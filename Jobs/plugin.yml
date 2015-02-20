@@ -1,0 +1,100 @@
+name: Jobs
+description: Jobs Plugin for the BukkitAPI
+main: com.gamingmesh.jobs.JobsPlugin
+version: 2.14.0
+author: phrstbrn
+softdepend: [Vault]
+commands:
+  jobs:
+    description: Jobs
+    usage: /jobs
+permissions:
+  jobs.*:
+    description: Grants access to all Jobs commands
+    children:
+      jobs.admin: true
+  jobs.admin:
+    description: Grants permissions as an admin
+    default: false
+    children:
+      jobs.use: true
+      jobs.command.*: true
+  jobs.use:
+    description: Grants ability to use this plugin
+    default: true
+  jobs.command.*:
+    description: Grants player access to all commands
+    default: false
+    children:
+      jobs.command.browse: true
+      jobs.command.stats: true
+      jobs.command.admin.stats: true
+      jobs.command.join: true
+      jobs.command.leave: true
+      jobs.command.leaveall: true
+      jobs.command.info: true
+      jobs.command.playerinfo: true
+      jobs.command.fire: true
+      jobs.command.fireall: true
+      jobs.command.employ: true
+      jobs.command.promote: true
+      jobs.command.demote: true
+      jobs.command.grantxp: true
+      jobs.command.removexp: true
+      jobs.command.transfer: true
+      jobs.command.reload: true
+      jobs.command.help: true
+  jobs.command.browse:
+    description: Grants access to the browse command
+    default: true
+  jobs.command.stats:
+    description: Grants access to the stats command
+    default: true
+  jobs.command.admin.stats:
+    description: Grants access to the stats command on other players
+    default: true
+  jobs.command.join:
+    description: Grants access to the join command
+    default: true
+  jobs.command.leave:
+    description: Grants access to the leave command
+    default: true
+  jobs.command.leaveall:
+    description: Grants access to the leaveall command
+    default: true
+  jobs.command.info:
+    description: Grants access to the info command
+    default: true
+  jobs.command.playerinfo:
+    description: Grants access to the playerinfo command
+    default: op
+  jobs.command.fire:
+    description: Grants access to the fire command
+    default: op
+  jobs.command.fireall:
+    description: Grants access to the fireall command
+    default: op
+  jobs.command.employ:
+    description: Grants access to the employ command
+    default: op
+  jobs.command.promote:
+    description: Grants access to the promote command
+    default: op
+  jobs.command.demote:
+    description: Grants access to the demote command
+    default: op
+  jobs.command.grantxp:
+    description: Grants access to the grantxp command
+    default: op
+  jobs.command.removexp:
+    description: Grants access to the removexp command
+    default: op
+  jobs.command.transfer:
+    description: Grants access to the transfer command
+    default: op
+  jobs.command.reload:
+    description: Grants access to the reload command
+    default: op
+  jobs.command.help:
+    description: Grants access to the help command
+    default: true  
