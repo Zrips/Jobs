@@ -126,7 +126,7 @@ public class JobsDAOSQLite extends JobsDAO {
                 executeSQL("ALTER TABLE `" + getPrefix() + "jobs_old` ADD COLUMN `player_uuid` binary(16) DEFAULT NULL;");
             }
             
-            executeSQL("CREATE TABLE `" + getPrefix() + "jobs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` binary(16) NOT NULL, `job` varchar(20), `experience` int, `level` int);");
+            executeSQL("CREATE TABLE `" + getPrefix() + "jobs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
             
             if (rows > 0) {
                 pst1 = conn.prepareStatement("SELECT DISTINCT `username` FROM `" + getPrefix() + "jobs_old` WHERE `player_uuid` IS NULL;");
