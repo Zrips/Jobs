@@ -142,13 +142,13 @@ public abstract class JobsDAO {
         JobsConnection conn = getConnection();
         if (conn == null)
             return;
-        try {
-            PreparedStatement prest = conn.prepareStatement("INSERT INTO `" + prefix + "jobs` (`player_uuid`, `username`, `job`, `level`, `experience`) VALUES (?, ?, ?, ?, ?);");
+        try {        	 
+            PreparedStatement prest = conn.prepareStatement("INSERT INTO `" + prefix + "jobs` (`player_uuid`, `job`, `level`, `experience`) VALUES (?, ?, ?, ?);");
             prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
             prest.setString(2, jPlayer.getUserName());
-            prest.setString(3, job.getName());
-            prest.setInt(4, 1);
-            prest.setInt(5, 0);
+            //prest.setString(3, job.getName());
+            prest.setInt(3, 1);
+            prest.setInt(4, 0);
             prest.execute();
             prest.close();
         } catch (SQLException e) {

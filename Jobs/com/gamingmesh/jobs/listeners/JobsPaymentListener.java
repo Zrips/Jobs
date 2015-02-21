@@ -69,7 +69,7 @@ import com.gmail.nossr50.events.fake.FakeBrewEvent;
 public class JobsPaymentListener implements Listener {
     private JobsPlugin plugin;
     private final String furnaceOwnerMetadata = "jobsFurnaceOwner";
-    private final String brewingOwnerMetadata = "jobsBrewingOwner";
+    public final static String brewingOwnerMetadata = "jobsBrewingOwner";
     private final String mobSpawnerMetadata = "jobsMobSpawner";
     private final String BlockMetadata = "BlockOwner";
     
@@ -87,7 +87,7 @@ public class JobsPaymentListener implements Listener {
         if (block.getType().equals(Material.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
             block.removeMetadata(furnaceOwnerMetadata, plugin);
         
-        if (block.hasMetadata(BlockMetadata)) return;
+       // if (block.hasMetadata(BlockMetadata)) return;
         	
         // make sure plugin is enabled
         if(!plugin.isEnabled()) return;
@@ -133,7 +133,7 @@ public class JobsPaymentListener implements Listener {
         
         if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
             return;
-        block.setMetadata(BlockMetadata, new FixedMetadataValue(plugin, true));
+        //block.setMetadata(BlockMetadata, new FixedMetadataValue(plugin, true));
         // restricted area multiplier
         double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -352,37 +352,6 @@ public class JobsPaymentListener implements Listener {
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
         Jobs.action(jPlayer, new ItemActionInfo(event.getContents().getIngredient(), ActionType.BREW), multiplier);
     }
-    
-    @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-    public void onBrewEvent(FakeBrewEvent event) {
-        if (!plugin.isEnabled())
-            return;
-        Block block = event.getBlock();
-        if (block == null)
-            return;
-        
-        if (!block.hasMetadata(brewingOwnerMetadata))
-            return;
-        List<MetadataValue> data = block.getMetadata(brewingOwnerMetadata);
-        if (data.isEmpty())
-            return;
-        
-        // only care about first
-        MetadataValue value = data.get(0);
-                
-        String playerName = value.asString();
-        Player player = Bukkit.getServer().getPlayerExact(playerName);
-        if (player == null || !player.isOnline())
-            return;
-        
-        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-            return;
-        
-        double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
-        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-        Jobs.action(jPlayer, new ItemActionInfo(event.getContents().getIngredient(), ActionType.BREW), multiplier);
-    }
-    
     
     @EventHandler(priority=EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {

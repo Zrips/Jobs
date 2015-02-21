@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.util.UUIDFetcher;
 import com.gamingmesh.jobs.util.UUIDUtil;
@@ -127,7 +129,7 @@ public class JobsDAOSQLite extends JobsDAO {
             }
             
             executeSQL("CREATE TABLE `" + getPrefix() + "jobs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
-            
+
             if (rows > 0) {
                 pst1 = conn.prepareStatement("SELECT DISTINCT `username` FROM `" + getPrefix() + "jobs_old` WHERE `player_uuid` IS NULL;");
                 ResultSet rs = pst1.executeQuery();

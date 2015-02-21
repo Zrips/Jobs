@@ -121,7 +121,7 @@ public class JobsDAOMySQL extends JobsDAO {
         PreparedStatement pst2 = null;
         try {
             if (rows == 0) {
-                executeSQL("CREATE TABLE `" + getPrefix() + "jobs` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+                executeSQL("CREATE TABLE `" + getPrefix() + "jobs` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `job` varchar(20), `experience` int, `level` int);");
             } else {
                 Jobs.getPluginLogger().info("Converting existing usernames to Mojang UUIDs.  This could take a long time!");
                 

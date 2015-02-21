@@ -27,37 +27,41 @@ import com.gamingmesh.jobs.config.JobConfig;
 import com.gamingmesh.jobs.config.JobsConfiguration;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
+import com.gamingmesh.jobs.listeners.McMMOlistener;
 
 public class JobsPlugin extends JavaPlugin {
-    @Override
-    public void onEnable() {
-        Jobs.setPermissionHandler(new PermissionHandler(this));
-        
-        Jobs.setPluginLogger(getLogger());
-        
-        Jobs.setDataFolder(getDataFolder());
-        
-        ConfigManager.registerJobsConfiguration(new JobsConfiguration(this));
-        ConfigManager.registerJobConfig(new JobConfig(this));
-        
-        getCommand("jobs").setExecutor(new JobsCommands());
-        
-        Jobs.startup();
-        
-        // register the listeners
-        getServer().getPluginManager().registerEvents(new JobsListener(this), this);
-        getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
-        
-        // register economy
-        Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
-        
-        // all loaded properly.
-        Jobs.getPluginLogger().info("Plugin has been enabled succesfully.");
-    }
-    
-    @Override
-    public void onDisable() {
-        Jobs.shutdown();
-        Jobs.getPluginLogger().info("Plugin has been disabled succesfully.");
-    }
+	@Override
+	public void onEnable() {
+		Jobs.setPermissionHandler(new PermissionHandler(this));
+
+		Jobs.setPluginLogger(getLogger());
+
+		Jobs.setDataFolder(getDataFolder());
+
+		ConfigManager.registerJobsConfiguration(new JobsConfiguration(this));
+		ConfigManager.registerJobConfig(new JobConfig(this));
+
+		getCommand("jobs").setExecutor(new JobsCommands());
+
+		Jobs.startup();
+
+		// register the listeners
+		getServer().getPluginManager().registerEvents(new JobsListener(this), this);
+		getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
+
+		if (McMMOlistener.CheckmcMMO())
+			getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
+
+		// register economy
+		Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
+
+		// all loaded properly.
+		Jobs.getPluginLogger().info("Plugin has been enabled succesfully.");
+	}
+
+	@Override
+	public void onDisable() {
+		Jobs.shutdown();
+		Jobs.getPluginLogger().info("Plugin has been disabled succesfully.");
+	}
 }
