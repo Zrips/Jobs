@@ -87,7 +87,7 @@ public class JobsPaymentListener implements Listener {
         if (block.getType().equals(Material.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
             block.removeMetadata(furnaceOwnerMetadata, plugin);
         
-       // if (block.hasMetadata(BlockMetadata)) return;
+       //if (block.hasMetadata(BlockMetadata)) return;
         	
         // make sure plugin is enabled
         if(!plugin.isEnabled()) return;
@@ -133,7 +133,7 @@ public class JobsPaymentListener implements Listener {
         
         if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
             return;
-        //block.setMetadata(BlockMetadata, new FixedMetadataValue(plugin, true));
+        block.setMetadata(BlockMetadata, new FixedMetadataValue(plugin, true));
         // restricted area multiplier
         double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
