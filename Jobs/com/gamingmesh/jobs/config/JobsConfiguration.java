@@ -49,6 +49,8 @@ public class JobsConfiguration {
     private JobsPlugin plugin;
     protected List<Title> titles = new ArrayList<Title>();
     protected ArrayList<RestrictedArea> restrictedAreas = new ArrayList<RestrictedArea>();
+    public static ArrayList<String> restrictedBlocks = new ArrayList<String>();
+    public static ArrayList<String> restrictedBlocksTimer = new ArrayList<String>();
     protected Locale locale;
     protected int savePeriod;
     protected boolean economyAsync;
@@ -62,6 +64,8 @@ public class JobsConfiguration {
     protected boolean modifyChat;
     protected int economyBatchDelay;
     protected boolean saveOnDisconnect;
+    public static boolean useBlockMoveProtection;
+    public static boolean useBlockTimer;
     public JobsConfiguration(JobsPlugin plugin) {
         super();
         this.plugin = plugin;
@@ -197,6 +201,8 @@ public class JobsConfiguration {
         loadTitleSettings();
         // restricted areas
         loadRestrictedAreaSettings();
+        // restricted blocks
+        loadRestrictedBlocks();
     }
 
     /**
@@ -285,6 +291,14 @@ public class JobsConfiguration {
         writer.addComment("economy-async",  "Enable async economy calls.",
                 "Only enable if your economy plugin is thread safe, use with EXTREME caution.");
         config.addDefault("economy-async", false);
+        
+        writer.addComment("use-block-move-protection",  "Experimental mode!.", "Enable blocks, like ore, protection.",
+                "Only enable if you want to protect block from beying moved by pistons.");
+        config.addDefault("use-block-move-protection", false);
+
+        writer.addComment("use-block-timer",  "Experimental mode!.","Enable blocks timer protection.",
+                "Only enable if you want to protect block from beying broken to fast.");
+        config.addDefault("use-block-timer", false);
         
         String storageMethod = config.getString("storage-method");
         if(storageMethod.equalsIgnoreCase("mysql")) {
@@ -378,6 +392,8 @@ public class JobsConfiguration {
         modifyChat = config.getBoolean("modify-chat");
         economyBatchDelay = config.getInt("economy-batch-delay");
         saveOnDisconnect = config.getBoolean("save-on-disconnect");
+        useBlockMoveProtection = config.getBoolean("use-block-move-protection");
+        useBlockTimer = config.getBoolean("use-block-timer");
         
         // Make sure we're only copying settings we care about
         copySetting(config, writer, "locale-language");
@@ -399,6 +415,8 @@ public class JobsConfiguration {
         copySetting(config, writer, "modify-chat");
         copySetting(config, writer, "economy-batch-delay");
         copySetting(config, writer, "economy-async");
+        copySetting(config, writer, "use-block-move-protection");
+        copySetting(config, writer, "use-block-timer");
         
         // Write back config
         try {
@@ -600,5 +618,55 @@ public class JobsConfiguration {
             e.printStackTrace();
         }
     }
+    /**
+     * Method to load the restricted areas configuration
+     * 
+     * loads from Jobs/restrictedAreas.yml
+     */
+    private synchronized void loadRestrictedBlocks(){
+        File f = new File(plugin.getDataFolder(), "restrictedBlocks.yml");
+        YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
+        conf.options().indent(2);
+        conf.options().copyDefaults(true);
+        StringBuilder header = new StringBuilder();
+        header.append("restrictedblocks - All block to be protected from place/block exploit and piston move")
+        .append(System.getProperty("line.separator"))
+        .append("Dont count in vegetables")
+        .append(System.getProperty("line.separator"));
+        restrictedBlocks.add("14");
+        restrictedBlocks.add("15");
+        restrictedBlocks.add("16");
+        restrictedBlocks.add("21");
+        restrictedBlocks.add("48");
+        restrictedBlocks.add("56");
+        restrictedBlocks.add("73");
+        restrictedBlocks.add("129");
+        restrictedBlocks.add("153");
 
+        
+        restrictedBlocksTimer.add("141-60");
+        restrictedBlocksTimer.add("59-60");
+        restrictedBlocksTimer.add("81-60");
+        restrictedBlocksTimer.add("32-60");
+        
+        conf.addDefault("restrictedblocks", restrictedBlocks);
+
+        header.append("blockstimer - Block protected by timer in sec")
+        .append(System.getProperty("line.separator"))
+        .append("141-60 means that carrot can be harvested after 60 sec (remember to use id's from placed objects, not from your inventory)")
+        .append(System.getProperty("line.separator"));
+        
+        conf.addDefault("blockstimer", restrictedBlocksTimer);
+        
+        
+        conf.options().header(header.toString());
+        restrictedBlocks = (ArrayList<String>) conf.getStringList("restrictedblocks");
+        restrictedBlocksTimer = (ArrayList<String>) conf.getStringList("blockstimer");
+        try {
+            conf.save(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }

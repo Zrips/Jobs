@@ -28,6 +28,7 @@ import com.gamingmesh.jobs.config.JobsConfiguration;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
+import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 
 public class JobsPlugin extends JavaPlugin {
 	@Override
@@ -51,6 +52,8 @@ public class JobsPlugin extends JavaPlugin {
 
 		if (McMMOlistener.CheckmcMMO())
 			getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
+		if (JobsConfiguration.useBlockMoveProtection)
+			getServer().getPluginManager().registerEvents(new PistonProtectionListener(this), this);
 
 		// register economy
 		Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));

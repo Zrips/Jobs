@@ -4,11 +4,16 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
@@ -19,6 +24,7 @@ import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
+import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
 public class McMMOlistener implements Listener{
 	
@@ -59,6 +65,34 @@ public class McMMOlistener implements Listener{
         double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
         Jobs.action(jPlayer, new ItemActionInfo(event.getContents().getIngredient(), ActionType.BREW), multiplier);
+    }
+    
+    @EventHandler
+    public void OnItemrepair(McMMOPlayerRepairCheckEvent event) {
+		// make sure plugin is enabled
+		if (!plugin.isEnabled())
+			return;
+
+		if (!(event.getPlayer() instanceof Player))
+			return;
+
+		Player player = (Player) event.getPlayer();
+
+		ItemStack resultStack = event.getRepairedObject();
+
+		if (resultStack == null)
+			return;
+
+		if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+			return;
+
+		// check if in creative
+		if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+			return;
+
+		double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), multiplier);
     }
     
 	public static boolean CheckmcMMO() {
