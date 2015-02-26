@@ -274,7 +274,7 @@ public class JobsPaymentListener implements Listener {
 			return;
 
 		// Must be "container" slot 9
-		
+
 		if (!event.getSlotType().equals(SlotType.RESULT) || event.getSlot() != 2)
 			return;
 
@@ -360,10 +360,16 @@ public class JobsPaymentListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEntityDeath(EntityDeathEvent event) {
+
 		// Entity that died must be living
 		if (!(event.getEntity() instanceof LivingEntity))
 			return;
 		LivingEntity lVictim = (LivingEntity) event.getEntity();
+
+		//extra check for Citizens 2 sentry kills
+		if (lVictim.getKiller() instanceof Player)
+			if (lVictim.getKiller().hasMetadata("NPC"))
+				return;
 
 		// mob spawner, no payment or experience
 		if (lVictim.hasMetadata(mobSpawnerMetadata)) {
