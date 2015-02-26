@@ -27,7 +27,9 @@ public enum ActionType {
     SMELT("Smelt"),
     BREW("Brew"),
     ENCHANT("Enchant"),
-    REPAIR("Repair");
+    REPAIR("Repair"),
+    BREED("Breed"),
+    TAME("Tame");
     
     private String name;
     private ActionType(String name) {

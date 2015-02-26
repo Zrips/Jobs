@@ -18,12 +18,14 @@
 
 package com.gamingmesh.jobs.listeners;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -39,6 +41,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
@@ -186,6 +189,44 @@ public class JobsPaymentListener implements Listener {
 			ItemStack items = ((Item) event.getCaught()).getItemStack();
 			Jobs.action(jPlayer, new ItemActionInfo(items, ActionType.FISH), multiplier);
 		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onAnimalTame(EntityTameEvent event) {
+
+		// Entity that died must be living
+		if (!(event.getEntity() instanceof LivingEntity))
+			return;
+		LivingEntity animal = (LivingEntity) event.getEntity();
+
+		// mob spawner, no payment or experience
+		if (animal.hasMetadata(mobSpawnerMetadata)) {
+			animal.removeMetadata(mobSpawnerMetadata, plugin);
+			return;
+		}
+
+		// make sure plugin is enabled
+		if (!plugin.isEnabled())
+			return;
+
+		Player player = (Player) event.getOwner();
+
+		if (player != null) {
+			// check if in creative
+			if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+				return;
+
+			if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+				return;
+
+			// restricted area multiplier
+			double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
+			// pay
+			JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
+
+			Jobs.action(jDamager, new EntityActionInfo(animal.getType(), ActionType.TAME), multiplier);
+		}
+
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -406,6 +447,7 @@ public class JobsPaymentListener implements Listener {
 				double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(pDamager);
 				// pay
 				JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(pDamager);
+
 				Jobs.action(jDamager, new EntityActionInfo(lVictim.getType(), ActionType.KILL), multiplier);
 			}
 		}
@@ -414,6 +456,7 @@ public class JobsPaymentListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
 		SpawnReason reason = event.getSpawnReason();
+
 		if (reason.toString().equalsIgnoreCase("SPAWNER") && !ConfigManager.getJobsConfiguration().payNearSpawner()) {
 			LivingEntity creature = (LivingEntity) event.getEntity();
 			creature.setMetadata(mobSpawnerMetadata, new FixedMetadataValue(plugin, true));
@@ -425,6 +468,49 @@ public class JobsPaymentListener implements Listener {
 		//      return;
 		// if(ConfigManager.getJobsConfiguration().payNearSpawner())
 		//     return;
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onCreatureBreed(CreatureSpawnEvent event) {
+		SpawnReason reason = event.getSpawnReason();
+		if (!reason.toString().equalsIgnoreCase("BREEDING"))
+			return;
+
+		// Entity that died must be living
+		if (!(event.getEntity() instanceof LivingEntity))
+			return;
+		LivingEntity animal = (LivingEntity) event.getEntity();
+		
+		// make sure plugin is enabled
+		if (!plugin.isEnabled())
+			return;
+
+		double closest = 30.0;
+		Player player = null;
+		Collection<? extends Player> OnlinePLayers = Bukkit.getOnlinePlayers();
+		for (Player i : OnlinePLayers) {
+			double dist = i.getLocation().distance(animal.getLocation());
+			if (closest == 30.0 || dist < closest) {
+				closest = dist;
+				player = i;
+			}
+		}
+
+		if (player != null) {
+			// check if in creative
+			if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+				return;
+
+			if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+				return;
+
+			// restricted area multiplier
+			double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
+			// pay
+			JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
+			Jobs.action(jDamager, new EntityActionInfo(animal.getType(), ActionType.BREED), multiplier);
+		}
+
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

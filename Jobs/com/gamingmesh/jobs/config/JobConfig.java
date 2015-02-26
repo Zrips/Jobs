@@ -54,7 +54,8 @@ public class JobConfig {
      * 
      * loads from Jobs/jobConfig.yml
      */
-    private void loadJobSettings(){
+    @SuppressWarnings("deprecation")
+	private void loadJobSettings(){
         File f = new File(plugin.getDataFolder(), "jobConfig.yml");
         ArrayList<Job> jobs = new ArrayList<Job>();
         Jobs.setJobs(jobs);
@@ -252,7 +253,7 @@ public class JobConfig {
                             // END HACK
                             
                             type = material.toString();
-                        } else if (actionType == ActionType.KILL) {
+                        } else if (actionType == ActionType.KILL || actionType == ActionType.TAME  || actionType == ActionType.BREED) {
                             // check entities
                             EntityType entity = EntityType.fromName(key);
                             if (entity == null) {
