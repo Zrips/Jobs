@@ -24,7 +24,8 @@ import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
 public class BlockActionInfo extends MaterialActionInfo implements ActionInfo {
-    public BlockActionInfo(Block block, ActionType type) {
+    @SuppressWarnings("deprecation")
+	public BlockActionInfo(Block block, ActionType type) {
         super(block.getType(), block.getData(), type);
     }
 }

@@ -358,37 +358,6 @@ public class JobsPaymentListener implements Listener {
 		Jobs.action(jPlayer, new ItemActionInfo(event.getResult(), ActionType.SMELT), multiplier);
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onBrewEvent(BrewEvent event) {
-		if (event.getEventName().equalsIgnoreCase("FakeBrewEvent"))
-			return;
-		if (!plugin.isEnabled())
-			return;
-		Block block = event.getBlock();
-		if (block == null)
-			return;
-
-		if (!block.hasMetadata(brewingOwnerMetadata))
-			return;
-		List<MetadataValue> data = block.getMetadata(brewingOwnerMetadata);
-		if (data.isEmpty())
-			return;
-
-		// only care about first
-		MetadataValue value = data.get(0);
-		String playerName = value.asString();
-		Player player = Bukkit.getServer().getPlayerExact(playerName);
-		if (player == null || !player.isOnline())
-			return;
-
-		if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-			return;
-
-		double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-		Jobs.action(jPlayer, new ItemActionInfo(event.getContents().getIngredient(), ActionType.BREW), multiplier);
-	}
-
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEntityDeath(EntityDeathEvent event) {
 		// Entity that died must be living

@@ -29,6 +29,7 @@ import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
+import com.gamingmesh.jobs.listeners.VanillaListeners;
 
 public class JobsPlugin extends JavaPlugin {
 	@Override
@@ -52,6 +53,8 @@ public class JobsPlugin extends JavaPlugin {
 
 		if (McMMOlistener.CheckmcMMO())
 			getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
+		else
+			getServer().getPluginManager().registerEvents(new VanillaListeners(this), this);
 		if (JobsConfiguration.useBlockMoveProtection)
 			getServer().getPluginManager().registerEvents(new PistonProtectionListener(this), this);
 
