@@ -472,6 +472,10 @@ public class JobsPaymentListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onCreatureBreed(CreatureSpawnEvent event) {
+
+		if (!JobsConfiguration.useBreederFinder)
+			return;
+
 		SpawnReason reason = event.getSpawnReason();
 		if (!reason.toString().equalsIgnoreCase("BREEDING"))
 			return;
@@ -479,8 +483,9 @@ public class JobsPaymentListener implements Listener {
 		// Entity that died must be living
 		if (!(event.getEntity() instanceof LivingEntity))
 			return;
+
 		LivingEntity animal = (LivingEntity) event.getEntity();
-		
+
 		// make sure plugin is enabled
 		if (!plugin.isEnabled())
 			return;
@@ -490,13 +495,13 @@ public class JobsPaymentListener implements Listener {
 		Collection<? extends Player> OnlinePLayers = Bukkit.getOnlinePlayers();
 		for (Player i : OnlinePLayers) {
 			double dist = i.getLocation().distance(animal.getLocation());
-			if (closest == 30.0 || dist < closest) {
+			if (closest > dist) {
 				closest = dist;
 				player = i;
 			}
 		}
 
-		if (player != null) {
+		if (player != null && closest < 30.0) {
 			// check if in creative
 			if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
 				return;

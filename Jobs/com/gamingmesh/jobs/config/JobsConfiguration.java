@@ -66,6 +66,7 @@ public class JobsConfiguration {
     protected boolean saveOnDisconnect;
     public static boolean useBlockMoveProtection;
     public static boolean useBlockTimer;
+    public static boolean useBreederFinder;
     public JobsConfiguration(JobsPlugin plugin) {
         super();
         this.plugin = plugin;
@@ -299,6 +300,10 @@ public class JobsConfiguration {
         writer.addComment("use-block-timer",  "Experimental mode!.","Enable blocks timer protection.",
                 "Only enable if you want to protect block from beying broken to fast.");
         config.addDefault("use-block-timer", false);
+
+        writer.addComment("use-breeder-finder",  "Breeder finder.",
+                "If you are not using breeding payment, you can disable this to save little resources. Really little.");
+        config.addDefault("use-breeder-finder", true);
         
         String storageMethod = config.getString("storage-method");
         if(storageMethod.equalsIgnoreCase("mysql")) {
@@ -394,6 +399,7 @@ public class JobsConfiguration {
         saveOnDisconnect = config.getBoolean("save-on-disconnect");
         useBlockMoveProtection = config.getBoolean("use-block-move-protection");
         useBlockTimer = config.getBoolean("use-block-timer");
+        useBreederFinder = config.getBoolean("use-breeder-finder");
         
         // Make sure we're only copying settings we care about
         copySetting(config, writer, "locale-language");
@@ -417,6 +423,7 @@ public class JobsConfiguration {
         copySetting(config, writer, "economy-async");
         copySetting(config, writer, "use-block-move-protection");
         copySetting(config, writer, "use-block-timer");
+        copySetting(config, writer, "use-breeder-finder");
         
         // Write back config
         try {
