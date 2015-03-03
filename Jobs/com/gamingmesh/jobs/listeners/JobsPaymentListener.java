@@ -494,10 +494,12 @@ public class JobsPaymentListener implements Listener {
 		Player player = null;
 		Collection<? extends Player> OnlinePLayers = Bukkit.getOnlinePlayers();
 		for (Player i : OnlinePLayers) {
-			double dist = i.getLocation().distance(animal.getLocation());
-			if (closest > dist) {
-				closest = dist;
-				player = i;
+			if (i.getWorld().getName().equals(animal.getWorld().getName())) {
+				double dist = i.getLocation().distance(animal.getLocation());
+				if (closest > dist) {
+					closest = dist;
+					player = i;
+				}
 			}
 		}
 

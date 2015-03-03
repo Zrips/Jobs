@@ -23,8 +23,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
-
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.util.ChatColor;
 
