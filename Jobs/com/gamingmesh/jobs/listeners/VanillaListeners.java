@@ -29,6 +29,7 @@ public class VanillaListeners implements Listener{
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onBrewEvent(BrewEvent event) {
+				
 		if (event.getEventName().equalsIgnoreCase("FakeBrewEvent"))
 			return;
 		if (!plugin.isEnabled())

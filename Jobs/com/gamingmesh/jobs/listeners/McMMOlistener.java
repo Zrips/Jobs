@@ -34,10 +34,12 @@ public class McMMOlistener implements Listener{
     
     @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
     public void onFakeBrewEvent(FakeBrewEvent event) {
+    	    	
         if (!plugin.isEnabled())
             return;
     	if (!event.getEventName().equalsIgnoreCase("FakeBrewEvent"))
     		return;
+    	
         Block block = event.getBlock();
         if (block == null)
             return;

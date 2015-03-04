@@ -110,7 +110,7 @@ public class JobsListener implements Listener {
 		String honorific = "";
 		if (jPlayer != null)
 			honorific = jPlayer.getDisplayHonorific() + " ";
-
+		
 		if (honorific.equalsIgnoreCase(" "))
 			honorific = "";
 		

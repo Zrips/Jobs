@@ -280,7 +280,8 @@ public class JobsCommands implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + Language.getMessage("command.error.permission"));
                 return true;
             }
-            OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+            @SuppressWarnings("deprecation")
+			OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
             jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         } else if (sender instanceof Player) {
             jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
@@ -346,7 +347,8 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
         
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         
         String jobName = args[1];
@@ -383,7 +385,8 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
         
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         
         Job job = Jobs.getJob(args[1]);
@@ -420,7 +423,8 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
         
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         
         List<JobProgression> jobs = jPlayer.getJobProgression();
@@ -450,7 +454,8 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
         
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         
         Job job = Jobs.getJob(args[1]);
@@ -489,7 +494,8 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
         
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         
         Job job = Jobs.getJob(args[1]);
@@ -526,7 +532,8 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
         
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         
         Job job = Jobs.getJob(args[1]);
@@ -564,7 +571,8 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
         
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         
         Job job = Jobs.getJob(args[1]);
@@ -607,7 +615,8 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
         
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         
         Job job = Jobs.getJob(args[1]);
@@ -650,7 +659,8 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
         
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
         
         Job oldjob = Jobs.getJob(args[1]);

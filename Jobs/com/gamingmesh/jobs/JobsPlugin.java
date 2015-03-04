@@ -53,8 +53,9 @@ public class JobsPlugin extends JavaPlugin {
 
 		if (McMMOlistener.CheckmcMMO())
 			getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
-		else
-			getServer().getPluginManager().registerEvents(new VanillaListeners(this), this);
+
+		getServer().getPluginManager().registerEvents(new VanillaListeners(this), this);
+
 		if (JobsConfiguration.useBlockMoveProtection)
 			getServer().getPluginManager().registerEvents(new PistonProtectionListener(this), this);
 

@@ -50,7 +50,8 @@ public class BufferedEconomy {
     public void pay(JobsPlayer player, double amount) {
         if (amount == 0)
             return;
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player.getUserName());
+        @SuppressWarnings("deprecation")
+		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player.getUserName());
         pay(new BufferedPayment(offlinePlayer, amount));
     }
     
