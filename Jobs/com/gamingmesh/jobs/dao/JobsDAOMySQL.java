@@ -22,11 +22,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.UUID;
+import org.bukkit.Bukkit;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.util.UUIDFetcher;
+import com.gamingmesh.jobs.util.ChatColor;
 import com.gamingmesh.jobs.util.UUIDUtil;
 
 public class JobsDAOMySQL extends JobsDAO {
@@ -91,7 +90,8 @@ public class JobsDAOMySQL extends JobsDAO {
         }
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected synchronized void checkUpdate1() throws SQLException {
         JobsConnection conn = getConnection();
         if (conn == null) {
@@ -134,6 +134,8 @@ public class JobsDAOMySQL extends JobsDAO {
                 while (rs.next()) {
                     usernames.add(rs.getString(1));
                 }
+                
+                /*
                 UUIDFetcher uuidFetcher = new UUIDFetcher(usernames);
                 Map<String, UUID> userMap = null;
                 try {
@@ -145,16 +147,31 @@ public class JobsDAOMySQL extends JobsDAO {
                 if (userMap == null) {
                     Jobs.getPluginLogger().severe("Error fetching UUIDs from Mojang.  Aborting conversion!");
                     return;
-                }
+                }*/
                 
                 pst2 = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `player_uuid` = ? WHERE `username` = ?;");
+                
+				int i = 0;
+				for (String names : usernames) {
+					i++;
+					if (i >= 10) {
+						Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + ""+i + " of " + usernames.size());
+						i = 0;
+					}
+					pst2.setBytes(1, UUIDUtil.toBytes(Bukkit.getOfflinePlayer(names).getUniqueId()));
+					pst2.setString(2, names);
+					pst2.execute();
+				}
+				
+                /*
                 for (Map.Entry<String, UUID> entry : userMap.entrySet()) {
                     String username = entry.getKey();
                     UUID uuid = entry.getValue();
                     pst2.setBytes(1, UUIDUtil.toBytes(uuid));
                     pst2.setString(2, username);
                     pst2.execute();
-                }
+                }*/
+                
                 executeSQL("ALTER TABLE `" + getPrefix() + "jobs` DROP COLUMN `username`;");
                 
                 Jobs.getPluginLogger().info("Mojang UUID conversion complete!");
