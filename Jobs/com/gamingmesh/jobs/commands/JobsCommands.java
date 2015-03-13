@@ -793,7 +793,7 @@ public class JobsCommands implements CommandExecutor {
         String message = Language.getMessage("command.stats.output");
         message = message.replace("%joblevel%", Integer.valueOf(jobProg.getLevel()).toString());
         message = message.replace("%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE);
-        message = message.replace("%jobxp%", Integer.toString((int)jobProg.getExperience()));
+        message = message.replace("%jobxp%", Double.toString(Math.round((Double)jobProg.getExperience()*100.0)/100.0));
         message = message.replace("%jobmaxxp%", Integer.toString(jobProg.getMaxExperience()));
         return message;
     }

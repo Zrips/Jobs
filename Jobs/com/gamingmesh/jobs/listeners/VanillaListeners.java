@@ -19,7 +19,6 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class VanillaListeners implements Listener{
-	
 	private JobsPlugin plugin;
 	public final static String brewingOwnerMetadata = "jobsBrewingOwner";
 
@@ -28,8 +27,7 @@ public class VanillaListeners implements Listener{
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onBrewEvent(BrewEvent event) {
-				
+	public void onBrewEvent(BrewEvent event) {	
 		if (event.getEventName().equalsIgnoreCase("FakeBrewEvent"))
 			return;
 		if (!plugin.isEnabled())
@@ -37,7 +35,6 @@ public class VanillaListeners implements Listener{
 		Block block = event.getBlock();
 		if (block == null)
 			return;
-
 		if (!block.hasMetadata(brewingOwnerMetadata))
 			return;
 		List<MetadataValue> data = block.getMetadata(brewingOwnerMetadata);
@@ -55,7 +52,7 @@ public class VanillaListeners implements Listener{
 			return;
 
 		double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);        
 		Jobs.action(jPlayer, new ItemActionInfo(event.getContents().getIngredient(), ActionType.BREW), multiplier);
 	}
 }

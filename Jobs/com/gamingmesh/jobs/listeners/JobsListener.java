@@ -96,7 +96,7 @@ public class JobsListener implements Listener {
 			return;
 
 		String format = event.getFormat();
-		format = format.replace("%1$s", "{jobs} %1$s");
+		format = format.replace("%1$s", "{jobs}%1$s");
 		event.setFormat(format);
 	}
 
@@ -116,7 +116,7 @@ public class JobsListener implements Listener {
 		
 		String format = event.getFormat();
 
-		format = format.replace("{jobs} ", honorific);
+		format = format.replace("{jobs}", honorific);
 		event.setFormat(format);
 	}
 

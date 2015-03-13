@@ -26,7 +26,6 @@ public class PistonProtectionListener implements Listener {
 
 	@SuppressWarnings("deprecation")
 	public static boolean CheckBlock(Block block) {
-
 		for (String BlockId : JobsConfiguration.restrictedBlocks) {
 			if (BlockId.equalsIgnoreCase(String.valueOf(block.getTypeId()))) {
 				return true;
@@ -45,14 +44,13 @@ public class PistonProtectionListener implements Listener {
 		}
 		return false;
 	}
-	
 
 	@SuppressWarnings("deprecation")
 	public static boolean checkVegybreak(Block block, Player player) {
 		for (String ConfigOneBlock : JobsConfiguration.restrictedBlocksTimer) {
 			int ConfigPlacedBlockId = Integer.valueOf(ConfigOneBlock.split("-")[0]);
 			if (block.getTypeId() == ConfigPlacedBlockId) {
-				if (CheckVegyTimer(block, Integer.valueOf(ConfigOneBlock.split("-")[1]), player)){
+				if (CheckVegyTimer(block, Integer.valueOf(ConfigOneBlock.split("-")[1]), player)) {
 					return true;
 				}
 			}
@@ -62,13 +60,14 @@ public class PistonProtectionListener implements Listener {
 
 	public static boolean CheckVegyTimer(Block block, int time, Player player) {
 		long currentTime = System.currentTimeMillis();
-		if (!block.hasMetadata(JobsPaymentListener.VegyMetadata)) return false;
+		if (!block.hasMetadata(JobsPaymentListener.VegyMetadata))
+			return false;
 		long BlockTime = block.getMetadata(JobsPaymentListener.VegyMetadata).get(0).asLong();
 
 		if (currentTime >= BlockTime + time * 1000) {
 			return false;
 		}
-		player.sendMessage(ChatColor.RED + "You need to wait: "+ ChatColor.AQUA + Math.round((((BlockTime + time * 1000) - currentTime))/1000) + ChatColor.RED +" sec more to get paid for this");
+		player.sendMessage(ChatColor.RED + "You need to wait: " + ChatColor.AQUA + Math.round((((BlockTime + time * 1000) - currentTime)) / 1000) + ChatColor.RED + " sec more to get paid for this");
 		return true;
 	}
 
@@ -78,8 +77,10 @@ public class PistonProtectionListener implements Listener {
 			return;
 		List<Block> block = event.getBlocks();
 		for (Block OneBlock : block) {
-			if (CheckBlock(OneBlock))
+			if (CheckBlock(OneBlock)) {
 				event.setCancelled(true);
+				break;
+			}
 		}
 	}
 
@@ -87,9 +88,10 @@ public class PistonProtectionListener implements Listener {
 	public static void OnBlockRetractMove(BlockPistonRetractEvent event) {
 		List<Block> block = event.getBlocks();
 		for (Block OneBlock : block) {
-			if (CheckBlock(OneBlock))
+			if (CheckBlock(OneBlock)) {
 				event.setCancelled(true);
+				break;
+			}
 		}
-
 	}
 }

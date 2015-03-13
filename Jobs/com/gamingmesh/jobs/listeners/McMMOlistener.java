@@ -23,51 +23,53 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
-public class McMMOlistener implements Listener{
-	
-    private JobsPlugin plugin;
-    public static boolean mcMMOPresent = false;
-    
-    public McMMOlistener(JobsPlugin plugin){
-        this.plugin = plugin;
-    }
-    
-    @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-    public void onFakeBrewEvent(FakeBrewEvent event) {
-    	    	
-        if (!plugin.isEnabled())
-            return;
-    	if (!event.getEventName().equalsIgnoreCase("FakeBrewEvent"))
-    		return;
-    	
-        Block block = event.getBlock();
-        if (block == null)
-            return;
-        
-        if (!block.hasMetadata(JobsPaymentListener.brewingOwnerMetadata))
-            return;
-        List<MetadataValue> data = block.getMetadata(JobsPaymentListener.brewingOwnerMetadata);
-        if (data.isEmpty())
-            return;
-        
-        // only care about first
-        MetadataValue value = data.get(0);
-                
-        String playerName = value.asString();
-        Player player = Bukkit.getServer().getPlayerExact(playerName);
-        if (player == null || !player.isOnline())
-            return;
-        
-        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-            return;
-        
-        double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
-        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-        Jobs.action(jPlayer, new ItemActionInfo(event.getContents().getIngredient(), ActionType.BREW), multiplier);
-    }
-    
-    @EventHandler
-    public void OnItemrepair(McMMOPlayerRepairCheckEvent event) {
+public class McMMOlistener implements Listener {
+
+	private JobsPlugin plugin;
+	public static boolean mcMMOPresent = false;
+
+	public McMMOlistener(JobsPlugin plugin) {
+		this.plugin = plugin;
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onFakeBrewEvent(FakeBrewEvent event) {
+
+		if (event.getContents().getIngredient() == null)
+			return;
+		if (!plugin.isEnabled())
+			return;
+		if (!event.getEventName().equalsIgnoreCase("FakeBrewEvent"))
+			return;
+
+		Block block = event.getBlock();
+		if (block == null)
+			return;
+
+		if (!block.hasMetadata(JobsPaymentListener.brewingOwnerMetadata))
+			return;
+		List<MetadataValue> data = block.getMetadata(JobsPaymentListener.brewingOwnerMetadata);
+		if (data.isEmpty())
+			return;
+
+		// only care about first
+		MetadataValue value = data.get(0);
+
+		String playerName = value.asString();
+		Player player = Bukkit.getServer().getPlayerExact(playerName);
+		if (player == null || !player.isOnline())
+			return;
+
+		if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+			return;
+
+		double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+		Jobs.action(jPlayer, new ItemActionInfo(event.getContents().getIngredient(), ActionType.BREW), multiplier);
+	}
+
+	@EventHandler
+	public void OnItemrepair(McMMOPlayerRepairCheckEvent event) {
 		// make sure plugin is enabled
 		if (!plugin.isEnabled())
 			return;
@@ -92,8 +94,8 @@ public class McMMOlistener implements Listener{
 		double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), multiplier);
-    }
-    
+	}
+
 	public static boolean CheckmcMMO() {
 		Plugin McMMO = Bukkit.getPluginManager().getPlugin("mcMMO");
 		if (McMMO != null) {

@@ -44,7 +44,6 @@ public class JobsDAOH2 extends JobsDAO {
 
 		try {
 			sqliteDao.executeSQL("CREATE TABLE `" + sqliteDao.getPrefix() + "jobs` (`username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
-
 			pst1 = h2Conn.prepareStatement("SELECT `username`, `job`, `experience`, `level` FROM `" + h2dao.getPrefix() + "jobs`");
 			pst2 = sqliteConn.prepareStatement("INSERT INTO `" + sqliteDao.getPrefix() + "jobs` (`username`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?);");
 			ResultSet rs = pst1.executeQuery();
