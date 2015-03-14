@@ -23,10 +23,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.util.ChatColor;
+import com.gamingmesh.jobs.util.UUIDConverter;
 import com.gamingmesh.jobs.util.UUIDUtil;
 
 public class JobsDAOSQLite extends JobsDAO {
@@ -93,7 +96,6 @@ public class JobsDAOSQLite extends JobsDAO {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected synchronized void checkUpdate1() throws SQLException {
 		JobsConnection conn = getConnection();
@@ -154,13 +156,15 @@ public class JobsDAOSQLite extends JobsDAO {
 				 */
 				pst2 = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs_old` SET `player_uuid` = ? WHERE `username` = ?;");
 				int i = 0;
+				int y = 0;
 				for (String names : usernames) {
 					i++;
-					if (i >= 10) {
-						Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + ""+i + " of " + usernames.size());
+					y++;
+					if (i >= 50) {
+						Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "" + y + " of " + usernames.size());
 						i = 0;
 					}
-					pst2.setBytes(1, UUIDUtil.toBytes(Bukkit.getOfflinePlayer(names).getUniqueId()));
+					pst2.setBytes(1, UUIDUtil.toBytes(UUID.fromString(UUIDConverter.getUUIDFromName(names, false, true))));
 					pst2.setString(2, names);
 					pst2.execute();
 				}
