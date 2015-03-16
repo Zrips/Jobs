@@ -101,5 +101,13 @@ public class JobsDAOH2 extends JobsDAO {
 		@Override
 		protected void checkUpdate1() throws SQLException {
 		}
+
+		@Override
+		protected void checkUpdate2() throws SQLException {
+		}
+	}
+
+	@Override
+	protected void checkUpdate2() throws SQLException {
 	}
 }

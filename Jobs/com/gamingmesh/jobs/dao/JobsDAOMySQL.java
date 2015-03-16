@@ -180,7 +180,7 @@ public class JobsDAOMySQL extends JobsDAO {
 				    pst2.execute();
 				}*/
 
-				executeSQL("ALTER TABLE `" + getPrefix() + "jobs` DROP COLUMN `username`;");
+				//executeSQL("ALTER TABLE `" + getPrefix() + "jobs` DROP COLUMN `username`;");
 
 				Jobs.getPluginLogger().info("Mojang UUID conversion complete!");
 			}
@@ -197,6 +197,41 @@ public class JobsDAOMySQL extends JobsDAO {
 				} catch (SQLException e) {
 				}
 			}
+		}
+	}
+
+	@Override
+	protected synchronized void checkUpdate2() throws SQLException {
+		JobsConnection conn = getConnection();
+		if (conn == null) {
+			Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+			return;
+		}
+		PreparedStatement prest = null;
+		int rows = 0;
+		try {
+			// Check for jobs table
+			prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?;");
+			prest.setString(1, database);
+			prest.setString(2, getPrefix() + "jobs");
+			prest.setString(3, "username");
+			ResultSet res = prest.executeQuery();
+			if (res.next()) {
+				rows = res.getInt(1);
+			}
+		} finally {
+			if (prest != null) {
+				try {
+					prest.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		try {
+			if (rows == 0)
+				executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `username` varchar(20);");
+		} finally {
 		}
 	}
 }

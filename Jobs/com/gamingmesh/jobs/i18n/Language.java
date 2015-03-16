@@ -21,6 +21,8 @@ package com.gamingmesh.jobs.i18n;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.bukkit.ChatColor;
+
 public class Language {
     private static ResourceBundle bundle;
     
@@ -43,7 +45,7 @@ public class Language {
      * @return the message
      */
     public static String getMessage(String key) {
-        return bundle.getString(key);
+        return ChatColor.translateAlternateColorCodes('&', bundle.getString(key));
     }
     
     public static boolean containsKey(String key) {
