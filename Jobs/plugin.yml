@@ -1,7 +1,7 @@
 name: Jobs
 description: Jobs Plugin for the BukkitAPI
 main: com.gamingmesh.jobs.JobsPlugin
-version: 2.19.0
+version: 2.20.0
 author: phrstbrn
 softdepend: [Vault]
 commands:
@@ -44,8 +44,12 @@ permissions:
       jobs.command.transfer: true
       jobs.command.reload: true
       jobs.command.help: true
+      jobs.command.top: true
   jobs.command.browse:
     description: Grants access to the browse command
+    default: true
+  jobs.command.top:
+    description: Grants access to the top command
     default: true
   jobs.command.stats:
     description: Grants access to the stats command

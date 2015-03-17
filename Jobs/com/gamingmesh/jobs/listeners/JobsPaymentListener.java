@@ -20,11 +20,14 @@ package com.gamingmesh.jobs.listeners;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -60,6 +63,7 @@ import org.bukkit.metadata.MetadataValue;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.actions.BlockActionInfo;
+import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.actions.EntityActionInfo;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.config.ConfigManager;
@@ -365,7 +369,16 @@ public class JobsPaymentListener implements Listener {
 
 		double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT), multiplier);
+
+		if (JobsConfiguration.useNewEnchantPaySystem) {
+			Map<Enchantment, Integer> enchants = event.getEnchantsToAdd();
+			for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
+				Jobs.action(jPlayer, new EnchantActionInfo(oneEnchant.getKey().getName(), oneEnchant.getValue(), ActionType.ENCHANT), multiplier);
+			}
+		}else{
+			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT), multiplier);
+		}
+
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

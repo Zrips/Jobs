@@ -67,6 +67,7 @@ public class JobsConfiguration {
     public static boolean useBlockMoveProtection;
     public static boolean useBlockTimer;
     public static boolean useBreederFinder;
+    public static boolean useNewEnchantPaySystem;
     public JobsConfiguration(JobsPlugin plugin) {
         super();
         this.plugin = plugin;
@@ -304,6 +305,10 @@ public class JobsConfiguration {
         writer.addComment("use-breeder-finder",  "Breeder finder.",
                 "If you are not using breeding payment, you can disable this to save little resources. Really little.");
         config.addDefault("use-breeder-finder", true);
+
+        writer.addComment("use-new-enchant-pay-system",  "Rewamped enchant system.",
+                "With this turned on, you will get paid for each enchanment by its lvl, not for item used to enchant.");
+        config.addDefault("use-new-enchant-pay-system", false);
         
         String storageMethod = config.getString("storage-method");
         if(storageMethod.equalsIgnoreCase("mysql")) {
@@ -400,6 +405,7 @@ public class JobsConfiguration {
         useBlockMoveProtection = config.getBoolean("use-block-move-protection");
         useBlockTimer = config.getBoolean("use-block-timer");
         useBreederFinder = config.getBoolean("use-breeder-finder");
+        useNewEnchantPaySystem = config.getBoolean("use-new-enchant-pay-system");
         
         // Make sure we're only copying settings we care about
         copySetting(config, writer, "locale-language");
@@ -424,6 +430,7 @@ public class JobsConfiguration {
         copySetting(config, writer, "use-block-move-protection");
         copySetting(config, writer, "use-block-timer");
         copySetting(config, writer, "use-breeder-finder");
+        copySetting(config, writer, "use-new-enchant-pay-system");
         
         // Write back config
         try {

@@ -96,10 +96,13 @@ public class JobsListener implements Listener {
 			return;
 
 		String format = event.getFormat();
+		
+		//Bukkit.broadcastMessage(format);
+		
 		format = format.replace("%1$s", "{jobs}%1$s");
 		event.setFormat(format);
 	}
-
+	
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerChatHighest(AsyncPlayerChatEvent event) {
 		if (!plugin.isEnabled())
@@ -115,7 +118,7 @@ public class JobsListener implements Listener {
 			honorific = "";
 		
 		String format = event.getFormat();
-
+		
 		format = format.replace("{jobs}", honorific);
 		event.setFormat(format);
 	}
