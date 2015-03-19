@@ -367,8 +367,10 @@ public class Jobs {
 					// give income
 					Jobs.getEconomy().pay(jPlayer, income * multiplier * MoneyBoost);
 					int oldLevel = prog.getLevel();
-					if (prog.addExperience(exp * multiplier * ExpBoost))
+					if (prog.addExperience(exp * multiplier * ExpBoost)) {
 						Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
+						Jobs.getPlayerManager().performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
+					}
 				}
 			}
 		}

@@ -33,6 +33,7 @@ import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.DisplayMethod;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobCommands;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.resources.jfep.Parser;
@@ -184,8 +185,27 @@ public class JobConfig {
 					jobPermissions.add(new JobPermission(node, value, levelRequirement));
 				}
 			}
+			
+			// Commands
+			ArrayList<JobCommands> jobCommand = new ArrayList<JobCommands>();
+			ConfigurationSection commandsSection = jobSection.getConfigurationSection("commands");
+			if (commandsSection != null) {
+				for (String commandKey : commandsSection.getKeys(false)) {
+					ConfigurationSection commandSection = commandsSection.getConfigurationSection(commandKey);
 
-			Job job = new Job(jobName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, maxSlots, jobPermissions);
+					String node = commandKey.toLowerCase();
+					if (commandSection == null) {
+						Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid command key" + commandKey + "!");
+						continue;
+					}
+					String command = commandSection.getString("command");
+					int levelFrom = commandSection.getInt("levelFrom");
+					int levelUntil = commandSection.getInt("levelUntil");
+					jobCommand.add(new JobCommands(node, command, levelFrom, levelUntil));
+				}
+			}
+			
+			Job job = new Job(jobName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, maxSlots, jobPermissions, jobCommand);
 
 			for (ActionType actionType : ActionType.values()) {
 				ConfigurationSection typeSection = jobSection.getConfigurationSection(actionType.getName());

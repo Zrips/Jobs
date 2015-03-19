@@ -30,6 +30,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobCommands;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
@@ -328,6 +329,30 @@ public class PlayerManager {
 		}
 		jPlayer.reloadHonorific();
 		Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+	}
+
+	/**
+	 * Performs command on level up
+	 * @param jPlayer
+	 * @param job
+	 * @param oldLevel
+	 */
+	public void performCommandOnLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
+		int newLevel = oldLevel + 1;
+		Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
+		JobProgression prog = jPlayer.getJobProgression(job);
+		if (prog == null)
+			return;
+		for (JobCommands command : job.getCommands()) {
+			if (newLevel >= command.getLevelFrom() && newLevel <= command.getLevelUntil()) {
+				String commandString = command.getCommand();
+				commandString = commandString.replace("[player]", player.getName());
+				commandString = commandString.replace("[oldlevel]", String.valueOf(oldLevel));
+				commandString = commandString.replace("[newlevel]", String.valueOf(newLevel));
+				commandString = commandString.replace("[jobname]", job.getName());
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandString);
+			}
+		}
 	}
 
 	/**

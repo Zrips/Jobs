@@ -31,6 +31,8 @@ public class Job {
 	private EnumMap<ActionType, List<JobInfo>> jobInfo = new EnumMap<ActionType, List<JobInfo>>(ActionType.class);
 	// permissions
 	private List<JobPermission> jobPermissions;
+	// commands
+	private List<JobCommands> jobCommands;
 	// job name
 	private String jobName;
 	// job short name (for use in multiple jobs)
@@ -60,7 +62,7 @@ public class Job {
 	 * @param maxSlots - the maximum number of people allowed to have this job at one time (null for no limits)
 	 * @param jobPermissions - permissions gained for having the job
 	 */
-	public Job(String jobName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel, Integer maxSlots, List<JobPermission> jobPermissions) {
+	public Job(String jobName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands) {
 		this.jobName = jobName;
 		this.jobShortName = jobShortName;
 		this.description = description;
@@ -70,6 +72,7 @@ public class Job {
 		this.maxLevel = maxLevel;
 		this.maxSlots = maxSlots;
 		this.jobPermissions = jobPermissions;
+		this.jobCommands = jobCommands;
 	}
 
 	/**
@@ -214,5 +217,13 @@ public class Job {
 	 */
 	public List<JobPermission> getPermissions() {
 		return Collections.unmodifiableList(jobPermissions);
+	}
+
+	/**
+	 * Get the permission nodes for this job
+	 * @return Permissions for this job
+	 */
+	public List<JobCommands> getCommands() {
+		return Collections.unmodifiableList(jobCommands);
 	}
 }
