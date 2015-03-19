@@ -20,7 +20,6 @@ package com.gamingmesh.jobs;
 
 import java.util.HashMap;
 import java.util.List;
-
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;

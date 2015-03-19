@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
 import com.gamingmesh.jobs.config.ConfigManager;
+import com.gamingmesh.jobs.config.JobsConfiguration;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -302,21 +302,46 @@ public class Jobs {
 	 * @param multiplier - the payment/xp multiplier
 	 */
 	public static void action(JobsPlayer jPlayer, ActionInfo info, double multiplier) {
+
 		List<JobProgression> progression = jPlayer.getJobProgression();
 		int numjobs = progression.size();
 		// no job
 		if (numjobs == 0) {
 			Job jobNone = Jobs.getNoneJob();
+
+			// money exp boost
+			Double MoneyBoost = 1.0;
+			Player dude = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
+			if (dude != null) {
+				if ((dude.hasPermission("jobs.boost." + jobNone.getName() + ".money") || dude.hasPermission("jobs.boost." + jobNone.getName() + ".both")) && !dude.isOp()) {
+					MoneyBoost = JobsConfiguration.BoostMoney;
+				}
+			}
+
 			if (jobNone != null) {
 				Double income = jobNone.getIncome(info, 1, numjobs);
 				if (income != null)
-					Jobs.getEconomy().pay(jPlayer, income * multiplier);
+					Jobs.getEconomy().pay(jPlayer, income * multiplier * MoneyBoost);
 			}
 		} else {
 			for (JobProgression prog : progression) {
 				int level = prog.getLevel();
 				Double income = prog.getJob().getIncome(info, level, numjobs);
 				if (income != null) {
+
+					// money exp boost
+					Double MoneyBoost = 1.0;
+					Double ExpBoost = 1.0;
+					Player dude = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
+					if (dude != null) {
+						if ((dude.hasPermission("jobs.boost." + prog.getJob().getName() + ".money") || dude.hasPermission("jobs.boost." + prog.getJob().getName() + ".both")) && !dude.isOp()) {
+							MoneyBoost = JobsConfiguration.BoostMoney;
+						}
+						if ((dude.hasPermission("jobs.boost." + prog.getJob().getName() + ".exp") || dude.hasPermission("jobs.boost." + prog.getJob().getName() + ".both")) && !dude.isOp()) {
+							ExpBoost = JobsConfiguration.BoostExp;
+						}
+					}
+
 					Double exp = prog.getJob().getExperience(info, level, numjobs);
 					if (ConfigManager.getJobsConfiguration().addXpPlayer()) {
 						Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
@@ -340,9 +365,9 @@ public class Jobs {
 						}
 					}
 					// give income
-					Jobs.getEconomy().pay(jPlayer, income * multiplier);
+					Jobs.getEconomy().pay(jPlayer, income * multiplier * MoneyBoost);
 					int oldLevel = prog.getLevel();
-					if (prog.addExperience(exp * multiplier))
+					if (prog.addExperience(exp * multiplier * ExpBoost))
 						Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
 				}
 			}

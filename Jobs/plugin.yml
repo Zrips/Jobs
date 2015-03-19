@@ -1,7 +1,7 @@
 name: Jobs
 description: Jobs Plugin for the BukkitAPI
 main: com.gamingmesh.jobs.JobsPlugin
-version: 2.20.0
+version: 2.21.0
 author: phrstbrn
 softdepend: [Vault]
 commands:

@@ -68,6 +68,8 @@ public class JobsConfiguration {
     public static boolean useBlockTimer;
     public static boolean useBreederFinder;
     public static boolean useNewEnchantPaySystem;
+    public static double BoostExp = 1.0;
+    public static double BoostMoney = 1.0;
     public JobsConfiguration(JobsPlugin plugin) {
         super();
         this.plugin = plugin;
@@ -309,6 +311,11 @@ public class JobsConfiguration {
         writer.addComment("use-new-enchant-pay-system",  "Rewamped enchant system.",
                 "With this turned on, you will get paid for each enchanment by its lvl, not for item used to enchant.");
         config.addDefault("use-new-enchant-pay-system", false);
+
+        writer.addComment("boost",  "Money exp boost with special permision.",
+                "You will need to add special permision for groups or players to have money/exp boost.","Use: jobs.boost.[jobname].money or jobs.boost.[jobname].exp or jobs.boost.[jobname].both for both of them","1.25 means that player will get 25% more than others, you can set less than 1 to get less from anothers");
+        config.addDefault("boost.exp", 1.25);
+        config.addDefault("boost.money", 1.25);
         
         String storageMethod = config.getString("storage-method");
         if(storageMethod.equalsIgnoreCase("mysql")) {
@@ -406,6 +413,8 @@ public class JobsConfiguration {
         useBlockTimer = config.getBoolean("use-block-timer");
         useBreederFinder = config.getBoolean("use-breeder-finder");
         useNewEnchantPaySystem = config.getBoolean("use-new-enchant-pay-system");
+        BoostExp = config.getDouble("boost.exp");
+        BoostMoney = config.getDouble("boost.money");
         
         // Make sure we're only copying settings we care about
         copySetting(config, writer, "locale-language");
@@ -431,6 +440,8 @@ public class JobsConfiguration {
         copySetting(config, writer, "use-block-timer");
         copySetting(config, writer, "use-breeder-finder");
         copySetting(config, writer, "use-new-enchant-pay-system");
+        copySetting(config, writer, "boost.exp");
+        copySetting(config, writer, "boost.money");
         
         // Write back config
         try {

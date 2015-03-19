@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.ConfigManager;
+import com.gamingmesh.jobs.config.JobsConfiguration;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
@@ -769,6 +770,20 @@ public class JobsCommands implements CommandExecutor {
 	 * @return the message
 	 */
 	private String jobInfoMessage(JobsPlayer player, Job job, ActionType type) {
+
+		// money exp boost
+		Double MoneyBoost = 1.0;
+		Double ExpBoost = 1.0;
+		Player dude = Bukkit.getServer().getPlayer(player.getPlayerUUID());
+		if (dude != null) {
+			if ((dude.hasPermission("jobs.boost." + job.getName() + ".money") || dude.hasPermission("jobs.boost." + job.getName() + ".both")) && !dude.isOp()) {
+				MoneyBoost = JobsConfiguration.BoostMoney;
+			}
+			if ((dude.hasPermission("jobs.boost." + job.getName() + ".exp") || dude.hasPermission("jobs.boost." + job.getName() + ".both")) && !dude.isOp()) {
+				ExpBoost = JobsConfiguration.BoostExp;
+			}
+		}
+
 		StringBuilder message = new StringBuilder();
 		message.append(Language.getMessage("command.info.output." + type.getName().toLowerCase()));
 		message.append(":\n");
@@ -783,10 +798,10 @@ public class JobsCommands implements CommandExecutor {
 		for (JobInfo info : jobInfo) {
 			String materialName = info.getName().toLowerCase().replace('_', ' ');
 
-			double income = info.getIncome(level, numjobs);
+			double income = info.getIncome(level, numjobs) * MoneyBoost;
 			ChatColor incomeColor = income >= 0 ? ChatColor.GREEN : ChatColor.DARK_RED;
 
-			double xp = info.getExperience(level, numjobs);
+			double xp = info.getExperience(level, numjobs) * ExpBoost;
 			ChatColor xpColor = xp >= 0 ? ChatColor.YELLOW : ChatColor.GRAY;
 			String xpString = String.format("%.2f xp", xp);
 
