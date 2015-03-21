@@ -375,7 +375,7 @@ public class JobsPaymentListener implements Listener {
 			for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
 				Jobs.action(jPlayer, new EnchantActionInfo(oneEnchant.getKey().getName(), oneEnchant.getValue(), ActionType.ENCHANT), multiplier);
 			}
-		}else{
+		} else {
 			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT), multiplier);
 		}
 

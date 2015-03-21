@@ -305,6 +305,41 @@ public class JobsCommands implements CommandExecutor {
 		return true;
 	}
 
+	@SuppressWarnings("deprecation")
+	@JobCommand
+	public boolean archive(CommandSender sender, String[] args) {
+		JobsPlayer jPlayer = null;
+		//Player player = null;
+		if (args.length >= 1) {
+			if (!sender.hasPermission("jobs.command.admin.archive")) {
+				sender.sendMessage(ChatColor.RED + Language.getMessage("command.error.permission"));
+				return true;
+			}
+			Player offlinePlayer = (Player) Bukkit.getServer().getOfflinePlayer(args[0]);
+			jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
+		} else if (sender instanceof Player) {
+			//player = (Player) sender;
+			jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+		}
+
+		if (jPlayer == null) {
+			sendUsage(sender, "archive");
+			return true;
+		}
+
+		List<String> AllJobs = Jobs.getJobsDAO().getJobsFromArchive(jPlayer);
+
+		if (AllJobs.size() == 0) {
+			sender.sendMessage(Language.getMessage("command.archive.error.nojob"));
+			return true;
+		}
+
+		for (String jobInfo : AllJobs) {
+			sender.sendMessage(jobStatsMessage(jobInfo));
+		}
+		return true;
+	}
+
 	@JobCommand
 	public boolean browse(CommandSender sender, String[] args) {
 		ArrayList<String> lines = new ArrayList<String>();
@@ -833,6 +868,21 @@ public class JobsCommands implements CommandExecutor {
 		message = message.replace("%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE);
 		message = message.replace("%jobxp%", Double.toString(Math.round((Double) jobProg.getExperience() * 100.0) / 100.0));
 		message = message.replace("%jobmaxxp%", Integer.toString(jobProg.getMaxExperience()));
+		return message;
+	}
+
+	/**
+	 * Displays job stats about a particular player's job from archive
+	 * @param jobInfo - jobinfo string line
+	 * @return the message
+	 */
+	private String jobStatsMessage(String jobInfo) {
+		String[] splited = jobInfo.split(":");
+		String message = Language.getMessage("command.archive.output");
+		message = message.replace("%joblevel%", Integer.valueOf(splited[1]).toString());
+		message = message.replace("%getbackjoblevel%", Integer.valueOf(splited[2]).toString());
+		message = message.replace("%jobname%", Jobs.getJob(splited[0]).getChatColor() + splited[0] + ChatColor.WHITE);
+		message = message.replace("%jobxp%", Double.toString(Math.round((Double) Double.valueOf(splited[3]) * 100.0) / 100.0));
 		return message;
 	}
 

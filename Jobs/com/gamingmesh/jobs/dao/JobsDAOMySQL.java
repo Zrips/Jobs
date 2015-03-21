@@ -128,6 +128,7 @@ public class JobsDAOMySQL extends JobsDAO {
 		try {
 			if (rows == 0) {
 				executeSQL("CREATE TABLE `" + getPrefix() + "jobs` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+				executeSQL("CREATE TABLE `" + getPrefix() + "archive` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
 			} else {
 				Jobs.getPluginLogger().info("Converting existing usernames to Mojang UUIDs.  This could take a long time!");
 
@@ -231,6 +232,40 @@ public class JobsDAOMySQL extends JobsDAO {
 		try {
 			if (rows == 0)
 				executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `username` varchar(20);");
+		} finally {
+		}
+	}
+
+	@Override
+	protected synchronized void checkUpdate4() throws SQLException {
+		JobsConnection conn = getConnection();
+		if (conn == null) {
+			Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+			return;
+		}
+		PreparedStatement prest = null;
+		int rows = 0;
+		try {
+			// Check for jobs table
+			prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
+			prest.setString(1, database);
+			prest.setString(2, getPrefix() + "archive");
+			ResultSet res = prest.executeQuery();
+			if (res.next()) {
+				rows = res.getInt(1);
+			}
+		} finally {
+			if (prest != null) {
+				try {
+					prest.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+
+		try {
+			if (rows == 0)
+				executeSQL("CREATE TABLE `" + getPrefix() + "archive` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
 		} finally {
 		}
 	}

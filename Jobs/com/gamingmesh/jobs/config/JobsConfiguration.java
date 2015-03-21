@@ -68,6 +68,8 @@ public class JobsConfiguration {
     public static boolean useBlockTimer;
     public static boolean useBreederFinder;
     public static boolean useNewEnchantPaySystem;
+    public static boolean fixAtMaxLevel;
+    public static Integer levelLossPercentage;
     public static double BoostExp = 1.0;
     public static double BoostMoney = 1.0;
     public JobsConfiguration(JobsPlugin plugin) {
@@ -316,6 +318,11 @@ public class JobsConfiguration {
                 "You will need to add special permision for groups or players to have money/exp boost.","Use: jobs.boost.[jobname].money or jobs.boost.[jobname].exp or jobs.boost.[jobname].both for both of them","1.25 means that player will get 25% more than others, you can set less than 1 to get less from anothers");
         config.addDefault("boost.exp", 1.25);
         config.addDefault("boost.money", 1.25);
+
+        writer.addComment("old-job",  "Old job save",
+                "Players can leave job and return later with some level loss during that","You can fix players level if hes job level is at max level");
+        config.addDefault("old-job.level-loss-percentage", 100);
+        config.addDefault("old-job.fix-at-max-level", false);
         
         String storageMethod = config.getString("storage-method");
         if(storageMethod.equalsIgnoreCase("mysql")) {
@@ -415,6 +422,8 @@ public class JobsConfiguration {
         useNewEnchantPaySystem = config.getBoolean("use-new-enchant-pay-system");
         BoostExp = config.getDouble("boost.exp");
         BoostMoney = config.getDouble("boost.money");
+        levelLossPercentage = config.getInt("old-job.level-loss-percentage");
+        fixAtMaxLevel = config.getBoolean("old-job.fix-at-max-level");
         
         // Make sure we're only copying settings we care about
         copySetting(config, writer, "locale-language");
@@ -442,6 +451,8 @@ public class JobsConfiguration {
         copySetting(config, writer, "use-new-enchant-pay-system");
         copySetting(config, writer, "boost.exp");
         copySetting(config, writer, "boost.money");
+        copySetting(config, writer, "old-job.level-loss-percentage");
+        copySetting(config, writer, "old-job.fix-at-max-level");
         
         // Write back config
         try {

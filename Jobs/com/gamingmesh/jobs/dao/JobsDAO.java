@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
-
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.config.JobsConfiguration;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -63,13 +63,16 @@ public abstract class JobsDAO {
 		}
 
 		try {
-			if (version <= 1) {
+			if (version <= 1)
 				checkUpdate1();
-				version = 3;
-			} else if (version == 2) {
+
+			if (version <= 2)
 				checkUpdate2();
-				version = 3;
-			}
+
+			if (version <= 3)
+				checkUpdate4();
+
+			version = 4;
 		} finally {
 			updateSchemaVersion(version);
 		}
@@ -80,6 +83,8 @@ public abstract class JobsDAO {
 	protected abstract void checkUpdate1() throws SQLException;
 
 	protected abstract void checkUpdate2() throws SQLException;
+
+	protected abstract void checkUpdate4() throws SQLException;
 
 	/**
 	 * Gets the database prefix
@@ -147,12 +152,20 @@ public abstract class JobsDAO {
 		if (conn == null)
 			return;
 		try {
+			int level = 1;
+			int exp = 0;
+			if (checkArchive(jPlayer, job).size() > 0) {
+				List<Integer> info = checkArchive(jPlayer, job);
+				level = info.get(0);
+				//exp = info.get(1);
+				deleteArchive(jPlayer, job);
+			}
 			PreparedStatement prest = conn.prepareStatement("INSERT INTO `" + prefix + "jobs` (`player_uuid`, `username`, `job`, `level`, `experience`) VALUES (?, ?, ?, ?, ?);");
 			prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
 			prest.setString(2, jPlayer.getUserName());
 			prest.setString(3, job.getName());
-			prest.setInt(4, 1);
-			prest.setInt(5, 0);
+			prest.setInt(4, level);
+			prest.setInt(5, exp);
 			prest.execute();
 			prest.close();
 		} catch (SQLException e) {
@@ -171,6 +184,121 @@ public abstract class JobsDAO {
 			return;
 		try {
 			PreparedStatement prest = conn.prepareStatement("DELETE FROM `" + prefix + "jobs` WHERE `player_uuid` = ? AND `job` = ?;");
+			prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+			prest.setString(2, job.getName());
+			prest.execute();
+			prest.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Record job to archive
+	 * @param player - player that wishes to quit the job
+	 * @param job - job that the player wishes to quit
+	 */
+	public synchronized void recordToArchive(JobsPlayer jPlayer, Job job) {
+		JobsConnection conn = getConnection();
+		if (conn == null)
+			return;
+		try {
+			int level = 1;
+			int exp = 0;
+			for (JobProgression progression : jPlayer.getJobProgression()) {
+				if (progression.getJob().getName().equalsIgnoreCase(job.getName())) {
+					level = progression.getLevel();
+					exp = (int) progression.getExperience();
+				}
+			}
+			PreparedStatement prest = conn.prepareStatement("INSERT INTO `" + prefix + "archive` (`player_uuid`, `username`, `job`, `level`, `experience`) VALUES (?, ?, ?, ?, ?);");
+			prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+			prest.setString(2, jPlayer.getUserName());
+			prest.setString(3, job.getName());
+			prest.setInt(4, level);
+			prest.setInt(5, exp);
+			prest.execute();
+			prest.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Check job in archive
+	 * @param player - player that wishes to quit the job
+	 * @param job - job that the player wishes to quit
+	 */
+	public synchronized List<Integer> checkArchive(JobsPlayer jPlayer, Job job) {
+		JobsConnection conn = getConnection();
+		if (conn == null)
+			return null;
+		try {
+			List<Integer> info = new ArrayList<Integer>();
+			PreparedStatement prest = conn.prepareStatement("SELECT `level`, `experience` FROM `" + prefix + "archive` WHERE `player_uuid` = ? AND `job` = ?;");
+			prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+			prest.setString(2, job.getName());
+			ResultSet res = prest.executeQuery();
+			if (res.next()) {
+				int level = (int) ((res.getInt(1) - (res.getInt(1) * (JobsConfiguration.levelLossPercentage / 100.0))));
+				if (level < 1)
+					level = 1;
+				if (JobsConfiguration.fixAtMaxLevel && res.getInt(1) == job.getMaxLevel())
+					level = res.getInt(1);
+				info.add(level);
+				info.add(res.getInt(2));
+			}
+			prest.close();
+			return info;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Get all jobs from archive by player
+	 * @param player - targeted player
+	 * @return info - information about jobs
+	 */
+	public synchronized List<String> getJobsFromArchive(JobsPlayer jPlayer) {
+		JobsConnection conn = getConnection();
+		if (conn == null)
+			return null;
+		try {
+			List<String> info = new ArrayList<String>();
+			PreparedStatement prest = conn.prepareStatement("SELECT `job`, `level`, `experience`  FROM `" + prefix + "archive` WHERE `player_uuid` = ?;");
+			prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+			ResultSet res = prest.executeQuery();
+			while (res.next()) {
+
+				int level = (int) ((res.getInt(2) - (res.getInt(2) * (JobsConfiguration.levelLossPercentage / 100.0))));
+				if (level < 1)
+					level = 1;
+				if (JobsConfiguration.fixAtMaxLevel && res.getInt(2) == Jobs.getJob(res.getString(1)).getMaxLevel())
+					level = res.getInt(2);
+
+				info.add(res.getString(1) + ":" + res.getInt(2) + ":" + level + ":" + res.getInt(3));
+			}
+			prest.close();
+			return info;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Delete job from archive
+	 * @param player - player that wishes to quit the job
+	 * @param job - job that the player wishes to quit
+	 */
+	public synchronized void deleteArchive(JobsPlayer jPlayer, Job job) {
+		JobsConnection conn = getConnection();
+		if (conn == null)
+			return;
+		try {
+			PreparedStatement prest = conn.prepareStatement("DELETE FROM `" + prefix + "archive` WHERE `player_uuid` = ? AND `job` = ?;");
 			prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
 			prest.setString(2, job.getName());
 			prest.execute();

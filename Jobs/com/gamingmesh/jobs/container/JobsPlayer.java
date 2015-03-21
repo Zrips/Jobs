@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.dao.JobsDAO;
@@ -128,10 +129,18 @@ public class JobsPlayer {
 	 * Player joins a job
 	 * @param job - the job joined
 	 */
-	public boolean joinJob(Job job) {
+	public boolean joinJob(Job job, JobsPlayer jPlayer) {
 		synchronized (saveLock) {
 			if (!isInJob(job)) {
-				progression.add(new JobProgression(job, this, 1, 0.0));
+				int level = 1;
+				int exp = 0;
+				if (Jobs.getJobsDAO().checkArchive(jPlayer, job).size() > 0) {
+					List<Integer> info = Jobs.getJobsDAO().checkArchive(jPlayer, job);
+					level = info.get(0);
+					//exp = info.get(1);
+					Jobs.getJobsDAO().deleteArchive(jPlayer, job);
+				}
+				progression.add(new JobProgression(job, this, level, exp));
 				reloadMaxExperience();
 				reloadHonorific();
 				Jobs.getPermissionHandler().recalculatePermissions(this);

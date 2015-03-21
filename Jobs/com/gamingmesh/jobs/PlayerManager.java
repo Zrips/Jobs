@@ -146,7 +146,7 @@ public class PlayerManager {
 			if (jPlayer.isInJob(job))
 				return;
 			// let the user join the job
-			if (!jPlayer.joinJob(job))
+			if (!jPlayer.joinJob(job, jPlayer))
 				return;
 
 			Jobs.getJobsDAO().joinJob(jPlayer, job);
@@ -163,10 +163,10 @@ public class PlayerManager {
 		synchronized (jPlayer.saveLock) {
 			if (!jPlayer.isInJob(job))
 				return;
+			Jobs.getJobsDAO().recordToArchive(jPlayer, job);
 			// let the user leave the job
 			if (!jPlayer.leaveJob(job))
 				return;
-
 			Jobs.getJobsDAO().quitJob(jPlayer, job);
 			Jobs.leaveSlot(job);
 		}
