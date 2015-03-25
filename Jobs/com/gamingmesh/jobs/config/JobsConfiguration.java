@@ -68,7 +68,7 @@ public class JobsConfiguration {
     public static boolean useBlockTimer;
     public static boolean useBreederFinder;
     public static boolean useNewEnchantPaySystem;
-    public static boolean fixAtMaxLevel;
+    public static boolean fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat, LevelChangeActionBar;
     public static Integer levelLossPercentage;
     public static double BoostExp = 1.0;
     public static double BoostMoney = 1.0;
@@ -323,6 +323,13 @@ public class JobsConfiguration {
                 "Players can leave job and return later with some level loss during that","You can fix players level if hes job level is at max level");
         config.addDefault("old-job.level-loss-percentage", 100);
         config.addDefault("old-job.fix-at-max-level", false);
+
+        writer.addComment("ShowActionBars",  "Action bars",
+                "You can enable/disable message show for players on title change or on levelup");
+        config.addDefault("ShowActionBars.OnTitleChange.ChatMessage", true);
+        config.addDefault("ShowActionBars.OnTitleChange.ActionBar", true);
+        config.addDefault("ShowActionBars.OnLevelChange.ChatMessage", true);
+        config.addDefault("ShowActionBars.OnLevelChange.ActionBar", true);
         
         String storageMethod = config.getString("storage-method");
         if(storageMethod.equalsIgnoreCase("mysql")) {
@@ -424,6 +431,10 @@ public class JobsConfiguration {
         BoostMoney = config.getDouble("boost.money");
         levelLossPercentage = config.getInt("old-job.level-loss-percentage");
         fixAtMaxLevel = config.getBoolean("old-job.fix-at-max-level");
+        TitleChangeChat = config.getBoolean("ShowActionBars.OnTitleChange.ChatMessage");
+        TitleChangeActionBar = config.getBoolean("ShowActionBars.OnTitleChange.ActionBar");
+        LevelChangeChat = config.getBoolean("ShowActionBars.OnLevelChange.ChatMessage");
+        LevelChangeActionBar = config.getBoolean("ShowActionBars.OnLevelChange.ActionBar");
         
         // Make sure we're only copying settings we care about
         copySetting(config, writer, "locale-language");
@@ -453,6 +464,10 @@ public class JobsConfiguration {
         copySetting(config, writer, "boost.money");
         copySetting(config, writer, "old-job.level-loss-percentage");
         copySetting(config, writer, "old-job.fix-at-max-level");
+        copySetting(config, writer, "ShowActionBars.OnTitleChange.ChatMessage");
+        copySetting(config, writer, "ShowActionBars.OnTitleChange.ActionBar");
+        copySetting(config, writer, "ShowActionBars.OnLevelChange.ChatMessage");
+        copySetting(config, writer, "ShowActionBars.OnLevelChange.ActionBar");
         
         // Write back config
         try {

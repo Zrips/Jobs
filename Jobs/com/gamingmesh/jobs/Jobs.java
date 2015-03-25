@@ -51,6 +51,7 @@ public class Jobs {
 	private static List<Job> jobs = null;
 	private static Job noneJob = null;
 	private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<Job, Integer>();
+	public static WeakHashMap<String, Boolean> actionbartoggle = new WeakHashMap<String, Boolean>();
 	private static BufferedEconomy economy;
 	private static PermissionHandler permissionHandler;
 
@@ -312,7 +313,7 @@ public class Jobs {
 			// money exp boost
 			Double MoneyBoost = 1.0;
 			Player dude = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
-			if (dude != null) {
+			if (dude != null && jobNone != null) {
 				if ((dude.hasPermission("jobs.boost." + jobNone.getName() + ".money") || dude.hasPermission("jobs.boost." + jobNone.getName() + ".both")) && !dude.isOp()) {
 					MoneyBoost = JobsConfiguration.BoostMoney;
 				}

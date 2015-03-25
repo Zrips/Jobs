@@ -131,7 +131,7 @@ public class JobsDAOSQLite extends JobsDAO {
 				executeSQL("ALTER TABLE `" + getPrefix() + "jobs_old` ADD COLUMN `player_uuid` binary(16) DEFAULT NULL;");
 			}
 
-			executeSQL("CREATE TABLE `" + getPrefix() + "jobs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+			executeSQL("CREATE TABLE `" + getPrefix() + "jobs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` binary(16) NOT NULL, `job` varchar(20), `experience` int, `level` int);");
 
 			if (rows > 0) {
 				pst1 = conn.prepareStatement("SELECT DISTINCT `username` FROM `" + getPrefix() + "jobs_old` WHERE `player_uuid` IS NULL;");
@@ -140,20 +140,6 @@ public class JobsDAOSQLite extends JobsDAO {
 				while (rs.next()) {
 					usernames.add(rs.getString(1));
 				}
-				/* 
-				 UUIDFetcher uuidFetcher = new UUIDFetcher(usernames);
-				 Map<String, UUID> userMap = null;
-				 try {
-				     userMap = uuidFetcher.call();
-				 } catch (Exception e) {
-				     e.printStackTrace();
-				 }
-				 
-				 if (userMap == null) {
-				     Jobs.getPluginLogger().severe("Error fetching UUIDs from Mojang.  Aborting conversion!");
-				     return;
-				 }
-				 */
 				pst2 = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs_old` SET `player_uuid` = ? WHERE `username` = ?;");
 				int i = 0;
 				int y = 0;
@@ -168,17 +154,7 @@ public class JobsDAOSQLite extends JobsDAO {
 					pst2.setString(2, names);
 					pst2.execute();
 				}
-
-				/*
-				for (Map.Entry<String, UUID> entry : userMap.entrySet()) {
-				    String username = entry.getKey();
-				    UUID uuid = entry.getValue();
-				    pst2.setBytes(1, UUIDUtil.toBytes(uuid));
-				    pst2.setString(2, username);
-				    pst2.execute();
-				}*/
-
-				executeSQL("INSERT INTO `" + getPrefix() + "jobs` (`player_uuid`, `username`, `job`, `experience`, `level`) SELECT `player_uuid`, `username`, `job`, `experience`, `level` FROM `" + getPrefix() + "jobs_old`;");
+				executeSQL("INSERT INTO `" + getPrefix() + "jobs` (`player_uuid`, `job`, `experience`, `level`) SELECT `player_uuid`, `job`, `experience`, `level` FROM `" + getPrefix() + "jobs_old`;");
 			}
 		} finally {
 			if (pst1 != null) {

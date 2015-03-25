@@ -29,6 +29,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.config.ConfigManager;
+import com.gamingmesh.jobs.config.JobsConfiguration;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -36,6 +37,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.util.ActionBar;
 import com.gamingmesh.jobs.util.ChatColor;
 
 public class PlayerManager {
@@ -300,7 +302,10 @@ public class PlayerManager {
 			if (ConfigManager.getJobsConfiguration().isBroadcastingLevelups()) {
 				Bukkit.getServer().broadcastMessage(line);
 			} else if (player != null) {
-				player.sendMessage(line);
+				if (JobsConfiguration.TitleChangeActionBar)
+					ActionBar.send(player, line);
+				if (JobsConfiguration.TitleChangeChat)
+					player.sendMessage(line);
 			}
 		}
 
@@ -323,7 +328,10 @@ public class PlayerManager {
 				if (ConfigManager.getJobsConfiguration().isBroadcastingLevelups()) {
 					Bukkit.getServer().broadcastMessage(line);
 				} else if (player != null) {
-					player.sendMessage(line);
+					if (JobsConfiguration.LevelChangeActionBar)
+						ActionBar.send(player, line);
+					if (JobsConfiguration.LevelChangeChat)
+						player.sendMessage(line);
 				}
 			}
 		}

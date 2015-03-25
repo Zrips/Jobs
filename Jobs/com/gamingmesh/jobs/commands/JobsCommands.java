@@ -58,9 +58,7 @@ public class JobsCommands implements CommandExecutor {
 					sender.sendMessage(ChatColor.RED + Language.getMessage("command.error.permission"));
 					return true;
 				}
-
 				String[] myArgs = reduceArgs(args);
-
 				if (myArgs.length > 0) {
 					if (myArgs[myArgs.length - 1].equals("?")) {
 						sendUsage(sender, cmd);
@@ -305,11 +303,42 @@ public class JobsCommands implements CommandExecutor {
 		return true;
 	}
 
+	@JobCommand
+	public boolean toggle(CommandSender sender, String[] args) {
+		if (!(sender instanceof Player))
+			return false;
+		if (args.length > 0) {
+			sendUsage(sender, "toggle");
+			return false;
+		}
+
+		String PlayerName = sender.getName();
+
+		if (PlayerName == null) {
+			sendUsage(sender, "stats");
+			return true;
+		}
+
+		if (Jobs.actionbartoggle.containsKey(PlayerName))
+			if (Jobs.actionbartoggle.get(PlayerName)) {
+				Jobs.actionbartoggle.put(PlayerName, false);
+				sender.sendMessage(ChatColor.GREEN + Language.getMessage("command.toggle.output.off"));
+			} else {
+				Jobs.actionbartoggle.put(PlayerName, true);
+				sender.sendMessage(ChatColor.GREEN + Language.getMessage("command.toggle.output.on"));
+			}
+		else {
+			Jobs.actionbartoggle.put(PlayerName, true);
+			sender.sendMessage(ChatColor.GREEN + Language.getMessage("command.toggle.output.on"));
+		}
+
+		return true;
+	}
+
 	@SuppressWarnings("deprecation")
 	@JobCommand
 	public boolean archive(CommandSender sender, String[] args) {
 		JobsPlayer jPlayer = null;
-		//Player player = null;
 		if (args.length >= 1) {
 			if (!sender.hasPermission("jobs.command.admin.archive")) {
 				sender.sendMessage(ChatColor.RED + Language.getMessage("command.error.permission"));
@@ -318,7 +347,6 @@ public class JobsCommands implements CommandExecutor {
 			Player offlinePlayer = (Player) Bukkit.getServer().getOfflinePlayer(args[0]);
 			jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
 		} else if (sender instanceof Player) {
-			//player = (Player) sender;
 			jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 		}
 

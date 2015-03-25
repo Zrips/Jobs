@@ -104,11 +104,7 @@ public class Job {
 
 	public Double getIncome(ActionInfo action, int level, int numjobs) {
 		List<JobInfo> jobInfo = getJobInfo(action.getType());
-
-		//Bukkit.broadcastMessage(action.getType() + " " + action.getName() + "  " + action.getNameWithSub());
-
 		for (JobInfo info : jobInfo) {
-			//Bukkit.broadcastMessage(info.getName() + " " + action.getName());
 			if (info.getName().equals(action.getName()) || info.getName().equals(action.getNameWithSub())) {
 				return info.getIncome(level, numjobs);
 			}

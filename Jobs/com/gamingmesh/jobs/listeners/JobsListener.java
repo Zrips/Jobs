@@ -97,8 +97,6 @@ public class JobsListener implements Listener {
 
 		String format = event.getFormat();
 		
-		//Bukkit.broadcastMessage(format);
-		
 		format = format.replace("%1$s", "{jobs}%1$s");
 		event.setFormat(format);
 	}
