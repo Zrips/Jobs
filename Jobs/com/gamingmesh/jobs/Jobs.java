@@ -322,7 +322,7 @@ public class Jobs {
 			if (jobNone != null) {
 				Double income = jobNone.getIncome(info, 1, numjobs);
 				if (income != null)
-					Jobs.getEconomy().pay(jPlayer, income * multiplier * MoneyBoost);
+					Jobs.getEconomy().pay(jPlayer, income + ((income * multiplier) - income) + ((income * MoneyBoost) - income));
 			}
 		} else {
 			for (JobProgression prog : progression) {
@@ -366,9 +366,9 @@ public class Jobs {
 						}
 					}
 					// give income
-					Jobs.getEconomy().pay(jPlayer, income * multiplier * MoneyBoost);
+					Jobs.getEconomy().pay(jPlayer, income + ((income * multiplier) - income) + ((income * MoneyBoost) - income));
 					int oldLevel = prog.getLevel();
-					if (prog.addExperience(exp * multiplier * ExpBoost)) {
+					if (prog.addExperience(exp + ((exp * multiplier) - exp) + ((exp * ExpBoost) - exp))) {
 						Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
 						Jobs.getPlayerManager().performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
 					}
