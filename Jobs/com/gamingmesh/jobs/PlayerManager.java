@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.config.ConfigManager;
@@ -280,7 +281,12 @@ public class PlayerManager {
 		JobProgression prog = jPlayer.getJobProgression(job);
 		if (prog == null)
 			return;
+		
 
+		if (JobsConfiguration.SoundLevelupUse)
+			player.getWorld().playSound(player.getLocation(), Sound.valueOf(JobsConfiguration.SoundLevelupSound.toUpperCase()),JobsConfiguration.SoundLevelupVolume, JobsConfiguration.SoundLevelupPitch);
+		
+		
 		String message;
 		if (ConfigManager.getJobsConfiguration().isBroadcastingLevelups()) {
 			message = Language.getMessage("message.levelup.broadcast");
@@ -302,15 +308,19 @@ public class PlayerManager {
 			if (ConfigManager.getJobsConfiguration().isBroadcastingLevelups()) {
 				Bukkit.getServer().broadcastMessage(line);
 			} else if (player != null) {
-				if (JobsConfiguration.TitleChangeActionBar)
+				if (JobsConfiguration.LevelChangeActionBar)
 					ActionBar.send(player, line);
-				if (JobsConfiguration.TitleChangeChat)
+				if (JobsConfiguration.LevelChangeChat)
 					player.sendMessage(line);
 			}
 		}
 
 		Title newTitle = ConfigManager.getJobsConfiguration().getTitleForLevel(prog.getLevel());
 		if (newTitle != null && !newTitle.equals(oldTitle)) {
+			
+			if (JobsConfiguration.SoundTitleChangeUse)
+				player.getWorld().playSound(player.getLocation(), Sound.valueOf(JobsConfiguration.SoundTitleChangeSound.toUpperCase()), JobsConfiguration.SoundTitleChangeVolume, JobsConfiguration.SoundTitleChangePitch);
+			
 			// user would skill up
 			if (ConfigManager.getJobsConfiguration().isBroadcastingSkillups()) {
 				message = Language.getMessage("message.skillup.broadcast");
@@ -328,9 +338,9 @@ public class PlayerManager {
 				if (ConfigManager.getJobsConfiguration().isBroadcastingLevelups()) {
 					Bukkit.getServer().broadcastMessage(line);
 				} else if (player != null) {
-					if (JobsConfiguration.LevelChangeActionBar)
+					if (JobsConfiguration.TitleChangeActionBar)
 						ActionBar.send(player, line);
-					if (JobsConfiguration.LevelChangeChat)
+					if (JobsConfiguration.TitleChangeChat)
 						player.sendMessage(line);
 				}
 			}
