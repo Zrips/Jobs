@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -30,10 +31,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.ConfigManager;
-import com.gamingmesh.jobs.config.JobsConfiguration;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
@@ -185,7 +186,8 @@ public class JobsCommands implements CommandExecutor {
 		}
 
 		int confMaxJobs = ConfigManager.getJobsConfiguration().getMaxJobs();
-		if (confMaxJobs > 0 && jPlayer.getJobProgression().size() >= confMaxJobs) {
+		short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
+		if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(pSender, PlayerMaxJobs)) {
 			sender.sendMessage(ChatColor.RED + Language.getMessage("command.join.error.maxjobs"));
 			return true;
 		}
@@ -315,7 +317,7 @@ public class JobsCommands implements CommandExecutor {
 		String PlayerName = sender.getName();
 
 		if (PlayerName == null) {
-			sendUsage(sender, "stats");
+			sendUsage(sender, "toggle");
 			return true;
 		}
 
@@ -333,6 +335,71 @@ public class JobsCommands implements CommandExecutor {
 		}
 
 		return true;
+	}
+
+	@JobCommand
+	public boolean boost(CommandSender sender, String[] args) {
+		if (!(sender instanceof Player))
+			return false;
+
+		if (args.length > 2 || args.length <= 1) {
+			sendUsage(sender, "boost");
+			return true;
+		}
+
+		double rate = 1.0;
+		if (!args[1].equalsIgnoreCase("all") && !args[0].equalsIgnoreCase("reset"))
+			try {
+				rate = Double.parseDouble(args[1]);
+			} catch (NumberFormatException e) {
+				sendUsage(sender, "boost");
+				return true;
+			}
+
+		if (!sender.hasPermission("jobs.command.boost")) {
+			sender.sendMessage(ChatColor.RED + Language.getMessage("command.error.permission"));
+			return true;
+		}
+
+		String PlayerName = sender.getName();
+		String jobName = args[0];
+		Job job = Jobs.getJob(jobName);
+
+		if (PlayerName == null) {
+			sendUsage(sender, "boost");
+			return true;
+		}
+
+		if (args[0].equalsIgnoreCase("reset") && args[1].equalsIgnoreCase("all")) {
+			Jobs.GlobalBoost.clear();
+			sender.sendMessage(ChatColor.GREEN + Language.getMessage("command.boost.output.allreset"));
+			return true;
+		} else if (args[0].equalsIgnoreCase("reset")) {
+			if (Jobs.GlobalBoost.isEmpty()) {
+				sender.sendMessage(ChatColor.RED + Language.getMessage("command.boost.output.nothingtoreset"));
+				return true;
+			}
+			if (Jobs.GlobalBoost.containsKey(args[1].toLowerCase())) {
+				Jobs.GlobalBoost.remove(args[1].toLowerCase());
+				sender.sendMessage(ChatColor.RED + Language.getMessage("command.boost.output.jobsboostreset").replace("%jobname%", job.getName()));
+				return true;
+			}
+		}
+
+		if (args[0].equalsIgnoreCase("all")) {
+			Jobs.GlobalBoost.clear();
+			Jobs.GlobalBoost.put(args[0].toLowerCase(), Double.valueOf(rate));
+			sender.sendMessage(ChatColor.GREEN + Language.getMessage("command.boost.output.boostalladded"));
+			return true;
+		} else {
+			if (job == null) {
+				sender.sendMessage(ChatColor.GREEN + Language.getMessage("command.error.job"));
+				return true;
+			}
+			Jobs.GlobalBoost.put(args[0].toLowerCase(), Double.valueOf(rate));
+			sender.sendMessage(ChatColor.GREEN + Language.getMessage("command.boost.output.boostadded").replace("%boost%", String.valueOf(rate)).replace("%jobname%", job.getName()));
+			return true;
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -810,6 +877,9 @@ public class JobsCommands implements CommandExecutor {
 			}
 		}
 
+		if (Jobs.GlobalBoost.containsKey("all") || Jobs.GlobalBoost.containsKey(job.getName().toLowerCase()))
+			message.append(ChatColor.RED + Language.getMessage("command.boost.output.infostats").replace("%boost%", String.valueOf(Jobs.getPlayerManager().GetGlobalBoost(job))) + "\n");
+
 		for (ActionType actionType : ActionType.values()) {
 			if (showAllTypes == 1 || type.startsWith(actionType.getName().toLowerCase())) {
 				List<JobInfo> info = job.getJobInfo(actionType);
@@ -835,19 +905,15 @@ public class JobsCommands implements CommandExecutor {
 	private String jobInfoMessage(JobsPlayer player, Job job, ActionType type) {
 
 		// money exp boost
-		Double MoneyBoost = 1.0;
-		Double ExpBoost = 1.0;
 		Player dude = Bukkit.getServer().getPlayer(player.getPlayerUUID());
-		if (dude != null) {
-			if ((dude.hasPermission("jobs.boost." + job.getName() + ".money") || dude.hasPermission("jobs.boost." + job.getName() + ".both")) && !dude.isOp()) {
-				MoneyBoost = JobsConfiguration.BoostMoney;
-			}
-			if ((dude.hasPermission("jobs.boost." + job.getName() + ".exp") || dude.hasPermission("jobs.boost." + job.getName() + ".both")) && !dude.isOp()) {
-				ExpBoost = JobsConfiguration.BoostExp;
-			}
-		}
+		Double MoneyBoost = Jobs.getPlayerManager().GetMoneyBoost(dude, job);
+		Double ExpBoost = Jobs.getPlayerManager().GetExpBoost(dude, job);
+
+		// Global boost
+		Double JobGlobalBoost = Jobs.getPlayerManager().GetGlobalBoost(job);
 
 		StringBuilder message = new StringBuilder();
+
 		message.append(Language.getMessage("command.info.output." + type.getName().toLowerCase()));
 		message.append(":\n");
 
@@ -861,10 +927,12 @@ public class JobsCommands implements CommandExecutor {
 		for (JobInfo info : jobInfo) {
 			String materialName = info.getName().toLowerCase().replace('_', ' ');
 
-			double income = info.getIncome(level, numjobs) * MoneyBoost;
+			double income = info.getIncome(level, numjobs);
+			income = income + ((income * MoneyBoost) - income) + ((income * JobGlobalBoost) - income);
 			ChatColor incomeColor = income >= 0 ? ChatColor.GREEN : ChatColor.DARK_RED;
 
-			double xp = info.getExperience(level, numjobs) * ExpBoost;
+			double xp = info.getExperience(level, numjobs);
+			xp = xp + ((xp * ExpBoost) - xp) + ((xp * JobGlobalBoost) - xp);
 			ChatColor xpColor = xp >= 0 ? ChatColor.YELLOW : ChatColor.GRAY;
 			String xpString = String.format("%.2f xp", xp);
 

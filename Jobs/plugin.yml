@@ -108,6 +108,9 @@ permissions:
   jobs.command.reload:
     description: Grants access to the reload command
     default: op
+  jobs.command.boost:
+    description: Grants access to the boost command
+    default: op
   jobs.command.help:
     description: Grants access to the help command
     default: true

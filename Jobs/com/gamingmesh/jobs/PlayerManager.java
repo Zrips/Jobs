@@ -364,6 +364,71 @@ public class PlayerManager {
 	}
 
 	/**
+	 * Get global job boost
+	 * @param job
+	 * @return integer of boost
+	 */
+	public double GetGlobalBoost(Job job) {
+		double JobGlobalBoost = 1.0;
+		if (Jobs.GlobalBoost.containsKey("all"))
+			JobGlobalBoost = Jobs.GlobalBoost.get("all");
+		else if (Jobs.GlobalBoost.containsKey(job.getName().toLowerCase()))
+			JobGlobalBoost = Jobs.GlobalBoost.get(job.getName().toLowerCase());
+		return JobGlobalBoost;
+	}
+
+	/**
+	 * Get job exp boost
+	 * @param player
+	 * @param job
+	 * @return double of boost
+	 */
+	public Double GetExpBoost(Player dude, Job job) {
+		Double ExpBoost = 1.0;
+		if (dude != null && job.getName() != null) {
+			if ((dude.hasPermission("jobs.boost." + job.getName() + ".exp") || dude.hasPermission("jobs.boost." + job.getName() + ".both")) && !dude.isOp()) {
+				ExpBoost = JobsConfiguration.BoostExp;
+			}
+		}
+		return ExpBoost;
+	}
+
+	/**
+	 * Get max jobs
+	 * @param player
+	 * @return True if he have permission
+	 */
+	public boolean getJobsLimit(Player player, Short currentCount) {
+		if (player.hasPermission("jobs.max.*") || player.hasPermission("jobs.*") || player.hasPermission("jobs.admin")) {
+			return true;
+		}
+		short count = (short) ConfigManager.getJobsConfiguration().getMaxJobs();
+		for (short ctr = 0; ctr < 255; ctr++) {
+			if (player.hasPermission("jobs.max." + ctr))
+				count = ctr;
+			if (count > currentCount)
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Get job money boost
+	 * @param player
+	 * @param job
+	 * @return double of boost
+	 */
+	public Double GetMoneyBoost(Player dude, Job job) {
+		Double MoneyBoost = 1.0;
+		if (dude != null && job.getName() != null) {
+			if ((dude.hasPermission("jobs.boost." + job.getName() + ".money") || dude.hasPermission("jobs.boost." + job.getName() + ".both")) && !dude.isOp()) {
+				MoneyBoost = JobsConfiguration.BoostMoney;
+			}
+		}
+		return MoneyBoost;
+	}
+
+	/**
 	 * Perform reload
 	 */
 	public void reload() {
