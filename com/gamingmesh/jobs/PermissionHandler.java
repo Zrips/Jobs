@@ -34,125 +34,125 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class PermissionHandler {
-	private JobsPlugin plugin;
+    private JobsPlugin plugin;
 
-	public PermissionHandler(JobsPlugin plugin) {
-		this.plugin = plugin;
+    public PermissionHandler(JobsPlugin plugin) {
+	this.plugin = plugin;
+    }
+
+    public void recalculatePermissions(JobsPlayer jPlayer) {
+
+	if (jPlayer == null)
+	    return;
+	Player player = (Player) jPlayer.getPlayer();
+
+	if (player == null)
+	    return;
+
+	boolean changed = false;
+
+	// remove old permissions
+	String permName = "jobs.players." + player.getName();
+	Permission permission = plugin.getServer().getPluginManager().getPermission(permName);
+	if (permission != null) {
+	    plugin.getServer().getPluginManager().removePermission(permission);
+	    changed = true;
 	}
 
-	public void recalculatePermissions(JobsPlayer jPlayer) {
-
-		if (jPlayer == null)
-			return;
-		Player player = (Player) jPlayer.getPlayer();
-		
-		if (player == null)
-			return;
-
-		boolean changed = false;
-
-		// remove old permissions
-		String permName = "jobs.players." + player.getName();
-		Permission permission = plugin.getServer().getPluginManager().getPermission(permName);
-		if (permission != null) {
-			plugin.getServer().getPluginManager().removePermission(permission);
-			changed = true;
-		}
-
-		// Permissions should only apply if we have permission to use jobs in this world
-		if (hasWorldPermission(player, player.getWorld().getName())) {
-			List<JobProgression> progression = jPlayer.getJobProgression();
-			// calculate new permissions
-			HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
-			if (progression.size() == 0) {
-				Job job = Jobs.getNoneJob();
-				if (job != null) {
-					for (JobPermission perm : job.getPermissions()) {
-						if (perm.getLevelRequirement() <= 0) {
-							if (perm.getValue()) {
-								permissions.put(perm.getNode(), true);
-							} else {
-								/*
-								 * If the key exists, don't put a false node in
-								 * This is in case we already have a true node there
-								 */
-								if (!permissions.containsKey(perm.getNode())) {
-									permissions.put(perm.getNode(), false);
-								}
-							}
-						}
-					}
+	// Permissions should only apply if we have permission to use jobs in this world
+	if (hasWorldPermission(player, player.getWorld().getName())) {
+	    List<JobProgression> progression = jPlayer.getJobProgression();
+	    // calculate new permissions
+	    HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
+	    if (progression.size() == 0) {
+		Job job = Jobs.getNoneJob();
+		if (job != null) {
+		    for (JobPermission perm : job.getPermissions()) {
+			if (perm.getLevelRequirement() <= 0) {
+			    if (perm.getValue()) {
+				permissions.put(perm.getNode(), true);
+			    } else {
+				/*
+				 * If the key exists, don't put a false node in
+				 * This is in case we already have a true node there
+				 */
+				if (!permissions.containsKey(perm.getNode())) {
+				    permissions.put(perm.getNode(), false);
 				}
-			} else {
-				for (JobProgression prog : progression) {
-					for (JobPermission perm : prog.getJob().getPermissions()) {
-						if (prog.getLevel() >= perm.getLevelRequirement()) {
-							/*
-							 * If the key exists, don't put a false node in
-							 * This is in case we already have a true node there
-							 */
-							if (perm.getValue()) {
-								permissions.put(perm.getNode(), true);
-							} else {
-								if (!permissions.containsKey(perm.getNode())) {
-									permissions.put(perm.getNode(), false);
-								}
-							}
-						}
-					}
+			    }
+			}
+		    }
+		}
+	    } else {
+		for (JobProgression prog : progression) {
+		    for (JobPermission perm : prog.getJob().getPermissions()) {
+			if (prog.getLevel() >= perm.getLevelRequirement()) {
+			    /*
+			     * If the key exists, don't put a false node in
+			     * This is in case we already have a true node there
+			     */
+			    if (perm.getValue()) {
+				permissions.put(perm.getNode(), true);
+			    } else {
+				if (!permissions.containsKey(perm.getNode())) {
+				    permissions.put(perm.getNode(), false);
 				}
+			    }
 			}
-
-			// add new permissions (if applicable)
-			if (permissions.size() > 0) {
-				plugin.getServer().getPluginManager().addPermission(new Permission(permName, PermissionDefault.FALSE, permissions));
-				changed = true;
-			}
+		    }
 		}
-		
-		// If the permissions changed, recalculate them
-		if (!changed)
-			return;
+	    }
 
-		// find old attachment
-		PermissionAttachment attachment = null;
-		for (PermissionAttachmentInfo pai : player.getEffectivePermissions()) {
-			if (pai.getAttachment() != null && pai.getAttachment().getPlugin() instanceof JobsPlugin) {
-				attachment = pai.getAttachment();
-			}
-		}
-
-		// create if attachment doesn't exist
-		if (attachment == null) {
-			attachment = player.addAttachment(plugin);
-			attachment.setPermission(permName, true);
-		}
-
-		// recalculate!
-		player.recalculatePermissions();
+	    // add new permissions (if applicable)
+	    if (permissions.size() > 0) {
+		plugin.getServer().getPluginManager().addPermission(new Permission(permName, PermissionDefault.FALSE, permissions));
+		changed = true;
+	    }
 	}
 
-	public void registerPermissions() {
-		PluginManager pm = plugin.getServer().getPluginManager();
-		for (World world : plugin.getServer().getWorlds()) {
-			if (pm.getPermission("jobs.world." + world.getName().toLowerCase()) == null)
-				pm.addPermission(new Permission("jobs.world." + world.getName().toLowerCase(), PermissionDefault.TRUE));
-		}
-		for (Job job : Jobs.getJobs()) {
-			if (pm.getPermission("jobs.join." + job.getName().toLowerCase()) == null)
-				pm.addPermission(new Permission("jobs.join." + job.getName().toLowerCase(), PermissionDefault.TRUE));
-		}
+	// If the permissions changed, recalculate them
+	if (!changed)
+	    return;
+
+	// find old attachment
+	PermissionAttachment attachment = null;
+	for (PermissionAttachmentInfo pai : player.getEffectivePermissions()) {
+	    if (pai.getAttachment() != null && pai.getAttachment().getPlugin() instanceof JobsPlugin) {
+		attachment = pai.getAttachment();
+	    }
 	}
 
-	/**
-	 * Check World permissions
-	 */
-	public boolean hasWorldPermission(Player player, String world) {
-		if (!player.hasPermission("jobs.use")) {
-			return false;
-		} else {
-			return player.hasPermission("jobs.world." + world.toLowerCase());
-		}
+	// create if attachment doesn't exist
+	if (attachment == null) {
+	    attachment = player.addAttachment(plugin);
+	    attachment.setPermission(permName, true);
 	}
+
+	// recalculate!
+	player.recalculatePermissions();
+    }
+
+    public void registerPermissions() {
+	PluginManager pm = plugin.getServer().getPluginManager();
+	for (World world : plugin.getServer().getWorlds()) {
+	    if (pm.getPermission("jobs.world." + world.getName().toLowerCase()) == null)
+		pm.addPermission(new Permission("jobs.world." + world.getName().toLowerCase(), PermissionDefault.TRUE));
+	}
+	for (Job job : Jobs.getJobs()) {
+	    if (pm.getPermission("jobs.join." + job.getName().toLowerCase()) == null)
+		pm.addPermission(new Permission("jobs.join." + job.getName().toLowerCase(), PermissionDefault.TRUE));
+	}
+    }
+
+    /**
+     * Check World permissions
+     */
+    public boolean hasWorldPermission(Player player, String world) {
+	if (!player.hasPermission("jobs.use")) {
+	    return false;
+	} else {
+	    return player.hasPermission("jobs.world." + world.toLowerCase());
+	}
+    }
 
 }

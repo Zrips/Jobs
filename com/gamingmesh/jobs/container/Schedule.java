@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.gamingmesh.jobs.Jobs;
+import org.bukkit.ChatColor;
 
-import net.md_5.bungee.api.ChatColor;
+import com.gamingmesh.jobs.Jobs;
 
 public class Schedule {
 
