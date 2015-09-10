@@ -154,7 +154,7 @@ public class JobsListener implements Listener {
 	//	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerJoin(final PlayerJoinEvent event) {
+	public void onPlayerJoin(PlayerJoinEvent event) {
 		// make sure plugin is enabled
 		if (!plugin.isEnabled())
 			return;
@@ -173,7 +173,7 @@ public class JobsListener implements Listener {
 		 * necessary to call this twice in case somebody is relying on permissions from this 
 		 * plugin on entry to the world.
 		 */
-		final JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 		Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	}
 

@@ -48,6 +48,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
@@ -932,6 +933,25 @@ public class JobsPaymentListener implements Listener {
 	if (event.getSpawnReason() == SpawnReason.SPAWNER) {
 	    LivingEntity creature = (LivingEntity) event.getEntity();
 	    creature.setMetadata(mobSpawnerMetadata, new FixedMetadataValue(plugin, true));
+	}
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onCreatureSpawn(SlimeSplitEvent event) {
+
+	if (!event.getEntity().hasMetadata(mobSpawnerMetadata))
+	    return;
+
+	EntityType type = event.getEntityType();
+
+	if (type == EntityType.SLIME && ConfigManager.getJobsConfiguration().PreventSlimeSplit) {
+	    event.setCancelled(true);
+	    return;
+	}
+
+	if (type == EntityType.MAGMA_CUBE && ConfigManager.getJobsConfiguration().PreventMagmaCubeSplit) {
+	    event.setCancelled(true);
+	    return;
 	}
     }
 

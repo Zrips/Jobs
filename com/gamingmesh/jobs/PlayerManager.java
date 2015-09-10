@@ -52,39 +52,38 @@ public class PlayerManager {
      * Handles join of new player
      * @param playername
      */
-    public void playerJoin(final Player player) {
-	//synchronized (players) {
-	JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
-	if (jPlayer == null) {
-	    jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
-	    players.put(player.getName().toLowerCase(), jPlayer);
+    public void playerJoin(Player player) {
+	synchronized (players) {
+	    JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
+	    if (jPlayer == null) {
+		jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
+		players.put(player.getName().toLowerCase(), jPlayer);
+	    }
+	    jPlayer.onConnect();
+	    jPlayer.reloadHonorific();
+	    Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+	    return;
 	}
-	jPlayer.onConnect();
-	jPlayer.reloadHonorific();
-	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	return;
-	//}
     }
-
     /**
      * Handles player quit
      * @param playername
      */
     public void playerQuit(Player player) {
-	//synchronized (players) {
-	if (ConfigManager.getJobsConfiguration().saveOnDisconnect()) {
-	    JobsPlayer jPlayer = players.remove(player.getName().toLowerCase());
-	    if (jPlayer != null) {
-		jPlayer.save(Jobs.getJobsDAO());
-		jPlayer.onDisconnect();
-	    }
-	} else {
-	    JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
-	    if (jPlayer != null) {
-		jPlayer.onDisconnect();
+	synchronized (players) {
+	    if (ConfigManager.getJobsConfiguration().saveOnDisconnect()) {
+		JobsPlayer jPlayer = players.remove(player.getName().toLowerCase());
+		if (jPlayer != null) {
+		    jPlayer.save(Jobs.getJobsDAO());
+		    jPlayer.onDisconnect();
+		}
+	    } else {
+		JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
+		if (jPlayer != null) {
+		    jPlayer.onDisconnect();
+		}
 	    }
 	}
-	//}
     }
 
     /**

@@ -44,10 +44,11 @@ public class PermissionHandler {
 
 	if (jPlayer == null)
 	    return;
-	Player player = (Player) jPlayer.getPlayer();
 
-	if (player == null)
+	Player player = this.plugin.getServer().getPlayer(jPlayer.getPlayerUUID());
+	if (player == null) {
 	    return;
+	}
 
 	boolean changed = false;
 

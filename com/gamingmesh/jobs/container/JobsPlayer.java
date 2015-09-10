@@ -34,464 +34,478 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class JobsPlayer {
-	// the player the object belongs to
-	private String userName;
-	// progression of the player in each job
-	private UUID playerUUID;
-	private ArrayList<JobProgression> progression = new ArrayList<JobProgression>();
-	// display honorific
-	private String honorific;
-	// player save status
-	private volatile boolean isSaved = true;
-	// player online status
-	private volatile boolean isOnline = false;
+    // the player the object belongs to
+    private String userName;
+    // progression of the player in each job
+    private UUID playerUUID;
+    private ArrayList<JobProgression> progression = new ArrayList<JobProgression>();
+    // display honorific
+    private String honorific;
+    // player save status
+    private volatile boolean isSaved = true;
+    // player online status
+    private volatile boolean isOnline = false;
 
-	private OfflinePlayer player = null;
+    private OfflinePlayer player = null;
 
-	private double VipSpawnerMultiplier = -1;
+    private double VipSpawnerMultiplier = -1;
 
-	// save lock
-	public final Object saveLock = new Object();
+    // save lock
+    public final Object saveLock = new Object();
+    
+    // log
+    private List<Log> logList = new ArrayList<Log>();
 
-	private JobsPlayer(String userName, OfflinePlayer player) {
-		this.userName = userName;
-		this.player = player;
+    private JobsPlayer(String userName, OfflinePlayer player) {
+	this.userName = userName;
+	this.player = player;
+    }
+
+    public static JobsPlayer loadFromDao(JobsDAO dao, OfflinePlayer player) {
+
+	JobsPlayer jPlayer = new JobsPlayer(player.getName(), player);
+	jPlayer.playerUUID = player.getUniqueId();
+	List<JobsDAOData> list = dao.getAllJobs(player);
+	synchronized (jPlayer.saveLock) {
+	    jPlayer.progression.clear();
+	    for (JobsDAOData jobdata : list) {
+		if (Jobs.getJob(jobdata.getJobName()) == null)
+		    continue;
+		// add the job
+		Job job = Jobs.getJob(jobdata.getJobName());
+		if (job == null)
+		    continue;
+
+		// create the progression object
+		JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1);
+		// calculate the max level
+		// add the progression level.
+		jPlayer.progression.add(jobProgression);
+
+	    }
+	    jPlayer.reloadMaxExperience();
 	}
+	return jPlayer;
+    }
+    
+    public List<Log> getLog() {
+	return this.logList;
+    }
+    
+    /**
+     * Get the player
+     * @return the player
+     */
+    public OfflinePlayer getPlayer() {
+	return this.player;
+    }
 
-	public static JobsPlayer loadFromDao(JobsDAO dao, OfflinePlayer player) {
+    /**
+     * Get the VipSpawnerMultiplier
+     * @return the Multiplier
+     */
+    public double getVipSpawnerMultiplier() {
+	if (!this.player.isOnline())
+	    return 1.0;
+	if (VipSpawnerMultiplier < 0)
+	    updateVipSpawnerMultiplier();
+	return this.VipSpawnerMultiplier;
+    }
 
-		JobsPlayer jPlayer = new JobsPlayer(player.getName(), player);
-		jPlayer.playerUUID = player.getUniqueId();
-		List<JobsDAOData> list = dao.getAllJobs(player);
-		//synchronized (jPlayer.saveLock) {
-		jPlayer.progression.clear();
-		for (JobsDAOData jobdata : list) {
-			if (Jobs.getJob(jobdata.getJobName()) == null)
-				continue;
-			// add the job
-			Job job = Jobs.getJob(jobdata.getJobName());
-			if (job == null)
-				continue;
+    public void updateVipSpawnerMultiplier() {
+	if (Perm.hasPermission(this.player, "jobs.vipspawner"))
+	    this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().VIPpayNearSpawnerMultiplier;
+	else
+	    this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().payNearSpawnerMultiplier;
+    }
 
-			// create the progression object
-			JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1);
-			// calculate the max level
-			// add the progression level.
-			jPlayer.progression.add(jobProgression);
+    /**
+     * Get the MoneyBoost
+     * @return the MoneyBoost
+     */
+    public static double getMoneyBoost(String JobName, OfflinePlayer player) {
+	double MoneyBoost = 1.0;
+	if (JobName != null) {
+	    if (Perm.hasPermission(player, "jobs.boost." + JobName + ".money") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(
+		player, "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.money")) {
+		MoneyBoost = ConfigManager.getJobsConfiguration().BoostMoney;
+	    }
+	}
+	return MoneyBoost;
+    }
 
+    /**
+     * Get the MoneyBoost
+     * @return the MoneyBoost
+     */
+    public static double getExpBoost(String JobName, OfflinePlayer player) {
+	Double ExpBoost = 1.0;
+	if (player == null || JobName == null)
+	    return 1.0;
+	if (Perm.hasPermission(player, "jobs.boost." + JobName + ".exp") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(player,
+	    "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.exp")) {
+	    ExpBoost = ConfigManager.getJobsConfiguration().BoostExp;
+	}
+	return ExpBoost;
+    }
+
+    /**
+     * Reloads max experience for this job.
+     */
+    private void reloadMaxExperience() {
+	for (JobProgression prog : progression) {
+	    prog.reloadMaxExperience();
+	}
+    }
+
+    /**
+     * Get the list of job progressions
+     * @return the list of job progressions
+     */
+    public List<JobProgression> getJobProgression() {
+	return Collections.unmodifiableList(progression);
+    }
+
+    /**
+     * Check if have permission
+     * @return true if have
+     */
+    public boolean havePermission(String perm) {
+	if (this.isOnline)
+	    return ((Player) player).hasPermission(perm);
+	return false;
+    }
+
+    /**
+     * Get the job progression with the certain job
+     * @return the job progression
+     */
+    public JobProgression getJobProgression(Job job) {
+	for (JobProgression prog : progression) {
+	    if (prog.getJob().equals(job))
+		return prog;
+	}
+	return null;
+    }
+
+    /**
+     * get the userName
+     * @return the userName
+     */
+    public String getUserName() {
+	return userName;
+    }
+
+    /**
+     * get the playerUUID
+     * @return the playerUUID
+     */
+    public UUID getPlayerUUID() {
+	return playerUUID;
+    }
+
+    public String getDisplayHonorific() {
+	return honorific;
+    }
+
+    /**
+     * Player joins a job
+     * @param job - the job joined
+     */
+    public boolean joinJob(Job job, JobsPlayer jPlayer) {
+	synchronized (saveLock) {
+	    if (!isInJob(job)) {
+		int level = 1;
+		int exp = 0;
+		if (Jobs.getJobsDAO().checkArchive(jPlayer, job).size() > 0) {
+		    List<Integer> info = Jobs.getJobsDAO().checkArchive(jPlayer, job);
+		    level = info.get(0);
+		    //exp = info.get(1);
+		    Jobs.getJobsDAO().deleteArchive(jPlayer, job);
 		}
-		jPlayer.reloadMaxExperience();
-		//}
-		return jPlayer;
-	}
 
-	/**
-	 * Get the player
-	 * @return the player
-	 */
-	public OfflinePlayer getPlayer() {
-		return this.player;
+		progression.add(new JobProgression(job, this, level, exp, -1, -1));
+		reloadMaxExperience();
+		reloadHonorific();
+		Jobs.getPermissionHandler().recalculatePermissions(this);
+		return true;
+	    }
+	    return false;
 	}
+    }
 
-	/**
-	 * Get the VipSpawnerMultiplier
-	 * @return the Multiplier
-	 */
-	public double getVipSpawnerMultiplier() {
-		if (!this.player.isOnline())
-			return 1.0;
-		if (VipSpawnerMultiplier < 0)
-			updateVipSpawnerMultiplier();
-		return this.VipSpawnerMultiplier;
+    /**
+     * Player leaves a job
+     * @param job - the job left
+     */
+    public boolean leaveJob(Job job) {
+	synchronized (saveLock) {
+	    JobProgression prog = getJobProgression(job);
+	    if (prog != null) {
+		progression.remove(prog);
+		reloadMaxExperience();
+		reloadHonorific();
+		Jobs.getPermissionHandler().recalculatePermissions(this);
+		return true;
+	    }
+	    return false;
 	}
+    }
 
-	public void updateVipSpawnerMultiplier() {
-		if (Perm.hasPermission(this.player, "jobs.vipspawner"))
-			this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().VIPpayNearSpawnerMultiplier;
-		else
-			this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().payNearSpawnerMultiplier;
+    /**
+     * Leave all jobs
+     * @return on success
+     */
+    public boolean leaveAllJobs() {
+	synchronized (saveLock) {
+	    progression.clear();
+	    reloadHonorific();
+	    Jobs.getPermissionHandler().recalculatePermissions(this);
+	    ;
+	    return true;
 	}
+    }
 
-	/**
-	 * Get the MoneyBoost
-	 * @return the MoneyBoost
-	 */
-	public static double getMoneyBoost(String JobName, OfflinePlayer player) {
-		double MoneyBoost = 1.0;
-		if (JobName != null) {
-			if (Perm.hasPermission(player, "jobs.boost." + JobName + ".money") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(player, "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.money")) {
-				MoneyBoost = ConfigManager.getJobsConfiguration().BoostMoney;
-			}
-		}
-		return MoneyBoost;
+    /**
+     * Promotes player in job
+     * @param job - the job being promoted
+     * @param levels - number of levels to promote
+     */
+    public void promoteJob(Job job, int levels, JobsPlayer player) {
+	synchronized (saveLock) {
+	    JobProgression prog = getJobProgression(job);
+	    if (prog == null)
+		return;
+	    if (levels <= 0)
+		return;
+	    int newLevel = prog.getLevel() + levels;
+
+	    int maxLevel = job.getMaxLevel();
+
+	    if (player.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
+		maxLevel = job.getVipMaxLevel();
+
+	    if (maxLevel > 0 && newLevel > maxLevel) {
+		newLevel = maxLevel;
+	    }
+	    setLevel(job, newLevel);
 	}
+    }
 
-	/**
-	 * Get the MoneyBoost
-	 * @return the MoneyBoost
-	 */
-	public static double getExpBoost(String JobName, OfflinePlayer player) {
-		Double ExpBoost = 1.0;
-		if (player == null || JobName == null)
-			return 1.0;
-		if (Perm.hasPermission(player, "jobs.boost." + JobName + ".exp") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(player, "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.exp")) {
-			ExpBoost = ConfigManager.getJobsConfiguration().BoostExp;
-		}
-		return ExpBoost;
+    /**
+     * Demotes player in job
+     * @param job - the job being deomoted
+     * @param levels - number of levels to demote
+     */
+    public void demoteJob(Job job, int levels) {
+	synchronized (saveLock) {
+	    JobProgression prog = getJobProgression(job);
+	    if (prog == null)
+		return;
+	    if (levels <= 0)
+		return;
+	    int newLevel = prog.getLevel() - levels;
+	    if (newLevel < 1) {
+		newLevel = 1;
+	    }
+	    setLevel(job, newLevel);
 	}
+    }
 
-	/**
-	 * Reloads max experience for this job.
-	 */
-	private void reloadMaxExperience() {
+    /**
+     * Sets player to a specific level
+     * @param job - the job
+     * @param level - the level
+     */
+    private void setLevel(Job job, int level) {
+	synchronized (saveLock) {
+	    JobProgression prog = getJobProgression(job);
+	    if (prog == null)
+		return;
+
+	    if (level != prog.getLevel()) {
+		prog.setLevel(level);
+		reloadHonorific();
+		Jobs.getPermissionHandler().recalculatePermissions(this);
+		;
+	    }
+	}
+    }
+
+    /**
+     * Player leaves a job
+     * @param oldjob - the old job
+     * @param newjob - the new job
+     */
+    public boolean transferJob(Job oldjob, Job newjob, JobsPlayer jPlayer) {
+	synchronized (saveLock) {
+	    if (!isInJob(newjob)) {
 		for (JobProgression prog : progression) {
-			prog.reloadMaxExperience();
+		    if (!prog.getJob().equals(oldjob))
+			continue;
+
+		    prog.setJob(newjob);
+
+		    int maxLevel = 0;
+		    if (jPlayer.havePermission("jobs." + newjob.getName() + ".vipmaxlevel"))
+			maxLevel = newjob.getVipMaxLevel();
+		    else
+			maxLevel = newjob.getMaxLevel();
+
+		    if (newjob.getMaxLevel() > 0 && prog.getLevel() > maxLevel) {
+			prog.setLevel(maxLevel);
+		    }
+		    reloadMaxExperience();
+		    reloadHonorific();
+		    Jobs.getPermissionHandler().recalculatePermissions(this);
+		    ;
+		    return true;
 		}
+	    }
+	    return false;
 	}
+    }
 
-	/**
-	 * Get the list of job progressions
-	 * @return the list of job progressions
-	 */
-	public List<JobProgression> getJobProgression() {
-		return Collections.unmodifiableList(progression);
+    /**
+     * Checks if the player is in this job.
+     * @param job - the job
+     * @return true - they are in the job
+     * @return false - they are not in the job
+     */
+    public boolean isInJob(Job job) {
+	for (JobProgression prog : progression) {
+	    if (prog.getJob().equals(job))
+		return true;
 	}
+	return false;
+    }
 
-	/**
-	 * Check if have permission
-	 * @return true if have
-	 */
-	public boolean havePermission(String perm) {
-		if (this.isOnline)
-			return ((Player) player).hasPermission(perm);
-		return false;
-	}
+    /**
+     * Function that reloads your honorific
+     */
+    public void reloadHonorific() {
+	StringBuilder builder = new StringBuilder();
+	int numJobs = progression.size();
+	boolean gotTitle = false;
 
-	/**
-	 * Get the job progression with the certain job
-	 * @return the job progression
-	 */
-	public JobProgression getJobProgression(Job job) {
-		for (JobProgression prog : progression) {
-			if (prog.getJob().equals(job))
-				return prog;
+	if (numJobs > 0)
+	    for (JobProgression prog : progression) {
+		DisplayMethod method = prog.getJob().getDisplayMethod();
+		if (method.equals(DisplayMethod.NONE))
+		    continue;
+		if (gotTitle) {
+		    builder.append(" ");
+		    gotTitle = false;
 		}
-		return null;
-	}
+		Title title = ConfigManager.getJobsConfiguration().getTitleForLevel(prog.getLevel(), prog.getJob().getName());
 
-	/**
-	 * get the userName
-	 * @return the userName
-	 */
-	public String getUserName() {
-		return userName;
-	}
-
-	/**
-	 * get the playerUUID
-	 * @return the playerUUID
-	 */
-	public UUID getPlayerUUID() {
-		return playerUUID;
-	}
-
-	public String getDisplayHonorific() {
-		return honorific;
-	}
-
-	/**
-	 * Player joins a job
-	 * @param job - the job joined
-	 */
-	public boolean joinJob(Job job, JobsPlayer jPlayer) {
-		synchronized (saveLock) {
-			if (!isInJob(job)) {
-				int level = 1;
-				int exp = 0;
-				if (Jobs.getJobsDAO().checkArchive(jPlayer, job).size() > 0) {
-					List<Integer> info = Jobs.getJobsDAO().checkArchive(jPlayer, job);
-					level = info.get(0);
-					//exp = info.get(1);
-					Jobs.getJobsDAO().deleteArchive(jPlayer, job);
-				}
-
-				progression.add(new JobProgression(job, this, level, exp, -1, -1));
-				reloadMaxExperience();
-				reloadHonorific();
-				Jobs.getPermissionHandler().recalculatePermissions(this);
-				return true;
+		if (numJobs == 1) {
+		    if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) {
+			if (title != null) {
+			    String honorificpart = title.getChatColor() + title.getName() + ChatColor.WHITE;
+			    if (honorificpart.contains("{level}"))
+				honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+			    builder.append(honorificpart);
+			    gotTitle = true;
 			}
-			return false;
-		}
-	}
-
-	/**
-	 * Player leaves a job
-	 * @param job - the job left
-	 */
-	public boolean leaveJob(Job job) {
-		synchronized (saveLock) {
-			JobProgression prog = getJobProgression(job);
-			if (prog != null) {
-				progression.remove(prog);
-				reloadMaxExperience();
-				reloadHonorific();
-				Jobs.getPermissionHandler().recalculatePermissions(this);
-				return true;
+		    }
+		    if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.JOB)) {
+			if (gotTitle) {
+			    builder.append(" ");
 			}
-			return false;
-		}
-	}
-
-	/**
-	 * Leave all jobs
-	 * @return on success
-	 */
-	public boolean leaveAllJobs() {
-		synchronized (saveLock) {
-			progression.clear();
-			reloadHonorific();
-			Jobs.getPermissionHandler().recalculatePermissions(this);;
-			return true;
-		}
-	}
-
-	/**
-	 * Promotes player in job
-	 * @param job - the job being promoted
-	 * @param levels - number of levels to promote
-	 */
-	public void promoteJob(Job job, int levels, JobsPlayer player) {
-		synchronized (saveLock) {
-			JobProgression prog = getJobProgression(job);
-			if (prog == null)
-				return;
-			if (levels <= 0)
-				return;
-			int newLevel = prog.getLevel() + levels;
-
-			int maxLevel = job.getMaxLevel();
-
-			if (player.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-				maxLevel = job.getVipMaxLevel();
-
-			if (maxLevel > 0 && newLevel > maxLevel) {
-				newLevel = maxLevel;
-			}
-			setLevel(job, newLevel);
-		}
-	}
-
-	/**
-	 * Demotes player in job
-	 * @param job - the job being deomoted
-	 * @param levels - number of levels to demote
-	 */
-	public void demoteJob(Job job, int levels) {
-		synchronized (saveLock) {
-			JobProgression prog = getJobProgression(job);
-			if (prog == null)
-				return;
-			if (levels <= 0)
-				return;
-			int newLevel = prog.getLevel() - levels;
-			if (newLevel < 1) {
-				newLevel = 1;
-			}
-			setLevel(job, newLevel);
-		}
-	}
-
-	/**
-	 * Sets player to a specific level
-	 * @param job - the job
-	 * @param level - the level
-	 */
-	private void setLevel(Job job, int level) {
-		synchronized (saveLock) {
-			JobProgression prog = getJobProgression(job);
-			if (prog == null)
-				return;
-
-			if (level != prog.getLevel()) {
-				prog.setLevel(level);
-				reloadHonorific();
-				Jobs.getPermissionHandler().recalculatePermissions(this);;
-			}
-		}
-	}
-
-	/**
-	 * Player leaves a job
-	 * @param oldjob - the old job
-	 * @param newjob - the new job
-	 */
-	public boolean transferJob(Job oldjob, Job newjob, JobsPlayer jPlayer) {
-		synchronized (saveLock) {
-			if (!isInJob(newjob)) {
-				for (JobProgression prog : progression) {
-					if (!prog.getJob().equals(oldjob))
-						continue;
-
-					prog.setJob(newjob);
-
-					int maxLevel = 0;
-					if (jPlayer.havePermission("jobs." + newjob.getName() + ".vipmaxlevel"))
-						maxLevel = newjob.getVipMaxLevel();
-					else
-						maxLevel = newjob.getMaxLevel();
-
-					if (newjob.getMaxLevel() > 0 && prog.getLevel() > maxLevel) {
-						prog.setLevel(maxLevel);
-					}
-					reloadMaxExperience();
-					reloadHonorific();
-					Jobs.getPermissionHandler().recalculatePermissions(this);;
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	/**
-	 * Checks if the player is in this job.
-	 * @param job - the job
-	 * @return true - they are in the job
-	 * @return false - they are not in the job
-	 */
-	public boolean isInJob(Job job) {
-		for (JobProgression prog : progression) {
-			if (prog.getJob().equals(job))
-				return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Function that reloads your honorific
-	 */
-	public void reloadHonorific() {
-		StringBuilder builder = new StringBuilder();
-		int numJobs = progression.size();
-		boolean gotTitle = false;
-
-		if (numJobs > 0)
-			for (JobProgression prog : progression) {
-				DisplayMethod method = prog.getJob().getDisplayMethod();
-				if (method.equals(DisplayMethod.NONE))
-					continue;
-				if (gotTitle) {
-					builder.append(" ");
-					gotTitle = false;
-				}
-				Title title = ConfigManager.getJobsConfiguration().getTitleForLevel(prog.getLevel(), prog.getJob().getName());
-
-				if (numJobs == 1) {
-					if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) {
-						if (title != null) {
-							String honorificpart = title.getChatColor() + title.getName() + ChatColor.WHITE;
-							if (honorificpart.contains("{level}"))
-								honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
-							builder.append(honorificpart);
-							gotTitle = true;
-						}
-					}
-					if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.JOB)) {
-						if (gotTitle) {
-							builder.append(" ");
-						}
-						String honorificpart = prog.getJob().getChatColor() + prog.getJob().getName() + ChatColor.WHITE;
-						if (honorificpart.contains("{level}"))
-							honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
-						builder.append(honorificpart);
-						gotTitle = true;
-					}
-				}
-
-				if (numJobs > 1 && (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) || method.equals(DisplayMethod.SHORT_FULL) || method.equals(DisplayMethod.SHORT_TITLE)) {
-					// add title to honorific
-					if (title != null) {
-						String honorificpart = title.getChatColor() + title.getShortName() + ChatColor.WHITE;
-						if (honorificpart.contains("{level}"))
-							honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
-						builder.append(honorificpart);
-						gotTitle = true;
-					}
-				}
-
-				if (numJobs > 1 && (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.JOB)) || method.equals(DisplayMethod.SHORT_FULL) || method.equals(DisplayMethod.SHORT_JOB)) {
-					String honorificpart = prog.getJob().getChatColor() + prog.getJob().getShortName() + ChatColor.WHITE;
-					if (honorificpart.contains("{level}"))
-						honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
-					builder.append(honorificpart);
-					gotTitle = true;
-				}
-			}
-		else {
-			Job nonejob = Jobs.getNoneJob();
-			if (nonejob != null) {
-				DisplayMethod metod = nonejob.getDisplayMethod();
-				if (metod.equals(DisplayMethod.FULL) || metod.equals(DisplayMethod.TITLE)) {
-					String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getName() + ChatColor.WHITE;
-					if (honorificpart.contains("{level}"))
-						honorificpart = honorificpart.replace("{level}", "");
-					builder.append(honorificpart);
-				}
-
-				if (metod.equals(DisplayMethod.SHORT_FULL) || metod.equals(DisplayMethod.SHORT_TITLE) || metod.equals(DisplayMethod.SHORT_JOB)) {
-					String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getShortName() + ChatColor.WHITE;
-					if (honorificpart.contains("{level}"))
-						honorificpart = honorificpart.replace("{level}", "");
-					builder.append(honorificpart);
-				}
-			}
+			String honorificpart = prog.getJob().getChatColor() + prog.getJob().getName() + ChatColor.WHITE;
+			if (honorificpart.contains("{level}"))
+			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+			builder.append(honorificpart);
+			gotTitle = true;
+		    }
 		}
 
-		honorific = builder.toString().trim();
-	}
-
-	/**
-	 * Performs player save
-	 * @param dao
-	 */
-	public void save(JobsDAO dao) {
-		synchronized (saveLock) {
-			if (!isSaved()) {
-				dao.save(this);
-				setSaved(true);
-			}
+		if (numJobs > 1 && (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) || method.equals(DisplayMethod.SHORT_FULL) || method.equals(
+		    DisplayMethod.SHORT_TITLE)) {
+		    // add title to honorific
+		    if (title != null) {
+			String honorificpart = title.getChatColor() + title.getShortName() + ChatColor.WHITE;
+			if (honorificpart.contains("{level}"))
+			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+			builder.append(honorificpart);
+			gotTitle = true;
+		    }
 		}
+
+		if (numJobs > 1 && (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.JOB)) || method.equals(DisplayMethod.SHORT_FULL) || method.equals(
+		    DisplayMethod.SHORT_JOB)) {
+		    String honorificpart = prog.getJob().getChatColor() + prog.getJob().getShortName() + ChatColor.WHITE;
+		    if (honorificpart.contains("{level}"))
+			honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+		    builder.append(honorificpart);
+		    gotTitle = true;
+		}
+	    }
+	else {
+	    Job nonejob = Jobs.getNoneJob();
+	    if (nonejob != null) {
+		DisplayMethod metod = nonejob.getDisplayMethod();
+		if (metod.equals(DisplayMethod.FULL) || metod.equals(DisplayMethod.TITLE)) {
+		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getName() + ChatColor.WHITE;
+		    if (honorificpart.contains("{level}"))
+			honorificpart = honorificpart.replace("{level}", "");
+		    builder.append(honorificpart);
+		}
+
+		if (metod.equals(DisplayMethod.SHORT_FULL) || metod.equals(DisplayMethod.SHORT_TITLE) || metod.equals(DisplayMethod.SHORT_JOB)) {
+		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getShortName() + ChatColor.WHITE;
+		    if (honorificpart.contains("{level}"))
+			honorificpart = honorificpart.replace("{level}", "");
+		    builder.append(honorificpart);
+		}
+	    }
 	}
 
-	/**
-	 * Perform connect
-	 */
-	public void onConnect() {
-		isOnline = true;
-	}
+	honorific = builder.toString().trim();
+    }
 
-	/**
-	 * Perform disconnect
-	 * 
-	 */
-	public void onDisconnect() {
-		isOnline = false;
+    /**
+     * Performs player save
+     * @param dao
+     */
+    public void save(JobsDAO dao) {
+	synchronized (saveLock) {
+	    if (!isSaved()) {
+		dao.save(this);
+		setSaved(true);
+	    }
 	}
+    }
 
-	/**
-	 * Whether or not player is online
-	 * @return true if online, otherwise false
-	 */
-	public boolean isOnline() {
-		return isOnline;
-	}
+    /**
+     * Perform connect
+     */
+    public void onConnect() {
+	isOnline = true;
+    }
 
-	public boolean isSaved() {
-		return isSaved;
-	}
+    /**
+     * Perform disconnect
+     * 
+     */
+    public void onDisconnect() {
+	isOnline = false;
+    }
 
-	public void setSaved(boolean value) {
-		isSaved = value;
-	}
+    /**
+     * Whether or not player is online
+     * @return true if online, otherwise false
+     */
+    public boolean isOnline() {
+	return isOnline;
+    }
+
+    public boolean isSaved() {
+	return isSaved;
+    }
+
+    public void setSaved(boolean value) {
+	isSaved = value;
+    }
 }
