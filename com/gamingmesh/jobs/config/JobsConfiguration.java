@@ -1343,6 +1343,7 @@ public class JobsConfiguration {
 	    GetConfigString("signs.SpecialList.3.3", "&8[level] level", writer, conf, true);
 	    GetConfigString("signs.SpecialList.3.4", "&b************", writer, conf, true);
 	    GetConfigString("signs.cantcreate", "&4You can't create this sign!", writer, conf, true);
+	    GetConfigString("signs.cantdestroy", "&4You can't destroy this sign!", writer, conf, true);
 	    GetConfigString("signs.topline", "&2[Jobs]", writer, conf, true);
 	    GetConfigString("signs.secondline.join", "&2Join", writer, conf, true);
 	    GetConfigString("signs.secondline.leave", "&4Leave", writer, conf, true);

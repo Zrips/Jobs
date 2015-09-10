@@ -925,7 +925,6 @@ public class JobsPaymentListener implements Listener {
 		    Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), multiplier, item, armor);
 		}
 	}
-
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
