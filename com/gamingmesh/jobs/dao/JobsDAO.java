@@ -587,10 +587,41 @@ public abstract class JobsDAO {
 	    while (res.next()) {
 		Loging.loadToLog(player, res.getString("action"), res.getString("itemname"), res.getInt("count"), res.getDouble("money"), res.getDouble("exp"));
 	    }
+	    res.close();
 	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    /**
+     * Save player-job information
+     * @param jobInfo - the information getting saved
+     * @return 
+     */
+    public List<String> getLognameList(int fromtime, int untiltime) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return null;
+	try {
+	    List<String> nameList = new ArrayList<String>();
+
+	    PreparedStatement prest = conn.prepareStatement("SELECT `username` FROM `" + prefix
+		+ "log` WHERE `time` >= ?  AND `time` <= ? ;");
+	    prest.setInt(1, fromtime);
+	    prest.setInt(2, untiltime);
+	    ResultSet res = prest.executeQuery();
+	    while (res.next()) {
+		if (!nameList.contains(res.getString("username")))
+		    nameList.add(res.getString("username"));
+	    }
+	    res.close();
+	    prest.close();
+	    return nameList;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return null;
     }
 
     /**

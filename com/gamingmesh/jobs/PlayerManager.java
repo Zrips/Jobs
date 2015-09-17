@@ -46,6 +46,8 @@ import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
+import net.milkbowl.vault.Vault;
+
 public class PlayerManager {
     private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
     //private Map<String, JobsPlayer> players = new HashMap<String, JobsPlayer>();
@@ -153,7 +155,9 @@ public class PlayerManager {
 	if (jPlayer != null)
 	    return jPlayer;
 
-	return JobsPlayer.loadFromDao(Jobs.getJobsDAO(), offlinePlayer);
+	JobsPlayer player = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), offlinePlayer);
+	JobsPlayer.loadLogFromDao(player);
+	return player;
     }
 
     /**
@@ -525,7 +529,7 @@ public class PlayerManager {
 	    return true;
 
 	short count = (short) ConfigManager.getJobsConfiguration().getMaxJobs();
-	for (short ctr = 0; ctr < 255; ctr++) {
+	for (short ctr = 0; ctr < 30; ctr++) {
 	    if (Perm(player, "jobs.max." + ctr))
 		count = ctr;
 	    if (count > currentCount)
@@ -535,8 +539,7 @@ public class PlayerManager {
     }
 
     private boolean Perm(Player player, String permission) {
-	Permission p = new Permission(permission, PermissionDefault.FALSE);
-	return player.hasPermission(p);
+	return player.isPermissionSet(permission);
     }
 
     /**

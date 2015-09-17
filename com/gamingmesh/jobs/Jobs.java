@@ -39,7 +39,6 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.Economy;
@@ -382,9 +381,6 @@ public class Jobs {
 	} else {
 	    PaymentData data = ExpLimit.get(playername);
 	    if (data.IsReachedExpLimit(ConfigManager.getJobsConfiguration().EconomyExpTimeLimit, ConfigManager.getJobsConfiguration().EconomyExpLimit)) {
-
-		Debug.D("exp limit reached");
-
 		if (player.isOnline() && !data.Informed && !data.isReseted()) {
 		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedExplimit"));
 		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedExplimit2"));
@@ -445,6 +441,8 @@ public class Jobs {
 
 		    Jobs.getEconomy().pay(jPlayer, amount, 0.0);
 
+		    if (ConfigManager.getJobsConfiguration().LoggingUse)
+			Loging.recordToLog(jPlayer, info, amount, 0);
 		}
 	    }
 	} else {
@@ -564,11 +562,11 @@ public class Jobs {
 		    Jobs.getEconomy().pay(jPlayer, amount, expAmount);
 		    int oldLevel = prog.getLevel();
 
-		    Loging.recordToLog(jPlayer, info, amount, expAmount);
+		    if (ConfigManager.getJobsConfiguration().LoggingUse)
+			Loging.recordToLog(jPlayer, info, amount, expAmount);
 
 		    if (prog.addExperience(expAmount))
 			Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
-
 		}
 	    }
 	}

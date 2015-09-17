@@ -26,9 +26,11 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public class JobsDAOSQLite extends JobsDAO {
@@ -152,7 +154,12 @@ public class JobsDAOSQLite extends JobsDAO {
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "" + y + " of " + usernames.size());
 			i = 0;
 		    }
-		    pst2.setBytes(1, UUIDUtil.toBytes(UUID.fromString(Bukkit.getOfflinePlayer(names).getUniqueId().toString())));
+
+		    OfflinePlayer offPlayer = OfflinePlayerList.getPlayer(names);
+		    if (offPlayer == null)
+			continue;
+
+		    pst2.setBytes(1, UUIDUtil.toBytes(offPlayer.getUniqueId()));
 		    pst2.setString(2, names);
 		    pst2.execute();
 		}

@@ -36,6 +36,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 
 public class BufferedEconomy {
@@ -80,7 +81,6 @@ public class BufferedEconomy {
     /**
      * Payout all players the amount they are going to be paid
      */
-    @SuppressWarnings("deprecation")
     public void payAll() {
 	if (payments.isEmpty())
 	    return;
@@ -128,10 +128,10 @@ public class BufferedEconomy {
 	    String ServerAccountname = ConfigManager.getJobsConfiguration().ServerAcountName;
 	    String ServerTaxesAccountname = ConfigManager.getJobsConfiguration().ServertaxesAcountName;
 	    if (this.ServerAccount == null)
-		this.ServerAccount = Bukkit.getOfflinePlayer(ServerAccountname);
+		this.ServerAccount = OfflinePlayerList.getPlayer(ServerAccountname);
 
 	    if (this.ServerTaxesAccount == null)
-		this.ServerTaxesAccount = Bukkit.getOfflinePlayer(ServerAccountname);
+		this.ServerTaxesAccount = OfflinePlayerList.getPlayer(ServerAccountname);
 
 	    if (ConfigManager.getJobsConfiguration().UseTaxes && ConfigManager.getJobsConfiguration().TransferToServerAccount && ServerTaxesAccount != null) {
 

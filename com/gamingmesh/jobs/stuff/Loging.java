@@ -19,9 +19,7 @@ public class Loging {
 
 	if (jPlayer.getLog().size() > 0 && ScheduleUtil.dateByInt != jPlayer.getLog().get(0).getDate()) {
 	    ScheduleUtil.dateByInt = TimeManage.timeInInt();
-	    Debug.D("1 Not equals " + ScheduleUtil.dateByInt + "  " + jPlayer.getLog().get(0).getDate());
 	    if (ScheduleUtil.dateByInt != jPlayer.getLog().get(0).getDate()) {
-		Debug.D("Not equals " + ScheduleUtil.dateByInt + "  " + jPlayer.getLog().get(0).getDate());
 		Jobs.getJobsDAO().saveLog(jPlayer);
 		jPlayer.getLog().clear();
 	    }
@@ -30,19 +28,13 @@ public class Loging {
 	for (Log one : logList) {
 	    if (!one.getActionType().equalsIgnoreCase(ActionName))
 		continue;
-
 	    one.add(item, amount, expAmount);
-
 	    found = true;
-
-	    Debug.D(item + " : " + one.getCount(item) + " money: " + one.getMoney(item) + " exp:" + one.getExp(item));
 	}
 	if (!found) {
 	    Log log = new Log(ActionName);
 	    log.add(item, amount, expAmount);
 	    logList.add(log);
-	    String msg = item + " : " + log.getCount(item) + " money: " + log.getMoney(item) + " exp:" + log.getExp(item);
-	    Debug.D(msg);
 	}
     }
 
@@ -52,19 +44,13 @@ public class Loging {
 	for (Log one : logList) {
 	    if (!one.getActionType().equalsIgnoreCase(ActionName))
 		continue;
-
 	    one.add(item, count, money, expAmount);
-
 	    found = true;
-
-	    Debug.D(item + " : " + one.getCount(item) + " money: " + one.getMoney(item) + " exp:" + one.getExp(item));
 	}
 	if (!found) {
 	    Log log = new Log(ActionName);
 	    log.add(item, count, money, expAmount);
 	    logList.add(log);
-	    String msg = item + " : " + log.getCount(item) + " money: " + log.getMoney(item) + " exp:" + log.getExp(item);
-	    Debug.D(msg);
 	}
     }
 }

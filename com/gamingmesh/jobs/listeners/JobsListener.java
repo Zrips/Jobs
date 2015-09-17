@@ -51,6 +51,7 @@ import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
@@ -185,6 +186,7 @@ public class JobsListener implements Listener {
 	if (!plugin.isEnabled())
 	    return;
 	Jobs.getPlayerManager().playerQuit(event.getPlayer());
+	OfflinePlayerList.addPlayer(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -205,13 +207,7 @@ public class JobsListener implements Listener {
 	if (!ConfigManager.getJobsConfiguration().SignsEnabled)
 	    return;
 
-	Player player = (Player) event.getPlayer();
 	if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
-	    return;
-
-	Material material = event.getClickedBlock().getType();
-
-	if (material != Material.WALL_SIGN && material != Material.SIGN && material != Material.SIGN_POST)
 	    return;
 
 	Block block = event.getClickedBlock();
@@ -237,6 +233,7 @@ public class JobsListener implements Listener {
 	    }
 	}
 
+	Player player = (Player) event.getPlayer();
 	Bukkit.dispatchCommand(player, "jobs " + command + " " + ChatColor.stripColor(sign.getLine(2)) + " " + ChatColor.stripColor(sign.getLine(3)));
     }
 
@@ -247,11 +244,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	if (!ConfigManager.getJobsConfiguration().SignsEnabled)
-	    return;
-
-	Material material = event.getBlock().getType();
-
-	if (material != Material.WALL_SIGN && material != Material.SIGN && material != Material.SIGN_POST)
 	    return;
 
 	Block block = event.getBlock();

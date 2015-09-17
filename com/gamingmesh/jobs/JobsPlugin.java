@@ -37,6 +37,7 @@ import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
+import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 import com.gamingmesh.jobs.stuff.ScheduleUtil;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.config.YmlMaker;
@@ -47,65 +48,65 @@ public class JobsPlugin extends JavaPlugin {
     public static boolean CPPresent = false;
 
     @Override
-	public void onEnable() {
-		instance = this;
-		YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
-		jobConfig.saveDefaultConfig();
-		
-		YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
-		jobSigns.saveDefaultConfig();
-		
-		YmlMaker jobSchedule = new YmlMaker(this, "schedule.yml");
-		jobSchedule.saveDefaultConfig();
-		
-		Jobs.setPermissionHandler(new PermissionHandler(this));
+    public void onEnable() {
+	instance = this;
+	OfflinePlayerList.fillList();
+	YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
+	jobConfig.saveDefaultConfig();
 
-		Jobs.setPluginLogger(getLogger());
+	YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
+	jobSigns.saveDefaultConfig();
 
-		Jobs.setDataFolder(getDataFolder());
+	YmlMaker jobSchedule = new YmlMaker(this, "schedule.yml");
+	jobSchedule.saveDefaultConfig();
 
-		ConfigManager.registerJobsConfiguration(new JobsConfiguration(this));
-		ConfigManager.registerJobConfig(new JobConfig(this));
+	Jobs.setPermissionHandler(new PermissionHandler(this));
 
-		getCommand("jobs").setExecutor(new JobsCommands());
+	Jobs.setPluginLogger(getLogger());
 
-		this.getCommand("jobs").setTabCompleter(new TabComplete());
+	Jobs.setDataFolder(getDataFolder());
 
-		try {
-			Jobs.startup();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	ConfigManager.registerJobsConfiguration(new JobsConfiguration(this));
+	ConfigManager.registerJobConfig(new JobConfig(this));
 
-		// register the listeners
-		getServer().getPluginManager().registerEvents(new JobsListener(this), this);
-		getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
+	getCommand("jobs").setExecutor(new JobsCommands());
 
-		if (McMMOlistener.CheckmcMMO())
-			getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
+	this.getCommand("jobs").setTabCompleter(new TabComplete());
 
-		if (ConfigManager.getJobsConfiguration().useBlockProtection)
-			getServer().getPluginManager().registerEvents(new PistonProtectionListener(this), this);
-
-		// register economy
-		Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
-
-		if (getServer().getPluginManager().getPlugin("CoreProtect") != null) {
-			CPPresent = true;
-			CPAPI = ((CoreProtect) getServer().getPluginManager().getPlugin("CoreProtect")).getAPI();
-		}
-
-		// all loaded properly.
-
-
-		if (ConfigManager.getJobsConfiguration().useGlobalBoostScheduler)
-			ScheduleUtil.scheduler();
-		ScheduleUtil.DateUpdater();
-		
-		String message = ChatColor.translateAlternateColorCodes('&', "&2Plugin has been enabled succesfully.");
-		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-		console.sendMessage(message);
+	try {
+	    Jobs.startup();
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
+
+	// register the listeners
+	getServer().getPluginManager().registerEvents(new JobsListener(this), this);
+	getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
+
+	if (McMMOlistener.CheckmcMMO())
+	    getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
+
+	if (ConfigManager.getJobsConfiguration().useBlockProtection)
+	    getServer().getPluginManager().registerEvents(new PistonProtectionListener(this), this);
+
+	// register economy
+	Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
+
+	if (getServer().getPluginManager().getPlugin("CoreProtect") != null) {
+	    CPPresent = true;
+	    CPAPI = ((CoreProtect) getServer().getPluginManager().getPlugin("CoreProtect")).getAPI();
+	}
+
+	// all loaded properly.
+
+	if (ConfigManager.getJobsConfiguration().useGlobalBoostScheduler)
+	    ScheduleUtil.scheduler();
+	ScheduleUtil.DateUpdater();
+
+	String message = ChatColor.translateAlternateColorCodes('&', "&2Plugin has been enabled succesfully.");
+	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	console.sendMessage(message);
+    }
 
     @Override
     public void onDisable() {

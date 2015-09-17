@@ -61,9 +61,11 @@ import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.GiveItem;
+import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.gamingmesh.jobs.stuff.Scboard;
 import com.gamingmesh.jobs.stuff.Sorting;
+import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.TranslateName;
 
 public class JobsCommands implements CommandExecutor {
@@ -364,9 +366,12 @@ public class JobsCommands implements CommandExecutor {
 		sender.sendMessage(ChatColor.RED + Language.getMessage("command.error.permission"));
 		return true;
 	    }
-	    @SuppressWarnings("deprecation")
-	    OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
+//	    @SuppressWarnings("deprecation")
+//	    OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
+
+	    OfflinePlayer offlinePlayer = OfflinePlayerList.getPlayer(args[0]);
+	    if (offlinePlayer != null)
+		jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
 	} else if (sender instanceof Player) {
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	}
@@ -1368,13 +1373,22 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 	JobsPlayer JPlayer = null;
-	if (args.length == 1)
-	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	if (args.length == 0)
-	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(sender.getName());
+	    JPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+	else if (args.length == 1 ) {
+	    if (!sender.hasPermission("jobs.commands.log.others")){
+		sender.sendMessage(Language.getMessage("command.error.permission"));
+		return true;
+	    }
+	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+	    if (JPlayer == null)
+		JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(OfflinePlayerList.getPlayer(args[0]));
+	}
 
-	if (JPlayer == null)
+	if (JPlayer == null) {
+	    sendUsage(sender, "log");
 	    return true;
+	}
 
 	List<Log> logList = JPlayer.getLog();
 
@@ -1393,15 +1407,20 @@ public class JobsCommands implements CommandExecutor {
 	unsortMap = Sorting.sortDoubleDESC(unsortMap);
 	int count = 0;
 	int max = 10;
-	sender.sendMessage("******************* " + JPlayer.getUserName() + " *******************");
+	sender.sendMessage(Language.getMessage("command.log.output.topline").replace("%playername%", JPlayer.getUserName()));
 	for (Log one : logList) {
 	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
 	    for (Entry<String, Double> oneSorted : unsortMap.entrySet()) {
 		for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
 		    if (oneMap.getKey().equalsIgnoreCase(oneSorted.getKey())) {
 			count++;
-			String msg = "&6" + count + ". &e" + one.getActionType() + ": &6" + oneMap.getValue().getItemName() + " &ecount: &6" + oneMap.getValue()
-			    .getCount() + " &emoney: &6" + oneMap.getValue().getMoney() + " &eexp: &6" + oneMap.getValue().getExp();
+			String msg = Language.getMessage("command.log.output.list")
+			    .replace("%number%", String.valueOf(count))
+			    .replace("%action%", one.getActionType())
+			    .replace("%item%", oneMap.getValue().getItemName().replace(":0", "").toLowerCase())
+			    .replace("%qty%", String.valueOf(oneMap.getValue().getCount()))
+			    .replace("%money%", String.valueOf(oneMap.getValue().getMoney()))
+			    .replace("%exp%", String.valueOf(oneMap.getValue().getExp()));
 			msg = org.bukkit.ChatColor.translateAlternateColorCodes('&', msg);
 			sender.sendMessage(msg);
 			break;
@@ -1413,7 +1432,7 @@ public class JobsCommands implements CommandExecutor {
 	    if (count > max)
 		break;
 	}
-	sender.sendMessage("***********************************************");
+	sender.sendMessage(Language.getMessage("command.log.output.bottomline"));
 
 	return true;
     }
@@ -1429,12 +1448,15 @@ public class JobsCommands implements CommandExecutor {
 	    public void run() {
 		Map<LogAmounts, Double> unsortMap = new HashMap<LogAmounts, Double>();
 
-		Collection<? extends Player> onlineP = Bukkit.getOnlinePlayers();
+		int time = TimeManage.timeInInt();
 
-		sender.sendMessage("Looking for players data");
-		for (Player OneP : onlineP) {
-
+		for (String OneP : Jobs.getJobsDAO().getLognameList(time, time)) {
 		    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(OneP);
+		    if (JPlayer == null) {
+			OfflinePlayer offp = OfflinePlayerList.getPlayer(OneP);
+			if (offp != null)
+			    JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(OfflinePlayerList.getPlayer(OneP));
+		    }
 		    if (JPlayer == null)
 			continue;
 		    List<Log> logList = JPlayer.getLog();
@@ -1444,7 +1466,7 @@ public class JobsCommands implements CommandExecutor {
 		    for (Log one : logList) {
 			HashMap<String, LogAmounts> AmountList = one.getAmountList();
 			for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
-			    oneMap.getValue().setUsername(OneP.getName());
+			    oneMap.getValue().setUsername(OneP);
 			    oneMap.getValue().setAction(one.getActionType());
 			    unsortMap.put(oneMap.getValue(), oneMap.getValue().getMoney());
 			}
@@ -1453,14 +1475,21 @@ public class JobsCommands implements CommandExecutor {
 
 		unsortMap = Sorting.sortDoubleDESCByLog(unsortMap);
 
-		int count = 0;
+		int count = 1;
 		int max = 10;
 
+		sender.sendMessage(Language.getMessage("command.glog.output.topline"));
 		for (Entry<LogAmounts, Double> one : unsortMap.entrySet()) {
 		    LogAmounts info = one.getKey();
-		    String msg = "&3" + info.getUsername() + " &e" + info.getAction() + ": &6" + (info.getItemName().toString().contains(":0") ? info.getItemName()
-			.toString().replace(":0", "") : info.getItemName()) + " &ecount: &6" + info.getCount() + " &emoney: &6" + info.getMoney() + " &eexp: &6" + info
-			    .getExp();
+
+		    String msg = Language.getMessage("command.glog.output.list")
+			.replace("%username%", one.getKey().getUsername())
+			.replace("%number%", String.valueOf(count))
+			.replace("%action%", info.getAction())
+			.replace("%item%", one.getKey().getItemName().replace(":0", "").toLowerCase())
+			.replace("%qty%", String.valueOf(one.getKey().getCount()))
+			.replace("%money%", String.valueOf(one.getKey().getMoney()))
+			.replace("%exp%", String.valueOf(one.getKey().getExp()));
 		    msg = org.bukkit.ChatColor.translateAlternateColorCodes('&', msg);
 		    sender.sendMessage(msg);
 		    count++;
@@ -1471,6 +1500,7 @@ public class JobsCommands implements CommandExecutor {
 		if (unsortMap.size() == 0) {
 		    sender.sendMessage("No data found");
 		}
+		sender.sendMessage(Language.getMessage("command.glog.output.bottomline"));
 
 		return;
 	    }

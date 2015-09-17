@@ -69,6 +69,8 @@ public class JobsConfiguration {
     protected boolean modifyChat;
     protected int economyBatchDelay;
     protected boolean saveOnDisconnect;
+    public boolean LocalOfflinePlayersData;
+    public boolean LoggingUse;
     public boolean EconomyLimitUse, EconomyExpLimitUse, PayForRenaming, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
 	EnableAnounceMessage, useBlockPiston, useSilkTouchProtection, UseCustomNames, EconomyMoneyStop,
@@ -368,6 +370,16 @@ public class JobsConfiguration {
 	    "Player data is always periodically auto-saved and autosaved during a clean shutdown.",
 	    "Only enable this if you have a multi-server setup, or have a really good reason for enabling this.", "Turning this on will decrease database performance.");
 	saveOnDisconnect = getBoolean("save-on-disconnect", false, config, writer);
+
+	writer.addComment("Optimizations.UseLocalOfflinePlayersData", "With this set to true, offline player data will be taken from local player data files",
+	    "This will eliminate small lag spikes when request is being send to mojangs servers for offline players data",
+	    "Theroticali this should work without issues, but if you havving some, just disable",
+	    "But then you can feal some small (100-200ms) lag spikes while performings some jobs commands");
+	LocalOfflinePlayersData = getBoolean("Optimizations.UseLocalOfflinePlayersData", true, config, writer);
+
+	writer.addComment("Logging.Use", "With this set to true all players jobs actions will be logged to database for easy to see statistics",
+	    "This is still in development and in feature it will expand");
+	LoggingUse = getBoolean("Logging.Use", false, config, writer);
 
 	writer.addComment("broadcast.on-skill-up.use", "Do all players get a message when somone goes up a skill level?");
 	isBroadcastingSkillups = getBoolean("broadcast.on-skill-up.use", false, config, writer);
@@ -1289,6 +1301,20 @@ public class JobsConfiguration {
 	    GetConfigString("command.gtop.output.next", "&2|&e Next Page >>>>", writer, conf, true);
 	    GetConfigString("command.gtop.output.show", "&2Show from &e[from] &2until &e[until] &2global top list", writer, conf, true);
 
+	    GetConfigString("command.log.help.info", "Shows statistics.", writer, conf, true);
+	    GetConfigString("command.log.help.args", "[playername]", writer, conf, true);
+	    GetConfigString("command.log.output.topline", "&7************************* &6%playername% &7*************************", writer, conf, true);
+	    GetConfigString("command.log.output.list", "&7* &6%number%. &3%action%: &6%item% &eqty: %qty% &6money: %money% &eexp: %exp%", writer, conf, true);
+	    GetConfigString("command.log.output.bottomline", "&7***********************************************************", writer, conf, true);
+	    GetConfigString("command.log.output.prev", "&e<<<<< Prev page &2|", writer, conf, true);
+	    GetConfigString("command.log.output.next", "&2|&e Next Page >>>>", writer, conf, true);
+
+	    GetConfigString("command.glog.help.info", "Shows global statistics.", writer, conf, true);
+	    GetConfigString("command.glog.help.args", "", writer, conf, true);
+	    GetConfigString("command.glog.output.topline", "&7*********************** &6Global statistics &7***********************", writer, conf, true);
+	    GetConfigString("command.glog.output.list", "&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6money: %money% &eexp: %exp%", writer, conf, true);
+	    GetConfigString("command.glog.output.bottomline", "&7**************************************************************", writer, conf, true);
+	    
 	    GetConfigString("command.transfer.help.info", "Transfer a player's job from an old job to a new job.", writer, conf, true);
 	    GetConfigString("command.transfer.help.args", "[playername] [oldjob] [newjob]", writer, conf, true);
 	    GetConfigString("command.transfer.output.target", "You have been transferred from %oldjobname% to %newjobname%.", writer, conf, true);
