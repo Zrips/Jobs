@@ -1,4 +1,4 @@
-package Signs;
+package com.gamingmesh.jobs.Signs;
 
 public class Sign {
 

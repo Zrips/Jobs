@@ -52,7 +52,7 @@ public class JobsPlayer {
 
     // save lock
     public final Object saveLock = new Object();
-    
+
     // log
     private List<Log> logList = new ArrayList<Log>();
 
@@ -87,11 +87,15 @@ public class JobsPlayer {
 	}
 	return jPlayer;
     }
-    
+
+    public static void loadLogFromDao(JobsPlayer jPlayer) {
+	Jobs.getJobsDAO().loadLog(jPlayer);
+    }
+
     public List<Log> getLog() {
 	return this.logList;
     }
-    
+
     /**
      * Get the player
      * @return the player
@@ -473,6 +477,7 @@ public class JobsPlayer {
 	synchronized (saveLock) {
 	    if (!isSaved()) {
 		dao.save(this);
+		dao.saveLog(this);
 		setSaved(true);
 	    }
 	}

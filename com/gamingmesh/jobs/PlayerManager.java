@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -36,6 +37,7 @@ import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
+import com.gamingmesh.jobs.container.JobConditions;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.dao.JobsDAO;
@@ -45,8 +47,8 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
-    //	private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
-    private Map<String, JobsPlayer> players = new HashMap<String, JobsPlayer>();
+    private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
+    //private Map<String, JobsPlayer> players = new HashMap<String, JobsPlayer>();
 
     /**
      * Handles join of new player
@@ -57,6 +59,7 @@ public class PlayerManager {
 	    JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
 	    if (jPlayer == null) {
 		jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
+		JobsPlayer.loadLogFromDao(jPlayer);
 		players.put(player.getName().toLowerCase(), jPlayer);
 	    }
 	    jPlayer.onConnect();
@@ -65,6 +68,7 @@ public class PlayerManager {
 	    return;
 	}
     }
+
     /**
      * Handles player quit
      * @param playername
@@ -175,8 +179,8 @@ public class PlayerManager {
 	    Jobs.getJobsDAO().joinJob(jPlayer, job);
 	    PerformCommands.PerformCommandsOnJoin(jPlayer, job);
 	    Jobs.takeSlot(job);
-	    Signs.SignUtil.SignUpdate(job.getName());
-	    Signs.SignUtil.SignUpdate("gtoplist");
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
 	    job.updateTotalPlayers();
 	}
     }
@@ -206,8 +210,8 @@ public class PlayerManager {
 	    PerformCommands.PerformCommandsOnLeave(jPlayer, job);
 	    Jobs.leaveSlot(job);
 
-	    Signs.SignUtil.SignUpdate(job.getName());
-	    Signs.SignUtil.SignUpdate("gtoplist");
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
 	    job.updateTotalPlayers();
 	}
     }
@@ -223,8 +227,8 @@ public class PlayerManager {
 		PerformCommands.PerformCommandsOnLeave(jPlayer, job.getJob());
 		Jobs.leaveSlot(job.getJob());
 
-		Signs.SignUtil.SignUpdate(job.getJob().getName());
-		Signs.SignUtil.SignUpdate("gtoplist");
+		com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getJob().getName());
+		com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
 		job.getJob().updateTotalPlayers();
 	    }
 
@@ -263,8 +267,8 @@ public class PlayerManager {
 	    jPlayer.promoteJob(job, levels, jPlayer);
 	    jPlayer.save(Jobs.getJobsDAO());
 
-	    Signs.SignUtil.SignUpdate(job.getName());
-	    Signs.SignUtil.SignUpdate("gtoplist");
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
 	}
     }
 
@@ -278,8 +282,8 @@ public class PlayerManager {
 	synchronized (jPlayer.saveLock) {
 	    jPlayer.demoteJob(job, levels);
 	    jPlayer.save(Jobs.getJobsDAO());
-	    Signs.SignUtil.SignUpdate(job.getName());
-	    Signs.SignUtil.SignUpdate("gtoplist");
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
 	}
     }
 
@@ -299,8 +303,8 @@ public class PlayerManager {
 		performLevelUp(jPlayer, job, oldLevel);
 
 	    jPlayer.save(Jobs.getJobsDAO());
-	    Signs.SignUtil.SignUpdate(job.getName());
-	    Signs.SignUtil.SignUpdate("gtoplist");
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
 	}
     }
 
@@ -318,8 +322,8 @@ public class PlayerManager {
 	    prog.addExperience(-experience);
 
 	    jPlayer.save(Jobs.getJobsDAO());
-	    Signs.SignUtil.SignUpdate(job.getName());
-	    Signs.SignUtil.SignUpdate("gtoplist");
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
 	}
     }
 
@@ -414,8 +418,58 @@ public class PlayerManager {
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
-	Signs.SignUtil.SignUpdate(job.getName());
-	Signs.SignUtil.SignUpdate("gtoplist");
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+    }
+
+    /**
+     * Performs command on level up
+     * @param jPlayer
+     * @param job
+     * @param oldLevel
+     */
+    public void CheckConditions(JobsPlayer jPlayer, Job job) {
+	Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
+	JobProgression prog = jPlayer.getJobProgression(job);
+	if (prog == null)
+	    return;
+	for (JobConditions Condition : job.getConditions()) {
+	    boolean ok = true;
+	    for (String oneReq : Condition.getRequires()) {
+		if (oneReq.toLowerCase().contains("j:")) {
+		    String jobName = oneReq.toLowerCase().replace("j:", "").split("-")[0];
+		    int jobLevel = Integer.valueOf(oneReq.toLowerCase().replace("j:", "").split("-")[1]);
+		    boolean found = false;
+		    for (JobProgression oneJob : jPlayer.getJobProgression()) {
+			if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
+			    found = true;
+			if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() != jobLevel) {
+			    ok = false;
+			    break;
+			}
+		    }
+		    if (found == false)
+			ok = false;
+		}
+		if (ok = false)
+		    break;
+
+		if (oneReq.toLowerCase().contains("p:")) {
+		    if (!player.hasPermission(oneReq.replace(":p", ""))) {
+			ok = false;
+			break;
+		    }
+		}
+	    }
+
+	    if (ok) {
+		for (String one : Condition.getPerform()) {
+		    if (one.toLowerCase().contains("c:")) {
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("c:", "").replace("[name]", jPlayer.getUserName()));
+		    }
+		}
+	    }
+	}
     }
 
     /**

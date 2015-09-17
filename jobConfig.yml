@@ -291,6 +291,19 @@ Jobs:
         value: true
         # Permission granted when reaching level 10
         level: 10
+    # Permissions granted when perticular conditions are meet
+    conditions:
+      # Condition mane, irelevent, you can write anything in here
+      first:
+        requires:
+        # j marks that player should have particular jobs level and higher
+        - j:Miner-50
+        - j:Digger-50
+        # p marks permission requirement
+        - p:essentials.notnoob
+        perform:
+        # p marks permission, player will get if given true value, if used false, permission will be taken
+        - p:essentials.fly-true        
     # Commands executed when player reached level
     commands:
       # command name, just to have better idea what this do

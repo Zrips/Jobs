@@ -66,4 +66,5 @@ public class VaultEconomy implements Economy {
 	public String format(double money) {
 		return vault.format(money);
 	}
+	
 }

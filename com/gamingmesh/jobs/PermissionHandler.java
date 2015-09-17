@@ -20,6 +20,7 @@ package com.gamingmesh.jobs;
 
 import java.util.HashMap;
 import java.util.List;
+
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -29,6 +30,7 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobConditions;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -83,6 +85,62 @@ public class PermissionHandler {
 			    }
 			}
 		    }
+
+		    for (JobConditions Condition : job.getConditions()) {
+			boolean ok = true;
+			for (String oneReq : Condition.getRequires()) {
+			    if (oneReq.toLowerCase().contains("j:")) {
+				String jobName = oneReq.toLowerCase().replace("j:", "").split("-")[0];
+				int jobLevel = Integer.valueOf(oneReq.toLowerCase().replace("j:", "").split("-")[1]);
+				boolean found = false;
+				for (JobProgression oneJob : jPlayer.getJobProgression()) {
+				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
+					found = true;
+				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
+					ok = false;
+					break;
+				    }
+				}
+				if (found == false)
+				    ok = false;
+			    }
+			    if (ok = false)
+				break;
+
+			    if (oneReq.toLowerCase().contains("p:")) {
+				if (!player.hasPermission(oneReq.replace(":p", ""))) {
+				    ok = false;
+				    break;
+				}
+			    }
+			}
+
+			if (!ok)
+			    continue;
+
+			for (String one : Condition.getPerform()) {
+			    if (!one.toLowerCase().contains("p:"))
+				continue;
+
+			    String perm = one.toLowerCase().replace("p:", "").split("-")[0];
+			    boolean node = Boolean.getBoolean(one.toLowerCase().replace("p:", "").split("-")[1]);
+
+			    if (node) {
+				permissions.put(perm, true);
+			    } else {
+				/*
+				 * If the key exists, don't put a false node in
+				 * This is in case we already have a true node there
+				 */
+				if (!permissions.containsKey(perm)) {
+				    permissions.put(perm, false);
+				}
+			    }
+
+			}
+
+		    }
+
 		}
 	    } else {
 		for (JobProgression prog : progression) {
@@ -97,6 +155,59 @@ public class PermissionHandler {
 			    } else {
 				if (!permissions.containsKey(perm.getNode())) {
 				    permissions.put(perm.getNode(), false);
+				}
+			    }
+			}
+		    }
+
+		    for (JobConditions Condition : prog.getJob().getConditions()) {
+			boolean ok = true;
+			for (String oneReq : Condition.getRequires()) {
+			    if (oneReq.toLowerCase().contains("j:")) {
+				String jobName = oneReq.toLowerCase().replace("j:", "").split("-")[0];
+				int jobLevel = Integer.valueOf(oneReq.toLowerCase().replace("j:", "").split("-")[1]);
+				boolean found = false;
+				for (JobProgression oneJob : jPlayer.getJobProgression()) {
+				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
+					found = true;
+				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
+					ok = false;
+					break;
+				    }
+				}
+				if (found == false)
+				    ok = false;
+
+			    }
+			    if (ok == false)
+				break;
+
+			    if (oneReq.toLowerCase().contains("p:")) {
+				if (!player.hasPermission(oneReq.replace("p:", ""))) {
+				    ok = false;
+				    break;
+				}
+			    }
+			}
+
+			if (!ok)
+			    continue;
+			for (String one : Condition.getPerform()) {
+			    if (!one.toLowerCase().contains("p:"))
+				continue;
+			    String perm = one.toLowerCase().replace("p:", "").split("-")[0];
+			    String nodeString = one.toLowerCase().replace("p:", "").split("-")[1];
+			    boolean node = nodeString.equalsIgnoreCase("true") ? true : false;
+
+			    if (node) {
+				permissions.put(perm, true);
+			    } else {
+				/*
+				 * If the key exists, don't put a false node in
+				 * This is in case we already have a true node there
+				 */
+				if (!permissions.containsKey(perm)) {
+				    permissions.put(perm, false);
 				}
 			    }
 			}

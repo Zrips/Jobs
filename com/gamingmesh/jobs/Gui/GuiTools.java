@@ -1,4 +1,4 @@
-package Gui;
+package com.gamingmesh.jobs.Gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;

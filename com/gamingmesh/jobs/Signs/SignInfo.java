@@ -1,4 +1,4 @@
-package Signs;
+package com.gamingmesh.jobs.Signs;
 
 import java.util.ArrayList;
 import java.util.List;

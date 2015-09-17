@@ -31,244 +31,289 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public class JobsDAOMySQL extends JobsDAO {
-	private String database;
+    private String database;
 
-	private JobsDAOMySQL(String hostname, String database, String username, String password, String prefix) {
-		super("com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database, username, password, prefix);
-		this.database = database;
+    private JobsDAOMySQL(String hostname, String database, String username, String password, String prefix) {
+	super("com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database, username, password, prefix);
+	this.database = database;
+    }
+
+    public static JobsDAOMySQL initialize(String hostname, String database, String username, String password, String prefix) {
+	JobsDAOMySQL dao = new JobsDAOMySQL(hostname, database, username, password, prefix);
+	try {
+	    dao.setUp();
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	}
+	return dao;
+    }
 
-	public static JobsDAOMySQL initialize(String hostname, String database, String username, String password, String prefix) {
-		JobsDAOMySQL dao = new JobsDAOMySQL(hostname, database, username, password, prefix);
+    @Override
+    protected synchronized void setupConfig() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+	PreparedStatement prest = null;
+	int rows = 0;
+	try {
+	    // Check for config table
+	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
+	    prest.setString(1, database);
+	    prest.setString(2, getPrefix() + "config");
+	    ResultSet res = prest.executeQuery();
+	    if (res.next()) {
+		rows = res.getInt(1);
+	    }
+	} finally {
+	    if (prest != null) {
 		try {
-			dao.setUp();
+		    prest.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
 		}
-		return dao;
+	    }
 	}
 
-	@Override
-	protected synchronized void setupConfig() throws SQLException {
-		JobsConnection conn = getConnection();
-		if (conn == null) {
-			Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
-			return;
+	if (rows == 0) {
+	    PreparedStatement insert = null;
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix() + "config` (`key` varchar(50) NOT NULL PRIMARY KEY, `value` varchar(100) NOT NULL);");
+
+		insert = conn.prepareStatement("INSERT INTO `" + getPrefix() + "config` (`key`, `value`) VALUES (?, ?);");
+		insert.setString(1, "version");
+		insert.setString(2, "1");
+		insert.execute();
+	    } finally {
+		if (insert != null) {
+		    try {
+			insert.close();
+		    } catch (SQLException e) {
+		    }
 		}
-		PreparedStatement prest = null;
-		int rows = 0;
+	    }
+	}
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    protected synchronized void checkUpdate1() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+	PreparedStatement prest = null;
+	int rows = 0;
+	try {
+	    // Check for jobs table
+	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
+	    prest.setString(1, database);
+	    prest.setString(2, getPrefix() + "jobs");
+	    ResultSet res = prest.executeQuery();
+	    if (res.next()) {
+		rows = res.getInt(1);
+	    }
+	} finally {
+	    if (prest != null) {
 		try {
-			// Check for config table
-			prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
-			prest.setString(1, database);
-			prest.setString(2, getPrefix() + "config");
-			ResultSet res = prest.executeQuery();
-			if (res.next()) {
-				rows = res.getInt(1);
-			}
-		} finally {
-			if (prest != null) {
-				try {
-					prest.close();
-				} catch (SQLException e) {}
-			}
+		    prest.close();
+		} catch (SQLException e) {
 		}
-
-		if (rows == 0) {
-			PreparedStatement insert = null;
-			try {
-				executeSQL("CREATE TABLE `" + getPrefix() + "config` (`key` varchar(50) NOT NULL PRIMARY KEY, `value` varchar(100) NOT NULL);");
-
-				insert = conn.prepareStatement("INSERT INTO `" + getPrefix() + "config` (`key`, `value`) VALUES (?, ?);");
-				insert.setString(1, "version");
-				insert.setString(2, "1");
-				insert.execute();
-			} finally {
-				if (insert != null) {
-					try {
-						insert.close();
-					} catch (SQLException e) {}
-				}
-			}
-		}
+	    }
 	}
 
-	@SuppressWarnings("deprecation")
-	@Override
-	protected synchronized void checkUpdate1() throws SQLException {
-		JobsConnection conn = getConnection();
-		if (conn == null) {
-			Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
-			return;
-		}
-		PreparedStatement prest = null;
-		int rows = 0;
+	PreparedStatement pst1 = null;
+	PreparedStatement pst2 = null;
+	try {
+	    if (rows == 0) {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "jobs` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `job` varchar(20), `experience` int, `level` int);");
+	    } else {
+		Jobs.getPluginLogger().info("Converting existing usernames to Mojang UUIDs.  This could take a long time!");
+
 		try {
-			// Check for jobs table
-			prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
-			prest.setString(1, database);
-			prest.setString(2, getPrefix() + "jobs");
-			ResultSet res = prest.executeQuery();
-			if (res.next()) {
-				rows = res.getInt(1);
-			}
+		    // Check for jobs table id column
+		    // This is extra check to be sure there is no column by this name already
+		    int idrows = 0;
+		    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?;");
+		    prest.setString(1, database);
+		    prest.setString(2, getPrefix() + "jobs");
+		    prest.setString(3, "id");
+		    ResultSet res = prest.executeQuery();
+		    if (res.next()) {
+			idrows = res.getInt(1);
+		    }
+		    if (idrows == 0)
+			executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;");
 		} finally {
-			if (prest != null) {
-				try {
-					prest.close();
-				} catch (SQLException e) {}
-			}
+
 		}
 
-		PreparedStatement pst1 = null;
-		PreparedStatement pst2 = null;
 		try {
-			if (rows == 0) {
-				executeSQL("CREATE TABLE `" + getPrefix() + "jobs` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `job` varchar(20), `experience` int, `level` int);");
-			} else {
-				Jobs.getPluginLogger().info("Converting existing usernames to Mojang UUIDs.  This could take a long time!");
-
-				try {
-					// Check for jobs table id column
-					// This is extra check to be sure there is no column by this name already
-					int idrows = 0;
-					prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?;");
-					prest.setString(1, database);
-					prest.setString(2, getPrefix() + "jobs");
-					prest.setString(3, "id");
-					ResultSet res = prest.executeQuery();
-					if (res.next()) {
-						idrows = res.getInt(1);
-					}
-					if (idrows == 0)
-						executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;");
-				} finally {
-
-				}
-
-				try {
-					// Check for jobs table id column
-					// This is extra check to be sure there is no column by this name already
-					int uuidrows = 0;
-					prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?;");
-					prest.setString(1, database);
-					prest.setString(2, getPrefix() + "jobs");
-					prest.setString(3, "player_uuid");
-					ResultSet res = prest.executeQuery();
-					if (res.next()) {
-						uuidrows = res.getInt(1);
-					}
-					if (uuidrows == 0)
-						executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `player_uuid` binary(16) DEFAULT NULL AFTER `id`;");
-				} finally {
-
-				}
-
-				pst1 = conn.prepareStatement("SELECT DISTINCT `username` FROM `" + getPrefix() + "jobs` WHERE `player_uuid` IS NULL;");
-				ResultSet rs = pst1.executeQuery();
-				ArrayList<String> usernames = new ArrayList<String>();
-				while (rs.next()) {
-					usernames.add(rs.getString(1));
-				}
-
-				pst2 = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `player_uuid` = ? WHERE `username` = ?;");
-
-				int i = 0;
-				int y = 0;
-				for (String names : usernames) {
-					i++;
-					y++;
-					if (i >= 10) {
-						Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "" + y + " of " + usernames.size());
-						i = 0;
-					}
-					pst2.setBytes(1, UUIDUtil.toBytes(UUID.fromString(Bukkit.getOfflinePlayer(names).getUniqueId().toString())));
-					pst2.setString(2, names);
-					pst2.execute();
-				}
-
-				Jobs.getPluginLogger().info("Mojang UUID conversion complete!");
-			}
+		    // Check for jobs table id column
+		    // This is extra check to be sure there is no column by this name already
+		    int uuidrows = 0;
+		    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?;");
+		    prest.setString(1, database);
+		    prest.setString(2, getPrefix() + "jobs");
+		    prest.setString(3, "player_uuid");
+		    ResultSet res = prest.executeQuery();
+		    if (res.next()) {
+			uuidrows = res.getInt(1);
+		    }
+		    if (uuidrows == 0)
+			executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `player_uuid` binary(16) DEFAULT NULL AFTER `id`;");
 		} finally {
-			if (pst1 != null) {
-				try {
-					pst1.close();
-				} catch (SQLException e) {}
-			}
-			if (pst2 != null) {
-				try {
-					pst2.close();
-				} catch (SQLException e) {}
-			}
+
 		}
 
-		checkUpdate2();
+		pst1 = conn.prepareStatement("SELECT DISTINCT `username` FROM `" + getPrefix() + "jobs` WHERE `player_uuid` IS NULL;");
+		ResultSet rs = pst1.executeQuery();
+		ArrayList<String> usernames = new ArrayList<String>();
+		while (rs.next()) {
+		    usernames.add(rs.getString(1));
+		}
+
+		pst2 = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `player_uuid` = ? WHERE `username` = ?;");
+
+		int i = 0;
+		int y = 0;
+		for (String names : usernames) {
+		    i++;
+		    y++;
+		    if (i >= 10) {
+			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "" + y + " of " + usernames.size());
+			i = 0;
+		    }
+		    pst2.setBytes(1, UUIDUtil.toBytes(UUID.fromString(Bukkit.getOfflinePlayer(names).getUniqueId().toString())));
+		    pst2.setString(2, names);
+		    pst2.execute();
+		}
+
+		Jobs.getPluginLogger().info("Mojang UUID conversion complete!");
+	    }
+	} finally {
+	    if (pst1 != null) {
+		try {
+		    pst1.close();
+		} catch (SQLException e) {
+		}
+	    }
+	    if (pst2 != null) {
+		try {
+		    pst2.close();
+		} catch (SQLException e) {
+		}
+	    }
 	}
 
-	@Override
-	protected synchronized void checkUpdate2() throws SQLException {
-		JobsConnection conn = getConnection();
-		if (conn == null) {
-			Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
-			return;
-		}
-		PreparedStatement prest = null;
-		int rows = 0;
-		try {
-			// Check for jobs table
-			prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?;");
-			prest.setString(1, database);
-			prest.setString(2, getPrefix() + "jobs");
-			prest.setString(3, "username");
-			ResultSet res = prest.executeQuery();
-			if (res.next()) {
-				rows = res.getInt(1);
-			}
-		} finally {
-			if (prest != null) {
-				try {
-					prest.close();
-				} catch (SQLException e) {}
-			}
-		}
+	checkUpdate2();
+    }
 
+    @Override
+    protected synchronized void checkUpdate2() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+	PreparedStatement prest = null;
+	int rows = 0;
+	try {
+	    // Check for jobs table
+	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?;");
+	    prest.setString(1, database);
+	    prest.setString(2, getPrefix() + "jobs");
+	    prest.setString(3, "username");
+	    ResultSet res = prest.executeQuery();
+	    if (res.next()) {
+		rows = res.getInt(1);
+	    }
+	} finally {
+	    if (prest != null) {
 		try {
-			if (rows == 0)
-				executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `username` varchar(20);");
-		} finally {
+		    prest.close();
+		} catch (SQLException e) {
 		}
-		checkUpdate4();
+	    }
 	}
 
-	@Override
-	protected synchronized void checkUpdate4() throws SQLException {
-		JobsConnection conn = getConnection();
-		if (conn == null) {
-			Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
-			return;
-		}
-		PreparedStatement prest = null;
-		int rows = 0;
-		try {
-			// Check for jobs table
-			prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
-			prest.setString(1, database);
-			prest.setString(2, getPrefix() + "archive");
-			ResultSet res = prest.executeQuery();
-			if (res.next()) {
-				rows = res.getInt(1);
-			}
-		} finally {
-			if (prest != null) {
-				try {
-					prest.close();
-				} catch (SQLException e) {}
-			}
-		}
-
-		try {
-			if (rows == 0)
-				executeSQL("CREATE TABLE `" + getPrefix() + "archive` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
-		} finally {}
+	try {
+	    if (rows == 0)
+		executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `username` varchar(20);");
+	} finally {
 	}
+	checkUpdate4();
+    }
+
+    @Override
+    protected synchronized void checkUpdate4() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+	PreparedStatement prest = null;
+	int rows = 0;
+	try {
+	    // Check for jobs table
+	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
+	    prest.setString(1, database);
+	    prest.setString(2, getPrefix() + "archive");
+	    ResultSet res = prest.executeQuery();
+	    if (res.next()) {
+		rows = res.getInt(1);
+	    }
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	try {
+	    if (rows == 0)
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "archive` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+	} finally {
+	}
+    }
+
+    @Override
+    protected synchronized void checkUpdate5() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+	PreparedStatement prest = null;
+	int rows = 0;
+	try {
+	    // Check for jobs table
+	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
+	    prest.setString(1, database);
+	    prest.setString(2, getPrefix() + "log");
+	    ResultSet res = prest.executeQuery();
+	    if (res.next()) {
+		rows = res.getInt(1);
+	    }
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	try {
+	    if (rows == 0)
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "log` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(20), `count` int, `money` double, `exp` double);");
+	} finally {
+	}
+    }
 }

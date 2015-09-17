@@ -46,12 +46,11 @@ import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
+import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
-
-import Signs.SignUtil;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
@@ -277,7 +276,7 @@ public class JobsListener implements Listener {
 	
 	Location loc = block.getLocation();
 
-	for (Signs.Sign one : SignUtil.Signs.GetAllSigns()) {
+	for (com.gamingmesh.jobs.Signs.Sign one : SignUtil.Signs.GetAllSigns()) {
 
 	    if (one.GetX() != loc.getBlockX())
 		continue;
@@ -353,13 +352,13 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	Signs.Sign signInfo = new Signs.Sign();
+	com.gamingmesh.jobs.Signs.Sign signInfo = new com.gamingmesh.jobs.Signs.Sign();
 
 	Location loc = sign.getLocation();
 
 	int category = 1;
-	if (Signs.SignUtil.Signs.GetAllSigns().size() > 0)
-	    category = Signs.SignUtil.Signs.GetAllSigns().get(Signs.SignUtil.Signs.GetAllSigns().size() - 1).GetCategory() + 1;
+	if (com.gamingmesh.jobs.Signs.SignUtil.Signs.GetAllSigns().size() > 0)
+	    category = com.gamingmesh.jobs.Signs.SignUtil.Signs.GetAllSigns().get(com.gamingmesh.jobs.Signs.SignUtil.Signs.GetAllSigns().size() - 1).GetCategory() + 1;
 	signInfo.setNumber(Number);
 	signInfo.setWorld(loc.getWorld().getName());
 	signInfo.setX(loc.getX());
@@ -372,16 +371,16 @@ public class JobsListener implements Listener {
 	    signInfo.setJobName("gtoplist");
 	signInfo.setSpecial(special);
 
-	Signs.SignUtil.Signs.addSign(signInfo);
-	Signs.SignUtil.saveSigns();
+	com.gamingmesh.jobs.Signs.SignUtil.Signs.addSign(signInfo);
+	com.gamingmesh.jobs.Signs.SignUtil.saveSigns();
 	event.setCancelled(true);
 
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(JobsPlugin.instance, new Runnable() {
 	    public void run() {
 		if (!signtype.equalsIgnoreCase("gtoplist"))
-		    Signs.SignUtil.SignUpdate(job.getName());
+		    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
 		else
-		    Signs.SignUtil.SignUpdate("gtoplist");
+		    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
 		return;
 	    }
 	}, 1L);

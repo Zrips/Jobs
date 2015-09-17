@@ -42,11 +42,11 @@ import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.config.YmlMaker;
 
 public class JobsPlugin extends JavaPlugin {
-	public static Plugin instance;
-	public static CoreProtectAPI CPAPI;
-	public static boolean CPPresent = false;
+    public static Plugin instance;
+    public static CoreProtectAPI CPAPI;
+    public static boolean CPPresent = false;
 
-	@Override
+    @Override
 	public void onEnable() {
 		instance = this;
 		YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
@@ -100,17 +100,18 @@ public class JobsPlugin extends JavaPlugin {
 
 		if (ConfigManager.getJobsConfiguration().useGlobalBoostScheduler)
 			ScheduleUtil.scheduler();
+		ScheduleUtil.DateUpdater();
 		
 		String message = ChatColor.translateAlternateColorCodes('&', "&2Plugin has been enabled succesfully.");
 		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 		console.sendMessage(message);
 	}
 
-	@Override
-	public void onDisable() {
-		Jobs.shutdown();
-		String message = ChatColor.translateAlternateColorCodes('&', "&2Plugin has been disabled succesfully.");
-		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-		console.sendMessage(message);
-	}
+    @Override
+    public void onDisable() {
+	Jobs.shutdown();
+	String message = ChatColor.translateAlternateColorCodes('&', "&2Plugin has been disabled succesfully.");
+	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	console.sendMessage(message);
+    }
 }

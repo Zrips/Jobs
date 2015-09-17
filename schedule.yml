@@ -5,6 +5,8 @@
 # Jobs can be any of your settup job or use All to give for all jobs at once
 # BroadcastOnStart or BroadcastOnStop - set it false to disable message when boost starts/stops
 # MessageOnStart or MessageOnStop - optional messages, if not given, then message from locale file will be shown
+# BroadcastInterval - how often in minutes to broadcast message about money/exp boost for jobs
+# BroadcastMessage - message to show every x minutes
 
 Boost:
   NightBoost:
@@ -29,6 +31,11 @@ Boost:
     - '&e* Boost time for jobs have beed stoped'
     - '&e* All rates reseted to original ones'
     - '&e***********************************************'
+    BroadcastInterval: 15
+    BroadcastMessage:
+    - '&e******************************************************'
+    - '&e* 2x boost time for all jobs is activated until [until]  *'
+    - '&e******************************************************'
   ShortMoneyBoost:
     Enabled: false
     From: '07:00:00'
@@ -53,3 +60,9 @@ Boost:
     - '&e* Boost time for Miner and Woodcutter have beed stoped'
     - '&e* Money rates reseted to original ones'
     - '&e***********************************************'
+    BroadcastInterval: 15
+    BroadcastMessage:
+    - '&e******************************************************'
+    - '&e* 2x money boost time for Miner and Woodcutter jobs'
+    - '&e* Is activated until [until]'
+    - '&e******************************************************'

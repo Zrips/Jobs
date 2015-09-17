@@ -16,22 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.gamingmesh.jobs.economy;
+package com.gamingmesh.jobs.container;
 
-import org.bukkit.OfflinePlayer;
+import java.util.List;
 
-public interface Economy {
-    public boolean depositPlayer(OfflinePlayer offlinePlayer, double money);
+public class JobConditions {
+    private String node;
+    private List<String> requires;
+    private List<String> perform;
 
-    public boolean withdrawPlayer(OfflinePlayer offlinePlayer, double money);
+    public JobConditions(String node, List<String> requires, List<String> perform) {
+	this.node = node;
+	this.requires = requires;
+	this.perform = perform;
+    }
 
-    public String format(double money);
+    public String getNode() {
+	return node;
+    }
 
-    boolean hasMoney(OfflinePlayer offlinePlayer, double money);
+    public List<String> getRequires() {
+	return requires;
+    }
 
-    boolean hasMoney(String PlayerName, double money);
-
-    boolean withdrawPlayer(String PlayerName, double money);
-
-    boolean depositPlayer(String PlayerName, double money);
+    public List<String> getPerform() {
+	return perform;
+    }
 }

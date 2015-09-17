@@ -141,8 +141,8 @@ public class BufferedEconomy {
 		    if (!Jobs.actionbartoggle.containsKey(ServerTaxesAccountname) && ConfigManager.getJobsConfiguration().JobsToggleEnabled)
 			Jobs.actionbartoggle.put(ServerTaxesAccountname, true);
 		    if (Jobs.actionbartoggle.containsKey(ServerTaxesAccountname) && Jobs.actionbartoggle.get(ServerTaxesAccountname)) {
-			ActionBar.send((Player) ServerTaxesAccount, Language.getMessage("message.taxes").replace("[amount]", String.valueOf((int) (TotalAmount * 100)
-			    / 100.0)));
+			ActionBar.send(Bukkit.getPlayer(ServerAccountname), Language.getMessage("message.taxes").replace("[amount]", String.valueOf((int) (TotalAmount
+			    * 100) / 100.0)));
 		    }
 		}
 	    }

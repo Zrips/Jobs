@@ -24,7 +24,12 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -39,6 +44,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Convert;
@@ -47,13 +53,17 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.Log;
+import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.GiveItem;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.gamingmesh.jobs.stuff.Scboard;
+import com.gamingmesh.jobs.stuff.Sorting;
 import com.gamingmesh.jobs.stuff.TranslateName;
 
 public class JobsCommands implements CommandExecutor {
@@ -1014,9 +1024,9 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 	if (!args[0].equalsIgnoreCase("gtoplist"))
-	    Signs.SignUtil.SignUpdate(oldjob.getName());
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(oldjob.getName());
 	else
-	    Signs.SignUtil.SignUpdate("gtoplist");
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
 
 	return true;
     }
@@ -1347,37 +1357,126 @@ public class JobsCommands implements CommandExecutor {
 	return true;
     }
 
-//    @JobCommand
-//    public boolean log(CommandSender sender, String[] args) {
-//	if (args.length != 1) {
-//	    sendUsage(sender, "log");
-//	    return true;
-//	}
-//
-//	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-//
-//	if (JPlayer == null)
-//	    return true;
-//
-//	List<Log> logList = JPlayer.getLog();
-//
-//	if (logList.size() == 0)
-//	    return true;
-//
-//	for (Log one : logList) {
-//
-//	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
-//
-//	    for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
-//		String msg = "&e" + one.getActionType().getName() + ": &6" + oneMap.getValue().getItemName() + " &ecount: &6" + oneMap.getValue().getCount()
-//		    + " &emoney: &6" + oneMap.getValue().getMoney() + " &eexp: &6" + oneMap.getValue().getExp();
-//		msg = org.bukkit.ChatColor.translateAlternateColorCodes('&', msg);
-//		sender.sendMessage(msg);
-//	    }
-//	}
-//
-//	return true;
-//    }
+    @JobCommand
+    public boolean log(CommandSender sender, String[] args) {
+
+	if (!(sender instanceof Player) && args.length != 1)
+	    return false;
+
+	if (args.length != 1 && args.length != 0) {
+	    sendUsage(sender, "log");
+	    return true;
+	}
+	JobsPlayer JPlayer = null;
+	if (args.length == 1)
+	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+	if (args.length == 0)
+	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(sender.getName());
+
+	if (JPlayer == null)
+	    return true;
+
+	List<Log> logList = JPlayer.getLog();
+
+	if (logList.size() == 0)
+	    return true;
+
+	Map<String, Double> unsortMap = new HashMap<String, Double>();
+
+	for (Log one : logList) {
+	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
+	    for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
+		unsortMap.put(oneMap.getKey(), oneMap.getValue().getMoney());
+	    }
+	}
+
+	unsortMap = Sorting.sortDoubleDESC(unsortMap);
+	int count = 0;
+	int max = 10;
+	sender.sendMessage("******************* " + JPlayer.getUserName() + " *******************");
+	for (Log one : logList) {
+	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
+	    for (Entry<String, Double> oneSorted : unsortMap.entrySet()) {
+		for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
+		    if (oneMap.getKey().equalsIgnoreCase(oneSorted.getKey())) {
+			count++;
+			String msg = "&6" + count + ". &e" + one.getActionType() + ": &6" + oneMap.getValue().getItemName() + " &ecount: &6" + oneMap.getValue()
+			    .getCount() + " &emoney: &6" + oneMap.getValue().getMoney() + " &eexp: &6" + oneMap.getValue().getExp();
+			msg = org.bukkit.ChatColor.translateAlternateColorCodes('&', msg);
+			sender.sendMessage(msg);
+			break;
+		    }
+		}
+		if (count > max)
+		    break;
+	    }
+	    if (count > max)
+		break;
+	}
+	sender.sendMessage("***********************************************");
+
+	return true;
+    }
+
+    @JobCommand
+    public boolean glog(final CommandSender sender, String[] args) {
+	if (args.length != 0) {
+	    sendUsage(sender, "glog");
+	    return true;
+	}
+	Bukkit.getScheduler().runTaskAsynchronously(JobsPlugin.instance, new Runnable() {
+	    @Override
+	    public void run() {
+		Map<LogAmounts, Double> unsortMap = new HashMap<LogAmounts, Double>();
+
+		Collection<? extends Player> onlineP = Bukkit.getOnlinePlayers();
+
+		sender.sendMessage("Looking for players data");
+		for (Player OneP : onlineP) {
+
+		    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(OneP);
+		    if (JPlayer == null)
+			continue;
+		    List<Log> logList = JPlayer.getLog();
+		    if (logList.size() == 0)
+			continue;
+
+		    for (Log one : logList) {
+			HashMap<String, LogAmounts> AmountList = one.getAmountList();
+			for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
+			    oneMap.getValue().setUsername(OneP.getName());
+			    oneMap.getValue().setAction(one.getActionType());
+			    unsortMap.put(oneMap.getValue(), oneMap.getValue().getMoney());
+			}
+		    }
+		}
+
+		unsortMap = Sorting.sortDoubleDESCByLog(unsortMap);
+
+		int count = 0;
+		int max = 10;
+
+		for (Entry<LogAmounts, Double> one : unsortMap.entrySet()) {
+		    LogAmounts info = one.getKey();
+		    String msg = "&3" + info.getUsername() + " &e" + info.getAction() + ": &6" + (info.getItemName().toString().contains(":0") ? info.getItemName()
+			.toString().replace(":0", "") : info.getItemName()) + " &ecount: &6" + info.getCount() + " &emoney: &6" + info.getMoney() + " &eexp: &6" + info
+			    .getExp();
+		    msg = org.bukkit.ChatColor.translateAlternateColorCodes('&', msg);
+		    sender.sendMessage(msg);
+		    count++;
+
+		    if (count > max)
+			break;
+		}
+		if (unsortMap.size() == 0) {
+		    sender.sendMessage("No data found");
+		}
+
+		return;
+	    }
+	});
+	return true;
+    }
 
     /**
      * Displays info about a job

@@ -15,6 +15,23 @@ import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.i18n.Language;
 
 public class ScheduleUtil {
+
+    public static int dateByInt = 0;
+
+    public static void DateUpdater() {
+	if (dateByInt == 0)
+	    dateByInt = TimeManage.timeInInt();
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(JobsPlugin.instance, new Runnable() {
+	    public void run() {
+
+		dateByInt = TimeManage.timeInInt();
+
+		DateUpdater();
+		return;
+	    }
+	}, 60 * 20L);
+    }
+
     public static boolean scheduler() {
 	if (ConfigManager.getJobsConfiguration().BoostSchedule.size() > 0 && ConfigManager.getJobsConfiguration().useGlobalBoostScheduler) {
 
@@ -34,6 +51,13 @@ public class ScheduleUtil {
 
 		List<String> days = one.GetDays();
 
+		if (one.isStarted() && one.getBroadcastInfoOn() < System.currentTimeMillis() && one.GetBroadcastInterval() > 0) {
+		    one.setBroadcastInfoOn(System.currentTimeMillis() + one.GetBroadcastInterval() * 60 * 1000);
+		    for (String oneMsg : one.GetMessageToBroadcast()) {
+			Bukkit.broadcastMessage(oneMsg);
+		    }
+		}
+
 		if (((one.isNextDay() && (Current >= From && Current < one.GetUntil() || Current >= one.GetNextFrom() && Current < one.GetNextUntil()) && !one
 		    .isStarted()) || !one.isNextDay() && (Current >= From && Current < Until)) && (days.contains(CurrentDayName) || days.contains("all")) && !one
 			.isStarted()) {
@@ -50,6 +74,9 @@ public class ScheduleUtil {
 			onejob.setExpBoost(one.GetExpBoost());
 			onejob.setMoneyBoost(one.GetMoneyBoost());
 		    }
+
+		    one.setBroadcastInfoOn(System.currentTimeMillis() + one.GetBroadcastInterval() * 60 * 1000);
+
 		    one.setStarted(true);
 		    one.setStoped(false);
 		    break;

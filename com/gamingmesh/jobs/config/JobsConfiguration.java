@@ -260,7 +260,7 @@ public class JobsConfiguration {
 	// Item/Block/mobs name list
 	loadItemList();
 	// Item/Block/mobs name list
-	Signs.SignUtil.LoadSigns();
+	com.gamingmesh.jobs.Signs.SignUtil.LoadSigns();
 
 //		loadScheduler();
     }
@@ -549,7 +549,8 @@ public class JobsConfiguration {
 	    "0.2 means 20% of original price");
 	TreeFellerMultiplier = getDouble("ExploitProtections.McMMO.TreeFellerMultiplier", 0.2, config, writer);
 
-	writer.addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime spliting when they are from spawner","Protects agains exploiting as new splited slimes is treated as naturaly spawned and not from spawner");
+	writer.addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime spliting when they are from spawner",
+	    "Protects agains exploiting as new splited slimes is treated as naturaly spawned and not from spawner");
 	PreventSlimeSplit = getBoolean("ExploitProtections.Spawner.PreventSlimeSplit", true, config, writer);
 	writer.addComment("ExploitProtections.Spawner.PreventMagmaCubeSplit", "Prevent magmacube spliting when they are from spawner");
 	PreventMagmaCubeSplit = getBoolean("ExploitProtections.Spawner.PreventMagmaCubeSplit", true, config, writer);
@@ -932,22 +933,28 @@ public class JobsConfiguration {
 	    if (!path.contains("Money") || !path.isDouble("Money"))
 		continue;
 
+	    sched.setDays(path.getStringList("Days"));
+	    sched.setJobs(path.getStringList("Jobs"));
+	    sched.setFrom(Integer.valueOf(path.getString("From").replace(":", "")));
+	    sched.setUntil(Integer.valueOf(path.getString("Until").replace(":", "")));
+
 	    if (path.contains("MessageOnStart") && path.isList("MessageOnStart"))
-		sched.setMessageOnStart(path.getStringList("MessageOnStart"));
+		sched.setMessageOnStart(path.getStringList("MessageOnStart"), path.getString("From"), path.getString("Until"));
 
 	    if (path.contains("BroadcastOnStart"))
 		sched.setBroadcastOnStart(path.getBoolean("BroadcastOnStart"));
 
 	    if (path.contains("MessageOnStop") && path.isList("MessageOnStop"))
-		sched.setMessageOnStop(path.getStringList("MessageOnStop"));
+		sched.setMessageOnStop(path.getStringList("MessageOnStop"), path.getString("From"), path.getString("Until"));
 
 	    if (path.contains("BroadcastOnStop"))
 		sched.setBroadcastOnStop(path.getBoolean("BroadcastOnStop"));
 
-	    sched.setDays(path.getStringList("Days"));
-	    sched.setJobs(path.getStringList("Jobs"));
-	    sched.setFrom(Integer.valueOf(path.getString("From").replace(":", "")));
-	    sched.setUntil(Integer.valueOf(path.getString("Until").replace(":", "")));
+	    if (path.contains("BroadcastInterval"))
+		sched.setBroadcastInterval(path.getInt("BroadcastInterval"));
+
+	    if (path.contains("BroadcastMessage") && path.isList("BroadcastMessage"))
+		sched.setMessageToBroadcast(path.getStringList("BroadcastMessage"), path.getString("From"), path.getString("Until"));
 
 	    sched.setExpBoost(path.getDouble("Exp"));
 	    sched.setMoneyBoost(path.getDouble("Money"));

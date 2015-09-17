@@ -38,6 +38,8 @@ public class Job {
 	private List<JobPermission> jobPermissions;
 	// commands
 	private List<JobCommands> jobCommands;
+	// conditions
+	private List<JobConditions> jobConditions;
 	// items
 	private List<JobItems> jobItems;
 	// job name
@@ -65,7 +67,7 @@ public class Job {
 	// Item for GUI
 	private ItemStack GUIitem;
 
-	private int totalPlayers = 0;
+	private int totalPlayers = -1;
 	private double bonus = 0.0;
 
 	private double ExpBoost = 1.0;
@@ -88,8 +90,9 @@ public class Job {
 	 * @param jobItems - items with boost
 	 * @param CmdOnJoin - commands performed on player join
 	 * @param CmdOnLeave - commands performed on player leave
+	 * @param jobConditions - jobs conditions
 	 */
-	public Job(String jobName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel, int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobItems> jobItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem) {
+	public Job(String jobName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel, int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, List<JobItems> jobItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem) {
 		this.jobName = jobName;
 		this.jobShortName = jobShortName;
 		this.description = description;
@@ -101,6 +104,7 @@ public class Job {
 		this.maxSlots = maxSlots;
 		this.jobPermissions = jobPermissions;
 		this.jobCommands = jobCommands;
+		this.jobConditions = jobConditions;
 		this.jobItems = jobItems;
 		this.CmdOnJoin = CmdOnJoin;
 		this.CmdOnLeave = CmdOnLeave;
@@ -124,7 +128,7 @@ public class Job {
 	}
 	
 	public int getTotalPlayers() {
-		if (this.totalPlayers == 0) {
+		if (this.totalPlayers == -1) {
 			this.totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(this.jobName);
 			updateBonus();
 		}
@@ -334,6 +338,13 @@ public class Job {
 	 */
 	public List<JobCommands> getCommands() {
 		return Collections.unmodifiableList(jobCommands);
+	}
+	/**
+	 * Get the conditions for this job
+	 * @return Conditions for this job
+	 */
+	public List<JobConditions> getConditions() {
+	    return Collections.unmodifiableList(jobConditions);
 	}
 
 	/**

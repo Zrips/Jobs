@@ -1,4 +1,4 @@
-package Signs;
+package com.gamingmesh.jobs.Signs;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class SignUtil {
 		    return;
 		for (String category : categoriesList) {
 		    ConfigurationSection NameSection = ConfCategory.getConfigurationSection(category);
-		    Signs.Sign newTemp = new Signs.Sign();
+		    com.gamingmesh.jobs.Signs.Sign newTemp = new com.gamingmesh.jobs.Signs.Sign();
 		    newTemp.setCategory(Integer.valueOf(category));
 		    newTemp.setWorld(NameSection.getString("World"));
 		    newTemp.setX(NameSection.getDouble("X"));
@@ -75,7 +75,7 @@ public class SignUtil {
 		if (!conf.isConfigurationSection("Signs"))
 		    conf.createSection("Signs");
 
-		for (Signs.Sign one : Signs.GetAllSigns()) {
+		for (com.gamingmesh.jobs.Signs.Sign one : Signs.GetAllSigns()) {
 		    String path = "Signs." + String.valueOf(one.GetCategory());
 		    writer.set(path + ".World", one.GetWorld());
 		    writer.set(path + ".X", one.GetX());
@@ -99,12 +99,12 @@ public class SignUtil {
     }
 
     public static boolean SignUpdate(String JobName) {
-	List<Signs.Sign> Copy = new ArrayList<Signs.Sign>(Signs.GetAllSigns().size());
-	for (Signs.Sign foo : Signs.GetAllSigns()) {
+	List<com.gamingmesh.jobs.Signs.Sign> Copy = new ArrayList<com.gamingmesh.jobs.Signs.Sign>(Signs.GetAllSigns().size());
+	for (com.gamingmesh.jobs.Signs.Sign foo : Signs.GetAllSigns()) {
 	    Copy.add(foo);
 	}
 	int timelapse = 1;
-	for (Signs.Sign one : Copy) {
+	for (com.gamingmesh.jobs.Signs.Sign one : Copy) {
 	    String SignJobName = one.GetJobName();
 	    if (JobName.equalsIgnoreCase(SignJobName)) {
 		String SignsWorld = one.GetWorld();
@@ -121,7 +121,9 @@ public class SignUtil {
 		}
 		if (PlayerList.size() != 0) {
 		    World world = Bukkit.getWorld(SignsWorld);
-		    Location nloc = new Location(world, SignsX, SignsY, SignsZ);
+		    if (world == null)
+			continue;
+		    Location nloc = new Location(world, SignsX, SignsY, SignsZ);		    
 		    Block block = nloc.getBlock();
 		    if (!(block.getState() instanceof org.bukkit.block.Sign)) {
 			Signs.GetAllSigns().remove(one);

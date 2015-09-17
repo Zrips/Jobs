@@ -48,6 +48,7 @@ import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
+import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -563,7 +564,7 @@ public class Jobs {
 		    Jobs.getEconomy().pay(jPlayer, amount, expAmount);
 		    int oldLevel = prog.getLevel();
 
-		    recordToLog(jPlayer, info, amount, expAmount);
+		    Loging.recordToLog(jPlayer, info, amount, expAmount);
 
 		    if (prog.addExperience(expAmount))
 			Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
@@ -573,27 +574,4 @@ public class Jobs {
 	}
     }
 
-    private static void recordToLog(JobsPlayer jPlayer, ActionInfo info, double amount, double expAmount) {
-	List<Log> logList = jPlayer.getLog();
-	boolean found = false;
-	for (Log one : logList) {
-	    if (!one.getActionType().getName().equalsIgnoreCase(info.getType().getName()))
-		continue;
-
-	    one.add(info.getNameWithSub(), amount, expAmount);
-
-	    found = true;
-
-	    Debug.D(info.getNameWithSub() + " : " + one.getCount(info.getNameWithSub()) + " money: " + one.getMoney(info.getNameWithSub()) + " exp:" + one.getExp(info
-		.getNameWithSub()));
-	}
-	if (!found) {
-	    Log log = new Log(info.getType());
-	    log.add(info.getNameWithSub(), amount, expAmount);
-	    logList.add(log);
-	    String msg = info.getNameWithSub() + " : " + log.getCount(info.getNameWithSub()) + " money: " + log.getMoney(info.getNameWithSub()) + " exp:" + log.getExp(info
-		.getNameWithSub());
-	    Debug.D(msg);
-	}
-    }
 }
