@@ -76,10 +76,9 @@ public abstract class JobsDAO {
 		checkUpdate1();
 	    else if (version <= 2)
 		checkUpdate2();
-	    else if (version <= 3)
-		checkUpdate4();
-	    else if (version <= 4)
-		checkUpdate5();
+
+	    checkUpdate4();
+	    checkUpdate5();
 
 	    version = 5;
 	} finally {

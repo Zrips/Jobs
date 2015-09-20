@@ -98,7 +98,6 @@ public class JobsDAOSQLite extends JobsDAO {
 	}
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected synchronized void checkUpdate1() throws SQLException {
 	JobsConnection conn = getConnection();
