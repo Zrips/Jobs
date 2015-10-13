@@ -22,8 +22,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -97,7 +95,6 @@ public class JobsDAOMySQL extends JobsDAO {
 	}
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected synchronized void checkUpdate1() throws SQLException {
 	JobsConnection conn = getConnection();

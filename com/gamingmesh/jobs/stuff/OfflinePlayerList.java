@@ -39,6 +39,7 @@ public class OfflinePlayerList {
 	return null;
     }
 
+    @SuppressWarnings("deprecation")
     public static OfflinePlayer getPlayer(String name) {
 	if (!ConfigManager.getJobsConfiguration().LocalOfflinePlayersData)
 	    return Bukkit.getOfflinePlayer(name);

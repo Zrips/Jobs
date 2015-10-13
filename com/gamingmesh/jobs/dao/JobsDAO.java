@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -639,7 +640,18 @@ public abstract class JobsDAO {
 	    prest.setString(1, jobsname);
 	    ResultSet res = prest.executeQuery();
 	    while (res.next()) {
-		jobs.add(new TopList(res.getString(1), res.getInt(2), res.getInt(3), res.getBytes(4)));
+
+		Player player = Bukkit.getPlayer(res.getString(1));
+		if (player != null) {
+
+		    JobsPlayer jobsinfo = Jobs.getPlayerManager().getJobsPlayer(player);
+		    Job job = Jobs.getJob(jobsname);
+		    if (job != null) {
+			JobProgression prog = jobsinfo.getJobProgression(job);
+			jobs.add(new TopList(player.getName(), prog.getLevel(), (int) prog.getExperience(), UUIDUtil.toBytes(player.getUniqueId())));
+		    }
+		} else
+		    jobs.add(new TopList(res.getString(1), res.getInt(2), res.getInt(3), res.getBytes(4)));
 	    }
 	    prest.close();
 	} catch (SQLException e) {

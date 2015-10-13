@@ -254,7 +254,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-
+		
 	// remove furnace metadata for broken block
 	Block block = event.getBlock();
 	if (block == null)
@@ -875,7 +875,7 @@ public class JobsPaymentListener implements Listener {
 		Tameable t = (Tameable) ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
 		if (t.isTamed() && t.getOwner() instanceof Player) {
 		    pDamager = (Player) t.getOwner();
-		    if (Perm.hasPermission(pDamager, "jobs.petpay"))
+		    if (Perm.hasPermission(pDamager, "jobs.petpay") || Perm.hasPermission(pDamager, "jobs.vippetpay"))
 			PetPayMultiplier = ConfigManager.getJobsConfiguration().VipPetPay;
 		    else
 			PetPayMultiplier = ConfigManager.getJobsConfiguration().PetPay;
