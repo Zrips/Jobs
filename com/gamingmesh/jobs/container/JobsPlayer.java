@@ -51,7 +51,7 @@ public class JobsPlayer {
     private double VipSpawnerMultiplier = -1;
 
     // save lock
-    public final Object saveLock = new Object();
+//    public final Object saveLock = new Object();
 
     // log
     private List<Log> logList = new ArrayList<Log>();
@@ -66,7 +66,7 @@ public class JobsPlayer {
 	JobsPlayer jPlayer = new JobsPlayer(player.getName(), player);
 	jPlayer.playerUUID = player.getUniqueId();
 	List<JobsDAOData> list = dao.getAllJobs(player);
-	synchronized (jPlayer.saveLock) {
+//	synchronized (jPlayer.saveLock) {
 	    jPlayer.progression.clear();
 	    for (JobsDAOData jobdata : list) {
 		if (Jobs.getJob(jobdata.getJobName()) == null)
@@ -84,7 +84,7 @@ public class JobsPlayer {
 
 	    }
 	    jPlayer.reloadMaxExperience();
-	}
+//	}
 	return jPlayer;
     }
 
@@ -217,7 +217,7 @@ public class JobsPlayer {
      * @param job - the job joined
      */
     public boolean joinJob(Job job, JobsPlayer jPlayer) {
-	synchronized (saveLock) {
+//	synchronized (saveLock) {
 	    if (!isInJob(job)) {
 		int level = 1;
 		int exp = 0;
@@ -235,7 +235,7 @@ public class JobsPlayer {
 		return true;
 	    }
 	    return false;
-	}
+//	}
     }
 
     /**
@@ -243,7 +243,7 @@ public class JobsPlayer {
      * @param job - the job left
      */
     public boolean leaveJob(Job job) {
-	synchronized (saveLock) {
+//	synchronized (saveLock) {
 	    JobProgression prog = getJobProgression(job);
 	    if (prog != null) {
 		progression.remove(prog);
@@ -253,7 +253,7 @@ public class JobsPlayer {
 		return true;
 	    }
 	    return false;
-	}
+//	}
     }
 
     /**
@@ -261,13 +261,13 @@ public class JobsPlayer {
      * @return on success
      */
     public boolean leaveAllJobs() {
-	synchronized (saveLock) {
+//	synchronized (saveLock) {
 	    progression.clear();
 	    reloadHonorific();
 	    Jobs.getPermissionHandler().recalculatePermissions(this);
 	    ;
 	    return true;
-	}
+//	}
     }
 
     /**
@@ -276,7 +276,7 @@ public class JobsPlayer {
      * @param levels - number of levels to promote
      */
     public void promoteJob(Job job, int levels, JobsPlayer player) {
-	synchronized (saveLock) {
+//	synchronized (saveLock) {
 	    JobProgression prog = getJobProgression(job);
 	    if (prog == null)
 		return;
@@ -293,7 +293,7 @@ public class JobsPlayer {
 		newLevel = maxLevel;
 	    }
 	    setLevel(job, newLevel);
-	}
+//	}
     }
 
     /**
@@ -302,7 +302,7 @@ public class JobsPlayer {
      * @param levels - number of levels to demote
      */
     public void demoteJob(Job job, int levels) {
-	synchronized (saveLock) {
+//	synchronized (saveLock) {
 	    JobProgression prog = getJobProgression(job);
 	    if (prog == null)
 		return;
@@ -313,7 +313,7 @@ public class JobsPlayer {
 		newLevel = 1;
 	    }
 	    setLevel(job, newLevel);
-	}
+//	}
     }
 
     /**
@@ -322,7 +322,7 @@ public class JobsPlayer {
      * @param level - the level
      */
     private void setLevel(Job job, int level) {
-	synchronized (saveLock) {
+//	synchronized (saveLock) {
 	    JobProgression prog = getJobProgression(job);
 	    if (prog == null)
 		return;
@@ -333,7 +333,7 @@ public class JobsPlayer {
 		Jobs.getPermissionHandler().recalculatePermissions(this);
 		;
 	    }
-	}
+//	}
     }
 
     /**
@@ -342,7 +342,7 @@ public class JobsPlayer {
      * @param newjob - the new job
      */
     public boolean transferJob(Job oldjob, Job newjob, JobsPlayer jPlayer) {
-	synchronized (saveLock) {
+//	synchronized (saveLock) {
 	    if (!isInJob(newjob)) {
 		for (JobProgression prog : progression) {
 		    if (!prog.getJob().equals(oldjob))
@@ -367,7 +367,7 @@ public class JobsPlayer {
 		}
 	    }
 	    return false;
-	}
+//	}
     }
 
     /**
@@ -474,13 +474,13 @@ public class JobsPlayer {
      * @param dao
      */
     public void save(JobsDAO dao) {
-	synchronized (saveLock) {
-	    if (!isSaved()) {
-		dao.save(this);
-		dao.saveLog(this);
-		setSaved(true);
-	    }
+//	synchronized (saveLock) {
+	if (!isSaved()) {
+	    dao.save(this);
+	    dao.saveLog(this);
+	    setSaved(true);
 	}
+//	}
     }
 
     /**

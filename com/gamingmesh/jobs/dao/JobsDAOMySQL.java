@@ -185,11 +185,11 @@ public class JobsDAOMySQL extends JobsDAO {
 			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "" + y + " of " + usernames.size());
 			i = 0;
 		    }
-		    
+
 		    OfflinePlayer offPlayer = OfflinePlayerList.getPlayer(names);
 		    if (offPlayer == null)
 			continue;
-		    
+
 		    pst2.setBytes(1, UUIDUtil.toBytes(offPlayer.getUniqueId()));
 		    pst2.setString(2, names);
 		    pst2.execute();
@@ -316,8 +316,18 @@ public class JobsDAOMySQL extends JobsDAO {
 	try {
 	    if (rows == 0)
 		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "log` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(20), `count` int, `money` double, `exp` double);");
+		    + "log` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
 	} finally {
 	}
+    }
+
+    @Override
+    protected synchronized void checkUpdate6() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+	executeSQL("ALTER TABLE `" + getPrefix() + "log` MODIFY `itemname` VARCHAR(60);");
     }
 }

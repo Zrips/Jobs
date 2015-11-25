@@ -80,11 +80,11 @@ public class JobProgression {
 	 * @param job - the new job to be set
 	 */
 	public void setJob(Job job) {
-		synchronized (jPlayer.saveLock) {
+//		synchronized (jPlayer.saveLock) {
 			jPlayer.setSaved(false);
 			this.job = job;
 			reloadMaxExperienceAndCheckLevelUp();
-		}
+//		}
 	}
 
 	/**
@@ -101,11 +101,11 @@ public class JobProgression {
 	 * @return - job level up
 	 */
 	public boolean addExperience(double experience) {
-		synchronized (jPlayer.saveLock) {
+//		synchronized (jPlayer.saveLock) {
 			jPlayer.setSaved(false);
 			this.experience += experience;
 			return checkLevelUp();
-		}
+//		}
 	}
 
 	/**
@@ -129,11 +129,11 @@ public class JobProgression {
 	 * @param level - the new level for this job
 	 */
 	public void setLevel(int level) {
-		synchronized (jPlayer.saveLock) {
+//		synchronized (jPlayer.saveLock) {
 			jPlayer.setSaved(false);
 			this.level = level;
 			reloadMaxExperienceAndCheckLevelUp();
-		}
+//		}
 	}
 
 	/**

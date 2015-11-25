@@ -44,6 +44,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
+import com.gamingmesh.jobs.Gui.GuiTools;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Convert;
@@ -643,9 +644,9 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
-	//		if (sender instanceof Player) {
-	//			((Player) sender).openInventory(GuiTools.CreateJobsGUI((Player) sender));
-	//		}
+	if (sender instanceof Player) {
+	    ((Player) sender).openInventory(GuiTools.CreateJobsGUI((Player) sender));
+	}
 
 	sender.sendMessage(Language.getMessage("command.browse.output.header"));
 	for (String line : lines) {

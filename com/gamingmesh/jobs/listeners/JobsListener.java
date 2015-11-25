@@ -33,6 +33,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -45,6 +48,8 @@ import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
+import com.gamingmesh.jobs.Gui.GuiInfoList;
+import com.gamingmesh.jobs.Gui.GuiTools;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Job;
@@ -60,100 +65,100 @@ public class JobsListener implements Listener {
 	this.plugin = plugin;
     }
 
-    //	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
-    //	public void onGuiRightClick(InventoryClickEvent event) {
-    //		if (Gui.GuiTools.GuiList.size() == 0)
-    //			return;
-    //
-    //		Player player = (Player) event.getWhoClicked();
-    //
-    //		if (!Gui.GuiTools.GuiList.containsKey(player.getName()))
-    //			return;
-    //
-    //		if (event.getClick() != ClickType.RIGHT)
-    //			return;
-    //
-    //		event.setCancelled(true);
-    //
-    //		GuiInfoList joblist = Gui.GuiTools.GuiList.get(player.getName());
-    //
-    //		if (joblist.isJobInfo())
-    //			return;
-    //
-    //		int slot = event.getRawSlot();
-    //
-    //		if (slot < joblist.getJobList().size()) {
-    //			Bukkit.dispatchCommand(player, "jobs join " + joblist.getJobList().get(slot).getName());
-    //			player.getOpenInventory().getTopInventory().setContents(GuiTools.CreateJobsGUI(player).getContents());
-    //		}
-    //	}
-    //
-    //	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
-    //	public void onGuiLeftClick(InventoryClickEvent event) {
-    //		if (Gui.GuiTools.GuiList.size() == 0)
-    //			return;
-    //
-    //		Player player = (Player) event.getWhoClicked();
-    //
-    //		if (!Gui.GuiTools.GuiList.containsKey(player.getName()))
-    //			return;
-    //
-    //		event.setCancelled(true);
-    //
-    //		if (event.getClick() != ClickType.LEFT)
-    //			return;
-    //
-    //		GuiInfoList joblist = Gui.GuiTools.GuiList.get(player.getName());
-    //
-    //		if (joblist.isJobInfo())
-    //			return;
-    //
-    //		int slot = event.getRawSlot();
-    //
-    //		if (slot < joblist.getJobList().size()) {
-    //			player.closeInventory();
-    //			player.openInventory(GuiTools.CreateJobsSubGUI(player, joblist.getJobList().get(slot)));
-    //		}
-    //	}
-    //
-    //	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
-    //	public void onGuiLeftSubClick(InventoryClickEvent event) {
-    //		if (Gui.GuiTools.GuiList.size() == 0)
-    //			return;
-    //
-    //		Player player = (Player) event.getWhoClicked();
-    //
-    //		if (!Gui.GuiTools.GuiList.containsKey(player.getName()))
-    //			return;
-    //
-    //		event.setCancelled(true);
-    //
-    //		if (event.getClick() != ClickType.LEFT)
-    //			return;
-    //
-    //		GuiInfoList joblist = Gui.GuiTools.GuiList.get(player.getName());
-    //
-    //		if (!joblist.isJobInfo())
-    //			return;
-    //
-    //		int slot = event.getRawSlot();
-    //
-    //		if (slot == joblist.getbackButton()) {
-    //			player.closeInventory();
-    //			player.openInventory(GuiTools.CreateJobsGUI(player));
-    //		}
-    //	}
-    //
-    //	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
-    //	public void onGuiClose(InventoryCloseEvent event) {
-    //		if (Gui.GuiTools.GuiList.size() == 0)
-    //			return;
-    //
-    //		Player player = (Player) event.getPlayer();
-    //
-    //		if (Gui.GuiTools.GuiList.containsKey(player.getName()))
-    //			Gui.GuiTools.GuiList.remove(player.getName());
-    //	}
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
+    public void onGuiRightClick(InventoryClickEvent event) {
+	if (GuiTools.GuiList.size() == 0)
+	    return;
+
+	Player player = (Player) event.getWhoClicked();
+
+	if (!GuiTools.GuiList.containsKey(player.getName()))
+	    return;
+
+	if (event.getClick() != ClickType.RIGHT)
+	    return;
+
+	event.setCancelled(true);
+
+	GuiInfoList joblist = GuiTools.GuiList.get(player.getName());
+
+	if (joblist.isJobInfo())
+	    return;
+
+	int slot = event.getRawSlot();
+
+	if (slot < joblist.getJobList().size()) {
+	    Bukkit.dispatchCommand(player, "jobs join " + joblist.getJobList().get(slot).getName());
+	    player.getOpenInventory().getTopInventory().setContents(GuiTools.CreateJobsGUI(player).getContents());
+	}
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
+    public void onGuiLeftClick(InventoryClickEvent event) {
+	if (GuiTools.GuiList.size() == 0)
+	    return;
+
+	Player player = (Player) event.getWhoClicked();
+
+	if (!GuiTools.GuiList.containsKey(player.getName()))
+	    return;
+
+	event.setCancelled(true);
+
+	if (event.getClick() != ClickType.LEFT)
+	    return;
+
+	GuiInfoList joblist = GuiTools.GuiList.get(player.getName());
+
+	if (joblist.isJobInfo())
+	    return;
+
+	int slot = event.getRawSlot();
+
+	if (slot < joblist.getJobList().size()) {
+	    player.closeInventory();
+	    player.openInventory(GuiTools.CreateJobsSubGUI(player, joblist.getJobList().get(slot)));
+	}
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
+    public void onGuiLeftSubClick(InventoryClickEvent event) {
+	if (GuiTools.GuiList.size() == 0)
+	    return;
+
+	Player player = (Player) event.getWhoClicked();
+
+	if (!GuiTools.GuiList.containsKey(player.getName()))
+	    return;
+
+	event.setCancelled(true);
+
+	if (event.getClick() != ClickType.LEFT)
+	    return;
+
+	GuiInfoList joblist = GuiTools.GuiList.get(player.getName());
+
+	if (!joblist.isJobInfo())
+	    return;
+
+	int slot = event.getRawSlot();
+
+	if (slot == joblist.getbackButton()) {
+	    player.closeInventory();
+	    player.openInventory(GuiTools.CreateJobsGUI(player));
+	}
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
+    public void onGuiClose(InventoryCloseEvent event) {
+	if (GuiTools.GuiList.size() == 0)
+	    return;
+
+	Player player = (Player) event.getPlayer();
+
+	if (GuiTools.GuiList.containsKey(player.getName()))
+	    GuiTools.GuiList.remove(player.getName());
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -253,9 +258,8 @@ public class JobsListener implements Listener {
 	if (!(block.getState() instanceof Sign))
 	    return;
 
-
 	Player player = (Player) event.getPlayer();
-	
+
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
 	if (FirstLine.equalsIgnoreCase(Language.getMessage("signs.topline")))
@@ -264,7 +268,7 @@ public class JobsListener implements Listener {
 		player.sendMessage(Language.getMessage("signs.cantdestroy"));
 		return;
 	    }
-	
+
 	Location loc = block.getLocation();
 
 	for (com.gamingmesh.jobs.Signs.Sign one : SignUtil.Signs.GetAllSigns()) {

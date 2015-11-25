@@ -30,36 +30,36 @@ import com.gamingmesh.jobs.economy.BlackholeEconomy;
 import com.gamingmesh.jobs.economy.VaultEconomy;
 
 public class HookEconomyTask implements Runnable {
-	private JobsPlugin plugin;
+    private JobsPlugin plugin;
 
-	public HookEconomyTask(JobsPlugin plugin) {
-		this.plugin = plugin;
-	}
+    public HookEconomyTask(JobsPlugin plugin) {
+	this.plugin = plugin;
+    }
 
-	public void run() {
-		Plugin eco = Bukkit.getServer().getPluginManager().getPlugin("Vault");
-		if (eco != null) {
-			RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-			if (provider != null) {
-				Economy economy = provider.getProvider();
-				if (economy != null) {
-					Jobs.setEconomy(plugin, new VaultEconomy(economy));
-					String message = ChatColor.translateAlternateColorCodes('&', "&2[" + plugin.getDescription().getName() + "] Successfully linked with Vault.");
-					ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-					console.sendMessage(message);
-					return;
-				}
-			}
+    public void run() {
+	Plugin eco = Bukkit.getServer().getPluginManager().getPlugin("Vault");
+	if (eco != null) {
+	    RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+	    if (provider != null) {
+		Economy economy = provider.getProvider();
+		if (economy != null) {
+		    Jobs.setEconomy(plugin, new VaultEconomy(economy));
+		    String message = ChatColor.translateAlternateColorCodes('&', "&2[" + plugin.getDescription().getName() + "] Successfully linked with Vault.");
+		    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+		    console.sendMessage(message);
+		    return;
 		}
-
-		// no Vault found
-		Jobs.setEconomy(plugin, new BlackholeEconomy());
-		Bukkit.getServer().getLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
-		Bukkit.getServer().getLogger().severe("Vault is required by this plugin for economy support!");
-		Bukkit.getServer().getLogger().severe("Please install Vault first!");
-		Bukkit.getServer().getLogger().severe("You can find the latest version here:");
-		Bukkit.getServer().getLogger().severe("http://dev.bukkit.org/server-mods/vault/");
-		Bukkit.getServer().getLogger().severe("==============================================");
+	    }
 	}
+
+	// no Vault found
+	Jobs.setEconomy(plugin, new BlackholeEconomy());
+	Bukkit.getServer().getLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
+	Bukkit.getServer().getLogger().severe("Vault is required by this plugin for economy support!");
+	Bukkit.getServer().getLogger().severe("Please install Vault first!");
+	Bukkit.getServer().getLogger().severe("You can find the latest version here:");
+	Bukkit.getServer().getLogger().severe("http://dev.bukkit.org/server-mods/vault/");
+	Bukkit.getServer().getLogger().severe("==============================================");
+    }
 
 }

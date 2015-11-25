@@ -80,8 +80,11 @@ public abstract class JobsDAO {
 
 	    checkUpdate4();
 	    checkUpdate5();
+	    
+	    if (version <= 5)
+		checkUpdate6();
 
-	    version = 5;
+	    version = 6;
 	} finally {
 	    updateSchemaVersion(version);
 	}
@@ -96,6 +99,8 @@ public abstract class JobsDAO {
     protected abstract void checkUpdate4() throws SQLException;
 
     protected abstract void checkUpdate5() throws SQLException;
+
+    protected abstract void checkUpdate6() throws SQLException;
 
     /**
      * Gets the database prefix
@@ -168,6 +173,7 @@ public abstract class JobsDAO {
 	    while (res.next()) {
 		count = res.getInt(1);
 	    }
+	    res.close();
 	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -193,6 +199,7 @@ public abstract class JobsDAO {
 		jobs.add(new JobsDAOData(UUIDUtil.fromBytes(res.getBytes(1)), res.getString(2), res.getInt(3), res.getInt(4)));
 	    }
 	    prest.close();
+	    res.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
@@ -249,6 +256,7 @@ public abstract class JobsDAO {
 		list.add(new Convert(res.getInt("id"), res.getString("username"), UUIDUtil.fromBytes(res.getBytes("player_uuid")), res.getString("job"), res.getInt(
 		    "level"), res.getInt("experience")));
 	    }
+	    res.close();
 	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -292,6 +300,7 @@ public abstract class JobsDAO {
 	    insert.executeBatch();
 	    conns.commit();
 	    conns.setAutoCommit(true);
+	    statement.close();
 	} finally {
 	    if (insert != null) {
 		try {
@@ -385,6 +394,7 @@ public abstract class JobsDAO {
 		info.add(level);
 		info.add(res.getInt(2));
 	    }
+	    res.close();
 	    prest.close();
 	    return info;
 	} catch (SQLException e) {
@@ -421,7 +431,7 @@ public abstract class JobsDAO {
 
 		names.add(top);
 	    }
-
+	    res.close();
 	    prest.close();
 	    return names;
 	} catch (SQLException e) {
@@ -461,6 +471,7 @@ public abstract class JobsDAO {
 
 		info.add(res.getString(1) + ":" + res.getInt(2) + ":" + level + ":" + res.getInt(3));
 	    }
+	    res.close();
 	    prest.close();
 	    return info;
 	} catch (SQLException e) {
@@ -653,6 +664,7 @@ public abstract class JobsDAO {
 		} else
 		    jobs.add(new TopList(res.getString(1), res.getInt(2), res.getInt(3), res.getBytes(4)));
 	    }
+	    res.close();
 	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -677,6 +689,7 @@ public abstract class JobsDAO {
 	    if (res.next()) {
 		slot = res.getInt(1);
 	    }
+	    res.close();
 	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -700,6 +713,7 @@ public abstract class JobsDAO {
 	    if (res.next()) {
 		return Integer.valueOf(res.getString(1));
 	    }
+	    res.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} catch (NumberFormatException e) {

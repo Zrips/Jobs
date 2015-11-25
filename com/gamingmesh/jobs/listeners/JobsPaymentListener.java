@@ -646,6 +646,7 @@ public class JobsPaymentListener implements Listener {
 			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier, null, armor);
 		    }
 		}
+		return;
 	    }
 	}, 1);
     }

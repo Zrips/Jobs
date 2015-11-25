@@ -287,8 +287,27 @@ public class JobsDAOSQLite extends JobsDAO {
 	try {
 	    if (rows == 0)
 		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "log` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(20), `count` int, `money` double, `exp` double);");
+		    + "log` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
 	} finally {
 	}
+    }
+
+    @Override
+    protected synchronized void checkUpdate6() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+
+	executeSQL("CREATE TABLE `" + getPrefix()
+	    + "log_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+
+	executeSQL("INSERT INTO `" + getPrefix() + "log_temp` SELECT `id`, `player_uuid`, `username`, `time`, `action`, `itemname`, `count`, `money`, `exp` FROM `"
+	    + getPrefix() + "log`;");
+
+	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
+	executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
+
     }
 }

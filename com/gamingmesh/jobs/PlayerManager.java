@@ -19,10 +19,8 @@
 package com.gamingmesh.jobs;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -44,26 +42,26 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
-    private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
-    //private Map<String, JobsPlayer> players = new HashMap<String, JobsPlayer>();
+//    private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
+    private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<String, JobsPlayer>();
 
     /**
      * Handles join of new player
      * @param playername
      */
     public void playerJoin(Player player) {
-	synchronized (players) {
-	    JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
-	    if (jPlayer == null) {
-		jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
-		JobsPlayer.loadLogFromDao(jPlayer);
-		players.put(player.getName().toLowerCase(), jPlayer);
-	    }
-	    jPlayer.onConnect();
-	    jPlayer.reloadHonorific();
-	    Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	    return;
+//	synchronized (players) {
+	JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
+	if (jPlayer == null) {
+	    jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
+	    JobsPlayer.loadLogFromDao(jPlayer);
+	    players.put(player.getName().toLowerCase(), jPlayer);
 	}
+	jPlayer.onConnect();
+	jPlayer.reloadHonorific();
+	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+	return;
+//	}
     }
 
     /**
@@ -71,20 +69,20 @@ public class PlayerManager {
      * @param playername
      */
     public void playerQuit(Player player) {
-	synchronized (players) {
-	    if (ConfigManager.getJobsConfiguration().saveOnDisconnect()) {
-		JobsPlayer jPlayer = players.remove(player.getName().toLowerCase());
-		if (jPlayer != null) {
-		    jPlayer.save(Jobs.getJobsDAO());
-		    jPlayer.onDisconnect();
-		}
-	    } else {
-		JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
-		if (jPlayer != null) {
-		    jPlayer.onDisconnect();
-		}
+//	synchronized (players) {
+	if (ConfigManager.getJobsConfiguration().saveOnDisconnect()) {
+	    JobsPlayer jPlayer = players.remove(player.getName().toLowerCase());
+	    if (jPlayer != null) {
+		jPlayer.save(Jobs.getJobsDAO());
+		jPlayer.onDisconnect();
+	    }
+	} else {
+	    JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
+	    if (jPlayer != null) {
+		jPlayer.onDisconnect();
 	    }
 	}
+//	}
     }
 
     /**
@@ -101,25 +99,25 @@ public class PlayerManager {
 	 * 3) Garbage collect the real list to remove any offline players with saved data
 	 */
 	ArrayList<JobsPlayer> list = null;
-	synchronized (players) {
-	    list = new ArrayList<JobsPlayer>(players.values());
-	}
+//	synchronized (players) {
+	list = new ArrayList<JobsPlayer>(players.values());
+//	}
 
 	for (JobsPlayer jPlayer : list) {
 	    jPlayer.save(dao);
 	}
 
-	synchronized (players) {
-	    Iterator<JobsPlayer> iter = players.values().iterator();
-	    while (iter.hasNext()) {
-		JobsPlayer jPlayer = iter.next();
-		synchronized (jPlayer.saveLock) {
-		    if (!jPlayer.isOnline() && jPlayer.isSaved()) {
-			iter.remove();
-		    }
-		}
+//	synchronized (players) {
+	Iterator<JobsPlayer> iter = players.values().iterator();
+	while (iter.hasNext()) {
+	    JobsPlayer jPlayer = iter.next();
+//		synchronized (jPlayer.saveLock) {
+	    if (!jPlayer.isOnline() && jPlayer.isSaved()) {
+		iter.remove();
 	    }
+//		}
 	}
+//	}
     }
 
     /**
@@ -128,7 +126,9 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(Player player) {
+//	synchronized (players) {
 	return players.get(player.getName().toLowerCase());
+//	}
     }
 
     /**
@@ -137,7 +137,9 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {
+//	synchronized (players) {
 	return players.get(playerName.toLowerCase());
+//	}
     }
 
     /**
@@ -161,27 +163,27 @@ public class PlayerManager {
      * @param job
      */
     public void joinJob(JobsPlayer jPlayer, Job job) {
-	synchronized (jPlayer.saveLock) {
-	    if (jPlayer.isInJob(job))
-		return;
-	    // let the user join the job
-	    if (!jPlayer.joinJob(job, jPlayer))
-		return;
+//	synchronized (jPlayer.saveLock) {
+	if (jPlayer.isInJob(job))
+	    return;
+	// let the user join the job
+	if (!jPlayer.joinJob(job, jPlayer))
+	    return;
 
-	    // JobsJoin event
-	    JobsJoinEvent jobsjoinevent = new JobsJoinEvent(jPlayer, job);
-	    Bukkit.getServer().getPluginManager().callEvent(jobsjoinevent);
-	    // If event is canceled, dont do anything
-	    if (jobsjoinevent.isCancelled())
-		return;
+	// JobsJoin event
+	JobsJoinEvent jobsjoinevent = new JobsJoinEvent(jPlayer, job);
+	Bukkit.getServer().getPluginManager().callEvent(jobsjoinevent);
+	// If event is canceled, dont do anything
+	if (jobsjoinevent.isCancelled())
+	    return;
 
-	    Jobs.getJobsDAO().joinJob(jPlayer, job);
-	    PerformCommands.PerformCommandsOnJoin(jPlayer, job);
-	    Jobs.takeSlot(job);
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
-	    job.updateTotalPlayers();
-	}
+	Jobs.getJobsDAO().joinJob(jPlayer, job);
+	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
+	Jobs.takeSlot(job);
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	job.updateTotalPlayers();
+//	}
     }
 
     /**
@@ -190,29 +192,29 @@ public class PlayerManager {
      * @param job
      */
     public void leaveJob(JobsPlayer jPlayer, Job job) {
-	synchronized (jPlayer.saveLock) {
-	    if (!jPlayer.isInJob(job))
-		return;
-	    Jobs.getJobsDAO().recordToArchive(jPlayer, job);
-	    // let the user leave the job
-	    if (!jPlayer.leaveJob(job))
-		return;
+//	synchronized (jPlayer.saveLock) {
+	if (!jPlayer.isInJob(job))
+	    return;
+	Jobs.getJobsDAO().recordToArchive(jPlayer, job);
+	// let the user leave the job
+	if (!jPlayer.leaveJob(job))
+	    return;
 
-	    // JobsJoin event
-	    JobsLeaveEvent jobsleaveevent = new JobsLeaveEvent(jPlayer, job);
-	    Bukkit.getServer().getPluginManager().callEvent(jobsleaveevent);
-	    // If event is canceled, dont do anything
-	    if (jobsleaveevent.isCancelled())
-		return;
+	// JobsJoin event
+	JobsLeaveEvent jobsleaveevent = new JobsLeaveEvent(jPlayer, job);
+	Bukkit.getServer().getPluginManager().callEvent(jobsleaveevent);
+	// If event is canceled, dont do anything
+	if (jobsleaveevent.isCancelled())
+	    return;
 
-	    Jobs.getJobsDAO().quitJob(jPlayer, job);
-	    PerformCommands.PerformCommandsOnLeave(jPlayer, job);
-	    Jobs.leaveSlot(job);
+	Jobs.getJobsDAO().quitJob(jPlayer, job);
+	PerformCommands.PerformCommandsOnLeave(jPlayer, job);
+	Jobs.leaveSlot(job);
 
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
-	    job.updateTotalPlayers();
-	}
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	job.updateTotalPlayers();
+//	}
     }
 
     /**
@@ -220,19 +222,19 @@ public class PlayerManager {
      * @param jPlayer
      */
     public void leaveAllJobs(JobsPlayer jPlayer) {
-	synchronized (jPlayer.saveLock) {
-	    for (JobProgression job : jPlayer.getJobProgression()) {
-		Jobs.getJobsDAO().quitJob(jPlayer, job.getJob());
-		PerformCommands.PerformCommandsOnLeave(jPlayer, job.getJob());
-		Jobs.leaveSlot(job.getJob());
+//	synchronized (jPlayer.saveLock) {
+	for (JobProgression job : jPlayer.getJobProgression()) {
+	    Jobs.getJobsDAO().quitJob(jPlayer, job.getJob());
+	    PerformCommands.PerformCommandsOnLeave(jPlayer, job.getJob());
+	    Jobs.leaveSlot(job.getJob());
 
-		com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getJob().getName());
-		com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
-		job.getJob().updateTotalPlayers();
-	    }
-
-	    jPlayer.leaveAllJobs();
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getJob().getName());
+	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	    job.getJob().updateTotalPlayers();
 	}
+
+	jPlayer.leaveAllJobs();
+//	}
     }
 
     /**
@@ -242,17 +244,17 @@ public class PlayerManager {
      * @param newjob - the new job
      */
     public void transferJob(JobsPlayer jPlayer, Job oldjob, Job newjob) {
-	synchronized (jPlayer.saveLock) {
-	    if (!jPlayer.transferJob(oldjob, newjob, jPlayer))
-		return;
+//	synchronized (jPlayer.saveLock) {
+	if (!jPlayer.transferJob(oldjob, newjob, jPlayer))
+	    return;
 
-	    JobsDAO dao = Jobs.getJobsDAO();
-	    dao.quitJob(jPlayer, oldjob);
-	    oldjob.updateTotalPlayers();
-	    dao.joinJob(jPlayer, newjob);
-	    newjob.updateTotalPlayers();
-	    jPlayer.save(dao);
-	}
+	JobsDAO dao = Jobs.getJobsDAO();
+	dao.quitJob(jPlayer, oldjob);
+	oldjob.updateTotalPlayers();
+	dao.joinJob(jPlayer, newjob);
+	newjob.updateTotalPlayers();
+	jPlayer.save(dao);
+//	}
     }
 
     /**
@@ -262,13 +264,13 @@ public class PlayerManager {
      * @param levels - number of levels to promote
      */
     public void promoteJob(JobsPlayer jPlayer, Job job, int levels) {
-	synchronized (jPlayer.saveLock) {
-	    jPlayer.promoteJob(job, levels, jPlayer);
-	    jPlayer.save(Jobs.getJobsDAO());
+//	synchronized (jPlayer.saveLock) {
+	jPlayer.promoteJob(job, levels, jPlayer);
+	jPlayer.save(Jobs.getJobsDAO());
 
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
-	}
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+//	}
     }
 
     /**
@@ -278,12 +280,12 @@ public class PlayerManager {
      * @param levels - number of levels to demote
      */
     public void demoteJob(JobsPlayer jPlayer, Job job, int levels) {
-	synchronized (jPlayer.saveLock) {
-	    jPlayer.demoteJob(job, levels);
-	    jPlayer.save(Jobs.getJobsDAO());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
-	}
+//	synchronized (jPlayer.saveLock) {
+	jPlayer.demoteJob(job, levels);
+	jPlayer.save(Jobs.getJobsDAO());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+//	}
     }
 
     /**
@@ -293,18 +295,18 @@ public class PlayerManager {
      * @param experience - experience gained
      */
     public void addExperience(JobsPlayer jPlayer, Job job, double experience) {
-	synchronized (jPlayer.saveLock) {
-	    JobProgression prog = jPlayer.getJobProgression(job);
-	    if (prog == null)
-		return;
-	    int oldLevel = prog.getLevel();
-	    if (prog.addExperience(experience))
-		performLevelUp(jPlayer, job, oldLevel);
+//	synchronized (jPlayer.saveLock) {
+	JobProgression prog = jPlayer.getJobProgression(job);
+	if (prog == null)
+	    return;
+	int oldLevel = prog.getLevel();
+	if (prog.addExperience(experience))
+	    performLevelUp(jPlayer, job, oldLevel);
 
-	    jPlayer.save(Jobs.getJobsDAO());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
-	}
+	jPlayer.save(Jobs.getJobsDAO());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+//	}
     }
 
     /**
@@ -314,16 +316,16 @@ public class PlayerManager {
      * @param experience - experience gained
      */
     public void removeExperience(JobsPlayer jPlayer, Job job, double experience) {
-	synchronized (jPlayer.saveLock) {
-	    JobProgression prog = jPlayer.getJobProgression(job);
-	    if (prog == null)
-		return;
-	    prog.addExperience(-experience);
+//	synchronized (jPlayer.saveLock) {
+	JobProgression prog = jPlayer.getJobProgression(job);
+	if (prog == null)
+	    return;
+	prog.addExperience(-experience);
 
-	    jPlayer.save(Jobs.getJobsDAO());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
-	}
+	jPlayer.save(Jobs.getJobsDAO());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+//	}
     }
 
     /**
@@ -558,20 +560,20 @@ public class PlayerManager {
      * Perform reload
      */
     public void reload() {
-	synchronized (players) {
-	    for (JobsPlayer jPlayer : players.values()) {
-		for (JobProgression progression : jPlayer.getJobProgression()) {
-		    String jobName = progression.getJob().getName();
-		    Job job = Jobs.getJob(jobName);
-		    if (job != null) {
-			progression.setJob(job);
-		    }
-		}
-		if (jPlayer.isOnline()) {
-		    jPlayer.reloadHonorific();
-		    Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+//	synchronized (players) {
+	for (JobsPlayer jPlayer : players.values()) {
+	    for (JobProgression progression : jPlayer.getJobProgression()) {
+		String jobName = progression.getJob().getName();
+		Job job = Jobs.getJob(jobName);
+		if (job != null) {
+		    progression.setJob(job);
 		}
 	    }
+	    if (jPlayer.isOnline()) {
+		jPlayer.reloadHonorific();
+		Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+	    }
 	}
+//	}
     }
 }
