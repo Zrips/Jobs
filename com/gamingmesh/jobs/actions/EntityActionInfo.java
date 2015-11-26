@@ -29,39 +29,39 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
 public class EntityActionInfo extends BaseActionInfo implements ActionInfo {
-	private Entity entity;
+    private Entity entity;
 
-	public EntityActionInfo(Entity entity, ActionType type) {
-		super(type);
-		this.entity = entity;
+    public EntityActionInfo(Entity entity, ActionType type) {
+	super(type);
+	this.entity = entity;
+    }
+
+    @Override
+    public String getName() {
+	if (this.entity instanceof Skeleton) {
+	    Skeleton skeleton = (Skeleton) this.entity;
+	    if (skeleton.getSkeletonType() == SkeletonType.WITHER)
+		return "WitherSkeleton";
 	}
 
-	@Override
-	public String getName() {
-		if (this.entity instanceof Skeleton) {
-			Skeleton skeleton = (Skeleton) this.entity;
-			if (skeleton.getSkeletonType() == SkeletonType.WITHER)
-				return "WitherSkeleton";
-		}
-
-		if (this.entity instanceof Zombie) {
-			Zombie zombie = (Zombie) this.entity;
-			if (zombie.isVillager())
-				return "ZombieVillager";
-		}
-
-		if (this.entity.getType().toString().toLowerCase().contains("guardian"))
-			if (this.entity instanceof Guardian) {
-				Guardian guardian = (Guardian) this.entity;
-				if (guardian.isElder())
-					return "ElderGuardian";
-			}
-
-		return entity.getType().toString();
+	if (this.entity instanceof Zombie) {
+	    Zombie zombie = (Zombie) this.entity;
+	    if (zombie.isVillager())
+		return "ZombieVillager";
 	}
 
-	@Override
-	public String getNameWithSub() {
-		return getName();
-	}
+	if (this.entity.getType().toString().toLowerCase().contains("guardian"))
+	    if (this.entity instanceof Guardian) {
+		Guardian guardian = (Guardian) this.entity;
+		if (guardian.isElder())
+		    return "ElderGuardian";
+	    }
+
+	return entity.getType().toString();
+    }
+
+    @Override
+    public String getNameWithSub() {
+	return getName();
+    }
 }

@@ -420,8 +420,7 @@ public class JobConfig {
 			    if (enchant != null)
 				id = enchant.getId();
 			    type = myKey;
-			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR) {
-
+			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL) {
 			    type = myKey;
 			}
 

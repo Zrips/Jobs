@@ -16,32 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.gamingmesh.jobs.container;
+package com.gamingmesh.jobs.actions;
 
-public enum ActionType {
-    BREAK("Break"),
-    PLACE("Place"),
-    KILL("Kill"),
-    MMKILL("MMKill"),
-    FISH("Fish"),
-    CRAFT("Craft"),
-    SMELT("Smelt"),
-    BREW("Brew"),
-    ENCHANT("Enchant"),
-    REPAIR("Repair"),
-    BREED("Breed"),
-    TAME("Tame"),
-    DYE("Dye"),
-    SHEAR("Shear"),
-    MILK("Milk"),
-    CUSTOMKILL("custom-kill");
-    
-    private String name;
-    private ActionType(String name) {
-        this.name = name;
-    }
-    
-    public String getName() {
-        return name;
-    }
+import com.gamingmesh.jobs.container.ActionInfo;
+import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.BaseActionInfo;
+
+public class MMKillInfo extends BaseActionInfo implements ActionInfo {
+	private String name;
+
+	public MMKillInfo(String name, ActionType type) {
+		super(type);
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getNameWithSub() {
+		return name;
+	}
 }

@@ -70,6 +70,7 @@ public class TranslateName {
 		}
 		break;
 	    case CUSTOMKILL:
+	    case MMKILL:
 		break;
 	    case SHEAR:
 		for (NameList one : ConfigManager.getJobsConfiguration().ListOfColors) {

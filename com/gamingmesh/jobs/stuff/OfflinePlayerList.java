@@ -17,6 +17,10 @@ public class OfflinePlayerList {
 	for (OfflinePlayer one : Bukkit.getOfflinePlayers()) {
 	    if (one == null)
 		continue;
+	    if (one.getName() == null)
+		continue;
+	    if (one.getUniqueId() == null)
+		continue;
 	    map.put(one.getName().toLowerCase(), one);
 	    uuidmap.put(one.getUniqueId(), one);
 	}

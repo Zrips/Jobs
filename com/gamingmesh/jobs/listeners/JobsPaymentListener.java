@@ -254,7 +254,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-		
+
 	// remove furnace metadata for broken block
 	Block block = event.getBlock();
 	if (block == null)
@@ -853,6 +853,11 @@ public class JobsPaymentListener implements Listener {
 	if (lVictim.getKiller() instanceof Player)
 	    if (lVictim.getKiller().hasMetadata("NPC"))
 		return;
+
+	if (MythicMobsListener.Present) {
+	    if (JobsPlugin.MMAPI.getMobAPI().isMythicMob(lVictim))
+		return;
+	}
 
 	// mob spawner, no payment or experience
 	if (lVictim.hasMetadata(mobSpawnerMetadata) && !ConfigManager.getJobsConfiguration().payNearSpawner()) {

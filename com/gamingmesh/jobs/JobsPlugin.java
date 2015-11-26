@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import net.elseland.xikage.MythicMobs.MythicMobs;
+import net.elseland.xikage.MythicMobs.API.MythicMobsAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -36,6 +38,7 @@ import com.gamingmesh.jobs.config.JobsConfiguration;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
+import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 import com.gamingmesh.jobs.stuff.ScheduleUtil;
@@ -45,6 +48,7 @@ import com.gamingmesh.jobs.config.YmlMaker;
 public class JobsPlugin extends JavaPlugin {
     public static Plugin instance;
     public static CoreProtectAPI CPAPI;
+    public static MythicMobsAPI MMAPI;
     public static boolean CPPresent = false;
 
     @Override
@@ -86,11 +90,18 @@ public class JobsPlugin extends JavaPlugin {
 	if (McMMOlistener.CheckmcMMO())
 	    getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
 
+	if (MythicMobsListener.Check())
+	    getServer().getPluginManager().registerEvents(new MythicMobsListener(this), this);
+
 	if (ConfigManager.getJobsConfiguration().useBlockProtection)
 	    getServer().getPluginManager().registerEvents(new PistonProtectionListener(this), this);
 
 	// register economy
 	Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
+
+	if (getServer().getPluginManager().getPlugin("MythicMobs") != null) {
+	    MMAPI = ((MythicMobs) getServer().getPluginManager().getPlugin("MythicMobs")).getAPI();
+	}
 
 	if (getServer().getPluginManager().getPlugin("CoreProtect") != null) {
 	    CPPresent = true;

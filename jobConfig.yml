@@ -136,6 +136,14 @@ Jobs:
         income: 7.5
         # base experience
         experience: 7.5
+    # killing a MythicMob
+    MMKill:
+      # mob name
+      CustomNameHere:
+        # base income
+        income: 7.5
+        # base experience
+        experience: 7.5
     # Killing player with certain job
     custom-kill:
       Woodcutter:

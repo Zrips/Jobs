@@ -1219,6 +1219,8 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.output.place.none", "%jobname% does not get money for placing blocks.", writer, conf, true);
 	    GetConfigString("command.info.output.kill.info", "Kill", writer, conf, true);
 	    GetConfigString("command.info.output.kill.none", "%jobname% does not get money for killing monsters.", writer, conf, true);
+	    GetConfigString("command.info.output.mmkill.info", "MMKill", writer, conf, true);
+	    GetConfigString("command.info.output.mmkill.none", "%jobname% does not get money for killing Mythic monsters.", writer, conf, true);
 	    GetConfigString("command.info.output.fish.info", "Fish", writer, conf, true);
 	    GetConfigString("command.info.output.fish.none", "%jobname% does not get money from fishing.", writer, conf, true);
 	    GetConfigString("command.info.output.craft.info", "Craft", writer, conf, true);
