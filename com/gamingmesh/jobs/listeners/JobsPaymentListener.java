@@ -19,7 +19,6 @@
 package com.gamingmesh.jobs.listeners;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -982,8 +981,7 @@ public class JobsPaymentListener implements Listener {
 
 	double closest = 30.0;
 	Player player = null;
-	Collection<? extends Player> OnlinePLayers = Bukkit.getOnlinePlayers();
-	for (Player i : OnlinePLayers) {
+	for (Player i : Bukkit.getOnlinePlayers()) {
 	    if (i.getWorld().getName().equals(animal.getWorld().getName())) {
 		double dist = i.getLocation().distance(animal.getLocation());
 		if (closest > dist) {

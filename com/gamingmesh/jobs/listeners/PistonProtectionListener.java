@@ -17,105 +17,105 @@ import com.gamingmesh.jobs.stuff.ActionBar;
 
 public class PistonProtectionListener implements Listener {
 
-	@SuppressWarnings("unused")
-	private JobsPlugin plugin;
+    @SuppressWarnings("unused")
+    private JobsPlugin plugin;
 
-	public PistonProtectionListener(JobsPlugin plugin) {
-		this.plugin = plugin;
-	}
+    public PistonProtectionListener(JobsPlugin plugin) {
+	this.plugin = plugin;
+    }
 
-	@SuppressWarnings("deprecation")
-	public static boolean CheckBlock(Block block) {
-		for (String BlockId : ConfigManager.getJobsConfiguration().restrictedBlocks) {
-			if (BlockId.equalsIgnoreCase(String.valueOf(block.getTypeId()))) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@SuppressWarnings("deprecation")
-	public static boolean CheckPlaceBlock(Block block) {
-		for (int BlockId : ConfigManager.getJobsConfiguration().restrictedPlaceBlocksTimer) {
-			if (BlockId == block.getTypeId()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@SuppressWarnings("deprecation")
-	public static boolean CheckVegy(Block block) {
-		for (String ConfigOneBlock : ConfigManager.getJobsConfiguration().restrictedBlocksTimer) {
-			int ConfigPlacedBlockId = Integer.valueOf(ConfigOneBlock.split("-")[0]);
-			if (block.getTypeId() == ConfigPlacedBlockId) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@SuppressWarnings("deprecation")
-	public static boolean checkVegybreak(Block block, Player player) {
-		for (String ConfigOneBlock : ConfigManager.getJobsConfiguration().restrictedBlocksTimer) {
-			int ConfigPlacedBlockId = Integer.valueOf(ConfigOneBlock.split("-")[0]);
-			if (block.getTypeId() == ConfigPlacedBlockId) {
-				if (CheckVegyTimer(block, Integer.valueOf(ConfigOneBlock.split("-")[1]), player)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public static boolean CheckVegyTimer(Block block, int time, Player player) {
-		long currentTime = System.currentTimeMillis();
-		if (!block.hasMetadata(JobsPaymentListener.VegyMetadata))
-			return false;
-		long BlockTime = block.getMetadata(JobsPaymentListener.VegyMetadata).get(0).asLong();
-
-		if (currentTime >= BlockTime + time * 1000) {
-			return false;
-		}
-
-		int sec = Math.round((((BlockTime + time * 1000) - currentTime)) / 1000);
-
-		ActionBar.send(player, Language.getMessage("message.blocktimer").replace("[time]", String.valueOf(sec)));
+    @SuppressWarnings("deprecation")
+    public static boolean CheckBlock(Block block) {
+	for (String BlockId : ConfigManager.getJobsConfiguration().restrictedBlocks) {
+	    if (BlockId.equalsIgnoreCase(String.valueOf(block.getTypeId()))) {
 		return true;
+	    }
 	}
+	return false;
+    }
 
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-	public static void OnBlockMove(BlockPistonExtendEvent event) {
-		if (event.isCancelled())
-			return;
+    @SuppressWarnings("deprecation")
+    public static boolean CheckPlaceBlock(Block block) {
+	for (int BlockId : ConfigManager.getJobsConfiguration().restrictedPlaceBlocksTimer) {
+	    if (BlockId == block.getTypeId()) {
+		return true;
+	    }
+	}
+	return false;
+    }
 
-		if (!ConfigManager.getJobsConfiguration().useBlockPiston)
-			return;
+    @SuppressWarnings("deprecation")
+    public static boolean CheckVegy(Block block) {
+	for (String ConfigOneBlock : ConfigManager.getJobsConfiguration().restrictedBlocksTimer) {
+	    int ConfigPlacedBlockId = Integer.valueOf(ConfigOneBlock.split("-")[0]);
+	    if (block.getTypeId() == ConfigPlacedBlockId) {
+		return true;
+	    }
+	}
+	return false;
+    }
 
-		List<Block> block = event.getBlocks();
-		for (Block OneBlock : block) {
-			if (CheckBlock(OneBlock)) {
-				event.setCancelled(true);
-				break;
-			}
+    @SuppressWarnings("deprecation")
+    public static boolean checkVegybreak(Block block, Player player) {
+	for (String ConfigOneBlock : ConfigManager.getJobsConfiguration().restrictedBlocksTimer) {
+	    int ConfigPlacedBlockId = Integer.valueOf(ConfigOneBlock.split("-")[0]);
+	    if (block.getTypeId() == ConfigPlacedBlockId) {
+		if (CheckVegyTimer(block, Integer.valueOf(ConfigOneBlock.split("-")[1]), player)) {
+		    return true;
 		}
+	    }
+	}
+	return false;
+    }
+
+    public static boolean CheckVegyTimer(Block block, int time, Player player) {
+	long currentTime = System.currentTimeMillis();
+	if (!block.hasMetadata(JobsPaymentListener.VegyMetadata))
+	    return false;
+	long BlockTime = block.getMetadata(JobsPaymentListener.VegyMetadata).get(0).asLong();
+
+	if (currentTime >= BlockTime + time * 1000) {
+	    return false;
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public static void OnBlockRetractMove(BlockPistonRetractEvent event) {
+	int sec = Math.round((((BlockTime + time * 1000) - currentTime)) / 1000);
 
-		if (event.isCancelled())
-			return;
+	ActionBar.send(player, Language.getMessage("message.blocktimer").replace("[time]", String.valueOf(sec)));
+	return true;
+    }
 
-		if (!ConfigManager.getJobsConfiguration().useBlockPiston)
-			return;
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public static void OnBlockMove(BlockPistonExtendEvent event) {
+	if (event.isCancelled())
+	    return;
 
-		List<Block> block = event.getBlocks();
-		for (Block OneBlock : block) {
-			if (CheckBlock(OneBlock)) {
-				event.setCancelled(true);
-				break;
-			}
-		}
+	if (!ConfigManager.getJobsConfiguration().useBlockPiston)
+	    return;
+
+	List<Block> block = event.getBlocks();
+	for (Block OneBlock : block) {
+	    if (CheckBlock(OneBlock)) {
+		event.setCancelled(true);
+		break;
+	    }
 	}
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public static void OnBlockRetractMove(BlockPistonRetractEvent event) {
+
+	if (event.isCancelled())
+	    return;
+
+	if (!ConfigManager.getJobsConfiguration().useBlockPiston)
+	    return;
+
+	List<Block> block = JobsPlugin.getNms().getPistonRetractBlocks(event);
+	for (Block OneBlock : block) {
+	    if (CheckBlock(OneBlock)) {
+		event.setCancelled(true);
+		break;
+	    }
+	}
+    }
 }

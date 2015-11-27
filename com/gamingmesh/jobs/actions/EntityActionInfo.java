@@ -19,11 +19,11 @@
 package com.gamingmesh.jobs.actions;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Guardian;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Zombie;
 
+import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
@@ -50,12 +50,8 @@ public class EntityActionInfo extends BaseActionInfo implements ActionInfo {
 		return "ZombieVillager";
 	}
 
-	if (this.entity.getType().toString().toLowerCase().contains("guardian"))
-	    if (this.entity instanceof Guardian) {
-		Guardian guardian = (Guardian) this.entity;
-		if (guardian.isElder())
-		    return "ElderGuardian";
-	    }
+	if (JobsPlugin.getNms().isElderGuardian(this.entity))
+	    return "ElderGuardian";
 
 	return entity.getType().toString();
     }

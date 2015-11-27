@@ -65,37 +65,10 @@ public class JobsListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
-    public void onGuiRightClick(InventoryClickEvent event) {
-	if (GuiTools.GuiList.size() == 0)
-	    return;
-
-	Player player = (Player) event.getWhoClicked();
-
-	if (!GuiTools.GuiList.containsKey(player.getName()))
-	    return;
-
-	if (event.getClick() != ClickType.RIGHT)
-	    return;
-
-	event.setCancelled(true);
-
-	GuiInfoList joblist = GuiTools.GuiList.get(player.getName());
-
-	if (joblist.isJobInfo())
-	    return;
-
-	int slot = event.getRawSlot();
-
-	if (slot < joblist.getJobList().size()) {
-	    Bukkit.dispatchCommand(player, "jobs join " + joblist.getJobList().get(slot).getName());
-	    player.getOpenInventory().getTopInventory().setContents(GuiTools.CreateJobsGUI(player).getContents());
-	}
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onGuiLeftClick(InventoryClickEvent event) {
-	if (GuiTools.GuiList.size() == 0)
+
+	if (GuiTools.GuiList.isEmpty())
 	    return;
 
 	Player player = (Player) event.getWhoClicked();
@@ -105,47 +78,27 @@ public class JobsListener implements Listener {
 
 	event.setCancelled(true);
 
-	if (event.getClick() != ClickType.LEFT)
-	    return;
-
 	GuiInfoList joblist = GuiTools.GuiList.get(player.getName());
-
-	if (joblist.isJobInfo())
-	    return;
 
 	int slot = event.getRawSlot();
 
-	if (slot < joblist.getJobList().size()) {
-	    player.closeInventory();
-	    player.openInventory(GuiTools.CreateJobsSubGUI(player, joblist.getJobList().get(slot)));
-	}
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
-    public void onGuiLeftSubClick(InventoryClickEvent event) {
-	if (GuiTools.GuiList.size() == 0)
-	    return;
-
-	Player player = (Player) event.getWhoClicked();
-
-	if (!GuiTools.GuiList.containsKey(player.getName()))
-	    return;
-
-	event.setCancelled(true);
-
-	if (event.getClick() != ClickType.LEFT)
-	    return;
-
-	GuiInfoList joblist = GuiTools.GuiList.get(player.getName());
-
-	if (!joblist.isJobInfo())
-	    return;
-
-	int slot = event.getRawSlot();
-
-	if (slot == joblist.getbackButton()) {
-	    player.closeInventory();
-	    player.openInventory(GuiTools.CreateJobsGUI(player));
+	if (slot >= 0) {
+	    if (event.getClick() == ClickType.LEFT) {
+		if (!joblist.isJobInfo() && slot < joblist.getJobList().size()) {
+		    player.closeInventory();
+		    player.openInventory(GuiTools.CreateJobsSubGUI(player, joblist.getJobList().get(slot)));
+		} else {
+		    if (slot == joblist.getbackButton()) {
+			player.closeInventory();
+			player.openInventory(GuiTools.CreateJobsGUI(player));
+		    }
+		}
+	    } else if (event.getClick() == ClickType.RIGHT) {
+		if (!joblist.isJobInfo() && slot < joblist.getJobList().size()) {
+		    Bukkit.dispatchCommand(player, "jobs join " + joblist.getJobList().get(slot).getName());
+		    player.getOpenInventory().getTopInventory().setContents(GuiTools.CreateJobsGUI(player).getContents());
+		}
+	    }
 	}
     }
 

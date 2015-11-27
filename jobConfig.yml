@@ -54,6 +54,12 @@ Jobs:
     #   joblevel - the level the player has attained in the job.
     # NOTE: Please take care of the brackets when modifying this equation.
     experience-progression-equation: baseexperience*((1.05)^(joblevel-1))
+    # GUI icon information when using GUI function
+    Gui:
+    # id of block
+      Id: 17
+    # data of block, usualy its 0, but in example Diorite will have id of 1 and data of 3
+      Data: 2
     ########################################################################
     # Section used to configure what items the job gets paid for, how much
     # they get paid and how much experience they gain.

@@ -87,7 +87,7 @@ public class JobsConfiguration {
     public boolean fixAtMaxLevel, ToggleActionBar, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAcountChat,
 	EmptyServerAcountActionBar, JobsToggleEnabled, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	useGlobalBoostScheduler;
+	useGlobalBoostScheduler, JobsGUIOpenOnBrowse,JobsGUIOpenOnJoin;
     public Integer levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
 	SoundTitleChangePitch, ToplistInScoreboardInterval;
     public double BoostExp;
@@ -625,6 +625,11 @@ public class JobsConfiguration {
 	writer.addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show penalty and bonus in jobs browse window. Only works if this feature is enabled");
 	ShowPenaltyBonus = getBoolean("JobsBrowse.ShowPenaltyBonus", true, config, writer);
 
+	writer.addComment("JobsGUI.OpenOnBrowse", "Do you want to show GUI when performing /jobs browse command");
+	JobsGUIOpenOnBrowse = getBoolean("JobsGUI.OpenOnBrowse", true, config, writer);
+	writer.addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show GUI when performing /jobs join command");
+	JobsGUIOpenOnJoin = getBoolean("JobsGUI.OpenOnJoin", true, config, writer);
+	
 	writer.addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
 	useGlobalBoostScheduler = getBoolean("Schedule.Boost.Enable", false, config, writer);
 
@@ -1213,6 +1218,14 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.help.actions", "&eValid actions are: &f%actions%", writer, conf, true);
 	    GetConfigString("command.info.help.max", " - &emax level:&f ", writer, conf, true);
 	    GetConfigString("command.info.help.material", "&7%material%", writer, conf, true);
+
+	    GetConfigString("command.info.gui.actions", "&eValid actions are:", writer, conf, true);
+	    GetConfigString("command.info.gui.leftClick", "&eLeft Click for more info", writer, conf, true);
+	    GetConfigString("command.info.gui.rightClick", "&eRight click to join job", writer, conf, true);
+	    GetConfigString("command.info.gui.leftSlots", "&eLeft slots:&f ", writer, conf, true);
+	    GetConfigString("command.info.gui.working", "&2&nAlready working", writer, conf, true);
+	    GetConfigString("command.info.gui.max", "&eMax level:&f ", writer, conf, true);
+	    
 	    GetConfigString("command.info.output.break.info", "Break", writer, conf, true);
 	    GetConfigString("command.info.output.break.none", "%jobname% does not get money for breaking blocks.", writer, conf, true);
 	    GetConfigString("command.info.output.place.info", "Place", writer, conf, true);

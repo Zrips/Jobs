@@ -1,5 +1,5 @@
 /**
- * Jobs Plugin for Bukkit
+  * Jobs Plugin for Bukkit
  * Copyright (C) 2011 Zak Ford <zak.j.ford@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -224,8 +224,16 @@ public class JobsCommands implements CommandExecutor {
 	if (!(sender instanceof Player))
 	    return false;
 
-	if (args.length < 1) {
+	if (args.length != 1 && args.length != 0) {
 	    sendUsage(sender, "join");
+	    return true;
+	}
+
+	if (args.length == 0) {
+	    if (sender instanceof Player && ConfigManager.getJobsConfiguration().JobsGUIOpenOnJoin)
+		((Player) sender).openInventory(GuiTools.CreateJobsGUI((Player) sender));
+	    else
+		return false;
 	    return true;
 	}
 
@@ -644,7 +652,7 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
-	if (sender instanceof Player) {
+	if (sender instanceof Player && ConfigManager.getJobsConfiguration().JobsGUIOpenOnBrowse) {
 	    ((Player) sender).openInventory(GuiTools.CreateJobsGUI((Player) sender));
 	}
 
@@ -1374,8 +1382,8 @@ public class JobsCommands implements CommandExecutor {
 	JobsPlayer JPlayer = null;
 	if (args.length == 0)
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
-	else if (args.length == 1 ) {
-	    if (!sender.hasPermission("jobs.commands.log.others")){
+	else if (args.length == 1) {
+	    if (!sender.hasPermission("jobs.commands.log.others")) {
 		sender.sendMessage(Language.getMessage("command.error.permission"));
 		return true;
 	    }

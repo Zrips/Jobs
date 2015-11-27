@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
@@ -50,9 +51,51 @@ public class JobsPlugin extends JavaPlugin {
     public static CoreProtectAPI CPAPI;
     public static MythicMobsAPI MMAPI;
     public static boolean CPPresent = false;
+    private static NMS nms;
+
+    public static NMS getNms() {
+	return nms;
+    }
 
     @Override
     public void onEnable() {
+
+	String packageName = getServer().getClass().getPackage().getName();
+
+	String[] packageSplit = packageName.split("\\.");
+	String version = packageSplit[packageSplit.length - 1].split("(?<=\\G.{4})")[0];
+	try {
+	    Class<?> nmsClass;
+	    nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + version);
+	    if (NMS.class.isAssignableFrom(nmsClass)) {
+		nms = (NMS) nmsClass.getConstructor().newInstance();
+	    } else {
+		System.out.println("Something went wrong, please note down version and contact author v:" + version);
+		this.setEnabled(false);
+	    }
+	} catch (ClassNotFoundException e) {
+	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + version);
+	    this.setEnabled(false);
+	} catch (InstantiationException e) {
+	    e.printStackTrace();
+	    this.setEnabled(false);
+	} catch (IllegalAccessException e) {
+	    e.printStackTrace();
+	    this.setEnabled(false);
+	} catch (IllegalArgumentException e) {
+	    e.printStackTrace();
+	    this.setEnabled(false);
+	} catch (InvocationTargetException e) {
+	    e.printStackTrace();
+	    this.setEnabled(false);
+	} catch (NoSuchMethodException e) {
+	    e.printStackTrace();
+	    this.setEnabled(false);
+	} catch (SecurityException e) {
+	    e.printStackTrace();
+	    this.setEnabled(false);
+	}
+
 	instance = this;
 	OfflinePlayerList.fillList();
 	YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
