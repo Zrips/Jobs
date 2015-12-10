@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -80,11 +81,14 @@ public abstract class JobsDAO {
 
 	    checkUpdate4();
 	    checkUpdate5();
-	    
+
 	    if (version <= 5)
 		checkUpdate6();
 
-	    version = 6;
+	    if (version <= 6)
+		checkUpdate7();
+
+	    version = 7;
 	} finally {
 	    updateSchemaVersion(version);
 	}
@@ -101,6 +105,8 @@ public abstract class JobsDAO {
     protected abstract void checkUpdate5() throws SQLException;
 
     protected abstract void checkUpdate6() throws SQLException;
+
+    protected abstract void checkUpdate7() throws SQLException;
 
     /**
      * Gets the database prefix
@@ -122,7 +128,7 @@ public abstract class JobsDAO {
 	    return jobs;
 	try {
 	    PreparedStatement prest = conn.prepareStatement("SELECT `player_uuid`, `job`, `level`, `experience` FROM `" + prefix + "jobs` WHERE `player_uuid` = ?;");
-	    prest.setBytes(1, UUIDUtil.toBytes(player.getUniqueId()));
+	    prest.setString(1, player.getUniqueId().toString());
 	    ResultSet res = prest.executeQuery();
 	    while (res.next()) {
 		jobs.add(new JobsDAOData(player.getUniqueId(), res.getString(2), res.getInt(3), res.getInt(4)));
@@ -225,7 +231,7 @@ public abstract class JobsDAO {
 	    }
 	    PreparedStatement prest = conn.prepareStatement("INSERT INTO `" + prefix
 		+ "jobs` (`player_uuid`, `username`, `job`, `level`, `experience`) VALUES (?, ?, ?, ?, ?);");
-	    prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+	    prest.setString(1, jPlayer.getPlayerUUID().toString());
 	    prest.setString(2, jPlayer.getUserName());
 	    prest.setString(3, job.getName());
 	    prest.setInt(4, level);
@@ -291,7 +297,7 @@ public abstract class JobsDAO {
 		i--;
 		Convert convertData = list.get(i);
 		insert.setString(1, convertData.GetName());
-		insert.setBytes(2, UUIDUtil.toBytes(convertData.GetUuid()));
+		insert.setString(2, convertData.GetUuid().toString());
 		insert.setString(3, convertData.GetJobName());
 		insert.setInt(4, convertData.GetLevel());
 		insert.setInt(5, convertData.GetExp());
@@ -322,7 +328,7 @@ public abstract class JobsDAO {
 	    return;
 	try {
 	    PreparedStatement prest = conn.prepareStatement("DELETE FROM `" + prefix + "jobs` WHERE `player_uuid` = ? AND `job` = ?;");
-	    prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+	    prest.setString(1, jPlayer.getPlayerUUID().toString());
 	    prest.setString(2, job.getName());
 	    prest.execute();
 	    prest.close();
@@ -351,7 +357,7 @@ public abstract class JobsDAO {
 	    }
 	    PreparedStatement prest = conn.prepareStatement("INSERT INTO `" + prefix
 		+ "archive` (`player_uuid`, `username`, `job`, `level`, `experience`) VALUES (?, ?, ?, ?, ?);");
-	    prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+	    prest.setString(1, jPlayer.getPlayerUUID().toString());
 	    prest.setString(2, jPlayer.getUserName());
 	    prest.setString(3, job.getName());
 	    prest.setInt(4, level);
@@ -375,7 +381,7 @@ public abstract class JobsDAO {
 	try {
 	    List<Integer> info = new ArrayList<Integer>();
 	    PreparedStatement prest = conn.prepareStatement("SELECT `level`, `experience` FROM `" + prefix + "archive` WHERE `player_uuid` = ? AND `job` = ?;");
-	    prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+	    prest.setString(1, jPlayer.getPlayerUUID().toString());
 	    prest.setString(2, job.getName());
 	    ResultSet res = prest.executeQuery();
 	    if (res.next()) {
@@ -427,7 +433,7 @@ public abstract class JobsDAO {
 
 	    while (res.next()) {
 
-		TopList top = new TopList(res.getString("username"), res.getInt("totallvl"), 0, res.getBytes("player_uuid"));
+		TopList top = new TopList(res.getString("username"), res.getInt("totallvl"), 0, UUID.fromString(res.getString("player_uuid")));
 
 		names.add(top);
 	    }
@@ -452,7 +458,7 @@ public abstract class JobsDAO {
 	try {
 	    List<String> info = new ArrayList<String>();
 	    PreparedStatement prest = conn.prepareStatement("SELECT `job`, `level`, `experience`  FROM `" + prefix + "archive` WHERE `player_uuid` = ?;");
-	    prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+	    prest.setString(1, jPlayer.getPlayerUUID().toString());
 	    ResultSet res = prest.executeQuery();
 	    while (res.next()) {
 
@@ -491,7 +497,7 @@ public abstract class JobsDAO {
 	    return;
 	try {
 	    PreparedStatement prest = conn.prepareStatement("DELETE FROM `" + prefix + "archive` WHERE `player_uuid` = ? AND `job` = ?;");
-	    prest.setBytes(1, UUIDUtil.toBytes(jPlayer.getPlayerUUID()));
+	    prest.setString(1, jPlayer.getPlayerUUID().toString());
 	    prest.setString(2, job.getName());
 	    prest.execute();
 	    prest.close();
@@ -513,7 +519,7 @@ public abstract class JobsDAO {
 	    for (JobProgression progression : player.getJobProgression()) {
 		prest.setInt(1, progression.getLevel());
 		prest.setInt(2, (int) progression.getExperience());
-		prest.setBytes(3, UUIDUtil.toBytes(player.getPlayerUUID()));
+		prest.setString(3, player.getPlayerUUID().toString());
 		prest.setString(4, progression.getJob().getName());
 		prest.execute();
 	    }
@@ -544,7 +550,7 @@ public abstract class JobsDAO {
 		    prest.setDouble(2, one.getValue().getMoney());
 		    prest.setDouble(3, one.getValue().getExp());
 
-		    prest.setBytes(4, UUIDUtil.toBytes(player.getPlayerUUID()));
+		    prest.setString(4, player.getPlayerUUID().toString());
 		    prest.setInt(5, log.getDate());
 		    prest.setString(6, log.getActionType());
 		    prest.setString(7, one.getKey());
@@ -561,7 +567,7 @@ public abstract class JobsDAO {
 
 		    one.getValue().setNewEntry(false);
 
-		    prest.setBytes(1, UUIDUtil.toBytes(player.getPlayerUUID()));
+		    prest.setString(1, player.getPlayerUUID().toString());
 		    prest.setString(2, player.getUserName());
 		    prest.setInt(3, log.getDate());
 		    prest.setString(4, log.getActionType());
@@ -592,7 +598,7 @@ public abstract class JobsDAO {
 
 	    PreparedStatement prest = conn.prepareStatement("SELECT `player_uuid`, `username`, `time`, `action`, `itemname`, `count`, `money`, `exp` FROM `" + prefix
 		+ "log` WHERE `player_uuid` = ?  AND `time` = ? ;");
-	    prest.setBytes(1, UUIDUtil.toBytes(player.getPlayerUUID()));
+	    prest.setString(1, player.getPlayerUUID().toString());
 	    prest.setInt(2, time);
 	    ResultSet res = prest.executeQuery();
 	    while (res.next()) {
@@ -659,10 +665,10 @@ public abstract class JobsDAO {
 		    Job job = Jobs.getJob(jobsname);
 		    if (job != null) {
 			JobProgression prog = jobsinfo.getJobProgression(job);
-			jobs.add(new TopList(player.getName(), prog.getLevel(), (int) prog.getExperience(), UUIDUtil.toBytes(player.getUniqueId())));
+			jobs.add(new TopList(player.getName(), prog.getLevel(), (int) prog.getExperience(), player.getUniqueId()));
 		    }
 		} else
-		    jobs.add(new TopList(res.getString(1), res.getInt(2), res.getInt(3), res.getBytes(4)));
+		    jobs.add(new TopList(res.getString(1), res.getInt(2), res.getInt(3), UUID.fromString(res.getString(4))));
 	    }
 	    res.close();
 	    prest.close();

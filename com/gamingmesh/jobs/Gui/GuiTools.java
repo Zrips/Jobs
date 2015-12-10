@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.Gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class GuiTools {
 
 	List<JobProgression> pJobs = JPlayer.getJobProgression();
 
-	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, "Pick your job!");
+	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, Language.getMessage("command.info.gui.pickjob"));
 
 	for (int i = 0; i < JobsList.size(); i++) {
 
@@ -92,16 +93,17 @@ public class GuiTools {
 		else
 		    Lore.add(Language.getMessage("command.browse.output.bonus").replace("[amount]", String.valueOf((int) (job.getBonus() * 100) / 100.0)));
 
-	    Lore.add(job.getDescription());
+	    Lore.addAll(Arrays.asList(job.getDescription().split("/n")));
 
 	    if (job.getMaxSlots() != null)
-		Lore.add(Language.getMessage("command.info.gui.leftSlots") + ((job.getMaxSlots() - Jobs.getUsedSlots(job)) > 0 ? (job.getMaxSlots() - Jobs.getUsedSlots(job)) : 0));
+		Lore.add(Language.getMessage("command.info.gui.leftSlots") + ((job.getMaxSlots() - Jobs.getUsedSlots(job)) > 0 ? (job.getMaxSlots() - Jobs.getUsedSlots(
+		    job)) : 0));
 
 	    Lore.add(Language.getMessage("command.info.gui.actions"));
 	    for (ActionType actionType : ActionType.values()) {
 		List<JobInfo> info = job.getJobInfo(actionType);
 		if (info != null && !info.isEmpty()) {
-		    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + actionType.getName()));
+		    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + Language.getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info")));
 		}
 	    }
 
@@ -227,7 +229,7 @@ public class GuiTools {
 //	    backButton = 53;
 //	}
 
-	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, job.getName() + " Info!");
+	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, Language.getMessage("command.info.gui.jobinfo").replace("[jobname]", job.getName()));
 
 	for (int i1 = 0; i1 < items.size(); i1++) {
 	    GuiInv.setItem(i1, items.get(i1));

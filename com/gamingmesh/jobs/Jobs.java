@@ -341,7 +341,8 @@ public class Jobs {
 	    paymentLimit.put(playername, data);
 	} else {
 	    PaymentData data = paymentLimit.get(playername);
-	    if (data.IsReachedMoneyLimit(ConfigManager.getJobsConfiguration().EconomyLimitTimeLimit, ConfigManager.getJobsConfiguration().EconomyLimitMoneyLimit)) {
+	    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(player);
+	    if (data.IsReachedMoneyLimit(ConfigManager.getJobsConfiguration().EconomyLimitTimeLimit, JPlayer.getMoneyLimit())) {
 		if (player.isOnline() && !data.Informed && !data.isReseted()) {
 		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedlimit"));
 		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedlimit2"));
@@ -379,7 +380,8 @@ public class Jobs {
 	    ExpLimit.put(playername, data);
 	} else {
 	    PaymentData data = ExpLimit.get(playername);
-	    if (data.IsReachedExpLimit(ConfigManager.getJobsConfiguration().EconomyExpTimeLimit, ConfigManager.getJobsConfiguration().EconomyExpLimit)) {
+	    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(player);
+	    if (data.IsReachedExpLimit(ConfigManager.getJobsConfiguration().EconomyExpTimeLimit, JPlayer.getExpLimit())) {
 		if (player.isOnline() && !data.Informed && !data.isReseted()) {
 		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedExplimit"));
 		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedExplimit2"));

@@ -1,19 +1,20 @@
 package com.gamingmesh.jobs.container;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.stuff.OfflinePlayerList;
-import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public final class TopList {
     private String player;
     private int level;
     private int exp;
-    private byte[] uuid;
+    private UUID uuid;
 
-    public TopList(String player, int level, int exp, byte[] uuid) {
+    public TopList(String player, int level, int exp, UUID uuid) {
 	this.player = player;
 	this.level = level;
 	this.exp = exp;
@@ -22,11 +23,11 @@ public final class TopList {
 
     public String getPlayerName() {
 	if (this.player == null || this.player == "") {
-	    Player player = Bukkit.getPlayer(UUIDUtil.fromBytes(this.uuid));
+	    Player player = Bukkit.getPlayer(this.uuid);
 	    if (player != null)
 		return player.getName();
 	    else {
-		OfflinePlayer Offlineplayer = OfflinePlayerList.getPlayer(UUIDUtil.fromBytes(this.uuid));
+		OfflinePlayer Offlineplayer = OfflinePlayerList.getPlayer(this.uuid);
 		if (Offlineplayer != null)
 		    return Offlineplayer.getName();
 		else

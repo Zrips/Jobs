@@ -571,6 +571,8 @@ public class PlayerManager {
 	    }
 	    if (jPlayer.isOnline()) {
 		jPlayer.reloadHonorific();
+		jPlayer.reloadMoneyLimit();
+		jPlayer.reloadExpLimit();
 		Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	    }
 	}

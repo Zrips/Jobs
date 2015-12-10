@@ -330,4 +330,105 @@ public class JobsDAOMySQL extends JobsDAO {
 	}
 	executeSQL("ALTER TABLE `" + getPrefix() + "log` MODIFY `itemname` VARCHAR(60);");
     }
+
+    @Override
+    protected synchronized void checkUpdate7() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+
+	Jobs.getPluginLogger().info("Converting byte uuids to string.  This could take a long time!!!");
+
+	// Converting jobs players byte uuid into string
+	executeSQL("CREATE TABLE `" + getPrefix()
+	    + "jobs_temp` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL,`username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+
+	PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "jobs`;");
+	ResultSet rs = pst1.executeQuery();
+	PreparedStatement insert = null;
+	while (rs.next()) {
+
+	    String uuid = UUIDUtil.fromBytes(rs.getBytes("player_uuid")).toString();
+
+	    if (uuid != null) {
+		insert = conn.prepareStatement("INSERT INTO `" + getPrefix()
+		    + "jobs_temp` (`player_uuid`, `username`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?, ?);");
+		insert.setString(1, uuid);
+		insert.setString(2, rs.getString("username"));
+		insert.setString(3, rs.getString("job"));
+		insert.setInt(4, rs.getInt("experience"));
+		insert.setInt(5, rs.getInt("level"));
+		insert.execute();
+	    }
+	}
+	rs.close();
+	if (insert != null)
+	    insert.close();
+
+	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "jobs`;");
+	executeSQL("ALTER TABLE `" + getPrefix() + "jobs_temp` RENAME TO `" + getPrefix() + "jobs`;");
+
+	// Converting archive players byte uuid into string
+	executeSQL("CREATE TABLE `" + getPrefix()
+	    + "archive_temp` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+
+	PreparedStatement pst11 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
+	ResultSet rs1 = pst11.executeQuery();
+	PreparedStatement insert1 = null;
+	while (rs1.next()) {
+
+	    String uuid = UUIDUtil.fromBytes(rs1.getBytes("player_uuid")).toString();
+
+	    if (uuid != null) {
+		insert1 = conn.prepareStatement("INSERT INTO `" + getPrefix()
+		    + "archive_temp` (`player_uuid`, `username`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?, ?);");
+		insert1.setString(1, uuid);
+		insert1.setString(2, rs1.getString("username"));
+		insert1.setString(3, rs1.getString("job"));
+		insert1.setInt(4, rs1.getInt("experience"));
+		insert1.setInt(5, rs1.getInt("level"));
+		insert1.execute();
+	    }
+	}
+	rs1.close();
+	if (insert1 != null)
+	    insert1.close();
+
+	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "archive`;");
+	executeSQL("ALTER TABLE `" + getPrefix() + "archive_temp` RENAME TO `" + getPrefix() + "archive`;");
+
+	// Converting log players byte uuid into string
+	executeSQL("CREATE TABLE `" + getPrefix()
+	    + "log_temp` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+
+	PreparedStatement pst111 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
+	ResultSet rs11 = pst111.executeQuery();
+	PreparedStatement insert11 = null;
+	while (rs11.next()) {
+
+	    String uuid = UUIDUtil.fromBytes(rs11.getBytes("player_uuid")).toString();
+
+	    if (uuid != null) {
+		insert11 = conn.prepareStatement("INSERT INTO `" + getPrefix()
+		    + "log_temp` (`player_uuid`, `username`, `time`, `action`, `itemname`, `count`, `money`, `exp`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+		insert11.setString(1, uuid);
+		insert11.setString(2, rs11.getString("username"));
+		insert11.setLong(3, rs11.getLong("time"));
+		insert11.setString(4, rs11.getString("action"));
+		insert11.setString(5, rs11.getString("itemname"));
+		insert11.setInt(6, rs11.getInt("count"));
+		insert11.setDouble(7, rs11.getDouble("money"));
+		insert11.setDouble(8, rs11.getDouble("exp"));
+		insert11.execute();
+	    }
+	}
+	rs11.close();
+	if (insert11 != null)
+	    insert11.close();
+
+	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
+	executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
+    }
 }

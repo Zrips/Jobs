@@ -83,7 +83,8 @@ public class JobsListener implements Listener {
 	int slot = event.getRawSlot();
 
 	if (slot >= 0) {
-	    if (event.getClick() == ClickType.LEFT) {
+	    if (!ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT ||
+		ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT) {
 		if (!joblist.isJobInfo() && slot < joblist.getJobList().size()) {
 		    player.closeInventory();
 		    player.openInventory(GuiTools.CreateJobsSubGUI(player, joblist.getJobList().get(slot)));
@@ -93,7 +94,8 @@ public class JobsListener implements Listener {
 			player.openInventory(GuiTools.CreateJobsGUI(player));
 		    }
 		}
-	    } else if (event.getClick() == ClickType.RIGHT) {
+	    } else if (!ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
+		ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
 		if (!joblist.isJobInfo() && slot < joblist.getJobList().size()) {
 		    Bukkit.dispatchCommand(player, "jobs join " + joblist.getJobList().get(slot).getName());
 		    player.getOpenInventory().getTopInventory().setContents(GuiTools.CreateJobsGUI(player).getContents());

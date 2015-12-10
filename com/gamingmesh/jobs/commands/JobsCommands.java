@@ -643,7 +643,7 @@ public class JobsCommands implements CommandExecutor {
 
 	    lines.add(builder.toString());
 	    if (!job.getDescription().isEmpty()) {
-		lines.add("  - " + job.getDescription());
+		lines.add("  - " + job.getDescription().replace("/n", ""));
 	    }
 	}
 
@@ -656,11 +656,13 @@ public class JobsCommands implements CommandExecutor {
 	    ((Player) sender).openInventory(GuiTools.CreateJobsGUI((Player) sender));
 	}
 
-	sender.sendMessage(Language.getMessage("command.browse.output.header"));
-	for (String line : lines) {
-	    sender.sendMessage(line);
+	if (ConfigManager.getJobsConfiguration().JobsGUIShowChatBrowse) {
+	    sender.sendMessage(Language.getMessage("command.browse.output.header"));
+	    for (String line : lines) {
+		sender.sendMessage(line);
+	    }
+	    sender.sendMessage(Language.getMessage("command.browse.output.footer"));
 	}
-	sender.sendMessage(Language.getMessage("command.browse.output.footer"));
 	return true;
     }
 
@@ -1268,6 +1270,7 @@ public class JobsCommands implements CommandExecutor {
 	    player.sendMessage(Language.getMessage("command.limit.output.notenabled"));
 	    return true;
 	}
+	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
 	String playername = player.getName();
 
@@ -1283,8 +1286,8 @@ public class JobsCommands implements CommandExecutor {
 		player.sendMessage(lefttimemessage);
 
 		String message = Language.getMessage("command.limit.output.moneylimit");
-		message = message.replace("%money%", String.valueOf(data.GetAmountBylimit(ConfigManager.getJobsConfiguration().EconomyLimitMoneyLimit)));
-		message = message.replace("%totalmoney%", String.valueOf(ConfigManager.getJobsConfiguration().EconomyLimitMoneyLimit));
+		message = message.replace("%money%", String.valueOf(data.GetAmountBylimit(JPlayer.getMoneyLimit())));
+		message = message.replace("%totalmoney%", String.valueOf(JPlayer.getMoneyLimit()));
 		player.sendMessage(message);
 
 	    } else {
@@ -1315,7 +1318,7 @@ public class JobsCommands implements CommandExecutor {
 		player.sendMessage(message);
 
 		message = Language.getMessage("command.limit.output.moneylimit").replace("%money%", "0.0");
-		message = message.replace("%totalmoney%", String.valueOf(ConfigManager.getJobsConfiguration().EconomyLimitMoneyLimit));
+		message = message.replace("%totalmoney%", String.valueOf(JPlayer.getMoneyLimit()));
 		player.sendMessage(message);
 	    }
 
@@ -1330,8 +1333,8 @@ public class JobsCommands implements CommandExecutor {
 		player.sendMessage(lefttimemessage);
 
 		String message = Language.getMessage("command.limit.output.explimit");
-		message = message.replace("%exp%", String.valueOf(data.GetExpBylimit(ConfigManager.getJobsConfiguration().EconomyExpLimit)));
-		message = message.replace("%totalexp%", String.valueOf(ConfigManager.getJobsConfiguration().EconomyExpLimit));
+		message = message.replace("%exp%", String.valueOf(data.GetExpBylimit(JPlayer.getExpLimit())));
+		message = message.replace("%totalexp%", String.valueOf(JPlayer.getExpLimit()));
 		player.sendMessage(message);
 
 	    } else {
@@ -1362,7 +1365,7 @@ public class JobsCommands implements CommandExecutor {
 		player.sendMessage(message);
 
 		message = Language.getMessage("command.limit.output.explimit").replace("%exp%", "0.0");
-		message = message.replace("%totalexp%", String.valueOf(ConfigManager.getJobsConfiguration().EconomyExpLimit));
+		message = message.replace("%totalexp%", String.valueOf(JPlayer.getExpLimit()));
 		player.sendMessage(message);
 	    }
 

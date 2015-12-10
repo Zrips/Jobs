@@ -30,6 +30,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
+import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Perm;
 
@@ -50,6 +51,9 @@ public class JobsPlayer {
 
     private double VipSpawnerMultiplier = -1;
 
+    private int MoneyLimit = 0;
+    private int ExpLimit = 0;
+
     // save lock
 //    public final Object saveLock = new Object();
 
@@ -67,23 +71,25 @@ public class JobsPlayer {
 	jPlayer.playerUUID = player.getUniqueId();
 	List<JobsDAOData> list = dao.getAllJobs(player);
 //	synchronized (jPlayer.saveLock) {
-	    jPlayer.progression.clear();
-	    for (JobsDAOData jobdata : list) {
-		if (Jobs.getJob(jobdata.getJobName()) == null)
-		    continue;
-		// add the job
-		Job job = Jobs.getJob(jobdata.getJobName());
-		if (job == null)
-		    continue;
+	jPlayer.progression.clear();
+	for (JobsDAOData jobdata : list) {
+	    if (Jobs.getJob(jobdata.getJobName()) == null)
+		continue;
+	    // add the job
+	    Job job = Jobs.getJob(jobdata.getJobName());
+	    if (job == null)
+		continue;
 
-		// create the progression object
-		JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1);
-		// calculate the max level
-		// add the progression level.
-		jPlayer.progression.add(jobProgression);
+	    // create the progression object
+	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1);
+	    // calculate the max level
+	    // add the progression level.
+	    jPlayer.progression.add(jobProgression);
 
-	    }
-	    jPlayer.reloadMaxExperience();
+	}
+	jPlayer.reloadMaxExperience();
+	jPlayer.reloadMoneyLimit();
+	jPlayer.reloadExpLimit();
 //	}
 	return jPlayer;
     }
@@ -163,6 +169,40 @@ public class JobsPlayer {
     }
 
     /**
+     * Reloads money limit for this player.
+     */
+    public void reloadMoneyLimit() {
+	int TotalLevel = 0;
+	for (JobProgression prog : progression) {
+	    TotalLevel += prog.getLevel();
+	}
+	Parser eq = ConfigManager.getJobsConfiguration().maxMoneyEquation;
+	eq.setVariable("totallevel", TotalLevel);
+	MoneyLimit = (int) eq.getValue();
+    }
+
+    /**
+     * Reloads exp limit for this player.
+     */
+    public void reloadExpLimit() {
+	int TotalLevel = 0;
+	for (JobProgression prog : progression) {
+	    TotalLevel += prog.getLevel();
+	}
+	Parser eq = ConfigManager.getJobsConfiguration().maxExpEquation;
+	eq.setVariable("totallevel", TotalLevel);
+	ExpLimit = (int) eq.getValue();
+    }
+
+    public int getMoneyLimit() {
+	return this.MoneyLimit;
+    }
+
+    public int getExpLimit() {
+	return this.ExpLimit;
+    }
+
+    /**
      * Get the list of job progressions
      * @return the list of job progressions
      */
@@ -218,23 +258,25 @@ public class JobsPlayer {
      */
     public boolean joinJob(Job job, JobsPlayer jPlayer) {
 //	synchronized (saveLock) {
-	    if (!isInJob(job)) {
-		int level = 1;
-		int exp = 0;
-		if (Jobs.getJobsDAO().checkArchive(jPlayer, job).size() > 0) {
-		    List<Integer> info = Jobs.getJobsDAO().checkArchive(jPlayer, job);
-		    level = info.get(0);
-		    //exp = info.get(1);
-		    Jobs.getJobsDAO().deleteArchive(jPlayer, job);
-		}
-
-		progression.add(new JobProgression(job, this, level, exp, -1, -1));
-		reloadMaxExperience();
-		reloadHonorific();
-		Jobs.getPermissionHandler().recalculatePermissions(this);
-		return true;
+	if (!isInJob(job)) {
+	    int level = 1;
+	    int exp = 0;
+	    if (Jobs.getJobsDAO().checkArchive(jPlayer, job).size() > 0) {
+		List<Integer> info = Jobs.getJobsDAO().checkArchive(jPlayer, job);
+		level = info.get(0);
+		//exp = info.get(1);
+		Jobs.getJobsDAO().deleteArchive(jPlayer, job);
 	    }
-	    return false;
+
+	    progression.add(new JobProgression(job, this, level, exp, -1, -1));
+	    reloadMaxExperience();
+	    reloadMoneyLimit();
+	    reloadExpLimit();
+	    reloadHonorific();
+	    Jobs.getPermissionHandler().recalculatePermissions(this);
+	    return true;
+	}
+	return false;
 //	}
     }
 
@@ -244,15 +286,17 @@ public class JobsPlayer {
      */
     public boolean leaveJob(Job job) {
 //	synchronized (saveLock) {
-	    JobProgression prog = getJobProgression(job);
-	    if (prog != null) {
-		progression.remove(prog);
-		reloadMaxExperience();
-		reloadHonorific();
-		Jobs.getPermissionHandler().recalculatePermissions(this);
-		return true;
-	    }
-	    return false;
+	JobProgression prog = getJobProgression(job);
+	if (prog != null) {
+	    progression.remove(prog);
+	    reloadMaxExperience();
+	    reloadMoneyLimit();
+	    reloadExpLimit();
+	    reloadHonorific();
+	    Jobs.getPermissionHandler().recalculatePermissions(this);
+	    return true;
+	}
+	return false;
 //	}
     }
 
@@ -262,11 +306,11 @@ public class JobsPlayer {
      */
     public boolean leaveAllJobs() {
 //	synchronized (saveLock) {
-	    progression.clear();
-	    reloadHonorific();
-	    Jobs.getPermissionHandler().recalculatePermissions(this);
-	    ;
-	    return true;
+	progression.clear();
+	reloadHonorific();
+	Jobs.getPermissionHandler().recalculatePermissions(this);
+	;
+	return true;
 //	}
     }
 
@@ -277,22 +321,22 @@ public class JobsPlayer {
      */
     public void promoteJob(Job job, int levels, JobsPlayer player) {
 //	synchronized (saveLock) {
-	    JobProgression prog = getJobProgression(job);
-	    if (prog == null)
-		return;
-	    if (levels <= 0)
-		return;
-	    int newLevel = prog.getLevel() + levels;
+	JobProgression prog = getJobProgression(job);
+	if (prog == null)
+	    return;
+	if (levels <= 0)
+	    return;
+	int newLevel = prog.getLevel() + levels;
 
-	    int maxLevel = job.getMaxLevel();
+	int maxLevel = job.getMaxLevel();
 
-	    if (player.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-		maxLevel = job.getVipMaxLevel();
+	if (player.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
+	    maxLevel = job.getVipMaxLevel();
 
-	    if (maxLevel > 0 && newLevel > maxLevel) {
-		newLevel = maxLevel;
-	    }
-	    setLevel(job, newLevel);
+	if (maxLevel > 0 && newLevel > maxLevel) {
+	    newLevel = maxLevel;
+	}
+	setLevel(job, newLevel);
 //	}
     }
 
@@ -303,16 +347,16 @@ public class JobsPlayer {
      */
     public void demoteJob(Job job, int levels) {
 //	synchronized (saveLock) {
-	    JobProgression prog = getJobProgression(job);
-	    if (prog == null)
-		return;
-	    if (levels <= 0)
-		return;
-	    int newLevel = prog.getLevel() - levels;
-	    if (newLevel < 1) {
-		newLevel = 1;
-	    }
-	    setLevel(job, newLevel);
+	JobProgression prog = getJobProgression(job);
+	if (prog == null)
+	    return;
+	if (levels <= 0)
+	    return;
+	int newLevel = prog.getLevel() - levels;
+	if (newLevel < 1) {
+	    newLevel = 1;
+	}
+	setLevel(job, newLevel);
 //	}
     }
 
@@ -323,16 +367,16 @@ public class JobsPlayer {
      */
     private void setLevel(Job job, int level) {
 //	synchronized (saveLock) {
-	    JobProgression prog = getJobProgression(job);
-	    if (prog == null)
-		return;
+	JobProgression prog = getJobProgression(job);
+	if (prog == null)
+	    return;
 
-	    if (level != prog.getLevel()) {
-		prog.setLevel(level);
-		reloadHonorific();
-		Jobs.getPermissionHandler().recalculatePermissions(this);
-		;
-	    }
+	if (level != prog.getLevel()) {
+	    prog.setLevel(level);
+	    reloadHonorific();
+	    Jobs.getPermissionHandler().recalculatePermissions(this);
+	    ;
+	}
 //	}
     }
 
@@ -343,30 +387,32 @@ public class JobsPlayer {
      */
     public boolean transferJob(Job oldjob, Job newjob, JobsPlayer jPlayer) {
 //	synchronized (saveLock) {
-	    if (!isInJob(newjob)) {
-		for (JobProgression prog : progression) {
-		    if (!prog.getJob().equals(oldjob))
-			continue;
+	if (!isInJob(newjob)) {
+	    for (JobProgression prog : progression) {
+		if (!prog.getJob().equals(oldjob))
+		    continue;
 
-		    prog.setJob(newjob);
+		prog.setJob(newjob);
 
-		    int maxLevel = 0;
-		    if (jPlayer.havePermission("jobs." + newjob.getName() + ".vipmaxlevel"))
-			maxLevel = newjob.getVipMaxLevel();
-		    else
-			maxLevel = newjob.getMaxLevel();
+		int maxLevel = 0;
+		if (jPlayer.havePermission("jobs." + newjob.getName() + ".vipmaxlevel"))
+		    maxLevel = newjob.getVipMaxLevel();
+		else
+		    maxLevel = newjob.getMaxLevel();
 
-		    if (newjob.getMaxLevel() > 0 && prog.getLevel() > maxLevel) {
-			prog.setLevel(maxLevel);
-		    }
-		    reloadMaxExperience();
-		    reloadHonorific();
-		    Jobs.getPermissionHandler().recalculatePermissions(this);
-		    ;
-		    return true;
+		if (newjob.getMaxLevel() > 0 && prog.getLevel() > maxLevel) {
+		    prog.setLevel(maxLevel);
 		}
+		reloadMaxExperience();
+		reloadMoneyLimit();
+		reloadExpLimit();
+		reloadHonorific();
+		Jobs.getPermissionHandler().recalculatePermissions(this);
+		;
+		return true;
 	    }
-	    return false;
+	}
+	return false;
 //	}
     }
 

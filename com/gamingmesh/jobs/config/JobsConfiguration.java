@@ -75,7 +75,6 @@ public class JobsConfiguration {
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
 	EnableAnounceMessage, useBlockPiston, useSilkTouchProtection, UseCustomNames, EconomyMoneyStop,
 	EconomyExpStop, UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit;
-    public int EconomyLimitMoneyLimit, EconomyExpLimit;
     public int EconomyLimitTimeLimit, EconomyExpTimeLimit;
     public int EconomyLimitAnnouncmentDelay, EconomyLimitAnnouncmentExpDelay, globalblocktimer, CowMilkingTimer,
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
@@ -87,7 +86,7 @@ public class JobsConfiguration {
     public boolean fixAtMaxLevel, ToggleActionBar, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAcountChat,
 	EmptyServerAcountActionBar, JobsToggleEnabled, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	useGlobalBoostScheduler, JobsGUIOpenOnBrowse,JobsGUIOpenOnJoin;
+	useGlobalBoostScheduler, JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
     public Integer levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
 	SoundTitleChangePitch, ToplistInScoreboardInterval;
     public double BoostExp;
@@ -104,6 +103,8 @@ public class JobsConfiguration {
     public boolean TakeFromPlayersPayment;
 
     public Parser DynamicPaymentEquation;
+    public Parser maxMoneyEquation;
+    public Parser maxExpEquation;
 
     public List<Schedule> BoostSchedule = new ArrayList<Schedule>();
 
@@ -476,7 +477,22 @@ public class JobsConfiguration {
 	EconomyLimitUse = getBoolean("Economy.Limit.Money.Use", false, config, writer);
 	writer.addComment("Economy.Limit.Money.StopWithExp", "Do you want to stop money gain when exp limit reached?");
 	EconomyMoneyStop = getBoolean("Economy.Limit.Money.StopWithExp", false, config, writer);
-	EconomyLimitMoneyLimit = getInt("Economy.Limit.Money.MoneyLimit", 500, config, writer);
+
+	writer.addComment("Economy.Limit.Money.MoneyLimit",
+	    "Equation to calculate max money limit. Option to use totallevel to include players total amount levels of current jobs",
+	    "You can always use simple number to set money limit",
+	    "Default equation is: 500+500*(totallevel/100), this will add 1% from 500 for each level player have",
+	    "So player with 2 jobs with level 15 and 22 will have 685 limit");
+	String MoneyLimit = getString("Economy.Limit.Money.MoneyLimit", "500+500*(totallevel/100)", config, writer);
+	try {
+	    maxMoneyEquation = new Parser(MoneyLimit);
+	    maxMoneyEquation.setVariable("totallevel", 1);
+	    maxMoneyEquation.getValue();
+	} catch (Exception e) {
+	    Jobs.getPluginLogger().warning("MoneyLimit has an invalid value. Disabling money limit!");
+	    EconomyLimitUse = false;
+	}
+
 	writer.addComment("Economy.Limit.Money.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
 	EconomyLimitTimeLimit = getInt("Economy.Limit.Money.TimeLimit", 3600, config, writer);
 	writer.addComment("Economy.Limit.Money.AnnouncmentDelay", "Delay between announcements about reached money limit",
@@ -488,7 +504,21 @@ public class JobsConfiguration {
 	EconomyExpLimitUse = getBoolean("Economy.Limit.Exp.Use", false, config, writer);
 	writer.addComment("Economy.Limit.Exp.StopWithMoney", "Do you want to stop exp gain when money limit reached?");
 	EconomyExpStop = getBoolean("Economy.Limit.Exp.StopWithMoney", false, config, writer);
-	EconomyExpLimit = getInt("Economy.Limit.Exp.Limit", 5000, config, writer);
+
+	writer.addComment("Economy.Limit.Exp.Limit", "Equation to calculate max money limit. Option to use totallevel to include players total amount of current jobs",
+	    "You can always use simple number to set exp limit",
+	    "Default equation is: 5000+5000*(totallevel/100), this will add 1% from 5000 for each level player have",
+	    "So player with 2 jobs with level 15 and 22 will have 6850 limit");
+	String expLimit = getString("Economy.Limit.Exp.Limit", "5000+5000*(totallevel/100)", config, writer);
+	try {
+	    maxExpEquation = new Parser(expLimit);
+	    maxExpEquation.setVariable("totallevel", 1);
+	    maxExpEquation.getValue();
+	} catch (Exception e) {
+	    Jobs.getPluginLogger().warning("ExpLimit has an invalid value. Disabling money limit!");
+	    EconomyExpLimitUse = false;
+	}
+
 	writer.addComment("Economy.Limit.Exp.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
 	EconomyExpTimeLimit = getInt("Economy.Limit.Exp.TimeLimit", 3600, config, writer);
 	writer.addComment("Economy.Limit.Exp.AnnouncmentDelay", "Delay between announcements about reached Exp limit",
@@ -627,9 +657,14 @@ public class JobsConfiguration {
 
 	writer.addComment("JobsGUI.OpenOnBrowse", "Do you want to show GUI when performing /jobs browse command");
 	JobsGUIOpenOnBrowse = getBoolean("JobsGUI.OpenOnBrowse", true, config, writer);
+	writer.addComment("JobsGUI.ShowChatBrowse", "Do you want to show chat information when performing /jobs browse command");
+	JobsGUIShowChatBrowse = getBoolean("JobsGUI.ShowChatBrowse", true, config, writer);
+	writer.addComment("JobsGUI.SwitcheButtons", "With true left mouse button will join job and right will show more info",
+	    "With false left mouse button will show more info, rigth will join job", "Dont forget to adjust locale file");
+	JobsGUISwitcheButtons = getBoolean("JobsGUI.SwitcheButtons", false, config, writer);
 	writer.addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show GUI when performing /jobs join command");
 	JobsGUIOpenOnJoin = getBoolean("JobsGUI.OpenOnJoin", true, config, writer);
-	
+
 	writer.addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
 	useGlobalBoostScheduler = getBoolean("Schedule.Boost.Enable", false, config, writer);
 
@@ -1219,13 +1254,15 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.help.max", " - &emax level:&f ", writer, conf, true);
 	    GetConfigString("command.info.help.material", "&7%material%", writer, conf, true);
 
+	    GetConfigString("command.info.gui.pickjob", "&ePick your job!", writer, conf, true);
+	    GetConfigString("command.info.gui.jobinfo", "&e[jobname] info!", writer, conf, true);
 	    GetConfigString("command.info.gui.actions", "&eValid actions are:", writer, conf, true);
 	    GetConfigString("command.info.gui.leftClick", "&eLeft Click for more info", writer, conf, true);
 	    GetConfigString("command.info.gui.rightClick", "&eRight click to join job", writer, conf, true);
 	    GetConfigString("command.info.gui.leftSlots", "&eLeft slots:&f ", writer, conf, true);
 	    GetConfigString("command.info.gui.working", "&2&nAlready working", writer, conf, true);
 	    GetConfigString("command.info.gui.max", "&eMax level:&f ", writer, conf, true);
-	    
+
 	    GetConfigString("command.info.output.break.info", "Break", writer, conf, true);
 	    GetConfigString("command.info.output.break.none", "%jobname% does not get money for breaking blocks.", writer, conf, true);
 	    GetConfigString("command.info.output.place.info", "Place", writer, conf, true);
@@ -1327,9 +1364,10 @@ public class JobsConfiguration {
 	    GetConfigString("command.glog.help.info", "Shows global statistics.", writer, conf, true);
 	    GetConfigString("command.glog.help.args", "", writer, conf, true);
 	    GetConfigString("command.glog.output.topline", "&7*********************** &6Global statistics &7***********************", writer, conf, true);
-	    GetConfigString("command.glog.output.list", "&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6money: %money% &eexp: %exp%", writer, conf, true);
+	    GetConfigString("command.glog.output.list", "&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6money: %money% &eexp: %exp%", writer, conf,
+		true);
 	    GetConfigString("command.glog.output.bottomline", "&7**************************************************************", writer, conf, true);
-	    
+
 	    GetConfigString("command.transfer.help.info", "Transfer a player's job from an old job to a new job.", writer, conf, true);
 	    GetConfigString("command.transfer.help.args", "[playername] [oldjob] [newjob]", writer, conf, true);
 	    GetConfigString("command.transfer.output.target", "You have been transferred from %oldjobname% to %newjobname%.", writer, conf, true);
