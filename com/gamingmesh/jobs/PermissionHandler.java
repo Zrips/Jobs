@@ -104,7 +104,7 @@ public class PermissionHandler {
 				if (found == false)
 				    ok = false;
 			    }
-			    if (ok = false)
+			    if (ok == false)
 				break;
 
 			    if (oneReq.toLowerCase().contains("p:")) {
