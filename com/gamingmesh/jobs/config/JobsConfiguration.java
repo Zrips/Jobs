@@ -1262,6 +1262,7 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.gui.leftSlots", "&eLeft slots:&f ", writer, conf, true);
 	    GetConfigString("command.info.gui.working", "&2&nAlready working", writer, conf, true);
 	    GetConfigString("command.info.gui.max", "&eMax level:&f ", writer, conf, true);
+	    GetConfigString("command.info.gui.back", "&e<<< Back", writer, conf, true);
 
 	    GetConfigString("command.info.output.break.info", "Break", writer, conf, true);
 	    GetConfigString("command.info.output.break.none", "%jobname% does not get money for breaking blocks.", writer, conf, true);
@@ -1307,6 +1308,9 @@ public class JobsConfiguration {
 	    GetConfigString("command.leave.help.info", "Leave the selected job.", writer, conf, true);
 	    GetConfigString("command.leave.help.args", "[jobname]", writer, conf, true);
 	    GetConfigString("command.leave.success", "You have left the job %jobname%.", writer, conf, true);
+	    
+	    GetConfigString("command.fixnames.help.info", "Tries to fix NULL player names in data base.", writer, conf, true);
+	    GetConfigString("command.fixnames.help.args", "", writer, conf, true);
 
 	    GetConfigString("command.leaveall.help.info", "Leave all your jobs.", writer, conf, true);
 	    GetConfigString("command.leaveall.error.nojobs", "You do not have any jobs to leave!", writer, conf, true);

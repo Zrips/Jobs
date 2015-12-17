@@ -56,7 +56,7 @@ public class Language {
 	 * @param key - the key of the message
 	 * @return the message
 	 */
-	public static String getMessage(String key) {
+    public static String getMessage(String key) {
 		if (customlocale == null || !customlocale.contains(key))
 			return enlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', enlocale.getString(key)) : "Cant find locale";
 		return customlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', customlocale.getString(key)) : "Cant find locale";

@@ -23,15 +23,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Convert;
 import com.gamingmesh.jobs.container.Job;
@@ -40,7 +43,9 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Loging;
+import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
@@ -486,6 +491,70 @@ public abstract class JobsDAO {
 	return null;
     }
 
+    public void fixName(final CommandSender sender) {
+	Bukkit.getScheduler().runTaskAsynchronously(JobsPlugin.instance, new Runnable() {
+	    @Override
+	    public void run() {
+		JobsConnection conn = getConnection();
+		if (conn == null)
+		    return;
+		try {
+		    PreparedStatement prest = conn.prepareStatement("SELECT `player_uuid`, `username`  FROM `" + prefix + "jobs` WHERE `username` IS NULL;");
+		    ResultSet res = prest.executeQuery();
+		    HashMap<String, String> convert = new HashMap<String, String>();
+		    int failed = 0;
+		    while (res.next()) {
+
+			String uuidString = res.getString("player_uuid");
+			if (uuidString == null)
+			    continue;
+
+			UUID uuid = UUID.fromString(uuidString);
+			if (uuid == null)
+			    continue;
+
+			OfflinePlayer player = OfflinePlayerList.getPlayer(uuid);
+
+			if (player == null)
+			    player = Bukkit.getOfflinePlayer(uuid);
+
+			if (player == null)
+			    continue;
+
+			if (player.getName() == null) {
+			    failed++;
+			    continue;
+			}
+
+			convert.put(uuidString, player.getName());
+		    }
+		    res.close();
+		    prest.close();
+
+		    prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `username` = ? WHERE `player_uuid` = ?;");
+
+		    for (Entry<String, String> oneEntry : convert.entrySet()) {
+			prest.setString(1, oneEntry.getValue());
+			prest.setString(2, oneEntry.getKey());
+			prest.execute();
+		    }
+		    if (prest != null)
+			prest.close();
+
+		    sender.sendMessage(ChatColor.GOLD + "[Jobs] Converted " + ChatColor.YELLOW + convert.size() + ChatColor.GOLD + " user names and failed "
+			+ ChatColor.YELLOW + failed + ChatColor.GOLD + " to do so, most likely user data no longer exists in your player data folder");
+
+		    return;
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+
+		return;
+	    }
+	});
+	return;
+    }
+
     /**
      * Delete job from archive
      * @param player - player that wishes to quit the job
@@ -658,7 +727,12 @@ public abstract class JobsDAO {
 	    ResultSet res = prest.executeQuery();
 	    while (res.next()) {
 
-		Player player = Bukkit.getPlayer(res.getString(1));
+		String name = res.getString(1);
+
+		if (name == null)
+		    continue;
+
+		Player player = Bukkit.getPlayer(name);
 		if (player != null) {
 
 		    JobsPlayer jobsinfo = Jobs.getPlayerManager().getJobsPlayer(player);

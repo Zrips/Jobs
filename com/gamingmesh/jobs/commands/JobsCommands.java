@@ -166,6 +166,21 @@ public class JobsCommands implements CommandExecutor {
     }
 
     @JobCommand
+    public boolean fixnames(CommandSender sender, String[] args) throws IOException {
+
+	if (args.length > 0) {
+	    sendUsage(sender, "fixnames");
+	    return true;
+	}
+
+	Jobs.getJobsDAO().fixName(sender);
+
+	sender.sendMessage(ChatColor.GOLD + "[Jobs] Starting name fix proccess, this can take up to minute depending on your data base size.");
+
+	return true;
+    }
+
+    @JobCommand
     public boolean convert(CommandSender sender, String[] args) throws IOException {
 
 	if (!(sender instanceof Player))

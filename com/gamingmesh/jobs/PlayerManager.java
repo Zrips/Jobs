@@ -536,7 +536,7 @@ public class PlayerManager {
     }
 
     private boolean Perm(Player player, String permission) {
-	return player.isPermissionSet(permission);
+	return player.hasPermission(permission);
     }
 
     /**

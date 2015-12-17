@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,6 +27,15 @@ import com.gamingmesh.jobs.stuff.TranslateName;
 public class GuiTools {
 
     public static HashMap<String, GuiInfoList> GuiList = new HashMap<String, GuiInfoList>();
+
+    public static void CloseInventories() {
+	for (Entry<String, GuiInfoList> one : GuiList.entrySet()) {
+	    Player player = Bukkit.getPlayer(one.getKey());
+	    if (player != null) {
+		player.closeInventory();
+	    }
+	}
+    }
 
     public static Inventory CreateJobsGUI(Player player) {
 
@@ -62,7 +72,11 @@ public class GuiTools {
 
 	List<JobProgression> pJobs = JPlayer.getJobProgression();
 
-	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, Language.getMessage("command.info.gui.pickjob"));
+	String title = Language.getMessage("command.info.gui.pickjob");
+	if (title.length() > 32)
+	    title = title.substring(0, 30) + "..";
+
+	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, title);
 
 	for (int i = 0; i < JobsList.size(); i++) {
 
@@ -103,7 +117,8 @@ public class GuiTools {
 	    for (ActionType actionType : ActionType.values()) {
 		List<JobInfo> info = job.getJobInfo(actionType);
 		if (info != null && !info.isEmpty()) {
-		    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + Language.getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info")));
+		    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + Language.getMessage("command.info.output." + actionType.getName().toLowerCase()
+			+ ".info")));
 		}
 	    }
 
@@ -229,7 +244,10 @@ public class GuiTools {
 //	    backButton = 53;
 //	}
 
-	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, Language.getMessage("command.info.gui.jobinfo").replace("[jobname]", job.getName()));
+	String title = Language.getMessage("command.info.gui.jobinfo").replace("[jobname]", job.getName());
+	if (title.length() > 32)
+	    title = title.substring(0, 30) + "..";
+	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, title);
 
 	for (int i1 = 0; i1 < items.size(); i1++) {
 	    GuiInv.setItem(i1, items.get(i1));
@@ -238,7 +256,7 @@ public class GuiTools {
 	ItemStack skull = new ItemStack(Material.JACK_O_LANTERN, 1, (byte) 0);
 
 	ItemMeta skullMeta = skull.getItemMeta();
-	skullMeta.setDisplayName("<<< Back");
+	skullMeta.setDisplayName(Language.getMessage("command.info.gui.back"));
 
 	skull.setItemMeta(skullMeta);
 

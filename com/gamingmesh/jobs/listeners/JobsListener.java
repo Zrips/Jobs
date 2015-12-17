@@ -83,16 +83,16 @@ public class JobsListener implements Listener {
 	int slot = event.getRawSlot();
 
 	if (slot >= 0) {
-	    if (!ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT ||
-		ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT) {
-		if (!joblist.isJobInfo() && slot < joblist.getJobList().size()) {
+	    if (!joblist.isJobInfo() && (!ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT ||
+		ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT)) {
+		if (slot < joblist.getJobList().size()) {
 		    player.closeInventory();
 		    player.openInventory(GuiTools.CreateJobsSubGUI(player, joblist.getJobList().get(slot)));
-		} else {
-		    if (slot == joblist.getbackButton()) {
-			player.closeInventory();
-			player.openInventory(GuiTools.CreateJobsGUI(player));
-		    }
+		}
+	    } else if (joblist.isJobInfo()) {
+		if (slot == joblist.getbackButton()) {
+		    player.closeInventory();
+		    player.openInventory(GuiTools.CreateJobsGUI(player));
 		}
 	    } else if (!ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
 		ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {

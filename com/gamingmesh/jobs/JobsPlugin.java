@@ -20,7 +20,6 @@ package com.gamingmesh.jobs;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import net.elseland.xikage.MythicMobs.MythicMobs;
@@ -32,6 +31,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 
+import com.gamingmesh.jobs.Gui.GuiTools;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.config.JobConfig;
@@ -164,6 +164,7 @@ public class JobsPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+	GuiTools.CloseInventories();
 	Jobs.shutdown();
 	String message = ChatColor.translateAlternateColorCodes('&', "&2Plugin has been disabled succesfully.");
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
