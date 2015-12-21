@@ -78,10 +78,11 @@ public class JobsConfiguration {
     public int EconomyLimitTimeLimit, EconomyExpTimeLimit;
     public int EconomyLimitAnnouncmentDelay, EconomyLimitAnnouncmentExpDelay, globalblocktimer, CowMilkingTimer,
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
-    public Double payNearSpawnerMultiplier, VIPpayNearSpawnerMultiplier, TreeFellerMultiplier, gigaDrillMultiplier, PetPay, VipPetPay;
+    public Double payNearSpawnerMultiplier, VIPpayNearSpawnerMultiplier, TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier, PetPay, VipPetPay;
     public String localeString;
     public boolean useBlockProtection;
     public boolean useBlockTimer;
+    public boolean useMinimumOveralPayment;
     public boolean useBreederFinder, CancelCowMilking;
     public boolean fixAtMaxLevel, ToggleActionBar, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAcountChat,
@@ -90,6 +91,7 @@ public class JobsConfiguration {
     public Integer levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
 	SoundTitleChangePitch, ToplistInScoreboardInterval;
     public double BoostExp;
+    public double MinimumOveralPaymentLimit;
     public double BoostMoney;
     public double DynamicPaymentMaxPenalty;
     public double DynamicPaymentMaxBonus;
@@ -428,8 +430,14 @@ public class JobsConfiguration {
 	    "Setting this too low may cause tick lag.  Increase this to improve economy performance (at the cost of delays in payment)");
 	economyBatchDelay = getInt("economy-batch-delay", 5, config, writer);
 
-	writer.addComment("economy-async", "Enable async economy calls.", "Disabl this if you have issues with payments or your plugin is not thread safe.");
+	writer.addComment("economy-async", "Enable async economy calls.", "Disable this if you have issues with payments or your plugin is not thread safe.");
 	economyAsync = getBoolean("economy-async", true, config, writer);
+
+	writer.addComment("Economy.MinimumOveralPayment.use",
+	    "Determines minimum payment. In example if player uses McMMO treefeller and earns only 20%, but at same time he gets 25% penalty from dynamic payment. He can 'get' negative amount of money",
+	    "This will limit it to particular percentage", "Works only when original payment is above 0");
+	useMinimumOveralPayment = getBoolean("Economy.MinimumOveralPayment.use", true, config, writer);
+	MinimumOveralPaymentLimit = getDouble("Economy.MinimumOveralPayment.limit", 0.1, config, writer);
 
 	writer.addComment("Economy.DynamicPayment.use", "Do you want to use dinamic payment dependent on how many players already working for jobs",
 	    "This can help automaticaly lift up payments for not so popular jobs and lower for most popular ones");
@@ -593,6 +601,9 @@ public class JobsConfiguration {
 	writer.addComment("ExploitProtections.McMMO.gigaDrillMultiplier", "Players will get part of money from braking blocks with gigaDrill ability enabled.",
 	    "0.2 means 20% of original price");
 	gigaDrillMultiplier = getDouble("ExploitProtections.McMMO.gigaDrillMultiplier", 0.2, config, writer);
+	writer.addComment("ExploitProtections.McMMO.superBreakerMultiplier", "Players will get part of money from braking blocks with super breaker ability enabled.",
+	    "0.2 means 20% of original price");
+	superBreakerMultiplier = getDouble("ExploitProtections.McMMO.superBreakerMultiplier", 0.2, config, writer);
 
 	writer.addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime spliting when they are from spawner",
 	    "Protects agains exploiting as new splited slimes is treated as naturaly spawned and not from spawner");

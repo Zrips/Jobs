@@ -528,12 +528,20 @@ public class Jobs {
 		    OfflinePlayer dude = jPlayer.getPlayer();
 
 		    // Calculate income
+
 		    Double amount = income + ((income * multiplier) - income) + ((income * prog.getJob().getMoneyBoost()) - income) + ((income * prog.getMoneyBoost())
 			- income) + itemMoneyBoost + armorMoneyBoost;
 
 		    if (ConfigManager.getJobsConfiguration().useDynamicPayment) {
 			double moneyBonus = (income * (prog.getJob().getBonus() / 100));
 			amount += moneyBonus;
+		    }
+
+		    if (ConfigManager.getJobsConfiguration().useMinimumOveralPayment && income > 0) {
+			double maxLimit = income * ConfigManager.getJobsConfiguration().MinimumOveralPaymentLimit;
+			if (amount < maxLimit) {
+			    amount = maxLimit;
+			}
 		    }
 
 		    // Calculate exp
@@ -543,6 +551,13 @@ public class Jobs {
 		    if (ConfigManager.getJobsConfiguration().useDynamicPayment) {
 			double expBonus = (exp * (prog.getJob().getBonus() / 100));
 			expAmount += expBonus;
+		    }
+
+		    if (ConfigManager.getJobsConfiguration().useMinimumOveralPayment && exp > 0) {
+			double maxLimit = exp * ConfigManager.getJobsConfiguration().MinimumOveralPaymentLimit;
+			if (exp < maxLimit) {
+			    exp = maxLimit;
+			}
 		    }
 
 		    if (!isUnderMoneyLimit(dude, amount)) {
