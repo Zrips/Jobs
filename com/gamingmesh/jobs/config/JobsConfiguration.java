@@ -78,7 +78,7 @@ public class JobsConfiguration {
     public int EconomyLimitTimeLimit, EconomyExpTimeLimit;
     public int EconomyLimitAnnouncmentDelay, EconomyLimitAnnouncmentExpDelay, globalblocktimer, CowMilkingTimer,
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
-    public Double payNearSpawnerMultiplier, VIPpayNearSpawnerMultiplier, TreeFellerMultiplier, PetPay, VipPetPay;
+    public Double payNearSpawnerMultiplier, VIPpayNearSpawnerMultiplier, TreeFellerMultiplier, gigaDrillMultiplier, PetPay, VipPetPay;
     public String localeString;
     public boolean useBlockProtection;
     public boolean useBlockTimer;
@@ -590,6 +590,9 @@ public class JobsConfiguration {
 	writer.addComment("ExploitProtections.McMMO.TreeFellerMultiplier", "Players will get part of money from cutting trees with treefeller ability enabled.",
 	    "0.2 means 20% of original price");
 	TreeFellerMultiplier = getDouble("ExploitProtections.McMMO.TreeFellerMultiplier", 0.2, config, writer);
+	writer.addComment("ExploitProtections.McMMO.gigaDrillMultiplier", "Players will get part of money from braking blocks with gigaDrill ability enabled.",
+	    "0.2 means 20% of original price");
+	gigaDrillMultiplier = getDouble("ExploitProtections.McMMO.gigaDrillMultiplier", 0.2, config, writer);
 
 	writer.addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime spliting when they are from spawner",
 	    "Protects agains exploiting as new splited slimes is treated as naturaly spawned and not from spawner");
@@ -1308,7 +1311,7 @@ public class JobsConfiguration {
 	    GetConfigString("command.leave.help.info", "Leave the selected job.", writer, conf, true);
 	    GetConfigString("command.leave.help.args", "[jobname]", writer, conf, true);
 	    GetConfigString("command.leave.success", "You have left the job %jobname%.", writer, conf, true);
-	    
+
 	    GetConfigString("command.fixnames.help.info", "Tries to fix NULL player names in data base.", writer, conf, true);
 	    GetConfigString("command.fixnames.help.args", "", writer, conf, true);
 

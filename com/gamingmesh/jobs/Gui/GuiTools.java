@@ -166,7 +166,8 @@ public class GuiTools {
 		continue;
 
 	    ArrayList<String> Lore = new ArrayList<String>();
-	    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + actionType.getName()));
+	    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + Language.getMessage("command.info.output." + actionType.getName().toLowerCase()
+		+ ".info")));
 	    int y = 1;
 	    for (int z = 0; z < info.size(); z++) {
 		String itemName = TranslateName.Translate(info.get(z).getName(), info.get(z));
@@ -197,7 +198,8 @@ public class GuiTools {
 
 		    GuiItem = job.getGuiItem();
 		    Lore = new ArrayList<String>();
-		    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + actionType.getName()));
+		    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + Language.getMessage("command.info.output." + actionType.getName().toLowerCase()
+			+ ".info")));
 		    i++;
 		}
 		y++;

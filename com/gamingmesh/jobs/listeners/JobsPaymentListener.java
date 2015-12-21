@@ -312,6 +312,8 @@ public class JobsPaymentListener implements Listener {
 	    if (McMMOlistener.mcMMOPresent)
 		if (AbilityAPI.treeFellerEnabled(player))
 		    multiplier -= (1 - ConfigManager.getJobsConfiguration().TreeFellerMultiplier);
+		else if (AbilityAPI.gigaDrillBreakerEnabled(player))
+		    multiplier -= (1 - ConfigManager.getJobsConfiguration().gigaDrillMultiplier);
 	} catch (IndexOutOfBoundsException e) {
 	}
 
