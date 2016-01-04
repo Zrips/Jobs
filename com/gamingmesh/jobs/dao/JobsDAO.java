@@ -491,6 +491,53 @@ public abstract class JobsDAO {
 	return null;
     }
 
+    public void fixUuid(final CommandSender sender) {
+	Bukkit.getScheduler().runTaskAsynchronously(JobsPlugin.instance, new Runnable() {
+	    @Override
+	    public void run() {
+		JobsConnection conn = getConnection();
+		if (conn == null)
+		    return;
+		try {
+		    PreparedStatement prest = conn.prepareStatement("SELECT `player_uuid`, `username`  FROM `" + prefix + "jobs`;");
+		    ResultSet res = prest.executeQuery();
+		    HashMap<String, String> convert = new HashMap<String, String>();
+		    int failed = 0;
+		    while (res.next()) {
+
+			UUID uuid = OfflinePlayerList.getPlayer(res.getString("username")).getUniqueId();
+			if (uuid == null)
+			    continue;
+
+			convert.put(uuid.toString(), res.getString("username"));
+		    }
+		    res.close();
+		    prest.close();
+
+		    prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `player_uuid` = ? WHERE `username` = ?;");
+
+		    for (Entry<String, String> oneEntry : convert.entrySet()) {
+			prest.setString(1, oneEntry.getKey());
+			prest.setString(2, oneEntry.getValue());
+			prest.execute();
+		    }
+		    if (prest != null)
+			prest.close();
+
+		    sender.sendMessage(ChatColor.GOLD + "[Jobs] Converted " + ChatColor.YELLOW + convert.size() + ChatColor.GOLD + " user uuids and failed "
+			+ ChatColor.YELLOW + failed + ChatColor.GOLD + " to do so, most likely user data no longer exists in your player data folder");
+
+		    return;
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+
+		return;
+	    }
+	});
+	return;
+    }
+
     public void fixName(final CommandSender sender) {
 	Bukkit.getScheduler().runTaskAsynchronously(JobsPlugin.instance, new Runnable() {
 	    @Override

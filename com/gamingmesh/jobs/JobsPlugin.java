@@ -157,7 +157,7 @@ public class JobsPlugin extends JavaPlugin {
 	    ScheduleUtil.scheduler();
 	ScheduleUtil.DateUpdater();
 
-	String message = ChatColor.translateAlternateColorCodes('&', "&2Plugin has been enabled succesfully.");
+	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6Plugin has been enabled succesfully.");
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	console.sendMessage(message);
     }
@@ -166,7 +166,7 @@ public class JobsPlugin extends JavaPlugin {
     public void onDisable() {
 	GuiTools.CloseInventories();
 	Jobs.shutdown();
-	String message = ChatColor.translateAlternateColorCodes('&', "&2Plugin has been disabled succesfully.");
+	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Plugin has been disabled succesfully.");
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	console.sendMessage(message);
     }

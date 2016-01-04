@@ -61,7 +61,7 @@ public class McMMOlistener implements Listener {
 	Plugin McMMO = Bukkit.getPluginManager().getPlugin("mcMMO");
 	if (McMMO != null) {
 	    mcMMOPresent = true;
-	    Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "mcMMO was found - Enabling capabilities.");
+	    Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6mcMMO was found - Enabling capabilities."));
 	    return true;
 	}
 	return false;

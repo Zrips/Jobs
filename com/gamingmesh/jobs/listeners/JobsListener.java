@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -32,6 +33,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -115,7 +118,7 @@ public class JobsListener implements Listener {
 	    GuiTools.GuiList.remove(player.getName());
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
@@ -439,11 +442,36 @@ public class JobsListener implements Listener {
 	event.setFormat(format);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent event) {
 	World world = event.getWorld();
 	PluginManager pm = plugin.getServer().getPluginManager();
 	if (pm.getPermission("jobs.world." + world.getName().toLowerCase()) == null)
 	    pm.addPermission(new Permission("jobs.world." + world.getName().toLowerCase(), PermissionDefault.TRUE));
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onWaterBlockBreak(BlockFromToEvent event) {
+	if (!ConfigManager.getJobsConfiguration().WaterBlockBreake)
+	    return;
+	if (event.getBlock().getType() == Material.STATIONARY_WATER && event.getToBlock().getType() != Material.AIR && event.getToBlock()
+	    .getType() != Material.STATIONARY_WATER && event.getToBlock().getState().hasMetadata(
+		JobsPaymentListener.PlacedBlockMetadata)) {
+	    event.setCancelled(true);
+	}
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onCropGrown(final BlockGrowEvent event) {
+	if (!ConfigManager.getJobsConfiguration().WaterBlockBreake)
+	    return;
+	if (event.getBlock().getState().hasMetadata(JobsPaymentListener.PlacedBlockMetadata)) {
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(JobsPlugin.instance, new Runnable() {
+		public void run() {
+		    event.getBlock().getState().removeMetadata(JobsPaymentListener.PlacedBlockMetadata, plugin);
+		    return;
+		}
+	    }, 1L);
+	}
     }
 }

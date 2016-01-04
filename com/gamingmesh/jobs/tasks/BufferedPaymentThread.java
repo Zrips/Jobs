@@ -26,48 +26,48 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 
 public class BufferedPaymentThread extends Thread {
-	private volatile boolean running = true;
-	private int sleep;
+    private volatile boolean running = true;
+    private int sleep;
 
-	public BufferedPaymentThread(int duration) {
-		super("Jobs-BufferedPaymentThread");
-		this.sleep = duration * 1000;
-	}
+    public BufferedPaymentThread(int duration) {
+	super("Jobs-BufferedPaymentThread");
+	this.sleep = duration * 1000;
+    }
 
-	@Override
-	public void run() {
+    @Override
+    public void run() {
 
-		String message = ChatColor.translateAlternateColorCodes('&', "&2Started buffered payment thread.");
-		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-		console.sendMessage(message);
+	String message = ChatColor.translateAlternateColorCodes('&', "&2Started buffered payment thread.");
+	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	console.sendMessage(message);
 
-		//Jobs.getPluginLogger().info("Started buffered payment thread");
-		while (running) {
-			try {
-				sleep(sleep);
-			} catch (InterruptedException e) {
-				this.running = false;
-				continue;
-			}
-			try {
-				BufferedEconomy economy = Jobs.getEconomy();
-				if (economy != null)
-					economy.payAll();
-			} catch (Throwable t) {
-				t.printStackTrace();
-				message = ChatColor.translateAlternateColorCodes('&', "&cException in BufferedPaymentThread, stopping economy payments!");
-				console.sendMessage(message);
-				//Jobs.getPluginLogger().severe("Exception in BufferedPaymentThread, stopping economy payments!");
-				running = false;
-			}
-		}
-		message = ChatColor.translateAlternateColorCodes('&', "&6Buffered payment thread shutdown.");
-		console.sendMessage(message);
-		//Jobs.getPluginLogger().info("Buffered payment thread shutdown");   
-	}
-
-	public void shutdown() {
+	//Jobs.getPluginLogger().info("Started buffered payment thread");
+	while (running) {
+	    try {
+		sleep(sleep);
+	    } catch (InterruptedException e) {
 		this.running = false;
-		interrupt();
+		continue;
+	    }
+	    try {
+		BufferedEconomy economy = Jobs.getEconomy();
+		if (economy != null)
+		    economy.payAll();
+	    } catch (Throwable t) {
+		t.printStackTrace();
+		message = ChatColor.translateAlternateColorCodes('&', "&cException in BufferedPaymentThread, stopping economy payments!");
+		console.sendMessage(message);
+		//Jobs.getPluginLogger().severe("Exception in BufferedPaymentThread, stopping economy payments!");
+		running = false;
+	    }
 	}
+	message = ChatColor.translateAlternateColorCodes('&', "&6Buffered payment thread shutdown.");
+	console.sendMessage(message);
+	//Jobs.getPluginLogger().info("Buffered payment thread shutdown");   
+    }
+
+    public void shutdown() {
+	this.running = false;
+	interrupt();
+    }
 }

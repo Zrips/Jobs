@@ -74,7 +74,7 @@ public class JobsConfiguration {
     public boolean EconomyLimitUse, EconomyExpLimitUse, PayForRenaming, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
 	EnableAnounceMessage, useBlockPiston, useSilkTouchProtection, UseCustomNames, EconomyMoneyStop,
-	EconomyExpStop, UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit;
+	EconomyExpStop, UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit, WaterBlockBreake;
     public int EconomyLimitTimeLimit, EconomyExpTimeLimit;
     public int EconomyLimitAnnouncmentDelay, EconomyLimitAnnouncmentExpDelay, globalblocktimer, CowMilkingTimer,
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
@@ -611,6 +611,11 @@ public class JobsConfiguration {
 	writer.addComment("ExploitProtections.Spawner.PreventMagmaCubeSplit", "Prevent magmacube spliting when they are from spawner");
 	PreventMagmaCubeSplit = getBoolean("ExploitProtections.Spawner.PreventMagmaCubeSplit", true, config, writer);
 
+	writer.addComment("ExploitProtections.WaterBlockBreake",
+	    "Prevent water braking placed blocks. Protection resets with server restart or after plants grows to next stage with bone powder or naturally",
+	    "For strange reason works only 5 of 10 times, but this is completely enough to prevent exploiting");
+	WaterBlockBreake = getBoolean("ExploitProtections.WaterBlockBreake", true, config, writer);
+
 	writer.addComment("use-breeder-finder", "Breeder finder.",
 	    "If you are not using breeding payment, you can disable this to save little resources. Really little.");
 	useBreederFinder = getBoolean("use-breeder-finder", true, config, writer);
@@ -916,6 +921,35 @@ public class JobsConfiguration {
 	config.addDefault("blockstimer", restrictedBlocksTimer);
 	restrictedBlocksTimer = (ArrayList<String>) config.getStringList("blockstimer");
 	copySetting(config, writer, "blockstimer");
+
+	writer.addComment("PlacedBlockTimer", "Block place protected by timer in sec", "For this to work CoreProtect plugin should be installed");
+	restrictedPlaceBlocksTimer.add(2);
+	restrictedPlaceBlocksTimer.add(3);
+	restrictedPlaceBlocksTimer.add(6);
+	restrictedPlaceBlocksTimer.add(12);
+	restrictedPlaceBlocksTimer.add(18);
+	restrictedPlaceBlocksTimer.add(31);
+	restrictedPlaceBlocksTimer.add(32);
+	restrictedPlaceBlocksTimer.add(37);
+	restrictedPlaceBlocksTimer.add(38);
+	restrictedPlaceBlocksTimer.add(39);
+	restrictedPlaceBlocksTimer.add(40);
+	restrictedPlaceBlocksTimer.add(55);
+	restrictedPlaceBlocksTimer.add(59);
+	restrictedPlaceBlocksTimer.add(80);
+	restrictedPlaceBlocksTimer.add(81);
+	restrictedPlaceBlocksTimer.add(83);
+	restrictedPlaceBlocksTimer.add(103);
+	restrictedPlaceBlocksTimer.add(106);
+	restrictedPlaceBlocksTimer.add(111);
+	restrictedPlaceBlocksTimer.add(141);
+	restrictedPlaceBlocksTimer.add(142);
+	restrictedPlaceBlocksTimer.add(161);
+	restrictedPlaceBlocksTimer.add(171);
+	restrictedPlaceBlocksTimer.add(175);
+	config.addDefault("PlacedBlockTimer", restrictedPlaceBlocksTimer);
+	restrictedPlaceBlocksTimer = (ArrayList<Integer>) config.getIntegerList("PlacedBlockTimer");
+	copySetting(config, writer, "PlacedBlockTimer");
 
 	writer.addComment("PlacedBlockTimer", "Block place protected by timer in sec", "For this to work CoreProtect plugin should be installed");
 	restrictedPlaceBlocksTimer.add(2);
@@ -1378,6 +1412,7 @@ public class JobsConfiguration {
 	    GetConfigString("command.log.output.bottomline", "&7***********************************************************", writer, conf, true);
 	    GetConfigString("command.log.output.prev", "&e<<<<< Prev page &2|", writer, conf, true);
 	    GetConfigString("command.log.output.next", "&2|&e Next Page >>>>", writer, conf, true);
+	    GetConfigString("command.log.output.nodata", "&cData not found", writer, conf, true);
 
 	    GetConfigString("command.glog.help.info", "Shows global statistics.", writer, conf, true);
 	    GetConfigString("command.glog.help.args", "", writer, conf, true);
@@ -1385,6 +1420,7 @@ public class JobsConfiguration {
 	    GetConfigString("command.glog.output.list", "&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6money: %money% &eexp: %exp%", writer, conf,
 		true);
 	    GetConfigString("command.glog.output.bottomline", "&7**************************************************************", writer, conf, true);
+	    GetConfigString("command.glog.output.nodata", "&cData not found", writer, conf, true);
 
 	    GetConfigString("command.transfer.help.info", "Transfer a player's job from an old job to a new job.", writer, conf, true);
 	    GetConfigString("command.transfer.help.args", "[playername] [oldjob] [newjob]", writer, conf, true);

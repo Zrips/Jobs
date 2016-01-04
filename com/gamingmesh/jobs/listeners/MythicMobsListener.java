@@ -98,7 +98,7 @@ public class MythicMobsListener implements Listener {
 	Plugin mm = Bukkit.getPluginManager().getPlugin("MythicMobs");
 	if (mm != null) {
 	    Present = true;
-	    Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "MythicMobs was found - Enabling capabilities.");
+	    Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6MythicMobs was found - Enabling capabilities."));
 	    return true;
 	}
 	return false;

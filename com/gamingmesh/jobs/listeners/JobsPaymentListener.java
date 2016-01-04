@@ -89,6 +89,7 @@ public class JobsPaymentListener implements Listener {
     public final static String brewingOwnerMetadata = "jobsBrewingOwner";
     private final String mobSpawnerMetadata = "jobsMobSpawner";
     public static final String BlockMetadata = "BlockOwner";
+    public static final String PlacedBlockMetadata = "JobsBlockOwner";
     public static final String VegyMetadata = "VegyTimer";
     public static final String GlobalMetadata = "GlobalTimer";
     public static final String CowMetadata = "CowTimer";
@@ -296,11 +297,14 @@ public class JobsPaymentListener implements Listener {
 	if (ConfigManager.getJobsConfiguration().useGlobalTimer) {
 	    if (block.getState().hasMetadata(GlobalMetadata)) {
 		long currentTime = System.currentTimeMillis();
-		long BlockTime = block.getState().getMetadata(GlobalMetadata).get(0).asLong();
-		if (currentTime < BlockTime + ConfigManager.getJobsConfiguration().globalblocktimer * 1000) {
-		    int sec = Math.round((((BlockTime + ConfigManager.getJobsConfiguration().globalblocktimer * 1000) - currentTime)) / 1000);
-		    ActionBar.send(player, Language.getMessage("message.blocktimer").replace("[time]", String.valueOf(sec)));
-		    return;
+		List<MetadataValue> meta = block.getState().getMetadata(GlobalMetadata);
+		if (meta.size() > 0) {
+		    long BlockTime = meta.get(0).asLong();
+		    if (currentTime < BlockTime + ConfigManager.getJobsConfiguration().globalblocktimer * 1000) {
+			int sec = Math.round((((BlockTime + ConfigManager.getJobsConfiguration().globalblocktimer * 1000) - currentTime)) / 1000);
+			ActionBar.send(player, Language.getMessage("message.blocktimer").replace("[time]", String.valueOf(sec)));
+			return;
+		    }
 		}
 	    }
 	}
@@ -377,17 +381,20 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
-	// Block place/break protection
-	if (ConfigManager.getJobsConfiguration().useBlockProtection)
-	    if (PistonProtectionListener.CheckBlock(block))
-		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(plugin, true));
-
 	// check if in creative
 	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
+
+	// Block place/break protection
+	if (ConfigManager.getJobsConfiguration().useBlockProtection)
+	    if (PistonProtectionListener.CheckBlock(block))
+		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(plugin, true));
+
+	if (ConfigManager.getJobsConfiguration().WaterBlockBreake)
+	    block.getState().setMetadata(PlacedBlockMetadata, new FixedMetadataValue(plugin, true));
 
 	if (ConfigManager.getJobsConfiguration().useBlockTimer)
 	    if (PistonProtectionListener.CheckVegy(block)) {

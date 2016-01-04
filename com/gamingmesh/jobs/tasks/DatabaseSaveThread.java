@@ -25,50 +25,50 @@ import org.bukkit.command.ConsoleCommandSender;
 import com.gamingmesh.jobs.Jobs;
 
 public class DatabaseSaveThread extends Thread {
-    
+
     private volatile boolean running = true;
     private int sleep;
-    
+
     public DatabaseSaveThread(int duration) {
-        super("Jobs-DatabaseSaveTask");
-        this.sleep = duration * 60000;
+	super("Jobs-DatabaseSaveTask");
+	this.sleep = duration * 60000;
     }
 
     @Override
     public void run() {
-        //Jobs.getPluginLogger().info("Started database save task");
+	//Jobs.getPluginLogger().info("Started database save task");
 
-		String message = ChatColor.translateAlternateColorCodes('&', "&2Started database save task.");
-		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-		console.sendMessage(message);
-		
-        while (running) {
-            try {
-                sleep(sleep);
-            } catch (InterruptedException e) {
-                this.running = false;
-                continue;
-            }
-            try {
-                Jobs.getPlayerManager().saveAll();
-            } catch (Throwable t) {
-                t.printStackTrace();
-                //Jobs.getPluginLogger().severe("Exception in DatabaseSaveTask, stopping auto save!");
-        		message = ChatColor.translateAlternateColorCodes('&', "&cException in DatabaseSaveTask, stopping auto save!");
-        		console.sendMessage(message);
-                running = false;
-            }
-        }
+	String message = ChatColor.translateAlternateColorCodes('&', "&2Started database save task.");
+	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	console.sendMessage(message);
 
-		message = ChatColor.translateAlternateColorCodes('&', "&6Database save task shutdown!");
+	while (running) {
+	    try {
+		sleep(sleep);
+	    } catch (InterruptedException e) {
+		this.running = false;
+		continue;
+	    }
+	    try {
+		Jobs.getPlayerManager().saveAll();
+	    } catch (Throwable t) {
+		t.printStackTrace();
+		//Jobs.getPluginLogger().severe("Exception in DatabaseSaveTask, stopping auto save!");
+		message = ChatColor.translateAlternateColorCodes('&', "&cException in DatabaseSaveTask, stopping auto save!");
 		console.sendMessage(message);
-        
-		//Jobs.getPluginLogger().info("Database save task shutdown");
-        
+		running = false;
+	    }
+	}
+
+	message = ChatColor.translateAlternateColorCodes('&', "&6Database save task shutdown!");
+	console.sendMessage(message);
+
+	//Jobs.getPluginLogger().info("Database save task shutdown");
+
     }
-    
+
     public void shutdown() {
-        this.running = false;
-        interrupt();
+	this.running = false;
+	interrupt();
     }
 }

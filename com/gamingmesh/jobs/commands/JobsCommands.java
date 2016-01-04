@@ -173,9 +173,22 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
+	sender.sendMessage(ChatColor.GOLD + "[Jobs] Starting name fix proccess, this can take up to minute depending on your data base size.");
 	Jobs.getJobsDAO().fixName(sender);
 
-	sender.sendMessage(ChatColor.GOLD + "[Jobs] Starting name fix proccess, this can take up to minute depending on your data base size.");
+	return true;
+    }
+
+    @JobCommand
+    public boolean fixuuid(CommandSender sender, String[] args) throws IOException {
+
+	if (args.length > 0) {
+	    sendUsage(sender, "fixuuid");
+	    return true;
+	}
+
+	sender.sendMessage(ChatColor.GOLD + "[Jobs] Starting uuid fix proccess, this can take up to minute depending on your data base size.");
+	Jobs.getJobsDAO().fixUuid(sender);
 
 	return true;
     }
@@ -1417,8 +1430,12 @@ public class JobsCommands implements CommandExecutor {
 
 	List<Log> logList = JPlayer.getLog();
 
-	if (logList.size() == 0)
+	if (logList.size() == 0) {
+	    sender.sendMessage(Language.getMessage("command.log.output.bottomline"));
+	    sender.sendMessage(Language.getMessage("command.log.output.nodata"));
+	    sender.sendMessage(Language.getMessage("command.log.output.bottomline"));
 	    return true;
+	}
 
 	Map<String, Double> unsortMap = new HashMap<String, Double>();
 
@@ -1442,7 +1459,7 @@ public class JobsCommands implements CommandExecutor {
 			String msg = Language.getMessage("command.log.output.list")
 			    .replace("%number%", String.valueOf(count))
 			    .replace("%action%", one.getActionType())
-			    .replace("%item%", oneMap.getValue().getItemName().replace(":0", "").toLowerCase())
+			    .replace("%item%", oneMap.getValue().getItemName().replace(":0", "").replace("_", " ").toLowerCase())
 			    .replace("%qty%", String.valueOf(oneMap.getValue().getCount()))
 			    .replace("%money%", String.valueOf(oneMap.getValue().getMoney()))
 			    .replace("%exp%", String.valueOf(oneMap.getValue().getExp()));
@@ -1523,7 +1540,7 @@ public class JobsCommands implements CommandExecutor {
 			break;
 		}
 		if (unsortMap.size() == 0) {
-		    sender.sendMessage("No data found");
+		    sender.sendMessage(Language.getMessage("command.glog.output.nodata"));
 		}
 		sender.sendMessage(Language.getMessage("command.glog.output.bottomline"));
 
