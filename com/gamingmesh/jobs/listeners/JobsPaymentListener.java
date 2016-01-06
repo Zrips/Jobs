@@ -931,6 +931,12 @@ public class JobsPaymentListener implements Listener {
 	// Calulating multiplaier
 	multiplier = multiplier * NearSpawnerMultiplier * PetPayMultiplier;
 
+	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
+	    Player VPlayer = (Player) lVictim;
+	    if (jDamager.getUserName().equalsIgnoreCase(VPlayer.getName()))
+		return;
+	}
+
 	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), multiplier, item, armor);
 
 	// Payment for killing player with particular job, except NPC's

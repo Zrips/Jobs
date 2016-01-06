@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.Job;
@@ -47,12 +48,19 @@ import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
+import com.gamingmesh.jobs.stuff.Scboard;
+import com.gamingmesh.jobs.stuff.ScheduleUtil;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
 public class Jobs {
     public static Jobs instance = new Jobs();
+//    public static JobsPlugin plugin = new JobsPlugin();
     private static PlayerManager pManager = new PlayerManager();
+    private static Language lManager = new Language();
+    private static SignUtil signManager = new SignUtil();
+    private static Scboard scboardManager = new Scboard();
+    private static ScheduleUtil scheduleManager = new ScheduleUtil();
 
     private static Logger pLogger;
     private static File dataFolder;
@@ -81,6 +89,54 @@ public class Jobs {
      */
     public static PlayerManager getPlayerManager() {
 	return pManager;
+    }
+
+    /**
+     * Returns schedule manager
+     * @return the schedule manager
+     */
+    public static ScheduleUtil getSchedule() {
+	return scheduleManager;
+    }
+
+    public static void setSchedule(JobsPlugin plugin) {
+	scheduleManager = new ScheduleUtil(plugin);
+    }
+
+    /**
+     * Returns scoreboard manager
+     * @return the scoreboard manager
+     */
+    public static Scboard getScboard() {
+	return scboardManager;
+    }
+
+    public static void setScboard(JobsPlugin plugin) {
+	scboardManager = new Scboard(plugin);
+    }
+
+    /**
+     * Returns sign manager
+     * @return the sign manager
+     */
+    public static SignUtil getSignUtil() {
+	return signManager;
+    }
+
+    public static void setSignUtil(JobsPlugin plugin) {
+	signManager = new SignUtil(plugin);
+    }
+
+    /**
+     * Returns language manager
+     * @return the language manager
+     */
+    public static Language getLanguage() {
+	return lManager;
+    }
+
+    public static void setLanguage(JobsPlugin plugin) {
+	lManager = new Language(plugin);
     }
 
     /**
@@ -207,7 +263,7 @@ public class Jobs {
 	}
 
 	ConfigManager.getJobsConfiguration().reload();
-	Language.reload(ConfigManager.getJobsConfiguration().getLocale());
+	Jobs.getLanguage().reload(ConfigManager.getJobsConfiguration().getLocale());
 	ConfigManager.getJobConfig().reload();
 	usedSlots.clear();
 	for (Job job : jobs) {

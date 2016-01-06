@@ -53,7 +53,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
 import com.gamingmesh.jobs.Gui.GuiTools;
-import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -229,7 +228,7 @@ public class JobsListener implements Listener {
 
 	Location loc = block.getLocation();
 
-	for (com.gamingmesh.jobs.Signs.Sign one : SignUtil.Signs.GetAllSigns()) {
+	for (com.gamingmesh.jobs.Signs.Sign one : Jobs.getSignUtil().getSigns().GetAllSigns()) {
 
 	    if (one.GetX() != loc.getBlockX())
 		continue;
@@ -244,8 +243,8 @@ public class JobsListener implements Listener {
 		return;
 	    }
 
-	    SignUtil.Signs.removeSign(one);
-	    SignUtil.saveSigns();
+	    Jobs.getSignUtil().getSigns().removeSign(one);
+	    Jobs.getSignUtil().saveSigns();
 	    break;
 	}
     }
@@ -310,8 +309,8 @@ public class JobsListener implements Listener {
 	Location loc = sign.getLocation();
 
 	int category = 1;
-	if (com.gamingmesh.jobs.Signs.SignUtil.Signs.GetAllSigns().size() > 0)
-	    category = com.gamingmesh.jobs.Signs.SignUtil.Signs.GetAllSigns().get(com.gamingmesh.jobs.Signs.SignUtil.Signs.GetAllSigns().size() - 1).GetCategory() + 1;
+	if (Jobs.getSignUtil().getSigns().GetAllSigns().size() > 0)
+	    category = Jobs.getSignUtil().getSigns().GetAllSigns().get(Jobs.getSignUtil().getSigns().GetAllSigns().size() - 1).GetCategory() + 1;
 	signInfo.setNumber(Number);
 	signInfo.setWorld(loc.getWorld().getName());
 	signInfo.setX(loc.getX());
@@ -324,16 +323,16 @@ public class JobsListener implements Listener {
 	    signInfo.setJobName("gtoplist");
 	signInfo.setSpecial(special);
 
-	com.gamingmesh.jobs.Signs.SignUtil.Signs.addSign(signInfo);
-	com.gamingmesh.jobs.Signs.SignUtil.saveSigns();
+	Jobs.getSignUtil().getSigns().addSign(signInfo);
+	Jobs.getSignUtil().saveSigns();
 	event.setCancelled(true);
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(JobsPlugin.instance, new Runnable() {
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    public void run() {
 		if (!signtype.equalsIgnoreCase("gtoplist"))
-		    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
+		    Jobs.getSignUtil().SignUpdate(job.getName());
 		else
-		    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+		    Jobs.getSignUtil().SignUpdate("gtoplist");
 		return;
 	    }
 	}, 1L);
@@ -466,7 +465,7 @@ public class JobsListener implements Listener {
 	if (!ConfigManager.getJobsConfiguration().WaterBlockBreake)
 	    return;
 	if (event.getBlock().getState().hasMetadata(JobsPaymentListener.PlacedBlockMetadata)) {
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(JobsPlugin.instance, new Runnable() {
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 		public void run() {
 		    event.getBlock().getState().removeMetadata(JobsPaymentListener.PlacedBlockMetadata, plugin);
 		    return;

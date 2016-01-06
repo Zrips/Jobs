@@ -180,8 +180,8 @@ public class PlayerManager {
 	Jobs.getJobsDAO().joinJob(jPlayer, job);
 	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
 	Jobs.takeSlot(job);
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	Jobs.getSignUtil().SignUpdate(job.getName());
+	Jobs.getSignUtil().SignUpdate("gtoplist");
 	job.updateTotalPlayers();
 //	}
     }
@@ -211,8 +211,8 @@ public class PlayerManager {
 	PerformCommands.PerformCommandsOnLeave(jPlayer, job);
 	Jobs.leaveSlot(job);
 
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	Jobs.getSignUtil().SignUpdate(job.getName());
+	Jobs.getSignUtil().SignUpdate("gtoplist");
 	job.updateTotalPlayers();
 //	}
     }
@@ -228,8 +228,8 @@ public class PlayerManager {
 	    PerformCommands.PerformCommandsOnLeave(jPlayer, job.getJob());
 	    Jobs.leaveSlot(job.getJob());
 
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getJob().getName());
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	    Jobs.getSignUtil().SignUpdate(job.getJob().getName());
+	    Jobs.getSignUtil().SignUpdate("gtoplist");
 	    job.getJob().updateTotalPlayers();
 	}
 
@@ -268,8 +268,8 @@ public class PlayerManager {
 	jPlayer.promoteJob(job, levels, jPlayer);
 	jPlayer.save(Jobs.getJobsDAO());
 
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	Jobs.getSignUtil().SignUpdate(job.getName());
+	Jobs.getSignUtil().SignUpdate("gtoplist");
 //	}
     }
 
@@ -283,8 +283,8 @@ public class PlayerManager {
 //	synchronized (jPlayer.saveLock) {
 	jPlayer.demoteJob(job, levels);
 	jPlayer.save(Jobs.getJobsDAO());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	Jobs.getSignUtil().SignUpdate(job.getName());
+	Jobs.getSignUtil().SignUpdate("gtoplist");
 //	}
     }
 
@@ -304,8 +304,8 @@ public class PlayerManager {
 	    performLevelUp(jPlayer, job, oldLevel);
 
 	jPlayer.save(Jobs.getJobsDAO());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	Jobs.getSignUtil().SignUpdate(job.getName());
+	Jobs.getSignUtil().SignUpdate("gtoplist");
 //	}
     }
 
@@ -323,8 +323,8 @@ public class PlayerManager {
 	prog.addExperience(-experience);
 
 	jPlayer.save(Jobs.getJobsDAO());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	Jobs.getSignUtil().SignUpdate(job.getName());
+	Jobs.getSignUtil().SignUpdate("gtoplist");
 //	}
     }
 
@@ -419,8 +419,8 @@ public class PlayerManager {
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(job.getName());
-	com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	Jobs.getSignUtil().SignUpdate(job.getName());
+	Jobs.getSignUtil().SignUpdate("gtoplist");
     }
 
     /**

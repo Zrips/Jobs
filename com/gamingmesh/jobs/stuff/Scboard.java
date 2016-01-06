@@ -13,10 +13,17 @@ import com.gamingmesh.jobs.config.ConfigManager;
 
 public class Scboard {
 
-    private static ConcurrentHashMap<String, Long> timerMap = new ConcurrentHashMap<String, Long>();
+    private ConcurrentHashMap<String, Long> timerMap = new ConcurrentHashMap<String, Long>();
+    private JobsPlugin plugin;
 
-    private static void RunScheduler() {
+    public Scboard() {
+    }
 
+    public Scboard(JobsPlugin plugin) {
+	this.plugin = plugin;
+    }
+
+    private void RunScheduler() {
 	Iterator<Entry<String, Long>> MeinMapIter = timerMap.entrySet().iterator();
 	while (MeinMapIter.hasNext()) {
 	    Entry<String, Long> Map = MeinMapIter.next();
@@ -31,7 +38,7 @@ public class Scboard {
 	}
 
 	if (timerMap.size() > 0)
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(JobsPlugin.instance, new Runnable() {
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 		public void run() {
 		    RunScheduler();
 		    return;
@@ -40,7 +47,7 @@ public class Scboard {
 	return;
     }
 
-    public static void addNew(Player player) {
+    public void addNew(Player player) {
 	timerMap.put(player.getName(), System.currentTimeMillis());
 	RunScheduler();
     }

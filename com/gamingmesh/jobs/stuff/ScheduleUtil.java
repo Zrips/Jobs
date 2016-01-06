@@ -16,12 +16,28 @@ import com.gamingmesh.jobs.i18n.Language;
 
 public class ScheduleUtil {
 
-    public static int dateByInt = 0;
+    public int dateByInt = 0;
 
-    public static void DateUpdater() {
+    private JobsPlugin plugin;
+
+    public ScheduleUtil() {
+    }
+
+    public ScheduleUtil(JobsPlugin plugin) {
+	this.plugin = plugin;
+    }
+    
+    public int getDateByInt(){
+	return dateByInt;
+    }
+    public void setDateByInt(int time){
+	dateByInt = time;
+    }
+
+    public void DateUpdater() {
 	if (dateByInt == 0)
 	    dateByInt = TimeManage.timeInInt();
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(JobsPlugin.instance, new Runnable() {
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    public void run() {
 
 		dateByInt = TimeManage.timeInInt();
@@ -32,7 +48,7 @@ public class ScheduleUtil {
 	}, 60 * 20L);
     }
 
-    public static boolean scheduler() {
+    public boolean scheduler() {
 	if (ConfigManager.getJobsConfiguration().BoostSchedule.size() > 0 && ConfigManager.getJobsConfiguration().useGlobalBoostScheduler) {
 
 	    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -99,7 +115,7 @@ public class ScheduleUtil {
 
 	    }
 
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(JobsPlugin.instance, new Runnable() {
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 		public void run() {
 		    scheduler();
 		    return;

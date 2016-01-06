@@ -60,6 +60,11 @@ public abstract class JobsDAO {
 
     private JobsConnectionPool pool;
     private String prefix;
+    private JobsPlugin plugin;
+
+    public JobsDAO(JobsPlugin plugin) {
+	this.plugin = plugin;
+    }
 
     protected JobsDAO(String driverName, String url, String username, String password, String prefix) {
 	this.prefix = prefix;
@@ -492,7 +497,7 @@ public abstract class JobsDAO {
     }
 
     public void fixUuid(final CommandSender sender) {
-	Bukkit.getScheduler().runTaskAsynchronously(JobsPlugin.instance, new Runnable() {
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		JobsConnection conn = getConnection();
@@ -539,7 +544,7 @@ public abstract class JobsDAO {
     }
 
     public void fixName(final CommandSender sender) {
-	Bukkit.getScheduler().runTaskAsynchronously(JobsPlugin.instance, new Runnable() {
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		JobsConnection conn = getConnection();

@@ -62,13 +62,17 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.GiveItem;
 import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 import com.gamingmesh.jobs.stuff.Perm;
-import com.gamingmesh.jobs.stuff.Scboard;
 import com.gamingmesh.jobs.stuff.Sorting;
 import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.TranslateName;
 
 public class JobsCommands implements CommandExecutor {
     private static final String label = "jobs";
+    private JobsPlugin plugin;
+
+    public JobsCommands(JobsPlugin plugin) {
+	this.plugin = plugin;
+    }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (args.length == 0)
@@ -1066,9 +1070,9 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 	if (!args[0].equalsIgnoreCase("gtoplist"))
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate(oldjob.getName());
+	    Jobs.getSignUtil().SignUpdate(oldjob.getName());
 	else
-	    com.gamingmesh.jobs.Signs.SignUtil.SignUpdate("gtoplist");
+	    Jobs.getSignUtil().SignUpdate("gtoplist");
 
 	return true;
     }
@@ -1135,7 +1139,7 @@ public class JobsCommands implements CommandExecutor {
 	    }
 	    player.setScoreboard(board);
 
-	    Scboard.addNew(player);
+	    Jobs.getScboard().addNew(player);
 
 	    //player.sendMessage(ChatColor.GOLD + Language.getMessage("scoreboard.clear"));
 
@@ -1224,7 +1228,7 @@ public class JobsCommands implements CommandExecutor {
 	    player.setScoreboard(board);
 	    //player.sendMessage(ChatColor.GOLD + Language.getMessage("scoreboard.clear"));
 
-	    Scboard.addNew(player);
+	    Jobs.getScboard().addNew(player);
 
 	    int from = start;
 	    if (start >= 15)
@@ -1485,7 +1489,7 @@ public class JobsCommands implements CommandExecutor {
 	    sendUsage(sender, "glog");
 	    return true;
 	}
-	Bukkit.getScheduler().runTaskAsynchronously(JobsPlugin.instance, new Runnable() {
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		Map<LogAmounts, Double> unsortMap = new HashMap<LogAmounts, Double>();

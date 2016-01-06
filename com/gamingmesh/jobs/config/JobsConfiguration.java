@@ -264,8 +264,8 @@ public class JobsConfiguration {
 	loadRestrictedBlocks();
 	// Item/Block/mobs name list
 	loadItemList();
-	// Item/Block/mobs name list
-	com.gamingmesh.jobs.Signs.SignUtil.LoadSigns();
+	// signs information
+	Jobs.getSignUtil().LoadSigns();
 
 //		loadScheduler();
     }
@@ -1100,7 +1100,7 @@ public class JobsConfiguration {
     }
 
     private synchronized void loadItemList() {
-	YmlMaker ItemFile = new YmlMaker((JavaPlugin) JobsPlugin.instance, "ItemList.yml");
+	YmlMaker ItemFile = new YmlMaker((JavaPlugin) plugin, "ItemList.yml");
 	ItemFile.saveDefaultConfig();
 	List<String> section = ItemFile.getConfig().getStringList("ItemList");
 	ListOfNames.clear();
@@ -1208,7 +1208,7 @@ public class JobsConfiguration {
 	languages.add("ru");
 
 	for (String lang : languages) {
-	    YmlMaker langFile = new YmlMaker((JavaPlugin) JobsPlugin.instance, "locale" + File.separator + "messages_" + lang + ".yml");
+	    YmlMaker langFile = new YmlMaker((JavaPlugin) plugin, "locale" + File.separator + "messages_" + lang + ".yml");
 	    if (langFile != null)
 		langFile.saveDefaultConfig();
 	}

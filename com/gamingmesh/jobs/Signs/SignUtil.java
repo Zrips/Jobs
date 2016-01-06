@@ -21,16 +21,28 @@ import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.i18n.Language;
 
 public class SignUtil {
+    
+    public SignUtil() {
+    }
+    
+    public SignInfo Signs = new SignInfo();
+    private JobsPlugin plugin;
 
-    public static SignInfo Signs = new SignInfo();
+    public SignUtil(JobsPlugin plugin) {
+	this.plugin = plugin;
+    }
+    
+    public SignInfo getSigns(){
+	return Signs;
+    }
 
     // Sign file
-    public static void LoadSigns() {
+    public void LoadSigns() {
 	Thread threadd = new Thread() {
 	    public void run() {
 
 		Signs.GetAllSigns().clear();
-		File file = new File(JobsPlugin.instance.getDataFolder(), "Signs.yml");
+		File file = new File(plugin.getDataFolder(), "Signs.yml");
 		YamlConfiguration f = YamlConfiguration.loadConfiguration(file);
 
 		if (!f.isConfigurationSection("Signs"))
@@ -60,11 +72,11 @@ public class SignUtil {
     }
 
     // Signs save file
-    public static void saveSigns() {
-
+    public void saveSigns() {
+	
 	Thread threadd = new Thread() {
 	    public void run() {
-		File f = new File(JobsPlugin.instance.getDataFolder(), "Signs.yml");
+		File f = new File(plugin.getDataFolder(), "Signs.yml");
 		YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 
 		CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
@@ -98,7 +110,7 @@ public class SignUtil {
 	threadd.start();
     }
 
-    public static boolean SignUpdate(String JobName) {
+    public boolean SignUpdate(String JobName) {
 	List<com.gamingmesh.jobs.Signs.Sign> Copy = new ArrayList<com.gamingmesh.jobs.Signs.Sign>(Signs.GetAllSigns().size());
 	for (com.gamingmesh.jobs.Signs.Sign foo : Signs.GetAllSigns()) {
 	    Copy.add(foo);
@@ -123,7 +135,7 @@ public class SignUtil {
 		    World world = Bukkit.getWorld(SignsWorld);
 		    if (world == null)
 			continue;
-		    Location nloc = new Location(world, SignsX, SignsY, SignsZ);		    
+		    Location nloc = new Location(world, SignsX, SignsY, SignsZ);
 		    Block block = nloc.getBlock();
 		    if (!(block.getState() instanceof org.bukkit.block.Sign)) {
 			Signs.GetAllSigns().remove(one);
@@ -199,9 +211,9 @@ public class SignUtil {
 	return true;
     }
 
-    public static void UpdateHead(final Location loc, final String Playername, final int timelapse) {
+    public void UpdateHead(final Location loc, final String Playername, final int timelapse) {
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(JobsPlugin.instance, new Runnable() {
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    public void run() {
 
 		loc.setY(loc.getY() + 1);

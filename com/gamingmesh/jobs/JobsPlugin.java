@@ -27,7 +27,6 @@ import net.elseland.xikage.MythicMobs.API.MythicMobsAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 
@@ -42,12 +41,10 @@ import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.OfflinePlayerList;
-import com.gamingmesh.jobs.stuff.ScheduleUtil;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.config.YmlMaker;
 
 public class JobsPlugin extends JavaPlugin {
-    public static Plugin instance;
     public static CoreProtectAPI CPAPI;
     public static MythicMobsAPI MMAPI;
     public static boolean CPPresent = false;
@@ -96,7 +93,6 @@ public class JobsPlugin extends JavaPlugin {
 	    this.setEnabled(false);
 	}
 
-	instance = this;
 	OfflinePlayerList.fillList();
 	YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
 	jobConfig.saveDefaultConfig();
@@ -109,6 +105,11 @@ public class JobsPlugin extends JavaPlugin {
 
 	Jobs.setPermissionHandler(new PermissionHandler(this));
 
+	Jobs.setSignUtil(this);
+	Jobs.setScboard(this);
+	Jobs.setSchedule(this);
+	Jobs.setLanguage(this);
+
 	Jobs.setPluginLogger(getLogger());
 
 	Jobs.setDataFolder(getDataFolder());
@@ -116,7 +117,7 @@ public class JobsPlugin extends JavaPlugin {
 	ConfigManager.registerJobsConfiguration(new JobsConfiguration(this));
 	ConfigManager.registerJobConfig(new JobConfig(this));
 
-	getCommand("jobs").setExecutor(new JobsCommands());
+	getCommand("jobs").setExecutor(new JobsCommands(this));
 
 	this.getCommand("jobs").setTabCompleter(new TabComplete());
 
@@ -154,12 +155,13 @@ public class JobsPlugin extends JavaPlugin {
 	// all loaded properly.
 
 	if (ConfigManager.getJobsConfiguration().useGlobalBoostScheduler)
-	    ScheduleUtil.scheduler();
-	ScheduleUtil.DateUpdater();
+	    Jobs.getSchedule().scheduler();
+	Jobs.getSchedule().DateUpdater();
 
 	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6Plugin has been enabled succesfully.");
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	console.sendMessage(message);
+	Jobs.getLanguage().reload(ConfigManager.getJobsConfiguration().getLocale());
     }
 
     @Override
