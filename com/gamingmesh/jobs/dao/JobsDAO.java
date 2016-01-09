@@ -37,6 +37,8 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Convert;
+import com.gamingmesh.jobs.container.ExploreChunk;
+import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -98,7 +100,10 @@ public abstract class JobsDAO {
 	    if (version <= 6)
 		checkUpdate7();
 
-	    version = 7;
+	    // creating explore database
+	    checkUpdate8();
+
+	    version = 8;
 	} finally {
 	    updateSchemaVersion(version);
 	}
@@ -117,6 +122,8 @@ public abstract class JobsDAO {
     protected abstract void checkUpdate6() throws SQLException;
 
     protected abstract void checkUpdate7() throws SQLException;
+
+    protected abstract void checkUpdate8() throws SQLException;
 
     /**
      * Gets the database prefix
@@ -724,6 +731,65 @@ public abstract class JobsDAO {
 	    ResultSet res = prest.executeQuery();
 	    while (res.next()) {
 		Loging.loadToLog(player, res.getString("action"), res.getString("itemname"), res.getInt("count"), res.getDouble("money"), res.getDouble("exp"));
+	    }
+	    res.close();
+	    prest.close();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    /**
+     * Save player-explore information
+     * @param jobexplore - the information getting saved
+     */
+    public synchronized void saveExplore() {
+	if (!Jobs.getExplore().isExploreEnabled())
+	    return;
+	
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	try {
+	    PreparedStatement prest = conn.prepareStatement("TRUNCATE TABLE `" + prefix + "explore`;");
+	    prest.execute();
+	    prest.close();
+
+	    PreparedStatement prest2 = conn.prepareStatement("INSERT INTO `" + prefix + "explore` (`worldname`, `chunkX`, `chunkZ`, `playerName`) VALUES (?, ?, ?, ?);");
+	    for (Entry<String, ExploreRegion> worlds : Jobs.getExplore().getWorlds().entrySet()) {
+		for (ExploreChunk oneChunk : worlds.getValue().getChunks()) {
+		    for (String oneuser : oneChunk.getPlayers()) {
+			prest2.setString(1, worlds.getKey());
+			prest2.setInt(2, oneChunk.getX());
+			prest2.setInt(3, oneChunk.getZ());
+			prest2.setString(4, oneuser);
+			prest2.execute();
+		    }
+		}
+	    }
+	    prest2.close();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    /**
+     * Save player-explore information
+     * @param jobexplore - the information getting saved
+     */
+    public synchronized void loadExplore() {
+	if (!Jobs.getExplore().isExploreEnabled())
+	    return;
+	
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	try {
+
+	    PreparedStatement prest = conn.prepareStatement("SELECT * FROM `" + prefix + "explore`;");
+	    ResultSet res = prest.executeQuery();
+	    while (res.next()) {
+		Jobs.getExplore().ChunkRespond(res.getString("playerName"), res.getString("worldname"), res.getInt("chunkX"), res.getInt("chunkZ"));
 	    }
 	    res.close();
 	    prest.close();

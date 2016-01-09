@@ -411,4 +411,37 @@ public class JobsDAOSQLite extends JobsDAO {
 	executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
     }
 
+    @Override
+    protected synchronized void checkUpdate8() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+	PreparedStatement prest = null;
+	int rows = 0;
+	try {
+	    // Check for jobs table
+	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
+	    prest.setString(1, getPrefix() + "explore");
+	    ResultSet res = prest.executeQuery();
+	    if (res.next()) {
+		rows = res.getInt(1);
+	    }
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	try {
+	    if (rows == 0)
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "explore` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `worldname` varchar(64), `chunkX` int, `chunkZ` int, `playerName` varchar(32));");
+	} finally {
+	}
+    }
 }

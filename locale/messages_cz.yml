@@ -1,0 +1,230 @@
+economy:
+  error:
+    nomoney: Nedostatek financi!
+command:
+  boost:
+    help:
+      info: Zvysuje Exp/Vydelek pro vsechny hrace.
+      args: '[JmenoPrace] [Hodnota]'
+    output:
+      allreset: Vsechny exp/vydelky BOOST byly vypnuty.
+      jobsboostreset: BOOST pro %jobname% byl vypnut.
+      nothingtoreset: Neni nic, co by se dalo vypnout.
+      boostalladded: BOOST hodnoty %boost% byly povoleny pro vsechny prace.
+      boostadded: BOOST hodnoty &e%boost% &abyly povoleny pro praci &e%jobname%!
+      infostats: '&c-----> &aExp/Vydelky x%boost% je/jsou zapnute&c <-------'
+  convert:
+    help:
+      info: Prevede data z jednoho zpusobu databaze na jiny. Pokud práve pouzivate SQLite, bude preveden na MySQL a naopak.
+      args: ''
+  limit:
+    help:
+      info: Vypise limit vydelku praci.
+      args: ''
+    output:
+      lefttime: '&eZbyvajici cas do resetovani limitu vydelku: &2%hour% &ehour &2%min% &emin &2%sec%
+        &esec'
+      moneylimit: '&eLimit vydelku: &2%money%&e/&2%totalmoney%'
+      reachedlimit: '&4Dosahl/a jsi limitu vydelku v danem case!'
+      reachedlimit2: '&eLimit zjistis prikazem &2/jobs limit'
+      notenabled: '&eLimit vydelku neni zapnuty.'
+  admin:
+    error: Doslo k chybe v prikazu.
+    success: Prikaz byl proveden dle rozkazu.
+  error:
+    job: 'Prace, kterou sis vybral/a, neexistuje.'
+    permission: Nemas povoleni na tuto akci.
+  help:
+    output:
+      info: Napis /jobs [prikaz] ? pro vice informaci.
+      usage: 'Pouziti: %usage%'
+  stats:
+    help:
+      info: 'Vypise level v pracech, ve kterych jsi zamestnany(a).'
+      args: '[JmenoHrace]'
+    error:
+      nojob: 'Nejdrive se prihlas do nejake prace.'
+    output: 'lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+  archive:
+    help:
+      info: Vypise vsechny prace ulozene v archivu podle uzivatele.
+      args: '[JmenoHrace]'
+    error:
+      nojob: Nejsou zadne ulozene prace.
+    output: lvl %joblevel% (%getbackjoblevel%) %jobname%
+  give:
+    help:
+      info: Da item podle nazvu prace a nazvu kategorie. Jmeno Hrace neni povinny udaj.
+      args: '[JmenoHrace] [JmenoPrace] [JmenoItemu]'
+    output:
+      notonline: '&4Hrac [%playername%] neni online!'
+      noitem: '&4Nelze najit item s timto jmenem!'
+  info:
+    help:
+      title: '&2*** &ePrace&2 ***'
+      info: Vypise vysi vydelku prace k dane akci.
+      args: '[JmenoPrace] [akce]'
+      actions: '&ePlatne akce jsou: &f%actions%'
+      max: ' - &emax level:&f '
+      material: '&7%material%'
+    output:
+      break:
+        info: Breaknuti
+        none: '%jobname% vydelava penize za breaknuti bloku.'
+      place:
+        info: Polozeni
+        none: '%jobname% vydelava penize za polozeni bloku.'
+      kill:
+        info: Zabijeni
+        none: '%jobname% vydelava penize za zabijeni monster.'
+      fish:
+        info: Rybareni
+        none: '%jobname% vydelava penize za rybarení.'
+      craft:
+        info: Craft
+        none: '%jobname% vydelava penize za craftení vecí.'
+      smelt:
+        info: Peceni
+        none: '%jobname% vydelava penize za pecení v peci.'
+      brew:
+        info: Vareni
+        none: '%jobname% vydelava penize za vareni lektvaru.'
+      enchant:
+        info: Ocarovani
+        none: '%jobname% vydelava penize za ocarovávání/enchant itemu.'
+      repair:
+        info: Opravovani
+        none: '%jobname% vydelava penize za opravování predmetu.'
+      breed:
+        info: Farmareni
+        none: '%jobname% vydelava penize za farmareni.'
+      tame:
+        info: Ochocovani
+        none: '%jobname% vydelava penize za ochocovani zvirat.'
+  playerinfo:
+    help:
+      info: Vypise vysi vydelku prace k dane akci urciteho hrace.
+      args: '[JmenoHrace] [JmenoPrace] [akce]'
+  join:
+    help:
+      info: Zamestnas se do prace.
+      args: '[JmenoPrace]'
+    error:
+      alreadyin: Uz pracujes jako %jobname%.
+      fullslots: Nemuzes se zamestnat do prace %jobname%, nejsou zde zadna volna mista.
+      maxjobs: Dosahl/a jsi maxima povolenych praci.
+    success: Zamestnal/a ses jako %jobname%.
+  leave:
+    help:
+      info: Opustis danou praci.
+      args: '[JmenoPrace]'
+    success: Opustil/a jsi praci %jobname%.
+  leaveall:
+    help:
+      info: Opustis vsechny svoje prace
+    error:
+      nojobs: Nemas zadne prace, ktere by jsi mohl/a opustit.
+    success: Opustil/a jsi vsechny sve prace.
+  browse:
+    help:
+      info: Seznam dostupnych praci
+    error:
+      nojobs: 'Nejsou zadne prace, ve kterych by jsi mohl/a byt zamestnan/a.'
+    output:
+      header: 'Mas povoleni na zamestnani v techto pracech:'
+      footer: Pro více info napis /jobs info [JmenoPrace]
+  fire:
+    help:
+      info: Vykopne hrace z dane prace.
+      args: '[JmenoHrace] [JmenoPrace]'
+    error:
+      nojob: Hrac neni zamestnan jako %jobname%.
+    output:
+      target: Byl/a jsi vyhozen/a z prace %jobname%.
+  fireall:
+    help:
+      info: Vykopne hrace ze vsech prací.
+      args: '[JmenoHrace]'
+    error:
+      nojobs: Hrac nema zadne prace, ze kterych by mohl byt vykopnut.
+    output:
+      target: Byl/a jsi vykopnut/a ze vsech prací.
+  employ:
+    help:
+      info: Zamestna hrace do prace.
+      args: '[JmenoHrace] [JmenoPrace]'
+    error:
+      alreadyin: Hrac uz pracuje jako %jobname%.
+    output:
+      target: Byl/a jsi zamestnan/a jako %jobname%.
+  top:
+    help:
+      info: '&eZobrazi &aTop 10 &ehracu dle praci.'
+      args: '[JmenoPrace]'
+    error:
+      nojob: Nelze najit zadnou praci s timto jmenem.
+    output:
+      topline: '&aTop&e 10 &ehracu pro praci &6%jobname%'
+      list: '&e%number%&a. &e%playername% &alvl &e%level% &as&e %exp% &aexp'
+  transfer:
+    help:
+     info: Prevede danou praci hrace ze stare práce do nove.
+     args: '[JmenoHrace] [StaraPrace] [NovaPrace]'
+    output:
+      target: Byl/a jsi presunut/a z prace %oldjobname% do %newjobname%.
+  promote:
+    help:
+      info: Prida hraci levely do dane prace.
+      args: '[JmenoHrace] [JmenoPrace] [levely]'
+    output:
+      target: Bylo ti pridano %levelsgained% levelu v praci %jobname%.
+  demote:
+    help:
+      info: Odebere hraci levely z dane prace.
+      args: '[JmenoHrace] [JmenoPrace] [levely]'
+    output:
+      target: Bylo ti odebrano %levelslost% levelu v praci %jobname%.
+  grantxp:
+    help:
+      info: Prida hraci zkusenosti do dane prace.
+      args: '[JmenoHrace] [JmenoPrace] [xp]'
+    output:
+      target: Dostal/a jsi %xpgained% zkusenosti v praci %jobname%.
+  removexp:
+    help:
+      info: Odstrani hraci zkusenosti z dane prace.
+      args: '[JmenoHrace] [JmenoPrace] [xp]'
+    output:
+      target: Ztratil/a jsi %xplost% zkusenosti v praci %jobname%.
+  reload:
+    help:
+      info: Reloadne konfiguraci.
+  toggle:
+    help:
+      info: Zapina/Vypina vypis vydelku na panelu akci.
+    output:
+      paid: '&a+ &a&l[amount]&a$'
+      'on': '&aVypis: &aZAPNUTO'
+      'off': '&aVypis: &cVYPNUTO'
+message:
+  skillup:
+    broadcast: '%playername% byl/a povysen/a na %titlename% %jobname%.'
+    nobroadcast: Gratulujeme, byl/a jsi povysen/a na %titlename% %jobname%.
+  levelup:
+    broadcast: '%playername% dosahl/a levelu %joblevel% v praci %jobname%.'
+    nobroadcast: Dosahl/a jsi levelu %joblevel% v praci %jobname%.
+  crafting:
+    fullinventory: Mas plny inventar!
+signs:
+  cantcreate: '&4Nemuzes vytvorit tuto cedulku!'
+  topline: '&e[Jobs]'
+  secondline:
+    join: '&2Join'
+    leave: '&4Leave'
+    toggle: '&eToggle'
+    top: '&eTop'
+    browse: '&eBrowse'
+    stats: '&eStats'
+    limit: '&eLimit'
+    info: '&eInfo'
+    archive: '&eArchive'

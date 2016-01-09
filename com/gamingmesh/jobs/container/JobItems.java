@@ -18,18 +18,21 @@
 
 package com.gamingmesh.jobs.container;
 
+import java.util.HashMap;
 import java.util.List;
+
+import org.bukkit.enchantments.Enchantment;
 
 public class JobItems {
 	private String node;
 	private int id;
 	private String name;
 	private List<String> lore;
-	private List<String> enchants;
+	private HashMap<Enchantment, Integer> enchants;
 	private Double moneyBoost;
 	private Double expBoost;
 
-	public JobItems(String node, int id, String name, List<String> lore, List<String> enchants, double moneyBoost, double expBoost) {
+	public JobItems(String node, int id, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, double moneyBoost, double expBoost) {
 		this.node = node;
 		this.id = id;
 		this.name = name;
@@ -55,7 +58,7 @@ public class JobItems {
 		return this.lore;
 	}
 
-	public List<String> getenchants() {
+	public HashMap<Enchantment, Integer> getenchants() {
 		return this.enchants;
 	}
 

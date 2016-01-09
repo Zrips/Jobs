@@ -20,15 +20,19 @@ package com.gamingmesh.jobs;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,6 +50,8 @@ import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ActionBar;
+import com.gamingmesh.jobs.stuff.Debug;
+import com.gamingmesh.jobs.stuff.Explore;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.Scboard;
@@ -61,6 +67,7 @@ public class Jobs {
     private static SignUtil signManager = new SignUtil();
     private static Scboard scboardManager = new Scboard();
     private static ScheduleUtil scheduleManager = new ScheduleUtil();
+    private static Explore exploreManager = new Explore();
 
     private static Logger pLogger;
     private static File dataFolder;
@@ -101,6 +108,14 @@ public class Jobs {
 
     public static void setSchedule(JobsPlugin plugin) {
 	scheduleManager = new ScheduleUtil(plugin);
+    }
+
+    public static Explore getExplore() {
+	return exploreManager;
+    }
+
+    public static void setExplore() {
+	exploreManager = new Explore();
     }
 
     /**
@@ -537,22 +552,52 @@ public class Jobs {
 		    // Item boost check
 		    Double itemMoneyBoost = 0.0;
 		    Double itemExpBoost = 0.0;
-		    if (item != null)
+		    if (item != null) {
+
+			ItemMeta meta = item.getItemMeta();
+			String name = null;
+			List<String> lore = new ArrayList<String>();
+
 			if (item.hasItemMeta()) {
-			    ItemMeta meta = item.getItemMeta();
-			    if (meta.hasDisplayName() && meta.hasLore())
-				for (JobItems oneItem : prog.getJob().getItems()) {
-				    if (oneItem.getId() != item.getTypeId())
-					continue;
-				    if (!ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(meta.getDisplayName()))
-					continue;
-				    if (!oneItem.getLore().equals(meta.getLore()))
-					continue;
-				    itemMoneyBoost = ((income * oneItem.getMoneyBoost()) - income);
-				    itemExpBoost = ((exp * oneItem.getExpBoost()) - exp);
-				    break;
-				}
+			    if (meta.hasDisplayName())
+				name = meta.getDisplayName();
+			    if (meta.hasLore())
+				lore = meta.getLore();
 			}
+
+			Map<Enchantment, Integer> enchants = item.getEnchantments();
+
+			main: for (JobItems oneItem : prog.getJob().getItems()) {
+			    if (oneItem.getId() != item.getTypeId())
+				continue;
+
+			    if (oneItem.getName() != null && name != null)
+				if (!org.bukkit.ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name))
+				    continue;
+
+			    for (String onelore : oneItem.getLore()) {
+				if (lore.size() == 0 || !lore.contains(onelore))
+				    continue main;
+			    }
+
+			    for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
+				if (oneItem.getenchants().containsKey(oneE.getKey())) {
+				    if (oneItem.getenchants().get(oneE.getKey()) < oneE.getValue()) {
+					continue main;
+				    }
+				} else
+				    continue main;
+			    }
+
+			    itemMoneyBoost = ((income * oneItem.getMoneyBoost()) - income);
+			    itemExpBoost = ((exp * oneItem.getExpBoost()) - exp);
+
+			    Debug.D("boost");
+
+			    break;
+			}
+
+		    }
 
 		    // Armor boost check
 		    Double armorMoneyBoost = 0.0;

@@ -21,3 +21,7 @@
 /Log.class
 /LogAmounts.class
 /JobConditions.class
+/JobLimitedItems.class
+/ExploreRegion.class
+/ExploreChunk.class
+/ExploreWorld.class

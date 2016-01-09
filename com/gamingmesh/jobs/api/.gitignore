@@ -6,3 +6,4 @@
 /JobsLeaveEvent.class
 /JobsLevelUpEvent.class
 /JobsPaymentEvent.class
+/JobsChunkChangeEvent.class

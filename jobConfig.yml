@@ -293,6 +293,24 @@ Jobs:
       REDSTONE:
         income: 5.0
         experience: 3.0
+    # Explore options. Each number represents players number in exploring that chunk
+    # 1 means that player is first in this chunk, 2 is second and so on, so you can give money not only for first player ho discovers that chunk
+    Explore:
+      1:
+        income: 5.0
+        experience: 5.0
+      2:
+        income: 2.5
+        experience: 2.5
+      3:
+        income: 1.0
+        experience: 1.0
+      4:
+        income: 0.5
+        experience: 0.5
+      5:
+        income: 0.1
+        experience: 0.1
     # permissions granted for joining class
     permissions:
       # example node
@@ -363,6 +381,25 @@ Jobs:
         - '&710% bonus XP'
         moneyBoost: 1.1
         expBoost: 1.1
+    # Limit item use to jobs level
+    limitedItems:
+      # Just name, dont have any impact
+      firstOne:
+        # Tool/Weapon id. Works for any interact action.
+        id: 278
+        # Level of this job player can start using this item
+        level: 5
+        # (optional) Items name, option to use color codes
+        name: '&8Miner Pickaxe'
+        # (optional) Item lore, again can come with color codes
+        lore:
+        - '&eBobs pick'
+        - '&710% bonus XP'
+        # (optional) Item enchantments, all enchantment names can be found https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html
+        # enchant level can inrease with jobs level to give best RPG experiance
+        enchants:
+        - DAMAGE_ALL=1
+        - FIRE_ASPECT=1
     cmd-on-join:
     - 'msg [name] Thx for joining this job!'
     - 'msg [name] Now start working and get money from [jobname] job!'

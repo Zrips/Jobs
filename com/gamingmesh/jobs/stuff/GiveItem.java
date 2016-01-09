@@ -1,7 +1,9 @@
 package com.gamingmesh.jobs.stuff;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,10 +13,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class GiveItem {
-	public static boolean GiveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore, List<String> enchants) {
+	public static boolean GiveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore, HashMap<Enchantment, Integer> hashMap) {
 		@SuppressWarnings("deprecation")
 		ItemStack itemStack = new ItemStack(Material.getMaterial(id), qty, (short) meta);
 		ItemMeta ItemMeta = itemStack.getItemMeta();
+		
 		if (lore != null) {
 			List<String> TranslatedLore = new ArrayList<String>();
 			for (String oneLore : lore) {
@@ -22,9 +25,8 @@ public class GiveItem {
 			}
 			ItemMeta.setLore(TranslatedLore);
 		}
-		if (enchants != null)
-			for (String OneEnchant : enchants) {
-				ItemMeta.addEnchant(Enchantment.getByName(OneEnchant.split("=")[0]), Integer.parseInt(OneEnchant.split("=")[1]), true);
+			for (Entry<Enchantment, Integer> OneEnchant : hashMap.entrySet()) {
+				ItemMeta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
 			}
 		if (name != null)
 			ItemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));

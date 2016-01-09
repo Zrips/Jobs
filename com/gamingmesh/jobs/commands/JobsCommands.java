@@ -1532,7 +1532,7 @@ public class JobsCommands implements CommandExecutor {
 			.replace("%username%", one.getKey().getUsername())
 			.replace("%number%", String.valueOf(count))
 			.replace("%action%", info.getAction())
-			.replace("%item%", one.getKey().getItemName().replace(":0", "").toLowerCase())
+			.replace("%item%", one.getKey().getItemName().replace(":0", "").replace("_", " ").toLowerCase())
 			.replace("%qty%", String.valueOf(one.getKey().getCount()))
 			.replace("%money%", String.valueOf(one.getKey().getMoney()))
 			.replace("%exp%", String.valueOf(one.getKey().getExp()));

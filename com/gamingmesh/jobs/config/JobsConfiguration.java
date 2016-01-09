@@ -62,6 +62,7 @@ public class JobsConfiguration {
     protected boolean isBroadcastingSkillups;
     protected boolean isBroadcastingLevelups;
     protected boolean payInCreative;
+    protected boolean payExploringWhenFlying;
     protected boolean addXpPlayer;
     protected boolean hideJobsWithoutPermission;
     protected int maxJobs;
@@ -170,6 +171,15 @@ public class JobsConfiguration {
      */
     public synchronized boolean payInCreative() {
 	return payInCreative;
+    }
+    
+    /**
+     * Function that tells if the player should be paid while exploring and flying
+     * @return true - pay
+     * @return false - do not
+     */
+    public synchronized boolean payExploringWhenFlying() {
+	return payExploringWhenFlying;
     }
 
     /**
@@ -379,7 +389,7 @@ public class JobsConfiguration {
 	    "Theroticali this should work without issues, but if you havving some, just disable",
 	    "But then you can feal some small (100-200ms) lag spikes while performings some jobs commands");
 	LocalOfflinePlayersData = getBoolean("Optimizations.UseLocalOfflinePlayersData", true, config, writer);
-
+	
 	writer.addComment("Logging.Use", "With this set to true all players jobs actions will be logged to database for easy to see statistics",
 	    "This is still in development and in feature it will expand");
 	LoggingUse = getBoolean("Logging.Use", false, config, writer);
@@ -414,6 +424,9 @@ public class JobsConfiguration {
 
 	writer.addComment("enable-pay-creative", "Option to allow payment to be made in creative mode");
 	payInCreative = getBoolean("enable-pay-creative", false, config, writer);
+	
+	writer.addComment("enable-pay-for-exploring-when-flying", "Option to allow payment to be made for exploring when player flyies");
+	payExploringWhenFlying = getBoolean("enable-pay-for-exploring-when-flying", false, config, writer);
 
 	writer.addComment("add-xp-player", "Adds the Jobs xp recieved to the player's Minecraft XP bar");
 	addXpPlayer = getBoolean("add-xp-player", false, config, writer);
@@ -1206,6 +1219,7 @@ public class JobsConfiguration {
 	languages.add("cs");
 	languages.add("fr");
 	languages.add("ru");
+	languages.add("cz");
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker((JavaPlugin) plugin, "locale" + File.separator + "messages_" + lang + ".yml");
@@ -1230,6 +1244,7 @@ public class JobsConfiguration {
 	    conf.options().copyDefaults(true);
 
 	    GetConfigString("economy.error.nomoney", "Sorry, no money left in national bank!", writer, conf, true);
+	    GetConfigString("limitedItem.error.levelup", "&cYou need to levelup in [jobname] to use this item!", writer, conf, true);
 
 	    GetConfigString("command.moneyboost.help.info", "Boosts Money gain for all players", writer, conf, true);
 	    GetConfigString("command.moneyboost.help.args", "[jobname] [rate]", writer, conf, true);
@@ -1340,6 +1355,8 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.output.milk.none", "%jobname% does not get money from milking cows.", writer, conf, true);
 	    GetConfigString("command.info.output.shear.info", "Shear", writer, conf, true);
 	    GetConfigString("command.info.output.shear.none", "%jobname% does not get money from shearing sheeps.", writer, conf, true);
+	    GetConfigString("command.info.output.explore.info", "Explore", writer, conf, true);
+	    GetConfigString("command.info.output.explore.none", "%jobname% does not get money from exploring.", writer, conf, true);
 	    GetConfigString("command.info.output.custom-kill.info", "Custom kill", writer, conf, true);
 	    GetConfigString("command.info.output.custom-kill.none", "%jobname% does not get money from custom player kills.", writer, conf, true);
 

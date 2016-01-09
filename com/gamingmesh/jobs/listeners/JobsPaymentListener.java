@@ -71,9 +71,12 @@ import com.gamingmesh.jobs.actions.BlockActionInfo;
 import com.gamingmesh.jobs.actions.CustomKillInfo;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.actions.EntityActionInfo;
+import com.gamingmesh.jobs.actions.ExploreActionInfo;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
+import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
@@ -324,7 +327,7 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	// Item in hand
-	ItemStack item = player.getItemInHand().hasItemMeta() ? player.getItemInHand() : null;
+	ItemStack item = player.getItemInHand();
 
 	// Protection for block break with silktouch
 	if (ConfigManager.getJobsConfiguration().useSilkTouchProtection && item != null)
@@ -1053,5 +1056,51 @@ public class JobsPaymentListener implements Listener {
 
 	    block.setMetadata(brewingOwnerMetadata, new FixedMetadataValue(plugin, event.getPlayer().getName()));
 	}
+    }
+
+    @EventHandler
+    public void onExplore(JobsChunkChangeEvent event) {
+	
+	if (!Jobs.getExplore().isExploreEnabled())
+	    return;
+
+	Player player = (Player) event.getPlayer();
+
+	if (!ConfigManager.getJobsConfiguration().payExploringWhenFlying())
+	    return;
+
+	ExploreRespond respond = Jobs.getExplore().ChunkRespond(event.getPlayer(), event.getNewChunk());
+
+	if (!respond.isNewChunk())
+	    return;
+
+	// make sure plugin is enabled
+	if (!plugin.isEnabled())
+	    return;
+
+	if (!player.isOnline())
+	    return;
+
+	// check if in creative
+	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// restricted area multiplier
+	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
+
+	// Item in hand
+	ItemStack item = player.getItemInHand();
+
+	// Wearing armor
+	ItemStack[] armor = player.getInventory().getArmorContents();
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
+	    return;
+
+	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE), multiplier, item, armor);
     }
 }

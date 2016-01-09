@@ -18,15 +18,21 @@
 
 package com.gamingmesh.jobs.listeners;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -43,8 +49,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
@@ -53,10 +62,14 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
 import com.gamingmesh.jobs.Gui.GuiTools;
+import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobLimitedItems;
+import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 
 public class JobsListener implements Listener {
@@ -473,4 +486,89 @@ public class JobsListener implements Listener {
 	    }, 1L);
 	}
     }
+
+    @SuppressWarnings("deprecation")
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onLimitedItemInteract(PlayerInteractEvent event) {
+
+	Player player = (Player) event.getPlayer();
+
+	ItemStack iih = player.getItemInHand();
+
+	if (iih == null)
+	    return;
+
+	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+
+	if (JPlayer == null)
+	    return;
+
+	List<JobProgression> prog = JPlayer.getJobProgression();
+
+	String name = null;
+	List<String> lore = new ArrayList<String>();
+
+	Map<Enchantment, Integer> enchants = iih.getEnchantments();
+
+	if (iih.hasItemMeta()) {
+	    ItemMeta meta = iih.getItemMeta();
+	    if (meta.hasDisplayName())
+		name = meta.getDisplayName();
+	    if (meta.hasLore())
+		lore = meta.getLore();
+	}
+
+	String meinOk = null;
+
+	mein: for (JobProgression one : prog) {
+	    second: for (JobLimitedItems oneItem : one.getJob().getLimitedItems()) {
+
+		if (oneItem.getId() != iih.getTypeId())
+		    continue;
+
+		meinOk = one.getJob().getName();
+
+		if (oneItem.getName() != null && name != null)
+		    if (!org.bukkit.ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name))
+			continue;
+
+		if (one.getLevel() < oneItem.getLevel())
+		    continue;
+
+		for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
+		    if (oneItem.getenchants().containsKey(oneE.getKey())) {
+			if (oneItem.getenchants().get(oneE.getKey()) < oneE.getValue()) {
+			    continue second;
+			}
+		    } else
+			continue second;
+		}
+		for (String onelore : oneItem.getLore()) {
+		    if (!lore.contains(onelore))
+			continue second;
+		}
+		meinOk = null;
+		break mein;
+	    }
+	}
+
+	if (meinOk != null) {
+	    event.setCancelled(true);
+	    ActionBar.send(player, Language.getDefaultMessage("limitedItem.error.levelup").replace("[jobname]", meinOk));
+	}
+    }
+
+    @EventHandler
+    public void onChunkChangeMove(PlayerMoveEvent event) {
+
+	Chunk from = event.getFrom().getChunk();
+	Chunk to = event.getTo().getChunk();
+
+	if (from == to)
+	    return;
+
+	JobsChunkChangeEvent jobsChunkChangeEvent = new JobsChunkChangeEvent(event.getPlayer(), from, to);
+	Bukkit.getServer().getPluginManager().callEvent(jobsChunkChangeEvent);
+    }
+
 }

@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -43,6 +44,7 @@ import com.gamingmesh.jobs.container.JobCommands;
 import com.gamingmesh.jobs.container.JobConditions;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobItems;
+import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
@@ -285,17 +287,34 @@ public class JobConfig {
 			continue;
 		    }
 		    int id = itemSection.getInt("id");
-		    String name = itemSection.getString("name");
+
+		    String name = null;
+		    if (itemSection.isString("name"))
+			name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<String>();
-		    for (String eachLine : itemSection.getStringList("lore")) {
-			lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
-		    }
+		    if (itemSection.getStringList("lore") != null)
+			for (String eachLine : itemSection.getStringList("lore")) {
+			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
+			}
 
-		    List<String> enchants = new ArrayList<String>();
+		    HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 		    if (itemSection.getStringList("enchants") != null)
 			for (String eachLine : itemSection.getStringList("enchants")) {
-			    enchants.add(eachLine);
+
+			    if (!eachLine.contains("="))
+				continue;
+
+			    Enchantment ench = Enchantment.getByName(eachLine.split("=")[0]);
+			    Integer level = -1;
+			    try {
+				level = Integer.parseInt(eachLine.split("=")[1]);
+			    } catch (NumberFormatException e) {
+				continue;
+			    }
+
+			    if (ench != null && level != -1)
+				enchants.put(ench, level);
 			}
 
 		    Double moneyBoost = itemSection.getDouble("moneyBoost");
@@ -304,8 +323,57 @@ public class JobConfig {
 		}
 	    }
 
+	    // Limited Items
+	    ArrayList<JobLimitedItems> jobLimitedItems = new ArrayList<JobLimitedItems>();
+	    ConfigurationSection LimitedItemsSection = jobSection.getConfigurationSection("limitedItems");
+	    if (LimitedItemsSection != null) {
+		for (String itemKey : LimitedItemsSection.getKeys(false)) {
+		    ConfigurationSection itemSection = LimitedItemsSection.getConfigurationSection(itemKey);
+
+		    String node = itemKey.toLowerCase();
+		    if (itemSection == null) {
+			Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid item key " + itemKey + "!");
+			continue;
+		    }
+		    int id = itemSection.getInt("id");
+
+		    String name = null;
+		    if (itemSection.isString("name"))
+			name = itemSection.getString("name");
+
+		    List<String> lore = new ArrayList<String>();
+		    if (itemSection.getStringList("lore") != null)
+			for (String eachLine : itemSection.getStringList("lore")) {
+			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
+			}
+
+		    HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+		    if (itemSection.getStringList("enchants") != null)
+			for (String eachLine : itemSection.getStringList("enchants")) {
+
+			    if (!eachLine.contains("="))
+				continue;
+
+			    Enchantment ench = Enchantment.getByName(eachLine.split("=")[0]);
+			    Integer level = -1;
+			    try {
+				level = Integer.parseInt(eachLine.split("=")[1]);
+			    } catch (NumberFormatException e) {
+				continue;
+			    }
+
+			    if (ench != null && level != -1)
+				enchants.put(ench, level);
+			}
+
+		    int level = itemSection.getInt("level");
+
+		    jobLimitedItems.add(new JobLimitedItems(node, id, name, lore, enchants, level));
+		}
+	    }
+
 	    Job job = new Job(jobName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
-		jobConditions, jobItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem);
+		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem);
 
 	    for (ActionType actionType : ActionType.values()) {
 		ConfigurationSection typeSection = jobSection.getConfigurationSection(actionType.getName());
@@ -346,6 +414,9 @@ public class JobConfig {
 				}
 			    }
 			}
+
+			if (actionType == ActionType.EXPLORE)
+			    material = null;
 
 			if (material != null) {
 			    // Break and Place actions MUST be blocks
@@ -422,6 +493,17 @@ public class JobConfig {
 			    type = myKey;
 			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL) {
 			    type = myKey;
+			} else if (actionType == ActionType.EXPLORE) {
+			    type = myKey;
+			    int amount = 10;
+			    try {
+				amount = Integer.valueOf(myKey);
+			    } catch (NumberFormatException e) {
+				Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
+				continue;
+			    }
+			    Jobs.getExplore().setExploreEnabled();
+			    Jobs.getExplore().setPlayerAmount(amount + 1);
 			}
 
 			if (type == null) {

@@ -109,6 +109,7 @@ public class JobsPlugin extends JavaPlugin {
 	Jobs.setScboard(this);
 	Jobs.setSchedule(this);
 	Jobs.setLanguage(this);
+	Jobs.setExplore();
 
 	Jobs.setPluginLogger(getLogger());
 
@@ -162,11 +163,14 @@ public class JobsPlugin extends JavaPlugin {
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	console.sendMessage(message);
 	Jobs.getLanguage().reload(ConfigManager.getJobsConfiguration().getLocale());
+	
+	Jobs.getJobsDAO().loadExplore();
     }
 
     @Override
     public void onDisable() {
 	GuiTools.CloseInventories();
+	Jobs.getJobsDAO().saveExplore();
 	Jobs.shutdown();
 	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Plugin has been disabled succesfully.");
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
