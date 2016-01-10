@@ -12,6 +12,8 @@ public class TranslateName {
 	if (ConfigManager.getJobsConfiguration().UseCustomNames)
 	    switch (info.getActionType()) {
 	    case BREAK:
+	    case TNTBREAK:
+	    case EAT:
 	    case CRAFT:
 	    case DYE:
 	    case PLACE:

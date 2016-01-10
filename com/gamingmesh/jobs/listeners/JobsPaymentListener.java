@@ -85,7 +85,6 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.gmail.nossr50.api.AbilityAPI;
 import com.google.common.base.Objects;
