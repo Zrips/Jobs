@@ -1347,6 +1347,8 @@ public class JobsConfiguration {
 
 	    GetConfigString("command.info.output.break.info", "Break", writer, conf, true);
 	    GetConfigString("command.info.output.break.none", "%jobname% does not get money for breaking blocks.", writer, conf, true);
+	    GetConfigString("command.info.output.tntbreak.info", "TNTBreak", writer, conf, true);
+	    GetConfigString("command.info.output.tntbreak.none", "%jobname% does not get money for breaking blocks with tnt.", writer, conf, true);
 	    GetConfigString("command.info.output.place.info", "Place", writer, conf, true);
 	    GetConfigString("command.info.output.place.none", "%jobname% does not get money for placing blocks.", writer, conf, true);
 	    GetConfigString("command.info.output.kill.info", "Kill", writer, conf, true);
@@ -1361,6 +1363,8 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.output.smelt.none", "%jobname% does not get money from smelting.", writer, conf, true);
 	    GetConfigString("command.info.output.brew.info", "Brew", writer, conf, true);
 	    GetConfigString("command.info.output.brew.none", "%jobname% does not get money from brewing.", writer, conf, true);
+	    GetConfigString("command.info.output.eat.info", "Eat", writer, conf, true);
+	    GetConfigString("command.info.output.eat.none", "%jobname% does not get money from eating food.", writer, conf, true);
 	    GetConfigString("command.info.output.enchant.info", "Enchant", writer, conf, true);
 	    GetConfigString("command.info.output.enchant.none", "%jobname% does not get money from enchanting.", writer, conf, true);
 	    GetConfigString("command.info.output.repair.info", "Repair", writer, conf, true);
