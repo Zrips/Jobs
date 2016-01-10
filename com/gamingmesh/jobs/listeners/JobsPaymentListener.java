@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -45,8 +46,10 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -82,6 +85,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.gmail.nossr50.api.AbilityAPI;
 import com.google.common.base.Objects;
@@ -290,7 +294,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1002,13 +1006,15 @@ public class JobsPaymentListener implements Listener {
 	double closest = 30.0;
 	Player player = null;
 	for (Player i : Bukkit.getOnlinePlayers()) {
-	    if (i.getWorld().getName().equals(animal.getWorld().getName())) {
-		double dist = i.getLocation().distance(animal.getLocation());
-		if (closest > dist) {
-		    closest = dist;
-		    player = i;
-		}
+	    if (!i.getWorld().getName().equals(animal.getWorld().getName()))
+		continue;
+
+	    double dist = i.getLocation().distance(animal.getLocation());
+	    if (closest > dist) {
+		closest = dist;
+		player = i;
 	    }
+
 	}
 
 	if (player != null && closest < 30.0) {
@@ -1037,6 +1043,120 @@ public class JobsPaymentListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerEat(FoodLevelChangeEvent event) {
+
+	// make sure plugin is enabled
+	if (!plugin.isEnabled())
+	    return;
+
+	if (!(event.getEntity() instanceof Player))
+	    return;
+
+	if (event.getEntity().hasMetadata("NPC"))
+	    return;
+
+	if (event.getFoodLevel() <= ((Player) event.getEntity()).getFoodLevel())
+	    return;
+
+	Player player = (Player) event.getEntity();
+
+	if (!player.isOnline())
+	    return;
+
+	// check if in creative
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// restricted area multiplier
+	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
+
+	// Item in hand
+	ItemStack item = player.getItemInHand();
+
+	// Wearing armor
+	ItemStack[] armor = player.getInventory().getArmorContents();
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
+	    return;
+
+	Jobs.action(jPlayer, new ItemActionInfo(item, ActionType.EAT), multiplier, item, armor);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onTntExplode(EntityExplodeEvent event) {
+
+	// make sure plugin is enabled
+	if (!plugin.isEnabled())
+	    return;
+
+	if (!ConfigManager.getJobsConfiguration().isUseTntFinder())
+	    return;
+
+	if (event.getEntityType() != EntityType.PRIMED_TNT && event.getEntityType() != EntityType.MINECART_TNT)
+	    return;
+
+	double closest = 30.0;
+	Player player = null;
+	Location loc = event.getEntity().getLocation();
+	for (Player i : Bukkit.getOnlinePlayers()) {
+
+	    if (loc.getWorld() != i.getWorld())
+		continue;
+
+	    double dist = i.getLocation().distance(loc);
+	    if (closest > dist) {
+		closest = dist;
+		player = i;
+	    }
+	}
+
+	if (player == null || closest == 30.0)
+	    return;
+
+	if (!player.isOnline())
+	    return;
+
+	// check if in creative
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// restricted area multiplier
+	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
+
+	// Item in hand
+	ItemStack item = player.getItemInHand();
+
+	// Wearing armor
+	ItemStack[] armor = player.getInventory().getArmorContents();
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
+	    return;
+
+	for (Block block : event.blockList()) {
+	    if (block == null)
+		continue;
+
+	    if (block.getType().equals(Material.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+		block.removeMetadata(furnaceOwnerMetadata, plugin);
+
+	    if (ConfigManager.getJobsConfiguration().useBlockProtection)
+		if (block.getState().hasMetadata(BlockMetadata))
+		    return;
+
+	    BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.TNTBREAK);
+	    Jobs.action(jPlayer, bInfo, multiplier, item, armor);
+	}
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
 	if (!plugin.isEnabled())
 	    return;
@@ -1060,7 +1180,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler
     public void onExplore(JobsChunkChangeEvent event) {
-	
+
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 

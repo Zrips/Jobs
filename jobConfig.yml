@@ -126,6 +126,11 @@ Jobs:
         income: 5.0
         # base experience
         experience: 5.0
+    # payment for breaking a block with tnt
+    TNTBreak:
+      LOG:
+        income: 5.0
+        experience: 5.0
     # payment for placing a block
     Place:
       SAPLING: 
@@ -165,6 +170,14 @@ Jobs:
       Wolf:
         income: 2.0
         experience: 5.0
+    # Eating food
+    Eat:
+      cooked_rabbit:
+        income: 5
+        experience: 5
+      baked_potato:
+        income: 5
+        experience: 5    
     # Milking cows, only one option is available
     Milk:
       Cow:

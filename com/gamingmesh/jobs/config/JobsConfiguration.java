@@ -84,7 +84,9 @@ public class JobsConfiguration {
     public boolean useBlockProtection;
     public boolean useBlockTimer;
     public boolean useMinimumOveralPayment;
-    public boolean useBreederFinder, CancelCowMilking;
+    public boolean useBreederFinder = false;
+    private boolean useTnTFinder = false;
+    public boolean CancelCowMilking;
     public boolean fixAtMaxLevel, ToggleActionBar, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAcountChat,
 	EmptyServerAcountActionBar, JobsToggleEnabled, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
@@ -129,6 +131,22 @@ public class JobsConfiguration {
 	return text;
     }
 
+    public void setBreederFinder(boolean state) {
+	this.useBreederFinder = state;
+    }
+
+    public boolean isUseBreederFinder() {
+	return this.useBreederFinder;
+    }
+    
+    public void setTntFinder(boolean state) {
+	this.useTnTFinder = state;
+    }
+
+    public boolean isUseTntFinder() {
+	return this.useTnTFinder;
+    }
+    
     /**
      * Get how often in minutes to save job information
      * @return how often in minutes to save job information
@@ -172,7 +190,7 @@ public class JobsConfiguration {
     public synchronized boolean payInCreative() {
 	return payInCreative;
     }
-    
+
     /**
      * Function that tells if the player should be paid while exploring and flying
      * @return true - pay
@@ -389,7 +407,7 @@ public class JobsConfiguration {
 	    "Theroticali this should work without issues, but if you havving some, just disable",
 	    "But then you can feal some small (100-200ms) lag spikes while performings some jobs commands");
 	LocalOfflinePlayersData = getBoolean("Optimizations.UseLocalOfflinePlayersData", true, config, writer);
-	
+
 	writer.addComment("Logging.Use", "With this set to true all players jobs actions will be logged to database for easy to see statistics",
 	    "This is still in development and in feature it will expand");
 	LoggingUse = getBoolean("Logging.Use", false, config, writer);
@@ -424,7 +442,7 @@ public class JobsConfiguration {
 
 	writer.addComment("enable-pay-creative", "Option to allow payment to be made in creative mode");
 	payInCreative = getBoolean("enable-pay-creative", false, config, writer);
-	
+
 	writer.addComment("enable-pay-for-exploring-when-flying", "Option to allow payment to be made for exploring when player flyies");
 	payExploringWhenFlying = getBoolean("enable-pay-for-exploring-when-flying", false, config, writer);
 

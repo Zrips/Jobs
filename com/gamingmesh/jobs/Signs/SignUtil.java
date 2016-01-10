@@ -168,8 +168,8 @@ public class SignUtil {
 			    UpdateHead(sign.getLocation(), ((TopList) PlayerList.get(0)).getPlayerName(), timelapse);
 			} else {
 			    String PlayerName = ((TopList) PlayerList.get(0)).getPlayerName();
-			    if (PlayerName.length() > 18) {
-				String PlayerNameStrip = PlayerName.split("(?<=\\G.{13})")[0];
+			    if (PlayerName.length() > 8) {
+				String PlayerNameStrip = PlayerName.split("(?<=\\G.{7})")[0];
 				PlayerName = PlayerNameStrip + "~";
 			    }
 			    String line1 = Language.getMessage("signs.SpecialList." + one.GetNumber() + ".1");

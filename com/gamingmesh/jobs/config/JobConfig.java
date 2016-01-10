@@ -461,8 +461,11 @@ public class JobConfig {
 
 			    if (entity != null && entity.isAlive()) {
 				type = entity.toString();
-
 				id = entity.getTypeId();
+
+				// using breeder finder
+				if (actionType == ActionType.BREED)
+				    ConfigManager.getJobsConfiguration().setBreederFinder(true);
 			    }
 
 			    // Just to recognize wither skeleton
@@ -510,6 +513,9 @@ public class JobConfig {
 			    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
 			    continue;
 			}
+
+			if (actionType == ActionType.TNTBREAK)
+			    ConfigManager.getJobsConfiguration().setTntFinder(true);
 
 			double income = section.getDouble("income", 0.0);
 			double experience = section.getDouble("experience", 0.0);

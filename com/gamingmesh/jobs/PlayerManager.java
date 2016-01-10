@@ -525,8 +525,10 @@ public class PlayerManager {
 	if (Perm(player, "jobs.max.*"))
 	    return true;
 
+	int totalJobs = Jobs.getJobs().size() + 5;
+
 	short count = (short) ConfigManager.getJobsConfiguration().getMaxJobs();
-	for (short ctr = 0; ctr < 30; ctr++) {
+	for (short ctr = 0; ctr < totalJobs; ctr++) {
 	    if (Perm(player, "jobs.max." + ctr))
 		count = ctr;
 	    if (count > currentCount)
