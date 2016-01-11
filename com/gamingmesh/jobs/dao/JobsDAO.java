@@ -746,12 +746,18 @@ public abstract class JobsDAO {
     public synchronized void saveExplore() {
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
-	
+
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
 	try {
-	    PreparedStatement prest = conn.prepareStatement("TRUNCATE TABLE `" + prefix + "explore`;");
+
+	    PreparedStatement prest = null;
+	    if (ConfigManager.getJobsConfiguration().storageMethod.equalsIgnoreCase("sqlite")) {
+		prest = conn.prepareStatement("DELETE from `" + prefix + "explore`;");
+	    } else
+		prest = conn.prepareStatement("TRUNCATE TABLE `" + prefix + "explore`;");
+
 	    prest.execute();
 	    prest.close();
 
@@ -780,7 +786,7 @@ public abstract class JobsDAO {
     public synchronized void loadExplore() {
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
-	
+
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;

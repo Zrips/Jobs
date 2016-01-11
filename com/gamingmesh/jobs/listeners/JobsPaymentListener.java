@@ -1098,7 +1098,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getEntityType() != EntityType.PRIMED_TNT && event.getEntityType() != EntityType.MINECART_TNT)
 	    return;
 
-	double closest = 30.0;
+	double closest = 60.0;
 	Player player = null;
 	Location loc = event.getEntity().getLocation();
 	for (Player i : Bukkit.getOnlinePlayers()) {
@@ -1113,7 +1113,7 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
-	if (player == null || closest == 30.0)
+	if (player == null || closest == 60.0)
 	    return;
 
 	if (!player.isOnline())

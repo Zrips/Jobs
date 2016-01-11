@@ -77,17 +77,21 @@ public class ActionBar {
 	if (!Jobs.actionbartoggle.containsKey(playername) && ConfigManager.getJobsConfiguration().JobsToggleEnabled)
 	    Jobs.actionbartoggle.put(playername, true);
 
-	if (playername != null && Jobs.actionbartoggle.size() > 0)
-	    if (Jobs.actionbartoggle.containsKey(playername)) {
-		Boolean show = Jobs.actionbartoggle.get(playername);
-		Player abp = (Player) payment.getOfflinePlayer();
-		if (abp != null && show) {
-		    String Message = Language.getMessage("command.toggle.output.paid");
-		    Message = Message.replace("[amount]", String.format("%.2f", payment.getAmount()));
-		    Message = Message.replace("[exp]", String.format("%.2f", payment.getExp()));
-		    ActionBar.send(abp, ChatColor.GREEN + Message);
-		}
-	    }
+	if (playername == null)
+	    return;
+
+	if (!Jobs.actionbartoggle.containsKey(playername))
+	    return;
+
+	Boolean show = Jobs.actionbartoggle.get(playername);
+	Player abp = (Player) payment.getOfflinePlayer();
+	if (abp != null && show) {
+	    String Message = Language.getMessage("command.toggle.output.paid");
+	    Message = Message.replace("[amount]", String.format("%.2f", payment.getAmount()));
+	    Message = Message.replace("[exp]", String.format("%.2f", payment.getExp()));
+	    ActionBar.send(abp, ChatColor.GREEN + Message);
+	}
+
     }
 
     public static void send(Player receivingPacket, String msg) {
