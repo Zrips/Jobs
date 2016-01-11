@@ -444,7 +444,7 @@ public class JobsPlayer {
 		if (method.equals(DisplayMethod.NONE))
 		    continue;
 		if (gotTitle) {
-		    builder.append(" ");
+		    builder.append(ConfigManager.getJobsConfiguration().getModifyChatSeparator());
 		    gotTitle = false;
 		}
 		Title title = ConfigManager.getJobsConfiguration().getTitleForLevel(prog.getLevel(), prog.getJob().getName());
@@ -513,6 +513,8 @@ public class JobsPlayer {
 	}
 
 	honorific = builder.toString().trim();
+	honorific = ConfigManager.getJobsConfiguration().getModifyChatPrefix() + honorific + ConfigManager.getJobsConfiguration().getModifyChatSuffix();
+
     }
 
     /**

@@ -68,6 +68,9 @@ public class JobsConfiguration {
     protected int maxJobs;
     protected boolean payNearSpawner;
     protected boolean modifyChat;
+    public String modifyChatPrefix;
+    public String modifyChatSuffix;
+    public String modifyChatSeparator;
     protected int economyBatchDelay;
     protected boolean saveOnDisconnect;
     public boolean LocalOfflinePlayersData;
@@ -138,7 +141,7 @@ public class JobsConfiguration {
     public boolean isUseBreederFinder() {
 	return this.useBreederFinder;
     }
-    
+
     public void setTntFinder(boolean state) {
 	this.useTnTFinder = state;
     }
@@ -146,7 +149,7 @@ public class JobsConfiguration {
     public boolean isUseTntFinder() {
 	return this.useTnTFinder;
     }
-    
+
     /**
      * Get how often in minutes to save job information
      * @return how often in minutes to save job information
@@ -265,6 +268,18 @@ public class JobsConfiguration {
 
     public synchronized boolean getModifyChat() {
 	return modifyChat;
+    }
+
+    public String getModifyChatPrefix() {
+	return modifyChatPrefix;
+    }
+
+    public String getModifyChatSuffix() {
+	return modifyChatSuffix;
+    }
+
+    public String getModifyChatSeparator() {
+	return modifyChatSeparator;
     }
 
     public synchronized int getEconomyBatchDelay() {
@@ -452,6 +467,10 @@ public class JobsConfiguration {
 	writer.addComment("modify-chat",
 	    "Modifys chat to add chat titles.  If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
 	modifyChat = getBoolean("modify-chat", true, config, writer);
+
+	modifyChatPrefix = getString("modify-chat-prefix", "&c[", config, writer, true);
+	modifyChatSuffix = getString("modify-chat-suffix", "&c]", config, writer, true);
+	modifyChatSeparator = getString("modify-chat-seperator", " ", config, writer, true);
 
 	writer.addComment("UseCustomNames", "Do you want to use custom item/block/mob/enchant/color names",
 	    "With this set to true names like Stone:1 will be translated to Granite", "Name list is in ItemList.yml file");
@@ -1122,6 +1141,12 @@ public class JobsConfiguration {
 	config.addDefault(path, boo);
 	copySetting(config, writer, path);
 	return config.getString(path);
+    }
+
+    private String getString(String path, String boo, YamlConfiguration config, CommentedYamlConfiguration writer, boolean colorize) {
+	config.addDefault(path, boo);
+	copySetting(config, writer, path);
+	return org.bukkit.ChatColor.translateAlternateColorCodes('&', config.getString(path));
     }
 
     private Double getDouble(String path, Double boo, YamlConfiguration config, CommentedYamlConfiguration writer) {
