@@ -1,17 +1,17 @@
 /**
  * Jobs Plugin for Bukkit
  * Copyright (C) 2011 Zak Ford <zak.j.ford@gmail.com>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -44,8 +44,9 @@ public class PermissionHandler {
 
     public void recalculatePermissions(JobsPlayer jPlayer) {
 
-	if (jPlayer == null)
-	    return;
+	if (jPlayer == null) {
+		return;
+	}
 
 	Player player = this.plugin.getServer().getPlayer(jPlayer.getPlayerUUID());
 	if (player == null) {
@@ -94,36 +95,41 @@ public class PermissionHandler {
 				int jobLevel = Integer.valueOf(oneReq.toLowerCase().replace("j:", "").split("-")[1]);
 				boolean found = false;
 				for (JobProgression oneJob : jPlayer.getJobProgression()) {
-				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
-					found = true;
+				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName)) {
+						found = true;
+					}
 				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
 					ok = false;
 					break;
 				    }
 				}
-				if (found == false)
-				    ok = false;
+				if (found == false) {
+					ok = false;
+				}
 			    }
-			    if (ok == false)
-				break;
+			    if (ok == false) {
+					break;
+				}
 
 			    if (oneReq.toLowerCase().contains("p:")) {
-				if (!player.hasPermission(oneReq.replace(":p", ""))) {
+				if (!player.hasPermission(oneReq.replace("p:", ""))) {
 				    ok = false;
 				    break;
 				}
 			    }
 			}
 
-			if (!ok)
-			    continue;
+			if (!ok) {
+				continue;
+			}
 
 			for (String one : Condition.getPerform()) {
-			    if (!one.toLowerCase().contains("p:"))
-				continue;
+			    if (!one.toLowerCase().contains("p:")) {
+					continue;
+				}
 
-			    String perm = one.toLowerCase().replace("p:", "").split("-")[0];
-			    boolean node = Boolean.getBoolean(one.toLowerCase().replace("p:", "").split("-")[1]);
+			    String perm = one.toLowerCase().replace("p:", "");
+			    boolean node = Boolean.getBoolean(one.toLowerCase().replace("p:", ""));
 
 			    if (node) {
 				permissions.put(perm, true);
@@ -168,19 +174,22 @@ public class PermissionHandler {
 				int jobLevel = Integer.valueOf(oneReq.toLowerCase().replace("j:", "").split("-")[1]);
 				boolean found = false;
 				for (JobProgression oneJob : jPlayer.getJobProgression()) {
-				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
-					found = true;
+				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName)) {
+						found = true;
+					}
 				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
 					ok = false;
 					break;
 				    }
 				}
-				if (found == false)
-				    ok = false;
+				if (found == false) {
+					ok = false;
+				}
 
 			    }
-			    if (ok == false)
-				break;
+			    if (ok == false) {
+					break;
+				}
 
 			    if (oneReq.toLowerCase().contains("p:")) {
 				if (!player.hasPermission(oneReq.replace("p:", ""))) {
@@ -190,13 +199,15 @@ public class PermissionHandler {
 			    }
 			}
 
-			if (!ok)
-			    continue;
-			for (String one : Condition.getPerform()) {
-			    if (!one.toLowerCase().contains("p:"))
+			if (!ok) {
 				continue;
-			    String perm = one.toLowerCase().replace("p:", "").split("-")[0];
-			    String nodeString = one.toLowerCase().replace("p:", "").split("-")[1];
+			}
+			for (String one : Condition.getPerform()) {
+			    if (!one.toLowerCase().contains("p:")) {
+					continue;
+				}
+			    String perm = one.toLowerCase().replace("p:", "");
+			    String nodeString = one.toLowerCase().replace("p:", "");
 			    boolean node = nodeString.equalsIgnoreCase("true") ? true : false;
 
 			    if (node) {
@@ -223,8 +234,9 @@ public class PermissionHandler {
 	}
 
 	// If the permissions changed, recalculate them
-	if (!changed)
-	    return;
+	if (!changed) {
+		return;
+	}
 
 	// find old attachment
 	PermissionAttachment attachment = null;
@@ -247,12 +259,14 @@ public class PermissionHandler {
     public void registerPermissions() {
 	PluginManager pm = plugin.getServer().getPluginManager();
 	for (World world : plugin.getServer().getWorlds()) {
-	    if (pm.getPermission("jobs.world." + world.getName().toLowerCase()) == null)
-		pm.addPermission(new Permission("jobs.world." + world.getName().toLowerCase(), PermissionDefault.TRUE));
+	    if (pm.getPermission("jobs.world." + world.getName().toLowerCase()) == null) {
+			pm.addPermission(new Permission("jobs.world." + world.getName().toLowerCase(), PermissionDefault.TRUE));
+		}
 	}
 	for (Job job : Jobs.getJobs()) {
-	    if (pm.getPermission("jobs.join." + job.getName().toLowerCase()) == null)
-		pm.addPermission(new Permission("jobs.join." + job.getName().toLowerCase(), PermissionDefault.TRUE));
+	    if (pm.getPermission("jobs.join." + job.getName().toLowerCase()) == null) {
+			pm.addPermission(new Permission("jobs.join." + job.getName().toLowerCase(), PermissionDefault.TRUE));
+		}
 	}
     }
 
