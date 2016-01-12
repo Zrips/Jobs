@@ -406,7 +406,7 @@ public class JobsListener implements Listener {
 	Player player = event.getPlayer();
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
-	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() + " " : "";
+	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
 
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";
