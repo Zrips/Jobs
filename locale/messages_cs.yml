@@ -203,7 +203,8 @@ command:
     help:
       info: Prepina vystup plateb na panelu akci.
     output:
-      paid: '&aDostal jsi penize za: &2[amount]'
+      paid: '&aZiskal jsi penize za: &2[amount]'
+        exponly: '&aZiskal jsi &2[exp] &aexp'
       'on': '&aZmeneno: &aON'
       'off': '&aZmeneno: &4OFF'
 message:

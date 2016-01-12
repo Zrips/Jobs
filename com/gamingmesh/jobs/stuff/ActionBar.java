@@ -38,24 +38,32 @@ public class ActionBar {
 		cleanVersion = Integer.parseInt(version.replace("v", "").replace("V", "").replace("_", "").replace("r", "").replace("R", ""));
 	    } catch (NumberFormatException e) {
 		// Fail save if it for some reason can't translate version to integer
-		if (version.contains("v1_7"))
-		    cleanVersion = 1700;
-		if (version.contains("v1_6"))
-		    cleanVersion = 1600;
-		if (version.contains("v1_5"))
-		    cleanVersion = 1500;
-		if (version.contains("v1_4"))
-		    cleanVersion = 1400;
-		if (version.contains("v1_8_R1"))
-		    cleanVersion = 1810;
-		if (version.contains("v1_8_R2"))
-		    cleanVersion = 1820;
-		if (version.contains("v1_8_R3"))
-		    cleanVersion = 1830;
+		if (version.contains("v1_7")) {
+			cleanVersion = 1700;
+		}
+		if (version.contains("v1_6")) {
+			cleanVersion = 1600;
+		}
+		if (version.contains("v1_5")) {
+			cleanVersion = 1500;
+		}
+		if (version.contains("v1_4")) {
+			cleanVersion = 1400;
+		}
+		if (version.contains("v1_8_R1")) {
+			cleanVersion = 1810;
+		}
+		if (version.contains("v1_8_R2")) {
+			cleanVersion = 1820;
+		}
+		if (version.contains("v1_8_R3")) {
+			cleanVersion = 1830;
+		}
 	    }
 
-	    if (cleanVersion < 1000)
-		cleanVersion = cleanVersion * 10;
+	    if (cleanVersion < 1000) {
+			cleanVersion = cleanVersion * 10;
+		}
 
 	    packetType = Class.forName(getPacketPlayOutChat());
 	    Class<?> typeCraftPlayer = Class.forName(getCraftPlayerClasspath());
@@ -74,21 +82,30 @@ public class ActionBar {
 
     public static void ShowActionBar(BufferedPayment payment) {
 	String playername = payment.getOfflinePlayer().getName();
-	if (!Jobs.actionbartoggle.containsKey(playername) && ConfigManager.getJobsConfiguration().JobsToggleEnabled)
-	    Jobs.actionbartoggle.put(playername, true);
+	if (!Jobs.actionbartoggle.containsKey(playername) && ConfigManager.getJobsConfiguration().JobsToggleEnabled) {
+		Jobs.actionbartoggle.put(playername, true);
+	}
 
-	if (playername == null)
-	    return;
+	if (playername == null) {
+		return;
+	}
 
-	if (!Jobs.actionbartoggle.containsKey(playername))
-	    return;
+	if (!Jobs.actionbartoggle.containsKey(playername)) {
+		return;
+	}
 
 	Boolean show = Jobs.actionbartoggle.get(playername);
 	Player abp = (Player) payment.getOfflinePlayer();
 	if (abp != null && show) {
-	    String Message = Language.getMessage("command.toggle.output.paid");
-	    Message = Message.replace("[amount]", String.format("%.2f", payment.getAmount()));
-	    Message = Message.replace("[exp]", String.format("%.2f", payment.getExp()));
+		String Message = "";
+		if (payment.getAmount() > 0) {
+		    Message = Language.getMessage("command.toggle.output.paid");
+		    Message = Message.replace("[amount]", String.format("%.2f", payment.getAmount()));
+		    Message = Message.replace("[exp]", String.format("%.2f", payment.getExp()));
+		} else {
+			Message = Language.getMessage("command.toggle.output.paid.exponly");
+		    Message = Message.replace("[exp]", String.format("%.2f", payment.getExp()));
+		}
 	    ActionBar.send(abp, ChatColor.GREEN + Message);
 	}
 
@@ -96,8 +113,9 @@ public class ActionBar {
 
     public static void send(Player receivingPacket, String msg) {
 	try {
-	    if (msg == null || nmsChatSerializer == null)
-		return;
+	    if (msg == null || nmsChatSerializer == null) {
+			return;
+		}
 
 	    if (cleanVersion < 1800) {
 		receivingPacket.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
