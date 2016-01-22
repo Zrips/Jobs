@@ -126,6 +126,14 @@ Jobs:
         income: 5.0
         # base experience
         experience: 5.0
+        # (OPTIONAL) from which level of this job player can get money for this action  
+        # if not given, then player will always get money for this action
+        # this can be used for any action
+        from-level: 1
+        # (OPTIONAL) until which level player can get money for this action.
+        # if not given, then there is no limit
+        # this can be used for any action
+        until-level: 30
     # payment for breaking a block with tnt
     TNTBreak:
       LOG:
