@@ -123,8 +123,8 @@ public class GuiTools {
 	    }
 
 	    Lore.add("");
-	    Lore.add(Language.getDefaultMessage("command.info.gui.leftClick"));
-	    Lore.add(Language.getDefaultMessage("command.info.gui.rightClick"));
+	    Lore.add(Language.getMessage("command.info.gui.leftClick"));
+	    Lore.add(Language.getMessage("command.info.gui.rightClick"));
 
 	    ItemStack GuiItem = job.getGuiItem();
 

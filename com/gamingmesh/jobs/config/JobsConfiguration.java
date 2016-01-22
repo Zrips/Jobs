@@ -470,7 +470,7 @@ public class JobsConfiguration {
 
 	modifyChatPrefix = getString("modify-chat-prefix", "&c[", config, writer, true);
 	modifyChatSuffix = getString("modify-chat-suffix", "&c]", config, writer, true);
-	modifyChatSeparator = getString("modify-chat-seperator", " ", config, writer, true);
+	modifyChatSeparator = getString("modify-chat-separator", " ", config, writer, true);
 
 	writer.addComment("UseCustomNames", "Do you want to use custom item/block/mob/enchant/color names",
 	    "With this set to true names like Stone:1 will be translated to Granite", "Name list is in ItemList.yml file");
@@ -1359,6 +1359,10 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.help.actions", "&eValid actions are: &f%actions%", writer, conf, true);
 	    GetConfigString("command.info.help.max", " - &emax level:&f ", writer, conf, true);
 	    GetConfigString("command.info.help.material", "&7%material%", writer, conf, true);
+	    
+	    GetConfigString("command.info.help.levelRange", " &a(&e%levelFrom% &a- &e%levelUntil% &alevels)", writer, conf, true);
+	    GetConfigString("command.info.help.levelFrom", " &a(from &e%levelFrom% &alevel)", writer, conf, true);
+	    GetConfigString("command.info.help.levelUntil", " &a(until &e%levelUntil% &alevel)", writer, conf, true);
 
 	    GetConfigString("command.info.gui.pickjob", "&ePick your job!", writer, conf, true);
 	    GetConfigString("command.info.gui.jobinfo", "&e[jobname] info!", writer, conf, true);
@@ -1389,7 +1393,9 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.output.brew.info", "Brew", writer, conf, true);
 	    GetConfigString("command.info.output.brew.none", "%jobname% does not get money from brewing.", writer, conf, true);
 	    GetConfigString("command.info.output.eat.info", "Eat", writer, conf, true);
-	    GetConfigString("command.info.output.eat.none", "%jobname% does not get money from eating food.", writer, conf, true);
+	    GetConfigString("command.info.output.eat.none", "%jobname% does not get money from eating food.", writer, conf, true);	    
+	    GetConfigString("command.info.output.dye.info", "Dye", writer, conf, true);
+	    GetConfigString("command.info.output.dye.none", "%jobname% does not get money from dyeing.", writer, conf, true);
 	    GetConfigString("command.info.output.enchant.info", "Enchant", writer, conf, true);
 	    GetConfigString("command.info.output.enchant.none", "%jobname% does not get money from enchanting.", writer, conf, true);
 	    GetConfigString("command.info.output.repair.info", "Repair", writer, conf, true);

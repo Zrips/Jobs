@@ -554,7 +554,7 @@ public class JobsListener implements Listener {
 
 	if (meinOk != null) {
 	    event.setCancelled(true);
-	    ActionBar.send(player, Language.getDefaultMessage("limitedItem.error.levelup").replace("[jobname]", meinOk));
+	    ActionBar.send(player, Language.getMessage("limitedItem.error.levelup").replace("[jobname]", meinOk));
 	}
     }
 

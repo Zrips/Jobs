@@ -520,7 +520,22 @@ public class JobConfig {
 			double income = section.getDouble("income", 0.0);
 			double experience = section.getDouble("experience", 0.0);
 
-			jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation));
+			int fromlevel = 1;
+
+			if (section.isInt("from-level"))
+			    fromlevel = section.getInt("from-level");
+
+			int untilLevel = -1;
+			if (section.isInt("until-level")) {
+			    untilLevel = section.getInt("until-level");
+			    if (untilLevel < fromlevel) {
+				Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid until-level in " + actionType.getName() + " for type property: " + key
+				    + "! It will be not set.");
+				untilLevel = -1;
+			    }
+			}
+
+			jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, fromlevel, untilLevel));
 		    }
 		}
 		job.setJobInfo(actionType, jobInfo);

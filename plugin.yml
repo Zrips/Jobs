@@ -1,7 +1,7 @@
 name: Jobs
 description: Jobs Plugin for the BukkitAPI
 main: com.gamingmesh.jobs.JobsPlugin
-version: 2.60.0
+version: 2.61.0
 author: phrstbrn
 softdepend: [Vault, CoreProtect, MythicMobs, McMMO]
 commands:

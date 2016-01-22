@@ -643,12 +643,13 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return;
 	try {
-	    PreparedStatement prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `level` = ?, `experience` = ? WHERE `player_uuid` = ? AND `job` = ?;");
+	    PreparedStatement prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `level` = ?, `experience` = ?, `username` = ? WHERE `player_uuid` = ? AND `job` = ?;");
 	    for (JobProgression progression : player.getJobProgression()) {
 		prest.setInt(1, progression.getLevel());
 		prest.setInt(2, (int) progression.getExperience());
-		prest.setString(3, player.getPlayerUUID().toString());
-		prest.setString(4, progression.getJob().getName());
+		prest.setString(3, player.getPlayer().getName());
+		prest.setString(4, player.getPlayerUUID().toString());
+		prest.setString(5, progression.getJob().getName());
 		prest.execute();
 	    }
 	    prest.close();
@@ -661,7 +662,7 @@ public abstract class JobsDAO {
      * Save player-job information
      * @param jobInfo - the information getting saved
      */
-    public synchronized void saveLog(JobsPlayer player) {
+    public void saveLog(JobsPlayer player) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
@@ -743,7 +744,7 @@ public abstract class JobsDAO {
      * Save player-explore information
      * @param jobexplore - the information getting saved
      */
-    public synchronized void saveExplore() {
+    public void saveExplore() {
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
@@ -783,7 +784,7 @@ public abstract class JobsDAO {
      * Save player-explore information
      * @param jobexplore - the information getting saved
      */
-    public synchronized void loadExplore() {
+    public void loadExplore() {
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
@@ -839,7 +840,7 @@ public abstract class JobsDAO {
      * @param toplist - toplist by jobs name
      * @return 
      */
-    public synchronized ArrayList<TopList> toplist(String jobsname, int limit) {
+    public ArrayList<TopList> toplist(String jobsname, int limit) {
 	ArrayList<TopList> jobs = new ArrayList<TopList>();
 	JobsConnection conn = getConnection();
 	if (conn == null)

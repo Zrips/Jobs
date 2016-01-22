@@ -183,19 +183,19 @@ public class JobsCommands implements CommandExecutor {
 	return true;
     }
 
-    @JobCommand
-    public boolean fixuuid(CommandSender sender, String[] args) throws IOException {
-
-	if (args.length > 0) {
-	    sendUsage(sender, "fixuuid");
-	    return true;
-	}
-
-	sender.sendMessage(ChatColor.GOLD + "[Jobs] Starting uuid fix proccess, this can take up to minute depending on your data base size.");
-	Jobs.getJobsDAO().fixUuid(sender);
-
-	return true;
-    }
+//    @JobCommand
+//    public boolean fixuuid(CommandSender sender, String[] args) throws IOException {
+//
+//	if (args.length > 0) {
+//	    sendUsage(sender, "fixuuid");
+//	    return true;
+//	}
+//
+//	sender.sendMessage(ChatColor.GOLD + "[Jobs] Starting uuid fix proccess, this can take up to minute depending on your data base size.");
+//	Jobs.getJobsDAO().fixUuid(sender);
+//
+//	return true;
+//    }
 
     @JobCommand
     public boolean convert(CommandSender sender, String[] args) throws IOException {
@@ -313,6 +313,18 @@ public class JobsCommands implements CommandExecutor {
 	String message = Language.getMessage("command.join.success");
 	message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
 	sender.sendMessage(message);
+	return true;
+    }
+
+    @JobCommand
+    public boolean test(CommandSender sender, String[] args) {
+	if (!(sender instanceof Player))
+	    return false;
+
+	Player pSender = (Player) sender;
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
+
+	Jobs.getJobsDAO().saveLog(jPlayer);
 	return true;
     }
 
@@ -1676,7 +1688,10 @@ public class JobsCommands implements CommandExecutor {
 	    message.append("  ");
 
 	    message.append(Language.getMessage("command.info.help.material").replace("%material%", materialName));
-	    message.append(" -> ");
+	    if (!info.isInLevelRange(prog.getLevel()))
+		message.append(org.bukkit.ChatColor.RED + " -> ");
+	    else
+		message.append(" -> ");
 
 	    message.append(xpColor.toString());
 	    message.append(xpString);
@@ -1684,6 +1699,16 @@ public class JobsCommands implements CommandExecutor {
 
 	    message.append(incomeColor.toString());
 	    message.append(Jobs.getEconomy().format(income));
+
+	    if (info.getFromLevel() > 1 && info.getUntilLevel() != -1)
+		message.append(Language.getMessage("command.info.help.levelRange").replace("%levelFrom%", "" + info.getFromLevel()).replace("%levelUntil%", "" + info
+		    .getUntilLevel()));
+
+	    if (info.getFromLevel() > 1 && info.getUntilLevel() == -1)
+		message.append(Language.getMessage("command.info.help.levelFrom").replace("%levelFrom%", "" + info.getFromLevel()));
+
+	    if (info.getFromLevel() == 1 && info.getUntilLevel() != -1)
+		message.append(Language.getMessage("command.info.help.levelUntil").replace("%levelUntil%", "" + info.getUntilLevel()));
 
 	    message.append('\n');
 	}

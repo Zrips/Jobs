@@ -220,6 +220,8 @@ public class Job {
 	List<JobInfo> jobInfo = getJobInfo(action.getType());
 	for (JobInfo info : jobInfo) {
 	    if (info.getName().equalsIgnoreCase(action.getName()) || info.getName().equalsIgnoreCase(action.getNameWithSub())) {
+		if (!info.isInLevelRange(level))
+		    return 0D;
 		return info.getIncome(level, numjobs);
 	    }
 	}
@@ -237,8 +239,11 @@ public class Job {
     public Double getExperience(ActionInfo action, int level, int numjobs) {
 	List<JobInfo> jobInfo = getJobInfo(action.getType());
 	for (JobInfo info : jobInfo) {
-	    if (info.getName().equalsIgnoreCase(action.getName()) || info.getName().equalsIgnoreCase(action.getNameWithSub()))
+	    if (info.getName().equalsIgnoreCase(action.getName()) || info.getName().equalsIgnoreCase(action.getNameWithSub())){
+		if (!info.isInLevelRange(level))
+		    return 0D;
 		return info.getExperience(level, numjobs);
+	    }
 	}
 	return null;
     }
