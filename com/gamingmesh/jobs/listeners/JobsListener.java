@@ -521,33 +521,12 @@ public class JobsListener implements Listener {
 	String meinOk = null;
 
 	mein: for (JobProgression one : prog) {
-	    second: for (JobLimitedItems oneItem : one.getJob().getLimitedItems()) {
-
-		if (oneItem.getId() != iih.getTypeId())
+	    for (JobLimitedItems oneItem : one.getJob().getLimitedItems()) {
+		if (one.getLevel() >= oneItem.getLevel())
 		    continue;
-
+		if (!isThisItem(oneItem, iih.getTypeId(), name, lore, enchants))
+		    continue;
 		meinOk = one.getJob().getName();
-
-		if (oneItem.getName() != null && name != null)
-		    if (!org.bukkit.ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name))
-			continue;
-
-		if (one.getLevel() < oneItem.getLevel())
-		    continue;
-
-		for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
-		    if (oneItem.getenchants().containsKey(oneE.getKey())) {
-			if (oneItem.getenchants().get(oneE.getKey()) < oneE.getValue()) {
-			    continue second;
-			}
-		    } else
-			continue second;
-		}
-		for (String onelore : oneItem.getLore()) {
-		    if (!lore.contains(onelore))
-			continue second;
-		}
-		meinOk = null;
 		break mein;
 	    }
 	}
@@ -556,6 +535,43 @@ public class JobsListener implements Listener {
 	    event.setCancelled(true);
 	    ActionBar.send(player, Language.getMessage("limitedItem.error.levelup").replace("[jobname]", meinOk));
 	}
+    }
+
+    private boolean isThisItem(JobLimitedItems oneItem, int id, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
+
+	if (oneItem.getId() != id)
+	    return false;
+
+	if (oneItem.getName() != null && name != null) {
+	    if (!org.bukkit.ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name)) {
+		return false;
+	    }
+	}
+
+	for (String onelore : oneItem.getLore()) {
+	    if (!lore.contains(onelore)) {
+		return false;
+	    }
+	}
+
+	boolean foundEnc = false;
+	for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
+	    if (oneItem.getenchants().containsKey(oneE.getKey())) {
+		if (oneItem.getenchants().get(oneE.getKey()) <= oneE.getValue()) {
+		    foundEnc = true;
+		    break;
+		} else {
+		    continue;
+		}
+	    } else {
+		continue;
+	    }
+	}
+
+	if (!foundEnc)
+	    return false;
+
+	return true;
     }
 
     @EventHandler

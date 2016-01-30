@@ -46,6 +46,7 @@ import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 import com.gamingmesh.jobs.stuff.TimeManage;
@@ -643,7 +644,8 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return;
 	try {
-	    PreparedStatement prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `level` = ?, `experience` = ?, `username` = ? WHERE `player_uuid` = ? AND `job` = ?;");
+	    PreparedStatement prest = conn.prepareStatement("UPDATE `" + prefix
+		+ "jobs` SET `level` = ?, `experience` = ?, `username` = ? WHERE `player_uuid` = ? AND `job` = ?;");
 	    for (JobProgression progression : player.getJobProgression()) {
 		prest.setInt(1, progression.getLevel());
 		prest.setInt(2, (int) progression.getExperience());
@@ -748,6 +750,8 @@ public abstract class JobsDAO {
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
+	Debug.D("Starting explorer save");
+
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
@@ -763,6 +767,7 @@ public abstract class JobsDAO {
 	    prest.close();
 
 	    PreparedStatement prest2 = conn.prepareStatement("INSERT INTO `" + prefix + "explore` (`worldname`, `chunkX`, `chunkZ`, `playerName`) VALUES (?, ?, ?, ?);");
+	    conn.setAutoCommit(false);
 	    for (Entry<String, ExploreRegion> worlds : Jobs.getExplore().getWorlds().entrySet()) {
 		for (ExploreChunk oneChunk : worlds.getValue().getChunks()) {
 		    for (String oneuser : oneChunk.getPlayers()) {
@@ -770,14 +775,18 @@ public abstract class JobsDAO {
 			prest2.setInt(2, oneChunk.getX());
 			prest2.setInt(3, oneChunk.getZ());
 			prest2.setString(4, oneuser);
-			prest2.execute();
+			prest2.addBatch();
 		    }
 		}
 	    }
+	    prest2.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
 	    prest2.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
+	Debug.D("Explorer saved");
     }
 
     /**

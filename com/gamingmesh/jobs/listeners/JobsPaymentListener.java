@@ -870,7 +870,7 @@ public class JobsPaymentListener implements Listener {
 	    if (lVictim.getKiller().hasMetadata("NPC"))
 		return;
 
-	if (MythicMobsListener.Present) {
+	if (ConfigManager.getJobsConfiguration().MythicMobsEnabled && MythicMobsListener.Present) {
 	    if (JobsPlugin.MMAPI.getMobAPI().isMythicMob(lVictim))
 		return;
 	}

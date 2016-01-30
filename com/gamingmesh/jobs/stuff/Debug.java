@@ -9,7 +9,7 @@ public class Debug {
 	Player player = Bukkit.getPlayer("Zrips");
 	if (player == null)
 	    return;
-	player.sendMessage(ChatColor.DARK_GRAY + "[Debug] " + ChatColor.DARK_AQUA + ChatColor.translateAlternateColorCodes('&', message));
+	player.sendMessage(ChatColor.DARK_GRAY + "[Jobs Debug] " + ChatColor.DARK_AQUA + ChatColor.translateAlternateColorCodes('&', message));
 	return;
     }
 }

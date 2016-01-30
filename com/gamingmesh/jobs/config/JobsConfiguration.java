@@ -74,6 +74,7 @@ public class JobsConfiguration {
     protected int economyBatchDelay;
     protected boolean saveOnDisconnect;
     public boolean LocalOfflinePlayersData;
+    public boolean MythicMobsEnabled;
     public boolean LoggingUse;
     public boolean EconomyLimitUse, EconomyExpLimitUse, PayForRenaming, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
@@ -654,6 +655,9 @@ public class JobsConfiguration {
 	writer.addComment("ExploitProtections.McMMO.superBreakerMultiplier", "Players will get part of money from braking blocks with super breaker ability enabled.",
 	    "0.2 means 20% of original price");
 	superBreakerMultiplier = getDouble("ExploitProtections.McMMO.superBreakerMultiplier", 0.2, config, writer);
+	
+	writer.addComment("ExploitProtections.MythicMobs", "MythicMobs plugin support","Disable if you having issues with it or using old version");
+	MythicMobsEnabled = getBoolean("ExploitProtections.MythicMobs.enabled", true, config, writer);
 
 	writer.addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime spliting when they are from spawner",
 	    "Protects agains exploiting as new splited slimes is treated as naturaly spawned and not from spawner");

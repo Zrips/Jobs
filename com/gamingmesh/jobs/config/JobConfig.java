@@ -105,6 +105,11 @@ public class JobConfig {
 	//	jobsSection = conf.createSection("Jobs");
 	//}
 	for (String jobKey : jobsSection.getKeys(false)) {
+	    
+	    // Ignoring example job
+	    if (jobKey.equalsIgnoreCase("exampleJob"))
+		continue;
+	    
 	    ConfigurationSection jobSection = jobsSection.getConfigurationSection(jobKey);
 	    String jobName = jobSection.getString("fullname");
 

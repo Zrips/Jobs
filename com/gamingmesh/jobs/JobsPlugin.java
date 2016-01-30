@@ -135,7 +135,7 @@ public class JobsPlugin extends JavaPlugin {
 	if (McMMOlistener.CheckmcMMO())
 	    getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
 
-	if (MythicMobsListener.Check())
+	if (MythicMobsListener.Check() && ConfigManager.getJobsConfiguration().MythicMobsEnabled)
 	    getServer().getPluginManager().registerEvents(new MythicMobsListener(this), this);
 
 	if (ConfigManager.getJobsConfiguration().useBlockProtection)

@@ -445,7 +445,7 @@ ItemList:
   - '315 - Golden Chestplate = golden_chestplate'
   - '316 - Golden Leggings = golden_leggings'
   - '317 - Golden Boots = golden_boots'
-  - '318 - Flint = flint_and_steel'
+  - '318 - Flint = flint'
   - '319 - Raw Porkchop = porkchop'
   - '320 - Cooked Porkchop = cooked_porkchop'
   - '321 - Painting = painting'

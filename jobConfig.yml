@@ -11,8 +11,8 @@
 # they will get 15 income and job1 will gain 10 experience and job2 will gain 5 experience.
 
 Jobs:
-  # must be one word
-  Woodcutter:
+  # must be one word. This job will be ignored as this is just example of all posible actions
+  exampleJob:
     # full name of the job (displayed when browsing a job, used when joining and leaving)
     # also can be used as a prefix for the user's name if the option is enabled.
     # Shown as a prefix only when the user has 1 job.
@@ -29,13 +29,13 @@ Jobs:
     # options are: full, title, job, shortfull, shorttitle, shortjob and none
     chat-display: full
     # [OPTIONAL] - the maximum level of this class
-    #max-level: 10
+    max-level: 10
     # [OPTIONAL] - the maximum level of this class with specific permission
     # use jobs.[jobsname].vipmaxlevel
-    #vip-max-level: 20
+    vip-max-level: 20
     # [OPTIONAL] - the maximum number of users on the server that can have this job at 
     # any one time (includes offline players).
-    #slots: 1
+    slots: 1
     # Equation used for calculating how much experience is needed to go to the next level.
     # Available parameters:
     #   numjobs - the number of jobs the player has
@@ -427,6 +427,64 @@ Jobs:
     cmd-on-leave:
     - 'msg [name] You have left this awesome [jobname] job'
     - 'msg [name] See you soon!'
+# from this point you can edit jobs by your liking, rename, remove or add new ones
+  Woodcutter:
+    fullname: Woodcutter
+    shortname: W
+    description: Earns money felling and planting trees
+    ChatColour: GREEN
+    chat-display: full
+    leveling-progression-equation: 100*((1.13+(0.01*(numjobs-1)))^(joblevel-1))
+    income-progression-equation: baseincome*((1.05)^(joblevel-1))
+    experience-progression-equation: baseexperience*((1.05)^(joblevel-1))
+    Gui:
+      Id: 17
+      Data: 2
+    Break:
+      17-0:
+        income: 2.5
+        experience: 2.5
+      17-1:
+        income: 2.0
+        experience: 2.0
+      17-2:
+        income: 2.5
+        experience: 2.5
+      17-3:
+        income: 2.5
+        experience: 2.5
+      18-0:
+        income: 0.5
+        experience: 0.5
+      18-1:
+        income: 0.5
+        experience: 0.5
+      18-2:
+        income: 0.5
+        experience: 0.5
+      18-3:
+        income: 0.5
+        experience: 0.5
+      161-0:
+        income: 0.5
+        experience: 0.5
+      161-1:
+        income: 0.5
+        experience: 0.5
+      162-0:
+        income: 2.5
+        experience: 2.5
+      162-1:
+        income: 2.5
+        experience: 2.5
+    Kill:
+      Player:
+        income: 7.5
+        experience: 7.5
+    custom-kill:
+      Woodcutter:
+        income: 10.0
+        experience: 10.0
   Miner:
     fullname: Miner
     shortname: M
