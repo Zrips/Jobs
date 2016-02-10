@@ -1688,7 +1688,7 @@ public class JobsCommands implements CommandExecutor {
 	    message.append("  ");
 
 	    message.append(Language.getMessage("command.info.help.material").replace("%material%", materialName));
-	    if (!info.isInLevelRange(prog.getLevel()))
+	    if (prog!= null && !info.isInLevelRange(prog.getLevel()))
 		message.append(org.bukkit.ChatColor.RED + " -> ");
 	    else
 		message.append(" -> ");
