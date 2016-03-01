@@ -73,6 +73,7 @@ public class JobsPlugin extends JavaPlugin {
 	} catch (ClassNotFoundException e) {
 	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + version);
 	    this.setEnabled(false);
+	    return;
 	} catch (InstantiationException e) {
 	    e.printStackTrace();
 	    this.setEnabled(false);

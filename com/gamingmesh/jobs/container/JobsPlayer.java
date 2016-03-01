@@ -408,7 +408,7 @@ public class JobsPlayer {
 		reloadExpLimit();
 		reloadHonorific();
 		Jobs.getPermissionHandler().recalculatePermissions(this);
-		;
+		
 		return true;
 	    }
 	}

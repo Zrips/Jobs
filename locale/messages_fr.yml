@@ -1,61 +1,61 @@
 economy:
   error:
-    nomoney: 'Il n''y a plus d''argent dans la banque nationale !'
+    nomoney: Il n''y a plus d''argent dans la banque nationale !
 command:
   boost:
     help:
       info: Boost les gains d''Exp/Argent pour tous les joueurs
       args: '[jobname] [rate]'
     output:
-      allreset: 'Tous les boosts d''Exp/Argent ont été désactivés.'
-      jobsboostreset: 'Le boost pour %jobname% a été désactivé.'
-      nothingtoreset: 'Il n''y a rien à désactiver.'
-      boostalladded: 'Boost de %boost% ajouté à tous les métiers !'
-      boostadded: 'Boost de &e%boost% &aajouté pour &e%jobname% !'
+      allreset: Tous les boosts d''Exp/Argent ont été désactivés.
+      jobsboostreset: Le boost pour %jobname% a été désactivé.
+      nothingtoreset: Il n''y a rien à désactiver.
+      boostalladded: Boost de %boost% ajouté à tous les métiers !
+      boostadded: Boost de &e%boost% &aajouté pour &e%jobname% !
       infostats: '&c-----> &aTaux d''Exp/argent de x%boost% activé&c <-------'
   convert:
     help:
-      info: 'Convertit le système de la base de données. Si vous utilisez SQLite, cela sera converti à MySQL et vice-versa.'
+      info: Convertit le système de la base de données. Si vous utilisez SQLite, cela sera converti à MySQL et vice-versa.
       args: ''
   limit:
     help:
-      info: 'Montre les limites des métiers'
+      info: Montre les limites des métiers
       args: ''
     output:
       lefttime: '&eTemps restant avant la fin de la limite : &2%hour% &eheure(s) &2%min% &emin &2%sec%
         &esec'
       moneylimit: '&eLimite : &2%money%&e/&2%totalmoney%'
-      reachedlimit: '&4You have reached money limit in given time!'
+      reachedlimit: '&4Vous avez atteint le nombre d''argent gagner max pour cette heure!'
       reachedlimit2: '&eVous pouvez vérifier votre limite avec &2/jobs limit &ecommand'
       notenabled: '&eLa limite n''est pas activée.'
   admin:
     error: Erreur dans la commande.
     success: Votre commande a été exécutée.
   error:
-    job: 'Le métier que vous avez selectionné n''existe pas !'
-    permission: 'Vous n''avez pas la permission !'
+    job: Le métier que vous avez selectionné n''existe pas !
+    permission: Vous n''avez pas la permission !
   help:
     output:
-      info: 'Tapez /jobs [cmd] ? pour plus d''information sur une commande.'
+      info: Tapez /jobs [cmd] ? pour plus d''information sur une commande.
       usage: 'Utilisation: %usage%'
   stats:
     help:
       info: 'Donne votre niveau dans chacun de vos métiers.'
       args: '[playername]'
     error:
-      nojob: 'Vous n''avez pas de métier.'
+      nojob: Vous n''avez pas de métier.
     output: 'lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
   archive:
     help:
-      info: 'Donne tous les métiers en archive par joueur.'
+      info: Donne tous les métiers en archive par joueur.
       args: '[playername]'
     error:
-      nojob: 'Il n''y a aucun métier en archive.'
+      nojob: Il n''y a aucun métier en archive.
     output: lvl %joblevel% (%getbackjoblevel%) %jobname%
   give:
     help:
-      info: 'Donne un objet par nom de métier et nom de catégorie d''objet. Le pseudo est facultatif.'
-      args: '[playername] [jobname] [itemname]'
+      info: Donne un objet par nom de métier et nom de catégorie d''objet. Le pseudo est facultatif.
+      args: '[Spielername] [Jobname] [Item]'
     output:
       notonline: '&4[%playername%] est hors-ligne !'
       noitem: '&4Ce nom ne correspond à aucun objet !'
@@ -65,7 +65,7 @@ command:
       info: Donne combien est payé chaque métier et pour quoi.
       args: '[jobname] [action]'
       actions: '&eLes actions possibles sont: &f%actions%'
-      max: ' - &eniveau max:&f '
+      max: ' - &eNiveau Max:&f '
       material: '&7%material%'
     output:
       break:
@@ -101,6 +101,12 @@ command:
       tame:
         info: Apprivoiser
         none: '%jobname% ne donne rien en apprivoisant.'
+      milk:
+        info: Melken
+        none: '%jobname% bekommt kein Geld für das Melken.'
+      shear:
+        info: Scheren
+        none: '%jobname% bekommt kein Geld für das Scheren.'
       custom-kill:
         info: Tuer
         none: '%jobname% ne donne rien en tuant des joueurs particuliers.'
@@ -114,14 +120,14 @@ command:
       args: '[jobname]'
     error:
       alreadyin: Vous exercez déjà le métier de %jobname%.
-      fullslots: 'Vous ne pouvez pas devenir %jobname%, il n''y a plus de place disponible.'
-      maxjobs: 'Vous exercez déjà trop de métiers.'
-    success: 'Vous exercez maintenant le métier de %jobname%.'
+      fullslots: Vous ne pouvez pas devenir %jobname%, il n''y a plus de place disponible.
+      maxjobs: Vous exercez déjà trop de métiers.
+    success: Vous exercez maintenant le métier de %jobname%.
   leave:
     help:
       info: Quitter le métier.
       args: '[jobname]'
-    success: 'Vous n''exercez plus le métier de %jobname%.'
+    success: Vous n''exercez plus le métier de %jobname%.
   leaveall:
     help:
       info: Quitter tous vos métiers.
@@ -180,7 +186,7 @@ command:
       info: Promeut le joueur de X niveaux dans un métier.
       args: '[playername] [jobname] [levels]'
     output:
-      target: Vous avez été promu de %levelsgained% niveaux en %jobname%.
+      target:  Vous avez été promu de %levelsgained% niveaux en %jobname%.
   demote:
     help:
       info: Rétrograde le joueur de X niveaux dans un métier.
@@ -217,6 +223,10 @@ message:
   levelup:
     broadcast: '%playername% est maintenant au niveau %joblevel% %jobname%.'
     nobroadcast: Vous êtes maintenant au niveau %joblevel% %jobname%.
+  cowtimer: '&eVous devez attendre &6%time% &esec avant d''etre payer.'
+  blocktimer: '&eDu musst &3[time] &eSekunden warten um wieder etwas für das Abbauen zu verdienen!'
+  placeblocktimer: '&eDu musst &6[time] &eSekunden warten um wieder etwas für das Setzen zu
+verdienen!'
   crafting:
     fullinventory: Votre inventaire est plein !
 signs:
@@ -225,7 +235,7 @@ signs:
   secondline:
     join: '&2Rejoindre'
     leave: '&4Quitter'
-    toggle: '&eToggle'
+    toggle: '&eBasculer'
     top: '&eTop'
     browse: '&eListe'
     stats: '&eStats'
