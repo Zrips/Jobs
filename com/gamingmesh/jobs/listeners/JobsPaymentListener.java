@@ -326,7 +326,7 @@ public class JobsPaymentListener implements Listener {
 		    multiplier = multiplier * ConfigManager.getJobsConfiguration().gigaDrillMultiplier;
 		else if (AbilityAPI.superBreakerEnabled(player))
 		    multiplier = multiplier * ConfigManager.getJobsConfiguration().superBreakerMultiplier;
-	} catch (IndexOutOfBoundsException e) {
+	} catch (Exception e) {
 	}
 
 	// Item in hand

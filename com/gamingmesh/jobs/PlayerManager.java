@@ -328,6 +328,14 @@ public class PlayerManager {
 //	}
     }
 
+    private Sound getSound(String soundName) {
+	for (Sound one : Sound.values()) {
+	    if (one.name().equalsIgnoreCase(soundName))
+		return one;
+	}
+	return null;
+    }
+
     /**
      * Broadcasts level up about a player
      * @param jPlayer
@@ -352,8 +360,13 @@ public class PlayerManager {
 	if (levelUpEvent.isCancelled())
 	    return;
 
-	if (ConfigManager.getJobsConfiguration().SoundLevelupUse)
-	    player.getWorld().playSound(player.getLocation(), Sound.valueOf(levelUpEvent.getSoundName()), levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
+	if (ConfigManager.getJobsConfiguration().SoundLevelupUse) {
+	    Sound sound = getSound(levelUpEvent.getSoundName());
+	    if (sound != null)
+		player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
+	    else
+		Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSoundName() + ". Please update it");
+	}
 
 	String message;
 	if (ConfigManager.getJobsConfiguration().isBroadcastingLevelups()) {
@@ -388,10 +401,14 @@ public class PlayerManager {
 
 	if (levelUpEvent.getNewTitle() != null && !levelUpEvent.getNewTitle().equals(levelUpEvent.getOldTitle())) {
 
-	    if (ConfigManager.getJobsConfiguration().SoundTitleChangeUse)
-		player.getWorld().playSound(player.getLocation(), Sound.valueOf(levelUpEvent.getTitleChangeSoundName()), levelUpEvent.getTitleChangeVolume(), levelUpEvent
-		    .getTitleChangePitch());
-
+	    if (ConfigManager.getJobsConfiguration().SoundTitleChangeUse) {
+		Sound sound = getSound(levelUpEvent.getTitleChangeSoundName());
+		if (sound != null)
+		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
+			levelUpEvent.getTitleChangePitch());
+		else
+		    Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSoundName() + ". Please update it");
+	    }
 	    // user would skill up
 	    if (ConfigManager.getJobsConfiguration().isBroadcastingSkillups()) {
 		message = Language.getMessage("message.skillup.broadcast");
