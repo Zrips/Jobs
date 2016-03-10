@@ -328,8 +328,12 @@ public class JobsDAOSQLite extends JobsDAO {
 	ResultSet rs = pst1.executeQuery();
 	PreparedStatement insert = null;
 	while (rs.next()) {
+	    byte[] uuidBytes = rs.getBytes("player_uuid");
 
-	    String uuid = UUIDUtil.fromBytes(rs.getBytes("player_uuid")).toString();
+	    if (uuidBytes == null)
+		continue;
+
+	    String uuid = UUIDUtil.fromBytes(uuidBytes).toString();
 
 	    if (uuid != null) {
 		insert = conn.prepareStatement("INSERT INTO `" + getPrefix()

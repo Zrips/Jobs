@@ -350,7 +350,12 @@ public class JobsDAOMySQL extends JobsDAO {
 	PreparedStatement insert = null;
 	while (rs.next()) {
 
-	    String uuid = UUIDUtil.fromBytes(rs.getBytes("player_uuid")).toString();
+	    byte[] uuidBytes = rs.getBytes("player_uuid");
+
+	    if (uuidBytes == null)
+		continue;
+
+	    String uuid = UUIDUtil.fromBytes(uuidBytes).toString();
 
 	    if (uuid != null) {
 		insert = conn.prepareStatement("INSERT INTO `" + getPrefix()

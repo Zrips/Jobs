@@ -34,7 +34,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Convert;
 import com.gamingmesh.jobs.container.ExploreChunk;
@@ -63,11 +62,6 @@ public abstract class JobsDAO {
 
     private JobsConnectionPool pool;
     private String prefix;
-    private JobsPlugin plugin;
-
-    public JobsDAO(JobsPlugin plugin) {
-	this.plugin = plugin;
-    }
 
     protected JobsDAO(String driverName, String url, String username, String password, String prefix) {
 	this.prefix = prefix;
@@ -105,8 +99,8 @@ public abstract class JobsDAO {
 	    checkUpdate8();
 
 	    version = 8;
-	} finally {
 	    updateSchemaVersion(version);
+	} finally {
 	}
     }
 
@@ -505,113 +499,100 @@ public abstract class JobsDAO {
     }
 
     public void fixUuid(final CommandSender sender) {
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		JobsConnection conn = getConnection();
-		if (conn == null)
-		    return;
-		try {
-		    PreparedStatement prest = conn.prepareStatement("SELECT `player_uuid`, `username`  FROM `" + prefix + "jobs`;");
-		    ResultSet res = prest.executeQuery();
-		    HashMap<String, String> convert = new HashMap<String, String>();
-		    int failed = 0;
-		    while (res.next()) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	try {
+	    PreparedStatement prest = conn.prepareStatement("SELECT `player_uuid`, `username`  FROM `" + prefix + "jobs`;");
+	    ResultSet res = prest.executeQuery();
+	    HashMap<String, String> convert = new HashMap<String, String>();
+	    int failed = 0;
+	    while (res.next()) {
 
-			UUID uuid = OfflinePlayerList.getPlayer(res.getString("username")).getUniqueId();
-			if (uuid == null)
-			    continue;
+		UUID uuid = OfflinePlayerList.getPlayer(res.getString("username")).getUniqueId();
+		if (uuid == null)
+		    continue;
 
-			convert.put(uuid.toString(), res.getString("username"));
-		    }
-		    res.close();
-		    prest.close();
-
-		    prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `player_uuid` = ? WHERE `username` = ?;");
-
-		    for (Entry<String, String> oneEntry : convert.entrySet()) {
-			prest.setString(1, oneEntry.getKey());
-			prest.setString(2, oneEntry.getValue());
-			prest.execute();
-		    }
-		    if (prest != null)
-			prest.close();
-
-		    sender.sendMessage(ChatColor.GOLD + "[Jobs] Converted " + ChatColor.YELLOW + convert.size() + ChatColor.GOLD + " user uuids and failed "
-			+ ChatColor.YELLOW + failed + ChatColor.GOLD + " to do so, most likely user data no longer exists in your player data folder");
-
-		    return;
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		}
-
-		return;
+		convert.put(uuid.toString(), res.getString("username"));
 	    }
-	});
+	    res.close();
+	    prest.close();
+
+	    prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `player_uuid` = ? WHERE `username` = ?;");
+
+	    for (Entry<String, String> oneEntry : convert.entrySet()) {
+		prest.setString(1, oneEntry.getKey());
+		prest.setString(2, oneEntry.getValue());
+		prest.execute();
+	    }
+	    if (prest != null)
+		prest.close();
+
+	    sender.sendMessage(ChatColor.GOLD + "[Jobs] Converted " + ChatColor.YELLOW + convert.size() + ChatColor.GOLD + " user uuids and failed "
+		+ ChatColor.YELLOW + failed + ChatColor.GOLD + " to do so, most likely user data no longer exists in your player data folder");
+
+	    return;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+
 	return;
     }
 
     public void fixName(final CommandSender sender) {
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		JobsConnection conn = getConnection();
-		if (conn == null)
-		    return;
-		try {
-		    PreparedStatement prest = conn.prepareStatement("SELECT `player_uuid`, `username`  FROM `" + prefix + "jobs` WHERE `username` IS NULL;");
-		    ResultSet res = prest.executeQuery();
-		    HashMap<String, String> convert = new HashMap<String, String>();
-		    int failed = 0;
-		    while (res.next()) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	try {
+	    PreparedStatement prest = conn.prepareStatement("SELECT `player_uuid`, `username`  FROM `" + prefix + "jobs` WHERE `username` IS NULL;");
+	    ResultSet res = prest.executeQuery();
+	    HashMap<String, String> convert = new HashMap<String, String>();
+	    int failed = 0;
+	    while (res.next()) {
 
-			String uuidString = res.getString("player_uuid");
-			if (uuidString == null)
-			    continue;
+		String uuidString = res.getString("player_uuid");
+		if (uuidString == null)
+		    continue;
 
-			UUID uuid = UUID.fromString(uuidString);
-			if (uuid == null)
-			    continue;
+		UUID uuid = UUID.fromString(uuidString);
+		if (uuid == null)
+		    continue;
 
-			OfflinePlayer player = OfflinePlayerList.getPlayer(uuid);
+		OfflinePlayer player = OfflinePlayerList.getPlayer(uuid);
 
-			if (player == null)
-			    player = Bukkit.getOfflinePlayer(uuid);
+		if (player == null)
+		    player = Bukkit.getOfflinePlayer(uuid);
 
-			if (player == null)
-			    continue;
+		if (player == null)
+		    continue;
 
-			if (player.getName() == null) {
-			    failed++;
-			    continue;
-			}
-
-			convert.put(uuidString, player.getName());
-		    }
-		    res.close();
-		    prest.close();
-
-		    prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `username` = ? WHERE `player_uuid` = ?;");
-
-		    for (Entry<String, String> oneEntry : convert.entrySet()) {
-			prest.setString(1, oneEntry.getValue());
-			prest.setString(2, oneEntry.getKey());
-			prest.execute();
-		    }
-		    if (prest != null)
-			prest.close();
-
-		    sender.sendMessage(ChatColor.GOLD + "[Jobs] Converted " + ChatColor.YELLOW + convert.size() + ChatColor.GOLD + " user names and failed "
-			+ ChatColor.YELLOW + failed + ChatColor.GOLD + " to do so, most likely user data no longer exists in your player data folder");
-
-		    return;
-		} catch (SQLException e) {
-		    e.printStackTrace();
+		if (player.getName() == null) {
+		    failed++;
+		    continue;
 		}
 
-		return;
+		convert.put(uuidString, player.getName());
 	    }
-	});
+	    res.close();
+	    prest.close();
+
+	    prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `username` = ? WHERE `player_uuid` = ?;");
+
+	    for (Entry<String, String> oneEntry : convert.entrySet()) {
+		prest.setString(1, oneEntry.getValue());
+		prest.setString(2, oneEntry.getKey());
+		prest.execute();
+	    }
+	    if (prest != null)
+		prest.close();
+
+	    sender.sendMessage(ChatColor.GOLD + "[Jobs] Converted " + ChatColor.YELLOW + convert.size() + ChatColor.GOLD + " user names and failed "
+		+ ChatColor.YELLOW + failed + ChatColor.GOLD + " to do so, most likely user data no longer exists in your player data folder");
+
+	    return;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
 	return;
     }
 
