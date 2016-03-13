@@ -445,6 +445,9 @@ public abstract class JobsDAO {
 
 	    while (res.next()) {
 
+		if (res.getString("username") == null)
+		    continue;
+
 		TopList top = new TopList(res.getString("username"), res.getInt("totallvl"), 0, UUID.fromString(res.getString("player_uuid")));
 
 		names.add(top);
@@ -840,7 +843,11 @@ public abstract class JobsDAO {
 		+ "jobs` WHERE `job` LIKE ? ORDER BY `level` DESC, LOWER(username) ASC LIMIT " + limit + ", 15;");
 	    prest.setString(1, jobsname);
 	    ResultSet res = prest.executeQuery();
+	    Debug.D("her2e");
+
 	    while (res.next()) {
+
+		Debug.D("here");
 
 		String name = res.getString(1);
 

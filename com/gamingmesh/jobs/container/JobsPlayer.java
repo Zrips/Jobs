@@ -408,7 +408,7 @@ public class JobsPlayer {
 		reloadExpLimit();
 		reloadHonorific();
 		Jobs.getPermissionHandler().recalculatePermissions(this);
-		
+
 		return true;
 	    }
 	}
@@ -513,7 +513,8 @@ public class JobsPlayer {
 	}
 
 	honorific = builder.toString().trim();
-	honorific = ConfigManager.getJobsConfiguration().getModifyChatPrefix() + honorific + ConfigManager.getJobsConfiguration().getModifyChatSuffix();
+	if (honorific.length() > 0)
+	    honorific = ConfigManager.getJobsConfiguration().getModifyChatPrefix() + honorific + ConfigManager.getJobsConfiguration().getModifyChatSuffix();
 
     }
 

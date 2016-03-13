@@ -655,8 +655,8 @@ public class JobsConfiguration {
 	writer.addComment("ExploitProtections.McMMO.superBreakerMultiplier", "Players will get part of money from braking blocks with super breaker ability enabled.",
 	    "0.2 means 20% of original price");
 	superBreakerMultiplier = getDouble("ExploitProtections.McMMO.superBreakerMultiplier", 0.2, config, writer);
-	
-	writer.addComment("ExploitProtections.MythicMobs", "MythicMobs plugin support","Disable if you having issues with it or using old version");
+
+	writer.addComment("ExploitProtections.MythicMobs", "MythicMobs plugin support", "Disable if you having issues with it or using old version");
 	MythicMobsEnabled = getBoolean("ExploitProtections.MythicMobs.enabled", true, config, writer);
 
 	writer.addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime spliting when they are from spawner",
@@ -1274,7 +1274,6 @@ public class JobsConfiguration {
 		langFile.saveDefaultConfig();
 	}
 
-	languages.clear();
 	languages.add("en");
 
 	File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + localeString + ".yml");
@@ -1363,7 +1362,7 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.help.actions", "&eValid actions are: &f%actions%", writer, conf, true);
 	    GetConfigString("command.info.help.max", " - &emax level:&f ", writer, conf, true);
 	    GetConfigString("command.info.help.material", "&7%material%", writer, conf, true);
-	    
+
 	    GetConfigString("command.info.help.levelRange", " &a(&e%levelFrom% &a- &e%levelUntil% &alevels)", writer, conf, true);
 	    GetConfigString("command.info.help.levelFrom", " &a(from &e%levelFrom% &alevel)", writer, conf, true);
 	    GetConfigString("command.info.help.levelUntil", " &a(until &e%levelUntil% &alevel)", writer, conf, true);
@@ -1397,7 +1396,7 @@ public class JobsConfiguration {
 	    GetConfigString("command.info.output.brew.info", "Brew", writer, conf, true);
 	    GetConfigString("command.info.output.brew.none", "%jobname% does not get money from brewing.", writer, conf, true);
 	    GetConfigString("command.info.output.eat.info", "Eat", writer, conf, true);
-	    GetConfigString("command.info.output.eat.none", "%jobname% does not get money from eating food.", writer, conf, true);	    
+	    GetConfigString("command.info.output.eat.none", "%jobname% does not get money from eating food.", writer, conf, true);
 	    GetConfigString("command.info.output.dye.info", "Dye", writer, conf, true);
 	    GetConfigString("command.info.output.dye.none", "%jobname% does not get money from dyeing.", writer, conf, true);
 	    GetConfigString("command.info.output.enchant.info", "Enchant", writer, conf, true);
