@@ -203,7 +203,8 @@ command:
     help:
       info: Zapina/Vypina vypis vydelku na panelu akci.
     output:
-      paid: '&a+ &a&l[amount]&a$'
+      paid: '&aDostal jsi penize za: &2[amount]'
+        exponly: '&aZiskal jsi &2[exp] &aexp'
       'on': '&aVypis: &aZAPNUTO'
       'off': '&aVypis: &cVYPNUTO'
 message:

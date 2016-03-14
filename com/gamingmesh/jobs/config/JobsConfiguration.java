@@ -1,17 +1,17 @@
 /**
  * Jobs Plugin for Bukkit
  * Copyright (C) 2011 Zak Ford <zak.j.ford@gmail.com>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -31,10 +32,8 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.NameList;
 import com.gamingmesh.jobs.container.RestrictedArea;
@@ -42,6 +41,7 @@ import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.dao.JobsDAOMySQL;
 import com.gamingmesh.jobs.dao.JobsDAOSQLite;
+import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class JobsConfiguration {
@@ -129,8 +129,9 @@ public class JobsConfiguration {
     public String GetConfigString(String path, String text, CommentedYamlConfiguration writer, YamlConfiguration conf, Boolean colorize) {
 	conf.addDefault(path, text);
 	text = conf.getString(path);
-	if (colorize)
-	    text = Colors(text);
+	if (colorize) {
+		text = Colors(text);
+	}
 	copySetting(conf, writer, path);
 	return text;
     }
@@ -261,8 +262,9 @@ public class JobsConfiguration {
      */
     public synchronized double getRestrictedMultiplier(Player player) {
 	for (RestrictedArea area : restrictedAreas) {
-	    if (area.inRestrictedArea(player))
-		return area.getMultiplier();
+	    if (area.inRestrictedArea(player)) {
+			return area.getMultiplier();
+		}
 	}
 	return 1.0;
     }
@@ -316,7 +318,7 @@ public class JobsConfiguration {
 
     /**
      * Method to load the general configuration
-     * 
+     *
      * loads from Jobs/generalConfig.yml
      */
     private synchronized void loadGeneralSettings() {
@@ -775,8 +777,9 @@ public class JobsConfiguration {
 	String hostname = config.getString("mysql-hostname");
 	String database = config.getString("mysql-database");
 	String prefix = config.getString("mysql-table-prefix");
-	if (plugin.isEnabled())
-	    Jobs.setDAO(JobsDAOMySQL.initialize(hostname, database, username, password, prefix));
+	if (plugin.isEnabled()) {
+		Jobs.setDAO(JobsDAOMySQL.initialize(hostname, database, username, password, prefix));
+	}
     }
 
     public synchronized void startSqlite() {
@@ -789,7 +792,7 @@ public class JobsConfiguration {
 
     /**
      * Method to load the title configuration
-     * 
+     *
      * loads from Jobs/titleConfig.yml
      */
     private synchronized void loadTitleSettings() {
@@ -865,7 +868,7 @@ public class JobsConfiguration {
 
     /**
      * Method to load the restricted areas configuration
-     * 
+     *
      * loads from Jobs/restrictedAreas.yml
      */
     private synchronized void loadRestrictedAreaSettings() {
@@ -900,8 +903,9 @@ public class JobsConfiguration {
 		String worldName = conf.getString("restrictedareas." + areaKey + ".world");
 		double multiplier = conf.getDouble("restrictedareas." + areaKey + ".multiplier", 0.0);
 		World world = Bukkit.getServer().getWorld(worldName);
-		if (world == null)
-		    continue;
+		if (world == null) {
+			continue;
+		}
 		Location point1 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point1.x", 0.0), conf.getDouble("restrictedareas." + areaKey
 		    + ".point1.y", 0.0), conf.getDouble("restrictedareas." + areaKey + ".point1.z", 0.0));
 
@@ -919,7 +923,7 @@ public class JobsConfiguration {
 
     /**
      * Method to load the restricted areas configuration
-     * 
+     *
      * loads from Jobs/restrictedAreas.yml
      */
     private synchronized void loadRestrictedBlocks() {
@@ -1043,7 +1047,7 @@ public class JobsConfiguration {
 
     /**
      * Method to load the scheduler configuration
-     * 
+     *
      * loads from Jobs/schedule.yml
      */
     public void loadScheduler() {
@@ -1052,63 +1056,78 @@ public class JobsConfiguration {
 
 	conf.options().copyDefaults(true);
 
-	if (!conf.contains("Boost"))
-	    return;
+	if (!conf.contains("Boost")) {
+		return;
+	}
 
 	ArrayList<String> sections = new ArrayList<String>(conf.getConfigurationSection("Boost").getKeys(false));
 
 	for (String OneSection : sections) {
 	    ConfigurationSection path = conf.getConfigurationSection("Boost." + OneSection);
 
-	    if (!path.contains("Enabled"))
-		continue;
+	    if (!path.contains("Enabled")) {
+			continue;
+		}
 
-	    if (!conf.getConfigurationSection("Boost." + OneSection).getBoolean("Enabled"))
-		continue;
+	    if (!conf.getConfigurationSection("Boost." + OneSection).getBoolean("Enabled")) {
+			continue;
+		}
 
 	    Schedule sched = new Schedule();
 	    sched.setName(OneSection);
 
-	    if (!path.contains("From") || !path.getString("From").contains(":"))
-		continue;
+	    if (!path.contains("From") || !path.getString("From").contains(":")) {
+			continue;
+		}
 
-	    if (!path.contains("Until") || !path.getString("Until").contains(":"))
-		continue;
+	    if (!path.contains("Until") || !path.getString("Until").contains(":")) {
+			continue;
+		}
 
-	    if (!path.contains("Days") || !path.isList("Days"))
-		continue;
+	    if (!path.contains("Days") || !path.isList("Days")) {
+			continue;
+		}
 
-	    if (!path.contains("Jobs") || !path.isList("Jobs"))
-		continue;
+	    if (!path.contains("Jobs") || !path.isList("Jobs")) {
+			continue;
+		}
 
-	    if (!path.contains("Exp") || !path.isDouble("Exp"))
-		continue;
+	    if (!path.contains("Exp") || !path.isDouble("Exp")) {
+			continue;
+		}
 
-	    if (!path.contains("Money") || !path.isDouble("Money"))
-		continue;
+	    if (!path.contains("Money") || !path.isDouble("Money")) {
+			continue;
+		}
 
 	    sched.setDays(path.getStringList("Days"));
 	    sched.setJobs(path.getStringList("Jobs"));
 	    sched.setFrom(Integer.valueOf(path.getString("From").replace(":", "")));
 	    sched.setUntil(Integer.valueOf(path.getString("Until").replace(":", "")));
 
-	    if (path.contains("MessageOnStart") && path.isList("MessageOnStart"))
-		sched.setMessageOnStart(path.getStringList("MessageOnStart"), path.getString("From"), path.getString("Until"));
+	    if (path.contains("MessageOnStart") && path.isList("MessageOnStart")) {
+			sched.setMessageOnStart(path.getStringList("MessageOnStart"), path.getString("From"), path.getString("Until"));
+		}
 
-	    if (path.contains("BroadcastOnStart"))
-		sched.setBroadcastOnStart(path.getBoolean("BroadcastOnStart"));
+	    if (path.contains("BroadcastOnStart")) {
+			sched.setBroadcastOnStart(path.getBoolean("BroadcastOnStart"));
+		}
 
-	    if (path.contains("MessageOnStop") && path.isList("MessageOnStop"))
-		sched.setMessageOnStop(path.getStringList("MessageOnStop"), path.getString("From"), path.getString("Until"));
+	    if (path.contains("MessageOnStop") && path.isList("MessageOnStop")) {
+			sched.setMessageOnStop(path.getStringList("MessageOnStop"), path.getString("From"), path.getString("Until"));
+		}
 
-	    if (path.contains("BroadcastOnStop"))
-		sched.setBroadcastOnStop(path.getBoolean("BroadcastOnStop"));
+	    if (path.contains("BroadcastOnStop")) {
+			sched.setBroadcastOnStop(path.getBoolean("BroadcastOnStop"));
+		}
 
-	    if (path.contains("BroadcastInterval"))
-		sched.setBroadcastInterval(path.getInt("BroadcastInterval"));
+	    if (path.contains("BroadcastInterval")) {
+			sched.setBroadcastInterval(path.getInt("BroadcastInterval"));
+		}
 
-	    if (path.contains("BroadcastMessage") && path.isList("BroadcastMessage"))
-		sched.setMessageToBroadcast(path.getStringList("BroadcastMessage"), path.getString("From"), path.getString("Until"));
+	    if (path.contains("BroadcastMessage") && path.isList("BroadcastMessage")) {
+			sched.setMessageToBroadcast(path.getStringList("BroadcastMessage"), path.getString("From"), path.getString("Until"));
+		}
 
 	    sched.setExpBoost(path.getDouble("Exp"));
 	    sched.setMoneyBoost(path.getDouble("Money"));
@@ -1160,16 +1179,18 @@ public class JobsConfiguration {
     }
 
     private synchronized void loadItemList() {
-	YmlMaker ItemFile = new YmlMaker((JavaPlugin) plugin, "ItemList.yml");
+	YmlMaker ItemFile = new YmlMaker(plugin, "ItemList.yml");
 	ItemFile.saveDefaultConfig();
 	List<String> section = ItemFile.getConfig().getStringList("ItemList");
 	ListOfNames.clear();
 	for (String one : section) {
-	    if (!one.contains(" - "))
-		continue;
+	    if (!one.contains(" - ")) {
+			continue;
+		}
 
-	    if (!one.contains(" = "))
-		continue;
+	    if (!one.contains(" = ")) {
+			continue;
+		}
 
 	    String meta = "";
 	    String id = one.split(" - ")[0];
@@ -1190,11 +1211,13 @@ public class JobsConfiguration {
 	section = ItemFile.getConfig().getStringList("EntityList");
 	ListOfEntities.clear();
 	for (String one : section) {
-	    if (!one.contains(" - "))
-		continue;
+	    if (!one.contains(" - ")) {
+			continue;
+		}
 
-	    if (!one.contains(" = "))
-		continue;
+	    if (!one.contains(" = ")) {
+			continue;
+		}
 
 	    String meta = "";
 	    String id = one.split(" - ")[0];
@@ -1215,11 +1238,13 @@ public class JobsConfiguration {
 	section = ItemFile.getConfig().getStringList("EnchantList");
 	ListOfEnchants.clear();
 	for (String one : section) {
-	    if (!one.contains(" - "))
-		continue;
+	    if (!one.contains(" - ")) {
+			continue;
+		}
 
-	    if (!one.contains(" = "))
-		continue;
+	    if (!one.contains(" = ")) {
+			continue;
+		}
 
 	    String id = one.split(" - ")[0];
 	    String part2 = one.split(" - ")[1];
@@ -1234,11 +1259,13 @@ public class JobsConfiguration {
 	section = ItemFile.getConfig().getStringList("ColorList");
 	ListOfColors.clear();
 	for (String one : section) {
-	    if (!one.contains(" - "))
-		continue;
+	    if (!one.contains(" - ")) {
+			continue;
+		}
 
-	    if (!one.contains(" = "))
-		continue;
+	    if (!one.contains(" = ")) {
+			continue;
+		}
 
 	    String id = one.split(" - ")[0];
 	    String part2 = one.split(" - ")[1];
@@ -1254,7 +1281,7 @@ public class JobsConfiguration {
 
     /**
      * Method to load the language file configuration
-     * 
+     *
      * loads from Jobs/locale/messages_en.yml
      */
     private synchronized void loadLanguage() {
@@ -1269,16 +1296,18 @@ public class JobsConfiguration {
 	languages.add("cz");
 
 	for (String lang : languages) {
-	    YmlMaker langFile = new YmlMaker((JavaPlugin) plugin, "locale" + File.separator + "messages_" + lang + ".yml");
-	    if (langFile != null)
-		langFile.saveDefaultConfig();
+	    YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + lang + ".yml");
+	    if (langFile != null) {
+			langFile.saveDefaultConfig();
+		}
 	}
 
 	languages.add("en");
 
 	File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + localeString + ".yml");
-	if (!customLocaleFile.exists() && !localeString.equalsIgnoreCase("en"))
-	    languages.add(localeString);
+	if (!customLocaleFile.exists() && !localeString.equalsIgnoreCase("en")) {
+		languages.add(localeString);
+	}
 
 	for (String lang : languages) {
 
@@ -1537,6 +1566,7 @@ public class JobsConfiguration {
 	    GetConfigString("command.toggle.help.info", "Toggles payment output on action bar.", writer, conf, true);
 	    GetConfigString("command.toggle.output.turnedoff", "&4This feature are turned off!", writer, conf, true);
 	    GetConfigString("command.toggle.output.paid", "&aYou got paid for &2[amount]&a and got &2[exp] &aexp", writer, conf, true);
+	    GetConfigString("command.toggle.output.paid.exponly", "&aYou have gained &2[exp] &aexp", writer, conf, true);
 	    GetConfigString("command.toggle.output.on", "&aToggled: &aON", writer, conf, true);
 	    GetConfigString("command.toggle.output.off", "&aToggled: &4OFF", writer, conf, true);
 

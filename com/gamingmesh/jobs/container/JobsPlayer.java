@@ -1,17 +1,17 @@
 /**
  * Jobs Plugin for Bukkit
  * Copyright (C) 2011 Zak Ford <zak.j.ford@gmail.com>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -73,12 +73,14 @@ public class JobsPlayer {
 //	synchronized (jPlayer.saveLock) {
 	jPlayer.progression.clear();
 	for (JobsDAOData jobdata : list) {
-	    if (Jobs.getJob(jobdata.getJobName()) == null)
-		continue;
+	    if (Jobs.getJob(jobdata.getJobName()) == null) {
+			continue;
+		}
 	    // add the job
 	    Job job = Jobs.getJob(jobdata.getJobName());
-	    if (job == null)
-		continue;
+	    if (job == null) {
+			continue;
+		}
 
 	    // create the progression object
 	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1);
@@ -115,18 +117,21 @@ public class JobsPlayer {
      * @return the Multiplier
      */
     public double getVipSpawnerMultiplier() {
-	if (!this.player.isOnline())
-	    return 1.0;
-	if (VipSpawnerMultiplier < 0)
-	    updateVipSpawnerMultiplier();
+	if (!this.player.isOnline()) {
+		return 1.0;
+	}
+	if (VipSpawnerMultiplier < 0) {
+		updateVipSpawnerMultiplier();
+	}
 	return this.VipSpawnerMultiplier;
     }
 
     public void updateVipSpawnerMultiplier() {
-	if (Perm.hasPermission(this.player, "jobs.vipspawner"))
-	    this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().VIPpayNearSpawnerMultiplier;
-	else
-	    this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().payNearSpawnerMultiplier;
+	if (Perm.hasPermission(this.player, "jobs.vipspawner")) {
+		this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().VIPpayNearSpawnerMultiplier;
+	} else {
+		this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().payNearSpawnerMultiplier;
+	}
     }
 
     /**
@@ -150,8 +155,9 @@ public class JobsPlayer {
      */
     public static double getExpBoost(String JobName, OfflinePlayer player) {
 	Double ExpBoost = 1.0;
-	if (player == null || JobName == null)
-	    return 1.0;
+	if (player == null || JobName == null) {
+		return 1.0;
+	}
 	if (Perm.hasPermission(player, "jobs.boost." + JobName + ".exp") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(player,
 	    "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.exp")) {
 	    ExpBoost = ConfigManager.getJobsConfiguration().BoostExp;
@@ -207,7 +213,7 @@ public class JobsPlayer {
      * @return the list of job progressions
      */
     public List<JobProgression> getJobProgression() {
-	return Collections.unmodifiableList(progression);
+    	return Collections.unmodifiableList(progression);
     }
 
     /**
@@ -215,8 +221,9 @@ public class JobsPlayer {
      * @return true if have
      */
     public boolean havePermission(String perm) {
-	if (this.isOnline)
-	    return ((Player) player).hasPermission(perm);
+	if (this.isOnline) {
+		return ((Player) player).hasPermission(perm);
+	}
 	return false;
     }
 
@@ -226,8 +233,9 @@ public class JobsPlayer {
      */
     public JobProgression getJobProgression(Job job) {
 	for (JobProgression prog : progression) {
-	    if (prog.getJob().equals(job))
-		return prog;
+	    if (prog.getJob().equals(job)) {
+			return prog;
+		}
 	}
 	return null;
     }
@@ -322,16 +330,19 @@ public class JobsPlayer {
     public void promoteJob(Job job, int levels, JobsPlayer player) {
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
-	if (prog == null)
-	    return;
-	if (levels <= 0)
-	    return;
+	if (prog == null) {
+		return;
+	}
+	if (levels <= 0) {
+		return;
+	}
 	int newLevel = prog.getLevel() + levels;
 
 	int maxLevel = job.getMaxLevel();
 
-	if (player.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-	    maxLevel = job.getVipMaxLevel();
+	if (player.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0) {
+		maxLevel = job.getVipMaxLevel();
+	}
 
 	if (maxLevel > 0 && newLevel > maxLevel) {
 	    newLevel = maxLevel;
@@ -348,10 +359,12 @@ public class JobsPlayer {
     public void demoteJob(Job job, int levels) {
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
-	if (prog == null)
-	    return;
-	if (levels <= 0)
-	    return;
+	if (prog == null) {
+		return;
+	}
+	if (levels <= 0) {
+		return;
+	}
 	int newLevel = prog.getLevel() - levels;
 	if (newLevel < 1) {
 	    newLevel = 1;
@@ -368,8 +381,9 @@ public class JobsPlayer {
     private void setLevel(Job job, int level) {
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
-	if (prog == null)
-	    return;
+	if (prog == null) {
+		return;
+	}
 
 	if (level != prog.getLevel()) {
 	    prog.setLevel(level);
@@ -389,16 +403,18 @@ public class JobsPlayer {
 //	synchronized (saveLock) {
 	if (!isInJob(newjob)) {
 	    for (JobProgression prog : progression) {
-		if (!prog.getJob().equals(oldjob))
-		    continue;
+		if (!prog.getJob().equals(oldjob)) {
+			continue;
+		}
 
 		prog.setJob(newjob);
 
 		int maxLevel = 0;
-		if (jPlayer.havePermission("jobs." + newjob.getName() + ".vipmaxlevel"))
-		    maxLevel = newjob.getVipMaxLevel();
-		else
-		    maxLevel = newjob.getMaxLevel();
+		if (jPlayer.havePermission("jobs." + newjob.getName() + ".vipmaxlevel")) {
+			maxLevel = newjob.getVipMaxLevel();
+		} else {
+			maxLevel = newjob.getMaxLevel();
+		}
 
 		if (newjob.getMaxLevel() > 0 && prog.getLevel() > maxLevel) {
 		    prog.setLevel(maxLevel);
@@ -424,8 +440,9 @@ public class JobsPlayer {
      */
     public boolean isInJob(Job job) {
 	for (JobProgression prog : progression) {
-	    if (prog.getJob().equals(job))
-		return true;
+	    if (prog.getJob().equals(job)) {
+			return true;
+		}
 	}
 	return false;
     }
@@ -438,11 +455,12 @@ public class JobsPlayer {
 	int numJobs = progression.size();
 	boolean gotTitle = false;
 
-	if (numJobs > 0)
-	    for (JobProgression prog : progression) {
+	if (numJobs > 0) {
+		for (JobProgression prog : progression) {
 		DisplayMethod method = prog.getJob().getDisplayMethod();
-		if (method.equals(DisplayMethod.NONE))
-		    continue;
+		if (method.equals(DisplayMethod.NONE)) {
+			continue;
+		}
 		if (gotTitle) {
 		    builder.append(ConfigManager.getJobsConfiguration().getModifyChatSeparator());
 		    gotTitle = false;
@@ -453,8 +471,9 @@ public class JobsPlayer {
 		    if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) {
 			if (title != null) {
 			    String honorificpart = title.getChatColor() + title.getName() + ChatColor.WHITE;
-			    if (honorificpart.contains("{level}"))
-				honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+			    if (honorificpart.contains("{level}")) {
+					honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+				}
 			    builder.append(honorificpart);
 			    gotTitle = true;
 			}
@@ -464,8 +483,9 @@ public class JobsPlayer {
 			    builder.append(" ");
 			}
 			String honorificpart = prog.getJob().getChatColor() + prog.getJob().getName() + ChatColor.WHITE;
-			if (honorificpart.contains("{level}"))
-			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+			if (honorificpart.contains("{level}")) {
+				honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+			}
 			builder.append(honorificpart);
 			gotTitle = true;
 		    }
@@ -476,8 +496,9 @@ public class JobsPlayer {
 		    // add title to honorific
 		    if (title != null) {
 			String honorificpart = title.getChatColor() + title.getShortName() + ChatColor.WHITE;
-			if (honorificpart.contains("{level}"))
-			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+			if (honorificpart.contains("{level}")) {
+				honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+			}
 			builder.append(honorificpart);
 			gotTitle = true;
 		    }
@@ -486,27 +507,30 @@ public class JobsPlayer {
 		if (numJobs > 1 && (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.JOB)) || method.equals(DisplayMethod.SHORT_FULL) || method.equals(
 		    DisplayMethod.SHORT_JOB)) {
 		    String honorificpart = prog.getJob().getChatColor() + prog.getJob().getShortName() + ChatColor.WHITE;
-		    if (honorificpart.contains("{level}"))
-			honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+		    if (honorificpart.contains("{level}")) {
+				honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+			}
 		    builder.append(honorificpart);
 		    gotTitle = true;
 		}
 	    }
-	else {
+	} else {
 	    Job nonejob = Jobs.getNoneJob();
 	    if (nonejob != null) {
 		DisplayMethod metod = nonejob.getDisplayMethod();
 		if (metod.equals(DisplayMethod.FULL) || metod.equals(DisplayMethod.TITLE)) {
 		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getName() + ChatColor.WHITE;
-		    if (honorificpart.contains("{level}"))
-			honorificpart = honorificpart.replace("{level}", "");
+		    if (honorificpart.contains("{level}")) {
+				honorificpart = honorificpart.replace("{level}", "");
+			}
 		    builder.append(honorificpart);
 		}
 
 		if (metod.equals(DisplayMethod.SHORT_FULL) || metod.equals(DisplayMethod.SHORT_TITLE) || metod.equals(DisplayMethod.SHORT_JOB)) {
 		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getShortName() + ChatColor.WHITE;
-		    if (honorificpart.contains("{level}"))
-			honorificpart = honorificpart.replace("{level}", "");
+		    if (honorificpart.contains("{level}")) {
+				honorificpart = honorificpart.replace("{level}", "");
+			}
 		    builder.append(honorificpart);
 		}
 	    }
@@ -541,7 +565,7 @@ public class JobsPlayer {
 
     /**
      * Perform disconnect
-     * 
+     *
      */
     public void onDisconnect() {
 	isOnline = false;
