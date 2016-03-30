@@ -1,4 +1,4 @@
-package com.gamingmesh.jobs.stuff;
+package com.gamingmesh.jobs.config;
 
 import java.util.HashMap;
 import org.bukkit.Chunk;
@@ -9,13 +9,13 @@ import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.ExploreRespond;
 
-public class Explore {
+public class ExploreManager {
 
     private HashMap<String, ExploreRegion> worlds = new HashMap<String, ExploreRegion>();
     private boolean exploreEnabled = false;
     private int playerAmount = 1;
 
-    public Explore() {
+    public ExploreManager() {
     }
 
     public int getPlayerAmount() {

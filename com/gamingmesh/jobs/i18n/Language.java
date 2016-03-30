@@ -23,8 +23,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
-import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.config.YmlMaker;
 
 public class Language {
@@ -36,21 +36,11 @@ public class Language {
 	this.plugin = plugin;
     }
 
-//    static {
-//	customlocale = new YmlMaker((JavaPlugin) plugin, "locale/messages_" + ConfigManager.getJobsConfiguration().localeString + ".yml").getConfig();
-//	enlocale = new YmlMaker((JavaPlugin) JobsPlugin.instance, "locale/messages_en.yml").getConfig();
-//	if (customlocale == null)
-//	    customlocale = enlocale;
-//    }
-
-    public Language() {
-    }
-
     /**
      * Reloads the config
      */
     public void reload(Locale locale) {
-	customlocale = new YmlMaker((JavaPlugin) plugin, "locale/messages_" + ConfigManager.getJobsConfiguration().localeString + ".yml").getConfig();
+	customlocale = new YmlMaker((JavaPlugin) plugin, "locale/messages_" + Jobs.getGCManager().localeString + ".yml").getConfig();
 	enlocale = new YmlMaker((JavaPlugin) plugin, "locale/messages_en.yml").getConfig();
 	if (customlocale == null)
 	    customlocale = enlocale;
@@ -61,10 +51,22 @@ public class Language {
      * @param key - the key of the message
      * @return the message
      */
-    public static String getMessage(String key) {
+    public String getMessage(String key, Object... variables) {
+	String missing = "Missing locale for " + key + " ";
+	String msg = "";
 	if (customlocale == null || !customlocale.contains(key))
-	    return enlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', enlocale.getString(key)) : "Cant find locale";
-	return customlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', customlocale.getString(key)) : "Cant find locale";
+	    msg = enlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', enlocale.getString(key)) : missing;
+	else
+	    msg = customlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', customlocale.getString(key)) : missing;
+
+	if (variables.length > 0)
+	    for (int i = 0; i < variables.length; i++) {
+		if (variables.length >= i + 2)
+		    msg = msg.replace(String.valueOf(variables[i]), String.valueOf(variables[i + 1]));
+		i++;
+	    }
+
+	return msg;
     }
 
     /**
@@ -72,7 +74,7 @@ public class Language {
      * @param key - the key of the message
      * @return the message
      */
-    public static String getDefaultMessage(String key) {
+    public String getDefaultMessage(String key) {
 	return enlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', enlocale.getString(key)) : "Cant find locale";
     }
 
@@ -81,7 +83,7 @@ public class Language {
      * @param key - the key of the message
      * @return true/false
      */
-    public static boolean containsKey(String key) {
+    public boolean containsKey(String key) {
 	if (customlocale == null || !customlocale.contains(key))
 	    return enlocale.contains(key);
 	return customlocale.contains(key);

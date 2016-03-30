@@ -26,3 +26,9 @@
 /ExploreChunk.class
 /ExploreWorld.class
 /ExploreRespond.class
+/PlayerInfo.class
+/BossBarInfo.class
+/PlayerPoints.class
+/ShopItem.class
+/LocaleReader.class
+/BoostMultiplier.class

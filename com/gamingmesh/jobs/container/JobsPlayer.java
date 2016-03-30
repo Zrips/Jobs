@@ -27,11 +27,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class JobsPlayer {
@@ -39,7 +39,7 @@ public class JobsPlayer {
     private String userName;
     // progression of the player in each job
     private UUID playerUUID;
-    private ArrayList<JobProgression> progression = new ArrayList<JobProgression>();
+    public ArrayList<JobProgression> progression = new ArrayList<JobProgression>();
     // display honorific
     private String honorific;
     // player save status
@@ -53,14 +53,19 @@ public class JobsPlayer {
 
     private int MoneyLimit = 0;
     private int ExpLimit = 0;
+    private int PointLimit = 0;
 
+    private int userid = -1;
+
+    List<BossBarInfo> barMap = new ArrayList<BossBarInfo>();
+    List<String> updateBossBarFor = new ArrayList<String>();
     // save lock
 //    public final Object saveLock = new Object();
 
     // log
     private List<Log> logList = new ArrayList<Log>();
 
-    private JobsPlayer(String userName, OfflinePlayer player) {
+    public JobsPlayer(String userName, OfflinePlayer player) {
 	this.userName = userName;
 	this.player = player;
     }
@@ -81,15 +86,16 @@ public class JobsPlayer {
 		continue;
 
 	    // create the progression object
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1);
+	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1, -1);
 	    // calculate the max level
 	    // add the progression level.
 	    jPlayer.progression.add(jobProgression);
 
 	}
 	jPlayer.reloadMaxExperience();
-	jPlayer.reloadMoneyLimit();
-	jPlayer.reloadExpLimit();
+	jPlayer.reloadLimits();
+	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerMap().get(player.getUniqueId().toString()).getID());
+	Jobs.getJobsDAO().loadPoints(jPlayer);
 //	}
 	return jPlayer;
     }
@@ -98,8 +104,30 @@ public class JobsPlayer {
 	Jobs.getJobsDAO().loadLog(jPlayer);
     }
 
+    public List<String> getUpdateBossBarFor() {
+	return this.updateBossBarFor;
+    }
+
+    public List<BossBarInfo> getBossBarInfo() {
+	return this.barMap;
+    }
+
+    public void hideBossBars() {
+	for (BossBarInfo one : this.barMap) {
+	    one.getBar().setVisible(false);
+	}
+    }
+
     public List<Log> getLog() {
 	return this.logList;
+    }
+
+    public void setUserId(int id) {
+	this.userid = id;
+    }
+
+    public int getUserId() {
+	return this.userid;
     }
 
     /**
@@ -124,9 +152,9 @@ public class JobsPlayer {
 
     public void updateVipSpawnerMultiplier() {
 	if (Perm.hasPermission(this.player, "jobs.vipspawner"))
-	    this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().VIPpayNearSpawnerMultiplier;
+	    this.VipSpawnerMultiplier = Jobs.getGCManager().VIPpayNearSpawnerMultiplier;
 	else
-	    this.VipSpawnerMultiplier = ConfigManager.getJobsConfiguration().payNearSpawnerMultiplier;
+	    this.VipSpawnerMultiplier = Jobs.getGCManager().payNearSpawnerMultiplier;
     }
 
     /**
@@ -138,15 +166,30 @@ public class JobsPlayer {
 	if (JobName != null) {
 	    if (Perm.hasPermission(player, "jobs.boost." + JobName + ".money") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(
 		player, "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.money")) {
-		MoneyBoost = ConfigManager.getJobsConfiguration().BoostMoney;
+		MoneyBoost = Jobs.getGCManager().BoostMoney;
 	    }
 	}
 	return MoneyBoost;
     }
 
     /**
-     * Get the MoneyBoost
-     * @return the MoneyBoost
+     * Get the PointBoost
+     * @return the PointBoost
+     */
+    public static double getPointBoost(String JobName, OfflinePlayer player) {
+	double PointBoost = 1.0;
+	if (JobName != null) {
+	    if (Perm.hasPermission(player, "jobs.boost." + JobName + ".points") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(
+		player, "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.money")) {
+		PointBoost = Jobs.getGCManager().BoostPoints;
+	    }
+	}
+	return PointBoost;
+    }
+
+    /**
+     * Get the ExpBoost
+     * @return the ExpBoost
      */
     public static double getExpBoost(String JobName, OfflinePlayer player) {
 	Double ExpBoost = 1.0;
@@ -154,7 +197,7 @@ public class JobsPlayer {
 	    return 1.0;
 	if (Perm.hasPermission(player, "jobs.boost." + JobName + ".exp") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(player,
 	    "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.exp")) {
-	    ExpBoost = ConfigManager.getJobsConfiguration().BoostExp;
+	    ExpBoost = Jobs.getGCManager().BoostExp;
 	}
 	return ExpBoost;
     }
@@ -162,7 +205,7 @@ public class JobsPlayer {
     /**
      * Reloads max experience for this job.
      */
-    private void reloadMaxExperience() {
+    public void reloadMaxExperience() {
 	for (JobProgression prog : progression) {
 	    prog.reloadMaxExperience();
 	}
@@ -171,12 +214,12 @@ public class JobsPlayer {
     /**
      * Reloads money limit for this player.
      */
-    public void reloadMoneyLimit() {
+    public void reloadMoney() {
 	int TotalLevel = 0;
 	for (JobProgression prog : progression) {
 	    TotalLevel += prog.getLevel();
 	}
-	Parser eq = ConfigManager.getJobsConfiguration().maxMoneyEquation;
+	Parser eq = Jobs.getGCManager().maxMoneyEquation;
 	eq.setVariable("totallevel", TotalLevel);
 	MoneyLimit = (int) eq.getValue();
     }
@@ -184,22 +227,45 @@ public class JobsPlayer {
     /**
      * Reloads exp limit for this player.
      */
-    public void reloadExpLimit() {
+    public void reloadExp() {
 	int TotalLevel = 0;
 	for (JobProgression prog : progression) {
 	    TotalLevel += prog.getLevel();
 	}
-	Parser eq = ConfigManager.getJobsConfiguration().maxExpEquation;
+	Parser eq = Jobs.getGCManager().maxExpEquation;
 	eq.setVariable("totallevel", TotalLevel);
 	ExpLimit = (int) eq.getValue();
     }
-
+    
+    /**
+     * Reloads exp limit for this player.
+     */
+    public void reloadPoint() {
+	int TotalLevel = 0;
+	for (JobProgression prog : progression) {
+	    TotalLevel += prog.getLevel();
+	}
+	Parser eq = Jobs.getGCManager().maxPointEquation;
+	eq.setVariable("totallevel", TotalLevel);
+	PointLimit = (int) eq.getValue();
+    }
+    
+    public void reloadLimits() {
+	reloadMoney();
+	reloadExp();
+	reloadPoint();
+    }
+    
     public int getMoneyLimit() {
 	return this.MoneyLimit;
     }
 
     public int getExpLimit() {
 	return this.ExpLimit;
+    }
+
+    public int getPointLimit() {
+	return this.PointLimit;
     }
 
     /**
@@ -248,6 +314,10 @@ public class JobsPlayer {
 	return playerUUID;
     }
 
+    public void setPlayerUUID(UUID uuid) {
+	playerUUID = uuid;
+    }
+
     public String getDisplayHonorific() {
 	return honorific;
     }
@@ -268,10 +338,9 @@ public class JobsPlayer {
 		Jobs.getJobsDAO().deleteArchive(jPlayer, job);
 	    }
 
-	    progression.add(new JobProgression(job, this, level, exp, -1, -1));
+	    progression.add(new JobProgression(job, this, level, exp, -1, -1, -1));
 	    reloadMaxExperience();
-	    reloadMoneyLimit();
-	    reloadExpLimit();
+	    reloadLimits();
 	    reloadHonorific();
 	    Jobs.getPermissionHandler().recalculatePermissions(this);
 	    return true;
@@ -290,8 +359,7 @@ public class JobsPlayer {
 	if (prog != null) {
 	    progression.remove(prog);
 	    reloadMaxExperience();
-	    reloadMoneyLimit();
-	    reloadExpLimit();
+	    reloadLimits();
 	    reloadHonorific();
 	    Jobs.getPermissionHandler().recalculatePermissions(this);
 	    return true;
@@ -404,8 +472,7 @@ public class JobsPlayer {
 		    prog.setLevel(maxLevel);
 		}
 		reloadMaxExperience();
-		reloadMoneyLimit();
-		reloadExpLimit();
+		reloadLimits();
 		reloadHonorific();
 		Jobs.getPermissionHandler().recalculatePermissions(this);
 
@@ -444,10 +511,10 @@ public class JobsPlayer {
 		if (method.equals(DisplayMethod.NONE))
 		    continue;
 		if (gotTitle) {
-		    builder.append(ConfigManager.getJobsConfiguration().getModifyChatSeparator());
+		    builder.append(Jobs.getGCManager().getModifyChatSeparator());
 		    gotTitle = false;
 		}
-		Title title = ConfigManager.getJobsConfiguration().getTitleForLevel(prog.getLevel(), prog.getJob().getName());
+		Title title = Jobs.gettitleManager().getTitleForLevel(prog.getLevel(), prog.getJob().getName());
 
 		if (numJobs == 1) {
 		    if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) {
@@ -514,7 +581,7 @@ public class JobsPlayer {
 
 	honorific = builder.toString().trim();
 	if (honorific.length() > 0)
-	    honorific = ConfigManager.getJobsConfiguration().getModifyChatPrefix() + honorific + ConfigManager.getJobsConfiguration().getModifyChatSuffix();
+	    honorific = Jobs.getGCManager().getModifyChatPrefix() + honorific + Jobs.getGCManager().getModifyChatSuffix();
 
     }
 
@@ -523,10 +590,15 @@ public class JobsPlayer {
      * @param dao
      */
     public void save(JobsDAO dao) {
+	long time = System.nanoTime();
 //	synchronized (saveLock) {
 	if (!isSaved()) {
 	    dao.save(this);
+	    Debug.D("1 " + (System.nanoTime() - time));
 	    dao.saveLog(this);
+	    Debug.D("2 " + (System.nanoTime() - time));
+	    dao.savePoints(this);
+	    Debug.D("3 " + (System.nanoTime() - time));
 	    setSaved(true);
 	}
 //	}
@@ -544,7 +616,16 @@ public class JobsPlayer {
      * 
      */
     public void onDisconnect() {
+//	Jobs.getJobsDAO().savePoints(this);
+	clearBossMaps();
 	isOnline = false;
+    }
+
+    public void clearBossMaps() {
+	for (BossBarInfo one : barMap) {
+	    one.cancel();
+	}
+	barMap.clear();
     }
 
     /**

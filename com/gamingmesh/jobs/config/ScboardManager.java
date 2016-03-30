@@ -1,4 +1,4 @@
-package com.gamingmesh.jobs.stuff;
+package com.gamingmesh.jobs.config;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -8,18 +8,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
-import com.gamingmesh.jobs.config.ConfigManager;
 
-public class Scboard {
+public class ScboardManager {
 
     private ConcurrentHashMap<String, Long> timerMap = new ConcurrentHashMap<String, Long>();
     private JobsPlugin plugin;
 
-    public Scboard() {
-    }
-
-    public Scboard(JobsPlugin plugin) {
+    public ScboardManager(JobsPlugin plugin) {
 	this.plugin = plugin;
     }
 
@@ -28,7 +25,7 @@ public class Scboard {
 	while (MeinMapIter.hasNext()) {
 	    Entry<String, Long> Map = MeinMapIter.next();
 
-	    if (System.currentTimeMillis() > Map.getValue() + (ConfigManager.getJobsConfiguration().ToplistInScoreboardInterval * 1000)) {
+	    if (System.currentTimeMillis() > Map.getValue() + (Jobs.getGCManager().ToplistInScoreboardInterval * 1000)) {
 		Player player = Bukkit.getPlayer(Map.getKey());
 		if (player != null) {
 		    player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);

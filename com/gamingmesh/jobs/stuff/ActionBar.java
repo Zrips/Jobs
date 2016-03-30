@@ -10,26 +10,30 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.economy.BufferedPayment;
-import com.gamingmesh.jobs.i18n.Language;
 
 /**
 *
 * @author hamzaxx
 */
 public class ActionBar {
-    private static int cleanVersion = 1820;
-    private static String version = "";
-    private static Object packet;
-    private static Method getHandle;
-    private static Method sendPacket;
-    private static Field playerConnection;
-    private static Class<?> nmsChatSerializer;
-    private static Class<?> nmsIChatBaseComponent;
-    private static Class<?> packetType;
+    private int cleanVersion = -1;
+    private String version = "";
+    private Object packet;
+    private Method getHandle;
+    private Method sendPacket;
+    private Field playerConnection;
+    private Class<?> nmsChatSerializer;
+    private Class<?> nmsIChatBaseComponent;
+    private Class<?> packetType;
 
-    static {
+    public int getVersion() {
+	if (cleanVersion == -1)
+	    getInfo();
+	return cleanVersion;
+    }
+
+    private void getInfo() {
 	try {
 	    version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
@@ -52,8 +56,14 @@ public class ActionBar {
 		    cleanVersion = 1820;
 		if (version.contains("v1_8_R3"))
 		    cleanVersion = 1830;
+		if (version.contains("v1_9_R1"))
+		    cleanVersion = 1910;
+		if (version.contains("v1_9_R2"))
+		    cleanVersion = 1920;
 	    }
 
+	    if (cleanVersion < 100)
+		cleanVersion = cleanVersion * 10;
 	    if (cleanVersion < 1000)
 		cleanVersion = cleanVersion * 10;
 
@@ -72,29 +82,42 @@ public class ActionBar {
 	}
     }
 
-    public static void ShowActionBar(BufferedPayment payment) {
-	String playername = payment.getOfflinePlayer().getName();
-	if (!Jobs.actionbartoggle.containsKey(playername) && ConfigManager.getJobsConfiguration().JobsToggleEnabled)
-	    Jobs.actionbartoggle.put(playername, true);
+    public void ShowActionBar(BufferedPayment payment) {
 
+	Debug.D("show action bar");
+	if (cleanVersion == -1)
+	    getInfo();
+
+	if (cleanVersion == -1)
+	    return;
+
+	String playername = payment.getOfflinePlayer().getName();
+	if (!Jobs.getActionbarToggleList().containsKey(playername) && Jobs.getGCManager().ActionBarsMessageByDefault)
+	    Jobs.getActionbarToggleList().put(playername, true);
+
+	
 	if (playername == null)
 	    return;
 
-	if (!Jobs.actionbartoggle.containsKey(playername))
+	if (!Jobs.getActionbarToggleList().containsKey(playername))
 	    return;
 
-	Boolean show = Jobs.actionbartoggle.get(playername);
-	Player abp = (Player) payment.getOfflinePlayer();
-	if (abp != null && show) {
-	    String Message = Language.getMessage("command.toggle.output.paid");
-	    Message = Message.replace("[amount]", String.format("%.2f", payment.getAmount()));
-	    Message = Message.replace("[exp]", String.format("%.2f", payment.getExp()));
-	    ActionBar.send(abp, ChatColor.GREEN + Message);
-	}
+	Boolean show = Jobs.getActionbarToggleList().get(playername);
+	Player abp = Bukkit.getPlayer(payment.getOfflinePlayer().getUniqueId());
 
+	if (abp != null && show) {
+	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
+	    if (payment.getAmount() != 0D)
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format("%.2f", payment.getAmount()));
+	    if (payment.getPoints() != 0D)
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format("%.2f", payment.getPoints()));
+	    if (payment.getExp() != 0D)
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format("%.2f", payment.getExp()));
+	    send(abp, ChatColor.GREEN + Message);
+	}
     }
 
-    public static void send(Player receivingPacket, String msg) {
+    public void send(Player receivingPacket, String msg) {
 	try {
 	    if (msg == null || nmsChatSerializer == null)
 		return;
@@ -113,41 +136,32 @@ public class ActionBar {
 	    Object player = getHandle.invoke(receivingPacket);
 	    Object connection = playerConnection.get(player);
 	    sendPacket.invoke(connection, packet);
-	} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex) {
-	    Bukkit.getLogger().log(Level.SEVERE, "Error {0}", ex);
-	}
-
-	try {
-	    Object player = getHandle.invoke(receivingPacket);
-	    Object connection = playerConnection.get(player);
-	    sendPacket.invoke(connection, packet);
-	} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+	} catch (SecurityException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchMethodException ex) {
 	    Bukkit.getLogger().log(Level.SEVERE, "Error {0}", ex);
 	}
     }
 
-    private static String getCraftPlayerClasspath() {
+    private String getCraftPlayerClasspath() {
 	return "org.bukkit.craftbukkit." + version + ".entity.CraftPlayer";
     }
 
-    private static String getPlayerConnectionClasspath() {
+    private String getPlayerConnectionClasspath() {
 	return "net.minecraft.server." + version + ".PlayerConnection";
     }
 
-    private static String getNMSPlayerClasspath() {
+    private String getNMSPlayerClasspath() {
 	return "net.minecraft.server." + version + ".EntityPlayer";
     }
 
-    private static String getPacketClasspath() {
+    private String getPacketClasspath() {
 	return "net.minecraft.server." + version + ".Packet";
     }
 
-    private static String getIChatBaseComponentClasspath() {
+    private String getIChatBaseComponentClasspath() {
 	return "net.minecraft.server." + version + ".IChatBaseComponent";
     }
 
-    private static String getChatSerializerClasspath() {
-
+    private String getChatSerializerClasspath() {
 	if (cleanVersion < 1820) {
 	    return "net.minecraft.server." + version + ".ChatSerializer";
 	} else {
@@ -155,7 +169,7 @@ public class ActionBar {
 	}
     }
 
-    private static String getPacketPlayOutChat() {
+    private String getPacketPlayOutChat() {
 	return "net.minecraft.server." + version + ".PacketPlayOutChat";
     }
 }

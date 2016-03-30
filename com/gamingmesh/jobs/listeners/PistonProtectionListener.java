@@ -10,10 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
-import com.gamingmesh.jobs.config.ConfigManager;
-import com.gamingmesh.jobs.i18n.Language;
-import com.gamingmesh.jobs.stuff.ActionBar;
 
 public class PistonProtectionListener implements Listener {
 
@@ -26,7 +24,7 @@ public class PistonProtectionListener implements Listener {
 
     @SuppressWarnings("deprecation")
     public static boolean CheckBlock(Block block) {
-	for (String BlockId : ConfigManager.getJobsConfiguration().restrictedBlocks) {
+	for (String BlockId : Jobs.getRestrictedBlockManager().restrictedBlocks) {
 	    if (BlockId.equalsIgnoreCase(String.valueOf(block.getTypeId()))) {
 		return true;
 	    }
@@ -36,7 +34,7 @@ public class PistonProtectionListener implements Listener {
 
     @SuppressWarnings("deprecation")
     public static boolean CheckPlaceBlock(Block block) {
-	for (int BlockId : ConfigManager.getJobsConfiguration().restrictedPlaceBlocksTimer) {
+	for (int BlockId : Jobs.getRestrictedBlockManager().restrictedPlaceBlocksTimer) {
 	    if (BlockId == block.getTypeId()) {
 		return true;
 	    }
@@ -46,7 +44,7 @@ public class PistonProtectionListener implements Listener {
 
     @SuppressWarnings("deprecation")
     public static boolean CheckVegy(Block block) {
-	for (String ConfigOneBlock : ConfigManager.getJobsConfiguration().restrictedBlocksTimer) {
+	for (String ConfigOneBlock : Jobs.getRestrictedBlockManager().restrictedBlocksTimer) {
 	    int ConfigPlacedBlockId = Integer.valueOf(ConfigOneBlock.split("-")[0]);
 	    if (block.getTypeId() == ConfigPlacedBlockId) {
 		return true;
@@ -57,7 +55,7 @@ public class PistonProtectionListener implements Listener {
 
     @SuppressWarnings("deprecation")
     public static boolean checkVegybreak(Block block, Player player) {
-	for (String ConfigOneBlock : ConfigManager.getJobsConfiguration().restrictedBlocksTimer) {
+	for (String ConfigOneBlock : Jobs.getRestrictedBlockManager().restrictedBlocksTimer) {
 	    int ConfigPlacedBlockId = Integer.valueOf(ConfigOneBlock.split("-")[0]);
 	    if (block.getTypeId() == ConfigPlacedBlockId) {
 		if (CheckVegyTimer(block, Integer.valueOf(ConfigOneBlock.split("-")[1]), player)) {
@@ -80,16 +78,19 @@ public class PistonProtectionListener implements Listener {
 
 	int sec = Math.round((((BlockTime + time * 1000) - currentTime)) / 1000);
 
-	ActionBar.send(player, Language.getMessage("message.blocktimer").replace("[time]", String.valueOf(sec)));
+	Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
 	return true;
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public static void OnBlockMove(BlockPistonExtendEvent event) {
+	//disabling plugin in world
+	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	    return;
 	if (event.isCancelled())
 	    return;
 
-	if (!ConfigManager.getJobsConfiguration().useBlockPiston)
+	if (!Jobs.getGCManager().useBlockPiston)
 	    return;
 
 	List<Block> block = event.getBlocks();
@@ -103,14 +104,16 @@ public class PistonProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public static void OnBlockRetractMove(BlockPistonRetractEvent event) {
-
+	//disabling plugin in world
+	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	    return;
 	if (event.isCancelled())
 	    return;
 
-	if (!ConfigManager.getJobsConfiguration().useBlockPiston)
+	if (!Jobs.getGCManager().useBlockPiston)
 	    return;
 
-	List<Block> block = JobsPlugin.getNms().getPistonRetractBlocks(event);
+	List<Block> block = Jobs.getNms().getPistonRetractBlocks(event);
 	for (Block OneBlock : block) {
 	    if (CheckBlock(OneBlock)) {
 		event.setCancelled(true);

@@ -25,23 +25,26 @@ public class JobInfo {
     private int id;
     private String meta;
     private String name;
-    private double baseIncome, baseXp;
-    private Parser moneyEquation, xpEquation;
+    private double baseIncome, baseXp, basePoints;
+    private Parser moneyEquation, xpEquation, pointsEquation;
     private int fromLevel;
     private int untilLevel;
 
-    public JobInfo(ActionType actionType, int id, String meta, String name, double baseIncome, Parser moneyEquation, double baseXp, Parser xpEquation, int fromLevel,
-	int untilLevel) {
+    public JobInfo(ActionType actionType, int id, String meta, String name, double baseIncome, Parser moneyEquation, double baseXp, Parser xpEquation,
+	Parser pointsEquation, double basePoints, int fromLevel, int untilLevel) {
 	this.actionType = actionType;
 	this.id = id;
 	this.meta = meta;
 	this.name = name;
 	this.baseIncome = baseIncome;
 	this.moneyEquation = moneyEquation;
+	this.pointsEquation = pointsEquation;
+	this.basePoints = basePoints;
 	this.baseXp = baseXp;
 	this.xpEquation = xpEquation;
 	this.fromLevel = fromLevel;
 	this.untilLevel = untilLevel;
+
     }
 
     public int getFromLevel() {
@@ -80,17 +83,28 @@ public class JobInfo {
 	return this.baseXp;
     }
 
-    public double getIncome(int level, int numjobs) {
+    public double getBasePoints() {
+	return this.basePoints;
+    }
+
+    public double getIncome(double level, double numjobs) {
 	moneyEquation.setVariable("joblevel", level);
 	moneyEquation.setVariable("numjobs", numjobs);
 	moneyEquation.setVariable("baseincome", baseIncome);
 	return moneyEquation.getValue();
     }
 
-    public double getExperience(int level, int numjobs) {
+    public double getExperience(double level, double numjobs) {
 	xpEquation.setVariable("joblevel", level);
 	xpEquation.setVariable("numjobs", numjobs);
 	xpEquation.setVariable("baseexperience", baseXp);
 	return xpEquation.getValue();
+    }
+
+    public double getPoints(double level, double numjobs) {
+	pointsEquation.setVariable("joblevel", level);
+	pointsEquation.setVariable("numjobs", numjobs);
+	pointsEquation.setVariable("basepoints", basePoints);
+	return pointsEquation.getValue();
     }
 }

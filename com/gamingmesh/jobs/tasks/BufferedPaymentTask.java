@@ -18,6 +18,7 @@
 
 package com.gamingmesh.jobs.tasks;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
@@ -26,19 +27,24 @@ public class BufferedPaymentTask implements Runnable {
     private BufferedEconomy bufferedEconomy;
     private Economy economy;
     private BufferedPayment payment;
+
     public BufferedPaymentTask(BufferedEconomy bufferedEconomy, Economy economy, BufferedPayment payment) {
-        this.bufferedEconomy =  bufferedEconomy;
-        this.economy = economy;
-        this.payment = payment;
+	this.bufferedEconomy = bufferedEconomy;
+	this.economy = economy;
+	this.payment = payment;
     }
+
     @Override
     public void run() {
-        if (payment.getAmount() > 0) {
-            economy.depositPlayer(payment.getOfflinePlayer(), payment.getAmount());
-        } else {
-            if (!economy.withdrawPlayer(payment.getOfflinePlayer(), -payment.getAmount())) {
-                bufferedEconomy.pay(payment);
-            }
-        }
+	if (payment.getAmount() > 0) {
+	    economy.depositPlayer(payment.getOfflinePlayer(), payment.getAmount());
+	} else {
+	    if (!economy.withdrawPlayer(payment.getOfflinePlayer(), -payment.getAmount())) {
+		bufferedEconomy.pay(payment);
+	    }
+	}
+	
+	if (payment.getPoints() != 0D)
+	    Jobs.getPlayerManager().getPointsData().addPoints(payment.getOfflinePlayer().getUniqueId(), payment.getPoints());	
     }
 }

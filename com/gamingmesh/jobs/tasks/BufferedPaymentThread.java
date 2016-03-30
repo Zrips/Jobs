@@ -37,7 +37,7 @@ public class BufferedPaymentThread extends Thread {
     @Override
     public void run() {
 
-	String message = ChatColor.translateAlternateColorCodes('&', "&2Started buffered payment thread.");
+	String message = ChatColor.YELLOW + "[Jobs] Started buffered payment thread.";
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	console.sendMessage(message);
 
@@ -55,13 +55,13 @@ public class BufferedPaymentThread extends Thread {
 		    economy.payAll();
 	    } catch (Throwable t) {
 		t.printStackTrace();
-		message = ChatColor.translateAlternateColorCodes('&', "&cException in BufferedPaymentThread, stopping economy payments!");
+		message = ChatColor.RED + "[Jobs] Exception in BufferedPaymentThread, stopping economy payments!";
 		console.sendMessage(message);
 		//Jobs.getPluginLogger().severe("Exception in BufferedPaymentThread, stopping economy payments!");
 		running = false;
 	    }
 	}
-	message = ChatColor.translateAlternateColorCodes('&', "&6Buffered payment thread shutdown.");
+	message = ChatColor.YELLOW + "[Jobs] Buffered payment thread shutdown.";
 	console.sendMessage(message);
 	//Jobs.getPluginLogger().info("Buffered payment thread shutdown");   
     }

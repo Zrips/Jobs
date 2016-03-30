@@ -27,7 +27,6 @@ import java.util.Map;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -75,6 +74,8 @@ public class Job {
     private double ExpBoost = 1.0;
 
     private double MoneyBoost = 1.0;
+    
+    private double PointBoost = 1.0;
 
     /**
      * Constructor
@@ -116,7 +117,15 @@ public class Job {
 	this.CmdOnLeave = CmdOnLeave;
 	this.GUIitem = GUIitem;
     }
+    
+    public void setPointBoost(double Point) {
+	this.PointBoost = Point;
+    }
 
+    public double getPointBoost() {
+	return this.PointBoost;
+    }
+    
     public void setMoneyBoost(double amount) {
 	this.MoneyBoost = amount;
     }
@@ -147,18 +156,18 @@ public class Job {
     }
 
     public void updateBonus() {
-	if (!ConfigManager.getJobsConfiguration().useDynamicPayment)
+	if (!Jobs.getGCManager().useDynamicPayment)
 	    return;
-	Parser eq = ConfigManager.getJobsConfiguration().DynamicPaymentEquation;
+	Parser eq = Jobs.getGCManager().DynamicPaymentEquation;
 	eq.setVariable("totalworkers", Jobs.getJobsDAO().getTotalPlayers());
 	eq.setVariable("totaljobs", Jobs.getJobs().size());
 	eq.setVariable("jobstotalplayers", getTotalPlayers());
 
 	double now = eq.getValue();
-	if (now > ConfigManager.getJobsConfiguration().DynamicPaymentMaxBonus)
-	    now = ConfigManager.getJobsConfiguration().DynamicPaymentMaxBonus;
-	if (now < ConfigManager.getJobsConfiguration().DynamicPaymentMaxPenalty * -1)
-	    now = ConfigManager.getJobsConfiguration().DynamicPaymentMaxPenalty * -1;
+	if (now > Jobs.getGCManager().DynamicPaymentMaxBonus)
+	    now = Jobs.getGCManager().DynamicPaymentMaxBonus;
+	if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty * -1)
+	    now = Jobs.getGCManager().DynamicPaymentMaxPenalty * -1;
 	this.bonus = now;
     }
 
@@ -207,42 +216,13 @@ public class Job {
     public EnumMap<ActionType, List<JobInfo>> getJobInfoList() {
 	return jobInfo;
     }
-
-    /**
-     * Function to get the income for an action
-     * @param action - The action info
-     * @param level - players job level
-     * @param numjobs - number of jobs for the player
-     * @return the income received for performing action
-     */
-
-    public Double getIncome(ActionInfo action, int level, int numjobs) {
-	List<JobInfo> jobInfo = getJobInfo(action.getType());
-	for (JobInfo info : jobInfo) {
-	    if (info.getName().equalsIgnoreCase(action.getName()) || info.getName().equalsIgnoreCase(action.getNameWithSub())) {
-		if (!info.isInLevelRange(level))
-		    return 0D;
-		return info.getIncome(level, numjobs);
-	    }
-	}
-	return null;
-    }
-
-    /**
-     * Function to get the income for an action
-     * @param action - The action info
-     * @param level - players job level
-     * @param numjobs - number of jobs for the player
-     * @return the income received for performing action
-     */
-
-    public Double getExperience(ActionInfo action, int level, int numjobs) {
-	List<JobInfo> jobInfo = getJobInfo(action.getType());
-	for (JobInfo info : jobInfo) {
+    
+    public JobInfo getJobInfo(ActionInfo action, int level) {
+	for (JobInfo info : getJobInfo(action.getType())) {
 	    if (info.getName().equalsIgnoreCase(action.getName()) || info.getName().equalsIgnoreCase(action.getNameWithSub())){
 		if (!info.isInLevelRange(level))
-		    return 0D;
-		return info.getExperience(level, numjobs);
+		    break;
+		return info;
 	    }
 	}
 	return null;

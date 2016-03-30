@@ -6,37 +6,43 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public final class JobsPaymentEvent extends Event implements Cancellable {
-	private static final HandlerList handlers = new HandlerList();
-	private OfflinePlayer offlinePlayer;
-	private double money;
-	private boolean cancelled;
+    private static final HandlerList handlers = new HandlerList();
+    private OfflinePlayer offlinePlayer;
+    private double money;
+    private double points;
+    private boolean cancelled;
 
-	public JobsPaymentEvent(OfflinePlayer offlinePlayer, double money) {
-		this.offlinePlayer = offlinePlayer;
-		this.money = money;
-	}
+    public JobsPaymentEvent(OfflinePlayer offlinePlayer, double money, double points) {
+	this.offlinePlayer = offlinePlayer;
+	this.money = money;
+	this.points = points;
+    }
 
-	public OfflinePlayer getPlayer() {
-		return this.offlinePlayer;
-	}
+    public OfflinePlayer getPlayer() {
+	return this.offlinePlayer;
+    }
 
-	public double getAmount() {
-		return this.money;
-	}
+    public double getAmount() {
+	return this.money;
+    }
 
-	public boolean isCancelled() {
-		return cancelled;
-	}
+    public double getPoints() {
+	return this.points;
+    }
 
-	public void setCancelled(boolean cancel) {
-		cancelled = cancel;
-	}
+    public boolean isCancelled() {
+	return cancelled;
+    }
 
-	public HandlerList getHandlers() {
-		return handlers;
-	}
+    public void setCancelled(boolean cancel) {
+	cancelled = cancel;
+    }
 
-	public static HandlerList getHandlerList() {
-		return handlers;
-	}
+    public HandlerList getHandlers() {
+	return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+	return handlers;
+    }
 }

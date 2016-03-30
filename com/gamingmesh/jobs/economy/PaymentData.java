@@ -5,13 +5,15 @@ public class PaymentData {
     Long time = 0L;
     Long lastAnnouced = 0L;
     Double Payment = 0.0;
+    Double Points = 0.0;
     Double Exp = 0.0;
     public boolean Informed = false;
     public boolean Reseted = false;
 
-    public PaymentData(Long time, Double Payment, Double Exp, Long lastAnnouced, boolean Informed) {
+    public PaymentData(Long time, Double Payment, Double Points, Double Exp, Long lastAnnouced, boolean Informed) {
 	this.time = time;
 	this.Payment = Payment;
+	this.Points = Points;
 	this.Exp = Exp;
 	this.lastAnnouced = lastAnnouced;
 	this.Informed = Informed;
@@ -41,13 +43,23 @@ public class PaymentData {
 	    return (double) limit;
 	return (int) (this.Payment * 100) / 100.0;
     }
-    
+
+    public Double GetPoints() {
+	return this.Points;
+    }
+
+    public Double GetPointsBylimit(int limit) {
+	if (this.Points > limit)
+	    return (double) limit;
+	return (int) (this.Points * 100) / 100.0;
+    }
+
     public Double GetExpBylimit(int limit) {
 	if (this.Exp > limit)
 	    return (double) limit;
 	return (int) (this.Exp * 100) / 100.0;
     }
-    
+
     public Long GetLastAnnounced() {
 	return this.lastAnnouced;
     }
@@ -68,6 +80,11 @@ public class PaymentData {
 	this.Payment = Payment;
     }
 
+    public void AddNewPoints(Double Points) {
+	this.time = System.currentTimeMillis();
+	this.Points = Points;
+    }
+
     public void Setinformed() {
 	this.Informed = true;
     }
@@ -79,6 +96,11 @@ public class PaymentData {
     public void AddAmount(Double Payment) {
 	this.Payment = this.Payment + Payment;
     }
+
+    public void AddPoints(Double Points) {
+	this.Points = this.Points + Points;
+    }
+
     public void AddExpAmount(Double Exp) {
 	this.Exp = this.Exp + Exp;
     }
@@ -92,6 +114,12 @@ public class PaymentData {
 
     public boolean IsOverMoneyLimit(int limit) {
 	if (this.Payment < limit)
+	    return false;
+	return true;
+    }
+
+    public boolean IsOverPointsLimit(int limit) {
+	if (this.Points < limit)
 	    return false;
 	return true;
     }
@@ -112,6 +140,7 @@ public class PaymentData {
 	this.time = System.currentTimeMillis();
 	this.Payment = 0.0;
 	this.Exp = 0.0;
+	this.Points = 0.0;
 	this.Reseted = true;
 	return true;
     }
@@ -131,7 +160,15 @@ public class PaymentData {
 	    return true;
 	return false;
     }
-
+    
+    public boolean IsReachedPointLimit(int time, int point) {
+	if (IsOverTimeLimit(time))
+	    return true;
+	if (IsOverPointsLimit(point))
+	    return true;
+	return false;
+    }
+    
     public int GetLeftsec(int time) {
 	int lefttime1 = GetLeftTime(time);
 	int sec = 0;

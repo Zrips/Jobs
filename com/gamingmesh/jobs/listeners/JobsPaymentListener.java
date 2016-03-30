@@ -77,16 +77,12 @@ import com.gamingmesh.jobs.actions.EntityActionInfo;
 import com.gamingmesh.jobs.actions.ExploreActionInfo;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
-import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.i18n.Language;
-import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Perm;
-import com.gmail.nossr50.api.AbilityAPI;
 import com.google.common.base.Objects;
 
 public class JobsPaymentListener implements Listener {
@@ -106,6 +102,13 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCowMilking(PlayerInteractEntityEvent event) {
+	//disabling plugin in world
+	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
+	    return;
+
+	// make sure plugin is enabled
+	if (!plugin.isEnabled())
+	    return;
 
 	if (!(event.getRightClicked() instanceof LivingEntity))
 	    return;
@@ -114,30 +117,26 @@ public class JobsPaymentListener implements Listener {
 	if (cow.getType() != EntityType.COW && cow.getType() != EntityType.MUSHROOM_COW)
 	    return;
 
-	// make sure plugin is enabled
-	if (!plugin.isEnabled())
-	    return;
-
 	Player player = (Player) event.getPlayer();
 
 	if (player == null)
 	    return;
 
-	if (ConfigManager.getJobsConfiguration().CowMilkingTimer > 0)
+	if (Jobs.getGCManager().CowMilkingTimer > 0)
 	    if (cow.hasMetadata(CowMetadata)) {
 		long time = cow.getMetadata(CowMetadata).get(0).asLong();
-		if (System.currentTimeMillis() < time + ConfigManager.getJobsConfiguration().CowMilkingTimer) {
+		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
 
-		    long timer = ((ConfigManager.getJobsConfiguration().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
-		    player.sendMessage(Language.getMessage("message.cowtimer").replace("%time%", String.valueOf(timer)));
+		    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
+		    player.sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
 
-		    if (ConfigManager.getJobsConfiguration().CancelCowMilking)
+		    if (Jobs.getGCManager().CancelCowMilking)
 			event.setCancelled(true);
 		    return;
 		}
 	    }
 
-	ItemStack itemInHand = player.getItemInHand();
+	ItemStack itemInHand = Jobs.getNms().getItemInMainHand(player);
 
 	if (itemInHand == null)
 	    return;
@@ -146,26 +145,18 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	// Item in hand
-	ItemStack item = player.getItemInHand().hasItemMeta() ? player.getItemInHand() : null;
-
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
-	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 	// pay
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
 
-	Jobs.action(jPlayer, new EntityActionInfo(cow, ActionType.MILK), multiplier, item, armor);
+	Jobs.action(jPlayer, new EntityActionInfo(cow, ActionType.MILK), 0.0);
 
 	Long Timer = System.currentTimeMillis();
 
@@ -174,7 +165,9 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityShear(PlayerShearEntityEvent event) {
-
+	//disabling plugin in world
+	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
+	    return;
 	// Entity that died must be living
 	if (!(event.getEntity() instanceof Sheep))
 	    return;
@@ -196,30 +189,25 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	// Item in hand
-	ItemStack item = player.getItemInHand().hasItemMeta() ? player.getItemInHand() : null;
-
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
-	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 	// pay
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jDamager == null)
 	    return;
 
-	Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR), multiplier, item, armor);
+	Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR), 0.0);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrewEvent(BrewEvent event) {
+	//disabling plugin in world
+	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	    return;
 	if (!plugin.isEnabled())
 	    return;
 	Block block = event.getBlock();
@@ -245,22 +233,19 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
-
 	ItemStack contents = event.getContents().getIngredient();
 
 	if (contents == null)
 	    return;
 
-	Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW), multiplier, null, armor);
+	Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW), 0.0);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-
+	//disabling plugin in world
+	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	    return;
 	// remove furnace metadata for broken block
 	Block block = event.getBlock();
 	if (block == null)
@@ -269,18 +254,18 @@ public class JobsPaymentListener implements Listener {
 	if (block.getType().equals(Material.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 	    block.removeMetadata(furnaceOwnerMetadata, plugin);
 
-	if (ConfigManager.getJobsConfiguration().useBlockProtection)
+	if (Jobs.getGCManager().useBlockProtection)
 	    if (block.getState().hasMetadata(BlockMetadata))
 		return;
 
-	if (JobsPlugin.CPPresent && ConfigManager.getJobsConfiguration().useCoreProtect)
+	if (Jobs.getCoreProtectApi() != null && Jobs.getGCManager().useCoreProtect)
 	    if (PistonProtectionListener.CheckBlock(block)) {
-		List<String[]> blockLookup = JobsPlugin.CPAPI.blockLookup(block, ConfigManager.getJobsConfiguration().CoreProtectInterval);
+		List<String[]> blockLookup = Jobs.getCoreProtectApi().blockLookup(block, Jobs.getGCManager().CoreProtectInterval);
 		if (blockLookup.size() > 0)
 		    return;
 	    }
 
-	if (ConfigManager.getJobsConfiguration().useBlockTimer)
+	if (Jobs.getGCManager().useBlockTimer)
 	    if (PistonProtectionListener.checkVegybreak(block, (Player) event.getPlayer()))
 		return;
 
@@ -293,22 +278,22 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
 	// Global block timer
-	if (ConfigManager.getJobsConfiguration().useGlobalTimer) {
+	if (Jobs.getGCManager().useGlobalTimer) {
 	    if (block.getState().hasMetadata(GlobalMetadata)) {
 		long currentTime = System.currentTimeMillis();
 		List<MetadataValue> meta = block.getState().getMetadata(GlobalMetadata);
 		if (meta.size() > 0) {
 		    long BlockTime = meta.get(0).asLong();
-		    if (currentTime < BlockTime + ConfigManager.getJobsConfiguration().globalblocktimer * 1000) {
-			int sec = Math.round((((BlockTime + ConfigManager.getJobsConfiguration().globalblocktimer * 1000) - currentTime)) / 1000);
-			ActionBar.send(player, Language.getMessage("message.blocktimer").replace("[time]", String.valueOf(sec)));
+		    if (currentTime < BlockTime + Jobs.getGCManager().globalblocktimer * 1000) {
+			int sec = Math.round((((BlockTime + Jobs.getGCManager().globalblocktimer * 1000) - currentTime)) / 1000);
+			Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
 			return;
 		    }
 		}
@@ -316,31 +301,20 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
+	double multiplier = 0.0;
 
-	try {
-	    if (McMMOlistener.mcMMOPresent)
-		if (AbilityAPI.treeFellerEnabled(player))
-		    multiplier = multiplier * ConfigManager.getJobsConfiguration().TreeFellerMultiplier;
-		else if (AbilityAPI.gigaDrillBreakerEnabled(player))
-		    multiplier = multiplier * ConfigManager.getJobsConfiguration().gigaDrillMultiplier;
-		else if (AbilityAPI.superBreakerEnabled(player))
-		    multiplier = multiplier * ConfigManager.getJobsConfiguration().superBreakerMultiplier;
-	} catch (Exception e) {
-	}
+	if (McMMOlistener.mcMMOPresent)
+	    multiplier = McMMOlistener.getMultiplier(player);
 
 	// Item in hand
-	ItemStack item = player.getItemInHand();
+	ItemStack item = Jobs.getNms().getItemInMainHand(player);
 
 	// Protection for block break with silktouch
-	if (ConfigManager.getJobsConfiguration().useSilkTouchProtection && item != null)
+	if (Jobs.getGCManager().useSilkTouchProtection && item != null)
 	    if (PistonProtectionListener.CheckBlock(block))
 		for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet())
 		    if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH"))
 			return;
-
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
@@ -348,7 +322,7 @@ public class JobsPaymentListener implements Listener {
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 
-	Jobs.action(jPlayer, bInfo, multiplier, item, armor);
+	Jobs.action(jPlayer, bInfo, multiplier);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -357,7 +331,11 @@ public class JobsPaymentListener implements Listener {
 
 	if (block == null)
 	    return;
-
+	
+	//disabling plugin in world
+	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+	    return;
+	
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
@@ -371,16 +349,15 @@ public class JobsPaymentListener implements Listener {
 	if (!player.isOnline())
 	    return;
 
-	if (JobsPlugin.CPPresent && ConfigManager.getJobsConfiguration().useCoreProtect && ConfigManager.getJobsConfiguration().BlockPlaceUse) {
+	if (Jobs.getCoreProtectApi() != null && Jobs.getGCManager().useCoreProtect && Jobs.getGCManager().BlockPlaceUse) {
 	    if (PistonProtectionListener.CheckPlaceBlock(block)) {
-		List<String[]> blockLookup = JobsPlugin.CPAPI.blockLookup(block, ConfigManager.getJobsConfiguration().BlockPlaceInterval + 1);
+		List<String[]> blockLookup = Jobs.getCoreProtectApi().blockLookup(block, Jobs.getGCManager().BlockPlaceInterval + 1);
 		if (blockLookup.size() > 0) {
 		    long PlacedBlockTime = Integer.valueOf(blockLookup.get(0)[0]);
 		    long CurrentTime = System.currentTimeMillis() / 1000;
-		    if (PlacedBlockTime + ConfigManager.getJobsConfiguration().BlockPlaceInterval > CurrentTime) {
-			if (ConfigManager.getJobsConfiguration().EnableAnounceMessage)
-			    ActionBar.send(player, Language.getMessage("message.placeblocktimer").replace("[time]", String.valueOf(ConfigManager
-				.getJobsConfiguration().BlockPlaceInterval)));
+		    if (PlacedBlockTime + Jobs.getGCManager().BlockPlaceInterval > CurrentTime) {
+			if (Jobs.getGCManager().EnableAnounceMessage)
+			    Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.placeblocktimer", "[time]", Jobs.getGCManager().BlockPlaceInterval));
 			return;
 		    }
 		}
@@ -388,44 +365,42 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	// check if in creative
-	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
 	// Block place/break protection
-	if (ConfigManager.getJobsConfiguration().useBlockProtection)
+	if (Jobs.getGCManager().useBlockProtection)
 	    if (PistonProtectionListener.CheckBlock(block))
 		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(plugin, true));
 
-	if (ConfigManager.getJobsConfiguration().WaterBlockBreake)
+	if (Jobs.getGCManager().WaterBlockBreake)
 	    block.getState().setMetadata(PlacedBlockMetadata, new FixedMetadataValue(plugin, true));
 
-	if (ConfigManager.getJobsConfiguration().useBlockTimer)
+	if (Jobs.getGCManager().useBlockTimer)
 	    if (PistonProtectionListener.CheckVegy(block)) {
 		long time = System.currentTimeMillis();
 		block.setMetadata(VegyMetadata, new FixedMetadataValue(plugin, time));
 	    }
 
-	if (ConfigManager.getJobsConfiguration().useGlobalTimer) {
+	if (Jobs.getGCManager().useGlobalTimer) {
 	    long time = System.currentTimeMillis();
 	    block.setMetadata(GlobalMetadata, new FixedMetadataValue(plugin, time));
 	}
 
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
-	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.PLACE), multiplier, null, armor);
+	Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.PLACE), 0.0);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
+	//disabling plugin in world
+	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
+	    return;
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
@@ -433,33 +408,26 @@ public class JobsPaymentListener implements Listener {
 	Player player = event.getPlayer();
 
 	// check if in creative
-	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
-
-	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
-
-	// Item in hand
-	ItemStack item = player.getItemInHand().hasItemMeta() ? player.getItemInHand() : null;
-
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
 
 	if (event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH) && event.getCaught() instanceof Item) {
 	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	    if (jPlayer == null)
 		return;
 	    ItemStack items = ((Item) event.getCaught()).getItemStack();
-	    Jobs.action(jPlayer, new ItemActionInfo(items, ActionType.FISH), multiplier, item, armor);
+	    Jobs.action(jPlayer, new ItemActionInfo(items, ActionType.FISH), 0.0);
 	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAnimalTame(EntityTameEvent event) {
-
+	//disabling plugin in world
+	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
 	// Entity that died must be living
 	if (!(event.getEntity() instanceof LivingEntity))
 	    return;
@@ -480,32 +448,26 @@ public class JobsPaymentListener implements Listener {
 	if (player == null)
 	    return;
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	// Item in hand
-	ItemStack item = player.getItemInHand().hasItemMeta() ? player.getItemInHand() : null;
-
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
-	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 	// pay
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jDamager == null)
 	    return;
-	Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME), multiplier, item, armor);
+	Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME), 0.0);
 
     }
 
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryCraft(CraftItemEvent event) {
-
+	//disabling plugin in world
+	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+	    return;
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
@@ -536,7 +498,7 @@ public class JobsPaymentListener implements Listener {
 
 	//Check if inventory is full and using shift click, possible money dupping fix
 	if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
-	    player.sendMessage(ChatColor.RED + Language.getMessage("message.crafting.fullinventory"));
+	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
 	    return;
 	}
 
@@ -547,13 +509,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
+	double multiplier = 0.0;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
@@ -590,7 +549,7 @@ public class JobsPaymentListener implements Listener {
 
 	if (y == 2) {
 	    if (first == second && third == second) {
-		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), multiplier, null, armor);
+		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), multiplier);
 		return;
 	    }
 	}
@@ -598,17 +557,17 @@ public class JobsPaymentListener implements Listener {
 	// Check Dyes
 	if (y >= 2) {
 	    if ((third == 351 || second == 351) && leather) {
-		Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE), multiplier, null, armor);
+		Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE), multiplier);
 		for (ItemStack OneDye : DyeStack) {
-		    Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE), multiplier, null, armor);
+		    Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE), multiplier);
 		}
 		return;
 	    }
 	}
 
 	// If we need to pay only by each craft action we will skip calculation how much was crafted
-	if (!ConfigManager.getJobsConfiguration().PayForEachCraft) {
-	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier, null, armor);
+	if (!Jobs.getGCManager().PayForEachCraft) {
+	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier);
 	    return;
 	}
 
@@ -618,14 +577,14 @@ public class JobsPaymentListener implements Listener {
 	// Make sure we are actually crafting anything
 	if (player != null && hasItems(toCraft))
 	    if (event.isShiftClick())
-		schedulePostDetection(player, toCraft, jPlayer, resultStack, multiplier, armor);
+		schedulePostDetection(player, toCraft, jPlayer, resultStack, multiplier);
 	    else {
 		// The items are stored in the cursor. Make sure there's enough space.
 		if (isStackSumLegal(toCraft, toStore)) {
 		    int newItemsCount = toCraft.getAmount();
 		    while (newItemsCount >= 0) {
 			newItemsCount--;
-			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier, null, armor);
+			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier);
 		    }
 		}
 	    }
@@ -635,7 +594,7 @@ public class JobsPaymentListener implements Listener {
     // HACK! The API doesn't allow us to easily determine the resulting number of
     // crafted items, so we're forced to compare the inventory before and after.
     private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack,
-	final double multiplier, final ItemStack[] armor) {
+	final double multiplier) {
 	final ItemStack[] preInv = player.getInventory().getContents();
 	// Clone the array. The content may (was for me) be mutable.
 	for (int i = 0; i < preInv.length; i++) {
@@ -659,7 +618,7 @@ public class JobsPaymentListener implements Listener {
 		if (newItemsCount > 0) {
 		    while (newItemsCount >= 0) {
 			newItemsCount--;
-			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier, null, armor);
+			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier);
 		    }
 		}
 		return;
@@ -691,6 +650,9 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryRepair(InventoryClickEvent event) {
+	//disabling plugin in world
+	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+	    return;
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
@@ -745,7 +707,7 @@ public class JobsPaymentListener implements Listener {
 	    if (resultStack.getItemMeta().getDisplayName() != null)
 		NewName = resultStack.getItemMeta().getDisplayName();
 	if (OriginalName != NewName && event.getInventory().getItem(1) == null)
-	    if (!ConfigManager.getJobsConfiguration().PayForRenaming)
+	    if (!Jobs.getGCManager().PayForRenaming)
 		return;
 
 	// Check for world permissions
@@ -753,21 +715,20 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), multiplier, null, armor);
+	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), 0.0);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEnchantItem(EnchantItemEvent event) {
+	//disabling plugin in world
+	if (event.getEnchanter() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEnchanter().getWorld()))
+	    return;
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
@@ -791,13 +752,9 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
 	if (jPlayer == null)
@@ -817,14 +774,17 @@ public class JobsPaymentListener implements Listener {
 	    if (level == null)
 		continue;
 
-	    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT), multiplier, null, armor);
+	    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT), 0.0);
 	}
-	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT), multiplier, null, armor);
+	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT), 0.0);
 
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onFurnaceSmelt(FurnaceSmeltEvent event) {
+	//disabling plugin in world
+	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	    return;
 	if (!plugin.isEnabled())
 	    return;
 	Block block = event.getBlock();
@@ -847,19 +807,17 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	Jobs.action(jPlayer, new ItemActionInfo(event.getResult(), ActionType.SMELT), multiplier, null, armor);
+	Jobs.action(jPlayer, new ItemActionInfo(event.getResult(), ActionType.SMELT), 0.0);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-
+	//disabling plugin in world
+	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
 	// Entity that died must be living
 	if (!(event.getEntity() instanceof LivingEntity))
 	    return;
@@ -870,13 +828,13 @@ public class JobsPaymentListener implements Listener {
 	    if (lVictim.getKiller().hasMetadata("NPC"))
 		return;
 
-	if (ConfigManager.getJobsConfiguration().MythicMobsEnabled && MythicMobsListener.Present) {
-	    if (JobsPlugin.MMAPI.getMobAPI().isMythicMob(lVictim))
+	if (Jobs.getGCManager().MythicMobsEnabled && Jobs.getMythicManager().MMAPI != null) {
+	    if (Jobs.getMythicManager().MMAPI.getMobAPI().isMythicMob(lVictim))
 		return;
 	}
 
 	// mob spawner, no payment or experience
-	if (lVictim.hasMetadata(mobSpawnerMetadata) && !ConfigManager.getJobsConfiguration().payNearSpawner()) {
+	if (lVictim.hasMetadata(mobSpawnerMetadata) && !Jobs.getGCManager().payNearSpawner()) {
 	    //lVictim.removeMetadata(mobSpawnerMetadata, plugin);
 	    return;
 	}
@@ -887,7 +845,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player pDamager = null;
 
-	Double PetPayMultiplier = 1.0;
+	Double PetPayMultiplier = 0.0;
 	// Checking if killer is player
 	if (event.getEntity().getKiller() instanceof Player)
 	    pDamager = (Player) event.getEntity().getKiller();
@@ -898,9 +856,9 @@ public class JobsPaymentListener implements Listener {
 		if (t.isTamed() && t.getOwner() instanceof Player) {
 		    pDamager = (Player) t.getOwner();
 		    if (Perm.hasPermission(pDamager, "jobs.petpay") || Perm.hasPermission(pDamager, "jobs.vippetpay"))
-			PetPayMultiplier = ConfigManager.getJobsConfiguration().VipPetPay;
+			PetPayMultiplier = Jobs.getGCManager().VipPetPay;
 		    else
-			PetPayMultiplier = ConfigManager.getJobsConfiguration().PetPay;
+			PetPayMultiplier = Jobs.getGCManager().PetPay;
 		}
 	    }
 	} else
@@ -909,14 +867,11 @@ public class JobsPaymentListener implements Listener {
 	if (pDamager == null)
 	    return;
 	// check if in creative
-	if (pDamager.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (pDamager.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
 	    return;
-
-	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(pDamager);
 
 	// pay
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(pDamager);
@@ -924,18 +879,12 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null)
 	    return;
 
-	Double NearSpawnerMultiplier = 1.0;
+	Double NearSpawnerMultiplier = 0.0;
 	if (lVictim.hasMetadata(mobSpawnerMetadata))
 	    NearSpawnerMultiplier = jDamager.getVipSpawnerMultiplier();
 
-	// Item in hand
-	ItemStack item = pDamager.getItemInHand().hasItemMeta() ? pDamager.getItemInHand() : null;
-
-	// Wearing armor
-	ItemStack[] armor = pDamager.getInventory().getArmorContents();
-
 	// Calulating multiplaier
-	multiplier = multiplier * NearSpawnerMultiplier * PetPayMultiplier;
+	double multiplier = ((NearSpawnerMultiplier * 100) - 100) + ((PetPayMultiplier * 100) - 100);
 
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
 	    Player VPlayer = (Player) lVictim;
@@ -943,20 +892,23 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
-	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), multiplier, item, armor);
+	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), multiplier);
 
 	// Payment for killing player with particular job, except NPC's
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
 	    List<JobProgression> jobs = Jobs.getPlayerManager().getJobsPlayer((Player) lVictim).getJobProgression();
 	    if (jobs != null)
 		for (JobProgression job : jobs) {
-		    Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), multiplier, item, armor);
+		    Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), multiplier);
 		}
 	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
+	//disabling plugin in world
+	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
 	if (event.getSpawnReason() == SpawnReason.SPAWNER) {
 	    LivingEntity creature = (LivingEntity) event.getEntity();
 	    creature.setMetadata(mobSpawnerMetadata, new FixedMetadataValue(plugin, true));
@@ -965,18 +917,20 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(SlimeSplitEvent event) {
-
+	//disabling plugin in world
+	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
 	if (!event.getEntity().hasMetadata(mobSpawnerMetadata))
 	    return;
 
 	EntityType type = event.getEntityType();
 
-	if (type == EntityType.SLIME && ConfigManager.getJobsConfiguration().PreventSlimeSplit) {
+	if (type == EntityType.SLIME && Jobs.getGCManager().PreventSlimeSplit) {
 	    event.setCancelled(true);
 	    return;
 	}
 
-	if (type == EntityType.MAGMA_CUBE && ConfigManager.getJobsConfiguration().PreventMagmaCubeSplit) {
+	if (type == EntityType.MAGMA_CUBE && Jobs.getGCManager().PreventMagmaCubeSplit) {
 	    event.setCancelled(true);
 	    return;
 	}
@@ -984,8 +938,10 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureBreed(CreatureSpawnEvent event) {
-
-	if (!ConfigManager.getJobsConfiguration().useBreederFinder)
+	//disabling plugin in world
+	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
+	if (!Jobs.getGCManager().useBreederFinder)
 	    return;
 
 	SpawnReason reason = event.getSpawnReason();
@@ -1018,32 +974,26 @@ public class JobsPaymentListener implements Listener {
 
 	if (player != null && closest < 30.0) {
 	    // check if in creative
-	    if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	    if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 		return;
 
 	    if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 		return;
 
-	    // Item in hand
-	    ItemStack item = player.getItemInHand().hasItemMeta() ? player.getItemInHand() : null;
-
-	    // Wearing armor
-	    ItemStack[] armor = player.getInventory().getArmorContents();
-
-	    // restricted area multiplier
-	    double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
 	    // pay
 	    JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
 	    if (jDamager == null)
 		return;
-	    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.BREED), multiplier, item, armor);
+	    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.BREED), 0.0);
 	}
 
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerEat(FoodLevelChangeEvent event) {
-
+	//disabling plugin in world
+	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
@@ -1063,36 +1013,32 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
-
 	// Item in hand
-	ItemStack item = player.getItemInHand();
-
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
+	ItemStack item = Jobs.getNms().getItemInMainHand(player);
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
 
-	Jobs.action(jPlayer, new ItemActionInfo(item, ActionType.EAT), multiplier, item, armor);
+	Jobs.action(jPlayer, new ItemActionInfo(item, ActionType.EAT), 0.0);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTntExplode(EntityExplodeEvent event) {
-
+	//disabling plugin in world
+	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
 
-	if (!ConfigManager.getJobsConfiguration().isUseTntFinder())
+	if (!Jobs.getGCManager().isUseTntFinder())
 	    return;
 
 	if (event.getEntityType() != EntityType.PRIMED_TNT && event.getEntityType() != EntityType.MINECART_TNT)
@@ -1120,20 +1066,11 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
-
-	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
-
-	// Item in hand
-	ItemStack item = player.getItemInHand();
-
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
@@ -1146,17 +1083,20 @@ public class JobsPaymentListener implements Listener {
 	    if (block.getType().equals(Material.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 		block.removeMetadata(furnaceOwnerMetadata, plugin);
 
-	    if (ConfigManager.getJobsConfiguration().useBlockProtection)
+	    if (Jobs.getGCManager().useBlockProtection)
 		if (block.getState().hasMetadata(BlockMetadata))
 		    return;
 
 	    BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.TNTBREAK);
-	    Jobs.action(jPlayer, bInfo, multiplier, item, armor);
+	    Jobs.action(jPlayer, bInfo, 0.0);
 	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
+	//disabling plugin in world
+	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
+	    return;
 	if (!plugin.isEnabled())
 	    return;
 
@@ -1179,13 +1119,15 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler
     public void onExplore(JobsChunkChangeEvent event) {
-
+	//disabling plugin in world
+	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
+	    return;
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
 	Player player = (Player) event.getPlayer();
 
-	if (!ConfigManager.getJobsConfiguration().payExploringWhenFlying())
+	if (!Jobs.getGCManager().payExploringWhenFlying())
 	    return;
 
 	ExploreRespond respond = Jobs.getExplore().ChunkRespond(event.getPlayer(), event.getNewChunk());
@@ -1201,25 +1143,16 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !ConfigManager.getJobsConfiguration().payInCreative())
+	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	// restricted area multiplier
-	double multiplier = ConfigManager.getJobsConfiguration().getRestrictedMultiplier(player);
-
-	// Item in hand
-	ItemStack item = player.getItemInHand();
-
-	// Wearing armor
-	ItemStack[] armor = player.getInventory().getArmorContents();
-
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
 
-	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE), multiplier, item, armor);
+	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE), 0.0);
     }
 }
