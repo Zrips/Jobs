@@ -26,6 +26,9 @@ public class BossBarManager {
     }
 
     public synchronized void ShowJobProgression(final JobsPlayer player) {
+	if (Jobs.getActionBar().getVersion() < 1900)
+	    return;
+
 	if (player == null)
 	    return;
 	for (String one : player.getUpdateBossBarFor()) {
@@ -38,7 +41,8 @@ public class BossBarManager {
     }
 
     public synchronized void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg) {
-
+	if (Jobs.getActionBar().getVersion() < 1900)
+	    return;
 	String playername = player.getUserName();
 	if (!Jobs.getBossBarToggleList().containsKey(playername) && Jobs.getGCManager().BossBarsMessageByDefault)
 	    Jobs.getBossBarToggleList().put(playername, true);
