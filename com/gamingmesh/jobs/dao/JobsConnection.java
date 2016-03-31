@@ -24,46 +24,46 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class JobsConnection {
-	private Connection conn;
+    private Connection conn;
 
-	public JobsConnection(Connection conn) {
-		this.conn = conn;
-	}
+    public JobsConnection(Connection conn) {
+	this.conn = conn;
+    }
 
-	public synchronized boolean isClosed() {
-		try {
-			return conn.isClosed();
-		} catch (SQLException e) {
-			// Assume it's closed
-			return true;
-		}
+    public synchronized boolean isClosed() {
+	try {
+	    return conn.isClosed();
+	} catch (SQLException e) {
+	    // Assume it's closed
+	    return true;
 	}
+    }
 
-	public synchronized boolean isValid(int timeout) throws SQLException {
-		try {
-			return conn.isValid(timeout);
-		} catch (AbstractMethodError e) {
-			return true;
-		}
+    public synchronized boolean isValid(int timeout) throws SQLException {
+	try {
+	    return conn.isValid(timeout);
+	} catch (AbstractMethodError e) {
+	    return true;
 	}
+    }
 
-	public synchronized void closeConnection() throws SQLException {
-		conn.close();
-	}
+    public synchronized void closeConnection() throws SQLException {
+	conn.close();
+    }
 
-	public synchronized Statement createStatement() throws SQLException {
-		return conn.createStatement();
-	}
+    public synchronized Statement createStatement() throws SQLException {
+	return conn.createStatement();
+    }
 
-	public synchronized PreparedStatement prepareStatement(String sql) throws SQLException {
-		return conn.prepareStatement(sql);
-	}
+    public synchronized PreparedStatement prepareStatement(String sql) throws SQLException {
+	return conn.prepareStatement(sql);
+    }
 
-	public synchronized void setAutoCommit(Boolean mode) throws SQLException {
-		conn.setAutoCommit(mode);
-	}
+    public synchronized void setAutoCommit(Boolean mode) throws SQLException {
+	conn.setAutoCommit(mode);
+    }
 
-	public synchronized void commit() throws SQLException {
-		conn.commit();
-	}
+    public synchronized void commit() throws SQLException {
+	conn.commit();
+    }
 }

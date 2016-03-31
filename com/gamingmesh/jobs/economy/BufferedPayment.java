@@ -22,32 +22,42 @@ import org.bukkit.OfflinePlayer;
 
 public class BufferedPayment {
     private OfflinePlayer offlinePlayer;
-    private double amount= 0.0;
+    private double amount = 0.0;
+    private double points = 0.0;
     private double exp = 0.0;
-    
-    public BufferedPayment(OfflinePlayer offlinePlayer, double amount, double exp) {
-        this.offlinePlayer = offlinePlayer;
-        this.amount = amount;
-        this.exp = exp;
+
+    public BufferedPayment(OfflinePlayer offlinePlayer, double amount, double points, double exp) {
+	this.offlinePlayer = offlinePlayer;
+	this.amount = amount;
+	this.points = points;
+	this.exp = exp;
     }
-    
+
     public OfflinePlayer getOfflinePlayer() {
-        return offlinePlayer;
+	return offlinePlayer;
     }
-    
+
     public double getAmount() {
-        return amount;
+	return amount;
     }
     
+    public double getPoints() {
+	return points;
+    }
+
     public double getExp() {
-        return exp;
+	return exp;
+    }
+
+    public void setAmount(double amount) {
+	this.amount = amount;
     }
     
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setPoints(double amount) {
+	this.points = amount;
     }
     
     public void setExp(double exp) {
-        this.exp = exp;
+	this.exp = exp;
     }
 }

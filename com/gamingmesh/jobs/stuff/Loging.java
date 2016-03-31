@@ -17,9 +17,9 @@ public class Loging {
 	List<Log> logList = jPlayer.getLog();
 	boolean found = false;
 
-	if (jPlayer.getLog().size() > 0 && Jobs.getSchedule().getDateByInt() != jPlayer.getLog().get(0).getDate()) {
-	    Jobs.getSchedule().setDateByInt(TimeManage.timeInInt());
-	    if (Jobs.getSchedule().getDateByInt() != jPlayer.getLog().get(0).getDate()) {
+	if (jPlayer.getLog().size() > 0 && Jobs.getScheduleManager().getDateByInt() != jPlayer.getLog().get(0).getDate()) {
+	    Jobs.getScheduleManager().setDateByInt(TimeManage.timeInInt());
+	    if (Jobs.getScheduleManager().getDateByInt() != jPlayer.getLog().get(0).getDate()) {
 		Jobs.getJobsDAO().saveLog(jPlayer);
 		jPlayer.getLog().clear();
 	    }

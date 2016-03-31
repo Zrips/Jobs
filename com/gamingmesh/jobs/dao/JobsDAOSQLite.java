@@ -23,12 +23,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public class JobsDAOSQLite extends JobsDAO {
@@ -152,11 +154,11 @@ public class JobsDAOSQLite extends JobsDAO {
 			i = 0;
 		    }
 
-		    OfflinePlayer offPlayer = OfflinePlayerList.getPlayer(names);
-		    if (offPlayer == null)
+		    Entry<String, PlayerInfo> info = Jobs.getPlayerManager().getPlayerInfoByName(names);
+		    if (info == null)
 			continue;
 
-		    pst2.setBytes(1, UUIDUtil.toBytes(offPlayer.getUniqueId()));
+		    pst2.setBytes(1, UUIDUtil.toBytes(UUID.fromString(info.getKey())));
 		    pst2.setString(2, names);
 		    pst2.execute();
 		}
@@ -447,5 +449,247 @@ public class JobsDAOSQLite extends JobsDAO {
 		    + "explore` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `worldname` varchar(64), `chunkX` int, `chunkZ` int, `playerName` varchar(32));");
 	} finally {
 	}
+    }
+
+    @Override
+    protected synchronized void checkUpdate9() throws SQLException {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to SQLite!");
+	    return;
+	}
+
+	HashMap<String, String> tempMap = new HashMap<String, String>();
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "jobs;");
+	    ResultSet res = prest.executeQuery();
+	    while (res.next()) {
+		tempMap.put(res.getString("player_uuid"), res.getString("username"));
+	    }
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	try {
+	    prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "archive;");
+	    ResultSet res = prest.executeQuery();
+	    while (res.next()) {
+		tempMap.put(res.getString("player_uuid"), res.getString("username"));
+	    }
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	try {
+	    prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "log;");
+	    ResultSet res = prest.executeQuery();
+	    while (res.next()) {
+		tempMap.put(res.getString("player_uuid"), res.getString("username"));
+	    }
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	executeSQL("CREATE TABLE `" + getPrefix() + "users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
+	try {
+	    prest = conn.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`player_uuid`, `username`) VALUES (?, ?);");
+	    conn.setAutoCommit(false);
+	    for (Entry<String, String> users : tempMap.entrySet()) {
+		prest.setString(1, users.getKey());
+		prest.setString(2, users.getValue());
+		prest.addBatch();
+	    }
+	    prest.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	HashMap<String, PlayerInfo> tempPlayerMap = new HashMap<String, PlayerInfo>();
+
+	try {
+	    prest = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
+	    ResultSet res = prest.executeQuery();
+	    while (res.next()) {
+		tempPlayerMap.put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id")));
+	    }
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	// Modifying jobs main table
+	executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `userid` int;");
+	try {
+	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `userid` = ? WHERE `player_uuid` = ?;");
+	    conn.setAutoCommit(false);
+	    for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
+		prest.setInt(1, users.getValue().getID());
+		prest.setString(2, users.getKey());
+		prest.addBatch();
+	    }
+	    prest.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	// dropping 2 columns
+	executeSQL("CREATE TABLE `" + getPrefix()
+	    + "jobs_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+
+	PreparedStatement pst111 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "jobs`;");
+	ResultSet rs11 = pst111.executeQuery();
+	PreparedStatement insert11 = null;
+	while (rs11.next()) {
+
+	    String uuid = UUIDUtil.fromBytes(rs11.getBytes("player_uuid")).toString();
+
+	    if (uuid != null) {
+		insert11 = conn.prepareStatement("INSERT INTO `" + getPrefix() + "jobs_temp` (`userid`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?);");
+		insert11.setInt(1, rs11.getInt("userid"));
+		insert11.setString(2, rs11.getString("job"));
+		insert11.setInt(3, rs11.getInt("experience"));
+		insert11.setInt(4, rs11.getInt("level"));
+		insert11.execute();
+	    }
+	}
+	rs11.close();
+	if (insert11 != null)
+	    insert11.close();
+
+	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "jobs`;");
+	executeSQL("ALTER TABLE `" + getPrefix() + "jobs_temp` RENAME TO `" + getPrefix() + "jobs`;");
+
+	// Modifying jobs archive table
+	executeSQL("ALTER TABLE `" + getPrefix() + "archive` ADD COLUMN `userid` int;");
+	try {
+	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "archive` SET `userid` = ? WHERE `player_uuid` = ?;");
+	    conn.setAutoCommit(false);
+	    for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
+		prest.setInt(1, users.getValue().getID());
+		prest.setString(2, users.getKey());
+		prest.addBatch();
+	    }
+	    prest.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	// dropping 2 columns
+	executeSQL("CREATE TABLE `" + getPrefix()
+	    + "archive_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+
+	PreparedStatement pst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
+	ResultSet rs = pst.executeQuery();
+	PreparedStatement insert = null;
+	while (rs.next()) {
+	    String uuid = UUIDUtil.fromBytes(rs.getBytes("player_uuid")).toString();
+	    if (uuid != null) {
+		insert = conn.prepareStatement("INSERT INTO `" + getPrefix() + "archive_temp` (`userid`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?);");
+		insert.setInt(1, rs.getInt("userid"));
+		insert.setString(2, rs.getString("job"));
+		insert.setInt(3, rs.getInt("experience"));
+		insert.setInt(4, rs.getInt("level"));
+		insert.execute();
+	    }
+	}
+
+	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "archive`;");
+	executeSQL("ALTER TABLE `" + getPrefix() + "archive_temp` RENAME TO `" + getPrefix() + "archive`;");
+
+	// Modifying jobs log table
+	executeSQL("ALTER TABLE `" + getPrefix() + "log` ADD COLUMN `userid` int;");
+	try {
+	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "log` SET `userid` = ? WHERE `player_uuid` = ?;");
+	    conn.setAutoCommit(false);
+	    for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
+		prest.setInt(1, users.getValue().getID());
+		prest.setString(2, users.getKey());
+		prest.addBatch();
+	    }
+	    prest.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+	} finally {
+	    if (prest != null) {
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		}
+	    }
+	}
+
+	// dropping 2 columns
+	executeSQL("CREATE TABLE `" + getPrefix()
+	    + "log_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+
+	pst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
+	rs = pst.executeQuery();
+	insert = null;
+	while (rs.next()) {
+	    String uuid = UUIDUtil.fromBytes(rs.getBytes("player_uuid")).toString();
+	    if (uuid != null) {
+		insert = conn.prepareStatement("INSERT INTO `" + getPrefix()
+		    + "log_temp` (`userid`, `time`, `action`, `itemname`, `count`, `money`, `exp`) VALUES (?, ?, ?, ?, ?, ?, ?);");
+		insert.setInt(1, rs.getInt("userid"));
+		insert.setLong(2, rs.getLong("time"));
+		insert.setString(3, rs.getString("action"));
+		insert.setString(4, rs.getString("itemname"));
+		insert.setInt(5, rs.getInt("count"));
+		insert.setDouble(6, rs.getDouble("money"));
+		insert.setDouble(7, rs.getDouble("exp"));
+		insert.execute();
+	    }
+	}
+	rs.close();
+	if (insert != null)
+	    insert.close();
+
+	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
+	executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
+
+	// Create new points table
+	executeSQL("CREATE TABLE `" + getPrefix()
+	    + "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
     }
 }

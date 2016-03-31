@@ -24,49 +24,68 @@ import java.util.List;
 import org.bukkit.enchantments.Enchantment;
 
 public class JobItems {
-	private String node;
-	private int id;
-	private String name;
-	private List<String> lore;
-	private HashMap<Enchantment, Integer> enchants;
-	private Double moneyBoost;
-	private Double expBoost;
+    private String node;
+    private int id;
+    private int data;
+    private int amount;
+    private String name;
+    private List<String> lore;
+    private HashMap<Enchantment, Integer> enchants;
+    private Double moneyBoost = 0D;
+    private Double pointBoost = 0D;
+    private Double expBoost = 0D;
 
-	public JobItems(String node, int id, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, double moneyBoost, double expBoost) {
-		this.node = node;
-		this.id = id;
-		this.name = name;
-		this.lore = lore;
-		this.enchants = enchants;
-		this.moneyBoost = moneyBoost;
-		this.expBoost = expBoost;
-	}
+    public JobItems(String node, int id, int data, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, double moneyBoost,
+	double pointBoost, double expBoost) {
+	this.node = node;
+	this.id = id;
+	this.data = data;
+	this.amount = amount;
+	this.name = name;
+	this.lore = lore;
+	this.enchants = enchants;
+	this.moneyBoost = moneyBoost;
+	this.pointBoost = pointBoost;
+	this.expBoost = expBoost;
+    }
 
-	public String getNode() {
-		return this.node;
-	}
+    public String getNode() {
+	return this.node;
+    }
 
-	public int getId() {
-		return this.id;
-	}
+    public int getId() {
+	return this.id;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public int getData() {
+	return this.data;
+    }
 
-	public List<String> getLore() {
-		return this.lore;
-	}
+    public int getAmount() {
+	return this.amount;
+    }
 
-	public HashMap<Enchantment, Integer> getenchants() {
-		return this.enchants;
-	}
+    public String getName() {
+	return this.name;
+    }
 
-	public Double getMoneyBoost() {
-		return this.moneyBoost;
-	}
+    public List<String> getLore() {
+	return this.lore;
+    }
 
-	public Double getExpBoost() {
-		return this.expBoost;
-	}
+    public HashMap<Enchantment, Integer> getenchants() {
+	return this.enchants;
+    }
+
+    public Double getMoneyBoost() {
+	return this.moneyBoost;
+    }
+
+    public Double getPointBoost() {
+	return this.pointBoost;
+    }
+
+    public Double getExpBoost() {
+	return this.expBoost;
+    }
 }

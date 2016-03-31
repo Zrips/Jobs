@@ -5,7 +5,9 @@ import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Guardian;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.NMS;
 
@@ -25,6 +27,11 @@ public class v1_9 implements NMS {
 		return true;
 	}
 	return false;
+    }
+    
+    @Override
+    public ItemStack getItemInMainHand(Player player) {
+	return player.getInventory().getItemInMainHand();
     }
 
 }

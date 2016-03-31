@@ -1,49 +1,41 @@
 package com.gamingmesh.jobs.container;
 
-import java.util.UUID;
-
 public class Convert {
 
-	int id;
-	String name;
-	UUID uuid;
-	String jobname;
-	int level;
-	int exp;
+    int id;
+    int userid;
+    String jobname;
+    int level;
+    int exp;
 
-	public Convert(int id, String name, UUID uuid2, String jobname, int level, int exp) {
-		this.id = id;
-		this.name = name;
-		this.uuid = uuid2;
-		this.jobname = jobname;
-		this.level = level;
-		this.exp = exp;
-	}
+    public Convert(int id, int userid, String jobname, int level, int exp) {
+	this.id = id;
+	this.userid = userid;
+	this.jobname = jobname;
+	this.level = level;
+	this.exp = exp;
+    }
 
-	public Convert() {
-	}
+    public Convert() {
+    }
 
-	public int GetId() {
-		return this.id;
-	}
+    public int GetId() {
+	return this.id;
+    }
 
-	public String GetName() {
-		return this.name;
-	}
+    public int GetUserid() {
+	return this.userid;
+    }
 
-	public UUID GetUuid() {
-		return this.uuid;
-	}
+    public String GetJobName() {
+	return this.jobname;
+    }
 
-	public String GetJobName() {
-		return this.jobname;
-	}
+    public int GetLevel() {
+	return this.level;
+    }
 
-	public int GetLevel() {
-		return this.level;
-	}
-
-	public int GetExp() {
-		return this.exp;
-	}
+    public int GetExp() {
+	return this.exp;
+    }
 }

@@ -20,28 +20,35 @@ package com.gamingmesh.jobs;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.WeakHashMap;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
+import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.Signs.SignUtil;
+import com.gamingmesh.jobs.commands.JobsCommands;
+import com.gamingmesh.jobs.config.BossBarManager;
 import com.gamingmesh.jobs.config.ConfigManager;
+import com.gamingmesh.jobs.config.ExploreManager;
+import com.gamingmesh.jobs.config.GeneralConfigManager;
+import com.gamingmesh.jobs.config.LanguageManager;
+import com.gamingmesh.jobs.config.NameTranslatorManager;
+import com.gamingmesh.jobs.config.RestrictedAreaManager;
+import com.gamingmesh.jobs.config.RestrictedBlockManager;
+import com.gamingmesh.jobs.config.ScboardManager;
+import com.gamingmesh.jobs.config.ScheduleManager;
+import com.gamingmesh.jobs.config.ShopManager;
+import com.gamingmesh.jobs.config.TitleManager;
 import com.gamingmesh.jobs.container.ActionInfo;
+import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.container.JobItems;
+import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.dao.JobsDAO;
@@ -49,25 +56,38 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
-import com.gamingmesh.jobs.stuff.Debug;
-import com.gamingmesh.jobs.stuff.Explore;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
-import com.gamingmesh.jobs.stuff.Scboard;
-import com.gamingmesh.jobs.stuff.ScheduleUtil;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
+
+import net.coreprotect.CoreProtectAPI;
 
 public class Jobs {
     public static Jobs instance = new Jobs();
 //    public static JobsPlugin plugin = new JobsPlugin();
     private static PlayerManager pManager = new PlayerManager();
-    private static Language lManager = new Language();
-    private static SignUtil signManager = new SignUtil();
-    private static Scboard scboardManager = new Scboard();
-    private static ScheduleUtil scheduleManager = new ScheduleUtil();
-    private static Explore exploreManager = new Explore();
+    private static JobsCommands cManager = null;
+    private static Language lManager = null;
+    private static LanguageManager lmManager = null;
+    private static SignUtil signManager = null;
+    private static ScboardManager scboardManager = null;
+    private static ScheduleManager scheduleManager = null;
+    private static NameTranslatorManager NameTranslatorManager = null;
+    private static GuiManager GUIManager = null;
+    private static ExploreManager exploreManager = null;
+    private static TitleManager titleManager = null;
+    private static RestrictedBlockManager RBManager = null;
+    private static RestrictedAreaManager RAManager = null;
+    private static BossBarManager BBManager;
+    private static ShopManager shopManager;
+
+    private static MythicMobsListener MythicManager;
+
+    private static ConfigManager configManager;
+    private static GeneralConfigManager GconfigManager;
 
     private static Logger pLogger;
     private static File dataFolder;
@@ -77,6 +97,7 @@ public class Jobs {
     private static Job noneJob = null;
     private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<Job, Integer>();
     public static WeakHashMap<String, Boolean> actionbartoggle = new WeakHashMap<String, Boolean>();
+    public static WeakHashMap<String, Boolean> BossBartoggle = new WeakHashMap<String, Boolean>();
 //	public static WeakHashMap<String, Double> GlobalBoost = new WeakHashMap<String, Double>();
     private static BufferedEconomy economy;
     private static PermissionHandler permissionHandler;
@@ -86,8 +107,68 @@ public class Jobs {
 
     public final static HashMap<String, PaymentData> paymentLimit = new HashMap<String, PaymentData>();
     public final static HashMap<String, PaymentData> ExpLimit = new HashMap<String, PaymentData>();
+    public final static HashMap<String, PaymentData> PointLimit = new HashMap<String, PaymentData>();
 
-    private Jobs() {
+    private static NMS nms;
+
+    private static ActionBar actionbar;
+
+    private static CoreProtectAPI CPAPI = null;
+
+    public static CoreProtectAPI getCoreProtectApi() {
+	return CPAPI;
+    }
+
+    public static void setCoreProtectApi(CoreProtectAPI capi) {
+	CPAPI = capi;
+    }
+
+    public static void setMythicManager(JobsPlugin plugin) {
+	MythicManager = new MythicMobsListener(plugin);
+    }
+
+    public static MythicMobsListener getMythicManager() {
+	return MythicManager;
+    }
+
+    public static void setShopManager(JobsPlugin plugin) {
+	shopManager = new ShopManager(plugin);
+    }
+
+    public static ShopManager getShopManager() {
+	return shopManager;
+    }
+
+    public static void setConfigManager(JobsPlugin plugin) {
+	configManager = new ConfigManager(plugin);
+    }
+
+    public static ConfigManager getConfigManager() {
+	return configManager;
+    }
+
+    public static void setGCManager(JobsPlugin plugin) {
+	GconfigManager = new GeneralConfigManager(plugin);
+    }
+
+    public static GeneralConfigManager getGCManager() {
+	return GconfigManager;
+    }
+
+    public static void setActionBar(ActionBar bar) {
+	actionbar = bar;
+    }
+
+    public static ActionBar getActionBar() {
+	return actionbar;
+    }
+
+    public static void setNms(NMS newNms) {
+	nms = newNms;
+    }
+
+    public static NMS getNms() {
+	return nms;
     }
 
     /**
@@ -98,36 +179,100 @@ public class Jobs {
 	return pManager;
     }
 
+    public static void setRestrictedBlockManager(JobsPlugin plugin) {
+	RBManager = new RestrictedBlockManager(plugin);
+    }
+
+    public static RestrictedBlockManager getRestrictedBlockManager() {
+	return RBManager;
+    }
+
+    public static void setRestrictedAreaManager(JobsPlugin plugin) {
+	RAManager = new RestrictedAreaManager(plugin);
+    }
+
+    public static RestrictedAreaManager getRestrictedAreaManager() {
+	return RAManager;
+    }
+
+    public static void setTitleManager(JobsPlugin plugin) {
+	titleManager = new TitleManager(plugin);
+    }
+
+    public static TitleManager gettitleManager() {
+	return titleManager;
+    }
+
+    public static void setBBManager(JobsPlugin plugin) {
+	BBManager = new BossBarManager(plugin);
+    }
+
+    public static BossBarManager getBBManager() {
+	return BBManager;
+    }
+
+    public static WeakHashMap<String, Boolean> getActionbarToggleList() {
+	return actionbartoggle;
+    }
+
+    public static WeakHashMap<String, Boolean> getBossBarToggleList() {
+	return BossBartoggle;
+    }
+
     /**
      * Returns schedule manager
      * @return the schedule manager
      */
-    public static ScheduleUtil getSchedule() {
+    public static ScheduleManager getScheduleManager() {
 	return scheduleManager;
     }
 
-    public static void setSchedule(JobsPlugin plugin) {
-	scheduleManager = new ScheduleUtil(plugin);
+    public static void setScheduleManager(JobsPlugin plugin) {
+	scheduleManager = new ScheduleManager(plugin);
     }
 
-    public static Explore getExplore() {
+    public static NameTranslatorManager getNameTranslatorManager() {
+	return NameTranslatorManager;
+    }
+
+    public static void setNameTranslatorManager(JobsPlugin plugin) {
+	NameTranslatorManager = new NameTranslatorManager(plugin);
+    }
+
+    public static GuiManager getGUIManager() {
+	return GUIManager;
+    }
+
+    public static void setGUIManager(JobsPlugin plugin) {
+	GUIManager = new GuiManager();
+    }
+
+    public static JobsCommands getCommandManager() {
+	return cManager;
+    }
+
+    public static void setCommandManager(JobsPlugin plugin) {
+	cManager = new JobsCommands(plugin);
+    }
+
+    public static ExploreManager getExplore() {
 	return exploreManager;
     }
 
     public static void setExplore() {
-	exploreManager = new Explore();
+	exploreManager = new ExploreManager();
     }
 
     /**
      * Returns scoreboard manager
      * @return the scoreboard manager
      */
-    public static Scboard getScboard() {
+    public static ScboardManager getScboard() {
 	return scboardManager;
     }
 
     public static void setScboard(JobsPlugin plugin) {
-	scboardManager = new Scboard(plugin);
+	scboardManager = new ScboardManager(plugin);
     }
 
     /**
@@ -152,6 +297,14 @@ public class Jobs {
 
     public static void setLanguage(JobsPlugin plugin) {
 	lManager = new Language(plugin);
+    }
+
+    public static LanguageManager getLanguageManager() {
+	return lmManager;
+    }
+
+    public static void setLanguageManager(JobsPlugin plugin) {
+	lmManager = new LanguageManager(plugin);
     }
 
     /**
@@ -277,9 +430,9 @@ public class Jobs {
 	    dao.closeConnections();
 	}
 
-	ConfigManager.getJobsConfiguration().reload();
-	Jobs.getLanguage().reload(ConfigManager.getJobsConfiguration().getLocale());
-	ConfigManager.getJobConfig().reload();
+	Jobs.getGCManager().reload();
+	Jobs.getLanguage().reload(Jobs.getGCManager().getLocale());
+	Jobs.getConfigManager().reload();
 	usedSlots.clear();
 	for (Job job : jobs) {
 	    usedSlots.put(job, getJobsDAO().getSlotsTaken(job));
@@ -288,16 +441,16 @@ public class Jobs {
 	permissionHandler.registerPermissions();
 
 	// set the system to auto save
-	if (ConfigManager.getJobsConfiguration().getSavePeriod() > 0) {
-	    saveTask = new DatabaseSaveThread(ConfigManager.getJobsConfiguration().getSavePeriod());
+	if (Jobs.getGCManager().getSavePeriod() > 0) {
+	    saveTask = new DatabaseSaveThread(Jobs.getGCManager().getSavePeriod());
 	    saveTask.start();
 	}
 
 	// schedule payouts to buffered payments
-	paymentThread = new BufferedPaymentThread(ConfigManager.getJobsConfiguration().getEconomyBatchDelay());
+	paymentThread = new BufferedPaymentThread(Jobs.getGCManager().getEconomyBatchDelay());
 	paymentThread.start();
 
-	ConfigManager.getJobsConfiguration().loadScheduler();
+	Jobs.getJobsDAO().loadPlayerData();
     }
 
     /**
@@ -324,10 +477,10 @@ public class Jobs {
 	if (dao != null) {
 	    dao.closeConnections();
 	}
-	if (ConfigManager.getJobsConfiguration().storageMethod.equals("mysql"))
-	    ConfigManager.getJobsConfiguration().startSqlite();
+	if (Jobs.getGCManager().storageMethod.equals("mysql"))
+	    Jobs.getGCManager().startSqlite();
 	else
-	    ConfigManager.getJobsConfiguration().startMysql();
+	    Jobs.getGCManager().startMysql();
 	pManager.reload();
     }
 
@@ -401,30 +554,33 @@ public class Jobs {
 	if (player == null)
 	    return true;
 
+	if (amount == 0)
+	    return true;
+
 	String playername = player.getName();
 
-	if (!ConfigManager.getJobsConfiguration().EconomyLimitUse)
+	if (!Jobs.getGCManager().MoneyLimitUse)
 	    return true;
 
 	if (!paymentLimit.containsKey(playername)) {
-	    PaymentData data = new PaymentData(System.currentTimeMillis(), amount, 0.0, 0L, false);
+	    PaymentData data = new PaymentData(System.currentTimeMillis(), amount, 0.0, 0.0, 0L, false);
 	    //data.AddNewAmount(amount);
 	    paymentLimit.put(playername, data);
 	} else {
 	    PaymentData data = paymentLimit.get(playername);
 	    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(player);
-	    if (data.IsReachedMoneyLimit(ConfigManager.getJobsConfiguration().EconomyLimitTimeLimit, JPlayer.getMoneyLimit())) {
+	    if (data.IsReachedMoneyLimit(Jobs.getGCManager().MoneyTimeLimit, JPlayer.getMoneyLimit())) {
 		if (player.isOnline() && !data.Informed && !data.isReseted()) {
-		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedlimit"));
-		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedlimit2"));
+		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedlimit"));
+		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedlimit2"));
 		    data.Setinformed();
 		}
-		if (data.IsAnnounceTime(ConfigManager.getJobsConfiguration().EconomyLimitAnnouncmentDelay) && player.isOnline()) {
-		    String message = Language.getMessage("command.limit.output.lefttime").replace("%hour%", String.valueOf(data.GetLeftHour(ConfigManager
-			.getJobsConfiguration().EconomyLimitTimeLimit)));
-		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(ConfigManager.getJobsConfiguration().EconomyLimitTimeLimit)));
-		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(ConfigManager.getJobsConfiguration().EconomyLimitTimeLimit)));
-		    ActionBar.send(((Player) player), ChatColor.RED + message);
+		if (data.IsAnnounceTime(Jobs.getGCManager().MoneyAnnouncmentDelay) && player.isOnline()) {
+		    String message = Jobs.getLanguage().getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(Jobs
+			.getGCManager().MoneyTimeLimit));
+		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(Jobs.getGCManager().MoneyTimeLimit)));
+		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(Jobs.getGCManager().MoneyTimeLimit)));
+		    Jobs.getActionBar().send(((Player) player), ChatColor.RED + message);
 		}
 		if (data.isReseted())
 		    data.setReseted(false);
@@ -442,28 +598,27 @@ public class Jobs {
 
 	String playername = player.getName();
 
-	if (!ConfigManager.getJobsConfiguration().EconomyExpLimitUse)
+	if (!Jobs.getGCManager().ExpLimitUse)
 	    return true;
 
 	if (!ExpLimit.containsKey(playername)) {
-	    PaymentData data = new PaymentData(System.currentTimeMillis(), 0.0, amount, 0L, false);
+	    PaymentData data = new PaymentData(System.currentTimeMillis(), 0.0, 0.0, amount, 0L, false);
 	    //data.AddNewAmount(amount);
 	    ExpLimit.put(playername, data);
 	} else {
 	    PaymentData data = ExpLimit.get(playername);
 	    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(player);
-	    if (data.IsReachedExpLimit(ConfigManager.getJobsConfiguration().EconomyExpTimeLimit, JPlayer.getExpLimit())) {
+	    if (data.IsReachedExpLimit(Jobs.getGCManager().ExpTimeLimit, JPlayer.getExpLimit())) {
 		if (player.isOnline() && !data.Informed && !data.isReseted()) {
-		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedExplimit"));
-		    ((Player) player).sendMessage(Language.getMessage("command.limit.output.reachedExplimit2"));
+		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedExplimit"));
+		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedExplimit2"));
 		    data.Setinformed();
 		}
-		if (data.IsAnnounceTime(ConfigManager.getJobsConfiguration().EconomyLimitAnnouncmentExpDelay) && player.isOnline()) {
-		    String message = Language.getMessage("command.limit.output.lefttime").replace("%hour%", String.valueOf(data.GetLeftHour(ConfigManager
-			.getJobsConfiguration().EconomyExpTimeLimit)));
-		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(ConfigManager.getJobsConfiguration().EconomyExpTimeLimit)));
-		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(ConfigManager.getJobsConfiguration().EconomyExpTimeLimit)));
-		    ActionBar.send(((Player) player), ChatColor.RED + message);
+		if (data.IsAnnounceTime(Jobs.getGCManager().ExpAnnouncmentDelay) && player.isOnline()) {
+		    String message = Jobs.getLanguage().getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(Jobs.getGCManager().ExpTimeLimit));
+		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(Jobs.getGCManager().ExpTimeLimit)));
+		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(Jobs.getGCManager().ExpTimeLimit)));
+		    Jobs.getActionBar().send(((Player) player), ChatColor.RED + message);
 		}
 		if (data.isReseted())
 		    data.setReseted(false);
@@ -471,6 +626,47 @@ public class Jobs {
 	    } else
 		data.AddExpAmount(amount);
 	    ExpLimit.put(playername, data);
+	}
+	return true;
+    }
+
+    public static boolean isUnderPointLimit(final OfflinePlayer player, Double amount) {
+	if (player == null)
+	    return false;
+
+	if (amount == 0)
+	    return true;
+
+	String playername = player.getName();
+
+	if (!Jobs.getGCManager().PointLimitUse)
+	    return true;
+
+	if (!PointLimit.containsKey(playername)) {
+	    PaymentData data = new PaymentData(System.currentTimeMillis(), 0.0, amount, 0.0, 0L, false);
+	    //data.AddNewAmount(amount);
+	    PointLimit.put(playername, data);
+	} else {
+	    PaymentData data = PointLimit.get(playername);
+	    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(player);
+	    if (data.IsReachedPointLimit(Jobs.getGCManager().PointTimeLimit, JPlayer.getPointLimit())) {
+		if (player.isOnline() && !data.Informed && !data.isReseted()) {
+		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedPointlimit"));
+		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedPointlimit2"));
+		    data.Setinformed();
+		}
+		if (data.IsAnnounceTime(Jobs.getGCManager().PointAnnouncmentDelay) && player.isOnline()) {
+		    String message = Jobs.getLanguage().getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(Jobs.getGCManager().PointTimeLimit));
+		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(Jobs.getGCManager().PointTimeLimit)));
+		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(Jobs.getGCManager().PointTimeLimit)));
+		    Jobs.getActionBar().send(((Player) player), ChatColor.RED + message);
+		}
+		if (data.isReseted())
+		    data.setReseted(false);
+		return false;
+	    } else
+		data.AddPoints(amount);
+	    PointLimit.put(playername, data);
 	}
 	return true;
     }
@@ -483,8 +679,7 @@ public class Jobs {
      * @param action - the action
      * @param multiplier - the payment/xp multiplier
      */
-    @SuppressWarnings("deprecation")
-    public static void action(JobsPlayer jPlayer, ActionInfo info, double multiplier, ItemStack item, ItemStack[] armor) {
+    public static void action(JobsPlayer jPlayer, ActionInfo info, double multiplier) {
 
 	if (jPlayer == null)
 	    return;
@@ -498,22 +693,38 @@ public class Jobs {
 	    Player dude = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
 
 	    if (jobNone != null) {
-		Double income = jobNone.getIncome(info, 1, numjobs);
-		if (income != null) {
+		JobInfo jobinfo = jobNone.getJobInfo(info, 1);
 
-		    Double amount = income + ((income * multiplier) - income) + ((income * 1.0) - income) + ((income * Jobs.getNoneJob().getMoneyBoost()) - income);
+		if (jobinfo == null)
+		    return;
 
-		    if (ConfigManager.getJobsConfiguration().useDynamicPayment) {
+		Double income = jobinfo.getIncome(1, numjobs);
+		Double points = jobinfo.getPoints(1, numjobs);
+
+		if (income != 0D || points != 0D) {
+
+		    Double amount = 0D;
+		    if (income != 0D)
+			amount = income + ((income * multiplier) - income) + ((income * 1.0) - income) + ((income * Jobs.getNoneJob().getMoneyBoost()) - income);
+
+		    Double pointAmount = 0D;
+		    if (points != 0D)
+			pointAmount = points + ((points * multiplier) - points) + ((points * 1.0) - points) + ((points * Jobs.getNoneJob().getPointBoost()) - points);
+
+		    if (Jobs.getGCManager().useDynamicPayment) {
 			double moneyBonus = (income * (jobNone.getBonus() / 100));
 			amount += moneyBonus;
+
+			double pointBonus = (points * (jobNone.getBonus() / 100));
+			pointAmount += pointBonus;
 		    }
 
 		    if (!isUnderMoneyLimit(dude, amount))
 			return;
 
-		    Jobs.getEconomy().pay(jPlayer, amount, 0.0);
+		    Jobs.getEconomy().pay(jPlayer, amount, pointAmount, 0.0);
 
-		    if (ConfigManager.getJobsConfiguration().LoggingUse)
+		    if (Jobs.getGCManager().LoggingUse)
 			Loging.recordToLog(jPlayer, info, amount, 0);
 		}
 	    }
@@ -522,171 +733,126 @@ public class Jobs {
 	    for (JobProgression prog : progression) {
 
 		int level = prog.getLevel();
-		Double income = prog.getJob().getIncome(info, level, numjobs);
+		JobInfo jobinfo = prog.getJob().getJobInfo(info, level);
 
-		if (income != null) {
-		    Double exp = prog.getJob().getExperience(info, level, numjobs);
+		if (jobinfo == null)
+		    continue;
 
-		    if (ConfigManager.getJobsConfiguration().addXpPlayer()) {
-			Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
-			if (player != null) {
-			    /*
-			     * Minecraft experience is calculated in whole numbers only.
-			     * Calculate the fraction of an experience point and perform a dice roll.
-			     * That way jobs that give fractions of experience points will slowly give
-			     * experience in the aggregate
-			     */
-			    int expInt = exp.intValue();
-			    double remainder = exp.doubleValue() - expInt;
-			    if (Math.abs(remainder) > Math.random()) {
-				if (exp.doubleValue() < 0) {
-				    expInt--;
-				} else {
-				    expInt++;
-				}
+		Double income = jobinfo.getIncome(level, numjobs);
+		Double points = jobinfo.getPoints(level, numjobs);
+
+		if (income == 0D && points == 0D)
+		    continue;
+
+		Double exp = jobinfo.getExperience(level, numjobs);
+
+		if (Jobs.getGCManager().addXpPlayer()) {
+		    Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
+		    if (player != null) {
+			/*
+			 * Minecraft experience is calculated in whole numbers only.
+			 * Calculate the fraction of an experience point and perform a dice roll.
+			 * That way jobs that give fractions of experience points will slowly give
+			 * experience in the aggregate
+			 */
+			int expInt = exp.intValue();
+			double remainder = exp.doubleValue() - expInt;
+			if (Math.abs(remainder) > Math.random()) {
+			    if (exp.doubleValue() < 0) {
+				expInt--;
+			    } else {
+				expInt++;
 			    }
-			    player.giveExp(expInt);
 			}
+			player.giveExp(expInt);
 		    }
+		}
 
-		    // Item boost check
-		    Double itemMoneyBoost = 0.0;
-		    Double itemExpBoost = 0.0;
-		    if (item != null) {
+		BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID()), prog.getJob());
 
-			ItemMeta meta = item.getItemMeta();
-			String name = null;
-			List<String> lore = new ArrayList<String>();
+		if (multiplier != 0.0)
+		    FinalBoost = new BoostMultiplier(FinalBoost.getMoney() + ((multiplier * 100) - 100), FinalBoost.getPoints() + ((multiplier * 100) - 100), FinalBoost
+			.getExp() + ((multiplier * 100) - 100));
 
-			if (item.hasItemMeta()) {
-			    if (meta.hasDisplayName())
-				name = meta.getDisplayName();
-			    if (meta.hasLore())
-				lore = meta.getLore();
-			}
+		OfflinePlayer dude = jPlayer.getPlayer();
 
-			Map<Enchantment, Integer> enchants = item.getEnchantments();
+		// Calculate income
 
-			main: for (JobItems oneItem : prog.getJob().getItems()) {
-			    if (oneItem.getId() != item.getTypeId())
-				continue;
-
-			    if (oneItem.getName() != null && name != null)
-				if (!org.bukkit.ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name))
-				    continue;
-
-			    for (String onelore : oneItem.getLore()) {
-				if (lore.size() == 0 || !lore.contains(onelore))
-				    continue main;
-			    }
-
-			    for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
-				if (oneItem.getenchants().containsKey(oneE.getKey())) {
-				    if (oneItem.getenchants().get(oneE.getKey()) < oneE.getValue()) {
-					continue main;
-				    }
-				} else
-				    continue main;
-			    }
-
-			    itemMoneyBoost = ((income * oneItem.getMoneyBoost()) - income);
-			    itemExpBoost = ((exp * oneItem.getExpBoost()) - exp);
-
-			    Debug.D("boost");
-
-			    break;
-			}
-
-		    }
-
-		    // Armor boost check
-		    Double armorMoneyBoost = 0.0;
-		    Double armorExpBoost = 0.0;
-		    if (armor != null)
-			for (ItemStack OneArmor : armor) {
-			    if (OneArmor == null)
-				continue;
-			    if (!OneArmor.hasItemMeta())
-				continue;
-			    ItemMeta meta = OneArmor.getItemMeta();
-			    if (!meta.hasDisplayName() || !meta.hasLore())
-				continue;
-			    for (JobItems oneItem : prog.getJob().getItems()) {
-				if (oneItem.getId() != OneArmor.getTypeId())
-				    continue;
-				if (!ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(meta.getDisplayName()))
-				    continue;
-				if (!oneItem.getLore().equals(meta.getLore()))
-				    continue;
-				armorMoneyBoost += ((income * oneItem.getMoneyBoost()) - income);
-				armorExpBoost += ((exp * oneItem.getExpBoost()) - exp);
-				break;
-
-			    }
-
-			}
-
-		    OfflinePlayer dude = jPlayer.getPlayer();
-
-		    // Calculate income
-
-		    Double amount = income + ((income * multiplier) - income) + ((income * prog.getJob().getMoneyBoost()) - income) + ((income * prog.getMoneyBoost())
-			- income) + itemMoneyBoost + armorMoneyBoost;
-
-		    if (ConfigManager.getJobsConfiguration().useDynamicPayment) {
-			double moneyBonus = (income * (prog.getJob().getBonus() / 100));
-			amount += moneyBonus;
-		    }
-
-		    if (ConfigManager.getJobsConfiguration().useMinimumOveralPayment && income > 0) {
-			double maxLimit = income * ConfigManager.getJobsConfiguration().MinimumOveralPaymentLimit;
+		Double amount = 0D;
+		if (income != 0D) {
+		    amount = income + (income * FinalBoost.getMoney() / 100);
+		    if (Jobs.getGCManager().useMinimumOveralPayment && income > 0) {
+			double maxLimit = income * Jobs.getGCManager().MinimumOveralPaymentLimit;
 			if (amount < maxLimit) {
 			    amount = maxLimit;
 			}
 		    }
+		}
 
-		    // Calculate exp
-		    double expAmount = exp + ((exp * multiplier) - exp) + ((exp * prog.getJob().getExpBoost()) - exp) + ((exp * prog.getExpBoost()) - exp) + itemExpBoost
-			+ armorExpBoost;
+		// Calculate points
 
-		    if (ConfigManager.getJobsConfiguration().useDynamicPayment) {
-			double expBonus = (exp * (prog.getJob().getBonus() / 100));
-			expAmount += expBonus;
-		    }
-
-		    if (ConfigManager.getJobsConfiguration().useMinimumOveralPayment && exp > 0) {
-			double maxLimit = exp * ConfigManager.getJobsConfiguration().MinimumOveralPaymentLimit;
-			if (exp < maxLimit) {
-			    exp = maxLimit;
+		Double pointAmount = 0D;
+		if (points != 0D) {
+		    pointAmount = points + (points * FinalBoost.getPoints() / 100);
+		    if (Jobs.getGCManager().useMinimumOveralPoints && points > 0) {
+			double maxLimit = points * Jobs.getGCManager().MinimumOveralPaymentLimit;
+			if (pointAmount < maxLimit) {
+			    pointAmount = maxLimit;
 			}
 		    }
-
-		    if (!isUnderMoneyLimit(dude, amount)) {
-			amount = 0.0000000001;
-			if (ConfigManager.getJobsConfiguration().EconomyExpStop)
-			    expAmount = 0.0;
-		    }
-
-		    if (!isUnderExpLimit(dude, expAmount)) {
-			expAmount = 0.0;
-			if (ConfigManager.getJobsConfiguration().EconomyMoneyStop)
-			    expAmount = 0.0000000001;
-		    }
-
-		    if (amount == 0.0000000001 && expAmount == 0.0)
-			continue;
-
-		    Jobs.getEconomy().pay(jPlayer, amount, expAmount);
-		    int oldLevel = prog.getLevel();
-
-		    if (ConfigManager.getJobsConfiguration().LoggingUse)
-			Loging.recordToLog(jPlayer, info, amount, expAmount);
-
-		    if (prog.addExperience(expAmount))
-			Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
 		}
+
+		// Calculate exp
+		double expAmount = exp + (exp * FinalBoost.getExp() / 100);
+
+		if (Jobs.getGCManager().useMinimumOveralPayment && exp > 0) {
+		    double maxLimit = exp * Jobs.getGCManager().MinimumOveralPaymentLimit;
+		    if (exp < maxLimit) {
+			exp = maxLimit;
+		    }
+		}
+
+		if (!isUnderMoneyLimit(dude, amount)) {
+		    amount = 0D;
+		    if (Jobs.getGCManager().MoneyStopExp)
+			expAmount = 0D;
+		    if (Jobs.getGCManager().MoneyStopPoint)
+			pointAmount = 0D;
+		}
+
+		if (!isUnderExpLimit(dude, expAmount)) {
+		    expAmount = 0D;
+		    if (Jobs.getGCManager().ExpStopMoney)
+			amount = 0D;
+		    if (Jobs.getGCManager().ExpStopPoint)
+			pointAmount = 0D;
+		}
+
+		if (!isUnderPointLimit(dude, pointAmount)) {
+		    pointAmount = 0D;
+		    if (Jobs.getGCManager().PointStopMoney)
+			amount = 0D;
+		    if (Jobs.getGCManager().PointStopExp)
+			expAmount = 0D;
+		}
+
+		if ((amount == 0D || pointAmount == 0D) && expAmount == 0D)
+		    continue;
+
+		if (Jobs.getGCManager().BossBarEnabled && Jobs.getGCManager().BossBarShowOnEachAction)
+		    Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
+		else if (Jobs.getGCManager().BossBarEnabled && !Jobs.getGCManager().BossBarShowOnEachAction)
+		    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
+
+		Jobs.getEconomy().pay(jPlayer, amount, pointAmount, expAmount);
+		int oldLevel = prog.getLevel();
+
+		if (Jobs.getGCManager().LoggingUse)
+		    Loging.recordToLog(jPlayer, info, amount, expAmount);
+
+		if (prog.addExperience(expAmount))
+		    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
 	    }
 	}
     }
-
 }

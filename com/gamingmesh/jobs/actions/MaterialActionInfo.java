@@ -40,7 +40,7 @@ public abstract class MaterialActionInfo extends BaseActionInfo implements Actio
 
     @Override
     public String getNameWithSub() {
-        return getName()+":"+data;
+	return getName() + ":" + data;
     }
 
 }

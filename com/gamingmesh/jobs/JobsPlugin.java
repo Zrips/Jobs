@@ -21,38 +21,21 @@ package com.gamingmesh.jobs;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import net.coreprotect.CoreProtect;
-import net.coreprotect.CoreProtectAPI;
-import net.elseland.xikage.MythicMobs.MythicMobs;
-import net.elseland.xikage.MythicMobs.API.MythicMobsAPI;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 
-import com.gamingmesh.jobs.Gui.GuiTools;
-import com.gamingmesh.jobs.commands.JobsCommands;
-import com.gamingmesh.jobs.config.ConfigManager;
-import com.gamingmesh.jobs.config.JobConfig;
-import com.gamingmesh.jobs.config.JobsConfiguration;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
-import com.gamingmesh.jobs.stuff.OfflinePlayerList;
+import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.config.YmlMaker;
 
 public class JobsPlugin extends JavaPlugin {
-    public static CoreProtectAPI CPAPI;
-    public static MythicMobsAPI MMAPI;
-    public static boolean CPPresent = false;
-    private static NMS nms;
-
-    public static NMS getNms() {
-	return nms;
-    }
 
     @Override
     public void onEnable() {
@@ -65,7 +48,7 @@ public class JobsPlugin extends JavaPlugin {
 	    Class<?> nmsClass;
 	    nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + version);
 	    if (NMS.class.isAssignableFrom(nmsClass)) {
-		nms = (NMS) nmsClass.getConstructor().newInstance();
+		Jobs.setNms((NMS) nmsClass.getConstructor().newInstance());
 	    } else {
 		System.out.println("Something went wrong, please note down version and contact author v:" + version);
 		this.setEnabled(false);
@@ -94,7 +77,9 @@ public class JobsPlugin extends JavaPlugin {
 	    this.setEnabled(false);
 	}
 
-	OfflinePlayerList.fillList();
+	Jobs.setActionBar(new ActionBar());
+
+//	OfflinePlayerList.fillList();
 	YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
 	jobConfig.saveDefaultConfig();
 
@@ -103,23 +88,29 @@ public class JobsPlugin extends JavaPlugin {
 
 	YmlMaker jobSchedule = new YmlMaker(this, "schedule.yml");
 	jobSchedule.saveDefaultConfig();
+	
+	YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
+	jobShopItems.saveDefaultConfig();
 
 	Jobs.setPermissionHandler(new PermissionHandler(this));
 
-	Jobs.setSignUtil(this);
 	Jobs.setScboard(this);
-	Jobs.setSchedule(this);
 	Jobs.setLanguage(this);
+	Jobs.setGUIManager(this);
 	Jobs.setExplore();
+
+	Jobs.setBBManager(this);
 
 	Jobs.setPluginLogger(getLogger());
 
 	Jobs.setDataFolder(getDataFolder());
 
-	ConfigManager.registerJobsConfiguration(new JobsConfiguration(this));
-	ConfigManager.registerJobConfig(new JobConfig(this));
+	Jobs.setGCManager(this);
+	Jobs.setConfigManager(this);
 
-	getCommand("jobs").setExecutor(new JobsCommands(this));
+	Jobs.setCommandManager(this);
+
+	getCommand("jobs").setExecutor(Jobs.getCommandManager());
 
 	this.getCommand("jobs").setTabCompleter(new TabComplete());
 
@@ -136,41 +127,41 @@ public class JobsPlugin extends JavaPlugin {
 	if (McMMOlistener.CheckmcMMO())
 	    getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
 
-	if (MythicMobsListener.Check() && ConfigManager.getJobsConfiguration().MythicMobsEnabled)
+	Jobs.setMythicManager(this);
+	if (Jobs.getMythicManager().Check() && Jobs.getGCManager().MythicMobsEnabled) {
 	    getServer().getPluginManager().registerEvents(new MythicMobsListener(this), this);
+	}
 
-	if (ConfigManager.getJobsConfiguration().useBlockProtection)
+	if (Jobs.getGCManager().useBlockProtection)
 	    getServer().getPluginManager().registerEvents(new PistonProtectionListener(this), this);
 
 	// register economy
 	Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
 
-	if (getServer().getPluginManager().getPlugin("MythicMobs") != null) {
-	    MMAPI = ((MythicMobs) getServer().getPluginManager().getPlugin("MythicMobs")).getAPI();
-	}
-
 	if (getServer().getPluginManager().getPlugin("CoreProtect") != null) {
-	    CPPresent = true;
-	    CPAPI = ((CoreProtect) getServer().getPluginManager().getPlugin("CoreProtect")).getAPI();
+	    Jobs.setCoreProtectApi(((CoreProtect) getServer().getPluginManager().getPlugin("CoreProtect")).getAPI());
 	}
 
 	// all loaded properly.
 
-	if (ConfigManager.getJobsConfiguration().useGlobalBoostScheduler)
-	    Jobs.getSchedule().scheduler();
-	Jobs.getSchedule().DateUpdater();
+	if (Jobs.getGCManager().useGlobalBoostScheduler)
+	    Jobs.getScheduleManager().scheduler();
+	Jobs.getScheduleManager().DateUpdater();
 
-	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6Plugin has been enabled succesfully.");
+	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Plugin has been enabled succesfully.");
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	console.sendMessage(message);
-	Jobs.getLanguage().reload(ConfigManager.getJobsConfiguration().getLocale());
-	
+	Jobs.getLanguage().reload(Jobs.getGCManager().getLocale());
+
 	Jobs.getJobsDAO().loadExplore();
+
+	Jobs.getCommandManager().fillCommands();
     }
 
     @Override
     public void onDisable() {
-	GuiTools.CloseInventories();
+	Jobs.getGUIManager().CloseInventories();
+	Jobs.getShopManager().CloseInventories();
 	Jobs.getJobsDAO().saveExplore();
 	Jobs.shutdown();
 	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Plugin has been disabled succesfully.");

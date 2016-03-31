@@ -19,49 +19,106 @@
 package com.gamingmesh.jobs;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
-import com.gamingmesh.jobs.config.ConfigManager;
+import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
 import com.gamingmesh.jobs.container.JobConditions;
+import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.dao.JobsDAO;
-import com.gamingmesh.jobs.i18n.Language;
-import com.gamingmesh.jobs.stuff.ActionBar;
+import com.gamingmesh.jobs.dao.JobsDAOData;
+import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
 //    private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
     private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<String, JobsPlayer>();
+    private PointsData PointsDatabase = new PointsData();
+
+    private HashMap<String, PlayerInfo> PlayerMap = new HashMap<String, PlayerInfo>();
+
+    public PointsData getPointsData() {
+	return PointsDatabase;
+    }
+
+    public HashMap<String, PlayerInfo> getPlayerMap() {
+	return PlayerMap;
+    }
+
+    public int getPlayerIdByName(String name) {
+	for (Entry<String, PlayerInfo> one : PlayerMap.entrySet()) {
+	    if (one.getValue().getName() == null)
+		continue;
+	    if (one.getValue().getName().equalsIgnoreCase(name))
+		return one.getValue().getID();
+	}
+	return -1;
+    }
+
+    public Entry<String, PlayerInfo> getPlayerInfoByName(String name) {
+	for (Entry<String, PlayerInfo> one : PlayerMap.entrySet()) {
+	    if (one.getValue().getName() == null)
+		continue;
+	    if (one.getValue().getName().equalsIgnoreCase(name))
+		return one;
+	}
+	return null;
+    }
+
+    public Entry<String, PlayerInfo> getPlayerInfoById(int id) {
+	for (Entry<String, PlayerInfo> one : PlayerMap.entrySet()) {
+	    if (one.getValue().getName() == null)
+		continue;
+	    if (one.getValue().getID() == id)
+		return one;
+	}
+	return null;
+    }
 
     /**
      * Handles join of new player
      * @param playername
      */
     public void playerJoin(Player player) {
-//	synchronized (players) {
+	long time = System.nanoTime();
 	JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
 	if (jPlayer == null) {
 	    jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
+	    Debug.D("1. " + (System.nanoTime() - time));
 	    JobsPlayer.loadLogFromDao(jPlayer);
+	    Debug.D("2. " + (System.nanoTime() - time));
 	    players.put(player.getName().toLowerCase(), jPlayer);
 	}
 	jPlayer.onConnect();
+	Debug.D("3. " + (System.nanoTime() - time));
 	jPlayer.reloadHonorific();
+	Debug.D("4. " + (System.nanoTime() - time));
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+	Debug.D("5. " + (System.nanoTime() - time));
 	return;
-//	}
     }
 
     /**
@@ -69,20 +126,20 @@ public class PlayerManager {
      * @param playername
      */
     public void playerQuit(Player player) {
-//	synchronized (players) {
-	if (ConfigManager.getJobsConfiguration().saveOnDisconnect()) {
+	if (Jobs.getGCManager().saveOnDisconnect()) {
+	    Debug.D("save on disc");
 	    JobsPlayer jPlayer = players.remove(player.getName().toLowerCase());
 	    if (jPlayer != null) {
 		jPlayer.save(Jobs.getJobsDAO());
 		jPlayer.onDisconnect();
 	    }
 	} else {
+	    Debug.D("dont save");
 	    JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
 	    if (jPlayer != null) {
 		jPlayer.onDisconnect();
 	    }
 	}
-//	}
     }
 
     /**
@@ -99,25 +156,19 @@ public class PlayerManager {
 	 * 3) Garbage collect the real list to remove any offline players with saved data
 	 */
 	ArrayList<JobsPlayer> list = null;
-//	synchronized (players) {
 	list = new ArrayList<JobsPlayer>(players.values());
-//	}
 
 	for (JobsPlayer jPlayer : list) {
 	    jPlayer.save(dao);
 	}
 
-//	synchronized (players) {
 	Iterator<JobsPlayer> iter = players.values().iterator();
 	while (iter.hasNext()) {
 	    JobsPlayer jPlayer = iter.next();
-//		synchronized (jPlayer.saveLock) {
 	    if (!jPlayer.isOnline() && jPlayer.isSaved()) {
 		iter.remove();
 	    }
-//		}
 	}
-//	}
     }
 
     /**
@@ -126,9 +177,7 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(Player player) {
-//	synchronized (players) {
 	return players.get(player.getName().toLowerCase());
-//	}
     }
 
     /**
@@ -137,9 +186,11 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {
-//	synchronized (players) {
 	return players.get(playerName.toLowerCase());
-//	}
+    }
+
+    public JobsPlayer getJobsPlayerOffline(OfflinePlayer player) {
+	return getJobsPlayerOffline(player.getName());
     }
 
     /**
@@ -147,14 +198,43 @@ public class PlayerManager {
      * @param player - the player who's job you're getting
      * @return the player job info of the player
      */
-    public JobsPlayer getJobsPlayerOffline(OfflinePlayer offlinePlayer) {
-	JobsPlayer jPlayer = players.get(offlinePlayer.getName().toLowerCase());
+    public JobsPlayer getJobsPlayerOffline(String playerName) {
+	Debug.D("Getting offline player data");
+	JobsPlayer jPlayer = players.get(playerName.toLowerCase());
 	if (jPlayer != null)
 	    return jPlayer;
 
-	JobsPlayer player = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), offlinePlayer);
-	JobsPlayer.loadLogFromDao(player);
-	return player;
+	Entry<String, PlayerInfo> info = getPlayerInfoByName(playerName);
+
+	if (info == null)
+	    return null;
+
+	if (info.getValue().getName() == null)
+	    return null;
+
+	jPlayer = new JobsPlayer(info.getValue().getName(), null);
+	jPlayer.setPlayerUUID(UUID.fromString(info.getKey()));
+	jPlayer.setUserId(info.getValue().getID());
+
+	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getValue().getName(), UUID.fromString(info.getKey()));
+	for (JobsDAOData jobdata : list) {
+	    if (Jobs.getJob(jobdata.getJobName()) == null)
+		continue;
+	    Job job = Jobs.getJob(jobdata.getJobName());
+	    if (job == null)
+		continue;
+	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1, -1);
+	    jPlayer.progression.add(jobProgression);
+	    jPlayer.reloadMaxExperience();
+	    jPlayer.reloadLimits();
+	}
+
+	Debug.D("Offline player UID " + jPlayer.getUserId());
+
+	Jobs.getJobsDAO().loadPoints(jPlayer);
+
+	JobsPlayer.loadLogFromDao(jPlayer);
+	return jPlayer;
     }
 
     /**
@@ -350,17 +430,16 @@ public class PlayerManager {
 	    return;
 
 	// LevelUp event
-	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job.getName(), prog.getLevel(), ConfigManager.getJobsConfiguration().getTitleForLevel(oldLevel, job
-	    .getName()), ConfigManager.getJobsConfiguration().getTitleForLevel(prog.getLevel(), job.getName()), ConfigManager.getJobsConfiguration().SoundLevelupSound
-		.toUpperCase(), ConfigManager.getJobsConfiguration().SoundLevelupVolume, ConfigManager.getJobsConfiguration().SoundLevelupPitch, ConfigManager
-		    .getJobsConfiguration().SoundTitleChangeSound.toUpperCase(), ConfigManager.getJobsConfiguration().SoundTitleChangeVolume, ConfigManager
-			.getJobsConfiguration().SoundTitleChangePitch);
+	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job.getName(), prog.getLevel(), Jobs.gettitleManager().getTitleForLevel(oldLevel, job
+	    .getName()), Jobs.gettitleManager().getTitleForLevel(prog.getLevel(), job.getName()), Jobs.getGCManager().SoundLevelupSound
+		.toUpperCase(), Jobs.getGCManager().SoundLevelupVolume, Jobs.getGCManager().SoundLevelupPitch, Jobs.getGCManager().SoundTitleChangeSound.toUpperCase(),
+	    Jobs.getGCManager().SoundTitleChangeVolume, Jobs.getGCManager().SoundTitleChangePitch);
 	Bukkit.getServer().getPluginManager().callEvent(levelUpEvent);
 	// If event is canceled, dont do anything
 	if (levelUpEvent.isCancelled())
 	    return;
 
-	if (ConfigManager.getJobsConfiguration().SoundLevelupUse) {
+	if (Jobs.getGCManager().SoundLevelupUse) {
 	    Sound sound = getSound(levelUpEvent.getSoundName());
 	    if (sound != null)
 		player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
@@ -369,10 +448,10 @@ public class PlayerManager {
 	}
 
 	String message;
-	if (ConfigManager.getJobsConfiguration().isBroadcastingLevelups()) {
-	    message = Language.getMessage("message.levelup.broadcast");
+	if (Jobs.getGCManager().isBroadcastingLevelups()) {
+	    message = Jobs.getLanguage().getMessage("message.levelup.broadcast");
 	} else {
-	    message = Language.getMessage("message.levelup.nobroadcast");
+	    message = Jobs.getLanguage().getMessage("message.levelup.nobroadcast");
 	}
 
 	message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
@@ -387,21 +466,20 @@ public class PlayerManager {
 	}
 	message = message.replace("%joblevel%", "" + prog.getLevel());
 	for (String line : message.split("\n")) {
-	    if (ConfigManager.getJobsConfiguration().isBroadcastingLevelups()) {
-		if (ConfigManager.getJobsConfiguration().BroadcastingLevelUpLevels.contains(oldLevel + 1) || ConfigManager
-		    .getJobsConfiguration().BroadcastingLevelUpLevels.contains(0))
+	    if (Jobs.getGCManager().isBroadcastingLevelups()) {
+		if (Jobs.getGCManager().BroadcastingLevelUpLevels.contains(oldLevel + 1) || Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
 		    Bukkit.getServer().broadcastMessage(line);
 	    } else if (player != null) {
-		if (ConfigManager.getJobsConfiguration().LevelChangeActionBar)
-		    ActionBar.send(player, line);
-		if (ConfigManager.getJobsConfiguration().LevelChangeChat)
+		if (Jobs.getGCManager().LevelChangeActionBar)
+		    Jobs.getActionBar().send(player, line);
+		if (Jobs.getGCManager().LevelChangeChat)
 		    player.sendMessage(line);
 	    }
 	}
 
 	if (levelUpEvent.getNewTitle() != null && !levelUpEvent.getNewTitle().equals(levelUpEvent.getOldTitle())) {
 
-	    if (ConfigManager.getJobsConfiguration().SoundTitleChangeUse) {
+	    if (Jobs.getGCManager().SoundTitleChangeUse) {
 		Sound sound = getSound(levelUpEvent.getTitleChangeSoundName());
 		if (sound != null)
 		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
@@ -410,10 +488,10 @@ public class PlayerManager {
 		    Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSoundName() + ". Please update it");
 	    }
 	    // user would skill up
-	    if (ConfigManager.getJobsConfiguration().isBroadcastingSkillups()) {
-		message = Language.getMessage("message.skillup.broadcast");
+	    if (Jobs.getGCManager().isBroadcastingSkillups()) {
+		message = Jobs.getLanguage().getMessage("message.skillup.broadcast");
 	    } else {
-		message = Language.getMessage("message.skillup.nobroadcast");
+		message = Jobs.getLanguage().getMessage("message.skillup.nobroadcast");
 	    }
 	    if (player != null) {
 		message = message.replace("%playername%", player.getDisplayName());
@@ -423,12 +501,12 @@ public class PlayerManager {
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitleColor() + levelUpEvent.getNewTitleName() + ChatColor.WHITE);
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
 	    for (String line : message.split("\n")) {
-		if (ConfigManager.getJobsConfiguration().isBroadcastingLevelups()) {
+		if (Jobs.getGCManager().isBroadcastingLevelups()) {
 		    Bukkit.getServer().broadcastMessage(line);
 		} else if (player != null) {
-		    if (ConfigManager.getJobsConfiguration().TitleChangeActionBar)
-			ActionBar.send(player, line);
-		    if (ConfigManager.getJobsConfiguration().TitleChangeChat)
+		    if (Jobs.getGCManager().TitleChangeActionBar)
+			Jobs.getActionBar().send(player, line);
+		    if (Jobs.getGCManager().TitleChangeChat)
 			player.sendMessage(line);
 		}
 	    }
@@ -515,24 +593,6 @@ public class PlayerManager {
     }
 
     /**
-     * Get job exp boost
-     * @param player
-     * @param job
-     * @return double of boost
-     */
-    public Double GetExpBoost(Player dude, Job job) {
-	Double ExpBoost = 1.0;
-	if (dude == null || job.getName() == null)
-	    return 1.0;
-	if (Perm(dude, "jobs.boost." + job.getName() + ".exp") || Perm(dude, "jobs.boost." + job.getName() + ".both") || Perm(dude, "jobs.boost.all.both") || Perm(dude,
-	    "jobs.boost.all.exp")) {
-	    ExpBoost = ConfigManager.getJobsConfiguration().BoostExp;
-	}
-
-	return ExpBoost;
-    }
-
-    /**
      * Get max jobs
      * @param player
      * @return True if he have permission
@@ -544,7 +604,7 @@ public class PlayerManager {
 
 	int totalJobs = Jobs.getJobs().size() + 5;
 
-	short count = (short) ConfigManager.getJobsConfiguration().getMaxJobs();
+	short count = (short) Jobs.getGCManager().getMaxJobs();
 	for (short ctr = 0; ctr < totalJobs; ctr++) {
 	    if (Perm(player, "jobs.max." + ctr))
 		count = ctr;
@@ -565,21 +625,70 @@ public class PlayerManager {
      * @return double of boost
      */
     public Double GetMoneyBoost(Player dude, Job job) {
-	Double MoneyBoost = 1.0;
+	Double Boost = 1.0;
 	if (dude != null && job.getName() != null) {
-	    if (Perm(dude, "jobs.boost." + job.getName() + ".money") || Perm(dude, "jobs.boost." + job.getName() + ".both") || Perm(dude, "jobs.boost.all.both") || Perm(
+	    if (Perm(dude, "jobs.boost." + job.getName() + ".money") || Perm(dude, "jobs.boost." + job.getName() + ".all") || Perm(dude, "jobs.boost.all.all") || Perm(
 		dude, "jobs.boost.all.money")) {
-		MoneyBoost = ConfigManager.getJobsConfiguration().BoostMoney;
+		Boost = Jobs.getGCManager().BoostMoney;
 	    }
 	}
-	return MoneyBoost;
+	return Boost;
+    }
+
+    public double GetMoneyBoostInPerc(Player dude, Job job) {
+	double Boost = GetMoneyBoost(dude, job) * 100.0 - 100.0;
+	return Boost;
+    }
+
+    /**
+     * Get job point boost
+     * @param player
+     * @param job
+     * @return double of boost
+     */
+    public Double GetPointBoost(Player dude, Job job) {
+	Double Boost = 1.0;
+	if (dude != null && job.getName() != null) {
+	    if (Perm(dude, "jobs.boost." + job.getName() + ".points") || Perm(dude, "jobs.boost." + job.getName() + ".all") || Perm(dude, "jobs.boost.all.all") || Perm(
+		dude, "jobs.boost.all.points")) {
+		Boost = Jobs.getGCManager().BoostPoints;
+	    }
+	}
+	return Boost;
+    }
+
+    public double GetPointBoostInPerc(Player dude, Job job) {
+	double Boost = GetPointBoost(dude, job) * 100.0 - 100.0;
+	return Boost;
+    }
+
+    /**
+     * Get job exp boost
+     * @param player
+     * @param job
+     * @return double of boost
+     */
+    public Double GetExpBoost(Player dude, Job job) {
+	Double Boost = 1.0;
+	if (dude == null || job.getName() == null)
+	    return 1.0;
+	if (Perm(dude, "jobs.boost." + job.getName() + ".exp") || Perm(dude, "jobs.boost." + job.getName() + ".all") || Perm(dude, "jobs.boost.all.all") || Perm(dude,
+	    "jobs.boost.all.exp")) {
+	    Boost = Jobs.getGCManager().BoostExp;
+	}
+
+	return Boost;
+    }
+
+    public double GetExpBoostInPerc(Player dude, Job job) {
+	double Boost = GetExpBoost(dude, job) * 100.0 - 100.0;
+	return Boost;
     }
 
     /**
      * Perform reload
      */
     public void reload() {
-//	synchronized (players) {
 	for (JobsPlayer jPlayer : players.values()) {
 	    for (JobProgression progression : jPlayer.getJobProgression()) {
 		String jobName = progression.getJob().getName();
@@ -590,11 +699,120 @@ public class PlayerManager {
 	    }
 	    if (jPlayer.isOnline()) {
 		jPlayer.reloadHonorific();
-		jPlayer.reloadMoneyLimit();
-		jPlayer.reloadExpLimit();
+		jPlayer.reloadLimits();
 		Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	    }
 	}
-//	}
+    }
+
+    public BoostMultiplier getItemBoost(Player player, Job prog) {
+	BoostMultiplier data = new BoostMultiplier(1D, 1D, 1D);
+	if (player == null)
+	    return data;
+
+	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
+
+	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(prog, iih);
+
+	data = new BoostMultiplier(data.getMoney() + itemboost.getMoney(),
+	    data.getPoints() + itemboost.getPoints(),
+	    data.getExp() + itemboost.getExp());
+
+	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
+	    BoostMultiplier armorboost = Jobs.getPlayerManager().getItemBoost(prog, OneArmor);
+	    data = new BoostMultiplier(data.getMoney() + armorboost.getMoney(),
+		data.getPoints() + armorboost.getPoints(),
+		data.getExp() + armorboost.getExp());
+	}
+
+	return data;
+    }
+
+    @SuppressWarnings("deprecation")
+    public BoostMultiplier getItemBoost(Job prog, ItemStack item) {
+	if (item == null)
+	    return new BoostMultiplier(0D, 0D, 0D);
+
+	ItemMeta meta = item.getItemMeta();
+	String name = null;
+	List<String> lore = new ArrayList<String>();
+
+	if (item.hasItemMeta()) {
+	    if (meta.hasDisplayName())
+		name = meta.getDisplayName();
+	    if (meta.hasLore())
+		lore = meta.getLore();
+	}
+
+	Map<Enchantment, Integer> enchants = item.getEnchantments();
+
+	main: for (JobItems oneItem : prog.getItems()) {
+	    if (oneItem.getId() != item.getTypeId())
+		continue;
+
+	    if (oneItem.getName() != null && name != null)
+		if (!org.bukkit.ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name))
+		    continue;
+
+	    for (String onelore : oneItem.getLore()) {
+		if (lore.size() == 0 || !lore.contains(onelore))
+		    continue main;
+	    }
+
+	    for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
+		if (oneItem.getenchants().containsKey(oneE.getKey())) {
+		    if (oneItem.getenchants().get(oneE.getKey()) < oneE.getValue()) {
+			continue main;
+		    }
+		} else
+		    continue main;
+	    }
+
+	    return new BoostMultiplier(oneItem.getMoneyBoost() - 1D, oneItem.getPointBoost() - 1D, oneItem.getExpBoost() - 1D);
+	}
+
+	return new BoostMultiplier(0D, 0D, 0D);
+    }
+
+    public BoostMultiplier getFinalBonus(Player player, Job prog) {
+	BoostMultiplier multiplier = new BoostMultiplier(0D, 0D, 0D);
+	if (player == null || prog == null)
+	    return multiplier;
+
+	double PMoneyBoost = Jobs.getPlayerManager().GetMoneyBoostInPerc(player, prog);
+	PMoneyBoost = (int) (PMoneyBoost * 100D) / 100D;
+	double PPointBoost = Jobs.getPlayerManager().GetPointBoostInPerc(player, prog);
+	PPointBoost = (int) (PPointBoost * 100D) / 100D;
+	double PExpBoost = Jobs.getPlayerManager().GetExpBoostInPerc(player, prog);
+	PExpBoost = (int) (PExpBoost * 100D) / 100D;
+
+	double GMoneyBoost = prog.getMoneyBoost() * 100.0 - 100.0;
+	GMoneyBoost = (int) (GMoneyBoost * 100D) / 100D;
+	double GPointBoost = prog.getPointBoost() * 100.0 - 100.0;
+	GPointBoost = (int) (GPointBoost * 100D) / 100D;
+	double GExpBoost = prog.getExpBoost() * 100.0 - 100.0;
+	GExpBoost = (int) (GExpBoost * 100D) / 100D;
+
+	double DBoost = (int) (prog.getBonus() * 100D) / 100D;
+	if (!Jobs.getGCManager().useDynamicPayment)
+	    DBoost = 0.0;
+
+	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(player, prog);
+
+	double IMoneyBoost = itemboost.getMoney() * 100.0 - 100.0;
+	IMoneyBoost = (int) (IMoneyBoost * 100D) / 100D;
+	double IPointBoost = itemboost.getPoints() * 100.0 - 100.0;
+	IPointBoost = (int) (IPointBoost * 100D) / 100D;
+	double IExpBoost = itemboost.getExp() * 100.0 - 100.0;
+	IExpBoost = (int) (IExpBoost * 100D) / 100D;
+
+	double RBoost = Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player) * 100.0 - 100.0;
+	RBoost = (int) (RBoost * 100D) / 100D;
+
+	double Fmoney = (int) ((IMoneyBoost + DBoost + GMoneyBoost + PMoneyBoost + RBoost) * 100) / 100D;
+	double Fpoints = (int) ((IPointBoost + DBoost + GPointBoost + PPointBoost + RBoost) * 100) / 100D;
+	double Fexp = (int) ((IExpBoost + DBoost + GExpBoost + PExpBoost + RBoost) * 100) / 100D;
+
+	return new BoostMultiplier(Fmoney, Fpoints, Fexp);
     }
 }

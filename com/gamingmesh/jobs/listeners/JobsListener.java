@@ -61,16 +61,11 @@ import org.bukkit.plugin.PluginManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
-import com.gamingmesh.jobs.Gui.GuiTools;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
-import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.i18n.Language;
-import com.gamingmesh.jobs.stuff.ActionBar;
-import com.gamingmesh.jobs.stuff.OfflinePlayerList;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
@@ -81,39 +76,69 @@ public class JobsListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onGuiLeftClick(InventoryClickEvent event) {
-
-	if (GuiTools.GuiList.isEmpty())
+    public void onShopClick(InventoryClickEvent event) {
+	if (Jobs.getShopManager().GuiList.isEmpty())
 	    return;
 
 	Player player = (Player) event.getWhoClicked();
 
-	if (!GuiTools.GuiList.containsKey(player.getName()))
+	if (!Jobs.getShopManager().GuiList.contains(player.getName()))
 	    return;
 
 	event.setCancelled(true);
 
-	GuiInfoList joblist = GuiTools.GuiList.get(player.getName());
+	if (event.getSlot() < 0 || event.getSlot() >= Jobs.getShopManager().list.size())
+	    return;
+
+	Jobs.getShopManager().checkSlot(player, event.getSlot());
+
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
+    public void onShopClose(InventoryCloseEvent event) {
+	if (Jobs.getShopManager().GuiList.isEmpty())
+	    return;
+
+	Player player = (Player) event.getPlayer();
+
+	if (Jobs.getShopManager().GuiList.contains(player.getName()))
+	    Jobs.getShopManager().GuiList.remove(player.getName());
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onGuiLeftClick(InventoryClickEvent event) {
+
+	if (Jobs.getGUIManager().GuiList.isEmpty())
+	    return;
+
+	Player player = (Player) event.getWhoClicked();
+
+	if (!Jobs.getGUIManager().GuiList.containsKey(player.getName()))
+	    return;
+
+	event.setCancelled(true);
+
+	GuiInfoList joblist = Jobs.getGUIManager().GuiList.get(player.getName());
 
 	int slot = event.getRawSlot();
 
 	if (slot >= 0) {
-	    if (!joblist.isJobInfo() && (!ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT ||
-		ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT)) {
+	    if (!joblist.isJobInfo() && (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT ||
+		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT)) {
 		if (slot < joblist.getJobList().size()) {
 		    player.closeInventory();
-		    player.openInventory(GuiTools.CreateJobsSubGUI(player, joblist.getJobList().get(slot)));
+		    player.openInventory(Jobs.getGUIManager().CreateJobsSubGUI(player, joblist.getJobList().get(slot)));
 		}
 	    } else if (joblist.isJobInfo()) {
 		if (slot == joblist.getbackButton()) {
 		    player.closeInventory();
-		    player.openInventory(GuiTools.CreateJobsGUI(player));
+		    player.openInventory(Jobs.getGUIManager().CreateJobsGUI(player));
 		}
-	    } else if (!ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
-		ConfigManager.getJobsConfiguration().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
+	    } else if (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
+		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
 		if (!joblist.isJobInfo() && slot < joblist.getJobList().size()) {
 		    Bukkit.dispatchCommand(player, "jobs join " + joblist.getJobList().get(slot).getName());
-		    player.getOpenInventory().getTopInventory().setContents(GuiTools.CreateJobsGUI(player).getContents());
+		    player.getOpenInventory().getTopInventory().setContents(Jobs.getGUIManager().CreateJobsGUI(player).getContents());
 		}
 	    }
 	}
@@ -121,13 +146,13 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
     public void onGuiClose(InventoryCloseEvent event) {
-	if (GuiTools.GuiList.size() == 0)
+	if (Jobs.getGUIManager().GuiList.isEmpty())
 	    return;
 
 	Player player = (Player) event.getPlayer();
 
-	if (GuiTools.GuiList.containsKey(player.getName()))
-	    GuiTools.GuiList.remove(player.getName());
+	if (Jobs.getGUIManager().GuiList.containsKey(player.getName()))
+	    Jobs.getGUIManager().GuiList.remove(player.getName());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -160,7 +185,6 @@ public class JobsListener implements Listener {
 	if (!plugin.isEnabled())
 	    return;
 	Jobs.getPlayerManager().playerQuit(event.getPlayer());
-	OfflinePlayerList.addPlayer(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -178,7 +202,7 @@ public class JobsListener implements Listener {
 	if (!plugin.isEnabled())
 	    return;
 
-	if (!ConfigManager.getJobsConfiguration().SignsEnabled)
+	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
 	if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
@@ -195,13 +219,13 @@ public class JobsListener implements Listener {
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
 
-	if (!FirstLine.equalsIgnoreCase(Language.getMessage("signs.topline")))
+	if (!FirstLine.equalsIgnoreCase(Jobs.getLanguage().getMessage("signs.topline")))
 	    return;
 
 	String command = ChatColor.stripColor(sign.getLine(1));
 
-	for (String key : ConfigManager.getJobsConfiguration().keys) {
-	    if (command.equalsIgnoreCase(ChatColor.stripColor(Language.getMessage("signs.secondline." + key)))) {
+	for (String key : Jobs.getGCManager().keys) {
+	    if (command.equalsIgnoreCase(ChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
 		command = key;
 		break;
 	    }
@@ -217,7 +241,7 @@ public class JobsListener implements Listener {
 	if (!plugin.isEnabled())
 	    return;
 
-	if (!ConfigManager.getJobsConfiguration().SignsEnabled)
+	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
 	Block block = event.getBlock();
@@ -232,10 +256,10 @@ public class JobsListener implements Listener {
 
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
-	if (FirstLine.equalsIgnoreCase(Language.getMessage("signs.topline")))
+	if (FirstLine.equalsIgnoreCase(Jobs.getLanguage().getMessage("signs.topline")))
 	    if (!player.hasPermission("jobs.command.signs")) {
 		event.setCancelled(true);
-		player.sendMessage(Language.getMessage("signs.cantdestroy"));
+		player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
 		return;
 	    }
 
@@ -252,7 +276,7 @@ public class JobsListener implements Listener {
 
 	    if (!player.hasPermission("jobs.command.signs")) {
 		event.setCancelled(true);
-		player.sendMessage(Language.getMessage("signs.cantdestroy"));
+		player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
 		return;
 	    }
 
@@ -267,7 +291,7 @@ public class JobsListener implements Listener {
 	if (!plugin.isEnabled())
 	    return;
 
-	if (!ConfigManager.getJobsConfiguration().SignsEnabled)
+	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
 	Block block = event.getBlock();
@@ -289,7 +313,7 @@ public class JobsListener implements Listener {
 
 	if (!event.getPlayer().hasPermission("jobs.command.signs")) {
 	    event.setCancelled(true);
-	    player.sendMessage(Language.getMessage("signs.cantcreate"));
+	    player.sendMessage(Jobs.getLanguage().getMessage("signs.cantcreate"));
 	    return;
 	}
 
@@ -298,7 +322,7 @@ public class JobsListener implements Listener {
 	final Job job = Jobs.getJob(jobname);
 
 	if (job == null && !signtype.equalsIgnoreCase("gtoplist")) {
-	    player.sendMessage(Language.getMessage("command.top.error.nojob"));
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return;
 	}
 
@@ -313,7 +337,7 @@ public class JobsListener implements Listener {
 	try {
 	    Number = Integer.parseInt(numberString);
 	} catch (NumberFormatException e) {
-	    player.sendMessage(Language.getMessage("command.error.notNumber"));
+	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.notNumber"));
 	    return;
 	}
 
@@ -356,26 +380,27 @@ public class JobsListener implements Listener {
 	if (!plugin.isEnabled())
 	    return;
 
-	if (!ConfigManager.getJobsConfiguration().SignsEnabled)
+	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
-	if (ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase(ChatColor.stripColor(Language.getMessage("signs.topline"))) && !ChatColor.stripColor(event.getLine(1))
+	if (ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase(ChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !ChatColor.stripColor(event
+	    .getLine(1))
 	    .equalsIgnoreCase("toplist"))
-	    event.setLine(0, Convert(Language.getMessage("signs.topline")));
+	    event.setLine(0, Convert(Jobs.getLanguage().getMessage("signs.topline")));
 	else
 	    return;
 
 	if (!event.getPlayer().hasPermission("jobs.command.signs")) {
 	    event.setCancelled(true);
-	    event.getPlayer().sendMessage(Language.getMessage("signs.cantcreate"));
+	    event.getPlayer().sendMessage(Jobs.getLanguage().getMessage("signs.cantcreate"));
 	    return;
 	}
 
 	String command = ChatColor.stripColor(event.getLine(1)).toLowerCase();
 
-	for (String key : ConfigManager.getJobsConfiguration().keys) {
-	    if (command.equalsIgnoreCase(ChatColor.stripColor(Language.getMessage("signs.secondline." + key)))) {
-		event.setLine(1, Convert(Language.getMessage("signs.secondline." + key)));
+	for (String key : Jobs.getGCManager().keys) {
+	    if (command.equalsIgnoreCase(ChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
+		event.setLine(1, Convert(Jobs.getLanguage().getMessage("signs.secondline." + key)));
 		break;
 	    }
 	}
@@ -385,7 +410,7 @@ public class JobsListener implements Listener {
 	if (job == null)
 	    return;
 
-	String color = ConfigManager.getJobsConfiguration().SignsColorizeJobName ? job.getChatColor().toString() : "";
+	String color = Jobs.getGCManager().SignsColorizeJobName ? job.getChatColor().toString() : "";
 	event.setLine(2, Convert(color + job.getName()));
     }
 
@@ -400,7 +425,7 @@ public class JobsListener implements Listener {
 	if (!plugin.isEnabled())
 	    return;
 
-	if (!ConfigManager.getJobsConfiguration().getModifyChat())
+	if (!Jobs.getGCManager().getModifyChat())
 	    return;
 
 	Player player = event.getPlayer();
@@ -421,7 +446,7 @@ public class JobsListener implements Listener {
     public void onPlayerChatLow(AsyncPlayerChatEvent event) {
 	if (!plugin.isEnabled())
 	    return;
-	if (ConfigManager.getJobsConfiguration().getModifyChat())
+	if (Jobs.getGCManager().getModifyChat())
 	    return;
 	Player player = event.getPlayer();
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -440,7 +465,7 @@ public class JobsListener implements Listener {
     public void onPlayerChatHigh(AsyncPlayerChatEvent event) {
 	if (!plugin.isEnabled())
 	    return;
-	if (ConfigManager.getJobsConfiguration().getModifyChat())
+	if (Jobs.getGCManager().getModifyChat())
 	    return;
 	Player player = event.getPlayer();
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -464,7 +489,12 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onWaterBlockBreak(BlockFromToEvent event) {
-	if (!ConfigManager.getJobsConfiguration().WaterBlockBreake)
+
+	//disabling plugin in world
+	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	    return;
+
+	if (!Jobs.getGCManager().WaterBlockBreake)
 	    return;
 	if (event.getBlock().getType() == Material.STATIONARY_WATER && event.getToBlock().getType() != Material.AIR && event.getToBlock()
 	    .getType() != Material.STATIONARY_WATER && event.getToBlock().getState().hasMetadata(
@@ -475,7 +505,10 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCropGrown(final BlockGrowEvent event) {
-	if (!ConfigManager.getJobsConfiguration().WaterBlockBreake)
+	//disabling plugin in world
+	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	    return;
+	if (!Jobs.getGCManager().WaterBlockBreake)
 	    return;
 	if (event.getBlock().getState().hasMetadata(JobsPaymentListener.PlacedBlockMetadata)) {
 	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -490,7 +523,9 @@ public class JobsListener implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLimitedItemInteract(PlayerInteractEvent event) {
-
+	//disabling plugin in world
+	if (event.getClickedBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getClickedBlock().getWorld()))
+	    return;
 	Player player = (Player) event.getPlayer();
 
 	ItemStack iih = player.getItemInHand();
@@ -533,7 +568,7 @@ public class JobsListener implements Listener {
 
 	if (meinOk != null) {
 	    event.setCancelled(true);
-	    ActionBar.send(player, Language.getMessage("limitedItem.error.levelup").replace("[jobname]", meinOk));
+	    Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", meinOk));
 	}
     }
 
@@ -576,7 +611,9 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void onChunkChangeMove(PlayerMoveEvent event) {
-
+	//disabling plugin in world
+	if (event.getTo() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
+	    return;
 	Chunk from = event.getFrom().getChunk();
 	Chunk to = event.getTo().getChunk();
 

@@ -38,7 +38,7 @@ public class DatabaseSaveThread extends Thread {
     public void run() {
 	//Jobs.getPluginLogger().info("Started database save task");
 
-	String message = ChatColor.translateAlternateColorCodes('&', "&2Started database save task.");
+	String message = ChatColor.YELLOW + "[Jobs] Started database save task.";
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	console.sendMessage(message);
 
@@ -54,13 +54,13 @@ public class DatabaseSaveThread extends Thread {
 	    } catch (Throwable t) {
 		t.printStackTrace();
 		//Jobs.getPluginLogger().severe("Exception in DatabaseSaveTask, stopping auto save!");
-		message = ChatColor.translateAlternateColorCodes('&', "&cException in DatabaseSaveTask, stopping auto save!");
+		message = ChatColor.RED + "[Jobs] Exception in DatabaseSaveTask, stopping auto save!";
 		console.sendMessage(message);
 		running = false;
 	    }
 	}
 
-	message = ChatColor.translateAlternateColorCodes('&', "&6Database save task shutdown!");
+	message = ChatColor.YELLOW + "[Jobs] Database save task shutdown!";
 	console.sendMessage(message);
 
 	//Jobs.getPluginLogger().info("Database save task shutdown");
