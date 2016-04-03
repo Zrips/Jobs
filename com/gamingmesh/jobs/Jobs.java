@@ -33,7 +33,6 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
-import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.BossBarManager;
 import com.gamingmesh.jobs.config.ConfigManager;
@@ -751,7 +750,7 @@ public class Jobs {
 		    }
 		    if (amount == 0D && pointAmount == 0D)
 			return;
-		    
+
 		    Jobs.getEconomy().pay(jPlayer, amount, pointAmount, 0.0);
 
 		    if (Jobs.getGCManager().LoggingUse)
@@ -882,7 +881,7 @@ public class Jobs {
 		    Loging.recordToLog(jPlayer, info, amount, expAmount);
 
 		// JobsPayment event
-		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), expAmount);
+		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount);
 		Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
 		// If event is canceled, don't do anything
 		if (JobsExpGainEvent.isCancelled())
