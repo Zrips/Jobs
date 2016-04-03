@@ -35,6 +35,7 @@ public class LanguageManager {
 	languages.add("fr");
 	languages.add("ru");
 	languages.add("cz");
+	languages.add("es");
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker((JavaPlugin) plugin, "locale" + File.separator + "messages_" + lang + ".yml");
@@ -65,6 +66,7 @@ public class LanguageManager {
 	    c.get("general.info.separator", "&7*******************************************************");
 	    c.get("general.admin.error", "&cThere was an error in the command.");
 	    c.get("general.admin.success", "&eYour command has been performed.");
+	    c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
 	    c.get("general.error.notNumber", "&ePlease use numbers!");
 	    c.get("general.error.job", "&cThe job you have selected does not exist!");
 	    c.get("general.error.permission", "&cYou do not have permission to do that!");
@@ -154,6 +156,13 @@ public class LanguageManager {
 	    c.get("command.editpoints.output.set", "&ePlayers (&6%playername%&e) points was set to &6%amount%");
 	    c.get("command.editpoints.output.add", "&ePlayer (&6%playername%&e) got aditinal &6%amount% &epoints. Now he has &6%total%");
 	    c.get("command.editpoints.output.take", "&ePlayer (&6%playername%&e) lost &6%amount% &epoints. Now he has &6%total%");
+	    
+	    c.get("command.blockinfo.help.info", "Shows block information you looking at.");
+	    c.get("command.blockinfo.help.args", "");
+	    c.get("command.blockinfo.output.name", " &eBlock name: &6%blockname%");
+	    c.get("command.blockinfo.output.id", " &eBlock id: &6%blockid%");
+	    c.get("command.blockinfo.output.data", " &eBlock data: &6%blockdata%");
+	    c.get("command.blockinfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
 
 	    c.get("command.stats.help.info", "Show the level you are in each job you are part of.");
 	    c.get("command.stats.help.args", "[playername]");
@@ -201,6 +210,10 @@ public class LanguageManager {
 	    c.get("command.info.help.levelRange", " &a(&e%levelFrom% &a- &e%levelUntil% &alevels)");
 	    c.get("command.info.help.levelFrom", " &a(from &e%levelFrom% &alevel)");
 	    c.get("command.info.help.levelUntil", " &a(until &e%levelUntil% &alevel)");
+	    
+	    c.get("command.info.help.money", " &2%money%\u0024");
+	    c.get("command.info.help.points", " &6%points%points");
+	    c.get("command.info.help.exp", " &e%exp%xp");
 
 	    c.get("command.info.gui.pickjob", "&ePick your job!");
 	    c.get("command.info.gui.jobinfo", "&e[jobname] info!");
@@ -423,7 +436,7 @@ public class LanguageManager {
 	    c.get("scoreboard.gtopline", "&2Global top list");
 	    c.get("scoreboard.lines", "&2%number%. &e%playername%");
 
-//	    keys = new ArrayList<String>(c.getC().getConfigurationSection("signs.secondline").getKeys(false));
+	    Jobs.getGCManager().keys = new ArrayList<String>(c.getC().getConfigurationSection("signs.secondline").getKeys(false));
 
 	    // Write back config
 	    try {

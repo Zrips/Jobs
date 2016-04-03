@@ -32,6 +32,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.Signs.SignUtil;
+import com.gamingmesh.jobs.api.JobsExpGainEvent;
+import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.BossBarManager;
 import com.gamingmesh.jobs.config.ConfigManager;
@@ -451,6 +453,11 @@ public class Jobs {
 	paymentThread.start();
 
 	Jobs.getJobsDAO().loadPlayerData();
+
+	// Schedule
+	Jobs.getScheduleManager().load();
+	if (Jobs.getGCManager().useGlobalBoostScheduler)
+	    Jobs.getScheduleManager().scheduler();
     }
 
     /**
@@ -703,25 +710,48 @@ public class Jobs {
 
 		if (income != 0D || points != 0D) {
 
+		    BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID()), Jobs.getNoneJob());
+
+		    // Calculate income
+
 		    Double amount = 0D;
-		    if (income != 0D)
-			amount = income + ((income * multiplier) - income) + ((income * 1.0) - income) + ((income * Jobs.getNoneJob().getMoneyBoost()) - income);
-
-		    Double pointAmount = 0D;
-		    if (points != 0D)
-			pointAmount = points + ((points * multiplier) - points) + ((points * 1.0) - points) + ((points * Jobs.getNoneJob().getPointBoost()) - points);
-
-		    if (Jobs.getGCManager().useDynamicPayment) {
-			double moneyBonus = (income * (jobNone.getBonus() / 100));
-			amount += moneyBonus;
-
-			double pointBonus = (points * (jobNone.getBonus() / 100));
-			pointAmount += pointBonus;
+		    if (income != 0D) {
+			amount = income + (income * FinalBoost.getMoneyBoost() / 100);
+			if (Jobs.getGCManager().useMinimumOveralPayment && income > 0) {
+			    double maxLimit = income * Jobs.getGCManager().MinimumOveralPaymentLimit;
+			    if (amount < maxLimit) {
+				amount = maxLimit;
+			    }
+			}
 		    }
 
-		    if (!isUnderMoneyLimit(dude, amount))
-			return;
+		    // Calculate points
 
+		    Double pointAmount = 0D;
+		    if (points != 0D) {
+			pointAmount = points + (points * FinalBoost.getPointsBoost() / 100);
+			if (Jobs.getGCManager().useMinimumOveralPoints && points > 0) {
+			    double maxLimit = points * Jobs.getGCManager().MinimumOveralPaymentLimit;
+			    if (pointAmount < maxLimit) {
+				pointAmount = maxLimit;
+			    }
+			}
+		    }
+
+		    if (!isUnderMoneyLimit(dude, amount)) {
+			amount = 0D;
+			if (Jobs.getGCManager().MoneyStopPoint)
+			    pointAmount = 0D;
+		    }
+
+		    if (!isUnderPointLimit(dude, pointAmount)) {
+			pointAmount = 0D;
+			if (Jobs.getGCManager().PointStopMoney)
+			    amount = 0D;
+		    }
+		    if (amount == 0D && pointAmount == 0D)
+			return;
+		    
 		    Jobs.getEconomy().pay(jPlayer, amount, pointAmount, 0.0);
 
 		    if (Jobs.getGCManager().LoggingUse)
@@ -771,8 +801,9 @@ public class Jobs {
 		BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID()), prog.getJob());
 
 		if (multiplier != 0.0)
-		    FinalBoost = new BoostMultiplier(FinalBoost.getMoney() + ((multiplier * 100) - 100), FinalBoost.getPoints() + ((multiplier * 100) - 100), FinalBoost
-			.getExp() + ((multiplier * 100) - 100));
+		    FinalBoost = new BoostMultiplier(FinalBoost.getMoneyBoost() + multiplier,
+			FinalBoost.getPointsBoost() + multiplier,
+			FinalBoost.getExpBoost() + multiplier);
 
 		OfflinePlayer dude = jPlayer.getPlayer();
 
@@ -780,7 +811,7 @@ public class Jobs {
 
 		Double amount = 0D;
 		if (income != 0D) {
-		    amount = income + (income * FinalBoost.getMoney() / 100);
+		    amount = income + (income * FinalBoost.getMoneyBoost() / 100);
 		    if (Jobs.getGCManager().useMinimumOveralPayment && income > 0) {
 			double maxLimit = income * Jobs.getGCManager().MinimumOveralPaymentLimit;
 			if (amount < maxLimit) {
@@ -793,7 +824,7 @@ public class Jobs {
 
 		Double pointAmount = 0D;
 		if (points != 0D) {
-		    pointAmount = points + (points * FinalBoost.getPoints() / 100);
+		    pointAmount = points + (points * FinalBoost.getPointsBoost() / 100);
 		    if (Jobs.getGCManager().useMinimumOveralPoints && points > 0) {
 			double maxLimit = points * Jobs.getGCManager().MinimumOveralPaymentLimit;
 			if (pointAmount < maxLimit) {
@@ -803,7 +834,7 @@ public class Jobs {
 		}
 
 		// Calculate exp
-		double expAmount = exp + (exp * FinalBoost.getExp() / 100);
+		double expAmount = exp + (exp * FinalBoost.getExpBoost() / 100);
 
 		if (Jobs.getGCManager().useMinimumOveralPayment && exp > 0) {
 		    double maxLimit = exp * Jobs.getGCManager().MinimumOveralPaymentLimit;
@@ -850,6 +881,12 @@ public class Jobs {
 		if (Jobs.getGCManager().LoggingUse)
 		    Loging.recordToLog(jPlayer, info, amount, expAmount);
 
+		// JobsPayment event
+		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), expAmount);
+		Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
+		// If event is canceled, don't do anything
+		if (JobsExpGainEvent.isCancelled())
+		    continue;
 		if (prog.addExperience(expAmount))
 		    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
 	    }

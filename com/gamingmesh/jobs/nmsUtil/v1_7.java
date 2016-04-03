@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.nmsUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -27,5 +28,11 @@ public class v1_7 implements NMS {
     @Override
     public ItemStack getItemInMainHand(Player player) {
 	return player.getInventory().getItemInHand();
+    }
+    
+    @SuppressWarnings("deprecation")
+    @Override
+    public Block getTargetBlock(Player player, int range) {
+	return player.getTargetBlock((HashSet<Byte>) null, range);
     }
 }

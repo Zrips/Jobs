@@ -31,7 +31,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class JobsPlayer {
@@ -104,15 +103,20 @@ public class JobsPlayer {
 	Jobs.getJobsDAO().loadLog(jPlayer);
     }
 
-    public List<String> getUpdateBossBarFor() {
+    public synchronized List<String> getUpdateBossBarFor() {
 	return this.updateBossBarFor;
     }
 
-    public List<BossBarInfo> getBossBarInfo() {
+    public synchronized void clearUpdateBossBarFor() {
+	this.updateBossBarFor.clear();
+	;
+    }
+
+    public synchronized List<BossBarInfo> getBossBarInfo() {
 	return this.barMap;
     }
 
-    public void hideBossBars() {
+    public synchronized void hideBossBars() {
 	for (BossBarInfo one : this.barMap) {
 	    one.getBar().setVisible(false);
 	}
@@ -236,7 +240,7 @@ public class JobsPlayer {
 	eq.setVariable("totallevel", TotalLevel);
 	ExpLimit = (int) eq.getValue();
     }
-    
+
     /**
      * Reloads exp limit for this player.
      */
@@ -249,13 +253,13 @@ public class JobsPlayer {
 	eq.setVariable("totallevel", TotalLevel);
 	PointLimit = (int) eq.getValue();
     }
-    
+
     public void reloadLimits() {
 	reloadMoney();
 	reloadExp();
 	reloadPoint();
     }
-    
+
     public int getMoneyLimit() {
 	return this.MoneyLimit;
     }
@@ -590,15 +594,11 @@ public class JobsPlayer {
      * @param dao
      */
     public void save(JobsDAO dao) {
-	long time = System.nanoTime();
 //	synchronized (saveLock) {
 	if (!isSaved()) {
 	    dao.save(this);
-	    Debug.D("1 " + (System.nanoTime() - time));
 	    dao.saveLog(this);
-	    Debug.D("2 " + (System.nanoTime() - time));
 	    dao.savePoints(this);
-	    Debug.D("3 " + (System.nanoTime() - time));
 	    setSaved(true);
 	}
 //	}

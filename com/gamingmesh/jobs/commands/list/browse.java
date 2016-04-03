@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
@@ -57,7 +58,18 @@ public class browse implements Cmd {
 	}
 
 	if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
-	    ((Player) sender).openInventory(Jobs.getGUIManager().CreateJobsGUI((Player) sender));
+	    Inventory inv = null;
+	    try {
+		inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
+	    } catch (Exception e) {
+		((Player) sender).closeInventory();
+		Jobs.getGUIManager().GuiList.remove(((Player) sender).getName());
+		return true;
+	    }
+	    if (inv == null)
+		return true;
+	    
+	    ((Player) sender).openInventory(inv);
 	}
 
 	if (Jobs.getGCManager().JobsGUIShowChatBrowse) {

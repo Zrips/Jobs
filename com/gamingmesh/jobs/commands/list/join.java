@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.commands.list;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
@@ -11,12 +12,11 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
-
 public class join implements Cmd {
 
     @JobCommand(100)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
-	if (!(sender instanceof Player)){
+	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
 	    return false;
 	}
@@ -27,9 +27,20 @@ public class join implements Cmd {
 	}
 
 	if (args.length == 0) {
-	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnJoin)
-		((Player) sender).openInventory(Jobs.getGUIManager().CreateJobsGUI((Player) sender));
-	    else
+	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnJoin) {
+		Inventory inv = null;
+		try {
+		    inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
+		} catch (Exception e) {
+		    ((Player) sender).closeInventory();
+		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getName());
+		    return true;
+		}
+		if (inv == null)
+		    return true;
+
+		((Player) sender).openInventory(inv);
+	    } else
 		return false;
 	    return true;
 	}

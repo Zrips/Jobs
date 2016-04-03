@@ -293,7 +293,7 @@ public class JobsListener implements Listener {
 
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
-
+	
 	Block block = event.getBlock();
 
 	if (!(block.getState() instanceof Sign))
@@ -305,7 +305,7 @@ public class JobsListener implements Listener {
 
 	if (!ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[Jobs]"))
 	    return;
-
+	
 	if (!signtype.equalsIgnoreCase("toplist") && !signtype.equalsIgnoreCase("gtoplist"))
 	    return;
 

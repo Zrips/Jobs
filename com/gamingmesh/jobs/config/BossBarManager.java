@@ -3,6 +3,8 @@ package com.gamingmesh.jobs.config;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,13 +33,18 @@ public class BossBarManager {
 
 	if (player == null)
 	    return;
-	for (String one : player.getUpdateBossBarFor()) {
+
+	List<String> temp = new ArrayList<String>();
+
+	temp.addAll(player.getUpdateBossBarFor());
+
+	for (String one : temp) {
 	    for (JobProgression oneJob : player.getJobProgression()) {
 		if (one.equalsIgnoreCase(oneJob.getJob().getName()))
 		    ShowJobProgression(player, oneJob);
 	    }
 	}
-	player.getUpdateBossBarFor().clear();
+	player.clearUpdateBossBarFor();
     }
 
     public synchronized void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg) {

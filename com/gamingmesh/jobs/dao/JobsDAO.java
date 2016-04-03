@@ -43,7 +43,6 @@ import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -633,7 +632,6 @@ public abstract class JobsDAO {
     }
 
     public void savePoints(JobsPlayer player) {
-	Debug.D("Saving points: " + player.getUserName());
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;

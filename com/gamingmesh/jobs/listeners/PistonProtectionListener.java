@@ -45,7 +45,12 @@ public class PistonProtectionListener implements Listener {
     @SuppressWarnings("deprecation")
     public static boolean CheckVegy(Block block) {
 	for (String ConfigOneBlock : Jobs.getRestrictedBlockManager().restrictedBlocksTimer) {
-	    int ConfigPlacedBlockId = Integer.valueOf(ConfigOneBlock.split("-")[0]);
+	    int ConfigPlacedBlockId = 0;
+	    try {
+		ConfigPlacedBlockId = Integer.parseInt(ConfigOneBlock.split("-")[0]);
+	    } catch (NumberFormatException e) {
+		continue;
+	    }
 	    if (block.getTypeId() == ConfigPlacedBlockId) {
 		return true;
 	    }
@@ -56,9 +61,16 @@ public class PistonProtectionListener implements Listener {
     @SuppressWarnings("deprecation")
     public static boolean checkVegybreak(Block block, Player player) {
 	for (String ConfigOneBlock : Jobs.getRestrictedBlockManager().restrictedBlocksTimer) {
-	    int ConfigPlacedBlockId = Integer.valueOf(ConfigOneBlock.split("-")[0]);
+	    int ConfigPlacedBlockId = 0;
+	    int ConfigPlacedBlockTimer = 0;
+	    try {
+		ConfigPlacedBlockId = Integer.parseInt(ConfigOneBlock.split("-")[0]);
+		ConfigPlacedBlockTimer = Integer.parseInt(ConfigOneBlock.split("-")[1]);
+	    } catch (NumberFormatException e) {
+		continue;
+	    }
 	    if (block.getTypeId() == ConfigPlacedBlockId) {
-		if (CheckVegyTimer(block, Integer.valueOf(ConfigOneBlock.split("-")[1]), player)) {
+		if (CheckVegyTimer(block, ConfigPlacedBlockTimer, player)) {
 		    return true;
 		}
 	    }
@@ -83,7 +95,7 @@ public class PistonProtectionListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public static void OnBlockMove(BlockPistonExtendEvent event) {
+    public void OnBlockMove(BlockPistonExtendEvent event) {
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
@@ -103,7 +115,7 @@ public class PistonProtectionListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public static void OnBlockRetractMove(BlockPistonRetractEvent event) {
+    public void OnBlockRetractMove(BlockPistonRetractEvent event) {
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;

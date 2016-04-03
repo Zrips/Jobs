@@ -571,10 +571,10 @@ public class NameTranslatorManager {
 	c.get("ItemList.98:2.Name", "Cracked Stone Bricks");
 	c.get("ItemList.98:3.MCName", "stonebrick");
 	c.get("ItemList.98:3.Name", "Chiseled Stone Bricks");
-	c.get("ItemList.99.MCName", "stonebrick");
-	c.get("ItemList.99.Name", "Red Mushroom Cap");
-	c.get("ItemList.100.MCName", "stonebrick");
-	c.get("ItemList.100.Name", "Brown Mushroom Cap");
+	c.get("ItemList.99.MCName", "brown_mushroom_block");
+	c.get("ItemList.99.Name", "Brown Mushroom Cap");
+	c.get("ItemList.100.MCName", "red_mushroom_block");
+	c.get("ItemList.100.Name", "Red Mushroom Cap");
 	c.get("ItemList.101.MCName", "iron_bars");
 	c.get("ItemList.101.Name", "Iron Bars");
 	c.get("ItemList.102.MCName", "glass_pane");

@@ -52,11 +52,11 @@ public class bonus implements Cmd {
 
 	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(player, job);
 
-	double IMoneyBoost = itemboost.getMoney() * 100.0 - 100.0;
+	double IMoneyBoost = itemboost.getMoneyBoost() * 100.0 - 100.0;
 	IMoneyBoost = (int) (IMoneyBoost * 100D) / 100D;
-	double IPointBoost = itemboost.getPoints() * 100.0 - 100.0;
+	double IPointBoost = itemboost.getPointsBoost() * 100.0 - 100.0;
 	IPointBoost = (int) (IPointBoost * 100D) / 100D;
-	double IExpBoost = itemboost.getExp() * 100.0 - 100.0;
+	double IExpBoost = itemboost.getExpBoost() * 100.0 - 100.0;
 	IExpBoost = (int) (IExpBoost * 100D) / 100D;
 
 	double RBoost = Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player) * 100.0 - 100.0;

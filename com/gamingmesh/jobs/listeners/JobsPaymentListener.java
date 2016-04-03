@@ -82,6 +82,7 @@ import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.google.common.base.Objects;
 
@@ -304,7 +305,7 @@ public class JobsPaymentListener implements Listener {
 	double multiplier = 0.0;
 
 	if (McMMOlistener.mcMMOPresent)
-	    multiplier = McMMOlistener.getMultiplier(player);
+	    multiplier = McMMOlistener.getMultiplier(player) * 100 - 100;
 
 	// Item in hand
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
@@ -331,11 +332,11 @@ public class JobsPaymentListener implements Listener {
 
 	if (block == null)
 	    return;
-	
+
 	//disabling plugin in world
 	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
 	    return;
-	
+
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
@@ -856,9 +857,9 @@ public class JobsPaymentListener implements Listener {
 		if (t.isTamed() && t.getOwner() instanceof Player) {
 		    pDamager = (Player) t.getOwner();
 		    if (Perm.hasPermission(pDamager, "jobs.petpay") || Perm.hasPermission(pDamager, "jobs.vippetpay"))
-			PetPayMultiplier = Jobs.getGCManager().VipPetPay;
+			PetPayMultiplier = Jobs.getGCManager().VipPetPay * 100 - 100;
 		    else
-			PetPayMultiplier = Jobs.getGCManager().PetPay;
+			PetPayMultiplier = Jobs.getGCManager().PetPay * 100 - 100;
 		}
 	    }
 	} else
@@ -881,10 +882,12 @@ public class JobsPaymentListener implements Listener {
 
 	Double NearSpawnerMultiplier = 0.0;
 	if (lVictim.hasMetadata(mobSpawnerMetadata))
-	    NearSpawnerMultiplier = jDamager.getVipSpawnerMultiplier();
+	    NearSpawnerMultiplier = jDamager.getVipSpawnerMultiplier() * 100 - 100;
 
 	// Calulating multiplaier
-	double multiplier = ((NearSpawnerMultiplier * 100) - 100) + ((PetPayMultiplier * 100) - 100);
+	double multiplier = NearSpawnerMultiplier + PetPayMultiplier;
+
+	Debug.D(multiplier + "   " + NearSpawnerMultiplier + " " + PetPayMultiplier);
 
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
 	    Player VPlayer = (Player) lVictim;

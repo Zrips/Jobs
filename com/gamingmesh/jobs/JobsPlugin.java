@@ -88,7 +88,7 @@ public class JobsPlugin extends JavaPlugin {
 
 	YmlMaker jobSchedule = new YmlMaker(this, "schedule.yml");
 	jobSchedule.saveDefaultConfig();
-	
+
 	YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
 	jobShopItems.saveDefaultConfig();
 
@@ -144,8 +144,6 @@ public class JobsPlugin extends JavaPlugin {
 
 	// all loaded properly.
 
-	if (Jobs.getGCManager().useGlobalBoostScheduler)
-	    Jobs.getScheduleManager().scheduler();
 	Jobs.getScheduleManager().DateUpdater();
 
 	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Plugin has been enabled succesfully.");
@@ -156,6 +154,7 @@ public class JobsPlugin extends JavaPlugin {
 	Jobs.getJobsDAO().loadExplore();
 
 	Jobs.getCommandManager().fillCommands();
+
     }
 
     @Override

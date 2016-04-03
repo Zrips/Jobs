@@ -187,13 +187,14 @@ public class BufferedEconomy {
 
 			Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 		}
-
-		// Action bar stuff
-		Jobs.getActionBar().ShowActionBar(payment);
-
-		if (payment.getOfflinePlayer().isOnline()) {
-		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getName());
-		    Jobs.getBBManager().ShowJobProgression(jPlayer);
+		try {
+		    // Action bar stuff
+		    Jobs.getActionBar().ShowActionBar(payment);
+		    if (payment.getOfflinePlayer().isOnline()) {
+			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getName());
+			Jobs.getBBManager().ShowJobProgression(jPlayer);
+		    }
+		} catch (Exception e) {
 		}
 	    }
 	    // empty payment cache

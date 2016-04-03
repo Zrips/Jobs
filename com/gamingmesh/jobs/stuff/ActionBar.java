@@ -7,6 +7,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -84,7 +85,6 @@ public class ActionBar {
 
     public void ShowActionBar(BufferedPayment payment) {
 
-	Debug.D("show action bar");
 	if (cleanVersion == -1)
 	    getInfo();
 
@@ -95,7 +95,6 @@ public class ActionBar {
 	if (!Jobs.getActionbarToggleList().containsKey(playername) && Jobs.getGCManager().ActionBarsMessageByDefault)
 	    Jobs.getActionbarToggleList().put(playername, true);
 
-	
 	if (playername == null)
 	    return;
 
@@ -117,12 +116,12 @@ public class ActionBar {
 	}
     }
 
-    public void send(Player receivingPacket, String msg) {
+    public void send(CommandSender receivingPacket, String msg) {
 	try {
 	    if (msg == null || nmsChatSerializer == null)
 		return;
 
-	    if (cleanVersion < 1800) {
+	    if (cleanVersion < 1800 || !(receivingPacket instanceof Player)) {
 		receivingPacket.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
 		return;
 	    }

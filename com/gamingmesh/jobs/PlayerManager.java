@@ -50,7 +50,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
@@ -103,21 +102,15 @@ public class PlayerManager {
      * @param playername
      */
     public void playerJoin(Player player) {
-	long time = System.nanoTime();
 	JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
 	if (jPlayer == null) {
 	    jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
-	    Debug.D("1. " + (System.nanoTime() - time));
 	    JobsPlayer.loadLogFromDao(jPlayer);
-	    Debug.D("2. " + (System.nanoTime() - time));
 	    players.put(player.getName().toLowerCase(), jPlayer);
 	}
 	jPlayer.onConnect();
-	Debug.D("3. " + (System.nanoTime() - time));
 	jPlayer.reloadHonorific();
-	Debug.D("4. " + (System.nanoTime() - time));
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	Debug.D("5. " + (System.nanoTime() - time));
 	return;
     }
 
@@ -127,14 +120,12 @@ public class PlayerManager {
      */
     public void playerQuit(Player player) {
 	if (Jobs.getGCManager().saveOnDisconnect()) {
-	    Debug.D("save on disc");
 	    JobsPlayer jPlayer = players.remove(player.getName().toLowerCase());
 	    if (jPlayer != null) {
 		jPlayer.save(Jobs.getJobsDAO());
 		jPlayer.onDisconnect();
 	    }
 	} else {
-	    Debug.D("dont save");
 	    JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
 	    if (jPlayer != null) {
 		jPlayer.onDisconnect();
@@ -199,7 +190,6 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayerOffline(String playerName) {
-	Debug.D("Getting offline player data");
 	JobsPlayer jPlayer = players.get(playerName.toLowerCase());
 	if (jPlayer != null)
 	    return jPlayer;
@@ -228,8 +218,6 @@ public class PlayerManager {
 	    jPlayer.reloadMaxExperience();
 	    jPlayer.reloadLimits();
 	}
-
-	Debug.D("Offline player UID " + jPlayer.getUserId());
 
 	Jobs.getJobsDAO().loadPoints(jPlayer);
 
@@ -714,15 +702,15 @@ public class PlayerManager {
 
 	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(prog, iih);
 
-	data = new BoostMultiplier(data.getMoney() + itemboost.getMoney(),
-	    data.getPoints() + itemboost.getPoints(),
-	    data.getExp() + itemboost.getExp());
+	data = new BoostMultiplier(data.getMoneyBoost() + itemboost.getMoneyBoost(),
+	    data.getPointsBoost() + itemboost.getPointsBoost(),
+	    data.getExpBoost() + itemboost.getExpBoost());
 
 	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
 	    BoostMultiplier armorboost = Jobs.getPlayerManager().getItemBoost(prog, OneArmor);
-	    data = new BoostMultiplier(data.getMoney() + armorboost.getMoney(),
-		data.getPoints() + armorboost.getPoints(),
-		data.getExp() + armorboost.getExp());
+	    data = new BoostMultiplier(data.getMoneyBoost() + armorboost.getMoneyBoost(),
+		data.getPointsBoost() + armorboost.getPointsBoost(),
+		data.getExpBoost() + armorboost.getExpBoost());
 	}
 
 	return data;
@@ -799,11 +787,11 @@ public class PlayerManager {
 
 	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(player, prog);
 
-	double IMoneyBoost = itemboost.getMoney() * 100.0 - 100.0;
+	double IMoneyBoost = itemboost.getMoneyBoost() * 100.0 - 100.0;
 	IMoneyBoost = (int) (IMoneyBoost * 100D) / 100D;
-	double IPointBoost = itemboost.getPoints() * 100.0 - 100.0;
+	double IPointBoost = itemboost.getPointsBoost() * 100.0 - 100.0;
 	IPointBoost = (int) (IPointBoost * 100D) / 100D;
-	double IExpBoost = itemboost.getExp() * 100.0 - 100.0;
+	double IExpBoost = itemboost.getExpBoost() * 100.0 - 100.0;
 	IExpBoost = (int) (IExpBoost * 100D) / 100D;
 
 	double RBoost = Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player) * 100.0 - 100.0;

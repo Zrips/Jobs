@@ -322,7 +322,6 @@ public class GeneralConfigManager {
 	Jobs.getSignUtil().LoadSigns();
 	// Schedule
 	Jobs.setScheduleManager(plugin);
-	Jobs.getScheduleManager().load();
 	// Shop
 	Jobs.setShopManager(plugin);
 	Jobs.getShopManager().load();
@@ -791,7 +790,6 @@ public class GeneralConfigManager {
 
 	//		writer.addComment("Gui.UseJobsBrowse", "Do you want to use jobs browse gui instead of chat text");
 	//		UseJobsBrowse = c.get("Gui.UseJobsBrowse", true);
-
 	// Write back config
 	try {
 	    c.getW().save(f);

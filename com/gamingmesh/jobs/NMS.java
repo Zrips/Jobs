@@ -12,6 +12,8 @@ public interface NMS {
     public List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event);
 
     public boolean isElderGuardian(Entity entity);
-    
+
     public ItemStack getItemInMainHand(Player player);
+
+    public Block getTargetBlock(Player player, int range);
 }

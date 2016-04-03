@@ -11,15 +11,15 @@ public class BoostMultiplier {
 	this.exp = exp;
     }
 
-    public double getMoney() {
+    public double getMoneyBoost() {
 	return this.money;
     }
 
-    public double getPoints() {
+    public double getPointsBoost() {
 	return this.points;
     }
 
-    public double getExp() {
+    public double getExpBoost() {
 	return this.exp;
     }
 }

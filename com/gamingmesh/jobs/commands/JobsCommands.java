@@ -33,6 +33,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class JobsCommands implements CommandExecutor {
     private static final String label = "jobs";
@@ -72,8 +73,6 @@ public class JobsCommands implements CommandExecutor {
 		    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.notNumber"));
 		    return true;
 		}
-	    if (page < 1)
-		page = 1;
 	    return help(sender, page);
 	}
 
@@ -166,9 +165,13 @@ public class JobsCommands implements CommandExecutor {
 	if (((commands.size() * 1.0) / (amountToShow * 1.0)) - TotalPages > 0)
 	    TotalPages++;
 	if (start >= commands.size()) {
-	    page = TotalPages;
 	    start = page * amountToShow;
 	    end = start + amountToShow;
+	}
+
+	if (page > TotalPages || page < 1) {
+	    Jobs.getActionBar().send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
+	    return true;
 	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.title"));
@@ -447,18 +450,16 @@ public class JobsCommands implements CommandExecutor {
 
 //	    Jobs.getPlayerManager().getFinalBonus(player, prog)
 
-	    income = income + (income * finalBoost.getMoney() / 100);
-	    ChatColor incomeColor = income >= 0 ? ChatColor.GREEN : ChatColor.DARK_RED;
+	    income = income + (income * finalBoost.getMoneyBoost() / 100);
+	    String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
 	    double xp = info.getExperience(level, numjobs);
-	    xp = xp + (xp * finalBoost.getExp() / 100);
-	    ChatColor xpColor = xp >= 0 ? ChatColor.YELLOW : ChatColor.GRAY;
-	    String xpString = String.format("%.2f xp", xp);
+	    xp = xp + (xp * finalBoost.getExpBoost() / 100);
+	    String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
 	    double points = info.getPoints(level, numjobs);
-	    points = points + (points * finalBoost.getPoints() / 100);
-	    ChatColor pointsColor = xp >= 0 ? ChatColor.GOLD : ChatColor.GRAY;
-	    String pointsString = String.format("%.2f points ", points);
+	    points = points + (points * finalBoost.getPointsBoost() / 100);
+	    String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 
 	    message.append("  ");
 
@@ -468,20 +469,14 @@ public class JobsCommands implements CommandExecutor {
 	    else
 		message.append(" -> ");
 
-	    if (income != 0.0) {
-		message.append(incomeColor.toString());
-		message.append(Jobs.getEconomy().format(income));
-		message.append(" ");
-	    }
+	    if (income != 0.0)
+		message.append(Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor + String.format("%.2f", income)));
 
-	    if (points != 0.0) {
-		message.append(pointsColor.toString());
-		message.append(pointsString);
-	    }
+	    if (points != 0.0)
+		message.append(Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor + String.format("%.2f", points)));
 
-	    message.append(xpColor.toString());
-	    message.append(xpString);
-	    message.append(" ");
+	    if (xp != 0.0)
+		message.append(Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor + String.format("%.2f", xp)));
 
 	    if (info.getFromLevel() > 1 && info.getUntilLevel() != -1)
 		message.append(Jobs.getLanguage().getMessage("command.info.help.levelRange", "%levelFrom%", info.getFromLevel(), "%levelUntil%", info.getUntilLevel()));
@@ -515,6 +510,8 @@ public class JobsCommands implements CommandExecutor {
 	String message = "";
 	String pos = ChatColor.DARK_GREEN + "\u258F";
 	String pros = ChatColor.YELLOW + "\u258F";
+	if (current < 0)
+	    current = 0;
 	int percentage = (int) ((current * 50.0) / max);
 	for (int i = 0; i < percentage; i++) {
 	    message += pos;
