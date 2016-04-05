@@ -69,7 +69,7 @@ import net.coreprotect.CoreProtectAPI;
 public class Jobs {
     public static Jobs instance = new Jobs();
 //    public static JobsPlugin plugin = new JobsPlugin();
-    private static PlayerManager pManager = new PlayerManager();
+    private static PlayerManager pManager = null;
     private static JobsCommands cManager = null;
     private static Language lManager = null;
     private static LanguageManager lmManager = null;
@@ -178,6 +178,10 @@ public class Jobs {
      */
     public static PlayerManager getPlayerManager() {
 	return pManager;
+    }
+
+    public static void setPlayerManager(JobsPlugin jobsPlugin) {
+	pManager = new PlayerManager (jobsPlugin);
     }
 
     public static void setRestrictedBlockManager(JobsPlugin plugin) {

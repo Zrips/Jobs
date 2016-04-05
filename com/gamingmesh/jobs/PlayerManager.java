@@ -58,6 +58,11 @@ public class PlayerManager {
     private PointsData PointsDatabase = new PointsData();
 
     private HashMap<String, PlayerInfo> PlayerMap = new HashMap<String, PlayerInfo>();
+    JobsPlugin plugin;
+
+    public PlayerManager(JobsPlugin plugin) {
+	this.plugin = plugin;
+    }
 
     public PointsData getPointsData() {
 	return PointsDatabase;
@@ -108,6 +113,7 @@ public class PlayerManager {
 	    JobsPlayer.loadLogFromDao(jPlayer);
 	    players.put(player.getName().toLowerCase(), jPlayer);
 	}
+	AutoJoinJobs(player);
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
@@ -803,5 +809,29 @@ public class PlayerManager {
 	double Fexp = (int) ((IExpBoost + DBoost + GExpBoost + PExpBoost + RBoost) * 100) / 100D;
 
 	return new BoostMultiplier(Fmoney, Fpoints, Fexp);
+    }
+
+    public void AutoJoinJobs(final Player player) {
+	if (player == null)
+	    return;
+	// ignoring OP players for obvious reasons
+	if (player.isOp())
+	    return;
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	    public void run() {
+		if (!player.isOnline())
+		    return;
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+		if (jPlayer == null)
+		    return;
+		for (Job one : Jobs.getJobs()) {
+		    JobProgression cur = jPlayer.getJobProgression(one);
+		    if (cur == null && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase())) {
+			Jobs.getPlayerManager().joinJob(jPlayer, one);
+		    }
+		}
+		return;
+	    }
+	}, Jobs.getGCManager().AutoJobJoinDelay * 20L);
     }
 }
