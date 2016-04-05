@@ -29,13 +29,14 @@ public class LanguageManager {
 
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<String>();
-	languages.add("lt");
-	languages.add("de");
 	languages.add("cs");
-	languages.add("fr");
-	languages.add("ru");
 	languages.add("cz");
+	languages.add("de");
 	languages.add("es");
+	languages.add("fr");
+	languages.add("lt");
+	languages.add("ru");
+	languages.add("tr");
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker((JavaPlugin) plugin, "locale" + File.separator + "messages_" + lang + ".yml");
