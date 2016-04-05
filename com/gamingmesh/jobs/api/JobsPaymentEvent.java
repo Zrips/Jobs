@@ -37,6 +37,10 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
     public void setCancelled(boolean cancel) {
 	cancelled = cancel;
     }
+    
+    public void setAmount(double money) {
+	this.money = money;
+    }
 
     public HandlerList getHandlers() {
 	return handlers;
