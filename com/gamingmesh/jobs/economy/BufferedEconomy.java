@@ -55,8 +55,6 @@ public class BufferedEconomy {
      * @param amount - amount to be paid
      */
     public void pay(JobsPlayer player, double amount, double points, double exp) {
-	if (amount == 0 && points == 0)
-	    return;
 	pay(new BufferedPayment(player.getPlayer(), amount, points, exp));
     }
 

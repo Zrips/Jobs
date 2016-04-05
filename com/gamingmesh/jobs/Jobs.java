@@ -751,6 +751,9 @@ public class Jobs {
 		    if (amount == 0D && pointAmount == 0D)
 			return;
 
+		    if (pointAmount != 0D)
+			jPlayer.setSaved(false);
+
 		    Jobs.getEconomy().pay(jPlayer, amount, pointAmount, 0.0);
 
 		    if (Jobs.getGCManager().LoggingUse)

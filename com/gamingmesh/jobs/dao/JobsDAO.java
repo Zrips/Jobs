@@ -43,6 +43,7 @@ import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -541,10 +542,16 @@ public abstract class JobsDAO {
 		    level = 1;
 
 		int maxLevel = 0;
-		if (jPlayer.havePermission("jobs." + Jobs.getJob(res.getString(1)).getName() + ".vipmaxlevel"))
-		    maxLevel = Jobs.getJob(res.getString(1)).getVipMaxLevel();
+		
+		Job job = Jobs.getJob(res.getString(1));
+		
+		if (job == null)
+		    continue;
+		
+		if (jPlayer.havePermission("jobs." + job.getName() + ".vipmaxlevel"))
+		    maxLevel = job.getVipMaxLevel();
 		else
-		    maxLevel = Jobs.getJob(res.getString(1)).getMaxLevel();
+		    maxLevel = job.getMaxLevel();
 
 		if (Jobs.getGCManager().fixAtMaxLevel && res.getInt(2) == maxLevel)
 		    level = res.getInt(2);
@@ -636,7 +643,7 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return;
 	try {
-
+	    Debug.D("saving points");
 	    PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(player.getPlayerUUID());
 
 	    String req = "UPDATE `" + prefix + "points` SET `totalpoints` = ?, `currentpoints` = ? WHERE `userid` = ?;";

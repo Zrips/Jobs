@@ -63,7 +63,7 @@ public class McMMOlistener implements Listener {
 	    return Jobs.getGCManager().gigaDrillMultiplier;
 	else if (AbilityAPI.superBreakerEnabled(player))
 	    return Jobs.getGCManager().superBreakerMultiplier;
-	return 0.0;
+	return 1.0;
     }
 
     public static boolean CheckmcMMO() {

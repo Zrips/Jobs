@@ -293,6 +293,7 @@ public class PlayerManager {
 //	synchronized (jPlayer.saveLock) {
 	for (JobProgression job : jPlayer.getJobProgression()) {
 	    Jobs.getJobsDAO().quitJob(jPlayer, job.getJob());
+	    Jobs.getJobsDAO().recordToArchive(jPlayer, job.getJob());
 	    PerformCommands.PerformCommandsOnLeave(jPlayer, job.getJob());
 	    Jobs.leaveSlot(job.getJob());
 
