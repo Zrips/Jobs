@@ -169,6 +169,9 @@ public class BufferedEconomy {
 		// If event is canceled, dont do anything
 		if (JobsPaymentEvent.isCancelled())
 		    continue;
+		    
+		double newAmount = JobsPaymentEvent.getAmount();
+		payment.setAmount(newAmount);
 
 		if (Jobs.getGCManager().UseServerAccount) {
 		    if (!hasMoney) {
