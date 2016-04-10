@@ -551,13 +551,7 @@ public class ConfigManager {
 			    Jobs.getGCManager().setTntFinder(true);
 
 			double income = section.getDouble("income", 0.0);
-			if (income == 0)
-			    incomeEquation = new Parser("0");
-
 			double points = section.getDouble("points", 0.0);
-			if (points == 0)
-			    pointsEquation = new Parser("0");
-
 			double experience = section.getDouble("experience", 0.0);
 
 			int fromlevel = 1;

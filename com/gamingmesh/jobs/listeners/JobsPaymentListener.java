@@ -82,7 +82,6 @@ import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.google.common.base.Objects;
 
@@ -886,8 +885,6 @@ public class JobsPaymentListener implements Listener {
 
 	// Calulating multiplaier
 	double multiplier = NearSpawnerMultiplier + PetPayMultiplier;
-
-	Debug.D(multiplier + "   " + NearSpawnerMultiplier + " " + PetPayMultiplier);
 
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
 	    Player VPlayer = (Player) lVictim;

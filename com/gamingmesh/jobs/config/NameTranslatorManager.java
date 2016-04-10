@@ -886,9 +886,9 @@ public class NameTranslatorManager {
 	c.get("ItemList.179.MCName", "red_sandstone");
 	c.get("ItemList.179.Name", "Red Sandstone");
 	c.get("ItemList.179:1.MCName", "red_sandstone");
-	c.get("ItemList.179:1.Name", "Smooth Red Sandstone");
+	c.get("ItemList.179:1.Name", "Chiseled Red Sandstone");
 	c.get("ItemList.179:2.MCName", "red_sandstone");
-	c.get("ItemList.179:2.Name", "Chiseled Red Sandstone");
+	c.get("ItemList.179:2.Name", "Smooth Red Sandstone");
 	c.get("ItemList.180.MCName", "red_sandstone_stairs");
 	c.get("ItemList.180.Name", "Red Sandstone Stairs");
 	c.get("ItemList.181.MCName", "stone_slab2");
@@ -943,6 +943,8 @@ public class NameTranslatorManager {
 	c.get("ItemList.205.Name", "Purpur Slab");
 	c.get("ItemList.206.MCName", "end_bricks");
 	c.get("ItemList.206.Name", "End Stone Bricks");
+	c.get("ItemList.207.MCName", "beetroots");
+	c.get("ItemList.207.Name", "Beetroot Block");
 	c.get("ItemList.208.MCName", "grass_path");
 	c.get("ItemList.208.Name", "Grass Path");
 	c.get("ItemList.209.MCName", "end_gateway");
@@ -1453,6 +1455,8 @@ public class NameTranslatorManager {
 	c.get("ItemList.2267.Name", "Wait Disc");
 
 	// Entity list
+	c.get("EntityList.-1.MCName", "Player");
+	c.get("EntityList.-1.Name", "Player");
 	c.get("EntityList.50.MCName", "Creeper");
 	c.get("EntityList.50.Name", "Creeper");
 	c.get("EntityList.51.MCName", "Skeleton");
@@ -1497,8 +1501,8 @@ public class NameTranslatorManager {
 	c.get("EntityList.68.Name", "Guardian");
 	c.get("EntityList.68:1.MCName", "Guardian");
 	c.get("EntityList.68:1.Name", "Elder Guardian");
-	c.get("EntityList.68.MCName", "Shulker");
-	c.get("EntityList.68.Name", "Shulker");
+	c.get("EntityList.69.MCName", "Shulker");
+	c.get("EntityList.69.Name", "Shulker");
 	c.get("EntityList.90.MCName", "Pig");
 	c.get("EntityList.90.Name", "Pig");
 	c.get("EntityList.91.MCName", "Sheep");
@@ -1525,6 +1529,8 @@ public class NameTranslatorManager {
 	c.get("EntityList.101.Name", "Rabbit");
 	c.get("EntityList.120.MCName", "Villager");
 	c.get("EntityList.120.Name", "Villager");
+	c.get("EntityList.200.MCName", "EnderCrystal");
+	c.get("EntityList.200.Name", "Ender Crystal");
 
 	// Enchant list
 	c.get("EnchantList.0.MCName", "PROTECTION_ENVIRONMENTAL");

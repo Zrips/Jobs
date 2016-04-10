@@ -506,8 +506,8 @@ public class JobsDAOSQLite extends JobsDAO {
 	    }
 	}
 
-	executeSQL("CREATE TABLE `" + getPrefix() + "users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
 	try {
+	    executeSQL("CREATE TABLE `" + getPrefix() + "users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
 	    prest = conn.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`player_uuid`, `username`) VALUES (?, ?);");
 	    conn.setAutoCommit(false);
 	    for (Entry<String, String> users : tempMap.entrySet()) {
@@ -545,8 +545,8 @@ public class JobsDAOSQLite extends JobsDAO {
 	}
 
 	// Modifying jobs main table
-	executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `userid` int;");
 	try {
+	    executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `userid` int;");
 	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `userid` = ? WHERE `player_uuid` = ?;");
 	    conn.setAutoCommit(false);
 	    for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
@@ -567,8 +567,11 @@ public class JobsDAOSQLite extends JobsDAO {
 	}
 
 	// dropping 2 columns
-	executeSQL("CREATE TABLE `" + getPrefix()
-	    + "jobs_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "jobs_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	} catch (Exception e) {
+	}
 
 	PreparedStatement pst111 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "jobs`;");
 	ResultSet rs11 = pst111.executeQuery();
@@ -589,13 +592,15 @@ public class JobsDAOSQLite extends JobsDAO {
 	rs11.close();
 	if (insert11 != null)
 	    insert11.close();
-
-	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "jobs`;");
-	executeSQL("ALTER TABLE `" + getPrefix() + "jobs_temp` RENAME TO `" + getPrefix() + "jobs`;");
+	try {
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "jobs`;");
+	    executeSQL("ALTER TABLE `" + getPrefix() + "jobs_temp` RENAME TO `" + getPrefix() + "jobs`;");
+	} catch (Exception e) {
+	}
 
 	// Modifying jobs archive table
-	executeSQL("ALTER TABLE `" + getPrefix() + "archive` ADD COLUMN `userid` int;");
 	try {
+	    executeSQL("ALTER TABLE `" + getPrefix() + "archive` ADD COLUMN `userid` int;");
 	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "archive` SET `userid` = ? WHERE `player_uuid` = ?;");
 	    conn.setAutoCommit(false);
 	    for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
@@ -616,8 +621,11 @@ public class JobsDAOSQLite extends JobsDAO {
 	}
 
 	// dropping 2 columns
-	executeSQL("CREATE TABLE `" + getPrefix()
-	    + "archive_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "archive_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	} catch (Exception e) {
+	}
 
 	PreparedStatement pst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
 	ResultSet rs = pst.executeQuery();
@@ -633,13 +641,14 @@ public class JobsDAOSQLite extends JobsDAO {
 		insert.execute();
 	    }
 	}
-
-	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "archive`;");
-	executeSQL("ALTER TABLE `" + getPrefix() + "archive_temp` RENAME TO `" + getPrefix() + "archive`;");
-
-	// Modifying jobs log table
-	executeSQL("ALTER TABLE `" + getPrefix() + "log` ADD COLUMN `userid` int;");
 	try {
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "archive`;");
+	    executeSQL("ALTER TABLE `" + getPrefix() + "archive_temp` RENAME TO `" + getPrefix() + "archive`;");
+	} catch (Exception e) {
+	}
+	// Modifying jobs log table
+	try {
+	    executeSQL("ALTER TABLE `" + getPrefix() + "log` ADD COLUMN `userid` int;");
 	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "log` SET `userid` = ? WHERE `player_uuid` = ?;");
 	    conn.setAutoCommit(false);
 	    for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
@@ -660,8 +669,11 @@ public class JobsDAOSQLite extends JobsDAO {
 	}
 
 	// dropping 2 columns
-	executeSQL("CREATE TABLE `" + getPrefix()
-	    + "log_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "log_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+	} catch (Exception e) {
+	}
 
 	pst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
 	rs = pst.executeQuery();
@@ -684,12 +696,15 @@ public class JobsDAOSQLite extends JobsDAO {
 	rs.close();
 	if (insert != null)
 	    insert.close();
+	
+	try {
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
+	    executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
 
-	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
-	executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
-
-	// Create new points table
-	executeSQL("CREATE TABLE `" + getPrefix()
-	    + "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
+	    // Create new points table
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
+	} catch (Exception e) {
+	}
     }
 }

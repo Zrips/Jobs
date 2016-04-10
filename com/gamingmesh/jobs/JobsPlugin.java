@@ -95,7 +95,7 @@ public class JobsPlugin extends JavaPlugin {
 	Jobs.setPermissionHandler(new PermissionHandler(this));
 
 	Jobs.setPlayerManager(this);
-	
+
 	Jobs.setScboard(this);
 	Jobs.setLanguage(this);
 	Jobs.setGUIManager(this);

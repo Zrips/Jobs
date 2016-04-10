@@ -181,7 +181,7 @@ public class Jobs {
     }
 
     public static void setPlayerManager(JobsPlugin jobsPlugin) {
-	pManager = new PlayerManager (jobsPlugin);
+	pManager = new PlayerManager(jobsPlugin);
     }
 
     public static void setRestrictedBlockManager(JobsPlugin plugin) {
@@ -776,11 +776,10 @@ public class Jobs {
 
 		Double income = jobinfo.getIncome(level, numjobs);
 		Double points = jobinfo.getPoints(level, numjobs);
-
-		if (income == 0D && points == 0D)
-		    continue;
-
 		Double exp = jobinfo.getExperience(level, numjobs);
+
+		if (income == 0D && points == 0D && exp == 0D)
+		    continue;
 
 		if (Jobs.getGCManager().addXpPlayer()) {
 		    Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
@@ -873,12 +872,12 @@ public class Jobs {
 			expAmount = 0D;
 		}
 
-		if ((amount == 0D || pointAmount == 0D) && expAmount == 0D)
+		if (amount == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
 
-		if (Jobs.getGCManager().BossBarEnabled && Jobs.getGCManager().BossBarShowOnEachAction)
+		if (Jobs.getGCManager().BossBarEnabled && Jobs.getGCManager().BossBarShowOnEachAction){
 		    Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
-		else if (Jobs.getGCManager().BossBarEnabled && !Jobs.getGCManager().BossBarShowOnEachAction)
+		}else if (Jobs.getGCManager().BossBarEnabled && !Jobs.getGCManager().BossBarShowOnEachAction)
 		    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 
 		Jobs.getEconomy().pay(jPlayer, amount, pointAmount, expAmount);

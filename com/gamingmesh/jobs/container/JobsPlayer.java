@@ -31,7 +31,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class JobsPlayer {
@@ -595,7 +594,6 @@ public class JobsPlayer {
      */
     public void save(JobsDAO dao) {
 //	synchronized (saveLock) {
-	Debug.D("saved: " + isSaved);
 	if (!isSaved()) {
 	    dao.save(this);
 	    dao.saveLog(this);
@@ -642,7 +640,6 @@ public class JobsPlayer {
     }
 
     public void setSaved(boolean value) {
-	Debug.D("setting saved " + value);
 	isSaved = value;
     }
 }

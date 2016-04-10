@@ -43,7 +43,6 @@ import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -643,7 +642,6 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return;
 	try {
-	    Debug.D("saving points");
 	    PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(player.getPlayerUUID());
 
 	    String req = "UPDATE `" + prefix + "points` SET `totalpoints` = ?, `currentpoints` = ? WHERE `userid` = ?;";

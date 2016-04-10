@@ -460,6 +460,9 @@ public class JobsCommands implements CommandExecutor {
 	    points = points + (points * finalBoost.getPointsBoost() / 100);
 	    String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 
+	    if (income == 0D && points == 0D && xp == 0D)
+		continue;
+
 	    message.append("  ");
 
 	    message.append(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", materialName));

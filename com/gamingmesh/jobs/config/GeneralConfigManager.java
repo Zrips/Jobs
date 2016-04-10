@@ -62,6 +62,9 @@ public class GeneralConfigManager {
     public boolean LocalOfflinePlayersData;
     public boolean MythicMobsEnabled;
     public boolean LoggingUse;
+    public boolean PaymentMethodsMoney;
+    public boolean PaymentMethodsPoints;
+    public boolean PaymentMethodsExp;
 
     // Money limit
     public boolean MoneyLimitUse;
@@ -479,6 +482,13 @@ public class GeneralConfigManager {
 
 	c.getW().addComment("economy-async", "Enable async economy calls.", "Disable this if you have issues with payments or your plugin is not thread safe.");
 	economyAsync = c.get("economy-async", true);
+
+	c.getW().addComment("Economy.PaymentMethods",
+	    "By disabling one of thies, players no longer will get particular payment.",
+	    "Usefull for removing particular payment method without editing whole jobConfig file");
+	PaymentMethodsMoney = c.get("Economy.PaymentMethods.Money", true);
+	PaymentMethodsPoints = c.get("Economy.PaymentMethods.Points", true);
+	PaymentMethodsExp = c.get("Economy.PaymentMethods.Exp", true);
 
 	c.getW().addComment("Economy.MinimumOveralPayment.use",
 	    "Determines minimum payment. In example if player uses McMMO treefeller and earns only 20%, but at same time he gets 25% penalty from dynamic payment. He can 'get' negative amount of money",

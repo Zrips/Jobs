@@ -18,6 +18,7 @@
 
 package com.gamingmesh.jobs.container;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 
 public class JobInfo {
@@ -88,6 +89,8 @@ public class JobInfo {
     }
 
     public double getIncome(double level, double numjobs) {
+	if (baseIncome == 0 || !Jobs.getGCManager().PaymentMethodsMoney)
+	    return 0;
 	moneyEquation.setVariable("joblevel", level);
 	moneyEquation.setVariable("numjobs", numjobs);
 	moneyEquation.setVariable("baseincome", baseIncome);
@@ -95,6 +98,8 @@ public class JobInfo {
     }
 
     public double getExperience(double level, double numjobs) {
+	if (baseXp == 0 || !Jobs.getGCManager().PaymentMethodsExp)
+	    return 0;
 	xpEquation.setVariable("joblevel", level);
 	xpEquation.setVariable("numjobs", numjobs);
 	xpEquation.setVariable("baseexperience", baseXp);
@@ -102,6 +107,8 @@ public class JobInfo {
     }
 
     public double getPoints(double level, double numjobs) {
+	if (basePoints == 0 || !Jobs.getGCManager().PaymentMethodsPoints)
+	    return 0;
 	pointsEquation.setVariable("joblevel", level);
 	pointsEquation.setVariable("numjobs", numjobs);
 	pointsEquation.setVariable("basepoints", basePoints);
