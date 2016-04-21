@@ -21,15 +21,12 @@ package com.gamingmesh.jobs.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerInfo;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public class JobsDAOMySQL extends JobsDAO {
@@ -98,123 +95,18 @@ public class JobsDAOMySQL extends JobsDAO {
     }
 
     @Override
-    protected synchronized void checkUpdate1() throws SQLException {
+    protected synchronized void checkUpdate() throws SQLException {
 	JobsConnection conn = getConnection();
 	if (conn == null) {
 	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
 	    return;
 	}
-	PreparedStatement prest = null;
-	int rows = 0;
-	try {
-	    // Check for jobs table
-	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
-	    prest.setString(1, database);
-	    prest.setString(2, getPrefix() + "jobs");
-	    ResultSet res = prest.executeQuery();
-	    if (res.next()) {
-		rows = res.getInt(1);
-	    }
-	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
-	}
-
-	PreparedStatement pst1 = null;
-	PreparedStatement pst2 = null;
-	try {
-	    if (rows == 0) {
-		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "jobs` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `job` varchar(20), `experience` int, `level` int);");
-	    } else {
-		Jobs.getPluginLogger().info("Converting existing usernames to Mojang UUIDs.  This could take a long time!");
-
-		try {
-		    // Check for jobs table id column
-		    // This is extra check to be sure there is no column by this name already
-		    int idrows = 0;
-		    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?;");
-		    prest.setString(1, database);
-		    prest.setString(2, getPrefix() + "jobs");
-		    prest.setString(3, "id");
-		    ResultSet res = prest.executeQuery();
-		    if (res.next()) {
-			idrows = res.getInt(1);
-		    }
-		    if (idrows == 0)
-			executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;");
-		} finally {
-
-		}
-
-		try {
-		    // Check for jobs table id column
-		    // This is extra check to be sure there is no column by this name already
-		    int uuidrows = 0;
-		    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?;");
-		    prest.setString(1, database);
-		    prest.setString(2, getPrefix() + "jobs");
-		    prest.setString(3, "player_uuid");
-		    ResultSet res = prest.executeQuery();
-		    if (res.next()) {
-			uuidrows = res.getInt(1);
-		    }
-		    if (uuidrows == 0)
-			executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `player_uuid` binary(16) DEFAULT NULL AFTER `id`;");
-		} finally {
-
-		}
-
-		pst1 = conn.prepareStatement("SELECT DISTINCT `username` FROM `" + getPrefix() + "jobs` WHERE `player_uuid` IS NULL;");
-		ResultSet rs = pst1.executeQuery();
-		ArrayList<String> usernames = new ArrayList<String>();
-		while (rs.next()) {
-		    usernames.add(rs.getString(1));
-		}
-
-		pst2 = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `player_uuid` = ? WHERE `username` = ?;");
-
-		int i = 0;
-		int y = 0;
-		for (String names : usernames) {
-		    i++;
-		    y++;
-		    if (i >= 10) {
-			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "" + y + " of " + usernames.size());
-			i = 0;
-		    }
-
-		    Entry<String, PlayerInfo> info = Jobs.getPlayerManager().getPlayerInfoByName(names);
-		    if (info == null)
-			continue;
-
-		    pst2.setBytes(1, UUIDUtil.toBytes(UUID.fromString(info.getKey())));
-		    pst2.setString(2, names);
-		    pst2.execute();
-		}
-
-		Jobs.getPluginLogger().info("Mojang UUID conversion complete!");
-	    }
-	} finally {
-	    if (pst1 != null) {
-		try {
-		    pst1.close();
-		} catch (SQLException e) {
-		}
-	    }
-	    if (pst2 != null) {
-		try {
-		    pst2.close();
-		} catch (SQLException e) {
-		}
-	    }
-	}
-
-	checkUpdate2();
+	createDefaultJobsBase();
+	createDefaultLogBase();
+	createDefaultArchiveBase();
+	createDefaultPointsBase();
+	createDefaultExploreBase();
+	createDefaultUsersBase();
     }
 
     @Override
@@ -250,7 +142,6 @@ public class JobsDAOMySQL extends JobsDAO {
 		executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `username` varchar(20);");
 	} finally {
 	}
-	checkUpdate4();
     }
 
     @Override
@@ -582,8 +473,7 @@ public class JobsDAOMySQL extends JobsDAO {
 
 	try {
 	    if (rows == 0)
-		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "explore` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `worldname` varchar(64), `chunkX` int, `chunkZ` int, `playerName` varchar(32));");
+		createDefaultExploreBase();
 	} catch (Exception e) {
 	} finally {
 	}
@@ -792,12 +682,28 @@ public class JobsDAOMySQL extends JobsDAO {
 	    } catch (Exception e) {
 	    }
 	    // Create new points table
-	    try {
-		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "points` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `totalpoints` double, `currentpoints` double);");
-	    } catch (Exception e) {
-	    }
+	    createDefaultPointsBase();
 	}
+    }
+
+    private boolean createDefaultExploreBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "explore` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `worldname` varchar(64), `chunkX` int, `chunkZ` int, `playerName` varchar(32));");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultPointsBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "points` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `totalpoints` double, `currentpoints` double);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
     }
 
     private boolean createDefaultLogBase() {
@@ -824,6 +730,16 @@ public class JobsDAOMySQL extends JobsDAO {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
 		+ "jobs` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultUsersBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
 	} catch (SQLException e) {
 	    return false;
 	}

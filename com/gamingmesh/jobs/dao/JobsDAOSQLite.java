@@ -22,15 +22,11 @@ import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerInfo;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public class JobsDAOSQLite extends JobsDAO {
@@ -99,93 +95,18 @@ public class JobsDAOSQLite extends JobsDAO {
     }
 
     @Override
-    protected synchronized void checkUpdate1() throws SQLException {
+    protected synchronized void checkUpdate() throws SQLException {
 	JobsConnection conn = getConnection();
 	if (conn == null) {
 	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
 	    return;
 	}
-	PreparedStatement prest = null;
-	int rows = 0;
-	try {
-	    // Check for jobs table
-	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
-	    prest.setString(1, getPrefix() + "jobs");
-	    ResultSet res = prest.executeQuery();
-	    if (res.next()) {
-		rows = res.getInt(1);
-	    }
-	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
-	}
-
-	PreparedStatement pst1 = null;
-	PreparedStatement pst2 = null;
-	try {
-	    if (rows > 0) {
-		Jobs.getPluginLogger().info("Converting existing usernames to Mojang UUIDs.  This could take a long time!!!");
-		executeSQL("ALTER TABLE `" + getPrefix() + "jobs` RENAME TO `" + getPrefix() + "jobs_old`;");
-		executeSQL("ALTER TABLE `" + getPrefix() + "jobs_old` ADD COLUMN `player_uuid` binary(16) DEFAULT NULL;");
-	    }
-
-	    executeSQL("CREATE TABLE `" + getPrefix()
-		+ "jobs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` binary(16) NOT NULL, `job` varchar(20), `experience` int, `level` int);");
-
-	    if (rows > 0) {
-		pst1 = conn.prepareStatement("SELECT DISTINCT `username` FROM `" + getPrefix() + "jobs_old` WHERE `player_uuid` IS NULL;");
-		ResultSet rs = pst1.executeQuery();
-		ArrayList<String> usernames = new ArrayList<String>();
-		while (rs.next()) {
-		    usernames.add(rs.getString(1));
-		}
-		pst2 = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs_old` SET `player_uuid` = ? WHERE `username` = ?;");
-		int i = 0;
-		int y = 0;
-		for (String names : usernames) {
-		    i++;
-		    y++;
-		    if (i >= 50) {
-			Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "" + y + " of " + usernames.size());
-			i = 0;
-		    }
-
-		    Entry<String, PlayerInfo> info = Jobs.getPlayerManager().getPlayerInfoByName(names);
-		    if (info == null)
-			continue;
-
-		    pst2.setBytes(1, UUIDUtil.toBytes(UUID.fromString(info.getKey())));
-		    pst2.setString(2, names);
-		    pst2.execute();
-		}
-		executeSQL("INSERT INTO `" + getPrefix() + "jobs` (`player_uuid`, `job`, `experience`, `level`) SELECT `player_uuid`, `job`, `experience`, `level` FROM `"
-		    + getPrefix() + "jobs_old`;");
-	    }
-	} finally {
-	    if (pst1 != null) {
-		try {
-		    pst1.close();
-		} catch (SQLException e) {
-		}
-	    }
-	    if (pst2 != null) {
-		try {
-		    pst2.close();
-		} catch (SQLException e) {
-		}
-	    }
-	}
-
-	if (rows > 0) {
-	    executeSQL("DROP TABLE `" + getPrefix() + "jobs_old`;");
-
-	    Jobs.getPluginLogger().info("Mojang UUID conversion complete!");
-	}
-	checkUpdate2();
+	createDefaultJobsBase();
+	createDefaultLogBase();
+	createDefaultArchiveBase();
+	createDefaultPointsBase();
+	createDefaultExploreBase();
+	createDefaultUsersBase();
     }
 
     @Override
@@ -221,7 +142,6 @@ public class JobsDAOSQLite extends JobsDAO {
 
 	} finally {
 	}
-	checkUpdate4();
     }
 
     @Override
@@ -859,12 +779,40 @@ public class JobsDAOSQLite extends JobsDAO {
 		executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
 
 		// Create new points table
-		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
-
+		createDefaultPointsBase();
 	    } catch (Exception e) {
 	    }
 	}
+    }
+
+    private boolean createDefaultExploreBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "explore` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `worldname` varchar(64), `chunkX` int, `chunkZ` int, `playerName` varchar(32));");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultPointsBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultUsersBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
     }
 
     private boolean createDefaultLogBase() {

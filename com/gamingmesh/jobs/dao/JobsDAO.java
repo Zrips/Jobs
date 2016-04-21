@@ -43,6 +43,7 @@ import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -76,18 +77,22 @@ public abstract class JobsDAO {
 	}
 
 	try {
+	    
+	    Debug.D("V"+version);
 	    if (version <= 1)
-		checkUpdate1();
-	    else if (version <= 2)
-		checkUpdate2();
+		checkUpdate();
+	    else {
+		if (version <= 2)
+		    checkUpdate2();
 
-	    checkUpdate4();
-	    checkUpdate5();
-	    checkUpdate6();
-	    checkUpdate7();
-	    // creating explore database
-	    checkUpdate8();
-	    checkUpdate9();
+		checkUpdate4();
+		checkUpdate5();
+		checkUpdate6();
+		checkUpdate7();
+		// creating explore database
+		checkUpdate8();
+		checkUpdate9();
+	    }
 
 	    version = 9;
 	    updateSchemaVersion(version);
@@ -97,7 +102,7 @@ public abstract class JobsDAO {
 
     protected abstract void setupConfig() throws SQLException;
 
-    protected abstract void checkUpdate1() throws SQLException;
+    protected abstract void checkUpdate() throws SQLException;
 
     protected abstract void checkUpdate2() throws SQLException;
 
