@@ -331,15 +331,23 @@ public class JobsDAOSQLite extends JobsDAO {
 	PreparedStatement tempPst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "jobs`;");
 	ResultSet tempRes = tempPst.executeQuery();
 
+	boolean noJobsdata = true;
 	try {
 	    while (tempRes.next()) {
+		noJobsdata = false;
 		tempRes.getByte("player_uuid");
+		break;
 	    }
 	} catch (Exception e) {
 	    convertJobs = false;
 	} finally {
 	    tempRes.close();
 	    tempPst.close();
+	}
+	if (noJobsdata) {
+	    dropDataBase("jobs");
+	    createDefaultJobsBase();
+	    convertJobs = false;
 	}
 
 	if (convertJobs) {
@@ -392,15 +400,23 @@ public class JobsDAOSQLite extends JobsDAO {
 	PreparedStatement tempArchivePst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
 	ResultSet tempArchiveRes = tempArchivePst.executeQuery();
 
+	boolean noArchivedata = true;
 	try {
 	    while (tempArchiveRes.next()) {
+		noArchivedata = false;
 		tempArchiveRes.getByte("player_uuid");
+		break;
 	    }
 	} catch (Exception e) {
 	    convertArchive = false;
 	} finally {
 	    tempArchiveRes.close();
 	    tempArchivePst.close();
+	}
+	if (noArchivedata) {
+	    dropDataBase("archive");
+	    createDefaultArchiveBase();
+	    convertArchive = false;
 	}
 
 	if (convertArchive) {
@@ -449,15 +465,24 @@ public class JobsDAOSQLite extends JobsDAO {
 	PreparedStatement tempLogPst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
 	ResultSet tempLogRes = tempLogPst.executeQuery();
 
+	boolean nodata = true;
 	try {
 	    while (tempLogRes.next()) {
+		nodata = false;
 		tempLogRes.getByte("player_uuid");
+		break;
 	    }
+
 	} catch (Exception e) {
 	    convertLog = false;
 	} finally {
 	    tempLogRes.close();
 	    tempLogPst.close();
+	}
+	if (nodata) {
+	    dropDataBase("log");
+	    createDefaultLogBase();
+	    convertLog = false;
 	}
 
 	if (convertLog) {
@@ -840,5 +865,44 @@ public class JobsDAOSQLite extends JobsDAO {
 	    } catch (Exception e) {
 	    }
 	}
+    }
+
+    private boolean createDefaultLogBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "log` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultArchiveBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "archive` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultJobsBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "jobs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean dropDataBase(String name) {
+	try {
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + name + "`;");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
     }
 }

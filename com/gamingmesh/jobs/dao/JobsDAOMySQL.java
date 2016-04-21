@@ -348,8 +348,10 @@ public class JobsDAOMySQL extends JobsDAO {
 	PreparedStatement tempPst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "jobs`;");
 	ResultSet tempRes = tempPst.executeQuery();
 
+	boolean noJobsdata = true;
 	try {
 	    while (tempRes.next()) {
+		noJobsdata = false;
 		tempRes.getByte("player_uuid");
 		break;
 	    }
@@ -358,6 +360,11 @@ public class JobsDAOMySQL extends JobsDAO {
 	} finally {
 	    tempRes.close();
 	    tempPst.close();
+	}
+	if (noJobsdata) {
+	    dropDataBase("jobs");
+	    createDefaultJobsBase();
+	    convertJobs = false;
 	}
 
 	if (convertJobs) {
@@ -413,8 +420,10 @@ public class JobsDAOMySQL extends JobsDAO {
 	PreparedStatement tempArchivePst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
 	ResultSet tempArchiveRes = tempArchivePst.executeQuery();
 
+	boolean noArchivedata = true;
 	try {
 	    while (tempArchiveRes.next()) {
+		noArchivedata = false;
 		tempArchiveRes.getByte("player_uuid");
 		break;
 	    }
@@ -423,6 +432,11 @@ public class JobsDAOMySQL extends JobsDAO {
 	} finally {
 	    tempArchiveRes.close();
 	    tempArchivePst.close();
+	}
+	if (noArchivedata) {
+	    dropDataBase("archive");
+	    createDefaultArchiveBase();
+	    convertArchive = false;
 	}
 
 	if (convertArchive) {
@@ -472,8 +486,10 @@ public class JobsDAOMySQL extends JobsDAO {
 	PreparedStatement tempLogPst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
 	ResultSet tempLogRes = tempLogPst.executeQuery();
 
+	boolean nodata = true;
 	try {
 	    while (tempLogRes.next()) {
+		nodata = false;
 		tempLogRes.getByte("player_uuid");
 		break;
 	    }
@@ -483,8 +499,14 @@ public class JobsDAOMySQL extends JobsDAO {
 	    tempLogRes.close();
 	    tempLogPst.close();
 	}
+	if (nodata) {
+	    dropDataBase("log");
+	    createDefaultLogBase();
+	    convertLog = false;
+	}
 
 	if (convertLog) {
+	    Bukkit.getConsoleSender().sendMessage("Converting log database");
 	    // Converting log players byte uuid into string
 	    try {
 		executeSQL("CREATE TABLE `" + getPrefix()
@@ -776,5 +798,44 @@ public class JobsDAOMySQL extends JobsDAO {
 	    } catch (Exception e) {
 	    }
 	}
+    }
+
+    private boolean createDefaultLogBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "log` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultArchiveBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "archive` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultJobsBase() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "jobs` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean dropDataBase(String name) {
+	try {
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + name + "`;");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
     }
 }
