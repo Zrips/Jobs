@@ -56,7 +56,7 @@ public class HookEconomyTask implements Runnable {
 	Jobs.setEconomy(plugin, new BlackholeEconomy());
 	Bukkit.getServer().getLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
 	Bukkit.getServer().getLogger().severe("Vault is required by this plugin for economy support!");
-	Bukkit.getServer().getLogger().severe("Please install Vault first!");
+	Bukkit.getServer().getLogger().severe("Please install Vault and economy manager first!");
 	Bukkit.getServer().getLogger().severe("You can find the latest version here:");
 	Bukkit.getServer().getLogger().severe("http://dev.bukkit.org/bukkit-plugins/vault/");
 	Bukkit.getServer().getLogger().severe("==============================================");

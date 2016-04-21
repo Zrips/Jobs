@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.commands;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -203,7 +204,10 @@ public class JobsCommands implements CommandExecutor {
 	List<String> result = new ArrayList<String>();
 	try {
 	    for (URL jarURL : ((URLClassLoader) JobsPlugin.class.getClassLoader()).getURLs()) {
-		result.addAll(getClassesInSamePackageFromJar(pckgname, jarURL.getPath()));
+		try {
+		    result.addAll(getClassesInSamePackageFromJar(pckgname, jarURL.toURI().getPath()));
+		} catch (URISyntaxException e) {
+		}
 	    }
 	} catch (NullPointerException x) {
 	    throw new ClassNotFoundException(pckgname + " does not appear to be a valid package (Null pointer exception)");

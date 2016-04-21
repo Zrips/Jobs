@@ -330,7 +330,10 @@ public class JobsDAOMySQL extends JobsDAO {
 	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
 	    return;
 	}
-	executeSQL("ALTER TABLE `" + getPrefix() + "log` MODIFY `itemname` VARCHAR(60);");
+	try {
+	    executeSQL("ALTER TABLE `" + getPrefix() + "log` MODIFY `itemname` VARCHAR(60);");
+	} catch (Exception e) {
+	}
     }
 
     @Override
@@ -341,102 +344,191 @@ public class JobsDAOMySQL extends JobsDAO {
 	    return;
 	}
 
-	Jobs.getPluginLogger().info("Converting byte uuids to string.  This could take a long time!!!");
+	boolean convertJobs = true;
+	PreparedStatement tempPst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "jobs`;");
+	ResultSet tempRes = tempPst.executeQuery();
 
-	// Converting jobs players byte uuid into string
-	executeSQL("CREATE TABLE `" + getPrefix()
-	    + "jobs_temp` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL,`username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+	try {
+	    while (tempRes.next()) {
+		tempRes.getByte("player_uuid");
+		break;
+	    }
+	} catch (Exception e) {
+	    convertJobs = false;
+	} finally {
+	    tempRes.close();
+	    tempPst.close();
+	}
 
-	PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "jobs`;");
-	ResultSet rs = pst1.executeQuery();
-	PreparedStatement insert = null;
-	while (rs.next()) {
+	if (convertJobs) {
+	    Jobs.getPluginLogger().info("Converting byte uuids to string.  This could take a long time!!!");
+	    // Converting jobs players byte uuid into string
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "jobs_temp` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL,`username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+	    } catch (Exception e) {
+	    }
 
-	    byte[] uuidBytes = rs.getBytes("player_uuid");
+	    PreparedStatement pst1 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "jobs`;");
+	    ResultSet rs = pst1.executeQuery();
+	    PreparedStatement insert = null;
 
-	    if (uuidBytes == null)
-		continue;
+	    conn.setAutoCommit(false);
 
-	    String uuid = UUIDUtil.fromBytes(uuidBytes).toString();
+	    while (rs.next()) {
 
-	    if (uuid != null) {
-		insert = conn.prepareStatement("INSERT INTO `" + getPrefix()
-		    + "jobs_temp` (`player_uuid`, `username`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?, ?);");
-		insert.setString(1, uuid);
-		insert.setString(2, rs.getString("username"));
-		insert.setString(3, rs.getString("job"));
-		insert.setInt(4, rs.getInt("experience"));
-		insert.setInt(5, rs.getInt("level"));
-		insert.execute();
+		byte[] uuidBytes = rs.getBytes("player_uuid");
+
+		if (uuidBytes == null)
+		    continue;
+
+		String uuid = UUIDUtil.fromBytes(uuidBytes).toString();
+
+		if (uuid != null) {
+		    insert = conn.prepareStatement("INSERT INTO `" + getPrefix()
+			+ "jobs_temp` (`player_uuid`, `username`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?, ?);");
+		    insert.setString(1, uuid);
+		    insert.setString(2, rs.getString("username"));
+		    insert.setString(3, rs.getString("job"));
+		    insert.setInt(4, rs.getInt("experience"));
+		    insert.setInt(5, rs.getInt("level"));
+		    insert.addBatch();
+		}
+	    }
+
+	    if (insert != null)
+		insert.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+
+	    rs.close();
+	    if (insert != null)
+		insert.close();
+
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "jobs`;");
+	    executeSQL("ALTER TABLE `" + getPrefix() + "jobs_temp` RENAME TO `" + getPrefix() + "jobs`;");
+	}
+
+	boolean convertArchive = true;
+	PreparedStatement tempArchivePst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
+	ResultSet tempArchiveRes = tempArchivePst.executeQuery();
+
+	try {
+	    while (tempArchiveRes.next()) {
+		tempArchiveRes.getByte("player_uuid");
+		break;
+	    }
+	} catch (Exception e) {
+	    convertArchive = false;
+	} finally {
+	    tempArchiveRes.close();
+	    tempArchivePst.close();
+	}
+
+	if (convertArchive) {
+	    // Converting archive players byte uuid into string
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "archive_temp` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+	    } catch (Exception e) {
+	    }
+
+	    PreparedStatement pst11 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
+	    ResultSet rs1 = pst11.executeQuery();
+	    PreparedStatement insert1 = null;
+
+	    conn.setAutoCommit(false);
+
+	    while (rs1.next()) {
+		String uuid = UUIDUtil.fromBytes(rs1.getBytes("player_uuid")).toString();
+		if (uuid != null) {
+		    insert1 = conn.prepareStatement("INSERT INTO `" + getPrefix()
+			+ "archive_temp` (`player_uuid`, `username`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?, ?);");
+		    insert1.setString(1, uuid);
+		    insert1.setString(2, rs1.getString("username"));
+		    insert1.setString(3, rs1.getString("job"));
+		    insert1.setInt(4, rs1.getInt("experience"));
+		    insert1.setInt(5, rs1.getInt("level"));
+		    insert1.addBatch();
+		}
+	    }
+	    if (insert1 != null)
+		insert1.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+
+	    rs1.close();
+	    if (insert1 != null)
+		insert1.close();
+
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "archive`;");
+	    try {
+		executeSQL("ALTER TABLE `" + getPrefix() + "archive_temp` RENAME TO `" + getPrefix() + "archive`;");
+	    } catch (Exception e) {
 	    }
 	}
-	rs.close();
-	if (insert != null)
-	    insert.close();
 
-	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "jobs`;");
-	executeSQL("ALTER TABLE `" + getPrefix() + "jobs_temp` RENAME TO `" + getPrefix() + "jobs`;");
+	boolean convertLog = true;
+	PreparedStatement tempLogPst = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
+	ResultSet tempLogRes = tempLogPst.executeQuery();
 
-	// Converting archive players byte uuid into string
-	executeSQL("CREATE TABLE `" + getPrefix()
-	    + "archive_temp` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+	try {
+	    while (tempLogRes.next()) {
+		tempLogRes.getByte("player_uuid");
+		break;
+	    }
+	} catch (Exception e) {
+	    convertLog = false;
+	} finally {
+	    tempLogRes.close();
+	    tempLogPst.close();
+	}
 
-	PreparedStatement pst11 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
-	ResultSet rs1 = pst11.executeQuery();
-	PreparedStatement insert1 = null;
-	while (rs1.next()) {
+	if (convertLog) {
+	    // Converting log players byte uuid into string
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "log_temp` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+	    } catch (Exception e) {
+	    }
 
-	    String uuid = UUIDUtil.fromBytes(rs1.getBytes("player_uuid")).toString();
+	    PreparedStatement pst111 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
+	    ResultSet rs11 = pst111.executeQuery();
+	    PreparedStatement insert11 = null;
 
-	    if (uuid != null) {
-		insert1 = conn.prepareStatement("INSERT INTO `" + getPrefix()
-		    + "archive_temp` (`player_uuid`, `username`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?, ?);");
-		insert1.setString(1, uuid);
-		insert1.setString(2, rs1.getString("username"));
-		insert1.setString(3, rs1.getString("job"));
-		insert1.setInt(4, rs1.getInt("experience"));
-		insert1.setInt(5, rs1.getInt("level"));
-		insert1.execute();
+	    conn.setAutoCommit(false);
+
+	    while (rs11.next()) {
+		String uuid = UUIDUtil.fromBytes(rs11.getBytes("player_uuid")).toString();
+		if (uuid != null) {
+		    insert11 = conn.prepareStatement("INSERT INTO `" + getPrefix()
+			+ "log_temp` (`player_uuid`, `username`, `time`, `action`, `itemname`, `count`, `money`, `exp`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+		    insert11.setString(1, uuid);
+		    insert11.setString(2, rs11.getString("username"));
+		    insert11.setLong(3, rs11.getLong("time"));
+		    insert11.setString(4, rs11.getString("action"));
+		    insert11.setString(5, rs11.getString("itemname"));
+		    insert11.setInt(6, rs11.getInt("count"));
+		    insert11.setDouble(7, rs11.getDouble("money"));
+		    insert11.setDouble(8, rs11.getDouble("exp"));
+		    insert11.addBatch();
+		}
+	    }
+	    if (insert11 != null)
+		insert11.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+
+	    rs11.close();
+	    if (insert11 != null)
+		insert11.close();
+
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
+	    try {
+		executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
+	    } catch (Exception e) {
 	    }
 	}
-	rs1.close();
-	if (insert1 != null)
-	    insert1.close();
-
-	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "archive`;");
-	executeSQL("ALTER TABLE `" + getPrefix() + "archive_temp` RENAME TO `" + getPrefix() + "archive`;");
-
-	// Converting log players byte uuid into string
-	executeSQL("CREATE TABLE `" + getPrefix()
-	    + "log_temp` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
-
-	PreparedStatement pst111 = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
-	ResultSet rs11 = pst111.executeQuery();
-	PreparedStatement insert11 = null;
-	while (rs11.next()) {
-
-	    String uuid = UUIDUtil.fromBytes(rs11.getBytes("player_uuid")).toString();
-
-	    if (uuid != null) {
-		insert11 = conn.prepareStatement("INSERT INTO `" + getPrefix()
-		    + "log_temp` (`player_uuid`, `username`, `time`, `action`, `itemname`, `count`, `money`, `exp`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-		insert11.setString(1, uuid);
-		insert11.setString(2, rs11.getString("username"));
-		insert11.setLong(3, rs11.getLong("time"));
-		insert11.setString(4, rs11.getString("action"));
-		insert11.setString(5, rs11.getString("itemname"));
-		insert11.setInt(6, rs11.getInt("count"));
-		insert11.setDouble(7, rs11.getDouble("money"));
-		insert11.setDouble(8, rs11.getDouble("exp"));
-		insert11.execute();
-	    }
-	}
-	rs11.close();
-	if (insert11 != null)
-	    insert11.close();
-
-	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
-	executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
     }
 
     @Override
@@ -470,6 +562,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	    if (rows == 0)
 		executeSQL("CREATE TABLE `" + getPrefix()
 		    + "explore` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `worldname` varchar(64), `chunkX` int, `chunkZ` int, `playerName` varchar(32));");
+	} catch (Exception e) {
 	} finally {
 	}
     }
@@ -482,162 +575,206 @@ public class JobsDAOMySQL extends JobsDAO {
 	    return;
 	}
 
-	HashMap<String, String> tempMap = new HashMap<String, String>();
-	PreparedStatement prest = null;
+	PreparedStatement tempPrest = null;
+	int rows = 0;
 	try {
-	    prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "jobs;");
-	    ResultSet res = prest.executeQuery();
-	    while (res.next()) {
-		tempMap.put(res.getString("player_uuid"), res.getString("username"));
+	    // Check for jobs table
+	    tempPrest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
+	    tempPrest.setString(1, database);
+	    tempPrest.setString(2, getPrefix() + "users");
+	    ResultSet res = tempPrest.executeQuery();
+	    if (res.next()) {
+		rows = res.getInt(1);
 	    }
 	} finally {
-	    if (prest != null) {
+	    if (tempPrest != null) {
 		try {
-		    prest.close();
+		    tempPrest.close();
 		} catch (SQLException e) {
 		}
 	    }
 	}
 
-	try {
-	    prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "archive;");
-	    ResultSet res = prest.executeQuery();
-	    while (res.next()) {
-		tempMap.put(res.getString("player_uuid"), res.getString("username"));
-	    }
-	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
+	if (rows == 0) {
+	    HashMap<String, String> tempMap = new HashMap<String, String>();
+	    PreparedStatement prest = null;
+	    try {
+		prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "jobs;");
+		ResultSet res = prest.executeQuery();
+		while (res.next()) {
+		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
+		}
+	    } finally {
+		if (prest != null) {
+		    try {
+			prest.close();
+		    } catch (SQLException e) {
+		    }
 		}
 	    }
-	}
 
-	try {
-	    prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "log;");
-	    ResultSet res = prest.executeQuery();
-	    while (res.next()) {
-		tempMap.put(res.getString("player_uuid"), res.getString("username"));
-	    }
-	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
+	    try {
+		prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "archive;");
+		ResultSet res = prest.executeQuery();
+		while (res.next()) {
+		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
+		}
+	    } finally {
+		if (prest != null) {
+		    try {
+			prest.close();
+		    } catch (SQLException e) {
+		    }
 		}
 	    }
-	}
 
-	executeSQL("CREATE TABLE `" + getPrefix() + "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
-	try {
-	    prest = conn.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`player_uuid`, `username`) VALUES (?, ?);");
-	    conn.setAutoCommit(false);
-	    for (Entry<String, String> users : tempMap.entrySet()) {
-		prest.setString(1, users.getKey());
-		prest.setString(2, users.getValue());
-		prest.addBatch();
+	    try {
+		prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "log;");
+		ResultSet res = prest.executeQuery();
+		while (res.next()) {
+		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
+		}
+	    } finally {
+		if (prest != null)
+		    try {
+			prest.close();
+		    } catch (SQLException e) {
+		    }
 	    }
-	    prest.executeBatch();
-	    conn.commit();
-	    conn.setAutoCommit(true);
-	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
+
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
+	    } catch (Exception e) {
+	    }
+
+	    try {
+		prest = conn.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`player_uuid`, `username`) VALUES (?, ?);");
+		conn.setAutoCommit(false);
+		for (Entry<String, String> users : tempMap.entrySet()) {
+		    prest.setString(1, users.getKey());
+		    prest.setString(2, users.getValue());
+		    prest.addBatch();
+		}
+		prest.executeBatch();
+		conn.commit();
+		conn.setAutoCommit(true);
+	    } finally {
+		if (prest != null) {
+		    try {
+			prest.close();
+		    } catch (SQLException e) {
+		    }
 		}
 	    }
-	}
 
-	HashMap<String, PlayerInfo> tempPlayerMap = new HashMap<String, PlayerInfo>();
+	    HashMap<String, PlayerInfo> tempPlayerMap = new HashMap<String, PlayerInfo>();
 
-	try {
-	    prest = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
-	    ResultSet res = prest.executeQuery();
-	    while (res.next()) {
-		tempPlayerMap.put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id")));
-	    }
-	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
+	    try {
+		prest = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
+		ResultSet res = prest.executeQuery();
+		while (res.next()) {
+		    tempPlayerMap.put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id")));
+		}
+	    } finally {
+		if (prest != null) {
+		    try {
+			prest.close();
+		    } catch (SQLException e) {
+		    }
 		}
 	    }
-	}
 
-	// Modifying jobs main table
-	executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `userid` int;");
-	try {
-	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `userid` = ? WHERE `player_uuid` = ?;");
-	    conn.setAutoCommit(false);
-	    for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
-		prest.setInt(1, users.getValue().getID());
-		prest.setString(2, users.getKey());
-		prest.addBatch();
+	    // Modifying jobs main table
+	    try {
+		executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `userid` int;");
+	    } catch (Exception e) {
 	    }
-	    prest.executeBatch();
-	    conn.commit();
-	    conn.setAutoCommit(true);
-	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
+	    try {
+		prest = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `userid` = ? WHERE `player_uuid` = ?;");
+		conn.setAutoCommit(false);
+		for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
+		    prest.setInt(1, users.getValue().getID());
+		    prest.setString(2, users.getKey());
+		    prest.addBatch();
+		}
+		prest.executeBatch();
+		conn.commit();
+		conn.setAutoCommit(true);
+	    } finally {
+		if (prest != null) {
+		    try {
+			prest.close();
+		    } catch (SQLException e) {
+		    }
 		}
 	    }
-	}
-	executeSQL("ALTER TABLE `" + getPrefix() + "jobs` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
-
-	// Modifying jobs archive table
-	executeSQL("ALTER TABLE `" + getPrefix() + "archive` ADD COLUMN `userid` int;");
-	try {
-	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "archive` SET `userid` = ? WHERE `player_uuid` = ?;");
-	    conn.setAutoCommit(false);
-	    for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
-		prest.setInt(1, users.getValue().getID());
-		prest.setString(2, users.getKey());
-		prest.addBatch();
+	    try {
+		executeSQL("ALTER TABLE `" + getPrefix() + "jobs` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
+	    } catch (Exception e) {
 	    }
-	    prest.executeBatch();
-	    conn.commit();
-	    conn.setAutoCommit(true);
-	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
+	    // Modifying jobs archive table
+	    try {
+		executeSQL("ALTER TABLE `" + getPrefix() + "archive` ADD COLUMN `userid` int;");
+	    } catch (Exception e) {
+	    }
+	    try {
+		prest = conn.prepareStatement("UPDATE `" + getPrefix() + "archive` SET `userid` = ? WHERE `player_uuid` = ?;");
+		conn.setAutoCommit(false);
+		for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
+		    prest.setInt(1, users.getValue().getID());
+		    prest.setString(2, users.getKey());
+		    prest.addBatch();
+		}
+		prest.executeBatch();
+		conn.commit();
+		conn.setAutoCommit(true);
+	    } finally {
+		if (prest != null) {
+		    try {
+			prest.close();
+		    } catch (SQLException e) {
+		    }
 		}
 	    }
-	}
-	executeSQL("ALTER TABLE `" + getPrefix() + "archive` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
-
-	// Modifying jobs log table
-	executeSQL("ALTER TABLE `" + getPrefix() + "log` ADD COLUMN `userid` int;");
-	try {
-	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "log` SET `userid` = ? WHERE `player_uuid` = ?;");
-	    conn.setAutoCommit(false);
-	    for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
-		prest.setInt(1, users.getValue().getID());
-		prest.setString(2, users.getKey());
-		prest.addBatch();
+	    try {
+		executeSQL("ALTER TABLE `" + getPrefix() + "archive` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
+	    } catch (Exception e) {
 	    }
-	    prest.executeBatch();
-	    conn.commit();
-	    conn.setAutoCommit(true);
-	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
+	    // Modifying jobs log table
+	    try {
+		executeSQL("ALTER TABLE `" + getPrefix() + "log` ADD COLUMN `userid` int;");
+	    } catch (Exception e) {
+	    }
+	    try {
+		prest = conn.prepareStatement("UPDATE `" + getPrefix() + "log` SET `userid` = ? WHERE `player_uuid` = ?;");
+		conn.setAutoCommit(false);
+		for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
+		    prest.setInt(1, users.getValue().getID());
+		    prest.setString(2, users.getKey());
+		    prest.addBatch();
+		}
+		prest.executeBatch();
+		conn.commit();
+		conn.setAutoCommit(true);
+	    } finally {
+		if (prest != null) {
+		    try {
+			prest.close();
+		    } catch (SQLException e) {
+		    }
 		}
 	    }
+	    try {
+		executeSQL("ALTER TABLE `" + getPrefix() + "log` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
+	    } catch (Exception e) {
+	    }
+	    // Create new points table
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "points` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `totalpoints` double, `currentpoints` double);");
+	    } catch (Exception e) {
+	    }
 	}
-	executeSQL("ALTER TABLE `" + getPrefix() + "log` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
-
-	// Create new points table
-	executeSQL("CREATE TABLE `" + getPrefix()
-	    + "points` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `totalpoints` double, `currentpoints` double);");
     }
 }

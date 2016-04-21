@@ -57,12 +57,30 @@ public class McMMOlistener implements Listener {
     }
 
     public static double getMultiplier(Player player) {
-	if (AbilityAPI.treeFellerEnabled(player))
+	try {
+	    if (AbilityAPI.treeFellerEnabled(player))
+		return Jobs.getGCManager().TreeFellerMultiplier;
+	} catch (Exception e) {
+	    // If fails, apply tree feller multiplier
 	    return Jobs.getGCManager().TreeFellerMultiplier;
-	else if (AbilityAPI.gigaDrillBreakerEnabled(player))
+	}
+
+	try {
+	    if (AbilityAPI.gigaDrillBreakerEnabled(player))
+		return Jobs.getGCManager().gigaDrillMultiplier;
+	} catch (Exception e) {
+	    // If fails, apply giga drill multiplier
 	    return Jobs.getGCManager().gigaDrillMultiplier;
-	else if (AbilityAPI.superBreakerEnabled(player))
+	}
+
+	try {
+	    if (AbilityAPI.superBreakerEnabled(player))
+		return Jobs.getGCManager().superBreakerMultiplier;
+	} catch (Exception e) {
+	    // If fails, apply super breaker multiplier
 	    return Jobs.getGCManager().superBreakerMultiplier;
+	}
+
 	return 1.0;
     }
 

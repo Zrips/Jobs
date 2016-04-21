@@ -875,10 +875,11 @@ public class Jobs {
 		if (amount == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
 
-		if (Jobs.getGCManager().BossBarEnabled && Jobs.getGCManager().BossBarShowOnEachAction){
-		    Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
-		}else if (Jobs.getGCManager().BossBarEnabled && !Jobs.getGCManager().BossBarShowOnEachAction)
-		    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
+		if (expAmount != 0D)
+		    if (Jobs.getGCManager().BossBarEnabled && Jobs.getGCManager().BossBarShowOnEachAction) {
+			Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
+		    } else if (Jobs.getGCManager().BossBarEnabled && !Jobs.getGCManager().BossBarShowOnEachAction)
+			jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 
 		Jobs.getEconomy().pay(jPlayer, amount, pointAmount, expAmount);
 		int oldLevel = prog.getLevel();

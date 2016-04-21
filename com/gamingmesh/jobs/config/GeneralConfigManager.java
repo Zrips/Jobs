@@ -59,6 +59,7 @@ public class GeneralConfigManager {
     public String modifyChatSeparator;
     protected int economyBatchDelay;
     protected boolean saveOnDisconnect;
+    protected boolean MultiServerCompatability;
     public boolean LocalOfflinePlayersData;
     public boolean MythicMobsEnabled;
     public boolean LoggingUse;
@@ -273,6 +274,10 @@ public class GeneralConfigManager {
 	return saveOnDisconnect;
     }
 
+    public synchronized boolean MultiServerCompatability() {
+	return MultiServerCompatability;
+    }
+
     public synchronized Locale getLocale() {
 	return locale;
     }
@@ -405,6 +410,13 @@ public class GeneralConfigManager {
 	    "Player data is always periodically auto-saved and autosaved during a clean shutdown.",
 	    "Only enable this if you have a multi-server setup, or have a really good reason for enabling this.", "Turning this on will decrease database performance.");
 	saveOnDisconnect = c.get("save-on-disconnect", false);
+
+	c.getW().addComment("MultiServerCompatability", "Enable if you are using one data base for multiple servers across bungee network",
+	    "This will force to load players data every time he is logging in to have most up to date data instead of having preloaded data",
+	    "This will enable automaticaly save-on-disconnect feature");
+	MultiServerCompatability = c.get("MultiServerCompatability", false);
+	if (MultiServerCompatability)
+	    saveOnDisconnect = true;
 
 	c.getW().addComment("Optimizations.AutoJobJoinDelay", "Delay in seconds to perform auto join job if used after player joins server",
 	    "If you using offline server, try to keep it slightly more than your login plugin gives time to enter password",
