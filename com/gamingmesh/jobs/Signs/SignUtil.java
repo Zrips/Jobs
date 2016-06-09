@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -148,7 +149,7 @@ public class SignUtil {
 				sign.setLine(i, line);
 			    }
 			    sign.update();
-			    UpdateHead(sign.getLocation(), ((TopList) PlayerList.get(0)).getPlayerName(), timelapse);
+			    UpdateHead(sign, ((TopList) PlayerList.get(0)).getPlayerName(), timelapse);
 			} else {
 			    String PlayerName = ((TopList) PlayerList.get(0)).getPlayerName();
 			    if (PlayerName.length() > 8) {
@@ -183,7 +184,7 @@ public class SignUtil {
 
 			    sign.setLine(3, line1);
 			    sign.update();
-			    UpdateHead(sign.getLocation(), ((TopList) PlayerList.get(0)).getPlayerName(), timelapse);
+			    UpdateHead(sign, ((TopList) PlayerList.get(0)).getPlayerName(), timelapse);
 			}
 
 			timelapse++;
@@ -194,22 +195,28 @@ public class SignUtil {
 	return true;
     }
 
-    public void UpdateHead(final Location loc, final String Playername, final int timelapse) {
+    public void UpdateHead(final org.bukkit.block.Sign sign, final String Playername, final int timelapse) {
 
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    public void run() {
 
-		loc.setY(loc.getY() + 1);
+		org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getData();
+		BlockFace directionFacing = signMat.getFacing();
+
+		Location loc = sign.getLocation().clone();
+		loc.add(0, 1, 0);
 
 		if (Playername == null)
 		    return;
 
 		Block block = loc.getBlock();
 
-		if (block == null)
-		    return;
+		if (block == null || !(block.getState() instanceof Skull))
+		    loc.add(directionFacing.getOppositeFace().getModX(), 0, directionFacing.getOppositeFace().getModZ());
 
-		if (!(block.getState() instanceof Skull))
+		block = loc.getBlock();
+
+		if (block == null || !(block.getState() instanceof Skull))
 		    return;
 
 		Skull skull = (Skull) block.getState();

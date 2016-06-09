@@ -379,8 +379,8 @@ public class LanguageManager {
 
 	    c.get("command.reload.help.info", "Reload configurations.");
 
-	    c.get("command.toggle.help.info", "Toggles payment output on action bar.");
-	    c.get("command.toggle.help.args", "");
+	    c.get("command.toggle.help.info", "Toggles payment output on action bar or bossbar.");
+	    c.get("command.toggle.help.args", "[actionbar/bossbar]");
 	    c.get("command.toggle.output.turnedoff", "&4This feature are turned off!");
 	    c.get("command.toggle.output.paid.main", "&aYou got:");
 	    c.get("command.toggle.output.paid.money", "&e[amount] money");

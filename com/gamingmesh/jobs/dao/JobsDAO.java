@@ -43,7 +43,6 @@ import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -77,18 +76,17 @@ public abstract class JobsDAO {
 	}
 
 	try {
-	    
-	    Debug.D("V"+version);
 	    if (version <= 1)
 		checkUpdate();
 	    else {
 		if (version <= 2)
 		    checkUpdate2();
-
 		checkUpdate4();
 		checkUpdate5();
-		checkUpdate6();
-		checkUpdate7();
+		if (version <= 6)
+		    checkUpdate6();
+		if (version <= 7)
+		    checkUpdate7();
 		// creating explore database
 		checkUpdate8();
 		checkUpdate9();
@@ -126,7 +124,7 @@ public abstract class JobsDAO {
 	return prefix;
     }
 
-    public synchronized List<JobsDAOData> getAllJobs(OfflinePlayer player) {
+    public List<JobsDAOData> getAllJobs(OfflinePlayer player) {
 	return getAllJobs(player.getName(), player.getUniqueId());
     }
 
@@ -135,7 +133,7 @@ public abstract class JobsDAO {
      * @param playerUUID - the player being searched for
      * @return list of all of the names of the jobs the players are part of.
      */
-    public synchronized List<JobsDAOData> getAllJobs(String playerName, UUID uuid) {
+    public List<JobsDAOData> getAllJobs(String playerName, UUID uuid) {
 
 	int id = -1;
 	PlayerInfo userData = null;
@@ -924,9 +922,10 @@ public abstract class JobsDAO {
 
 		    JobsPlayer jobsinfo = Jobs.getPlayerManager().getJobsPlayer(player);
 		    Job job = Jobs.getJob(jobsname);
-		    if (job != null) {
+		    if (job != null && jobsinfo != null) {
 			JobProgression prog = jobsinfo.getJobProgression(job);
-			jobs.add(new TopList(jobsinfo.getUserId(), prog.getLevel(), (int) prog.getExperience()));
+			if (prog != null)
+			    jobs.add(new TopList(jobsinfo.getUserId(), prog.getLevel(), (int) prog.getExperience()));
 		    }
 		} else {
 		    jobs.add(new TopList(res.getInt("userid"), res.getInt("level"), res.getInt("experience")));

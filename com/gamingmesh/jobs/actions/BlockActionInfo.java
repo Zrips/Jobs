@@ -18,14 +18,41 @@
 
 package com.gamingmesh.jobs.actions;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
 public class BlockActionInfo extends MaterialActionInfo implements ActionInfo {
-    @SuppressWarnings("deprecation")
-	public BlockActionInfo(Block block, ActionType type) {
-        super(block.getType(), block.getData(), type);
+    public BlockActionInfo(Block block, ActionType type) {
+	super(block.getType(), getData(block), type);
+    }
+
+    private static byte getData(Block block) {
+	@SuppressWarnings("deprecation")
+	byte data = block.getData();
+	if (block.getType() == Material.COCOA)
+	    switch (data) {
+	    case 0:
+	    case 1:
+	    case 2:
+	    case 3:
+		data = 0;
+		break;
+	    case 4:
+	    case 5:
+	    case 6:
+	    case 7:
+		data = 1;
+		break;
+	    case 8:
+	    case 9:
+	    case 10:
+	    case 11:
+		data = 2;
+		break;
+	    }
+	return data;
     }
 }

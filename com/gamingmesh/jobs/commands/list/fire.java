@@ -31,6 +31,12 @@ public class fire implements Cmd {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+	
+	if (jPlayer == null){
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
+	    return true;
+	}
+	
 	if (!jPlayer.isInJob(job)) {
 	    String message = ChatColor.RED + Jobs.getLanguage().getMessage("command.fire.error.nojob", "%jobname%", job.getChatColor() + job.getName() + ChatColor.RED);
 	    sender.sendMessage(message);

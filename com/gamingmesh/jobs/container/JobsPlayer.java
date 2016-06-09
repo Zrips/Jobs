@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -46,7 +47,8 @@ public class JobsPlayer {
     // player online status
     private volatile boolean isOnline = false;
 
-    private OfflinePlayer player = null;
+    private OfflinePlayer OffPlayer = null;
+    private Player player = null;
 
     private double VipSpawnerMultiplier = -1;
 
@@ -66,7 +68,7 @@ public class JobsPlayer {
 
     public JobsPlayer(String userName, OfflinePlayer player) {
 	this.userName = userName;
-	this.player = player;
+	this.OffPlayer = player;
     }
 
     public static JobsPlayer loadFromDao(JobsDAO dao, OfflinePlayer player) {
@@ -99,6 +101,10 @@ public class JobsPlayer {
 	return jPlayer;
     }
 
+    public void setPlayer(Player p) {
+	this.player = p;
+    }
+
     public static void loadLogFromDao(JobsPlayer jPlayer) {
 	Jobs.getJobsDAO().loadLog(jPlayer);
     }
@@ -109,7 +115,6 @@ public class JobsPlayer {
 
     public synchronized void clearUpdateBossBarFor() {
 	this.updateBossBarFor.clear();
-	;
     }
 
     public synchronized List<BossBarInfo> getBossBarInfo() {
@@ -138,8 +143,10 @@ public class JobsPlayer {
      * Get the player
      * @return the player
      */
-    public OfflinePlayer getPlayer() {
-	return this.player;
+    public Player getPlayer() {
+	if (this.player != null)
+	    return this.player;
+	return Bukkit.getPlayer(this.playerUUID);
     }
 
     /**
@@ -147,7 +154,7 @@ public class JobsPlayer {
      * @return the Multiplier
      */
     public double getVipSpawnerMultiplier() {
-	if (!this.player.isOnline())
+	if (!this.OffPlayer.isOnline())
 	    return 1.0;
 	if (VipSpawnerMultiplier < 0)
 	    updateVipSpawnerMultiplier();
@@ -165,7 +172,7 @@ public class JobsPlayer {
      * Get the MoneyBoost
      * @return the MoneyBoost
      */
-    public static double getMoneyBoost(String JobName, OfflinePlayer player) {
+    public static double getMoneyBoost(String JobName, Player player) {
 	double MoneyBoost = 1.0;
 	if (JobName != null) {
 	    if (Perm.hasPermission(player, "jobs.boost." + JobName + ".money") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(
@@ -180,7 +187,7 @@ public class JobsPlayer {
      * Get the PointBoost
      * @return the PointBoost
      */
-    public static double getPointBoost(String JobName, OfflinePlayer player) {
+    public static double getPointBoost(String JobName, Player player) {
 	double PointBoost = 1.0;
 	if (JobName != null) {
 	    if (Perm.hasPermission(player, "jobs.boost." + JobName + ".points") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(
@@ -195,7 +202,7 @@ public class JobsPlayer {
      * Get the ExpBoost
      * @return the ExpBoost
      */
-    public static double getExpBoost(String JobName, OfflinePlayer player) {
+    public static double getExpBoost(String JobName, Player player) {
 	Double ExpBoost = 1.0;
 	if (player == null || JobName == null)
 	    return 1.0;
@@ -285,8 +292,10 @@ public class JobsPlayer {
      * @return true if have
      */
     public boolean havePermission(String perm) {
-	if (this.isOnline)
-	    return ((Player) player).hasPermission(perm);
+	if (this.player == null)
+	    this.player = Bukkit.getPlayer(this.playerUUID);
+	if (this.player != null)
+	    return Perm.hasPermission(player, perm);
 	return false;
     }
 
@@ -446,7 +455,7 @@ public class JobsPlayer {
 	if (level != prog.getLevel()) {
 	    prog.setLevel(level);
 	    reloadHonorific();
-	    Jobs.getPermissionHandler().recalculatePermissions(this);	    
+	    Jobs.getPermissionHandler().recalculatePermissions(this);
 	}
 //	}
     }

@@ -8,7 +8,12 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Guardian;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Horse.Variant;
+import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,14 +28,37 @@ public class v1_8 implements NMS {
     }
 
     @Override
-    public boolean isElderGuardian(Entity entity) {
-	if (entity instanceof Guardian) {
-	    Guardian guardian = (Guardian) entity;
-	    if (guardian.isElder())
-		return true;
+    public String getRealType(Entity entity) {
+	String name = entity.getType().name();
+	switch (entity.getType()) {
+	case GUARDIAN:
+	    Guardian g = (Guardian) entity;
+	    if (g.isElder())
+		name = "GuardianElder";
+	    break;
+	case HORSE:
+	    Horse horse = (Horse) entity;
+	    if (horse.getVariant() == Variant.UNDEAD_HORSE)
+		name = "HorseZombie";
+	    if (horse.getVariant() == Variant.SKELETON_HORSE)
+		name = "HorseSkeleton";
+	    break;
+	case SKELETON:
+	    Skeleton skeleton = (Skeleton) entity;
+	    if (skeleton.getSkeletonType() == SkeletonType.WITHER)
+		name = "SkeletonWither";
+	    break;
+	case ZOMBIE:
+	    Zombie zombie = (Zombie) entity;
+	    if (zombie.isVillager())
+		return "ZombieVillager";
+	    break;
+	default:
+	    break;
 	}
-	return false;
+	return name;
     }
+    
     @SuppressWarnings("deprecation")
     @Override
     public ItemStack getItemInMainHand(Player player) {

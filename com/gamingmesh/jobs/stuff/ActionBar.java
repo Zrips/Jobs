@@ -36,21 +36,22 @@ public class ActionBar {
 
     private void getInfo() {
 	try {
-	    version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-
+	    String[] v = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
+	    version = v[v.length - 1];
 	    // Translating version to integer for simpler use
 	    try {
 		cleanVersion = Integer.parseInt(version.replace("v", "").replace("V", "").replace("_", "").replace("r", "").replace("R", ""));
+		cleanVersion *= 10;
 	    } catch (NumberFormatException e) {
-		// Fail save if it for some reason can't translate version to integer
-		if (version.contains("v1_7"))
-		    cleanVersion = 1700;
-		if (version.contains("v1_6"))
-		    cleanVersion = 1600;
-		if (version.contains("v1_5"))
-		    cleanVersion = 1500;
+		// Fail safe if it for some reason can't translate version to integer
 		if (version.contains("v1_4"))
 		    cleanVersion = 1400;
+		if (version.contains("v1_5"))
+		    cleanVersion = 1500;
+		if (version.contains("v1_6"))
+		    cleanVersion = 1600;
+		if (version.contains("v1_7"))
+		    cleanVersion = 1700;
 		if (version.contains("v1_8_R1"))
 		    cleanVersion = 1810;
 		if (version.contains("v1_8_R2"))
@@ -61,12 +62,12 @@ public class ActionBar {
 		    cleanVersion = 1910;
 		if (version.contains("v1_9_R2"))
 		    cleanVersion = 1920;
+		if (version.contains("v1_10_R1"))
+		    cleanVersion = 11010;
 	    }
 
-	    if (cleanVersion < 100)
-		cleanVersion = cleanVersion * 10;
-	    if (cleanVersion < 1000)
-		cleanVersion = cleanVersion * 10;
+	    if (cleanVersion < 1400)
+		cleanVersion *= 10;
 
 	    packetType = Class.forName(getPacketPlayOutChat());
 	    Class<?> typeCraftPlayer = Class.forName(getCraftPlayerClasspath());

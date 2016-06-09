@@ -1,10 +1,13 @@
 package com.gamingmesh.jobs.nmsUtil;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Guardian;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
@@ -16,11 +19,11 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.NMS;
 
-public class v1_7 implements NMS {
+public class v1_10 implements NMS {
     @Override
     public List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
 	List<Block> blocks = new ArrayList<Block>();
-	blocks.add(event.getBlock());
+	blocks.addAll(event.getBlocks());
 	return blocks;
     }
 
@@ -28,6 +31,11 @@ public class v1_7 implements NMS {
     public String getRealType(Entity entity) {
 	String name = entity.getType().name();
 	switch (entity.getType()) {
+	case GUARDIAN:
+	    Guardian g = (Guardian) entity;
+	    if (g.isElder())
+		name = "GuardianElder";
+	    break;
 	case HORSE:
 	    Horse horse = (Horse) entity;
 	    if (horse.getVariant() == Variant.UNDEAD_HORSE)
@@ -39,6 +47,8 @@ public class v1_7 implements NMS {
 	    Skeleton skeleton = (Skeleton) entity;
 	    if (skeleton.getSkeletonType() == SkeletonType.WITHER)
 		name = "SkeletonWither";
+	    if (skeleton.getSkeletonType() == SkeletonType.STRAY)
+		name = "SkeletonStray";
 	    break;
 	case ZOMBIE:
 	    Zombie zombie = (Zombie) entity;
@@ -51,15 +61,14 @@ public class v1_7 implements NMS {
 	return name;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public ItemStack getItemInMainHand(Player player) {
-	return player.getInventory().getItemInHand();
+	return player.getInventory().getItemInMainHand();
     }
-    
-    @SuppressWarnings("deprecation")
+
     @Override
     public Block getTargetBlock(Player player, int range) {
-	return player.getTargetBlock((HashSet<Byte>) null, range);
+	return player.getTargetBlock((Set<Material>) null, range);
     }
+
 }

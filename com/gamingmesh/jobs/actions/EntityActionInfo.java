@@ -19,10 +19,6 @@
 package com.gamingmesh.jobs.actions;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Skeleton.SkeletonType;
-import org.bukkit.entity.Zombie;
-
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
@@ -37,23 +33,8 @@ public class EntityActionInfo extends BaseActionInfo implements ActionInfo {
     }
 
     @Override
-    public String getName() {
-	if (this.entity instanceof Skeleton) {
-	    Skeleton skeleton = (Skeleton) this.entity;
-	    if (skeleton.getSkeletonType() == SkeletonType.WITHER)
-		return "WitherSkeleton";
-	}
-
-	if (this.entity instanceof Zombie) {
-	    Zombie zombie = (Zombie) this.entity;
-	    if (zombie.isVillager())
-		return "ZombieVillager";
-	}
-
-	if (Jobs.getNms().isElderGuardian(this.entity))
-	    return "ElderGuardian";
-
-	return entity.getType().toString();
+    public String getName() {	
+	return Jobs.getNms().getRealType(entity);
     }
 
     @Override

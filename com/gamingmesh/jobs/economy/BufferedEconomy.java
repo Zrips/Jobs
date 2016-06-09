@@ -133,10 +133,9 @@ public class BufferedEconomy {
 		this.ServerAccount = Bukkit.getOfflinePlayer(ServerAccountname);
 
 	    if (this.ServerTaxesAccount == null)
-		this.ServerTaxesAccount = Bukkit.getOfflinePlayer(ServerAccountname);
+		this.ServerTaxesAccount = Bukkit.getOfflinePlayer(ServerTaxesAccountname);
 
 	    if (Jobs.getGCManager().UseTaxes && Jobs.getGCManager().TransferToServerAccount && ServerTaxesAccount != null) {
-
 		economy.depositPlayer(ServerTaxesAccount, TaxesAmount);
 
 		if (ServerTaxesAccount.isOnline()) {
@@ -167,7 +166,7 @@ public class BufferedEconomy {
 		// If event is canceled, dont do anything
 		if (JobsPaymentEvent.isCancelled())
 		    continue;
-		    
+
 		double newAmount = JobsPaymentEvent.getAmount();
 		payment.setAmount(newAmount);
 

@@ -518,10 +518,16 @@ public class JobsCommands implements CommandExecutor {
 	String pros = ChatColor.YELLOW + "\u258F";
 	if (current < 0)
 	    current = 0;
+	if (max < current)
+	    max = current;
 	int percentage = (int) ((current * 50.0) / max);
 	for (int i = 0; i < percentage; i++) {
 	    message += pos;
 	}
+
+	if (50 - percentage < 0)
+	    percentage = 50;
+
 	for (int i = 0; i < 50 - percentage; i++) {
 	    message += pros;
 	}

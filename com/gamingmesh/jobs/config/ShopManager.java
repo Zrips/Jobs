@@ -27,6 +27,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.ShopItem;
+import com.gamingmesh.jobs.stuff.Perm;
 
 public class ShopManager {
     private JobsPlugin plugin;
@@ -46,9 +47,9 @@ public class ShopManager {
 	ShopItem item = list.get(slot);
 	PlayerPoints pointsInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(player.getUniqueId());
 
-	if (!player.hasPermission("jobs.items.bypass")) {
+	if (!Perm.hasPermission(player, "jobs.items.bypass")) {
 	    for (String onePerm : item.getRequiredPerm()) {
-		if (!player.hasPermission(onePerm)) {
+		if (!Perm.hasPermission(player, onePerm)) {
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPermForItem"));
 		    return;
 		}
@@ -119,7 +120,7 @@ public class ShopManager {
 
 	}
 
-	if (!player.hasPermission("jobs.items.bypass")) {
+	if (!Perm.hasPermission(player, "jobs.items.bypass")) {
 	    pointsInfo.takePoints(item.getPrice());
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPrice()));
 	}
@@ -169,7 +170,7 @@ public class ShopManager {
 
 	    if (item.isHideWithoutPerm()) {
 		for (String onePerm : item.getRequiredPerm()) {
-		    if (!player.hasPermission(onePerm)) {
+		    if (!Perm.hasPermission(player, onePerm)) {
 			mat = Material.STONE_BUTTON;
 			Lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPermToBuy"));
 			break;

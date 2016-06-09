@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.config;
 
 import java.util.HashMap;
+
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
@@ -32,8 +33,10 @@ public class ExploreManager {
     }
 
     public void setExploreEnabled() {
-	this.exploreEnabled = true;
-	Jobs.getJobsDAO().loadExplore();
+	if (!exploreEnabled) {
+	    this.exploreEnabled = true;
+	    Jobs.getJobsDAO().loadExplore();
+	}
     }
 
     public HashMap<String, ExploreRegion> getWorlds() {

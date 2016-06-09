@@ -34,7 +34,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
@@ -50,10 +49,13 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
+import com.gamingmesh.jobs.stuff.Perm;
 
 public class PlayerManager {
 //    private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
+    private ConcurrentHashMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<String, JobsPlayer>();
     private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<String, JobsPlayer>();
     private PointsData PointsDatabase = new PointsData();
 
@@ -70,6 +72,14 @@ public class PlayerManager {
 
     public HashMap<String, PlayerInfo> getPlayerMap() {
 	return PlayerMap;
+    }
+
+    public ConcurrentHashMap<String, JobsPlayer> getPlayersCache() {
+	return playersCache;
+    }
+
+    public ConcurrentHashMap<String, JobsPlayer> getPlayers() {
+	return players;
     }
 
     public int getPlayerIdByName(String name) {
@@ -107,12 +117,16 @@ public class PlayerManager {
      * @param playername
      */
     public void playerJoin(Player player) {
-	JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
+	JobsPlayer jPlayer = playersCache.get(player.getName().toLowerCase());
 	if (jPlayer == null) {
 	    jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
+
 	    JobsPlayer.loadLogFromDao(jPlayer);
-	    players.put(player.getName().toLowerCase(), jPlayer);
+	    playersCache.put(player.getName().toLowerCase(), jPlayer);
 	}
+
+	players.put(player.getName().toLowerCase(), jPlayer);
+
 	AutoJoinJobs(player);
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
@@ -174,7 +188,7 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(Player player) {
-	return players.get(player.getName().toLowerCase());
+	return playersCache.get(player.getName().toLowerCase());
     }
 
     /**
@@ -183,7 +197,7 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {
-	return players.get(playerName.toLowerCase());
+	return playersCache.get(playerName.toLowerCase());
     }
 
     public JobsPlayer getJobsPlayerOffline(OfflinePlayer player) {
@@ -196,7 +210,7 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayerOffline(String playerName) {
-	JobsPlayer jPlayer = players.get(playerName.toLowerCase());
+	JobsPlayer jPlayer = playersCache.get(playerName.toLowerCase());
 	if (jPlayer != null)
 	    return jPlayer;
 
@@ -419,7 +433,7 @@ public class PlayerManager {
      */
     public void performLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
 
-	Player player = (Player) jPlayer.getPlayer();
+	Player player = jPlayer.getPlayer();
 	JobProgression prog = jPlayer.getJobProgression(job);
 	if (prog == null)
 	    return;
@@ -594,23 +608,19 @@ public class PlayerManager {
      */
     public boolean getJobsLimit(Player player, Short currentCount) {
 
-	if (Perm(player, "jobs.max.*"))
+	if (Perm.hasPermission(player, "jobs.max.*"))
 	    return true;
 
 	int totalJobs = Jobs.getJobs().size() + 5;
 
 	short count = (short) Jobs.getGCManager().getMaxJobs();
 	for (short ctr = 0; ctr < totalJobs; ctr++) {
-	    if (Perm(player, "jobs.max." + ctr))
+	    if (Perm.hasPermission(player, "jobs.max." + ctr))
 		count = ctr;
 	    if (count > currentCount)
 		return true;
 	}
 	return false;
-    }
-
-    private boolean Perm(Player player, String permission) {
-	return player.hasPermission(permission);
     }
 
     /**
@@ -619,19 +629,21 @@ public class PlayerManager {
      * @param job
      * @return double of boost
      */
-    public Double GetMoneyBoost(Player dude, Job job) {
+    public Double GetMoneyBoost(Player player, Job job) {
 	Double Boost = 1.0;
-	if (dude != null && job.getName() != null) {
-	    if (Perm(dude, "jobs.boost." + job.getName() + ".money") || Perm(dude, "jobs.boost." + job.getName() + ".all") || Perm(dude, "jobs.boost.all.all") || Perm(
-		dude, "jobs.boost.all.money")) {
+	if (player != null && job.getName() != null) {
+	    if (Perm.hasPermission(player, "jobs.boost." + job.getName() + ".money") ||
+		Perm.hasPermission(player, "jobs.boost." + job.getName() + ".all") ||
+		Perm.hasPermission(player, "jobs.boost.all.all") ||
+		Perm.hasPermission(player, "jobs.boost.all.money")) {
 		Boost = Jobs.getGCManager().BoostMoney;
 	    }
 	}
 	return Boost;
     }
 
-    public double GetMoneyBoostInPerc(Player dude, Job job) {
-	double Boost = GetMoneyBoost(dude, job) * 100.0 - 100.0;
+    public double GetMoneyBoostInPerc(Player player, Job job) {
+	double Boost = GetMoneyBoost(player, job) * 100.0 - 100.0;
 	return Boost;
     }
 
@@ -641,19 +653,21 @@ public class PlayerManager {
      * @param job
      * @return double of boost
      */
-    public Double GetPointBoost(Player dude, Job job) {
+    public Double GetPointBoost(Player player, Job job) {
 	Double Boost = 1.0;
-	if (dude != null && job.getName() != null) {
-	    if (Perm(dude, "jobs.boost." + job.getName() + ".points") || Perm(dude, "jobs.boost." + job.getName() + ".all") || Perm(dude, "jobs.boost.all.all") || Perm(
-		dude, "jobs.boost.all.points")) {
+	if (player != null && job.getName() != null) {
+	    if (Perm.hasPermission(player, "jobs.boost." + job.getName() + ".points") ||
+		Perm.hasPermission(player, "jobs.boost." + job.getName() + ".all") ||
+		Perm.hasPermission(player, "jobs.boost.all.all") ||
+		Perm.hasPermission(player, "jobs.boost.all.points")) {
 		Boost = Jobs.getGCManager().BoostPoints;
 	    }
 	}
 	return Boost;
     }
 
-    public double GetPointBoostInPerc(Player dude, Job job) {
-	double Boost = GetPointBoost(dude, job) * 100.0 - 100.0;
+    public double GetPointBoostInPerc(Player player, Job job) {
+	double Boost = GetPointBoost(player, job) * 100.0 - 100.0;
 	return Boost;
     }
 
@@ -663,20 +677,22 @@ public class PlayerManager {
      * @param job
      * @return double of boost
      */
-    public Double GetExpBoost(Player dude, Job job) {
+    public Double GetExpBoost(Player player, Job job) {
 	Double Boost = 1.0;
-	if (dude == null || job.getName() == null)
+	if (player == null || job.getName() == null)
 	    return 1.0;
-	if (Perm(dude, "jobs.boost." + job.getName() + ".exp") || Perm(dude, "jobs.boost." + job.getName() + ".all") || Perm(dude, "jobs.boost.all.all") || Perm(dude,
-	    "jobs.boost.all.exp")) {
+	if (Perm.hasPermission(player, "jobs.boost." + job.getName() + ".exp") ||
+	    Perm.hasPermission(player, "jobs.boost." + job.getName() + ".all") ||
+	    Perm.hasPermission(player, "jobs.boost.all.all") ||
+	    Perm.hasPermission(player, "jobs.boost.all.exp")) {
 	    Boost = Jobs.getGCManager().BoostExp;
 	}
 
 	return Boost;
     }
 
-    public double GetExpBoostInPerc(Player dude, Job job) {
-	double Boost = GetExpBoost(dude, job) * 100.0 - 100.0;
+    public double GetExpBoostInPerc(Player player, Job job) {
+	double Boost = GetExpBoost(player, job) * 100.0 - 100.0;
 	return Boost;
     }
 
@@ -814,7 +830,6 @@ public class PlayerManager {
     public void AutoJoinJobs(final Player player) {
 	if (player == null)
 	    return;
-	// ignoring OP players for obvious reasons
 	if (player.isOp())
 	    return;
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -824,11 +839,21 @@ public class PlayerManager {
 		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 		if (jPlayer == null)
 		    return;
+		int confMaxJobs = Jobs.getGCManager().getMaxJobs();
 		for (Job one : Jobs.getJobs()) {
-		    JobProgression cur = jPlayer.getJobProgression(one);
-		    if (cur == null && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase())) {
+
+		    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
+			continue;
+
+		    short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
+		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(player, PlayerMaxJobs))
+			break;
+
+		    if (jPlayer.isInJob(one))
+			continue;
+
+		    if (Perm.hasPermission(player, "jobs.autojoin." + one.getName().toLowerCase()))
 			Jobs.getPlayerManager().joinJob(jPlayer, one);
-		    }
 		}
 		return;
 	    }

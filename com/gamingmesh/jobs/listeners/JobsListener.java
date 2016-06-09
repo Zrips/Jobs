@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs.listeners;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -293,7 +294,7 @@ public class JobsListener implements Listener {
 
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
-	
+
 	Block block = event.getBlock();
 
 	if (!(block.getState() instanceof Sign))
@@ -305,7 +306,7 @@ public class JobsListener implements Listener {
 
 	if (!ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[Jobs]"))
 	    return;
-	
+
 	if (!signtype.equalsIgnoreCase("toplist") && !signtype.equalsIgnoreCase("gtoplist"))
 	    return;
 
@@ -543,7 +544,14 @@ public class JobsListener implements Listener {
 	String name = null;
 	List<String> lore = new ArrayList<String>();
 
-	Map<Enchantment, Integer> enchants = iih.getEnchantments();
+	Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+	try {
+	    enchants = iih.getEnchantments();
+	} catch (NullPointerException e) {
+	    return;
+	}
+	if (enchants.isEmpty())
+	    return;
 
 	if (iih.hasItemMeta()) {
 	    ItemMeta meta = iih.getItemMeta();

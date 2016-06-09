@@ -410,6 +410,28 @@ public class Jobs {
      */
     public static void startup() throws IOException {
 	reload();
+
+	// add all online players
+	if (!Jobs.getGCManager().MultiServerCompatability()) {
+	    int i = 0;
+	    long time = System.currentTimeMillis();
+	    for (OfflinePlayer offline : Bukkit.getServer().getOfflinePlayers()) {
+		if (offline.isOnline())
+		    continue;
+
+		long lastPlayed = offline.getLastPlayed();
+		int dif = (int) ((time - lastPlayed) / 1000 / 60 / 60 / 24);
+		if (dif >= 7)
+		    continue;
+
+		JobsPlayer jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), offline);
+		JobsPlayer.loadLogFromDao(jPlayer);
+		Jobs.getPlayerManager().getPlayersCache().put(offline.getName().toLowerCase(), jPlayer);
+		i++;
+	    }
+	    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + i + " players data from last week");
+	}
+
 	// add all online players
 	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
 	    Jobs.getPlayerManager().playerJoin(online);

@@ -31,17 +31,44 @@ public class blockinfo implements Cmd {
 	if (block == null || block.getState().getType() == Material.AIR)
 	    return true;
 
-	String dataString = block.getData() == 0 ? "" : "-" + block.getData();
+	String dataString = getData(block) == 0 ? "" : "-" + getData(block);
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.name", "%blockname%", block.getType().name()));
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.id", "%blockid%", block.getTypeId()));
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.data", "%blockdata%", block.getData()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.data", "%blockdata%", getData(block)));
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.usage", "%first%", block.getTypeId() + dataString,
 	    "%second%", block.getType().name() + dataString));
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 
 	return true;
+    }
+
+    private byte getData(Block block) {
+	@SuppressWarnings("deprecation")
+	byte data = block.getData();
+	if (block.getType() == Material.COCOA)
+	    switch (data) {
+	    case 0:
+	    case 1:
+	    case 2:
+	    case 3:
+		data = 0;
+		break;
+	    case 4:
+	    case 5:
+	    case 6:
+	    case 7:
+		data = 1;
+		break;
+	    case 8:
+	    case 9:
+	    case 10:
+	    case 11:
+		data = 2;
+		break;
+	    }
+	return data;
     }
 
 }

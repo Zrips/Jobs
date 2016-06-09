@@ -99,17 +99,23 @@ Jobs:
     #   Ghast
     #   Giant
     #   Guardian
+    #   GuardianElder
     #   Horse
+    #   HorseZombie
+    #   HorseSkeleton
     #   Iron_golem
     #   Magma_cube
     #   Mushroom_cow
     #   Ocelot
     #   Pig
     #   Player
+    #   Polar_Bear
     #   Rabbit
     #   Sheep
     #   Silverfish
     #   Skeleton
+    #   SkeletonWither
+    #   SkeletonStray
     #   Shulker
     #   Slime
     #   Snowman
@@ -120,6 +126,8 @@ Jobs:
     #   Wither
     #   Wolf
     #   Zombie  
+    #   ZombieVillager
+    #   ZombieHusk
     #       
     #
     # NOTE: mob names are case sensitive.

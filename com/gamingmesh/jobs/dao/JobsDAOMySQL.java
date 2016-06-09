@@ -162,6 +162,8 @@ public class JobsDAOMySQL extends JobsDAO {
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
 	} finally {
 	    if (prest != null) {
 		try {
@@ -175,6 +177,8 @@ public class JobsDAOMySQL extends JobsDAO {
 	    if (rows == 0)
 		executeSQL("CREATE TABLE `" + getPrefix()
 		    + "archive` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` binary(16) NOT NULL, `username` varchar(20), `job` varchar(20), `experience` int, `level` int);");
+	} catch (Exception e) {
+	    e.printStackTrace();
 	} finally {
 	}
     }
@@ -224,6 +228,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	try {
 	    executeSQL("ALTER TABLE `" + getPrefix() + "log` MODIFY `itemname` VARCHAR(60);");
 	} catch (Exception e) {
+	    e.printStackTrace();
 	}
     }
 
@@ -440,6 +445,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	    try {
 		executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
 	    } catch (Exception e) {
+		e.printStackTrace();
 	    }
 	}
     }
@@ -462,6 +468,8 @@ public class JobsDAOMySQL extends JobsDAO {
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
 	} finally {
 	    if (prest != null) {
 		try {
@@ -473,8 +481,13 @@ public class JobsDAOMySQL extends JobsDAO {
 
 	try {
 	    if (rows == 0)
-		createDefaultExploreBase();
+		try {
+		    executeSQL("CREATE TABLE `" + getPrefix()
+			+ "explore` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `worldname` varchar(64), `chunkX` int, `chunkZ` int, `playerName` varchar(32));");
+		} catch (SQLException e) {
+		}
 	} catch (Exception e) {
+	    e.printStackTrace();
 	} finally {
 	}
     }
@@ -498,6 +511,8 @@ public class JobsDAOMySQL extends JobsDAO {
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
 	} finally {
 	    if (tempPrest != null) {
 		try {
@@ -516,13 +531,7 @@ public class JobsDAOMySQL extends JobsDAO {
 		while (res.next()) {
 		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
 		}
-	    } finally {
-		if (prest != null) {
-		    try {
-			prest.close();
-		    } catch (SQLException e) {
-		    }
-		}
+	    } catch (Exception e) {
 	    }
 
 	    try {
@@ -531,13 +540,7 @@ public class JobsDAOMySQL extends JobsDAO {
 		while (res.next()) {
 		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
 		}
-	    } finally {
-		if (prest != null) {
-		    try {
-			prest.close();
-		    } catch (SQLException e) {
-		    }
-		}
+	    } catch (Exception e) {
 	    }
 
 	    try {
@@ -546,18 +549,14 @@ public class JobsDAOMySQL extends JobsDAO {
 		while (res.next()) {
 		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
 		}
-	    } finally {
-		if (prest != null)
-		    try {
-			prest.close();
-		    } catch (SQLException e) {
-		    }
+	    } catch (Exception e) {
 	    }
 
 	    try {
 		executeSQL("CREATE TABLE `" + getPrefix()
 		    + "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
 	    } catch (Exception e) {
+		e.printStackTrace();
 	    }
 
 	    try {
@@ -571,13 +570,8 @@ public class JobsDAOMySQL extends JobsDAO {
 		prest.executeBatch();
 		conn.commit();
 		conn.setAutoCommit(true);
-	    } finally {
-		if (prest != null) {
-		    try {
-			prest.close();
-		    } catch (SQLException e) {
-		    }
-		}
+	    } catch (Exception e) {
+		e.printStackTrace();
 	    }
 
 	    HashMap<String, PlayerInfo> tempPlayerMap = new HashMap<String, PlayerInfo>();
@@ -588,13 +582,8 @@ public class JobsDAOMySQL extends JobsDAO {
 		while (res.next()) {
 		    tempPlayerMap.put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id")));
 		}
-	    } finally {
-		if (prest != null) {
-		    try {
-			prest.close();
-		    } catch (SQLException e) {
-		    }
-		}
+	    } catch (Exception e) {
+		e.printStackTrace();
 	    }
 
 	    // Modifying jobs main table
@@ -613,14 +602,10 @@ public class JobsDAOMySQL extends JobsDAO {
 		prest.executeBatch();
 		conn.commit();
 		conn.setAutoCommit(true);
-	    } finally {
-		if (prest != null) {
-		    try {
-			prest.close();
-		    } catch (SQLException e) {
-		    }
-		}
+	    } catch (Exception e) {
+		e.printStackTrace();
 	    }
+
 	    try {
 		executeSQL("ALTER TABLE `" + getPrefix() + "jobs` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
 	    } catch (Exception e) {
@@ -641,14 +626,10 @@ public class JobsDAOMySQL extends JobsDAO {
 		prest.executeBatch();
 		conn.commit();
 		conn.setAutoCommit(true);
-	    } finally {
-		if (prest != null) {
-		    try {
-			prest.close();
-		    } catch (SQLException e) {
-		    }
-		}
+	    } catch (Exception e) {
+		e.printStackTrace();
 	    }
+
 	    try {
 		executeSQL("ALTER TABLE `" + getPrefix() + "archive` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
 	    } catch (Exception e) {
@@ -669,6 +650,8 @@ public class JobsDAOMySQL extends JobsDAO {
 		prest.executeBatch();
 		conn.commit();
 		conn.setAutoCommit(true);
+	    } catch (Exception e) {
+		e.printStackTrace();
 	    } finally {
 		if (prest != null) {
 		    try {
@@ -682,7 +665,12 @@ public class JobsDAOMySQL extends JobsDAO {
 	    } catch (Exception e) {
 	    }
 	    // Create new points table
-	    createDefaultPointsBase();
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "points` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `totalpoints` double, `currentpoints` double);");
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
     }
 

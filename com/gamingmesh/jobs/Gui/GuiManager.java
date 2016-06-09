@@ -19,6 +19,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Perm;
 
 public class GuiManager {
 
@@ -91,7 +92,7 @@ public class GuiManager {
 	    }
 
 	    int maxlevel = 0;
-	    if (player.hasPermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
+	    if (Perm.hasPermission(player, "jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
 		maxlevel = job.getVipMaxLevel();
 	    else
 		maxlevel = job.getMaxLevel();
