@@ -14,6 +14,7 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -52,8 +53,10 @@ public class v1_10 implements NMS {
 	    break;
 	case ZOMBIE:
 	    Zombie zombie = (Zombie) entity;
-	    if (zombie.isVillager())
+	    if (zombie.isVillager() && zombie.getVillagerProfession() != Profession.HUSK)
 		return "ZombieVillager";
+	    if (zombie.isVillager() && zombie.getVillagerProfession() == Profession.HUSK)
+		return "ZombieHusk";
 	    break;
 	default:
 	    break;

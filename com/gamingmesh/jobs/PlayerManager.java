@@ -40,7 +40,6 @@ import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
-import com.gamingmesh.jobs.container.JobConditions;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -49,7 +48,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Perm;
 
@@ -120,8 +118,8 @@ public class PlayerManager {
 	JobsPlayer jPlayer = playersCache.get(player.getName().toLowerCase());
 	if (jPlayer == null) {
 	    jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
-
-	    JobsPlayer.loadLogFromDao(jPlayer);
+	    if (player.hasPlayedBefore())
+		JobsPlayer.loadLogFromDao(jPlayer);
 	    playersCache.put(player.getName().toLowerCase(), jPlayer);
 	}
 
@@ -525,56 +523,6 @@ public class PlayerManager {
 	performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
 	Jobs.getSignUtil().SignUpdate(job.getName());
 	Jobs.getSignUtil().SignUpdate("gtoplist");
-    }
-
-    /**
-     * Performs command on level up
-     * @param jPlayer
-     * @param job
-     * @param oldLevel
-     */
-    public void CheckConditions(JobsPlayer jPlayer, Job job) {
-	Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
-	JobProgression prog = jPlayer.getJobProgression(job);
-	if (prog == null)
-	    return;
-	for (JobConditions Condition : job.getConditions()) {
-	    boolean ok = true;
-	    for (String oneReq : Condition.getRequires()) {
-		if (oneReq.toLowerCase().contains("j:")) {
-		    String jobName = oneReq.toLowerCase().replace("j:", "").split("-")[0];
-		    int jobLevel = Integer.valueOf(oneReq.toLowerCase().replace("j:", "").split("-")[1]);
-		    boolean found = false;
-		    for (JobProgression oneJob : jPlayer.getJobProgression()) {
-			if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
-			    found = true;
-			if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() != jobLevel) {
-			    ok = false;
-			    break;
-			}
-		    }
-		    if (found == false)
-			ok = false;
-		}
-		if (ok = false)
-		    break;
-
-		if (oneReq.toLowerCase().contains("p:")) {
-		    if (!player.hasPermission(oneReq.replace(":p", ""))) {
-			ok = false;
-			break;
-		    }
-		}
-	    }
-
-	    if (ok) {
-		for (String one : Condition.getPerform()) {
-		    if (one.toLowerCase().contains("c:")) {
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("c:", "").replace("[name]", jPlayer.getUserName()));
-		    }
-		}
-	    }
-	}
     }
 
     /**

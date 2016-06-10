@@ -158,27 +158,28 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
+
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
 	Jobs.getPlayerManager().playerJoin(event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoinMonitor(PlayerJoinEvent event) {
-	// make sure plugin is enabled
-	if (!plugin.isEnabled())
-	    return;
-
-	/*
-	 * We need to recalculate again to check for world permission and revoke permissions
-	 * if we don't have world permission (from some other permission manager).  It's 
-	 * necessary to call this twice in case somebody is relying on permissions from this 
-	 * plugin on entry to the world.
-	 */
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
-	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-    }
+//    @EventHandler(priority = EventPriority.MONITOR)
+//    public void onPlayerJoinMonitor(PlayerJoinEvent event) {
+//	// make sure plugin is enabled
+//	if (!plugin.isEnabled())
+//	    return;
+//
+//	/*
+//	 * We need to recalculate again to check for world permission and revoke permissions
+//	 * if we don't have world permission (from some other permission manager).  It's 
+//	 * necessary to call this twice in case somebody is relying on permissions from this 
+//	 * plugin on entry to the world.
+//	 */
+//	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
+//	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+//    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -547,7 +548,7 @@ public class JobsListener implements Listener {
 	Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 	try {
 	    enchants = iih.getEnchantments();
-	} catch (NullPointerException e) {
+	} catch (Exception e) {
 	    return;
 	}
 	if (enchants.isEmpty())

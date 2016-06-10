@@ -20,6 +20,7 @@ package com.gamingmesh.jobs;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -88,43 +89,34 @@ public class PermissionHandler {
 
 		    for (JobConditions Condition : job.getConditions()) {
 			boolean ok = true;
-			for (String oneReq : Condition.getRequires()) {
-			    if (oneReq.toLowerCase().contains("j:")) {
-				String jobName = oneReq.toLowerCase().replace("j:", "").split("-")[0];
-				int jobLevel = Integer.valueOf(oneReq.toLowerCase().replace("j:", "").split("-")[1]);
-				boolean found = false;
-				for (JobProgression oneJob : jPlayer.getJobProgression()) {
-				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
-					found = true;
-				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
-					ok = false;
-					break;
-				    }
-				}
-				if (found == false)
-				    ok = false;
-			    }
-			    if (ok == false)
+			for (String oneReq : Condition.getRequiredPerm()) {
+			    if (!player.hasPermission(oneReq)) {
+				ok = false;
 				break;
+			    }
+			}
 
-			    if (oneReq.toLowerCase().contains("p:")) {
-				if (!player.hasPermission(oneReq.replace(":p", ""))) {
+			for (Entry<String, Integer> oneReq : Condition.getRequiredJobs().entrySet()) {
+			    String jobName = oneReq.getKey();
+			    int jobLevel = oneReq.getValue();
+			    boolean found = false;
+			    for (JobProgression oneJob : jPlayer.getJobProgression()) {
+				if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
+				    found = true;
+				if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
 				    ok = false;
 				    break;
 				}
 			    }
+			    if (found == false)
+				ok = false;
 			}
 
 			if (!ok)
 			    continue;
-
-			for (String one : Condition.getPerform()) {
-			    if (!one.toLowerCase().contains("p:"))
-				continue;
-
-			    String perm = one.toLowerCase().replace("p:", "").split("-")[0];
-			    boolean node = Boolean.getBoolean(one.toLowerCase().replace("p:", "").split("-")[1]);
-
+			for (Entry<String, Boolean> one : Condition.getPerformPerm().entrySet()) {
+			    String perm = one.getKey();
+			    boolean node = one.getValue();
 			    if (node) {
 				permissions.put(perm, true);
 			    } else {
@@ -136,7 +128,6 @@ public class PermissionHandler {
 				    permissions.put(perm, false);
 				}
 			    }
-
 			}
 
 		    }
@@ -162,43 +153,33 @@ public class PermissionHandler {
 
 		    for (JobConditions Condition : prog.getJob().getConditions()) {
 			boolean ok = true;
-			for (String oneReq : Condition.getRequires()) {
-			    if (oneReq.toLowerCase().contains("j:")) {
-				String jobName = oneReq.toLowerCase().replace("j:", "").split("-")[0];
-				int jobLevel = Integer.valueOf(oneReq.toLowerCase().replace("j:", "").split("-")[1]);
-				boolean found = false;
-				for (JobProgression oneJob : jPlayer.getJobProgression()) {
-				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
-					found = true;
-				    if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
-					ok = false;
-					break;
-				    }
-				}
-				if (found == false)
-				    ok = false;
-
-			    }
-			    if (ok == false)
+			for (String oneReq : Condition.getRequiredPerm()) {
+			    if (!player.hasPermission(oneReq)) {
+				ok = false;
 				break;
+			    }
+			}
 
-			    if (oneReq.toLowerCase().contains("p:")) {
-				if (!player.hasPermission(oneReq.replace("p:", ""))) {
+			for (Entry<String, Integer> oneReq : Condition.getRequiredJobs().entrySet()) {
+			    String jobName = oneReq.getKey();
+			    int jobLevel = oneReq.getValue();
+			    boolean found = false;
+			    for (JobProgression oneJob : jPlayer.getJobProgression()) {
+				if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
+				    found = true;
+				if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
 				    ok = false;
 				    break;
 				}
 			    }
+			    if (found == false)
+				ok = false;
 			}
-
 			if (!ok)
 			    continue;
-			for (String one : Condition.getPerform()) {
-			    if (!one.toLowerCase().contains("p:"))
-				continue;
-			    String perm = one.toLowerCase().replace("p:", "").split("-")[0];
-			    String nodeString = one.toLowerCase().replace("p:", "").split("-")[1];
-			    boolean node = nodeString.equalsIgnoreCase("true") ? true : false;
-
+			for (Entry<String, Boolean> one : Condition.getPerformPerm().entrySet()) {
+			    String perm = one.getKey();
+			    boolean node = one.getValue();
 			    if (node) {
 				permissions.put(perm, true);
 			    } else {

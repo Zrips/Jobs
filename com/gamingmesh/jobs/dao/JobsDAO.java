@@ -143,12 +143,14 @@ public abstract class JobsDAO {
 	else
 	    userData = Jobs.getPlayerManager().getPlayerMap().get(uuid.toString());
 
+	ArrayList<JobsDAOData> jobs = new ArrayList<JobsDAOData>();
+
 	if (userData == null) {
-	    id = recordNewPlayer(playerName, uuid);
+	    recordNewPlayer(playerName, uuid);
+	    return jobs;
 	} else
 	    id = userData.getID();
 
-	ArrayList<JobsDAOData> jobs = new ArrayList<JobsDAOData>();
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return jobs;
@@ -166,45 +168,32 @@ public abstract class JobsDAO {
 	return jobs;
     }
 
-    public int recordNewPlayer(Player player) {
-	return recordNewPlayer((OfflinePlayer) player);
+    public void recordNewPlayer(Player player) {
+	recordNewPlayer((OfflinePlayer) player);
     }
 
-    public int recordNewPlayer(OfflinePlayer player) {
-	return recordNewPlayer(player.getName(), player.getUniqueId());
+    public void recordNewPlayer(OfflinePlayer player) {
+	recordNewPlayer(player.getName(), player.getUniqueId());
     }
 
-    public int recordNewPlayer(String playerName, UUID uuid) {
-
-	int id = -1;
-
+    public void recordNewPlayer(String playerName, UUID uuid) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
-	    return id;
+	    return;
 	try {
 	    PreparedStatement prest = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`) VALUES (?, ?);");
 	    prest.setString(1, uuid.toString());
 	    prest.setString(2, playerName);
 	    prest.executeUpdate();
+	    ResultSet keys = prest.getGeneratedKeys();
+	    if (keys.next()) {
+		int id = keys.getInt(1);
+		Jobs.getPlayerManager().getPlayerMap().put(uuid.toString(), new PlayerInfo(playerName, id));
+	    }
 	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
-
-	try {
-	    PreparedStatement prest = conn.prepareStatement("SELECT `id` FROM `" + prefix + "users` WHERE `player_uuid` = ?;");
-	    prest.setString(1, uuid.toString());
-	    ResultSet res = prest.executeQuery();
-	    res.next();
-	    id = res.getInt("id");
-	    Jobs.getPlayerManager().getPlayerMap().put(uuid.toString(), new PlayerInfo(playerName, id));
-	    res.close();
-	    prest.close();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-
-	return id;
     }
 
     /**

@@ -501,25 +501,42 @@ public class ConfigManager {
 				    Jobs.getGCManager().setBreederFinder(true);
 			    }
 
-			    // Just to recognize wither skeleton
-			    if (key.equalsIgnoreCase("WitherSkeleton")) {
-				type = "WitherSkeleton";
+			    switch (key.toLowerCase()) {
+			    case "skeletonwither":
+				type = "SkeletonWither";
 				id = 51;
 				meta = "1";
-			    }
-
-			    // Just to recognize Zombie Villager
-			    if (key.equalsIgnoreCase("ZombieVillager")) {
+				break;
+			    case "skeletonstray":
+				type = "SkeletonStray";
+				id = 51;
+				meta = "2";
+				break;
+			    case "zombievillager":
 				type = "ZombieVillager";
 				id = 54;
 				meta = "1";
-			    }
-
-			    // Just to recognize Elder Guardian
-			    if (key.equalsIgnoreCase("ElderGuardian")) {
-				type = "ElderGuardian";
+				break;
+			    case "zombiehusk":
+				type = "ZombieHusk";
+				id = 54;
+				meta = "2";
+				break;
+			    case "horseskeleton":
+				type = "HorseSkeleton";
+				id = 100;
+				meta = "1";
+				break;
+			    case "horsezombie":
+				type = "HorseZombie";
+				id = 100;
+				meta = "2";
+				break;
+			    case "guardianelder":
+				type = "GuardianElder";
 				id = 68;
 				meta = "1";
+				break;
 			    }
 
 			} else if (actionType == ActionType.ENCHANT && material == null) {

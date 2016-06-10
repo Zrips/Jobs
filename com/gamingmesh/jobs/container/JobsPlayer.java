@@ -101,6 +101,37 @@ public class JobsPlayer {
 	return jPlayer;
     }
 
+    public static JobsPlayer loadFromDao(JobsDAO dao, Player player) {
+
+	JobsPlayer jPlayer = new JobsPlayer(player.getName(), player);
+	jPlayer.playerUUID = player.getUniqueId();
+	List<JobsDAOData> list = new ArrayList<JobsDAOData>();
+	list = dao.getAllJobs(player);
+//	synchronized (jPlayer.saveLock) {
+	jPlayer.progression.clear();
+	for (JobsDAOData jobdata : list) {
+	    if (Jobs.getJob(jobdata.getJobName()) == null)
+		continue;
+	    // add the job
+	    Job job = Jobs.getJob(jobdata.getJobName());
+	    if (job == null)
+		continue;
+
+	    // create the progression object
+	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1, -1);
+	    // calculate the max level
+	    // add the progression level.
+	    jPlayer.progression.add(jobProgression);
+
+	}
+	jPlayer.reloadMaxExperience();
+	jPlayer.reloadLimits();
+	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerMap().get(player.getUniqueId().toString()).getID());
+	Jobs.getJobsDAO().loadPoints(jPlayer);
+//	}
+	return jPlayer;
+    }
+
     public void setPlayer(Player p) {
 	this.player = p;
     }
@@ -517,7 +548,7 @@ public class JobsPlayer {
 	int numJobs = progression.size();
 	boolean gotTitle = false;
 
-	if (numJobs > 0)
+	if (numJobs > 0) {
 	    for (JobProgression prog : progression) {
 		DisplayMethod method = prog.getJob().getDisplayMethod();
 		if (method.equals(DisplayMethod.NONE))
@@ -571,7 +602,7 @@ public class JobsPlayer {
 		    gotTitle = true;
 		}
 	    }
-	else {
+	} else {
 	    Job nonejob = Jobs.getNoneJob();
 	    if (nonejob != null) {
 		DisplayMethod metod = nonejob.getDisplayMethod();

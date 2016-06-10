@@ -18,28 +18,56 @@
 
 package com.gamingmesh.jobs.container;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class JobConditions {
     private String node;
-    private List<String> requires;
-    private List<String> perform;
+    private List<String> requiresPerm = new ArrayList<String>();
+    private HashMap<String, Integer> requiresJobs = new HashMap<String, Integer>();
+    private HashMap<String, Boolean> performPerm = new HashMap<String, Boolean>();
 
     public JobConditions(String node, List<String> requires, List<String> perform) {
 	this.node = node;
-	this.requires = requires;
-	this.perform = perform;
+
+	for (String one : requires) {
+	    if (one.toLowerCase().contains("j:")) {
+		String jobName = one.toLowerCase().replace("j:", "").split("-")[0];
+		int jobLevel = 0;
+		try {
+		    jobLevel = Integer.valueOf(one.toLowerCase().replace("j:", "").split("-")[1]);
+		} catch (Exception e) {
+		    continue;
+		}
+		requiresJobs.put(jobName, jobLevel);
+	    }
+	    if (one.toLowerCase().contains("p:")) {
+		requiresPerm.add(one.replace("p:", ""));
+	    }
+	}
+	for (String one : perform) {
+	    if (!one.toLowerCase().contains("p:"))
+		continue;
+	    String perm = one.toLowerCase().replace("p:", "").split("-")[0];
+	    boolean n = one.toLowerCase().replace("p:", "").split("-")[1].equalsIgnoreCase("true") ? true : false;
+	    performPerm.put(perm, n);
+	}
     }
 
     public String getNode() {
 	return node;
     }
 
-    public List<String> getRequires() {
-	return requires;
+    public List<String> getRequiredPerm() {
+	return requiresPerm;
     }
 
-    public List<String> getPerform() {
-	return perform;
+    public HashMap<String, Integer> getRequiredJobs() {
+	return requiresJobs;
+    }
+
+    public HashMap<String, Boolean> getPerformPerm() {
+	return performPerm;
     }
 }
