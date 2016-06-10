@@ -32,6 +32,10 @@ public final class JobsExpGainEvent extends Event implements Cancellable {
 	return this.exp;
     }
 
+    public void setExp(double exp) {
+	this.exp = exp;
+    }
+
     public boolean isCancelled() {
 	return cancelled;
     }
