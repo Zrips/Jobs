@@ -915,7 +915,8 @@ public class Jobs {
 		// If event is canceled, don't do anything
 		if (JobsExpGainEvent.isCancelled())
 		    continue;
-		if (prog.addExperience(expAmount))
+		double newExpAmount = JobsExpGainEvent.getExp();
+		if (prog.addExperience(newExpAmount))
 		    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
 	    }
 	}
