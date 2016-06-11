@@ -118,8 +118,7 @@ public class PlayerManager {
 	JobsPlayer jPlayer = playersCache.get(player.getName().toLowerCase());
 	if (jPlayer == null) {
 	    jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
-	    if (player.hasPlayedBefore())
-		JobsPlayer.loadLogFromDao(jPlayer);
+	    JobsPlayer.loadLogFromDao(jPlayer);
 	    playersCache.put(player.getName().toLowerCase(), jPlayer);
 	}
 
@@ -559,7 +558,7 @@ public class PlayerManager {
 	if (Perm.hasPermission(player, "jobs.max.*"))
 	    return true;
 
-	int totalJobs = Jobs.getJobs().size() + 5;
+	int totalJobs = Jobs.getJobs().size() + 1;
 
 	short count = (short) Jobs.getGCManager().getMaxJobs();
 	for (short ctr = 0; ctr < totalJobs; ctr++) {

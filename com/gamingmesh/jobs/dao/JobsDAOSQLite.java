@@ -277,9 +277,9 @@ public class JobsDAOSQLite extends JobsDAO {
 	}
 
 	if (convertJobs) {
-	    
+
 	    Bukkit.getConsoleSender().sendMessage("convert jobs table from byte");
-	    
+
 	    Jobs.getPluginLogger().info("Converting byte uuids to string.  This could take a long time!!!");
 	    try {
 		executeSQL("CREATE TABLE `" + getPrefix()
@@ -529,7 +529,7 @@ public class JobsDAOSQLite extends JobsDAO {
 
 	if (rows != 0)
 	    return;
-	
+
 	HashMap<String, String> tempMap = new HashMap<String, String>();
 	PreparedStatement prestJobs = null;
 	try {
@@ -785,13 +785,13 @@ public class JobsDAOSQLite extends JobsDAO {
 	try {
 	    executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
 
-	    // Create new points table
-	    try {
-		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	// Create new points table
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}

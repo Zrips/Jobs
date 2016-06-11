@@ -185,11 +185,18 @@ public abstract class JobsDAO {
 	    prest.setString(1, uuid.toString());
 	    prest.setString(2, playerName);
 	    prest.executeUpdate();
-	    ResultSet keys = prest.getGeneratedKeys();
-	    if (keys.next()) {
-		int id = keys.getInt(1);
-		Jobs.getPlayerManager().getPlayerMap().put(uuid.toString(), new PlayerInfo(playerName, id));
-	    }
+	    prest.close();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	try {
+	    PreparedStatement prest = conn.prepareStatement("SELECT `id` FROM `" + this.prefix + "users` WHERE `player_uuid` = ?;");
+	    prest.setString(1, uuid.toString());
+	    ResultSet res = prest.executeQuery();
+	    res.next();
+	    int id = res.getInt("id");
+	    Jobs.getPlayerManager().getPlayerMap().put(uuid.toString(), new PlayerInfo(playerName, id));
+	    res.close();
 	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
