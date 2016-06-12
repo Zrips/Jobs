@@ -735,7 +735,9 @@ public class Jobs {
 
 		if (income != 0D || points != 0D) {
 
-		    BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID()), Jobs.getNoneJob());
+//		    jPlayer
+		    
+		    BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(jPlayer, Jobs.getNoneJob());
 
 		    // Calculate income
 
@@ -825,7 +827,7 @@ public class Jobs {
 		    }
 		}
 
-		BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID()), prog.getJob());
+		BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob());
 
 		if (multiplier != 0.0)
 		    FinalBoost = new BoostMultiplier(FinalBoost.getMoneyBoost() + multiplier,
@@ -903,19 +905,22 @@ public class Jobs {
 		    } else if (Jobs.getGCManager().BossBarEnabled && !Jobs.getGCManager().BossBarShowOnEachAction)
 			jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 
+		// JobsPayment event
+		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount);
+		Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
+		// If event is canceled, don't do anything
+		if (JobsExpGainEvent.isCancelled())
+		    expAmount = 0D;
+		else
+		    expAmount = JobsExpGainEvent.getExp();
+
 		Jobs.getEconomy().pay(jPlayer, amount, pointAmount, expAmount);
 		int oldLevel = prog.getLevel();
 
 		if (Jobs.getGCManager().LoggingUse)
 		    Loging.recordToLog(jPlayer, info, amount, expAmount);
 
-		// JobsPayment event
-		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount);
-		Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
-		// If event is canceled, don't do anything
-		if (JobsExpGainEvent.isCancelled())
-		    continue;
-		if (prog.addExperience(JobsExpGainEvent.getExp()))
+		if (prog.addExperience(expAmount))
 		    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
 	    }
 	}

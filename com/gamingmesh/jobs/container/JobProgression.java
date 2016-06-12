@@ -26,18 +26,12 @@ public class JobProgression {
     private double experience;
     private int level;
     private transient int maxExperience = -1;
-    private double MoneyBoost = -1;
-    private double PointBoost = -1;
-    private double ExpBoost = -1;
 
-    public JobProgression(Job job, JobsPlayer jPlayer, int level, double experience, double MoneyBoost, double PointBoost, double ExpBoost) {
+    public JobProgression(Job job, JobsPlayer jPlayer, int level, double experience) {
 	this.job = job;
 	this.jPlayer = jPlayer;
 	this.experience = experience;
 	this.level = level;
-	this.MoneyBoost = MoneyBoost;
-	this.PointBoost = PointBoost;
-	this.ExpBoost = ExpBoost;
     }
 
     /**
@@ -48,37 +42,7 @@ public class JobProgression {
     public boolean canLevelUp() {
 	return experience >= maxExperience;
     }
-
-    /**
-     * Return the MoneyBoost
-     * @return the MoneyBoost
-     */
-    public double getMoneyBoost() {
-	if (this.MoneyBoost == -1)
-	    this.MoneyBoost = JobsPlayer.getMoneyBoost(this.job.getName(), this.jPlayer.getPlayer());
-	return this.MoneyBoost;
-    }
-
-    /**
-     * Return the PointBoost
-     * @return the PointBoost
-     */
-    public double getPointBoost() {
-	if (this.PointBoost == -1)
-	    this.PointBoost = JobsPlayer.getPointBoost(this.job.getName(), this.jPlayer.getPlayer());
-	return this.PointBoost;
-    }
-
-    /**
-     * Return the ExpBoost
-     * @return the ExpBoost
-     */
-    public double getExpBoost() {
-	if (this.ExpBoost == -1)
-	    this.ExpBoost = JobsPlayer.getExpBoost(this.job.getName(), this.jPlayer.getPlayer());
-	return this.ExpBoost;
-    }
-
+    
     /**
      * Return the job
      * @return the job

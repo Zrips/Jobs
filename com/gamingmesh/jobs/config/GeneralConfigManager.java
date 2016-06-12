@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.JobsPlugin;
+import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.dao.JobsDAOMySQL;
@@ -109,11 +110,11 @@ public class GeneralConfigManager {
 	useGlobalBoostScheduler, JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
     public Integer levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
 	SoundTitleChangePitch, ToplistInScoreboardInterval;
-    public double BoostExp;
     public double MinimumOveralPaymentLimit;
     public double MinimumOveralPointsLimit;
-    public double BoostMoney;
-    public double BoostPoints;
+
+    public HashMap <BoostType, Double> Boost = new HashMap <BoostType, Double>();
+    
     public double DynamicPaymentMaxPenalty;
     public double DynamicPaymentMaxBonus;
     public double TaxesAmount;
@@ -734,9 +735,9 @@ public class GeneralConfigManager {
 	    "Use: jobs.boost.[jobname].money or jobs.boost.[jobname].exp or jobs.boost.[jobname].points or jobs.boost.[jobname].all for all of them with specific jobs name.",
 	    "Use: jobs.boost.all.money or jobs.boost.all.exp or jobs.boost.all.points or jobs.boost.all.all to get boost for all jobs",
 	    "1.25 means that player will get 25% more than others, you can set less than 1 to get less from anothers");
-	BoostExp = c.get("boost.exp", 1.00);
-	BoostMoney = c.get("boost.money", 1.00);
-	BoostPoints = c.get("boost.points", 1.00);
+	Boost.put(BoostType.EXP, c.get("boost.exp", 1.00));
+	Boost.put(BoostType.MONEY,  c.get("boost.money", 1.00));
+	Boost.put(BoostType.POINTS,  c.get("boost.points", 1.00));
 
 	c.getW().addComment("old-job", "Old job save", "Players can leave job and return later with some level loss during that",
 	    "You can fix players level if hes job level is at max level");

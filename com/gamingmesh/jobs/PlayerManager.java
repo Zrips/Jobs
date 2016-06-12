@@ -38,6 +38,7 @@ import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.BoostMultiplier;
+import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
 import com.gamingmesh.jobs.container.JobItems;
@@ -230,7 +231,7 @@ public class PlayerManager {
 	    Job job = Jobs.getJob(jobdata.getJobName());
 	    if (job == null)
 		continue;
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1, -1);
+	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
 	    jPlayer.progression.add(jobProgression);
 	    jPlayer.reloadMaxExperience();
 	    jPlayer.reloadLimits();
@@ -570,76 +571,9 @@ public class PlayerManager {
 	return false;
     }
 
-    /**
-     * Get job money boost
-     * @param player
-     * @param job
-     * @return double of boost
-     */
-    public Double GetMoneyBoost(Player player, Job job) {
-	Double Boost = 1.0;
-	if (player != null && job.getName() != null) {
-	    if (Perm.hasPermission(player, "jobs.boost." + job.getName() + ".money") ||
-		Perm.hasPermission(player, "jobs.boost." + job.getName() + ".all") ||
-		Perm.hasPermission(player, "jobs.boost.all.all") ||
-		Perm.hasPermission(player, "jobs.boost.all.money")) {
-		Boost = Jobs.getGCManager().BoostMoney;
-	    }
-	}
-	return Boost;
-    }
 
-    public double GetMoneyBoostInPerc(Player player, Job job) {
-	double Boost = GetMoneyBoost(player, job) * 100.0 - 100.0;
-	return Boost;
-    }
-
-    /**
-     * Get job point boost
-     * @param player
-     * @param job
-     * @return double of boost
-     */
-    public Double GetPointBoost(Player player, Job job) {
-	Double Boost = 1.0;
-	if (player != null && job.getName() != null) {
-	    if (Perm.hasPermission(player, "jobs.boost." + job.getName() + ".points") ||
-		Perm.hasPermission(player, "jobs.boost." + job.getName() + ".all") ||
-		Perm.hasPermission(player, "jobs.boost.all.all") ||
-		Perm.hasPermission(player, "jobs.boost.all.points")) {
-		Boost = Jobs.getGCManager().BoostPoints;
-	    }
-	}
-	return Boost;
-    }
-
-    public double GetPointBoostInPerc(Player player, Job job) {
-	double Boost = GetPointBoost(player, job) * 100.0 - 100.0;
-	return Boost;
-    }
-
-    /**
-     * Get job exp boost
-     * @param player
-     * @param job
-     * @return double of boost
-     */
-    public Double GetExpBoost(Player player, Job job) {
-	Double Boost = 1.0;
-	if (player == null || job.getName() == null)
-	    return 1.0;
-	if (Perm.hasPermission(player, "jobs.boost." + job.getName() + ".exp") ||
-	    Perm.hasPermission(player, "jobs.boost." + job.getName() + ".all") ||
-	    Perm.hasPermission(player, "jobs.boost.all.all") ||
-	    Perm.hasPermission(player, "jobs.boost.all.exp")) {
-	    Boost = Jobs.getGCManager().BoostExp;
-	}
-
-	return Boost;
-    }
-
-    public double GetExpBoostInPerc(Player player, Job job) {
-	double Boost = GetExpBoost(player, job) * 100.0 - 100.0;
+    public double GetBoostInPerc(JobsPlayer player, Job job, BoostType type) {
+	double Boost = player.getBoost(job.getName(), type) * 100.0 - 100.0;
 	return Boost;
     }
 
@@ -732,16 +666,16 @@ public class PlayerManager {
 	return new BoostMultiplier(0D, 0D, 0D);
     }
 
-    public BoostMultiplier getFinalBonus(Player player, Job prog) {
+    public BoostMultiplier getFinalBonus(JobsPlayer player, Job prog) {
 	BoostMultiplier multiplier = new BoostMultiplier(0D, 0D, 0D);
 	if (player == null || prog == null)
 	    return multiplier;
 
-	double PMoneyBoost = Jobs.getPlayerManager().GetMoneyBoostInPerc(player, prog);
+	double PMoneyBoost = Jobs.getPlayerManager().GetBoostInPerc(player, prog, BoostType.MONEY);
 	PMoneyBoost = (int) (PMoneyBoost * 100D) / 100D;
-	double PPointBoost = Jobs.getPlayerManager().GetPointBoostInPerc(player, prog);
+	double PPointBoost = Jobs.getPlayerManager().GetBoostInPerc(player, prog, BoostType.POINTS);
 	PPointBoost = (int) (PPointBoost * 100D) / 100D;
-	double PExpBoost = Jobs.getPlayerManager().GetExpBoostInPerc(player, prog);
+	double PExpBoost = Jobs.getPlayerManager().GetBoostInPerc(player, prog, BoostType.EXP);
 	PExpBoost = (int) (PExpBoost * 100D) / 100D;
 
 	double GMoneyBoost = prog.getMoneyBoost() * 100.0 - 100.0;
@@ -755,7 +689,7 @@ public class PlayerManager {
 	if (!Jobs.getGCManager().useDynamicPayment)
 	    DBoost = 0.0;
 
-	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(player, prog);
+	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog);
 
 	double IMoneyBoost = itemboost.getMoneyBoost() * 100.0 - 100.0;
 	IMoneyBoost = (int) (IMoneyBoost * 100D) / 100D;
@@ -764,7 +698,7 @@ public class PlayerManager {
 	double IExpBoost = itemboost.getExpBoost() * 100.0 - 100.0;
 	IExpBoost = (int) (IExpBoost * 100D) / 100D;
 
-	double RBoost = Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player) * 100.0 - 100.0;
+	double RBoost = Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer()) * 100.0 - 100.0;
 	RBoost = (int) (RBoost * 100D) / 100D;
 
 	double Fmoney = (int) ((IMoneyBoost + DBoost + GMoneyBoost + PMoneyBoost + RBoost) * 100) / 100D;

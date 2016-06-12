@@ -426,9 +426,7 @@ public class JobsCommands implements CommandExecutor {
     public static String jobInfoMessage(JobsPlayer player, Job job, ActionType type) {
 
 	// money exp boost
-	Player dude = Bukkit.getServer().getPlayer(player.getPlayerUUID());
-
-	BoostMultiplier finalBoost = Jobs.getPlayerManager().getFinalBonus(dude, job);
+	BoostMultiplier finalBoost = Jobs.getPlayerManager().getFinalBonus(player, job);
 
 	StringBuilder message = new StringBuilder();
 

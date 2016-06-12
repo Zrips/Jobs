@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerInfo;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public class JobsDAOSQLite extends JobsDAO {
@@ -503,6 +504,7 @@ public class JobsDAOSQLite extends JobsDAO {
 
     @Override
     protected synchronized void checkUpdate9() throws SQLException {
+	Debug.D("checkling 9");
 	JobsConnection conn = getConnection();
 	if (conn == null) {
 	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to SQLite!");
@@ -526,7 +528,14 @@ public class JobsDAOSQLite extends JobsDAO {
 		}
 	    }
 	}
-
+	
+	// Create new points table
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
+	} catch (Exception e) {
+	}
+	
 	if (rows != 0)
 	    return;
 
@@ -788,13 +797,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
-	// Create new points table
-	try {
-	    executeSQL("CREATE TABLE `" + getPrefix()
-		+ "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+
 
     }
 

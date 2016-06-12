@@ -251,7 +251,7 @@ public class JobsPaymentListener implements Listener {
 	if (block == null)
 	    return;
 
-	if (block.getType().equals(Material.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
 	    block.removeMetadata(furnaceOwnerMetadata, plugin);
 
 	if (Jobs.getGCManager().useBlockProtection)
@@ -278,7 +278,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
+	if (player.getGameMode()== GameMode.CREATIVE && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))

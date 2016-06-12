@@ -7,7 +7,9 @@ import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.BoostMultiplier;
+import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class bonus implements Cmd {
@@ -32,13 +34,18 @@ public class bonus implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+	
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	
+	if (jPlayer == null)
+	    return false;
 
 //	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", job.getChatColor() + job.getName()));
-	double PMoneyBoost = Jobs.getPlayerManager().GetMoneyBoostInPerc(player, job);
+	double PMoneyBoost = Jobs.getPlayerManager().GetBoostInPerc(jPlayer, job, BoostType.MONEY);
 	PMoneyBoost = (int) (PMoneyBoost * 100D) / 100D;
-	double PPointBoost = Jobs.getPlayerManager().GetPointBoostInPerc(player, job);
+	double PPointBoost = Jobs.getPlayerManager().GetBoostInPerc(jPlayer, job, BoostType.POINTS);
 	PPointBoost = (int) (PPointBoost * 100D) / 100D;
-	double PExpBoost = Jobs.getPlayerManager().GetExpBoostInPerc(player, job);
+	double PExpBoost = Jobs.getPlayerManager().GetBoostInPerc(jPlayer, job, BoostType.EXP);
 	PExpBoost = (int) (PExpBoost * 100D) / 100D;
 
 	double GMoneyBoost = job.getMoneyBoost() * 100.0 - 100.0;

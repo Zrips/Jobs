@@ -20,6 +20,7 @@ package com.gamingmesh.jobs.container;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +33,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class JobsPlayer {
@@ -40,6 +42,9 @@ public class JobsPlayer {
     // progression of the player in each job
     private UUID playerUUID;
     public ArrayList<JobProgression> progression = new ArrayList<JobProgression>();
+
+    private HashMap<String, ArrayList<BoostCounter>> boostCounter = new HashMap<String, ArrayList<BoostCounter>>();
+
     // display honorific
     private String honorific;
     // player save status
@@ -87,7 +92,7 @@ public class JobsPlayer {
 		continue;
 
 	    // create the progression object
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1, -1);
+	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
 	    // calculate the max level
 	    // add the progression level.
 	    jPlayer.progression.add(jobProgression);
@@ -118,7 +123,7 @@ public class JobsPlayer {
 		continue;
 
 	    // create the progression object
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience(), -1, -1, -1);
+	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
 	    // calculate the max level
 	    // add the progression level.
 	    jPlayer.progression.add(jobProgression);
@@ -200,48 +205,60 @@ public class JobsPlayer {
     }
 
     /**
-     * Get the MoneyBoost
-     * @return the MoneyBoost
+     * Get the Boost
+     * @return the Boost
      */
-    public static double getMoneyBoost(String JobName, Player player) {
-	double MoneyBoost = 1.0;
-	if (JobName != null) {
-	    if (Perm.hasPermission(player, "jobs.boost." + JobName + ".money") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(
-		player, "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.money")) {
-		MoneyBoost = Jobs.getGCManager().BoostMoney;
+    public double getBoost(String JobName, BoostType type) {
+
+	if (this.player == null)
+	    this.player = Bukkit.getPlayer(this.OffPlayer.getUniqueId());
+
+	double Boost = 1.0;
+
+	if (this.player == null)
+	    return Boost;
+
+	long time = System.currentTimeMillis();
+
+	if (this.boostCounter.containsKey(JobName)) {
+	    ArrayList<BoostCounter> counterList = boostCounter.get(JobName);
+	    for (BoostCounter counter : counterList) {
+		if (counter.getType() != type)
+		    continue;
+		if (time - counter.getTime() > 1000 * 60) {
+		    Boost = getPlayerBoost(JobName, type);
+		    counter.setBoost(Boost);
+		    counter.setTime(time);
+		    return Boost;
+		} else {
+		    return counter.getBoost();
+		}
 	    }
+	    Boost = getPlayerBoost(JobName, type);
+	    counterList.add(new BoostCounter(type, Boost, time));
+	    return Boost;
 	}
-	return MoneyBoost;
+
+	Boost = getPlayerBoost(JobName, type);
+
+	ArrayList<BoostCounter> counterList = new ArrayList<BoostCounter>();
+	counterList.add(new BoostCounter(type, Boost, time));
+
+	boostCounter.put(JobName, counterList);
+
+	return Boost;
     }
 
-    /**
-     * Get the PointBoost
-     * @return the PointBoost
-     */
-    public static double getPointBoost(String JobName, Player player) {
-	double PointBoost = 1.0;
-	if (JobName != null) {
-	    if (Perm.hasPermission(player, "jobs.boost." + JobName + ".points") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(
-		player, "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.money")) {
-		PointBoost = Jobs.getGCManager().BoostPoints;
-	    }
+    private Double getPlayerBoost(String JobName, BoostType type) {
+	double Boost = 1.0;
+	Debug.D("recalculating for " + JobName);
+	if (Perm.hasPermission(player, "jobs.boost." + JobName + "." + type.getName().toLowerCase()) ||
+	    Perm.hasPermission(player, "jobs.boost." + JobName + ".all") ||
+	    Perm.hasPermission(player, "jobs.boost.all.all") ||
+	    Perm.hasPermission(player, "jobs.boost.all." + type.getName().toLowerCase())) {
+	    Boost = Jobs.getGCManager().Boost.get(type);
 	}
-	return PointBoost;
-    }
-
-    /**
-     * Get the ExpBoost
-     * @return the ExpBoost
-     */
-    public static double getExpBoost(String JobName, Player player) {
-	Double ExpBoost = 1.0;
-	if (player == null || JobName == null)
-	    return 1.0;
-	if (Perm.hasPermission(player, "jobs.boost." + JobName + ".exp") || Perm.hasPermission(player, "jobs.boost." + JobName + ".both") || Perm.hasPermission(player,
-	    "jobs.boost.all.both") || Perm.hasPermission(player, "jobs.boost.all.exp")) {
-	    ExpBoost = Jobs.getGCManager().BoostExp;
-	}
-	return ExpBoost;
+	return Boost;
     }
 
     /**
@@ -382,7 +399,7 @@ public class JobsPlayer {
 		Jobs.getJobsDAO().deleteArchive(jPlayer, job);
 	    }
 
-	    progression.add(new JobProgression(job, this, level, exp, -1, -1, -1));
+	    progression.add(new JobProgression(job, this, level, exp));
 	    reloadMaxExperience();
 	    reloadLimits();
 	    reloadHonorific();

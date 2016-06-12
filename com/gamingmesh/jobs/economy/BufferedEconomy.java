@@ -167,8 +167,8 @@ public class BufferedEconomy {
 		if (JobsPaymentEvent.isCancelled())
 		    continue;
 
-		double newAmount = JobsPaymentEvent.getAmount();
-		payment.setAmount(newAmount);
+		payment.setAmount(JobsPaymentEvent.getAmount());
+		payment.setPoints(JobsPaymentEvent.getPoints());
 
 		if (Jobs.getGCManager().UseServerAccount) {
 		    if (!hasMoney) {
@@ -184,7 +184,6 @@ public class BufferedEconomy {
 		    if (Jobs.getGCManager().isEconomyAsync())
 			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);
 		    else
-
 			Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 		}
 		try {

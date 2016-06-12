@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -149,9 +150,8 @@ public class GuiManager {
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
 	// money exp boost
-	Player dude = Bukkit.getServer().getPlayer(player.getUniqueId());
-	Double MoneyBoost = Jobs.getPlayerManager().GetMoneyBoost(dude, job);
-	Double ExpBoost = Jobs.getPlayerManager().GetExpBoost(dude, job);
+	Double MoneyBoost = JPlayer.getBoost(job.getName(), BoostType.MONEY);
+	Double ExpBoost = JPlayer.getBoost(job.getName(), BoostType.EXP);
 
 	int level = 1;
 	JobProgression prog = JPlayer.getJobProgression(job);

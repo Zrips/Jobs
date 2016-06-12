@@ -521,7 +521,13 @@ public class JobsDAOMySQL extends JobsDAO {
 		}
 	    }
 	}
-
+	// Create new points table
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "points` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `totalpoints` double, `currentpoints` double);");
+	} catch (SQLException e) {
+	}
+	
 	if (rows == 0) {
 	    HashMap<String, String> tempMap = new HashMap<String, String>();
 	    PreparedStatement prest = null;
@@ -664,13 +670,7 @@ public class JobsDAOMySQL extends JobsDAO {
 		executeSQL("ALTER TABLE `" + getPrefix() + "log` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
 	    } catch (Exception e) {
 	    }
-	    // Create new points table
-	    try {
-		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "points` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `totalpoints` double, `currentpoints` double);");
-	    } catch (SQLException e) {
-		e.printStackTrace();
-	    }
+
 	}
     }
 
