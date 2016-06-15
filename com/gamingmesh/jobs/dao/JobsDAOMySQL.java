@@ -527,35 +527,97 @@ public class JobsDAOMySQL extends JobsDAO {
 		+ "points` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `totalpoints` double, `currentpoints` double);");
 	} catch (SQLException e) {
 	}
-	
+
+	// dropping 2 columns
+	PreparedStatement prestLogTemp = null;
+	ResultSet rsLogTemp = null;
+	try {
+	    prestLogTemp = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
+	    rsLogTemp = prestLogTemp.executeQuery();
+	    while (rsLogTemp.next()) {
+		rsLogTemp.getInt("userid");
+		rsLogTemp.getLong("time");
+		rsLogTemp.getString("action");
+		rsLogTemp.getString("itemname");
+		rsLogTemp.getInt("count");
+		rsLogTemp.getDouble("money");
+		rsLogTemp.getDouble("exp");
+		break;
+	    }
+	} catch (Exception ex) {
+	    try {
+		if (rsLogTemp != null)
+		    rsLogTemp.close();
+		if (prestLogTemp != null)
+		    prestLogTemp.close();
+	    } catch (Exception e) {
+	    }
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "log` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+	    } catch (Exception e) {
+	    }
+	} finally {
+	    try {
+		if (rsLogTemp != null)
+		    rsLogTemp.close();
+		if (prestLogTemp != null)
+		    prestLogTemp.close();
+	    } catch (Exception e) {
+	    }
+	}
+
 	if (rows == 0) {
 	    HashMap<String, String> tempMap = new HashMap<String, String>();
-	    PreparedStatement prest = null;
+	    PreparedStatement prestJobs = null;
 	    try {
-		prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "jobs;");
-		ResultSet res = prest.executeQuery();
+		prestJobs = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "jobs;");
+		ResultSet res = prestJobs.executeQuery();
 		while (res.next()) {
 		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
 		}
 	    } catch (Exception e) {
+	    } finally {
+		if (prestJobs != null) {
+		    try {
+			prestJobs.close();
+		    } catch (SQLException e) {
+		    }
+		}
 	    }
 
+	    PreparedStatement prestArchive = null;
 	    try {
-		prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "archive;");
-		ResultSet res = prest.executeQuery();
+		prestArchive = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "archive;");
+		ResultSet res = prestArchive.executeQuery();
 		while (res.next()) {
 		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
 		}
 	    } catch (Exception e) {
+	    } finally {
+		if (prestArchive != null) {
+		    try {
+			prestArchive.close();
+		    } catch (SQLException e) {
+		    }
+		}
 	    }
 
+	    PreparedStatement prestLog = null;
 	    try {
-		prest = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "log;");
-		ResultSet res = prest.executeQuery();
+		prestLog = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "log;");
+		ResultSet res = prestLog.executeQuery();
 		while (res.next()) {
 		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
 		}
 	    } catch (Exception e) {
+	    } finally {
+		if (prestLog != null) {
+		    try {
+			prestLog.close();
+		    } catch (SQLException e) {
+		    }
+		}
 	    }
 
 	    try {
@@ -565,31 +627,47 @@ public class JobsDAOMySQL extends JobsDAO {
 		e.printStackTrace();
 	    }
 
+	    PreparedStatement prestUsers = null;
 	    try {
-		prest = conn.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`player_uuid`, `username`) VALUES (?, ?);");
+		prestUsers = conn.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`player_uuid`, `username`) VALUES (?, ?);");
 		conn.setAutoCommit(false);
 		for (Entry<String, String> users : tempMap.entrySet()) {
-		    prest.setString(1, users.getKey());
-		    prest.setString(2, users.getValue());
-		    prest.addBatch();
+		    prestUsers.setString(1, users.getKey());
+		    prestUsers.setString(2, users.getValue());
+		    prestUsers.addBatch();
 		}
-		prest.executeBatch();
+		prestUsers.executeBatch();
 		conn.commit();
 		conn.setAutoCommit(true);
 	    } catch (Exception e) {
 		e.printStackTrace();
+	    } finally {
+		if (prestUsers != null) {
+		    try {
+			prestUsers.close();
+		    } catch (SQLException e) {
+		    }
+		}
 	    }
 
 	    HashMap<String, PlayerInfo> tempPlayerMap = new HashMap<String, PlayerInfo>();
 
+	    PreparedStatement prestUsersT = null;
 	    try {
-		prest = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
-		ResultSet res = prest.executeQuery();
+		prestUsersT = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
+		ResultSet res = prestUsersT.executeQuery();
 		while (res.next()) {
 		    tempPlayerMap.put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id")));
 		}
 	    } catch (Exception e) {
 		e.printStackTrace();
+	    } finally {
+		if (prestUsersT != null) {
+		    try {
+			prestUsersT.close();
+		    } catch (SQLException e) {
+		    }
+		}
 	    }
 
 	    // Modifying jobs main table
@@ -597,19 +675,27 @@ public class JobsDAOMySQL extends JobsDAO {
 		executeSQL("ALTER TABLE `" + getPrefix() + "jobs` ADD COLUMN `userid` int;");
 	    } catch (Exception e) {
 	    }
+	    PreparedStatement prestJobsT = null;
 	    try {
-		prest = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `userid` = ? WHERE `player_uuid` = ?;");
+		prestJobsT = conn.prepareStatement("UPDATE `" + getPrefix() + "jobs` SET `userid` = ? WHERE `player_uuid` = ?;");
 		conn.setAutoCommit(false);
 		for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
-		    prest.setInt(1, users.getValue().getID());
-		    prest.setString(2, users.getKey());
-		    prest.addBatch();
+		    prestJobsT.setInt(1, users.getValue().getID());
+		    prestJobsT.setString(2, users.getKey());
+		    prestJobsT.addBatch();
 		}
-		prest.executeBatch();
+		prestJobsT.executeBatch();
 		conn.commit();
 		conn.setAutoCommit(true);
 	    } catch (Exception e) {
 		e.printStackTrace();
+	    } finally {
+		if (prestJobsT != null) {
+		    try {
+			prestJobsT.close();
+		    } catch (SQLException e) {
+		    }
+		}
 	    }
 
 	    try {
@@ -621,53 +707,32 @@ public class JobsDAOMySQL extends JobsDAO {
 		executeSQL("ALTER TABLE `" + getPrefix() + "archive` ADD COLUMN `userid` int;");
 	    } catch (Exception e) {
 	    }
-	    try {
-		prest = conn.prepareStatement("UPDATE `" + getPrefix() + "archive` SET `userid` = ? WHERE `player_uuid` = ?;");
-		conn.setAutoCommit(false);
-		for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
-		    prest.setInt(1, users.getValue().getID());
-		    prest.setString(2, users.getKey());
-		    prest.addBatch();
-		}
-		prest.executeBatch();
-		conn.commit();
-		conn.setAutoCommit(true);
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
 
+	    PreparedStatement prestArchiveT = null;
 	    try {
-		executeSQL("ALTER TABLE `" + getPrefix() + "archive` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
-	    } catch (Exception e) {
-	    }
-	    // Modifying jobs log table
-	    try {
-		executeSQL("ALTER TABLE `" + getPrefix() + "log` ADD COLUMN `userid` int;");
-	    } catch (Exception e) {
-	    }
-	    try {
-		prest = conn.prepareStatement("UPDATE `" + getPrefix() + "log` SET `userid` = ? WHERE `player_uuid` = ?;");
+		prestArchiveT = conn.prepareStatement("UPDATE `" + getPrefix() + "archive` SET `userid` = ? WHERE `player_uuid` = ?;");
 		conn.setAutoCommit(false);
 		for (Entry<String, PlayerInfo> users : tempPlayerMap.entrySet()) {
-		    prest.setInt(1, users.getValue().getID());
-		    prest.setString(2, users.getKey());
-		    prest.addBatch();
+		    prestArchiveT.setInt(1, users.getValue().getID());
+		    prestArchiveT.setString(2, users.getKey());
+		    prestArchiveT.addBatch();
 		}
-		prest.executeBatch();
+		prestArchiveT.executeBatch();
 		conn.commit();
 		conn.setAutoCommit(true);
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    } finally {
-		if (prest != null) {
+		if (prestArchiveT != null) {
 		    try {
-			prest.close();
+			prestArchiveT.close();
 		    } catch (SQLException e) {
 		    }
 		}
 	    }
+
 	    try {
-		executeSQL("ALTER TABLE `" + getPrefix() + "log` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
+		executeSQL("ALTER TABLE `" + getPrefix() + "archive` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
 	    } catch (Exception e) {
 	    }
 

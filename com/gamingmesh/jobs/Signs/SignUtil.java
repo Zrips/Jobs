@@ -102,6 +102,7 @@ public class SignUtil {
 	int timelapse = 1;
 	for (com.gamingmesh.jobs.Signs.Sign one : Copy) {
 	    String SignJobName = one.GetJobName();
+
 	    if (JobName.equalsIgnoreCase(SignJobName)) {
 		String SignsWorld = one.GetWorld();
 		double SignsX = one.GetX();
@@ -198,6 +199,7 @@ public class SignUtil {
     public void UpdateHead(final org.bukkit.block.Sign sign, final String Playername, final int timelapse) {
 
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	    @SuppressWarnings("deprecation")
 	    public void run() {
 
 		org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getData();

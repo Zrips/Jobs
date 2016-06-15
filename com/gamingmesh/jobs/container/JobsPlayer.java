@@ -209,6 +209,10 @@ public class JobsPlayer {
      * @return the Boost
      */
     public double getBoost(String JobName, BoostType type) {
+	return getBoost(JobName, type, false);
+    }
+
+    public double getBoost(String JobName, BoostType type, boolean force) {
 
 	if (this.player == null)
 	    this.player = Bukkit.getPlayer(this.OffPlayer.getUniqueId());
@@ -225,7 +229,7 @@ public class JobsPlayer {
 	    for (BoostCounter counter : counterList) {
 		if (counter.getType() != type)
 		    continue;
-		if (time - counter.getTime() > 1000 * 60) {
+		if (force || time - counter.getTime() > 1000 * 60) {
 		    Boost = getPlayerBoost(JobName, type);
 		    counter.setBoost(Boost);
 		    counter.setTime(time);
@@ -245,13 +249,11 @@ public class JobsPlayer {
 	counterList.add(new BoostCounter(type, Boost, time));
 
 	boostCounter.put(JobName, counterList);
-
 	return Boost;
     }
 
     private Double getPlayerBoost(String JobName, BoostType type) {
 	double Boost = 1.0;
-	Debug.D("recalculating for " + JobName);
 	if (Perm.hasPermission(player, "jobs.boost." + JobName + "." + type.getName().toLowerCase()) ||
 	    Perm.hasPermission(player, "jobs.boost." + JobName + ".all") ||
 	    Perm.hasPermission(player, "jobs.boost.all.all") ||

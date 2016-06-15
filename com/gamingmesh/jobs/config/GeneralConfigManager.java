@@ -125,7 +125,9 @@ public class GeneralConfigManager {
     public boolean UseTaxes;
     public boolean TransferToServerAccount;
     public boolean TakeFromPlayersPayment;
+    
     public int AutoJobJoinDelay;
+    public boolean AutoJobJoinUse;
 
     //BossBar
     public boolean BossBarEnabled;
@@ -418,12 +420,15 @@ public class GeneralConfigManager {
 	MultiServerCompatability = c.get("MultiServerCompatability", false);
 	if (MultiServerCompatability)
 	    saveOnDisconnect = true;
-
-	c.getW().addComment("Optimizations.AutoJobJoinDelay", "Delay in seconds to perform auto join job if used after player joins server",
+	
+	c.getW().addComment("Optimizations.AutoJobJoin.Use", "Use or not auto join jobs feature",
+	    "If you are not using auto join feature, keep it disabled");
+	AutoJobJoinUse = c.get("Optimizations.AutoJobJoin.Use", false);
+	c.getW().addComment("Optimizations.AutoJobJoin.Delay", "Delay in seconds to perform auto join job if used after player joins server",
 	    "If you using offline server, try to keep it slightly more than your login plugin gives time to enter password",
 	    "For player to auto join job add permission node jobs.autojoin.[jobname]",
 	    "Op players are ignored");
-	AutoJobJoinDelay = c.get("Optimizations.AutoJobJoinDelay", 15);
+	AutoJobJoinDelay = c.get("Optimizations.AutoJobJoin.Delay", 15);
 
 	c.getW().addComment("Optimizations.UseLocalOfflinePlayersData", "With this set to true, offline player data will be taken from local player data files",
 	    "This will eliminate small lag spikes when request is being send to mojangs servers for offline players data",

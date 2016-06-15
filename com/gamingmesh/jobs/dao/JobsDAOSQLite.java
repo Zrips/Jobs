@@ -29,7 +29,6 @@ import org.bukkit.Bukkit;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerInfo;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public class JobsDAOSQLite extends JobsDAO {
@@ -504,7 +503,6 @@ public class JobsDAOSQLite extends JobsDAO {
 
     @Override
     protected synchronized void checkUpdate9() throws SQLException {
-	Debug.D("checkling 9");
 	JobsConnection conn = getConnection();
 	if (conn == null) {
 	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to SQLite!");
@@ -528,14 +526,55 @@ public class JobsDAOSQLite extends JobsDAO {
 		}
 	    }
 	}
-	
+
 	// Create new points table
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
 		+ "points` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `totalpoints` double, `currentpoints` double);");
 	} catch (Exception e) {
 	}
-	
+
+	// checking log table, recreating if old version present
+	PreparedStatement prestLogTemp = null;
+	ResultSet rsLogTemp = null;
+	try {
+	    prestLogTemp = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
+	    rsLogTemp = prestLogTemp.executeQuery();
+	    while (rsLogTemp.next()) {
+		rsLogTemp.getInt("userid");
+		rsLogTemp.getLong("time");
+		rsLogTemp.getString("action");
+		rsLogTemp.getString("itemname");
+		rsLogTemp.getInt("count");
+		rsLogTemp.getDouble("money");
+		rsLogTemp.getDouble("exp");
+		break;
+	    }
+	} catch (Exception ex) {
+	    try {
+		if (rsLogTemp != null)
+		    rsLogTemp.close();
+		if (prestLogTemp != null)
+		    prestLogTemp.close();
+	    } catch (Exception e) {
+	    }
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");	    
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "log_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
+	} finally {
+	    try {
+		if (rsLogTemp != null)
+		    rsLogTemp.close();
+		if (prestLogTemp != null)
+		    prestLogTemp.close();
+	    } catch (Exception e) {
+	    }
+	}
+
 	if (rows != 0)
 	    return;
 
@@ -712,26 +751,33 @@ public class JobsDAOSQLite extends JobsDAO {
 	} catch (Exception e) {
 	}
 
-	PreparedStatement pstArchive = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
-	ResultSet rsArchive = pstArchive.executeQuery();
+	PreparedStatement pstArchive = null;
+	ResultSet rsArchive = null;
 	PreparedStatement insertArchive = null;
-	while (rsArchive.next()) {
-	    String uuid = UUIDUtil.fromBytes(rsArchive.getBytes("player_uuid")).toString();
-	    if (uuid != null) {
-		insertArchive = conn.prepareStatement("INSERT INTO `" + getPrefix() + "archive_temp` (`userid`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?);");
-		insertArchive.setInt(1, rsArchive.getInt("userid"));
-		insertArchive.setString(2, rsArchive.getString("job"));
-		insertArchive.setInt(3, rsArchive.getInt("experience"));
-		insertArchive.setInt(4, rsArchive.getInt("level"));
-		insertArchive.execute();
+	try {
+	    pstArchive = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "archive`;");
+	    rsArchive = pstArchive.executeQuery();
+	    while (rsArchive.next()) {
+		String uuid = UUIDUtil.fromBytes(rsArchive.getBytes("player_uuid")).toString();
+		if (uuid != null) {
+		    insertArchive = conn.prepareStatement("INSERT INTO `" + getPrefix() + "archive_temp` (`userid`, `job`, `experience`, `level`) VALUES (?, ?, ?, ?);");
+		    insertArchive.setInt(1, rsArchive.getInt("userid"));
+		    insertArchive.setString(2, rsArchive.getString("job"));
+		    insertArchive.setInt(3, rsArchive.getInt("experience"));
+		    insertArchive.setInt(4, rsArchive.getInt("level"));
+		    insertArchive.execute();
+		}
 	    }
+	} catch (Exception e) {
+	} finally {
+	    if (rsArchive != null)
+		rsArchive.close();
+	    if (insertArchive != null)
+		insertArchive.close();
+	    if (pstArchive != null)
+		pstArchive.close();
 	}
-	if (rsArchive != null)
-	    rsArchive.close();
-	if (insertArchive != null)
-	    insertArchive.close();
-	if (pstArchive != null)
-	    pstArchive.close();
+
 	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "archive`;");
 	try {
 	    executeSQL("ALTER TABLE `" + getPrefix() + "archive_temp` RENAME TO `" + getPrefix() + "archive`;");
@@ -759,45 +805,6 @@ public class JobsDAOSQLite extends JobsDAO {
 		}
 	    }
 	}
-
-	// dropping 2 columns
-	try {
-	    executeSQL("CREATE TABLE `" + getPrefix()
-		+ "log_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-
-	PreparedStatement prestLogT = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
-	ResultSet rsLog = prestLogT.executeQuery();
-	PreparedStatement insertLog = null;
-	while (rsLog.next()) {
-	    String uuid = UUIDUtil.fromBytes(rsLog.getBytes("player_uuid")).toString();
-	    if (uuid != null) {
-		insertLog = conn.prepareStatement("INSERT INTO `" + getPrefix()
-		    + "log_temp` (`userid`, `time`, `action`, `itemname`, `count`, `money`, `exp`) VALUES (?, ?, ?, ?, ?, ?, ?);");
-		insertLog.setInt(1, rsLog.getInt("userid"));
-		insertLog.setLong(2, rsLog.getLong("time"));
-		insertLog.setString(3, rsLog.getString("action"));
-		insertLog.setString(4, rsLog.getString("itemname"));
-		insertLog.setInt(5, rsLog.getInt("count"));
-		insertLog.setDouble(6, rsLog.getDouble("money"));
-		insertLog.setDouble(7, rsLog.getDouble("exp"));
-		insertLog.execute();
-	    }
-	}
-	rsLog.close();
-	if (insertLog != null)
-	    insertLog.close();
-
-	executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
-	try {
-	    executeSQL("ALTER TABLE `" + getPrefix() + "log_temp` RENAME TO `" + getPrefix() + "log`;");
-
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-
 
     }
 

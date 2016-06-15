@@ -571,9 +571,12 @@ public class PlayerManager {
 	return false;
     }
 
-
     public double GetBoostInPerc(JobsPlayer player, Job job, BoostType type) {
-	double Boost = player.getBoost(job.getName(), type) * 100.0 - 100.0;
+	return GetBoostInPerc(player, job, type, false);
+    }
+
+    public double GetBoostInPerc(JobsPlayer player, Job job, BoostType type, boolean force) {
+	double Boost = player.getBoost(job.getName(), type, force) * 100.0 - 100.0;
 	return Boost;
     }
 
@@ -713,6 +716,8 @@ public class PlayerManager {
 	    return;
 	if (player.isOp())
 	    return;
+	if (!Jobs.getGCManager().AutoJobJoinUse)
+	    return;
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    public void run() {
 		if (!player.isOnline())
@@ -720,20 +725,18 @@ public class PlayerManager {
 		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 		if (jPlayer == null)
 		    return;
+		if (player.hasPermission("jobs.*"))
+		    return;
 		int confMaxJobs = Jobs.getGCManager().getMaxJobs();
 		for (Job one : Jobs.getJobs()) {
-
 		    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
 			continue;
-
 		    short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
 		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(player, PlayerMaxJobs))
 			break;
-
 		    if (jPlayer.isInJob(one))
 			continue;
-
-		    if (Perm.hasPermission(player, "jobs.autojoin." + one.getName().toLowerCase()))
+		    if (player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
 			Jobs.getPlayerManager().joinJob(jPlayer, one);
 		}
 		return;

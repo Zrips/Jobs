@@ -41,11 +41,11 @@ public class bonus implements Cmd {
 	    return false;
 
 //	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", job.getChatColor() + job.getName()));
-	double PMoneyBoost = Jobs.getPlayerManager().GetBoostInPerc(jPlayer, job, BoostType.MONEY);
+	double PMoneyBoost = Jobs.getPlayerManager().GetBoostInPerc(jPlayer, job, BoostType.MONEY, true);
 	PMoneyBoost = (int) (PMoneyBoost * 100D) / 100D;
-	double PPointBoost = Jobs.getPlayerManager().GetBoostInPerc(jPlayer, job, BoostType.POINTS);
+	double PPointBoost = Jobs.getPlayerManager().GetBoostInPerc(jPlayer, job, BoostType.POINTS, true);
 	PPointBoost = (int) (PPointBoost * 100D) / 100D;
-	double PExpBoost = Jobs.getPlayerManager().GetBoostInPerc(jPlayer, job, BoostType.EXP);
+	double PExpBoost = Jobs.getPlayerManager().GetBoostInPerc(jPlayer, job, BoostType.EXP, true);
 	PExpBoost = (int) (PExpBoost * 100D) / 100D;
 
 	double GMoneyBoost = job.getMoneyBoost() * 100.0 - 100.0;

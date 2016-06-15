@@ -426,10 +426,8 @@ public class JobsListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
 	if (!plugin.isEnabled())
 	    return;
-
 	if (!Jobs.getGCManager().getModifyChat())
 	    return;
-
 	Player player = event.getPlayer();
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
