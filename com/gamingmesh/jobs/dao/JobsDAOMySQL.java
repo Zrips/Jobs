@@ -531,10 +531,11 @@ public class JobsDAOMySQL extends JobsDAO {
 	// dropping 2 columns
 	PreparedStatement prestLogTemp = null;
 	ResultSet rsLogTemp = null;
+	boolean next = false;
 	try {
 	    prestLogTemp = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
 	    rsLogTemp = prestLogTemp.executeQuery();
-	    while (rsLogTemp.next()) {
+	    while (next = rsLogTemp.next()) {
 		rsLogTemp.getInt("userid");
 		rsLogTemp.getLong("time");
 		rsLogTemp.getString("action");
@@ -552,17 +553,21 @@ public class JobsDAOMySQL extends JobsDAO {
 		    prestLogTemp.close();
 	    } catch (Exception e) {
 	    }
-	    try {
-		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "log` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
-	    } catch (Exception e) {
-	    }
 	} finally {
 	    try {
 		if (rsLogTemp != null)
 		    rsLogTemp.close();
 		if (prestLogTemp != null)
 		    prestLogTemp.close();
+	    } catch (Exception e) {
+	    }
+	}
+
+	if (!next) {
+	    dropDataBase("log");
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "log` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `username` varchar(20), `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
 	    } catch (Exception e) {
 	    }
 	}

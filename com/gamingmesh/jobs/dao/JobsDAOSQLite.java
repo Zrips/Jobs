@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerInfo;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public class JobsDAOSQLite extends JobsDAO {
@@ -537,10 +538,13 @@ public class JobsDAOSQLite extends JobsDAO {
 	// checking log table, recreating if old version present
 	PreparedStatement prestLogTemp = null;
 	ResultSet rsLogTemp = null;
+	boolean next = false;
 	try {
+	    Debug.D("trying table");
 	    prestLogTemp = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
 	    rsLogTemp = prestLogTemp.executeQuery();
-	    while (rsLogTemp.next()) {
+	    while (next = rsLogTemp.next()) {
+		Debug.D("din table");
 		rsLogTemp.getInt("userid");
 		rsLogTemp.getLong("time");
 		rsLogTemp.getString("action");
@@ -548,9 +552,14 @@ public class JobsDAOSQLite extends JobsDAO {
 		rsLogTemp.getInt("count");
 		rsLogTemp.getDouble("money");
 		rsLogTemp.getDouble("exp");
+
+		Debug.D("din table");
 		break;
 	    }
 	} catch (Exception ex) {
+
+	    Debug.D("recreating table");
+
 	    try {
 		if (rsLogTemp != null)
 		    rsLogTemp.close();
@@ -558,13 +567,7 @@ public class JobsDAOSQLite extends JobsDAO {
 		    prestLogTemp.close();
 	    } catch (Exception e) {
 	    }
-	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");	    
-	    try {
-		executeSQL("CREATE TABLE `" + getPrefix()
-		    + "log_temp` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
+
 	} finally {
 	    try {
 		if (rsLogTemp != null)
@@ -572,6 +575,16 @@ public class JobsDAOSQLite extends JobsDAO {
 		if (prestLogTemp != null)
 		    prestLogTemp.close();
 	    } catch (Exception e) {
+	    }
+	}
+	
+	if (!next){
+	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
+	    try {
+		executeSQL("CREATE TABLE `" + getPrefix()
+		    + "log` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
+	    } catch (Exception e) {
+		e.printStackTrace();
 	    }
 	}
 

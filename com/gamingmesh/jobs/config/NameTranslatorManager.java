@@ -1463,6 +1463,8 @@ public class NameTranslatorManager {
 	c.get("EntityList.51.Name", "Skeleton");
 	c.get("EntityList.51:1.MCName", "Skeleton");
 	c.get("EntityList.51:1.Name", "WitherSkeleton");
+	c.get("EntityList.51:2.MCName", "Skeleton");
+	c.get("EntityList.51:2.Name", "Skeleton Stray");
 	c.get("EntityList.52.MCName", "Spider");
 	c.get("EntityList.52.Name", "Spider");
 	c.get("EntityList.53.MCName", "Giant");
@@ -1471,6 +1473,8 @@ public class NameTranslatorManager {
 	c.get("EntityList.54.Name", "Zombie");
 	c.get("EntityList.54:1.MCName", "Zombie");
 	c.get("EntityList.54:1.Name", "Zombie Villager");
+	c.get("EntityList.54:2.MCName", "Zombie");
+	c.get("EntityList.54:2.Name", "Zombie Husk");
 	c.get("EntityList.55.MCName", "Slime");
 	c.get("EntityList.55.Name", "Slime");
 	c.get("EntityList.56.MCName", "Ghast");
@@ -1527,6 +1531,8 @@ public class NameTranslatorManager {
 	c.get("EntityList.100.Name", "Horse");
 	c.get("EntityList.101.MCName", "Rabbit");
 	c.get("EntityList.101.Name", "Rabbit");
+	c.get("EntityList.102.MCName", "PolarBear");
+	c.get("EntityList.102.Name", "Polar Bear");
 	c.get("EntityList.120.MCName", "Villager");
 	c.get("EntityList.120.Name", "Villager");
 	c.get("EntityList.200.MCName", "EnderCrystal");
