@@ -43,8 +43,8 @@ public class HookEconomyTask implements Runnable {
 	    if (provider != null) {
 		Economy economy = provider.getProvider();
 		if (economy != null) {
-		    Jobs.setEconomy(plugin, new VaultEconomy(economy));
-		    String message = ChatColor.translateAlternateColorCodes('&', "&e[" + plugin.getDescription().getName() + "] Successfully linked with Vault.");
+		    Jobs.setEconomy(this.plugin, new VaultEconomy(economy));
+		    String message = ChatColor.translateAlternateColorCodes('&', "&e[" + this.plugin.getDescription().getName() + "] Successfully linked with Vault.");
 		    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 		    console.sendMessage(message);
 		    return;
@@ -53,8 +53,8 @@ public class HookEconomyTask implements Runnable {
 	}
 
 	// no Vault found
-	Jobs.setEconomy(plugin, new BlackholeEconomy());
-	Bukkit.getServer().getLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
+	Jobs.setEconomy(this.plugin, new BlackholeEconomy());
+	Bukkit.getServer().getLogger().severe("==================== " + this.plugin.getDescription().getName() + " ====================");
 	Bukkit.getServer().getLogger().severe("Vault is required by this plugin for economy support!");
 	Bukkit.getServer().getLogger().severe("Please install Vault and economy manager first!");
 	Bukkit.getServer().getLogger().severe("You can find the latest version here:");

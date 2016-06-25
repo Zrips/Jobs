@@ -88,8 +88,7 @@ public class SignUtil {
 	try {
 	    writer.save(f);
 	} catch (IOException e) {
-	    e.printStackTrace();
-	    ;
+	    e.printStackTrace();	    
 	}
 	return;
     }

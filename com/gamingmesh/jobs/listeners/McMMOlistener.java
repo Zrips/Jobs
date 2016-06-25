@@ -20,7 +20,7 @@ import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 public class McMMOlistener implements Listener {
 
     private JobsPlugin plugin;
-    public static boolean mcMMOPresent = false;
+    public boolean mcMMOPresent = false;
 
     public McMMOlistener(JobsPlugin plugin) {
 	this.plugin = plugin;
@@ -56,7 +56,7 @@ public class McMMOlistener implements Listener {
 	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), 0.0);
     }
 
-    public static double getMultiplier(Player player) {
+    public double getMultiplier(Player player) {
 	try {
 	    if (AbilityAPI.treeFellerEnabled(player))
 		return Jobs.getGCManager().TreeFellerMultiplier;
@@ -84,7 +84,7 @@ public class McMMOlistener implements Listener {
 	return 1.0;
     }
 
-    public static boolean CheckmcMMO() {
+    public boolean CheckmcMMO() {
 	Plugin McMMO = Bukkit.getPluginManager().getPlugin("mcMMO");
 	if (McMMO != null) {
 	    try {

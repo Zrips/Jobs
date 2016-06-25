@@ -421,7 +421,7 @@ public class JobsListener implements Listener {
 	event.setLine(2, Convert(color + job.getName()));
     }
 
-    private String Convert(String line) {
+    private static String Convert(String line) {
 	Pattern ReplacePatern = Pattern.compile("&([0-9a-fk-or])");
 	return ReplacePatern.matcher(ChatColor.translateAlternateColorCodes('&', line)).replaceAll("\u00a7$1");
     }
@@ -584,7 +584,7 @@ public class JobsListener implements Listener {
 	}
     }
 
-    private boolean isThisItem(JobLimitedItems oneItem, int id, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
+    private static boolean isThisItem(JobLimitedItems oneItem, int id, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
 
 	if (oneItem.getId() != id)
 	    return false;

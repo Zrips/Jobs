@@ -29,7 +29,6 @@ import org.bukkit.Bukkit;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerInfo;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
 
 public class JobsDAOSQLite extends JobsDAO {
@@ -50,6 +49,24 @@ public class JobsDAOSQLite extends JobsDAO {
 	super("org.sqlite.JDBC", "jdbc:sqlite:" + new File(Jobs.getDataFolder(), "jobs.sqlite.db").getPath(), null, null, "");
     }
 
+    private static void close(ResultSet res) {
+	if (res != null) {
+	    try {
+		res.close();
+	    } catch (SQLException e) {
+	    }
+	}
+    }
+
+    private static void close(PreparedStatement prest) {
+	if (prest != null) {
+	    try {
+		prest.close();
+	    } catch (SQLException e) {
+	    }
+	}
+    }
+
     @Override
     protected synchronized void setupConfig() throws SQLException {
 	JobsConnection conn = getConnection();
@@ -59,22 +76,19 @@ public class JobsDAOSQLite extends JobsDAO {
 	}
 
 	PreparedStatement prest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for config table
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
 	    prest.setString(1, getPrefix() + "config");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	if (rows == 0) {
@@ -87,12 +101,7 @@ public class JobsDAOSQLite extends JobsDAO {
 		insert.setString(2, "1");
 		insert.execute();
 	    } finally {
-		if (insert != null) {
-		    try {
-			insert.close();
-		    } catch (SQLException e) {
-		    }
-		}
+		close(insert);
 	    }
 	}
     }
@@ -120,22 +129,19 @@ public class JobsDAOSQLite extends JobsDAO {
 	    return;
 	}
 	PreparedStatement prest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
 	    prest.setString(1, getPrefix() + "jobs");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	try {
@@ -155,22 +161,19 @@ public class JobsDAOSQLite extends JobsDAO {
 	    return;
 	}
 	PreparedStatement prest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
 	    prest.setString(1, getPrefix() + "archive");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	try {
@@ -191,22 +194,19 @@ public class JobsDAOSQLite extends JobsDAO {
 	    return;
 	}
 	PreparedStatement prest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
 	    prest.setString(1, getPrefix() + "log");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	try {
@@ -315,7 +315,10 @@ public class JobsDAOSQLite extends JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    rs.close();
+	    if (rs != null)
+		rs.close();
+	    if (pst1 != null)
+		pst1.close();
 	    if (insert != null)
 		insert.close();
 
@@ -383,7 +386,10 @@ public class JobsDAOSQLite extends JobsDAO {
 		insert1.executeBatch();
 	    conn.commit();
 	    conn.setAutoCommit(true);
-	    rs1.close();
+	    if (rs1 != null)
+		rs1.close();
+	    if (pst11 != null)
+		pst11.close();
 	    if (insert1 != null)
 		insert1.close();
 	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "archive`;");
@@ -455,7 +461,10 @@ public class JobsDAOSQLite extends JobsDAO {
 		insert11.executeBatch();
 	    conn.commit();
 	    conn.setAutoCommit(true);
-	    rs11.close();
+	    if (rs11 != null)
+		rs11.close();
+	    if (pst111 != null)
+		pst111.close();
 	    if (insert11 != null)
 		insert11.close();
 
@@ -475,22 +484,19 @@ public class JobsDAOSQLite extends JobsDAO {
 	    return;
 	}
 	PreparedStatement prest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
 	    prest.setString(1, getPrefix() + "explore");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	try {
@@ -510,22 +516,19 @@ public class JobsDAOSQLite extends JobsDAO {
 	    return;
 	}
 	PreparedStatement prestTemp = null;
+	ResultSet res1 = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
 	    prestTemp = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
 	    prestTemp.setString(1, getPrefix() + "users");
-	    ResultSet res = prestTemp.executeQuery();
-	    if (res.next()) {
-		rows = res.getInt(1);
+	    res1 = prestTemp.executeQuery();
+	    if (res1.next()) {
+		rows = res1.getInt(1);
 	    }
 	} finally {
-	    if (prestTemp != null) {
-		try {
-		    prestTemp.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res1);
+	    close(prestTemp);
 	}
 
 	// Create new points table
@@ -540,11 +543,9 @@ public class JobsDAOSQLite extends JobsDAO {
 	ResultSet rsLogTemp = null;
 	boolean next = false;
 	try {
-	    Debug.D("trying table");
 	    prestLogTemp = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
 	    rsLogTemp = prestLogTemp.executeQuery();
 	    while (next = rsLogTemp.next()) {
-		Debug.D("din table");
 		rsLogTemp.getInt("userid");
 		rsLogTemp.getLong("time");
 		rsLogTemp.getString("action");
@@ -552,33 +553,16 @@ public class JobsDAOSQLite extends JobsDAO {
 		rsLogTemp.getInt("count");
 		rsLogTemp.getDouble("money");
 		rsLogTemp.getDouble("exp");
-
-		Debug.D("din table");
 		break;
 	    }
 	} catch (Exception ex) {
 
-	    Debug.D("recreating table");
-
-	    try {
-		if (rsLogTemp != null)
-		    rsLogTemp.close();
-		if (prestLogTemp != null)
-		    prestLogTemp.close();
-	    } catch (Exception e) {
-	    }
-
 	} finally {
-	    try {
-		if (rsLogTemp != null)
-		    rsLogTemp.close();
-		if (prestLogTemp != null)
-		    prestLogTemp.close();
-	    } catch (Exception e) {
-	    }
+	    close(rsLogTemp);
+	    close(prestLogTemp);
 	}
-	
-	if (!next){
+
+	if (!next) {
 	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "log`;");
 	    try {
 		executeSQL("CREATE TABLE `" + getPrefix()
@@ -593,38 +577,31 @@ public class JobsDAOSQLite extends JobsDAO {
 
 	HashMap<String, String> tempMap = new HashMap<String, String>();
 	PreparedStatement prestJobs = null;
+	ResultSet res2 = null;
 	try {
 	    prestJobs = conn.prepareStatement("SELECT * FROM " + getPrefix() + "jobs;");
-	    ResultSet res = prestJobs.executeQuery();
-	    while (res.next()) {
-		Bukkit.getConsoleSender().sendMessage(res.getString("player_uuid") + " -> " + res.getString("username"));
-		tempMap.put(res.getString("player_uuid"), res.getString("username"));
+	    res2 = prestJobs.executeQuery();
+	    while (res2.next()) {
+		Bukkit.getConsoleSender().sendMessage(res2.getString("player_uuid") + " -> " + res2.getString("username"));
+		tempMap.put(res2.getString("player_uuid"), res2.getString("username"));
 	    }
 	} finally {
-	    if (prestJobs != null) {
-		try {
-		    prestJobs.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res2);
+	    close(prestJobs);
 	}
+
 	PreparedStatement prestArchive = null;
+	ResultSet res3 = null;
 	try {
 	    prestArchive = conn.prepareStatement("SELECT * FROM " + getPrefix() + "archive;");
-	    ResultSet res = prestArchive.executeQuery();
-	    while (res.next()) {
-		tempMap.put(res.getString("player_uuid"), res.getString("username"));
-		Bukkit.getConsoleSender().sendMessage(res.getString("player_uuid") + " -> " + res.getString("username"));
+	    res3 = prestArchive.executeQuery();
+	    while (res3.next()) {
+		tempMap.put(res3.getString("player_uuid"), res3.getString("username"));
+		Bukkit.getConsoleSender().sendMessage(res3.getString("player_uuid") + " -> " + res3.getString("username"));
 	    }
-	    if (res != null)
-		res.close();
 	} finally {
-	    if (prestArchive != null) {
-		try {
-		    prestArchive.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res3);
+	    close(prestArchive);
 	}
 
 	try {
@@ -646,32 +623,22 @@ public class JobsDAOSQLite extends JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 	} finally {
-	    if (prestUsers != null) {
-		try {
-		    prestUsers.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(prestUsers);
 	}
 
 	HashMap<String, PlayerInfo> tempPlayerMap = new HashMap<String, PlayerInfo>();
 
 	PreparedStatement prestUsers2 = null;
+	ResultSet res4 = null;
 	try {
 	    prestUsers2 = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
-	    ResultSet res = prestUsers2.executeQuery();
-	    while (res.next()) {
-		tempPlayerMap.put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id")));
+	    res4 = prestUsers2.executeQuery();
+	    while (res4.next()) {
+		tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id")));
 	    }
-	    if (res != null)
-		res.close();
 	} finally {
-	    if (prestUsers2 != null) {
-		try {
-		    prestUsers2.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res4);
+	    close(prestUsers2);
 	}
 
 	// Modifying jobs main table
@@ -693,12 +660,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	    conn.setAutoCommit(true);
 	} catch (Exception e) {
 	} finally {
-	    if (prestJobsT != null) {
-		try {
-		    prestJobsT.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(prestJobsT);
 	}
 
 	// dropping 2 columns
@@ -722,7 +684,10 @@ public class JobsDAOSQLite extends JobsDAO {
 		insert11.execute();
 	    }
 	}
-	rs11.close();
+	if (rs11 != null)
+	    rs11.close();
+	if (pst111 != null)
+	    pst111.close();
 	if (insert11 != null)
 	    insert11.close();
 	try {
@@ -749,12 +714,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 	} finally {
-	    if (prestArchiveT != null) {
-		try {
-		    prestArchiveT.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(prestArchiveT);
 	}
 
 	// dropping 2 columns
@@ -811,12 +771,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 	} finally {
-	    if (prestPreLog != null) {
-		try {
-		    prestPreLog.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(prestPreLog);
 	}
 
     }

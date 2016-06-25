@@ -97,6 +97,8 @@ public class ConfigManager {
 	    Bukkit.getServer().getLogger().severe("Error: " + e.getMessage());
 	    Bukkit.getServer().getLogger().severe("==============================================");
 	    return;
+	} finally {
+	    s.close();
 	}
 	//conf.options().header(new StringBuilder().append("Jobs configuration.").append(System.getProperty("line.separator")).append(System.getProperty("line.separator")).append("Stores information about each job.").append(System.getProperty("line.separator")).append(System.getProperty("line.separator")).append("For example configurations, visit http://dev.bukkit.org/bukkit-plugins/jobs-reborn/.").append(System.getProperty("line.separator")).toString());
 

@@ -23,7 +23,7 @@ public class PistonProtectionListener implements Listener {
     }
 
     @SuppressWarnings("deprecation")
-    public static boolean CheckBlock(Block block) {
+    public boolean CheckBlock(Block block) {
 	for (String BlockId : Jobs.getRestrictedBlockManager().restrictedBlocks) {
 	    if (BlockId.equalsIgnoreCase(String.valueOf(block.getTypeId()))) {
 		return true;
@@ -33,7 +33,7 @@ public class PistonProtectionListener implements Listener {
     }
 
     @SuppressWarnings("deprecation")
-    public static boolean CheckPlaceBlock(Block block) {
+    public boolean CheckPlaceBlock(Block block) {
 	for (int BlockId : Jobs.getRestrictedBlockManager().restrictedPlaceBlocksTimer) {
 	    if (BlockId == block.getTypeId()) {
 		return true;
@@ -43,7 +43,7 @@ public class PistonProtectionListener implements Listener {
     }
 
     @SuppressWarnings("deprecation")
-    public static boolean CheckVegy(Block block) {
+    public boolean CheckVegy(Block block) {
 	for (String ConfigOneBlock : Jobs.getRestrictedBlockManager().restrictedBlocksTimer) {
 	    int ConfigPlacedBlockId = 0;
 	    try {
@@ -59,7 +59,7 @@ public class PistonProtectionListener implements Listener {
     }
 
     @SuppressWarnings("deprecation")
-    public static boolean checkVegybreak(Block block, Player player) {
+    public boolean checkVegybreak(Block block, Player player) {
 	for (String ConfigOneBlock : Jobs.getRestrictedBlockManager().restrictedBlocksTimer) {
 	    int ConfigPlacedBlockId = 0;
 	    int ConfigPlacedBlockTimer = 0;
@@ -78,7 +78,7 @@ public class PistonProtectionListener implements Listener {
 	return false;
     }
 
-    public static boolean CheckVegyTimer(Block block, int time, Player player) {
+    public boolean CheckVegyTimer(Block block, int time, Player player) {
 	long currentTime = System.currentTimeMillis();
 	if (!block.hasMetadata(JobsPaymentListener.VegyMetadata))
 	    return false;

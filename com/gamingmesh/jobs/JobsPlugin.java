@@ -20,7 +20,6 @@ package com.gamingmesh.jobs;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import net.coreprotect.CoreProtect;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,7 +29,6 @@ import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
-import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.config.YmlMaker;
@@ -40,9 +38,9 @@ public class JobsPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
 
-	    String packageName = getServer().getClass().getPackage().getName();
-	    String[] packageSplit = packageName.split("\\.");
-	    String version = packageSplit[packageSplit.length - 1].substring(0,packageSplit[packageSplit.length - 1].length()-3);
+	String packageName = getServer().getClass().getPackage().getName();
+	String[] packageSplit = packageName.split("\\.");
+	String version = packageSplit[packageSplit.length - 1].substring(0, packageSplit[packageSplit.length - 1].length() - 3);
 	try {
 	    Class<?> nmsClass;
 	    nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + version);
@@ -105,23 +103,22 @@ public class JobsPlugin extends JavaPlugin {
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
 
-	    if (McMMOlistener.CheckmcMMO())
+	    if (Jobs.getMcMMOlistener().CheckmcMMO()){
 		getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
+	    }
 
 	    Jobs.setMythicManager(this);
 	    if (Jobs.getMythicManager().Check() && Jobs.getGCManager().MythicMobsEnabled) {
 		getServer().getPluginManager().registerEvents(new MythicMobsListener(this), this);
 	    }
 
-	    if (Jobs.getGCManager().useBlockProtection)
-		getServer().getPluginManager().registerEvents(new PistonProtectionListener(this), this);
+	    if (Jobs.getGCManager().useBlockProtection) {
+		Jobs.setPistonProtectionListener(this);
+		getServer().getPluginManager().registerEvents(Jobs.getPistonProtectionListener(), this);
+	    }
 
 	    // register economy
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
-
-	    if (getServer().getPluginManager().getPlugin("CoreProtect") != null) {
-		Jobs.setCoreProtectApi(((CoreProtect) getServer().getPluginManager().getPlugin("CoreProtect")).getAPI());
-	    }
 
 	    // all loaded properly.
 

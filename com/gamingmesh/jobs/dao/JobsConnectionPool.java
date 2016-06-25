@@ -48,7 +48,8 @@ public class JobsConnectionPool {
         }
         
         if (connection == null) {
-            Connection conn = DriverManager.getConnection(url, username, password);
+            @SuppressWarnings("resource")
+	    Connection conn = DriverManager.getConnection(url, username, password);
             connection = new JobsConnection(conn);
         }
         

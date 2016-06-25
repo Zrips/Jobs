@@ -47,6 +47,24 @@ public class JobsDAOMySQL extends JobsDAO {
 	return dao;
     }
 
+    private static void close(ResultSet res) {
+	if (res != null) {
+	    try {
+		res.close();
+	    } catch (SQLException e) {
+	    }
+	}
+    }
+
+    private static void close(PreparedStatement prest) {
+	if (prest != null) {
+	    try {
+		prest.close();
+	    } catch (SQLException e) {
+	    }
+	}
+    }
+
     @Override
     protected synchronized void setupConfig() throws SQLException {
 	JobsConnection conn = getConnection();
@@ -56,22 +74,19 @@ public class JobsDAOMySQL extends JobsDAO {
 	}
 	PreparedStatement prest = null;
 	int rows = 0;
+	ResultSet res = null;
 	try {
 	    // Check for config table
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
 	    prest.setString(1, database);
 	    prest.setString(2, getPrefix() + "config");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	if (rows == 0) {
@@ -84,12 +99,7 @@ public class JobsDAOMySQL extends JobsDAO {
 		insert.setString(2, "1");
 		insert.execute();
 	    } finally {
-		if (insert != null) {
-		    try {
-			insert.close();
-		    } catch (SQLException e) {
-		    }
-		}
+		close(insert);
 	    }
 	}
     }
@@ -117,6 +127,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	    return;
 	}
 	PreparedStatement prest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
@@ -124,17 +135,13 @@ public class JobsDAOMySQL extends JobsDAO {
 	    prest.setString(1, database);
 	    prest.setString(2, getPrefix() + "jobs");
 	    prest.setString(3, "username");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	try {
@@ -152,25 +159,22 @@ public class JobsDAOMySQL extends JobsDAO {
 	    return;
 	}
 	PreparedStatement prest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
 	    prest.setString(1, database);
 	    prest.setString(2, getPrefix() + "archive");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	try {
@@ -191,23 +195,20 @@ public class JobsDAOMySQL extends JobsDAO {
 	    return;
 	}
 	PreparedStatement prest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
 	    prest.setString(1, database);
 	    prest.setString(2, getPrefix() + "log");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	try {
@@ -301,12 +302,16 @@ public class JobsDAOMySQL extends JobsDAO {
 
 	    if (insert != null)
 		insert.executeBatch();
+
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    rs.close();
 	    if (insert != null)
 		insert.close();
+	    if (rs != null)
+		rs.close();
+	    if (pst1 != null)
+		pst1.close();
 
 	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "jobs`;");
 	    executeSQL("ALTER TABLE `" + getPrefix() + "jobs_temp` RENAME TO `" + getPrefix() + "jobs`;");
@@ -367,7 +372,10 @@ public class JobsDAOMySQL extends JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    rs1.close();
+	    if (rs1 != null)
+		rs1.close();
+	    if (pst11 != null)
+		pst11.close();
 	    if (insert1 != null)
 		insert1.close();
 
@@ -437,7 +445,10 @@ public class JobsDAOMySQL extends JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    rs11.close();
+	    if (pst111 != null)
+		pst111.close();
+	    if (rs11 != null)
+		rs11.close();
 	    if (insert11 != null)
 		insert11.close();
 
@@ -458,25 +469,22 @@ public class JobsDAOMySQL extends JobsDAO {
 	    return;
 	}
 	PreparedStatement prest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
 	    prest.setString(1, database);
 	    prest.setString(2, getPrefix() + "explore");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
 	} finally {
-	    if (prest != null) {
-		try {
-		    prest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(prest);
 	}
 
 	try {
@@ -501,25 +509,22 @@ public class JobsDAOMySQL extends JobsDAO {
 	}
 
 	PreparedStatement tempPrest = null;
+	ResultSet res = null;
 	int rows = 0;
 	try {
 	    // Check for jobs table
 	    tempPrest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
 	    tempPrest.setString(1, database);
 	    tempPrest.setString(2, getPrefix() + "users");
-	    ResultSet res = tempPrest.executeQuery();
+	    res = tempPrest.executeQuery();
 	    if (res.next()) {
 		rows = res.getInt(1);
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
 	} finally {
-	    if (tempPrest != null) {
-		try {
-		    tempPrest.close();
-		} catch (SQLException e) {
-		}
-	    }
+	    close(res);
+	    close(tempPrest);
 	}
 	// Create new points table
 	try {
@@ -546,21 +551,9 @@ public class JobsDAOMySQL extends JobsDAO {
 		break;
 	    }
 	} catch (Exception ex) {
-	    try {
-		if (rsLogTemp != null)
-		    rsLogTemp.close();
-		if (prestLogTemp != null)
-		    prestLogTemp.close();
-	    } catch (Exception e) {
-	    }
 	} finally {
-	    try {
-		if (rsLogTemp != null)
-		    rsLogTemp.close();
-		if (prestLogTemp != null)
-		    prestLogTemp.close();
-	    } catch (Exception e) {
-	    }
+	    close(rsLogTemp);
+	    close(prestLogTemp);
 	}
 
 	if (!next) {
@@ -575,54 +568,45 @@ public class JobsDAOMySQL extends JobsDAO {
 	if (rows == 0) {
 	    HashMap<String, String> tempMap = new HashMap<String, String>();
 	    PreparedStatement prestJobs = null;
+	    ResultSet res1 = null;
 	    try {
 		prestJobs = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "jobs;");
-		ResultSet res = prestJobs.executeQuery();
-		while (res.next()) {
-		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
+		res1 = prestJobs.executeQuery();
+		while (res1.next()) {
+		    tempMap.put(res1.getString("player_uuid"), res1.getString("username"));
 		}
 	    } catch (Exception e) {
 	    } finally {
-		if (prestJobs != null) {
-		    try {
-			prestJobs.close();
-		    } catch (SQLException e) {
-		    }
-		}
+		close(res1);
+		close(prestJobs);
 	    }
 
 	    PreparedStatement prestArchive = null;
+	    ResultSet res2 = null;
 	    try {
 		prestArchive = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "archive;");
-		ResultSet res = prestArchive.executeQuery();
-		while (res.next()) {
-		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
+		res2 = prestArchive.executeQuery();
+		while (res2.next()) {
+		    tempMap.put(res2.getString("player_uuid"), res2.getString("username"));
 		}
 	    } catch (Exception e) {
 	    } finally {
-		if (prestArchive != null) {
-		    try {
-			prestArchive.close();
-		    } catch (SQLException e) {
-		    }
-		}
+		close(res2);
+		close(prestArchive);
 	    }
 
 	    PreparedStatement prestLog = null;
+	    ResultSet res3 = null;
 	    try {
 		prestLog = conn.prepareStatement("SELECT DISTINCT(player_uuid),username FROM " + getPrefix() + "log;");
-		ResultSet res = prestLog.executeQuery();
-		while (res.next()) {
-		    tempMap.put(res.getString("player_uuid"), res.getString("username"));
+		res3 = prestLog.executeQuery();
+		while (res3.next()) {
+		    tempMap.put(res3.getString("player_uuid"), res3.getString("username"));
 		}
 	    } catch (Exception e) {
 	    } finally {
-		if (prestLog != null) {
-		    try {
-			prestLog.close();
-		    } catch (SQLException e) {
-		    }
-		}
+		close(res3);
+		close(prestLog);
 	    }
 
 	    try {
@@ -647,32 +631,24 @@ public class JobsDAOMySQL extends JobsDAO {
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    } finally {
-		if (prestUsers != null) {
-		    try {
-			prestUsers.close();
-		    } catch (SQLException e) {
-		    }
-		}
+		close(prestUsers);
 	    }
 
 	    HashMap<String, PlayerInfo> tempPlayerMap = new HashMap<String, PlayerInfo>();
 
 	    PreparedStatement prestUsersT = null;
+	    ResultSet res4 = null;
 	    try {
 		prestUsersT = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
-		ResultSet res = prestUsersT.executeQuery();
-		while (res.next()) {
-		    tempPlayerMap.put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id")));
+		res4 = prestUsersT.executeQuery();
+		while (res4.next()) {
+		    tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id")));
 		}
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    } finally {
-		if (prestUsersT != null) {
-		    try {
-			prestUsersT.close();
-		    } catch (SQLException e) {
-		    }
-		}
+		close(res4);
+		close(prestUsersT);
 	    }
 
 	    // Modifying jobs main table
@@ -695,12 +671,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    } finally {
-		if (prestJobsT != null) {
-		    try {
-			prestJobsT.close();
-		    } catch (SQLException e) {
-		    }
-		}
+		close(prestJobsT);
 	    }
 
 	    try {
@@ -728,12 +699,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    } finally {
-		if (prestArchiveT != null) {
-		    try {
-			prestArchiveT.close();
-		    } catch (SQLException e) {
-		    }
-		}
+		close(prestArchiveT);
 	    }
 
 	    try {

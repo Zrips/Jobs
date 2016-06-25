@@ -438,8 +438,7 @@ public class JobsPlayer {
 //	synchronized (saveLock) {
 	progression.clear();
 	reloadHonorific();
-	Jobs.getPermissionHandler().recalculatePermissions(this);
-	;
+	Jobs.getPermissionHandler().recalculatePermissions(this);	
 	return true;
 //	}
     }

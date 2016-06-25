@@ -66,23 +66,23 @@ public class PlayerManager {
     }
 
     public PointsData getPointsData() {
-	return PointsDatabase;
+	return this.PointsDatabase;
     }
 
     public HashMap<String, PlayerInfo> getPlayerMap() {
-	return PlayerMap;
+	return this.PlayerMap;
     }
 
     public ConcurrentHashMap<String, JobsPlayer> getPlayersCache() {
-	return playersCache;
+	return this.playersCache;
     }
 
     public ConcurrentHashMap<String, JobsPlayer> getPlayers() {
-	return players;
+	return this.players;
     }
 
     public int getPlayerIdByName(String name) {
-	for (Entry<String, PlayerInfo> one : PlayerMap.entrySet()) {
+	for (Entry<String, PlayerInfo> one : this.PlayerMap.entrySet()) {
 	    if (one.getValue().getName() == null)
 		continue;
 	    if (one.getValue().getName().equalsIgnoreCase(name))
@@ -92,7 +92,7 @@ public class PlayerManager {
     }
 
     public Entry<String, PlayerInfo> getPlayerInfoByName(String name) {
-	for (Entry<String, PlayerInfo> one : PlayerMap.entrySet()) {
+	for (Entry<String, PlayerInfo> one : this.PlayerMap.entrySet()) {
 	    if (one.getValue().getName() == null)
 		continue;
 	    if (one.getValue().getName().equalsIgnoreCase(name))
@@ -102,7 +102,7 @@ public class PlayerManager {
     }
 
     public Entry<String, PlayerInfo> getPlayerInfoById(int id) {
-	for (Entry<String, PlayerInfo> one : PlayerMap.entrySet()) {
+	for (Entry<String, PlayerInfo> one : this.PlayerMap.entrySet()) {
 	    if (one.getValue().getName() == null)
 		continue;
 	    if (one.getValue().getID() == id)
@@ -116,14 +116,14 @@ public class PlayerManager {
      * @param playername
      */
     public void playerJoin(Player player) {
-	JobsPlayer jPlayer = playersCache.get(player.getName().toLowerCase());
+	JobsPlayer jPlayer = this.playersCache.get(player.getName().toLowerCase());
 	if (jPlayer == null) {
 	    jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
 	    JobsPlayer.loadLogFromDao(jPlayer);
-	    playersCache.put(player.getName().toLowerCase(), jPlayer);
+	    this.playersCache.put(player.getName().toLowerCase(), jPlayer);
 	}
 
-	players.put(player.getName().toLowerCase(), jPlayer);
+	this.players.put(player.getName().toLowerCase(), jPlayer);
 
 	AutoJoinJobs(player);
 	jPlayer.onConnect();
@@ -138,13 +138,13 @@ public class PlayerManager {
      */
     public void playerQuit(Player player) {
 	if (Jobs.getGCManager().saveOnDisconnect()) {
-	    JobsPlayer jPlayer = players.remove(player.getName().toLowerCase());
+	    JobsPlayer jPlayer = this.players.remove(player.getName().toLowerCase());
 	    if (jPlayer != null) {
 		jPlayer.save(Jobs.getJobsDAO());
 		jPlayer.onDisconnect();
 	    }
 	} else {
-	    JobsPlayer jPlayer = players.get(player.getName().toLowerCase());
+	    JobsPlayer jPlayer = this.players.get(player.getName().toLowerCase());
 	    if (jPlayer != null) {
 		jPlayer.onDisconnect();
 	    }
@@ -165,13 +165,13 @@ public class PlayerManager {
 	 * 3) Garbage collect the real list to remove any offline players with saved data
 	 */
 	ArrayList<JobsPlayer> list = null;
-	list = new ArrayList<JobsPlayer>(players.values());
+	list = new ArrayList<JobsPlayer>(this.players.values());
 
 	for (JobsPlayer jPlayer : list) {
 	    jPlayer.save(dao);
 	}
 
-	Iterator<JobsPlayer> iter = players.values().iterator();
+	Iterator<JobsPlayer> iter = this.players.values().iterator();
 	while (iter.hasNext()) {
 	    JobsPlayer jPlayer = iter.next();
 	    if (!jPlayer.isOnline() && jPlayer.isSaved()) {
@@ -186,7 +186,7 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(Player player) {
-	return playersCache.get(player.getName().toLowerCase());
+	return this.playersCache.get(player.getName().toLowerCase());
     }
 
     /**
@@ -195,7 +195,7 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {
-	return playersCache.get(playerName.toLowerCase());
+	return this.playersCache.get(playerName.toLowerCase());
     }
 
     public JobsPlayer getJobsPlayerOffline(OfflinePlayer player) {
@@ -208,7 +208,7 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayerOffline(String playerName) {
-	JobsPlayer jPlayer = playersCache.get(playerName.toLowerCase());
+	JobsPlayer jPlayer = this.playersCache.get(playerName.toLowerCase());
 	if (jPlayer != null)
 	    return jPlayer;
 
@@ -584,7 +584,7 @@ public class PlayerManager {
      * Perform reload
      */
     public void reload() {
-	for (JobsPlayer jPlayer : players.values()) {
+	for (JobsPlayer jPlayer : this.players.values()) {
 	    for (JobProgression progression : jPlayer.getJobProgression()) {
 		String jobName = progression.getJob().getName();
 		Job job = Jobs.getJob(jobName);
@@ -718,7 +718,7 @@ public class PlayerManager {
 	    return;
 	if (!Jobs.getGCManager().AutoJobJoinUse)
 	    return;
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
 	    public void run() {
 		if (!player.isOnline())
 		    return;

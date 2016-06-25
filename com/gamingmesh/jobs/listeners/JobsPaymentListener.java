@@ -107,7 +107,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	if (!(event.getRightClicked() instanceof LivingEntity))
@@ -160,7 +160,7 @@ public class JobsPaymentListener implements Listener {
 
 	Long Timer = System.currentTimeMillis();
 
-	cow.setMetadata(CowMetadata, new FixedMetadataValue(plugin, Timer));
+	cow.setMetadata(CowMetadata, new FixedMetadataValue(this.plugin, Timer));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -174,13 +174,13 @@ public class JobsPaymentListener implements Listener {
 	Sheep sheep = (Sheep) event.getEntity();
 
 	// mob spawner, no payment or experience
-	if (sheep.hasMetadata(mobSpawnerMetadata)) {
-	    sheep.removeMetadata(mobSpawnerMetadata, plugin);
+	if (sheep.hasMetadata(this.mobSpawnerMetadata)) {
+	    sheep.removeMetadata(this.mobSpawnerMetadata, this.plugin);
 	    return;
 	}
 
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	Player player = (Player) event.getPlayer();
@@ -208,7 +208,7 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 	Block block = event.getBlock();
 	if (block == null)
@@ -251,26 +251,19 @@ public class JobsPaymentListener implements Listener {
 	if (block == null)
 	    return;
 
-	if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
-	    block.removeMetadata(furnaceOwnerMetadata, plugin);
+	if (block.getType() == Material.FURNACE && block.hasMetadata(this.furnaceOwnerMetadata))
+	    block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
 
 	if (Jobs.getGCManager().useBlockProtection)
 	    if (block.getState().hasMetadata(BlockMetadata))
 		return;
 
-	if (Jobs.getCoreProtectApi() != null && Jobs.getGCManager().useCoreProtect)
-	    if (PistonProtectionListener.CheckBlock(block)) {
-		List<String[]> blockLookup = Jobs.getCoreProtectApi().blockLookup(block, Jobs.getGCManager().CoreProtectInterval);
-		if (blockLookup.size() > 0)
-		    return;
-	    }
-
 	if (Jobs.getGCManager().useBlockTimer)
-	    if (PistonProtectionListener.checkVegybreak(block, (Player) event.getPlayer()))
+	    if (Jobs.getPistonProtectionListener().checkVegybreak(block, (Player) event.getPlayer()))
 		return;
 
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 	Player player = event.getPlayer();
 
@@ -303,15 +296,15 @@ public class JobsPaymentListener implements Listener {
 	// restricted area multiplier
 	double multiplier = 0.0;
 
-	if (McMMOlistener.mcMMOPresent)
-	    multiplier = McMMOlistener.getMultiplier(player) * 100 - 100;
+	if (Jobs.getMcMMOlistener().mcMMOPresent)
+	    multiplier = Jobs.getMcMMOlistener().getMultiplier(player) * 100 - 100;
 
 	// Item in hand
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
 
 	// Protection for block break with silktouch
 	if (Jobs.getGCManager().useSilkTouchProtection && item != null)
-	    if (PistonProtectionListener.CheckBlock(block))
+	    if (Jobs.getPistonProtectionListener().CheckBlock(block))
 		for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet())
 		    if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH"))
 			return;
@@ -337,7 +330,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	// check to make sure you can build
@@ -349,21 +342,6 @@ public class JobsPaymentListener implements Listener {
 	if (!player.isOnline())
 	    return;
 
-	if (Jobs.getCoreProtectApi() != null && Jobs.getGCManager().useCoreProtect && Jobs.getGCManager().BlockPlaceUse) {
-	    if (PistonProtectionListener.CheckPlaceBlock(block)) {
-		List<String[]> blockLookup = Jobs.getCoreProtectApi().blockLookup(block, Jobs.getGCManager().BlockPlaceInterval + 1);
-		if (blockLookup.size() > 0) {
-		    long PlacedBlockTime = Integer.valueOf(blockLookup.get(0)[0]);
-		    long CurrentTime = System.currentTimeMillis() / 1000;
-		    if (PlacedBlockTime + Jobs.getGCManager().BlockPlaceInterval > CurrentTime) {
-			if (Jobs.getGCManager().EnableAnounceMessage)
-			    Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.placeblocktimer", "[time]", Jobs.getGCManager().BlockPlaceInterval));
-			return;
-		    }
-		}
-	    }
-	}
-
 	// check if in creative
 	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
@@ -373,21 +351,21 @@ public class JobsPaymentListener implements Listener {
 
 	// Block place/break protection
 	if (Jobs.getGCManager().useBlockProtection)
-	    if (PistonProtectionListener.CheckBlock(block))
-		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(plugin, true));
+	    if (Jobs.getPistonProtectionListener().CheckBlock(block))
+		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(this.plugin, true));
 
 	if (Jobs.getGCManager().WaterBlockBreake)
-	    block.getState().setMetadata(PlacedBlockMetadata, new FixedMetadataValue(plugin, true));
+	    block.getState().setMetadata(PlacedBlockMetadata, new FixedMetadataValue(this.plugin, true));
 
 	if (Jobs.getGCManager().useBlockTimer)
-	    if (PistonProtectionListener.CheckVegy(block)) {
+	    if (Jobs.getPistonProtectionListener().CheckVegy(block)) {
 		long time = System.currentTimeMillis();
-		block.setMetadata(VegyMetadata, new FixedMetadataValue(plugin, time));
+		block.setMetadata(VegyMetadata, new FixedMetadataValue(this.plugin, time));
 	    }
 
 	if (Jobs.getGCManager().useGlobalTimer) {
 	    long time = System.currentTimeMillis();
-	    block.setMetadata(GlobalMetadata, new FixedMetadataValue(plugin, time));
+	    block.setMetadata(GlobalMetadata, new FixedMetadataValue(this.plugin, time));
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -402,7 +380,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
 	    return;
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	Player player = event.getPlayer();
@@ -434,13 +412,13 @@ public class JobsPaymentListener implements Listener {
 	LivingEntity animal = (LivingEntity) event.getEntity();
 
 	// mob spawner, no payment or experience
-	if (animal.hasMetadata(mobSpawnerMetadata)) {
-	    animal.removeMetadata(mobSpawnerMetadata, plugin);
+	if (animal.hasMetadata(this.mobSpawnerMetadata)) {
+	    animal.removeMetadata(this.mobSpawnerMetadata, this.plugin);
 	    return;
 	}
 
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	Player player = (Player) event.getOwner();
@@ -469,7 +447,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
 	    return;
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	// If event is nothing or place, do nothing
@@ -600,7 +578,7 @@ public class JobsPaymentListener implements Listener {
 	for (int i = 0; i < preInv.length; i++) {
 	    preInv[i] = preInv[i] != null ? preInv[i].clone() : null;
 	}
-	return Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	return Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		final ItemStack[] postInv = player.getInventory().getContents();
@@ -626,12 +604,12 @@ public class JobsPaymentListener implements Listener {
 	}, 1);
     }
 
-    private boolean hasItems(ItemStack stack) {
+    private static boolean hasItems(ItemStack stack) {
 	return stack != null && stack.getAmount() > 0;
     }
 
     @SuppressWarnings("deprecation")
-    private boolean hasSameItem(ItemStack a, ItemStack b) {
+    private static boolean hasSameItem(ItemStack a, ItemStack b) {
 	if (a == null)
 	    return b == null;
 	else if (b == null)
@@ -640,7 +618,7 @@ public class JobsPaymentListener implements Listener {
 	    .getEnchantments());
     }
 
-    private boolean isStackSumLegal(ItemStack a, ItemStack b) {
+    private static boolean isStackSumLegal(ItemStack a, ItemStack b) {
 	// See if we can create a new item stack with the combined elements of a and b
 	if (a == null || b == null)
 	    return true;// Treat null as an empty stack
@@ -654,7 +632,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
 	    return;
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 	Inventory inv = event.getInventory();
 
@@ -730,7 +708,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getEnchanter() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEnchanter().getWorld()))
 	    return;
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	if (event.isCancelled())
@@ -785,15 +763,15 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 	Block block = event.getBlock();
 	if (block == null)
 	    return;
 
-	if (!block.hasMetadata(furnaceOwnerMetadata))
+	if (!block.hasMetadata(this.furnaceOwnerMetadata))
 	    return;
-	List<MetadataValue> data = block.getMetadata(furnaceOwnerMetadata);
+	List<MetadataValue> data = block.getMetadata(this.furnaceOwnerMetadata);
 	if (data.isEmpty())
 	    return;
 
@@ -834,13 +812,13 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	// mob spawner, no payment or experience
-	if (lVictim.hasMetadata(mobSpawnerMetadata) && !Jobs.getGCManager().payNearSpawner()) {
+	if (lVictim.hasMetadata(this.mobSpawnerMetadata) && !Jobs.getGCManager().payNearSpawner()) {
 	    //lVictim.removeMetadata(mobSpawnerMetadata, plugin);
 	    return;
 	}
 
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	Player pDamager = null;
@@ -880,7 +858,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Double NearSpawnerMultiplier = 0.0;
-	if (lVictim.hasMetadata(mobSpawnerMetadata))
+	if (lVictim.hasMetadata(this.mobSpawnerMetadata))
 	    NearSpawnerMultiplier = jDamager.getVipSpawnerMultiplier() * 100 - 100;
 
 	// Calulating multiplaier
@@ -911,7 +889,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	if (event.getSpawnReason() == SpawnReason.SPAWNER) {
 	    LivingEntity creature = (LivingEntity) event.getEntity();
-	    creature.setMetadata(mobSpawnerMetadata, new FixedMetadataValue(plugin, true));
+	    creature.setMetadata(this.mobSpawnerMetadata, new FixedMetadataValue(this.plugin, true));
 	}
     }
 
@@ -920,7 +898,7 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
-	if (!event.getEntity().hasMetadata(mobSpawnerMetadata))
+	if (!event.getEntity().hasMetadata(this.mobSpawnerMetadata))
 	    return;
 
 	EntityType type = event.getEntityType();
@@ -955,7 +933,7 @@ public class JobsPaymentListener implements Listener {
 	LivingEntity animal = (LivingEntity) event.getEntity();
 
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	double closest = 30.0;
@@ -995,7 +973,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	if (!(event.getEntity() instanceof Player))
@@ -1035,7 +1013,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	if (!Jobs.getGCManager().isUseTntFinder())
@@ -1080,8 +1058,8 @@ public class JobsPaymentListener implements Listener {
 	    if (block == null)
 		continue;
 
-	    if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
-		block.removeMetadata(furnaceOwnerMetadata, plugin);
+	    if (block.getType() == Material.FURNACE && block.hasMetadata(this.furnaceOwnerMetadata))
+		block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
 
 	    if (Jobs.getGCManager().useBlockProtection)
 		if (block.getState().hasMetadata(BlockMetadata))
@@ -1097,7 +1075,7 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
 	    return;
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	Block block = event.getClickedBlock();
@@ -1108,14 +1086,14 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (block.getType() == Material.FURNACE || block.getType() == Material.BURNING_FURNACE) {
-	    if (block.hasMetadata(furnaceOwnerMetadata))
-		block.removeMetadata(furnaceOwnerMetadata, plugin);
-	    block.setMetadata(furnaceOwnerMetadata, new FixedMetadataValue(plugin, event.getPlayer().getName()));
+	    if (block.hasMetadata(this.furnaceOwnerMetadata))
+		block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
+	    block.setMetadata(this.furnaceOwnerMetadata, new FixedMetadataValue(this.plugin, event.getPlayer().getName()));
 	} else if (block.getType() == Material.BREWING_STAND) {
 	    if (block.hasMetadata(brewingOwnerMetadata))
-		block.removeMetadata(brewingOwnerMetadata, plugin);
+		block.removeMetadata(brewingOwnerMetadata, this.plugin);
 
-	    block.setMetadata(brewingOwnerMetadata, new FixedMetadataValue(plugin, event.getPlayer().getName()));
+	    block.setMetadata(brewingOwnerMetadata, new FixedMetadataValue(this.plugin, event.getPlayer().getName()));
 	}
     }
 
@@ -1138,7 +1116,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
+	if (!this.plugin.isEnabled())
 	    return;
 
 	if (!player.isOnline())

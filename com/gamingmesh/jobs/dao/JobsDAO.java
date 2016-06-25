@@ -158,16 +158,25 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return jobs;
+
+	ResultSet res = null;
 	try {
 	    PreparedStatement prest = conn.prepareStatement("SELECT `job`, `level`, `experience` FROM `" + prefix + "jobs` WHERE `userid` = ?;");
 	    prest.setInt(1, id);
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    while (res.next()) {
 		jobs.add(new JobsDAOData(uuid, res.getString(1), res.getInt(2), res.getInt(3)));
 	    }
 	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
+	} finally {
+	    if (res != null)
+		try {
+		    res.close();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
 	}
 	return jobs;
     }
@@ -217,16 +226,24 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return 0;
 	int count = 0;
+	ResultSet res = null;
 	try {
 	    PreparedStatement prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + prefix + "jobs` WHERE `job` = ?;");
 	    prest.setString(1, JobName);
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    while (res.next()) {
 		count = res.getInt(1);
 	    }
 	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
+	} finally {
+	    if (res != null)
+		try {
+		    res.close();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
 	}
 	return count;
     }
@@ -721,27 +738,28 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
+	PreparedStatement prest1 = null;
+	PreparedStatement prest2 = null;
 	try {
-
-	    PreparedStatement prest = conn.prepareStatement("UPDATE `" + prefix
+	    prest1 = conn.prepareStatement("UPDATE `" + prefix
 		+ "log` SET `count` = ?, `money` = ?, `exp` = ? WHERE `userid` = ? AND `time` = ? AND `action` = ? AND `itemname` = ?;");
 	    for (Log log : player.getLog()) {
 		for (Entry<String, LogAmounts> one : log.getAmountList().entrySet()) {
 		    if (one.getValue().isNewEntry())
 			continue;
 
-		    prest.setInt(1, one.getValue().getCount());
-		    prest.setDouble(2, one.getValue().getMoney());
-		    prest.setDouble(3, one.getValue().getExp());
+		    prest1.setInt(1, one.getValue().getCount());
+		    prest1.setDouble(2, one.getValue().getMoney());
+		    prest1.setDouble(3, one.getValue().getExp());
 
-		    prest.setInt(4, player.getUserId());
-		    prest.setInt(5, log.getDate());
-		    prest.setString(6, log.getActionType());
-		    prest.setString(7, one.getKey());
-		    prest.execute();
+		    prest1.setInt(4, player.getUserId());
+		    prest1.setInt(5, log.getDate());
+		    prest1.setString(6, log.getActionType());
+		    prest1.setString(7, one.getKey());
+		    prest1.execute();
 		}
 	    }
-	    prest = conn.prepareStatement("INSERT INTO `" + prefix
+	    prest2 = conn.prepareStatement("INSERT INTO `" + prefix
 		+ "log` (`userid`, `time`, `action`, `itemname`, `count`, `money`, `exp`) VALUES (?, ?, ?, ?, ?, ?, ?);");
 	    for (Log log : player.getLog()) {
 		for (Entry<String, LogAmounts> one : log.getAmountList().entrySet()) {
@@ -751,19 +769,31 @@ public abstract class JobsDAO {
 
 		    one.getValue().setNewEntry(false);
 
-		    prest.setInt(1, player.getUserId());
-		    prest.setInt(2, log.getDate());
-		    prest.setString(3, log.getActionType());
-		    prest.setString(4, one.getKey());
-		    prest.setInt(5, one.getValue().getCount());
-		    prest.setDouble(6, one.getValue().getMoney());
-		    prest.setDouble(7, one.getValue().getExp());
-		    prest.execute();
+		    prest2.setInt(1, player.getUserId());
+		    prest2.setInt(2, log.getDate());
+		    prest2.setString(3, log.getActionType());
+		    prest2.setString(4, one.getKey());
+		    prest2.setInt(5, one.getValue().getCount());
+		    prest2.setDouble(6, one.getValue().getMoney());
+		    prest2.setDouble(7, one.getValue().getExp());
+		    prest2.execute();
 		}
 	    }
-	    prest.close();
 	} catch (SQLException e) {
 	    e.printStackTrace();
+	} finally {
+	    if (prest1 != null)
+		try {
+		    prest1.close();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+	    if (prest2 != null)
+		try {
+		    prest2.close();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
 	}
     }
 
@@ -985,12 +1015,14 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return 0;
 	PreparedStatement prest = null;
+	ResultSet res = null;
+	int schema = 0;
 	try {
 	    prest = conn.prepareStatement("SELECT `value` FROM `" + prefix + "config` WHERE `key` = ?;");
 	    prest.setString(1, "version");
-	    ResultSet res = prest.executeQuery();
+	    res = prest.executeQuery();
 	    if (res.next()) {
-		return Integer.valueOf(res.getString(1));
+		schema = Integer.valueOf(res.getString(1));
 	    }
 	    res.close();
 	} catch (SQLException e) {
@@ -998,6 +1030,12 @@ public abstract class JobsDAO {
 	} catch (NumberFormatException e) {
 	    e.printStackTrace();
 	} finally {
+	    if (res != null) {
+		try {
+		    res.close();
+		} catch (SQLException e) {
+		}
+	    }
 	    if (prest != null) {
 		try {
 		    prest.close();
@@ -1005,8 +1043,7 @@ public abstract class JobsDAO {
 		}
 	    }
 	}
-
-	return 0;
+	return schema;
     }
 
     /**

@@ -663,22 +663,6 @@ public class GeneralConfigManager {
 	    "Set to 0 if you want to disable timer");
 	CowMilkingTimer = c.get("Economy.MilkingCow.Timer", 30) * 1000;
 
-	c.getW().addComment("ExploitProtections.Coreprotect.Use",
-	    "Requires to have CoreProtect plugin and there should be block place/break logging enabled in core protect config file.",
-	    "This will prevent players from abusing by placing and breaking blocks again and again", "This will work even after server restart");
-	useCoreProtect = c.get("ExploitProtections.Coreprotect.Use", false);
-	c.getW().addComment("ExploitProtections.Coreprotect.TimeLimit", "Time limit in minutes to protect blocks from repeating place/breake action.",
-	    "10080 equals to 7 days, keep it in reasonable time range");
-	CoreProtectInterval = c.get("ExploitProtections.Coreprotect.TimeLimit", 604800);
-
-	c.getW().addComment("ExploitProtections.Coreprotect.BlockPlace.Use", "Do you want to use block place interval protection");
-	BlockPlaceUse = c.get("ExploitProtections.Coreprotect.BlockPlace.Use", true);
-	EnableAnounceMessage = c.get("ExploitProtections.Coreprotect.BlockPlace.EnableAnounceMessage", true);
-	c.getW().addComment("ExploitProtections.Coreprotect.BlockPlace.Interval", "Time interval in seconds in how fast you can place block in same place.",
-	    "Keep it on low interval, 3-5 sec will be enough to prevent fast block place in same place and dont annoy peps",
-	    "Edit block list in restrictedBlocks.yml under PlacedBlockTimer");
-	BlockPlaceInterval = c.get("ExploitProtections.Coreprotect.BlockPlace.Interval", 2);
-
 	c.getW().addComment("ExploitProtections.General.PlaceAndBreakProtection",
 	    "Enable blocks protection, like ore, from exploiting by placing and destroying same block again and again.", "This works only until server restart",
 	    "Modify restrictedBlocks.yml for blocks you want to protect");

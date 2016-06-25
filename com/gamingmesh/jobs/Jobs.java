@@ -57,14 +57,14 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
+import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
-
-import net.coreprotect.CoreProtectAPI;
 
 public class Jobs {
     public static Jobs instance = new Jobs();
@@ -84,6 +84,9 @@ public class Jobs {
     private static RestrictedAreaManager RAManager = null;
     private static BossBarManager BBManager;
     private static ShopManager shopManager;
+
+    private static PistonProtectionListener PistonProtectionListener = null;
+    private static McMMOlistener McMMOlistener = null;
 
     private static MythicMobsListener MythicManager;
 
@@ -114,14 +117,20 @@ public class Jobs {
 
     private static ActionBar actionbar;
 
-    private static CoreProtectAPI CPAPI = null;
-
-    public static CoreProtectAPI getCoreProtectApi() {
-	return CPAPI;
+    public static void setMcMMOlistener(JobsPlugin plugin) {
+	McMMOlistener = new McMMOlistener(plugin);
     }
 
-    public static void setCoreProtectApi(CoreProtectAPI capi) {
-	CPAPI = capi;
+    public static McMMOlistener getMcMMOlistener() {
+	return McMMOlistener;
+    }
+
+    public static void setPistonProtectionListener(JobsPlugin plugin) {
+	PistonProtectionListener = new PistonProtectionListener(plugin);
+    }
+
+    public static PistonProtectionListener getPistonProtectionListener() {
+	return PistonProtectionListener;
     }
 
     public static void setMythicManager(JobsPlugin plugin) {

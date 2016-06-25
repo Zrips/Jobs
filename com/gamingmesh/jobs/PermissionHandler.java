@@ -57,9 +57,9 @@ public class PermissionHandler {
 
 	// remove old permissions
 	String permName = "jobs.players." + player.getName();
-	Permission permission = plugin.getServer().getPluginManager().getPermission(permName);
+	Permission permission = this.plugin.getServer().getPluginManager().getPermission(permName);
 	if (permission != null) {
-	    plugin.getServer().getPluginManager().removePermission(permission);
+	    this.plugin.getServer().getPluginManager().removePermission(permission);
 	    changed = true;
 	}
 
@@ -198,7 +198,7 @@ public class PermissionHandler {
 
 	    // add new permissions (if applicable)
 	    if (permissions.size() > 0) {
-		plugin.getServer().getPluginManager().addPermission(new Permission(permName, PermissionDefault.FALSE, permissions));
+		this.plugin.getServer().getPluginManager().addPermission(new Permission(permName, PermissionDefault.FALSE, permissions));
 		changed = true;
 	    }
 	}
@@ -217,7 +217,7 @@ public class PermissionHandler {
 
 	// create if attachment doesn't exist
 	if (attachment == null) {
-	    attachment = player.addAttachment(plugin);
+	    attachment = player.addAttachment(this.plugin);
 	    attachment.setPermission(permName, true);
 	}
 
@@ -226,8 +226,8 @@ public class PermissionHandler {
     }
 
     public void registerPermissions() {
-	PluginManager pm = plugin.getServer().getPluginManager();
-	for (World world : plugin.getServer().getWorlds()) {
+	PluginManager pm = this.plugin.getServer().getPluginManager();
+	for (World world : this.plugin.getServer().getWorlds()) {
 	    if (pm.getPermission("jobs.world." + world.getName().toLowerCase()) == null)
 		pm.addPermission(new Permission("jobs.world." + world.getName().toLowerCase(), PermissionDefault.TRUE));
 	}
