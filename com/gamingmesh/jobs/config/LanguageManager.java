@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.LocaleReader;
@@ -39,7 +37,7 @@ public class LanguageManager {
 	languages.add("tr");
 
 	for (String lang : languages) {
-	    YmlMaker langFile = new YmlMaker((JavaPlugin) plugin, "locale" + File.separator + "messages_" + lang + ".yml");
+	    YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + lang + ".yml");
 	    if (langFile != null)
 		langFile.saveDefaultConfig();
 	}

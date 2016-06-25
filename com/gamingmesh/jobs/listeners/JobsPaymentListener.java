@@ -61,7 +61,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.AnvilInventory;
-import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -112,12 +111,12 @@ public class JobsPaymentListener implements Listener {
 
 	if (!(event.getRightClicked() instanceof LivingEntity))
 	    return;
-	Entity cow = (LivingEntity) event.getRightClicked();
+	Entity cow = event.getRightClicked();
 
 	if (cow.getType() != EntityType.COW && cow.getType() != EntityType.MUSHROOM_COW)
 	    return;
 
-	Player player = (Player) event.getPlayer();
+	Player player = event.getPlayer();
 
 	if (player == null)
 	    return;
@@ -183,7 +182,7 @@ public class JobsPaymentListener implements Listener {
 	if (!this.plugin.isEnabled())
 	    return;
 
-	Player player = (Player) event.getPlayer();
+	Player player = event.getPlayer();
 
 	if (player == null)
 	    return;
@@ -228,7 +227,7 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null || !jPlayer.getPlayer().isOnline())
 	    return;
 
-	Player player = (Player) jPlayer.getPlayer();
+	Player player = jPlayer.getPlayer();
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
@@ -259,7 +258,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 
 	if (Jobs.getGCManager().useBlockTimer)
-	    if (Jobs.getPistonProtectionListener().checkVegybreak(block, (Player) event.getPlayer()))
+	    if (Jobs.getPistonProtectionListener().checkVegybreak(block, event.getPlayer()))
 		return;
 
 	// make sure plugin is enabled
@@ -407,9 +406,8 @@ public class JobsPaymentListener implements Listener {
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 	// Entity that died must be living
-	if (!(event.getEntity() instanceof LivingEntity))
-	    return;
-	LivingEntity animal = (LivingEntity) event.getEntity();
+
+	LivingEntity animal = event.getEntity();
 
 	// mob spawner, no payment or experience
 	if (animal.hasMetadata(this.mobSpawnerMetadata)) {
@@ -461,7 +459,7 @@ public class JobsPaymentListener implements Listener {
 	    break;
 	}
 
-	if (!(event.getInventory() instanceof CraftingInventory) || !event.getSlotType().equals(SlotType.RESULT))
+	if (!event.getSlotType().equals(SlotType.RESULT))
 	    return;
 
 	ItemStack resultStack = event.getRecipe().getResult();
@@ -622,8 +620,7 @@ public class JobsPaymentListener implements Listener {
 	// See if we can create a new item stack with the combined elements of a and b
 	if (a == null || b == null)
 	    return true;// Treat null as an empty stack
-	else
-	    return a.getAmount() + b.getAmount() <= a.getType().getMaxStackSize();
+	return a.getAmount() + b.getAmount() <= a.getType().getMaxStackSize();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -797,14 +794,11 @@ public class JobsPaymentListener implements Listener {
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 	// Entity that died must be living
-	if (!(event.getEntity() instanceof LivingEntity))
-	    return;
-	LivingEntity lVictim = (LivingEntity) event.getEntity();
+	LivingEntity lVictim = event.getEntity();
 
 	//extra check for Citizens 2 sentry kills
-	if (lVictim.getKiller() instanceof Player)
-	    if (lVictim.getKiller().hasMetadata("NPC"))
-		return;
+	if (lVictim.getKiller().hasMetadata("NPC"))
+	    return;
 
 	if (Jobs.getGCManager().MythicMobsEnabled && Jobs.getMythicManager().MMAPI != null) {
 	    if (Jobs.getMythicManager().MMAPI.getMobAPI().isMythicMob(lVictim))
@@ -888,7 +882,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 	if (event.getSpawnReason() == SpawnReason.SPAWNER) {
-	    LivingEntity creature = (LivingEntity) event.getEntity();
+	    LivingEntity creature = event.getEntity();
 	    creature.setMetadata(this.mobSpawnerMetadata, new FixedMetadataValue(this.plugin, true));
 	}
     }
@@ -926,11 +920,8 @@ public class JobsPaymentListener implements Listener {
 	if (!reason.toString().equalsIgnoreCase("BREEDING"))
 	    return;
 
-	// Entity that spawn must be living
-	if (!(event.getEntity() instanceof LivingEntity))
-	    return;
 
-	LivingEntity animal = (LivingEntity) event.getEntity();
+	LivingEntity animal = event.getEntity();
 
 	// make sure plugin is enabled
 	if (!this.plugin.isEnabled())
@@ -1105,7 +1096,7 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
-	Player player = (Player) event.getPlayer();
+	Player player = event.getPlayer();
 
 	if (!Jobs.getGCManager().payExploringWhenFlying())
 	    return;

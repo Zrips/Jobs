@@ -161,7 +161,7 @@ public class JobsCommands implements CommandExecutor {
 	int amountToShow = 7;
 	int start = page * amountToShow - amountToShow;
 	int end = page * amountToShow;
-	int TotalPages = (int) commands.size() / amountToShow;
+	int TotalPages = commands.size() / amountToShow;
 	if (((commands.size() * 1.0) / (amountToShow * 1.0)) - TotalPages > 0)
 	    TotalPages++;
 	if (start >= commands.size()) {
@@ -235,12 +235,11 @@ public class JobsCommands implements CommandExecutor {
 	    }
 	} catch (Exception e) {
 	} finally {
-	    try {
-		if (jarFile != null) {
+	    if (jarFile != null)
+		try {
 		    jarFile.close();
+		} catch (Exception e) {
 		}
-	    } catch (Exception e) {
-	    }
 	}
 	return listOfCommands;
     }
@@ -338,9 +337,8 @@ public class JobsCommands implements CommandExecutor {
     public boolean hasJobPermission(CommandSender sender, Job job) {
 	if (!sender.hasPermission("jobs.use")) {
 	    return false;
-	} else {
-	    return sender.hasPermission("jobs.join." + job.getName().toLowerCase());
 	}
+	return sender.hasPermission("jobs.join." + job.getName().toLowerCase());
     }
 
     public void sendValidActions(CommandSender sender) {
@@ -505,7 +503,7 @@ public class JobsCommands implements CommandExecutor {
 	String message = Jobs.getLanguage().getMessage("command.stats.output",
 	    "%joblevel%", Integer.valueOf(jobProg.getLevel()).toString(),
 	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE,
-	    "%jobxp%", Double.toString(Math.round((Double) jobProg.getExperience() * 100.0) / 100.0),
+	    "%jobxp%", Double.toString(Math.round(jobProg.getExperience() * 100.0) / 100.0),
 	    "%jobmaxxp%", Integer.toString(jobProg.getMaxExperience()));
 	return " " + jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) + " " + message;
     }
@@ -545,7 +543,7 @@ public class JobsCommands implements CommandExecutor {
 	    "%joblevel%", Integer.valueOf(splited[1]).toString(),
 	    "%getbackjoblevel%", Integer.valueOf(splited[2]).toString(),
 	    "%jobname%", Jobs.getJob(splited[0]).getChatColor() + splited[0] + ChatColor.WHITE,
-	    "%jobxp%", Double.toString(Math.round((Double) Double.valueOf(splited[3]) * 100.0) / 100.0));
+	    "%jobxp%", Double.toString(Math.round(Double.valueOf(splited[3]) * 100.0) / 100.0));
 	return message;
     }
 }

@@ -545,7 +545,8 @@ public class JobsDAOSQLite extends JobsDAO {
 	try {
 	    prestLogTemp = conn.prepareStatement("SELECT * FROM `" + getPrefix() + "log`;");
 	    rsLogTemp = prestLogTemp.executeQuery();
-	    while (next = rsLogTemp.next()) {
+	    while (rsLogTemp.next()) {
+		next = true;
 		rsLogTemp.getInt("userid");
 		rsLogTemp.getLong("time");
 		rsLogTemp.getString("action");

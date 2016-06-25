@@ -66,14 +66,13 @@ public class expboost implements Cmd {
 
 	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.expboost.output.boostalladded", "%boost%", rate));
 	    return true;
-	} else {
-	    if (job == null) {
-		sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("general.error.job"));
-		return true;
-	    }
-	    job.setExpBoost(rate);
-	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.expboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
+	}
+	if (job == null) {
+	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+	job.setExpBoost(rate);
+	sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.expboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
+	return true;
     }
 }

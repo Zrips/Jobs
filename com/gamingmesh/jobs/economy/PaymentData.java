@@ -64,8 +64,8 @@ public class PaymentData {
 	return this.lastAnnouced;
     }
 
-    public boolean IsAnnounceTime(int time) {
-	if (this.lastAnnouced + (time * 1000) > System.currentTimeMillis())
+    public boolean IsAnnounceTime(int t) {
+	if (this.lastAnnouced + (t * 1000) > System.currentTimeMillis())
 	    return false;
 	SetAnnouncmentTime();
 	return true;
@@ -169,6 +169,7 @@ public class PaymentData {
 	return false;
     }
     
+    @SuppressWarnings("cast")
     public int GetLeftsec(int time) {
 	int lefttime1 = GetLeftTime(time);
 	int sec = 0;
@@ -185,6 +186,7 @@ public class PaymentData {
 	return sec;
     }
 
+    @SuppressWarnings("cast")
     public int GetLeftMin(int time) {
 	int lefttime1 = GetLeftTime(time);
 	int min = 0;

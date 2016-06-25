@@ -41,13 +41,13 @@ public class LocaleReader {
 	copySetting(path);
 	return config.getIntegerList(path);
     }
-    
+
     public List<String> getStringList(String path, List<String> list) {
 	config.addDefault(path, list);
 	copySetting(path);
 	return config.getStringList(path);
     }
-    
+
     public String get(String path, String boo) {
 	config.addDefault(path, boo);
 	copySetting(path);
@@ -59,8 +59,7 @@ public class LocaleReader {
 	copySetting(path);
 	if (colorize)
 	    return ChatColor.translateAlternateColorCodes('&', config.getString(path));
-	else
-	    return config.getString(path);
+	return config.getString(path);
     }
 
     public Double get(String path, Double boo) {

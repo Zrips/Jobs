@@ -35,7 +35,7 @@ public class VariableNode implements ExpressionNode {
     protected String name;
     /** An empty array with children */
     protected ExpressionNode[] children = new ExpressionNode[0];
-    
+
     /**
      * Creates a new variable node with given name.
      * @param name name of the variable
@@ -43,79 +43,78 @@ public class VariableNode implements ExpressionNode {
      * is not initialized. Otherwise 0.0 is returned.
      */
     public VariableNode(String name, boolean error) {
-        this.name = name;
-        value = 0.0;
-        this.error = error;
+	this.name = name;
+	value = 0.0;
+	this.error = error;
     }
-    
+
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#count()
      */
     public int count() {
-        return 1;
+	return 1;
     }
 
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getDepth()
      */
     public int getDepth() {
-        return 1; // This is a leaf node
+	return 1; // This is a leaf node
     }
 
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getSubtype()
      */
     public String getSubtype() {
-        return name;
+	return name;
     }
 
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getType()
      */
     public int getType() {
-        return ExpressionNode.VARIABLE_NODE;
+	return ExpressionNode.VARIABLE_NODE;
     }
 
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getValue()
      */
     public double getValue() {
-        if (!error)
-            return value;
-        else
-            throw new EvaluationException("Variable '" + name + "' was not initialized.");
+	if (!error)
+	    return value;
+	throw new EvaluationException("Variable '" + name + "' was not initialized.");
     }
 
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#setVariable(java.lang.String, double)
      */
     public void setVariable(String name, double value) {
-        if (this.name.equals(name)) {
-            this.value = value;
-            error = false;
-        }
+	if (this.name.equals(name)) {
+	    this.value = value;
+	    error = false;
+	}
     }
-    
+
     /* (non-Javadoc)
      * @see org.mbertoli.jfep.ExpressionNode#getChildrenNodes()
      */
     public ExpressionNode[] getChildrenNodes() {
-        return children;
+	return children;
     }
 
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
     public Object clone() {
-        VariableNode node = new VariableNode(name, error);
-        node.value = value;
-        return node;
+	VariableNode node = new VariableNode(name, error);
+	node.value = value;
+	return node;
     }
 
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return getSubtype();
+	return getSubtype();
     }
 }

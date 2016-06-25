@@ -78,8 +78,8 @@ public class BossBarManager {
 	String message = Jobs.getLanguage().getMessage("command.stats.output",
 	    "%joblevel%", Integer.valueOf(jobProg.getLevel()).toString(),
 	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE,
-	    "%jobxp%", formatter.format(Math.round((Double) jobProg.getExperience() * 100.0) / 100.0),
-	    "%jobmaxxp%", (int) jobProg.getMaxExperience());
+	    "%jobxp%", formatter.format(Math.round(jobProg.getExperience() * 100.0) / 100.0),
+	    "%jobmaxxp%", jobProg.getMaxExperience());
 
 	if (bar == null) {
 	    BarColor color = BarColor.BLUE;

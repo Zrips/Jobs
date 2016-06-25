@@ -233,9 +233,8 @@ public class JobsPlayer {
 		    counter.setBoost(Boost);
 		    counter.setTime(time);
 		    return Boost;
-		} else {
-		    return counter.getBoost();
 		}
+		return counter.getBoost();
 	    }
 	    Boost = getPlayerBoost(JobName, type);
 	    counterList.add(new BoostCounter(type, Boost, time));
@@ -438,7 +437,7 @@ public class JobsPlayer {
 //	synchronized (saveLock) {
 	progression.clear();
 	reloadHonorific();
-	Jobs.getPermissionHandler().recalculatePermissions(this);	
+	Jobs.getPermissionHandler().recalculatePermissions(this);
 	return true;
 //	}
     }
@@ -574,7 +573,7 @@ public class JobsPlayer {
 		    builder.append(Jobs.getGCManager().getModifyChatSeparator());
 		    gotTitle = false;
 		}
-		Title title = Jobs.gettitleManager().getTitleForLevel(prog.getLevel(), prog.getJob().getName());
+		Title title = Jobs.gettitleManager().getTitleForLevel(prog.getLevel());
 
 		if (numJobs == 1) {
 		    if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) {

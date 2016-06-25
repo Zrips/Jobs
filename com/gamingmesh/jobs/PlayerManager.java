@@ -437,8 +437,7 @@ public class PlayerManager {
 	    return;
 
 	// LevelUp event
-	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job.getName(), prog.getLevel(), Jobs.gettitleManager().getTitleForLevel(oldLevel, job
-	    .getName()), Jobs.gettitleManager().getTitleForLevel(prog.getLevel(), job.getName()), Jobs.getGCManager().SoundLevelupSound
+	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job.getName(), prog.getLevel(), Jobs.gettitleManager().getTitleForLevel(oldLevel), Jobs.gettitleManager().getTitleForLevel(prog.getLevel()), Jobs.getGCManager().SoundLevelupSound
 		.toUpperCase(), Jobs.getGCManager().SoundLevelupVolume, Jobs.getGCManager().SoundLevelupPitch, Jobs.getGCManager().SoundTitleChangeSound.toUpperCase(),
 	    Jobs.getGCManager().SoundTitleChangeVolume, Jobs.getGCManager().SoundTitleChangePitch);
 	Bukkit.getServer().getPluginManager().callEvent(levelUpEvent);

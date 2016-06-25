@@ -61,26 +61,23 @@ public class ExploreManager {
 	    eRegion.addChunk(eChunk);
 	    worlds.put(worldName, eRegion);
 	    return new ExploreRespond(eChunk.getCount(), true);
-	} else {
-	    ExploreRegion eRegion = worlds.get(worldName);
-	    ExploreChunk eChunk = null;
-	    for (ExploreChunk one : eRegion.getChunks()) {
-		if (one.getX() != ChunkX)
-		    continue;
-		if (one.getZ() != ChunkZ)
-		    continue;
-		eChunk = one;
-		break;
-	    }
-
-	    if (eChunk == null) {
-		eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
-		eRegion.addChunk(eChunk);
-		return new ExploreRespond(eChunk.getCount(), true);
-	    } else {
-		return eChunk.addPlayer(player);
-	    }
 	}
-    }
+	ExploreRegion eRegion = worlds.get(worldName);
+	ExploreChunk eChunk = null;
+	for (ExploreChunk one : eRegion.getChunks()) {
+	    if (one.getX() != ChunkX)
+		continue;
+	    if (one.getZ() != ChunkZ)
+		continue;
+	    eChunk = one;
+	    break;
+	}
 
+	if (eChunk == null) {
+	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
+	    eRegion.addChunk(eChunk);
+	    return new ExploreRespond(eChunk.getCount(), true);
+	}
+	return eChunk.addPlayer(player);
+    }
 }

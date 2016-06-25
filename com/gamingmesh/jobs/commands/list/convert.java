@@ -29,14 +29,12 @@ public class convert implements Cmd {
 	    return true;
 	}
 
-	Player pSender = (Player) sender;
-
 	List<Convert> list = null;
 	List<Convert> archivelist = null;
 
 	try {
-	    list = Jobs.getJobsDAO().convertDatabase(pSender, "jobs");
-	    archivelist = Jobs.getJobsDAO().convertDatabase(pSender, "archive");
+	    list = Jobs.getJobsDAO().convertDatabase("jobs");
+	    archivelist = Jobs.getJobsDAO().convertDatabase("archive");
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    sender.sendMessage(ChatColor.RED + "Can't read data from data base, please send error log to dev's.");

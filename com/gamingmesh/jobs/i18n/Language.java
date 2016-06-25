@@ -18,11 +18,8 @@
 
 package com.gamingmesh.jobs.i18n;
 
-import java.util.Locale;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.config.YmlMaker;
@@ -39,9 +36,9 @@ public class Language {
     /**
      * Reloads the config
      */
-    public void reload(Locale locale) {
-	customlocale = new YmlMaker((JavaPlugin) plugin, "locale/messages_" + Jobs.getGCManager().localeString + ".yml").getConfig();
-	enlocale = new YmlMaker((JavaPlugin) plugin, "locale/messages_en.yml").getConfig();
+    public void reload() {
+	customlocale = new YmlMaker(plugin, "locale/messages_" + Jobs.getGCManager().localeString + ".yml").getConfig();
+	enlocale = new YmlMaker(plugin, "locale/messages_en.yml").getConfig();
 	if (customlocale == null)
 	    customlocale = enlocale;
     }

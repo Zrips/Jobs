@@ -35,10 +35,7 @@ public class McMMOlistener implements Listener {
 	if (!plugin.isEnabled())
 	    return;
 
-	if (!(event.getPlayer() instanceof Player))
-	    return;
-
-	Player player = (Player) event.getPlayer();
+	Player player = event.getPlayer();
 
 	ItemStack resultStack = event.getRepairedObject();
 

@@ -19,8 +19,6 @@ public final class TopList {
 	if (info != null) {
 	    if (info.getValue().getName() != null)
 		return info.getValue().getName();
-	    else
-		return "Unknown";
 	}
 	return "Unknown";
     }

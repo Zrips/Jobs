@@ -67,21 +67,18 @@ public final class Log {
     public int getCount(String item) {
 	if (this.amountMap.containsKey(item))
 	    return this.amountMap.get(item).getCount();
-	else
-	    return 0;
+	return 0;
     }
 
     public double getMoney(String item) {
 	if (this.amountMap.containsKey(item))
 	    return this.amountMap.get(item).getMoney();
-	else
-	    return 0;
+	return 0;
     }
 
     public double getExp(String item) {
 	if (this.amountMap.containsKey(item))
 	    return this.amountMap.get(item).getExp();
-	else
-	    return 0;
+	return 0;
     }
 }

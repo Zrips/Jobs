@@ -162,11 +162,9 @@ public class ActionBar {
     }
 
     private String getChatSerializerClasspath() {
-	if (cleanVersion < 1820) {
+	if (cleanVersion < 1820)
 	    return "net.minecraft.server." + version + ".ChatSerializer";
-	} else {
-	    return "net.minecraft.server." + version + ".IChatBaseComponent$ChatSerializer";// 1_8_R2 moved to IChatBaseComponent
-	}
+	return "net.minecraft.server." + version + ".IChatBaseComponent$ChatSerializer";// 1_8_R2 moved to IChatBaseComponent	
     }
 
     private String getPacketPlayOutChat() {

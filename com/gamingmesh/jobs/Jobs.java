@@ -257,7 +257,7 @@ public class Jobs {
 	return GUIManager;
     }
 
-    public static void setGUIManager(JobsPlugin plugin) {
+    public static void setGUIManager() {
 	GUIManager = new GuiManager();
     }
 
@@ -467,7 +467,7 @@ public class Jobs {
 	}
 
 	Jobs.getGCManager().reload();
-	Jobs.getLanguage().reload(Jobs.getGCManager().getLocale());
+	Jobs.getLanguage().reload();
 	Jobs.getConfigManager().reload();
 	usedSlots.clear();
 	for (Job job : jobs) {
@@ -533,8 +533,7 @@ public class Jobs {
     public static int getUsedSlots(Job job) {
 	if (usedSlots.containsKey(job))
 	    return usedSlots.get(job);
-	else
-	    return 0;
+	return 0;
     }
 
     /**
@@ -631,8 +630,9 @@ public class Jobs {
 		if (data.isReseted())
 		    data.setReseted(false);
 		return false;
-	    } else
-		data.AddAmount(amount);
+	    }
+
+	    data.AddAmount(amount);
 	    paymentLimit.put(playername, data);
 	}
 	return true;
@@ -669,8 +669,8 @@ public class Jobs {
 		if (data.isReseted())
 		    data.setReseted(false);
 		return false;
-	    } else
-		data.AddExpAmount(amount);
+	    }
+	    data.AddExpAmount(amount);
 	    ExpLimit.put(playername, data);
 	}
 	return true;
@@ -710,8 +710,8 @@ public class Jobs {
 		if (data.isReseted())
 		    data.setReseted(false);
 		return false;
-	    } else
-		data.AddPoints(amount);
+	    }
+	    data.AddPoints(amount);
 	    PointLimit.put(playername, data);
 	}
 	return true;

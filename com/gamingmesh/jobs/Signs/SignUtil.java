@@ -88,7 +88,7 @@ public class SignUtil {
 	try {
 	    writer.save(f);
 	} catch (IOException e) {
-	    e.printStackTrace();	    
+	    e.printStackTrace();
 	}
 	return;
     }
@@ -131,7 +131,7 @@ public class SignUtil {
 				if (i >= PlayerList.size()) {
 				    break;
 				}
-				String PlayerName = ((TopList) PlayerList.get(i)).getPlayerName();
+				String PlayerName = PlayerList.get(i).getPlayerName();
 
 				if (PlayerName != null && PlayerName.length() > 8) {
 				    String PlayerNameStrip = PlayerName.split("(?<=\\G.{7})")[0];
@@ -144,14 +144,14 @@ public class SignUtil {
 				String line = Jobs.getLanguage().getMessage("signs.List");
 				line = line.replace("[number]", String.valueOf(i + number + 1));
 				line = line.replace("[player]", PlayerName);
-				line = line.replace("[level]", String.valueOf(((TopList) PlayerList.get(i)).getLevel()));
+				line = line.replace("[level]", String.valueOf(PlayerList.get(i).getLevel()));
 
 				sign.setLine(i, line);
 			    }
 			    sign.update();
-			    UpdateHead(sign, ((TopList) PlayerList.get(0)).getPlayerName(), timelapse);
+			    UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse);
 			} else {
-			    String PlayerName = ((TopList) PlayerList.get(0)).getPlayerName();
+			    String PlayerName = PlayerList.get(0).getPlayerName();
 			    if (PlayerName.length() > 8) {
 				String PlayerNameStrip = PlayerName.split("(?<=\\G.{7})")[0];
 				PlayerName = PlayerNameStrip + "~";
@@ -159,32 +159,32 @@ public class SignUtil {
 			    String line1 = Jobs.getLanguage().getMessage("signs.SpecialList." + one.GetNumber() + ".1");
 			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
 			    line1 = line1.replace("[player]", PlayerName);
-			    line1 = line1.replace("[level]", String.valueOf(((TopList) PlayerList.get(0)).getLevel()));
+			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
 
 			    sign.setLine(0, line1);
 
 			    line1 = Jobs.getLanguage().getMessage("signs.SpecialList." + one.GetNumber() + ".2");
 			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
 			    line1 = line1.replace("[player]", PlayerName);
-			    line1 = line1.replace("[level]", String.valueOf(((TopList) PlayerList.get(0)).getLevel()));
+			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
 
 			    sign.setLine(1, line1);
 
 			    line1 = Jobs.getLanguage().getMessage("signs.SpecialList." + one.GetNumber() + ".3");
 			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
 			    line1 = line1.replace("[player]", PlayerName);
-			    line1 = line1.replace("[level]", String.valueOf(((TopList) PlayerList.get(0)).getLevel()));
+			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
 
 			    sign.setLine(2, line1);
 
 			    line1 = Jobs.getLanguage().getMessage("signs.SpecialList." + one.GetNumber() + ".4");
 			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
 			    line1 = line1.replace("[player]", PlayerName);
-			    line1 = line1.replace("[level]", String.valueOf(((TopList) PlayerList.get(0)).getLevel()));
+			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
 
 			    sign.setLine(3, line1);
 			    sign.update();
-			    UpdateHead(sign, ((TopList) PlayerList.get(0)).getPlayerName(), timelapse);
+			    UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse);
 			}
 
 			timelapse++;

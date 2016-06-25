@@ -165,7 +165,7 @@ public class BufferedEconomy {
 
 		if (payment.getOfflinePlayer() == null)
 		    continue;
-		
+
 		// JobsPayment event
 		JobsPaymentEvent JobsPaymentEvent = new JobsPaymentEvent(payment.getOfflinePlayer(), payment.getAmount(), payment.getPoints());
 		Bukkit.getServer().getPluginManager().callEvent(JobsPaymentEvent);
@@ -180,12 +180,11 @@ public class BufferedEconomy {
 		    if (!hasMoney) {
 			Jobs.getActionBar().send(payment.getOfflinePlayer().getPlayer(), ChatColor.RED + Jobs.getLanguage().getMessage("economy.error.nomoney"));
 			continue;
-		    } else {
-			if (Jobs.getGCManager().isEconomyAsync())
-			    Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);
-			else
-			    Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 		    }
+		    if (Jobs.getGCManager().isEconomyAsync())
+			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);
+		    else
+			Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 		} else {
 		    if (Jobs.getGCManager().isEconomyAsync())
 			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);

@@ -67,14 +67,13 @@ public class pointboost implements Cmd {
 
 	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.pointboost.output.boostalladded", "%boost%", rate));
 	    return true;
-	} else {
-	    if (job == null) {
-		sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("general.error.job"));
-		return true;
-	    }
-	    job.setPointBoost(rate);
-	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.pointboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
+	}
+	if (job == null) {
+	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+	job.setPointBoost(rate);
+	sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.pointboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
+	return true;
     }
 }

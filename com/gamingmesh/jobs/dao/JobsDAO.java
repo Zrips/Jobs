@@ -152,8 +152,8 @@ public abstract class JobsDAO {
 	if (userData == null) {
 	    recordNewPlayer(playerName, uuid);
 	    return jobs;
-	} else
-	    id = userData.getID();
+	}
+	id = userData.getID();
 
 	JobsConnection conn = getConnection();
 	if (conn == null)
@@ -337,7 +337,7 @@ public abstract class JobsDAO {
      * @param job - job that the player wishes to join
      * @throws SQLException 
      */
-    public List<Convert> convertDatabase(Player Player, String table) throws SQLException {
+    public List<Convert> convertDatabase(String table) throws SQLException {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return null;

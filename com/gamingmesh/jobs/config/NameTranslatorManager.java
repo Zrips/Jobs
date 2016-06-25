@@ -9,8 +9,6 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.JobInfo;
@@ -114,7 +112,7 @@ public class NameTranslatorManager {
     }
 
     public void readFile() {
-	YmlMaker ItemFile = new YmlMaker((JavaPlugin) plugin, "TranslatableWords" + File.separator + "Words_" + Jobs.getGCManager().localeString + ".yml");
+	YmlMaker ItemFile = new YmlMaker(plugin, "TranslatableWords" + File.separator + "Words_" + Jobs.getGCManager().localeString + ".yml");
 	ItemFile.saveDefaultConfig();
 	ConfigurationSection section = ItemFile.getConfig().getConfigurationSection("ItemList");
 	Set<String> keys = section.getKeys(false);
@@ -178,7 +176,7 @@ public class NameTranslatorManager {
 	languages.add("fr");
 
 	for (String lang : languages) {
-	    YmlMaker langFile = new YmlMaker((JavaPlugin) plugin, "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+	    YmlMaker langFile = new YmlMaker(plugin, "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
 	    if (langFile != null)
 		langFile.saveDefaultConfig();
 	}

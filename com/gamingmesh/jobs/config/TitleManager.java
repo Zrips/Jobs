@@ -30,7 +30,7 @@ public class TitleManager {
      * @return the correct title
      * @return null if no title matches
      */
-    public Title getTitleForLevel(int level, String jobName) {
+    public Title getTitleForLevel(int level) {
 	Title title = null;
 	for (Title t : titles) {
 	    if (title == null) {

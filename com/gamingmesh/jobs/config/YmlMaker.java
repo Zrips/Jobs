@@ -47,12 +47,6 @@ public class YmlMaker {
 	    e1.printStackTrace();
 	} catch (FileNotFoundException e1) {
 	    e1.printStackTrace();
-	} finally {
-	    try {
-		f.close();
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
 	}
 
 	this.Configuration = YamlConfiguration.loadConfiguration(f);
@@ -63,11 +57,18 @@ public class YmlMaker {
 	    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 	    this.Configuration.setDefaults(defConfig);
 	}
-	try {
-	    defConfigStream.close();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+	if (defConfigStream != null)
+	    try {
+		defConfigStream.close();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	if (f != null)
+	    try {
+		f.close();
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
     }
 
     public FileConfiguration getConfig() {

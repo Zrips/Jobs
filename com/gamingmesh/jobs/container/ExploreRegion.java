@@ -9,11 +9,6 @@ public class ExploreRegion {
     int z;
     List<ExploreChunk> chunks = new ArrayList<ExploreChunk>();
 
-    public ExploreRegion(int x, int z, List<ExploreChunk> chunks) {
-	this.x = x;
-	this.z = z;
-    }
-
     public ExploreRegion(int x, int z) {
 	this.x = x;
 	this.z = z;

@@ -88,11 +88,11 @@ public class JobsListener implements Listener {
 	    return;
 
 	event.setCancelled(true);
-	
+
 	Debug.D(event.getRawSlot());
 
 	int tsize = player.getOpenInventory().getTopInventory().getSize();
-	
+
 	if (event.getRawSlot() < 0 || event.getRawSlot() >= tsize)
 	    return;
 
@@ -238,7 +238,7 @@ public class JobsListener implements Listener {
 	    }
 	}
 
-	Player player = (Player) event.getPlayer();
+	Player player = event.getPlayer();
 	Bukkit.dispatchCommand(player, "jobs " + command + " " + ChatColor.stripColor(sign.getLine(2)) + " " + ChatColor.stripColor(sign.getLine(3)));
     }
 
@@ -259,7 +259,7 @@ public class JobsListener implements Listener {
 	if (!(block.getState() instanceof Sign))
 	    return;
 
-	Player player = (Player) event.getPlayer();
+	Player player = event.getPlayer();
 
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
@@ -316,7 +316,7 @@ public class JobsListener implements Listener {
 	if (!signtype.equalsIgnoreCase("toplist") && !signtype.equalsIgnoreCase("gtoplist"))
 	    return;
 
-	Player player = (Player) event.getPlayer();
+	Player player = event.getPlayer();
 
 	if (!event.getPlayer().hasPermission("jobs.command.signs")) {
 	    event.setCancelled(true);
@@ -531,7 +531,7 @@ public class JobsListener implements Listener {
 	//disabling plugin in world
 	if (event.getClickedBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getClickedBlock().getWorld()))
 	    return;
-	Player player = (Player) event.getPlayer();
+	Player player = event.getPlayer();
 
 	ItemStack iih = player.getItemInHand();
 
@@ -607,11 +607,7 @@ public class JobsListener implements Listener {
 		if (oneItem.getenchants().get(oneE.getKey()) <= oneE.getValue()) {
 		    foundEnc = true;
 		    break;
-		} else {
-		    continue;
 		}
-	    } else {
-		continue;
 	    }
 	}
 

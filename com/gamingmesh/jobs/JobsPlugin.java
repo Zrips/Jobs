@@ -79,7 +79,7 @@ public class JobsPlugin extends JavaPlugin {
 
 	    Jobs.setScboard(this);
 	    Jobs.setLanguage(this);
-	    Jobs.setGUIManager(this);
+	    Jobs.setGUIManager();
 	    Jobs.setExplore();
 
 	    Jobs.setBBManager(this);
@@ -103,6 +103,7 @@ public class JobsPlugin extends JavaPlugin {
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
 
+	    Jobs.setMcMMOlistener(this);
 	    if (Jobs.getMcMMOlistener().CheckmcMMO()){
 		getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
 	    }
@@ -127,7 +128,7 @@ public class JobsPlugin extends JavaPlugin {
 	    String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Plugin has been enabled succesfully.");
 	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	    console.sendMessage(message);
-	    Jobs.getLanguage().reload(Jobs.getGCManager().getLocale());
+	    Jobs.getLanguage().reload();
 
 	    Jobs.getJobsDAO().loadExplore();
 
