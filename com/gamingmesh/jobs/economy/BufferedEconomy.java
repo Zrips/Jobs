@@ -96,6 +96,9 @@ public class BufferedEconomy {
 		    TaxesPoints += payment.getPoints() * (Jobs.getGCManager().TaxesAmount / 100.0);
 		}
 
+		if (payment.getOfflinePlayer() == null)
+		    continue;
+
 		UUID uuid = payment.getOfflinePlayer().getUniqueId();
 		if (paymentCache.containsKey(uuid)) {
 		    BufferedPayment existing = paymentCache.get(uuid);
@@ -160,6 +163,9 @@ public class BufferedEconomy {
 	    for (BufferedPayment payment : paymentCache.values()) {
 		i++;
 
+		if (payment.getOfflinePlayer() == null)
+		    continue;
+		
 		// JobsPayment event
 		JobsPaymentEvent JobsPaymentEvent = new JobsPaymentEvent(payment.getOfflinePlayer(), payment.getAmount(), payment.getPoints());
 		Bukkit.getServer().getPluginManager().callEvent(JobsPaymentEvent);

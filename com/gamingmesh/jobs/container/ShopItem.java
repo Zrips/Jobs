@@ -10,6 +10,9 @@ public class ShopItem {
 
     private double price = 0D;
 
+    private int slot = -1;
+    private int page = -1;
+
     private int IconId = 1;
     private int IconData = 0;
     private int IconAmount = 1;
@@ -29,6 +32,22 @@ public class ShopItem {
 	this.NodeName = NodeName;
 	this.price = price;
 	this.IconId = IconId;
+    }
+
+    public void setPage(Integer page) {
+	this.page = page;
+    }
+
+    public int getPage() {
+	return this.page;
+    }
+
+    public void setSlot(Integer slot) {
+	this.slot = slot;
+    }
+
+    public int getSlot() {
+	return this.slot;
     }
 
     public void setitems(List<JobItems> items) {

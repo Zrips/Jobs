@@ -851,7 +851,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	return true;
     }
 
-    private boolean createDefaultLogBase() {
+    protected boolean createDefaultLogBase() {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
 		+ "log` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `time` bigint, `action` varchar(20), `itemname` varchar(60), `count` int, `money` double, `exp` double);");
@@ -881,7 +881,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	return true;
     }
 
-    private boolean dropDataBase(String name) {
+    protected boolean dropDataBase(String name) {
 	try {
 	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + name + "`;");
 	} catch (SQLException e) {

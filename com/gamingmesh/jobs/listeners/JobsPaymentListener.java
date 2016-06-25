@@ -278,7 +278,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode()== GameMode.CREATIVE && !Jobs.getGCManager().payInCreative())
+	if (player.getGameMode() == GameMode.CREATIVE && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1080,7 +1080,7 @@ public class JobsPaymentListener implements Listener {
 	    if (block == null)
 		continue;
 
-	    if (block.getType().equals(Material.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	    if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
 		block.removeMetadata(furnaceOwnerMetadata, plugin);
 
 	    if (Jobs.getGCManager().useBlockProtection)
@@ -1104,12 +1104,14 @@ public class JobsPaymentListener implements Listener {
 	if (block == null)
 	    return;
 
-	if (block.getType().equals(Material.FURNACE)) {
+	if (event.isCancelled())
+	    return;
+
+	if (block.getType() == Material.FURNACE || block.getType() == Material.BURNING_FURNACE) {
 	    if (block.hasMetadata(furnaceOwnerMetadata))
 		block.removeMetadata(furnaceOwnerMetadata, plugin);
-
 	    block.setMetadata(furnaceOwnerMetadata, new FixedMetadataValue(plugin, event.getPlayer().getName()));
-	} else if (block.getType().equals(Material.BREWING_STAND)) {
+	} else if (block.getType() == Material.BREWING_STAND) {
 	    if (block.hasMetadata(brewingOwnerMetadata))
 		block.removeMetadata(brewingOwnerMetadata, plugin);
 

@@ -522,7 +522,10 @@ public class Jobs {
      * @return the number of slots
      */
     public static int getUsedSlots(Job job) {
-	return usedSlots.get(job);
+	if (usedSlots.containsKey(job))
+	    return usedSlots.get(job);
+	else
+	    return 0;
     }
 
     /**
@@ -530,7 +533,8 @@ public class Jobs {
      * @param job - the job someone is taking
      */
     public static void takeSlot(Job job) {
-	usedSlots.put(job, usedSlots.get(job) + 1);
+	if (usedSlots.containsKey(job))
+	    usedSlots.put(job, usedSlots.get(job) + 1);
     }
 
     /**
@@ -538,7 +542,8 @@ public class Jobs {
      * @param job - the job someone is leaving
      */
     public static void leaveSlot(Job job) {
-	usedSlots.put(job, usedSlots.get(job) - 1);
+	if (usedSlots.containsKey(job))
+	    usedSlots.put(job, usedSlots.get(job) - 1);
     }
 
     /**
@@ -736,7 +741,7 @@ public class Jobs {
 		if (income != 0D || points != 0D) {
 
 //		    jPlayer
-		    
+
 		    BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(jPlayer, Jobs.getNoneJob());
 
 		    // Calculate income

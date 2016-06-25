@@ -116,6 +116,10 @@ public abstract class JobsDAO {
 
     protected abstract void checkUpdate9() throws SQLException;
 
+    protected abstract boolean createDefaultLogBase();
+
+    protected abstract boolean dropDataBase(String name);
+
     /**
      * Gets the database prefix
      * @return the prefix
@@ -771,11 +775,10 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
+	PreparedStatement prest = null;
 	try {
-
 	    int time = TimeManage.timeInInt();
-
-	    PreparedStatement prest = conn.prepareStatement("SELECT * FROM `" + prefix + "log` WHERE `userid` = ?  AND `time` = ? ;");
+	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "log` WHERE `userid` = ?  AND `time` = ? ;");
 	    prest.setInt(1, player.getUserId());
 	    prest.setInt(2, time);
 	    ResultSet res = prest.executeQuery();
@@ -783,9 +786,22 @@ public abstract class JobsDAO {
 		Loging.loadToLog(player, res.getString("action"), res.getString("itemname"), res.getInt("count"), res.getDouble("money"), res.getDouble("exp"));
 	    }
 	    res.close();
-	    prest.close();
-	} catch (SQLException e) {
-	    e.printStackTrace();
+	} catch (Exception e) {
+	    if (prest != null)
+		try {
+		    prest.close();
+		} catch (SQLException e1) {
+		    e1.printStackTrace();
+		}
+	    this.dropDataBase("log");
+	    this.createDefaultLogBase();
+	} finally {
+	    if (prest != null)
+		try {
+		    prest.close();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
 	}
     }
 

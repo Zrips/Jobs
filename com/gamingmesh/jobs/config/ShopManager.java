@@ -32,7 +32,7 @@ import com.gamingmesh.jobs.stuff.Perm;
 public class ShopManager {
     private JobsPlugin plugin;
     public List<ShopItem> list = new ArrayList<ShopItem>();
-    public List<String> GuiList = new ArrayList<String>();
+    public HashMap<String, Integer> GuiList = new HashMap<String, Integer>();
 
     public ShopManager(JobsPlugin plugin) {
 	this.plugin = plugin;
@@ -42,9 +42,38 @@ public class ShopManager {
 	return list;
     }
 
-    public void checkSlot(Player player, int slot) {
+    public void openInventory(Player player, int page) {
+	Inventory inv = Jobs.getShopManager().CreateJobsGUI(player, page);
+	if (inv == null) {
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.cantOpen"));
+	    return;
+	}
+	Inventory topinv = player.getOpenInventory().getTopInventory();
+	if (topinv != null)
+	    player.closeInventory();
+	Jobs.getShopManager().GuiList.put(player.getName(), page);
+	player.openInventory(inv);
+    }
 
-	ShopItem item = list.get(slot);
+    public void checkSlot(Player player, int slot, int page) {
+
+	List<ShopItem> ls = getItemsByPage(page);
+
+	int GuiSize = this.getGuiSize(ls, page);
+	if (slot == getPrevButtonSlot(GuiSize, page)) {
+	    openInventory(player, page - 1);
+	    return;
+	}
+
+	if (slot == getnextButtonSlot(GuiSize, page)) {
+	    openInventory(player, page + 1);
+	    return;
+	}
+
+	if (slot > ls.size() - 1)
+	    return;
+
+	ShopItem item = ls.get(slot);
 	PlayerPoints pointsInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(player.getUniqueId());
 
 	if (!Perm.hasPermission(player, "jobs.items.bypass")) {
@@ -125,28 +154,65 @@ public class ShopManager {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPrice()));
 	}
 
-	player.getOpenInventory().getTopInventory().setContents(CreateJobsGUI(player).getContents());
+	player.getOpenInventory().getTopInventory().setContents(CreateJobsGUI(player, page).getContents());
 
     }
 
-    public Inventory CreateJobsGUI(Player player) {
+    private List<ShopItem> getItemsByPage(Integer page) {
+	List<ShopItem> ls = new ArrayList<ShopItem>();
+	for (ShopItem one : list) {
+	    if (one.getPage() == page)
+		ls.add(one);
+	}
+	return ls;
+    }
 
+    private int getGuiSize(List<ShopItem> ls, int page) {
 	int GuiSize = 9;
-
-	if (list.size() > 9)
+	if (ls.size() > 9)
 	    GuiSize = 18;
 
-	if (list.size() > 18)
+	if (ls.size() > 18)
 	    GuiSize = 27;
 
-	if (list.size() > 27)
+	if (ls.size() > 27)
 	    GuiSize = 36;
 
-	if (list.size() > 36)
+	if (ls.size() > 36)
 	    GuiSize = 45;
 
-	if (list.size() > 45)
+	if (ls.size() == 45)
 	    GuiSize = 54;
+
+	if (page > 1 && GuiSize < 54)
+	    GuiSize += 9;
+
+	return GuiSize;
+    }
+
+    private int getPrevButtonSlot(int GuiSize, int page) {
+	int prev = -1;
+	if (page > 1)
+	    prev = GuiSize - 9;
+	return prev;
+    }
+
+    private int getnextButtonSlot(int GuiSize, int page) {
+	int next = -1;
+	List<ShopItem> lsnext = getItemsByPage(page + 1);
+	if (!lsnext.isEmpty())
+	    next = GuiSize - 1;
+	return next;
+    }
+
+    public Inventory CreateJobsGUI(Player player, Integer page) {
+
+	List<ShopItem> ls = getItemsByPage(page);
+
+	if (ls.isEmpty())
+	    return null;
+
+	int GuiSize = getGuiSize(ls, page);
 
 	String title = Jobs.getLanguage().getMessage("command.shop.info.title");
 	if (title.length() > 32)
@@ -159,9 +225,9 @@ public class ShopManager {
 
 	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, title);
 
-	for (int i = 0; i < list.size(); i++) {
+	for (int i = 0; i < ls.size(); i++) {
 
-	    ShopItem item = list.get(i);
+	    ShopItem item = ls.get(i);
 
 	    ArrayList<String> Lore = new ArrayList<String>();
 
@@ -220,6 +286,24 @@ public class ShopManager {
 	    GUIitem.setItemMeta(meta);
 	    GuiInv.setItem(i, GUIitem);
 	}
+
+	ItemStack Item = new ItemStack(Material.ARROW);
+
+	ItemMeta meta = Item.getItemMeta();
+	int pervSlot = getPrevButtonSlot(GuiSize, page);
+	if (pervSlot != -1) {
+	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.prev"));
+	    Item.setItemMeta(meta);
+	    GuiInv.setItem(pervSlot, Item);
+	}
+
+	int nextSlot = getnextButtonSlot(GuiSize, page);
+	if (nextSlot != -1) {
+	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.next"));
+	    Item.setItemMeta(meta);
+	    GuiInv.setItem(nextSlot, Item);
+	}
+
 	return GuiInv;
     }
 
@@ -235,6 +319,8 @@ public class ShopManager {
 	ArrayList<String> categoriesList = new ArrayList<String>(ConfCategory.getKeys(false));
 	if (categoriesList.size() == 0)
 	    return;
+	int i = 0;
+	int y = 1;
 	for (String category : categoriesList) {
 	    ConfigurationSection NameSection = ConfCategory.getConfigurationSection(category);
 
@@ -361,10 +447,19 @@ public class ShopManager {
 		Sitem.setitems(items);
 	    }
 
-	    if (list.size() >= 54) {
-		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Jobs] To many jobs shop items, max allowed is 54! Only first 54 items will be used!");
-		break;
+//	    if (list.size() >= 54) {
+//		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Jobs] To many jobs shop items, max allowed is 54! Only first 54 items will be used!");
+//		break;
+//	    }
+	    i++;
+
+	    if (i > 45) {
+		i = 1;
+		y++;
 	    }
+
+	    Sitem.setSlot(i);
+	    Sitem.setPage(y);
 	    list.add(Sitem);
 	}
 
@@ -375,8 +470,8 @@ public class ShopManager {
     }
 
     public void CloseInventories() {
-	for (String one : GuiList) {
-	    Player player = Bukkit.getPlayer(one);
+	for (Entry<String, Integer> one : GuiList.entrySet()) {
+	    Player player = Bukkit.getPlayer(one.getKey());
 	    if (player != null) {
 		player.closeInventory();
 	    }

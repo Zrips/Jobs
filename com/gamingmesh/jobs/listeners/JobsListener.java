@@ -67,6 +67,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
@@ -83,15 +84,19 @@ public class JobsListener implements Listener {
 
 	Player player = (Player) event.getWhoClicked();
 
-	if (!Jobs.getShopManager().GuiList.contains(player.getName()))
+	if (!Jobs.getShopManager().GuiList.containsKey(player.getName()))
 	    return;
 
 	event.setCancelled(true);
+	
+	Debug.D(event.getRawSlot());
 
-	if (event.getSlot() < 0 || event.getSlot() >= Jobs.getShopManager().list.size())
+	int tsize = player.getOpenInventory().getTopInventory().getSize();
+	
+	if (event.getRawSlot() < 0 || event.getRawSlot() >= tsize)
 	    return;
 
-	Jobs.getShopManager().checkSlot(player, event.getSlot());
+	Jobs.getShopManager().checkSlot(player, event.getRawSlot(), Jobs.getShopManager().GuiList.get(player.getName()));
 
     }
 
@@ -102,7 +107,7 @@ public class JobsListener implements Listener {
 
 	Player player = (Player) event.getPlayer();
 
-	if (Jobs.getShopManager().GuiList.contains(player.getName()))
+	if (Jobs.getShopManager().GuiList.containsKey(player.getName()))
 	    Jobs.getShopManager().GuiList.remove(player.getName());
     }
 
