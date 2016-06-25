@@ -17,6 +17,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class fireall implements Cmd {
 
+    @Override
     @JobCommand(2000)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 1) {

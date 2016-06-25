@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class toggle implements Cmd {
 
+    @Override
     @JobCommand(1000)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 

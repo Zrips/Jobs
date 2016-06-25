@@ -9,11 +9,11 @@ import com.gamingmesh.jobs.container.Log;
 
 public class Loging {
 
-    public static void recordToLog(JobsPlayer jPlayer, ActionInfo info, double amount, double expAmount) {
+    public void recordToLog(JobsPlayer jPlayer, ActionInfo info, double amount, double expAmount) {
 	recordToLog(jPlayer, info.getType().getName(), info.getNameWithSub(), amount, expAmount);
     }
 
-    public static void recordToLog(JobsPlayer jPlayer, String ActionName, String item, double amount, double expAmount) {
+    public void recordToLog(JobsPlayer jPlayer, String ActionName, String item, double amount, double expAmount) {
 	List<Log> logList = jPlayer.getLog();
 	boolean found = false;
 
@@ -38,7 +38,7 @@ public class Loging {
 	}
     }
 
-    public static void loadToLog(JobsPlayer jPlayer, String ActionName, String item, int count, double money, double expAmount) {
+    public void loadToLog(JobsPlayer jPlayer, String ActionName, String item, int count, double money, double expAmount) {
 	List<Log> logList = jPlayer.getLog();
 	boolean found = false;
 	for (Log one : logList) {

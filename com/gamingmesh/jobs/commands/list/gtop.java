@@ -20,6 +20,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class gtop implements Cmd {
 
+    @Override
     @JobCommand(600)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 

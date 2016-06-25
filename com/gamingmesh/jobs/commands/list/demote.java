@@ -15,6 +15,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class demote implements Cmd {
 
+    @Override
     @JobCommand(1700)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 3) {

@@ -361,7 +361,7 @@ public class JobsListener implements Listener {
 	signInfo.setY(loc.getY());
 	signInfo.setZ(loc.getZ());
 	signInfo.setCategory(category);
-	if (!signtype.equalsIgnoreCase("gtoplist"))
+	if (!signtype.equalsIgnoreCase("gtoplist") && job != null)
 	    signInfo.setJobName(job.getName());
 	else
 	    signInfo.setJobName("gtoplist");
@@ -372,8 +372,9 @@ public class JobsListener implements Listener {
 	event.setCancelled(true);
 
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	    @Override
 	    public void run() {
-		if (!signtype.equalsIgnoreCase("gtoplist"))
+		if (!signtype.equalsIgnoreCase("gtoplist") && job != null)
 		    Jobs.getSignUtil().SignUpdate(job.getName());
 		else
 		    Jobs.getSignUtil().SignUpdate("gtoplist");
@@ -517,6 +518,7 @@ public class JobsListener implements Listener {
 	    return;
 	if (event.getBlock().getState().hasMetadata(JobsPaymentListener.PlacedBlockMetadata)) {
 	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		@Override
 		public void run() {
 		    event.getBlock().getState().removeMetadata(JobsPaymentListener.PlacedBlockMetadata, plugin);
 		    return;

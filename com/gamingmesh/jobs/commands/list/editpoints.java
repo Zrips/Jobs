@@ -10,6 +10,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 
 public class editpoints implements Cmd {
 
+    @Override
     @JobCommand(475)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 

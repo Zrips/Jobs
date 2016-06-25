@@ -77,6 +77,6 @@ public class JobsDAOData {
      * @return the experience in the job
      */
     public double getExperience() {
-        return (double) experience;
+        return experience;
     }
 }

@@ -79,6 +79,7 @@ public interface ExpressionNode extends Cloneable {
      * Returns a string describing the entire tree
      * @return string describing the entire tree
      */
+    @Override
     public String toString();
 
     /**

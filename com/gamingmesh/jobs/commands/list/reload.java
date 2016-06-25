@@ -11,6 +11,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class reload implements Cmd {
+    @Override
     @JobCommand(2900)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	try {

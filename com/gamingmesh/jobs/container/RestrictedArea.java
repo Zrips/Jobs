@@ -74,7 +74,7 @@ public class RestrictedArea {
      * @return true - number is between bounds
      * @return false - number is out of bounds
      */
-    private boolean isBetween(double number, double bound1, double bound2) {
+    private static boolean isBetween(double number, double bound1, double bound2) {
         if(bound1 < bound2 && number > bound1 && number < bound2) {
             return true;
         } else if (bound1 > bound2 && number < bound1 && number > bound2) {

@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class info implements Cmd {
 
+    @Override
     @JobCommand(300)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {

@@ -21,6 +21,7 @@ import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class glog implements Cmd {
 
+    @Override
     @JobCommand(1200)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	if (args.length != 0) {

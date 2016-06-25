@@ -36,14 +36,17 @@ public final class JobsExpGainEvent extends Event implements Cancellable {
 	this.exp = exp;
     }
 
+    @Override
     public boolean isCancelled() {
 	return cancelled;
     }
 
+    @Override
     public void setCancelled(boolean cancel) {
 	cancelled = cancel;
     }
 
+    @Override
     public HandlerList getHandlers() {
 	return handlers;
     }

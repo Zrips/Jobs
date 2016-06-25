@@ -53,6 +53,7 @@ public class OperatorNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#count()
      */
+    @Override
     public int count() {
         return 1 + left.count() + right.count();
     }
@@ -60,6 +61,7 @@ public class OperatorNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getDepth()
      */
+    @Override
     public int getDepth() {
         return 1 + Math.max(left.getDepth(), right.getDepth());
     }
@@ -67,6 +69,7 @@ public class OperatorNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getSubtype()
      */
+    @Override
     public String getSubtype() {
         return Character.toString(operation);
     }
@@ -74,6 +77,7 @@ public class OperatorNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getType()
      */
+    @Override
     public int getType() {
         return ExpressionNode.OPERATOR_NODE;
     }
@@ -81,6 +85,7 @@ public class OperatorNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getValue()
      */
+    @Override
     public double getValue() {
         switch (operation) {
             case '+': return left.getValue() + right.getValue();
@@ -97,6 +102,7 @@ public class OperatorNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#setVariable(java.lang.String, double)
      */
+    @Override
     public void setVariable(String name, double value) {
         left.setVariable(name, value);
         right.setVariable(name, value);
@@ -105,6 +111,7 @@ public class OperatorNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see org.mbertoli.jfep.ExpressionNode#getChildrenNodes()
      */
+    @Override
     public ExpressionNode[] getChildrenNodes() {
         return children;
     }
@@ -112,6 +119,7 @@ public class OperatorNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         ExpressionNode n_left = (ExpressionNode)left.clone();
         ExpressionNode n_right = (ExpressionNode)right.clone();
@@ -121,6 +129,7 @@ public class OperatorNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         StringBuffer str = new StringBuffer();
         if (needBrackets(left, true))

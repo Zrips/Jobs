@@ -52,6 +52,7 @@ public class JobsCommands implements CommandExecutor {
 	return CommandList;
     }
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 	if (sender instanceof Player) {
@@ -282,7 +283,7 @@ public class JobsCommands implements CommandExecutor {
 	}
     }
 
-    private Class<?> getClass(String cmd) {
+    private static Class<?> getClass(String cmd) {
 	Class<?> nmsClass = null;
 	try {
 	    nmsClass = Class.forName(packagePath + "." + cmd.toLowerCase());
@@ -293,7 +294,7 @@ public class JobsCommands implements CommandExecutor {
 	return nmsClass;
     }
 
-    private Cmd getCmdClass(String cmd) {
+    private static Cmd getCmdClass(String cmd) {
 	Cmd cmdClass = null;
 	try {
 	    Class<?> nmsClass;
@@ -315,6 +316,7 @@ public class JobsCommands implements CommandExecutor {
     private static Map<String, Integer> sort(Map<String, Integer> unsortMap) {
 	List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
 	Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+	    @Override
 	    public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
 		return (o1.getValue()).compareTo(o2.getValue());
 	    }

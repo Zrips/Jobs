@@ -14,6 +14,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class playerinfo implements Cmd {
 
+    @Override
     @JobCommand(1300)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 2) {

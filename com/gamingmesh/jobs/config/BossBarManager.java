@@ -120,6 +120,7 @@ public class BossBarManager {
 	bar.setVisible(true);
 
 	OldOne.setId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	    @Override
 	    public void run() {
 
 		for (BossBarInfo one : player.getBossBarInfo()) {

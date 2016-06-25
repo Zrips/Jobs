@@ -11,6 +11,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 
 public class blockinfo implements Cmd {
 
+    @Override
     @SuppressWarnings("deprecation")
     @JobCommand(1450)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
@@ -44,7 +45,7 @@ public class blockinfo implements Cmd {
 	return true;
     }
 
-    private byte getData(Block block) {
+    private static byte getData(Block block) {
 	@SuppressWarnings("deprecation")
 	byte data = block.getData();
 	if (block.getType() == Material.COCOA)

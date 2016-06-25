@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class stats implements Cmd {
 
+    @Override
     @JobCommand(400)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;

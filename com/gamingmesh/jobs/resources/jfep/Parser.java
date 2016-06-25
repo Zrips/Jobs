@@ -118,7 +118,7 @@ public class Parser {
      * @param c input character
      * @return truth value
      */
-    private boolean isNumber(char c) {
+    private static boolean isNumber(char c) {
 	if ((c >= '0' && c <= '9') || c == '.')
 	    return true;
 	return false;
@@ -129,7 +129,7 @@ public class Parser {
      * @param c input character
      * @return truth value
      */
-    private boolean isOperator(char c) {
+    private static boolean isOperator(char c) {
 	for (int i = 0; i < OperatorNode.OPERATIONS.length; i++)
 	    if (c == OperatorNode.OPERATIONS[i])
 		return true;
@@ -141,7 +141,7 @@ public class Parser {
      * @param c input character
      * @return truth value
      */
-    private boolean isText(char c) {
+    private static boolean isText(char c) {
 	return ((c >= 'A' && c <= 'Z') ||
 	    (c >= 'a' && c <= 'z') ||
 	    c == '_');
@@ -152,7 +152,7 @@ public class Parser {
      * @param c character
      * @return truth value
      */
-    private boolean isBracket(char c) {
+    private static boolean isBracket(char c) {
 	return (c == OP_BRACKET) || (c == CL_BRACKET);
     }
 
@@ -161,7 +161,7 @@ public class Parser {
      * @param c input character
      * @return truth value
      */
-    private boolean isEndOfExpression(char c) {
+    private static boolean isEndOfExpression(char c) {
 	return c == TERM;
     }
 

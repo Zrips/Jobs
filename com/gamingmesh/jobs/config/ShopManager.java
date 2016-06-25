@@ -59,7 +59,7 @@ public class ShopManager {
 
 	List<ShopItem> ls = getItemsByPage(page);
 
-	int GuiSize = this.getGuiSize(ls, page);
+	int GuiSize = getGuiSize(ls, page);
 	if (slot == getPrevButtonSlot(GuiSize, page)) {
 	    openInventory(player, page - 1);
 	    return;
@@ -167,7 +167,7 @@ public class ShopManager {
 	return ls;
     }
 
-    private int getGuiSize(List<ShopItem> ls, int page) {
+    private static int getGuiSize(List<ShopItem> ls, int page) {
 	int GuiSize = 9;
 	if (ls.size() > 9)
 	    GuiSize = 18;
@@ -190,7 +190,7 @@ public class ShopManager {
 	return GuiSize;
     }
 
-    private int getPrevButtonSlot(int GuiSize, int page) {
+    private static int getPrevButtonSlot(int GuiSize, int page) {
 	int prev = -1;
 	if (page > 1)
 	    prev = GuiSize - 9;

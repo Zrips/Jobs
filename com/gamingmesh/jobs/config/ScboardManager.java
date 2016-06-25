@@ -36,6 +36,7 @@ public class ScboardManager {
 
 	if (timerMap.size() > 0)
 	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		@Override
 		public void run() {
 		    RunScheduler();
 		    return;

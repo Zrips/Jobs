@@ -9,6 +9,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 
 public class shop implements Cmd {
 
+    @Override
     @JobCommand(750)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 

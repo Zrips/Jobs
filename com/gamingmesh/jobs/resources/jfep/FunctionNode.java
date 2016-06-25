@@ -73,6 +73,7 @@ public class FunctionNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#count()
      */
+    @Override
     public int count() {
 	return 1 + child.count();
     }
@@ -80,6 +81,7 @@ public class FunctionNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getDepth()
      */
+    @Override
     public int getDepth() {
 	return 1 + child.getDepth();
     }
@@ -87,6 +89,7 @@ public class FunctionNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getSubtype()
      */
+    @Override
     public String getSubtype() {
 	return FUNCTIONS[function];
     }
@@ -94,6 +97,7 @@ public class FunctionNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getType()
      */
+    @Override
     public int getType() {
 	return ExpressionNode.FUNCTION_NODE;
     }
@@ -101,6 +105,7 @@ public class FunctionNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getValue()
      */
+    @Override
     public double getValue() {
 	switch (function) {
 	case 0:
@@ -159,6 +164,7 @@ public class FunctionNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#setVariable(java.lang.String, double)
      */
+    @Override
     public void setVariable(String name, double value) {
 	child.setVariable(name, value);
     }
@@ -166,6 +172,7 @@ public class FunctionNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see org.mbertoli.jfep.ExpressionNode#getChildrenNodes()
      */
+    @Override
     public ExpressionNode[] getChildrenNodes() {
 	return children;
     }
@@ -173,6 +180,7 @@ public class FunctionNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
 	ExpressionNode n_child = (ExpressionNode) child.clone();
 	return new FunctionNode(n_child, function);
@@ -181,6 +189,7 @@ public class FunctionNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 	// Special case for negation function
 	if (function != 0)

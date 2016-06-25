@@ -19,6 +19,7 @@ import com.gamingmesh.jobs.stuff.Sorting;
 
 public class log implements Cmd {
 
+    @Override
     @JobCommand(1100)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 

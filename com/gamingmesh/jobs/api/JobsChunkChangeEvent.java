@@ -31,14 +31,17 @@ public final class JobsChunkChangeEvent extends Event implements Cancellable {
 	return this.newChunk;
     }
 
+    @Override
     public boolean isCancelled() {
 	return cancelled;
     }
 
+    @Override
     public void setCancelled(boolean cancel) {
 	cancelled = cancel;
     }
 
+    @Override
     public HandlerList getHandlers() {
 	return handlers;
     }

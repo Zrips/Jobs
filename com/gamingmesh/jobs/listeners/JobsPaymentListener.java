@@ -796,9 +796,14 @@ public class JobsPaymentListener implements Listener {
 	// Entity that died must be living
 	LivingEntity lVictim = event.getEntity();
 
-	//extra check for Citizens 2 sentry kills
-	if (lVictim.getKiller().hasMetadata("NPC"))
+	if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
 	    return;
+
+	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
+	//extra check for Citizens 2 sentry kills
+	if (e.getDamager() instanceof Player)
+	    if (lVictim.getKiller().hasMetadata("NPC"))
+		return;
 
 	if (Jobs.getGCManager().MythicMobsEnabled && Jobs.getMythicManager().MMAPI != null) {
 	    if (Jobs.getMythicManager().MMAPI.getMobAPI().isMythicMob(lVictim))
@@ -819,19 +824,17 @@ public class JobsPaymentListener implements Listener {
 
 	Double PetPayMultiplier = 0.0;
 	// Checking if killer is player
-	if (event.getEntity().getKiller() instanceof Player)
-	    pDamager = (Player) event.getEntity().getKiller();
+	if (e.getDamager() instanceof Player)
+	    pDamager = (Player) e.getDamager();
 	// Checking if killer is tamed animal
-	else if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-	    if (((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager() instanceof Tameable) {
-		Tameable t = (Tameable) ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
-		if (t.isTamed() && t.getOwner() instanceof Player) {
-		    pDamager = (Player) t.getOwner();
-		    if (Perm.hasPermission(pDamager, "jobs.petpay") || Perm.hasPermission(pDamager, "jobs.vippetpay"))
-			PetPayMultiplier = Jobs.getGCManager().VipPetPay * 100 - 100;
-		    else
-			PetPayMultiplier = Jobs.getGCManager().PetPay * 100 - 100;
-		}
+	else if (e.getDamager() instanceof Tameable) {
+	    Tameable t = (Tameable) (e).getDamager();
+	    if (t.isTamed() && t.getOwner() instanceof Player) {
+		pDamager = (Player) t.getOwner();
+		if (Perm.hasPermission(pDamager, "jobs.petpay") || Perm.hasPermission(pDamager, "jobs.vippetpay"))
+		    PetPayMultiplier = Jobs.getGCManager().VipPetPay * 100 - 100;
+		else
+		    PetPayMultiplier = Jobs.getGCManager().PetPay * 100 - 100;
 	    }
 	} else
 	    return;
@@ -919,7 +922,6 @@ public class JobsPaymentListener implements Listener {
 	SpawnReason reason = event.getSpawnReason();
 	if (!reason.toString().equalsIgnoreCase("BREEDING"))
 	    return;
-
 
 	LivingEntity animal = event.getEntity();
 

@@ -26,14 +26,17 @@ public final class JobsLeaveEvent extends Event implements Cancellable {
 		return this.job;
 	}
 
+	@Override
 	public boolean isCancelled() {
 		return cancelled;
 	}
 
+	@Override
 	public void setCancelled(boolean cancel) {
 		cancelled = cancel;
 	}
 
+	@Override
 	public HandlerList getHandlers() {
 		return handlers;
 	}

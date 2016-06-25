@@ -36,6 +36,7 @@ public class HookEconomyTask implements Runnable {
 	this.plugin = plugin;
     }
 
+    @Override
     public void run() {
 	Plugin eco = Bukkit.getServer().getPluginManager().getPlugin("Vault");
 	if (eco != null) {

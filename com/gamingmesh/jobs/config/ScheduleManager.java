@@ -41,6 +41,7 @@ public class ScheduleManager {
 	if (dateByInt == 0)
 	    dateByInt = TimeManage.timeInInt();
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	    @Override
 	    public void run() {
 
 		dateByInt = TimeManage.timeInInt();
@@ -119,6 +120,7 @@ public class ScheduleManager {
 	    }
 
 	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		@Override
 		public void run() {
 		    scheduler();
 		    return;

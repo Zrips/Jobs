@@ -731,6 +731,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	return true;
     }
 
+    @Override
     protected boolean createDefaultLogBase() {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
@@ -771,6 +772,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	return true;
     }
 
+    @Override
     protected boolean dropDataBase(String name) {
 	try {
 	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + name + "`;");

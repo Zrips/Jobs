@@ -15,6 +15,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class promote implements Cmd {
 
+    @Override
     @JobCommand(1600)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 3) {

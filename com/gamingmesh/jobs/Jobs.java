@@ -84,6 +84,7 @@ public class Jobs {
     private static RestrictedAreaManager RAManager = null;
     private static BossBarManager BBManager;
     private static ShopManager shopManager;
+    private static Loging loging;
 
     private static PistonProtectionListener PistonProtectionListener = null;
     private static McMMOlistener McMMOlistener = null;
@@ -139,6 +140,14 @@ public class Jobs {
 
     public static MythicMobsListener getMythicManager() {
 	return MythicManager;
+    }
+
+    public static void setLoging() {
+	loging = new Loging();
+    }
+
+    public static Loging getLoging() {
+	return loging;
     }
 
     public static void setShopManager(JobsPlugin plugin) {
@@ -799,7 +808,7 @@ public class Jobs {
 		    Jobs.getEconomy().pay(jPlayer, amount, pointAmount, 0.0);
 
 		    if (Jobs.getGCManager().LoggingUse)
-			Loging.recordToLog(jPlayer, info, amount, 0);
+			Jobs.getLoging().recordToLog(jPlayer, info, amount, 0);
 		}
 	    }
 	} else {
@@ -932,7 +941,7 @@ public class Jobs {
 		int oldLevel = prog.getLevel();
 
 		if (Jobs.getGCManager().LoggingUse)
-		    Loging.recordToLog(jPlayer, info, amount, expAmount);
+		    Jobs.getLoging().recordToLog(jPlayer, info, amount, expAmount);
 
 		if (prog.addExperience(expAmount))
 		    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);

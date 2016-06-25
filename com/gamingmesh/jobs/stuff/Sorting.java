@@ -18,6 +18,7 @@ public class Sorting {
 
 	// Sort list with comparator, to compare the Map values
 	Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+	    @Override
 	    public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
 		return (o2.getValue()).compareTo(o1.getValue());
 	    }
@@ -39,6 +40,7 @@ public class Sorting {
 
 	// Sort list with comparator, to compare the Map values
 	Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
+	    @Override
 	    public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
 		return (o2.getValue()).compareTo(o1.getValue());
 	    }
@@ -60,6 +62,7 @@ public class Sorting {
 
 	// Sort list with comparator, to compare the Map values
 	Collections.sort(list, new Comparator<Map.Entry<LogAmounts, Double>>() {
+	    @Override
 	    public int compare(Map.Entry<LogAmounts, Double> o1, Map.Entry<LogAmounts, Double> o2) {
 		return (o2.getValue()).compareTo(o1.getValue());
 	    }
@@ -81,6 +84,7 @@ public class Sorting {
 
 	// Sort list with comparator, to compare the Map values
 	Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+	    @Override
 	    public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
 		return (o1.getValue()).compareTo(o2.getValue());
 	    }

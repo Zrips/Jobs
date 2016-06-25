@@ -74,6 +74,7 @@ public class ConstantNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#count()
      */
+    @Override
     public int count() {
 	return 1;
     }
@@ -81,6 +82,7 @@ public class ConstantNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getDepth()
      */
+    @Override
     public int getDepth() {
 	return 1; // This is a leaf node
     }
@@ -88,6 +90,7 @@ public class ConstantNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getSubtype()
      */
+    @Override
     public String getSubtype() {
 	// Checks if this is integer or double
 	if (Math.floor(constant) == constant)
@@ -98,6 +101,7 @@ public class ConstantNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getType()
      */
+    @Override
     public int getType() {
 	return ExpressionNode.CONSTANT_NODE;
     }
@@ -105,6 +109,7 @@ public class ConstantNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getValue()
      */
+    @Override
     public double getValue() {
 	return constant;
     }
@@ -112,6 +117,7 @@ public class ConstantNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#setVariable(java.lang.String, double)
      */
+    @Override
     public void setVariable(String name, double value) {
 	// Nothing to be done here...
     }
@@ -119,6 +125,7 @@ public class ConstantNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see org.mbertoli.jfep.ExpressionNode#getChildrenNodes()
      */
+    @Override
     public ExpressionNode[] getChildrenNodes() {
 	return children;
     }
@@ -126,6 +133,7 @@ public class ConstantNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
 	return new ConstantNode(constant);
     }
@@ -133,6 +141,7 @@ public class ConstantNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 	if (name == null)
 	    return getSubtype();

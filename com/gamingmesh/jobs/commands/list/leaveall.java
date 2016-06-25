@@ -14,6 +14,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class leaveall implements Cmd {
 
+    @Override
     @JobCommand(900)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {

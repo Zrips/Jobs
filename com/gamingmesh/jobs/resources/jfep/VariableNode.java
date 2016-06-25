@@ -51,6 +51,7 @@ public class VariableNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#count()
      */
+    @Override
     public int count() {
 	return 1;
     }
@@ -58,6 +59,7 @@ public class VariableNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getDepth()
      */
+    @Override
     public int getDepth() {
 	return 1; // This is a leaf node
     }
@@ -65,6 +67,7 @@ public class VariableNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getSubtype()
      */
+    @Override
     public String getSubtype() {
 	return name;
     }
@@ -72,6 +75,7 @@ public class VariableNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getType()
      */
+    @Override
     public int getType() {
 	return ExpressionNode.VARIABLE_NODE;
     }
@@ -79,6 +83,7 @@ public class VariableNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#getValue()
      */
+    @Override
     public double getValue() {
 	if (!error)
 	    return value;
@@ -88,6 +93,7 @@ public class VariableNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see jmt.engine.math.parser.ExpressionNode#setVariable(java.lang.String, double)
      */
+    @Override
     public void setVariable(String name, double value) {
 	if (this.name.equals(name)) {
 	    this.value = value;
@@ -98,6 +104,7 @@ public class VariableNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see org.mbertoli.jfep.ExpressionNode#getChildrenNodes()
      */
+    @Override
     public ExpressionNode[] getChildrenNodes() {
 	return children;
     }
@@ -105,6 +112,7 @@ public class VariableNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
 	VariableNode node = new VariableNode(name, error);
 	node.value = value;
@@ -114,6 +122,7 @@ public class VariableNode implements ExpressionNode {
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 	return getSubtype();
     }

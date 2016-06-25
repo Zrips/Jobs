@@ -14,6 +14,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class bonus implements Cmd {
 
+    @Override
     @JobCommand(300)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
@@ -109,7 +110,7 @@ public class bonus implements Cmd {
 	return true;
     }
 
-    private String formatText(double amount) {
+    private static String formatText(double amount) {
 	return ((amount > 0 ? "+" : "") + amount + "%");
     }
 

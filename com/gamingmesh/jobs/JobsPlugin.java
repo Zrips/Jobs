@@ -88,6 +88,7 @@ public class JobsPlugin extends JavaPlugin {
 
 	    Jobs.setDataFolder(getDataFolder());
 
+	    Jobs.setLoging();
 	    Jobs.setGCManager(this);
 	    Jobs.setConfigManager(this);
 
@@ -104,7 +105,7 @@ public class JobsPlugin extends JavaPlugin {
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
 
 	    Jobs.setMcMMOlistener(this);
-	    if (Jobs.getMcMMOlistener().CheckmcMMO()){
+	    if (Jobs.getMcMMOlistener().CheckmcMMO()) {
 		getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
 	    }
 

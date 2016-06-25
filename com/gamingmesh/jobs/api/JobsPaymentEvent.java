@@ -34,10 +34,12 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
 	this.points = amount;
     }
 
+    @Override
     public boolean isCancelled() {
 	return cancelled;
     }
 
+    @Override
     public void setCancelled(boolean cancel) {
 	cancelled = cancel;
     }
@@ -46,6 +48,7 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
 	this.money = money;
     }
 
+    @Override
     public HandlerList getHandlers() {
 	return handlers;
     }

@@ -415,7 +415,7 @@ public class PlayerManager {
 //	}
     }
 
-    private Sound getSound(String soundName) {
+    private static Sound getSound(String soundName) {
 	for (Sound one : Sound.values()) {
 	    if (one.name().equalsIgnoreCase(soundName))
 		return one;
@@ -437,7 +437,8 @@ public class PlayerManager {
 	    return;
 
 	// LevelUp event
-	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job.getName(), prog.getLevel(), Jobs.gettitleManager().getTitleForLevel(oldLevel), Jobs.gettitleManager().getTitleForLevel(prog.getLevel()), Jobs.getGCManager().SoundLevelupSound
+	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job.getName(), prog.getLevel(), Jobs.gettitleManager().getTitleForLevel(oldLevel), Jobs
+	    .gettitleManager().getTitleForLevel(prog.getLevel()), Jobs.getGCManager().SoundLevelupSound
 		.toUpperCase(), Jobs.getGCManager().SoundLevelupVolume, Jobs.getGCManager().SoundLevelupPitch, Jobs.getGCManager().SoundTitleChangeSound.toUpperCase(),
 	    Jobs.getGCManager().SoundTitleChangeVolume, Jobs.getGCManager().SoundTitleChangePitch);
 	Bukkit.getServer().getPluginManager().callEvent(levelUpEvent);
@@ -487,7 +488,7 @@ public class PlayerManager {
 
 	    if (Jobs.getGCManager().SoundTitleChangeUse) {
 		Sound sound = getSound(levelUpEvent.getTitleChangeSoundName());
-		if (sound != null)
+		if (sound != null && player != null)
 		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
 			levelUpEvent.getTitleChangePitch());
 		else
@@ -718,6 +719,7 @@ public class PlayerManager {
 	if (!Jobs.getGCManager().AutoJobJoinUse)
 	    return;
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
+	    @Override
 	    public void run() {
 		if (!player.isOnline())
 		    return;

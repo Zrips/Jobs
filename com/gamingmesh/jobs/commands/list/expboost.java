@@ -11,6 +11,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class expboost implements Cmd {
 
+    @Override
     @JobCommand(2300)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 	if (args.length > 2 || args.length <= 1) {
