@@ -116,6 +116,8 @@ public abstract class JobsDAO {
     protected abstract void checkUpdate9() throws SQLException;
 
     protected abstract boolean createDefaultLogBase();
+    
+    protected abstract boolean createDefaultArchiveBase();
 
     protected abstract boolean dropDataBase(String name);
 

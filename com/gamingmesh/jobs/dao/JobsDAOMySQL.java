@@ -707,7 +707,6 @@ public class JobsDAOMySQL extends JobsDAO {
 		executeSQL("ALTER TABLE `" + getPrefix() + "archive` DROP COLUMN `player_uuid`, DROP COLUMN `username`;");
 	    } catch (Exception e) {
 	    }
-
 	}
     }
 
@@ -742,7 +741,8 @@ public class JobsDAOMySQL extends JobsDAO {
 	return true;
     }
 
-    private boolean createDefaultArchiveBase() {
+    @Override
+    protected boolean createDefaultArchiveBase() {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
 		+ "archive` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `userid` int, `job` varchar(20), `experience` int, `level` int);");

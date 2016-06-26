@@ -818,7 +818,8 @@ public class JobsDAOSQLite extends JobsDAO {
 	return true;
     }
 
-    private boolean createDefaultArchiveBase() {
+    @Override
+    protected boolean createDefaultArchiveBase() {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
 		+ "archive` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");

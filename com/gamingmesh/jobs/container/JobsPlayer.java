@@ -252,10 +252,11 @@ public class JobsPlayer {
 
     private Double getPlayerBoost(String JobName, BoostType type) {
 	double Boost = 1.0;
-	if (player.hasPermission("jobs.boost." + JobName + "." + type.getName().toLowerCase()) ||
-	    player.hasPermission("jobs.boost." + JobName + ".all") ||
-	    player.hasPermission("jobs.boost.all.all") ||
-	    player.hasPermission("jobs.boost.all." + type.getName().toLowerCase())) {
+
+	if (Perm.hasPermission(player, "jobs.boost." + JobName + "." + type.getName().toLowerCase()) ||
+	    Perm.hasPermission(player, "jobs.boost." + JobName + ".all") ||
+	    Perm.hasPermission(player, "jobs.boost.all.all") ||
+	    Perm.hasPermission(player, "jobs.boost.all." + type.getName().toLowerCase())) {
 	    Boost = Jobs.getGCManager().Boost.get(type);
 	}
 	return Boost;

@@ -124,7 +124,7 @@ public class PlayerManager {
 	}
 
 	this.players.put(player.getName().toLowerCase(), jPlayer);
-
+	jPlayer.setPlayer(player);
 	AutoJoinJobs(player);
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
@@ -186,7 +186,7 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(Player player) {
-	return this.playersCache.get(player.getName().toLowerCase());
+	return getJobsPlayer(player.getName().toLowerCase());
     }
 
     /**
