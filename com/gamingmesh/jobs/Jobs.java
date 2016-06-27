@@ -922,11 +922,15 @@ public class Jobs {
 		if (amount == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
 
-		if (expAmount != 0D)
-		    if (Jobs.getGCManager().BossBarEnabled && Jobs.getGCManager().BossBarShowOnEachAction) {
-			Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
-		    } else if (Jobs.getGCManager().BossBarEnabled && !Jobs.getGCManager().BossBarShowOnEachAction)
-			jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
+		try {
+		    if (expAmount != 0D)
+			if (Jobs.getGCManager().BossBarEnabled && Jobs.getGCManager().BossBarShowOnEachAction) {
+			    Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
+			} else if (Jobs.getGCManager().BossBarEnabled && !Jobs.getGCManager().BossBarShowOnEachAction)
+			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
+		} catch (Exception e) {
+		    Bukkit.getConsoleSender().sendMessage("[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
+		}
 
 		// JobsPayment event
 		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount);

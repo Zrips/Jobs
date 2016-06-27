@@ -108,17 +108,23 @@ public class BossBarManager {
 	    bar.setTitle(message);
 
 	double percentage = jobProg.getExperience() / jobProg.getMaxExperience();
-	bar.setProgress(percentage);
-	if (OldOne == null) {
-	    Player target = Bukkit.getPlayer(player.getPlayer().getUniqueId());
-	    if (target == null)
-		return;
-	    bar.addPlayer(target);
-	    OldOne = new BossBarInfo(player.getUserName(), jobProg.getJob().getName(), bar);
-	    player.getBossBarInfo().add(OldOne);
+	try {
+	    bar.setProgress(percentage);
+	    if (OldOne == null) {
+		Player target = Bukkit.getPlayer(player.getPlayer().getUniqueId());
+		if (target == null)
+		    return;
+		bar.addPlayer(target);
+		OldOne = new BossBarInfo(player.getUserName(), jobProg.getJob().getName(), bar);
+		player.getBossBarInfo().add(OldOne);
+	    }
+	    bar.setVisible(true);
+	} catch (NoSuchMethodError e) {
 	}
-	bar.setVisible(true);
 
+	if (OldOne == null)
+	    return;
+	
 	OldOne.setId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
