@@ -114,8 +114,8 @@ public class JobsPlugin extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MythicMobsListener(this), this);
 	    }
 
+	    Jobs.setPistonProtectionListener(this);
 	    if (Jobs.getGCManager().useBlockProtection) {
-		Jobs.setPistonProtectionListener(this);
 		getServer().getPluginManager().registerEvents(Jobs.getPistonProtectionListener(), this);
 	    }
 
