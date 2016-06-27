@@ -363,10 +363,11 @@ public class JobsCommands implements CommandExecutor {
      * @param type - type of info
      * @return the message
      */
-    public String jobInfoMessage(JobsPlayer player, Job job, String type) {
+    public void jobInfoMessage(CommandSender sender, JobsPlayer player, Job job, String type, int page) {
 	if (job == null) {
 	    // job doesn't exist
-	    return ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job");
+	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    return;
 	}
 
 	if (type == null) {
@@ -413,7 +414,78 @@ public class JobsCommands implements CommandExecutor {
 		}
 	    }
 	}
-	return message.toString();
+
+	StringBuilder message2 = new StringBuilder();
+	int perPage = 20;
+	int start = (page - 1) * perPage;
+	int end = start + perPage;
+	int pagecount = (int) Math.ceil((double) message.toString().split("\n").length / (double) perPage);
+	if (pagecount == 0)
+	    pagecount = 1;
+	if (page > pagecount) {
+	    player.getPlayer().sendMessage("Invalid page");
+	    return;
+	}
+
+	if (message.toString().split("\n").length > perPage && sender instanceof Player) {
+	    int i = 0;
+	    for (String one : message.toString().split("\n")) {
+		i++;
+		if (i <= start)
+		    continue;
+		if (i > end)
+		    break;
+
+		message2.append(one);
+		message2.append("\n");
+	    }
+	    message = message2;
+	}
+
+	sender.sendMessage(message.toString().split("\n"));
+
+	String t = type == "" ? "" : " " + type;
+
+	if (sender instanceof Player)
+	    if (sender.getName().equalsIgnoreCase(player.getUserName()))
+		ShowPagination(sender.getName(), pagecount, page, "jobs info " + job.getName() + t);
+	    else
+		ShowPagination(sender.getName(), pagecount, page, "jobs playerinfo " + player.getUserName() + " " + job.getName() + t);
+    }
+
+    public static void ShowPagination(String target, int pageCount, int CurrentPage, String cmd) {
+	if (target.equalsIgnoreCase("console"))
+	    return;
+//	String separator = ChatColor.GOLD + "";
+//	String simbol = "\u25AC";
+//	for (int i = 0; i < 10; i++) {
+//	    separator += simbol;
+//	}
+
+	if (pageCount == 1)
+	    return;
+
+	int NextPage = CurrentPage + 1;
+	NextPage = CurrentPage < pageCount ? NextPage : CurrentPage;
+	int Prevpage = CurrentPage - 1;
+	Prevpage = CurrentPage > 1 ? Prevpage : CurrentPage;
+
+	String prevCmd = "/" + cmd + " " + Prevpage;
+	String prev = "\"\",{\"text\":\" " + Jobs.getLanguage().getMessage("command.help.output.prev")
+	    + "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + prevCmd
+	    + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + "<<<" + "\"}]}}}";
+	String nextCmd = "/" + cmd + " " + NextPage;
+	String next = " {\"text\":\"" + Jobs.getLanguage().getMessage("command.help.output.next") + " "
+	    + "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\""
+	    + nextCmd + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + ">>>" + "\"}]}}}";
+
+	if (CurrentPage >= pageCount)
+	    next = "{\"text\":\"" + Jobs.getLanguage().getMessage("command.help.output.next") + " \"}";
+
+	if (CurrentPage <= 1)
+	    prev = "{\"text\":\" " + Jobs.getLanguage().getMessage("command.help.output.prev") + "\"}";
+
+	Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + target + " [" + prev + "," + next + "]");
     }
 
     /**
