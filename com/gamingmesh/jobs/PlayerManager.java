@@ -308,20 +308,10 @@ public class PlayerManager {
      * @param jPlayer
      */
     public void leaveAllJobs(JobsPlayer jPlayer) {
-//	synchronized (jPlayer.saveLock) {
 	for (JobProgression job : jPlayer.getJobProgression()) {
-	    Jobs.getJobsDAO().quitJob(jPlayer, job.getJob());
-	    Jobs.getJobsDAO().recordToArchive(jPlayer, job.getJob());
-	    PerformCommands.PerformCommandsOnLeave(jPlayer, job.getJob());
-	    Jobs.leaveSlot(job.getJob());
-
-	    Jobs.getSignUtil().SignUpdate(job.getJob().getName());
-	    Jobs.getSignUtil().SignUpdate("gtoplist");
-	    job.getJob().updateTotalPlayers();
+	    leaveJob(jPlayer, job.getJob());
 	}
-
 	jPlayer.leaveAllJobs();
-//	}
     }
 
     /**

@@ -812,9 +812,7 @@ public class Jobs {
 		}
 	    }
 	} else {
-
 	    for (JobProgression prog : progression) {
-
 		int level = prog.getLevel();
 		JobInfo jobinfo = prog.getJob().getJobInfo(info, level);
 
