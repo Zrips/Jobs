@@ -28,7 +28,9 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -116,7 +118,7 @@ public abstract class JobsDAO {
     protected abstract void checkUpdate9() throws SQLException;
 
     protected abstract boolean createDefaultLogBase();
-    
+
     protected abstract boolean createDefaultArchiveBase();
 
     protected abstract boolean dropDataBase(String name);
@@ -849,25 +851,20 @@ public abstract class JobsDAO {
 	    return;
 	try {
 
-	    PreparedStatement prest = null;
-	    if (Jobs.getGCManager().storageMethod.equalsIgnoreCase("sqlite")) {
-		prest = conn.prepareStatement("DELETE from `" + prefix + "explore`;");
-	    } else
-		prest = conn.prepareStatement("TRUNCATE TABLE `" + prefix + "explore`;");
-
-	    prest.execute();
-	    prest.close();
-
 	    PreparedStatement prest2 = conn.prepareStatement("INSERT INTO `" + prefix + "explore` (`worldname`, `chunkX`, `chunkZ`, `playerName`) VALUES (?, ?, ?, ?);");
 	    conn.setAutoCommit(false);
+	    int i = 0;
 	    for (Entry<String, ExploreRegion> worlds : Jobs.getExplore().getWorlds().entrySet()) {
 		for (ExploreChunk oneChunk : worlds.getValue().getChunks()) {
+		    if (!oneChunk.isNew())
+			continue;
 		    for (String oneuser : oneChunk.getPlayers()) {
 			prest2.setString(1, worlds.getKey());
 			prest2.setInt(2, oneChunk.getX());
 			prest2.setInt(3, oneChunk.getZ());
 			prest2.setString(4, oneuser);
 			prest2.addBatch();
+			i++;
 		    }
 		}
 	    }
@@ -875,6 +872,12 @@ public abstract class JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 	    prest2.close();
+
+	    if (i > 0) {
+		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Saved " + i + " new explorer entries.");
+		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+		console.sendMessage(message);
+	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
@@ -896,7 +899,7 @@ public abstract class JobsDAO {
 	    PreparedStatement prest = conn.prepareStatement("SELECT * FROM `" + prefix + "explore`;");
 	    ResultSet res = prest.executeQuery();
 	    while (res.next()) {
-		Jobs.getExplore().ChunkRespond(res.getString("playerName"), res.getString("worldname"), res.getInt("chunkX"), res.getInt("chunkZ"));
+		Jobs.getExplore().ChunkRespond(res.getString("playerName"), res.getString("worldname"), res.getInt("chunkX"), res.getInt("chunkZ"), false);
 	    }
 	    res.close();
 	    prest.close();

@@ -43,11 +43,11 @@ public class ExploreManager {
 	return worlds;
     }
 
-    public ExploreRespond ChunkRespond(Player player, Chunk chunk) {
-	return ChunkRespond(player.getName(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+    public ExploreRespond ChunkRespond(Player player, Chunk chunk, boolean isNew) {
+	return ChunkRespond(player.getName(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ(), isNew);
     }
 
-    public ExploreRespond ChunkRespond(String player, String worldName, int x, int z) {
+    public ExploreRespond ChunkRespond(String player, String worldName, int x, int z, boolean isNew) {
 
 	int ChunkX = x;
 	int ChunkZ = z;
@@ -57,6 +57,8 @@ public class ExploreManager {
 
 	if (!worlds.containsKey(worldName)) {
 	    ExploreChunk eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
+	    if (!isNew)
+		eChunk.setOldChunk();
 	    ExploreRegion eRegion = new ExploreRegion(RegionX, RegionZ);
 	    eRegion.addChunk(eChunk);
 	    worlds.put(worldName, eRegion);
@@ -70,11 +72,15 @@ public class ExploreManager {
 	    if (one.getZ() != ChunkZ)
 		continue;
 	    eChunk = one;
+	    if (!isNew)
+		eChunk.setOldChunk();
 	    break;
 	}
 
 	if (eChunk == null) {
 	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
+	    if (!isNew)
+		eChunk.setOldChunk();
 	    eRegion.addChunk(eChunk);
 	    return new ExploreRespond(eChunk.getCount(), true);
 	}
