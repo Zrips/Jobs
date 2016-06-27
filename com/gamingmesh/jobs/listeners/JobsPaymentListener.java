@@ -793,16 +793,21 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
-	// Entity that died must be living
-	LivingEntity lVictim = event.getEntity();
 
 	if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
 	    return;
 
 	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
+
+	// Entity that died must be living
+	if (!(e.getEntity() instanceof LivingEntity))
+	    return;
+	
+	LivingEntity lVictim = (LivingEntity) e.getEntity();
+	
 	//extra check for Citizens 2 sentry kills
 	if (e.getDamager() instanceof Player)
-	    if (lVictim.getKiller().hasMetadata("NPC"))
+	    if (e.getDamager().hasMetadata("NPC"))
 		return;
 
 	if (Jobs.getGCManager().MythicMobsEnabled && Jobs.getMythicManager().MMAPI != null) {
