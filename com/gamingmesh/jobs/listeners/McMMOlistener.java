@@ -1,10 +1,13 @@
 package com.gamingmesh.jobs.listeners;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -14,13 +17,17 @@ import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gmail.nossr50.api.AbilityAPI;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
+import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
 public class McMMOlistener implements Listener {
 
     private JobsPlugin plugin;
     public boolean mcMMOPresent = false;
+
+    HashMap<String, HashMap<AbilityType, Long>> map = new HashMap<String, HashMap<AbilityType, Long>>();
 
     public McMMOlistener(JobsPlugin plugin) {
 	this.plugin = plugin;
@@ -53,31 +60,53 @@ public class McMMOlistener implements Listener {
 	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), 0.0);
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void OnAbilityOn(McMMOPlayerAbilityActivateEvent event) {
+	HashMap<AbilityType, Long> InfoMap = new HashMap<AbilityType, Long>();
+	if (map.containsKey(event.getPlayer().getName()))
+	    InfoMap = map.get(event.getPlayer().getName());
+	InfoMap.put(event.getAbility(), System.currentTimeMillis() + (event.getAbility().getMaxLength() * 1000));
+	map.put(event.getPlayer().getName(), InfoMap);
+//	Debug.D("rec 1 " + map.size() + "  " + event.getPlayer().getName());
+//	Debug.D(map.containsKey(event.getPlayer().getName()));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void OnAbilityOff(McMMOPlayerAbilityDeactivateEvent event) {
+	if (map.containsKey(event.getPlayer().getName())) {
+	    HashMap<AbilityType, Long> InfoMap = map.get(event.getPlayer().getName());
+	    InfoMap.remove(event.getAbility());
+	    if (InfoMap.isEmpty())
+		map.remove(event.getPlayer().getName());
+	}
+    }
+
     public double getMultiplier(Player player) {
-	try {
-	    if (AbilityAPI.treeFellerEnabled(player))
+
+	HashMap<AbilityType, Long> InfoMap = map.get(player.getName());
+	if (InfoMap == null)
+	    return 1.0;
+
+	Long t = InfoMap.get(AbilityType.TREE_FELLER);
+	if (t != null) {
+	    if (t < System.currentTimeMillis())
 		return Jobs.getGCManager().TreeFellerMultiplier;
-	} catch (Exception e) {
-	    // If fails, apply tree feller multiplier
-	    return Jobs.getGCManager().TreeFellerMultiplier;
+	    map.remove(AbilityType.TREE_FELLER);
 	}
 
-	try {
-	    if (AbilityAPI.gigaDrillBreakerEnabled(player))
+	t = InfoMap.get(AbilityType.GIGA_DRILL_BREAKER);
+	if (t != null) {
+	    if (t < System.currentTimeMillis())
 		return Jobs.getGCManager().gigaDrillMultiplier;
-	} catch (Exception e) {
-	    // If fails, apply giga drill multiplier
-	    return Jobs.getGCManager().gigaDrillMultiplier;
+	    map.remove(AbilityType.GIGA_DRILL_BREAKER);
 	}
 
-	try {
-	    if (AbilityAPI.superBreakerEnabled(player))
+	t = InfoMap.get(AbilityType.SUPER_BREAKER);
+	if (t != null) {
+	    if (t < System.currentTimeMillis())
 		return Jobs.getGCManager().superBreakerMultiplier;
-	} catch (Exception e) {
-	    // If fails, apply super breaker multiplier
-	    return Jobs.getGCManager().superBreakerMultiplier;
+	    map.remove(AbilityType.SUPER_BREAKER);
 	}
-
 	return 1.0;
     }
 

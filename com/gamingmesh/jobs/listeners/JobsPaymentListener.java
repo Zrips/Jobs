@@ -78,6 +78,7 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.ExploreRespond;
+import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
@@ -290,6 +291,15 @@ public class JobsPaymentListener implements Listener {
 		    }
 		}
 	    }
+	}
+
+	FastPayment fp = Jobs.FastPayment.get(player.getName());
+	if (fp != null) {
+	    if (fp.getTime() > System.currentTimeMillis()) {
+		Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
+		return;
+	    }
+	    Jobs.FastPayment.remove(player.getName());
 	}
 
 	// restricted area multiplier
@@ -802,9 +812,9 @@ public class JobsPaymentListener implements Listener {
 	// Entity that died must be living
 	if (!(e.getEntity() instanceof LivingEntity))
 	    return;
-	
+
 	LivingEntity lVictim = (LivingEntity) e.getEntity();
-	
+
 	//extra check for Citizens 2 sentry kills
 	if (e.getDamager() instanceof Player)
 	    if (e.getDamager().hasMetadata("NPC"))

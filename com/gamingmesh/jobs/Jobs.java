@@ -52,8 +52,10 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
+import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.i18n.Language;
@@ -113,6 +115,8 @@ public class Jobs {
     public final static HashMap<String, PaymentData> paymentLimit = new HashMap<String, PaymentData>();
     public final static HashMap<String, PaymentData> ExpLimit = new HashMap<String, PaymentData>();
     public final static HashMap<String, PaymentData> PointLimit = new HashMap<String, PaymentData>();
+
+    public final static HashMap<String, FastPayment> FastPayment = new HashMap<String, FastPayment>();
 
     private static NMS nms;
 
@@ -947,7 +951,33 @@ public class Jobs {
 
 		if (prog.addExperience(expAmount))
 		    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
+
+		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), amount, points, exp), prog.getJob()));
 	    }
 	}
+    }
+
+    public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
+	// JobsPayment event
+	JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, payment.getExp());
+	Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
+	double expAmount;
+	// If event is canceled, don't do anything
+	if (JobsExpGainEvent.isCancelled())
+	    expAmount = 0D;
+	else
+	    expAmount = JobsExpGainEvent.getExp();
+
+	Jobs.getEconomy().pay(jPlayer, payment.getAmount(), payment.getPoints(), expAmount);
+
+	JobProgression prog = jPlayer.getJobProgression(job);
+
+	int oldLevel = prog.getLevel();
+
+	if (Jobs.getGCManager().LoggingUse)
+	    Jobs.getLoging().recordToLog(jPlayer, info, payment.getAmount(), expAmount);
+
+	if (prog.addExperience(expAmount))
+	    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
     }
 }

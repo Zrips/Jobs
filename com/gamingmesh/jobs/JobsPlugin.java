@@ -27,8 +27,6 @@ import org.bukkit.ChatColor;
 
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
-import com.gamingmesh.jobs.listeners.McMMOlistener;
-import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.config.YmlMaker;
@@ -106,12 +104,12 @@ public class JobsPlugin extends JavaPlugin {
 
 	    Jobs.setMcMMOlistener(this);
 	    if (Jobs.getMcMMOlistener().CheckmcMMO()) {
-		getServer().getPluginManager().registerEvents(new McMMOlistener(this), this);
+		getServer().getPluginManager().registerEvents(Jobs.getMcMMOlistener(), this);
 	    }
 
 	    Jobs.setMythicManager(this);
 	    if (Jobs.getMythicManager().Check() && Jobs.getGCManager().MythicMobsEnabled) {
-		getServer().getPluginManager().registerEvents(new MythicMobsListener(this), this);
+		getServer().getPluginManager().registerEvents(Jobs.getMythicManager(), this);
 	    }
 
 	    Jobs.setPistonProtectionListener(this);

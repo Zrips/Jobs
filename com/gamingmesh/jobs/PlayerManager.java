@@ -308,7 +308,9 @@ public class PlayerManager {
      * @param jPlayer
      */
     public void leaveAllJobs(JobsPlayer jPlayer) {
-	for (JobProgression job : jPlayer.getJobProgression()) {
+	List<JobProgression> jobs = new ArrayList<JobProgression>();
+	jobs.addAll(jPlayer.getJobProgression());
+	for (JobProgression job : jobs) {
 	    leaveJob(jPlayer, job.getJob());
 	}
 	jPlayer.leaveAllJobs();
