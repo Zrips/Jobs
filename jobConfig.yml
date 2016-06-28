@@ -48,14 +48,14 @@ Jobs:
     #   baseincome - the income for the action at level 1 (as set in the configuration).
     #   joblevel - the level the player has attained in the job.
     # NOTE: Please take care of the brackets when modifying this equation.
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     # Equation used for calculating how much points is given per action for the job level.
     # Available parameters:
     #   numjobs - the number of jobs the player has
     #   basepoints - the points for the action at level 1 (as set in the configuration).
     #   joblevel - the level the player has attained in the job.
     # NOTE: Please take care of the brackets when modifying this equation.
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
      # Equation used for calculating how much experience is given per action for the job level.
     # Available parameters:
     #   numjobs - the number of jobs the player has
@@ -459,8 +459,8 @@ Jobs:
     ChatColour: GREEN
     chat-display: full
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 17
@@ -534,8 +534,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 270
@@ -678,8 +678,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 108
@@ -1000,8 +1000,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 269
@@ -1055,8 +1055,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 290
@@ -1270,8 +1270,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 261
@@ -1404,8 +1404,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 301
@@ -1445,8 +1445,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 61
@@ -1692,8 +1692,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 346
@@ -1730,8 +1730,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 58
@@ -1863,8 +1863,8 @@ Jobs:
     ChatColour: LIGHT_PURPLE
     chat-display: full
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 379
@@ -1932,8 +1932,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Gui:
       Id: 116
@@ -2356,8 +2356,8 @@ Jobs:
     #max-level: 10
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
-    income-progression-equation: baseincome+(joblevel-1)*0.01-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    points-progression-equation: basepoints+(joblevel-1)*0.01-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
+    points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     Kill:
       Player:
