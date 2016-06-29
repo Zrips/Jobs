@@ -57,6 +57,8 @@ public class LanguageManager {
 	    LocaleReader c = new LocaleReader(config, writer);
 
 	    c.getC().options().copyDefaults(true);
+	    
+	    
 	    Jobs.getGCManager().commandArgs.clear();
 
 	    c.get("economy.error.nomoney", "&cSorry, no money left in national bank!");

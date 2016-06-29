@@ -35,6 +35,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
@@ -839,10 +840,10 @@ public class JobsPaymentListener implements Listener {
 
 	Double PetPayMultiplier = 0.0;
 	// Checking if killer is player
-	if (e.getDamager() instanceof Player)
+	if (e.getDamager() instanceof Player) {
 	    pDamager = (Player) e.getDamager();
-	// Checking if killer is tamed animal
-	else if (e.getDamager() instanceof Tameable) {
+	    // Checking if killer is tamed animal
+	} else if (e.getDamager() instanceof Tameable) {
 	    Tameable t = (Tameable) (e).getDamager();
 	    if (t.isTamed() && t.getOwner() instanceof Player) {
 		pDamager = (Player) t.getOwner();
@@ -851,6 +852,10 @@ public class JobsPaymentListener implements Listener {
 		else
 		    PetPayMultiplier = Jobs.getGCManager().PetPay * 100 - 100;
 	    }
+	} else if (e.getDamager() instanceof Projectile) {
+	    Projectile pr = (Projectile) e.getDamager();
+	    if (pr.getShooter() instanceof Player)
+		pDamager = (Player) pr.getShooter();
 	} else
 	    return;
 
