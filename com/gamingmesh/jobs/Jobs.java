@@ -30,6 +30,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
@@ -68,6 +69,9 @@ import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
+
 public class Jobs {
     public static Jobs instance = new Jobs();
 //    public static JobsPlugin plugin = new JobsPlugin();
@@ -86,6 +90,7 @@ public class Jobs {
     private static RestrictedAreaManager RAManager = null;
     private static BossBarManager BBManager;
     private static ShopManager shopManager;
+    private static CoreProtectAPI coreProtect;
     private static Loging loging;
 
     private static PistonProtectionListener PistonProtectionListener = null;
@@ -126,7 +131,42 @@ public class Jobs {
 	McMMOlistener = new McMMOlistener(plugin);
     }
 
-    public static McMMOlistener getMcMMOlistener() {
+    public static CoreProtectAPI getCoreProtect() {
+		return coreProtect;
+	}
+    
+    public static void setCoreProtectAPI(JobsPlugin plugin){
+		Plugin p = plugin.getServer().getPluginManager().getPlugin("CoreProtect");
+		GconfigManager.useCoreProtect = true;
+		
+		// Check that CoreProtect is loaded
+		if (p == null || !(p instanceof CoreProtect)) {
+			plugin.getLogger().warning("CoreProtect is not found!");
+			plugin.getLogger().warning("Block break/place exploit will not be fully functional!");
+			GconfigManager.useCoreProtect = false;
+			return;
+		}
+
+		// Check that the API is enabled
+		coreProtect = ((CoreProtect) p).getAPI();
+		if (coreProtect.isEnabled() == false) {
+			plugin.getLogger().warning("CoreProtect is not found!");
+			plugin.getLogger().warning("Block break/place exploit will not be fully functional!");
+			GconfigManager.useCoreProtect = false;
+			return;
+		}
+
+		// Check that a compatible version of the API is loaded
+		if (coreProtect.APIVersion() < 4) {
+			plugin.getLogger().warning("You have out dated version of CoreProtect!");
+			plugin.getLogger().warning("Block break/place exploit will not be fully functional!");
+			plugin.getLogger().warning("Please download the latest version of CoreProtect!");
+			GconfigManager.useCoreProtect = false;
+			return;
+		}
+    }
+
+	public static McMMOlistener getMcMMOlistener() {
 	return McMMOlistener;
     }
 
