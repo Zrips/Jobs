@@ -70,7 +70,7 @@ public class JobsPlugin extends JavaPlugin {
 
 	    YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
 	    jobShopItems.saveDefaultConfig();
-
+	    
 	    Jobs.setPermissionHandler(new PermissionHandler(this));
 
 	    Jobs.setPlayerManager(this);
@@ -89,6 +89,8 @@ public class JobsPlugin extends JavaPlugin {
 	    Jobs.setLoging();
 	    Jobs.setGCManager(this);
 	    Jobs.setConfigManager(this);
+	    
+	    Jobs.setCoreProtectAPI(this);
 
 	    Jobs.setCommandManager(this);
 

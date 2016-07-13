@@ -86,6 +86,9 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.google.common.base.Objects;
 
+import net.coreprotect.CoreProtectAPI;
+import net.coreprotect.CoreProtectAPI.ParseResult;
+
 public class JobsPaymentListener implements Listener {
     private JobsPlugin plugin;
     private final String furnaceOwnerMetadata = "jobsFurnaceOwner";
@@ -360,9 +363,18 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Block place/break protection
-	if (Jobs.getGCManager().useBlockProtection)
-	    if (Jobs.getPistonProtectionListener().CheckBlock(block))
-		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(this.plugin, true));
+	if (Jobs.getGCManager().useBlockProtection){
+	    if (Jobs.getPistonProtectionListener().CheckBlock(block)){
+	    	block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(this.plugin, true));
+	    	if(Jobs.getGCManager().useCoreProtect){
+	    		//check if exploit placing crop at the same place (placed within 30 secs)
+	    		if(getLastData(1, block, 30) != null){
+	    			//do not pay if exploit
+	    			return;
+	    		}
+	    	}
+	    }
+	}
 
 	if (Jobs.getGCManager().WaterBlockBreake)
 	    block.getState().setMetadata(PlacedBlockMetadata, new FixedMetadataValue(this.plugin, true));
@@ -410,6 +422,26 @@ public class JobsPaymentListener implements Listener {
 	    Jobs.action(jPlayer, new ItemActionInfo(items, ActionType.FISH), 0.0);
 	}
     }
+    
+    private static CoreProtectAPI api = Jobs.getCoreProtect();
+	/**
+	 * 
+	 * @param actionID 0 - remove , 1 - place, 2 - interact
+	 * @param block the block to inspect
+	 * @param lookup look up period in seconds
+	 * @return null if not found
+	 */
+	private ParseResult getLastData(int actionID, Block block, int lookup){
+		List<String[]> list = api.blockLookup(block, Jobs.getGCManager().globalblocktimer);
+		if(list == null || list.size() == 0) return null;
+		
+		for(String[] search : list){
+			ParseResult result = api.parseResult(search);
+			if(result.getActionId() == actionID) return result;
+		}
+		
+		return null;
+	}
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAnimalTame(EntityTameEvent event) {
