@@ -19,6 +19,7 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.NMS;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class v1_10 implements NMS {
     @Override
@@ -55,7 +56,7 @@ public class v1_10 implements NMS {
 	    Zombie zombie = (Zombie) entity;
 	    if (zombie.isVillager() && zombie.getVillagerProfession() != Profession.HUSK)
 		return "ZombieVillager";
-	    if (zombie.isVillager() && zombie.getVillagerProfession() == Profession.HUSK)
+	    if (zombie.getVillagerProfession() == Profession.HUSK)
 		return "ZombieHusk";
 	    break;
 	default:

@@ -143,6 +143,11 @@ public class TitleManager {
 		ChatColor.matchColor(c.get("Titles.Legendary.ChatColour", "BLACK")),
 		c.get("Titles.Legendary.levelReq", 200),
 		null));
+	    try {
+		c.getC().save(f);
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	} else
 	    for (String titleKey : titleSection.getKeys(false)) {
 		String jobName = null;
@@ -175,12 +180,6 @@ public class TitleManager {
 
 		this.titles.add(new Title(titleName, titleShortName, titleColor, levelReq, jobName));
 	    }
-
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + titles.size() + " titles!");
-	try {
-	    c.getC().save(f);
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
     }
 }
