@@ -438,17 +438,21 @@ public class Jobs {
 	    int i = 0;
 	    long time = System.currentTimeMillis();
 	    for (OfflinePlayer offline : Bukkit.getServer().getOfflinePlayers()) {
-		if (offline.isOnline())
-		    continue;
 
-		long lastPlayed = offline.getLastPlayed();
-		int dif = (int) ((time - lastPlayed) / 1000 / 60 / 60 / 24);
-		if (dif >= 7)
-		    continue;
+		try {
+		    if (offline.isOnline())
+			continue;
 
-		JobsPlayer jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), offline);
-		JobsPlayer.loadLogFromDao(jPlayer);
-		Jobs.getPlayerManager().getPlayersCache().put(offline.getName().toLowerCase(), jPlayer);
+		    long lastPlayed = offline.getLastPlayed();
+		    int dif = (int) ((time - lastPlayed) / 1000 / 60 / 60 / 24);
+		    if (dif >= 7)
+			continue;
+
+		    JobsPlayer jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), offline);
+		    JobsPlayer.loadLogFromDao(jPlayer);
+		    Jobs.getPlayerManager().getPlayersCache().put(offline.getName().toLowerCase(), jPlayer);
+		} catch (Exception e) {
+		}
 		i++;
 	    }
 	    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + i + " players data from last week");

@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.LocaleReader;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class LanguageManager {
     private JobsPlugin plugin;
@@ -25,6 +26,8 @@ public class LanguageManager {
      */
     synchronized void load() {
 
+	long time = System.currentTimeMillis();
+
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<String>();
 	languages.add("cs");
@@ -36,20 +39,26 @@ public class LanguageManager {
 	languages.add("ru");
 	languages.add("tr");
 
+	Debug.D(System.currentTimeMillis() - time);
+
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + lang + ".yml");
 	    if (langFile != null)
 		langFile.saveDefaultConfig();
 	}
 
+	Debug.D(System.currentTimeMillis() - time);
 	languages.add("en");
 
 	File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + Jobs.getGCManager().localeString + ".yml");
 	if (!customLocaleFile.exists() && !Jobs.getGCManager().localeString.equalsIgnoreCase("en"))
 	    languages.add(Jobs.getGCManager().localeString);
 
+	Debug.D(System.currentTimeMillis() - time);
+
 	for (String lang : languages) {
 
+	    Debug.D(lang + " -> " + (System.currentTimeMillis() - time));
 	    File f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
@@ -57,8 +66,7 @@ public class LanguageManager {
 	    LocaleReader c = new LocaleReader(config, writer);
 
 	    c.getC().options().copyDefaults(true);
-	    
-	    
+
 	    Jobs.getGCManager().commandArgs.clear();
 
 	    c.get("economy.error.nomoney", "&cSorry, no money left in national bank!");
@@ -157,7 +165,7 @@ public class LanguageManager {
 	    c.get("command.editpoints.output.set", "&ePlayers (&6%playername%&e) points was set to &6%amount%");
 	    c.get("command.editpoints.output.add", "&ePlayer (&6%playername%&e) got aditinal &6%amount% &epoints. Now he has &6%total%");
 	    c.get("command.editpoints.output.take", "&ePlayer (&6%playername%&e) lost &6%amount% &epoints. Now he has &6%total%");
-	    
+
 	    c.get("command.blockinfo.help.info", "Shows block information you looking at.");
 	    c.get("command.blockinfo.help.args", "");
 	    c.get("command.blockinfo.output.name", " &eBlock name: &6%blockname%");
@@ -179,7 +187,7 @@ public class LanguageManager {
 	    c.get("command.shop.info.reqJobs", "&eRequired jobs:");
 	    c.get("command.shop.info.reqJobsList", "  &6%jobsname%&e: &e%level% lvl");
 	    c.get("command.shop.info.cantOpen", "&cCan't open this page");
-	    
+
 	    c.get("command.shop.info.NoPermForItem", "&cYou don't have required permissions for this item!");
 	    c.get("command.shop.info.NoPermToBuy", "&cNo permissions to buy this item");
 	    c.get("command.shop.info.NoJobReqForitem", "&cYou don't have required job (&6%jobname%&e) with required (&6%joblevel%&e) level");
@@ -212,7 +220,7 @@ public class LanguageManager {
 	    c.get("command.info.help.levelRange", " &a(&e%levelFrom% &a- &e%levelUntil% &alevels)");
 	    c.get("command.info.help.levelFrom", " &a(from &e%levelFrom% &alevel)");
 	    c.get("command.info.help.levelUntil", " &a(until &e%levelUntil% &alevel)");
-	    
+
 	    c.get("command.info.help.money", " &2%money%\u0024");
 	    c.get("command.info.help.points", " &6%points%points");
 	    c.get("command.info.help.exp", " &e%exp%xp");
@@ -447,5 +455,7 @@ public class LanguageManager {
 		e.printStackTrace();
 	    }
 	}
+
+	Debug.D(System.currentTimeMillis() - time);
     }
 }
