@@ -255,9 +255,12 @@ public class JobsPaymentListener implements Listener {
 	if (block.getType() == Material.FURNACE && block.hasMetadata(this.furnaceOwnerMetadata))
 	    block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
 
-	if (Jobs.getGCManager().useBlockProtection)
+	if (Jobs.getGCManager().useBlockProtection) {
 	    if (block.getState().hasMetadata(BlockMetadata))
 		return;
+	    if (Jobs.getPistonProtectionListener().CheckBlock(block))
+		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(this.plugin, true));
+	}
 
 	if (Jobs.getGCManager().useBlockTimer)
 	    if (Jobs.getPistonProtectionListener().checkVegybreak(block, event.getPlayer()))
@@ -360,9 +363,12 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Block place/break protection
-	if (Jobs.getGCManager().useBlockProtection)
+	if (Jobs.getGCManager().useBlockProtection) {
+	    if (block.getState().hasMetadata(BlockMetadata))
+		return;
 	    if (Jobs.getPistonProtectionListener().CheckBlock(block))
 		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(this.plugin, true));
+	}
 
 	if (Jobs.getGCManager().WaterBlockBreake)
 	    block.getState().setMetadata(PlacedBlockMetadata, new FixedMetadataValue(this.plugin, true));
