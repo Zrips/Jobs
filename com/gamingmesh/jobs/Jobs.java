@@ -434,7 +434,7 @@ public class Jobs {
 	reload();
 
 	// add all online players
-	if (!Jobs.getGCManager().MultiServerCompatability()) {
+	if (!Jobs.getGCManager().MultiServerCompatability() && Jobs.getGCManager().PreLoadUse) {
 	    int i = 0;
 	    long time = System.currentTimeMillis();
 	    for (OfflinePlayer offline : Bukkit.getServer().getOfflinePlayers()) {
@@ -448,8 +448,10 @@ public class Jobs {
 		    if (dif >= 7)
 			continue;
 
-		    JobsPlayer jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), offline);
-		    JobsPlayer.loadLogFromDao(jPlayer);
+		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offline);
+		    if (jPlayer == null)
+			continue;
+		    Jobs.getJobsDAO().loadLog(jPlayer);
 		    Jobs.getPlayerManager().getPlayersCache().put(offline.getName().toLowerCase(), jPlayer);
 		} catch (Exception e) {
 		}
