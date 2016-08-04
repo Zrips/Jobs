@@ -87,7 +87,7 @@ public class TitleManager {
 	ConfigurationSection titleSection = c.getC().getConfigurationSection("Titles");
 	if (titleSection == null) {
 	    titleSection = c.getC().createSection("Titles");
-	    
+
 	    this.titles.add(new Title(
 		c.get("Titles.Novice.Name", "N"),
 		c.get("Titles.Novice.ShortName", "N"),
@@ -143,39 +143,38 @@ public class TitleManager {
 		ChatColor.matchColor(c.get("Titles.Legendary.ChatColour", "BLACK")),
 		c.get("Titles.Legendary.levelReq", 200),
 		null));
-	}
+	} else
+	    for (String titleKey : titleSection.getKeys(false)) {
+		String jobName = null;
+		String titleName = titleSection.getString(titleKey + ".Name");
+		String titleShortName = titleSection.getString(titleKey + ".ShortName");
+		ChatColor titleColor = ChatColor.matchColor(titleSection.getString(titleKey + ".ChatColour", ""));
+		int levelReq = titleSection.getInt(titleKey + ".levelReq", -1);
 
-	for (String titleKey : titleSection.getKeys(false)) {
-	    String jobName = null;
-	    String titleName = titleSection.getString(titleKey + ".Name");
-	    String titleShortName = titleSection.getString(titleKey + ".ShortName");
-	    ChatColor titleColor = ChatColor.matchColor(titleSection.getString(titleKey + ".ChatColour", ""));
-	    int levelReq = titleSection.getInt(titleKey + ".levelReq", -1);
+		if (titleSection.isString(titleKey + ".JobName")) {
+		    jobName = titleSection.getString(titleKey + ".JobName");
+		}
 
-	    if (titleSection.isString(titleKey + ".JobName")) {
-		jobName = titleSection.getString(titleKey + ".JobName");
-	    }
+		if (titleName == null) {
+		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid Name property. Skipping!");
+		    continue;
+		}
 
-	    if (titleName == null) {
-		Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid Name property. Skipping!");
-		continue;
-	    }
+		if (titleShortName == null) {
+		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid ShortName property. Skipping!");
+		    continue;
+		}
+		if (titleColor == null) {
+		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid ChatColour property. Skipping!");
+		    continue;
+		}
+		if (levelReq <= -1) {
+		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid levelReq property. Skipping!");
+		    continue;
+		}
 
-	    if (titleShortName == null) {
-		Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid ShortName property. Skipping!");
-		continue;
+		this.titles.add(new Title(titleName, titleShortName, titleColor, levelReq, jobName));
 	    }
-	    if (titleColor == null) {
-		Jobs.getPluginLogger().severe("Title " + titleKey + "has an invalid ChatColour property. Skipping!");
-		continue;
-	    }
-	    if (levelReq <= -1) {
-		Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid levelReq property. Skipping!");
-		continue;
-	    }
-
-	    this.titles.add(new Title(titleName, titleShortName, titleColor, levelReq, jobName));
-	}
 
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + titles.size() + " titles!");
 	try {
