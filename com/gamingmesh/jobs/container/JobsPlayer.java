@@ -320,6 +320,8 @@ public class JobsPlayer {
     }
 
     public String getDisplayHonorific() {
+	if (honorific == null)
+	    reloadHonorific();
 	return honorific;
     }
 
