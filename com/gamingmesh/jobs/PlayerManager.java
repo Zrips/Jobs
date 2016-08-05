@@ -638,6 +638,9 @@ public class PlayerManager {
 	    return data;
 
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
+	
+	if (iih == null || prog == null)
+	    return data;
 
 	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(prog, iih);
 
