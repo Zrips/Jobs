@@ -122,6 +122,9 @@ public class ActionBar {
 	    if (msg == null || nmsChatSerializer == null)
 		return;
 
+	    if (receivingPacket == null)
+		return;
+
 	    if (cleanVersion < 1800 || !(receivingPacket instanceof Player)) {
 		receivingPacket.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
 		return;

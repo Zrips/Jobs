@@ -121,7 +121,11 @@ public class Job {
     public void setPointBoost(double Point) {
 	this.PointBoost = Point;
     }
-
+    
+    public boolean same(Job job) {
+	return this.getName().equalsIgnoreCase(job.getName());
+    }
+    
     public double getPointBoost() {
 	return this.PointBoost;
     }

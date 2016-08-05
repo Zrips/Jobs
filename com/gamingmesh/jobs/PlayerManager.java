@@ -245,14 +245,14 @@ public class PlayerManager {
 
 	return jPlayer;
     }
-    
+
     /**
      * Get the player job info for specific player
      * @param player - the player who's job you're getting
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayerOffline(Entry<String, PlayerInfo> info) {
-	
+
 	if (info == null)
 	    return null;
 
@@ -282,7 +282,7 @@ public class PlayerManager {
 
 	return jPlayer;
     }
-    
+
     /**
      * Causes player to join their job
      * @param jPlayer
@@ -317,21 +317,22 @@ public class PlayerManager {
      * @param jPlayer
      * @param job
      */
-    public void leaveJob(JobsPlayer jPlayer, Job job) {
+    public boolean leaveJob(JobsPlayer jPlayer, Job job) {
 //	synchronized (jPlayer.saveLock) {
 	if (!jPlayer.isInJob(job))
-	    return;
-	Jobs.getJobsDAO().recordToArchive(jPlayer, job);
-	// let the user leave the job
-	if (!jPlayer.leaveJob(job))
-	    return;
+	    return false;
 
 	// JobsJoin event
 	JobsLeaveEvent jobsleaveevent = new JobsLeaveEvent(jPlayer, job);
 	Bukkit.getServer().getPluginManager().callEvent(jobsleaveevent);
 	// If event is canceled, dont do anything
 	if (jobsleaveevent.isCancelled())
-	    return;
+	    return false;
+
+	Jobs.getJobsDAO().recordToArchive(jPlayer, job);
+	// let the user leave the job
+	if (!jPlayer.leaveJob(job))
+	    return false;
 
 	Jobs.getJobsDAO().quitJob(jPlayer, job);
 	PerformCommands.PerformCommandsOnLeave(jPlayer, job);
@@ -340,6 +341,7 @@ public class PlayerManager {
 	Jobs.getSignUtil().SignUpdate(job.getName());
 	Jobs.getSignUtil().SignUpdate("gtoplist");
 	job.updateTotalPlayers();
+	return true;
 //	}
     }
 
@@ -638,7 +640,7 @@ public class PlayerManager {
 	    return data;
 
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-	
+
 	if (iih == null || prog == null)
 	    return data;
 

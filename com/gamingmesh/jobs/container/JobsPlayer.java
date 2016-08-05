@@ -293,7 +293,7 @@ public class JobsPlayer {
      */
     public JobProgression getJobProgression(Job job) {
 	for (JobProgression prog : progression) {
-	    if (prog.getJob().equals(job))
+	    if (prog.getJob().same(job))
 		return prog;
 	}
 	return null;
@@ -456,7 +456,7 @@ public class JobsPlayer {
 //	synchronized (saveLock) {
 	if (!isInJob(newjob)) {
 	    for (JobProgression prog : progression) {
-		if (!prog.getJob().equals(oldjob))
+		if (!prog.getJob().same(oldjob))
 		    continue;
 
 		prog.setJob(newjob);
@@ -490,7 +490,7 @@ public class JobsPlayer {
      */
     public boolean isInJob(Job job) {
 	for (JobProgression prog : progression) {
-	    if (prog.getJob().equals(job))
+	    if (prog.getJob().same(job))
 		return true;
 	}
 	return false;

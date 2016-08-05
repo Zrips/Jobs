@@ -11,7 +11,6 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
-
 public class leave implements Cmd {
 
     @Override
@@ -35,10 +34,11 @@ public class leave implements Cmd {
 	    return true;
 	}
 
-	Jobs.getPlayerManager().leaveJob(jPlayer, job);
-	String message = Jobs.getLanguage().getMessage("command.leave.success");
-	message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
-	sender.sendMessage(message);
+	if (Jobs.getPlayerManager().leaveJob(jPlayer, job)) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.leave.success", "%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE));
+	} else
+	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
 	return true;
+
     }
 }
