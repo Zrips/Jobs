@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.WeakHashMap;
 import java.util.logging.Logger;
 
@@ -52,6 +53,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
@@ -430,36 +432,40 @@ public class Jobs {
      * Executes startup
      * @throws IOException 
      */
-    public static void startup() throws IOException {
-	reload();
-
-	// add all online players
-	if (!Jobs.getGCManager().MultiServerCompatability() && Jobs.getGCManager().PreLoadUse) {
-	    int i = 0;
-	    long time = System.currentTimeMillis();
-	    for (OfflinePlayer offline : Bukkit.getServer().getOfflinePlayers()) {
-
-		try {
-		    if (offline.isOnline())
-			continue;
-
-		    long lastPlayed = offline.getLastPlayed();
-		    int dif = (int) ((time - lastPlayed) / 1000 / 60 / 60 / 24);
-		    if (dif >= 7)
-			continue;
-
-		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offline);
-		    if (jPlayer == null)
-			continue;
-		    Jobs.getJobsDAO().loadLog(jPlayer);
-		    Jobs.getPlayerManager().getPlayersCache().put(offline.getName().toLowerCase(), jPlayer);
-		} catch (Exception e) {
-		}
-		i++;
-	    }
-	    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + i + " players data from last week");
+    public static void startup(JobsPlugin plugin) {
+	try {
+	    reload();
+	} catch (IOException e1) {
+	    e1.printStackTrace();
 	}
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+	    @Override
+	    public void run() {
+		int i = 0;
+		int y = 0;
+		int total = Jobs.getPlayerManager().getPlayerMap().size();
+		long time = System.currentTimeMillis();
+		for (Entry<String, PlayerInfo> one : Jobs.getPlayerManager().getPlayerMap().entrySet()) {
+		    try {
+			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one);
+			if (jPlayer == null)
+			    continue;
+			Jobs.getPlayerManager().getPlayersCache().put(one.getValue().getName().toLowerCase(), jPlayer);
+		    } catch (Exception e) {
+		    }
+		    i++;
+		    y++;
+		    if (y >= 1000) {
+			Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + i + "/" + total + " players data");
+			y = 0;
+		    }
+		}
+		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + i + " players data in " + ((int) (((System.currentTimeMillis() - time)
+		    / 1000d) * 100) / 100D));
 
+		return;
+	    }
+	});
 	// add all online players
 	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
 	    Jobs.getPlayerManager().playerJoin(online);

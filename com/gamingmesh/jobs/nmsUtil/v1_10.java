@@ -19,7 +19,6 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.NMS;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class v1_10 implements NMS {
     @Override

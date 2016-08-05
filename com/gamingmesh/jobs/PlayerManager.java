@@ -49,6 +49,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Perm;
 
@@ -118,10 +119,13 @@ public class PlayerManager {
     public void playerJoin(Player player) {
 	JobsPlayer jPlayer = this.playersCache.get(player.getName().toLowerCase());
 	if (jPlayer == null) {
-	    jPlayer = JobsPlayer.loadFromDao(Jobs.getJobsDAO(), player);
-	    JobsPlayer.loadLogFromDao(jPlayer);
+	    Debug.D("not in cache");
+	    jPlayer = Jobs.getJobsDAO().loadFromDao(player);
+	    jPlayer.loadLogFromDao();
 	    this.playersCache.put(player.getName().toLowerCase(), jPlayer);
-	}
+	} else
+
+	    Debug.D("in cache");
 
 	this.players.put(player.getName().toLowerCase(), jPlayer);
 	jPlayer.setPlayer(player);
@@ -140,7 +144,7 @@ public class PlayerManager {
 	if (Jobs.getGCManager().saveOnDisconnect()) {
 	    JobsPlayer jPlayer = this.players.remove(player.getName().toLowerCase());
 	    if (jPlayer != null) {
-		jPlayer.save(Jobs.getJobsDAO());
+		jPlayer.save();
 		jPlayer.onDisconnect();
 	    }
 	} else {
@@ -155,8 +159,6 @@ public class PlayerManager {
      * Save all the information of all of the players in the game
      */
     public void saveAll() {
-	JobsDAO dao = Jobs.getJobsDAO();
-
 	/*
 	 * Saving is a three step process to minimize synchronization locks when called asynchronously.
 	 * 
@@ -168,7 +170,7 @@ public class PlayerManager {
 	list = new ArrayList<JobsPlayer>(this.players.values());
 
 	for (JobsPlayer jPlayer : list) {
-	    jPlayer.save(dao);
+	    jPlayer.save();
 	}
 
 	Iterator<JobsPlayer> iter = this.players.values().iterator();
@@ -239,10 +241,48 @@ public class PlayerManager {
 
 	Jobs.getJobsDAO().loadPoints(jPlayer);
 
-	JobsPlayer.loadLogFromDao(jPlayer);
+	jPlayer.loadLogFromDao();
+
 	return jPlayer;
     }
+    
+    /**
+     * Get the player job info for specific player
+     * @param player - the player who's job you're getting
+     * @return the player job info of the player
+     */
+    public JobsPlayer getJobsPlayerOffline(Entry<String, PlayerInfo> info) {
+	
+	if (info == null)
+	    return null;
 
+	if (info.getValue().getName() == null)
+	    return null;
+
+	JobsPlayer jPlayer = new JobsPlayer(info.getValue().getName(), null);
+	jPlayer.setPlayerUUID(UUID.fromString(info.getKey()));
+	jPlayer.setUserId(info.getValue().getID());
+
+	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getValue().getName(), jPlayer.getPlayerUUID());
+	for (JobsDAOData jobdata : list) {
+	    if (Jobs.getJob(jobdata.getJobName()) == null)
+		continue;
+	    Job job = Jobs.getJob(jobdata.getJobName());
+	    if (job == null)
+		continue;
+	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
+	    jPlayer.progression.add(jobProgression);
+	    jPlayer.reloadMaxExperience();
+	    jPlayer.reloadLimits();
+	}
+
+	Jobs.getJobsDAO().loadPoints(jPlayer);
+
+	jPlayer.loadLogFromDao();
+
+	return jPlayer;
+    }
+    
     /**
      * Causes player to join their job
      * @param jPlayer
@@ -253,7 +293,7 @@ public class PlayerManager {
 	if (jPlayer.isInJob(job))
 	    return;
 	// let the user join the job
-	if (!jPlayer.joinJob(job, jPlayer))
+	if (!jPlayer.joinJob(job))
 	    return;
 
 	// JobsJoin event
@@ -324,7 +364,7 @@ public class PlayerManager {
      */
     public void transferJob(JobsPlayer jPlayer, Job oldjob, Job newjob) {
 //	synchronized (jPlayer.saveLock) {
-	if (!jPlayer.transferJob(oldjob, newjob, jPlayer))
+	if (!jPlayer.transferJob(oldjob, newjob))
 	    return;
 
 	JobsDAO dao = Jobs.getJobsDAO();
@@ -332,7 +372,7 @@ public class PlayerManager {
 	oldjob.updateTotalPlayers();
 	dao.joinJob(jPlayer, newjob);
 	newjob.updateTotalPlayers();
-	jPlayer.save(dao);
+	jPlayer.save();
 //	}
     }
 
@@ -344,8 +384,8 @@ public class PlayerManager {
      */
     public void promoteJob(JobsPlayer jPlayer, Job job, int levels) {
 //	synchronized (jPlayer.saveLock) {
-	jPlayer.promoteJob(job, levels, jPlayer);
-	jPlayer.save(Jobs.getJobsDAO());
+	jPlayer.promoteJob(job, levels);
+	jPlayer.save();
 
 	Jobs.getSignUtil().SignUpdate(job.getName());
 	Jobs.getSignUtil().SignUpdate("gtoplist");
@@ -361,7 +401,7 @@ public class PlayerManager {
     public void demoteJob(JobsPlayer jPlayer, Job job, int levels) {
 //	synchronized (jPlayer.saveLock) {
 	jPlayer.demoteJob(job, levels);
-	jPlayer.save(Jobs.getJobsDAO());
+	jPlayer.save();
 	Jobs.getSignUtil().SignUpdate(job.getName());
 	Jobs.getSignUtil().SignUpdate("gtoplist");
 //	}
@@ -382,7 +422,7 @@ public class PlayerManager {
 	if (prog.addExperience(experience))
 	    performLevelUp(jPlayer, job, oldLevel);
 
-	jPlayer.save(Jobs.getJobsDAO());
+	jPlayer.save();
 	Jobs.getSignUtil().SignUpdate(job.getName());
 	Jobs.getSignUtil().SignUpdate("gtoplist");
 //	}
@@ -401,7 +441,7 @@ public class PlayerManager {
 	    return;
 	prog.addExperience(-experience);
 
-	jPlayer.save(Jobs.getJobsDAO());
+	jPlayer.save();
 	Jobs.getSignUtil().SignUpdate(job.getName());
 	Jobs.getSignUtil().SignUpdate("gtoplist");
 //	}

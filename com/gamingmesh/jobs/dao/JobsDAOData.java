@@ -18,8 +18,6 @@
 
 package com.gamingmesh.jobs.dao;
 
-import java.util.UUID;
-
 /**
  * Container class to hold information out of the database.
  * 
@@ -30,53 +28,43 @@ import java.util.UUID;
  *
  */
 public class JobsDAOData {
-    private UUID playerUUID;
     private String job;
     private int level;
     private int experience;
-    
+
     /**
      * Constructor class for the DAO side of things.
      * @param job - the name of the job
      * @param level - the level of the job
      * @param experience - the experience of the job
      */
-    public JobsDAOData(UUID playerUUID, String job, int level, int experience) {
-        this.playerUUID = playerUUID;
-        this.job = job;
-        this.level = level;
-        this.experience = experience;
+    public JobsDAOData(String job, int level, int experience) {
+	this.job = job;
+	this.level = level;
+	this.experience = experience;
     }
-    
-    /**
-     * Getter function for the playerUUID
-     * @return the job name
-     */
-    public UUID getPlayerUUID() {
-        return playerUUID;
-    }
-    
+
     /**
      * Getter function for the job name
      * @return the job name
      */
     public String getJobName() {
-        return job;
+	return job;
     }
-    
+
     /**
      * Getter function for the level
      * @return the level in the job
      */
     public int getLevel() {
-        return level;
+	return level;
     }
-    
+
     /**
      * Getter function for the experience.
      * @return the experience in the job
      */
     public double getExperience() {
-        return experience;
+	return experience;
     }
 }

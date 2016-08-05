@@ -18,7 +18,6 @@
 
 package com.gamingmesh.jobs;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -96,7 +95,7 @@ public class JobsPlugin extends JavaPlugin {
 
 	    this.getCommand("jobs").setTabCompleter(new TabComplete());
 
-	    Jobs.startup();
+	    Jobs.startup(this);
 
 	    // register the listeners
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
@@ -132,7 +131,7 @@ public class JobsPlugin extends JavaPlugin {
 	    Jobs.getJobsDAO().loadExplore();
 
 	    Jobs.getCommandManager().fillCommands();
-	} catch (IOException e) {
+	} catch (Exception e) {
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
 	    this.setEnabled(false);
 	    e.printStackTrace();

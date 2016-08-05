@@ -141,7 +141,6 @@ public class GeneralConfigManager {
     public Parser maxPointEquation;
 
     public boolean DisabledWorldsUse;
-    public boolean PreLoadUse;
     public List<String> DisabledWorldsList = new ArrayList<String>();
 
     public List<Schedule> BoostSchedule = new ArrayList<Schedule>();
@@ -441,11 +440,7 @@ public class GeneralConfigManager {
 	    "Only commands can be performed from disabled worlds with jobs.disabledworld.commands permission node");
 	DisabledWorldsUse = c.get("Optimizations.DisabledWorlds.Use", false);
 	DisabledWorldsList = c.getStringList("Optimizations.DisabledWorlds.List", Arrays.asList(Bukkit.getWorlds().get(0).getName()));
-	
-
-	c.getW().addComment("Optimizations.PreLoad.Use", "By setting this to true, Jobs plugin will preload some of recent players data to be used instead of loading them from data base on players join");
-	PreLoadUse = c.get("Optimizations.PreLoad.Use", false);
-	
+		
 //	c.getW().addComment("Optimizations.Purge.Use", "By setting this to true, Jobs plugin will clean data base on startup from all jobs with level 1 and at 0 exp");
 //	PurgeUse = c.get("Optimizations.Purge.Use", false);
 

@@ -30,7 +30,6 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsDAO;
-import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Perm;
@@ -39,7 +38,7 @@ public class JobsPlayer {
     // the player the object belongs to
     private String userName;
     // progression of the player in each job
-    private UUID playerUUID;
+    public UUID playerUUID;
     public ArrayList<JobProgression> progression = new ArrayList<JobProgression>();
 
     private HashMap<String, ArrayList<BoostCounter>> boostCounter = new HashMap<String, ArrayList<BoostCounter>>();
@@ -73,75 +72,15 @@ public class JobsPlayer {
     public JobsPlayer(String userName, OfflinePlayer player) {
 	this.userName = userName;
 	this.OffPlayer = player;
-    }
-
-    public static JobsPlayer loadFromDao(JobsDAO dao, OfflinePlayer player) {
-
-	JobsPlayer jPlayer = new JobsPlayer(player.getName(), player);
-	jPlayer.playerUUID = player.getUniqueId();
-	List<JobsDAOData> list = dao.getAllJobs(player);
-//	synchronized (jPlayer.saveLock) {
-	jPlayer.progression.clear();
-	for (JobsDAOData jobdata : list) {
-	    if (Jobs.getJob(jobdata.getJobName()) == null)
-		continue;
-	    // add the job
-	    Job job = Jobs.getJob(jobdata.getJobName());
-	    if (job == null)
-		continue;
-
-	    // create the progression object
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
-	    // calculate the max level
-	    // add the progression level.
-	    jPlayer.progression.add(jobProgression);
-
-	}
-	jPlayer.reloadMaxExperience();
-	jPlayer.reloadLimits();
-	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerMap().get(player.getUniqueId().toString()).getID());
-	Jobs.getJobsDAO().loadPoints(jPlayer);
-//	}
-	return jPlayer;
-    }
-
-    public static JobsPlayer loadFromDao(JobsDAO dao, Player player) {
-
-	JobsPlayer jPlayer = new JobsPlayer(player.getName(), player);
-	jPlayer.playerUUID = player.getUniqueId();
-	List<JobsDAOData> list = new ArrayList<JobsDAOData>();
-	list = dao.getAllJobs(player);
-//	synchronized (jPlayer.saveLock) {
-	jPlayer.progression.clear();
-	for (JobsDAOData jobdata : list) {
-	    if (Jobs.getJob(jobdata.getJobName()) == null)
-		continue;
-	    // add the job
-	    Job job = Jobs.getJob(jobdata.getJobName());
-	    if (job == null)
-		continue;
-
-	    // create the progression object
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
-	    // calculate the max level
-	    // add the progression level.
-	    jPlayer.progression.add(jobProgression);
-
-	}
-	jPlayer.reloadMaxExperience();
-	jPlayer.reloadLimits();
-	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerMap().get(player.getUniqueId().toString()).getID());
-	Jobs.getJobsDAO().loadPoints(jPlayer);
-//	}
-	return jPlayer;
+	this.player = Bukkit.getPlayer(userName);
     }
 
     public void setPlayer(Player p) {
 	this.player = p;
     }
 
-    public static void loadLogFromDao(JobsPlayer jPlayer) {
-	Jobs.getJobsDAO().loadLog(jPlayer);
+    public void loadLogFromDao() {
+	Jobs.getJobsDAO().loadLog(this);
     }
 
     public synchronized List<String> getUpdateBossBarFor() {
@@ -388,16 +327,16 @@ public class JobsPlayer {
      * Player joins a job
      * @param job - the job joined
      */
-    public boolean joinJob(Job job, JobsPlayer jPlayer) {
+    public boolean joinJob(Job job) {
 //	synchronized (saveLock) {
 	if (!isInJob(job)) {
 	    int level = 1;
 	    int exp = 0;
-	    if (Jobs.getJobsDAO().checkArchive(jPlayer, job).size() > 0) {
-		List<Integer> info = Jobs.getJobsDAO().checkArchive(jPlayer, job);
+	    if (Jobs.getJobsDAO().checkArchive(this, job).size() > 0) {
+		List<Integer> info = Jobs.getJobsDAO().checkArchive(this, job);
 		level = info.get(0);
 		//exp = info.get(1);
-		Jobs.getJobsDAO().deleteArchive(jPlayer, job);
+		Jobs.getJobsDAO().deleteArchive(this, job);
 	    }
 
 	    progression.add(new JobProgression(job, this, level, exp));
@@ -448,7 +387,7 @@ public class JobsPlayer {
      * @param job - the job being promoted
      * @param levels - number of levels to promote
      */
-    public void promoteJob(Job job, int levels, JobsPlayer player) {
+    public void promoteJob(Job job, int levels) {
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
 	if (prog == null)
@@ -459,7 +398,7 @@ public class JobsPlayer {
 
 	int maxLevel = job.getMaxLevel();
 
-	if (player.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
+	if (this.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
 	    maxLevel = job.getVipMaxLevel();
 
 	if (maxLevel > 0 && newLevel > maxLevel) {
@@ -513,7 +452,7 @@ public class JobsPlayer {
      * @param oldjob - the old job
      * @param newjob - the new job
      */
-    public boolean transferJob(Job oldjob, Job newjob, JobsPlayer jPlayer) {
+    public boolean transferJob(Job oldjob, Job newjob) {
 //	synchronized (saveLock) {
 	if (!isInJob(newjob)) {
 	    for (JobProgression prog : progression) {
@@ -523,7 +462,7 @@ public class JobsPlayer {
 		prog.setJob(newjob);
 
 		int maxLevel = 0;
-		if (jPlayer.havePermission("jobs." + newjob.getName() + ".vipmaxlevel"))
+		if (this.havePermission("jobs." + newjob.getName() + ".vipmaxlevel"))
 		    maxLevel = newjob.getVipMaxLevel();
 		else
 		    maxLevel = newjob.getMaxLevel();
@@ -649,9 +588,10 @@ public class JobsPlayer {
      * Performs player save
      * @param dao
      */
-    public void save(JobsDAO dao) {
+    public void save() {
 //	synchronized (saveLock) {
 	if (!isSaved()) {
+	    JobsDAO dao = Jobs.getJobsDAO();
 	    dao.save(this);
 	    dao.saveLog(this);
 	    dao.savePoints(this);

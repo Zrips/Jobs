@@ -20,7 +20,7 @@ public class convert implements Cmd {
     @JobCommand(2600)
     public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
 
-	if (!(sender instanceof Player)) {
+	if (sender instanceof Player) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.fromconsole"));
 	    return false;
 	}
