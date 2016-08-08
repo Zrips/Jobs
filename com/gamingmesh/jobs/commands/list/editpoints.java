@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.commands.list;
 
 import org.bukkit.command.CommandSender;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -12,7 +11,7 @@ public class editpoints implements Cmd {
 
     @Override
     @JobCommand(475)
-    public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
+    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 
 	if (args.length != 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "editpoints");

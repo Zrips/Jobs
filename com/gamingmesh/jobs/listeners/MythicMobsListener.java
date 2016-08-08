@@ -12,7 +12,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.actions.MMKillInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -25,10 +24,10 @@ import net.elseland.xikage.MythicMobs.Mobs.MythicMob;
 
 public class MythicMobsListener implements Listener {
 
-    private JobsPlugin plugin;
+    private Jobs plugin;
     public MythicMobsAPI MMAPI = null;
 
-    public MythicMobsListener(JobsPlugin plugin) {
+    public MythicMobsListener(Jobs plugin) {
 	this.plugin = plugin;
     }
 

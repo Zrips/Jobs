@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.NameList;
@@ -18,14 +17,14 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class NameTranslatorManager {
 
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
     public ArrayList<NameList> ListOfNames = new ArrayList<NameList>();
     public ArrayList<NameList> ListOfEntities = new ArrayList<NameList>();
     public ArrayList<NameList> ListOfEnchants = new ArrayList<NameList>();
     public ArrayList<NameList> ListOfColors = new ArrayList<NameList>();
 
-    public NameTranslatorManager(JobsPlugin plugin) {
+    public NameTranslatorManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 

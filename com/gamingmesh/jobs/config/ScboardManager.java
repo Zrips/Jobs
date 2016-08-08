@@ -9,14 +9,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 
 public class ScboardManager {
 
     private ConcurrentHashMap<String, Long> timerMap = new ConcurrentHashMap<String, Long>();
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public ScboardManager(JobsPlugin plugin) {
+    public ScboardManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 

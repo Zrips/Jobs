@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
@@ -18,7 +17,7 @@ public class browse implements Cmd {
 
     @Override
     @JobCommand(200)
-    public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
+    public boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
 	ArrayList<String> lines = new ArrayList<String>();
 	for (Job job : Jobs.getJobs()) {
 	    if (Jobs.getGCManager().getHideJobsWithoutPermission()) {
@@ -59,6 +58,7 @@ public class browse implements Cmd {
 	}
 
 	if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
+	    
 	    Inventory inv = null;
 	    try {
 		inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
@@ -71,6 +71,8 @@ public class browse implements Cmd {
 		return true;
 	    
 	    ((Player) sender).openInventory(inv);
+	    
+	    
 	}
 
 	if (Jobs.getGCManager().JobsGUIShowChatBrowse) {

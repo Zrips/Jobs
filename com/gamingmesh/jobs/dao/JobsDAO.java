@@ -23,6 +23,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.Map.Entry;
@@ -58,6 +60,7 @@ public abstract class JobsDAO {
 
     private JobsConnectionPool pool;
     private String prefix;
+    private HashMap<Integer, ArrayList<JobsDAOData>> map = new HashMap<Integer, ArrayList<JobsDAOData>>();
 
     protected JobsDAO(String driverName, String url, String username, String password, String prefix) {
 	this.prefix = prefix;
@@ -97,6 +100,7 @@ public abstract class JobsDAO {
 	    updateSchemaVersion(version);
 	} finally {
 	}
+	loadAllSavedJobs();
     }
 
     protected abstract void setupConfig() throws SQLException;
@@ -140,6 +144,7 @@ public abstract class JobsDAO {
      * @param playerUUID - the player being searched for
      * @return list of all of the names of the jobs the players are part of.
      */
+
     public List<JobsDAOData> getAllJobs(String playerName, UUID uuid) {
 
 	int id = -1;
@@ -180,29 +185,32 @@ public abstract class JobsDAO {
 	return jobs;
     }
 
-    /**
-     * Get all jobs the player is part of.
-     * @param playerUUID - the player being searched for
-     * @return list of all of the names of the jobs the players are part of.
-     */
-    public List<JobsDAOData> getAllJobs(JobsPlayer jPlayer) {
+    public List<JobsDAOData> getAllJobs(PlayerInfo pInfo) {
+	List<JobsDAOData> list = map.get(pInfo.getID());
+	if (list != null)
+	    return list;
+	return new ArrayList<JobsDAOData>();
+    }
 
-	ArrayList<JobsDAOData> jobs = new ArrayList<JobsDAOData>();
-
-	int id = jPlayer.getUserId();
-
+    private void loadAllSavedJobs() {
 	JobsConnection conn = getConnection();
 	if (conn == null)
-	    return jobs;
-
+	    return;
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
-	    prest = conn.prepareStatement("SELECT `job`, `level`, `experience` FROM `" + prefix + "jobs` WHERE `userid` = ?;");
-	    prest.setInt(1, id);
+	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "jobs`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		jobs.add(new JobsDAOData(res.getString(1), res.getInt(2), res.getInt(3)));
+		int id = res.getInt("userid");
+		ArrayList<JobsDAOData> list = map.get(id);
+		if (list == null) {
+		    list = new ArrayList<JobsDAOData>();
+		    list.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
+		    map.put(id, list);
+		} else {
+		    list.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
+		}
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -210,7 +218,6 @@ public abstract class JobsDAO {
 	    close(res);
 	    close(prest);
 	}
-	return jobs;
     }
 
     public void recordNewPlayer(Player player) {
@@ -1210,5 +1217,9 @@ public abstract class JobsDAO {
 	    } catch (SQLException e) {
 		e.printStackTrace();
 	    }
+    }
+
+    public HashMap<Integer, ArrayList<JobsDAOData>> getMap() {
+	return map;
     }
 }

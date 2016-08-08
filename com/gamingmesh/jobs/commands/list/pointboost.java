@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.commands.list;
 import org.bukkit.command.CommandSender;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
@@ -13,7 +12,7 @@ public class pointboost implements Cmd {
 
     @Override
     @JobCommand(2400)
-    public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
+    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (args.length > 2 || args.length <= 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "pointboost");

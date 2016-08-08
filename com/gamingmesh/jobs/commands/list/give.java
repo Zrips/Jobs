@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
@@ -16,7 +15,7 @@ public class give implements Cmd {
 
     @Override
     @JobCommand(2500)
-    public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
+    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (args.length < 1 || Jobs.getJob(args[0]) == null && Jobs.getJob(args[1]) == null) {
 	    Jobs.getCommandManager().sendUsage(sender, "give");
@@ -27,7 +26,7 @@ public class give implements Cmd {
 	    Job job = Jobs.getJob(args[0]);
 	    for (JobItems item : job.getItems()) {
 		if (item.getNode().equalsIgnoreCase(args[1])) {
-		    GiveItem.GiveItemForPlayer((Player) sender, item.getId(), 0, 1, item.getName(), item.getLore(), item.getenchants());
+		    GiveItem.GiveItemForPlayer((Player) sender, item.getId(), 0, 1, item.getName(), item.getLore(), item.getEnchants());
 		    return true;
 		}
 	    }
@@ -42,7 +41,7 @@ public class give implements Cmd {
 	    }
 	    for (JobItems item : job.getItems()) {
 		if (item.getNode().equalsIgnoreCase(args[2])) {
-		    GiveItem.GiveItemForPlayer(player, item.getId(), 0, 1, item.getName(), item.getLore(), item.getenchants());
+		    GiveItem.GiveItemForPlayer(player, item.getId(), 0, 1, item.getName(), item.getLore(), item.getEnchants());
 		    return true;
 		}
 	    }

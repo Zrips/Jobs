@@ -34,7 +34,7 @@ import com.gamingmesh.jobs.stuff.UUIDUtil;
 public class JobsDAOSQLite extends JobsDAO {
     public static JobsDAOSQLite initialize() {
 	JobsDAOSQLite dao = new JobsDAOSQLite();
-	File dir = Jobs.getDataFolder();
+	File dir = Jobs.getFolder();
 	if (!dir.exists())
 	    dir.mkdirs();
 	try {
@@ -46,7 +46,7 @@ public class JobsDAOSQLite extends JobsDAO {
     }
 
     private JobsDAOSQLite() {
-	super("org.sqlite.JDBC", "jdbc:sqlite:" + new File(Jobs.getDataFolder(), "jobs.sqlite.db").getPath(), null, null, "");
+	super("org.sqlite.JDBC", "jdbc:sqlite:" + new File(Jobs.getFolder(), "jobs.sqlite.db").getPath(), null, null, "");
     }
 
     private static void close(ResultSet res) {

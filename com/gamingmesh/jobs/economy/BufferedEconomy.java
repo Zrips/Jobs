@@ -27,14 +27,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 
 public class BufferedEconomy {
-    private JobsPlugin plugin;
+    private Jobs plugin;
     private Economy economy;
     private LinkedBlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<BufferedPayment>();
     private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<UUID, BufferedPayment>());
@@ -44,7 +43,7 @@ public class BufferedEconomy {
 
     PaymentData PaymentData = new PaymentData();
 
-    public BufferedEconomy(JobsPlugin plugin, Economy economy) {
+    public BufferedEconomy(Jobs plugin, Economy economy) {
 	this.plugin = plugin;
 	this.economy = economy;
     }

@@ -12,7 +12,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.TopList;
@@ -22,7 +21,7 @@ public class gtop implements Cmd {
 
     @Override
     @JobCommand(600)
-    public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
+    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (args.length != 1 && args.length != 0) {
 	    Jobs.getCommandManager().sendUsage(sender, "gtop");

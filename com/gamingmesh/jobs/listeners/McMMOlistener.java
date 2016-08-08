@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -24,12 +23,12 @@ import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
 public class McMMOlistener implements Listener {
 
-    private JobsPlugin plugin;
+    private Jobs plugin;
     public boolean mcMMOPresent = false;
 
     HashMap<String, HashMap<AbilityType, Long>> map = new HashMap<String, HashMap<AbilityType, Long>>();
 
-    public McMMOlistener(JobsPlugin plugin) {
+    public McMMOlistener(Jobs plugin) {
 	this.plugin = plugin;
     }
 

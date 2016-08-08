@@ -30,9 +30,9 @@ import com.gamingmesh.jobs.economy.BlackholeEconomy;
 import com.gamingmesh.jobs.economy.VaultEconomy;
 
 public class HookEconomyTask implements Runnable {
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public HookEconomyTask(JobsPlugin plugin) {
+    public HookEconomyTask(Jobs plugin) {
 	this.plugin = plugin;
     }
 

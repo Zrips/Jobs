@@ -32,7 +32,6 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.Schedule;
@@ -41,7 +40,7 @@ import com.gamingmesh.jobs.dao.JobsDAOSQLite;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class GeneralConfigManager {
-    private JobsPlugin plugin;
+    private Jobs plugin;
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<Integer>();
     protected Locale locale;
     protected int savePeriod;
@@ -151,7 +150,7 @@ public class GeneralConfigManager {
 	return commandArgs;
     }
 
-    public GeneralConfigManager(JobsPlugin plugin) {
+    public GeneralConfigManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 
@@ -315,27 +314,27 @@ public class GeneralConfigManager {
 	// general settings
 	loadGeneralSettings();
 	// Load locale
-	Jobs.setLanguageManager(plugin);
+	Jobs.setLanguageManager(this.plugin);
 	Jobs.getLanguageManager().load();
 	// title settings
-	Jobs.setTitleManager(plugin);
+	Jobs.setTitleManager(this.plugin);
 	Jobs.gettitleManager().load();
 	// restricted areas
-	Jobs.setRestrictedAreaManager(plugin);
+	Jobs.setRestrictedAreaManager(this.plugin);
 	Jobs.getRestrictedAreaManager().load();
 	// restricted blocks
-	Jobs.setRestrictedBlockManager(plugin);
+	Jobs.setRestrictedBlockManager(this.plugin);
 	Jobs.getRestrictedBlockManager().load();
 	// Item/Block/mobs name list
-	Jobs.setNameTranslatorManager(plugin);
+	Jobs.setNameTranslatorManager(this.plugin);
 	Jobs.getNameTranslatorManager().load();
 	// signs information
-	Jobs.setSignUtil(plugin);
+	Jobs.setSignUtil(this.plugin);
 	Jobs.getSignUtil().LoadSigns();
 	// Schedule
-	Jobs.setScheduleManager(plugin);
+	Jobs.setScheduleManager(this.plugin);
 	// Shop
-	Jobs.setShopManager(plugin);
+	Jobs.setShopManager(this.plugin);
 	Jobs.getShopManager().load();
     }
 

@@ -13,7 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.stuff.ChatColor;
@@ -23,9 +22,9 @@ public class ScheduleManager {
 
     public int dateByInt = 0;
 
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public ScheduleManager(JobsPlugin plugin) {
+    public ScheduleManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 

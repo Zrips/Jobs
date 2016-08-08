@@ -20,6 +20,7 @@ package com.gamingmesh.jobs;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -29,8 +30,10 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
@@ -47,6 +50,7 @@ import com.gamingmesh.jobs.config.ScboardManager;
 import com.gamingmesh.jobs.config.ScheduleManager;
 import com.gamingmesh.jobs.config.ShopManager;
 import com.gamingmesh.jobs.config.TitleManager;
+import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
@@ -61,18 +65,20 @@ import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.listeners.JobsListener;
+import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
+import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
-public class Jobs {
-    public static Jobs instance = new Jobs();
-//    public static JobsPlugin plugin = new JobsPlugin();
+public class Jobs extends JavaPlugin {
+//    public static Jobs plugin = new Jobs();
     private static PlayerManager pManager = null;
     private static JobsCommands cManager = null;
     private static Language lManager = null;
@@ -100,7 +106,7 @@ public class Jobs {
 
     private static Logger pLogger;
     private static File dataFolder;
-    private static JobsClassLoader classLoader = new JobsClassLoader(instance);
+    private static JobsClassLoader classLoader;
     private static JobsDAO dao = null;
     private static List<Job> jobs = null;
     private static Job noneJob = null;
@@ -124,31 +130,31 @@ public class Jobs {
 
     private static ActionBar actionbar;
 
-    public static void setMcMMOlistener(JobsPlugin plugin) {
-	McMMOlistener = new McMMOlistener(plugin);
+    public void setMcMMOlistener() {
+	McMMOlistener = new McMMOlistener(this);
     }
 
     public static McMMOlistener getMcMMOlistener() {
 	return McMMOlistener;
     }
 
-    public static void setPistonProtectionListener(JobsPlugin plugin) {
-	PistonProtectionListener = new PistonProtectionListener(plugin);
+    public void setPistonProtectionListener() {
+	PistonProtectionListener = new PistonProtectionListener(this);
     }
 
     public static PistonProtectionListener getPistonProtectionListener() {
 	return PistonProtectionListener;
     }
 
-    public static void setMythicManager(JobsPlugin plugin) {
-	MythicManager = new MythicMobsListener(plugin);
+    public void setMythicManager() {
+	MythicManager = new MythicMobsListener(this);
     }
 
     public static MythicMobsListener getMythicManager() {
 	return MythicManager;
     }
 
-    public static void setLoging() {
+    public void setLoging() {
 	loging = new Loging();
     }
 
@@ -156,7 +162,7 @@ public class Jobs {
 	return loging;
     }
 
-    public static void setShopManager(JobsPlugin plugin) {
+    public static void setShopManager(Jobs plugin) {
 	shopManager = new ShopManager(plugin);
     }
 
@@ -164,24 +170,24 @@ public class Jobs {
 	return shopManager;
     }
 
-    public static void setConfigManager(JobsPlugin plugin) {
-	configManager = new ConfigManager(plugin);
+    public void setConfigManager() {
+	configManager = new ConfigManager(this);
     }
 
     public static ConfigManager getConfigManager() {
 	return configManager;
     }
 
-    public static void setGCManager(JobsPlugin plugin) {
-	GconfigManager = new GeneralConfigManager(plugin);
+    public void setGCManager() {
+	GconfigManager = new GeneralConfigManager(this);
     }
 
     public static GeneralConfigManager getGCManager() {
 	return GconfigManager;
     }
 
-    public static void setActionBar(ActionBar bar) {
-	actionbar = bar;
+    public void setActionBar() {
+	actionbar = new ActionBar();
     }
 
     public static ActionBar getActionBar() {
@@ -204,11 +210,11 @@ public class Jobs {
 	return pManager;
     }
 
-    public static void setPlayerManager(JobsPlugin jobsPlugin) {
-	pManager = new PlayerManager(jobsPlugin);
+    public void setPlayerManager() {
+	pManager = new PlayerManager(this);
     }
 
-    public static void setRestrictedBlockManager(JobsPlugin plugin) {
+    public static void setRestrictedBlockManager(Jobs plugin) {
 	RBManager = new RestrictedBlockManager(plugin);
     }
 
@@ -216,7 +222,7 @@ public class Jobs {
 	return RBManager;
     }
 
-    public static void setRestrictedAreaManager(JobsPlugin plugin) {
+    public static void setRestrictedAreaManager(Jobs plugin) {
 	RAManager = new RestrictedAreaManager(plugin);
     }
 
@@ -224,7 +230,7 @@ public class Jobs {
 	return RAManager;
     }
 
-    public static void setTitleManager(JobsPlugin plugin) {
+    public static void setTitleManager(Jobs plugin) {
 	titleManager = new TitleManager(plugin);
     }
 
@@ -232,8 +238,8 @@ public class Jobs {
 	return titleManager;
     }
 
-    public static void setBBManager(JobsPlugin plugin) {
-	BBManager = new BossBarManager(plugin);
+    public void setBBManager() {
+	BBManager = new BossBarManager(this);
     }
 
     public static BossBarManager getBBManager() {
@@ -256,7 +262,7 @@ public class Jobs {
 	return scheduleManager;
     }
 
-    public static void setScheduleManager(JobsPlugin plugin) {
+    public static void setScheduleManager(Jobs plugin) {
 	scheduleManager = new ScheduleManager(plugin);
     }
 
@@ -264,7 +270,7 @@ public class Jobs {
 	return NameTranslatorManager;
     }
 
-    public static void setNameTranslatorManager(JobsPlugin plugin) {
+    public static void setNameTranslatorManager(Jobs plugin) {
 	NameTranslatorManager = new NameTranslatorManager(plugin);
     }
 
@@ -272,7 +278,7 @@ public class Jobs {
 	return GUIManager;
     }
 
-    public static void setGUIManager() {
+    public void setGUIManager() {
 	GUIManager = new GuiManager();
     }
 
@@ -280,15 +286,15 @@ public class Jobs {
 	return cManager;
     }
 
-    public static void setCommandManager(JobsPlugin plugin) {
-	cManager = new JobsCommands(plugin);
+    public void setCommandManager() {
+	cManager = new JobsCommands(this);
     }
 
     public static ExploreManager getExplore() {
 	return exploreManager;
     }
 
-    public static void setExplore() {
+    public void setExplore() {
 	exploreManager = new ExploreManager();
     }
 
@@ -300,8 +306,8 @@ public class Jobs {
 	return scboardManager;
     }
 
-    public static void setScboard(JobsPlugin plugin) {
-	scboardManager = new ScboardManager(plugin);
+    public void setScboard() {
+	scboardManager = new ScboardManager(this);
     }
 
     /**
@@ -312,7 +318,7 @@ public class Jobs {
 	return signManager;
     }
 
-    public static void setSignUtil(JobsPlugin plugin) {
+    public static void setSignUtil(Jobs plugin) {
 	signManager = new SignUtil(plugin);
     }
 
@@ -324,22 +330,22 @@ public class Jobs {
 	return lManager;
     }
 
-    public static void setLanguage(JobsPlugin plugin) {
-	lManager = new Language(plugin);
+    public void setLanguage() {
+	lManager = new Language(this);
     }
 
     public static LanguageManager getLanguageManager() {
 	return lmManager;
     }
 
-    public static void setLanguageManager(JobsPlugin plugin) {
+    public static void setLanguageManager(Jobs plugin) {
 	lmManager = new LanguageManager(plugin);
     }
 
     /**
      * Sets the plugin logger
      */
-    public static void setPluginLogger(Logger logger) {
+    public void setPluginLogger(Logger logger) {
 	pLogger = logger;
     }
 
@@ -355,7 +361,7 @@ public class Jobs {
      * Sets the data folder
      * @param dir - the data folder
      */
-    public static void setDataFolder(File dir) {
+    public void setDataFolder(File dir) {
 	dataFolder = dir;
     }
 
@@ -363,7 +369,7 @@ public class Jobs {
      * Retrieves the data folder
      * @return data folder
      */
-    public static File getDataFolder() {
+    public static File getFolder() {
 	return dataFolder;
     }
 
@@ -432,40 +438,35 @@ public class Jobs {
      * Executes startup
      * @throws IOException 
      */
-    public static void startup(JobsPlugin plugin) {
+    public void startup() {
 	try {
 	    reload();
 	} catch (IOException e1) {
 	    e1.printStackTrace();
 	}
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		int i = 0;
-		int y = 0;
-		int total = Jobs.getPlayerManager().getPlayerMap().size();
-		long time = System.currentTimeMillis();
-		for (Entry<String, PlayerInfo> one : Jobs.getPlayerManager().getPlayerMap().entrySet()) {
-		    try {
-			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one);
-			if (jPlayer == null)
-			    continue;
-			Jobs.getPlayerManager().getPlayersCache().put(one.getValue().getName().toLowerCase(), jPlayer);
-		    } catch (Exception e) {
-		    }
-		    i++;
-		    y++;
-		    if (y >= 1000) {
-			Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + i + "/" + total + " players data");
-			y = 0;
-		    }
-		}
-		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + i + " players data in " + ((int) (((System.currentTimeMillis() - time)
-		    / 1000d) * 100) / 100D));
-
-		return;
+	int i = 0;
+	int y = 0;
+	int total = Jobs.getPlayerManager().getPlayerMap().size();
+	long time = System.currentTimeMillis();
+	for (Entry<String, PlayerInfo> one : Jobs.getPlayerManager().getPlayerMap().entrySet()) {
+	    try {
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one);
+		if (jPlayer == null)
+		    continue;
+		Jobs.getPlayerManager().getPlayersCache().put(one.getValue().getName().toLowerCase(), jPlayer);
+	    } catch (Exception e) {
 	    }
-	});
+	    i++;
+	    y++;
+	    if (y >= 1000) {
+		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + i + "/" + total + " players data");
+		y = 0;
+	    }
+	}
+	dao.getMap().clear();
+	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + i + " players data in " + ((int) (((System.currentTimeMillis() - time)
+	    / 1000d) * 100) / 100D));
+
 	// add all online players
 	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
 	    Jobs.getPlayerManager().playerJoin(online);
@@ -491,8 +492,8 @@ public class Jobs {
 	    dao.closeConnections();
 	}
 
-	Jobs.getGCManager().reload();
-	Jobs.getLanguage().reload();
+	GconfigManager.reload();
+	lManager.reload();
 	Jobs.getConfigManager().reload();
 	usedSlots.clear();
 	for (Job job : jobs) {
@@ -502,20 +503,20 @@ public class Jobs {
 	permissionHandler.registerPermissions();
 
 	// set the system to auto save
-	if (Jobs.getGCManager().getSavePeriod() > 0) {
-	    saveTask = new DatabaseSaveThread(Jobs.getGCManager().getSavePeriod());
+	if (GconfigManager.getSavePeriod() > 0) {
+	    saveTask = new DatabaseSaveThread(GconfigManager.getSavePeriod());
 	    saveTask.start();
 	}
 
 	// schedule payouts to buffered payments
-	paymentThread = new BufferedPaymentThread(Jobs.getGCManager().getEconomyBatchDelay());
+	paymentThread = new BufferedPaymentThread(GconfigManager.getEconomyBatchDelay());
 	paymentThread.start();
 
 	Jobs.getJobsDAO().loadPlayerData();
 
 	// Schedule
 	Jobs.getScheduleManager().load();
-	if (Jobs.getGCManager().useGlobalBoostScheduler)
+	if (GconfigManager.useGlobalBoostScheduler)
 	    Jobs.getScheduleManager().scheduler();
     }
 
@@ -543,10 +544,10 @@ public class Jobs {
 	if (dao != null) {
 	    dao.closeConnections();
 	}
-	if (Jobs.getGCManager().storageMethod.equals("mysql"))
-	    Jobs.getGCManager().startSqlite();
+	if (GconfigManager.storageMethod.equals("mysql"))
+	    GconfigManager.startSqlite();
 	else
-	    Jobs.getGCManager().startMysql();
+	    GconfigManager.startMysql();
 	pManager.reload();
     }
 
@@ -587,11 +588,15 @@ public class Jobs {
 	return classLoader;
     }
 
+    public void setJobsClassloader() {
+	classLoader = new JobsClassLoader(this);
+    }
+
     /**
      * Sets the permission handler
      * @param h - the permission handler
      */
-    public static void setPermissionHandler(PermissionHandler h) {
+    public void setPermissionHandler(PermissionHandler h) {
 	permissionHandler = h;
     }
 
@@ -607,7 +612,7 @@ public class Jobs {
      * Sets the economy handler
      * @param eco - the economy handler
      */
-    public static void setEconomy(JobsPlugin plugin, Economy eco) {
+    public static void setEconomy(Jobs plugin, Economy eco) {
 	economy = new BufferedEconomy(plugin, eco);
     }
 
@@ -619,127 +624,113 @@ public class Jobs {
 	return economy;
     }
 
-    public static boolean isUnderMoneyLimit(OfflinePlayer player, Double amount) {
+    @Override
+    public void onEnable() {
 
-	if (player == null)
-	    return true;
+	String packageName = getServer().getClass().getPackage().getName();
+	String[] packageSplit = packageName.split("\\.");
+	String version = packageSplit[packageSplit.length - 1].substring(0, packageSplit[packageSplit.length - 1].length() - 3);
+	try {
+	    Class<?> nmsClass;
+	    nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + version);
+	    if (NMS.class.isAssignableFrom(nmsClass)) {
+		setNms((NMS) nmsClass.getConstructor().newInstance());
+	    } else {
+		System.out.println("Something went wrong, please note down version and contact author v:" + version);
+		this.setEnabled(false);
+	    }
+	} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+	    | SecurityException e) {
+	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + version);
+	    this.setEnabled(false);
+	    e.printStackTrace();
+	    return;
+	}
 
-	if (amount == 0)
-	    return true;
+	try {
+	    setActionBar();
+	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
+	    jobConfig.saveDefaultConfig();
 
-	String playername = player.getName();
+	    YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
+	    jobSigns.saveDefaultConfig();
 
-	if (!Jobs.getGCManager().MoneyLimitUse)
-	    return true;
+	    YmlMaker jobSchedule = new YmlMaker(this, "schedule.yml");
+	    jobSchedule.saveDefaultConfig();
 
-	if (!paymentLimit.containsKey(playername)) {
-	    PaymentData data = new PaymentData(System.currentTimeMillis(), amount, 0.0, 0.0, 0L, false);
-	    //data.AddNewAmount(amount);
-	    paymentLimit.put(playername, data);
-	} else {
-	    PaymentData data = paymentLimit.get(playername);
-	    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(player);
-	    if (data.IsReachedMoneyLimit(Jobs.getGCManager().MoneyTimeLimit, JPlayer.getMoneyLimit())) {
-		if (player.isOnline() && !data.Informed && !data.isReseted()) {
-		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedlimit"));
-		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedlimit2"));
-		    data.Setinformed();
-		}
-		if (data.IsAnnounceTime(Jobs.getGCManager().MoneyAnnouncmentDelay) && player.isOnline()) {
-		    String message = Jobs.getLanguage().getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(Jobs
-			.getGCManager().MoneyTimeLimit));
-		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(Jobs.getGCManager().MoneyTimeLimit)));
-		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(Jobs.getGCManager().MoneyTimeLimit)));
-		    Jobs.getActionBar().send(((Player) player), ChatColor.RED + message);
-		}
-		if (data.isReseted())
-		    data.setReseted(false);
-		return false;
+	    YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
+	    jobShopItems.saveDefaultConfig();
+
+	    setPermissionHandler(new PermissionHandler(this));
+	    setJobsClassloader();
+	    setPlayerManager();
+	    setScboard();
+	    setLanguage();
+	    setGUIManager();
+	    setExplore();
+	    setBBManager();
+	    setPluginLogger(getLogger());
+	    setDataFolder(getDataFolder());
+	    setLoging();
+	    setGCManager();
+	    setConfigManager();
+	    setCommandManager();
+
+	    getCommand("jobs").setExecutor(cManager);
+	    this.getCommand("jobs").setTabCompleter(new TabComplete());
+
+	    startup();
+
+	    // register the listeners
+	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
+	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
+
+	    setMcMMOlistener();
+	    if (McMMOlistener.CheckmcMMO()) {
+		getServer().getPluginManager().registerEvents(McMMOlistener, this);
 	    }
 
-	    data.AddAmount(amount);
-	    paymentLimit.put(playername, data);
+	    setMythicManager();
+	    if (MythicManager.Check() && GconfigManager.MythicMobsEnabled) {
+		getServer().getPluginManager().registerEvents(MythicManager, this);
+	    }
+
+	    setPistonProtectionListener();
+	    if (GconfigManager.useBlockProtection) {
+		getServer().getPluginManager().registerEvents(PistonProtectionListener, this);
+	    }
+
+	    // register economy
+	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
+
+	    // all loaded properly.
+
+	    scheduleManager.DateUpdater();
+
+	    String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Plugin has been enabled succesfully.");
+	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	    console.sendMessage(message);
+	    lManager.reload();
+
+	    dao.loadExplore();
+
+	    cManager.fillCommands();
+	} catch (Exception e) {
+	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
+	    this.setEnabled(false);
+	    e.printStackTrace();
 	}
-	return true;
     }
 
-    public static boolean isUnderExpLimit(final OfflinePlayer player, Double amount) {
-	if (player == null)
-	    return false;
-
-	String playername = player.getName();
-
-	if (!Jobs.getGCManager().ExpLimitUse)
-	    return true;
-
-	if (!ExpLimit.containsKey(playername)) {
-	    PaymentData data = new PaymentData(System.currentTimeMillis(), 0.0, 0.0, amount, 0L, false);
-	    //data.AddNewAmount(amount);
-	    ExpLimit.put(playername, data);
-	} else {
-	    PaymentData data = ExpLimit.get(playername);
-	    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(player);
-	    if (data.IsReachedExpLimit(Jobs.getGCManager().ExpTimeLimit, JPlayer.getExpLimit())) {
-		if (player.isOnline() && !data.Informed && !data.isReseted()) {
-		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedExplimit"));
-		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedExplimit2"));
-		    data.Setinformed();
-		}
-		if (data.IsAnnounceTime(Jobs.getGCManager().ExpAnnouncmentDelay) && player.isOnline()) {
-		    String message = Jobs.getLanguage().getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(Jobs.getGCManager().ExpTimeLimit));
-		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(Jobs.getGCManager().ExpTimeLimit)));
-		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(Jobs.getGCManager().ExpTimeLimit)));
-		    Jobs.getActionBar().send(((Player) player), ChatColor.RED + message);
-		}
-		if (data.isReseted())
-		    data.setReseted(false);
-		return false;
-	    }
-	    data.AddExpAmount(amount);
-	    ExpLimit.put(playername, data);
-	}
-	return true;
-    }
-
-    public static boolean isUnderPointLimit(final OfflinePlayer player, Double amount) {
-	if (player == null)
-	    return false;
-
-	if (amount == 0)
-	    return true;
-
-	String playername = player.getName();
-
-	if (!Jobs.getGCManager().PointLimitUse)
-	    return true;
-
-	if (!PointLimit.containsKey(playername)) {
-	    PaymentData data = new PaymentData(System.currentTimeMillis(), 0.0, amount, 0.0, 0L, false);
-	    //data.AddNewAmount(amount);
-	    PointLimit.put(playername, data);
-	} else {
-	    PaymentData data = PointLimit.get(playername);
-	    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(player);
-	    if (data.IsReachedPointLimit(Jobs.getGCManager().PointTimeLimit, JPlayer.getPointLimit())) {
-		if (player.isOnline() && !data.Informed && !data.isReseted()) {
-		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedPointlimit"));
-		    ((Player) player).sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reachedPointlimit2"));
-		    data.Setinformed();
-		}
-		if (data.IsAnnounceTime(Jobs.getGCManager().PointAnnouncmentDelay) && player.isOnline()) {
-		    String message = Jobs.getLanguage().getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(Jobs.getGCManager().PointTimeLimit));
-		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(Jobs.getGCManager().PointTimeLimit)));
-		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(Jobs.getGCManager().PointTimeLimit)));
-		    Jobs.getActionBar().send(((Player) player), ChatColor.RED + message);
-		}
-		if (data.isReseted())
-		    data.setReseted(false);
-		return false;
-	    }
-	    data.AddPoints(amount);
-	    PointLimit.put(playername, data);
-	}
-	return true;
+    @Override
+    public void onDisable() {
+	GUIManager.CloseInventories();
+	shopManager.CloseInventories();
+	dao.saveExplore();
+	Jobs.shutdown();
+	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Plugin has been disabled succesfully.");
+	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	console.sendMessage(message);
     }
 
     /**
@@ -760,11 +751,9 @@ public class Jobs {
 	// no job
 
 	if (numjobs == 0) {
-	    Job jobNone = Jobs.getNoneJob();
-	    Player dude = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
 
-	    if (jobNone != null) {
-		JobInfo jobinfo = jobNone.getJobInfo(info, 1);
+	    if (noneJob != null) {
+		JobInfo jobinfo = noneJob.getJobInfo(info, 1);
 
 		if (jobinfo == null)
 		    return;
@@ -776,15 +765,15 @@ public class Jobs {
 
 //		    jPlayer
 
-		    BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(jPlayer, Jobs.getNoneJob());
+		    BoostMultiplier FinalBoost = pManager.getFinalBonus(jPlayer, Jobs.getNoneJob());
 
 		    // Calculate income
 
 		    Double amount = 0D;
 		    if (income != 0D) {
 			amount = income + (income * FinalBoost.getMoneyBoost() / 100);
-			if (Jobs.getGCManager().useMinimumOveralPayment && income > 0) {
-			    double maxLimit = income * Jobs.getGCManager().MinimumOveralPaymentLimit;
+			if (GconfigManager.useMinimumOveralPayment && income > 0) {
+			    double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
 			    if (amount < maxLimit) {
 				amount = maxLimit;
 			    }
@@ -796,23 +785,23 @@ public class Jobs {
 		    Double pointAmount = 0D;
 		    if (points != 0D) {
 			pointAmount = points + (points * FinalBoost.getPointsBoost() / 100);
-			if (Jobs.getGCManager().useMinimumOveralPoints && points > 0) {
-			    double maxLimit = points * Jobs.getGCManager().MinimumOveralPaymentLimit;
+			if (GconfigManager.useMinimumOveralPoints && points > 0) {
+			    double maxLimit = points * GconfigManager.MinimumOveralPaymentLimit;
 			    if (pointAmount < maxLimit) {
 				pointAmount = maxLimit;
 			    }
 			}
 		    }
 
-		    if (!isUnderMoneyLimit(dude, amount)) {
+		    if (!isUnderMoneyLimit(jPlayer, amount)) {
 			amount = 0D;
-			if (Jobs.getGCManager().MoneyStopPoint)
+			if (GconfigManager.MoneyStopPoint)
 			    pointAmount = 0D;
 		    }
 
-		    if (!isUnderPointLimit(dude, pointAmount)) {
+		    if (!isUnderPointLimit(jPlayer, pointAmount)) {
 			pointAmount = 0D;
-			if (Jobs.getGCManager().PointStopMoney)
+			if (GconfigManager.PointStopMoney)
 			    amount = 0D;
 		    }
 		    if (amount == 0D && pointAmount == 0D)
@@ -823,8 +812,8 @@ public class Jobs {
 
 		    Jobs.getEconomy().pay(jPlayer, amount, pointAmount, 0.0);
 
-		    if (Jobs.getGCManager().LoggingUse)
-			Jobs.getLoging().recordToLog(jPlayer, info, amount, 0);
+		    if (GconfigManager.LoggingUse)
+			loging.recordToLog(jPlayer, info, amount, 0);
 		}
 	    }
 	} else {
@@ -842,7 +831,7 @@ public class Jobs {
 		if (income == 0D && points == 0D && exp == 0D)
 		    continue;
 
-		if (Jobs.getGCManager().addXpPlayer()) {
+		if (GconfigManager.addXpPlayer()) {
 		    Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
 		    if (player != null) {
 			/*
@@ -871,15 +860,15 @@ public class Jobs {
 			FinalBoost.getPointsBoost() + multiplier,
 			FinalBoost.getExpBoost() + multiplier);
 
-		OfflinePlayer dude = jPlayer.getPlayer();
+//		OfflinePlayer dude = jPlayer.getPlayer();
 
 		// Calculate income
 
 		Double amount = 0D;
 		if (income != 0D) {
 		    amount = income + (income * FinalBoost.getMoneyBoost() / 100);
-		    if (Jobs.getGCManager().useMinimumOveralPayment && income > 0) {
-			double maxLimit = income * Jobs.getGCManager().MinimumOveralPaymentLimit;
+		    if (GconfigManager.useMinimumOveralPayment && income > 0) {
+			double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
 			if (amount < maxLimit) {
 			    amount = maxLimit;
 			}
@@ -891,8 +880,8 @@ public class Jobs {
 		Double pointAmount = 0D;
 		if (points != 0D) {
 		    pointAmount = points + (points * FinalBoost.getPointsBoost() / 100);
-		    if (Jobs.getGCManager().useMinimumOveralPoints && points > 0) {
-			double maxLimit = points * Jobs.getGCManager().MinimumOveralPaymentLimit;
+		    if (GconfigManager.useMinimumOveralPoints && points > 0) {
+			double maxLimit = points * GconfigManager.MinimumOveralPaymentLimit;
 			if (pointAmount < maxLimit) {
 			    pointAmount = maxLimit;
 			}
@@ -902,34 +891,34 @@ public class Jobs {
 		// Calculate exp
 		double expAmount = exp + (exp * FinalBoost.getExpBoost() / 100);
 
-		if (Jobs.getGCManager().useMinimumOveralPayment && exp > 0) {
-		    double maxLimit = exp * Jobs.getGCManager().MinimumOveralPaymentLimit;
+		if (GconfigManager.useMinimumOveralPayment && exp > 0) {
+		    double maxLimit = exp * GconfigManager.MinimumOveralPaymentLimit;
 		    if (exp < maxLimit) {
 			exp = maxLimit;
 		    }
 		}
 
-		if (!isUnderMoneyLimit(dude, amount)) {
+		if (!isUnderMoneyLimit(jPlayer, amount)) {
 		    amount = 0D;
-		    if (Jobs.getGCManager().MoneyStopExp)
+		    if (GconfigManager.MoneyStopExp)
 			expAmount = 0D;
-		    if (Jobs.getGCManager().MoneyStopPoint)
+		    if (GconfigManager.MoneyStopPoint)
 			pointAmount = 0D;
 		}
 
-		if (!isUnderExpLimit(dude, expAmount)) {
+		if (!isUnderExpLimit(jPlayer, expAmount)) {
 		    expAmount = 0D;
-		    if (Jobs.getGCManager().ExpStopMoney)
+		    if (GconfigManager.ExpStopMoney)
 			amount = 0D;
-		    if (Jobs.getGCManager().ExpStopPoint)
+		    if (GconfigManager.ExpStopPoint)
 			pointAmount = 0D;
 		}
 
-		if (!isUnderPointLimit(dude, pointAmount)) {
+		if (!isUnderPointLimit(jPlayer, pointAmount)) {
 		    pointAmount = 0D;
-		    if (Jobs.getGCManager().PointStopMoney)
+		    if (GconfigManager.PointStopMoney)
 			amount = 0D;
-		    if (Jobs.getGCManager().PointStopExp)
+		    if (GconfigManager.PointStopExp)
 			expAmount = 0D;
 		}
 
@@ -938,9 +927,9 @@ public class Jobs {
 
 		try {
 		    if (expAmount != 0D)
-			if (Jobs.getGCManager().BossBarEnabled && Jobs.getGCManager().BossBarShowOnEachAction) {
+			if (GconfigManager.BossBarEnabled && GconfigManager.BossBarShowOnEachAction) {
 			    Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
-			} else if (Jobs.getGCManager().BossBarEnabled && !Jobs.getGCManager().BossBarShowOnEachAction)
+			} else if (GconfigManager.BossBarEnabled && !GconfigManager.BossBarShowOnEachAction)
 			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Exception e) {
 		    Bukkit.getConsoleSender().sendMessage("[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
@@ -955,15 +944,16 @@ public class Jobs {
 		else
 		    expAmount = JobsExpGainEvent.getExp();
 
-		Jobs.getEconomy().pay(jPlayer, amount, pointAmount, expAmount);
+		economy.pay(jPlayer, amount, pointAmount, expAmount);
 		int oldLevel = prog.getLevel();
 
-		if (Jobs.getGCManager().LoggingUse)
-		    Jobs.getLoging().recordToLog(jPlayer, info, amount, expAmount);
+		if (GconfigManager.LoggingUse)
+		    loging.recordToLog(jPlayer, info, amount, expAmount);
 
 		if (prog.addExperience(expAmount))
-		    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
+		    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
 
+		FastPayment.clear();
 		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), amount, points, exp), prog.getJob()));
 	    }
 	}
@@ -980,16 +970,145 @@ public class Jobs {
 	else
 	    expAmount = JobsExpGainEvent.getExp();
 
-	Jobs.getEconomy().pay(jPlayer, payment.getAmount(), payment.getPoints(), expAmount);
+	economy.pay(jPlayer, payment.getAmount(), payment.getPoints(), expAmount);
 
 	JobProgression prog = jPlayer.getJobProgression(job);
 
 	int oldLevel = prog.getLevel();
 
-	if (Jobs.getGCManager().LoggingUse)
-	    Jobs.getLoging().recordToLog(jPlayer, info, payment.getAmount(), expAmount);
+	if (GconfigManager.LoggingUse)
+	    loging.recordToLog(jPlayer, info, payment.getAmount(), expAmount);
 
 	if (prog.addExperience(expAmount))
-	    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
+	    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
     }
+
+    public static boolean isUnderMoneyLimit(JobsPlayer jPlayer, Double amount) {
+
+	Player player = jPlayer.getPlayer();
+
+	if (player == null)
+	    return true;
+
+	if (amount == 0)
+	    return true;
+
+	String playername = player.getName();
+
+	if (!GconfigManager.MoneyLimitUse)
+	    return true;
+
+	if (!paymentLimit.containsKey(playername)) {
+	    PaymentData data = new PaymentData(System.currentTimeMillis(), amount, 0.0, 0.0, 0L, false);
+	    //data.AddNewAmount(amount);
+	    paymentLimit.put(playername, data);
+	} else {
+	    PaymentData data = paymentLimit.get(playername);
+	    if (data.IsReachedMoneyLimit(GconfigManager.MoneyTimeLimit, jPlayer.getMoneyLimit())) {
+		if (player.isOnline() && !data.Informed && !data.isReseted()) {
+		    player.sendMessage(lManager.getMessage("command.limit.output.reachedlimit"));
+		    player.sendMessage(lManager.getMessage("command.limit.output.reachedlimit2"));
+		    data.Setinformed();
+		}
+		if (data.IsAnnounceTime(GconfigManager.MoneyAnnouncmentDelay) && player.isOnline()) {
+		    String message = lManager.getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(GconfigManager.MoneyTimeLimit));
+		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(GconfigManager.MoneyTimeLimit)));
+		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(GconfigManager.MoneyTimeLimit)));
+		    Jobs.getActionBar().send((player), ChatColor.RED + message);
+		}
+		if (data.isReseted())
+		    data.setReseted(false);
+		return false;
+	    }
+
+	    data.AddAmount(amount);
+	    paymentLimit.put(playername, data);
+	}
+	return true;
+    }
+
+    public static boolean isUnderExpLimit(JobsPlayer jPlayer, Double amount) {
+	Player player = jPlayer.getPlayer();
+
+	if (player == null)
+	    return true;
+
+	if (amount == 0)
+	    return true;
+
+	String playername = player.getName();
+
+	if (!GconfigManager.ExpLimitUse)
+	    return true;
+
+	if (!ExpLimit.containsKey(playername)) {
+	    PaymentData data = new PaymentData(System.currentTimeMillis(), 0.0, 0.0, amount, 0L, false);
+	    //data.AddNewAmount(amount);
+	    ExpLimit.put(playername, data);
+	} else {
+	    PaymentData data = ExpLimit.get(playername);
+	    if (data.IsReachedExpLimit(GconfigManager.ExpTimeLimit, jPlayer.getExpLimit())) {
+		if (player.isOnline() && !data.Informed && !data.isReseted()) {
+		    player.sendMessage(lManager.getMessage("command.limit.output.reachedExplimit"));
+		    player.sendMessage(lManager.getMessage("command.limit.output.reachedExplimit2"));
+		    data.Setinformed();
+		}
+		if (data.IsAnnounceTime(GconfigManager.ExpAnnouncmentDelay) && player.isOnline()) {
+		    String message = lManager.getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(GconfigManager.ExpTimeLimit));
+		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(GconfigManager.ExpTimeLimit)));
+		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(GconfigManager.ExpTimeLimit)));
+		    Jobs.getActionBar().send((player), ChatColor.RED + message);
+		}
+		if (data.isReseted())
+		    data.setReseted(false);
+		return false;
+	    }
+	    data.AddExpAmount(amount);
+	    ExpLimit.put(playername, data);
+	}
+	return true;
+    }
+
+    public static boolean isUnderPointLimit(JobsPlayer jPlayer, Double amount) {
+	Player player = jPlayer.getPlayer();
+
+	if (player == null)
+	    return true;
+
+	if (amount == 0)
+	    return true;
+
+	String playername = player.getName();
+
+	if (!GconfigManager.PointLimitUse)
+	    return true;
+
+	if (!PointLimit.containsKey(playername)) {
+	    PaymentData data = new PaymentData(System.currentTimeMillis(), 0.0, amount, 0.0, 0L, false);
+	    //data.AddNewAmount(amount);
+	    PointLimit.put(playername, data);
+	} else {
+	    PaymentData data = PointLimit.get(playername);
+	    if (data.IsReachedPointLimit(GconfigManager.PointTimeLimit, jPlayer.getPointLimit())) {
+		if (player.isOnline() && !data.Informed && !data.isReseted()) {
+		    player.sendMessage(lManager.getMessage("command.limit.output.reachedPointlimit"));
+		    player.sendMessage(lManager.getMessage("command.limit.output.reachedPointlimit2"));
+		    data.Setinformed();
+		}
+		if (data.IsAnnounceTime(GconfigManager.PointAnnouncmentDelay) && player.isOnline()) {
+		    String message = lManager.getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(GconfigManager.PointTimeLimit));
+		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(GconfigManager.PointTimeLimit)));
+		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(GconfigManager.PointTimeLimit)));
+		    Jobs.getActionBar().send((player), ChatColor.RED + message);
+		}
+		if (data.isReseted())
+		    data.setReseted(false);
+		return false;
+	    }
+	    data.AddPoints(amount);
+	    PointLimit.put(playername, data);
+	}
+	return true;
+    }
+
 }

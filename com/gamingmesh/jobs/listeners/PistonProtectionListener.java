@@ -11,14 +11,13 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 
 public class PistonProtectionListener implements Listener {
 
     @SuppressWarnings("unused")
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public PistonProtectionListener(JobsPlugin plugin) {
+    public PistonProtectionListener(Jobs plugin) {
 	this.plugin = plugin;
     }
 

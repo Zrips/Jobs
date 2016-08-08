@@ -27,7 +27,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
@@ -38,13 +37,12 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 public class JobsCommands implements CommandExecutor {
     private static final String label = "jobs";
     private static final String packagePath = "com.gamingmesh.jobs.commands.list";
-    private static final List<String> hidenCommands = Arrays.asList();
+    private static final List<String> hidenCommands = new ArrayList<String>();
     Map<String, Integer> CommandList = new HashMap<String, Integer>();
-    final String baseCmd = "jobs";
 
-    protected JobsPlugin plugin;
+    protected Jobs plugin;
 
-    public JobsCommands(JobsPlugin plugin) {
+    public JobsCommands(Jobs plugin) {
 	this.plugin = plugin;
     }
 
@@ -106,10 +104,7 @@ public class JobsCommands implements CommandExecutor {
     }
 
     private static String[] reduceArgs(String[] args) {
-	if (args.length <= 1)
-	    return new String[0];
-
-	return Arrays.copyOfRange(args, 1, args.length);
+	return args.length <= 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length);
     }
 
     private static boolean hasCommandPermission(CommandSender sender, String cmd) {
@@ -188,11 +183,11 @@ public class JobsCommands implements CommandExecutor {
 	    sender.sendMessage(getUsage(one.getKey()) + " - " + Jobs.getLanguage().getMessage("command." + one.getKey() + ".help.info"));
 	}
 
-	String prevCmd = "/" + baseCmd + " ? " + (page - 1);
+	String prevCmd = "/" + label + " ? " + (page - 1);
 	String prev = "[\"\",{\"text\":\"" + Jobs.getLanguage().getMessage("command.help.output.prev") + "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\""
 	    + prevCmd
 	    + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + "<<<" + "\"}]}}}";
-	String nextCmd = "/" + baseCmd + " ? " + (page + 1);
+	String nextCmd = "/" + label + " ? " + (page + 1);
 	String next = " {\"text\":\"" + Jobs.getLanguage().getMessage("command.help.output.next") + "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + nextCmd
 	    + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + ">>>" + "\"}]}}}]";
 
@@ -201,10 +196,10 @@ public class JobsCommands implements CommandExecutor {
 	return true;
     }
 
-    public static List<String> getClassesFromPackage(String pckgname) throws ClassNotFoundException {
+    private static List<String> getClassesFromPackage(String pckgname) throws ClassNotFoundException {
 	List<String> result = new ArrayList<String>();
 	try {
-	    for (URL jarURL : ((URLClassLoader) JobsPlugin.class.getClassLoader()).getURLs()) {
+	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
 		try {
 		    result.addAll(getClassesInSamePackageFromJar(pckgname, jarURL.toURI().getPath()));
 		} catch (URISyntaxException e) {
@@ -287,9 +282,7 @@ public class JobsCommands implements CommandExecutor {
 	Class<?> nmsClass = null;
 	try {
 	    nmsClass = Class.forName(packagePath + "." + cmd.toLowerCase());
-	} catch (ClassNotFoundException e) {
-	} catch (IllegalArgumentException e) {
-	} catch (SecurityException e) {
+	} catch (ClassNotFoundException | IllegalArgumentException | SecurityException e) {
 	}
 	return nmsClass;
     }
@@ -302,13 +295,8 @@ public class JobsCommands implements CommandExecutor {
 	    if (Cmd.class.isAssignableFrom(nmsClass)) {
 		cmdClass = (Cmd) nmsClass.getConstructor().newInstance();
 	    }
-	} catch (ClassNotFoundException e) {
-	} catch (InstantiationException e) {
-	} catch (IllegalAccessException e) {
-	} catch (IllegalArgumentException e) {
-	} catch (InvocationTargetException e) {
-	} catch (NoSuchMethodException e) {
-	} catch (SecurityException e) {
+	} catch (ClassNotFoundException | InstantiationException | IllegalArgumentException | IllegalAccessException | NoSuchMethodException | InvocationTargetException
+	    | SecurityException e) {
 	}
 	return cmdClass;
     }

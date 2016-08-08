@@ -21,15 +21,14 @@ package com.gamingmesh.jobs.i18n;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.config.YmlMaker;
 
 public class Language {
-    public static FileConfiguration enlocale;
-    public static FileConfiguration customlocale;
-    private JobsPlugin plugin;
+    public FileConfiguration enlocale;
+    public FileConfiguration customlocale;
+    private Jobs plugin;
 
-    public Language(JobsPlugin plugin) {
+    public Language(Jobs plugin) {
 	this.plugin = plugin;
     }
 

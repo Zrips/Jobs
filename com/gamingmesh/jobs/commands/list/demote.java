@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
@@ -17,7 +16,7 @@ public class demote implements Cmd {
 
     @Override
     @JobCommand(1700)
-    public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
+    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length < 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "demote");
 	    return true;

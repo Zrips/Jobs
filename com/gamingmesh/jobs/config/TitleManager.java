@@ -10,7 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.stuff.ChatColor;
@@ -19,9 +18,9 @@ public class TitleManager {
 
     protected List<Title> titles = new ArrayList<Title>();
 
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public TitleManager(JobsPlugin plugin) {
+    public TitleManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 

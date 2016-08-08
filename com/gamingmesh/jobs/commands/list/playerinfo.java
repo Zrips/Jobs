@@ -5,7 +5,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
@@ -16,7 +15,7 @@ public class playerinfo implements Cmd {
 
     @Override
     @JobCommand(1300)
-    public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
+    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 2) {
 	    Jobs.getCommandManager().sendUsage(sender, "playerinfo");
 	    Jobs.getCommandManager().sendValidActions(sender);

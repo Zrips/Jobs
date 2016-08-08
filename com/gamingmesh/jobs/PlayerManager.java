@@ -60,9 +60,9 @@ public class PlayerManager {
     private PointsData PointsDatabase = new PointsData();
 
     private HashMap<String, PlayerInfo> PlayerMap = new HashMap<String, PlayerInfo>();
-    JobsPlugin plugin;
+    Jobs plugin;
 
-    public PlayerManager(JobsPlugin plugin) {
+    public PlayerManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 
@@ -166,8 +166,7 @@ public class PlayerManager {
 	 * 2) Perform save on all players on copied list.
 	 * 3) Garbage collect the real list to remove any offline players with saved data
 	 */
-	ArrayList<JobsPlayer> list = null;
-	list = new ArrayList<JobsPlayer>(this.players.values());
+	ArrayList<JobsPlayer> list = new ArrayList<JobsPlayer>(this.players.values());
 
 	for (JobsPlayer jPlayer : list) {
 	    jPlayer.save();
@@ -263,7 +262,7 @@ public class PlayerManager {
 	jPlayer.setPlayerUUID(UUID.fromString(info.getKey()));
 	jPlayer.setUserId(info.getValue().getID());
 
-	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getValue().getName(), jPlayer.getPlayerUUID());
+	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getValue());
 	for (JobsDAOData jobdata : list) {
 	    if (Jobs.getJob(jobdata.getJobName()) == null)
 		continue;
@@ -692,8 +691,8 @@ public class PlayerManager {
 	    }
 
 	    for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
-		if (oneItem.getenchants().containsKey(oneE.getKey())) {
-		    if (oneItem.getenchants().get(oneE.getKey()) < oneE.getValue()) {
+		if (oneItem.getEnchants().containsKey(oneE.getKey())) {
+		    if (oneItem.getEnchants().get(oneE.getKey()) < oneE.getValue()) {
 			continue main;
 		    }
 		} else

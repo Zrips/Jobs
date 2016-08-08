@@ -23,20 +23,20 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
 public class CustomKillInfo extends BaseActionInfo implements ActionInfo {
-	private String name;
+    private String name;
 
-	public CustomKillInfo(String name, ActionType type) {
-		super(type);
-		this.name = name;
-	}
+    public CustomKillInfo(String name, ActionType type) {
+	super(type);
+	this.name = name;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    @Override
+    public String getName() {
+	return name;
+    }
 
-	@Override
-	public String getNameWithSub() {
-		return name;
-	}
+    @Override
+    public String getNameWithSub() {
+	return name;
+    }
 }

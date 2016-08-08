@@ -15,16 +15,15 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.TopList;
 
 public class SignUtil {
 
     public SignInfo Signs = new SignInfo();
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public SignUtil(JobsPlugin plugin) {
+    public SignUtil(Jobs plugin) {
 	this.plugin = plugin;
     }
 

@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import com.gamingmesh.jobs.JobsPlugin;
+
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -16,9 +17,9 @@ public class RestrictedBlockManager {
     public ArrayList<String> restrictedBlocksTimer = new ArrayList<String>();
     public ArrayList<Integer> restrictedPlaceBlocksTimer = new ArrayList<Integer>();
 
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public RestrictedBlockManager(JobsPlugin plugin) {
+    public RestrictedBlockManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 

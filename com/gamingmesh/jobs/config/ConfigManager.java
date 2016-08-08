@@ -36,7 +36,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.DisplayMethod;
 import com.gamingmesh.jobs.container.Job;
@@ -50,9 +49,9 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class ConfigManager {
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public ConfigManager(JobsPlugin plugin) {
+    public ConfigManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 

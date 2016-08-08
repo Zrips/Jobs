@@ -13,16 +13,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.gamingmesh.jobs.JobsPlugin;
+import com.gamingmesh.jobs.Jobs;
 
 public class YmlMaker {
-    JobsPlugin Plugin;
+    Jobs Plugin;
     public String fileName;
     private JavaPlugin plugin;
     public File ConfigFile;
     private FileConfiguration Configuration;
 
-    public YmlMaker(JobsPlugin Plugin) {
+    public YmlMaker(Jobs Plugin) {
 	this.Plugin = Plugin;
     }
 

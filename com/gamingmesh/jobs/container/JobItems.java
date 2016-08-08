@@ -73,7 +73,7 @@ public class JobItems {
 	return this.lore;
     }
 
-    public HashMap<Enchantment, Integer> getenchants() {
+    public HashMap<Enchantment, Integer> getEnchants() {
 	return this.enchants;
     }
 

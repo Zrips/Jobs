@@ -60,7 +60,6 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.Job;
@@ -71,9 +70,9 @@ import com.gamingmesh.jobs.stuff.Debug;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public JobsListener(JobsPlugin plugin) {
+    public JobsListener(Jobs plugin) {
 	this.plugin = plugin;
     }
 

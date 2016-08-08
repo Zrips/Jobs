@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import com.gamingmesh.jobs.JobsPlugin;
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.RestrictedArea;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -19,9 +19,9 @@ public class RestrictedAreaManager {
 
     protected ArrayList<RestrictedArea> restrictedAreas = new ArrayList<RestrictedArea>();
 
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public RestrictedAreaManager(JobsPlugin plugin) {
+    public RestrictedAreaManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 

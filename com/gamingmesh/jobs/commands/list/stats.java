@@ -4,7 +4,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -15,7 +14,7 @@ public class stats implements Cmd {
 
     @Override
     @JobCommand(400)
-    public boolean perform(JobsPlugin plugin, final CommandSender sender, final String[] args) {
+    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {
 	    if (!sender.hasPermission("jobs.command.admin.stats")) {

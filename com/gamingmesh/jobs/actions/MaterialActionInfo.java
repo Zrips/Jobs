@@ -35,7 +35,7 @@ public abstract class MaterialActionInfo extends BaseActionInfo implements Actio
 
     @Override
     public String getName() {
-        return material.toString();
+        return material.name();
     }
 
     @Override

@@ -37,9 +37,9 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class PermissionHandler {
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public PermissionHandler(JobsPlugin plugin) {
+    public PermissionHandler(Jobs plugin) {
 	this.plugin = plugin;
     }
 
@@ -50,7 +50,7 @@ public class PermissionHandler {
 
 	Player player = jPlayer.getPlayer();
 	if (player == null)
-	    return;	
+	    return;
 
 	boolean changed = false;
 
@@ -72,7 +72,7 @@ public class PermissionHandler {
 		if (job != null) {
 		    for (JobPermission perm : job.getPermissions()) {
 			if (perm.getLevelRequirement() <= 0) {
-			    if (perm.getValue()) {
+			    if (perm.isValue()) {
 				permissions.put(perm.getNode(), true);
 			    } else {
 				/*
@@ -107,7 +107,7 @@ public class PermissionHandler {
 				    break;
 				}
 			    }
-			    if (found == false)
+			    if (!found)
 				ok = false;
 			}
 
@@ -140,7 +140,7 @@ public class PermissionHandler {
 			     * If the key exists, don't put a false node in
 			     * This is in case we already have a true node there
 			     */
-			    if (perm.getValue()) {
+			    if (perm.isValue()) {
 				permissions.put(perm.getNode(), true);
 			    } else {
 				if (!permissions.containsKey(perm.getNode())) {
@@ -171,7 +171,7 @@ public class PermissionHandler {
 				    break;
 				}
 			    }
-			    if (found == false)
+			    if (!found)
 				ok = false;
 			}
 			if (!ok)
@@ -209,7 +209,7 @@ public class PermissionHandler {
 	// find old attachment
 	PermissionAttachment attachment = null;
 	for (PermissionAttachmentInfo pai : player.getEffectivePermissions()) {
-	    if (pai.getAttachment() != null && pai.getAttachment().getPlugin() instanceof JobsPlugin) {
+	    if (pai.getAttachment() != null && pai.getAttachment().getPlugin() instanceof Jobs) {
 		attachment = pai.getAttachment();
 	    }
 	}

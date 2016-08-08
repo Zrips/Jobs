@@ -20,7 +20,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -30,11 +29,11 @@ import com.gamingmesh.jobs.container.ShopItem;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class ShopManager {
-    private JobsPlugin plugin;
+    private Jobs plugin;
     public List<ShopItem> list = new ArrayList<ShopItem>();
     public HashMap<String, Integer> GuiList = new HashMap<String, Integer>();
 
-    public ShopManager(JobsPlugin plugin) {
+    public ShopManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 
@@ -135,13 +134,13 @@ public class ShopManager {
 
 	    if (itemStack.getType() == Material.ENCHANTED_BOOK) {
 		EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) itemStack.getItemMeta();
-		for (Entry<Enchantment, Integer> oneEnch : one.getenchants().entrySet()) {
+		for (Entry<Enchantment, Integer> oneEnch : one.getEnchants().entrySet()) {
 		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
 		}
 		if (bookMeta != null)
 		    itemStack.setItemMeta(bookMeta);
 	    } else
-		for (Entry<Enchantment, Integer> oneEnch : one.getenchants().entrySet()) {
+		for (Entry<Enchantment, Integer> oneEnch : one.getEnchants().entrySet()) {
 		    itemStack.addUnsafeEnchantment(oneEnch.getKey(), oneEnch.getValue());
 		}
 

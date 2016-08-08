@@ -14,16 +14,15 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.BossBarInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class BossBarManager {
 
-    JobsPlugin plugin;
+    Jobs plugin;
 
-    public BossBarManager(JobsPlugin plugin) {
+    public BossBarManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 

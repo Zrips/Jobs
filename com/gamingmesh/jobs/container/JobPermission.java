@@ -32,7 +32,7 @@ public class JobPermission {
         return node;
     }
     
-    public boolean getValue() {
+    public boolean isValue() {
         return value;
     }
     

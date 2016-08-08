@@ -69,7 +69,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.actions.BlockActionInfo;
 import com.gamingmesh.jobs.actions.CustomKillInfo;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
@@ -87,7 +86,7 @@ import com.gamingmesh.jobs.stuff.Perm;
 import com.google.common.base.Objects;
 
 public class JobsPaymentListener implements Listener {
-    private JobsPlugin plugin;
+    private Jobs plugin;
     private final String furnaceOwnerMetadata = "jobsFurnaceOwner";
     public final static String brewingOwnerMetadata = "jobsBrewingOwner";
     private final String mobSpawnerMetadata = "jobsMobSpawner";
@@ -97,7 +96,7 @@ public class JobsPaymentListener implements Listener {
     public static final String GlobalMetadata = "GlobalTimer";
     public static final String CowMetadata = "CowTimer";
 
-    public JobsPaymentListener(JobsPlugin plugin) {
+    public JobsPaymentListener(Jobs plugin) {
 	this.plugin = plugin;
     }
 

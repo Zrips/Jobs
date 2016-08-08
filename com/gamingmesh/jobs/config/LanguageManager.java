@@ -8,14 +8,13 @@ import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.JobsPlugin;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.stuff.Debug;
 
 public class LanguageManager {
-    private JobsPlugin plugin;
+    private Jobs plugin;
 
-    public LanguageManager(JobsPlugin plugin) {
+    public LanguageManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 
