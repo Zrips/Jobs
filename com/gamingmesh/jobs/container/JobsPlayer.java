@@ -128,7 +128,7 @@ public class JobsPlayer {
      * @return the Multiplier
      */
     public double getVipSpawnerMultiplier() {
-	if (!this.OffPlayer.isOnline())
+	if (OffPlayer == null || !this.OffPlayer.isOnline())
 	    return 1.0;
 	if (VipSpawnerMultiplier < 0)
 	    updateVipSpawnerMultiplier();
@@ -152,10 +152,13 @@ public class JobsPlayer {
 
     public double getBoost(String JobName, BoostType type, boolean force) {
 
+	double Boost = 1.0;
+
+	if (this.OffPlayer == null)
+	    return Boost;
+
 	if (this.player == null)
 	    this.player = Bukkit.getPlayer(this.OffPlayer.getUniqueId());
-
-	double Boost = 1.0;
 
 	if (this.player == null)
 	    return Boost;
