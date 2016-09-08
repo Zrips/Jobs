@@ -834,22 +834,23 @@ public class Jobs extends JavaPlugin {
 		if (GconfigManager.addXpPlayer()) {
 		    Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
 		    if (player != null) {
-			/*
-			 * Minecraft experience is calculated in whole numbers only.
-			 * Calculate the fraction of an experience point and perform a dice roll.
-			 * That way jobs that give fractions of experience points will slowly give
-			 * experience in the aggregate
-			 */
-			int expInt = exp.intValue();
-			double remainder = exp.doubleValue() - expInt;
-			if (Math.abs(remainder) > Math.random()) {
-			    if (exp.doubleValue() < 0) {
-				expInt--;
-			    } else {
-				expInt++;
-			    }
-			}
-			player.giveExp(expInt);
+				/*
+				 * Minecraft experience is calculated in whole numbers only.
+				 * Calculate the fraction of an experience point and perform a dice roll.
+				 * That way jobs that give fractions of experience points will slowly give
+				 * experience in the aggregate
+				 */
+				int expInt = exp.intValue();
+				double remainder = exp.doubleValue() - expInt;
+				if (Math.abs(remainder) > Math.random()) {
+				    if (exp.doubleValue() < 0) {
+					expInt--;
+				    } else {
+					expInt++;
+				    }
+				}
+				if(expInt > 0)
+					player.giveExp(expInt);
 		    }
 		}
 
