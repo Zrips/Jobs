@@ -849,8 +849,10 @@ public class Jobs extends JavaPlugin {
 					expInt++;
 				    }
 				}
-				if(expInt > 0)
+				if(player.getExp() + expInt > 0)
 					player.giveExp(expInt);
+				else
+					player.setExp(0);
 		    }
 		}
 
