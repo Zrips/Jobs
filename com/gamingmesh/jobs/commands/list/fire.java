@@ -22,21 +22,19 @@ public class fire implements Cmd {
 	    return true;
 	}
 
-	@SuppressWarnings("deprecation")
-	OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
-	
-	if (jPlayer == null){
+
+	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
 	}
-	
+
 	if (!jPlayer.isInJob(job)) {
 	    String message = ChatColor.RED + Jobs.getLanguage().getMessage("command.fire.error.nojob", "%jobname%", job.getChatColor() + job.getName() + ChatColor.RED);
 	    sender.sendMessage(message);
@@ -44,7 +42,7 @@ public class fire implements Cmd {
 	}
 	try {
 	    Jobs.getPlayerManager().leaveJob(jPlayer, job);
-	    Player player = Bukkit.getServer().getPlayer(offlinePlayer.getUniqueId());
+	    Player player = jPlayer.getPlayer();
 	    if (player != null) {
 		String message = Jobs.getLanguage().getMessage("command.fire.output.target", "%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
 		player.sendMessage(message);

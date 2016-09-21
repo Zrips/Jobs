@@ -28,8 +28,6 @@ public class points implements Cmd {
 		return true;
 	    }
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-	    if (jPlayer == null)
-		jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(args[0]);
 	} else if (sender instanceof Player) {
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	}

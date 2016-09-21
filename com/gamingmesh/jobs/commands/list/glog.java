@@ -47,9 +47,6 @@ public class glog implements Cmd {
 			continue;
 
 		    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(name);
-		    if (JPlayer == null) {
-			JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(name);
-		    }
 
 		    if (JPlayer == null)
 			continue;

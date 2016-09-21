@@ -1,8 +1,6 @@
 
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,9 +21,12 @@ public class removexp implements Cmd {
 	    return true;
 	}
 
-	@SuppressWarnings("deprecation")
-	OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+
+	if (jPlayer == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
+	    return true;
+	}
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
@@ -47,7 +48,7 @@ public class removexp implements Cmd {
 	if (jPlayer.isInJob(job)) {
 	    Jobs.getPlayerManager().removeExperience(jPlayer, job, xpLost);
 
-	    Player player = Bukkit.getServer().getPlayer(offlinePlayer.getUniqueId());
+	    Player player = jPlayer.getPlayer();
 	    if (player != null) {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.removexp.output.target",
 		    "%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE,

@@ -1,7 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import com.gamingmesh.jobs.Jobs;
@@ -22,9 +20,7 @@ public class playerinfo implements Cmd {
 	    return true;
 	}
 
-	@SuppressWarnings("deprecation")
-	OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 
 	String jobName = args[1];
 	Job job = Jobs.getJob(jobName);

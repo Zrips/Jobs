@@ -118,9 +118,9 @@ public class JobsPlayer {
      * @return the player
      */
     public Player getPlayer() {
-	if (this.player != null)
-	    return this.player;
-	return Bukkit.getPlayer(this.playerUUID);
+	if (this.playerUUID != null)
+	    this.player = Bukkit.getPlayer(this.playerUUID);
+	return this.player;
     }
 
     /**

@@ -28,7 +28,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -141,14 +140,14 @@ public class PlayerManager {
      * @param playername
      */
     public void playerQuit(Player player) {
+	JobsPlayer jPlayer = this.players.remove(player.getName().toLowerCase());
+	playersCache.put(player.getName().toLowerCase(), jPlayer);
 	if (Jobs.getGCManager().saveOnDisconnect()) {
-	    JobsPlayer jPlayer = this.players.remove(player.getName().toLowerCase());
 	    if (jPlayer != null) {
 		jPlayer.save();
 		jPlayer.onDisconnect();
 	    }
 	} else {
-	    JobsPlayer jPlayer = this.players.get(player.getName().toLowerCase());
 	    if (jPlayer != null) {
 		jPlayer.onDisconnect();
 	    }
@@ -196,53 +195,10 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {
-	return this.playersCache.get(playerName.toLowerCase());
-    }
-
-    public JobsPlayer getJobsPlayerOffline(OfflinePlayer player) {
-	return getJobsPlayerOffline(player.getName());
-    }
-
-    /**
-     * Get the player job info for specific player
-     * @param player - the player who's job you're getting
-     * @return the player job info of the player
-     */
-    public JobsPlayer getJobsPlayerOffline(String playerName) {
-	JobsPlayer jPlayer = this.playersCache.get(playerName.toLowerCase());
+	JobsPlayer jPlayer = this.players.get(playerName.toLowerCase());
 	if (jPlayer != null)
 	    return jPlayer;
-
-	Entry<String, PlayerInfo> info = getPlayerInfoByName(playerName);
-
-	if (info == null)
-	    return null;
-
-	if (info.getValue().getName() == null)
-	    return null;
-
-	jPlayer = new JobsPlayer(info.getValue().getName(), null);
-	jPlayer.setPlayerUUID(UUID.fromString(info.getKey()));
-	jPlayer.setUserId(info.getValue().getID());
-
-	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getValue().getName(), UUID.fromString(info.getKey()));
-	for (JobsDAOData jobdata : list) {
-	    if (Jobs.getJob(jobdata.getJobName()) == null)
-		continue;
-	    Job job = Jobs.getJob(jobdata.getJobName());
-	    if (job == null)
-		continue;
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
-	    jPlayer.progression.add(jobProgression);
-	    jPlayer.reloadMaxExperience();
-	    jPlayer.reloadLimits();
-	}
-
-	Jobs.getJobsDAO().loadPoints(jPlayer);
-
-	jPlayer.loadLogFromDao();
-
-	return jPlayer;
+	return this.playersCache.get(playerName.toLowerCase());
     }
 
     /**

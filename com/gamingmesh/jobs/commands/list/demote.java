@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,22 +21,26 @@ public class demote implements Cmd {
 	    return true;
 	}
 
-	@SuppressWarnings("deprecation")
-	OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+
+	if (jPlayer == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
+	    return true;
+	}
+	
 	try {
 	    // check if player already has the job
 	    if (jPlayer.isInJob(job)) {
 		Integer levelsLost = Integer.parseInt(args[2]);
 		Jobs.getPlayerManager().demoteJob(jPlayer, job, levelsLost);
 
-		Player player = Bukkit.getServer().getPlayer(offlinePlayer.getUniqueId());
+		Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
 		if (player != null) {
 		    String message = Jobs.getLanguage().getMessage("command.demote.output.target",
 			"%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE,

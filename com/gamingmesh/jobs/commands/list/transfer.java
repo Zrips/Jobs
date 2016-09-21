@@ -1,8 +1,6 @@
 
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,10 +21,11 @@ public class transfer implements Cmd {
 	    return true;
 	}
 
-	@SuppressWarnings("deprecation")
-	OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
-
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+	if (jPlayer == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
+	    return true;
+	}
 	Job oldjob = Jobs.getJob(args[1]);
 	Job newjob = Jobs.getJob(args[2]);
 	if (oldjob == null) {
@@ -41,7 +40,7 @@ public class transfer implements Cmd {
 	    if (jPlayer.isInJob(oldjob) && !jPlayer.isInJob(newjob)) {
 		Jobs.getPlayerManager().transferJob(jPlayer, oldjob, newjob);
 
-		Player player = Bukkit.getServer().getPlayer(offlinePlayer.getUniqueId());
+		Player player = jPlayer.getPlayer();
 		if (player != null) {
 		    String message = Jobs.getLanguage().getMessage("command.transfer.output.target",
 			"%oldjobname%", oldjob.getChatColor() + oldjob.getName() + ChatColor.WHITE,

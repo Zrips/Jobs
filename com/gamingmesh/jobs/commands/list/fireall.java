@@ -2,8 +2,6 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,10 +22,11 @@ public class fireall implements Cmd {
 	    return true;
 	}
 
-	@SuppressWarnings("deprecation")
-	OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
-
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+	if (jPlayer == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
+	    return true;
+	}
 	List<JobProgression> jobs = jPlayer.getJobProgression();
 	if (jobs.size() == 0) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.fireall.error.nojobs"));
@@ -36,7 +35,7 @@ public class fireall implements Cmd {
 
 	try {
 	    Jobs.getPlayerManager().leaveAllJobs(jPlayer);
-	    Player player = Bukkit.getServer().getPlayer(offlinePlayer.getUniqueId());
+	    Player player = jPlayer.getPlayer();
 	    if (player != null) {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.fireall.output.target"));
 	    }

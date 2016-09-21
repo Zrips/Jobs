@@ -19,8 +19,6 @@ public class editpoints implements Cmd {
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[1]);
-	if (jPlayer == null)
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(args[1]);
 
 	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[1]));

@@ -1,7 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,13 +20,15 @@ public class promote implements Cmd {
 	    return true;
 	}
 
-	@SuppressWarnings("deprecation")
-	OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    return true;
+	}
+	if (jPlayer == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
 	}
 	try {
@@ -37,7 +37,7 @@ public class promote implements Cmd {
 		Integer levelsGained = Integer.parseInt(args[2]);
 		Jobs.getPlayerManager().promoteJob(jPlayer, job, levelsGained);
 
-		Player player = Bukkit.getServer().getPlayer(offlinePlayer.getUniqueId());
+		Player player = jPlayer.getPlayer();
 		if (player != null) {
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.promote.output.target",
 			"%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE,

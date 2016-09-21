@@ -2,8 +2,6 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,9 +22,7 @@ public class archive implements Cmd {
 		sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.permission"));
 		return true;
 	    }
-	    @SuppressWarnings("deprecation")
-	    OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[0]);
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(offlinePlayer);
+	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 
 	} else if (sender instanceof Player) {
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);

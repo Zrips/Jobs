@@ -40,8 +40,6 @@ public class log implements Cmd {
 		return true;
 	    }
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-	    if (JPlayer == null)
-		JPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(args[0]);
 	}
 
 	if (JPlayer == null) {
