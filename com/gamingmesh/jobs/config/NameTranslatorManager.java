@@ -176,8 +176,7 @@ public class NameTranslatorManager {
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker(plugin, "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
-	    if (langFile != null)
-		langFile.saveDefaultConfig();
+	    langFile.saveDefaultConfig();
 	}
 
 	languages.add("en");

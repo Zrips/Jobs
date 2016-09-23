@@ -289,7 +289,8 @@ public class PlayerManager {
 	if (!jPlayer.leaveJob(job))
 	    return false;
 
-	Jobs.getJobsDAO().quitJob(jPlayer, job);
+	if (!Jobs.getJobsDAO().quitJob(jPlayer, job))
+	    return false;
 	PerformCommands.PerformCommandsOnLeave(jPlayer, job);
 	Jobs.leaveSlot(job);
 
@@ -319,18 +320,20 @@ public class PlayerManager {
      * @param oldjob - the old job
      * @param newjob - the new job
      */
-    public void transferJob(JobsPlayer jPlayer, Job oldjob, Job newjob) {
+    public boolean transferJob(JobsPlayer jPlayer, Job oldjob, Job newjob) {
 //	synchronized (jPlayer.saveLock) {
 	if (!jPlayer.transferJob(oldjob, newjob))
-	    return;
+	    return false;
 
 	JobsDAO dao = Jobs.getJobsDAO();
-	dao.quitJob(jPlayer, oldjob);
+	if (!dao.quitJob(jPlayer, oldjob))
+	    return false;
 	oldjob.updateTotalPlayers();
 	dao.joinJob(jPlayer, newjob);
 	newjob.updateTotalPlayers();
 	jPlayer.save();
 //	}
+	return true;
     }
 
     /**

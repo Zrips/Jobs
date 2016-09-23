@@ -128,7 +128,7 @@ public class JobsPlayer {
      * @return the Multiplier
      */
     public double getVipSpawnerMultiplier() {
-	if (OffPlayer == null || !this.OffPlayer.isOnline())
+	if (this.getPlayer() == null || !this.getPlayer().isOnline())
 	    return 1.0;
 	if (VipSpawnerMultiplier < 0)
 	    updateVipSpawnerMultiplier();

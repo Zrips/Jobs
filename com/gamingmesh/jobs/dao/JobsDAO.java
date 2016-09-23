@@ -448,16 +448,49 @@ public abstract class JobsDAO {
 	}
     }
 
+    public void transferUsers() throws SQLException {
+	JobsConnection conns = this.getConnection();
+	if (conns == null)
+	    return;
+	PreparedStatement insert = null;
+	Statement statement = null;
+	try {
+	    statement = conns.createStatement();
+	    if (Jobs.getGCManager().storageMethod.equalsIgnoreCase("sqlite")) {
+		statement.executeUpdate("TRUNCATE `" + getPrefix() + "users`");
+	    } else {
+		statement.executeUpdate("DELETE from `" + getPrefix() + "users`");
+	    }
+
+	    insert = conns.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`id`, `player_uuid`, `username`) VALUES (?, ?, ?);");
+	    conns.setAutoCommit(false);
+
+	    for (Entry<String, JobsPlayer> oneUser : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
+		insert.setInt(1, oneUser.getValue().getUserId());
+		insert.setString(2, oneUser.getValue().getPlayerUUID().toString());
+		insert.setString(3, oneUser.getValue().getUserName());
+		insert.addBatch();
+	    }
+	    insert.executeBatch();
+	    conns.commit();
+	    conns.setAutoCommit(true);
+	} finally {
+	    close(statement);
+	    close(insert);
+	}
+    }
+
     /**
      * Quit a job (delete player-job entry from storage)
      * @param player - player that wishes to quit the job
      * @param job - job that the player wishes to quit
      */
-    public synchronized void quitJob(JobsPlayer jPlayer, Job job) {
+    public synchronized boolean quitJob(JobsPlayer jPlayer, Job job) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
-	    return;
+	    return false;
 	PreparedStatement prest = null;
+	boolean ok = true;
 	try {
 	    prest = conn.prepareStatement("DELETE FROM `" + prefix + "jobs` WHERE `userid` = ? AND `job` = ?;");
 	    prest.setInt(1, jPlayer.getUserId());
@@ -465,9 +498,11 @@ public abstract class JobsDAO {
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
+	    ok = false;
 	} finally {
 	    close(prest);
 	}
+	return ok;
     }
 
     /**

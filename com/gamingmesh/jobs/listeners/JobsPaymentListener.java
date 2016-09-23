@@ -567,7 +567,7 @@ public class JobsPaymentListener implements Listener {
 	ItemStack toCraft = event.getCurrentItem();
 	ItemStack toStore = event.getCursor();
 	// Make sure we are actually crafting anything
-	if (player != null && hasItems(toCraft))
+	if (hasItems(toCraft))
 	    if (event.isShiftClick())
 		schedulePostDetection(player, toCraft, jPlayer, resultStack, multiplier);
 	    else {
@@ -627,7 +627,7 @@ public class JobsPaymentListener implements Listener {
 	if (a == null)
 	    return b == null;
 	else if (b == null)
-	    return a == null;
+	    return false;
 	return a.getTypeId() == b.getTypeId() && a.getDurability() == b.getDurability() && Objects.equal(a.getData(), b.getData()) && Objects.equal(a.getEnchantments(), b
 	    .getEnchantments());
     }

@@ -42,8 +42,7 @@ public class LanguageManager {
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + lang + ".yml");
-	    if (langFile != null)
-		langFile.saveDefaultConfig();
+	    langFile.saveDefaultConfig();
 	}
 
 	Debug.D(System.currentTimeMillis() - time);

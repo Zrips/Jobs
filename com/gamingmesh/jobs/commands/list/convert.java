@@ -21,7 +21,7 @@ public class convert implements Cmd {
 
 	if (sender instanceof Player) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.fromconsole"));
-	    return false;
+	    return true;
 	}
 
 	if (args.length > 0) {
@@ -38,19 +38,21 @@ public class convert implements Cmd {
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    sender.sendMessage(ChatColor.RED + "Can't read data from data base, please send error log to dev's.");
-	    return false;
+	    return true;
 	}
+	
 	Jobs.ChangeDatabase();
-
+	
 	if (list == null & archivelist == null)
 	    return false;
 	try {
 	    Jobs.getJobsDAO().continueConvertions(list, "jobs");
 	    Jobs.getJobsDAO().continueConvertions(archivelist, "archive");
+	    Jobs.getJobsDAO().transferUsers();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    sender.sendMessage(ChatColor.RED + "Can't write data to data base, please send error log to dev's.");
-	    return false;
+	    return true;
 	}
 
 	try {

@@ -540,7 +540,7 @@ public class ConfigManager {
 				break;
 			    }
 
-			} else if (actionType == ActionType.ENCHANT && material == null) {
+			} else if (actionType == ActionType.ENCHANT) {
 			    Enchantment enchant = Enchantment.getByName(myKey);
 			    if (enchant != null)
 				id = enchant.getId();
