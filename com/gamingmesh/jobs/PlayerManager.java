@@ -117,14 +117,11 @@ public class PlayerManager {
      */
     public void playerJoin(Player player) {
 	JobsPlayer jPlayer = this.playersCache.get(player.getName().toLowerCase());
-	if (jPlayer == null) {
-	    Debug.D("not in cache");
+	if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
 	    jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 	    jPlayer.loadLogFromDao();
 	    this.playersCache.put(player.getName().toLowerCase(), jPlayer);
-	} else
-
-	    Debug.D("in cache");
+	}
 
 	this.players.put(player.getName().toLowerCase(), jPlayer);
 	jPlayer.setPlayer(player);

@@ -428,16 +428,16 @@ public class LanguageManager {
 	    c.get("signs.SpecialList.3.4", "&b************");
 	    c.get("signs.cantcreate", "&4You can't create this sign!");
 	    c.get("signs.cantdestroy", "&4You can't destroy this sign!");
-	    c.get("signs.topline", "&2[Jobs]");
-	    c.get("signs.secondline.join", "&2Join");
-	    c.get("signs.secondline.leave", "&4Leave");
-	    c.get("signs.secondline.toggle", "&2Toggle");
-	    c.get("signs.secondline.top", "&2Top");
-	    c.get("signs.secondline.browse", "&2Browse");
-	    c.get("signs.secondline.stats", "&2Stats");
-	    c.get("signs.secondline.limit", "&2Limit");
-	    c.get("signs.secondline.info", "&2Info");
-	    c.get("signs.secondline.archive", "&2Archive");
+	    c.get("signs.topline", "&0[Jobs]");
+	    c.get("signs.secondline.join", "&0Join");
+	    c.get("signs.secondline.leave", "&0Leave");
+	    c.get("signs.secondline.toggle", "&0Toggle");
+	    c.get("signs.secondline.top", "&0Top");
+	    c.get("signs.secondline.browse", "&0Browse");
+	    c.get("signs.secondline.stats", "&0Stats");
+	    c.get("signs.secondline.limit", "&0Limit");
+	    c.get("signs.secondline.info", "&0Info");
+	    c.get("signs.secondline.archive", "&0Archive");
 
 	    //c.get("scoreboard.clear", "&eIf you want to remove scoreboard, type &2/jobs top clear");
 	    c.get("scoreboard.topline", "&2Top &e%jobname%");
