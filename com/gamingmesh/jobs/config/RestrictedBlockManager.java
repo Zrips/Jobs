@@ -3,6 +3,8 @@ package com.gamingmesh.jobs.config;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,7 +16,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 public class RestrictedBlockManager {
 
     public ArrayList<String> restrictedBlocks = new ArrayList<String>();
-    public ArrayList<String> restrictedBlocksTimer = new ArrayList<String>();
+    public HashMap<Integer, Integer> restrictedBlocksTimer = new HashMap<Integer, Integer>();
     public ArrayList<Integer> restrictedPlaceBlocksTimer = new ArrayList<Integer>();
 
     private Jobs plugin;
@@ -53,39 +55,58 @@ public class RestrictedBlockManager {
 	restrictedBlocks = (ArrayList<String>) c.getC().getStringList("restrictedblocks");
 	c.copySetting("restrictedblocks");
 
-
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + restrictedBlocks.size() + " restricted blocks!");
-	
+
 	c.getW().addComment("blockstimer", "Block protected by timer in sec",
 	    "141-60 means that carrot can be harvested after 60 sec (remember to use id's from placed objects, not from your inventory)");
-	restrictedBlocksTimer.add("2-60");
-	restrictedBlocksTimer.add("3-60");
-	restrictedBlocksTimer.add("6-60");
-	restrictedBlocksTimer.add("12-60");
-	restrictedBlocksTimer.add("18-60");
-	restrictedBlocksTimer.add("31-60");
-	restrictedBlocksTimer.add("32-60");
-	restrictedBlocksTimer.add("37-60");
-	restrictedBlocksTimer.add("38-60");
-	restrictedBlocksTimer.add("39-60");
-	restrictedBlocksTimer.add("40-60");
-	restrictedBlocksTimer.add("55-60");
-	restrictedBlocksTimer.add("59-60");
-	restrictedBlocksTimer.add("80-60");
-	restrictedBlocksTimer.add("81-60");
-	restrictedBlocksTimer.add("83-60");
-	restrictedBlocksTimer.add("103-60");
-	restrictedBlocksTimer.add("106-60");
-	restrictedBlocksTimer.add("111-60");
-	restrictedBlocksTimer.add("141-60");
-	restrictedBlocksTimer.add("142-60");
-	restrictedBlocksTimer.add("161-60");
-	restrictedBlocksTimer.add("171-60");
-	restrictedBlocksTimer.add("175-60");
-	c.getC().addDefault("blockstimer", restrictedBlocksTimer);
-	restrictedBlocksTimer = (ArrayList<String>) c.getC().getStringList("blockstimer");
+	ArrayList<String> ls = new ArrayList<String>();
+	ls.addAll(Arrays.asList("2-60",
+	    "3-60",
+	    "6-60",
+	    "12-60",
+	    "18-60",
+	    "31-60",
+	    "32-60",
+	    "37-60",
+	    "38-60",
+	    "39-60",
+	    "40-60",
+	    "55-60",
+	    "59-60",
+	    "80-60",
+	    "81-60",
+	    "83-60",
+	    "103-60",
+	    "106-60",
+	    "111-60",
+	    "141-60",
+	    "142-60",
+	    "161-60",
+	    "171-60",
+	    "175-60"));
+	c.getC().addDefault("blockstimer", ls);
+	ls = (ArrayList<String>) c.getC().getStringList("blockstimer");
+
+	for (String one : ls) {
+
+	    if (!one.contains("-"))
+		continue;
+
+	    int id = 0;
+	    int timer = 0;
+
+	    try {
+		id = Integer.parseInt(one.split("-")[0]);
+		timer = Integer.parseInt(one.split("-")[1]);
+	    } catch (NumberFormatException e) {
+		continue;
+	    }
+	    restrictedBlocksTimer.put(id, timer);
+
+	}
+
 	c.copySetting("blockstimer");
-	
+
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + restrictedBlocksTimer.size() + " restricted blocks timers!");
 
 	c.getW().addComment("PlacedBlockTimer", "Block place protected by timer in sec", "For this to work CoreProtect plugin should be installed");

@@ -43,37 +43,17 @@ public class PistonProtectionListener implements Listener {
 
     @SuppressWarnings("deprecation")
     public boolean CheckVegy(Block block) {
-	for (String ConfigOneBlock : Jobs.getRestrictedBlockManager().restrictedBlocksTimer) {
-	    int ConfigPlacedBlockId = 0;
-	    try {
-		ConfigPlacedBlockId = Integer.parseInt(ConfigOneBlock.split("-")[0]);
-	    } catch (NumberFormatException e) {
-		continue;
-	    }
-	    if (block.getTypeId() == ConfigPlacedBlockId) {
-		return true;
-	    }
-	}
-	return false;
+	if (!Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(block.getTypeId()))
+	    return false;
+	return true;
     }
 
     @SuppressWarnings("deprecation")
     public boolean checkVegybreak(Block block, Player player) {
-	for (String ConfigOneBlock : Jobs.getRestrictedBlockManager().restrictedBlocksTimer) {
-	    int ConfigPlacedBlockId = 0;
-	    int ConfigPlacedBlockTimer = 0;
-	    try {
-		ConfigPlacedBlockId = Integer.parseInt(ConfigOneBlock.split("-")[0]);
-		ConfigPlacedBlockTimer = Integer.parseInt(ConfigOneBlock.split("-")[1]);
-	    } catch (NumberFormatException e) {
-		continue;
-	    }
-	    if (block.getTypeId() == ConfigPlacedBlockId) {
-		if (CheckVegyTimer(block, ConfigPlacedBlockTimer, player)) {
-		    return true;
-		}
-	    }
-	}
+	if (!Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(block.getTypeId()))
+	    return false;
+	if (CheckVegyTimer(block, Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId()), player))
+	    return true;
 	return false;
     }
 
