@@ -281,7 +281,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Global block timer
-	if (Jobs.getGCManager().useGlobalTimer) {
+	if (Jobs.getGCManager().useGlobalTimer && !Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(block.getTypeId())) {
 	    if (block.getState().hasMetadata(GlobalMetadata)) {
 		long currentTime = System.currentTimeMillis();
 		List<MetadataValue> meta = block.getState().getMetadata(GlobalMetadata);
