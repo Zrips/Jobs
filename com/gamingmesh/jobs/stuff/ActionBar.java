@@ -119,7 +119,7 @@ public class ActionBar {
 
     public void send(CommandSender receivingPacket, String msg) {
 	try {
-	    if (msg == null || nmsChatSerializer == null)
+	    if (msg == null || nmsChatSerializer == null || msg.isEmpty())
 		return;
 
 	    if (receivingPacket == null)
