@@ -71,6 +71,7 @@ import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -79,6 +80,7 @@ import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
 public class Jobs extends JavaPlugin {
 //    public static Jobs plugin = new Jobs();
+    private static String version = "";
     private static PlayerManager pManager = null;
     private static JobsCommands cManager = null;
     private static Language lManager = null;
@@ -629,7 +631,7 @@ public class Jobs extends JavaPlugin {
 
 	String packageName = getServer().getClass().getPackage().getName();
 	String[] packageSplit = packageName.split("\\.");
-	String version = packageSplit[packageSplit.length - 1].substring(0, packageSplit[packageSplit.length - 1].length() - 3);
+	version = packageSplit[packageSplit.length - 1].substring(0, packageSplit[packageSplit.length - 1].length() - 3);
 	try {
 	    Class<?> nmsClass;
 	    nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + version);
@@ -832,7 +834,7 @@ public class Jobs extends JavaPlugin {
 		    continue;
 
 		if (GconfigManager.addXpPlayer()) {
-		    Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
+		    Player player = jPlayer.getPlayer();
 		    if (player != null) {
 			/*
 			 * Minecraft experience is calculated in whole numbers only.
@@ -849,7 +851,13 @@ public class Jobs extends JavaPlugin {
 				expInt++;
 			    }
 			}
-			player.giveExp(expInt);
+
+			if (expInt < 0 && getPlayerExperience(player) < -expInt) {
+			    player.setLevel(0);
+			    player.setTotalExperience(0);
+			    player.setExp(0);
+			} else
+			    player.giveExp(expInt);
 		    }
 		}
 
@@ -956,6 +964,51 @@ public class Jobs extends JavaPlugin {
 		FastPayment.clear();
 		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), amount, points, exp), prog.getJob()));
 	    }
+	}
+    }
+
+    private static int getPlayerExperience(Player player) {
+	int bukkitExp = (ExpToLevel(player.getLevel()) + Math.round(deltaLevelToExp(player.getLevel()) * player.getExp()));
+	return bukkitExp;
+    }
+
+    // total xp calculation based by lvl
+    private static int ExpToLevel(int level) {
+	if (version.equals("1_7")) {
+	    if (level <= 16) {
+		return 17 * level;
+	    } else if (level <= 31) {
+		return ((3 * level * level) / 2) - ((59 * level) / 2) + 360;
+	    } else {
+		return ((7 * level * level) / 2) - ((303 * level) / 2) + 2220;
+	    }
+	}
+	if (level <= 16) {
+	    return (level * level) + (6 * level);
+	} else if (level <= 31) {
+	    return (int) ((2.5 * level * level) - (40.5 * level) + 360);
+	} else {
+	    return (int) ((4.5 * level * level) - (162.5 * level) + 2220);
+	}
+    }
+
+    // xp calculation for one current lvl
+    private static int deltaLevelToExp(int level) {
+	if (version.equals("1_7")) {
+	    if (level <= 16) {
+		return 17;
+	    } else if (level <= 31) {
+		return 3 * level - 31;
+	    } else {
+		return 7 * level - 155;
+	    }
+	}
+	if (level <= 16) {
+	    return 2 * level + 7;
+	} else if (level <= 31) {
+	    return 5 * level - 38;
+	} else {
+	    return 9 * level - 158;
 	}
     }
 
