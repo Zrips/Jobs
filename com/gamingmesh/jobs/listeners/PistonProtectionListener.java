@@ -1,9 +1,8 @@
 package com.gamingmesh.jobs.listeners;
 
-import java.util.List;
-
+import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,94 +20,71 @@ public class PistonProtectionListener implements Listener {
 	this.plugin = plugin;
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean CheckBlock(Block block) {
-	for (String BlockId : Jobs.getRestrictedBlockManager().restrictedBlocks) {
-	    if (BlockId.equalsIgnoreCase(String.valueOf(block.getTypeId()))) {
-		return true;
-	    }
-	}
-	return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean CheckPlaceBlock(Block block) {
-	for (int BlockId : Jobs.getRestrictedBlockManager().restrictedPlaceBlocksTimer) {
-	    if (BlockId == block.getTypeId()) {
-		return true;
-	    }
-	}
-	return false;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean CheckVegy(Block block) {
-	if (!Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(block.getTypeId()))
-	    return false;
-	return true;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean checkVegybreak(Block block, Player player) {
-	if (!Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(block.getTypeId()))
-	    return false;
-	if (CheckVegyTimer(block, Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId()), player))
-	    return true;
-	return false;
-    }
-
-    public boolean CheckVegyTimer(Block block, int time, Player player) {
-	long currentTime = System.currentTimeMillis();
-	if (!block.hasMetadata(JobsPaymentListener.VegyMetadata))
-	    return false;
-	long BlockTime = block.getMetadata(JobsPaymentListener.VegyMetadata).get(0).asLong();
-
-	if (currentTime >= BlockTime + time * 1000) {
-	    return false;
-	}
-
-	int sec = Math.round((((BlockTime + time * 1000) - currentTime)) / 1000);
-
-	Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
-	return true;
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void OnBlockMove(BlockPistonExtendEvent event) {
+
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 	if (event.isCancelled())
 	    return;
 
-	if (!Jobs.getGCManager().useBlockPiston)
+	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
 
-	List<Block> block = event.getBlocks();
-	for (Block OneBlock : block) {
-	    if (CheckBlock(OneBlock)) {
-		event.setCancelled(true);
-		break;
+	BlockFace dir = event.getDirection();
+
+	int x = dir.getModX();
+	int y = dir.getModY();
+	int z = dir.getModZ();
+	for (Block one : event.getBlocks()) {
+
+	    Location oldLoc = one.getLocation();
+	    Location newLoc = oldLoc.clone().add(x, y, z);
+
+	    Long bp = Jobs.getBpManager().getTime(oldLoc);
+	    if (bp != null) {
+		Jobs.getBpManager().add(newLoc, bp);
+	    } else {
+		Integer cd = Jobs.getBpManager().getBlockDelayTime(one);
+		if (cd != null)
+		    Jobs.getBpManager().add(newLoc, System.currentTimeMillis() + (cd * 1000));
+		else if (Jobs.getGCManager().useGlobalTimer)
+		    Jobs.getBpManager().add(newLoc, System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
 	    }
 	}
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void OnBlockRetractMove(BlockPistonRetractEvent event) {
+
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 	if (event.isCancelled())
 	    return;
 
-	if (!Jobs.getGCManager().useBlockPiston)
+	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
 
-	List<Block> block = Jobs.getNms().getPistonRetractBlocks(event);
-	for (Block OneBlock : block) {
-	    if (CheckBlock(OneBlock)) {
-		event.setCancelled(true);
-		break;
+	BlockFace dir = event.getDirection();
+
+	int x = dir.getModX();
+	int y = dir.getModY();
+	int z = dir.getModZ();
+
+	for (Block one : Jobs.getNms().getPistonRetractBlocks(event)) {
+	    Location oldLoc = one.getLocation();
+	    Location newLoc = oldLoc.clone().add(x, y, z);
+	    Long bp = Jobs.getBpManager().getTime(oldLoc);
+	    if (bp != null) {
+		Jobs.getBpManager().add(newLoc, bp);
+	    } else {
+		Integer cd = Jobs.getBpManager().getBlockDelayTime(one);
+		if (cd != null)
+		    Jobs.getBpManager().add(newLoc, System.currentTimeMillis() + (cd * 1000));
+		else if (Jobs.getGCManager().useGlobalTimer)
+		    Jobs.getBpManager().add(newLoc, System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
 	    }
 	}
     }

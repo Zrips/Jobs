@@ -66,8 +66,6 @@ public class McMMOlistener implements Listener {
 	    InfoMap = map.get(event.getPlayer().getName());
 	InfoMap.put(event.getAbility(), System.currentTimeMillis() + (event.getAbility().getMaxLength() * 1000));
 	map.put(event.getPlayer().getName(), InfoMap);
-//	Debug.D("rec 1 " + map.size() + "  " + event.getPlayer().getName());
-//	Debug.D(map.containsKey(event.getPlayer().getName()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

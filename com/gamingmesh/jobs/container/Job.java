@@ -122,8 +122,8 @@ public class Job {
 	this.PointBoost = Point;
     }
     
-    public boolean same(Job job) {
-	return this == job;
+    public boolean isSame(Job job) {
+	return this.equals(job);
     }
     
     public double getPointBoost() {

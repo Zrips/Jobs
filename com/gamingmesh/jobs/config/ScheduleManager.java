@@ -222,10 +222,8 @@ public class ScheduleManager {
 
 	    sched.setExpBoost(path.getDouble("Exp"));
 	    sched.setMoneyBoost(path.getDouble("Money"));
-
 	    Jobs.getGCManager().BoostSchedule.add(sched);
-
-	    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");
 	}
+	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");
     }
 }

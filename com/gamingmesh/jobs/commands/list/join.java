@@ -10,8 +10,6 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
-
 public class join implements Cmd {
 
     @Override
@@ -71,7 +69,6 @@ public class join implements Cmd {
 	    return true;
 	}
 
-	Debug.D("s");
 	if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
 	    String message = ChatColor.RED + Jobs.getLanguage().getMessage("command.join.error.fullslots");
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.RED);
@@ -81,9 +78,6 @@ public class join implements Cmd {
 
 	int confMaxJobs = Jobs.getGCManager().getMaxJobs();
 	short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
-	Debug.D(confMaxJobs > 0);
-	Debug.D(PlayerMaxJobs >= confMaxJobs);
-	Debug.D(!Jobs.getPlayerManager().getJobsLimit(pSender, PlayerMaxJobs));
 	if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(pSender, PlayerMaxJobs)) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
 	    return true;

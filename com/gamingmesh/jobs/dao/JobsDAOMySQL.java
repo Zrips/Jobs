@@ -117,6 +117,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	createDefaultPointsBase();
 	createDefaultExploreBase();
 	createDefaultUsersBase();
+	createDefaultBlockProtection();
     }
 
     @Override
@@ -643,7 +644,7 @@ public class JobsDAOMySQL extends JobsDAO {
 		prestUsersT = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
 		res4 = prestUsersT.executeQuery();
 		while (res4.next()) {
-		    tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id")));
+		    tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id"), System.currentTimeMillis()));
 		}
 	    } catch (Exception e) {
 		e.printStackTrace();
@@ -710,6 +711,64 @@ public class JobsDAOMySQL extends JobsDAO {
 	}
     }
 
+    @Override
+    protected synchronized void checkUpdate10() {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	int rows = 0;
+	try {
+	    // Check for jobs table
+	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
+	    prest.setString(1, database);
+	    prest.setString(2, getPrefix() + "blocks");
+	    res = prest.executeQuery();
+	    if (res.next()) {
+		rows = res.getInt(1);
+	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+
+	if (rows == 0)
+	    createDefaultBlockProtection();
+    }
+
+    @Override
+    protected synchronized void checkUpdate11() {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+
+	try {
+	    executeSQL("ALTER TABLE `" + getPrefix() + "users` ADD COLUMN `seen` bigint;");
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    return;
+	} finally {
+	}
+	
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "users` SET `seen` = ?;");
+	    prest.setLong(1, System.currentTimeMillis());
+	    prest.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+    }
+
     private boolean createDefaultExploreBase() {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
@@ -765,7 +824,17 @@ public class JobsDAOMySQL extends JobsDAO {
     private boolean createDefaultUsersBase() {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
-		+ "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
+		+ "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `seen` bigint);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultBlockProtection() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "blocks` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `world` varchar(36) NOT NULL, `x` int, `y` int, `z` int, `recorded` bigint, `resets` bigint);");
 	} catch (SQLException e) {
 	    return false;
 	}

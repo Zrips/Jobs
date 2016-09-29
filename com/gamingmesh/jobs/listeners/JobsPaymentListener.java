@@ -77,6 +77,7 @@ import com.gamingmesh.jobs.actions.ExploreActionInfo;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -254,17 +255,6 @@ public class JobsPaymentListener implements Listener {
 	if (block.getType() == Material.FURNACE && block.hasMetadata(this.furnaceOwnerMetadata))
 	    block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
 
-	if (Jobs.getGCManager().useBlockProtection) {
-	    if (block.getState().hasMetadata(BlockMetadata))
-		return;
-	    if (Jobs.getPistonProtectionListener().CheckBlock(block))
-		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(this.plugin, true));
-	}
-
-	if (Jobs.getGCManager().useBlockTimer)
-	    if (Jobs.getPistonProtectionListener().checkVegybreak(block, event.getPlayer()))
-		return;
-
 	// make sure plugin is enabled
 	if (!this.plugin.isEnabled())
 	    return;
@@ -279,22 +269,6 @@ public class JobsPaymentListener implements Listener {
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
-
-	// Global block timer
-	if (Jobs.getGCManager().useGlobalTimer && !Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(block.getTypeId())) {
-	    if (block.getState().hasMetadata(GlobalMetadata)) {
-		long currentTime = System.currentTimeMillis();
-		List<MetadataValue> meta = block.getState().getMetadata(GlobalMetadata);
-		if (meta.size() > 0) {
-		    long BlockTime = meta.get(0).asLong();
-		    if (currentTime < BlockTime + Jobs.getGCManager().globalblocktimer * 1000) {
-			int sec = Math.round((((BlockTime + Jobs.getGCManager().globalblocktimer * 1000) - currentTime)) / 1000);
-			Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
-			return;
-		    }
-		}
-	    }
-	}
 
 	FastPayment fp = Jobs.FastPayment.get(player.getName());
 	if (fp != null) {
@@ -316,18 +290,16 @@ public class JobsPaymentListener implements Listener {
 
 	// Protection for block break with silktouch
 	if (Jobs.getGCManager().useSilkTouchProtection && item != null)
-	    if (Jobs.getPistonProtectionListener().CheckBlock(block))
-		for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet())
-		    if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH"))
-			return;
+	    for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet())
+		if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH"))
+		    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
-
-	Jobs.action(jPlayer, bInfo, multiplier);
+	Jobs.action(jPlayer, bInfo, multiplier, block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -361,32 +333,16 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	// Block place/break protection
 	if (Jobs.getGCManager().useBlockProtection) {
-	    if (block.getState().hasMetadata(BlockMetadata))
-		return;
-	    if (Jobs.getPistonProtectionListener().CheckBlock(block))
-		block.getState().setMetadata(BlockMetadata, new FixedMetadataValue(this.plugin, true));
-	}
-
-	if (Jobs.getGCManager().WaterBlockBreake)
-	    block.getState().setMetadata(PlacedBlockMetadata, new FixedMetadataValue(this.plugin, true));
-
-	if (Jobs.getGCManager().useBlockTimer)
-	    if (Jobs.getPistonProtectionListener().CheckVegy(block)) {
-		long time = System.currentTimeMillis();
-		block.setMetadata(VegyMetadata, new FixedMetadataValue(this.plugin, time));
-	    }
-
-	if (Jobs.getGCManager().useGlobalTimer) {
-	    long time = System.currentTimeMillis();
-	    block.setMetadata(GlobalMetadata, new FixedMetadataValue(this.plugin, time));
+	    BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
+	    if (bp == null)
+		Jobs.getBpManager().add(block, Jobs.getBpManager().getBlockDelayTime(block), false);
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.PLACE), 0.0);
+	Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.PLACE), 0.0, block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

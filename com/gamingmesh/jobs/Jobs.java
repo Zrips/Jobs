@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +39,7 @@ import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
+import com.gamingmesh.jobs.config.BlockProtectionManager;
 import com.gamingmesh.jobs.config.BossBarManager;
 import com.gamingmesh.jobs.config.ConfigManager;
 import com.gamingmesh.jobs.config.ExploreManager;
@@ -52,7 +54,10 @@ import com.gamingmesh.jobs.config.ShopManager;
 import com.gamingmesh.jobs.config.TitleManager;
 import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.ActionInfo;
+import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.BoostMultiplier;
+import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -71,7 +76,6 @@ import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -97,6 +101,7 @@ public class Jobs extends JavaPlugin {
     private static BossBarManager BBManager;
     private static ShopManager shopManager;
     private static Loging loging;
+    private static BlockProtectionManager BpManager = null;
 
     private static PistonProtectionListener PistonProtectionListener = null;
     private static McMMOlistener McMMOlistener = null;
@@ -162,6 +167,14 @@ public class Jobs extends JavaPlugin {
 
     public static Loging getLoging() {
 	return loging;
+    }
+
+    public void setBpManager() {
+	BpManager = new BlockProtectionManager();
+    }
+
+    public static BlockProtectionManager getBpManager() {
+	return BpManager;
     }
 
     public static void setShopManager(Jobs plugin) {
@@ -677,6 +690,7 @@ public class Jobs extends JavaPlugin {
 	    setGCManager();
 	    setConfigManager();
 	    setCommandManager();
+	    setBpManager();
 
 	    getCommand("jobs").setExecutor(cManager);
 	    this.getCommand("jobs").setTabCompleter(new TabComplete());
@@ -709,12 +723,13 @@ public class Jobs extends JavaPlugin {
 
 	    scheduleManager.DateUpdater();
 
+	    dao.loadBlockProtection();
+	    dao.loadExplore();
+
 	    String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Plugin has been enabled succesfully.");
 	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	    console.sendMessage(message);
 	    lManager.reload();
-
-	    dao.loadExplore();
 
 	    cManager.fillCommands();
 	} catch (Exception e) {
@@ -729,6 +744,7 @@ public class Jobs extends JavaPlugin {
 	GUIManager.CloseInventories();
 	shopManager.CloseInventories();
 	dao.saveExplore();
+	dao.saveBlockProtection();
 	Jobs.shutdown();
 	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Plugin has been disabled succesfully.");
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
@@ -744,6 +760,10 @@ public class Jobs extends JavaPlugin {
      * @param multiplier - the payment/xp multiplier
      */
     public static void action(JobsPlayer jPlayer, ActionInfo info, double multiplier) {
+	action(jPlayer, info, multiplier, null);
+    }
+
+    public static void action(JobsPlayer jPlayer, ActionInfo info, double multiplier, Block block) {
 
 	if (jPlayer == null)
 	    return;
@@ -766,7 +786,6 @@ public class Jobs extends JavaPlugin {
 		if (income != 0D || points != 0D) {
 
 //		    jPlayer
-
 		    BoostMultiplier FinalBoost = pManager.getFinalBonus(jPlayer, Jobs.getNoneJob());
 
 		    // Calculate income
@@ -806,8 +825,15 @@ public class Jobs extends JavaPlugin {
 			if (GconfigManager.PointStopMoney)
 			    amount = 0D;
 		    }
+
+		    if (!isBpOk(jPlayer, info, block))
+			return;
+
 		    if (amount == 0D && pointAmount == 0D)
 			return;
+
+		    if (info.getType() == ActionType.BREAK && block != null)
+			Jobs.getBpManager().remove(block);
 
 		    if (pointAmount != 0D)
 			jPlayer.setSaved(false);
@@ -930,6 +956,9 @@ public class Jobs extends JavaPlugin {
 			expAmount = 0D;
 		}
 
+		if (!isBpOk(jPlayer, info, block))
+		    return;
+
 		if (amount == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
 
@@ -965,6 +994,55 @@ public class Jobs extends JavaPlugin {
 		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), amount, points, exp), prog.getJob()));
 	    }
 	}
+    }
+
+    private static boolean isBpOk(JobsPlayer jPlayer, ActionInfo info, Block block) {
+	if (block != null && Jobs.getGCManager().useBlockProtection) {
+	    if (info.getType() == ActionType.BREAK) {
+		BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
+
+		if (bp != null) {
+		    Long time = bp.getTime();
+		    if (time == -1)
+			return false;
+		    Integer cd = Jobs.getBpManager().getBlockDelayTime(block);
+
+		    if (time > System.currentTimeMillis() && bp.isPaid() && bp.getAction() != DBAction.DELETE) {
+			int sec = Math.round((time - System.currentTimeMillis()) / 1000);
+			Jobs.getActionBar().send(jPlayer.getPlayer(), Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+			return false;
+		    }
+
+		    Jobs.getBpManager().add(block, cd);
+		    if (cd == null) {
+			if (Jobs.getGCManager().useGlobalTimer) {
+			    Jobs.getBpManager().add(block, System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
+			}
+		    }
+		} else {
+		    if (Jobs.getGCManager().useGlobalTimer) {
+			Jobs.getBpManager().add(block, System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
+		    }
+		}
+	    } else if (info.getType() == ActionType.PLACE) {
+		BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
+		if (bp != null) {
+		    Long time = bp.getTime();
+		    if (time != -1) {
+			if (time > System.currentTimeMillis() && bp.isPaid() && bp.getAction() != DBAction.DELETE) {
+			    int sec = Math.round((time - System.currentTimeMillis()) / 1000);
+			    Jobs.getActionBar().send(jPlayer.getPlayer(), Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+			    return false;
+			}
+		    } else if (bp.isPaid()) {
+			if (bp.getTime() == -1 && Jobs.getBpManager().getBlockDelayTime(block) != null && Jobs.getBpManager().getBlockDelayTime(block) == -1)
+			    return false;
+		    }
+		} else
+		    Jobs.getBpManager().add(block, Jobs.getBpManager().getBlockDelayTime(block));
+	    }
+	}
+	return true;
     }
 
     private static int getPlayerExperience(Player player) {
@@ -1016,23 +1094,24 @@ public class Jobs extends JavaPlugin {
 	// JobsPayment event
 	JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, payment.getExp());
 	Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
-	double expAmount;
 	// If event is canceled, don't do anything
 	if (JobsExpGainEvent.isCancelled())
-	    expAmount = 0D;
-	else
-	    expAmount = JobsExpGainEvent.getExp();
+	    return;
 
-	economy.pay(jPlayer, payment.getAmount(), payment.getPoints(), expAmount);
+	isUnderMoneyLimit(jPlayer, payment.getAmount());
+	isUnderExpLimit(jPlayer, payment.getExp());
+	isUnderPointLimit(jPlayer, payment.getPoints());
+
+	economy.pay(jPlayer, payment.getAmount(), payment.getPoints(), payment.getExp());
 
 	JobProgression prog = jPlayer.getJobProgression(job);
 
 	int oldLevel = prog.getLevel();
 
 	if (GconfigManager.LoggingUse)
-	    loging.recordToLog(jPlayer, info, payment.getAmount(), expAmount);
+	    loging.recordToLog(jPlayer, info, payment.getAmount(), payment.getExp());
 
-	if (prog.addExperience(expAmount))
+	if (prog.addExperience(payment.getExp()))
 	    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
     }
 

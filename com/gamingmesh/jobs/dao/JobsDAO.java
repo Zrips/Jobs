@@ -30,12 +30,17 @@ import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.Convert;
+import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.Job;
@@ -93,12 +98,17 @@ public abstract class JobsDAO {
 		// creating explore database
 		checkUpdate8();
 		checkUpdate9();
+		// creating block protection database
+		checkUpdate10();
+		if (version <= 10)
+		    checkUpdate11();
 	    }
 
-	    version = 9;
+	    version = 11;
 	    updateSchemaVersion(version);
 	} finally {
 	}
+
 	loadAllSavedJobs();
     }
 
@@ -119,6 +129,10 @@ public abstract class JobsDAO {
     protected abstract void checkUpdate8() throws SQLException;
 
     protected abstract void checkUpdate9() throws SQLException;
+
+    protected abstract void checkUpdate10() throws SQLException;
+
+    protected abstract void checkUpdate11() throws SQLException;
 
     protected abstract boolean createDefaultLogBase();
 
@@ -191,6 +205,43 @@ public abstract class JobsDAO {
 	return new ArrayList<JobsDAOData>();
     }
 
+    public void cleanUsers() {
+	if (!Jobs.getGCManager().DBCleaningUsersUse)
+	    return;
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	long mark = System.currentTimeMillis() - (Jobs.getGCManager().DBCleaningUsersDays * 24 * 60 * 60 * 1000);
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("DELETE FROM `" + prefix + "users` WHERE `seen` < ?;");
+	    prest.setLong(1, mark);
+	    prest.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+    }
+
+    public void cleanJobs() {
+	if (!Jobs.getGCManager().DBCleaningJobsUse)
+	    return;
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("DELETE FROM `" + prefix + "jobs` WHERE `level` <= ?;");
+	    prest.setInt(1, Jobs.getGCManager().DBCleaningJobsLvl);
+	    prest.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+    }
+
     private void loadAllSavedJobs() {
 	JobsConnection conn = getConnection();
 	if (conn == null)
@@ -233,9 +284,10 @@ public abstract class JobsDAO {
 	    return;
 	PreparedStatement prestt = null;
 	try {
-	    prestt = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`) VALUES (?, ?);");
+	    prestt = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`, `seen`) VALUES (?, ?, ?);");
 	    prestt.setString(1, uuid.toString());
 	    prestt.setString(2, playerName);
+	    prestt.setLong(3, System.currentTimeMillis());
 	    prestt.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -250,7 +302,7 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 	    res.next();
 	    int id = res.getInt("id");
-	    Jobs.getPlayerManager().getPlayerMap().put(uuid.toString(), new PlayerInfo(playerName, id));
+	    Jobs.getPlayerManager().getPlayerMap().put(uuid.toString(), new PlayerInfo(playerName, id, System.currentTimeMillis()));
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -462,13 +514,14 @@ public abstract class JobsDAO {
 		statement.executeUpdate("DELETE from `" + getPrefix() + "users`");
 	    }
 
-	    insert = conns.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`id`, `player_uuid`, `username`) VALUES (?, ?, ?);");
+	    insert = conns.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`id`, `player_uuid`, `username`, `seen`) VALUES (?, ?, ?, ?);");
 	    conns.setAutoCommit(false);
 
 	    for (Entry<String, JobsPlayer> oneUser : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
 		insert.setInt(1, oneUser.getValue().getUserId());
 		insert.setString(2, oneUser.getValue().getPlayerUUID().toString());
 		insert.setString(3, oneUser.getValue().getUserName());
+		insert.setLong(4, oneUser.getValue().getSeen());
 		insert.addBatch();
 	    }
 	    insert.executeBatch();
@@ -686,7 +739,7 @@ public abstract class JobsDAO {
 	    prest.setString(1, uuid.toString());
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		pInfo = new PlayerInfo(res.getString("username"), res.getInt("id"));
+		pInfo = new PlayerInfo(res.getString("username"), res.getInt("id"), res.getLong("seen"));
 		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), pInfo);
 	    }
 	} catch (SQLException e) {
@@ -709,7 +762,8 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT *  FROM `" + prefix + "users`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id")));
+		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id"), res.getLong(
+		    "seen")));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -728,8 +782,6 @@ public abstract class JobsDAO {
 //	synchronized (jPlayer.saveLock) {
 	jPlayer.progression.clear();
 	for (JobsDAOData jobdata : list) {
-	    if (Jobs.getJob(jobdata.getJobName()) == null)
-		continue;
 	    // add the job
 	    Job job = Jobs.getJob(jobdata.getJobName());
 	    if (job == null)
@@ -761,7 +813,8 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT *  FROM `" + prefix + "users`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id")));
+		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id"), res.getLong(
+		    "seen")));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -813,6 +866,25 @@ public abstract class JobsDAO {
 		prest.setString(4, progression.getJob().getName());
 		prest.execute();
 	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+	updateSeen(player);
+    }
+
+    public void updateSeen(JobsPlayer player) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("UPDATE `" + prefix
+		+ "users` SET `seen` = ? WHERE `id` = ?;");
+	    prest.setLong(1, System.currentTimeMillis());
+	    prest.setInt(2, player.getUserId());
+	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -919,6 +991,10 @@ public abstract class JobsDAO {
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
+	    close(prest1);
+	    close(prest2);
+	    this.dropDataBase("log");
+	    this.createDefaultLogBase();
 	} finally {
 	    close(prest1);
 	    close(prest2);
@@ -949,6 +1025,189 @@ public abstract class JobsDAO {
 	    close(prest);
 	    this.dropDataBase("log");
 	    this.createDefaultLogBase();
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+    }
+
+    /**
+     * Save block protection information
+     * @param jobBlockProtection - the information getting saved
+     */
+    public void saveBlockProtection() {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement insert = null;
+	PreparedStatement update = null;
+	PreparedStatement delete = null;
+	try {
+
+	    insert = conn.prepareStatement("INSERT INTO `" + prefix + "blocks` (`world`, `x`, `y`, `z`, `recorded`, `resets`) VALUES (?, ?, ?, ?, ?, ?);");
+	    update = conn.prepareStatement("UPDATE `" + prefix + "blocks` SET `recorded` = ?, `resets` = ? WHERE `id` = ?;");
+	    delete = conn.prepareStatement("DELETE from `" + getPrefix() + "blocks` WHERE `id` = ?;");
+
+	    Jobs.getPluginLogger().info("Saving blocks");
+
+	    conn.setAutoCommit(false);
+	    int inserted = 0;
+	    int updated = 0;
+	    int deleted = 0;
+	    Long current = System.currentTimeMillis();
+	    Long mark = System.currentTimeMillis() - (Jobs.getGCManager().BlockProtectionDays * 24L * 60L * 60L * 1000L);
+	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+
+	    for (Entry<World, HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>>> worlds : Jobs.getBpManager().getMap().entrySet()) {
+		for (Entry<String, HashMap<String, HashMap<Vector, BlockProtection>>> regions : worlds.getValue().entrySet()) {
+		    for (Entry<String, HashMap<Vector, BlockProtection>> chunks : regions.getValue().entrySet()) {
+			for (Entry<Vector, BlockProtection> block : chunks.getValue().entrySet()) {
+
+			    switch (block.getValue().getAction()) {
+			    case DELETE:
+				delete.setInt(1, block.getValue().getId());
+				delete.addBatch();
+
+				deleted++;
+				if (deleted % 10000 == 0) {
+				    delete.executeBatch();
+				    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Removed " + deleted + " old block protection entries.");
+				    console.sendMessage(message);
+				}
+				break;
+			    case INSERT:
+				if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
+				    continue;
+				insert.setString(1, worlds.getKey().getName());
+				insert.setInt(2, block.getKey().getBlockX());
+				insert.setInt(3, block.getKey().getBlockY());
+				insert.setInt(4, block.getKey().getBlockZ());
+				insert.setLong(5, block.getValue().getRecorded());
+				insert.setLong(6, block.getValue().getTime());
+				insert.addBatch();
+
+				inserted++;
+				if (inserted % 10000 == 0) {
+				    insert.executeBatch();
+				    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Added " + inserted + " new block protection entries.");
+				    console.sendMessage(message);
+				}
+				break;
+			    case UPDATE:
+				if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
+				    continue;
+				update.setLong(1, block.getValue().getRecorded());
+				update.setLong(2, block.getValue().getTime());
+				update.setInt(3, block.getValue().getId());
+				update.addBatch();
+
+				updated++;
+				if (updated % 10000 == 0) {
+				    update.executeBatch();
+				    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Upadated " + updated + " old block protection entries.");
+				    console.sendMessage(message);
+				}
+				break;
+			    case NONE:
+				if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
+				    continue;
+				if (block.getValue().getTime() == -1 && block.getValue().getRecorded() > mark)
+				    continue;
+
+				delete.setInt(1, block.getValue().getId());
+				delete.addBatch();
+
+				deleted++;
+				if (deleted % 10000 == 0) {
+				    delete.executeBatch();
+				    Jobs.getPluginLogger().info("[Jobs] Removed " + deleted + " old block protection entries.");
+				}
+				break;
+			    default:
+				continue;
+			    }
+			}
+		    }
+		}
+	    }
+
+	    insert.executeBatch();
+	    update.executeBatch();
+	    delete.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+	    if (inserted > 0) {
+		String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Added " + inserted + " new block protection entries.");
+		console.sendMessage(message);
+	    }
+	    if (updated > 0) {
+		String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Updated " + updated + " with new block protection entries.");
+		console.sendMessage(message);
+	    }
+	    if (deleted > 0) {
+		String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Deleted " + deleted + " old block protection entries.");
+		console.sendMessage(message);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(insert);
+	    close(update);
+	    close(delete);
+	}
+    }
+
+    /**
+     * Save block protection information
+     * @param jobBlockProtection - the information getting saved
+     */
+    public void loadBlockProtection() {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+
+	Jobs.getBpManager().timer = 0L;
+
+	try {
+	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "blocks`;");
+	    res = prest.executeQuery();
+	    int i = 0;
+	    int ii = 0;
+
+	    while (res.next()) {
+		World world = Bukkit.getWorld(res.getString("world"));
+		if (world == null)
+		    continue;
+
+		int id = res.getInt("id");
+		int x = res.getInt("x");
+		int y = res.getInt("y");
+		int z = res.getInt("z");
+		long resets = res.getLong("resets");
+		Location loc = new Location(world, x, y, z);
+		BlockProtection bp = Jobs.getBpManager().add(loc, resets, true);
+		bp.setId(id);
+		long t = System.currentTimeMillis();
+		bp.setRecorded(res.getLong("recorded"));
+		bp.setAction(DBAction.NONE);
+		i++;
+		ii++;
+
+		if (ii >= 100000) {
+		    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Loading (" + i +") BP");
+		    Bukkit.getServer().getConsoleSender().sendMessage(message);
+		    ii = 0;
+		}
+		Jobs.getBpManager().timer += System.currentTimeMillis() - t;
+	    }
+	    if (i > 0) {
+		String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] loaded " + i + " block protection entries. " + Jobs.getBpManager().timer);
+		Bukkit.getServer().getConsoleSender().sendMessage(message);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	} finally {
 	    close(res);
 	    close(prest);

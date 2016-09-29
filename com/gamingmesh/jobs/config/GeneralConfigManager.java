@@ -90,14 +90,16 @@ public class GeneralConfigManager {
 
     public boolean PayForRenaming, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
-	EnableAnounceMessage, useBlockPiston, useSilkTouchProtection, UseCustomNames,
-	UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit, WaterBlockBreake;
+	EnableAnounceMessage, useSilkTouchProtection, UseCustomNames,
+	UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit;
     public int globalblocktimer, CowMilkingTimer,
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
     public Double payNearSpawnerMultiplier, VIPpayNearSpawnerMultiplier, TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier, PetPay, VipPetPay;
     public String localeString = "EN";
+
     public boolean useBlockProtection;
-    public boolean useBlockTimer;
+    public int BlockProtectionDays;
+
     public boolean useMinimumOveralPayment;
     public boolean useMinimumOveralPoints;
     public boolean useBreederFinder = false;
@@ -112,8 +114,8 @@ public class GeneralConfigManager {
     public double MinimumOveralPaymentLimit;
     public double MinimumOveralPointsLimit;
 
-    public HashMap <BoostType, Double> Boost = new HashMap <BoostType, Double>();
-    
+    public HashMap<BoostType, Double> Boost = new HashMap<BoostType, Double>();
+
     public double DynamicPaymentMaxPenalty;
     public double DynamicPaymentMaxBonus;
     public double TaxesAmount;
@@ -124,7 +126,7 @@ public class GeneralConfigManager {
     public boolean UseTaxes;
     public boolean TransferToServerAccount;
     public boolean TakeFromPlayersPayment;
-    
+
     public int AutoJobJoinDelay;
     public boolean AutoJobJoinUse;
 
@@ -145,6 +147,11 @@ public class GeneralConfigManager {
     public List<Schedule> BoostSchedule = new ArrayList<Schedule>();
 
     public HashMap<String, List<String>> commandArgs = new HashMap<String, List<String>>();
+
+    public boolean DBCleaningJobsUse;
+    public int DBCleaningJobsLvl;
+    public boolean DBCleaningUsersUse;
+    public int DBCleaningUsersDays;
 
     public HashMap<String, List<String>> getCommandArgs() {
 	return commandArgs;
@@ -313,6 +320,8 @@ public class GeneralConfigManager {
     public synchronized void reload() {
 	// general settings
 	loadGeneralSettings();
+	Jobs.getJobsDAO().cleanJobs();
+	Jobs.getJobsDAO().cleanUsers();
 	// Load locale
 	Jobs.setLanguageManager(this.plugin);
 	Jobs.getLanguageManager().load();
@@ -419,7 +428,19 @@ public class GeneralConfigManager {
 	MultiServerCompatability = c.get("MultiServerCompatability", false);
 	if (MultiServerCompatability)
 	    saveOnDisconnect = true;
-	
+
+	c.getW().addComment("Optimizations.DBCleaning.Jobs.Use", "When set to true, jobs data base will be cleaned on each startup to avoid having not used jobs",
+	    "keep in mind that this will only clean actual jobs, but not recorded players");
+	DBCleaningJobsUse = c.get("Optimizations.DBCleaning.Jobs.Use", false);
+	c.getW().addComment("Optimizations.DBCleaning.Jobs.Level", "Any one who has jobs level equal or less then set, hies job will be removed from data base");
+	DBCleaningJobsLvl = c.get("Optimizations.DBCleaning.Jobs.Level", 1);
+
+	c.getW().addComment("Optimizations.DBCleaning.Users.Use",
+	    "When set to true, data base will be cleaned on each startup from user data to avoid having old player data");
+	DBCleaningUsersUse = c.get("Optimizations.DBCleaning.Users.Use", false);
+	c.getW().addComment("Optimizations.DBCleaning.Users.Days", "Any one who not playied for defined amount of days, will be removed from data base");
+	DBCleaningUsersDays = c.get("Optimizations.DBCleaning.Users.Days", 60);
+
 	c.getW().addComment("Optimizations.AutoJobJoin.Use", "Use or not auto join jobs feature",
 	    "If you are not using auto join feature, keep it disabled");
 	AutoJobJoinUse = c.get("Optimizations.AutoJobJoin.Use", false);
@@ -439,7 +460,7 @@ public class GeneralConfigManager {
 	    "Only commands can be performed from disabled worlds with jobs.disabledworld.commands permission node");
 	DisabledWorldsUse = c.get("Optimizations.DisabledWorlds.Use", false);
 	DisabledWorldsList = c.getStringList("Optimizations.DisabledWorlds.List", Arrays.asList(Bukkit.getWorlds().get(0).getName()));
-		
+
 //	c.getW().addComment("Optimizations.Purge.Use", "By setting this to true, Jobs plugin will clean data base on startup from all jobs with level 1 and at 0 exp");
 //	PurgeUse = c.get("Optimizations.Purge.Use", false);
 
@@ -666,26 +687,22 @@ public class GeneralConfigManager {
 	CowMilkingTimer = c.get("Economy.MilkingCow.Timer", 30) * 1000;
 
 	c.getW().addComment("ExploitProtections.General.PlaceAndBreakProtection",
-	    "Enable blocks protection, like ore, from exploiting by placing and destroying same block again and again.", "This works only until server restart",
+	    "Enable blocks protection, like ore, from exploiting by placing and destroying same block again and again.",
 	    "Modify restrictedBlocks.yml for blocks you want to protect");
 	useBlockProtection = c.get("ExploitProtections.General.PlaceAndBreakProtection", true);
+
+	c.getW().addComment("ExploitProtections.General.KeepDataFor",
+	    "For how long in days to keep block protection data in data base", "This will clean block data which ones have -1 as cooldown value",
+	    "Data base cleannup will be performed on each server startup");
+	BlockProtectionDays = c.get("ExploitProtections.General.KeepDataFor", 14);
+
+	c.getW().addComment("ExploitProtections.General.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");
+	useGlobalTimer = c.get("ExploitProtections.General.GlobalBlockTimer.use", true);
+	globalblocktimer = c.get("ExploitProtections.General.GlobalBlockTimer.timer", 3);
 
 	c.getW().addComment("ExploitProtections.General.SilkTouchProtection", "Enable silk touch protection.",
 	    "With this enabled players wont get paid for breaked blocks from restrictedblocks list with silk touch tool.");
 	useSilkTouchProtection = c.get("ExploitProtections.General.SilkTouchProtection", false);
-
-	c.getW().addComment("ExploitProtections.General.StopPistonBlockMove", "Enable piston moving blocks from restrictedblocks list.",
-	    "If piston moves block then it will be like new block and BlockPlaceAndBreakProtection wont work properly",
-	    "If you using core protect and its being logging piston block moving, then you can disable this");
-	useBlockPiston = c.get("ExploitProtections.General.StopPistonBlockMove", true);
-
-	c.getW().addComment("ExploitProtections.General.BlocksTimer", "Enable blocks timer protection.",
-	    "Only enable if you want to protect block from beying broken to fast, useful for vegetables.", "Modify restrictedBlocks.yml for blocks you want to protect");
-	useBlockTimer = c.get("ExploitProtections.General.BlocksTimer", true);
-
-	c.getW().addComment("ExploitProtections.General.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");
-	useGlobalTimer = c.get("ExploitProtections.General.GlobalBlockTimer.use", false);
-	globalblocktimer = c.get("ExploitProtections.General.GlobalBlockTimer.timer", 30);
 
 	c.getW().addComment("ExploitProtections.General.PetPay", "Do you want to pay when players pet kills monster/player", "Can be exploited with mob farms",
 	    "0.2 means 20% of original reward", "Optionaly you can give jobs.petpay permission node for specific players/ranks to get paid by VipPetPay multiplier");
@@ -712,11 +729,6 @@ public class GeneralConfigManager {
 	c.getW().addComment("ExploitProtections.Spawner.PreventMagmaCubeSplit", "Prevent magmacube spliting when they are from spawner");
 	PreventMagmaCubeSplit = c.get("ExploitProtections.Spawner.PreventMagmaCubeSplit", true);
 
-	c.getW().addComment("ExploitProtections.WaterBlockBreake",
-	    "Prevent water braking placed blocks. Protection resets with server restart or after plants grows to next stage with bone powder or naturally",
-	    "For strange reason works only 5 of 10 times, but this is completely enough to prevent exploiting");
-	WaterBlockBreake = c.get("ExploitProtections.WaterBlockBreake", true);
-
 	c.getW().addComment("use-breeder-finder", "Breeder finder.",
 	    "If you are not using breeding payment, you can disable this to save little resources. Really little.");
 	useBreederFinder = c.get("use-breeder-finder", true);
@@ -727,8 +739,8 @@ public class GeneralConfigManager {
 	    "Use: jobs.boost.all.money or jobs.boost.all.exp or jobs.boost.all.points or jobs.boost.all.all to get boost for all jobs",
 	    "1.25 means that player will get 25% more than others, you can set less than 1 to get less from anothers");
 	Boost.put(BoostType.EXP, c.get("boost.exp", 1.00));
-	Boost.put(BoostType.MONEY,  c.get("boost.money", 1.00));
-	Boost.put(BoostType.POINTS,  c.get("boost.points", 1.00));
+	Boost.put(BoostType.MONEY, c.get("boost.money", 1.00));
+	Boost.put(BoostType.POINTS, c.get("boost.points", 1.00));
 
 	c.getW().addComment("old-job", "Old job save", "Players can leave job and return later with some level loss during that",
 	    "You can fix players level if hes job level is at max level");

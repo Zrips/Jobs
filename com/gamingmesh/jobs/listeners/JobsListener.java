@@ -29,7 +29,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -40,7 +39,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.ClickType;
@@ -66,7 +64,6 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
@@ -87,8 +84,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	event.setCancelled(true);
-
-	Debug.D(event.getRawSlot());
 
 	int tsize = player.getOpenInventory().getTopInventory().getSize();
 
@@ -493,37 +488,17 @@ public class JobsListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onWaterBlockBreak(BlockFromToEvent event) {
-
-	//disabling plugin in world
-	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
-	    return;
-
-	if (!Jobs.getGCManager().WaterBlockBreake)
-	    return;
-	if (event.getBlock().getType() == Material.STATIONARY_WATER && event.getToBlock().getType() != Material.AIR && event.getToBlock()
-	    .getType() != Material.STATIONARY_WATER && event.getToBlock().getState().hasMetadata(
-		JobsPaymentListener.PlacedBlockMetadata)) {
-	    event.setCancelled(true);
-	}
-    }
-
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCropGrown(final BlockGrowEvent event) {
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
-	if (!Jobs.getGCManager().WaterBlockBreake)
-	    return;
-	if (event.getBlock().getState().hasMetadata(JobsPaymentListener.PlacedBlockMetadata)) {
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    event.getBlock().getState().removeMetadata(JobsPaymentListener.PlacedBlockMetadata, plugin);
-		    return;
-		}
-	    }, 1L);
-	}
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	    @Override
+	    public void run() {
+		Jobs.getBpManager().remove(event.getBlock());
+		return;
+	    }
+	}, 1L);
     }
 
     @SuppressWarnings("deprecation")

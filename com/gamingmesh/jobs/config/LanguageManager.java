@@ -9,7 +9,6 @@ import java.util.List;
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.LocaleReader;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class LanguageManager {
     private Jobs plugin;
@@ -25,8 +24,6 @@ public class LanguageManager {
      */
     synchronized void load() {
 
-	long time = System.currentTimeMillis();
-
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<String>();
 	languages.add("cs");
@@ -38,25 +35,18 @@ public class LanguageManager {
 	languages.add("ru");
 	languages.add("tr");
 
-	Debug.D(System.currentTimeMillis() - time);
-
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + lang + ".yml");
 	    langFile.saveDefaultConfig();
 	}
 
-	Debug.D(System.currentTimeMillis() - time);
 	languages.add("en");
 
 	File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + Jobs.getGCManager().localeString + ".yml");
 	if (!customLocaleFile.exists() && !Jobs.getGCManager().localeString.equalsIgnoreCase("en"))
 	    languages.add(Jobs.getGCManager().localeString);
 
-	Debug.D(System.currentTimeMillis() - time);
-
 	for (String lang : languages) {
-
-	    Debug.D(lang + " -> " + (System.currentTimeMillis() - time));
 	    File f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
@@ -384,6 +374,11 @@ public class LanguageManager {
 	    c.get("command.signupdate.help.args", "[jobname]");
 	    Jobs.getGCManager().commandArgs.put("signupdate", Arrays.asList("[jobname]"));
 
+	    c.get("command.bp.help.info", "Shows Block protection arround you in 10 block radius");
+	    c.get("command.bp.help.args", "");
+	    c.get("command.bp.output.found", "&eFound &6%amount% &eprotected blocks around you");
+	    c.get("command.bp.output.notFound", "&eNo protected blocks found around you");
+
 	    c.get("command.reload.help.info", "Reload configurations.");
 
 	    c.get("command.toggle.help.info", "Toggles payment output on action bar or bossbar.");
@@ -453,7 +448,5 @@ public class LanguageManager {
 		e.printStackTrace();
 	    }
 	}
-
-	Debug.D(System.currentTimeMillis() - time);
     }
 }

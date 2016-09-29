@@ -22,10 +22,13 @@ import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerInfo;
@@ -119,6 +122,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	createDefaultPointsBase();
 	createDefaultExploreBase();
 	createDefaultUsersBase();
+	createDefaultBlockProtection();
     }
 
     @Override
@@ -278,8 +282,6 @@ public class JobsDAOSQLite extends JobsDAO {
 	}
 
 	if (convertJobs) {
-
-	    Bukkit.getConsoleSender().sendMessage("convert jobs table from byte");
 
 	    Jobs.getPluginLogger().info("Converting byte uuids to string.  This could take a long time!!!");
 	    try {
@@ -583,7 +585,6 @@ public class JobsDAOSQLite extends JobsDAO {
 	    prestJobs = conn.prepareStatement("SELECT * FROM " + getPrefix() + "jobs;");
 	    res2 = prestJobs.executeQuery();
 	    while (res2.next()) {
-		Bukkit.getConsoleSender().sendMessage(res2.getString("player_uuid") + " -> " + res2.getString("username"));
 		tempMap.put(res2.getString("player_uuid"), res2.getString("username"));
 	    }
 	} finally {
@@ -598,7 +599,6 @@ public class JobsDAOSQLite extends JobsDAO {
 	    res3 = prestArchive.executeQuery();
 	    while (res3.next()) {
 		tempMap.put(res3.getString("player_uuid"), res3.getString("username"));
-		Bukkit.getConsoleSender().sendMessage(res3.getString("player_uuid") + " -> " + res3.getString("username"));
 	    }
 	} finally {
 	    close(res3);
@@ -615,7 +615,6 @@ public class JobsDAOSQLite extends JobsDAO {
 	    prestUsers = conn.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`player_uuid`, `username`) VALUES (?, ?);");
 	    conn.setAutoCommit(false);
 	    for (Entry<String, String> users : tempMap.entrySet()) {
-		Bukkit.getConsoleSender().sendMessage(users.getKey() + " -----> " + users.getValue());
 		prestUsers.setString(1, users.getKey());
 		prestUsers.setString(2, users.getValue());
 		prestUsers.addBatch();
@@ -635,7 +634,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	    prestUsers2 = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
 	    res4 = prestUsers2.executeQuery();
 	    while (res4.next()) {
-		tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id")));
+		tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id"), System.currentTimeMillis()));
 	    }
 	} finally {
 	    close(res4);
@@ -777,6 +776,99 @@ public class JobsDAOSQLite extends JobsDAO {
 
     }
 
+    @Override
+    protected synchronized void checkUpdate10() {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	int rows = 0;
+	try {
+	    // Check for jobs table
+	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
+	    prest.setString(1, getPrefix() + "blocks");
+	    res = prest.executeQuery();
+	    if (res.next()) {
+		rows = res.getInt(1);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+
+	if (rows == 0)
+	    createDefaultBlockProtection();
+    }
+
+    @Override
+    protected synchronized void checkUpdate11() {
+	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    return;
+	}
+
+	try {
+	    executeSQL("ALTER TABLE `" + getPrefix() + "users` ADD COLUMN `seen` bigint;");
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    return;
+	} finally {
+	}
+
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("UPDATE `" + getPrefix() + "users` SET `seen` = ?;");
+	    prest.setLong(1, System.currentTimeMillis());
+	    prest.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+
+//	HashMap<UUID, Long> map = new HashMap<UUID, Long>();
+//	Jobs.getPluginLogger().info("Updating player last seen value");
+//	for (OfflinePlayer one : Bukkit.getOfflinePlayers()) {
+//	    map.put(one.getUniqueId(), one.getLastPlayed());
+//	}
+//
+//	PreparedStatement prestJobsT = null;
+//	try {
+//	    prestJobsT = conn.prepareStatement("UPDATE `" + getPrefix() + "users` SET `seen` = ? WHERE `player_uuid` = ?;");
+//	    conn.setAutoCommit(false);
+//
+//	    int i = 0;
+//	    int y = 0;
+//	    for (Entry<UUID, Long> users : map.entrySet()) {
+//		prestJobsT.setLong(1, users.getValue());
+//		prestJobsT.setString(2, users.getKey().toString());
+//		prestJobsT.addBatch();
+//
+//		i++;
+//		y++;
+//		if (i >= 1000) {
+//		    Jobs.getPluginLogger().info("Updated " + y + "/" + map.size());
+//		    i = 0;
+//		}
+//	    }
+//	    prestJobsT.executeBatch();
+//	    conn.commit();
+//	    conn.setAutoCommit(true);
+//	    Jobs.getPluginLogger().info("Finished");
+//	} catch (SQLException e) {
+//	    e.printStackTrace();
+//	} finally {
+//	    close(prestJobsT);
+//	}
+
+    }
+
     private boolean createDefaultExploreBase() {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
@@ -800,7 +892,7 @@ public class JobsDAOSQLite extends JobsDAO {
     private boolean createDefaultUsersBase() {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
-		+ "users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` varchar(36) NOT NULL, `username` varchar(20));");
+		+ "users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `seen` bigint);");
 	} catch (SQLException e) {
 	    return false;
 	}
@@ -833,6 +925,16 @@ public class JobsDAOSQLite extends JobsDAO {
 	try {
 	    executeSQL("CREATE TABLE `" + getPrefix()
 		+ "jobs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `job` varchar(20), `experience` int, `level` int);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+
+    private boolean createDefaultBlockProtection() {
+	try {
+	    executeSQL("CREATE TABLE `" + getPrefix()
+		+ "blocks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `world` varchar(36) NOT NULL, `x` int, `y` int, `z` int, `recorded` bigint, `resets` bigint);");
 	} catch (SQLException e) {
 	    return false;
 	}

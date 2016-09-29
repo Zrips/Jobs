@@ -69,6 +69,8 @@ public class JobsPlayer {
     // log
     private List<Log> logList = new ArrayList<Log>();
 
+    private Long seen;
+    
     public JobsPlayer(String userName, OfflinePlayer player) {
 	this.userName = userName;
 	this.OffPlayer = player;
@@ -296,7 +298,7 @@ public class JobsPlayer {
      */
     public JobProgression getJobProgression(Job job) {
 	for (JobProgression prog : progression) {
-	    if (prog.getJob().same(job))
+	    if (prog.getJob().isSame(job))
 		return prog;
 	}
 	return null;
@@ -461,7 +463,7 @@ public class JobsPlayer {
 //	synchronized (saveLock) {
 	if (!isInJob(newjob)) {
 	    for (JobProgression prog : progression) {
-		if (!prog.getJob().same(oldjob))
+		if (!prog.getJob().isSame(oldjob))
 		    continue;
 
 		prog.setJob(newjob);
@@ -495,7 +497,7 @@ public class JobsPlayer {
      */
     public boolean isInJob(Job job) {
 	for (JobProgression prog : progression) {
-	    if (prog.getJob().same(job))
+	    if (prog.getJob().isSame(job))
 		return true;
 	}
 	return false;
@@ -643,5 +645,13 @@ public class JobsPlayer {
 
     public void setSaved(boolean value) {
 	isSaved = value;
+    }
+
+    public Long getSeen() {
+	return seen;
+    }
+
+    public void setSeen(Long seen) {
+	this.seen = seen;
     }
 }
