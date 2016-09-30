@@ -403,20 +403,13 @@ public class PlayerManager {
 //	}
     }
 
-    private static Sound getSound(String soundName) {
-	for (Sound one : Sound.values()) {
-	    if (one.name().equalsIgnoreCase(soundName))
-		return one;
-	}
-	return null;
-    }
-
     /**
      * Broadcasts level up about a player
      * @param jPlayer
      * @param job
      * @param oldLevel
      */
+    @SuppressWarnings("deprecation")
     public void performLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
 
 	Player player = jPlayer.getPlayer();
@@ -435,8 +428,8 @@ public class PlayerManager {
 	    return;
 
 	if (Jobs.getGCManager().SoundLevelupUse) {
-	    Sound sound = getSound(levelUpEvent.getSoundName());
-	    if (sound != null)
+	    Sound sound = levelUpEvent.getSound();
+	    if (sound != null && player != null && player.getLocation() != null)
 		player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
 	    else
 		Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSoundName() + ". Please update it");
@@ -475,7 +468,7 @@ public class PlayerManager {
 	if (levelUpEvent.getNewTitle() != null && !levelUpEvent.getNewTitle().equals(levelUpEvent.getOldTitle())) {
 
 	    if (Jobs.getGCManager().SoundTitleChangeUse) {
-		Sound sound = getSound(levelUpEvent.getTitleChangeSoundName());
+		Sound sound = levelUpEvent.getTitleChangeSound();
 		if (sound != null && player != null)
 		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
 			levelUpEvent.getTitleChangePitch());

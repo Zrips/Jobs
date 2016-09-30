@@ -100,8 +100,8 @@ public abstract class JobsDAO {
 		checkUpdate9();
 		// creating block protection database
 		checkUpdate10();
-		if (version <= 10)
-		    checkUpdate11();
+		// adding seen field into users table
+		checkUpdate11();
 	    }
 
 	    version = 11;
@@ -1196,7 +1196,7 @@ public abstract class JobsDAO {
 		ii++;
 
 		if (ii >= 100000) {
-		    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Loading (" + i +") BP");
+		    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Loading (" + i + ") BP");
 		    Bukkit.getServer().getConsoleSender().sendMessage(message);
 		    ii = 0;
 		}

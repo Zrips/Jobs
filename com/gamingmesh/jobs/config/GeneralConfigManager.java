@@ -429,13 +429,16 @@ public class GeneralConfigManager {
 	if (MultiServerCompatability)
 	    saveOnDisconnect = true;
 
-	c.getW().addComment("Optimizations.DBCleaning.Jobs.Use", "When set to true, jobs data base will be cleaned on each startup to avoid having not used jobs",
+	c.getW().addComment("Optimizations.DBCleaning.Jobs.Use",
+	    "Warning!!! before enabling this feature, please make data base backup, just in case there will be some issues with data base cleaning",
+	    "When set to true, jobs data base will be cleaned on each startup to avoid having not used jobs",
 	    "keep in mind that this will only clean actual jobs, but not recorded players");
 	DBCleaningJobsUse = c.get("Optimizations.DBCleaning.Jobs.Use", false);
 	c.getW().addComment("Optimizations.DBCleaning.Jobs.Level", "Any one who has jobs level equal or less then set, hies job will be removed from data base");
 	DBCleaningJobsLvl = c.get("Optimizations.DBCleaning.Jobs.Level", 1);
 
 	c.getW().addComment("Optimizations.DBCleaning.Users.Use",
+	    "Warning!!! before enabling this feature, please make data base backup, just in case there will be some issues with data base cleaning",
 	    "When set to true, data base will be cleaned on each startup from user data to avoid having old player data");
 	DBCleaningUsersUse = c.get("Optimizations.DBCleaning.Users.Use", false);
 	c.getW().addComment("Optimizations.DBCleaning.Users.Days", "Any one who not playied for defined amount of days, will be removed from data base");

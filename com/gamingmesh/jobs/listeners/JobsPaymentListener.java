@@ -852,11 +852,16 @@ public class JobsPaymentListener implements Listener {
 
 	// Payment for killing player with particular job, except NPC's
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
-	    List<JobProgression> jobs = Jobs.getPlayerManager().getJobsPlayer((Player) lVictim).getJobProgression();
-	    if (jobs != null)
-		for (JobProgression job : jobs) {
-		    Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), multiplier);
-		}
+	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) lVictim);
+	    if (jPlayer == null)
+		return;
+
+	    List<JobProgression> jobs = jPlayer.getJobProgression();
+	    if (jobs == null)
+		return;
+	    for (JobProgression job : jobs) {
+		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), multiplier);
+	    }
 	}
     }
 

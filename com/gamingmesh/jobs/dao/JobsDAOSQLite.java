@@ -778,45 +778,20 @@ public class JobsDAOSQLite extends JobsDAO {
 
     @Override
     protected synchronized void checkUpdate10() {
-	JobsConnection conn = getConnection();
-	if (conn == null) {
-	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
-	    return;
-	}
-	PreparedStatement prest = null;
-	ResultSet res = null;
-	int rows = 0;
-	try {
-	    // Check for jobs table
-	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
-	    prest.setString(1, getPrefix() + "blocks");
-	    res = prest.executeQuery();
-	    if (res.next()) {
-		rows = res.getInt(1);
-	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(res);
-	    close(prest);
-	}
-
-	if (rows == 0)
-	    createDefaultBlockProtection();
+	createDefaultBlockProtection();
     }
 
     @Override
     protected synchronized void checkUpdate11() {
 	JobsConnection conn = getConnection();
 	if (conn == null) {
-	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
+	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to SQLITE!");
 	    return;
 	}
 
 	try {
 	    executeSQL("ALTER TABLE `" + getPrefix() + "users` ADD COLUMN `seen` bigint;");
-	} catch (SQLException e) {
-	    e.printStackTrace();
+	} catch (Exception e) {
 	    return;
 	} finally {
 	}
@@ -831,41 +806,6 @@ public class JobsDAOSQLite extends JobsDAO {
 	} finally {
 	    close(prest);
 	}
-
-//	HashMap<UUID, Long> map = new HashMap<UUID, Long>();
-//	Jobs.getPluginLogger().info("Updating player last seen value");
-//	for (OfflinePlayer one : Bukkit.getOfflinePlayers()) {
-//	    map.put(one.getUniqueId(), one.getLastPlayed());
-//	}
-//
-//	PreparedStatement prestJobsT = null;
-//	try {
-//	    prestJobsT = conn.prepareStatement("UPDATE `" + getPrefix() + "users` SET `seen` = ? WHERE `player_uuid` = ?;");
-//	    conn.setAutoCommit(false);
-//
-//	    int i = 0;
-//	    int y = 0;
-//	    for (Entry<UUID, Long> users : map.entrySet()) {
-//		prestJobsT.setLong(1, users.getValue());
-//		prestJobsT.setString(2, users.getKey().toString());
-//		prestJobsT.addBatch();
-//
-//		i++;
-//		y++;
-//		if (i >= 1000) {
-//		    Jobs.getPluginLogger().info("Updated " + y + "/" + map.size());
-//		    i = 0;
-//		}
-//	    }
-//	    prestJobsT.executeBatch();
-//	    conn.commit();
-//	    conn.setAutoCommit(true);
-//	    Jobs.getPluginLogger().info("Finished");
-//	} catch (SQLException e) {
-//	    e.printStackTrace();
-//	} finally {
-//	    close(prestJobsT);
-//	}
 
     }
 
@@ -933,7 +873,7 @@ public class JobsDAOSQLite extends JobsDAO {
 
     private boolean createDefaultBlockProtection() {
 	try {
-	    executeSQL("CREATE TABLE `" + getPrefix()
+	    executeSQL("CREATE TABLE IF NOT EXISTS `" + getPrefix()
 		+ "blocks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `world` varchar(36) NOT NULL, `x` int, `y` int, `z` int, `recorded` bigint, `resets` bigint);");
 	} catch (SQLException e) {
 	    return false;
