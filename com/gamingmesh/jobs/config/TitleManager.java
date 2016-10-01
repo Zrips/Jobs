@@ -29,15 +29,15 @@ public class TitleManager {
      * @return the correct title
      * @return null if no title matches
      */
-    public Title getTitleForLevel(int level) {
+    public Title getTitle(int level, String jobName) {
 	Title title = null;
 	for (Title t : titles) {
 	    if (title == null) {
-		if (t.getLevelReq() <= level) {
+		if (t.getLevelReq() <= level && (t.getJobName() == null || t.getJobName().equalsIgnoreCase(jobName))) {
 		    title = t;
 		}
 	    } else {
-		if (t.getLevelReq() <= level && t.getLevelReq() > title.getLevelReq()) {
+		if (t.getLevelReq() <= level && t.getLevelReq() > title.getLevelReq() && (t.getJobName() == null || t.getJobName().equalsIgnoreCase(jobName))) {
 		    title = t;
 		}
 	    }

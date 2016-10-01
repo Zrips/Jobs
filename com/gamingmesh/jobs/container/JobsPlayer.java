@@ -520,7 +520,7 @@ public class JobsPlayer {
 		    builder.append(Jobs.getGCManager().getModifyChatSeparator());
 		    gotTitle = false;
 		}
-		Title title = Jobs.gettitleManager().getTitleForLevel(prog.getLevel());
+		Title title = Jobs.gettitleManager().getTitle(prog.getLevel(), prog.getJob().getName());
 
 		if (numJobs == 1) {
 		    if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) {

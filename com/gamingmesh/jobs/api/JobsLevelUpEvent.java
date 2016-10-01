@@ -15,12 +15,12 @@ public final class JobsLevelUpEvent extends Event implements Cancellable {
     private Title OldTitle;
     private Title NewTitle;
     private int level;
-    private Sound soundLevelupSound;
+    private Sound soundLevelupSound = Sound.values()[0];
     private int soundLevelupVolume = 1;
     private int soundLevelupPitch = 3;
-    private Sound soundTitleChangeSound;
-    private int soundTitleChangeVolume;
-    private int soundTitleChangePitch;
+    private Sound soundTitleChangeSound = Sound.values()[0];
+    private int soundTitleChangeVolume = 1;
+    private int soundTitleChangePitch = 3;
     private boolean cancelled;
 
     public JobsLevelUpEvent(JobsPlayer jPlayer, String JobName, int level, Title OldTitle, Title NewTitle, String soundLevelupSound, Integer soundLevelupVolume,

@@ -418,10 +418,18 @@ public class PlayerManager {
 	    return;
 
 	// LevelUp event
-	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job.getName(), prog.getLevel(), Jobs.gettitleManager().getTitleForLevel(oldLevel), Jobs
-	    .gettitleManager().getTitleForLevel(prog.getLevel()), Jobs.getGCManager().SoundLevelupSound
-		.toUpperCase(), Jobs.getGCManager().SoundLevelupVolume, Jobs.getGCManager().SoundLevelupPitch, Jobs.getGCManager().SoundTitleChangeSound.toUpperCase(),
-	    Jobs.getGCManager().SoundTitleChangeVolume, Jobs.getGCManager().SoundTitleChangePitch);
+	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(
+	    jPlayer,
+	    job.getName(),
+	    prog.getLevel(),
+	    Jobs.gettitleManager().getTitle(oldLevel, prog.getJob().getName()),
+	    Jobs.gettitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
+	    Jobs.getGCManager().SoundLevelupSound.toUpperCase(),
+	    Jobs.getGCManager().SoundLevelupVolume,
+	    Jobs.getGCManager().SoundLevelupPitch,
+	    Jobs.getGCManager().SoundTitleChangeSound.toUpperCase(),
+	    Jobs.getGCManager().SoundTitleChangeVolume, 
+	    Jobs.getGCManager().SoundTitleChangePitch);
 	Bukkit.getServer().getPluginManager().callEvent(levelUpEvent);
 	// If event is canceled, dont do anything
 	if (levelUpEvent.isCancelled())
@@ -469,7 +477,7 @@ public class PlayerManager {
 
 	    if (Jobs.getGCManager().SoundTitleChangeUse) {
 		Sound sound = levelUpEvent.getTitleChangeSound();
-		if (sound != null && player != null)
+		if (sound != null && player != null && player.getLocation() != null)
 		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
 			levelUpEvent.getTitleChangePitch());
 		else
