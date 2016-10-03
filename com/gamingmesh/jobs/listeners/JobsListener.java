@@ -156,12 +156,21 @@ public class JobsListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(final PlayerJoinEvent event) {
 
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
-	Jobs.getPlayerManager().playerJoin(event.getPlayer());
+	if (!Jobs.getGCManager().MultiServerCompatability())
+	    Jobs.getPlayerManager().playerJoin(event.getPlayer());
+	else
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		@Override
+		public void run() {
+		    Jobs.getPlayerManager().playerJoin(event.getPlayer());
+		}
+	    }, 10L);
+
     }
 
 //    @EventHandler(priority = EventPriority.MONITOR)

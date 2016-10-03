@@ -123,7 +123,7 @@ public class Job {
     }
     
     public boolean isSame(Job job) {
-	return this.equals(job);
+	return this.getName().equalsIgnoreCase(job.getName());
     }
     
     public double getPointBoost() {
