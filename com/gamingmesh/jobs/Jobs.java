@@ -1261,4 +1261,7 @@ public class Jobs extends JavaPlugin {
 	return true;
     }
 
+    public static void consoleMsg(String msg){
+	Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+    }
 }

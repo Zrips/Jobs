@@ -20,14 +20,13 @@ package com.gamingmesh.jobs;
 
 import net.milkbowl.vault.economy.Economy;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.gamingmesh.jobs.economy.BlackholeEconomy;
 import com.gamingmesh.jobs.economy.VaultEconomy;
+import com.gamingmesh.jobs.economy.IConomy6Adapter;
 
 public class HookEconomyTask implements Runnable {
     private Jobs plugin;
@@ -38,29 +37,57 @@ public class HookEconomyTask implements Runnable {
 
     @Override
     public void run() {
-	Plugin eco = Bukkit.getServer().getPluginManager().getPlugin("Vault");
-	if (eco != null) {
-	    RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
-	    if (provider != null) {
-		Economy economy = provider.getProvider();
-		if (economy != null) {
-		    Jobs.setEconomy(this.plugin, new VaultEconomy(economy));
-		    String message = ChatColor.translateAlternateColorCodes('&', "&e[" + this.plugin.getDescription().getName() + "] Successfully linked with Vault.");
-		    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-		    console.sendMessage(message);
-		    return;
-		}
-	    }
-	}
 
-	// no Vault found
+	if (setVault())
+	    return;
+
+	if (setIConomy())
+	    return;
+
+	// no Economy found
 	Jobs.setEconomy(this.plugin, new BlackholeEconomy());
 	Bukkit.getServer().getLogger().severe("==================== " + this.plugin.getDescription().getName() + " ====================");
-	Bukkit.getServer().getLogger().severe("Vault is required by this plugin for economy support!");
-	Bukkit.getServer().getLogger().severe("Please install Vault and economy manager first!");
-	Bukkit.getServer().getLogger().severe("You can find the latest version here:");
+	Bukkit.getServer().getLogger().severe("Vault or Iconomy is required by this plugin for economy support!");
+	Bukkit.getServer().getLogger().severe("Please install them first!");
+	Bukkit.getServer().getLogger().severe("You can find the latest versions here:");
 	Bukkit.getServer().getLogger().severe("http://dev.bukkit.org/bukkit-plugins/vault/");
+	Bukkit.getServer().getLogger().severe("https://dev.bukkit.org/bukkit-plugins/iconomy-7/");
 	Bukkit.getServer().getLogger().severe("==============================================");
+    }
+
+    private boolean setVault() {
+	Plugin eco = Bukkit.getServer().getPluginManager().getPlugin("Vault");
+	if (eco == null)
+	    return false;
+
+	RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+	if (provider == null)
+	    return false;
+
+	Economy economy = provider.getProvider();
+	if (economy == null)
+	    return false;
+
+	Jobs.setEconomy(this.plugin, new VaultEconomy(economy));
+	Jobs.consoleMsg("&e[" + this.plugin.getDescription().getName() + "] Successfully linked with Vault.");
+	return true;
+    }
+
+    private boolean setIConomy() {
+	Plugin p = Bukkit.getServer().getPluginManager().getPlugin("iConomy");
+	if (p == null)
+	    return false;
+
+	try {
+	    Jobs.setEconomy(this.plugin, new IConomy6Adapter((com.iCo6.iConomy) p));
+	} catch (Exception e) {
+	    Jobs.consoleMsg("&e[" + this.plugin.getDescription().getName() + "] UNKNOWN iConomy version.");
+	    return false;
+	}
+
+	Jobs.consoleMsg("&e[" + this.plugin.getDescription().getName() + "] Successfully linked with iConomy! Version: " + p.getDescription().getVersion());
+	return true;
+
     }
 
 }
