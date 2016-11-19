@@ -416,7 +416,9 @@ Jobs:
         # Money boost: 1.1 is equals 10% more income when 0.9 is equals 10% less from base income
         moneyBoost: 1.1
         # Exp boost
-        expBoost: 1.1
+        expBoost: 1.2
+        # Point boost
+        pointBoost: 1.3
       helmet:
         # Armor id. This one works with all jobs
         id: 310

@@ -53,7 +53,7 @@ public class JobsPlayer {
     private OfflinePlayer OffPlayer = null;
     private Player player = null;
 
-    private double VipSpawnerMultiplier = -1;
+    private double VipSpawnerMultiplier = 0D;
 
     private int MoneyLimit = 0;
     private int ExpLimit = 0;
@@ -70,7 +70,7 @@ public class JobsPlayer {
     private List<Log> logList = new ArrayList<Log>();
 
     private Long seen;
-    
+
     public JobsPlayer(String userName, OfflinePlayer player) {
 	this.userName = userName;
 	this.OffPlayer = player;
@@ -131,7 +131,7 @@ public class JobsPlayer {
      */
     public double getVipSpawnerMultiplier() {
 	if (this.getPlayer() == null || !this.getPlayer().isOnline())
-	    return 1.0;
+	    return 0D;
 	if (VipSpawnerMultiplier < 0)
 	    updateVipSpawnerMultiplier();
 	return this.VipSpawnerMultiplier;
@@ -139,9 +139,9 @@ public class JobsPlayer {
 
     public void updateVipSpawnerMultiplier() {
 	if (Perm.hasPermission(this.player, "jobs.vipspawner"))
-	    this.VipSpawnerMultiplier = Jobs.getGCManager().VIPpayNearSpawnerMultiplier;
+	    this.VipSpawnerMultiplier = Jobs.getGCManager().VIPpayNearSpawnerMultiplier - 1;
 	else
-	    this.VipSpawnerMultiplier = Jobs.getGCManager().payNearSpawnerMultiplier;
+	    this.VipSpawnerMultiplier = Jobs.getGCManager().payNearSpawnerMultiplier - 1;
     }
 
     /**

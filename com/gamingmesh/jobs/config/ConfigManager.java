@@ -37,6 +37,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.BoostMultiplier;
+import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.DisplayMethod;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
@@ -47,6 +49,7 @@ import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class ConfigManager {
     private Jobs plugin;
@@ -341,19 +344,15 @@ public class ConfigManager {
 				enchants.put(ench, level);
 			}
 
-		    Double moneyBoost = 1D;
+		    BoostMultiplier b = new BoostMultiplier();		    
 		    if (itemSection.isDouble("moneyBoost"))
-			moneyBoost = itemSection.getDouble("moneyBoost");
-
-		    Double pointBoost = 1D;
+			b.add(BoostType.MONEY, itemSection.getDouble("moneyBoost") - 1);
 		    if (itemSection.isDouble("pointBoost"))
-			pointBoost = itemSection.getDouble("pointBoost");
-
-		    Double expBoost = 1D;
+			b.add(BoostType.POINTS, itemSection.getDouble("pointBoost") - 1);
 		    if (itemSection.isDouble("expBoost"))
-			expBoost = itemSection.getDouble("expBoost");
-
-		    jobItems.add(new JobItems(node, id, 0, 1, name, lore, enchants, moneyBoost, pointBoost, expBoost));
+			b.add(BoostType.EXP,  itemSection.getDouble("expBoost") - 1);		    
+		    
+		    jobItems.add(new JobItems(node, id, 0, 1, name, lore, enchants, b));
 		}
 	    }
 

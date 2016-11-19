@@ -35,7 +35,7 @@ public class RestrictedAreaManager {
 	    if (area.inRestrictedArea(player))
 		return area.getMultiplier();
 	}
-	return 1.0;
+	return 0D;
     }
     
     /**

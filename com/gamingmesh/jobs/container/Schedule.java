@@ -18,8 +18,7 @@ public class Schedule {
 
     boolean nextDay = false;
 
-    double MoneyBoost = 1.0;
-    double ExpBoost = 1.0;
+    BoostMultiplier BM = new BoostMultiplier();
 
     String Name = null;
 
@@ -83,20 +82,16 @@ public class Schedule {
 	return this.stoped;
     }
 
-    public void setMoneyBoost(double MoneyBoost) {
-	this.MoneyBoost = MoneyBoost;
+    public void setBoost(BoostType type, double amount) {
+	this.BM.add(type, amount - 1);
     }
 
-    public double GetMoneyBoost() {
-	return this.MoneyBoost;
+    public double getBoost(BoostType type) {
+	return this.BM.get(type);
     }
 
-    public void setExpBoost(double ExpBoost) {
-	this.ExpBoost = ExpBoost;
-    }
-
-    public double GetExpBoost() {
-	return this.ExpBoost;
+    public BoostMultiplier getBoost() {
+	return this.BM;
     }
 
     public void setName(String Name) {

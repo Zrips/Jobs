@@ -83,14 +83,12 @@ import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Perm;
 import com.google.common.base.Objects;
 
 public class JobsPaymentListener implements Listener {
     private Jobs plugin;
     private final String furnaceOwnerMetadata = "jobsFurnaceOwner";
     public final static String brewingOwnerMetadata = "jobsBrewingOwner";
-    private final String mobSpawnerMetadata = "jobsMobSpawner";
     public static final String BlockMetadata = "BlockOwner";
     public static final String PlacedBlockMetadata = "JobsBlockOwner";
     public static final String VegyMetadata = "VegyTimer";
@@ -157,7 +155,7 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	Jobs.action(jPlayer, new EntityActionInfo(cow, ActionType.MILK), 0.0);
+	Jobs.action(jPlayer, new EntityActionInfo(cow, ActionType.MILK));
 
 	Long Timer = System.currentTimeMillis();
 
@@ -175,8 +173,8 @@ public class JobsPaymentListener implements Listener {
 	Sheep sheep = (Sheep) event.getEntity();
 
 	// mob spawner, no payment or experience
-	if (sheep.hasMetadata(this.mobSpawnerMetadata)) {
-	    sheep.removeMetadata(this.mobSpawnerMetadata, this.plugin);
+	if (sheep.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+	    sheep.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), this.plugin);
 	    return;
 	}
 
@@ -201,7 +199,7 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null)
 	    return;
 
-	Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR), 0.0);
+	Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -239,7 +237,7 @@ public class JobsPaymentListener implements Listener {
 	if (contents == null)
 	    return;
 
-	Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW), 0.0);
+	Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -280,10 +278,6 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	// restricted area multiplier
-	double multiplier = 0.0;
-
-	if (Jobs.getMcMMOlistener().mcMMOPresent)
-	    multiplier = Jobs.getMcMMOlistener().getMultiplier(player) * 100 - 100;
 
 	// Item in hand
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
@@ -299,7 +293,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
-	Jobs.action(jPlayer, bInfo, multiplier, block);
+	Jobs.action(jPlayer, bInfo, block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -342,7 +336,7 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.PLACE), 0.0, block);
+	Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.PLACE), block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -368,7 +362,7 @@ public class JobsPaymentListener implements Listener {
 	    if (jPlayer == null)
 		return;
 	    ItemStack items = ((Item) event.getCaught()).getItemStack();
-	    Jobs.action(jPlayer, new ItemActionInfo(items, ActionType.FISH), 0.0);
+	    Jobs.action(jPlayer, new ItemActionInfo(items, ActionType.FISH));
 	}
     }
 
@@ -382,8 +376,8 @@ public class JobsPaymentListener implements Listener {
 	LivingEntity animal = event.getEntity();
 
 	// mob spawner, no payment or experience
-	if (animal.hasMetadata(this.mobSpawnerMetadata)) {
-	    animal.removeMetadata(this.mobSpawnerMetadata, this.plugin);
+	if (animal.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+	    animal.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), this.plugin);
 	    return;
 	}
 
@@ -406,7 +400,7 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jDamager == null)
 	    return;
-	Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME), 0.0);
+	Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
 
     }
 
@@ -460,8 +454,6 @@ public class JobsPaymentListener implements Listener {
 	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
-	double multiplier = 0.0;
-
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
 	// Checking if item is been repaired, not crafted. Combining 2 items
@@ -497,7 +489,7 @@ public class JobsPaymentListener implements Listener {
 
 	if (y == 2) {
 	    if (first == second && third == second) {
-		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), multiplier);
+		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
 		return;
 	    }
 	}
@@ -505,9 +497,9 @@ public class JobsPaymentListener implements Listener {
 	// Check Dyes
 	if (y >= 2) {
 	    if ((third == 351 || second == 351) && leather) {
-		Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE), multiplier);
+		Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
 		for (ItemStack OneDye : DyeStack) {
-		    Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE), multiplier);
+		    Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
 		}
 		return;
 	    }
@@ -515,7 +507,7 @@ public class JobsPaymentListener implements Listener {
 
 	// If we need to pay only by each craft action we will skip calculation how much was crafted
 	if (!Jobs.getGCManager().PayForEachCraft) {
-	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier);
+	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 	    return;
 	}
 
@@ -525,14 +517,14 @@ public class JobsPaymentListener implements Listener {
 	// Make sure we are actually crafting anything
 	if (hasItems(toCraft))
 	    if (event.isShiftClick())
-		schedulePostDetection(player, toCraft, jPlayer, resultStack, multiplier);
+		schedulePostDetection(player, toCraft, jPlayer, resultStack);
 	    else {
 		// The items are stored in the cursor. Make sure there's enough space.
 		if (isStackSumLegal(toCraft, toStore)) {
 		    int newItemsCount = toCraft.getAmount();
 		    while (newItemsCount >= 0) {
 			newItemsCount--;
-			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier);
+			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 		    }
 		}
 	    }
@@ -541,8 +533,7 @@ public class JobsPaymentListener implements Listener {
 
     // HACK! The API doesn't allow us to easily determine the resulting number of
     // crafted items, so we're forced to compare the inventory before and after.
-    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack,
-	final double multiplier) {
+    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack) {
 	final ItemStack[] preInv = player.getInventory().getContents();
 	// Clone the array. The content may (was for me) be mutable.
 	for (int i = 0; i < preInv.length; i++) {
@@ -566,7 +557,7 @@ public class JobsPaymentListener implements Listener {
 		if (newItemsCount > 0) {
 		    while (newItemsCount >= 0) {
 			newItemsCount--;
-			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT), multiplier);
+			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 		    }
 		}
 		return;
@@ -668,7 +659,7 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), 0.0);
+	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -721,9 +712,9 @@ public class JobsPaymentListener implements Listener {
 	    if (level == null)
 		continue;
 
-	    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT), 0.0);
+	    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
 	}
-	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT), 0.0);
+	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
 
     }
 
@@ -757,7 +748,7 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	Jobs.action(jPlayer, new ItemActionInfo(event.getResult(), ActionType.SMELT), 0.0);
+	Jobs.action(jPlayer, new ItemActionInfo(event.getResult(), ActionType.SMELT));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -788,7 +779,7 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	// mob spawner, no payment or experience
-	if (lVictim.hasMetadata(this.mobSpawnerMetadata) && !Jobs.getGCManager().payNearSpawner()) {
+	if (lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()) && !Jobs.getGCManager().payNearSpawner()) {
 	    //lVictim.removeMetadata(mobSpawnerMetadata, plugin);
 	    return;
 	}
@@ -799,20 +790,11 @@ public class JobsPaymentListener implements Listener {
 
 	Player pDamager = null;
 
-	Double PetPayMultiplier = 0.0;
 	// Checking if killer is player
 	if (e.getDamager() instanceof Player) {
 	    pDamager = (Player) e.getDamager();
 	    // Checking if killer is tamed animal
 	} else if (e.getDamager() instanceof Tameable) {
-	    Tameable t = (Tameable) (e).getDamager();
-	    if (t.isTamed() && t.getOwner() instanceof Player) {
-		pDamager = (Player) t.getOwner();
-		if (Perm.hasPermission(pDamager, "jobs.petpay") || Perm.hasPermission(pDamager, "jobs.vippetpay"))
-		    PetPayMultiplier = Jobs.getGCManager().VipPetPay * 100 - 100;
-		else
-		    PetPayMultiplier = Jobs.getGCManager().PetPay * 100 - 100;
-	    }
 	} else if (e.getDamager() instanceof Projectile) {
 	    Projectile pr = (Projectile) e.getDamager();
 	    if (pr.getShooter() instanceof Player)
@@ -835,20 +817,13 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null)
 	    return;
 
-	Double NearSpawnerMultiplier = 0.0;
-	if (lVictim.hasMetadata(this.mobSpawnerMetadata))
-	    NearSpawnerMultiplier = jDamager.getVipSpawnerMultiplier() * 100 - 100;
-
-	// Calulating multiplaier
-	double multiplier = NearSpawnerMultiplier + PetPayMultiplier;
-
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
 	    Player VPlayer = (Player) lVictim;
 	    if (jDamager.getUserName().equalsIgnoreCase(VPlayer.getName()))
 		return;
 	}
 
-	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), multiplier);
+	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
 
 	// Payment for killing player with particular job, except NPC's
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
@@ -860,7 +835,7 @@ public class JobsPaymentListener implements Listener {
 	    if (jobs == null)
 		return;
 	    for (JobProgression job : jobs) {
-		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), multiplier);
+		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), e.getDamager(), lVictim);
 	    }
 	}
     }
@@ -872,7 +847,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	if (event.getSpawnReason() == SpawnReason.SPAWNER) {
 	    LivingEntity creature = event.getEntity();
-	    creature.setMetadata(this.mobSpawnerMetadata, new FixedMetadataValue(this.plugin, true));
+	    creature.setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(this.plugin, true));
 	}
     }
 
@@ -881,7 +856,7 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
-	if (!event.getEntity().hasMetadata(this.mobSpawnerMetadata))
+	if (!event.getEntity().hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
 	    return;
 
 	EntityType type = event.getEntityType();
@@ -941,7 +916,7 @@ public class JobsPaymentListener implements Listener {
 	    JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
 	    if (jDamager == null)
 		return;
-	    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.BREED), 0.0);
+	    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.BREED));
 	}
 
     }
@@ -983,7 +958,7 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	Jobs.action(jPlayer, new ItemActionInfo(item, ActionType.EAT), 0.0);
+	Jobs.action(jPlayer, new ItemActionInfo(item, ActionType.EAT));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1045,7 +1020,7 @@ public class JobsPaymentListener implements Listener {
 		    return;
 
 	    BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.TNTBREAK);
-	    Jobs.action(jPlayer, bInfo, 0.0);
+	    Jobs.action(jPlayer, bInfo);
 	}
     }
 
@@ -1112,6 +1087,6 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE), 0.0);
+	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE));
     }
 }

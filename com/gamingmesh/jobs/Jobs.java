@@ -32,6 +32,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -56,7 +58,8 @@ import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BlockProtection;
-import com.gamingmesh.jobs.container.BoostMultiplier;
+import com.gamingmesh.jobs.container.Boost;
+import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
@@ -127,11 +130,11 @@ public class Jobs extends JavaPlugin {
     public static BufferedPaymentThread paymentThread = null;
     private static DatabaseSaveThread saveTask = null;
 
-    public final static HashMap<String, PaymentData> paymentLimit = new HashMap<String, PaymentData>();
-    public final static HashMap<String, PaymentData> ExpLimit = new HashMap<String, PaymentData>();
-    public final static HashMap<String, PaymentData> PointLimit = new HashMap<String, PaymentData>();
+    public static HashMap<String, PaymentData> paymentLimit = new HashMap<String, PaymentData>();
+    public static HashMap<String, PaymentData> ExpLimit = new HashMap<String, PaymentData>();
+    public static HashMap<String, PaymentData> PointLimit = new HashMap<String, PaymentData>();
 
-    public final static HashMap<String, FastPayment> FastPayment = new HashMap<String, FastPayment>();
+    public static HashMap<String, FastPayment> FastPayment = new HashMap<String, FastPayment>();
 
     private static NMS nms;
 
@@ -759,11 +762,24 @@ public class Jobs extends JavaPlugin {
      * @param action - the action
      * @param multiplier - the payment/xp multiplier
      */
-    public static void action(JobsPlayer jPlayer, ActionInfo info, double multiplier) {
-	action(jPlayer, info, multiplier, null);
+
+    public static void action(JobsPlayer jPlayer, ActionInfo info) {
+	action(jPlayer, info, null, null, null);
     }
 
-    public static void action(JobsPlayer jPlayer, ActionInfo info, double multiplier, Block block) {
+    public static void action(JobsPlayer jPlayer, ActionInfo info, Block block) {
+	action(jPlayer, info, block, null, null);
+    }
+    
+    public static void action(JobsPlayer jPlayer, ActionInfo info, Entity ent) {
+	action(jPlayer, info, null, ent, null);
+    }
+    
+    public static void action(JobsPlayer jPlayer, ActionInfo info, Entity ent, LivingEntity victim) {
+	action(jPlayer, info, null, ent, victim);
+    }
+    
+    public static void action(JobsPlayer jPlayer, ActionInfo info, Block block, Entity ent, LivingEntity victim) {
 
 	if (jPlayer == null)
 	    return;
@@ -774,76 +790,75 @@ public class Jobs extends JavaPlugin {
 
 	if (numjobs == 0) {
 
-	    if (noneJob != null) {
-		JobInfo jobinfo = noneJob.getJobInfo(info, 1);
+	    if (noneJob == null)
+		return;
+	    JobInfo jobinfo = noneJob.getJobInfo(info, 1);
 
-		if (jobinfo == null)
-		    return;
+	    if (jobinfo == null)
+		return;
 
-		Double income = jobinfo.getIncome(1, numjobs);
-		Double points = jobinfo.getPoints(1, numjobs);
+	    Double income = jobinfo.getIncome(1, numjobs);
+	    Double pointAmount = jobinfo.getPoints(1, numjobs);
 
-		if (income != 0D || points != 0D) {
+	    if (income != 0D || pointAmount != 0D) {
 
 //		    jPlayer
-		    BoostMultiplier FinalBoost = pManager.getFinalBonus(jPlayer, Jobs.getNoneJob());
+		Boost boost = pManager.getFinalBonus(jPlayer, Jobs.getNoneJob());
 
-		    // Calculate income
+		// Calculate income
 
-		    Double amount = 0D;
-		    if (income != 0D) {
-			amount = income + (income * FinalBoost.getMoneyBoost() / 100);
-			if (GconfigManager.useMinimumOveralPayment && income > 0) {
-			    double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
-			    if (amount < maxLimit) {
-				amount = maxLimit;
-			    }
+		if (income != 0D) {
+		    income = income + (income * boost.getFinal(BoostType.MONEY));
+		    if (GconfigManager.useMinimumOveralPayment && income > 0) {
+			double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
+			if (income < maxLimit) {
+			    income = maxLimit;
 			}
 		    }
-
-		    // Calculate points
-
-		    Double pointAmount = 0D;
-		    if (points != 0D) {
-			pointAmount = points + (points * FinalBoost.getPointsBoost() / 100);
-			if (GconfigManager.useMinimumOveralPoints && points > 0) {
-			    double maxLimit = points * GconfigManager.MinimumOveralPaymentLimit;
-			    if (pointAmount < maxLimit) {
-				pointAmount = maxLimit;
-			    }
-			}
-		    }
-
-		    if (!isUnderMoneyLimit(jPlayer, amount)) {
-			amount = 0D;
-			if (GconfigManager.MoneyStopPoint)
-			    pointAmount = 0D;
-		    }
-
-		    if (!isUnderPointLimit(jPlayer, pointAmount)) {
-			pointAmount = 0D;
-			if (GconfigManager.PointStopMoney)
-			    amount = 0D;
-		    }
-
-		    if (!isBpOk(jPlayer, info, block))
-			return;
-
-		    if (amount == 0D && pointAmount == 0D)
-			return;
-
-		    if (info.getType() == ActionType.BREAK && block != null)
-			Jobs.getBpManager().remove(block);
-
-		    if (pointAmount != 0D)
-			jPlayer.setSaved(false);
-
-		    Jobs.getEconomy().pay(jPlayer, amount, pointAmount, 0.0);
-
-		    if (GconfigManager.LoggingUse)
-			loging.recordToLog(jPlayer, info, amount, 0);
 		}
+
+		// Calculate points
+
+		if (pointAmount != 0D) {
+		    pointAmount = pointAmount + (pointAmount * boost.getFinal(BoostType.POINTS));
+		    if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
+			double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
+			if (pointAmount < maxLimit) {
+			    pointAmount = maxLimit;
+			}
+		    }
+		}
+
+		if (!isUnderMoneyLimit(jPlayer, income)) {
+		    income = 0D;
+		    if (GconfigManager.MoneyStopPoint)
+			pointAmount = 0D;
+		}
+
+		if (!isUnderPointLimit(jPlayer, pointAmount)) {
+		    pointAmount = 0D;
+		    if (GconfigManager.PointStopMoney)
+			income = 0D;
+		}
+
+		if (!isBpOk(jPlayer, info, block))
+		    return;
+
+		if (income == 0D && pointAmount == 0D)
+		    return;
+
+		if (info.getType() == ActionType.BREAK && block != null)
+		    Jobs.getBpManager().remove(block);
+
+		if (pointAmount != 0D)
+		    jPlayer.setSaved(false);
+
+		Jobs.getEconomy().pay(jPlayer, income, pointAmount, 0.0);
+
+		if (GconfigManager.LoggingUse)
+		    loging.recordToLog(jPlayer, info, income, 0);
 	    }
+
 	} else {
 	    for (JobProgression prog : progression) {
 		int level = prog.getLevel();
@@ -853,10 +868,10 @@ public class Jobs extends JavaPlugin {
 		    continue;
 
 		Double income = jobinfo.getIncome(level, numjobs);
-		Double points = jobinfo.getPoints(level, numjobs);
-		Double exp = jobinfo.getExperience(level, numjobs);
+		Double pointAmount = jobinfo.getPoints(level, numjobs);
+		Double expAmount = jobinfo.getExperience(level, numjobs);
 
-		if (income == 0D && points == 0D && exp == 0D)
+		if (income == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
 
 		if (GconfigManager.addXpPlayer()) {
@@ -868,10 +883,10 @@ public class Jobs extends JavaPlugin {
 			 * That way jobs that give fractions of experience points will slowly give
 			 * experience in the aggregate
 			 */
-			int expInt = exp.intValue();
-			double remainder = exp.doubleValue() - expInt;
+			int expInt = expAmount.intValue();
+			double remainder = expAmount.doubleValue() - expInt;
 			if (Math.abs(remainder) > Math.random()) {
-			    if (exp.doubleValue() < 0) {
+			    if (expAmount.doubleValue() < 0) {
 				expInt--;
 			    } else {
 				expInt++;
@@ -887,35 +902,26 @@ public class Jobs extends JavaPlugin {
 		    }
 		}
 
-		BoostMultiplier FinalBoost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob());
+		Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
 
-		if (multiplier != 0.0)
-		    FinalBoost = new BoostMultiplier(FinalBoost.getMoneyBoost() + multiplier,
-			FinalBoost.getPointsBoost() + multiplier,
-			FinalBoost.getExpBoost() + multiplier);
-
-//		OfflinePlayer dude = jPlayer.getPlayer();
+//		Debug.D(FinalBoost.getMoneyBoost() + " : " + FinalBoost.getPointsBoost() + " : " + FinalBoost.getExpBoost());
 
 		// Calculate income
-
-		Double amount = 0D;
 		if (income != 0D) {
-		    amount = income + (income * FinalBoost.getMoneyBoost() / 100);
+		    income = income + (income * boost.getFinal(BoostType.MONEY));
 		    if (GconfigManager.useMinimumOveralPayment && income > 0) {
 			double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
-			if (amount < maxLimit) {
-			    amount = maxLimit;
+			if (income < maxLimit) {
+			    income = maxLimit;
 			}
 		    }
 		}
 
 		// Calculate points
-
-		Double pointAmount = 0D;
-		if (points != 0D) {
-		    pointAmount = points + (points * FinalBoost.getPointsBoost() / 100);
-		    if (GconfigManager.useMinimumOveralPoints && points > 0) {
-			double maxLimit = points * GconfigManager.MinimumOveralPaymentLimit;
+		if (pointAmount != 0D) {
+		    pointAmount = pointAmount + (pointAmount * boost.getFinal(BoostType.POINTS));
+		    if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
+			double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
 			if (pointAmount < maxLimit) {
 			    pointAmount = maxLimit;
 			}
@@ -923,17 +929,17 @@ public class Jobs extends JavaPlugin {
 		}
 
 		// Calculate exp
-		double expAmount = exp + (exp * FinalBoost.getExpBoost() / 100);
+		expAmount = expAmount + (expAmount * boost.getFinal(BoostType.EXP));
 
-		if (GconfigManager.useMinimumOveralPayment && exp > 0) {
-		    double maxLimit = exp * GconfigManager.MinimumOveralPaymentLimit;
-		    if (exp < maxLimit) {
-			exp = maxLimit;
+		if (GconfigManager.useMinimumOveralPayment && expAmount > 0) {
+		    double maxLimit = expAmount * GconfigManager.MinimumOveralPaymentLimit;
+		    if (expAmount < maxLimit) {
+			expAmount = maxLimit;
 		    }
 		}
 
-		if (!isUnderMoneyLimit(jPlayer, amount)) {
-		    amount = 0D;
+		if (!isUnderMoneyLimit(jPlayer, income)) {
+		    income = 0D;
 		    if (GconfigManager.MoneyStopExp)
 			expAmount = 0D;
 		    if (GconfigManager.MoneyStopPoint)
@@ -943,7 +949,7 @@ public class Jobs extends JavaPlugin {
 		if (!isUnderExpLimit(jPlayer, expAmount)) {
 		    expAmount = 0D;
 		    if (GconfigManager.ExpStopMoney)
-			amount = 0D;
+			income = 0D;
 		    if (GconfigManager.ExpStopPoint)
 			pointAmount = 0D;
 		}
@@ -951,7 +957,7 @@ public class Jobs extends JavaPlugin {
 		if (!isUnderPointLimit(jPlayer, pointAmount)) {
 		    pointAmount = 0D;
 		    if (GconfigManager.PointStopMoney)
-			amount = 0D;
+			income = 0D;
 		    if (GconfigManager.PointStopExp)
 			expAmount = 0D;
 		}
@@ -959,7 +965,7 @@ public class Jobs extends JavaPlugin {
 		if (!isBpOk(jPlayer, info, block))
 		    return;
 
-		if (amount == 0D && pointAmount == 0D && expAmount == 0D)
+		if (income == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
 
 		try {
@@ -981,17 +987,19 @@ public class Jobs extends JavaPlugin {
 		else
 		    expAmount = JobsExpGainEvent.getExp();
 
-		economy.pay(jPlayer, amount, pointAmount, expAmount);
+		FastPayment.clear();
+		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), income, pointAmount, expAmount), prog
+		    .getJob()));
+
+		economy.pay(jPlayer, income, pointAmount, expAmount);
 		int oldLevel = prog.getLevel();
 
 		if (GconfigManager.LoggingUse)
-		    loging.recordToLog(jPlayer, info, amount, expAmount);
+		    loging.recordToLog(jPlayer, info, income, expAmount);
 
 		if (prog.addExperience(expAmount))
 		    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
 
-		FastPayment.clear();
-		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), amount, points, exp), prog.getJob()));
 	    }
 	}
     }

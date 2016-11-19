@@ -16,6 +16,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
@@ -56,10 +57,10 @@ public class McMMOlistener implements Listener {
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR), 0.0);
+	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void OnAbilityOn(McMMOPlayerAbilityActivateEvent event) {
 	HashMap<AbilityType, Long> InfoMap = new HashMap<AbilityType, Long>();
 	if (map.containsKey(event.getPlayer().getName()))
@@ -68,7 +69,7 @@ public class McMMOlistener implements Listener {
 	map.put(event.getPlayer().getName(), InfoMap);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void OnAbilityOff(McMMOPlayerAbilityDeactivateEvent event) {
 	if (map.containsKey(event.getPlayer().getName())) {
 	    HashMap<AbilityType, Long> InfoMap = map.get(event.getPlayer().getName());
@@ -81,30 +82,32 @@ public class McMMOlistener implements Listener {
     public double getMultiplier(Player player) {
 
 	HashMap<AbilityType, Long> InfoMap = map.get(player.getName());
-	if (InfoMap == null)
-	    return 1.0;
+	if (InfoMap == null) {
+	    return 0D;
+	}
 
 	Long t = InfoMap.get(AbilityType.TREE_FELLER);
 	if (t != null) {
 	    if (t < System.currentTimeMillis())
-		return Jobs.getGCManager().TreeFellerMultiplier;
+		return -(1-Jobs.getGCManager().TreeFellerMultiplier);
 	    map.remove(AbilityType.TREE_FELLER);
 	}
 
 	t = InfoMap.get(AbilityType.GIGA_DRILL_BREAKER);
 	if (t != null) {
 	    if (t < System.currentTimeMillis())
-		return Jobs.getGCManager().gigaDrillMultiplier;
+		return -(1-Jobs.getGCManager().gigaDrillMultiplier);
 	    map.remove(AbilityType.GIGA_DRILL_BREAKER);
 	}
 
 	t = InfoMap.get(AbilityType.SUPER_BREAKER);
 	if (t != null) {
 	    if (t < System.currentTimeMillis())
-		return Jobs.getGCManager().superBreakerMultiplier;
+		return -(1-Jobs.getGCManager().superBreakerMultiplier);
 	    map.remove(AbilityType.SUPER_BREAKER);
 	}
-	return 1.0;
+
+	return 0D;
     }
 
     public boolean CheckmcMMO() {

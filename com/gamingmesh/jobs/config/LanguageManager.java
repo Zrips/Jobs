@@ -112,6 +112,7 @@ public class LanguageManager {
 	    c.get("command.bonus.output.global", " &eGlobal bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.dynamic", " &eDynamic payment bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.area", " &eArea bonus: %money% %points% %exp%");
+	    c.get("command.bonus.output.mcmmo", " &eMcMMO bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.final", " &eFinal bonus: %money% %points% %exp%");
 
 	    c.get("command.convert.help.info",

@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
@@ -149,9 +150,8 @@ public class GuiManager {
 	ItemStack GuiItem = job.getGuiItem();
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
-	// money exp boost
-	Double MoneyBoost = JPlayer.getBoost(job.getName(), BoostType.MONEY);
-	Double ExpBoost = JPlayer.getBoost(job.getName(), BoostType.EXP);
+
+	Boost boost = Jobs.getPlayerManager().getFinalBonus(JPlayer, job);
 
 	int level = 1;
 	JobProgression prog = JPlayer.getJobProgression(job);
@@ -176,11 +176,11 @@ public class GuiManager {
 		String itemName = Jobs.getNameTranslatorManager().Translate(info.get(z).getName(), info.get(z));
 
 		double income = info.get(z).getIncome(level, numjobs);
-		income = income + ((income * MoneyBoost) - income) + ((income * job.getMoneyBoost()) - income);
+		income = income + (income * boost.getFinal(BoostType.MONEY));
 		ChatColor incomeColor = income >= 0 ? ChatColor.GREEN : ChatColor.DARK_RED;
 
 		double xp = info.get(z).getExperience(level, numjobs);
-		xp = xp + ((xp * ExpBoost) - xp) + ((xp * job.getExpBoost()) - xp);
+		xp = xp + (xp * boost.getFinal(BoostType.EXP));
 		ChatColor xpColor = xp >= 0 ? ChatColor.YELLOW : ChatColor.GRAY;
 
 		String xpString = String.format("%.2fxp", xp);

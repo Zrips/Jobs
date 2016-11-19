@@ -1,25 +1,39 @@
 package com.gamingmesh.jobs.container;
 
+import java.util.HashMap;
+
 public class BoostMultiplier {
-    double money;
-    double points;
-    double exp;
 
-    public BoostMultiplier(double money, double points, double exp) {
-	this.money = money;
-	this.points = points;
-	this.exp = exp;
+    HashMap<BoostType, Double> map = new HashMap<BoostType, Double>();
+
+    public BoostMultiplier() {
+	for (BoostType one : BoostType.values()) {
+	    map.put(one, 0D);
+	}
     }
 
-    public double getMoneyBoost() {
-	return this.money;
+    public BoostMultiplier add(BoostType type, double amount) {
+	map.put(type, amount);
+	return this;
     }
 
-    public double getPointsBoost() {
-	return this.points;
+    public BoostMultiplier add(double amount) {
+	for (BoostType one : BoostType.values()) {
+	    map.put(one, amount);
+	}
+	return this;
     }
 
-    public double getExpBoost() {
-	return this.exp;
+    public double get(BoostType type) {
+	if (!map.containsKey(type))
+	    return 0D;
+	return this.map.get(type);
+    }
+
+    public void add(BoostMultiplier armorboost) {
+	for (BoostType one : BoostType.values()) {
+	    double r = armorboost.get(one);
+	    map.put(one, get(one) + r);
+	}
     }
 }

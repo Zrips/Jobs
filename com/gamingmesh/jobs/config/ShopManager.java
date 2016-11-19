@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -441,7 +442,7 @@ public class ShopManager {
 				enchants.put(ench, level);
 			}
 
-		    items.add(new JobItems(node, id, data, amount, name, lore, enchants, 0, 0, 0));
+		    items.add(new JobItems(node, id, data, amount, name, lore, enchants, new BoostMultiplier()));
 		}
 		Sitem.setitems(items);
 	    }

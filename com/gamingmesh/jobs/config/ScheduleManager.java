@@ -13,6 +13,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.BoostMultiplier;
+import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.stuff.ChatColor;
@@ -90,8 +92,7 @@ public class ScheduleManager {
 			    }
 
 		    for (Job onejob : one.GetJobs()) {
-			onejob.setExpBoost(one.GetExpBoost());
-			onejob.setMoneyBoost(one.GetMoneyBoost());
+			onejob.setBoost(one.getBoost());
 		    }
 
 		    one.setBroadcastInfoOn(System.currentTimeMillis() + one.GetBroadcastInterval() * 60 * 1000);
@@ -109,8 +110,7 @@ public class ScheduleManager {
 				Bukkit.broadcastMessage(oneMsg);
 			    }
 		    for (Job onejob : one.GetJobs()) {
-			onejob.setExpBoost(1.0);
-			onejob.setMoneyBoost(1.0);
+			onejob.setBoost(new BoostMultiplier());
 		    }
 		    one.setStoped(true);
 		    one.setStarted(false);
@@ -191,12 +191,6 @@ public class ScheduleManager {
 	    if (!path.contains("Jobs") || !path.isList("Jobs"))
 		continue;
 
-	    if (!path.contains("Exp") || !path.isDouble("Exp"))
-		continue;
-
-	    if (!path.contains("Money") || !path.isDouble("Money"))
-		continue;
-
 	    sched.setDays(path.getStringList("Days"));
 	    sched.setJobs(path.getStringList("Jobs"));
 	    sched.setFrom(Integer.valueOf(path.getString("From").replace(":", "")));
@@ -220,8 +214,12 @@ public class ScheduleManager {
 	    if (path.contains("BroadcastMessage") && path.isList("BroadcastMessage"))
 		sched.setMessageToBroadcast(path.getStringList("BroadcastMessage"), path.getString("From"), path.getString("Until"));
 
-	    sched.setExpBoost(path.getDouble("Exp"));
-	    sched.setMoneyBoost(path.getDouble("Money"));
+	    if (path.contains("Exp") && path.isDouble("Exp"))
+		sched.setBoost(BoostType.EXP, path.getDouble("Exp", 0D));
+	    if (path.contains("Money") && path.isDouble("Money"))
+		sched.setBoost(BoostType.MONEY, path.getDouble("Money", 0D));
+	    if (path.contains("Points") && path.isDouble("Points"))
+		sched.setBoost(BoostType.POINTS, path.getDouble("Points", 0D));
 	    Jobs.getGCManager().BoostSchedule.add(sched);
 	}
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");

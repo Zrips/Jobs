@@ -28,7 +28,8 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.BoostMultiplier;
+import com.gamingmesh.jobs.container.Boost;
+import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -374,14 +375,14 @@ public class JobsCommands implements CommandExecutor {
 	    }
 	}
 
-	if (job.getExpBoost() != 1.0)
-	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", job.getExpBoost()) + "\n");
+	if (job.getBoost().get(BoostType.EXP) != 1.0)
+	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", job.getBoost().get(BoostType.EXP)) + "\n");
 
-	if (job.getMoneyBoost() != 1.0)
-	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", job.getMoneyBoost()) + "\n");
+	if (job.getBoost().get(BoostType.MONEY) != 1.0)
+	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", job.getBoost().get(BoostType.MONEY)) + "\n");
 
-	if (job.getPointBoost() != 1.0)
-	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", job.getPointBoost()) + "\n");
+	if (job.getBoost().get(BoostType.POINTS) != 1.0)
+	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", job.getBoost().get(BoostType.POINTS)) + "\n");
 
 	if (Jobs.getGCManager().useDynamicPayment)
 	    if (job.getBonus() < 0)
@@ -486,7 +487,7 @@ public class JobsCommands implements CommandExecutor {
     public static String jobInfoMessage(JobsPlayer player, Job job, ActionType type) {
 
 	// money exp boost
-	BoostMultiplier finalBoost = Jobs.getPlayerManager().getFinalBonus(player, job);
+	Boost boost = Jobs.getPlayerManager().getFinalBonus(player, job);
 
 	StringBuilder message = new StringBuilder();
 
@@ -511,15 +512,15 @@ public class JobsCommands implements CommandExecutor {
 
 //	    Jobs.getPlayerManager().getFinalBonus(player, prog)
 
-	    income = income + (income * finalBoost.getMoneyBoost() / 100);
+	    income = income + (income * boost.getFinal(BoostType.MONEY));
 	    String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
 	    double xp = info.getExperience(level, numjobs);
-	    xp = xp + (xp * finalBoost.getExpBoost() / 100);
+	    xp = xp + (xp * boost.getFinal(BoostType.EXP));
 	    String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
 	    double points = info.getPoints(level, numjobs);
-	    points = points + (points * finalBoost.getPointsBoost() / 100);
+	    points = points + (points * boost.getFinal(BoostType.POINTS));
 	    String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 
 	    if (income == 0D && points == 0D && xp == 0D)

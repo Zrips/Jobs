@@ -31,12 +31,9 @@ public class JobItems {
     private String name;
     private List<String> lore;
     private HashMap<Enchantment, Integer> enchants;
-    private Double moneyBoost = 0D;
-    private Double pointBoost = 0D;
-    private Double expBoost = 0D;
+    private BoostMultiplier boostMultiplier = new BoostMultiplier();
 
-    public JobItems(String node, int id, int data, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, double moneyBoost,
-	double pointBoost, double expBoost) {
+    public JobItems(String node, int id, int data, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier) {
 	this.node = node;
 	this.id = id;
 	this.data = data;
@@ -44,9 +41,7 @@ public class JobItems {
 	this.name = name;
 	this.lore = lore;
 	this.enchants = enchants;
-	this.moneyBoost = moneyBoost;
-	this.pointBoost = pointBoost;
-	this.expBoost = expBoost;
+	this.boostMultiplier = boostMultiplier;
     }
 
     public String getNode() {
@@ -77,15 +72,7 @@ public class JobItems {
 	return this.enchants;
     }
 
-    public Double getMoneyBoost() {
-	return this.moneyBoost;
-    }
-
-    public Double getPointBoost() {
-	return this.pointBoost;
-    }
-
-    public Double getExpBoost() {
-	return this.expBoost;
+    public BoostMultiplier getBoost() {
+	return this.boostMultiplier;
     }
 }

@@ -30,12 +30,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
+import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.Job;
@@ -48,6 +52,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Perm;
 
@@ -56,6 +61,7 @@ public class PlayerManager {
     private ConcurrentHashMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<String, JobsPlayer>();
     private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<String, JobsPlayer>();
     private PointsData PointsDatabase = new PointsData();
+    private final String mobSpawnerMetadata = "jobsMobSpawner";
 
     private HashMap<String, PlayerInfo> PlayerMap = new HashMap<String, PlayerInfo>();
     Jobs plugin;
@@ -428,7 +434,7 @@ public class PlayerManager {
 	    Jobs.getGCManager().SoundLevelupVolume,
 	    Jobs.getGCManager().SoundLevelupPitch,
 	    Jobs.getGCManager().SoundTitleChangeSound.toUpperCase(),
-	    Jobs.getGCManager().SoundTitleChangeVolume, 
+	    Jobs.getGCManager().SoundTitleChangeVolume,
 	    Jobs.getGCManager().SoundTitleChangePitch);
 	Bukkit.getServer().getPluginManager().callEvent(levelUpEvent);
 	// If event is canceled, dont do anything
@@ -560,13 +566,20 @@ public class PlayerManager {
 	return false;
     }
 
-    public double GetBoostInPerc(JobsPlayer player, Job job, BoostType type) {
-	return GetBoostInPerc(player, job, type, false);
+    public BoostMultiplier getBoost(JobsPlayer player, Job job) {
+	BoostMultiplier b = new BoostMultiplier();
+	for (BoostType one : BoostType.values()) {
+	    b.add(one, getBoost(player, job, one, false));
+	}
+	return b;
     }
 
-    public double GetBoostInPerc(JobsPlayer player, Job job, BoostType type, boolean force) {
-	double Boost = player.getBoost(job.getName(), type, force) * 100.0 - 100.0;
-	return Boost;
+    public double getBoost(JobsPlayer player, Job job, BoostType type) {
+	return getBoost(player, job, type, false);
+    }
+
+    public double getBoost(JobsPlayer player, Job job, BoostType type, boolean force) {
+	return player.getBoost(job.getName(), type, force);
     }
 
     /**
@@ -590,35 +603,25 @@ public class PlayerManager {
     }
 
     public BoostMultiplier getItemBoost(Player player, Job prog) {
-	BoostMultiplier data = new BoostMultiplier(1D, 1D, 1D);
+	BoostMultiplier data = new BoostMultiplier();
 	if (player == null)
 	    return data;
-
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-
 	if (iih == null || prog == null)
 	    return data;
-
-	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(prog, iih);
-
-	data = new BoostMultiplier(data.getMoneyBoost() + itemboost.getMoneyBoost(),
-	    data.getPointsBoost() + itemboost.getPointsBoost(),
-	    data.getExpBoost() + itemboost.getExpBoost());
-
+	 data = Jobs.getPlayerManager().getItemBoost(prog, iih);
 	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
-	    BoostMultiplier armorboost = Jobs.getPlayerManager().getItemBoost(prog, OneArmor);
-	    data = new BoostMultiplier(data.getMoneyBoost() + armorboost.getMoneyBoost(),
-		data.getPointsBoost() + armorboost.getPointsBoost(),
-		data.getExpBoost() + armorboost.getExpBoost());
+	    BoostMultiplier armorboost = Jobs.getPlayerManager().getItemBoost(prog, OneArmor);	    
+	    data.add(armorboost);
 	}
-
 	return data;
     }
 
     @SuppressWarnings("deprecation")
     public BoostMultiplier getItemBoost(Job prog, ItemStack item) {
+	BoostMultiplier bonus = new BoostMultiplier();
 	if (item == null)
-	    return new BoostMultiplier(0D, 0D, 0D);
+	    return bonus;
 
 	ItemMeta meta = item.getItemMeta();
 	String name = null;
@@ -655,52 +658,53 @@ public class PlayerManager {
 		    continue main;
 	    }
 
-	    return new BoostMultiplier(oneItem.getMoneyBoost() - 1D, oneItem.getPointBoost() - 1D, oneItem.getExpBoost() - 1D);
+	    return oneItem.getBoost();
 	}
 
-	return new BoostMultiplier(0D, 0D, 0D);
+	return bonus;
     }
 
-    public BoostMultiplier getFinalBonus(JobsPlayer player, Job prog) {
-	BoostMultiplier multiplier = new BoostMultiplier(0D, 0D, 0D);
+    public enum BoostOf {
+	McMMO, PetPay, NearSpawner, Permission, Global, Dynamic, Item, Area
+    }
+
+    public Boost getFinalBonus(JobsPlayer player, Job prog) {
+	return getFinalBonus(player, prog, null, null);
+    }
+
+    public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim) {
+	Boost boost = new Boost();
+
 	if (player == null || prog == null)
-	    return multiplier;
+	    return boost;
 
-	double PMoneyBoost = Jobs.getPlayerManager().GetBoostInPerc(player, prog, BoostType.MONEY);
-	PMoneyBoost = (int) (PMoneyBoost * 100D) / 100D;
-	double PPointBoost = Jobs.getPlayerManager().GetBoostInPerc(player, prog, BoostType.POINTS);
-	PPointBoost = (int) (PPointBoost * 100D) / 100D;
-	double PExpBoost = Jobs.getPlayerManager().GetBoostInPerc(player, prog, BoostType.EXP);
-	PExpBoost = (int) (PExpBoost * 100D) / 100D;
+	if (Jobs.getMcMMOlistener().mcMMOPresent)
+	    boost.add(BoostOf.McMMO, new BoostMultiplier().add(Jobs.getMcMMOlistener().getMultiplier(player.getPlayer())));
 
-	double GMoneyBoost = prog.getMoneyBoost() * 100.0 - 100.0;
-	GMoneyBoost = (int) (GMoneyBoost * 100D) / 100D;
-	double GPointBoost = prog.getPointBoost() * 100.0 - 100.0;
-	GPointBoost = (int) (GPointBoost * 100D) / 100D;
-	double GExpBoost = prog.getExpBoost() * 100.0 - 100.0;
-	GExpBoost = (int) (GExpBoost * 100D) / 100D;
+	if (ent != null && ent instanceof Tameable) {
+	    Tameable t = (Tameable) ent;
+	    if (t.isTamed() && t.getOwner() instanceof Player) {
+		Player pDamager = (Player) t.getOwner();
+		double PetPayMultiplier = 0D;
+		if (Perm.hasPermission(pDamager, "jobs.petpay") || Perm.hasPermission(pDamager, "jobs.vippetpay"))
+		    PetPayMultiplier = Jobs.getGCManager().VipPetPay;
+		else
+		    PetPayMultiplier = Jobs.getGCManager().PetPay;
+		boost.add(BoostOf.PetPay, new BoostMultiplier().add(PetPayMultiplier));
+	    }
+	}
 
-	double DBoost = (int) (prog.getBonus() * 100D) / 100D;
-	if (!Jobs.getGCManager().useDynamicPayment)
-	    DBoost = 0.0;
+	if (victim != null && victim.hasMetadata(this.getMobSpawnerMetadata()))
+	    boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(player.getVipSpawnerMultiplier()));
+	boost.add(BoostOf.Permission, Jobs.getPlayerManager().getBoost(player, prog));
+	boost.add(BoostOf.Global, prog.getBoost());
+	if (Jobs.getGCManager().useDynamicPayment)
+	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
+	boost.add(BoostOf.Item, Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog));
+	boost.add(BoostOf.Item, Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog));
+	boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
 
-	BoostMultiplier itemboost = Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog);
-
-	double IMoneyBoost = itemboost.getMoneyBoost() * 100.0 - 100.0;
-	IMoneyBoost = (int) (IMoneyBoost * 100D) / 100D;
-	double IPointBoost = itemboost.getPointsBoost() * 100.0 - 100.0;
-	IPointBoost = (int) (IPointBoost * 100D) / 100D;
-	double IExpBoost = itemboost.getExpBoost() * 100.0 - 100.0;
-	IExpBoost = (int) (IExpBoost * 100D) / 100D;
-
-	double RBoost = Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer()) * 100.0 - 100.0;
-	RBoost = (int) (RBoost * 100D) / 100D;
-
-	double Fmoney = (int) ((IMoneyBoost + DBoost + GMoneyBoost + PMoneyBoost + RBoost) * 100) / 100D;
-	double Fpoints = (int) ((IPointBoost + DBoost + GPointBoost + PPointBoost + RBoost) * 100) / 100D;
-	double Fexp = (int) ((IExpBoost + DBoost + GExpBoost + PExpBoost + RBoost) * 100) / 100D;
-
-	return new BoostMultiplier(Fmoney, Fpoints, Fexp);
+	return boost;
     }
 
     public void AutoJoinJobs(final Player player) {
@@ -735,5 +739,9 @@ public class PlayerManager {
 		return;
 	    }
 	}, Jobs.getGCManager().AutoJobJoinDelay * 20L);
+    }
+
+    public String getMobSpawnerMetadata() {
+	return mobSpawnerMetadata;
     }
 }

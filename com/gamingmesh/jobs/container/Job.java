@@ -71,11 +71,7 @@ public class Job {
     private int totalPlayers = -1;
     private double bonus = 0.0;
 
-    private double ExpBoost = 1.0;
-
-    private double MoneyBoost = 1.0;
-    
-    private double PointBoost = 1.0;
+    private BoostMultiplier boost = new BoostMultiplier();
 
     /**
      * Constructor
@@ -117,33 +113,21 @@ public class Job {
 	this.CmdOnLeave = CmdOnLeave;
 	this.GUIitem = GUIitem;
     }
+
+    public void addBoost(BoostType type, double Point) {
+	this.boost.add(type, Point - 1D);
+    }
     
-    public void setPointBoost(double Point) {
-	this.PointBoost = Point;
+    public void setBoost(BoostMultiplier BM) {
+  	this.boost = BM;
+      }
+    
+    public BoostMultiplier getBoost() {
+	return this.boost;
     }
     
     public boolean isSame(Job job) {
 	return this.getName().equalsIgnoreCase(job.getName());
-    }
-    
-    public double getPointBoost() {
-	return this.PointBoost;
-    }
-    
-    public void setMoneyBoost(double amount) {
-	this.MoneyBoost = amount;
-    }
-
-    public double getMoneyBoost() {
-	return this.MoneyBoost;
-    }
-
-    public void setExpBoost(double amount) {
-	this.ExpBoost = amount;
-    }
-
-    public double getExpBoost() {
-	return this.ExpBoost;
     }
 
     public int getTotalPlayers() {
@@ -220,10 +204,10 @@ public class Job {
     public EnumMap<ActionType, List<JobInfo>> getJobInfoList() {
 	return jobInfo;
     }
-    
+
     public JobInfo getJobInfo(ActionInfo action, int level) {
 	for (JobInfo info : getJobInfo(action.getType())) {
-	    if (info.getName().equalsIgnoreCase(action.getName()) || info.getName().equalsIgnoreCase(action.getNameWithSub())){
+	    if (info.getName().equalsIgnoreCase(action.getName()) || info.getName().equalsIgnoreCase(action.getNameWithSub())) {
 		if (!info.isInLevelRange(level))
 		    break;
 		return info;
