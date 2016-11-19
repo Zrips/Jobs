@@ -69,7 +69,7 @@ public class JobsPlayer {
     // log
     private List<Log> logList = new ArrayList<Log>();
 
-    private Long seen;
+    private Long seen = System.currentTimeMillis();
 
     public JobsPlayer(String userName, OfflinePlayer player) {
 	this.userName = userName;
@@ -309,6 +309,10 @@ public class JobsPlayer {
      * @return the userName
      */
     public String getUserName() {
+	if (userName == null && player != null)
+	    userName = player.getName();
+	if (userName == null && OffPlayer != null)
+	    userName = OffPlayer.getName();
 	return userName;
     }
 

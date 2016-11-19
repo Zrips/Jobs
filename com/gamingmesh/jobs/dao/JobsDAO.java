@@ -521,7 +521,7 @@ public abstract class JobsDAO {
 		insert.setInt(1, oneUser.getValue().getUserId());
 		insert.setString(2, oneUser.getValue().getPlayerUUID().toString());
 		insert.setString(3, oneUser.getValue().getUserName());
-		insert.setLong(4, oneUser.getValue().getSeen());
+		insert.setLong(4, oneUser.getValue().getSeen() == null ? System.currentTimeMillis() : oneUser.getValue().getSeen());
 		insert.addBatch();
 	    }
 	    insert.executeBatch();

@@ -139,6 +139,7 @@ public class Jobs extends JavaPlugin {
     private static NMS nms;
 
     private static ActionBar actionbar;
+    private boolean running = false;
 
     public void setMcMMOlistener() {
 	McMMOlistener = new McMMOlistener(this);
@@ -462,29 +463,37 @@ public class Jobs extends JavaPlugin {
 	} catch (IOException e1) {
 	    e1.printStackTrace();
 	}
-	int i = 0;
-	int y = 0;
-	int total = Jobs.getPlayerManager().getPlayerMap().size();
-	long time = System.currentTimeMillis();
-	for (Entry<String, PlayerInfo> one : Jobs.getPlayerManager().getPlayerMap().entrySet()) {
-	    try {
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one);
-		if (jPlayer == null)
-		    continue;
-		Jobs.getPlayerManager().getPlayersCache().put(one.getValue().getName().toLowerCase(), jPlayer);
-	    } catch (Exception e) {
-	    }
-	    i++;
-	    y++;
-	    if (y >= 1000) {
-		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + i + "/" + total + " players data");
-		y = 0;
-	    }
-	}
-	dao.getMap().clear();
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + i + " players data in " + ((int) (((System.currentTimeMillis() - time)
-	    / 1000d) * 100) / 100D));
 
+	Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
+	    @Override
+	    public void run() {
+		int i = 0;
+		int y = 0;
+		int total = Jobs.getPlayerManager().getPlayerMap().size();
+		long time = System.currentTimeMillis();
+		for (Entry<String, PlayerInfo> one : Jobs.getPlayerManager().getPlayerMap().entrySet()) {
+		    if (!running)
+			return;
+		    try {
+			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one);
+			if (jPlayer == null)
+			    continue;
+			Jobs.getPlayerManager().getPlayersCache().put(one.getValue().getName().toLowerCase(), jPlayer);
+		    } catch (Exception e) {
+		    }
+		    i++;
+		    y++;
+		    if (y >= 1000) {
+			Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + i + "/" + total + " players data");
+			y = 0;
+		    }
+		}
+		dao.getMap().clear();
+		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + i + " players data in " + ((int) (((System.currentTimeMillis() - time)
+		    / 1000d) * 100) / 100D));
+		return;
+	    }
+	});
 	// add all online players
 	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
 	    Jobs.getPlayerManager().playerJoin(online);
@@ -644,7 +653,7 @@ public class Jobs extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+	running = true;
 	String packageName = getServer().getClass().getPackage().getName();
 	String[] packageSplit = packageName.split("\\.");
 	version = packageSplit[packageSplit.length - 1].substring(0, packageSplit[packageSplit.length - 1].length() - 3);
@@ -744,6 +753,7 @@ public class Jobs extends JavaPlugin {
 
     @Override
     public void onDisable() {
+	running = false;
 	GUIManager.CloseInventories();
 	shopManager.CloseInventories();
 	dao.saveExplore();
@@ -770,15 +780,15 @@ public class Jobs extends JavaPlugin {
     public static void action(JobsPlayer jPlayer, ActionInfo info, Block block) {
 	action(jPlayer, info, block, null, null);
     }
-    
+
     public static void action(JobsPlayer jPlayer, ActionInfo info, Entity ent) {
 	action(jPlayer, info, null, ent, null);
     }
-    
+
     public static void action(JobsPlayer jPlayer, ActionInfo info, Entity ent, LivingEntity victim) {
 	action(jPlayer, info, null, ent, victim);
     }
-    
+
     public static void action(JobsPlayer jPlayer, ActionInfo info, Block block, Entity ent, LivingEntity victim) {
 
 	if (jPlayer == null)
