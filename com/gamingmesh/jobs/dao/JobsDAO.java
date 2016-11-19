@@ -762,8 +762,12 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT *  FROM `" + prefix + "users`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id"), res.getLong(
-		    "seen")));
+		long seen = System.currentTimeMillis();
+		try {
+		    seen = res.getLong("seen");
+		} catch (Exception e) {
+		}
+		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id"), seen));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
