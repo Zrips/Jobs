@@ -26,7 +26,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.gamingmesh.jobs.economy.BlackholeEconomy;
 import com.gamingmesh.jobs.economy.VaultEconomy;
-import com.gamingmesh.jobs.economy.IConomy6Adapter;
+import com.gamingmesh.jobs.economy.IConomyAdapter;
 
 public class HookEconomyTask implements Runnable {
     private Jobs plugin;
@@ -79,7 +79,7 @@ public class HookEconomyTask implements Runnable {
 	    return false;
 
 	try {
-	    Jobs.setEconomy(this.plugin, new IConomy6Adapter((com.iCo6.iConomy) p));
+	    Jobs.setEconomy(this.plugin, new IConomyAdapter((com.iCo6.iConomy) p));
 	} catch (Exception e) {
 	    Jobs.consoleMsg("&e[" + this.plugin.getDescription().getName() + "] UNKNOWN iConomy version.");
 	    return false;

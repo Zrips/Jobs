@@ -28,8 +28,8 @@ public class JobInfo {
     private String name;
     private double baseIncome, baseXp, basePoints;
     private Parser moneyEquation, xpEquation, pointsEquation;
-    private int fromLevel;
-    private int untilLevel;
+    private int fromLevel = 0;
+    private int untilLevel = Integer.MAX_VALUE;
 
     public JobInfo(ActionType actionType, int id, String meta, String name, double baseIncome, Parser moneyEquation, double baseXp, Parser xpEquation,
 	Parser pointsEquation, double basePoints, int fromLevel, int untilLevel) {

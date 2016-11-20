@@ -56,6 +56,8 @@ public class RestrictedArea {
      * @return false - the location is outside the restricted area
      */
     public boolean inRestrictedArea(Player player) {
+	if (player == null)
+	    return false;
 	if (isBetween(player.getLocation().getX(), this.location1.getX(), this.location2.getX()) &&
 	    isBetween(player.getLocation().getY(), this.location1.getY(), this.location2.getY()) &&
 	    isBetween(player.getLocation().getZ(), this.location1.getZ(), this.location2.getZ()) &&

@@ -5,11 +5,11 @@ import org.bukkit.OfflinePlayer;
 import com.iCo6.iConomy;
 import com.iCo6.system.Accounts;
 
-public class IConomy6Adapter implements Economy {
+public class IConomyAdapter implements Economy {
 
     iConomy icon;
 
-    public IConomy6Adapter(iConomy iconomy) {
+    public IConomyAdapter(iConomy iconomy) {
 	icon = iconomy;
     }
 

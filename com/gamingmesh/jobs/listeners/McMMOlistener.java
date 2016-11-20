@@ -81,6 +81,9 @@ public class McMMOlistener implements Listener {
 
     public double getMultiplier(Player player) {
 
+	if (player == null)
+	    return 0D;
+
 	HashMap<AbilityType, Long> InfoMap = map.get(player.getName());
 	if (InfoMap == null) {
 	    return 0D;
