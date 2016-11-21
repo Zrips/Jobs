@@ -678,7 +678,7 @@ public class PlayerManager {
 	if (player == null || prog == null)
 	    return boost;
 
-	if (Jobs.getMcMMOlistener().mcMMOPresent)
+	if (Jobs.getMcMMOlistener() != null && Jobs.getMcMMOlistener().mcMMOPresent)
 	    boost.add(BoostOf.McMMO, new BoostMultiplier().add(Jobs.getMcMMOlistener().getMultiplier(player.getPlayer())));
 
 	if (ent != null && ent instanceof Tameable) {

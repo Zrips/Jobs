@@ -876,6 +876,9 @@ public class Jobs extends JavaPlugin {
 
 		if (jobinfo == null)
 		    continue;
+		
+		if (!isBpOk(jPlayer, info, block))
+		    return;
 
 		Double income = jobinfo.getIncome(level, numjobs);
 		Double pointAmount = jobinfo.getPoints(level, numjobs);
@@ -1001,7 +1004,9 @@ public class Jobs extends JavaPlugin {
 		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), income, pointAmount, expAmount), prog
 		    .getJob()));
 
-		economy.pay(jPlayer, income, pointAmount, expAmount);
+		if(economy != null)
+			economy.pay(jPlayer, income, pointAmount, expAmount);
+		
 		int oldLevel = prog.getLevel();
 
 		if (GconfigManager.LoggingUse)
