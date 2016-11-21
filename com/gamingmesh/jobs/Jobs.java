@@ -1013,6 +1013,11 @@ public class Jobs extends JavaPlugin {
 		    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
 
 	    }
+	    
+	    //need to update bp
+	    BlockProtection bp = BpManager.getBp(block.getLocation());
+	    if(bp != null)
+	    	bp.setPaid(true);
 	}
     }
 
