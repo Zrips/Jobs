@@ -164,7 +164,11 @@ public class BlockProtectionManager {
 
     @SuppressWarnings("deprecation")
     public Integer getBlockDelayTime(Block block) {
-	return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId());
+    	if(Jobs.getGCManager().useGlobalTimer){
+    		return Jobs.getGCManager().globalblocktimer;
+    	}else{
+    		return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId());
+    	}
     }
 
     @SuppressWarnings("deprecation")
