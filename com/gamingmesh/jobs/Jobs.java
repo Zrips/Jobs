@@ -79,6 +79,7 @@ import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -807,6 +808,9 @@ public class Jobs extends JavaPlugin {
 	    if (jobinfo == null)
 		return;
 
+	    if (!isBpOk(jPlayer.getPlayer(), info.getType(), block, true))
+		return;
+
 	    Double income = jobinfo.getIncome(1, numjobs);
 	    Double pointAmount = jobinfo.getPoints(1, numjobs);
 
@@ -851,9 +855,6 @@ public class Jobs extends JavaPlugin {
 			income = 0D;
 		}
 
-		if (!isBpOk(jPlayer, info, block))
-		    return;
-
 		if (income == 0D && pointAmount == 0D)
 		    return;
 
@@ -876,7 +877,8 @@ public class Jobs extends JavaPlugin {
 
 		if (jobinfo == null)
 		    continue;
-
+		if (!isBpOk(jPlayer.getPlayer(), info.getType(), block, true))
+		    return;
 		Double income = jobinfo.getIncome(level, numjobs);
 		Double pointAmount = jobinfo.getPoints(level, numjobs);
 		Double expAmount = jobinfo.getExperience(level, numjobs);
@@ -972,9 +974,6 @@ public class Jobs extends JavaPlugin {
 			expAmount = 0D;
 		}
 
-		if (!isBpOk(jPlayer, info, block))
-		    return;
-
 		if (income == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
 
@@ -1009,14 +1008,14 @@ public class Jobs extends JavaPlugin {
 
 		if (prog.addExperience(expAmount))
 		    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
-
+		break;
 	    }
 	}
     }
 
-    private static boolean isBpOk(JobsPlayer jPlayer, ActionInfo info, Block block) {
+    private static boolean isBpOk(Player player, ActionType type, Block block, boolean inform) {
 	if (block != null && Jobs.getGCManager().useBlockProtection) {
-	    if (info.getType() == ActionType.BREAK) {
+	    if (type == ActionType.BREAK) {
 		BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
 
 		if (bp != null) {
@@ -1025,9 +1024,15 @@ public class Jobs extends JavaPlugin {
 			return false;
 		    Integer cd = Jobs.getBpManager().getBlockDelayTime(block);
 
-		    if (time > System.currentTimeMillis() && bp.isPaid() && bp.getAction() != DBAction.DELETE) {
+		    if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
+			Jobs.getBpManager().remove(block);
+			return true;
+		    }
+
+		    if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000);
-			Jobs.getActionBar().send(jPlayer.getPlayer(), Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+			if (inform)
+			    Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
 			return false;
 		    }
 
@@ -1042,14 +1047,27 @@ public class Jobs extends JavaPlugin {
 			Jobs.getBpManager().add(block, System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
 		    }
 		}
-	    } else if (info.getType() == ActionType.PLACE) {
+	    } else if (type == ActionType.PLACE) {
+		Debug.D("place");
 		BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
 		if (bp != null) {
+		    Debug.D("bpp not null here");
 		    Long time = bp.getTime();
 		    if (time != -1) {
-			if (time > System.currentTimeMillis() && bp.isPaid() && bp.getAction() != DBAction.DELETE) {
+
+			Debug.D("time is " + (time < System.currentTimeMillis()));
+			if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
+			    Jobs.getBpManager().remove(block);
+			    return true;
+			}
+
+			Debug.D("place " + ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE));
+
+			if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
+			    Debug.D("here mufyn");
 			    int sec = Math.round((time - System.currentTimeMillis()) / 1000);
-			    Jobs.getActionBar().send(jPlayer.getPlayer(), Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+			    if (inform)
+				Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
 			    return false;
 			}
 		    } else if (bp.isPaid()) {
@@ -1261,7 +1279,7 @@ public class Jobs extends JavaPlugin {
 	return true;
     }
 
-    public static void consoleMsg(String msg){
+    public static void consoleMsg(String msg) {
 	Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
     }
 }

@@ -78,11 +78,13 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BlockProtection;
+import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.google.common.base.Objects;
 
 public class JobsPaymentListener implements Listener {
@@ -329,8 +331,11 @@ public class JobsPaymentListener implements Listener {
 
 	if (Jobs.getGCManager().useBlockProtection) {
 	    BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
-	    if (bp == null)
+	    Debug.D("bp is null " + (bp == null));
+	    if (bp == null || bp.getAction() == DBAction.DELETE)
 		Jobs.getBpManager().add(block, Jobs.getBpManager().getBlockDelayTime(block), false);
+//	    else
+//		Debug.D("bp is  " + bp.getId());
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);

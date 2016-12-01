@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class BlockProtectionManager {
 
@@ -54,6 +55,7 @@ public class BlockProtectionManager {
     }
 
     public void add(Block block, Integer cd, boolean paid) {
+	Debug.D("cd: " +cd);
 	if (cd == null)
 	    return;
 	if (cd != -1)
@@ -97,6 +99,7 @@ public class BlockProtectionManager {
 	chunks.put(chunk, Bpm);
 	regions.put(region, chunks);
 	map.put(loc.getWorld(), regions);
+	Debug.D("added new " + Bp.getAction());
 	return Bp;
     }
 
