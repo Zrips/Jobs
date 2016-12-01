@@ -517,7 +517,7 @@ public class JobsPaymentListener implements Listener {
 	// Make sure we are actually crafting anything
 	if (hasItems(toCraft))
 	    if (event.isShiftClick())
-		schedulePostDetection(player, toCraft, jPlayer, resultStack);
+		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone());
 	    else {
 		// The items are stored in the cursor. Make sure there's enough space.
 		if (isStackSumLegal(toCraft, toStore)) {
