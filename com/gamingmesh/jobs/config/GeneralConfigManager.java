@@ -38,6 +38,7 @@ import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.dao.JobsDAOMySQL;
 import com.gamingmesh.jobs.dao.JobsDAOSQLite;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class GeneralConfigManager {
     private Jobs plugin;
@@ -741,9 +742,10 @@ public class GeneralConfigManager {
 	    "Use: jobs.boost.[jobname].money or jobs.boost.[jobname].exp or jobs.boost.[jobname].points or jobs.boost.[jobname].all for all of them with specific jobs name.",
 	    "Use: jobs.boost.all.money or jobs.boost.all.exp or jobs.boost.all.points or jobs.boost.all.all to get boost for all jobs",
 	    "1.25 means that player will get 25% more than others, you can set less than 1 to get less from anothers");
-	Boost.put(BoostType.EXP, c.get("boost.exp", 1D) - 1D);
-	Boost.put(BoostType.MONEY, c.get("boost.money", 1D) - 1D);
-	Boost.put(BoostType.POINTS, c.get("boost.points", 1D) - 1D);
+	
+	Boost.put(BoostType.EXP, (int) ((c.get("boost.exp", 1D) * 100)-100) / 100D);
+	Boost.put(BoostType.MONEY, (int) ((c.get("boost.money", 1D) * 100)-100) / 100D);
+	Boost.put(BoostType.POINTS, (int) ((c.get("boost.points", 1D) * 100)-100) / 100D);
 
 	c.getW().addComment("old-job", "Old job save", "Players can leave job and return later with some level loss during that",
 	    "You can fix players level if hes job level is at max level");

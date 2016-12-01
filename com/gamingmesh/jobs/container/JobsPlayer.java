@@ -154,7 +154,7 @@ public class JobsPlayer {
 
     public double getBoost(String JobName, BoostType type, boolean force) {
 
-	double Boost = 1.0;
+	double Boost = 0D;
 
 	if (this.OffPlayer == null)
 	    return Boost;
@@ -195,8 +195,7 @@ public class JobsPlayer {
     }
 
     private Double getPlayerBoost(String JobName, BoostType type) {
-	double Boost = 1.0;
-
+	double Boost = 0D;
 	if (Perm.hasPermission(player, "jobs.boost." + JobName + "." + type.getName().toLowerCase()) ||
 	    Perm.hasPermission(player, "jobs.boost." + JobName + ".all") ||
 	    Perm.hasPermission(player, "jobs.boost.all.all") ||
