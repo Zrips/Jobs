@@ -996,6 +996,7 @@ public class Jobs extends JavaPlugin {
 		else
 		    expAmount = JobsExpGainEvent.getExp();
 
+		Debug.D("income: " + income);
 		FastPayment.clear();
 		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), income, pointAmount, expAmount), prog
 		    .getJob()));

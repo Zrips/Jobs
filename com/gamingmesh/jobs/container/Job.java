@@ -44,7 +44,7 @@ public class Job {
     // limited items
     private List<JobLimitedItems> jobLimitedItems;
     // job name
-    private String jobName;
+    private String jobName = "N/A";
     // job short name (for use in multiple jobs)
     private String jobShortName;
     // short description of the job

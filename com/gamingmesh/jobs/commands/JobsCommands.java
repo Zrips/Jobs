@@ -376,13 +376,13 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	if (job.getBoost().get(BoostType.EXP) != 0D)
-	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", job.getBoost().get(BoostType.EXP)) + "\n");
+	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", (job.getBoost().get(BoostType.EXP)) + 1) + "\n");
 
 	if (job.getBoost().get(BoostType.MONEY) != 0D)
-	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", job.getBoost().get(BoostType.MONEY)) + "\n");
+	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", (job.getBoost().get(BoostType.MONEY)) + 1) + "\n");
 
 	if (job.getBoost().get(BoostType.POINTS) != 0D)
-	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", job.getBoost().get(BoostType.POINTS)) + "\n");
+	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", (job.getBoost().get(BoostType.POINTS)) + 1) + "\n");
 
 	if (Jobs.getGCManager().useDynamicPayment)
 	    if (job.getBonus() < 0)

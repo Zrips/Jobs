@@ -270,11 +270,15 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
+	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 	FastPayment fp = Jobs.FastPayment.get(player.getName());
 	if (fp != null) {
 	    if (fp.getTime() > System.currentTimeMillis()) {
-		Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
-		return;
+		if (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
+		    fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub())) {
+		    Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
+		    return;
+		}
 	    }
 	    Jobs.FastPayment.remove(player.getName());
 	}
@@ -294,7 +298,6 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 	Jobs.action(jPlayer, bInfo, block);
     }
 

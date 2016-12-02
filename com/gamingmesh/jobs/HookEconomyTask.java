@@ -54,7 +54,7 @@ public class HookEconomyTask implements Runnable {
 	Bukkit.getServer().getLogger().severe("https://dev.bukkit.org/bukkit-plugins/iconomy-7/");
 	Bukkit.getServer().getLogger().severe("==============================================");
     }
-
+    
     private boolean setVault() {
 	Plugin eco = Bukkit.getServer().getPluginManager().getPlugin("Vault");
 	if (eco == null)
