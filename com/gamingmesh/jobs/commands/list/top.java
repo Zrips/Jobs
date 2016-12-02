@@ -33,7 +33,7 @@ public class top implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
 	    return false;
 	}
-	
+
 	Player player = (Player) sender;
 
 	if (args[0].equalsIgnoreCase("clear")) {
@@ -51,9 +51,14 @@ public class top implements Cmd {
 	if (start < 0)
 	    start = 0;
 
+	if (Jobs.getJob(args[0]) == null) {
+	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.top.error.nojob"));
+	    return false;
+	}
+
 	List<TopList> FullList = Jobs.getJobsDAO().toplist(args[0], start);
 	if (FullList.size() <= 0) {
-	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.top.error.nojob"));
+	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    return false;
 	}
 
@@ -68,6 +73,7 @@ public class top implements Cmd {
 	    for (TopList One : FullList) {
 		i++;
 		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
+
 		player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.list", "%number%", i, "%playername%", PlayerName, "%level%", One.getLevel(), "%exp%",
 		    One.getExp()));
 	    }
@@ -81,12 +87,14 @@ public class top implements Cmd {
 	    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	    objective.setDisplayName(Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", jobName));
 	    int i = start;
+	    int line = 16;
 	    for (TopList One : FullList) {
 		i++;
+		line--;
 		String playername = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
 
-		Score score = objective.getScore(Jobs.getLanguage().getMessage("scoreboard.lines", "%number%", i, "%playername%", playername));
-		score.setScore(One.getLevel());
+		Score score = objective.getScore(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", i, "%playername%", playername, "%level%", One.getLevel()));
+		score.setScore(line);
 
 	    }
 	    player.setScoreboard(board);

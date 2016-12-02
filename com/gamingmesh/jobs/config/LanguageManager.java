@@ -438,7 +438,7 @@ public class LanguageManager {
 	    //c.get("scoreboard.clear", "&eIf you want to remove scoreboard, type &2/jobs top clear");
 	    c.get("scoreboard.topline", "&2Top &e%jobname%");
 	    c.get("scoreboard.gtopline", "&2Global top list");
-	    c.get("scoreboard.lines", "&2%number%. &e%playername%");
+	    c.get("scoreboard.line", "&2%number%. &e%playername% (&6%level%&e)");
 
 	    Jobs.getGCManager().keys = new ArrayList<String>(c.getC().getConfigurationSection("signs.secondline").getKeys(false));
 

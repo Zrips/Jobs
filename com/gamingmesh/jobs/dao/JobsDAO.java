@@ -51,6 +51,7 @@ import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 /**
@@ -890,7 +891,6 @@ public abstract class JobsDAO {
 	    prest.setInt(2, player.getUserId());
 	    prest.execute();
 	} catch (SQLException e) {
-	    e.printStackTrace();
 	} finally {
 	    close(prest);
 	}
@@ -1335,7 +1335,7 @@ public abstract class JobsDAO {
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
-	    prest = conn.prepareStatement("SELECT DISTINCT(userid), `level`, `experience` FROM `" + prefix
+	    prest = conn.prepareStatement("SELECT `userid`, `level`, `experience` FROM `" + prefix
 		+ "jobs` WHERE `job` LIKE ? ORDER BY `level` DESC, LOWER(experience) DESC LIMIT " + limit + ", 15;");
 	    prest.setString(1, jobsname);
 	    res = prest.executeQuery();
@@ -1343,8 +1343,10 @@ public abstract class JobsDAO {
 	    while (res.next()) {
 		Entry<String, PlayerInfo> info = Jobs.getPlayerManager().getPlayerInfoById(res.getInt("userid"));
 
-		if (info == null)
+		if (info == null){
+		    Debug.D("Continue " + res.getInt("userid"));
 		    continue;
+		}
 
 		if (info.getValue().getName() == null)
 		    continue;

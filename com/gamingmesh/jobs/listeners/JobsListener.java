@@ -229,7 +229,7 @@ public class JobsListener implements Listener {
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
 
-	if (!FirstLine.equalsIgnoreCase(Jobs.getLanguage().getMessage("signs.topline")))
+	if (!ChatColor.stripColor(FirstLine).equalsIgnoreCase(ChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))))
 	    return;
 
 	String command = ChatColor.stripColor(sign.getLine(1));
@@ -242,7 +242,7 @@ public class JobsListener implements Listener {
 	}
 
 	Player player = event.getPlayer();
-	Bukkit.dispatchCommand(player, "jobs " + command + " " + ChatColor.stripColor(sign.getLine(2)) + " " + ChatColor.stripColor(sign.getLine(3)));
+	player.performCommand("jobs " + command + " " + ChatColor.stripColor(sign.getLine(2)) + " " + ChatColor.stripColor(sign.getLine(3)));
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)

@@ -72,13 +72,13 @@ public class gtop implements Cmd {
 	    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	    objective.setDisplayName(Jobs.getLanguage().getMessage("scoreboard.gtopline"));
 	    int i = start;
+	    int line = 16;
 	    for (TopList One : FullList) {
 		i++;
+		line--;
 		String playername = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
-
-		Score score = objective.getScore(Jobs.getLanguage().getMessage("scoreboard.lines", "%number%", i, "%playername%", playername));
-		score.setScore(One.getLevel());
-
+		Score score = objective.getScore(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", i, "%playername%", playername, "%level%", One.getLevel()));
+		score.setScore(line);
 	    }
 	    player.setScoreboard(board);
 
