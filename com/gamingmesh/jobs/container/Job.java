@@ -147,7 +147,7 @@ public class Job {
 	if (!Jobs.getGCManager().useDynamicPayment)
 	    return;
 	Parser eq = Jobs.getGCManager().DynamicPaymentEquation;
-	eq.setVariable("totalworkers", Jobs.getJobsDAO().getTotalPlayers());
+	eq.setVariable("totalworkers", this.totalPlayers);
 	eq.setVariable("totaljobs", Jobs.getJobs().size());
 	eq.setVariable("jobstotalplayers", getTotalPlayers());
 
