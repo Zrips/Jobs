@@ -42,9 +42,9 @@ public class browse implements Cmd {
 
 	    if (Jobs.getGCManager().useDynamicPayment && Jobs.getGCManager().ShowPenaltyBonus)
 		if (job.getBonus() < 0)
-		    builder.append(Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", (int) (job.getBonus() * 100) / 100.0 * -1));
+		    builder.append(Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", (int) (job.getBonus() * 100) * -1));
 		else
-		    builder.append(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (job.getBonus() * 100) / 100.0));
+		    builder.append(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (job.getBonus() * 100)));
 
 	    lines.add(builder.toString());
 	    if (!job.getDescription().isEmpty()) {
@@ -58,7 +58,7 @@ public class browse implements Cmd {
 	}
 
 	if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
-	    
+
 	    Inventory inv = null;
 	    try {
 		inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
@@ -69,10 +69,9 @@ public class browse implements Cmd {
 	    }
 	    if (inv == null)
 		return true;
-	    
+
 	    ((Player) sender).openInventory(inv);
-	    
-	    
+
 	}
 
 	if (Jobs.getGCManager().JobsGUIShowChatBrowse) {
