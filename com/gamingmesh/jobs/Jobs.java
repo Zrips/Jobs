@@ -405,7 +405,11 @@ public class Jobs extends JavaPlugin {
      * Get the Data Access Object
      * @return the DAO
      */
+    static int ii = 0;
+
     public static JobsDAO getJobsDAO() {
+	ii++;
+	Debug.D("db access " + ii);
 	return dao;
     }
 

@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class Job {
     // job info
@@ -69,7 +70,7 @@ public class Job {
     private ItemStack GUIitem;
 
     private int totalPlayers = -1;
-    private double bonus = 0.0;
+    private Double bonus = null;
 
     private BoostMultiplier boost = new BoostMultiplier();
 
@@ -117,15 +118,15 @@ public class Job {
     public void addBoost(BoostType type, double Point) {
 	this.boost.add(type, Point - 1D);
     }
-    
+
     public void setBoost(BoostMultiplier BM) {
-  	this.boost = BM;
-      }
-    
+	this.boost = BM;
+    }
+
     public BoostMultiplier getBoost() {
 	return this.boost;
     }
-    
+
     public boolean isSame(Job job) {
 	return this.getName().equalsIgnoreCase(job.getName());
     }
@@ -147,22 +148,21 @@ public class Job {
 	if (!Jobs.getGCManager().useDynamicPayment)
 	    return;
 	Parser eq = Jobs.getGCManager().DynamicPaymentEquation;
-	eq.setVariable("totalworkers", this.totalPlayers);
+	eq.setVariable("totalworkers", Jobs.getJobsDAO().getTotalPlayers());
 	eq.setVariable("totaljobs", Jobs.getJobs().size());
 	eq.setVariable("jobstotalplayers", getTotalPlayers());
-
 	double now = eq.getValue();
 	if (now > Jobs.getGCManager().DynamicPaymentMaxBonus)
 	    now = Jobs.getGCManager().DynamicPaymentMaxBonus;
 	if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty * -1)
 	    now = Jobs.getGCManager().DynamicPaymentMaxPenalty * -1;
-	this.bonus = now;
+	this.bonus = (now / 100);
     }
 
     public double getBonus() {
-	if (this.bonus == 0.0)
+	if (this.bonus == null)
 	    updateBonus();
-	return this.bonus;
+	return this.bonus == null ? 1D : this.bonus;
     }
 
     public List<String> getCmdOnJoin() {
