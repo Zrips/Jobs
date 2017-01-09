@@ -345,25 +345,11 @@ public abstract class JobsDAO {
      * @return total amount of player currently working.
      */
     public synchronized int getTotalPlayers() {
-	JobsConnection conn = getConnection();
-	if (conn == null)
-	    return 0;
-	int count = 0;
-	PreparedStatement prest = null;
-	ResultSet res = null;
-	try {
-	    prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + prefix + "jobs`;");
-	    res = prest.executeQuery();
-	    while (res.next()) {
-		count = res.getInt(1);
-	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(res);
-	    close(prest);
+	int total = 0;
+	for (Job one : Jobs.getJobs()) {
+	    total += one.getTotalPlayers();
 	}
-	return count;
+	return total;
     }
 
     /**
@@ -1343,8 +1329,7 @@ public abstract class JobsDAO {
 	    while (res.next()) {
 		Entry<String, PlayerInfo> info = Jobs.getPlayerManager().getPlayerInfoById(res.getInt("userid"));
 
-		if (info == null){
-		    Debug.D("Continue " + res.getInt("userid"));
+		if (info == null) {
 		    continue;
 		}
 

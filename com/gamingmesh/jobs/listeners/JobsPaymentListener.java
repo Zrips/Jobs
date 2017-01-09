@@ -247,11 +247,9 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
-	// remove furnace metadata for broken block
 	Block block = event.getBlock();
 	if (block == null)
 	    return;
-
 	if (block.getType() == Material.FURNACE && block.hasMetadata(this.furnaceOwnerMetadata))
 	    block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
 
@@ -334,11 +332,8 @@ public class JobsPaymentListener implements Listener {
 
 	if (Jobs.getGCManager().useBlockProtection) {
 	    BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
-	    Debug.D("bp is null " + (bp == null));
 	    if (bp == null || bp.getAction() == DBAction.DELETE)
 		Jobs.getBpManager().add(block, Jobs.getBpManager().getBlockDelayTime(block), false);
-//	    else
-//		Debug.D("bp is  " + bp.getId());
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -803,6 +798,9 @@ public class JobsPaymentListener implements Listener {
 	    pDamager = (Player) e.getDamager();
 	    // Checking if killer is tamed animal
 	} else if (e.getDamager() instanceof Tameable) {
+	    Tameable t = (Tameable) e.getDamager();
+	    if (t.isTamed() && t.getOwner() instanceof Player)
+		pDamager = (Player) t.getOwner();
 	} else if (e.getDamager() instanceof Projectile) {
 	    Projectile pr = (Projectile) e.getDamager();
 	    if (pr.getShooter() instanceof Player)

@@ -799,6 +799,7 @@ public class Jobs extends JavaPlugin {
 	int numjobs = progression.size();
 	// no job
 
+	
 	if (numjobs == 0) {
 
 	    if (noneJob == null)
@@ -816,7 +817,6 @@ public class Jobs extends JavaPlugin {
 
 	    if (income != 0D || pointAmount != 0D) {
 
-//		    jPlayer
 		Boost boost = pManager.getFinalBonus(jPlayer, Jobs.getNoneJob());
 
 		// Calculate income
@@ -913,10 +913,8 @@ public class Jobs extends JavaPlugin {
 			    player.giveExp(expInt);
 		    }
 		}
-
 		Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
 
-//		Debug.D(FinalBoost.getMoneyBoost() + " : " + FinalBoost.getPointsBoost() + " : " + FinalBoost.getExpBoost());
 
 		// Calculate income
 		if (income != 0D) {
@@ -996,7 +994,6 @@ public class Jobs extends JavaPlugin {
 		else
 		    expAmount = JobsExpGainEvent.getExp();
 
-		Debug.D("income: " + income);
 		FastPayment.clear();
 		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), income, pointAmount, expAmount), prog
 		    .getJob()));
@@ -1049,23 +1046,16 @@ public class Jobs extends JavaPlugin {
 		    }
 		}
 	    } else if (type == ActionType.PLACE) {
-		Debug.D("place");
 		BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
 		if (bp != null) {
-		    Debug.D("bpp not null here");
 		    Long time = bp.getTime();
 		    if (time != -1) {
-
-			Debug.D("time is " + (time < System.currentTimeMillis()));
 			if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
 			    Jobs.getBpManager().remove(block);
 			    return true;
 			}
 
-			Debug.D("place " + ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE));
-
 			if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
-			    Debug.D("here mufyn");
 			    int sec = Math.round((time - System.currentTimeMillis()) / 1000);
 			    if (inform)
 				Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));

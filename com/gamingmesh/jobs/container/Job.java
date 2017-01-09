@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -156,13 +157,13 @@ public class Job {
 	    now = Jobs.getGCManager().DynamicPaymentMaxBonus;
 	if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty * -1)
 	    now = Jobs.getGCManager().DynamicPaymentMaxPenalty * -1;
-	this.bonus = (now / 100);
+	this.bonus = (now / 100D);
     }
 
     public double getBonus() {
 	if (this.bonus == null)
 	    updateBonus();
-	return this.bonus == null ? 1D : this.bonus;
+	return this.bonus == null ? 0D : this.bonus;
     }
 
     public List<String> getCmdOnJoin() {

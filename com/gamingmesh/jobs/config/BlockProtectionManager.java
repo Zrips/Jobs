@@ -55,7 +55,6 @@ public class BlockProtectionManager {
     }
 
     public void add(Block block, Integer cd, boolean paid) {
-	Debug.D("cd: " +cd);
 	if (cd == null)
 	    return;
 	if (cd != -1)
@@ -99,7 +98,6 @@ public class BlockProtectionManager {
 	chunks.put(chunk, Bpm);
 	regions.put(region, chunks);
 	map.put(loc.getWorld(), regions);
-	Debug.D("added new " + Bp.getAction());
 	return Bp;
     }
 
