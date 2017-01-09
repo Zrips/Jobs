@@ -545,7 +545,7 @@ public class Jobs extends JavaPlugin {
 	// Schedule
 	Jobs.getScheduleManager().load();
 	if (GconfigManager.useGlobalBoostScheduler)
-	    Jobs.getScheduleManager().scheduler();
+	    Jobs.getScheduleManager().start();
     }
 
     /**
@@ -733,8 +733,6 @@ public class Jobs extends JavaPlugin {
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
 
 	    // all loaded properly.
-
-	    scheduleManager.DateUpdater();
 
 	    dao.loadBlockProtection();
 	    dao.loadExplore();

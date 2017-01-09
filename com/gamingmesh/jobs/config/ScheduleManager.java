@@ -18,114 +18,115 @@ import com.gamingmesh.jobs.container.BoostType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class ScheduleManager {
 
-    public int dateByInt = 0;
-
     private Jobs plugin;
+    private int autoTimerBukkitId = -1;
 
     public ScheduleManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 
+    public void start() {
+	autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoTimer, 20, 30 * 20L);
+    }
+
+    public void cancel() {
+	if (autoTimerBukkitId != -1)
+	    Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
+    }
+
+    private Runnable autoTimer = new Runnable() {
+	@Override
+	public void run() {
+	    try {
+		scheduler();
+	    } catch (Exception e) {
+	    }
+	}
+    };
+
     public int getDateByInt() {
-	return dateByInt;
+	return TimeManage.timeInInt();
     }
 
-    public void setDateByInt(int time) {
-	dateByInt = time;
-    }
+    private boolean scheduler() {
+	if (Jobs.getGCManager().BoostSchedule.isEmpty() || !Jobs.getGCManager().useGlobalBoostScheduler)
+	    return false;
 
-    public void DateUpdater() {
-	if (dateByInt == 0)
-	    dateByInt = TimeManage.timeInInt();
+	DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	Date date = new Date();
+
+	String currenttime = dateFormat.format(date);
+
+	int Current = Integer.valueOf(currenttime.replace(":", "")).intValue();
+
+	String CurrentDayName = GetWeekDay();
+
+	for (Schedule one : Jobs.getGCManager().BoostSchedule) {
+
+	    int From = one.GetFrom();
+	    int Until = one.GetUntil();
+
+	    List<String> days = one.GetDays();
+
+	    if (one.isStarted() && one.getBroadcastInfoOn() < System.currentTimeMillis() && one.GetBroadcastInterval() > 0) {
+		one.setBroadcastInfoOn(System.currentTimeMillis() + one.GetBroadcastInterval() * 60 * 1000);
+		for (String oneMsg : one.GetMessageToBroadcast()) {
+		    Bukkit.broadcastMessage(oneMsg);
+		}
+	    }
+
+	    if (((one.isNextDay() && (Current >= From && Current < Until || Current >= one.GetNextFrom() && Current < one.GetNextUntil()) && !one
+		.isStarted()) || !one.isNextDay() && (Current >= From && Current < Until)) && (days.contains(CurrentDayName) || days.contains("all")) && !one
+		    .isStarted()) {
+
+		if (one.isBroadcastOnStart())
+		    if (one.GetMessageOnStart().size() == 0)
+			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStarted"));
+		    else
+			for (String oneMsg : one.GetMessageOnStart()) {
+			    Bukkit.broadcastMessage(oneMsg);
+			}
+
+		for (Job onejob : one.GetJobs()) {
+		    onejob.setBoost(one.getBoost());
+		}
+
+		one.setBroadcastInfoOn(System.currentTimeMillis() + one.GetBroadcastInterval() * 60 * 1000);
+
+		one.setStarted(true);
+		one.setStoped(false);
+		break;
+	    } else if (((one.isNextDay() && Current > one.GetNextUntil() && Current < one.GetFrom() && !one.isStoped()) || !one.isNextDay() && Current > Until
+		&& ((days.contains(CurrentDayName)) || days.contains("all"))) && !one.isStoped()) {
+		if (one.isBroadcastOnStop())
+		    if (one.GetMessageOnStop().size() == 0)
+			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStoped"));
+		    else
+			for (String oneMsg : one.GetMessageOnStop()) {
+			    Bukkit.broadcastMessage(oneMsg);
+			}
+		for (Job onejob : one.GetJobs()) {
+		    onejob.setBoost(new BoostMultiplier());
+		}
+		one.setStoped(true);
+		one.setStarted(false);
+	    }
+
+	}
+
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
-
-		dateByInt = TimeManage.timeInInt();
-
-		DateUpdater();
+		scheduler();
 		return;
 	    }
-	}, 60 * 20L);
-    }
+	}, 30 * 20L);
 
-    public boolean scheduler() {
-	if (Jobs.getGCManager().BoostSchedule.size() > 0 && Jobs.getGCManager().useGlobalBoostScheduler) {
-
-	    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-	    Date date = new Date();
-
-	    String currenttime = dateFormat.format(date);
-
-	    int Current = Integer.valueOf(currenttime.replace(":", "")).intValue();
-
-	    String CurrentDayName = GetWeekDay();
-
-	    for (Schedule one : Jobs.getGCManager().BoostSchedule) {
-
-		int From = one.GetFrom();
-		int Until = one.GetUntil();
-
-		List<String> days = one.GetDays();
-
-		if (one.isStarted() && one.getBroadcastInfoOn() < System.currentTimeMillis() && one.GetBroadcastInterval() > 0) {
-		    one.setBroadcastInfoOn(System.currentTimeMillis() + one.GetBroadcastInterval() * 60 * 1000);
-		    for (String oneMsg : one.GetMessageToBroadcast()) {
-			Bukkit.broadcastMessage(oneMsg);
-		    }
-		}
-
-		if (((one.isNextDay() && (Current >= From && Current < one.GetUntil() || Current >= one.GetNextFrom() && Current < one.GetNextUntil()) && !one
-		    .isStarted()) || !one.isNextDay() && (Current >= From && Current < Until)) && (days.contains(CurrentDayName) || days.contains("all")) && !one
-			.isStarted()) {
-
-		    if (one.isBroadcastOnStart())
-			if (one.GetMessageOnStart().size() == 0)
-			    Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStarted"));
-			else
-			    for (String oneMsg : one.GetMessageOnStart()) {
-				Bukkit.broadcastMessage(oneMsg);
-			    }
-
-		    for (Job onejob : one.GetJobs()) {
-			onejob.setBoost(one.getBoost());
-		    }
-
-		    one.setBroadcastInfoOn(System.currentTimeMillis() + one.GetBroadcastInterval() * 60 * 1000);
-
-		    one.setStarted(true);
-		    one.setStoped(false);
-		    break;
-		} else if (((one.isNextDay() && Current > one.GetNextUntil() && Current < one.GetFrom() && !one.isStoped()) || !one.isNextDay() && Current > Until
-		    && ((days.contains(CurrentDayName)) || days.contains("all"))) && !one.isStoped()) {
-		    if (one.isBroadcastOnStop())
-			if (one.GetMessageOnStop().size() == 0)
-			    Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStoped"));
-			else
-			    for (String oneMsg : one.GetMessageOnStop()) {
-				Bukkit.broadcastMessage(oneMsg);
-			    }
-		    for (Job onejob : one.GetJobs()) {
-			onejob.setBoost(new BoostMultiplier());
-		    }
-		    one.setStoped(true);
-		    one.setStarted(false);
-		}
-
-	    }
-
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    scheduler();
-		    return;
-		}
-	    }, 30 * 20L);
-	}
 	return true;
     }
 
