@@ -115,7 +115,7 @@ public class ConfigManager {
 		continue;
 
 	    ConfigurationSection jobSection = jobsSection.getConfigurationSection(jobKey);
-	    String jobName = jobSection.getString("fullname");
+	    String jobName = jobSection.getString("fullname", null);
 
 	    // Translating unicode
 	    jobName = StringEscapeUtils.unescapeJava(jobName);
@@ -138,7 +138,7 @@ public class ConfigManager {
 		maxSlots = null;
 	    }
 
-	    String jobShortName = jobSection.getString("shortname");
+	    String jobShortName = jobSection.getString("shortname", null);
 	    if (jobShortName == null) {
 		Jobs.getPluginLogger().warning("Job " + jobKey + " is missing the shortname property.  Skipping job!");
 		continue;
