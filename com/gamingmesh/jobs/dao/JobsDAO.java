@@ -67,8 +67,10 @@ public abstract class JobsDAO {
     private JobsConnectionPool pool;
     private String prefix;
     private HashMap<Integer, ArrayList<JobsDAOData>> map = new HashMap<Integer, ArrayList<JobsDAOData>>();
+    private Jobs plugin;
 
-    protected JobsDAO(String driverName, String url, String username, String password, String prefix) {
+    protected JobsDAO(Jobs plugin, String driverName, String url, String username, String password, String prefix) {
+	this.plugin = plugin;
 	this.prefix = prefix;
 	try {
 	    pool = new JobsConnectionPool(driverName, url, username, password);
@@ -845,6 +847,9 @@ public abstract class JobsDAO {
 //	synchronized (jPlayer.saveLock) {
 	jPlayer.progression.clear();
 	for (JobsDAOData jobdata : list) {
+	    if (!plugin.isEnabled())
+		return null;
+
 	    // add the job
 	    Job job = Jobs.getJob(jobdata.getJobName());
 	    if (job == null)

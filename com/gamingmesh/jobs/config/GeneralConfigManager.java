@@ -383,7 +383,7 @@ public class GeneralConfigManager {
 	} else {
 	    Jobs.getPluginLogger().warning("Invalid storage method!  Changing method to sqlite!");
 	    c.getC().set("storage-method", "sqlite");
-	    Jobs.setDAO(JobsDAOSQLite.initialize());
+	    startSqlite();
 	}
 
 	c.getW().addComment("mysql-username", "Requires Mysql.");
@@ -858,10 +858,10 @@ public class GeneralConfigManager {
 	String database = config.getString("mysql-database");
 	String prefix = config.getString("mysql-table-prefix");
 	if (plugin.isEnabled())
-	    Jobs.setDAO(JobsDAOMySQL.initialize(hostname, database, username, password, prefix));
+	    Jobs.setDAO(JobsDAOMySQL.initialize(plugin, hostname, database, username, password, prefix));
     }
 
     public synchronized void startSqlite() {
-	Jobs.setDAO(JobsDAOSQLite.initialize());
+	Jobs.setDAO(JobsDAOSQLite.initialize(plugin));
     }
 }

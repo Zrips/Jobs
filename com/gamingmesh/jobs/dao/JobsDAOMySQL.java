@@ -32,13 +32,13 @@ import com.gamingmesh.jobs.stuff.UUIDUtil;
 public class JobsDAOMySQL extends JobsDAO {
     private String database;
 
-    private JobsDAOMySQL(String hostname, String database, String username, String password, String prefix) {
-	super("com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database, username, password, prefix);
+    private JobsDAOMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix) {
+	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database, username, password, prefix);
 	this.database = database;
     }
 
-    public static JobsDAOMySQL initialize(String hostname, String database, String username, String password, String prefix) {
-	JobsDAOMySQL dao = new JobsDAOMySQL(hostname, database, username, password, prefix);
+    public static JobsDAOMySQL initialize(Jobs plugin, String hostname, String database, String username, String password, String prefix) {
+	JobsDAOMySQL dao = new JobsDAOMySQL(plugin, hostname, database, username, password, prefix);
 	try {
 	    dao.setUp();
 	} catch (SQLException e) {

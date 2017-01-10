@@ -30,6 +30,7 @@ public class Language {
 
     public Language(Jobs plugin) {
 	this.plugin = plugin;
+	reload();
     }
 
     /**
