@@ -153,7 +153,7 @@ public class GuiManager {
 		i++;
 	    }
 
-	    ItemStack filler = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 15);
+	    ItemStack filler = Jobs.getGCManager().guiFiller;
 
 	    for (int y = 0; y < GuiInv.getContents().length; y++) {
 		ItemStack item = GuiInv.getItem(y);
@@ -240,7 +240,7 @@ public class GuiManager {
 	    if (one != null)
 		items.add(one);
 	}
-	
+
 	int GuiSize = 54;
 	int backButton = 45;
 
@@ -253,7 +253,7 @@ public class GuiManager {
 	    GuiInv.setItem(i1, items.get(i1));
 	}
 
-	ItemStack skull = new ItemStack(Material.JACK_O_LANTERN, 1, (byte) 0);
+	ItemStack skull = Jobs.getGCManager().guiBackButton;
 
 	ItemMeta skullMeta = skull.getItemMeta();
 	skullMeta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.back"));
@@ -267,14 +267,14 @@ public class GuiManager {
 	guiInfo.setbackButton(backButton);
 	GuiList.put(player.getName(), guiInfo);
 
-	ItemStack filler = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 15);
+	ItemStack filler = Jobs.getGCManager().guiFiller;
 
 	for (int y = 0; y < GuiInv.getContents().length; y++) {
 	    ItemStack item = GuiInv.getItem(y);
 	    if (item == null || item.getType() == Material.AIR)
 		GuiInv.setItem(y, filler);
 	}
-	
+
 	return GuiInv;
     }
 }

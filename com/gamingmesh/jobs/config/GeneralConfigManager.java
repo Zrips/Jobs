@@ -26,9 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.resources.jfep.Parser;
@@ -92,6 +94,10 @@ public class GeneralConfigManager {
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAcountChat,
 	EmptyServerAcountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	useGlobalBoostScheduler, JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
+
+    public ItemStack guiBackButton;
+    public ItemStack guiFiller;
+
     public Integer levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
 	SoundTitleChangePitch, ToplistInScoreboardInterval;
     public double MinimumOveralPaymentLimit;
@@ -820,6 +826,9 @@ public class GeneralConfigManager {
 	JobsGUISwitcheButtons = c.get("JobsGUI.SwitcheButtons", false);
 	c.getW().addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show GUI when performing /jobs join command");
 	JobsGUIOpenOnJoin = c.get("JobsGUI.OpenOnJoin", true);
+
+	guiBackButton = new ItemStack(Material.getMaterial(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN")), 1, (byte) c.get("JobsGUI.BackButton.Data", 0));
+	guiFiller = new ItemStack(Material.getMaterial(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE")), 1, (byte) c.get("JobsGUI.Filler.Data", 15));
 
 	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
 	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);
