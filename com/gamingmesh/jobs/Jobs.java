@@ -1002,7 +1002,6 @@ public class Jobs extends JavaPlugin {
 
 		if (prog.addExperience(expAmount))
 		    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
-		break;
 	    }
 	}
     }

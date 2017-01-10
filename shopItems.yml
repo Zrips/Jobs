@@ -25,6 +25,8 @@ Items:
     RequiredJobLevels:
     - Miner-50
     - Woodcutter-10
+    # (Optional) Total level from all jobs player currently in
+    RequiredTotalLevels: 100
     # (Optional) Performs comands on item purchase
     # use 'msg ' at start of command to send nice message to player
     # all other commands will be performed normaly as they would be executed from console
