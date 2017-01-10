@@ -310,10 +310,8 @@ public class JobsDAOMySQL extends JobsDAO {
 
 	    if (insert != null)
 		insert.close();
-	    if (rs != null)
-		rs.close();
-	    if (pst1 != null)
-		pst1.close();
+	    rs.close();
+	    pst1.close();
 
 	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "jobs`;");
 	    executeSQL("ALTER TABLE `" + getPrefix() + "jobs_temp` RENAME TO `" + getPrefix() + "jobs`;");
@@ -374,10 +372,8 @@ public class JobsDAOMySQL extends JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    if (rs1 != null)
-		rs1.close();
-	    if (pst11 != null)
-		pst11.close();
+	    rs1.close();
+	    pst11.close();
 	    if (insert1 != null)
 		insert1.close();
 
@@ -447,10 +443,8 @@ public class JobsDAOMySQL extends JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    if (pst111 != null)
-		pst111.close();
-	    if (rs11 != null)
-		rs11.close();
+	    pst111.close();
+	    rs11.close();
 	    if (insert11 != null)
 		insert11.close();
 
@@ -815,7 +809,7 @@ public class JobsDAOMySQL extends JobsDAO {
 	}
 	return true;
     }
-    
+
     private boolean createDefaultLimitBase() {
 	try {
 	    executeSQL("CREATE TABLE IF NOT EXISTS `" + getPrefix()

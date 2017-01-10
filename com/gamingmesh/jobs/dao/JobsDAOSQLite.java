@@ -22,14 +22,8 @@ import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.stuff.UUIDUtil;
@@ -318,10 +312,8 @@ public class JobsDAOSQLite extends JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    if (rs != null)
-		rs.close();
-	    if (pst1 != null)
-		pst1.close();
+	    rs.close();
+	    pst1.close();
 	    if (insert != null)
 		insert.close();
 
@@ -389,10 +381,9 @@ public class JobsDAOSQLite extends JobsDAO {
 		insert1.executeBatch();
 	    conn.commit();
 	    conn.setAutoCommit(true);
-	    if (rs1 != null)
-		rs1.close();
-	    if (pst11 != null)
-		pst11.close();
+
+	    rs1.close();
+	    pst11.close();
 	    if (insert1 != null)
 		insert1.close();
 	    executeSQL("DROP TABLE IF EXISTS `" + getPrefix() + "archive`;");
@@ -464,10 +455,9 @@ public class JobsDAOSQLite extends JobsDAO {
 		insert11.executeBatch();
 	    conn.commit();
 	    conn.setAutoCommit(true);
-	    if (rs11 != null)
-		rs11.close();
-	    if (pst111 != null)
-		pst111.close();
+
+	    rs11.close();
+	    pst111.close();
 	    if (insert11 != null)
 		insert11.close();
 
@@ -685,10 +675,8 @@ public class JobsDAOSQLite extends JobsDAO {
 		insert11.execute();
 	    }
 	}
-	if (rs11 != null)
-	    rs11.close();
-	if (pst111 != null)
-	    pst111.close();
+	rs11.close();
+	pst111.close();
 	if (insert11 != null)
 	    insert11.close();
 	try {
@@ -881,7 +869,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	}
 	return true;
     }
-    
+
     private boolean createDefaultLimitBase() {
 	try {
 	    executeSQL("CREATE TABLE IF NOT EXISTS `" + getPrefix()

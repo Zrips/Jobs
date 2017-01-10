@@ -391,19 +391,22 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
-	PreparedStatement prest = null;
+	PreparedStatement prest2 = null;
 	try {
-	    prest = conn.prepareStatement("DELETE FROM `" + prefix + "limits` WHERE `userid` = ?;");
-	    prest.setInt(1, jPlayer.getUserId());
-	    prest.execute();
+	    prest2 = conn.prepareStatement("DELETE FROM `" + prefix + "limits` WHERE `userid` = ?;");
+	    prest2.setInt(1, jPlayer.getUserId());
+	    prest2.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
-	    close(prest);
+	    close(prest2);
 	}
 
+	PreparedStatement prest = null;
 	try {
 	    PaymentData limit = jPlayer.getPaymentLimit();
+	    prest = conn.prepareStatement("INSERT INTO `" + prefix + "limits` (`userid`, `type`, `collected`, `started`) VALUES (?, ?, ?, ?);");
+	    conn.setAutoCommit(false);
 	    for (CurrencyType type : CurrencyType.values()) {
 		if (limit == null)
 		    continue;
@@ -412,14 +415,16 @@ public abstract class JobsDAO {
 		if (limit.GetLeftTime(type) < 0)
 		    continue;
 
-		prest = conn.prepareStatement("INSERT INTO `" + prefix + "limits` (`userid`, `type`, `collected`, `started`) VALUES (?, ?, ?, ?);");
 		prest.setInt(1, jPlayer.getUserId());
 		prest.setString(2, type.getName());
 		prest.setDouble(3, limit.GetAmount(type));
 		prest.setLong(4, limit.GetTime(type));
-		prest.execute();
+		prest.addBatch();
 	    }
-	} catch (SQLException e) {
+	    prest.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+	} catch (Exception e) {
 	    e.printStackTrace();
 	} finally {
 	    close(prest);

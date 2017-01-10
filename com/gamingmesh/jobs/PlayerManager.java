@@ -144,16 +144,16 @@ public class PlayerManager {
      */
     public void playerQuit(Player player) {
 	JobsPlayer jPlayer = this.players.remove(player.getName().toLowerCase());
+	if (jPlayer == null)
+	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
+	    return;
 	playersCache.put(player.getName().toLowerCase(), jPlayer);
 	if (Jobs.getGCManager().saveOnDisconnect()) {
-	    if (jPlayer != null) {
-		jPlayer.save();
-		jPlayer.onDisconnect();
-	    }
+	    jPlayer.save();
+	    jPlayer.onDisconnect();
 	} else {
-	    if (jPlayer != null) {
-		jPlayer.onDisconnect();
-	    }
+	    jPlayer.onDisconnect();
 	}
     }
 
