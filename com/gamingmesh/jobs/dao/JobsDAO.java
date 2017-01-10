@@ -1304,7 +1304,10 @@ public abstract class JobsDAO {
 	    prest2 = conn.prepareStatement("INSERT INTO `" + prefix + "explore` (`worldname`, `chunkX`, `chunkZ`, `playerName`) VALUES (?, ?, ?, ?);");
 	    conn.setAutoCommit(false);
 	    int i = 0;
-	    for (Entry<String, ExploreRegion> worlds : Jobs.getExplore().getWorlds().entrySet()) {
+	    
+	    HashMap<String, ExploreRegion> temp = new HashMap<String, ExploreRegion>(Jobs.getExplore().getWorlds());
+	    
+	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
 		for (ExploreChunk oneChunk : worlds.getValue().getChunks()) {
 		    if (!oneChunk.isNew())
 			continue;
