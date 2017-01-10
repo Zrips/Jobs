@@ -447,7 +447,7 @@ public class PlayerManager {
 	    if (sound != null && player != null && player.getLocation() != null)
 		player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
 	    else
-		Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSoundName() + ". Please update it");
+		Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 	}
 
 	String message;
@@ -488,7 +488,7 @@ public class PlayerManager {
 		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
 			levelUpEvent.getTitleChangePitch());
 		else
-		    Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSoundName() + ". Please update it");
+		    Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 	    }
 	    // user would skill up
 	    if (Jobs.getGCManager().isBroadcastingSkillups()) {
@@ -568,9 +568,13 @@ public class PlayerManager {
     }
 
     public BoostMultiplier getBoost(JobsPlayer player, Job job) {
+	return getBoost(player, job, false);
+    }
+
+    public BoostMultiplier getBoost(JobsPlayer player, Job job, boolean force) {
 	BoostMultiplier b = new BoostMultiplier();
 	for (CurrencyType one : CurrencyType.values()) {
-	    b.add(one, getBoost(player, job, one, false));
+	    b.add(one, getBoost(player, job, one, force));
 	}
 	return b;
     }
@@ -673,11 +677,15 @@ public class PlayerManager {
 	McMMO, PetPay, NearSpawner, Permission, Global, Dynamic, Item, Area
     }
 
-    public Boost getFinalBonus(JobsPlayer player, Job prog) {
-	return getFinalBonus(player, prog, null, null);
+    public Boost getFinalBonus(JobsPlayer player, Job prog, boolean force) {
+	return getFinalBonus(player, prog, null, null, force);
     }
 
-    public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim) {
+    public Boost getFinalBonus(JobsPlayer player, Job prog) {
+	return getFinalBonus(player, prog, null, null, false);
+    }
+
+    public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim, boolean force) {
 	Boost boost = new Boost();
 
 	if (player == null || prog == null)
@@ -701,7 +709,7 @@ public class PlayerManager {
 
 	if (victim != null && victim.hasMetadata(this.getMobSpawnerMetadata()))
 	    boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(player.getVipSpawnerMultiplier()));
-	boost.add(BoostOf.Permission, Jobs.getPlayerManager().getBoost(player, prog));
+	boost.add(BoostOf.Permission, Jobs.getPlayerManager().getBoost(player, prog, force));
 	boost.add(BoostOf.Global, prog.getBoost());
 	if (Jobs.getGCManager().useDynamicPayment)
 	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));

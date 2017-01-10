@@ -18,7 +18,9 @@
 
 package com.gamingmesh.jobs.i18n;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.YmlMaker;
@@ -30,7 +32,6 @@ public class Language {
 
     public Language(Jobs plugin) {
 	this.plugin = plugin;
-	reload();
     }
 
     /**
@@ -51,11 +52,17 @@ public class Language {
     public String getMessage(String key, Object... variables) {
 	String missing = "Missing locale for " + key + " ";
 	String msg = "";
-	if (customlocale == null || !customlocale.contains(key))
-	    msg = enlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', enlocale.getString(key)) : missing;
-	else
-	    msg = customlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', customlocale.getString(key)) : missing;
-
+	try {
+	    if (customlocale == null || !customlocale.contains(key))
+		msg = enlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', enlocale.getString(key)) : missing;
+	    else
+		msg = customlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', customlocale.getString(key)) : missing;
+	} catch (Exception e) {
+	    String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Cant read language file. Plugin will be disabled.");
+	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	    console.sendMessage(message);
+	    throw e;
+	}
 	if (variables.length > 0)
 	    for (int i = 0; i < variables.length; i++) {
 		if (variables.length >= i + 2)

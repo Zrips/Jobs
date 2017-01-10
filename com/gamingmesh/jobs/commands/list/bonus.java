@@ -42,7 +42,7 @@ public class bonus implements Cmd {
 	if (jPlayer == null)
 	    return false;
 
-	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job);
+	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job, true);
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
 

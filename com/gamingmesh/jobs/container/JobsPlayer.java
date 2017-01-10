@@ -33,6 +33,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class JobsPlayer {
@@ -189,7 +190,6 @@ public class JobsPlayer {
     }
 
     public double getBoost(String JobName, CurrencyType type, boolean force) {
-
 	double Boost = 0D;
 
 	if (this.OffPlayer == null)
@@ -209,6 +209,7 @@ public class JobsPlayer {
 		if (counter.getType() != type)
 		    continue;
 		if (force || time - counter.getTime() > 1000 * 60) {
+		    Debug.D("updating perm");
 		    Boost = getPlayerBoost(JobName, type);
 		    counter.setBoost(Boost);
 		    counter.setTime(time);

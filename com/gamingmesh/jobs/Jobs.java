@@ -910,7 +910,7 @@ public class Jobs extends JavaPlugin {
 			    player.giveExp(expInt);
 		    }
 		}
-		Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
+		Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim, false);
 
 		// Calculate income
 		if (income != 0D) {
