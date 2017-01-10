@@ -6,6 +6,15 @@ public class BoostMultiplier {
 
     HashMap<CurrencyType, Double> map = new HashMap<CurrencyType, Double>();
 
+    @Override
+    public BoostMultiplier clone() {
+	BoostMultiplier boost = new BoostMultiplier();
+	for (CurrencyType type : CurrencyType.values()) {
+	    boost.add(type, map.get(type));
+	}
+	return boost;
+    }
+
     public BoostMultiplier() {
 	for (CurrencyType one : CurrencyType.values()) {
 	    map.put(one, 0D);
