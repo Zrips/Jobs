@@ -827,8 +827,10 @@ public class GeneralConfigManager {
 	c.getW().addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show GUI when performing /jobs join command");
 	JobsGUIOpenOnJoin = c.get("JobsGUI.OpenOnJoin", true);
 
-	guiBackButton = new ItemStack(Material.getMaterial(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN")), 1, (byte) c.get("JobsGUI.BackButton.Data", 0));
-	guiFiller = new ItemStack(Material.getMaterial(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE")), 1, (byte) c.get("JobsGUI.Filler.Data", 15));
+	Material tmat = Material.getMaterial(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
+	guiBackButton = new ItemStack(tmat == null ? Material.JACK_O_LANTERN : tmat, 1, (byte) c.get("JobsGUI.BackButton.Data", 0));
+	tmat = Material.getMaterial(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
+	guiFiller = new ItemStack(tmat == null ? Material.STAINED_GLASS_PANE : tmat, 1, (byte) c.get("JobsGUI.Filler.Data", 15));
 
 	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
 	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);

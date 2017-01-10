@@ -20,6 +20,7 @@ public class ShopItem {
     private List<String> IconLore = new ArrayList<String>();
 
     private boolean HideWithoutPerm = false;
+    private int RequiredTotalLevels = -1;
 
     private List<String> RequiredPerm = new ArrayList<String>();
     private HashMap<String, Integer> RequiredJobs = new HashMap<String, Integer>();
@@ -132,5 +133,13 @@ public class ShopItem {
 
     public String getIconName() {
 	return this.IconName;
+    }
+
+    public int getRequiredTotalLevels() {
+	return RequiredTotalLevels;
+    }
+
+    public void setRequiredTotalLevels(int requiredTotalLevels) {
+	RequiredTotalLevels = requiredTotalLevels;
     }
 }

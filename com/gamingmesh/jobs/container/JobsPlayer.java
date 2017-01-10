@@ -79,6 +79,14 @@ public class JobsPlayer {
 	this.player = Bukkit.getPlayer(userName);
     }
 
+    public int getTotalLevels() {
+	int i = 0;
+	for (JobProgression job : progression) {
+	    i += job.getLevel();
+	}
+	return i;
+    }
+
     public PaymentData getPaymentLimit() {
 	if (paymentLimits == null) {
 	    paymentLimits = Jobs.getJobsDAO().getPlayersLimits(this);
@@ -96,7 +104,7 @@ public class JobsPlayer {
 	if (!limit.isEnabled())
 	    return true;
 	PaymentData data = getPaymentLimit();
-	
+
 	if (data.IsReachedLimit(type, this.limits.get(type))) {
 	    if (player.isOnline() && !data.isInformed() && !data.isReseted()) {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit"));

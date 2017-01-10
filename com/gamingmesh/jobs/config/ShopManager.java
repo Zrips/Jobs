@@ -106,6 +106,12 @@ public class ShopManager {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
 		return;
 	    }
+
+	    if (item.getRequiredTotalLevels() != -1 && Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()) {
+		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoTotalLevel", "%totalLevel%", Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels()));
+		return;
+	    }
+
 	}
 
 	for (String one : item.getCommands()) {
@@ -282,6 +288,11 @@ public class ShopManager {
 		}
 	    }
 
+	    if (item.getRequiredTotalLevels() != -1) {
+		Lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevel",
+		    "%totalLevel%", (Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels() ? ChatColor.DARK_RED + "" : "") + item.getRequiredTotalLevels()));
+	    }
+
 	    meta.setLore(Lore);
 	    GUIitem.setItemMeta(meta);
 	    GuiInv.setItem(i, GUIitem);
@@ -363,6 +374,9 @@ public class ShopManager {
 
 	    if (NameSection.isList("RequiredPermission"))
 		Sitem.setRequiredPerm(NameSection.getStringList("RequiredPermission"));
+
+	    if (NameSection.isInt("RequiredTotalLevels"))
+		Sitem.setRequiredTotalLevels(NameSection.getInt("RequiredTotalLevels"));
 
 	    if (NameSection.isList("RequiredJobLevels")) {
 		HashMap<String, Integer> RequiredJobs = new HashMap<String, Integer>();
