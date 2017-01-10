@@ -1,0 +1,56 @@
+package com.gamingmesh.jobs.commands.list;
+
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.commands.JobCommand;
+
+public class iteminfo implements Cmd {
+
+    @Override
+    @SuppressWarnings("deprecation")
+    @JobCommand(1450)
+    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+	if (!(sender instanceof Player)) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
+	    return false;
+	}
+
+	if (args.length != 0) {
+	    Jobs.getCommandManager().sendUsage(sender, "blockinfo");
+	    return true;
+	}
+
+	Player player = (Player) sender;
+
+	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
+
+	if (iih == null || iih.getType() == Material.AIR)
+	    return true;
+
+	boolean tool = false;
+	if (EnchantmentTarget.TOOL.includes(iih) ||
+	    EnchantmentTarget.WEAPON.includes(iih) ||
+	    EnchantmentTarget.ARMOR.includes(iih) ||
+	    EnchantmentTarget.BOW.includes(iih) ||
+	    EnchantmentTarget.FISHING_ROD.includes(iih))
+	    tool = true;
+
+	String dataString = iih.getData().getData() == 0 ? "" : "-" + iih.getData().getData();
+
+	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.name", "%itemname%", iih.getType().name()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.id", "%itemid%", iih.getTypeId()));
+	if (!tool)
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.data", "%itemdata%", iih.getData().getData()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.usage", "%first%", iih.getTypeId() + dataString,
+	    "%second%", iih.getType().name() + dataString));
+	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+
+	return true;
+    }
+}

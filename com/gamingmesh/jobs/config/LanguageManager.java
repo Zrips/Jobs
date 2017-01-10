@@ -166,6 +166,14 @@ public class LanguageManager {
 	    c.get("command.blockinfo.output.data", " &eBlock data: &6%blockdata%");
 	    c.get("command.blockinfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
 	    
+
+	    c.get("command.iteminfo.help.info", "Shows item information you holding.");
+	    c.get("command.iteminfo.help.args", "");
+	    c.get("command.iteminfo.output.name", " &eItem name: &6%itemname%");
+	    c.get("command.iteminfo.output.id", " &eItem id: &6%itemid%");
+	    c.get("command.iteminfo.output.data", " &eItem data: &6%itemdata%");
+	    c.get("command.iteminfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
+	    
 	    c.get("command.entitylist.help.info", "Shows all possible entities can be used with plugin.");
 	    c.get("command.entitylist.help.args", "");
 
