@@ -73,6 +73,6 @@ public class JobItems {
     }
 
     public BoostMultiplier getBoost() {
-	return this.boostMultiplier;
+	return this.boostMultiplier.clone();
     }
 }

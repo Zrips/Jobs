@@ -126,6 +126,8 @@ public class Job {
     }
 
     public boolean isSame(Job job) {
+	if (job == null)
+	    return false;
 	return this.getName().equalsIgnoreCase(job.getName());
     }
 

@@ -663,7 +663,7 @@ public class PlayerManager {
 		    continue main;
 	    }
 
-	    return oneItem.getBoost().clone();
+	    return oneItem.getBoost();
 	}
 
 	return bonus;

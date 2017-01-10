@@ -972,10 +972,10 @@ public class Jobs extends JavaPlugin {
 		    continue;
 
 		try {
-		    if (expAmount != 0D)
-			if (GconfigManager.BossBarEnabled && GconfigManager.BossBarShowOnEachAction) {
+		    if (expAmount != 0D && GconfigManager.BossBarEnabled)
+			if (GconfigManager.BossBarShowOnEachAction) {
 			    Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
-			} else if (GconfigManager.BossBarEnabled && !GconfigManager.BossBarShowOnEachAction)
+			} else
 			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Exception e) {
 		    Bukkit.getConsoleSender().sendMessage("[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
