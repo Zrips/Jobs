@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
-import com.gamingmesh.jobs.container.BoostType;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -40,7 +40,7 @@ public class pointboost implements Cmd {
 
 	if (args[0].equalsIgnoreCase("reset") && args[1].equalsIgnoreCase("all")) {
 	    for (Job one : Jobs.getJobs()) {
-		one.addBoost(BoostType.POINTS, 1.0);
+		one.addBoost(CurrencyType.POINTS, 1.0);
 	    }
 	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.pointboost.output.allreset"));
 	    return true;
@@ -48,7 +48,7 @@ public class pointboost implements Cmd {
 	    boolean found = false;
 	    for (Job one : Jobs.getJobs()) {
 		if (one.getName().equalsIgnoreCase(args[1])) {
-		    one.addBoost(BoostType.POINTS, 1.0);
+		    one.addBoost(CurrencyType.POINTS, 1.0);
 		    found = true;
 		    break;
 		}
@@ -63,7 +63,7 @@ public class pointboost implements Cmd {
 	if (args[0].equalsIgnoreCase("all")) {
 
 	    for (Job one : Jobs.getJobs()) {
-		one.addBoost(BoostType.POINTS, rate);
+		one.addBoost(CurrencyType.POINTS, rate);
 	    }
 
 	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.pointboost.output.boostalladded", "%boost%", rate));
@@ -73,7 +73,7 @@ public class pointboost implements Cmd {
 	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
-	job.addBoost(BoostType.POINTS, rate);
+	job.addBoost(CurrencyType.POINTS, rate);
 	sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.pointboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
 	return true;
     }

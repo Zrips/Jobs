@@ -123,6 +123,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	createDefaultExploreBase();
 	createDefaultUsersBase();
 	createDefaultBlockProtection();
+	createDefaultLimitBase();
     }
 
     @Override
@@ -875,6 +876,16 @@ public class JobsDAOSQLite extends JobsDAO {
 	try {
 	    executeSQL("CREATE TABLE IF NOT EXISTS `" + getPrefix()
 		+ "blocks` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `world` varchar(36) NOT NULL, `x` int, `y` int, `z` int, `recorded` bigint, `resets` bigint);");
+	} catch (SQLException e) {
+	    return false;
+	}
+	return true;
+    }
+    
+    private boolean createDefaultLimitBase() {
+	try {
+	    executeSQL("CREATE TABLE IF NOT EXISTS `" + getPrefix()
+		+ "limits` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `userid` int, `type` varchar(36), `collected` double, `started` bigint);");
 	} catch (SQLException e) {
 	    return false;
 	}

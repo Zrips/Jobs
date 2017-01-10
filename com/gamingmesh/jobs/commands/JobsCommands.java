@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
-import com.gamingmesh.jobs.container.BoostType;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -375,14 +375,14 @@ public class JobsCommands implements CommandExecutor {
 	    }
 	}
 
-	if (job.getBoost().get(BoostType.EXP) != 0D)
-	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", (job.getBoost().get(BoostType.EXP)) + 1) + "\n");
+	if (job.getBoost().get(CurrencyType.EXP) != 0D)
+	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.EXP)) + 1) + "\n");
 
-	if (job.getBoost().get(BoostType.MONEY) != 0D)
-	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", (job.getBoost().get(BoostType.MONEY)) + 1) + "\n");
+	if (job.getBoost().get(CurrencyType.MONEY) != 0D)
+	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.MONEY)) + 1) + "\n");
 
-	if (job.getBoost().get(BoostType.POINTS) != 0D)
-	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", (job.getBoost().get(BoostType.POINTS)) + 1) + "\n");
+	if (job.getBoost().get(CurrencyType.POINTS) != 0D)
+	    message.append(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.POINTS)) + 1) + "\n");
 
 	if (Jobs.getGCManager().useDynamicPayment)
 	    if (job.getBonus() < 0)
@@ -512,15 +512,15 @@ public class JobsCommands implements CommandExecutor {
 
 //	    Jobs.getPlayerManager().getFinalBonus(player, prog)
 
-	    income = income + (income * boost.getFinal(BoostType.MONEY));
+	    income = income + (income * boost.getFinal(CurrencyType.MONEY));
 	    String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
 	    double xp = info.getExperience(level, numjobs);
-	    xp = xp + (xp * boost.getFinal(BoostType.EXP));
+	    xp = xp + (xp * boost.getFinal(CurrencyType.EXP));
 	    String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
 	    double points = info.getPoints(level, numjobs);
-	    points = points + (points * boost.getFinal(BoostType.POINTS));
+	    points = points + (points * boost.getFinal(CurrencyType.POINTS));
 	    String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 
 	    if (income == 0D && points == 0D && xp == 0D)

@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
-import com.gamingmesh.jobs.container.BoostType;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -176,11 +176,11 @@ public class GuiManager {
 		String itemName = Jobs.getNameTranslatorManager().Translate(info.get(z).getName(), info.get(z));
 
 		double income = info.get(z).getIncome(level, numjobs);
-		income = income + (income * boost.getFinal(BoostType.MONEY));
+		income = income + (income * boost.getFinal(CurrencyType.MONEY));
 		ChatColor incomeColor = income >= 0 ? ChatColor.GREEN : ChatColor.DARK_RED;
 
 		double xp = info.get(z).getExperience(level, numjobs);
-		xp = xp + (xp * boost.getFinal(BoostType.EXP));
+		xp = xp + (xp * boost.getFinal(CurrencyType.EXP));
 		ChatColor xpColor = xp >= 0 ? ChatColor.YELLOW : ChatColor.GRAY;
 
 		String xpString = String.format("%.2fxp", xp);

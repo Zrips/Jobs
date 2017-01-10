@@ -59,7 +59,7 @@ import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.Boost;
-import com.gamingmesh.jobs.container.BoostType;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
@@ -797,7 +797,6 @@ public class Jobs extends JavaPlugin {
 	int numjobs = progression.size();
 	// no job
 
-	
 	if (numjobs == 0) {
 
 	    if (noneJob == null)
@@ -820,7 +819,7 @@ public class Jobs extends JavaPlugin {
 		// Calculate income
 
 		if (income != 0D) {
-		    income = income + (income * boost.getFinal(BoostType.MONEY));
+		    income = income + (income * boost.getFinal(CurrencyType.MONEY));
 		    if (GconfigManager.useMinimumOveralPayment && income > 0) {
 			double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
 			if (income < maxLimit) {
@@ -832,7 +831,7 @@ public class Jobs extends JavaPlugin {
 		// Calculate points
 
 		if (pointAmount != 0D) {
-		    pointAmount = pointAmount + (pointAmount * boost.getFinal(BoostType.POINTS));
+		    pointAmount = pointAmount + (pointAmount * boost.getFinal(CurrencyType.POINTS));
 		    if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
 			double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
 			if (pointAmount < maxLimit) {
@@ -841,15 +840,15 @@ public class Jobs extends JavaPlugin {
 		    }
 		}
 
-		if (!isUnderMoneyLimit(jPlayer, income)) {
+		if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
 		    income = 0D;
-		    if (GconfigManager.MoneyStopPoint)
+		    if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
 			pointAmount = 0D;
 		}
 
-		if (!isUnderPointLimit(jPlayer, pointAmount)) {
+		if (!jPlayer.isUnderLimit(CurrencyType.POINTS, pointAmount)) {
 		    pointAmount = 0D;
-		    if (GconfigManager.PointStopMoney)
+		    if (GconfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.MONEY))
 			income = 0D;
 		}
 
@@ -913,10 +912,9 @@ public class Jobs extends JavaPlugin {
 		}
 		Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
 
-
 		// Calculate income
 		if (income != 0D) {
-		    income = income + (income * boost.getFinal(BoostType.MONEY));
+		    income = income + (income * boost.getFinal(CurrencyType.MONEY));
 		    if (GconfigManager.useMinimumOveralPayment && income > 0) {
 			double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
 			if (income < maxLimit) {
@@ -927,7 +925,7 @@ public class Jobs extends JavaPlugin {
 
 		// Calculate points
 		if (pointAmount != 0D) {
-		    pointAmount = pointAmount + (pointAmount * boost.getFinal(BoostType.POINTS));
+		    pointAmount = pointAmount + (pointAmount * boost.getFinal(CurrencyType.POINTS));
 		    if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
 			double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
 			if (pointAmount < maxLimit) {
@@ -937,7 +935,7 @@ public class Jobs extends JavaPlugin {
 		}
 
 		// Calculate exp
-		expAmount = expAmount + (expAmount * boost.getFinal(BoostType.EXP));
+		expAmount = expAmount + (expAmount * boost.getFinal(CurrencyType.EXP));
 
 		if (GconfigManager.useMinimumOveralPayment && expAmount > 0) {
 		    double maxLimit = expAmount * GconfigManager.MinimumOveralPaymentLimit;
@@ -946,27 +944,27 @@ public class Jobs extends JavaPlugin {
 		    }
 		}
 
-		if (!isUnderMoneyLimit(jPlayer, income)) {
+		if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
 		    income = 0D;
-		    if (GconfigManager.MoneyStopExp)
+		    if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.EXP))
 			expAmount = 0D;
-		    if (GconfigManager.MoneyStopPoint)
+		    if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
 			pointAmount = 0D;
 		}
 
-		if (!isUnderExpLimit(jPlayer, expAmount)) {
+		if (!jPlayer.isUnderLimit(CurrencyType.EXP, expAmount)) {
 		    expAmount = 0D;
-		    if (GconfigManager.ExpStopMoney)
+		    if (GconfigManager.getLimit(CurrencyType.EXP).getStopWith().contains(CurrencyType.MONEY))
 			income = 0D;
-		    if (GconfigManager.ExpStopPoint)
+		    if (GconfigManager.getLimit(CurrencyType.EXP).getStopWith().contains(CurrencyType.POINTS))
 			pointAmount = 0D;
 		}
 
-		if (!isUnderPointLimit(jPlayer, pointAmount)) {
+		if (!jPlayer.isUnderLimit(CurrencyType.POINTS, pointAmount)) {
 		    pointAmount = 0D;
-		    if (GconfigManager.PointStopMoney)
+		    if (GconfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.MONEY))
 			income = 0D;
-		    if (GconfigManager.PointStopExp)
+		    if (GconfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.EXP))
 			expAmount = 0D;
 		}
 
@@ -1123,9 +1121,12 @@ public class Jobs extends JavaPlugin {
 	if (JobsExpGainEvent.isCancelled())
 	    return;
 
-	isUnderMoneyLimit(jPlayer, payment.getAmount());
-	isUnderExpLimit(jPlayer, payment.getExp());
-	isUnderPointLimit(jPlayer, payment.getPoints());
+	if (!jPlayer.isUnderLimit(CurrencyType.MONEY, payment.getAmount()))
+	    return;
+	if (!jPlayer.isUnderLimit(CurrencyType.EXP, payment.getExp()))
+	    return;
+	if (!jPlayer.isUnderLimit(CurrencyType.POINTS, payment.getPoints()))
+	    return;
 
 	economy.pay(jPlayer, payment.getAmount(), payment.getPoints(), payment.getExp());
 
@@ -1138,134 +1139,6 @@ public class Jobs extends JavaPlugin {
 
 	if (prog.addExperience(payment.getExp()))
 	    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
-    }
-
-    public static boolean isUnderMoneyLimit(JobsPlayer jPlayer, Double amount) {
-
-	Player player = jPlayer.getPlayer();
-
-	if (player == null)
-	    return true;
-
-	if (amount == 0)
-	    return true;
-
-	String playername = player.getName();
-
-	if (!GconfigManager.MoneyLimitUse)
-	    return true;
-
-	if (!paymentLimit.containsKey(playername)) {
-	    PaymentData data = new PaymentData(System.currentTimeMillis(), amount, 0.0, 0.0, 0L, false);
-	    //data.AddNewAmount(amount);
-	    paymentLimit.put(playername, data);
-	} else {
-	    PaymentData data = paymentLimit.get(playername);
-	    if (data.IsReachedMoneyLimit(GconfigManager.MoneyTimeLimit, jPlayer.getMoneyLimit())) {
-		if (player.isOnline() && !data.Informed && !data.isReseted()) {
-		    player.sendMessage(lManager.getMessage("command.limit.output.reachedlimit"));
-		    player.sendMessage(lManager.getMessage("command.limit.output.reachedlimit2"));
-		    data.Setinformed();
-		}
-		if (data.IsAnnounceTime(GconfigManager.MoneyAnnouncmentDelay) && player.isOnline()) {
-		    String message = lManager.getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(GconfigManager.MoneyTimeLimit));
-		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(GconfigManager.MoneyTimeLimit)));
-		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(GconfigManager.MoneyTimeLimit)));
-		    Jobs.getActionBar().send((player), ChatColor.RED + message);
-		}
-		if (data.isReseted())
-		    data.setReseted(false);
-		return false;
-	    }
-
-	    data.AddAmount(amount);
-	    paymentLimit.put(playername, data);
-	}
-	return true;
-    }
-
-    public static boolean isUnderExpLimit(JobsPlayer jPlayer, Double amount) {
-	Player player = jPlayer.getPlayer();
-
-	if (player == null)
-	    return true;
-
-	if (amount == 0)
-	    return true;
-
-	String playername = player.getName();
-
-	if (!GconfigManager.ExpLimitUse)
-	    return true;
-
-	if (!ExpLimit.containsKey(playername)) {
-	    PaymentData data = new PaymentData(System.currentTimeMillis(), 0.0, 0.0, amount, 0L, false);
-	    //data.AddNewAmount(amount);
-	    ExpLimit.put(playername, data);
-	} else {
-	    PaymentData data = ExpLimit.get(playername);
-	    if (data.IsReachedExpLimit(GconfigManager.ExpTimeLimit, jPlayer.getExpLimit())) {
-		if (player.isOnline() && !data.Informed && !data.isReseted()) {
-		    player.sendMessage(lManager.getMessage("command.limit.output.reachedExplimit"));
-		    player.sendMessage(lManager.getMessage("command.limit.output.reachedExplimit2"));
-		    data.Setinformed();
-		}
-		if (data.IsAnnounceTime(GconfigManager.ExpAnnouncmentDelay) && player.isOnline()) {
-		    String message = lManager.getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(GconfigManager.ExpTimeLimit));
-		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(GconfigManager.ExpTimeLimit)));
-		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(GconfigManager.ExpTimeLimit)));
-		    Jobs.getActionBar().send((player), ChatColor.RED + message);
-		}
-		if (data.isReseted())
-		    data.setReseted(false);
-		return false;
-	    }
-	    data.AddExpAmount(amount);
-	    ExpLimit.put(playername, data);
-	}
-	return true;
-    }
-
-    public static boolean isUnderPointLimit(JobsPlayer jPlayer, Double amount) {
-	Player player = jPlayer.getPlayer();
-
-	if (player == null)
-	    return true;
-
-	if (amount == 0)
-	    return true;
-
-	String playername = player.getName();
-
-	if (!GconfigManager.PointLimitUse)
-	    return true;
-
-	if (!PointLimit.containsKey(playername)) {
-	    PaymentData data = new PaymentData(System.currentTimeMillis(), 0.0, amount, 0.0, 0L, false);
-	    //data.AddNewAmount(amount);
-	    PointLimit.put(playername, data);
-	} else {
-	    PaymentData data = PointLimit.get(playername);
-	    if (data.IsReachedPointLimit(GconfigManager.PointTimeLimit, jPlayer.getPointLimit())) {
-		if (player.isOnline() && !data.Informed && !data.isReseted()) {
-		    player.sendMessage(lManager.getMessage("command.limit.output.reachedPointlimit"));
-		    player.sendMessage(lManager.getMessage("command.limit.output.reachedPointlimit2"));
-		    data.Setinformed();
-		}
-		if (data.IsAnnounceTime(GconfigManager.PointAnnouncmentDelay) && player.isOnline()) {
-		    String message = lManager.getMessage("command.limit.output.lefttime", "%hour%", data.GetLeftHour(GconfigManager.PointTimeLimit));
-		    message = message.replace("%min%", String.valueOf(data.GetLeftMin(GconfigManager.PointTimeLimit)));
-		    message = message.replace("%sec%", String.valueOf(data.GetLeftsec(GconfigManager.PointTimeLimit)));
-		    Jobs.getActionBar().send((player), ChatColor.RED + message);
-		}
-		if (data.isReseted())
-		    data.setReseted(false);
-		return false;
-	    }
-	    data.AddPoints(amount);
-	    PointLimit.put(playername, data);
-	}
-	return true;
     }
 
     public static void consoleMsg(String msg) {

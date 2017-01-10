@@ -24,11 +24,11 @@ public class Boost {
 	return map.get(boostoff);
     }
 
-    public double get(BoostOf boostoff, BoostType BT) {
+    public double get(BoostOf boostoff, CurrencyType BT) {
 	return get(boostoff, BT, false);
     }
 
-    public double get(BoostOf boostoff, BoostType BT, boolean percent) {
+    public double get(BoostOf boostoff, CurrencyType BT, boolean percent) {
 	if (!map.containsKey(boostoff))
 	    return 0D;
 	double r = map.get(boostoff).get(BT);
@@ -39,11 +39,11 @@ public class Boost {
 	return r;
     }
 
-    public double getFinal(BoostType BT) {
+    public double getFinal(CurrencyType BT) {
 	return getFinal(BT, false);
     }
 
-    public double getFinal(BoostType BT, boolean percent) {
+    public double getFinal(CurrencyType BT, boolean percent) {
 	double r = 0D;
 	for (BoostOf one : BoostOf.values()) {
 	    if (!map.containsKey(one))

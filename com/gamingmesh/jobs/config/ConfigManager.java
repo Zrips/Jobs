@@ -38,7 +38,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
-import com.gamingmesh.jobs.container.BoostType;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.DisplayMethod;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
@@ -346,11 +346,11 @@ public class ConfigManager {
 
 		    BoostMultiplier b = new BoostMultiplier();		    
 		    if (itemSection.isDouble("moneyBoost"))
-			b.add(BoostType.MONEY, itemSection.getDouble("moneyBoost") - 1);
+			b.add(CurrencyType.MONEY, itemSection.getDouble("moneyBoost") - 1);
 		    if (itemSection.isDouble("pointBoost"))
-			b.add(BoostType.POINTS, itemSection.getDouble("pointBoost") - 1);
+			b.add(CurrencyType.POINTS, itemSection.getDouble("pointBoost") - 1);
 		    if (itemSection.isDouble("expBoost"))
-			b.add(BoostType.EXP,  itemSection.getDouble("expBoost") - 1);		    
+			b.add(CurrencyType.EXP,  itemSection.getDouble("expBoost") - 1);		    
 		    
 		    jobItems.add(new JobItems(node, id, 0, 1, name, lore, enchants, b));
 		}

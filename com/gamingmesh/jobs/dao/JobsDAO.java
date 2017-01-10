@@ -40,6 +40,7 @@ import org.bukkit.util.Vector;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.Convert;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
@@ -51,7 +52,7 @@ import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.Debug;
+import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 /**
@@ -85,9 +86,8 @@ public abstract class JobsDAO {
 	}
 
 	try {
-	    if (version <= 1)
-		checkUpdate();
-	    else {
+	    checkUpdate();
+	    if (version > 1) {
 		if (version <= 2)
 		    checkUpdate2();
 		checkUpdate4();
@@ -111,6 +111,7 @@ public abstract class JobsDAO {
 	}
 
 	loadAllSavedJobs();
+
     }
 
     protected abstract void setupConfig() throws SQLException;
@@ -384,6 +385,72 @@ public abstract class JobsDAO {
 	    close(prest);
 	}
 	return jobs;
+    }
+
+    public synchronized void recordPlayersLimits(JobsPlayer jPlayer) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("DELETE FROM `" + prefix + "limits` WHERE `userid` = ?;");
+	    prest.setInt(1, jPlayer.getUserId());
+	    prest.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+
+	try {
+	    PaymentData limit = jPlayer.getPaymentLimit();
+	    for (CurrencyType type : CurrencyType.values()) {
+		if (limit == null)
+		    continue;
+		if (limit.GetAmount(type) == 0D)
+		    continue;
+		if (limit.GetLeftTime(type) < 0)
+		    continue;
+
+		prest = conn.prepareStatement("INSERT INTO `" + prefix + "limits` (`userid`, `type`, `collected`, `started`) VALUES (?, ?, ?, ?);");
+		prest.setInt(1, jPlayer.getUserId());
+		prest.setString(2, type.getName());
+		prest.setDouble(3, limit.GetAmount(type));
+		prest.setLong(4, limit.GetTime(type));
+		prest.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+
+    }
+
+    public synchronized PaymentData getPlayersLimits(JobsPlayer jPlayer) {
+	PaymentData data = new PaymentData();
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return data;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    prest = conn.prepareStatement("SELECT `type`, `collected`, `started` FROM `" + prefix + "limits` WHERE `userid` = ?;");
+	    prest.setInt(1, jPlayer.getUserId());
+	    res = prest.executeQuery();
+	    while (res.next()) {
+		CurrencyType type = CurrencyType.getByName(res.getString("type"));
+		if (type == null)
+		    continue;
+		data.AddNewAmount(type, res.getDouble("collected"), res.getLong("started"));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+	return data;
     }
 
     /**
@@ -882,22 +949,28 @@ public abstract class JobsDAO {
 	}
     }
 
-    public void savePoints(JobsPlayer player) {
+    public void savePoints(JobsPlayer jPlayer) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
+	PreparedStatement prest2 = null;
+	try {
+	    prest2 = conn.prepareStatement("DELETE FROM `" + prefix + "points` WHERE `userid` = ?;");
+	    prest2.setInt(1, jPlayer.getUserId());
+	    prest2.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest2);
+	}
+
 	PreparedStatement prest = null;
 	try {
-	    PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(player.getPlayerUUID());
-	    String req = "UPDATE `" + prefix + "points` SET `totalpoints` = ?, `currentpoints` = ? WHERE `userid` = ?;";
-	    if (pointInfo.isNewEntry()) {
-		pointInfo.setNewEntry(false);
-		req = "INSERT INTO `" + prefix + "points` (`totalpoints`, `currentpoints`, `userid`) VALUES (?, ?, ?);";
-	    }
-	    prest = conn.prepareStatement(req);
+	    PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(jPlayer.getPlayerUUID());
+	    prest = conn.prepareStatement("INSERT INTO `" + prefix + "points` (`totalpoints`, `currentpoints`, `userid`) VALUES (?, ?, ?);");
 	    prest.setDouble(1, pointInfo.getTotalPoints());
 	    prest.setDouble(2, pointInfo.getCurrentPoints());
-	    prest.setInt(3, player.getUserId());
+	    prest.setInt(3, jPlayer.getUserId());
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();

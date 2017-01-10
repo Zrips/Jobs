@@ -82,11 +82,11 @@ public class Schedule {
 	return this.stoped;
     }
 
-    public void setBoost(BoostType type, double amount) {
+    public void setBoost(CurrencyType type, double amount) {
 	this.BM.add(type, amount - 1);
     }
 
-    public double getBoost(BoostType type) {
+    public double getBoost(CurrencyType type) {
 	return this.BM.get(type);
     }
 

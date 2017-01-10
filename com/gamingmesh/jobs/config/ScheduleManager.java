@@ -14,7 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BoostMultiplier;
-import com.gamingmesh.jobs.container.BoostType;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.stuff.ChatColor;
@@ -216,11 +216,11 @@ public class ScheduleManager {
 		sched.setMessageToBroadcast(path.getStringList("BroadcastMessage"), path.getString("From"), path.getString("Until"));
 
 	    if (path.contains("Exp") && path.isDouble("Exp"))
-		sched.setBoost(BoostType.EXP, path.getDouble("Exp", 0D));
+		sched.setBoost(CurrencyType.EXP, path.getDouble("Exp", 0D));
 	    if (path.contains("Money") && path.isDouble("Money"))
-		sched.setBoost(BoostType.MONEY, path.getDouble("Money", 0D));
+		sched.setBoost(CurrencyType.MONEY, path.getDouble("Money", 0D));
 	    if (path.contains("Points") && path.isDouble("Points"))
-		sched.setBoost(BoostType.POINTS, path.getDouble("Points", 0D));
+		sched.setBoost(CurrencyType.POINTS, path.getDouble("Points", 0D));
 	    Jobs.getGCManager().BoostSchedule.add(sched);
 	}
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");

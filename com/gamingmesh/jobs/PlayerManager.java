@@ -42,7 +42,7 @@ import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.BoostMultiplier;
-import com.gamingmesh.jobs.container.BoostType;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
 import com.gamingmesh.jobs.container.JobItems;
@@ -569,17 +569,17 @@ public class PlayerManager {
 
     public BoostMultiplier getBoost(JobsPlayer player, Job job) {
 	BoostMultiplier b = new BoostMultiplier();
-	for (BoostType one : BoostType.values()) {
+	for (CurrencyType one : CurrencyType.values()) {
 	    b.add(one, getBoost(player, job, one, false));
 	}
 	return b;
     }
 
-    public double getBoost(JobsPlayer player, Job job, BoostType type) {
+    public double getBoost(JobsPlayer player, Job job, CurrencyType type) {
 	return getBoost(player, job, type, false);
     }
 
-    public double getBoost(JobsPlayer player, Job job, BoostType type, boolean force) {
+    public double getBoost(JobsPlayer player, Job job, CurrencyType type, boolean force) {
 	return player.getBoost(job.getName(), type, force);
     }
 
@@ -678,21 +678,14 @@ public class PlayerManager {
     }
 
     public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim) {
-	long time = System.nanoTime();
-	long last = System.nanoTime();
 	Boost boost = new Boost();
 
 	if (player == null || prog == null)
 	    return boost;
 
-	Debug.D("Boost 1 : " + (System.nanoTime() - last));
-	last = System.nanoTime();
-
 	if (Jobs.getMcMMOlistener().mcMMOPresent)
 	    boost.add(BoostOf.McMMO, new BoostMultiplier().add(Jobs.getMcMMOlistener().getMultiplier(player.getPlayer())));
 
-	Debug.D("Boost 2 : " + (System.nanoTime() - last));
-	last = System.nanoTime();
 	if (ent != null && ent instanceof Tameable) {
 	    Tameable t = (Tameable) ent;
 	    if (t.isTamed() && t.getOwner() instanceof Player) {
@@ -706,28 +699,14 @@ public class PlayerManager {
 	    }
 	}
 
-	Debug.D("Boost 3 : " + (System.nanoTime() - last));
-	last = System.nanoTime();
 	if (victim != null && victim.hasMetadata(this.getMobSpawnerMetadata()))
 	    boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(player.getVipSpawnerMultiplier()));
-	Debug.D("Boost 4 : " + (System.nanoTime() - last));
-	last = System.nanoTime();
 	boost.add(BoostOf.Permission, Jobs.getPlayerManager().getBoost(player, prog));
-	Debug.D("Boost 5 : " + (System.nanoTime() - last));
-	last = System.nanoTime();
 	boost.add(BoostOf.Global, prog.getBoost());
-	Debug.D("Boost 6 : " + (System.nanoTime() - last));
-	last = System.nanoTime();
 	if (Jobs.getGCManager().useDynamicPayment)
 	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
-	Debug.D("Boost 7 : " + (System.nanoTime() - last));
-	last = System.nanoTime();
 	boost.add(BoostOf.Item, Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog));
-	Debug.D("Boost 8 : " + (System.nanoTime() - last));
-	last = System.nanoTime();
 	boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
-	Debug.D("Boost 9 : " + (System.nanoTime() - last));
-	last = System.nanoTime();
 	return boost;
     }
 

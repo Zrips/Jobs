@@ -30,9 +30,9 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsDAO;
+import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class JobsPlayer {
@@ -41,6 +41,8 @@ public class JobsPlayer {
     // progression of the player in each job
     public UUID playerUUID;
     public ArrayList<JobProgression> progression = new ArrayList<JobProgression>();
+
+    private PaymentData paymentLimits = null;
 
     private HashMap<String, ArrayList<BoostCounter>> boostCounter = new HashMap<String, ArrayList<BoostCounter>>();
 
@@ -56,9 +58,7 @@ public class JobsPlayer {
 
     private double VipSpawnerMultiplier = 0D;
 
-    private int MoneyLimit = 0;
-    private int ExpLimit = 0;
-    private int PointLimit = 0;
+    private HashMap<CurrencyType, Integer> limits = new HashMap<CurrencyType, Integer>();
 
     private int userid = -1;
 
@@ -76,6 +76,41 @@ public class JobsPlayer {
 	this.userName = userName;
 	this.OffPlayer = player;
 	this.player = Bukkit.getPlayer(userName);
+    }
+
+    public PaymentData getPaymentLimit() {
+	if (paymentLimits == null) {
+	    paymentLimits = Jobs.getJobsDAO().getPlayersLimits(this);
+	}
+	return paymentLimits;
+    }
+
+    public boolean isUnderLimit(CurrencyType type, Double amount) {
+	Player player = this.getPlayer();
+	if (player == null)
+	    return true;
+	if (amount == 0)
+	    return true;
+	CurrencyLimit limit = Jobs.getGCManager().getLimit(type);
+	if (!limit.isEnabled())
+	    return true;
+	PaymentData data = getPaymentLimit();
+	
+	if (data.IsReachedLimit(type, this.limits.get(type))) {
+	    if (player.isOnline() && !data.isInformed() && !data.isReseted()) {
+		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit"));
+		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit2"));
+		data.setInformed();
+	    }
+	    if (data.IsAnnounceTime(limit.getAnnouncmentDelay()) && player.isOnline()) {
+		Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", data.GetLeftTime(type)));
+	    }
+	    if (data.isReseted())
+		data.setReseted(false);
+	    return false;
+	}
+	data.AddAmount(type, amount);
+	return true;
     }
 
     public void setPlayer(Player p) {
@@ -149,11 +184,11 @@ public class JobsPlayer {
      * Get the Boost
      * @return the Boost
      */
-    public double getBoost(String JobName, BoostType type) {
+    public double getBoost(String JobName, CurrencyType type) {
 	return getBoost(JobName, type, false);
     }
 
-    public double getBoost(String JobName, BoostType type, boolean force) {
+    public double getBoost(String JobName, CurrencyType type, boolean force) {
 
 	double Boost = 0D;
 
@@ -195,7 +230,7 @@ public class JobsPlayer {
 	return Boost;
     }
 
-    private Double getPlayerBoost(String JobName, BoostType type) {
+    private Double getPlayerBoost(String JobName, CurrencyType type) {
 	double Boost = 0D;
 	if (Perm.hasPermission(player, "jobs.boost." + JobName + "." + type.getName().toLowerCase()) ||
 	    Perm.hasPermission(player, "jobs.boost." + JobName + ".all") ||
@@ -216,60 +251,26 @@ public class JobsPlayer {
     }
 
     /**
-     * Reloads money limit for this player.
+     * Reloads limit for this player.
      */
-    public void reloadMoney() {
+    public void reload(CurrencyType type) {
 	int TotalLevel = 0;
 	for (JobProgression prog : progression) {
 	    TotalLevel += prog.getLevel();
 	}
-	Parser eq = Jobs.getGCManager().maxMoneyEquation;
+	Parser eq = Jobs.getGCManager().currencyLimitUse.get(type).getMaxEquation();
 	eq.setVariable("totallevel", TotalLevel);
-	MoneyLimit = (int) eq.getValue();
-    }
-
-    /**
-     * Reloads exp limit for this player.
-     */
-    public void reloadExp() {
-	int TotalLevel = 0;
-	for (JobProgression prog : progression) {
-	    TotalLevel += prog.getLevel();
-	}
-	Parser eq = Jobs.getGCManager().maxExpEquation;
-	eq.setVariable("totallevel", TotalLevel);
-	ExpLimit = (int) eq.getValue();
-    }
-
-    /**
-     * Reloads exp limit for this player.
-     */
-    public void reloadPoint() {
-	int TotalLevel = 0;
-	for (JobProgression prog : progression) {
-	    TotalLevel += prog.getLevel();
-	}
-	Parser eq = Jobs.getGCManager().maxPointEquation;
-	eq.setVariable("totallevel", TotalLevel);
-	PointLimit = (int) eq.getValue();
+	limits.put(type, (int) eq.getValue());
     }
 
     public void reloadLimits() {
-	reloadMoney();
-	reloadExp();
-	reloadPoint();
+	for (CurrencyType type : CurrencyType.values()) {
+	    reload(type);
+	}
     }
 
-    public int getMoneyLimit() {
-	return this.MoneyLimit;
-    }
-
-    public int getExpLimit() {
-	return this.ExpLimit;
-    }
-
-    public int getPointLimit() {
-	return this.PointLimit;
+    public int getLimit(CurrencyType type) {
+	return this.limits.get(type);
     }
 
     /**
@@ -606,6 +607,7 @@ public class JobsPlayer {
 	    dao.save(this);
 	    dao.saveLog(this);
 	    dao.savePoints(this);
+	    dao.recordPlayersLimits(this);
 	    setSaved(true);
 	}
 //	}

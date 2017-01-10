@@ -116,7 +116,7 @@ public class Job {
 	this.GUIitem = GUIitem;
     }
 
-    public void addBoost(BoostType type, double Point) {
+    public void addBoost(CurrencyType type, double Point) {
 	this.boost.add(type, Point - 1D);
     }
 

@@ -4,34 +4,34 @@ import java.util.HashMap;
 
 public class BoostMultiplier {
 
-    HashMap<BoostType, Double> map = new HashMap<BoostType, Double>();
+    HashMap<CurrencyType, Double> map = new HashMap<CurrencyType, Double>();
 
     public BoostMultiplier() {
-	for (BoostType one : BoostType.values()) {
+	for (CurrencyType one : CurrencyType.values()) {
 	    map.put(one, 0D);
 	}
     }
 
-    public BoostMultiplier add(BoostType type, double amount) {
+    public BoostMultiplier add(CurrencyType type, double amount) {
 	map.put(type, amount);
 	return this;
     }
 
     public BoostMultiplier add(double amount) {
-	for (BoostType one : BoostType.values()) {
+	for (CurrencyType one : CurrencyType.values()) {
 	    map.put(one, amount);
 	}
 	return this;
     }
 
-    public double get(BoostType type) {
+    public double get(CurrencyType type) {
 	if (!map.containsKey(type))
 	    return 0D;
 	return this.map.get(type);
     }
 
     public void add(BoostMultiplier armorboost) {
-	for (BoostType one : BoostType.values()) {
+	for (CurrencyType one : CurrencyType.values()) {
 	    double r = armorboost.get(one);
 	    map.put(one, get(one) + r);
 	}

@@ -32,13 +32,13 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.container.BoostType;
+import com.gamingmesh.jobs.container.CurrencyLimit;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.dao.JobsDAOMySQL;
 import com.gamingmesh.jobs.dao.JobsDAOSQLite;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class GeneralConfigManager {
     private Jobs plugin;
@@ -68,26 +68,8 @@ public class GeneralConfigManager {
     public boolean PaymentMethodsPoints;
     public boolean PaymentMethodsExp;
 
-    // Money limit
-    public boolean MoneyLimitUse;
-    public boolean MoneyStopPoint;
-    public boolean MoneyStopExp;
-    public int MoneyTimeLimit;
-    public int MoneyAnnouncmentDelay;
-
-    // Point limit
-    public boolean PointLimitUse;
-    public boolean PointStopExp;
-    public boolean PointStopMoney;
-    public int PointTimeLimit;
-    public int PointAnnouncmentDelay;
-
-    // Exp limit
-    public boolean ExpLimitUse;
-    public boolean ExpStopPoint;
-    public boolean ExpStopMoney;
-    public int ExpTimeLimit;
-    public int ExpAnnouncmentDelay;
+    // Limits
+    public HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<CurrencyType, CurrencyLimit>();
 
     public boolean PayForRenaming, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
@@ -115,7 +97,7 @@ public class GeneralConfigManager {
     public double MinimumOveralPaymentLimit;
     public double MinimumOveralPointsLimit;
 
-    public HashMap<BoostType, Double> Boost = new HashMap<BoostType, Double>();
+    public HashMap<CurrencyType, Double> Boost = new HashMap<CurrencyType, Double>();
 
     public double DynamicPaymentMaxPenalty;
     public double DynamicPaymentMaxBonus;
@@ -138,9 +120,6 @@ public class GeneralConfigManager {
     public boolean BossBarsMessageByDefault;
 
     public Parser DynamicPaymentEquation;
-    public Parser maxMoneyEquation;
-    public Parser maxExpEquation;
-    public Parser maxPointEquation;
 
     public boolean DisabledWorldsUse;
     public List<String> DisabledWorldsList = new ArrayList<String>();
@@ -156,6 +135,10 @@ public class GeneralConfigManager {
 
     public HashMap<String, List<String>> getCommandArgs() {
 	return commandArgs;
+    }
+
+    public CurrencyLimit getLimit(CurrencyType type) {
+	return currencyLimitUse.get(type);
     }
 
     public GeneralConfigManager(Jobs plugin) {
@@ -585,14 +568,18 @@ public class GeneralConfigManager {
 	TakeFromPlayersPayment = c.get("Economy.Taxes.TakeFromPlayersPayment", false);
 
 	// Money limit
+	CurrencyLimit limit = new CurrencyLimit();
 	c.getW().addComment("Economy.Limit.Money", "Money gain limit", "With this enabled, players will be limited how much they can make in defined time",
 	    "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
-	MoneyLimitUse = c.get("Economy.Limit.Money.Use", false);
+	limit.setEnabled(c.get("Economy.Limit.Money.Use", false));
+	List<CurrencyType> list = new ArrayList<CurrencyType>();
 	c.getW().addComment("Economy.Limit.Money.StopWithExp", "Do you want to stop money gain when exp limit reached?");
-	MoneyStopExp = c.get("Economy.Limit.Money.StopWithExp", false);
+	if (c.get("Economy.Limit.Money.StopWithExp", false))
+	    list.add(CurrencyType.EXP);
 	c.getW().addComment("Economy.Limit.Money.StopWithPoint", "Do you want to stop money gain when point limit reached?");
-	MoneyStopPoint = c.get("Economy.Limit.Money.StopWithPoint", false);
-
+	if (c.get("Economy.Limit.Money.StopWithPoint", false))
+	    list.add(CurrencyType.POINTS);
+	limit.setStopWith(list);
 	c.getW().addComment("Economy.Limit.Money.MoneyLimit",
 	    "Equation to calculate max limit. Option to use totallevel to include players total amount levels of current jobs",
 	    "You can always use simple number to set money limit",
@@ -600,28 +587,33 @@ public class GeneralConfigManager {
 	    "So player with 2 jobs with level 15 and 22 will have 685 limit");
 	String MoneyLimit = c.get("Economy.Limit.Money.MoneyLimit", "500+500*(totallevel/100)");
 	try {
-	    maxMoneyEquation = new Parser(MoneyLimit);
-	    maxMoneyEquation.setVariable("totallevel", 1);
-	    maxMoneyEquation.getValue();
+	    Parser Equation = new Parser(MoneyLimit);
+	    Equation.setVariable("totallevel", 1);
+	    Equation.getValue();
+	    limit.setMaxEquation(Equation);
 	} catch (Exception e) {
 	    Jobs.getPluginLogger().warning("MoneyLimit has an invalid value. Disabling money limit!");
-	    MoneyLimitUse = false;
+	    limit.setEnabled(false);
 	}
-
 	c.getW().addComment("Economy.Limit.Money.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
-	MoneyTimeLimit = c.get("Economy.Limit.Money.TimeLimit", 3600);
+	limit.setTimeLimit(c.get("Economy.Limit.Money.TimeLimit", 3600));
 	c.getW().addComment("Economy.Limit.Money.AnnouncmentDelay", "Delay between announcements about reached money limit",
 	    "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
-	MoneyAnnouncmentDelay = c.get("Economy.Limit.Money.AnnouncmentDelay", 30);
+	limit.setAnnouncmentDelay(c.get("Economy.Limit.Money.AnnouncmentDelay", 30));
+	currencyLimitUse.put(CurrencyType.MONEY, limit);
 
 	// Point limit
+	limit = new CurrencyLimit();
+	list = new ArrayList<CurrencyType>();
 	c.getW().addComment("Economy.Limit.Point", "Point gain limit", "With this enabled, players will be limited how much they can make in defined time");
-	PointLimitUse = c.get("Economy.Limit.Point.Use", false);
+	limit.setEnabled(c.get("Economy.Limit.Point.Use", false));
 	c.getW().addComment("Economy.Limit.Point.StopWithExp", "Do you want to stop Point gain when exp limit reached?");
-	PointStopExp = c.get("Economy.Limit.Point.StopWithExp", false);
+	if (c.get("Economy.Limit.Point.StopWithExp", false))
+	    list.add(CurrencyType.EXP);
 	c.getW().addComment("Economy.Limit.Point.StopWithMoney", "Do you want to stop Point gain when money limit reached?");
-	PointStopMoney = c.get("Economy.Limit.Point.StopWithMoney", false);
-
+	if (c.get("Economy.Limit.Point.StopWithMoney", false))
+	    list.add(CurrencyType.MONEY);
+	limit.setStopWith(list);
 	c.getW().addComment("Economy.Limit.Point.Limit",
 	    "Equation to calculate max limit. Option to use totallevel to include players total amount levels of current jobs",
 	    "You can always use simple number to set limit",
@@ -629,48 +621,54 @@ public class GeneralConfigManager {
 	    "So player with 2 jobs with level 15 and 22 will have 685 limit");
 	String PointLimit = c.get("Economy.Limit.Point.Limit", "500+500*(totallevel/100)");
 	try {
-	    maxPointEquation = new Parser(PointLimit);
-	    maxPointEquation.setVariable("totallevel", 1);
-	    maxPointEquation.getValue();
+	    Parser Equation = new Parser(PointLimit);
+	    Equation.setVariable("totallevel", 1);
+	    Equation.getValue();
+	    limit.setMaxEquation(Equation);
 	} catch (Exception e) {
 	    Jobs.getPluginLogger().warning("PointLimit has an invalid value. Disabling money limit!");
-	    PointLimitUse = false;
+	    limit.setEnabled(false);
 	}
-
 	c.getW().addComment("Economy.Limit.Point.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
-	PointTimeLimit = c.get("Economy.Limit.Point.TimeLimit", 3600);
+	limit.setTimeLimit(c.get("Economy.Limit.Point.TimeLimit", 3600));
 	c.getW().addComment("Economy.Limit.Point.AnnouncmentDelay", "Delay between announcements about reached limit",
 	    "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
-	PointAnnouncmentDelay = c.get("Economy.Limit.Point.AnnouncmentDelay", 30);
+	limit.setAnnouncmentDelay(c.get("Economy.Limit.Point.AnnouncmentDelay", 30));
+	currencyLimitUse.put(CurrencyType.POINTS, limit);
 
 	// Exp limit
+	limit = new CurrencyLimit();
+	list = new ArrayList<CurrencyType>();
 	c.getW().addComment("Economy.Limit.Exp", "Exp gain limit", "With this enabled, players will be limited how much they can get in defined time",
 	    "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
-	ExpLimitUse = c.get("Economy.Limit.Exp.Use", false);
+	limit.setEnabled(c.get("Economy.Limit.Exp.Use", false));
 	c.getW().addComment("Economy.Limit.Exp.StopWithMoney", "Do you want to stop exp gain when money limit reached?");
-	ExpStopMoney = c.get("Economy.Limit.Exp.StopWithMoney", false);
+	if (c.get("Economy.Limit.Exp.StopWithMoney", false))
+	    list.add(CurrencyType.MONEY);
 	c.getW().addComment("Economy.Limit.Exp.StopWithPoint", "Do you want to stop exp gain when point limit reached?");
-	ExpStopPoint = c.get("Economy.Limit.Exp.StopWithPoint", false);
-
+	if (c.get("Economy.Limit.Exp.StopWithPoint", false))
+	    list.add(CurrencyType.POINTS);
+	limit.setStopWith(list);
 	c.getW().addComment("Economy.Limit.Exp.Limit", "Equation to calculate max money limit. Option to use totallevel to include players total amount of current jobs",
 	    "You can always use simple number to set exp limit",
 	    "Default equation is: 5000+5000*(totallevel/100), this will add 1% from 5000 for each level player have",
 	    "So player with 2 jobs with level 15 and 22 will have 6850 limit");
 	String expLimit = c.get("Economy.Limit.Exp.Limit", "5000+5000*(totallevel/100)");
 	try {
-	    maxExpEquation = new Parser(expLimit);
-	    maxExpEquation.setVariable("totallevel", 1);
-	    maxExpEquation.getValue();
+	    Parser Equation = new Parser(expLimit);
+	    Equation.setVariable("totallevel", 1);
+	    Equation.getValue();
+	    limit.setMaxEquation(Equation);
 	} catch (Exception e) {
 	    Jobs.getPluginLogger().warning("ExpLimit has an invalid value. Disabling money limit!");
-	    ExpLimitUse = false;
+	    limit.setEnabled(false);
 	}
-
 	c.getW().addComment("Economy.Limit.Exp.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
-	ExpTimeLimit = c.get("Economy.Limit.Exp.TimeLimit", 3600);
+	limit.setTimeLimit(c.get("Economy.Limit.Exp.TimeLimit", 3600));
 	c.getW().addComment("Economy.Limit.Exp.AnnouncmentDelay", "Delay between announcements about reached Exp limit",
 	    "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
-	ExpAnnouncmentDelay = c.get("Economy.Limit.Exp.AnnouncmentDelay", 30);
+	limit.setAnnouncmentDelay(c.get("Economy.Limit.Exp.AnnouncmentDelay", 30));
+	currencyLimitUse.put(CurrencyType.EXP, limit);
 
 	c.getW().addComment("Economy.Repair.PayForRenaming", "Do you want to give money for only renaming items in anvil",
 	    "Players will get full pay as they would for remairing two items when they only renaming one",
@@ -742,10 +740,10 @@ public class GeneralConfigManager {
 	    "Use: jobs.boost.[jobname].money or jobs.boost.[jobname].exp or jobs.boost.[jobname].points or jobs.boost.[jobname].all for all of them with specific jobs name.",
 	    "Use: jobs.boost.all.money or jobs.boost.all.exp or jobs.boost.all.points or jobs.boost.all.all to get boost for all jobs",
 	    "1.25 means that player will get 25% more than others, you can set less than 1 to get less from anothers");
-	
-	Boost.put(BoostType.EXP, (int) ((c.get("boost.exp", 1D) * 100)-100) / 100D);
-	Boost.put(BoostType.MONEY, (int) ((c.get("boost.money", 1D) * 100)-100) / 100D);
-	Boost.put(BoostType.POINTS, (int) ((c.get("boost.points", 1D) * 100)-100) / 100D);
+
+	Boost.put(CurrencyType.EXP, (int) ((c.get("boost.exp", 1D) * 100) - 100) / 100D);
+	Boost.put(CurrencyType.MONEY, (int) ((c.get("boost.money", 1D) * 100) - 100) / 100D);
+	Boost.put(CurrencyType.POINTS, (int) ((c.get("boost.points", 1D) * 100) - 100) / 100D);
 
 	c.getW().addComment("old-job", "Old job save", "Players can leave job and return later with some level loss during that",
 	    "You can fix players level if hes job level is at max level");

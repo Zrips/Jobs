@@ -61,6 +61,10 @@ public class LanguageManager {
 	    c.get("limitedItem.error.levelup", "&cYou need to levelup in [jobname] to use this item!");
 	    c.get("general.info.toplineseparator", "&7*********************** &6%playername% &7***********************");
 	    c.get("general.info.separator", "&7*******************************************************");
+	    c.get("general.info.time.day", "&e%days% &6days ");
+	    c.get("general.info.time.hours", "&e%hours% &6hours ");
+	    c.get("general.info.time.mins", "&e%mins% &6min ");
+	    c.get("general.info.time.secs", "&e%secs% &6sec ");
 	    c.get("general.admin.error", "&cThere was an error in the command.");
 	    c.get("general.admin.success", "&eYour command has been performed.");
 	    c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
@@ -121,18 +125,18 @@ public class LanguageManager {
 
 	    c.get("command.limit.help.info", "Shows payment limits for jobs");
 	    c.get("command.limit.help.args", "");
-	    c.get("command.limit.output.lefttime", "&eTime left until money limit resets: &2%hour% &ehour &2%min% &emin &2%sec% &esec");
+	    c.get("command.limit.output.moneytime", "&eTime left until money limit resets: &2%time%");
 	    c.get("command.limit.output.moneylimit", "&eMoney limit: &2%money%&e/&2%totalmoney%");
-	    c.get("command.limit.output.leftexptime", "&eTime left until Exp limit resets: &2%hour% &ehour &2%min% &emin &2%sec% &esec");
+	    c.get("command.limit.output.exptime", "&eTime left until Exp limit resets: &2%time%");
 	    c.get("command.limit.output.explimit", "&eExp limit: &2%exp%&e/&2%totalexp%");
-	    c.get("command.limit.output.leftpointtime", "&eTime left until Point limit resets: &2%hour% &ehour &2%min% &emin &2%sec% &esec");
-	    c.get("command.limit.output.pointlimit", "&ePoint limit: &2%current%&e/&2%total%");
-	    c.get("command.limit.output.reachedlimit", "&4You have reached money limit in given time!");
-	    c.get("command.limit.output.reachedlimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
-	    c.get("command.limit.output.reachedExplimit", "&4You have reached exp limit in given time!");
-	    c.get("command.limit.output.reachedExplimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
-	    c.get("command.limit.output.reachedPointlimit", "&4You have reached exp limit in given time!");
-	    c.get("command.limit.output.reachedPointlimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
+	    c.get("command.limit.output.pointstime", "&eTime left until Point limit resets: &2%time%");
+	    c.get("command.limit.output.pointslimit", "&ePoint limit: &2%current%&e/&2%total%");
+	    c.get("command.limit.output.reachedmoneylimit", "&4You have reached money limit in given time!");
+	    c.get("command.limit.output.reachedmoneylimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
+	    c.get("command.limit.output.reachedexplimit", "&4You have reached exp limit in given time!");
+	    c.get("command.limit.output.reachedexplimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
+	    c.get("command.limit.output.reachedpointslimit", "&4You have reached exp limit in given time!");
+	    c.get("command.limit.output.reachedpointslimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
 	    c.get("command.limit.output.notenabled", "&eMoney limit is not enabled");
 
 	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");

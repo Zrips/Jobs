@@ -18,17 +18,26 @@
 
 package com.gamingmesh.jobs.container;
 
-public enum BoostType {
+public enum CurrencyType {
     MONEY("Money"),
     EXP("Exp"),
     POINTS("Points");
-    
+
     private String name;
-    private BoostType(String name) {
-        this.name = name;
+
+    private CurrencyType(String name) {
+	this.name = name;
     }
-    
+
     public String getName() {
-        return name;
+	return name;
+    }
+
+    public static CurrencyType getByName(String name) {
+	for (CurrencyType one : values()) {
+	    if (one.getName().equalsIgnoreCase(name))
+		return one;
+	}
+	return null;
     }
 }
