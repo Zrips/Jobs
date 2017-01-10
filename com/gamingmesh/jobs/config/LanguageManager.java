@@ -165,6 +165,9 @@ public class LanguageManager {
 	    c.get("command.blockinfo.output.id", " &eBlock id: &6%blockid%");
 	    c.get("command.blockinfo.output.data", " &eBlock data: &6%blockdata%");
 	    c.get("command.blockinfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
+	    
+	    c.get("command.entitylist.help.info", "Shows all possible entities can be used with plugin.");
+	    c.get("command.entitylist.help.args", "");
 
 	    c.get("command.stats.help.info", "Show the level you are in each job you are part of.");
 	    c.get("command.stats.help.args", "[playername]");
