@@ -51,6 +51,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
@@ -64,6 +65,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
@@ -125,14 +127,28 @@ public class JobsListener implements Listener {
 	if (slot >= 0) {
 	    if (!joblist.isJobInfo() && (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT ||
 		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT)) {
-		if (slot < joblist.getJobList().size()) {
-		    player.closeInventory();
-		    player.openInventory(Jobs.getGUIManager().CreateJobsSubGUI(player, joblist.getJobList().get(slot)));
+		Job job = Jobs.getGUIManager().getJobBySlot(player, slot);
+		if (job != null) {
+
+		    Inventory inv = Jobs.getGUIManager().CreateJobsSubGUI(player, job);
+//		    player.closeInventory(); 
+		    Inventory top = player.getOpenInventory().getTopInventory();
+		    if (top.getSize() == 54)
+			top.setContents(inv.getContents());
+//		    player.openInventory(inv);
 		}
 	    } else if (joblist.isJobInfo()) {
 		if (slot == joblist.getbackButton()) {
-		    player.closeInventory();
-		    player.openInventory(Jobs.getGUIManager().CreateJobsGUI(player));
+
+		    Inventory inv = Jobs.getGUIManager().CreateJobsGUI(player);
+//		    player.closeInventory(); 
+		    Inventory top = player.getOpenInventory().getTopInventory();
+		    if (top.getSize() == 54)
+			top.setContents(inv.getContents());
+
+		    Debug.D("back");
+//		    player.closeInventory();
+//		    player.openInventory(Jobs.getGUIManager().CreateJobsGUI(player));
 		}
 	    } else if (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
 		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
