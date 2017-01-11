@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BossBarInfo;
+import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
@@ -81,26 +82,31 @@ public class BossBarManager {
 	    "%jobmaxxp%", jobProg.getMaxExperience());
 
 	if (bar == null) {
-	    BarColor color = BarColor.BLUE;
-	    switch (player.getBossBarInfo().size()) {
-	    case 1:
-		color = BarColor.GREEN;
-		break;
-	    case 2:
-		color = BarColor.RED;
-		break;
-	    case 3:
-		color = BarColor.WHITE;
-		break;
-	    case 4:
-		color = BarColor.YELLOW;
-		break;
-	    case 5:
-		color = BarColor.PINK;
-		break;
-	    case 6:
-		color = BarColor.PURPLE;
-		break;
+	    BarColor color = getColor(jobProg.getJob());
+	    if (color == null) {
+		switch (player.getBossBarInfo().size()) {
+		case 1:
+		    color = BarColor.GREEN;
+		    break;
+		case 2:
+		    color = BarColor.RED;
+		    break;
+		case 3:
+		    color = BarColor.WHITE;
+		    break;
+		case 4:
+		    color = BarColor.YELLOW;
+		    break;
+		case 5:
+		    color = BarColor.PINK;
+		    break;
+		case 6:
+		    color = BarColor.PURPLE;
+		    break;
+		default:
+		    color = BarColor.BLUE;
+		    break;
+		}
 	    }
 	    bar = Bukkit.createBossBar(message, color, BarStyle.SEGMENTED_20);
 	} else
@@ -123,7 +129,7 @@ public class BossBarManager {
 
 	if (OldOne == null)
 	    return;
-	
+
 	OldOne.setId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
@@ -143,5 +149,15 @@ public class BossBarManager {
 	    }
 	}, Jobs.getGCManager().BossBarTimer * 20L));
 
+    }
+
+    private BarColor getColor(Job job) {
+	if (job.getBossbar() == null)
+	    return null;
+	for (BarColor color : BarColor.values()) {
+	    if (job.getBossbar().equalsIgnoreCase(color.name()))
+		return color;
+	}
+	return null;
     }
 }

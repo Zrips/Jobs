@@ -71,6 +71,7 @@ public class Job {
     private Double bonus = null;
 
     private BoostMultiplier boost = new BoostMultiplier();
+    private String bossbar;
 
     /**
      * Constructor
@@ -93,7 +94,7 @@ public class Job {
      */
     public Job(String jobName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, List<JobItems> jobItems,
-	List<JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem) {
+	List<JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, String bossbar) {
 	this.jobName = jobName;
 	this.jobShortName = jobShortName;
 	this.description = description;
@@ -111,6 +112,7 @@ public class Job {
 	this.CmdOnJoin = CmdOnJoin;
 	this.CmdOnLeave = CmdOnLeave;
 	this.GUIitem = GUIitem;
+	this.bossbar = bossbar;
     }
 
     public void addBoost(CurrencyType type, double Point) {
@@ -341,5 +343,13 @@ public class Job {
      */
     public List<JobLimitedItems> getLimitedItems() {
 	return Collections.unmodifiableList(jobLimitedItems);
+    }
+
+    public String getBossbar() {
+	return bossbar;
+    }
+
+    public void setBossbar(String bossbar) {
+	this.bossbar = bossbar;
     }
 }

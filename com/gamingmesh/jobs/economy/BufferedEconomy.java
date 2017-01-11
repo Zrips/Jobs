@@ -193,7 +193,7 @@ public class BufferedEconomy {
 		try {
 		    // Action bar stuff
 		    Jobs.getActionBar().ShowActionBar(payment);
-		    if (payment.getOfflinePlayer().isOnline()) {
+		    if (payment.getOfflinePlayer().isOnline() && Jobs.getActionBar().getVersion() > 1900) {
 			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getName());
 			Jobs.getBBManager().ShowJobProgression(jPlayer);
 		    }

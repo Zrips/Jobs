@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.boss.BarColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -49,7 +50,6 @@ import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class ConfigManager {
     private Jobs plugin;
@@ -154,6 +154,16 @@ public class ConfigManager {
 		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid ChatColour property.  Defaulting to WHITE!");
 		}
 	    }
+	    
+	    String bossbar = null;
+	    if (jobSection.contains("BossBarColour")) {
+		bossbar = jobSection.getString("BossBarColour", "");
+		if (bossbar == null) {
+		    color = ChatColor.WHITE;
+		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid BossBarColour property.");
+		}
+	    }
+	    
 	    DisplayMethod displayMethod = DisplayMethod.matchMethod(jobSection.getString("chat-display", ""));
 	    if (displayMethod == null) {
 		Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid chat-display property. Defaulting to None!");
@@ -406,7 +416,7 @@ public class ConfigManager {
 	    }
 
 	    Job job = new Job(jobName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
-		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem);
+		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem, bossbar);
 
 	    for (ActionType actionType : ActionType.values()) {
 		ConfigurationSection typeSection = jobSection.getConfigurationSection(actionType.getName());

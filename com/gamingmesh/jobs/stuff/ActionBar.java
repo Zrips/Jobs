@@ -64,6 +64,8 @@ public class ActionBar {
 		    cleanVersion = 1920;
 		if (version.contains("v1_10_R1"))
 		    cleanVersion = 11010;
+		if (version.contains("v1_11_R1"))
+		    cleanVersion = 11110;
 	    }
 
 	    if (cleanVersion < 1400)
