@@ -228,7 +228,7 @@ public class JobsPaymentListener implements Listener {
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(playerName);
 
-	if (jPlayer == null || !jPlayer.getPlayer().isOnline())
+	if (jPlayer == null || !jPlayer.isOnline())
 	    return;
 
 	Player player = jPlayer.getPlayer();

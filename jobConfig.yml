@@ -25,6 +25,8 @@ Jobs:
     description: Earns money felling and planting trees  
     # The colour of the name, for a full list of supported colours, go to the message config.
     ChatColour: GREEN
+    # [OPTIONAL] The colour of the boss bar: GREEN, BLUE, RED, WHITE, YELLOW, PINK, PURPLE.
+    BossBarColour: WHITE
     # Option to let you choose what kind of prefix this job adds to your name.
     # options are: full, title, job, shortfull, shorttitle, shortjob and none
     chat-display: full
