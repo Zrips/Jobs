@@ -239,6 +239,10 @@ public class PermissionHandler {
     /**
      * Check World permissions
      */
+    public boolean hasWorldPermission(Player player) {
+	return hasWorldPermission(player, player.getWorld().getName());
+    }
+
     public boolean hasWorldPermission(Player player, String world) {
 	if (!player.hasPermission("jobs.use")) {
 	    return false;

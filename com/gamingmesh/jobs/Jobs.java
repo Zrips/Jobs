@@ -125,6 +125,7 @@ public class Jobs extends JavaPlugin {
 //	public static WeakHashMap<String, Double> GlobalBoost = new WeakHashMap<String, Double>();
     private static BufferedEconomy economy;
     private static PermissionHandler permissionHandler;
+    private static PermissionManager permissionManager;
 
     public static BufferedPaymentThread paymentThread = null;
     private static DatabaseSaveThread saveTask = null;
@@ -540,6 +541,8 @@ public class Jobs extends JavaPlugin {
 	Jobs.getScheduleManager().load();
 	if (GconfigManager.useGlobalBoostScheduler)
 	    Jobs.getScheduleManager().start();
+
+	permissionManager = new PermissionManager();
     }
 
     /**
@@ -628,6 +631,10 @@ public class Jobs extends JavaPlugin {
      */
     public static PermissionHandler getPermissionHandler() {
 	return permissionHandler;
+    }
+
+    public static PermissionManager getPermissionManager() {
+	return permissionManager;
     }
 
     /**

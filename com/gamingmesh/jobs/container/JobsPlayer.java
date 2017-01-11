@@ -73,6 +73,9 @@ public class JobsPlayer {
 
     private Long seen = System.currentTimeMillis();
 
+    private HashMap<String, Boolean> permissionsCache = null;
+    private Long lastPermissionUpdate = -1L;
+
     public JobsPlayer(String userName, OfflinePlayer player) {
 	this.userName = userName;
 	this.OffPlayer = player;
@@ -668,5 +671,25 @@ public class JobsPlayer {
 
     public void setSeen(Long seen) {
 	this.seen = seen;
+    }
+
+    public HashMap<String, Boolean> getPermissionsCache() {
+	return permissionsCache;
+    }
+
+    public void setPermissionsCache(HashMap<String, Boolean> permissionsCache) {
+	this.permissionsCache = permissionsCache;
+    }
+
+    public void setPermissionsCache(String permission, Boolean state) {
+	this.permissionsCache.put(permission, state);
+    }
+
+    public Long getLastPermissionUpdate() {
+	return lastPermissionUpdate;
+    }
+
+    public void setLastPermissionUpdate(Long lastPermissionUpdate) {
+	this.lastPermissionUpdate = lastPermissionUpdate;
     }
 }

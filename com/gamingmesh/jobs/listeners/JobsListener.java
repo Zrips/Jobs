@@ -65,7 +65,6 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
@@ -129,26 +128,17 @@ public class JobsListener implements Listener {
 		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT)) {
 		Job job = Jobs.getGUIManager().getJobBySlot(player, slot);
 		if (job != null) {
-
 		    Inventory inv = Jobs.getGUIManager().CreateJobsSubGUI(player, job);
-//		    player.closeInventory(); 
 		    Inventory top = player.getOpenInventory().getTopInventory();
 		    if (top.getSize() == 54)
 			top.setContents(inv.getContents());
-//		    player.openInventory(inv);
 		}
 	    } else if (joblist.isJobInfo()) {
 		if (slot == joblist.getbackButton()) {
-
 		    Inventory inv = Jobs.getGUIManager().CreateJobsGUI(player);
-//		    player.closeInventory(); 
 		    Inventory top = player.getOpenInventory().getTopInventory();
 		    if (top.getSize() == 54)
 			top.setContents(inv.getContents());
-
-		    Debug.D("back");
-//		    player.closeInventory();
-//		    player.openInventory(Jobs.getGUIManager().CreateJobsGUI(player));
 		}
 	    } else if (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
 		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
