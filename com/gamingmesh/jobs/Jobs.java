@@ -71,7 +71,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
-import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
@@ -79,7 +78,6 @@ import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -130,10 +128,6 @@ public class Jobs extends JavaPlugin {
 
     public static BufferedPaymentThread paymentThread = null;
     private static DatabaseSaveThread saveTask = null;
-
-    public static HashMap<String, PaymentData> paymentLimit = new HashMap<String, PaymentData>();
-    public static HashMap<String, PaymentData> ExpLimit = new HashMap<String, PaymentData>();
-    public static HashMap<String, PaymentData> PointLimit = new HashMap<String, PaymentData>();
 
     public static HashMap<String, FastPayment> FastPayment = new HashMap<String, FastPayment>();
 

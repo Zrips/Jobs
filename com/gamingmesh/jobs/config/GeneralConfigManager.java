@@ -103,6 +103,9 @@ public class GeneralConfigManager {
     public double MinimumOveralPaymentLimit;
     public double MinimumOveralPointsLimit;
 
+    public boolean MonsterDamageUse = false;
+    public double MonsterDamagePercentage;
+
     public HashMap<CurrencyType, Double> Boost = new HashMap<CurrencyType, Double>();
 
     public double DynamicPaymentMaxPenalty;
@@ -716,6 +719,11 @@ public class GeneralConfigManager {
 	    "0.2 means 20% of original reward", "Optionaly you can give jobs.petpay permission node for specific players/ranks to get paid by VipPetPay multiplier");
 	PetPay = c.get("ExploitProtections.General.PetPay", 0.1) - 1D;
 	VipPetPay = c.get("ExploitProtections.General.VipPetPay", 1.0) - 1D;
+
+	c.getW().addComment("ExploitProtections.General.MonsterDamage.Use", "This section controls how much damage player should do to monster for player to get paid",
+	    "This prevents from killing monsters in one hit when they suffer in example fall damage");
+	MonsterDamageUse = c.get("ExploitProtections.General.MonsterDamage.Use", false);
+	MonsterDamagePercentage = c.get("ExploitProtections.General.MonsterDamage.Percentage", 60);
 
 	c.getW().addComment("ExploitProtections.McMMO", "McMMO abilities");
 	c.getW().addComment("ExploitProtections.McMMO.TreeFellerMultiplier", "Players will get part of money from cutting trees with treefeller ability enabled.",

@@ -29,6 +29,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
@@ -46,6 +47,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -67,6 +69,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.BlockActionInfo;
@@ -84,17 +87,17 @@ import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.google.common.base.Objects;
 
 public class JobsPaymentListener implements Listener {
     private Jobs plugin;
     private final String furnaceOwnerMetadata = "jobsFurnaceOwner";
-    public final static String brewingOwnerMetadata = "jobsBrewingOwner";
-    public static final String BlockMetadata = "BlockOwner";
-    public static final String PlacedBlockMetadata = "JobsBlockOwner";
+    private final String brewingOwnerMetadata = "jobsBrewingOwner";
+    private final String BlockMetadata = "BlockOwner";
     public static final String VegyMetadata = "VegyTimer";
-    public static final String GlobalMetadata = "GlobalTimer";
-    public static final String CowMetadata = "CowTimer";
+    private final String CowMetadata = "CowTimer";
+    private final String entityDamageByPlayer = "JobsEntityDamagePlayer";
 
     public JobsPaymentListener(Jobs plugin) {
 	this.plugin = plugin;
@@ -753,6 +756,59 @@ public class JobsPaymentListener implements Listener {
 	Jobs.action(jPlayer, new ItemActionInfo(event.getResult(), ActionType.SMELT));
     }
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityDamageByPlayer(EntityDamageEvent event) {
+	//disabling plugin in world
+	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
+
+	if (!Jobs.getGCManager().MonsterDamageUse)
+	    return;
+
+	Entity ent = event.getEntity();
+	if (ent instanceof Player)
+	    return;
+	if (!(event instanceof EntityDamageByEntityEvent))
+	    return;
+	EntityDamageByEntityEvent attackevent = (EntityDamageByEntityEvent) event;
+	Entity damager = attackevent.getDamager();
+	if (!(damager instanceof Player))
+	    return;
+	double damage = event.getFinalDamage();
+	double s = ((Damageable) ent).getHealth();
+	if (damage > s)
+	    damage = s;
+	if (ent.hasMetadata(entityDamageByPlayer))
+	    damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
+	ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(this.plugin, damage));
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityDamageByProjectile(EntityDamageByEntityEvent event) {
+	//disabling plugin in world
+	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
+	Entity ent = event.getEntity();
+	Entity damager = event.getDamager();
+	if (!(damager instanceof Projectile))
+	    return;
+	Projectile projectile = (Projectile) damager;
+	ProjectileSource shooter = projectile.getShooter();
+	double damage = event.getFinalDamage();
+
+	double s = ((Damageable) ent).getHealth();
+
+	if (damage > s)
+	    damage = s;
+
+	if (shooter instanceof Player) {
+	    if (ent.hasMetadata(entityDamageByPlayer))
+		damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
+	    ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(this.plugin, damage));
+	}
+
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
 	//disabling plugin in world
@@ -825,6 +881,13 @@ public class JobsPaymentListener implements Listener {
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
 	    Player VPlayer = (Player) lVictim;
 	    if (jDamager.getUserName().equalsIgnoreCase(VPlayer.getName()))
+		return;
+	}
+
+	if (Jobs.getGCManager().MonsterDamageUse && lVictim.hasMetadata(entityDamageByPlayer)) {
+	    double damage = lVictim.getMetadata(entityDamageByPlayer).get(0).asDouble();
+	    double perc = (damage * 100D) / lVictim.getMaxHealth();
+	    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
 		return;
 	}
 
