@@ -152,8 +152,9 @@ public class JobsListener implements Listener {
 		}
 	    } else if (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
 		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
-		if (!joblist.isJobInfo() && slot < joblist.getJobList().size()) {
-		    Bukkit.dispatchCommand(player, "jobs join " + joblist.getJobList().get(slot).getName());
+		Job job = Jobs.getGUIManager().getJobBySlot(player, slot);
+		if (job != null) {
+		    Bukkit.dispatchCommand(player, "jobs join " + job.getName());
 		    player.getOpenInventory().getTopInventory().setContents(Jobs.getGUIManager().CreateJobsGUI(player).getContents());
 		}
 	    }
