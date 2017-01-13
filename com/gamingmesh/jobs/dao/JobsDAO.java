@@ -948,10 +948,10 @@ public abstract class JobsDAO {
 	    return;
 	PreparedStatement prest = null;
 	try {
-	    prest = conn.prepareStatement("UPDATE `" + prefix
-		+ "users` SET `seen` = ? WHERE `id` = ?;");
+	    prest = conn.prepareStatement("UPDATE `" + prefix + "users` SET `seen` = ?, `username` = ? WHERE `id` = ?;");
 	    prest.setLong(1, System.currentTimeMillis());
-	    prest.setInt(2, player.getUserId());
+	    prest.setString(1, player.getUserName());
+	    prest.setInt(3, player.getUserId());
 	    prest.execute();
 	} catch (SQLException e) {
 	} finally {
@@ -1304,9 +1304,9 @@ public abstract class JobsDAO {
 	    prest2 = conn.prepareStatement("INSERT INTO `" + prefix + "explore` (`worldname`, `chunkX`, `chunkZ`, `playerName`) VALUES (?, ?, ?, ?);");
 	    conn.setAutoCommit(false);
 	    int i = 0;
-	    
+
 	    HashMap<String, ExploreRegion> temp = new HashMap<String, ExploreRegion>(Jobs.getExplore().getWorlds());
-	    
+
 	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
 		for (ExploreChunk oneChunk : worlds.getValue().getChunks()) {
 		    if (!oneChunk.isNew())
