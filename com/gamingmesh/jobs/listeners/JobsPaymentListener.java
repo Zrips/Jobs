@@ -774,6 +774,8 @@ public class JobsPaymentListener implements Listener {
 	if (!(damager instanceof Player))
 	    return;
 	double damage = event.getFinalDamage();
+	if (!(ent instanceof Damageable))
+	    return;
 	double s = ((Damageable) ent).getHealth();
 	if (damage > s)
 	    damage = s;
@@ -795,6 +797,8 @@ public class JobsPaymentListener implements Listener {
 	ProjectileSource shooter = projectile.getShooter();
 	double damage = event.getFinalDamage();
 
+	if (!(ent instanceof Damageable))
+	    return;
 	double s = ((Damageable) ent).getHealth();
 
 	if (damage > s)
