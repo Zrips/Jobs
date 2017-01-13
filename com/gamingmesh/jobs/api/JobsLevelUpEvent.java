@@ -92,7 +92,7 @@ public final class JobsLevelUpEvent extends Event implements Cancellable {
     }
 
     public Sound getSound() {
-	return this.soundLevelupSound;
+	return this.soundLevelupSound == null ? Sound.values()[0] : this.soundLevelupSound;
     }
 
     public void setSound(Sound sound) {
@@ -121,7 +121,7 @@ public final class JobsLevelUpEvent extends Event implements Cancellable {
     }
 
     public Sound getTitleChangeSound() {
-	return this.soundTitleChangeSound;
+	return this.soundTitleChangeSound == null ? Sound.values()[0] : this.soundTitleChangeSound;
     }
 
     public void setTitleChangeSound(Sound sound) {

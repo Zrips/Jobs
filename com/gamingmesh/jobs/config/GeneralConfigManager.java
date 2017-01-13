@@ -747,13 +747,14 @@ public class GeneralConfigManager {
 	    "If you are not using breeding payment, you can disable this to save little resources. Really little.");
 	useBreederFinder = c.get("use-breeder-finder", true);
 
-	c.getW().addComment("boost", "[Removed]", "Money exp boost with special permision.",
+	c.getW().addComment("old-job", "------------------------------------------------------------------------", "[Section Removed] Now its all permission based", "Money exp boost with special permision.",
 	    "You will need to add special permision for groups or players to have money/exp/points boost.",
 	    "Use: jobs.boost.[jobname].money.[amount] or jobs.boost.[jobname].exp.[amount] or jobs.boost.[jobname].points.[amount] or jobs.boost.[jobname].all.[amount] for all of them with specific jobs name.",
 	    "Use: jobs.boost.all.money.[amount] or jobs.boost.all.exp.[amount] or jobs.boost.all.points.[amount] or jobs.boost.all.all.[amount] to get boost for all jobs",
-	    "In example: jobs.boost.miner.exp.0.25 means that player will get 25% more than others, you can set less than 1 to get less from anothers");
-
-	c.getW().addComment("old-job", "Old job save", "Players can leave job and return later with some level loss during that",
+	    "In example: jobs.boost.miner.exp.0.25 means that player will get 25% more than others, you can set less than 0 to get less from anothers",
+	    "jobs.boost.all.all.-0.5, jobs.boost.miner.all.1",
+	    "------------------------------------------------------------------------", 
+	    "Old job save", "Players can leave job and return later with some level loss during that",
 	    "You can fix players level if hes job level is at max level");
 	levelLossPercentage = c.get("old-job.level-loss-percentage", 30);
 	fixAtMaxLevel = c.get("old-job.fix-at-max-level", true);

@@ -416,7 +416,6 @@ public class PlayerManager {
      * @param job
      * @param oldLevel
      */
-    @SuppressWarnings("deprecation")
     public void performLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
 
 	Player player = jPlayer.getPlayer();
