@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.CurrencyType;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class PaymentData {
 
@@ -106,7 +105,6 @@ public class PaymentData {
     public boolean IsOverLimit(CurrencyType type, int limit) {
 	if (this.payments.get(type) < limit)
 	    return false;
-	Debug.D(type.getName() + " limit reach money");
 	return true;
     }
 
@@ -116,7 +114,6 @@ public class PaymentData {
 	if (this.Informed)
 	    this.Informed = false;
 	resetLimits();
-	Debug.D(type.getName() + " limit reach time");
 	return true;
     }
 

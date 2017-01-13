@@ -49,15 +49,15 @@ public class limit implements Cmd {
 		int lefttime1 = Jobs.getGCManager().currencyLimitUse.get(type).getTimeLimit() * 1000;
 		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort((long) lefttime1)));
 		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "limit",
-		    "%" + type.getName().toLowerCase() + "%", "0.0",
-		    "%total" + type.getName().toLowerCase() + "%", JPlayer.getLimit(type)));
+		    "%current%", "0.0",
+		    "%total%", JPlayer.getLimit(type)));
 		continue;
 	    }
 	    if (limit.GetLeftTime(type) > 0) {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(limit.GetLeftTime(type))));
 		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "limit",
-		    "%" + type.getName().toLowerCase() + "%", (int) (limit.GetAmount(type) * 100) / 100D,
-		    "%total" + type.getName().toLowerCase() + "%", JPlayer.getLimit(type)));
+		    "%current%", (int) (limit.GetAmount(type) * 100) / 100D,
+		    "%total%", JPlayer.getLimit(type)));
 	    }
 	}
 	return true;

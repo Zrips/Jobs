@@ -30,7 +30,6 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class PermissionManager {
 
@@ -135,10 +134,8 @@ public class PermissionManager {
 	Double amount = null;
 	for (Entry<String, Boolean> uno : permissions.entrySet()) {
 	    if (uno.getKey().startsWith(perm)) {
-		Debug.D("start with " + uno.getKey());
 		try {
 		    double t = Double.parseDouble(uno.getKey().replace(perm, ""));
-		    Debug.D(t);
 		    if (amount == null || t > amount)
 			amount = t;
 		} catch (Exception e) {

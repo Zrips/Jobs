@@ -151,7 +151,7 @@ public class BossBarManager {
 
     }
 
-    private BarColor getColor(Job job) {
+    private static BarColor getColor(Job job) {
 	if (job.getBossbar() == null)
 	    return null;
 	for (BarColor color : BarColor.values()) {

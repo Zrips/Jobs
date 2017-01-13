@@ -13,7 +13,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class BlockProtectionManager {
 

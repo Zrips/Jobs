@@ -33,8 +33,8 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
+import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
     // the player the object belongs to
@@ -115,7 +115,7 @@ public class JobsPlayer {
 		data.setInformed();
 	    }
 	    if (data.IsAnnounceTime(limit.getAnnouncmentDelay()) && player.isOnline()) {
-		Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", data.GetLeftTime(type)));
+		Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(data.GetLeftTime(type))));
 	    }
 	    if (data.isReseted())
 		data.setReseted(false);
@@ -254,7 +254,6 @@ public class JobsPlayer {
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName().toLowerCase());
 	if (Boost == null ||v1 != null &&v1 > Boost)
 	    Boost = v1;
-	Debug.D("boost " + Boost);
 	return Boost == null ? 0D : Boost;
     }
 
