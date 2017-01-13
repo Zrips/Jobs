@@ -950,7 +950,7 @@ public abstract class JobsDAO {
 	try {
 	    prest = conn.prepareStatement("UPDATE `" + prefix + "users` SET `seen` = ?, `username` = ? WHERE `id` = ?;");
 	    prest.setLong(1, System.currentTimeMillis());
-	    prest.setString(1, player.getUserName());
+	    prest.setString(2, player.getUserName());
 	    prest.setInt(3, player.getUserId());
 	    prest.execute();
 	} catch (SQLException e) {
