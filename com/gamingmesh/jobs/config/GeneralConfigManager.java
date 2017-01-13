@@ -106,8 +106,6 @@ public class GeneralConfigManager {
     public boolean MonsterDamageUse = false;
     public double MonsterDamagePercentage;
 
-    public HashMap<CurrencyType, Double> Boost = new HashMap<CurrencyType, Double>();
-
     public double DynamicPaymentMaxPenalty;
     public double DynamicPaymentMaxBonus;
     public double TaxesAmount;
@@ -749,15 +747,11 @@ public class GeneralConfigManager {
 	    "If you are not using breeding payment, you can disable this to save little resources. Really little.");
 	useBreederFinder = c.get("use-breeder-finder", true);
 
-	c.getW().addComment("boost", "Money exp boost with special permision.",
+	c.getW().addComment("boost", "[Removed]", "Money exp boost with special permision.",
 	    "You will need to add special permision for groups or players to have money/exp/points boost.",
-	    "Use: jobs.boost.[jobname].money or jobs.boost.[jobname].exp or jobs.boost.[jobname].points or jobs.boost.[jobname].all for all of them with specific jobs name.",
-	    "Use: jobs.boost.all.money or jobs.boost.all.exp or jobs.boost.all.points or jobs.boost.all.all to get boost for all jobs",
-	    "1.25 means that player will get 25% more than others, you can set less than 1 to get less from anothers");
-
-	Boost.put(CurrencyType.EXP, (int) ((c.get("boost.exp", 1D) * 100) - 100) / 100D);
-	Boost.put(CurrencyType.MONEY, (int) ((c.get("boost.money", 1D) * 100) - 100) / 100D);
-	Boost.put(CurrencyType.POINTS, (int) ((c.get("boost.points", 1D) * 100) - 100) / 100D);
+	    "Use: jobs.boost.[jobname].money.[amount] or jobs.boost.[jobname].exp.[amount] or jobs.boost.[jobname].points.[amount] or jobs.boost.[jobname].all.[amount] for all of them with specific jobs name.",
+	    "Use: jobs.boost.all.money.[amount] or jobs.boost.all.exp.[amount] or jobs.boost.all.points.[amount] or jobs.boost.all.all.[amount] to get boost for all jobs",
+	    "In example: jobs.boost.miner.exp.0.25 means that player will get 25% more than others, you can set less than 1 to get less from anothers");
 
 	c.getW().addComment("old-job", "Old job save", "Players can leave job and return later with some level loss during that",
 	    "You can fix players level if hes job level is at max level");

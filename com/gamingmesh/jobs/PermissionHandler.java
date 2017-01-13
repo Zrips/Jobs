@@ -249,5 +249,12 @@ public class PermissionHandler {
 	}
 	return player.hasPermission("jobs.world." + world.toLowerCase());
     }
+    
+    public boolean hasWorldPermission(JobsPlayer player, String world) {
+	if (!Jobs.getPermissionManager().hasPermission(player, "jobs.use")) {
+	    return false;
+	}
+	return Jobs.getPermissionManager().hasPermission(player, "jobs.world." + world.toLowerCase());
+    }
 
 }

@@ -550,20 +550,29 @@ public class PlayerManager {
      * @param player
      * @return True if he have permission
      */
-    public boolean getJobsLimit(Player player, Short currentCount) {
+    public boolean getJobsLimit(JobsPlayer jPlayer, Short currentCount) {
 
-	if (Perm.hasPermission(player, "jobs.max.*"))
+	Double max = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max");
+
+	max = max == null ? Jobs.getGCManager().getMaxJobs() : max;
+
+	if (max > currentCount)
 	    return true;
 
-	int totalJobs = Jobs.getJobs().size() + 1;
+	// Using new system to get max value from permission
 
-	short count = (short) Jobs.getGCManager().getMaxJobs();
-	for (short ctr = 0; ctr < totalJobs; ctr++) {
-	    if (Perm.hasPermission(player, "jobs.max." + ctr))
-		count = ctr;
-	    if (count > currentCount)
-		return true;
-	}
+//	if (Perm.hasPermission(player, "jobs.max.*"))
+//	    return true;
+//
+//	int totalJobs = Jobs.getJobs().size() + 1;
+//
+//	short count = (short) Jobs.getGCManager().getMaxJobs();
+//	for (short ctr = 0; ctr < totalJobs; ctr++) {
+//	    if (Perm.hasPermission(player, "jobs.max." + ctr))
+//		count = ctr;
+//	    if (count > currentCount)
+//		return true;
+//	}
 	return false;
     }
 
@@ -740,7 +749,7 @@ public class PlayerManager {
 		    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
 			continue;
 		    short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
-		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(player, PlayerMaxJobs))
+		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(jPlayer, PlayerMaxJobs))
 			break;
 		    if (jPlayer.isInJob(one))
 			continue;

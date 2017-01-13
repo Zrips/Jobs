@@ -78,7 +78,7 @@ public class join implements Cmd {
 
 	int confMaxJobs = Jobs.getGCManager().getMaxJobs();
 	short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
-	if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(pSender, PlayerMaxJobs)) {
+	if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(jPlayer, PlayerMaxJobs)) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
 	    return true;
 	}
