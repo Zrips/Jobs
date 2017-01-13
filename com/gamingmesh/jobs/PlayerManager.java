@@ -441,12 +441,16 @@ public class PlayerManager {
 	if (levelUpEvent.isCancelled())
 	    return;
 
-	if (Jobs.getGCManager().SoundLevelupUse) {
-	    Sound sound = levelUpEvent.getSound();
-	    if (sound != null && player != null && player.getLocation() != null)
-		player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
-	    else
-		Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+	// If it fails, we can ignore it
+	try {
+	    if (Jobs.getGCManager().SoundLevelupUse) {
+		Sound sound = levelUpEvent.getSound();
+		if (sound != null && player != null && player.getLocation() != null)
+		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
+		else
+		    Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+	    }
+	} catch (Exception e) {
 	}
 
 	String message;
@@ -481,13 +485,17 @@ public class PlayerManager {
 
 	if (levelUpEvent.getNewTitle() != null && !levelUpEvent.getNewTitle().equals(levelUpEvent.getOldTitle())) {
 
-	    if (Jobs.getGCManager().SoundTitleChangeUse) {
-		Sound sound = levelUpEvent.getTitleChangeSound();
-		if (sound != null && player != null && player.getLocation() != null)
-		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
-			levelUpEvent.getTitleChangePitch());
-		else
-		    Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+	    // If it fails, we can ignore it
+	    try {
+		if (Jobs.getGCManager().SoundTitleChangeUse) {
+		    Sound sound = levelUpEvent.getTitleChangeSound();
+		    if (sound != null && player != null && player.getLocation() != null)
+			player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
+			    levelUpEvent.getTitleChangePitch());
+		    else
+			Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+		}
+	    } catch (Exception e) {
 	    }
 	    // user would skill up
 	    if (Jobs.getGCManager().isBroadcastingSkillups()) {
