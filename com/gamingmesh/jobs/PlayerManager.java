@@ -154,6 +154,7 @@ public class PlayerManager {
 	} else {
 	    jPlayer.onDisconnect();
 	}
+	Jobs.getJobsDAO().updateSeen(jPlayer);
     }
 
     /**

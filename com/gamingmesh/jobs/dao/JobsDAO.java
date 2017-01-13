@@ -939,7 +939,6 @@ public abstract class JobsDAO {
 	} finally {
 	    close(prest);
 	}
-	updateSeen(player);
     }
 
     public void updateSeen(JobsPlayer player) {
