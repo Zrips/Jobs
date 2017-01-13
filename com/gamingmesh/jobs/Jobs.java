@@ -78,6 +78,7 @@ import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.stuff.ActionBar;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -915,7 +916,7 @@ public class Jobs extends JavaPlugin {
 
 		// Calculate income
 		if (income != 0D) {
-		    income = income + (income * boost.getFinal(CurrencyType.MONEY));
+		    income = income + ((income > 0D ? income : -income) * boost.getFinal(CurrencyType.MONEY));
 		    if (GconfigManager.useMinimumOveralPayment && income > 0) {
 			double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
 			if (income < maxLimit) {
@@ -926,7 +927,7 @@ public class Jobs extends JavaPlugin {
 
 		// Calculate points
 		if (pointAmount != 0D) {
-		    pointAmount = pointAmount + (pointAmount * boost.getFinal(CurrencyType.POINTS));
+		    pointAmount = pointAmount + ((pointAmount > 0D ? pointAmount : -pointAmount) * boost.getFinal(CurrencyType.POINTS));
 		    if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
 			double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
 			if (pointAmount < maxLimit) {
@@ -936,7 +937,7 @@ public class Jobs extends JavaPlugin {
 		}
 
 		// Calculate exp
-		expAmount = expAmount + (expAmount * boost.getFinal(CurrencyType.EXP));
+		expAmount = expAmount + ((expAmount > 0D ? expAmount : -expAmount) * boost.getFinal(CurrencyType.EXP));
 
 		if (GconfigManager.useMinimumOveralPayment && expAmount > 0) {
 		    double maxLimit = expAmount * GconfigManager.MinimumOveralPaymentLimit;
