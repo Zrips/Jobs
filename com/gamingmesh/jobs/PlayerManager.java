@@ -629,7 +629,6 @@ public class PlayerManager {
     }
 
     public BoostMultiplier getBoost(JobsPlayer player, Job job, boolean force) {
-	Debug.D("getting boost");
 	BoostMultiplier b = new BoostMultiplier();
 	for (CurrencyType one : CurrencyType.values()) {
 	    b.add(one, getBoost(player, job, one, force));

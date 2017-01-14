@@ -173,7 +173,7 @@ public class JobsPlayer {
 	    this.player = Bukkit.getPlayer(this.playerUUID);
 	return this.player;
     }
-    
+
     /**
      * Get the VipSpawnerMultiplier
      * @return the Multiplier
@@ -203,12 +203,9 @@ public class JobsPlayer {
 
     public double getBoost(String JobName, CurrencyType type, boolean force) {
 	double Boost = 0D;
-	Debug.D("1 "+this.isOnline());
-
 	if (!this.isOnline())
 	    return Boost;
 
-	Debug.D("4 ");
 	long time = System.currentTimeMillis();
 
 	if (this.boostCounter.containsKey(JobName)) {
@@ -241,17 +238,16 @@ public class JobsPlayer {
     private Double getPlayerBoostNew(String JobName, CurrencyType type) {
 	Double Boost = null;
 	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + "." + type.getName().toLowerCase(), true);
-	    Boost = v1;
+	Boost = v1;
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + ".all");
-	if (Boost == null ||v1 != null && v1 > Boost)
+	if (Boost == null || v1 != null && v1 > Boost)
 	    Boost = v1;
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all");
-	if (Boost == null ||v1 != null && v1 > Boost)
+	if (Boost == null || v1 != null && v1 > Boost)
 	    Boost = v1;
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName().toLowerCase());
-	if (Boost == null ||v1 != null &&v1 > Boost)
+	if (Boost == null || v1 != null && v1 > Boost)
 	    Boost = v1;
-	Debug.D("bonus " + Boost);
 	return Boost == null ? 0D : Boost;
     }
 

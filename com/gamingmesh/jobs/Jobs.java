@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -468,7 +469,9 @@ public class Jobs extends JavaPlugin {
 		int y = 0;
 		int total = Jobs.getPlayerManager().getMapSize();
 		long time = System.currentTimeMillis();
-		for (Entry<UUID, PlayerInfo> one : Jobs.getPlayerManager().getPlayersInfoUUIDMap().entrySet()) {
+		Iterator<Entry<UUID, PlayerInfo>> it = Jobs.getPlayerManager().getPlayersInfoUUIDMap().entrySet().iterator();
+		while (it.hasNext()) {
+		    Entry<UUID, PlayerInfo> one = it.next();
 		    if (!running)
 			return;
 		    try {
