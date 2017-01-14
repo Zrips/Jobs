@@ -771,8 +771,12 @@ public class PlayerManager {
 	}
 
 	if (getall) {
-	    boost.add(BoostOf.PetPay, new BoostMultiplier().add(Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force)));
-	    boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force)));
+	    Double mount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force);
+	    if (mount != null)
+		boost.add(BoostOf.PetPay, new BoostMultiplier().add(mount));
+	    mount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
+	    if (mount != null)
+		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(mount));
 	}
 
 	boost.add(BoostOf.Permission, Jobs.getPlayerManager().getBoost(player, prog, force));
