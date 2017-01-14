@@ -1310,13 +1310,13 @@ public abstract class JobsDAO {
 	    HashMap<String, ExploreRegion> temp = new HashMap<String, ExploreRegion>(Jobs.getExplore().getWorlds());
 
 	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
-		for (ExploreChunk oneChunk : worlds.getValue().getChunks()) {
-		    if (!oneChunk.isNew())
+		for (Entry<String, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
+		    if (!oneChunk.getValue().isNew())
 			continue;
-		    for (String oneuser : oneChunk.getPlayers()) {
+		    for (String oneuser : oneChunk.getValue().getPlayers()) {
 			prest2.setString(1, worlds.getKey());
-			prest2.setInt(2, oneChunk.getX());
-			prest2.setInt(3, oneChunk.getZ());
+			prest2.setInt(2, oneChunk.getValue().getX());
+			prest2.setInt(3, oneChunk.getValue().getZ());
 			prest2.setString(4, oneuser);
 			prest2.addBatch();
 			i++;

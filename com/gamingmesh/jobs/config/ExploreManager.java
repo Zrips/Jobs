@@ -2,6 +2,8 @@ package com.gamingmesh.jobs.config;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
@@ -15,9 +17,6 @@ public class ExploreManager {
     private HashMap<String, ExploreRegion> worlds = new HashMap<String, ExploreRegion>();
     private boolean exploreEnabled = false;
     private int playerAmount = 1;
-
-    public ExploreManager() {
-    }
 
     public int getPlayerAmount() {
 	return this.playerAmount;
@@ -35,8 +34,15 @@ public class ExploreManager {
     public void setExploreEnabled() {
 	if (!exploreEnabled) {
 	    this.exploreEnabled = true;
-	    Jobs.getJobsDAO().loadExplore();
 	}
+    }
+
+    public void load() {
+	if (!exploreEnabled)
+	    return;
+	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loading explorer data");
+	Jobs.getJobsDAO().loadExplore();
+	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded explorer data");
     }
 
     public HashMap<String, ExploreRegion> getWorlds() {
@@ -65,17 +71,7 @@ public class ExploreManager {
 	    return new ExploreRespond(eChunk.getCount(), true);
 	}
 	ExploreRegion eRegion = worlds.get(worldName);
-	ExploreChunk eChunk = null;
-	for (ExploreChunk one : eRegion.getChunks()) {
-	    if (one.getX() != ChunkX)
-		continue;
-	    if (one.getZ() != ChunkZ)
-		continue;
-	    eChunk = one;
-	    if (!isNew)
-		eChunk.setOldChunk();
-	    break;
-	}
+	ExploreChunk eChunk = eRegion.getChunk(ChunkX + ":" + ChunkZ);
 
 	if (eChunk == null) {
 	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
@@ -84,6 +80,29 @@ public class ExploreManager {
 	    eRegion.addChunk(eChunk);
 	    return new ExploreRespond(eChunk.getCount(), true);
 	}
+	eChunk.setOldChunk();
 	return eChunk.addPlayer(player);
+    }
+
+    public void addChunk(String player, String worldName, int x, int z) {
+	int ChunkX = x;
+	int ChunkZ = z;
+	int RegionX = (int) Math.floor(ChunkX / 32D);
+	int RegionZ = (int) Math.floor(ChunkZ / 32D);
+	if (!worlds.containsKey(worldName)) {
+	    ExploreChunk eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
+	    eChunk.setOldChunk();
+	    ExploreRegion eRegion = new ExploreRegion(RegionX, RegionZ);
+	    eRegion.addChunk(eChunk);
+	    worlds.put(worldName, eRegion);
+	}
+	ExploreRegion eRegion = worlds.get(worldName);
+	ExploreChunk eChunk = eRegion.getChunk(ChunkX + ":" + ChunkZ);
+	if (eChunk == null) {
+	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
+	    eChunk.setOldChunk();
+	    eRegion.addChunk(eChunk);
+	} else
+	    eChunk.setOldChunk();
     }
 }

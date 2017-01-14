@@ -737,7 +737,7 @@ public class Jobs extends JavaPlugin {
 	    // all loaded properly.
 
 	    dao.loadBlockProtection();
-	    dao.loadExplore();
+	    getExplore().load();
 
 	    String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Plugin has been enabled succesfully.");
 	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();

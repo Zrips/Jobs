@@ -97,16 +97,24 @@ public class PlayerManager {
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
 	if (jPlayer.getUserName() != null)
-	    this.playersCache.put(jPlayer.getUserName(), jPlayer);
+	    this.playersCache.put(jPlayer.getUserName().toLowerCase(), jPlayer);
 	if (jPlayer.getPlayerUUID() != null)
 	    this.playersUUIDCache.put(jPlayer.getPlayerUUID(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
 	if (jPlayer.getUserName() != null)
-	    this.players.put(jPlayer.getUserName(), jPlayer);
+	    this.players.put(jPlayer.getUserName().toLowerCase(), jPlayer);
 	if (jPlayer.getPlayerUUID() != null)
 	    this.playersUUID.put(jPlayer.getPlayerUUID(), jPlayer);
+    }
+
+    public JobsPlayer removePlayer(Player player) {
+	if (player == null)
+	    return null;
+	this.players.remove(player.getName().toLowerCase());
+	JobsPlayer jPlayer = this.playersUUID.remove(player.getUniqueId());
+	return jPlayer;
     }
 
     public ConcurrentHashMap<UUID, JobsPlayer> getPlayersCache() {
@@ -148,14 +156,13 @@ public class PlayerManager {
      * @param playername
      */
     public void playerJoin(Player player) {
-	JobsPlayer jPlayer = this.playersCache.get(player.getName().toLowerCase());
+	JobsPlayer jPlayer = this.playersUUIDCache.get(player.getUniqueId());
 	if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
 	    jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 	    jPlayer.loadLogFromDao();
-	    this.playersCache.put(player.getName().toLowerCase(), jPlayer);
 	}
 
-	this.players.put(player.getName().toLowerCase(), jPlayer);
+	this.addPlayer(jPlayer);
 	jPlayer.setPlayer(player);
 	AutoJoinJobs(player);
 	jPlayer.onConnect();
@@ -169,12 +176,12 @@ public class PlayerManager {
      * @param playername
      */
     public void playerQuit(Player player) {
-	JobsPlayer jPlayer = this.players.remove(player.getName().toLowerCase());
+	JobsPlayer jPlayer = this.removePlayer(player);
 	if (jPlayer == null)
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	playersCache.put(player.getName().toLowerCase(), jPlayer);
+	addPlayerToCache(jPlayer);
 	if (Jobs.getGCManager().saveOnDisconnect()) {
 	    jPlayer.save();
 	    jPlayer.onDisconnect();
