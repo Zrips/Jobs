@@ -51,7 +51,8 @@ public class PermissionManager {
 	jobs_boost_all_exp_AMOUNT(remade("jobs.boost.all.exp.%AMOUNT%"), 60 * 1000),
 	jobs_boost_all_points_AMOUNT(remade("jobs.boost.all.points.%AMOUNT%"), 60 * 1000),
 	jobs_boost_all_all_AMOUNT(remade("jobs.boost.all.all.%AMOUNT%"), 60 * 1000),
-	jobs_max_AMOUNT(remade("jobs.max.%AMOUNT%"), 60 * 1000),
+	jobs_spawner_AMOUNT(remade("jobs.nearspawner.%AMOUNT%"), 60 * 1000),
+	jobs_petpay_AMOUNT(remade("jobs.petpay.%AMOUNT%"), 60 * 1000),
 //	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 60 * 1000)
 	;
 

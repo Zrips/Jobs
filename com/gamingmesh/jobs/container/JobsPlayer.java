@@ -33,7 +33,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -57,8 +56,6 @@ public class JobsPlayer {
 
     private OfflinePlayer OffPlayer = null;
     private Player player = null;
-
-    private double VipSpawnerMultiplier = 0D;
 
     private HashMap<CurrencyType, Integer> limits = new HashMap<CurrencyType, Integer>();
 
@@ -172,25 +169,6 @@ public class JobsPlayer {
 	if (this.playerUUID != null)
 	    this.player = Bukkit.getPlayer(this.playerUUID);
 	return this.player;
-    }
-
-    /**
-     * Get the VipSpawnerMultiplier
-     * @return the Multiplier
-     */
-    public double getVipSpawnerMultiplier() {
-	if (this.getPlayer() == null || !this.getPlayer().isOnline())
-	    return 0D;
-	if (VipSpawnerMultiplier < 0)
-	    updateVipSpawnerMultiplier();
-	return this.VipSpawnerMultiplier;
-    }
-
-    public void updateVipSpawnerMultiplier() {
-	if (Perm.hasPermission(this.player, "jobs.vipspawner"))
-	    this.VipSpawnerMultiplier = Jobs.getGCManager().VIPpayNearSpawnerMultiplier - 1;
-	else
-	    this.VipSpawnerMultiplier = Jobs.getGCManager().payNearSpawnerMultiplier - 1;
     }
 
     /**

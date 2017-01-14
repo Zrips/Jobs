@@ -111,10 +111,12 @@ public class LanguageManager {
 	    c.get("command.bonus.help.args", "[jobname]");
 	    Jobs.getGCManager().commandArgs.put("bonus", Arrays.asList("[jobname]"));
 	    c.get("command.bonus.output.topline", "&7**************** &2[money] &6[points] &e[exp] &7****************");
-	    c.get("command.bonus.output.permission", " &ePermission bonus: %money% %points% %exp%");
+	    c.get("command.bonus.output.permission", " &ePerm bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.item", " &eItem bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.global", " &eGlobal bonus: %money% %points% %exp%");
-	    c.get("command.bonus.output.dynamic", " &eDynamic payment bonus: %money% %points% %exp%");
+	    c.get("command.bonus.output.dynamic", " &eDynamic bonus: %money% %points% %exp%");
+	    c.get("command.bonus.output.nearspawner", " &eSpawner bonus: %money% %points% %exp%");
+	    c.get("command.bonus.output.petpay", " &ePetPay bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.area", " &eArea bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.mcmmo", " &eMcMMO bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.final", " &eFinal bonus: %money% %points% %exp%");

@@ -734,15 +734,23 @@ public class PlayerManager {
 	McMMO, PetPay, NearSpawner, Permission, Global, Dynamic, Item, Area
     }
 
+    public Boost getFinalBonus(JobsPlayer player, Job prog, boolean force, boolean getall) {
+	return getFinalBonus(player, prog, null, null, force, getall);
+    }
+
     public Boost getFinalBonus(JobsPlayer player, Job prog, boolean force) {
-	return getFinalBonus(player, prog, null, null, force);
+	return getFinalBonus(player, prog, null, null, force, false);
     }
 
     public Boost getFinalBonus(JobsPlayer player, Job prog) {
-	return getFinalBonus(player, prog, null, null, false);
+	return getFinalBonus(player, prog, null, null, false, false);
     }
 
-    public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim, boolean force) {
+    public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim) {
+	return getFinalBonus(player, prog, ent, victim, false, false);
+    }
+
+    public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim, boolean force, boolean getall) {
 	Boost boost = new Boost();
 
 	if (player == null || prog == null)
@@ -754,18 +762,19 @@ public class PlayerManager {
 	if (ent != null && ent instanceof Tameable) {
 	    Tameable t = (Tameable) ent;
 	    if (t.isTamed() && t.getOwner() instanceof Player) {
-		Player pDamager = (Player) t.getOwner();
-		double PetPayMultiplier = 0D;
-		if (Perm.hasPermission(pDamager, "jobs.petpay") || Perm.hasPermission(pDamager, "jobs.vippetpay"))
-		    PetPayMultiplier = Jobs.getGCManager().VipPetPay;
-		else
-		    PetPayMultiplier = Jobs.getGCManager().PetPay;
-		boost.add(BoostOf.PetPay, new BoostMultiplier().add(PetPayMultiplier));
+		boost.add(BoostOf.PetPay, new BoostMultiplier().add(Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay")));
 	    }
 	}
 
-	if (victim != null && victim.hasMetadata(this.getMobSpawnerMetadata()))
-	    boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(player.getVipSpawnerMultiplier()));
+	if (victim != null && victim.hasMetadata(this.getMobSpawnerMetadata())) {
+	    boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner")));
+	}
+
+	if (getall) {
+	    boost.add(BoostOf.PetPay, new BoostMultiplier().add(Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force)));
+	    boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force)));
+	}
+
 	boost.add(BoostOf.Permission, Jobs.getPlayerManager().getBoost(player, prog, force));
 	boost.add(BoostOf.Global, prog.getBoost());
 	if (Jobs.getGCManager().useDynamicPayment)

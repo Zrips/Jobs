@@ -79,7 +79,7 @@ public class GeneralConfigManager {
 	UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit;
     public int globalblocktimer, CowMilkingTimer,
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
-    public Double payNearSpawnerMultiplier, VIPpayNearSpawnerMultiplier, TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier, PetPay, VipPetPay;
+    public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
     public String localeString = "EN";
 
     public boolean useBlockProtection;
@@ -482,14 +482,6 @@ public class GeneralConfigManager {
 	c.getW().addComment("enable-pay-near-spawner", "Option to allow payment to be made when killing mobs from a spawner");
 	payNearSpawner = c.get("enable-pay-near-spawner", false);
 
-	c.getW().addComment("pay-near-spawner-multiplier", "enable-pay-near-spawner should be enabled for this to work",
-	    "0.5 means that players will get only 50% exp/money from monsters spawned from spawner");
-	payNearSpawnerMultiplier = c.get("pay-near-spawner-multiplier", 1.0);
-
-	c.getW().addComment("VIP-pay-near-spawner-multiplier", "VIP multiplier to pay for monsters from spawners, this will ignore global multiplier",
-	    "Use jobs.vipspawner permission node for this to be enabled");
-	VIPpayNearSpawnerMultiplier = c.get("VIP-pay-near-spawner-multiplier", 1.0);
-
 	c.getW().addComment("enable-pay-creative", "Option to allow payment to be made in creative mode");
 	payInCreative = c.get("enable-pay-creative", false);
 
@@ -713,11 +705,6 @@ public class GeneralConfigManager {
 	    "With this enabled players wont get paid for breaked blocks from restrictedblocks list with silk touch tool.");
 	useSilkTouchProtection = c.get("ExploitProtections.General.SilkTouchProtection", false);
 
-	c.getW().addComment("ExploitProtections.General.PetPay", "Do you want to pay when players pet kills monster/player", "Can be exploited with mob farms",
-	    "0.2 means 20% of original reward", "Optionaly you can give jobs.petpay permission node for specific players/ranks to get paid by VipPetPay multiplier");
-	PetPay = c.get("ExploitProtections.General.PetPay", 0.1) - 1D;
-	VipPetPay = c.get("ExploitProtections.General.VipPetPay", 1.0) - 1D;
-
 	c.getW().addComment("ExploitProtections.General.MonsterDamage.Use", "This section controls how much damage player should do to monster for player to get paid",
 	    "This prevents from killing monsters in one hit when they suffer in example fall damage");
 	MonsterDamageUse = c.get("ExploitProtections.General.MonsterDamage.Use", false);
@@ -747,13 +734,7 @@ public class GeneralConfigManager {
 	    "If you are not using breeding payment, you can disable this to save little resources. Really little.");
 	useBreederFinder = c.get("use-breeder-finder", true);
 
-	c.getW().addComment("old-job", "------------------------------------------------------------------------", "[Section Removed] Now its all permission based", "Money exp boost with special permision.",
-	    "You will need to add special permision for groups or players to have money/exp/points boost.",
-	    "Use: jobs.boost.[jobname].money.[amount] or jobs.boost.[jobname].exp.[amount] or jobs.boost.[jobname].points.[amount] or jobs.boost.[jobname].all.[amount] for all of them with specific jobs name.",
-	    "Use: jobs.boost.all.money.[amount] or jobs.boost.all.exp.[amount] or jobs.boost.all.points.[amount] or jobs.boost.all.all.[amount] to get boost for all jobs",
-	    "In example: jobs.boost.miner.exp.0.25 means that player will get 25% more than others, you can set less than 0 to get less from anothers",
-	    "jobs.boost.all.all.-0.5, jobs.boost.miner.all.1",
-	    "------------------------------------------------------------------------", 
+	c.getW().addComment("old-job",
 	    "Old job save", "Players can leave job and return later with some level loss during that",
 	    "You can fix players level if hes job level is at max level");
 	levelLossPercentage = c.get("old-job.level-loss-percentage", 30);

@@ -6,6 +6,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.PlayerManager.BoostOf;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
+import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
@@ -41,7 +42,7 @@ public class bonus implements Cmd {
 	if (jPlayer == null)
 	    return false;
 
-	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job, true);
+	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job, true, true);
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
 
@@ -54,6 +55,20 @@ public class bonus implements Cmd {
 	    "%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.Item, CurrencyType.MONEY, true)),
 	    "%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.Item, CurrencyType.POINTS, true)),
 	    "%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.Item, CurrencyType.EXP, true))));
+
+	if (!job.getJobInfo(ActionType.KILL).isEmpty() || !job.getJobInfo(ActionType.MMKILL).isEmpty()) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.nearspawner",
+		"%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.NearSpawner, CurrencyType.MONEY, true)),
+		"%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.NearSpawner, CurrencyType.POINTS, true)),
+		"%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.NearSpawner, CurrencyType.EXP, true))));
+	}
+	
+	if (!job.getJobInfo(ActionType.KILL).isEmpty() || !job.getJobInfo(ActionType.MMKILL).isEmpty()) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.petpay",
+		"%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.PetPay, CurrencyType.MONEY, true)),
+		"%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.PetPay, CurrencyType.POINTS, true)),
+		"%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.PetPay, CurrencyType.EXP, true))));
+	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.global",
 	    "%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.Global, CurrencyType.MONEY, true)),
