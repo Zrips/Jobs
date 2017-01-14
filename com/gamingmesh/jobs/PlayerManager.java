@@ -59,11 +59,15 @@ import com.gamingmesh.jobs.stuff.Perm;
 public class PlayerManager {
 //    private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
     private ConcurrentHashMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<String, JobsPlayer>();
+    private ConcurrentHashMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<UUID, JobsPlayer>();
     private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<String, JobsPlayer>();
+    private ConcurrentHashMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<UUID, JobsPlayer>();
     private PointsData PointsDatabase = new PointsData();
     private final String mobSpawnerMetadata = "jobsMobSpawner";
 
-    private HashMap<String, PlayerInfo> PlayerMap = new HashMap<String, PlayerInfo>();
+    private HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<UUID, PlayerInfo>();
+    private HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<Integer, PlayerInfo>();
+    private HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<String, PlayerInfo>();
     Jobs plugin;
 
     public PlayerManager(Jobs plugin) {
@@ -74,46 +78,68 @@ public class PlayerManager {
 	return this.PointsDatabase;
     }
 
-    public HashMap<String, PlayerInfo> getPlayerMap() {
-	return this.PlayerMap;
+    public int getMapSize() {
+	return PlayerUUIDMap.size();
     }
 
-    public ConcurrentHashMap<String, JobsPlayer> getPlayersCache() {
-	return this.playersCache;
+    public void clearMaps() {
+	PlayerUUIDMap.clear();
+	PlayerIDMap.clear();
+	PlayerNameMap.clear();
     }
 
-    public ConcurrentHashMap<String, JobsPlayer> getPlayers() {
-	return this.players;
+    public void addPlayerToMap(PlayerInfo info) {
+	this.PlayerUUIDMap.put(info.getUuid(), info);
+	this.PlayerIDMap.put(info.getID(), info);
+	this.PlayerNameMap.put(info.getName().toLowerCase(), info);
     }
 
-    public int getPlayerIdByName(String name) {
-	for (Entry<String, PlayerInfo> one : this.PlayerMap.entrySet()) {
-	    if (one.getValue().getName() == null)
-		continue;
-	    if (one.getValue().getName().equalsIgnoreCase(name))
-		return one.getValue().getID();
-	}
-	return -1;
+    public void addPlayerToCache(JobsPlayer jPlayer) {
+	if (jPlayer.getUserName() != null)
+	    this.playersCache.put(jPlayer.getUserName(), jPlayer);
+	if (jPlayer.getPlayerUUID() != null)
+	    this.playersUUIDCache.put(jPlayer.getPlayerUUID(), jPlayer);
     }
 
-    public Entry<String, PlayerInfo> getPlayerInfoByName(String name) {
-	for (Entry<String, PlayerInfo> one : this.PlayerMap.entrySet()) {
-	    if (one.getValue().getName() == null)
-		continue;
-	    if (one.getValue().getName().equalsIgnoreCase(name))
-		return one;
-	}
-	return null;
+    public void addPlayer(JobsPlayer jPlayer) {
+	if (jPlayer.getUserName() != null)
+	    this.players.put(jPlayer.getUserName(), jPlayer);
+	if (jPlayer.getPlayerUUID() != null)
+	    this.playersUUID.put(jPlayer.getPlayerUUID(), jPlayer);
     }
 
-    public Entry<String, PlayerInfo> getPlayerInfoById(int id) {
-	for (Entry<String, PlayerInfo> one : this.PlayerMap.entrySet()) {
-	    if (one.getValue().getName() == null)
-		continue;
-	    if (one.getValue().getID() == id)
-		return one;
-	}
-	return null;
+    public ConcurrentHashMap<UUID, JobsPlayer> getPlayersCache() {
+	return this.playersUUIDCache;
+    }
+
+//    public ConcurrentHashMap<String, JobsPlayer> getPlayers() {
+//	return this.players;
+//    }
+
+    public HashMap<UUID, PlayerInfo> getPlayersInfoUUIDMap() {
+	return this.PlayerUUIDMap;
+    }
+
+    public int getPlayerId(String name) {
+	PlayerInfo info = getPlayerInfo(name);
+	return info == null ? -1 : info.getID();
+    }
+
+    public int getPlayerId(UUID uuid) {
+	PlayerInfo info = PlayerUUIDMap.get(uuid);
+	return info == null ? -1 : info.getID();
+    }
+
+    public PlayerInfo getPlayerInfo(String name) {
+	return PlayerNameMap.get(name.toLowerCase());
+    }
+
+    public PlayerInfo getPlayerInfo(int id) {
+	return PlayerIDMap.get(id);
+    }
+
+    public PlayerInfo getPlayerInfo(UUID uuid) {
+	return PlayerUUIDMap.get(uuid);
     }
 
     /**
@@ -189,7 +215,14 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(Player player) {
-	return getJobsPlayer(player.getName().toLowerCase());
+	return getJobsPlayer(player.getUniqueId());
+    }
+
+    public JobsPlayer getJobsPlayer(UUID uuid) {
+	JobsPlayer jPlayer = this.playersUUID.get(uuid);
+	if (jPlayer != null)
+	    return jPlayer;
+	return this.playersUUIDCache.get(uuid);
     }
 
     /**
@@ -209,19 +242,19 @@ public class PlayerManager {
      * @param player - the player who's job you're getting
      * @return the player job info of the player
      */
-    public JobsPlayer getJobsPlayerOffline(Entry<String, PlayerInfo> info) {
+    public JobsPlayer getJobsPlayerOffline(PlayerInfo info) {
 
 	if (info == null)
 	    return null;
 
-	if (info.getValue().getName() == null)
+	if (info.getName() == null)
 	    return null;
 
-	JobsPlayer jPlayer = new JobsPlayer(info.getValue().getName(), null);
-	jPlayer.setPlayerUUID(UUID.fromString(info.getKey()));
-	jPlayer.setUserId(info.getValue().getID());
+	JobsPlayer jPlayer = new JobsPlayer(info.getName(), null);
+	jPlayer.setPlayerUUID(info.getUuid());
+	jPlayer.setUserId(info.getID());
 
-	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getValue());
+	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getName(), info.getUuid());
 	for (JobsDAOData jobdata : list) {
 	    if (Jobs.getJob(jobdata.getJobName()) == null)
 		continue;

@@ -170,7 +170,7 @@ public abstract class JobsDAO {
 	if (Jobs.getGCManager().MultiServerCompatability())
 	    userData = loadPlayerData(uuid);
 	else
-	    userData = Jobs.getPlayerManager().getPlayerMap().get(uuid.toString());
+	    userData = Jobs.getPlayerManager().getPlayerInfo(uuid);
 
 	ArrayList<JobsDAOData> jobs = new ArrayList<JobsDAOData>();
 
@@ -306,7 +306,7 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 	    res.next();
 	    int id = res.getInt("id");
-	    Jobs.getPlayerManager().getPlayerMap().put(uuid.toString(), new PlayerInfo(playerName, id, System.currentTimeMillis()));
+	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, id, uuid, System.currentTimeMillis()));
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -364,7 +364,7 @@ public abstract class JobsDAO {
 
 	ArrayList<JobsDAOData> jobs = new ArrayList<JobsDAOData>();
 
-	Entry<String, PlayerInfo> info = Jobs.getPlayerManager().getPlayerInfoByName(userName);
+	PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(userName);
 	if (info == null)
 	    return jobs;
 
@@ -375,7 +375,7 @@ public abstract class JobsDAO {
 	ResultSet res = null;
 	try {
 	    prest = conn.prepareStatement("SELECT `job`, `level`, `experience` FROM `" + prefix + "jobs` WHERE `userid` = ?;");
-	    prest.setInt(1, info.getValue().getID());
+	    prest.setInt(1, info.getID());
 	    res = prest.executeQuery();
 	    while (res.next()) {
 		jobs.add(new JobsDAOData(res.getString(2), res.getInt(3), res.getInt(4)));
@@ -578,7 +578,7 @@ public abstract class JobsDAO {
 	    insert = conns.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`id`, `player_uuid`, `username`, `seen`) VALUES (?, ?, ?, ?);");
 	    conns.setAutoCommit(false);
 
-	    for (Entry<String, JobsPlayer> oneUser : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
+	    for (Entry<UUID, JobsPlayer> oneUser : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
 		insert.setInt(1, oneUser.getValue().getUserId());
 		insert.setString(2, oneUser.getValue().getPlayerUUID().toString());
 		insert.setString(3, oneUser.getValue().getUserName());
@@ -719,15 +719,15 @@ public abstract class JobsDAO {
 
 	    while (res.next()) {
 
-		Entry<String, PlayerInfo> info = Jobs.getPlayerManager().getPlayerInfoById(res.getInt(1));
+		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt("userid"));
 
 		if (info == null)
 		    continue;
 
-		if (info.getValue().getName() == null)
+		if (info.getName() == null)
 		    continue;
 
-		TopList top = new TopList(res.getInt("userid"), res.getInt("totallvl"), 0);
+		TopList top = new TopList(info, res.getInt("totallvl"), 0);
 
 		names.add(top);
 	    }
@@ -800,8 +800,8 @@ public abstract class JobsDAO {
 	    prest.setString(1, uuid.toString());
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		pInfo = new PlayerInfo(res.getString("username"), res.getInt("id"), res.getLong("seen"));
-		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), pInfo);
+		pInfo = new PlayerInfo(res.getString("username"), res.getInt("id"), uuid, res.getLong("seen"));
+		Jobs.getPlayerManager().addPlayerToMap(pInfo);
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -813,7 +813,7 @@ public abstract class JobsDAO {
     }
 
     public void loadPlayerData() {
-	Jobs.getPlayerManager().getPlayerMap().clear();
+	Jobs.getPlayerManager().clearMaps();
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
@@ -826,9 +826,9 @@ public abstract class JobsDAO {
 		long seen = System.currentTimeMillis();
 		try {
 		    seen = res.getLong("seen");
+		    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(res.getString("username"), res.getInt("id"), UUID.fromString(res.getString("player_uuid")), seen));
 		} catch (Exception e) {
 		}
-		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id"), seen));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -864,14 +864,14 @@ public abstract class JobsDAO {
 	}
 	jPlayer.reloadMaxExperience();
 	jPlayer.reloadLimits();
-	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerMap().get(player.getUniqueId().toString()).getID());
+	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(player.getUniqueId()));
 	Jobs.getJobsDAO().loadPoints(jPlayer);
 //	}
 	return jPlayer;
     }
 
     public void loadAllData() {
-	Jobs.getPlayerManager().getPlayerMap().clear();
+	Jobs.getPlayerManager().clearMaps();
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
@@ -881,8 +881,11 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT *  FROM `" + prefix + "users`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		Jobs.getPlayerManager().getPlayerMap().put(res.getString("player_uuid"), new PlayerInfo(res.getString("username"), res.getInt("id"), res.getLong(
-		    "seen")));
+		try {
+		    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(res.getString("username"), res.getInt("id"), UUID.fromString(res.getString("player_uuid")), res.getLong(
+			"seen")));
+		} catch (Exception e) {
+		}
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1412,16 +1415,15 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 
 	    while (res.next()) {
-		Entry<String, PlayerInfo> info = Jobs.getPlayerManager().getPlayerInfoById(res.getInt("userid"));
+		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt("userid"));
 
-		if (info == null) {
-		    continue;
-		}
-
-		if (info.getValue().getName() == null)
+		if (info == null)
 		    continue;
 
-		String name = info.getValue().getName();
+		if (info.getName() == null)
+		    continue;
+
+		String name = info.getName();
 		Player player = Bukkit.getPlayer(name);
 		if (player != null) {
 
@@ -1430,10 +1432,10 @@ public abstract class JobsDAO {
 		    if (job != null && jobsinfo != null) {
 			JobProgression prog = jobsinfo.getJobProgression(job);
 			if (prog != null)
-			    jobs.add(new TopList(jobsinfo.getUserId(), prog.getLevel(), (int) prog.getExperience()));
+			    jobs.add(new TopList(info, prog.getLevel(), (int) prog.getExperience()));
 		    }
 		} else {
-		    jobs.add(new TopList(res.getInt("userid"), res.getInt("level"), res.getInt("experience")));
+		    jobs.add(new TopList(info, res.getInt("level"), res.getInt("experience")));
 		}
 	    }
 	} catch (SQLException e) {

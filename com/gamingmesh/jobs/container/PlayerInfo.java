@@ -1,14 +1,18 @@
 package com.gamingmesh.jobs.container;
 
+import java.util.UUID;
+
 public class PlayerInfo {
 
     int id;
-    String name;
+    String name = "Unknown";
     private Long seen;
+    private UUID uuid;
 
-    public PlayerInfo(String name, int id, Long seen) {
+    public PlayerInfo(String name, int id, UUID uuid, Long seen) {
 	this.name = name;
 	this.id = id;
+	this.uuid = uuid;
 	this.seen = seen;
     }
 
@@ -22,5 +26,9 @@ public class PlayerInfo {
 
     public Long getSeen() {
 	return seen;
+    }
+
+    public UUID getUuid() {
+	return uuid;
     }
 }

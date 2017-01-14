@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -639,7 +640,7 @@ public class JobsDAOMySQL extends JobsDAO {
 		prestUsersT = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
 		res4 = prestUsersT.executeQuery();
 		while (res4.next()) {
-		    tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id"), System.currentTimeMillis()));
+		    tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id"), UUID.fromString(res4.getString("player_uuid")), System.currentTimeMillis()));
 		}
 	    } catch (Exception e) {
 		e.printStackTrace();

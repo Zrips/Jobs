@@ -36,17 +36,17 @@ public class glog implements Cmd {
 
 		for (Integer OneP : Jobs.getJobsDAO().getLognameList(time, time)) {
 
-		    Entry<String, PlayerInfo> info = Jobs.getPlayerManager().getPlayerInfoById(OneP);
+		    PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(OneP);
 
 		    if (info == null)
 			continue;
 
-		    String name = info.getValue().getName();
+		    String name = info.getName();
 
 		    if (name == null)
 			continue;
 
-		    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(name);
+		    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(info.getUuid());
 
 		    if (JPlayer == null)
 			continue;

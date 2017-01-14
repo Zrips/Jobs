@@ -23,6 +23,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.Map.Entry;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerInfo;
@@ -625,7 +626,7 @@ public class JobsDAOSQLite extends JobsDAO {
 	    prestUsers2 = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
 	    res4 = prestUsers2.executeQuery();
 	    while (res4.next()) {
-		tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id"), System.currentTimeMillis()));
+		tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id"), UUID.fromString(res4.getString("player_uuid")), System.currentTimeMillis()));
 	    }
 	} finally {
 	    close(res4);

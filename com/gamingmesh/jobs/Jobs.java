@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.logging.Logger;
 
@@ -465,16 +466,16 @@ public class Jobs extends JavaPlugin {
 	    public void run() {
 		int i = 0;
 		int y = 0;
-		int total = Jobs.getPlayerManager().getPlayerMap().size();
+		int total = Jobs.getPlayerManager().getMapSize();
 		long time = System.currentTimeMillis();
-		for (Entry<String, PlayerInfo> one : Jobs.getPlayerManager().getPlayerMap().entrySet()) {
+		for (Entry<UUID, PlayerInfo> one : Jobs.getPlayerManager().getPlayersInfoUUIDMap().entrySet()) {
 		    if (!running)
 			return;
 		    try {
-			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one);
+			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one.getValue());
 			if (jPlayer == null)
 			    continue;
-			Jobs.getPlayerManager().getPlayersCache().put(one.getValue().getName().toLowerCase(), jPlayer);
+			Jobs.getPlayerManager().addPlayerToCache(jPlayer);
 		    } catch (Exception e) {
 		    }
 		    i++;

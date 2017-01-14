@@ -25,8 +25,10 @@ public class toggle implements Cmd {
 	    Jobs.getCommandManager().sendUsage(sender, "toggle");
 	    return true;
 	}
+	
+	Player player = (Player) sender;
 
-	String PlayerName = sender.getName();
+	String PlayerName = player.getName();
 
 	if (PlayerName == null || !args[0].equalsIgnoreCase("bossbar") && !args[0].equalsIgnoreCase("actionbar")) {
 	    Jobs.getCommandManager().sendUsage(sender, "toggle");
@@ -53,7 +55,7 @@ public class toggle implements Cmd {
 		    Jobs.getBossBarToggleList().put(PlayerName, false);
 		    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.toggle.output.off"));
 
-		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(PlayerName);
+		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player.getUniqueId());
 
 		    if (jPlayer != null)
 			jPlayer.hideBossBars();
