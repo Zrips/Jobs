@@ -33,6 +33,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -172,7 +173,7 @@ public class JobsPlayer {
 	    this.player = Bukkit.getPlayer(this.playerUUID);
 	return this.player;
     }
-
+    
     /**
      * Get the VipSpawnerMultiplier
      * @return the Multiplier
@@ -202,16 +203,12 @@ public class JobsPlayer {
 
     public double getBoost(String JobName, CurrencyType type, boolean force) {
 	double Boost = 0D;
+	Debug.D("1 "+this.isOnline());
 
-	if (this.OffPlayer == null)
+	if (!this.isOnline())
 	    return Boost;
 
-	if (this.player == null)
-	    this.player = Bukkit.getPlayer(this.OffPlayer.getUniqueId());
-
-	if (this.player == null)
-	    return Boost;
-
+	Debug.D("4 ");
 	long time = System.currentTimeMillis();
 
 	if (this.boostCounter.containsKey(JobName)) {
@@ -254,6 +251,7 @@ public class JobsPlayer {
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName().toLowerCase());
 	if (Boost == null ||v1 != null &&v1 > Boost)
 	    Boost = v1;
+	Debug.D("bonus " + Boost);
 	return Boost == null ? 0D : Boost;
     }
 
@@ -315,7 +313,7 @@ public class JobsPlayer {
      */
     public boolean havePermission(String perm) {
 	if (this.player == null)
-	    this.player = Bukkit.getPlayer(this.playerUUID);
+	    this.player = Bukkit.getPlayer(this.getPlayerUUID());
 	if (this.player != null)
 	    return Perm.hasPermission(player, perm);
 	return false;
@@ -350,7 +348,11 @@ public class JobsPlayer {
      * @return the playerUUID
      */
     public UUID getPlayerUUID() {
-	return playerUUID;
+	if (this.playerUUID == null && player != null)
+	    this.playerUUID = player.getUniqueId();
+	if (this.playerUUID == null && this.OffPlayer != null)
+	    this.playerUUID = OffPlayer.getUniqueId();
+	return this.playerUUID;
     }
 
     public void setPlayerUUID(UUID uuid) {
@@ -670,6 +672,8 @@ public class JobsPlayer {
      * @return true if online, otherwise false
      */
     public boolean isOnline() {
+	if (this.getPlayer() != null)
+	    return this.getPlayer().isOnline();
 	return isOnline;
     }
 

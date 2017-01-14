@@ -53,6 +53,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Perm;
 
@@ -621,6 +622,7 @@ public class PlayerManager {
     }
 
     public BoostMultiplier getBoost(JobsPlayer player, Job job, boolean force) {
+	Debug.D("getting boost");
 	BoostMultiplier b = new BoostMultiplier();
 	for (CurrencyType one : CurrencyType.values()) {
 	    b.add(one, getBoost(player, job, one, force));
