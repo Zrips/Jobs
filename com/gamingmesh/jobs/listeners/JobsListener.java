@@ -162,7 +162,7 @@ public class JobsListener implements Listener {
 	    Jobs.getGUIManager().GuiList.remove(player.getName());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PlayerJoinEvent event) {
 
 	// make sure plugin is enabled

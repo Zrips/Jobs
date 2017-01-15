@@ -35,6 +35,7 @@ import com.gamingmesh.jobs.container.JobConditions;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class PermissionHandler {
     private Jobs plugin;
@@ -45,6 +46,7 @@ public class PermissionHandler {
 
     public void recalculatePermissions(JobsPlayer jPlayer) {
 
+//	long time = System.nanoTime();
 	if (jPlayer == null)
 	    return;
 
@@ -61,9 +63,9 @@ public class PermissionHandler {
 	    this.plugin.getServer().getPluginManager().removePermission(permission);
 	    changed = true;
 	}
-
+	
 	// Permissions should only apply if we have permission to use jobs in this world
-	if (hasWorldPermission(player, player.getWorld().getName())) {
+	if (hasWorldPermission2(player, player.getWorld().getName())) {
 	    List<JobProgression> progression = jPlayer.getJobProgression();
 	    // calculate new permissions
 	    HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
@@ -249,7 +251,27 @@ public class PermissionHandler {
 	}
 	return player.hasPermission("jobs.world." + world.toLowerCase());
     }
-    
+
+    public boolean hasWorldPermission2(Player player, String world) {
+	boolean foundMain = false;
+	boolean foundWorld = false;
+	for (PermissionAttachmentInfo one : player.getEffectivePermissions()) {
+	    if (one.getPermission().equalsIgnoreCase("jobs.use")) {
+		foundMain = true;
+		if (foundWorld)
+		    break;
+	    }
+	    if (one.getPermission().equalsIgnoreCase("jobs.world." + world.toLowerCase())) {
+		foundWorld = true;
+		if (foundMain)
+		    break;
+	    }
+	}
+	if (!foundMain || !foundWorld)
+	    return false;
+	return true;
+    }
+
     public boolean hasWorldPermission(JobsPlayer player, String world) {
 	if (!Jobs.getPermissionManager().hasPermission(player, "jobs.use")) {
 	    return false;

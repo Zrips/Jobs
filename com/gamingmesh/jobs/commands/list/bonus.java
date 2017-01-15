@@ -12,6 +12,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class bonus implements Cmd {
 
@@ -46,58 +47,35 @@ public class bonus implements Cmd {
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.permission",
-	    "%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.Permission, CurrencyType.MONEY, true)),
-	    "%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.Permission, CurrencyType.POINTS, true)),
-	    "%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.Permission, CurrencyType.EXP, true))));
-
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.item",
-	    "%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.Item, CurrencyType.MONEY, true)),
-	    "%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.Item, CurrencyType.POINTS, true)),
-	    "%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.Item, CurrencyType.EXP, true))));
-
-	if (!job.getJobInfo(ActionType.KILL).isEmpty() || !job.getJobInfo(ActionType.MMKILL).isEmpty()) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.nearspawner",
-		"%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.NearSpawner, CurrencyType.MONEY, true)),
-		"%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.NearSpawner, CurrencyType.POINTS, true)),
-		"%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.NearSpawner, CurrencyType.EXP, true))));
-	}
-	
-	if (!job.getJobInfo(ActionType.KILL).isEmpty() || !job.getJobInfo(ActionType.MMKILL).isEmpty()) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.petpay",
-		"%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.PetPay, CurrencyType.MONEY, true)),
-		"%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.PetPay, CurrencyType.POINTS, true)),
-		"%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.PetPay, CurrencyType.EXP, true))));
-	}
-
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.global",
-	    "%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.Global, CurrencyType.MONEY, true)),
-	    "%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.Global, CurrencyType.POINTS, true)),
-	    "%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.Global, CurrencyType.EXP, true))));
-
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.dynamic",
-	    "%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.Dynamic, CurrencyType.MONEY, true)),
-	    "%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.Dynamic, CurrencyType.POINTS, true)),
-	    "%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.Dynamic, CurrencyType.EXP, true))));
-
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.area",
-	    "%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.Area, CurrencyType.MONEY, true)),
-	    "%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.Area, CurrencyType.POINTS, true)),
-	    "%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.Area, CurrencyType.EXP, true))));
+	printBoost(sender, boost, BoostOf.Permission);
+	printBoost(sender, boost, BoostOf.Item);
+	printBoost(sender, boost, BoostOf.NearSpawner);
+	printBoost(sender, boost, BoostOf.PetPay);
+	printBoost(sender, boost, BoostOf.Global);
+	printBoost(sender, boost, BoostOf.Dynamic);
+	printBoost(sender, boost, BoostOf.Area);
 
 	if (Jobs.getMcMMOlistener().mcMMOPresent && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.mcmmo",
-		"%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.get(BoostOf.McMMO, CurrencyType.MONEY, true)),
-		"%points%", ChatColor.GOLD.toString() + formatText(boost.get(BoostOf.McMMO, CurrencyType.POINTS, true)),
-		"%exp%", ChatColor.YELLOW.toString() + formatText(boost.get(BoostOf.McMMO, CurrencyType.EXP, true))));
+	    printBoost(sender, boost, BoostOf.McMMO);
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.final",
-	    "%money%", ChatColor.DARK_GREEN.toString() + formatText(boost.getFinal(CurrencyType.MONEY, true)),
-	    "%points%", ChatColor.GOLD.toString() + formatText(boost.getFinal(CurrencyType.POINTS, true)),
-	    "%exp%", ChatColor.YELLOW.toString() + formatText(boost.getFinal(CurrencyType.EXP, true))));
+	    "%money%", mc + formatText(boost.getFinal(CurrencyType.MONEY, true)),
+	    "%points%", pc + formatText(boost.getFinal(CurrencyType.POINTS, true)),
+	    "%exp%", ec + formatText(boost.getFinal(CurrencyType.EXP, true))));
 
 	return true;
+    }
+
+    String mc = ChatColor.DARK_GREEN.toString();
+    String pc = ChatColor.GOLD.toString();
+    String ec = ChatColor.YELLOW.toString();
+
+    private void printBoost(CommandSender sender, Boost boost, BoostOf type) {
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output." + type.name().toLowerCase(),
+	    "%money%", mc + formatText(boost.get(type, CurrencyType.MONEY, true)),
+	    "%points%", pc + formatText(boost.get(type, CurrencyType.POINTS, true)),
+	    "%exp%", ec + formatText(boost.get(type, CurrencyType.EXP, true))));
     }
 
     private static String formatText(double amount) {
