@@ -928,8 +928,7 @@ public abstract class JobsDAO {
 	    return;
 	PreparedStatement prest = null;
 	try {
-	    prest = conn.prepareStatement("UPDATE `" + prefix
-		+ "jobs` SET `level` = ?, `experience` = ? WHERE `userid` = ? AND `job` = ?;");
+	    prest = conn.prepareStatement("UPDATE `" + prefix + "jobs` SET `level` = ?, `experience` = ? WHERE `userid` = ? AND `job` = ?;");
 	    for (JobProgression progression : player.getJobProgression()) {
 		prest.setInt(1, progression.getLevel());
 		prest.setInt(2, (int) progression.getExperience());

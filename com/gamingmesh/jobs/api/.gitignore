@@ -8,3 +8,4 @@
 /JobsPaymentEvent.class
 /JobsChunkChangeEvent.class
 /JobsExpGainEvent.class
+/JobsAreaSelectionEvent.class

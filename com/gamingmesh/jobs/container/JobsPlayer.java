@@ -612,6 +612,7 @@ public class JobsPlayer {
 	    dao.saveLog(this);
 	    dao.savePoints(this);
 	    dao.recordPlayersLimits(this);
+	    dao.updateSeen(this);
 	    setSaved(true);
 	}
 //	}

@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="C:/Users/Arte/Desktop/CheckMyInventory/lib/spigot-1.11.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Arte/Desktop/Jobs/lib/MythicMobs-2.1.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Arte/Desktop/Residence/lib/iConomy7.0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arte/Desktop/Residence/lib/worldedit-bukkit-6.1.1-SNAPSHOT-dist.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

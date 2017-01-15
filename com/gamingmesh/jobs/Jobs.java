@@ -79,6 +79,7 @@ import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
+import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
@@ -138,6 +139,8 @@ public class Jobs extends JavaPlugin {
 
     private static ActionBar actionbar;
     private boolean running = false;
+
+    protected static SelectionManager smanager;
 
     public void setMcMMOlistener() {
 	McMMOlistener = new McMMOlistener(this);
@@ -514,7 +517,7 @@ public class Jobs extends JavaPlugin {
 	    paymentThread.shutdown();
 	    paymentThread = null;
 	}
-
+	smanager = new SelectionManager();
 	if (dao != null) {
 	    dao.closeConnections();
 	}
@@ -1147,5 +1150,9 @@ public class Jobs extends JavaPlugin {
 
     public static void consoleMsg(String msg) {
 	Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+    }
+
+    public static SelectionManager getSelectionManager() {
+	return smanager;
     }
 }

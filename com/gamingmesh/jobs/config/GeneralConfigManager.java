@@ -69,6 +69,7 @@ public class GeneralConfigManager {
     public boolean PaymentMethodsMoney;
     public boolean PaymentMethodsPoints;
     public boolean PaymentMethodsExp;
+    public int getSelectionTooldID;
 
     // Limits
     public HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<CurrencyType, CurrencyLimit>();
@@ -412,6 +413,8 @@ public class GeneralConfigManager {
 	    "Player data is always periodically auto-saved and autosaved during a clean shutdown.",
 	    "Only enable this if you have a multi-server setup, or have a really good reason for enabling this.", "Turning this on will decrease database performance.");
 	saveOnDisconnect = c.get("save-on-disconnect", false);
+
+	getSelectionTooldID = c.get("selectionTool", 294);
 
 	c.getW().addComment("MultiServerCompatability", "Enable if you are using one data base for multiple servers across bungee network",
 	    "This will force to load players data every time he is logging in to have most up to date data instead of having preloaded data",
@@ -858,5 +861,9 @@ public class GeneralConfigManager {
 
     public synchronized void startSqlite() {
 	Jobs.setDAO(JobsDAOSQLite.initialize(plugin));
+    }
+
+    public int getSelectionTooldID() {
+	return getSelectionTooldID;
     }
 }

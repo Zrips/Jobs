@@ -53,9 +53,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
-import com.gamingmesh.jobs.stuff.Perm;
 
 public class PlayerManager {
 //    private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
@@ -188,7 +186,6 @@ public class PlayerManager {
 	} else {
 	    jPlayer.onDisconnect();
 	}
-	Jobs.getJobsDAO().updateSeen(jPlayer);
     }
 
     /**
@@ -762,21 +759,25 @@ public class PlayerManager {
 	if (ent != null && ent instanceof Tameable) {
 	    Tameable t = (Tameable) ent;
 	    if (t.isTamed() && t.getOwner() instanceof Player) {
-		boost.add(BoostOf.PetPay, new BoostMultiplier().add(Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay")));
+		Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
+		if (amount != null)
+		    boost.add(BoostOf.PetPay, new BoostMultiplier().add(amount));
 	    }
 	}
 
 	if (victim != null && victim.hasMetadata(this.getMobSpawnerMetadata())) {
-	    boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner")));
+	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner");
+	    if (amount != null)
+		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
 	}
 
 	if (getall) {
-	    Double mount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force);
-	    if (mount != null)
-		boost.add(BoostOf.PetPay, new BoostMultiplier().add(mount));
-	    mount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
-	    if (mount != null)
-		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(mount));
+	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force);
+	    if (amount != null)
+		boost.add(BoostOf.PetPay, new BoostMultiplier().add(amount));
+	    amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
+	    if (amount != null)
+		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
 	}
 
 	boost.add(BoostOf.Permission, Jobs.getPlayerManager().getBoost(player, prog, force));

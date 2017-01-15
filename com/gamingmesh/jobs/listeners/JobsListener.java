@@ -28,7 +28,9 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -60,6 +62,7 @@ import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
+import com.gamingmesh.jobs.api.JobsAreaSelectionEvent;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobLimitedItems;
@@ -72,6 +75,50 @@ public class JobsListener implements Listener {
 
     public JobsListener(Jobs plugin) {
 	this.plugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onSelection(PlayerInteractEvent event) {
+	if (event.getPlayer() == null)
+	    return;
+	//disabling plugin in world
+	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
+	    return;
+	if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+	    return;
+	Player player = event.getPlayer();
+	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
+	if (iih == null || iih.getType() == Material.AIR)
+	    return;
+	int heldItemId = iih.getTypeId();
+	if (heldItemId != Jobs.getGCManager().getSelectionTooldID())
+	    return;
+	
+	if (!player.hasPermission("jobs.selectarea"))
+	    return;
+
+	if (player.getGameMode() == GameMode.CREATIVE)
+	    event.setCancelled(true);
+	
+	Block block = event.getClickedBlock();
+	if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+	    Location loc = block.getLocation();
+	    Jobs.getSelectionManager().placeLoc1(player, loc);
+	    player.sendMessage("Selected: " + loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ());
+	    event.setCancelled(true);
+	} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+	    Location loc = block.getLocation();
+	    Jobs.getSelectionManager().placeLoc2(player, loc);
+	    player.sendMessage("Selected: " + loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ());
+	    event.setCancelled(true);
+	}
+
+	if (Jobs.getSelectionManager().hasPlacedBoth(player)) {
+	    JobsAreaSelectionEvent jobsAreaSelectionEvent = new JobsAreaSelectionEvent(event.getPlayer(), Jobs.getSelectionManager().getSelectionCuboid(player));
+	    Bukkit.getServer().getPluginManager().callEvent(jobsAreaSelectionEvent);
+	}
+
+	return;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

@@ -19,25 +19,21 @@
 package com.gamingmesh.jobs.container;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
-/**
- * Restricted Area Class
- * 
- * Holds data pertaining to restricted areas on the server
- * @author Zak Ford <zak.j.ford@gmail.com>
- *
- */
 public class RestrictedArea {
 
-    private Location location1;
-    private Location location2;
+    private CuboidArea area;
     private double multiplier;
+    private String name;
 
-    public RestrictedArea(Location location1, Location location2, double multiplier) {
-	this.location1 = location1;
-	this.location2 = location2;
+    public RestrictedArea(String name, CuboidArea area, double multiplier) {
+	this.name = name;
+	this.area = area;
 	this.multiplier = multiplier;
+    }
+
+    public CuboidArea getCuboidArea() {
+	return this.area;
     }
 
     /**
@@ -46,7 +42,7 @@ public class RestrictedArea {
      */
 
     public double getMultiplier() {
-	return this.multiplier - 1;
+	return this.multiplier;
     }
 
     /**
@@ -55,33 +51,27 @@ public class RestrictedArea {
      * @return true - the location is inside the restricted area
      * @return false - the location is outside the restricted area
      */
-    public boolean inRestrictedArea(Player player) {
-	if (player == null)
+    public boolean inRestrictedArea(Location loc) {
+	if (loc == null)
 	    return false;
-	if (isBetween(player.getLocation().getX(), this.location1.getX(), this.location2.getX()) &&
-	    isBetween(player.getLocation().getY(), this.location1.getY(), this.location2.getY()) &&
-	    isBetween(player.getLocation().getZ(), this.location1.getZ(), this.location2.getZ()) &&
-	    this.location1.getWorld().equals(player.getLocation().getWorld()) &&
-	    this.location2.getWorld().equals(player.getLocation().getWorld())) {
-	    return true;
-	}
-	return false;
+	if (!loc.getWorld().getName().equals(area.getWorld().getName()))
+	    return false;
+	if (area.getLowLoc().getBlockX() > loc.getBlockX())
+	    return false;
+	if (area.getHighLoc().getBlockX() < loc.getBlockX())
+	    return false;
+	if (area.getLowLoc().getBlockZ() > loc.getBlockZ())
+	    return false;
+	if (area.getHighLoc().getBlockZ() < loc.getBlockZ())
+	    return false;
+	if (area.getLowLoc().getBlockY() > loc.getBlockY())
+	    return false;
+	if (area.getHighLoc().getBlockY() < loc.getBlockY())
+	    return false;
+	return true;
     }
 
-    /**
-     * Function check if number is between bounds
-     * @param number - the number to be checked
-     * @param bound1 - the first bound
-     * @param bound2 - the second bound
-     * @return true - number is between bounds
-     * @return false - number is out of bounds
-     */
-    private static boolean isBetween(double number, double bound1, double bound2) {
-	if (bound1 < bound2 && number > bound1 && number < bound2) {
-	    return true;
-	} else if (bound1 > bound2 && number < bound1 && number > bound2) {
-	    return true;
-	}
-	return false;
+    public String getName() {
+	return name;
     }
 }
