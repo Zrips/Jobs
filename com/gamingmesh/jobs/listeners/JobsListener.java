@@ -93,23 +93,23 @@ public class JobsListener implements Listener {
 	int heldItemId = iih.getTypeId();
 	if (heldItemId != Jobs.getGCManager().getSelectionTooldID())
 	    return;
-	
-	if (!player.hasPermission("jobs.selectarea"))
+
+	if (!player.hasPermission("jobs.area.select"))
 	    return;
 
 	if (player.getGameMode() == GameMode.CREATIVE)
 	    event.setCancelled(true);
-	
+
 	Block block = event.getClickedBlock();
 	if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 	    Location loc = block.getLocation();
 	    Jobs.getSelectionManager().placeLoc1(player, loc);
-	    player.sendMessage("Selected: " + loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ());
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.area.output.selected1", "%x%", loc.getBlockX(), "%y%", loc.getBlockY(), "%z%", loc.getBlockZ()));
 	    event.setCancelled(true);
 	} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	    Location loc = block.getLocation();
 	    Jobs.getSelectionManager().placeLoc2(player, loc);
-	    player.sendMessage("Selected: " + loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ());
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.area.output.selected2", "%x%", loc.getBlockX(), "%y%", loc.getBlockY(), "%z%", loc.getBlockZ()));
 	    event.setCancelled(true);
 	}
 

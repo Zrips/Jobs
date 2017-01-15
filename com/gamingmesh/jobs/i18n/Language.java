@@ -49,6 +49,10 @@ public class Language {
      * @param key - the key of the message
      * @return the message
      */
+    public String getMessage(String key) {
+	return getMessage(key, "");
+    }
+
     public String getMessage(String key, Object... variables) {
 	String missing = "Missing locale for " + key + " ";
 	String msg = "";

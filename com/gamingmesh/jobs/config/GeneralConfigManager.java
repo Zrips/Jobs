@@ -344,6 +344,7 @@ public class GeneralConfigManager {
      * 
      * loads from Jobs/generalConfig.yml
      */
+    @SuppressWarnings("deprecation")
     private synchronized void loadGeneralSettings() {
 	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
@@ -415,6 +416,8 @@ public class GeneralConfigManager {
 	saveOnDisconnect = c.get("save-on-disconnect", false);
 
 	getSelectionTooldID = c.get("selectionTool", 294);
+	if (Material.getMaterial(Jobs.getGCManager().getSelectionTooldID) == null)
+	    getSelectionTooldID = 294;
 
 	c.getW().addComment("MultiServerCompatability", "Enable if you are using one data base for multiple servers across bungee network",
 	    "This will force to load players data every time he is logging in to have most up to date data instead of having preloaded data",

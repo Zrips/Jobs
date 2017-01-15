@@ -46,6 +46,21 @@ public class RestrictedAreaManager {
 	if (save)
 	    save();
     }
+    
+    public void remove(String name, boolean save) {
+	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
+	    if (area.getKey().equalsIgnoreCase(name)){
+		restrictedAreas.remove(area.getKey());
+		break;
+	    }
+	}
+	if (save)
+	    save();
+    }
+    
+    public HashMap<String, RestrictedArea> getRestrictedAres(){
+	return restrictedAreas;
+    }
 
     private void save() {
 	File f = new File(plugin.getDataFolder(), "restrictedAreas.yml");
