@@ -1,15 +1,13 @@
 package com.gamingmesh.jobs.api;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import com.gamingmesh.jobs.container.CuboidArea;
 
-public final class JobsAreaSelectionEvent extends Event implements Cancellable {
+public final class JobsAreaSelectionEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
-    private boolean cancelled;
     private CuboidArea area;
     private Player player;
 
@@ -24,16 +22,6 @@ public final class JobsAreaSelectionEvent extends Event implements Cancellable {
 
     public CuboidArea getArea() {
 	return area;
-    }
-
-    @Override
-    public boolean isCancelled() {
-	return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel) {
-	cancelled = cancel;
     }
 
     @Override

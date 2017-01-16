@@ -112,14 +112,15 @@ public class RestrictedAreaManager {
 	return areas;
     }
 
-    private StringBuilder addHeader(StringBuilder header) {
+    private static StringBuilder addHeader(StringBuilder header) {
 	header.append("Restricted area configuration");
 	header.append(System.getProperty("line.separator"))
 	    .append(System.getProperty("line.separator"))
 	    .append("Configures restricted areas where you cannot get experience or money").append(System.getProperty("line.separator"))
 	    .append("when performing a job.").append(System.getProperty("line.separator")).append(System.getProperty("line.separator"))
 	    .append("The multiplier changes the experience/money gains in an area.").append(System.getProperty("line.separator"))
-	    .append("A multiplier of 0.0 means no money or xp, while 0.5 means you will get half the normal money/exp").append(System.getProperty("line.separator"))
+	    .append("A multiplier of 0.0 means no bonus, while 0.5 means you will get 50% more the normal income").append(System.getProperty("line.separator"))
+	    .append("While -0.5 means that you will get 50% less the normal income").append(System.getProperty("line.separator"))
 	    .append(System.getProperty("line.separator"))
 	    .append("restrictedareas:").append(System.getProperty("line.separator"))
 	    .append("  area1:").append(System.getProperty("line.separator"))

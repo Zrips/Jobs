@@ -90,6 +90,7 @@ public class JobsListener implements Listener {
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 	if (iih == null || iih.getType() == Material.AIR)
 	    return;
+	@SuppressWarnings("deprecation")
 	int heldItemId = iih.getTypeId();
 	if (heldItemId != Jobs.getGCManager().getSelectionTooldID())
 	    return;

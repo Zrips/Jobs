@@ -35,25 +35,27 @@ public class Boost {
 	if (r < -1)
 	    r = -1;
 	if (percent)
-	    return (int)(r * 100);
+	    return (int) (r * 100);
 	return r;
     }
 
     public double getFinal(CurrencyType BT) {
-	return getFinal(BT, false);
+	return getFinal(BT, false, false);
     }
 
-    public double getFinal(CurrencyType BT, boolean percent) {
+    public double getFinal(CurrencyType BT, boolean percent, boolean excludeExtra) {
 	double r = 0D;
 	for (BoostOf one : BoostOf.values()) {
 	    if (!map.containsKey(one))
+		continue;
+	    if (excludeExtra && (one == BoostOf.NearSpawner || one == BoostOf.PetPay))
 		continue;
 	    r += map.get(one).get(BT);
 	}
 	if (r < -1)
 	    r = -1;
 	if (percent)
-	    return (int)(r * 100);
+	    return (int) (r * 100);
 	return r;
     }
 }

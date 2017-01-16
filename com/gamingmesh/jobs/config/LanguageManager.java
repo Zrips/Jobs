@@ -120,6 +120,7 @@ public class LanguageManager {
 	    c.get("command.bonus.output.area", " &eArea bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.mcmmo", " &eMcMMO bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.final", " &eFinal bonus: %money% %points% %exp%");
+	    c.get("command.bonus.output.finalExplanation", " &eDoes not include Petpay and Near spawner bonus/penalty");
 
 	    c.get("command.convert.help.info",
 		"Converts data base system from one system to another. if you currently running sqlite, this will convert to Mysql and vise versa.");
