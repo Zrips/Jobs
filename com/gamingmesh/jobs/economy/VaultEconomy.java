@@ -21,50 +21,50 @@ package com.gamingmesh.jobs.economy;
 import org.bukkit.OfflinePlayer;
 
 public class VaultEconomy implements Economy {
-	private net.milkbowl.vault.economy.Economy vault;
+    private net.milkbowl.vault.economy.Economy vault;
 
-	public VaultEconomy(net.milkbowl.vault.economy.Economy vault) {
-		this.vault = vault;
-	}
+    public VaultEconomy(net.milkbowl.vault.economy.Economy vault) {
+	this.vault = vault;
+    }
 
-	@Override
-	public boolean depositPlayer(OfflinePlayer offlinePlayer, double money) {
-		return vault.depositPlayer(offlinePlayer, money).transactionSuccess();
-	}
-	
-	@SuppressWarnings("deprecation")
-	@Override
-	public boolean depositPlayer(String PlayerName, double money) {
-		return vault.depositPlayer(PlayerName, money).transactionSuccess();
-	}
-	
-	@Override
-	public boolean withdrawPlayer(OfflinePlayer offlinePlayer, double money) {
-		return vault.withdrawPlayer(offlinePlayer, money).transactionSuccess();
-	}
+    @Override
+    public boolean depositPlayer(OfflinePlayer offlinePlayer, double money) {
+	return vault.depositPlayer(offlinePlayer, money).transactionSuccess();
+    }
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public boolean withdrawPlayer(String PlayerName, double money) {
-		return vault.withdrawPlayer(PlayerName, money).transactionSuccess();
-	}
-	
-	@Override
-	public boolean hasMoney(OfflinePlayer offlinePlayer, double money) {
-		if (offlinePlayer.getName() == null)
-			return false;
-		return vault.has(offlinePlayer, money);
-	}
-	
-	@SuppressWarnings("deprecation")
-	@Override
-	public boolean hasMoney(String PlayerName, double money) {
-		return vault.has(PlayerName, money);
-	}
-	
-	@Override
-	public String format(double money) {
-		return vault.format(money);
-	}
-	
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean depositPlayer(String PlayerName, double money) {
+	return vault.depositPlayer(PlayerName, money).transactionSuccess();
+    }
+
+    @Override
+    public boolean withdrawPlayer(OfflinePlayer offlinePlayer, double money) {
+	return vault.withdrawPlayer(offlinePlayer, money).transactionSuccess();
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean withdrawPlayer(String PlayerName, double money) {
+	return vault.withdrawPlayer(PlayerName, money).transactionSuccess();
+    }
+
+    @Override
+    public boolean hasMoney(OfflinePlayer offlinePlayer, double money) {
+	if (offlinePlayer.getName() == null)
+	    return false;
+	return vault.has(offlinePlayer, money);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean hasMoney(String PlayerName, double money) {
+	return vault.has(PlayerName, money);
+    }
+
+    @Override
+    public String format(double money) {
+	return vault.format(money);
+    }
+
 }

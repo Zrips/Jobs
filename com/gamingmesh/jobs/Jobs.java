@@ -472,7 +472,9 @@ public class Jobs extends JavaPlugin {
 		int y = 0;
 		int total = Jobs.getPlayerManager().getMapSize();
 		long time = System.currentTimeMillis();
-		Iterator<Entry<UUID, PlayerInfo>> it = Jobs.getPlayerManager().getPlayersInfoUUIDMap().entrySet().iterator();
+		// Cloning to avoid issues
+		HashMap<UUID, PlayerInfo> temp = new HashMap<UUID, PlayerInfo>(Jobs.getPlayerManager().getPlayersInfoUUIDMap());
+		Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator();
 		while (it.hasNext()) {
 		    Entry<UUID, PlayerInfo> one = it.next();
 		    if (!running)
