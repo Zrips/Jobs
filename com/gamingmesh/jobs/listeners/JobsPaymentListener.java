@@ -150,7 +150,7 @@ public class JobsPaymentListener implements Listener {
 	// check if in creative
 	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
-	
+
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
@@ -267,16 +267,11 @@ public class JobsPaymentListener implements Listener {
 	if (player.getGameMode() == GameMode.CREATIVE && !Jobs.getGCManager().payInCreative())
 	    return;
 
-	long time = System.nanoTime();
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
-	Debug.D("time in " + (System.nanoTime() - time));
-	
 
-	 time = System.nanoTime();
 	if (!Jobs.getPermissionHandler().hasWorldPermission2(player, player.getLocation().getWorld().getName()))
 	    return;
-	Debug.D("time in " + (System.nanoTime() - time));
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 	FastPayment fp = Jobs.FastPayment.get(player.getName());

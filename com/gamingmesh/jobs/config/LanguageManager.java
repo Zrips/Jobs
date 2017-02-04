@@ -141,7 +141,13 @@ public class LanguageManager {
 	    c.get("command.limit.output.reachedpointslimit", "&4You have reached exp limit in given time!");
 	    c.get("command.limit.output.reachedpointslimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
 	    c.get("command.limit.output.notenabled", "&eMoney limit is not enabled");
+	    
 
+	    c.get("command.resetlimit.help.info", "Resets players payment limits");
+	    c.get("command.resetlimit.help.args", "[playername]");
+	    c.get("command.resetlimit.output.reseted", "&ePayment limits have been reset for: &2%playername%");
+	    
+	    
 	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
 	    c.get("command.help.output.usage", "Usage: %usage%");
 	    c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");

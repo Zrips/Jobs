@@ -261,6 +261,7 @@ public class JobsPlayer {
 	Parser eq = Jobs.getGCManager().currencyLimitUse.get(type).getMaxEquation();
 	eq.setVariable("totallevel", TotalLevel);
 	limits.put(type, (int) eq.getValue());
+	setSaved(false);
     }
 
     public void reloadLimits() {
@@ -271,6 +272,14 @@ public class JobsPlayer {
 
     public int getLimit(CurrencyType type) {
 	return this.limits.get(type);
+    }
+
+    public void resetPaymentLimit() {
+	if (paymentLimits == null)
+	    getPaymentLimit();
+	if (paymentLimits != null)
+	    paymentLimits.resetLimits();
+	setSaved(false);
     }
 
     /**
