@@ -1,6 +1,5 @@
 /**
  * Jobs Plugin for Bukkit
- * Copyright (C) 2011 Zak Ford <zak.j.ford@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

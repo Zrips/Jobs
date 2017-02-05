@@ -21,6 +21,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class GuiManager {
@@ -70,8 +71,9 @@ public class GuiManager {
 	guiInfo.setJobList(JobsList);
 
 	Inventory topinv = player.getOpenInventory().getTopInventory();
-	if (topinv != null && !GuiList.containsKey(player.getName()))
+	if (topinv != null && !GuiList.containsKey(player.getName())) {
 	    player.closeInventory();
+	}
 
 	GuiList.put(player.getName(), guiInfo);
 
@@ -153,12 +155,14 @@ public class GuiManager {
 		i++;
 	    }
 
-	    ItemStack filler = Jobs.getGCManager().guiFiller;
+	}
 
-	    for (int y = 0; y < GuiInv.getContents().length; y++) {
-		ItemStack item = GuiInv.getItem(y);
-		if (item == null || item.getType() == Material.AIR)
-		    GuiInv.setItem(y, filler);
+	ItemStack filler = Jobs.getGCManager().guiFiller;
+
+	for (int y = 0; y < GuiInv.getSize(); y++) {
+	    ItemStack item = GuiInv.getItem(y);
+	    if (item == null || item.getType() == Material.AIR) {
+		GuiInv.setItem(y, filler);
 	    }
 	}
 	return GuiInv;
@@ -269,7 +273,7 @@ public class GuiManager {
 
 	ItemStack filler = Jobs.getGCManager().guiFiller;
 
-	for (int y = 0; y < GuiInv.getContents().length; y++) {
+	for (int y = 0; y < GuiInv.getSize(); y++) {
 	    ItemStack item = GuiInv.getItem(y);
 	    if (item == null || item.getType() == Material.AIR)
 		GuiInv.setItem(y, filler);

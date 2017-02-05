@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -68,13 +69,28 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
     private Jobs plugin;
 
+    private HashMap<UUID, Long> interactDelay = new HashMap<UUID, Long>();
+
     public JobsListener(Jobs plugin) {
 	this.plugin = plugin;
+    }
+
+    private boolean isInteractOk(Player player) {
+	if (!interactDelay.containsKey(player.getUniqueId())) {
+	    interactDelay.put(player.getUniqueId(), System.currentTimeMillis());
+	    return true;
+	}
+	long time = System.currentTimeMillis() - interactDelay.get(player.getUniqueId());
+	interactDelay.put(player.getUniqueId(), System.currentTimeMillis());
+	if (time > 100)
+	    return true;
+	return false;
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -87,6 +103,7 @@ public class JobsListener implements Listener {
 	if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK)
 	    return;
 	Player player = event.getPlayer();
+
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 	if (iih == null || iih.getType() == Material.AIR)
 	    return;
@@ -143,15 +160,13 @@ public class JobsListener implements Listener {
 
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
-    public void onShopClose(InventoryCloseEvent event) {
-	if (Jobs.getShopManager().GuiList.isEmpty())
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onGuiClose(InventoryCloseEvent event) {
+	if (Jobs.getGUIManager().GuiList.isEmpty())
 	    return;
-
 	Player player = (Player) event.getPlayer();
-
-	if (Jobs.getShopManager().GuiList.containsKey(player.getName()))
-	    Jobs.getShopManager().GuiList.remove(player.getName());
+	if (Jobs.getGUIManager().GuiList.containsKey(player.getName()))
+	    Jobs.getGUIManager().GuiList.remove(player.getName());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -197,17 +212,6 @@ public class JobsListener implements Listener {
 		}
 	    }
 	}
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
-    public void onGuiClose(InventoryCloseEvent event) {
-	if (Jobs.getGUIManager().GuiList.isEmpty())
-	    return;
-
-	Player player = (Player) event.getPlayer();
-
-	if (Jobs.getGUIManager().GuiList.containsKey(player.getName()))
-	    Jobs.getGUIManager().GuiList.remove(player.getName());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -261,7 +265,7 @@ public class JobsListener implements Listener {
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
     }
 
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSignInteract(PlayerInteractEvent event) {
 
 	if (!plugin.isEnabled())
@@ -281,6 +285,11 @@ public class JobsListener implements Listener {
 	if (!(block.getState() instanceof Sign))
 	    return;
 
+	Player player = event.getPlayer();
+
+	if (!isInteractOk(player))
+	    return;
+
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
 
@@ -296,7 +305,6 @@ public class JobsListener implements Listener {
 	    }
 	}
 
-	Player player = event.getPlayer();
 	player.performCommand("jobs " + command + " " + ChatColor.stripColor(sign.getLine(2)) + " " + ChatColor.stripColor(sign.getLine(3)));
     }
 
