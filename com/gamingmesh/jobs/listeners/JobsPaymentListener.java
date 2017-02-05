@@ -270,9 +270,6 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission2(player, player.getLocation().getWorld().getName()))
-	    return;
-
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 	FastPayment fp = Jobs.FastPayment.get(player.getName());
 	if (fp != null) {
