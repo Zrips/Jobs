@@ -319,7 +319,7 @@ public class JobsPlayer {
      * @return the userName
      */
     public String getUserName() {
-	if (userName == null && player != null)
+	if (player != null)
 	    userName = player.getName();
 	if (userName == null && OffPlayer != null)
 	    userName = OffPlayer.getName();
