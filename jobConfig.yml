@@ -1210,7 +1210,7 @@ Jobs:
         income: 0.2
         points: 0.2
         experience: 0.2
-      COCOA-4:
+      COCOA-2:
         income: 4
         points: 4
         experience: 4.0
