@@ -69,7 +69,7 @@ public class NameTranslatorManager {
 		for (NameList one : ListOfEntities) {
 		    String ids = one.getId();
 		    if (ids.equalsIgnoreCase(String.valueOf(info.getId())) && !one.getId().equalsIgnoreCase("0")) {
-			return materialName = one.getName();
+			return one.getName();
 		    }
 		}
 		break;

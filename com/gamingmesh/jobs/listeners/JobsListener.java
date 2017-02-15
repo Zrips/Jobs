@@ -140,7 +140,8 @@ public class JobsListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onShopClick(InventoryClickEvent event) {
+    public void onShopGuiClick(InventoryClickEvent event) {
+
 	if (Jobs.getShopManager().GuiList.isEmpty())
 	    return;
 
@@ -160,13 +161,24 @@ public class JobsListener implements Listener {
 
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onShopGuiClose(InventoryCloseEvent event) {
+	if (Jobs.getShopManager().GuiList.isEmpty())
+	    return;
+	Player player = (Player) event.getPlayer();
+	if (Jobs.getShopManager().GuiList.containsKey(player.getName())) {
+	    Jobs.getShopManager().GuiList.remove(player.getName());
+	}
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onGuiClose(InventoryCloseEvent event) {
 	if (Jobs.getGUIManager().GuiList.isEmpty())
 	    return;
 	Player player = (Player) event.getPlayer();
-	if (Jobs.getGUIManager().GuiList.containsKey(player.getName()))
+	if (Jobs.getGUIManager().GuiList.containsKey(player.getName())) {
 	    Jobs.getGUIManager().GuiList.remove(player.getName());
+	}
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
