@@ -48,14 +48,14 @@ public class limit implements Cmd {
 	    if (limit == null) {
 		int lefttime1 = Jobs.getGCManager().currencyLimitUse.get(type).getTimeLimit() * 1000;
 		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort((long) lefttime1)));
-		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "limit",
+		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "Limit",
 		    "%current%", "0.0",
 		    "%total%", JPlayer.getLimit(type)));
 		continue;
 	    }
 	    if (limit.GetLeftTime(type) > 0) {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(limit.GetLeftTime(type))));
-		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "limit",
+		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "Limit",
 		    "%current%", (int) (limit.GetAmount(type) * 100) / 100D,
 		    "%total%", JPlayer.getLimit(type)));
 	    }

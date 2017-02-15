@@ -129,11 +129,11 @@ public class LanguageManager {
 	    c.get("command.limit.help.info", "Shows payment limits for jobs");
 	    c.get("command.limit.help.args", "");
 	    c.get("command.limit.output.moneytime", "&eTime left until money limit resets: &2%time%");
-	    c.get("command.limit.output.moneylimit", "&eMoney limit: &2%current%&e/&2%total%");
+	    c.get("command.limit.output.moneyLimit", "&eMoney limit: &2%current%&e/&2%total%");
 	    c.get("command.limit.output.exptime", "&eTime left until Exp limit resets: &2%time%");
-	    c.get("command.limit.output.explimit", "&eExp limit: &2%current%&e/&2%total%");
+	    c.get("command.limit.output.expLimit", "&eExp limit: &2%current%&e/&2%total%");
 	    c.get("command.limit.output.pointstime", "&eTime left until Point limit resets: &2%time%");
-	    c.get("command.limit.output.pointslimit", "&ePoint limit: &2%current%&e/&2%total%");
+	    c.get("command.limit.output.pointsLimit", "&ePoint limit: &2%current%&e/&2%total%");
 	    c.get("command.limit.output.reachedmoneylimit", "&4You have reached money limit in given time!");
 	    c.get("command.limit.output.reachedmoneylimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
 	    c.get("command.limit.output.reachedexplimit", "&4You have reached exp limit in given time!");

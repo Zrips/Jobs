@@ -1,7 +1,7 @@
 name: Jobs
 description: Jobs Plugin for the BukkitAPI
 main: com.gamingmesh.jobs.Jobs
-version: 3.8.1
+version: 3.8.2
 author: phrstbrn
 softdepend: [Vault, iConomy, MythicMobs, McMMO]
 commands:
@@ -58,6 +58,8 @@ permissions:
       jobs.command.signupdate: true
       jobs.command.moneyboost: true
       jobs.command.expboost: true
+      jobs.command.iteminfo: true
+      jobs.command.blockinfo: true
   jobs.command.browse:
     description: Grants access to the browse command
     default: true
@@ -165,4 +167,10 @@ permissions:
     default: true
   jobs.command.points:
     description: Grants access to the points command
+    default: true
+  jobs.command.blockinfo:
+    description: Grants access to the blockinfo command
+    default: true
+  jobs.command.iteminfo:
+    description: Grants access to the iteminfo command
     default: true
