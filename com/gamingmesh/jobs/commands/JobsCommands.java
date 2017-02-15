@@ -510,17 +510,15 @@ public class JobsCommands implements CommandExecutor {
 
 	    double income = info.getIncome(level, numjobs);
 
-//	    Jobs.getPlayerManager().getFinalBonus(player, prog)
-
-	    income = income + (income * boost.getFinal(CurrencyType.MONEY));
+	    income = boost.getFinalAmount(CurrencyType.MONEY, income);
 	    String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
 	    double xp = info.getExperience(level, numjobs);
-	    xp = xp + (xp * boost.getFinal(CurrencyType.EXP));
+	    xp = boost.getFinalAmount(CurrencyType.EXP, xp);
 	    String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
 	    double points = info.getPoints(level, numjobs);
-	    points = points + (points * boost.getFinal(CurrencyType.POINTS));
+	    points = boost.getFinalAmount(CurrencyType.POINTS, points);
 	    String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 
 	    if (income == 0D && points == 0D && xp == 0D)

@@ -43,6 +43,10 @@ public class Boost {
 	return getFinal(BT, false, false);
     }
 
+    public double getFinalAmount(CurrencyType BT, double income) {
+	return income + ((income > 0D ? income : -income) * getFinal(BT, false, false));
+    }
+
     public double getFinal(CurrencyType BT, boolean percent, boolean excludeExtra) {
 	double r = 0D;
 	for (BoostOf one : BoostOf.values()) {
