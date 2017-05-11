@@ -42,7 +42,7 @@ public class JobProgression {
     public boolean canLevelUp() {
 	return experience >= maxExperience;
     }
-    
+
     /**
      * Return the job
      * @return the job
@@ -77,11 +77,31 @@ public class JobProgression {
      * @return - job level up
      */
     public boolean addExperience(double experience) {
-//		synchronized (jPlayer.saveLock) {
 	jPlayer.setSaved(false);
 	this.experience += experience;
 	return checkLevelUp();
-//		}
+    }
+
+    /**
+     * Sets experience for this job
+     * @param experience - the experience in this job
+     * @return - job level up
+     */
+    public boolean setExperience(double experience) {
+	jPlayer.setSaved(false);
+	this.experience = experience;
+	return checkLevelUp();
+    }
+
+    /**
+     * Takes experience from this job
+     * @param experience - the experience in this job
+     * @return - job level up
+     */
+    public boolean takeExperience(double experience) {
+	jPlayer.setSaved(false);
+	this.experience -= experience;
+	return checkLevelUp();
     }
 
     /**

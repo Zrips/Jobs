@@ -56,3 +56,5 @@
 /iteminfo.class
 /area.class
 /resetlimit.class
+/exp.class
+/exp$Action.class
