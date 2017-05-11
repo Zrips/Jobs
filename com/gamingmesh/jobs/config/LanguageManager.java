@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.LocaleReader;
@@ -17,6 +18,12 @@ public class LanguageManager {
 	this.plugin = plugin;
     }
 
+    List<String> languages = new ArrayList<String>();
+
+    public List<String> getLanguages() {
+	return languages;
+    }
+
     /**
      * Method to load the language file configuration
      * 
@@ -25,7 +32,7 @@ public class LanguageManager {
     synchronized void load() {
 
 	// Just copying default language files, except en, that one will be generated
-	List<String> languages = new ArrayList<String>();
+	languages = new ArrayList<String>();
 	languages.add("cs");
 	languages.add("cz");
 	languages.add("de");
@@ -48,6 +55,13 @@ public class LanguageManager {
 
 	for (String lang : languages) {
 	    File f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+	    
+	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
+	    if ((f.length() / 1024) > 1024) {
+		f.delete();
+		f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+	    }
+	    
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
 
@@ -141,13 +155,11 @@ public class LanguageManager {
 	    c.get("command.limit.output.reachedpointslimit", "&4You have reached exp limit in given time!");
 	    c.get("command.limit.output.reachedpointslimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
 	    c.get("command.limit.output.notenabled", "&eMoney limit is not enabled");
-	    
 
 	    c.get("command.resetlimit.help.info", "Resets players payment limits");
 	    c.get("command.resetlimit.help.args", "[playername]");
 	    c.get("command.resetlimit.output.reseted", "&ePayment limits have been reset for: &2%playername%");
-	    
-	    
+
 	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
 	    c.get("command.help.output.usage", "Usage: %usage%");
 	    c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");
@@ -174,7 +186,6 @@ public class LanguageManager {
 	    c.get("command.blockinfo.output.id", " &eBlock id: &6%blockid%");
 	    c.get("command.blockinfo.output.data", " &eBlock data: &6%blockdata%");
 	    c.get("command.blockinfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
-	    
 
 	    c.get("command.iteminfo.help.info", "Shows item information you holding.");
 	    c.get("command.iteminfo.help.args", "");
@@ -182,7 +193,7 @@ public class LanguageManager {
 	    c.get("command.iteminfo.output.id", " &eItem id: &6%itemid%");
 	    c.get("command.iteminfo.output.data", " &eItem data: &6%itemdata%");
 	    c.get("command.iteminfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
-	    
+
 	    c.get("command.entitylist.help.info", "Shows all possible entities can be used with plugin.");
 	    c.get("command.entitylist.help.args", "");
 
@@ -354,7 +365,6 @@ public class LanguageManager {
 	    c.get("command.gtop.output.prev", "&e<<<<< Prev page &2|");
 	    c.get("command.gtop.output.next", "&2|&e Next Page >>>>");
 	    c.get("command.gtop.output.show", "&2Show from &e[from] &2until &e[until] &2global top list");
-	    
 
 	    c.get("command.area.help.info", "Modify restricted areas.");
 	    c.get("command.area.help.args", "add/remove/info/list");

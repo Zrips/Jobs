@@ -14,6 +14,7 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.NameList;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class NameTranslatorManager {
 
@@ -179,7 +180,7 @@ public class NameTranslatorManager {
 	    langFile.saveDefaultConfig();
 	}
 
-	languages.add("en");
+	languages.addAll(Jobs.getLanguageManager().getLanguages());
 
 	File customLocaleFile = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + Jobs.getGCManager().localeString + ".yml");
 	if (!customLocaleFile.exists() && !Jobs.getGCManager().localeString.equalsIgnoreCase("en"))
@@ -188,6 +189,14 @@ public class NameTranslatorManager {
 	for (String lang : languages) {
 
 	    File f = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+
+	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
+	    if ((f.length() / 1024) > 1024) {
+		f.delete();
+		f = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+	    }
+
+	    Bukkit.getServer().getConsoleSender().sendMessage(lang + " " + (f.length() / 1024));
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
 

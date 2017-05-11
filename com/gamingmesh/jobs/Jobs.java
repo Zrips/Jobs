@@ -510,6 +510,7 @@ public class Jobs extends JavaPlugin {
      * @throws IOException 
      */
     public static void reload() throws IOException {
+	
 	if (saveTask != null) {
 	    saveTask.shutdown();
 	    saveTask = null;
