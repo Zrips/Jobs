@@ -754,7 +754,7 @@ public class Jobs extends JavaPlugin {
 	    }
 
 	    setMyPetManager();
-	    
+
 	    setMythicManager();
 	    if (MythicManager.Check() && GconfigManager.MythicMobsEnabled) {
 		MythicManager.registerListener();
@@ -842,7 +842,7 @@ public class Jobs extends JavaPlugin {
 	    if (jobinfo == null)
 		return;
 
-	    if (!isBpOk(jPlayer.getPlayer(), info.getType(), block, true))
+	    if (!isBpOk(jPlayer, info, block))
 		return;
 
 	    Double income = jobinfo.getIncome(1, numjobs);
@@ -910,7 +910,7 @@ public class Jobs extends JavaPlugin {
 
 		if (jobinfo == null)
 		    continue;
-		if (!isBpOk(jPlayer.getPlayer(), info.getType(), block, true))
+		if (!isBpOk(jPlayer, info, block))
 		    return;
 		Double income = jobinfo.getIncome(level, numjobs);
 		Double pointAmount = jobinfo.getPoints(level, numjobs);
@@ -1039,65 +1039,44 @@ public class Jobs extends JavaPlugin {
 		if (prog.addExperience(expAmount))
 		    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
 	    }
+
+	    //need to update bp
+	    BlockProtection bp = BpManager.getBp(block.getLocation());
+	    if (bp != null)
+		bp.setPaid(true);
 	}
     }
 
-    private static boolean isBpOk(Player player, ActionType type, Block block, boolean inform) {
+    private static boolean isBpOk(JobsPlayer jPlayer, ActionInfo info, Block block) {
 	if (block != null && Jobs.getGCManager().useBlockProtection) {
-	    if (type == ActionType.BREAK) {
+	    if (info.getType() == ActionType.BREAK || info.getType() == ActionType.PLACE) {
 		BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
 
 		if (bp != null) {
 		    Long time = bp.getTime();
 		    if (time == -1)
 			return false;
+
 		    Integer cd = Jobs.getBpManager().getBlockDelayTime(block);
 
-		    if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
-			Jobs.getBpManager().remove(block);
-			return true;
-		    }
-
-		    if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
+		    if (time > System.currentTimeMillis() && bp.isPaid() && bp.getAction() != DBAction.DELETE) {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000);
-			if (inform)
-			    Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+			Jobs.getActionBar().send(jPlayer.getPlayer(),
+			    Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
 			return false;
 		    }
-
-		    Jobs.getBpManager().add(block, cd);
-		    if (cd == null) {
-			if (Jobs.getGCManager().useGlobalTimer) {
-			    Jobs.getBpManager().add(block, System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
-			}
+		    //timer expired + already paid
+		    else if (bp.isPaid()) {
+			Jobs.getBpManager().remove(block);
 		    }
-		} else {
-		    if (Jobs.getGCManager().useGlobalTimer) {
-			Jobs.getBpManager().add(block, System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
+
+		    if (cd != null) {
+			Jobs.getBpManager().add(block,
+			    System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
+		    } else {
+			Jobs.getBpManager().add(block, cd);
 		    }
 		}
-	    } else if (type == ActionType.PLACE) {
-		BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
-		if (bp != null) {
-		    Long time = bp.getTime();
-		    if (time != -1) {
-			if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
-			    Jobs.getBpManager().remove(block);
-			    return true;
-			}
-
-			if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
-			    int sec = Math.round((time - System.currentTimeMillis()) / 1000);
-			    if (inform)
-				Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
-			    return false;
-			}
-		    } else if (bp.isPaid()) {
-			if (bp.getTime() == -1 && Jobs.getBpManager().getBlockDelayTime(block) != null && Jobs.getBpManager().getBlockDelayTime(block) == -1)
-			    return false;
-		    }
-		} else
-		    Jobs.getBpManager().add(block, Jobs.getBpManager().getBlockDelayTime(block));
 	    }
 	}
 	return true;
