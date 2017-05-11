@@ -40,6 +40,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamingmesh.jobs.Gui.GuiManager;
+import com.gamingmesh.jobs.MythicMobs.MythicMobInterface;
+import com.gamingmesh.jobs.MythicMobs.MythicMobs2;
+import com.gamingmesh.jobs.MythicMobs.MythicMobs2Listener;
+import com.gamingmesh.jobs.MythicMobs.MythicMobs4;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
@@ -77,10 +81,10 @@ import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
-import com.gamingmesh.jobs.listeners.MythicMobsListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.ActionBar;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -111,7 +115,7 @@ public class Jobs extends JavaPlugin {
     private static PistonProtectionListener PistonProtectionListener = null;
     private static McMMOlistener McMMOlistener = null;
 
-    private static MythicMobsListener MythicManager;
+    private static MythicMobInterface MythicManager;
 
     private static ConfigManager configManager;
     private static GeneralConfigManager GconfigManager;
@@ -159,10 +163,22 @@ public class Jobs extends JavaPlugin {
     }
 
     public void setMythicManager() {
-	MythicManager = new MythicMobsListener(this);
+	try {
+	    Class.forName("net.elseland.xikage.MythicMobs.API.MythicMobsAPI");
+	    Debug.D("one");
+	    MythicManager = new MythicMobs2(this);
+	} catch (ClassNotFoundException e) {
+	    try {
+		Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
+		Debug.D("two");
+		MythicManager = new MythicMobs4(this);
+	    } catch (ClassNotFoundException ex) {
+
+	    }
+	}
     }
 
-    public static MythicMobsListener getMythicManager() {
+    public static MythicMobInterface getMythicManager() {
 	return MythicManager;
     }
 
@@ -510,7 +526,7 @@ public class Jobs extends JavaPlugin {
      * @throws IOException 
      */
     public static void reload() throws IOException {
-	
+
 	if (saveTask != null) {
 	    saveTask.shutdown();
 	    saveTask = null;
@@ -732,7 +748,7 @@ public class Jobs extends JavaPlugin {
 
 	    setMythicManager();
 	    if (MythicManager.Check() && GconfigManager.MythicMobsEnabled) {
-		getServer().getPluginManager().registerEvents(MythicManager, this);
+		MythicManager.registerListener();
 	    }
 
 	    setPistonProtectionListener();

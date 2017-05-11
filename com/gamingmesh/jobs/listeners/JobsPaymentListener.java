@@ -835,8 +835,8 @@ public class JobsPaymentListener implements Listener {
 	    if (e.getDamager().hasMetadata("NPC"))
 		return;
 
-	if (Jobs.getGCManager().MythicMobsEnabled && Jobs.getMythicManager().MMAPI != null) {
-	    if (Jobs.getMythicManager().MMAPI.getMobAPI().isMythicMob(lVictim))
+	if (Jobs.getGCManager().MythicMobsEnabled && Jobs.getMythicManager() != null) {
+	    if (Jobs.getMythicManager().isMythicMob(lVictim))
 		return;
 	}
 

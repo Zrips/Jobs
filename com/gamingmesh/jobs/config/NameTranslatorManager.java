@@ -196,7 +196,6 @@ public class NameTranslatorManager {
 		f = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
 	    }
 
-	    Bukkit.getServer().getConsoleSender().sendMessage(lang + " " + (f.length() / 1024));
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
 
