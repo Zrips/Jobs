@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -815,6 +816,9 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
+	// make sure plugin is enabled
+	if (!this.plugin.isEnabled())
+	    return;
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
@@ -846,15 +850,16 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	}
 
-	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
-	    return;
-
 	Player pDamager = null;
 
 	// Checking if killer is player
 	if (e.getDamager() instanceof Player) {
 	    pDamager = (Player) e.getDamager();
+	    // Checking if killer is MyPet animal
+	} else if (Jobs.getMyPetManager().isMyPet(e.getDamager())) {
+	    UUID uuid = Jobs.getMyPetManager().getOwnerOfPet(e.getDamager());
+	    if (uuid != null)
+		pDamager = Bukkit.getPlayer(uuid);
 	    // Checking if killer is tamed animal
 	} else if (e.getDamager() instanceof Tameable) {
 	    Tameable t = (Tameable) e.getDamager();

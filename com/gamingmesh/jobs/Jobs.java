@@ -40,9 +40,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamingmesh.jobs.Gui.GuiManager;
+import com.gamingmesh.jobs.MyPet.MyPetManager;
 import com.gamingmesh.jobs.MythicMobs.MythicMobInterface;
 import com.gamingmesh.jobs.MythicMobs.MythicMobs2;
-import com.gamingmesh.jobs.MythicMobs.MythicMobs2Listener;
 import com.gamingmesh.jobs.MythicMobs.MythicMobs4;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
@@ -116,6 +116,7 @@ public class Jobs extends JavaPlugin {
     private static McMMOlistener McMMOlistener = null;
 
     private static MythicMobInterface MythicManager;
+    private static MyPetManager myPetManager;
 
     private static ConfigManager configManager;
     private static GeneralConfigManager GconfigManager;
@@ -162,15 +163,21 @@ public class Jobs extends JavaPlugin {
 	return PistonProtectionListener;
     }
 
+    public void setMyPetManager() {
+	myPetManager = new MyPetManager();
+    }
+
+    public static MyPetManager getMyPetManager() {
+	return myPetManager;
+    }
+
     public void setMythicManager() {
 	try {
 	    Class.forName("net.elseland.xikage.MythicMobs.API.MythicMobsAPI");
-	    Debug.D("one");
 	    MythicManager = new MythicMobs2(this);
 	} catch (ClassNotFoundException e) {
 	    try {
 		Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
-		Debug.D("two");
 		MythicManager = new MythicMobs4(this);
 	    } catch (ClassNotFoundException ex) {
 
@@ -746,6 +753,8 @@ public class Jobs extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(McMMOlistener, this);
 	    }
 
+	    setMyPetManager();
+	    
 	    setMythicManager();
 	    if (MythicManager.Check() && GconfigManager.MythicMobsEnabled) {
 		MythicManager.registerListener();

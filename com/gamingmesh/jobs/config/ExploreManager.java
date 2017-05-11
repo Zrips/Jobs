@@ -11,7 +11,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.ExploreRespond;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class ExploreManager {
 

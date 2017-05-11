@@ -757,13 +757,19 @@ public class PlayerManager {
 	if (Jobs.getMcMMOlistener().mcMMOPresent)
 	    boost.add(BoostOf.McMMO, new BoostMultiplier().add(Jobs.getMcMMOlistener().getMultiplier(player.getPlayer())));
 
-	if (ent != null && ent instanceof Tameable) {
+	if (ent != null && (ent instanceof Tameable)) {
 	    Tameable t = (Tameable) ent;
 	    if (t.isTamed() && t.getOwner() instanceof Player) {
 		Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
 		if (amount != null)
 		    boost.add(BoostOf.PetPay, new BoostMultiplier().add(amount));
 	    }
+	}
+
+	if (ent != null && Jobs.getMyPetManager().isMyPet(ent)) {
+	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
+	    if (amount != null)
+		boost.add(BoostOf.PetPay, new BoostMultiplier().add(amount));
 	}
 
 	if (victim != null && victim.hasMetadata(this.getMobSpawnerMetadata())) {

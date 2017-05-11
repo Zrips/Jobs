@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="C:/Users/Arte/Desktop/Jobs/lib/craftconomy3-3.3.1-20160221.070622-13.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Arte/Desktop/Jobs/lib/MythicMobs-4.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Arte/Desktop/Jobs/lib/MythicMobs-2.1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arte/Desktop/Jobs/lib/MyPet-2.3.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
