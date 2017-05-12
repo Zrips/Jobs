@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>Jobs</groupId>
+	<artifactId>jobs</artifactId>
+	<version>3.8.2</version>
+	<packaging>jar</packaging>
+	<name>Jobs</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<!-- Spigot -->
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>1.10.2-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- iConomy7 -->
+		<dependency>
+			<groupId>com.iCo6</groupId>
+			<artifactId>iConomy7</artifactId>
+			<version>7.0.6</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/iConomy7.0.6.jar</systemPath>
+		</dependency>
+		<!-- MyPet -->
+		<dependency>
+			<groupId>de.Keyle.MyPet</groupId>
+			<artifactId>MyPet</artifactId>
+			<version>2.3.0-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/MyPet-2.3.0-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<!-- McMMO -->
+		<dependency>
+			<groupId>com.gmail.nossr50.mcMMO</groupId>
+			<artifactId>mcMMO</artifactId>
+			<version>1.5.05-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/mcMMO-1.5.05-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<!-- Vault -->
+		<dependency>
+			<groupId>net.milkbowl.vault</groupId>
+			<artifactId>Vault</artifactId>
+			<version>1.6.6</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.bukkit</groupId>
+					<artifactId>bukkit</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bukkit</groupId>
+					<artifactId>craftbukkit</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- MythicMobs -->
+		<dependency>
+			<groupId>net.elseland.xikage</groupId>
+			<artifactId>MythicMobs</artifactId>
+			<version>2.4.5</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/MythicMobs-2.4.5.jar</systemPath>
+		</dependency>
+		<!-- MythicMobs4 -->
+		<dependency>
+			<groupId>io.lumine.xikage.mythicmobs</groupId>
+			<artifactId>MythicMobs</artifactId>
+			<version>4.1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/MythicMobs-4.1.0.jar</systemPath>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<!-- Spigot -->
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+		</repository>
+		<!-- Vault -->
+		<repository>
+			<id>vault-repo</id>
+			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+		</repository>
+			<repository>
+				<id>mcmmo-repo</id>
+				<url>http://repo.mcmmo.org/</url>
+			</repository>
+	</repositories>
+	<!-- Builds Plugin -->
+	<build>
+		<defaultGoal>clean package</defaultGoal>
+		<finalName>Jobs${project.version}</finalName>
+		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<directory>${basedir}/src/main/resources/</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<!-- Make a Jar -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>

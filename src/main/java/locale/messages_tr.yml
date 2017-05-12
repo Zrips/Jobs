@@ -1,0 +1,453 @@
+economy:
+  error:
+    nomoney: '&cÖzür dileriz, bankanizda para kalmamis!'
+limitedItem:
+  error:
+    levelup: '&cBunun için [meslek] mesleginde level atlaman lazim!'
+general:
+  info:
+    toplineseparator: '&7*********************** &6%playername% &7***********************'
+    separator: '&7*******************************************************'
+  admin:
+    error: '&cKomut uygulanirken bir hata olustu.'
+    success: '&eKomut basariyla uygulandi.'
+  error:
+    noHelpPage: '&cBu sayida bir yardim sayfasi yok!'
+    notNumber: '&eLütfen sayilari kullanin!'
+    job: '&cBöyle bir meslek bulunmamaktadir!'
+    permission: '&cBunun için yetkiniz bulunmamaktadir!'
+    noinfo: '&cBilgi bulunamadi!'
+    noinfoByPlayer: '&cSuan [%playername%] adli oyuncunun bilgisi yok!'
+    ingame: '&cBu komutu sadece oyundakiler kullanabilir!'
+    fromconsole: '&cBu komutu sadece konsoldan kullanabilirsiniz!'
+    worldisdisabled: '&cBu dünyada bu komut kullanilamaz!'
+command:
+  moneyboost:
+    help:
+      info: Tüm oyunculara para avansi verir.
+      args: '[meslek] [rate]'
+    output:
+      allreset: Tüm oyuncularin para avansi kapatildi.
+      jobsboostreset: Para avansi %jobname% meslegi için kapatildi.
+      nothingtoreset: Resetlenecek birsey yok.
+      boostalladded: Para avansi %boost% tüm mesleklere eklendi!
+      boostadded: Para avansi &e%boost% &asuan &e%jobname% &ameslegine eklendi!
+      infostats: '&c-----> &aPara avansi x%boost% aktif&c <-------'
+  pointboost:
+    help:
+      info: Tüm oyunculara puan avansi verir.
+      args: '[meslek] [rate]'
+    output:
+      allreset: Tüm puan avanslari kapatildi
+      jobsboostreset: Puan avansi %jobname% meslegi için kapatildi.
+      nothingtoreset: Resetlenecek birsey yok.
+      boostalladded: Puan avansi %boost% tüm mesleklere eklendi!
+      boostadded: Puan avansi &e%boost% &asuan &e%jobname% &ameslegine eklendi!
+      infostats: '&c-----> &aPuan avansi x%boost% aktif&c <-------'
+  expboost:
+    help:
+      info: Tüm oyunculara exp avansi verir.
+      args: '[meslek] [rate]'
+    output:
+      allreset: Tüm exp avanslari kapatildi.
+      jobsboostreset: Exp avansi %jobname% meslegi için kapatildi.
+      nothingtoreset: Resetlenecek birsey yok.
+      boostalladded: Exp avansi %boost% tüm mesleklere eklendi!
+      boostadded: Exp avansi &e%boost% &asuan &e%jobname% &ameslegine eklendi!
+      infostats: '&c-----> &aExp avansi x%boost% aktif&c <-------'
+  bonus:
+    help:
+      info: Meslek bonuslarini gösterir
+      args: '[meslek]'
+    output:
+      topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
+      permission: ' &eYetki bonusu: %money% %points% %exp%'
+      item: ' &eItem bonusu: %money% %points% %exp%'
+      global: ' &eGenell bonus: %money% %points% %exp%'
+      dynamic: ' &eDinamik ödeme bonus: %money% %points% %exp%'
+      area: ' &eAlan bonusu: %money% %points% %exp%'
+      final: ' &eFinal bonus: %money% %points% %exp%'
+  convert:
+    help:
+      info: Veri tabanini dönüstürür. Eger SQLite kullaniyorsaniz MYSQL veritabanina dönüstürebilirsiniz.
+      args: ''
+  limit:
+    help:
+      info: Mesleklerin harcama limitlerini gösterir.
+      args: ''
+    output:
+      lefttime: '&eHarcama limitlerinin resetlenmesine son: &2%hour% &esaat &2%min% &edakika
+        &2%sec% &esaniye'
+      moneylimit: '&ePara limiti: &2%money%&e/&2%totalmoney%'
+      leftexptime: '&eExp limitlerinin resetlenmesine son: &2%hour% &esaat &2%min% &edakika
+        &2%sec% &esaniye'
+      explimit: '&eExp limit: &2%exp%&e/&2%totalexp%'
+      leftpointtime: '&ePuan limitlerinin resetlenmesine son: &2%hour% &esaat &2%min%
+        &edakika &2%sec% &esaniye'
+      pointlimit: '&ePuan limit: &2%current%&e/&2%total%'
+      reachedlimit: '&4Suan para limitine ulastin!'
+      reachedlimit2: '&eLimitleri kontrol etmek için &2/jobs limit &eyazabilirsin'
+      reachedExplimit: '&4Suan exp limitine ulastin!'
+      reachedExplimit2: '&eLimitleri kontrol etmek için &2/jobs limit &eyazabilirsin'
+      reachedPointlimit: '&4Suan puan limitine ulastin!'
+      reachedPointlimit2: '&eLimitleri kontrol etmek için &2/jobs limit &eyazabilirsin'
+      notenabled: '&ePara limiti suan deaktif.'
+  help:
+    output:
+      info: '/jobs [komut] ? yazarak komut hakkinda bilgi alabilirsin.'
+      usage: 'Kullanim: %usage%'
+      title: '&e-------&e ======= &6Jobs &e======= &e-------'
+      page: '&e-----&e ====== Sayfa &6[1] &eof &6[2] &e====== &e-----'
+      prev: '&e--- <<<<< &6Önceki Sayfa &e|'
+      next: '&e|&6 Sonraki Sayfa &e>>>> ---'
+  points:
+    help:
+      info: Oyuncunun kaç puani oldugunu gösterir.
+      args: '[oyuncu]'
+    currentpoints: ' &eSuanki Puan: &6%currentpoints%'
+    totalpoints: ' &eToplam Puan: &6%totalpoints%'
+  editpoints:
+    help:
+      info: Oyuncunun puanini degistir.
+      args: '[set/add/take] [oyuncu] [miktar]'
+    output:
+      set: '&eOyuncu (&6%playername%&e) puani artik &6%amount% &eoldu!'
+      add: '&eOyuncu (&6%playername%&e) suan &6%amount% &epuan eklendi. Artik
+        &6%total% &epuani var!'
+      take: '&eOyuncu (&6%playername%&e) suan &6%amount% &epuani alindi. Suanki puani &6%total%'
+  blockinfo:
+    help:
+      info: Baktigin blogun bilgilerini gösterir.
+      args: ''
+    output:
+      name: ' &eBlok ismi: &6%blockname%'
+      id: ' &eBlok kodu: &6%blockid%'
+      data: ' &eBlok datasi: &6%blockdata%'
+      usage: ' &eKullanim: &6%first% &eveya &6%second%'
+  stats:
+    help:
+      info: Hangi meslekte ne kadar gelistigini gösterir.
+      args: '[oyuncu]'
+    error:
+      nojob: Lütfen önce bir meslege giriniz.
+    output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+  shop:
+    help:
+      info: Özel meslek marketini açar.
+      args: ''
+    info:
+      title: '&e------- &8Meslek Marketi &e-------'
+      currentPoints: '&ePuanin: &6%currentpoints%'
+      price: '&eÜcret: &6%price%'
+      reqJobs: '&eGereken Meslekler:'
+      reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
+      NoPermForItem: '&cBunu kullanmak için yetkin yok!'
+      NoPermToBuy: '&cBu item için yetkin yok'
+      NoJobReqForitem: '&cBunu kullanman için (&6%jobname%&e) mesleginin
+        (&6%joblevel%&e) leveline sahip olman gerek'
+      NoPoints: '&cYeterli puanin yok!'
+      Paid: '&eAldigin iteme karsilik verdigin ücret &6%amount%'
+  archive:
+    help:
+      info: Oyuncunun tüm meslekleri gösterilir.
+      args: '[oyuncu]'
+    error:
+      nojob: Herhangi bir meslek bulunamadi.
+    output: lvl %joblevel% (%getbackjoblevel%) %jobname%
+  give:
+    help:
+      info: Meslek marketinden item verir. Oyuncu ismi opsiyoneldir
+      args: '[oyuncu] [meslekismi] [itemismi]'
+    output:
+      notonline: '&4Oyuncu [%playername%] suan açik degil!'
+      noitem: '&4Böyle bir item bulunamadi!'
+  info:
+    help:
+      title: '&2*** &eMeslekler&2 ***'
+      info: Meslegin ne kadar ücret verdigini gösterir.
+      penalty: '&eBu meslek &c[penalty]% &ekdv keser çünkü zaten çok fazla oyuncu bu meslekte.'
+      bonus: '&eBu meslek &2[bonus]% &ebonus verir çünkü bu meslekte pek oyuncu yok.'
+      args: '[meslek] [action]'
+      actions: '&eGeçerli Aksiyonlar: &f%actions%'
+      max: ' - &emax level:&f '
+      material: '&7%material%'
+      levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &alevel)'
+      levelFrom: ' &a(dan &e%levelFrom% &alevel)'
+      levelUntil: ' &a(kadar &e%levelUntil% &alevel)'
+      money: ' &2%money%?'
+      points: ' &6%points%puan'
+      exp: ' &e%exp%xp'
+    gui:
+      pickjob: '&eMeslek edin!'
+      jobinfo: '&e[meslek] bilgi!'
+      actions: '&eYapilabilen Aksiyonlar:'
+      leftClick: '&eSol tiklayarak bilgi al'
+      rightClick: '&eSag tiklayarak katil'
+      leftSlots: '&eKalan Slotlar:&f '
+      working: '&2&nZaten alinmis'
+      max: '&eMaximum level:&f '
+      back: '&e<<< Geri'
+    output:
+      break:
+        info: Kirmak
+        none: '%jobname% bu is için para vermez.'
+      tntbreak:
+        info: TNTKirmak
+        none: '%jobname% bu is için para vermez.'
+      place:
+        info: Yerlestirmek
+        none: '%jobname% bu is için para vermez.'
+      kill:
+        info: Öldürmek
+        none: '%jobname% bu is için para vermez.'
+      mmkill:
+        info: MMKill
+        none: '%jobname% bu is için para vermez.'
+      fish:
+        info: Balik
+        none: '%jobname% bu is için para vermez.'
+      craft:
+        info: Hüner
+        none: '%jobname% bu is için para vermez.'
+      smelt:
+        info: Isitmak
+        none: '%jobname% bu is için para vermez.'
+      brew:
+        info: Iksircilik
+        none: '%jobname% bu is için para vermez.'
+      eat:
+        info: Yemek
+        none: '%jobname% bu is için para vermez.'
+      dye:
+        info: Boyama
+        none: '%jobname% bu is için para vermez.'
+      enchant:
+        info: Büyü
+        none: '%jobname% bu is için para vermez.'
+      repair:
+        info: Tamir
+        none: '%jobname% bu is için para vermez.'
+      breed:
+        info: Çiftlestirme
+        none: '%jobname% bu is için para vermez.'
+      tame:
+        info: Evcillestirme
+        none: '%jobname% bu is için para vermez.'
+      milk:
+        info: Sagma
+        none: '%jobname% bu is için para vermez.'
+      shear:
+        info: Kirpmak
+        none: '%jobname% bu is için para vermez.'
+      explore:
+        info: Kesfetme
+        none: '%jobname% bu is için para vermez.'
+      custom-kill:
+        info: Rastgele Öldürme
+        none: '%jobname% meslegi bu is için para vermez.'
+  playerinfo:
+    help:
+      info: Bir oyuncunun hangi meslekten ne kadar kazandigini gösterir.
+      args: '[oyuncu] [meslek] [komut]'
+  join:
+    help:
+      info: Seçilen meslege girer.
+      args: '[meslek]'
+    error:
+      alreadyin: Zaten %jobname% meslegindesin.
+      fullslots: Suan %jobname% meslegine katilamazsin çünkü yeterli yer yok.
+      maxjobs: Zaten maksimum meslek sayisina ulastin.
+    success: Basariyla %jobname% meslegine katildin.
+  leave:
+    help:
+      info: Mesleginden ayrilirsin.
+      args: '[meslek]'
+    success: Basariyla çiktigin meslek %jobname%.
+  leaveall:
+    help:
+      info: Tüm mesleklerden çikar.
+    error:
+      nojobs: Ayrilacak bir meslegin yok!
+    success: Basariyla tüm mesleklerden ayrildin.
+  browse:
+    help:
+      info: Katilabilecegin meslekleri gösterir.
+    error:
+      nojobs: Maksimum meslege ulastin.
+    output:
+      header: 'Meslek hakkinda bilgi verir:'
+      footer: Daha fazla bilgi için /jobs info [meslek]
+      totalWorkers: ' &7Isçi: &e[amount]'
+      penalty: ' &4Ceza: &c[amount]%'
+      bonus: ' &2Bonus: &a[amount]%'
+  fire:
+    help:
+      info: Fire the player from the job.
+      args: '[oyuncu] [meslek]'
+    error:
+      nojob: Oyuncunun %jobname% meslegi silindi.
+    output:
+      target: Meslekleri silindi %jobname%.
+  fireall:
+    help:
+      info: Oyuncunun tüm mesleklerini siler.
+      args: '[oyuncu]'
+    error:
+      nojobs: Suan hiçbir meslegi yok!
+    output:
+      target: Tüm meslekleri silindi.
+  employ:
+    help:
+      info: Oyuncuyu bir meslege sok.
+      args: '[oyuncu] [meslek]'
+    error:
+      alreadyin: Oyuncu zaten %jobname% mesleginde.
+    output:
+      target: Oyuncu basariyla %jobname% meslegine sokuldu.
+  top:
+    help:
+      info: Belirlenen bir meslege sahip en iyi 15 oyuncu gösterilir.
+      args: '[meslek]'
+    error:
+      nojob: Bu isimde bir meslek bulunamadi.
+    output:
+      topline: '&aTop&e 15 &aoyuncu &e%jobname% &amesleginde gösteriliyor'
+      list: '&e%number%&a. &e%playername% &alvl &e%level% &ave&e %exp% &aexp'
+      prev: '&e<<<<< Önceki Sayfa &2|'
+      next: '&2|&e Sonraki Sayfa >>>>'
+      show: '&2Suan &e[from] &2kadar &e[until] &2kadari gösteriliyor'
+  gtop:
+    help:
+      info: Genel olarak en yüksek meslege sahip 15 oyuncuyu gösterir.
+      args: ''
+    error:
+      nojob: Bir bilgi bulunamadi.
+    output:
+      topline: '&aTop&e 15 &aoyuncunun meslek levelleri'
+      list: '&e%number%&a. &e%playername% &alvl &e%level% &ave&e %exp% &aexp'
+      prev: '&e<<<<< Önceki Sayfa &2|'
+      next: '&2|&e Sonraki Sayfa >>>>'
+      show: '&2Suan &e[from] &2kadar &e[until] &2kadari gösteriliyor'
+  log:
+    help:
+      info: Istatistigi gösterir.
+      args: '[oyuncu]'
+    output:
+      topline: '&7************************* &6%playername% &7*************************'
+      list: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% &6money: %money% &eexp:
+        %exp%'
+      bottomline: '&7***********************************************************'
+      prev: '&e<<<<< Önceki Sayfa &2|'
+      next: '&2|&e Sonraki Sayfa >>>>'
+      nodata: '&cVeri bulunamadi'
+  glog:
+    help:
+      info: Genel istatistigi gösterir.
+      args: ''
+    output:
+      topline: '&7*********************** &6Genel Istatistik &7***********************'
+      list: '&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6money:
+        %money% &eexp: %exp%'
+      bottomline: '&7**************************************************************'
+      nodata: '&cVeri bulunamadi'
+  transfer:
+    help:
+      info: Oyuncunun meslegini degistirir.
+      args: '[oyuncu] [eskimeslek] [yenimeslek]'
+    output:
+      target: Artik %oldjobname% mesleginden %newjobname% meslegine aktarildiniz.
+  promote:
+    help:
+      info: Belirli bir miktarda belirlenen oyuncuya level verir.
+      args: '[oyuncu] [meslek] [level]'
+    output:
+      target: Tebrikler, suan %levelsgained% kadar leveli %jobname% meslegi için aldiniz.
+  demote:
+    help:
+      info: Belirli bir miktarda belirlenen oyuncunun leveli düsürülür.
+      args: '[oyuncu] [meslek] [level]'
+    output:
+      target: Maalese f%levelslost% levelini %jobname% mesleginde kaybettin.
+  grantxp:
+    help:
+      info: Belirli bir miktarda belirlenen oyuncuya exp verir.
+      args: '[oyuncu] [meslek] [xp]'
+    output:
+      target: Tebrikler, suan %xpgained% expsini %jobname% meslegi için aldiniz.
+  removexp:
+    help:
+      info: Belirli bir miktarda belirlenen oyuncunun expsini alir.
+      args: '[oyuncu] [meslek] [xp]'
+    output:
+      target: Maalesef %xplost% expsini %jobname% mesleginden kaybettin.
+  signupdate:
+    help:
+      info: Belirli bir meslegin tabelalarini manuel yeniler
+      args: '[meslekismi]'
+  reload:
+    help:
+      info: Ayarlari yeniden yükler.
+  toggle:
+    help:
+      info: Aldigin ücreti assagidaki bara yansitir.
+      args: ''
+    output:
+      turnedoff: '&4Bu özellik devre disi!'
+      paid:
+        main: '&aAldigin:'
+        money: '&e[amount] para'
+        exp: '&7[exp] exp'
+        points: '&6[points] puan'
+      'on': '&aDurum: &aAÇIK'
+      'off': '&aDurum: &4KAPALI'
+message:
+  skillup:
+    broadcast: '%playername% adli oyuncu %titlename% skilini %jobname% mesleginde kazandi.'
+    nobroadcast: Tebrikler, kazandiginiz yetenek %titlename% %jobname%.
+  levelup:
+    broadcast: '%playername% adli oyuncu %jobname% mesleginde %joblevel% leveline ulasti.'
+    nobroadcast: Tebrikler, suan %jobname% mesleginde %joblevel% levelsin.
+  cowtimer: '&eSuan ödeme alabilmen için &6%time% &esaniye beklemen gerek.'
+  blocktimer: '&eÖdeme yapabilmen için gereken süre: &3[time] !'
+  placeblocktimer: '&eYou cant place block faster than &6[time] &esec interval in
+    same place!'
+  taxes: '&3[amount] &ekadar vergi hesabiniza eklendi'
+  boostStarted: '&eMeslek avansi suan basladi!'
+  boostStoped: '&eMeslek avansi suan sona erdi!'
+  crafting:
+    fullinventory: Envanterin dolu!
+signs:
+  List: '&0[number].&8[player]&7:&4[level]'
+  SpecialList:
+    '1':
+      '1': '&b** &8Birinci &b**'
+      '2': '&9[player]'
+      '3': '&8[level] level'
+      '4': '&b************'
+    '2':
+      '1': '&b** &8Ikinci &b**'
+      '2': '&9[player]'
+      '3': '&8[level] level'
+      '4': '&b************'
+    '3':
+      '1': '&b** &8Ucuncu &b**'
+      '2': '&9[player]'
+      '3': '&8[level] level'
+      '4': '&b************'
+  cantcreate: '&4Bir tabela yaratamazsin!'
+  cantdestroy: '&4Bir tabela yok edemezsin!'
+  topline: '&2[Jobs]'
+  secondline:
+    join: '&2Katil'
+    leave: '&4Çik'
+    toggle: '&2Durum'
+    top: '&2Top'
+    browse: '&2Meslekler'
+    stats: '&2Istatistik'
+    limit: '&2Limit'
+    info: '&2Bilgi'
+    archive: '&2Arsiv'
+scoreboard:
+  topline: '&2Top &e%jobname%'
+  gtopline: '&2Genel en listesi'
+  lines: '&2%number%. &e%playername%'

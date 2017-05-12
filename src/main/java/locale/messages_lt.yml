@@ -1,0 +1,203 @@
+economy:
+  error:
+    nomoney: Atsiprašome, nacionalinis bankas nebeturi pinigu!
+command:
+  boost:
+    help:
+      info: Boosts Exp/money gain for all players
+      args: '[jobname] [rate]'
+    output:
+      allreset: All exp/money boost turned off
+      jobsboostreset: Boost for %jobname% was turned off
+      nothingtoreset: Nothing to reset
+      boostalladded: Boost of %boost% added for all jobs!
+      boostadded: Boost of &e%boost% &aadded for &e%jobname%!
+      infostats: '&c-----> &aExp/money rate x%boost% enabled&c <-------'
+  limit:
+    help:
+      info: Shows payment limits for jobs
+      args: ''
+    output:
+      lefttime: '&eLikes laikas iki nusiresetinimo: &2%hour% &evalandos &2%min% &emin &2%sec%
+        &esek'
+      moneylimit: '&ePinigu limitas: &2%money%&e/&2%totalmoney%'
+      reachedlimit: '&4You have reached money limit in given time!'
+      reachedlimit2: '&eYou can check your limit with &2/jobs limit &ecommand'
+      notenabled: '&eMoney limit is not enabled'
+  admin:
+    error: There was an error in the command.
+    success: Your command has been performed.
+  error:
+    job: The job you have selected does not exist!
+    permission: You do not have permission to do that!
+  help:
+    output:
+      info: Rasyk &2/jobs [cmd] ? &edel detalesnes informacijos.
+      usage: 'Naudojimas: %usage%'
+  stats:
+    help:
+      info: Parodyti visu i kuriuos esate isidarbine darbu informacija.
+      args: '[playername]'
+    error:
+      nojob: Prasome isidarbinti visu pirma.
+    output: 'lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+  archive:
+    help:
+      info: Shows all jobs saved in archive by user.
+      args: '[playername]'
+    error:
+      nojob: There is no jobs saved.
+    output: lvl %joblevel% (%getbackjoblevel%) %jobname%
+  info:
+    help:
+      title: '&2*** &eDarbas&2 ***'
+      info: Parodo kiek gali uzdirbti is kiekvieno darbo uz tamtikra veikla.
+      args: '[jobname] [action]'
+    output:
+      break:
+        info: Sudauzyti
+        none: '%jobname% does not get money for breaking blocks.'
+      place:
+        info: Padeti
+        none: '%jobname% does not get money for placing blocks.'
+      kill:
+        info: Uzmusti
+        none: '%jobname% does not get money for killing monsters.'
+      fish:
+        info: Suzvejoti
+        none: '%jobname% does not get money from fishing.'
+      craft:
+        info: Pagaminti
+        none: '%jobname% does not get money from crafting.'
+      smelt:
+        info: Islidyti
+        none: '%jobname% does not get money from smelting.'
+      brew:
+        info: Isvirti
+        none: '%jobname% does not get money from brewing.'
+      enchant:
+        info: Patobulinti
+        none: '%jobname% does not get money from enchanting.'
+      repair:
+        info: Sutaisyti
+        none: '%jobname% does not get money from repairing.'
+      breed:
+        info: Veisti
+        none: '%jobname% does not get money from breeding.'
+      tame:
+        info: Prijaukinti
+        none: '%jobname% does not get money from taming.'
+  playerinfo:
+    help:
+      info: Parodo kiek kitas zaidejas uzdirba is tam tikru darbu.
+      args: '[playername] [jobname] [action]'
+  join:
+    help:
+      info: Isidarbinti i pasirinkta darba.
+      args: '[jobname]'
+    error:
+      alreadyin: Jus jau esate isidarbines i %jobname%.
+      fullslots: Tu negali isidarbinti %jobname%, turi maksimalu darbu skaiciu.
+      maxjobs: Tu jau istojai i maksimaliai leistinus darbus.
+    success: Tu istojai i %jobname%.
+  leave:
+    help:
+      info: Iseiti is pasirinkto darbo.
+      args: '[jobname]'
+    success: Tu isejai is %jobname%.
+  leaveall:
+    help:
+      info: Iseiti is visu darbu.
+    error:
+      nojobs: Tu negali iseiti is darbo kol nesi isidarbines!
+    success: Tu isejai is visu darbu.
+  browse:
+    help:
+      info: Darbu sarasas i kuriuos gali istoti.
+    error:
+      nojobs: Nera darbu
+    output:
+      header: 'Tu gali isidarbinti i situos darbus:'
+      footer: Del daugiau informacijos rasyk /jobs info [JobName]
+  fire:
+    help:
+      info: Fire the player from the job.
+      args: '[playername] [jobname]'
+    error:
+      nojob: Player does not have the job %jobname%.
+    output:
+      target: Tu buvai atleistas is %jobname%.
+  fireall:
+    help:
+      info: Fire player from all their jobs.
+      args: '[playername]'
+    error:
+      nojobs: Player does not have any jobs to be fired from!
+    output:
+      target: Tu buvai atleistas is visu darbu.
+  employ:
+    help:
+      info: Employ the player to the job.
+      args: '[playername] [jobname]'
+    error:
+      alreadyin: Player is already in the job %jobname%.
+    output:
+      target: Tu buvai idarbintas i %jobname%.
+  top:
+    help:
+      info: Parodo top 10 zaidejus pagal darbo pavadinima.
+      args: '[jobname]'
+    error:
+      nojob: Nebuvo rastas joks darbas su tokiu pavadinimu.
+    output:
+      topline: '&aTop&e 10 &azaidejai pagal &e%jobname% &adarba'
+      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
+  transfer:
+    help:
+      info: Transfer a player's job from an old job to a new job.
+      args: '[playername] [oldjob] [newjob]'
+    output:
+      target: Tu buvai perkeltas is %oldjobname% i %newjobname%.
+  promote:
+    help:
+      info: Promote the player X levels in a job.
+      args: '[playername] [jobname] [levels]'
+    output:
+      target: Tu gavai %levelsgained% lygiu %jobname% darbe.
+  demote:
+    help:
+      info: Demote the player X levels in a job.
+      args: '[playername] [jobname] [levels]'
+    output:
+      target: You have been demoted %levelslost% levels in %jobname%.
+  grantxp:
+    help:
+      info: Grant the player X experience in a job.
+      args: '[playername] [jobname] [xp]'
+    output:
+      target: You have been granted %xpgained% experience in %jobname%.
+  removexp:
+    help:
+      info: Remove X experience from the player in a job.
+      args: '[playername] [jobname] [xp]'
+    output:
+      target: You have lost %xplost% experience in %jobname%.
+  reload:
+    help:
+      info: Reload configurations.
+  toggle:
+    help:
+      info: Perjungia mokejimu rodima veiksmu lenteleje.
+    output:
+      paid: '&aTau buvo sumoketa: &2[amount]'
+      'on': '&aIjungta: &aTaip'
+      'off': '&aIjungta: &4Ne'
+message:
+  skillup:
+    broadcast: '%playername% has been promoted to a %titlename% %jobname%.'
+    nobroadcast: Sveikiname, buvote paaukstintas iki %titlename% %jobname%.
+  levelup:
+    broadcast: '%playername% is now a level %joblevel% %jobname%.'
+    nobroadcast: Tu pasiekiai %joblevel% lygi %jobname% darbe.
+  crafting:
+    fullinventory: Your inventory is full!

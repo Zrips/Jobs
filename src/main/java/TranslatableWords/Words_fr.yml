@@ -1,0 +1,2170 @@
+ItemList:
+  '0':
+    MCName: air
+    Name: Air
+  '1':
+    MCName: stone
+    Name: Toutes les pierres
+  '1:0':
+    MCName: stone
+    Name: Roche
+  '1:1':
+    MCName: stone
+    Name: Granite
+  '1:2':
+    MCName: stone
+    Name: Granite poli
+  '1:3':
+    MCName: stone
+    Name: Diorite
+  '1:4':
+    MCName: stone
+    Name: Diorite polie
+  '1:5':
+    MCName: stone
+    Name: Andésite
+  '1:6':
+    MCName: stone
+    Name: Andésite polie
+  '2':
+    MCName: grass
+    Name: Herbe
+  '3':
+    MCName: dirt
+    Name: Toutes les terres
+  '3:0':
+    MCName: dirt
+    Name: Terre
+  '3:1':
+    MCName: dirt
+    Name: Terre stérile
+  '3:2':
+    MCName: dirt
+    Name: Podzol
+  '4':
+    MCName: cobblestone
+    Name: Pierre
+  '5':
+    MCName: planks
+    Name: Toutes les planches de bois
+  '5:0':
+    MCName: planks
+    Name: Planche de chêne
+  '5:1':
+    MCName: planks
+    Name: Planche de sapin
+  '5:2':
+    MCName: planks
+    Name: Planche de bouleau
+  '5:3':
+    MCName: planks
+    Name: Planche d'acajou
+  '5:4':
+    MCName: planks
+    Name: Planche d'acacia
+  '5:5':
+    MCName: planks
+    Name: Planche de chêne noir
+  '6':
+    MCName: sapling
+    Name: Toutes les pousses
+  '6:0':
+    MCName: sapling
+    Name: Pousse de chêne
+  '6:1':
+    MCName: sapling
+    Name: Pousse de sapin
+  '6:2':
+    MCName: sapling
+    Name: Pousse de bouleau
+  '6:3':
+    MCName: sapling
+    Name: Pousse d'acajou
+  '6:4':
+    MCName: sapling
+    Name: Pousse d'acacia
+  '6:5':
+    MCName: sapling
+    Name: Pousse de chêne noir
+  '7':
+    MCName: bedrock
+    Name: Bedrock
+  '8':
+    MCName: flowing_water
+    Name: Coulée d'eau
+  '9':
+    MCName: water
+    Name: Source d'eau
+  '10':
+    MCName: flowing_lava
+    Name: Coulée de lave
+  '11':
+    MCName: lava
+    Name: Source de lave
+  '12':
+    MCName: sand
+    Name: Tous les sables
+  '12:0':
+    MCName: sand
+    Name: Sable
+  '12:1':
+    MCName: sand
+    Name: Sable rouge
+  '13':
+    MCName: gravel
+    Name: Gravier
+  '14':
+    MCName: gold_ore
+    Name: Minerai d'or
+  '15':
+    MCName: iron_ore
+    Name: Minerai de fer
+  '16':
+    MCName: coal_ore
+    Name: Minerai de charbon
+  '17':
+    MCName: log
+    Name: Tous les bois
+  '17:0':
+    MCName: log
+    Name: Bois de chêne
+  '17:1':
+    MCName: log
+    Name: Bois de sapin
+  '17:2':
+    MCName: log
+    Name: Bois de bouleau
+  '17:3':
+    MCName: log
+    Name: Bois d'acajou
+  '18':
+    MCName: leaves
+    Name: Toutes les feuilles
+  '18:0':
+    MCName: leaves
+    Name: Feuilles de chêne
+  '18:1':
+    MCName: leaves
+    Name: Feuilles de sapin
+  '18:2':
+    MCName: leaves
+    Name: Feuilles de bouleau
+  '18:3':
+    MCName: leaves
+    Name: Feuille d'acajou
+  '19':
+    MCName: sponge
+    Name: Éponge
+  '19:1':
+    MCName: sponge
+    Name: Éponge mouillée
+  '20':
+    MCName: glass
+    Name: Vitre
+  '21':
+    MCName: lapis_ore
+    Name: Minerais de Lapis Lazuli
+  '22':
+    MCName: lapis_block
+    Name: Bloc de Lapis Lazuli
+  '23':
+    MCName: dispenser
+    Name: Distributeur
+  '24':
+    MCName: sandstone
+    Name: Grès
+  '24:1':
+    MCName: sandstone
+    Name: Grès scuplté
+  '24:2':
+    MCName: sandstone
+    Name: Grès poli
+  '25':
+    MCName: noteblock
+    Name: Bloc musical
+  '26':
+    MCName: bed
+    Name: Lit
+  '27':
+    MCName: golden_rail
+    Name: Rails de propulsion
+  '28':
+    MCName: detector_rail
+    Name: Rails détecteurs
+  '29':
+    MCName: sticky_piston
+    Name: Piston collant
+  '30':
+    MCName: web
+    Name: Toile d'araignée
+  '31':
+    MCName: tallgrass
+    Name: Arbuste
+  '31:1':
+    MCName: tallgrass
+    Name: Hautes herbes
+  '31:2':
+    MCName: tallgrass
+    Name: Fougère
+  '32':
+    MCName: deadbush
+    Name: Arbuste mort
+  '33':
+    MCName: piston
+    Name: Piston
+  '34':
+    MCName: piston_head
+    Name: Tête de piston
+  '35':
+    MCName: wool
+    Name: Toutes les laines
+  '35:0':
+    MCName: wool
+    Name: Laine blanche
+  '35:1':
+    MCName: wool
+    Name: Laine orange
+  '35:2':
+    MCName: wool
+    Name: Laine magenta
+  '35:3':
+    MCName: wool
+    Name: Laine bleu clair
+  '35:4':
+    MCName: wool
+    Name: Laine jaune
+  '35:5':
+    MCName: wool
+    Name: Laine vert clair
+  '35:6':
+    MCName: wool
+    Name: Laine rose
+  '35:7':
+    MCName: wool
+    Name: Laine grise
+  '35:8':
+    MCName: wool
+    Name: Laine gris clair
+  '35:9':
+    MCName: wool
+    Name: Laine cyan
+  '35:10':
+    MCName: wool
+    Name: Laine violette
+  '35:11':
+    MCName: wool
+    Name: Laine bleue
+  '35:12':
+    MCName: wool
+    Name: Laine marron
+  '35:13':
+    MCName: wool
+    Name: Laine verte
+  '35:14':
+    MCName: wool
+    Name: Laine rouge
+  '35:15':
+    MCName: wool
+    Name: Laine noire
+  '37':
+    MCName: yellow_flower
+    Name: Pissenlit
+  '38':
+    MCName: red_flower
+    Name: Toutes les fleurs
+  '38:0':
+    MCName: red_flower
+    Name: Coquelicot
+  '38:1':
+    MCName: red_flower
+    Name: Orchidée bleue
+  '38:2':
+    MCName: red_flower
+    Name: Allium
+  '38:3':
+    MCName: red_flower
+    Name: Houstonie
+  '38:4':
+    MCName: red_flower
+    Name: Tulipe rouge
+  '38:5':
+    MCName: red_flower
+    Name: Tulipe orange
+  '38:6':
+    MCName: red_flower
+    Name: Tulipe blanche
+  '38:7':
+    MCName: red_flower
+    Name: Tulipe rose
+  '38:8':
+    MCName: red_flower
+    Name: Marguerite
+  '39':
+    MCName: brown_mushroom
+    Name: Champignon marron
+  '40':
+    MCName: red_mushroom
+    Name: Champignon rouge
+  '41':
+    MCName: gold_block
+    Name: Bloc d'or
+  '42':
+    MCName: iron_block
+    Name: Bloc de fer
+  '43':
+    MCName: double_stone_slab
+    Name: Toutes les doubles dalles
+  '43:0':
+    MCName: double_stone_slab
+    Name: Double dalle en roche
+  '43:1':
+    MCName: double_stone_slab
+    Name: Double dalle en grès
+  '43:2':
+    MCName: double_stone_slab
+    Name: Double dalle en bois
+  '43:3':
+    MCName: double_stone_slab
+    Name: Double dalle en pierre
+  '43:4':
+    MCName: double_stone_slab
+    Name: Double dalle en brique
+  '43:5':
+    MCName: double_stone_slab
+    Name: Double dalle en pierre taillée
+  '43:6':
+    MCName: double_stone_slab
+    Name: Double dalle en brique du nether
+  '43:7':
+    MCName: double_stone_slab
+    Name: Double dalle en quartz
+  '44':
+    MCName: stone_slab
+    Name: Toutes les dalles
+  '44:0':
+    MCName: stone_slab
+    Name: Dalle en roche
+  '44:1':
+    MCName: stone_slab
+    Name: Dalle en grès
+  '44:2':
+    MCName: stone_slab
+    Name: Dalle en bois
+  '44:3':
+    MCName: stone_slab
+    Name: Dalle en pierre
+  '44:4':
+    MCName: stone_slab
+    Name: Dalle en brique
+  '44:5':
+    MCName: stone_slab
+    Name: Dalle en pierre taillée
+  '44:6':
+    MCName: stone_slab
+    Name: Dalle en brique du nether
+  '44:7':
+    MCName: stone_slab
+    Name: Dalle en quartz
+  '45':
+    MCName: brick_block
+    Name: Briques
+  '46':
+    MCName: tnt
+    Name: TNT
+  '47':
+    MCName: bookshelf
+    Name: Bibliothèque
+  '48':
+    MCName: mossy_cobblestone
+    Name: Pierres moussues
+  '49':
+    MCName: obsidian
+    Name: Obsidienne
+  '50':
+    MCName: torch
+    Name: Torche
+  '51':
+    MCName: fire
+    Name: Feu
+  '52':
+    MCName: mob_spawner
+    Name: Générateur de monstres
+  '53':
+    MCName: oak_stairs
+    Name: Escalier en chêne
+  '54':
+    MCName: chest
+    Name: Coffre
+  '55':
+    MCName: redstone_wire
+    Name: Cable de RedStone
+  '56':
+    MCName: diamond_ore
+    Name: Minerai de diamant
+  '57':
+    MCName: diamond_block
+    Name: Bloc de diamant
+  '58':
+    MCName: crafting_table
+    Name: Établi
+  '59':
+    MCName: wheat
+    Name: Blé
+  '60':
+    MCName: farmland
+    Name: Terre labourée
+  '61':
+    MCName: furnace
+    Name: Fourneau
+  '62':
+    MCName: lit_furnace
+    Name: Fourneau brulant
+  '63':
+    MCName: standing_sign
+    Name: Panneau sur pied
+  '64':
+    MCName: wooden_door
+    Name: Porte en bois
+  '65':
+    MCName: ladder
+    Name: Échelle
+  '66':
+    MCName: rail
+    Name: Rail
+  '67':
+    MCName: stone_stairs
+    Name: Escalier en pierre
+  '68':
+    MCName: wall_sign
+    Name: Panneau
+  '69':
+    MCName: lever
+    Name: Levier
+  '70':
+    MCName: stone_pressure_plate
+    Name: Plaque de pression en pierre
+  '71':
+    MCName: iron_door
+    Name: Porte en fer
+  '72':
+    MCName: wooden_pressure_plate
+    Name: Plaque de pression en bois
+  '73':
+    MCName: redstone_ore
+    Name: Minerais de redstone
+  '74':
+    MCName: lit_redstone_ore
+    Name: Minerai de Redstone Lumineux
+  '75':
+    MCName: unlit_redstone_torch
+    Name: Torche de redstone (off)
+  '76':
+    MCName: redstone_torch
+    Name: Torche de redstone (on)
+  '77':
+    MCName: stone_button
+    Name: Bouton en pierre
+  '78':
+    MCName: snow_layer
+    Name: Neige
+  '79':
+    MCName: ice
+    Name: Glace
+  '80':
+    MCName: snow
+    Name: Bloc de neige
+  '81':
+    MCName: cactus
+    Name: Cactus
+  '82':
+    MCName: clay
+    Name: Argile
+  '83':
+    MCName: reeds
+    Name: Canne à sucre
+  '84':
+    MCName: jukebox
+    Name: Jukebox
+  '85':
+    MCName: fence
+    Name: Barrière en chêne
+  '86':
+    MCName: pumpkin
+    Name: Citrouille
+  '87':
+    MCName: netherrack
+    Name: Roche du Nether
+  '88':
+    MCName: soul_sand
+    Name: Sable des âmes
+  '89':
+    MCName: glowstone
+    Name: Pierre lumineuse
+  '90':
+    MCName: portal
+    Name: Portail du Nether
+  '91':
+    MCName: lit_pumpkin
+    Name: Jack o'Lantern
+  '92':
+    MCName: cake
+    Name: Gâteau
+  '93':
+    MCName: unpowered_repeater
+    Name: Répéteur Coupé
+  '94':
+    MCName: powered_repeater
+    Name: Répéteur Activé
+  '95':
+    MCName: stained_glass
+    Name: Toutes les teintes de verre
+  '95:0':
+    MCName: stained_glass
+    Name: Verre blanc
+  '95:1':
+    MCName: stained_glass
+    Name: Verre orange
+  '95:2':
+    MCName: stained_glass
+    Name: Verre magenta
+  '95:3':
+    MCName: stained_glass
+    Name: Verre bleu clair
+  '95:4':
+    MCName: stained_glass
+    Name: Verre jaune
+  '95:5':
+    MCName: stained_glass
+    Name: Verre vert clair
+  '95:6':
+    MCName: stained_glass
+    Name: Verre rose
+  '95:7':
+    MCName: stained_glass
+    Name: Verre gris
+  '95:8':
+    MCName: stained_glass
+    Name: Verre gris clair
+  '95:9':
+    MCName: stained_glass
+    Name: Verre cyan
+  '95:10':
+    MCName: stained_glass
+    Name: Verre violet
+  '95:11':
+    MCName: stained_glass
+    Name: Verre bleu
+  '95:12':
+    MCName: stained_glass
+    Name: Verre marron
+  '95:13':
+    MCName: stained_glass
+    Name: Verre vert
+  '95:14':
+    MCName: stained_glass
+    Name: Verre rouge
+  '95:15':
+    MCName: stained_glass
+    Name: Verre noir
+  '96':
+    MCName: trapdoor
+    Name: Trappe en bois
+  '97':
+    MCName: monster_egg
+    Name: Roche infestée
+  '97:1':
+    MCName: monster_egg
+    Name: Pierre infestée
+  '97:2':
+    MCName: monster_egg
+    Name: Pierre taillée infestée
+  '97:3':
+    MCName: monster_egg
+    Name: Pierre taillée moussue infestée
+  '97:4':
+    MCName: monster_egg
+    Name: Pierre taillée craquelée infestée
+  '97:5':
+    MCName: monster_egg
+    Name: Pierre sculptée infestée
+  '98':
+    MCName: stonebrick
+    Name: Pierre taillée
+  '98:1':
+    MCName: stonebrick
+    Name: Pierre taillée moussue
+  '98:2':
+    MCName: stonebrick
+    Name: Pierre taillée craquelée
+  '98:3':
+    MCName: stonebrick
+    Name: Pierre taillée scupltée
+  '99':
+    MCName: brown_mushroom_block
+    Name: Champignon géant marron
+  '100':
+    MCName: red_mushroom_block
+    Name: Champignon géant rouge
+  '101':
+    MCName: iron_bars
+    Name: Lingot de fer
+  '102':
+    MCName: glass_pane
+    Name: Vitre
+  '103':
+    MCName: melon_block
+    Name: Pastèque
+  '104':
+    MCName: pumpkin_stem
+    Name: Tige de Citrouille
+  '105':
+    MCName: melon_stem
+    Name: Tige de Pastèque
+  '106':
+    MCName: vine
+    Name: Lianes
+  '107':
+    MCName: fence_gate
+    Name: Portillon en bois de chêne
+  '108':
+    MCName: brick_stairs
+    Name: Escaliers en briques
+  '109':
+    MCName: stone_brick_stairs
+    Name: Escaliers en pierre taillée
+  '110':
+    MCName: mycelium
+    Name: Mycelium
+  '111':
+    MCName: waterlily
+    Name: Nenuphar
+  '112':
+    MCName: nether_brick
+    Name: Brique du Nether
+  '113':
+    MCName: nether_brick_fence
+    Name: Barrière en briques du Nether
+  '114':
+    MCName: nether_brick_stairs
+    Name: Escaliers en briques du Nether
+  '115':
+    MCName: nether_wart
+    Name: Verrues du Nether
+  '116':
+    MCName: enchanting_table
+    Name: Table d'enchantement
+  '117':
+    MCName: brewing_stand
+    Name: Alambic
+  '118':
+    MCName: cauldron
+    Name: Chaudron
+  '119':
+    MCName: end_portal
+    Name: Portail du Néant
+  '120':
+    MCName: end_portal_frame
+    Name: Cadre du portail du Néant
+  '121':
+    MCName: end_stone
+    Name: Pierre du Néant
+  '122':
+    MCName: dragon_egg
+    Name: Oeuf de dragon
+  '123':
+    MCName: redstone_lamp
+    Name: Lampe Redstone (Éteinte)
+  '124':
+    MCName: lit_redstone_lamp
+    Name: Lampe Redstone (Allumée)
+  '125':
+    MCName: double_wooden_slab
+    Name: Toutes les doubles dalles en bois
+  '125:0':
+    MCName: double_wooden_slab
+    Name: Double dalle de bois de chêne
+  '125:1':
+    MCName: double_wooden_slab
+    Name: Double dalle de bois de  sapin
+  '125:2':
+    MCName: double_wooden_slab
+    Name: Double dalle de bois de  bouleau
+  '125:3':
+    MCName: double_wooden_slab
+    Name: Double dalle de bois de  acajou
+  '125:4':
+    MCName: double_wooden_slab
+    Name: Double dalle de bois de  acacia
+  '125:5':
+    MCName: double_wooden_slab
+    Name: Double dalle de bois de  chêne bois
+  '126':
+    MCName: wooden_slab
+    Name: Toutes les dalles en bois
+  '126:0':
+    MCName: wooden_slab
+    Name: Dalle de bois de chêne
+  '126:1':
+    MCName: wooden_slab
+    Name: Dalle de bois de sapin
+  '126:2':
+    MCName: wooden_slab
+    Name: Dalle de bois de bouleau
+  '126:3':
+    MCName: wooden_slab
+    Name: Dalle de bois d'acajou
+  '126:4':
+    MCName: wooden_slab
+    Name: Dalle de bois d'acacia
+  '126:5':
+    MCName: wooden_slab
+    Name: Dalle de bois de chêne noir
+  '127':
+    MCName: cocoa
+    Name: Cacao
+  '128':
+    MCName: sandstone_stairs
+    Name: Escaliers en grès
+  '129':
+    MCName: emerald_ore
+    Name: Minerais d'émeraude
+  '130':
+    MCName: ender_chest
+    Name: Coffre du Néant
+  '131':
+    MCName: tripwire_hook
+    Name: Crochet
+  '132':
+    MCName: tripwire_hook
+    Name: Fil de déclenchement
+  '133':
+    MCName: emerald_block
+    Name: Bloc d'émeraude
+  '134':
+    MCName: spruce_stairs
+    Name: Escaliers en bois de sapin
+  '135':
+    MCName: birch_stairs
+    Name: Escaliers en bois de bouleau
+  '136':
+    MCName: jungle_stairs
+    Name: Escaliers en bois d'acajou
+  '137':
+    MCName: command_block
+    Name: Bloc de commande
+  '138':
+    MCName: beacon
+    Name: Balise
+  '139':
+    MCName: cobblestone_wall
+    Name: Muret
+  '139:1':
+    MCName: cobblestone_wall
+    Name: Muret de pierres moussues
+  '140':
+    MCName: flower_pot
+    Name: Pot de fleurs
+  '141':
+    MCName: carrots
+    Name: Carrotes
+  '142':
+    MCName: potatoes
+    Name: Pomme de terre
+  '143':
+    MCName: wooden_button
+    Name: Bouton en bois
+  '144':
+    MCName: skull
+    Name: Tête de monstre
+  '145':
+    MCName: anvil
+    Name: Enclume
+  '146':
+    MCName: trapped_chest
+    Name: Coffre piégé
+  '147':
+    MCName: light_weighted_pressure_plate
+    Name: Plaque de pression pondérée (léger)
+  '148':
+    MCName: heavy_weighted_pressure_plate
+    Name: Plaque de pression pondérée (lourd)
+  '149':
+    MCName: unpowered_comparator
+    Name: Comparateur (inactif)
+  '150':
+    MCName: powered_comparator
+    Name: Comparateur(actif)
+  '151':
+    MCName: daylight_detector
+    Name: Capteur de lumière
+  '152':
+    MCName: redstone_block
+    Name: Bloc de redstone
+  '153':
+    MCName: quartz_ore
+    Name: Minerai de quartz du Nether
+  '154':
+    MCName: hopper
+    Name: Entonnoir
+  '155':
+    MCName: quartz_block
+    Name: Bloc de quartz
+  '155:1':
+    MCName: quartz_block
+    Name: Bloc de quartz scuplté
+  '155:2':
+    MCName: quartz_block
+    Name: Bloc de quartz rayé
+  '156':
+    MCName: quartz_stairs
+    Name: Escaliers en quartz
+  '157':
+    MCName: activator_rail
+    Name: Rail activateur
+  '158':
+    MCName: dropper
+    Name: Dropper
+  '159':
+    MCName: stained_hardened_clay
+    Name: Toutes les teintes d'argile durcie
+  '159:0':
+    MCName: stained_hardened_clay
+    Name: Argile durcie blanche
+  '159:1':
+    MCName: stained_hardened_clay
+    Name: Argile durcie orange
+  '159:2':
+    MCName: stained_hardened_clay
+    Name: Argile durcie magenta
+  '159:3':
+    MCName: stained_hardened_clay
+    Name: Argile durcie bleu clair
+  '159:4':
+    MCName: stained_hardened_clay
+    Name: Argile durcie jaune
+  '159:5':
+    MCName: stained_hardened_clay
+    Name: Argile durcie vert clair
+  '159:6':
+    MCName: stained_hardened_clay
+    Name: Argile durcie rose
+  '159:7':
+    MCName: stained_hardened_clay
+    Name: Argile durcie grise
+  '159:8':
+    MCName: stained_hardened_clay
+    Name: Argile durcie gris clair
+  '159:9':
+    MCName: stained_hardened_clay
+    Name: Argile durcie cyan
+  '159:10':
+    MCName: stained_hardened_clay
+    Name: Argile durcie violette
+  '159:11':
+    MCName: stained_hardened_clay
+    Name: Argile durcie bleue
+  '159:12':
+    MCName: stained_hardened_clay
+    Name: Argile durcie marron
+  '159:13':
+    MCName: stained_hardened_clay
+    Name: Argile durcie verte
+  '159:14':
+    MCName: stained_hardened_clay
+    Name: Argile durcie rouge
+  '159:15':
+    MCName: stained_hardened_clay
+    Name: Argile durcie noire
+  '160':
+    MCName: stained_glass_pane
+    Name: Toutes les teintes de vitre
+  '160:0':
+    MCName: stained_glass_pane
+    Name: Vitre blanche
+  '160:1':
+    MCName: stained_glass_pane
+    Name: Vitre orange
+  '160:2':
+    MCName: stained_glass_pane
+    Name: Vitre magenta
+  '160:3':
+    MCName: stained_glass_pane
+    Name: Vitre bleu clair
+  '160:4':
+    MCName: stained_glass_pane
+    Name: Vitre jaune
+  '160:5':
+    MCName: stained_glass_pane
+    Name: Vitre vert clair
+  '160:6':
+    MCName: stained_glass_pane
+    Name: Vitre rose
+  '160:7':
+    MCName: stained_glass_pane
+    Name: Vitre grise
+  '160:8':
+    MCName: stained_glass_pane
+    Name: Vitre gris clair
+  '160:9':
+    MCName: stained_glass_pane
+    Name: Vitre cyan
+  '160:10':
+    MCName: stained_glass_pane
+    Name: Vitre violette
+  '160:11':
+    MCName: stained_glass_pane
+    Name: Vitre bleue
+  '160:12':
+    MCName: stained_glass_pane
+    Name: Vitre marron
+  '160:13':
+    MCName: stained_glass_pane
+    Name: Vitre verte
+  '160:14':
+    MCName: stained_glass_pane
+    Name: Vitre rouge
+  '160:15':
+    MCName: stained_glass_pane
+    Name: Vitre noire
+  '161':
+    MCName: leaves2
+    Name: Feuilles d'acacia ou de chêne noir
+  '161:0':
+    MCName: leaves2
+    Name: Feuilles d'acacia
+  '161:1':
+    MCName: leaves2
+    Name: Feuilles de chêne noir
+  '162':
+    MCName: logs2
+    Name: Bois d'acacia ou de chêne noir
+  '162:0':
+    MCName: logs2
+    Name: Bois d'acacia
+  '162:1':
+    MCName: logs2
+    Name: Bois de chêne n oir
+  '163':
+    MCName: acacia_stairs
+    Name: Escaliers en bois d'acacia
+  '164':
+    MCName: dark_oak_stairs
+    Name: Escaliers en bois de chêne noir
+  '165':
+    MCName: slime
+    Name: Bloc de Slime
+  '166':
+    MCName: barrier
+    Name: Barrier
+  '167':
+    MCName: iron_trapdoor
+    Name: Trappe en fer
+  '168':
+    MCName: prismarine
+    Name: Toutes les prismarines
+  '168:0':
+    MCName: prismarine
+    Name: Prismarine
+  '168:1':
+    MCName: prismarine
+    Name: Briques de Prismarine
+  '168:2':
+    MCName: prismarine
+    Name: Prismarine Noire
+  '169':
+    MCName: sea_lantern
+    Name: Lanterne Marine
+  '170':
+    MCName: hay_block
+    Name: Bloc de paille
+  '171':
+    MCName: carpet
+    Name: Tous les tapis
+  '171:0':
+    MCName: carpet
+    Name: Tapis blanc
+  '171:1':
+    MCName: carpet
+    Name: Tapis orange
+  '171:2':
+    MCName: carpet
+    Name: Tapis magenta
+  '171:3':
+    MCName: carpet
+    Name: Tapis bleu clair
+  '171:4':
+    MCName: carpet
+    Name: Tapis jaune
+  '171:5':
+    MCName: carpet
+    Name: Tapis vert clair
+  '171:6':
+    MCName: carpet
+    Name: Tapis rose
+  '171:7':
+    MCName: carpet
+    Name: Tapis gris
+  '171:8':
+    MCName: carpet
+    Name: Tapis gris clair
+  '171:9':
+    MCName: carpet
+    Name: Tapis cyan
+  '171:10':
+    MCName: carpet
+    Name: Tapis violet
+  '171:11':
+    MCName: carpet
+    Name: Tapis bleu
+  '171:12':
+    MCName: carpet
+    Name: Tapis marron
+  '171:13':
+    MCName: carpet
+    Name: Tapis vert
+  '171:14':
+    MCName: carpet
+    Name: Tapis rouge
+  '171:15':
+    MCName: carpet
+    Name: Tapis noir
+  '172':
+    MCName: hardened_clay
+    Name: Argile durcie
+  '173':
+    MCName: coal_block
+    Name: Bloc de charbon
+  '174':
+    MCName: packed_ice
+    Name: Glace compactée
+  '175':
+    MCName: double_plant
+    Name: Toutes les fleurs de grande taille
+  '175:0':
+    MCName: double_plant
+    Name: Tournesol
+  '175:1':
+    MCName: double_plant
+    Name: Lilas
+  '175:2':
+    MCName: double_plant
+    Name: Très hautes herbes
+  '175:3':
+    MCName: double_plant
+    Name: Grande fougère
+  '175:4':
+    MCName: double_plant
+    Name: Rosier
+  '175:5':
+    MCName: double_plant
+    Name: Pivoine
+  '176':
+    MCName: standing_banner
+    Name: Bannière sur pied
+  '177':
+    MCName: wall_banner
+    Name: Bannière sur un mur
+  '178':
+    MCName: daylight_detector_inverted
+    Name: Capteur nocturne
+  '179':
+    MCName: red_sandstone
+    Name: Grès rouge
+  '179:1':
+    MCName: red_sandstone
+    Name: Grès rouge sculpté
+  '179:2':
+    MCName: red_sandstone
+    Name: Grès rouge poli
+  '180':
+    MCName: red_sandstone_stairs
+    Name: Escaliers en grès rouge
+  '181':
+    MCName: stone_slab2
+    Name: Double dalle en grès rouge
+  '182':
+    MCName: double_stone_slab2
+    Name: Dalle en grès rouge
+  '183':
+    MCName: spruce_fence_gate
+    Name: Portillon en bois de sapin
+  '184':
+    MCName: birch_fence_gate
+    Name: Portillon en bois de bouleau
+  '185':
+    MCName: jungle_fence_gate
+    Name: Portillon en bois d'acajou
+  '186':
+    MCName: dark_oak_fence_gate
+    Name: Portillon en bois de chêne noir
+  '187':
+    MCName: acacia_fence_gate
+    Name: Portillon en bois d'acacia
+  '188':
+    MCName: spruce_fence
+    Name: Barrière en bois de sapin
+  '189':
+    MCName: birch_fence
+    Name: Barrière en bois de bouleau
+  '190':
+    MCName: jungle_fence
+    Name: Barrière en bois d'acajou
+  '191':
+    MCName: dark_oak_fence
+    Name: Barrière en bois de chêne noir
+  '192':
+    MCName: acacia_fence
+    Name: Barrière en bois d'acacia
+  '193':
+    MCName: spruce_door
+    Name: Porte en bois de sapin
+  '194':
+    MCName: birch_door
+    Name: Porte en bois de bouleau
+  '195':
+    MCName: jungle_door
+    Name: Porte en bois d'acajou
+  '196':
+    MCName: acacia_door
+    Name: Porte en bois d'acacia
+  '197':
+    MCName: dark_oak_door
+    Name: Porte en bois de chêne noir
+  '198':
+    MCName: end_rod
+    Name: Barre de l'End
+  '199':
+    MCName: chorus_plant
+    Name: Chorus
+  '200':
+    MCName: chorus_flower
+    Name: Fleur de Chorus
+  '201':
+    MCName: purpur_block
+    Name: Bloc Pourpre
+  '202':
+    MCName: purpur_pillar
+    Name: Pillier Pourpre
+  '203':
+    MCName: purpur_stairs
+    Name: Escalier Pourpre
+  '204':
+    MCName: purpur_double_slab
+    Name: Double Dalle Pourpre
+  '205':
+    MCName: purpur_slab
+    Name: Dalle Pourpre
+  '206':
+    MCName: end_bricks
+    Name: Brique de Roche de l'End
+  '207':
+    MCName: beetroots
+    Name: Plan de Betteraves
+  '208':
+    MCName: grass_path
+    Name: Chemin d'Herbe
+  '209':
+    MCName: end_gateway
+    Name: Passerelle du Néant
+  '212':
+    MCName: frosted_ice
+    Name: Glace Gelée
+  '256':
+    MCName: iron_shovel
+    Name: Pelle en fer
+  '257':
+    MCName: iron_pickaxe
+    Name: Pioche en fer
+  '258':
+    MCName: iron_axe
+    Name: Hache en fer
+  '259':
+    MCName: flint_and_steel
+    Name: Briquet
+  '260':
+    MCName: apple
+    Name: Pomme
+  '261':
+    MCName: bow
+    Name: Arc
+  '262':
+    MCName: arrow
+    Name: Flèche
+  '263':
+    MCName: coal
+    Name: Charbon
+  '263:1':
+    MCName: coal
+    Name: Charbon de bois
+  '264':
+    MCName: diamond
+    Name: Diamant
+  '265':
+    MCName: iron_ingot
+    Name: Lingot de fer
+  '266':
+    MCName: gold_ingot
+    Name: Lingot d'or
+  '267':
+    MCName: iron_sword
+    Name: Épée en fer
+  '268':
+    MCName: wooden_sword
+    Name: Épée en bois
+  '269':
+    MCName: wooden_shovel
+    Name: Pelle en bois
+  '270':
+    MCName: wooden_pickaxe
+    Name: Pioche en bois
+  '271':
+    MCName: wooden_axe
+    Name: Hache en bois
+  '272':
+    MCName: stone_sword
+    Name: Épée en pierre
+  '273':
+    MCName: stone_shovel
+    Name: Pelle en pierre
+  '274':
+    MCName: stone_pickaxe
+    Name: Pioche en pierre
+  '275':
+    MCName: stone_axe
+    Name: Hache en pierre
+  '276':
+    MCName: diamond_sword
+    Name: Épée en diamant
+  '277':
+    MCName: diamond_shovel
+    Name: Pelle en diamant
+  '278':
+    MCName: diamond_pickaxe
+    Name: Pioche en diamant
+  '279':
+    MCName: diamond_axe
+    Name: Hache en diamant
+  '280':
+    MCName: stick
+    Name: Baton
+  '281':
+    MCName: bowl
+    Name: Bol
+  '282':
+    MCName: mushroom_stew
+    Name: Soupe de champignons
+  '283':
+    MCName: golden_sword
+    Name: Épée en or
+  '284':
+    MCName: golden_shovel
+    Name: Pelle en or
+  '285':
+    MCName: golden_pickaxe
+    Name: Pioche en or
+  '286':
+    MCName: golden_axe
+    Name: Hache en or
+  '287':
+    MCName: string
+    Name: Ficelle
+  '288':
+    MCName: feather
+    Name: Plume
+  '289':
+    MCName: gunpowder
+    Name: Poudre à canon
+  '290':
+    MCName: wooden_hoe
+    Name: Houe en bois
+  '291':
+    MCName: stone_hoe
+    Name: Houe en pierre
+  '292':
+    MCName: iron_hoe
+    Name: Houe en fer
+  '293':
+    MCName: diamond_hoe
+    Name: Houe en diamant
+  '294':
+    MCName: golden_hoe
+    Name: Houe en or
+  '295':
+    MCName: wheat_seeds
+    Name: Graine de blé
+  '296':
+    MCName: wheat
+    Name: Blé
+  '297':
+    MCName: bread
+    Name: Pain
+  '298':
+    MCName: leather_helmet
+    Name: Casque en cuir
+  '299':
+    MCName: leather_chestplate
+    Name: Tunique en cuir
+  '300':
+    MCName: leather_leggings
+    Name: Pantalon en cuir
+  '301':
+    MCName: leather_boots
+    Name: Botte en cuir
+  '302':
+    MCName: chainmail_helmet
+    Name: Casque en mailles
+  '303':
+    MCName: chainmail_chestplate
+    Name: Plastron en mailles
+  '304':
+    MCName: chainmail_leggings
+    Name: Jambière en mailles
+  '305':
+    MCName: chainmail_boots
+    Name: Botte en mailles
+  '306':
+    MCName: iron_helmet
+    Name: Casque en fer
+  '307':
+    MCName: iron_chestplate
+    Name: Plastron en fer
+  '308':
+    MCName: iron_leggings
+    Name: Jambière en fer
+  '309':
+    MCName: iron_boots
+    Name: Botte en fer
+  '310':
+    MCName: diamond_helmet
+    Name: Casque en diamant
+  '311':
+    MCName: diamond_chestplate
+    Name: Plastron en diamant
+  '312':
+    MCName: diamond_leggings
+    Name: Jambière en diamant
+  '313':
+    MCName: diamond_boots
+    Name: Botte en diamant
+  '314':
+    MCName: golden_helmet
+    Name: Casque en or
+  '315':
+    MCName: golden_chestplate
+    Name: Plastron en or
+  '316':
+    MCName: golden_leggings
+    Name: Jambière en or
+  '317':
+    MCName: golden_boots
+    Name: Botte en or
+  '318':
+    MCName: flint_and_steel
+    Name: Silex
+  '319':
+    MCName: porkchop
+    Name: Côtelette de porc crue
+  '320':
+    MCName: cooked_porkchop
+    Name: Côtelette de porc cuite
+  '321':
+    MCName: painting
+    Name: Tableau
+  '322':
+    MCName: golden_apple
+    Name: Pomme dorée
+  '322:1':
+    MCName: golden_apple
+    Name: Pomme de Notch
+  '323':
+    MCName: sign
+    Name: Panneau
+  '324':
+    MCName: wooden_door
+    Name: Porte en bois
+  '325':
+    MCName: bucket
+    Name: Seau
+  '326':
+    MCName: water_bucket
+    Name: Seau d'eau
+  '327':
+    MCName: lava_bucket
+    Name: Seau de lave
+  '328':
+    MCName: minecart
+    Name: Wagonnet
+  '329':
+    MCName: saddle
+    Name: Selle
+  '330':
+    MCName: iron_door
+    Name: Porte en fer
+  '331':
+    MCName: redstone
+    Name: Redstone
+  '332':
+    MCName: snowball
+    Name: Boule de neige
+  '333':
+    MCName: boat
+    Name: Bateau
+  '334':
+    MCName: leather
+    Name: Cuir
+  '335':
+    MCName: milk_bucket
+    Name: Seau de lait
+  '336':
+    MCName: brick
+    Name: Brique
+  '337':
+    MCName: clay_ball
+    Name: Boule d'argile
+  '338':
+    MCName: reeds
+    Name: Canne à sucre
+  '339':
+    MCName: paper
+    Name: Papier
+  '340':
+    MCName: book
+    Name: Livre
+  '341':
+    MCName: slime_ball
+    Name: Boule de slime
+  '342':
+    MCName: chest_minecart
+    Name: Wagonnet de stockage
+  '343':
+    MCName: furnace_minecart
+    Name: Wagonnet motorisé
+  '344':
+    MCName: egg
+    Name: Oeuf
+  '345':
+    MCName: compass
+    Name: Boussole
+  '346':
+    MCName: fishing_rod
+    Name: Canne à pêche
+  '347':
+    MCName: clock
+    Name: Montre
+  '348':
+    MCName: glowstone_dust
+    Name: Poudre de pierre lumineuse
+  '349':
+    MCName: fish
+    Name: Poisson cru
+  '349:1':
+    MCName: fish
+    Name: Saumon cru
+  '349:2':
+    MCName: fish
+    Name: Poisson-clown
+  '349:3':
+    MCName: fish
+    Name: Poisson-globe
+  '350':
+    MCName: cooked_fish
+    Name: Poisson cuit
+  '350:1':
+    MCName: cooked_fish
+    Name: Saumon cuit
+  '351':
+    MCName: dye
+    Name: Toutes les teintures
+  '351:0':
+    MCName: dye
+    Name: Poche d'encre
+  '351:1':
+    MCName: dye
+    Name: Rouge de rose
+  '351:2':
+    MCName: dye
+    Name: Vert de cactus
+  '351:3':
+    MCName: dye
+    Name: Fèves de cacao
+  '351:4':
+    MCName: dye
+    Name: Lapis Lazuli
+  '351:5':
+    MCName: dye
+    Name: Teinture violette
+  '351:6':
+    MCName: dye
+    Name: Teinture cyan
+  '351:7':
+    MCName: dye
+    Name: Teinture gris clair
+  '351:8':
+    MCName: dye
+    Name: Teinture grise
+  '351:9':
+    MCName: dye
+    Name: Teinture rose
+  '351:10':
+    MCName: dye
+    Name: Teinture vert clair
+  '351:11':
+    MCName: dye
+    Name: Jaune pissenlit
+  '351:12':
+    MCName: dye
+    Name: Teinture bleu clair
+  '351:13':
+    MCName: dye
+    Name: Teinture magenta
+  '351:14':
+    MCName: dye
+    Name: Teinture orange
+  '351:15':
+    MCName: dye
+    Name: Poudre d'os
+  '352':
+    MCName: bone
+    Name: Os
+  '353':
+    MCName: sugar
+    Name: Sucre
+  '354':
+    MCName: cake
+    Name: Gâteau
+  '355':
+    MCName: bed
+    Name: Lit
+  '356':
+    MCName: repeater
+    Name: Répéteur
+  '357':
+    MCName: cookie
+    Name: Cookie
+  '358':
+    MCName: filled_map
+    Name: Carte
+  '359':
+    MCName: shears
+    Name: Cisailles
+  '360':
+    MCName: melon
+    Name: Pastèque
+  '361':
+    MCName: pumpkin_seeds
+    Name: Graine de citrouille
+  '362':
+    MCName: melon_seeds
+    Name: Graine de pastèque
+  '363':
+    MCName: beef
+    Name: Boeuf cru
+  '364':
+    MCName: cooked_beef
+    Name: Steak
+  '365':
+    MCName: chicken
+    Name: Poulet cru
+  '366':
+    MCName: cooked_chicken
+    Name: Poulet rôti
+  '367':
+    MCName: rotten_flesh
+    Name: Chair putréfiée
+  '368':
+    MCName: ender_pearl
+    Name: Perle du Néant
+  '369':
+    MCName: blaze_rod
+    Name: Bâton de Blaze
+  '370':
+    MCName: ghast_tear
+    Name: Larme de Ghast
+  '371':
+    MCName: gold_nugget
+    Name: Pépite d'or
+  '372':
+    MCName: nether_wart
+    Name: Verrues du Nether
+  '373':
+    MCName: potion
+    Name: Potion
+  '374':
+    MCName: glass_bottle
+    Name: Fiole
+  '375':
+    MCName: spider_eye
+    Name: Oeil d'araignée
+  '376':
+    MCName: fermented_spider_eye
+    Name: Oeil d'araignée fermenté
+  '377':
+    MCName: blaze_powder
+    Name: Poudre de Blaze
+  '378':
+    MCName: magma_cream
+    Name: Crème de magma
+  '379':
+    MCName: brewing_stand
+    Name: Alambic
+  '380':
+    MCName: cauldron
+    Name: Chaudron
+  '381':
+    MCName: ender_eye
+    Name: Oeil du Néant
+  '382':
+    MCName: speckled_melon
+    Name: Pastèque scintillante
+  '383:50':
+    MCName: spawn_egg
+    Name: Oeuf de Creeper
+  '383:51':
+    MCName: spawn_egg
+    Name: Oeuf de Squelette
+  '383:52':
+    MCName: spawn_egg
+    Name: Oeuf d'araignée
+  '383:54':
+    MCName: spawn_egg
+    Name: Oeuf de Zombie
+  '383:55':
+    MCName: spawn_egg
+    Name: Oeuf de Slime
+  '383:56':
+    MCName: spawn_egg
+    Name: Oeuf de Ghast
+  '383:57':
+    MCName: spawn_egg
+    Name: Oeuf de Cochon Zombie
+  '383:58':
+    MCName: spawn_egg
+    Name: Oeuf d'Enderman
+  '383:59':
+    MCName: spawn_egg
+    Name: Oeuf d'Araignée bleu
+  383:60:
+    MCName: spawn_egg
+    Name: Oeuf de Poisson d'argent
+  383:61:
+    MCName: spawn_egg
+    Name: Oeuf de Blaze
+  383:62:
+    MCName: spawn_egg
+    Name: Oeuf de Cube magmatique
+  383:65:
+    MCName: spawn_egg
+    Name: Oeuf de Chauve Souris
+  383:66:
+    MCName: spawn_egg
+    Name: Oeuf de Sorcière
+  383:67:
+    MCName: spawn_egg
+    Name: Oeuf d'Endermite
+  383:68:
+    MCName: spawn_egg
+    Name: Oeuf de Gardien
+  383:90:
+    MCName: spawn_egg
+    Name: Oeuf de Cochon
+  383:91:
+    MCName: spawn_egg
+    Name: Oeuf de Mouton
+  383:92:
+    MCName: spawn_egg
+    Name: Oeuf de Vache
+  383:93:
+    MCName: spawn_egg
+    Name: Oeuf de Poule
+  383:94:
+    MCName: spawn_egg
+    Name: Oeuf de Poulpe
+  383:95:
+    MCName: spawn_egg
+    Name: Oeuf de Loup
+  383:96:
+    MCName: spawn_egg
+    Name: Oeuf de Champimeuh
+  383:98:
+    MCName: spawn_egg
+    Name: Oeuf d'Ocelot
+  383:100:
+    MCName: spawn_egg
+    Name: Oeuf de Cheval
+  383:101:
+    MCName: spawn_egg
+    Name: Oeuf de Lapin
+  383:120:
+    MCName: spawn_egg
+    Name: Oeuf de Villageois
+  '384':
+    MCName: experience_bottle
+    Name: Fiole d'expérience
+  '385':
+    MCName: fire_charge
+    Name: Boule de feu
+  '386':
+    MCName: writable_book
+    Name: Livre et plume
+  '387':
+    MCName: written_book
+    Name: Livre écrit
+  '388':
+    MCName: emerald
+    Name: Emeraude
+  '389':
+    MCName: item_frame
+    Name: Cadre
+  '390':
+    MCName: flower_pot
+    Name: Pot de fleurs
+  '391':
+    MCName: carrot
+    Name: Carrote
+  '392':
+    MCName: potato
+    Name: Pomme de Terre
+  '393':
+    MCName: baked_potato
+    Name: Pomme de terre cuite
+  '394':
+    MCName: poisonous_potato
+    Name: Pomme de terre empoisonnée
+  '395':
+    MCName: map
+    Name: Carte vierge
+  '396':
+    MCName: golden_carrot
+    Name: Carotte en or
+  '397':
+    MCName: skull
+    Name: Crâne de squelette
+  '397:1':
+    MCName: skull
+    Name: Crâne de Wither squelette
+  '397:2':
+    MCName: skull
+    Name: Tête de zombie
+  '397:3':
+    MCName: skull
+    Name: Tête
+  '397:4':
+    MCName: skull
+    Name: Tête de Creeper
+  '398':
+    MCName: carrot_on_a_stick
+    Name: Carotte sur un bâton
+  '399':
+    MCName: nether_star
+    Name: Étoile du Nether
+  '400':
+    MCName: pumpkin_pie
+    Name: Tarte à la citrouille
+  '401':
+    MCName: fireworks
+    Name: Fusée de feu d'artifice
+  '402':
+    MCName: firework_charge
+    Name: Étoile de feu d'artifice
+  '403':
+    MCName: enchanted_book
+    Name: Livre enchanté
+  '404':
+    MCName: comparator
+    Name: Comparateur
+  '405':
+    MCName: netherbrick
+    Name: Brique du Nether
+  '406':
+    MCName: quartz
+    Name: Quartz du Nether
+  '407':
+    MCName: tnt_minecart
+    Name: Wagonnet à TNT
+  '408':
+    MCName: hopper_minecart
+    Name: Wagonnet à entonnoir
+  '409':
+    MCName: prismarine_shard
+    Name: Éclat de prismarin
+  '410':
+    MCName: prismarine_crystals
+    Name: Cristaux de prismarin
+  '411':
+    MCName: rabbit
+    Name: Lapin cru
+  '412':
+    MCName: cooked_rabbit
+    Name: Lapin cuit
+  '413':
+    MCName: rabbit_stew
+    Name: Ragoût de lapin
+  '414':
+    MCName: rabbit_foot
+    Name: Patte de lapin
+  '415':
+    MCName: rabbit_hide
+    Name: Peau de lapin
+  '416':
+    MCName: armor_stand
+    Name: Stand armure
+  '417':
+    MCName: iron_horse_armor
+    Name: Armure pour cheval en fer
+  '418':
+    MCName: golden_horse_armor
+    Name: Armure pour cheval en or
+  '419':
+    MCName: diamond_horse_armor
+    Name: Armure pour cheval en diamant
+  '420':
+    MCName: lead
+    Name: Laisse
+  '421':
+    MCName: name_tag
+    Name: Étiquette
+  '422':
+    MCName: command_block_minecart
+    Name: Wagonnet avec bloc de commande
+  '423':
+    MCName: mutton
+    Name: Mouton cru
+  '424':
+    MCName: cooked_mutton
+    Name: Mouton cuit
+  '425':
+    MCName: banner
+    Name: Bannière
+  '426':
+    MCName: end_crystal
+    Name: Cristal du Néant
+  '427':
+    MCName: spruce_door
+    Name: Porte en bois de sapin
+  '428':
+    MCName: birch_door
+    Name: Porte en bois de bouleau
+  '429':
+    MCName: jungle_door
+    Name: Porte en bois d'acajou
+  '430':
+    MCName: acacia_door
+    Name: Porte en bois d'acacia
+  '431':
+    MCName: dark_oak_door
+    Name: Porte en bois de chêne
+  '432':
+    MCName: chorus_fruit
+    Name: Fruit de Chorus
+  '433':
+    MCName: chorus_fruit_popped
+    Name: Fruit de Chorus Éclaté
+  '434':
+    MCName: beetroot
+    Name: Betterave
+  '435':
+    MCName: beetroot_seeds
+    Name: Graine de Betterave
+  '436':
+    MCName: beetroot_soup
+    Name: Soupe de Betterave
+  '437':
+    MCName: dragon_breath
+    Name: Souffle du Dragon
+  '439':
+    MCName: spectral_arrow
+    Name: Flèche Spectrale
+  '440':
+    MCName: tipped_arrow
+    Name: Flèches spéciales
+  '441':
+    MCName: lingering_potion
+    Name: Potion Persistante
+  '442':
+    MCName: shield
+    Name: Bouclier
+  '443':
+    MCName: elytra
+    Name: Elytra
+  '2256':
+    MCName: record_13
+    Name: Disque 13
+  '2257':
+    MCName: record_cat
+    Name: Disque Cat
+  '2258':
+    MCName: record_blocks
+    Name: Disque Blocks
+  '2259':
+    MCName: record_chirp
+    Name: Disque Chirp
+  '2260':
+    MCName: record_far
+    Name: Disque Far
+  '2261':
+    MCName: record_mall
+    Name: Disque Mall
+  '2262':
+    MCName: record_mellohi
+    Name: Disque Mellohi
+  '2263':
+    MCName: record_stal
+    Name: Disque Stal
+  '2264':
+    MCName: record_strad
+    Name: Disque Strad
+  '2265':
+    MCName: record_ward
+    Name: Disque Ward
+  '2266':
+    MCName: record_11
+    Name: Disque 11
+  '2267':
+    MCName: record_wait
+    Name: Disque Wait
+EntityList:
+  '-1':
+    MCName: Player
+    Name: Joueur
+  '50':
+    MCName: Creeper
+    Name: Creeper
+  '51':
+    MCName: Skeleton
+    Name: Squelette
+  '51:1':
+    MCName: Skeleton
+    Name: Wither Squelette
+  '52':
+    MCName: Spider
+    Name: Araignée
+  '53':
+    MCName: Giant
+    Name: Géant
+  '54':
+    MCName: Zombie
+    Name: Zombie
+  '54:1':
+    MCName: Zombie
+    Name: Zombie Villageois
+  '55':
+    MCName: Slime
+    Name: Slime
+  '56':
+    MCName: Ghast
+    Name: Ghast
+  '57':
+    MCName: PigZombie
+    Name: Cochon zombie
+  '58':
+    MCName: Enderman
+    Name: Enderman
+  '59':
+    MCName: CaveSpider
+    Name: Araignée bleu
+  '60':
+    MCName: Silverfish
+    Name: Poisson d'argent
+  '61':
+    MCName: Blaze
+    Name: Blaze
+  '62':
+    MCName: LavaSlime
+    Name: Cube de magma
+  '63':
+    MCName: EnderDragon
+    Name: EnderDragon
+  '64':
+    MCName: WitherBoss
+    Name: WitherBoss
+  '65':
+    MCName: Bat
+    Name: Chauve souris
+  '66':
+    MCName: Witch
+    Name: Sorcière
+  '67':
+    MCName: Endermite
+    Name: Endermite
+  '68':
+    MCName: Guardian
+    Name: Gardien
+  '68:1':
+    MCName: Guardian
+    Name: Elder Gardien
+  '69':
+    MCName: Shulker
+    Name: Shulker
+  '90':
+    MCName: Pig
+    Name: Cochon
+  '91':
+    MCName: Sheep
+    Name: Mouton
+  '92':
+    MCName: Cow
+    Name: Vache
+  '93':
+    MCName: Chicken
+    Name: Poule
+  '94':
+    MCName: Squid
+    Name: Poulpe
+  '95':
+    MCName: Wolf
+    Name: Loup
+  '96':
+    MCName: MushroomCow
+    Name: Champimeuh
+  '97':
+    MCName: SnowMan
+    Name: Bonhomme de neige
+  '98':
+    MCName: Ozelot
+    Name: Ocelot
+  '99':
+    MCName: VillagerGolem
+    Name: Golem de Fer
+  '100':
+    MCName: EntityHorse
+    Name: Cheval
+  '101':
+    MCName: Rabbit
+    Name: Lapin
+  '120':
+    MCName: Villager
+    Name: Villageois
+  '200':
+    MCName: EnderCrystal
+    Name: Cristal du néant
+EnchantList:
+  '0':
+    MCName: PROTECTION_ENVIRONMENTAL
+    Name: Protection
+  '1':
+    MCName: PROTECTION_FIRE
+    Name: Protection contre le feu
+  '2':
+    MCName: PROTECTION_FALL
+    Name: Chute amortie
+  '3':
+    MCName: PROTECTION_EXPLOSIONS
+    Name: Protection contre les explosions
+  '4':
+    MCName: ROTECTION_PROJECTILE
+    Name: Protection contre les projectiles
+  '5':
+    MCName: OXYGEN
+    Name: Apnée
+  '6':
+    MCName: DIG_SPEED
+    Name: Affinité aquatique
+  '7':
+    MCName: THORNS
+    Name: Épines
+  '8':
+    MCName: DEPTH_STRIDER
+    Name: Agilité aquatique
+  '9':
+    MCName: FROST_WALKER
+    Name: Semelles givrantes
+  '16':
+    MCName: DAMAGE_ALL
+    Name: Tranchant
+  '17':
+    MCName: DAMAGE_UNDEAD
+    Name: Châtiment
+  '18':
+    MCName: DAMAGE_ARTHROPODS
+    Name: Fléau des arthropodes
+  '19':
+    MCName: KNOCKBACK
+    Name: Recul
+  '20':
+    MCName: FIRE_ASPECT
+    Name: Aura de Feu
+  '21':
+    MCName: LOOT_BONUS_MOBS
+    Name: Butin
+  '32':
+    MCName: DIG_SPEED
+    Name: Efficacité
+  '33':
+    MCName: SILK_TOUCH
+    Name: Toucher de soie
+  '34':
+    MCName: DURABILITY
+    Name: Solidité
+  '35':
+    MCName: LOOT_BONUS_BLOCKS
+    Name: Fortune
+  '48':
+    MCName: ARROW_DAMAGE
+    Name: Puissance
+  '49':
+    MCName: ARROW_KNOCKBACK
+    Name: Frappe
+  '50':
+    MCName: ARROW_FIRE
+    Name: Flame
+  '51':
+    MCName: ARROW_INFINITE
+    Name: Infinité
+  '61':
+    MCName: LUCK
+    Name: Chance de la mer
+  '62':
+    MCName: LURE
+    Name: Appât
+  '70':
+    MCName: MENDING
+    Name: Raccommodage
+ColorList:
+  '0':
+    MCName: white
+    Name: '&fBlanc'
+  '1':
+    MCName: orange
+    Name: '&6Orange'
+  '2':
+    MCName: magenta
+    Name: '&dMagenta'
+  '3':
+    MCName: lightBlue
+    Name: '%9Bleu Clair'
+  '4':
+    MCName: yellow
+    Name: '&eJaune'
+  '5':
+    MCName: lime
+    Name: '&aVert clair'
+  '6':
+    MCName: pink
+    Name: '&dRose'
+  '7':
+    MCName: gray
+    Name: '&8Gris'
+  '8':
+    MCName: silver
+    Name: '&7Gris clair'
+  '9':
+    MCName: cyan
+    Name: '&3Cyan'
+  '10':
+    MCName: purple
+    Name: '&5Violet'
+  '11':
+    MCName: blue
+    Name: '&1Bleu'
+  '12':
+    MCName: brown
+    Name: '&4Marron'
+  '13':
+    MCName: green
+    Name: '&2Vert'
+  '14':
+    MCName: red
+    Name: '&cRouge'
+  '15':
+    MCName: black
+    Name: '&0Noir'
