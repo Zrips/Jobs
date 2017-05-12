@@ -370,9 +370,9 @@ Jobs:
         value: true
         # Permission granted when reaching level 10
         level: 10
-    # Permissions granted when perticular conditions are meet
+    # Permissions granted when particular conditions are meet
     conditions:
-      # Condition mane, irelevent, you can write anything in here
+      # Condition name, irrelevant, you can write anything in here
       first:
         requires:
         # j marks that player should have particular jobs level and higher

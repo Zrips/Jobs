@@ -186,9 +186,10 @@ public class BlockProtectionManager {
 	    return false;
 	}
 
-	int sec = Math.round((((BlockTime + time * 1000) - currentTime)) / 1000);
-
-	Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+	if (Jobs.getGCManager().BossBarShowOnEachAction) {
+	    int sec = Math.round((((BlockTime + time * 1000) - currentTime)) / 1000);
+	    Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+	}
 	return true;
     }
 
