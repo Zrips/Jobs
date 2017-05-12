@@ -175,15 +175,12 @@ public class PlayerManager {
      * @param playername
      */
     public void playerQuit(Player player) {
-	JobsPlayer jPlayer = this.removePlayer(player);
-	if (jPlayer == null)
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	JobsPlayer jPlayer = this.getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	addPlayerToCache(jPlayer);
 	if (Jobs.getGCManager().saveOnDisconnect()) {
-	    jPlayer.save();
 	    jPlayer.onDisconnect();
+	    jPlayer.save();
 	} else {
 	    jPlayer.onDisconnect();
 	}

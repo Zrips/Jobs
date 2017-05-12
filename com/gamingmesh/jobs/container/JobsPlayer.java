@@ -168,8 +168,14 @@ public class JobsPlayer {
      * @return the player
      */
     public Player getPlayer() {
-	if (this.playerUUID != null)
-	    this.player = Bukkit.getPlayer(this.playerUUID);
+	if (this.playerUUID != null){
+	    Player p = Bukkit.getPlayer(this.playerUUID);
+	    if (p != null){
+		this.player = p;
+		this.OffPlayer = p;
+		this.userName = player.getName();
+	    }
+	}
 	return this.player;
     }
 
@@ -625,6 +631,11 @@ public class JobsPlayer {
 	    dao.recordPlayersLimits(this);
 	    dao.updateSeen(this);
 	    setSaved(true);
+
+	    if (this.getPlayer() == null || !this.getPlayer().isOnline()){
+		Jobs.getPlayerManager().addPlayerToCache(this);
+		Jobs.getPlayerManager().removePlayer(this.getPlayer());
+	    }
 	}
 //	}
     }
@@ -644,6 +655,7 @@ public class JobsPlayer {
 //	Jobs.getJobsDAO().savePoints(this);
 	clearBossMaps();
 	isOnline = false;
+	Jobs.getPlayerManager().addPlayerToCache(this);
     }
 
     public void clearBossMaps() {

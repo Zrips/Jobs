@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -283,6 +284,14 @@ public class GeneralConfigManager {
 	return locale;
     }
 
+    public boolean canPerformActionInWorld(Entity ent) {
+	if (ent == null)
+	    return true;
+	if (ent.getWorld() == null)
+	    return true;
+	return canPerformActionInWorld(ent.getWorld());
+    }
+
     public boolean canPerformActionInWorld(Player player) {
 	if (player == null)
 	    return true;
@@ -414,7 +423,7 @@ public class GeneralConfigManager {
 	    "Player data is always periodically auto-saved and autosaved during a clean shutdown.",
 	    "Only enable this if you have a multi-server setup, or have a really good reason for enabling this.", "Turning this on will decrease database performance.");
 	saveOnDisconnect = c.get("save-on-disconnect", false);
-	
+
 	c.getW().addComment("selectionTool", "Tool used when selecting bounds for restricted area");
 	getSelectionTooldID = c.get("selectionTool", 294);
 	if (Material.getMaterial(Jobs.getGCManager().getSelectionTooldID) == null)

@@ -53,6 +53,7 @@ import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 /**
@@ -923,6 +924,7 @@ public abstract class JobsDAO {
      * @param jobInfo - the information getting saved
      */
     public void save(JobsPlayer player) {
+	Debug.D("saving player data " + player.getUserName());
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
@@ -1277,7 +1279,7 @@ public abstract class JobsDAO {
 		Jobs.getBpManager().timer += System.currentTimeMillis() - t;
 	    }
 	    if (i > 0) {
-		String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] loaded " + i + " block protection entries. " + Jobs.getBpManager().timer);
+		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] loaded " + i + " block protection entries. " + Jobs.getBpManager().timer);
 		Bukkit.getServer().getConsoleSender().sendMessage(message);
 	    }
 	} catch (SQLException e) {

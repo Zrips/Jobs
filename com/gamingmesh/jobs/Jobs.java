@@ -1041,9 +1041,11 @@ public class Jobs extends JavaPlugin {
 	    }
 
 	    //need to update bp
-	    BlockProtection bp = BpManager.getBp(block.getLocation());
-	    if (bp != null)
-		bp.setPaid(true);
+	    if (block != null) {
+		BlockProtection bp = BpManager.getBp(block.getLocation());
+		if (bp != null)
+		    bp.setPaid(true);
+	    }
 	}
     }
 
