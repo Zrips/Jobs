@@ -121,7 +121,9 @@ public class GeneralConfigManager {
 
     public int AutoJobJoinDelay;
     public boolean AutoJobJoinUse;
-
+    
+    public boolean AllowDelevel;
+    
     //BossBar
     public boolean BossBarEnabled;
     public boolean BossBarShowOnEachAction;
@@ -459,6 +461,10 @@ public class GeneralConfigManager {
 	    "For player to auto join job add permission node jobs.autojoin.[jobname]",
 	    "Op players are ignored");
 	AutoJobJoinDelay = c.get("Optimizations.AutoJobJoin.Delay", 15);
+
+	c.getW().addComment("Optimizations.AllowDelevel", "When set to true players who gets negavite experience can delevel job up to level 1",
+	    "ATTENTION! Set it to true only if you certain that commands performed on levelup will not cause issues if player start level and delevel in a row.");
+	AllowDelevel = c.get("Optimizations.AllowDelevel", false);
 
 	c.getW().addComment("Optimizations.UseLocalOfflinePlayersData", "With this set to true, offline player data will be taken from local player data files",
 	    "This will eliminate small lag spikes when request is being send to mojangs servers for offline players data",

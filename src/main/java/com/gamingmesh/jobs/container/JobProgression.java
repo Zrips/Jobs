@@ -44,6 +44,15 @@ public class JobProgression {
     }
 
     /**
+     * Can the job level down?
+     * @return true if the job can level up
+     * @return false if the job cannot
+     */
+    public boolean canLevelDown() {
+	return experience < 0;
+    }
+
+    /**
      * Return the job
      * @return the job
      */
@@ -142,11 +151,24 @@ public class JobProgression {
 	this.maxExperience = (int) job.getMaxExp(param);
     }
 
+    public int getMaxExperience(int level) {
+	HashMap<String, Double> param = new HashMap<String, Double>();
+	param.put("joblevel", (double) level);
+	param.put("numjobs", (double) jPlayer.getJobProgression().size());
+	return (int) job.getMaxExp(param);
+    }
+
     /**
      * Performs a level up
      * @returns if level up was performed
      */
     private boolean checkLevelUp() {
+
+	if (level == 1 && experience < 0)
+	    experience = 0;
+	if (experience < 0)
+	    return checkLevelDown();
+
 	boolean ret = false;
 	while (canLevelUp()) {
 
@@ -168,6 +190,26 @@ public class JobProgression {
 	// At max level
 	if (experience > maxExperience)
 	    experience = maxExperience;
+
+	return ret;
+    }
+
+    /**
+     * Performs a level up
+     * @returns if level up was performed
+     */
+    private boolean checkLevelDown() {
+	boolean ret = false;
+	while (canLevelDown()) {
+	    // Don't level down at 1       	
+	    if (level <= 1)
+		break;
+	    level--;
+	    int exp = getMaxExperience(level);
+	    experience = experience + exp;
+	    ret = true;
+	    reloadMaxExperience();
+	}
 	return ret;
     }
 

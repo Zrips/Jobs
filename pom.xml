@@ -6,7 +6,6 @@
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
 	<version>3.8.2</version>
-	<packaging>jar</packaging>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 	<properties>
