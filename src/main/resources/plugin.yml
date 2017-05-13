@@ -174,3 +174,6 @@ permissions:
   jobs.command.iteminfo:
     description: Grants access to the iteminfo command
     default: true
+  jobs.command.exp:
+    description: Grants access to the exp command
+    default: op
