@@ -756,7 +756,7 @@ public class Jobs extends JavaPlugin {
 	    setMyPetManager();
 
 	    setMythicManager();
-	    if (MythicManager.Check() && GconfigManager.MythicMobsEnabled) {
+	    if (MythicManager != null && MythicManager.Check() && GconfigManager.MythicMobsEnabled) {
 		MythicManager.registerListener();
 	    }
 
