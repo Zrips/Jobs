@@ -924,7 +924,6 @@ public abstract class JobsDAO {
      * @param jobInfo - the information getting saved
      */
     public void save(JobsPlayer player) {
-	Debug.D("saving player data " + player.getUserName());
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;

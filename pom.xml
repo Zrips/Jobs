@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>3.8.2</version>
+	<version>3.9.0</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -88,10 +88,10 @@
 			<id>vault-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
 		</repository>
-			<repository>
-				<id>mcmmo-repo</id>
-				<url>http://repo.mcmmo.org/</url>
-			</repository>
+		<repository>
+			<id>mcmmo-repo</id>
+			<url>http://repo.mcmmo.org/</url>
+		</repository>
 	</repositories>
 	<!-- Builds Plugin -->
 	<build>
@@ -118,6 +118,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
+				<configuration>
+					<outputDirectory>C:\Users\Arte\Desktop\Server\plugins</outputDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

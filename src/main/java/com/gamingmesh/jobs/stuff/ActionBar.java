@@ -122,7 +122,7 @@ public class ActionBar {
 	}
     }
 
-    private String convertAmount(double amount) {
+    private static String convertAmount(double amount) {
 	String format = "%.2f";
 	if (amount % 1 == 0 || amount > 100 || amount < -100) {
 	    amount = (int) Math.round(amount);
