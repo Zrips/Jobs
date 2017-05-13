@@ -110,13 +110,29 @@ public class ActionBar {
 	if (abp != null && show) {
 	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
 	    if (payment.getAmount() != 0D)
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format("%.2f", payment.getAmount()));
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", convertAmount(payment.getAmount()));
+
 	    if (payment.getPoints() != 0D)
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format("%.2f", payment.getPoints()));
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", convertAmount(payment.getPoints()));
+
 	    if (payment.getExp() != 0D)
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format("%.2f", payment.getExp()));
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", convertAmount(payment.getExp()));
+
 	    send(abp, ChatColor.GREEN + Message);
 	}
+    }
+
+    private String convertAmount(double amount) {
+	String format = "%.2f";
+	if (amount % 1 == 0 || amount > 100 || amount < -100) {
+	    amount = (int) Math.round(amount);
+	    format = "%.0f";
+	} else {
+	    if ((amount * 10) % 1 == 0) {
+		format = "%.1f";
+	    }
+	}
+	return String.format(format, amount);
     }
 
     public void send(CommandSender receivingPacket, String msg) {

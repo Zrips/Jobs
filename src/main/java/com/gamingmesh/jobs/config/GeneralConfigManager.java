@@ -121,9 +121,9 @@ public class GeneralConfigManager {
 
     public int AutoJobJoinDelay;
     public boolean AutoJobJoinUse;
-    
+
     public boolean AllowDelevel;
-    
+
     //BossBar
     public boolean BossBarEnabled;
     public boolean BossBarShowOnEachAction;
