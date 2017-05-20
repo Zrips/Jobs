@@ -42,6 +42,7 @@ import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.dao.JobsDAOMySQL;
 import com.gamingmesh.jobs.dao.JobsDAOSQLite;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class GeneralConfigManager {
     private Jobs plugin;
@@ -143,6 +144,8 @@ public class GeneralConfigManager {
     public int DBCleaningJobsLvl;
     public boolean DBCleaningUsersUse;
     public int DBCleaningUsersDays;
+
+    private boolean ShowNewVersion;
 
     public HashMap<String, List<String>> getCommandArgs() {
 	return commandArgs;
@@ -438,6 +441,10 @@ public class GeneralConfigManager {
 	if (MultiServerCompatability)
 	    saveOnDisconnect = true;
 
+	c.getW().addComment("Optimizations.NewVersion",
+	    "When set to true staff will be informed about new Jobs plugin version", "You need to have jobs.versioncheck permission node");
+	ShowNewVersion = c.get("Optimizations.NewVersion", true);
+
 	c.getW().addComment("Optimizations.DBCleaning.Jobs.Use",
 	    "Warning!!! before enabling this feature, please make data base backup, just in case there will be some issues with data base cleaning",
 	    "When set to true, jobs data base will be cleaned on each startup to avoid having not used jobs",
@@ -518,7 +525,7 @@ public class GeneralConfigManager {
 	modifyChat = c.get("modify-chat", true);
 
 	modifyChatPrefix = c.get("modify-chat-prefix", "&c[", true);
-	modifyChatSuffix = c.get("modify-chat-suffix", "&c]", true);
+	modifyChatSuffix = c.get("modify-chat-suffix", "&c]&r", true);
 	modifyChatSeparator = c.get("modify-chat-separator", " ", true);
 
 	c.getW().addComment("UseCustomNames", "Do you want to use custom item/block/mob/enchant/color names",
@@ -768,7 +775,7 @@ public class GeneralConfigManager {
 	c.getW().addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
 	BossBarEnabled = c.get("BossBar.Enabled", true);
 
-	if (Jobs.getActionBar().getVersion() < 1900) {
+	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
 	    BossBarEnabled = false;
 	    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Jobs] Your server version don't support BossBar. This feature will be disabled");
 	}
@@ -884,5 +891,9 @@ public class GeneralConfigManager {
 
     public int getSelectionTooldID() {
 	return getSelectionTooldID;
+    }
+
+    public boolean isShowNewVersion() {
+	return ShowNewVersion;
     }
 }

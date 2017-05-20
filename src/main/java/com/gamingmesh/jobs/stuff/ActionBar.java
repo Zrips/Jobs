@@ -12,14 +12,14 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.economy.BufferedPayment;
+import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 /**
 *
 * @author hamzaxx
 */
 public class ActionBar {
-    private int cleanVersion = -1;
-    private String version = "";
+    private Version version = Version.v1_11_R1;
     private Object packet;
     private Method getHandle;
     private Method sendPacket;
@@ -28,49 +28,13 @@ public class ActionBar {
     private Class<?> nmsIChatBaseComponent;
     private Class<?> packetType;
 
-    public int getVersion() {
-	if (cleanVersion == -1)
-	    getInfo();
-	return cleanVersion;
-    }
-
-    private void getInfo() {
+    private Class<?> ChatMessageclz;
+    private Class<?> sub;
+    private Object[] consts;
+    
+    public ActionBar() {
 	try {
-	    String[] v = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
-	    version = v[v.length - 1];
-	    // Translating version to integer for simpler use
-	    try {
-		cleanVersion = Integer.parseInt(version.replace("v", "").replace("V", "").replace("_", "").replace("r", "").replace("R", ""));
-		cleanVersion *= 10;
-	    } catch (NumberFormatException e) {
-		// Fail safe if it for some reason can't translate version to integer
-		if (version.contains("v1_4"))
-		    cleanVersion = 1400;
-		if (version.contains("v1_5"))
-		    cleanVersion = 1500;
-		if (version.contains("v1_6"))
-		    cleanVersion = 1600;
-		if (version.contains("v1_7"))
-		    cleanVersion = 1700;
-		if (version.contains("v1_8_R1"))
-		    cleanVersion = 1810;
-		if (version.contains("v1_8_R2"))
-		    cleanVersion = 1820;
-		if (version.contains("v1_8_R3"))
-		    cleanVersion = 1830;
-		if (version.contains("v1_9_R1"))
-		    cleanVersion = 1910;
-		if (version.contains("v1_9_R2"))
-		    cleanVersion = 1920;
-		if (version.contains("v1_10_R1"))
-		    cleanVersion = 11010;
-		if (version.contains("v1_11_R1"))
-		    cleanVersion = 11110;
-	    }
-
-	    if (cleanVersion < 1400)
-		cleanVersion *= 10;
-
+	    version = Jobs.getVersionCheckManager().getVersion();
 	    packetType = Class.forName(getPacketPlayOutChat());
 	    Class<?> typeCraftPlayer = Class.forName(getCraftPlayerClasspath());
 	    Class<?> typeNMSPlayer = Class.forName(getNMSPlayerClasspath());
@@ -81,17 +45,21 @@ public class ActionBar {
 	    playerConnection = typeNMSPlayer.getField("playerConnection");
 	    sendPacket = typePlayerConnection.getMethod("sendPacket", Class.forName(getPacketClasspath()));
 
+	    if (Jobs.getVersionCheckManager().getVersion().isHigher(Version.v1_11_R1)) {
+		ChatMessageclz = Class.forName(getChatMessageTypeClasspath());
+		consts = ChatMessageclz.getEnumConstants();
+		sub = consts[2].getClass();
+	    }
+
 	} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | NoSuchFieldException ex) {
 	    Bukkit.getLogger().log(Level.SEVERE, "Error {0}", ex);
 	}
+
     }
 
     public void ShowActionBar(BufferedPayment payment) {
-
-	if (cleanVersion == -1)
-	    getInfo();
-
-	if (cleanVersion == -1)
+	
+	if (!payment.getOfflinePlayer().isOnline())
 	    return;
 
 	String playername = payment.getOfflinePlayer().getName();
@@ -110,29 +78,13 @@ public class ActionBar {
 	if (abp != null && show) {
 	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
 	    if (payment.getAmount() != 0D)
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", convertAmount(payment.getAmount()));
-
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format("%.2f", payment.getAmount()));
 	    if (payment.getPoints() != 0D)
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", convertAmount(payment.getPoints()));
-
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format("%.2f", payment.getPoints()));
 	    if (payment.getExp() != 0D)
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", convertAmount(payment.getExp()));
-
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format("%.2f", payment.getExp()));
 	    send(abp, ChatColor.GREEN + Message);
 	}
-    }
-
-    private static String convertAmount(double amount) {
-	String format = "%.2f";
-	if (amount % 1 == 0 || amount > 100 || amount < -100) {
-	    amount = (int) Math.round(amount);
-	    format = "%.0f";
-	} else {
-	    if ((amount * 10) % 1 == 0) {
-		format = "%.1f";
-	    }
-	}
-	return String.format(format, amount);
     }
 
     public void send(CommandSender receivingPacket, String msg) {
@@ -142,14 +94,16 @@ public class ActionBar {
 
 	    if (receivingPacket == null)
 		return;
-
-	    if (cleanVersion < 1800 || !(receivingPacket instanceof Player)) {
+	    
+	    if (version.isLower(Version.v1_8_R1) || !(receivingPacket instanceof Player)) {
 		receivingPacket.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
 		return;
 	    }
 
 	    Object serialized = nmsChatSerializer.getMethod("a", String.class).invoke(null, "{\"text\": \"" + ChatColor.translateAlternateColorCodes('&', msg) + "\"}");
-	    if (cleanVersion > 1800) {
+	    if (Jobs.getVersionCheckManager().getVersion().isHigher(Version.v1_11_R1))
+		packet = packetType.getConstructor(nmsIChatBaseComponent, sub).newInstance(serialized, consts[2]);
+	    else if (version.isHigher(Version.v1_7_R4)) {
 		packet = packetType.getConstructor(nmsIChatBaseComponent, byte.class).newInstance(serialized, (byte) 2);
 	    } else {
 		packet = packetType.getConstructor(nmsIChatBaseComponent, int.class).newInstance(serialized, 2);
@@ -163,32 +117,36 @@ public class ActionBar {
     }
 
     private String getCraftPlayerClasspath() {
-	return "org.bukkit.craftbukkit." + version + ".entity.CraftPlayer";
+	return "org.bukkit.craftbukkit." + version.name() + ".entity.CraftPlayer";
     }
 
     private String getPlayerConnectionClasspath() {
-	return "net.minecraft.server." + version + ".PlayerConnection";
+	return "net.minecraft.server." + version.name() + ".PlayerConnection";
     }
 
     private String getNMSPlayerClasspath() {
-	return "net.minecraft.server." + version + ".EntityPlayer";
+	return "net.minecraft.server." + version.name() + ".EntityPlayer";
     }
 
     private String getPacketClasspath() {
-	return "net.minecraft.server." + version + ".Packet";
+	return "net.minecraft.server." + version.name() + ".Packet";
     }
 
     private String getIChatBaseComponentClasspath() {
-	return "net.minecraft.server." + version + ".IChatBaseComponent";
+	return "net.minecraft.server." + version.name() + ".IChatBaseComponent";
     }
 
     private String getChatSerializerClasspath() {
-	if (cleanVersion < 1820)
-	    return "net.minecraft.server." + version + ".ChatSerializer";
-	return "net.minecraft.server." + version + ".IChatBaseComponent$ChatSerializer";// 1_8_R2 moved to IChatBaseComponent	
+	if (!Jobs.getVersionCheckManager().getVersion().isHigher(Version.v1_8_R2))
+	    return "net.minecraft.server." + version.name() + ".ChatSerializer";
+	return "net.minecraft.server." + version.name() + ".IChatBaseComponent$ChatSerializer";// 1_8_R2 moved to IChatBaseComponent
     }
 
     private String getPacketPlayOutChat() {
-	return "net.minecraft.server." + version + ".PacketPlayOutChat";
+	return "net.minecraft.server." + version.name() + ".PacketPlayOutChat";
+    }
+
+    private String getChatMessageTypeClasspath() {
+	return "net.minecraft.server." + version.name() + ".ChatMessageType";
     }
 }

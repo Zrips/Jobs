@@ -30,6 +30,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 
 public class BufferedEconomy {
@@ -193,7 +194,7 @@ public class BufferedEconomy {
 		try {
 		    // Action bar stuff
 		    Jobs.getActionBar().ShowActionBar(payment);
-		    if (payment.getOfflinePlayer().isOnline() && Jobs.getActionBar().getVersion() > 1900) {
+		    if (payment.getOfflinePlayer().isOnline() && Jobs.getVersionCheckManager().getVersion().isHigher(Version.v1_8_R3)) {
 			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId());
 			Jobs.getBBManager().ShowJobProgression(jPlayer);
 		    }

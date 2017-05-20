@@ -88,6 +88,7 @@ import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
+import com.gamingmesh.jobs.stuff.VersionChecker;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -144,6 +145,8 @@ public class Jobs extends JavaPlugin {
 
     private static ActionBar actionbar;
     private boolean running = false;
+
+    protected static VersionChecker versionCheckManager;
 
     protected static SelectionManager smanager;
 
@@ -686,12 +689,21 @@ public class Jobs extends JavaPlugin {
 	return economy;
     }
 
+    /**
+     * Gets the version check manager
+     * @return the version check manager
+     */
+    public static VersionChecker getVersionCheckManager() {
+	return versionCheckManager;
+    }
+
     @Override
     public void onEnable() {
 	running = true;
-	String packageName = getServer().getClass().getPackage().getName();
-	String[] packageSplit = packageName.split("\\.");
-	version = packageSplit[packageSplit.length - 1].substring(0, packageSplit[packageSplit.length - 1].length() - 3);
+
+	versionCheckManager = new VersionChecker(this);
+	version = versionCheckManager.getVersion().getShortVersion();
+
 	try {
 	    Class<?> nmsClass;
 	    nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + version);
@@ -710,6 +722,7 @@ public class Jobs extends JavaPlugin {
 	}
 
 	try {
+
 	    setActionBar();
 	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
 	    jobConfig.saveDefaultConfig();

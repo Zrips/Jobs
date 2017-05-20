@@ -18,6 +18,7 @@ import com.gamingmesh.jobs.container.BossBarInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class BossBarManager {
 
@@ -28,7 +29,7 @@ public class BossBarManager {
     }
 
     public synchronized void ShowJobProgression(final JobsPlayer player) {
-	if (Jobs.getActionBar().getVersion() < 1900)
+	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
 	    return;
 
 	if (player == null)
@@ -48,7 +49,7 @@ public class BossBarManager {
     }
 
     public synchronized void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg) {
-	if (Jobs.getActionBar().getVersion() < 1900)
+	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
 	    return;
 	String playername = player.getUserName();
 	if (!Jobs.getBossBarToggleList().containsKey(playername) && Jobs.getGCManager().BossBarsMessageByDefault)
