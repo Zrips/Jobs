@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 
@@ -53,22 +54,13 @@ public class YmlMaker {
 
 	InputStream defConfigStream = this.plugin.getResource(this.fileName);
 	if (defConfigStream != null) {
-	    @SuppressWarnings("deprecation")
-	    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	    this.Configuration.setDefaults(defConfig);
+		try (Reader reader = new InputStreamReader(defConfigStream)) {
+			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(reader);
+			this.Configuration.setDefaults(defConfig);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	if (defConfigStream != null)
-	    try {
-		defConfigStream.close();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-	if (f != null)
-	    try {
-		f.close();
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
     }
 
     public FileConfiguration getConfig() {
