@@ -53,8 +53,7 @@ public class YmlMaker {
 
 	InputStream defConfigStream = this.plugin.getResource(this.fileName);
 	if (defConfigStream != null) {
-	    @SuppressWarnings("deprecation")
-	    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(f);
 	    this.Configuration.setDefaults(defConfig);
 	}
 	if (defConfigStream != null)
