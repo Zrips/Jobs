@@ -50,18 +50,6 @@ public class YmlMaker {
 	}
 
 	this.Configuration = YamlConfiguration.loadConfiguration(f);
-
-	InputStream defConfigStream = this.plugin.getResource(this.fileName);
-	if (defConfigStream != null) {
-	    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(f);
-	    this.Configuration.setDefaults(defConfig);
-	}
-	if (defConfigStream != null)
-	    try {
-		defConfigStream.close();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
 	if (f != null)
 	    try {
 		f.close();

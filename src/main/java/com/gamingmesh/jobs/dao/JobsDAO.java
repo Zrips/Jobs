@@ -1137,7 +1137,8 @@ public abstract class JobsDAO {
 		for (Entry<String, HashMap<String, HashMap<Vector, BlockProtection>>> regions : worlds.getValue().entrySet()) {
 		    for (Entry<String, HashMap<Vector, BlockProtection>> chunks : regions.getValue().entrySet()) {
 			for (Entry<Vector, BlockProtection> block : chunks.getValue().entrySet()) {
-
+			    if (block.getValue() == null)
+				continue;
 			    switch (block.getValue().getAction()) {
 			    case DELETE:
 				delete.setInt(1, block.getValue().getId());
