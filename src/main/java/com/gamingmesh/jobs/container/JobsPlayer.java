@@ -168,9 +168,9 @@ public class JobsPlayer {
      * @return the player
      */
     public Player getPlayer() {
-	if (this.playerUUID != null){
+	if (this.playerUUID != null) {
 	    Player p = Bukkit.getPlayer(this.playerUUID);
-	    if (p != null){
+	    if (p != null) {
 		this.player = p;
 		this.OffPlayer = p;
 		this.userName = player.getName();
@@ -279,7 +279,8 @@ public class JobsPlayer {
     }
 
     public int getLimit(CurrencyType type) {
-	return this.limits.get(type);
+	Integer value = this.limits.get(type);
+	return value == null ? 0 : value;
     }
 
     public void resetPaymentLimit() {
@@ -570,8 +571,7 @@ public class JobsPlayer {
 		    }
 		}
 
-		if (numJobs > 1 && (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) || method.equals(DisplayMethod.SHORT_FULL) || method.equals(
-		    DisplayMethod.SHORT_TITLE)) {
+		if (numJobs > 1 && (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) || method.equals(DisplayMethod.SHORT_FULL) || method.equals(DisplayMethod.SHORT_TITLE)) {
 		    // add title to honorific
 		    if (title != null) {
 			String honorificpart = title.getChatColor() + title.getShortName() + ChatColor.WHITE;
@@ -632,7 +632,7 @@ public class JobsPlayer {
 	    dao.updateSeen(this);
 	    setSaved(true);
 
-	    if (this.getPlayer() == null || !this.getPlayer().isOnline()){
+	    if (this.getPlayer() == null || !this.getPlayer().isOnline()) {
 		Jobs.getPlayerManager().addPlayerToCache(this);
 		Jobs.getPlayerManager().removePlayer(this.getPlayer());
 	    }
