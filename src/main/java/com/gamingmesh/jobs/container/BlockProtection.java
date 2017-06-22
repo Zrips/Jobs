@@ -1,5 +1,7 @@
 package com.gamingmesh.jobs.container;
 
+import org.bukkit.util.Vector;
+
 public class BlockProtection {
 
     private int id;
@@ -7,12 +9,15 @@ public class BlockProtection {
     private Long recorded;
     private DBAction action = DBAction.INSERT;
     private Boolean paid = true;
+    private Vector pos;
 
-    public BlockProtection() {
+    public BlockProtection(Vector pos) {
+	this.pos = pos;
     }
 
-    public BlockProtection(DBAction action) {
+    public BlockProtection(DBAction action, Vector pos) {
 	this.action = action;
+	this.pos = pos;
     }
 
     public Long getTime() {
@@ -54,5 +59,13 @@ public class BlockProtection {
 
     public void setId(int id) {
 	this.id = id;
+    }
+
+    public Vector getPos() {
+	return pos;
+    }
+
+    public void setPos(Vector pos) {
+	this.pos = pos;
     }
 }

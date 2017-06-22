@@ -13,23 +13,24 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class BlockProtectionManager {
 
-    private HashMap<World, HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>>> map =
-	new HashMap<World, HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>>>();
+    private HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> map =
+	new HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>>();
 
     public Long timer = 0L;
 
-    public HashMap<World, HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>>> getMap() {
+    public HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> getMap() {
 	return this.map;
     }
 
     public int getSize() {
 	int i = 0;
-	for (Entry<World, HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>>> worlds : map.entrySet()) {
-	    for (Entry<String, HashMap<String, HashMap<Vector, BlockProtection>>> regions : worlds.getValue().entrySet()) {
-		for (Entry<String, HashMap<Vector, BlockProtection>> chunks : regions.getValue().entrySet()) {
+	for (Entry<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> worlds : map.entrySet()) {
+	    for (Entry<String, HashMap<String, HashMap<String, BlockProtection>>> regions : worlds.getValue().entrySet()) {
+		for (Entry<String, HashMap<String, BlockProtection>> chunks : regions.getValue().entrySet()) {
 		    i += chunks.getValue().size();
 		}
 	    }
@@ -71,23 +72,23 @@ public class BlockProtectionManager {
     }
 
     public BlockProtection add(Location loc, Long time, boolean paid) {
-	Vector v = new Vector(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-	HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>> regions = map.get(loc.getWorld());
+	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
+	HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> regions = map.get(loc.getWorld());
 	if (regions == null)
-	    regions = new HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>>();
+	    regions = new HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>();
 	String region = locToRegion(loc);
-	HashMap<String, HashMap<Vector, BlockProtection>> chunks = regions.get(region);
+	HashMap<String, HashMap<String, BlockProtection>> chunks = regions.get(region);
 	if (chunks == null)
-	    chunks = new HashMap<String, HashMap<Vector, BlockProtection>>();
+	    chunks = new HashMap<String, HashMap<String, BlockProtection>>();
 	String chunk = locToChunk(loc);
-	HashMap<Vector, BlockProtection> Bpm = chunks.get(chunk);
+	HashMap<String, BlockProtection> Bpm = chunks.get(chunk);
 	if (Bpm == null)
-	    Bpm = new HashMap<Vector, BlockProtection>();
+	    Bpm = new HashMap<String, BlockProtection>();
 
 	BlockProtection Bp = Bpm.get(v);
 
 	if (Bp == null)
-	    Bp = new BlockProtection(DBAction.INSERT);
+	    Bp = new BlockProtection(DBAction.INSERT, new Vector(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
 	else
 	    Bp.setAction(DBAction.UPDATE);
 
@@ -105,16 +106,16 @@ public class BlockProtectionManager {
     }
 
     public BlockProtection remove(Location loc) {
-	HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>> world = map.get(loc.getWorld());
+	HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> world = map.get(loc.getWorld());
 	if (world == null)
 	    return null;
-	HashMap<String, HashMap<Vector, BlockProtection>> region = world.get(locToRegion(loc));
+	HashMap<String, HashMap<String, BlockProtection>> region = world.get(locToRegion(loc));
 	if (region == null)
 	    return null;
-	HashMap<Vector, BlockProtection> chunk = region.get(locToChunk(loc));
+	HashMap<String, BlockProtection> chunk = region.get(locToChunk(loc));
 	if (chunk == null)
 	    return null;
-	Vector v = new Vector(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 	BlockProtection bp = chunk.get(v);
 	if (bp != null)
 	    bp.setAction(DBAction.DELETE);
@@ -133,19 +134,25 @@ public class BlockProtectionManager {
     }
 
     public BlockProtection getBp(Location loc) {
-	HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>> world = map.get(loc.getWorld());
+	HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> world = map.get(loc.getWorld());
 	if (world == null)
 	    return null;
-	HashMap<String, HashMap<Vector, BlockProtection>> region = world.get(locToRegion(loc));
+	HashMap<String, HashMap<String, BlockProtection>> region = world.get(locToRegion(loc));
 	if (region == null)
 	    return null;
-	HashMap<Vector, BlockProtection> chunk = region.get(locToChunk(loc));
+	HashMap<String, BlockProtection> chunk = region.get(locToChunk(loc));
 	if (chunk == null)
 	    return null;
-	Vector v = new Vector(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 	BlockProtection Bp = chunk.get(v);
+
 	if (Bp == null)
 	    return null;
+	 Debug.D("by " + v);
+	 Debug.D("got " + Bp.getPos().toString());
+	for (Entry<String, BlockProtection> one : chunk.entrySet()) {
+	    Debug.D("g " + one.getKey());
+	}
 	return Bp;
     }
 

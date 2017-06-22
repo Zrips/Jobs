@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.BlockProtection;
+import com.gamingmesh.jobs.container.DBAction;
 
 public class bp implements Cmd {
 
@@ -39,12 +40,12 @@ public class bp implements Cmd {
 		    BlockProtection bp = Jobs.getBpManager().getBp(l);
 		    if (bp != null) {
 			Long time = bp.getTime();
-//			if (bp.getAction() == DBAction.DELETE)
-//			    continue;
-//			if (time != -1 && time < System.currentTimeMillis()) {
-//			    Jobs.getBpManager().remove(l);
-//			    continue;
-//			}
+			if (bp.getAction() == DBAction.DELETE)
+			    continue;
+			if (time != -1 && time < System.currentTimeMillis()) {
+			    Jobs.getBpManager().remove(l);
+			    continue;
+			}
 			changedBlocks.add(l.getBlock());
 			if (time == -1)
 			    player.sendBlockChange(l, Material.STAINED_GLASS, (byte) 15);

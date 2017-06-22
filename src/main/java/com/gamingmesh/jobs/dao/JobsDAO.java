@@ -1133,10 +1133,10 @@ public abstract class JobsDAO {
 	    Long mark = System.currentTimeMillis() - (Jobs.getGCManager().BlockProtectionDays * 24L * 60L * 60L * 1000L);
 	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
-	    for (Entry<World, HashMap<String, HashMap<String, HashMap<Vector, BlockProtection>>>> worlds : Jobs.getBpManager().getMap().entrySet()) {
-		for (Entry<String, HashMap<String, HashMap<Vector, BlockProtection>>> regions : worlds.getValue().entrySet()) {
-		    for (Entry<String, HashMap<Vector, BlockProtection>> chunks : regions.getValue().entrySet()) {
-			for (Entry<Vector, BlockProtection> block : chunks.getValue().entrySet()) {
+	    for (Entry<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> worlds : Jobs.getBpManager().getMap().entrySet()) {
+		for (Entry<String, HashMap<String, HashMap<String, BlockProtection>>> regions : worlds.getValue().entrySet()) {
+		    for (Entry<String, HashMap<String, BlockProtection>> chunks : regions.getValue().entrySet()) {
+			for (Entry<String, BlockProtection> block : chunks.getValue().entrySet()) {
 			    if (block.getValue() == null)
 				continue;
 			    switch (block.getValue().getAction()) {
@@ -1155,9 +1155,9 @@ public abstract class JobsDAO {
 				if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
 				    continue;
 				insert.setString(1, worlds.getKey().getName());
-				insert.setInt(2, block.getKey().getBlockX());
-				insert.setInt(3, block.getKey().getBlockY());
-				insert.setInt(4, block.getKey().getBlockZ());
+				insert.setInt(2, block.getValue().getPos().getBlockX());
+				insert.setInt(3, block.getValue().getPos().getBlockY());
+				insert.setInt(4, block.getValue().getPos().getBlockZ());
 				insert.setLong(5, block.getValue().getRecorded());
 				insert.setLong(6, block.getValue().getTime());
 				insert.addBatch();

@@ -333,12 +333,6 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	if (Jobs.getGCManager().useBlockProtection) {
-	    BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
-	    if (bp == null || bp.getAction() == DBAction.DELETE)
-		Jobs.getBpManager().add(block, Jobs.getBpManager().getBlockDelayTime(block), false);
-	}
-
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;

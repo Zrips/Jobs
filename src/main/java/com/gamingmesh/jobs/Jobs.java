@@ -846,6 +846,9 @@ public class Jobs extends JavaPlugin {
 	int numjobs = progression.size();
 	// no job
 
+	if (!isBpOk(jPlayer.getPlayer(), info, block, true))
+	    return;
+
 	if (numjobs == 0) {
 
 	    if (noneJob == null)
@@ -853,9 +856,6 @@ public class Jobs extends JavaPlugin {
 	    JobInfo jobinfo = noneJob.getJobInfo(info, 1);
 
 	    if (jobinfo == null)
-		return;
-
-	    if (!isBpOk(jPlayer, info, block))
 		return;
 
 	    Double income = jobinfo.getIncome(1, numjobs);
@@ -923,8 +923,6 @@ public class Jobs extends JavaPlugin {
 
 		if (jobinfo == null)
 		    continue;
-		if (!isBpOk(jPlayer, info, block))
-		    return;
 		Double income = jobinfo.getIncome(level, numjobs);
 		Double pointAmount = jobinfo.getPoints(level, numjobs);
 		Double expAmount = jobinfo.getExperience(level, numjobs);
@@ -1061,36 +1059,61 @@ public class Jobs extends JavaPlugin {
 	    }
 	}
     }
-
-    private static boolean isBpOk(JobsPlayer jPlayer, ActionInfo info, Block block) {
-	if (block != null && Jobs.getGCManager().useBlockProtection) {
-	    if (info.getType() == ActionType.BREAK || info.getType() == ActionType.PLACE) {
-		BlockProtection bp = Jobs.getBpManager().getBp(block.getLocation());
-
+    
+    private static boolean isBpOk(Player player, ActionInfo info, Block block, boolean inform) {
+	if ((block != null) && (getGCManager().useBlockProtection)) {
+	    if (info.getType() == ActionType.BREAK) {
+		BlockProtection bp = getBpManager().getBp(block.getLocation());
 		if (bp != null) {
 		    Long time = bp.getTime();
-		    if (time == -1)
-			return false;
-
-		    Integer cd = Jobs.getBpManager().getBlockDelayTime(block);
-
-		    if (time > System.currentTimeMillis() && bp.isPaid() && bp.getAction() != DBAction.DELETE) {
-			int sec = Math.round((time - System.currentTimeMillis()) / 1000);
-			Jobs.getActionBar().send(jPlayer.getPlayer(),
-			    Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
+		    if (time == -1L) {
 			return false;
 		    }
-		    //timer expired + already paid
-		    else if (bp.isPaid()) {
-			Jobs.getBpManager().remove(block);
+		    Integer cd = getBpManager().getBlockDelayTime(block);
+		    if ((time < System.currentTimeMillis()) && (bp.getAction() != DBAction.DELETE)) {
+			getBpManager().remove(block);
+			return true;
 		    }
+		    if (((time > System.currentTimeMillis()) || (bp.isPaid().booleanValue())) && (bp.getAction() != DBAction.DELETE)) {
+			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
+			if (inform) {
+			    getActionBar().send(player, getLanguage().getMessage("message.blocktimer", new Object[] { "[time]", Integer.valueOf(sec) }));
+			}
+			return false;
+		    }
+		    getBpManager().add(block, cd);
+		    if ((cd == null) &&
+			(getGCManager().useGlobalTimer)) {
+			getBpManager().add(block, Long.valueOf(System.currentTimeMillis() + getGCManager().globalblocktimer * 1000));
+		    }
+		} else if (getGCManager().useGlobalTimer) {
+		    getBpManager().add(block, Long.valueOf(System.currentTimeMillis() + getGCManager().globalblocktimer * 1000));
+		}
+	    } else if (info.getType() == ActionType.PLACE) {
+		BlockProtection bp = getBpManager().getBp(block.getLocation());
+		if (bp != null) {
+		    Long time = bp.getTime();
+		    if (time != -1L) {
+			if ((time < System.currentTimeMillis()) && (bp.getAction() != DBAction.DELETE)) {
+			    getBpManager().add(block, getBpManager().getBlockDelayTime(block));			    
+			    return true;
+			}
+			if (((time > System.currentTimeMillis()) || (bp.isPaid().booleanValue())) && (bp.getAction() != DBAction.DELETE)) {
+			    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 
-		    if (cd != null) {
-			Jobs.getBpManager().add(block,
-			    System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
-		    } else {
-			Jobs.getBpManager().add(block, cd);
+			    Debug.D((time - System.currentTimeMillis()) + "  " + bp.isPaid().booleanValue() + bp.getAction());
+
+			    if (inform) {
+				getActionBar().send(player, getLanguage().getMessage("message.blocktimer", new Object[] { "[time]", Integer.valueOf(sec) }));
+			    }
+			    return false;
+			}
+		    } else if ((bp.isPaid().booleanValue()) &&
+			(bp.getTime() == -1L) && (getBpManager().getBlockDelayTime(block) != null) && (getBpManager().getBlockDelayTime(block).intValue() == -1)) {
+			return false;
 		    }
+		} else {
+		    getBpManager().add(block, getBpManager().getBlockDelayTime(block));
 		}
 	    }
 	}

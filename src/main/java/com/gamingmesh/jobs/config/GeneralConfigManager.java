@@ -499,7 +499,7 @@ public class GeneralConfigManager {
 	c.getW().addComment("broadcast.on-level-up.levels", "For what levels you want to broadcast message? Keep it at 0 if you want for all of them");
 	BroadcastingLevelUpLevels = c.getIntList("broadcast.on-level-up.levels", Arrays.asList(0));
 
-	c.getW().addComment("max-jobs", "Maximum number of jobs a player can join.", "Use 0 for no maximum");
+	c.getW().addComment("max-jobs", "Maximum number of jobs a player can join.", "Use 0 for no maximum", "Keep in mind that jobs.max.[amount] will bypass this setting");
 	maxJobs = c.get("max-jobs", 3);
 
 	c.getW().addComment("hide-jobs-without-permission", "Hide jobs from player if they lack the permission to join the job");
