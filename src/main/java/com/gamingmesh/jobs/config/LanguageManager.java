@@ -76,7 +76,7 @@ public class LanguageManager {
 	    c.get("general.Spawner", "&r[type] Spawner");
 	    c.get("general.info.toplineseparator", "&7*********************** &6%playername% &7***********************");
 	    c.get("general.info.separator", "&7*******************************************************");
-	    c.get("general.info.time.day", "&e%days% &6days ");
+	    c.get("general.info.time.days", "&e%days% &6days ");
 	    c.get("general.info.time.hours", "&e%hours% &6hours ");
 	    c.get("general.info.time.mins", "&e%mins% &6min ");
 	    c.get("general.info.time.secs", "&e%secs% &6sec ");
