@@ -714,22 +714,17 @@ public abstract class JobsDAO {
 	ResultSet res = null;
 	try {
 
-	    prest = conn.prepareStatement("SELECT userid, COUNT(*) AS amount,  sum(level) AS totallvl FROM `" + prefix
+	    prest = conn.prepareStatement("SELECT userid, COUNT(*) AS amount, sum(level) AS totallvl FROM `" + prefix
 		+ "jobs` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + ",20;");
 	    res = prest.executeQuery();
 
 	    while (res.next()) {
-
 		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt("userid"));
-
 		if (info == null)
 		    continue;
-
 		if (info.getName() == null)
 		    continue;
-
 		TopList top = new TopList(info, res.getInt("totallvl"), 0);
-
 		names.add(top);
 	    }
 	} catch (SQLException e) {

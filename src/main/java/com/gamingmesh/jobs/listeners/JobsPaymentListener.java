@@ -290,11 +290,14 @@ public class JobsPaymentListener implements Listener {
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
 
 	// Protection for block break with silktouch
-	if (Jobs.getGCManager().useSilkTouchProtection && item != null)
-	    for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet())
-		if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH"))
-		    return;
-
+	if (Jobs.getGCManager().useSilkTouchProtection && item != null) {
+	    for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
+		if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH")) {
+		    if (Jobs.getBpManager().isInBp(block))
+			return;
+		}
+	    }
+	}
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;

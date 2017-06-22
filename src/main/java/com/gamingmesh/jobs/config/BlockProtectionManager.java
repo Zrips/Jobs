@@ -6,14 +6,11 @@ import java.util.Map.Entry;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
-import com.gamingmesh.jobs.listeners.JobsPaymentListener;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class BlockProtectionManager {
 
@@ -38,20 +35,7 @@ public class BlockProtectionManager {
 	return i;
     }
 
-//    public void add(Block block, boolean paid) {
-//	add(block, -1L, paid);
-//    }
-//
-//    public void add(Block block) {
-//	add(block, -1L, true);
-//    }
-
-//    public void add(Block block, Long time, boolean paid) {
-//	add(block.getLocation(), time, paid);
-//    }
-
     public void add(Block block, Integer cd) {
-	Debug.D("adding block timer " + cd);
 	add(block, cd, true);
     }
 
@@ -71,14 +55,6 @@ public class BlockProtectionManager {
 	else
 	    addP(loc, -1L, paid);
     }
-
-//    public void add(Block block, Long time) {
-//	add(block.getLocation(), time, true);
-//    }
-//
-//    public void add(Location loc, Long time) {
-//	add(loc, time, true);
-//    }
 
     public BlockProtection addP(Location loc, Long time, boolean paid) {
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
@@ -176,5 +152,10 @@ public class BlockProtectionManager {
 	if (time == null && Jobs.getGCManager().useGlobalTimer)
 	    time = Jobs.getGCManager().globalblocktimer;	
 	return time;
+    }
+    
+    @SuppressWarnings("deprecation")
+    public boolean isInBp(Block block) {	
+	return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId()) != null;
     }
 }
