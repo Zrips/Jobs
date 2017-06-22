@@ -715,7 +715,7 @@ public abstract class JobsDAO {
 	try {
 
 	    prest = conn.prepareStatement("SELECT userid, COUNT(*) AS amount, sum(level) AS totallvl FROM `" + prefix
-		+ "jobs` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + ",20;");
+		+ "jobs` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + ",100;");
 	    res = prest.executeQuery();
 
 	    while (res.next()) {
@@ -726,6 +726,8 @@ public abstract class JobsDAO {
 		    continue;
 		TopList top = new TopList(info, res.getInt("totallvl"), 0);
 		names.add(top);
+		if (names.size() >= 15)
+		    break;
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();

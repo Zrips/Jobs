@@ -16,6 +16,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.RawMessage;
 
 public class gtop implements Cmd {
 
@@ -37,17 +38,17 @@ public class gtop implements Cmd {
 	    return true;
 	}
 
-	int start = 0;
+	int page = 1;
 	if (args.length == 1)
 	    try {
-		start = Integer.parseInt(args[0]);
+		page = Integer.parseInt(args[0]);
 	    } catch (NumberFormatException e) {
 		return true;
 	    }
-	if (start < 0)
-	    start = 0;
+	if (page < 1)
+	    page = 1;
 
-	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(start);
+	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(page * 15 - 15);
 	if (FullList.size() <= 0) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.gtop.error.nojob"));
 	    return false;
@@ -55,7 +56,7 @@ public class gtop implements Cmd {
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline"));
-	    int i = start;
+	    int i = page * 15 - 15;
 	    for (TopList One : FullList) {
 		i++;
 		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
@@ -71,7 +72,7 @@ public class gtop implements Cmd {
 	    Objective objective = board.registerNewObjective("JobsTopPlayers", "dummy");
 	    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	    objective.setDisplayName(Jobs.getLanguage().getMessage("scoreboard.gtopline"));
-	    int i = start;
+	    int i = page * 15 - 15;
 	    int line = 16;
 	    for (TopList One : FullList) {
 		i++;
@@ -84,21 +85,15 @@ public class gtop implements Cmd {
 
 	    Jobs.getScboard().addNew(player);
 
-	    int from = start;
-	    if (start >= 15)
-		from = start - 15;
-	    int until = start + 15;
+	    int prev = page < 2 ? 1 : page - 1;
+	    int next = page + 1;
 
-	    String prev = "[\"\",{\"text\":\"" + Jobs.getLanguage().getMessage("command.gtop.output.prev")
-		+ "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/jobs gtop "
-		+ from + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + Jobs.getLanguage().getMessage(
-		    "command.gtop.output.show", "[from]", from, "[until]", (from + 15)) + "\"}]}}}";
-	    String next = " {\"text\":\"" + Jobs.getLanguage().getMessage("command.gtop.output.next")
-		+ "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/jobs gtop "
-		+ until + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + Jobs.getLanguage().getMessage(
-		    "command.gtop.output.show", "[from]", (until + 1), "[until]", (until + 15)) + "\"}]}}}]";
-
-	    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + player.getName() + " " + prev + "," + next);
+	    RawMessage rm = new RawMessage();
+	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.prev"),
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", prev * 15 - 15, "[until]", (prev * 15)), "jobs gtop " + prev);
+	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.next"),
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", (next * 15), "[until]", (next * 15 + 15)), "jobs gtop " + next);
+	    rm.show(player);
 	}
 	return true;
     }
