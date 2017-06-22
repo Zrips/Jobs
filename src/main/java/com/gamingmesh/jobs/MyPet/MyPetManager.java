@@ -53,7 +53,7 @@ public class MyPetManager {
 	mp = MyPetApi.getPlayerManager();
 	mppm = MyPetApi.getMyPetManager();
 	enabled = true;
-	Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6MyPet was found - Enabling capabilities."));
+	Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6MyPet detected"));
     }
 
 }

@@ -46,10 +46,10 @@ public class RestrictedAreaManager {
 	if (save)
 	    save();
     }
-    
+
     public void remove(String name, boolean save) {
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
-	    if (area.getKey().equalsIgnoreCase(name)){
+	    if (area.getKey().equalsIgnoreCase(name)) {
 		restrictedAreas.remove(area.getKey());
 		break;
 	    }
@@ -57,8 +57,8 @@ public class RestrictedAreaManager {
 	if (save)
 	    save();
     }
-    
-    public HashMap<String, RestrictedArea> getRestrictedAres(){
+
+    public HashMap<String, RestrictedArea> getRestrictedAres() {
 	return restrictedAreas;
     }
 
@@ -72,15 +72,21 @@ public class RestrictedAreaManager {
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
 	    String areaKey = area.getKey();
 	    CuboidArea cuboid = area.getValue().getCuboidArea();
-	    conf.set("restrictedareas." + areaKey + ".world", cuboid.getWorld().getName());
 	    conf.set("restrictedareas." + areaKey + ".multiplier", area.getValue().getMultiplier());
-	    conf.set("restrictedareas." + areaKey + ".point1.x", cuboid.getLowLoc().getBlockX());
-	    conf.set("restrictedareas." + areaKey + ".point1.y", cuboid.getLowLoc().getBlockY());
-	    conf.set("restrictedareas." + areaKey + ".point1.z", cuboid.getLowLoc().getBlockZ());
-	    conf.set("restrictedareas." + areaKey + ".point2.x", cuboid.getHighLoc().getBlockX());
-	    conf.set("restrictedareas." + areaKey + ".point2.y", cuboid.getHighLoc().getBlockY());
-	    conf.set("restrictedareas." + areaKey + ".point2.z", cuboid.getHighLoc().getBlockZ());
+
+	    if (area.getValue().getWgName() == null) {
+		conf.set("restrictedareas." + areaKey + ".world", cuboid.getWorld().getName());
+		conf.set("restrictedareas." + areaKey + ".point1.x", cuboid.getLowLoc().getBlockX());
+		conf.set("restrictedareas." + areaKey + ".point1.y", cuboid.getLowLoc().getBlockY());
+		conf.set("restrictedareas." + areaKey + ".point1.z", cuboid.getLowLoc().getBlockZ());
+		conf.set("restrictedareas." + areaKey + ".point2.x", cuboid.getHighLoc().getBlockX());
+		conf.set("restrictedareas." + areaKey + ".point2.y", cuboid.getHighLoc().getBlockY());
+		conf.set("restrictedareas." + areaKey + ".point2.z", cuboid.getHighLoc().getBlockZ());
+	    } else
+		conf.set("restrictedareas." + areaKey + ".WG", true);
+
 	}
+
 	try {
 	    conf.save(f);
 	} catch (IOException e) {
@@ -96,9 +102,13 @@ public class RestrictedAreaManager {
     public synchronized double getRestrictedMultiplier(Player player) {
 	if (player == null)
 	    return 0D;
-	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
-	    if (area.getValue().inRestrictedArea(player.getLocation()))
-		return area.getValue().getMultiplier();
+	for (RestrictedArea area : getRestrictedAreasByLoc(player.getLocation())) {
+	    if (area.inRestrictedArea(player.getLocation()))
+		return area.getMultiplier();
+	    if (area.getWgName() != null && Jobs.getWorldGuardManager() != null && Jobs.getWorldGuardManager().inArea(player.getLocation(), area.getWgName())) {
+		return area.getMultiplier();
+	    }
+
 	}
 	return 0D;
     }
@@ -107,6 +117,20 @@ public class RestrictedAreaManager {
 	List<RestrictedArea> areas = new ArrayList<RestrictedArea>();
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
 	    if (area.getValue().inRestrictedArea(loc))
+		areas.add(area.getValue());
+	}
+
+	if (Jobs.getWorldGuardManager() != null) {
+	    areas.addAll(Jobs.getWorldGuardManager().getArea(loc));
+	}
+
+	return areas;
+    }
+
+    public synchronized List<RestrictedArea> getRestrictedAreasByName(String name) {
+	List<RestrictedArea> areas = new ArrayList<RestrictedArea>();
+	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
+	    if (area.getKey().equalsIgnoreCase(name))
 		areas.add(area.getValue());
 	}
 	return areas;
@@ -167,17 +191,24 @@ public class RestrictedAreaManager {
 	ConfigurationSection areaSection = conf.getConfigurationSection("restrictedareas");
 	if (areaSection != null) {
 	    for (String areaKey : areaSection.getKeys(false)) {
-		String worldName = conf.getString("restrictedareas." + areaKey + ".world");
 		double multiplier = conf.getDouble("restrictedareas." + areaKey + ".multiplier", 0.0);
-		World world = Bukkit.getServer().getWorld(worldName);
-		if (world == null)
-		    continue;
-		Location point1 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point1.x", 0.0), conf.getDouble("restrictedareas." + areaKey
-		    + ".point1.y", 0.0), conf.getDouble("restrictedareas." + areaKey + ".point1.z", 0.0));
 
-		Location point2 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point2.x", 0.0), conf.getDouble("restrictedareas." + areaKey
-		    + ".point2.y", 0.0), conf.getDouble("restrictedareas." + areaKey + ".point2.z", 0.0));
-		addNew(new RestrictedArea(areaKey, new CuboidArea(point1, point2), multiplier));
+		if (conf.isBoolean("restrictedareas." + areaKey + ".WG")) {
+		    RestrictedArea ar = new RestrictedArea(areaKey, areaKey, multiplier);
+		    addNew(ar);
+		} else {
+
+		    String worldName = conf.getString("restrictedareas." + areaKey + ".world");
+		    World world = Bukkit.getServer().getWorld(worldName);
+		    if (world == null)
+			continue;
+		    Location point1 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point1.x", 0.0), conf.getDouble("restrictedareas." + areaKey
+			+ ".point1.y", 0.0), conf.getDouble("restrictedareas." + areaKey + ".point1.z", 0.0));
+
+		    Location point2 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point2.x", 0.0), conf.getDouble("restrictedareas." + areaKey
+			+ ".point2.y", 0.0), conf.getDouble("restrictedareas." + areaKey + ".point2.z", 0.0));
+		    addNew(new RestrictedArea(areaKey, new CuboidArea(point1, point2), multiplier));
+		}
 	    }
 	}
 

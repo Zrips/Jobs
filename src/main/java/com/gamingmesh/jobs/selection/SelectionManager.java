@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.selection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.container.CuboidArea;
@@ -73,37 +72,5 @@ public class SelectionManager {
     public void clearSelection(Player player) {
 	playerLoc1.remove(player.getName());
 	playerLoc2.remove(player.getName());
-    }
-
-    public void selectChunk(Player player) {
-	Chunk chunk = player.getWorld().getChunkAt(player.getLocation());
-	int xcoord = chunk.getX() * 16;
-	int zcoord = chunk.getZ() * 16;
-	int ycoord = MIN_HEIGHT;
-	int xmax = xcoord + 15;
-	int zmax = zcoord + 15;
-	int ymax = player.getLocation().getWorld().getMaxHeight() - 1;
-	playerLoc1.put(player.getName(), new Location(player.getWorld(), xcoord, ycoord, zcoord));
-	playerLoc2.put(player.getName(), new Location(player.getWorld(), xmax, ymax, zmax));
-	player.sendMessage("msg");
-    }
-
-    public boolean worldEdit(Player player) {
-	player.sendMessage("msg");
-	return false;
-    }
-
-    public boolean worldEditUpdate(Player player) {
-	player.sendMessage("msg");
-	return false;
-    }
-
-    public void selectBySize(Player player, int xsize, int ysize, int zsize) {
-	Location myloc = player.getLocation();
-	Location loc1 = new Location(myloc.getWorld(), myloc.getBlockX() + xsize, myloc.getBlockY() + ysize, myloc.getBlockZ() + zsize);
-	Location loc2 = new Location(myloc.getWorld(), myloc.getBlockX() - xsize, myloc.getBlockY() - ysize, myloc.getBlockZ() - zsize);
-	placeLoc1(player, loc1);
-	placeLoc2(player, loc2);
-	player.sendMessage("msg");
     }
 }

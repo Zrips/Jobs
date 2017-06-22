@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.config.RestrictedAreaManager;
 import com.gamingmesh.jobs.container.CuboidArea;
 import com.gamingmesh.jobs.container.RestrictedArea;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class area implements Cmd {
 
@@ -40,16 +41,35 @@ public class area implements Cmd {
 	    } catch (Exception e) {
 		return false;
 	    }
+	    Boolean wg = false;
+
+	    if (name.startsWith("wg:")) {
+		wg = true;
+		name = name.substring("wg:".length(), name.length());
+	    }
+
 	    if (ra.isExist(name)) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.exist"));
 		return true;
 	    }
 
-	    if (!Jobs.getSelectionManager().hasPlacedBoth(player)) {
+	    if (!wg && !Jobs.getSelectionManager().hasPlacedBoth(player)) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.select", "%tool%", Material.getMaterial(Jobs.getGCManager().getSelectionTooldID).name().toLowerCase()));
 		return true;
 	    }
-	    ra.addNew(new RestrictedArea(name, Jobs.getSelectionManager().getSelectionCuboid(player), bonus), true);
+
+	    if (wg && Jobs.getWorldGuardManager() != null) {
+		name = Jobs.getWorldGuardManager().getNameByName(name);
+		if (name == null) {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.wgDontExist"));
+		    return true;
+		}
+	    }
+
+	    if (!wg)
+		ra.addNew(new RestrictedArea(name, Jobs.getSelectionManager().getSelectionCuboid(player), bonus), true);
+	    else
+		ra.addNew(new RestrictedArea(name, name, bonus), true);
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.addedNew", "%bonus%", bonus));
 	    return true;
 	}
@@ -100,16 +120,22 @@ public class area implements Cmd {
 	    for (Entry<String, RestrictedArea> area : areas.entrySet()) {
 		i++;
 		CuboidArea cuboid = area.getValue().getCuboidArea();
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.list", "%number%", i,
-		    "%areaname%", area.getKey(),
-		    "%worldname%", cuboid.getWorld().getName(),
-		    "%x1%", cuboid.getLowLoc().getBlockX(),
-		    "%y1%", cuboid.getLowLoc().getBlockY(),
-		    "%z1%", cuboid.getLowLoc().getBlockZ(),
-		    "%x2%", cuboid.getHighLoc().getBlockX(),
-		    "%y2%", cuboid.getHighLoc().getBlockY(),
-		    "%z2%", cuboid.getHighLoc().getBlockZ(),
-		    "%bonus%", area.getValue().getMultiplier()));
+		if (area.getValue().getWgName() == null) {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.list", "%number%", i,
+			"%areaname%", area.getKey(),
+			"%worldname%", cuboid.getWorld().getName(),
+			"%x1%", cuboid.getLowLoc().getBlockX(),
+			"%y1%", cuboid.getLowLoc().getBlockY(),
+			"%z1%", cuboid.getLowLoc().getBlockZ(),
+			"%x2%", cuboid.getHighLoc().getBlockX(),
+			"%y2%", cuboid.getHighLoc().getBlockY(),
+			"%z2%", cuboid.getHighLoc().getBlockZ(),
+			"%bonus%", area.getValue().getMultiplier()));
+		} else {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.wgList", "%number%", i,
+			"%areaname%", area.getKey(),
+			"%bonus%", area.getValue().getMultiplier()));
+		}
 	    }
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	    return true;
@@ -126,7 +152,7 @@ public class area implements Cmd {
 	    }
 	}
 
-	return true;
+	return false;
     }
 
 }

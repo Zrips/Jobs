@@ -37,6 +37,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamingmesh.jobs.CmiItems.ItemManager;
@@ -46,6 +47,7 @@ import com.gamingmesh.jobs.MythicMobs.MythicMobInterface;
 import com.gamingmesh.jobs.MythicMobs.MythicMobs2;
 import com.gamingmesh.jobs.MythicMobs.MythicMobs4;
 import com.gamingmesh.jobs.Signs.SignUtil;
+import com.gamingmesh.jobs.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.BlockProtectionManager;
@@ -119,6 +121,7 @@ public class Jobs extends JavaPlugin {
 
     private static MythicMobInterface MythicManager;
     private static MyPetManager myPetManager;
+    private static WorldGuardManager worldGuardManager;
 
     private static ConfigManager configManager;
     private static GeneralConfigManager GconfigManager;
@@ -177,6 +180,10 @@ public class Jobs extends JavaPlugin {
 	return myPetManager;
     }
 
+    public static WorldGuardManager getWorldGuardManager() {
+	return worldGuardManager;
+    }
+
     public void setMythicManager() {
 	try {
 	    Class.forName("net.elseland.xikage.MythicMobs.API.MythicMobsAPI");
@@ -186,9 +193,20 @@ public class Jobs extends JavaPlugin {
 		Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
 		MythicManager = new MythicMobs4(this);
 	    } catch (ClassNotFoundException ex) {
-
 	    }
 	}
+	if (MythicManager != null)
+	    consoleMsg("&e[Jobs] MythicMobs detected.");
+    }
+
+    private boolean setWorldGuard() {
+	Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+	if (plugin != null) {
+	    worldGuardManager = new WorldGuardManager(this);
+	    consoleMsg("&e[Jobs] WorldGuard detected.");
+	    return true;
+	}
+	return false;
     }
 
     public static MythicMobInterface getMythicManager() {
@@ -776,7 +794,8 @@ public class Jobs extends JavaPlugin {
 	    }
 
 	    setMyPetManager();
-
+	    setWorldGuard();
+	    
 	    setMythicManager();
 	    if (MythicManager != null && MythicManager.Check() && GconfigManager.MythicMobsEnabled) {
 		MythicManager.registerListener();

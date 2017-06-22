@@ -25,10 +25,17 @@ public class RestrictedArea {
     private CuboidArea area;
     private double multiplier;
     private String name;
+    private String wgName;    
 
     public RestrictedArea(String name, CuboidArea area, double multiplier) {
 	this.name = name;
 	this.area = area;
+	this.multiplier = multiplier;
+    }
+    
+    public RestrictedArea(String name, String wgName, double multiplier) {
+	this.name = name;
+	this.wgName = wgName;
 	this.multiplier = multiplier;
     }
 
@@ -52,8 +59,9 @@ public class RestrictedArea {
      * @return false - the location is outside the restricted area
      */
     public boolean inRestrictedArea(Location loc) {
-	if (loc == null)
+	if (loc == null || area == null)
 	    return false;
+	
 	if (!loc.getWorld().getName().equals(area.getWorld().getName()))
 	    return false;
 	if (area.getLowLoc().getBlockX() > loc.getBlockX())
@@ -73,5 +81,13 @@ public class RestrictedArea {
 
     public String getName() {
 	return name;
+    }
+
+    public String getWgName() {
+	return wgName;
+    }
+
+    public void setWgName(String wgName) {
+	this.wgName = wgName;
     }
 }

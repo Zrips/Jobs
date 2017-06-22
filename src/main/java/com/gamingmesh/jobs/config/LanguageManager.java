@@ -369,11 +369,12 @@ public class LanguageManager {
 
 	    c.get("command.area.help.info", "Modify restricted areas.");
 	    c.get("command.area.help.args", "add/remove/info/list");
-	    c.get("command.area.help.addUsage", "&eUsage: &6/Jobs area add [areaName] [bonus]");
+	    c.get("command.area.help.addUsage", "&eUsage: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]");
 	    c.get("command.area.help.removeUsage", "&eUsage: &6/Jobs area remove [areaName]");
 	    c.get("command.area.output.addedNew", "&eAdded new restricted area with &6%bonus% &ebonus");
 	    c.get("command.area.output.removed", "&eRemoved restricted area &6%name%");
 	    c.get("command.area.output.list", "&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%");
+	    c.get("command.area.output.wgList", "&e%number%&a. WorldGuard: &e%areaname% &6%bonus%");
 	    c.get("command.area.output.noAreas", "&eThere is no saved restricted areas");
 	    c.get("command.area.output.noAreasByLoc", "&eThere is no restricted areas in this location");
 	    c.get("command.area.output.areaList", "&eRestricted areas by your location: &6%list%");
@@ -382,6 +383,7 @@ public class LanguageManager {
 	    c.get("command.area.output.select", "&eSelect 2 points with selection tool (%tool%)");
 	    c.get("command.area.output.exist", "&eRestriction area by this name already exist");
 	    c.get("command.area.output.dontExist", "&eRestriction area by this name don't exist");
+	    c.get("command.area.output.wgDontExist", "&eWorldGuard area by this name don't exist");
 
 	    c.get("command.log.help.info", "Shows statistics.");
 	    c.get("command.log.help.args", "[playername]");
