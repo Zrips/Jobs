@@ -51,6 +51,7 @@ public class BlockProtectionManager {
 //    }
 
     public void add(Block block, Integer cd) {
+	Debug.D("adding block timer " + cd);
 	add(block, cd, true);
     }
 
@@ -153,8 +154,6 @@ public class BlockProtectionManager {
 	    return null;
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 	BlockProtection Bp = chunk.get(v);
-	if (Bp == null)
-	    return null;
 	return Bp;
     }
 
@@ -173,34 +172,9 @@ public class BlockProtectionManager {
 
     @SuppressWarnings("deprecation")
     public Integer getBlockDelayTime(Block block) {
-	Integer c = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId());
-	return c == null ? 0 : c;
+	Integer time = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId());	
+	if (time == null && Jobs.getGCManager().useGlobalTimer)
+	    time = Jobs.getGCManager().globalblocktimer;	
+	return time;
     }
-
-    @SuppressWarnings("deprecation")
-    public boolean checkVegybreak(Block block, Player player) {
-	if (!Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(block.getTypeId()))
-	    return false;
-	if (CheckVegyTimer(block, Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId()), player))
-	    return true;
-	return false;
-    }
-
-    public boolean CheckVegyTimer(Block block, int time, Player player) {
-	long currentTime = System.currentTimeMillis();
-	if (!block.hasMetadata(JobsPaymentListener.VegyMetadata))
-	    return false;
-	long BlockTime = block.getMetadata(JobsPaymentListener.VegyMetadata).get(0).asLong();
-
-	if (currentTime >= BlockTime + time * 1000) {
-	    return false;
-	}
-
-	if (Jobs.getGCManager().BossBarShowOnEachAction) {
-	    int sec = Math.round((((BlockTime + time * 1000) - currentTime)) / 1000);
-	    Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("message.blocktimer", "[time]", sec));
-	}
-	return true;
-    }
-
 }

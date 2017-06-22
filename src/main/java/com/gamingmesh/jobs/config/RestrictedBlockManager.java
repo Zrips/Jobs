@@ -40,7 +40,8 @@ public class RestrictedBlockManager {
 	c.getW().addComment("blocksTimer", "Block protected by timer in sec",
 	    "Category name can be any you like to be easily recognized",
 	    "id can be actual block id (use /jobs blockinfo to get correct id) or use block name",
-	    "By setting time to -1 will keep block protected until global cleanup, mainly used for structure blocks like diamond");
+	    "By setting time to -1 will keep block protected until global cleanup, mainly used for structure blocks like diamond",
+	    "If you want to have default value for all blocks, enale GlobalBlockTimer in generalConfig file");
 
 	if (!c.getC().isConfigurationSection("blocksTimer")) {
 	    c.getC().addDefault("blocksTimer.Sapling.id", 6);
