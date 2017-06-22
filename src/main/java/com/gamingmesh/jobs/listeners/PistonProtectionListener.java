@@ -44,13 +44,14 @@ public class PistonProtectionListener implements Listener {
 
 	    Long bp = Jobs.getBpManager().getTime(oldLoc);
 	    if (bp != null) {
-		Jobs.getBpManager().add(newLoc, bp);
+		Jobs.getBpManager().addP(newLoc, bp, true);
+		Jobs.getBpManager().remove(oldLoc);
 	    } else {
 		Integer cd = Jobs.getBpManager().getBlockDelayTime(one);
 		if (cd != null)
-		    Jobs.getBpManager().add(newLoc, System.currentTimeMillis() + (cd * 1000));
+		    Jobs.getBpManager().add(newLoc, cd);
 		else if (Jobs.getGCManager().useGlobalTimer)
-		    Jobs.getBpManager().add(newLoc, System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
+		    Jobs.getBpManager().add(newLoc, Jobs.getGCManager().globalblocktimer);
 	    }
 	}
     }
@@ -78,13 +79,14 @@ public class PistonProtectionListener implements Listener {
 	    Location newLoc = oldLoc.clone().add(x, y, z);
 	    Long bp = Jobs.getBpManager().getTime(oldLoc);
 	    if (bp != null) {
-		Jobs.getBpManager().add(newLoc, bp);
+		Jobs.getBpManager().addP(newLoc, bp, true);
+		Jobs.getBpManager().remove(oldLoc);
 	    } else {
 		Integer cd = Jobs.getBpManager().getBlockDelayTime(one);
 		if (cd != null)
-		    Jobs.getBpManager().add(newLoc, System.currentTimeMillis() + (cd * 1000));
+		    Jobs.getBpManager().add(newLoc, cd);
 		else if (Jobs.getGCManager().useGlobalTimer)
-		    Jobs.getBpManager().add(newLoc, System.currentTimeMillis() + (Jobs.getGCManager().globalblocktimer * 1000));
+		    Jobs.getBpManager().add(newLoc, Jobs.getGCManager().globalblocktimer);
 	    }
 	}
     }

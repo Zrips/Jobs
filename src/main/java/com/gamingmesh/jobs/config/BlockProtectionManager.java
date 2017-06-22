@@ -38,40 +38,48 @@ public class BlockProtectionManager {
 	return i;
     }
 
-    public void add(Block block, boolean paid) {
-	add(block, -1L, paid);
-    }
+//    public void add(Block block, boolean paid) {
+//	add(block, -1L, paid);
+//    }
+//
+//    public void add(Block block) {
+//	add(block, -1L, true);
+//    }
 
-    public void add(Block block) {
-	add(block, -1L, true);
-    }
-
-    public void add(Block block, Long time, boolean paid) {
-	add(block.getLocation(), time, paid);
-    }
+//    public void add(Block block, Long time, boolean paid) {
+//	add(block.getLocation(), time, paid);
+//    }
 
     public void add(Block block, Integer cd) {
 	add(block, cd, true);
     }
 
     public void add(Block block, Integer cd, boolean paid) {
+	add(block.getLocation(), cd, paid);
+    }
+
+    public void add(Location loc, Integer cd) {
+	add(loc, cd, true);
+    }
+
+    public void add(Location loc, Integer cd, boolean paid) {
 	if (cd == null)
 	    return;
 	if (cd != -1)
-	    add(block, System.currentTimeMillis() + (cd * 1000), paid);
+	    addP(loc, System.currentTimeMillis() + (cd * 1000), paid);
 	else
-	    add(block, paid);
+	    addP(loc, -1L, paid);
     }
 
-    public void add(Block block, Long time) {
-	add(block.getLocation(), time, true);
-    }
+//    public void add(Block block, Long time) {
+//	add(block.getLocation(), time, true);
+//    }
+//
+//    public void add(Location loc, Long time) {
+//	add(loc, time, true);
+//    }
 
-    public void add(Location loc, Long time) {
-	add(loc, time, true);
-    }
-
-    public BlockProtection add(Location loc, Long time, boolean paid) {
+    public BlockProtection addP(Location loc, Long time, boolean paid) {
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 	HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> regions = map.get(loc.getWorld());
 	if (regions == null)
@@ -145,14 +153,8 @@ public class BlockProtectionManager {
 	    return null;
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 	BlockProtection Bp = chunk.get(v);
-
 	if (Bp == null)
 	    return null;
-	 Debug.D("by " + v);
-	 Debug.D("got " + Bp.getPos().toString());
-	for (Entry<String, BlockProtection> one : chunk.entrySet()) {
-	    Debug.D("g " + one.getKey());
-	}
 	return Bp;
     }
 
@@ -171,7 +173,8 @@ public class BlockProtectionManager {
 
     @SuppressWarnings("deprecation")
     public Integer getBlockDelayTime(Block block) {
-	return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId());
+	Integer c = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId());
+	return c == null ? 0 : c;
     }
 
     @SuppressWarnings("deprecation")

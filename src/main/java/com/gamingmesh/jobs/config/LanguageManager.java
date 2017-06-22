@@ -73,6 +73,7 @@ public class LanguageManager {
 
 	    c.get("economy.error.nomoney", "&cSorry, no money left in national bank!");
 	    c.get("limitedItem.error.levelup", "&cYou need to levelup in [jobname] to use this item!");
+	    c.get("general.Spawner", "&r[type] Spawner");
 	    c.get("general.info.toplineseparator", "&7*********************** &6%playername% &7***********************");
 	    c.get("general.info.separator", "&7*******************************************************");
 	    c.get("general.info.time.day", "&e%days% &6days ");

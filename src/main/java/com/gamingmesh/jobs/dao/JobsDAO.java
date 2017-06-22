@@ -1263,7 +1263,7 @@ public abstract class JobsDAO {
 		int z = res.getInt("z");
 		long resets = res.getLong("resets");
 		Location loc = new Location(world, x, y, z);
-		BlockProtection bp = Jobs.getBpManager().add(loc, resets, true);
+		BlockProtection bp = Jobs.getBpManager().addP(loc, resets, true);
 		bp.setId(id);
 		long t = System.currentTimeMillis();
 		bp.setRecorded(res.getLong("recorded"));

@@ -26,6 +26,9 @@ public class bp implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
 	    return false;
 	}
+	boolean all = false;
+	if (args.length > 0 && args[0].equalsIgnoreCase("-a"))
+	    all = true;
 
 	final Player player = (Player) sender;
 
@@ -40,14 +43,18 @@ public class bp implements Cmd {
 		    BlockProtection bp = Jobs.getBpManager().getBp(l);
 		    if (bp != null) {
 			Long time = bp.getTime();
-			if (bp.getAction() == DBAction.DELETE)
-			    continue;
-			if (time != -1 && time < System.currentTimeMillis()) {
-			    Jobs.getBpManager().remove(l);
-			    continue;
+			if (!all) {
+			    if (bp.getAction() == DBAction.DELETE)
+				continue;
+			    if (time != -1 && time < System.currentTimeMillis()) {
+				Jobs.getBpManager().remove(l);
+				continue;
+			    }
 			}
 			changedBlocks.add(l.getBlock());
-			if (time == -1)
+			if (bp.getAction() == DBAction.DELETE)
+			    player.sendBlockChange(l, Material.STAINED_GLASS, (byte) 14);
+			else if (time == -1)
 			    player.sendBlockChange(l, Material.STAINED_GLASS, (byte) 15);
 			else
 			    player.sendBlockChange(l, Material.STAINED_GLASS, (byte) 0);
@@ -68,7 +75,7 @@ public class bp implements Cmd {
 		}
 	    }
 	}, 120L);
-	
+
 	return true;
     }
 }

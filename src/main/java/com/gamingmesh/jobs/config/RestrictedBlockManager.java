@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CmiItems.CMIItem;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -28,7 +28,6 @@ public class RestrictedBlockManager {
      * 
      * loads from Jobs/restrictedAreas.yml
      */
-    @SuppressWarnings("deprecation")
     public synchronized void load() {
 	File f = new File(plugin.getDataFolder(), "restrictedBlocks.yml");
 	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
@@ -151,20 +150,19 @@ public class RestrictedBlockManager {
 	    c.getC().addDefault("blocksTimer.emeraldore.cd", -1);
 	    c.getC().addDefault("blocksTimer.quartzore.id", "quartzore");
 	    c.getC().addDefault("blocksTimer.quartzore.cd", -1);
-
 	}
 
 	if (c.getC().isConfigurationSection("blocksTimer")) {
 	    Set<String> lss = c.getC().getConfigurationSection("blocksTimer").getKeys(false);
 	    for (String one : lss) {
 		if (((c.getC().isString("blocksTimer." + one + ".id")) || (c.getC().isInt("blocksTimer." + one + ".id"))) && (c.getC().isInt("blocksTimer." + one
-		    + ".cd"))) {
-		    Material mat = getMaterial(c.getC().getString("blocksTimer." + one + ".id"));
-		    if ((mat == null) || (!mat.isBlock())) {
+		    + ".cd"))) {		    
+		    CMIItem cm = Jobs.getItemManager().getItem(c.getC().getString("blocksTimer." + one + ".id"));		    
+		    if ((cm == null) || (!cm.getMaterial().isBlock())) {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Jobs] Your defined (" + c.getC().getString(new StringBuilder("blocksTimer.").append(one)
 			    .append(".id").toString()) + ") protected block id/name is not correct!");
 		    } else {
-			this.restrictedBlocksTimer.put(mat.getId(), c.getC().getInt("blocksTimer." + one + ".cd"));
+			this.restrictedBlocksTimer.put(cm.getId(), c.getC().getInt("blocksTimer." + one + ".cd"));
 		    }
 		}
 	    }
@@ -177,30 +175,5 @@ public class RestrictedBlockManager {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-    }
-
-    @SuppressWarnings("deprecation")
-    private static Material getMaterial(String id) {
-	id = id.replace("_", "").replace(" ", "");
-	Material material = null;
-
-	for (Material one : Material.values()) {
-	    if (one.name().replace("_", "").equalsIgnoreCase(id)) {
-		material = one;
-		break;
-	    }
-	}
-
-	if (material == null) {
-	    Integer matId = null;
-	    try {
-		matId = Integer.valueOf(id);
-	    } catch (NumberFormatException localNumberFormatException) {
-	    }
-	    if (matId != null) {
-		material = Material.getMaterial(matId);
-	    }
-	}
-	return material;
     }
 }
