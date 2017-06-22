@@ -65,11 +65,11 @@ public class gtop implements Cmd {
 	    }
 	} else {
 
-	    player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
-
-	    ScoreboardManager manager = Bukkit.getScoreboardManager();
-	    Scoreboard board = manager.getNewScoreboard();
-	    Objective objective = board.registerNewObjective("JobsTopPlayers", "dummy");
+	    Jobs.getScboard().addNew(player);
+	    Scoreboard board = player.getScoreboard();
+	    Objective objective = board.getObjective("JobsTopPlayers");
+	    if (objective == null)
+		objective = board.registerNewObjective("JobsTopPlayers", "dummy");
 	    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	    objective.setDisplayName(Jobs.getLanguage().getMessage("scoreboard.gtopline"));
 	    int i = page * 15 - 15;
@@ -82,8 +82,6 @@ public class gtop implements Cmd {
 		score.setScore(line);
 	    }
 	    player.setScoreboard(board);
-
-	    Jobs.getScboard().addNew(player);
 
 	    int prev = page < 2 ? 1 : page - 1;
 	    int next = page + 1;

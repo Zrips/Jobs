@@ -78,12 +78,11 @@ public class top implements Cmd {
 		    One.getExp()));
 	    }
 	} else {
-
-	    player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
-
-	    ScoreboardManager manager = Bukkit.getScoreboardManager();
-	    Scoreboard board = manager.getNewScoreboard();
-	    Objective objective = board.registerNewObjective("JobsTopPlayers", "dummy");
+	    Jobs.getScboard().addNew(player);
+	    Scoreboard board = player.getScoreboard();
+	    Objective objective = board.getObjective("JobsTopPlayers");
+	    if (objective == null)
+		objective = board.registerNewObjective("JobsTopPlayers", "dummy");
 	    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 	    objective.setDisplayName(Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", jobName));
 	    int i = start;
@@ -99,7 +98,6 @@ public class top implements Cmd {
 	    }
 	    player.setScoreboard(board);
 
-	    Jobs.getScboard().addNew(player);
 
 	    int from = start;
 	    if (start >= 15)
