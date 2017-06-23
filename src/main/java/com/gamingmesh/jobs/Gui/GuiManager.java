@@ -197,7 +197,11 @@ public class GuiManager {
 		+ ".info")));
 	    int y = 1;
 	    for (int z = 0; z < info.size(); z++) {
-		String itemName = Jobs.getNameTranslatorManager().Translate(info.get(z).getName(), info.get(z));
+
+		String itemName = info.get(z).getName().toLowerCase().replace('_', ' ');
+		itemName = Character.toUpperCase(itemName.charAt(0)) + itemName.substring(1);
+		itemName = Jobs.getNameTranslatorManager().Translate(itemName, info.get(z));
+		itemName = org.bukkit.ChatColor.translateAlternateColorCodes('&', itemName);
 
 		double income = info.get(z).getIncome(level, numjobs);
 		income = income + (income * boost.getFinal(CurrencyType.MONEY));
