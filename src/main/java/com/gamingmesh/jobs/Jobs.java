@@ -35,6 +35,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -795,7 +796,7 @@ public class Jobs extends JavaPlugin {
 
 	    setMyPetManager();
 	    setWorldGuard();
-	    
+
 	    setMythicManager();
 	    if (MythicManager != null && MythicManager.Check() && GconfigManager.MythicMobsEnabled) {
 		MythicManager.registerListener();

@@ -2,7 +2,9 @@ package com.gamingmesh.jobs.CmiItems;
 
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
@@ -35,7 +37,7 @@ public class ItemManager {
 	    byMaterial.put(one, cm);
 	}
 
-	for (itemNames one : itemNames.values()) {
+	for (CMIMaterial one : CMIMaterial.values()) {
 	    proccessItemName(one);
 	}
     }
@@ -64,7 +66,7 @@ public class ItemManager {
 	    } catch (Exception e) {
 	    }
 	}
-	
+
 	if (name.contains("-")) {
 	    name = name.split("-")[0];
 	    try {
@@ -88,7 +90,7 @@ public class ItemManager {
 		    }
 		}
 		if (cm == null) {
-		    for (itemNames one : itemNames.values()) {
+		    for (CMIMaterial one : CMIMaterial.values()) {
 			if (one.getName().replace(" ", "").equalsIgnoreCase(name)) {
 			    cm = byId.get(one.getId());
 			    if (cm != null) {
@@ -98,7 +100,7 @@ public class ItemManager {
 			}
 		    }
 		    if (cm == null) {
-			for (itemNames one : itemNames.values()) {
+			for (CMIMaterial one : CMIMaterial.values()) {
 			    if (one.getName().replace(" ", "").toLowerCase().startsWith(name)) {
 				cm = byId.get(one.getId());
 				if (cm != null) {
@@ -109,7 +111,7 @@ public class ItemManager {
 			}
 		    }
 		    if (cm == null) {
-			for (itemNames one : itemNames.values()) {
+			for (CMIMaterial one : CMIMaterial.values()) {
 
 			    if (one.getName().replace(" ", "").toLowerCase().contains(name)) {
 				cm = byId.get(one.getId());
@@ -141,27 +143,27 @@ public class ItemManager {
 	return cm.getMaterial();
     }
 
-    public itemNames getRealName(CMIItem item) {
+    public CMIMaterial getRealName(CMIItem item) {
 	return getRealName(item, false);
     }
 
-    public itemNames getRealName(CMIItem item, boolean safe) {
-	for (itemNames one : itemNames.values()) {
+    public CMIMaterial getRealName(CMIItem item, boolean safe) {
+	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one.getId() == item.getId() && one.getData() == item.getData())
 		return one;
 	}
-	return safe ? itemNames.air_0_0 : null;
+	return safe ? CMIMaterial.air_0_0 : null;
     }
 
-    private static itemNames proccessItemName(itemNames one) {
+    private static CMIMaterial proccessItemName(CMIMaterial one) {
 	if (one.getName().contains("[colorNames]"))
-	    one.setName(one.getName().replace("[colorNames]", colorNames.getById(one.getData()).getName()));
+	    one.setName(one.getName().replace("[colorNames]", CMIChatColor.getById(one.getData()).getName()));
 	else if (one.getName().contains("[entityNames]"))
-	    one.setName(one.getName().replace("[entityNames]", entityNames.getById(one.getData()).getName()));
+	    one.setName(one.getName().replace("[entityNames]", CMIEntityType.getById(one.getData()).getName()));
 	return one;
     }
 
-    public enum colorNames {
+    public enum CMIChatColor {
 	White(0, "White"),
 	Orange(1, "Orange"),
 	Magenta(2, "Magenta"),
@@ -182,7 +184,7 @@ public class ItemManager {
 	private int id;
 	private String name;
 
-	colorNames(int id, String name) {
+	CMIChatColor(int id, String name) {
 	    this.id = id;
 	    this.name = name;
 	}
@@ -191,20 +193,24 @@ public class ItemManager {
 	    return id;
 	}
 
+	public static String translate(String msg) {
+	    return ChatColor.translateAlternateColorCodes('&', msg);
+	}
+
 	public String getName() {
 	    return name;
 	}
 
-	public static colorNames getById(int id) {
-	    for (colorNames one : colorNames.values()) {
+	public static CMIChatColor getById(int id) {
+	    for (CMIChatColor one : CMIChatColor.values()) {
 		if (one.getId() == id)
 		    return one;
 	    }
-	    return colorNames.White;
+	    return CMIChatColor.White;
 	}
     }
 
-    public enum entityNames {
+    public enum CMIEntityType {
 	elder_guardian(4, "Elder Guardian"),
 	wither_skeleton(5, "Wither Skeleton"),
 	stray(6, "Stray"),
@@ -215,7 +221,7 @@ public class ItemManager {
 	armor_stand(30, "Armor Stand"),
 	donkey(31, "Donkey"),
 	mule(32, "Mule"),
-	evocation_illager(34, "Evocation illager"),
+	evocation_illager(34, "Evocation Illager"),
 	vex(35, "Vex"),
 	vindication_illager(36, "Vindication Illager"),
 	illusion_illager(37, "Illusion Illager"),
@@ -245,10 +251,10 @@ public class ItemManager {
 	chicken(93, "Chicken"),
 	squid(94, "Squid"),
 	wolf(95, "Wolf"),
-	mooshroom(96, "Mooshroom"),
+	mushroom_cow(96, "Mushroom Cow"),
 	snowman(97, "Snowman"),
 	ocelot(98, "Ocelot"),
-	villager_golem(99, "Villager"),
+	villager_golem(99, "Iron Golem"),
 	horse(100, "Horse"),
 	rabbit(101, "Rabbit"),
 	polar_bear(102, "Polar Bear"),
@@ -259,7 +265,7 @@ public class ItemManager {
 	private int id;
 	private String name;
 
-	entityNames(int id, String name) {
+	CMIEntityType(int id, String name) {
 	    this.id = id;
 	    this.name = name;
 	}
@@ -272,16 +278,43 @@ public class ItemManager {
 	    return name;
 	}
 
-	public static entityNames getById(int id) {
-	    for (entityNames one : entityNames.values()) {
+	public EntityType getType() {
+	    for (EntityType one : EntityType.values()) {
+		if (one.getTypeId() == this.getId())
+		    return one;
+	    }
+	    return null;
+	}
+
+	public static CMIEntityType getById(int id) {
+	    for (CMIEntityType one : CMIEntityType.values()) {
 		if (one.getId() == id)
 		    return one;
 	    }
-	    return entityNames.pig;
+	    return null;
+	}
+
+	public static CMIEntityType getByName(String name) {
+	    name = name.toLowerCase().replace("_", "");
+	    CMIEntityType type = null;
+	    for (CMIEntityType one : CMIEntityType.values()) {
+		if (one.name().equalsIgnoreCase(name) || one.name.replace(" ", "").equalsIgnoreCase(name)) {
+		    type = one;
+		    break;
+		}
+	    }
+	    if (type == null)
+		for (CMIEntityType one : CMIEntityType.values()) {
+		    if (one.name.contains(name)) {
+			type = one;
+			break;
+		    }
+		}
+	    return type;
 	}
     }
 
-    public enum itemNames {
+    public enum CMIMaterial {
 	air_0_0(0, 0, "Unknown"),
 	stone_1_0(1, 0, "Stone"),
 	stone_1_1(1, 1, "Granite"),
@@ -1065,7 +1098,7 @@ public class ItemManager {
 	private int data;
 	private String name;
 
-	itemNames(int id, int data, String name) {
+	CMIMaterial(int id, int data, String name) {
 	    this.id = id;
 	    this.data = data;
 	    this.name = name;

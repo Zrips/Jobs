@@ -36,6 +36,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CmiItems.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -49,6 +50,7 @@ import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class ConfigManager {
     private Jobs plugin;
@@ -153,7 +155,7 @@ public class ConfigManager {
 		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid ChatColour property.  Defaulting to WHITE!");
 		}
 	    }
-	    
+
 	    String bossbar = null;
 	    if (jobSection.contains("BossBarColour")) {
 		bossbar = jobSection.getString("BossBarColour", "");
@@ -162,7 +164,7 @@ public class ConfigManager {
 		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid BossBarColour property.");
 		}
 	    }
-	    
+
 	    DisplayMethod displayMethod = DisplayMethod.matchMethod(jobSection.getString("chat-display", ""));
 	    if (displayMethod == null) {
 		Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid chat-display property. Defaulting to None!");
@@ -353,14 +355,14 @@ public class ConfigManager {
 				enchants.put(ench, level);
 			}
 
-		    BoostMultiplier b = new BoostMultiplier();		    
+		    BoostMultiplier b = new BoostMultiplier();
 		    if (itemSection.isDouble("moneyBoost"))
 			b.add(CurrencyType.MONEY, itemSection.getDouble("moneyBoost") - 1);
 		    if (itemSection.isDouble("pointBoost"))
 			b.add(CurrencyType.POINTS, itemSection.getDouble("pointBoost") - 1);
 		    if (itemSection.isDouble("expBoost"))
-			b.add(CurrencyType.EXP,  itemSection.getDouble("expBoost") - 1);		    
-		    
+			b.add(CurrencyType.EXP, itemSection.getDouble("expBoost") - 1);
+
 		    jobItems.add(new JobItems(node, id, 0, 1, name, lore, enchants, b));
 		}
 	    }
@@ -492,6 +494,7 @@ public class ConfigManager {
 			    type = material.toString();
 			    id = material.getId();
 			} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
+
 			    // check entities
 			    EntityType entity = EntityType.fromName(key);
 			    if (entity == null) {
