@@ -5,6 +5,7 @@ limitedItem:
   error:
     levelup: '&cDu musst als [jobname] ein Level aufsteigen bevor du dieses Item verwenden kannst!
 general:
+  Spawner: '&r[Typ] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -184,7 +185,7 @@ command:
       args: '[Spielername]'
     error:
       nojob: Keine gespeicherten Jobs des Spielers vorhanden.
-    output: Level %joblevel% %jobname%
+      output: Level %joblevel% %jobname%
   give:
     help:
       info: Vergibt je nach Job Items. Spielername ist optional.
@@ -366,21 +367,23 @@ command:
       addUsage: '&eNutze: &6/Jobs area add [areaName] [bonus]'
       removeUsage: '&eNutze: &6/Jobs area remove [areaName]'
     output:
-      addedNew: '&eNeue Zone erstellt mit&6%bonus% &ebonus'
+      addedNew: '&eNeue Zone erstellt mit&6%bonus% &ebonus.'
       removed: '&eZone &6%name% &eist entfernt.'
       list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
         &6%bonus%'
-      noAreas: '&eEs gibt keine gespeicherten Zone'
+      wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
+      noAreas: '&eEs gibt keine gespeicherten Zone.'
       noAreasByLoc: '&eEs gib hier keine Zonen.'
       areaList: '&eZone(n) bei deiner Position: &6%list%'
       selected1: '&e1. Punkt ausgewählt: &6%x%:%y%:%z%'
       selected2: '&e2. Punkt ausgewählt: &6%x%:%y%:%z%'
       select: '&eWähle den 2. Punkt dem Auswahlwerkzeug (%tool%).'
-      exist: '&eEine andere Zone trägt bereits diesen Namen'
-      dontExist: '&eEine Zone mit diesem Namen existiert nicht'
+      exist: '&eEine andere Zone trägt bereits diesen Namen.'
+      dontExist: '&eEine Zone mit diesem Namen existiert nicht.'
+      wgDontExist: '&eWorldGuard-Region mit diesem Namen existiert nicht.'
   log:
     help:
-      info: Shows statistics.
+      info: Siehe Statistiken.
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
