@@ -5,11 +5,12 @@ limitedItem:
   error:
     levelup: '&c你需要让你的职业 [职业] 升级才能使用此物品!'
 general:
+  Spawner: '&r[type] 刷怪笼'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
     time:
-      day: '&e%days% &6天 '
+      days: '&e%days% &6天 '
       hours: '&e%hours% &6小时 '
       mins: '&e%mins% &6分 '
       secs: '&e%secs% &6秒 '
@@ -182,7 +183,7 @@ command:
     output: LV.%joblevel% (%getbackjoblevel%) %jobname%
   give:
     help:
-      info: '玩家名可选. 给玩家职业以物品'
+      info: 玩家名可选. 给玩家职业以物品
       args: '[玩家] [职业] [物品]'
     output:
       notonline: '&4玩家 [%playername%] 不在线!'
@@ -190,7 +191,7 @@ command:
   info:
     help:
       title: '&2*** &eJobs&2 ***'
-      info: '显示一个职业的详细信息.'
+      info: 显示一个职业的详细信息.
       penalty: '&e这个职业拥有 &2[bonus]% &e惩罚因为就业人数过多.'
       bonus: '&e这个职业拥有 &2[bonus]% &e加成因为就业人数较少.'
       args: '[职业] [动作]'
@@ -365,6 +366,7 @@ command:
       removed: '&e移除了管制区域 &6%name%'
       list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
         &6%bonus%'
+      wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
       noAreas: '&e没有保存的管制区域'
       noAreasByLoc: '&e这里没有管制区域'
       areaList: '&e这里的管制区域: &6%list%'
@@ -373,6 +375,7 @@ command:
       select: '&e用 (%tool%) 选择两个点'
       exist: '&e这个名字的管制区域已经存在'
       dontExist: '&e这个名字的管制区域不存在'
+      wgDontExist: '&e不存在此 WorldGuard 区域!'
   log:
     help:
       info: 显示统计信息.
@@ -390,8 +393,9 @@ command:
       info: 显示全局统计信息.
       args: ''
     output:
-      topline: '&7*********************** &6Global statistics &7***********************'
-      list: '&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6游戏币: %money% &e经验: %exp%'
+      topline: '&7*********************** &6全局统计&7***********************'
+      list: '&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6游戏币:
+        %money% &e经验: %exp%'
       bottomline: '&7**************************************************************'
       nodata: '&c没有数据'
   transfer:
@@ -406,6 +410,12 @@ command:
       args: '[玩家] [职业] [级]'
     output:
       target: 你的 %jobname% 职业被提升了 %levelsgained% 级.
+  exp:
+    help:
+      info: 改变玩家此职业的经验.
+      args: '[玩家] [职业] [set/add/take] [数量]'
+    output:
+      target: '&e你的 %jobname% &e职业的经验已经更改, 你现在已经 &6%level% 级了 &e, 有 &6%exp% 经验'
   demote:
     help:
       info: 降级玩家的职业等级.
