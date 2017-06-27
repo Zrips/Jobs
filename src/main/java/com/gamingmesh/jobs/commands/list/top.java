@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -78,26 +79,38 @@ public class top implements Cmd {
 		    One.getExp()));
 	    }
 	} else {
-	    Jobs.getScboard().addNew(player);
-	    Scoreboard board = player.getScoreboard();
-	    Objective objective = board.getObjective("JobsTopPlayers");
-	    if (objective == null)
-		objective = board.registerNewObjective("JobsTopPlayers", "dummy");
-	    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-	    objective.setDisplayName(Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", jobName));
-	    int i = start;
-	    int line = 16;
-	    for (TopList One : FullList) {
+
+	    List<String> ls = new ArrayList<String>();
+
+	    int i = (start + 1) * 15 - 15;
+	    for (TopList one : FullList) {
 		i++;
-		line--;
-		String playername = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
-
-		Score score = objective.getScore(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", i, "%playername%", playername, "%level%", One.getLevel()));
-		score.setScore(line);
-
+		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
+		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", i, "%playername%", playername, "%level%", one.getLevel()));
 	    }
-	    player.setScoreboard(board);
 
+	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", jobName), ls);
+
+	    plugin.getCMIScoreboardManager().addNew(player);
+
+//	    Scoreboard board = player.getScoreboard();
+//	    Objective objective = board.getObjective("JobsTopPlayers");
+//	    if (objective == null)
+//		objective = board.registerNewObjective("JobsTopPlayers", "dummy");
+//	    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+//	    objective.setDisplayName(Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", jobName));
+//	    int i = start;
+//	    int line = 16;
+//	    for (TopList One : FullList) {
+//		i++;
+//		line--;
+//		String playername = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
+//
+//		Score score = objective.getScore(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", i, "%playername%", playername, "%level%", One.getLevel()));
+//		score.setScore(line);
+//
+//	    }
+//	    player.setScoreboard(board);
 
 	    int from = start;
 	    if (start >= 15)

@@ -1,12 +1,11 @@
 package com.gamingmesh.jobs.commands.list;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class entitylist implements Cmd {
 

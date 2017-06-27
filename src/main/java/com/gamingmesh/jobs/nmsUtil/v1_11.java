@@ -35,5 +35,4 @@ public class v1_11 implements NMS {
     public Block getTargetBlock(Player player, int range) {
 	return player.getTargetBlock((Set<Material>) null, range);
     }
-
 }

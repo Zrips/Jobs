@@ -60,7 +60,6 @@ import com.gamingmesh.jobs.config.LanguageManager;
 import com.gamingmesh.jobs.config.NameTranslatorManager;
 import com.gamingmesh.jobs.config.RestrictedAreaManager;
 import com.gamingmesh.jobs.config.RestrictedBlockManager;
-import com.gamingmesh.jobs.config.ScboardManager;
 import com.gamingmesh.jobs.config.ScheduleManager;
 import com.gamingmesh.jobs.config.ShopManager;
 import com.gamingmesh.jobs.config.TitleManager;
@@ -93,6 +92,7 @@ import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.stuff.VersionChecker;
+import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -104,7 +104,7 @@ public class Jobs extends JavaPlugin {
     private static Language lManager = null;
     private static LanguageManager lmManager = null;
     private static SignUtil signManager = null;
-    private static ScboardManager scboardManager = null;
+    private CMIScoreboardManager CMIScoreboardManager = null;
     private static ScheduleManager scheduleManager = null;
     private static NameTranslatorManager NameTranslatorManager = null;
     private static GuiManager GUIManager = null;
@@ -370,12 +370,15 @@ public class Jobs extends JavaPlugin {
      * Returns scoreboard manager
      * @return the scoreboard manager
      */
-    public static ScboardManager getScboard() {
-	return scboardManager;
+    public CMIScoreboardManager getCMIScoreboardManager() {
+	if (CMIScoreboardManager == null)
+	    CMIScoreboardManager = new CMIScoreboardManager(this);
+	return CMIScoreboardManager;
     }
 
-    public void setScboard() {
-	scboardManager = new ScboardManager(this);
+    protected static Jobs instance;
+    public static Jobs getInstance() {
+	return instance;
     }
 
     /**
@@ -507,6 +510,7 @@ public class Jobs extends JavaPlugin {
      * @throws IOException 
      */
     public void startup() {
+	instance = this;
 	try {
 	    reload();
 	} catch (IOException e1) {
@@ -767,7 +771,6 @@ public class Jobs extends JavaPlugin {
 	    setPermissionHandler(new PermissionHandler(this));
 	    setJobsClassloader();
 	    setPlayerManager();
-	    setScboard();
 	    setLanguage();
 	    setGUIManager();
 	    setExplore();
