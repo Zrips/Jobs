@@ -728,6 +728,7 @@ public class Jobs extends JavaPlugin {
     @Override
     public void onEnable() {
 	running = true;
+	this.setEnabled(true);
 
 	versionCheckManager = new VersionChecker(this);
 	version = versionCheckManager.getVersion().getShortVersion();
@@ -840,6 +841,7 @@ public class Jobs extends JavaPlugin {
 	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Plugin has been disabled succesfully.");
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	console.sendMessage(message);
+	this.setEnabled(false);
     }
 
     /**

@@ -77,6 +77,8 @@ public class BufferedEconomy {
     public void payAll() {
 	if (payments.isEmpty())
 	    return;
+	if (!plugin.isEnabled())
+	    return;
 
 	synchronized (paymentCache) {
 
@@ -181,14 +183,14 @@ public class BufferedEconomy {
 			Jobs.getActionBar().send(payment.getOfflinePlayer().getPlayer(), ChatColor.RED + Jobs.getLanguage().getMessage("economy.error.nomoney"));
 			continue;
 		    }
-		    if (Jobs.getGCManager().isEconomyAsync())
+		    if (Jobs.getGCManager().isEconomyAsync()) {
 			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);
-		    else
+		    } else
 			Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 		} else {
-		    if (Jobs.getGCManager().isEconomyAsync())
+		    if (Jobs.getGCManager().isEconomyAsync()) {
 			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);
-		    else
+		    } else
 			Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 		}
 		try {
