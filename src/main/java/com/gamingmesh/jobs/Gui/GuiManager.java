@@ -221,7 +221,7 @@ public class GuiManager {
 		    if (z == info.size() - 1)
 			continue;
 		    ItemMeta meta = GuiItem.getItemMeta();
-		    meta.setDisplayName(job.getName());
+			meta.setDisplayName(job.getChatColor()+job.getName());
 		    meta.setLore(Lore);
 		    GuiItem.setItemMeta(meta);
 		    //GuiInv.setItem(i, GuiItem);
