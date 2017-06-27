@@ -18,6 +18,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.RawMessage;
 
 public class top implements Cmd {
 
@@ -42,22 +43,22 @@ public class top implements Cmd {
 	    return true;
 	}
 
-	int start = 0;
+	int page = 1;
 	if (args.length == 2)
 	    try {
-		start = Integer.parseInt(args[1]);
+		page = Integer.parseInt(args[1]);
 	    } catch (NumberFormatException e) {
 		return true;
 	    }
-	if (start < 0)
-	    start = 0;
+	if (page < 1)
+	    page = 1;
 
 	if (Jobs.getJob(args[0]) == null) {
 	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return false;
 	}
 
-	List<TopList> FullList = Jobs.getJobsDAO().toplist(args[0], start);
+	List<TopList> FullList = Jobs.getJobsDAO().toplist(args[0], page * 15);
 	if (FullList.size() <= 0) {
 	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    return false;
@@ -70,7 +71,7 @@ public class top implements Cmd {
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", jobName));
-	    int i = start;
+	    int i = (page * 15) - 15;
 	    for (TopList One : FullList) {
 		i++;
 		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
@@ -82,7 +83,7 @@ public class top implements Cmd {
 
 	    List<String> ls = new ArrayList<String>();
 
-	    int i = (start + 1) * 15 - 15;
+	    int i = (page * 15) - 15;
 	    for (TopList one : FullList) {
 		i++;
 		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
@@ -93,40 +94,15 @@ public class top implements Cmd {
 
 	    plugin.getCMIScoreboardManager().addNew(player);
 
-//	    Scoreboard board = player.getScoreboard();
-//	    Objective objective = board.getObjective("JobsTopPlayers");
-//	    if (objective == null)
-//		objective = board.registerNewObjective("JobsTopPlayers", "dummy");
-//	    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-//	    objective.setDisplayName(Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", jobName));
-//	    int i = start;
-//	    int line = 16;
-//	    for (TopList One : FullList) {
-//		i++;
-//		line--;
-//		String playername = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
-//
-//		Score score = objective.getScore(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", i, "%playername%", playername, "%level%", One.getLevel()));
-//		score.setScore(line);
-//
-//	    }
-//	    player.setScoreboard(board);
+	    int prev = page < 2 ? 1 : page - 1;
+	    int next = page + 1;
 
-	    int from = start;
-	    if (start >= 15)
-		from = start - 15;
-	    int until = start + 15;
-
-	    String prev = "[\"\",{\"text\":\"" + Jobs.getLanguage().getMessage("command.top.output.prev")
-		+ "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/jobs top "
-		+ jobName + " " + from + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + Jobs.getLanguage().getMessage(
-		    "command.top.output.show", "[from]", from, "[until]", (from + 15)) + "\"}]}}}";
-	    String next = " {\"text\":\"" + Jobs.getLanguage().getMessage("command.top.output.next")
-		+ "\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/jobs top "
-		+ jobName + " " + until + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + Jobs.getLanguage().getMessage(
-		    "command.top.output.show", "[from]", (until + 1), "[until]", (until + 15)) + "\"}]}}}]";
-
-	    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + player.getName() + " " + prev + "," + next);
+	    RawMessage rm = new RawMessage();
+	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.prev"),
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", prev * 15 - 15, "[until]", (prev * 15)), "jobs top " + jobName + " " + prev);
+	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.next"),
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", (next * 15), "[until]", (next * 15 + 15)), "jobs top " + jobName + " " + next);
+	    rm.show(player);
 	}
 	return true;
     }
