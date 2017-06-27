@@ -1,0 +1,2179 @@
+ItemList:
+  '0':
+    MCName: air
+    Name: 空气
+  '1':
+    MCName: stone
+    Name: 石头
+  '1:0':
+    MCName: stone
+    Name: 石头
+  '1:1':
+    MCName: stone
+    Name: 花岗岩
+  '1:2':
+    MCName: stone
+    Name: 磨制花岗岩
+  '1:3':
+    MCName: stone
+    Name: 闪长岩
+  '1:4':
+    MCName: stone
+    Name: 磨制闪长岩
+  '1:5':
+    MCName: stone
+    Name: 安山岩
+  '1:6':
+    MCName: stone
+    Name: 磨制安山岩
+  '2':
+    MCName: grass
+    Name: 草方块
+  '3':
+    MCName: dirt
+    Name: 泥土
+  '3:0':
+    MCName: dirt
+    Name: 沙土
+  '3:1':
+    MCName: dirt
+    Name: 泥土
+  '3:2':
+    MCName: dirt
+    Name: 灰化土
+  '4':
+    MCName: cobblestone
+    Name: 圆石
+  '5':
+    MCName: planks
+    Name: 橡木木板
+  '5:0':
+    MCName: planks
+    Name: 橡木木板
+  '5:1':
+    MCName: planks
+    Name: 云杉木板
+  '5:2':
+    MCName: planks
+    Name: 白桦木板
+  '5:3':
+    MCName: planks
+    Name: 丛林木板
+  '5:4':
+    MCName: planks
+    Name: 金合欢木板
+  '5:5':
+    MCName: planks
+    Name: 深色橡木木板
+  '6':
+    MCName: sapling
+    Name: 橡树树苗
+  '6:0':
+    MCName: sapling
+    Name: 橡树树苗
+  '6:1':
+    MCName: sapling
+    Name: 云杉树苗
+  '6:2':
+    MCName: sapling
+    Name: 白桦树苗
+  '6:3':
+    MCName: sapling
+    Name: 丛林树苗
+  '6:4':
+    MCName: sapling
+    Name: 金合欢树苗
+  '6:5':
+    MCName: sapling
+    Name: 深色橡树树苗
+  '7':
+    MCName: bedrock
+    Name: 基岩
+  '8':
+    MCName: flowing_water
+    Name: 水
+  '9':
+    MCName: water
+    Name: 静态水
+  '10':
+    MCName: flowing_lava
+    Name: 岩浆
+  '11':
+    MCName: lava
+    Name: 静态岩浆
+  '12':
+    MCName: sand
+    Name: 沙子
+  '12:0':
+    MCName: sand
+    Name: 沙子
+  '12:1':
+    MCName: sand
+    Name: 红沙
+  '13':
+    MCName: gravel
+    Name: 砂砾
+  '14':
+    MCName: gold_ore
+    Name: 金矿石
+  '15':
+    MCName: iron_ore
+    Name: 铁矿石
+  '16':
+    MCName: coal_ore
+    Name: 煤矿石
+  '17':
+    MCName: log
+    Name: 橡木
+  '17:0':
+    MCName: log
+    Name: 橡木
+  '17:1':
+    MCName: log
+    Name: 云杉木
+  '17:2':
+    MCName: log
+    Name: 白桦木
+  '17:3':
+    MCName: log
+    Name: 丛林木
+  '18':
+    MCName: leaves
+    Name: 橡树树叶
+  '18:0':
+    MCName: leaves
+    Name: 橡树树叶
+  '18:1':
+    MCName: leaves
+    Name: 云杉树叶
+  '18:2':
+    MCName: leaves
+    Name: 白桦树叶
+  '18:3':
+    MCName: leaves
+    Name: 丛林树叶
+  '19':
+    MCName: sponge
+    Name: 海绵
+  '19:1':
+    MCName: sponge
+    Name: 湿海绵
+  '20':
+    MCName: glass
+    Name: 玻璃
+  '21':
+    MCName: lapis_ore
+    Name: 青金石矿石
+  '22':
+    MCName: lapis_block
+    Name: 青金石块
+  '23':
+    MCName: dispenser
+    Name: 发射器
+  '24':
+    MCName: sandstone
+    Name: 沙石
+  '24:1':
+    MCName: sandstone
+    Name: 錾制砂石
+  '24:2':
+    MCName: sandstone
+    Name: 平滑砂石
+  '25':
+    MCName: noteblock
+    Name: 音符盒
+  '26':
+    MCName: bed
+    Name: 床
+  '27':
+    MCName: golden_rail
+    Name: 充能铁轨
+  '28':
+    MCName: detector_rail
+    Name: 探测铁轨
+  '29':
+    MCName: sticky_piston
+    Name: 粘性活塞
+  '30':
+    MCName: web
+    Name: 蜘蛛网
+  '31':
+    MCName: tallgrass
+    Name: 草
+  '31:1':
+    MCName: tallgrass
+    Name: 草
+  '31:2':
+    MCName: tallgrass
+    Name: 蕨
+  '32':
+    MCName: deadbush
+    Name: 枯死的灌木
+  '33':
+    MCName: piston
+    Name: 活塞
+  '34':
+    MCName: piston_head
+    Name: 活塞臂
+  '35':
+    MCName: wool
+    Name: 羊毛
+  '35:0':
+    MCName: wool
+    Name: 白色羊毛
+  '35:1':
+    MCName: wool
+    Name: 橙色羊毛
+  '35:2':
+    MCName: wool
+    Name: 品红色羊毛
+  '35:3':
+    MCName: wool
+    Name: 淡蓝色羊毛
+  '35:4':
+    MCName: wool
+    Name: 黄色羊毛
+  '35:5':
+    MCName: wool
+    Name: 黄绿色羊毛
+  '35:6':
+    MCName: wool
+    Name: 粉红色羊毛
+  '35:7':
+    MCName: wool
+    Name: 灰色羊毛
+  '35:8':
+    MCName: wool
+    Name: 淡灰色羊毛
+  '35:9':
+    MCName: wool
+    Name: 青色羊毛
+  '35:10':
+    MCName: wool
+    Name: 紫色羊毛
+  '35:11':
+    MCName: wool
+    Name: 蓝色羊毛
+  '35:12':
+    MCName: wool
+    Name: 棕色羊毛
+  '35:13':
+    MCName: wool
+    Name: 绿色羊毛
+  '35:14':
+    MCName: wool
+    Name: 红色羊毛
+  '35:15':
+    MCName: wool
+    Name: 黑色羊毛
+  '37':
+    MCName: yellow_flower
+    Name: 蒲公英
+  '38':
+    MCName: red_flower
+    Name: 婴栗
+  '38:0':
+    MCName: red_flower
+    Name: 婴栗
+  '38:1':
+    MCName: red_flower
+    Name: 兰花
+  '38:2':
+    MCName: red_flower
+    Name: 绒球葱
+  '38:3':
+    MCName: red_flower
+    Name: 茜草花
+  '38:4':
+    MCName: red_flower
+    Name: 红色郁金香
+  '38:5':
+    MCName: red_flower
+    Name: 橙色郁金香
+  '38:6':
+    MCName: red_flower
+    Name: 白色郁金香
+  '38:7':
+    MCName: red_flower
+    Name: 粉红色郁金香
+  '38:8':
+    MCName: red_flower
+    Name: 滨菊
+  '39':
+    MCName: brown_mushroom
+    Name: 蘑菇
+  '40':
+    MCName: red_mushroom
+    Name: 红蘑菇
+  '41':
+    MCName: gold_block
+    Name: 金块
+  '42':
+    MCName: iron_block
+    Name: 铁块
+  '43':
+    MCName: double_stone_slab
+    Name: 双石台阶
+  '43:0':
+    MCName: double_stone_slab
+    Name: 双石台阶
+  '43:1':
+    MCName: double_stone_slab
+    Name: 双石台阶
+  '43:2':
+    MCName: double_stone_slab
+    Name: 双石台阶
+  '43:3':
+    MCName: double_stone_slab
+    Name: 双石台阶
+  '43:4':
+    MCName: double_stone_slab
+    Name: 双石台阶
+  '43:5':
+    MCName: double_stone_slab
+    Name: 双石台阶
+  '43:6':
+    MCName: double_stone_slab
+    Name: 双石台阶
+  '43:7':
+    MCName: double_stone_slab
+    Name: 双石台阶
+  '44':
+    MCName: stone_slab
+    Name: 石台阶
+  '44:0':
+    MCName: stone_slab
+    Name: 石台阶
+  '44:1':
+    MCName: stone_slab
+    Name: 沙石台阶
+  '44:2':
+    MCName: stone_slab
+    Name: 沙石台阶
+  '44:3':
+    MCName: stone_slab
+    Name: 圆石台阶
+  '44:4':
+    MCName: stone_slab
+    Name: 砖台阶
+  '44:5':
+    MCName: stone_slab
+    Name: 石砖台阶
+  '44:6':
+    MCName: stone_slab
+    Name: 地狱砖台阶
+  '44:7':
+    MCName: stone_slab
+    Name: 石英台阶
+  '45':
+    MCName: brick_block
+    Name: 砖块
+  '46':
+    MCName: tnt
+    Name: TNT
+  '47':
+    MCName: bookshelf
+    Name: 书架
+  '48':
+    MCName: mossy_cobblestone
+    Name: 苔石
+  '49':
+    MCName: obsidian
+    Name: 黑曜石
+  '50':
+    MCName: torch
+    Name: 火把
+  '51':
+    MCName: fire
+    Name: 火
+  '52':
+    MCName: mob_spawner
+    Name: 刷怪箱
+  '53':
+    MCName: oak_stairs
+    Name: 橡木楼梯
+  '54':
+    MCName: chest
+    Name: 箱子
+  '55':
+    MCName: redstone_wire
+    Name: 红石线
+  '56':
+    MCName: diamond_ore
+    Name: 钻石矿石
+  '57':
+    MCName: diamond_block
+    Name: 钻石块
+  '58':
+    MCName: crafting_table
+    Name: 工作台
+  '59':
+    MCName: wheat
+    Name: 小麦
+  '60':
+    MCName: farmland
+    Name: 耕地
+  '61':
+    MCName: furnace
+    Name: 熔炉
+  '62':
+    MCName: lit_furnace
+    Name: 燃烧的熔炉
+  '63':
+    MCName: standing_sign
+    Name: 站立的告示牌
+  '64':
+    MCName: wooden_door
+    Name: 木门
+  '65':
+    MCName: ladder
+    Name: 梯子
+  '66':
+    MCName: rail
+    Name: 铁轨
+  '67':
+    MCName: stone_stairs
+    Name: 圆石楼梯
+  '68':
+    MCName: wall_sign
+    Name: 墙上的告示牌
+  '69':
+    MCName: lever
+    Name: 拉杆
+  '70':
+    MCName: stone_pressure_plate
+    Name: 石质压力板
+  '71':
+    MCName: iron_door
+    Name: 铁门
+  '72':
+    MCName: wooden_pressure_plate
+    Name: 木质压力板
+  '73':
+    MCName: redstone_ore
+    Name: 红石矿石
+  '74':
+    MCName: lit_redstone_ore
+    Name: 发光的红石矿石
+  '75':
+    MCName: unlit_redstone_torch
+    Name: 红石火把(未开启)
+  '76':
+    MCName: redstone_torch
+    Name: 红石火把(已开启)
+  '77':
+    MCName: stone_button
+    Name: 石质按钮
+  '78':
+    MCName: snow_layer
+    Name: 雪
+  '79':
+    MCName: ice
+    Name: 冰
+  '80':
+    MCName: snow
+    Name: 雪块
+  '81':
+    MCName: cactus
+    Name: 仙人掌
+  '82':
+    MCName: clay
+    Name: 粘土
+  '83':
+    MCName: reeds
+    Name: 甘蔗
+  '84':
+    MCName: jukebox
+    Name: 唱片机
+  '85':
+    MCName: fence
+    Name: 栅栏
+  '86':
+    MCName: pumpkin
+    Name: 南瓜
+  '87':
+    MCName: netherrack
+    Name: 地狱岩
+  '88':
+    MCName: soul_sand
+    Name: 灵魂沙
+  '89':
+    MCName: glowstone
+    Name: 萤石
+  '90':
+    MCName: portal
+    Name: 下界传送门
+  '91':
+    MCName: lit_pumpkin
+    Name: 南瓜灯
+  '92':
+    MCName: cake
+    Name: 蛋糕
+  '93':
+    MCName: unpowered_repeater
+    Name: 红石中继器(未开启)
+  '94':
+    MCName: powered_repeater
+    Name: 红石中继器(已开启)
+  '95':
+    MCName: stained_glass
+    Name: 染色玻璃
+  '95:0':
+    MCName: stained_glass
+    Name: 白色染色玻璃
+  '95:1':
+    MCName: stained_glass
+    Name: 橙色染色玻璃
+  '95:2':
+    MCName: stained_glass
+    Name: 品红色染色玻璃
+  '95:3':
+    MCName: stained_glass
+    Name: 淡蓝色染色玻璃
+  '95:4':
+    MCName: stained_glass
+    Name: 黄色染色玻璃
+  '95:5':
+    MCName: stained_glass
+    Name: 黄绿色染色玻璃
+  '95:6':
+    MCName: stained_glass
+    Name: 粉红色染色玻璃
+  '95:7':
+    MCName: stained_glass
+    Name: 灰色染色玻璃
+  '95:8':
+    MCName: stained_glass
+    Name: 淡灰色染色玻璃
+  '95:9':
+    MCName: stained_glass
+    Name: 青色染色玻璃
+  '95:10':
+    MCName: stained_glass
+    Name: 紫色染色玻璃
+  '95:11':
+    MCName: stained_glass
+    Name: 蓝色染色玻璃
+  '95:12':
+    MCName: stained_glass
+    Name: 棕色染色玻璃
+  '95:13':
+    MCName: stained_glass
+    Name: 绿色染色玻璃
+  '95:14':
+    MCName: stained_glass
+    Name: 红色染色玻璃
+  '95:15':
+    MCName: stained_glass
+    Name: 黑色染色玻璃
+  '96':
+    MCName: trapdoor
+    Name: 活板门
+  '97':
+    MCName: monster_egg
+    Name: 怪物蛋
+  '97:1':
+    MCName: monster_egg
+    Name: 怪物蛋
+  '97:2':
+    MCName: monster_egg
+    Name: 怪物蛋
+  '97:3':
+    MCName: monster_egg
+    Name: 怪物蛋
+  '97:4':
+    MCName: monster_egg
+    Name: 怪物蛋
+  '97:5':
+    MCName: monster_egg
+    Name: 怪物蛋
+  '98':
+    MCName: stonebrick
+    Name: 石砖
+  '98:1':
+    MCName: stonebrick
+    Name: 苔石砖
+  '98:2':
+    MCName: stonebrick
+    Name: 裂石砖
+  '98:3':
+    MCName: stonebrick
+    Name: 錾制石砖
+  '99':
+    MCName: brown_mushroom_block
+    Name: 棕色巨型蘑菇
+  '100':
+    MCName: red_mushroom_block
+    Name: 红色巨型蘑菇
+  '101':
+    MCName: iron_bars
+    Name: 铁栏杆
+  '102':
+    MCName: glass_pane
+    Name: 玻璃板
+  '103':
+    MCName: melon_block
+    Name: 西瓜片
+  '104':
+    MCName: pumpkin_stem
+    Name: 南瓜梗
+  '105':
+    MCName: melon_stem
+    Name: 西瓜梗
+  '106':
+    MCName: vine
+    Name: 藤蔓
+  '107':
+    MCName: fence_gate
+    Name: 栅栏门
+  '108':
+    MCName: brick_stairs
+    Name: 砖块楼梯
+  '109':
+    MCName: stone_brick_stairs
+    Name: 石砖楼梯
+  '110':
+    MCName: mycelium
+    Name: 菌丝
+  '111':
+    MCName: waterlily
+    Name: 睡莲
+  '112':
+    MCName: nether_brick
+    Name: 地狱砖块
+  '113':
+    MCName: nether_brick_fence
+    Name: 地狱砖栅栏
+  '114':
+    MCName: nether_brick_stairs
+    Name: 地狱砖楼梯
+  '115':
+    MCName: nether_wart
+    Name: 地狱疣
+  '116':
+    MCName: enchanting_table
+    Name: 附魔台
+  '117':
+    MCName: brewing_stand
+    Name: 酿造台
+  '118':
+    MCName: cauldron
+    Name: 炼药锅
+  '119':
+    MCName: end_portal
+    Name: 末地传送门方块
+  '120':
+    MCName: end_portal_frame
+    Name: 末地传送门框架
+  '121':
+    MCName: end_stone
+    Name: 末地石
+  '122':
+    MCName: dragon_egg
+    Name: 龙蛋
+  '123':
+    MCName: redstone_lamp
+    Name: 红石灯(未开启)
+  '124':
+    MCName: lit_redstone_lamp
+    Name: 红石灯(已开启)
+  '125':
+    MCName: double_wooden_slab
+    Name: 双木台阶
+  '125:0':
+    MCName: double_wooden_slab
+    Name: 双木台阶
+  '125:1':
+    MCName: double_wooden_slab
+    Name: 双木台阶
+  '125:2':
+    MCName: double_wooden_slab
+    Name: 双木台阶
+  '125:3':
+    MCName: double_wooden_slab
+    Name: 双木台阶
+  '125:4':
+    MCName: double_wooden_slab
+    Name: 双木台阶
+  '125:5':
+    MCName: double_wooden_slab
+    Name: 双木台阶
+  '126':
+    MCName: wooden_slab
+    Name: 木台阶
+  '126:0':
+    MCName: wooden_slab
+    Name: 橡木台阶
+  '126:1':
+    MCName: wooden_slab
+    Name: 云杉台阶
+  '126:2':
+    MCName: wooden_slab
+    Name: 桦木台阶
+  '126:3':
+    MCName: wooden_slab
+    Name: 丛林台阶
+  '126:4':
+    MCName: wooden_slab
+    Name: 金合欢木台阶
+  '126:5':
+    MCName: wooden_slab
+    Name: 深色橡木台阶
+  '127':
+    MCName: cocoa
+    Name: 可可果
+  '128':
+    MCName: sandstone_stairs
+    Name: 砂岩楼梯
+  '129':
+    MCName: emerald_ore
+    Name: 绿宝石矿石
+  '130':
+    MCName: ender_chest
+    Name: 末影箱
+  '131':
+    MCName: tripwire_hook
+    Name: 绊线钩
+  '132':
+    MCName: tripwire_hook
+    Name: 绊线
+  '133':
+    MCName: emerald_block
+    Name: 绿宝石块
+  '134':
+    MCName: spruce_stairs
+    Name: 云杉楼梯
+  '135':
+    MCName: birch_stairs
+    Name: 桦木楼梯
+  '136':
+    MCName: jungle_stairs
+    Name: 丛林楼梯
+  '137':
+    MCName: command_block
+    Name: 命令方块
+  '138':
+    MCName: beacon
+    Name: 信标
+  '139':
+    MCName: cobblestone_wall
+    Name: 圆石墙
+  '139:1':
+    MCName: cobblestone_wall
+    Name: 苔石墙
+  '140':
+    MCName: flower_pot
+    Name: 花盆
+  '141':
+    MCName: carrots
+    Name: 胡萝卜
+  '142':
+    MCName: potatoes
+    Name: 马铃薯
+  '143':
+    MCName: wooden_button
+    Name: 木质按钮
+  '144':
+    MCName: skull
+    Name: 生物头颅
+  '145':
+    MCName: anvil
+    Name: 铁砧
+  '146':
+    MCName: trapped_chest
+    Name: 陷阱箱
+  '147':
+    MCName: light_weighted_pressure_plate
+    Name: 轻质测重压力板
+  '148':
+    MCName: heavy_weighted_pressure_plate
+    Name: 重质测重压力板
+  '149':
+    MCName: unpowered_comparator
+    Name: 红石比较器(未开启)
+  '150':
+    MCName: powered_comparator
+    Name: 红石比较器(已开启)
+  '151':
+    MCName: daylight_detector
+    Name: 阳光传感器
+  '152':
+    MCName: redstone_block
+    Name: 红石块
+  '153':
+    MCName: quartz_ore
+    Name: 下界石英矿石
+  '154':
+    MCName: hopper
+    Name: 漏斗
+  '155':
+    MCName: quartz_block
+    Name: 石英块
+  '155:1':
+    MCName: quartz_block
+    Name: 錾制石英块
+  '155:2':
+    MCName: quartz_block
+    Name: 竖纹石英块
+  '156':
+    MCName: quartz_stairs
+    Name: 石英楼梯
+  '157':
+    MCName: activator_rail
+    Name: 激活铁轨
+  '158':
+    MCName: dropper
+    Name: 投掷器
+  '159':
+    MCName: stained_hardened_clay
+    Name: 染色粘土
+  '159:0':
+    MCName: stained_hardened_clay
+    Name: 白色黏土
+  '159:1':
+    MCName: stained_hardened_clay
+    Name: 橙色黏土
+  '159:2':
+    MCName: stained_hardened_clay
+    Name: 品红色黏土
+  '159:3':
+    MCName: stained_hardened_clay
+    Name: 淡蓝色黏土
+  '159:4':
+    MCName: stained_hardened_clay
+    Name: 黄色黏土
+  '159:5':
+    MCName: stained_hardened_clay
+    Name: 黄绿色黏土
+  '159:6':
+    MCName: stained_hardened_clay
+    Name: 粉红色黏土
+  '159:7':
+    MCName: stained_hardened_clay
+    Name: 灰色黏土
+  '159:8':
+    MCName: stained_hardened_clay
+    Name: 淡灰色黏土
+  '159:9':
+    MCName: stained_hardened_clay
+    Name: 青色黏土
+  '159:10':
+    MCName: stained_hardened_clay
+    Name: 紫色黏土
+  '159:11':
+    MCName: stained_hardened_clay
+    Name: 蓝色黏土
+  '159:12':
+    MCName: stained_hardened_clay
+    Name: 棕色黏土
+  '159:13':
+    MCName: stained_hardened_clay
+    Name: 绿色黏土
+  '159:14':
+    MCName: stained_hardened_clay
+    Name: 红色黏土
+  '159:15':
+    MCName: stained_hardened_clay
+    Name: 黑色黏土
+  '160':
+    MCName: stained_glass_pane
+    Name: 染色玻璃板
+  '160:0':
+    MCName: stained_glass_pane
+    Name: 白色染色玻璃板
+  '160:1':
+    MCName: stained_glass_pane
+    Name: 橙色色染色玻璃板
+  '160:2':
+    MCName: stained_glass_pane
+    Name: 品红色染色玻璃板
+  '160:3':
+    MCName: stained_glass_pane
+    Name: 淡蓝色染色玻璃板
+  '160:4':
+    MCName: stained_glass_pane
+    Name: 黄色染色玻璃板
+  '160:5':
+    MCName: stained_glass_pane
+    Name: 黄绿色染色玻璃板
+  '160:6':
+    MCName: stained_glass_pane
+    Name: 粉红色染色玻璃板
+  '160:7':
+    MCName: stained_glass_pane
+    Name: 灰色染色玻璃板
+  '160:8':
+    MCName: stained_glass_pane
+    Name: 淡灰色染色玻璃板
+  '160:9':
+    MCName: stained_glass_pane
+    Name: 青色染色玻璃板
+  '160:10':
+    MCName: stained_glass_pane
+    Name: 紫色染色玻璃板
+  '160:11':
+    MCName: stained_glass_pane
+    Name: 蓝色染色玻璃板
+  '160:12':
+    MCName: stained_glass_pane
+    Name: 棕色染色玻璃板
+  '160:13':
+    MCName: stained_glass_pane
+    Name: 绿色染色玻璃板
+  '160:14':
+    MCName: stained_glass_pane
+    Name: 红色染色玻璃板
+  '160:15':
+    MCName: stained_glass_pane
+    Name: 黑色染色玻璃板
+  '161':
+    MCName: leaves2
+    Name: 树叶
+  '161:0':
+    MCName: leaves2
+    Name: 金合欢树叶
+  '161:1':
+    MCName: leaves2
+    Name: 深色橡木树叶
+  '162':
+    MCName: logs2
+    Name: 金合欢木
+  '162:0':
+    MCName: logs2
+    Name: 金合欢木
+  '162:1':
+    MCName: logs2
+    Name: 深色橡木
+  '163':
+    MCName: acacia_stairs
+    Name: 金合欢楼梯
+  '164':
+    MCName: dark_oak_stairs
+    Name: 深色橡木楼梯
+  '165':
+    MCName: slime
+    Name: 粘液块
+  '166':
+    MCName: barrier
+    Name: 屏障
+  '167':
+    MCName: iron_trapdoor
+    Name: 铁活板门
+  '168':
+    MCName: prismarine
+    Name: 海晶石
+  '168:0':
+    MCName: prismarine
+    Name: 海晶石
+  '168:1':
+    MCName: prismarine
+    Name: 海晶石砖
+  '168:2':
+    MCName: prismarine
+    Name: 暗海晶石
+  '169':
+    MCName: sea_lantern
+    Name: 海晶灯
+  '170':
+    MCName: hay_block
+    Name: 干草块
+  '171':
+    MCName: carpet
+    Name: 地毯
+  '171:0':
+    MCName: carpet
+    Name: 白色地毯
+  '171:1':
+    MCName: carpet
+    Name: 橙色地毯
+  '171:2':
+    MCName: carpet
+    Name: 品红色地毯
+  '171:3':
+    MCName: carpet
+    Name: 淡蓝色地毯
+  '171:4':
+    MCName: carpet
+    Name: 黄色地毯
+  '171:5':
+    MCName: carpet
+    Name: 黄绿色色地毯
+  '171:6':
+    MCName: carpet
+    Name: 粉红色地毯
+  '171:7':
+    MCName: carpet
+    Name: 灰色地毯
+  '171:8':
+    MCName: carpet
+    Name: 淡灰色地毯
+  '171:9':
+    MCName: carpet
+    Name: 青色地毯
+  '171:10':
+    MCName: carpet
+    Name: 紫色地毯
+  '171:11':
+    MCName: carpet
+    Name: 蓝色地毯
+  '171:12':
+    MCName: carpet
+    Name: 棕色地毯
+  '171:13':
+    MCName: carpet
+    Name: 绿色地毯
+  '171:14':
+    MCName: carpet
+    Name: 红色地毯
+  '171:15':
+    MCName: carpet
+    Name: 黑色地毯
+  '172':
+    MCName: hardened_clay
+    Name: 硬化粘土
+  '173':
+    MCName: coal_block
+    Name: 煤炭块
+  '174':
+    MCName: packed_ice
+    Name: 浮冰
+  '175':
+    MCName: double_plant
+    Name: 大型花
+  '175:0':
+    MCName: double_plant
+    Name: 向日葵
+  '175:1':
+    MCName: double_plant
+    Name: 丁香
+  '175:2':
+    MCName: double_plant
+    Name: 高草丛
+  '175:3':
+    MCName: double_plant
+    Name: 大型蕨
+  '175:4':
+    MCName: double_plant
+    Name: 玫瑰丛
+  '175:5':
+    MCName: double_plant
+    Name: 牡丹
+  '176':
+    MCName: standing_banner
+    Name: 站立的旗帜
+  '177':
+    MCName: wall_banner
+    Name: 墙上的旗帜
+  '178':
+    MCName: daylight_detector_inverted
+    Name: 反向阳光传感器
+  '179':
+    MCName: red_sandstone
+    Name: 红砂岩
+  '179:1':
+    MCName: red_sandstone
+    Name: 錾制红砂岩
+  '179:2':
+    MCName: red_sandstone
+    Name: 平滑红砂岩
+  '180':
+    MCName: red_sandstone_stairs
+    Name: 红砂岩楼梯
+  '181':
+    MCName: stone_slab2
+    Name: 双红砂岩台阶
+  '182':
+    MCName: double_stone_slab2
+    Name: 红砂岩台阶
+  '183':
+    MCName: spruce_fence_gate
+    Name: 云杉木栅栏门
+  '184':
+    MCName: birch_fence_gate
+    Name: 白桦木栅栏门
+  '185':
+    MCName: jungle_fence_gate
+    Name: 丛林木栅栏门
+  '186':
+    MCName: dark_oak_fence_gate
+    Name: 深色橡木栅栏门
+  '187':
+    MCName: acacia_fence_gate
+    Name: 金合欢栅栏门
+  '188':
+    MCName: spruce_fence
+    Name: 云杉木栅栏
+  '189':
+    MCName: birch_fence
+    Name: 白桦木栅栏
+  '190':
+    MCName: jungle_fence
+    Name: 丛林木栅栏
+  '191':
+    MCName: dark_oak_fence
+    Name: 深色橡木栅栏
+  '192':
+    MCName: acacia_fence
+    Name: 金合欢栅栏
+  '193':
+    MCName: spruce_door
+    Name: 云杉木门
+  '194':
+    MCName: birch_door
+    Name: 白桦木门
+  '195':
+    MCName: jungle_door
+    Name: 丛林木门
+  '196':
+    MCName: acacia_door
+    Name: 金合欢木门
+  '197':
+    MCName: dark_oak_door
+    Name: 深色橡木门
+  '198':
+    MCName: end_rod
+    Name: 末地烛
+  '199':
+    MCName: chorus_plant
+    Name: 紫颂植物
+  '200':
+    MCName: chorus_flower
+    Name: 紫颂花
+  '201':
+    MCName: purpur_block
+    Name: 紫珀块
+  '202':
+    MCName: purpur_pillar
+    Name: 竖纹紫珀块
+  '203':
+    MCName: purpur_stairs
+    Name: 紫珀块楼梯
+  '204':
+    MCName: purpur_double_slab
+    Name: 双紫珀台阶
+  '205':
+    MCName: purpur_slab
+    Name: 紫珀块台阶
+  '206':
+    MCName: end_bricks
+    Name: 末地石砖
+  '207':
+    MCName: beetroots
+    Name: 甜菜种子
+  '208':
+    MCName: grass_path
+    Name: 草径
+  '209':
+    MCName: end_gateway
+    Name: 末地折跃门方块
+  '212':
+    MCName: frosted_ice
+    Name: 霜冰
+  '256':
+    MCName: iron_shovel
+    Name: 铁锹
+  '257':
+    MCName: iron_pickaxe
+    Name: 铁镐
+  '258':
+    MCName: iron_axe
+    Name: 铁斧
+  '259':
+    MCName: flint_and_steel
+    Name: 打火石
+  '260':
+    MCName: apple
+    Name: 苹果
+  '261':
+    MCName: bow
+    Name: 弓
+  '262':
+    MCName: arrow
+    Name: 箭
+  '263':
+    MCName: coal
+    Name: 煤炭
+  '263:1':
+    MCName: coal
+    Name: 木炭
+  '264':
+    MCName: diamond
+    Name: 钻石
+  '265':
+    MCName: iron_ingot
+    Name: 铁锭
+  '266':
+    MCName: gold_ingot
+    Name: 金锭
+  '267':
+    MCName: iron_sword
+    Name: 铁剑
+  '268':
+    MCName: wooden_sword
+    Name: 木剑
+  '269':
+    MCName: wooden_shovel
+    Name: 木锹
+  '270':
+    MCName: wooden_pickaxe
+    Name: 木搞
+  '271':
+    MCName: wooden_axe
+    Name: 木斧
+  '272':
+    MCName: stone_sword
+    Name: 石剑
+  '273':
+    MCName: stone_shovel
+    Name: 石锹
+  '274':
+    MCName: stone_pickaxe
+    Name: 石镐
+  '275':
+    MCName: stone_axe
+    Name: 石斧
+  '276':
+    MCName: diamond_sword
+    Name: 钻石剑
+  '277':
+    MCName: diamond_shovel
+    Name: 钻石锹
+  '278':
+    MCName: diamond_pickaxe
+    Name: 钻石搞
+  '279':
+    MCName: diamond_axe
+    Name: 钻石斧
+  '280':
+    MCName: stick
+    Name: 木棍
+  '281':
+    MCName: bowl
+    Name: 碗
+  '282':
+    MCName: mushroom_stew
+    Name: 蘑菇堡
+  '283':
+    MCName: golden_sword
+    Name: 金剑
+  '284':
+    MCName: golden_shovel
+    Name: 金锹
+  '285':
+    MCName: golden_pickaxe
+    Name: 金搞
+  '286':
+    MCName: golden_axe
+    Name: 金斧
+  '287':
+    MCName: string
+    Name: 线
+  '288':
+    MCName: feather
+    Name: 羽毛
+  '289':
+    MCName: gunpowder
+    Name: 火药
+  '290':
+    MCName: wooden_hoe
+    Name: 木锄
+  '291':
+    MCName: stone_hoe
+    Name: 石锄
+  '292':
+    MCName: iron_hoe
+    Name: 铁锄
+  '293':
+    MCName: diamond_hoe
+    Name: 钻石锄
+  '294':
+    MCName: golden_hoe
+    Name: 金锄
+  '295':
+    MCName: wheat_seeds
+    Name: 小麦种子
+  '296':
+    MCName: wheat
+    Name: 小麦
+  '297':
+    MCName: bread
+    Name: 面包
+  '298':
+    MCName: leather_helmet
+    Name: 皮革帽子
+  '299':
+    MCName: leather_chestplate
+    Name: 皮革外套
+  '300':
+    MCName: leather_leggings
+    Name: 皮革裤子
+  '301':
+    MCName: leather_boots
+    Name: 皮革靴子
+  '302':
+    MCName: chainmail_helmet
+    Name: 锁链头盔
+  '303':
+    MCName: chainmail_chestplate
+    Name: 锁链胸甲
+  '304':
+    MCName: chainmail_leggings
+    Name: 锁链护腿
+  '305':
+    MCName: chainmail_boots
+    Name: 锁链靴子
+  '306':
+    MCName: iron_helmet
+    Name: 铁头盔
+  '307':
+    MCName: iron_chestplate
+    Name: 铁胸甲
+  '308':
+    MCName: iron_leggings
+    Name: 铁护腿
+  '309':
+    MCName: iron_boots
+    Name: 铁靴子
+  '310':
+    MCName: diamond_helmet
+    Name: 钻石头盔
+  '311':
+    MCName: diamond_chestplate
+    Name: 钻石胸甲
+  '312':
+    MCName: diamond_leggings
+    Name: 钻石护腿
+  '313':
+    MCName: diamond_boots
+    Name: 钻石靴子
+  '314':
+    MCName: golden_helmet
+    Name: 金头盔
+  '315':
+    MCName: golden_chestplate
+    Name: 金胸甲
+  '316':
+    MCName: golden_leggings
+    Name: 金护腿
+  '317':
+    MCName: golden_boots
+    Name: 金靴子
+  '318':
+    MCName: flint_and_steel
+    Name: 燧石
+  '319':
+    MCName: porkchop
+    Name: 生猪排
+  '320':
+    MCName: cooked_porkchop
+    Name: 熟猪排
+  '321':
+    MCName: painting
+    Name: 画
+  '322':
+    MCName: golden_apple
+    Name: 金苹果
+  '322:1':
+    MCName: golden_apple
+    Name: 金苹果
+  '323':
+    MCName: sign
+    Name: 告示牌
+  '324':
+    MCName: wooden_door
+    Name: 橡木门
+  '325':
+    MCName: bucket
+    Name: 桶
+  '326':
+    MCName: water_bucket
+    Name: 水桶
+  '327':
+    MCName: lava_bucket
+    Name: 熔浆桶
+  '328':
+    MCName: minecart
+    Name: 矿车
+  '329':
+    MCName: saddle
+    Name: 鞍
+  '330':
+    MCName: iron_door
+    Name: 铁门
+  '331':
+    MCName: redstone
+    Name: 红石
+  '332':
+    MCName: snowball
+    Name: 雪球
+  '333':
+    MCName: boat
+    Name: 橡木船
+  '334':
+    MCName: leather
+    Name: 皮革
+  '335':
+    MCName: milk_bucket
+    Name: 牛奶
+  '336':
+    MCName: brick
+    Name: 红砖
+  '337':
+    MCName: clay_ball
+    Name: 黏土
+  '338':
+    MCName: reeds
+    Name: 甘蔗
+  '339':
+    MCName: paper
+    Name: 纸
+  '340':
+    MCName: book
+    Name: 书
+  '341':
+    MCName: slime_ball
+    Name: 粘液球
+  '342':
+    MCName: chest_minecart
+    Name: 运输矿车
+  '343':
+    MCName: furnace_minecart
+    Name: 动力矿车
+  '344':
+    MCName: egg
+    Name: 鸡蛋
+  '345':
+    MCName: compass
+    Name: 指南针
+  '346':
+    MCName: fishing_rod
+    Name: 鱼竿
+  '347':
+    MCName: clock
+    Name: 钟表
+  '348':
+    MCName: glowstone_dust
+    Name: 萤石粉
+  '349':
+    MCName: fish
+    Name: 生鱼
+  '349:1':
+    MCName: fish
+    Name: 生蛙鱼
+  '349:2':
+    MCName: fish
+    Name: 小丑鱼
+  '349:3':
+    MCName: fish
+    Name: 河豚
+  '350':
+    MCName: cooked_fish
+    Name: 熟鱼
+  '350:1':
+    MCName: cooked_fish
+    Name: 熟蛙鱼
+  '351':
+    MCName: dye
+    Name: 墨囊
+  '351:0':
+    MCName: dye
+    Name: 墨囊
+  '351:1':
+    MCName: dye
+    Name: 玫瑰红
+  '351:2':
+    MCName: dye
+    Name: 仙人掌绿
+  '351:3':
+    MCName: dye
+    Name: 可可豆
+  '351:4':
+    MCName: dye
+    Name: 青金石
+  '351:5':
+    MCName: dye
+    Name: 紫色染料
+  '351:6':
+    MCName: dye
+    Name: 青色染料
+  '351:7':
+    MCName: dye
+    Name: 淡灰色染料
+  '351:8':
+    MCName: dye
+    Name: 灰色染料
+  '351:9':
+    MCName: dye
+    Name: 粉红色染料
+  '351:10':
+    MCName: dye
+    Name: 黄绿色染料
+  '351:11':
+    MCName: dye
+    Name: 蒲公英黄
+  '351:12':
+    MCName: dye
+    Name: 淡蓝色染料
+  '351:13':
+    MCName: dye
+    Name: 品红色染料
+  '351:14':
+    MCName: dye
+    Name: 橙色染料
+  '351:15':
+    MCName: dye
+    Name: 骨粉
+  '352':
+    MCName: bone
+    Name: 骨头
+  '353':
+    MCName: sugar
+    Name: 糖
+  '354':
+    MCName: cake
+    Name: 蛋糕
+  '355':
+    MCName: bed
+    Name: 床
+  '356':
+    MCName: repeater
+    Name: 红石中继器
+  '357':
+    MCName: cookie
+    Name: 曲奇
+  '358':
+    MCName: filled_map
+    Name: 地图
+  '359':
+    MCName: shears
+    Name: 剪刀
+  '360':
+    MCName: melon
+    Name: 西瓜
+  '361':
+    MCName: pumpkin_seeds
+    Name: 南瓜种子
+  '362':
+    MCName: melon_seeds
+    Name: 西瓜种子
+  '363':
+    MCName: beef
+    Name: 生牛肉
+  '364':
+    MCName: cooked_beef
+    Name: 牛排
+  '365':
+    MCName: chicken
+    Name: 生鸡肉
+  '366':
+    MCName: cooked_chicken
+    Name: 熟鸡肉
+  '367':
+    MCName: rotten_flesh
+    Name: 腐肉
+  '368':
+    MCName: ender_pearl
+    Name: 末影珍珠
+  '369':
+    MCName: blaze_rod
+    Name: 烈焰棒
+  '370':
+    MCName: ghast_tear
+    Name: 恶魂之泪
+  '371':
+    MCName: gold_nugget
+    Name: 金粒
+  '372':
+    MCName: nether_wart
+    Name: 地狱疣
+  '373':
+    MCName: potion
+    Name: 药水
+  '374':
+    MCName: glass_bottle
+    Name: 玻璃瓶
+  '375':
+    MCName: spider_eye
+    Name: 蜘蛛眼
+  '376':
+    MCName: fermented_spider_eye
+    Name: 发酵蜘蛛眼
+  '377':
+    MCName: blaze_powder
+    Name: 烈焰粉
+  '378':
+    MCName: magma_cream
+    Name: 岩浆膏
+  '379':
+    MCName: brewing_stand
+    Name: 酿造台
+  '380':
+    MCName: cauldron
+    Name: 炼药锅
+  '381':
+    MCName: ender_eye
+    Name: 末影之眼
+  '382':
+    MCName: speckled_melon
+    Name: 闪烁的西瓜
+  '383:50':
+    MCName: spawn_egg
+    Name: 生成爬行者
+  '383:51':
+    MCName: spawn_egg
+    Name: 生成北极熊
+  '383:52':
+    MCName: spawn_egg
+    Name: 生成蜘蛛
+  '383:54':
+    MCName: spawn_egg
+    Name: 生成僵尸
+  '383:55':
+    MCName: spawn_egg
+    Name: 生成史莱姆
+  '383:56':
+    MCName: spawn_egg
+    Name: 生成恶魂
+  '383:57':
+    MCName: spawn_egg
+    Name: 生成猪
+  '383:58':
+    MCName: spawn_egg
+    Name: 生成末影人
+  '383:59':
+    MCName: spawn_egg
+    Name: 生成鸡
+  383:60:
+    MCName: spawn_egg
+    Name: 生成远古守卫者
+  383:61:
+    MCName: spawn_egg
+    Name: 生成烈焰人
+  383:62:
+    MCName: spawn_egg
+    Name: 生成岩浆怪
+  383:65:
+    MCName: spawn_egg
+    Name: 生成羊驼
+  383:66:
+    MCName: spawn_egg
+    Name: 生成女巫
+  383:67:
+    MCName: spawn_egg
+    Name: 生成末影螨
+  383:68:
+    MCName: spawn_egg
+    Name: 生成守卫者
+  383:90:
+    MCName: spawn_egg
+    Name: 生成猪
+  383:91:
+    MCName: spawn_egg
+    Name: 生成羊
+  383:92:
+    MCName: spawn_egg
+    Name: 生成牛
+  383:93:
+    MCName: spawn_egg
+    Name: 生成鸡
+  383:94:
+    MCName: spawn_egg
+    Name: 生成鱿鱼
+  383:95:
+    MCName: spawn_egg
+    Name: 生成狼
+  383:96:
+    MCName: spawn_egg
+    Name: 生成哞菇
+  383:98:
+    MCName: spawn_egg
+    Name: 生成豹猫
+  383:100:
+    MCName: spawn_egg
+    Name: 生成马
+  383:101:
+    MCName: spawn_egg
+    Name: 生成兔子
+  383:120:
+    MCName: spawn_egg
+    Name: 生成恶魂
+  '384':
+    MCName: experience_bottle
+    Name: 附魔之瓶
+  '385':
+    MCName: fire_charge
+    Name: 火焰弹
+  '386':
+    MCName: writable_book
+    Name: 书与笔
+  '387':
+    MCName: written_book
+    Name: 书
+  '388':
+    MCName: emerald
+    Name: 绿宝石
+  '389':
+    MCName: item_frame
+    Name: 物品展示框
+  '390':
+    MCName: flower_pot
+    Name: 花盆
+  '391':
+    MCName: carrot
+    Name: 胡萝卜
+  '392':
+    MCName: potato
+    Name: 马铃薯
+  '393':
+    MCName: baked_potato
+    Name: 烤马铃薯
+  '394':
+    MCName: poisonous_potato
+    Name: 毒马铃薯
+  '395':
+    MCName: map
+    Name: 空地图
+  '396':
+    MCName: golden_carrot
+    Name: 金胡萝卜
+  '397':
+    MCName: skull
+    Name: 骷髅头颅
+  '397:1':
+    MCName: skull
+    Name: 凋零骷髅头颅
+  '397:2':
+    MCName: skull
+    Name: 僵尸头颅
+  '397:3':
+    MCName: skull
+    Name: 头
+  '397:4':
+    MCName: skull
+    Name: 爬行者头
+  '398':
+    MCName: carrot_on_a_stick
+    Name: 胡萝卜钓竿
+  '399':
+    MCName: nether_star
+    Name: 下界之星
+  '400':
+    MCName: pumpkin_pie
+    Name: 南瓜派
+  '401':
+    MCName: fireworks
+    Name: 烟花
+  '402':
+    MCName: firework_charge
+    Name: 烟火之星
+  '403':
+    MCName: enchanted_book
+    Name: 附魔书
+  '404':
+    MCName: comparator
+    Name: 红石比较器
+  '405':
+    MCName: netherbrick
+    Name: 地狱砖
+  '406':
+    MCName: quartz
+    Name: 下界石英
+  '407':
+    MCName: tnt_minecart
+    Name: TNT矿车
+  '408':
+    MCName: hopper_minecart
+    Name: 漏斗矿车
+  '409':
+    MCName: prismarine_shard
+    Name: 海晶碎片
+  '410':
+    MCName: prismarine_crystals
+    Name: 海晶砂砾
+  '411':
+    MCName: rabbit
+    Name: 生兔肉
+  '412':
+    MCName: cooked_rabbit
+    Name: 熟兔肉
+  '413':
+    MCName: rabbit_stew
+    Name: 兔肉堡
+  '414':
+    MCName: rabbit_foot
+    Name: 兔子脚
+  '415':
+    MCName: rabbit_hide
+    Name: 兔子皮
+  '416':
+    MCName: armor_stand
+    Name: 盔甲架
+  '417':
+    MCName: iron_horse_armor
+    Name: 铁马凯
+  '418':
+    MCName: golden_horse_armor
+    Name: 金马凯
+  '419':
+    MCName: diamond_horse_armor
+    Name: 钻石马凯
+  '420':
+    MCName: lead
+    Name: 拴绳
+  '421':
+    MCName: name_tag
+    Name: 命名牌
+  '422':
+    MCName: command_block_minecart
+    Name: 命令方块矿车
+  '423':
+    MCName: mutton
+    Name: 生羊肉
+  '424':
+    MCName: cooked_mutton
+    Name: 熟羊肉
+  '425':
+    MCName: banner
+    Name: 旗帜
+  '426':
+    MCName: end_crystal
+    Name: 末影水晶
+  '427':
+    MCName: spruce_door
+    Name: 云杉木门
+  '428':
+    MCName: birch_door
+    Name: 白桦木门
+  '429':
+    MCName: jungle_door
+    Name: 丛林木门
+  '430':
+    MCName: acacia_door
+    Name: 金合欢木门
+  '431':
+    MCName: dark_oak_door
+    Name: 深色橡木门
+  '432':
+    MCName: chorus_fruit
+    Name: 紫颂果
+  '433':
+    MCName: chorus_fruit_popped
+    Name: 爆裂紫颂果
+  '434':
+    MCName: beetroot
+    Name: 甜菜根
+  '435':
+    MCName: beetroot_seeds
+    Name: 甜菜种子
+  '436':
+    MCName: beetroot_soup
+    Name: 甜菜汤
+  '437':
+    MCName: dragon_breath
+    Name: 龙息
+  '439':
+    MCName: spectral_arrow
+    Name: 光灵箭
+  '440':
+    MCName: tipped_arrow
+    Name: 夜视之箭
+  '441':
+    MCName: lingering_potion
+    Name: 滞留型水瓶
+  '442':
+    MCName: shield
+    Name: 盾牌
+  '443':
+    MCName: elytra
+    Name: 鞘翅
+  '2256':
+    MCName: record_13
+    Name: 13 唱片
+  '2257':
+    MCName: record_cat
+    Name: Cat 唱片
+  '2258':
+    MCName: record_blocks
+    Name: Blocks 唱片
+  '2259':
+    MCName: record_chirp
+    Name: Chirp 唱片
+  '2260':
+    MCName: record_far
+    Name: Far 唱片
+  '2261':
+    MCName: record_mall
+    Name: Mall 唱片
+  '2262':
+    MCName: record_mellohi
+    Name: Mellohi 唱片
+  '2263':
+    MCName: record_stal
+    Name: Stal 唱片
+  '2264':
+    MCName: record_strad
+    Name: Strad 唱片
+  '2265':
+    MCName: record_ward
+    Name: Ward 唱片
+  '2266':
+    MCName: record_11
+    Name: 11 唱片
+  '2267':
+    MCName: record_wait
+    Name: Wait 唱片
+EntityList:
+  '-1':
+    MCName: Player
+    Name: 玩家
+  '50':
+    MCName: Creeper
+    Name: 苦力怕
+  '51':
+    MCName: Skeleton
+    Name: 小白
+  '51:1':
+    MCName: Skeleton
+    Name: 凋零骷髅
+  '51:2':
+    MCName: Skeleton
+    Name: 游荡骷髅
+  '52':
+    MCName: Spider
+    Name: 蜘蛛
+  '53':
+    MCName: Giant
+    Name: 巨人僵尸
+  '54':
+    MCName: Zombie
+    Name: 僵尸
+  '54:1':
+    MCName: Zombie
+    Name: 僵尸村民
+  '54:2':
+    MCName: Zombie
+    Name: 其他僵尸
+  '55':
+    MCName: Slime
+    Name: 史莱姆
+  '56':
+    MCName: Ghast
+    Name: 幽魂
+  '57':
+    MCName: PigZombie
+    Name: 僵尸猪人
+  '58':
+    MCName: Enderman
+    Name: 末影人
+  '59':
+    MCName: CaveSpider
+    Name: 洞穴蜘蛛
+  '60':
+    MCName: Silverfish
+    Name: 蠹虫
+  '61':
+    MCName: Blaze
+    Name: 烈焰人
+  '62':
+    MCName: LavaSlime
+    Name: 熔浆怪
+  '63':
+    MCName: EnderDragon
+    Name: 末影龙
+  '64':
+    MCName: WitherBoss
+    Name: 凋零
+  '65':
+    MCName: Bat
+    Name: 蝙蝠
+  '66':
+    MCName: Witch
+    Name: 女巫
+  '67':
+    MCName: Endermite
+    Name: 末影螨
+  '68':
+    MCName: Guardian
+    Name: 守护者
+  '68:1':
+    MCName: Guardian
+    Name: 远古守护者
+  '69':
+    MCName: Shulker
+    Name: 潜影贝
+  '90':
+    MCName: Pig
+    Name: 猪
+  '91':
+    MCName: Sheep
+    Name: 羊
+  '92':
+    MCName: Cow
+    Name: 牛
+  '93':
+    MCName: Chicken
+    Name: 鸡
+  '94':
+    MCName: Squid
+    Name: 鱿鱼
+  '95':
+    MCName: Wolf
+    Name: 狼
+  '96':
+    MCName: MushroomCow
+    Name: 哞菇
+  '97':
+    MCName: SnowMan
+    Name: 雪人
+  '98':
+    MCName: Ozelot
+    Name: 豹猫
+  '99':
+    MCName: VillagerGolem
+    Name: 铁傀儡
+  '100':
+    MCName: EntityHorse
+    Name: 马
+  '101':
+    MCName: Rabbit
+    Name: 兔子
+  '102':
+    MCName: PolarBear
+    Name: 北极熊
+  '120':
+    MCName: Villager
+    Name: 村民
+  '200':
+    MCName: EnderCrystal
+    Name: 末影水晶
+EnchantList:
+  '0':
+    MCName: PROTECTION_ENVIRONMENTAL
+    Name: 保护
+  '1':
+    MCName: PROTECTION_FIRE
+    Name: 火焰保护
+  '2':
+    MCName: PROTECTION_FALL
+    Name: 摔落保护
+  '3':
+    MCName: PROTECTION_EXPLOSIONS
+    Name: 爆炸保护
+  '4':
+    MCName: ROTECTION_PROJECTILE
+    Name: 弹射物保护
+  '5':
+    MCName: OXYGEN
+    Name: 水下呼吸
+  '6':
+    MCName: DIG_SPEED
+    Name: 水下速掘
+  '7':
+    MCName: THORNS
+    Name: 荆棘
+  '8':
+    MCName: DEPTH_STRIDER
+    Name: 深海探索者
+  '9':
+    MCName: FROST_WALKER
+    Name: 冰霜行者
+  '16':
+    MCName: DAMAGE_ALL
+    Name: 锋利
+  '17':
+    MCName: DAMAGE_UNDEAD
+    Name: 亡灵杀手
+  '18':
+    MCName: DAMAGE_ARTHROPODS
+    Name: 节肢杀手
+  '19':
+    MCName: KNOCKBACK
+    Name: 击退
+  '20':
+    MCName: FIRE_ASPECT
+    Name: 火焰附加
+  '21':
+    MCName: LOOT_BONUS_MOBS
+    Name: 抢夺
+  '32':
+    MCName: DIG_SPEED
+    Name: 效率
+  '33':
+    MCName: SILK_TOUCH
+    Name: 精准采集
+  '34':
+    MCName: DURABILITY
+    Name: 耐久
+  '35':
+    MCName: LOOT_BONUS_BLOCKS
+    Name: 时运
+  '48':
+    MCName: ARROW_DAMAGE
+    Name: 力量
+  '49':
+    MCName: ARROW_KNOCKBACK
+    Name: 冲击
+  '50':
+    MCName: ARROW_FIRE
+    Name: 火矢
+  '51':
+    MCName: ARROW_INFINITE
+    Name: 无限
+  '61':
+    MCName: LUCK
+    Name: 海之眷顾
+  '62':
+    MCName: LURE
+    Name: 饵钓
+  '70':
+    MCName: MENDING
+    Name: 经验修补
+ColorList:
+  '0':
+    MCName: white
+    Name: '&f白色'
+  '1':
+    MCName: orange
+    Name: '&6橙色'
+  '2':
+    MCName: magenta
+    Name: '&d品红色'
+  '3':
+    MCName: lightBlue
+    Name: '%9浅蓝'
+  '4':
+    MCName: yellow
+    Name: '&e黄色'
+  '5':
+    MCName: lime
+    Name: '&a黄绿色'
+  '6':
+    MCName: pink
+    Name: '&d粉红色'
+  '7':
+    MCName: gray
+    Name: '&8灰色'
+  '8':
+    MCName: silver
+    Name: '&7淡灰色'
+  '9':
+    MCName: cyan
+    Name: '&3青色'
+  '10':
+    MCName: purple
+    Name: '&5紫色'
+  '11':
+    MCName: blue
+    Name: '&1蓝色'
+  '12':
+    MCName: brown
+    Name: '&4棕色'
+  '13':
+    MCName: green
+    Name: '&2绿色'
+  '14':
+    MCName: red
+    Name: '&c红色'
+  '15':
+    MCName: black
+    Name: '&0黑色'
