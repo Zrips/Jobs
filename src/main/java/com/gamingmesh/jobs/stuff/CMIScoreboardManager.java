@@ -126,9 +126,10 @@ public class CMIScoreboardManager {
 		if (i >= lines.size())
 		    break;
 
+		String ln = ChatColor.translateAlternateColorCodes('&', lines.get(i));
 		Class<?> ScoreboardScoreClass = getNMSClass("ScoreboardScore");
 		Constructor<?> packetConstructor2 = ScoreboardScoreClass.getConstructor(getNMSClass("Scoreboard"), getNMSClass("ScoreboardObjective"), String.class);
-		Object packet2 = packetConstructor2.newInstance(boards, obj, lines.get(i));
+		Object packet2 = packetConstructor2.newInstance(boards, obj, ln);
 		Method mc = packet2.getClass().getMethod("setScore", int.class);
 		mc.invoke(packet2, 15 - i);
 

@@ -462,7 +462,27 @@ public class ConfigManager {
 			if (actionType == ActionType.EXPLORE)
 			    material = null;
 
-			if (material != null) {
+			c: if (material != null) {
+
+			    // Need to include thos ones and count as regular blocks
+			    switch (key.replace("_", "").toLowerCase()) {
+			    case "itemframe":
+				type = "ITEM_FRAME";
+				id = 18;
+				meta = "1";
+				break c;
+			    case "painting":
+				type = "PAINTING";
+				id = 9;
+				meta = "1";
+				break c;
+			    case "armorstand":
+				type = "ARMOR_STAND";
+				id = 30;
+				meta = "1";
+				break c;
+			    }
+
 			    // Break and Place actions MUST be blocks
 			    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE) {
 				if (!material.isBlock()) {

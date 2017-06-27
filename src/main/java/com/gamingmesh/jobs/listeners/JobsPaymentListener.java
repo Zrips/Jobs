@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs.listeners;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -51,10 +52,15 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
+import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
@@ -923,6 +929,142 @@ public class JobsPaymentListener implements Listener {
 	    LivingEntity creature = event.getEntity();
 	    creature.setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(this.plugin, true));
 	}
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onHangingPlaceEvent(HangingPlaceEvent event) {
+
+	//disabling plugin in world
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
+
+	// make sure plugin is enabled
+	if (!this.plugin.isEnabled())
+	    return;
+
+	Player player = event.getPlayer();
+
+	if (!player.isOnline())
+	    return;
+
+	// check if in creative
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
+	    return;
+	Jobs.action(jPlayer, new EntityActionInfo(event.getEntity(), ActionType.PLACE));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onHangingBreakEvent(HangingBreakByEntityEvent event) {
+
+	//disabling plugin in world
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
+
+	// make sure plugin is enabled
+	if (!this.plugin.isEnabled())
+	    return;
+
+	if (!(event.getRemover() instanceof Player))
+	    return;
+
+	Player player = (Player) event.getRemover();
+
+	if (!player.isOnline())
+	    return;
+
+	// check if in creative
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
+	    return;
+	Jobs.action(jPlayer, new EntityActionInfo(event.getEntity(), ActionType.BREAK));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onArmorstandPlace(EntitySpawnEvent event) {
+	Entity ent = event.getEntity();
+
+	if (!ent.getType().toString().equalsIgnoreCase("ARMOR_STAND"))
+	    return;
+
+	Location loc = event.getLocation();
+	Collection<Entity> ents = loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
+	double dis = Double.MAX_VALUE;
+	Player player = null;
+	for (Entity one : ents) {
+	    if (!(one instanceof Player))
+		continue;
+	    Player p = (Player) one;
+	    if (!Jobs.getNms().getItemInMainHand(p).getType().toString().equalsIgnoreCase("ARMOR_STAND"))
+		continue;
+	    double d = p.getLocation().distance(loc);
+	    if (d < dis) {
+		dis = d;
+		player = p;
+	    }
+	}
+
+	if (player == null || !player.isOnline())
+	    return;
+	// check if in creative
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
+	    return;
+	Jobs.action(jPlayer, new EntityActionInfo(ent, ActionType.PLACE));
+
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onArmorstandBreak(EntityDeathEvent event) {
+	Entity ent = event.getEntity();
+
+	if (!ent.getType().toString().equalsIgnoreCase("ARMOR_STAND"))
+	    return;
+
+	if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
+	    return;
+
+	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
+
+	//extra check for Citizens 2 sentry kills
+	if (e.getDamager() instanceof Player)
+	    if (e.getDamager().hasMetadata("NPC"))
+		return;
+
+	Player pDamager = (Player) e.getDamager();
+
+	// check if in creative
+	if (pDamager.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
+	    return;
+
+	// pay
+	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(pDamager);
+
+	if (jDamager == null)
+	    return;
+
+	Jobs.action(jDamager, new EntityActionInfo(ent, ActionType.BREAK), e.getDamager());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
