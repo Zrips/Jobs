@@ -147,7 +147,7 @@ public class GuiManager {
 		ItemStack GuiItem = job.getGuiItem();
 
 		ItemMeta meta = GuiItem.getItemMeta();
-		meta.setDisplayName(job.getName());
+		meta.setDisplayName(job.getChatColor()+job.getName());
 		meta.setLore(Lore);
 		GuiItem.setItemMeta(meta);
 
@@ -236,7 +236,7 @@ public class GuiManager {
 		y++;
 	    }
 	    ItemMeta meta = GuiItem.getItemMeta();
-	    meta.setDisplayName(job.getName());
+		meta.setDisplayName(job.getChatColor()+job.getName());
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
 	    //GuiInv.setItem(i, GuiItem);
