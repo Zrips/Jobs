@@ -41,6 +41,7 @@ public class LanguageManager {
 	languages.add("ru");
 	languages.add("tr");
 	languages.add("zhcn");
+	languages.add("zhrw");
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + lang + ".yml");

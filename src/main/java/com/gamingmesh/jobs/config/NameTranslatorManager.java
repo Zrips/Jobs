@@ -173,6 +173,8 @@ public class NameTranslatorManager {
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<String>();
 	languages.add("fr");
+	languages.add("zhcn");
+	languages.add("zhtw");
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker(plugin, "TranslatableWords" + File.separator + "Words_" + lang + ".yml");

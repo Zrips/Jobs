@@ -166,7 +166,7 @@ public class SignUtil {
 			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
 			    line1 = line1.replace("[player]", PlayerName);
 			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
-				line1 = line1.replace("[job]", JobName);
+			    line1 = line1.replace("[job]", JobName);
 
 			    sign.setLine(1, line1);
 
@@ -174,7 +174,7 @@ public class SignUtil {
 			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
 			    line1 = line1.replace("[player]", PlayerName);
 			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
-				line1 = line1.replace("[job]", JobName);
+			    line1 = line1.replace("[job]", JobName);
 
 			    sign.setLine(2, line1);
 
@@ -182,7 +182,7 @@ public class SignUtil {
 			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
 			    line1 = line1.replace("[player]", PlayerName);
 			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
-				line1 = line1.replace("[job]", JobName);
+			    line1 = line1.replace("[job]", JobName);
 
 			    sign.setLine(3, line1);
 			    sign.update();
