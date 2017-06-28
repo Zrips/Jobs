@@ -3,7 +3,7 @@ economy:
     nomoney: Die Bank hat kein Geld mehr!
 limitedItem:
   error:
-    levelup: '&cDu musst als [jobname] ein Level aufsteigen bevor du dieses Item verwenden kannst!
+    levelup: '&cDu musst als [jobname] ein Level aufsteigen bevor du dieses Item verwenden kannst!'
 general:
   Spawner: '&r[Typ] Spawner'
   info:
