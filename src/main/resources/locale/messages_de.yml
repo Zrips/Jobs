@@ -1,6 +1,6 @@
 economy:
   error:
-    nomoney: Die Bank hat kein Geld mehr!
+    nomoney: '&cDie Bank hat kein Geld mehr!'
 limitedItem:
   error:
     levelup: '&cDu musst als [jobname] ein Level aufsteigen bevor du dieses Item verwenden kannst!'
@@ -128,7 +128,7 @@ command:
       add: '&e(&6%playername%&e) erhaltet &6%amount% &ePunkte. Er hat nun
         &6%total%&e.'
       take: '&e(&6%playername%&e) verliert &6%amount% &ePunkte und hat somit nur noch &6%total%&e.'
-   blockinfo:
+  blockinfo:
     help:
       info: Zeit Infos über den Block an, den du gerade anschaust.
       args: ''
@@ -148,8 +148,8 @@ command:
       usage: ' &eNutze: &6%first% &eoder &6%second%'
   entitylist:
     help:
-      info: Zeigt alle möglichen "Entities" an, die du mit Jobs.
-      args: '
+      info: 'Zeigt alle möglichen "Entities" an, die du mit Jobs.'
+      args: ''
   error:
     job: Dieser Job existiert nicht!
     permission: Du hast dafür keine Berechtigungen!
@@ -459,7 +459,7 @@ command:
       info: Schaltet Mitteilungen über Bezahlungen in der action bar ein/aus.
     output:
       turnedoff: '&4Dieses Feature ist deaktiviert!'
-      paid: '&aGeldgutschrift: &2[amount]'
+      paid:
         main: '&aDu hast:'
         money: '&e[amount] Geld'
         exp: '&7[exp] EP'
@@ -482,6 +482,8 @@ message:
   crafting:
     fullinventory: Dein Inventar ist voll!
 signs:
+  List: '&0[Nummer].&8[Spieler]&7:&4[level]'
+  SpecialList:
     '1':
       '1': '&b** &8Erster &b**'
       '2': '&9[player]'
