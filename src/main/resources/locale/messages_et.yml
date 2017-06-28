@@ -78,8 +78,8 @@ command:
       finalExplanation: ' &eEi sisalda Petpay ja Spawneri läheduse boonust/trahvi'
   convert:
     help:
-      info: Muudab andmeid põhisüsteemis ühest süsteemist teise. Kui sul hetkel töötab
-       sqlite, muutub see Mysql-iks ja vastupidi.
+      info: 'Muudab andmeid põhisüsteemis ühest süsteemist teise. Kui sul hetkel töötab
+       sqlite, muutub see Mysql-iks ja vastupidi.'
       args: ''
   limit:
     help:
@@ -284,7 +284,7 @@ command:
       info: Ühine valitud ametige.
       args: '[jobname]'
     error:
-      alreadyin: Oled hetkel järgmises ametis: %jobname%.
+      alreadyin: 'Oled hetkel järgmises ametis: %jobname%.'
       fullslots: Sa ei saa ühineda ametiga %jobname%, seal pole ühtegi kohta vaba.
       maxjobs: Sa oled juba ühinenud liiga paljude ametitega.
     success: Oled ühinenud tööga %jobname%.
