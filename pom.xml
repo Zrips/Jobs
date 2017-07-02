@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>3.9.6</version>
+	<version>3.9.7</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 	<properties>
