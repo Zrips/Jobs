@@ -30,11 +30,14 @@ public class WorldGuardManager {
     }
 
     public List<RestrictedArea> getArea(Location loc) {
-	ApplicableRegionSet regions = wg.getRegionContainer().get(loc.getWorld()).getApplicableRegions(loc);
-	for (ProtectedRegion one : regions.getRegions()) {
-	    if (!Jobs.getRestrictedAreaManager().isExist(one.getId()))
-		continue;
-	    return Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
+	try {
+	    ApplicableRegionSet regions = wg.getRegionContainer().get(loc.getWorld()).getApplicableRegions(loc);
+	    for (ProtectedRegion one : regions.getRegions()) {
+		if (!Jobs.getRestrictedAreaManager().isExist(one.getId()))
+		    continue;
+		return Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
+	    }
+	} catch (NoSuchMethodError e) {
 	}
 	return new ArrayList<RestrictedArea>();
     }

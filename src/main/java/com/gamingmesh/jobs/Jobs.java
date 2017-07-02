@@ -825,7 +825,6 @@ public class Jobs extends JavaPlugin {
 	    cManager.fillCommands();
 	} catch (Exception e) {
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
-	    this.setEnabled(false);
 	    e.printStackTrace();
 	}
     }
