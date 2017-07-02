@@ -57,8 +57,9 @@ public class top implements Cmd {
 	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return false;
 	}
+	int st = (page * 15) - 15;
 
-	List<TopList> FullList = Jobs.getJobsDAO().toplist(args[0], page * 15);
+	List<TopList> FullList = Jobs.getJobsDAO().toplist(args[0], st);
 	if (FullList.size() <= 0) {
 	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    return false;
@@ -71,7 +72,7 @@ public class top implements Cmd {
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", jobName));
-	    int i = (page * 15) - 15;
+	    int i = st;
 	    for (TopList One : FullList) {
 		i++;
 		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
@@ -83,7 +84,7 @@ public class top implements Cmd {
 
 	    List<String> ls = new ArrayList<String>();
 
-	    int i = (page * 15) - 15;
+	    int i = st;
 	    for (TopList one : FullList) {
 		i++;
 		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";

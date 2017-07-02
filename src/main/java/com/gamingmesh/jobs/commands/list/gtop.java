@@ -49,7 +49,9 @@ public class gtop implements Cmd {
 	if (page < 1)
 	    page = 1;
 
-	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(page * 15 - 15);
+	int st = (page * 15) - 15;
+	
+	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(st);
 	if (FullList.size() <= 0) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.gtop.error.nojob"));
 	    return false;
@@ -57,7 +59,7 @@ public class gtop implements Cmd {
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline"));
-	    int i = page * 15 - 15;
+	    int i = st;
 	    for (TopList One : FullList) {
 		i++;
 		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
@@ -68,7 +70,7 @@ public class gtop implements Cmd {
 
 	    List<String> ls = new ArrayList<String>();
 
-	    int i = page * 15 - 15;
+	    int i = st;
 	    for (TopList one : FullList) {
 		i++;
 		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
