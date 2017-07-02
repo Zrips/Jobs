@@ -1045,9 +1045,11 @@ public class JobsPaymentListener implements Listener {
 	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
 
 	//extra check for Citizens 2 sentry kills
-	if (e.getDamager() instanceof Player)
-	    if (e.getDamager().hasMetadata("NPC"))
-		return;
+	if (!(e.getDamager() instanceof Player))
+	    return;
+
+	if (e.getDamager().hasMetadata("NPC"))
+	    return;
 
 	Player pDamager = (Player) e.getDamager();
 
