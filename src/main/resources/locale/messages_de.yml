@@ -472,7 +472,7 @@ message:
     nobroadcast: '&eGratulation, du bist zum %titlename% %jobname% aufgestiegen.'
   levelup:
     broadcast: '&e%playername%, der %jobname%&r, ist nun Level &e%joblevel%&r.'
-    nobroadcast: '&eDu bist nun %jobname%, Level %joblevel%.
+    nobroadcast: '&eDu bist nun %jobname%, Level %joblevel%.'
   cowtimer: '&eDu musst &6%time% &eSekunden warten um wieder etwas für das Melken zu verdienen!'
   blocktimer: '&eDu musst &3[time] &eSekunden warten um wieder etwas für das Abbauen zu verdienen!'
   placeblocktimer: '&eDu musst &6[time] &eSekunden warten um wieder etwas platzieren zu können.'
