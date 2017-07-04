@@ -1,0 +1,515 @@
+economy:
+  error:
+    nomoney: '&cVabandust, riiklikus pangas pole raha järel!'
+limitedItem:
+  error:
+    levelup: '&cSa pead jõudma järgmisele tasemele ametis [jobname], et seda eset kasutada!'
+general:
+  info:
+    toplineseparator: '&7*********************** &6%playername% &7***********************'
+    separator: '&7*******************************************************'
+    time:
+      day: '&e%days% &6päeva '
+      hours: '&e%hours% &6tundi '
+      mins: '&e%mins% &6minutit '
+      secs: '&e%secs% &6sekundit '
+  admin:
+    error: '&Käsklus oli vigane.'
+    success: '&eKäsklus viidi täide.'
+  error:
+    noHelpPage: '&cSellise leheküljega abileht puudub!'
+    notNumber: '&ePalun kasuta numbreid!'
+    job: '&cAmetit, mille valisid, pole olemas!'
+    permission: '&cSul puudub õigus selle tegemiseks!'
+    noinfo: '&cTeavet ei leitud!'
+    noinfoByPlayer: '&cEi leitud teavet mängija [%playername%] kohta!'
+    ingame: '&cVõid kasutada seda käsklust ainult mängus!'
+    fromconsole: '&cVõid kasutada seda käsklust ainult konsoolis!'
+    worldisdisabled: '&cSa ei või kasutada seda käsku siin maailmas!'
+command:
+  moneyboost:
+    help:
+      info: Võimendab raha saamist kõikide mängijate jaoks
+      args: '[jobname] [rate]'
+    output:
+      allreset: Kõik palga võimendused on väljalülitatud
+      jobsboostreset: Palga võimendus ameti %jobname% jaoks on välja lülitatud
+      nothingtoreset: Pole midagi lähtestada
+      boostalladded: Palga võimendus suurusega %boost% lisati kõikidele ametitele!
+      boostadded: Palga võimendus suurusega &e%boost% &alisati ametile &e%jobname%!
+      infostats: '&c-----> &aRahakurss x%boost% sees&c <-------'
+  pointboost:
+    help:
+      info: Võimendab punktide saamist kõikidele mängijatele
+      args: '[jobname] [rate]'
+    output:
+      allreset: Kõik punktide võimendused on välja lülitatud
+      jobsboostreset: Punktide võimendus ametis %jobname% on välja lülitatud
+      nothingtoreset: Pole midagi lähtestada
+      boostalladded: Punkti võimendus suurusega %boost% lisati kõikidele ametitele!
+      boostadded: Punkti võimendus suurusega &e%boost% &alisati ametile &e%jobname%!
+      infostats: '&c-----> &aPunktikurss x%boost% sees&c <-------'
+  expboost:
+    help:
+      info: Võimendab kogemuste saamist kõikidele mängijatele
+      args: '[jobname] [rate]'
+    output:
+      allreset: Kõik kogemuste võimendused on välja lülitatud
+      jobsboostreset: Kogemuste võimendus ametis %jobname% on välja lülitatud
+      nothingtoreset: Pole midagi lähtestada
+      boostalladded: Kogemuste võimendus suurusega %boost% lisati kõikidele ametitele!
+      boostadded: Kogemuste võimendus suurusega &e%boost% &alisati ametile &e%jobname%!
+      infostats: '&c-----> &aKogemused x%boost% sees&c <-------'
+  bonus:
+    help:
+      info: Näita tööboonuseid
+      args: '[jobname]'
+    output:
+      topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
+      permission: ' &eLoa boonus: %money% %points% %exp%'
+      item: ' &eEseme boonus: %money% %points% %exp%'
+      global: ' &eGlobaalne boonus: %money% %points% %exp%'
+      dynamic: ' &eDünaamilise tasu boonus: %money% %points% %exp%'
+      nearspawner: ' &eSpawneri boonus: %money% %points% %exp%'
+      petpay: ' &ePetPay boonus: %money% %points% %exp%'
+      area: ' &eAla boonus: %money% %points% %exp%'
+      mcmmo: ' &eMcMMO boonus: %money% %points% %exp%'
+      final: ' &eLõplik boonus: %money% %points% %exp%'
+      finalExplanation: ' &eEi sisalda Petpay ja Spawneri läheduse boonust/trahvi'
+  convert:
+    help:
+      info: 'Muudab andmeid põhisüsteemis ühest süsteemist teise. Kui sul hetkel töötab
+       sqlite, muutub see Mysql-iks ja vastupidi.'
+      args: ''
+  limit:
+    help:
+      info: Näitab tööde tasulimiite
+      args: ''
+    output:
+      moneytime: '&eAega järel kuni raha limiit lähtestatakse: &2%time%'
+      moneyLimit: '&eRaha liimit: &2%current%&e/&2%total%'
+      exptime: '&eAega järel kuni kogemuste limiit lähtestatakse: &2%time%'
+      expLimit: '&eKogemuste limiit: &2%current%&e/&2%total%'
+      pointstime: '&eAega järel kuni punkti limiit lähtestatakse: &2%time%'
+      pointsLimit: '&ePunkti limiit: &2%current%&e/&2%total%'
+      reachedmoneylimit: '&4Olete jõudnud raha limiidini antud aja jooksul!'
+      reachedmoneylimit2: '&eSa saad näha oma limiiti &käsklusega &2/jobs limit'
+      reachedexplimit: '&4Oled jõudnud kogemuste limiiti antud aja jooksul!'
+      reachedexplimit2: '&eSa saad näha oma limiiti &käsklusega &2/jobs limit'
+      reachedpointslimit: '&4Oled jõudnud kogemuste limiiti antud aja jooksul!'
+      reachedpointslimit2: '&eSa saad näha oma limiiti &käsklusega &2/jobs limit'
+      notenabled: '&eRaha limiit pole sees'
+  resetlimit:
+    help:
+      info: Lähtestab mängijate tasu limiidid
+      args: '[playername]'
+    output:
+      reseted: '&eTasu limiit on lähtestatud mängija &2%playername% jaoks'
+  help:
+    output:
+      info: Kasuta käsklust /jobs [cmd] ? teabe saamiseks mõne käskluse kohta.
+      usage: 'Kasutus: %usage%'
+      title: '&e-------&e ======= &6Tööd &e======= &e-------'
+      page: '&e-----&e ====== Leht &6[1] &eof &6[2] &e====== &e-----'
+      prev: '&e--- <<<<< &6Eelmine leht &e|'
+      next: '&e|&6 Järgmine leht &e>>>> ---'
+  points:
+    help:
+      info: Näitab, kui palju punkte mängijal on.
+      args: '[playername]'
+    currentpoints: ' &ePraegune punktide arv: &6%currentpoints%'
+    totalpoints: ' &ePraeguseni kogutud punktide täielik arv: &6%totalpoints%'
+  editpoints:
+    help:
+      info: Muuda mängijate punkte.
+      args: '[set/add/take] [playername] [amount]'
+    output:
+      set: '&eMängija (&6%playername%&e) punktide arv muudeti: &6%amount%'
+      add: '&eMängija (&6%playername%&e) sai lisaks &6%amount% &epunkti. Nüüd on tal
+        &6%total% punkti'
+      take: '&eMängija (&6%playername%&e) kaotas &6%amount% &epunkti. Nüüd on tal &6%total% punkti'
+  blockinfo:
+    help:
+      info: Näitab Block-i, mida sa vaatad, teavet .
+      args: ''
+    output:
+      name: ' &eBlock-i nimi: &6%blockname%'
+      id: ' &eBlock-i id: &6%blockid%'
+      data: ' &eBlock-i teave: &6%blockdata%'
+      usage: ' &eKasutus: &6%first% &eor &6%second%'
+  iteminfo:
+    help:
+      info: Näitab su käes oleva eseme teavet.
+      args: ''
+    output:
+      name: ' &eEseme nimi: &6%itemname%'
+      id: ' &eEseme id: &6%itemid%'
+      data: ' &eEseme teave: &6%itemdata%'
+      usage: ' &eKasutus: &6%first% &eor &6%second%'
+  entitylist:
+    help:
+      info: Näitab kõiki võimalikke entity-si mida saab pluginiga kasutada.
+      args: ''
+  stats:
+    help:
+      info: Näita su taset igas ametis kus sa oled.
+      args: '[playername]'
+    error:
+      nojob: Palun ühine esmalt mõne ametiga.
+    output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+  shop:
+    help:
+      info: Avab eriliste ametite poe.
+      args: ''
+    info:
+      title: '&e------- &8Ametite pood &e-------'
+      currentPoints: '&eSul on: &6%currentpoints%'
+      price: '&eHind: &6%price%'
+      reqJobs: '&eVajalikud ametid:'
+      reqJobsList: '  &6%jobsname%&e: &e%level% tase'
+      reqTotalLevel: '&6Vajalik tase: &e%totalLevel%'
+      cantOpen: '&cEi saa seda lehte avada'
+      NoPermForItem: '&cSul puuduvad vajalikud õigused sellele esemele!'
+      NoPermToBuy: '&cPuudub selle eseme ostmise õigus'
+      NoJobReqForitem: '&cSul pole vajalik amet (&6%jobname%&e) vajaliku tasemega
+        (&6%joblevel%&e)'
+      NoPoints: '&cSul pole piisavalt punkte'
+      NoTotalLevel: '&cTäielik ametite tase on liiga madal (%totalLevel%)'
+      Paid: '&eOled maksnud &6%amount% &eselle eseme eest'
+  archive:
+    help:
+      info: Näitab kõiki ameteid, mis on kasutaja poolt arhiivi salvestatud.
+      args: '[playername]'
+    error:
+      nojob: Ühtegi ametit pole salvestatud.
+    output: tase %joblevel% (%getbackjoblevel%) %jobname%
+  give:
+    help:
+      info: Annab eseme põhinedes ametile ja eseme kategooriale. Mängija nimi on valikuline. 
+      args: '[playername] [jobname] [itemname]'
+    output:
+      notonline: '&4Mängija [%playername%] pole sees!'
+      noitem: '&4Ei leia ühtegi eset antud nime järgi!'
+  info:
+    help:
+      title: '&2*** &eAmetid&2 ***'
+      info: Näitab, kui palju ja mille eest igas ametis raha saab.
+      penalty: '&eSellel ametil on &c[penalty]% &karistus, sest liiga palju mängijaid on selles ametis.'
+      bonus: '&eSellel ametil on &2[bonus]% &võimendus, sest piisavalt mängijaid ei
+        ole selles ametis.'
+      args: '[jobname] [action]'
+      actions: '&eLubatud teod on: &f%actions%'
+      max: ' - &emaksimum tase:&f '
+      material: '&7%material%'
+      levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &alevels)'
+      levelFrom: ' &a(alates &e%levelFrom% &atase)'
+      levelUntil: ' &a(kuni &e%levelUntil% &atase)'
+      money: ' &2%money%$'
+      points: ' &6%points% punkti'
+      exp: ' &e%exp% kogemust'
+    gui:
+      pickjob: '&eVali oma amet!'
+      jobinfo: '&e[jobname] teave!'
+      actions: '&eLubatud teod on:'
+      leftClick: '&eVasak-kliki, et saada rohkem infot'
+      rightClick: '&eParem-kliki, et tööle saada'
+      leftSlots: '&eJärelejäänud kohad:&f '
+      working: '&2&nJuba töötavad'
+      max: '&eMaksimum tase:&f '
+      back: '&e<<< Tagasi'
+    output:
+      break:
+        info: Lõhkumine
+        none: 'Ametis %jobname% ei saa raha block-ide lõhkumise eest.'
+      tntbreak:
+        info: Dünamiidi lõhkamine
+        none: 'Ametis %jobname% ei saa raha block-ide lõhkumise eest dünamiidiga .'
+      place:
+        info: Asetamine
+        none: 'Ametis %jobname% ei saa raha block-ide maha panemise eest.'
+      kill:
+        info: Tapmine
+        none: '%Ametis jobname% ei saa raha koletiste tapmise eest.'
+      mmkill:
+        info: MKtapmine
+        none: 'Ametis %jobname% ei saa raha Müütiliste Koletiste tapmise eest.'
+      fish:
+        info: Kala
+        none: 'Ametis %jobname% ei saa raha kalastamise eest.'
+      craft:
+        info: Meisterdamine
+        none: 'Ametis %jobname% ei saa raha meisterdamise eest.'
+      smelt:
+        info: Sulatamine
+        none: 'Ametis %jobname% ei saa raha sulatamise eest.'
+      brew:
+        info: Pruulimine
+        none: 'Ametis %jobname% ei saa raha pruulimise eest.'
+      eat:
+        info: Söömine
+        none: 'Ametis %jobname% ei saa raha söömise eest.'
+      dye:
+        info: Värvimine
+        none: 'Ametis %jobname% ei saa raha värvimise eest.'
+      enchant:
+        info: Loitsimine
+        none: 'Ametis %jobname% ei saa raha loitsimise eest.'
+      repair:
+        info: Parandamine
+        none: 'Ametis %jobname% ei saa raha parandamise eest.'
+      breed:
+        info: Sigitamine
+        none: 'Ametis %jobname% ei saa raha sigitamise eest.'
+      tame:
+        info: Taltsutamine
+        none: 'Ametis %jobname% ei saa raha taltsutamise eest.'
+      milk:
+        info: Piim
+        none: 'Ametis %jobname% ei saa raha lehmade lüpsmise eest.'
+      shear:
+        info: Käärid
+        none: 'Ametis %jobname% ei saa raha lammaste pügamise eest.'
+      explore:
+        info: Avastamine
+        none: 'Ametis %jobname% ei saa raha avastamise eest.'
+      custom-kill:
+        info: Tehislik tapmine
+        none: 'Ametis %jobname% ei saa raha mängijate tehisliku tapmise eest.'
+  playerinfo:
+    help:
+      info: Näitab, kui palju ja mille eest mõni mängija ametis tasu saab.
+      args: '[playername] [jobname] [action]'
+  join:
+    help:
+      info: Ühine valitud ametige.
+      args: '[jobname]'
+    error:
+      alreadyin: 'Oled hetkel järgmises ametis: %jobname%.'
+      fullslots: Sa ei saa ühineda ametiga %jobname%, seal pole ühtegi kohta vaba.
+      maxjobs: Sa oled juba ühinenud liiga paljude ametitega.
+    success: Oled ühinenud tööga %jobname%.
+  leave:
+    help:
+      info: Lahku valitud ametist.
+      args: '[oldplayerjob]'
+    success: Oled lahkunud ametist %jobname%.
+  leaveall:
+    help:
+      info: Lahku kõikidest ametitest.
+    error:
+      nojobs: Sul pole ühtegi ametit kust lahkuda!
+    success: Oled lahkunud kõigist ametitest.
+  browse:
+    help:
+      info: Näita sulle saadaval olevate ametite nimekirja.
+    error:
+      nojobs: Pole ühtegi ametit millega sa ühineda saaksid.
+    output:
+      header: 'Sul pole lubatud ühineda järgnevate ametitega:'
+      footer: Rohkema teabe saaviseks kasuta käsklust /jobs info [job]
+      totalWorkers: ' &7Töötajad: &e[amount]'
+      penalty: ' &4Karistus: &c[amount]%'
+      bonus: ' &2Võimendus: &a[amount]%'
+  fire:
+    help:
+      info: Vallanda mängija ametist.
+      args: '[playername] [jobname]'
+    error:
+      nojob: Mängijal pole ametis %jobname% tööd.
+    output:
+      target: Sind on ametist %jobname% vallandatud.
+  fireall:
+    help:
+      info: Vallanda mängija kõigist ametitest.
+      args: '[playername]'
+    error:
+      nojobs: Mängijal pole ühtegi ametit!
+    output:
+      target: Sind on kõikidest ametitest lahti lastud.
+  employ:
+    help:
+      info: Palka mängija tööle.
+      args: '[playername] [jobname]'
+    error:
+      alreadyin: Mängija on juba tööl ametis %jobname%.
+    output:
+      target: Sind on palgatud ametisse %jobname%.
+  top:
+    help:
+      info: Näitab 15 parimat mängijat ametinimetuse järgi.
+      args: '[jobname]'
+    error:
+      nojob: Ei leia ametit selle nimetuse järgi.
+    output:
+      topline: '&aTop&e 15 &amängijat &e%jobname% &aametis'
+      list: '&e%number%&a. &e%playername% &atase &e%level% &akoos&e %exp% &aexp'
+      prev: '&e<<<<< Eelmine leht &2|'
+      next: '&2|&e Järgmine leht >>>>'
+      show: '&2Näita alates &e[from] &2kuni &e[until] &2parimate nimekirja'
+  gtop:
+    help:
+      info: Näitab 15 parimat mängijat globaalse ameti taseme järgi. 
+      args: ''
+    error:
+      nojob: Ei leia informatsiooni.
+    output:
+      topline: '&aTop&e 15 &amängijat globaalse ameti taseme järgi'
+      list: '&e%number%&a. &e%playername% &atase &e%level% &akoos&e %exp% &aexp'
+      prev: '&e<<<<< Eelmine leht &2|'
+      next: '&2|&e Järgmine leht >>>>'
+      show: '&2Näita alates &e[from] &2kuni &e[until] &2globaalset parimate nimekirja'
+  area:
+    help:
+      info: Muudab piirangualasi.
+      args: add/remove/info/list
+      addUsage: '&eKasutus: &6/Jobs area add [areaName] [bonus]'
+      removeUsage: '&eKasutus: &6/Jobs area remove [areaName]'
+    output:
+      addedNew: '&eLisatud uus piiranguala &6%bonus% &evõimendus'
+      removed: '&eEemaldatud piiranguala &6%name%'
+      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
+        &6%bonus%'
+      noAreas: '&ePole salvestatud piirangualasi'
+      noAreasByLoc: '&eSiin asukohas pole piiranguala'
+      areaList: '&ePiirangualad sinu asukohas: &6%list%'
+      selected1: '&eVali esimene punkt: &6%x%:%y%:%z%'
+      selected2: '&eVali teine punkt: &6%x%:%y%:%z%'
+      select: '&eVali 2 punkti valikutööriistaga (%tool%)'
+      exist: '&ePiiranguala selle nimega on juba olemas'
+      dontExist: '&ePiiranguala selle nimega pole olemas'
+  log:
+    help:
+      info: Näitab statistikat.
+      args: '[playername]'
+    output:
+      topline: '&7************************* &6%playername% &7*************************'
+      list: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% &6raha: %money% &eexp:
+        %exp%'
+      bottomline: '&7***********************************************************'
+      prev: '&e<<<<< Eelmine leht &2|'
+      next: '&2|&e Järgmine leht >>>>'
+      nodata: '&cAndmeid ei leitud'
+  glog:
+    help:
+      info: Näitab globaalset statistikat.
+      args: ''
+    output:
+      topline: '&7*********************** &6Globaalne statistika &7***********************'
+      list: '&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6raha:
+        %money% &eexp: %exp%'
+      bottomline: '&7**************************************************************'
+      nodata: '&cAndmeid ei leitud'
+  transfer:
+    help:
+      info: Kanna mängija amet vanast ametist uude ametisse.
+      args: '[playername] [oldjob] [newjob]'
+    output:
+      target: Sa oled ametist %oldjobname% üle viidud ametisse %newjobname%.
+  promote:
+    help:
+      info: Anna mängijale ametikõrgendus.
+      args: '[playername] [jobname] [levels]'
+    output:
+      target: Oled saanud ametikõrgendust %levelsgained% taset ametis %jobname%.
+  exp:
+    help:
+      info: Muuda mängija kogemust ametis.
+      args: '[playername] [jobname] [set/add/take] [amount]'
+    output:
+      target: '&eSu kogemust muudeti ametis %jobname% &eja nüüd oled sa tasemel &6%level%
+        &eja &6%exp%exp punktiga.'
+  demote:
+    help:
+      info: Alanda mängijat ametis.
+      args: '[playername] [jobname] [levels]'
+    output:
+      target: Sind on alandatud %levelslost% taset ametis %jobname%.
+  grantxp:
+    help:
+      info: Anna mängijale kogemust.
+      args: '[playername] [jobname] [xp]'
+    output:
+      target: Sulle on antud  %xpgained% kogemust ametis %jobname%.
+  removexp:
+    help:
+      info: Eemalda mängija kogemust töös.
+      args: '[playername] [jobname] [xp]'
+    output:
+      target: Oled kaotanud %xplost% kogemust ametis %jobname%.
+  signupdate:
+    help:
+      info: Käsitsi uuendab silte ametinime järgi
+      args: '[jobname]'
+  bp:
+    help:
+      info: Näitab block-i kaitset sinu ümber 10 block-i raadiuses
+      args: ''
+    output:
+      found: '&eLeitud &6%amount% &ekaitstud block-i ümber sinu'
+      notFound: '&Ei leitud kaitstud block-e ümber sinu'
+  reload:
+    help:
+      info: Taaslae konfiguratsioon.
+  toggle:
+    help:
+      info: Lülitab sisse tasu näidiku tegevusnäidikul või ülemusnäidikul.
+      args: '[actionbar/bossbar]'
+    output:
+      turnedoff: '&4See funktsioon on välja lülitatud!'
+      paid:
+        main: '&aSa said:'
+        money: '&e[amount] raha'
+        exp: '&7[exp] kogemust'
+        points: '&6[points] punkti'
+      'on': '&aSeis: &aSEES'
+      'off': '&aSeis: &4VÄLJAS'
+message:
+  skillup:
+    broadcast: '%playername% on ülendatud ametinimetusse %titlename% ametis %jobname%.'
+    nobroadcast: Palju õnne, sind on ülendatud ametinimetusse %titlename% ametis %jobname%.
+  levelup:
+    broadcast: '%playername% on nüüd tasemel %joblevel% ametis %jobname%.'
+    nobroadcast: Oled nüüd tasemel %joblevel% ametis %jobname%.
+  cowtimer: '&ePead endiselt ootama &6%time% &esekundit, et saada selle töö eest palka.'
+  blocktimer: '&ePead ootama: &3[time] &esekundit  veel, et selle eest palka saada!'
+  placeblocktimer: '&eSa ei saa samasse kohta maha panna block-e intervallist &6[time] &esekundit kiiremini!'
+  taxes: '&3[amount] &eserveri makse kanti üle sellele kasutajale'
+  boostStarted: '&eAmeti võimenduse aeg on alanud!'
+  boostStoped: '&eAmeti võimenduse aeg on lõppenud!'
+  crafting:
+    fullinventory: Su seljakott on täis!
+signs:
+  List: '&0[number].&8[player]&7:&4[level]'
+  SpecialList:
+    '1':
+      '1': '&b** &8Esimene &b**'
+      '2': '&9[player]'
+      '3': '&8[level] tase'
+      '4': '&b************'
+    '2':
+      '1': '&b** &8Teine &b**'
+      '2': '&9[player]'
+      '3': '&8[level] tase'
+      '4': '&b************'
+    '3':
+      '1': '&b** &8Kolmas &b**'
+      '2': '&9[player]'
+      '3': '&8[level] tase'
+      '4': '&b************'
+  cantcreate: '&4Sa ei saa seda silti luua!'
+  cantdestroy: '&4Sa ei saa seda silti lõhkuda!'
+  topline: '&0[Jobs]'
+  secondline:
+    join: '&0Ühine'
+    leave: '&0Lahku'
+    toggle: '&0Lülita'
+    top: '&0Parim'
+    browse: '&0Sirvi'
+    stats: '&0Statistika'
+    limit: '&0Piirang'
+    info: '&0Teave'
+    archive: '&0Arhiiv'
+scoreboard:
+  topline: '&2Parimate nimikiri ametis &e%jobname%'
+  gtopline: '&2Globaalne parimate nimekiri'
+  line: '&2%number%. &e%playername% (&6%level%&e)'
