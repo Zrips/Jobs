@@ -1117,7 +1117,7 @@ public class Jobs extends JavaPlugin {
 		    return false;
 		}
 		getBpManager().add(block, cd);
-		if (cd == 0 && getGCManager().useGlobalTimer) {
+		if ((cd == null || cd == 0) && getGCManager().useGlobalTimer) {
 		    getBpManager().add(block, getGCManager().globalblocktimer);
 		}
 	    } else if (getGCManager().useGlobalTimer) {
