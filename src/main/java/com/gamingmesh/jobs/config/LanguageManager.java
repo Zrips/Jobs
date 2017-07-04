@@ -36,6 +36,7 @@ public class LanguageManager {
 	languages.add("cz");
 	languages.add("de");
 	languages.add("es");
+	languages.add("et");
 	languages.add("fr");
 	languages.add("lt");
 	languages.add("ru");
