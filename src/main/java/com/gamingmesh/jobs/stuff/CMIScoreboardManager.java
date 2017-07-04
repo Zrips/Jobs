@@ -78,7 +78,7 @@ public class CMIScoreboardManager {
 
 	    Class<?> IScoreboardCriterias = getNMSClass("ScoreboardBaseCriteria");
 	    Constructor<?> IScoreboardCriteriasConst = IScoreboardCriterias.getConstructor(String.class);
-	    Object IScoreboardCriteria = IScoreboardCriteriasConst.newInstance("dummy");
+	    Object IScoreboardCriteria = IScoreboardCriteriasConst.newInstance("JobsDummy");
 
 	    Object obj = m.invoke(boards, objName, IScoreboardCriteria);
 	    Class<?> p1 = getNMSClass("PacketPlayOutScoreboardObjective");
@@ -100,7 +100,7 @@ public class CMIScoreboardManager {
 
 	    Class<?> IScoreboardCriterias = getNMSClass("ScoreboardBaseCriteria");
 	    Constructor<?> IScoreboardCriteriasConst = IScoreboardCriterias.getConstructor(String.class);
-	    Object IScoreboardCriteria = IScoreboardCriteriasConst.newInstance("dummy");
+	    Object IScoreboardCriteria = IScoreboardCriteriasConst.newInstance("JobsDummy");
 
 	    Object obj = m.invoke(boards, objName, IScoreboardCriteria);
 
