@@ -1098,7 +1098,7 @@ public class Jobs extends JavaPlugin {
 	if (info.getType() == ActionType.BREAK) {
 	    if(block.hasMetadata("JobsExploit")){
 	        //player.sendMessage("This block is protected using Rukes' system!");
-	        return true;
+	        return false;
         }
 	    BlockProtection bp = getBpManager().getBp(block.getLocation());
 	    if (bp != null) {
