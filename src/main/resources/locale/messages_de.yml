@@ -1,9 +1,9 @@
 economy:
   error:
-    nomoney: Die Bank hat kein Geld mehr!
+    nomoney: '&cDie Bank hat kein Geld mehr!'
 limitedItem:
   error:
-    levelup: '&cDu musst als [jobname] ein Level aufsteigen bevor du dieses Item verwenden kannst!
+    levelup: '&cDu musst als [jobname] ein Level aufsteigen, bevor du dieses Item verwenden kannst!'
 general:
   Spawner: '&r[Typ] Spawner'
   info:
@@ -15,15 +15,15 @@ general:
       mins: '&e%mins% &6Min. '
       secs: '&e%secs% &6Sek. '
   admin:
-    error: Fehlerhafter Befehl.
-    success: Befehl ausgeführt.
+    error: '&cFehlerhafter Befehl.'
+    success: '&aBefehl ausgeführt.'
   error:
-    noHelpPage: '&cEs existiert keine Hilfeseite mit dieser Nummer!'
-    notNumber: '&eNutz Nummern!'
+    noHelpPage: '&cDiese Seite existiert nicht!'
+    notNumber: '&eNutze Nummern!'
     job: '&cDer ausgewählte Job existiert nicht!'
     permission: '&cDu hast dafür keine Berechtigung!'
     noinfo: '&cKeine Informationen gefunden!'
-    noinfoByPlayer: '&cNo information found by [%playername%] player name!'
+    noinfoByPlayer: '&cÜber [%playername%] wurden keine Informationen gefunden!'
     ingame: '&cDu kannst diesen Befehl nur Ingame ausführen!'
     fromconsole: '&cDieser Befehl geht nur in der Konsole!'
     worldisdisabled: '&cIn dieser Welt kannst den Befehl nicht ausführen!'
@@ -33,34 +33,34 @@ command:
       info: Erhöht das Einkommen für alle Spieler
       args: '[Jobname] [Faktor]'
     output:
-      allreset: Alle Einkommens-Boosts deaktiviert.
-      jobsboostreset: Boost für %jobname% deaktiviert.
-      nothingtoreset: Es gibt nichts zum zurücksetzen.
-      boostalladded: Ein Boost von %boost% allen Jobs hinzugefügt!
-      boostadded: Ein Boost von &e%boost% &ahinzugefügt für &e%jobname%!
-      infostats: '&c-----> &äGeld-Faktor x%boost% aktiviert&c <-------'
+      allreset: 'Alle Einkommens-Boosts deaktiviert.'
+      jobsboostreset: '&eBoost für %jobname% deaktiviert.'
+      nothingtoreset: '&eEs gibt nichts zum zurücksetzen.'
+      boostalladded: '&eEin Boost von %boost% wurde bei allen Jobs hinzugefügt!'
+      boostadded: '&eEin Boost von &e%boost% &ahinzugefügt für &e%jobname%!'
+      infostats: '&c-----> &eGeld-Faktor x%boost% aktiviert&c <-------'
   pointboost:
     help:
       info: Erhöht den Verdienst von Punkten für alle Spieler.
       args: '[Jobname] [Faktor]'
     output:
-      allreset: Alle Punkte-Boosts deaktiviert.
-      jobsboostreset: Boost für %jobname% deaktiviert.
-      nothingtoreset: Es gibt nichts zum zurücksetzen.
-      boostalladded: Ein Boost von %boost% allen Jobs hinzugefügt!
-      boostadded: Ein Boost von &e%boost% &ahinzugefügt für &e%jobname%!
-      infostats: '&c-----> &äPunkte-Faktor x%boost% aktiviert&c <-------'
+      allreset: '&eAlle Punkte-Boosts deaktiviert.'
+      jobsboostreset: '&eBoost für %jobname% deaktiviert.'
+      nothingtoreset: '&eEs gibt nichts zum zurücksetzen.'
+      boostalladded: '&eEin Boost von %boost% wurde bei allen Jobs hinzugefügt!'
+      boostadded: '&eEin Boost von &e%boost% &ahinzugefügt für &e%jobname%!'
+      infostats: '&c-----> &ePunkte-Faktor x%boost% aktiviert&c <-------'
   expboost:
     help:
       info: Erhöht den Verdienst von Erfahrung für alle Spieler.
       args: '[Jobname] [Faktor]'
     output:
-      allreset: Alle Erfahrung-Boosts deaktiviert.
-      jobsboostreset: Boost für %jobname% deaktiviert.
-      nothingtoreset: Es gibt nichts zum zurücksetzen.
-      boostalladded: Ein Boost von %boost% allen Jobs hinzugefügt!
-      boostadded: Ein Boost von &e%boost% &ahinzugefügt für &e%jobname%!
-      infostats: '&c-----> &äErfahrung-Faktor x%boost% aktiviert&c <-------'
+      allreset: '&eAlle Erfahrung-Boosts deaktiviert.'
+      jobsboostreset: '&eBoost für %jobname% deaktiviert.'
+      nothingtoreset: '&eEs gibt nichts zum zurücksetzen.'
+      boostalladded: '&eEin Boost von %boost% wurde bei allen Jobs hinzugefügt!'
+      boostadded: '&eEin Boost von &e%boost% &ahinzugefügt für &e%jobname%!'
+      infostats: '&c-----> &eErfahrung-Faktor x%boost% aktiviert&c <-------'
   bonus:
     help:
       info: Siehe Job-Boni
@@ -76,7 +76,7 @@ command:
       area: ' &eArea Bonus: %money% %points% %exp%'
       mcmmo: ' &eMcMMO Bonus: %money% %points% %exp%'
       final: ' &eEndgültiger Bonus: %money% %points% %exp%'
-      finalExplanation: ' &eBeinhaltet keine Boni/Abzüge von Petpay und in der nähe befindenen Spawner.'
+      finalExplanation: ' &eBeinhaltet keine Boni/Abzüge von Petpay und in der Nähe befindenen Spawner.'
   convert:
     help:
       info: Konvertiert das Datenbanksystem vom einen zum anderen. Benutzt du momentan sqlite, wird zu MySQL konvertiert und andersherum.
@@ -121,16 +121,16 @@ command:
     totalpoints: ' &eBis jetzt gesammelte Punkte: &6%totalpoints%'
   editpoints:
     help:
-      info: Punktemenge eines Spielers ändern.
+      info: Punktzahl eines Spielers ändern.
       args: '[set/add/take] [Spielername] [Menge]'
     output:
-      set: '&e(&6%playername%&e) Punkte wurde zu  &6%amount% geändert'
+      set: '&e(&6%playername%&e)´s Punkte wurde zu  &6%amount% geändert'
       add: '&e(&6%playername%&e) erhaltet &6%amount% &ePunkte. Er hat nun
         &6%total%&e.'
       take: '&e(&6%playername%&e) verliert &6%amount% &ePunkte und hat somit nur noch &6%total%&e.'
-   blockinfo:
+  blockinfo:
     help:
-      info: Zeit Infos über den Block an, den du gerade anschaust.
+      info: Zeigt Infos über den Block an, den du gerade anschaust.
       args: ''
     output:
       name: ' &eBlockname: &6%blockname%'
@@ -139,7 +139,7 @@ command:
       usage: ' &eNutze: &6%first% &eoder &6%second%'
   iteminfo:
     help:
-      info: Zeit Infos über das Item an, den du gerade anschaust.
+      info: Zeigt Infos über das Item an, den du gerade anschaust.
       args: ''
     output:
       name: ' &eItemname: &6%itemname%'
@@ -148,17 +148,17 @@ command:
       usage: ' &eNutze: &6%first% &eoder &6%second%'
   entitylist:
     help:
-      info: Zeigt alle möglichen "Entities" an, die du mit Jobs.
-      args: '
+      info: 'Zeigt alle möglichen Infos über "Entities" an.'
+      args: ''
   error:
-    job: Dieser Job existiert nicht!
-    permission: Du hast dafür keine Berechtigungen!
+    job: '&cDieser Job existiert nicht!'
+    permission: '&cDu hast dafür keine Berechtigung!'
   stats:
     help:
       info: Zeigt die Level deiner Jobs an.
       args: '[Spielername]'
     error:
-      nojob: Du hast zurzeit keinen Job.
+      nojob: '&eDu bist Arbeitslos.'
     output: 'Level %joblevel% %jobname% : %jobxp%/%jobmaxxp% XP'
   shop:
     help:
@@ -171,34 +171,34 @@ command:
       reqJobs: '&eBenötigte Jobs:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6Benötigte Gesamtlevel: &e%totalLevel%'
-      cantOpen: '&cSeite kann nicht geöffnet werden'
+      cantOpen: '&cSeite kann nicht geöffnet werden.'
       NoPermForItem: '&cDu hast für dieses Item keine Berechtigung!'
-      NoPermToBuy: '&cKeine Berechtigung dieses Item zu kaufen.'
-      NoJobReqForitem: '&cDu musst (&6%jobname%&e)&csein und braucht das Level
+      NoPermToBuy: '&cDu hast keine Berechtigung dieses Item zu kaufen.'
+      NoJobReqForitem: '&cDu musst (&6%jobname%&e)&csein und brauchst das Level
         (&6%joblevel%&e)&c.'
-      NoPoints: '&cNicht genug Punkte'
+      NoPoints: '&cNicht genug Punkte!'
       NoTotalLevel: '&cGesamtlevel ist zu niedrig. (%totalLevel%)'
-      Paid: '&eDu hast &6%amount% &efür dieses Item ausgegeben'    
+      Paid: '&eDu hast &6%amount% &efür dieses Item ausgegeben.'    
   archive:
     help:
       info: Zeigt alle im Archiv gespeicherten Jobs des Spielers an.
       args: '[Spielername]'
     error:
-      nojob: Keine gespeicherten Jobs des Spielers vorhanden.
+      nojob: '&eKeine gespeicherten Jobs des Spielers vorhanden.'
       output: Level %joblevel% %jobname%
   give:
     help:
-      info: Vergibt je nach Job Items. Spielername ist optional.
+      info: Vergibt je nach Job, Items. Spielername ist optional.
       args: '[Spielername] [Jobname] [Item]'
     output:
       notonline: '&4[%playername%] ist nicht online!'
-      noitem: '&4Kein so benanntes Item vorhanden!'
+      noitem: '&4&4Es existiert kein Item mit diesem Namen!'
   info:
     help:
       title: '&2*** &eJobs&2 ***'
-      info: Zeigt an, wie ein Job für was bezahlt wird.
-      penalty: '&eDieser Job hat &c[penalty]% &eAbzug weil der Job derzeit überbesetzt ist.'
-      bonus: '&eDieser Job hat &2[bonus]% &eBonus weil der Job unterbesetzt ist.'
+      info: Zeigt an, wie ein Job bezahlt wird.
+      penalty: '&eDieser Job hat &c[penalty]% &eAbzug, weil der Job derzeit überbesetzt ist.'
+      bonus: '&eDieser Job hat &2[bonus]% &eBonus, weil der Job unterbesetzt ist.'
       args: '[Jobname] [Tätigkeit]'
       actions: '&eGültige Tätigkeiten sind: &f%actions%'
       max: ' - &eMaximale Level:&f '
@@ -213,8 +213,8 @@ command:
       pickjob: '&eWähle einen Job!'
       jobinfo: '&e[jobname] Infos!'
       actions: '&eDeine Möglichkeiten sind:'
-      leftClick: '&eLinksklicken für mehr Infos'
-      rightClick: '&eRechtsklicken um den Job anzunehmen'
+      leftClick: '&eLinksklicken für mehr Infos.'
+      rightClick: '&eRechtsklicken um den Job anzunehmen.'
       leftSlots: '&eLinker Platz:&f '
       working: '&2&nDu hast diesen Job bereits.'
       max: '&eMax. Level:&f '
@@ -286,10 +286,10 @@ command:
       info: Ausgewählten Job erlernen.
       args: '[Jobname]'
     error:
-      alreadyin: Du bist bereits %jobname%.
-      fullslots: Du kannst kein %jobname% werden, keine freie Arbeitsstelle vorhanden.
-      maxjobs: Du hast das Maximum an Jobs bereits erreicht.
-    success: Du bist nun %jobname%.
+      alreadyin: '&eDu bist bereits %jobname%.'
+      fullslots: '&eDu kannst kein %jobname% werden, keine freie Arbeitsstelle vorhanden.'
+      maxjobs: '&eDu hast das Maximum an Jobs bereits erreicht.'
+    success: '&eDu bist nun %jobname%.'
   leave:
     help:
       info: Ausgewählten Job verlernen.
@@ -299,13 +299,13 @@ command:
     help:
       info: Alle Jobs verlernen.
     error:
-      nojobs: Du bist schon arbeitslos!
-    success: Du bist nun arbeitslos.
+      nojobs: '&4Du bist schon arbeitslos!'
+    success: '&cDu bist nun arbeitslos.'
   browse:
     help:
       info: Zeigt alle verfügbaren Jobs an.
     error:
-      nojobs: Es gibt keine Jobs für dich.
+      nojobs: '&cEs gibt keine Jobs für dich.'
     output:
       header: 'Derzeit sind folgende Jobs verfügbar:'
       footer: Für mehr Informationen, gebe /jobs info [Jobname] ein.
@@ -325,9 +325,9 @@ command:
       info: Einen Spieler in allen Jobs feuern.
       args: '[Spielername]'
     error:
-      nojobs: Der Spieler ist bereits arbeitslos!
+      nojobs: '&eDer Spieler ist bereits arbeitslos!'
     output:
-      target: Du wurdest in allen Jobs gefeuert.
+      target: '&eDu wurdest in allen Jobs gefeuert.'
   employ:
     help:
       info: Einen Spieler in einem Job anstellen.
@@ -341,7 +341,7 @@ command:
       info: Zeigt die Top 10 eines Jobs.
       args: '[jobname]'
     error:
-      nojob: Diesen Job gibt es nicht.
+      nojob: Dieser Job gibt es nicht.
     output:
       topline: '&aTop&e 10 &e%jobname%&a '
       list: '&e%number%&a. &e%playername% &aLevel &e%level% &amit&e %exp% &aXP'
@@ -367,7 +367,7 @@ command:
       addUsage: '&eNutze: &6/Jobs area add [areaName] [bonus]'
       removeUsage: '&eNutze: &6/Jobs area remove [areaName]'
     output:
-      addedNew: '&eNeue Zone erstellt mit&6%bonus% &ebonus.'
+      addedNew: '&eNeue Zone erstellt mit&6%bonus% &eBonus.'
       removed: '&eZone &6%name% &eist entfernt.'
       list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
         &6%bonus%'
@@ -433,13 +433,13 @@ command:
       info: Einem Spieler X XP geben.
       args: '[Spielername] [Jobname] [Exp]'
     output:
-      target: Du hast %xpgained% XP als %jobname% erhalten.
+      target: '&eDu hast %xpgained% XP als %jobname% erhalten.'
   removexp:
     help:
       info: Einem Spieler X XP nehmen.
       args: '[Spielername] [Jobname] [xp]'
     output:
-      target: Du hast %xplost% XP als %jobname% verloren.
+      target: '&eDu hast %xplost% XP als %jobname% verloren.'
   signupdate:
     help:
       info: Aktualisiert Manuell Schilder.
@@ -449,17 +449,17 @@ command:
       info: Zeigt im Radius von 10 Blöcken die Blockprotection an
       args: ''
     output:
-      found: '&6%amount% &egesicherte Blöcke wurde um dich gefunden'
-      notFound: '&eIn deiner Nähe wurden keine gesicherten Blöcke gefunden'
+      found: '&6%amount% &egesicherte Blöcke wurde um dich gefunden.'
+      notFound: '&eIn deiner Nähe wurden keine gesicherten Blöcke gefunden.'
   reload:
     help:
-      info: Konfiguration neu laden.
+      info: Konfigurationen neu laden.
   toggle:
     help:
-      info: Schaltet Mitteilungen über Bezahlungen in der action bar ein/aus.
+      info: Schaltet Mitteilungen über Bezahlungen in der Actionbar ein/aus.
     output:
       turnedoff: '&4Dieses Feature ist deaktiviert!'
-      paid: '&aGeldgutschrift: &2[amount]'
+      paid:
         main: '&aDu hast:'
         money: '&e[amount] Geld'
         exp: '&7[exp] EP'
@@ -468,20 +468,22 @@ command:
       'off': '&aStatus: &4AUS'
 message:
   skillup:
-    broadcast: '%playername% ist zum %titlename% %jobname% aufgestiegen.'
-    nobroadcast: Gratulation, du bist zum %titlename% %jobname% aufgestiegen.
+    broadcast: '&e%playername% ist zum %titlename% %jobname% aufgestiegen.'
+    nobroadcast: '&eGratulation, du bist zum %titlename% %jobname% aufgestiegen.'
   levelup:
-    broadcast: '%playername%, der %jobname%&r, ist nun Level &e%joblevel%&r.'
-    nobroadcast: Du bist nun %jobname%, Level %joblevel%.
+    broadcast: '&e%playername%, der %jobname%&r, ist nun Level &e%joblevel%&r.'
+    nobroadcast: '&eDu bist nun %jobname%, Level %joblevel%.'
   cowtimer: '&eDu musst &6%time% &eSekunden warten um wieder etwas für das Melken zu verdienen!'
   blocktimer: '&eDu musst &3[time] &eSekunden warten um wieder etwas für das Abbauen zu verdienen!'
-  placeblocktimer: '&eDu musst &6[time] &eSekunden warten um wieder etwas zu setzen.'
+  placeblocktimer: '&eDu musst &6[time] &eSekunden warten um wieder etwas platzieren zu können.'
   taxes: '&3[amount] &eServersteuern wurden dir gutgeschrieben.'
   boostStarted: '&eJobboost startet jetzt!'
   boostStoped: '&eJobboost endet!'
   crafting:
     fullinventory: Dein Inventar ist voll!
 signs:
+  List: '&0[Nummer].&8[Spieler]&7:&4[level]'
+  SpecialList:
     '1':
       '1': '&b** &8Erster &b**'
       '2': '&9[player]'
