@@ -21,6 +21,7 @@ package com.gamingmesh.jobs.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.Map.Entry;
@@ -34,7 +35,7 @@ public class JobsDAOMySQL extends JobsDAO {
     private String database;
 
     private JobsDAOMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix) {
-	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database, username, password, prefix);
+	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?autoReconnect=true&useSSL=false", username, password, prefix);
 	this.database = database;
     }
 
@@ -73,28 +74,11 @@ public class JobsDAOMySQL extends JobsDAO {
 	    Jobs.getPluginLogger().severe("Could not run database updates!  Could not connect to MySQL!");
 	    return;
 	}
-	PreparedStatement prest = null;
-	int rows = 0;
-	ResultSet res = null;
-	try {
-	    // Check for config table
-	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
-	    prest.setString(1, database);
-	    prest.setString(2, getPrefix() + "config");
-	    res = prest.executeQuery();
-	    if (res.next()) {
-		rows = res.getInt(1);
-	    }
-	} finally {
-	    close(res);
-	    close(prest);
-	}
 
-	if (rows == 0) {
+	if (!isTable(getPrefix() + "config")) {
 	    PreparedStatement insert = null;
 	    try {
 		executeSQL("CREATE TABLE `" + getPrefix() + "config` (`key` varchar(50) NOT NULL PRIMARY KEY, `value` varchar(100) NOT NULL);");
-
 		insert = conn.prepareStatement("INSERT INTO `" + getPrefix() + "config` (`key`, `value`) VALUES (?, ?);");
 		insert.setString(1, "version");
 		insert.setString(2, "1");
@@ -103,6 +87,66 @@ public class JobsDAOMySQL extends JobsDAO {
 		close(insert);
 	    }
 	}
+    }
+
+    @SuppressWarnings("resource")
+    private boolean isTable(String table) {
+	Statement statement;
+	try {
+	    statement = getConnection().createStatement();
+	} catch (SQLException e) {
+	    Jobs.consoleMsg("&cCould not check if its table, SQLException: " + e.getMessage());
+	    return false;
+	}
+	try {
+	    statement.executeQuery("SELECT * FROM " + table);
+	    statement.close();
+	    return true;
+	} catch (SQLException e) {
+	    close(statement);
+	    return false;
+	}
+    }
+
+    public boolean isCollumn(String table, String collumn) {
+	Statement statement;
+	try {
+	    statement = getConnection().createStatement();
+	} catch (SQLException e) {
+	    Jobs.consoleMsg("&cCould not check if its collumn, SQLException: " + e.getMessage());
+	    return false;
+	}
+	try {
+	    statement.executeQuery("SELECT " + collumn + " FROM " + table);
+	    statement.close();
+	    return true;
+	} catch (SQLException e) {
+	    close(statement);
+	    return false;
+	}
+    }
+
+    @SuppressWarnings("resource")
+    public boolean createTable(String query) {
+	Jobs.consoleMsg(query);
+	Statement statement = null;
+	if (query == null || query.equals("")) {
+	    Jobs.consoleMsg("&cCould not create table: query is empty or null.");
+	    return false;
+	}
+
+	try {
+	    statement = getConnection().createStatement();
+	    statement.execute(query);
+	    statement.close();
+	} catch (SQLException e) {
+	    Jobs.consoleMsg("&cCould not create table, SQLException: " + e.getMessage());
+	    close(statement);
+	    return false;
+	} finally {
+	    close(statement);
+	}
+	return true;
     }
 
     @Override
@@ -640,7 +684,8 @@ public class JobsDAOMySQL extends JobsDAO {
 		prestUsersT = conn.prepareStatement("SELECT * FROM " + getPrefix() + "users;");
 		res4 = prestUsersT.executeQuery();
 		while (res4.next()) {
-		    tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id"), UUID.fromString(res4.getString("player_uuid")), System.currentTimeMillis()));
+		    tempPlayerMap.put(res4.getString("player_uuid"), new PlayerInfo(res4.getString("username"), res4.getInt("id"), UUID.fromString(res4.getString("player_uuid")), System
+			.currentTimeMillis()));
 		}
 	    } catch (Exception e) {
 		e.printStackTrace();

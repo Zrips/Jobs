@@ -1579,7 +1579,7 @@ public abstract class JobsDAO {
 	    }
     }
 
-    private static void close(Statement stmt) {
+    protected static void close(Statement stmt) {
 	if (stmt != null)
 	    try {
 		stmt.close();
