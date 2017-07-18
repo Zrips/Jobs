@@ -1,24 +1,7 @@
-/**
- * Jobs Plugin for Bukkit
- * Copyright (C) 2011 Zak Ford <zak.j.ford@gmail.com>
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.gamingmesh.jobs.dao;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -59,11 +42,19 @@ public class JobsConnection {
 	return conn.prepareStatement(sql);
     }
 
+    public synchronized PreparedStatement prepareStatement(String sql, int returnGeneratedKeys) throws SQLException {
+	return conn.prepareStatement(sql, returnGeneratedKeys);
+    }
+
     public synchronized void setAutoCommit(Boolean mode) throws SQLException {
 	conn.setAutoCommit(mode);
     }
 
     public synchronized void commit() throws SQLException {
 	conn.commit();
+    }
+
+    public synchronized DatabaseMetaData getMetaData() throws SQLException {
+	return conn.getMetaData();
     }
 }

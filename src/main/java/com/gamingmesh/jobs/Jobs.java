@@ -74,8 +74,8 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.PlayerInfo;
+import com.gamingmesh.jobs.dao.*;
 import com.gamingmesh.jobs.container.FastPayment;
-import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
@@ -86,7 +86,6 @@ import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.ActionBar;
-import com.gamingmesh.jobs.stuff.JobsClassLoader;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.stuff.VersionChecker;
@@ -114,6 +113,8 @@ public class Jobs extends JavaPlugin {
     private static ShopManager shopManager;
     private static Loging loging;
     private static BlockProtectionManager BpManager = null;
+
+    private static JobsManager DBManager = null;
 
     private static PistonProtectionListener PistonProtectionListener = null;
     private static McMMOlistener McMMOlistener = null;
@@ -226,6 +227,12 @@ public class Jobs extends JavaPlugin {
 
     public static BlockProtectionManager getBpManager() {
 	return BpManager;
+    }
+
+    public static JobsManager getDBManager() {
+	if (DBManager == null)
+	    DBManager = new JobsManager(instance);
+	return DBManager;
     }
 
     public static void setShopManager(Jobs plugin) {
@@ -375,6 +382,7 @@ public class Jobs extends JavaPlugin {
     }
 
     protected static Jobs instance;
+
     public static Jobs getInstance() {
 	return instance;
     }
@@ -626,13 +634,7 @@ public class Jobs extends JavaPlugin {
      * Executes close connections
      */
     public static void ChangeDatabase() {
-	if (dao != null) {
-	    dao.closeConnections();
-	}
-	if (GconfigManager.storageMethod.equals("mysql"))
-	    GconfigManager.startSqlite();
-	else
-	    GconfigManager.startMysql();
+	getDBManager().switchDataBase();
 	pManager.reload();
     }
 

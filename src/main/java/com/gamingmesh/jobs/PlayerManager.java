@@ -37,6 +37,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
@@ -208,6 +209,15 @@ public class PlayerManager {
 	    if (!jPlayer.isOnline() && jPlayer.isSaved()) {
 		iter.remove();
 	    }
+	}
+    }
+    
+    /**
+     * Save all the information of all of the players
+     */
+    public void saveEntireChacheOfPlayers() {
+	for (Entry<UUID, JobsPlayer> one : playersUUIDCache.entrySet()) {
+	    one.getValue().save();
 	}
     }
 

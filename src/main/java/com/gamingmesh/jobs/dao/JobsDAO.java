@@ -1,21 +1,3 @@
-/**
- * Jobs Plugin for Bukkit
- * Copyright (C) 2011 Zak Ford <zak.j.ford@gmail.com>
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.gamingmesh.jobs.dao;
 
 import java.sql.PreparedStatement;
@@ -35,7 +17,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BlockProtection;
@@ -52,27 +33,387 @@ import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
-/**
- * Data Access Object interface for the Jobs plugin
- * 
- * Interface that holds all methods that a DAO needs to have
- * @author Alex
- *
- */
 public abstract class JobsDAO {
 
     private JobsConnectionPool pool;
-    private String prefix;
-    private HashMap<Integer, ArrayList<JobsDAOData>> map = new HashMap<Integer, ArrayList<JobsDAOData>>();
+    private static String prefix;
     private Jobs plugin;
 
-    protected JobsDAO(Jobs plugin, String driverName, String url, String username, String password, String prefix) {
+    private static DataBaseType dbType = DataBaseType.SqLite;
+
+    // Not in use currently
+    public enum TablesFieldsType {
+	decimal, number, text, varchar, stringList, stringLongMap, stringIntMap, locationMap, state, location, longNumber;
+    }
+
+    public enum UserTableFields implements JobsTableInterface {
+	player_uuid("varchar(36)", TablesFieldsType.varchar),
+	username("text", TablesFieldsType.text),
+	seen("bigint", TablesFieldsType.longNumber);
+
+	private String type;
+	private TablesFieldsType fieldType;
+
+	UserTableFields(String type, TablesFieldsType fieldType) {
+	    this.type = type;
+	    this.fieldType = fieldType;
+	}
+
+	@Override
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	@Override
+	public String getType() {
+	    return type;
+	}
+
+	@Override
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+    }
+
+    public enum JobsTableFields implements JobsTableInterface {
+	userid("int", TablesFieldsType.number),
+	job("text", TablesFieldsType.text),
+	experience("int", TablesFieldsType.number),
+	level("int", TablesFieldsType.number);
+
+	private String type;
+	private TablesFieldsType fieldType;
+
+	JobsTableFields(String type, TablesFieldsType fieldType) {
+	    this.type = type;
+	    this.fieldType = fieldType;
+	}
+
+	@Override
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	@Override
+	public String getType() {
+	    return type;
+	}
+
+	@Override
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+    }
+
+    public enum ArchiveTableFields implements JobsTableInterface {
+	userid("int", TablesFieldsType.number),
+	job("text", TablesFieldsType.text),
+	experience("int", TablesFieldsType.number),
+	level("int", TablesFieldsType.number);
+
+	private String type;
+	private TablesFieldsType fieldType;
+
+	ArchiveTableFields(String type, TablesFieldsType fieldType) {
+	    this.type = type;
+	    this.fieldType = fieldType;
+	}
+
+	@Override
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	@Override
+	public String getType() {
+	    return type;
+	}
+
+	@Override
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+    }
+
+    public enum BlockTableFields implements JobsTableInterface {
+	world("varchar(36)", TablesFieldsType.varchar),
+	x("int", TablesFieldsType.number),
+	y("int", TablesFieldsType.number),
+	z("int", TablesFieldsType.number),
+	recorded("bigint", TablesFieldsType.longNumber),
+	resets("bigint", TablesFieldsType.longNumber);
+
+	private String type;
+	private TablesFieldsType fieldType;
+
+	BlockTableFields(String type, TablesFieldsType fieldType) {
+	    this.type = type;
+	    this.fieldType = fieldType;
+	}
+
+	@Override
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	@Override
+	public String getType() {
+	    return type;
+	}
+
+	@Override
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+    }
+
+    public enum LimitTableFields implements JobsTableInterface {
+	userid("int", TablesFieldsType.number),
+	type("varchar(36)", TablesFieldsType.number),
+	collected("double", TablesFieldsType.decimal),
+	started("bigint", TablesFieldsType.longNumber);
+
+	private String ttype;
+	private TablesFieldsType fieldType;
+
+	LimitTableFields(String type, TablesFieldsType fieldType) {
+	    this.ttype = type;
+	    this.fieldType = fieldType;
+	}
+
+	@Override
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	@Override
+	public String getType() {
+	    return ttype;
+	}
+
+	@Override
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+    }
+
+    public enum LogTableFields implements JobsTableInterface {
+	userid("int", TablesFieldsType.number),
+	time("bigint", TablesFieldsType.longNumber),
+	action("varchar(20)", TablesFieldsType.varchar),
+	itemname("text", TablesFieldsType.text),
+	count("int", TablesFieldsType.number),
+	money("double", TablesFieldsType.decimal),
+	exp("double", TablesFieldsType.decimal);
+
+	private String type;
+	private TablesFieldsType fieldType;
+
+	LogTableFields(String type, TablesFieldsType fieldType) {
+	    this.type = type;
+	    this.fieldType = fieldType;
+	}
+
+	@Override
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	@Override
+	public String getType() {
+	    return type;
+	}
+
+	@Override
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+    }
+
+    public enum PointsTableFields implements JobsTableInterface {
+	userid("int", TablesFieldsType.number),
+	totalpoints("double", TablesFieldsType.decimal),
+	currentpoints("double", TablesFieldsType.decimal);
+
+	private String type;
+	private TablesFieldsType fieldType;
+
+	PointsTableFields(String type, TablesFieldsType fieldType) {
+	    this.type = type;
+	    this.fieldType = fieldType;
+	}
+
+	@Override
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	@Override
+	public String getType() {
+	    return type;
+	}
+
+	@Override
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+    }
+
+    public enum ExploreTableFields implements JobsTableInterface {
+	worldname("varchar(64)", TablesFieldsType.varchar),
+	chunkX("int", TablesFieldsType.number),
+	chunkZ("int", TablesFieldsType.number),
+	playerName("text", TablesFieldsType.text);
+
+	private String type;
+	private TablesFieldsType fieldType;
+
+	ExploreTableFields(String type, TablesFieldsType fieldType) {
+	    this.type = type;
+	    this.fieldType = fieldType;
+	}
+
+	@Override
+	public String getCollumn() {
+	    return this.name();
+	}
+
+	@Override
+	public String getType() {
+	    return type;
+	}
+
+	@Override
+	public TablesFieldsType getFieldType() {
+	    return fieldType;
+	}
+    }
+
+    public enum DBTables {
+	UsersTable("users",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", UserTableFields.class),
+	JobsTable("jobs",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", JobsTableFields.class),
+	ArchiveTable("archive",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", ArchiveTableFields.class),
+	BlocksTable("blocks",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", BlockTableFields.class),
+	LimitsTable("limits",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", LimitTableFields.class),
+	LogTable("log",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", LogTableFields.class),
+	ExploreTable("explore",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", ExploreTableFields.class),
+	PointsTable("points",
+	    "CREATE TABLE `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
+	    "CREATE TABLE `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", PointsTableFields.class);
+
+	private String mySQL;
+	private String sQlite;
+	private String tableName;
+	private JobsTableInterface[] c;
+
+	DBTables(String tableName, String MySQL, String SQlite, Class<?> cc) {
+	    this.tableName = tableName;
+	    this.mySQL = MySQL;
+	    this.sQlite = SQlite;
+	    this.c = (JobsTableInterface[]) cc.getEnumConstants();
+	}
+
+	private String getQR() {
+	    switch (dbType) {
+	    case MySQL:
+		return this.mySQL.replace("[tableName]", prefix + this.tableName);
+	    case SqLite:
+		return this.sQlite.replace("[tableName]", this.tableName);
+	    }
+	    return "";
+	}
+
+	public String getQuery() {
+	    String rp = "";
+	    for (JobsTableInterface one : this.getInterface()) {
+		rp += ", " + "`" + one.getCollumn() + "` " + one.getType();
+	    }
+	    return getQR().replace("[fields]", rp);
+	}
+
+	public JobsTableInterface[] getInterface() {
+	    return this.c;
+	}
+
+//	public String getUpdateQuery() {
+//
+//	    String rp = "";
+//	    for (JobsTableInterface one : this.getInterface()) {
+//		if (one.getCollumn().equalsIgnoreCase("userid") || one.getCollumn().equalsIgnoreCase("player_uuid"))
+//		    continue;
+//		if (!rp.isEmpty())
+//		    rp += ", ";
+//
+//	    }
+//
+//	    switch (this) {
+//	    case JobsTable:
+//		for (JobsTableInterface one : this.getInterface()) {
+//		    if (one == JobsTableFields.userid)
+//			continue;
+//		    if (!rp.isEmpty())
+//			rp += ", ";
+//		    rp += "`" + one.getCollumn() + "` = ?";
+//		}
+//		rp = "UPDATE `" + getTableName() + "` SET " + rp + " WHERE `player_id` = ?;";
+//		return rp;
+//	    default:
+//		rp = "";
+//		for (JobsTableInterface one : this.getInterface()) {
+//		    if (one.getCollumn().equalsIgnoreCase("userid") || one.getCollumn().equalsIgnoreCase("player_uuid"))
+//			continue;
+//		    if (!rp.isEmpty())
+//			rp += ", ";
+//		    rp += "`" + one.getCollumn() + "` = ?";
+//		}
+//		rp = "UPDATE `" + getTableName() + "` SET " + rp + " WHERE `id` = ?;";
+//		return rp;
+//	    }
+//	}
+//
+//	public String getInsertQuery() {
+//	    String rp = "";
+//	    String q = "";
+//
+//	    for (JobsTableInterface one : this.getInterface()) {
+//		if (!rp.isEmpty())
+//		    rp += ", ";
+//		rp += "`" + one.getCollumn() + "`";
+//
+//		if (!q.isEmpty())
+//		    q += ", ";
+//		q += "?";
+//	    }
+//	    rp = "INSERT INTO `" + getTableName() + "` (" + rp + ") VALUES (" + q + ");";
+//	    return rp;
+//	}
+
+	public String getTableName() {
+	    return prefix + tableName;
+	}
+    }
+
+    protected JobsDAO(Jobs plugin, String driverName, String url, String username, String password, String pr) {
 	this.plugin = plugin;
-	this.prefix = prefix;
+	prefix = pr;
 	try {
 	    pool = new JobsConnectionPool(driverName, url, username, password);
 	} catch (Exception e) {
@@ -84,66 +425,101 @@ public abstract class JobsDAO {
 	setupConfig();
 	int version = getSchemaVersion();
 	if (version == 0) {
-	    Jobs.getPluginLogger().severe("Could not initialize database!  Could not determine schema version!");
+	    Jobs.consoleMsg("&cCould not initialize database!  Could not determine schema version!");
 	    return;
 	}
 
 	try {
-	    checkUpdate();
-	    if (version > 1) {
-		if (version <= 2)
-		    checkUpdate2();
-		checkUpdate4();
-		checkUpdate5();
-		if (version <= 6)
-		    checkUpdate6();
-		if (version <= 7)
-		    checkUpdate7();
-		// creating explore database
-		checkUpdate8();
-		checkUpdate9();
-		// creating block protection database
-		checkUpdate10();
-		// adding seen field into users table
-		checkUpdate11();
-	    }
-
 	    version = 11;
 	    updateSchemaVersion(version);
+	    for (DBTables one : DBTables.values()) {
+		createDefaultTable(one);
+	    }
+	    checkDefaultCollumns();
 	} finally {
 	}
-
-	loadAllSavedJobs();
-
     }
 
     protected abstract void setupConfig() throws SQLException;
 
     protected abstract void checkUpdate() throws SQLException;
 
-    protected abstract void checkUpdate2() throws SQLException;
+    public abstract Statement prepareStatement(String query) throws SQLException;
 
-    protected abstract void checkUpdate4() throws SQLException;
+    public abstract boolean createTable(String query) throws SQLException;
 
-    protected abstract void checkUpdate5() throws SQLException;
+    public abstract boolean isTable(String table);
 
-    protected abstract void checkUpdate6() throws SQLException;
+    public abstract boolean isCollumn(String table, String collumn);
 
-    protected abstract void checkUpdate7() throws SQLException;
+    public abstract boolean truncate(String table);
 
-    protected abstract void checkUpdate8() throws SQLException;
+    public abstract boolean addCollumn(String table, String collumn, String type);
 
-    protected abstract void checkUpdate9() throws SQLException;
+    public abstract boolean drop(String table);
 
-    protected abstract void checkUpdate10() throws SQLException;
+    public boolean isConnected() {
+	try {
+	    return pool.getConnection() != null;
+	} catch (SQLException e) {
+	    return false;
+	}
+    }
 
-    protected abstract void checkUpdate11() throws SQLException;
+    public void setAutoCommit(boolean state) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	try {
+	    conn.setAutoCommit(state);
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
 
-    protected abstract boolean createDefaultLogBase();
+    public void commit() {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
 
-    protected abstract boolean createDefaultArchiveBase();
+	try {
+	    conn.commit();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+    }
 
-    protected abstract boolean dropDataBase(String name);
+    private boolean createDefaultTable(DBTables table) {
+	if (this.isTable(table.getTableName()))
+	    return true;
+	try {
+	    this.createTable(table.getQuery());
+	    return true;
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	}
+	return false;
+    }
+
+    private boolean checkDefaultCollumns() {
+	for (DBTables one : DBTables.values()) {
+	    for (JobsTableInterface oneT : one.getInterface()) {
+		if (this.isCollumn(one.getTableName(), oneT.getCollumn()))
+		    continue;
+		this.addCollumn(one.getTableName(), oneT.getCollumn(), oneT.getType());
+	    }
+	}
+
+	return true;
+    }
+
+    public DataBaseType getDbType() {
+	return dbType;
+    }
+
+    public void setDbType(DataBaseType dabType) {
+	dbType = dabType;
+    }
 
     /**
      * Gets the database prefix
@@ -202,6 +578,8 @@ public abstract class JobsDAO {
 	}
 	return jobs;
     }
+
+    private HashMap<Integer, ArrayList<JobsDAOData>> map = new HashMap<Integer, ArrayList<JobsDAOData>>();
 
     public List<JobsDAOData> getAllJobs(PlayerInfo pInfo) {
 	List<JobsDAOData> list = map.get(pInfo.getID());
@@ -302,7 +680,7 @@ public abstract class JobsDAO {
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
-	    prest = conn.prepareStatement("SELECT `id` FROM `" + this.prefix + "users` WHERE `player_uuid` = ?;");
+	    prest = conn.prepareStatement("SELECT `id` FROM `" + prefix + "users` WHERE `player_uuid` = ?;");
 	    prest.setString(1, uuid.toString());
 	    res = prest.executeQuery();
 	    res.next();
@@ -1065,8 +1443,8 @@ public abstract class JobsDAO {
 	    e.printStackTrace();
 	    close(prest1);
 	    close(prest2);
-	    this.dropDataBase("log");
-	    this.createDefaultLogBase();
+	    drop(DBTables.LogTable.getTableName());
+	    createDefaultTable(DBTables.LogTable);
 	} finally {
 	    close(prest1);
 	    close(prest2);
@@ -1095,8 +1473,8 @@ public abstract class JobsDAO {
 	} catch (Exception e) {
 	    close(res);
 	    close(prest);
-	    this.dropDataBase("log");
-	    this.createDefaultLogBase();
+	    drop(DBTables.LogTable.getTableName());
+	    createDefaultTable(DBTables.LogTable);
 	} finally {
 	    close(res);
 	    close(prest);
@@ -1551,7 +1929,7 @@ public abstract class JobsDAO {
 
     /**
      * Get a database connection
-     * @return  JobsConnection object
+     * @return  DBConnection object
      * @throws SQLException 
      */
     protected JobsConnection getConnection() {
@@ -1570,7 +1948,7 @@ public abstract class JobsDAO {
 	pool.closeConnection();
     }
 
-    private static void close(ResultSet res) {
+    protected static void close(ResultSet res) {
 	if (res != null)
 	    try {
 		res.close();
@@ -1591,4 +1969,5 @@ public abstract class JobsDAO {
     public HashMap<Integer, ArrayList<JobsDAOData>> getMap() {
 	return map;
     }
+
 }

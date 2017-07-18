@@ -39,8 +39,6 @@ import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.Schedule;
-import com.gamingmesh.jobs.dao.JobsDAOMySQL;
-import com.gamingmesh.jobs.dao.JobsDAOSQLite;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
@@ -397,24 +395,26 @@ public class GeneralConfigManager {
 	    Jobs.getPluginLogger().warning("Invalid locale \"" + localeString + "\" defaulting to " + locale.getLanguage());
 	}
 
-	c.getW().addComment("storage-method", "storage method, can be MySQL, sqlite");
-	storageMethod = c.get("storage-method", "sqlite");
-	if (storageMethod.equalsIgnoreCase("mysql")) {
-	    startMysql();
-	} else if (storageMethod.equalsIgnoreCase("sqlite")) {
-	    startSqlite();
-	} else {
-	    Jobs.getPluginLogger().warning("Invalid storage method!  Changing method to sqlite!");
-	    c.getC().set("storage-method", "sqlite");
-	    startSqlite();
-	}
-
-	c.getW().addComment("mysql-username", "Requires Mysql.");
-	c.get("mysql-username", "root");
-	c.get("mysql-password", "");
-	c.get("mysql-hostname", "localhost:3306");
-	c.get("mysql-database", "minecraft");
-	c.get("mysql-table-prefix", "jobs_");
+	Jobs.getDBManager().start(c);
+	
+//	c.getW().addComment("storage-method", "storage method, can be MySQL, sqlite");
+//	storageMethod = c.get("storage-method", "sqlite");
+//	if (storageMethod.equalsIgnoreCase("mysql")) {
+//	    startMysql();
+//	} else if (storageMethod.equalsIgnoreCase("sqlite")) {
+//	    startSqlite();
+//	} else {
+//	    Jobs.getPluginLogger().warning("Invalid storage method!  Changing method to sqlite!");
+//	    c.getC().set("storage-method", "sqlite");
+//	    startSqlite();
+//	}
+//
+//	c.getW().addComment("mysql-username", "Requires Mysql.");
+//	c.get("mysql-username", "root");
+//	c.get("mysql-password", "");
+//	c.get("mysql-hostname", "localhost:3306");
+//	c.get("mysql-database", "minecraft");
+//	c.get("mysql-table-prefix", "jobs_");
 
 	c.getW().addComment("save-period", "How often in minutes you want it to save.  This must be a non-zero number");
 	c.get("save-period", 10);
@@ -858,36 +858,36 @@ public class GeneralConfigManager {
 	}
     }
 
-    public synchronized void startMysql() {
-	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
-	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
-	String legacyUrl = config.getString("mysql-url");
-	if (legacyUrl != null) {
-	    String jdbcString = "jdbc:mysql://";
-	    if (legacyUrl.toLowerCase().startsWith(jdbcString)) {
-		legacyUrl = legacyUrl.substring(jdbcString.length());
-		String[] parts = legacyUrl.split("/");
-		if (parts.length >= 2) {
-		    config.set("mysql-hostname", parts[0]);
-		    config.set("mysql-database", parts[1]);
-		}
-	    }
-	}
-	String username = config.getString("mysql-username");
-	if (username == null) {
-	    Jobs.getPluginLogger().severe("mysql-username property invalid or missing");
-	}
-	String password = config.getString("mysql-password");
-	String hostname = config.getString("mysql-hostname");
-	String database = config.getString("mysql-database");
-	String prefix = config.getString("mysql-table-prefix");
-	if (plugin.isEnabled())
-	    Jobs.setDAO(JobsDAOMySQL.initialize(plugin, hostname, database, username, password, prefix));
-    }
-
-    public synchronized void startSqlite() {
-	Jobs.setDAO(JobsDAOSQLite.initialize(plugin));
-    }
+//    public synchronized void startMysql() {
+//	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
+//	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
+//	String legacyUrl = config.getString("mysql-url");
+//	if (legacyUrl != null) {
+//	    String jdbcString = "jdbc:mysql://";
+//	    if (legacyUrl.toLowerCase().startsWith(jdbcString)) {
+//		legacyUrl = legacyUrl.substring(jdbcString.length());
+//		String[] parts = legacyUrl.split("/");
+//		if (parts.length >= 2) {
+//		    config.set("mysql-hostname", parts[0]);
+//		    config.set("mysql-database", parts[1]);
+//		}
+//	    }
+//	}
+//	String username = config.getString("mysql-username");
+//	if (username == null) {
+//	    Jobs.getPluginLogger().severe("mysql-username property invalid or missing");
+//	}
+//	String password = config.getString("mysql-password");
+//	String hostname = config.getString("mysql-hostname");
+//	String database = config.getString("mysql-database");
+//	String prefix = config.getString("mysql-table-prefix");
+//	if (plugin.isEnabled())
+//	    Jobs.setDAO(JobsDAOMySQL.initialize(plugin, hostname, database, username, password, prefix));
+//    }
+//
+//    public synchronized void startSqlite() {
+//	Jobs.setDAO(JobsDAOSQLite.initialize(plugin));
+//    }
 
     public int getSelectionTooldID() {
 	return getSelectionTooldID;

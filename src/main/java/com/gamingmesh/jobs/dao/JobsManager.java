@@ -1,0 +1,111 @@
+package com.gamingmesh.jobs.dao;
+
+import java.io.File;
+
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.LocaleReader;
+
+public class JobsManager {
+    private JobsDAO dao;
+    private Jobs plugin;
+    private DataBaseType DbType = DataBaseType.SqLite;
+
+    public enum DataBaseType {
+	MySQL, SqLite
+    }
+
+    public JobsManager(Jobs plugin) {
+	this.plugin = plugin;
+    }
+
+    public JobsDAO getDB() {
+	return dao;
+    }
+
+    public void switchDataBase() {	
+	if (dao != null)
+	    dao.closeConnections();
+	switch (DbType) {
+	case MySQL:
+	    DbType = DataBaseType.SqLite;
+	    dao = startSqlite();
+	    dao.setDbType(DbType);
+	    break;
+	case SqLite:
+	    DbType = DataBaseType.MySQL;
+	    dao = startMysql();
+	    dao.setDbType(DbType);
+	    break;
+	}
+	Jobs.setDAO(dao);
+    }
+
+    public void start(LocaleReader c) {
+	c.getW().addComment("storage.method", "storage method, can be MySQL or sqlite");
+	String storageMethod = c.get("storage.method", "sqlite");
+	c.getW().addComment("mysql-username", "Requires Mysql.");
+	c.get("mysql-username", "root");
+	c.get("mysql-password", "");
+	c.get("mysql-hostname", "localhost:3306");
+	c.get("mysql-database", "minecraft");
+	c.get("mysql-table-prefix", "jobs_");
+
+	if (storageMethod.equalsIgnoreCase("mysql")) {
+	    DbType = DataBaseType.MySQL;
+	    dao = startMysql();
+	} else if (storageMethod.equalsIgnoreCase("sqlite")) {
+	    DbType = DataBaseType.SqLite;
+	    dao = startSqlite();
+	} else {
+	    Jobs.consoleMsg("&cInvalid storage method!  Changing method to sqlite!");
+	    c.getC().set("storage.method", "sqlite");
+	    DbType = DataBaseType.SqLite;
+	    dao = startSqlite();
+	}
+	Jobs.setDAO(dao);
+    }
+
+    private synchronized JobsMySQL startMysql() {
+	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
+	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
+	String legacyUrl = config.getString("mysql-url");
+	if (legacyUrl != null) {
+	    String jdbcString = "jdbc:mysql://";
+	    if (legacyUrl.toLowerCase().startsWith(jdbcString)) {
+		legacyUrl = legacyUrl.substring(jdbcString.length());
+		String[] parts = legacyUrl.split("/");
+		if (parts.length >= 2) {
+		    config.set("mysql-hostname", parts[0]);
+		    config.set("mysql-database", parts[1]);
+		}
+	    }
+	}
+	String username = config.getString("mysql-username");
+	if (username == null) {
+	    Jobs.getPluginLogger().severe("mysql-username property invalid or missing");
+	}
+	String password = config.getString("mysql-password");
+	String hostname = config.getString("mysql-hostname");
+	String database = config.getString("mysql-database");
+	String prefix = config.getString("mysql-table-prefix");
+	if (plugin.isEnabled()) {
+	    JobsMySQL data = new JobsMySQL(plugin, hostname, database, username, password, prefix);
+	    data.initialize();
+	    return data;
+	}
+	return null;
+    }
+
+    private synchronized JobsSQLite startSqlite() {
+	JobsSQLite data = new JobsSQLite(plugin, plugin.getDataFolder());
+	data.initialize();
+	return data;
+    }
+
+    public DataBaseType getDbType() {
+	return DbType;
+    }
+
+}
