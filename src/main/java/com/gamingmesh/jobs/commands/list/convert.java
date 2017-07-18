@@ -70,7 +70,7 @@ public class convert implements Cmd {
 	String from = "MysSQL";
 	String to = "SqLite";
 
-	if (Jobs.getDBManager().getDbType().equals(DataBaseType.SqLite)) {
+	if (!Jobs.getDBManager().getDbType().equals(DataBaseType.SqLite)) {
 	    from = "SqLite";
 	    to = "MySQL";
 	}

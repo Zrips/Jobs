@@ -921,7 +921,14 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + table + "`");
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		list.add(new Convert(res.getInt("id"), res.getInt("userid"), res.getString("job"), res.getInt("level"), res.getInt("experience")));
+		int id = res.getInt("userid");
+		PlayerInfo pi = Jobs.getPlayerManager().getPlayerInfo(id);
+		if (pi == null)
+		    continue;
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pi.getUuid());
+		if (jPlayer == null)
+		    continue;
+		list.add(new Convert(res.getInt("id"), jPlayer.getPlayerUUID(), res.getString("job"), res.getInt("level"), res.getInt("experience")));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -957,8 +964,15 @@ public abstract class JobsDAO {
 	    conns.setAutoCommit(false);
 	    while (i > 0) {
 		i--;
+
+		
 		Convert convertData = list.get(i);
-		insert.setInt(1, convertData.GetId());
+		
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(convertData.GetUserUUID());
+		if (jPlayer == null)
+		    continue;
+		
+		insert.setInt(1, jPlayer.getUserId());
 		insert.setString(2, convertData.GetJobName());
 		insert.setInt(3, convertData.GetLevel());
 		insert.setInt(4, convertData.GetExp());
