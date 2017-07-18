@@ -150,7 +150,7 @@ public class Jobs extends JavaPlugin {
     private static NMS nms;
 
     private static ActionBar actionbar;
-    private boolean running = false;
+    private static boolean running = false;
 
     protected static VersionChecker versionCheckManager;
 
@@ -523,7 +523,15 @@ public class Jobs extends JavaPlugin {
 	    e1.printStackTrace();
 	}
 
-	Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
+	loadAllPlayersData();
+	// add all online players
+	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
+	    Jobs.getPlayerManager().playerJoin(online);
+	}
+    }
+
+    public static void loadAllPlayersData() {
+	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), new Runnable() {
 	    @Override
 	    public void run() {
 		int i = 0;
@@ -533,6 +541,7 @@ public class Jobs extends JavaPlugin {
 		// Cloning to avoid issues
 		HashMap<UUID, PlayerInfo> temp = new HashMap<UUID, PlayerInfo>(Jobs.getPlayerManager().getPlayersInfoUUIDMap());
 		Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator();
+		Jobs.consoleMsg("map size: " + temp.size());
 		while (it.hasNext()) {
 		    Entry<UUID, PlayerInfo> one = it.next();
 		    if (!running)
@@ -557,10 +566,6 @@ public class Jobs extends JavaPlugin {
 		return;
 	    }
 	});
-	// add all online players
-	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
-	    Jobs.getPlayerManager().playerJoin(online);
-	}
     }
 
     /**

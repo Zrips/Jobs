@@ -513,6 +513,12 @@ public abstract class JobsDAO {
 	return true;
     }
 
+    public void truncateAllTables() {
+	for (DBTables one : DBTables.values()) {
+	    this.truncate(one.getTableName());
+	}
+    }
+
     public DataBaseType getDbType() {
 	return dbType;
     }
@@ -625,33 +631,33 @@ public abstract class JobsDAO {
 	}
     }
 
-    private void loadAllSavedJobs() {
-	JobsConnection conn = getConnection();
-	if (conn == null)
-	    return;
-	PreparedStatement prest = null;
-	ResultSet res = null;
-	try {
-	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "jobs`;");
-	    res = prest.executeQuery();
-	    while (res.next()) {
-		int id = res.getInt("userid");
-		ArrayList<JobsDAOData> list = map.get(id);
-		if (list == null) {
-		    list = new ArrayList<JobsDAOData>();
-		    list.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
-		    map.put(id, list);
-		} else {
-		    list.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
-		}
-	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(res);
-	    close(prest);
-	}
-    }
+//    private void loadAllSavedJobs() {
+//	JobsConnection conn = getConnection();
+//	if (conn == null)
+//	    return;
+//	PreparedStatement prest = null;
+//	ResultSet res = null;
+//	try {
+//	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "jobs`;");
+//	    res = prest.executeQuery();
+//	    while (res.next()) {
+//		int id = res.getInt("userid");
+//		ArrayList<JobsDAOData> list = map.get(id);
+//		if (list == null) {
+//		    list = new ArrayList<JobsDAOData>();
+//		    list.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
+//		    map.put(id, list);
+//		} else {
+//		    list.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
+//		}
+//	    }
+//	} catch (SQLException e) {
+//	    e.printStackTrace();
+//	} finally {
+//	    close(res);
+//	    close(prest);
+//	}
+//    }
 
     public void recordNewPlayer(Player player) {
 	recordNewPlayer((OfflinePlayer) player);
@@ -874,6 +880,33 @@ public abstract class JobsDAO {
      * Join a job (create player-job entry from storage)
      * @param player - player that wishes to join the job
      * @param job - job that the player wishes to join
+     */
+    public synchronized void insertJob(JobsPlayer jPlayer, JobProgression prog) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement prest = null;
+	try {
+	    int exp = (int) prog.getExperience();
+	    if (exp < 0)
+		exp = 0;
+	    prest = conn.prepareStatement("INSERT INTO `" + prefix + "jobs` (`userid`, `job`, `level`, `experience`) VALUES (?, ?, ?, ?);");
+	    prest.setInt(1, jPlayer.getUserId());
+	    prest.setString(2, prog.getJob().getName());
+	    prest.setInt(3, prog.getLevel());
+	    prest.setInt(4, exp);
+	    prest.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+    }
+
+    /**
+     * Join a job (create player-job entry from storage)
+     * @param player - player that wishes to join the job
+     * @param job - job that the player wishes to join
      * @throws SQLException 
      */
     public List<Convert> convertDatabase(String table) throws SQLException {
@@ -914,7 +947,7 @@ public abstract class JobsDAO {
 	int i = list.size();
 	try {
 	    statement = conns.createStatement();
-	    if (Jobs.getGCManager().storageMethod.equalsIgnoreCase("sqlite")) {
+	    if (Jobs.getDBManager().getDbType().toString().equalsIgnoreCase("sqlite")) {
 		statement.executeUpdate("TRUNCATE `" + getPrefix() + table + "`");
 	    } else {
 		statement.executeUpdate("DELETE from `" + getPrefix() + table + "`");
@@ -940,38 +973,38 @@ public abstract class JobsDAO {
 	}
     }
 
-    public void transferUsers() throws SQLException {
-	JobsConnection conns = this.getConnection();
-	if (conns == null)
-	    return;
-	PreparedStatement insert = null;
-	Statement statement = null;
-	try {
-	    statement = conns.createStatement();
-	    if (Jobs.getGCManager().storageMethod.equalsIgnoreCase("sqlite")) {
-		statement.executeUpdate("TRUNCATE `" + getPrefix() + "users`");
-	    } else {
-		statement.executeUpdate("DELETE from `" + getPrefix() + "users`");
-	    }
-
-	    insert = conns.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`id`, `player_uuid`, `username`, `seen`) VALUES (?, ?, ?, ?);");
-	    conns.setAutoCommit(false);
-
-	    for (Entry<UUID, JobsPlayer> oneUser : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
-		insert.setInt(1, oneUser.getValue().getUserId());
-		insert.setString(2, oneUser.getValue().getPlayerUUID().toString());
-		insert.setString(3, oneUser.getValue().getUserName());
-		insert.setLong(4, oneUser.getValue().getSeen() == null ? System.currentTimeMillis() : oneUser.getValue().getSeen());
-		insert.addBatch();
-	    }
-	    insert.executeBatch();
-	    conns.commit();
-	    conns.setAutoCommit(true);
-	} finally {
-	    close(statement);
-	    close(insert);
-	}
-    }
+//    public void transferUsers() throws SQLException {
+//	JobsConnection conns = this.getConnection();
+//	if (conns == null)
+//	    return;
+//	PreparedStatement insert = null;
+//	Statement statement = null;
+//	try {
+//	    statement = conns.createStatement();
+//	    if (Jobs.getGCManager().storageMethod.equalsIgnoreCase("sqlite")) {
+//		statement.executeUpdate("TRUNCATE `" + getPrefix() + "users`");
+//	    } else {
+//		statement.executeUpdate("DELETE from `" + getPrefix() + "users`");
+//	    }
+//
+//	    insert = conns.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`id`, `player_uuid`, `username`, `seen`) VALUES (?, ?, ?, ?);");
+//	    conns.setAutoCommit(false);
+//
+//	    for (Entry<UUID, JobsPlayer> oneUser : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
+//		insert.setInt(1, oneUser.getValue().getUserId());
+//		insert.setString(2, oneUser.getValue().getPlayerUUID().toString());
+//		insert.setString(3, oneUser.getValue().getUserName());
+//		insert.setLong(4, oneUser.getValue().getSeen() == null ? System.currentTimeMillis() : oneUser.getValue().getSeen());
+//		insert.addBatch();
+//	    }
+//	    insert.executeBatch();
+//	    conns.commit();
+//	    conns.setAutoCommit(true);
+//	} finally {
+//	    close(statement);
+//	    close(insert);
+//	}
+//    }
 
     /**
      * Quit a job (delete player-job entry from storage)
@@ -1320,6 +1353,10 @@ public abstract class JobsDAO {
     }
 
     public void updateSeen(JobsPlayer player) {
+	if (player.getUserId() == -1) {
+	    insertPlayer(player);
+	    return;
+	}
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
@@ -1332,6 +1369,40 @@ public abstract class JobsDAO {
 	    prest.execute();
 	} catch (SQLException e) {
 	} finally {
+	    close(prest);
+	}
+    }
+
+    private void insertPlayer(JobsPlayer player) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement prestt = null;
+	try {
+	    prestt = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`, `seen`) VALUES (?, ?, ?);");
+	    prestt.setString(1, player.getPlayerUUID().toString());
+	    prestt.setString(2, player.getUserName());
+	    prestt.setLong(3, player.getSeen());
+	    prestt.executeUpdate();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prestt);
+	}
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    prest = conn.prepareStatement("SELECT `id` FROM `" + prefix + "users` WHERE `player_uuid` = ?;");
+	    prest.setString(1, player.getPlayerUUID().toString());
+	    res = prest.executeQuery();
+	    res.next();
+	    int id = res.getInt("id");
+	    player.setUserId(id);
+	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(player.getUserName(), id, player.getPlayerUUID(), player.getSeen()));
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(res);
 	    close(prest);
 	}
     }
@@ -1670,6 +1741,10 @@ public abstract class JobsDAO {
      * @param jobexplore - the information getting saved
      */
     public void saveExplore() {
+	saveExplore(true);
+    }
+
+    public void saveExplore(boolean ignoreOld) {
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
@@ -1687,7 +1762,7 @@ public abstract class JobsDAO {
 
 	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
 		for (Entry<String, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
-		    if (!oneChunk.getValue().isNew())
+		    if (!oneChunk.getValue().isNew() && ignoreOld)
 			continue;
 		    for (String oneuser : oneChunk.getValue().getPlayers()) {
 			prest2.setString(1, worlds.getKey());

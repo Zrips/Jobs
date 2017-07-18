@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.config;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -47,6 +48,14 @@ public class ExploreManager {
 
     public HashMap<String, ExploreRegion> getWorlds() {
 	return worlds;
+    }
+
+    public int getSize() {
+	int i = 0;
+	for (Entry<String, ExploreRegion> one : this.getWorlds().entrySet()) {
+	    i += one.getValue().getChunks().size();
+	}
+	return i;
     }
 
     public ExploreRespond ChunkRespond(Player player, Chunk chunk, boolean isNew) {

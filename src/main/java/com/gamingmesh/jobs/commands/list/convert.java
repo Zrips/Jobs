@@ -11,6 +11,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Convert;
+import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class convert implements Cmd {
@@ -29,29 +30,34 @@ public class convert implements Cmd {
 	    return true;
 	}
 
-	List<Convert> list = null;
 	List<Convert> archivelist = null;
 
 	try {
-	    list = Jobs.getJobsDAO().convertDatabase("jobs");
 	    archivelist = Jobs.getJobsDAO().convertDatabase("archive");
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    sender.sendMessage(ChatColor.RED + "Can't read data from data base, please send error log to dev's.");
 	    return true;
 	}
-	
+
 	Jobs.ChangeDatabase();
-	
-	if (list == null & archivelist == null)
+
+	if (archivelist == null)
 	    return false;
 	try {
-	    Jobs.getJobsDAO().continueConvertions(list, "jobs");
+	    Jobs.getJobsDAO().truncateAllTables();
+	    Jobs.getPlayerManager().convertChacheOfPlayers(true);
+
 	    Jobs.getJobsDAO().continueConvertions(archivelist, "archive");
-	    Jobs.getJobsDAO().transferUsers();
+	    Jobs.getPlayerManager().clearMaps();
+	    Jobs.getPlayerManager().clearCache();
+
+	    Jobs.getJobsDAO().saveExplore(false);
+	    Jobs.getJobsDAO().saveBlockProtection();
+	    Jobs.loadAllPlayersData();
 	} catch (SQLException e) {
 	    e.printStackTrace();
-	    sender.sendMessage(ChatColor.RED + "Can't write data to data base, please send error log to dev's.");
+	    Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
 	    return true;
 	}
 
@@ -64,14 +70,12 @@ public class convert implements Cmd {
 	String from = "MysSQL";
 	String to = "SqLite";
 
-	if (Jobs.getGCManager().storageMethod.equalsIgnoreCase("sqlite")) {
+	if (Jobs.getDBManager().getDbType().equals(DataBaseType.SqLite)) {
 	    from = "SqLite";
 	    to = "MySQL";
 	}
 
-	sender.sendMessage(ChatColor.GOLD + "Data base was converted from " + ChatColor.GREEN + from + ChatColor.GOLD + " to " + ChatColor.GREEN + to + ChatColor.GOLD
-	    + "! Now you can stop the server, change storage-method to " + ChatColor.GREEN + to + ChatColor.GOLD
-	    + " in general config file and start server again on your new database system.");
+	Jobs.consoleMsg("&eData base was converted from &2" + from + " &eto &2" + to + "&e!");
 
 	return true;
     }

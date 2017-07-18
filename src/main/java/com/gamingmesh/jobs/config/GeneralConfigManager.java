@@ -112,7 +112,6 @@ public class GeneralConfigManager {
     public double TaxesAmount;
     public String SoundLevelupSound, SoundTitleChangeSound, ServerAcountName, ServertaxesAcountName;
     public ArrayList<String> keys;
-    public String storageMethod;
     public boolean hideJobsInfoWithoutPermission;
     public boolean UseTaxes;
     public boolean TransferToServerAccount;

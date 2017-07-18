@@ -88,6 +88,13 @@ public class PlayerManager {
 	PlayerNameMap.clear();
     }
 
+    public void clearCache() {
+	playersCache.clear();
+	playersUUIDCache.clear();
+	players.clear();
+	playersUUID.clear();
+    }
+
     public void addPlayerToMap(PlayerInfo info) {
 	this.PlayerUUIDMap.put(info.getUuid(), info);
 	this.PlayerIDMap.put(info.getID(), info);
@@ -211,13 +218,34 @@ public class PlayerManager {
 	    }
 	}
     }
-    
+
     /**
      * Save all the information of all of the players
      */
-    public void saveEntireChacheOfPlayers() {
+    public void convertChacheOfPlayers(boolean resetID) {
+	int y = 0;
+	int i = 0;
+	int total = playersUUIDCache.size();
 	for (Entry<UUID, JobsPlayer> one : playersUUIDCache.entrySet()) {
-	    one.getValue().save();
+	    JobsPlayer jPlayer = one.getValue();
+	    if (resetID)
+		jPlayer.setUserId(-1);
+	    JobsDAO dao = Jobs.getJobsDAO();
+	    dao.updateSeen(jPlayer);
+	    if (jPlayer.getUserId() == -1)
+		continue;
+	    for (JobProgression oneJ : jPlayer.getJobProgression()) {
+		dao.insertJob(jPlayer, oneJ);
+	    }
+	    dao.saveLog(jPlayer);
+	    dao.savePoints(jPlayer);
+	    dao.recordPlayersLimits(jPlayer);
+	    i++;
+	    y++;
+	    if (y >= 1000) {
+		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Saved " + i + "/" + total + " players data");
+		y = 0;
+	    }
 	}
     }
 

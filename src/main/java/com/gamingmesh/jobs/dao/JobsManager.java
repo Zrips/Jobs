@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.dao;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -24,7 +25,7 @@ public class JobsManager {
 	return dao;
     }
 
-    public void switchDataBase() {	
+    public void switchDataBase() {
 	if (dao != null)
 	    dao.closeConnections();
 	switch (DbType) {
@@ -39,6 +40,17 @@ public class JobsManager {
 	    dao.setDbType(DbType);
 	    break;
 	}
+
+	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
+	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
+
+	config.set("storage.method", DbType.toString());
+	try {
+	    config.save(f);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+
 	Jobs.setDAO(dao);
     }
 
