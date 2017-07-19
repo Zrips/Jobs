@@ -308,6 +308,10 @@ Jobs:
       LEATHER_BOOTS:
         income: 1.0
         experience: 6.0
+      # Add ! at front when you want to pay for crafted items with special names      
+      "!Healing Bandage":
+        income: 1.0
+        experience: 6.0
     # Smelting ores
     Smelt:
       IRON_INGOT:

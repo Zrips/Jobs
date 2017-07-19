@@ -589,6 +589,8 @@ public class ConfigManager {
 			    }
 			    Jobs.getExplore().setExploreEnabled();
 			    Jobs.getExplore().setPlayerAmount(amount + 1);
+			} else if (actionType == ActionType.CRAFT && myKey.startsWith("!")) {
+			    type = myKey.substring(1, myKey.length());
 			}
 
 			if (type == null) {

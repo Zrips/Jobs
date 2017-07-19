@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -85,6 +86,7 @@ import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.actions.EntityActionInfo;
 import com.gamingmesh.jobs.actions.ExploreActionInfo;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
+import com.gamingmesh.jobs.actions.ItemNameActionInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BlockProtection;
@@ -93,7 +95,6 @@ import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Debug;
 import com.google.common.base.Objects;
 
@@ -514,9 +515,14 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
+	Debug.D("Crafted item " + resultStack.getType().name() + "  " + resultStack.getAmount());
+
 	// If we need to pay only by each craft action we will skip calculation how much was crafted
 	if (!Jobs.getGCManager().PayForEachCraft) {
-	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+	    if (resultStack.getItemMeta().hasDisplayName())
+		Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
+	    else
+		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 	    return;
 	}
 
@@ -533,7 +539,10 @@ public class JobsPaymentListener implements Listener {
 		    int newItemsCount = toCraft.getAmount();
 		    while (newItemsCount >= 0) {
 			newItemsCount--;
-			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+			if (resultStack.getItemMeta().hasDisplayName())
+			    Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
+			else
+			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 		    }
 		}
 	    }

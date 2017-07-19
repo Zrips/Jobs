@@ -541,7 +541,6 @@ public class Jobs extends JavaPlugin {
 		// Cloning to avoid issues
 		HashMap<UUID, PlayerInfo> temp = new HashMap<UUID, PlayerInfo>(Jobs.getPlayerManager().getPlayersInfoUUIDMap());
 		Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator();
-		Jobs.consoleMsg("map size: " + temp.size());
 		while (it.hasNext()) {
 		    Entry<UUID, PlayerInfo> one = it.next();
 		    if (!running)
