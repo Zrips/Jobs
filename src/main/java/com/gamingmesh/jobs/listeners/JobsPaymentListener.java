@@ -31,6 +31,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Furnace;
+import org.bukkit.block.BrewingStand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -53,19 +55,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -89,8 +90,6 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.actions.ItemNameActionInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.BlockProtection;
-import com.gamingmesh.jobs.container.DBAction;
 import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -734,6 +733,55 @@ public class JobsPaymentListener implements Listener {
 	}
 	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
 
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onInventoryMoveItemEventToFurnace(InventoryMoveItemEvent event) {
+	try {
+	    if (event.getDestination().getType() != InventoryType.FURNACE)
+		return;
+	    if (!Jobs.getGCManager().PreventHopperFillUps)
+		return;
+	    if (event.getItem() == null || event.getItem().getType() == Material.AIR)
+		return;
+	    Furnace furnace = (Furnace) event.getDestination().getHolder();
+	    //disabling plugin in world
+	    if (!Jobs.getGCManager().canPerformActionInWorld(furnace.getWorld()))
+		return;
+	    if (!this.plugin.isEnabled())
+		return;
+	    Block block = furnace.getBlock();
+
+	    if (block.hasMetadata(this.furnaceOwnerMetadata))
+		block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onInventoryMoveItemEventToBrewingStand(InventoryMoveItemEvent event) {
+	try {
+
+	    if (event.getDestination().getType() != InventoryType.BREWING)
+		return;
+	    if (!Jobs.getGCManager().PreventBrewingStandFillUps)
+		return;
+	    if (event.getItem() == null || event.getItem().getType() == Material.AIR)
+		return;
+	    BrewingStand stand = (BrewingStand) event.getDestination().getHolder();
+	    //disabling plugin in world
+	    if (!Jobs.getGCManager().canPerformActionInWorld(stand.getWorld()))
+		return;
+	    if (!this.plugin.isEnabled())
+		return;
+	    Block block = stand.getBlock();
+
+	    if (block.hasMetadata(this.brewingOwnerMetadata))
+		block.removeMetadata(this.brewingOwnerMetadata, this.plugin);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

@@ -77,7 +77,7 @@ public class GeneralConfigManager {
     public boolean PayForRenaming, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
 	EnableAnounceMessage, useSilkTouchProtection, UseCustomNames,
-	UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit;
+	UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps;
     public int globalblocktimer, CowMilkingTimer,
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
     public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
@@ -395,7 +395,7 @@ public class GeneralConfigManager {
 	}
 
 	Jobs.getDBManager().start(c);
-	
+
 //	c.getW().addComment("storage-method", "storage method, can be MySQL, sqlite");
 //	storageMethod = c.get("storage-method", "sqlite");
 //	if (storageMethod.equalsIgnoreCase("mysql")) {
@@ -757,6 +757,11 @@ public class GeneralConfigManager {
 	PreventSlimeSplit = c.get("ExploitProtections.Spawner.PreventSlimeSplit", true);
 	c.getW().addComment("ExploitProtections.Spawner.PreventMagmaCubeSplit", "Prevent magmacube spliting when they are from spawner");
 	PreventMagmaCubeSplit = c.get("ExploitProtections.Spawner.PreventMagmaCubeSplit", true);
+
+	c.getW().addComment("ExploitProtections.Smelt.PreventHopperFillUps", "Prevent payments when hoppers moving items into furnace", "Player will not get paid, but items will be smellted");
+	PreventHopperFillUps = c.get("ExploitProtections.Smelt.PreventHopperFillUps", true);
+	c.getW().addComment("ExploitProtections.Smelt.PreventMagmaCubeSplit", "Prevent payments when hoppers moving items into brewing stands", "Player will not get paid, but items will be brewd as they supose too");
+	PreventBrewingStandFillUps = c.get("ExploitProtections.Brew.PreventBrewingStandFillUps", true);
 
 	c.getW().addComment("use-breeder-finder", "Breeder finder.",
 	    "If you are not using breeding payment, you can disable this to save little resources. Really little.");
