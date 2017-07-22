@@ -308,7 +308,7 @@ Jobs:
       LEATHER_BOOTS:
         income: 1.0
         experience: 6.0
-      # Add ! at front when you want to pay for crafted items with special names      
+      # Add ! at front when you want to pay for crafted items with special names. Always use double quotation marks, same as example
       "!Healing Bandage":
         income: 1.0
         experience: 6.0

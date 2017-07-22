@@ -37,7 +37,7 @@ public class WorldGuardManager {
 		    continue;
 		return Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
 	    }
-	} catch (NoSuchMethodError e) {
+	} catch (Exception | NoSuchMethodError e) {
 	}
 	return new ArrayList<RestrictedArea>();
     }

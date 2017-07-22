@@ -1002,12 +1002,11 @@ public class JobsPaymentListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onArmorstandPlace(EntitySpawnEvent event) {
+    public void onArmorstandPlace(CreatureSpawnEvent event) {
 	Entity ent = event.getEntity();
 
 	if (!ent.getType().toString().equalsIgnoreCase("ARMOR_STAND"))
 	    return;
-
 	Location loc = event.getLocation();
 	Collection<Entity> ents = loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
 	double dis = Double.MAX_VALUE;
@@ -1038,7 +1037,6 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 	Jobs.action(jPlayer, new EntityActionInfo(ent, ActionType.PLACE));
-
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
