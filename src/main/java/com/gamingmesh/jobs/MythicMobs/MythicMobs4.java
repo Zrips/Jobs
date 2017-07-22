@@ -26,6 +26,8 @@ public class MythicMobs4 implements MythicMobInterface {
 
     @Override
     public boolean isMythicMob(LivingEntity lVictim) {
+	if (MMAPI == null || lVictim == null)
+	    return false;
 	if (MMAPI.isMythicMob(lVictim))
 	    return true;
 	return false;
