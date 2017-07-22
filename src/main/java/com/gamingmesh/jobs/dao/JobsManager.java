@@ -63,8 +63,8 @@ public class JobsManager {
 	c.get("mysql-hostname", "localhost:3306");
 	c.get("mysql-database", "minecraft");
 	c.get("mysql-table-prefix", "jobs_");
-	c.get("verify-server-certificate", "false");
-	c.get("use-ssl", "false");
+	c.get("verify-server-certificate", false);
+	c.get("use-ssl", false);
 
 	if (storageMethod.equalsIgnoreCase("mysql")) {
 	    DbType = DataBaseType.MySQL;
@@ -104,7 +104,7 @@ public class JobsManager {
 	String hostname = config.getString("mysql-hostname");
 	String database = config.getString("mysql-database");
 	String prefix = config.getString("mysql-table-prefix");
-	
+
 	boolean certificate = config.getBoolean("verify-server-certificate", false);
 	boolean ssl = config.getBoolean("use-ssl", false);
 	if (plugin.isEnabled()) {
