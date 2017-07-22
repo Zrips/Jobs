@@ -905,7 +905,7 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	// mob spawner, no payment or experience
-	if (lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()) && !Jobs.getGCManager().payNearSpawner()) {
+	if (lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())/* && !Jobs.getGCManager().payNearSpawner()*/) {
 	    //lVictim.removeMetadata(mobSpawnerMetadata, plugin);
 	    return;
 	}
@@ -982,10 +982,11 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
-	if (event.getSpawnReason() == SpawnReason.SPAWNER) {
-	    LivingEntity creature = event.getEntity();
-	    creature.setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(this.plugin, true));
+	if (event.getSpawnReason() == SpawnReason.NATURAL || event.getSpawnReason() == SpawnReason.CHUNK_GEN) {
+	    return;
 	}
+		LivingEntity creature = event.getEntity();
+		creature.setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(this.plugin, true));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

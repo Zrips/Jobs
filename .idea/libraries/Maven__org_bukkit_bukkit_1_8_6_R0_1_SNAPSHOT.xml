@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.bukkit:bukkit:1.8.6-R0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/bukkit/bukkit/1.8.6-R0.1-SNAPSHOT/bukkit-1.8.6-R0.1-20150605.095643-24.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/bukkit/bukkit/1.8.6-R0.1-SNAPSHOT/bukkit-1.8.6-R0.1-20150605.095643-24-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/bukkit/bukkit/1.8.6-R0.1-SNAPSHOT/bukkit-1.8.6-R0.1-20150605.095643-24-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

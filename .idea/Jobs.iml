@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: junit:junit:4.10" level="project" />
+    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:21.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.0" level="project" />
+    <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.18" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:bungeecord-chat:1.12-SNAPSHOT" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: com.iCo6:iConomy7:7.0.6">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/iConomy7.0.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: de.Keyle.MyPet:MyPet:2.3.0-SNAPSHOT">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/MyPet-2.3.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: com.gmail.nossr50.mcMMO:mcMMO:1.5.05-SNAPSHOT">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/mcMMO-1.5.05-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.milkbowl.vault:Vault:1.6.6" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: net.elseland.xikage:MythicMobs:2.4.5">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/MythicMobs-2.4.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: io.lumine.xikage.mythicmobs:MythicMobs:4.1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/MythicMobs-4.1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Maven: com.sk89q:worldguard:6.1" level="project" />
+    <orderEntry type="library" name="Maven: com.sk89q:worldedit:5.5.8" level="project" />
+    <orderEntry type="library" name="Maven: de.schlichtherle:truezip:6.8.3" level="project" />
+    <orderEntry type="library" name="Maven: rhino:js:1.7R2" level="project" />
+    <orderEntry type="library" name="Maven: com.sk89q:jchronic:0.2.4a" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sk89q.spigot:bukkit-classloader-check:1.8-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.avaje:ebean:2.8.1" level="project" />
+    <orderEntry type="library" name="Maven: javax.persistence:persistence-api:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.8.6-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.sk89q:commandbook:2.3" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.opencsv:opencsv:2.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:1.3.9" level="project" />
+  </component>
+</module>
