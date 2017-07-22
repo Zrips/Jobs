@@ -49,7 +49,9 @@ import com.gamingmesh.jobs.container.JobCommands;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.PlayerInfo;
+import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PointsData;
@@ -282,7 +284,7 @@ public class PlayerManager {
      * @param player - the player who's job you're getting
      * @return the player job info of the player
      */
-    public JobsPlayer getJobsPlayerOffline(PlayerInfo info) {
+    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points, HashMap<String, Log> logs) {
 
 	if (info == null)
 	    return null;
@@ -294,22 +296,28 @@ public class PlayerManager {
 	jPlayer.setPlayerUUID(info.getUuid());
 	jPlayer.setUserId(info.getID());
 
-	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getName(), info.getUuid());
-	for (JobsDAOData jobdata : list) {
-	    if (Jobs.getJob(jobdata.getJobName()) == null)
-		continue;
-	    Job job = Jobs.getJob(jobdata.getJobName());
-	    if (job == null)
-		continue;
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
-	    jPlayer.progression.add(jobProgression);
-	    jPlayer.reloadMaxExperience();
-	    jPlayer.reloadLimits();
+//	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getName(), info.getUuid());
+	if (jobs != null)
+	    for (JobsDAOData jobdata : jobs) {
+		if (Jobs.getJob(jobdata.getJobName()) == null)
+		    continue;
+		Job job = Jobs.getJob(jobdata.getJobName());
+		if (job == null)
+		    continue;
+		JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
+		jPlayer.progression.add(jobProgression);
+		jPlayer.reloadMaxExperience();
+		jPlayer.reloadLimits();
+	    }
+
+	if (points != null) {
+	    Jobs.getPlayerManager().getPointsData().addPlayer(jPlayer.getPlayerUUID(), points);
+	} else {
+	    Jobs.getPlayerManager().getPointsData().addPlayer(jPlayer.getPlayerUUID());
 	}
 
-	Jobs.getJobsDAO().loadPoints(jPlayer);
-
-	jPlayer.loadLogFromDao();
+	if (logs != null)
+	    jPlayer.setLog(logs);
 
 	return jPlayer;
     }

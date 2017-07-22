@@ -50,11 +50,12 @@ public class glog implements Cmd {
 
 		    if (JPlayer == null)
 			continue;
-		    List<Log> logList = JPlayer.getLog();
+		    HashMap<String, Log> logList = JPlayer.getLog();
 		    if (logList.size() == 0)
 			continue;
 
-		    for (Log one : logList) {
+		    for (Entry<String, Log> l : logList.entrySet()) {
+			Log one = l.getValue();
 			HashMap<String, LogAmounts> AmountList = one.getAmountList();
 			for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
 			    oneMap.getValue().setUsername(name);

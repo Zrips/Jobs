@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.stuff;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionInfo;
@@ -14,42 +15,29 @@ public class Loging {
     }
 
     public void recordToLog(JobsPlayer jPlayer, String ActionName, String item, double amount, double expAmount) {
-	List<Log> logList = jPlayer.getLog();
-	boolean found = false;
-
-	if (jPlayer.getLog().size() > 0 && Jobs.getScheduleManager().getDateByInt() != jPlayer.getLog().get(0).getDate()) {
-	    if (Jobs.getScheduleManager().getDateByInt() != jPlayer.getLog().get(0).getDate()) {
-		Jobs.getJobsDAO().saveLog(jPlayer);
-		jPlayer.getLog().clear();
-	    }
+	HashMap<String, Log> logList = jPlayer.getLog();
+	Log l = null;
+	for (Entry<String, Log> one : logList.entrySet()) {
+	    l = one.getValue();
+	    break;
 	}
-
-	for (Log one : logList) {
-	    if (!one.getActionType().equalsIgnoreCase(ActionName))
-		continue;
-	    one.add(item, amount, expAmount);
-	    found = true;
+	if (l != null && Jobs.getScheduleManager().getDateByInt() != l.getDate()) {
+	    Jobs.getJobsDAO().saveLog(jPlayer);
+	    jPlayer.getLog().clear();
 	}
-	if (!found) {
-	    Log log = new Log(ActionName);
-	    log.add(item, amount, expAmount);
-	    logList.add(log);
-	}
+	Log log = logList.get(ActionName);
+	if (log == null)
+	    log = new Log(ActionName);
+	log.add(item, amount, expAmount);
     }
 
     public void loadToLog(JobsPlayer jPlayer, String ActionName, String item, int count, double money, double expAmount) {
-	List<Log> logList = jPlayer.getLog();
-	boolean found = false;
-	for (Log one : logList) {
-	    if (!one.getActionType().equalsIgnoreCase(ActionName))
-		continue;
-	    one.add(item, count, money, expAmount);
-	    found = true;
-	}
-	if (!found) {
-	    Log log = new Log(ActionName);
-	    log.add(item, count, money, expAmount);
-	    logList.add(log);
-	}
+	HashMap<String, Log> logList = jPlayer.getLog();
+
+	Log log = logList.get(ActionName);
+	if (log == null)
+	    log = new Log(ActionName);
+	log.add(item, count, money, expAmount);
     }
+
 }

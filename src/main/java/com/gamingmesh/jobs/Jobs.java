@@ -73,7 +73,9 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.PlayerInfo;
+import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.dao.*;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
@@ -90,6 +92,7 @@ import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.stuff.VersionChecker;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -531,40 +534,27 @@ public class Jobs extends JavaPlugin {
     }
 
     public static void loadAllPlayersData() {
-	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), new Runnable() {
-	    @Override
-	    public void run() {
-		int i = 0;
-		int y = 0;
-		int total = Jobs.getPlayerManager().getMapSize();
-		long time = System.currentTimeMillis();
-		// Cloning to avoid issues
-		HashMap<UUID, PlayerInfo> temp = new HashMap<UUID, PlayerInfo>(Jobs.getPlayerManager().getPlayersInfoUUIDMap());
-		Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator();
-		while (it.hasNext()) {
-		    Entry<UUID, PlayerInfo> one = it.next();
-		    if (!running)
-			return;
-		    try {
-			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one.getValue());
-			if (jPlayer == null)
-			    continue;
-			Jobs.getPlayerManager().addPlayerToCache(jPlayer);
-		    } catch (Exception e) {
-		    }
-		    i++;
-		    y++;
-		    if (y >= 1000) {
-			Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + i + "/" + total + " players data");
-			y = 0;
-		    }
-		}
-		dao.getMap().clear();
-		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + i + " players data in " + ((int) (((System.currentTimeMillis() - time)
-		    / 1000d) * 100) / 100D));
-		return;
+	long time = System.currentTimeMillis();
+	// Cloning to avoid issues
+	HashMap<UUID, PlayerInfo> temp = new HashMap<UUID, PlayerInfo>(Jobs.getPlayerManager().getPlayersInfoUUIDMap());
+	HashMap<Integer, List<JobsDAOData>> playersJobs = Jobs.getJobsDAO().getAllJobs();
+	HashMap<Integer, PlayerPoints> playersPoints = Jobs.getJobsDAO().getAllPoints();
+	HashMap<Integer, HashMap<String, Log>> playersLogs = Jobs.getJobsDAO().getAllLogs();
+	Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator();
+	while (it.hasNext()) {
+	    Entry<UUID, PlayerInfo> one = it.next();
+	    try {
+		int id = one.getValue().getID();
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one.getValue(), playersJobs.get(id), playersPoints.get(id), playersLogs.get(id));
+		if (jPlayer == null)
+		    continue;
+		Jobs.getPlayerManager().addPlayerToCache(jPlayer);
+	    } catch (Exception e) {
 	    }
-	});
+	}
+	dao.getMap().clear();
+	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + Jobs.getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
+	    / 1000d) * 100) / 100D));
     }
 
     /**

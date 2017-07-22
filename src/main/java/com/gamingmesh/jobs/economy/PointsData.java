@@ -29,6 +29,11 @@ public class PointsData {
 	    Pointbase.put(uuid, new PlayerPoints(points, total));
     }
 
+    public void addPlayer(UUID uuid, PlayerPoints points) {
+	if (!Pointbase.containsKey(uuid))
+	    Pointbase.put(uuid, points);
+    }
+
     public void addPoints(UUID uuid, Double points) {
 	if (!Pointbase.containsKey(uuid))
 	    addPlayer(uuid, points);

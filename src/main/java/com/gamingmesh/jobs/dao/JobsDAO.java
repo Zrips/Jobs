@@ -574,7 +574,7 @@ public abstract class JobsDAO {
 	    prest.setInt(1, id);
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		jobs.add(new JobsDAOData(res.getString(1), res.getInt(2), res.getInt(3)));
+		jobs.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -583,6 +583,97 @@ public abstract class JobsDAO {
 	    close(prest);
 	}
 	return jobs;
+    }
+
+    public HashMap<Integer, List<JobsDAOData>> getAllJobs() {
+	HashMap<Integer, List<JobsDAOData>> map = new HashMap<Integer, List<JobsDAOData>>();
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return map;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "jobs`;");
+	    res = prest.executeQuery();
+	    while (res.next()) {
+		int id = res.getInt("userid");
+		List<JobsDAOData> ls = map.get(id);
+		if (ls == null)
+		    ls = new ArrayList<JobsDAOData>();
+		ls.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
+		map.put(id, ls);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+	return map;
+    }
+
+    public HashMap<Integer, PlayerPoints> getAllPoints() {
+	HashMap<Integer, PlayerPoints> map = new HashMap<Integer, PlayerPoints>();
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return map;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "points`;");
+	    res = prest.executeQuery();
+	    while (res.next()) {
+		map.put(res.getInt(PointsTableFields.userid.getCollumn()), new PlayerPoints(res.getDouble("currentpoints"), res.getDouble("totalpoints")));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+	return map;
+    }
+
+    public HashMap<Integer, HashMap<String, Log>> getAllLogs() {
+	HashMap<Integer, HashMap<String, Log>> map = new HashMap<Integer, HashMap<String, Log>>();
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return map;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    int time = TimeManage.timeInInt();
+	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "log` WHERE `time` = ? ;");
+	    prest.setInt(1, time);
+	    res = prest.executeQuery();
+	    while (res.next()) {
+
+		int id = res.getInt("userid");
+
+		HashMap<String, Log> m = map.get(id);
+		if (m == null)
+		    m = new HashMap<String, Log>();
+		String action = res.getString("action");
+		Log log = m.get(action);
+
+		if (log == null)
+		    log = new Log(action);
+
+		log.add(res.getString("itemname"), res.getInt("count"), res.getDouble("money"), res.getDouble("exp"));
+
+		m.put(action, log);
+		map.put(id, m);
+
+//		Jobs.getLoging().loadToLog(player, res.getString("action"), res.getString("itemname"), res.getInt("count"), res.getDouble("money"), res.getDouble("exp"));
+	    }
+	} catch (Exception e) {
+	    close(res);
+	    close(prest);
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+	return map;
     }
 
     private HashMap<Integer, ArrayList<JobsDAOData>> map = new HashMap<Integer, ArrayList<JobsDAOData>>();
@@ -965,13 +1056,12 @@ public abstract class JobsDAO {
 	    while (i > 0) {
 		i--;
 
-		
 		Convert convertData = list.get(i);
-		
+
 		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(convertData.GetUserUUID());
 		if (jPlayer == null)
 		    continue;
-		
+
 		insert.setInt(1, jPlayer.getUserId());
 		insert.setString(2, convertData.GetJobName());
 		insert.setInt(3, convertData.GetLevel());
@@ -1488,7 +1578,8 @@ public abstract class JobsDAO {
 	try {
 	    prest1 = conn.prepareStatement("UPDATE `" + prefix
 		+ "log` SET `count` = ?, `money` = ?, `exp` = ? WHERE `userid` = ? AND `time` = ? AND `action` = ? AND `itemname` = ?;");
-	    for (Log log : player.getLog()) {
+	    for (Entry<String, Log> l : player.getLog().entrySet()) {
+		Log log = l.getValue();
 		for (Entry<String, LogAmounts> one : log.getAmountList().entrySet()) {
 		    if (one.getValue().isNewEntry())
 			continue;
@@ -1506,7 +1597,8 @@ public abstract class JobsDAO {
 	    }
 	    prest2 = conn.prepareStatement("INSERT INTO `" + prefix
 		+ "log` (`userid`, `time`, `action`, `itemname`, `count`, `money`, `exp`) VALUES (?, ?, ?, ?, ?, ?, ?);");
-	    for (Log log : player.getLog()) {
+	    for (Entry<String, Log> l : player.getLog().entrySet()) {
+		Log log = l.getValue();
 		for (Entry<String, LogAmounts> one : log.getAmountList().entrySet()) {
 
 		    if (!one.getValue().isNewEntry())

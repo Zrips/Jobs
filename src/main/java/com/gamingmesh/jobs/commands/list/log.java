@@ -47,7 +47,7 @@ public class log implements Cmd {
 	    return true;
 	}
 
-	List<Log> logList = JPlayer.getLog();
+	HashMap<String, Log> logList = JPlayer.getLog();
 
 	if (logList.size() == 0) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.bottomline"));
@@ -58,7 +58,8 @@ public class log implements Cmd {
 
 	Map<String, Double> unsortMap = new HashMap<String, Double>();
 
-	for (Log one : logList) {
+	for (Entry<String, Log> l : logList.entrySet()) {
+	    Log one = l.getValue();
 	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
 	    for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
 		unsortMap.put(oneMap.getKey(), oneMap.getValue().getMoney());
@@ -69,7 +70,8 @@ public class log implements Cmd {
 	int count = 0;
 	int max = 10;
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.topline", "%playername%", JPlayer.getUserName()));
-	for (Log one : logList) {
+	for (Entry<String, Log> l : logList.entrySet()) {
+	    Log one = l.getValue();
 	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
 	    for (Entry<String, Double> oneSorted : unsortMap.entrySet()) {
 		for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {

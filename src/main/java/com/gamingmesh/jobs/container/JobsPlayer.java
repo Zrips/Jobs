@@ -67,7 +67,7 @@ public class JobsPlayer {
 //    public final Object saveLock = new Object();
 
     // log
-    private List<Log> logList = new ArrayList<Log>();
+    private HashMap<String, Log> logList = new HashMap<String, Log>();
 
     private Long seen = System.currentTimeMillis();
 
@@ -151,8 +151,12 @@ public class JobsPlayer {
 	}
     }
 
-    public List<Log> getLog() {
+    public HashMap<String, Log> getLog() {
 	return this.logList;
+    }
+
+    public void setLog(HashMap<String, Log> l) {
+	this.logList = l;
     }
 
     public void setUserId(int id) {
