@@ -52,23 +52,15 @@ public class CommentedYamlConfiguration extends YamlConfiguration {
     @Override
     public void save(File file) throws IOException {
 	if (file == null) {
-	    throw new IllegalArgumentException("File cannot be null");
+		throw new IllegalArgumentException("File cannot be null");
 	}
-
 	Files.createParentDirs(file);
-
-	String data = insertComments(saveToString());
-
-	//FileWriter writer = new FileWriter(file);
-
+	String data = insertComments(saveToString());	
 	PrintWriter writer = new PrintWriter(file, "UTF-8");
-
-	//Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
-
 	try {
-	    writer.write(data);
+		writer.write(data);
 	} finally {
-	    writer.close();
+		writer.close();
 	}
     }
 
