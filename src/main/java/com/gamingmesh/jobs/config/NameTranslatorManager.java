@@ -175,6 +175,7 @@ public class NameTranslatorManager {
 	languages.add("fr");
 	languages.add("zhcn");
 	languages.add("zhtw");
+	languages.add("de");
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker(plugin, "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
