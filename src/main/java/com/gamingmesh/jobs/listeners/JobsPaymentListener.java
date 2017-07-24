@@ -518,7 +518,7 @@ public class JobsPaymentListener implements Listener {
 
 	// If we need to pay only by each craft action we will skip calculation how much was crafted
 	if (!Jobs.getGCManager().PayForEachCraft) {
-	    if (resultStack.getItemMeta().hasDisplayName())
+	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
 		Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
 	    else
 		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
@@ -538,7 +538,7 @@ public class JobsPaymentListener implements Listener {
 		    int newItemsCount = toCraft.getAmount();
 		    while (newItemsCount >= 0) {
 			newItemsCount--;
-			if (resultStack.getItemMeta().hasDisplayName())
+			if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
 			    Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
 			else
 			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
