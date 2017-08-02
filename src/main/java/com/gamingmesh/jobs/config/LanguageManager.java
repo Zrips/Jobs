@@ -88,6 +88,7 @@ public class LanguageManager {
 	    c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
 	    c.get("general.error.notNumber", "&ePlease use numbers!");
 	    c.get("general.error.job", "&cThe job you have selected does not exist!");
+	    c.get("general.error.noCommand", "&cThere is no command by this name!");
 	    c.get("general.error.permission", "&cYou do not have permission to do that!");
 	    c.get("general.error.noinfo", "&cNo information found!");
 	    c.get("general.error.noinfoByPlayer", "&cNo information found by [%playername%] player name!");

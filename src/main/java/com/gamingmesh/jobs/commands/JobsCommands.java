@@ -78,6 +78,13 @@ public class JobsCommands implements CommandExecutor {
 
 	String cmd = args[0].toLowerCase();
 
+	Cmd cmdClass = getCmdClass(cmd);
+
+	if (cmdClass == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noCommand"));
+	    return true;
+	}
+
 	if (!hasCommandPermission(sender, cmd)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
@@ -90,10 +97,10 @@ public class JobsCommands implements CommandExecutor {
 	    }
 	}
 
-	Cmd cmdClass = getCmdClass(cmd);
-	if (cmdClass == null) {
-	    return help(sender, 1);
-	}
+//	if (cmdClass == null) {
+//	    return help(sender, 1);
+//	}
+	
 	boolean back = cmdClass.perform(plugin, sender, myArgs);
 	if (back)
 	    return true;
