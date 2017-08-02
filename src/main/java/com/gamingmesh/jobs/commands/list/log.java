@@ -35,8 +35,7 @@ public class log implements Cmd {
 	if (args.length == 0)
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	else if (args.length == 1) {
-	    if (!sender.hasPermission("jobs.commands.log.others")) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+	    if (!Jobs.hasPermission(sender, "jobs.commands.log.others", true)) {
 		return true;
 	    }
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);

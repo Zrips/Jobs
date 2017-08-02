@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -89,6 +90,7 @@ import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.Loging;
+import com.gamingmesh.jobs.stuff.RawMessage;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.stuff.VersionChecker;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
@@ -1230,5 +1232,28 @@ public class Jobs extends JavaPlugin {
 
     public static SelectionManager getSelectionManager() {
 	return smanager;
+    }
+
+    public static boolean hasPermission(Object sender, String perm, boolean inform) {
+	if (sender instanceof Player) {
+	    if (((Player) sender).hasPermission(perm))
+		return true;
+	    if (!inform)
+		return false;
+	    RawMessage rm = new RawMessage();
+	    rm.add(Jobs.getLanguage().getMessage("general.error.permission"), "&2" + perm);
+	    rm.show((Player) sender);
+	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	    Jobs.sendMessage(console, Jobs.getLanguage().getMessage("general.error.permission"));
+	    return false;
+	}
+	return true;
+    }
+
+    public static void sendMessage(Object sender, String msg) {
+	if (sender instanceof Player) {
+	    ((Player) sender).sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+	} else
+	    ((CommandSender) sender).sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
     }
 }

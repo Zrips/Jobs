@@ -9,7 +9,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class archive implements Cmd {
 
@@ -18,8 +17,7 @@ public class archive implements Cmd {
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {
-	    if (!sender.hasPermission("jobs.command.admin.archive")) {
-		sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.permission"));
+	    if (!Jobs.hasPermission(sender, "jobs.command.admin.archive", true)) {
 		return true;
 	    }
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);

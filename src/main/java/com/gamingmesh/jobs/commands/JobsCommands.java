@@ -24,6 +24,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -34,6 +35,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.RawMessage;
 
 public class JobsCommands implements CommandExecutor {
     private static final String label = "jobs";
@@ -85,10 +87,18 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
-	if (!hasCommandPermission(sender, cmd)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+	if (!hasCommandPermission(sender, cmd)) {	    
+	    if (sender instanceof Player) {
+		RawMessage rm = new RawMessage();
+		rm.add(Jobs.getLanguage().getMessage("general.error.permission"), "&2" + label + ".command." + cmd);
+		rm.show(sender);
+		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+		Jobs.sendMessage(console, Jobs.getLanguage().getMessage("general.error.permission"));
+	    } else
+		Jobs.sendMessage(sender, Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
+	
 	String[] myArgs = reduceArgs(args);
 	if (myArgs.length > 0) {
 	    if (myArgs[myArgs.length - 1].equals("?")) {
