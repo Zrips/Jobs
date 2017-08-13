@@ -30,9 +30,11 @@ public class JobInfo {
     private Parser moneyEquation, xpEquation, pointsEquation;
     private int fromLevel = 0;
     private int untilLevel = Integer.MAX_VALUE;
+    
+    private String configPath = "";
 
     public JobInfo(ActionType actionType, int id, String meta, String name, double baseIncome, Parser moneyEquation, double baseXp, Parser xpEquation,
-	Parser pointsEquation, double basePoints, int fromLevel, int untilLevel) {
+	Parser pointsEquation, double basePoints, int fromLevel, int untilLevel, String configPath) {
 	this.actionType = actionType;
 	this.id = id;
 	this.meta = meta;
@@ -45,6 +47,7 @@ public class JobInfo {
 	this.xpEquation = xpEquation;
 	this.fromLevel = fromLevel;
 	this.untilLevel = untilLevel;
+	this.configPath = configPath;
 
     }
 
@@ -113,5 +116,25 @@ public class JobInfo {
 	pointsEquation.setVariable("numjobs", numjobs);
 	pointsEquation.setVariable("basepoints", basePoints);
 	return pointsEquation.getValue();
+    }
+
+    public String getConfigPath() {
+	return configPath;
+    }
+
+    public void setConfigPath(String configPath) {
+	this.configPath = configPath;
+    }
+
+    public void setBaseIncome(double baseIncome) {
+	this.baseIncome = baseIncome;
+    }
+
+    public void setBaseXp(double baseXp) {
+	this.baseXp = baseXp;
+    }
+
+    public void setBasePoints(double basePoints) {
+	this.basePoints = basePoints;
     }
 }

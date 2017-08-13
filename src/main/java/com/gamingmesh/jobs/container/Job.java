@@ -73,6 +73,8 @@ public class Job {
     private BoostMultiplier boost = new BoostMultiplier();
     private String bossbar;
 
+    private Parser moneyEquation, xpEquation, pointsEquation;
+
     /**
      * Constructor
      * @param jobName - the name of the job
@@ -195,7 +197,7 @@ public class Job {
      */
 
     public List<JobInfo> getJobInfo(ActionType type) {
-	return Collections.unmodifiableList(jobInfo.get(type));
+	return jobInfo.get(type);
     }
 
     /**
@@ -351,5 +353,29 @@ public class Job {
 
     public void setBossbar(String bossbar) {
 	this.bossbar = bossbar;
+    }
+
+    public Parser getMoneyEquation() {
+	return moneyEquation;
+    }
+
+    public void setMoneyEquation(Parser moneyEquation) {
+	this.moneyEquation = moneyEquation;
+    }
+
+    public Parser getXpEquation() {
+	return xpEquation;
+    }
+
+    public void setXpEquation(Parser xpEquation) {
+	this.xpEquation = xpEquation;
+    }
+
+    public Parser getPointsEquation() {
+	return pointsEquation;
+    }
+
+    public void setPointsEquation(Parser pointsEquation) {
+	this.pointsEquation = pointsEquation;
     }
 }

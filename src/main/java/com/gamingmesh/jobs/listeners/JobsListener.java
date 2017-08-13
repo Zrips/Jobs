@@ -69,7 +69,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.Debug;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
@@ -79,6 +79,27 @@ public class JobsListener implements Listener {
 
     public JobsListener(Jobs plugin) {
 	this.plugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+	if (event.isCancelled())
+	    return;
+
+	if (Util.getJobsEditorMap().isEmpty())
+	    return;
+
+	Player player = event.getPlayer();
+	if (!Util.getJobsEditorMap().containsKey(player.getUniqueId()))
+	    return;
+
+	String msg = Util.getJobsEditorMap().remove(player.getUniqueId());
+
+	if (msg == null)
+	    return;
+
+	player.performCommand(msg + event.getMessage());
+	event.setCancelled(true);
     }
 
     private boolean isInteractOk(Player player) {

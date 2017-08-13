@@ -1,5 +1,8 @@
 package com.gamingmesh.jobs.stuff;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
@@ -14,6 +17,8 @@ public class Util {
 
     public Util() {
     }
+
+    private static HashMap<UUID, String> jobsEditorMap = new HashMap<UUID, String>();
 
     @SuppressWarnings("deprecation")
     public static ItemStack setEntityType(ItemStack is, EntityType type) throws IllegalArgumentException {
@@ -41,7 +46,7 @@ public class Util {
 	}
 	return is;
     }
-    
+
     @SuppressWarnings("deprecation")
     public static EntityType getEntityType(ItemStack is) {
 	if (is.getItemMeta() instanceof BlockStateMeta) {
@@ -52,5 +57,9 @@ public class Util {
 	    }
 	}
 	return EntityType.fromId(is.getData().getData());
+    }
+
+    public static HashMap<UUID, String> getJobsEditorMap() {
+	return jobsEditorMap;
     }
 }

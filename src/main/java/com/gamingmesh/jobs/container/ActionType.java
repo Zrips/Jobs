@@ -38,13 +38,23 @@ public enum ActionType {
     EXPLORE("Explore"),
     EAT("Eat"),
     CUSTOMKILL("custom-kill");
-    
+
     private String name;
+
     private ActionType(String name) {
-        this.name = name;
+	this.name = name;
     }
-    
+
     public String getName() {
-        return name;
+	return name;
+    }
+
+    public static ActionType getByName(String name) {
+	name = name.replace("_", "");
+	for (ActionType one : ActionType.values()) {
+	    if (one.name.equalsIgnoreCase(name))
+		return one;
+	}
+	return null;
     }
 }
