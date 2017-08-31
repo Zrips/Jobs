@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.LocaleReader;
@@ -58,13 +56,13 @@ public class LanguageManager {
 
 	for (String lang : languages) {
 	    File f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
-	    
+
 	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
 	    if ((f.length() / 1024) > 1024) {
 		f.delete();
 		f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    }
-	    
+
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
 
@@ -169,8 +167,11 @@ public class LanguageManager {
 	    c.get("command.help.output.usage", "Usage: %usage%");
 	    c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");
 	    c.get("command.help.output.page", "&e-----&e ====== Page &6[1] &eof &6[2] &e====== &e-----");
+	    c.get("command.help.output.fliperSimbols", "&e----------");
 	    c.get("command.help.output.prev", "&e--- <<<<< &6Prev page &e|");
+	    c.get("command.help.output.prevOff", "&7--- <<<<< Prev page &e|");
 	    c.get("command.help.output.next", "&e|&6 Next Page &e>>>> ---");
+	    c.get("command.help.output.nextOff", "&e|&7 Next Page >>>> ---");
 
 	    c.get("command.points.help.info", "Shows how much points player have.");
 	    c.get("command.points.help.args", "[playername]");
@@ -184,6 +185,25 @@ public class LanguageManager {
 	    c.get("command.editpoints.output.set", "&ePlayers (&6%playername%&e) points was set to &6%amount%");
 	    c.get("command.editpoints.output.add", "&ePlayer (&6%playername%&e) got aditinal &6%amount% &epoints. Now he has &6%total%");
 	    c.get("command.editpoints.output.take", "&ePlayer (&6%playername%&e) lost &6%amount% &epoints. Now he has &6%total%");
+
+	    c.get("command.editjobs.help.info", "Edit current jobs.");
+	    c.get("command.editjobs.help.args", "");
+	    c.get("command.editjobs.help.list.job", "&eJobs:");
+	    c.get("command.editjobs.help.list.jobs", "  -> [&e%jobname%&r]");
+	    c.get("command.editjobs.help.list.actions", "    -> [&e%actionname%&r]");
+	    c.get("command.editjobs.help.list.material", "      -> [&e%materialname%&r]      ");
+	    c.get("command.editjobs.help.list.materialRemove", "&c[X]");
+	    c.get("command.editjobs.help.list.materialAdd", "      -> &e[&2+&e]");
+	    c.get("command.editjobs.help.list.money", "        -> &eMoney: &6%amount%");
+	    c.get("command.editjobs.help.list.exp", "        -> &ePoints: &6%amount%");
+	    c.get("command.editjobs.help.list.points", "        -> &eExp: &6%amount%");
+	    c.get("command.editjobs.help.modify.newValue", "&eEnter new value");
+	    c.get("command.editjobs.help.modify.enter", "&eEnter new name or press ");
+	    c.get("command.editjobs.help.modify.hand", "&6HAND ");
+	    c.get("command.editjobs.help.modify.handHover", "&6Press to grab info from item in your hand");
+	    c.get("command.editjobs.help.modify.or", "&eor ");
+	    c.get("command.editjobs.help.modify.look", "&6LOOKING AT");
+	    c.get("command.editjobs.help.modify.lookHover", "&6Press to grab info from block you are looking");
 
 	    c.get("command.blockinfo.help.info", "Shows block information you looking at.");
 	    c.get("command.blockinfo.help.args", "");
@@ -415,7 +435,7 @@ public class LanguageManager {
 	    c.get("command.promote.help.args", "[playername] [jobname] [levels]");
 	    Jobs.getGCManager().commandArgs.put("promote", Arrays.asList("[playername]", "[jobname]", "[levels]"));
 	    c.get("command.promote.output.target", "You have been promoted %levelsgained% levels in %jobname%.");
-	    
+
 	    c.get("command.exp.help.info", "Change the player exp for job.");
 	    c.get("command.exp.help.args", "[playername] [jobname] [set/add/take] [amount]");
 	    Jobs.getGCManager().commandArgs.put("exp", Arrays.asList("[playername]", "[jobname]", "take%%set%%add"));

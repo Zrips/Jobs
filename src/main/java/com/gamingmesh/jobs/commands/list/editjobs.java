@@ -18,12 +18,12 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.RawMessage;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class editjobs implements Cmd {
 
-    // [jobName] [add/del/edit]
     @Override
     @JobCommand(475)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
@@ -38,88 +38,82 @@ public class editjobs implements Cmd {
 
 	switch (args[0]) {
 	case "list":
-
 	    if (args.length == 1) {
-
 		showPath(player, null, null, null);
-
 		for (Job one : Jobs.getJobs()) {
 		    RawMessage rm = new RawMessage();
-		    rm.add("  -> [" + one.getChatColor() + one.getName() + "&r]", one.getName(), "jobs editjobs list " + one.getName());
+		    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", one.getChatColor() + one.getName()), one.getName(), "jobs editjobs list " + one.getName());
 		    rm.show(sender);
 		}
 		Util.getJobsEditorMap().remove(player.getUniqueId());
-
 		return true;
 	    }
 
 	    if (args.length == 2) {
-
 		Job job = Jobs.getJob(args[1]);
-
 		if (job == null)
 		    return false;
-
 		showPath(player, job, null, null);
-
 		for (ActionType oneI : ActionType.values()) {
-
 		    List<JobInfo> action = job.getJobInfo(oneI);
-
 		    if (action == null || action.isEmpty())
 			continue;
-
 		    RawMessage rm = new RawMessage();
-		    rm.add("    -> &e[&6" + oneI.getName() + "&e]", oneI.getName(), "jobs editjobs list " + job.getName() + " " + oneI.getName());
-		    rm.show(sender);
-
-		}
-		Util.getJobsEditorMap().remove(player.getUniqueId());
-
-		return true;
-	    }
-
-	    if (args.length == 3) {
-
-		Job job = Jobs.getJob(args[1]);
-
-		if (job == null)
-		    return false;
-
-		ActionType actionT = ActionType.getByName(args[2]);
-
-		if (actionT == null)
-		    return false;
-
-		List<JobInfo> action = job.getJobInfo(actionT);
-
-		if (action == null || action.isEmpty())
-		    return false;
-
-		showPath(player, job, actionT, null);
-
-		for (JobInfo one : action) {
-
-		    String materialName = one.getName().toLowerCase().replace('_', ' ');
-		    materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
-		    materialName = Jobs.getNameTranslatorManager().Translate(materialName, one);
-		    materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
-
-		    RawMessage rm = new RawMessage();
-		    rm.add("      -> &e[&6" + materialName + "&e]    ", one.getName(), "jobs editjobs list " + job.getName() + " " + actionT.getName() + " " + one.getName());
-		    rm.add("&c[X]", "Remove", "jobs editjobs remove " + job.getName() + " " + actionT.getName() + " " + one.getName());
+		    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.actions", "%actionname%", oneI.getName()), oneI.getName(), "jobs editjobs list " + job.getName() + " " + oneI.getName()
+			+ " 1");
 		    rm.show(sender);
 		}
-
-		RawMessage rm = new RawMessage();
-		rm.add("      -> &e[&2+&e]", "&eAdd new", "jobs editjobs add " + job.getName() + " " + actionT.getName());
-		rm.show(sender);
 		Util.getJobsEditorMap().remove(player.getUniqueId());
-
 		return true;
 	    }
 
 	    if (args.length == 4) {
+
+		Integer page = null;
+		try {
+		    page = Integer.parseInt(args[3]);
+		} catch (Exception e) {
+		}
+
+		if (page != null) {
+		    Job job = Jobs.getJob(args[1]);
+		    if (job == null)
+			return false;
+		    ActionType actionT = ActionType.getByName(args[2]);
+		    if (actionT == null)
+			return false;
+		    List<JobInfo> action = job.getJobInfo(actionT);
+		    if (action == null || action.isEmpty())
+			return false;
+		    showPath(player, job, actionT, null);
+		    PageInfo pi = new PageInfo(15, action.size(), page);
+		    for (JobInfo one : action) {
+
+			if (!pi.isEntryOk())
+			    continue;
+
+			String materialName = one.getName().toLowerCase().replace('_', ' ');
+			materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
+			materialName = Jobs.getNameTranslatorManager().Translate(materialName, one);
+			materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
+
+			RawMessage rm = new RawMessage();
+			rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.material", "%materialname%", materialName), one.getName(), "jobs editjobs list " + job.getName() + " " + actionT
+			    .getName() + " " + one.getName());
+			rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.materialRemove"), "&cRemove", "jobs editjobs remove " + job.getName() + " " + actionT.getName() + " " + one
+			    .getName());
+			rm.show(sender);
+		    }
+
+		    RawMessage rm = new RawMessage();
+		    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.materialAdd"), "&eAdd new", "jobs editjobs add " + job.getName() + " " + actionT.getName());
+		    rm.show(sender);
+		    Util.getJobsEditorMap().remove(player.getUniqueId());
+
+		    Jobs.getInstance().ShowPagination(sender, pi.getTotalPages(), page, "jobs editjobs list " + job.getName() + " " + actionT.getName());
+
+		    return true;
+		}
 
 		Job job = Jobs.getJob(args[1]);
 
@@ -151,16 +145,19 @@ public class editjobs implements Cmd {
 		showPath(player, job, actionT, jInfo);
 
 		RawMessage rm = new RawMessage();
-		rm.add("        -> &eMoney: &6" + jInfo.getBaseIncome(), jInfo.getBaseIncome() + "", "jobs editjobs modify " + job.getName() + " " + actionT.getName() + " " + jInfo.getName() + " money ");
+		rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.money", "%amount%", jInfo.getBaseIncome()), "&e" + jInfo.getBaseIncome(), "jobs editjobs modify " + job.getName() + " "
+		    + actionT.getName() + " " + jInfo.getName() + " money ");
 		rm.show(sender);
 
 		rm = new RawMessage();
-		rm.add("        -> &ePoints: &6" + jInfo.getBasePoints(), jInfo.getBasePoints() + "", "jobs editjobs modify " + job.getName() + " " + actionT.getName() + " " + jInfo.getName()
+		rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.points", "%amount%", jInfo.getBasePoints()), "&e" + jInfo.getBasePoints(), "jobs editjobs modify " + job.getName() + " "
+		    + actionT.getName() + " " + jInfo.getName()
 		    + " points ");
 		rm.show(sender);
 
 		rm = new RawMessage();
-		rm.add("        -> &eExp: &6" + jInfo.getBaseXp(), jInfo.getBaseXp() + "", "jobs editjobs modify " + job.getName() + " " + actionT.getName() + " " + jInfo.getName() + " exp ");
+		rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.exp", "%amount%", jInfo.getBaseXp()), "&e" + jInfo.getBaseXp(), "jobs editjobs modify " + job.getName() + " " + actionT
+		    .getName() + " " + jInfo.getName() + " exp ");
 		rm.show(sender);
 		Util.getJobsEditorMap().remove(player.getUniqueId());
 
@@ -205,7 +202,7 @@ public class editjobs implements Cmd {
 
 		Util.getJobsEditorMap().put(player.getUniqueId(), "jobs editjobs modify " + job.getName() + " " + actionT.getName() + " " + jInfo.getName() + " " + type.getName() + " ");
 
-		sender.sendMessage(ChatColor.GOLD + "Enter new value");
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.editjobs.help.modify.newValue"));
 
 		return true;
 	    }
@@ -251,8 +248,6 @@ public class editjobs implements Cmd {
 		} catch (Exception e) {
 		    return false;
 		}
-
-		sender.sendMessage("Set new value " + job.getName() + " " + actionT.getName() + " " + jInfo.getName() + " " + type.getName() + " " + value);
 
 		String sType = null;
 		switch (type) {
@@ -310,7 +305,6 @@ public class editjobs implements Cmd {
 		}
 
 		if (jInfo == null) {
-		    player.sendMessage("Cant find this one");
 		    return true;
 		}
 
@@ -318,7 +312,8 @@ public class editjobs implements Cmd {
 
 		Jobs.getConfigManager().changeJobsSettings(jInfo.getConfigPath(), null);
 
-		sender.sendMessage("Removed");
+		player.performCommand("jobs editjobs list " + job.getName() + " " + actionT.getName() + " 1");
+
 		Util.getJobsEditorMap().remove(player.getUniqueId());
 
 		return true;
@@ -345,12 +340,14 @@ public class editjobs implements Cmd {
 		    return false;
 
 		RawMessage rm = new RawMessage();
-		rm.add("&eEnter new name or press");
-		rm.add(" &6HAND ", "Press to grab info from item in your hand", "jobs editjobs add " + job.getName() + " " + actionT.getName() + " hand");
-		rm.add("&eor");
-		rm.add(" &6LOOKING AT", "Press to grab info from block you are looking", "jobs editjobs add " + job.getName() + " " + actionT.getName() + " looking");
+		rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.modify.enter"));
+		rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.modify.hand"), Jobs.getLanguage().getMessage("command.editjobs.help.modify.handHover"), "jobs editjobs add " + job.getName()
+		    + " " + actionT.getName() + " hand");
+		rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.modify.or"));
+		rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.modify.look"), Jobs.getLanguage().getMessage("command.editjobs.help.modify.lookHover"), "jobs editjobs add " + job.getName()
+		    + " " + actionT.getName() + " looking");
 		rm.show(sender);
-		
+
 		Util.getJobsEditorMap().put(player.getUniqueId(), "jobs editjobs add " + job.getName() + " " + actionT.getName() + " ");
 
 		return true;
@@ -414,8 +411,8 @@ public class editjobs implements Cmd {
 		    if (matId != null) {
 			material = Material.getMaterial(matId);
 			if (material != null) {
-			    player.sendMessage("Job " + job.getName() + " " + actionT.getName() + " is using ID: " + key + "!");
-			    player.sendMessage("Please use the Material name instead: " + material.toString() + "!");
+			    player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " " + actionT.getName() + " is using ID: " + key + "!");
+			    player.sendMessage(ChatColor.GOLD + "Please use the Material name instead: " + material.toString() + "!");
 			}
 		    }
 		}
@@ -446,16 +443,16 @@ public class editjobs implements Cmd {
 
 		    if (actionT == ActionType.BREAK || actionT == ActionType.PLACE) {
 			if (!material.isBlock()) {
-			    player.sendMessage("Job " + job.getName() + " has an invalid " + actionT.getName() + " type property: " + key
+			    player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " has an invalid " + actionT.getName() + " type property: " + key
 				+ "! Material must be a block!");
 			    break;
 			}
 		    }
 		    if (material == Material.REDSTONE_ORE && actionT == ActionType.BREAK) {
-			player.sendMessage("Job " + job.getName() + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
-			player.sendMessage("Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
-			player.sendMessage("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
-			player.sendMessage("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
+			player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
+			player.sendMessage(ChatColor.GOLD + "Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
+			player.sendMessage(ChatColor.GOLD + "In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
+			player.sendMessage(ChatColor.GOLD + "In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
 			material = Material.GLOWING_REDSTONE_ORE;
 		    }
 
@@ -532,7 +529,7 @@ public class editjobs implements Cmd {
 		    try {
 			amount = Integer.valueOf(myKey);
 		    } catch (NumberFormatException e) {
-			player.sendMessage("Job " + job.getName() + " has an invalid " + actionT.getName() + " type property: " + key + "!");
+			player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " has an invalid " + actionT.getName() + " type property: " + key + "!");
 			break;
 		    }
 		    Jobs.getExplore().setExploreEnabled();
@@ -542,7 +539,7 @@ public class editjobs implements Cmd {
 		}
 
 		if (type == null) {
-		    player.sendMessage("Job " + job.getName() + " has an invalid " + actionT.getName() + " type property: " + key + "!");
+		    player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " has an invalid " + actionT.getName() + " type property: " + key + "!");
 		    break;
 		}
 
@@ -571,7 +568,7 @@ public class editjobs implements Cmd {
 		Jobs.getConfigManager().changeJobsSettings(jInfo.getConfigPath() + "/income", 0);
 		Jobs.getConfigManager().changeJobsSettings(jInfo.getConfigPath() + "/points", 0);
 		Jobs.getConfigManager().changeJobsSettings(jInfo.getConfigPath() + "/experience", 0);
-		
+
 		Util.getJobsEditorMap().remove(player.getUniqueId());
 
 		return true;
@@ -583,22 +580,22 @@ public class editjobs implements Cmd {
 	return true;
     }
 
-    private void showPath(Player player, Job job, ActionType action, JobInfo jInfo) {
+    private static void showPath(Player player, Job job, ActionType action, JobInfo jInfo) {
 
 	RawMessage rm = new RawMessage();
-	rm.add("&eJobs:", "&eJob list", "jobs editjobs");
+	rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.job"), "&eJob list", "jobs editjobs");
 	rm.show(player);
 
 	if (job != null) {
 	    rm = new RawMessage();
-	    rm.add("  -> [" + job.getChatColor() + job.getName() + "&r]", job.getName(), "jobs editjobs list " + job.getName());
+	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", job.getChatColor() + job.getName()), job.getName(), "jobs editjobs list " + job.getName());
 	    rm.show(player);
 	}
 
 	if (action != null && job != null) {
 	    rm = new RawMessage();
 
-	    rm.add("    -> &e[&6" + action.getName() + "&e]", action.getName(), "jobs editjobs list " + job.getName() + " " + action.getName());
+	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.actions", "%actionname%",  action.getName()), action.getName(), "jobs editjobs list " + job.getName() + " " + action.getName() + " 1");
 	    rm.show(player);
 	}
 
@@ -610,7 +607,7 @@ public class editjobs implements Cmd {
 	    materialName = Jobs.getNameTranslatorManager().Translate(materialName, jInfo);
 	    materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
 
-	    rm.add("      -> &e[&6" + jInfo.getName() + "&e]", jInfo.getName(), "jobs editjobs list " + job.getName() + " " + action.getName() + " " + materialName);
+	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.material", "%materialname%",   jInfo.getName()), jInfo.getName(), "jobs editjobs list " + job.getName() + " " + action.getName() + " " + materialName);
 	    rm.show(player);
 	}
     }

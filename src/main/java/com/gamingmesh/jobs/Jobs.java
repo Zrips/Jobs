@@ -1256,4 +1256,28 @@ public class Jobs extends JavaPlugin {
 	} else
 	    ((CommandSender) sender).sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
     }
+
+    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd) {
+	if (!(sender instanceof Player))
+	    return;
+	if (!cmd.startsWith("/"))
+	    cmd = "/" + cmd;
+//	String separator = Jobs.getLanguage().getMessage("command.help.output.fliperSimbols");
+
+	if (pageCount == 1)
+	    return;
+
+	int NextPage = CurrentPage + 1;
+	NextPage = CurrentPage < pageCount ? NextPage : CurrentPage;
+	int Prevpage = CurrentPage - 1;
+	Prevpage = CurrentPage > 1 ? Prevpage : CurrentPage;
+
+	RawMessage rm = new RawMessage();
+	rm.add((CurrentPage > 1 ? Jobs.getLanguage().getMessage("command.help.output.prev") : Jobs.getLanguage().getMessage("command.help.output.prevOff")), CurrentPage > 1 ? "<<<" : null, CurrentPage > 1
+	    ? cmd + " " + Prevpage : null);
+	rm.add(pageCount > CurrentPage ? Jobs.getLanguage().getMessage("command.help.output.next") : Jobs.getLanguage().getMessage("command.help.output.nextOff"), pageCount > CurrentPage ? ">>>" : null,
+	    pageCount > CurrentPage ? cmd + " " + NextPage : null);
+	if (pageCount != 0)
+	    rm.show(sender);
+    }
 }
