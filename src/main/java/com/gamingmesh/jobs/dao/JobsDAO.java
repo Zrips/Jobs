@@ -36,6 +36,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public abstract class JobsDAO {
@@ -765,34 +766,6 @@ public abstract class JobsDAO {
 	}
     }
 
-//    private void loadAllSavedJobs() {
-//	JobsConnection conn = getConnection();
-//	if (conn == null)
-//	    return;
-//	PreparedStatement prest = null;
-//	ResultSet res = null;
-//	try {
-//	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "jobs`;");
-//	    res = prest.executeQuery();
-//	    while (res.next()) {
-//		int id = res.getInt("userid");
-//		ArrayList<JobsDAOData> list = map.get(id);
-//		if (list == null) {
-//		    list = new ArrayList<JobsDAOData>();
-//		    list.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
-//		    map.put(id, list);
-//		} else {
-//		    list.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
-//		}
-//	    }
-//	} catch (SQLException e) {
-//	    e.printStackTrace();
-//	} finally {
-//	    close(res);
-//	    close(prest);
-//	}
-//    }
-
     public void recordNewPlayer(Player player) {
 	recordNewPlayer((OfflinePlayer) player);
     }
@@ -806,31 +779,27 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return;
 	PreparedStatement prestt = null;
+	ResultSet res2 = null;
 	try {
-	    prestt = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`, `seen`) VALUES (?, ?, ?);");
+	    prestt = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`, `seen`) VALUES (?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
 	    prestt.setString(1, uuid.toString());
 	    prestt.setString(2, playerName);
 	    prestt.setLong(3, System.currentTimeMillis());
 	    prestt.executeUpdate();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(prestt);
-	}
-	PreparedStatement prest = null;
-	ResultSet res = null;
-	try {
-	    prest = conn.prepareStatement("SELECT `id` FROM `" + prefix + "users` WHERE `player_uuid` = ?;");
-	    prest.setString(1, uuid.toString());
-	    res = prest.executeQuery();
-	    res.next();
-	    int id = res.getInt("id");
+
+	    res2 = prestt.getGeneratedKeys();
+	    int id = 0;
+	    if (res2.next())
+		id = res2.getInt(1);
+
+	    Debug.D("got id " + id);
+
 	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, id, uuid, System.currentTimeMillis()));
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
-	    close(res);
-	    close(prest);
+	    close(prestt);
+	    close(res2);
 	}
     }
 
