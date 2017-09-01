@@ -507,7 +507,9 @@ public class GeneralConfigManager {
 	c.getW().addComment("hide-jobsinfo-without-permission", "Hide jobs info from player if they lack the permission to join the job");
 	hideJobsInfoWithoutPermission = c.get("hide-jobsinfo-without-permission", false);
 
-	c.getW().addComment("enable-pay-near-spawner", "Option to allow payment to be made when killing mobs from a spawner");
+	c.getW().addComment("enable-pay-near-spawner",
+	    "Option to allow payment to be made when killing mobs from a spawner.",
+	    "Use jobs.nearspawner.[amount] to define multiplayer. Example jobs.nearspawner.-0.5 will pay half of payment, jobs.nearspawner.-1 will not pay at all");
 	payNearSpawner = c.get("enable-pay-near-spawner", false);
 
 	c.getW().addComment("enable-pay-creative", "Option to allow payment to be made in creative mode");
@@ -760,7 +762,8 @@ public class GeneralConfigManager {
 
 	c.getW().addComment("ExploitProtections.Smelt.PreventHopperFillUps", "Prevent payments when hoppers moving items into furnace", "Player will not get paid, but items will be smellted");
 	PreventHopperFillUps = c.get("ExploitProtections.Smelt.PreventHopperFillUps", true);
-	c.getW().addComment("ExploitProtections.Smelt.PreventMagmaCubeSplit", "Prevent payments when hoppers moving items into brewing stands", "Player will not get paid, but items will be brewd as they supose too");
+	c.getW().addComment("ExploitProtections.Smelt.PreventMagmaCubeSplit", "Prevent payments when hoppers moving items into brewing stands",
+	    "Player will not get paid, but items will be brewd as they supose too");
 	PreventBrewingStandFillUps = c.get("ExploitProtections.Brew.PreventBrewingStandFillUps", true);
 
 	c.getW().addComment("use-breeder-finder", "Breeder finder.",

@@ -117,7 +117,7 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent event) {
 	if (Jobs.getGCManager().isShowNewVersion() && event.getPlayer().hasPermission("jobs.versioncheck"))
-	    plugin.getVersionCheckManager().VersionCheck(event.getPlayer());
+	    Jobs.getVersionCheckManager().VersionCheck(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
