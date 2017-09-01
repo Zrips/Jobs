@@ -31,10 +31,7 @@ public class browse implements Cmd {
 	    if (job.getMaxLevel() > 0) {
 		builder.append(ChatColor.WHITE.toString());
 		builder.append(Jobs.getLanguage().getMessage("command.info.help.max"));
-		if (Perm.hasPermission(sender, "jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-		    builder.append(job.getVipMaxLevel());
-		else
-		    builder.append(job.getMaxLevel());
+		builder.append(job.getMaxLevel(sender));
 	    }
 
 	    if (Jobs.getGCManager().ShowTotalWorkers)

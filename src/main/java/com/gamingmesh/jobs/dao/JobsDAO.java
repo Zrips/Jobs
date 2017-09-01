@@ -1205,47 +1205,6 @@ public abstract class JobsDAO {
 	}
     }
 
-//    /**
-//     * Check job in archive
-//     * @param player - player that wishes to quit the job
-//     * @param job - job that the player wishes to quit
-//     */
-//    public synchronized JobProgression getOldJobProgresion(JobsPlayer jPlayer, Job job) {
-//	JobsConnection conn = getConnection();
-//	JobProgression jp = null;
-//	if (conn == null)
-//	    return jp;
-//	PreparedStatement prest = null;
-//	ResultSet res = null;
-//	try {
-//	    prest = conn.prepareStatement("SELECT `level`, `experience`, `left` FROM `" + prefix + "archive` WHERE `userid` = ? AND `job` = ?;");
-//	    prest.setInt(1, jPlayer.getUserId());
-//	    prest.setString(2, job.getName());
-//	    res = prest.executeQuery();
-//	    if (res.next()) {
-//		int level = (int) ((res.getInt(1) - (res.getInt(1) * (Jobs.getGCManager().levelLossPercentage / 100.0))));
-//		if (level < 1)
-//		    level = 1;
-//
-//		int maxLevel = 0;
-//		if (jPlayer.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-//		    maxLevel = job.getVipMaxLevel();
-//		else
-//		    maxLevel = job.getMaxLevel();
-//
-//		if (Jobs.getGCManager().fixAtMaxLevel && res.getInt(1) == maxLevel)
-//		    level = res.getInt(1);
-//		jp = new JobProgression(job, jPlayer, level, res.getInt("experience"));
-//	    }
-//	} catch (SQLException e) {
-//	    e.printStackTrace();
-//	} finally {
-//	    close(res);
-//	    close(prest);
-//	}
-//	return jp;
-//    }
-
     public List<TopList> getGlobalTopList() {
 	return getGlobalTopList(0);
     }
@@ -1288,54 +1247,6 @@ public abstract class JobsDAO {
 	    close(prest);
 	}
 	return names;
-    }
-
-    /**
-     * Get all jobs from archive by player
-     * @param player - targeted player
-     * @return info - information about jobs
-     */
-    public synchronized List<String> getJobsFromArchive(JobsPlayer jPlayer) {
-	JobsConnection conn = getConnection();
-	if (conn == null)
-	    return null;
-	List<String> info = new ArrayList<String>();
-	PreparedStatement prest = null;
-	ResultSet res = null;
-	try {
-	    prest = conn.prepareStatement("SELECT `job`, `level`, `experience`  FROM `" + prefix + "archive` WHERE `userid` = ?;");
-	    prest.setInt(1, jPlayer.getUserId());
-	    res = prest.executeQuery();
-	    while (res.next()) {
-
-		int level = (int) ((res.getInt(2) - (res.getInt(2) * (Jobs.getGCManager().levelLossPercentage / 100.0))));
-		if (level < 1)
-		    level = 1;
-
-		int maxLevel = 0;
-
-		Job job = Jobs.getJob(res.getString(1));
-
-		if (job == null)
-		    continue;
-
-		if (jPlayer.havePermission("jobs." + job.getName() + ".vipmaxlevel"))
-		    maxLevel = job.getVipMaxLevel();
-		else
-		    maxLevel = job.getMaxLevel();
-
-		if (Jobs.getGCManager().fixAtMaxLevel && res.getInt(2) == maxLevel)
-		    level = res.getInt(2);
-
-		info.add(res.getString(1) + ":" + res.getInt(2) + ":" + level + ":" + res.getInt(3));
-	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(res);
-	    close(prest);
-	}
-	return info;
     }
 
     public PlayerInfo loadPlayerData(UUID uuid) {

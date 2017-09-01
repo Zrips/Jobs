@@ -175,12 +175,7 @@ public class JobProgression {
 	boolean ret = false;
 	while (canLevelUp()) {
 
-	    int maxLevel = 0;
-	    if (jPlayer.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-		maxLevel = job.getVipMaxLevel();
-	    else
-		maxLevel = job.getMaxLevel();
-
+	    int maxLevel = this.jPlayer.getMaxJobLevelAllowed(this.getJob());
 	    // Don't level up at max level        	
 	    if (job.getMaxLevel() > 0 && level >= maxLevel)
 		break;

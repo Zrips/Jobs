@@ -106,12 +106,7 @@ public class GuiManager {
 			Lore.add(Jobs.getLanguage().getMessage("command.info.gui.working"));
 		}
 
-		int maxlevel = 0;
-		if (Perm.hasPermission(player, "jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-		    maxlevel = job.getVipMaxLevel();
-		else
-		    maxlevel = job.getMaxLevel();
-
+		int maxlevel = job.getMaxLevel(JPlayer);
 		if (maxlevel > 0)
 		    Lore.add(Jobs.getLanguage().getMessage("command.info.gui.max") + maxlevel);
 

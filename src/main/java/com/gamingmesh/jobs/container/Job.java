@@ -23,6 +23,9 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
@@ -290,6 +293,23 @@ public class Job {
      */
     public int getMaxLevel() {
 	return maxLevel;
+    }
+
+    public int getMaxLevel(JobsPlayer player) {
+	if (player == null)
+	    return getMaxLevel();
+	return player.getMaxJobLevelAllowed(this);
+    }
+
+    public int getMaxLevel(CommandSender sender) {
+	if (sender == null)
+	    return getMaxLevel();
+	if (sender instanceof Player) {
+	    JobsPlayer player = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+	    if (player != null)
+		return player.getMaxJobLevelAllowed(this);
+	}	
+	return getMaxLevel() > getVipMaxLevel() ? getMaxLevel() : getVipMaxLevel();
     }
 
     /**

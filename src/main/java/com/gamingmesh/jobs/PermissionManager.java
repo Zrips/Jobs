@@ -142,7 +142,7 @@ public class PermissionManager {
 		}
 	    }
 	}
-	return amount;
+	return amount == null ? 0D : amount;
     }
 
     public boolean hasPermission(JobsPlayer jPlayer, String perm) {

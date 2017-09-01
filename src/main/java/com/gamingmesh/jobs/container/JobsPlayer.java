@@ -414,12 +414,7 @@ public class JobsPlayer {
 	    level = 1;
 
 	Job job = jp.getJob();
-	int maxLevel = 0;
-	if (havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-	    maxLevel = job.getVipMaxLevel();
-	else
-	    maxLevel = job.getMaxLevel();
-
+	int maxLevel = this.getMaxJobLevelAllowed(job);
 	if (Jobs.getGCManager().fixAtMaxLevel && jp.getLevel() == maxLevel)
 	    level = jp.getLevel();
 
@@ -486,10 +481,7 @@ public class JobsPlayer {
 	    return;
 	int newLevel = prog.getLevel() + levels;
 
-	int maxLevel = job.getMaxLevel();
-
-	if (this.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-	    maxLevel = job.getVipMaxLevel();
+	int maxLevel = job.getMaxLevel(this);
 
 	if (maxLevel > 0 && newLevel > maxLevel) {
 	    newLevel = maxLevel;
@@ -551,11 +543,7 @@ public class JobsPlayer {
 
 		prog.setJob(newjob);
 
-		int maxLevel = 0;
-		if (this.havePermission("jobs." + newjob.getName() + ".vipmaxlevel"))
-		    maxLevel = newjob.getVipMaxLevel();
-		else
-		    maxLevel = newjob.getMaxLevel();
+		int maxLevel = getMaxJobLevelAllowed(newjob);
 
 		if (newjob.getMaxLevel() > 0 && prog.getLevel() > maxLevel) {
 		    prog.setLevel(maxLevel);
@@ -570,6 +558,18 @@ public class JobsPlayer {
 	}
 	return false;
 //	}
+    }
+
+    public int getMaxJobLevelAllowed(Job job) {
+	int maxLevel = 0;
+	if (this.havePermission("jobs." + job.getName() + ".vipmaxlevel"))
+	    maxLevel = job.getVipMaxLevel() > job.getMaxLevel() ? job.getVipMaxLevel() : job.getMaxLevel();
+	else
+	    maxLevel = job.getMaxLevel();
+	int tMax = Jobs.getPermissionManager().getMaxPermission(this, "jobs." + job.getName() + ".vipmaxlevel").intValue();
+	if (tMax > maxLevel)
+	    maxLevel = tMax;
+	return maxLevel;
     }
 
     /**
