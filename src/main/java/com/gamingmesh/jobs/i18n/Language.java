@@ -54,7 +54,7 @@ public class Language {
     }
 
     public String getMessage(String key, Object... variables) {
-	String missing = "Missing locale for " + key + " ";
+	String missing = "MLF " + key;
 	String msg = "";
 	try {
 	    if (customlocale == null || !customlocale.contains(key))

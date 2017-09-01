@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class SignUtil {
 
@@ -154,35 +155,35 @@ public class SignUtil {
 				String PlayerNameStrip = PlayerName.split("(?<=\\G.{7})")[0];
 				PlayerName = PlayerNameStrip + "~";
 			    }
-			    String line1 = Jobs.getLanguage().getMessage("signs.SpecialList." + one.GetNumber() + ".1");
-			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
-			    line1 = line1.replace("[player]", PlayerName);
-			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
-			    line1 = line1.replace("[job]", JobName);
+			    String line1 = Jobs.getLanguage().getMessage("signs.SpecialList.p" + one.GetNumber(),
+				"[number]", one.GetNumber() + number + 1,
+				"[player]", PlayerName,
+				"[level]", PlayerList.get(0).getLevel(),
+				"[job]", JobName);
 
 			    sign.setLine(0, line1);
 
-			    line1 = Jobs.getLanguage().getMessage("signs.SpecialList." + one.GetNumber() + ".2");
-			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
-			    line1 = line1.replace("[player]", PlayerName);
-			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
-			    line1 = line1.replace("[job]", JobName);
+			    line1 = Jobs.getLanguage().getMessage("signs.SpecialList.name",
+				"[number]", one.GetNumber() + number + 1,
+				"[player]", PlayerName,
+				"[level]", PlayerList.get(0).getLevel(),
+				"[job]", JobName);
 
 			    sign.setLine(1, line1);
 
-			    line1 = Jobs.getLanguage().getMessage("signs.SpecialList." + one.GetNumber() + ".3");
-			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
-			    line1 = line1.replace("[player]", PlayerName);
-			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
-			    line1 = line1.replace("[job]", JobName);
+			    line1 = Jobs.getLanguage().getMessage("signs.SpecialList.level",
+				"[number]", one.GetNumber() + number + 1,
+				"[player]", PlayerName,
+				"[level]", PlayerList.get(0).getLevel(),
+				"[job]", JobName);
 
 			    sign.setLine(2, line1);
 
-			    line1 = Jobs.getLanguage().getMessage("signs.SpecialList." + one.GetNumber() + ".4");
-			    line1 = line1.replace("[number]", String.valueOf(one.GetNumber() + number + 1));
-			    line1 = line1.replace("[player]", PlayerName);
-			    line1 = line1.replace("[level]", String.valueOf(PlayerList.get(0).getLevel()));
-			    line1 = line1.replace("[job]", JobName);
+			    line1 = Jobs.getLanguage().getMessage("signs.SpecialList.bottom",
+				"[number]", one.GetNumber() + number + 1,
+				"[player]", PlayerName,
+				"[level]", PlayerList.get(0).getLevel(),
+				"[job]", JobName);
 
 			    sign.setLine(3, line1);
 			    sign.update();
