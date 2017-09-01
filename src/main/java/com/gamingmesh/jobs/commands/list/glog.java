@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.LogAmounts;
@@ -60,7 +60,7 @@ public class glog implements Cmd {
 			for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
 			    oneMap.getValue().setUsername(name);
 			    oneMap.getValue().setAction(one.getActionType());
-			    unsortMap.put(oneMap.getValue(), oneMap.getValue().getMoney());
+			    unsortMap.put(oneMap.getValue(), oneMap.getValue().get(CurrencyType.MONEY));
 			}
 		    }
 		}
@@ -73,14 +73,28 @@ public class glog implements Cmd {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.topline"));
 		for (Entry<LogAmounts, Double> one : unsortMap.entrySet()) {
 		    LogAmounts info = one.getKey();
-		    sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.list",
-			"%username%", one.getKey().getUsername(),
-			"%number%", count,
-			"%action%", info.getAction(),
-			"%item%", one.getKey().getItemName().replace(":0", "").replace("_", " ").toLowerCase(),
-			"%qty%", one.getKey().getCount(),
-			"%money%", one.getKey().getMoney(),
-			"%exp%", one.getKey().getExp()));
+			String moneyS = "";
+			if (info.get(CurrencyType.MONEY) != 0D)
+			    moneyS = Jobs.getLanguage().getMessage("command.glog.output.money", "%amount%", info.get(CurrencyType.MONEY));
+
+			String expS = "";
+			if (info.get(CurrencyType.EXP) != 0D)
+			    expS = Jobs.getLanguage().getMessage("command.glog.output.exp", "%amount%", info.get(CurrencyType.EXP));
+
+			String pointsS = "";
+			if (info.get(CurrencyType.POINTS) != 0D)
+			    pointsS = Jobs.getLanguage().getMessage("command.glog.output.points", "%amount%", info.get(CurrencyType.POINTS));
+
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.ls",
+			    "%number%", count,
+			    "%action%", info.getAction(),
+			    "%item%", info.getItemName().replace(":0", "").replace("_", " ").toLowerCase(),
+			    "%qty%", info.getCount(),
+			    "%money%", moneyS,
+			    "%exp%", expS,
+			    "%points%", pointsS));
+		    
+		    
 		    count++;
 
 		    if (count > max)

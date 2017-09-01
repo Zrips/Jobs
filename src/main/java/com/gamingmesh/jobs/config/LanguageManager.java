@@ -413,7 +413,10 @@ public class LanguageManager {
 	    c.get("command.log.help.args", "[playername]");
 	    Jobs.getGCManager().commandArgs.put("log", Arrays.asList("[playername]"));
 	    c.get("command.log.output.topline", "&7************************* &6%playername% &7*************************");
-	    c.get("command.log.output.list", "&7* &6%number%. &3%action%: &6%item% &eqty: %qty% &6money: %money% &eexp: %exp%");
+	    c.get("command.log.output.ls", "&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%");
+	    c.get("command.log.output.money", "&6money: %amount% ");
+	    c.get("command.log.output.exp", "&eexp: %amount% ");
+	    c.get("command.log.output.points", "&6points: %amount%");
 	    c.get("command.log.output.bottomline", "&7***********************************************************");
 	    c.get("command.log.output.prev", "&e<<<<< Prev page &2|");
 	    c.get("command.log.output.next", "&2|&e Next Page >>>>");
@@ -422,7 +425,10 @@ public class LanguageManager {
 	    c.get("command.glog.help.info", "Shows global statistics.");
 	    c.get("command.glog.help.args", "");
 	    c.get("command.glog.output.topline", "&7*********************** &6Global statistics &7***********************");
-	    c.get("command.glog.output.list", "&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6money: %money% &eexp: %exp%");
+	    c.get("command.glog.output.ls", "&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%");
+	    c.get("command.glog.output.money", "&6money: %amount% ");
+	    c.get("command.glog.output.exp", "&eexp: %amount% ");
+	    c.get("command.glog.output.points", "&6points: %amount%");
 	    c.get("command.glog.output.bottomline", "&7**************************************************************");
 	    c.get("command.glog.output.nodata", "&cData not found");
 

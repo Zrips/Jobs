@@ -18,38 +18,23 @@ public final class Log {
 	return this.action;
     }
 
-    public void add(String item, double money, double exp) {
-	if (!this.amountMap.containsKey(item)) {
-	    LogAmounts LAmount = new LogAmounts(item);
-	    LAmount.addCount();
-	    LAmount.addMoney(money);
-	    LAmount.addExp(exp);
-	    this.amountMap.put(item, LAmount);
-	} else {
-	    LogAmounts LAmount = this.amountMap.get(item);
-	    LAmount.addCount();
-	    LAmount.addMoney(money);
-	    LAmount.addExp(exp);
-	    this.amountMap.put(item, LAmount);
-	}
+    public void add(String item, HashMap<CurrencyType, Double> amounts) {
+	LogAmounts LAmount = this.amountMap.get(item);
+	if (LAmount == null)
+	    LAmount = new LogAmounts(item);
+	LAmount.addCount();
+	LAmount.add(amounts);
+	this.amountMap.put(item, LAmount);
     }
 
-    public void add(String item, int count, double money, double exp) {
-	if (!this.amountMap.containsKey(item)) {
-	    LogAmounts LAmount = new LogAmounts(item);
-	    LAmount.setCount(count);
-	    LAmount.setNewEntry(false);
-	    LAmount.addMoney(money);
-	    LAmount.addExp(exp);
-	    this.amountMap.put(item, LAmount);
-	} else {
-	    LogAmounts LAmount = this.amountMap.get(item);
-	    LAmount.setCount(count);
-	    LAmount.setNewEntry(false);
-	    LAmount.addMoney(money);
-	    LAmount.addExp(exp);
-	    this.amountMap.put(item, LAmount);
-	}
+    public void add(String item, int count, HashMap<CurrencyType, Double> amounts) {
+	LogAmounts LAmount = this.amountMap.get(item);
+	if (LAmount == null)
+	    LAmount = new LogAmounts(item);
+	LAmount.setCount(count);
+	LAmount.add(amounts);
+	LAmount.setNewEntry(false);
+	this.amountMap.put(item, LAmount);
     }
 
     public void setDate() {
@@ -70,15 +55,9 @@ public final class Log {
 	return 0;
     }
 
-    public double getMoney(String item) {
+    public double get(String item, CurrencyType type) {
 	if (this.amountMap.containsKey(item))
-	    return this.amountMap.get(item).getMoney();
-	return 0;
-    }
-
-    public double getExp(String item) {
-	if (this.amountMap.containsKey(item))
-	    return this.amountMap.get(item).getExp();
+	    return this.amountMap.get(item).get(type);
 	return 0;
     }
 }

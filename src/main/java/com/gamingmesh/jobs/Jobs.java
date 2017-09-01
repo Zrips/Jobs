@@ -557,8 +557,7 @@ public class Jobs extends JavaPlugin {
 		e.printStackTrace();
 	    }
 	}
-	
-	
+
 	dao.getMap().clear();
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + Jobs.getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
 	    / 1000d) * 100) / 100D));
@@ -946,8 +945,11 @@ public class Jobs extends JavaPlugin {
 
 		Jobs.getEconomy().pay(jPlayer, income, pointAmount, 0.0);
 
-		if (GconfigManager.LoggingUse)
-		    loging.recordToLog(jPlayer, info, income, 0);
+		if (GconfigManager.LoggingUse) {
+		    HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+		    amounts.put(CurrencyType.MONEY, income);
+		    loging.recordToLog(jPlayer, info, amounts);
+		}
 	    }
 
 	} else {
@@ -1078,8 +1080,13 @@ public class Jobs extends JavaPlugin {
 		economy.pay(jPlayer, income, pointAmount, expAmount);
 		int oldLevel = prog.getLevel();
 
-		if (GconfigManager.LoggingUse)
-		    loging.recordToLog(jPlayer, info, income, expAmount);
+		if (GconfigManager.LoggingUse) {
+		    HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+		    amounts.put(CurrencyType.MONEY, income);
+		    amounts.put(CurrencyType.EXP, expAmount);
+		    amounts.put(CurrencyType.POINTS, pointAmount);
+		    loging.recordToLog(jPlayer, info, amounts);
+		}
 
 		if (prog.addExperience(expAmount))
 		    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
@@ -1099,10 +1106,10 @@ public class Jobs extends JavaPlugin {
 	    return true;
 
 	if (info.getType() == ActionType.BREAK) {
-        if(block.hasMetadata("JobsExploit")){
-            //player.sendMessage("This block is protected using Rukes' system!");
-            return false;
-        }
+	    if (block.hasMetadata("JobsExploit")) {
+		//player.sendMessage("This block is protected using Rukes' system!");
+		return false;
+	    }
 	    BlockProtection bp = getBpManager().getBp(block.getLocation());
 	    if (bp != null) {
 		Long time = bp.getTime();
@@ -1228,8 +1235,13 @@ public class Jobs extends JavaPlugin {
 
 	int oldLevel = prog.getLevel();
 
-	if (GconfigManager.LoggingUse)
-	    loging.recordToLog(jPlayer, info, payment.getAmount(), payment.getExp());
+	if (GconfigManager.LoggingUse) {
+	    HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+	    amounts.put(CurrencyType.MONEY, payment.getAmount());
+	    amounts.put(CurrencyType.EXP, payment.getExp());
+	    amounts.put(CurrencyType.POINTS, payment.getPoints());
+	    loging.recordToLog(jPlayer, info, amounts);
+	}
 
 	if (prog.addExperience(payment.getExp()))
 	    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);

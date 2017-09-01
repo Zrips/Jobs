@@ -211,7 +211,8 @@ public abstract class JobsDAO {
 	itemname("text", TablesFieldsType.text),
 	count("int", TablesFieldsType.number),
 	money("double", TablesFieldsType.decimal),
-	exp("double", TablesFieldsType.decimal);
+	exp("double", TablesFieldsType.decimal),
+	points("double", TablesFieldsType.decimal);
 
 	private String type;
 	private TablesFieldsType fieldType;
@@ -703,7 +704,12 @@ public abstract class JobsDAO {
 		if (log == null)
 		    log = new Log(action);
 
-		log.add(res.getString("itemname"), res.getInt("count"), res.getDouble("money"), res.getDouble("exp"));
+		HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+		amounts.put(CurrencyType.MONEY, res.getDouble("money"));
+		amounts.put(CurrencyType.EXP, res.getDouble("exp"));
+		amounts.put(CurrencyType.POINTS, res.getDouble("points"));
+
+		log.add(res.getString("itemname"), res.getInt("count"), amounts);
 
 		m.put(action, log);
 		map.put(id, m);
@@ -1494,8 +1500,13 @@ public abstract class JobsDAO {
 	PreparedStatement prest1 = null;
 	PreparedStatement prest2 = null;
 	try {
+
+	    conn.setAutoCommit(false);
+
 	    prest1 = conn.prepareStatement("UPDATE `" + prefix
-		+ "log` SET `count` = ?, `money` = ?, `exp` = ? WHERE `userid` = ? AND `time` = ? AND `action` = ? AND `itemname` = ?;");
+		+ "log` SET `count` = ?, `money` = ?, `exp` = ?, `points` = ? WHERE `userid` = ? AND `time` = ? AND `action` = ? AND `itemname` = ?;");
+
+	    boolean added = false;
 	    for (Entry<String, Log> l : player.getLog().entrySet()) {
 		Log log = l.getValue();
 		for (Entry<String, LogAmounts> one : log.getAmountList().entrySet()) {
@@ -1503,25 +1514,30 @@ public abstract class JobsDAO {
 			continue;
 
 		    prest1.setInt(1, one.getValue().getCount());
-		    prest1.setDouble(2, one.getValue().getMoney());
-		    prest1.setDouble(3, one.getValue().getExp());
+		    prest1.setDouble(2, one.getValue().get(CurrencyType.MONEY));
+		    prest1.setDouble(3, one.getValue().get(CurrencyType.EXP));
+		    prest1.setDouble(4, one.getValue().get(CurrencyType.POINTS));
 
-		    prest1.setInt(4, player.getUserId());
-		    prest1.setInt(5, log.getDate());
-		    prest1.setString(6, log.getActionType());
-		    prest1.setString(7, one.getKey());
-		    prest1.execute();
+		    prest1.setInt(5, player.getUserId());
+		    prest1.setInt(6, log.getDate());
+		    prest1.setString(7, log.getActionType());
+		    prest1.setString(8, one.getKey());
+		    prest1.addBatch();
+		    added = true;
 		}
 	    }
+	    if (added) {
+		prest1.execute();
+		conn.commit();
+	    }
+	    added = false;
 	    prest2 = conn.prepareStatement("INSERT INTO `" + prefix
-		+ "log` (`userid`, `time`, `action`, `itemname`, `count`, `money`, `exp`) VALUES (?, ?, ?, ?, ?, ?, ?);");
+		+ "log` (`userid`, `time`, `action`, `itemname`, `count`, `money`, `exp`, `points`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 	    for (Entry<String, Log> l : player.getLog().entrySet()) {
 		Log log = l.getValue();
 		for (Entry<String, LogAmounts> one : log.getAmountList().entrySet()) {
-
 		    if (!one.getValue().isNewEntry())
 			continue;
-
 		    one.getValue().setNewEntry(false);
 
 		    prest2.setInt(1, player.getUserId());
@@ -1529,17 +1545,22 @@ public abstract class JobsDAO {
 		    prest2.setString(3, log.getActionType());
 		    prest2.setString(4, one.getKey());
 		    prest2.setInt(5, one.getValue().getCount());
-		    prest2.setDouble(6, one.getValue().getMoney());
-		    prest2.setDouble(7, one.getValue().getExp());
-		    prest2.execute();
+		    prest2.setDouble(6, one.getValue().get(CurrencyType.MONEY));
+		    prest2.setDouble(7, one.getValue().get(CurrencyType.EXP));
+		    prest2.setDouble(8, one.getValue().get(CurrencyType.POINTS));
+		    prest2.addBatch();
+		    added = true;
 		}
 	    }
+	    if (added) {
+		prest2.execute();
+		conn.commit();
+	    }
+	    conn.setAutoCommit(true);
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    close(prest1);
 	    close(prest2);
-	    drop(DBTables.LogTable.getTableName());
-	    createDefaultTable(DBTables.LogTable);
 	} finally {
 	    close(prest1);
 	    close(prest2);
@@ -1563,7 +1584,13 @@ public abstract class JobsDAO {
 	    prest.setInt(2, time);
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		Jobs.getLoging().loadToLog(player, res.getString("action"), res.getString("itemname"), res.getInt("count"), res.getDouble("money"), res.getDouble("exp"));
+
+		HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+		amounts.put(CurrencyType.MONEY, res.getDouble("money"));
+		amounts.put(CurrencyType.EXP, res.getDouble("exp"));
+		amounts.put(CurrencyType.POINTS, res.getDouble("points"));
+
+		Jobs.getLoging().loadToLog(player, res.getString("action"), res.getString("itemname"), res.getInt("count"), amounts);
 	    }
 	} catch (Exception e) {
 	    close(res);

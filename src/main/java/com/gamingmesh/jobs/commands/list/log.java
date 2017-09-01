@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.LogAmounts;
@@ -61,7 +62,7 @@ public class log implements Cmd {
 	    Log one = l.getValue();
 	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
 	    for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
-		unsortMap.put(oneMap.getKey(), oneMap.getValue().getMoney());
+		unsortMap.put(oneMap.getKey(), oneMap.getValue().get(CurrencyType.MONEY));
 	    }
 	}
 
@@ -76,13 +77,27 @@ public class log implements Cmd {
 		for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
 		    if (oneMap.getKey().equalsIgnoreCase(oneSorted.getKey())) {
 			count++;
-			sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.list",
+
+			String moneyS = "";
+			if (oneMap.getValue().get(CurrencyType.MONEY) != 0D)
+			    moneyS = Jobs.getLanguage().getMessage("command.log.output.money", "%amount%", oneMap.getValue().get(CurrencyType.MONEY));
+
+			String expS = "";
+			if (oneMap.getValue().get(CurrencyType.EXP) != 0D)
+			    expS = Jobs.getLanguage().getMessage("command.log.output.exp", "%amount%", oneMap.getValue().get(CurrencyType.EXP));
+
+			String pointsS = "";
+			if (oneMap.getValue().get(CurrencyType.POINTS) != 0D)
+			    pointsS = Jobs.getLanguage().getMessage("command.log.output.points", "%amount%", oneMap.getValue().get(CurrencyType.POINTS));
+
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.ls",
 			    "%number%", count,
 			    "%action%", one.getActionType(),
 			    "%item%", oneMap.getValue().getItemName().replace(":0", "").replace("_", " ").toLowerCase(),
 			    "%qty%", oneMap.getValue().getCount(),
-			    "%money%", oneMap.getValue().getMoney(),
-			    "%exp%", oneMap.getValue().getExp()));
+			    "%money%", moneyS,
+			    "%exp%", expS,
+			    "%points%", pointsS));
 			break;
 		    }
 		}
