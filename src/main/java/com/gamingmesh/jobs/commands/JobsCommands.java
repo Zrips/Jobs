@@ -87,7 +87,7 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
-	if (!hasCommandPermission(sender, cmd)) {	    
+	if (!hasCommandPermission(sender, cmd)) {
 	    if (sender instanceof Player) {
 		RawMessage rm = new RawMessage();
 		rm.add(Jobs.getLanguage().getMessage("general.error.permission"), "&2" + label + ".command." + cmd);
@@ -98,7 +98,7 @@ public class JobsCommands implements CommandExecutor {
 		Jobs.sendMessage(sender, Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
-	
+
 	String[] myArgs = reduceArgs(args);
 	if (myArgs.length > 0) {
 	    if (myArgs[myArgs.length - 1].equals("?")) {
@@ -110,7 +110,7 @@ public class JobsCommands implements CommandExecutor {
 //	if (cmdClass == null) {
 //	    return help(sender, 1);
 //	}
-	
+
 	boolean back = cmdClass.perform(plugin, sender, myArgs);
 	if (back)
 	    return true;
@@ -581,7 +581,7 @@ public class JobsCommands implements CommandExecutor {
 	String message = Jobs.getLanguage().getMessage("command.stats.output",
 	    "%joblevel%", jobProg.getLevel(),
 	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE,
-	    "%jobxp%",Math.round(jobProg.getExperience() * 100.0) / 100.0,
+	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience());
 	return " " + jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) + " " + message;
     }
@@ -614,12 +614,13 @@ public class JobsCommands implements CommandExecutor {
      * @return the message
      */
     public String jobStatsMessageArchive(JobsPlayer jPlayer, JobProgression jobProg) {
-	String message = Jobs.getLanguage().getMessage("command.archive.feedback",
-	    "%joblevel%", jobProg.getLevel(),
-	    "%leftjoblevel%", jPlayer.getLevelAfterRejoin(jobProg),
+	int level = jPlayer.getLevelAfterRejoin(jobProg);
+	int exp = jPlayer.getExpAfterRejoin(jobProg, jPlayer.getLevelAfterRejoin(jobProg));
+	String message = Jobs.getLanguage().getMessage("command.stats.output",
+	    "%joblevel%", level,
 	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE,
-	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
-	    "%jobmaxxp%", jobProg.getMaxExperience());
-	return " " + jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) + " " + message;
+	    "%jobxp%", Math.round(exp * 100.0) / 100.0,
+	    "%jobmaxxp%", jobProg.getMaxExperience(level));
+	return " " + jobProgressMessage(jobProg.getMaxExperience(level), exp) + " " + message;
     }
 }

@@ -49,8 +49,8 @@ public class archive implements Cmd {
 	    if (jobInfo.canRejoin())
 		rm.add(ChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), "Click to rejoin this job", "jobs join " + jobInfo.getJob().getName());
 	    else
-		rm.add(ChatColor.RED + "-" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), "You cant join, need to wait " + (TimeManage.to24hourShort(jobInfo.getLeftOn() + jobInfo
-		    .getJob().getRejoinCd() - System.currentTimeMillis())));
+		rm.add(ChatColor.RED + "-" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", jobInfo
+		    .getRejoinTimeMessage()));
 	    rm.show(sender);
 	}
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));

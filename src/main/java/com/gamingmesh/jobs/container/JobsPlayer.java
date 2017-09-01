@@ -388,6 +388,7 @@ public class JobsPlayer {
 	    JobProgression archived = this.getArchivedJobProgression(job);
 	    if (archived != null) {
 		level = getLevelAfterRejoin(archived);
+		exp = getExpAfterRejoin(archived, level);
 		Jobs.getJobsDAO().deleteArchive(this, job);
 	    }
 
@@ -423,6 +424,20 @@ public class JobsPlayer {
 	    level = jp.getLevel();
 
 	return level;
+    }
+
+    public int getExpAfterRejoin(JobProgression jp, int level) {
+	if (jp == null)
+	    return 1;
+	Integer max = jp.getMaxExperience(level);
+	Double exp = jp.getExperience();
+	if (exp > max)
+	    exp = max.doubleValue();
+
+	if (exp > 0) {
+	    exp = (exp - (exp * (Jobs.getGCManager().levelLossPercentage / 100.0)));
+	}
+	return exp.intValue();
     }
 
     /**

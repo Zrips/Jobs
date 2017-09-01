@@ -65,6 +65,8 @@ Jobs:
     #   joblevel - the level the player has attained in the job.
     # NOTE: Please take care of the brackets when modifying this equation.
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    # Defines how often in seconds player can rejoin this job. Can be bypassed with jobs.rejoinbypass
+    rejoinCooldown: 10
     # GUI icon information when using GUI function
     Gui:
     # id of block
