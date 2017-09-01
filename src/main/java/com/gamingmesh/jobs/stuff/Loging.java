@@ -26,9 +26,11 @@ public class Loging {
 	    jPlayer.getLog().clear();
 	}
 	Log log = logList.get(ActionName);
-	if (log == null)
+	if (log == null){
 	    log = new Log(ActionName);
+	}
 	log.add(item, amount, expAmount);
+	logList.put(ActionName, log);
     }
 
     public void loadToLog(JobsPlayer jPlayer, String ActionName, String item, int count, double money, double expAmount) {
