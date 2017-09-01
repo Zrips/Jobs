@@ -786,10 +786,14 @@ public abstract class JobsDAO {
 	    prestt.setString(2, playerName);
 	    prestt.setLong(3, System.currentTimeMillis());
 	    prestt.executeUpdate();
+
 	    res2 = prestt.getGeneratedKeys();
 	    int id = 0;
 	    if (res2.next())
 		id = res2.getInt(1);
+
+	    Debug.D("got id " + id);
+
 	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, id, uuid, System.currentTimeMillis()));
 	} catch (SQLException e) {
 	    e.printStackTrace();
