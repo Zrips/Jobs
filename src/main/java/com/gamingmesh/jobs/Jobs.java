@@ -95,7 +95,6 @@ import com.gamingmesh.jobs.stuff.RawMessage;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.stuff.VersionChecker;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
