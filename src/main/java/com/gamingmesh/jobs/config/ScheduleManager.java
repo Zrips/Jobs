@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.gamingmesh.jobs.api.JobsScheduleStartEvent;
+import com.gamingmesh.jobs.api.JobsScheduleStopEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -83,6 +85,11 @@ public class ScheduleManager {
 		.isStarted()) || !one.isNextDay() && (Current >= From && Current < Until)) && (days.contains(CurrentDayName) || days.contains("all")) && !one
 		    .isStarted()) {
 
+			JobsScheduleStartEvent event = new JobsScheduleStartEvent(one);
+			Bukkit.getPluginManager().callEvent(event);
+			if(event.isCancelled()){
+				continue;
+			}
 		if (one.isBroadcastOnStart())
 		    if (one.GetMessageOnStart().size() == 0)
 			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStarted"));
@@ -102,6 +109,11 @@ public class ScheduleManager {
 		break;
 	    } else if (((one.isNextDay() && Current > one.GetNextUntil() && Current < one.GetFrom() && !one.isStoped()) || !one.isNextDay() && Current > Until
 		&& ((days.contains(CurrentDayName)) || days.contains("all"))) && !one.isStoped()) {
+			JobsScheduleStopEvent event = new JobsScheduleStopEvent(one);
+			Bukkit.getPluginManager().callEvent(event);
+			if(event.isCancelled()){
+				continue;
+			}
 		if (one.isBroadcastOnStop())
 		    if (one.GetMessageOnStop().size() == 0)
 			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStoped"));
