@@ -95,7 +95,6 @@ import com.gamingmesh.jobs.stuff.RawMessage;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.stuff.VersionChecker;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -879,7 +878,7 @@ public class Jobs extends JavaPlugin {
 	int numjobs = progression.size();
 	// no job
 
-	if (!isBpOk(jPlayer.getPlayer(), info, block, true))
+	if (!isBpOk(jPlayer, info, block, true))
 	    return;
 
 	if (numjobs == 0) {
@@ -894,62 +893,62 @@ public class Jobs extends JavaPlugin {
 	    Double income = jobinfo.getIncome(1, numjobs);
 	    Double pointAmount = jobinfo.getPoints(1, numjobs);
 
-	    if (income != 0D || pointAmount != 0D) {
+	    if (income == 0D && pointAmount == 0D)
+		return;
 
-		Boost boost = pManager.getFinalBonus(jPlayer, Jobs.getNoneJob());
+	    Boost boost = pManager.getFinalBonus(jPlayer, Jobs.getNoneJob());
 
-		// Calculate income
+	    // Calculate income
 
-		if (income != 0D) {
-		    income = income + (income * boost.getFinal(CurrencyType.MONEY));
-		    if (GconfigManager.useMinimumOveralPayment && income > 0) {
-			double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
-			if (income < maxLimit) {
-			    income = maxLimit;
-			}
+	    if (income != 0D) {
+		income = income + (income * boost.getFinal(CurrencyType.MONEY));
+		if (GconfigManager.useMinimumOveralPayment && income > 0) {
+		    double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
+		    if (income < maxLimit) {
+			income = maxLimit;
 		    }
 		}
+	    }
 
-		// Calculate points
+	    // Calculate points
 
-		if (pointAmount != 0D) {
-		    pointAmount = pointAmount + (pointAmount * boost.getFinal(CurrencyType.POINTS));
-		    if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
-			double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
-			if (pointAmount < maxLimit) {
-			    pointAmount = maxLimit;
-			}
+	    if (pointAmount != 0D) {
+		pointAmount = pointAmount + (pointAmount * boost.getFinal(CurrencyType.POINTS));
+		if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
+		    double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
+		    if (pointAmount < maxLimit) {
+			pointAmount = maxLimit;
 		    }
 		}
+	    }
 
-		if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
-		    income = 0D;
-		    if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
-			pointAmount = 0D;
-		}
-
-		if (!jPlayer.isUnderLimit(CurrencyType.POINTS, pointAmount)) {
+	    if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
+		income = 0D;
+		if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
 		    pointAmount = 0D;
-		    if (GconfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.MONEY))
-			income = 0D;
-		}
+	    }
 
-		if (income == 0D && pointAmount == 0D)
-		    return;
+	    if (!jPlayer.isUnderLimit(CurrencyType.POINTS, pointAmount)) {
+		pointAmount = 0D;
+		if (GconfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.MONEY))
+		    income = 0D;
+	    }
 
-		if (info.getType() == ActionType.BREAK && block != null)
-		    Jobs.getBpManager().remove(block);
+	    if (income == 0D && pointAmount == 0D)
+		return;
 
-		if (pointAmount != 0D)
-		    jPlayer.setSaved(false);
+	    if (info.getType() == ActionType.BREAK && block != null)
+		Jobs.getBpManager().remove(block);
 
-		Jobs.getEconomy().pay(jPlayer, income, pointAmount, 0.0);
+	    if (pointAmount != 0D)
+		jPlayer.setSaved(false);
 
-		if (GconfigManager.LoggingUse) {
-		    HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
-		    amounts.put(CurrencyType.MONEY, income);
-		    loging.recordToLog(jPlayer, info, amounts);
-		}
+	    Jobs.getEconomy().pay(jPlayer, income, pointAmount, 0.0);
+
+	    if (GconfigManager.LoggingUse) {
+		HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+		amounts.put(CurrencyType.MONEY, income);
+		loging.recordToLog(jPlayer, info, amounts);
 	    }
 
 	} else {
@@ -1101,7 +1100,7 @@ public class Jobs extends JavaPlugin {
 	}
     }
 
-    private static boolean isBpOk(Player player, ActionInfo info, Block block, boolean inform) {
+    private static boolean isBpOk(JobsPlayer player, ActionInfo info, Block block, boolean inform) {
 	if (block == null || !getGCManager().useBlockProtection)
 	    return true;
 
@@ -1126,7 +1125,8 @@ public class Jobs extends JavaPlugin {
 		if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
 		    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 		    if (inform) {
-			getActionBar().send(player, getLanguage().getMessage("message.blocktimer", "[time]", sec));
+			if (player.canGetPaid(info))
+			    getActionBar().send(player.getPlayer(), getLanguage().getMessage("message.blocktimer", "[time]", sec));
 		    }
 		    return false;
 		}
@@ -1151,7 +1151,8 @@ public class Jobs extends JavaPlugin {
 		    if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 			if (inform) {
-			    getActionBar().send(player, getLanguage().getMessage("message.blocktimer", "[time]", sec));
+			    if (player.canGetPaid(info))
+				getActionBar().send(player.getPlayer(), getLanguage().getMessage("message.blocktimer", "[time]", sec));
 			}
 			getBpManager().add(block, cd);
 			return false;

@@ -514,8 +514,6 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
-	Debug.D("Crafted item " + resultStack.getType().name() + "  " + resultStack.getAmount());
-
 	// If we need to pay only by each craft action we will skip calculation how much was crafted
 	if (!Jobs.getGCManager().PayForEachCraft) {
 	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())

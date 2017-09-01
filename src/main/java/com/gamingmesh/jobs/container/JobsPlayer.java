@@ -766,4 +766,36 @@ public class JobsPlayer {
     public void setLastPermissionUpdate(Long lastPermissionUpdate) {
 	this.lastPermissionUpdate = lastPermissionUpdate;
     }
+
+    public boolean canGetPaid(ActionInfo info) {
+
+	List<JobProgression> progression = getJobProgression();
+	int numjobs = progression.size();
+
+	if (numjobs == 0) {
+	    if (Jobs.getNoneJob() == null)
+		return false;
+	    JobInfo jobinfo = Jobs.getNoneJob().getJobInfo(info, 1);
+	    if (jobinfo == null)
+		return false;
+	    Double income = jobinfo.getIncome(1, numjobs);
+	    Double points = jobinfo.getPoints(1, numjobs);
+	    if (income == 0D && points == 0D)
+		return false;
+	}
+
+	for (JobProgression prog : progression) {
+	    int level = prog.getLevel();
+	    JobInfo jobinfo = prog.getJob().getJobInfo(info, level);
+	    if (jobinfo == null)
+		continue;
+	    Double income = jobinfo.getIncome(level, numjobs);
+	    Double pointAmount = jobinfo.getPoints(level, numjobs);
+	    Double expAmount = jobinfo.getExperience(level, numjobs);
+	    if (income != 0D || pointAmount != 0D || expAmount != 0D)
+		return true;
+	}
+
+	return false;
+    }
 }
