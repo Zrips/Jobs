@@ -468,6 +468,7 @@ Jobs:
     description: Earns money felling and planting trees
     ChatColour: GREEN
     chat-display: full
+    max-level: 200
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -535,14 +536,13 @@ Jobs:
         income: 10.0
         points: 10.0
         experience: 10.0
-    max-level: 200
   Miner:
     fullname: Miner
     shortname: M
     description: Earns money mining minerals and ores.
     ChatColour: DARK_GRAY
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -680,14 +680,13 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Builder:
     fullname: Builder
     shortname: B
     description: Earns money for building structures.
     ChatColour: WHITE
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -1003,14 +1002,13 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Digger:
     fullname: Digger
     shortname: D
     description: Earns money for terraforming the world.
     ChatColour: GOLD
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -1059,14 +1057,13 @@ Jobs:
         income: 10.0
         points: 10.0
         experience: 10.0
-    max-level: 200
   Farmer:
     fullname: Farmer
     shortname: Fa
     description: Earns money farming crops.
     ChatColour: BLUE
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -1275,14 +1272,13 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Hunter:
     fullname: Hunter
     shortname: H
     description: Earns money killing animals and monsters.
     ChatColour: RED
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -1410,14 +1406,13 @@ Jobs:
         income: 9.0
         points: 9
         experience: 7.5
-    max-level: 200
   Explorer:
     fullname: Explorer
     shortname: Ex
     description: Earns money from exploring map.
     ChatColour: AQUA
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -1452,14 +1447,13 @@ Jobs:
       Player:
         income: 7.5
         experience: 7.5
-    max-level: 200
   Crafter:
     fullname: Crafter
     shortname: Cr
     description: Earns money from crafting items.
     ChatColour: RED
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -1700,14 +1694,13 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Fisherman:
     fullname: Fisherman
     shortname: Fi
     description: Earns money from fishing.
     ChatColour: AQUA
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -1739,14 +1732,13 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Weaponsmith:
     fullname: Weaponsmith
     shortname: W
     description: Earns money from crafting and repairing weapons.
     ChatColour: DARK_PURPLE
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -1875,13 +1867,13 @@ Jobs:
         income: 7.0
         points: 7.0
         experience: 20
-    max-level: 200
   Brewer:
     fullname: Brewer
     shortname: Br
     description: Earns money brewing potions.
     ChatColour: LIGHT_PURPLE
     chat-display: full
+    max-level: 200
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -1943,14 +1935,13 @@ Jobs:
         income: 18.0
         points: 18.0
         experience: 18.0
-    max-level: 200
   Enchanter:
     fullname: Enchanter
     shortname: E
     description: Earns money enchanting weapons.
     ChatColour: DARK_BLUE
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -2369,7 +2360,6 @@ Jobs:
         income: 30.0
         points: 30.0
         experience: 100.0
-    max-level: 200
   None:
     fullname: None
     shortname: N

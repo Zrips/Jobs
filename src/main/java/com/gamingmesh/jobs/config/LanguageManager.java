@@ -195,8 +195,8 @@ public class LanguageManager {
 	    c.get("command.editjobs.help.list.materialRemove", "&c[X]");
 	    c.get("command.editjobs.help.list.materialAdd", "      -> &e[&2+&e]");
 	    c.get("command.editjobs.help.list.money", "        -> &eMoney: &6%amount%");
-	    c.get("command.editjobs.help.list.exp", "        -> &ePoints: &6%amount%");
-	    c.get("command.editjobs.help.list.points", "        -> &eExp: &6%amount%");
+	    c.get("command.editjobs.help.list.exp", "        -> &eExp: &6%amount%");
+	    c.get("command.editjobs.help.list.points", "        -> &ePoints: &6%amount%");
 	    c.get("command.editjobs.help.modify.newValue", "&eEnter new value");
 	    c.get("command.editjobs.help.modify.enter", "&eEnter new name or press ");
 	    c.get("command.editjobs.help.modify.hand", "&6HAND ");

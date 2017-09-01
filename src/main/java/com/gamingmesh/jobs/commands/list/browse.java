@@ -28,7 +28,7 @@ public class browse implements Cmd {
 	    builder.append("  ");
 	    builder.append(job.getChatColor().toString());
 	    builder.append(job.getName());
-	    if (job.getMaxLevel() > 0) {
+	    if (job.getMaxLevel(sender) > 0) {
 		builder.append(ChatColor.WHITE.toString());
 		builder.append(Jobs.getLanguage().getMessage("command.info.help.max"));
 		builder.append(job.getMaxLevel(sender));
