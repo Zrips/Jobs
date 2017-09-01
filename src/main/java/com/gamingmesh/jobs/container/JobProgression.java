@@ -20,12 +20,15 @@ package com.gamingmesh.jobs.container;
 
 import java.util.HashMap;
 
+import com.gamingmesh.jobs.stuff.TimeManage;
+
 public class JobProgression {
     private Job job;
     private JobsPlayer jPlayer;
     private double experience;
     private int level;
     private transient int maxExperience = -1;
+    private Long leftOn = null;
 
     public JobProgression(Job job, JobsPlayer jPlayer, int level, double experience) {
 	this.job = job;
@@ -223,4 +226,29 @@ public class JobProgression {
 	reloadMaxExperience();
 	return checkLevelUp();
     }
+
+    public Long getLeftOn() {
+	return leftOn;
+    }
+
+    public JobProgression setLeftOn(Long leftOn) {
+	this.leftOn = leftOn;
+	return this;
+    }
+
+    public boolean canRejoin() {
+	if (this.leftOn == null)
+	    return true;
+	if (this.leftOn + this.getJob().getRejoinCd() < System.currentTimeMillis())
+	    return true;
+	return false;
+    }
+
+    public String getRejoinTimeMessage() {
+	if (leftOn == null)
+	    return "";
+	String msg = (TimeManage.to24hourShort(getLeftOn() + getJob().getRejoinCd() - System.currentTimeMillis()));
+	return msg;
+    }
+
 }

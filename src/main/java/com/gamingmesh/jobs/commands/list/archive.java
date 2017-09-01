@@ -1,14 +1,18 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.util.List;
+import java.util.Set;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
+import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.RawMessage;
+import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class archive implements Cmd {
 
@@ -32,7 +36,7 @@ public class archive implements Cmd {
 	    return true;
 	}
 
-	List<String> AllJobs = Jobs.getJobsDAO().getJobsFromArchive(jPlayer);
+	Set<JobProgression> AllJobs = jPlayer.getArchivedJobs().getArchivedJobs();
 
 	if (AllJobs.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.archive.error.nojob"));
@@ -40,8 +44,14 @@ public class archive implements Cmd {
 	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getUserName()));
-	for (String jobInfo : AllJobs) {
-	    sender.sendMessage(Jobs.getCommandManager().jobStatsMessage(jobInfo));
+	for (JobProgression jobInfo : AllJobs) {
+	    RawMessage rm = new RawMessage();
+	    if (jobInfo.canRejoin())
+		rm.add(ChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), "Click to rejoin this job", "jobs join " + jobInfo.getJob().getName());
+	    else
+		rm.add(ChatColor.RED + "-" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), "You cant join, need to wait " + (TimeManage.to24hourShort(jobInfo.getLeftOn() + jobInfo
+		    .getJob().getRejoinCd() - System.currentTimeMillis())));
+	    rm.show(sender);
 	}
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	return true;

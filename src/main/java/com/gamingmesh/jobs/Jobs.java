@@ -66,6 +66,7 @@ import com.gamingmesh.jobs.config.TitleManager;
 import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.ArchivedJobs;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -542,18 +543,22 @@ public class Jobs extends JavaPlugin {
 	HashMap<Integer, List<JobsDAOData>> playersJobs = Jobs.getJobsDAO().getAllJobs();
 	HashMap<Integer, PlayerPoints> playersPoints = Jobs.getJobsDAO().getAllPoints();
 	HashMap<Integer, HashMap<String, Log>> playersLogs = Jobs.getJobsDAO().getAllLogs();
+	HashMap<Integer, ArchivedJobs> playersArchives = Jobs.getJobsDAO().getAllArchivedJobs();
 	Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator();
 	while (it.hasNext()) {
 	    Entry<UUID, PlayerInfo> one = it.next();
 	    try {
 		int id = one.getValue().getID();
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one.getValue(), playersJobs.get(id), playersPoints.get(id), playersLogs.get(id));
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one.getValue(), playersJobs.get(id), playersPoints.get(id), playersLogs.get(id), playersArchives.get(id));
 		if (jPlayer == null)
 		    continue;
 		Jobs.getPlayerManager().addPlayerToCache(jPlayer);
 	    } catch (Exception e) {
+		e.printStackTrace();
 	    }
 	}
+	
+	
 	dao.getMap().clear();
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + Jobs.getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
 	    / 1000d) * 100) / 100D));

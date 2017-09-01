@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -42,6 +43,7 @@ public class JobsPlayer {
     // progression of the player in each job
     public UUID playerUUID;
     public ArrayList<JobProgression> progression = new ArrayList<JobProgression>();
+    private ArchivedJobs archivedJobs = new ArchivedJobs();
 
     private PaymentData paymentLimits = null;
 
@@ -78,6 +80,18 @@ public class JobsPlayer {
 	this.userName = userName;
 	this.OffPlayer = player;
 	this.player = Bukkit.getPlayer(userName);
+    }
+
+    public ArchivedJobs getArchivedJobs() {
+	return archivedJobs;
+    }
+
+    public JobProgression getArchivedJobProgression(Job job) {
+	return archivedJobs.getArchivedJobProgression(job);
+    }
+
+    public void setArchivedJobs(ArchivedJobs archivedJob) {
+	this.archivedJobs = archivedJob;
     }
 
     public int getTotalLevels() {
@@ -370,10 +384,10 @@ public class JobsPlayer {
 	if (!isInJob(job)) {
 	    int level = 1;
 	    int exp = 0;
-	    if (Jobs.getJobsDAO().checkArchive(this, job).size() > 0) {
-		List<Integer> info = Jobs.getJobsDAO().checkArchive(this, job);
-		level = info.get(0);
-		//exp = info.get(1);
+
+	    JobProgression archived = this.getArchivedJobProgression(job);
+	    if (archived != null) {
+		level = getLevelAfterRejoin(archived);
 		Jobs.getJobsDAO().deleteArchive(this, job);
 	    }
 
@@ -386,6 +400,29 @@ public class JobsPlayer {
 	}
 	return false;
 //	}
+    }
+
+    public int getLevelAfterRejoin(JobProgression jp) {
+	if (jp == null)
+	    return 1;
+
+	int level = jp.getLevel();
+
+	level = (int) ((level - (level * (Jobs.getGCManager().levelLossPercentage / 100.0))));
+	if (level < 1)
+	    level = 1;
+
+	Job job = jp.getJob();
+	int maxLevel = 0;
+	if (havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
+	    maxLevel = job.getVipMaxLevel();
+	else
+	    maxLevel = job.getMaxLevel();
+
+	if (Jobs.getGCManager().fixAtMaxLevel && jp.getLevel() == maxLevel)
+	    level = jp.getLevel();
+
+	return level;
     }
 
     /**

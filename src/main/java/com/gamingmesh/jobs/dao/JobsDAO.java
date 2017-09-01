@@ -19,6 +19,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.ArchivedJobs;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.Convert;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -113,7 +114,8 @@ public abstract class JobsDAO {
 	userid("int", TablesFieldsType.number),
 	job("text", TablesFieldsType.text),
 	experience("int", TablesFieldsType.number),
-	level("int", TablesFieldsType.number);
+	level("int", TablesFieldsType.number),
+	left("bigint", TablesFieldsType.longNumber);
 
 	private String type;
 	private TablesFieldsType fieldType;
@@ -634,6 +636,47 @@ public abstract class JobsDAO {
 	return map;
     }
 
+    public HashMap<Integer, ArchivedJobs> getAllArchivedJobs() {
+	HashMap<Integer, ArchivedJobs> map = new HashMap<Integer, ArchivedJobs>();
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return map;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "archive`;");
+	    res = prest.executeQuery();
+	    while (res.next()) {
+
+		int id = res.getInt("userid");
+		String jobName = res.getString("job");
+		Double exp = res.getDouble("experience");
+		int lvl = res.getInt("level");
+		Long left = res.getLong("left");
+
+		Job job = Jobs.getJob(jobName);
+		if (job == null)
+		    continue;
+
+		ArchivedJobs m = map.get(id);
+		if (m == null)
+		    m = new ArchivedJobs();
+		JobProgression jp = new JobProgression(job, null, lvl, exp);
+		if (left != 0L)
+		    jp.setLeftOn(left);
+		m.addArchivedJob(jp);
+		map.put(id, m);
+	    }
+	} catch (Exception e) {
+	    close(res);
+	    close(prest);
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+	return map;
+    }
+
     public HashMap<Integer, HashMap<String, Log>> getAllLogs() {
 	HashMap<Integer, HashMap<String, Log>> map = new HashMap<Integer, HashMap<String, Log>>();
 	JobsConnection conn = getConnection();
@@ -941,24 +984,19 @@ public abstract class JobsDAO {
      * @param player - player that wishes to join the job
      * @param job - job that the player wishes to join
      */
-    public synchronized void joinJob(JobsPlayer jPlayer, Job job) {
+    public synchronized void joinJob(JobsPlayer jPlayer, JobProgression job) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
 	PreparedStatement prest = null;
 	try {
-	    int level = 1;
-	    int exp = 0;
-	    if (checkArchive(jPlayer, job).size() > 0) {
-		List<Integer> info = checkArchive(jPlayer, job);
-		level = info.get(0);
-		deleteArchive(jPlayer, job);
-	    }
+	    int level = job.getLevel();
+	    Double exp = job.getExperience();
 	    prest = conn.prepareStatement("INSERT INTO `" + prefix + "jobs` (`userid`, `job`, `level`, `experience`) VALUES (?, ?, ?, ?);");
 	    prest.setInt(1, jPlayer.getUserId());
-	    prest.setString(2, job.getName());
+	    prest.setString(2, job.getJob().getName());
 	    prest.setInt(3, level);
-	    prest.setInt(4, exp);
+	    prest.setInt(4, exp.intValue());
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1141,24 +1179,24 @@ public abstract class JobsDAO {
      * @param job - job that the player wishes to quit
      */
     public void recordToArchive(JobsPlayer jPlayer, Job job) {
+	JobProgression jp = jPlayer.getJobProgression(job);
+	if (jp == null)
+	    return;
+	jp.setLeftOn(System.currentTimeMillis());
+	jPlayer.getArchivedJobs().addArchivedJob(jp);
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
 	PreparedStatement prest = null;
 	try {
-	    int level = 1;
-	    int exp = 0;
-	    for (JobProgression progression : jPlayer.getJobProgression()) {
-		if (progression.getJob().getName().equalsIgnoreCase(job.getName())) {
-		    level = progression.getLevel();
-		    exp = (int) progression.getExperience();
-		}
-	    }
-	    prest = conn.prepareStatement("INSERT INTO `" + prefix + "archive` (`userid`, `job`, `level`, `experience`) VALUES (?, ?, ?, ?);");
+	    int level = jp.getLevel();
+	    Double exp = jp.getExperience();
+	    prest = conn.prepareStatement("INSERT INTO `" + prefix + "archive` (`userid`, `job`, `level`, `experience`, `left`) VALUES (?, ?, ?, ?, ?);");
 	    prest.setInt(1, jPlayer.getUserId());
 	    prest.setString(2, job.getName());
 	    prest.setInt(3, level);
-	    prest.setInt(4, exp);
+	    prest.setInt(4, exp.intValue());
+	    prest.setLong(5, System.currentTimeMillis());
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1167,47 +1205,46 @@ public abstract class JobsDAO {
 	}
     }
 
-    /**
-     * Check job in archive
-     * @param player - player that wishes to quit the job
-     * @param job - job that the player wishes to quit
-     */
-    public synchronized List<Integer> checkArchive(JobsPlayer jPlayer, Job job) {
-	JobsConnection conn = getConnection();
-	List<Integer> info = new ArrayList<Integer>();
-	if (conn == null)
-	    return info;
-	PreparedStatement prest = null;
-	ResultSet res = null;
-	try {
-	    prest = conn.prepareStatement("SELECT `level`, `experience` FROM `" + prefix + "archive` WHERE `userid` = ? AND `job` = ?;");
-	    prest.setInt(1, jPlayer.getUserId());
-	    prest.setString(2, job.getName());
-	    res = prest.executeQuery();
-	    if (res.next()) {
-		int level = (int) ((res.getInt(1) - (res.getInt(1) * (Jobs.getGCManager().levelLossPercentage / 100.0))));
-		if (level < 1)
-		    level = 1;
-
-		int maxLevel = 0;
-		if (jPlayer.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
-		    maxLevel = job.getVipMaxLevel();
-		else
-		    maxLevel = job.getMaxLevel();
-
-		if (Jobs.getGCManager().fixAtMaxLevel && res.getInt(1) == maxLevel)
-		    level = res.getInt(1);
-		info.add(level);
-		info.add(res.getInt(2));
-	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(res);
-	    close(prest);
-	}
-	return info;
-    }
+//    /**
+//     * Check job in archive
+//     * @param player - player that wishes to quit the job
+//     * @param job - job that the player wishes to quit
+//     */
+//    public synchronized JobProgression getOldJobProgresion(JobsPlayer jPlayer, Job job) {
+//	JobsConnection conn = getConnection();
+//	JobProgression jp = null;
+//	if (conn == null)
+//	    return jp;
+//	PreparedStatement prest = null;
+//	ResultSet res = null;
+//	try {
+//	    prest = conn.prepareStatement("SELECT `level`, `experience`, `left` FROM `" + prefix + "archive` WHERE `userid` = ? AND `job` = ?;");
+//	    prest.setInt(1, jPlayer.getUserId());
+//	    prest.setString(2, job.getName());
+//	    res = prest.executeQuery();
+//	    if (res.next()) {
+//		int level = (int) ((res.getInt(1) - (res.getInt(1) * (Jobs.getGCManager().levelLossPercentage / 100.0))));
+//		if (level < 1)
+//		    level = 1;
+//
+//		int maxLevel = 0;
+//		if (jPlayer.havePermission("jobs." + job.getName() + ".vipmaxlevel") && job.getVipMaxLevel() != 0)
+//		    maxLevel = job.getVipMaxLevel();
+//		else
+//		    maxLevel = job.getMaxLevel();
+//
+//		if (Jobs.getGCManager().fixAtMaxLevel && res.getInt(1) == maxLevel)
+//		    level = res.getInt(1);
+//		jp = new JobProgression(job, jPlayer, level, res.getInt("experience"));
+//	    }
+//	} catch (SQLException e) {
+//	    e.printStackTrace();
+//	} finally {
+//	    close(res);
+//	    close(prest);
+//	}
+//	return jp;
+//    }
 
     public List<TopList> getGlobalTopList() {
 	return getGlobalTopList(0);
@@ -1415,6 +1452,7 @@ public abstract class JobsDAO {
      * @param job - job that the player wishes to quit
      */
     public synchronized void deleteArchive(JobsPlayer jPlayer, Job job) {
+	jPlayer.getArchivedJobs().removeArchivedJob(job);
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;

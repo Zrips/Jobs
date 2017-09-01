@@ -66,6 +66,8 @@ public class Job {
     private List<String> CmdOnLeave = new ArrayList<String>();
     // Item for GUI
     private ItemStack GUIitem;
+    // Item for GUI
+    private Long rejoinCd = 0L;
 
     private int totalPlayers = -1;
     private Double bonus = null;
@@ -96,7 +98,7 @@ public class Job {
      */
     public Job(String jobName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, List<JobItems> jobItems,
-	List<JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, String bossbar) {
+	List<JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, String bossbar, Long rejoinCD) {
 	this.jobName = jobName;
 	this.jobShortName = jobShortName;
 	this.description = description;
@@ -115,6 +117,7 @@ public class Job {
 	this.CmdOnLeave = CmdOnLeave;
 	this.GUIitem = GUIitem;
 	this.bossbar = bossbar;
+	this.rejoinCd = rejoinCD;
     }
 
     public void addBoost(CurrencyType type, double Point) {
@@ -377,5 +380,13 @@ public class Job {
 
     public void setPointsEquation(Parser pointsEquation) {
 	this.pointsEquation = pointsEquation;
+    }
+
+    public Long getRejoinCd() {
+	return rejoinCd;
+    }
+
+    public void setRejoinCd(Long rejoinCd) {
+	this.rejoinCd = rejoinCd;
     }
 }

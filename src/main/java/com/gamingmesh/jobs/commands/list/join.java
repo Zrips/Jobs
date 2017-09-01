@@ -8,8 +8,10 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
+
 public class join implements Cmd {
 
     @Override
@@ -81,6 +83,14 @@ public class join implements Cmd {
 	if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(jPlayer, PlayerMaxJobs)) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
 	    return true;
+	}
+
+	JobProgression ajp = jPlayer.getArchivedJobProgression(job);
+	if (ajp != null) {
+	    if (!ajp.canRejoin()) {
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", ajp.getRejoinTimeMessage()));
+		return true;
+	    }
 	}
 
 	Jobs.getPlayerManager().joinJob(jPlayer, job);

@@ -41,6 +41,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
+import com.gamingmesh.jobs.container.ArchivedJobs;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -64,6 +65,7 @@ public class PlayerManager {
     private ConcurrentHashMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<UUID, JobsPlayer>();
     private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<String, JobsPlayer>();
     private ConcurrentHashMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<UUID, JobsPlayer>();
+
     private PointsData PointsDatabase = new PointsData();
     private final String mobSpawnerMetadata = "jobsMobSpawner";
 
@@ -281,10 +283,11 @@ public class PlayerManager {
 
     /**
      * Get the player job info for specific player
+     * @param archivedJobs 
      * @param player - the player who's job you're getting
      * @return the player job info of the player
      */
-    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points, HashMap<String, Log> logs) {
+    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points, HashMap<String, Log> logs, ArchivedJobs archivedJobs) {
 
 	if (info == null)
 	    return null;
@@ -296,7 +299,6 @@ public class PlayerManager {
 	jPlayer.setPlayerUUID(info.getUuid());
 	jPlayer.setUserId(info.getID());
 
-//	List<JobsDAOData> list = Jobs.getJobsDAO().getAllJobs(info.getName(), info.getUuid());
 	if (jobs != null)
 	    for (JobsDAOData jobdata : jobs) {
 		if (Jobs.getJob(jobdata.getJobName()) == null)
@@ -318,6 +320,18 @@ public class PlayerManager {
 
 	if (logs != null)
 	    jPlayer.setLog(logs);
+
+	if (archivedJobs != null) {
+	    ArchivedJobs aj = new ArchivedJobs();
+	    for (JobProgression one : archivedJobs.getArchivedJobs()) {
+		JobProgression jp = new JobProgression(one.getJob(), jPlayer, one.getLevel(), one.getExperience());
+		jp.reloadMaxExperience();
+		if (one.getLeftOn() != null && one.getLeftOn() != 0L)
+		    jp.setLeftOn(one.getLeftOn());
+		aj.addArchivedJob(jp);
+	    }
+	    jPlayer.setArchivedJobs(aj);
+	}
 
 	return jPlayer;
     }
@@ -342,7 +356,7 @@ public class PlayerManager {
 	if (jobsjoinevent.isCancelled())
 	    return;
 
-	Jobs.getJobsDAO().joinJob(jPlayer, job);
+	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
 	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
 	Jobs.takeSlot(job);
 	Jobs.getSignUtil().SignUpdate(job.getName());
@@ -413,7 +427,7 @@ public class PlayerManager {
 	if (!dao.quitJob(jPlayer, oldjob))
 	    return false;
 	oldjob.updateTotalPlayers();
-	dao.joinJob(jPlayer, newjob);
+	dao.joinJob(jPlayer, jPlayer.getJobProgression(newjob));
 	newjob.updateTotalPlayers();
 	jPlayer.save();
 //	}

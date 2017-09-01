@@ -194,6 +194,12 @@ public class ConfigManager {
 		maxSlots = null;
 	    }
 
+	    Long rejoinCd = jobSection.getLong("rejoinCooldown", 0L);
+	    if (rejoinCd < 0L) {
+		rejoinCd = 0L;
+	    }
+	    rejoinCd = rejoinCd * 1000L;
+
 	    String jobShortName = jobSection.getString("shortname", null);
 	    if (jobShortName == null) {
 		Jobs.getPluginLogger().warning("Job " + jobKey + " is missing the shortname property.  Skipping job!");
@@ -472,12 +478,12 @@ public class ConfigManager {
 	    }
 
 	    Job job = new Job(jobName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
-		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem, bossbar);
+		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem, bossbar, rejoinCd);
 
 	    job.setMoneyEquation(incomeEquation);
 	    job.setXpEquation(expEquation);
 	    job.setPointsEquation(pointsEquation);
-	    
+
 	    for (ActionType actionType : ActionType.values()) {
 		ConfigurationSection typeSection = jobSection.getConfigurationSection(actionType.getName());
 		ArrayList<JobInfo> jobInfo = new ArrayList<JobInfo>();

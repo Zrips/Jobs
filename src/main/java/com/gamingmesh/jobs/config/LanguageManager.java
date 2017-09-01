@@ -250,7 +250,7 @@ public class LanguageManager {
 	    c.get("command.archive.help.args", "[playername]");
 	    Jobs.getGCManager().commandArgs.put("archive", Arrays.asList("[playername]"));
 	    c.get("command.archive.error.nojob", "There is no jobs saved.");
-	    c.get("command.archive.output", "lvl %joblevel% (%getbackjoblevel%) %jobname%");
+	    c.get("command.archive.feedback", " lvl%joblevel%(%leftjoblevel%) %jobname% : %jobxp%/%jobmaxxp% xp");
 
 	    c.get("command.give.help.info", "Gives item by jobs name and item category name. Player name is optional");
 	    c.get("command.give.help.args", "[playername] [jobname] [itemname]");
@@ -335,6 +335,7 @@ public class LanguageManager {
 	    c.get("command.join.error.alreadyin", "You are already in the job %jobname%.");
 	    c.get("command.join.error.fullslots", "You cannot join the job %jobname%, there are no slots available.");
 	    c.get("command.join.error.maxjobs", "You have already joined too many jobs.");
+	    c.get("command.join.error.rejoin", "&cCan't rejoin this job. Wait [time]");
 	    c.get("command.join.success", "You have joined the job %jobname%.");
 
 	    c.get("command.leave.help.info", "Leave the selected job.");

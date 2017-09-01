@@ -579,10 +579,10 @@ public class JobsCommands implements CommandExecutor {
      */
     public String jobStatsMessage(JobProgression jobProg) {
 	String message = Jobs.getLanguage().getMessage("command.stats.output",
-	    "%joblevel%", Integer.valueOf(jobProg.getLevel()).toString(),
+	    "%joblevel%", jobProg.getLevel(),
 	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE,
-	    "%jobxp%", Double.toString(Math.round(jobProg.getExperience() * 100.0) / 100.0),
-	    "%jobmaxxp%", Integer.toString(jobProg.getMaxExperience()));
+	    "%jobxp%",Math.round(jobProg.getExperience() * 100.0) / 100.0,
+	    "%jobmaxxp%", jobProg.getMaxExperience());
 	return " " + jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) + " " + message;
     }
 
@@ -613,15 +613,13 @@ public class JobsCommands implements CommandExecutor {
      * @param jobInfo - jobinfo string line
      * @return the message
      */
-    public String jobStatsMessage(String jobInfo) {
-	String[] splited = jobInfo.split(":");
-	if (Jobs.getJob(splited[0]) == null)
-	    return "";
-	String message = Jobs.getLanguage().getMessage("command.archive.output",
-	    "%joblevel%", Integer.valueOf(splited[1]).toString(),
-	    "%getbackjoblevel%", Integer.valueOf(splited[2]).toString(),
-	    "%jobname%", Jobs.getJob(splited[0]).getChatColor() + splited[0] + ChatColor.WHITE,
-	    "%jobxp%", Double.toString(Math.round(Double.valueOf(splited[3]) * 100.0) / 100.0));
-	return message;
+    public String jobStatsMessageArchive(JobsPlayer jPlayer, JobProgression jobProg) {
+	String message = Jobs.getLanguage().getMessage("command.archive.feedback",
+	    "%joblevel%", jobProg.getLevel(),
+	    "%leftjoblevel%", jPlayer.getLevelAfterRejoin(jobProg),
+	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE,
+	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
+	    "%jobmaxxp%", jobProg.getMaxExperience());
+	return " " + jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) + " " + message;
     }
 }

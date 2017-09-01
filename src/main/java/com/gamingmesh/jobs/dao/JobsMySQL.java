@@ -195,7 +195,7 @@ public class JobsMySQL extends JobsDAO {
 	    return true;
 	} catch (SQLException e) {
 	    close(statement);
-	    e.printStackTrace();
+//	    e.printStackTrace();
 	    return false;
 	}
     }
