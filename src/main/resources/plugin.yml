@@ -1,7 +1,7 @@
 name: Jobs
 description: Jobs Plugin for the BukkitAPI
 main: com.gamingmesh.jobs.Jobs
-version: 4.0.1
+version: 4.1.0
 website: https://www.spigotmc.org/resources/jobs-reborn.4216/
 author: phrstbrn
 softdepend: [Vault, iConomy, MythicMobs, McMMO, WorldGuard, MyPet]
