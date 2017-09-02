@@ -142,7 +142,7 @@ public class GuiManager {
 		ItemStack GuiItem = job.getGuiItem();
 
 		ItemMeta meta = GuiItem.getItemMeta();
-		meta.setDisplayName(job.getChatColor()+job.getName());
+		meta.setDisplayName(job.getChatColor() + job.getName());
 		meta.setLore(Lore);
 		GuiItem.setItemMeta(meta);
 
@@ -154,12 +154,13 @@ public class GuiManager {
 
 	ItemStack filler = Jobs.getGCManager().guiFiller;
 
-	for (int y = 0; y < GuiInv.getSize(); y++) {
-	    ItemStack item = GuiInv.getItem(y);
-	    if (item == null || item.getType() == Material.AIR) {
-		GuiInv.setItem(y, filler);
+	if (filler != null && filler.getType() != Material.AIR)
+	    for (int y = 0; y < GuiInv.getSize(); y++) {
+		ItemStack item = GuiInv.getItem(y);
+		if (item == null || item.getType() == Material.AIR) {
+		    GuiInv.setItem(y, filler);
+		}
 	    }
-	}
 	return GuiInv;
     }
 
@@ -216,7 +217,7 @@ public class GuiManager {
 		    if (z == info.size() - 1)
 			continue;
 		    ItemMeta meta = GuiItem.getItemMeta();
-			meta.setDisplayName(job.getChatColor()+job.getName());
+		    meta.setDisplayName(job.getChatColor() + job.getName());
 		    meta.setLore(Lore);
 		    GuiItem.setItemMeta(meta);
 		    //GuiInv.setItem(i, GuiItem);
@@ -231,7 +232,7 @@ public class GuiManager {
 		y++;
 	    }
 	    ItemMeta meta = GuiItem.getItemMeta();
-		meta.setDisplayName(job.getChatColor()+job.getName());
+	    meta.setDisplayName(job.getChatColor() + job.getName());
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
 	    //GuiInv.setItem(i, GuiItem);
