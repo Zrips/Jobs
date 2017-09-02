@@ -35,4 +35,10 @@ public class GiveItem {
 	player.getPlayer().updateInventory();
 	return true;
     }
+
+    public static boolean GiveItemForPlayer(Player player, ItemStack item) {
+	player.getInventory().addItem(item);
+	player.getPlayer().updateInventory();
+	return true;
+    }
 }

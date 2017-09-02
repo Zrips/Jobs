@@ -17,39 +17,53 @@ public class give implements Cmd {
     @JobCommand(2500)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
-	if (args.length < 1 || Jobs.getJob(args[0]) == null && Jobs.getJob(args[1]) == null) {
+	Player player = null;
+	Job job = null;
+	String itemName = null;
+
+	for (String one : args) {
+	    if (player == null) {
+		player = Bukkit.getPlayer(one);
+		if (player != null)
+		    continue;
+	    }
+
+	    if (job == null) {
+		job = Jobs.getJob(one);
+		if (job != null)
+		    continue;
+	    }
+	    itemName = one;
+	}
+
+	if (player == null && sender instanceof Player)
+	    player = (Player) sender;
+
+	if (player == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.notonline", "%playername%", args[0]));
+	    return true;
+	}
+
+	if (job == null || itemName == null) {
 	    Jobs.getCommandManager().sendUsage(sender, "give");
 	    return true;
 	}
 
-	if (args.length == 2 && sender instanceof Player) {
-	    Job job = Jobs.getJob(args[0]);
-	    for (JobItems item : job.getItems()) {
-		if (item.getNode().equalsIgnoreCase(args[1])) {
-		    GiveItem.GiveItemForPlayer((Player) sender, item.getId(), 0, 1, item.getName(), item.getLore(), item.getEnchants());
-		    return true;
-		}
+	JobItems jItem = null;
+
+	for (JobItems item : job.getItems()) {
+	    if (item.getNode().equalsIgnoreCase(itemName)) {
+		jItem = item;
+		break;
 	    }
+	}
+
+	if (jItem == null || jItem.getItemStack(player) == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.noitem"));
-	    return true;
-	} else if (args.length == 3) {
-	    Job job = Jobs.getJob(args[1]);
-	    Player player = Bukkit.getPlayer(args[0]);
-	    if (player == null) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.notonline", "%playername%", args[0]));
-		return true;
-	    }
-	    for (JobItems item : job.getItems()) {
-		if (item.getNode().equalsIgnoreCase(args[2])) {
-		    GiveItem.GiveItemForPlayer(player, item.getId(), 0, 1, item.getName(), item.getLore(), item.getEnchants());
-		    return true;
-		}
-	    }
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.noitem"));
-	    return true;
-	} else {
-	    Jobs.getCommandManager().sendUsage(sender, "give");
 	    return true;
 	}
+	
+	GiveItem.GiveItemForPlayer(player, jItem.getItemStack(player));
+	return true;
     }
 }

@@ -18,10 +18,17 @@
 
 package com.gamingmesh.jobs.container;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class JobItems {
     private String node;
@@ -46,6 +53,31 @@ public class JobItems {
 
     public String getNode() {
 	return this.node;
+    }
+
+    public ItemStack getItemStack(Player player) {
+	try {
+	    ItemStack item = new ItemStack(Material.getMaterial(id), amount, (short) data);
+	    ItemMeta meta = item.getItemMeta();
+	    if (this.name != null)
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+	    if (lore != null) {
+		List<String> TranslatedLore = new ArrayList<String>();
+		for (String oneLore : lore) {
+		    TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player.getName())));
+		}
+		meta.setLore(TranslatedLore);
+	    }
+	    if (enchants != null)
+		for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
+		    meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
+		}
+	    item.setItemMeta(meta);
+	    return item;
+	} catch (Exception e) {
+
+	}
+	return null;
     }
 
     public int getId() {
