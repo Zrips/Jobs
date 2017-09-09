@@ -19,7 +19,7 @@
 package com.gamingmesh.jobs.container;
 
 public enum DisplayMethod {
-	FULL("full"), JOB("job"), TITLE("title"), NONE("none"), SHORT_FULL("shortfull"), SHORT_JOB("shortjob"), SHORT_TITLE("shortitle");
+	FULL("full"), JOB("job"), TITLE("title"), NONE("none"), SHORT_FULL("shortfull"), SHORT_JOB("shortjob"), SHORT_TITLE("shorttitle");
 
 	private String name;
 
