@@ -534,7 +534,7 @@ public class JobsPaymentListener implements Listener {
 		// The items are stored in the cursor. Make sure there's enough space.
 		if (isStackSumLegal(toCraft, toStore)) {
 		    int newItemsCount = toCraft.getAmount();
-		    while (newItemsCount >= 0) {
+		    while (newItemsCount >= 1) {
 			newItemsCount--;
 			if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
 			    Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
@@ -570,7 +570,7 @@ public class JobsPaymentListener implements Listener {
 		    }
 		}
 		if (newItemsCount > 0) {
-		    while (newItemsCount >= 0) {
+		    while (newItemsCount >= 1) {
 			newItemsCount--;
 			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 		    }
