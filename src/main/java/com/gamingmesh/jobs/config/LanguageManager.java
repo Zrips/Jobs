@@ -2,9 +2,16 @@ package com.gamingmesh.jobs.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.LocaleReader;
@@ -22,26 +29,64 @@ public class LanguageManager {
 	return languages;
     }
 
+    public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
+	List<String> result = new ArrayList<String>();
+	try {
+	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
+		try {
+		    result.addAll(getClassesInSamePackageFromJar(pckgname, jarURL.toURI().getPath(), cleaner));
+		} catch (URISyntaxException e) {
+		}
+	    }
+	} catch (NullPointerException x) {
+	    throw new ClassNotFoundException(pckgname + " does not appear to be a valid package (Null pointer exception)");
+	}
+	return result;
+    }
+
+    private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath, String cleaner) {
+	JarFile jarFile = null;
+	List<String> listOfCommands = new ArrayList<String>();
+	try {
+	    jarFile = new JarFile(jarPath);
+	    Enumeration<JarEntry> en = jarFile.entries();
+	    while (en.hasMoreElements()) {
+		JarEntry entry = en.nextElement();
+		String entryName = entry.getName();
+		packageName = packageName.replace(".", "/");
+		if (entryName != null && entryName.endsWith(".yml") && entryName.startsWith(packageName)) {
+		    String name = entryName.replace(packageName, "").replace(".yml", "").replace("/", "");
+		    if (name.contains("$"))
+			name = name.split("\\$")[0];
+		    if (cleaner != null)
+			name = name.replace(cleaner, "");
+		    listOfCommands.add(name);
+		}
+	    }
+	} catch (Exception e) {
+	} finally {
+	    if (jarFile != null)
+		try {
+		    jarFile.close();
+		} catch (Exception e) {
+		}
+	}
+	return listOfCommands;
+    }
+
     /**
      * Method to load the language file configuration
      * 
      * loads from Jobs/locale/messages_en.yml
      */
     synchronized void load() {
-
-	// Just copying default language files, except en, that one will be generated
 	languages = new ArrayList<String>();
-	languages.add("cs");
-	languages.add("cz");
-	languages.add("de");
-	languages.add("es");
-	languages.add("et");
-	languages.add("fr");
-	languages.add("lt");
-	languages.add("ru");
-	languages.add("tr");
-	languages.add("zhcn");
-	languages.add("zhtw");
+
+	try {
+	    languages.addAll(getClassesFromPackage("locale", "messages_"));
+	} catch (ClassNotFoundException e1) {
+	    e1.printStackTrace();
+	}
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + lang + ".yml");

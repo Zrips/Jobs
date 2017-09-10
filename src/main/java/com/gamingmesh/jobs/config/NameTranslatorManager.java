@@ -2,9 +2,15 @@ package com.gamingmesh.jobs.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -163,6 +169,7 @@ public class NameTranslatorManager {
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + ListOfColors.size() + " custom color names!");
     }
 
+    
     synchronized void load() {
 
 	File file = new File(plugin.getDataFolder(), "TranslatableWords.yml");
@@ -172,10 +179,12 @@ public class NameTranslatorManager {
 
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<String>();
-	languages.add("fr");
-	languages.add("zhcn");
-	languages.add("zhtw");
-	languages.add("de");
+	
+	try {
+	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "Words_"));
+	} catch (ClassNotFoundException e1) {
+	    e1.printStackTrace();
+	}
 
 	for (String lang : languages) {
 	    YmlMaker langFile = new YmlMaker(plugin, "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
