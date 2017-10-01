@@ -12,6 +12,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.ExploreRespond;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class ExploreManager {
 
@@ -43,7 +44,7 @@ public class ExploreManager {
 	    return;
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loading explorer data");
 	Jobs.getJobsDAO().loadExplore();
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded explorer data");
+	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded explorer data (" + getSize() + ")");
     }
 
     public HashMap<String, ExploreRegion> getWorlds() {
@@ -92,26 +93,26 @@ public class ExploreManager {
 	eChunk.setOldChunk();
 	return eChunk.addPlayer(player);
     }
-
-    public void addChunk(String player, String worldName, int x, int z) {
-	int ChunkX = x;
-	int ChunkZ = z;
-	int RegionX = (int) Math.floor(ChunkX / 32D);
-	int RegionZ = (int) Math.floor(ChunkZ / 32D);
-	if (!worlds.containsKey(worldName)) {
-	    ExploreChunk eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
-	    eChunk.setOldChunk();
-	    ExploreRegion eRegion = new ExploreRegion(RegionX, RegionZ);
-	    eRegion.addChunk(eChunk);
-	    worlds.put(worldName, eRegion);
-	}
-	ExploreRegion eRegion = worlds.get(worldName);
-	ExploreChunk eChunk = eRegion.getChunk(ChunkX + ":" + ChunkZ);
-	if (eChunk == null) {
-	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
-	    eChunk.setOldChunk();
-	    eRegion.addChunk(eChunk);
-	} else
-	    eChunk.setOldChunk();
-    }
+//
+//    public void addChunk(String player, String worldName, int x, int z) {
+//	int ChunkX = x;
+//	int ChunkZ = z;
+//	int RegionX = (int) Math.floor(ChunkX / 32D);
+//	int RegionZ = (int) Math.floor(ChunkZ / 32D);
+//	if (!worlds.containsKey(worldName)) {
+//	    ExploreChunk eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
+//	    eChunk.setOldChunk();
+//	    ExploreRegion eRegion = new ExploreRegion(RegionX, RegionZ);
+//	    eRegion.addChunk(eChunk);
+//	    worlds.put(worldName, eRegion);
+//	}
+//	ExploreRegion eRegion = worlds.get(worldName);
+//	ExploreChunk eChunk = eRegion.getChunk(ChunkX + ":" + ChunkZ);
+//	if (eChunk == null) {
+//	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
+//	    eChunk.setOldChunk();
+//	    eRegion.addChunk(eChunk);
+//	} else
+//	    eChunk.setOldChunk();
+//    }
 }

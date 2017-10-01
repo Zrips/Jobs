@@ -1522,7 +1522,7 @@ public abstract class JobsDAO {
 		    prest1.setInt(6, log.getDate());
 		    prest1.setString(7, log.getActionType());
 		    prest1.setString(8, one.getKey());
-		    prest1.addBatch();
+//		    prest1.addBatch();
 		    added = true;
 		}
 	    }
@@ -1548,7 +1548,7 @@ public abstract class JobsDAO {
 		    prest2.setDouble(6, one.getValue().get(CurrencyType.MONEY));
 		    prest2.setDouble(7, one.getValue().get(CurrencyType.EXP));
 		    prest2.setDouble(8, one.getValue().get(CurrencyType.POINTS));
-		    prest2.addBatch();
+//		    prest2.addBatch();
 		    added = true;
 		}
 	    }

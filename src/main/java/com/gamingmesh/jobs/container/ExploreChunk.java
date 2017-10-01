@@ -1,7 +1,7 @@
 package com.gamingmesh.jobs.container;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
 
@@ -9,7 +9,7 @@ public class ExploreChunk {
 
     int x;
     int z;
-    List<String> playerNames = new ArrayList<String>();
+    Set<String> playerNames = new HashSet<String>();
     boolean isNewChunk = true;
 
     public ExploreChunk(String playerName, int x, int z) {
@@ -45,7 +45,7 @@ public class ExploreChunk {
 	return this.z;
     }
     
-    public List<String> getPlayers() {
+    public Set<String> getPlayers() {
 	return this.playerNames;
     }
     
