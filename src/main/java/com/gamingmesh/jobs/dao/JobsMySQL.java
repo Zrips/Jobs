@@ -147,7 +147,7 @@ public class JobsMySQL extends JobsDAO {
 	    return false;
 	}
 	try {
-	    statement.executeQuery("SELECT * FROM " + table);
+	    statement.executeQuery("SELECT * FROM `" + table+"`;");
 	    statement.close();
 	    return true;
 	} catch (SQLException e) {
@@ -168,10 +168,11 @@ public class JobsMySQL extends JobsDAO {
 	    return false;
 	}
 	try {
-	    statement.executeQuery("SELECT " + collumn + " FROM " + table);
+	    statement.executeQuery("SELECT `" + collumn + "` FROM `" + table + "`;");
 	    statement.close();
 	    return true;
 	} catch (SQLException e) {
+	    e.printStackTrace();
 	    Jobs.consoleMsg("Not a culumn |" + "SELECT " + collumn + " FROM " + table + "|");
 	    close(statement);
 	    return false;

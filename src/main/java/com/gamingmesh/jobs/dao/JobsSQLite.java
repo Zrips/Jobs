@@ -180,7 +180,7 @@ public class JobsSQLite extends JobsDAO {
 	    return false;
 	}
 	try {
-	    statement.executeQuery("ALTER TABLE " + table + " ADD " + collumn + " " + type);
+	    statement.executeQuery("ALTER TABLE `" + table + "` ADD `" + collumn + "` " + type);
 	    statement.close();
 	    return true;
 	} catch (SQLException e) {
@@ -200,7 +200,7 @@ public class JobsSQLite extends JobsDAO {
 		return false;
 	    }
 	    statement = getConnection().createStatement();
-	    query = "DELETE FROM " + table + ";";
+	    query = "DELETE FROM `" + table + "`;";
 	    statement.executeQuery(query);
 	    statement.close();
 	    return true;
