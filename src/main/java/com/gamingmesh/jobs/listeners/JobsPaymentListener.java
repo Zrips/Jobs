@@ -1339,6 +1339,7 @@ public class JobsPaymentListener implements Listener {
 
 	if (!respond.isNewChunk())
 	    return;
+
 	// make sure plugin is enabled
 	if (!this.plugin.isEnabled())
 	    return;
