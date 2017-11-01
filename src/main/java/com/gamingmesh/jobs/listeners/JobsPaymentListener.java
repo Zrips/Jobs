@@ -1332,14 +1332,13 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (!Jobs.getGCManager().payExploringWhenFlying())
+	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())
 	    return;
 
 	ExploreRespond respond = Jobs.getExplore().ChunkRespond(event.getPlayer(), event.getNewChunk(), true);
 
 	if (!respond.isNewChunk())
 	    return;
-
 	// make sure plugin is enabled
 	if (!this.plugin.isEnabled())
 	    return;
