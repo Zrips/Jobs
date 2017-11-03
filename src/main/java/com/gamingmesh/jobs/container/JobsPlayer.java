@@ -102,6 +102,10 @@ public class JobsPlayer {
 	return i;
     }
 
+    public void setPaymentLimit(PaymentData limits) {
+	paymentLimits = limits;
+    }
+
     public PaymentData getPaymentLimit() {
 	if (paymentLimits == null) {
 	    paymentLimits = Jobs.getJobsDAO().getPlayersLimits(this);

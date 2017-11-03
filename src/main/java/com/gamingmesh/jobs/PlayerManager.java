@@ -55,6 +55,7 @@ import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
+import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.PerformCommands;
@@ -287,7 +288,7 @@ public class PlayerManager {
      * @param player - the player who's job you're getting
      * @return the player job info of the player
      */
-    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points, HashMap<String, Log> logs, ArchivedJobs archivedJobs) {
+    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points, HashMap<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
 
 	if (info == null)
 	    return null;
@@ -320,6 +321,9 @@ public class PlayerManager {
 
 	if (logs != null)
 	    jPlayer.setLog(logs);
+	
+	if (limits != null)
+	    jPlayer.setPaymentLimit(limits);
 
 	if (archivedJobs != null) {
 	    ArchivedJobs aj = new ArchivedJobs();

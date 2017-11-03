@@ -83,6 +83,7 @@ import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
+import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
@@ -543,12 +544,19 @@ public class Jobs extends JavaPlugin {
 	HashMap<Integer, PlayerPoints> playersPoints = Jobs.getJobsDAO().getAllPoints();
 	HashMap<Integer, HashMap<String, Log>> playersLogs = Jobs.getJobsDAO().getAllLogs();
 	HashMap<Integer, ArchivedJobs> playersArchives = Jobs.getJobsDAO().getAllArchivedJobs();
+	HashMap<Integer, PaymentData> playersLimits = Jobs.getJobsDAO().loadPlayerLimits();
 	Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator();
 	while (it.hasNext()) {
 	    Entry<UUID, PlayerInfo> one = it.next();
 	    try {
 		int id = one.getValue().getID();
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(one.getValue(), playersJobs.get(id), playersPoints.get(id), playersLogs.get(id), playersArchives.get(id));
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(
+		    one.getValue(),
+		    playersJobs.get(id),
+		    playersPoints.get(id),
+		    playersLogs.get(id),
+		    playersArchives.get(id),
+		    playersLimits.get(id));
 		if (jPlayer == null)
 		    continue;
 		Jobs.getPlayerManager().addPlayerToCache(jPlayer);

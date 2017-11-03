@@ -954,6 +954,36 @@ public abstract class JobsDAO {
 	return data;
     }
 
+    public synchronized HashMap<Integer, PaymentData> loadPlayerLimits() {
+	HashMap<Integer, PaymentData> map = new HashMap<Integer, PaymentData>();
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return map;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "limits`;");
+	    res = prest.executeQuery();
+	    while (res.next()) {
+		int id = res.getInt(LimitTableFields.userid.getCollumn());
+		PaymentData data = map.get(id);
+		if (data == null)
+		    data = new PaymentData();
+		CurrencyType type = CurrencyType.getByName(res.getString("type"));
+		if (type == null)
+		    continue;
+		data.AddNewAmount(type, res.getDouble("collected"), res.getLong("started"));
+		map.put(id, data);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+	return map;
+    }
+
     /**
      * Join a job (create player-job entry from storage)
      * @param player - player that wishes to join the job

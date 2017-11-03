@@ -39,4 +39,10 @@ public class PlayerInfo {
     public UUID getUuid() {
 	return uuid;
     }
+
+    public JobsPlayer getJobsPlayer() {
+	if (player == null)
+	    player = Jobs.getPlayerManager().getJobsPlayer(uuid);
+	return player;
+    }
 }
