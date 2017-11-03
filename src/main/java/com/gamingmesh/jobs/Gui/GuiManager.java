@@ -113,9 +113,9 @@ public class GuiManager {
 
 		if (Jobs.getGCManager().useDynamicPayment && Jobs.getGCManager().ShowPenaltyBonus)
 		    if (job.getBonus() < 0)
-			Lore.add(Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", (int) (job.getBonus() * 100) / 100.0 * -1));
+			Lore.add(Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", (int) (job.getBonus() * 100) * -1));
 		    else
-			Lore.add(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (job.getBonus() * 100) / 100.0));
+			Lore.add(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (job.getBonus() * 100)));
 
 		Lore.addAll(Arrays.asList(job.getDescription().split("/n")));
 
