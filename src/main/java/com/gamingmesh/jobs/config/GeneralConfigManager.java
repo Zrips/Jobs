@@ -63,7 +63,7 @@ public class GeneralConfigManager {
     protected int economyBatchDelay;
     protected boolean saveOnDisconnect;
     protected boolean MultiServerCompatability;
-    public boolean LocalOfflinePlayersData;
+//    public boolean LocalOfflinePlayersData;
     public boolean MythicMobsEnabled;
     public boolean LoggingUse;
     public boolean PaymentMethodsMoney;
@@ -472,11 +472,11 @@ public class GeneralConfigManager {
 	    "ATTENTION! Set it to true only if you certain that commands performed on levelup will not cause issues if player start level and delevel in a row.");
 	AllowDelevel = c.get("Optimizations.AllowDelevel", false);
 
-	c.getW().addComment("Optimizations.UseLocalOfflinePlayersData", "With this set to true, offline player data will be taken from local player data files",
-	    "This will eliminate small lag spikes when request is being send to mojangs servers for offline players data",
-	    "Theroticali this should work without issues, but if you havving some, just disable",
-	    "But then you can feal some small (100-200ms) lag spikes while performings some jobs commands");
-	LocalOfflinePlayersData = c.get("Optimizations.UseLocalOfflinePlayersData", true);
+//	c.getW().addComment("Optimizations.UseLocalOfflinePlayersData", "With this set to true, offline player data will be taken from local player data files",
+//	    "This will eliminate small lag spikes when request is being send to mojangs servers for offline players data",
+//	    "Theroticali this should work without issues, but if you havving some, just disable",
+//	    "But then you can feal some small (100-200ms) lag spikes while performings some jobs commands");
+//	LocalOfflinePlayersData = c.get("Optimizations.UseLocalOfflinePlayersData", true);
 
 	c.getW().addComment("Optimizations.DisabledWorlds.Use", "By setting this to true, Jobs plugin will be disabled in given worlds",
 	    "Only commands can be performed from disabled worlds with jobs.disabledworld.commands permission node");
