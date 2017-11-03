@@ -52,7 +52,7 @@ public class convert implements Cmd {
 	    Jobs.getPlayerManager().clearMaps();
 	    Jobs.getPlayerManager().clearCache();
 
-	    Jobs.getJobsDAO().saveExplore(false);
+	    Jobs.getJobsDAO().saveExplore();
 	    Jobs.getJobsDAO().saveBlockProtection();
 	    Jobs.loadAllPlayersData();
 	} catch (SQLException e) {

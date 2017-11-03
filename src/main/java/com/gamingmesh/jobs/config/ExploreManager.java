@@ -1,7 +1,12 @@
 package com.gamingmesh.jobs.config;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,6 +17,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.ExploreRespond;
+import com.gamingmesh.jobs.dao.JobsDAO.ExploreDataTableFields;
 import com.gamingmesh.jobs.stuff.Debug;
 
 public class ExploreManager {
@@ -59,39 +65,84 @@ public class ExploreManager {
 	return i;
     }
 
-    public ExploreRespond ChunkRespond(Player player, Chunk chunk, boolean isNew) {
-	return ChunkRespond(player.getName(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ(), isNew);
+    public ExploreRespond ChunkRespond(Player player, Chunk chunk) {
+	return ChunkRespond(player.getName(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
     }
 
-    public ExploreRespond ChunkRespond(String player, String worldName, int x, int z, boolean isNew) {
+    public ExploreRespond ChunkRespond(String player, String world, int x, int z) {
 
-	int ChunkX = x;
-	int ChunkZ = z;
+//	int ChunkX = x;
+//	int ChunkZ = z;
 
-	int RegionX = (int) Math.floor(ChunkX / 32D);
-	int RegionZ = (int) Math.floor(ChunkZ / 32D);
+//	int RegionX = (int) Math.floor(ChunkX / 32D);
+//	int RegionZ = (int) Math.floor(ChunkZ / 32D);
 
-	if (!worlds.containsKey(worldName)) {
-	    ExploreChunk eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
-	    if (!isNew)
-		eChunk.setOldChunk();
-	    ExploreRegion eRegion = new ExploreRegion(RegionX, RegionZ);
-	    eRegion.addChunk(eChunk);
-	    worlds.put(worldName, eRegion);
-	    return new ExploreRespond(eChunk.getCount(), true);
+	ExploreRegion eRegions = worlds.get(world);
+	if (eRegions == null) {
+	    int RegionX = (int) Math.floor(x / 32D);
+	    int RegionZ = (int) Math.floor(z / 32D);
+	    eRegions = new ExploreRegion(RegionX, RegionZ);
 	}
-	ExploreRegion eRegion = worlds.get(worldName);
-	ExploreChunk eChunk = eRegion.getChunk(ChunkX + ":" + ChunkZ);
+	ExploreChunk chunk = eRegions.getChunk(x, z);
+	if (chunk == null)
+	    chunk = new ExploreChunk(x, z);
 
-	if (eChunk == null) {
-	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
-	    if (!isNew)
-		eChunk.setOldChunk();
-	    eRegion.addChunk(eChunk);
-	    return new ExploreRespond(eChunk.getCount(), true);
+	eRegions.addChunk(chunk);
+	worlds.put(world, eRegions);
+
+	return chunk.addPlayer(player);
+
+//	if (!worlds.containsKey(worldName)) {
+//	    ExploreChunk eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
+//	    if (!isNew)
+//		eChunk.setOldChunk();
+//	    ExploreRegion eRegion = new ExploreRegion(RegionX, RegionZ);
+//	    eRegion.addChunk(eChunk);
+//	    worlds.put(worldName, eRegion);
+//	    Debug.D("new chunk " + eChunk.isNew());
+//	    return new ExploreRespond(eChunk.getCount(), true);
+//	}
+//	ExploreRegion eRegion = worlds.get(worldName);
+//	ExploreChunk eChunk = eRegion.getChunk(ChunkX + ":" + ChunkZ);
+//
+//	if (eChunk == null) {
+//	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
+//	    if (!isNew)
+//		eChunk.setOldChunk();
+//	    eRegion.addChunk(eChunk);
+//	    Debug.D("new chunk " + eChunk.isNew());
+//	    return new ExploreRespond(eChunk.getCount(), true);
+//	}
+//	eChunk.setOldChunk();
+//	return eChunk.addPlayer(player);
+    }
+
+    public void load(ResultSet res) {
+	try {
+	    String world = res.getString(ExploreDataTableFields.worldname.getCollumn());
+	    int x = res.getInt(ExploreDataTableFields.chunkX.getCollumn());
+	    int z = res.getInt(ExploreDataTableFields.chunkZ.getCollumn());
+	    String names = res.getString(ExploreDataTableFields.playerNames.getCollumn());
+	    int id = res.getInt("id");
+
+	    ExploreRegion eRegions = worlds.get(world);
+	    if (eRegions == null) {
+		int RegionX = (int) Math.floor(x / 32D);
+		int RegionZ = (int) Math.floor(z / 32D);
+		eRegions = new ExploreRegion(RegionX, RegionZ);
+	    }
+	    ExploreChunk chunk = eRegions.getChunk(x, z);
+	    if (chunk == null)
+		chunk = new ExploreChunk(x, z);
+	    chunk.deserializeNames(names);
+	    chunk.setDbId(id);
+
+	    eRegions.addChunk(chunk);
+	    worlds.put(world, eRegions);
+
+	} catch (SQLException e) {
+	    e.printStackTrace();
 	}
-	eChunk.setOldChunk();
-	return eChunk.addPlayer(player);
     }
 //
 //    public void addChunk(String player, String worldName, int x, int z) {

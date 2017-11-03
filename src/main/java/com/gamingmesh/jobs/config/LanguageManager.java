@@ -390,6 +390,10 @@ public class LanguageManager {
 	    c.get("command.leaveall.help.info", "Leave all your jobs.");
 	    c.get("command.leaveall.error.nojobs", "You do not have any jobs to leave!");
 	    c.get("command.leaveall.success", "You have left all your jobs.");
+	    
+	    c.get("command.explored.help.info", "Check who visited this chunk");
+	    c.get("command.explored.error.noexplore", "No one visited this chunk");
+	    c.get("command.explored.list", "&e%place%. %playername%");
 
 	    c.get("command.browse.help.info", "List the jobs available to you.");
 	    c.get("command.browse.error.nojobs", "There are no jobs you can join.");

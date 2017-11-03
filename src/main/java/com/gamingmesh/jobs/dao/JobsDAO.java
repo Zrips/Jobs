@@ -267,16 +267,16 @@ public abstract class JobsDAO {
 	}
     }
 
-    public enum ExploreTableFields implements JobsTableInterface {
+    public enum ExploreDataTableFields implements JobsTableInterface {
 	worldname("varchar(64)", TablesFieldsType.varchar),
 	chunkX("int", TablesFieldsType.number),
 	chunkZ("int", TablesFieldsType.number),
-	playerName("text", TablesFieldsType.text);
+	playerNames("text", TablesFieldsType.text);
 
 	private String type;
 	private TablesFieldsType fieldType;
 
-	ExploreTableFields(String type, TablesFieldsType fieldType) {
+	ExploreDataTableFields(String type, TablesFieldsType fieldType) {
 	    this.type = type;
 	    this.fieldType = fieldType;
 	}
@@ -316,9 +316,9 @@ public abstract class JobsDAO {
 	LogTable("log",
 	    "CREATE TABLE IF NOT EXISTS `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
 	    "CREATE TABLE IF NOT EXISTS `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", LogTableFields.class),
-	ExploreTable("explore",
+	ExploreDataTable("exploreData",
 	    "CREATE TABLE IF NOT EXISTS `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
-	    "CREATE TABLE IF NOT EXISTS `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", ExploreTableFields.class),
+	    "CREATE TABLE IF NOT EXISTS `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", ExploreDataTableFields.class),
 	PointsTable("points",
 	    "CREATE TABLE IF NOT EXISTS `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
 	    "CREATE TABLE IF NOT EXISTS `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", PointsTableFields.class);
@@ -1791,11 +1791,13 @@ public abstract class JobsDAO {
      * Save player-explore information
      * @param jobexplore - the information getting saved
      */
+
     public void saveExplore() {
-	saveExplore(true);
+	insertExplore();
+	updateExplore();
     }
 
-    public void saveExplore(boolean ignoreOld) {
+    public void insertExplore() {
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
@@ -1805,7 +1807,7 @@ public abstract class JobsDAO {
 	PreparedStatement prest2 = null;
 	try {
 
-	    prest2 = conn.prepareStatement("INSERT INTO `" + prefix + "explore` (`worldname`, `chunkX`, `chunkZ`, `playerName`) VALUES (?, ?, ?, ?);");
+	    prest2 = conn.prepareStatement("INSERT INTO `" + prefix + "exploreData` (`worldname`, `chunkX`, `chunkZ`, `playerNames`) VALUES (?, ?, ?, ?);");
 	    conn.setAutoCommit(false);
 	    int i = 0;
 
@@ -1813,16 +1815,14 @@ public abstract class JobsDAO {
 
 	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
 		for (Entry<String, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
-		    if (!oneChunk.getValue().isNew() && ignoreOld)
+		    if (oneChunk.getValue().getDbId() != null)
 			continue;
-		    for (String oneuser : oneChunk.getValue().getPlayers()) {
-			prest2.setString(1, worlds.getKey());
-			prest2.setInt(2, oneChunk.getValue().getX());
-			prest2.setInt(3, oneChunk.getValue().getZ());
-			prest2.setString(4, oneuser);
-			prest2.addBatch();
-			i++;
-		    }
+		    prest2.setString(1, worlds.getKey());
+		    prest2.setInt(2, oneChunk.getValue().getX());
+		    prest2.setInt(3, oneChunk.getValue().getZ());
+		    prest2.setString(4, oneChunk.getValue().serializeNames());
+		    prest2.addBatch();
+		    i++;
 		}
 	    }
 	    prest2.executeBatch();
@@ -1841,6 +1841,50 @@ public abstract class JobsDAO {
 	}
     }
 
+    public void updateExplore() {
+	if (!Jobs.getExplore().isExploreEnabled())
+	    return;
+
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement prest = null;
+	try {
+	    conn.setAutoCommit(false);
+	    prest = conn.prepareStatement("UPDATE `" + prefix + "exploreData` SET `playerNames` = ? WHERE `id` = ?;");
+
+	    int i = 0;
+
+	    HashMap<String, ExploreRegion> temp = new HashMap<String, ExploreRegion>(Jobs.getExplore().getWorlds());
+
+	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
+		for (Entry<String, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
+		    if (oneChunk.getValue().getDbId() == null)
+			continue;
+		    if (!oneChunk.getValue().isUpdated())
+			continue;
+		    prest.setString(1, oneChunk.getValue().serializeNames());
+		    prest.setInt(2, oneChunk.getValue().getDbId());
+		    prest.addBatch();
+		    i++;
+		}
+	    }
+	    prest.executeBatch();
+	    conn.commit();
+	    conn.setAutoCommit(true);
+
+	    if (i > 0) {
+		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Updated " + i + " explorer entries.");
+		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+		console.sendMessage(message);
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+    }
+
     /**
      * Save player-explore information
      * @param jobexplore - the information getting saved
@@ -1852,13 +1896,40 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
+
+	if (this.isTable(prefix + "explore")) {
+	    PreparedStatement prest = null;
+	    ResultSet res = null;
+	    try {
+		prest = conn.prepareStatement("SELECT * FROM `" + prefix + "explore`;");
+		res = prest.executeQuery();
+		while (res.next()) {
+		    Jobs.getExplore().ChunkRespond(res.getString("playerName"), res.getString("worldname"), res.getInt("chunkX"), res.getInt("chunkZ"));
+		}
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    } finally {
+		close(res);
+		close(prest);
+	    }
+	    Statement stmt = null;
+	    try {
+		stmt = conn.createStatement();
+		stmt.executeUpdate("DROP TABLE `" + prefix + "explore`;");
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    } finally {
+		close(stmt);
+	    }
+	}
+
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
-	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "explore`;");
+	    prest = conn.prepareStatement("SELECT * FROM `" + prefix + "exploreData`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		Jobs.getExplore().ChunkRespond(res.getString("playerName"), res.getString("worldname"), res.getInt("chunkX"), res.getInt("chunkZ"), false);
+		Jobs.getExplore().load(res);
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1866,6 +1937,7 @@ public abstract class JobsDAO {
 	    close(res);
 	    close(prest);
 	}
+
     }
 
     /**

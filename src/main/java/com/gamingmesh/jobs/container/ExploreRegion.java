@@ -2,6 +2,8 @@ package com.gamingmesh.jobs.container;
 
 import java.util.HashMap;
 
+import org.bukkit.Chunk;
+
 public class ExploreRegion {
 
     int x;
@@ -19,6 +21,14 @@ public class ExploreRegion {
 
     public HashMap<String, ExploreChunk> getChunks() {
 	return chunks;
+    }
+
+    public ExploreChunk getChunk(int x, int z) {
+	return getChunk(x + ":" + z);
+    }
+
+    public ExploreChunk getChunk(Chunk chunk) {
+	return getChunk(chunk.getX() + ":" + chunk.getZ());
     }
 
     public ExploreChunk getChunk(String cord) {
