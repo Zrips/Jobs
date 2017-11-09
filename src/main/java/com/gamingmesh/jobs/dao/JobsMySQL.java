@@ -151,7 +151,7 @@ public class JobsMySQL extends JobsDAO {
 	    statement.close();
 	    return true;
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM " + table + "|");
+//	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM " + table + "|");
 	    close(statement);
 	    return false;
 	}

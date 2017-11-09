@@ -30,11 +30,19 @@ public class JobInfo {
     private Parser moneyEquation, xpEquation, pointsEquation;
     private int fromLevel = 0;
     private int untilLevel = Integer.MAX_VALUE;
-    
+
     private String configPath = "";
+    private Integer softIncomeLevelLimit;
+    private Integer softExpLevelLimit;
+    private Integer softPointsLevelLimit;
 
     public JobInfo(ActionType actionType, int id, String meta, String name, double baseIncome, Parser moneyEquation, double baseXp, Parser xpEquation,
 	Parser pointsEquation, double basePoints, int fromLevel, int untilLevel, String configPath) {
+	this(actionType, id, meta, name, baseIncome, moneyEquation, baseXp, xpEquation, pointsEquation, basePoints, fromLevel, untilLevel, configPath, null, null, null);
+    }
+
+    public JobInfo(ActionType actionType, int id, String meta, String name, double baseIncome, Parser moneyEquation, double baseXp, Parser xpEquation,
+	Parser pointsEquation, double basePoints, int fromLevel, int untilLevel, String configPath, Integer softIncomeLevelLimit, Integer softExpLevelLimit, Integer softPointsLevelLimit) {
 	this.actionType = actionType;
 	this.id = id;
 	this.meta = meta;
@@ -48,7 +56,9 @@ public class JobInfo {
 	this.fromLevel = fromLevel;
 	this.untilLevel = untilLevel;
 	this.configPath = configPath;
-
+	this.softIncomeLevelLimit = softIncomeLevelLimit;
+	this.softExpLevelLimit = softExpLevelLimit;
+	this.softPointsLevelLimit = softPointsLevelLimit;
     }
 
     public int getFromLevel() {
@@ -92,6 +102,8 @@ public class JobInfo {
     }
 
     public double getIncome(double level, double numjobs) {
+	if (softIncomeLevelLimit != null && level > softIncomeLevelLimit)
+	    level = softIncomeLevelLimit;
 	if (baseIncome == 0 || !Jobs.getGCManager().PaymentMethodsMoney)
 	    return 0;
 	moneyEquation.setVariable("joblevel", level);
@@ -101,6 +113,8 @@ public class JobInfo {
     }
 
     public double getExperience(double level, double numjobs) {
+	if (softExpLevelLimit != null && level > softExpLevelLimit)
+	    level = softExpLevelLimit;
 	if (baseXp == 0 || !Jobs.getGCManager().PaymentMethodsExp)
 	    return 0;
 	xpEquation.setVariable("joblevel", level);
@@ -110,6 +124,8 @@ public class JobInfo {
     }
 
     public double getPoints(double level, double numjobs) {
+	if (softPointsLevelLimit != null && level > softPointsLevelLimit)
+	    level = softPointsLevelLimit;
 	if (basePoints == 0 || !Jobs.getGCManager().PaymentMethodsPoints)
 	    return 0;
 	pointsEquation.setVariable("joblevel", level);

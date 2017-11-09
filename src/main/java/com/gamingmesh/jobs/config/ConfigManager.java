@@ -51,6 +51,7 @@ import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class ConfigManager {
     private Jobs plugin;
@@ -484,6 +485,16 @@ public class ConfigManager {
 	    job.setXpEquation(expEquation);
 	    job.setPointsEquation(pointsEquation);
 
+	    Integer softIncomeLimit = null;
+	    Integer softExpLimit = null;
+	    Integer softPointsLimit = null;
+	    if (jobSection.isInt("softIncomeLimit"))
+		softIncomeLimit = jobSection.getInt("softIncomeLimit");
+	    if (jobSection.isInt("softExpLimit"))
+		softExpLimit = jobSection.getInt("softExpLimit");
+	    if (jobSection.isInt("softPointsLimit"))
+		softPointsLimit = jobSection.getInt("softPointsLimit");
+
 	    for (ActionType actionType : ActionType.values()) {
 		ConfigurationSection typeSection = jobSection.getConfigurationSection(actionType.getName());
 		ArrayList<JobInfo> jobInfo = new ArrayList<JobInfo>();
@@ -686,7 +697,7 @@ public class ConfigManager {
 			}
 
 			jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, fromlevel,
-			    untilLevel, section.getCurrentPath()));
+			    untilLevel, section.getCurrentPath(), softIncomeLimit, softExpLimit, softPointsLimit));
 		    }
 		}
 		job.setJobInfo(actionType, jobInfo);

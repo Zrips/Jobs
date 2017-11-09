@@ -10,7 +10,7 @@ public class BossBarInfo {
     int id = -1;
 
     public BossBarInfo(String PlayerName, String jobName, BossBar bar) {
-	this.PlayerName =PlayerName;
+	this.PlayerName = PlayerName;
 	this.jobName = jobName;
 	this.bar = bar;
     }
