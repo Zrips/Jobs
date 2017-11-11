@@ -38,7 +38,7 @@ Jobs:
     # [OPTIONAL] - the maximum number of users on the server that can have this job at 
     # any one time (includes offline players).
     slots: 1
-    # Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.
+    # [OPTIONAL] Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.
     # In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60
     # This only aplies after players level is higher than provided particular limit.
     softIncomeLimit: 50
