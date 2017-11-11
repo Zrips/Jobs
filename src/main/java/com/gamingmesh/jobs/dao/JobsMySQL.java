@@ -172,7 +172,7 @@ public class JobsMySQL extends JobsDAO {
 	    statement.close();
 	    return true;
 	} catch (SQLException e) {
-	    e.printStackTrace();
+//	    e.printStackTrace();
 	    Jobs.consoleMsg("Not a culumn |" + "SELECT " + collumn + " FROM " + table + "|");
 	    close(statement);
 	    return false;
