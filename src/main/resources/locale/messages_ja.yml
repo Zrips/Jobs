@@ -540,7 +540,7 @@ signs:
     top: '&0トップ'
     browse: '&0閲覧'
     stats: '&0ステータス'
-    limit: '&0限界'
+    limit: '&0上限'
     info: '&0情報'
     archive: '&0アーカイブ'
 scoreboard:
