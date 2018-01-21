@@ -62,7 +62,7 @@ public class top implements Cmd {
 	List<TopList> FullList = Jobs.getJobsDAO().toplist(args[0], st);
 	if (FullList.size() <= 0) {
 	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.noinfo"));
-	    return false;
+	    return true;
 	}
 
 	Job job = Jobs.getJob(args[0]);

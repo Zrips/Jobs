@@ -303,14 +303,14 @@ public class ShopManager {
 	ItemMeta meta = Item.getItemMeta();
 	int pervSlot = getPrevButtonSlot(GuiSize, page);
 	if (pervSlot != -1) {
-	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.prev"));
+	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.prevPage"));
 	    Item.setItemMeta(meta);
 	    GuiInv.setItem(pervSlot, Item);
 	}
 
 	int nextSlot = getnextButtonSlot(GuiSize, page);
 	if (nextSlot != -1) {
-	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.next"));
+	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.nextPage"));
 	    Item.setItemMeta(meta);
 	    GuiInv.setItem(nextSlot, Item);
 	}

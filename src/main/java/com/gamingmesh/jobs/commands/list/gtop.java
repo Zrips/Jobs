@@ -54,7 +54,7 @@ public class gtop implements Cmd {
 	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(st);
 	if (FullList.size() <= 0) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.gtop.error.nojob"));
-	    return false;
+	    return true;
 	}
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
