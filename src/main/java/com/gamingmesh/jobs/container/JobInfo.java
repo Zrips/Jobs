@@ -24,7 +24,7 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 public class JobInfo {
     private ActionType actionType;
     private int id;
-    private String meta;
+    private String meta; 
     private String name;
     private double baseIncome, baseXp, basePoints;
     private Parser moneyEquation, xpEquation, pointsEquation;

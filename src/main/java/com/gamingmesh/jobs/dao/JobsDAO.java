@@ -7,8 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,7 +36,6 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public abstract class JobsDAO {
@@ -55,7 +54,9 @@ public abstract class JobsDAO {
     public enum UserTableFields implements JobsTableInterface {
 	player_uuid("varchar(36)", TablesFieldsType.varchar),
 	username("text", TablesFieldsType.text),
-	seen("bigint", TablesFieldsType.longNumber);
+	seen("bigint", TablesFieldsType.longNumber),
+	donequests("int", TablesFieldsType.number),
+	quests("text", TablesFieldsType.text);
 
 	private String type;
 	private TablesFieldsType fieldType;
@@ -787,10 +788,11 @@ public abstract class JobsDAO {
 	PreparedStatement prestt = null;
 	ResultSet res2 = null;
 	try {
-	    prestt = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`, `seen`) VALUES (?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+	    prestt = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`, `seen`, `donequests`) VALUES (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
 	    prestt.setString(1, uuid.toString());
 	    prestt.setString(2, playerName);
 	    prestt.setLong(3, System.currentTimeMillis());
+	    prestt.setInt(4, 0);
 	    prestt.executeUpdate();
 
 	    res2 = prestt.getGeneratedKeys();
@@ -798,9 +800,7 @@ public abstract class JobsDAO {
 	    if (res2.next())
 		id = res2.getInt(1);
 
-	    Debug.D("got id " + id);
-
-	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, id, uuid, System.currentTimeMillis()));
+	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, id, uuid, System.currentTimeMillis(), 0));
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -1266,7 +1266,11 @@ public abstract class JobsDAO {
 	    prest.setString(1, uuid.toString());
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		pInfo = new PlayerInfo(res.getString("username"), res.getInt("id"), uuid, res.getLong("seen"));
+		pInfo = new PlayerInfo(
+		    res.getString("username"),
+		    res.getInt("id"), uuid,
+		    res.getLong("seen"),
+		    res.getInt("donequests"));
 		Jobs.getPlayerManager().addPlayerToMap(pInfo);
 	    }
 	} catch (SQLException e) {
@@ -1292,7 +1296,12 @@ public abstract class JobsDAO {
 		long seen = System.currentTimeMillis();
 		try {
 		    seen = res.getLong("seen");
-		    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(res.getString("username"), res.getInt("id"), UUID.fromString(res.getString("player_uuid")), seen));
+		    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
+			res.getString("username"),
+			res.getInt("id"),
+			UUID.fromString(res.getString("player_uuid")),
+			seen,
+			res.getInt("donequests")));
 		} catch (Exception e) {
 		}
 	    }
@@ -1348,8 +1357,12 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 	    while (res.next()) {
 		try {
-		    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(res.getString("username"), res.getInt("id"), UUID.fromString(res.getString("player_uuid")), res.getLong(
-			"seen")));
+		    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
+			res.getString("username"),
+			res.getInt("id"),
+			UUID.fromString(res.getString("player_uuid")),
+			res.getLong("seen"),
+			res.getInt("donequests")));
 		} catch (Exception e) {
 		}
 	    }
@@ -1420,12 +1433,14 @@ public abstract class JobsDAO {
 	    return;
 	PreparedStatement prest = null;
 	try {
-	    prest = conn.prepareStatement("UPDATE `" + prefix + "users` SET `seen` = ?, `username` = ? WHERE `id` = ?;");
+	    prest = conn.prepareStatement("UPDATE `" + prefix + "users` SET `seen` = ?, `username` = ?, `donequests` = ? WHERE `id` = ?;");
 	    prest.setLong(1, System.currentTimeMillis());
 	    prest.setString(2, player.getUserName());
-	    prest.setInt(3, player.getUserId());
+	    prest.setInt(3, player.getDoneQuests());
+	    prest.setInt(4, player.getUserId());
 	    prest.execute();
 	} catch (SQLException e) {
+	    e.printStackTrace();
 	} finally {
 	    close(prest);
 	}
@@ -1437,10 +1452,11 @@ public abstract class JobsDAO {
 	    return;
 	PreparedStatement prestt = null;
 	try {
-	    prestt = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`, `seen`) VALUES (?, ?, ?);");
+	    prestt = conn.prepareStatement("INSERT INTO `" + prefix + "users` (`player_uuid`, `username`, `seen`, `donequests`) VALUES (?, ?, ?, ?);");
 	    prestt.setString(1, player.getPlayerUUID().toString());
 	    prestt.setString(2, player.getUserName());
 	    prestt.setLong(3, player.getSeen());
+	    prestt.setInt(4, 0);
 	    prestt.executeUpdate();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1456,7 +1472,12 @@ public abstract class JobsDAO {
 	    res.next();
 	    int id = res.getInt("id");
 	    player.setUserId(id);
-	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(player.getUserName(), id, player.getPlayerUUID(), player.getSeen()));
+	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
+		player.getUserName(),
+		id,
+		player.getPlayerUUID(),
+		player.getSeen(),
+		res.getInt("donequests")));
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {

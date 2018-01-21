@@ -46,6 +46,10 @@ public class PageInfo {
 	return currentEntry - 1 >= start && currentEntry - 1 <= end;
     }
 
+    public boolean isBreak() {
+	return currentEntry - 1 > end;
+    }
+
     public boolean isPageOk() {
 	return isPageOk(this.currentPage);
     }
@@ -76,5 +80,8 @@ public class PageInfo {
 
     public int getTotalEntries() {
 	return totalEntries;
+    }
+    public int getPerPageCount(){
+	return this.perPage;
     }
 }

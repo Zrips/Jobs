@@ -126,6 +126,7 @@ public class LanguageManager {
 	    c.get("general.info.time.hours", "&e%hours% &6hours ");
 	    c.get("general.info.time.mins", "&e%mins% &6min ");
 	    c.get("general.info.time.secs", "&e%secs% &6sec ");
+	    c.get("general.info.invalidPage", "&cInvalid page");
 	    c.get("general.admin.error", "&cThere was an error in the command.");
 	    c.get("general.admin.success", "&eYour command has been performed.");
 	    c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
@@ -213,10 +214,12 @@ public class LanguageManager {
 	    c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");
 	    c.get("command.help.output.page", "&e-----&e ====== Page &6[1] &eof &6[2] &e====== &e-----");
 	    c.get("command.help.output.fliperSimbols", "&e----------");
-	    c.get("command.help.output.prev", "&e--- <<<<< &6Prev page &e|");
-	    c.get("command.help.output.prevOff", "&7--- <<<<< Prev page &e|");
-	    c.get("command.help.output.next", "&e|&6 Next Page &e>>>> ---");
-	    c.get("command.help.output.nextOff", "&e|&7 Next Page >>>> ---");
+	    
+	    c.get("command.help.output.prevPage", "&2----<< &6Prev ");
+	    c.get("command.help.output.prevPageOff", "&7----<< Prev ");
+	    c.get("command.help.output.nextPage", "&6 Next &2>>----");
+	    c.get("command.help.output.nextPageOff", "&7 Next >>----");
+	    c.get("command.help.output.pageCount", "&2[current]/[total]");
 
 	    c.get("command.points.help.info", "Shows how much points player have.");
 	    c.get("command.points.help.args", "[playername]");
@@ -310,6 +313,7 @@ public class LanguageManager {
 	    Jobs.getGCManager().commandArgs.put("info", Arrays.asList("[jobname]", "[action]"));
 	    c.get("command.info.help.actions", "&eValid actions are: &f%actions%");
 	    c.get("command.info.help.max", " - &emax level:&f ");
+	    c.get("command.info.help.newMax", " &eMax level: &f[max]");
 	    c.get("command.info.help.material", "&7%material%");
 
 	    c.get("command.info.help.levelRange", " &a(&e%levelFrom% &a- &e%levelUntil% &alevels)");
@@ -382,6 +386,8 @@ public class LanguageManager {
 	    c.get("command.join.error.rejoin", "&cCan't rejoin this job. Wait [time]");
 	    c.get("command.join.success", "You have joined the job %jobname%.");
 
+	    c.get("command.join.confirm", "&2Click to confirm join action for &7[jobname] &2job.");
+
 	    c.get("command.leave.help.info", "Leave the selected job.");
 	    c.get("command.leave.help.args", "[oldplayerjob]");
 	    Jobs.getGCManager().commandArgs.put("leave", Arrays.asList("[oldplayerjob]"));
@@ -402,6 +408,27 @@ public class LanguageManager {
 	    c.get("command.browse.output.totalWorkers", " &7Workers: &e[amount]");
 	    c.get("command.browse.output.penalty", " &4Penalty: &c[amount]%");
 	    c.get("command.browse.output.bonus", " &2Bonus: &a[amount]%");
+	    
+
+	    c.get("command.browse.output.newHeader", "&2========== [amount] Available Jobs =========");
+	    c.get("command.browse.output.list", "    &8[place]. &7[jobname]");
+	    c.get("command.browse.output.click", "&bClick on the job to see more info about it!");
+	    c.get("command.browse.output.detailed", "&bClick to see more detailed list on job actions"); 
+
+	    c.get("command.browse.output.jobHeader", "&2========== [jobname] =========");
+	    c.get("command.browse.output.chooseJob", "&7&n&oChoose this job");
+	    c.get("command.browse.output.chooseJobHover", "&7Click here to get this job");
+	    
+
+	    c.get("command.quests.help.info", "List available quests");
+	    c.get("command.quests.help.args", "(playername)");
+	    c.get("command.quests.error.noquests", "There are no jobs you can join.");
+	    c.get("command.quests.toplineseparator", "&7*********************** &6[playerName]&2(&f[questsDone]&2) &7***********************");
+	    c.get("command.quests.output.completed", "&2      !Completed!&r      ");
+	    c.get("command.quests.output.questLine", "[progress] &7[questName] &f[done]&7/&8[required]");
+	    c.get("command.quests.output.hover", Arrays.asList("&f[jobName]", "[desc]", "&7New quest in: [time]"));
+	    
+	    
 
 	    c.get("command.fire.help.info", "Fire the player from the job.");
 	    c.get("command.fire.help.args", "[playername] [jobname]");

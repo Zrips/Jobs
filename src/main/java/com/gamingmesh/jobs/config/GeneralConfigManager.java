@@ -70,6 +70,9 @@ public class GeneralConfigManager {
     public boolean PaymentMethodsPoints;
     public boolean PaymentMethodsExp;
     public int getSelectionTooldID;
+    
+    private int ResetTimeHour;
+    private int ResetTimeMinute;
 
     // Limits
     public HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<CurrencyType, CurrencyLimit>();
@@ -498,6 +501,11 @@ public class GeneralConfigManager {
 	c.getW().addComment("broadcast.on-level-up.levels", "For what levels you want to broadcast message? Keep it at 0 if you want for all of them");
 	BroadcastingLevelUpLevels = c.getIntList("broadcast.on-level-up.levels", Arrays.asList(0));
 
+	c.getW().addComment("DailyQuests.ResetTime", "Defines time in 24hour format when we want to give out new daily quests",
+	    "Any daily quests given before reset will be invalid and new ones will be given out");
+	ResetTimeHour = c.get("DailyQuests.ResetTime.Hour", 4);
+	ResetTimeMinute = c.get("DailyQuests.ResetTime.Minute", 0);
+
 	c.getW().addComment("max-jobs", "Maximum number of jobs a player can join.", "Use 0 for no maximum", "Keep in mind that jobs.max.[amount] will bypass this setting");
 	maxJobs = c.get("max-jobs", 3);
 
@@ -845,7 +853,6 @@ public class GeneralConfigManager {
 	    "With false left mouse button will show more info, rigth will join job", "Dont forget to adjust locale file");
 	JobsGUISwitcheButtons = c.get("JobsGUI.SwitcheButtons", false);
 	c.getW().addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show GUI when performing /jobs join command");
-	JobsGUIOpenOnJoin = c.get("JobsGUI.OpenOnJoin", true);
 
 	Material tmat = Material.getMaterial(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
 	guiBackButton = new ItemStack(tmat == null ? Material.JACK_O_LANTERN : tmat, 1, (byte) c.get("JobsGUI.BackButton.Data", 0));
@@ -855,9 +862,6 @@ public class GeneralConfigManager {
 	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
 	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);
 
-	//		writer.addComment("Gui.UseJobsBrowse", "Do you want to use jobs browse gui instead of chat text");
-	//		UseJobsBrowse = c.get("Gui.UseJobsBrowse", true);
-	// Write back config
 	try {
 	    c.getW().save(f);
 	} catch (IOException e) {
@@ -865,42 +869,27 @@ public class GeneralConfigManager {
 	}
     }
 
-//    public synchronized void startMysql() {
-//	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
-//	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
-//	String legacyUrl = config.getString("mysql-url");
-//	if (legacyUrl != null) {
-//	    String jdbcString = "jdbc:mysql://";
-//	    if (legacyUrl.toLowerCase().startsWith(jdbcString)) {
-//		legacyUrl = legacyUrl.substring(jdbcString.length());
-//		String[] parts = legacyUrl.split("/");
-//		if (parts.length >= 2) {
-//		    config.set("mysql-hostname", parts[0]);
-//		    config.set("mysql-database", parts[1]);
-//		}
-//	    }
-//	}
-//	String username = config.getString("mysql-username");
-//	if (username == null) {
-//	    Jobs.getPluginLogger().severe("mysql-username property invalid or missing");
-//	}
-//	String password = config.getString("mysql-password");
-//	String hostname = config.getString("mysql-hostname");
-//	String database = config.getString("mysql-database");
-//	String prefix = config.getString("mysql-table-prefix");
-//	if (plugin.isEnabled())
-//	    Jobs.setDAO(JobsDAOMySQL.initialize(plugin, hostname, database, username, password, prefix));
-//    }
-//
-//    public synchronized void startSqlite() {
-//	Jobs.setDAO(JobsDAOSQLite.initialize(plugin));
-//    }
-
     public int getSelectionTooldID() {
 	return getSelectionTooldID;
     }
 
     public boolean isShowNewVersion() {
 	return ShowNewVersion;
+    }
+
+    public int getResetTimeHour() {
+	return ResetTimeHour;
+    }
+
+    public void setResetTimeHour(int resetTimeHour) {
+	ResetTimeHour = resetTimeHour;
+    }
+
+    public int getResetTimeMinute() {
+	return ResetTimeMinute;
+    }
+
+    public void setResetTimeMinute(int resetTimeMinute) {
+	ResetTimeMinute = resetTimeMinute;
     }
 }

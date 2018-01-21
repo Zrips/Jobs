@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -79,6 +80,11 @@ public class Job {
     private String bossbar;
 
     private Parser moneyEquation, xpEquation, pointsEquation;
+
+    private List<String> fDescription = new ArrayList<String>();
+
+    private List<Quest> quests = new ArrayList<Quest>();
+    private int maxDailyQuests = 1;
 
     /**
      * Constructor
@@ -308,7 +314,7 @@ public class Job {
 	    JobsPlayer player = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	    if (player != null)
 		return player.getMaxJobLevelAllowed(this);
-	}	
+	}
 	return getMaxLevel() > getVipMaxLevel() ? getMaxLevel() : getVipMaxLevel();
     }
 
@@ -408,5 +414,66 @@ public class Job {
 
     public void setRejoinCd(Long rejoinCd) {
 	this.rejoinCd = rejoinCd;
+    }
+
+    public List<String> getFullDescription() {
+	return fDescription;
+    }
+
+    public void setFullDescription(List<String> fDescription) {
+	this.fDescription = fDescription;
+    }
+
+    public List<Quest> getQuests() {
+	return quests;
+    }
+
+    public Quest getQuest(String name) {
+	for (Quest one : quests) {
+	    if (one.getConfigName().equalsIgnoreCase(name))
+		return one;
+	}
+	return null;
+    }
+
+    public void setQuests(List<Quest> quests) {
+	this.quests.clear();
+	this.quests = quests;
+    }
+
+//    public Quest getNextQuest() {
+//	return getNextQuest(null, null);
+//    }
+
+    public Quest getNextQuest(List<String> excludeQuests, Integer level) {
+	List<Quest> ls = new ArrayList<Quest>(this.quests);
+	Collections.shuffle(ls);
+
+	int i = 0;
+	while (true) {
+	    i++;
+	    Random rand = new Random(System.nanoTime());
+	    int target = rand.nextInt(100);
+	    for (Quest one : ls) {
+		if (one.getChance() >= target)
+		    if (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase())) {
+
+			if (!one.isInLevelRange(level))
+			    continue;
+
+			return one;
+		    }
+	    }
+	    if (i > 20)
+		return null;
+	}
+    }
+
+    public int getMaxDailyQuests() {
+	return maxDailyQuests;
+    }
+
+    public void setMaxDailyQuests(int maxDailyQuests) {
+	this.maxDailyQuests = maxDailyQuests;
     }
 }

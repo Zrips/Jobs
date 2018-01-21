@@ -18,10 +18,17 @@
 
 package com.gamingmesh.jobs.i18n;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.YmlMaker;
 
@@ -75,6 +82,57 @@ public class Language {
 	    }
 
 	return msg;
+    }
+
+    /**
+     * Get the message with the correct key
+     * @param key - the key of the message
+     * @return the message
+     */
+    public List<String> getMessageList(String key, Object... variables) {
+	String missing = "MLF " + key + " ";
+
+	List<String> ls;
+	if (customlocale.isList(key))
+	    ls = ColorsArray(customlocale.getStringList(key), true);
+	else
+	    ls = !enlocale.getStringList(key).isEmpty() ? ColorsArray(enlocale.getStringList(key), true) : Arrays.asList(missing);
+
+	if (variables != null && variables.length > 0)
+	    for (int i = 0; i < ls.size(); i++) {
+		String msg = ls.get(i);
+		for (int y = 0; y < variables.length; y += 2) {
+		    msg = msg.replace(String.valueOf(variables[y]), String.valueOf(variables[y + 1]));
+		}
+		msg = filterNewLine(msg);
+		ls.set(i, ChatColor.translateAlternateColorCodes('&', msg));
+	    }
+
+	return ls;
+    }
+
+    public String filterNewLine(String msg) {
+	Pattern patern = Pattern.compile("([ ]?[\\/][n][$|\\s])");
+	Matcher match = patern.matcher(msg);
+	while (match.find()) {
+	    msg = msg.replace(match.group(0), "\n");
+	}
+	return msg;
+    }
+
+    public List<String> ColorsArray(List<String> text, Boolean colorize) {
+	List<String> temp = new ArrayList<String>();
+	for (String part : text) {
+	    if (colorize)
+		part = Colors(part);
+	    temp.add(Colors(part));
+	}
+
+	return temp;
+    }
+
+    public String Colors(String text) {
+	return ChatColor.translateAlternateColorCodes('&', text);
     }
 
     /**

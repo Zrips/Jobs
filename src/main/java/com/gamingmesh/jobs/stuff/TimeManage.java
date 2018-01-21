@@ -19,10 +19,20 @@ public class TimeManage {
     }
 
     public static String to24hourShort(Long ticks) {
-	long days = toDays(ticks);
-	long hours = toHours(ticks);
-	long minutes = toMin(ticks);
-	long sec = toSec(ticks);
+	long years = ticks / 1000 / 60 / 60 / 24 / 365;
+	ticks = ticks - (years * 1000 * 60 * 60 * 24 * 365);
+
+	long days = ticks / 1000 / 60 / 60 / 24;
+	ticks = ticks - (days * 1000 * 60 * 60 * 24);
+
+	long hours = ticks / 1000 / 60 / 60;
+	ticks = ticks - (hours * 1000 * 60 * 60);
+
+	long minutes = ticks / 1000 / 60;
+	ticks = ticks - (minutes * 1000 * 60);
+
+	long sec = ticks / 1000;
+	ticks = ticks - (sec * 1000);
 
 	String time = "";
 

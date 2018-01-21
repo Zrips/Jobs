@@ -48,6 +48,12 @@ public class LocaleReader {
 	return config.getStringList(path);
     }
 
+    public List<String> get(String path, List<String> list) {
+	config.addDefault(path, list);
+	copySetting(path);
+	return config.getStringList(path);
+    }
+
     public String get(String path, String boo) {
 	config.addDefault(path, boo);
 	copySetting(path);

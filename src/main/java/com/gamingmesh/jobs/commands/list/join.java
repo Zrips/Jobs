@@ -1,8 +1,11 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.util.HashMap;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
@@ -11,6 +14,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.RawMessage;
 
 public class join implements Cmd {
 
@@ -22,27 +26,13 @@ public class join implements Cmd {
 	    return false;
 	}
 
-	if (args.length != 1 && args.length != 0) {
+	if (args.length != 1 && args.length != 0 && args.length != 2) {
 	    Jobs.getCommandManager().sendUsage(sender, "join");
 	    return true;
 	}
 
 	if (args.length == 0) {
-	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnJoin) {
-		Inventory inv = null;
-		try {
-		    inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
-		} catch (Exception e) {
-		    ((Player) sender).closeInventory();
-		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getName());
-		    return true;
-		}
-		if (inv == null)
-		    return true;
-
-		((Player) sender).openInventory(inv);
-	    } else
-		return false;
+	    Bukkit.dispatchCommand(sender, "jobs browse");
 	    return true;
 	}
 
@@ -82,6 +72,13 @@ public class join implements Cmd {
 	short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
 	if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(jPlayer, PlayerMaxJobs)) {
 	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
+	    return true;
+	}
+
+	if (args.length == 2 && args[1].equalsIgnoreCase("-needConfirmation")) {
+	    RawMessage rm = new RawMessage();
+	    rm.add(Jobs.getLanguage().getMessage("command.join.confirm"), Jobs.getLanguage().getMessage("command.join.confirm"), "jobs join " + job.getName());	    
+	    rm.show(sender);
 	    return true;
 	}
 
