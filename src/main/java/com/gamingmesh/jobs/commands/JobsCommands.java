@@ -132,37 +132,21 @@ public class JobsCommands implements CommandExecutor {
     }
 
     private static String getUsage(String cmd) {
-	StringBuilder builder = new StringBuilder();
-	builder.append(ChatColor.GREEN.toString());
-	builder.append('/').append(label).append(' ');
-	builder.append(cmd);
-	builder.append(ChatColor.YELLOW);
+	String cmdString = Jobs.getLanguage().getMessage("command.help.output.cmdFormat", "[command]", label + " " + cmd);
 	String key = "command." + cmd + ".help.args";
-	if (Jobs.getLanguage().containsKey(key)) {
-	    builder.append(' ');
-	    builder.append(Jobs.getLanguage().getMessage(key));
-	}
-	return builder.toString();
-    }
-
-    public static String getUsageNoCmd(String cmd) {
-	StringBuilder builder = new StringBuilder();
-	builder.append(ChatColor.GREEN.toString());
-	builder.append('/').append(label).append(' ');
-	builder.append(ChatColor.YELLOW);
-	String key = "command." + cmd + ".help.args";
-	if (Jobs.getLanguage().containsKey(key)) {
-	    builder.append(' ');
-	    builder.append(Jobs.getLanguage().getMessage(key));
-	}
-	return builder.toString();
+	if (Jobs.getLanguage().containsKey(key) && !Jobs.getLanguage().getMessage(key).isEmpty()) {
+	    cmdString = cmdString.replace("[arguments]", " " + Jobs.getLanguage().getMessage(key));
+	} else {
+	    cmdString = cmdString.replace("[arguments]", "");
+	} 
+	return cmdString;
     }
 
     public void sendUsage(CommandSender sender, String cmd) {
-	String message = ChatColor.YELLOW + Jobs.getLanguage().getMessage("command.help.output.usage");
-	message = message.replace("%usage%", getUsage(cmd));
+	String message = Jobs.getLanguage().getMessage("command.help.output.cmdUsage");
+	message = message.replace("[command]", getUsage(cmd));
 	sender.sendMessage(message);
-	sender.sendMessage(ChatColor.YELLOW + "* " + Jobs.getLanguage().getMessage("command." + cmd + ".help.info"));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.helpPageDescription", "[description]", Jobs.getLanguage().getMessage("command." + cmd + ".help.info")));
     }
 
     protected boolean help(CommandSender sender, int page) {
@@ -188,7 +172,10 @@ public class JobsCommands implements CommandExecutor {
 		continue;
 	    if (pi.isBreak())
 		break;
-	    sender.sendMessage(getUsage(one.getKey()) + " - " + Jobs.getLanguage().getMessage("command." + one.getKey() + ".help.info"));
+
+	    String msg = Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one.getKey()), "[description]", Jobs.getLanguage().getMessage("command." + one.getKey()
+		+ ".help.info"));
+	    sender.sendMessage(msg);
 	}
 
 	plugin.ShowPagination(sender, pi.getTotalPages(), page, label + " ?");

@@ -140,6 +140,25 @@ public class LanguageManager {
 	    c.get("general.error.fromconsole", "&cYou can use this command only from console!");
 	    c.get("general.error.worldisdisabled", "&cYou cant use command in this world!");
 
+	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
+	    c.get("command.help.output.cmdUsage", "&2Usage: &7[command]");
+	    
+	    c.get("command.help.output.cmdInfoFormat", "[command] &f- &8[description]");
+	    c.get("command.help.output.cmdFormat", "&7/[command]&f[arguments]");
+	    c.get("command.help.output.helpPageDescription", "&2* [description]");
+	    
+	    c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");
+	    c.get("command.help.output.page", "&e-----&e ====== Page &6[1] &eof &6[2] &e====== &e-----");
+	    c.get("command.help.output.fliperSimbols", "&e----------");
+
+	    c.get("command.help.output.prevPage", "&2----<< &6Prev ");
+	    c.get("command.help.output.prevPageOff", "&7----<< Prev ");
+	    c.get("command.help.output.nextPage", "&6 Next &2>>----");
+	    c.get("command.help.output.nextPageOff", "&7 Next >>----");
+	    c.get("command.help.output.pageCount", "&2[current]/[total]");
+
+
+	    
 	    c.get("command.moneyboost.help.info", "Boosts Money gain for all players");
 	    c.get("command.moneyboost.help.args", "[jobname] [rate]");
 	    Jobs.getGCManager().commandArgs.put("moneyboost", Arrays.asList("[jobname]", "[rate]"));
@@ -208,18 +227,6 @@ public class LanguageManager {
 	    c.get("command.resetlimit.help.info", "Resets players payment limits");
 	    c.get("command.resetlimit.help.args", "[playername]");
 	    c.get("command.resetlimit.output.reseted", "&ePayment limits have been reset for: &2%playername%");
-
-	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
-	    c.get("command.help.output.usage", "Usage: %usage%");
-	    c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");
-	    c.get("command.help.output.page", "&e-----&e ====== Page &6[1] &eof &6[2] &e====== &e-----");
-	    c.get("command.help.output.fliperSimbols", "&e----------");
-	    
-	    c.get("command.help.output.prevPage", "&2----<< &6Prev ");
-	    c.get("command.help.output.prevPageOff", "&7----<< Prev ");
-	    c.get("command.help.output.nextPage", "&6 Next &2>>----");
-	    c.get("command.help.output.nextPageOff", "&7 Next >>----");
-	    c.get("command.help.output.pageCount", "&2[current]/[total]");
 
 	    c.get("command.points.help.info", "Shows how much points player have.");
 	    c.get("command.points.help.args", "[playername]");
@@ -396,7 +403,7 @@ public class LanguageManager {
 	    c.get("command.leaveall.help.info", "Leave all your jobs.");
 	    c.get("command.leaveall.error.nojobs", "You do not have any jobs to leave!");
 	    c.get("command.leaveall.success", "You have left all your jobs.");
-	    
+
 	    c.get("command.explored.help.info", "Check who visited this chunk");
 	    c.get("command.explored.error.noexplore", "No one visited this chunk");
 	    c.get("command.explored.list", "&e%place%. %playername%");
@@ -408,17 +415,15 @@ public class LanguageManager {
 	    c.get("command.browse.output.totalWorkers", " &7Workers: &e[amount]");
 	    c.get("command.browse.output.penalty", " &4Penalty: &c[amount]%");
 	    c.get("command.browse.output.bonus", " &2Bonus: &a[amount]%");
-	    
 
 	    c.get("command.browse.output.newHeader", "&2========== [amount] Available Jobs =========");
 	    c.get("command.browse.output.list", "    &8[place]. &7[jobname]");
 	    c.get("command.browse.output.click", "&bClick on the job to see more info about it!");
-	    c.get("command.browse.output.detailed", "&bClick to see more detailed list on job actions"); 
+	    c.get("command.browse.output.detailed", "&bClick to see more detailed list on job actions");
 
 	    c.get("command.browse.output.jobHeader", "&2========== [jobname] =========");
 	    c.get("command.browse.output.chooseJob", "&7&n&oChoose this job");
 	    c.get("command.browse.output.chooseJobHover", "&7Click here to get this job");
-	    
 
 	    c.get("command.quests.help.info", "List available quests");
 	    c.get("command.quests.help.args", "(playername)");
@@ -427,8 +432,6 @@ public class LanguageManager {
 	    c.get("command.quests.output.completed", "&2      !Completed!&r      ");
 	    c.get("command.quests.output.questLine", "[progress] &7[questName] &f[done]&7/&8[required]");
 	    c.get("command.quests.output.hover", Arrays.asList("&f[jobName]", "[desc]", "&7New quest in: [time]"));
-	    
-	    
 
 	    c.get("command.fire.help.info", "Fire the player from the job.");
 	    c.get("command.fire.help.args", "[playername] [jobname]");
