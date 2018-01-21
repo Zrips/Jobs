@@ -20,6 +20,7 @@ package com.gamingmesh.jobs.listeners;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -95,12 +96,13 @@ import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Debug;
+import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.google.common.base.Objects;
 
 public class JobsPaymentListener implements Listener {
     private Jobs plugin;
-    private final String furnaceOwnerMetadata = "jobsFurnaceOwner";
-    private final String brewingOwnerMetadata = "jobsBrewingOwner";
+    public static final String furnaceOwnerMetadata = "jobsFurnaceOwner";
+    public static final String brewingOwnerMetadata = "jobsBrewingOwner";
     private final String BlockMetadata = "BlockOwner";
     public static final String VegyMetadata = "VegyTimer";
     private final String CowMetadata = "CowTimer";
@@ -178,7 +180,7 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
 	    return;
-	
+
 	if (!(event.getEntity() instanceof Sheep))
 	    return;
 	Sheep sheep = (Sheep) event.getEntity();
@@ -233,7 +235,12 @@ public class JobsPaymentListener implements Listener {
 	MetadataValue value = data.get(0);
 	String playerName = value.asString();
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(playerName);
+	UUID uuid = UUID.fromString(playerName);
+
+	if (uuid == null)
+	    return;
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(uuid);
 
 	if (jPlayer == null || !jPlayer.isOnline())
 	    return;
@@ -259,8 +266,8 @@ public class JobsPaymentListener implements Listener {
 	Block block = event.getBlock();
 	if (block == null)
 	    return;
-	if (block.getType() == Material.FURNACE && block.hasMetadata(this.furnaceOwnerMetadata))
-	    block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
+	if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
+	    FurnaceBrewingHandling.removeFurnace(block);
 
 	// make sure plugin is enabled
 	if (!this.plugin.isEnabled())
@@ -750,8 +757,8 @@ public class JobsPaymentListener implements Listener {
 		return;
 	    Block block = furnace.getBlock();
 
-	    if (block.hasMetadata(this.furnaceOwnerMetadata))
-		block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
+	    if (block.hasMetadata(furnaceOwnerMetadata))
+		FurnaceBrewingHandling.removeFurnace(block);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -775,8 +782,8 @@ public class JobsPaymentListener implements Listener {
 		return;
 	    Block block = stand.getBlock();
 
-	    if (block.hasMetadata(this.brewingOwnerMetadata))
-		block.removeMetadata(this.brewingOwnerMetadata, this.plugin);
+	    if (block.hasMetadata(brewingOwnerMetadata))
+		FurnaceBrewingHandling.removeBrewing(block);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -793,16 +800,23 @@ public class JobsPaymentListener implements Listener {
 	if (block == null)
 	    return;
 
-	if (!block.hasMetadata(this.furnaceOwnerMetadata))
+	if (!block.hasMetadata(furnaceOwnerMetadata))
 	    return;
-	List<MetadataValue> data = block.getMetadata(this.furnaceOwnerMetadata);
+	List<MetadataValue> data = block.getMetadata(furnaceOwnerMetadata);
 	if (data.isEmpty())
 	    return;
 
 	// only care about first
 	MetadataValue value = data.get(0);
 	String playerName = value.asString();
-	Player player = Bukkit.getServer().getPlayerExact(playerName);
+
+	Player player = null;
+
+	UUID uuid = UUID.fromString(playerName);
+	if (uuid == null)
+	    return;
+	player = Bukkit.getPlayer(uuid);
+
 	if (player == null || !player.isOnline())
 	    return;
 
@@ -1283,8 +1297,8 @@ public class JobsPaymentListener implements Listener {
 	    if (block == null)
 		continue;
 
-	    if (block.getType() == Material.FURNACE && block.hasMetadata(this.furnaceOwnerMetadata))
-		block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
+	    if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
+		FurnaceBrewingHandling.removeFurnace(block);
 
 	    if (Jobs.getGCManager().useBlockProtection)
 		if (block.getState().hasMetadata(BlockMetadata))
@@ -1311,14 +1325,49 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (block.getType() == Material.FURNACE || block.getType() == Material.BURNING_FURNACE) {
-	    if (block.hasMetadata(this.furnaceOwnerMetadata))
-		block.removeMetadata(this.furnaceOwnerMetadata, this.plugin);
-	    block.setMetadata(this.furnaceOwnerMetadata, new FixedMetadataValue(this.plugin, event.getPlayer().getName()));
-	} else if (block.getType() == Material.BREWING_STAND) {
-	    if (block.hasMetadata(brewingOwnerMetadata))
-		block.removeMetadata(brewingOwnerMetadata, this.plugin);
 
-	    block.setMetadata(brewingOwnerMetadata, new FixedMetadataValue(this.plugin, event.getPlayer().getName()));
+	    boolean done = FurnaceBrewingHandling.registerFurnaces(event.getPlayer(), block);
+
+	    if (!done) {
+		boolean report = false;
+		if (block.hasMetadata(furnaceOwnerMetadata)) {
+		    List<MetadataValue> data = block.getMetadata(furnaceOwnerMetadata);
+		    if (data.isEmpty())
+			return;
+		    // only care about first
+		    MetadataValue value = data.get(0);
+		    String uuid = value.asString();
+
+		    if (!uuid.equals(event.getPlayer().getUniqueId().toString()))
+			report = true;
+		} else
+		    report = true;
+
+		if (report)
+		    Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.noFurnaceRegistration"));
+	    }
+	} else if (block.getType() == Material.BREWING_STAND) {
+
+	    boolean done = FurnaceBrewingHandling.registerBrewingStand(event.getPlayer(), block);
+
+	    if (!done) {
+		boolean report = false;
+		if (block.hasMetadata(brewingOwnerMetadata)) {
+		    List<MetadataValue> data = block.getMetadata(brewingOwnerMetadata);
+		    if (data.isEmpty())
+			return;
+		    // only care about first
+		    MetadataValue value = data.get(0);
+		    String uuid = value.asString();
+
+		    if (!uuid.equals(event.getPlayer().getUniqueId().toString()))
+			report = true;
+		} else
+		    report = true;
+
+		if (report)
+		    Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.noBrewingRegistration"));
+	    }
 	}
     }
 

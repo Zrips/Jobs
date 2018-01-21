@@ -96,6 +96,7 @@ import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
+import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.RawMessage;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -526,7 +527,6 @@ public class Jobs extends JavaPlugin {
      * @throws IOException 
      */
     public void startup() {
-	instance = this;
 	try {
 	    reload();
 	} catch (IOException e1) {
@@ -740,6 +740,8 @@ public class Jobs extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+	instance = this;
 	running = true;
 	this.setEnabled(true);
 
@@ -780,6 +782,8 @@ public class Jobs extends JavaPlugin {
 	    YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
 	    jobShopItems.saveDefaultConfig();
 
+	    FurnaceBrewingHandling.load();
+	    
 	    setPermissionHandler(new PermissionHandler(this));
 	    setJobsClassloader();
 	    setPlayerManager();
@@ -849,6 +853,9 @@ public class Jobs extends JavaPlugin {
 	shopManager.CloseInventories();
 	dao.saveExplore();
 	dao.saveBlockProtection();
+	
+	FurnaceBrewingHandling.save();
+	
 	Jobs.shutdown();
 	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Plugin has been disabled succesfully.");
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();

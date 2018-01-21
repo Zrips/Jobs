@@ -139,6 +139,8 @@ public class LanguageManager {
 	    c.get("general.error.ingame", "&cYou can use this command only in game!");
 	    c.get("general.error.fromconsole", "&cYou can use this command only from console!");
 	    c.get("general.error.worldisdisabled", "&cYou cant use command in this world!");
+	    c.get("general.error.noFurnaceRegistration", "&cYou reached max furnace count!");
+	    c.get("general.error.noBrewingRegistration", "&cYou reached max brewing stand count!");
 
 	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
 	    c.get("command.help.output.cmdUsage", "&2Usage: &7[command]");

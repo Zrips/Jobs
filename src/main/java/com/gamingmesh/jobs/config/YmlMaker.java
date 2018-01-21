@@ -76,6 +76,20 @@ public class YmlMaker {
 	}
     }
 
+    public boolean exists() {
+	return this.ConfigFile.exists();
+    }
+
+    public void createNewFile() {
+	if (!this.ConfigFile.exists()) {
+	    try {
+		this.ConfigFile.createNewFile();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	}
+    }
+
     public void saveDefaultConfig() {
 	if (!this.ConfigFile.exists()) {
 	    this.plugin.saveResource(this.fileName, false);
