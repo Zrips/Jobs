@@ -36,7 +36,7 @@ public class PermissionManager {
 
     private enum prm {
 //	jobs_join_JOBNAME(remade("jobs.join.%JOBNAME%"), 60 * 1000),
-//	jobs_use(remade("jobs.use"), 60 * 1000),
+	jobs_use(remade("jobs.use"), 2 * 1000),
 //	jobs_boost_JOBNAME_money(remade("jobs.boost.%JOBNAME%.money"), 60 * 1000),
 //	jobs_boost_JOBNAME_exp(remade("jobs.boost.%JOBNAME%.exp"), 60 * 1000),
 //	jobs_boost_JOBNAME_points(remade("jobs.boost.%JOBNAME%.points"), 60 * 1000),
@@ -54,7 +54,7 @@ public class PermissionManager {
 	jobs_petpay_AMOUNT(remade("jobs.petpay.%AMOUNT%"), 60 * 1000),
 	jobs_maxfurnaces_AMOUNT(remade("jobs.maxfurnaces.%AMOUNT%"), 2 * 1000),
 	jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 2 * 1000),
-//	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 60 * 1000)
+	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2 * 1000)
 	;
 
 	private int reload;

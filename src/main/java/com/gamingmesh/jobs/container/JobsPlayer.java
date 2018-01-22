@@ -33,6 +33,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -942,5 +943,34 @@ public class JobsPlayer {
 
     public void addDoneQuest() {
 	this.doneQuests++;
+    }
+
+    public int getFurnaceCount() {
+	return FurnaceBrewingHandling.getTotalFurnaces(this.getPlayerUUID());
+    }
+
+    public int getBrewingStandCount() {
+	return FurnaceBrewingHandling.getTotalBrewingStands(this.getPlayerUUID());
+    }
+
+    public int getMaxBrewingStandsAllowed() {
+	Double maxV = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxbrewingstands");
+
+	if (maxV == null || maxV == 0)
+	    maxV = (double) Jobs.getGCManager().getBrewingStandsMaxDefault();
+
+	int max = maxV.intValue();
+	return max;
+    }
+
+    public int getMaxFurnacesAllowed() {
+	Double maxV = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxfurnaces");
+
+	if (maxV == null || maxV == 0)
+	    maxV = (double) Jobs.getGCManager().getFurnacesMaxDefault();
+
+	int max = maxV.intValue();
+
+	return max;
     }
 }

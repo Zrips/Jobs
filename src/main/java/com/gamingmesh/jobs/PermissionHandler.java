@@ -35,6 +35,7 @@ import com.gamingmesh.jobs.container.JobConditions;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class PermissionHandler {
     private Jobs plugin;
@@ -45,7 +46,6 @@ public class PermissionHandler {
 
     public void recalculatePermissions(JobsPlayer jPlayer) {
 
-//	long time = System.nanoTime();
 	if (jPlayer == null)
 	    return;
 
@@ -64,10 +64,11 @@ public class PermissionHandler {
 	}
 
 	// Permissions should only apply if we have permission to use jobs in this world
-	if (hasWorldPermission(player, player.getWorld().getName())) {
+	if (hasWorldPermission(player)) {
 	    List<JobProgression> progression = jPlayer.getJobProgression();
 	    // calculate new permissions
 	    HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
+
 	    if (progression.size() == 0) {
 		Job job = Jobs.getNoneJob();
 		if (job != null) {
@@ -249,6 +250,12 @@ public class PermissionHandler {
 	    return false;
 	}
 	return player.hasPermission("jobs.world." + world.toLowerCase());
+    }
+
+    public boolean hasWorldPermission(JobsPlayer player) {
+	if (player.getPlayer() == null)
+	    return false;
+	return hasWorldPermission(player, player.getPlayer().getWorld().getName());
     }
 
     public boolean hasWorldPermission(JobsPlayer player, String world) {

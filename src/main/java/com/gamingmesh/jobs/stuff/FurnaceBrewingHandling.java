@@ -17,6 +17,7 @@ import org.bukkit.metadata.MetadataValue;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.YmlMaker;
+import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 
 public class FurnaceBrewingHandling {
@@ -127,7 +128,8 @@ public class FurnaceBrewingHandling {
 	f.saveDefaultConfig();
 	FileConfiguration config = f.getConfig();
 
-	if (Jobs.getGCManager().isFurnacesReassign())
+	if (Jobs.getGCManager().isFurnacesReassign()) {
+	    config.set("Furnace", null);
 	    for (Entry<UUID, List<blockLoc>> one : furnaceMap.entrySet()) {
 
 		String full = "";
@@ -143,8 +145,10 @@ public class FurnaceBrewingHandling {
 		    config.set("Furnace." + one.getKey().toString(), full);
 		}
 	    }
+	}
 
-	if (Jobs.getGCManager().isBrewingStandsReassign())
+	if (Jobs.getGCManager().isBrewingStandsReassign()) {
+	    config.set("Brewing", null);
 	    for (Entry<UUID, List<blockLoc>> one : brewingMap.entrySet()) {
 
 		String full = "";
@@ -159,20 +163,21 @@ public class FurnaceBrewingHandling {
 		if (!full.isEmpty())
 		    config.set("Brewing." + one.getKey().toString(), full);
 	    }
+	}
 
 	f.saveConfig();
 
     }
 
-    public static int getTotalFurnaces(Player player) {
-	List<blockLoc> ls = furnaceMap.get(player.getUniqueId());
+    public static int getTotalFurnaces(UUID uuid) {
+	List<blockLoc> ls = furnaceMap.get(uuid);
 	if (ls == null)
 	    return 0;
 	return ls.size();
     }
 
-    public static int getTotalBrewingStands(Player player) {
-	List<blockLoc> ls = brewingMap.get(player.getUniqueId());
+    public static int getTotalBrewingStands(UUID uuid) {
+	List<blockLoc> ls = brewingMap.get(uuid);
 	if (ls == null)
 	    return 0;
 	return ls.size();
@@ -210,8 +215,8 @@ public class FurnaceBrewingHandling {
     public static boolean removeBrewing(Block block) {
 
 	UUID uuid = null;
-	if (block.hasMetadata(JobsPaymentListener.furnaceOwnerMetadata)) {
-	    List<MetadataValue> data = block.getMetadata(JobsPaymentListener.furnaceOwnerMetadata);
+	if (block.hasMetadata(JobsPaymentListener.brewingOwnerMetadata)) {
+	    List<MetadataValue> data = block.getMetadata(JobsPaymentListener.brewingOwnerMetadata);
 	    if (!data.isEmpty()) {
 		// only care about first
 		MetadataValue value = data.get(0);
@@ -235,20 +240,21 @@ public class FurnaceBrewingHandling {
 
     }
 
-    public static boolean registerFurnaces(Player player, Block block) {
+    public enum ownershipFeedback {
+	invalid, tooMany, newReg, old
+    }
+
+    public static ownershipFeedback registerFurnaces(Player player, Block block) {
 
 	if (block.getType() != Material.FURNACE && block.getType() != Material.BURNING_FURNACE) {
-	    return false;
+	    return ownershipFeedback.invalid;
 	}
 
-	Double maxV = Jobs.getPermissionManager().getMaxPermission(Jobs.getPlayerManager().getJobsPlayer(player), "jobs.maxfurnaces");
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
-	if (maxV == null)
-	    maxV = (double) Jobs.getGCManager().getFurnacesMaxDefault();
+	int max = jPlayer.getMaxFurnacesAllowed();
 
-	int max = maxV.intValue();
-
-	int have = getTotalFurnaces(player);
+	int have = jPlayer.getFurnaceCount();
 
 	boolean owner = false;
 	if (block.hasMetadata(JobsPaymentListener.furnaceOwnerMetadata)) {
@@ -259,7 +265,7 @@ public class FurnaceBrewingHandling {
 		String uuid = value.asString();
 
 		if (uuid.equals(player.getUniqueId().toString())) {
-		    if (have > max)
+		    if (have > max && max > 0)
 			removeFurnace(block);
 		    owner = true;
 		}
@@ -267,10 +273,10 @@ public class FurnaceBrewingHandling {
 	}
 
 	if (owner)
-	    return true;
+	    return ownershipFeedback.old;
 
 	if (have >= max && max > 0)
-	    return false;
+	    return ownershipFeedback.tooMany;
 
 	block.setMetadata(JobsPaymentListener.furnaceOwnerMetadata, new FixedMetadataValue(Jobs.getInstance(), player.getUniqueId().toString()));
 
@@ -280,23 +286,20 @@ public class FurnaceBrewingHandling {
 	ls.add(new blockLoc(block.getLocation()));
 	furnaceMap.put(player.getUniqueId(), ls);
 
-	return true;
+	return ownershipFeedback.newReg;
     }
 
-    public static boolean registerBrewingStand(Player player, Block block) {
+    public static ownershipFeedback registerBrewingStand(Player player, Block block) {
 
 	if (block.getType() != Material.BREWING_STAND) {
-	    return false;
+	    return ownershipFeedback.invalid;
 	}
 
-	Double maxV = Jobs.getPermissionManager().getMaxPermission(Jobs.getPlayerManager().getJobsPlayer(player), "jobs.maxbrewingstands");
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
-	if (maxV == null)
-	    maxV = (double) Jobs.getGCManager().getBrewingStandsMaxDefault();
+	int max = jPlayer.getMaxBrewingStandsAllowed();
 
-	int max = maxV.intValue();
-
-	int have = getTotalFurnaces(player);
+	int have = jPlayer.getBrewingStandCount();
 
 	boolean owner = false;
 	if (block.hasMetadata(JobsPaymentListener.brewingOwnerMetadata)) {
@@ -307,18 +310,17 @@ public class FurnaceBrewingHandling {
 		String uuid = value.asString();
 
 		if (uuid.equals(player.getUniqueId().toString())) {
-		    if (have > max)
+		    if (have > max && max > 0)
 			removeBrewing(block);
 		    owner = true;
 		}
 	    }
 	}
-
 	if (owner)
-	    return true;
+	    return ownershipFeedback.old;
 
 	if (have >= max && max > 0)
-	    return false;
+	    return ownershipFeedback.tooMany;
 
 	block.setMetadata(JobsPaymentListener.brewingOwnerMetadata, new FixedMetadataValue(Jobs.getInstance(), player.getUniqueId().toString()));
 
@@ -328,16 +330,40 @@ public class FurnaceBrewingHandling {
 	ls.add(new blockLoc(block.getLocation()));
 	brewingMap.put(player.getUniqueId(), ls);
 
-	return true;
+	return ownershipFeedback.newReg;
     }
 
-    public static boolean clearFurnaces(Player player) {
-	furnaceMap.remove(player.getUniqueId());
-	return true;
+    public static int clearFurnaces(UUID uuid) {
+	List<blockLoc> ls = furnaceMap.remove(uuid);
+	if (ls == null)
+	    return 0;
+	for (blockLoc one : ls) {
+	    Block block = one.getBlock();
+	    if (block == null)
+		continue;
+
+	    if (block.getType() != Material.FURNACE && block.getType() != Material.BURNING_FURNACE) {
+		continue;
+	    }
+	    block.removeMetadata(JobsPaymentListener.furnaceOwnerMetadata, Jobs.getInstance());
+	}
+	return ls.size();
     }
 
-    public static boolean clearBrewingStands(Player player) {
-	brewingMap.remove(player.getUniqueId());
-	return true;
+    public static int clearBrewingStands(UUID uuid) {
+	List<blockLoc> ls = brewingMap.remove(uuid);
+	if (ls == null)
+	    return 0;
+	for (blockLoc one : ls) {
+	    Block block = one.getBlock();
+	    if (block == null)
+		continue;
+
+	    if (block.getType() != Material.BREWING_STAND) {
+		continue;
+	    }
+	    block.removeMetadata(JobsPaymentListener.brewingOwnerMetadata, Jobs.getInstance());
+	}
+	return ls.size();
     }
 }

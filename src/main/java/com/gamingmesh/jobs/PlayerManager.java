@@ -168,7 +168,9 @@ public class PlayerManager {
      * @param playername
      */
     public void playerJoin(Player player) {
+
 	JobsPlayer jPlayer = this.playersUUIDCache.get(player.getUniqueId());
+
 	if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
 	    jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 	    jPlayer.loadLogFromDao();
@@ -180,6 +182,7 @@ public class PlayerManager {
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+
 	return;
     }
 
@@ -323,7 +326,7 @@ public class PlayerManager {
 
 	if (logs != null)
 	    jPlayer.setLog(logs);
-	
+
 	if (limits != null)
 	    jPlayer.setPaymentLimit(limits);
 

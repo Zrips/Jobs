@@ -139,6 +139,9 @@ public class LanguageManager {
 	    c.get("general.error.ingame", "&cYou can use this command only in game!");
 	    c.get("general.error.fromconsole", "&cYou can use this command only from console!");
 	    c.get("general.error.worldisdisabled", "&cYou cant use command in this world!");
+	    
+	    c.get("general.error.newFurnaceRegistration", "&eRegistered new ownership for furnace &7[current]&e/&f[max]");
+	    c.get("general.error.newBrewingRegistration", "&eRegistered new ownership for brewing stand &7[current]&e/&f[max]");
 	    c.get("general.error.noFurnaceRegistration", "&cYou reached max furnace count!");
 	    c.get("general.error.noBrewingRegistration", "&cYou reached max brewing stand count!");
 
@@ -427,6 +430,10 @@ public class LanguageManager {
 	    c.get("command.browse.output.chooseJob", "&7&n&oChoose this job");
 	    c.get("command.browse.output.chooseJobHover", "&7Click here to get this job");
 
+	    c.get("command.clearownership.help.info", "Clear block ownership");
+	    c.get("command.clearownership.help.args", "(playername)");
+	    c.get("command.clearownership.output.cleared", "&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands");
+	    
 	    c.get("command.quests.help.info", "List available quests");
 	    c.get("command.quests.help.args", "(playername)");
 	    c.get("command.quests.error.noquests", "There are no jobs you can join.");

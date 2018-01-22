@@ -97,6 +97,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
+import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
 
 public class JobsPaymentListener implements Listener {
@@ -1326,9 +1327,8 @@ public class JobsPaymentListener implements Listener {
 
 	if (block.getType() == Material.FURNACE || block.getType() == Material.BURNING_FURNACE) {
 
-	    boolean done = FurnaceBrewingHandling.registerFurnaces(event.getPlayer(), block);
-
-	    if (!done) {
+	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(event.getPlayer(), block);
+	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
 		if (block.hasMetadata(furnaceOwnerMetadata)) {
 		    List<MetadataValue> data = block.getMetadata(furnaceOwnerMetadata);
@@ -1345,12 +1345,16 @@ public class JobsPaymentListener implements Listener {
 
 		if (report)
 		    Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.noFurnaceRegistration"));
+	    } else if (done.equals(ownershipFeedback.newReg)) {
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
+		Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.newFurnaceRegistration",
+		    "[current]", jPlayer.getFurnaceCount(),
+		    "[max]", jPlayer.getMaxFurnacesAllowed() == 0 ? "-" : jPlayer.getMaxFurnacesAllowed()));
 	    }
 	} else if (block.getType() == Material.BREWING_STAND) {
 
-	    boolean done = FurnaceBrewingHandling.registerBrewingStand(event.getPlayer(), block);
-
-	    if (!done) {
+	    ownershipFeedback done = FurnaceBrewingHandling.registerBrewingStand(event.getPlayer(), block);
+	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
 		if (block.hasMetadata(brewingOwnerMetadata)) {
 		    List<MetadataValue> data = block.getMetadata(brewingOwnerMetadata);
@@ -1367,6 +1371,11 @@ public class JobsPaymentListener implements Listener {
 
 		if (report)
 		    Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.noBrewingRegistration"));
+	    } else if (done.equals(ownershipFeedback.newReg)) {
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
+		Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.newBrewingRegistration",
+		    "[current]", jPlayer.getBrewingStandCount(),
+		    "[max]", jPlayer.getMaxBrewingStandsAllowed() == 0 ? "-" : jPlayer.getMaxBrewingStandsAllowed()));
 	    }
 	}
     }
