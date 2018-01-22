@@ -782,7 +782,6 @@ public class Jobs extends JavaPlugin {
 	    YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
 	    jobShopItems.saveDefaultConfig();
 
-	    FurnaceBrewingHandling.load();
 	    
 	    setPermissionHandler(new PermissionHandler(this));
 	    setJobsClassloader();
@@ -834,12 +833,16 @@ public class Jobs extends JavaPlugin {
 	    dao.loadBlockProtection();
 	    getExplore().load();
 
+	    FurnaceBrewingHandling.load();
+	    
 	    String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Plugin has been enabled succesfully.");
 	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	    console.sendMessage(message);
 	    lManager.reload();
 
 	    cManager.fillCommands();
+
+	    
 	} catch (Exception e) {
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
 	    e.printStackTrace();

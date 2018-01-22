@@ -478,7 +478,7 @@ public class ShopManager {
 	}
 
 	if (!list.isEmpty())
-	    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] " + list.size() + " shop items loaded!");
+	    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + list.size() + " shop items!");
 
 	return;
     }

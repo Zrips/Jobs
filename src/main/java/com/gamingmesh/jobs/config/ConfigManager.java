@@ -764,12 +764,12 @@ public class ConfigManager {
 			quests.add(quest);
 
 		    } catch (Exception e) {
-			Jobs.getPluginLogger().warning("Cant load " + one + " quest for " + jobName);
+			Jobs.consoleMsg("&c[Jobs] Cant load " + one + " quest for " + jobName);
 			e.printStackTrace();
 		    }
 		}
 
-		Jobs.getPluginLogger().warning("Loaded " + quests.size() + " quests for " + jobName);
+		Jobs.consoleMsg("&e[Jobs] Loaded " + quests.size() + " quests for " + jobName);
 		job.setQuests(quests);
 	    }
 	    job.setMaxDailyQuests(jobSection.getInt("maxDailyQuests", 1));

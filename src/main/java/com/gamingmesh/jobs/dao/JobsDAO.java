@@ -1827,7 +1827,7 @@ public abstract class JobsDAO {
 		Jobs.getBpManager().timer += System.currentTimeMillis() - t;
 	    }
 	    if (i > 0) {
-		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] loaded " + i + " block protection entries. " + Jobs.getBpManager().timer);
+		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Loaded " + i + " block protection entries. " + Jobs.getBpManager().timer);
 		Bukkit.getServer().getConsoleSender().sendMessage(message);
 	    }
 	} catch (SQLException e) {

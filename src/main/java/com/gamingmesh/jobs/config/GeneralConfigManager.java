@@ -70,7 +70,7 @@ public class GeneralConfigManager {
     public boolean PaymentMethodsPoints;
     public boolean PaymentMethodsExp;
     public int getSelectionTooldID;
-    
+
     private int ResetTimeHour;
     private int ResetTimeMinute;
 
@@ -85,6 +85,9 @@ public class GeneralConfigManager {
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
     public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
     public String localeString = "EN";
+
+    private boolean FurnacesReassign, BrewingStandsReassign;
+    private int FurnacesMaxDefault, BrewingStandsMaxDefault;
 
     public boolean useBlockProtection;
     public int BlockProtectionDays;
@@ -102,7 +105,7 @@ public class GeneralConfigManager {
     public ItemStack guiBackButton;
     public ItemStack guiFiller;
 
-    public Integer levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
+    public Integer levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
 	SoundTitleChangePitch, ToplistInScoreboardInterval;
     public double MinimumOveralPaymentLimit;
     public double MinimumOveralPointsLimit;
@@ -725,6 +728,25 @@ public class GeneralConfigManager {
 	    "Set to 0 if you want to disable timer");
 	CowMilkingTimer = c.get("Economy.MilkingCow.Timer", 30) * 1000;
 
+	c.getW().addComment("ExploitProtections.Furnaces.Reassign",
+	    "When enabled, players interacted furnaces will be saved into file and will be reassigned after restart to keep giving out money",
+	    "Players will no longer need to click on furnace to get paid from it after server restart");
+	FurnacesReassign = c.get("ExploitProtections.Furnaces.Reassign", true);
+	c.getW().addComment("ExploitProtections.Furnaces.MaxDefaultAvailable",
+	    "Defines max avaible furnaces each player can have to get paid from",
+	    "This can be ovveriden with jobs.maxfurnaces.[amount] permission node");
+	FurnacesMaxDefault = c.get("ExploitProtections.Furnaces.MaxDefaultAvailable", 20);
+
+	c.getW().addComment("ExploitProtections.BrewingStands.Reassign",
+	    "When enabled, players interacted brewing stands will be saved into file and will be reassigned after restart to keep giving out money",
+	    "Players will no longer need to click on brewing stand to get paid from it after server restart");
+	BrewingStandsReassign = c.get("ExploitProtections.BrewingStands.Reassign", true);
+	c.getW().addComment("ExploitProtections.BrewingStands.MaxDefaultAvailable",
+	    "Defines max avaible brewing stands each player can have to get paid from",
+	    "Set to 0 if you want to disable this limitation",
+	    "This can be ovveriden with jobs.maxbrewingstands.[amount] permission node");
+	BrewingStandsMaxDefault = c.get("ExploitProtections.BrewingStands.MaxDefaultAvailable", 20);
+
 	c.getW().addComment("ExploitProtections.General.PlaceAndBreakProtection",
 	    "Enable blocks protection, like ore, from exploiting by placing and destroying same block again and again.",
 	    "Modify restrictedBlocks.yml for blocks you want to protect");
@@ -783,6 +805,10 @@ public class GeneralConfigManager {
 	    "You can fix players level if hes job level is at max level");
 	levelLossPercentage = c.get("old-job.level-loss-percentage", 30);
 	fixAtMaxLevel = c.get("old-job.fix-at-max-level", true);
+	c.getW().addComment("old-job.level-loss-from-max-level",
+	    "Percentage to loose when leaving job at max level",
+	    "Only works when fix-at-max-level is set to false");
+	levelLossPercentageFromMax = c.get("old-job.level-loss-from-max-level", levelLossPercentage);
 
 	c.getW().addComment("ActionBars.Messages.EnabledByDefault", "When this set to true player will see action bar messages by default");
 	ActionBarsMessageByDefault = c.get("ActionBars.Messages.EnabledByDefault", true);
@@ -891,5 +917,21 @@ public class GeneralConfigManager {
 
     public void setResetTimeMinute(int resetTimeMinute) {
 	ResetTimeMinute = resetTimeMinute;
+    }
+
+    public boolean isFurnacesReassign() {
+	return FurnacesReassign;
+    }
+
+    public boolean isBrewingStandsReassign() {
+	return BrewingStandsReassign;
+    }
+
+    public int getFurnacesMaxDefault() {
+	return FurnacesMaxDefault;
+    }
+
+    public int getBrewingStandsMaxDefault() {
+	return BrewingStandsMaxDefault;
     }
 }

@@ -421,8 +421,16 @@ public class JobsPlayer {
 
 	Job job = jp.getJob();
 	int maxLevel = this.getMaxJobLevelAllowed(job);
-	if (Jobs.getGCManager().fixAtMaxLevel && jp.getLevel() == maxLevel)
-	    level = jp.getLevel();
+	if (jp.getLevel() == maxLevel) {
+	    if (Jobs.getGCManager().fixAtMaxLevel) {
+		level = jp.getLevel();
+	    } else {
+		level = jp.getLevel();
+		level = (int) ((level - (level * (Jobs.getGCManager().levelLossPercentageFromMax / 100.0))));
+		if (level < 1)
+		    level = 1;
+	    }
+	}
 
 	return level;
     }
@@ -436,7 +444,14 @@ public class JobsPlayer {
 	    exp = max.doubleValue();
 
 	if (exp > 0) {
-	    exp = (exp - (exp * (Jobs.getGCManager().levelLossPercentage / 100.0)));
+	    Job job = jp.getJob();
+	    int maxLevel = this.getMaxJobLevelAllowed(job);
+	    if (jp.getLevel() == maxLevel) {
+		if (!Jobs.getGCManager().fixAtMaxLevel)
+		    exp = (exp - (exp * (Jobs.getGCManager().levelLossPercentageFromMax / 100.0)));
+	    } else {
+		exp = (exp - (exp * (Jobs.getGCManager().levelLossPercentage / 100.0)));
+	    }
 	}
 	return exp.intValue();
     }
