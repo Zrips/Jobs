@@ -77,7 +77,7 @@ public class join implements Cmd {
 
 	if (args.length == 2 && args[1].equalsIgnoreCase("-needConfirmation")) {
 	    RawMessage rm = new RawMessage();
-	    rm.add(Jobs.getLanguage().getMessage("command.join.confirm"), Jobs.getLanguage().getMessage("command.join.confirm"), "jobs join " + job.getName());	    
+	    rm.add(Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()), Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()), "jobs join " + job.getName());	    
 	    rm.show(sender);
 	    return true;
 	}
