@@ -80,7 +80,8 @@ public class GeneralConfigManager {
     public boolean PayForRenaming, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
 	EnableAnounceMessage, useSilkTouchProtection, UseCustomNames,
-	UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps;
+	UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
+	BrowseUseNewLook;
     public int globalblocktimer, CowMilkingTimer,
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
     public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
@@ -871,6 +872,8 @@ public class GeneralConfigManager {
 	c.getW().addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show penalty and bonus in jobs browse window. Only works if this feature is enabled");
 	ShowPenaltyBonus = c.get("JobsBrowse.ShowPenaltyBonus", true);
 
+	c.getW().addComment("JobsBrowse.UseNewLook", "Defines if you want to use new /jobs browse look or old one");
+	BrowseUseNewLook = c.get("JobsBrowse.UseNewLook", true);
 	c.getW().addComment("JobsBrowse.AmountToShow", "Defines amount of jobs to be shown in one page for /jobs browse");
 	BrowseAmountToShow = c.get("JobsBrowse.AmountToShow", 5);
 
