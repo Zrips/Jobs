@@ -731,14 +731,14 @@ public class ConfigManager {
 
 			ConfigurationSection sqsection = qsection.getConfigurationSection(one);
 
-			String name = sqsection.getString("Name");
+			String name = sqsection.getString("Name", one);
 
 			ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
 			KeyValues kv = getKeyValue(sqsection.getString("Target"), actionType, jobName);
 			if (kv == null)
 			    continue;
 			int amount = sqsection.getInt("Amount");
-			int chance = sqsection.getInt("Chance");
+			int chance = sqsection.getInt("Chance", 100);
 
 			List<String> commands = sqsection.getStringList("RewardCommands");
 			List<String> desc = sqsection.getStringList("RewardDesc");

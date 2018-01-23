@@ -241,7 +241,7 @@ public class FurnaceBrewingHandling {
     }
 
     public enum ownershipFeedback {
-	invalid, tooMany, newReg, old
+	invalid, tooMany, newReg, old, notOwn
     }
 
     public static ownershipFeedback registerFurnaces(Player player, Block block) {
@@ -268,7 +268,8 @@ public class FurnaceBrewingHandling {
 		    if (have > max && max > 0)
 			removeFurnace(block);
 		    owner = true;
-		}
+		} else
+		    return ownershipFeedback.notOwn;
 	    }
 	}
 
@@ -313,7 +314,8 @@ public class FurnaceBrewingHandling {
 		    if (have > max && max > 0)
 			removeBrewing(block);
 		    owner = true;
-		}
+		} else
+		    return ownershipFeedback.notOwn;
 	    }
 	}
 	if (owner)

@@ -1,7 +1,7 @@
 name: Jobs
 description: Jobs Plugin for the BukkitAPI
 main: com.gamingmesh.jobs.Jobs
-version: 4.2.1
+version: 4.3.0
 website: https://www.spigotmc.org/resources/jobs-reborn.4216/
 author: phrstbrn
 softdepend: [Vault, iConomy, MythicMobs, McMMO, WorldGuard, MyPet]
@@ -178,3 +178,9 @@ permissions:
   jobs.command.exp:
     description: Grants access to the exp command
     default: op
+  jobs.command.quests:
+    description: Grants access to the quests command
+    default: true
+  jobs.command.clearownership:
+    description: Grants access to the clearownership command
+    default: true

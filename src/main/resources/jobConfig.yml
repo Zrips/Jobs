@@ -23,6 +23,12 @@ Jobs:
     # than 1 job
     shortname: W
     description: Earns money felling and planting trees  
+    # Full description of job to be shown in job browse command
+    FullDescription: 
+    - "&2Get money for:"
+    - "  &7Planting trees"
+    - "  &7Cutting down trees"
+    - "  &7Killing players"
     # The colour of the name, for a full list of supported colours, go to the message config.
     ChatColour: GREEN
     # [OPTIONAL] The colour of the boss bar: GREEN, BLUE, RED, WHITE, YELLOW, PINK, PURPLE.
@@ -79,6 +85,65 @@ Jobs:
       Id: 17
     # data of block, usualy its 0, but in example Diorite will have id of 1 and data of 3
       Data: 2
+    # Defines maximum amount of daily quests player can have from THIS job
+    # This will not have effect on overall quest amount player will have
+    maxDailyQuests: 3
+    # Daily quests
+    # Each job can have as many daily quests as you want
+    # Players will have access to quests from jobs he is currently working at
+    Quests:
+      # Quest identification. Can be any ONE word or number or both of them. This doesnt have any real meaning but it cant repeat
+      1:
+        # Quest name used for quests list, don't forget to enclose it with " "
+        Name: "Break Oak wood"
+        # Quest action can be any valid job action. Look at lower for all possible action types
+        Action: Break
+        # Target id or name. Comes in same format as it is for regular job action
+        Target: "17-0"
+        # Amount of actions players should perform to complete this quest
+        Amount: 300
+        # Command list to be performed after quest is finished.
+        # Use [playerName] to insert players name who finished that quest
+        RewardCommands: 
+        - "money give [playerName] 500"
+        - "msg [playerName] Completed quest!"
+        # Quest description to be used to explain quest requirements or rewards for player
+        RewardDesc: 
+        - "Break 300 Oak wood"
+        - "Get 500 bucks for this"
+        # Defines chance in getting this quest. 
+        # If you have set 10 quests and player can have only 2, then quests with biggest chance will be picked most likely
+        # This will allow to have some rare quests with legendary rewards
+        Chance: 40
+        # Defines to which job level you want to give out this quest. 
+        # Keep in mind that player will keep quest even if he is over level limit if he got new one while being under
+        # In example: player with level 2 takes quests and levels up to level 5, he still can finish this quest and after next quest reset (check general config file) he will no longer have option to get this quest
+        toLevel: 3
+        # Defines from which level you want to give option to get this quest
+        # You can use both limitations to have limited quests for particular job level ranges
+        fromLevel: 5
+      2:
+        Name: "Zombie killer"
+        Action: Kill
+        Target: Zombie
+        Amount: 50
+        RewardCommands: 
+        - "money give [playerName] 2000"
+        - "msg [playerName] Completed quest!"
+        RewardDesc: 
+        - "Kill 50 zombies"
+        - "Get 2000 for this!"
+      3:
+        Name: "Chicken cooker"
+        Action: Smelt
+        Target: "COOKED_CHICKEN"
+        Amount: 20
+        RewardCommands: 
+        - "money give [playerName] 300"
+        - "msg [playerName] Completed quest!"
+        RewardDesc: 
+        - "Cook some chicken breasts"
+        - "Get 300 for this!"
     ########################################################################
     # Section used to configure what items the job gets paid for, how much
     # they get paid and how much experience they gain.

@@ -148,7 +148,7 @@ public class LanguageManager {
 	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
 	    c.get("command.help.output.cmdUsage", "&2Usage: &7[command]");
 	    
-	    c.get("command.help.output.cmdInfoFormat", "[command] &f- &8[description]");
+	    c.get("command.help.output.cmdInfoFormat", "[command] &f- &2[description]");
 	    c.get("command.help.output.cmdFormat", "&7/[command]&f[arguments]");
 	    c.get("command.help.output.helpPageDescription", "&2* [description]");
 	    
@@ -436,7 +436,7 @@ public class LanguageManager {
 	    
 	    c.get("command.quests.help.info", "List available quests");
 	    c.get("command.quests.help.args", "(playername)");
-	    c.get("command.quests.error.noquests", "There are no jobs you can join.");
+	    c.get("command.quests.error.noquests", "There are no quests");
 	    c.get("command.quests.toplineseparator", "&7*********************** &6[playerName]&2(&f[questsDone]&2) &7***********************");
 	    c.get("command.quests.output.completed", "&2      !Completed!&r      ");
 	    c.get("command.quests.output.questLine", "[progress] &7[questName] &f[done]&7/&8[required]");

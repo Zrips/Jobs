@@ -65,7 +65,7 @@ public class browse implements Cmd {
 	}
 
 	if (j == null) {
-	    PageInfo pi = new PageInfo(5, jobList.size(), page);
+	    PageInfo pi = new PageInfo(Jobs.getGCManager().getBrowseAmountToShow(), jobList.size(), page);
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.newHeader", "[amount]", jobList.size()));
 	    for (Job one : jobList) {
 		if (!pi.isEntryOk())

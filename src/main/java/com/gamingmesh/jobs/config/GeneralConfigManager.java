@@ -87,7 +87,7 @@ public class GeneralConfigManager {
     public String localeString = "EN";
 
     private boolean FurnacesReassign, BrewingStandsReassign;
-    private int FurnacesMaxDefault, BrewingStandsMaxDefault;
+    private int FurnacesMaxDefault, BrewingStandsMaxDefault, BrowseAmountToShow;
 
     public boolean useBlockProtection;
     public int BlockProtectionDays;
@@ -871,6 +871,9 @@ public class GeneralConfigManager {
 	c.getW().addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show penalty and bonus in jobs browse window. Only works if this feature is enabled");
 	ShowPenaltyBonus = c.get("JobsBrowse.ShowPenaltyBonus", true);
 
+	c.getW().addComment("JobsBrowse.AmountToShow", "Defines amount of jobs to be shown in one page for /jobs browse");
+	BrowseAmountToShow = c.get("JobsBrowse.AmountToShow", 5);
+
 	c.getW().addComment("JobsGUI.OpenOnBrowse", "Do you want to show GUI when performing /jobs browse command");
 	JobsGUIOpenOnBrowse = c.get("JobsGUI.OpenOnBrowse", true);
 	c.getW().addComment("JobsGUI.ShowChatBrowse", "Do you want to show chat information when performing /jobs browse command");
@@ -933,5 +936,9 @@ public class GeneralConfigManager {
 
     public int getBrewingStandsMaxDefault() {
 	return BrewingStandsMaxDefault;
+    }
+
+    public int getBrowseAmountToShow() {
+	return BrowseAmountToShow;
     }
 }
