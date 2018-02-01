@@ -232,14 +232,14 @@ public class JobsListener implements Listener {
 		if (job != null) {
 		    Inventory inv = Jobs.getGUIManager().CreateJobsSubGUI(player, job);
 		    Inventory top = player.getOpenInventory().getTopInventory();
-		    if (top.getSize() == 54)
+		    if (top.getSize() == Jobs.getGCManager().getJobsGUIRows() * 9)
 			top.setContents(inv.getContents());
 		}
 	    } else if (joblist.isJobInfo()) {
 		if (slot == joblist.getbackButton()) {
 		    Inventory inv = Jobs.getGUIManager().CreateJobsGUI(player);
 		    Inventory top = player.getOpenInventory().getTopInventory();
-		    if (top.getSize() == 54)
+		    if (top.getSize() == Jobs.getGCManager().getJobsGUIRows() * 9)
 			top.setContents(inv.getContents());
 		}
 	    } else if (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
