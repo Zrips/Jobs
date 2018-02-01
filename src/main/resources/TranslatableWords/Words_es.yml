@@ -1,0 +1,2179 @@
+ItemList:
+  '0':
+    MCName: air
+    Name: Aire (Air)
+  '1':
+    MCName: stone
+    Name: Toda la Piedra (stone)
+  '1:0':
+    MCName: stone
+    Name: Piedra (Stone)
+  '1:1':
+    MCName: stone
+    Name: Granito (Granite)
+  '1:2':
+    MCName: stone
+    Name: Granito Pulido (Polished Granite)
+  '1:3':
+    MCName: stone
+    Name: Diorito (Diorite)
+  '1:4':
+    MCName: stone
+    Name: Diorito Pulido (Polished Diorite)
+  '1:5':
+    MCName: stone
+    Name: Andesita (Andesite)
+  '1:6':
+    MCName: stone
+    Name: Andesita Pulida
+  '2':
+    MCName: grass
+    Name: Césped (Grass)
+  '3':
+    MCName: dirt
+    Name: Toda la Tierra
+  '3:0':
+    MCName: dirt
+    Name: Tierra (Dirt)
+  '3:1':
+    MCName: dirt
+    Name: Tierra Muerta (Coarse Dirt)
+  '3:2':
+    MCName: dirt
+    Name: Pasto (Podzol)
+  '4':
+    MCName: cobblestone
+    Name: Piedra Picada (Cobblestone)
+  '5':
+    MCName: planks
+    Name: Todas las Tablas (planks)
+  '5:0':
+    MCName: planks
+    Name: Tablas de Roble (Oak Wood Planks)
+  '5:1':
+    MCName: planks
+    Name: Tablas de Abeto (Spruce Wood Planks)
+  '5:2':
+    MCName: planks
+    Name: Tablas de Abedul (Birch Wood Planks)
+  '5:3':
+    MCName: planks
+    Name: Tablas Silvestres (Jungle Wood Planks)
+  '5:4':
+    MCName: planks
+    Name: Tablas de Acacia (Acacia Wood Planks)
+  '5:5':
+    MCName: planks
+    Name: Tablas de Viejo-Roble (Dark Oak Wood Planks)
+  '6':
+    MCName: sapling
+    Name: Todos los Brotes (sapling)
+  '6:0':
+    MCName: sapling
+    Name: Brote de Roble (Oak Sapling)
+  '6:1':
+    MCName: sapling
+    Name: Brote de Abeto (Spruce Sapling)
+  '6:2':
+    MCName: sapling
+    Name: Brote de Abedul (Birch Sapling)
+  '6:3':
+    MCName: sapling
+    Name: Brote de Selva (Jungle Sapling)
+  '6:4':
+    MCName: sapling
+    Name: Brote de Acacia (Acacia Sapling)
+  '6:5':
+    MCName: sapling
+    Name: Brote de Viejo-Roble (Dark Oak Sapling)
+  '7':
+    MCName: bedrock
+    Name: Roca (Bedrock)
+  '8':
+    MCName: flowing_water
+    Name: Agua Fluida (Flowing Water)
+  '9':
+    MCName: water
+    Name: Agua Estática (Still Water)
+  '10':
+    MCName: flowing_lava
+    Name: Lava Fluida (Flowing Lava)
+  '11':
+    MCName: lava
+    Name: Lava Estática (Still Lava)
+  '12':
+    MCName: sand
+    Name: Toda la Arena (Sand)
+  '12:0':
+    MCName: sand
+    Name: Arena (Sand)
+  '12:1':
+    MCName: sand
+    Name: Rojiza (Red Sand)
+  '13':
+    MCName: gravel
+    Name: Grava (Gravel)
+  '14':
+    MCName: gold_ore
+    Name: Mena de Oro (Gold Ore)
+  '15':
+    MCName: iron_ore
+    Name: Mena de Hierro (Iron Ore)
+  '16':
+    MCName: coal_ore
+    Name: Mena de Carbón (Coal Ore)
+  '17':
+    MCName: log
+    Name: Todos los Troncos (Wood)
+  '17:0':
+    MCName: log
+    Name: Tronco de Roble (Oak Wood)
+  '17:1':
+    MCName: log
+    Name: Tronco de Abeto (Spruce Wood)
+  '17:2':
+    MCName: log
+    Name: Tronco de Abedul (Birch Wood)
+  '17:3':
+    MCName: log
+    Name: Tronco Silvestre (Jungle Wood)
+  '18':
+    MCName: leaves
+    Name: Todas las Hojas (Leaves)
+  '18:0':
+    MCName: leaves
+    Name: Hojas de Roble (Oak Leaves)
+  '18:1':
+    MCName: leaves
+    Name: Hojas de Abeto (Spruce Leaves)
+  '18:2':
+    MCName: leaves
+    Name: Hojas de Abedul (Birch Leaves)
+  '18:3':
+    MCName: leaves
+    Name: Hojas Silvestres (Jungle Leaves)
+  '19':
+    MCName: sponge
+    Name: Esponja (Sponge)
+  '19:1':
+    MCName: sponge
+    Name: Esponja Húmeda (Wet Sponge)
+  '20':
+    MCName: glass
+    Name: Cristal (Glass)
+  '21':
+    MCName: lapis_ore
+    Name: Mena de Lapislázuli (Lapis Lazuli Ore)
+  '22':
+    MCName: lapis_block
+    Name: Bloque de Lapislázuli (Lapis Lazuli Block)
+  '23':
+    MCName: dispenser
+    Name: Dispensador (Dispenser)
+  '24':
+    MCName: sandstone
+    Name: Arena Compacta (Sandstone)
+  '24:1':
+    MCName: sandstone
+    Name: Arena Compacta Tallada (Chiseled Sandstone)
+  '24:2':
+    MCName: sandstone
+    Name: Arena Compacta Lisa (Smooth Sandstone)
+  '25':
+    MCName: noteblock
+    Name: Caja Musical (Note Block)
+  '26':
+    MCName: bed
+    Name: Cama (Bed)
+  '27':
+    MCName: golden_rail
+    Name: Raíl Propulsor (Powered Rail)
+  '28':
+    MCName: detector_rail
+    Name: Raíl Detector (Detector Rail)
+  '29':
+    MCName: sticky_piston
+    Name: Pistón Pegajoso (Sticky Piston)
+  '30':
+    MCName: web
+    Name: Telaraña (Cobweb)
+  '31':
+    MCName: tallgrass
+    Name: Arbusto Seco (Dead Shrub)
+  '31:1':
+    MCName: tallgrass
+    Name: Hierba (Grass)
+  '31:2':
+    MCName: tallgrass
+    Name: Helecho (Fern)
+  '32':
+    MCName: deadbush
+    Name: Arbusto Seco (Dead Shrub)
+  '33':
+    MCName: piston
+    Name: Pistón (Piston)
+  '34':
+    MCName: piston_head
+    Name: Superior del Pistón (Piston Head)
+  '35':
+    MCName: wool
+    Name: Lana (Wool)
+  '35:0':
+    MCName: wool
+    Name: Lana Blanca (White Wool)
+  '35:1':
+    MCName: wool
+    Name: Lana Naranja (Orange Wool)
+  '35:2':
+    MCName: wool
+    Name: Lana Magenta (Magenta Wool)
+  '35:3':
+    MCName: wool
+    Name: Lana Azul Claro (Light Blue Wool)
+  '35:4':
+    MCName: wool
+    Name: Lana Amarilla (Yellow Wool)
+  '35:5':
+    MCName: wool
+    Name: Lana Verde Lima (Lime Wool)
+  '35:6':
+    MCName: wool
+    Name: Lana Rosa (Pink Wool)
+  '35:7':
+    MCName: wool
+    Name: Lana Gris (Gray Wool)
+  '35:8':
+    MCName: wool
+    Name: Lana Gris Claro (Light Gray Wool)
+  '35:9':
+    MCName: wool
+    Name: Lana Cían (Cyan Wool)
+  '35:10':
+    MCName: wool
+    Name: Lana Morada (Purple Wool)
+  '35:11':
+    MCName: wool
+    Name: Lana Azul (Blue Wool)
+  '35:12':
+    MCName: wool
+    Name: Lana Marrón (Brown Wool)
+  '35:13':
+    MCName: wool
+    Name: Lana Verde (Green Wool)
+  '35:14':
+    MCName: wool
+    Name: Lana Roja (Red Wool)
+  '35:15':
+    MCName: wool
+    Name: Lana Negra (Black Wool)
+  '37':
+    MCName: yellow_flower
+    Name: Diente de León (Dandelion)
+  '38':
+    MCName: red_flower
+    Name: Flores (Flowers)
+  '38:0':
+    MCName: red_flower
+    Name: Amapola (Poppy)
+  '38:1':
+    MCName: red_flower
+    Name: Orquidea Azul (Blue Orchid)
+  '38:2':
+    MCName: red_flower
+    Name: Liliácea Allium (Allium)
+  '38:3':
+    MCName: red_flower
+    Name: Houstonia Caerulea (Azure Bluet)
+  '38:4':
+    MCName: red_flower
+    Name: Tulipán Rojo (Red Tulip)
+  '38:5':
+    MCName: red_flower
+    Name: Tulipán Naranja (Orange Tulip)
+  '38:6':
+    MCName: red_flower
+    Name: Tulipán Blanco (White Tulip)
+  '38:7':
+    MCName: red_flower
+    Name: Tulipán Rosa (Pink Tulip)
+  '38:8':
+    MCName: red_flower
+    Name: Margarita Común (Oxeye Daisy)
+  '39':
+    MCName: brown_mushroom
+    Name: Seta (Mushroom)
+  '40':
+    MCName: red_mushroom
+    Name: Seta Roja (Red Mushroom)
+  '41':
+    MCName: gold_block
+    Name: Bloque de Oro (Gold Block)
+  '42':
+    MCName: iron_block
+    Name: Bloque de Hierro (Iron Block)
+  '43':
+    MCName: double_stone_slab
+    Name: Todas las Losas Dobles (All Double Slabs)
+  '43:0':
+    MCName: double_stone_slab
+    Name: Losa doble de Piedra (Double Stone Slab)
+  '43:1':
+    MCName: double_stone_slab
+    Name: Losa doble de Arena (Double Sandstone Slab)
+  '43:2':
+    MCName: double_stone_slab
+    Name: Losa doble de Madera (Double Wooden Slab)
+  '43:3':
+    MCName: double_stone_slab
+    Name: Losa doble de Piedras (Double Cobblestone Slab)
+  '43:4':
+    MCName: double_stone_slab
+    Name: Losa doble de Ladrillos (Double Brick Slab)
+  '43:5':
+    MCName: double_stone_slab
+    Name: Losa doble de Ladrillos de Piedra (Double Stone Brick Slab)
+  '43:6':
+    MCName: double_stone_slab
+    Name: Losa doble de Infradrillos (Double Nether Brick Slab)
+  '43:7':
+    MCName: double_stone_slab
+    Name: Losa doble de Cuarzo (Double Quartz Slab)
+  '44':
+    MCName: stone_slab
+    Name: Todas las Losas (All Slabs)
+  '44:0':
+    MCName: stone_slab
+    Name: Losa de Piedra (Stone Slab)
+  '44:1':
+    MCName: stone_slab
+    Name: Losa de Arena (Sandstone Slab)
+  '44:2':
+    MCName: stone_slab
+    Name: Losa de Madera (Wooden Slab)
+  '44:3':
+    MCName: stone_slab
+    Name: Losa de Piedras (Cobblestone Slab)
+  '44:4':
+    MCName: stone_slab
+    Name: Losa de Ladrillos (Brick Slab)
+  '44:5':
+    MCName: stone_slab
+    Name: Losa de Ladrillos de Piedra (Stone Brick Slab)
+  '44:6':
+    MCName: stone_slab
+    Name: Losa de Infradrillos (Nether Brick Slab)
+  '44:7':
+    MCName: stone_slab
+    Name: Losa de Cuarzo (Quartz Slab)
+  '45':
+    MCName: brick_block
+    Name: Ladrillos (Bricks)
+  '46':
+    MCName: tnt
+    Name: Dinamita (TNT)
+  '47':
+    MCName: bookshelf
+    Name: Librería (Bookshelf)
+  '48':
+    MCName: mossy_cobblestone
+    Name: Piedra Mohosa (Moss Stone)
+  '49':
+    MCName: obsidian
+    Name: Obsidiana (Obsidian)
+  '50':
+    MCName: torch
+    Name: Antorcha (Torch)
+  '51':
+    MCName: fire
+    Name: Fuego (Fire)
+  '52':
+    MCName: mob_spawner
+    Name: Generador de Monstruos (Monster Spawner)
+  '53':
+    MCName: oak_stairs
+    Name: Escalones de Roble (Oak Wood Stairs)
+  '54':
+    MCName: chest
+    Name: Cofre (Chest)
+  '55':
+    MCName: redstone_wire
+    Name: Hilo de Redstone (Redstone Wire)
+  '56':
+    MCName: diamond_ore
+    Name: Mena de Diamante (Diamond Ore)
+  '57':
+    MCName: diamond_block
+    Name: Bloque de Diamante (Diamond Block)
+  '58':
+    MCName: crafting_table
+    Name: Banco de Trabajo (Crafting Table)
+  '59':
+    MCName: wheat
+    Name: Brote de Trigo (Wheat Crops)
+  '60':
+    MCName: farmland
+    Name: Tierra Labrada (Farmland)
+  '61':
+    MCName: furnace
+    Name: Horno (Furnace)
+  '62':
+    MCName: lit_furnace
+    Name: Horno Encendido (Burning Furnace)
+  '63':
+    MCName: standing_sign
+    Name: Cartel Clavado (Standing Sign Block)
+  '64':
+    MCName: wooden_door
+    Name: Puerta de Madera (Wooden Door Block)
+  '65':
+    MCName: ladder
+    Name: Escalera de Mano (Ladder)
+  '66':
+    MCName: rail
+    Name: Raíl (Rail)
+  '67':
+    MCName: stone_stairs
+    Name: Escalera de Piedras (Cobblestone Stairs)
+  '68':
+    MCName: wall_sign
+    Name: Cartel Colgado (Wall-mounted Sign Block)
+  '69':
+    MCName: lever
+    Name: Palanca (Lever)
+  '70':
+    MCName: stone_pressure_plate
+    Name: Placa de Presión de Piedra (Stone Pressure Plate)
+  '71':
+    MCName: iron_door
+    Name: Puerta de Hierro (Iron Door Block)
+  '72':
+    MCName: wooden_pressure_plate
+    Name: Placa de Presión de Madera (Wooden Pressure Plate)
+  '73':
+    MCName: redstone_ore
+    Name: Mena de Redstone (Redstone Ore)
+  '74':
+    MCName: lit_redstone_ore
+    Name: Mena de Redstone Ilimunada (Glowing Redstone Ore)
+  '75':
+    MCName: unlit_redstone_torch
+    Name: Antorcha apagada de Redstone (Redstone Torch (off))
+  '76':
+    MCName: redstone_torch
+    Name: Antorcha encendida de Redstone (Redstone Torch (on))
+  '77':
+    MCName: stone_button
+    Name: Botón de Piedra (Stone Button)
+  '78':
+    MCName: snow_layer
+    Name: Nieve (Snow)
+  '79':
+    MCName: ice
+    Name: Hielo (Ice)
+  '80':
+    MCName: snow
+    Name: Bloque de Nieve (Snow Block)
+  '81':
+    MCName: cactus
+    Name: Cactus (Cactus)
+  '82':
+    MCName: clay
+    Name: Arcilla (Clay)
+  '83':
+    MCName: reeds
+    Name: Cañas de Azúcar (Sugar Canes)
+  '84':
+    MCName: jukebox
+    Name: Máquina de Discos (Jukebox)
+  '85':
+    MCName: fence
+    Name: Valla de Roble Oscuro (Dark Oak Fence)
+  '86':
+    MCName: pumpkin
+    Name: Calabaza (Pumpkin)
+  '87':
+    MCName: netherrack
+    Name: Infiedra (Netherrack)
+  '88':
+    MCName: soul_sand
+    Name: Tierra de Almas (Soul Sand)
+  '89':
+    MCName: glowstone
+    Name: Glowstone (Glowstone)
+  '90':
+    MCName: portal
+    Name: Portal del Inframundo (Nether Portal)
+  '91':
+    MCName: lit_pumpkin
+    Name: Calabaza Iluminada (Jack o'Lantern)
+  '92':
+    MCName: cake
+    Name: Tarta (Cake Block)
+  '93':
+    MCName: unpowered_repeater
+    Name: Repetidor desactivado (Redstone Repeater Block (off))
+  '94':
+    MCName: powered_repeater
+    Name: Repetidor activado (Redstone Repeater Block (on))
+  '95':
+    MCName: stained_glass
+    Name: Todos los Cristales Tintados (All Stained Glass)
+  '95:0':
+    MCName: stained_glass
+    Name: Cristal Tintado Blanco (White Stained Glass)
+  '95:1':
+    MCName: stained_glass
+    Name: Cristal Tintado Naranja (Orange Stained Glass)
+  '95:2':
+    MCName: stained_glass
+    Name: Cristal Tintado Magenta (Magenta Stained Glass)
+  '95:3':
+    MCName: stained_glass
+    Name: Cristal Tintado Azul Claro (Light Blue Stained Glass)
+  '95:4':
+    MCName: stained_glass
+    Name: Cristal Tintado Amarillo (Yellow Stained Glass)
+  '95:5':
+    MCName: stained_glass
+    Name: Cristal Tintado Verde Lima (Lime Stained Glass)
+  '95:6':
+    MCName: stained_glass
+    Name: Cristal Tintado Rosa (Pink Stained Glass)
+  '95:7':
+    MCName: stained_glass
+    Name: Cristal Tintado Gris (Gray Stained Glass)
+  '95:8':
+    MCName: stained_glass
+    Name: Light Gray Stained Glass)
+  '95:9':
+    MCName: stained_glass
+    Name: Cristal Tintado Cían (Cyan Stained Glass)
+  '95:10':
+    MCName: stained_glass
+    Name: Cristal Tintado Morado (Purple Stained Glass)
+  '95:11':
+    MCName: stained_glass
+    Name: Cristal Tintado Azul (Blue Stained Glass)
+  '95:12':
+    MCName: stained_glass
+    Name: Cristal Tintado Marrón (Brown Stained Glass)
+  '95:13':
+    MCName: stained_glass
+    Name: Cristal Tintado Verde (Green Stained Glass)
+  '95:14':
+    MCName: stained_glass
+    Name: Cristal Tintado Rojo (Red Stained Glass)
+  '95:15':
+    MCName: stained_glass
+    Name: Cristal Tintado Negro (Black Stained Glass)
+  '96':
+    MCName: trapdoor
+    Name: Trampilla de Madera (Wooden Trapdoor)
+  '97':
+    MCName: monster_egg
+    Name: Piedra con Lepismas (Stone Monster Egg)
+  '97:1':
+    MCName: monster_egg
+    Name: Piedras con Lepismas (Cobblestone Monster Egg)
+  '97:2':
+    MCName: monster_egg
+    Name: Ladrillos de Piedra con Lepismas (Stone Brick Monster Egg)
+  '97:3':
+    MCName: monster_egg
+    Name: Ladrillo de Piedra Mohosa con Lepismas (Mossy Stone Brick Monster Egg)
+  '97:4':
+    MCName: monster_egg
+    Name: Ladrillo de Piedra Fracturada con Lepismas (Cracked Stone Brick Monster Egg)
+  '97:5':
+    MCName: monster_egg
+    Name: Ladrillo de Piedra Tallada con Lepismas (Chiseled Stone Brick Monster Egg)
+  '98':
+    MCName: stonebrick
+    Name: Ladrillos de Piedra (Stone Bricks)
+  '98:1':
+    MCName: stonebrick
+    Name: Ladrillos de Piedra Mohosa (Mossy Stone Bricks)
+  '98:2':
+    MCName: stonebrick
+    Name: Ladrillos de Piedra Fracturado (Cracked Stone Bricks)
+  '98:3':
+    MCName: stonebrick
+    Name: Ladrillos de Piedra Tallada (Chiseled Stone Bricks)
+  '99':
+    MCName: brown_mushroom_block
+    Name: Porción de Seta Marrón (Brown Mushroom Cap)
+  '100':
+    MCName: red_mushroom_block
+    Name: Porción de Seta Roja (Red Mushroom Cap)
+  '101':
+    MCName: iron_bars
+    Name: Barrotes de Hierro (Iron Bars)
+  '102':
+    MCName: glass_pane
+    Name: Panel de Cristal (Glass Pane)
+  '103':
+    MCName: melon_block
+    Name: Sandía (Melon Block)
+  '104':
+    MCName: pumpkin_stem
+    Name: Tallo de Calabaza (Pumpkin Stem)
+  '105':
+    MCName: melon_stem
+    Name: Tallo de Sandía (Melon Stem)
+  '106':
+    MCName: vine
+    Name: Enredaderas (Vines)
+  '107':
+    MCName: fence_gate
+    Name: Puerta de Valla de Roble (Oak Fence Gate)
+  '108':
+    MCName: brick_stairs
+    Name: Escalones de Ladrillo (Brick Stairs)
+  '109':
+    MCName: stone_brick_stairs
+    Name: Escalones de Ladrillo de Piedra (Stone Brick Stairs)
+  '110':
+    MCName: mycelium
+    Name: Micelio (Mycelium)
+  '111':
+    MCName: waterlily
+    Name: Nenúfar (Lily Pad)
+  '112':
+    MCName: nether_brick
+    Name: Infradrillos (Nether Brick)
+  '113':
+    MCName: nether_brick_fence
+    Name: Valla de Infradrillos (Nether Brick Fence)
+  '114':
+    MCName: nether_brick_stairs
+    Name: Escalones de Infradrillos (Nether Brick Stairs)
+  '115':
+    MCName: nether_wart
+    Name: Planta Infernal (Nether Wart)
+  '116':
+    MCName: enchanting_table
+    Name: Mesa de Encantamientos (Enchantment Table)
+  '117':
+    MCName: brewing_stand
+    Name: Soporte para Pociones (Brewing Stand)
+  '118':
+    MCName: cauldron
+    Name: Caldero (Cauldron)
+  '119':
+    MCName: end_portal
+    Name: Portal al End (End Portal)
+  '120':
+    MCName: end_portal_frame
+    Name: Marco del Portal del End (End Portal Frame)
+  '121':
+    MCName: end_stone
+    Name: Piedra de End (End Stone)
+  '122':
+    MCName: dragon_egg
+    Name: Huevo de Dragón (Dragon Egg)
+  '123':
+    MCName: redstone_lamp
+    Name: Redstone Lamp (inactive)
+  '124':
+    MCName: lit_redstone_lamp
+    Name: Lámpara activa de Redstone (Redstone Lamp (active))
+  '125':
+    MCName: double_wooden_slab
+    Name: Todas las Losas Dobles de Madera (All Double Wood Slab)
+  '125:0':
+    MCName: double_wooden_slab
+    Name: Losa doble de Roble (Double Oak Wood Slab)
+  '125:1':
+    MCName: double_wooden_slab
+    Name: Losa doble de Abeto (Double Spruce Wood Slab)
+  '125:2':
+    MCName: double_wooden_slab
+    Name: Losa doble de Abedul (Double Birch Wood Slab)
+  '125:3':
+    MCName: double_wooden_slab
+    Name: Losa doble Silvestre (Double Jungle Wood Slab)
+  '125:4':
+    MCName: double_wooden_slab
+    Name: Losa doble de Acacia (Double Acacia Wood Slab)
+  '125:5':
+    MCName: double_wooden_slab
+    Name: Losa doble de Roble Oscuro (Double Dark Oak Wood Slab)
+  '126':
+    MCName: wooden_slab
+    Name: Todas las Losas de Madera (All Wood Slab)
+  '126:0':
+    MCName: wooden_slab
+    Name: Losa de Roble (Oak Wood Slab)
+  '126:1':
+    MCName: wooden_slab
+    Name: Losa de Abeto (Spruce Wood Slab)
+  '126:2':
+    MCName: wooden_slab
+    Name: Losa de Abedul (Birch Wood Slab)
+  '126:3':
+    MCName: wooden_slab
+    Name: Losa Silvestre (Jungle Wood Slab)
+  '126:4':
+    MCName: wooden_slab
+    Name: Losa de Acacia (Acacia Wood Slab)
+  '126:5':
+    MCName: wooden_slab
+    Name: Losa de Roble Oscuro (Dark Oak Wood Slab)
+  '127':
+    MCName: cocoa
+    Name: Cacao (Cocoa)
+  '128':
+    MCName: sandstone_stairs
+    Name: Escalones de Arena Compacta (Sandstone Stairs)
+  '129':
+    MCName: emerald_ore
+    Name: Mena de Esmeralda (Emerald Ore)
+  '130':
+    MCName: ender_chest
+    Name: Cofre de Ender (Ender Chest)
+  '131':
+    MCName: tripwire_hook
+    Name: Gancho de Cuerda (Tripwire Hook)
+  '132':
+    MCName: tripwire_hook
+    Name: Cuerda (Tripwire)
+  '133':
+    MCName: emerald_block
+    Name: Bloque de Esmeralda (Emerald Block)
+  '134':
+    MCName: spruce_stairs
+    Name: Escalones de Abeto (Spruce Wood Stairs)
+  '135':
+    MCName: birch_stairs
+    Name: Escalones de Abedul (Birch Wood Stairs)
+  '136':
+    MCName: jungle_stairs
+    Name: Escalones Silvestres (Jungle Wood Stairs)
+  '137':
+    MCName: command_block
+    Name: Bloque de Comandos (Command Block)
+  '138':
+    MCName: beacon
+    Name: Baliza (Beacon)
+  '139':
+    MCName: cobblestone_wall
+    Name: Muro de Piedras (Cobblestone Wall)
+  '139:1':
+    MCName: cobblestone_wall
+    Name: Muro de Piedras Mohosas (Mossy Cobblestone Wall)
+  '140':
+    MCName: flower_pot
+    Name: Macetero (Flower Pot)
+  '141':
+    MCName: carrots
+    Name: Zanahorias (Carrots)
+  '142':
+    MCName: potatoes
+    Name: Patatas (Potatoes)
+  '143':
+    MCName: wooden_button
+    Name: Botón de Madera (Wooden Button)
+  '144':
+    MCName: skull
+    Name: Cabeza de Monstruo (Mob Head)
+  '145':
+    MCName: anvil
+    Name: Yunque (Anvil)
+  '146':
+    MCName: trapped_chest
+    Name: Cofre Trampa (Trapped Chest)
+  '147':
+    MCName: light_weighted_pressure_plate
+    Name: Placa de Presión Ligera (Weighted Pressure Plate (light))
+  '148':
+    MCName: heavy_weighted_pressure_plate
+    Name: Placa de Presión Pesada (Weighted Pressure Plate (heavy))
+  '149':
+    MCName: unpowered_comparator
+    Name: Comparador inactivo (Redstone Comparator (inactive))
+  '150':
+    MCName: powered_comparator
+    Name: Comparador activo (Redstone Comparator (active))
+  '151':
+    MCName: daylight_detector
+    Name: Célula Fotoeléctrica (Daylight Sensor)
+  '152':
+    MCName: redstone_block
+    Name: Bloque de Redstone (Redstone Block)
+  '153':
+    MCName: quartz_ore
+    Name: Mena de Cuarzo (Nether Quartz Ore)
+  '154':
+    MCName: hopper
+    Name: Tolva (Hopper)
+  '155':
+    MCName: quartz_block
+    Name: Bloque de Cuarzo (Quartz Block)
+  '155:1':
+    MCName: quartz_block
+    Name: Bloque de Cuarzo Tallado (Chiseled Quartz Block)
+  '155:2':
+    MCName: quartz_block
+    Name: Pilar de Cuarzo (Pillar Quartz Block)
+  '156':
+    MCName: quartz_stairs
+    Name: Escalones de Cuarzo (Quartz Stairs)
+  '157':
+    MCName: activator_rail
+    Name: Raíl Activador (Activator Rail)
+  '158':
+    MCName: dropper
+    Name: Lanzador (Dropper)
+  '159':
+    MCName: stained_hardened_clay
+    Name: Todas las Arcillas (All Stained Clays)
+  '159:0':
+    MCName: stained_hardened_clay
+    Name: Arcilla Blanca (White Stained Clay)
+  '159:1':
+    MCName: stained_hardened_clay
+    Name: Arcilla Naranja (Orange Stained Clay)
+  '159:2':
+    MCName: stained_hardened_clay
+    Name: Arcilla Magenta (Magenta Stained Clay)
+  '159:3':
+    MCName: stained_hardened_clay
+    Name: Arcilla Azul Claro (Light Blue Stained Clay)
+  '159:4':
+    MCName: stained_hardened_clay
+    Name: Arcilla Amarilla (Yellow Stained Clay)
+  '159:5':
+    MCName: stained_hardened_clay
+    Name: Arcilla Verde Lima (Lime Stained Clay)
+  '159:6':
+    MCName: stained_hardened_clay
+    Name: Arcilla Rosa (Pink Stained Clay)
+  '159:7':
+    MCName: stained_hardened_clay
+    Name: Arcilla Gris (Gray Stained Clay)
+  '159:8':
+    MCName: stained_hardened_clay
+    Name: Arcilla Gris Claro (Light Gray Stained Clay)
+  '159:9':
+    MCName: stained_hardened_clay
+    Name: Arcilla Cían (Cyan Stained Clay)
+  '159:10':
+    MCName: stained_hardened_clay
+    Name: Arcilla Morada (Purple Stained Clay)
+  '159:11':
+    MCName: stained_hardened_clay
+    Name: Arcilla Azul (Blue Stained Clay)
+  '159:12':
+    MCName: stained_hardened_clay
+    Name: Arcilla Marrón (Brown Stained Clay)
+  '159:13':
+    MCName: stained_hardened_clay
+    Name: Arcilla Verde (Green Stained Clay)
+  '159:14':
+    MCName: stained_hardened_clay
+    Name: Arcilla Roja (Red Stained Clay)
+  '159:15':
+    MCName: stained_hardened_clay
+    Name: Arcilla Negra (Black Stained Clay)
+  '160':
+    MCName: stained_glass_pane
+    Name: Todos los Cristales Tintados (All Stained Glass Panes)
+  '160:0':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Blanco (White Stained Glass Pane)
+  '160:1':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Naranja (Orange Stained Glass Pane)
+  '160:2':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Magenta (Magenta Stained Glass Pane)
+  '160:3':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Azul Claro (Light Blue Stained Glass Pane)
+  '160:4':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Amarillo (Yellow Stained Glass Pane)
+  '160:5':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Verde Lima (Lime Stained Glass Pane)
+  '160:6':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Rosa (Pink Stained Glass Pane)
+  '160:7':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Gris (Gray Stained Glass Pane)
+  '160:8':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Gris Claro (Light Gray Stained Glass Pane)
+  '160:9':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Cían (Cyan Stained Glass Pane)
+  '160:10':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Morado (Purple Stained Glass Pane)
+  '160:11':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Azul (Blue Stained Glass Pane)
+  '160:12':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Marrón (Brown Stained Glass Pane)
+  '160:13':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Verde (Green Stained Glass Pane)
+  '160:14':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Rojo (Red Stained Glass Pane)
+  '160:15':
+    MCName: stained_glass_pane
+    Name: Cristal Tintado Negro (Black Stained Glass Pane)
+  '161':
+    MCName: leaves2
+    Name: Hojas de Acacia o Roble Oscuro (Acacia Or Dark Oak Leaves)
+  '161:0':
+    MCName: leaves2
+    Name: Hojas de Acacia (Acacia Leaves)
+  '161:1':
+    MCName: leaves2
+    Name: Hojas de Roble Oscuro (Dark Oak Leaves)
+  '162':
+    MCName: logs2
+    Name: Tronco de Acacia o Roble Oscuro (Acacia Or Dark Oak Wood)
+  '162:0':
+    MCName: logs2
+    Name: Tronco de Acacia (Acacia Wood)
+  '162:1':
+    MCName: logs2
+    Name: Tronco de Roble Oscuro (Dark Oak Wood)
+  '163':
+    MCName: acacia_stairs
+    Name: Escalones de Acacia (Acacia Wood Stairs)
+  '164':
+    MCName: dark_oak_stairs
+    Name: Escalones de Roble Oscuro (Dark Oak Wood Stairs)
+  '165':
+    MCName: slime
+    Name: Bloque de Baba (Slime Block)
+  '166':
+    MCName: barrier
+    Name: Barrera (Barrier)
+  '167':
+    MCName: iron_trapdoor
+    Name: Trampilla de Hierro (Iron Trapdoor)
+  '168':
+    MCName: prismarine
+    Name: Toda la Prismarina (All Prismarine)
+  '168:0':
+    MCName: prismarine
+    Name: Prismarina (Prismarine)
+  '168:1':
+    MCName: prismarine
+    Name: Ladrillos de Prismarina (Prismarine Bricks)
+  '168:2':
+    MCName: prismarine
+    Name: Prismarina Oscura (Dark Prismarine)
+  '169':
+    MCName: sea_lantern
+    Name: Linterna Acuática (Sea Lantern)
+  '170':
+    MCName: hay_block
+    Name: Bala de Heno (Hay Bale)
+  '171':
+    MCName: carpet
+    Name: Todas las Alfombras (All Carpet)
+  '171:0':
+    MCName: carpet
+    Name: Alfombra Blanca (White Carpet)
+  '171:1':
+    MCName: carpet
+    Name: Alfombra Naranja (Orange Carpet)
+  '171:2':
+    MCName: carpet
+    Name: Alfombra Magenta (Magenta Carpet)
+  '171:3':
+    MCName: carpet
+    Name: Alfombra Azul Claro (Light Blue Carpet)
+  '171:4':
+    MCName: carpet
+    Name: Alfombra Amarillo (Yellow Carpet)
+  '171:5':
+    MCName: carpet
+    Name: Alfombra Verde Lima (Lime Carpet)
+  '171:6':
+    MCName: carpet
+    Name: Alfombra Rosa (Pink Carpet)
+  '171:7':
+    MCName: carpet
+    Name: Alfombra Gris (Gray Carpet)
+  '171:8':
+    MCName: carpet
+    Name: Alfombra Gris Claro (Light Gray Carpet)
+  '171:9':
+    MCName: carpet
+    Name: Alfombra Cían (Cyan Carpet)
+  '171:10':
+    MCName: carpet
+    Name: Alfombra Morada (Purple Carpet)
+  '171:11':
+    MCName: carpet
+    Name: Alfombra Azul (Blue Carpet)
+  '171:12':
+    MCName: carpet
+    Name: Alfombra Marrón (Brown Carpet)
+  '171:13':
+    MCName: carpet
+    Name: Alfombra Verde (Green Carpet)
+  '171:14':
+    MCName: carpet
+    Name: Alfombra Roja (Red Carpet)
+  '171:15':
+    MCName: carpet
+    Name: Alfombra Negra (Black Carpet)
+  '172':
+    MCName: hardened_clay
+    Name: Arcilla Endurecida (Hardened Clay)
+  '173':
+    MCName: coal_block
+    Name: Bloque de Carbón (Block of Coal)
+  '174':
+    MCName: packed_ice
+    Name: Hielo Compacto (Packed Ice)
+  '175':
+    MCName: double_plant
+    Name: Todas las Flores Grandes (All Big Flowers)
+  '175:0':
+    MCName: double_plant
+    Name: Girasol (Sunflower)
+  '175:1':
+    MCName: double_plant
+    Name: Lila (Lilac)
+  '175:2':
+    MCName: double_plant
+    Name: Hierva Alta (Double Tallgrass)
+  '175:3':
+    MCName: double_plant
+    Name: Helecho Alto (Large Fern)
+  '175:4':
+    MCName: double_plant
+    Name: Rosal (Rose Bush)
+  '175:5':
+    MCName: double_plant
+    Name: Peonía (Peony)
+  '176':
+    MCName: standing_banner
+    Name: Estandarte Clavado (Free-standing Banner)
+  '177':
+    MCName: wall_banner
+    Name: Estandarte Colgado (Wall-mounted Banner)
+  '178':
+    MCName: daylight_detector_inverted
+    Name: Célula Fotoeléctrica Invertida (Inverted Daylight Sensor)
+  '179':
+    MCName: red_sandstone
+    Name: Arena Compacta Roja (Red Sandstone)
+  '179:1':
+    MCName: red_sandstone
+    Name: Arena Compacta Roja Tallada (Chiseled Red Sandstone)
+  '179:2':
+    MCName: red_sandstone
+    Name: Arena Compacta Roja Lisa (Smooth Red Sandstone)
+  '180':
+    MCName: red_sandstone_stairs
+    Name: Escalones de Arena Compacta Roja (Red Sandstone Stairs)
+  '181':
+    MCName: stone_slab2
+    Name: Losa doble de Arena Compacta Roja (Double Red Sandstone Slab)
+  '182':
+    MCName: double_stone_slab2
+    Name: Losa de Arena Compacta Roja (Red Sandstone Slab)
+  '183':
+    MCName: spruce_fence_gate
+    Name: Puerta de Valla de Abeto (Spruce Fence Gate)
+  '184':
+    MCName: birch_fence_gate
+    Name: Puerta de Valla de Abedul (Birch Fence Gate)
+  '185':
+    MCName: jungle_fence_gate
+    Name: Puerta de Valla Silvestre (Jungle Fence Gate)
+  '186':
+    MCName: dark_oak_fence_gate
+    Name: Puerta de Valla de Roble Oscuro (Dark Oak Fence Gate)
+  '187':
+    MCName: acacia_fence_gate
+    Name: Puerta de Valla de Acacia (Acacia Fence Gate)
+  '188':
+    MCName: spruce_fence
+    Name: Valla de Abeto (Spruce Fence)
+  '189':
+    MCName: birch_fence
+    Name: Valla de Abedul (Birch Fence)
+  '190':
+    MCName: jungle_fence
+    Name: Valla Silvestre (Jungle Fence)
+  '191':
+    MCName: dark_oak_fence
+    Name: Valla de Roble Oscuro (Dark Oak Fence)
+  '192':
+    MCName: acacia_fence
+    Name: Valla de Acacia (Acacia Fence)
+  '193':
+    MCName: spruce_door
+    Name: Puerta de Abeto (Spruce Door)
+  '194':
+    MCName: birch_door
+    Name: Puerta de Abedul (Birch Door Block)
+  '195':
+    MCName: jungle_door
+    Name: Puerta Silvestre (Jungle Door Block)
+  '196':
+    MCName: acacia_door
+    Name: Puerta de Acacia (Acacia Door Block)
+  '197':
+    MCName: dark_oak_door
+    Name: Puerta de Roble Oscuro(Dark Oak Door Block)
+  '198':
+    MCName: end_rod
+    Name: Vara de End (End Rod)
+  '199':
+    MCName: chorus_plant
+    Name: Planta Coral (Chorus Plant)
+  '200':
+    MCName: chorus_flower
+    Name: Flor Coral (Chorus Flower)
+  '201':
+    MCName: purpur_block
+    Name: Bloque Púrpura (Purpur Block)
+  '202':
+    MCName: purpur_pillar
+    Name: Pilar Púrpura (Purpur Pillar)
+  '203':
+    MCName: purpur_stairs
+    Name: Escalones Púrpura (Purpur Stairs)
+  '204':
+    MCName: purpur_double_slab
+    Name: Losa doble Púrpura (Double Purpur Slab)
+  '205':
+    MCName: purpur_slab
+    Name: Losa Púrpura (Purpur Slab)
+  '206':
+    MCName: end_bricks
+    Name: Ladrillos de Piedra del End (End Stone Bricks)
+  '207':
+    MCName: beetroots
+    Name: Remolacha (Beetroot Block)
+  '208':
+    MCName: grass_path
+    Name: Camino de Hierva (Grass Path)
+  '209':
+    MCName: end_gateway
+    Name: Portal de End (End Gateway Block)
+  '212':
+    MCName: frosted_ice
+    Name: Escarcha (Frosted Ice)
+  '256':
+    MCName: iron_shovel
+    Name: Pala de Hierro (Iron Shovel)
+  '257':
+    MCName: iron_pickaxe
+    Name: Pico de Hierro (Iron Pickaxe)
+  '258':
+    MCName: iron_axe
+    Name: Hacha de Hierro (Iron Axe)
+  '259':
+    MCName: flint_and_steel
+    Name: Mechero (Flint and Steel)
+  '260':
+    MCName: apple
+    Name: Manzana (Apple)
+  '261':
+    MCName: bow
+    Name: Arco (Bow)
+  '262':
+    MCName: arrow
+    Name: Flecha (Arrow)
+  '263':
+    MCName: coal
+    Name: Carbón (Coal)
+  '263:1':
+    MCName: coal
+    Name: Carbón Vegetal (Charcoal)
+  '264':
+    MCName: diamond
+    Name: Diamante (Diamond)
+  '265':
+    MCName: iron_ingot
+    Name: Lingote de Hierro (Iron Ingot)
+  '266':
+    MCName: gold_ingot
+    Name: Lingote de Oro (Gold Ingot)
+  '267':
+    MCName: iron_sword
+    Name: Espada de Hierro (Iron Sword)
+  '268':
+    MCName: wooden_sword
+    Name: Espada de Madera (Wooden Sword)
+  '269':
+    MCName: wooden_shovel
+    Name: Pala de Madera (Wooden Shovel)
+  '270':
+    MCName: wooden_pickaxe
+    Name: Pico de Madera (Wooden Pickaxe)
+  '271':
+    MCName: wooden_axe
+    Name: Hacha de Madera (Wooden Axe)
+  '272':
+    MCName: stone_sword
+    Name: Espada de Piedra (Stone Sword)
+  '273':
+    MCName: stone_shovel
+    Name: Pala de Piedra (Stone Shovel)
+  '274':
+    MCName: stone_pickaxe
+    Name: Pico de Piedra (Stone Pickaxe)
+  '275':
+    MCName: stone_axe
+    Name: Hacha de Piedra (Stone Axe)
+  '276':
+    MCName: diamond_sword
+    Name: Espada de Diamante (Diamond Sword)
+  '277':
+    MCName: diamond_shovel
+    Name: Pala de Diamante (Diamond Shovel)
+  '278':
+    MCName: diamond_pickaxe
+    Name: Pico de Diamante (Diamond Pickaxe)
+  '279':
+    MCName: diamond_axe
+    Name: Hacha de Diamante (Diamond Axe)
+  '280':
+    MCName: stick
+    Name: Palo (Stick)
+  '281':
+    MCName: bowl
+    Name: Arco (Bowl)
+  '282':
+    MCName: mushroom_stew
+    Name: Sopa de Setas (Mushroom Stew)
+  '283':
+    MCName: golden_sword
+    Name: Espada de Oro (Golden Sword)
+  '284':
+    MCName: golden_shovel
+    Name: Pala de Oro (Golden Shovel)
+  '285':
+    MCName: golden_pickaxe
+    Name: Pico de Oro (Golden Pickaxe)
+  '286':
+    MCName: golden_axe
+    Name: Hacha de Oro (Golden Axe)
+  '287':
+    MCName: string
+    Name: Hilo (String)
+  '288':
+    MCName: feather
+    Name: Pluma (Feather)
+  '289':
+    MCName: gunpowder
+    Name: Pólvora (Gunpowder)
+  '290':
+    MCName: wooden_hoe
+    Name: Azada de Madera (Wooden Hoe)
+  '291':
+    MCName: stone_hoe
+    Name: Azada de Piedra (Stone Hoe)
+  '292':
+    MCName: iron_hoe
+    Name: Azada de Hierro (Iron Hoe)
+  '293':
+    MCName: diamond_hoe
+    Name: Azada de Diamante (Diamond Hoe)
+  '294':
+    MCName: golden_hoe
+    Name: Azada de Oro (Golden Hoe)
+  '295':
+    MCName: wheat_seeds
+    Name: Semillas de trigo (Wheat Seeds)
+  '296':
+    MCName: wheat
+    Name: Trigo (Wheat)
+  '297':
+    MCName: bread
+    Name: Pan (Bread)
+  '298':
+    MCName: leather_helmet
+    Name: Capa de Cuero (Leather Helmet)
+  '299':
+    MCName: leather_chestplate
+    Name: Peto de Cuero (Leather Tunic)
+  '300':
+    MCName: leather_leggings
+    Name: Pantalones de Cuero (Leather Pants)
+  '301':
+    MCName: leather_boots
+    Name: Botas de Cuero (Leather Boots)
+  '302':
+    MCName: chainmail_helmet
+    Name: Casco de Cota (Chainmail Helmet)
+  '303':
+    MCName: chainmail_chestplate
+    Name: Peto de Cota (Chainmail Chestplate)
+  '304':
+    MCName: chainmail_leggings
+    Name: Mallas de Cota (Chainmail Leggings
+  '305':
+    MCName: chainmail_boots
+    Name: Botas de Cota (Chainmail Boots)
+  '306':
+    MCName: iron_helmet
+    Name: Casco de Hierro (Helmet Iron)
+  '307':
+    MCName: iron_chestplate
+    Name: Peto de Hierro (Iron Chestplate)
+  '308':
+    MCName: iron_leggings
+    Name: Mallas de Hierro (Iron Leggings)
+  '309':
+    MCName: iron_boots
+    Name: Botas de Hierro (Iron Boots)
+  '310':
+    MCName: diamond_helmet
+    Name: Casco de Diamante (Diamond Helmet)
+  '311':
+    MCName: diamond_chestplate
+    Name: Peto de Diamante (Diamond Chestplate)
+  '312':
+    MCName: diamond_leggings
+    Name: Mallas de Diamante (Diamond Leggings)
+  '313':
+    MCName: diamond_boots
+    Name: Botas de Diamante (Diamond Boots)
+  '314':
+    MCName: golden_helmet
+    Name: Casco de Oro (Golden Helmet)
+  '315':
+    MCName: golden_chestplate
+    Name: Peto de Oro (Golden Chestplate)
+  '316':
+    MCName: golden_leggings
+    Name: Mallas de Oro (Golden Leggings)
+  '317':
+    MCName: golden_boots
+    Name: Botas de Oro (Golden Boots)
+  '318':
+    MCName: flint_and_steel
+    Name: Pedernal (Flint)
+  '319':
+    MCName: porkchop
+    Name: Carne de Cerdo (Raw Porkchop)
+  '320':
+    MCName: cooked_porkchop
+    Name: Chuleta de Cerdo (Cooked Porkchop)
+  '321':
+    MCName: painting
+    Name: Cuadro (Painting)
+  '322':
+    MCName: golden_apple
+    Name: Manzana Dorada (Golden Apple)
+  '322:1':
+    MCName: golden_apple
+    Name: Manzana Dorada Encantada (Enchanted Golden Apple)
+  '323':
+    MCName: sign
+    Name: Cartel (Sign)
+  '324':
+    MCName: wooden_door
+    Name: Puerta de Madera (Wooden Door)
+  '325':
+    MCName: bucket
+    Name: Cubo (Bucket)
+  '326':
+    MCName: water_bucket
+    Name: Cubo de Agua (Water Bucket)
+  '327':
+    MCName: lava_bucket
+    Name: Cubo de Lava (Lava Bucket)
+  '328':
+    MCName: minecart
+    Name: Vagoneta (Minecart)
+  '329':
+    MCName: saddle
+    Name: Montura (Saddle)
+  '330':
+    MCName: iron_door
+    Name: Puerta de Hierro (Iron Door)
+  '331':
+    MCName: redstone
+    Name: Redstone (Redstone)
+  '332':
+    MCName: snowball
+    Name: Bola de Nieve (Snowball)
+  '333':
+    MCName: boat
+    Name: Barca (Boat)
+  '334':
+    MCName: leather
+    Name: Cuero (Leather)
+  '335':
+    MCName: milk_bucket
+    Name: Cubo de Leche (Milk Bucket)
+  '336':
+    MCName: brick
+    Name: Ladrillo (Brick)
+  '337':
+    MCName: clay_ball
+    Name: Bola de Arcilla (Clay Ball)
+  '338':
+    MCName: reeds
+    Name: Cañas de Azúcar (Sugar Cane)
+  '339':
+    MCName: paper
+    Name: Papel (Paper)
+  '340':
+    MCName: book
+    Name: Libro (Book)
+  '341':
+    MCName: slime_ball
+    Name: Babosa (Slimeball)
+  '342':
+    MCName: chest_minecart
+    Name: Vagoneta-Cofre (Minecart with Chest)
+  '343':
+    MCName: furnace_minecart
+    Name: Vagoneta-Horno (Minecart with Furnace)
+  '344':
+    MCName: egg
+    Name: Huevo (Egg)
+  '345':
+    MCName: compass
+    Name: Brújula (Compass)
+  '346':
+    MCName: fishing_rod
+    Name: Caña de Pescar (Fishing Rod)
+  '347':
+    MCName: clock
+    Name: Reloj (Clock)
+  '348':
+    MCName: glowstone_dust
+    Name: Polvo de Glowstone (Glowstone Dust)
+  '349':
+    MCName: fish
+    Name: Pescado Crudo (Raw Fish)
+  '349:1':
+    MCName: fish
+    Name: Salmón (Raw Salmon)
+  '349:2':
+    MCName: fish
+    Name: Nemo (Clownfish)
+  '349:3':
+    MCName: fish
+    Name: Pez Globo (Pufferfish)
+  '350':
+    MCName: cooked_fish
+    Name: Pescado a la Plancha (Cooked Fish)
+  '350:1':
+    MCName: cooked_fish
+    Name: Salmón a la Plancha (Cooked Salmon)
+  '351':
+    MCName: dye
+    Name: Todos los Tintes (All Dyes)
+  '351:0':
+    MCName: dye
+    Name: Tinte Negro (Ink Sack)
+  '351:1':
+    MCName: dye
+    Name: Tinte Rojo (Rose Red)
+  '351:2':
+    MCName: dye
+    Name: Tinte Verde (Cactus Green)
+  '351:3':
+    MCName: dye
+    Name: Tinte Marrón (Coco Beans)
+  '351:4':
+    MCName: dye
+    Name: Tinte Azul (Lapis Lazuli)
+  '351:5':
+    MCName: dye
+    Name: Tinte Morado (Purple Dye)
+  '351:6':
+    MCName: dye
+    Name: Tinte Cían (Cyan Dye)
+  '351:7':
+    MCName: dye
+    Name: Tinte Gris Claro (Light Gray Dye)
+  '351:8':
+    MCName: dye
+    Name: Tinte Gris (Gray Dye)
+  '351:9':
+    MCName: dye
+    Name: Tinte Rosa (Pink Dye)
+  '351:10':
+    MCName: dye
+    Name: Tinte Verde (Lime Dye)
+  '351:11':
+    MCName: dye
+    Name: Tinte Amarillo (Dandelion Yellow)
+  '351:12':
+    MCName: dye
+    Name: Tinte Azul Claro (Light Blue Dye)
+  '351:13':
+    MCName: dye
+    Name: Tinte Magenta (Magenta Dye)
+  '351:14':
+    MCName: dye
+    Name: Tinte Naranja (Orange Dye)
+  '351:15':
+    MCName: dye
+    Name: Tinte Blanco (Bone Meal)
+  '352':
+    MCName: bone
+    Name: Hueso (Bone)
+  '353':
+    MCName: sugar
+    Name: Azúcar (Sugar)
+  '354':
+    MCName: cake
+    Name: Tarta (Cake)
+  '355':
+    MCName: bed
+    Name: Cama (Bed)
+  '356':
+    MCName: repeater
+    Name: Repetidor (Redstone Repeater)
+  '357':
+    MCName: cookie
+    Name: Galleta (Cookie)
+  '358':
+    MCName: filled_map
+    Name: Mapa (Map)
+  '359':
+    MCName: shears
+    Name: Tijeras (Shears)
+  '360':
+    MCName: melon
+    Name: sandía (Melon)
+  '361':
+    MCName: pumpkin_seeds
+    Name: Semillas de Calabaza (Pumpkin Seeds)
+  '362':
+    MCName: melon_seeds
+    Name: Semillas de Sandía (Melon Seeds)
+  '363':
+    MCName: beef
+    Name: Carne de Vaca (Raw Beef)
+  '364':
+    MCName: cooked_beef
+    Name: Solomillo de Vaca (Steak)
+  '365':
+    MCName: chicken
+    Name: Carne de Pollo (Raw Chicken)
+  '366':
+    MCName: cooked_chicken
+    Name: Pollo Asado (Cooked Chicken)
+  '367':
+    MCName: rotten_flesh
+    Name: Carne Podrida (Rotten Flesh)
+  '368':
+    MCName: ender_pearl
+    Name: Perla de Ender (Ender Pearl)
+  '369':
+    MCName: blaze_rod
+    Name: Vara de Blaze (Blaze Rod)
+  '370':
+    MCName: ghast_tear
+    Name: Lágrima de Ghast (Ghast Tear)
+  '371':
+    MCName: gold_nugget
+    Name: Pepita de Oro (Gold Nugget)
+  '372':
+    MCName: nether_wart
+    Name: Planta Infernal (Nether Wart)
+  '373':
+    MCName: potion
+    Name: Poción (Potion)
+  '374':
+    MCName: glass_bottle
+    Name: Botella de Cristal (Glass Bottle)
+  '375':
+    MCName: spider_eye
+    Name: Ojo de Araña (Spider Eye)
+  '376':
+    MCName: fermented_spider_eye
+    Name: Ojo de Araña Fermentado (Fermented Spider Eye)
+  '377':
+    MCName: blaze_powder
+    Name: Blaze en Polvo (Blaze Powder)
+  '378':
+    MCName: magma_cream
+    Name: Crema de Magma (Magma Cream)
+  '379':
+    MCName: brewing_stand
+    Name: Soporte para Pociones (Brewing Stand)
+  '380':
+    MCName: cauldron
+    Name: Caldero (Cauldron)
+  '381':
+    MCName: ender_eye
+    Name: Ojo de Enderman (Eye of Ender)
+  '382':
+    MCName: speckled_melon
+    Name: Sandía Brillante (Glistering Melon)
+  '383:50':
+    MCName: spawn_egg
+    Name: Huevo de Creeper (Spawn Creeper)
+  '383:51':
+    MCName: spawn_egg
+    Name: Huevo de Esqueleto (Spawn Skeleton)
+  '383:52':
+    MCName: spawn_egg
+    Name: Huevo de Araña (Spawn Spider)
+  '383:54':
+    MCName: spawn_egg
+    Name: Huevo de Zombi (Spawn Zombie)
+  '383:55':
+    MCName: spawn_egg
+    Name: Huevo de Babosa (Spawn Slime)
+  '383:56':
+    MCName: spawn_egg
+    Name: Huevo de Ghast (Spawn Ghast)
+  '383:57':
+    MCName: spawn_egg
+    Name: Huevo de Cerdo Zombi (Spawn Pigman)
+  '383:58':
+    MCName: spawn_egg
+    Name: Huevo de Enderman (Spawn Enderman)
+  '383:59':
+    MCName: spawn_egg
+    Name: Huevo de Araña de Cueva (Spawn Cave Spider)
+  383:60:
+    MCName: spawn_egg
+    Name: Huevo de Lepisma (Spawn Silverfish)
+  383:61:
+    MCName: spawn_egg
+    Name: Huevo de Blaze (Spawn Blaze)
+  383:62:
+    MCName: spawn_egg
+    Name: Huevo de Cubo de Magma (Spawn Magma Cube)
+  383:65:
+    MCName: spawn_egg
+    Name: Huevo de Murciélago (Spawn Bat)
+  383:66:
+    MCName: spawn_egg
+    Name: Huevo de Bruja (Spawn Witch)
+  383:67:
+    MCName: spawn_egg
+    Name: Huevo de Endermite (Spawn Endermite)
+  383:68:
+    MCName: spawn_egg
+    Name: Huevo de Guardián (Spawn Guardian)
+  383:90:
+    MCName: spawn_egg
+    Name: Huevo de Cerdo (Spawn Pig)
+  383:91:
+    MCName: spawn_egg
+    Name: Huevo de Obeja (Spawn Sheep)
+  383:92:
+    MCName: spawn_egg
+    Name: Huevo de Vaca (Spawn Cow)
+  383:93:
+    MCName: spawn_egg
+    Name: Huevo de Gallina (Spawn Chicken)
+  383:94:
+    MCName: spawn_egg
+    Name: Huevo de Pulpo (Spawn Squid)
+  383:95:
+    MCName: spawn_egg
+    Name: Huevo de Lobo (Spawn Wolf)
+  383:96:
+    MCName: spawn_egg
+    Name: Huevo de Vacaseta (Spawn Mooshroom)
+  383:98:
+    MCName: spawn_egg
+    Name: Huevo de Ocelote (Spawn Ocelot)
+  383:100:
+    MCName: spawn_egg
+    Name: Huevo de Caballo (Spawn Horse)
+  383:101:
+    MCName: spawn_egg
+    Name: Huevo de Conejo (Spawn Rabbit)
+  383:120:
+    MCName: spawn_egg
+    Name: Huevo de Aldeano (Spawn Villager)
+  '384':
+    MCName: experience_bottle
+    Name: Botella de Experiencia (Bottle o' Enchanting)
+  '385':
+    MCName: fire_charge
+    Name: Bola de Fuego (Fire Charge)
+  '386':
+    MCName: writable_book
+    Name: Libro y Pluma (Book and Quill)
+  '387':
+    MCName: written_book
+    Name: Libro Escrito (Written Book)
+  '388':
+    MCName: emerald
+    Name: Esmeralda (Emerald)
+  '389':
+    MCName: item_frame
+    Name: Marco (Item Frame)
+  '390':
+    MCName: flower_pot
+    Name: Macetero (Flower Pot)
+  '391':
+    MCName: carrot
+    Name: Zanahoria (Carrot)
+  '392':
+    MCName: potato
+    Name: Patata (Potato)
+  '393':
+    MCName: baked_potato
+    Name: Patata Asada (Baked Potato)
+  '394':
+    MCName: poisonous_potato
+    Name: Patata Envenenada (Poisonous Potato)
+  '395':
+    MCName: map
+    Name: Mapa Vacío (Empty Map)
+  '396':
+    MCName: golden_carrot
+    Name: Zanahoria Dorada (Golden Carrot)
+  '397':
+    MCName: skull
+    Name: Cabeza de Esqueleto (Mob Head (Skeleton))
+  '397:1':
+    MCName: skull
+    Name: Cabeza de Wither (Mob Head (Wither Skeleton))
+  '397:2':
+    MCName: skull
+    Name: Cabeza de Zombi (Mob Head (Zombie))
+  '397:3':
+    MCName: skull
+    Name: Cabeza Humana (Mob Head (Human))
+  '397:4':
+    MCName: skull
+    Name: Cabeza de Creeper (Mob Head (Creeper))
+  '398':
+    MCName: carrot_on_a_stick
+    Name: Caña con Zanahoria (Carrot on a Stick)
+  '399':
+    MCName: nether_star
+    Name: Estrella del Inframundo (Nether Star)
+  '400':
+    MCName: pumpkin_pie
+    Name: Tarta de Calabaza (Pumpkin Pie)
+  '401':
+    MCName: fireworks
+    Name: Cohete (Firework Rocket)
+  '402':
+    MCName: firework_charge
+    Name: Carga (Firework Star)
+  '403':
+    MCName: enchanted_book
+    Name: Libro Encantado (Enchanted Book)
+  '404':
+    MCName: comparator
+    Name: Comparador (Redstone Comparator)
+  '405':
+    MCName: netherbrick
+    Name: Infraladrillo (Nether Brick)
+  '406':
+    MCName: quartz
+    Name: Cuarzo (Nether Quartz)
+  '407':
+    MCName: tnt_minecart
+    Name: Vagoneta con Dinamita (Minecart with TNT)
+  '408':
+    MCName: hopper_minecart
+    Name: Vagoneta Tolva (Minecart with Hopper)
+  '409':
+    MCName: prismarine_shard
+    Name: Fragmento de Prismarina (Prismarine Shard)
+  '410':
+    MCName: prismarine_crystals
+    Name: Cristales de Prismarina (Prismarine Crystals)
+  '411':
+    MCName: rabbit
+    Name: Carne de Conejo (Raw Rabbit)
+  '412':
+    MCName: cooked_rabbit
+    Name: Conejo Frito (Cooked Rabbit)
+  '413':
+    MCName: rabbit_stew
+    Name: Sopa de Conejo (Rabbit Stew)
+  '414':
+    MCName: rabbit_foot
+    Name: Pata de Conejo (Rabbit's Foot)
+  '415':
+    MCName: rabbit_hide
+    Name: Piel de Conejo (Rabbit Hide)
+  '416':
+    MCName: armor_stand
+    Name: Soporta-Armadura (Armor Stand)
+  '417':
+    MCName: iron_horse_armor
+    Name: Armadura de Hierro (Iron Horse Armor)
+  '418':
+    MCName: golden_horse_armor
+    Name: Armadura de Oro (Gold Horse Armor)
+  '419':
+    MCName: diamond_horse_armor
+    Name: Armadura de Diamante (Diamond Horse Armor)
+  '420':
+    MCName: lead
+    Name: Correa (Lead)
+  '421':
+    MCName: name_tag
+    Name: Etiqueta (Name Tag)
+  '422':
+    MCName: command_block_minecart
+    Name: Vagoneta con Bloque de Comandos (Minecart with Command Block)
+  '423':
+    MCName: mutton
+    Name: Carne de Cordero (Raw Mutton)
+  '424':
+    MCName: cooked_mutton
+    Name: Cordero a la Brasa (Cooked Mutton)
+  '425':
+    MCName: banner
+    Name: Estandarte (Banner)
+  '426':
+    MCName: end_crystal
+    Name: Cristal del End (End Crystal)
+  '427':
+    MCName: spruce_door
+    Name: Puerta de Abeto (Spruce Door)
+  '428':
+    MCName: birch_door
+    Name: Puerta de Abedul (Birch Door)
+  '429':
+    MCName: jungle_door
+    Name: Puerta Silvestre (Jungle Door)
+  '430':
+    MCName: acacia_door
+    Name: Puerta de Acacia (Acacia Door)
+  '431':
+    MCName: dark_oak_door
+    Name: Puerta de Roble Oscuro(Dark Oak Door)
+  '432':
+    MCName: chorus_fruit
+    Name: Fruta Coral (Chorus Fruit)
+  '433':
+    MCName: chorus_fruit_popped
+    Name: Fruta de Coral Cocida (Popped Chorus Fruit)
+  '434':
+    MCName: beetroot
+    Name: Remolacha (Beetroot)
+  '435':
+    MCName: beetroot_seeds
+    Name: Semillas de Remolacha (Beetroot Seeds)
+  '436':
+    MCName: beetroot_soup
+    Name: Sopa de Remolacha (Beetroot Soup)
+  '437':
+    MCName: dragon_breath
+    Name: Fuego Valyrio (Dragon's Breath)
+  '439':
+    MCName: spectral_arrow
+    Name: Flecha Espectral (Spectral Arrow)
+  '440':
+    MCName: tipped_arrow
+    Name: Flecha Encantada (Tipped Arrow)
+  '441':
+    MCName: lingering_potion
+    Name: Poción Persistente (Lingering Potion)
+  '442':
+    MCName: shield
+    Name: Escudo (Shield)
+  '443':
+    MCName: elytra
+    Name: Élitros (Elytra)
+  '2256':
+    MCName: record_13
+    Name: Disco 13
+  '2257':
+    MCName: record_cat
+    Name: Disco de Gatos
+  '2258':
+    MCName: record_blocks
+    Name: Disco de Bloques
+  '2259':
+    MCName: record_chirp
+    Name: Disco de Chirridos
+  '2260':
+    MCName: record_far
+    Name: Disco Tenebroso
+  '2261':
+    MCName: record_mall
+    Name: Disco de Centro Urbano
+  '2262':
+    MCName: record_mellohi
+    Name: Disco Mellohi
+  '2263':
+    MCName: record_stal
+    Name: Disco Stal
+  '2264':
+    MCName: record_strad
+    Name: Disco Strad
+  '2265':
+    MCName: record_ward
+    Name: Disco Ward
+  '2266':
+    MCName: record_11
+    Name: Disco 11
+  '2267':
+    MCName: record_wait
+    Name: Disco Sala de Espera
+EntityList:
+  '-1':
+    MCName: Player
+    Name: Jugador
+  '50':
+    MCName: Creeper
+    Name: Creeper
+  '51':
+    MCName: Skeleton
+    Name: Esqueleto
+  '51:1':
+    MCName: Skeleton
+    Name: Esqueleto de Wither
+  '51:2':
+    MCName: Skeleton
+    Name: Esqueleto Glacial
+  '52':
+    MCName: Spider
+    Name: Araña
+  '53':
+    MCName: Giant
+    Name: Giante
+  '54':
+    MCName: Zombie
+    Name: Zombi
+  '54:1':
+    MCName: Zombie
+    Name: Aldeano Zombi
+  '54:2':
+    MCName: Zombie
+    Name: Zombi Momificado
+  '55':
+    MCName: Slime
+    Name: Babosa
+  '56':
+    MCName: Ghast
+    Name: Ghast
+  '57':
+    MCName: PigZombie
+    Name: Zombi Cerdo
+  '58':
+    MCName: Enderman
+    Name: Enderman
+  '59':
+    MCName: CaveSpider
+    Name: Araña de Cueva
+  '60':
+    MCName: Silverfish
+    Name: Lepisma
+  '61':
+    MCName: Blaze
+    Name: Llamarada
+  '62':
+    MCName: LavaSlime
+    Name: Cubo de Magma
+  '63':
+    MCName: EnderDragon
+    Name: Dragón
+  '64':
+    MCName: WitherBoss
+    Name: Wither
+  '65':
+    MCName: Bat
+    Name: Murciélago
+  '66':
+    MCName: Witch
+    Name: Bruja
+  '67':
+    MCName: Endermite
+    Name: Endermite
+  '68':
+    MCName: Guardian
+    Name: Guardián
+  '68:1':
+    MCName: Guardian
+    Name: Guardián Anciano
+  '69':
+    MCName: Shulker
+    Name: Shulker
+  '90':
+    MCName: Pig
+    Name: Cerdo
+  '91':
+    MCName: Sheep
+    Name: Oveja
+  '92':
+    MCName: Cow
+    Name: Vaca
+  '93':
+    MCName: Chicken
+    Name: Pollo
+  '94':
+    MCName: Squid
+    Name: Plulpo
+  '95':
+    MCName: Wolf
+    Name: Lobo
+  '96':
+    MCName: MushroomCow
+    Name: Vaca-Seta
+  '97':
+    MCName: SnowMan
+    Name: Golem de Nieve
+  '98':
+    MCName: Ozelot
+    Name: Ocelote
+  '99':
+    MCName: VillagerGolem
+    Name: Golem de Hierro
+  '100':
+    MCName: EntityHorse
+    Name: Caballo
+  '101':
+    MCName: Rabbit
+    Name: Conejo
+  '102':
+    MCName: PolarBear
+    Name: Oso Polar
+  '120':
+    MCName: Villager
+    Name: Aldeano
+  '200':
+    MCName: EnderCrystal
+    Name: Cristal de Ender
+EnchantList:
+  '0':
+    MCName: PROTECTION_ENVIRONMENTAL
+    Name: Protección
+  '1':
+    MCName: PROTECTION_FIRE
+    Name: Protección contra el fuego
+  '2':
+    MCName: PROTECTION_FALL
+    Name: Peso pluma
+  '3':
+    MCName: PROTECTION_EXPLOSIONS
+    Name: Protección contra explosiones
+  '4':
+    MCName: ROTECTION_PROJECTILE
+    Name: Protección contra proyectiles
+  '5':
+    MCName: OXYGEN
+    Name: Apnea
+  '6':
+    MCName: DIG_SPEED
+    Name: Afinidad acuática
+  '7':
+    MCName: THORNS
+    Name: Espinas
+  '8':
+    MCName: DEPTH_STRIDER
+    Name: Agilidad acuática
+  '9':
+    MCName: FROST_WALKER
+    Name: Paso helado
+  '16':
+    MCName: DAMAGE_ALL
+    Name: Daño
+  '17':
+    MCName: DAMAGE_UNDEAD
+    Name: Golpeo
+  '18':
+    MCName: DAMAGE_ARTHROPODS
+    Name: Perdición de los artrópodos
+  '19':
+    MCName: KNOCKBACK
+    Name: Empuje
+  '20':
+    MCName: FIRE_ASPECT
+    Name: Aspecto ígneo
+  '21':
+    MCName: LOOT_BONUS_MOBS
+    Name: Botín
+  '32':
+    MCName: DIG_SPEED
+    Name: Eficiencia
+  '33':
+    MCName: SILK_TOUCH
+    Name: Toque de seda
+  '34':
+    MCName: DURABILITY
+    Name: Irrompibilidad
+  '35':
+    MCName: LOOT_BONUS_BLOCKS
+    Name: Fortuna
+  '48':
+    MCName: ARROW_DAMAGE
+    Name: Potencia
+  '49':
+    MCName: ARROW_KNOCKBACK
+    Name: Retroceso
+  '50':
+    MCName: ARROW_FIRE
+    Name: Fuego
+  '51':
+    MCName: ARROW_INFINITE
+    Name: Infinidad
+  '61':
+    MCName: LUCK
+    Name: Suerte Marina
+  '62':
+    MCName: LURE
+    Name: Atracción
+  '70':
+    MCName: MENDING
+    Name: Reparación
+ColorList:
+  '0':
+    MCName: white
+    Name: '&fBlanco'
+  '1':
+    MCName: orange
+    Name: '&6Naranja'
+  '2':
+    MCName: magenta
+    Name: '&dMagenta'
+  '3':
+    MCName: lightBlue
+    Name: '&9Azul Claro'
+  '4':
+    MCName: yellow
+    Name: '&eAmarillo'
+  '5':
+    MCName: lime
+    Name: '&aVerde Lima'
+  '6':
+    MCName: pink
+    Name: '&dRosa'
+  '7':
+    MCName: gray
+    Name: '&8Gris'
+  '8':
+    MCName: silver
+    Name: '&7Gris Claro'
+  '9':
+    MCName: cyan
+    Name: '&3Cian'
+  '10':
+    MCName: purple
+    Name: '&5Morado'
+  '11':
+    MCName: blue
+    Name: '&1Azul'
+  '12':
+    MCName: brown
+    Name: '&4Marrón'
+  '13':
+    MCName: green
+    Name: '&2Verde'
+  '14':
+    MCName: red
+    Name: '&cRojo'
+  '15':
+    MCName: black
+    Name: '&0Negro'
