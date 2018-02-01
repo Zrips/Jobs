@@ -138,7 +138,7 @@ public class JobsCommands implements CommandExecutor {
 	    cmdString = cmdString.replace("[arguments]", " " + Jobs.getLanguage().getMessage(key));
 	} else {
 	    cmdString = cmdString.replace("[arguments]", "");
-	} 
+	}
 	return cmdString;
     }
 
@@ -448,10 +448,7 @@ public class JobsCommands implements CommandExecutor {
 	List<JobInfo> jobInfo = job.getJobInfo(type);
 	for (JobInfo info : jobInfo) {
 
-	    String materialName = info.getName().toLowerCase().replace('_', ' ');
-	    materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
-	    materialName = Jobs.getNameTranslatorManager().Translate(materialName, info);
-	    materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
+	    String materialName = info.getRealisticName();
 
 	    double income = info.getIncome(level, numjobs);
 
@@ -478,13 +475,13 @@ public class JobsCommands implements CommandExecutor {
 		message.append(" -> ");
 
 	    if (income != 0.0)
-		message.append(Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor + String.format("%.2f", income)));
+		message.append(Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income)));
 
 	    if (points != 0.0)
-		message.append(Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor + String.format("%.2f", points)));
+		message.append(Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points)));
 
 	    if (xp != 0.0)
-		message.append(Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor + String.format("%.2f", xp)));
+		message.append(Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp)));
 
 	    if (info.getFromLevel() > 1 && info.getUntilLevel() != -1)
 		message.append(Jobs.getLanguage().getMessage("command.info.help.levelRange", "%levelFrom%", info.getFromLevel(), "%levelUntil%", info.getUntilLevel()));

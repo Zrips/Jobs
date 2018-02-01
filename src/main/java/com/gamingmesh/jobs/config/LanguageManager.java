@@ -333,7 +333,7 @@ public class LanguageManager {
 	    c.get("command.info.help.levelUntil", " &a(until &e%levelUntil% &alevel)");
 
 	    c.get("command.info.help.money", " &2%money%\u0024");
-	    c.get("command.info.help.points", " &6%points%points");
+	    c.get("command.info.help.points", " &6%points%pts");
 	    c.get("command.info.help.exp", " &e%exp%xp");
 
 	    c.get("command.info.gui.pickjob", "&ePick your job!");
@@ -436,7 +436,7 @@ public class LanguageManager {
 	    
 	    c.get("command.quests.help.info", "List available quests");
 	    c.get("command.quests.help.args", "(playername)");
-	    c.get("command.quests.error.noquests", "There are no quests");
+	    c.get("command.quests.error.noquests", "&cThere are no quests");
 	    c.get("command.quests.toplineseparator", "&7*********************** &6[playerName]&2(&f[questsDone]&2) &7***********************");
 	    c.get("command.quests.output.completed", "&2      !Completed!&r      ");
 	    c.get("command.quests.output.questLine", "[progress] &7[questName] &f[done]&7/&8[required]");

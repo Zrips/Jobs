@@ -24,7 +24,7 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 public class JobInfo {
     private ActionType actionType;
     private int id;
-    private String meta; 
+    private String meta;
     private String name;
     private double baseIncome, baseXp, basePoints;
     private Parser moneyEquation, xpEquation, pointsEquation;
@@ -75,6 +75,14 @@ public class JobInfo {
 
     public String getName() {
 	return this.name;
+    }
+
+    public String getRealisticName() {
+	String materialName = getName().toLowerCase().replace('_', ' ');
+	materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
+	materialName = Jobs.getNameTranslatorManager().Translate(materialName, this);
+	materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
+	return materialName;
     }
 
     public int getId() {

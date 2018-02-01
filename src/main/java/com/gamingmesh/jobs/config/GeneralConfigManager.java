@@ -103,6 +103,8 @@ public class GeneralConfigManager {
 	EmptyServerAcountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	useGlobalBoostScheduler, JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
 
+    private String DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
+
     public ItemStack guiBackButton;
     public ItemStack guiFiller;
 
@@ -450,6 +452,12 @@ public class GeneralConfigManager {
 	c.getW().addComment("Optimizations.NewVersion",
 	    "When set to true staff will be informed about new Jobs plugin version", "You need to have jobs.versioncheck permission node");
 	ShowNewVersion = c.get("Optimizations.NewVersion", true);
+
+	c.getW().addComment("Optimizations.DecimalPlaces.Money",
+	    "Decimal places to be shown");
+	DecimalPlacesMoney = "%." + c.get("Optimizations.DecimalPlaces.Money", 2) + "f";
+	DecimalPlacesExp = "%." + c.get("Optimizations.DecimalPlaces.Exp", 2) + "f";
+	DecimalPlacesPoints = "%." + c.get("Optimizations.DecimalPlaces.Points", 2) + "f";
 
 	c.getW().addComment("Optimizations.DBCleaning.Jobs.Use",
 	    "Warning!!! before enabling this feature, please make data base backup, just in case there will be some issues with data base cleaning",
@@ -944,4 +952,17 @@ public class GeneralConfigManager {
     public int getBrowseAmountToShow() {
 	return BrowseAmountToShow;
     }
+
+    public String getDecimalPlacesMoney() {
+	return DecimalPlacesMoney;
+    }
+
+    public String getDecimalPlacesExp() {
+	return DecimalPlacesExp;
+    }
+
+    public String getDecimalPlacesPoints() {
+	return DecimalPlacesPoints;
+    }
+
 }

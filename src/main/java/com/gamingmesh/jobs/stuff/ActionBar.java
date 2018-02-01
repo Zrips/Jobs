@@ -31,7 +31,7 @@ public class ActionBar {
     private Class<?> ChatMessageclz;
     private Class<?> sub;
     private Object[] consts;
-    
+
     public ActionBar() {
 	try {
 	    version = Jobs.getVersionCheckManager().getVersion();
@@ -58,7 +58,7 @@ public class ActionBar {
     }
 
     public void ShowActionBar(BufferedPayment payment) {
-	
+
 	if (!payment.getOfflinePlayer().isOnline())
 	    return;
 
@@ -78,11 +78,12 @@ public class ActionBar {
 	if (abp != null && show) {
 	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
 	    if (payment.getAmount() != 0D)
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format("%.2f", payment.getAmount()));
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), payment
+		    .getAmount()));
 	    if (payment.getPoints() != 0D)
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format("%.2f", payment.getPoints()));
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), payment.getPoints()));
 	    if (payment.getExp() != 0D)
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format("%.2f", payment.getExp()));
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), payment.getExp()));
 	    send(abp, ChatColor.GREEN + Message);
 	}
     }
@@ -94,7 +95,7 @@ public class ActionBar {
 
 	    if (receivingPacket == null)
 		return;
-	    
+
 	    if (version.isLower(Version.v1_8_R1) || !(receivingPacket instanceof Player)) {
 		receivingPacket.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
 		return;

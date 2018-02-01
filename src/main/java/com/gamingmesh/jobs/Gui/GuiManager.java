@@ -192,22 +192,36 @@ public class GuiManager {
 	    int y = 1;
 	    for (int z = 0; z < info.size(); z++) {
 
-		String itemName = info.get(z).getName().toLowerCase().replace('_', ' ');
-		itemName = Character.toUpperCase(itemName.charAt(0)) + itemName.substring(1);
-		itemName = Jobs.getNameTranslatorManager().Translate(itemName, info.get(z));
-		itemName = org.bukkit.ChatColor.translateAlternateColorCodes('&', itemName);
+		String itemName = info.get(z).getRealisticName();
 
 		double income = info.get(z).getIncome(level, numjobs);
-		income = income + (income * boost.getFinal(CurrencyType.MONEY));
-		ChatColor incomeColor = income >= 0 ? ChatColor.GREEN : ChatColor.DARK_RED;
+
+		income = boost.getFinalAmount(CurrencyType.MONEY, income);
+		String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
 		double xp = info.get(z).getExperience(level, numjobs);
-		xp = xp + (xp * boost.getFinal(CurrencyType.EXP));
-		ChatColor xpColor = xp >= 0 ? ChatColor.YELLOW : ChatColor.GRAY;
+		xp = boost.getFinalAmount(CurrencyType.EXP, xp);
+		String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
-		String xpString = String.format("%.2fxp", xp);
+		double points = info.get(z).getPoints(level, numjobs);
+		points = boost.getFinalAmount(CurrencyType.POINTS, points);
+		String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 
-		Lore.add(ChatColor.translateAlternateColorCodes('&', "&7" + itemName + " " + xpColor + xpString + " " + incomeColor + Jobs.getEconomy().format(income)));
+		if (income == 0D && points == 0D && xp == 0D)
+		    continue;
+
+		String val = "";
+
+		if (income != 0.0)
+		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
+
+		if (points != 0.0)
+		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+
+		if (xp != 0.0)
+		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
+
+		Lore.add(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", itemName) + val);
 
 		if (y >= 10) {
 		    y = 1;
