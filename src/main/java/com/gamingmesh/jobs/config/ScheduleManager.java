@@ -20,6 +20,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class ScheduleManager {
@@ -32,6 +33,8 @@ public class ScheduleManager {
     }
 
     public void start() {
+	if (Jobs.getGCManager().BoostSchedule.isEmpty())
+	    return;
 	autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoTimer, 20, 30 * 20L);
     }
 
@@ -55,7 +58,7 @@ public class ScheduleManager {
     }
 
     private boolean scheduler() {
-	if (Jobs.getGCManager().BoostSchedule.isEmpty() || !Jobs.getGCManager().useGlobalBoostScheduler)
+	if (Jobs.getGCManager().BoostSchedule.isEmpty())
 	    return false;
 
 	DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -85,11 +88,11 @@ public class ScheduleManager {
 		.isStarted()) || !one.isNextDay() && (Current >= From && Current < Until)) && (days.contains(CurrentDayName) || days.contains("all")) && !one
 		    .isStarted()) {
 
-			JobsScheduleStartEvent event = new JobsScheduleStartEvent(one);
-			Bukkit.getPluginManager().callEvent(event);
-			if(event.isCancelled()){
-				continue;
-			}
+		JobsScheduleStartEvent event = new JobsScheduleStartEvent(one);
+		Bukkit.getPluginManager().callEvent(event);
+		if (event.isCancelled()) {
+		    continue;
+		}
 		if (one.isBroadcastOnStart())
 		    if (one.GetMessageOnStart().size() == 0)
 			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStarted"));
@@ -109,11 +112,11 @@ public class ScheduleManager {
 		break;
 	    } else if (((one.isNextDay() && Current > one.GetNextUntil() && Current < one.GetFrom() && !one.isStoped()) || !one.isNextDay() && Current > Until
 		&& ((days.contains(CurrentDayName)) || days.contains("all"))) && !one.isStoped()) {
-			JobsScheduleStopEvent event = new JobsScheduleStopEvent(one);
-			Bukkit.getPluginManager().callEvent(event);
-			if(event.isCancelled()){
-				continue;
-			}
+		JobsScheduleStopEvent event = new JobsScheduleStopEvent(one);
+		Bukkit.getPluginManager().callEvent(event);
+		if (event.isCancelled()) {
+		    continue;
+		}
 		if (one.isBroadcastOnStop())
 		    if (one.GetMessageOnStop().size() == 0)
 			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStoped"));
@@ -232,6 +235,7 @@ public class ScheduleManager {
 		sched.setBoost(CurrencyType.MONEY, path.getDouble("Money", 0D));
 	    if (path.contains("Points") && path.isDouble("Points"))
 		sched.setBoost(CurrencyType.POINTS, path.getDouble("Points", 0D));
+
 	    Jobs.getGCManager().BoostSchedule.add(sched);
 	}
 	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");

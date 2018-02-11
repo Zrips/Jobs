@@ -101,7 +101,7 @@ public class GeneralConfigManager {
     public boolean fixAtMaxLevel, ToggleActionBar, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAcountChat,
 	EmptyServerAcountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	useGlobalBoostScheduler, JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
+	 JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
 
     private int JobsGUIRows, JobsGUIBackButton,
 	JobsGUIStartPosition,
@@ -913,8 +913,8 @@ public class GeneralConfigManager {
 	tmat = Material.getMaterial(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
 	guiFiller = new ItemStack(tmat == null ? Material.STAINED_GLASS_PANE : tmat, 1, (byte) c.get("JobsGUI.Filler.Data", 15));
 
-	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
-	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);
+//	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
+//	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);
 
 	try {
 	    c.getW().save(f);
