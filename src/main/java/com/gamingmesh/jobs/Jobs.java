@@ -136,6 +136,8 @@ public class Jobs extends JavaPlugin {
 
     private static ConfigManager configManager;
     private static GeneralConfigManager GconfigManager;
+    
+    private static Reflections reflections;
 
     private static Logger pLogger;
     private static File dataFolder;
@@ -240,6 +242,12 @@ public class Jobs extends JavaPlugin {
 	return BpManager;
     }
 
+    public static Reflections getReflections() {
+	if (reflections == null)
+	    reflections = new Reflections(instance);
+	return reflections;
+    }
+    
     public static JobsManager getDBManager() {
 	if (DBManager == null)
 	    DBManager = new JobsManager(instance);

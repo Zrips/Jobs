@@ -65,6 +65,11 @@ public class v1_9 implements NMS {
     }
 
     @Override
+    public void setItemInMainHand(Player player, ItemStack item) {
+	player.getInventory().setItemInHand(item);
+    }
+
+    @Override
     public Block getTargetBlock(Player player, int range) {
 	return player.getTargetBlock((Set<Material>) null, range);
     }

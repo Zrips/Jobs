@@ -49,21 +49,14 @@ public class give implements Cmd {
 	    return true;
 	}
 
-	JobItems jItem = null;
-
-	for (JobItems item : job.getItems()) {
-	    if (item.getNode().equalsIgnoreCase(itemName)) {
-		jItem = item;
-		break;
-	    }
-	}
+	JobItems jItem = job.getItemBonus(itemName);
 
 	if (jItem == null || jItem.getItemStack(player) == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.noitem"));
 	    return true;
 	}
-	
-	GiveItem.GiveItemForPlayer(player, jItem.getItemStack(player));
+
+	GiveItem.GiveItemForPlayer(player, jItem.getItemStack(player, job));
 	return true;
     }
 }

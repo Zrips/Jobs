@@ -58,6 +58,11 @@ public class v1_7 implements NMS {
 	return player.getInventory().getItemInHand();
     }
 
+    @Override
+    public void setItemInMainHand(Player player, ItemStack item) {
+	player.getInventory().setItemInHand(item);
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public Block getTargetBlock(Player player, int range) {

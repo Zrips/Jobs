@@ -194,6 +194,14 @@ public class LanguageManager {
 	    c.get("command.expboost.output.boostadded", "Exp boost of &e%boost% &aadded for &e%jobname%!");
 	    c.get("command.expboost.output.infostats", "&c-----> &aExp rate x%boost% enabled&c <-------");
 
+	    c.get("command.itembonus.help.info", "Check item bonus");
+	    c.get("command.itembonus.help.args", "");
+	    c.get("command.itembonus.output.list", "&e[jobname]: %money% %points% %exp%");
+
+	    c.get("command.edititembonus.help.info", "Edit item boost bonus");
+	    c.get("command.edititembonus.help.args", "[list/add/remove] [jobsName] [itemBoostName]");
+	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("add%%remove", "[jobname]", "[jobitemname]"));
+	    
 	    c.get("command.bonus.help.info", "Show job bonuses");
 	    c.get("command.bonus.help.args", "[jobname]");
 	    Jobs.getGCManager().commandArgs.put("bonus", Arrays.asList("[jobname]"));
@@ -208,6 +216,9 @@ public class LanguageManager {
 	    c.get("command.bonus.output.mcmmo", " &eMcMMO bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.final", " &eFinal bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.finalExplanation", " &eDoes not include Petpay and Near spawner bonus/penalty");
+	    
+	    
+	    
 
 	    c.get("command.convert.help.info",
 		"Converts data base system from one system to another. if you currently running sqlite, this will convert to Mysql and vise versa.");

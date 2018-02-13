@@ -42,6 +42,8 @@ public class bonus implements Cmd {
 	if (jPlayer == null)
 	    return false;
 
+	Jobs.getPlayerManager().updateOldItems(player);
+	
 	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job, true, true);
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));

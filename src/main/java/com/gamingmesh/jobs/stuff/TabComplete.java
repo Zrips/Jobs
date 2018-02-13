@@ -15,6 +15,7 @@ import org.bukkit.util.StringUtil;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobItemBonus;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -76,8 +77,8 @@ public class TabComplete implements TabCompleter {
 		    case "[jobitemname]":
 			Job oneJob = Jobs.getJob(args[i - 1]);
 			if (oneJob != null)
-			    for (JobItems item : oneJob.getItems()) {
-				temp.add(item.getNode());
+			    for (Entry<String, JobItems> item : oneJob.getItemBonus().entrySet()) {
+				temp.add(item.getValue().getNode());
 			    }
 			break;
 		    case "[oldjob]":

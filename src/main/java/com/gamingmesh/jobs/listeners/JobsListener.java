@@ -34,6 +34,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Dispenser;
 import org.bukkit.block.Sign;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -42,20 +44,27 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -65,9 +74,12 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
 import com.gamingmesh.jobs.api.JobsAreaSelectionEvent;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
+import com.gamingmesh.jobs.container.ArmorTypes;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
+import com.gamingmesh.jobs.container.JobsArmorChangeEvent;
+import com.gamingmesh.jobs.container.JobsArmorChangeEvent.EquipMethod;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -719,4 +731,198 @@ public class JobsListener implements Listener {
 	Bukkit.getServer().getPluginManager().callEvent(jobsChunkChangeEvent);
     }
 
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+	if (event.isCancelled())
+	    return;
+
+	boolean shift = false, numberkey = false;
+	if (event.isCancelled())
+	    return;
+	ClickType click = event.getClick();
+	if (click.equals(ClickType.SHIFT_LEFT) || click.equals(ClickType.SHIFT_RIGHT))
+	    shift = true;
+
+	if (click.equals(ClickType.NUMBER_KEY))
+	    numberkey = true;
+
+	SlotType slotType = event.getSlotType();
+
+	if ((slotType != SlotType.ARMOR || slotType != SlotType.QUICKBAR) && !event.getInventory().getType().equals(InventoryType.CRAFTING))
+	    return;
+	if (!(event.getWhoClicked() instanceof Player))
+	    return;
+
+	Player player = (Player) event.getWhoClicked();
+
+	if (event.getCurrentItem() == null)
+	    return;
+	ArmorTypes newArmorType = ArmorTypes.matchType(shift ? event.getCurrentItem() : event.getCursor());
+	if (!shift && newArmorType != null && event.getRawSlot() != newArmorType.getSlot())
+	    return;
+
+	if (shift) {
+	    newArmorType = ArmorTypes.matchType(event.getCurrentItem());
+	    if (newArmorType == null)
+		return;
+	    boolean equipping = true;
+	    if (event.getRawSlot() == newArmorType.getSlot())
+		equipping = false;
+
+	    PlayerInventory inv = player.getInventory();
+
+	    if (newArmorType.equals(ArmorTypes.HELMET) &&
+		(equipping ? inv.getHelmet() == null : inv.getHelmet() != null) ||
+		(newArmorType.equals(ArmorTypes.CHESTPLATE) || newArmorType.equals(ArmorTypes.ELYTRA)) &&
+		    (equipping ? inv.getChestplate() == null : inv.getChestplate() != null) ||
+		newArmorType.equals(ArmorTypes.LEGGINGS) &&
+		    (equipping ? inv.getLeggings() == null : inv.getLeggings() != null) ||
+		newArmorType.equals(ArmorTypes.BOOTS) &&
+		    (equipping ? inv.getBoots() == null : inv.getBoots() != null)) {
+		JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(player, EquipMethod.SHIFT_CLICK, newArmorType, equipping ? null : event
+		    .getCurrentItem(), equipping ? event.getCurrentItem() : null);
+		Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+		if (armorEquipEvent.isCancelled()) {
+		    event.setCancelled(true);
+		}
+	    }
+
+	} else {
+	    ItemStack newArmorPiece = event.getCursor();
+	    ItemStack oldArmorPiece = event.getCurrentItem();
+	    if (numberkey) {
+		if (event.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+		    ItemStack hotbarItem = event.getClickedInventory().getItem(event.getHotbarButton());
+		    if (hotbarItem != null) {
+			newArmorType = ArmorTypes.matchType(hotbarItem);
+			newArmorPiece = hotbarItem;
+			oldArmorPiece = event.getClickedInventory().getItem(event.getSlot());
+		    } else {
+			newArmorType = ArmorTypes.matchType(oldArmorPiece != null && oldArmorPiece.getType() != Material.AIR ? oldArmorPiece : event.getCursor());
+		    }
+		}
+	    } else {
+		newArmorType = ArmorTypes.matchType(oldArmorPiece != null && oldArmorPiece.getType() != Material.AIR ? oldArmorPiece : event.getCursor());
+	    }
+	    if (newArmorType != null && event.getRawSlot() == newArmorType.getSlot()) {
+		EquipMethod method = EquipMethod.DRAG;
+		if (event.getAction().equals(InventoryAction.HOTBAR_SWAP) || numberkey)
+		    method = EquipMethod.HOTBAR_SWAP;
+		JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent((Player) event.getWhoClicked(), method, newArmorType, oldArmorPiece, newArmorPiece);
+		Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+		if (armorEquipEvent.isCancelled()) {
+		    event.setCancelled(true);
+		}
+	    }
+	}
+    }
+
+    @EventHandler
+    public void playerInteractEvent(PlayerInteractEvent event) {
+//	if (event.isCancelled())
+//	    return;
+
+	Action action = event.getAction();
+	if (action == Action.PHYSICAL)
+	    return;
+	if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
+	    return;
+	Player player = event.getPlayer();
+	ArmorTypes newArmorType = ArmorTypes.matchType(event.getItem());
+	if (newArmorType == null)
+	    return;
+	PlayerInventory inv = player.getInventory();
+	if (newArmorType.equals(ArmorTypes.HELMET) &&
+	    inv.getHelmet() == null ||
+	    (newArmorType.equals(ArmorTypes.CHESTPLATE) || newArmorType.equals(ArmorTypes.ELYTRA)) &&
+		inv.getChestplate() == null ||
+	    newArmorType.equals(ArmorTypes.LEGGINGS) &&
+		inv.getLeggings() == null ||
+	    newArmorType.equals(ArmorTypes.BOOTS) &&
+		inv.getBoots() == null) {
+	    JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(player, EquipMethod.HOTBAR, ArmorTypes.matchType(event.getItem()), null, event
+		.getItem());
+	    Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+	    if (armorEquipEvent.isCancelled()) {
+		event.setCancelled(true);
+		player.updateInventory();
+	    }
+	}
+
+    }
+
+    @EventHandler
+    public void dispenserFireEvent(BlockDispenseEvent event) {
+	if (event.isCancelled())
+	    return;
+
+	ItemStack item = event.getItem();
+	ArmorTypes type = ArmorTypes.matchType(item);
+	if (ArmorTypes.matchType(item) == null)
+	    return;
+	Location loc = event.getBlock().getLocation();
+	for (Player p : loc.getWorld().getPlayers()) {
+	    Location ploc = p.getLocation();
+	    if (loc.getBlockY() - ploc.getBlockY() >= -1 && loc.getBlockY() - ploc.getBlockY() <= 1) {
+
+		if (p.getInventory().getHelmet() == null && type.equals(ArmorTypes.HELMET) ||
+		    p.getInventory().getChestplate() == null && (type.equals(ArmorTypes.CHESTPLATE) || type.equals(ArmorTypes.ELYTRA)) ||
+		    p.getInventory().getLeggings() == null && type.equals(ArmorTypes.LEGGINGS) ||
+		    p.getInventory().getBoots() == null && type.equals(ArmorTypes.BOOTS)) {
+
+		    if (!(event.getBlock().getState() instanceof Dispenser))
+			continue;
+		    Dispenser dispenser = (Dispenser) event.getBlock().getState();
+		    org.bukkit.material.Dispenser dis = (org.bukkit.material.Dispenser) dispenser.getData();
+		    BlockFace directionFacing = dis.getFacing();
+		    if (directionFacing == BlockFace.EAST &&
+			ploc.getBlockX() != loc.getBlockX() &&
+			ploc.getX() <= loc.getX() + 2.3 &&
+			ploc.getX() >= loc.getX() ||
+			directionFacing == BlockFace.WEST &&
+			    ploc.getX() >= loc.getX() - 1.3 &&
+			    ploc.getX() <= loc.getX() ||
+			directionFacing == BlockFace.SOUTH &&
+			    ploc.getBlockZ() != loc.getBlockZ() &&
+			    ploc.getZ() <= loc.getZ() + 2.3 &&
+			    ploc.getZ() >= loc.getZ() ||
+			directionFacing == BlockFace.NORTH &&
+			    ploc.getZ() >= loc.getZ() - 1.3 &&
+			    ploc.getZ() <= loc.getZ()) {
+
+			JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(p, EquipMethod.DISPENSER, type, null, item);
+			Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+			if (armorEquipEvent.isCancelled()) {
+			    event.setCancelled(true);
+			    return;
+			}
+		    }
+		}
+	    }
+	}
+    }
+
+    @EventHandler
+    public void JobsArmorChangeEvent(JobsArmorChangeEvent event) {
+	Player player = event.getPlayer();
+	Jobs.getPlayerManager().resetiItemBonusCache(player.getUniqueId());
+    }
+
+    @EventHandler
+    public void PlayerItemHeldEvent(PlayerItemHeldEvent event) {
+	Player player = event.getPlayer();
+	Jobs.getPlayerManager().resetiItemBonusCache(player.getUniqueId());
+    }
+
+    @EventHandler
+    public void PlayerItemBreakEvent(PlayerItemBreakEvent event) {
+	Player player = event.getPlayer();
+	Jobs.getPlayerManager().resetiItemBonusCache(player.getUniqueId());
+    }
+
+    @EventHandler
+    public void PlayerItemBreakEvent(InventoryClickEvent event) {
+	Player player = (Player) event.getWhoClicked();
+	Jobs.getPlayerManager().resetiItemBonusCache(player.getUniqueId());
+    }
 }

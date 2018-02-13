@@ -16,4 +16,6 @@ public interface NMS {
     public ItemStack getItemInMainHand(Player player);
 
     public Block getTargetBlock(Player player, int range);
+
+    void setItemInMainHand(Player player, ItemStack item);
 }

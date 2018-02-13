@@ -610,7 +610,7 @@ public class ConfigManager {
 	    }
 
 	    // Items
-	    ArrayList<JobItems> jobItems = new ArrayList<JobItems>();
+	    HashMap<String, JobItems> jobItems = new HashMap<String, JobItems>();
 	    ConfigurationSection itemsSection = jobSection.getConfigurationSection("items");
 	    if (itemsSection != null) {
 		for (String itemKey : itemsSection.getKeys(false)) {
@@ -660,7 +660,7 @@ public class ConfigManager {
 		    if (itemSection.isDouble("expBoost"))
 			b.add(CurrencyType.EXP, itemSection.getDouble("expBoost") - 1);
 
-		    jobItems.add(new JobItems(node, id, 0, 1, name, lore, enchants, b));
+		    jobItems.put(node.toLowerCase(), new JobItems(node, id, 0, 1, name, lore, enchants, b));
 		}
 	    }
 

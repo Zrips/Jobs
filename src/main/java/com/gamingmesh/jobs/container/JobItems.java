@@ -30,6 +30,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.gamingmesh.jobs.Jobs;
+
 public class JobItems {
     private String node;
     private int id;
@@ -56,6 +58,10 @@ public class JobItems {
     }
 
     public ItemStack getItemStack(Player player) {
+	return getItemStack(player, null);
+    }
+
+    public ItemStack getItemStack(Player player, Job job) {
 	try {
 	    ItemStack item = new ItemStack(Material.getMaterial(id), amount, (short) data);
 	    ItemMeta meta = item.getItemMeta();
@@ -73,6 +79,10 @@ public class JobItems {
 		    meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
 		}
 	    item.setItemMeta(meta);
+
+	    if (job != null)
+		item = Jobs.getReflections().setNbt(item, "JobsItemBoost", job.getName(), node);
+	    
 	    return item;
 	} catch (Exception e) {
 

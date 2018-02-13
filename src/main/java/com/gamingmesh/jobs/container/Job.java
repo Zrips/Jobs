@@ -21,6 +21,7 @@ package com.gamingmesh.jobs.container;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -43,7 +44,7 @@ public class Job {
     // conditions
     private List<JobConditions> jobConditions;
     // items
-    private List<JobItems> jobItems;
+    private HashMap<String, JobItems> jobItems;
     // limited items
     private List<JobLimitedItems> jobLimitedItems;
     // job name
@@ -106,7 +107,7 @@ public class Job {
      * @param jobConditions - jobs conditions
      */
     public Job(String jobName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
-	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, List<JobItems> jobItems,
+	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, HashMap<String, JobItems> jobItems,
 	List<JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, String bossbar, Long rejoinCD) {
 	this.jobName = jobName;
 	this.jobShortName = jobShortName;
@@ -364,8 +365,12 @@ public class Job {
      * Get the item nodes for this job
      * @return Items for this job
      */
-    public List<JobItems> getItems() {
-	return Collections.unmodifiableList(jobItems);
+    public HashMap<String, JobItems> getItemBonus() {
+	return jobItems;
+    }
+
+    public JobItems getItemBonus(String key) {
+	return jobItems.get(key.toLowerCase());
     }
 
     /**
