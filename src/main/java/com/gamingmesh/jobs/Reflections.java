@@ -116,26 +116,6 @@ public class Reflections {
 	}
     }
 
-//    public ItemStack removeNbt(ItemStack item, String path) {
-//	if (item == null)
-//	    return null;
-//	try {
-//	    Object nmsStack = asNMSCopy(item);
-//	    Method methTag = nmsStack.getClass().getMethod("getTag");
-//	    Object tag = methTag.invoke(nmsStack);
-//	    if (tag == null)
-//		tag = NBTTagCompound.newInstance();
-//	    Method meth = tag.getClass().getMethod("remove", String.class);
-//	    meth.invoke(tag, path);
-//	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
-//	    meth2.invoke(nmsStack, tag);
-//	    return (ItemStack) asBukkitCopy(nmsStack);
-//	} catch (Exception e) {
-//	    e.printStackTrace();
-//	    return null;
-//	}
-//    }
-
     public ItemStack removeNbt(ItemStack item, String base, String path) {
 	if (item == null)
 	    return null;
@@ -167,19 +147,6 @@ public class Reflections {
 	}
     }
 
-//    public boolean hasNbt(ItemStack item) {
-//	if (item == null)
-//	    return false;
-//	try {
-//	    Object nmsStack = asNMSCopy(item);
-//	    Method methTag = nmsStack.getClass().getMethod("getTag");
-//	    Object tag = methTag.invoke(nmsStack);
-//	    return tag != null;
-//	} catch (Exception e) {
-//	    return false;
-//	}
-//    }
-
     public boolean hasNbt(ItemStack item, String base) {
 	if (item == null)
 	    return false;
@@ -208,21 +175,6 @@ public class Reflections {
 	}
     }
 
-//    public Object getNbt(ItemStack item, String path) {
-//	if (item == null)
-//	    return null;
-//	try {
-//	    Object nbt = getNbt(item);
-//	    if (nbt == null)
-//		return null;
-//	    Method meth = nbt.getClass().getMethod("getString", String.class);
-//	    Object res = meth.invoke(nbt, path);
-//	    return res;
-//	} catch (Exception e) {
-//	    return null;
-//	}
-//    }
-
     public Object getNbt(ItemStack item, String base, String path) {
 	if (item == null)
 	    return null;
@@ -244,26 +196,6 @@ public class Reflections {
 	    return null;
 	}
     }
-
-//    public ItemStack setNbt(ItemStack item, String path, String value) {
-//	if (item == null)
-//	    return null;
-//	try {
-//	    Object nmsStack = asNMSCopy(item);
-//	    Method methTag = nmsStack.getClass().getMethod("getTag");
-//	    Object tag = methTag.invoke(nmsStack);
-//	    if (tag == null)
-//		tag = NBTTagCompound.newInstance();
-//	    Method meth = tag.getClass().getMethod("setString", String.class, String.class);
-//	    meth.invoke(tag, path, value);
-//	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
-//	    meth2.invoke(nmsStack, tag);
-//	    return (ItemStack) asBukkitCopy(nmsStack);
-//	} catch (Exception e) {
-//	    e.printStackTrace();
-//	    return null;
-//	}
-//    }
 
     public ItemStack setNbt(ItemStack item, String base, String path, String value) {
 	if (item == null)

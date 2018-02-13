@@ -729,26 +729,6 @@ public class PlayerManager {
 	}
     }
 
-//    public BoostMultiplier getItemBoost(Player player, Job prog) {
-//	Long time = System.nanoTime();
-//	BoostMultiplier data = new BoostMultiplier();
-//	if (player == null)
-//	    return data;
-//	if (prog == null)
-//	    return data;
-//	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-//	data = Jobs.getPlayerManager().getItemBoost(prog, iih);
-//	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
-//	    if (OneArmor == null || OneArmor.getType() == Material.AIR)
-//		continue;
-//	    BoostMultiplier armorboost = Jobs.getPlayerManager().getItemBoost(prog, OneArmor);
-//	    data.add(armorboost);
-//	}
-//	Debug.D("Calculated item boost in: " + (System.nanoTime() - time));
-//
-//	return data;
-//    }
-
     HashMap<UUID, HashMap<Job, ItemBonusCache>> cache = new HashMap<UUID, HashMap<Job, ItemBonusCache>>();
 
     public void resetiItemBonusCache(UUID uuid) {
@@ -757,7 +737,6 @@ public class PlayerManager {
 
     public BoostMultiplier getItemBoostNBT(Player player, Job prog) {
 
-	Long time = System.nanoTime();
 	HashMap<Job, ItemBonusCache> cj = cache.get(player.getUniqueId());
 
 	if (cj == null) {
@@ -770,11 +749,8 @@ public class PlayerManager {
 	    c = new ItemBonusCache(player, prog);
 	    c.recheck();
 	    cj.put(prog, c);
-	    Debug.D("NBT Calculated item boost in: " + (System.nanoTime() - time));
 	    return c.getBoostMultiplier();
 	}
-
-	Debug.D("NBT Calculated item boost in: " + (System.nanoTime() - time));
 	return c.getBoostMultiplier();
     }
 
@@ -795,56 +771,6 @@ public class PlayerManager {
 
 	return data;
     }
-
-//    @SuppressWarnings("deprecation")
-//    public BoostMultiplier getItemBoost(Job prog, ItemStack item) {
-//	BoostMultiplier bonus = new BoostMultiplier();
-//	if (prog.getItemBonus().isEmpty())
-//	    return bonus;
-//	if (item == null)
-//	    return bonus;
-//
-//	ItemMeta meta = item.getItemMeta();
-//	String name = null;
-//	List<String> lore = new ArrayList<String>();
-//
-//	if (item.hasItemMeta()) {
-//	    if (meta.hasDisplayName())
-//		name = meta.getDisplayName();
-//	    if (meta.hasLore())
-//		lore = meta.getLore();
-//	}
-//
-//	Map<Enchantment, Integer> enchants = item.getEnchantments();
-//
-//	main: for (Entry<String, JobItems> one : prog.getItemBonus().entrySet()) {
-//	    JobItems oneItem = one.getValue();
-//	    if (oneItem.getId() != item.getTypeId())
-//		continue;
-//
-//	    if (oneItem.getName() != null && name != null)
-//		if (!org.bukkit.ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name))
-//		    continue;
-//
-//	    for (String onelore : oneItem.getLore()) {
-//		if (lore.size() == 0 || !lore.contains(onelore))
-//		    continue main;
-//	    }
-//
-//	    for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
-//		if (oneItem.getEnchants().containsKey(oneE.getKey())) {
-//		    if (oneItem.getEnchants().get(oneE.getKey()) < oneE.getValue()) {
-//			continue main;
-//		    }
-//		} else
-//		    continue main;
-//	    }
-//
-//	    return oneItem.getBoost();
-//	}
-//
-//	return bonus;
-//    }
 
     @SuppressWarnings("deprecation")
     public JobItems getOldItemBoost(Job prog, ItemStack item) {
@@ -929,7 +855,7 @@ public class PlayerManager {
 	boolean gchanged = false;
 	for (int i = 0; i < cont.length; i++) {
 	    ItemStack item = cont[i];
-	    if (item == null || item.getType().equals(Material.AIR) ||  Jobs.getReflections().hasNbt(iih, "JobsItemBoost"))
+	    if (item == null || item.getType().equals(Material.AIR) || Jobs.getReflections().hasNbt(iih, "JobsItemBoost"))
 		continue;
 	    boolean changed = false;
 	    for (Job one : Jobs.getJobs()) {
