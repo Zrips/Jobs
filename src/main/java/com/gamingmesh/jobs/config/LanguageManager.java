@@ -147,6 +147,7 @@ public class LanguageManager {
 
 	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
 	    c.get("command.help.output.cmdUsage", "&2Usage: &7[command]");
+	    c.get("command.help.output.label", "Jobs");
 	    
 	    c.get("command.help.output.cmdInfoFormat", "[command] &f- &2[description]");
 	    c.get("command.help.output.cmdFormat", "&7/[command]&f[arguments]");
