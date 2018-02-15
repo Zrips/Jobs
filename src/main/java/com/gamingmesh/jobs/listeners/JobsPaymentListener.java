@@ -485,19 +485,26 @@ public class JobsPaymentListener implements Listener {
 	for (int i = 0; i < sourceItems.length; i++) {
 	    if (sourceItems[i] == null)
 		continue;
-	    if (sourceItems[i].getTypeId() > 0) {
-		if (sourceItems[i].getTypeId() == 351)
+	    int id = sourceItems[i].getTypeId();
+	    if (id > 0) {
+		if (id == 351)
 		    DyeStack.add(sourceItems[i]);
 		y++;
 		if (y == 0)
-		    first = sourceItems[i].getTypeId();
+		    first = id;
 		if (y == 1)
-		    second = sourceItems[i].getTypeId();
+		    second = id;
 		if (y == 2)
-		    third = sourceItems[i].getTypeId();
+		    third = id;
 	    }
 
-	    if (sourceItems[i].getTypeId() == 299)
+	    if (id == 299)
+		leather = true;
+	    if (id == 300)
+		leather = true;
+	    if (id == 301)
+		leather = true;
+	    if (id == 298)
 		leather = true;
 	}
 

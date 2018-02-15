@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.container;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class ItemBonusCache {
 
@@ -36,7 +35,6 @@ public class ItemBonusCache {
     }
 
     public ItemBonusCache recheck() {
-	Debug.D("recalculating item bonus");
 	bm = Jobs.getPlayerManager().getInventoryBoost(player, job);
 	lastCheck = System.currentTimeMillis();
 	return this;
