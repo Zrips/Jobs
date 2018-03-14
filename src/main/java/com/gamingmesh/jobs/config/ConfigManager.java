@@ -967,8 +967,11 @@ public class ConfigManager {
 			    Jobs.getGCManager().setTntFinder(true);
 
 			double income = section.getDouble("income", 0.0);
+			income = updateValue(CurrencyType.MONEY, income);
 			double points = section.getDouble("points", 0.0);
+			points = updateValue(CurrencyType.POINTS, points);
 			double experience = section.getDouble("experience", 0.0);
+			experience = updateValue(CurrencyType.EXP, experience);
 
 			int fromlevel = 1;
 
@@ -1009,5 +1012,11 @@ public class ConfigManager {
 	//} catch (IOException e) {
 	//	e.printStackTrace();
 	//}
+    }
+
+    private double updateValue(CurrencyType type, double amount) {
+	Double mult = Jobs.getGCManager().getGeneralMulti(type);
+	amount = amount + (amount * mult);
+	return amount;
     }
 }
