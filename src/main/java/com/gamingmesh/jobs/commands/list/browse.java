@@ -35,12 +35,13 @@ public class browse implements Cmd {
 		    inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
 		} catch (Exception e) {
 		    ((Player) sender).closeInventory();
-		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getName());
+		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getUniqueId());
 		    return true;
 		}
 		if (inv == null)
 		    return true;
-		((Player) sender).openInventory(inv);
+		if (Jobs.getGUIManager().isInGui((Player) sender))
+		    ((Player) sender).openInventory(inv);
 		return true;
 	    }
 
@@ -199,8 +200,8 @@ public class browse implements Cmd {
 		if (inv == null)
 		    return true;
 
-		((Player) sender).openInventory(inv);
-
+		if (Jobs.getGUIManager().isInGui((Player) sender))
+		    ((Player) sender).openInventory(inv);
 	    }
 
 	    if (Jobs.getGCManager().JobsGUIShowChatBrowse) {

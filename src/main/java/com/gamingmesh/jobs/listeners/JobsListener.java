@@ -215,9 +215,7 @@ public class JobsListener implements Listener {
 	if (Jobs.getGUIManager().GuiList.isEmpty())
 	    return;
 	Player player = (Player) event.getPlayer();
-	if (Jobs.getGUIManager().GuiList.containsKey(player.getName())) {
-	    Jobs.getGUIManager().GuiList.remove(player.getName());
-	}
+	Jobs.getGUIManager().GuiList.remove(player.getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -228,12 +226,12 @@ public class JobsListener implements Listener {
 
 	Player player = (Player) event.getWhoClicked();
 
-	if (!Jobs.getGUIManager().GuiList.containsKey(player.getName()))
+	if (!Jobs.getGUIManager().GuiList.containsKey(player.getUniqueId()))
 	    return;
 
 	event.setCancelled(true);
 
-	GuiInfoList joblist = Jobs.getGUIManager().GuiList.get(player.getName());
+	GuiInfoList joblist = Jobs.getGUIManager().GuiList.get(player.getUniqueId());
 
 	int slot = event.getRawSlot();
 

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,10 +25,10 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class GuiManager {
 
-    public HashMap<String, GuiInfoList> GuiList = new HashMap<String, GuiInfoList>();
+    public HashMap<UUID, GuiInfoList> GuiList = new HashMap<UUID, GuiInfoList>();
 
     public void CloseInventories() {
-	for (Entry<String, GuiInfoList> one : GuiList.entrySet()) {
+	for (Entry<UUID, GuiInfoList> one : GuiList.entrySet()) {
 	    Player player = Bukkit.getPlayer(one.getKey());
 	    if (player != null) {
 		player.closeInventory();
@@ -35,8 +36,12 @@ public class GuiManager {
 	}
     }
 
+    public boolean isInGui(Player player) {
+	return GuiList.containsKey(player.getUniqueId());
+    }
+
     public Job getJobBySlot(Player player, int slot) {
-	GuiInfoList info = GuiList.get(player.getName());
+	GuiInfoList info = GuiList.get(player.getUniqueId());
 	List<Job> JobsList = info.getJobList();
 	int i = 0;
 	int pos = Jobs.getGCManager().getJobsGUIStartPosition() - 1;
@@ -74,12 +79,13 @@ public class GuiManager {
 	GuiInfoList guiInfo = new GuiInfoList(player.getName());
 	guiInfo.setJobList(JobsList);
 
-	Inventory topinv = player.getOpenInventory().getTopInventory();
-	if (topinv != null && !GuiList.containsKey(player.getName())) {
+//	Inventory topinv = player.getOpenInventory().getTopInventory();
+//	if (topinv != null && !GuiList.containsKey(player.getName())) {
+	if (!this.isInGui(player))
 	    player.closeInventory();
-	}
+//	}
 
-	GuiList.put(player.getName(), guiInfo);
+	GuiList.put(player.getUniqueId(), guiInfo);
 
 	int GuiSize = Jobs.getGCManager().getJobsGUIRows() * 9;
 
@@ -295,7 +301,7 @@ public class GuiManager {
 	GuiInfoList guiInfo = new GuiInfoList(player.getName());
 	guiInfo.setJobInfo(true);
 	guiInfo.setbackButton(backButton);
-	GuiList.put(player.getName(), guiInfo);
+	GuiList.put(player.getUniqueId(), guiInfo);
 
 	ItemStack filler = Jobs.getGCManager().guiFiller;
 
