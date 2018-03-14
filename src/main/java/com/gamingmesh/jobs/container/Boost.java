@@ -44,7 +44,10 @@ public class Boost {
     }
 
     public double getFinalAmount(CurrencyType BT, double income) {
-	return income + ((income > 0D ? income : -income) * getFinal(BT, false, false));
+	double f = income + ((income > 0D ? income : -income) * getFinal(BT, false, false));
+	if (income > 0 && f < 0 || income < 0 && f > 0)
+	    f = 0;
+	return f;
     }
 
     public double getFinal(CurrencyType BT, boolean percent, boolean excludeExtra) {
