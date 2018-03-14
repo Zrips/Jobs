@@ -617,7 +617,7 @@ public class PlayerManager {
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitleColor() + levelUpEvent.getNewTitleName() + ChatColor.WHITE);
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
 	    for (String line : message.split("\n")) {
-		if (Jobs.getGCManager().isBroadcastingLevelups()) {
+		if (Jobs.getGCManager().isBroadcastingSkillups()) {
 		    Bukkit.getServer().broadcastMessage(line);
 		} else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
