@@ -819,8 +819,11 @@ public class JobsPaymentListener implements Listener {
 	String playerName = value.asString();
 
 	Player player = null;
-
-	UUID uuid = UUID.fromString(playerName);
+	UUID uuid = null;
+	try {
+	    uuid = UUID.fromString(playerName);
+	} catch (Exception e) {
+	}
 	if (uuid == null)
 	    return;
 	player = Bukkit.getPlayer(uuid);
