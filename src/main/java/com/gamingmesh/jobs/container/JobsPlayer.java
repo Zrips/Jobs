@@ -501,7 +501,8 @@ public class JobsPlayer {
 	    return;
 	if (levels <= 0)
 	    return;
-	int newLevel = prog.getLevel() + levels;
+	int oldLevel = prog.getLevel();
+	int newLevel = oldLevel + levels;
 
 	int maxLevel = job.getMaxLevel(this);
 
@@ -509,6 +510,7 @@ public class JobsPlayer {
 	    newLevel = maxLevel;
 	}
 	setLevel(job, newLevel);
+	Jobs.getPlayerManager().performCommandOnLevelUp(this, job, newLevel - 1);
 //	}
     }
 
