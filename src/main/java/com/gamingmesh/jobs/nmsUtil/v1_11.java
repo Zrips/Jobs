@@ -23,6 +23,22 @@ public class v1_11 implements NMS {
 
     @Override
     public String getRealType(Entity entity) {
+	switch (entity.getType().name()) {
+	case "WITHER_SKELETON":
+	    return "skeletonwither";
+	case "STRAY":
+	    return "SkeletonStray";
+	case "ZOMBIE_VILLAGER":
+	    return "ZombieVillager";
+	case "HUSK":
+	    return "ZombieHusk";
+	case "SKELETON_HORSE":
+	    return "HorseSkeleton";
+	case "ZOMBIE_HORSE":
+	    return "HorseZombie";
+	case "ELDER_GUARDIAN":
+	    return "GuardianElder";
+	}
 	return entity.getType().name();
     }
 
