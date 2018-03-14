@@ -1,0 +1,549 @@
+economy:
+  error:
+    nomoney: '&cごめんなさい><お支払いできるお金がありません。'
+limitedItem:
+  error:
+    levelup: '&cこのアイテムを使うには [jobname] のレベルが足りません'
+general:
+  Spawner: '&r[type] スポナー'
+  info:
+    toplineseparator: '&7*********************** &6%playername% &7***********************'
+    separator: '&7*******************************************************'
+    time:
+      days: '&e%days% &6日 '
+      hours: '&e%hours% &6時間 '
+      mins: '&e%mins% &6分 '
+      secs: '&e%secs% &6秒 '
+  admin:
+    error: '&cコマンドでエラーが発生しました'
+    success: '&eコマンドを実行しました'
+  error:
+    noHelpPage: '&cこの番号のヘルプページはありません。'
+    notNumber: '&e数値ではありません'
+    job: '&c存在しないジョブです'
+    noCommand: '&c存在しないコマンドです'
+    permission: '&c権限を持っていないため実行できません'
+    noinfo: '&c情報はありません'
+    noinfoByPlayer: '&c[%playername%] というプレイヤー名の情報は存在しません'
+    ingame: '&cこのコマンドはゲーム中のみ利用できます'
+    fromconsole: '&cコンソールで実行する必要があります'
+    worldisdisabled: '&cこのワールドではこのコマンドを実行できません'
+command:
+  moneyboost:
+    help:
+      info: '[職業名]の収入(お金)を[倍率]倍にします'
+      args: '[職業名] [倍率]'
+    output:
+      allreset: 上げた収入(お金)をリセットしました
+      jobsboostreset: '&a%jobname% の収入(お金)をリセットしました'
+      nothingtoreset: 'リセットする項目がありません'
+      boostalladded: 全てのジョブの収入を %boost% 倍上げました
+      boostadded: '&e%jobname% に対する収入(お金)を &e%boost% 倍に設定しました'
+      infostats: '&c-----> &a収入(お金)が %boost% 倍に設定されました&c <-------'
+  pointboost:
+    help:
+      info: '[職業名]の獲得ポイントを[倍率]倍にします'
+      args: '[職業名] [倍率]'
+    output:
+      allreset: 上げた獲得ポイントをリセットしました
+      jobsboostreset: '&a%jobname% のポイント獲得をリセットしました'
+      nothingtoreset: リセットする項目がありません
+      boostalladded: 全ての職業の獲得ポイントを %boost% 倍に設定しました
+      boostadded:  '&e%jobname% に対する獲得ポイントを &e%boost% 倍に設定しました'
+      infostats: '&c-----> &a獲得ポイントが %boost% 倍に設定されました&c <-------'
+  expboost:
+    help:
+      info: '[職業名]の獲得経験値を[倍率]倍にします'
+      args: '[職業名] [倍率]'
+    output:
+      allreset: 上げた獲得経験値をリセットしました
+      jobsboostreset: '&a%jobname% の獲得経験値をリセットしました'
+      nothingtoreset: リセットする項目がありません
+      boostalladded: 全ての職業に対する獲得経験値を &e%boost% 倍に設定しました
+      boostadded: '&e%jobname% の獲得経験値が &e%boost% 倍に設定しました  '
+      infostats: '&c-----> &a獲得経験値が %boost% 倍に設定されました&c <-------'
+  bonus:
+    help:
+      info: ボーナスを表示します
+      args: '[職業名]'
+    output:
+      topline: '&7**************** &2[収入(お金)] &6[獲得ポイント] &e[獲得経験値] &7****************'
+      permission: '&e権限ボーナス: %money% %points% %exp%'
+      item: '&eアイテムボーナス: %money% %points% %exp%'
+      global: '&eグローバルボーナス: %money% %points% %exp%'
+      dynamic: '&eダイナミックボーナス: %money% %points% %exp%'
+      nearspawner: '&eスポナーボーナス: %money% %points% %exp%'
+      petpay: '&eペットペイボーナス: %money% %points% %exp%'
+      area: '&eエリアボーナス: %money% %points% %exp%'
+      mcmmo: '&eMcMMO ボーナス: %money% %points% %exp%'
+      final: '&e最終ボーナス: %money% %points% %exp%'
+      finalExplanation: '&eペットボーナスとスポナーボーナスは含まれていません'
+  convert:
+    help:
+      info: 'データベースシステムを使っていないデータベースシステムにをコンバートします'
+      args: ''
+  limit:
+    help:
+      info: 'ジョブの支払い限度を表示します'
+      args: ''
+    output:
+      moneytime: '&eお金の支払い上限がリセットされるまでの時間 : &2%time% '
+      moneyLimit: '&eお金の支払い上限 : &2%current%&e/&2%total%'
+      exptime: '&e経験値獲得上限がリセットされるまでの時間 : &2%time%'
+      expLimit: '&e経験値獲得上限: &2%current%&e/&2%total%'
+      pointstime: '&eポイント獲得上限がリセットされるまでの時間 : &2%time%'
+      pointsLimit: '&eポイント獲得上限: &2%current%&e/&2%total%'
+      reachedmoneylimit: '&4お金の支払い上限に達しました'
+      reachedmoneylimit2: '&2/jobs limit &eコマンドで上限を確認できます'
+      reachedexplimit: '&4経験値獲得上限に達しました'
+      reachedexplimit2: '&2/jobs limit &eコマンドで上限を確認できます'
+      reachedpointslimit: '&4ポイント獲得上限に達しました'
+      reachedpointslimit2: '&2/jobs limit &eコマンドで上限を確認できます'
+      notenabled: '&e上限は有効化されていません'
+  resetlimit:
+    help:
+      info: '[player]の上限をリセットします'
+      args: '[player]'
+    output:
+      reseted: '&2%playername% &eの支払い上限をリセットしました'
+  help:
+    output:
+      info: '&2/jobs [cmd] ?&eでコマンドの詳細を表示します'
+      usage: '使い方: %usage%'
+      title: '&e-------&e ======= &6Jobs &e======= &e-------'
+      page: '&e-----&e ====== &6[2] 中 &6[1] &eページ &e====== &e-----'
+      prev: '&e--- <<<<< &6前のページ &e|'
+      prevOff: '&7--- <<<<< 前のページ &e|'
+      fliperSimbols: '&e----------'
+      next: '&e|&6 次のページ &e>>>> ---'
+      nextOff: '&e|&7 次のページ >>>> ---'
+  points:
+    help:
+      info: '[player]の所有ポイントを表示します'
+      args: '[player]'
+    currentpoints: '&e現在のポイント: &6%currentpoints%'
+    totalpoints: '&e集めたポイントの合計: &6%totalpoints%'
+  editpoints:
+    help:
+      info: '[player]のポイントを編集します'
+      args: '[set/add/take] [player] [amount]'
+    output:
+      set: '&e(&6%playername%&e) の所持ポイントを &6%amount% &eにしました'
+      add: '&6%playername%&e に &6%amount%&e ポイント与えましました
+              &e結果 &6%playername% &eの所持ポイントは &6%total%&e ポイントになりました'
+      take: '&6%playername%&e から &6%amount% &eポイント奪いました
+        &e結果 &6%playername% &eの所持ポイントは &6%total% &eポイントになりました'
+  editjobs:
+    help:
+      info: '存在する職業を編集します'
+      args: ''
+      list:
+        job: '&e職業:'
+        jobs: '  -> [&e%jobname%&r]'
+        actions: '    -> [&e%actionname%&r]'
+        material: '      -> [&e%materialname%&r]      '
+        materialRemove: '&c[X]'
+        materialAdd: '      -> &e[&2+&e]'
+        money: '        -> &e収入(お金): &6%amount%'
+        exp: '        -> &e獲得経験値: &6%amount%'
+        points: '        -> &e獲得ポイント: &6%amount%'
+      modify:
+        newValue: '&e新しい値をチャット欄に入力'
+        enter: '&e追加するブロック・エンティティの名前 '
+        hand: '&6手に持っている '
+        handHover: '&6手に持っているアイテムを指定します'
+        or: '&eまたは '
+        look: '&6見ている'
+        lookHover: '&6見ているブロック・エンティティを指定します'
+  blockinfo:
+    help:
+      info: '今見ているブロックの情報を表示します'
+      args: ''
+    output:
+      name: '&eブロック名: &6%blockname%'
+      id: '&eブロックID: &6%blockid%'
+      data: '&eブロックデータ: &6%blockdata%'
+      usage: '&e結果: &6%first% &eまたは &6%second%'
+  iteminfo:
+    help:
+      info: '持っているアイテムの情報を表示します'
+      args: ''
+    output:
+      name: '&eItem name: &6%itemname%'
+      id: '&eItem id: &6%itemid%'
+      data: '&eItem data: &6%itemdata%'
+      usage: '&e結果: &6%first% &eまたは &6%second%'
+  entitylist:
+    help:
+      info: 'プラグインで認識できる全てのエンティティを表示します'
+      args: ''
+  stats:
+    help:
+      info: 'あなたの各職業のレベルを表示します'
+      args: '[player]'
+    error:
+      nojob: '少なくとも１つは職業についている必要があります'
+    output: '%jobname% レベル%joblevel% : 経験値 %jobxp%/%jobmaxxp%'
+  shop:
+    help:
+      info: 'Jobsショップを開きます'
+      args: ''
+    info:
+      title: '&e------- &8Jobs ショップ &e-------'
+      currentPoints: '&e所持金: &6%currentpoints%'
+      price: '&e価格: &6%price%'
+      reqJobs: '&e必要な職業:'
+      reqJobsList: ' &6%jobsname%&e: &e%level% lvl'
+      reqTotalLevel: '&6必要な合計レベル: &e%totalLevel%'
+      cantOpen: '&cこのページを開くことはできません'
+      NoPermForItem: '&cあなたはこのアイテムに必要な権限を持っていません'
+      NoPermToBuy: '&c権限がないため購入できません'
+      NoJobReqForitem: '&cあなたの &6%jobname%&c は必要なレベル(&6%joblevel%&e)に達していません'
+      NoPoints: '&c所持しているポイントが足りません'
+      NoTotalLevel: '&c合計レベルが (%totalLevel%) より低いです'
+      Paid: '&eあなたは所持ポイントから &6%amount% &eポイントを払いこのアイテムを買いました'
+  archive:
+    help:
+      info: '各ユーザーの離職中のジョブを表示します'
+      args: '[player]'
+    error:
+      nojob: '離職中のジョブはありません'
+  give:
+    help:
+      info: '[player]はオプションです'
+      args: '[player] [jobname] [itemname]'
+    output:
+      notonline: '&4[%playername%] さんはオフラインです'
+      noitem: '&4指定された名前は見つけられませんでした'
+  info:
+    help:
+      title: '&2*** &eJobs&2 ***'
+      info: '各職業でどのくらい報酬を得れているのかを確認できます'
+      penalty: '&eこの職業は人が多いので&c[penalty]% &eペナルティーがあります'
+      bonus: '&eこの職業は人が少ないので &2[bonus]% &eボーナスが得られます'
+      args: '[職業名] [動作]'
+      actions: '&e有効なアクション: &f%actions%'
+      max: '- &e最大レベル:&f '
+      material: '&7%material%'
+      levelRange: '&a(&e%levelFrom% &a- &e%levelUntil% &aレベル)'
+      levelFrom: '&a( &e%levelFrom% &aレベルから)'
+      levelUntil: '&a( &e%levelUntil% &aレベルまで)'
+      money: '&2%money%$'
+      points: '&6%points%ポイント'
+      exp: '&e%exp%経験値'
+    gui:
+      pickjob: '&eあなたの仕事を選んでください'
+      jobinfo: '&e[職業名] info!'
+      actions: '&e有効な行動:'
+      leftClick: '&eクリックで詳しい情報'
+      rightClick: '&e右クリックで職業に就きます'
+      leftSlots: '&e左のスロット:&f '
+      working: '&2&nすでに選択している職業です'
+      max: '&e最大レベル:&f '
+      back: '&e<<< 戻る'
+    output:
+      break:
+        info: '破壊'
+        none: '%jobname% はブロックの破壊で報酬を得ることはできません'
+      tntbreak:
+        info: 'TNTによる破壊'
+        none: '%jobname% はTNTの爆発による破壊で報酬を得ることはできません'
+      place:
+        info: '建築'
+        none: '%jobname% はブロックの設置で報酬を得ることはできません'
+      kill:
+        info: '討伐'
+        none: '%jobname% はモンスターの討伐で報酬を得ることはできません'
+      mmkill:
+        info: MMKill
+        none: '%jobname% はMythicモンスターの討伐で報酬を得ることはできません'
+      fish:
+        info: Fish
+        none: '%jobname% は釣りで報酬を得ることはできません'
+      craft:
+        info: 'クラフト'
+        none: '%jobname% はクラフトで報酬を得ることはできません'
+      smelt:
+        info: '精錬'
+        none: '%jobname% は精錬で報酬を得ることはできません'
+      brew:
+        info: '醸造'
+        none: '%jobname% は醸造で報酬を得ることはできません'
+      eat:
+        info: '飲食'
+        none: '%jobname% は飲食で報酬を得ることはできません'
+      dye:
+        info: '染色'
+        none: '%jobname% は染色で報酬を得ることはできません'
+      enchant:
+        info: 'エンチャント'
+        none: '%jobname% はエンチャントで報酬を得ることはできません'
+      repair:
+        info: '修理'
+        none: '%jobname% は修理で報酬を得ることはできません'
+      breed:
+        info: '繁殖'
+        none: '%jobname% は動物の繁殖で報酬を得ることはできません'
+      tame:
+        info: 'テイム'
+        none: '%jobname% は動物を手懐けることで報酬を得ることはできません'
+      milk:
+        info: '搾乳'
+        none: '%jobname% は搾乳で報酬を得ることはできません'
+      shear:
+        info: '羊毛狩り'
+        none: '%jobname% は羊毛狩りで報酬を得ることはできません'
+      explore:
+        info: '探索'
+        none: '%jobname% は探索で報酬を得ることはできません'
+      custom-kill:
+        info: 'カスタムキル'
+        none: '%jobname% はカスタムプレイヤーの討伐で報酬を得ることはできません'
+  playerinfo:
+    help:
+      info: '各職業で他のプレイヤーがどのくらい報酬を得れているのかを確認できます(?)'
+      args: '[playername] [jobname] [action]'
+  join:
+    help:
+      info: '[職業名]の職業に就きます'
+      args: '[職業名]'
+    error:
+      alreadyin: '%jobname% はすでに就いている職業です'
+      fullslots: '%jobname% に就くことができませんでした。利用可能なスロットがありません'
+      maxjobs: '就ける職業の上限に達しています'
+      rejoin: '&cこのジョブに再び就くには [time] 待つ必要があります'
+    success: '%jobname% に就きました'
+  leave:
+    help:
+      info: '[職業名]を離職します'
+      args: '[職業名]'
+    success: '%jobname% を離職しました'
+  leaveall:
+    help:
+      info: '就いている全ての職業を離職します'
+    error:
+      nojobs: '離職できる職業はありません'
+    success: '就いている全ての職業を離職しました'
+  explored:
+    help:
+      info: 'このチャンクに来たことのある人を確認できます'
+    error:
+      noexplore: '誰もこのチャンクを訪れたことがありません'
+    list: '&e%place%. %playername%'
+  browse:
+    help:
+      info: '利用可能な職業の一覧を表示します'
+    error:
+      nojobs: 'あなたが就ける職業はありません'
+    output:
+      header: '次の職業に就くことができます:'
+      footer: '"/jobs info [職業名]" で詳細な情報が見れます'
+      totalWorkers: '&7プレイヤー数: &e[amount]'
+      penalty: '&4ペナルティー: &c[amount]%'
+      bonus: '&2ボーナス: &a[amount]%'
+  fire:
+    help:
+      info: '[player]に[職業名]を強制的に離職させます'
+      args: '[player] [職業名]'
+    error:
+      nojob: '%jobname%に就いていません'
+    output:
+      target: '%jobname% を離職させられました'
+  fireall:
+    help:
+      info: '[player]に就いてる職業全てを強制的に離職させます'
+      args: '[player]'
+    error:
+      nojobs: 'プレイヤーが職業についていないため離職させられませんでした'
+    output:
+      target: '全ての職業を離職させられました'
+  employ:
+    help:
+      info: '[player]を[職業名]に就かせます'
+      args: '[player] [職業名]'
+    error:
+      alreadyin: 'プレイヤーはすでに %jobname% に就いています'
+    output:
+      target: '%jobname% に就かされました'
+  top:
+    help:
+      info: '[職業名]の上位15名を表示します'
+      args: '[職業名]'
+    error:
+      nojob: '存在しない職業名です'
+    output:
+      topline: '&aトップ &e%jobname%'
+      list: '&e%number%&a. &e%playername% &aレベル:&e%level% 経験値:%exp%'
+      prev: '&e<<<<< 前のメージ &2|'
+      next: '&2|&e 次のページ >>>>'
+      show: '&e[from] &2 から &e[until] &2までのリストを表示します'
+  gtop:
+    help:
+      info: '合計レベルの上位15名を表示します'
+      args: ''
+    error:
+      nojob: '情報がありません'
+    output:
+      topline: '&aトップ&e 15 &a合計レベル'
+      list: '&e%number%&a. &e%playername% &aレベル &e%level% 経験値:%exp%'
+      prev: '&e<<<<<前のページ &2|'
+      next: '&2|&e 次のページ >>>>'
+      show: '&e[from] &2から &e[until] &2のリストを表示します'
+  area:
+    help:
+      info: 'エリアを変更します'
+      args: add/remove/info/list
+      addUsage: '&e使い方: &6/Jobs area add [エリア名/wg:WorldGuardのエリア名] [ボーナス]'
+      removeUsage: '&e使い方: &6/Jobs area remove [エリア名]'
+    output:
+      addedNew: '&e新しいエリアを ボーナス:&6%bonus% &eで作成しました'
+      removed: '&eエリア &6%name% &eを削除しました'
+      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
+        &6%bonus%'
+      wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
+      noAreas: '&e作成されたエリアはありません'
+      noAreasByLoc: '&eこの場所に作成されたエリアはありません'
+      areaList: '&eこの場所に作成されているエリア: &6%list%'
+      selected1: '&e開始点: &6%x%:%y%:%z%'
+      selected2: '&e終了点: &6%x%:%y%:%z%'
+      select: '&e選択ツール(%tool%)で開始点と終了点を指定してください'
+      exist: '&eすでに存在するエリア名です'
+      dontExist: '&e存在しないエリア名です'
+      wgDontExist: '&eこの名前のWorldGuardエリア名は存在しません'
+  log:
+    help:
+      info: '統計情報を表示します'
+      args: '[player]'
+    output:
+      topline: '&7************************* &6%playername% &7*************************'
+      ls: '&7* &6%number%. &3%action%: &6%item% &e数量: %qty% %money% %exp% %points%'
+      money: '&6収入(お金): %amount% '
+      exp: '&e獲得経験値: %amount% '
+      points: '&6ポイント: %amount%'
+      bottomline: '&7***********************************************************'
+      prev: '&e<<<<< 前のぺージ &2|'
+      next: '&2|&e 次のページ >>>>'
+      nodata: '&cデータがありません'
+  glog:
+    help:
+      info: 'グローバル統計を表示します'
+      args: ''
+    output:
+      topline: '&7*********************** &6 グローバル統計 &7***********************'
+      ls: '&7* &6%number%. &3%username% &e%action%: &6%item% &e数量: %qty% %money% %exp% %points%'
+      money: '&6収入(お金): %amount% '
+      exp: '&e獲得経験値: %amount% '
+      points: '&6ポイント: %amount%'
+      bottomline: '&7**************************************************************'
+      nodata: '&cデータがありません'
+  transfer:
+    help:
+      info: '[player]の職業を[現在の職業]から[次に就く職業]へ移行します(経験値そのまま)'
+      args: '[player] [現在の職業] [次に就く職業]'
+    output:
+      target: 'あなたの職業を %oldjobname% から %newjobname% へ移行しました'
+  promote:
+    help:
+      info: '[player]の[職業名]レベルを[レベル]上げます'
+      args: '[player] [職業名] [レベル]'
+    output:
+      target: '%jobname% のレベルを %levelsgained% 上げました'
+  exp:
+    help:
+      info: '[player]の[職業名]の経験値を編集します'
+      args: '[player] [職業名] [set/add/take] [数値]'
+    output:
+      target: '&eあなたの %jobname% の経験値が変更されました &e今のあなたの状態 &6%level%レベル &6%exp%経験値'
+  demote:
+    help:
+      info: '[player]の[職業名]のレベルを[レベル]下げます'
+      args: '[player] [職業名] [レベル]'
+    output:
+      target: 'あなたは %jobname% のレベルを %levelslost% 下げました'
+  grantxp:
+    help:
+      info: '[player]の[職業名]に[数値]経験値を与えます'
+      args: '[player] [職業名] [数値]'
+    output:
+      target: '%jobname% に %xpgained% 経験値が与えられました'
+  removexp:
+    help:
+      info: '[player]の[職業名]から[数値]経験値を奪います'
+      args: '[player] [職業名] [数値]'
+    output:
+      target: '%jobname% から %xplost% 経験値を奪われました' 
+  signupdate:
+    help:
+      info: '手動で看板を更新します'
+      args: '[jobname]'
+  bp:
+    help:
+      info: '半径10ブロック以内の報酬を受け取れないブロッックを表示します'
+      args: ''
+    output:
+      found: '&eあなたが報酬を受け取れないブロックが &6%amount% 個見つかりました'
+      notFound: '&eあなたが報酬を受け取れないブロックはありません'
+  reload:
+    help:
+      info: '設定ファイル群をリロードします'
+  toggle:
+    help:
+      info: 'アクションバーまたはボスバーの報酬表示を切り替えます'
+      args: '[actionbar/bossbar]'
+    output:
+      turnedoff: '&4この機能はオフになっています'
+      paid:
+        main: '&a得た報酬:'
+        money: '&eお金 : [amount]'
+        exp: '&7経験値 : [exp]'
+        points: '&6ポイント : [points]'
+      'on': '&aON &aに変更しました'
+      'off': '&4OFF &aに変更しました'
+message:
+  skillup:
+    broadcast: '%playername% の %jobname% ランクが %titlename% に昇格しました'
+    nobroadcast: '%jobname% が%titlename% に昇格しました'
+  levelup:
+    broadcast: '%playername% の %jobname% のレベルが %joblevel% に上がりました'
+    nobroadcast: '%jobname% のレベルが %joblevel% に上がりました'
+  cowtimer: '&eYou still need to wait &6%time% &esec to get paid for this job.'
+  blocktimer: '&eこのジョブの報酬を受け取るには: &3[time] &esec 待つ必要があります'
+  placeblocktimer: '&eあなたがこの場所で報酬を得るには&6[time] &e秒待つ必要があります'
+  taxes: '&e税金を&3[amount]&eに納めました'
+  boostStarted: '&eJobsのスペシャル報酬時間が始まりました'
+  boostStoped: '&eJobsのスペシャル報酬時間が終わりました'
+  crafting:
+    fullinventory: 'インベントリがいっぱいです'
+signs:
+  List: '&0[number].&8[player]&7:&4[level]'
+  SpecialList:
+    p1: '&b** &81位 &b**'
+    p2: '&b** &82位 &b**'
+    p3: '&b** &83位 &b**'
+    p4: '&b** &84位 &b**'
+    p5: '&b** &85位 &b**'
+    p6: '&b** &86位 &b**'
+    p7: '&b** &87位 &b**'
+    p8: '&b** &88位 &b**'
+    p9: '&b** &89位 &b**'
+    p10: '&b** &810位 &b**'
+    name: '&9[player]'
+    level: '&8レベル : [level]'
+    bottom: '&b************'
+  cantcreate: '&4あなたにこの看板を作る権限はありません'
+  cantdestroy: '&4あなたにこの看板を破壊する権限はありません'
+  topline: '&0[Jobs]'
+  secondline:
+    join: '&0就く'
+    leave: '&0離職'
+    toggle: '&0切り替え'
+    top: '&0トップ'
+    browse: '&0閲覧'
+    stats: '&0ステータス'
+    limit: '&0上限'
+    info: '&0情報'
+    archive: '&0アーカイブ'
+scoreboard:
+  topline: '&2トップ &e%jobname%'
+  gtopline: '&2グローバル　トップリスト'
+  line: '&2%number%. &e%playername% (&6%level%&e)'
