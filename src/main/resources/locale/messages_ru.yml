@@ -5,9 +5,16 @@ limitedItem:
   error:
     levelup: '&cВам нужно повысить свой уровень в работе под именем [jobname], чтобы использовать эту вещь!'
 general:
+  Spawner: '&r[type] Спавнер'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
+    time:
+      days: '&e%days% &6дней '
+      hours: '&e%hours% &6часов '
+      mins: '&e%mins% &6мин '
+      secs: '&e%secs% &6сек '
+    invalidPage: '&cНеверная страница'
   admin:
     error: '&cОшибка в этой команде.'
     success: '&eВаша команда была выполнена успешно.'
@@ -15,13 +22,34 @@ general:
     noHelpPage: '&cНет страницы справочника с этим номером!'
     notNumber: '&eПожалуйста, используйте целые числа!'
     job: '&cРаботы, что вы выбрали, не существует!'
+    noCommand: '&cТакой команды не существует!'
     permission: '&cУ вас нет прав на совершение этого дествия!'
     noinfo: '&cИнформация не найдена!'
     noinfoByPlayer: '&cИнформация не найдена связанная с игроком [%playername%]!'
     ingame: '&cВы можете использовать эту команду только в игре!'
     fromconsole: '&cВы можете использовать эту команду только в консоле!'
     worldisdisabled: '&cВы не можете использовать эту команду в этом мире!'
+    newFurnaceRegistration: '&eЗарегистрирован новый владелец печи &7[current]&e/&f[max]'
+    newBrewingRegistration: '&eЗарегистрирован новый владелец варочной стойки &7[current]&e/&f[max]'
+    noFurnaceRegistration: '&cВы достигли лимита действующих печей!'
+    noBrewingRegistration: '&cВы достигли лимита варочных стоек!'
 command:
+  help:
+    output:
+      info: Используйте /jobs [cmd] ? Для более точной информации.
+      cmdUsage: '&2Использование: &7[command]'
+      label: Работы
+      cmdInfoFormat: '[command] &f- &2[description]'
+      cmdFormat: '&7/[command]&f[arguments]'
+      helpPageDescription: '&2* [description]'
+      title: '&e-------&e ======= &6Работы &e======= &e-------'
+      page: '&e-----&e ====== Страница &6[1] &eиз &6[2] &e====== &e-----'
+      fliperSimbols: '&e----------'
+      prevPage: '&2----<< &6Предыдущая страница '
+      prevPageOff: '&7----<< Предыдущая страница '
+      nextPage: '&6 Следующая страница &2>>----'
+      nextPageOff: '&7 Следующая страница >>----'
+      pageCount: '&2[current]/[total]'
   moneyboost:
     help:
       info: Ускоряет получение денег для всех игроков
@@ -55,18 +83,32 @@ command:
       boostalladded: Ускорение получения опыта %boost% было добавлено для всех работ!
       boostadded: Ускорение получения опыта &e%boost% &aдобавлено к &e%jobname%!
       infostats: '&c-----> &aУскорение получения опыта x%boost% включено&c <-------'
+  itembonus:
+    help:
+      info: Проверить бонусы.
+      args: ''
+    output:
+      list: '&e[jobname]: %money% %points% %exp%'
+  edititembonus:
+    help:
+      info: Редактировать бонусы работ.
+      args: '[list/add/remove] [jobsName] [itemBoostName]'
   bonus:
     help:
       info: Показывает бонусы работ.
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &eНа основе привелегий: %money% %points% %exp%'
-      item: ' &eItem bonus: %money% %points% %exp%'
+      permission: ' &eНа основе привилегий: %money% %points% %exp%'
+      item: ' &eБонус на предмет: %money% %points% %exp%'
       global: ' &eГлобальный: %money% %points% %exp%'
-      dynamic: ' &eDynamic payment bonus: %money% %points% %exp%'
+      dynamic: ' &eДинамический бонус: %money% %points% %exp%'
+      nearspawner: ' &eБонус спавнера: %money% %points% %exp%'
+      petpay: ' &ePetPay бонус: %money% %points% %exp%'
       area: ' &eНа основе местности: %money% %points% %exp%'
+      mcmmo: ' &eMcMMO бонус: %money% %points% %exp%'
       final: ' &eИтого: %money% %points% %exp%'
+      finalExplanation: ' &eНе включает бонусы/пенальти Petpay и Спавнеров'
   convert:
     help:
       info: Конвертирует данные из одного вида БД в другой. Если сейчас все работает под SQLite, то команда конвертирует все данные в MySQL или наоборот.
@@ -76,30 +118,25 @@ command:
       info: Показывает лимит оплаты для работы.
       args: ''
     output:
-      lefttime: '&eДо сброса лимита: &2%hour% &ehour &2%min% &emin
-        &2%sec% &esec'
-      moneylimit: '&eЛимит денег: &2%money%&e/&2%totalmoney%'
-      leftexptime: '&eДо сброса XP лимита: &2%hour% &ehour &2%min%
-        &emin &2%sec% &esec'
-      explimit: '&eЛимит опыта: &2%exp%&e/&2%totalexp%'
-      leftpointtime: '&eДо сброса лимита очков: &2%hour% &ehour &2%min%
-        &emin &2%sec% &esec'
-      pointlimit: '&eЛимит очков: &2%current%&e/&2%total%'
-      reachedlimit: '&4Вы достигли предела денег, которые можно получить!'
-      reachedlimit2: '&eВы можете проверить лимит командой &2/jobs limit'
-      reachedExplimit: '&4Вы достигли предела опыта, которые можно получить!'
-      reachedExplimit2: '&eВы можете проверить лимит командой &2/jobs limit'
-      reachedPointlimit: '&4Вы достигли предела очков, которые можно получить!'
-      reachedPointlimit2: '&eВы можете проверить лимит командой &2/jobs limit'
+      moneytime: '&eДо сброса лимита: &2%time%'
+      moneyLimit: '&eЛимит денег: &2%current%&e/&2%total%'
+      exptime: '&eДо сброса XP лимита: &2%time%'
+      expLimit: '&eЛимит опыта: &2%current%&e/&2%total%'
+      pointstime: '&eДо сброса лимита очков: &2%time%'
+      pointsLimit: '&eЛимит очков: &2%current%&e/&2%total%'
+      reachedmoneylimit: '&4Вы достигли предела денег, которые можно получить!'
+      reachedmoneylimit2: '&eВы можете проверить лимит командой &2/jobs limit'
+      reachedexplimit: '&4Вы достигли предела опыта, которые можно получить!'
+      reachedexplimit2: '&eВы можете проверить лимит командой &2/jobs limit'
+      reachedpointslimit: '&4Вы достигли предела очков, которые можно получить!'
+      reachedpointslimit2: '&eВы можете проверить лимит командой &2/jobs limit'
       notenabled: '&eЛимит денег выключен'
-  help:
+  resetlimit:
+    help:
+      info: Сбрасывает установленные лимиты игроков
+      args: '[playername]'
     output:
-      info: Используйте /jobs [cmd] ? Для более точной информации.
-      usage: 'Использование: %usage%'
-      title: '&e-------&e ======= &6Работы &e======= &e-------'
-      page: '&e-----&e ====== Страница &6[1] &eиз &6[2] &e====== &e-----'
-      prev: '&e--- <<<<< &6Предыдущая страница &e|'
-      next: '&e|&6 Следующая страница &e>>>> ---'
+      reseted: '&eУспешно сброшен лимит игрока: &2%playername%'
   points:
     help:
       info: Выводит кол-во очков у игрока.
@@ -114,47 +151,85 @@ command:
       set: '&eКоличество очков игрока &6%playername%&e приведены к &6%amount% ед.'
       add: '&eИгрок &6%playername%&e получил дополнительные &6%amount% &eочков. Сейчас у него всего &6%total%'
       take: '&eИгрок &6%playername%&e потерял &6%amount% &eочков. Сейчас у него всего &6%total%'
+  editjobs:
+    help:
+      info: Редактировать существующие работы.
+      args: ''
+      list:
+        job: '&eРаботы:'
+        jobs: '  -> [&e%jobname%&r]'
+        actions: '    -> [&e%actionname%&r]'
+        material: '      -> [&e%materialname%&r]      '
+        materialRemove: '&c[X]'
+        materialAdd: '      -> &e[&2+&e]'
+        money: '        -> &eДеньги: &6%amount%'
+        exp: '        -> &eОпыт: &6%amount%'
+        points: '        -> &eОчки: &6%amount%'
+      modify:
+        newValue: '&eВведите новое значение'
+        enter: '&eУкажите новое название или нажмите '
+        hand: '&6РУКА '
+        handHover: '&6Нажмите, чтобы получить информацию о предмете в вашей руке'
+        or: '&eor '
+        look: '&6СМОТРЕТЬ НА'
+        lookHover: '&6Нажмите, чтобы получить информацию о блоке, на который вы смотрите'
   blockinfo:
     help:
-      info: Показывает информацию о блоке, на который Вы смотрите.
+      info: Показывает информацию о блоке, на который вы смотрите.
       args: ''
     output:
-      name: ' &eИмя блока: &6%blockname%'
+      name: ' &eНазвание блока: &6%blockname%'
       id: ' &eID блока: &6%blockid%'
       data: ' &eДанные блока: &6%blockdata%'
       usage: ' &eИспользование: &6%first% &eили &6%second%'
+  iteminfo:
+    help:
+      info: Отображает информацию о предмете, который вы держите.
+      args: ''
+    output:
+      name: ' &eНазвание предмета: &6%itemname%'
+      id: ' &eID предмета: &6%itemid%'
+      data: ' &eДанные предмета: &6%itemdata%'
+      usage: ' &eИспользование: &6%first% &eor &6%second%'
+  entitylist:
+    help:
+      info: Показывает все возможные сущности, которые могут быть задействованы плагином.
+      args: ''
   stats:
     help:
-      info: Показывет Ваш уровень работы.
+      info: Показывет Ваш уровень по отдельным работам.
       args: '[playername]'
     error:
-      nojob: Сперва устройтесь работу.
+      nojob: Сперва устройтесь на работу.
     output: 'Уровень%joblevel% %jobname% : %jobxp%/%jobmaxxp% опыта'
   shop:
     help:
-      info: Открывает специальный список работ.
+      info: Открывает специальный магазин за бонусные очки.
       args: ''
     info:
-      title: '&e------- &8Список работ &e-------'
+      title: '&e--- &8Магазин спецтоваров &e----'
       currentPoints: '&eКол-во очков, которые у вас: &6%currentpoints%'
       price: '&eЦена: &6%price%'
       reqJobs: '&eТребуемые работы:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
-      NoPermForItem: '&cУ вас нет прав на совершение этого дествия!'
-      NoPermToBuy: '&cУ вас нет прав на совершение этого дествия!'
-      NoJobReqForitem: '&cВы, &6%jobname&c, нам не подходите!'
-      NoPoints: '&cУ вас недостаточно очков'
-      Paid: '&eВы заплатили &6%amount% &e за эту вещь'
+      reqTotalLevel: '&6Требуется совокупный уровень: &e%totalLevel%'
+      cantOpen: '&cНе могу открыть эту страницу'
+      NoPermForItem: '&cУ Вас нет прав на совершение этого действия!'
+      NoPermToBuy: '&cУ Вас нет прав на покупку этого товара!'
+      NoJobReqForitem: '&cВы не работаете &6(%jobname%), &eлибо не достигли
+        &6(%joblevel%) &eуровня'
+      NoPoints: '&cУ Вас недостаточно очков'
+      NoTotalLevel: '&cУ Вас недостаточный совокупный уровень работ. Требуется (%totalLevel%)'
+      Paid: '&eВы заплатили &6%amount% &eза эту вещь'
   archive:
     help:
       info: Показывает все работы, сохраненные в архиве пользователем.
       args: '[playername]'
     error:
       nojob: Нет сохранёных работ.
-    output: Уровень %joblevel% (%getbackjoblevel%) %jobname%
   give:
     help:
-      info: Gives item by jobs name and item category name. Player name is optional
+      info: Выдать предмет по названию Работы либо по категории. Имя игрока необязательно.
       args: '[playername] [jobname] [itemname]'
     output:
       notonline: '&Игрок [%playername%] не на сервере!'
@@ -168,20 +243,21 @@ command:
       args: '[jobname] [action]'
       actions: '&eДопустимые действия: &f%actions%'
       max: ' - &eмаксимальный уровень:&f '
+      newMax: ' &eНовый максимальный уровень: &f[max]'
       material: '&7%material%'
       levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &aуровней)'
       levelFrom: ' &a(от &e%levelFrom% &aуровня)'
       levelUntil: ' &a(вплоть до &e%levelUntil% &aуровня)'
       money: ' &2%money%$'
-      points: ' &6%points% очков'
+      points: ' &6%points%pts'
       exp: ' &e%exp%xp'
     gui:
       pickjob: '&eВыберите Вашу работу!'
       jobinfo: '&eИнформация о[jobname]!'
       actions: '&eДоступные действия:'
-      leftClick: '&eНажмите левую клавишу мыши, чтобы узнать подробнее'
-      rightClick: '&eНажмите правую клавишу мыши, чтобы устроиться на работу'
-      leftSlots: '&e"Левые слоты":&f '
+      leftClick: '&eНажмите ЛКМ, чтобы узнать подробнее'
+      rightClick: '&eНажмите ПКМ, чтобы устроиться на работу'
+      leftSlots: '&e"Осталось вакансий":&f '
       working: '&2&nТекущая работа'
       max: '&eМаксимальный уровень:&f '
       back: '&e<--Вернуться'
@@ -252,14 +328,16 @@ command:
       info: Устроиться работу.
       args: '[jobname]'
     error:
-      alreadyin: Ты уже устроен на работу %jobname%.
-      fullslots: Не возможно устроиться на %jobname%, нет свободных мест.
+      alreadyin: Вы уже устроились на работу %jobname%.
+      fullslots: Невозможно устроиться на %jobname% - нет свободных мест.
       maxjobs: Слишком много работ.
+      rejoin: '&cВы не можете устроиться прямо сейчас. Подождите [time]'
     success: Вы устроились на %jobname%.
+    confirm: '&2Кликните, чтобы подтвердить приём на работу &7[jobname]'
   leave:
     help:
       info: Уволиться с работы.
-      args: '[jobname]'
+      args: '[oldplayerjob]'
     success: Вы уволились с %jobname%.
   leaveall:
     help:
@@ -267,6 +345,12 @@ command:
     error:
       nojobs: Нет работ с которых можно уволится!
     success: Вы уволились со всех работ.
+  explored:
+    help:
+      info: Проверить, кто посещал этот чанк.
+    error:
+      noexplore: Никто ещё не был замечен на этом чанке
+    list: '&e%place%. %playername%'
   browse:
     help:
       info: Вывести список доступных работ.
@@ -278,6 +362,34 @@ command:
       totalWorkers: ' &7Рабочих: &e[amount]'
       penalty: ' &4Ограниченых: &c[amount]%'
       bonus: ' &2Бонус: &a[amount]%'
+      newHeader: '&2========== [amount] Доступные Работы ========='
+      list: '    &8[place]. &7[jobname]'
+      click: '&bКликните по работе, чтобы узнать больше про неё!'
+      detailed: '&bКликните, чтобы увидеть детальный список действий по данной работе'
+      jobHeader: '&2========== [jobname] ========='
+      chooseJob: '&7&n&oВыбрать эту работу'
+      chooseJobHover: '&7Кликните здесь, чтобы получить эту работу'
+  clearownership:
+    help:
+      info: Очистить информацию о владельце.
+      args: (playername)
+    output:
+      cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+  quests:
+    help:
+      info: Отобразить список доступных квестов.
+      args: (playername)
+    error:
+      noquests: '&cКвесты не найдены'
+    toplineseparator: '&7*********************** &6[playerName]&2(&f[questsDone]&2)
+      &7***********************'
+    output:
+      completed: '&2      !Завершено!&r      '
+      questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      hover:
+      - '&f[jobName]'
+      - '[desc]'
+      - '&7Новый квест будет доступен через: [time]'
   fire:
     help:
       info: Уволить игрока с работы.
@@ -304,7 +416,7 @@ command:
       target: Вы были устроены на работу %jobname%.
   top:
     help:
-      info: Показывает топ игроков.
+      info: Показывает ТОП игроков.
       args: '[jobname]'
     error:
       nojob: Нет такой работы.
@@ -316,7 +428,7 @@ command:
       show: '&2Показать с &e[from] &2вплоть до &e[until] &2список топ игроков'
   gtop:
     help:
-      info: Показывает топ 15 игроков по уровню на работе.
+      info: Показывает ТОП 15 игроков по уровню на работе.
       args: ''
     error:
       nojob: Невозможно найти какую-либо информацию.
@@ -325,14 +437,38 @@ command:
       list: '&e%number%&a. &e%playername% &alvl &e%level% &aс&e %exp% &aопыта'
       prev: '&e<<<<< Предыдущая страница &2|'
       next: '&2|&e Следующая страница >>>>'
-      show: '&2Показать с &e[from] &2вплоть до &e[until] &2список топ игроков'
+      show: '&2Показать с &e[from] &2вплоть до &e[until] &2список ТОП игроков'
+  area:
+    help:
+      info: Управление Бонусными зонами.
+      args: add/remove/info/list
+      addUsage: '&eИспользование: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]'
+      removeUsage: '&eИспользование: &6/Jobs area remove [areaName]'
+    output:
+      addedNew: '&eУспешно добавлена новая Бонусная зона с бонусом &6%bonus%'
+      removed: '&eБонусная зона &6%name% успешно удалена'
+      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
+        &6%bonus%'
+      wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
+      noAreas: '&eБонусных зон не найдено'
+      noAreasByLoc: '&eВ этой местности нет Бонусных зон'
+      areaList: '&eВсе Бонусные зоны в Вашем местоположении: &6%list%'
+      selected1: '&eВыбрана первая точка новой Бонусной зоны: &6%x%:%y%:%z%'
+      selected2: '&eВыбрана вторая точка новой Бонусной зоны: &6%x%:%y%:%z%'
+      select: '&eУкажите 2 точки новой Бонусной зоны, используя инструмент (%tool%)'
+      exist: '&eБонусная зона с таким именем уже существует'
+      dontExist: '&eБонусная зона с таким именем не существует'
+      wgDontExist: '&eWorldGuard области с таким именем не существует'
   log:
     help:
       info: Показывает статистику.
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
-      list: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% &6денег: %money% &eопыт: %exp%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
+      money: '&6money: %amount% '
+      exp: '&eexp: %amount% '
+      points: '&6points: %amount%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Предыдущая страница &2|'
       next: '&2|&e Следующая страница >>>>'
@@ -343,7 +479,10 @@ command:
       args: ''
     output:
       topline: '&7*********************** &6Глобальная статистика &7***********************'
-      list: '&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6деньги:%money% &eопыт: %exp%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
+      money: '&6money: %amount% '
+      exp: '&eexp: %amount% '
+      points: '&6points: %amount%'
       bottomline: '&7**************************************************************'
       nodata: '&cДанные не найдены'
   transfer:
@@ -358,6 +497,13 @@ command:
       args: '[playername] [jobname] [levels]'
     output:
       target: Вы были продвинуты на %levelsgained% уровней в %jobname%.
+  exp:
+    help:
+      info: Change the player exp for job.
+      args: '[playername] [jobname] [set/add/take] [amount]'
+    output:
+      target: '&eYour exp was changed for %jobname% &eand now you at &6%level%lvl
+        &eand with &6%exp%exp.'
   demote:
     help:
       info: Понижает игрока на X уровней.
@@ -378,8 +524,15 @@ command:
       target: Вы потеряли %xplost% опыта в %jobname%.
   signupdate:
     help:
-      info: Manualy updates sign by its name
+      info: Обновить табличку по её имени.
       args: '[jobname]'
+  bp:
+    help:
+      info: Показать защищённые блоки в радиусе 10 блоков от вас.
+      args: ''
+    output:
+      found: '&eНайдено &6%amount% &eзащищённых блоков рядом с вами'
+      notFound: '&eЗащищённых блоков рядом с вами не найдено'
   reload:
     help:
       info: Перезагружает настройки плагина.
@@ -404,9 +557,9 @@ message:
     broadcast: '%playername% получил уровень %joblevel% в работе %jobname%.'
     nobroadcast: Вы получили уровень %joblevel% в работе %jobname%.
   cowtimer: '&eВы должны подождать &6%time% &eсекунд, чтобы получить зарплату.'
-  blocktimer: '&eВы должны подождать: &3[time] &eсек ещё, чтобы получить свои деньги!'
+  blocktimer: '&eВы должны подождать ещё &3[time] &eсекунд, чтобы получить свои деньги!'
   placeblocktimer: '&eВы не можете ставить блоки быстрее, чем &6[time] &eсекунд в одном месте!'
-  taxes: '&3[amount] &eserver taxes where transfered to this account'
+  taxes: '&3[amount] &eбыло удержано в виде налогов с этого счёта'
   boostStarted: '&eУскорение получения денег с работы началось!'
   boostStoped: '&eУскорение получения денег с работы уже закончилось!'
   crafting:
@@ -414,35 +567,33 @@ message:
 signs:
   List: '&0[number].&8[player]&7:&4[level]'
   SpecialList:
-    '1':
-      '1': '&b** &8Первый &b**'
-      '2': '&9[player]'
-      '3': '&8[level] уровень'
-      '4': '&b************'
-    '2':
-      '1': '&b** &8Второй &b**'
-      '2': '&9[player]'
-      '3': '&8[level] уровень'
-      '4': '&b************'
-    '3':
-      '1': '&b** &8Третий &b**'
-      '2': '&9[player]'
-      '3': '&8[level] уровень'
-      '4': '&b************'
+    p1: '&b** &8Первый &b**'
+    p2: '&b** &8Второй &b**'
+    p3: '&b** &8Третий &b**'
+    p4: '&b** &8Четвёртый &b**'
+    p5: '&b** &8Пятый &b**'
+    p6: '&b** &8Шестой &b**'
+    p7: '&b** &8Седьмой &b**'
+    p8: '&b** &8Восьмой &b**'
+    p9: '&b** &8Девятый &b**'
+    p10: '&b** &8Десятый &b**'
+    name: '&9[player]'
+    level: '&8[level] уровень'
+    bottom: '&b************'
   cantcreate: '&4Вы не можете создать табличку!'
   cantdestroy: '&4Вы не можете уничтожить эту табличку!'
   topline: '&e[Jobs]'
   secondline:
     join: '&2Устроиться'
     leave: '&4Уволиться'
-    toggle: '&eToggle'
-    top: '&eТоп'
-    browse: '&eBrowse'
-    stats: '&eStats'
-    limit: '&eLimit'
-    info: '&eИнформ'
-    archive: '&eArchive'
+    toggle: '&eПереключить'
+    top: '&eТОП'
+    browse: '&eОбзор'
+    stats: '&eСтатистика'
+    limit: '&eЛимиты'
+    info: '&eИнфо'
+    archive: '&0Архив'
 scoreboard:
-  topline: '&2Top &e%jobname%'
-  gtopline: '&2Глобальный топ-лист'
-  lines: '&2%number%. &e%playername%'
+  topline: '&2ТОП &e%jobname%'
+  gtopline: '&2Глобальный ТОП лист'
+  line: '&2%number%. &e%playername% (&6%level%&e)'
