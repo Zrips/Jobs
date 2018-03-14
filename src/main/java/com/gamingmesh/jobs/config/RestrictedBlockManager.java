@@ -109,15 +109,15 @@ public class RestrictedBlockManager {
 	    c.getC().addDefault("blocksTimer.comparator.cd", 60);
 
 	    c.getC().addDefault("blocksTimer.lily.id", 111);
-	    c.getC().addDefault("blocksTimer.lily.cd", -1);
+	    c.getC().addDefault("blocksTimer.lily.cd", 30);
 	    c.getC().addDefault("blocksTimer.vines.id", 106);
-	    c.getC().addDefault("blocksTimer.vines.cd", -1);
+	    c.getC().addDefault("blocksTimer.vines.cd", 30);
 	    c.getC().addDefault("blocksTimer.wheat.id", 59);
 	    c.getC().addDefault("blocksTimer.wheat.cd", 5);
 	    c.getC().addDefault("blocksTimer.sugarcane.id", 83);
-	    c.getC().addDefault("blocksTimer.sugarcane.cd", -1);
+	    c.getC().addDefault("blocksTimer.sugarcane.cd", 30);
 	    c.getC().addDefault("blocksTimer.cactus.id", 81);
-	    c.getC().addDefault("blocksTimer.cactus.cd", -1);
+	    c.getC().addDefault("blocksTimer.cactus.cd", 30);
 	    c.getC().addDefault("blocksTimer.beatroot.id", 207);
 	    c.getC().addDefault("blocksTimer.beatroot.cd", 60);
 	    c.getC().addDefault("blocksTimer.potato.id", 142);
@@ -127,13 +127,13 @@ public class RestrictedBlockManager {
 	    c.getC().addDefault("blocksTimer.warts.id", 115);
 	    c.getC().addDefault("blocksTimer.warts.cd", 60);
 	    c.getC().addDefault("blocksTimer.pumpkin.id", 86);
-	    c.getC().addDefault("blocksTimer.pumpkin.cd", -1);
+	    c.getC().addDefault("blocksTimer.pumpkin.cd", 30);
 	    c.getC().addDefault("blocksTimer.pumpkinstem.id", 104);
-	    c.getC().addDefault("blocksTimer.pumpkinstem.cd", -1);
+	    c.getC().addDefault("blocksTimer.pumpkinstem.cd", 30);
 	    c.getC().addDefault("blocksTimer.melon.id", 103);
-	    c.getC().addDefault("blocksTimer.melon.cd", -1);
+	    c.getC().addDefault("blocksTimer.melon.cd", 30);
 	    c.getC().addDefault("blocksTimer.melonstem.id", 105);
-	    c.getC().addDefault("blocksTimer.melonstem.cd", -1);
+	    c.getC().addDefault("blocksTimer.melonstem.cd", 30);
 
 	    c.getC().addDefault("blocksTimer.goldore.id", "goldore");
 	    c.getC().addDefault("blocksTimer.goldore.cd", -1);
