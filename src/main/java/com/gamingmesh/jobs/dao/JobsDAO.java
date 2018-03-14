@@ -358,59 +358,6 @@ public abstract class JobsDAO {
 	    return this.c;
 	}
 
-//	public String getUpdateQuery() {
-//
-//	    String rp = "";
-//	    for (JobsTableInterface one : this.getInterface()) {
-//		if (one.getCollumn().equalsIgnoreCase("userid") || one.getCollumn().equalsIgnoreCase("player_uuid"))
-//		    continue;
-//		if (!rp.isEmpty())
-//		    rp += ", ";
-//
-//	    }
-//
-//	    switch (this) {
-//	    case JobsTable:
-//		for (JobsTableInterface one : this.getInterface()) {
-//		    if (one == JobsTableFields.userid)
-//			continue;
-//		    if (!rp.isEmpty())
-//			rp += ", ";
-//		    rp += "`" + one.getCollumn() + "` = ?";
-//		}
-//		rp = "UPDATE `" + getTableName() + "` SET " + rp + " WHERE `player_id` = ?;";
-//		return rp;
-//	    default:
-//		rp = "";
-//		for (JobsTableInterface one : this.getInterface()) {
-//		    if (one.getCollumn().equalsIgnoreCase("userid") || one.getCollumn().equalsIgnoreCase("player_uuid"))
-//			continue;
-//		    if (!rp.isEmpty())
-//			rp += ", ";
-//		    rp += "`" + one.getCollumn() + "` = ?";
-//		}
-//		rp = "UPDATE `" + getTableName() + "` SET " + rp + " WHERE `id` = ?;";
-//		return rp;
-//	    }
-//	}
-//
-//	public String getInsertQuery() {
-//	    String rp = "";
-//	    String q = "";
-//
-//	    for (JobsTableInterface one : this.getInterface()) {
-//		if (!rp.isEmpty())
-//		    rp += ", ";
-//		rp += "`" + one.getCollumn() + "`";
-//
-//		if (!q.isEmpty())
-//		    q += ", ";
-//		q += "?";
-//	    }
-//	    rp = "INSERT INTO `" + getTableName() + "` (" + rp + ") VALUES (" + q + ");";
-//	    return rp;
-//	}
-
 	public String getTableName() {
 	    return prefix + tableName;
 	}
@@ -428,15 +375,8 @@ public abstract class JobsDAO {
 
     public final synchronized void setUp() throws SQLException {
 	setupConfig();
-	int version = getSchemaVersion();
-	if (version == 0) {
-	    Jobs.consoleMsg("&cCould not initialize database!  Could not determine schema version!");
-	    return;
-	}
 
 	try {
-	    version = 11;
-	    updateSchemaVersion(version);
 	    for (DBTables one : DBTables.values()) {
 		createDefaultTable(one);
 	    }
@@ -1119,39 +1059,6 @@ public abstract class JobsDAO {
 	    close(insert);
 	}
     }
-
-//    public void transferUsers() throws SQLException {
-//	JobsConnection conns = this.getConnection();
-//	if (conns == null)
-//	    return;
-//	PreparedStatement insert = null;
-//	Statement statement = null;
-//	try {
-//	    statement = conns.createStatement();
-//	    if (Jobs.getGCManager().storageMethod.equalsIgnoreCase("sqlite")) {
-//		statement.executeUpdate("TRUNCATE `" + getPrefix() + "users`");
-//	    } else {
-//		statement.executeUpdate("DELETE from `" + getPrefix() + "users`");
-//	    }
-//
-//	    insert = conns.prepareStatement("INSERT INTO `" + getPrefix() + "users` (`id`, `player_uuid`, `username`, `seen`) VALUES (?, ?, ?, ?);");
-//	    conns.setAutoCommit(false);
-//
-//	    for (Entry<UUID, JobsPlayer> oneUser : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
-//		insert.setInt(1, oneUser.getValue().getUserId());
-//		insert.setString(2, oneUser.getValue().getPlayerUUID().toString());
-//		insert.setString(3, oneUser.getValue().getUserName());
-//		insert.setLong(4, oneUser.getValue().getSeen() == null ? System.currentTimeMillis() : oneUser.getValue().getSeen());
-//		insert.addBatch();
-//	    }
-//	    insert.executeBatch();
-//	    conns.commit();
-//	    conns.setAutoCommit(true);
-//	} finally {
-//	    close(statement);
-//	    close(insert);
-//	}
-//    }
 
     /**
      * Quit a job (delete player-job entry from storage)
@@ -2098,66 +2005,6 @@ public abstract class JobsDAO {
 	    close(prest);
 	}
 	return slot;
-    }
-
-    /**
-     * Gets the current schema version
-     * @return schema version number
-     */
-    protected int getSchemaVersion() {
-	JobsConnection conn = getConnection();
-	if (conn == null)
-	    return 0;
-	PreparedStatement prest = null;
-	ResultSet res = null;
-	int schema = 0;
-	try {
-	    prest = conn.prepareStatement("SELECT `value` FROM `" + prefix + "config` WHERE `key` = ?;");
-	    prest.setString(1, "version");
-	    res = prest.executeQuery();
-	    if (res.next()) {
-		schema = Integer.valueOf(res.getString(1));
-	    }
-	    res.close();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} catch (NumberFormatException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(res);
-	    close(prest);
-	}
-	return schema;
-    }
-
-    /**
-     * Updates schema to version number
-     * @param version
-     */
-    protected void updateSchemaVersion(int version) {
-	updateSchemaConfig("version", Integer.toString(version));
-    }
-
-    /**
-     * Updates configuration value
-     * @param key - the configuration key
-     * @param value - the configuration value
-     */
-    private void updateSchemaConfig(String key, String value) {
-	JobsConnection conn = getConnection();
-	if (conn == null)
-	    return;
-	PreparedStatement prest = null;
-	try {
-	    prest = conn.prepareStatement("UPDATE `" + prefix + "config` SET `value` = ? WHERE `key` = ?;");
-	    prest.setString(1, value);
-	    prest.setString(2, key);
-	    prest.execute();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(prest);
-	}
     }
 
     /**
