@@ -106,7 +106,8 @@ public class PlayerManager {
     public void addPlayerToMap(PlayerInfo info) {
 	this.PlayerUUIDMap.put(info.getUuid(), info);
 	this.PlayerIDMap.put(info.getID(), info);
-	this.PlayerNameMap.put(info.getName().toLowerCase(), info);
+	if (info.getName() != null)
+	    this.PlayerNameMap.put(info.getName().toLowerCase(), info);
     }
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
