@@ -91,7 +91,7 @@ public class blockLoc {
     }
 
     public Location getLocation() {
-	if (worldName == null && this.w == null)
+	if (this.w == null && worldName == null)
 	    return null;
 	World w = this.w == null ? Bukkit.getWorld(worldName) : this.w;
 	if (w == null)
