@@ -27,15 +27,18 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
@@ -533,6 +536,19 @@ public class ConfigManager {
 		ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
 		if (guiSection.contains("Id") && guiSection.contains("Data") && guiSection.isInt("Id") && guiSection.isInt("Data")) {
 		    GUIitem = new ItemStack(Material.getMaterial(guiSection.getInt("Id")), 1, (byte) guiSection.getInt("Data"));
+		} else if (guiSection.contains("CustomSkull")) {
+		    String skullOwner = guiSection.getString("CustomSkull");
+		    GUIitem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+		    SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
+		    if (skullOwner.length() == 36) {
+			try {
+			    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
+			    skullMeta.setOwner(offPlayer.getName());
+			} catch (Exception e) {
+			}
+		    } else
+			skullMeta.setOwner(skullOwner);
+		    GUIitem.setItemMeta(skullMeta);
 		} else
 		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
 	    }
