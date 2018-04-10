@@ -864,6 +864,11 @@ public abstract class JobsDAO {
 	    e.printStackTrace();
 	} finally {
 	    close(prest);
+	    try {
+		conn.setAutoCommit(true);
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
 
     }
@@ -1057,6 +1062,11 @@ public abstract class JobsDAO {
 	} finally {
 	    close(statement);
 	    close(insert);
+	    try {
+		conns.setAutoCommit(true);
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
     }
 
@@ -1522,6 +1532,11 @@ public abstract class JobsDAO {
 	} finally {
 	    close(prest1);
 	    close(prest2);
+	    try {
+		conn.setAutoCommit(true);
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
     }
 
@@ -1685,6 +1700,11 @@ public abstract class JobsDAO {
 	    close(insert);
 	    close(update);
 	    close(delete);
+	    try {
+		conn.setAutoCommit(true);
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
     }
 
@@ -1796,6 +1816,11 @@ public abstract class JobsDAO {
 	    e.printStackTrace();
 	} finally {
 	    close(prest2);
+	    try {
+		conn.setAutoCommit(true);
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
     }
 
@@ -1840,6 +1865,11 @@ public abstract class JobsDAO {
 	    e.printStackTrace();
 	} finally {
 	    close(prest);
+	    try {
+		conn.setAutoCommit(true);
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
 	}
     }
 
