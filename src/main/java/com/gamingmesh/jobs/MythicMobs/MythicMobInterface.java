@@ -9,5 +9,9 @@ public interface MythicMobInterface {
     boolean isMythicMob(LivingEntity lVictim);
 
     void registerListener();
+    
+    String getDisplayName(String id);
+	
+    
 
 }

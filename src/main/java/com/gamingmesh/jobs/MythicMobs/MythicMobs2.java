@@ -9,6 +9,8 @@ import com.gamingmesh.jobs.Jobs;
 
 import net.elseland.xikage.MythicMobs.MythicMobs;
 import net.elseland.xikage.MythicMobs.API.MythicMobsAPI;
+import net.elseland.xikage.MythicMobs.API.Exceptions.InvalidMobTypeException;
+import net.elseland.xikage.MythicMobs.Mobs.MythicMob;
 
 public class MythicMobs2 implements MythicMobInterface {
 
@@ -55,5 +57,17 @@ public class MythicMobs2 implements MythicMobInterface {
 	Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6MythicMobs2 was found - Enabling capabilities."));
 	return true;
 
+    }
+
+    @Override
+    public String getDisplayName(String id) {
+	try {
+	    MythicMob mm = MMAPI.getMobAPI().getMythicMob(id);
+	    if (mm != null)
+		return mm.getDisplayName();
+	} catch (InvalidMobTypeException e) {
+	    return "";
+	}
+	return "";
     }
 }

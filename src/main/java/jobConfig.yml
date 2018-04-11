@@ -73,6 +73,10 @@ Jobs:
       Id: 17
     # data of block, usualy its 0, but in example Diorite will have id of 1 and data of 3
       Data: 2
+    # !OPTIONALY!
+    # Instead of providing item id and data you can provide skull owner name or UUID to use it in GUI
+    # In this case you don't need to use Id and Data fields
+      CustomSkull: Zrips
     ########################################################################
     # Section used to configure what items the job gets paid for, how much
     # they get paid and how much experience they gain.

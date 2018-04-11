@@ -80,7 +80,7 @@ public class JobInfo {
     public String getRealisticName() {
 	String materialName = getName().toLowerCase().replace('_', ' ');
 	materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
-	materialName = Jobs.getNameTranslatorManager().Translate(materialName, this);
+	materialName = Jobs.getNameTranslatorManager().Translate(getActionType().equals(ActionType.MMKILL) ? getName() : materialName, this);
 	materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
 	return materialName;
     }

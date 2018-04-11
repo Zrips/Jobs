@@ -101,7 +101,6 @@ public class NameTranslatorManager {
 		}
 		break;
 	    case CUSTOMKILL:
-	    case MMKILL:
 	    case EXPLORE:
 		break;
 	    case SHEAR:
@@ -112,6 +111,9 @@ public class NameTranslatorManager {
 		    }
 		}
 		break;
+
+	    case MMKILL:
+		return Jobs.getMythicManager().getDisplayName(materialName);
 	    }
 
 	return materialName;
