@@ -145,6 +145,8 @@ public class Job {
     public boolean isSame(Job job) {
 	if (job == null)
 	    return false;
+	if (this.getName() == null && job.getName() == null)
+	    return true;
 	return this.getName().equalsIgnoreCase(job.getName());
     }
 
