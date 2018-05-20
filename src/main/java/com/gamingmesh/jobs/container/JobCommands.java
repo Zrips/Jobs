@@ -18,31 +18,48 @@
 
 package com.gamingmesh.jobs.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class JobCommands {
     private String node;
-    private String command;
+    private List<String> commands = new ArrayList<String>();
     private int levelFrom;
     private int levelUntil;
+
+    @Deprecated
     public JobCommands(String node, String command, int levelFrom, int levelUntil) {
-        this.node = node;
-        this.command = command;
-        this.levelFrom = levelFrom;
-        this.levelUntil = levelUntil;
+	this.node = node;
+	this.commands.add(command);
+	this.levelFrom = levelFrom;
+	this.levelUntil = levelUntil;
     }
-    
+
+    public JobCommands(String node, List<String> commands, int levelFrom, int levelUntil) {
+	this.node = node;
+	this.commands.addAll(commands);
+	this.levelFrom = levelFrom;
+	this.levelUntil = levelUntil;
+    }
+
     public String getNode() {
-        return node;
+	return node;
     }
-    
+
+    @Deprecated
     public String getCommand() {
-        return command;
+	return commands.isEmpty() ? "" : commands.get(0);
     }
-    
+
+    public List<String> getCommands() {
+	return commands;
+    }
+
     public int getLevelFrom() {
-        return levelFrom;
+	return levelFrom;
     }
-    
+
     public int getLevelUntil() {
-        return levelUntil;
+	return levelUntil;
     }
 }

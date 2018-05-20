@@ -618,10 +618,14 @@ public class ConfigManager {
 			Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid command key" + commandKey + "!");
 			continue;
 		    }
-		    String command = commandSection.getString("command");
+		    List<String> commands = new ArrayList<String>();
+		    if (commandSection.isString("command"))
+			commands.add(commandSection.getString("command"));
+		    else if (commandSection.isList("command"))
+			commands.addAll(commandSection.getStringList("command"));
 		    int levelFrom = commandSection.getInt("levelFrom");
 		    int levelUntil = commandSection.getInt("levelUntil");
-		    jobCommand.add(new JobCommands(node, command, levelFrom, levelUntil));
+		    jobCommand.add(new JobCommands(node, commands, levelFrom, levelUntil));
 		}
 	    }
 

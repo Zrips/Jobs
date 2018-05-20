@@ -454,6 +454,7 @@ Jobs:
       fly:
         # Command its self, this will be executed from console, so all commands should work
         # Possible variables are: [player] [jobname] [oldlevel] [newlevel]
+        # can be one or multiple lines
         command: manuaddp [player] essentials.fly
         # When to execute this command first time
         levelFrom: 100
@@ -461,7 +462,9 @@ Jobs:
         # This can be set to same level as levelFrom, so this command will be executed only once
         levelUntil: 100
       kit:
-        command: manuaddp [player] essentials.kits.woodcutter
+        command: 
+        - manuaddp [player] essentials.kits.woodcutter
+        - manuaddp [player] essentials.fly
         levelFrom: 150
         levelUntil: 150
     # Getting more money when equiped with specific weapon/tool ar wearing armor

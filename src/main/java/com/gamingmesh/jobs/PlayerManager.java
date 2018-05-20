@@ -649,12 +649,13 @@ public class PlayerManager {
 	    return;
 	for (JobCommands command : job.getCommands()) {
 	    if (newLevel >= command.getLevelFrom() && newLevel <= command.getLevelUntil()) {
-		String commandString = command.getCommand();
-		commandString = commandString.replace("[player]", player.getName());
-		commandString = commandString.replace("[oldlevel]", String.valueOf(oldLevel));
-		commandString = commandString.replace("[newlevel]", String.valueOf(newLevel));
-		commandString = commandString.replace("[jobname]", job.getName());
-		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandString);
+		for (String commandString : new ArrayList<String>(command.getCommands())) {
+		    commandString = commandString.replace("[player]", player.getName());
+		    commandString = commandString.replace("[oldlevel]", String.valueOf(oldLevel));
+		    commandString = commandString.replace("[newlevel]", String.valueOf(newLevel));
+		    commandString = commandString.replace("[jobname]", job.getName());
+		    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), commandString);
+		}
 	    }
 	}
     }
