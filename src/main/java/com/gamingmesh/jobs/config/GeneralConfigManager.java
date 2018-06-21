@@ -760,8 +760,8 @@ public class GeneralConfigManager {
 	    "Players will no longer need to click on furnace to get paid from it after server restart");
 	FurnacesReassign = c.get("ExploitProtections.Furnaces.Reassign", true);
 	c.getW().addComment("ExploitProtections.Furnaces.MaxDefaultAvailable",
-	    "Defines max avaible furnaces each player can have to get paid from",
-	    "This can be ovveriden with jobs.maxfurnaces.[amount] permission node");
+	    "Defines max available furnaces each player can have to get paid from",
+	    "This can be overridden with jobs.maxfurnaces.[amount] permission node");
 	FurnacesMaxDefault = c.get("ExploitProtections.Furnaces.MaxDefaultAvailable", 20);
 
 	c.getW().addComment("ExploitProtections.BrewingStands.Reassign",
@@ -769,9 +769,9 @@ public class GeneralConfigManager {
 	    "Players will no longer need to click on brewing stand to get paid from it after server restart");
 	BrewingStandsReassign = c.get("ExploitProtections.BrewingStands.Reassign", true);
 	c.getW().addComment("ExploitProtections.BrewingStands.MaxDefaultAvailable",
-	    "Defines max avaible brewing stands each player can have to get paid from",
+	    "Defines max available brewing stands each player can have to get paid from",
 	    "Set to 0 if you want to disable this limitation",
-	    "This can be ovveriden with jobs.maxbrewingstands.[amount] permission node");
+	    "This can be overridden with jobs.maxbrewingstands.[amount] permission node");
 	BrewingStandsMaxDefault = c.get("ExploitProtections.BrewingStands.MaxDefaultAvailable", 20);
 
 	c.getW().addComment("ExploitProtections.General.PlaceAndBreakProtection",
@@ -781,7 +781,7 @@ public class GeneralConfigManager {
 
 	c.getW().addComment("ExploitProtections.General.KeepDataFor",
 	    "For how long in days to keep block protection data in data base", "This will clean block data which ones have -1 as cooldown value",
-	    "Data base cleannup will be performed on each server startup");
+	    "Data base cleanup will be performed on each server startup");
 	BlockProtectionDays = c.get("ExploitProtections.General.KeepDataFor", 14);
 
 	c.getW().addComment("ExploitProtections.General.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");

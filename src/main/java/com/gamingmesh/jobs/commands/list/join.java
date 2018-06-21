@@ -1,8 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
