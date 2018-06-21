@@ -35,7 +35,6 @@ import com.gamingmesh.jobs.container.JobConditions;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class PermissionHandler {
     private Jobs plugin;

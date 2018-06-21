@@ -49,9 +49,14 @@ public class JobConditions {
 	for (String one : perform) {
 	    if (!one.toLowerCase().contains("p:"))
 		continue;
-	    String perm = one.toLowerCase().replace("p:", "").split("-")[0];
-	    boolean n = one.toLowerCase().replace("p:", "").split("-")[1].equalsIgnoreCase("true") ? true : false;
-	    performPerm.put(perm, n);
+	    String clean = one.toLowerCase().substring("p:".length());
+	    if (clean.contains("-")) {
+		String perm = clean.split("-")[0];
+		boolean n = clean.split("-")[1].equalsIgnoreCase("true") ? true : false;
+		performPerm.put(perm, n);
+	    } else {
+		performPerm.put(clean, true);
+	    }
 	}
     }
 
