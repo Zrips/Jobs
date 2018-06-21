@@ -81,6 +81,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent.EquipMethod;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class JobsListener implements Listener {
@@ -218,18 +219,19 @@ public class JobsListener implements Listener {
 	Jobs.getGUIManager().GuiList.remove(player.getUniqueId());
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onGuiLeftClick(InventoryClickEvent event) {
 
 	if (Jobs.getGUIManager().GuiList.isEmpty())
 	    return;
 
-	Player player = (Player) event.getWhoClicked();
+	final Player player = (Player) event.getWhoClicked();
 
 	if (!Jobs.getGUIManager().GuiList.containsKey(player.getUniqueId()))
 	    return;
 
 	event.setCancelled(true);
+	final ItemStack clicked = event.getCurrentItem();
 
 	GuiInfoList joblist = Jobs.getGUIManager().GuiList.get(player.getUniqueId());
 
@@ -261,6 +263,16 @@ public class JobsListener implements Listener {
 		}
 	    }
 	}
+	player.updateInventory();
+
+	if (event.getClick().isShiftClick() && clicked != null && !clicked.getType().equals(Material.AIR))
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		@Override
+		public void run() {
+		    player.getInventory().remove(clicked);
+		    player.updateInventory();
+		}
+	    }, 1L);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
