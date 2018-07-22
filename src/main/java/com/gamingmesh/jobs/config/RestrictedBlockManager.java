@@ -9,7 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CmiItems.CMIItem;
+import com.gamingmesh.jobs.CMILib.CMIItemStack;
+import com.gamingmesh.jobs.CMILib.ItemManager;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -158,8 +159,8 @@ public class RestrictedBlockManager {
 	    for (String one : lss) {
 		if (((c.getC().isString("blocksTimer." + one + ".id")) || (c.getC().isInt("blocksTimer." + one + ".id"))) && (c.getC().isInt("blocksTimer." + one
 		    + ".cd"))) {		    
-		    CMIItem cm = Jobs.getItemManager().getItem(c.getC().getString("blocksTimer." + one + ".id"));		    
-		    if ((cm == null) || (!cm.getMaterial().isBlock())) {
+		    CMIItemStack cm = ItemManager.getItem(c.getC().getString("blocksTimer." + one + ".id"));		    
+		    if ((cm == null) || (!cm.getCMIType().isBlock())) {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Jobs] Your defined (" + c.getC().getString(new StringBuilder("blocksTimer.").append(one)
 			    .append(".id").toString()) + ") protected block id/name is not correct!");
 		    } else {

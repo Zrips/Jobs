@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.config.RestrictedAreaManager;
 import com.gamingmesh.jobs.container.CuboidArea;
 import com.gamingmesh.jobs.container.RestrictedArea;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class area implements Cmd {
 
@@ -54,7 +54,7 @@ public class area implements Cmd {
 	    }
 
 	    if (!wg && !Jobs.getSelectionManager().hasPlacedBoth(player)) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.select", "%tool%", Material.getMaterial(Jobs.getGCManager().getSelectionTooldID).name().toLowerCase()));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.select", "%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTooldID).getName()));
 		return true;
 	    }
 

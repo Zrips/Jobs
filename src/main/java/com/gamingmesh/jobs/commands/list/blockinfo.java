@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class blockinfo implements Cmd {
 
@@ -26,7 +27,7 @@ public class blockinfo implements Cmd {
 
 	Player player = (Player) sender;
 
-	Block block = Jobs.getNms().getTargetBlock(player, 15);
+	Block block = Util.getTargetBlock(player, 15);
 
 	if (block == null || block.getState().getType() == Material.AIR)
 	    return true;
@@ -35,9 +36,9 @@ public class blockinfo implements Cmd {
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.name", "%blockname%", block.getType().name()));
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.id", "%blockid%", block.getTypeId()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.id", "%blockid%", block.getType().getId()));
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.data", "%blockdata%", getData(block)));
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.usage", "%first%", block.getTypeId() + dataString,
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.usage", "%first%", block.getType().getId() + dataString,
 	    "%second%", block.getType().name() + dataString));
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 

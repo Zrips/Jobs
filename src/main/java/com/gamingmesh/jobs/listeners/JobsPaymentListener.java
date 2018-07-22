@@ -20,7 +20,6 @@ package com.gamingmesh.jobs.listeners;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,8 +31,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Furnace;
 import org.bukkit.block.BrewingStand;
+import org.bukkit.block.Furnace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -52,11 +51,11 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
@@ -82,6 +81,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.actions.BlockActionInfo;
 import com.gamingmesh.jobs.actions.CustomKillInfo;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
@@ -95,7 +95,6 @@ import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -485,7 +484,7 @@ public class JobsPaymentListener implements Listener {
 	for (int i = 0; i < sourceItems.length; i++) {
 	    if (sourceItems[i] == null)
 		continue;
-	    int id = sourceItems[i].getTypeId();
+	    int id = sourceItems[i].getType().getId();
 	    if (id > 0) {
 		if (id == 351)
 		    DyeStack.add(sourceItems[i]);
@@ -605,7 +604,7 @@ public class JobsPaymentListener implements Listener {
 	    return b == null;
 	else if (b == null)
 	    return false;
-	return a.getTypeId() == b.getTypeId() && a.getDurability() == b.getDurability() && Objects.equal(a.getData(), b.getData()) && Objects.equal(a.getEnchantments(), b
+	return a.getType().getId() == b.getType().getId() && a.getDurability() == b.getDurability() && Objects.equal(a.getData(), b.getData()) && Objects.equal(a.getEnchantments(), b
 	    .getEnchantments());
     }
 
@@ -1335,7 +1334,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.isCancelled())
 	    return;
 
-	if (block.getType() == Material.FURNACE || block.getType() == Material.BURNING_FURNACE) {
+	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) || CMIMaterial.get(block).equals(CMIMaterial.BURNING_FURNACE)) {
 
 	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(event.getPlayer(), block);
 	    if (done.equals(ownershipFeedback.tooMany)) {

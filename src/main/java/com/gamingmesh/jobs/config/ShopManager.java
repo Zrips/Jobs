@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
@@ -123,13 +124,14 @@ public class ShopManager {
 
 	for (JobItems one : item.getitems()) {
 	    @SuppressWarnings("deprecation")
-	    Material mat = Material.getMaterial(one.getId());
+	    CMIMaterial mat = CMIMaterial.get(one.getId(), one.getData());
 
 	    if (mat == null)
 		continue;
 
-	    ItemStack itemStack = new ItemStack(mat, one.getAmount(), (byte) one.getData());
-
+	    ItemStack itemStack = mat.newItemStack();
+	    itemStack.setAmount(one.getAmount());
+	    
 	    ItemMeta meta = itemStack.getItemMeta();
 
 	    if (one.getName() != null)
@@ -238,12 +240,12 @@ public class ShopManager {
 	    ArrayList<String> Lore = new ArrayList<String>();
 
 	    @SuppressWarnings("deprecation")
-	    Material mat = Material.getMaterial(item.getIconId());
+	    CMIMaterial mat = CMIMaterial.get(item.getIconId(), item.getIconData());
 
 	    if (item.isHideWithoutPerm()) {
 		for (String onePerm : item.getRequiredPerm()) {
 		    if (!Perm.hasPermission(player, onePerm)) {
-			mat = Material.STONE_BUTTON;
+			mat = CMIMaterial.STONE_BUTTON;
 			Lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPermToBuy"));
 			break;
 		    }
@@ -251,10 +253,11 @@ public class ShopManager {
 	    }
 
 	    if (mat == null)
-		mat = Material.STONE_BUTTON;
+		mat = CMIMaterial.STONE_BUTTON;
 
-	    ItemStack GUIitem = new ItemStack(mat, item.getIconAmount(), (byte) item.getIconData());
-
+	    ItemStack GUIitem = mat.newItemStack();
+	    GUIitem.setAmount(item.getIconAmount());
+	    
 	    ItemMeta meta = GUIitem.getItemMeta();
 
 	    if (item.getIconName() != null)

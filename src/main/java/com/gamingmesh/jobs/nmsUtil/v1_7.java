@@ -63,9 +63,4 @@ public class v1_7 implements NMS {
 	player.getInventory().setItemInHand(item);
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public Block getTargetBlock(Player player, int range) {
-	return player.getTargetBlock((HashSet<Byte>) null, range);
-    }
 }

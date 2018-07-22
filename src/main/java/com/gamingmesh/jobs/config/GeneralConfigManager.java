@@ -34,6 +34,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -445,7 +446,7 @@ public class GeneralConfigManager {
 
 	c.getW().addComment("selectionTool", "Tool used when selecting bounds for restricted area");
 	getSelectionTooldID = c.get("selectionTool", 294);
-	if (Material.getMaterial(Jobs.getGCManager().getSelectionTooldID) == null)
+	if (CMIMaterial.get(Jobs.getGCManager().getSelectionTooldID) == null)
 	    getSelectionTooldID = 294;
 
 	c.getW().addComment("MultiServerCompatability", "Enable if you are using one data base for multiple servers across bungee network",
@@ -924,7 +925,7 @@ public class GeneralConfigManager {
 	Material tmat = Material.getMaterial(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
 	guiBackButton = new ItemStack(tmat == null ? Material.JACK_O_LANTERN : tmat, 1, (byte) c.get("JobsGUI.BackButton.Data", 0));
 	tmat = Material.getMaterial(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
-	guiFiller = new ItemStack(tmat == null ? Material.STAINED_GLASS_PANE : tmat, 1, (byte) c.get("JobsGUI.Filler.Data", 15));
+	guiFiller = new ItemStack(tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.getMaterial() : tmat, 1, (byte) c.get("JobsGUI.Filler.Data", 15));
 
 //	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
 //	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);

@@ -78,7 +78,7 @@ public class Reflections {
 	try {
 	    Object nmsStack = asNMSCopy(item);
 	    Method itemMeth = Item.getMethod("getById", int.class);
-	    Object res = itemMeth.invoke(Item, item.getTypeId());
+	    Object res = itemMeth.invoke(Item, item.getType().getId());
 
 	    String ff = "b";
 	    switch (Jobs.getVersionCheckManager().getVersion()) {

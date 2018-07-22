@@ -12,10 +12,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+
 public class GiveItem {
     public static boolean GiveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore, HashMap<Enchantment, Integer> hashMap) {
 	@SuppressWarnings("deprecation")
-	ItemStack itemStack = new ItemStack(Material.getMaterial(id), qty, (short) meta);
+	ItemStack itemStack = CMIMaterial.get(id, meta).newItemStack();
+	itemStack.setAmount(qty);
 	ItemMeta ItemMeta = itemStack.getItemMeta();
 
 	if (lore != null) {

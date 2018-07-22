@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.BlockProtection;
@@ -53,11 +54,11 @@ public class bp implements Cmd {
 			}
 			changedBlocks.add(l.getBlock());
 			if (bp.getAction() == DBAction.DELETE)
-			    player.sendBlockChange(l, Material.STAINED_GLASS, (byte) 14);
+			    player.sendBlockChange(l, CMIMaterial.RED_STAINED_GLASS.getMaterial(), (byte) 14);
 			else if (time == -1)
-			    player.sendBlockChange(l, Material.STAINED_GLASS, (byte) 15);
+			    player.sendBlockChange(l, CMIMaterial.RED_STAINED_GLASS.getMaterial(), (byte) 15);
 			else
-			    player.sendBlockChange(l, Material.STAINED_GLASS, (byte) 0);
+			    player.sendBlockChange(l, CMIMaterial.RED_STAINED_GLASS.getMaterial(), (byte) 0);
 		    }
 		}
 	    }

@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class JobItems {
     private String node;
@@ -63,7 +63,9 @@ public class JobItems {
 
     public ItemStack getItemStack(Player player, Job job) {
 	try {
-	    ItemStack item = new ItemStack(Material.getMaterial(id), amount, (short) data);
+	    CMIMaterial cm = CMIMaterial.get(id, data);
+	    ItemStack item = cm.newItemStack();
+	    item.setAmount(amount);
 	    ItemMeta meta = item.getItemMeta();
 	    if (this.name != null)
 		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
@@ -82,7 +84,7 @@ public class JobItems {
 
 	    if (job != null)
 		item = Jobs.getReflections().setNbt(item, "JobsItemBoost", job.getName(), node);
-	    
+
 	    return item;
 	} catch (Exception e) {
 

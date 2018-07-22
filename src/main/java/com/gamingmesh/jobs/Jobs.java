@@ -41,7 +41,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.gamingmesh.jobs.CmiItems.ItemManager;
+import com.gamingmesh.jobs.CMILib.*;
 import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.MyPet.MyPetManager;
 import com.gamingmesh.jobs.MythicMobs.MythicMobInterface;
@@ -153,7 +153,7 @@ public class Jobs extends JavaPlugin {
     private static PermissionHandler permissionHandler;
     private static PermissionManager permissionManager;
 
-    private static ItemManager itemManager;
+//    private static ItemManager itemManager;
 
     public static BufferedPaymentThread paymentThread = null;
     private static DatabaseSaveThread saveTask = null;
@@ -717,9 +717,9 @@ public class Jobs extends JavaPlugin {
 	return permissionManager;
     }
 
-    public static ItemManager getItemManager() {
-	return itemManager;
-    }
+//    public static ItemManager getItemManager() {
+//	return itemManager;
+//    }
 
     /**
      * Sets the economy handler
@@ -753,9 +753,12 @@ public class Jobs extends JavaPlugin {
 	this.setEnabled(true);
 
 	versionCheckManager = new VersionChecker(this);
+	
+	ItemManager.load();
+	
 	version = versionCheckManager.getVersion().getShortVersion();
 
-	itemManager = new ItemManager(this);
+//	itemManager = new ItemManager(this);
 
 	try {
 	    Class<?> nmsClass;

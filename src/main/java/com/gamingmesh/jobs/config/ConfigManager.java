@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -56,6 +58,7 @@ import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Debug;
+import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class ConfigManager {
     private Jobs plugin;
@@ -178,10 +181,10 @@ public class ConfigManager {
 	    myKey = myKey.split("-")[0];
 	}
 
-	Material material = Material.matchMaterial(myKey);
+	CMIMaterial material = CMIMaterial.get(myKey);
 
 	if (material == null)
-	    material = Material.getMaterial(myKey.replace(" ", "_").toUpperCase());
+	    material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
 
 	if (material == null) {
 	    // try integer method
@@ -191,7 +194,7 @@ public class ConfigManager {
 	    } catch (NumberFormatException e) {
 	    }
 	    if (matId != null) {
-		material = Material.getMaterial(matId);
+		material = CMIMaterial.get(matId);
 		if (material != null) {
 		    Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " is using ID: " + myKey + "!");
 		    Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
@@ -242,12 +245,12 @@ public class ConfigManager {
 	     * future this hack may be removed and anybody using REDSTONE_ORE will have their
 	     * configurations broken.
 	     */
-	    if (material == Material.REDSTONE_ORE && actionType == ActionType.BREAK) {
+	    if (material == CMIMaterial.REDSTONE_ORE && actionType == ActionType.BREAK) {
 		Jobs.getPluginLogger().warning("Job " + jobName + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
 		Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
 		Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 		Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
-		material = Material.GLOWING_REDSTONE_ORE;
+		material = CMIMaterial.GLOWING_REDSTONE_ORE;
 	    }
 	    // END HACK
 
@@ -313,8 +316,14 @@ public class ConfigManager {
 
 	} else if (actionType == ActionType.ENCHANT) {
 	    Enchantment enchant = Enchantment.getByName(myKey);
-	    if (enchant != null)
-		id = enchant.getId();
+	    if (enchant != null) {
+		if (Jobs.getVersionCheckManager().getVersion().isEqualOrLower(Version.v1_12_R1)) {
+		    try {
+			id = (int) enchant.getClass().getMethod("getId").invoke(enchant);
+		    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		    }
+		}
+	    }
 	    type = myKey;
 	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL) {
 	    type = myKey;
@@ -531,14 +540,14 @@ public class ConfigManager {
 	    }
 
 	    // Gui item
-	    ItemStack GUIitem = new ItemStack(Material.getMaterial(35), 1, (byte) 13);
+	    ItemStack GUIitem = CMIMaterial.GREEN_WOOL.newItemStack();
 	    if (jobSection.contains("Gui")) {
 		ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
 		if (guiSection.contains("Id") && guiSection.contains("Data") && guiSection.isInt("Id") && guiSection.isInt("Data")) {
-		    GUIitem = new ItemStack(Material.getMaterial(guiSection.getInt("Id")), 1, (byte) guiSection.getInt("Data"));
+		    GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
 		} else if (guiSection.contains("CustomSkull")) {
 		    String skullOwner = guiSection.getString("CustomSkull");
-		    GUIitem = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
+		    GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
 		    SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
 		    if (skullOwner.length() == 36) {
 			try {
@@ -823,10 +832,10 @@ public class ConfigManager {
 			    myKey = myKey.split("-")[0];
 			}
 
-			Material material = Material.matchMaterial(myKey);
+			CMIMaterial material = CMIMaterial.get(myKey);
 
 			if (material == null)
-			    material = Material.getMaterial(myKey.replace(" ", "_").toUpperCase());
+			    material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
 
 			if (material == null) {
 			    // try integer method
@@ -836,7 +845,7 @@ public class ConfigManager {
 			    } catch (NumberFormatException e) {
 			    }
 			    if (matId != null) {
-				material = Material.getMaterial(matId);
+				material = CMIMaterial.get(matId);
 				if (material != null) {
 				    Jobs.getPluginLogger().warning("Job " + jobKey + " " + actionType.getName() + " is using ID: " + key + "!");
 				    Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
@@ -887,12 +896,12 @@ public class ConfigManager {
 			     * future this hack may be removed and anybody using REDSTONE_ORE will have their
 			     * configurations broken.
 			     */
-			    if (material == Material.REDSTONE_ORE && actionType == ActionType.BREAK) {
+			    if (material == CMIMaterial.REDSTONE_ORE && actionType == ActionType.BREAK) {
 				Jobs.getPluginLogger().warning("Job " + jobKey + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
 				Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
 				Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 				Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
-				material = Material.GLOWING_REDSTONE_ORE;
+				material = CMIMaterial.GLOWING_REDSTONE_ORE;
 			    }
 			    // END HACK
 
@@ -958,8 +967,14 @@ public class ConfigManager {
 
 			} else if (actionType == ActionType.ENCHANT) {
 			    Enchantment enchant = Enchantment.getByName(myKey);
-			    if (enchant != null)
-				id = enchant.getId();
+			    if (enchant != null) {
+				if (Jobs.getVersionCheckManager().getVersion().isEqualOrLower(Version.v1_12_R1)) {
+				    try {
+					id = (int) enchant.getClass().getMethod("getId").invoke(enchant);
+				    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				    }
+				}
+			    }
 			    type = myKey;
 			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL) {
 			    type = myKey;

@@ -16,6 +16,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
@@ -246,7 +247,7 @@ public class FurnaceBrewingHandling {
 
     public static ownershipFeedback registerFurnaces(Player player, Block block) {
 
-	if (block.getType() != Material.FURNACE && block.getType() != Material.BURNING_FURNACE) {
+	if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.BURNING_FURNACE)) {
 	    return ownershipFeedback.invalid;
 	}
 
@@ -344,7 +345,7 @@ public class FurnaceBrewingHandling {
 	    if (block == null)
 		continue;
 
-	    if (block.getType() != Material.FURNACE && block.getType() != Material.BURNING_FURNACE) {
+	    if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.BURNING_FURNACE)) {
 		continue;
 	    }
 	    block.removeMetadata(JobsPaymentListener.furnaceOwnerMetadata, Jobs.getInstance());

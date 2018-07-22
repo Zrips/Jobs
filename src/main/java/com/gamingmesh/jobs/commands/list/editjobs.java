@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.ActionType;
@@ -21,6 +23,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.RawMessage;
 import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class editjobs implements Cmd {
 
@@ -378,7 +381,7 @@ public class editjobs implements Cmd {
 		    break;
 		case "looking":
 		case "lookingat":
-		    Block block = Jobs.getNms().getTargetBlock(player, 30);
+		    Block block = Util.getTargetBlock(player, 30);
 		    key = block.getType().name() + "-" + block.getData();
 		    break;
 		}
@@ -396,10 +399,10 @@ public class editjobs implements Cmd {
 		    myKey = myKey.split("-")[0];
 		}
 
-		Material material = Material.matchMaterial(myKey);
+		CMIMaterial material = CMIMaterial.get(myKey);
 
 		if (material == null)
-		    material = Material.getMaterial(myKey.replace(" ", "_").toUpperCase());
+		    material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
 
 		if (material == null) {
 		    // try integer method
@@ -409,7 +412,7 @@ public class editjobs implements Cmd {
 		    } catch (NumberFormatException e) {
 		    }
 		    if (matId != null) {
-			material = Material.getMaterial(matId);
+			material = CMIMaterial.get(matId);
 			if (material != null) {
 			    player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " " + actionT.getName() + " is using ID: " + key + "!");
 			    player.sendMessage(ChatColor.GOLD + "Please use the Material name instead: " + material.toString() + "!");
@@ -448,12 +451,12 @@ public class editjobs implements Cmd {
 			    break;
 			}
 		    }
-		    if (material == Material.REDSTONE_ORE && actionT == ActionType.BREAK) {
+		    if (material == CMIMaterial.REDSTONE_ORE && actionT == ActionType.BREAK) {
 			player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
 			player.sendMessage(ChatColor.GOLD + "Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
 			player.sendMessage(ChatColor.GOLD + "In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 			player.sendMessage(ChatColor.GOLD + "In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
-			material = Material.GLOWING_REDSTONE_ORE;
+			material = CMIMaterial.GLOWING_REDSTONE_ORE;
 		    }
 
 		    type = material.toString();
@@ -518,8 +521,14 @@ public class editjobs implements Cmd {
 
 		} else if (actionT == ActionType.ENCHANT) {
 		    Enchantment enchant = Enchantment.getByName(myKey);
-		    if (enchant != null)
-			id = enchant.getId();
+		    if (enchant != null) {
+			if (Jobs.getVersionCheckManager().getVersion().isEqualOrLower(Version.v1_12_R1)) {
+			    try {
+				id = (int) enchant.getClass().getMethod("getId").invoke(enchant);
+			    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			    }
+			}
+		    }
 		    type = myKey;
 		} else if (actionT == ActionType.CUSTOMKILL || actionT == ActionType.SHEAR || actionT == ActionType.MMKILL) {
 		    type = myKey;

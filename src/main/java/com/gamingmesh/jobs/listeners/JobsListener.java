@@ -148,7 +148,7 @@ public class JobsListener implements Listener {
 	if (iih == null || iih.getType() == Material.AIR)
 	    return;
 	@SuppressWarnings("deprecation")
-	int heldItemId = iih.getTypeId();
+	int heldItemId = iih.getType().getId();
 	if (heldItemId != Jobs.getGCManager().getSelectionTooldID())
 	    return;
 
@@ -680,7 +680,7 @@ public class JobsListener implements Listener {
 	    for (JobLimitedItems oneItem : one.getJob().getLimitedItems()) {
 		if (one.getLevel() >= oneItem.getLevel())
 		    continue;
-		if (!isThisItem(oneItem, iih.getTypeId(), name, lore, enchants))
+		if (!isThisItem(oneItem, iih.getType().getId(), name, lore, enchants))
 		    continue;
 		meinOk = one.getJob().getName();
 		break mein;

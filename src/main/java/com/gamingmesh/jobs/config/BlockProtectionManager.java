@@ -148,7 +148,7 @@ public class BlockProtectionManager {
 
     @SuppressWarnings("deprecation")
     public Integer getBlockDelayTime(Block block) {
-	Integer time = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId());	
+	Integer time = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getType().getId());	
 	if (time == null && Jobs.getGCManager().useGlobalTimer)
 	    time = Jobs.getGCManager().globalblocktimer;	
 	return time;
@@ -156,6 +156,6 @@ public class BlockProtectionManager {
     
     @SuppressWarnings("deprecation")
     public boolean isInBp(Block block) {	
-	return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getTypeId()) != null;
+	return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getType().getId()) != null;
     }
 }

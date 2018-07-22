@@ -23,11 +23,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -48,7 +49,6 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.ItemBonusCache;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobCommands;
-import com.gamingmesh.jobs.container.JobItemBonus;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -59,8 +59,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.economy.PointsData;
-import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
@@ -796,7 +794,7 @@ public class PlayerManager {
 
 	main: for (Entry<String, JobItems> one : prog.getItemBonus().entrySet()) {
 	    JobItems oneItem = one.getValue();
-	    if (oneItem.getId() != item.getTypeId())
+	    if (oneItem.getId() != item.getType().getId())
 		continue;
 
 	    if (oneItem.getName() != null && name != null)

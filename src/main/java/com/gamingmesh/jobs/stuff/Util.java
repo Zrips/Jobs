@@ -1,17 +1,23 @@
 package com.gamingmesh.jobs.stuff;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.UUID;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.BlockIterator;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class Util {
 
@@ -24,7 +30,7 @@ public class Util {
     public static ItemStack setEntityType(ItemStack is, EntityType type) throws IllegalArgumentException {
 	boolean useMeta;
 	try {
-	    ItemStack testis = new ItemStack(Material.MOB_SPAWNER, 1);
+	    ItemStack testis = CMIMaterial.SPAWNER.newItemStack();
 	    ItemMeta meta = testis.getItemMeta();
 	    useMeta = meta instanceof BlockStateMeta;
 	} catch (Exception e) {
@@ -61,5 +67,48 @@ public class Util {
 
     public static HashMap<UUID, String> getJobsEditorMap() {
 	return jobsEditorMap;
+    }
+
+    public static Block getTargetBlock(Player player, int distance, boolean ignoreNoneSolids) {
+	return getTargetBlock(player, null, distance, ignoreNoneSolids);
+    }
+
+    public static Block getTargetBlock(Player player, int distance) {
+	return getTargetBlock(player, null, distance, false);
+    }
+
+    public static Block getTargetBlock(Player player, Material lookingFor, int distance) {
+	return getTargetBlock(player, lookingFor, distance, false);
+    }
+
+    public static Block getTargetBlock(Player player, Material lookingFor, int distance, boolean ignoreNoneSolids) {
+	if (distance > 15 * 16)
+	    distance = 15 * 16;
+	if (distance < 1)
+	    distance = 1;
+	ArrayList<Block> blocks = new ArrayList<Block>();
+	Iterator<Block> itr = new BlockIterator(player, distance);
+	while (itr.hasNext()) {
+	    Block block = itr.next();
+	    blocks.add(block);
+	    if (distance != 0 && blocks.size() > distance) {
+		blocks.remove(0);
+	    }
+	    Material material = block.getType();
+
+	    if (ignoreNoneSolids && !block.getType().isSolid())
+		continue;
+
+	    if (lookingFor == null) {
+		if (!CMIMaterial.AIR.equals(material) && !CMIMaterial.CAVE_AIR.equals(material) && !CMIMaterial.VOID_AIR.equals(material)) {
+		    break;
+		}
+	    } else {
+		if (lookingFor.equals(material)) {
+		    return block;
+		}
+	    }
+	}
+	return !blocks.isEmpty() ? blocks.get(blocks.size() - 1) : null;
     }
 }
