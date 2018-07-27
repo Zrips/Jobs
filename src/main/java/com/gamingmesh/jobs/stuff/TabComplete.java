@@ -102,8 +102,6 @@ public class TabComplete implements TabCompleter {
 		    StringUtil.copyPartialMatches(PartOfCommand, temp, completionList);
 		}
 
-	if (completionList.isEmpty())
-	    Jobs.getCommandManager().sendUsage(sender, args[0].toLowerCase());
 	Collections.sort(completionList);
 	return completionList;
     }
