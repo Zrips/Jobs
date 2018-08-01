@@ -96,6 +96,7 @@ import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.RawMessage;
@@ -755,7 +756,7 @@ public class Jobs extends JavaPlugin {
 	versionCheckManager = new VersionChecker(this);
 	
 	ItemManager.load();
-	
+
 	version = versionCheckManager.getVersion().getShortVersion();
 
 //	itemManager = new ItemManager(this);

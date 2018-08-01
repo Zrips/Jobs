@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class Job {
     // job info
@@ -225,6 +226,7 @@ public class Job {
     }
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
+
 	for (JobInfo info : getJobInfo(action.getType())) {
 	    if (info.getName().equalsIgnoreCase(action.getName()) || info.getName().equalsIgnoreCase(action.getNameWithSub())) {
 		if (!info.isInLevelRange(level))

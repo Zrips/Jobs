@@ -250,7 +250,7 @@ public class ConfigManager {
 		Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
 		Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 		Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
-		material = CMIMaterial.GLOWING_REDSTONE_ORE;
+		material = CMIMaterial.REDSTONE_ORE;
 	    }
 	    // END HACK
 
@@ -832,7 +832,7 @@ public class ConfigManager {
 			    myKey = myKey.split("-")[0];
 			}
 
-			CMIMaterial material = CMIMaterial.get(myKey);
+			CMIMaterial material = CMIMaterial.get(myKey + (subType));
 
 			if (material == null)
 			    material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
@@ -901,7 +901,7 @@ public class ConfigManager {
 				Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
 				Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 				Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
-				material = CMIMaterial.GLOWING_REDSTONE_ORE;
+				material = CMIMaterial.REDSTONE_ORE;
 			    }
 			    // END HACK
 
@@ -1021,6 +1021,36 @@ public class ConfigManager {
 				    + "! It will be not set.");
 				untilLevel = -1;
 			    }
+			}
+
+			switch (actionType) {
+			case BREED:
+			case CUSTOMKILL:
+			case BREW:
+			case EXPLORE:
+			case FISH:
+			case KILL:
+			case MILK:
+			case MMKILL:
+			case SHEAR:
+			case TAME:
+			    break;
+			case TNTBREAK:
+			case SMELT:
+			case REPAIR:
+			case PLACE:
+			case ENCHANT:
+			case DYE:
+			case EAT:
+			case CRAFT:
+			case BREAK:
+			    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)){
+				subType = "";
+				meta = "";
+			    }
+			    break;
+			default:
+			    break;
 			}
 
 			jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, fromlevel,

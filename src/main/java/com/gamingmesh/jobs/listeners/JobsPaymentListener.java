@@ -95,6 +95,7 @@ import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -248,7 +249,7 @@ public class JobsPaymentListener implements Listener {
 	Player player = jPlayer.getPlayer();
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+	    return; 
 
 	ItemStack contents = event.getContents().getIngredient();
 
@@ -257,7 +258,7 @@ public class JobsPaymentListener implements Listener {
 
 	Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
     }
-
+ 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 	//disabling plugin in world
@@ -278,7 +279,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode() == GameMode.CREATIVE && !Jobs.getGCManager().payInCreative())
+	if (player.getGameMode() == GameMode.CREATIVE && !Jobs.getGCManager().payInCreative()) 
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1334,7 +1335,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.isCancelled())
 	    return;
 
-	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) || CMIMaterial.get(block).equals(CMIMaterial.BURNING_FURNACE)) {
+	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) || CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE)) {
 
 	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(event.getPlayer(), block);
 	    if (done.equals(ownershipFeedback.tooMany)) {

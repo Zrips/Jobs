@@ -21,8 +21,10 @@ package com.gamingmesh.jobs.actions;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class BlockActionInfo extends MaterialActionInfo implements ActionInfo {
     public BlockActionInfo(Block block, ActionType type) {
@@ -30,6 +32,8 @@ public class BlockActionInfo extends MaterialActionInfo implements ActionInfo {
     }
 
     private static byte getData(Block block) {
+	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1))
+	    return 0;
 	@SuppressWarnings("deprecation")
 	byte data = block.getData();
 	if (block.getType() == Material.COCOA)

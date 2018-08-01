@@ -62,7 +62,6 @@ public class MythicMobs4 implements MythicMobInterface {
 
     @Override
     public String getDisplayName(String id) {
-	Debug.D(id);
 	MythicMob mm = MMAPI.getMythicMob(id);
 	if (mm != null)
 	    return mm.getDisplayName();

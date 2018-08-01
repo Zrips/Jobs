@@ -456,7 +456,7 @@ public class editjobs implements Cmd {
 			player.sendMessage(ChatColor.GOLD + "Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
 			player.sendMessage(ChatColor.GOLD + "In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 			player.sendMessage(ChatColor.GOLD + "In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
-			material = CMIMaterial.GLOWING_REDSTONE_ORE;
+			material = CMIMaterial.REDSTONE_ORE;
 		    }
 
 		    type = material.toString();

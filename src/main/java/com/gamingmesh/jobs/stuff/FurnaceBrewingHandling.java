@@ -247,7 +247,7 @@ public class FurnaceBrewingHandling {
 
     public static ownershipFeedback registerFurnaces(Player player, Block block) {
 
-	if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.BURNING_FURNACE)) {
+	if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE)) {
 	    return ownershipFeedback.invalid;
 	}
 
@@ -345,7 +345,7 @@ public class FurnaceBrewingHandling {
 	    if (block == null)
 		continue;
 
-	    if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.BURNING_FURNACE)) {
+	    if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE)) {
 		continue;
 	    }
 	    block.removeMetadata(JobsPaymentListener.furnaceOwnerMetadata, Jobs.getInstance());
