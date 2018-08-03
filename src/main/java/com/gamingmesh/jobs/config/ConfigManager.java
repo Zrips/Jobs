@@ -42,6 +42,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
@@ -856,7 +857,7 @@ public class ConfigManager {
 			if (actionType == ActionType.EXPLORE)
 			    material = null;
 
-			c: if (material != null) {
+			c: if (material != null && material.getMaterial() != null) {
 
 			    // Need to include thos ones and count as regular blocks
 			    switch (key.replace("_", "").toLowerCase()) {
@@ -910,17 +911,17 @@ public class ConfigManager {
 			} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
 
 			    // check entities
-			    EntityType entity = EntityType.fromName(key);
-			    if (entity == null) {
-				try {
-				    entity = EntityType.valueOf(key.toUpperCase());
-				} catch (IllegalArgumentException e) {
-				}
-			    }
+			    CMIEntityType entity = CMIEntityType.getByName(key);
+//			    if (entity == null) {
+//				try {
+//				    entity = EntityType.valueOf(key.toUpperCase());
+//				} catch (IllegalArgumentException e) {
+//				}
+//			    }
 
 			    if (entity != null && entity.isAlive()) {
 				type = entity.toString();
-				id = entity.getTypeId();
+				id = entity.getId();
 
 				// using breeder finder
 				if (actionType == ActionType.BREED)
