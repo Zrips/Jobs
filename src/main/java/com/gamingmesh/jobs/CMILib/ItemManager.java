@@ -657,7 +657,7 @@ public class ItemManager {
 	BLACK_STAINED_GLASS(95, 15, 13941, "Black Stained Glass", "STAINED_GLASS"),
 	BLACK_STAINED_GLASS_PANE(160, 15, 13201, "Black Stained Glass Pane", "STAINED_GLASS_PANE"),
 	BLACK_TERRACOTTA(159, 15, 26691, "Black Terracotta", "STAINED_CLAY"),
-	BLACK_WALL_BANNER(425, -1, 4919, "Black Banner", ""),
+	BLACK_WALL_BANNER(117, 0, 4919, "Black Banner", ""),
 	BLACK_WOOL(35, 15, 16693, "Black Wool", ""),
 	BLAZE_POWDER(377, 0, 18941, "Blaze Powder", ""),
 	BLAZE_ROD(369, 0, 8289, "Blaze Rod", ""),
@@ -674,7 +674,7 @@ public class ItemManager {
 	BLUE_STAINED_GLASS(95, 11, 7107, "Blue Stained Glass", ""),
 	BLUE_STAINED_GLASS_PANE(160, 11, 28484, "Blue Stained Glass Pane", ""),
 	BLUE_TERRACOTTA(159, 11, 5236, "Blue Terracotta", ""),
-	BLUE_WALL_BANNER(425, -1, 17757, "Blue Banner", ""),
+	BLUE_WALL_BANNER(117, 4, 17757, "Blue Banner", ""),
 	BLUE_WOOL(35, 11, 15738, "Blue Wool", ""),
 	BONE(352, 0, 5686, "Bone", ""),
 	BONE_BLOCK(216, 0, 17312, "Bone Block", "BONE_BLOCK"),
@@ -690,7 +690,7 @@ public class ItemManager {
 	BREAD(297, 0, 32049, "Bread", "BREAD"),
 	BREWING_STAND(379, 0, 14539, "Brewing Stand", "BREWING_STAND_ITEM"),
 	BRICK(336, 0, 6820, "Brick", "claybrick"),
-	BRICKS(45, 0, 14165, "Bricks", "BRICK"),
+	BRICKS(45, 0, 14165, "Bricks", ""),
 	BRICK_SLAB(44, 4, 26333, "Brick Slab", "STEP"),
 	BRICK_STAIRS(108, 0, 21534, "Brick Stairs", "BRICK_STAIRS"),
 	BROWN_BANNER(425, 3, 11481, "Brown Banner", ""),
@@ -705,7 +705,7 @@ public class ItemManager {
 	BROWN_STAINED_GLASS(95, 12, 20945, "Brown Stained Glass", ""),
 	BROWN_STAINED_GLASS_PANE(160, 12, 17557, "Brown Stained Glass Pane", ""),
 	BROWN_TERRACOTTA(159, 12, 23664, "Brown Terracotta", ""),
-	BROWN_WALL_BANNER(425, -1, 14731, "Brown Banner", ""),
+	BROWN_WALL_BANNER(117, 3, 14731, "Brown Banner", ""),
 	BROWN_WOOL(35, 12, 32638, "Brown Wool", ""),
 	BUBBLE_COLUMN(-1, -1, 13758, "Bubble Column", ""),
 	BUBBLE_CORAL(-1, -1, 12464, "Bubble Coral", ""),
@@ -776,7 +776,7 @@ public class ItemManager {
 	CRAFTING_TABLE(58, 0, 20706, "Crafting Table", "WORKBENCH"),
 	CREEPER_HEAD(397, 4, 29146, "Mob Head (Creeper)", "Creeper Head"),
 	CREEPER_SPAWN_EGG(383, 50, 9653, "Spawn Creeper", "Creeper Spawn Egg"),
-	CREEPER_WALL_HEAD(397, -1, 30123, "Creeper Wall Head", ""),
+	CREEPER_WALL_HEAD(397, 0, 30123, "Creeper Wall Head", ""),
 	CUT_RED_SANDSTONE(-1, -1, 26842, "Cut Red Sandstone", ""),
 	CUT_SANDSTONE(-1, -1, 6118, "Cut Sandstone", ""),
 	CYAN_BANNER(425, 6, 9839, "Cyan Banner", ""),
@@ -790,7 +790,7 @@ public class ItemManager {
 	CYAN_STAINED_GLASS(95, 9, 30604, "Cyan Stained Glass", ""),
 	CYAN_STAINED_GLASS_PANE(160, 9, 11784, "Cyan Stained Glass Pane", ""),
 	CYAN_TERRACOTTA(159, 9, 25940, "Cyan Terracotta", ""),
-	CYAN_WALL_BANNER(425, -1, 10889, "Cyan Banner", ""),
+	CYAN_WALL_BANNER(117, 6, 10889, "Cyan Banner", ""),
 	CYAN_WOOL(35, 9, 12221, "Cyan Wool", ""),
 	DAMAGED_ANVIL(145, 2, 10274, "Damaged Anvil", ""),
 	DANDELION(37, 0, 30558, "Dandelion", "YELLOW_FLOWER"),
@@ -908,15 +908,15 @@ public class ItemManager {
 	GLISTERING_MELON_SLICE(382, 0, 20158, "Glistering Melon", "speckledmelon"),
 	GLOWSTONE(89, 0, 32713, "Glowstone", "GLOWSTONE"),
 	GLOWSTONE_DUST(348, 0, 6665, "Glowstone Dust", ""),
-	GOLDEN_APPLE(322, 0, 27732, "Golden Apple", ""),
-	GOLDEN_AXE(286, 0, 4878, "Golden Axe", "GOLD_AXE"),
-	GOLDEN_BOOTS(317, 0, 7859, "Golden Boots", ""),
-	GOLDEN_CARROT(396, 0, 5300, "Golden Carrot", ""),
-	GOLDEN_CHESTPLATE(315, 0, 4507, "Golden Chestplate", ""),
-	GOLDEN_HELMET(314, 0, 7945, "Golden Helmet", ""),
-	GOLDEN_HOE(294, 0, 19337, "Golden Hoe", "GOLD_HOE"),
-	GOLDEN_HORSE_ARMOR(418, 0, 7996, "Golden Horse Armor", "gold_barding"),
-	GOLDEN_LEGGINGS(316, 0, 21002, "Golden Leggings", ""),
+	GOLDEN_APPLE(322, 0, 27732, "Golden Apple", "Gold apple"),
+	GOLDEN_AXE(286, 0, 4878, "Golden Axe", "Gold Axe"),
+	GOLDEN_BOOTS(317, 0, 7859, "Golden Boots", "Gold Boots"),
+	GOLDEN_CARROT(396, 0, 5300, "Golden Carrot", "Gold Carrot"),
+	GOLDEN_CHESTPLATE(315, 0, 4507, "Golden Chestplate", "Gold Chestplate"),
+	GOLDEN_HELMET(314, 0, 7945, "Golden Helmet", "Gold Helmet"),
+	GOLDEN_HOE(294, 0, 19337, "Golden Hoe", "Gold Hoe"),
+	GOLDEN_HORSE_ARMOR(418, 0, 7996, "Golden Horse Armor", "Gold Barding"),
+	GOLDEN_LEGGINGS(316, 0, 21002, "Golden Leggings", "Gold Leggings"),
 	GOLDEN_PICKAXE(285, 0, 10901, "Golden Pickaxe", "GOLD_PICKAXE"),
 	GOLDEN_SHOVEL(284, 0, 15597, "Golden Shovel", "GOLD_SPADE"),
 	GOLDEN_SWORD(283, 0, 10505, "Golden Sword", "GOLD_SWORD"),
@@ -940,7 +940,7 @@ public class ItemManager {
 	GRAY_STAINED_GLASS(95, 7, 29979, "Gray Stained Glass", ""),
 	GRAY_STAINED_GLASS_PANE(160, 7, 25272, "Gray Stained Glass Pane", ""),
 	GRAY_TERRACOTTA(159, 7, 18004, "Gray Terracotta", ""),
-	GRAY_WALL_BANNER(425, -1, 24275, "Gray Banner", ""),
+	GRAY_WALL_BANNER(117, 8, 24275, "Gray Banner", ""),
 	GRAY_WOOL(35, 7, 27209, "Gray Wool", ""),
 	GREEN_BANNER(425, 2, 10698, "Green Banner", ""),
 	GREEN_BED(355, 13, 13797, "Green Bed", "Green Bed"),
@@ -952,7 +952,7 @@ public class ItemManager {
 	GREEN_STAINED_GLASS(95, 13, 22503, "Green Stained Glass", ""),
 	GREEN_STAINED_GLASS_PANE(160, 13, 4767, "Green Stained Glass Pane", ""),
 	GREEN_TERRACOTTA(159, 13, 4105, "Green Terracotta", ""),
-	GREEN_WALL_BANNER(425, -1, 15046, "Green Banner", ""),
+	GREEN_WALL_BANNER(117, 2, 15046, "Green Banner", ""),
 	GREEN_WOOL(35, 13, 25085, "Green Wool", ""),
 	GUARDIAN_SPAWN_EGG(383, 68, 20113, "Spawn Guardian", "Guardian Spawn Egg"),
 	GUNPOWDER(289, 0, 29974, "Gunpowder", "SULPHUR"),
@@ -1037,9 +1037,9 @@ public class ItemManager {
 	LIGHT_BLUE_STAINED_GLASS(95, 3, 17162, "Light Blue Stained Glass", ""),
 	LIGHT_BLUE_STAINED_GLASS_PANE(160, 3, 18721, "Light Blue Stained Glass Pane", ""),
 	LIGHT_BLUE_TERRACOTTA(159, 3, 31779, "Light Blue Terracotta", ""),
-	LIGHT_BLUE_WALL_BANNER(425, -1, 12011, "Light Blue Banner", ""),
+	LIGHT_BLUE_WALL_BANNER(117, 12, 12011, "Light Blue Banner", ""),
 	LIGHT_BLUE_WOOL(35, 3, 21073, "Light Blue Wool", ""),
-	LIGHT_GRAY_BANNER(425, -1, 11417, "Light Gray Banner", ""),
+	LIGHT_GRAY_BANNER(425, 7, 11417, "Light Gray Banner", ""),
 	LIGHT_GRAY_BED(355, 8, 5090, "Light Gray Bed", "Light Gray Bed"),
 	LIGHT_GRAY_CARPET(171, 8, 11317, "Light Gray Carpet", ""),
 	LIGHT_GRAY_CONCRETE(251, 8, 14453, "Light Gray Concrete", ""),
@@ -1050,7 +1050,7 @@ public class ItemManager {
 	LIGHT_GRAY_STAINED_GLASS(95, 8, 5843, "Light Gray Stained Glass", ""),
 	LIGHT_GRAY_STAINED_GLASS_PANE(160, 8, 19008, "Light Gray Stained Glass Pane", ""),
 	LIGHT_GRAY_TERRACOTTA(159, 8, 26388, "Light Gray Terracotta", ""),
-	LIGHT_GRAY_WALL_BANNER(425, -1, 31088, "Light Gray Banner", ""),
+	LIGHT_GRAY_WALL_BANNER(117, 7, 31088, "Light Gray Banner", ""),
 	LIGHT_GRAY_WOOL(35, 8, 22936, "Light Gray Wool", ""),
 	LIGHT_WEIGHTED_PRESSURE_PLATE(147, 0, 14875, "Light Weighted Pressure Plate", "GOLD_PLATE"),
 	LILAC(175, 1, 22837, "Lilac", ""),
@@ -1066,7 +1066,7 @@ public class ItemManager {
 	LIME_STAINED_GLASS(95, 5, 24266, "Lime Stained Glass", ""),
 	LIME_STAINED_GLASS_PANE(160, 5, 10610, "Lime Stained Glass Pane", ""),
 	LIME_TERRACOTTA(159, 5, 24013, "Lime Terracotta", ""),
-	LIME_WALL_BANNER(425, -1, 21422, "Lime Banner", ""),
+	LIME_WALL_BANNER(117, 10, 21422, "Lime Banner", ""),
 	LIME_WOOL(35, 5, 10443, "Lime Wool", ""),
 	LINGERING_POTION(441, 0, 25857, "Lingering Potion", ""),
 	LLAMA_SPAWN_EGG(383, 103, 23640, "Spawn Llama", "Llama Spawn Egg"),
@@ -1081,7 +1081,7 @@ public class ItemManager {
 	MAGENTA_STAINED_GLASS(95, 2, 26814, "Magenta Stained Glass", ""),
 	MAGENTA_STAINED_GLASS_PANE(160, 2, 14082, "Magenta Stained Glass Pane", ""),
 	MAGENTA_TERRACOTTA(159, 2, 25900, "Magenta Terracotta", ""),
-	MAGENTA_WALL_BANNER(425, -1, 23291, "Magenta Banner", ""),
+	MAGENTA_WALL_BANNER(117, 13, 23291, "Magenta Banner", ""),
 	MAGENTA_WOOL(35, 2, 11853, "Magenta Wool", ""),
 	MAGMA_BLOCK(213, 0, 25927, "Magma Block", "MAGMA"),
 	MAGMA_CREAM(378, 0, 25097, "Magma Cream", ""),
@@ -1118,8 +1118,8 @@ public class ItemManager {
 	NAME_TAG(421, 0, 30731, "Name Tag", ""),
 	NAUTILUS_SHELL(-1, -1, 19989, "Nautilus Shell", ""),
 	NETHERRACK(87, 0, 23425, "Netherrack", "NETHERRACK"),
-	NETHER_BRICK(112, 0, 19996, "Nether Brick", "NETHER_BRICK"),
-	NETHER_BRICKS(405, 0, 27802, "Nether Brick", "Nether Bricks"),
+	NETHER_BRICK(405, 0, 19996, "Nether Brick", "NETHER_BRICK"),
+	NETHER_BRICKS(112, 0, 27802, "Nether Bricks"),
 	NETHER_BRICK_FENCE(113, 0, 5286, "Nether Brick Fence", "NETHER_FENCE"),
 	NETHER_BRICK_SLAB(44, 6, 26586, "Nether Brick Slab", ""),
 	NETHER_BRICK_STAIRS(114, 0, 12085, "Nether Brick Stairs", "NETHER_BRICK_STAIRS"),
@@ -1131,7 +1131,7 @@ public class ItemManager {
 	NOTE_BLOCK(25, 0, 20979, "Note Block", "NOTE_BLOCK"),
 	OAK_BOAT(333, 0, 17570, "Boat", "Oak Boat"),
 	OAK_BUTTON(143, 0, 13510, "Oak Button", "Wooden_button"),
-	OAK_DOOR(324, 0, 20341, "Wooden Door", "wooddoor"),
+	OAK_DOOR(324, 0, 20341, "Wooden Door", "Wood Door"),
 	OAK_FENCE(85, 0, 6442, "Oak Fence", "FENCE"),
 	OAK_FENCE_GATE(107, 0, 16689, "Oak Fence Gate", "FENCE_GATE"),
 	OAK_LEAVES(18, 0, 4385, "Oak Leaves", ""),
@@ -1158,7 +1158,7 @@ public class ItemManager {
 	ORANGE_STAINED_GLASS_PANE(160, 1, 21089, "Orange Stained Glass Pane", ""),
 	ORANGE_TERRACOTTA(159, 1, 18684, "Orange Terracotta", ""),
 	ORANGE_TULIP(38, 5, 26038, "Orange Tulip", ""),
-	ORANGE_WALL_BANNER(425, -1, 9936, "Orange Banner", ""),
+	ORANGE_WALL_BANNER(117, 114, 9936, "Orange Banner", ""),
 	ORANGE_WOOL(35, 1, 23957, "Orange Wool", ""),
 	OXEYE_DAISY(38, 8, 11709, "Oxeye Daisy", ""),
 	PACKED_ICE(174, 0, 28993, "Packed Ice", "PACKED_ICE"),
@@ -1182,7 +1182,7 @@ public class ItemManager {
 	PINK_STAINED_GLASS_PANE(160, 6, 24637, "Pink Stained Glass Pane", ""),
 	PINK_TERRACOTTA(159, 6, 23727, "Pink Terracotta", ""),
 	PINK_TULIP(38, 7, 27319, "Pink Tulip", ""),
-	PINK_WALL_BANNER(425, -1, 9421, "Pink Banner", ""),
+	PINK_WALL_BANNER(117, 9, 9421, "Pink Banner", ""),
 	PINK_WOOL(35, 6, 7611, "Pink Wool", ""),
 	PISTON(33, 0, 21130, "Piston", "PISTON_BASE"),
 	PISTON_HEAD(34, 0, 30226, "Piston Head", "PISTON_EXTENSION"),
@@ -1248,7 +1248,7 @@ public class ItemManager {
 	PURPLE_STAINED_GLASS(95, 10, 21845, "Purple Stained Glass", ""),
 	PURPLE_STAINED_GLASS_PANE(160, 10, 10948, "Purple Stained Glass Pane", ""),
 	PURPLE_TERRACOTTA(159, 10, 10387, "Purple Terracotta", ""),
-	PURPLE_WALL_BANNER(425, -1, 14298, "Purple Banner", ""),
+	PURPLE_WALL_BANNER(117, 5, 14298, "Purple Banner", ""),
 	PURPLE_WOOL(35, 10, 11922, "Purple Wool", ""),
 	PURPUR_BLOCK(201, 0, 7538, "Purpur Block", "PURPUR_BLOCK"),
 	PURPUR_PILLAR(202, 0, 26718, "Purpur Pillar", "PURPUR_PILLAR"),
@@ -1268,9 +1268,9 @@ public class ItemManager {
 	REDSTONE(331, 0, 11233, "Redstone", "Redstone Dust"),
 	REDSTONE_BLOCK(152, 0, 19496, "Block of Redstone", "REDSTONE_BLOCK"),
 	REDSTONE_LAMP(123, 0, 8217, "Redstone Lamp", "REDSTONE_LAMP_OFF"),
-	REDSTONE_ORE(74, 0, 10887, "Redstone Ore", ""),
+	REDSTONE_ORE(73, 0, 10887, "Redstone Ore"),
 	REDSTONE_TORCH(76, 0, 22547, "Redstone Torch(on)", "REDSTONE_TORCH_ON"),
-	REDSTONE_WALL_TORCH(76, -1, 7595, "Redstone Wall Torch", ""),
+	REDSTONE_WALL_TORCH(76, 0, 7595, "Redstone Wall Torch", ""),
 	REDSTONE_WIRE(55, 0, 25984, "Redstone Dust", "REDSTONE_WIRE"),
 	RED_BANNER(425, 1, 26961, "Red Banner", ""),
 	RED_BED(355, 14, 30910, "Red Bed", "Red Bed"),
@@ -1290,7 +1290,7 @@ public class ItemManager {
 	RED_STAINED_GLASS_PANE(160, 14, 8630, "Red Stained Glass Pane", ""),
 	RED_TERRACOTTA(159, 14, 5086, "Red Terracotta", ""),
 	RED_TULIP(38, 4, 16781, "Red Tulip", ""),
-	RED_WALL_BANNER(425, -1, 4378, "Red Banner", ""),
+	RED_WALL_BANNER(117, 1, 4378, "Red Banner", ""),
 	RED_WOOL(35, 14, 11621, "Red Wool", ""),
 	REPEATER(356, 0, 28823, "Redstone Repeater", "Diode"),
 	REPEATING_COMMAND_BLOCK(-1, -1, 12405, "Repeating Command Block", ""),
@@ -1320,7 +1320,7 @@ public class ItemManager {
 	SKELETON_HORSE_SPAWN_EGG(383, 28, 21356, "Spawn Skeleton Horse", "Skeleton Horse Spawn Egg"),
 	SKELETON_SKULL(397, 0, 13270, "Mob Head (Skeleton)", "Skeleton Skull"),
 	SKELETON_SPAWN_EGG(383, 51, 15261, "Spawn Skeleton", "Skeleton Spawn Egg"),
-	SKELETON_WALL_SKULL(397, -1, 31650, "Skeleton Wall Skull", ""),
+	SKELETON_WALL_SKULL(397, 0, 31650, "Skeleton Wall Skull", ""),
 	SLIME_BALL(341, 0, 5242, "Slimeball", ""),
 	SLIME_BLOCK(165, 0, 31892, "Slime Block", "SLIME_BLOCK"),
 	SLIME_SPAWN_EGG(383, 55, 6550, "Spawn Slime", "Slime Spawn Egg"),
@@ -1414,7 +1414,7 @@ public class ItemManager {
 	VINE(106, 0, 14564, "Vines", "VINE"),
 	VOID_AIR(-1, -1, 13668, "Void Air", ""),
 	WALL_SIGN(68, 0, 10644, "Wall Sign", "WALL_SIGN"),
-	WALL_TORCH(50, -1, 25890, "Wall Torch", ""),
+	WALL_TORCH(50, 0, 25890, "Wall Torch", ""),
 	WATER(8, 0, 24998, "Flowing Water", "FLOWING_WATER"),
 	WATER_BUCKET(326, 0, 8802, "Water Bucket", ""),
 	WET_SPONGE(19, 1, 9043, "Wet Sponge", ""),
@@ -1438,8 +1438,8 @@ public class ItemManager {
 	WITHER_SKELETON_SPAWN_EGG(383, 5, 10073, "Spawn Wither Skeleton", "Wither Skeleton Spawn Egg"),
 	WITHER_SKELETON_WALL_SKULL(397, 1, 9326, "Wither Skeleton Wall Skull", ""),
 	WOLF_SPAWN_EGG(383, 95, 21692, "Spawn Wolf", "Wolf Spawn Egg"),
-	WOODEN_AXE(271, 0, 6292, "Wooden Axe", "WOOD_AXE"),
-	WOODEN_HOE(290, 0, 16043, "Wooden Hoe", "WOOD_HOE"),
+	WOODEN_AXE(271, 0, 6292, "Wooden Axe", "Wood Axe"),
+	WOODEN_HOE(290, 0, 16043, "Wooden Hoe", "Wood Hoe"),
 	WOODEN_PICKAXE(270, 0, 12792, "Wooden Pickaxe", "WOOD_PICKAXE"),
 	WOODEN_SHOVEL(269, 0, 28432, "Wooden Shovel", "WOOD_SPADE"),
 	WOODEN_SWORD(268, 0, 7175, "Wooden Sword", "WOOD_SWORD"),
@@ -1470,7 +1470,8 @@ public class ItemManager {
 	LEGACY_BURNING_FURNACE(62, 0, -1, "Burning Furnace", ""),
 //	LEGACY_SIGN_POST(63, -1, -1, "Sign Post", ""),
 	LEGACY_WOODEN_DOOR_BLOCK(64, 0, -1, "LEGACY_WOODEN_DOOR", ""),
-	LEGACY_IRON_DOOR_BLOCK(71, 0, -1, "LEGACY_IRON_DOOR_BLOCK", "");
+	LEGACY_IRON_DOOR_BLOCK(71, 0, -1, "LEGACY_IRON_DOOR_BLOCK", ""),
+	LEGACY_GLOWING_REDSTON_ORE(74, 0, -1, "Glowing Redstone Ore", "");
 
 	private int legacyId;
 	private int legacyData;
@@ -1606,12 +1607,19 @@ public class ItemManager {
 	public static CMIMaterial get(String id) {
 	    Integer ids = null;
 	    Integer data = null;
+	    id = id.replace("_", "").replace(" ", "").toLowerCase();
 	    try {
 		ids = Integer.parseInt(id);
 	    } catch (Exception e) {
 		if (id.contains(":")) {
 		    try {
 			ids = Integer.parseInt(id.split(":")[0]);
+			data = Integer.parseInt(id.split(":")[1]);
+			return get(ids, data);
+		    } catch (Exception ex) {
+		    }
+
+		    try {
 			data = Integer.parseInt(id.split(":")[1]);
 			id = id.split(":")[0];
 		    } catch (Exception ex) {
@@ -1624,22 +1632,43 @@ public class ItemManager {
 	    CMIItemStack ci = byBukkitName.get(id);
 	    if (ci != null)
 		mat = ci.getCMIType();
-	    if (mat != null)
+	    if (mat != null) {
+		if (data != null) {
+		    for (CMIMaterial one : CMIMaterial.values()) {
+			if (one.getLegacyId() == mat.getLegacyId()) {
+			    if (one.getLegacyData() == data) {
+				mat = one;
+				break;
+			    }
+			}
+		    }
+		}
 		return mat;
+	    }
 
 	    ci = byMojangName.get(id);
 	    if (ci != null)
 		mat = ci.getCMIType();
 
-	    if (mat != null)
+	    if (mat != null) {
+		if (data != null) {
+		    for (CMIMaterial one : CMIMaterial.values()) {
+			if (one.getLegacyId() == mat.getLegacyId()) {
+			    if (one.getLegacyData() == data) {
+				mat = one;
+				break;
+			    }
+			}
+		    }
+		}
 		return mat;
+	    }
 
 	    if (ids != null) {
 		if (data == null)
 		    mat = get(ids);
-		else {
+		else
 		    mat = get(ids, data);
-		}
 	    }
 
 	    if (mat != null)
@@ -1750,7 +1779,7 @@ public class ItemManager {
 	    }
 	    if (mat != null) {
 		for (CMIMaterial one : CMIMaterial.values()) {
-		    if (one.getId() == mat.getId()) {
+		    if (one.getLegacyId() == mat.getLegacyId()) {
 			if (one.getLegacyData() == data) {
 			    mat = one;
 			    break;
