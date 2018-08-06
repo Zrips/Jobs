@@ -22,7 +22,7 @@ public class VersionChecker {
 	version = getCurrent();
     }
 
-    private Version version = Version.v1_11_R1;
+    private static Version version = Version.v1_11_R1;
 
     public Version getVersion() {
 	return version;
@@ -90,6 +90,10 @@ public class VersionChecker {
 
 	public boolean isEqualOrHigher(Version version) {
 	    return getValue() >= version.getValue();
+	}
+
+	public static boolean isCurrentEqualOrHigher(Version version) {
+	    return version.getValue() >= version.getValue();
 	}
     }
 
