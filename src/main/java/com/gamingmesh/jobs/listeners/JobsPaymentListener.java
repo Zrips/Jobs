@@ -44,7 +44,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -66,9 +65,7 @@ import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -118,12 +115,15 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void villagerTradeInventoryClick(InventoryClickEvent event) {
+
 	//disabling plugin in world
 	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
 	    return;
+
 	// make sure plugin is enabled
 	if (!this.plugin.isEnabled())
 	    return;
+
 	if (event.isCancelled())
 	    return;
 
@@ -147,7 +147,7 @@ public class JobsPaymentListener implements Listener {
 	if (!event.getSlotType().equals(SlotType.RESULT))
 	    return;
 
-	ItemStack resultStack = event.getCurrentItem();
+	ItemStack resultStack = event.getClickedInventory().getItem(2);
 
 	if (resultStack == null)
 	    return;
@@ -183,9 +183,9 @@ public class JobsPaymentListener implements Listener {
 	ItemStack toStore = event.getCursor();
 	// Make sure we are actually traded anything
 	if (hasItems(toCraft))
-	    if (event.isShiftClick())
-		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone());
-	    else {
+	    if (event.isShiftClick()) {
+		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.VTRADE);
+	    } else {
 		// The items are stored in the cursor. Make sure there's enough space.
 		if (isStackSumLegal(toCraft, toStore)) {
 		    int newItemsCount = toCraft.getAmount();
@@ -633,7 +633,7 @@ public class JobsPaymentListener implements Listener {
 	// Make sure we are actually crafting anything
 	if (hasItems(toCraft))
 	    if (event.isShiftClick())
-		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone());
+		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.CRAFT);
 	    else {
 		// The items are stored in the cursor. Make sure there's enough space.
 		if (isStackSumLegal(toCraft, toStore)) {
@@ -650,9 +650,14 @@ public class JobsPaymentListener implements Listener {
 
     }
 
+    @Deprecated
+    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack) {
+	return schedulePostDetection(player, compareItem, jPlayer, resultStack, ActionType.CRAFT);
+    }
+
     // HACK! The API doesn't allow us to easily determine the resulting number of
     // crafted items, so we're forced to compare the inventory before and after.
-    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack) {
+    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack, final ActionType type) {
 	final ItemStack[] preInv = player.getInventory().getContents();
 	// Clone the array. The content may (was for me) be mutable.
 	for (int i = 0; i < preInv.length; i++) {
@@ -676,7 +681,7 @@ public class JobsPaymentListener implements Listener {
 		if (newItemsCount > 0) {
 		    while (newItemsCount >= 1) {
 			newItemsCount--;
-			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+			Jobs.action(jPlayer, new ItemActionInfo(resultStack, type));
 		    }
 		}
 		return;
