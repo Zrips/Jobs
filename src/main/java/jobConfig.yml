@@ -23,6 +23,12 @@ Jobs:
     # than 1 job
     shortname: W
     description: Earns money felling and planting trees  
+    # Full description of job to be shown in job browse command
+    FullDescription: 
+    - "&2Get money for:"
+    - "  &7Planting trees"
+    - "  &7Cutting down trees"
+    - "  &7Killing players"
     # The colour of the name, for a full list of supported colours, go to the message config.
     ChatColour: GREEN
     # [OPTIONAL] The colour of the boss bar: GREEN, BLUE, RED, WHITE, YELLOW, PINK, PURPLE.
@@ -38,6 +44,12 @@ Jobs:
     # [OPTIONAL] - the maximum number of users on the server that can have this job at 
     # any one time (includes offline players).
     slots: 1
+    # [OPTIONAL] Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.
+    # In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60
+    # This only aplies after players level is higher than provided particular limit.
+    softIncomeLimit: 50
+    softExpLimit: 40
+    softPointsLimit: 60
     # Equation used for calculating how much experience is needed to go to the next level.
     # Available parameters:
     #   numjobs - the number of jobs the player has
@@ -73,10 +85,6 @@ Jobs:
       Id: 17
     # data of block, usualy its 0, but in example Diorite will have id of 1 and data of 3
       Data: 2
-    # !OPTIONALY!
-    # Instead of providing item id and data you can provide skull owner name or UUID to use it in GUI
-    # In this case you don't need to use Id and Data fields
-      CustomSkull: Zrips
     # Defines maximum amount of daily quests player can have from THIS job
     # This will not have effect on overall quest amount player will have
     maxDailyQuests: 3
@@ -207,7 +215,7 @@ Jobs:
     # payment for breaking a block
     Break:
       # block name/id (with optional sub-type)
-      LOG:
+      OAK_LOG:
         # base income, can be not used if using point system
         income: 5.0
         # base points, can be not used if using income system
@@ -224,17 +232,17 @@ Jobs:
         until-level: 30
     # payment for breaking a block with tnt
     TNTBreak:
-      LOG:
+      OAK_LOG:
         income: 5.0
         points: 5.0
         experience: 5.0
     # payment for placing a block
     Place:
-      SAPLING: 
+      OAK_SAPLING: 
         income: 1.0
         points: 1.0
         experience: 1.0
-      WOOD: 
+      OAK_WOOD: 
         income: 2.0
         points: 2.0
         experience: 2.0
@@ -252,128 +260,170 @@ Jobs:
       CustomNameHere:
         # base income
         income: 7.5
+        # base points
+        points: 7.5
         # base experience
         experience: 7.5
     # Killing player with certain job
     custom-kill:
       Woodcutter:
         income: 10.0
+        # base points
+        points: 4.5
         experience: 10.0
     # Tamig animals
     Tame:
-      Wolf:
+      WOLF:
         income: 2.0
+        # base points
+        points: 2.5
         experience: 5.0
     # Breeding animals
     Breed:
-      Wolf:
+      WOLF:
         income: 2.0
+        # base points
+        points: 2.5
         experience: 5.0
     # Eating food
     Eat:
-      cooked_rabbit:
+      COOKED_RABBIT:
         income: 5
+        # base points
+        points: 5
         experience: 5
-      baked_potato:
+      BAKED_POTATO:
         income: 5
+        # base points
+        points: 5
         experience: 5    
     # Milking cows, only one option is available
     Milk:
-      Cow:
+      COW:
         income: 2.0
+        # base points
+        points: 2
         experience: 5.0
-      Mushroomcow:
+      MUSHROOMCOW:
         income: 5.0
+        # base points
+        points: 5
         experience: 10.0
     # Shear sheeps by its color
     Shear:
-      Black:
+      BLACK_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0
-      Blue:
+      BLUE_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Brown:
+      BROWN_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Cyan:
+      CYAN_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Gray:
+      GRAY_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Green:
+      GREEN_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Light_blue:
+      LIGHT_BLUE_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Lime:
+      LIME_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Magenta:
+      MAGENTA_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Orange:
+      ORANGE_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Pink:
+      PINK_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Purple:
+      PURPLE_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Red:
+      RED_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Silver:
+      SILVER_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      White:
+      WHITE_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
-      Yellow:
+      YELLOW_WOOL:
         income: 2.0
+        points: 2.5
         experience: 5.0 
     # dyeing armor
     Dye:    
       LEATHER_BOOTS:
         income: 1.0
+        points: 2.5
         experience: 1.0
       LEATHER_CHESTPLATE:
         income: 1.0
+        points: 2.5
         experience: 1.0
       LEATHER_HELMET:
         income: 1.0
+        points: 2.5
         experience: 1.0
       LEATHER_LEGGINGS:
         income: 1.0
-        experience: 1.0
-      351:
-        income: 1.0
+        points: 2.5
         experience: 1.0
     # Catching fish
     Fish:
-      '349':
+      PUFFERFISH:
         income: 20.0
+        points: 2.5
+        experience: 25.0
+      TROPICAL_FISH:
+        income: 20.0
+        points: 2.5
         experience: 25.0
     # Repairing items
     Repair:
       WOOD_SWORD:
         income: 1.0
+        points: 2.5
         experience: 1.0
       IRON_SWORD:
         income: 2.0
+        points: 2.5
         experience: 2.0
     # Crafting items
     Craft:
       WOOD_SWORD:
         income: 1.5
+        points: 2.5
         experience: 3.0
       LEATHER_BOOTS:
         income: 1.0
-        experience: 6.0      
-    # Add ! at front when you want to pay for crafted items with special names. Always use double quotation marks, same as example
+        points: 2.5
+        experience: 6.0
+      # Add ! at front when you want to pay for crafted items with special names. Always use double quotation marks, same as example
       "!Healing Bandage":
         income: 1.0
         points: 2.5
@@ -387,51 +437,76 @@ Jobs:
     Smelt:
       IRON_INGOT:
         income: 2.0
+        points: 2.5
         experience: 8.0
       GOLD_INGOT:
         income: 4.5
+        points: 2.5
         experience: 12
     # Enchanting items
     Enchant:
       # You can set item for which player will get money
       WOOD_SWORD:
         income: 1.5
+        points: 2.5
         experience: 3.0
       LEATHER_BOOTS:
         income: 1.0
+        points: 2.5
         experience: 6.0
       # Or/and you can give money for each enchantment they got
       DIG_SPEED-1:
         income: 3.0
+        points: 2.5
         experience: 10.0
       DIG_SPEED-2:
         income: 6.0
+        points: 2.5
         experience: 20.0
     # Brewing potions
     Brew:
       NETHER_STALK:
         income: 5.0
+        points: 2.5
         experience: 3.0
       REDSTONE:
         income: 5.0
+        points: 2.5
         experience: 3.0
     # Explore options. Each number represents players number in exploring that chunk
     # 1 means that player is first in this chunk, 2 is second and so on, so you can give money not only for first player ho discovers that chunk
     Explore:
-      1:
+      STONE:
         income: 5.0
+        points: 2.5
         experience: 5.0
-      2:
+      GRASS:
         income: 2.5
+        points: 2.5
         experience: 2.5
-      3:
+      SEAGRASS:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
+      TALL_GRASS:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
+      DIRT:
         income: 1.0
+        points: 2.5
         experience: 1.0
-      4:
+      COARSE_DIRT:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
+      COBBLESTONE:
         income: 0.5
+        points: 2.5
         experience: 0.5
-      5:
+      OAK_PLANKS:
         income: 0.1
+        points: 2.5
         experience: 0.1
     # permissions granted for joining class
     permissions:
@@ -464,7 +539,6 @@ Jobs:
       fly:
         # Command its self, this will be executed from console, so all commands should work
         # Possible variables are: [player] [jobname] [oldlevel] [newlevel]
-        # can be one or multiple lines
         command: manuaddp [player] essentials.fly
         # When to execute this command first time
         levelFrom: 100
@@ -472,9 +546,7 @@ Jobs:
         # This can be set to same level as levelFrom, so this command will be executed only once
         levelUntil: 100
       kit:
-        command: 
-        - manuaddp [player] essentials.kits.woodcutter
-        - manuaddp [player] essentials.fly
+        command: manuaddp [player] essentials.kits.woodcutter
         levelFrom: 150
         levelUntil: 150
     # Getting more money when equiped with specific weapon/tool ar wearing armor
@@ -540,62 +612,88 @@ Jobs:
     description: Earns money felling and planting trees
     ChatColour: GREEN
     chat-display: full
+    max-level: 200
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 17
       Data: 2
     Break:
-      17-0:
+      JUNGLE_LOG:
         income: 2.5
         points: 2.5
         experience: 2.5
-      17-1:
+      OAK_LOG:
         income: 2.0
         points: 2.5
         experience: 2.0
-      17-2:
+      ACACIA_LOG:
+        income: 2.0
+        points: 2.0
+        experience: 2.0
+      BIRCH_LOG:
+        income: 2.0
+        points: 2.0
+        experience: 2.0
+      DARK_OAK_LOG:
+        income: 2.0
+        points: 2.0
+        experience: 2.0
+      SPRUCE_LOG:
         income: 2.5
         points: 2.5
         experience: 2.5
-      17-3:
+      STRIPPED_ACACIA_LOG:
         income: 2.5
         points: 2.5
         experience: 2.5
-      18-0:
-        income: 0.5
-        points: 0.5
-        experience: 0.5
-      18-1:
-        income: 0.5
-        points: 0.5
-        experience: 0.5
-      18-2:
-        income: 0.5
-        points: 0.5
-        experience: 0.5
-      18-3:
-        income: 0.5
-        points: 0.5
-        experience: 0.5
-      161-0:
-        income: 0.5
-        points: 0.5
-        experience: 0.5
-      161-1:
-        income: 0.5
-        points: 0.5
-        experience: 0.5
-      162-0:
+      STRIPPED_BIRCH_LOG:
         income: 2.5
         points: 2.5
         experience: 2.5
-      162-1:
+      STRIPPED_DARK_OAK_LOG:
         income: 2.5
         points: 2.5
         experience: 2.5
+      STRIPPED_JUNGLE_LOG:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
+      STRIPPED_OAK_LOG:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
+      STRIPPED_SPRUCE_LOG:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
+      ACACIA_LEAVES:
+        income: 0.5
+        points: 0.5
+        experience: 0.5
+      BIRCH_LEAVES:
+        income: 0.5
+        points: 0.5
+        experience: 0.5
+      DARK_OAK_LEAVES:
+        income: 0.5
+        points: 0.5
+        experience: 0.5
+      JUNGLE_LEAVES:
+        income: 0.5
+        points: 0.5
+        experience: 0.5
+      OAK_LEAVES:
+        income: 0.5
+        points: 0.5
+        experience: 0.5
+      SPRUCE_LEAVES:
+        income: 0.5
+        points: 0.5
+        experience: 0.5
     Kill:
       Player:
         income: 7.5
@@ -606,19 +704,19 @@ Jobs:
         income: 10.0
         points: 10.0
         experience: 10.0
-    max-level: 200
   Miner:
     fullname: Miner
     shortname: M
     description: Earns money mining minerals and ores.
     ChatColour: DARK_GRAY
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 270
       Data: 0
@@ -627,15 +725,19 @@ Jobs:
         income: 0.3
         points: 0.3
         experience: 0.3
-      STONE-1:
+      GRANITE:
         income: 1
         points: 1
         experience: 1
-      STONE-3:
+      DIORITE:
         income: 1
         points: 1
         experience: 1
-      STONE-5:
+      ANDESITE:
+        income: 1
+        points: 1
+        experience: 1
+      COBBLESTONE:
         income: 1
         points: 1
         experience: 1
@@ -644,15 +746,19 @@ Jobs:
         income: 0.3
         points: 0.3
         experience: 0.3
-      STONE-1:
+      GRANITE:
         income: 1
         points: 1
         experience: 1
-      STONE-3:
+      DIORITE:
         income: 1
         points: 1
         experience: 1
-      STONE-5:
+      ANDESITE:
+        income: 1
+        points: 1
+        experience: 1
+      COBBLESTONE:
         income: 1
         points: 1
         experience: 1
@@ -664,18 +770,34 @@ Jobs:
         income: 0.15
         points: 0.15
         experience: 0.2
-      SANDSTONE-1:
+      SMOOTH_SANDSTONE:
         income: 0.15
         points: 0.15
         experience: 0.2
-      SANDSTONE-2:
+      SMOOTH_RED_SANDSTONE:
         income: 0.15
         points: 0.15
         experience: 0.2
-      GLOWING_REDSTONE_ORE:
-        income: 2.5
-        points: 2
-        experience: 2
+      CHISELED_RED_SANDSTONE:
+        income: 0.15
+        points: 0.15
+        experience: 0.2
+      CHISELED_SANDSTONE:
+        income: 0.15
+        points: 0.15
+        experience: 0.2
+      CUT_RED_SANDSTONE:
+        income: 0.15
+        points: 0.15
+        experience: 0.2
+      CUT_SANDSTONE:
+        income: 0.15
+        points: 0.15
+        experience: 0.2
+      RED_SANDSTONE:
+        income: 0.15
+        points: 0.15
+        experience: 0.2
       IRON_ORE:
         income: 3.5
         points: 3
@@ -696,7 +818,7 @@ Jobs:
         income: 15
         points: 15
         experience: 30
-      QUARTZ_ORE:
+      NETHER_QUARTZ_ORE:
         income: 2.5
         points: 2.5
         experience: 2.5
@@ -708,15 +830,23 @@ Jobs:
         income: 2.5
         points: 2.5
         experience: 2.5
-      NETHER_BRICK:
+      MOSSY_STONE_BRICKS:
+        income: 3
+        points: 3
+        experience: 3
+      RED_NETHER_BRICKS:
         income: 1.0
         points: 1
         experience: 1.0
+      NETHER_BRICKS:
+        income: 1
+        points: 1
+        experience: 1
       NETHER_BRICK_STAIRS:
         income: 3
         points: 3
         experience: 3
-      NETHER_FENCE:
+      NETHER_BRICK_FENCE:
         income: 1
         points: 1
         experience: 1
@@ -728,8 +858,32 @@ Jobs:
         income: 2.5
         points: 2.5
         experience: 2.5
+      DARK_PRISMARINE:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
+      PRISMARINE_BRICKS:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
+      PRISMARINE_STAIRS:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
     Place:
-      RAILS:
+      POWERED_RAIL:
+        income: 2.0
+        points: 2.0
+        experience: 2.0
+      RAIL:
+        income: 2.0
+        points: 2.0
+        experience: 2.0
+      ACTIVATOR_RAIL:
+        income: 2.0
+        points: 2.0
+        experience: 2.0
+      DETECTOR_RAIL:
         income: 2.0
         points: 2.0
         experience: 2.0
@@ -750,32 +904,32 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Builder:
     fullname: Builder
     shortname: B
     description: Earns money for building structures.
     ChatColour: WHITE
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 108
       Data: 0
     Place:
-      STONE-2:
+      POLISHED_GRANITE:
         income: 1.3
         points: 1.3
         experience: 2
-      STONE-4:
+      POLISHED_DIORITE:
         income: 1.3
         points: 1.3
         experience: 2
-      STONE-6:
+      POLISHED_ANDESITE:
         income: 1.3
         points: 1.3
         experience: 2
@@ -783,195 +937,483 @@ Jobs:
         income: 0.7
         points: 0.7
         experience: 2
-      '5':
+      SPRUCE_PLANKS:
         income: 1.5
         points: 1.5
         experience: 2
-      '35':
+      ACACIA_PLANKS:
         income: 1.5
         points: 1.5
         experience: 2
-      '41':
+      BIRCH_PLANKS:
         income: 1.5
         points: 1.5
         experience: 2
-      '42':
+      DARK_OAK_PLANKS:
         income: 1.5
         points: 1.5
         experience: 2
-      '44':
+      JUNGLE_PLANKS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      OAK_PLANKS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      WHITE_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      YELLOW_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      BLACK_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      BLUE_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      BROWN_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      CYAN_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      GRAY_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      GREEN_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      LIGHT_BLUE_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      LIGHT_GRAY_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      LIME_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      MAGENTA_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      ORANGE_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      PINK_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      PURPLE_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      RED_WOOL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      GOLD_BLOCK:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      IRON_BLOCK:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      ACACIA_SLAB:
         income: 0.8
         points: 0.8
         experience: 2
-      '45':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '47':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '48':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '49':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '53':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '54':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '57':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '58':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '61':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '65':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '67':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '79':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '80':
-        income: 1.0
-        points: 1.0
-        experience: 2
-      '84':
-        income: 1.0
-        points: 1.0
-        experience: 2
-      '85':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '89':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '95':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '96':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '98':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '101':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '102':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '107':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '108':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '109':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '112':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '113':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '114':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '116':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '120':
-        income: 1.5
-        points: 1.5
-        experience: 2
-      '123':
-        income: 1.0
-        points: 1.0
-        experience: 2
-      '126':
+      BIRCH_SLAB:
         income: 0.8
         points: 0.8
         experience: 2
-      '128':
+      BRICK_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      COBBLESTONE_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      DARK_OAK_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      DARK_PRISMARINE_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      JUNGLE_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      NETHER_BRICK_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      OAK_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      PETRIFIED_OAK_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      PRISMARINE_BRICK_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      PRISMARINE_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      PURPUR_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      QUARTZ_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      RED_SANDSTONE_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      SANDSTONE_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      SPRUCE_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      STONE_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      STONE_BRICK_SLAB:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      BRICKS:
         income: 1.5
         points: 1.5
         experience: 2
-      '130':
+      BOOKSHELF:
         income: 1.5
         points: 1.5
         experience: 2
-      '133':
+      MOSSY_COBBLESTONE:
         income: 1.5
         points: 1.5
         experience: 2
-      '134':
+      OBSIDIAN:
         income: 1.5
         points: 1.5
         experience: 2
-      '139':
+      OAK_STAIRS:
         income: 1.5
         points: 1.5
         experience: 2
-      '146':
+      PRISMARINE_BRICK_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      PRISMARINE_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      PURPUR_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      QUARTZ_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      RED_SANDSTONE_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      SANDSTONE_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      SPRUCE_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      STONE_BRICK_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      DARK_OAK_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      JUNGLE_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      NETHER_BRICK_STAIRS:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      COBBLESTONE_STAIRS:
         income: 1.5
         points: 1.5
         experience: 2
-      '152':
+      CHEST:
         income: 1.5
         points: 1.5
         experience: 2
-      '154':
+      TRAPPED_CHEST:
+        income: 0.8
+        points: 0.8
+        experience: 2
+      DIAMOND_BLOCK:
         income: 1.5
         points: 1.5
         experience: 2
-      '155':
+      CRAFTING_TABLE:
         income: 1.5
         points: 1.5
         experience: 2
-      '156':
+      FURNACE:
         income: 1.5
         points: 1.5
         experience: 2
-      '159':
+      LADDER:
         income: 1.5
         points: 1.5
         experience: 2
-      '160':
+      ICE:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      SNOW_BLOCK:
+        income: 1.0
+        points: 1.0
+        experience: 2
+      JUKEBOX:
+        income: 1.0
+        points: 1.0
+        experience: 2
+      OAK_FENCE:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      GLOWSTONE:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      WHITE_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      BLACK_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      BLUE_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      BROWN_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      CYAN_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      GRAY_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      GREEN_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      LIGHT_BLUE_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      LIGHT_GRAY_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      LIME_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      MAGENTA_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      ORANGE_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      PINK_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      PURPLE_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      RED_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      YELLOW_STAINED_GLASS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      ACACIA_TRAPDOOR:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      BIRCH_TRAPDOOR:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      DARK_OAK_TRAPDOOR:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      IRON_TRAPDOOR:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      JUNGLE_TRAPDOOR:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      OAK_TRAPDOOR:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      SPRUCE_TRAPDOOR:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      STONE_BRICKS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      CHISELED_STONE_BRICKS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      CRACKED_STONE_BRICKS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      END_STONE_BRICKS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      MOSSY_STONE_BRICKS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      IRON_BARS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      GLASS_PANE:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      OAK_FENCE_GATE:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      BRICK_STAIRS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      STONE_BRICK_STAIRS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      NETHER_BRICKS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      NETHER_BRICK_FENCE:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      NETHER_BRICK_STAIRS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      ENCHANTING_TABLE:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      END_PORTAL_FRAME:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      REDSTONE_LAMP:
+        income: 1.0
+        points: 1.0
+        experience: 2
+      SANDSTONE_STAIRS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      ENDER_CHEST:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      EMERALD_BLOCK:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      SPRUCE_STAIRS:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      COBBLESTONE_WALL:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      TRAPPED_CHEST:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      REDSTONE_BLOCK:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      HOPPER:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      QUARTZ_BLOCK:
+        income: 1.5
+        points: 1.5
+        experience: 2
+      QUARTZ_STAIRS:
         income: 1.5
         points: 1.5
         experience: 2
@@ -1072,19 +1514,19 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Digger:
     fullname: Digger
     shortname: D
     description: Earns money for terraforming the world.
     ChatColour: GOLD
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 269
       Data: 0
@@ -1127,19 +1569,19 @@ Jobs:
         income: 10.0
         points: 10.0
         experience: 10.0
-    max-level: 200
   Farmer:
     fullname: Farmer
     shortname: Fa
     description: Earns money farming crops.
     ChatColour: BLUE
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 290
       Data: 0
@@ -1264,19 +1706,19 @@ Jobs:
         income: 1.5
         points: 1.5
         experience: 3.0
-      BEETROOT_BLOCK-3:
+      BEETROOTS:
         income: 1.5
         points: 1.5
         experience: 3.0
-      CROPS-7:
-        income: 1.5
+      WHEAT:
+        income: 1.14
         points: 1.5
         experience: 3.0
-      CARROT-7:
+      CARROTS:
         income: 1.0
         points: 1.0
         experience: 1.0
-      POTATO-7:
+      POTATOES:
         income: 1.0
         points: 1.0
         experience: 1.0
@@ -1284,11 +1726,11 @@ Jobs:
         income: 0.5
         points: 0.5
         experience: 1.0
-      SUGAR_CANE_BLOCK:
+      SUGAR_CANE:
         income: 0.2
         points: 0.2
         experience: 0.2
-      COCOA-2:
+      COCOA:
         income: 4
         points: 4
         experience: 4.0
@@ -1324,16 +1766,12 @@ Jobs:
         income: 1
         points: 1
         experience: 1.0
-      '115':
-        income: 1
-        points: 1
-        experience: 1.0
     Place:
-      CROPS-0:
+      WHEAT:
         income: 3.0
         points: 3
         experience: 3.0
-      SUGAR_CANE_BLOCK:
+      SUGAR_CANE:
         income: 1.0
         points: 1
         experience: 1.0
@@ -1342,19 +1780,19 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Hunter:
     fullname: Hunter
     shortname: H
     description: Earns money killing animals and monsters.
     ChatColour: RED
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 261
       Data: 0
@@ -1476,19 +1914,19 @@ Jobs:
         income: 9.0
         points: 9
         experience: 7.5
-    max-level: 200
   Explorer:
     fullname: Explorer
     shortname: Ex
     description: Earns money from exploring map.
     ChatColour: AQUA
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 301
       Data: 0    
@@ -1517,19 +1955,19 @@ Jobs:
       Player:
         income: 7.5
         experience: 7.5
-    max-level: 200
   Crafter:
     fullname: Crafter
     shortname: Cr
     description: Earns money from crafting items.
     ChatColour: RED
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 61
       Data: 0  
@@ -1764,19 +2202,19 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Fisherman:
     fullname: Fisherman
     shortname: Fi
     description: Earns money from fishing.
     ChatColour: AQUA
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 346
       Data: 0
@@ -1802,19 +2240,19 @@ Jobs:
         income: 7.5
         points: 7.5
         experience: 7.5
-    max-level: 200
   Weaponsmith:
     fullname: Weaponsmith
     shortname: W
     description: Earns money from crafting and repairing weapons.
     ChatColour: DARK_PURPLE
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 58
       Data: 0
@@ -1937,17 +2375,18 @@ Jobs:
         income: 7.0
         points: 7.0
         experience: 20
-    max-level: 200
   Brewer:
     fullname: Brewer
     shortname: Br
     description: Earns money brewing potions.
     ChatColour: LIGHT_PURPLE
     chat-display: full
+    max-level: 200
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 379
       Data: 0
@@ -2004,19 +2443,19 @@ Jobs:
         income: 18.0
         points: 18.0
         experience: 18.0
-    max-level: 200
   Enchanter:
     fullname: Enchanter
     shortname: E
     description: Earns money enchanting weapons.
     ChatColour: DARK_BLUE
     chat-display: full
-    #max-level: 10
+    max-level: 200
     #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+    rejoinCooldown: 10
     Gui:
       Id: 116
       Data: 0
@@ -2429,7 +2868,6 @@ Jobs:
         income: 30.0
         points: 30.0
         experience: 100.0
-    max-level: 200
   None:
     fullname: None
     shortname: N
@@ -2444,3 +2882,5 @@ Jobs:
     Kill:
       Player:
         income: 7.5
+        points: 7.5
+        experience: 7.5
