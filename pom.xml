@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>4.5.1</version>
+	<version>4.6.3</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.12-R0.1-SNAPSHOT</version>
+			<version>1.13-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- iConomy7 -->
@@ -125,14 +125,14 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
 					<outputDirectory>C:\Users\Arte\Desktop\Server\plugins</outputDirectory>
 				</configuration>
-			</plugin>
+			</plugin>-->
 		</plugins>
 	</build>
 </project>
