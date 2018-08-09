@@ -906,7 +906,7 @@ public class ConfigManager {
 			    }
 			    // END HACK
 
-			    type = material.toString();
+			    type = material.getMaterial().toString();
 			    id = material.getId();
 			} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
 

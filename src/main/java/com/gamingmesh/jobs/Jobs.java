@@ -1003,6 +1003,7 @@ public class Jobs extends JavaPlugin {
 	} else {
 	    for (JobProgression prog : progression) {
 		int level = prog.getLevel();
+
 		JobInfo jobinfo = prog.getJob().getJobInfo(info, level);
 
 		checkDailyQuests(jPlayer, prog.getJob(), info);

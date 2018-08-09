@@ -226,7 +226,6 @@ public class Job {
     }
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
-
 	for (JobInfo info : getJobInfo(action.getType())) {
 	    if (info.getName().equalsIgnoreCase(action.getName()) || info.getName().equalsIgnoreCase(action.getNameWithSub())) {
 		if (!info.isInLevelRange(level))
