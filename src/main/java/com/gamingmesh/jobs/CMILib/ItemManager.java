@@ -2189,7 +2189,7 @@ public class ItemManager {
 	public static boolean isDye(Material mat) {
 	    CMIMaterial m = CMIMaterial.get(mat);
 	    if (m == null)
-		return false;
+		return true;
 	    return m.isDye();
 	}
 
