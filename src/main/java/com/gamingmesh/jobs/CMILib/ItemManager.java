@@ -596,7 +596,7 @@ public class ItemManager {
 	}
     }
 
-    public enum CMIMaterial {
+    public static enum CMIMaterial {
 	NONE(-1, -1, -1, "None"),
 	ACACIA_BOAT(447, 0, 27326, "Acacia Boat", "BOAT_ACACIA"),
 	ACACIA_BUTTON(-1, -1, 13993, "Acacia Button", ""),

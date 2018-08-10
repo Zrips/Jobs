@@ -79,7 +79,6 @@ public class ItemReflection {
 	    Object res = meth.invoke(reg, res2);
 	    return res.toString();
 	} catch (Exception e) {
-	    e.printStackTrace();
 	    return null;
 	}
     }
