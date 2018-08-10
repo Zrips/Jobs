@@ -2257,7 +2257,7 @@ public class ItemManager {
 	    if (!isSlab(block.getType()))
 		return SlabType.NOTSLAB;
 
-	    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_10_R1.v1_13_R1)) {
+	    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)) {
 		if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
 		    org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
 		    switch (slab.getType()) {

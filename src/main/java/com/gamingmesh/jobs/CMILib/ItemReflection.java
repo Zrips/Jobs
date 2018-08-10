@@ -4,6 +4,7 @@
 
 package com.gamingmesh.jobs.CMILib;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
@@ -67,6 +68,23 @@ public class ItemReflection {
     }
 
     public static String getItemMinecraftName(ItemStack item) {
+	try {
+	    Object nmsStack = asNMSCopy(item);
+	    Field field = Item.getField("REGISTRY");
+	    Object reg = field.get(field);
+	    Method meth = reg.getClass().getMethod("b", Object.class);
+	    meth.setAccessible(true);
+	    Method secmeth = nmsStack.getClass().getMethod("getItem");
+	    Object res2 = secmeth.invoke(nmsStack);
+	    Object res = meth.invoke(reg, res2);
+	    return res.toString();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return null;
+	}
+    }
+
+    public static String getItemRealName(ItemStack item) {
 	try {
 	    Object nmsStack = asNMSCopy(item);
 	    Method itemMeth = Item.getMethod("getById", int.class);
