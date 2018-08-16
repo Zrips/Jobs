@@ -24,7 +24,7 @@ public class Util {
     public Util() {
     }
 
-    private static HashMap<UUID, String> jobsEditorMap = new HashMap<UUID, String>();
+    private static HashMap<UUID, String> jobsEditorMap = new HashMap<>();
 
     @SuppressWarnings("deprecation")
     public static ItemStack setEntityType(ItemStack is, EntityType type) throws IllegalArgumentException {
@@ -86,7 +86,7 @@ public class Util {
 	    distance = 15 * 16;
 	if (distance < 1)
 	    distance = 1;
-	ArrayList<Block> blocks = new ArrayList<Block>();
+	ArrayList<Block> blocks = new ArrayList<>();
 	Iterator<Block> itr = new BlockIterator(player, distance);
 	while (itr.hasNext()) {
 	    Block block = itr.next();
