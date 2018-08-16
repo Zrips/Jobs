@@ -70,7 +70,7 @@ public class JobItems {
 	    if (this.name != null)
 		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
 	    if (lore != null) {
-		List<String> TranslatedLore = new ArrayList<String>();
+		List<String> TranslatedLore = new ArrayList<>();
 		for (String oneLore : lore) {
 		    TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player.getName())));
 		}
