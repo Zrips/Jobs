@@ -25,7 +25,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class GuiManager {
 
-    public HashMap<UUID, GuiInfoList> GuiList = new HashMap<UUID, GuiInfoList>();
+    public HashMap<UUID, GuiInfoList> GuiList = new HashMap<>();
 
     public void CloseInventories() {
 	for (Entry<UUID, GuiInfoList> one : GuiList.entrySet()) {
@@ -68,7 +68,7 @@ public class GuiManager {
 
     public Inventory CreateJobsGUI(Player player) {
 
-	ArrayList<Job> JobsList = new ArrayList<Job>();
+	ArrayList<Job> JobsList = new ArrayList<>();
 	for (Job job : Jobs.getJobs()) {
 	    if (Jobs.getGCManager().getHideJobsWithoutPermission())
 		if (!Jobs.getCommandManager().hasJobPermission(player, job))
@@ -117,7 +117,7 @@ public class GuiManager {
 		break main;
 	    Job job = JobsList.get(i);
 
-	    ArrayList<String> Lore = new ArrayList<String>();
+	    ArrayList<String> Lore = new ArrayList<>();
 
 	    for (JobProgression onePJob : pJobs) {
 		if (onePJob.getJob().getName().equalsIgnoreCase(job.getName()))
@@ -198,7 +198,7 @@ public class GuiManager {
 
 	int numjobs = JPlayer.getJobProgression().size();
 
-	List<ItemStack> items = new ArrayList<ItemStack>();
+	List<ItemStack> items = new ArrayList<>();
 	int i = 0;
 	for (ActionType actionType : ActionType.values()) {
 	    List<JobInfo> info = job.getJobInfo(actionType);
@@ -206,7 +206,7 @@ public class GuiManager {
 	    if (info == null || info.isEmpty())
 		continue;
 
-	    ArrayList<String> Lore = new ArrayList<String>();
+	    ArrayList<String> Lore = new ArrayList<>();
 	    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase()
 		+ ".info")));
 	    int y = 1;
