@@ -234,7 +234,7 @@ public class JobsCommands implements CommandExecutor {
     }
 
     public void fillCommands() {
-	List<String> lm = new ArrayList<String>();
+	List<String> lm = new ArrayList<>();
 	HashMap<String, Class<?>> classes = new HashMap<>();
 	try {
 	    lm = getClassesFromPackage(packagePath);
