@@ -37,7 +37,7 @@ import com.gamingmesh.jobs.stuff.Debug;
 
 public class Job {
     // job info
-    private EnumMap<ActionType, List<JobInfo>> jobInfo = new EnumMap<ActionType, List<JobInfo>>(ActionType.class);
+    private EnumMap<ActionType, List<JobInfo>> jobInfo = new EnumMap<>(ActionType.class);
     // permissions
     private List<JobPermission> jobPermissions;
     // commands
@@ -67,9 +67,9 @@ public class Job {
     // max number of people allowed with this job on the server.
     private Integer maxSlots;
     // Commands to be performed on player job join
-    private List<String> CmdOnJoin = new ArrayList<String>();
+    private List<String> CmdOnJoin = new ArrayList<>();
     // Commands to be performed on player job leave
-    private List<String> CmdOnLeave = new ArrayList<String>();
+    private List<String> CmdOnLeave = new ArrayList<>();
     // Item for GUI
     private ItemStack GUIitem;
     // Item for GUI
@@ -83,9 +83,9 @@ public class Job {
 
     private Parser moneyEquation, xpEquation, pointsEquation;
 
-    private List<String> fDescription = new ArrayList<String>();
+    private List<String> fDescription = new ArrayList<>();
 
-    private List<Quest> quests = new ArrayList<Quest>();
+    private List<Quest> quests = new ArrayList<>();
     private int maxDailyQuests = 1;
 
     /**
@@ -454,7 +454,7 @@ public class Job {
 //    }
 
     public Quest getNextQuest(List<String> excludeQuests, Integer level) {
-	List<Quest> ls = new ArrayList<Quest>(this.quests);
+	List<Quest> ls = new ArrayList<>(this.quests);
 	Collections.shuffle(ls);
 
 	int i = 0;
