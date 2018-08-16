@@ -107,7 +107,7 @@ public class CMIItemStack {
 	ItemMeta meta = this.getItemStack().getItemMeta();
 	List<String> lore = meta.getLore();
 	if (lore == null)
-	    lore = new ArrayList<String>();
+	    lore = new ArrayList<>();
 	lore.add(ChatColor.translateAlternateColorCodes('&', string));
 	meta.setLore(lore);
 	this.getItemStack().setItemMeta(meta);
@@ -116,7 +116,7 @@ public class CMIItemStack {
 
     public CMIItemStack clearLore() {
 	ItemMeta meta = this.getItemStack().getItemMeta();
-	List<String> t = new ArrayList<String>();
+	List<String> t = new ArrayList<>();
 	meta.setLore(t);
 	this.getItemStack().setItemMeta(meta);
 	return this;
@@ -126,7 +126,7 @@ public class CMIItemStack {
 	if (lore == null || lore.isEmpty())
 	    return this;
 	ItemMeta meta = this.getItemStack().getItemMeta();
-	List<String> t = new ArrayList<String>();
+	List<String> t = new ArrayList<>();
 	for (String one : lore) {
 	    t.add(ChatColor.translateAlternateColorCodes('&', one));
 	}
@@ -165,7 +165,7 @@ public class CMIItemStack {
 	if (meta != null) {
 	    List<String> lore = meta.getLore();
 	    if (lore == null) {
-		lore = new ArrayList<String>();
+		lore = new ArrayList<>();
 		meta.setLore(lore);
 	    }
 
