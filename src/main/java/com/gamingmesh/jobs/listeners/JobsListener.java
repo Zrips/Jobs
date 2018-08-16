@@ -88,7 +88,7 @@ public class JobsListener implements Listener {
     // hook to the main plugin
     private Jobs plugin;
 
-    private HashMap<UUID, Long> interactDelay = new HashMap<UUID, Long>();
+    private HashMap<UUID, Long> interactDelay = new HashMap<>();
 
     public JobsListener(Jobs plugin) {
 	this.plugin = plugin;
@@ -657,7 +657,7 @@ public class JobsListener implements Listener {
 	String name = null;
 	List<String> lore = new ArrayList<String>();
 
-	Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+	Map<Enchantment, Integer> enchants = new HashMap<>();
 	try {
 	    enchants = iih.getEnchantments();
 	} catch (Exception e) {
