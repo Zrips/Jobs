@@ -66,7 +66,7 @@ public class PermissionHandler {
 	if (hasWorldPermission(player)) {
 	    List<JobProgression> progression = jPlayer.getJobProgression();
 	    // calculate new permissions
-	    HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
+	    HashMap<String, Boolean> permissions = new HashMap<>();
 
 	    if (progression.size() == 0) {
 		Job job = Jobs.getNoneJob();
