@@ -41,7 +41,7 @@ public class SignUtil {
 	    return;
 
 	ConfigurationSection ConfCategory = f.getConfigurationSection("Signs");
-	ArrayList<String> categoriesList = new ArrayList<String>(ConfCategory.getKeys(false));
+	ArrayList<String> categoriesList = new ArrayList<>(ConfCategory.getKeys(false));
 	if (categoriesList.size() == 0)
 	    return;
 	for (String category : categoriesList) {
@@ -108,7 +108,7 @@ public class SignUtil {
 		double SignsZ = one.GetZ();
 		int number = one.GetNumber() - 1;
 
-		List<TopList> PlayerList = new ArrayList<TopList>();
+		List<TopList> PlayerList = new ArrayList<>();
 		if (!JobName.equalsIgnoreCase("gtoplist")) {
 		    PlayerList = Jobs.getJobsDAO().toplist(SignJobName, number);
 		} else {
