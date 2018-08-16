@@ -292,7 +292,7 @@ public class CMIEffectManager {
 	}
 
 	public static List<CMIParticle> getParticleList() {
-	    List<CMIParticle> ls = new ArrayList<CMIParticle>();
+	    List<CMIParticle> ls = new ArrayList<>();
 	    for (CMIParticle one : CMIParticle.values()) {
 		if (!one.isParticle())
 		    continue;
