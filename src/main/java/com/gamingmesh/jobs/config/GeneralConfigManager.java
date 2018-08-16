@@ -45,7 +45,7 @@ import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class GeneralConfigManager {
     private Jobs plugin;
-    public List<Integer> BroadcastingLevelUpLevels = new ArrayList<Integer>();
+    public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
     protected Locale locale;
     protected int savePeriod;
     protected boolean economyAsync;
@@ -70,14 +70,14 @@ public class GeneralConfigManager {
     public boolean PaymentMethodsMoney;
     public boolean PaymentMethodsPoints;
     public boolean PaymentMethodsExp;
-    private HashMap<CurrencyType, Double> generalMulti = new HashMap<CurrencyType, Double>();
+    private HashMap<CurrencyType, Double> generalMulti = new HashMap<>();
     public int getSelectionTooldID;
 
     private int ResetTimeHour;
     private int ResetTimeMinute;
 
     // Limits
-    public HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<CurrencyType, CurrencyLimit>();
+    public HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
 
     public boolean PayForRenaming, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
@@ -147,11 +147,11 @@ public class GeneralConfigManager {
     public Parser DynamicPaymentEquation;
 
     public boolean DisabledWorldsUse;
-    public List<String> DisabledWorldsList = new ArrayList<String>();
+    public List<String> DisabledWorldsList = new ArrayList<>();
 
-    public List<Schedule> BoostSchedule = new ArrayList<Schedule>();
+    public List<Schedule> BoostSchedule = new ArrayList<>();
 
-    public HashMap<String, List<String>> commandArgs = new HashMap<String, List<String>>();
+    public HashMap<String, List<String>> commandArgs = new HashMap<>();
 
     public boolean DBCleaningJobsUse;
     public int DBCleaningJobsLvl;
@@ -640,7 +640,7 @@ public class GeneralConfigManager {
 	c.getW().addComment("Economy.Limit.Money", "Money gain limit", "With this enabled, players will be limited how much they can make in defined time",
 	    "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setEnabled(c.get("Economy.Limit.Money.Use", false));
-	List<CurrencyType> list = new ArrayList<CurrencyType>();
+	List<CurrencyType> list = new ArrayList<>();
 	c.getW().addComment("Economy.Limit.Money.StopWithExp", "Do you want to stop money gain when exp limit reached?");
 	if (c.get("Economy.Limit.Money.StopWithExp", false))
 	    list.add(CurrencyType.EXP);
@@ -672,7 +672,7 @@ public class GeneralConfigManager {
 
 	// Point limit
 	limit = new CurrencyLimit();
-	list = new ArrayList<CurrencyType>();
+	list = new ArrayList<>();
 	c.getW().addComment("Economy.Limit.Point", "Point gain limit", "With this enabled, players will be limited how much they can make in defined time");
 	limit.setEnabled(c.get("Economy.Limit.Point.Use", false));
 	c.getW().addComment("Economy.Limit.Point.StopWithExp", "Do you want to stop Point gain when exp limit reached?");
@@ -706,7 +706,7 @@ public class GeneralConfigManager {
 
 	// Exp limit
 	limit = new CurrencyLimit();
-	list = new ArrayList<CurrencyType>();
+	list = new ArrayList<>();
 	c.getW().addComment("Economy.Limit.Exp", "Exp gain limit", "With this enabled, players will be limited how much they can get in defined time",
 	    "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setEnabled(c.get("Economy.Limit.Exp.Use", false));
