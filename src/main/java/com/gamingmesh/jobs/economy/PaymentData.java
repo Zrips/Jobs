@@ -8,8 +8,8 @@ import com.gamingmesh.jobs.container.CurrencyType;
 public class PaymentData {
 
     Long lastAnnouced = 0L;
-    HashMap<CurrencyType, Double> payments = new HashMap<CurrencyType, Double>();
-    HashMap<CurrencyType, Long> paymentsTimes = new HashMap<CurrencyType, Long>();
+    HashMap<CurrencyType, Double> payments = new HashMap<>();
+    HashMap<CurrencyType, Long> paymentsTimes = new HashMap<>();
     private boolean Informed = false;
     private boolean Reseted = false;
 
