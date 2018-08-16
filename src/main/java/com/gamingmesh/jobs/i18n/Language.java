@@ -121,7 +121,7 @@ public class Language {
     }
 
     public List<String> ColorsArray(List<String> text, Boolean colorize) {
-	List<String> temp = new ArrayList<String>();
+	List<String> temp = new ArrayList<>();
 	for (String part : text) {
 	    if (colorize)
 		part = Colors(part);
