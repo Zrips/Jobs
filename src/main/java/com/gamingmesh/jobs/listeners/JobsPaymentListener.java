@@ -1023,7 +1023,11 @@ public class JobsPaymentListener implements Listener {
 
 	// mob spawner, no payment or experience
 	if (lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()) && !Jobs.getGCManager().payNearSpawner()) {
-	    //lVictim.removeMetadata(mobSpawnerMetadata, plugin);
+	    try {
+		// So lets remove meta in case some plugin removes entity in wrong way.
+		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+	    } catch (Exception ex) {
+	    }
 	    return;
 	}
 
