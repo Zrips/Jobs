@@ -42,12 +42,12 @@ public class JobsPlayer {
     private String userName;
     // progression of the player in each job
     public UUID playerUUID;
-    public ArrayList<JobProgression> progression = new ArrayList<JobProgression>();
+    public ArrayList<JobProgression> progression = new ArrayList<>();
     private ArchivedJobs archivedJobs = new ArchivedJobs();
 
     private PaymentData paymentLimits = null;
 
-    private HashMap<String, ArrayList<BoostCounter>> boostCounter = new HashMap<String, ArrayList<BoostCounter>>();
+    private HashMap<String, ArrayList<BoostCounter>> boostCounter = new HashMap<>();
 
     // display honorific
     private String honorific;
@@ -59,24 +59,24 @@ public class JobsPlayer {
     private OfflinePlayer OffPlayer = null;
     private Player player = null;
 
-    private HashMap<CurrencyType, Integer> limits = new HashMap<CurrencyType, Integer>();
+    private HashMap<CurrencyType, Integer> limits = new HashMap<>();
 
     private int userid = -1;
 
-    List<BossBarInfo> barMap = new ArrayList<BossBarInfo>();
-    List<String> updateBossBarFor = new ArrayList<String>();
+    List<BossBarInfo> barMap = new ArrayList<>();
+    List<String> updateBossBarFor = new ArrayList<>();
     // save lock
 //    public final Object saveLock = new Object();
 
     // log
-    private HashMap<String, Log> logList = new HashMap<String, Log>();
+    private HashMap<String, Log> logList = new HashMap<>();
 
     private Long seen = System.currentTimeMillis();
 
     private HashMap<String, Boolean> permissionsCache = null;
     private Long lastPermissionUpdate = -1L;
 
-    private HashMap<String, List<QuestProgression>> qProgression = new HashMap<String, List<QuestProgression>>();
+    private HashMap<String, List<QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
 
     public JobsPlayer(String userName, OfflinePlayer player) {
@@ -239,7 +239,7 @@ public class JobsPlayer {
 
 	Boost = getPlayerBoostNew(JobName, type);
 
-	ArrayList<BoostCounter> counterList = new ArrayList<BoostCounter>();
+	ArrayList<BoostCounter> counterList = new ArrayList<>();
 	counterList.add(new BoostCounter(type, Boost, time));
 
 	boostCounter.put(JobName, counterList);
@@ -840,7 +840,7 @@ public class JobsPlayer {
     }
 
     private List<String> getQuestNameList(Job job, ActionType type) {
-	List<String> ls = new ArrayList<String>();
+	List<String> ls = new ArrayList<>();
 	if (!this.isInJob(job))
 	    return ls;
 
@@ -868,7 +868,7 @@ public class JobsPlayer {
     }
 
     public List<QuestProgression> getQuestProgressions() {
-	List<QuestProgression> g = new ArrayList<QuestProgression>();
+	List<QuestProgression> g = new ArrayList<>();
 	for (JobProgression one : this.getJobProgression()) {
 	    g.addAll(this.getQuestProgressions(one.getJob()));
 	}
@@ -882,12 +882,12 @@ public class JobsPlayer {
     public List<QuestProgression> getQuestProgressions(Job job, ActionType type) {
 	if (!this.isInJob(job))
 	    return null;
-	List<QuestProgression> g = new ArrayList<QuestProgression>();
+	List<QuestProgression> g = new ArrayList<>();
 
 	if (this.qProgression.get(job.getName()) != null)
-	    g = new ArrayList<QuestProgression>(this.qProgression.get(job.getName()));
+	    g = new ArrayList<>(this.qProgression.get(job.getName()));
 
-	List<QuestProgression> tmp = new ArrayList<QuestProgression>();
+	List<QuestProgression> tmp = new ArrayList<>();
 
 	if (!g.isEmpty()) {
 	    if (g.get(0).isEnded()) {
