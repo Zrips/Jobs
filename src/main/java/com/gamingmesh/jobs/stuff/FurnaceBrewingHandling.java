@@ -26,8 +26,8 @@ public class FurnaceBrewingHandling {
     public FurnaceBrewingHandling() {
     }
 
-    static HashMap<UUID, List<blockLoc>> furnaceMap = new HashMap<UUID, List<blockLoc>>();
-    static HashMap<UUID, List<blockLoc>> brewingMap = new HashMap<UUID, List<blockLoc>>();
+    static HashMap<UUID, List<blockLoc>> furnaceMap = new HashMap<>();
+    static HashMap<UUID, List<blockLoc>> brewingMap = new HashMap<>();
 
     public static void load() {
 	YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
@@ -94,7 +94,7 @@ public class FurnaceBrewingHandling {
 			if (uuid == null)
 			    continue;
 
-			List<blockLoc> blist = new ArrayList<blockLoc>();
+			List<blockLoc> blist = new ArrayList<>();
 			for (String oneL : ls) {
 			    blockLoc bl = new blockLoc(oneL);
 			    Block block = bl.getBlock();
@@ -284,7 +284,7 @@ public class FurnaceBrewingHandling {
 
 	List<blockLoc> ls = furnaceMap.get(player.getUniqueId());
 	if (ls == null)
-	    ls = new ArrayList<blockLoc>();
+	    ls = new ArrayList<>();
 	ls.add(new blockLoc(block.getLocation()));
 	furnaceMap.put(player.getUniqueId(), ls);
 
@@ -329,7 +329,7 @@ public class FurnaceBrewingHandling {
 
 	List<blockLoc> ls = brewingMap.get(player.getUniqueId());
 	if (ls == null)
-	    ls = new ArrayList<blockLoc>();
+	    ls = new ArrayList<>();
 	ls.add(new blockLoc(block.getLocation()));
 	brewingMap.put(player.getUniqueId(), ls);
 
