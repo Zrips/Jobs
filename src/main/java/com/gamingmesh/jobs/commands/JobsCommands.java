@@ -42,8 +42,8 @@ import com.gamingmesh.jobs.stuff.RawMessage;
 public class JobsCommands implements CommandExecutor {
     private static final String label = "jobs";
     private static final String packagePath = "com.gamingmesh.jobs.commands.list";
-    private static final List<String> hidenCommands = new ArrayList<String>();
-    Map<String, Integer> CommandList = new HashMap<String, Integer>();
+    private static final List<String> hidenCommands = new ArrayList<>();
+    Map<String, Integer> CommandList = new HashMap<>();
 
     protected Jobs plugin;
 
@@ -108,10 +108,6 @@ public class JobsCommands implements CommandExecutor {
 		return true;
 	    }
 	}
-
-//	if (cmdClass == null) {
-//	    return help(sender, 1);
-//	}
 
 	boolean back = cmdClass.perform(plugin, sender, myArgs);
 	if (back)
@@ -184,7 +180,7 @@ public class JobsCommands implements CommandExecutor {
     }
 
     private static List<String> getClassesFromPackage(String pckgname) throws ClassNotFoundException {
-	List<String> result = new ArrayList<String>();
+	List<String> result = new ArrayList<>();
 	try {
 	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
 		try {
@@ -201,7 +197,7 @@ public class JobsCommands implements CommandExecutor {
 
     private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath) {
 	JarFile jarFile = null;
-	List<String> listOfCommands = new ArrayList<String>();
+	List<String> listOfCommands = new ArrayList<>();
 	try {
 	    jarFile = new JarFile(jarPath);
 	    Enumeration<JarEntry> en = jarFile.entries();
@@ -228,7 +224,7 @@ public class JobsCommands implements CommandExecutor {
     }
 
     public Map<String, Integer> GetCommands(CommandSender sender) {
-	Map<String, Integer> temp = new HashMap<String, Integer>();
+	Map<String, Integer> temp = new HashMap<>();
 	for (Entry<String, Integer> cmd : CommandList.entrySet()) {
 	    if (!hasCommandPermission(sender, cmd.getKey()))
 		continue;
@@ -239,7 +235,7 @@ public class JobsCommands implements CommandExecutor {
 
     public void fillCommands() {
 	List<String> lm = new ArrayList<String>();
-	HashMap<String, Class<?>> classes = new HashMap<String, Class<?>>();
+	HashMap<String, Class<?>> classes = new HashMap<>();
 	try {
 	    lm = getClassesFromPackage(packagePath);
 	} catch (ClassNotFoundException e) {
@@ -289,14 +285,14 @@ public class JobsCommands implements CommandExecutor {
     }
 
     private static Map<String, Integer> sort(Map<String, Integer> unsortMap) {
-	List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+	List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
 	Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
 	    @Override
 	    public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
 		return (o1.getValue()).compareTo(o2.getValue());
 	    }
 	});
-	Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+	Map<String, Integer> sortedMap = new LinkedHashMap<>();
 	for (Iterator<Map.Entry<String, Integer>> it = list.iterator(); it.hasNext();) {
 	    Map.Entry<String, Integer> entry = it.next();
 	    sortedMap.put(entry.getKey(), entry.getValue());
@@ -351,7 +347,7 @@ public class JobsCommands implements CommandExecutor {
 	    type = type.toLowerCase();
 	}
 
-	List<String> message = new ArrayList<String>();
+	List<String> message = new ArrayList<>();
 
 	int showAllTypes = 1;
 	for (ActionType actionType : ActionType.values()) {
