@@ -106,7 +106,6 @@ import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
 public class Jobs extends JavaPlugin {
-//    public static Jobs plugin = new Jobs();
     private static String version = "";
     private static PlayerManager pManager = null;
     private static JobsCommands cManager = null;
@@ -146,9 +145,9 @@ public class Jobs extends JavaPlugin {
     private static JobsDAO dao = null;
     private static List<Job> jobs = null;
     private static Job noneJob = null;
-    private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<Job, Integer>();
-    public static WeakHashMap<String, Boolean> actionbartoggle = new WeakHashMap<String, Boolean>();
-    public static WeakHashMap<String, Boolean> BossBartoggle = new WeakHashMap<String, Boolean>();
+    private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<>();
+    public static WeakHashMap<String, Boolean> actionbartoggle = new WeakHashMap<>();
+    public static WeakHashMap<String, Boolean> BossBartoggle = new WeakHashMap<>();
 //	public static WeakHashMap<String, Double> GlobalBoost = new WeakHashMap<String, Double>();
     private static BufferedEconomy economy;
     private static PermissionHandler permissionHandler;
@@ -159,7 +158,7 @@ public class Jobs extends JavaPlugin {
     public static BufferedPaymentThread paymentThread = null;
     private static DatabaseSaveThread saveTask = null;
 
-    public static HashMap<String, FastPayment> FastPayment = new HashMap<String, FastPayment>();
+    public static HashMap<String, FastPayment> FastPayment = new HashMap<>();
 
     private static NMS nms;
 
@@ -552,7 +551,7 @@ public class Jobs extends JavaPlugin {
     public static void loadAllPlayersData() {
 	long time = System.currentTimeMillis();
 	// Cloning to avoid issues
-	HashMap<UUID, PlayerInfo> temp = new HashMap<UUID, PlayerInfo>(Jobs.getPlayerManager().getPlayersInfoUUIDMap());
+	HashMap<UUID, PlayerInfo> temp = new HashMap<>(Jobs.getPlayerManager().getPlayersInfoUUIDMap());
 	HashMap<Integer, List<JobsDAOData>> playersJobs = Jobs.getJobsDAO().getAllJobs();
 	HashMap<Integer, PlayerPoints> playersPoints = Jobs.getJobsDAO().getAllPoints();
 	HashMap<Integer, HashMap<String, Log>> playersLogs = Jobs.getJobsDAO().getAllLogs();
@@ -846,8 +845,7 @@ public class Jobs extends JavaPlugin {
 	    FurnaceBrewingHandling.load();
 
 	    String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Plugin has been enabled succesfully.");
-	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-	    console.sendMessage(message);
+	    Bukkit.getServer().getConsoleSender().sendMessage(message);
 	    lManager.reload();
 
 	    cManager.fillCommands();
@@ -870,8 +868,7 @@ public class Jobs extends JavaPlugin {
 
 	Jobs.shutdown();
 	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Plugin has been disabled succesfully.");
-	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-	console.sendMessage(message);
+	Bukkit.getServer().getConsoleSender().sendMessage(message);
 	this.setEnabled(false);
     }
 
@@ -995,7 +992,7 @@ public class Jobs extends JavaPlugin {
 	    Jobs.getEconomy().pay(jPlayer, income, pointAmount, 0.0);
 
 	    if (GconfigManager.LoggingUse) {
-		HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+		HashMap<CurrencyType, Double> amounts = new HashMap<>();
 		amounts.put(CurrencyType.MONEY, income);
 		loging.recordToLog(jPlayer, info, amounts);
 	    }
@@ -1133,7 +1130,7 @@ public class Jobs extends JavaPlugin {
 		int oldLevel = prog.getLevel();
 
 		if (GconfigManager.LoggingUse) {
-		    HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+		    HashMap<CurrencyType, Double> amounts = new HashMap<>();
 		    amounts.put(CurrencyType.MONEY, income);
 		    amounts.put(CurrencyType.EXP, expAmount);
 		    amounts.put(CurrencyType.POINTS, pointAmount);
@@ -1290,7 +1287,7 @@ public class Jobs extends JavaPlugin {
 	int oldLevel = prog.getLevel();
 
 	if (GconfigManager.LoggingUse) {
-	    HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+	    HashMap<CurrencyType, Double> amounts = new HashMap<>();
 	    amounts.put(CurrencyType.MONEY, payment.getAmount());
 	    amounts.put(CurrencyType.EXP, payment.getExp());
 	    amounts.put(CurrencyType.POINTS, payment.getPoints());
