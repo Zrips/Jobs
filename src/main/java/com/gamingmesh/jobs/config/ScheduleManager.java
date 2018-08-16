@@ -180,7 +180,7 @@ public class ScheduleManager {
 	if (!conf.contains("Boost"))
 	    return;
 
-	ArrayList<String> sections = new ArrayList<String>(conf.getConfigurationSection("Boost").getKeys(false));
+	ArrayList<String> sections = new ArrayList<>(conf.getConfigurationSection("Boost").getKeys(false));
 
 	for (String OneSection : sections) {
 	    ConfigurationSection path = conf.getConfigurationSection("Boost." + OneSection);
