@@ -21,7 +21,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class RestrictedAreaManager {
 
-    protected HashMap<String, RestrictedArea> restrictedAreas = new HashMap<String, RestrictedArea>();
+    protected HashMap<String, RestrictedArea> restrictedAreas = new HashMap<>();
 
     private Jobs plugin;
 
@@ -114,7 +114,7 @@ public class RestrictedAreaManager {
     }
 
     public synchronized List<RestrictedArea> getRestrictedAreasByLoc(Location loc) {
-	List<RestrictedArea> areas = new ArrayList<RestrictedArea>();
+	List<RestrictedArea> areas = new ArrayList<>();
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
 	    if (area.getValue().inRestrictedArea(loc))
 		areas.add(area.getValue());
@@ -128,7 +128,7 @@ public class RestrictedAreaManager {
     }
 
     public synchronized List<RestrictedArea> getRestrictedAreasByName(String name) {
-	List<RestrictedArea> areas = new ArrayList<RestrictedArea>();
+	List<RestrictedArea> areas = new ArrayList<>();
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
 	    if (area.getKey().equalsIgnoreCase(name))
 		areas.add(area.getValue());
