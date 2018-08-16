@@ -76,8 +76,8 @@ public class Parser {
 	root = null;
 	inp_cur = 0;
 	this.error = error;
-	functions = new HashSet<String>();
-	variables = new HashSet<String>();
+	functions = new HashSet<>();
+	variables = new HashSet<>();
     }
 
     /**
