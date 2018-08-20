@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class ExploreChunk {
 

@@ -6,7 +6,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.stuff.Debug;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;

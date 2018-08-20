@@ -16,7 +16,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class SignUtil {
 
@@ -202,7 +201,6 @@ public class SignUtil {
 
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
-	    @SuppressWarnings("deprecation")
 	    public void run() {
 
 		org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getData();

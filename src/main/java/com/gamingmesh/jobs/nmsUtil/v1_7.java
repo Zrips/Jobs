@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.nmsUtil;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.block.Block;
@@ -52,7 +51,6 @@ public class v1_7 implements NMS {
 	return name;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public ItemStack getItemInMainHand(Player player) {
 	return player.getInventory().getItemInHand();

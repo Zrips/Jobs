@@ -32,7 +32,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -58,7 +57,6 @@ import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class ConfigManager {
@@ -363,7 +361,6 @@ public class ConfigManager {
      * loads from Jobs/jobConfig.yml
      * @throws IOException 
      */
-    @SuppressWarnings("deprecation")
     private void loadJobSettings() throws IOException {
 	File f = new File(plugin.getDataFolder(), "jobConfig.yml");
 	InputStreamReader s = new InputStreamReader(new FileInputStream(f), "UTF-8");

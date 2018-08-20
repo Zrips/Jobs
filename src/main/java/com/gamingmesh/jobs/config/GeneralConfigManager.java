@@ -371,7 +371,6 @@ public class GeneralConfigManager {
      * 
      * loads from Jobs/generalConfig.yml
      */
-    @SuppressWarnings("deprecation")
     private synchronized void loadGeneralSettings() {
 	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);

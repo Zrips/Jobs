@@ -65,11 +65,11 @@ public class Language {
 	String msg = "";
 	try {
 	    if (customlocale == null || !customlocale.contains(key))
-		msg = enlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', enlocale.getString(key)) : missing;
+		msg = enlocale.contains(key) == true ? Colors(enlocale.getString(key)) : missing;
 	    else
-		msg = customlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', customlocale.getString(key)) : missing;
+		msg = customlocale.contains(key) == true ? Colors(customlocale.getString(key)) : missing;
 	} catch (Exception e) {
-	    String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Cant read language file. Plugin will be disabled.");
+	    String message = Colors("&e[Jobs] &2Cant read language file. Plugin will be disabled.");
 	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	    console.sendMessage(message);
 	    throw e;
@@ -105,7 +105,7 @@ public class Language {
 		    msg = msg.replace(String.valueOf(variables[y]), String.valueOf(variables[y + 1]));
 		}
 		msg = filterNewLine(msg);
-		ls.set(i, ChatColor.translateAlternateColorCodes('&', msg));
+		ls.set(i, Colors(msg));
 	    }
 
 	return ls;
@@ -141,7 +141,7 @@ public class Language {
      * @return the message
      */
     public String getDefaultMessage(String key) {
-	return enlocale.contains(key) == true ? ChatColor.translateAlternateColorCodes('&', enlocale.getString(key)) : "Cant find locale";
+	return enlocale.contains(key) == true ? Colors(enlocale.getString(key)) : "Cant find locale";
     }
 
     /**

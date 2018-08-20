@@ -108,20 +108,20 @@ public class VersionChecker {
 	return null;
     }
 
-    public boolean isLower(Version version) {
-	return this.version.getValue() < version.getValue();
+    public boolean isLower(Version v) {
+	return version.getValue() < v.getValue();
     }
 
-    public boolean isLowerEquals(Version version) {
-	return this.version.getValue() <= version.getValue();
+    public boolean isLowerEquals(Version v) {
+	return version.getValue() <= v.getValue();
     }
 
-    public boolean isHigher(Version version) {
-	return this.version.getValue() > version.getValue();
+    public boolean isHigher(Version v) {
+	return version.getValue() > v.getValue();
     }
 
-    public boolean isHigherEquals(Version version) {
-	return this.version.getValue() >= version.getValue();
+    public boolean isHigherEquals(Version v) {
+	return version.getValue() >= v.getValue();
     }
 
     public void VersionCheck(final Player player) {

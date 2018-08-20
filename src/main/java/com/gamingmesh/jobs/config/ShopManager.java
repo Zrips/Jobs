@@ -123,7 +123,6 @@ public class ShopManager {
 	}
 
 	for (JobItems one : item.getitems()) {
-	    @SuppressWarnings("deprecation")
 	    CMIMaterial mat = CMIMaterial.get(one.getId(), one.getData());
 
 	    if (mat == null)
@@ -239,7 +238,6 @@ public class ShopManager {
 
 	    ArrayList<String> Lore = new ArrayList<String>();
 
-	    @SuppressWarnings("deprecation")
 	    CMIMaterial mat = CMIMaterial.get(item.getIconId(), item.getIconData());
 
 	    if (item.isHideWithoutPerm()) {

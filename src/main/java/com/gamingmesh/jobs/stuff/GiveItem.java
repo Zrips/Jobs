@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +15,6 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class GiveItem {
     public static boolean GiveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore, HashMap<Enchantment, Integer> hashMap) {
-	@SuppressWarnings("deprecation")
 	ItemStack itemStack = CMIMaterial.get(id, meta).newItemStack();
 	itemStack.setAmount(qty);
 	ItemMeta ItemMeta = itemStack.getItemMeta();
