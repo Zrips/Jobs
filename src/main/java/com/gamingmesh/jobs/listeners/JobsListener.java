@@ -95,23 +95,28 @@ public class JobsListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+    public void AsyncPlayerChatEvent(final AsyncPlayerChatEvent event) {
 	if (event.isCancelled())
 	    return;
 
 	if (Util.getJobsEditorMap().isEmpty())
 	    return;
 
-	Player player = event.getPlayer();
+	final Player player = event.getPlayer();
 	if (!Util.getJobsEditorMap().containsKey(player.getUniqueId()))
 	    return;
 
-	String msg = Util.getJobsEditorMap().remove(player.getUniqueId());
+	final String msg = Util.getJobsEditorMap().remove(player.getUniqueId());
 
 	if (msg == null)
 	    return;
 
-	player.performCommand(msg + event.getMessage());
+	Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
+		@Override
+		public void run() {
+			player.performCommand(msg + event.getMessage());
+		}
+	});
 	event.setCancelled(true);
     }
 
