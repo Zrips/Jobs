@@ -574,6 +574,7 @@ public class JobsPaymentListener implements Listener {
 	    if (sourceItems[i] == null)
 		continue;
 
+	    Debug.D("ss");
 	    if (CMIMaterial.isDye(sourceItems[i].getType()))
 		DyeStack.add(sourceItems[i]);
 

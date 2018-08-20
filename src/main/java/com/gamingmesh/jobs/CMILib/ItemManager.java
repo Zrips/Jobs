@@ -18,6 +18,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class ItemManager {
@@ -26,10 +27,10 @@ public class ItemManager {
     static HashMap<String, CMIItemStack> byBukkitName = new HashMap<>();
     static HashMap<String, CMIItemStack> byMojangName = new HashMap<>();
     static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<>();
-    static Version version;
+    static final Version version = Jobs.getVersionCheckManager().getVersion();
 
     public static void load() {
-	version = Jobs.getVersionCheckManager().getVersion();
+
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one == null)
 		continue;
@@ -2187,13 +2188,17 @@ public class ItemManager {
 	}
 
 	public static boolean isDye(Material mat) {
+	    Debug.D("ss1");
 	    CMIMaterial m = CMIMaterial.get(mat);
+	    Debug.D("ss2");
 	    if (m == null)
 		return false;
+	    Debug.D("ss3");
 	    return m.isDye();
 	}
 
 	public boolean isDye() {
+	    Debug.D("ss4");
 	    switch (this) {
 	    case INK_SAC:
 	    case ROSE_RED:
@@ -2254,70 +2259,7 @@ public class ItemManager {
 	}
 
 	public static SlabType getSlabType(Block block) {
-	    if (!isSlab(block.getType()))
-		return SlabType.NOTSLAB;
-
-	    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)) {
-		if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
-		    org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
-		    switch (slab.getType()) {
-		    case TOP:
-			return SlabType.TOP;
-		    case BOTTOM:
-			return SlabType.BOTTOM;
-		    case DOUBLE:
-			return SlabType.DOUBLE;
-		    }
-
-		}
-		return SlabType.NOTSLAB;
-	    }
-	    s: if (block.getType().name().contains("STEP")) {
-		switch (CMIMaterial.get(block).getLegacyId()) {
-		case 44:
-		    switch (block.getData()) {
-		    case 0:
-		    case 1:
-		    case 2:
-		    case 3:
-		    case 4:
-		    case 5:
-		    case 6:
-		    case 7:
-			return SlabType.BOTTOM;
-		    default:
-			return SlabType.DOUBLE;
-		    }
-		case 126:
-		    switch (block.getData()) {
-		    case 0:
-		    case 1:
-		    case 2:
-		    case 3:
-		    case 4:
-		    case 5:
-			return SlabType.BOTTOM;
-		    default:
-			return SlabType.DOUBLE;
-		    }
-		case 182:
-		    switch (block.getData()) {
-		    case 0:
-			return SlabType.BOTTOM;
-		    default:
-			return SlabType.DOUBLE;
-		    }
-		case 205:
-		    switch (block.getData()) {
-		    case 0:
-			return SlabType.BOTTOM;
-		    default:
-			return SlabType.DOUBLE;
-		    }
-		}
-	    }
-
-	    return SlabType.NOTSLAB;
+	    return checkSlab(block);
 	}
 
 	public boolean equals(Material mat) {
@@ -2353,6 +2295,71 @@ public class ItemManager {
 	public void setMojangName(String mojangName) {
 	    this.mojangName = mojangName;
 	}
+    }
+
+    private static SlabType checkSlab(Block block) throws NoClassDefFoundError {
+	if (!CMIMaterial.isSlab(block.getType()))
+	    return SlabType.NOTSLAB;
+
+	if (version.isEqualOrHigher(Version.v1_13_R1)) {
+	    if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
+		org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
+		org.bukkit.block.data.type.Slab.Type t = slab.getType();
+		if (t.equals(org.bukkit.block.data.type.Slab.Type.TOP))
+		    return SlabType.TOP;
+		if (t.equals(org.bukkit.block.data.type.Slab.Type.BOTTOM))
+		    return SlabType.BOTTOM;
+		if (t.equals(org.bukkit.block.data.type.Slab.Type.DOUBLE))
+		    return SlabType.DOUBLE;
+	    }
+	    return SlabType.NOTSLAB;
+	}
+	if (block.getType().name().contains("STEP")) {
+	    switch (CMIMaterial.get(block).getLegacyId()) {
+	    case 44:
+		switch (block.getData()) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		    return SlabType.BOTTOM;
+		default:
+		    return SlabType.DOUBLE;
+		}
+	    case 126:
+		switch (block.getData()) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		    return SlabType.BOTTOM;
+		default:
+		    return SlabType.DOUBLE;
+		}
+	    case 182:
+		switch (block.getData()) {
+		case 0:
+		    return SlabType.BOTTOM;
+		default:
+		    return SlabType.DOUBLE;
+		}
+	    case 205:
+		switch (block.getData()) {
+		case 0:
+		    return SlabType.BOTTOM;
+		default:
+		    return SlabType.DOUBLE;
+		}
+	    }
+	}
+
+	return SlabType.NOTSLAB;
     }
 
     public enum SlabType {
