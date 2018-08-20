@@ -66,10 +66,12 @@ public class ItemManager {
 	    }
 	    byBukkitName.put(one.name().toLowerCase().replace("_", "").replace(" ", ""), cm);
 
-	    String n = mojangName.toLowerCase().replace("_", "").replace(" ", "").replace("minecraft:", "");
-
-	    if (!byMojangName.containsKey(n))
-		byMojangName.put(n, cm);
+	    if (mojangName != null) {
+		String n = mojangName.toLowerCase().replace("_", "").replace(" ", "").replace("minecraft:", "");
+		if (!byMojangName.containsKey(n))
+		    byMojangName.put(n, cm);
+	    }
+	    
 	    byMaterial.put(one, cm);
 	    if (!byId.containsKey(id))
 		byId.put(id, cm);
@@ -2297,7 +2299,7 @@ public class ItemManager {
 	}
     }
 
-    private static SlabType checkSlab(Block block) throws NoClassDefFoundError {
+    private static SlabType checkSlab(Block block) {
 	if (!CMIMaterial.isSlab(block.getType()))
 	    return SlabType.NOTSLAB;
 
