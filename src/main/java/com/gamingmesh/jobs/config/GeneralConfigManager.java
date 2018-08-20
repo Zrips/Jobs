@@ -889,8 +889,13 @@ public class GeneralConfigManager {
 	    "This is update for same job signs, to avoid huge lag if you have bunch of same type signs. Keep it from 1 to as many sec you want");
 	InfoUpdateInterval = c.get("Signs.InfoUpdateInterval", 5);
 
-	c.getW().addComment("Scoreboard.ShowToplist", "This will enables to show top list in scoreboard instead of chat");
-	ShowToplistInScoreboard = c.get("Scoreboard.ShowToplist", true);
+	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+	    ShowToplistInScoreboard = false;
+	} else {
+	    c.getW().addComment("Scoreboard.ShowToplist", "This will enables to show top list in scoreboard instead of chat");
+	    ShowToplistInScoreboard = c.get("Scoreboard.ShowToplist", true);
+	}
+
 	c.getW().addComment("Scoreboard.interval", "For how long to show scoreboard");
 	ToplistInScoreboardInterval = c.get("Scoreboard.interval", 10);
 

@@ -114,6 +114,94 @@ public class JobsPaymentListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void villagerTradeInventoryClick(InventoryClickEvent event) {
+
+	//disabling plugin in world
+	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+	    return;
+
+	// make sure plugin is enabled
+	if (!this.plugin.isEnabled())
+	    return;
+
+	if (event.isCancelled())
+	    return;
+
+	// If event is nothing or place, do nothing
+	switch (event.getAction()) {
+	case NOTHING:
+	case PLACE_ONE:
+	case PLACE_ALL:
+	case PLACE_SOME:
+	    return;
+	default:
+	    break;
+	}
+
+	if (event.getInventory().getType() != InventoryType.MERCHANT)
+	    return;
+
+	if (event.getSlot() != 2)
+	    return;
+
+	if (!event.getSlotType().equals(SlotType.RESULT))
+	    return;
+
+	ItemStack resultStack = event.getClickedInventory().getItem(2);
+
+	if (resultStack == null)
+	    return;
+
+	if (!(event.getWhoClicked() instanceof Player))
+	    return;
+
+	Player player = (Player) event.getWhoClicked();
+
+	//Check if inventory is full and using shift click, possible money dupping fix
+	if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
+	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
+	    return;
+	}
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	if (!event.isLeftClick() && !event.isRightClick())
+	    return;
+
+	// check if in creative
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
+	    return;
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+
+	if (jPlayer == null)
+	    return;
+
+	// Checking how much player traded
+	ItemStack toCraft = event.getCurrentItem();
+	ItemStack toStore = event.getCursor();
+	// Make sure we are actually traded anything
+	if (hasItems(toCraft))
+	    if (event.isShiftClick()) {
+		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.VTRADE);
+	    } else {
+		// The items are stored in the cursor. Make sure there's enough space.
+		if (isStackSumLegal(toCraft, toStore)) {
+		    int newItemsCount = toCraft.getAmount();
+		    while (newItemsCount >= 1) {
+			newItemsCount--;
+			if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
+			    Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.VTRADE));
+			else
+			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.VTRADE));
+		    }
+		}
+	    }
+
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCowMilking(PlayerInteractEntityEvent event) {
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
@@ -249,7 +337,7 @@ public class JobsPaymentListener implements Listener {
 	Player player = jPlayer.getPlayer();
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return; 
+	    return;
 
 	ItemStack contents = event.getContents().getIngredient();
 
@@ -258,7 +346,7 @@ public class JobsPaymentListener implements Listener {
 
 	Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
     }
- 
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 	//disabling plugin in world
@@ -279,7 +367,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode() == GameMode.CREATIVE && !Jobs.getGCManager().payInCreative()) 
+	if (player.getGameMode() == GameMode.CREATIVE && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -421,7 +509,7 @@ public class JobsPaymentListener implements Listener {
 
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "incomplete-switch" })
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryCraft(CraftItemEvent event) {
 	//disabling plugin in world
@@ -485,10 +573,13 @@ public class JobsPaymentListener implements Listener {
 	for (int i = 0; i < sourceItems.length; i++) {
 	    if (sourceItems[i] == null)
 		continue;
+
+	    Debug.D("ss");
+	    if (CMIMaterial.isDye(sourceItems[i].getType()))
+		DyeStack.add(sourceItems[i]);
+
 	    int id = sourceItems[i].getType().getId();
 	    if (id > 0) {
-		if (id == 351)
-		    DyeStack.add(sourceItems[i]);
 		y++;
 		if (y == 0)
 		    first = id;
@@ -498,14 +589,13 @@ public class JobsPaymentListener implements Listener {
 		    third = id;
 	    }
 
-	    if (id == 299)
+	    switch (CMIMaterial.get(sourceItems[i])) {
+	    case LEATHER_BOOTS:
+	    case LEATHER_CHESTPLATE:
+	    case LEATHER_HELMET:
+	    case LEATHER_LEGGINGS:
 		leather = true;
-	    if (id == 300)
-		leather = true;
-	    if (id == 301)
-		leather = true;
-	    if (id == 298)
-		leather = true;
+	    }
 	}
 
 	if (jPlayer == null)
@@ -520,7 +610,7 @@ public class JobsPaymentListener implements Listener {
 
 	// Check Dyes
 	if (y >= 2) {
-	    if ((third == 351 || second == 351) && leather) {
+	    if ((CMIMaterial.get(third).isDye() || CMIMaterial.get(second).isDye()) && leather) {
 		Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
 		for (ItemStack OneDye : DyeStack) {
 		    Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
@@ -544,7 +634,7 @@ public class JobsPaymentListener implements Listener {
 	// Make sure we are actually crafting anything
 	if (hasItems(toCraft))
 	    if (event.isShiftClick())
-		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone());
+		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.CRAFT);
 	    else {
 		// The items are stored in the cursor. Make sure there's enough space.
 		if (isStackSumLegal(toCraft, toStore)) {
@@ -561,9 +651,14 @@ public class JobsPaymentListener implements Listener {
 
     }
 
+    @Deprecated
+    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack) {
+	return schedulePostDetection(player, compareItem, jPlayer, resultStack, ActionType.CRAFT);
+    }
+
     // HACK! The API doesn't allow us to easily determine the resulting number of
     // crafted items, so we're forced to compare the inventory before and after.
-    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack) {
+    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack, final ActionType type) {
 	final ItemStack[] preInv = player.getInventory().getContents();
 	// Clone the array. The content may (was for me) be mutable.
 	for (int i = 0; i < preInv.length; i++) {
@@ -587,7 +682,7 @@ public class JobsPaymentListener implements Listener {
 		if (newItemsCount > 0) {
 		    while (newItemsCount >= 1) {
 			newItemsCount--;
-			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+			Jobs.action(jPlayer, new ItemActionInfo(resultStack, type));
 		    }
 		}
 		return;
@@ -929,7 +1024,11 @@ public class JobsPaymentListener implements Listener {
 
 	// mob spawner, no payment or experience
 	if (lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()) && !Jobs.getGCManager().payNearSpawner()) {
-	    //lVictim.removeMetadata(mobSpawnerMetadata, plugin);
+	    try {
+		// So lets remove meta in case some plugin removes entity in wrong way.
+		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+	    } catch (Exception ex) {
+	    }
 	    return;
 	}
 

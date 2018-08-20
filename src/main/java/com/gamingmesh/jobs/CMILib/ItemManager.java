@@ -18,6 +18,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class ItemManager {
@@ -26,10 +27,10 @@ public class ItemManager {
     static HashMap<String, CMIItemStack> byBukkitName = new HashMap<String, CMIItemStack>();
     static HashMap<String, CMIItemStack> byMojangName = new HashMap<String, CMIItemStack>();
     static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<CMIMaterial, CMIItemStack>();
-    static Version version;
+    static final Version version = Jobs.getVersionCheckManager().getVersion();
 
     public static void load() {
-	version = Jobs.getVersionCheckManager().getVersion();
+
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one == null)
 		continue;
@@ -596,7 +597,7 @@ public class ItemManager {
 	}
     }
 
-    public enum CMIMaterial {
+    public static enum CMIMaterial {
 	NONE(-1, -1, -1, "None"),
 	ACACIA_BOAT(447, 0, 27326, "Acacia Boat", "BOAT_ACACIA"),
 	ACACIA_BUTTON(-1, -1, 13993, "Acacia Button", ""),
@@ -755,7 +756,7 @@ public class ItemManager {
 	COBWEB(30, 0, 9469, "Cobweb", "WEB"),
 	COCOA(127, 0, 29709, "Cocoa", ""),
 	COCOA_BEANS(351, 3, 27381, "Coco Beans", "INK_SACK"),
-	COD(349, 0, 24691, "Raw Fish", "RAW_FISH"),
+	COD(349, 0, 24691, "Raw Cod", "RAW_FISH"),
 	COD_BUCKET(-1, -1, 28601, "Bucket of Cod", ""),
 	COD_SPAWN_EGG(-1, -1, 27248, "Cod Spawn Egg", ""),
 	COMMAND_BLOCK(137, 0, 4355, "Command Block", "COMMAND"),
@@ -776,7 +777,7 @@ public class ItemManager {
 	CRAFTING_TABLE(58, 0, 20706, "Crafting Table", "WORKBENCH"),
 	CREEPER_HEAD(397, 4, 29146, "Mob Head (Creeper)", "Creeper Head"),
 	CREEPER_SPAWN_EGG(383, 50, 9653, "Spawn Creeper", "Creeper Spawn Egg"),
-	CREEPER_WALL_HEAD(397, 0, 30123, "Creeper Wall Head", ""),
+	CREEPER_WALL_HEAD(144, 4, 30123, "Creeper Wall Head", ""),
 	CUT_RED_SANDSTONE(-1, -1, 26842, "Cut Red Sandstone", ""),
 	CUT_SANDSTONE(-1, -1, 6118, "Cut Sandstone", ""),
 	CYAN_BANNER(425, 6, 9839, "Cyan Banner", ""),
@@ -852,7 +853,7 @@ public class ItemManager {
 	DRAGON_BREATH(437, 0, 20154, "Dragon's Breath", ""),
 	DRAGON_EGG(122, 0, 29946, "Dragon Egg", "DRAGON_EGG"),
 	DRAGON_HEAD(397, 5, 20084, "Dragon Head", ""),
-	DRAGON_WALL_HEAD(-1, -1, 19818, "Dragon Wall Head", ""),
+	DRAGON_WALL_HEAD(144, 5, 19818, "Dragon Wall Head", ""),
 	DRIED_KELP(-1, -1, 21042, "Dried Kelp", ""),
 	DRIED_KELP_BLOCK(-1, -1, 12966, "Dried Kelp Block", ""),
 	DROPPER(158, 0, 31273, "Dropper", "DROPPER"),
@@ -1187,7 +1188,7 @@ public class ItemManager {
 	PISTON(33, 0, 21130, "Piston", "PISTON_BASE"),
 	PISTON_HEAD(34, 0, 30226, "Piston Head", "PISTON_EXTENSION"),
 	PLAYER_HEAD(397, 3, 21174, "Mob Head (Human)", "Player Head"),
-	PLAYER_WALL_HEAD(-1, -1, 13164, "Player Wall Head", ""),
+	PLAYER_WALL_HEAD(144, 3, 13164, "Player Wall Head", ""),
 	PODZOL(3, 2, 24068, "Podzol", ""),
 	POISONOUS_POTATO(394, 0, 32640, "Poisonous Potato", ""),
 	POLAR_BEAR_SPAWN_EGG(383, 102, 17015, "Spawn Polar Bear", "Polar Bear Spawn Egg"),
@@ -1320,7 +1321,7 @@ public class ItemManager {
 	SKELETON_HORSE_SPAWN_EGG(383, 28, 21356, "Spawn Skeleton Horse", "Skeleton Horse Spawn Egg"),
 	SKELETON_SKULL(397, 0, 13270, "Mob Head (Skeleton)", "Skeleton Skull"),
 	SKELETON_SPAWN_EGG(383, 51, 15261, "Spawn Skeleton", "Skeleton Spawn Egg"),
-	SKELETON_WALL_SKULL(397, 0, 31650, "Skeleton Wall Skull", ""),
+	SKELETON_WALL_SKULL(144, 0, 31650, "Skeleton Wall Skull", ""),
 	SLIME_BALL(341, 0, 5242, "Slimeball", ""),
 	SLIME_BLOCK(165, 0, 31892, "Slime Block", "SLIME_BLOCK"),
 	SLIME_SPAWN_EGG(383, 55, 6550, "Spawn Slime", "Slime Spawn Egg"),
@@ -1398,7 +1399,7 @@ public class ItemManager {
 	TRIDENT(-1, -1, 7534, "Trident", ""),
 	TRIPWIRE(132, 0, 8810, "Tripwire", ""),
 	TRIPWIRE_HOOK(131, 0, 8130, "Tripwire Hook", ""),
-	TROPICAL_FISH(-1, -1, 12795, "Tropical Fish", ""),
+	TROPICAL_FISH(349, 2, 12795, "Tropical Fish", ""),
 	TROPICAL_FISH_BUCKET(-1, -1, 30390, "Bucket of Tropical Fish", ""),
 	TROPICAL_FISH_SPAWN_EGG(-1, -1, 19713, "Tropical Fish Spawn Egg", ""),
 	TUBE_CORAL(-1, -1, 23048, "Tube Coral", ""),
@@ -1436,7 +1437,7 @@ public class ItemManager {
 	WITCH_SPAWN_EGG(383, 66, 11837, "Spawn Witch", "Witch Spawn Egg"),
 	WITHER_SKELETON_SKULL(397, 1, 31487, "Mob Head (Wither Skeleton)", "Wither Skeleton Skull"),
 	WITHER_SKELETON_SPAWN_EGG(383, 5, 10073, "Spawn Wither Skeleton", "Wither Skeleton Spawn Egg"),
-	WITHER_SKELETON_WALL_SKULL(397, 1, 9326, "Wither Skeleton Wall Skull", ""),
+	WITHER_SKELETON_WALL_SKULL(144, 1, 9326, "Wither Skeleton Wall Skull", ""),
 	WOLF_SPAWN_EGG(383, 95, 21692, "Spawn Wolf", "Wolf Spawn Egg"),
 	WOODEN_AXE(271, 0, 6292, "Wooden Axe", "Wood Axe"),
 	WOODEN_HOE(290, 0, 16043, "Wooden Hoe", "Wood Hoe"),
@@ -1462,16 +1463,17 @@ public class ItemManager {
 	ZOMBIE_PIGMAN_SPAWN_EGG(383, 57, 11531, "Spawn Zombie Pigman", "Zombie Pigman Spawn Egg"),
 	ZOMBIE_SPAWN_EGG(383, 54, 5814, "Spawn Zombie", "Zombie Spawn Egg"),
 	ZOMBIE_VILLAGER_SPAWN_EGG(383, 27, 10311, "Spawn Zombie Villager", "Zombie Villager Spawn Egg"),
-	ZOMBIE_WALL_HEAD(397, 2, 16296, "Zombie Wall Head", ""),
+	ZOMBIE_WALL_HEAD(144, 2, 16296, "Zombie Wall Head", ""),
 
 	// Legacy
 	LEGACY_STATIONARY_WATER(9, 0, -1, "Stationary Water", ""),
 	LEGACY_STATIONARY_LAVA(11, 0, -1, "Stationary Lava", ""),
 	LEGACY_BURNING_FURNACE(62, 0, -1, "Burning Furnace", ""),
-//	LEGACY_SIGN_POST(63, -1, -1, "Sign Post", ""),
 	LEGACY_WOODEN_DOOR_BLOCK(64, 0, -1, "LEGACY_WOODEN_DOOR", ""),
 	LEGACY_IRON_DOOR_BLOCK(71, 0, -1, "LEGACY_IRON_DOOR_BLOCK", ""),
-	LEGACY_GLOWING_REDSTON_ORE(74, 0, -1, "Glowing Redstone Ore", "");
+	LEGACY_GLOWING_REDSTON_ORE(74, 0, -1, "Glowing Redstone Ore", ""),
+	LEGACY_RAW_FISH(349, 0, -1, "Raw Fish", ""),
+	LEGACY_SKULL(144, 0, -1, "Skull", "");
 
 	private int legacyId;
 	private int legacyData;
@@ -2186,13 +2188,17 @@ public class ItemManager {
 	}
 
 	public static boolean isDye(Material mat) {
+	    Debug.D("ss1");
 	    CMIMaterial m = CMIMaterial.get(mat);
+	    Debug.D("ss2");
 	    if (m == null)
 		return false;
+	    Debug.D("ss3");
 	    return m.isDye();
 	}
 
 	public boolean isDye() {
+	    Debug.D("ss4");
 	    switch (this) {
 	    case INK_SAC:
 	    case ROSE_RED:
@@ -2253,70 +2259,7 @@ public class ItemManager {
 	}
 
 	public static SlabType getSlabType(Block block) {
-	    if (!isSlab(block.getType()))
-		return SlabType.NOTSLAB;
-
-	    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_10_R1.v1_13_R1)) {
-		if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
-		    org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
-		    switch (slab.getType()) {
-		    case TOP:
-			return SlabType.TOP;
-		    case BOTTOM:
-			return SlabType.BOTTOM;
-		    case DOUBLE:
-			return SlabType.DOUBLE;
-		    }
-
-		}
-		return SlabType.NOTSLAB;
-	    }
-	    s: if (block.getType().name().contains("STEP")) {
-		switch (CMIMaterial.get(block).getLegacyId()) {
-		case 44:
-		    switch (block.getData()) {
-		    case 0:
-		    case 1:
-		    case 2:
-		    case 3:
-		    case 4:
-		    case 5:
-		    case 6:
-		    case 7:
-			return SlabType.BOTTOM;
-		    default:
-			return SlabType.DOUBLE;
-		    }
-		case 126:
-		    switch (block.getData()) {
-		    case 0:
-		    case 1:
-		    case 2:
-		    case 3:
-		    case 4:
-		    case 5:
-			return SlabType.BOTTOM;
-		    default:
-			return SlabType.DOUBLE;
-		    }
-		case 182:
-		    switch (block.getData()) {
-		    case 0:
-			return SlabType.BOTTOM;
-		    default:
-			return SlabType.DOUBLE;
-		    }
-		case 205:
-		    switch (block.getData()) {
-		    case 0:
-			return SlabType.BOTTOM;
-		    default:
-			return SlabType.DOUBLE;
-		    }
-		}
-	    }
-
-	    return SlabType.NOTSLAB;
+	    return checkSlab(block);
 	}
 
 	public boolean equals(Material mat) {
@@ -2352,6 +2295,71 @@ public class ItemManager {
 	public void setMojangName(String mojangName) {
 	    this.mojangName = mojangName;
 	}
+    }
+
+    private static SlabType checkSlab(Block block) throws NoClassDefFoundError {
+	if (!CMIMaterial.isSlab(block.getType()))
+	    return SlabType.NOTSLAB;
+
+	if (version.isEqualOrHigher(Version.v1_13_R1)) {
+	    if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
+		org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
+		org.bukkit.block.data.type.Slab.Type t = slab.getType();
+		if (t.equals(org.bukkit.block.data.type.Slab.Type.TOP))
+		    return SlabType.TOP;
+		if (t.equals(org.bukkit.block.data.type.Slab.Type.BOTTOM))
+		    return SlabType.BOTTOM;
+		if (t.equals(org.bukkit.block.data.type.Slab.Type.DOUBLE))
+		    return SlabType.DOUBLE;
+	    }
+	    return SlabType.NOTSLAB;
+	}
+	if (block.getType().name().contains("STEP")) {
+	    switch (CMIMaterial.get(block).getLegacyId()) {
+	    case 44:
+		switch (block.getData()) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		    return SlabType.BOTTOM;
+		default:
+		    return SlabType.DOUBLE;
+		}
+	    case 126:
+		switch (block.getData()) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		    return SlabType.BOTTOM;
+		default:
+		    return SlabType.DOUBLE;
+		}
+	    case 182:
+		switch (block.getData()) {
+		case 0:
+		    return SlabType.BOTTOM;
+		default:
+		    return SlabType.DOUBLE;
+		}
+	    case 205:
+		switch (block.getData()) {
+		case 0:
+		    return SlabType.BOTTOM;
+		default:
+		    return SlabType.DOUBLE;
+		}
+	    }
+	}
+
+	return SlabType.NOTSLAB;
     }
 
     public enum SlabType {

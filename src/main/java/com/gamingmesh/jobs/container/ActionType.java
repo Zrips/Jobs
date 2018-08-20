@@ -26,6 +26,7 @@ public enum ActionType {
     MMKILL("MMKill"),
     FISH("Fish"),
     CRAFT("Craft"),
+    VTRADE("VTrade"),
     SMELT("Smelt"),
     BREW("Brew"),
     ENCHANT("Enchant"),

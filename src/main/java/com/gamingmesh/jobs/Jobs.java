@@ -137,7 +137,7 @@ public class Jobs extends JavaPlugin {
 
     private static ConfigManager configManager;
     private static GeneralConfigManager GconfigManager;
-    
+
     private static Reflections reflections;
 
     private static Logger pLogger;
@@ -248,7 +248,7 @@ public class Jobs extends JavaPlugin {
 	    reflections = new Reflections(instance);
 	return reflections;
     }
-    
+
     public static JobsManager getDBManager() {
 	if (DBManager == null)
 	    DBManager = new JobsManager(instance);
@@ -754,7 +754,7 @@ public class Jobs extends JavaPlugin {
 	this.setEnabled(true);
 
 	versionCheckManager = new VersionChecker(this);
-	
+
 	ItemManager.load();
 
 	version = versionCheckManager.getVersion().getShortVersion();
@@ -875,9 +875,14 @@ public class Jobs extends JavaPlugin {
 	this.setEnabled(false);
     }
 
+    @Deprecated
     private static void checkDailyQuests(JobsPlayer jPlayer, JobProgression prog, ActionInfo info) {
-	if (!prog.getJob().getQuests().isEmpty()) {
-	    List<QuestProgression> q = jPlayer.getQuestProgressions(prog.getJob(), info.getType());
+	checkDailyQuests(jPlayer, prog.getJob(), info);
+    }
+
+    private static void checkDailyQuests(JobsPlayer jPlayer, Job job, ActionInfo info) {
+	if (!job.getQuests().isEmpty()) {
+	    List<QuestProgression> q = jPlayer.getQuestProgressions(job, info.getType());
 	    for (QuestProgression one : q) {
 		if (one != null) {
 		    one.processQuest(jPlayer, info);
@@ -928,6 +933,8 @@ public class Jobs extends JavaPlugin {
 	    if (noneJob == null)
 		return;
 	    JobInfo jobinfo = noneJob.getJobInfo(info, 1);
+
+	    checkDailyQuests(jPlayer, noneJob, info);
 
 	    if (jobinfo == null)
 		return;
@@ -996,12 +1003,13 @@ public class Jobs extends JavaPlugin {
 	} else {
 	    for (JobProgression prog : progression) {
 		int level = prog.getLevel();
+
 		JobInfo jobinfo = prog.getJob().getJobInfo(info, level);
+
+		checkDailyQuests(jPlayer, prog.getJob(), info);
 
 		if (jobinfo == null)
 		    continue;
-
-		checkDailyQuests(jPlayer, prog, info);
 
 		Double income = jobinfo.getIncome(level, numjobs);
 		Double pointAmount = jobinfo.getPoints(level, numjobs);
