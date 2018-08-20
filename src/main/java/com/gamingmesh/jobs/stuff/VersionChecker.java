@@ -92,8 +92,8 @@ public class VersionChecker {
 	    return getValue() >= version.getValue();
 	}
 
-	public static boolean isCurrentEqualOrHigher(Version version) {
-	    return version.getValue() >= version.getValue();
+	public static boolean isCurrentEqualOrHigher(Version v) {
+	    return version.getValue() >= v.getValue();
 	}
     }
 
