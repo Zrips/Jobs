@@ -9,14 +9,14 @@ import org.bukkit.entity.Player;
 
 public class RawMessage {
 
-    List<String> parts = new ArrayList<String>();
-    List<String> cleanParts = new ArrayList<String>();
+    List<String> parts = new ArrayList<>();
+    List<String> cleanParts = new ArrayList<>();
     String combined = "";
     String combinedClean = "";
 
     public void clear() {
-	parts = new ArrayList<String>();
-	cleanParts = new ArrayList<String>();
+	parts = new ArrayList<>();
+	cleanParts = new ArrayList<>();
 	combined = "";
 	combinedClean = "";
     }

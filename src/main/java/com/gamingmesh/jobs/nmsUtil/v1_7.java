@@ -19,7 +19,7 @@ import com.gamingmesh.jobs.NMS;
 public class v1_7 implements NMS {
     @Override
     public List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
-	List<Block> blocks = new ArrayList<Block>();
+	List<Block> blocks = new ArrayList<>();
 	blocks.add(event.getBlock());
 	return blocks;
     }

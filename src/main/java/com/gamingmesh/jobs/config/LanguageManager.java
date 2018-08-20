@@ -23,7 +23,7 @@ public class LanguageManager {
 	this.plugin = plugin;
     }
 
-    List<String> languages = new ArrayList<String>();
+    List<String> languages = new ArrayList<>();
 
     public List<String> getLanguages() {
 	return languages;
@@ -46,7 +46,7 @@ public class LanguageManager {
 
     private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath, String cleaner) {
 	JarFile jarFile = null;
-	List<String> listOfCommands = new ArrayList<String>();
+	List<String> listOfCommands = new ArrayList<>();
 	try {
 	    jarFile = new JarFile(jarPath);
 	    Enumeration<JarEntry> en = jarFile.entries();
@@ -80,7 +80,7 @@ public class LanguageManager {
      * loads from Jobs/locale/messages_en.yml
      */
     synchronized void load() {
-	languages = new ArrayList<String>();
+	languages = new ArrayList<>();
 
 	try {
 	    languages.addAll(getClassesFromPackage("locale", "messages_"));

@@ -26,7 +26,7 @@ public class McMMOlistener implements Listener {
     private Jobs plugin;
     public boolean mcMMOPresent = false;
 
-    HashMap<String, HashMap<AbilityType, Long>> map = new HashMap<String, HashMap<AbilityType, Long>>();
+    HashMap<String, HashMap<AbilityType, Long>> map = new HashMap<>();
 
     public McMMOlistener(Jobs plugin) {
 	this.plugin = plugin;
@@ -61,7 +61,7 @@ public class McMMOlistener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void OnAbilityOn(McMMOPlayerAbilityActivateEvent event) {
-	HashMap<AbilityType, Long> InfoMap = new HashMap<AbilityType, Long>();
+	HashMap<AbilityType, Long> InfoMap = new HashMap<>();
 	if (map.containsKey(event.getPlayer().getName()))
 	    InfoMap = map.get(event.getPlayer().getName());
 	InfoMap.put(event.getAbility(), System.currentTimeMillis() + (event.getAbility().getMaxLength() * 1000));

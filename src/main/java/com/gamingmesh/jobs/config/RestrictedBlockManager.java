@@ -16,7 +16,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class RestrictedBlockManager {
 
-    public HashMap<Integer, Integer> restrictedBlocksTimer = new HashMap<Integer, Integer>();
+    public HashMap<Integer, Integer> restrictedBlocksTimer = new HashMap<>();
 
     private Jobs plugin;
 

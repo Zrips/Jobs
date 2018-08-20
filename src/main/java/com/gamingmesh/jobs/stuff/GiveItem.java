@@ -20,7 +20,7 @@ public class GiveItem {
 	ItemMeta ItemMeta = itemStack.getItemMeta();
 
 	if (lore != null) {
-	    List<String> TranslatedLore = new ArrayList<String>();
+	    List<String> TranslatedLore = new ArrayList<>();
 	    for (String oneLore : lore) {
 		TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player.getName())));
 	    }

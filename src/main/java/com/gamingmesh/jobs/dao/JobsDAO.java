@@ -500,7 +500,7 @@ public abstract class JobsDAO {
 	else
 	    userData = Jobs.getPlayerManager().getPlayerInfo(uuid);
 
-	ArrayList<JobsDAOData> jobs = new ArrayList<JobsDAOData>();
+	ArrayList<JobsDAOData> jobs = new ArrayList<>();
 
 	if (userData == null) {
 	    recordNewPlayer(playerName, uuid);
@@ -531,7 +531,7 @@ public abstract class JobsDAO {
     }
 
     public HashMap<Integer, List<JobsDAOData>> getAllJobs() {
-	HashMap<Integer, List<JobsDAOData>> map = new HashMap<Integer, List<JobsDAOData>>();
+	HashMap<Integer, List<JobsDAOData>> map = new HashMap<>();
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return map;
@@ -544,7 +544,7 @@ public abstract class JobsDAO {
 		int id = res.getInt("userid");
 		List<JobsDAOData> ls = map.get(id);
 		if (ls == null)
-		    ls = new ArrayList<JobsDAOData>();
+		    ls = new ArrayList<>();
 		ls.add(new JobsDAOData(res.getString("job"), res.getInt("level"), res.getInt("experience")));
 		map.put(id, ls);
 	    }
@@ -558,7 +558,7 @@ public abstract class JobsDAO {
     }
 
     public HashMap<Integer, PlayerPoints> getAllPoints() {
-	HashMap<Integer, PlayerPoints> map = new HashMap<Integer, PlayerPoints>();
+	HashMap<Integer, PlayerPoints> map = new HashMap<>();
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return map;
@@ -580,7 +580,7 @@ public abstract class JobsDAO {
     }
 
     public HashMap<Integer, ArchivedJobs> getAllArchivedJobs() {
-	HashMap<Integer, ArchivedJobs> map = new HashMap<Integer, ArchivedJobs>();
+	HashMap<Integer, ArchivedJobs> map = new HashMap<>();
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return map;
@@ -621,7 +621,7 @@ public abstract class JobsDAO {
     }
 
     public HashMap<Integer, HashMap<String, Log>> getAllLogs() {
-	HashMap<Integer, HashMap<String, Log>> map = new HashMap<Integer, HashMap<String, Log>>();
+	HashMap<Integer, HashMap<String, Log>> map = new HashMap<>();
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return map;
@@ -638,14 +638,14 @@ public abstract class JobsDAO {
 
 		HashMap<String, Log> m = map.get(id);
 		if (m == null)
-		    m = new HashMap<String, Log>();
+		    m = new HashMap<>();
 		String action = res.getString("action");
 		Log log = m.get(action);
 
 		if (log == null)
 		    log = new Log(action);
 
-		HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+		HashMap<CurrencyType, Double> amounts = new HashMap<>();
 		amounts.put(CurrencyType.MONEY, res.getDouble("money"));
 		amounts.put(CurrencyType.EXP, res.getDouble("exp"));
 		amounts.put(CurrencyType.POINTS, res.getDouble("points"));
@@ -667,7 +667,7 @@ public abstract class JobsDAO {
 	return map;
     }
 
-    private HashMap<Integer, ArrayList<JobsDAOData>> map = new HashMap<Integer, ArrayList<JobsDAOData>>();
+    private HashMap<Integer, ArrayList<JobsDAOData>> map = new HashMap<>();
 
     public List<JobsDAOData> getAllJobs(PlayerInfo pInfo) {
 	List<JobsDAOData> list = map.get(pInfo.getID());
@@ -796,7 +796,7 @@ public abstract class JobsDAO {
      */
     public synchronized List<JobsDAOData> getAllJobsOffline(String userName) {
 
-	ArrayList<JobsDAOData> jobs = new ArrayList<JobsDAOData>();
+	ArrayList<JobsDAOData> jobs = new ArrayList<>();
 
 	PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(userName);
 	if (info == null)
@@ -900,7 +900,7 @@ public abstract class JobsDAO {
     }
 
     public synchronized HashMap<Integer, PaymentData> loadPlayerLimits() {
-	HashMap<Integer, PaymentData> map = new HashMap<Integer, PaymentData>();
+	HashMap<Integer, PaymentData> map = new HashMap<>();
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return map;
@@ -993,7 +993,7 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return null;
 
-	List<Convert> list = new ArrayList<Convert>();
+	List<Convert> list = new ArrayList<>();
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
@@ -1139,7 +1139,7 @@ public abstract class JobsDAO {
     public List<TopList> getGlobalTopList(int start) {
 	JobsConnection conn = getConnection();
 
-	List<TopList> names = new ArrayList<TopList>();
+	List<TopList> names = new ArrayList<>();
 
 	if (conn == null)
 	    return names;
@@ -1558,7 +1558,7 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 	    while (res.next()) {
 
-		HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+		HashMap<CurrencyType, Double> amounts = new HashMap<>();
 		amounts.put(CurrencyType.MONEY, res.getDouble("money"));
 		amounts.put(CurrencyType.EXP, res.getDouble("exp"));
 		amounts.put(CurrencyType.POINTS, res.getDouble("points"));
@@ -1789,7 +1789,7 @@ public abstract class JobsDAO {
 	    conn.setAutoCommit(false);
 	    int i = 0;
 
-	    HashMap<String, ExploreRegion> temp = new HashMap<String, ExploreRegion>(Jobs.getExplore().getWorlds());
+	    HashMap<String, ExploreRegion> temp = new HashMap<>(Jobs.getExplore().getWorlds());
 
 	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
 		for (Entry<String, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
@@ -1838,7 +1838,7 @@ public abstract class JobsDAO {
 
 	    int i = 0;
 
-	    HashMap<String, ExploreRegion> temp = new HashMap<String, ExploreRegion>(Jobs.getExplore().getWorlds());
+	    HashMap<String, ExploreRegion> temp = new HashMap<>(Jobs.getExplore().getWorlds());
 
 	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
 		for (Entry<String, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
@@ -1935,7 +1935,7 @@ public abstract class JobsDAO {
      */
     public List<Integer> getLognameList(int fromtime, int untiltime) {
 	JobsConnection conn = getConnection();
-	List<Integer> nameList = new ArrayList<Integer>();
+	List<Integer> nameList = new ArrayList<>();
 	if (conn == null)
 	    return nameList;
 	PreparedStatement prest = null;
@@ -1964,7 +1964,7 @@ public abstract class JobsDAO {
      * @return 
      */
     public ArrayList<TopList> toplist(String jobsname, int limit) {
-	ArrayList<TopList> jobs = new ArrayList<TopList>();
+	ArrayList<TopList> jobs = new ArrayList<>();
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return jobs;

@@ -35,7 +35,7 @@ public class BossBarManager {
 	if (player == null)
 	    return;
 
-	List<String> temp = new ArrayList<String>();
+	List<String> temp = new ArrayList<>();
 
 	temp.addAll(player.getUpdateBossBarFor());
 

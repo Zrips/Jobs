@@ -24,8 +24,8 @@ public class Quest {
 
     private int amount = Integer.MAX_VALUE;
 
-    private List<String> rewardCmds = new ArrayList<String>();
-    private List<String> rewards = new ArrayList<String>();
+    private List<String> rewardCmds = new ArrayList<>();
+    private List<String> rewards = new ArrayList<>();
 
     public Quest(String questName, Job job, ActionType action) {
 	this.questName = questName;

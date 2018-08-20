@@ -24,9 +24,9 @@ import java.util.List;
 
 public class JobConditions {
     private String node;
-    private List<String> requiresPerm = new ArrayList<String>();
-    private HashMap<String, Integer> requiresJobs = new HashMap<String, Integer>();
-    private HashMap<String, Boolean> performPerm = new HashMap<String, Boolean>();
+    private List<String> requiresPerm = new ArrayList<>();
+    private HashMap<String, Integer> requiresJobs = new HashMap<>();
+    private HashMap<String, Boolean> performPerm = new HashMap<>();
 
     public JobConditions(String node, List<String> requires, List<String> perform) {
 	this.node = node;

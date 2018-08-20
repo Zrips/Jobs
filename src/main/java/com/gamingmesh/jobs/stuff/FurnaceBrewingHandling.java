@@ -26,8 +26,8 @@ public class FurnaceBrewingHandling {
     public FurnaceBrewingHandling() {
     }
 
-    static HashMap<UUID, List<blockLoc>> furnaceMap = new HashMap<UUID, List<blockLoc>>();
-    static HashMap<UUID, List<blockLoc>> brewingMap = new HashMap<UUID, List<blockLoc>>();
+    static HashMap<UUID, List<blockLoc>> furnaceMap = new HashMap<>();
+    static HashMap<UUID, List<blockLoc>> brewingMap = new HashMap<>();
 
     public static void load() {
 	YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
@@ -39,14 +39,14 @@ public class FurnaceBrewingHandling {
 	int totalf = 0;
 	int totalb = 0;
 
-	if (Jobs.getGCManager().isFurnacesReassign())
+	if (Jobs.getGCManager().isFurnacesReassign()) {
 	    if (config.contains("Furnace")) {
 		ConfigurationSection section = config.getConfigurationSection("Furnace");
 
 		try {
 		    for (String one : section.getKeys(false)) {
 			String value = section.getString(one);
-			List<String> ls = new ArrayList<String>();
+			List<String> ls = new ArrayList<>();
 			if (value.contains(";"))
 			    ls.addAll(Arrays.asList(value.split(";")));
 			else
@@ -55,7 +55,7 @@ public class FurnaceBrewingHandling {
 
 			if (uuid == null)
 			    continue;
-			List<blockLoc> blist = new ArrayList<blockLoc>();
+			List<blockLoc> blist = new ArrayList<>();
 			for (String oneL : ls) {
 			    blockLoc bl = new blockLoc(oneL);
 			    Block block = bl.getBlock();
@@ -76,6 +76,7 @@ public class FurnaceBrewingHandling {
 		    e.printStackTrace();
 		}
 	    }
+	}
 
 	if (Jobs.getGCManager().isBrewingStandsReassign())
 	    if (config.contains("Brewing")) {
@@ -84,7 +85,7 @@ public class FurnaceBrewingHandling {
 		try {
 		    for (String one : section.getKeys(false)) {
 			String value = section.getString(one);
-			List<String> ls = new ArrayList<String>();
+			List<String> ls = new ArrayList<>();
 			if (value.contains(";"))
 			    ls.addAll(Arrays.asList(value.split(";")));
 			else
@@ -94,7 +95,7 @@ public class FurnaceBrewingHandling {
 			if (uuid == null)
 			    continue;
 
-			List<blockLoc> blist = new ArrayList<blockLoc>();
+			List<blockLoc> blist = new ArrayList<>();
 			for (String oneL : ls) {
 			    blockLoc bl = new blockLoc(oneL);
 			    Block block = bl.getBlock();
@@ -284,7 +285,7 @@ public class FurnaceBrewingHandling {
 
 	List<blockLoc> ls = furnaceMap.get(player.getUniqueId());
 	if (ls == null)
-	    ls = new ArrayList<blockLoc>();
+	    ls = new ArrayList<>();
 	ls.add(new blockLoc(block.getLocation()));
 	furnaceMap.put(player.getUniqueId(), ls);
 
@@ -329,7 +330,7 @@ public class FurnaceBrewingHandling {
 
 	List<blockLoc> ls = brewingMap.get(player.getUniqueId());
 	if (ls == null)
-	    ls = new ArrayList<blockLoc>();
+	    ls = new ArrayList<>();
 	ls.add(new blockLoc(block.getLocation()));
 	brewingMap.put(player.getUniqueId(), ls);
 

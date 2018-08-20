@@ -37,7 +37,7 @@ public class CommentedYamlConfiguration extends YamlConfiguration {
 
     public CommentedYamlConfiguration() {
 	super();
-	comments = new HashMap<String, String>();
+	comments = new HashMap<>();
     }
 
     @Override

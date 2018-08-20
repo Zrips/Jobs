@@ -36,8 +36,8 @@ import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 public class BufferedEconomy {
     private Jobs plugin;
     private Economy economy;
-    private LinkedBlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<BufferedPayment>();
-    private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<UUID, BufferedPayment>());
+    private LinkedBlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<>();
+    private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<>());
 
     private OfflinePlayer ServerAccount = null;
     private OfflinePlayer ServerTaxesAccount = null;

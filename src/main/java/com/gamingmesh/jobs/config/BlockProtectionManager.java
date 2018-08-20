@@ -14,8 +14,7 @@ import com.gamingmesh.jobs.container.DBAction;
 
 public class BlockProtectionManager {
 
-    private HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> map =
-	new HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>>();
+    private HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> map = new HashMap<>();
 
     public Long timer = 0L;
 
@@ -60,15 +59,15 @@ public class BlockProtectionManager {
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 	HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> regions = map.get(loc.getWorld());
 	if (regions == null)
-	    regions = new HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>();
+	    regions = new HashMap<>();
 	String region = locToRegion(loc);
 	HashMap<String, HashMap<String, BlockProtection>> chunks = regions.get(region);
 	if (chunks == null)
-	    chunks = new HashMap<String, HashMap<String, BlockProtection>>();
+	    chunks = new HashMap<>();
 	String chunk = locToChunk(loc);
 	HashMap<String, BlockProtection> Bpm = chunks.get(chunk);
 	if (Bpm == null)
-	    Bpm = new HashMap<String, BlockProtection>();
+	    Bpm = new HashMap<>();
 
 	BlockProtection Bp = Bpm.get(v);
 

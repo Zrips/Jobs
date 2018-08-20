@@ -16,7 +16,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class TitleManager {
 
-    protected List<Title> titles = new ArrayList<Title>();
+    protected List<Title> titles = new ArrayList<>();
 
     private Jobs plugin;
 

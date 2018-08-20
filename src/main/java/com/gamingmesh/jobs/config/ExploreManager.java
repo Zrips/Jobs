@@ -18,7 +18,7 @@ import com.gamingmesh.jobs.dao.JobsDAO.ExploreDataTableFields;
 
 public class ExploreManager {
 
-    private HashMap<String, ExploreRegion> worlds = new HashMap<String, ExploreRegion>();
+    private HashMap<String, ExploreRegion> worlds = new HashMap<>();
     private boolean exploreEnabled = false;
     private int playerAmount = 1;
 

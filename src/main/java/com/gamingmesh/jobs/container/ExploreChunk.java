@@ -10,7 +10,7 @@ public class ExploreChunk {
 
     int x;
     int z;
-    Set<String> playerNames = new HashSet<String>();
+    Set<String> playerNames = new HashSet<>();
     private Integer dbId = null;
     private boolean updated = false;
 

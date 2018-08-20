@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class BoostMultiplier {
 
-    HashMap<CurrencyType, Double> map = new HashMap<CurrencyType, Double>();
+    HashMap<CurrencyType, Double> map = new HashMap<>();
 
     @Override
     public BoostMultiplier clone() {
