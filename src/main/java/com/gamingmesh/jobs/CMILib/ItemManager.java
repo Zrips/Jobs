@@ -1121,7 +1121,7 @@ public class ItemManager {
 	NAME_TAG(421, 0, 30731, "Name Tag", ""),
 	NAUTILUS_SHELL(-1, -1, 19989, "Nautilus Shell", ""),
 	NETHERRACK(87, 0, 23425, "Netherrack", "NETHERRACK"),
-	NETHER_BRICK(405, 0, 19996, "Nether Brick", "NETHER_BRICK"),
+	NETHER_BRICK(405, 0, 19996, "Nether Brick"),
 	NETHER_BRICKS(112, 0, 27802, "Nether Bricks"),
 	NETHER_BRICK_FENCE(113, 0, 5286, "Nether Brick Fence", "NETHER_FENCE"),
 	NETHER_BRICK_SLAB(44, 6, 26586, "Nether Brick Slab", ""),
@@ -1471,9 +1471,11 @@ public class ItemManager {
 	LEGACY_STATIONARY_WATER(9, 0, -1, "Stationary Water", ""),
 	LEGACY_STATIONARY_LAVA(11, 0, -1, "Stationary Lava", ""),
 	LEGACY_BURNING_FURNACE(62, 0, -1, "Burning Furnace", ""),
-	LEGACY_WOODEN_DOOR_BLOCK(64, 0, -1, "LEGACY_WOODEN_DOOR", ""),
-	LEGACY_IRON_DOOR_BLOCK(71, 0, -1, "LEGACY_IRON_DOOR_BLOCK", ""),
+	LEGACY_WOODEN_DOOR_BLOCK(64, 0, -1, "Wooden Door Block", ""),
+	LEGACY_NETHER_WARTS(115, -1, -1, "Nether Warts", ""),
+	LEGACY_IRON_DOOR_BLOCK(71, 0, -1, "Iron Door Block", ""),
 	LEGACY_GLOWING_REDSTON_ORE(74, 0, -1, "Glowing Redstone Ore", ""),
+	LEGACY_SUGAR_CANE_BLOCK(83, -1, -1, "Sugar Cane Block", ""),
 	LEGACY_RAW_FISH(349, 0, -1, "Raw Fish", ""),
 	LEGACY_SKULL(144, 0, -1, "Skull", "");
 

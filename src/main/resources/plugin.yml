@@ -1,7 +1,7 @@
 name: Jobs
 description: Jobs Plugin for the BukkitAPI
 main: com.gamingmesh.jobs.Jobs
-version: 4.7.2
+version: 4.7.3
 api-version: 1.13
 website: https://www.spigotmc.org/resources/jobs-reborn.4216/
 author: phrstbrn
