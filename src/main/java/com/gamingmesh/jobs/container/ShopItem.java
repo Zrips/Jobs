@@ -17,17 +17,17 @@ public class ShopItem {
     private int IconData = 0;
     private int IconAmount = 1;
     private String IconName = null;
-    private List<String> IconLore = new ArrayList<String>();
+    private List<String> IconLore = new ArrayList<>();
 
     private boolean HideWithoutPerm = false;
     private int RequiredTotalLevels = -1;
 
-    private List<String> RequiredPerm = new ArrayList<String>();
-    private HashMap<String, Integer> RequiredJobs = new HashMap<String, Integer>();
+    private List<String> RequiredPerm = new ArrayList<>();
+    private HashMap<String, Integer> RequiredJobs = new HashMap<>();
 
-    private List<String> Commands = new ArrayList<String>();
+    private List<String> Commands = new ArrayList<>();
 
-    private List<JobItems> items = new ArrayList<JobItems>();
+    private List<JobItems> items = new ArrayList<>();
 
     public ShopItem(String NodeName, double price, int IconId) {
 	this.NodeName = NodeName;

@@ -11,7 +11,7 @@ public final class LogAmounts {
     private String item;
     private int count = 0;
 
-    private HashMap<CurrencyType, Double> amounts = new HashMap<CurrencyType, Double>();
+    private HashMap<CurrencyType, Double> amounts = new HashMap<>();
 
     private boolean newEntry = true;
 

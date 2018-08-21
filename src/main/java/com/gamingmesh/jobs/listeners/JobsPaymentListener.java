@@ -564,7 +564,7 @@ public class JobsPaymentListener implements Listener {
 	// Checking if item is been repaired, not crafted. Combining 2 items
 	ItemStack[] sourceItems = event.getInventory().getContents();
 	// For dye check
-	List<ItemStack> DyeStack = new ArrayList<ItemStack>();
+	List<ItemStack> DyeStack = new ArrayList<>();
 	int y = -1;
 	int first = 0;
 	int second = 0;

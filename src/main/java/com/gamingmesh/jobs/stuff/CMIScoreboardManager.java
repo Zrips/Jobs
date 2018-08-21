@@ -23,7 +23,7 @@ import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class CMIScoreboardManager {
 
-    private ConcurrentHashMap<UUID, ScoreboardInfo> timerMap = new ConcurrentHashMap<UUID, ScoreboardInfo>();
+    private ConcurrentHashMap<UUID, ScoreboardInfo> timerMap = new ConcurrentHashMap<>();
     private Jobs plugin;
 
     public CMIScoreboardManager(Jobs plugin) {

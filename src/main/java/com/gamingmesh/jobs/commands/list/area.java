@@ -17,7 +17,6 @@ import com.gamingmesh.jobs.container.RestrictedArea;
 
 public class area implements Cmd {
 
-    @SuppressWarnings("deprecation")
     @Override
     @JobCommand(300)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {

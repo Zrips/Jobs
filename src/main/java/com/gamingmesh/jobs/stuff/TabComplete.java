@@ -15,7 +15,6 @@ import org.bukkit.util.StringUtil;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.container.JobItemBonus;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -28,7 +27,7 @@ public class TabComplete implements TabCompleter {
 
 	if (args.length == 1) {
 	    String PartOfCommand = args[0];
-	    List<String> temp = new ArrayList<String>();
+	    List<String> temp = new ArrayList<>();
 
 	    for (Entry<String, Integer> BCmd : Jobs.getCommandManager().GetCommands(sender).entrySet()) {
 		temp.add(BCmd.getKey());
@@ -50,7 +49,7 @@ public class TabComplete implements TabCompleter {
 			continue;
 
 		    String arg = ArgsList.get(i - 1);
-		    List<String> temp = new ArrayList<String>();
+		    List<String> temp = new ArrayList<>();
 
 		    if (arg.contains("%%"))
 			for (String one : arg.split("%%")) {

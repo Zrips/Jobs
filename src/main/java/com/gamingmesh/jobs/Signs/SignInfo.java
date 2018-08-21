@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SignInfo {
 
-    List<Sign> AllSigns = new ArrayList<Sign>();
+    List<Sign> AllSigns = new ArrayList<>();
 
     public SignInfo() {
     }

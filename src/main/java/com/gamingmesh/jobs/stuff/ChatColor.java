@@ -43,9 +43,9 @@ public enum ChatColor {
 	private final char code;
 	private final int intCode;
 	private final String toString;
-	private final static Map<Integer, ChatColor> intMap = new HashMap<Integer, ChatColor>();
-	private final static Map<Character, ChatColor> charMap = new HashMap<Character, ChatColor>();
-	private final static Map<String, ChatColor> stringMap = new HashMap<String, ChatColor>();
+	private final static Map<Integer, ChatColor> intMap = new HashMap<>();
+	private final static Map<Character, ChatColor> charMap = new HashMap<>();
+	private final static Map<String, ChatColor> stringMap = new HashMap<>();
 
 	private ChatColor(char code, int intCode) {
 		this.code = code;

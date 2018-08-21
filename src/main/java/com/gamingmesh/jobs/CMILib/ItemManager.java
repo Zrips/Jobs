@@ -23,10 +23,10 @@ import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class ItemManager {
 
-    static HashMap<Integer, CMIItemStack> byId = new HashMap<Integer, CMIItemStack>();
-    static HashMap<String, CMIItemStack> byBukkitName = new HashMap<String, CMIItemStack>();
-    static HashMap<String, CMIItemStack> byMojangName = new HashMap<String, CMIItemStack>();
-    static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<CMIMaterial, CMIItemStack>();
+    static HashMap<Integer, CMIItemStack> byId = new HashMap<>();
+    static HashMap<String, CMIItemStack> byBukkitName = new HashMap<>();
+    static HashMap<String, CMIItemStack> byMojangName = new HashMap<>();
+    static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<>();
     static final Version version = Jobs.getVersionCheckManager().getVersion();
 
     public static void load() {
@@ -122,7 +122,7 @@ public class ItemManager {
 	return cm;
     }
 
-    static HashMap<String, ItemStack> headCache = new HashMap<String, ItemStack>();
+    static HashMap<String, ItemStack> headCache = new HashMap<>();
 
     public static CMIItemStack getItem(String name) {
 	if (byBukkitName.isEmpty())
@@ -279,7 +279,7 @@ public class ItemManager {
     }
 
     static public List<Recipe> getAllRecipes() {
-	List<Recipe> results = new ArrayList<Recipe>();
+	List<Recipe> results = new ArrayList<>();
 	Iterator<Recipe> iter = Bukkit.recipeIterator();
 	while (iter.hasNext()) {
 	    Recipe recipe = iter.next();
@@ -290,7 +290,7 @@ public class ItemManager {
 
     static public List<Recipe> getRecipesFor(ItemStack result) {
 
-	List<Recipe> results = new ArrayList<Recipe>();
+	List<Recipe> results = new ArrayList<>();
 	Iterator<Recipe> iter = Bukkit.recipeIterator();
 	while (iter.hasNext()) {
 	    Recipe recipe = iter.next();
@@ -1584,7 +1584,7 @@ public class ItemManager {
 
 	public static CMIMaterial getRandom(CMIMaterial mat) {
 
-	    List<CMIMaterial> ls = new ArrayList<CMIMaterial>();
+	    List<CMIMaterial> ls = new ArrayList<>();
 
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.getLegacyId() == -1)

@@ -32,8 +32,8 @@ import com.gamingmesh.jobs.stuff.Perm;
 
 public class ShopManager {
     private Jobs plugin;
-    public List<ShopItem> list = new ArrayList<ShopItem>();
-    public HashMap<String, Integer> GuiList = new HashMap<String, Integer>();
+    public List<ShopItem> list = new ArrayList<>();
+    public HashMap<String, Integer> GuiList = new HashMap<>();
 
     public ShopManager(Jobs plugin) {
 	this.plugin = plugin;
@@ -123,7 +123,6 @@ public class ShopManager {
 	}
 
 	for (JobItems one : item.getitems()) {
-	    @SuppressWarnings("deprecation")
 	    CMIMaterial mat = CMIMaterial.get(one.getId(), one.getData());
 
 	    if (mat == null)
@@ -167,7 +166,7 @@ public class ShopManager {
     }
 
     private List<ShopItem> getItemsByPage(Integer page) {
-	List<ShopItem> ls = new ArrayList<ShopItem>();
+	List<ShopItem> ls = new ArrayList<>();
 	for (ShopItem one : list) {
 	    if (one.getPage() == page)
 		ls.add(one);
@@ -237,9 +236,8 @@ public class ShopManager {
 
 	    ShopItem item = ls.get(i);
 
-	    ArrayList<String> Lore = new ArrayList<String>();
+	    ArrayList<String> Lore = new ArrayList<>();
 
-	    @SuppressWarnings("deprecation")
 	    CMIMaterial mat = CMIMaterial.get(item.getIconId(), item.getIconData());
 
 	    if (item.isHideWithoutPerm()) {
@@ -330,7 +328,7 @@ public class ShopManager {
 	    return;
 
 	ConfigurationSection ConfCategory = f.getConfigurationSection("Items");
-	ArrayList<String> categoriesList = new ArrayList<String>(ConfCategory.getKeys(false));
+	ArrayList<String> categoriesList = new ArrayList<>(ConfCategory.getKeys(false));
 	if (categoriesList.size() == 0)
 	    return;
 	int i = 0;
@@ -363,7 +361,7 @@ public class ShopManager {
 		Sitem.setIconName(ChatColor.translateAlternateColorCodes('&', NameSection.getString("Icon.Name")));
 
 	    if (NameSection.isList("Icon.Lore")) {
-		List<String> lore = new ArrayList<String>();
+		List<String> lore = new ArrayList<>();
 		if (NameSection.getStringList("Icon.Lore") != null)
 		    for (String eachLine : NameSection.getStringList("Icon.Lore")) {
 			lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
@@ -382,7 +380,7 @@ public class ShopManager {
 		Sitem.setRequiredTotalLevels(NameSection.getInt("RequiredTotalLevels"));
 
 	    if (NameSection.isList("RequiredJobLevels")) {
-		HashMap<String, Integer> RequiredJobs = new HashMap<String, Integer>();
+		HashMap<String, Integer> RequiredJobs = new HashMap<>();
 		for (String one : NameSection.getStringList("RequiredJobLevels")) {
 		    if (!one.contains("-"))
 			continue;
@@ -400,7 +398,7 @@ public class ShopManager {
 	    }
 
 	    if (NameSection.isList("PerformCommands")) {
-		List<String> cmd = new ArrayList<String>();
+		List<String> cmd = new ArrayList<>();
 		if (NameSection.getStringList("PerformCommands") != null)
 		    for (String eachLine : NameSection.getStringList("PerformCommands")) {
 			cmd.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
@@ -412,7 +410,7 @@ public class ShopManager {
 		ConfigurationSection itemsSection = NameSection.getConfigurationSection("GiveItems");
 		Set<String> itemKeys = itemsSection.getKeys(false);
 
-		List<JobItems> items = new ArrayList<JobItems>();
+		List<JobItems> items = new ArrayList<>();
 
 		for (String oneItemName : itemKeys) {
 
@@ -434,13 +432,13 @@ public class ShopManager {
 		    if (itemSection.isString("Name"))
 			name = org.bukkit.ChatColor.translateAlternateColorCodes('&', itemSection.getString("Name"));
 
-		    List<String> lore = new ArrayList<String>();
+		    List<String> lore = new ArrayList<>();
 		    if (itemSection.getStringList("Lore") != null)
 			for (String eachLine : itemSection.getStringList("Lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
-		    HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
 		    if (itemSection.getStringList("Enchants") != null)
 			for (String eachLine : itemSection.getStringList("Enchants")) {
 

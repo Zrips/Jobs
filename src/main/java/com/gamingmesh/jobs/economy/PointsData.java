@@ -7,7 +7,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 
 public class PointsData {
 
-    HashMap<UUID, PlayerPoints> Pointbase = new HashMap<UUID, PlayerPoints>();
+    HashMap<UUID, PlayerPoints> Pointbase = new HashMap<>();
 
     public PointsData() {
     }

@@ -11,7 +11,6 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.container.JobItemBonus;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;

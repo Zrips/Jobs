@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class ArchivedJobs {
 
-    private Set<JobProgression> jobs = new HashSet<JobProgression>();
+    private Set<JobProgression> jobs = new HashSet<>();
 
     public Set<JobProgression> getArchivedJobs() {
 	return jobs;

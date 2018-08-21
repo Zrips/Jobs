@@ -8,7 +8,7 @@ import com.gamingmesh.jobs.container.Job;
 public class GuiInfoList {
 
     String name;
-    List<Job> jobList = new ArrayList<Job>();
+    List<Job> jobList = new ArrayList<>();
     Boolean jobInfo = false;
     int backButton = 27;
 

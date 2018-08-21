@@ -20,7 +20,6 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class ScheduleManager {
@@ -180,7 +179,7 @@ public class ScheduleManager {
 	if (!conf.contains("Boost"))
 	    return;
 
-	ArrayList<String> sections = new ArrayList<String>(conf.getConfigurationSection("Boost").getKeys(false));
+	ArrayList<String> sections = new ArrayList<>(conf.getConfigurationSection("Boost").getKeys(false));
 
 	for (String OneSection : sections) {
 	    ConfigurationSection path = conf.getConfigurationSection("Boost." + OneSection);

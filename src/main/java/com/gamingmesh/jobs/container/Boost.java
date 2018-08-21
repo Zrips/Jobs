@@ -6,7 +6,7 @@ import com.gamingmesh.jobs.PlayerManager.BoostOf;
 
 public class Boost {
 
-    HashMap<BoostOf, BoostMultiplier> map = new HashMap<BoostOf, BoostMultiplier>();
+    HashMap<BoostOf, BoostMultiplier> map = new HashMap<>();
 
     public Boost() {
 	for (BoostOf one : BoostOf.values()) {

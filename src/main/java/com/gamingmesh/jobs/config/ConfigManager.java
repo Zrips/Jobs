@@ -32,7 +32,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -58,7 +57,6 @@ import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class ConfigManager {
@@ -363,12 +361,11 @@ public class ConfigManager {
      * loads from Jobs/jobConfig.yml
      * @throws IOException 
      */
-    @SuppressWarnings("deprecation")
     private void loadJobSettings() throws IOException {
 	File f = new File(plugin.getDataFolder(), "jobConfig.yml");
 	InputStreamReader s = new InputStreamReader(new FileInputStream(f), "UTF-8");
 
-	ArrayList<Job> jobs = new ArrayList<Job>();
+	ArrayList<Job> jobs = new ArrayList<>();
 	Jobs.setJobs(jobs);
 	Jobs.setNoneJob(null);
 	if (!f.exists()) {
@@ -446,7 +443,7 @@ public class ConfigManager {
 
 	    String description = org.bukkit.ChatColor.translateAlternateColorCodes('&', jobSection.getString("description", ""));
 
-	    List<String> fDescription = new ArrayList<String>();
+	    List<String> fDescription = new ArrayList<>();
 	    if (jobSection.contains("FullDescription")) {
 		if (jobSection.isString("FullDescription"))
 		    fDescription.add(jobSection.getString("FullDescription"));
@@ -564,7 +561,7 @@ public class ConfigManager {
 	    }
 
 	    // Permissions
-	    ArrayList<JobPermission> jobPermissions = new ArrayList<JobPermission>();
+	    ArrayList<JobPermission> jobPermissions = new ArrayList<>();
 	    ConfigurationSection permissionsSection = jobSection.getConfigurationSection("permissions");
 	    if (permissionsSection != null) {
 		for (String permissionKey : permissionsSection.getKeys(false)) {
@@ -582,7 +579,7 @@ public class ConfigManager {
 	    }
 
 	    // Conditions
-	    ArrayList<JobConditions> jobConditions = new ArrayList<JobConditions>();
+	    ArrayList<JobConditions> jobConditions = new ArrayList<>();
 	    ConfigurationSection conditionsSection = jobSection.getConfigurationSection("conditions");
 	    if (conditionsSection != null) {
 		for (String ConditionKey : conditionsSection.getKeys(false)) {
@@ -605,19 +602,19 @@ public class ConfigManager {
 	    }
 
 	    // Command on leave
-	    List<String> JobsCommandOnLeave = new ArrayList<String>();
+	    List<String> JobsCommandOnLeave = new ArrayList<>();
 	    if (jobSection.isList("cmd-on-leave")) {
 		JobsCommandOnLeave = jobSection.getStringList("cmd-on-leave");
 	    }
 
 	    // Command on join
-	    List<String> JobsCommandOnJoin = new ArrayList<String>();
+	    List<String> JobsCommandOnJoin = new ArrayList<>();
 	    if (jobSection.isList("cmd-on-join")) {
 		JobsCommandOnJoin = jobSection.getStringList("cmd-on-join");
 	    }
 
 	    // Commands
-	    ArrayList<JobCommands> jobCommand = new ArrayList<JobCommands>();
+	    ArrayList<JobCommands> jobCommand = new ArrayList<>();
 	    ConfigurationSection commandsSection = jobSection.getConfigurationSection("commands");
 	    if (commandsSection != null) {
 		for (String commandKey : commandsSection.getKeys(false)) {
@@ -628,7 +625,7 @@ public class ConfigManager {
 			Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid command key" + commandKey + "!");
 			continue;
 		    }
-		    List<String> commands = new ArrayList<String>();
+		    List<String> commands = new ArrayList<>();
 		    if (commandSection.isString("command"))
 			commands.add(commandSection.getString("command"));
 		    else if (commandSection.isList("command"))
@@ -640,7 +637,7 @@ public class ConfigManager {
 	    }
 
 	    // Items
-	    HashMap<String, JobItems> jobItems = new HashMap<String, JobItems>();
+	    HashMap<String, JobItems> jobItems = new HashMap<>();
 	    ConfigurationSection itemsSection = jobSection.getConfigurationSection("items");
 	    if (itemsSection != null) {
 		for (String itemKey : itemsSection.getKeys(false)) {
@@ -657,13 +654,13 @@ public class ConfigManager {
 		    if (itemSection.isString("name"))
 			name = itemSection.getString("name");
 
-		    List<String> lore = new ArrayList<String>();
+		    List<String> lore = new ArrayList<>();
 		    if (itemSection.getStringList("lore") != null)
 			for (String eachLine : itemSection.getStringList("lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
-		    HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
 		    if (itemSection.getStringList("enchants") != null)
 			for (String eachLine : itemSection.getStringList("enchants")) {
 
@@ -695,7 +692,7 @@ public class ConfigManager {
 	    }
 
 	    // Limited Items
-	    ArrayList<JobLimitedItems> jobLimitedItems = new ArrayList<JobLimitedItems>();
+	    ArrayList<JobLimitedItems> jobLimitedItems = new ArrayList<>();
 	    ConfigurationSection LimitedItemsSection = jobSection.getConfigurationSection("limitedItems");
 	    if (LimitedItemsSection != null) {
 		for (String itemKey : LimitedItemsSection.getKeys(false)) {
@@ -712,13 +709,13 @@ public class ConfigManager {
 		    if (itemSection.isString("name"))
 			name = itemSection.getString("name");
 
-		    List<String> lore = new ArrayList<String>();
+		    List<String> lore = new ArrayList<>();
 		    if (itemSection.getStringList("lore") != null)
 			for (String eachLine : itemSection.getStringList("lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
-		    HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
 		    if (itemSection.getStringList("enchants") != null)
 			for (String eachLine : itemSection.getStringList("enchants")) {
 
@@ -753,7 +750,7 @@ public class ConfigManager {
 
 	    if (jobSection.contains("Quests")) {
 
-		List<Quest> quests = new ArrayList<Quest>();
+		List<Quest> quests = new ArrayList<>();
 		ConfigurationSection qsection = jobSection.getConfigurationSection("Quests");
 
 		for (String one : qsection.getKeys(false)) {
@@ -816,7 +813,7 @@ public class ConfigManager {
 
 	    for (ActionType actionType : ActionType.values()) {
 		ConfigurationSection typeSection = jobSection.getConfigurationSection(actionType.getName());
-		ArrayList<JobInfo> jobInfo = new ArrayList<JobInfo>();
+		ArrayList<JobInfo> jobInfo = new ArrayList<>();
 		if (typeSection != null) {
 		    for (String key : typeSection.getKeys(false)) {
 			ConfigurationSection section = typeSection.getConfigurationSection(key);

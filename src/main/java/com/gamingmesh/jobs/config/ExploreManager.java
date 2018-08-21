@@ -2,11 +2,8 @@ package com.gamingmesh.jobs.config;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,11 +15,10 @@ import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.dao.JobsDAO.ExploreDataTableFields;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class ExploreManager {
 
-    private HashMap<String, ExploreRegion> worlds = new HashMap<String, ExploreRegion>();
+    private HashMap<String, ExploreRegion> worlds = new HashMap<>();
     private boolean exploreEnabled = false;
     private int playerAmount = 1;
 

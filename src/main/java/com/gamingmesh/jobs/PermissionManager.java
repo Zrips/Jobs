@@ -32,7 +32,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class PermissionManager {
 
-    HashMap<String, Integer> permDelay = new HashMap<String, Integer>();
+    HashMap<String, Integer> permDelay = new HashMap<>();
 
     private enum prm {
 //	jobs_join_JOBNAME(remade("jobs.join.%JOBNAME%"), 60 * 1000),
@@ -70,7 +70,7 @@ public class PermissionManager {
 	}
 
 	private static List<String> remade(String perm) {
-	    List<String> perms = new ArrayList<String>();
+	    List<String> perms = new ArrayList<>();
 	    for (Job oneJ : Jobs.getJobs()) {
 		String t = perm;
 		if (t.contains("%JOBNAME%"))
@@ -107,7 +107,7 @@ public class PermissionManager {
     }
 
     private static HashMap<String, Boolean> getAll(Player player) {
-	HashMap<String, Boolean> mine = new HashMap<String, Boolean>();
+	HashMap<String, Boolean> mine = new HashMap<>();
 	for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
 	    if (permission.getPermission().startsWith("jobs."))
 		mine.put(permission.getPermission(), permission.getValue());

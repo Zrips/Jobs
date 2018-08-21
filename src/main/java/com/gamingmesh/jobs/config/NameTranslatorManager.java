@@ -20,10 +20,10 @@ public class NameTranslatorManager {
 
     private Jobs plugin;
 
-    public ArrayList<NameList> ListOfNames = new ArrayList<NameList>();
-    public ArrayList<NameList> ListOfEntities = new ArrayList<NameList>();
-    public ArrayList<NameList> ListOfEnchants = new ArrayList<NameList>();
-    public ArrayList<NameList> ListOfColors = new ArrayList<NameList>();
+    public ArrayList<NameList> ListOfNames = new ArrayList<>();
+    public ArrayList<NameList> ListOfEntities = new ArrayList<>();
+    public ArrayList<NameList> ListOfEnchants = new ArrayList<>();
+    public ArrayList<NameList> ListOfColors = new ArrayList<>();
 
     public NameTranslatorManager(Jobs plugin) {
 	this.plugin = plugin;

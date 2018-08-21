@@ -14,7 +14,7 @@ public class Sorting {
     public static Map<String, Integer> sortDESC(Map<String, Integer> unsortMap) {
 
 	// Convert Map to List
-	List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+	List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
 
 	// Sort list with comparator, to compare the Map values
 	Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
@@ -25,7 +25,7 @@ public class Sorting {
 	});
 
 	// Convert sorted map back to a Map
-	Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+	Map<String, Integer> sortedMap = new LinkedHashMap<>();
 	for (Iterator<Map.Entry<String, Integer>> it = list.iterator(); it.hasNext();) {
 	    Map.Entry<String, Integer> entry = it.next();
 	    sortedMap.put(entry.getKey(), entry.getValue());
@@ -36,7 +36,7 @@ public class Sorting {
     public static Map<String, Double> sortDoubleDESC(Map<String, Double> unsortMap) {
 
 	// Convert Map to List
-	List<Map.Entry<String, Double>> list = new LinkedList<Map.Entry<String, Double>>(unsortMap.entrySet());
+	List<Map.Entry<String, Double>> list = new LinkedList<>(unsortMap.entrySet());
 
 	// Sort list with comparator, to compare the Map values
 	Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
@@ -47,7 +47,7 @@ public class Sorting {
 	});
 
 	// Convert sorted map back to a Map
-	Map<String, Double> sortedMap = new LinkedHashMap<String, Double>();
+	Map<String, Double> sortedMap = new LinkedHashMap<>();
 	for (Iterator<Map.Entry<String, Double>> it = list.iterator(); it.hasNext();) {
 	    Map.Entry<String, Double> entry = it.next();
 	    sortedMap.put(entry.getKey(), entry.getValue());
@@ -58,7 +58,7 @@ public class Sorting {
     public static Map<LogAmounts, Double> sortDoubleDESCByLog(Map<LogAmounts, Double> unsortMap) {
 
 	// Convert Map to List
-	List<Map.Entry<LogAmounts, Double>> list = new LinkedList<Map.Entry<LogAmounts, Double>>(unsortMap.entrySet());
+	List<Map.Entry<LogAmounts, Double>> list = new LinkedList<>(unsortMap.entrySet());
 
 	// Sort list with comparator, to compare the Map values
 	Collections.sort(list, new Comparator<Map.Entry<LogAmounts, Double>>() {
@@ -69,7 +69,7 @@ public class Sorting {
 	});
 
 	// Convert sorted map back to a Map
-	Map<LogAmounts, Double> sortedMap = new LinkedHashMap<LogAmounts, Double>();
+	Map<LogAmounts, Double> sortedMap = new LinkedHashMap<>();
 	for (Iterator<Map.Entry<LogAmounts, Double>> it = list.iterator(); it.hasNext();) {
 	    Map.Entry<LogAmounts, Double> entry = it.next();
 	    sortedMap.put(entry.getKey(), entry.getValue());
@@ -80,7 +80,7 @@ public class Sorting {
     public static Map<String, Integer> sortASC(Map<String, Integer> unsortMap) {
 
 	// Convert Map to List
-	List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+	List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
 
 	// Sort list with comparator, to compare the Map values
 	Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
@@ -91,7 +91,7 @@ public class Sorting {
 	});
 
 	// Convert sorted map back to a Map
-	Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+	Map<String, Integer> sortedMap = new LinkedHashMap<>();
 	for (Iterator<Map.Entry<String, Integer>> it = list.iterator(); it.hasNext();) {
 	    Map.Entry<String, Integer> entry = it.next();
 	    sortedMap.put(entry.getKey(), entry.getValue());

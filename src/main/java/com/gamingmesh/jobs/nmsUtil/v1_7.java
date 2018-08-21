@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.nmsUtil;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.block.Block;
@@ -20,7 +19,7 @@ import com.gamingmesh.jobs.NMS;
 public class v1_7 implements NMS {
     @Override
     public List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
-	List<Block> blocks = new ArrayList<Block>();
+	List<Block> blocks = new ArrayList<>();
 	blocks.add(event.getBlock());
 	return blocks;
     }
@@ -52,7 +51,6 @@ public class v1_7 implements NMS {
 	return name;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public ItemStack getItemInMainHand(Player player) {
 	return player.getInventory().getItemInHand();

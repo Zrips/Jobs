@@ -148,14 +148,14 @@ public class JobProgression {
      * Reloads max experience
      */
     public void reloadMaxExperience() {
-	HashMap<String, Double> param = new HashMap<String, Double>();
+	HashMap<String, Double> param = new HashMap<>();
 	param.put("joblevel", (double) level);
 	param.put("numjobs", (double) jPlayer.getJobProgression().size());
 	this.maxExperience = (int) job.getMaxExp(param);
     }
 
     public int getMaxExperience(int level) {
-	HashMap<String, Double> param = new HashMap<String, Double>();
+	HashMap<String, Double> param = new HashMap<>();
 	param.put("joblevel", (double) level);
 	param.put("numjobs", (double) jPlayer.getJobProgression().size());
 	return (int) job.getMaxExp(param);

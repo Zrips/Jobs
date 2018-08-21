@@ -63,17 +63,17 @@ import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
 //    private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
-    private ConcurrentHashMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<String, JobsPlayer>();
-    private ConcurrentHashMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<UUID, JobsPlayer>();
-    private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<String, JobsPlayer>();
-    private ConcurrentHashMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<UUID, JobsPlayer>();
+    private ConcurrentHashMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<>();
 
     private PointsData PointsDatabase = new PointsData();
     private final String mobSpawnerMetadata = "jobsMobSpawner";
 
-    private HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<UUID, PlayerInfo>();
-    private HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<Integer, PlayerInfo>();
-    private HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<String, PlayerInfo>();
+    private HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<>();
+    private HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<>();
+    private HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<>();
     Jobs plugin;
 
     public PlayerManager(Jobs plugin) {
@@ -214,7 +214,7 @@ public class PlayerManager {
 	 * 2) Perform save on all players on copied list.
 	 * 3) Garbage collect the real list to remove any offline players with saved data
 	 */
-	ArrayList<JobsPlayer> list = new ArrayList<JobsPlayer>(this.players.values());
+	ArrayList<JobsPlayer> list = new ArrayList<>(this.players.values());
 
 	for (JobsPlayer jPlayer : list) {
 	    jPlayer.save();
@@ -414,7 +414,7 @@ public class PlayerManager {
      * @param jPlayer
      */
     public void leaveAllJobs(JobsPlayer jPlayer) {
-	List<JobProgression> jobs = new ArrayList<JobProgression>();
+	List<JobProgression> jobs = new ArrayList<>();
 	jobs.addAll(jPlayer.getJobProgression());
 	for (JobProgression job : jobs) {
 	    leaveJob(jPlayer, job.getJob());
@@ -729,7 +729,7 @@ public class PlayerManager {
 	}
     }
 
-    HashMap<UUID, HashMap<Job, ItemBonusCache>> cache = new HashMap<UUID, HashMap<Job, ItemBonusCache>>();
+    HashMap<UUID, HashMap<Job, ItemBonusCache>> cache = new HashMap<>();
 
     public void resetiItemBonusCache(UUID uuid) {
 	cache.remove(uuid);

@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.commands.list;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;

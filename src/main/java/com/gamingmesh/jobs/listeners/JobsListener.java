@@ -81,14 +81,13 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent.EquipMethod;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class JobsListener implements Listener {
     // hook to the main plugin
     private Jobs plugin;
 
-    private HashMap<UUID, Long> interactDelay = new HashMap<UUID, Long>();
+    private HashMap<UUID, Long> interactDelay = new HashMap<>();
 
     public JobsListener(Jobs plugin) {
 	this.plugin = plugin;
@@ -662,7 +661,7 @@ public class JobsListener implements Listener {
 	String name = null;
 	List<String> lore = new ArrayList<String>();
 
-	Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+	Map<Enchantment, Integer> enchants = new HashMap<>();
 	try {
 	    enchants = iih.getEnchantments();
 	} catch (Exception e) {
@@ -834,8 +833,6 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event) {
-//	if (event.isCancelled())
-//	    return;
 
 	Action action = event.getAction();
 	if (action == Action.PHYSICAL)

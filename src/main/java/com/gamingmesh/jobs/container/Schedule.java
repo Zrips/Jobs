@@ -22,13 +22,13 @@ public class Schedule {
 
     String Name = null;
 
-    List<String> Days = new ArrayList<String>(Arrays.asList("all"));
-    List<Job> JobsList = new ArrayList<Job>();
+    List<String> Days = new ArrayList<>(Arrays.asList("all"));
+    List<Job> JobsList = new ArrayList<>();
 
-    List<String> MessageOnStart = new ArrayList<String>();
-    List<String> MessageOnStop = new ArrayList<String>();
+    List<String> MessageOnStart = new ArrayList<>();
+    List<String> MessageOnStop = new ArrayList<>();
 
-    List<String> MessageToBroadcast = new ArrayList<String>();
+    List<String> MessageToBroadcast = new ArrayList<>();
 
     boolean started = false;
     boolean stoped = true;
@@ -173,7 +173,7 @@ public class Schedule {
     }
 
     public void setMessageOnStart(List<String> msg, String From, String Until) {
-	List<String> temp = new ArrayList<String>();
+	List<String> temp = new ArrayList<>();
 	for (String one : msg) {
 	    temp.add(ChatColor.translateAlternateColorCodes('&', one.replace("[until]", Until).replace("[from]", From)));
 	}
@@ -185,7 +185,7 @@ public class Schedule {
     }
 
     public void setMessageOnStop(List<String> msg, String From, String Until) {
-	List<String> temp = new ArrayList<String>();
+	List<String> temp = new ArrayList<>();
 	for (String one : msg) {
 	    temp.add(ChatColor.translateAlternateColorCodes('&', one.replace("[until]", Until).replace("[from]", From)));
 	}
@@ -197,7 +197,7 @@ public class Schedule {
     }
 
     public void setMessageToBroadcast(List<String> msg, String From, String Until) {
-	List<String> temp = new ArrayList<String>();
+	List<String> temp = new ArrayList<>();
 	for (String one : msg) {
 	    temp.add(ChatColor.translateAlternateColorCodes('&', one.replace("[until]", Until).replace("[from]", From)));
 	}

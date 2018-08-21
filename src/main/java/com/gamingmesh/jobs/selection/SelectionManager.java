@@ -14,8 +14,8 @@ public class SelectionManager {
     public static final int MIN_HEIGHT = 0;
 
     public SelectionManager() {
-	playerLoc1 = Collections.synchronizedMap(new HashMap<String, Location>());
-	playerLoc2 = Collections.synchronizedMap(new HashMap<String, Location>());
+	playerLoc1 = Collections.synchronizedMap(new HashMap<>());
+	playerLoc2 = Collections.synchronizedMap(new HashMap<>());
     }
 
     public void updateLocations(Player player, Location loc1, Location loc2) {
