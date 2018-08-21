@@ -1,3 +1,6 @@
+/**
+ * Copyright (C) 2017 Zrips
+ */
 package com.gamingmesh.jobs.CMILib;
 
 import org.bukkit.Color;

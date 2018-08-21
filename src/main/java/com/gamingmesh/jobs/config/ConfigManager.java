@@ -180,7 +180,7 @@ public class ConfigManager {
 	    myKey = myKey.split("-")[0];
 	}
 
-	CMIMaterial material = CMIMaterial.get(myKey);
+	CMIMaterial material = CMIMaterial.get(myKey + (subType));
 
 	if (material == null)
 	    material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
@@ -228,8 +228,8 @@ public class ConfigManager {
 	    // Break and Place actions MUST be blocks
 	    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE) {
 		if (!material.isBlock()) {
-		    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey
-			+ "! Material must be a block!");
+		    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
+			+ "(" + myKey + ")! Material must be a block!");
 		    return null;
 		}
 	    }
@@ -878,8 +878,8 @@ public class ConfigManager {
 			    // Break and Place actions MUST be blocks
 			    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE) {
 				if (!material.isBlock()) {
-				    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key
-					+ "! Material must be a block!");
+				    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + material
+					+ " (" + key + ")! Material must be a block!");
 				    continue;
 				}
 			    }
@@ -1042,7 +1042,7 @@ public class ConfigManager {
 			case EAT:
 			case CRAFT:
 			case BREAK:
-			    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)){
+			    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)) {
 				subType = "";
 				meta = "";
 			    }

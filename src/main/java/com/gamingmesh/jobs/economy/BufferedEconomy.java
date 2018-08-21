@@ -37,7 +37,7 @@ public class BufferedEconomy {
     private Jobs plugin;
     private Economy economy;
     private LinkedBlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<>();
-    private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<>());
+    private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<UUID, BufferedPayment>());
 
     private OfflinePlayer ServerAccount = null;
     private OfflinePlayer ServerTaxesAccount = null;

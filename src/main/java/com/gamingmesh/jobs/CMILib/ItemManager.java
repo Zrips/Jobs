@@ -1,3 +1,6 @@
+/**
+ * Copyright (C) 2017 Zrips
+ */
 package com.gamingmesh.jobs.CMILib;
 
 import java.util.ArrayList;
@@ -744,8 +747,8 @@ public class ItemManager {
 	CHORUS_FLOWER(200, 0, 28542, "Chorus Flower", "CHORUS_FLOWER"),
 	CHORUS_FRUIT(432, 0, 7652, "Chorus Fruit", ""),
 	CHORUS_PLANT(199, 0, 28243, "Chorus Plant", "CHORUS_PLANT"),
-	CLAY(82, 0, 27880, "Clay", "CLAY"),
-	CLAY_BALL(337, 0, 24603, "Clay Ball", "Clay"),
+	CLAY(82, 0, 27880, "Clay", "Clay Block"),
+	CLAY_BALL(337, 0, 24603, "Clay Ball"),
 	CLOCK(347, 0, 14980, "Clock", "watch"),
 	COAL(263, 0, 29067, "Coal", ""),
 	COAL_BLOCK(173, 0, 27968, "Block of Coal", "COAL_BLOCK"),
