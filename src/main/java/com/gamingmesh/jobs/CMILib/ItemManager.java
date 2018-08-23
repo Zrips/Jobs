@@ -1098,7 +1098,7 @@ public class ItemManager {
 	MAP(395, 0, 21655, "Empty Map", "EMPTY_MAP"),
 	MELON(103, 0, 25172, "Melon", "Melon_Block"),
 	MELON_SEEDS(362, 0, 18340, "Melon Seeds", ""),
-	MELON_SLICE(360, 0, 5347, "Melon", "Melon Slice"),
+	MELON_SLICE(360, 0, 5347, "Melon Slice", ""),
 	MELON_STEM(105, 0, 8247, "Melon Stem", "MELON_STEM"),
 	MILK_BUCKET(335, 0, 9680, "Milk Bucket", ""),
 	MINECART(328, 0, 14352, "Minecart", ""),
