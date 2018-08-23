@@ -55,7 +55,7 @@ public class log implements Cmd {
 	    return true;
 	}
 
-	Map<String, Double> unsortMap = new HashMap<String, Double>();
+	Map<String, Double> unsortMap = new HashMap<>();
 
 	for (Entry<String, Log> l : logList.entrySet()) {
 	    Log one = l.getValue();

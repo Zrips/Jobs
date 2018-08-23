@@ -39,7 +39,7 @@ public class itembonus implements Cmd {
 
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 
-	List<ItemStack> items = new ArrayList<ItemStack>();
+	List<ItemStack> items = new ArrayList<>();
 
 	if (iih != null && !iih.getType().equals(Material.AIR))
 	    items.add(iih);

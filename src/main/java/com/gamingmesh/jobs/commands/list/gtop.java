@@ -63,7 +63,7 @@ public class gtop implements Cmd {
 	    }
 	} else {
 
-	    List<String> ls = new ArrayList<String>();
+	    List<String> ls = new ArrayList<>();
 
 	    int i = st;
 	    for (TopList one : FullList) {

@@ -30,7 +30,7 @@ public class glog implements Cmd {
 	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 	    @Override
 	    public void run() {
-		Map<LogAmounts, Double> unsortMap = new HashMap<LogAmounts, Double>();
+		Map<LogAmounts, Double> unsortMap = new HashMap<>();
 
 		int time = TimeManage.timeInInt();
 

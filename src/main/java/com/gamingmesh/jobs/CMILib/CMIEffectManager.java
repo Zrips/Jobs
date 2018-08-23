@@ -136,6 +136,7 @@ public class CMIEffectManager {
 	private Effect effect;
 	private Object EnumParticle;
 	private int[] extra;
+	@SuppressWarnings("unused")
 	private CMIParticleDataType dataType = CMIParticleDataType.Void;
 
 	CMIParticle(String name, int id, CMIParticleType type) {

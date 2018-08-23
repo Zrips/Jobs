@@ -87,7 +87,8 @@ public class ItemReflection {
 	try {
 	    Object nmsStack = asNMSCopy(item);
 	    Method itemMeth = Item.getMethod("getById", int.class);
-	    Object res = itemMeth.invoke(Item, item.getType().getId());
+	    @SuppressWarnings("deprecation")
+		Object res = itemMeth.invoke(Item, item.getType().getId());
 
 	    String ff = "b";
 	    switch (Jobs.getVersionCheckManager().getVersion()) {
@@ -135,7 +136,8 @@ public class ItemReflection {
 	try {
 	    Object nmsStack = asNMSCopy(item);
 	    Method itemMeth = Item.getMethod("getById", int.class);
-	    Object res = itemMeth.invoke(Item, item.getType().getId());
+	    @SuppressWarnings("deprecation")
+		Object res = itemMeth.invoke(Item, item.getType().getId());
 	    Method nameThingy = Item.getMethod("j", IStack);
 	    Object resThingy = nameThingy.invoke(res, nmsStack);
 	    return resThingy.toString();

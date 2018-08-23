@@ -65,7 +65,7 @@ public class quests implements Cmd {
 		    "[required]", q.getQuest().getAmount());
 
 		List<String> hoverMsgs = Jobs.getLanguage().getMessageList("command.quests.output.hover");
-		List<String> hoverList = new ArrayList<String>();
+		List<String> hoverList = new ArrayList<>();
 
 		for (int i = 0; i < hoverMsgs.size(); i++) {
 		    String current = hoverMsgs.get(i);

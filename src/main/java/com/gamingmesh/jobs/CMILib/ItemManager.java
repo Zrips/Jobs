@@ -32,7 +32,8 @@ public class ItemManager {
     static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<>();
     static final Version version = Jobs.getVersionCheckManager().getVersion();
 
-    public static void load() {
+    @SuppressWarnings("deprecation")
+	public static void load() {
 
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one == null)
@@ -127,7 +128,8 @@ public class ItemManager {
 
     static HashMap<String, ItemStack> headCache = new HashMap<>();
 
-    public static CMIItemStack getItem(String name) {
+    @SuppressWarnings("deprecation")
+	public static CMIItemStack getItem(String name) {
 	if (byBukkitName.isEmpty())
 	    load();
 	CMIItemStack cm = null;
@@ -182,7 +184,7 @@ public class ItemManager {
 		    if (d.length() == 36) {
 			try {
 			    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(d));
-			    skullMeta.setOwningPlayer(offPlayer);
+			    skullMeta.setOwner(offPlayer.getName());
 			} catch (Exception e) {
 			    break main;
 			}
@@ -308,7 +310,8 @@ public class ItemManager {
 	return results;
     }
 
-    static public Material getMaterial(String name) {
+    @SuppressWarnings("deprecation")
+	static public Material getMaterial(String name) {
 	CMIItemStack cm = getItem(name);
 	if (cm == null)
 	    return Material.AIR;
@@ -1522,6 +1525,7 @@ public class ItemManager {
 	    return mat == null ? null : mat;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void updateMaterial() {
 	    if (mat == null) {
 		for (Material one : Material.class.getEnumConstants()) {
@@ -1557,6 +1561,7 @@ public class ItemManager {
 	    }
 	}
 
+	@SuppressWarnings("deprecation")
 	public ItemStack newItemStack() {
 	    if (mat == null) {
 		for (Material one : Material.class.getEnumConstants()) {
@@ -1699,6 +1704,7 @@ public class ItemManager {
 	    return CMIMaterial.NONE;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static CMIMaterial get(Material mat) {
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.getMaterial() == null)
@@ -1710,6 +1716,7 @@ public class ItemManager {
 	    return CMIMaterial.NONE;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static CMIMaterial get(int id) {
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.getMaterial() == null)
@@ -1731,7 +1738,8 @@ public class ItemManager {
 //		int tid = CMI.getInstance().getNMS().getEggId(item);
 //		return get(item.getType().getId(), tid);
 //	    }
-	    CMIMaterial m = get(item.getType().getId(), item.getData().getData());
+	    @SuppressWarnings("deprecation")
+		CMIMaterial m = get(item.getType().getId(), item.getData().getData());
 
 	    if (m == null) {
 		CMIItemStack cm = byBukkitName.get(item.getType().toString().toLowerCase().replace("_", ""));
@@ -1743,7 +1751,8 @@ public class ItemManager {
 	}
 
 	public static CMIMaterial get(Block block) {
-	    CMIMaterial m = get(block.getType().getId(), block.getData());
+	    @SuppressWarnings("deprecation")
+		CMIMaterial m = get(block.getType().getId(), block.getData());
 	    if (m == null) {
 		CMIItemStack cm = byBukkitName.get(block.getType().toString().replace("_", "").toLowerCase());
 		if (cm != null)
@@ -2304,7 +2313,8 @@ public class ItemManager {
 	}
     }
 
-    private static SlabType checkSlab(Block block) {
+    @SuppressWarnings("deprecation")
+	private static SlabType checkSlab(Block block) {
 	if (!CMIMaterial.isSlab(block.getType()))
 	    return SlabType.NOTSLAB;
 

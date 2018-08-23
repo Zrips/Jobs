@@ -114,6 +114,8 @@ public class NameTranslatorManager {
 
 	    case MMKILL:
 		return Jobs.getMythicManager().getDisplayName(materialName);
+		default:
+			break;
 	    }
 
 	return materialName;
@@ -180,7 +182,7 @@ public class NameTranslatorManager {
 	    file.renameTo(file2);
 
 	// Just copying default language files, except en, that one will be generated
-	List<String> languages = new ArrayList<String>();
+	List<String> languages = new ArrayList<>();
 
 	try {
 	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "Words_"));

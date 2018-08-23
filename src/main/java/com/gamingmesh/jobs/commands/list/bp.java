@@ -34,7 +34,7 @@ public class bp implements Cmd {
 
 	Location loc = player.getLocation();
 
-	final List<Block> changedBlocks = new ArrayList<Block>();
+	final List<Block> changedBlocks = new ArrayList<>();
 
 	for (int x = -10; x < 10; x++) {
 	    for (int y = -10; y < 10; y++) {

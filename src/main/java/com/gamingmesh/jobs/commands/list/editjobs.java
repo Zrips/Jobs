@@ -26,7 +26,8 @@ import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class editjobs implements Cmd {
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     @JobCommand(475)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 

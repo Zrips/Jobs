@@ -30,7 +30,7 @@ public class LanguageManager {
     }
 
     public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
-	List<String> result = new ArrayList<String>();
+	List<String> result = new ArrayList<>();
 	try {
 	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
 		try {

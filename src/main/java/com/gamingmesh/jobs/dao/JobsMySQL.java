@@ -10,7 +10,8 @@ import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
 public class JobsMySQL extends JobsDAO {
     private String database;
-    private Jobs plugin;
+    @SuppressWarnings("unused")
+	private Jobs plugin;
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl) {
 	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?autoReconnect=true&useSSL=" + ssl + "&verifyServerCertificate=" + certificate, username, password, prefix);

@@ -22,7 +22,7 @@ public class browse implements Cmd {
     public boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
 
 	if (Jobs.getGCManager().BrowseUseNewLook) {
-	    List<Job> jobList = new ArrayList<Job>(Jobs.getJobs());
+	    List<Job> jobList = new ArrayList<>(Jobs.getJobs());
 
 	    if (jobList.size() == 0) {
 		sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
@@ -151,7 +151,7 @@ public class browse implements Cmd {
 
 	} else {
 
-	    ArrayList<String> lines = new ArrayList<String>();
+	    ArrayList<String> lines = new ArrayList<>();
 	    for (Job job : Jobs.getJobs()) {
 		if (Jobs.getGCManager().getHideJobsWithoutPermission()) {
 		    if (!Jobs.getCommandManager().hasJobPermission(sender, job))

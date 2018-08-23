@@ -871,7 +871,8 @@ public class Jobs extends JavaPlugin {
 	this.setEnabled(false);
     }
 
-    @Deprecated
+    @SuppressWarnings("unused")
+	@Deprecated
     private static void checkDailyQuests(JobsPlayer jPlayer, JobProgression prog, ActionInfo info) {
 	checkDailyQuests(jPlayer, prog.getJob(), info);
     }
@@ -1353,5 +1354,9 @@ public class Jobs extends JavaPlugin {
 	    pageCount > CurrentPage ? ">>>" : null, pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : null);
 	if (pageCount != 0)
 	    rm.show(sender);
+    }
+
+    public static boolean isRunning() {
+    	return running;
     }
 }

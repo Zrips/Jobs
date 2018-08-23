@@ -651,7 +651,8 @@ public class JobsPaymentListener implements Listener {
 
     }
 
-    @Deprecated
+    @SuppressWarnings("unused")
+	@Deprecated
     private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack) {
 	return schedulePostDetection(player, compareItem, jPlayer, resultStack, ActionType.CRAFT);
     }

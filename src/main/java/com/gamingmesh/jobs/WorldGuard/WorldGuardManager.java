@@ -18,7 +18,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class WorldGuardManager {
 
-    private Jobs plugin;
+    @SuppressWarnings("unused")
+	private Jobs plugin;
     WorldGuardPlugin wg;
 
     public WorldGuardManager(Jobs plugin) {

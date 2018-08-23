@@ -20,7 +20,8 @@ public class Reflections {
     private Class<?> CraftItemStack;
     private Class<?> Item;
     private Class<?> IStack;
-    private Jobs plugin;
+    @SuppressWarnings("unused")
+	private Jobs plugin;
 
     public Reflections(Jobs plugin) {
 	this.plugin = plugin;
@@ -78,7 +79,8 @@ public class Reflections {
 	try {
 	    Object nmsStack = asNMSCopy(item);
 	    Method itemMeth = Item.getMethod("getById", int.class);
-	    Object res = itemMeth.invoke(Item, item.getType().getId());
+	    @SuppressWarnings("deprecation")
+		Object res = itemMeth.invoke(Item, item.getType().getId());
 
 	    String ff = "b";
 	    switch (Jobs.getVersionCheckManager().getVersion()) {

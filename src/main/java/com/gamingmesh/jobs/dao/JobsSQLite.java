@@ -11,7 +11,8 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
 public class JobsSQLite extends JobsDAO {
-    private Jobs plugin;
+    @SuppressWarnings("unused")
+	private Jobs plugin;
 
     public void initialize() {
 	try {

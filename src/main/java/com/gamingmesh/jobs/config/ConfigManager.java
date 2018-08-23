@@ -166,7 +166,8 @@ public class ConfigManager {
 
     }
 
-    public KeyValues getKeyValue(String myKey, ActionType actionType, String jobName) {
+    @SuppressWarnings("deprecation")
+	public KeyValues getKeyValue(String myKey, ActionType actionType, String jobName) {
 
 	String type = null;
 	String subType = "";
