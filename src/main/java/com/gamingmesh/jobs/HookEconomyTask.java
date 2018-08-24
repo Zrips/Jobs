@@ -50,8 +50,9 @@ public class HookEconomyTask implements Runnable {
 	Bukkit.getServer().getLogger().severe("Vault or Iconomy is required by this plugin for economy support!");
 	Bukkit.getServer().getLogger().severe("Please install them first!");
 	Bukkit.getServer().getLogger().severe("You can find the latest versions here:");
-	Bukkit.getServer().getLogger().severe("http://dev.bukkit.org/bukkit-plugins/vault/");
-	Bukkit.getServer().getLogger().severe("https://dev.bukkit.org/bukkit-plugins/iconomy-7/");
+	Bukkit.getServer().getLogger().severe("http://dev.bukkit.org/projects/vault/");
+	Bukkit.getServer().getLogger().severe("https://dev.bukkit.org/projects/iconomy-7/");
+	Bukkit.getServer().getLogger().severe("https://www.spigotmc.org/resources/vault.34315/");
 	Bukkit.getServer().getLogger().severe("==============================================");
     }
     
@@ -60,7 +61,7 @@ public class HookEconomyTask implements Runnable {
 	if (eco == null)
 	    return false;
 
-	RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+	RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 	if (provider == null)
 	    return false;
 

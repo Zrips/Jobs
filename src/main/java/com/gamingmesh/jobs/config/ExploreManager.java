@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 
@@ -44,9 +42,9 @@ public class ExploreManager {
     public void load() {
 	if (!exploreEnabled)
 	    return;
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loading explorer data");
+	Jobs.consoleMsg("&e[Jobs] Loading explorer data");
 	Jobs.getJobsDAO().loadExplore();
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded explorer data (" + getSize() + ")");
+	Jobs.consoleMsg("&e[Jobs] Loaded explorer data (" + getSize() + ")");
     }
 
     public HashMap<String, ExploreRegion> getWorlds() {

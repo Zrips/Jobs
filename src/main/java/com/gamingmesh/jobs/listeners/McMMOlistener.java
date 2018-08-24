@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.listeners;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -120,13 +119,12 @@ public class McMMOlistener implements Listener {
 	    } catch (ClassNotFoundException e) {
 		// Disabling skill API check;
 		mcMMOPresent = false;
-		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-		    "&e[Jobs] &6mcMMO was found - &cBut your McMMO version is outdated, please update for full support."));
+		Jobs.consoleMsg("&e[Jobs] &6mcMMO was found - &cBut your McMMO version is outdated, please update for full support.");
 		// Still enabling event listener for repair
 		return true;
 	    }
 	    mcMMOPresent = true;
-	    Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6mcMMO was found - Enabling capabilities."));
+	    Jobs.consoleMsg("&e[Jobs] &6mcMMO was found - Enabling capabilities.");
 	    return true;
 	}
 	return false;

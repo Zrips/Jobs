@@ -1066,11 +1066,11 @@ public class ConfigManager {
 	    }
 	}
 
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + Jobs.getJobs().size() + " jobs!");
+	Jobs.consoleMsg("&e[Jobs] Loaded " + Jobs.getJobs().size() + " jobs!");
 	if (!Jobs.getExplore().isExploreEnabled()) {
-	    Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "[Jobs] Explorer jobs manager are not enabled!");
+		Jobs.consoleMsg("&6[Jobs] Explorer jobs manager are not enabled!");
 	} else
-	    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Explorer job manager registered!");
+		Jobs.consoleMsg("&e[Jobs] Explorer job manager registered!");
 	//try {
 	//	conf.save(f);
 	//} catch (IOException e) {

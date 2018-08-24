@@ -92,7 +92,7 @@ public class SignUtil {
     }
 
     public boolean SignUpdate(String JobName) {
-	List<com.gamingmesh.jobs.Signs.Sign> Copy = new ArrayList<com.gamingmesh.jobs.Signs.Sign>(Signs.GetAllSigns().size());
+	List<com.gamingmesh.jobs.Signs.Sign> Copy = new ArrayList<>(Signs.GetAllSigns().size());
 	for (com.gamingmesh.jobs.Signs.Sign foo : Signs.GetAllSigns()) {
 	    Copy.add(foo);
 	}

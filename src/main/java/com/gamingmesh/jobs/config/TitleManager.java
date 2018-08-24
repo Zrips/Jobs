@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -179,6 +178,6 @@ public class TitleManager {
 
 		this.titles.add(new Title(titleName, titleShortName, titleColor, levelReq, jobName));
 	    }
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + titles.size() + " titles!");
+	Jobs.consoleMsg("&e[Jobs] Loaded " + titles.size() + " titles!");
     }
 }

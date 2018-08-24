@@ -5,14 +5,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIItemStack;
 import com.gamingmesh.jobs.CMILib.ItemManager;
 import com.gamingmesh.jobs.container.LocaleReader;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class RestrictedBlockManager {
 
@@ -161,7 +159,7 @@ public class RestrictedBlockManager {
 		    + ".cd"))) {		    
 		    CMIItemStack cm = ItemManager.getItem(c.getC().getString("blocksTimer." + one + ".id"));		    
 		    if ((cm == null) || (!cm.getCMIType().isBlock())) {
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Jobs] Your defined (" + c.getC().getString(new StringBuilder("blocksTimer.").append(one)
+		    Jobs.consoleMsg("&e[Jobs] Your defined (" + c.getC().getString(new StringBuilder("blocksTimer.").append(one)
 			    .append(".id").toString()) + ") protected block id/name is not correct!");
 		    } else {
 			this.restrictedBlocksTimer.put(cm.getId(), c.getC().getInt("blocksTimer." + one + ".cd"));
@@ -171,7 +169,7 @@ public class RestrictedBlockManager {
 	}
 	c.copySetting("blocksTimer");
 
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + this.restrictedBlocksTimer.size() + " protected blocks timers!");
+	Jobs.consoleMsg("&e[Jobs] Loaded " + this.restrictedBlocksTimer.size() + " protected blocks timers!");
 	try {
 	    writer.save(f);
 	} catch (IOException e) {

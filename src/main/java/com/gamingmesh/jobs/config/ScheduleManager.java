@@ -19,7 +19,6 @@ import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class ScheduleManager {
@@ -237,6 +236,6 @@ public class ScheduleManager {
 
 	    Jobs.getGCManager().BoostSchedule.add(sched);
 	}
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");
+	Jobs.consoleMsg("&e[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");
     }
 }

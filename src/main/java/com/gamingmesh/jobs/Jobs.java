@@ -577,7 +577,7 @@ public class Jobs extends JavaPlugin {
 	}
 
 	dao.getMap().clear();
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Preloaded " + Jobs.getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
+	consoleMsg(ChatColor.YELLOW + "[Jobs] Preloaded " + Jobs.getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
 	    / 1000d) * 100) / 100D));
     }
 
@@ -843,8 +843,7 @@ public class Jobs extends JavaPlugin {
 
 	    FurnaceBrewingHandling.load();
 
-	    String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Plugin has been enabled succesfully.");
-	    Bukkit.getServer().getConsoleSender().sendMessage(message);
+	    consoleMsg("&e[Jobs] Plugin has been enabled succesfully.");
 	    lManager.reload();
 
 	    cManager.fillCommands();
@@ -866,8 +865,7 @@ public class Jobs extends JavaPlugin {
 	FurnaceBrewingHandling.save();
 
 	Jobs.shutdown();
-	String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &2Plugin has been disabled succesfully.");
-	Bukkit.getServer().getConsoleSender().sendMessage(message);
+	consoleMsg("&e[Jobs] &2Plugin has been disabled succesfully.");
 	this.setEnabled(false);
     }
 

@@ -256,7 +256,7 @@ public class GuiManager {
 		    tempInv.setItem(i, GuiItem);
 
 		    GuiItem = job.getGuiItem();
-		    Lore = new ArrayList<String>();
+		    Lore = new ArrayList<>();
 		    Lore.add(ChatColor.translateAlternateColorCodes('&', "&e" + Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase()
 			+ ".info")));
 		    i++;

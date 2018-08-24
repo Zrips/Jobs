@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -14,7 +13,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.NameList;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class NameTranslatorManager {
 
@@ -135,7 +133,7 @@ public class NameTranslatorManager {
 	    ListOfNames.add(new NameList(id, meta, Name, MCName));
 	}
 
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + ListOfNames.size() + " custom item names!");
+	Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfNames.size() + " custom item names!");
 
 	section = ItemFile.getConfig().getConfigurationSection("EntityList");
 	keys = section.getKeys(false);
@@ -147,7 +145,7 @@ public class NameTranslatorManager {
 	    String Name = section.getString(one + ".Name");
 	    ListOfEntities.add(new NameList(id, meta, Name, MCName));
 	}
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + ListOfEntities.size() + " custom entity names!");
+	Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfEntities.size() + " custom entity names!");
 
 	section = ItemFile.getConfig().getConfigurationSection("EnchantList");
 	keys = section.getKeys(false);
@@ -159,7 +157,7 @@ public class NameTranslatorManager {
 	    String Name = section.getString(one + ".Name");
 	    ListOfEnchants.add(new NameList(id, meta, Name, MCName));
 	}
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + ListOfEnchants.size() + " custom enchant names!");
+	Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfEnchants.size() + " custom enchant names!");
 
 	section = ItemFile.getConfig().getConfigurationSection("ColorList");
 	keys = section.getKeys(false);
@@ -171,7 +169,7 @@ public class NameTranslatorManager {
 	    String Name = section.getString(one + ".Name");
 	    ListOfColors.add(new NameList(id, meta, Name, MCName));
 	}
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + ListOfColors.size() + " custom color names!");
+	Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfColors.size() + " custom color names!");
     }
 
     synchronized void load() {

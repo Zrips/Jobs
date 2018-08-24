@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.CuboidArea;
 import com.gamingmesh.jobs.container.RestrictedArea;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class RestrictedAreaManager {
 
@@ -212,7 +211,7 @@ public class RestrictedAreaManager {
 	    }
 	}
 
-	Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Loaded " + restrictedAreas.size() + " restricted areas!");
+	Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedAreas.size() + " restricted areas!");
 
 	try {
 	    conf.save(f);

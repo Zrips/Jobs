@@ -18,10 +18,6 @@
 
 package com.gamingmesh.jobs.tasks;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.ConsoleCommandSender;
-
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 
@@ -37,9 +33,7 @@ public class BufferedPaymentThread extends Thread {
     @Override
     public void run() {
 
-	String message = ChatColor.YELLOW + "[Jobs] Started buffered payment thread.";
-	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-	console.sendMessage(message);
+	Jobs.consoleMsg("&e[Jobs] Started buffered payment thread.");
 
 	//Jobs.getPluginLogger().info("Started buffered payment thread");
 	while (running) {
@@ -55,14 +49,12 @@ public class BufferedPaymentThread extends Thread {
 		    economy.payAll();
 	    } catch (Throwable t) {
 		t.printStackTrace();
-		message = ChatColor.RED + "[Jobs] Exception in BufferedPaymentThread, stopping economy payments!";
-		console.sendMessage(message);
+		Jobs.consoleMsg("&c[Jobs] Exception in BufferedPaymentThread, stopping economy payments!");
 		//Jobs.getPluginLogger().severe("Exception in BufferedPaymentThread, stopping economy payments!");
 		running = false;
 	    }
 	}
-	message = ChatColor.YELLOW + "[Jobs] Buffered payment thread shutdown.";
-	console.sendMessage(message);
+	Jobs.consoleMsg("&e[Jobs] Buffered payment thread shutdown.");
 	//Jobs.getPluginLogger().info("Buffered payment thread shutdown");   
     }
 

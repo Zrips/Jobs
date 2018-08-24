@@ -30,6 +30,10 @@ public class FurnaceBrewingHandling {
     static HashMap<UUID, List<blockLoc>> brewingMap = new HashMap<>();
 
     public static void load() {
+    // No file creating when the boolean is false
+    if (!Jobs.getGCManager().isFurnacesReassign() || !Jobs.getGCManager().isBrewingStandsReassign())
+    	return;
+
 	YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
 	if (!f.exists())
 	    return;

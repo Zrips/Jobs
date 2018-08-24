@@ -10,6 +10,7 @@ commands:
   jobs:
     description: Jobs
     usage: /jobs
+
 permissions:
   jobs.*:
     description: Grants access to all Jobs commands
@@ -30,6 +31,7 @@ permissions:
     description: Grants player access to all commands
     default: false
     children:
+      jobs.command.archive: true
       jobs.command.browse: true
       jobs.command.stats: true
       jobs.command.admin.stats: true
@@ -43,7 +45,9 @@ permissions:
       jobs.command.fire: true
       jobs.command.fireall: true
       jobs.command.employ: true
+      jobs.command.edititembonus: true
       jobs.command.promote: true
+      jobs.command.points: true
       jobs.command.demote: true
       jobs.command.grantxp: true
       jobs.command.removexp: true
@@ -56,6 +60,7 @@ permissions:
       jobs.command.limit: true
       jobs.command.give: true
       jobs.command.signs: true
+      jobs.command.stats: true
       jobs.command.fixnames: true
       jobs.command.signupdate: true
       jobs.command.moneyboost: true
@@ -154,9 +159,6 @@ permissions:
     default: true
   jobs.command.shop:
     description: Grants access to the shop command
-    default: true
-  jobs.command.points:
-    description: Grants access to the points command
     default: true
   jobs.command.log.others:
     description: Grants access to the log command

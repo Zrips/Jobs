@@ -18,10 +18,6 @@
 
 package com.gamingmesh.jobs.tasks;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.ConsoleCommandSender;
-
 import com.gamingmesh.jobs.Jobs;
 
 public class DatabaseSaveThread extends Thread {
@@ -38,9 +34,7 @@ public class DatabaseSaveThread extends Thread {
     public void run() {
 	//Jobs.getPluginLogger().info("Started database save task");
 
-	String message = ChatColor.YELLOW + "[Jobs] Started database save task.";
-	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-	console.sendMessage(message);
+	Jobs.consoleMsg("&e[Jobs] Started database save task.");
 
 	while (running) {
 	    try {
@@ -54,14 +48,12 @@ public class DatabaseSaveThread extends Thread {
 	    } catch (Throwable t) {
 		t.printStackTrace();
 		//Jobs.getPluginLogger().severe("Exception in DatabaseSaveTask, stopping auto save!");
-		message = ChatColor.RED + "[Jobs] Exception in DatabaseSaveTask, stopping auto save!";
-		console.sendMessage(message);
+		Jobs.consoleMsg("&c[Jobs] Exception in DatabaseSaveTask, stopping auto save!");
 		running = false;
 	    }
 	}
 
-	message = ChatColor.YELLOW + "[Jobs] Database save task shutdown!";
-	console.sendMessage(message);
+	Jobs.consoleMsg("&e[Jobs] Database save task shutdown!");
 
 	//Jobs.getPluginLogger().info("Database save task shutdown");
 

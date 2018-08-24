@@ -253,7 +253,7 @@ public class PlayerManager {
 	    i++;
 	    y++;
 	    if (y >= 1000) {
-		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Jobs] Saved " + i + "/" + total + " players data");
+	    Jobs.consoleMsg("&e[Jobs] Saved " + i + "/" + total + " players data");
 		y = 0;
 	    }
 	}
@@ -781,7 +781,7 @@ public class PlayerManager {
 
 	ItemMeta meta = item.getItemMeta();
 	String name = null;
-	List<String> lore = new ArrayList<String>();
+	List<String> lore = new ArrayList<>();
 
 	if (item.hasItemMeta()) {
 	    if (meta.hasDisplayName())
