@@ -76,7 +76,7 @@ public class QuestProgression {
 	givenReward = true;
 
 	jPlayer.addDoneQuest();
-	
+
 	List<String> cmds = quest.getRewardCmds();
 	for (String one : cmds) {
 	    ServerCommandEvent ev = new ServerCommandEvent(Bukkit.getConsoleSender(), one.replace("[playerName]", jPlayer.getUserName()));
@@ -85,7 +85,7 @@ public class QuestProgression {
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ev.getCommand().startsWith("/") ? ev.getCommand().substring(1) : ev.getCommand());
 	    }
 	}
-	
+
 	return;
 
     }
