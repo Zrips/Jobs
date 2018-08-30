@@ -90,6 +90,7 @@ import com.gamingmesh.jobs.actions.EntityActionInfo;
 import com.gamingmesh.jobs.actions.ExploreActionInfo;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.actions.ItemNameActionInfo;
+import com.gamingmesh.jobs.actions.PotionDrinkInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.ExploreRespond;
@@ -1523,7 +1524,7 @@ public class JobsPaymentListener implements Listener {
 
 	// Player drinking a potion
 	if (item.getType().equals(CMIMaterial.get(Material.POTION).isPotion()))
-		Jobs.action(jPlayer, new ItemActionInfo(item, ActionType.DRINK));
+		Jobs.action(jPlayer, new PotionDrinkInfo(String.valueOf(CMIMaterial.get(Material.POTION).isPotion()), ActionType.DRINK));
     }
 
     @EventHandler
