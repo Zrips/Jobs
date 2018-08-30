@@ -1213,7 +1213,47 @@ public class ItemManager {
 	PORKCHOP(319, 0, 30896, "Raw Porkchop", ""),
 	POTATO(392, 0, 21088, "Potato", "Potatoitem"),
 	POTATOES(142, 0, 10879, "Potatoes", "POTATO"),
+
+	// Potions
 	POTION(373, 0, 24020, "Potion", ""),
+	AWKWARD_POTION(373, 16, 24020, "Potion", ""),
+	THICK_POTION(373, 32, 24020, "Potion", ""),
+	MUNDANE_POTION(373, 64, 24020, "Potion", ""),
+	REGENERATION_POTION(373, 8193, 24020, "Potion", ""),
+	SWIFTNESS_POTION(373, 8194, 24020, "Potion", ""),
+	FIRE_RESISTANCE_POTION(373, 8195, 24020, "Potion", ""),
+	POISON_POTION(373, 8196, 24020, "Potion", ""),
+	HEALING_POTION(373, 8197, 24020, "Potion", ""),
+	NIGHT_VISION_POTION(373, 8198, 24020, "Potion", ""),
+	WEAKNESS_POTION(373, 8200, 24020, "Potion", ""),
+	STRENGTH_POTION(373, 8201, 24020, "Potion", ""),
+	SLOWNESS_POTION(373, 8202, 24020, "Potion", ""),
+	HARMING_POTION(373, 8204, 24020, "Potion", ""),
+	WATER_BREATHING_POTION(373, 8205, 24020, "Potion", ""),
+	INVISIBILITY_POTION(373, 8206, 24020, "Potion", ""),
+	REGENERATION_POTION2(373, 8225, 24020, "Potion", ""),
+	SWIFTNESS_POTION2(373, 8226, 24020, "Potion", ""),
+	POISON_POTION2(373, 8228, 24020, "Potion", ""),
+	HEALING_POTION2(373, 8229, 24020, "Potion", ""),
+	STRENGTH_POTION2(373, 8233, 24020, "Potion", ""),
+	LEAPING_POTION2(373, 8235, 24020, "Potion", ""),
+	HARMING_POTION2(373, 8236, 24020, "Potion", ""),
+	REGENERATION_POTION3(373, 8257, 24020, "Potion", ""),
+	SWIFTNESS_POTION3(373, 8258, 24020, "Potion", ""),
+	FIRE_RESISTANCE_POTION3(373, 8259, 24020, "Potion", ""),
+	POISON_POTION3(373, 8260, 24020, "Potion", ""),
+	NIGHT_VISION_POTION2(373, 8262, 24020, "Potion", ""),
+	WEAKNESS_POTION2(373, 8264, 24020, "Potion", ""),
+	STRENGTH_POTION3(373, 8265, 24020, "Potion", ""),
+	SLOWNESS_POTION2(373, 8266, 24020, "Potion", ""),
+	LEAPING_POTION3(373, 8267, 24020, "Potion", ""),
+	WATER_BREATHING_POTION2(373, 8269, 24020, "Potion", ""),
+	INVISIBILITY_POTION2(373, 8270, 24020, "Potion", ""),
+	REGENERATION_POTION4(373, 8289, 24020, "Potion", ""),
+	SWIFTNESS_POTION4(373, 8290, 24020, "Potion", ""),
+	POISON_POTION4(373, 8292, 24020, "Potion", ""),
+	STRENGTH_POTION4(373, 8297, 24020, "Potion", ""),
+
 	POTTED_ACACIA_SAPLING(-1, -1, 14096, "Potted Acacia Sapling", ""),
 	POTTED_ALLIUM(-1, -1, 13184, "Potted Allium", ""),
 	POTTED_AZURE_BLUET(-1, -1, 8754, "Potted Azure Bluet", ""),
@@ -2029,6 +2069,61 @@ public class ItemManager {
 	    case OAK_PRESSURE_PLATE:
 	    case SPRUCE_PRESSURE_PLATE:
 	    case STONE_PRESSURE_PLATE:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
+	// TODO
+	public static boolean isPotion(Material mat) {
+		CMIMaterial m = CMIMaterial.get(mat);
+		if (m == null)
+			return false;
+		return m.isPotion();
+	}
+
+	public boolean isPotion() {
+	    switch (this) {
+	    case POTION:
+	    case AWKWARD_POTION:
+	    case THICK_POTION:
+	    case MUNDANE_POTION:
+	    case REGENERATION_POTION:
+	    case SWIFTNESS_POTION:
+	    case FIRE_RESISTANCE_POTION:
+	    case POISON_POTION:
+	    case HEALING_POTION:
+	    case NIGHT_VISION_POTION:
+	    case WEAKNESS_POTION:
+	    case STRENGTH_POTION:
+	    case SLOWNESS_POTION:
+	    case HARMING_POTION:
+	    case WATER_BREATHING_POTION:
+	    case INVISIBILITY_POTION:
+	    case REGENERATION_POTION2:
+	    case SWIFTNESS_POTION2:
+	    case POISON_POTION2:
+	    case HEALING_POTION2:
+	    case STRENGTH_POTION2:
+	    case LEAPING_POTION2:
+	    case HARMING_POTION2:
+	    case REGENERATION_POTION3:
+	    case SWIFTNESS_POTION3:
+	    case FIRE_RESISTANCE_POTION3:
+	    case POISON_POTION3:
+	    case NIGHT_VISION_POTION2:
+	    case WEAKNESS_POTION2:
+	    case STRENGTH_POTION3:
+	    case SLOWNESS_POTION2:
+	    case LEAPING_POTION3:
+	    case WATER_BREATHING_POTION2:
+	    case INVISIBILITY_POTION2:
+	    case REGENERATION_POTION4:
+	    case SWIFTNESS_POTION4:
+	    case POISON_POTION4:
+	    case STRENGTH_POTION4:
 		return true;
 	    default:
 		break;

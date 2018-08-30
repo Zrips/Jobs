@@ -211,7 +211,8 @@ public class RestrictedAreaManager {
 	    }
 	}
 
-	Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedAreas.size() + " restricted areas!");
+	if (restrictedAreas.size() != 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedAreas.size() + " restricted areas!");
 
 	try {
 	    conf.save(f);

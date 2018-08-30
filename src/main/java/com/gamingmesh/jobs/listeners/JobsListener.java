@@ -659,7 +659,7 @@ public class JobsListener implements Listener {
 	List<JobProgression> prog = JPlayer.getJobProgression();
 
 	String name = null;
-	List<String> lore = new ArrayList<String>();
+	List<String> lore = new ArrayList<>();
 
 	Map<Enchantment, Integer> enchants = new HashMap<>();
 	try {

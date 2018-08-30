@@ -40,7 +40,6 @@ import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.Schedule;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class GeneralConfigManager {
@@ -609,7 +608,7 @@ public class GeneralConfigManager {
 	    DynamicPaymentEquation.setVariable("jobstotalplayers", 10);
 	    DynamicPaymentEquation.getValue();
 	} catch (Exception e) {
-	    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Dynamic payment equation has an invalid property. Disabling feature!");
+	    Jobs.consoleMsg("&cDynamic payment equation has an invalid property. Disabling feature!");
 	    useDynamicPayment = false;
 	}
 
@@ -843,9 +842,9 @@ public class GeneralConfigManager {
 	c.getW().addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
 	BossBarEnabled = c.get("BossBar.Enabled", true);
 
-	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
+	if (BossBarEnabled = true && Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
 	    BossBarEnabled = false;
-	    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Jobs] Your server version don't support BossBar. This feature will be disabled");
+	    Jobs.consoleMsg("&c[Jobs] Your server version don't support BossBar. This feature will be disabled");
 	}
 
 	c.getW().addComment("BossBar.Messages.EnabledByDefault", "When this set to true player will see Bossbar messages by default");

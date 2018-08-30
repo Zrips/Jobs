@@ -71,6 +71,7 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
@@ -1488,6 +1489,41 @@ public class JobsPaymentListener implements Listener {
 		    "[max]", jPlayer.getMaxBrewingStandsAllowed() == 0 ? "-" : jPlayer.getMaxBrewingStandsAllowed()));
 	    }
 	}
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
+	//disabling plugin in world
+	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
+	    return;
+	if (!this.plugin.isEnabled())
+	    return;
+
+	if (event.isCancelled())
+	    return;
+
+	Player p = event.getPlayer();
+
+	if (!p.isOnline())
+		return;
+
+	// check if in creative
+	if (p.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(p, p.getLocation().getWorld().getName()))
+	    return;
+
+	// Item in hand
+	ItemStack item = p.getItemInHand();
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
+	if (jPlayer == null)
+	    return;
+
+	// Player drinking a potion
+	if (item.getType().equals(CMIMaterial.get(Material.POTION).isPotion()))
+		Jobs.action(jPlayer, new ItemActionInfo(item, ActionType.DRINK));
     }
 
     @EventHandler
