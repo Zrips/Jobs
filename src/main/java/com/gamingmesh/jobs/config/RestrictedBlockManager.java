@@ -169,7 +169,8 @@ public class RestrictedBlockManager {
 	}
 	c.copySetting("blocksTimer");
 
-	Jobs.consoleMsg("&e[Jobs] Loaded " + this.restrictedBlocksTimer.size() + " protected blocks timers!");
+	if (restrictedBlocksTimer.size() != 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + this.restrictedBlocksTimer.size() + " protected blocks timers!");
 	try {
 	    writer.save(f);
 	} catch (IOException e) {

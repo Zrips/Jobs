@@ -2076,7 +2076,6 @@ public class ItemManager {
 	    return false;
 	}
 
-	// TODO
 	public static boolean isPotion(Material mat) {
 		CMIMaterial m = CMIMaterial.get(mat);
 		if (m == null)

@@ -19,6 +19,7 @@ public class NameTranslatorManager {
     private Jobs plugin;
 
     public ArrayList<NameList> ListOfNames = new ArrayList<>();
+    public ArrayList<NameList> ListOfPotionNames = new ArrayList<>();
     public ArrayList<NameList> ListOfEntities = new ArrayList<>();
     public ArrayList<NameList> ListOfEnchants = new ArrayList<>();
     public ArrayList<NameList> ListOfColors = new ArrayList<>();
@@ -112,6 +113,13 @@ public class NameTranslatorManager {
 
 	    case MMKILL:
 		return Jobs.getMythicManager().getDisplayName(materialName);
+	    case DRINK:
+			for (NameList one : ListOfPotionNames) {
+			    String ids = one.getMinecraftName();
+			    if (ids.equalsIgnoreCase(String.valueOf(info.getName()))) {
+				return one.getName();
+			    }
+			}
 		default:
 			break;
 	    }
@@ -170,6 +178,18 @@ public class NameTranslatorManager {
 	    ListOfColors.add(new NameList(id, meta, Name, MCName));
 	}
 	Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfColors.size() + " custom color names!");
+
+	section = ItemFile.getConfig().getConfigurationSection("PotionNamesList");
+	keys = section.getKeys(false);
+	ListOfPotionNames.clear();
+	for (String one : keys) {
+	    String id = one.contains(":") ? one.split(":")[0] : one;
+	    String meta = one.contains(":") ? one.split(":")[1] : "";
+	    String MCName = section.getString(one + ".MCName");
+	    String Name = section.getString(one + ".Name");
+	    ListOfColors.add(new NameList(id, meta, Name, MCName));
+	}
+	Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfPotionNames.size() + " custom potion names!");
     }
 
     synchronized void load() {
@@ -1672,6 +1692,85 @@ public class NameTranslatorManager {
 	    c.get("ColorList.14.Name", "&cRed");
 	    c.get("ColorList.15.MCName", "black");
 	    c.get("ColorList.15.Name", "&0Black");
+
+	    // Potion name list
+	    c.get("PotionNamesList.0.MCName", "POTION");
+	    c.get("PotionNamesList.0.Name", "Potion");
+	    c.get("PotionNamesList.1.MCName", "AWKWARD_POTION");
+	    c.get("PotionNamesList.1.Name", "Awkward potion");
+	    c.get("PotionNamesList.2.MCName", "THICK_POTION");
+	    c.get("PotionNamesList.2.Name", "Thick potion");
+	    c.get("PotionNamesList.3.MCName", "MUNDANE_POTION");
+	    c.get("PotionNamesList.3.Name", "Mundane potion");
+	    c.get("PotionNamesList.4.MCName", "REGENERATION_POTION");
+	    c.get("PotionNamesList.4.Name", "Regeneration potion");
+	    c.get("PotionNamesList.5.MCName", "SWIFTNESS_POTION");
+	    c.get("PotionNamesList.5.Name", "Swiftness potion");
+	    c.get("PotionNamesList.6.MCName", "FIRE_RESISTANCE_POTION");
+	    c.get("PotionNamesList.6.Name", "Fire resistance potion");
+	    c.get("PotionNamesList.7.MCName", "POISON_POTION");
+	    c.get("PotionNamesList.7.Name", "Poison potion");
+	    c.get("PotionNamesList.8.MCName", "HEALING_POTION");
+	    c.get("PotionNamesList.8.Name", "Healing potion");
+	    c.get("PotionNamesList.9.MCName", "NIGHT_VISION_POTION");
+	    c.get("PotionNamesList.9.Name", "Night vision potion");
+	    c.get("PotionNamesList.10.MCName", "WEAKNESS_POTION");
+	    c.get("PotionNamesList.10.Name", "Weakness potion");
+	    c.get("PotionNamesList.11.MCName", "STRENGTH_POTION");
+	    c.get("PotionNamesList.11.Name", "Strength potion");
+	    c.get("PotionNamesList.12.MCName", "SLOWNESS_POTION");
+	    c.get("PotionNamesList.12.Name", "Slowness potion");
+	    c.get("PotionNamesList.13.MCName", "HARMING_POTION");
+	    c.get("PotionNamesList.13.Name", "Harming potion");
+	    c.get("PotionNamesList.14.MCName", "WATER_BREATHING_POTION");
+	    c.get("PotionNamesList.14.Name", "Water breathing potion");
+	    c.get("PotionNamesList.15.MCName", "INVISIBILITY_POTION");
+	    c.get("PotionNamesList.15.Name", "Inivisibility potion");
+	    c.get("PotionNamesList.16.MCName", "REGENERATION_POTION2");
+	    c.get("PotionNamesList.16.Name", "Regeneration potion 2");
+	    c.get("PotionNamesList.17.MCName", "SWIFTNESS_POTION2");
+	    c.get("PotionNamesList.17.Name", "Swiftness potion 2");
+	    c.get("PotionNamesList.18.MCName", "POISON_POTION2");
+	    c.get("PotionNamesList.18.Name", "Poison potion 2");
+	    c.get("PotionNamesList.19.MCName", "HEALING_POTION2");
+	    c.get("PotionNamesList.19.Name", "Healing potion 2");
+	    c.get("PotionNamesList.20.MCName", "STRENGTH_POTION2");
+	    c.get("PotionNamesList.20.Name", "Strength potion 2");
+	    c.get("PotionNamesList.21.MCName", "LEAPING_POTION2");
+	    c.get("PotionNamesList.21.Name", "Leaping potion 2");
+	    c.get("PotionNamesList.22.MCName", "HARMING_POTION2");
+	    c.get("PotionNamesList.22.Name", "Harming potion 2");
+	    c.get("PotionNamesList.23.MCName", "REGENERATION_POTION3");
+	    c.get("PotionNamesList.23.Name", "Regeneration potion 3");
+	    c.get("PotionNamesList.24.MCName", "SWIFTNESS_POTION3");
+	    c.get("PotionNamesList.24.Name", "Swiftness potion 3");
+	    c.get("PotionNamesList.25.MCName", "FIRE_RESISTANCE_POTION3");
+	    c.get("PotionNamesList.25.Name", "Fire resistance potion 3");
+	    c.get("PotionNamesList.26.MCName", "POISON_POTION3");
+	    c.get("PotionNamesList.26.Name", "Poison potion 3");
+	    c.get("PotionNamesList.27.MCName", "NIGHT_VISION_POTION2");
+	    c.get("PotionNamesList.27.Name", "Night vision potion 2");
+	    c.get("PotionNamesList.28.MCName", "WEAKNESS_POTION2");
+	    c.get("PotionNamesList.28.Name", "Weakness potion 2");
+	    c.get("PotionNamesList.29.MCName", "STRENGTH_POTION3");
+	    c.get("PotionNamesList.29.Name", "Strength potion 3");
+	    c.get("PotionNamesList.30.MCName", "SLOWNESS_POTION2");
+	    c.get("PotionNamesList.30.Name", "Slowness potion 2");
+	    c.get("PotionNamesList.31.MCName", "LEAPING_POTION3");
+	    c.get("PotionNamesList.31.Name", "Leaping potion 3");
+	    c.get("PotionNamesList.32.MCName", "WATER_BREATHING_POTION2");
+	    c.get("PotionNamesList.32.Name", "Water breathing potion 2");
+	    c.get("PotionNamesList.33.MCName", "INVISIBILITY_POTION2");
+	    c.get("PotionNamesList.33.Name", "Invisibility potion 2");
+	    c.get("PotionNamesList.34.MCName", "REGENERATION_POTION4");
+	    c.get("PotionNamesList.34.Name", "Regeneration potion 4");
+	    c.get("PotionNamesList.35.MCName", "SWIFTNESS_POTION4");
+	    c.get("PotionNamesList.35.Name", "Swiftness potion 4");
+	    c.get("PotionNamesList.36.MCName", "POISON_POTION4");
+	    c.get("PotionNamesList.36.Name", "Poison potion 4");
+	    c.get("PotionNamesList.37.MCName", "STRENGTH_POTION4");
+	    c.get("PotionNamesList.37.Name", "Strength potion 4");
+
 	    try {
 		c.getW().save(f);
 	    } catch (IOException e) {

@@ -27,9 +27,9 @@ import com.gamingmesh.jobs.container.BaseActionInfo;
 public class PotionDrinkInfo extends BaseActionInfo implements ActionInfo {
 	private String potion;
 
-	public PotionDrinkInfo(String item, ActionType type) {
+	public PotionDrinkInfo(String potion, ActionType type) {
 		super(type);
-		this.potion = item;
+		this.potion = potion;
 	}
 
 	@Override

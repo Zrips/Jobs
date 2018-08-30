@@ -236,6 +236,7 @@ public class ScheduleManager {
 
 	    Jobs.getGCManager().BoostSchedule.add(sched);
 	}
-	Jobs.consoleMsg("&e[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");
+	if (Jobs.getGCManager().BoostSchedule.size() != 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");
     }
 }

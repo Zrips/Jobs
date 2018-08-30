@@ -178,6 +178,7 @@ public class TitleManager {
 
 		this.titles.add(new Title(titleName, titleShortName, titleColor, levelReq, jobName));
 	    }
-	Jobs.consoleMsg("&e[Jobs] Loaded " + titles.size() + " titles!");
+	if (titles.size() != 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + titles.size() + " titles!");
     }
 }

@@ -39,6 +39,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
@@ -84,7 +85,7 @@ public class ConfigManager {
 	    try {
 		f.createNewFile();
 	    } catch (IOException e) {
-		Jobs.getPluginLogger().severe("Unable to create jobConfig.yml!  No jobs were loaded!");
+		Jobs.getPluginLogger().severe("Unable to create jobConfig.yml! No jobs were loaded!");
 		try {
 		    if (s != null)
 			s.close();
@@ -340,6 +341,11 @@ public class ConfigManager {
 	    Jobs.getExplore().setPlayerAmount(amount + 1);
 	} else if (actionType == ActionType.CRAFT && myKey.startsWith("!")) {
 	    type = myKey.substring(1, myKey.length());
+	} else if (actionType == ActionType.DRINK) {
+		type = myKey;
+		PotionType potion = PotionType.valueOf(myKey);
+		if (potion != null)
+			type = potion.name().toUpperCase().replace("_", "").toLowerCase();
 	}
 
 	if (type == null) {
@@ -1041,6 +1047,7 @@ public class ConfigManager {
 			case ENCHANT:
 			case DYE:
 			case EAT:
+			case DRINK:
 			case CRAFT:
 			case BREAK:
 			    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)) {
