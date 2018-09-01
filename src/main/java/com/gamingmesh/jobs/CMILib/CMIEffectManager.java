@@ -422,8 +422,8 @@ public class CMIEffectManager {
 	    return EnumParticle;
 	}
 
-	public void setEnumParticle(Object enumParticle) {
-	    EnumParticle = enumParticle;
+	public void setEnumParticle(Object EnumParticle) {
+	    this.EnumParticle = EnumParticle;
 	}
 
 	public int[] getExtra() {

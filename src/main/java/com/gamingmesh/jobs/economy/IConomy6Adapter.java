@@ -9,8 +9,8 @@ public class IConomy6Adapter implements Economy {
 
     iConomy icon;
 
-    public IConomy6Adapter(iConomy iconomy) {
-	icon = iconomy;
+    public IConomy6Adapter(iConomy icon) {
+	this.icon = icon;
     }
 
     public double getBalance(String playerName) {

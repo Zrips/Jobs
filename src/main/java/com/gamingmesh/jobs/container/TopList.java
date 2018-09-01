@@ -12,14 +12,14 @@ public final class TopList {
     }
 
     public String getPlayerName() {
-	return this.info.getName();
+	return info.getName();
     }
 
     public int getLevel() {
-	return this.level;
+	return level;
     }
 
     public int getExp() {
-	return this.exp;
+	return exp;
     }
 }

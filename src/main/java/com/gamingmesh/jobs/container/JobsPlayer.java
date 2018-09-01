@@ -146,8 +146,8 @@ public class JobsPlayer {
 	return true;
     }
 
-    public void setPlayer(Player p) {
-	this.player = p;
+    public void setPlayer(Player player) {
+	this.player = player;
     }
 
     public void loadLogFromDao() {
@@ -155,7 +155,7 @@ public class JobsPlayer {
     }
 
     public synchronized List<String> getUpdateBossBarFor() {
-	return this.updateBossBarFor;
+	return updateBossBarFor;
     }
 
     public synchronized void clearUpdateBossBarFor() {
@@ -163,7 +163,7 @@ public class JobsPlayer {
     }
 
     public synchronized List<BossBarInfo> getBossBarInfo() {
-	return this.barMap;
+	return barMap;
     }
 
     public synchronized void hideBossBars() {
@@ -173,7 +173,7 @@ public class JobsPlayer {
     }
 
     public HashMap<String, Log> getLog() {
-	return this.logList;
+	return logList;
     }
 
     public void setLog(HashMap<String, Log> l) {
@@ -185,7 +185,7 @@ public class JobsPlayer {
     }
 
     public int getUserId() {
-	return this.userid;
+	return userid;
     }
 
     /**
@@ -372,8 +372,8 @@ public class JobsPlayer {
 	return this.playerUUID;
     }
 
-    public void setPlayerUUID(UUID uuid) {
-	playerUUID = uuid;
+    public void setPlayerUUID(UUID playerUUID) {
+	this.playerUUID = playerUUID;
     }
 
     public String getDisplayHonorific() {
@@ -761,8 +761,8 @@ public class JobsPlayer {
 	return isSaved;
     }
 
-    public void setSaved(boolean value) {
-	isSaved = value;
+    public void setSaved(boolean isSaved) {
+	this.isSaved = isSaved;
     }
 
     public Long getSeen() {

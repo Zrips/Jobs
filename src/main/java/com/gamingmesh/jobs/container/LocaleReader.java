@@ -8,8 +8,8 @@ import org.bukkit.ChatColor;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 
 public class LocaleReader {
-    YamlConfiguration config;
-    CommentedYamlConfiguration writer;
+    private YamlConfiguration config;
+    private CommentedYamlConfiguration writer;
 
     public LocaleReader(YamlConfiguration config, CommentedYamlConfiguration writer) {
 	this.config = config;

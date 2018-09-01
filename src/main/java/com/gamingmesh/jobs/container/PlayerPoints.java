@@ -2,9 +2,9 @@ package com.gamingmesh.jobs.container;
 
 public class PlayerPoints {
 
-    double current = 0D;
-    double total = 0D;
-    boolean newEntry = false;
+	private double current = 0D;
+	private double total = 0D;
+	private boolean newEntry = false;
 
     public PlayerPoints() {
 	newEntry = true;
@@ -47,7 +47,7 @@ public class PlayerPoints {
 	return newEntry;
     }
     
-    public void setNewEntry(boolean state) {
-	newEntry = state;
+    public void setNewEntry(boolean newEntry) {
+	this.newEntry = newEntry;
     }
 }

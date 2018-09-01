@@ -40,7 +40,7 @@ public class RestrictedArea {
     }
 
     public CuboidArea getCuboidArea() {
-	return this.area;
+	return area;
     }
 
     /**
@@ -49,7 +49,7 @@ public class RestrictedArea {
      */
 
     public double getMultiplier() {
-	return this.multiplier;
+	return multiplier;
     }
 
     /**

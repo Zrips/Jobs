@@ -53,8 +53,8 @@ public class BufferedPayment {
 	this.amount = amount;
     }
     
-    public void setPoints(double amount) {
-	this.points = amount;
+    public void setPoints(double points) {
+	this.points = points;
     }
     
     public void setExp(double exp) {

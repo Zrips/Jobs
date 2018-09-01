@@ -13,11 +13,7 @@ import com.gamingmesh.jobs.Jobs;
 
 public class PistonProtectionListener implements Listener {
 
-    @SuppressWarnings("unused")
-    private Jobs plugin;
-
-    public PistonProtectionListener(Jobs plugin) {
-	this.plugin = plugin;
+    public PistonProtectionListener() {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

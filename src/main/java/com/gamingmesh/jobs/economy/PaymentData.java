@@ -7,9 +7,9 @@ import com.gamingmesh.jobs.container.CurrencyType;
 
 public class PaymentData {
 
-    Long lastAnnouced = 0L;
-    HashMap<CurrencyType, Double> payments = new HashMap<>();
-    HashMap<CurrencyType, Long> paymentsTimes = new HashMap<>();
+    private Long lastAnnouced = 0L;
+    private HashMap<CurrencyType, Double> payments = new HashMap<>();
+    private HashMap<CurrencyType, Long> paymentsTimes = new HashMap<>();
     private boolean Informed = false;
     private boolean Reseted = false;
 
@@ -39,12 +39,12 @@ public class PaymentData {
 	return paymentsTimes.get(type);
     }
 
-    public void setReseted(boolean state) {
-	this.Reseted = state;
+    public void setReseted(boolean Reseted) {
+	this.Reseted = Reseted;
     }
 
     public boolean isReseted() {
-	return this.Reseted;
+	return Reseted;
     }
 
     public Double GetAmount(CurrencyType type) {
@@ -60,7 +60,7 @@ public class PaymentData {
     }
 
     public Long GetLastAnnounced() {
-	return this.lastAnnouced;
+	return lastAnnouced;
     }
 
     public boolean IsAnnounceTime(int t) {
@@ -136,7 +136,7 @@ public class PaymentData {
 	return Informed;
     }
 
-    public void setInformed(boolean informed) {
-	Informed = informed;
+    public void setInformed(boolean Informed) {
+	this.Informed = Informed;
     }
 }

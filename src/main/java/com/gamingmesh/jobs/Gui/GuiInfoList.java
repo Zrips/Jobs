@@ -7,17 +7,17 @@ import com.gamingmesh.jobs.container.Job;
 
 public class GuiInfoList {
 
-    String name;
-    List<Job> jobList = new ArrayList<>();
-    Boolean jobInfo = false;
-    int backButton = 27;
+    private String name;
+    private List<Job> jobList = new ArrayList<>();
+    private Boolean jobInfo = false;
+    private int backButton = 27;
 
     public GuiInfoList(String name) {
 	this.name = name;
     }
 
     public int getbackButton() {
-	return this.backButton;
+	return backButton;
     }
 
     public void setbackButton(int backButton) {
@@ -25,11 +25,11 @@ public class GuiInfoList {
     }
 
     public String getName() {
-	return this.name;
+	return name;
     }
 
     public List<Job> getJobList() {
-	return this.jobList;
+	return jobList;
     }
 
     public void setJobList(List<Job> jobList) {
@@ -41,6 +41,6 @@ public class GuiInfoList {
     }
 
     public Boolean isJobInfo() {
-	return this.jobInfo;
+	return jobInfo;
     }
 }

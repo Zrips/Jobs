@@ -28,10 +28,10 @@ public class JobItemBonus {
     }
 
     public String getNode() {
-	return this.node;
+	return node;
     }
 
     public BoostMultiplier getBoost() {
-	return this.boostMultiplier.clone();
+	return boostMultiplier.clone();
     }
 }

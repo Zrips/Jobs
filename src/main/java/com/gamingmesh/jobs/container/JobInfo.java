@@ -62,11 +62,11 @@ public class JobInfo {
     }
 
     public int getFromLevel() {
-	return this.fromLevel;
+	return fromLevel;
     }
 
     public int getUntilLevel() {
-	return this.untilLevel;
+	return untilLevel;
     }
 
     public boolean isInLevelRange(int level) {
@@ -74,7 +74,7 @@ public class JobInfo {
     }
 
     public String getName() {
-	return this.name;
+	return name;
     }
 
     public String getRealisticName() {
@@ -86,27 +86,27 @@ public class JobInfo {
     }
 
     public int getId() {
-	return this.id;
+	return id;
     }
 
     public ActionType getActionType() {
-	return this.actionType;
+	return actionType;
     }
 
     public String getMeta() {
-	return this.meta;
+	return meta;
     }
 
     public double getBaseIncome() {
-	return this.baseIncome;
+	return baseIncome;
     }
 
     public double getBaseXp() {
-	return this.baseXp;
+	return baseXp;
     }
 
     public double getBasePoints() {
-	return this.basePoints;
+	return basePoints;
     }
 
     public double getIncome(double level, double numjobs) {

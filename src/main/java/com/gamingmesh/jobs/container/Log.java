@@ -15,7 +15,7 @@ public final class Log {
     }
 
     public String getActionType() {
-	return this.action;
+	return action;
     }
 
     public void add(String item, HashMap<CurrencyType, Double> amounts) {
@@ -42,11 +42,11 @@ public final class Log {
     }
 
     public int getDate() {
-	return this.day;
+	return day;
     }
 
     public HashMap<String, LogAmounts> getAmountList() {
-	return this.amountMap;
+	return amountMap;
     }
 
     public int getCount(String item) {

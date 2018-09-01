@@ -119,9 +119,9 @@ public class Jobs extends JavaPlugin {
     private static TitleManager titleManager = null;
     private static RestrictedBlockManager RBManager = null;
     private static RestrictedAreaManager RAManager = null;
-    private static BossBarManager BBManager;
-    private static ShopManager shopManager;
-    private static Loging loging;
+    private static BossBarManager BBManager = null;
+    private static ShopManager shopManager = null;
+    private static Loging loging = null;
     private static BlockProtectionManager BpManager = null;
 
     private static JobsManager DBManager = null;
@@ -129,18 +129,18 @@ public class Jobs extends JavaPlugin {
     private static PistonProtectionListener PistonProtectionListener = null;
     private static McMMOlistener McMMOlistener = null;
 
-    private static MythicMobInterface MythicManager;
-    private static MyPetManager myPetManager;
-    private static WorldGuardManager worldGuardManager;
+    private static MythicMobInterface MythicManager = null;
+    private static MyPetManager myPetManager = null;
+    private static WorldGuardManager worldGuardManager = null;
 
-    private static ConfigManager configManager;
-    private static GeneralConfigManager GconfigManager;
+    private static ConfigManager configManager = null;
+    private static GeneralConfigManager GconfigManager = null;
 
-    private static Reflections reflections;
+    private static Reflections reflections = null;
 
-    private static Logger pLogger;
-    private static File dataFolder;
-    private static JobsClassLoader classLoader;
+    private static Logger pLogger = null;
+    private static File dataFolder = null;
+    private static JobsClassLoader classLoader = null;
     private static JobsDAO dao = null;
     private static List<Job> jobs = null;
     private static Job noneJob = null;
@@ -159,14 +159,14 @@ public class Jobs extends JavaPlugin {
 
     public static HashMap<String, FastPayment> FastPayment = new HashMap<>();
 
-    private static NMS nms;
+    private static NMS nms = null;
 
-    private static ActionBar actionbar;
+    private static ActionBar actionbar = null;
     private static boolean running = false;
 
-    protected static VersionChecker versionCheckManager;
+    protected static VersionChecker versionCheckManager = null;
 
-    protected static SelectionManager smanager;
+    protected static SelectionManager smanager = null;
 
     public void setMcMMOlistener() {
 	McMMOlistener = new McMMOlistener(this);
@@ -177,7 +177,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public void setPistonProtectionListener() {
-	PistonProtectionListener = new PistonProtectionListener(this);
+	PistonProtectionListener = new PistonProtectionListener();
     }
 
     public static PistonProtectionListener getPistonProtectionListener() {
@@ -285,8 +285,8 @@ public class Jobs extends JavaPlugin {
 	return actionbar;
     }
 
-    public static void setNms(NMS newNms) {
-	nms = newNms;
+    public static void setNms(NMS nms) {
+	Jobs.nms = nms;
     }
 
     public static NMS getNms() {
@@ -302,7 +302,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public void setPlayerManager() {
-	pManager = new PlayerManager(this);
+	pManager = new PlayerManager();
     }
 
     public static void setRestrictedBlockManager(Jobs plugin) {
@@ -440,8 +440,8 @@ public class Jobs extends JavaPlugin {
     /**
      * Sets the plugin logger
      */
-    public void setPluginLogger(Logger logger) {
-	pLogger = logger;
+    public void setPluginLogger(Logger pLogger) {
+	Jobs.pLogger = pLogger;
     }
 
     /**
@@ -456,8 +456,8 @@ public class Jobs extends JavaPlugin {
      * Sets the data folder
      * @param dir - the data folder
      */
-    public void setDataFolder(File dir) {
-	dataFolder = dir;
+    public void setDataFolder(File dataFolder) {
+	Jobs.dataFolder = dataFolder;
     }
 
     /**
@@ -472,8 +472,8 @@ public class Jobs extends JavaPlugin {
      * Sets the Data Access Object
      * @param dao - the DAO
      */
-    public static void setDAO(JobsDAO value) {
-	dao = value;
+    public static void setDAO(JobsDAO dao) {
+	Jobs.dao = dao;
     }
 
     /**
@@ -488,8 +488,8 @@ public class Jobs extends JavaPlugin {
      * Sets the list of jobs
      * @param jobs - list of jobs
      */
-    public static void setJobs(List<Job> list) {
-	jobs = list;
+    public static void setJobs(List<Job> jobs) {
+	Jobs.jobs = jobs;
     }
 
     /**
@@ -504,8 +504,8 @@ public class Jobs extends JavaPlugin {
      * Sets the none job
      * @param noneJob - the none job
      */
-    public static void setNoneJob(Job job) {
-	noneJob = job;
+    public static void setNoneJob(Job noneJob) {
+	Jobs.noneJob = noneJob;
     }
 
     /**
@@ -577,8 +577,9 @@ public class Jobs extends JavaPlugin {
 	}
 
 	dao.getMap().clear();
-	consoleMsg(ChatColor.YELLOW + "[Jobs] Preloaded " + Jobs.getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
-	    / 1000d) * 100) / 100D));
+	if (Jobs.getPlayerManager().getPlayersCache().size() != 0)
+		consoleMsg("&e[Jobs] Preloaded " + Jobs.getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
+				/ 1000d) * 100) / 100D));
     }
 
     /**
@@ -766,11 +767,13 @@ public class Jobs extends JavaPlugin {
 		setNms((NMS) nmsClass.getConstructor().newInstance());
 	    } else {
 		System.out.println("Something went wrong, please note down version and contact author v:" + version);
+		running = false;
 		this.setEnabled(false);
 	    }
 	} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
 	    | SecurityException e) {
 	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + version);
+	    running = false;
 	    this.setEnabled(false);
 	    e.printStackTrace();
 	    return;
@@ -783,7 +786,7 @@ public class Jobs extends JavaPlugin {
 	    jobConfig.saveDefaultConfig();
 
 	    YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
-	    jobSigns.saveDefaultConfig();
+		jobSigns.saveDefaultConfig();
 
 	    YmlMaker jobSchedule = new YmlMaker(this, "schedule.yml");
 	    jobSchedule.saveDefaultConfig();
@@ -816,22 +819,19 @@ public class Jobs extends JavaPlugin {
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
 
 	    setMcMMOlistener();
-	    if (McMMOlistener.CheckmcMMO()) {
-		getServer().getPluginManager().registerEvents(McMMOlistener, this);
-	    }
+	    if (McMMOlistener.CheckmcMMO())
+	    	getServer().getPluginManager().registerEvents(McMMOlistener, this);
 
 	    setMyPetManager();
 	    setWorldGuard();
 
 	    setMythicManager();
-	    if (MythicManager != null && MythicManager.Check() && GconfigManager.MythicMobsEnabled) {
-		MythicManager.registerListener();
-	    }
+	    if (MythicManager != null && MythicManager.Check() && GconfigManager.MythicMobsEnabled)
+	    	MythicManager.registerListener();
 
 	    setPistonProtectionListener();
-	    if (GconfigManager.useBlockProtection) {
-		getServer().getPluginManager().registerEvents(PistonProtectionListener, this);
-	    }
+	    if (GconfigManager.useBlockProtection)
+	    	getServer().getPluginManager().registerEvents(PistonProtectionListener, this);
 
 	    // register economy
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
@@ -849,14 +849,16 @@ public class Jobs extends JavaPlugin {
 	    cManager.fillCommands();
 
 	} catch (Exception e) {
+		e.printStackTrace();
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
-	    e.printStackTrace();
+	    getServer().getPluginManager().disablePlugin(this);
+	    running = false;
+	    this.setEnabled(false);
 	}
     }
 
     @Override
     public void onDisable() {
-	running = false;
 	GUIManager.CloseInventories();
 	shopManager.CloseInventories();
 	dao.saveExplore();
@@ -866,6 +868,7 @@ public class Jobs extends JavaPlugin {
 
 	Jobs.shutdown();
 	consoleMsg("&e[Jobs] &2Plugin has been disabled succesfully.");
+	running = false;
 	this.setEnabled(false);
     }
 
@@ -879,9 +882,8 @@ public class Jobs extends JavaPlugin {
 	if (!job.getQuests().isEmpty()) {
 	    List<QuestProgression> q = jPlayer.getQuestProgressions(job, info.getType());
 	    for (QuestProgression one : q) {
-		if (one != null) {
+		if (one != null)
 		    one.processQuest(jPlayer, info);
-		}
 	    }
 	}
     }
@@ -948,9 +950,8 @@ public class Jobs extends JavaPlugin {
 		income = income + (income * boost.getFinal(CurrencyType.MONEY));
 		if (GconfigManager.useMinimumOveralPayment && income > 0) {
 		    double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
-		    if (income < maxLimit) {
-			income = maxLimit;
-		    }
+		    if (income < maxLimit)
+		    	income = maxLimit;
 		}
 	    }
 
@@ -960,9 +961,8 @@ public class Jobs extends JavaPlugin {
 		pointAmount = pointAmount + (pointAmount * boost.getFinal(CurrencyType.POINTS));
 		if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
 		    double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
-		    if (pointAmount < maxLimit) {
-			pointAmount = maxLimit;
-		    }
+		    if (pointAmount < maxLimit)
+		    	pointAmount = maxLimit;
 		}
 	    }
 
@@ -1025,11 +1025,10 @@ public class Jobs extends JavaPlugin {
 			int expInt = expAmount.intValue();
 			double remainder = expAmount.doubleValue() - expInt;
 			if (Math.abs(remainder) > Math.random()) {
-			    if (expAmount.doubleValue() < 0) {
+			    if (expAmount.doubleValue() < 0)
 				expInt--;
-			    } else {
+			    else
 				expInt++;
-			    }
 			}
 
 			if (expInt < 0 && getPlayerExperience(player) < -expInt) {
@@ -1047,9 +1046,8 @@ public class Jobs extends JavaPlugin {
 		    income = boost.getFinalAmount(CurrencyType.MONEY, income);
 		    if (GconfigManager.useMinimumOveralPayment && income > 0) {
 			double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
-			if (income < maxLimit) {
+			if (income < maxLimit)
 			    income = maxLimit;
-			}
 		    }
 		}
 
@@ -1058,9 +1056,8 @@ public class Jobs extends JavaPlugin {
 		    pointAmount = boost.getFinalAmount(CurrencyType.POINTS, pointAmount);
 		    if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
 			double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
-			if (pointAmount < maxLimit) {
+			if (pointAmount < maxLimit)
 			    pointAmount = maxLimit;
-			}
 		    }
 		}
 
@@ -1069,9 +1066,8 @@ public class Jobs extends JavaPlugin {
 
 		if (GconfigManager.useMinimumOveralPayment && expAmount > 0) {
 		    double maxLimit = expAmount * GconfigManager.MinimumOveralPaymentLimit;
-		    if (expAmount < maxLimit) {
-			expAmount = maxLimit;
-		    }
+		    if (expAmount < maxLimit)
+		    	expAmount = maxLimit;
 		}
 
 		if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
@@ -1103,10 +1099,10 @@ public class Jobs extends JavaPlugin {
 
 		try {
 		    if (expAmount != 0D && GconfigManager.BossBarEnabled)
-			if (GconfigManager.BossBarShowOnEachAction) {
-			    Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
-			} else
-			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
+			if (GconfigManager.BossBarShowOnEachAction)
+				Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
+			else
+				jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Exception e) {
 		    Bukkit.getConsoleSender().sendMessage("[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
@@ -1210,9 +1206,8 @@ public class Jobs extends JavaPlugin {
 		    return false;
 		} else
 		    getBpManager().add(block, cd);
-	    } else {
-		getBpManager().add(block, getBpManager().getBlockDelayTime(block));
-	    }
+	    } else
+	    	getBpManager().add(block, getBpManager().getBlockDelayTime(block));
 	}
 
 	return true;
@@ -1226,41 +1221,37 @@ public class Jobs extends JavaPlugin {
     // total xp calculation based by lvl
     private static int ExpToLevel(int level) {
 	if (version.equals("1_7")) {
-	    if (level <= 16) {
+	    if (level <= 16)
 		return 17 * level;
-	    } else if (level <= 31) {
+	    else if (level <= 31)
 		return ((3 * level * level) / 2) - ((59 * level) / 2) + 360;
-	    } else {
+	    else
 		return ((7 * level * level) / 2) - ((303 * level) / 2) + 2220;
-	    }
 	}
-	if (level <= 16) {
+	if (level <= 16)
 	    return (level * level) + (6 * level);
-	} else if (level <= 31) {
-	    return (int) ((2.5 * level * level) - (40.5 * level) + 360);
-	} else {
-	    return (int) ((4.5 * level * level) - (162.5 * level) + 2220);
-	}
+	else if (level <= 31)
+		return (int) ((2.5 * level * level) - (40.5 * level) + 360);
+	else
+		return (int) ((4.5 * level * level) - (162.5 * level) + 2220);
     }
 
     // xp calculation for one current lvl
     private static int deltaLevelToExp(int level) {
 	if (version.equals("1_7")) {
-	    if (level <= 16) {
+	    if (level <= 16)
 		return 17;
-	    } else if (level <= 31) {
+	    else if (level <= 31)
 		return 3 * level - 31;
-	    } else {
+	    else
 		return 7 * level - 155;
-	    }
 	}
-	if (level <= 16) {
+	if (level <= 16)
 	    return 2 * level + 7;
-	} else if (level <= 31) {
+	else if (level <= 31)
 	    return 5 * level - 38;
-	} else {
+	else
 	    return 9 * level - 158;
-	}
     }
 
     public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
@@ -1321,9 +1312,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public static void sendMessage(Object sender, String msg) {
-	if (sender instanceof Player) {
+	if (sender instanceof Player)
 	    ((Player) sender).sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
-	} else
+	else
 	    ((CommandSender) sender).sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
     }
 

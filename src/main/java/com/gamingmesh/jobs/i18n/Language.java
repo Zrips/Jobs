@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
@@ -69,9 +68,8 @@ public class Language {
 	    else
 		msg = customlocale.contains(key) == true ? Colors(customlocale.getString(key)) : missing;
 	} catch (Exception e) {
-	    String message = Colors("&e[Jobs] &2Cant read language file. Plugin will be disabled.");
-	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-	    console.sendMessage(message);
+	    Bukkit.getServer().getConsoleSender().sendMessage(Colors("&e[Jobs] &2Can't read language file. Plugin will be disabled."));
+	    Bukkit.getServer().getPluginManager().disablePlugin(plugin);
 	    throw e;
 	}
 	if (variables.length > 0)
@@ -131,7 +129,7 @@ public class Language {
 	return temp;
     }
 
-    public String Colors(String text) {
+    private String Colors(String text) {
 	return ChatColor.translateAlternateColorCodes('&', text);
     }
 
@@ -141,7 +139,7 @@ public class Language {
      * @return the message
      */
     public String getDefaultMessage(String key) {
-	return enlocale.contains(key) == true ? Colors(enlocale.getString(key)) : "Cant find locale";
+	return enlocale.contains(key) == true ? Colors(enlocale.getString(key)) : "Can't find locale";
     }
 
     /**

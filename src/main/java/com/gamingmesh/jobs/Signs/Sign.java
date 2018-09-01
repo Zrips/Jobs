@@ -2,14 +2,14 @@ package com.gamingmesh.jobs.Signs;
 
 public class Sign {
 
-	int Category = 0;
-	String World = null;
-	double x = 0.01;
-	double y = 0.01;
-	double z = 0.01;
-	int Number = 0;
-	String JobName = null;
-	boolean special = false;
+	private int Category = 0;
+	private String World = null;
+	private double x = 0.01;
+	private double y = 0.01;
+	private double z = 0.01;
+	private int Number = 0;
+	private String JobName = null;
+	private boolean special = false;
 
 	public Sign() {
 	}
@@ -19,7 +19,7 @@ public class Sign {
 	}
 
 	public boolean isSpecial() {
-		return this.special;
+		return special;
 	}
 	
 	public void setJobName(String JobName) {
@@ -27,7 +27,7 @@ public class Sign {
 	}
 
 	public String GetJobName() {
-		return this.JobName;
+		return JobName;
 	}
 	
 	public void setCategory(int Category) {
@@ -35,7 +35,7 @@ public class Sign {
 	}
 
 	public int GetCategory() {
-		return this.Category;
+		return Category;
 	}
 
 	public void setWorld(String World) {
@@ -43,7 +43,7 @@ public class Sign {
 	}
 
 	public String GetWorld() {
-		return this.World;
+		return World;
 	}
 
 	public void setX(double x) {
@@ -51,7 +51,7 @@ public class Sign {
 	}
 
 	public double GetX() {
-		return this.x;
+		return x;
 	}
 
 	public void setY(double y) {
@@ -59,7 +59,7 @@ public class Sign {
 	}
 
 	public double GetY() {
-		return this.y;
+		return y;
 	}
 
 	public void setZ(double z) {
@@ -67,7 +67,7 @@ public class Sign {
 	}
 
 	public double GetZ() {
-		return this.z;
+		return z;
 	}
 
 	public void setNumber(int Number) {
@@ -75,6 +75,6 @@ public class Sign {
 	}
 
 	public int GetNumber() {
-		return this.Number;
+		return Number;
 	}
 }

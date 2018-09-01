@@ -126,6 +126,9 @@ public class FurnaceBrewingHandling {
     }
 
     public static void save() {
+	// No file saving when the boolean is false
+	if (!Jobs.getGCManager().isFurnacesReassign() || !Jobs.getGCManager().isBrewingStandsReassign())
+		return;
 
 	YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
 

@@ -10,7 +10,7 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
     private OfflinePlayer offlinePlayer;
     private double money;
     private double points;
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     public JobsPaymentEvent(OfflinePlayer offlinePlayer, double money, double points) {
 	this.offlinePlayer = offlinePlayer;
@@ -19,19 +19,19 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
     }
 
     public OfflinePlayer getPlayer() {
-	return this.offlinePlayer;
+	return offlinePlayer;
     }
 
     public double getAmount() {
-	return this.money;
+	return money;
     }
 
     public double getPoints() {
-	return this.points;
+	return points;
     }
 
-    public void setPoints(double amount) {
-	this.points = amount;
+    public void setPoints(double points) {
+	this.points = points;
     }
 
     @Override
@@ -40,8 +40,8 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-	cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+	this.cancelled = cancelled;
     }
 
     public void setAmount(double money) {

@@ -1132,8 +1132,8 @@ public class ItemManager {
 	NAME_TAG(421, 0, 30731, "Name Tag", ""),
 	NAUTILUS_SHELL(-1, -1, 19989, "Nautilus Shell", ""),
 	NETHERRACK(87, 0, 23425, "Netherrack", "NETHERRACK"),
-	NETHER_BRICK(405, 0, 19996, "Nether Brick"),
-	NETHER_BRICKS(112, 0, 27802, "Nether Bricks"),
+	NETHER_BRICK(405, 0, 19996, "Nether Brick", ""),
+	NETHER_BRICKS(112, 0, 27802, "Nether Bricks", ""),
 	NETHER_BRICK_FENCE(113, 0, 5286, "Nether Brick Fence", "NETHER_FENCE"),
 	NETHER_BRICK_SLAB(44, 6, 26586, "Nether Brick Slab", ""),
 	NETHER_BRICK_STAIRS(114, 0, 12085, "Nether Brick Stairs", "NETHER_BRICK_STAIRS"),
@@ -1556,7 +1556,7 @@ public class ItemManager {
 	}
 
 	public int getLegacyId() {
-	    return this.legacyId;
+	    return legacyId;
 	}
 
 	public int getId() {

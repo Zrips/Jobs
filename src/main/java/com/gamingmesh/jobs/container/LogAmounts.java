@@ -20,15 +20,15 @@ public final class LogAmounts {
     }
 
     public boolean isNewEntry() {
-	return this.newEntry;
+	return newEntry;
     }
 
-    public void setNewEntry(boolean state) {
-	this.newEntry = state;
+    public void setNewEntry(boolean newEntry) {
+	this.newEntry = newEntry;
     }
 
     public String getItemName() {
-	return this.item;
+	return item;
     }
 
     public void add(HashMap<CurrencyType, Double> amounts) {
@@ -58,7 +58,7 @@ public final class LogAmounts {
     }
 
     public int getCount() {
-	return this.count;
+	return count;
     }
 
     public void setCount(int count) {
@@ -70,7 +70,7 @@ public final class LogAmounts {
     }
 
     public String getUsername() {
-	return this.username;
+	return username;
     }
 
     public void setAction(String action) {
@@ -78,7 +78,7 @@ public final class LogAmounts {
     }
 
     public String getAction() {
-	return this.action;
+	return action;
     }
 
 }

@@ -32,7 +32,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class PermissionManager {
 
-    HashMap<String, Integer> permDelay = new HashMap<>();
+    private HashMap<String, Integer> permDelay = new HashMap<>();
 
     private enum prm {
 //	jobs_join_JOBNAME(remade("jobs.join.%JOBNAME%"), 60 * 1000),

@@ -40,26 +40,26 @@ public class JobLimitedItems {
     }
 
     public String getNode() {
-	return this.node;
+	return node;
     }
 
     public int getId() {
-	return this.id;
+	return id;
     }
 
     public String getName() {
-	return this.name;
+	return name;
     }
 
     public List<String> getLore() {
-	return this.lore;
+	return lore;
     }
 
     public HashMap<Enchantment, Integer> getenchants() {
-	return this.enchants;
+	return enchants;
     }
 
     public int getLevel() {
-	return this.level;
+	return level;
     }
 }

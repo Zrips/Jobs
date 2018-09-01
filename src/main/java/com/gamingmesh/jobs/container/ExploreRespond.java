@@ -2,8 +2,8 @@ package com.gamingmesh.jobs.container;
 
 public class ExploreRespond {
 
-    int count;
-    boolean newChunk = false;
+	private int count;
+	private boolean newChunk = false;
 
     public ExploreRespond(int count, boolean newChunk) {
 	this.count = count;
@@ -11,10 +11,10 @@ public class ExploreRespond {
     }
 
     public int getCount() {
-	return this.count;
+	return count;
     }
 
     public boolean isNewChunk() {
-	return this.newChunk;
+	return newChunk;
     }
 }

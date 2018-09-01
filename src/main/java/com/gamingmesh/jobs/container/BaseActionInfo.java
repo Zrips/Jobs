@@ -26,6 +26,6 @@ public abstract class BaseActionInfo implements ActionInfo {
 
     @Override
     public ActionType getType() {
-        return this.type;
+        return type;
     }
 }

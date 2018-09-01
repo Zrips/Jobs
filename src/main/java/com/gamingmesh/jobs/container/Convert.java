@@ -4,11 +4,11 @@ import java.util.UUID;
 
 public class Convert {
 
-    int id;
-    UUID uuid;
-    String jobname;
-    int level;
-    int exp;
+    private int id;
+    private UUID uuid;
+    private String jobname;
+    private int level;
+    private int exp;
 
     public Convert(int id, UUID uuid, String jobname, int level, int exp) {
 	this.id = id;
@@ -22,22 +22,22 @@ public class Convert {
     }
 
     public int GetId() {
-	return this.id;
+	return id;
     }
 
     public UUID GetUserUUID() {
-	return this.uuid;
+	return uuid;
     }
 
     public String GetJobName() {
-	return this.jobname;
+	return jobname;
     }
 
     public int GetLevel() {
-	return this.level;
+	return level;
     }
 
     public int GetExp() {
-	return this.exp;
+	return exp;
     }
 }

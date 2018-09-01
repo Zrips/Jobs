@@ -6,12 +6,12 @@ import com.gamingmesh.jobs.Jobs;
 
 public class PlayerInfo {
 
-    int id;
-    String name = "Unknown";
-    private Long seen;
-    private Integer questsDone;
-    private UUID uuid;
-    private JobsPlayer player;
+	private int id;
+	private String name = "Unknown";
+	private Long seen;
+	private Integer questsDone;
+	private UUID uuid;
+	private JobsPlayer player;
 
     public PlayerInfo(String name, int id, UUID uuid, Long seen, Integer questsDone) {
 	this.name = name;

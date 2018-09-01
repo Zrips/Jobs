@@ -139,7 +139,7 @@ public class Job {
     }
 
     public BoostMultiplier getBoost() {
-	return this.boost;
+	return boost;
     }
 
     public boolean isSame(Job job) {
@@ -185,15 +185,15 @@ public class Job {
     }
 
     public List<String> getCmdOnJoin() {
-	return this.CmdOnJoin;
+	return CmdOnJoin;
     }
 
     public List<String> getCmdOnLeave() {
-	return this.CmdOnLeave;
+	return CmdOnLeave;
     }
 
     public ItemStack getGuiItem() {
-	return this.GUIitem;
+	return GUIitem;
     }
 
     /**

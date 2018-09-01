@@ -54,7 +54,7 @@ public class JobItems {
     }
 
     public String getNode() {
-	return this.node;
+	return node;
     }
 
     public ItemStack getItemStack(Player player) {
@@ -93,30 +93,30 @@ public class JobItems {
     }
 
     public int getId() {
-	return this.id;
+	return id;
     }
 
     public int getData() {
-	return this.data;
+	return data;
     }
 
     public int getAmount() {
-	return this.amount;
+	return amount;
     }
 
     public String getName() {
-	return this.name;
+	return name;
     }
 
     public List<String> getLore() {
-	return this.lore;
+	return lore;
     }
 
     public HashMap<Enchantment, Integer> getEnchants() {
-	return this.enchants;
+	return enchants;
     }
 
     public BoostMultiplier getBoost() {
-	return this.boostMultiplier.clone();
+	return boostMultiplier.clone();
     }
 }

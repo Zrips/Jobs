@@ -6,7 +6,7 @@ import com.gamingmesh.jobs.Jobs;
 
 public class ItemBonusCache {
 
-    Player player;
+	private Player player;
     private Long lastCheck = null;
     private BoostMultiplier bm = new BoostMultiplier();
     private Job job;

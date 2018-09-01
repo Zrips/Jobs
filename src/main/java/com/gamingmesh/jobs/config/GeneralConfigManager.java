@@ -86,7 +86,7 @@ public class GeneralConfigManager {
     public int globalblocktimer, CowMilkingTimer,
 	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
     public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
-    public String localeString = "EN";
+    public String localeString = "";
 
     private boolean FurnacesReassign, BrewingStandsReassign;
     private int FurnacesMaxDefault, BrewingStandsMaxDefault, BrowseAmountToShow;

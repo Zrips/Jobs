@@ -74,14 +74,12 @@ public class PlayerManager {
     private HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<>();
     private HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<>();
     private HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<>();
-    Jobs plugin;
 
-    public PlayerManager(Jobs plugin) {
-	this.plugin = plugin;
+    public PlayerManager() {
     }
 
     public PointsData getPointsData() {
-	return this.PointsDatabase;
+	return PointsDatabase;
     }
 
     public int getMapSize() {
@@ -131,7 +129,7 @@ public class PlayerManager {
     }
 
     public ConcurrentHashMap<UUID, JobsPlayer> getPlayersCache() {
-	return this.playersUUIDCache;
+	return playersUUIDCache;
     }
 
 //    public ConcurrentHashMap<String, JobsPlayer> getPlayers() {
@@ -139,7 +137,7 @@ public class PlayerManager {
 //    }
 
     public HashMap<UUID, PlayerInfo> getPlayersInfoUUIDMap() {
-	return this.PlayerUUIDMap;
+	return PlayerUUIDMap;
     }
 
     public int getPlayerId(String name) {
@@ -198,9 +196,8 @@ public class PlayerManager {
 	if (Jobs.getGCManager().saveOnDisconnect()) {
 	    jPlayer.onDisconnect();
 	    jPlayer.save();
-	} else {
+	} else
 	    jPlayer.onDisconnect();
-	}
     }
 
     /**
@@ -216,16 +213,14 @@ public class PlayerManager {
 	 */
 	ArrayList<JobsPlayer> list = new ArrayList<>(this.players.values());
 
-	for (JobsPlayer jPlayer : list) {
+	for (JobsPlayer jPlayer : list)
 	    jPlayer.save();
-	}
 
 	Iterator<JobsPlayer> iter = this.players.values().iterator();
 	while (iter.hasNext()) {
 	    JobsPlayer jPlayer = iter.next();
-	    if (!jPlayer.isOnline() && jPlayer.isSaved()) {
+	    if (!jPlayer.isOnline() && jPlayer.isSaved())
 		iter.remove();
-	    }
 	}
     }
 
@@ -239,14 +234,13 @@ public class PlayerManager {
 	for (Entry<UUID, JobsPlayer> one : playersUUIDCache.entrySet()) {
 	    JobsPlayer jPlayer = one.getValue();
 	    if (resetID)
-		jPlayer.setUserId(-1);
+	    jPlayer.setUserId(-1);
 	    JobsDAO dao = Jobs.getJobsDAO();
 	    dao.updateSeen(jPlayer);
 	    if (jPlayer.getUserId() == -1)
 		continue;
-	    for (JobProgression oneJ : jPlayer.getJobProgression()) {
-		dao.insertJob(jPlayer, oneJ);
-	    }
+	    for (JobProgression oneJ : jPlayer.getJobProgression())
+	    	dao.insertJob(jPlayer, oneJ);
 	    dao.saveLog(jPlayer);
 	    dao.savePoints(jPlayer);
 	    dao.recordPlayersLimits(jPlayer);
@@ -319,11 +313,10 @@ public class PlayerManager {
 		jPlayer.reloadLimits();
 	    }
 
-	if (points != null) {
+	if (points != null)
 	    Jobs.getPlayerManager().getPointsData().addPlayer(jPlayer.getPlayerUUID(), points);
-	} else {
+	else
 	    Jobs.getPlayerManager().getPointsData().addPlayer(jPlayer.getPlayerUUID());
-	}
 
 	if (logs != null)
 	    jPlayer.setLog(logs);
@@ -416,9 +409,8 @@ public class PlayerManager {
     public void leaveAllJobs(JobsPlayer jPlayer) {
 	List<JobProgression> jobs = new ArrayList<>();
 	jobs.addAll(jPlayer.getJobProgression());
-	for (JobProgression job : jobs) {
+	for (JobProgression job : jobs)
 	    leaveJob(jPlayer, job.getJob());
-	}
 	jPlayer.leaveAllJobs();
     }
 
@@ -553,28 +545,27 @@ public class PlayerManager {
 		if (sound != null && player != null && player.getLocation() != null)
 		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
 		else
-		    Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+		    Bukkit.getConsoleSender().sendMessage("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 	    }
 	} catch (Exception e) {
 	}
 
 	String message;
-	if (Jobs.getGCManager().isBroadcastingLevelups()) {
+	if (Jobs.getGCManager().isBroadcastingLevelups())
 	    message = Jobs.getLanguage().getMessage("message.levelup.broadcast");
-	} else {
+	else
 	    message = Jobs.getLanguage().getMessage("message.levelup.nobroadcast");
-	}
 
 	message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
 
-	if (levelUpEvent.getOldTitle() != null) {
+	if (levelUpEvent.getOldTitle() != null)
 	    message = message.replace("%titlename%", levelUpEvent.getOldTitleColor() + levelUpEvent.getOldTitleName() + ChatColor.WHITE);
-	}
-	if (player != null) {
+
+	if (player != null)
 	    message = message.replace("%playername%", player.getDisplayName());
-	} else {
+	else
 	    message = message.replace("%playername%", jPlayer.getUserName());
-	}
+
 	message = message.replace("%joblevel%", "" + prog.getLevel());
 	for (String line : message.split("\n")) {
 	    if (Jobs.getGCManager().isBroadcastingLevelups()) {
@@ -598,27 +589,27 @@ public class PlayerManager {
 			player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
 			    levelUpEvent.getTitleChangePitch());
 		    else
-			Bukkit.getConsoleSender().sendMessage("[Jobs] Cant find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+			Bukkit.getConsoleSender().sendMessage("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
 	    } catch (Exception e) {
 	    }
 	    // user would skill up
-	    if (Jobs.getGCManager().isBroadcastingSkillups()) {
-		message = Jobs.getLanguage().getMessage("message.skillup.broadcast");
-	    } else {
-		message = Jobs.getLanguage().getMessage("message.skillup.nobroadcast");
-	    }
-	    if (player != null) {
-		message = message.replace("%playername%", player.getDisplayName());
-	    } else {
-		message = message.replace("%playername%", jPlayer.getUserName());
-	    }
+	    if (Jobs.getGCManager().isBroadcastingSkillups())
+	    	message = Jobs.getLanguage().getMessage("message.skillup.broadcast");
+	    else
+	    	message = Jobs.getLanguage().getMessage("message.skillup.nobroadcast");
+
+	    if (player != null)
+	    	message = message.replace("%playername%", player.getDisplayName());
+	    else
+	    	message = message.replace("%playername%", jPlayer.getUserName());
+
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitleColor() + levelUpEvent.getNewTitleName() + ChatColor.WHITE);
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
 	    for (String line : message.split("\n")) {
-		if (Jobs.getGCManager().isBroadcastingSkillups()) {
+		if (Jobs.getGCManager().isBroadcastingSkillups())
 		    Bukkit.getServer().broadcastMessage(line);
-		} else if (player != null) {
+		else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
 			Jobs.getActionBar().send(player, line);
 		    if (Jobs.getGCManager().TitleChangeChat)
@@ -740,7 +731,7 @@ public class PlayerManager {
 	HashMap<Job, ItemBonusCache> cj = cache.get(player.getUniqueId());
 
 	if (cj == null) {
-	    cj = new HashMap<Job, ItemBonusCache>();
+	    cj = new HashMap<>();
 	    cache.put(player.getUniqueId(), cj);
 	}
 
@@ -972,7 +963,7 @@ public class PlayerManager {
 	    return;
 	if (!Jobs.getGCManager().AutoJobJoinUse)
 	    return;
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
 	    @Override
 	    public void run() {
 		if (!player.isOnline())

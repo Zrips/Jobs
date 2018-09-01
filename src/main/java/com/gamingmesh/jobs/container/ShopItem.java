@@ -40,7 +40,7 @@ public class ShopItem {
     }
 
     public int getPage() {
-	return this.page;
+	return page;
     }
 
     public void setSlot(Integer slot) {
@@ -48,7 +48,7 @@ public class ShopItem {
     }
 
     public int getSlot() {
-	return this.slot;
+	return slot;
     }
 
     public void setitems(List<JobItems> items) {
@@ -56,7 +56,7 @@ public class ShopItem {
     }
 
     public List<JobItems> getitems() {
-	return this.items;
+	return items;
     }
 
     public void setCommands(List<String> Commands) {
@@ -64,7 +64,7 @@ public class ShopItem {
     }
 
     public List<String> getCommands() {
-	return this.Commands;
+	return Commands;
     }
 
     public void setRequiredJobs(HashMap<String, Integer> RequiredJobs) {
@@ -72,7 +72,7 @@ public class ShopItem {
     }
 
     public HashMap<String, Integer> getRequiredJobs() {
-	return this.RequiredJobs;
+	return RequiredJobs;
     }
 
     public void setRequiredPerm(List<String> RequiredPerm) {
@@ -80,7 +80,7 @@ public class ShopItem {
     }
 
     public List<String> getRequiredPerm() {
-	return this.RequiredPerm;
+	return RequiredPerm;
     }
 
     public void setHideWithoutPerm(boolean HideWithoutPerm) {
@@ -88,7 +88,7 @@ public class ShopItem {
     }
 
     public boolean isHideWithoutPerm() {
-	return this.HideWithoutPerm;
+	return HideWithoutPerm;
     }
 
     public void setIconLore(List<String> IconLore) {
@@ -96,19 +96,19 @@ public class ShopItem {
     }
 
     public List<String> getIconLore() {
-	return this.IconLore;
+	return IconLore;
     }
 
     public String getNodeName() {
-	return this.NodeName;
+	return NodeName;
     }
 
     public int getIconId() {
-	return this.IconId;
+	return IconId;
     }
 
     public int getIconData() {
-	return this.IconData;
+	return IconData;
     }
 
     public void setIconData(int IconData) {
@@ -116,7 +116,7 @@ public class ShopItem {
     }
 
     public double getPrice() {
-	return this.price;
+	return price;
     }
 
     public void setIconAmount(int IconAmount) {
@@ -124,7 +124,7 @@ public class ShopItem {
     }
 
     public int getIconAmount() {
-	return this.IconAmount;
+	return IconAmount;
     }
 
     public void setIconName(String IconName) {
@@ -132,14 +132,14 @@ public class ShopItem {
     }
 
     public String getIconName() {
-	return this.IconName;
+	return IconName;
     }
 
     public int getRequiredTotalLevels() {
 	return RequiredTotalLevels;
     }
 
-    public void setRequiredTotalLevels(int requiredTotalLevels) {
-	RequiredTotalLevels = requiredTotalLevels;
+    public void setRequiredTotalLevels(int RequiredTotalLevels) {
+	this.RequiredTotalLevels = RequiredTotalLevels;
     }
 }

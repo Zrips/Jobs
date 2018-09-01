@@ -8,9 +8,9 @@ import com.gamingmesh.jobs.Jobs;
 
 public class ExploreChunk {
 
-    int x;
-    int z;
-    Set<String> playerNames = new HashSet<>();
+	private int x;
+	private int z;
+	private Set<String> playerNames = new HashSet<>();
     private Integer dbId = null;
     private boolean updated = false;
 
@@ -42,19 +42,19 @@ public class ExploreChunk {
     }
 
     public int getCount() {
-	return this.playerNames.size();
+	return playerNames.size();
     }
 
     public int getX() {
-	return this.x;
+	return x;
     }
 
     public int getZ() {
-	return this.z;
+	return z;
     }
 
     public Set<String> getPlayers() {
-	return this.playerNames;
+	return playerNames;
     }
 
     public String serializeNames() {

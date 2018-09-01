@@ -52,7 +52,7 @@ public class Title {
      * Function to return the long name of the title
      * @return the long name of the title
      */
-    public String getName(){
+    public String getName() {
         return name;
     }
     
@@ -60,7 +60,7 @@ public class Title {
      * Function to return the job name of the title
      * @return the job name of the title
      */
-    public String getJobName(){
+    public String getJobName() {
         return jobName;
     }
     
@@ -68,7 +68,7 @@ public class Title {
      * Function to get the ChatColor of the title
      * @return the chat colour o the title
      */
-    public ChatColor getChatColor(){
+    public ChatColor getChatColor() {
         return color;
     }
     
@@ -76,7 +76,7 @@ public class Title {
      * Function to get the levelRequirement of the title
      * @return the level requirement for the title
      */
-    public int getLevelReq(){
+    public int getLevelReq() {
         return levelReq;
     }
     
@@ -84,7 +84,7 @@ public class Title {
      * Function to get the short name of the title
      * @return the short name of the title
      */
-    public String getShortName(){
+    public String getShortName() {
         return shortName;
     }
 }

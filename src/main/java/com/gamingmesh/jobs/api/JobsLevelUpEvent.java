@@ -21,7 +21,7 @@ public final class JobsLevelUpEvent extends Event implements Cancellable {
     private Sound soundTitleChangeSound = Sound.values()[0];
     private int soundTitleChangeVolume = 1;
     private int soundTitleChangePitch = 3;
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     public JobsLevelUpEvent(JobsPlayer jPlayer, String JobName, int level, Title OldTitle, Title NewTitle, String soundLevelupSound, Integer soundLevelupVolume,
 	Integer soundLevelupPitch, String soundTitleChangeSound, Integer soundTitleChangeVolume, Integer soundTitleChangePitch) {
@@ -47,43 +47,43 @@ public final class JobsLevelUpEvent extends Event implements Cancellable {
     }
 
     public JobsPlayer getPlayer() {
-	return this.player;
+	return player;
     }
 
     public String getJobName() {
-	return this.JobName;
+	return JobName;
     }
 
     public Title getOldTitle() {
-	return this.OldTitle;
+	return OldTitle;
     }
 
     public String getOldTitleName() {
-	return this.OldTitle.getName();
+	return OldTitle.getName();
     }
 
     public String getOldTitleShort() {
-	return this.OldTitle.getShortName();
+	return OldTitle.getShortName();
     }
 
     public String getOldTitleColor() {
-	return this.OldTitle.getChatColor().toString();
+	return OldTitle.getChatColor().toString();
     }
 
     public Title getNewTitle() {
-	return this.NewTitle;
+	return NewTitle;
     }
 
     public String getNewTitleName() {
-	return this.NewTitle.getName();
+	return NewTitle.getName();
     }
 
     public String getNewTitleShort() {
-	return this.NewTitle.getShortName();
+	return NewTitle.getShortName();
     }
 
     public String getNewTitleColor() {
-	return this.NewTitle.getChatColor().toString();
+	return NewTitle.getChatColor().toString();
     }
 
     @Deprecated
@@ -95,24 +95,24 @@ public final class JobsLevelUpEvent extends Event implements Cancellable {
 	return this.soundLevelupSound == null ? Sound.values()[0] : this.soundLevelupSound;
     }
 
-    public void setSound(Sound sound) {
-	this.soundLevelupSound = sound;
+    public void setSound(Sound soundLevelupSound) {
+	this.soundLevelupSound = soundLevelupSound;
     }
 
     public int getSoundVolume() {
-	return this.soundLevelupVolume;
+	return soundLevelupVolume;
     }
 
-    public void setSoundVolume(int volume) {
-	this.soundLevelupVolume = volume;
+    public void setSoundVolume(int soundLevelupVolume) {
+	this.soundLevelupVolume = soundLevelupVolume;
     }
 
     public int getSoundPitch() {
-	return this.soundLevelupPitch;
+	return soundLevelupPitch;
     }
 
-    public void setSoundPitch(int pitch) {
-	this.soundLevelupPitch = pitch;
+    public void setSoundPitch(int soundLevelupPitch) {
+	this.soundLevelupPitch = soundLevelupPitch;
     }
 
     @Deprecated
@@ -124,28 +124,28 @@ public final class JobsLevelUpEvent extends Event implements Cancellable {
 	return this.soundTitleChangeSound == null ? Sound.values()[0] : this.soundTitleChangeSound;
     }
 
-    public void setTitleChangeSound(Sound sound) {
-	this.soundTitleChangeSound = sound;
+    public void setTitleChangeSound(Sound soundTitleChangeSound) {
+	this.soundTitleChangeSound = soundTitleChangeSound;
     }
 
     public int getTitleChangeVolume() {
-	return this.soundTitleChangeVolume;
+	return soundTitleChangeVolume;
     }
 
-    public void setTitleChangeVolume(int volume) {
-	this.soundTitleChangeVolume = volume;
+    public void setTitleChangeVolume(int soundTitleChangeVolume) {
+	this.soundTitleChangeVolume = soundTitleChangeVolume;
     }
 
     public int getTitleChangePitch() {
-	return this.soundTitleChangePitch;
+	return soundTitleChangePitch;
     }
 
-    public void setTitleChangePitch(int pitch) {
-	this.soundTitleChangePitch = pitch;
+    public void setTitleChangePitch(int soundTitleChangePitch) {
+	this.soundTitleChangePitch = soundTitleChangePitch;
     }
 
     public int getLevel() {
-	return this.level;
+	return level;
     }
 
     @Override
@@ -154,8 +154,8 @@ public final class JobsLevelUpEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-	cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+	this.cancelled = cancelled;
     }
 
     @Override

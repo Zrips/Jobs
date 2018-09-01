@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 
 public class JobsScheduleStopEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    private boolean cancelled;
+    private boolean cancelled = false;
     private Schedule schedule;
 
     public JobsScheduleStopEvent(Schedule schedule){
@@ -24,8 +24,8 @@ public class JobsScheduleStopEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-        cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 
     @Override

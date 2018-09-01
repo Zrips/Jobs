@@ -11,7 +11,7 @@ public final class JobsChunkChangeEvent extends Event implements Cancellable {
     private Player player;
     private Chunk oldChunk;
     private Chunk newChunk;
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     public JobsChunkChangeEvent(Player player, Chunk oldChunk, Chunk newChunk) {
 	this.player = player;
@@ -20,15 +20,15 @@ public final class JobsChunkChangeEvent extends Event implements Cancellable {
     }
 
     public Player getPlayer() {
-	return this.player;
+	return player;
     }
 
     public Chunk getOldChunk() {
-	return this.oldChunk;
+	return oldChunk;
     }
 
     public Chunk getNewChunk() {
-	return this.newChunk;
+	return newChunk;
     }
 
     @Override
@@ -37,8 +37,8 @@ public final class JobsChunkChangeEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-	cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+	this.cancelled = cancelled;
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SignInfo {
 
-    List<Sign> AllSigns = new ArrayList<>();
+    private List<Sign> AllSigns = new ArrayList<>();
 
     public SignInfo() {
     }
@@ -15,7 +15,7 @@ public class SignInfo {
     }
 
     public List<Sign> GetAllSigns() {
-	return this.AllSigns;
+	return AllSigns;
     }
 
     public void removeSign(Sign sign) {

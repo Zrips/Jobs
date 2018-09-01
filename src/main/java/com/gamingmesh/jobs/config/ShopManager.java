@@ -52,7 +52,7 @@ public class ShopManager {
 	Inventory topinv = player.getOpenInventory().getTopInventory();
 	if (topinv != null)
 	    player.closeInventory();
-	Jobs.getShopManager().GuiList.put(player.getName(), page);
+	GuiList.put(player.getName(), page);
 	player.openInventory(inv);
     }
 

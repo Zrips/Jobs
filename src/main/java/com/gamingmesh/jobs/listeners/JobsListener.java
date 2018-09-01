@@ -449,7 +449,7 @@ public class JobsListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (!event.getPlayer().hasPermission("jobs.command.signs")) {
+	if (!player.hasPermission("jobs.command.signs")) {
 	    event.setCancelled(true);
 	    player.sendMessage(Jobs.getLanguage().getMessage("signs.cantcreate"));
 	    return;
@@ -565,8 +565,7 @@ public class JobsListener implements Listener {
 	    return;
 	if (!Jobs.getGCManager().getModifyChat())
 	    return;
-	Player player = event.getPlayer();
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
 
@@ -585,8 +584,7 @@ public class JobsListener implements Listener {
 	    return;
 	if (Jobs.getGCManager().getModifyChat())
 	    return;
-	Player player = event.getPlayer();
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";
@@ -604,8 +602,7 @@ public class JobsListener implements Listener {
 	    return;
 	if (Jobs.getGCManager().getModifyChat())
 	    return;
-	Player player = event.getPlayer();
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";

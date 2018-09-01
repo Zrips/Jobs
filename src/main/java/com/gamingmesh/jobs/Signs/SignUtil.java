@@ -32,6 +32,10 @@ public class SignUtil {
 
     // Sign file
     public void LoadSigns() {
+    // Boolean false does not create a file
+    if (!Jobs.getGCManager().SignsEnabled)
+    	return;
+
 	Signs.GetAllSigns().clear();
 	File file = new File(plugin.getDataFolder(), "Signs.yml");
 	YamlConfiguration f = YamlConfiguration.loadConfiguration(file);
@@ -61,6 +65,9 @@ public class SignUtil {
 
     // Signs save file
     public void saveSigns() {
+    if (!Jobs.getGCManager().SignsEnabled)
+        return;
+
 	File f = new File(plugin.getDataFolder(), "Signs.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 
@@ -92,6 +99,9 @@ public class SignUtil {
     }
 
     public boolean SignUpdate(String JobName) {
+    if (!Jobs.getGCManager().SignsEnabled)
+        return true;
+
 	List<com.gamingmesh.jobs.Signs.Sign> Copy = new ArrayList<>(Signs.GetAllSigns().size());
 	for (com.gamingmesh.jobs.Signs.Sign foo : Signs.GetAllSigns()) {
 	    Copy.add(foo);
@@ -126,9 +136,8 @@ public class SignUtil {
 			org.bukkit.block.Sign sign = (org.bukkit.block.Sign) block.getState();
 			if (!one.isSpecial()) {
 			    for (int i = 0; i < 4; i++) {
-				if (i >= PlayerList.size()) {
+				if (i >= PlayerList.size())
 				    break;
-				}
 				String PlayerName = PlayerList.get(i).getPlayerName();
 
 				if (PlayerName != null && PlayerName.length() > 8) {

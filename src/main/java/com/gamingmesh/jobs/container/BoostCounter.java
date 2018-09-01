@@ -1,9 +1,9 @@
 package com.gamingmesh.jobs.container;
 
 public class BoostCounter {
-    CurrencyType type;
-    double boost;
-    Long calculatedon;
+    private CurrencyType type;
+    private double boost;
+    private Long calculatedon;
 
     public BoostCounter(CurrencyType type, double boost, Long calculatedon) {
 	this.type = type;
@@ -12,19 +12,19 @@ public class BoostCounter {
     }
 
     public CurrencyType getType() {
-	return this.type;
+	return type;
     }
 
     public long getTime() {
-	return this.calculatedon;
+	return calculatedon;
     }
 
     public double getBoost() {
-	return this.boost;
+	return boost;
     }
 
-    public void setTime(long time) {
-	this.calculatedon = time;
+    public void setTime(long calculatedon) {
+	this.calculatedon = calculatedon;
     }
 
     public void setBoost(double boost) {

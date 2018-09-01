@@ -12,7 +12,7 @@ public final class JobsExpGainEvent extends Event implements Cancellable {
     private OfflinePlayer offlinePlayer;
     private double exp;
     private Job job;
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     public JobsExpGainEvent(OfflinePlayer offlinePlayer, Job job, double exp) {
 	this.offlinePlayer = offlinePlayer;
@@ -21,15 +21,15 @@ public final class JobsExpGainEvent extends Event implements Cancellable {
     }
 
     public OfflinePlayer getPlayer() {
-	return this.offlinePlayer;
+	return offlinePlayer;
     }
 
     public Job getJob() {
-	return this.job;
+	return job;
     }
 
     public double getExp() {
-	return this.exp;
+	return exp;
     }
 
     public void setExp(double exp) {
@@ -42,8 +42,8 @@ public final class JobsExpGainEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-	cancelled = cancel;
+    public void setCancelled(boolean cancelled) {
+	this.cancelled = cancelled;
     }
 
     @Override

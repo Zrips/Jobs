@@ -4,10 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.boss.BossBar;
 
 public class BossBarInfo {
-    String jobName;
-    String PlayerName;
-    BossBar bar;
-    int id = -1;
+	private String jobName;
+    private String PlayerName;
+    private BossBar bar;
+    private int id = -1;
 
     public BossBarInfo(String PlayerName, String jobName, BossBar bar) {
 	this.PlayerName = PlayerName;
@@ -26,14 +26,14 @@ public class BossBarInfo {
     }
 
     public String getPlayerName() {
-	return this.PlayerName;
+	return PlayerName;
     }
 
     public String getJobName() {
-	return this.jobName;
+	return jobName;
     }
 
     public BossBar getBar() {
-	return this.bar;
+	return bar;
     }
 }

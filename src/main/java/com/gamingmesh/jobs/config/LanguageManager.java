@@ -139,7 +139,7 @@ public class LanguageManager {
 	    c.get("general.error.ingame", "&cYou can use this command only in game!");
 	    c.get("general.error.fromconsole", "&cYou can use this command only from console!");
 	    c.get("general.error.worldisdisabled", "&cYou cant use command in this world!");
-	    
+
 	    c.get("general.error.newFurnaceRegistration", "&eRegistered new ownership for furnace &7[current]&e/&f[max]");
 	    c.get("general.error.newBrewingRegistration", "&eRegistered new ownership for brewing stand &7[current]&e/&f[max]");
 	    c.get("general.error.noFurnaceRegistration", "&cYou reached max furnace count!");
@@ -163,8 +163,6 @@ public class LanguageManager {
 	    c.get("command.help.output.nextPageOff", "&7 Next >>----");
 	    c.get("command.help.output.pageCount", "&2[current]/[total]");
 
-
-	    
 	    c.get("command.moneyboost.help.info", "Boosts Money gain for all players");
 	    c.get("command.moneyboost.help.args", "[jobname] [rate]");
 	    Jobs.getGCManager().commandArgs.put("moneyboost", Arrays.asList("[jobname]", "[rate]"));
@@ -202,7 +200,7 @@ public class LanguageManager {
 	    c.get("command.edititembonus.help.info", "Edit item boost bonus");
 	    c.get("command.edititembonus.help.args", "[list/add/remove] [jobsName] [itemBoostName]");
 	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("add%%remove", "[jobname]", "[jobitemname]"));
-	    
+
 	    c.get("command.bonus.help.info", "Show job bonuses");
 	    c.get("command.bonus.help.args", "[jobname]");
 	    Jobs.getGCManager().commandArgs.put("bonus", Arrays.asList("[jobname]"));
@@ -217,9 +215,6 @@ public class LanguageManager {
 	    c.get("command.bonus.output.mcmmo", " &eMcMMO bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.final", " &eFinal bonus: %money% %points% %exp%");
 	    c.get("command.bonus.output.finalExplanation", " &eDoes not include Petpay and Near spawner bonus/penalty");
-	    
-	    
-	    
 
 	    c.get("command.convert.help.info",
 		"Converts data base system from one system to another. if you currently running sqlite, this will convert to Mysql and vise versa.");

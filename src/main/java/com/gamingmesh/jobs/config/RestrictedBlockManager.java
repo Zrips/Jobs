@@ -28,6 +28,11 @@ public class RestrictedBlockManager {
      * loads from Jobs/restrictedAreas.yml
      */
     public synchronized void load() {
+    // No file create/load when boolean is false
+    if (!Jobs.getGCManager().useBlockProtection) {
+    	return;
+    }
+
 	File f = new File(plugin.getDataFolder(), "restrictedBlocks.yml");
 	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
@@ -156,8 +161,8 @@ public class RestrictedBlockManager {
 	    Set<String> lss = c.getC().getConfigurationSection("blocksTimer").getKeys(false);
 	    for (String one : lss) {
 		if (((c.getC().isString("blocksTimer." + one + ".id")) || (c.getC().isInt("blocksTimer." + one + ".id"))) && (c.getC().isInt("blocksTimer." + one
-		    + ".cd"))) {		    
-		    CMIItemStack cm = ItemManager.getItem(c.getC().getString("blocksTimer." + one + ".id"));		    
+		    + ".cd"))) {
+		    CMIItemStack cm = ItemManager.getItem(c.getC().getString("blocksTimer." + one + ".id"));
 		    if ((cm == null) || (!cm.getCMIType().isBlock())) {
 		    Jobs.consoleMsg("&e[Jobs] Your defined (" + c.getC().getString(new StringBuilder("blocksTimer.").append(one)
 			    .append(".id").toString()) + ") protected block id/name is not correct!");

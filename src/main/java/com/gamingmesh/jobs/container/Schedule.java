@@ -10,76 +10,76 @@ import com.gamingmesh.jobs.Jobs;
 
 public class Schedule {
 
-    int From = 0;
-    int Until = 235959;
+    private int From = 0;
+    private int Until = 235959;
 
-    int nextFrom = 0;
-    int nextUntil = 235959;
+    private int nextFrom = 0;
+    private int nextUntil = 235959;
 
-    boolean nextDay = false;
+    private boolean nextDay = false;
 
-    BoostMultiplier BM = new BoostMultiplier();
+    private BoostMultiplier BM = new BoostMultiplier();
 
-    String Name = null;
+    private String Name = null;
 
-    List<String> Days = new ArrayList<>(Arrays.asList("all"));
-    List<Job> JobsList = new ArrayList<>();
+    private List<String> Days = new ArrayList<>(Arrays.asList("all"));
+    private List<Job> JobsList = new ArrayList<>();
 
-    List<String> MessageOnStart = new ArrayList<>();
-    List<String> MessageOnStop = new ArrayList<>();
+    private List<String> MessageOnStart = new ArrayList<>();
+    private List<String> MessageOnStop = new ArrayList<>();
 
-    List<String> MessageToBroadcast = new ArrayList<>();
+    private List<String> MessageToBroadcast = new ArrayList<>();
 
-    boolean started = false;
-    boolean stoped = true;
+    private boolean started = false;
+    private boolean stoped = true;
 
-    boolean onStop = true;
-    boolean OnStart = true;
+    private boolean onStop = true;
+    private boolean OnStart = true;
 
-    long broadcastInfoOn = 0L;
-    int broadcastInterval = 0;
+    private long broadcastInfoOn = 0L;
+    private int broadcastInterval = 0;
 
     public Schedule() {
     }
 
-    public void setBroadcastInfoOn(long time) {
-	this.broadcastInfoOn = time;
+    public void setBroadcastInfoOn(long broadcastInfoOn) {
+	this.broadcastInfoOn = broadcastInfoOn;
     }
 
     public long getBroadcastInfoOn() {
-	return this.broadcastInfoOn;
+	return broadcastInfoOn;
     }
 
-    public void setBroadcastOnStop(boolean stage) {
-	this.onStop = stage;
+    public void setBroadcastOnStop(boolean onStop) {
+	this.onStop = onStop;
     }
 
     public boolean isBroadcastOnStop() {
-	return this.onStop;
+	return onStop;
     }
 
-    public void setBroadcastOnStart(boolean stage) {
-	this.OnStart = stage;
+    public void setBroadcastOnStart(boolean OnStart) {
+	this.OnStart = OnStart;
     }
 
     public boolean isBroadcastOnStart() {
-	return this.OnStart;
+	return OnStart;
     }
 
-    public void setStarted(boolean stage) {
-	this.started = stage;
+    public void setStarted(boolean started) {
+	this.started = started;
     }
 
     public boolean isStarted() {
-	return this.started;
+	return started;
     }
 
-    public void setStoped(boolean con) {
-	this.stoped = con;
+    public void setStoped(boolean stoped) {
+	this.stoped = stoped;
     }
 
     public boolean isStoped() {
-	return this.stoped;
+	return stoped;
     }
 
     public void setBoost(CurrencyType type, double amount) {
@@ -91,7 +91,7 @@ public class Schedule {
     }
 
     public BoostMultiplier getBoost() {
-	return this.BM;
+	return BM;
     }
 
     public void setName(String Name) {
@@ -99,7 +99,7 @@ public class Schedule {
     }
 
     public String GetName() {
-	return this.Name;
+	return Name;
     }
 
     public void setFrom(int From) {
@@ -107,19 +107,19 @@ public class Schedule {
     }
 
     public int GetFrom() {
-	return this.From;
+	return From;
     }
 
     public int GetNextFrom() {
-	return this.nextFrom;
+	return nextFrom;
     }
 
     public int GetNextUntil() {
-	return this.nextUntil;
+	return nextUntil;
     }
 
     public boolean isNextDay() {
-	return this.nextDay;
+	return nextDay;
     }
 
     public void setUntil(int Until) {
@@ -134,7 +134,7 @@ public class Schedule {
     }
 
     public int GetUntil() {
-	return this.Until;
+	return Until;
     }
 
     public void setJobs(List<String> JobsNameList) {
@@ -158,7 +158,7 @@ public class Schedule {
     }
 
     public List<Job> GetJobs() {
-	return this.JobsList;
+	return JobsList;
     }
 
     public void setDays(List<String> Days) {
@@ -169,7 +169,7 @@ public class Schedule {
     }
 
     public List<String> GetDays() {
-	return this.Days;
+	return Days;
     }
 
     public void setMessageOnStart(List<String> msg, String From, String Until) {
@@ -181,7 +181,7 @@ public class Schedule {
     }
 
     public List<String> GetMessageOnStart() {
-	return this.MessageOnStart;
+	return MessageOnStart;
     }
 
     public void setMessageOnStop(List<String> msg, String From, String Until) {
@@ -193,7 +193,7 @@ public class Schedule {
     }
 
     public List<String> GetMessageOnStop() {
-	return this.MessageOnStop;
+	return MessageOnStop;
     }
 
     public void setMessageToBroadcast(List<String> msg, String From, String Until) {
@@ -205,15 +205,15 @@ public class Schedule {
     }
 
     public List<String> GetMessageToBroadcast() {
-	return this.MessageToBroadcast;
+	return MessageToBroadcast;
     }
 
-    public void setBroadcastInterval(int From) {
-	this.broadcastInterval = From;
+    public void setBroadcastInterval(int broadcastInterval) {
+	this.broadcastInterval = broadcastInterval;
     }
 
     public int GetBroadcastInterval() {
-	return this.broadcastInterval;
+	return broadcastInterval;
     }
 
 }

@@ -11,7 +11,7 @@ public final class JobsJoinEvent extends Event implements Cancellable {
 	private static final HandlerList handlers = new HandlerList();
 	private JobsPlayer player;
 	private Job job;
-	private boolean cancelled;
+	private boolean cancelled = false;
 
 	public JobsJoinEvent(JobsPlayer jPlayer, Job job) {
 		this.player = jPlayer;
@@ -19,11 +19,11 @@ public final class JobsJoinEvent extends Event implements Cancellable {
 	}
 
 	public JobsPlayer getPlayer() {
-		return this.player;
+		return player;
 	}
 
 	public Job getJob() {
-		return this.job;
+		return job;
 	}
 
 	@Override
@@ -32,8 +32,8 @@ public final class JobsJoinEvent extends Event implements Cancellable {
 	}
 
 	@Override
-	public void setCancelled(boolean cancel) {
-		cancelled = cancel;
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 	@Override

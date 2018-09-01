@@ -17,7 +17,7 @@ public final class JobsAreaSelectionEvent extends Event {
     }
 
     public Player getPlayer() {
-	return this.player;
+	return player;
     }
 
     public CuboidArea getArea() {
