@@ -114,8 +114,6 @@ public class GeneralConfigManager {
     public ItemStack guiBackButton;
     public ItemStack guiFiller;
 
-    public int JobsTopAmount;
-
     public Integer levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
 	SoundTitleChangePitch, ToplistInScoreboardInterval;
     public double MinimumOveralPaymentLimit;
@@ -926,9 +924,6 @@ public class GeneralConfigManager {
 	JobsGUIGroupAmount = c.get("JobsGUI.GroupAmount", 7);
 	c.getW().addComment("JobsGUI.SkipAmount", "Defines By how many slot we need to skip after group");
 	JobsGUISkipAmount = c.get("JobsGUI.SkipAmount", 2);
-
-	c.getW().addComment("JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top");
-	JobsTopAmount = c.get("JobsTop.AmountToShow", 15);
 
 	Material tmat = Material.getMaterial(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
 	guiBackButton = new ItemStack(tmat == null ? Material.JACK_O_LANTERN : tmat, 1, (byte) c.get("JobsGUI.BackButton.Data", 0));

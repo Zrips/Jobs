@@ -1808,7 +1808,9 @@ public abstract class JobsDAO {
 	    conn.setAutoCommit(true);
 
 	    if (i > 0) {
-		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Saved " + i + " new explorer entries."));
+		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Saved " + i + " new explorer entries.");
+		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+		console.sendMessage(message);
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1855,7 +1857,9 @@ public abstract class JobsDAO {
 	    conn.setAutoCommit(true);
 
 	    if (i > 0) {
-		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Updated " + i + " explorer entries."));
+		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Updated " + i + " explorer entries.");
+		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+		console.sendMessage(message);
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();

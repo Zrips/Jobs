@@ -45,144 +45,108 @@ public class browse implements Cmd {
 		return true;
 	    }
 
-	    Job j = null;
 	    int page = 1;
-	    if (sender instanceof Player) {
-		    for (String one : args) {
-			if (one.startsWith("-p:")) {
-			    try {
-				page = Integer.parseInt(one.substring("-p:".length()));
-				continue;
-			    } catch (Exception e) {
-			    }
-			}
-		    }
-	    }
+	    Job j = null;
 	    for (String one : args) {
-	    	if (one.startsWith("-j:")) {
-			    try {
-				j = Jobs.getJob(one.substring("-j:".length()));
-				continue;
-			    } catch (Exception e) {
-			    }
-			}
+		if (one.startsWith("-p:")) {
+		    try {
+			page = Integer.parseInt(one.substring("-p:".length()));
+			continue;
+		    } catch (Exception e) {
+		    }
+		}
+		if (one.startsWith("-j:")) {
+		    try {
+			j = Jobs.getJob(one.substring("-j:".length()));
+			continue;
+		    } catch (Exception e) {
+		    }
+		}
 	    }
 
-	    if (sender instanceof Player) {
-	    	if (j == null) {
-	    		PageInfo pi = new PageInfo(Jobs.getGCManager().getBrowseAmountToShow(), jobList.size(), page);
-	    		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.newHeader", "[amount]", jobList.size()));
-	    		for (Job one : jobList) {
-	    		    if (!pi.isEntryOk())
-	    			continue;
-	    		    if (pi.isBreak())
-	    			break;
+	    if (j == null) {
+		PageInfo pi = new PageInfo(Jobs.getGCManager().getBrowseAmountToShow(), jobList.size(), page);
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.newHeader", "[amount]", jobList.size()));
+		for (Job one : jobList) {
+		    if (!pi.isEntryOk())
+			continue;
+		    if (pi.isBreak())
+			break;
 
-	    		    RawMessage rm = new RawMessage();
+		    RawMessage rm = new RawMessage();
 
-	    		    String hoverMsg = "";
+		    String hoverMsg = "";
 
-	    		    if (!one.getDescription().isEmpty()) {
-	    			hoverMsg += one.getDescription().replace("/n", "");
-	    		    }
-	    		    if (one.getMaxLevel(sender) > 0) {
-	    			if (!hoverMsg.isEmpty())
-	    			    hoverMsg += " \n";
-	    			hoverMsg += Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", one.getMaxLevel(sender));
-	    		    }
+		    if (!one.getDescription().isEmpty()) {
+			hoverMsg += one.getDescription().replace("/n", "");
+		    }
+		    if (one.getMaxLevel(sender) > 0) {
+			if (!hoverMsg.isEmpty())
+			    hoverMsg += " \n";
+			hoverMsg += Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", one.getMaxLevel(sender));
+		    }
 
-	    		    if (Jobs.getGCManager().ShowTotalWorkers) {
-	    			if (!hoverMsg.isEmpty())
-	    			    hoverMsg += " \n";
-	    			hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.totalWorkers", "[amount]", one.getTotalPlayers());
+		    if (Jobs.getGCManager().ShowTotalWorkers) {
+			if (!hoverMsg.isEmpty())
+			    hoverMsg += " \n";
+			hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.totalWorkers", "[amount]", one.getTotalPlayers());
 
-	    		    }
+		    }
 
-	    		    if (Jobs.getGCManager().useDynamicPayment && Jobs.getGCManager().ShowPenaltyBonus) {
-	    			if (!hoverMsg.isEmpty())
-	    			    hoverMsg += " \n";
-	    			if ((int) (one.getBonus() * 100) < 0)
-	    			    hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", (int) (one.getBonus() * 100) * -1);
-	    			else
-	    			    hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (one.getBonus() * 100));
-	    		    }
+		    if (Jobs.getGCManager().useDynamicPayment && Jobs.getGCManager().ShowPenaltyBonus) {
+			if (!hoverMsg.isEmpty())
+			    hoverMsg += " \n";
+			if ((int) (one.getBonus() * 100) < 0)
+			    hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", (int) (one.getBonus() * 100) * -1);
+			else
+			    hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (one.getBonus() * 100));
+		    }
 
-	    		    if (!hoverMsg.isEmpty())
-	    			hoverMsg += " \n";
-	    		    hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.click");
+		    if (!hoverMsg.isEmpty())
+			hoverMsg += " \n";
+		    hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.click");
 
-	    		    rm.add(Jobs.getLanguage().getMessage("command.browse.output.list", "[place]", pi.getPositionForOutput(), "[jobname]", one.getName()),
-	    			hoverMsg, "jobs browse -j:" + one.getName());
+		    rm.add(Jobs.getLanguage().getMessage("command.browse.output.list", "[place]", pi.getPositionForOutput(), "[jobname]", one.getName()),
+			hoverMsg, "jobs browse -j:" + one.getName());
 
-	    		    rm.show(sender);
-	    		}
-	    		plugin.ShowPagination(sender, pi.getTotalPages(), page, "jobs browse", "-p:");
-	    	    } else {
-
-	    		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));
-
-	    		if (j.getMaxLevel(sender) > 0) {
-	    		    sender.sendMessage(Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", j.getMaxLevel(sender)));
-	    		}
-
-	    		if (Jobs.getGCManager().ShowTotalWorkers) {
-	    		    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.totalWorkers", "[amount]", j.getTotalPlayers()));
-
-	    		}
-
-	    		if (Jobs.getGCManager().useDynamicPayment && Jobs.getGCManager().ShowPenaltyBonus) {
-	    		    if ((int) (j.getBonus() * 100) < 0)
-	    			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", (int) (j.getBonus() * 100) * -1));
-	    		    else
-	    			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (j.getBonus() * 100)));
-	    		}
-
-	    		if (!j.getFullDescription().isEmpty()) {
-	    		    for (String one : j.getFullDescription()) {
-	    			sender.sendMessage(one);
-	    		    }
-	    		}
-
-	    		RawMessage rm = new RawMessage();
-	    		rm.add(Jobs.getLanguage().getMessage("command.browse.output.detailed"),
-	    		    Jobs.getLanguage().getMessage("command.browse.output.detailed"),
-	    		    "jobs info " + j.getName());
-	    		rm.show(sender);
-	    		rm.clear();
-	    		rm.add(Jobs.getLanguage().getMessage("command.browse.output.chooseJob"),
-	    		    Jobs.getLanguage().getMessage("command.browse.output.chooseJobHover"),
-	    		    "jobs join " + j.getName() + " -needConfirmation");
-	    		rm.show(sender);
-	    	    }
+		    rm.show(sender);
+		}
+		plugin.ShowPagination(sender, pi.getTotalPages(), page, "jobs browse", "-p:");
 	    } else {
-	    	if (j == null) {
-	    		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.newHeader", "[amount]", jobList.size()));
-	    	    } else {
 
-	    		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));
 
-	    		if (j.getMaxLevel(sender) > 0) {
-	    		    sender.sendMessage(Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", j.getMaxLevel(sender)));
-	    		}
+		if (j.getMaxLevel(sender) > 0) {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", j.getMaxLevel(sender)));
+		}
 
-	    		if (Jobs.getGCManager().ShowTotalWorkers) {
-	    		    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.totalWorkers", "[amount]", j.getTotalPlayers()));
+		if (Jobs.getGCManager().ShowTotalWorkers) {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.totalWorkers", "[amount]", j.getTotalPlayers()));
 
-	    		}
+		}
 
-	    		if (Jobs.getGCManager().useDynamicPayment && Jobs.getGCManager().ShowPenaltyBonus) {
-	    		    if ((int) (j.getBonus() * 100) < 0)
-	    			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", (int) (j.getBonus() * 100) * -1));
-	    		    else
-	    			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (j.getBonus() * 100)));
-	    		}
+		if (Jobs.getGCManager().useDynamicPayment && Jobs.getGCManager().ShowPenaltyBonus) {
+		    if ((int) (j.getBonus() * 100) < 0)
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", (int) (j.getBonus() * 100) * -1));
+		    else
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (j.getBonus() * 100)));
+		}
 
-	    		if (!j.getFullDescription().isEmpty()) {
-	    		    for (String one : j.getFullDescription()) {
-	    			sender.sendMessage(one);
-	    		    }
-	    		}
-	    	    }
+		if (!j.getFullDescription().isEmpty())
+		    for (String one : j.getFullDescription()) {
+			sender.sendMessage(one);
+		    }
+
+		RawMessage rm = new RawMessage();
+		rm.add(Jobs.getLanguage().getMessage("command.browse.output.detailed"),
+		    Jobs.getLanguage().getMessage("command.browse.output.detailed"),
+		    "jobs info " + j.getName());
+		rm.show(sender);
+		rm.clear();
+		rm.add(Jobs.getLanguage().getMessage("command.browse.output.chooseJob"),
+		    Jobs.getLanguage().getMessage("command.browse.output.chooseJobHover"),
+		    "jobs join " + j.getName() + " -needConfirmation");
+		rm.show(sender);
 	    }
 
 	} else {

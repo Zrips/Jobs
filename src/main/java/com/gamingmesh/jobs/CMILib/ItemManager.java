@@ -697,7 +697,7 @@ public class ItemManager {
 	BRAIN_CORAL_FAN(-1, -1, 13849, "Brain Coral Fan", ""),
 	BRAIN_CORAL_WALL_FAN(-1, -1, 22685, "Brain Coral Wall Fan", ""),
 	BREAD(297, 0, 32049, "Bread", "BREAD"),
-	BREWING_STAND(117, 0, 14539, "Brewing Stand", ""),
+	BREWING_STAND(379, 0, 14539, "Brewing Stand", "BREWING_STAND_ITEM"),
 	BRICK(336, 0, 6820, "Brick", "claybrick"),
 	BRICKS(45, 0, 14165, "Bricks", ""),
 	BRICK_SLAB(44, 4, 26333, "Brick Slab", "STEP"),
