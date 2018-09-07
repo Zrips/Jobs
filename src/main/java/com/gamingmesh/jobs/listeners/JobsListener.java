@@ -913,20 +913,17 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void JobsArmorChangeEvent(JobsArmorChangeEvent event) {
-	Player player = event.getPlayer();
-	Jobs.getPlayerManager().resetiItemBonusCache(player.getUniqueId());
+	Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
     public void PlayerItemHeldEvent(PlayerItemHeldEvent event) {
-	Player player = event.getPlayer();
-	Jobs.getPlayerManager().resetiItemBonusCache(player.getUniqueId());
+	Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
     public void PlayerItemBreakEvent(PlayerItemBreakEvent event) {
-	Player player = event.getPlayer();
-	Jobs.getPlayerManager().resetiItemBonusCache(player.getUniqueId());
+	Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
     }
 
     @EventHandler

@@ -149,7 +149,7 @@ public class NameTranslatorManager {
 
 	if (ItemFile.getConfig().isConfigurationSection("EntityList")) {
 		ConfigurationSection section = ItemFile.getConfig().getConfigurationSection("EntityList");
-		Set<String>keys = section.getKeys(false);
+		Set<String> keys = section.getKeys(false);
 		ListOfEntities.clear();
 		for (String one : keys) {
 		    String id = one.contains(":") ? one.split(":")[0] : one;
@@ -165,7 +165,7 @@ public class NameTranslatorManager {
 
 	if (ItemFile.getConfig().isConfigurationSection("EnchantList")) {
 		ConfigurationSection section = ItemFile.getConfig().getConfigurationSection("EnchantList");
-		Set<String>keys = section.getKeys(false);
+		Set<String> keys = section.getKeys(false);
 		ListOfEnchants.clear();
 		for (String one : keys) {
 		    String id = one.contains(":") ? one.split(":")[0] : one;
@@ -181,7 +181,7 @@ public class NameTranslatorManager {
 
 	if (ItemFile.getConfig().isConfigurationSection("ColorList")) {
 		ConfigurationSection section = ItemFile.getConfig().getConfigurationSection("ColorList");
-		Set<String>keys = section.getKeys(false);
+		Set<String> keys = section.getKeys(false);
 		ListOfColors.clear();
 		for (String one : keys) {
 		    String id = one.contains(":") ? one.split(":")[0] : one;
@@ -197,7 +197,7 @@ public class NameTranslatorManager {
 
 	if (ItemFile.getConfig().isConfigurationSection("PotionNamesList")) {
 		ConfigurationSection section = ItemFile.getConfig().getConfigurationSection("PotionNamesList");
-		Set<String>keys = section.getKeys(false);
+		Set<String> keys = section.getKeys(false);
 		ListOfPotionNames.clear();
 		for (String one : keys) {
 		    String id = one.contains(":") ? one.split(":")[0] : one;
