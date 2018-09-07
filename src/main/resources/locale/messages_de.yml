@@ -349,12 +349,12 @@ command:
       show: '&2Toplist von &e[from] &2bis &e[until] &2anzeigen'
   gtop:
     help:
-      info: Zeigt die 15 höchsten Level an.
+      info: Zeigt die %amount% höchsten Level an.
       args: ''
     error:
       nojob: Keine Informationen abrufbar..
     output:
-      topline: '&aTop&e 15 &aSpieler nach glbalen Joblevel'
+      topline: '&aTop&e %amount% &aSpieler nach glbalen Joblevel'
       list: '&e%number%&a. &e%playername% &aLevel &e%level% &amit&e %exp% &aeXP'
       prev: '&e<<<<< Vorherige Seite &2|'
       next: '&2|&e Nächste Seite >>>>'

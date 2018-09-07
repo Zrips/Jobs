@@ -1807,11 +1807,9 @@ public abstract class JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    if (i > 0) {
-		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Saved " + i + " new explorer entries.");
-		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-		console.sendMessage(message);
-	    }
+	    if (i > 0)
+		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Saved " + i + " new explorer entries."));
+
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -1856,11 +1854,9 @@ public abstract class JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 
-	    if (i > 0) {
-		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Updated " + i + " explorer entries.");
-		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-		console.sendMessage(message);
-	    }
+	    if (i > 0)
+		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Updated " + i + " explorer entries."));
+
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {

@@ -333,24 +333,24 @@ command:
       target: 你被雇佣为一名 %jobname%.
   top:
     help:
-      info: 显示指定职业最强的15名玩家.
+      info: 显示指定职业最强的%amount%名玩家.
       args: '[职业]'
     error:
       nojob: 没有这个职业.
     output:
-      topline: '&a前&e 15 &a个职业为 &e%jobname% &a的玩家'
+      topline: '&a前&e %amount% &a个职业为 &e%jobname% &a的玩家'
       list: '&e%number%&a. &e%playername% &aLV.&e%level% &a,&e %exp% &a经验'
       prev: '&e<<<<< 上一页 &2|'
       next: '&2|&e 下一页 >>>>'
       show: '&2显示 &e[from] &2到 &e[until] &2的排行榜'
   gtop:
     help:
-      info: 显示全部职业中最强的 15 名玩家.
+      info: 显示全部职业中最强的 %amount% 名玩家.
       args: ''
     error:
       nojob: 没有找到任何信息, 你这是新服吧23333.
     output:
-      topline: '&a全部职业排行前&e 15 &a的玩家'
+      topline: '&a全部职业排行前&e %amount% &a的玩家'
       list: '&e%number%&a. &e%playername% &aLV.&e%level% &awith&e %exp% &a经验'
       prev: '&e<<<<< 上一页 &2|'
       next: '&2|&e 下一页 >>>>'

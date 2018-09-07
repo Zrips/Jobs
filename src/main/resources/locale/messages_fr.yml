@@ -360,24 +360,24 @@ command:
       target: 'Vous avez été embauché pour être %jobname%.'
   top:
     help:
-      info: 'Montre le Top 15 des joueurs par métier.'
+      info: 'Montre le Top %amount% des joueurs par métier.'
       args: '[jobname]'
     error:
       nojob: 'Aucun métier ne porte ce nom.'
     output:
-      topline: '&aTop&e 15 &ades joueurs pour le métier de &e%jobname%'
+      topline: '&aTop&e %amount% &ades joueurs pour le métier de &e%jobname%'
       list: '&e%number%&a. &e%playername% &aniv. &e%level% &aavec&e %exp% &aEXP'
       prev: '&e<<<<< Page préc &2|'
       next: '&2|&e Page suiv >>>>'
       show: '&2Montre la Top List de &e[from] &2jusqu''à &e[until]'
   gtop:
     help:
-      info: 'Montre le Top 15 des joueurs global.'
+      info: 'Montre le Top %amount% des joueurs global.'
       args: ''
     error:
       nojob: 'Impossible de trouver des informations.'
     output:
-      topline: '&aTop&e 15 &ades joueurs par métier'
+      topline: '&aTop&e %amount% &ades joueurs par métier'
       list: '&e%number%&a. &e%playername% &aniv. &e%level% &aavec&e %exp% &aEXP'
       prev: '&e<<<<< Page préc &2|'
       next: '&2|&e Page suiv >>>>'

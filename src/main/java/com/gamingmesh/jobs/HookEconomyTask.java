@@ -50,12 +50,12 @@ public class HookEconomyTask implements Runnable {
 	Bukkit.getServer().getLogger().severe("Vault or Iconomy is required by this plugin for economy support!");
 	Bukkit.getServer().getLogger().severe("Please install them first!");
 	Bukkit.getServer().getLogger().severe("You can find the latest versions here:");
-	Bukkit.getServer().getLogger().severe("http://dev.bukkit.org/projects/vault/");
+	Bukkit.getServer().getLogger().severe("https://dev.bukkit.org/projects/vault/");
 	Bukkit.getServer().getLogger().severe("https://dev.bukkit.org/projects/iconomy-7/");
 	Bukkit.getServer().getLogger().severe("https://www.spigotmc.org/resources/vault.34315/");
 	Bukkit.getServer().getLogger().severe("==============================================");
     }
-    
+
     private boolean setVault() {
 	Plugin eco = Bukkit.getServer().getPluginManager().getPlugin("Vault");
 	if (eco == null)

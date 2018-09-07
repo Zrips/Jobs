@@ -337,24 +337,24 @@ command:
       target: Oyuncu başarıyla %jobname% mesleğine sokuldu.
   top:
     help:
-      info: Belirlenen bir mesleğe sahip en iyi 15 oyuncu gösterilir.
+      info: Belirlenen bir mesleğe sahip en iyi %amount% oyuncu gösterilir.
       args: '[meslek]'
     error:
       nojob: Bu isimde bir meslek bulunamadı.
     output:
-      topline: '&aTop&e 15 &aoyuncu &e%jobname% &amesleğinde gösteriliyor'
+      topline: '&aTop&e %amount% &aoyuncu &e%jobname% &amesleğinde gösteriliyor'
       list: '&e%number%&a. &e%playername% &alvl &e%level% &ave&e %exp% &aexp'
       prev: '&e<<<<< Önceki Sayfa &2|'
       next: '&2|&e Sonraki Sayfa >>>>'
       show: '&2Şuan &e[from] &2kadar &e[until] &2kadarı gösteriliyor'
   gtop:
     help:
-      info: Genel olarak en yüksek mesleğe sahip 15 oyuncuyu gösterir.
+      info: Genel olarak en yüksek mesleğe sahip %amount% oyuncuyu gösterir.
       args: ''
     error:
       nojob: Bir bilgi bulunamadı.
     output:
-      topline: '&aTop&e 15 &aoyuncunun meslek levelleri'
+      topline: '&aTop&e %amount% &aoyuncunun meslek levelleri'
       list: '&e%number%&a. &e%playername% &alvl &e%level% &ave&e %exp% &aexp'
       prev: '&e<<<<< Önceki Sayfa &2|'
       next: '&2|&e Sonraki Sayfa >>>>'

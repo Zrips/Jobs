@@ -336,24 +336,24 @@ command:
       target: Sind on palgatud ametisse %jobname%.
   top:
     help:
-      info: Näitab 15 parimat mängijat ametinimetuse järgi.
+      info: Näitab %amount% parimat mängijat ametinimetuse järgi.
       args: '[jobname]'
     error:
       nojob: Ei leia ametit selle nimetuse järgi.
     output:
-      topline: '&aTop&e 15 &amängijat &e%jobname% &aametis'
+      topline: '&aTop&e %amount% &amängijat &e%jobname% &aametis'
       list: '&e%number%&a. &e%playername% &atase &e%level% &akoos&e %exp% &aexp'
       prev: '&e<<<<< Eelmine leht &2|'
       next: '&2|&e Järgmine leht >>>>'
       show: '&2Näita alates &e[from] &2kuni &e[until] &2parimate nimekirja'
   gtop:
     help:
-      info: Näitab 15 parimat mängijat globaalse ameti taseme järgi. 
+      info: Näitab %amount% parimat mängijat globaalse ameti taseme järgi. 
       args: ''
     error:
       nojob: Ei leia informatsiooni.
     output:
-      topline: '&aTop&e 15 &amängijat globaalse ameti taseme järgi'
+      topline: '&aTop&e %amount% &amängijat globaalse ameti taseme järgi'
       list: '&e%number%&a. &e%playername% &atase &e%level% &akoos&e %exp% &aexp'
       prev: '&e<<<<< Eelmine leht &2|'
       next: '&2|&e Järgmine leht >>>>'

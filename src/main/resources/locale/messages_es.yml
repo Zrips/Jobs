@@ -408,24 +408,24 @@ command:
       target: Ahora eres trabajador de la profesión de %jobname%.
   top:
     help:
-      info: Muestra el podio de 15 jugadores según su profesión.
+      info: Muestra el podio de %amount% jugadores según su profesión.
       args: '[jobname]'
     error:
       nojob: No se ha encontrado ninguna profesión con este nombre.
     output:
-      topline: '&aPodio de &e15 &ajugadores de la profesión de &e%jobname%'
+      topline: '&aPodio de &e%amount% &ajugadores de la profesión de &e%jobname%'
       list: '&e%number%&a. &e%playername% &anivel &e%level% &acon&e %exp% &aexp'
       prev: '&e<<<<< Anterior &2|'
       next: '&2|&e Siguiente >>>>'
       show: '&2Muestra la lista de podio desde &e[from] &2hasta &e[until]&2.'
   gtop:
     help:
-      info: Muestra el podio de 15 jugadores para el nivel general de profesiones.
+      info: Muestra el podio de %amount% jugadores para el nivel general de profesiones.
       args: ''
     error:
       nojob: No se ha podido encontrar ninguna información.
     output:
-      topline: '&aPodio de &e15 &ajugadores para el nivel general de profesiones'
+      topline: '&aPodio de &e%amount% &ajugadores para el nivel general de profesiones'
       list: '&e%number%&a. &e%playername% &anivel &e%level% &acon&e %exp% &aexp'
       prev: '&e<<<<< Anterior &2|'
       next: '&2|&e Siguiente >>>>'

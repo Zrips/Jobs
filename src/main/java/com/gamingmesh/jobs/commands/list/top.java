@@ -22,7 +22,7 @@ public class top implements Cmd {
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (args.length != 1 && args.length != 2) {
-	    Jobs.getCommandManager().sendUsage(sender, "top");
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.top.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
 	    return true;
 	}
 
@@ -52,7 +52,8 @@ public class top implements Cmd {
 	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return false;
 	}
-	int st = (page * 15) - 15;
+	int showPageNum = Jobs.getGCManager().JobsTopAmount;
+	int st = (page * showPageNum) - showPageNum;
 
 	List<TopList> FullList = Jobs.getJobsDAO().toplist(args[0], st);
 	if (FullList.size() <= 0) {
@@ -66,7 +67,7 @@ public class top implements Cmd {
 	    jobName = job.getName();
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", jobName));
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", jobName, "%amount%", showPageNum));
 	    int i = st;
 	    for (TopList One : FullList) {
 		i++;
@@ -95,9 +96,9 @@ public class top implements Cmd {
 
 	    RawMessage rm = new RawMessage();
 	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.prev"),
-		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", prev * 15 - 15, "[until]", (prev * 15)), "jobs top " + jobName + " " + prev);
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", prev * showPageNum - showPageNum, "[until]", (prev * showPageNum)), "jobs top " + jobName + " " + prev);
 	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.next"),
-		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", (next * 15), "[until]", (next * 15 + 15)), "jobs top " + jobName + " " + next);
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", (next * showPageNum), "[until]", (next * showPageNum + showPageNum)), "jobs top " + jobName + " " + next);
 	    rm.show(player);
 	}
 	return true;

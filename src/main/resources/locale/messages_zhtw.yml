@@ -332,24 +332,24 @@ command:
       target: 你被聘請為一名 %jobname%.
   top:
     help:
-      info: 顯示指定職業最高等的15名玩家.
+      info: 顯示指定職業最高等的%amount%名玩家.
       args: '[職業]'
     error:
       nojob: 沒有這個職業.
     output:
-      topline: '&a前&e 15 &a個職業為 &e%jobname% &a的玩家'
+      topline: '&a前&e %amount% &a個職業為 &e%jobname% &a的玩家'
       list: '&e%number%&a. &e%playername% &aLV.&e%level% &a,&e %exp% &a經驗'
       prev: '&e<<<<< 上一頁 &2|'
       next: '&2|&e 下一頁 >>>>'
       show: '&2顯示 &e[from] &2到 &e[until] &2的排行榜'
   gtop:
     help:
-      info: 顯示全部職業中最高等的 15 名玩家.
+      info: 顯示全部職業中最高等的 %amount% 名玩家.
       args: ''
     error:
       nojob: 沒有找到任何資訊, 你這是新服吧23333.
     output:
-      topline: '&a全部職業排行前&e 15 &a的玩家'
+      topline: '&a全部職業排行前&e %amount% &a的玩家'
       list: '&e%number%&a. &e%playername% &aLV.&e%level% &awith&e %exp% &a經驗'
       prev: '&e<<<<< 上一頁 &2|'
       next: '&2|&e 下一頁 >>>>'

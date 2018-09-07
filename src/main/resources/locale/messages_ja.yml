@@ -367,7 +367,7 @@ command:
       target: '%jobname% に就かされました'
   top:
     help:
-      info: '[職業名]の上位15名を表示します'
+      info: '[職業名]の上位%amount%名を表示します'
       args: '[職業名]'
     error:
       nojob: '存在しない職業名です'
@@ -379,12 +379,12 @@ command:
       show: '&e[from] &2 から &e[until] &2までのリストを表示します'
   gtop:
     help:
-      info: '合計レベルの上位15名を表示します'
+      info: '合計レベルの上位%amount%名を表示します'
       args: ''
     error:
       nojob: '情報がありません'
     output:
-      topline: '&aトップ&e 15 &a合計レベル'
+      topline: '&aトップ&e %amount% &a合計レベル'
       list: '&e%number%&a. &e%playername% &aレベル &e%level% 経験値:%exp%'
       prev: '&e<<<<<前のページ &2|'
       next: '&2|&e 次のページ >>>>'

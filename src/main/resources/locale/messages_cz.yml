@@ -417,24 +417,24 @@ command:
       target: Byli jste zamestnani jako %jobname%.
   top:
     help:
-      info: Zobrazit top 15 hraců podle vybrane prace.
+      info: Zobrazit top %amount% hraců podle vybrane prace.
       args: '[jobname]'
     error:
       nojob: Nepodarilo se vyhledat praci s timto nazvem.
     output:
-      topline: '&aTop&e 15 &ahraců pro praci &e%jobname%'
+      topline: '&aTop&e %amount% &ahraců pro praci &e%jobname%'
       list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
       prev: '&e<<<<< Predchozi stranka &2|'
       next: '&2|&e Dalsi stranka >>>>'
       show: '&2Zobrazit od &e[from] &2az po &e[until] &2top listu'
   gtop:
     help:
-      info: Zobrazit globalnich top 15 hraců.
+      info: Zobrazit globalnich top %amount% hraců.
       args: ''
     error:
       nojob: Nedopodarilo se vyhledat dostatecne informace.
     output:
-      topline: '&aTop&e 15 &ahraců podle globalniho top levelu'
+      topline: '&aTop&e %amount% &ahraců podle globalniho top levelu'
       list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
       prev: '&e<<<<< Predchozi stranka &2|'
       next: '&2|&e Dalsi stranka >>>>'

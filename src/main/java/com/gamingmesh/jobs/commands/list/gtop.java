@@ -21,7 +21,7 @@ public class gtop implements Cmd {
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (args.length != 1 && args.length != 0) {
-	    Jobs.getCommandManager().sendUsage(sender, "gtop");
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
 	    return true;
 	}
 
@@ -44,7 +44,8 @@ public class gtop implements Cmd {
 	if (page < 1)
 	    page = 1;
 
-	int st = (page * 15) - 15;
+	int showPageNum = Jobs.getGCManager().JobsTopAmount;
+	int st = (page * showPageNum) - showPageNum;
 	
 	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(st);
 	if (FullList.size() <= 0) {
@@ -53,7 +54,7 @@ public class gtop implements Cmd {
 	}
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline", "%amount%", showPageNum));
 	    int i = st;
 	    for (TopList One : FullList) {
 		i++;
@@ -80,9 +81,9 @@ public class gtop implements Cmd {
 
 	    RawMessage rm = new RawMessage();
 	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.prev"),
-		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", prev * 15 - 15, "[until]", (prev * 15)), "jobs gtop " + prev);
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", prev * showPageNum - showPageNum, "[until]", (prev * showPageNum)), "jobs gtop " + prev);
 	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.next"),
-		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", (next * 15), "[until]", (next * 15 + 15)), "jobs gtop " + next);
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", (next * showPageNum), "[until]", (next * showPageNum + showPageNum)), "jobs gtop " + next);
 	    rm.show(player);
 	}
 	return true;

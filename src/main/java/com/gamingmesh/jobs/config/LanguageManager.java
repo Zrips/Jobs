@@ -467,20 +467,20 @@ public class LanguageManager {
 	    c.get("command.employ.error.alreadyin", "Player is already in the job %jobname%.");
 	    c.get("command.employ.output.target", "You have been employed as a %jobname%.");
 
-	    c.get("command.top.help.info", "Shows top 15 players by jobs name.");
+	    c.get("command.top.help.info", "Shows top %amount% players by jobs name.");
 	    c.get("command.top.help.args", "[jobname]");
 	    Jobs.getGCManager().commandArgs.put("top", Arrays.asList("[jobname]"));
 	    c.get("command.top.error.nojob", "Cant find any job with this name.");
-	    c.get("command.top.output.topline", "&aTop&e 15 &aplayers by &e%jobname% &ajob");
+	    c.get("command.top.output.topline", "&aTop&e %amount% &aplayers by &e%jobname% &ajob");
 	    c.get("command.top.output.list", "&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp");
 	    c.get("command.top.output.prev", "&e<<<<< Prev page &2|");
 	    c.get("command.top.output.next", "&2|&e Next Page >>>>");
 	    c.get("command.top.output.show", "&2Show from &e[from] &2until &e[until] &2top list");
 
-	    c.get("command.gtop.help.info", "Shows top 15 players by global jobs level.");
+	    c.get("command.gtop.help.info", "Shows top %amount% players by global jobs level.");
 	    c.get("command.gtop.help.args", "");
 	    c.get("command.gtop.error.nojob", "Cant find any information.");
-	    c.get("command.gtop.output.topline", "&aTop&e 15 &aplayers by global job level");
+	    c.get("command.gtop.output.topline", "&aTop&e %amount% &aplayers by global job level");
 	    c.get("command.gtop.output.list", "&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp");
 	    c.get("command.gtop.output.prev", "&e<<<<< Prev page &2|");
 	    c.get("command.gtop.output.next", "&2|&e Next Page >>>>");

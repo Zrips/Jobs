@@ -551,11 +551,11 @@ public class Jobs extends JavaPlugin {
 	long time = System.currentTimeMillis();
 	// Cloning to avoid issues
 	HashMap<UUID, PlayerInfo> temp = new HashMap<>(Jobs.getPlayerManager().getPlayersInfoUUIDMap());
-	HashMap<Integer, List<JobsDAOData>> playersJobs = Jobs.getJobsDAO().getAllJobs();
-	HashMap<Integer, PlayerPoints> playersPoints = Jobs.getJobsDAO().getAllPoints();
-	HashMap<Integer, HashMap<String, Log>> playersLogs = Jobs.getJobsDAO().getAllLogs();
-	HashMap<Integer, ArchivedJobs> playersArchives = Jobs.getJobsDAO().getAllArchivedJobs();
-	HashMap<Integer, PaymentData> playersLimits = Jobs.getJobsDAO().loadPlayerLimits();
+	HashMap<Integer, List<JobsDAOData>> playersJobs = dao.getAllJobs();
+	HashMap<Integer, PlayerPoints> playersPoints = dao.getAllPoints();
+	HashMap<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
+	HashMap<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
+	HashMap<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
 	Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator();
 	while (it.hasNext()) {
 	    Entry<UUID, PlayerInfo> one = it.next();
@@ -622,7 +622,7 @@ public class Jobs extends JavaPlugin {
 	paymentThread = new BufferedPaymentThread(GconfigManager.getEconomyBatchDelay());
 	paymentThread.start();
 
-	Jobs.getJobsDAO().loadPlayerData();
+	dao.loadPlayerData();
 
 	// Schedule
 	Jobs.getScheduleManager().load();

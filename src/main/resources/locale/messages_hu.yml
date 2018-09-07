@@ -22,9 +22,9 @@ general:
     noHelpPage: '&cNincs több segítség oldal szám!'
     notNumber: '&eKérlek, használj számokat!'
     job: '&cEz a munka nem létezik!'
-    noCommand: '&cNincs ilyen varázslat ezzel a névvel!'
+    noCommand: '&cNincs ilyen parancs ezzel a névvel!'
     permission: '&cNincs jogosultságod a használatára!'
-    noinfo: '&cNincs információ a játékosról!'
+    noinfo: '&cNincs információ a játékosról/munkáról!'
     noinfoByPlayer: '&cNincs információ [%playername%] játékosról!'
     ingame: '&cEz a parancs csak a játékban használható!'
     fromconsole: '&cEz a parancs csak a konzolon használható!'
@@ -256,7 +256,7 @@ command:
       leftClick: '&eTovábbi információért kattints bal gombbal'
       rightClick: '&eJobb kattintás a munkához'
       leftSlots: '&eBal oldali nyílások:&f '
-      working: '&2&nMár dolgozik'
+      working: '&2&nMár dolgozol'
       max: '&eMax. szint:&f '
       back: '&e<<< Vissza'
     output:
@@ -329,6 +329,7 @@ command:
       alreadyin: '&cMár csatlakoztál a(z) %jobname%&c munkához!'
       fullslots: 'Nem tudsz csatlakozni a(z) %jobname% munkához, mert nincsenek rendelkezésre álló helyek.'
       maxjobs: 'Már túl sok munkát vállaltál.'
+      rejoin: '&cNem csatlakozhatsz ebbe a munkába. Várj [time]'
     success: '&aSikeresen csatlakoztál a(z) %jobname%&a munkához!'
     confirm: '&2Kattints ide, hogy a &7[jobname]&2 munkát megerősítse.'
   leave:
@@ -350,7 +351,7 @@ command:
       list: '&e%place%. %playername%'
   browse:
     help:
-      info: 'Kilistázza a jelenleg elérhető munkákat.'
+      info: 'Listázza a jelenleg elérhető munkákat.'
     error:
       nojobs: 'Nincsenek olyan munkák, amelyekhez csatlakozhatsz.'
     output:
@@ -413,24 +414,24 @@ command:
       target: 'Most már a(z) %jobname% munkánál dolgozik.'
   top:
     help:
-      info: 'Top 15 játékosok a ranglistán.'
+      info: 'Top %amount% játékosok a ranglistán.'
       args: '[munkanév]'
     error:
       nojob: 'Nem találok semmilyen munkát ezzel a névvel.'
     output:
-      topline: '&aA top&e 15 &ajátékosok a(z) &e%jobname% &amunkából'
+      topline: '&aA top&e %amount% &ajátékosok a(z) &e%jobname% &amunkából'
       list: '&e%number%&a. &e%playername% &alvl &e%level% %exp% exp'
       prev: '&e<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>'
       show: '&2Megjelenítés innen &e[from]&2, amíg &e[until] &2top lista'
   gtop:
     help:
-      info: 'A top 15 legjobb játékosokat mutatja a globális munkákon.'
+      info: 'A top %amount% legjobb játékosokat mutatja a globális munkákon.'
       args: ''
     error:
       nojob: 'Nem találok semmilyen információt.'
     output:
-      topline: '&aTop&e 15 &ajátékosok a globális munkahelyi szinten.'
+      topline: '&aTop&e %amount% &ajátékosok a globális munkahelyi szinten.'
       list: '&e%number%&a. &e%playername% &alvl &e%level%&e %exp% &aexp'
       prev: '&e<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>'
