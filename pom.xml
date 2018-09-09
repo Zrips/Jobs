@@ -107,12 +107,7 @@
 		</dependency>
 	</dependencies>
 	<repositories>
-		<!-- WorldGuard -->
-		<repository>
-			<id>sk89q-repo</id>
-			<url>http://maven.sk89q.com/repo/</url>
-		</repository>
-		<!-- WorldEdit -->
+		<!-- WorldGuard & WorldEdit -->
 		<repository>
 			<id>sk89q-repo</id>
 			<url>http://maven.sk89q.com/repo/</url>
