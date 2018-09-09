@@ -85,6 +85,9 @@ Jobs:
       Id: 17
     # data of block, usualy its 0, but in example Diorite will have id of 1 and data of 3
       Data: 2
+    # enchants in the item
+      Enchantments:
+      - 'DURABILITY:1'
     # Defines maximum amount of daily quests player can have from THIS job
     # This will not have effect on overall quest amount player will have
     maxDailyQuests: 3

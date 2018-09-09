@@ -38,6 +38,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionType;
 
@@ -563,6 +564,20 @@ public class ConfigManager {
 		    } else
 			skullMeta.setOwner(skullOwner);
 		    GUIitem.setItemMeta(skullMeta);
+		} else if (guiSection.contains("Enchantments") && Jobs.getGCManager().JobsGUIEnableEnchants) {
+	    	List<String> enchants = guiSection.getStringList("Enchantments");
+			if (enchants.size() > 0) {
+				for (String str4 : enchants) {
+					String[] id = str4.split(":");
+					if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
+						EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+						enchantMeta.addStoredEnchant(Enchantment.getByName(id[0]), Integer.parseInt(id[1]), true);
+						GUIitem.setItemMeta(enchantMeta);
+					} else {
+						GUIitem.addUnsafeEnchantment(Enchantment.getByName(id[0]), Integer.parseInt(id[1]));
+					}
+				}
+			}
 		} else
 		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
 	    }
