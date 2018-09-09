@@ -564,7 +564,7 @@ public class ConfigManager {
 		    } else
 			skullMeta.setOwner(skullOwner);
 		    GUIitem.setItemMeta(skullMeta);
-		} else if (guiSection.contains("Enchantments") && Jobs.getGCManager().JobsGUIEnableEnchants) {
+		} else if (guiSection.contains("Enchantments")) {
 	    	List<String> enchants = guiSection.getStringList("Enchantments");
 			if (enchants.size() > 0) {
 				for (String str4 : enchants) {

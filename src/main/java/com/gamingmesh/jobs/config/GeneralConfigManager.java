@@ -102,7 +102,7 @@ public class GeneralConfigManager {
     public boolean fixAtMaxLevel, ToggleActionBar, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAcountChat,
 	EmptyServerAcountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin, JobsGUIEnableEnchants;
+	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
 
     private int JobsGUIRows, JobsGUIBackButton,
 	JobsGUIStartPosition,
@@ -916,8 +916,6 @@ public class GeneralConfigManager {
 	c.getW().addComment("JobsGUI.SwitcheButtons", "With true left mouse button will join job and right will show more info",
 	    "With false left mouse button will show more info, rigth will join job", "Dont forget to adjust locale file");
 	JobsGUISwitcheButtons = c.get("JobsGUI.SwitcheButtons", false);
-	c.getW().addComment("JobsGUI.EnableEnchants", "Enables the enchantment for items");
-	JobsGUIEnableEnchants = c.get("JobsGUI.EnableEnchants", true);
 	c.getW().addComment("JobsGUI.Rows", "Defines size in rows of GUI");
 	JobsGUIRows = c.get("JobsGUI.Rows", 5);
 	c.getW().addComment("JobsGUI.BackButtonSlot", "Defines back button slot in GUI");
