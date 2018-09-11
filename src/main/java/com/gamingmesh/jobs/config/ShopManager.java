@@ -136,7 +136,7 @@ public class ShopManager {
 	    if (one.getName() != null)
 		meta.setDisplayName(one.getName());
 
-	    if (one.getLore() != null)
+	    if (one.getLore() != null && !one.getLore().isEmpty())
 		meta.setLore(one.getLore());
 	    itemStack.setItemMeta(meta);
 

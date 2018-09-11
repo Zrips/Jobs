@@ -22,7 +22,7 @@ import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class BossBarManager {
 
-    Jobs plugin;
+    private Jobs plugin;
 
     public BossBarManager(Jobs plugin) {
 	this.plugin = plugin;

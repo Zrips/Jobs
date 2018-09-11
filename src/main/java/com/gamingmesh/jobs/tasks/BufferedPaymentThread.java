@@ -35,7 +35,6 @@ public class BufferedPaymentThread extends Thread {
 
 	Jobs.consoleMsg("&e[Jobs] Started buffered payment thread.");
 
-	//Jobs.getPluginLogger().info("Started buffered payment thread");
 	while (running) {
 	    try {
 		sleep(sleep);
@@ -50,12 +49,10 @@ public class BufferedPaymentThread extends Thread {
 	    } catch (Throwable t) {
 		t.printStackTrace();
 		Jobs.consoleMsg("&c[Jobs] Exception in BufferedPaymentThread, stopping economy payments!");
-		//Jobs.getPluginLogger().severe("Exception in BufferedPaymentThread, stopping economy payments!");
 		running = false;
 	    }
 	}
 	Jobs.consoleMsg("&e[Jobs] Buffered payment thread shutdown.");
-	//Jobs.getPluginLogger().info("Buffered payment thread shutdown");   
     }
 
     public void shutdown() {

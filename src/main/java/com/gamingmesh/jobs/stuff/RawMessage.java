@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 
 public class RawMessage {
 
-    List<String> parts = new ArrayList<>();
-    List<String> cleanParts = new ArrayList<>();
-    String combined = "";
-    String combinedClean = "";
+    private List<String> parts = new ArrayList<>();
+    private List<String> cleanParts = new ArrayList<>();
+    private String combined = "";
+    private String combinedClean = "";
 
     public void clear() {
 	parts = new ArrayList<>();

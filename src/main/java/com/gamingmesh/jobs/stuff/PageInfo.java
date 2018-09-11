@@ -24,15 +24,15 @@ public class PageInfo {
     }
 
     public int getPositionForOutput(int place) {
-	return this.start + place + 1;
+	return start + place + 1;
     }
 
     private void calculate() {
-	this.start = (this.currentPage - 1) * this.perPage;
-	this.end = this.start + this.perPage - 1;
-	if (this.end + 1 > this.totalEntries)
-	    this.end = this.totalEntries - 1;
-	this.totalPages = (int) Math.ceil((double) this.totalEntries / (double) this.perPage);
+	start = (currentPage - 1) * perPage;
+	end = start + perPage - 1;
+	if (end + 1 > totalEntries)
+	    end = totalEntries - 1;
+	totalPages = (int) Math.ceil((double) totalEntries / (double) perPage);
     }
 
     public boolean isInRange(int place) {
@@ -51,11 +51,11 @@ public class PageInfo {
     }
 
     public boolean isPageOk() {
-	return isPageOk(this.currentPage);
+	return isPageOk(currentPage);
     }
 
     public boolean isPageOk(int page) {
-	if (this.totalPages < page)
+	if (totalPages < page)
 	    return false;
 	if (page < 1)
 	    return false;
@@ -82,6 +82,6 @@ public class PageInfo {
 	return totalEntries;
     }
     public int getPerPageCount(){
-	return this.perPage;
+	return perPage;
     }
 }

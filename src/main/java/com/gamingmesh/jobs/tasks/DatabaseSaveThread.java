@@ -32,7 +32,6 @@ public class DatabaseSaveThread extends Thread {
 
     @Override
     public void run() {
-	//Jobs.getPluginLogger().info("Started database save task");
 
 	Jobs.consoleMsg("&e[Jobs] Started database save task.");
 
@@ -47,15 +46,12 @@ public class DatabaseSaveThread extends Thread {
 		Jobs.getPlayerManager().saveAll();
 	    } catch (Throwable t) {
 		t.printStackTrace();
-		//Jobs.getPluginLogger().severe("Exception in DatabaseSaveTask, stopping auto save!");
 		Jobs.consoleMsg("&c[Jobs] Exception in DatabaseSaveTask, stopping auto save!");
 		running = false;
 	    }
 	}
 
 	Jobs.consoleMsg("&e[Jobs] Database save task shutdown!");
-
-	//Jobs.getPluginLogger().info("Database save task shutdown");
 
     }
 
