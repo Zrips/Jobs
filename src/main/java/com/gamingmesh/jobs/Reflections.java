@@ -20,11 +20,8 @@ public class Reflections {
     private Class<?> CraftItemStack;
     private Class<?> Item;
     private Class<?> IStack;
-    @SuppressWarnings("unused")
-	private Jobs plugin;
 
-    public Reflections(Jobs plugin) {
-	this.plugin = plugin;
+    public Reflections() {
 	initialize();
     }
 

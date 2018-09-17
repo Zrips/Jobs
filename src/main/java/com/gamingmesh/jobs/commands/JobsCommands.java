@@ -25,7 +25,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -43,7 +42,7 @@ public class JobsCommands implements CommandExecutor {
     private static final String label = "jobs";
     private static final String packagePath = "com.gamingmesh.jobs.commands.list";
     private static final List<String> hidenCommands = new ArrayList<>();
-    Map<String, Integer> CommandList = new HashMap<>();
+    private Map<String, Integer> CommandList = new HashMap<>();
 
     protected Jobs plugin;
 
@@ -94,8 +93,7 @@ public class JobsCommands implements CommandExecutor {
 		RawMessage rm = new RawMessage();
 		rm.add(Jobs.getLanguage().getMessage("general.error.permission"), "&2" + label + ".command." + cmd);
 		rm.show(sender);
-		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-		Jobs.sendMessage(console, Jobs.getLanguage().getMessage("general.error.permission"));
+		Jobs.sendMessage(Bukkit.getServer().getConsoleSender(), Jobs.getLanguage().getMessage("general.error.permission"));
 	    } else
 		Jobs.sendMessage(sender, Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;

@@ -34,7 +34,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -148,9 +147,9 @@ public class Jobs extends JavaPlugin {
     public static WeakHashMap<String, Boolean> actionbartoggle = new WeakHashMap<>();
     public static WeakHashMap<String, Boolean> BossBartoggle = new WeakHashMap<>();
 //	public static WeakHashMap<String, Double> GlobalBoost = new WeakHashMap<String, Double>();
-    private static BufferedEconomy economy;
-    private static PermissionHandler permissionHandler;
-    private static PermissionManager permissionManager;
+    private static BufferedEconomy economy = null;
+    private static PermissionHandler permissionHandler = null;
+    private static PermissionManager permissionManager = null;
 
 //    private static ItemManager itemManager;
 
@@ -243,7 +242,7 @@ public class Jobs extends JavaPlugin {
 
     public static Reflections getReflections() {
 	if (reflections == null)
-	    reflections = new Reflections(instance);
+	    reflections = new Reflections();
 	return reflections;
     }
 
@@ -543,14 +542,14 @@ public class Jobs extends JavaPlugin {
 	loadAllPlayersData();
 	// add all online players
 	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
-	    Jobs.getPlayerManager().playerJoin(online);
+	    pManager.playerJoin(online);
 	}
     }
 
     public static void loadAllPlayersData() {
 	long time = System.currentTimeMillis();
 	// Cloning to avoid issues
-	HashMap<UUID, PlayerInfo> temp = new HashMap<>(Jobs.getPlayerManager().getPlayersInfoUUIDMap());
+	HashMap<UUID, PlayerInfo> temp = new HashMap<>(pManager.getPlayersInfoUUIDMap());
 	HashMap<Integer, List<JobsDAOData>> playersJobs = dao.getAllJobs();
 	HashMap<Integer, PlayerPoints> playersPoints = dao.getAllPoints();
 	HashMap<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
@@ -561,7 +560,7 @@ public class Jobs extends JavaPlugin {
 	    Entry<UUID, PlayerInfo> one = it.next();
 	    try {
 		int id = one.getValue().getID();
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayerOffline(
+		JobsPlayer jPlayer = pManager.getJobsPlayerOffline(
 		    one.getValue(),
 		    playersJobs.get(id),
 		    playersPoints.get(id),
@@ -570,15 +569,15 @@ public class Jobs extends JavaPlugin {
 		    playersLimits.get(id));
 		if (jPlayer == null)
 		    continue;
-		Jobs.getPlayerManager().addPlayerToCache(jPlayer);
+		pManager.addPlayerToCache(jPlayer);
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
 	}
 
 	dao.getMap().clear();
-	if (Jobs.getPlayerManager().getPlayersCache().size() != 0)
-		consoleMsg("&e[Jobs] Preloaded " + Jobs.getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
+	if (pManager.getPlayersCache().size() != 0)
+		consoleMsg("&e[Jobs] Preloaded " + pManager.getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
 				/ 1000d) * 100) / 100D));
     }
 
@@ -604,7 +603,7 @@ public class Jobs extends JavaPlugin {
 
 	GconfigManager.reload();
 	lManager.reload();
-	Jobs.getConfigManager().reload();
+	configManager.reload();
 	usedSlots.clear();
 	for (Job job : jobs) {
 	    usedSlots.put(job, getJobsDAO().getSlotsTaken(job));
@@ -625,8 +624,8 @@ public class Jobs extends JavaPlugin {
 	dao.loadPlayerData();
 
 	// Schedule
-	Jobs.getScheduleManager().load();
-	Jobs.getScheduleManager().start();
+	scheduleManager.load();
+	scheduleManager.start();
 
 	permissionManager = new PermissionManager();
     }
@@ -652,7 +651,7 @@ public class Jobs extends JavaPlugin {
      * Executes close connections
      */
     public static void ChangeDatabase() {
-	getDBManager().switchDataBase();
+	DBManager.switchDataBase();
 	pManager.reload();
     }
 
@@ -701,8 +700,8 @@ public class Jobs extends JavaPlugin {
      * Sets the permission handler
      * @param h - the permission handler
      */
-    public void setPermissionHandler(PermissionHandler h) {
-	permissionHandler = h;
+    public void setPermissionHandler(PermissionHandler permissionHandler) {
+	Jobs.permissionHandler = permissionHandler;
     }
 
     /**
@@ -839,7 +838,7 @@ public class Jobs extends JavaPlugin {
 	    // all loaded properly.
 
 	    dao.loadBlockProtection();
-	    getExplore().load();
+	    exploreManager.load();
 
 	    FurnaceBrewingHandling.load();
 
@@ -866,7 +865,7 @@ public class Jobs extends JavaPlugin {
 
 	FurnaceBrewingHandling.save();
 
-	Jobs.shutdown();
+	shutdown();
 	consoleMsg("&e[Jobs] &2Plugin has been disabled succesfully.");
 	running = false;
 	this.setEnabled(false);
@@ -982,12 +981,12 @@ public class Jobs extends JavaPlugin {
 		return;
 
 	    if (info.getType() == ActionType.BREAK && block != null)
-		Jobs.getBpManager().remove(block);
+		BpManager.remove(block);
 
 	    if (pointAmount != 0D)
 		jPlayer.setSaved(false);
 
-	    Jobs.getEconomy().pay(jPlayer, income, pointAmount, 0.0);
+	    economy.pay(jPlayer, income, pointAmount, 0.0);
 
 	    if (GconfigManager.LoggingUse) {
 		HashMap<CurrencyType, Double> amounts = new HashMap<>();
@@ -1039,7 +1038,7 @@ public class Jobs extends JavaPlugin {
 			    player.giveExp(expInt);
 		    }
 		}
-		Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
+		Boost boost = pManager.getFinalBonus(jPlayer, prog.getJob(), ent, victim);
 
 		// Calculate income
 		if (income != 0D) {
@@ -1100,11 +1099,11 @@ public class Jobs extends JavaPlugin {
 		try {
 		    if (expAmount != 0D && GconfigManager.BossBarEnabled)
 			if (GconfigManager.BossBarShowOnEachAction)
-				Jobs.getBBManager().ShowJobProgression(jPlayer, prog);
+				BBManager.ShowJobProgression(jPlayer, prog);
 			else
 				jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Exception e) {
-		    Bukkit.getConsoleSender().sendMessage("[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
+		    consoleMsg("[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
 
 		// JobsPayment event
@@ -1153,17 +1152,17 @@ public class Jobs extends JavaPlugin {
 		//player.sendMessage("This block is protected using Rukes' system!");
 		return false;
 	    }
-	    BlockProtection bp = getBpManager().getBp(block.getLocation());
+	    BlockProtection bp = BpManager.getBp(block.getLocation());
 	    if (bp != null) {
 		Long time = bp.getTime();
-		Integer cd = getBpManager().getBlockDelayTime(block);
+		Integer cd = BpManager.getBlockDelayTime(block);
 
 		if (time == -1L) {
-		    getBpManager().add(block, cd);
+		    BpManager.add(block, cd);
 		    return false;
 		}
 		if ((time < System.currentTimeMillis()) && (bp.getAction() != DBAction.DELETE)) {
-		    getBpManager().remove(block);
+		    BpManager.remove(block);
 		    return true;
 		}
 		if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
@@ -1174,22 +1173,22 @@ public class Jobs extends JavaPlugin {
 		    }
 		    return false;
 		}
-		getBpManager().add(block, cd);
+		BpManager.add(block, cd);
 		if ((cd == null || cd == 0) && getGCManager().useGlobalTimer) {
-		    getBpManager().add(block, getGCManager().globalblocktimer);
+		    BpManager.add(block, getGCManager().globalblocktimer);
 		}
 	    } else if (getGCManager().useGlobalTimer) {
-		getBpManager().add(block, getGCManager().globalblocktimer);
+		BpManager.add(block, getGCManager().globalblocktimer);
 	    }
 	} else if (info.getType() == ActionType.PLACE) {
-	    BlockProtection bp = getBpManager().getBp(block.getLocation());
+	    BlockProtection bp = BpManager.getBp(block.getLocation());
 	    if (bp != null) {
 		Long time = bp.getTime();
-		Integer cd = getBpManager().getBlockDelayTime(block);
+		Integer cd = BpManager.getBlockDelayTime(block);
 
 		if (time != -1L) {
 		    if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
-			getBpManager().add(block, cd);
+			BpManager.add(block, cd);
 			return true;
 		    }
 		    if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
@@ -1198,16 +1197,16 @@ public class Jobs extends JavaPlugin {
 			    if (player.canGetPaid(info))
 				getActionBar().send(player.getPlayer(), getLanguage().getMessage("message.blocktimer", "[time]", sec));
 			}
-			getBpManager().add(block, cd);
+			BpManager.add(block, cd);
 			return false;
 		    }
 		} else if (bp.isPaid().booleanValue() && bp.getTime() == -1L && cd != null && cd == -1) {
-		    getBpManager().add(block, cd);
+		    BpManager.add(block, cd);
 		    return false;
 		} else
-		    getBpManager().add(block, cd);
+		    BpManager.add(block, cd);
 	    } else
-	    	getBpManager().add(block, getBpManager().getBlockDelayTime(block));
+	    	BpManager.add(block, BpManager.getBlockDelayTime(block));
 	}
 
 	return true;
@@ -1304,8 +1303,7 @@ public class Jobs extends JavaPlugin {
 	    RawMessage rm = new RawMessage();
 	    rm.add(Jobs.getLanguage().getMessage("general.error.permission"), "&2" + perm);
 	    rm.show((Player) sender);
-	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-	    Jobs.sendMessage(console, Jobs.getLanguage().getMessage("general.error.permission"));
+	    sendMessage(Bukkit.getServer().getConsoleSender(), Jobs.getLanguage().getMessage("general.error.permission"));
 	    return false;
 	}
 	return true;

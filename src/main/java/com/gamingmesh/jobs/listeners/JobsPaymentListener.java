@@ -1532,6 +1532,8 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
 	    return;
+	if (event.isCancelled())
+		return;
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
@@ -1540,7 +1542,7 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())
 	    return;
 
-	ExploreRespond respond = Jobs.getExplore().ChunkRespond(event.getPlayer(), event.getNewChunk());
+	ExploreRespond respond = Jobs.getExplore().ChunkRespond(player, event.getNewChunk());
 
 	if (!respond.isNewChunk())
 	    return;
@@ -1553,7 +1555,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))

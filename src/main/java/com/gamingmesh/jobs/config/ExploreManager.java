@@ -21,7 +21,7 @@ public class ExploreManager {
     private int playerAmount = 1;
 
     public int getPlayerAmount() {
-	return this.playerAmount;
+	return playerAmount;
     }
 
     public void setPlayerAmount(int amount) {
@@ -30,12 +30,12 @@ public class ExploreManager {
     }
 
     public boolean isExploreEnabled() {
-	return this.exploreEnabled;
+	return exploreEnabled;
     }
 
     public void setExploreEnabled() {
 	if (!exploreEnabled) {
-	    this.exploreEnabled = true;
+	    exploreEnabled = true;
 	}
     }
 

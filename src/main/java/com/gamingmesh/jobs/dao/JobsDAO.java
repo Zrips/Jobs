@@ -11,11 +11,9 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -1601,7 +1599,6 @@ public abstract class JobsDAO {
 	    int deleted = 0;
 	    Long current = System.currentTimeMillis();
 	    Long mark = System.currentTimeMillis() - (Jobs.getGCManager().BlockProtectionDays * 24L * 60L * 60L * 1000L);
-	    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
 	    for (Entry<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> worlds : Jobs.getBpManager().getMap().entrySet()) {
 		for (Entry<String, HashMap<String, HashMap<String, BlockProtection>>> regions : worlds.getValue().entrySet()) {
@@ -1617,8 +1614,7 @@ public abstract class JobsDAO {
 				deleted++;
 				if (deleted % 10000 == 0) {
 				    delete.executeBatch();
-				    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Removed " + deleted + " old block protection entries.");
-				    console.sendMessage(message);
+				    Jobs.consoleMsg("&6[Jobs] Removed " + deleted + " old block protection entries.");
 				}
 				break;
 			    case INSERT:
@@ -1635,8 +1631,7 @@ public abstract class JobsDAO {
 				inserted++;
 				if (inserted % 10000 == 0) {
 				    insert.executeBatch();
-				    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Added " + inserted + " new block protection entries.");
-				    console.sendMessage(message);
+				    Jobs.consoleMsg("&6[Jobs] Added " + inserted + " new block protection entries.");
 				}
 				break;
 			    case UPDATE:
@@ -1650,8 +1645,7 @@ public abstract class JobsDAO {
 				updated++;
 				if (updated % 10000 == 0) {
 				    update.executeBatch();
-				    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Upadated " + updated + " old block protection entries.");
-				    console.sendMessage(message);
+				    Jobs.consoleMsg("&6[Jobs] Upadated " + updated + " old block protection entries.");
 				}
 				break;
 			    case NONE:
@@ -1683,16 +1677,13 @@ public abstract class JobsDAO {
 	    conn.commit();
 	    conn.setAutoCommit(true);
 	    if (inserted > 0) {
-		String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Added " + inserted + " new block protection entries.");
-		console.sendMessage(message);
+		Jobs.consoleMsg("&6[Jobs] Added " + inserted + " new block protection entries.");
 	    }
 	    if (updated > 0) {
-		String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Updated " + updated + " with new block protection entries.");
-		console.sendMessage(message);
+		Jobs.consoleMsg("&6[Jobs] Updated " + updated + " with new block protection entries.");
 	    }
 	    if (deleted > 0) {
-		String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Deleted " + deleted + " old block protection entries.");
-		console.sendMessage(message);
+		Jobs.consoleMsg("&6[Jobs] Deleted " + deleted + " old block protection entries.");
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1747,15 +1738,13 @@ public abstract class JobsDAO {
 		ii++;
 
 		if (ii >= 100000) {
-		    String message = ChatColor.translateAlternateColorCodes('&', "&6[Jobs] Loading (" + i + ") BP");
-		    Bukkit.getServer().getConsoleSender().sendMessage(message);
+		    Jobs.consoleMsg("&6[Jobs] Loading (" + i + ") BP");
 		    ii = 0;
 		}
 		Jobs.getBpManager().timer += System.currentTimeMillis() - t;
 	    }
 	    if (i > 0) {
-		String message = ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Loaded " + i + " block protection entries. " + Jobs.getBpManager().timer);
-		Bukkit.getServer().getConsoleSender().sendMessage(message);
+		Jobs.consoleMsg("&e[Jobs] Loaded " + i + " block protection entries. " + Jobs.getBpManager().timer);
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1808,7 +1797,7 @@ public abstract class JobsDAO {
 	    conn.setAutoCommit(true);
 
 	    if (i > 0)
-		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Saved " + i + " new explorer entries."));
+		Jobs.consoleMsg("&e[Jobs] Saved " + i + " new explorer entries.");
 
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1855,7 +1844,7 @@ public abstract class JobsDAO {
 	    conn.setAutoCommit(true);
 
 	    if (i > 0)
-		Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] Updated " + i + " explorer entries."));
+		Jobs.consoleMsg("&e[Jobs] Updated " + i + " explorer entries.");
 
 	} catch (SQLException e) {
 	    e.printStackTrace();

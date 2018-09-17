@@ -25,7 +25,7 @@ public class RestrictedArea {
     private CuboidArea area;
     private double multiplier;
     private String name;
-    private String wgName;    
+    private String wgName;
 
     public RestrictedArea(String name, CuboidArea area, double multiplier) {
 	this.name = name;

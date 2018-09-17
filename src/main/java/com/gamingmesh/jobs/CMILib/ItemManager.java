@@ -30,7 +30,7 @@ public class ItemManager {
     static HashMap<String, CMIItemStack> byBukkitName = new HashMap<>();
     static HashMap<String, CMIItemStack> byMojangName = new HashMap<>();
     static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<>();
-    static final Version version = Jobs.getVersionCheckManager().getVersion();
+    private final static Version version = Jobs.getVersionCheckManager().getVersion();
 
     @SuppressWarnings("deprecation")
 	public static void load() {
@@ -1560,7 +1560,7 @@ public class ItemManager {
 	}
 
 	public int getId() {
-	    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)) {
+	    if (version.isEqualOrHigher(Version.v1_13_R1)) {
 		return this.id;
 	    }
 	    return getLegacyId();
@@ -1616,7 +1616,7 @@ public class ItemManager {
 		    break;
 		}
 	    }
-	    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)) {
+	    if (version.isEqualOrHigher(Version.v1_13_R1)) {
 		return new ItemStack(mat == null ? Material.STONE : mat);
 	    }
 	    return new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
@@ -1625,7 +1625,7 @@ public class ItemManager {
 
 	@Deprecated
 	public short getData() {
-	    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)) {
+	    if (version.isEqualOrHigher(Version.v1_13_R1)) {
 		return 0;
 	    }
 	    return (short) legacyData;
