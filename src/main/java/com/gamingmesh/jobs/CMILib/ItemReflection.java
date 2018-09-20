@@ -9,11 +9,9 @@ import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 
 public class ItemReflection {
 
@@ -168,11 +166,11 @@ public class ItemReflection {
 	return CraftServer;
     }
 
-    public ItemStack getItemInOffHand(Player player) {
+/*    public ItemStack getItemInOffHand(Player player) {
 	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
 	    return null;
 	return player.getInventory().getItemInOffHand();
-    }
+    }*/
 
     public void setEndermiteActive(Entity ent, boolean state) {
 

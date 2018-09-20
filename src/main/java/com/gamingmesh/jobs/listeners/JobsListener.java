@@ -176,7 +176,7 @@ public class JobsListener implements Listener {
 	}
 
 	if (Jobs.getSelectionManager().hasPlacedBoth(player)) {
-	    JobsAreaSelectionEvent jobsAreaSelectionEvent = new JobsAreaSelectionEvent(event.getPlayer(), Jobs.getSelectionManager().getSelectionCuboid(player));
+	    JobsAreaSelectionEvent jobsAreaSelectionEvent = new JobsAreaSelectionEvent(player, Jobs.getSelectionManager().getSelectionCuboid(player));
 	    Bukkit.getServer().getPluginManager().callEvent(jobsAreaSelectionEvent);
 	}
 

@@ -161,7 +161,6 @@ public class Jobs extends JavaPlugin {
     private static NMS nms = null;
 
     private static ActionBar actionbar = null;
-    private static boolean running = false;
 
     protected static VersionChecker versionCheckManager = null;
 
@@ -748,7 +747,6 @@ public class Jobs extends JavaPlugin {
     public void onEnable() {
 
 	instance = this;
-	running = true;
 	this.setEnabled(true);
 
 	versionCheckManager = new VersionChecker(this);
@@ -765,14 +763,12 @@ public class Jobs extends JavaPlugin {
 	    if (NMS.class.isAssignableFrom(nmsClass)) {
 		setNms((NMS) nmsClass.getConstructor().newInstance());
 	    } else {
-		System.out.println("Something went wrong, please note down version and contact author v:" + version);
-		running = false;
+		System.out.println("Something went wrong, please note down version and contact author, version: " + version);
 		this.setEnabled(false);
 	    }
 	} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
 	    | SecurityException e) {
 	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + version);
-	    running = false;
 	    this.setEnabled(false);
 	    e.printStackTrace();
 	    return;
@@ -850,8 +846,6 @@ public class Jobs extends JavaPlugin {
 	} catch (Exception e) {
 		e.printStackTrace();
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
-	    getServer().getPluginManager().disablePlugin(this);
-	    running = false;
 	    this.setEnabled(false);
 	}
     }
@@ -867,7 +861,6 @@ public class Jobs extends JavaPlugin {
 
 	shutdown();
 	consoleMsg("&e[Jobs] &2Plugin has been disabled succesfully.");
-	running = false;
 	this.setEnabled(false);
     }
 
@@ -1341,9 +1334,5 @@ public class Jobs extends JavaPlugin {
 	    pageCount > CurrentPage ? ">>>" : null, pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : null);
 	if (pageCount != 0)
 	    rm.show(sender);
-    }
-
-    public static boolean isRunning() {
-    	return running;
     }
 }

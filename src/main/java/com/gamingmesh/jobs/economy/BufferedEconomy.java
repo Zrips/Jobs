@@ -42,8 +42,6 @@ public class BufferedEconomy {
     private OfflinePlayer ServerAccount = null;
     private OfflinePlayer ServerTaxesAccount = null;
 
-    PaymentData PaymentData = new PaymentData();
-
     public BufferedEconomy(Jobs plugin, Economy economy) {
 	this.plugin = plugin;
 	this.economy = economy;

@@ -9,14 +9,14 @@ public class CurrencyLimit {
     private boolean enabled;
     private List<CurrencyType> stopWith;
     private int timeLimit;
-    private int announcmentDelay;
+    private int announcementDelay;
     private Parser maxEquation;
 
-    public CurrencyLimit(boolean enabled, List<CurrencyType> stopWith, int timeLimit, int announcmentDelay, Parser maxEquation) {
+    public CurrencyLimit(boolean enabled, List<CurrencyType> stopWith, int timeLimit, int announcementDelay, Parser maxEquation) {
 	this.enabled = enabled;
 	this.stopWith = stopWith;
 	this.timeLimit = timeLimit;
-	this.announcmentDelay = announcmentDelay;
+	this.announcementDelay = announcementDelay;
 	this.maxEquation = maxEquation;
     }
 
@@ -47,12 +47,12 @@ public class CurrencyLimit {
 	this.timeLimit = timeLimit;
     }
 
-    public int getAnnouncmentDelay() {
-	return announcmentDelay;
+    public int getAnnouncementDelay() {
+	return announcementDelay;
     }
 
-    public void setAnnouncmentDelay(int announcmentDelay) {
-	this.announcmentDelay = announcmentDelay;
+    public void setAnnouncementDelay(int announcementDelay) {
+	this.announcementDelay = announcementDelay;
     }
 
     public Parser getMaxEquation() {

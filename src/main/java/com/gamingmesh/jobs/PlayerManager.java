@@ -720,7 +720,7 @@ public class PlayerManager {
 	}
     }
 
-    HashMap<UUID, HashMap<Job, ItemBonusCache>> cache = new HashMap<>();
+    private HashMap<UUID, HashMap<Job, ItemBonusCache>> cache = new HashMap<>();
 
     public void resetiItemBonusCache(UUID uuid) {
 	cache.remove(uuid);
@@ -789,7 +789,7 @@ public class PlayerManager {
 		continue;
 
 	    if (oneItem.getName() != null && name != null)
-		if (!org.bukkit.ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name))
+		if (!oneItem.getName().replaceAll("&", "§").equalsIgnoreCase(name))
 		    continue;
 
 	    for (String onelore : oneItem.getLore()) {

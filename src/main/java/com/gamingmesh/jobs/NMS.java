@@ -15,5 +15,5 @@ public interface NMS {
 
     public ItemStack getItemInMainHand(Player player);
 
-    void setItemInMainHand(Player player, ItemStack item);
+    public void setItemInMainHand(Player player, ItemStack item);
 }

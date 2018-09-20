@@ -665,9 +665,9 @@ public class GeneralConfigManager {
 	}
 	c.getW().addComment("Economy.Limit.Money.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setTimeLimit(c.get("Economy.Limit.Money.TimeLimit", 3600));
-	c.getW().addComment("Economy.Limit.Money.AnnouncmentDelay", "Delay between announcements about reached money limit",
+	c.getW().addComment("Economy.Limit.Money.AnnouncementDelay", "Delay between announcements about reached money limit",
 	    "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
-	limit.setAnnouncmentDelay(c.get("Economy.Limit.Money.AnnouncmentDelay", 30));
+	limit.setAnnouncementDelay(c.get("Economy.Limit.Money.AnnouncementDelay", 30));
 	currencyLimitUse.put(CurrencyType.MONEY, limit);
 
 	// Point limit
@@ -699,9 +699,9 @@ public class GeneralConfigManager {
 	}
 	c.getW().addComment("Economy.Limit.Point.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setTimeLimit(c.get("Economy.Limit.Point.TimeLimit", 3600));
-	c.getW().addComment("Economy.Limit.Point.AnnouncmentDelay", "Delay between announcements about reached limit",
+	c.getW().addComment("Economy.Limit.Point.AnnouncementDelay", "Delay between announcements about reached limit",
 	    "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
-	limit.setAnnouncmentDelay(c.get("Economy.Limit.Point.AnnouncmentDelay", 30));
+	limit.setAnnouncementDelay(c.get("Economy.Limit.Point.AnnouncementDelay", 30));
 	currencyLimitUse.put(CurrencyType.POINTS, limit);
 
 	// Exp limit
@@ -733,9 +733,9 @@ public class GeneralConfigManager {
 	}
 	c.getW().addComment("Economy.Limit.Exp.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setTimeLimit(c.get("Economy.Limit.Exp.TimeLimit", 3600));
-	c.getW().addComment("Economy.Limit.Exp.AnnouncmentDelay", "Delay between announcements about reached Exp limit",
+	c.getW().addComment("Economy.Limit.Exp.AnnouncementDelay", "Delay between announcements about reached Exp limit",
 	    "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
-	limit.setAnnouncmentDelay(c.get("Economy.Limit.Exp.AnnouncmentDelay", 30));
+	limit.setAnnouncementDelay(c.get("Economy.Limit.Exp.AnnouncementDelay", 30));
 	currencyLimitUse.put(CurrencyType.EXP, limit);
 
 	c.getW().addComment("Economy.Repair.PayForRenaming", "Do you want to give money for only renaming items in anvil",

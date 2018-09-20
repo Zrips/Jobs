@@ -105,8 +105,8 @@ public class JobsPlayer {
 	return i;
     }
 
-    public void setPaymentLimit(PaymentData limits) {
-	paymentLimits = limits;
+    public void setPaymentLimit(PaymentData paymentLimits) {
+	this.paymentLimits = paymentLimits;
     }
 
     public PaymentData getPaymentLimit() {
@@ -135,7 +135,7 @@ public class JobsPlayer {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit2"));
 		data.setInformed();
 	    }
-	    if (data.IsAnnounceTime(limit.getAnnouncmentDelay()) && player.isOnline()) {
+	    if (data.IsAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline()) {
 		Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(data.GetLeftTime(type))));
 	    }
 	    if (data.isReseted())
@@ -159,7 +159,7 @@ public class JobsPlayer {
     }
 
     public synchronized void clearUpdateBossBarFor() {
-	this.updateBossBarFor.clear();
+	updateBossBarFor.clear();
     }
 
     public synchronized List<BossBarInfo> getBossBarInfo() {
@@ -176,12 +176,12 @@ public class JobsPlayer {
 	return logList;
     }
 
-    public void setLog(HashMap<String, Log> l) {
-	this.logList = l;
+    public void setLog(HashMap<String, Log> logList) {
+	this.logList = logList;
     }
 
-    public void setUserId(int id) {
-	this.userid = id;
+    public void setUserId(int userid) {
+	this.userid = userid;
     }
 
     public int getUserId() {
