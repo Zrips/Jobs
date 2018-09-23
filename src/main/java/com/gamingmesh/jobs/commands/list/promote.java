@@ -8,7 +8,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class promote implements Cmd {
 
@@ -24,7 +23,7 @@ public class promote implements Cmd {
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 	if (jPlayer == null) {
@@ -40,14 +39,14 @@ public class promote implements Cmd {
 		Player player = jPlayer.getPlayer();
 		if (player != null) {
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.promote.output.target",
-			"%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE,
+			"%jobname%", job.getChatColor() + job.getName(),
 			"%levelsgained%", levelsGained));
 		}
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    }
 	} catch (Exception e) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.admin.error"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;
     }

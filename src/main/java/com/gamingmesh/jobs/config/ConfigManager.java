@@ -551,6 +551,21 @@ public class ConfigManager {
 		ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
 		if (guiSection.contains("Id") && guiSection.contains("Data") && guiSection.isInt("Id") && guiSection.isInt("Data")) {
 		    GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
+		    if (guiSection.contains("Enchantments")) {
+		    	List<String> enchants = guiSection.getStringList("Enchantments");
+				if (enchants.size() > 0) {
+					for (String str4 : enchants) {
+						String[] id = str4.split(":");
+						if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
+							EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+							enchantMeta.addStoredEnchant(Enchantment.getByName(id[0]), Integer.parseInt(id[1]), true);
+							GUIitem.setItemMeta(enchantMeta);
+						} else {
+							GUIitem.addUnsafeEnchantment(Enchantment.getByName(id[0]), Integer.parseInt(id[1]));
+						}
+					}
+				}
+			}
 		} else if (guiSection.contains("CustomSkull")) {
 		    String skullOwner = guiSection.getString("CustomSkull");
 		    GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
@@ -564,20 +579,6 @@ public class ConfigManager {
 		    } else
 			skullMeta.setOwner(skullOwner);
 		    GUIitem.setItemMeta(skullMeta);
-		} else if (guiSection.contains("Enchantments")) {
-	    	List<String> enchants = guiSection.getStringList("Enchantments");
-			if (enchants.size() > 0) {
-				for (String str4 : enchants) {
-					String[] id = str4.split(":");
-					if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
-						EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-						enchantMeta.addStoredEnchant(Enchantment.getByName(id[0]), Integer.parseInt(id[1]), true);
-						GUIitem.setItemMeta(enchantMeta);
-					} else {
-						GUIitem.addUnsafeEnchantment(Enchantment.getByName(id[0]), Integer.parseInt(id[1]));
-					}
-				}
-			}
 		} else
 		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
 	    }

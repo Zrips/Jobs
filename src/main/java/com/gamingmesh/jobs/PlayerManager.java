@@ -28,7 +28,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -556,10 +555,10 @@ public class PlayerManager {
 	else
 	    message = Jobs.getLanguage().getMessage("message.levelup.nobroadcast");
 
-	message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
+	message = message.replace("%jobname%", job.getChatColor() + job.getName());
 
 	if (levelUpEvent.getOldTitle() != null)
-	    message = message.replace("%titlename%", levelUpEvent.getOldTitleColor() + levelUpEvent.getOldTitleName() + ChatColor.WHITE);
+	    message = message.replace("%titlename%", levelUpEvent.getOldTitleColor() + levelUpEvent.getOldTitleName());
 
 	if (player != null)
 	    message = message.replace("%playername%", player.getDisplayName());
@@ -604,8 +603,8 @@ public class PlayerManager {
 	    else
 	    	message = message.replace("%playername%", jPlayer.getUserName());
 
-	    message = message.replace("%titlename%", levelUpEvent.getNewTitleColor() + levelUpEvent.getNewTitleName() + ChatColor.WHITE);
-	    message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
+	    message = message.replace("%titlename%", levelUpEvent.getNewTitleColor() + levelUpEvent.getNewTitleName());
+	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
 	    for (String line : message.split("\n")) {
 		if (Jobs.getGCManager().isBroadcastingSkillups())
 		    Bukkit.getServer().broadcastMessage(line);

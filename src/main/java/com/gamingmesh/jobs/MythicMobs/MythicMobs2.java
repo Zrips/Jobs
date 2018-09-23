@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.MythicMobs;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 
@@ -48,13 +47,12 @@ public class MythicMobs2 implements MythicMobInterface {
 	    Class.forName("net.elseland.xikage.MythicMobs.Mobs.MythicMob");
 	} catch (ClassNotFoundException e) {
 	    // Disabling
-	    Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-		"&e[Jobs] &6MythicMobs was found - &cBut your version is outdated, please update for full support."));
+	    Jobs.consoleMsg("&e[Jobs] &6MythicMobs was found - &cBut your version is outdated, please update for full support.");
 	    return false;
 	}
 
 	MMAPI = ((MythicMobs) mm).getAPI();
-	Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6MythicMobs2 was found - Enabling capabilities."));
+	Jobs.consoleMsg("&e[Jobs] &6MythicMobs2 was found - Enabling capabilities.");
 	return true;
 
     }

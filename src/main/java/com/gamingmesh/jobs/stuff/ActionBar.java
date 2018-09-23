@@ -84,7 +84,7 @@ public class ActionBar {
 		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), payment.getPoints()));
 	    if (payment.getExp() != 0D)
 		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), payment.getExp()));
-	    send(abp, ChatColor.GREEN + Message);
+	    send(abp, Message);
 	}
     }
 

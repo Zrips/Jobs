@@ -780,9 +780,6 @@ public class Jobs extends JavaPlugin {
 	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
 	    jobConfig.saveDefaultConfig();
 
-	    YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
-		jobSigns.saveDefaultConfig();
-
 	    YmlMaker jobSchedule = new YmlMaker(this, "schedule.yml");
 	    jobSchedule.saveDefaultConfig();
 
@@ -808,6 +805,11 @@ public class Jobs extends JavaPlugin {
 	    this.getCommand("jobs").setTabCompleter(new TabComplete());
 
 	    startup();
+
+		if (GconfigManager.SignsEnabled) {
+	    	YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
+			jobSigns.saveDefaultConfig();
+	    }
 
 	    // register the listeners
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);

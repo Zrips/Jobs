@@ -844,7 +844,7 @@ public class GeneralConfigManager {
 	c.getW().addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
 	BossBarEnabled = c.get("BossBar.Enabled", true);
 
-	if (BossBarEnabled = true && Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
+	if (BossBarEnabled == true && Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
 	    BossBarEnabled = false;
 	    Jobs.consoleMsg("&c[Jobs] Your server version don't support BossBar. This feature will be disabled");
 	}

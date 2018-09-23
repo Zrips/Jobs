@@ -12,7 +12,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.RawMessage;
 
 public class top implements Cmd {
@@ -39,17 +38,18 @@ public class top implements Cmd {
 	}
 
 	int page = 1;
-	if (args.length == 2)
+	if (args.length == 2) {
 	    try {
 		page = Integer.parseInt(args[1]);
 	    } catch (NumberFormatException e) {
 		return true;
 	    }
+	}
 	if (page < 1)
 	    page = 1;
 
 	if (Jobs.getJob(args[0]) == null) {
-	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.top.error.nojob"));
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return false;
 	}
 	int showPageNum = Jobs.getGCManager().JobsTopAmount;
@@ -57,7 +57,7 @@ public class top implements Cmd {
 
 	List<TopList> FullList = Jobs.getJobsDAO().toplist(args[0], st);
 	if (FullList.size() <= 0) {
-	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.noinfo"));
+	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    return true;
 	}
 

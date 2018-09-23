@@ -12,7 +12,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Convert;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class convert implements Cmd {
 
@@ -36,7 +35,7 @@ public class convert implements Cmd {
 	    archivelist = Jobs.getJobsDAO().convertDatabase("archive");
 	} catch (SQLException e) {
 	    e.printStackTrace();
-	    sender.sendMessage(ChatColor.RED + "Can't read data from data base, please send error log to dev's.");
+	    Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
 	    return true;
 	}
 

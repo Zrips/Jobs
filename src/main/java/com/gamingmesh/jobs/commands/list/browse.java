@@ -25,7 +25,7 @@ public class browse implements Cmd {
 	    List<Job> jobList = new ArrayList<>(Jobs.getJobs());
 
 	    if (jobList.size() == 0) {
-		sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
 		return true;
 	    }
 
@@ -219,7 +219,7 @@ public class browse implements Cmd {
 	    }
 
 	    if (lines.size() == 0) {
-		sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
 		return true;
 	    }
 

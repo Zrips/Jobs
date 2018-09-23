@@ -8,7 +8,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class info implements Cmd {
 
@@ -32,13 +31,13 @@ public class info implements Cmd {
 	String jobName = args[0];
 	Job job = Jobs.getJob(jobName);
 	if (job == null) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
 	if (Jobs.getGCManager().hideJobsInfoWithoutPermission)
 	    if (!Jobs.getCommandManager().hasJobPermission(pSender, job)) {
-		sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.permission"));
+		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 		return true;
 	    }
 

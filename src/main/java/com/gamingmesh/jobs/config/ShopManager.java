@@ -364,7 +364,7 @@ public class ShopManager {
 		List<String> lore = new ArrayList<>();
 		if (NameSection.getStringList("Icon.Lore") != null)
 		    for (String eachLine : NameSection.getStringList("Icon.Lore")) {
-			lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
+			lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 		    }
 		Sitem.setIconLore(lore);
 	    }
@@ -401,7 +401,7 @@ public class ShopManager {
 		List<String> cmd = new ArrayList<>();
 		if (NameSection.getStringList("PerformCommands") != null)
 		    for (String eachLine : NameSection.getStringList("PerformCommands")) {
-			cmd.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
+			cmd.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 		    }
 		Sitem.setCommands(cmd);
 	    }
@@ -430,12 +430,12 @@ public class ShopManager {
 
 		    String name = null;
 		    if (itemSection.isString("Name"))
-			name = org.bukkit.ChatColor.translateAlternateColorCodes('&', itemSection.getString("Name"));
+			name = ChatColor.translateAlternateColorCodes('&', itemSection.getString("Name"));
 
 		    List<String> lore = new ArrayList<>();
 		    if (itemSection.getStringList("Lore") != null)
 			for (String eachLine : itemSection.getStringList("Lore")) {
-			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
+			    lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();

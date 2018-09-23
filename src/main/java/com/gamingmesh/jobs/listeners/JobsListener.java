@@ -700,7 +700,7 @@ public class JobsListener implements Listener {
 	    return false;
 
 	if (oneItem.getName() != null && name != null) {
-	    if (!org.bukkit.ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name)) {
+	    if (!ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name)) {
 		return false;
 	    }
 	}

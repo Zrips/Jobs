@@ -9,7 +9,6 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class exp implements Cmd {
 
@@ -67,7 +66,7 @@ public class exp implements Cmd {
 	}
 
 	if (job == null) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
@@ -96,7 +95,7 @@ public class exp implements Cmd {
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    }
 	} catch (Exception e) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.admin.error"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;
     }

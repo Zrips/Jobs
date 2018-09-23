@@ -46,7 +46,7 @@ public class archive implements Cmd {
 	for (JobProgression jobInfo : AllJobs) {
 	    RawMessage rm = new RawMessage();
 	    if (jobInfo.canRejoin())
-		rm.add(ChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), "Click to rejoin this job", "jobs join " + jobInfo.getJob().getName());
+		rm.add(ChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), Jobs.getLanguage().getMessage("command.join.rejoin"), "jobs join " + jobInfo.getJob().getName());
 	    else
 		rm.add(ChatColor.RED + "-" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", jobInfo
 		    .getRejoinTimeMessage()));

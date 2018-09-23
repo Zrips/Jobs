@@ -6,13 +6,15 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class signupdate implements Cmd {
 
     @Override
     @JobCommand(2700)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+	if (!Jobs.getGCManager().SignsEnabled)
+    	return true;
+
 	if (args.length != 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "signupdate");
 	    return true;
@@ -21,7 +23,7 @@ public class signupdate implements Cmd {
 	Job oldjob = Jobs.getJob(args[0]);
 
 	if (oldjob == null && !args[0].equalsIgnoreCase("gtoplist")) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 	if (!args[0].equalsIgnoreCase("gtoplist") && oldjob != null)

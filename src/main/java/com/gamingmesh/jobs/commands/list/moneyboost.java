@@ -7,7 +7,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class moneyboost implements Cmd {
 
@@ -42,7 +41,7 @@ public class moneyboost implements Cmd {
 	    for (Job one : Jobs.getJobs()) {
 		one.addBoost(CurrencyType.MONEY, 1.0);
 	    }
-	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.moneyboost.output.allreset"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.allreset"));
 	    return true;
 	} else if (args[0].equalsIgnoreCase("reset")) {
 	    boolean found = false;
@@ -55,7 +54,7 @@ public class moneyboost implements Cmd {
 	    }
 
 	    if (found) {
-		sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.moneyboost.output.jobsboostreset", "%jobname%", job.getName()));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.jobsboostreset", "%jobname%", job.getName()));
 		return true;
 	    }
 	}
@@ -66,15 +65,15 @@ public class moneyboost implements Cmd {
 		one.addBoost(CurrencyType.MONEY, rate);
 	    }
 
-	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.moneyboost.output.boostalladded", "%boost%", rate));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.boostalladded", "%boost%", rate));
 	    return true;
 	}
 	if (job == null) {
-	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 	job.addBoost(CurrencyType.MONEY, rate);
-	sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.moneyboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
 	return true;
     }
 }

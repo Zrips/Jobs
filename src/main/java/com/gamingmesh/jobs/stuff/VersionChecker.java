@@ -16,13 +16,12 @@ import com.gamingmesh.jobs.Jobs;
 public class VersionChecker {
     private Jobs plugin;
     private int resource = 4216;
+    private static Version version = null;
 
     public VersionChecker(Jobs plugin) {
 	this.plugin = plugin;
 	version = getCurrent();
     }
-
-    private static Version version = Version.v1_11_R1;
 
     public Version getVersion() {
 	return version;
@@ -53,9 +52,9 @@ public class VersionChecker {
 	private Integer value;
 	private String shortVersion;
 
-	Version(Integer value, String ShortVersion) {
+	Version(Integer value, String shortVersion) {
 	    this.value = value;
-	    shortVersion = ShortVersion;
+	    this.shortVersion = shortVersion;
 	}
 
 	public Integer getValue() {
@@ -92,8 +91,8 @@ public class VersionChecker {
 	    return getValue() >= version.getValue();
 	}
 
-	public static boolean isCurrentEqualOrHigher(Version v) {
-	    return version.getValue() >= v.getValue();
+	public static boolean isCurrentEqualOrHigher(Version version) {
+	    return VersionChecker.version.getValue() >= version.getValue();
 	}
     }
 
@@ -108,20 +107,20 @@ public class VersionChecker {
 	return null;
     }
 
-    public boolean isLower(Version v) {
-	return version.getValue() < v.getValue();
+    public boolean isLower(Version version) {
+	return VersionChecker.version.getValue() < version.getValue();
     }
 
-    public boolean isLowerEquals(Version v) {
-	return version.getValue() <= v.getValue();
+    public boolean isLowerEquals(Version version) {
+	return VersionChecker.version.getValue() <= version.getValue();
     }
 
-    public boolean isHigher(Version v) {
-	return version.getValue() > v.getValue();
+    public boolean isHigher(Version version) {
+	return VersionChecker.version.getValue() > version.getValue();
     }
 
-    public boolean isHigherEquals(Version v) {
-	return version.getValue() >= v.getValue();
+    public boolean isHigherEquals(Version version) {
+	return VersionChecker.version.getValue() >= version.getValue();
     }
 
     public void VersionCheck(final Player player) {

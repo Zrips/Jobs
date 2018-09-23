@@ -403,8 +403,8 @@ public class LanguageManager {
 	    c.get("command.join.error.fullslots", "You cannot join the job %jobname%, there are no slots available.");
 	    c.get("command.join.error.maxjobs", "You have already joined too many jobs.");
 	    c.get("command.join.error.rejoin", "&cCan't rejoin this job. Wait [time]");
+	    c.get("command.join.rejoin", "&aClick to rejoin this job: ");
 	    c.get("command.join.success", "You have joined the job %jobname%.");
-
 	    c.get("command.join.confirm", "&2Click to confirm join action for &7[jobname] &2job.");
 
 	    c.get("command.leave.help.info", "Leave the selected job.");

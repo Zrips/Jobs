@@ -10,7 +10,6 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.RawMessage;
 
 public class join implements Cmd {
@@ -40,27 +39,27 @@ public class join implements Cmd {
 	Job job = Jobs.getJob(jobName);
 	if (job == null) {
 	    // job does not exist
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
 	if (!Jobs.getCommandManager().hasJobPermission(pSender, job)) {
 	    // you do not have permission to join the job
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.permission"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
 
 	if (jPlayer.isInJob(job)) {
 	    // already in job message
-	    String message = ChatColor.RED + Jobs.getLanguage().getMessage("command.join.error.alreadyin");
-	    message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.RED);
+	    String message = Jobs.getLanguage().getMessage("command.join.error.alreadyin");
+	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
 	    sender.sendMessage(message);
 	    return true;
 	}
 
 	if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
-	    String message = ChatColor.RED + Jobs.getLanguage().getMessage("command.join.error.fullslots");
-	    message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.RED);
+	    String message = Jobs.getLanguage().getMessage("command.join.error.fullslots");
+	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
 	    sender.sendMessage(message);
 	    return true;
 	}
@@ -68,7 +67,7 @@ public class join implements Cmd {
 	int confMaxJobs = Jobs.getGCManager().getMaxJobs();
 	short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
 	if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(jPlayer, PlayerMaxJobs)) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
 	    return true;
 	}
 
@@ -90,7 +89,7 @@ public class join implements Cmd {
 	Jobs.getPlayerManager().joinJob(jPlayer, job);
 
 	String message = Jobs.getLanguage().getMessage("command.join.success");
-	message = message.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
+	message = message.replace("%jobname%", job.getChatColor() + job.getName());
 	sender.sendMessage(message);
 	return true;
     }

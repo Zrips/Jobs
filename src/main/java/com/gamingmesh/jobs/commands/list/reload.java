@@ -1,12 +1,10 @@
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class reload implements Cmd {
     @Override
@@ -16,9 +14,8 @@ public class reload implements Cmd {
 	    Jobs.reload();
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	} catch (Exception e) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.admin.error"));
-	    String message = org.bukkit.ChatColor.translateAlternateColorCodes('&', "&4There was an error when performing a reload: ");
-	    Bukkit.getServer().getConsoleSender().sendMessage(message);
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
+	    Jobs.consoleMsg("&4There was an error when performing a reload: ");
 	    e.printStackTrace();
 	}
 	return true;

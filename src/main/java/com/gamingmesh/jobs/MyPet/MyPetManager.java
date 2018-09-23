@@ -3,8 +3,9 @@ package com.gamingmesh.jobs.MyPet;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
+
+import com.gamingmesh.jobs.Jobs;
 
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.entity.MyPet;
@@ -53,7 +54,7 @@ public class MyPetManager {
 	mp = MyPetApi.getPlayerManager();
 	mppm = MyPetApi.getMyPetManager();
 	enabled = true;
-	Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&e[Jobs] &6MyPet detected"));
+	Jobs.consoleMsg("&e[Jobs] &6MyPet detected");
     }
 
 }

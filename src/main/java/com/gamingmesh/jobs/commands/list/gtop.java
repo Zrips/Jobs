@@ -11,7 +11,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.RawMessage;
 
 public class gtop implements Cmd {
@@ -49,7 +48,7 @@ public class gtop implements Cmd {
 	
 	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(st);
 	if (FullList.size() <= 0) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.gtop.error.nojob"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.error.nojob"));
 	    return true;
 	}
 

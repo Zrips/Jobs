@@ -7,7 +7,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class expboost implements Cmd {
 
@@ -41,7 +40,7 @@ public class expboost implements Cmd {
 	    for (Job one : Jobs.getJobs()) {
 		one.addBoost(CurrencyType.EXP, 1.0);
 	    }
-	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.expboost.output.allreset"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.allreset"));
 	    return true;
 	} else if (args[0].equalsIgnoreCase("reset")) {
 	    boolean found = false;
@@ -54,7 +53,7 @@ public class expboost implements Cmd {
 	    }
 
 	    if (found) {
-		sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("command.expboost.output.jobsboostreset", "%jobname%", job.getName()));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.jobsboostreset", "%jobname%", job.getName()));
 		return true;
 	    }
 	}
@@ -65,15 +64,15 @@ public class expboost implements Cmd {
 		one.addBoost(CurrencyType.EXP, rate);
 	    }
 
-	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.expboost.output.boostalladded", "%boost%", rate));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.boostalladded", "%boost%", rate));
 	    return true;
 	}
 	if (job == null) {
-	    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 	job.addBoost(CurrencyType.EXP, rate);
-	sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.expboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
 	return true;
     }
 }

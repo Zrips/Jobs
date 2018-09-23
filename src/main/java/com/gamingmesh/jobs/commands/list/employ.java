@@ -8,7 +8,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class employ implements Cmd {
 
@@ -24,7 +23,7 @@ public class employ implements Cmd {
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 	
@@ -35,9 +34,7 @@ public class employ implements Cmd {
 	
 	if (jPlayer.isInJob(job)) {
 	    // already in job message
-	    String message = ChatColor.RED + Jobs.getLanguage().getMessage("command.employ.error.alreadyin", "%jobname%", job.getChatColor() + job.getName()
-		+ ChatColor.RED);
-	    sender.sendMessage(message);
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.employ.error.alreadyin", "%jobname%", job.getChatColor() + job.getName()));
 	    return true;
 	}
 	try {
@@ -45,11 +42,11 @@ public class employ implements Cmd {
 	    Jobs.getPlayerManager().joinJob(jPlayer, job);
 	    Player player = jPlayer.getPlayer();
 	    if (player != null)
-		player.sendMessage(Jobs.getLanguage().getMessage("command.employ.output.target", "%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE));
+		player.sendMessage(Jobs.getLanguage().getMessage("command.employ.output.target", "%jobname%", job.getChatColor() + job.getName()));
 
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	} catch (Exception e) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.admin.error"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;
     }

@@ -8,7 +8,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class toggle implements Cmd {
 
@@ -39,21 +38,21 @@ public class toggle implements Cmd {
 	    if (Jobs.getActionbarToggleList().containsKey(PlayerName))
 		if (Jobs.getActionbarToggleList().get(PlayerName)) {
 		    Jobs.getActionbarToggleList().put(PlayerName, false);
-		    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.toggle.output.off"));
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.off"));
 		} else {
 		    Jobs.getActionbarToggleList().put(PlayerName, true);
-		    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.toggle.output.on"));
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.on"));
 		}
 	    else {
 		Jobs.getActionbarToggleList().put(PlayerName, true);
-		sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.toggle.output.on"));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.on"));
 	    }
 
 	if (args[0].equalsIgnoreCase("bossbar"))
 	    if (Jobs.getBossBarToggleList().containsKey(PlayerName))
 		if (Jobs.getBossBarToggleList().get(PlayerName)) {
 		    Jobs.getBossBarToggleList().put(PlayerName, false);
-		    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.toggle.output.off"));
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.off"));
 
 		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player.getUniqueId());
 
@@ -62,11 +61,11 @@ public class toggle implements Cmd {
 
 		} else {
 		    Jobs.getBossBarToggleList().put(PlayerName, true);
-		    sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.toggle.output.on"));
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.on"));
 		}
 	    else {
 		Jobs.getBossBarToggleList().put(PlayerName, true);
-		sender.sendMessage(ChatColor.GREEN + Jobs.getLanguage().getMessage("command.toggle.output.on"));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.on"));
 	    }
 
 	return true;

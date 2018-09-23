@@ -161,7 +161,7 @@ public class JobsPaymentListener implements Listener {
 
 	//Check if inventory is full and using shift click, possible money dupping fix
 	if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
-	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
+	    player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
 	    return;
 	}
 
@@ -359,6 +359,8 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
 	    FurnaceBrewingHandling.removeFurnace(block);
+	if (block.getType() == Material.BREWING_STAND && block.hasMetadata(brewingOwnerMetadata))
+	    FurnaceBrewingHandling.removeBrewing(block);
 
 	// make sure plugin is enabled
 	if (!this.plugin.isEnabled())
@@ -547,7 +549,7 @@ public class JobsPaymentListener implements Listener {
 
 	//Check if inventory is full and using shift click, possible money dupping fix
 	if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
-	    player.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
+	    player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
 	    return;
 	}
 
@@ -1412,6 +1414,9 @@ public class JobsPaymentListener implements Listener {
 
 	    if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
 		FurnaceBrewingHandling.removeFurnace(block);
+
+	    if (block.getType() == Material.BREWING_STAND && block.hasMetadata(brewingOwnerMetadata))
+			FurnaceBrewingHandling.removeBrewing(block);
 
 	    if (Jobs.getGCManager().useBlockProtection)
 		if (block.getState().hasMetadata(BlockMetadata))

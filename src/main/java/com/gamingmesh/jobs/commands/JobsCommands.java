@@ -335,7 +335,7 @@ public class JobsCommands implements CommandExecutor {
     public void jobInfoMessage(CommandSender sender, JobsPlayer player, Job job, String type, int page) {
 	if (job == null) {
 	    // job doesn't exist
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return;
 	}
 
@@ -356,20 +356,20 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	if (job.getBoost().get(CurrencyType.EXP) != 0D)
-	    message.add(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.EXP)) + 1));
+	    message.add(Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.EXP)) + 1));
 
 	if (job.getBoost().get(CurrencyType.MONEY) != 0D)
-	    message.add(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.MONEY)) + 1));
+	    message.add(Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.MONEY)) + 1));
 
 	if (job.getBoost().get(CurrencyType.POINTS) != 0D)
-	    message.add(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.POINTS)) + 1));
+	    message.add(Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.POINTS)) + 1));
 
 	if (Jobs.getGCManager().useDynamicPayment) {
 	    if ((int) (job.getBonus() * 100) / 100.0 != 0) {
 		if ((int) (job.getBonus() * 100) / 100.0 < 0) {
-		    message.add(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.info.help.penalty", "[penalty]", (int) (job.getBonus() * 100) / 100.0 * -1));
+		    message.add(Jobs.getLanguage().getMessage("command.info.help.penalty", "[penalty]", (int) (job.getBonus() * 100) / 100.0 * -1));
 		} else {
-		    message.add(ChatColor.GOLD + Jobs.getLanguage().getMessage("command.info.help.bonus", "[bonus]", (int) (job.getBonus() * 100) / 100.0));
+		    message.add(Jobs.getLanguage().getMessage("command.info.help.bonus", "[bonus]", (int) (job.getBonus() * 100) / 100.0));
 		}
 	    }
 	}
@@ -385,7 +385,7 @@ public class JobsCommands implements CommandExecutor {
 			message.add(m);
 		} else if (showAllTypes == 0) {
 		    String myMessage = Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none");
-		    myMessage = myMessage.replace("%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE);
+		    myMessage = myMessage.replace("%jobname%", job.getChatColor() + job.getName());
 		    message.add(myMessage);
 		}
 	    }
@@ -499,7 +499,7 @@ public class JobsCommands implements CommandExecutor {
     public String jobStatsMessage(JobProgression jobProg) {
 	String message = Jobs.getLanguage().getMessage("command.stats.output",
 	    "%joblevel%", jobProg.getLevel(),
-	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE,
+	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName(),
 	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience());
 	return " " + jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) + " " + message;
@@ -537,7 +537,7 @@ public class JobsCommands implements CommandExecutor {
 	int exp = jPlayer.getExpAfterRejoin(jobProg, jPlayer.getLevelAfterRejoin(jobProg));
 	String message = Jobs.getLanguage().getMessage("command.stats.output",
 	    "%joblevel%", level,
-	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE,
+	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName(),
 	    "%jobxp%", Math.round(exp * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(level));
 	return " " + jobProgressMessage(jobProg.getMaxExperience(level), exp) + " " + message;

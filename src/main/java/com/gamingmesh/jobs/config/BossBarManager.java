@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -78,7 +77,7 @@ public class BossBarManager {
 
 	String message = Jobs.getLanguage().getMessage("command.stats.output",
 	    "%joblevel%", Integer.valueOf(jobProg.getLevel()).toString(),
-	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName() + ChatColor.WHITE,
+	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName(),
 	    "%jobxp%", formatter.format(Math.round(jobProg.getExperience() * 100.0) / 100.0),
 	    "%jobmaxxp%", jobProg.getMaxExperience());
 

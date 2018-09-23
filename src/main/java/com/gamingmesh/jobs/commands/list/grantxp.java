@@ -9,7 +9,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class grantxp implements Cmd {
 
@@ -25,18 +24,18 @@ public class grantxp implements Cmd {
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 	double xpGained;
 	try {
 	    xpGained = Double.parseDouble(args[2]);
 	} catch (Exception e) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.admin.error"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    return true;
 	}
 	if (xpGained <= 0) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.admin.error"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    return true;
 	}
 
@@ -52,7 +51,7 @@ public class grantxp implements Cmd {
 	    Player player = jPlayer.getPlayer();
 	    if (player != null) {
 		String message = Jobs.getLanguage().getMessage("command.grantxp.output.target",
-		    "%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE,
+		    "%jobname%", job.getChatColor() + job.getName(),
 		    "%xpgained%", xpGained);
 		player.sendMessage(message);
 	    }

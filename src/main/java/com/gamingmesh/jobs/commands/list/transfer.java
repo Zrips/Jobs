@@ -9,7 +9,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class transfer implements Cmd {
 
@@ -29,11 +28,11 @@ public class transfer implements Cmd {
 	Job oldjob = Jobs.getJob(args[1]);
 	Job newjob = Jobs.getJob(args[2]);
 	if (oldjob == null) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 	if (newjob == null) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 	try {
@@ -43,15 +42,15 @@ public class transfer implements Cmd {
 		Player player = jPlayer.getPlayer();
 		if (player != null) {
 		    String message = Jobs.getLanguage().getMessage("command.transfer.output.target",
-			"%oldjobname%", oldjob.getChatColor() + oldjob.getName() + ChatColor.WHITE,
-			"%newjobname%", newjob.getChatColor() + newjob.getName() + ChatColor.WHITE);
+			"%oldjobname%", oldjob.getChatColor() + oldjob.getName(),
+			"%newjobname%", newjob.getChatColor() + newjob.getName());
 		    player.sendMessage(message);
 		}
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    }
 	} catch (Exception e) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.admin.error"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;
     }

@@ -45,7 +45,7 @@ public class MythicMobs4Listener implements Listener {
 	    pDamager = (Player) event.getKiller();
 	// Checking if killer is tamed animal
 	else if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-	    ent = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();	    
+	    ent = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
 	} else
 	    return;
 
@@ -66,6 +66,4 @@ public class MythicMobs4Listener implements Listener {
 
 	Jobs.action(jDamager, new MMKillInfo(lVictim.getInternalName(), ActionType.MMKILL), ent);
     }
-
-
 }

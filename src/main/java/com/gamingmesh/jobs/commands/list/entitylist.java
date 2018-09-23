@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import com.gamingmesh.jobs.Jobs;
@@ -43,7 +42,7 @@ public class entitylist implements Cmd {
 	    msg += type.name().toLowerCase();
 	}
 
-	sender.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+	sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', msg));
 
 	return true;
     }
