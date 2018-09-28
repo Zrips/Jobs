@@ -445,7 +445,7 @@ public class ConfigManager {
 
 	    String jobShortName = jobSection.getString("shortname", null);
 	    if (jobShortName == null) {
-		Jobs.getPluginLogger().warning("Job " + jobKey + " is missing the shortname property.  Skipping job!");
+		Jobs.getPluginLogger().warning("Job " + jobKey + " is missing the shortname property. Skipping job!");
 		continue;
 	    }
 
@@ -467,7 +467,7 @@ public class ConfigManager {
 		color = ChatColor.matchColor(jobSection.getString("ChatColour", ""));
 		if (color == null) {
 		    color = ChatColor.WHITE;
-		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid ChatColour property.  Defaulting to WHITE!");
+		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid ChatColour property. Defaulting to WHITE!");
 		}
 	    }
 

@@ -431,10 +431,10 @@ public class GeneralConfigManager {
 //	c.get("mysql-database", "minecraft");
 //	c.get("mysql-table-prefix", "jobs_");
 
-	c.getW().addComment("save-period", "How often in minutes you want it to save.  This must be a non-zero number");
+	c.getW().addComment("save-period", "How often in minutes you want it to save. This must be a non-zero number");
 	c.get("save-period", 10);
 	if (c.getC().getInt("save-period") <= 0) {
-	    Jobs.getPluginLogger().severe("Save period must be greater than 0!  Defaulting to 10 minutes!");
+	    Jobs.getPluginLogger().severe("Save period must be greater than 0! Defaulting to 10 minutes!");
 	    c.getC().set("save-period", 10);
 	}
 	savePeriod = c.getC().getInt("save-period");
@@ -445,9 +445,10 @@ public class GeneralConfigManager {
 	saveOnDisconnect = c.get("save-on-disconnect", false);
 
 	c.getW().addComment("selectionTool", "Tool used when selecting bounds for restricted area");
-	getSelectionTooldID = c.get("selectionTool", 294);
-	if (CMIMaterial.get(Jobs.getGCManager().getSelectionTooldID) == null)
-	    getSelectionTooldID = 294;
+	if (CMIMaterial.get(getSelectionTooldID) == null)
+		getSelectionTooldID = 294;
+	else
+		getSelectionTooldID = c.get("selectionTool", 294);
 
 	c.getW().addComment("MultiServerCompatability", "Enable if you are using one data base for multiple servers across bungee network",
 	    "This will force to load players data every time he is logging in to have most up to date data instead of having preloaded data",
@@ -548,13 +549,11 @@ public class GeneralConfigManager {
 	c.getW().addComment("add-xp-player", "Adds the Jobs xp recieved to the player's Minecraft XP bar");
 	addXpPlayer = c.get("add-xp-player", false);
 
-	c.getW().addComment("modify-chat",
-	    "Modifys chat to add chat titles.  If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
-	modifyChat = c.get("modify-chat", true);
-
-	modifyChatPrefix = c.get("modify-chat-prefix", "&c[", true);
-	modifyChatSuffix = c.get("modify-chat-suffix", "&c]&r", true);
-	modifyChatSeparator = c.get("modify-chat-separator", " ", true);
+	c.getW().addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
+	modifyChat = c.get("modify-chat.use", true);
+	modifyChatPrefix = c.get("modify-chat.prefix", "&c[", true);
+	modifyChatSuffix = c.get("modify-chat.suffix", "&c]&r", true);
+	modifyChatSeparator = c.get("modify-chat.separator", " ", true);
 
 	c.getW().addComment("UseCustomNames", "Do you want to use custom item/block/mob/enchant/color names",
 	    "With this set to true names like Stone:1 will be translated to Granite", "Name list is in TranslatableWords.yml file");
@@ -638,7 +637,7 @@ public class GeneralConfigManager {
 	// Money limit
 	CurrencyLimit limit = new CurrencyLimit();
 	c.getW().addComment("Economy.Limit.Money", "Money gain limit", "With this enabled, players will be limited how much they can make in defined time",
-	    "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
+	    "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setEnabled(c.get("Economy.Limit.Money.Use", false));
 	List<CurrencyType> list = new ArrayList<>();
 	c.getW().addComment("Economy.Limit.Money.StopWithExp", "Do you want to stop money gain when exp limit reached?");
@@ -663,7 +662,7 @@ public class GeneralConfigManager {
 	    Jobs.getPluginLogger().warning("MoneyLimit has an invalid value. Disabling money limit!");
 	    limit.setEnabled(false);
 	}
-	c.getW().addComment("Economy.Limit.Money.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
+	c.getW().addComment("Economy.Limit.Money.TimeLimit", "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setTimeLimit(c.get("Economy.Limit.Money.TimeLimit", 3600));
 	c.getW().addComment("Economy.Limit.Money.AnnouncementDelay", "Delay between announcements about reached money limit",
 	    "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
@@ -697,7 +696,7 @@ public class GeneralConfigManager {
 	    Jobs.getPluginLogger().warning("PointLimit has an invalid value. Disabling money limit!");
 	    limit.setEnabled(false);
 	}
-	c.getW().addComment("Economy.Limit.Point.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
+	c.getW().addComment("Economy.Limit.Point.TimeLimit", "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setTimeLimit(c.get("Economy.Limit.Point.TimeLimit", 3600));
 	c.getW().addComment("Economy.Limit.Point.AnnouncementDelay", "Delay between announcements about reached limit",
 	    "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
@@ -708,7 +707,7 @@ public class GeneralConfigManager {
 	limit = new CurrencyLimit();
 	list = new ArrayList<>();
 	c.getW().addComment("Economy.Limit.Exp", "Exp gain limit", "With this enabled, players will be limited how much they can get in defined time",
-	    "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
+	    "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setEnabled(c.get("Economy.Limit.Exp.Use", false));
 	c.getW().addComment("Economy.Limit.Exp.StopWithMoney", "Do you want to stop exp gain when money limit reached?");
 	if (c.get("Economy.Limit.Exp.StopWithMoney", false))
@@ -717,7 +716,7 @@ public class GeneralConfigManager {
 	if (c.get("Economy.Limit.Exp.StopWithPoint", false))
 	    list.add(CurrencyType.POINTS);
 	limit.setStopWith(list);
-	c.getW().addComment("Economy.Limit.Exp.Limit", "Equation to calculate max money limit. Option to use totallevel to include players total amount of current jobs",
+	c.getW().addComment("Economy.Limit.Exp.Limit", "Equation to calculate max money limit. Option to use total level to include players total amount of current jobs",
 	    "You can always use simple number to set exp limit",
 	    "Default equation is: 5000+5000*(totallevel/100), this will add 1% from 5000 for each level player have",
 	    "So player with 2 jobs with level 15 and 22 will have 6850 limit");
@@ -731,7 +730,7 @@ public class GeneralConfigManager {
 	    Jobs.getPluginLogger().warning("ExpLimit has an invalid value. Disabling money limit!");
 	    limit.setEnabled(false);
 	}
-	c.getW().addComment("Economy.Limit.Exp.TimeLimit", "Time in seconds: 60 = 1min, 3600 = 1 hour, 86400 = 24 hours");
+	c.getW().addComment("Economy.Limit.Exp.TimeLimit", "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
 	limit.setTimeLimit(c.get("Economy.Limit.Exp.TimeLimit", 3600));
 	c.getW().addComment("Economy.Limit.Exp.AnnouncementDelay", "Delay between announcements about reached Exp limit",
 	    "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");

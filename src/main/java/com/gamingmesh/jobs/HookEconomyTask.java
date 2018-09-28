@@ -26,7 +26,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.gamingmesh.jobs.economy.BlackholeEconomy;
 import com.gamingmesh.jobs.economy.VaultEconomy;
-import com.gamingmesh.jobs.economy.IConomy6Adapter;
 
 public class HookEconomyTask implements Runnable {
     private Jobs plugin;
@@ -41,17 +40,12 @@ public class HookEconomyTask implements Runnable {
 	if (setVault())
 	    return;
 
-	if (setIConomy())
-	    return;
-
 	// no Economy found
 	Jobs.setEconomy(this.plugin, new BlackholeEconomy());
 	Bukkit.getServer().getLogger().severe("==================== " + this.plugin.getDescription().getName() + " ====================");
-	Bukkit.getServer().getLogger().severe("Vault or Iconomy is required by this plugin for economy support!");
+	Bukkit.getServer().getLogger().severe("Vault is required by this plugin for economy support!");
 	Bukkit.getServer().getLogger().severe("Please install them first!");
 	Bukkit.getServer().getLogger().severe("You can find the latest versions here:");
-	Bukkit.getServer().getLogger().severe("https://dev.bukkit.org/projects/vault/");
-	Bukkit.getServer().getLogger().severe("https://dev.bukkit.org/projects/iconomy-7/");
 	Bukkit.getServer().getLogger().severe("https://www.spigotmc.org/resources/vault.34315/");
 	Bukkit.getServer().getLogger().severe("==============================================");
     }
@@ -61,7 +55,7 @@ public class HookEconomyTask implements Runnable {
 	if (eco == null)
 	    return false;
 
-	RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+	RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
 	if (provider == null)
 	    return false;
 
@@ -72,23 +66,6 @@ public class HookEconomyTask implements Runnable {
 	Jobs.setEconomy(this.plugin, new VaultEconomy(economy));
 	Jobs.consoleMsg("&e[" + this.plugin.getDescription().getName() + "] Successfully linked with Vault.");
 	return true;
-    }
-
-    private boolean setIConomy() {
-	Plugin p = Bukkit.getServer().getPluginManager().getPlugin("iConomy");
-	if (p == null)
-	    return false;
-
-	try {
-	    Jobs.setEconomy(this.plugin, new IConomy6Adapter((com.iCo6.iConomy) p));
-	} catch (Exception e) {
-	    Jobs.consoleMsg("&e[" + this.plugin.getDescription().getName() + "] UNKNOWN iConomy version.");
-	    return false;
-	}
-
-	Jobs.consoleMsg("&e[" + this.plugin.getDescription().getName() + "] Successfully linked with iConomy! Version: " + p.getDescription().getVersion());
-	return true;
-
     }
 
 }

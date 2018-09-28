@@ -23,7 +23,7 @@ public class LanguageManager {
 	this.plugin = plugin;
     }
 
-    List<String> languages = new ArrayList<>();
+    private List<String> languages = new ArrayList<>();
 
     public List<String> getLanguages() {
 	return languages;
@@ -367,6 +367,8 @@ public class LanguageManager {
 	    c.get("command.info.output.fish.none", "%jobname% does not get money from fishing.");
 	    c.get("command.info.output.craft.info", "Craft");
 	    c.get("command.info.output.craft.none", "%jobname% does not get money from crafting.");
+		c.get("command.info.output.drink.info", "Drink");
+	    c.get("command.info.output.drink.none", "%jobname% does not get money for drinking.");
 	    c.get("command.info.output.smelt.info", "Smelt");
 	    c.get("command.info.output.smelt.none", "%jobname% does not get money from smelting.");
 	    c.get("command.info.output.brew.info", "Brew");

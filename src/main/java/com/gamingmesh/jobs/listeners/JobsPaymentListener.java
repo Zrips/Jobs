@@ -1520,16 +1520,13 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(p, p.getLocation().getWorld().getName()))
 	    return;
 
-	// Item in hand
-	ItemStack item = p.getItemInHand();
-
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
 	if (jPlayer == null)
 	    return;
 
 	// Player drinking a potion
-	if (item.getType().equals(CMIMaterial.get(Material.POTION).isPotion()))
-		Jobs.action(jPlayer, new PotionDrinkInfo(String.valueOf(CMIMaterial.get(Material.POTION).isPotion()), ActionType.DRINK));
+	if (event.getItem().getType().equals(CMIMaterial.get(Material.POTION).isPotion()))
+		Jobs.action(jPlayer, new PotionDrinkInfo(org.bukkit.potion.PotionType.valueOf(CMIMaterial.get(Material.POTION).name()), ActionType.DRINK));
     }
 
     @EventHandler

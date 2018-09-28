@@ -1139,7 +1139,7 @@ public class Jobs extends JavaPlugin {
     }
 
     private static boolean isBpOk(JobsPlayer player, ActionInfo info, Block block, boolean inform) {
-	if (block == null || !getGCManager().useBlockProtection)
+	if (block == null || !GconfigManager.useBlockProtection)
 	    return true;
 
 	if (info.getType() == ActionType.BREAK) {
@@ -1164,16 +1164,16 @@ public class Jobs extends JavaPlugin {
 		    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 		    if (inform) {
 			if (player.canGetPaid(info))
-			    getActionBar().send(player.getPlayer(), getLanguage().getMessage("message.blocktimer", "[time]", sec));
+			    actionbar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 		    }
 		    return false;
 		}
 		BpManager.add(block, cd);
-		if ((cd == null || cd == 0) && getGCManager().useGlobalTimer) {
-		    BpManager.add(block, getGCManager().globalblocktimer);
+		if ((cd == null || cd == 0) && GconfigManager.useGlobalTimer) {
+		    BpManager.add(block, GconfigManager.globalblocktimer);
 		}
-	    } else if (getGCManager().useGlobalTimer) {
-		BpManager.add(block, getGCManager().globalblocktimer);
+	    } else if (GconfigManager.useGlobalTimer) {
+		BpManager.add(block, GconfigManager.globalblocktimer);
 	    }
 	} else if (info.getType() == ActionType.PLACE) {
 	    BlockProtection bp = BpManager.getBp(block.getLocation());
@@ -1190,7 +1190,7 @@ public class Jobs extends JavaPlugin {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 			if (inform) {
 			    if (player.canGetPaid(info))
-				getActionBar().send(player.getPlayer(), getLanguage().getMessage("message.blocktimer", "[time]", sec));
+				actionbar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 			}
 			BpManager.add(block, cd);
 			return false;
@@ -1296,9 +1296,9 @@ public class Jobs extends JavaPlugin {
 	    if (!inform)
 		return false;
 	    RawMessage rm = new RawMessage();
-	    rm.add(Jobs.getLanguage().getMessage("general.error.permission"), "&2" + perm);
+	    rm.add(lManager.getMessage("general.error.permission"), "&2" + perm);
 	    rm.show((Player) sender);
-	    sendMessage(Bukkit.getServer().getConsoleSender(), Jobs.getLanguage().getMessage("general.error.permission"));
+	    sendMessage(Bukkit.getServer().getConsoleSender(), lManager.getMessage("general.error.permission"));
 	    return false;
 	}
 	return true;
@@ -1329,10 +1329,10 @@ public class Jobs extends JavaPlugin {
 	Prevpage = CurrentPage > 1 ? Prevpage : CurrentPage;
 
 	RawMessage rm = new RawMessage();
-	rm.add((CurrentPage > 1 ? Jobs.getLanguage().getMessage("command.help.output.prevPage") : Jobs.getLanguage().getMessage("command.help.output.prevPageOff")),
+	rm.add((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")),
 	    CurrentPage > 1 ? "<<<" : null, CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : null);
-	rm.add(Jobs.getLanguage().getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount));
-	rm.add(pageCount > CurrentPage ? Jobs.getLanguage().getMessage("command.help.output.nextPage") : Jobs.getLanguage().getMessage("command.help.output.nextPageOff"),
+	rm.add(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount));
+	rm.add(pageCount > CurrentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"),
 	    pageCount > CurrentPage ? ">>>" : null, pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : null);
 	if (pageCount != 0)
 	    rm.show(sender);

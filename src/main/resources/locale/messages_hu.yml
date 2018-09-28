@@ -281,6 +281,9 @@ command:
       craft:
         info: '&eBarkácsol'
         none: '%jobname% nem kap pénzt, ha barkácsol.'
+      drink:
+        info: '&eMegiszik'
+        none: '%jobname% nem kap pénzt, ha iszik.'
       smelt:
         info: '&eOlvaszt'
         none: '%jobname% nem kap pénzt, ha olvaszt.'
