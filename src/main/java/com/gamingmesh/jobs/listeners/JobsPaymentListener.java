@@ -27,6 +27,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.CropState;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -77,6 +78,7 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Crops;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
@@ -357,10 +359,6 @@ public class JobsPaymentListener implements Listener {
 	Block block = event.getBlock();
 	if (block == null)
 	    return;
-	if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
-	    FurnaceBrewingHandling.removeFurnace(block);
-	if (block.getType() == Material.BREWING_STAND && block.hasMetadata(brewingOwnerMetadata))
-	    FurnaceBrewingHandling.removeBrewing(block);
 
 	// make sure plugin is enabled
 	if (!this.plugin.isEnabled())
@@ -377,7 +375,25 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
+	if (block.getType() == Material.FURNACE && block.hasMetadata(furnaceOwnerMetadata))
+	    FurnaceBrewingHandling.removeFurnace(block);
+	if (block.getType() == Material.BREWING_STAND && block.hasMetadata(brewingOwnerMetadata))
+	    FurnaceBrewingHandling.removeBrewing(block);
+
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
+	// Checks whether or not the plant is ripe if it does not get money at that time
+	if (block.getType().equals(CMIMaterial.BEETROOT_SEEDS) || block.getType().equals(CMIMaterial.MELON_SEEDS) ||
+			block.getType().equals(CMIMaterial.WHEAT_SEEDS) || block.getType().equals(CMIMaterial.PUMPKIN_SEEDS) ||
+			block.getType().equals(CMIMaterial.CARROT) || block.getType().equals(CMIMaterial.COCOA_BEANS) ||
+			block.getType().equals(CMIMaterial.POTATO) || block.getType().equals(CMIMaterial.NETHER_WART)) {
+		Crops crop = (Crops) block.getState();
+		if (crop.getState().equals(CropState.RIPE)) {
+			// continue to get money
+		} else if (crop.getState().equals(CropState.SEEDED) || crop.getState().equals(CropState.MEDIUM) ||
+				crop.getState().equals(CropState.SMALL) || crop.getState().equals(CropState.TALL) ||
+				crop.getState().equals(CropState.VERY_SMALL) || crop.getState().equals(CropState.VERY_TALL))
+			return;
+	}
 	FastPayment fp = Jobs.FastPayment.get(player.getName());
 	if (fp != null) {
 	    if (fp.getTime() > System.currentTimeMillis()) {
@@ -436,7 +452,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
