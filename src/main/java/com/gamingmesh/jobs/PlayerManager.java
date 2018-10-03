@@ -541,11 +541,12 @@ public class PlayerManager {
 	try {
 	    if (Jobs.getGCManager().SoundLevelupUse) {
 		Sound sound = levelUpEvent.getSound();
-		if (sound != null && player != null && player.getLocation() != null)
-		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
-		else
+		if (sound != null) {
+			if (player != null && player.getLocation() != null)
+			    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
+		} else
 		    Bukkit.getConsoleSender().sendMessage("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
-	    }
+		}
 	} catch (Exception e) {
 	}
 
@@ -584,11 +585,12 @@ public class PlayerManager {
 	    try {
 		if (Jobs.getGCManager().SoundTitleChangeUse) {
 		    Sound sound = levelUpEvent.getTitleChangeSound();
-		    if (sound != null && player != null && player.getLocation() != null)
-			player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
-			    levelUpEvent.getTitleChangePitch());
-		    else
-			Bukkit.getConsoleSender().sendMessage("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+		    if (sound != null) {
+		    	if (player != null && player.getLocation() != null)
+					player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
+					    levelUpEvent.getTitleChangePitch());
+		    } else
+		    Bukkit.getConsoleSender().sendMessage("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
 	    } catch (Exception e) {
 	    }

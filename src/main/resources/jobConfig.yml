@@ -11,7 +11,7 @@
 # they will get 15 income and job1 will gain 10 experience and job2 will gain 5 experience.
 
 Jobs:
-  # must be one word. This job will be ignored as this is just example of all posible actions
+  # Must be one word. This job will be ignored as this is just example of all possible actions.
   exampleJob:
     # full name of the job (displayed when browsing a job, used when joining and leaving)
     # also can be used as a prefix for the user's name if the option is enabled.
@@ -19,12 +19,11 @@ Jobs:
     #
     # NOTE: Must be 1 word
     fullname: Woodcutter
-    # Shortened version of the name of the job. Used as a prefix when the user has more 
-    # than 1 job
+    # Shortened version of the name of the job. Used as a prefix when the user has more than 1 job.
     shortname: W
-    description: Earns money felling and planting trees  
+    description: Earns money felling and planting trees
     # Full description of job to be shown in job browse command
-    FullDescription: 
+    FullDescription:
     - "&2Get money for:"
     - "  &7Planting trees"
     - "  &7Cutting down trees"
@@ -41,8 +40,7 @@ Jobs:
     # [OPTIONAL] - the maximum level of this class with specific permission
     # use jobs.[jobsname].vipmaxlevel, in this case it will be jobs.exampleJob.vipmaxlevel
     vip-max-level: 20
-    # [OPTIONAL] - the maximum number of users on the server that can have this job at 
-    # any one time (includes offline players).
+    # [OPTIONAL] - the maximum number of users on the server that can have this job at any one time (includes offline players).
     slots: 1
     # [OPTIONAL] Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.
     # In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60
@@ -83,8 +81,11 @@ Jobs:
     Gui:
     # id of block
       Id: 17
-    # data of block, usualy its 0, but in example Diorite will have id of 1 and data of 3
+    # data of block, usually its 0, but in example Diorite will have id of 1 and data of 3
       Data: 2
+    # enchants in the item
+      Enchantments:
+      - 'DURABILITY:1'
     # Defines maximum amount of daily quests player can have from THIS job
     # This will not have effect on overall quest amount player will have
     maxDailyQuests: 3
@@ -92,7 +93,7 @@ Jobs:
     # Each job can have as many daily quests as you want
     # Players will have access to quests from jobs he is currently working at
     Quests:
-      # Quest identification. Can be any ONE word or number or both of them. This doesnt have any real meaning but it cant repeat
+      # Quest identification. Can be any ONE word or number or both of them. This doesn't have any real meaning but it can't repeat.
       1:
         # Quest name used for quests list, don't forget to enclose it with " "
         Name: "Break Oak wood"
@@ -127,10 +128,10 @@ Jobs:
         Action: Kill
         Target: Zombie
         Amount: 50
-        RewardCommands: 
+        RewardCommands:
         - "money give [playerName] 2000"
         - "msg [playerName] Completed quest!"
-        RewardDesc: 
+        RewardDesc:
         - "Kill 50 zombies"
         - "Get 2000 for this!"
       3:
@@ -138,10 +139,10 @@ Jobs:
         Action: Smelt
         Target: "COOKED_CHICKEN"
         Amount: 20
-        RewardCommands: 
+        RewardCommands:
         - "money give [playerName] 300"
         - "msg [playerName] Completed quest!"
-        RewardDesc: 
+        RewardDesc:
         - "Cook some chicken breasts"
         - "Get 300 for this!"
     ########################################################################
@@ -200,15 +201,14 @@ Jobs:
     #   Witch
     #   Wither
     #   Wolf
-    #   Zombie  
+    #   Zombie
     #   ZombieVillager
     #   ZombieHusk
-    #       
     #
     # NOTE: mob names are case sensitive.
     #
     # For custom-kill, it is the name of the job (also case sensitive).
-    # 
+    #
     # NOTE: If a job has both the pay for killing a player and for killing a
     # specific class, they will get both payments.
     ########################################################################
@@ -222,7 +222,7 @@ Jobs:
         points: 5.0
         # base experience
         experience: 5.0
-        # (OPTIONAL) from which level of this job player can get money for this action  
+        # (OPTIONAL) from which level of this job player can get money for this action
         # if not given, then player will always get money for this action
         # this can be used for any action
         from-level: 1
@@ -230,6 +230,10 @@ Jobs:
         # if not given, then there is no limit
         # this can be used for any action
         until-level: 30
+      13:
+        # you can use minuses to take away money if the player break this block
+        income: -1.0
+        experience: -1.0
     # payment for drinking a potion
     Drink:
       POTION:
@@ -249,11 +253,11 @@ Jobs:
         experience: 5.0
     # payment for placing a block
     Place:
-      SAPLING: 
+      SAPLING:
         income: 1.0
         points: 1.0
         experience: 1.0
-      WOOD: 
+      WOOD:
         income: 2.0
         points: 2.0
         experience: 2.0
@@ -278,7 +282,7 @@ Jobs:
       Woodcutter:
         income: 10.0
         experience: 10.0
-    # Tamig animals
+    # Taming animals
     Tame:
       Wolf:
         income: 2.0
@@ -295,13 +299,13 @@ Jobs:
         experience: 5
       baked_potato:
         income: 5
-        experience: 5    
+        experience: 5
     # Milking cows, only one option is available
     Milk:
       Cow:
         income: 2.0
         experience: 5.0
-      Mushroomcow:
+      MushroomCow:
         income: 5.0
         experience: 10.0
     # Shear sheeps by its color
@@ -311,51 +315,51 @@ Jobs:
         experience: 5.0
       Blue:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Brown:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Cyan:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Gray:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Green:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Light_blue:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Lime:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Magenta:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Orange:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Pink:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Purple:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Red:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Silver:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       White:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
       Yellow:
         income: 2.0
-        experience: 5.0 
+        experience: 5.0
     # dyeing armor
-    Dye:    
+    Dye:
       LEATHER_BOOTS:
         income: 1.0
         experience: 1.0
@@ -452,7 +456,7 @@ Jobs:
       aaaaaatest.node:
         # true to give, false to revoke
         value: true
-        # minimum level needed to grant permission.  Use 0 for all levels
+        # minimum level needed to grant permission. Use 0 for all levels
         level: 0
       aaaaaatest.node2:
         value: true
@@ -470,7 +474,7 @@ Jobs:
         - p:essentials.notnoob
         perform:
         # p marks permission, player will get if given true value, if used false, permission will be taken
-        - p:essentials.fly-true        
+        - p:essentials.fly-true
     # Commands executed when player reached level
     commands:
       # command name, just to have better idea what this do
@@ -487,9 +491,9 @@ Jobs:
         command: manuaddp [player] essentials.kits.woodcutter
         levelFrom: 150
         levelUntil: 150
-    # Getting more money when equiped with specific weapon/tool ar wearing armor
+    # Getting more money when equipped with specific weapon/tool are wearing armor
     items:
-      # Just name, dont have any impact
+      # Just name, don't have any impact
       firstOne:
         # Tool/Weapon id. Works for block Break, Fish, Animal tame, Breed, Monster/Player kill.
         id: 278
@@ -520,7 +524,7 @@ Jobs:
         expBoost: 1.1
     # Limit item use to jobs level
     limitedItems:
-      # Just name, dont have any impact
+      # Just name, don't have any impact
       firstOne:
         # Tool/Weapon id. Works for any interact action.
         id: 278
@@ -533,7 +537,7 @@ Jobs:
         - '&eBobs pick'
         - '&710% bonus XP'
         # (optional) Item enchantments, all enchantment names can be found https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html
-        # enchant level can inrease with jobs level to give best RPG experiance
+        # enchant level can increase with jobs level to give best RPG experience
         enchants:
         - DAMAGE_ALL=1
         - FIRE_ASPECT=1
@@ -1156,11 +1160,11 @@ Jobs:
       Id: 290
       Data: 0
     Tame:
-      Wolf: 
+      Wolf:
         income: 5.0
         points: 5.0
         experience: 5.0
-      Horse: 
+      Horse:
         income: 5.0
         points: 5.0
         experience: 5.0
@@ -1205,63 +1209,63 @@ Jobs:
       Orange:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Yellow:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Green:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Blue:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       'Light Blue':
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Magenta:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Pink:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       White:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       'Light Gray':
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Black:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Brown:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Purple:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Cyan:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       Gray:
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
       'Lime Green':
         income: 4.0
         points: 4.0
-        experience: 5.0 
+        experience: 5.0
     Milk:
       Cow:
         income: 5.0
@@ -1503,7 +1507,7 @@ Jobs:
     rejoinCooldown: 10
     Gui:
       Id: 301
-      Data: 0    
+      Data: 0
     Explore:
       1:
         income: 5.0
@@ -1544,7 +1548,7 @@ Jobs:
     rejoinCooldown: 10
     Gui:
       Id: 61
-      Data: 0  
+      Data: 0
     Craft:
       '280':
         income: 0.1

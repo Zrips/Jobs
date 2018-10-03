@@ -433,11 +433,11 @@ public class GeneralConfigManager {
 
 	c.getW().addComment("save-period", "How often in minutes you want it to save. This must be a non-zero number");
 	c.get("save-period", 10);
-	if (c.getC().getInt("save-period") <= 0) {
+	if (c.getW().getInt("save-period") <= 0) {
 	    Jobs.getPluginLogger().severe("Save period must be greater than 0! Defaulting to 10 minutes!");
-	    c.getC().set("save-period", 10);
+	    c.getW().set("save-period", 10);
 	}
-	savePeriod = c.getC().getInt("save-period");
+	savePeriod = c.getW().getInt("save-period");
 
 	c.getW().addComment("save-on-disconnect", "Should player data be saved on disconnect?",
 	    "Player data is always periodically auto-saved and autosaved during a clean shutdown.",
@@ -843,9 +843,12 @@ public class GeneralConfigManager {
 	c.getW().addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
 	BossBarEnabled = c.get("BossBar.Enabled", true);
 
-	if (BossBarEnabled == true && Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
-	    BossBarEnabled = false;
-	    Jobs.consoleMsg("&c[Jobs] Your server version don't support BossBar. This feature will be disabled");
+	if (BossBarEnabled == true) {
+		if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
+			Jobs.consoleMsg("&c[Jobs] Your server version don't support BossBar. This feature will be disabled.");
+			c.getW().set("BossBar.Enabled", false);
+			BossBarEnabled = false;
+		}
 	}
 
 	c.getW().addComment("BossBar.Messages.EnabledByDefault", "When this set to true player will see Bossbar messages by default");

@@ -19,14 +19,6 @@
 			<version>1.13.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- iConomy7 -->
-		<dependency>
-			<groupId>com.iCo6</groupId>
-			<artifactId>iConomy7</artifactId>
-			<version>7.0.6</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/iConomy7.0.6.jar</systemPath>
-		</dependency>
 		<!-- MyPet -->
 		<dependency>
 			<groupId>de.Keyle.MyPet</groupId>
@@ -44,23 +36,6 @@
 			<systemPath>${basedir}/libs/mcMMO-1.5.05-SNAPSHOT.jar</systemPath>
 		</dependency>
 		<!-- Vault -->
-		<dependency>
-			<groupId>net.milkbowl.vault</groupId>
-			<artifactId>Vault</artifactId>
-			<version>1.6.6</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.bukkit</groupId>
-					<artifactId>bukkit</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.bukkit</groupId>
-					<artifactId>craftbukkit</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- Dev. Vault -->
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>Vault</artifactId>
