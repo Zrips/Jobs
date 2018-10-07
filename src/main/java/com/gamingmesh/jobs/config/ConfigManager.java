@@ -546,42 +546,106 @@ public class ConfigManager {
 	    }
 
 	    // Gui item
-	    ItemStack GUIitem = CMIMaterial.GREEN_WOOL.newItemStack();
-	    if (jobSection.contains("Gui")) {
-		ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
-		if (guiSection.contains("Id") && guiSection.contains("Data") && guiSection.isInt("Id") && guiSection.isInt("Data")) {
-		    GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
-		    if (guiSection.contains("Enchantments")) {
-		    	List<String> enchants = guiSection.getStringList("Enchantments");
-				if (enchants.size() > 0) {
-					for (String str4 : enchants) {
-						String[] id = str4.split(":");
-						if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
-							EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-							enchantMeta.addStoredEnchant(Enchantment.getByName(id[0]), Integer.parseInt(id[1]), true);
-							GUIitem.setItemMeta(enchantMeta);
-						} else {
-							GUIitem.addUnsafeEnchantment(Enchantment.getByName(id[0]), Integer.parseInt(id[1]));
-						}
-					}
-				}
-			}
-		} else if (guiSection.contains("CustomSkull")) {
-		    String skullOwner = guiSection.getString("CustomSkull");
-		    GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
-		    SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
-		    if (skullOwner.length() == 36) {
-			try {
-			    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
-			    skullMeta.setOwner(offPlayer.getName());
-			} catch (Exception e) {
-			}
-		    } else
-			skullMeta.setOwner(skullOwner);
-		    GUIitem.setItemMeta(skullMeta);
-		} else
-		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
-	    }
+            ItemStack GUIitem = CMIMaterial.GREEN_WOOL.newItemStack();
+            if (jobSection.contains("Gui")) {
+                ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
+                if (guiSection.contains("Item") && guiSection.isString("Item")) {
+                    String item = guiSection.getString("Item");
+                    String type = null;
+                    String subType = "";
+                    String meta = "";
+                    int id = 0;
+
+                    if (item.contains("-")) {
+                        // uses subType
+                        subType = ":" + item.split("-")[1];
+                        meta = item.split("-")[1];
+                        item = item.split("-")[0];
+                    }
+
+                    CMIMaterial material = CMIMaterial.get(item + (subType));
+
+                    if (material == null) material = CMIMaterial.get(item.replace(" ", "_").toUpperCase());
+
+                    if (material == null) {
+                        // try integer method
+                        Integer matId = null;
+                        try {
+                            matId = Integer.valueOf(item);
+                        } catch (NumberFormatException e) {
+                        }
+                        if (matId != null) {
+                            material = CMIMaterial.get(matId);
+                            if (material != null) {
+                                Jobs.getPluginLogger()
+                                        .warning("Job " + jobName + " is using GUI item ID: " + item + "!");
+                                Jobs.getPluginLogger()
+                                        .warning("Please use the Material name instead: " + material.toString() + "!");
+                            }
+                        }
+                    }
+                    GUIitem = material.newItemStack();
+                    if (guiSection.contains("Enchantments")) {
+                        List<String> enchants = guiSection.getStringList("Enchantments");
+                        if (enchants.size() > 0) {
+                            for (String str4 : enchants) {
+                                String[] enchantid = str4.split(":");
+                                if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
+                                    EnchantmentStorageMeta enchantMeta =
+                                            (EnchantmentStorageMeta) GUIitem.getItemMeta();
+                                    enchantMeta.addStoredEnchant(
+                                            Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]), true);
+                                    GUIitem.setItemMeta(enchantMeta);
+                                } else {
+                                    GUIitem.addUnsafeEnchantment(
+                                            Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]));
+                                }
+                            }
+                        }
+                    }
+                } else if (guiSection.contains("Id")
+                        && guiSection.contains("Data")
+                        && guiSection.isInt("Id")
+                        && guiSection.isInt("Data")) {
+                    GUIitem =
+                            CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
+                    if (guiSection.contains("Enchantments")) {
+                        List<String> enchants = guiSection.getStringList("Enchantments");
+                        if (enchants.size() > 0) {
+                            for (String str4 : enchants) {
+                                String[] id = str4.split(":");
+                                if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
+                                    EnchantmentStorageMeta enchantMeta =
+                                            (EnchantmentStorageMeta) GUIitem.getItemMeta();
+                                    enchantMeta.addStoredEnchant(
+                                            Enchantment.getByName(id[0]), Integer.parseInt(id[1]), true);
+                                    GUIitem.setItemMeta(enchantMeta);
+                                } else {
+                                    GUIitem.addUnsafeEnchantment(
+                                            Enchantment.getByName(id[0]), Integer.parseInt(id[1]));
+                                }
+                            }
+                        }
+                    }
+                } else if (guiSection.contains("CustomSkull")) {
+                    String skullOwner = guiSection.getString("CustomSkull");
+                    GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
+                    SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
+                    if (skullOwner.length() == 36) {
+                        try {
+                            OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
+                            skullMeta.setOwner(offPlayer.getName());
+                        } catch (Exception e) {
+                        }
+                    } else skullMeta.setOwner(skullOwner);
+                    GUIitem.setItemMeta(skullMeta);
+                } else
+                    Jobs.getPluginLogger()
+                            .warning(
+                                    "Job "
+                                            + jobKey
+                                            + " has an invalid Gui property. Please fix this if you want to use it!");
+            }
 
 	    // Permissions
 	    ArrayList<JobPermission> jobPermissions = new ArrayList<>();
