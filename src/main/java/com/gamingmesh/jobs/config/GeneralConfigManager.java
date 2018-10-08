@@ -452,7 +452,7 @@ public class GeneralConfigManager {
 
 	c.getW().addComment("MultiServerCompatability", "Enable if you are using one data base for multiple servers across bungee network",
 	    "This will force to load players data every time he is logging in to have most up to date data instead of having preloaded data",
-	    "This will enable automaticaly save-on-disconnect feature");
+	    "This will enable automatically save-on-disconnect feature");
 	MultiServerCompatability = c.get("MultiServerCompatability", false);
 	if (MultiServerCompatability)
 	    saveOnDisconnect = true;
@@ -479,7 +479,7 @@ public class GeneralConfigManager {
 	    "Warning!!! before enabling this feature, please make data base backup, just in case there will be some issues with data base cleaning",
 	    "When set to true, data base will be cleaned on each startup from user data to avoid having old player data");
 	DBCleaningUsersUse = c.get("Optimizations.DBCleaning.Users.Use", false);
-	c.getW().addComment("Optimizations.DBCleaning.Users.Days", "Any one who not playied for defined amount of days, will be removed from data base");
+	c.getW().addComment("Optimizations.DBCleaning.Users.Days", "Any one who not played for defined amount of days, will be removed from data base");
 	DBCleaningUsersDays = c.get("Optimizations.DBCleaning.Users.Days", 60);
 
 	c.getW().addComment("Optimizations.AutoJobJoin.Use", "Use or not auto join jobs feature",
@@ -491,8 +491,8 @@ public class GeneralConfigManager {
 	    "Op players are ignored");
 	AutoJobJoinDelay = c.get("Optimizations.AutoJobJoin.Delay", 15);
 
-	c.getW().addComment("Optimizations.AllowDelevel", "When set to true players who gets negavite experience can delevel job up to level 1",
-	    "ATTENTION! Set it to true only if you certain that commands performed on levelup will not cause issues if player start level and delevel in a row.");
+	c.getW().addComment("Optimizations.AllowDelevel", "When set to true players who gets negative experience can delevel job up to level 1",
+	    "ATTENTION! Set it to true only if you certain that commands performed on level up will not cause issues if player start level and delevel in a row.");
 	AllowDelevel = c.get("Optimizations.AllowDelevel", false);
 
 //	c.getW().addComment("Optimizations.UseLocalOfflinePlayersData", "With this set to true, offline player data will be taken from local player data files",
@@ -513,10 +513,10 @@ public class GeneralConfigManager {
 	    "This is still in development and in feature it will expand");
 	LoggingUse = c.get("Logging.Use", false);
 
-	c.getW().addComment("broadcast.on-skill-up.use", "Do all players get a message when somone goes up a skill level?");
+	c.getW().addComment("broadcast.on-skill-up.use", "Do all players get a message when someone goes up a skill level?");
 	isBroadcastingSkillups = c.get("broadcast.on-skill-up.use", false);
 
-	c.getW().addComment("broadcast.on-level-up.use", "Do all players get a message when somone goes up a level?");
+	c.getW().addComment("broadcast.on-level-up.use", "Do all players get a message when someone goes up a level?");
 	isBroadcastingLevelups = c.get("broadcast.on-level-up.use", false);
 	c.getW().addComment("broadcast.on-level-up.levels", "For what levels you want to broadcast message? Keep it at 0 if you want for all of them");
 	BroadcastingLevelUpLevels = c.getIntList("broadcast.on-level-up.levels", Arrays.asList(0));
@@ -543,10 +543,10 @@ public class GeneralConfigManager {
 	c.getW().addComment("enable-pay-creative", "Option to allow payment to be made in creative mode");
 	payInCreative = c.get("enable-pay-creative", false);
 
-	c.getW().addComment("enable-pay-for-exploring-when-flying", "Option to allow payment to be made for exploring when player flyies");
+	c.getW().addComment("enable-pay-for-exploring-when-flying", "Option to allow payment to be made for exploring when player flies");
 	payExploringWhenFlying = c.get("enable-pay-for-exploring-when-flying", false);
 
-	c.getW().addComment("add-xp-player", "Adds the Jobs xp recieved to the player's Minecraft XP bar");
+	c.getW().addComment("add-xp-player", "Adds the Jobs xp received to the player's Minecraft XP bar");
 	addXpPlayer = c.get("add-xp-player", false);
 
 	c.getW().addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
@@ -568,7 +568,7 @@ public class GeneralConfigManager {
 
 	c.getW().addComment("Economy.PaymentMethods",
 	    "By disabling one of thies, players no longer will get particular payment.",
-	    "Usefull for removing particular payment method without editing whole jobConfig file");
+	    "Useful for removing particular payment method without editing whole jobConfig file");
 	PaymentMethodsMoney = c.get("Economy.PaymentMethods.Money", true);
 	PaymentMethodsPoints = c.get("Economy.PaymentMethods.Points", true);
 	PaymentMethodsExp = c.get("Economy.PaymentMethods.Exp", true);
@@ -597,7 +597,7 @@ public class GeneralConfigManager {
 	MinimumOveralPointsLimit = c.get("Economy.MinimumOveralPoints.limit", 0.1);
 
 	c.getW().addComment("Economy.DynamicPayment.use", "Do you want to use dinamic payment dependent on how many players already working for jobs",
-	    "This can help automaticaly lift up payments for not so popular jobs and lower for most popular ones");
+	    "This can help automatically lift up payments for not so popular jobs and lower for most popular ones");
 	useDynamicPayment = c.get("Economy.DynamicPayment.use", false);
 
 	String maxExpEquationInput = c.get("Economy.DynamicPayment.equation", "((totalworkers / totaljobs) - jobstotalplayers)/10.0");
@@ -616,14 +616,14 @@ public class GeneralConfigManager {
 	DynamicPaymentMaxPenalty = c.get("Economy.DynamicPayment.MaxPenalty", 25.0);
 	DynamicPaymentMaxBonus = c.get("Economy.DynamicPayment.MaxBonus", 100.0);
 
-	c.getW().addComment("Economy.UseServerAcount", "Server economy acount", "With this enabled, players will get money from defined user (server account)",
-	    "If this acount dont have enough money to pay for players for, player will get message");
+	c.getW().addComment("Economy.UseServerAcount", "Server economy account", "With this enabled, players will get money from defined user (server account)",
+	    "If this account don't have enough money to pay for players for, player will get message");
 	UseServerAccount = c.get("Economy.UseServerAcount", false);
 	c.getW().addComment("Economy.AcountName", "Username should be with Correct capitalization");
 	ServerAcountName = c.get("Economy.AcountName", "Server");
 	c.getW().addComment("Economy.Taxes.use", "Do you want to use taxes feature for jobs payment");
 	UseTaxes = c.get("Economy.Taxes.use", false);
-	c.getW().addComment("Economy.Taxes.AccountName", "Username should be with Correct capitalization, it can be same as settup in server account before");
+	c.getW().addComment("Economy.Taxes.AccountName", "Username should be with Correct capitalization, it can be same as setup in server account before");
 	ServertaxesAcountName = c.get("Economy.Taxes.AccountName", "Server");
 	c.getW().addComment("Economy.Taxes.Amount", "Amount in percentage");
 	TaxesAmount = c.get("Economy.Taxes.Amount", 15.0);
@@ -648,7 +648,7 @@ public class GeneralConfigManager {
 	    list.add(CurrencyType.POINTS);
 	limit.setStopWith(list);
 	c.getW().addComment("Economy.Limit.Money.MoneyLimit",
-	    "Equation to calculate max limit. Option to use totallevel to include players total amount levels of current jobs",
+	    "Equation to calculate max limit. Option to use total level to include players total amount levels of current jobs",
 	    "You can always use simple number to set money limit",
 	    "Default equation is: 500+500*(totallevel/100), this will add 1% from 500 for each level player have",
 	    "So player with 2 jobs with level 15 and 22 will have 685 limit");
@@ -682,7 +682,7 @@ public class GeneralConfigManager {
 	    list.add(CurrencyType.MONEY);
 	limit.setStopWith(list);
 	c.getW().addComment("Economy.Limit.Point.Limit",
-	    "Equation to calculate max limit. Option to use totallevel to include players total amount levels of current jobs",
+	    "Equation to calculate max limit. Option to use total level to include players total amount levels of current jobs",
 	    "You can always use simple number to set limit",
 	    "Default equation is: 500+500*(totallevel/100), this will add 1% from 500 for each level player have",
 	    "So player with 2 jobs with level 15 and 22 will have 685 limit");
@@ -738,7 +738,7 @@ public class GeneralConfigManager {
 	currencyLimitUse.put(CurrencyType.EXP, limit);
 
 	c.getW().addComment("Economy.Repair.PayForRenaming", "Do you want to give money for only renaming items in anvil",
-	    "Players will get full pay as they would for remairing two items when they only renaming one",
+	    "Players will get full pay as they would for remaining two items when they only renaming one",
 	    "This is not big issue, but if you want to disable it, you can");
 	PayForRenaming = c.get("Economy.Repair.PayForRenaming", true);
 
@@ -751,7 +751,7 @@ public class GeneralConfigManager {
 	    "With this false, player will get bucket of milk, but still no payment");
 	CancelCowMilking = c.get("Economy.MilkingCow.CancelMilking", false);
 	c.getW().addComment("Economy.MilkingCow.Timer",
-	    "How ofter player can milk cows in seconds. Keep in mind that by default player can milk cow indefinetly and as often as he wants",
+	    "How ofter player can milk cows in seconds. Keep in mind that by default player can milk cow indefinitely and as often as he wants",
 	    "Set to 0 if you want to disable timer");
 	CowMilkingTimer = c.get("Economy.MilkingCow.Timer", 30) * 1000;
 
@@ -811,13 +811,13 @@ public class GeneralConfigManager {
 	c.getW().addComment("ExploitProtections.MythicMobs", "MythicMobs plugin support", "Disable if you having issues with it or using old version");
 	MythicMobsEnabled = c.get("ExploitProtections.MythicMobs.enabled", true);
 
-	c.getW().addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime spliting when they are from spawner",
-	    "Protects agains exploiting as new splited slimes is treated as naturaly spawned and not from spawner");
+	c.getW().addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime splitting when they are from spawner",
+	    "Protects agains exploiting as new splited slimes is treated as naturally spawned and not from spawner");
 	PreventSlimeSplit = c.get("ExploitProtections.Spawner.PreventSlimeSplit", true);
-	c.getW().addComment("ExploitProtections.Spawner.PreventMagmaCubeSplit", "Prevent magmacube spliting when they are from spawner");
+	c.getW().addComment("ExploitProtections.Spawner.PreventMagmaCubeSplit", "Prevent magmacube splitting when they are from spawner");
 	PreventMagmaCubeSplit = c.get("ExploitProtections.Spawner.PreventMagmaCubeSplit", true);
 
-	c.getW().addComment("ExploitProtections.Smelt.PreventHopperFillUps", "Prevent payments when hoppers moving items into furnace", "Player will not get paid, but items will be smellted");
+	c.getW().addComment("ExploitProtections.Smelt.PreventHopperFillUps", "Prevent payments when hoppers moving items into furnace", "Player will not get paid, but items will be smelted");
 	PreventHopperFillUps = c.get("ExploitProtections.Smelt.PreventHopperFillUps", true);
 	c.getW().addComment("ExploitProtections.Smelt.PreventMagmaCubeSplit", "Prevent payments when hoppers moving items into brewing stands",
 	    "Player will not get paid, but items will be brewd as they supose too");
@@ -916,7 +916,7 @@ public class GeneralConfigManager {
 	c.getW().addComment("JobsGUI.ShowChatBrowse", "Do you want to show chat information when performing /jobs browse command");
 	JobsGUIShowChatBrowse = c.get("JobsGUI.ShowChatBrowse", true);
 	c.getW().addComment("JobsGUI.SwitcheButtons", "With true left mouse button will join job and right will show more info",
-	    "With false left mouse button will show more info, rigth will join job", "Dont forget to adjust locale file");
+	    "With false left mouse button will show more info, right will join job", "Don't forget to adjust locale file");
 	JobsGUISwitcheButtons = c.get("JobsGUI.SwitcheButtons", false);
 	c.getW().addComment("JobsGUI.Rows", "Defines size in rows of GUI");
 	JobsGUIRows = c.get("JobsGUI.Rows", 5);

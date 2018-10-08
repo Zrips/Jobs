@@ -249,7 +249,7 @@ public class ConfigManager {
 	     */
 	    if (material == CMIMaterial.REDSTONE_ORE && actionType == ActionType.BREAK) {
 		Jobs.getPluginLogger().warning("Job " + jobName + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
-		Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
+		Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE. Please update your configuration.");
 		Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 		Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
 		material = CMIMaterial.REDSTONE_ORE;
@@ -380,7 +380,7 @@ public class ConfigManager {
 	    try {
 		f.createNewFile();
 	    } catch (IOException e) {
-		Jobs.getPluginLogger().severe("Unable to create jobConfig.yml!  No jobs were loaded!");
+		Jobs.getPluginLogger().severe("Unable to create jobConfig.yml! No jobs were loaded!");
 		s.close();
 		return;
 	    }
@@ -425,23 +425,31 @@ public class ConfigManager {
 	    }
 
 	    int maxLevel = jobSection.getInt("max-level", 0);
+	    if (jobSection.contains("max-level")) {
 	    if (maxLevel < 0)
 		maxLevel = 0;
+	    }
 
 	    int vipmaxLevel = jobSection.getInt("vip-max-level", 0);
+	    if (jobSection.contains("vip-max-level")) {
 	    if (vipmaxLevel < 0)
 		vipmaxLevel = 0;
+	    }
 
 	    Integer maxSlots = jobSection.getInt("slots", 0);
+	    if (jobSection.contains("slots")) {
 	    if (maxSlots.intValue() <= 0) {
 		maxSlots = null;
 	    }
+	    }
 
 	    Long rejoinCd = jobSection.getLong("rejoinCooldown", 0L);
+	    if (jobSection.contains("rejoinCooldown")) {
 	    if (rejoinCd < 0L) {
 		rejoinCd = 0L;
 	    }
 	    rejoinCd = rejoinCd * 1000L;
+	    }
 
 	    String jobShortName = jobSection.getString("shortname", null);
 	    if (jobShortName == null) {
@@ -610,8 +618,7 @@ public class ConfigManager {
 					} else
 						skullMeta.setOwner(skullOwner);
 					GUIitem.setItemMeta(skullMeta);
-				} else
-					Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
+				}
 			} else if (guiSection.contains("Id") && guiSection.contains("Data") && guiSection.isInt("Id") && guiSection.isInt("Data")) {
 				GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
 				if (guiSection.contains("Enchantments")) {
@@ -641,9 +648,9 @@ public class ConfigManager {
 					} else
 						skullMeta.setOwner(skullOwner);
 					GUIitem.setItemMeta(skullMeta);
-				} else
-					Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
-			}
+				}
+			} else
+				Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
 		}
 
 	    // Permissions
@@ -741,13 +748,13 @@ public class ConfigManager {
 			name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.getStringList("lore") != null)
+		    if (itemSection.getStringList("lore") != null && itemSection.getStringList("lore").size() != 0)
 			for (String eachLine : itemSection.getStringList("lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.getStringList("enchants") != null)
+		    if (itemSection.getStringList("enchants") != null && itemSection.getStringList("enchants").size() != 0)
 			for (String eachLine : itemSection.getStringList("enchants")) {
 
 			    if (!eachLine.contains("="))
@@ -796,13 +803,13 @@ public class ConfigManager {
 			name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.getStringList("lore") != null)
+		    if (itemSection.getStringList("lore") != null && itemSection.getStringList("lore").size() != 0)
 			for (String eachLine : itemSection.getStringList("lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.getStringList("enchants") != null)
+		    if (itemSection.getStringList("enchants") != null && itemSection.getStringList("enchants").size() != 0)
 			for (String eachLine : itemSection.getStringList("enchants")) {
 
 			    if (!eachLine.contains("="))
@@ -877,7 +884,7 @@ public class ConfigManager {
 			quests.add(quest);
 
 		    } catch (Exception e) {
-			Jobs.consoleMsg("&c[Jobs] Cant load " + one + " quest for " + jobName);
+			Jobs.consoleMsg("&c[Jobs] Can't load " + one + " quest for " + jobName);
 			e.printStackTrace();
 		    }
 		}

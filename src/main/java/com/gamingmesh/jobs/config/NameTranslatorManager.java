@@ -1644,6 +1644,8 @@ public class NameTranslatorManager {
 	    c.get("EnchantList.8.Name", "Depth Strider");
 	    c.get("EnchantList.9.MCName", "FROST_WALKER");
 	    c.get("EnchantList.9.Name", "Frost Walker");
+	    c.get("EnchantList.10.MCName", "CURSE_OF_BINDING");
+	    c.get("EnchantList.10.Name", "Curse of Binding");
 	    c.get("EnchantList.16.MCName", "DAMAGE_ALL");
 	    c.get("EnchantList.16.Name", "Sharpness");
 	    c.get("EnchantList.17.MCName", "DAMAGE_UNDEAD");
@@ -1656,6 +1658,8 @@ public class NameTranslatorManager {
 	    c.get("EnchantList.20.Name", "Fire Aspect");
 	    c.get("EnchantList.21.MCName", "LOOT_BONUS_MOBS");
 	    c.get("EnchantList.21.Name", "Looting");
+	    c.get("EnchantList.22.MCName", "SWEEPING_EDGE");
+	    c.get("EnchantList.22.Name", "Sweeping Edge");
 	    c.get("EnchantList.32.MCName", "DIG_SPEED");
 	    c.get("EnchantList.32.Name", "Efficiency");
 	    c.get("EnchantList.33.MCName", "SILK_TOUCH");
@@ -1676,8 +1680,18 @@ public class NameTranslatorManager {
 	    c.get("EnchantList.61.Name", "Luck of the Sea");
 	    c.get("EnchantList.62.MCName", "LURE");
 	    c.get("EnchantList.62.Name", "Lure");
+	    c.get("EnchantList.65.MCName", "LOYALTY");
+	    c.get("EnchantList.65.Name", "Loyalty");
+	    c.get("EnchantList.66.MCName", "IMPALING");
+	    c.get("EnchantList.66.Name", "Impaling");
+	    c.get("EnchantList.67.MCName", "RIPTIDE");
+	    c.get("EnchantList.67.Name", "Riptide");
+	    c.get("EnchantList.68.MCName", "CHANNELING");
+	    c.get("EnchantList.68.Name", "Channeling");
 	    c.get("EnchantList.70.MCName", "MENDING");
 	    c.get("EnchantList.70.Name", "Mending");
+	    c.get("EnchantList.71.MCName", "CURSE_OF_VANISHING");
+	    c.get("EnchantList.71.Name", "Curse Of Vanishing");
 
 	    // Color list
 	    c.get("ColorList.0.MCName", "white");

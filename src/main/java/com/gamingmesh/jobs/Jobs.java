@@ -605,7 +605,7 @@ public class Jobs extends JavaPlugin {
 	configManager.reload();
 	usedSlots.clear();
 	for (Job job : jobs) {
-	    usedSlots.put(job, getJobsDAO().getSlotsTaken(job));
+	    usedSlots.put(job, dao.getSlotsTaken(job));
 	}
 	pManager.reload();
 	permissionHandler.registerPermissions();
@@ -840,7 +840,7 @@ public class Jobs extends JavaPlugin {
 
 	    FurnaceBrewingHandling.load();
 
-	    consoleMsg("&e[Jobs] Plugin has been enabled succesfully.");
+	    consoleMsg("&e[Jobs] Plugin has been enabled successfully.");
 	    lManager.reload();
 
 	    cManager.fillCommands();
@@ -854,6 +854,10 @@ public class Jobs extends JavaPlugin {
 
     @Override
     public void onDisable() {
+	// it will not run longer if it is a server error
+	if (!isEnabled())
+	return;
+
 	GUIManager.CloseInventories();
 	shopManager.CloseInventories();
 	dao.saveExplore();
@@ -862,7 +866,7 @@ public class Jobs extends JavaPlugin {
 	FurnaceBrewingHandling.save();
 
 	shutdown();
-	consoleMsg("&e[Jobs] &2Plugin has been disabled succesfully.");
+	consoleMsg("&e[Jobs] &2Plugin has been disabled successfully.");
 	this.setEnabled(false);
     }
 
