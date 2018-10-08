@@ -79,10 +79,13 @@ Jobs:
     rejoinCooldown: 10
     # GUI icon information when using GUI function
     Gui:
+    # name of the block
+      Item: LOG:2
+    # If you want to use this instaed of Item name.
     # id of block
-      Id: 17
+    #  Id: 17
     # data of block, usually its 0, but in example Diorite will have id of 1 and data of 3
-      Data: 2
+    #  Data: 2
     # enchants in the item
       Enchantments:
       - 'DURABILITY:1'
