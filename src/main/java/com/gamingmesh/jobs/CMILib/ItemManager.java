@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -446,23 +447,23 @@ public class ItemManager {
 	PARROT(105, "Parrot"),
 	VILLAGER(120, "Villager"),
 	ENDER_CRYSTAL(200, "End Crystal"),
-	TURTLE(-1, "Turtle"),
-	PHANTOM(-1, "Phantom"),
-	TRIDENT(-1, "Trident"),
-	COD(-1, "Cod"),
-	SALMON(-1, "Salmon"),
-	PUFFERFISH(-1, "Pufferfish"),
-	TROPICAL_FISH(-1, "Tropical Fish"),
-	DROWNED(-1, "Drowned"),
-	DOLPHIN(-1, "Dolphin"),
-	LINGERING_POTION(-1, "Lingering Potion"),
-	FISHING_HOOK(-1, "Fishing Hook"),
-	LIGHTNING(-1, "Lightning Bolt"),
-	WEATHER(-1, "Weather"),
-	PLAYER(-1, "Player"),
-	COMPLEX_PART(-1, "Complex Part"),
-	TIPPED_ARROW(-1, "Tipped Arrow"),
-	UNKNOWN(-1, "Unknown");
+	TURTLE(901, "Turtle"),
+	PHANTOM(902, "Phantom"),
+	TRIDENT(903, "Trident"),
+	COD(904, "Cod"),
+	SALMON(905, "Salmon"),
+	PUFFERFISH(906, "Pufferfish"),
+	TROPICAL_FISH(907, "Tropical Fish"),
+	DROWNED(908, "Drowned"),
+	DOLPHIN(909, "Dolphin"),
+	LINGERING_POTION(910, "Lingering Potion"),
+	FISHING_HOOK(911, "Fishing Hook"),
+	LIGHTNING(912, "Lightning Bolt"),
+	WEATHER(913, "Weather"),
+	PLAYER(914, "Player"),
+	COMPLEX_PART(915, "Complex Part"),
+	TIPPED_ARROW(916, "Tipped Arrow"),
+	UNKNOWN(999, "Unknown");
 
 	private int id;
 	private String name;
@@ -1475,7 +1476,7 @@ public class ItemManager {
 	WATER(8, 0, 24998, "Flowing Water", "FLOWING_WATER"),
 	WATER_BUCKET(326, 0, 8802, "Water Bucket", ""),
 	WET_SPONGE(19, 1, 9043, "Wet Sponge", ""),
-	WHEAT(59, 0, 27709, "Crops", ""),
+	WHEAT(296, 0, 27709, "Wheat", ""),
 	WHEAT_SEEDS(295, 0, 28742, "Wheat Seeds", "SEEDS"),
 	WHITE_BANNER(425, 15, 17562, "White Banner", ""),
 	WHITE_BED(355, 0, 8185, "White Bed", "Bed"),
@@ -1531,7 +1532,33 @@ public class ItemManager {
 	LEGACY_GLOWING_REDSTON_ORE(74, 0, -1, "Glowing Redstone Ore", ""),
 	LEGACY_SUGAR_CANE_BLOCK(83, -1, -1, "Sugar Cane Block", ""),
 	LEGACY_RAW_FISH(349, 0, -1, "Raw Fish", ""),
-	LEGACY_SKULL(144, 0, -1, "Skull", "");
+	LEGACY_SKULL(144, 0, -1, "Skull", ""),
+
+//	LEGACY_SIGN_POST(63, -1, -1, "Sign Post", ""),
+//	LEGACY_REDSTONE_TORCH_OFF(75, -1, -1, "LEGACY_REDSTONE_TORCH_OFF", ""),
+//	LEGACY_CAKE_BLOCK(92, -1, -1, "LEGACY_CAKE_BLOCK", ""),
+//	LEGACY_DIODE_BLOCK_OFF(93, -1, -1, "LEGACY_DIODE_BLOCK_OFF", ""),
+//	LEGACY_DIODE_BLOCK_ON(94, -1, -1, "LEGACY_DIODE_BLOCK_ON", ""),
+//	LEGACY_BREWING_STAND(117, -1, -1, "LEGACY_BREWING_STAND", ""),
+//	LEGACY_CAULDRON(118, -1, -1, "LEGACY_CAULDRON", ""),
+//	LEGACY_REDSTONE_LAMP_ON(124, -1, -1, "LEGACY_REDSTONE_LAMP_ON", ""),
+//	LEGACY_WOOD_DOUBLE_STEP(125, -1, -1, "LEGACY_WOOD_DOUBLE_STEP", ""),
+//	LEGACY_FLOWER_POT(140, -1, -1, "LEGACY_FLOWER_POT", ""),
+//	LEGACY_REDSTONE_COMPARATOR_OFF(149, -1, -1, "LEGACY_REDSTONE_COMPARATOR_OFF", ""),
+//	LEGACY_REDSTONE_COMPARATOR_ON(150, -1, -1, "LEGACY_REDSTONE_COMPARATOR_ON", ""),
+//	LEGACY_STANDING_BANNER(176, -1, -1, "LEGACY_STANDING_BANNER", ""),
+//	LEGACY_WALL_BANNER(177, -1, -1, "LEGACY_WALL_BANNER", ""),
+//	LEGACY_DAYLIGHT_DETECTOR_INVERTED(178, -1, -1, "LEGACY_DAYLIGHT_DETECTOR_INVERTED", ""),
+//	LEGACY_DOUBLE_STONE_SLAB2(181, -1, -1, "LEGACY_DOUBLE_STONE_SLAB2", ""),
+//	LEGACY_SPRUCE_DOOR(193, -1, -1, "LEGACY_SPRUCE_DOOR", ""),
+//	LEGACY_BIRCH_DOOR(194, -1, -1, "LEGACY_BIRCH_DOOR", ""),
+//	LEGACY_JUNGLE_DOOR(195, -1, -1, "LEGACY_JUNGLE_DOOR", ""),
+//	LEGACY_ACACIA_DOOR(196, -1, -1, "LEGACY_ACACIA_DOOR", ""),
+//	LEGACY_DARK_OAK_DOOR(197, -1, -1, "LEGACY_DARK_OAK_DOOR", ""),
+//	LEGACY_PURPUR_DOUBLE_SLAB(204, -1, -1, "LEGACY_PURPUR_DOUBLE_SLAB", ""),
+//	LEGACY_COMMAND_REPEATING(210, -1, -1, "LEGACY_COMMAND_REPEATING", ""),
+//	LEGACY_COMMAND_CHAIN(211, -1, -1, "LEGACY_COMMAND_CHAIN", ""),
+	LEGACY_WHEAT(59, -1, -1, "Wheat Block", "");
 
 	private int legacyId;
 	private int legacyData;
@@ -1609,8 +1636,12 @@ public class ItemManager {
 	    }
 	}
 
-	@SuppressWarnings("deprecation")
 	public ItemStack newItemStack() {
+	    return newItemStack(1);
+	}
+
+	@SuppressWarnings("deprecation")
+	public ItemStack newItemStack(int amount) {
 	    if (mat == null) {
 		for (Material one : Material.class.getEnumConstants()) {
 		    if (one.getId() != this.getId())
@@ -1620,9 +1651,14 @@ public class ItemManager {
 		}
 	    }
 	    if (version.isEqualOrHigher(Version.v1_13_R1)) {
-		return new ItemStack(mat == null ? Material.STONE : mat);
+		ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat);
+		stack.setAmount(amount);
+		return stack;
 	    }
-	    return new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
+
+		ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
+	    stack.setAmount(amount);
+	    return stack;
 
 	}
 
@@ -1798,9 +1834,14 @@ public class ItemManager {
 	    return m == null ? CMIMaterial.NONE : m;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static CMIMaterial get(Block block) {
-	    @SuppressWarnings("deprecation")
-		CMIMaterial m = get(block.getType().getId(), block.getData());
+		byte data = block.getData();
+	    if (block.getState() instanceof Skull) {
+		Skull skull = (Skull) block.getState();
+		data = (byte) skull.getSkullType().ordinal();
+	    }
+	    CMIMaterial m = get(block.getType().getId(), data);
 	    if (m == null) {
 		CMIItemStack cm = byBukkitName.get(block.getType().toString().replace("_", "").toLowerCase());
 		if (cm != null)
@@ -1821,23 +1862,13 @@ public class ItemManager {
 	    if (cm != null)
 		mat = cm.getCMIType();
 
-	    if (mat == null) {
-		cm = byId.get(id);
-		if (cm != null)
-		    mat = cm.getCMIType();
-	    }
+	    cm = byId.get(id);
+	    if (cm != null)
+		mat = cm.getCMIType();
 
 	    if (mat == null) {
 		for (CMIMaterial one : CMIMaterial.values()) {
 		    if (one.getId() == id) {
-			mat = one;
-			break;
-		    }
-		}
-	    }
-	    if (mat == null) {
-		for (CMIMaterial one : CMIMaterial.values()) {
-		    if (one.getLegacyId() == id) {
 			mat = one;
 			break;
 		    }
@@ -2190,6 +2221,7 @@ public class ItemManager {
 	    case RED_SHULKER_BOX:
 	    case WHITE_SHULKER_BOX:
 	    case YELLOW_SHULKER_BOX:
+	    case SHULKER_BOX:
 		return true;
 	    default:
 		break;
@@ -2227,9 +2259,16 @@ public class ItemManager {
 	    switch (this) {
 	    case OAK_DOOR:
 	    case IRON_DOOR:
+//	    case SPRUCE_DOOR_ITEM:
+//	    case BIRCH_DOOR_ITEM:
+//	    case JUNGLE_DOOR_ITEM:
+//	    case ACACIA_DOOR_ITEM:
+//	    case DARK_OAK_DOOR_ITEM:
+//	    case WOODEN_DOOR:
 	    case ACACIA_DOOR:
 	    case BIRCH_DOOR:
 	    case DARK_OAK_DOOR:
+//	    case IRON_DOOR_BLOCK:
 	    case JUNGLE_DOOR:
 	    case SPRUCE_DOOR:
 		return true;
@@ -2298,6 +2337,10 @@ public class ItemManager {
 	    case WITHER_SKELETON_SKULL:
 	    case SKELETON_WALL_SKULL:
 	    case WITHER_SKELETON_WALL_SKULL:
+	    case PLAYER_HEAD:
+	    case CREEPER_HEAD:
+	    case DRAGON_HEAD:
+	    case ZOMBIE_HEAD:
 		return true;
 	    default:
 		break;
@@ -2352,10 +2395,20 @@ public class ItemManager {
 	    switch (this) {
 	    case ACACIA_SLAB:
 	    case DARK_OAK_SLAB:
+//	    case DOUBLE_STONE_SLAB2:
+//	    case PURPUR_DOUBLE_SLAB:
 	    case BIRCH_SLAB:
 	    case BRICK_SLAB:
 	    case COBBLESTONE_SLAB:
 	    case DARK_PRISMARINE_SLAB:
+//	    case DOUBLE_STONE_SLAB:
+//	    case DOUBLE_SANDSTONE_SLAB:
+//	    case DOUBLE_WOODEN_SLAB:
+//	    case DOUBLE_COBBLESTONE_SLAB:
+//	    case DOUBLE_BRICK_SLAB:
+//	    case DOUBLE_STONE_BRICK_SLAB:
+//	    case DOUBLE_NETHER_BRICK_SLAB:
+//	    case DOUBLE_QUARTZ_SLAB:
 	    case JUNGLE_SLAB:
 	    case NETHER_BRICK_SLAB:
 	    case OAK_SLAB:
@@ -2376,13 +2429,75 @@ public class ItemManager {
 	    return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static SlabType getSlabType(Block block) {
-	    return checkSlab(block);
+	    if (!isSlab(block.getType()))
+		return SlabType.NOTSLAB;
+	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+		if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
+		    org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
+		    switch (slab.getType()) {
+		    case TOP:
+			return SlabType.TOP;
+		    case BOTTOM:
+			return SlabType.BOTTOM;
+		    case DOUBLE:
+			return SlabType.DOUBLE;
+		    }
+		}
+		return SlabType.NOTSLAB;
+	    }
+	    if (block.getType().name().contains("STEP")) {
+		switch (CMIMaterial.get(block).getLegacyId()) {
+		case 44:
+		    switch (block.getData()) {
+		    case 0:
+		    case 1:
+		    case 2:
+		    case 3:
+		    case 4:
+		    case 5:
+		    case 6:
+		    case 7:
+			return SlabType.BOTTOM;
+		    default:
+			return SlabType.DOUBLE;
+		    }
+		case 126:
+		    switch (block.getData()) {
+		    case 0:
+		    case 1:
+		    case 2:
+		    case 3:
+		    case 4:
+		    case 5:
+			return SlabType.BOTTOM;
+		    default:
+			return SlabType.DOUBLE;
+		    }
+		case 182:
+		    switch (block.getData()) {
+		    case 0:
+			return SlabType.BOTTOM;
+		    default:
+			return SlabType.DOUBLE;
+		    }
+		case 205:
+		    switch (block.getData()) {
+		    case 0:
+			return SlabType.BOTTOM;
+		    default:
+			return SlabType.DOUBLE;
+		    }
+		}
+	    }
+	    return SlabType.NOTSLAB;
 	}
 
 	public boolean equals(Material mat) {
-	    if (getMaterial() == null)
-		return false;
+	    if (getMaterial() == null) {
+	    	return false;
+	    }
 	    return this.getMaterial().equals(mat);
 	}
 
@@ -2396,7 +2511,7 @@ public class ItemManager {
 
 	public String getBukkitName() {
 	    if (bukkitName == null)
-		bukkitName = getMaterial().name();
+		bukkitName = getMaterial() == null ? "N/A" : getMaterial().name();
 	    return bukkitName;
 	}
 
@@ -2413,72 +2528,6 @@ public class ItemManager {
 	public void setMojangName(String mojangName) {
 	    this.mojangName = mojangName;
 	}
-    }
-
-    @SuppressWarnings("deprecation")
-	private static SlabType checkSlab(Block block) {
-	if (!CMIMaterial.isSlab(block.getType()))
-	    return SlabType.NOTSLAB;
-
-	if (version.isEqualOrHigher(Version.v1_13_R1)) {
-	    if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
-		org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
-		org.bukkit.block.data.type.Slab.Type t = slab.getType();
-		if (t.equals(org.bukkit.block.data.type.Slab.Type.TOP))
-		    return SlabType.TOP;
-		if (t.equals(org.bukkit.block.data.type.Slab.Type.BOTTOM))
-		    return SlabType.BOTTOM;
-		if (t.equals(org.bukkit.block.data.type.Slab.Type.DOUBLE))
-		    return SlabType.DOUBLE;
-	    }
-	    return SlabType.NOTSLAB;
-	}
-	if (block.getType().name().contains("STEP")) {
-	    switch (CMIMaterial.get(block).getLegacyId()) {
-	    case 44:
-		switch (block.getData()) {
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		    return SlabType.BOTTOM;
-		default:
-		    return SlabType.DOUBLE;
-		}
-	    case 126:
-		switch (block.getData()) {
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		    return SlabType.BOTTOM;
-		default:
-		    return SlabType.DOUBLE;
-		}
-	    case 182:
-		switch (block.getData()) {
-		case 0:
-		    return SlabType.BOTTOM;
-		default:
-		    return SlabType.DOUBLE;
-		}
-	    case 205:
-		switch (block.getData()) {
-		case 0:
-		    return SlabType.BOTTOM;
-		default:
-		    return SlabType.DOUBLE;
-		}
-	    }
-	}
-
-	return SlabType.NOTSLAB;
     }
 
     public enum SlabType {

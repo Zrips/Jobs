@@ -1529,8 +1529,8 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Player drinking a potion
-	if (event.getItem().getType().equals(CMIMaterial.get(Material.POTION).isPotion()))
-		Jobs.action(jPlayer, new PotionDrinkInfo(org.bukkit.potion.PotionType.valueOf(CMIMaterial.get(Material.POTION).name()), ActionType.DRINK));
+	if (CMIMaterial.get(Jobs.getNms().getItemInMainHand(p).getType()).isPotion())
+		Jobs.action(jPlayer, new PotionDrinkInfo(CMIMaterial.get(Jobs.getNms().getItemInMainHand(p).getType()).name(), ActionType.DRINK));
     }
 
     @EventHandler

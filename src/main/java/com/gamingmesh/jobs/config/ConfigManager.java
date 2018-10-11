@@ -425,29 +425,21 @@ public class ConfigManager {
 	    }
 
 		int maxLevel = jobSection.getInt("max-level", 0);
-		if (jobSection.isInt("max-level")) {
-			if (maxLevel < 0)
-				maxLevel = 0;
-		}
+		if (jobSection.isInt("max-level") || maxLevel < 0)
+			maxLevel = 0;
 
 		int vipmaxLevel = jobSection.getInt("vip-max-level", 0);
-		if (jobSection.isInt("vip-max-level")) {
-			if (vipmaxLevel < 0)
-				vipmaxLevel = 0;
-		}
+		if (jobSection.isInt("vip-max-level") || vipmaxLevel < 0)
+			vipmaxLevel = 0;
 
 		Integer maxSlots = jobSection.getInt("slots", 0);
-		if (jobSection.isInt("slots")) {
-			if (maxSlots.intValue() <= 0)
-				maxSlots = null;
-		}
+		if (jobSection.isInt("slots") || maxSlots.intValue() <= 0)
+			maxSlots = null;
 
 		Long rejoinCd = jobSection.getLong("rejoinCooldown", 0L);
-		if (jobSection.isLong("rejoinCooldown")) {
-			if (rejoinCd < 0L)
-				rejoinCd = 0L;
-			rejoinCd = rejoinCd * 1000L;
-		}
+		if (jobSection.isLong("rejoinCooldown") || rejoinCd < 0L)
+			rejoinCd = 0L;
+		rejoinCd = rejoinCd * 1000L;
 
 	    String jobShortName = jobSection.getString("shortname", null);
 	    if (jobShortName == null) {
