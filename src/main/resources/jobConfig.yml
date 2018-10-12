@@ -1287,7 +1287,7 @@ Jobs:
         income: 1.5
         points: 1.5
         experience: 3.0
-      CROPS-7:
+      WHEAT-7:
         income: 1.5
         points: 1.5
         experience: 3.0
@@ -1348,7 +1348,7 @@ Jobs:
         points: 1
         experience: 1.0
     Place:
-      CROPS-0:
+      WHEAT-0:
         income: 3.0
         points: 3
         experience: 3.0

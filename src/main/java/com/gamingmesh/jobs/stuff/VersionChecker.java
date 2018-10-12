@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -135,13 +134,14 @@ public class VersionChecker {
 		if (newVersion == null || newVersion.equalsIgnoreCase(currentVersion))
 		    return;
 		List<String> msg = Arrays.asList(
-		    ChatColor.GREEN + "*********************** " + plugin.getDescription().getName() + " **************************",
-		    ChatColor.GREEN + "* " + newVersion + " is now available! Your version: " + currentVersion,
-		    ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + plugin.getDescription().getWebsite(),
-		    ChatColor.GREEN + "************************************************************");
+		    "&a*********************** &e" + plugin.getDescription().getName() + "&a **************************",
+		    "&a* &e" + newVersion + " is now available! Your version: &e" + currentVersion,
+		    "&a* &2" + plugin.getDescription().getWebsite(),
+		    "&a* Or get the dev. builds from &2https://github.com/Zrips/Jobs/releases",
+		    "&a************************************************************");
 		for (String one : msg)
 		    if (player != null)
-			player.sendMessage(one);
+			player.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', one));
 	    }
 	});
     }

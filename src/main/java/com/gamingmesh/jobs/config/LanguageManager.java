@@ -432,6 +432,7 @@ public class LanguageManager {
 
 	    c.get("command.browse.output.newHeader", "&2========== [amount] Available Jobs =========");
 	    c.get("command.browse.output.list", "    &8[place]. &7[jobname]");
+	    c.get("command.browse.output.consoleList", "    &6[jobname]");
 	    c.get("command.browse.output.click", "&bClick on the job to see more info about it!");
 	    c.get("command.browse.output.detailed", "&bClick to see more detailed list on job actions");
 

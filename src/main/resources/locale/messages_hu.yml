@@ -282,7 +282,7 @@ command:
         info: '&eBarkácsol'
         none: '%jobname% nem kap pénzt, ha barkácsol.'
       drink:
-        info: '&eMegiszik'
+        info: '&eMegisz'
         none: '%jobname% nem kap pénzt, ha iszik.'
       smelt:
         info: '&eOlvaszt'
@@ -330,7 +330,7 @@ command:
       args: '[munkanév]'
     error:
       alreadyin: '&cMár csatlakoztál a(z) %jobname%&c munkához!'
-      fullslots: '&cNem tudsz csatlakozni a(z) %jobname% munkához, mert nincsenek rendelkezésre álló helyek.'
+      fullslots: '&cNem tudsz csatlakozni a(z) %jobname%&c munkához, mert nincsenek rendelkezésre álló helyek.'
       maxjobs: '&cMár túl sok munkát vállaltál.'
       rejoin: '&cNem csatlakozhatsz ebbe a munkába. Várj [time]'
     rejoin: '&aKattints ide, hogy újra csatlakozz ebbe a munkába: '
@@ -366,6 +366,7 @@ command:
       bonus: ' &2Bónusz: &a[amount]%'
       newHeader: '&2========== [amount] ELÉRHETŐ MUNKÁK ========='
       list: '    &8[place]. &7[jobname]'
+      consoleList: '    &6[jobname]'
       click: '&bTovábbi információkért kattints a munkára!'
       detailed: '&bKattints ide a munka részleteinek mutatásához.'
       jobHeader: '&2========== [jobname] ========='
@@ -415,7 +416,7 @@ command:
     error:
       alreadyin: '&cA játékos már dolgozik %jobname% munkánál.'
     output:
-      target: 'Most már a(z) %jobname% munkánál dolgozik.'
+      target: '&aMost már a(z) %jobname%&a munkánál dolgozik.'
   top:
     help:
       info: 'Top %amount% játékosok a ranglistán.'
