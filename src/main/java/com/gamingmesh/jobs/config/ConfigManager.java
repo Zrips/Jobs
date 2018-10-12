@@ -169,7 +169,7 @@ public class ConfigManager {
     }
 
     @SuppressWarnings("deprecation")
-	public KeyValues getKeyValue(String myKey, ActionType actionType, String jobName) {
+    public KeyValues getKeyValue(String myKey, ActionType actionType, String jobName) {
 
 	String type = null;
 	String subType = "";
@@ -343,10 +343,10 @@ public class ConfigManager {
 	} else if (actionType == ActionType.CRAFT && myKey.startsWith("!")) {
 	    type = myKey.substring(1, myKey.length());
 	} else if (actionType == ActionType.DRINK) {
-		type = myKey;
-		PotionType potion = PotionType.valueOf(myKey);
-		if (potion != null)
-			type = potion.name().toUpperCase().replace("_", "").toLowerCase();
+	    type = myKey;
+	    PotionType potion = PotionType.valueOf(myKey);
+	    if (potion != null)
+		type = potion.name().toUpperCase().replace("_", "").toLowerCase();
 	}
 
 	if (type == null) {
@@ -424,22 +424,22 @@ public class ConfigManager {
 		continue;
 	    }
 
-		int maxLevel = jobSection.getInt("max-level", 0);
-		if (jobSection.isInt("max-level") || maxLevel < 0)
-			maxLevel = 0;
+	    int maxLevel = jobSection.getInt("max-level", 0);
+	    if (jobSection.isInt("max-level") || maxLevel < 0)
+		maxLevel = 0;
 
-		int vipmaxLevel = jobSection.getInt("vip-max-level", 0);
-		if (jobSection.isInt("vip-max-level") || vipmaxLevel < 0)
-			vipmaxLevel = 0;
+	    int vipmaxLevel = jobSection.getInt("vip-max-level", 0);
+	    if (jobSection.isInt("vip-max-level") || vipmaxLevel < 0)
+		vipmaxLevel = 0;
 
-		Integer maxSlots = jobSection.getInt("slots", 0);
-		if (jobSection.isInt("slots") || maxSlots.intValue() <= 0)
-			maxSlots = null;
+	    Integer maxSlots = jobSection.getInt("slots", 0);
+	    if (jobSection.isInt("slots") || maxSlots.intValue() <= 0)
+		maxSlots = null;
 
-		Long rejoinCd = jobSection.getLong("rejoinCooldown", 0L);
-		if (jobSection.isLong("rejoinCooldown") || rejoinCd < 0L)
-			rejoinCd = 0L;
-		rejoinCd = rejoinCd * 1000L;
+	    Long rejoinCd = jobSection.getLong("rejoinCooldown", 0L);
+	    if (jobSection.isLong("rejoinCooldown") || rejoinCd < 0L)
+		rejoinCd = 0L;
+	    rejoinCd = rejoinCd * 1000L;
 
 	    String jobShortName = jobSection.getString("shortname", null);
 	    if (jobShortName == null) {
@@ -543,105 +543,106 @@ public class ConfigManager {
 		}
 	    }
 
-		// Gui item
-		ItemStack GUIitem = CMIMaterial.GREEN_WOOL.newItemStack();
-		if (jobSection.contains("Gui")) {
-			ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
-			if (guiSection.contains("Item") && guiSection.isString("Item")) {
-				String item = guiSection.getString("Item");
-				String subType = "";
-				@SuppressWarnings("unused")
-				String meta = "";
+	    // Gui item
+	    ItemStack GUIitem = CMIMaterial.GREEN_WOOL.newItemStack();
+	    if (jobSection.contains("Gui")) {
+		ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
+		if (guiSection.contains("Item") && guiSection.isString("Item")) {
+		    String item = guiSection.getString("Item");
+		    String subType = "";
+		    @SuppressWarnings("unused")
+		    String meta = "";
 
-				if (item.contains("-")) {
-					// uses subType
-					subType = ":" + item.split("-")[1];
-					meta = item.split("-")[1];
-					item = item.split("-")[0];
-				}
+		    if (item.contains("-")) {
+			// uses subType
+			subType = ":" + item.split("-")[1];
+			meta = item.split("-")[1];
+			item = item.split("-")[0];
+		    }
 
-				CMIMaterial material = CMIMaterial.get(item + (subType));
+		    CMIMaterial material = CMIMaterial.get(item + (subType));
 
-				if (material == null)
-					material = CMIMaterial.get(item.replace(" ", "_").toUpperCase());
+		    if (material == null)
+			material = CMIMaterial.get(item.replace(" ", "_").toUpperCase());
 
-				if (material == null) {
-					// try integer method
-					Integer matId = null;
-					try {
-						matId = Integer.valueOf(item);
-					} catch (NumberFormatException e) {
-					}
-					if (matId != null) {
-						material = CMIMaterial.get(matId);
-						if (material != null) {
-							Jobs.getPluginLogger().warning("Job " + jobName + " is using GUI item ID: " + item + "!");
-							Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
-						}
-					}
+		    if (material == null) {
+			// try integer method
+			Integer matId = null;
+			try {
+			    matId = Integer.valueOf(item);
+			} catch (NumberFormatException e) {
+			}
+			if (matId != null) {
+			    material = CMIMaterial.get(matId);
+			    if (material != null) {
+				Jobs.getPluginLogger().warning("Job " + jobName + " is using GUI item ID: " + item + "!");
+				Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
+			    }
+			}
+		    }
+		    if (material != null)
+			GUIitem = material.newItemStack();
+		    if (guiSection.contains("Enchantments")) {
+			List<String> enchants = guiSection.getStringList("Enchantments");
+			if (enchants.size() > 0) {
+			    for (String str4 : enchants) {
+				String[] enchantid = str4.split(":");
+				if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
+				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+				    enchantMeta.addStoredEnchant(Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]), true);
+				    GUIitem.setItemMeta(enchantMeta);
+				} else {
+				    GUIitem.addUnsafeEnchantment(Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]));
 				}
-				GUIitem = material.newItemStack();
-				if (guiSection.contains("Enchantments")) {
-					List<String> enchants = guiSection.getStringList("Enchantments");
-					if (enchants.size() > 0) {
-						for (String str4 : enchants) {
-							String[] enchantid = str4.split(":");
-							if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
-								EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-								enchantMeta.addStoredEnchant(Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]), true);
-								GUIitem.setItemMeta(enchantMeta);
-							} else {
-								GUIitem.addUnsafeEnchantment(Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]));
-							}
-						}
-					}
-				} else if (guiSection.contains("CustomSkull")) {
-					String skullOwner = guiSection.getString("CustomSkull");
-					GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
-					SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
-					if (skullOwner.length() == 36) {
-						try {
-							OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
-							skullMeta.setOwner(offPlayer.getName());
-						} catch (Exception e) {
-						}
-					} else
-						skullMeta.setOwner(skullOwner);
-					GUIitem.setItemMeta(skullMeta);
-				}
-			} else if (guiSection.contains("Id") && guiSection.contains("Data") && guiSection.isInt("Id") && guiSection.isInt("Data")) {
-				GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
-				if (guiSection.contains("Enchantments")) {
-					List<String> enchants = guiSection.getStringList("Enchantments");
-					if (enchants.size() > 0) {
-						for (String str4 : enchants) {
-							String[] id = str4.split(":");
-							if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
-								EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-								enchantMeta.addStoredEnchant(Enchantment.getByName(id[0]), Integer.parseInt(id[1]), true);
-								GUIitem.setItemMeta(enchantMeta);
-							} else {
-								GUIitem.addUnsafeEnchantment(Enchantment.getByName(id[0]), Integer.parseInt(id[1]));
-							}
-						}
-					}
-				} else if (guiSection.contains("CustomSkull")) {
-					String skullOwner = guiSection.getString("CustomSkull");
-					GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
-					SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
-					if (skullOwner.length() == 36) {
-						try {
-							OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
-							skullMeta.setOwner(offPlayer.getName());
-						} catch (Exception e) {
-						}
-					} else
-						skullMeta.setOwner(skullOwner);
-					GUIitem.setItemMeta(skullMeta);
-				}
+			    }
+			}
+		    } else if (guiSection.contains("CustomSkull")) {
+			String skullOwner = guiSection.getString("CustomSkull");
+			GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
+			SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
+			if (skullOwner.length() == 36) {
+			    try {
+				OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
+				skullMeta.setOwner(offPlayer.getName());
+			    } catch (Exception e) {
+			    }
 			} else
-				Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
-		}
+			    skullMeta.setOwner(skullOwner);
+			GUIitem.setItemMeta(skullMeta);
+		    }
+		} else if (guiSection.contains("Id") && guiSection.contains("Data") && guiSection.isInt("Id") && guiSection.isInt("Data")) {
+		    GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
+		    if (guiSection.contains("Enchantments")) {
+			List<String> enchants = guiSection.getStringList("Enchantments");
+			if (enchants.size() > 0) {
+			    for (String str4 : enchants) {
+				String[] id = str4.split(":");
+				if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
+				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+				    enchantMeta.addStoredEnchant(Enchantment.getByName(id[0]), Integer.parseInt(id[1]), true);
+				    GUIitem.setItemMeta(enchantMeta);
+				} else {
+				    GUIitem.addUnsafeEnchantment(Enchantment.getByName(id[0]), Integer.parseInt(id[1]));
+				}
+			    }
+			}
+		    } else if (guiSection.contains("CustomSkull")) {
+			String skullOwner = guiSection.getString("CustomSkull");
+			GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
+			SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
+			if (skullOwner.length() == 36) {
+			    try {
+				OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
+				skullMeta.setOwner(offPlayer.getName());
+			    } catch (Exception e) {
+			    }
+			} else
+			    skullMeta.setOwner(skullOwner);
+			GUIitem.setItemMeta(skullMeta);
+		    }
+		} else
+		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
+	    }
 
 	    // Permissions
 	    ArrayList<JobPermission> jobPermissions = new ArrayList<>();
@@ -1151,9 +1152,9 @@ public class ConfigManager {
 
 	Jobs.consoleMsg("&e[Jobs] Loaded " + Jobs.getJobs().size() + " jobs!");
 	if (!Jobs.getExplore().isExploreEnabled()) {
-		Jobs.consoleMsg("&6[Jobs] Explorer jobs manager are not enabled!");
+	    Jobs.consoleMsg("&6[Jobs] Explorer jobs manager are not enabled!");
 	} else
-		Jobs.consoleMsg("&e[Jobs] Explorer job manager registered!");
+	    Jobs.consoleMsg("&e[Jobs] Explorer job manager registered!");
 	//try {
 	//	conf.save(f);
 	//} catch (IOException e) {
