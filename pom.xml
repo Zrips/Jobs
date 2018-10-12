@@ -76,9 +76,34 @@
 		</dependency>
 		<!-- WorldEdit -->
 		<dependency>
-			<groupId>com.sk89q</groupId>
-			<artifactId>worldedit</artifactId>
-			<version>7.0.0-SNAPSHOT</version>
+		    <groupId>com.sk89q.worldedit</groupId>
+		    <artifactId>worldedit-bukkit</artifactId>
+		    <version>7.0.0-SNAPSHOT</version>
+		    <exclusions>
+			<exclusion>
+			    <artifactId>bukkit</artifactId>
+			    <groupId>org.bukkit</groupId>
+			</exclusion>
+			<exclusion>
+			    <artifactId>bukkit-classloader-check</artifactId>
+			    <groupId>org.sk89q.bukkit</groupId>
+			</exclusion>
+		    </exclusions>
+		</dependency>
+		<dependency>
+		    <groupId>com.sk89q.worldedit</groupId>
+		    <artifactId>worldedit-core</artifactId>
+		    <version>7.0.0-SNAPSHOT</version>
+		    <exclusions>
+			<exclusion>
+			    <artifactId>bukkit</artifactId>
+			    <groupId>org.bukkit</groupId>
+			</exclusion>
+			<exclusion>
+			    <artifactId>bukkit-classloader-check</artifactId>
+			    <groupId>org.sk89q.bukkit</groupId>
+			</exclusion>
+		    </exclusions>
 		</dependency>
 	</dependencies>
 	<repositories>
@@ -96,10 +121,6 @@
 		<repository>
 			<id>vault-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
-		</repository>
-		<repository>
-			<id>mcmmo-repo</id>
-			<url>http://repo.mcmmo.org/</url>
 		</repository>
 	</repositories>
 	<!-- Builds Plugin -->
