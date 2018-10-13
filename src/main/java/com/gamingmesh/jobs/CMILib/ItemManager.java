@@ -731,7 +731,7 @@ public class ItemManager {
 	CARROT(391, 0, 22824, "Carrot", "Carrotitem"),
 	CARROTS(141, 0, 17258, "Carrots", "CARROT"),
 	CARROT_ON_A_STICK(398, 0, 27809, "Carrot on a Stick", "carrotstick"),
-	CARVED_PUMPKIN(86, 0, 25833, "Carved Pumpkin", "PUMPKIN"),
+	CARVED_PUMPKIN(91, 0, 25833, "Carved Pumpkin", "JACK_O_LANTERN"),
 	CAULDRON(380, 0, 26531, "Cauldron", "CAULDRON_ITEM"),
 	CAVE_AIR(0, 0, 17422, "Air", "AIR"),
 	CAVE_SPIDER_SPAWN_EGG(383, 59, 23341, "Spawn Cave Spider", "Cave Spider Spawn Egg"),
