@@ -758,7 +758,7 @@ public class ItemManager {
 	CLOCK(347, 0, 14980, "Clock", "WATCH"),
 	COAL(263, 0, 29067, "Coal", ""),
 	COAL_BLOCK(173, 0, 27968, "Block of Coal", ""),
-	COAL_ORE(16, 0, 30965, "Coal Ore", "COAL_ORE"),
+	COAL_ORE(16, 0, 30965, "Coal Ore", ""),
 	COARSE_DIRT(3, 1, 15411, "Coarse Dirt", ""),
 	COBBLESTONE(4, 0, 32147, "Cobblestone", ""),
 	COBBLESTONE_SLAB(44, 3, 6340, "Cobblestone Slab", ""),
