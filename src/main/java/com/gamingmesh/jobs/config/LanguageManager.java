@@ -431,8 +431,17 @@ public class LanguageManager {
 	    c.get("command.browse.output.bonus", " &2Bonus: &a[amount]%");
 
 	    c.get("command.browse.output.newHeader", "&2========== [amount] Available Jobs =========");
+	    c.get("command.browse.output.description", "[description]");
 	    c.get("command.browse.output.list", "    &8[place]. &7[jobname]");
-	    c.get("command.browse.output.consoleList", "    &6[jobname]");
+
+	    c.get("command.browse.output.console.newHeader", "&2========== [amount] Available Jobs =========");
+	    c.get("command.browse.output.console.description", "[description]");
+	    c.get("command.browse.output.console.totalWorkers", " &7Workers: &e[amount]");
+	    c.get("command.browse.output.console.penalty", " &4Penalty: &c[amount]%");
+	    c.get("command.browse.output.console.bonus", " &2Bonus: &a[amount]%");
+	    c.get("command.browse.output.console.list", " &6[jobname]");
+	    c.get("command.browse.output.console.newMax", " &eMax level: &f[max]");
+
 	    c.get("command.browse.output.click", "&bClick on the job to see more info about it!");
 	    c.get("command.browse.output.detailed", "&bClick to see more detailed list on job actions");
 

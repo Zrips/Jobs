@@ -378,16 +378,15 @@ public class JobsPaymentListener implements Listener {
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 	// Checks whether or not the plant is ripe if it does not get money at that time
-	if (block.getType().equals(CMIMaterial.BEETROOT_SEEDS) || block.getType().equals(CMIMaterial.MELON_SEEDS) ||
-			block.getType().equals(CMIMaterial.WHEAT_SEEDS) || block.getType().equals(CMIMaterial.PUMPKIN_SEEDS) ||
-			block.getType().equals(CMIMaterial.CARROT) || block.getType().equals(CMIMaterial.COCOA_BEANS) ||
-			block.getType().equals(CMIMaterial.POTATO) || block.getType().equals(CMIMaterial.NETHER_WART)) {
+	if (block.getType().equals(CMIMaterial.WHEAT_SEEDS) || block.getType().equals(CMIMaterial.BEETROOT_SEEDS) ||
+			block.getType().equals(CMIMaterial.MELON_SEEDS) || block.getType().equals(CMIMaterial.WHEAT_SEEDS) ||
+			block.getType().equals(CMIMaterial.PUMPKIN_SEEDS) || block.getType().equals(CMIMaterial.CARROT) ||
+			block.getType().equals(CMIMaterial.COCOA_BEANS) || block.getType().equals(CMIMaterial.POTATO) ||
+			block.getType().equals(CMIMaterial.NETHER_WART) || block.getType().equals(CMIMaterial.WHEAT)) {
 		Crops crop = (Crops) block.getState();
-		if (crop.getState().equals(CropState.RIPE)) {
+		if (crop.getState() == CropState.RIPE) {
 			// continue to get money
-		} else if (crop.getState().equals(CropState.SEEDED) || crop.getState().equals(CropState.MEDIUM) ||
-				crop.getState().equals(CropState.SMALL) || crop.getState().equals(CropState.TALL) ||
-				crop.getState().equals(CropState.VERY_SMALL) || crop.getState().equals(CropState.VERY_TALL))
+		} else
 			return;
 	}
 	FastPayment fp = Jobs.FastPayment.get(player.getName());
