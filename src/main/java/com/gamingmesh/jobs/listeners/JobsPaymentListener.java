@@ -380,14 +380,13 @@ public class JobsPaymentListener implements Listener {
 	// Checks whether or not the plant is ripe if it does not get money at that time
 	if (block.getType().equals(CMIMaterial.WHEAT_SEEDS) || block.getType().equals(CMIMaterial.BEETROOT_SEEDS) ||
 			block.getType().equals(CMIMaterial.MELON_SEEDS) || block.getType().equals(CMIMaterial.WHEAT_SEEDS) ||
-			block.getType().equals(CMIMaterial.PUMPKIN_SEEDS) || block.getType().equals(CMIMaterial.CARROT) ||
+			block.getType().equals(CMIMaterial.PUMPKIN_SEEDS) || block.getType().toString().equals("CARROTS") ||
 			block.getType().equals(CMIMaterial.COCOA_BEANS) || block.getType().equals(CMIMaterial.POTATO) ||
 			block.getType().equals(CMIMaterial.NETHER_WART) || block.getType().equals(CMIMaterial.WHEAT)) {
-		Crops crop = (Crops) block.getState();
-		if (crop.getState() == CropState.RIPE) {
-			// continue to get money
-		} else
+		Crops crop = (Crops) block.getState().getData();
+		if (!crop.getState().equals(CropState.RIPE)) {
 			return;
+		}
 	}
 	FastPayment fp = Jobs.FastPayment.get(player.getName());
 	if (fp != null) {
