@@ -307,37 +307,37 @@ public class ConfigManager {
 	    if (entity == null) {
 		switch (myKey.toLowerCase()) {
 		case "skeletonwither":
-		    type = CMIEntityType.WITHER_SKELETON.getOneWordName();
+		    type = CMIEntityType.WITHER_SKELETON.name();
 		    id = 51;
 		    meta = "1";
 		    break;
 		case "skeletonstray":
-		    type = CMIEntityType.STRAY.getOneWordName();
+		    type = CMIEntityType.STRAY.name();
 		    id = 51;
 		    meta = "2";
 		    break;
 		case "zombievillager":
-		    type = CMIEntityType.ZOMBIE_VILLAGER.getOneWordName();
+		    type = CMIEntityType.ZOMBIE_VILLAGER.name();
 		    id = 54;
 		    meta = "1";
 		    break;
 		case "zombiehusk":
-		    type = CMIEntityType.HUSK.getOneWordName();
+		    type = CMIEntityType.HUSK.name();
 		    id = 54;
 		    meta = "2";
 		    break;
 		case "horseskeleton":
-		    type = CMIEntityType.SKELETON_HORSE.getOneWordName();
+		    type = CMIEntityType.SKELETON_HORSE.name();
 		    id = 100;
 		    meta = "1";
 		    break;
 		case "horsezombie":
-		    type = CMIEntityType.ZOMBIE_HORSE.getOneWordName();
+		    type = CMIEntityType.ZOMBIE_HORSE.name();
 		    id = 100;
 		    meta = "2";
 		    break;
 		case "guardianelder":
-		    type = CMIEntityType.ELDER_GUARDIAN.getOneWordName();
+		    type = CMIEntityType.ELDER_GUARDIAN.name();
 		    id = 68;
 		    meta = "1";
 		    break;
@@ -1061,37 +1061,37 @@ public class ConfigManager {
 			    if (entity == null) {
 				switch (key.toLowerCase()) {
 				case "skeletonwither":
-				    type = CMIEntityType.WITHER_SKELETON.getOneWordName();
+				    type = CMIEntityType.WITHER_SKELETON.name();
 				    id = 51;
 				    meta = "1";
 				    break;
 				case "skeletonstray":
-				    type = CMIEntityType.STRAY.getOneWordName();
+				    type = CMIEntityType.STRAY.name();
 				    id = 51;
 				    meta = "2";
 				    break;
 				case "zombievillager":
-				    type = CMIEntityType.ZOMBIE_VILLAGER.getOneWordName();
+				    type = CMIEntityType.ZOMBIE_VILLAGER.name();
 				    id = 54;
 				    meta = "1";
 				    break;
 				case "zombiehusk":
-				    type = CMIEntityType.HUSK.getOneWordName();
+				    type = CMIEntityType.HUSK.name();
 				    id = 54;
 				    meta = "2";
 				    break;
 				case "horseskeleton":
-				    type = CMIEntityType.SKELETON_HORSE.getOneWordName();
+				    type = CMIEntityType.SKELETON_HORSE.name();
 				    id = 100;
 				    meta = "1";
 				    break;
 				case "horsezombie":
-				    type = CMIEntityType.ZOMBIE_HORSE.getOneWordName();
+				    type = CMIEntityType.ZOMBIE_HORSE.name();
 				    id = 100;
 				    meta = "2";
 				    break;
 				case "guardianelder":
-				    type = CMIEntityType.ELDER_GUARDIAN.getOneWordName();
+				    type = CMIEntityType.ELDER_GUARDIAN.name();
 				    id = 68;
 				    meta = "1";
 				    break;

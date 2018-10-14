@@ -10,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.LocaleReader;
@@ -72,10 +73,12 @@ public class NameTranslatorManager {
 		    if (!one.getMeta().equalsIgnoreCase("") && ids.equalsIgnoreCase(info.getId() + ":" + info.getMeta()) && !one.getId().equalsIgnoreCase("0")) {
 			return one.getName();
 		    }
-		}
-		for (NameList one : ListOfEntities) {
-		    String ids = one.getId();
+		    ids = one.getId();
 		    if (ids.equalsIgnoreCase(String.valueOf(info.getId())) && !one.getId().equalsIgnoreCase("0")) {
+			return one.getName();
+		    }
+		    ids = one.getMinecraftName();
+		    if (ids.equalsIgnoreCase(info.getName())) {
 			return one.getName();
 		    }
 		}
@@ -137,10 +140,13 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfNames.clear();
 	    for (String one : keys) {
-		String id = one.contains(":") ? one.split(":")[0] : one;
-		String meta = one.contains(":") ? one.split(":")[1] : "";
-		String MCName = section.getString(one + ".MCName");
-		String Name = section.getString(one + ".Name");
+
+		String id = one.split("-")[0];
+		id = id.contains(":") ? id.split(":")[0] : id;
+		String meta = id.contains(":") ? id.split(":")[1] : "";
+
+		String MCName = one.split("-")[1];
+		String Name = ItemFile.getConfig().getString("ItemList." + one);
 		ListOfNames.add(new NameList(id, meta, Name, MCName));
 	    }
 	    if (ListOfNames.size() != 0)
@@ -153,10 +159,11 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfEntities.clear();
 	    for (String one : keys) {
-		String id = one.contains(":") ? one.split(":")[0] : one;
+		String id = one.split("-")[0];
+		id = one.contains(":") ? one.split(":")[0] : one;
 		String meta = one.contains(":") ? one.split(":")[1] : "";
-		String MCName = section.getString(one + ".MCName");
-		String Name = section.getString(one + ".Name");
+		String MCName = one.split("-")[1];
+		String Name = ItemFile.getConfig().getString("EntityList." + one);
 		ListOfEntities.add(new NameList(id, meta, Name, MCName));
 	    }
 	    if (ListOfEntities.size() != 0)
@@ -291,96 +298,58 @@ public class NameTranslatorManager {
 		}
 
 		if (name == null) {
+		    n = one.getLegacyId() + ":" + one.getLegacyData() + "-" + one.getBukkitName();
+		    if (c.getC().isString("ItemList." + n)) {
+			name = c.getC().getString("ItemList." + n);
+		    }
+		}
+
+		if (name == null) {
+		    n = String.valueOf(one.getLegacyId()) + "-" + one.getBukkitName();
+		    if (c.getC().isString("ItemList." + n)) {
+			name = c.getC().getString("ItemList." + n);
+		    }
+		}
+
+		if (name == null) {
+		    n = String.valueOf(one.getId()) + "-" + one.getBukkitName();
+		    if (c.getC().isString("ItemList." + n)) {
+			name = c.getC().getString("ItemList." + n);
+		    }
+		}
+
+		if (name == null) {
 		    name = one.getName();
 		}
 
-		c.get("ItemList." + one.getId() + ".MCName", one.getBukkitName());
-		c.get("ItemList." + one.getId() + ".Name", name);
+		c.get("ItemList." + (one.getId() == -1 ? one.getLegacyId() : one.getId()) + "-" + one.getBukkitName(), name);
 	    }
 
-	    // Entity list
-	    c.get("EntityList.-1.MCName", "Player");
-	    c.get("EntityList.-1.Name", "Player");
-	    c.get("EntityList.50.MCName", "Creeper");
-	    c.get("EntityList.50.Name", "Creeper");
-	    c.get("EntityList.51.MCName", "Skeleton");
-	    c.get("EntityList.51.Name", "Skeleton");
-	    c.get("EntityList.51:1.MCName", "Skeleton");
-	    c.get("EntityList.51:1.Name", "WitherSkeleton");
-	    c.get("EntityList.51:2.MCName", "Skeleton");
-	    c.get("EntityList.51:2.Name", "Skeleton Stray");
-	    c.get("EntityList.52.MCName", "Spider");
-	    c.get("EntityList.52.Name", "Spider");
-	    c.get("EntityList.53.MCName", "Giant");
-	    c.get("EntityList.53.Name", "Giant");
-	    c.get("EntityList.54.MCName", "Zombie");
-	    c.get("EntityList.54.Name", "Zombie");
-	    c.get("EntityList.54:1.MCName", "Zombie");
-	    c.get("EntityList.54:1.Name", "Zombie Villager");
-	    c.get("EntityList.54:2.MCName", "Zombie");
-	    c.get("EntityList.54:2.Name", "Zombie Husk");
-	    c.get("EntityList.55.MCName", "Slime");
-	    c.get("EntityList.55.Name", "Slime");
-	    c.get("EntityList.56.MCName", "Ghast");
-	    c.get("EntityList.56.Name", "Ghast");
-	    c.get("EntityList.57.MCName", "PigZombie");
-	    c.get("EntityList.57.Name", "Zombie Pigman");
-	    c.get("EntityList.58.MCName", "Enderman");
-	    c.get("EntityList.58.Name", "Enderman");
-	    c.get("EntityList.59.MCName", "CaveSpider");
-	    c.get("EntityList.59.Name", "Cave Spider");
-	    c.get("EntityList.60.MCName", "Silverfish");
-	    c.get("EntityList.60.Name", "Silverfish");
-	    c.get("EntityList.61.MCName", "Blaze");
-	    c.get("EntityList.61.Name", "Blaze");
-	    c.get("EntityList.62.MCName", "LavaSlime");
-	    c.get("EntityList.62.Name", "LavaSlime");
-	    c.get("EntityList.63.MCName", "EnderDragon");
-	    c.get("EntityList.63.Name", "EnderDragon");
-	    c.get("EntityList.64.MCName", "WitherBoss");
-	    c.get("EntityList.64.Name", "Wither");
-	    c.get("EntityList.65.MCName", "Bat");
-	    c.get("EntityList.65.Name", "Bat");
-	    c.get("EntityList.66.MCName", "Witch");
-	    c.get("EntityList.66.Name", "Witch");
-	    c.get("EntityList.67.MCName", "Endermite");
-	    c.get("EntityList.67.Name", "Endermite");
-	    c.get("EntityList.68.MCName", "Guardian");
-	    c.get("EntityList.68.Name", "Guardian");
-	    c.get("EntityList.68:1.MCName", "Guardian");
-	    c.get("EntityList.68:1.Name", "Elder Guardian");
-	    c.get("EntityList.69.MCName", "Shulker");
-	    c.get("EntityList.69.Name", "Shulker");
-	    c.get("EntityList.90.MCName", "Pig");
-	    c.get("EntityList.90.Name", "Pig");
-	    c.get("EntityList.91.MCName", "Sheep");
-	    c.get("EntityList.91.Name", "Sheep");
-	    c.get("EntityList.92.MCName", "Cow");
-	    c.get("EntityList.92.Name", "Cow");
-	    c.get("EntityList.93.MCName", "Chicken");
-	    c.get("EntityList.93.Name", "Chicken");
-	    c.get("EntityList.94.MCName", "Squid");
-	    c.get("EntityList.94.Name", "Squid");
-	    c.get("EntityList.95.MCName", "Wolf");
-	    c.get("EntityList.95.Name", "Wolf");
-	    c.get("EntityList.96.MCName", "MushroomCow");
-	    c.get("EntityList.96.Name", "MushroomCow");
-	    c.get("EntityList.97.MCName", "SnowMan");
-	    c.get("EntityList.97.Name", "Snow Golem");
-	    c.get("EntityList.98.MCName", "Ozelot");
-	    c.get("EntityList.98.Name", "Ocelot");
-	    c.get("EntityList.99.MCName", "VillagerGolem");
-	    c.get("EntityList.99.Name", "Iron Golem");
-	    c.get("EntityList.100.MCName", "EntityHorse");
-	    c.get("EntityList.100.Name", "Horse");
-	    c.get("EntityList.101.MCName", "Rabbit");
-	    c.get("EntityList.101.Name", "Rabbit");
-	    c.get("EntityList.102.MCName", "PolarBear");
-	    c.get("EntityList.102.Name", "Polar Bear");
-	    c.get("EntityList.120.MCName", "Villager");
-	    c.get("EntityList.120.Name", "Villager");
-	    c.get("EntityList.200.MCName", "EnderCrystal");
-	    c.get("EntityList.200.Name", "Ender Crystal");
+	    for (CMIEntityType one : CMIEntityType.values()) {
+		if (!one.isAlive())
+		    continue;
+
+		String n = String.valueOf(one.getId());
+
+		String name = null;
+
+		if (c.getC().isConfigurationSection("EntityList." + n)) {
+		    name = c.getC().getString("EntityList." + n + ".Name");
+		}
+
+		if (name == null) {
+		    n = n + "-" + one.toString();
+		    if (c.getC().isConfigurationSection("EntityList." + n)) {
+			name = c.getC().getString("EntityList." + n);
+		    }
+		}
+
+		if (name == null) {
+		    name = one.getName();
+		}
+
+		c.get("EntityList." + one.getId() + "-" + one.toString(), name);
+	    }
 
 	    // Enchant list
 	    c.get("EnchantList.0.MCName", "PROTECTION_ENVIRONMENTAL");

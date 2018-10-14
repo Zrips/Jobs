@@ -364,6 +364,7 @@ public class ItemManager {
 
     public enum CMIEntityType {
 
+	PLAYER(-1, "Player"),
 	DROPPED_ITEM(1, "Item"),
 	EXPERIENCE_ORB(2, "Experience Orb"),
 	AREA_EFFECT_CLOUD(3, "Area Effect Cloud"),
@@ -460,7 +461,6 @@ public class ItemManager {
 	FISHING_HOOK(911, "Fishing Hook"),
 	LIGHTNING(912, "Lightning Bolt"),
 	WEATHER(913, "Weather"),
-	PLAYER(914, "Player"),
 	COMPLEX_PART(915, "Complex Part"),
 	TIPPED_ARROW(916, "Tipped Arrow"),
 	UNKNOWN(999, "Unknown");
