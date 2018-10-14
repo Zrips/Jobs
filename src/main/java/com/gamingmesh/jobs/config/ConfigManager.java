@@ -1125,37 +1125,6 @@ public class ConfigManager {
 			    }
 			}
 
-			switch (actionType) {
-			case BREED:
-			case CUSTOMKILL:
-			case BREW:
-			case EXPLORE:
-			case FISH:
-			case KILL:
-			case MILK:
-			case MMKILL:
-			case SHEAR:
-			case TAME:
-			    break;
-			case TNTBREAK:
-			case SMELT:
-			case REPAIR:
-			case PLACE:
-			case ENCHANT:
-			case DYE:
-			case EAT:
-			case DRINK:
-			case CRAFT:
-			case BREAK:
-			    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)) {
-				subType = "";
-				meta = "";
-			    }
-			    break;
-			default:
-			    break;
-			}
-
 			jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, fromlevel,
 			    untilLevel, section.getCurrentPath(), softIncomeLimit, softExpLimit, softPointsLimit));
 		    }
