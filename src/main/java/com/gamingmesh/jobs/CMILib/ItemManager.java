@@ -589,14 +589,11 @@ public class ItemManager {
 	}
 
 	public boolean isAlive() {
-	    if (version.isLower(Version.v1_9_R1))
-		return true; // TODO: Fixing NullPointerException
-
-	    return getType().isAlive();
+	    return getType() == null ? false : getType().isAlive();
 	}
 
 	public boolean isSpawnable() {
-	    return getType().isSpawnable();
+	    return getType() == null ? false : getType().isSpawnable();
 	}
 
 	public static String getRealNameByType(EntityType type) {
