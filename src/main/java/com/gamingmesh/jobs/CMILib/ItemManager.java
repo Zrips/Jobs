@@ -733,7 +733,7 @@ public class ItemManager {
 	CARROT_ON_A_STICK(398, 0, 27809, "Carrot on a Stick", "carrotstick"),
 	CARVED_PUMPKIN(-1, -1, 25833, "Carved Pumpkin", ""),
 	CAULDRON(380, 0, 26531, "Cauldron", "CAULDRON_ITEM"),
-	CAVE_AIR(0, 0, 17422, "Air", "AIR"),
+	CAVE_AIR(-1, -1, 17422, "Air", ""),
 	CAVE_SPIDER_SPAWN_EGG(383, 59, 23341, "Spawn Cave Spider", "Cave Spider Spawn Egg"),
 	CHAINMAIL_BOOTS(305, 0, 17953, "Chainmail Boots", ""),
 	CHAINMAIL_CHESTPLATE(303, 0, 23602, "Chainmail Chestplate", ""),
