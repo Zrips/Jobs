@@ -34,7 +34,7 @@ public class ItemManager {
     private final static Version version = Jobs.getVersionCheckManager().getVersion();
 
     @SuppressWarnings("deprecation")
-	public static void load() {
+    public static void load() {
 
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one == null)
@@ -76,7 +76,7 @@ public class ItemManager {
 		if (!byMojangName.containsKey(n))
 		    byMojangName.put(n, cm);
 	    }
-	    
+
 	    byMaterial.put(one, cm);
 	    if (!byId.containsKey(id))
 		byId.put(id, cm);
@@ -130,7 +130,7 @@ public class ItemManager {
     static HashMap<String, ItemStack> headCache = new HashMap<>();
 
     @SuppressWarnings("deprecation")
-	public static CMIItemStack getItem(String name) {
+    public static CMIItemStack getItem(String name) {
 	if (byBukkitName.isEmpty())
 	    load();
 	CMIItemStack cm = null;
@@ -312,7 +312,7 @@ public class ItemManager {
     }
 
     @SuppressWarnings("deprecation")
-	static public Material getMaterial(String name) {
+    static public Material getMaterial(String name) {
 	CMIItemStack cm = getItem(name);
 	if (cm == null)
 	    return Material.AIR;
@@ -482,6 +482,10 @@ public class ItemManager {
 	    return name;
 	}
 
+	public String getOneWordName() {
+	    return name.replace(" ", "");
+	}
+
 	public static CMIEntityType getById(int id) {
 	    for (CMIEntityType one : CMIEntityType.values()) {
 		if (one.getId() == id)
@@ -585,8 +589,8 @@ public class ItemManager {
 	}
 
 	public boolean isAlive() {
-		if (version.isLower(Version.v1_9_R1))
-			return true; // TODO: Fixing NullPointerException
+	    if (version.isLower(Version.v1_9_R1))
+		return true; // TODO: Fixing NullPointerException
 
 	    return getType().isAlive();
 	}
@@ -1656,7 +1660,7 @@ public class ItemManager {
 		return stack;
 	    }
 
-		ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
+	    ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
 	    stack.setAmount(amount);
 	    return stack;
 
@@ -1823,7 +1827,7 @@ public class ItemManager {
 //		return get(item.getType().getId(), tid);
 //	    }
 	    @SuppressWarnings("deprecation")
-		CMIMaterial m = get(item.getType().getId(), item.getData().getData());
+	    CMIMaterial m = get(item.getType().getId(), item.getData().getData());
 
 	    if (m == null) {
 		CMIItemStack cm = byBukkitName.get(item.getType().toString().toLowerCase().replace("_", ""));
@@ -1836,7 +1840,7 @@ public class ItemManager {
 
 	@SuppressWarnings("deprecation")
 	public static CMIMaterial get(Block block) {
-		byte data = block.getData();
+	    byte data = block.getData();
 	    if (block.getState() instanceof Skull) {
 		Skull skull = (Skull) block.getState();
 		data = (byte) skull.getSkullType().ordinal();
@@ -2111,10 +2115,10 @@ public class ItemManager {
 	}
 
 	public static boolean isPotion(Material mat) {
-		CMIMaterial m = CMIMaterial.get(mat);
-		if (m == null)
-			return false;
-		return m.isPotion();
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isPotion();
 	}
 
 	public boolean isPotion() {
@@ -2496,7 +2500,7 @@ public class ItemManager {
 
 	public boolean equals(Material mat) {
 	    if (getMaterial() == null) {
-	    	return false;
+		return false;
 	    }
 	    return this.getMaterial().equals(mat);
 	}

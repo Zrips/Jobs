@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
@@ -19,6 +20,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.RawMessage;
 import com.gamingmesh.jobs.stuff.Util;
@@ -27,13 +29,13 @@ import com.gamingmesh.jobs.stuff.VersionChecker.Version;
 public class editjobs implements Cmd {
 
     @SuppressWarnings("deprecation")
-	@Override
+    @Override
     @JobCommand(475)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 
 	if (!(sender instanceof Player))
 	    return false;
-
+ 
 	Player player = (Player) sender;
 
 	if (args.length == 0)
@@ -399,29 +401,56 @@ public class editjobs implements Cmd {
 		    myKey = myKey.split("-")[0];
 		}
 
-		CMIMaterial material = CMIMaterial.get(myKey);
+		CMIMaterial material = null;
 
-		if (material == null)
-		    material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
+		switch (actionT) {
+		case KILL:
+		case MILK:
+		case MMKILL:
+		case BREED:
+		case SHEAR:
+		case EXPLORE:
+		case CUSTOMKILL:
+		    break;
+		case TNTBREAK:
+		case VTRADE:
+		case SMELT:
+		case REPAIR:
+		case PLACE:
+		case EAT:
+		case FISH:
+		case ENCHANT:
+		case DYE:
+		case DRINK:
+		case CRAFT:
+		case BREW:
+		case BREAK:
+		    material = CMIMaterial.get(myKey + (subType));
 
-		if (material == null) {
-		    // try integer method
-		    Integer matId = null;
-		    try {
-			matId = Integer.valueOf(myKey);
-		    } catch (NumberFormatException e) {
-		    }
-		    if (matId != null) {
-			material = CMIMaterial.get(matId);
-			if (material != null) {
-			    player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " " + actionT.getName() + " is using ID: " + key + "!");
-			    player.sendMessage(ChatColor.GOLD + "Please use the Material name instead: " + material.toString() + "!");
+		    if (material == null)
+			material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
+
+		    if (material == null) {
+			// try integer method
+			Integer matId = null;
+			try {
+			    matId = Integer.valueOf(myKey);
+			} catch (NumberFormatException e) {
+			}
+			if (matId != null) {
+			    material = CMIMaterial.get(matId);
+			    if (material != null) {
+				Jobs.getPluginLogger().warning("Job " + job.getName() + " " + actionT.getName() + " is using ID: " + key + "!");
+				Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
+			    }
 			}
 		    }
+		    break;
+		default:
+		    break;
+
 		}
 
-		if (actionT == ActionType.EXPLORE)
-		    material = null;
 
 		c: if (material != null) {
 
@@ -483,37 +512,37 @@ public class editjobs implements Cmd {
 
 		    switch (key.toLowerCase()) {
 		    case "skeletonwither":
-			type = "SkeletonWither";
+			type = CMIEntityType.WITHER_SKELETON.getOneWordName();
 			id = 51;
 			meta = "1";
 			break;
 		    case "skeletonstray":
-			type = "SkeletonStray";
+			type = CMIEntityType.STRAY.getOneWordName();
 			id = 51;
 			meta = "2";
 			break;
 		    case "zombievillager":
-			type = "ZombieVillager";
+			type = CMIEntityType.ZOMBIE_VILLAGER.getOneWordName();
 			id = 54;
 			meta = "1";
 			break;
 		    case "zombiehusk":
-			type = "ZombieHusk";
+			type = CMIEntityType.HUSK.getOneWordName();
 			id = 54;
 			meta = "2";
 			break;
 		    case "horseskeleton":
-			type = "HorseSkeleton";
+			type = CMIEntityType.SKELETON_HORSE.getOneWordName();
 			id = 100;
 			meta = "1";
 			break;
 		    case "horsezombie":
-			type = "HorseZombie";
+			type = CMIEntityType.ZOMBIE_HORSE.getOneWordName();
 			id = 100;
 			meta = "2";
 			break;
 		    case "guardianelder":
-			type = "GuardianElder";
+			type = CMIEntityType.ELDER_GUARDIAN.getOneWordName();
 			id = 68;
 			meta = "1";
 			break;
@@ -604,7 +633,8 @@ public class editjobs implements Cmd {
 	if (action != null && job != null) {
 	    rm = new RawMessage();
 
-	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.actions", "%actionname%",  action.getName()), action.getName(), "jobs editjobs list " + job.getName() + " " + action.getName() + " 1");
+	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.actions", "%actionname%", action.getName()), action.getName(), "jobs editjobs list " + job.getName() + " " + action.getName()
+		+ " 1");
 	    rm.show(player);
 	}
 
@@ -616,7 +646,8 @@ public class editjobs implements Cmd {
 	    materialName = Jobs.getNameTranslatorManager().Translate(materialName, jInfo);
 	    materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
 
-	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.material", "%materialname%",   jInfo.getName()), jInfo.getName(), "jobs editjobs list " + job.getName() + " " + action.getName() + " " + materialName);
+	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.material", "%materialname%", jInfo.getName()), jInfo.getName(), "jobs editjobs list " + job.getName() + " " + action.getName()
+		+ " " + materialName);
 	    rm.show(player);
 	}
     }

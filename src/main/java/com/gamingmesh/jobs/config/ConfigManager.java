@@ -425,21 +425,21 @@ public class ConfigManager {
 	    }
 
 	    int maxLevel = jobSection.getInt("max-level", 0);
-		if (maxLevel < 0)
-			maxLevel = 0;
+	    if (maxLevel < 0)
+		maxLevel = 0;
 
 	    int vipmaxLevel = jobSection.getInt("vip-max-level", 0);
-		if (vipmaxLevel < 0)
-			vipmaxLevel = 0;
+	    if (vipmaxLevel < 0)
+		vipmaxLevel = 0;
 
 	    Integer maxSlots = jobSection.getInt("slots", 0);
-		if (maxSlots.intValue() <= 0)
-			maxSlots = null;
+	    if (maxSlots.intValue() <= 0)
+		maxSlots = null;
 
 	    Long rejoinCd = jobSection.getLong("rejoinCooldown", 0L);
-		if (rejoinCd < 0L)
-			rejoinCd = 0L;
-		rejoinCd = rejoinCd * 1000L;
+	    if (rejoinCd < 0L)
+		rejoinCd = 0L;
+	    rejoinCd = rejoinCd * 1000L;
 
 	    String jobShortName = jobSection.getString("shortname", null);
 	    if (jobShortName == null) {
@@ -914,33 +914,59 @@ public class ConfigManager {
 			    myKey = myKey.split("-")[0];
 			}
 
-			CMIMaterial material = CMIMaterial.get(myKey + (subType));
+			CMIMaterial material = null;
 
-			if (material == null)
-			    material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
+			switch (actionType) {
+			case KILL:
+			case MILK:
+			case MMKILL:
+			case BREED:
+			case SHEAR:
+			case EXPLORE:
+			case CUSTOMKILL:
+			    break;
+			case TNTBREAK:
+			case VTRADE:
+			case SMELT:
+			case REPAIR:
+			case PLACE:
+			case EAT:
+			case FISH:
+			case ENCHANT:
+			case DYE:
+			case DRINK:
+			case CRAFT:
+			case BREW:
+			case BREAK:
+			    material = CMIMaterial.get(myKey + (subType));
 
-			if (material == null) {
-			    // try integer method
-			    Integer matId = null;
-			    try {
-				matId = Integer.valueOf(myKey);
-			    } catch (NumberFormatException e) {
-			    }
-			    if (matId != null) {
-				material = CMIMaterial.get(matId);
-				if (material != null) {
-				    Jobs.getPluginLogger().warning("Job " + jobKey + " " + actionType.getName() + " is using ID: " + key + "!");
-				    Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
+			    if (material == null)
+				material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
+
+			    if (material == null) {
+				// try integer method
+				Integer matId = null;
+				try {
+				    matId = Integer.valueOf(myKey);
+				} catch (NumberFormatException e) {
+				}
+				if (matId != null) {
+				    material = CMIMaterial.get(matId);
+				    if (material != null) {
+					Jobs.getPluginLogger().warning("Job " + jobKey + " " + actionType.getName() + " is using ID: " + key + "!");
+					Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
+				    }
 				}
 			    }
-			}
+			    break;
+			default:
+			    break;
 
-			if (actionType == ActionType.EXPLORE)
-			    material = null;
+			}
 
 			c: if (material != null && material.getMaterial() != null) {
 
-			    // Need to include thos ones and count as regular blocks
+			    // Need to include those ones and count as regular blocks
 			    switch (key.replace("_", "").toLowerCase()) {
 			    case "itemframe":
 				type = "ITEM_FRAME";
@@ -993,12 +1019,6 @@ public class ConfigManager {
 
 			    // check entities
 			    CMIEntityType entity = CMIEntityType.getByName(key);
-//			    if (entity == null) {
-//				try {
-//				    entity = EntityType.valueOf(key.toUpperCase());
-//				} catch (IllegalArgumentException e) {
-//				}
-//			    }
 
 			    if (entity != null && entity.isAlive()) {
 				type = entity.toString();
@@ -1011,37 +1031,37 @@ public class ConfigManager {
 
 			    switch (key.toLowerCase()) {
 			    case "skeletonwither":
-				type = "SkeletonWither";
+				type = CMIEntityType.WITHER_SKELETON.getOneWordName();
 				id = 51;
 				meta = "1";
 				break;
 			    case "skeletonstray":
-				type = "SkeletonStray";
+				type = CMIEntityType.STRAY.getOneWordName();
 				id = 51;
 				meta = "2";
 				break;
 			    case "zombievillager":
-				type = "ZombieVillager";
+				type = CMIEntityType.ZOMBIE_VILLAGER.getOneWordName();
 				id = 54;
 				meta = "1";
 				break;
 			    case "zombiehusk":
-				type = "ZombieHusk";
+				type = CMIEntityType.HUSK.getOneWordName();
 				id = 54;
 				meta = "2";
 				break;
 			    case "horseskeleton":
-				type = "HorseSkeleton";
+				type = CMIEntityType.SKELETON_HORSE.getOneWordName();
 				id = 100;
 				meta = "1";
 				break;
 			    case "horsezombie":
-				type = "HorseZombie";
+				type = CMIEntityType.ZOMBIE_HORSE.getOneWordName();
 				id = 100;
 				meta = "2";
 				break;
 			    case "guardianelder":
-				type = "GuardianElder";
+				type = CMIEntityType.ELDER_GUARDIAN.getOneWordName();
 				id = 68;
 				meta = "1";
 				break;
