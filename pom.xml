@@ -159,7 +159,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					<outputDirectory>C:\Users\Arte\Desktop\Server\plugins</outputDirectory>
+					<outputDirectory>C:\Users\Arte\Desktop\Server 1.13\plugins</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
