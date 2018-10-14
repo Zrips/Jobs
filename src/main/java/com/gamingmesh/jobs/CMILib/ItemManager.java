@@ -768,7 +768,7 @@ public class ItemManager {
 	COCOA(127, 0, 29709, "Cocoa", ""),
 	COCOA_BEANS(351, 3, 27381, "Coco Beans", "INK_SACK"),
 	COD(349, 0, 24691, "Raw Cod", "RAW_FISH"),
-	COD_BUCKET(326, 0, 28601, "Bucket of Cod", "WATER_BUCKET"),
+	COD_BUCKET(-1, -1, 28601, "Bucket of Cod", ""),
 	COD_SPAWN_EGG(-1, -1, 27248, "Cod Spawn Egg", ""),
 	COMMAND_BLOCK(137, 0, 4355, "Command Block", "COMMAND"),
 	COMMAND_BLOCK_MINECART(422, 0, 7992, "Minecart with Command Block", ""),
