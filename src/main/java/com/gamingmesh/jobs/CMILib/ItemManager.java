@@ -734,7 +734,7 @@ public class ItemManager {
 	CACTUS_GREEN(351, 2, 17296, "Cactus Green", ""),
 	CAKE(354, 0, 27048, "Cake", ""),
 	CARROT(391, 0, 22824, "Carrot", "Carrotitem"),
-	CARROTS(141, 0, 17258, "Carrots", "CARROT"),
+	CARROTS(141, 0, 17258, "Carrots"),
 	CARROT_ON_A_STICK(398, 0, 27809, "Carrot on a Stick", "carrotstick"),
 	CARVED_PUMPKIN(-1, -1, 25833, "Carved Pumpkin", ""),
 	CAULDRON(380, 0, 26531, "Cauldron", "CAULDRON_ITEM"),
@@ -1220,7 +1220,7 @@ public class ItemManager {
 	POPPY(38, 0, 12851, "Poppy", ""),
 	PORKCHOP(319, 0, 30896, "Raw Porkchop", ""),
 	POTATO(392, 0, 21088, "Potato", "Potatoitem"),
-	POTATOES(142, 0, 10879, "Potatoes", "POTATO"),
+	POTATOES(142, 0, 10879, "Potatoes"),
 
 	// Potions
 	POTION(373, 0, 24020, "Potion", ""),
@@ -1480,7 +1480,7 @@ public class ItemManager {
 	WATER(8, 0, 24998, "Flowing Water", "FLOWING_WATER"),
 	WATER_BUCKET(326, 0, 8802, "Water Bucket", ""),
 	WET_SPONGE(19, 1, 9043, "Wet Sponge", ""),
-	WHEAT(296, 0, 27709, "Wheat", ""),
+	WHEAT(296, 0, 27709, "Wheat"),
 	WHEAT_SEEDS(295, 0, 28742, "Wheat Seeds", "SEEDS"),
 	WHITE_BANNER(425, 15, 17562, "White Banner", ""),
 	WHITE_BED(355, 0, 8185, "White Bed", "Bed"),
@@ -1562,7 +1562,7 @@ public class ItemManager {
 //	LEGACY_PURPUR_DOUBLE_SLAB(204, -1, -1, "LEGACY_PURPUR_DOUBLE_SLAB", ""),
 //	LEGACY_COMMAND_REPEATING(210, -1, -1, "LEGACY_COMMAND_REPEATING", ""),
 //	LEGACY_COMMAND_CHAIN(211, -1, -1, "LEGACY_COMMAND_CHAIN", ""),
-	LEGACY_WHEAT(59, -1, -1, "Wheat Block", "");
+	LEGACY_WHEAT(59, 0, -1, "Wheat Block", "Crops");
 
 	private int legacyId;
 	private int legacyData;
