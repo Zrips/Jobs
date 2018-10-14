@@ -22,22 +22,22 @@ import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class RawMessage {
 
-    List<String> parts = new ArrayList<String>();
-    List<String> cleanParts = new ArrayList<String>();
-    String colorReplacerPlaceholder = "%#%";
+    private List<String> parts = new ArrayList<>();
+    private List<String> cleanParts = new ArrayList<>();
+    private String colorReplacerPlaceholder = "%#%";
 
     private String unfinished = "";
     private String unfinishedClean = "";
 
     private String combined = "";
-    String combinedClean = "";
+    private String combinedClean = "";
     private boolean breakLine = true;
 
 //    private boolean colorizeEntireWithLast = true;
 
     public void clear() {
-	parts = new ArrayList<String>();
-	cleanParts = new ArrayList<String>();
+	parts = new ArrayList<>();
+	cleanParts = new ArrayList<>();
 	combined = "";
 	combinedClean = "";
     }
@@ -71,17 +71,17 @@ public class RawMessage {
 	return add(text, hoverText, command, suggestion, null);
     }
 
-    Set<CMIChatColor> formats = new HashSet<CMIChatColor>();
-    CMIChatColor lastColor = null;
+    private Set<CMIChatColor> formats = new HashSet<>();
+    private CMIChatColor lastColor = null;
 
-    Set<CMIChatColor> savedFormats = new HashSet<CMIChatColor>();
-    CMIChatColor savedLastColor = null;
+    private Set<CMIChatColor> savedFormats = new HashSet<>();
+    private CMIChatColor savedLastColor = null;
 
-    CMIChatColor firstBlockColor = null;
+    private CMIChatColor firstBlockColor = null;
 
     private String makeMessyText(String text) {
 	text = CMIChatColor.deColorize(text);
-	List<String> splited = new ArrayList<String>();
+	List<String> splited = new ArrayList<>();
 
 	if (text.contains(" ")) {
 	    for (String one : text.split(" ")) {
@@ -348,7 +348,7 @@ public class RawMessage {
 	    }
 	}
 
-	List<String> Lore = new ArrayList<String>();
+	List<String> Lore = new ArrayList<>();
 
 //	if (CMIMaterial.isShulkerBox(item.getType())) {
 //	    List<ItemStack> items = CMI.getInstance().getShulkerBoxManager().getShulkerBoxContents(item);
@@ -437,7 +437,7 @@ public class RawMessage {
     }
 
     public List<String> softCombine() {
-	List<String> ls = new ArrayList<String>();
+	List<String> ls = new ArrayList<>();
 	String f = "";
 	for (String part : parts) {
 	    if (f.isEmpty())

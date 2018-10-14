@@ -20,7 +20,6 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.stuff.Util;
@@ -35,7 +34,7 @@ public class editjobs implements Cmd {
 
 	if (!(sender instanceof Player))
 	    return false;
- 
+
 	Player player = (Player) sender;
 
 	if (args.length == 0)

@@ -31,7 +31,6 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.CMILib.ActionBarTitleMessages;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 
@@ -148,7 +147,7 @@ public class BufferedEconomy {
 			Jobs.getActionbarToggleList().put(ServerTaxesAccountname, true);
 		    if (Jobs.getActionbarToggleList().containsKey(ServerTaxesAccountname) && Jobs.getActionbarToggleList().get(ServerTaxesAccountname)) {
 			Jobs.getActionBar();
-			ActionBarTitleMessages.send(Bukkit.getPlayer(ServerAccountname), Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100)
+			Jobs.getActionBar().send(Bukkit.getPlayer(ServerAccountname), Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100)
 			    / 100.0));
 		    }
 		}
@@ -182,7 +181,7 @@ public class BufferedEconomy {
 		if (Jobs.getGCManager().UseServerAccount) {
 		    if (!hasMoney) {
 			Jobs.getActionBar();
-			ActionBarTitleMessages.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
+			Jobs.getActionBar().send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
 			continue;
 		    }
 		    if (Jobs.getGCManager().isEconomyAsync()) {
@@ -242,7 +241,7 @@ public class BufferedEconomy {
 		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", new Object[] { "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), new Object[] {
 		    Double.valueOf(payment.getExp()) }) });
 	    }
-	    ActionBarTitleMessages.send(abp, Message);
+	    Jobs.getActionBar().send(abp, Message);
 	}
     }
 }
