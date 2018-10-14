@@ -138,7 +138,7 @@ public enum CMIChatColor {
     }
 
     public static CMIChatColor getRandomColor() {
-	List<CMIChatColor> ls = new ArrayList<CMIChatColor>();
+	List<CMIChatColor> ls = new ArrayList<>();
 	for (CMIChatColor one : CMIChatColor.values()) {
 	    if (!one.isColor())
 		continue;

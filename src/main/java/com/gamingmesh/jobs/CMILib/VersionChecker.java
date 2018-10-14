@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 
 public class VersionChecker {
-    Jobs plugin;
+    private Jobs plugin;
     private static int resource = 4216;
 
     public VersionChecker(Jobs plugin) {
@@ -182,7 +182,7 @@ public class VersionChecker {
 	    if (version.length() <= 7)
 		return version;
 	} catch (Exception ex) {
-	    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Failed to check for " + plugin.getDescription().getName() + " update on spigot web page.");
+	    Jobs.consoleMsg("&cFailed to check for " + plugin.getDescription().getName() + " update on spigot web page.");
 	}
 	return null;
     }

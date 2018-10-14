@@ -66,14 +66,14 @@ public class ActionBarTitleMessages {
 	}
     }
 
-    public static void send(CommandSender receivingPacket, String msg) {
+    public void send(CommandSender receivingPacket, String msg) {
 	if (receivingPacket instanceof Player)
 	    send((Player) receivingPacket, msg);
 	else
 	    receivingPacket.sendMessage(msg);
     }
 
-    public static void send(Player receivingPacket, String msg) {
+    public void send(Player receivingPacket, String msg) {
 	if (receivingPacket == null)
 	    return;
 	if (!receivingPacket.isOnline())
@@ -116,7 +116,8 @@ public class ActionBarTitleMessages {
 
     public static void sendTitle(final Player receivingPacket, final Object title, final Object subtitle, final int fadeIn, final int keep, final int fadeOut) {
 	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), new Runnable() {
-	    @Override
+	    @SuppressWarnings("deprecation")
+		@Override
 	    public void run() {
 
 		String t = title == null ? null : CMIChatColor.translateAlternateColorCodes((String) title);
