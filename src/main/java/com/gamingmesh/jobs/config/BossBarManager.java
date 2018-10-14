@@ -17,7 +17,7 @@ import com.gamingmesh.jobs.container.BossBarInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class BossBarManager {
 

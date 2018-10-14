@@ -40,7 +40,7 @@ import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.Schedule;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class GeneralConfigManager {
     private Jobs plugin;

@@ -24,7 +24,7 @@ import org.bukkit.block.Block;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class BlockActionInfo extends MaterialActionInfo implements ActionInfo {
     public BlockActionInfo(Block block, ActionType type) {

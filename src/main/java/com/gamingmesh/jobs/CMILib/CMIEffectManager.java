@@ -12,7 +12,7 @@ import org.bukkit.Material;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class CMIEffectManager {
 

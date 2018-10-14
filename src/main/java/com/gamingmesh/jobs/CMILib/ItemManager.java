@@ -23,7 +23,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.stuff.Debug;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ItemManager {
 

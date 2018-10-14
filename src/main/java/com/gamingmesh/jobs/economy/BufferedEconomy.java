@@ -26,10 +26,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.ActionBarTitleMessages;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 
 public class BufferedEconomy {
@@ -144,7 +147,8 @@ public class BufferedEconomy {
 		    if (!Jobs.getActionbarToggleList().containsKey(ServerTaxesAccountname) && Jobs.getGCManager().ActionBarsMessageByDefault)
 			Jobs.getActionbarToggleList().put(ServerTaxesAccountname, true);
 		    if (Jobs.getActionbarToggleList().containsKey(ServerTaxesAccountname) && Jobs.getActionbarToggleList().get(ServerTaxesAccountname)) {
-			Jobs.getActionBar().send(Bukkit.getPlayer(ServerAccountname), Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100)
+			Jobs.getActionBar();
+			ActionBarTitleMessages.send(Bukkit.getPlayer(ServerAccountname), Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100)
 			    / 100.0));
 		    }
 		}
@@ -177,7 +181,8 @@ public class BufferedEconomy {
 
 		if (Jobs.getGCManager().UseServerAccount) {
 		    if (!hasMoney) {
-			Jobs.getActionBar().send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
+			Jobs.getActionBar();
+			ActionBarTitleMessages.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
 			continue;
 		    }
 		    if (Jobs.getGCManager().isEconomyAsync()) {
@@ -192,7 +197,7 @@ public class BufferedEconomy {
 		}
 		try {
 		    // Action bar stuff
-		    Jobs.getActionBar().ShowActionBar(payment);
+		    ShowActionBar(payment);
 		    if (payment.getOfflinePlayer().isOnline() && Jobs.getVersionCheckManager().getVersion().isHigher(Version.v1_8_R3)) {
 			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId());
 			Jobs.getBBManager().ShowJobProgression(jPlayer);
@@ -204,5 +209,40 @@ public class BufferedEconomy {
 	    paymentCache.clear();
 	}
 
+    }
+
+    public void ShowActionBar(BufferedPayment payment) {
+	if (!payment.getOfflinePlayer().isOnline()) {
+	    return;
+	}
+	String playername = payment.getOfflinePlayer().getName();
+	if ((!Jobs.getActionbarToggleList().containsKey(playername)) && (Jobs.getGCManager().ActionBarsMessageByDefault)) {
+	    Jobs.getActionbarToggleList().put(playername, Boolean.valueOf(true));
+	}
+	if (playername == null) {
+	    return;
+	}
+	if (!Jobs.getActionbarToggleList().containsKey(playername)) {
+	    return;
+	}
+	Boolean show = Jobs.getActionbarToggleList().get(playername);
+	Player abp = Bukkit.getPlayer(payment.getOfflinePlayer().getUniqueId());
+	if ((abp != null) && (show.booleanValue())) {
+	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
+	    if (payment.getAmount() != 0.0D) {
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", new Object[] { "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(),
+		    new Object[] { Double.valueOf(payment
+			.getAmount()) }) });
+	    }
+	    if (payment.getPoints() != 0.0D) {
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", new Object[] { "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(),
+		    new Object[] { Double.valueOf(payment.getPoints()) }) });
+	    }
+	    if (payment.getExp() != 0.0D) {
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", new Object[] { "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), new Object[] {
+		    Double.valueOf(payment.getExp()) }) });
+	    }
+	    ActionBarTitleMessages.send(abp, Message);
+	}
     }
 }

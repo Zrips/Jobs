@@ -99,9 +99,7 @@ public class ItemReflection {
 		ff = "a";
 		break;
 	    case v1_11_R1:
-	    case v1_11_R2:
 	    case v1_12_R1:
-	    case v1_12_R2:
 		ff = "b";
 		break;
 	    case v1_13_R2:

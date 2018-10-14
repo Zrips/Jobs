@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.PageInfo;
-import com.gamingmesh.jobs.stuff.RawMessage;
+import com.gamingmesh.jobs.CMILib.RawMessage;
 
 public class browse implements Cmd {
 

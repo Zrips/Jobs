@@ -11,7 +11,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.RawMessage;
+import com.gamingmesh.jobs.CMILib.RawMessage;
 
 public class gtop implements Cmd {
 

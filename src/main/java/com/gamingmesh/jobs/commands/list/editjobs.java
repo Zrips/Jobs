@@ -22,9 +22,9 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PageInfo;
-import com.gamingmesh.jobs.stuff.RawMessage;
+import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.stuff.Util;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class editjobs implements Cmd {
 

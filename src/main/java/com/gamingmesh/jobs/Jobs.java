@@ -93,13 +93,10 @@ import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
-import com.gamingmesh.jobs.stuff.ActionBar;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.Loging;
-import com.gamingmesh.jobs.stuff.RawMessage;
 import com.gamingmesh.jobs.stuff.TabComplete;
-import com.gamingmesh.jobs.stuff.VersionChecker;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -160,7 +157,7 @@ public class Jobs extends JavaPlugin {
 
     private static NMS nms = null;
 
-    private static ActionBar actionbar = null;
+    private static ActionBarTitleMessages actionbar = null;
 
     protected static VersionChecker versionCheckManager = null;
 
@@ -276,10 +273,10 @@ public class Jobs extends JavaPlugin {
     }
 
     public void setActionBar() {
-	actionbar = new ActionBar();
+	actionbar = new ActionBarTitleMessages();
     }
 
-    public static ActionBar getActionBar() {
+    public static ActionBarTitleMessages getActionBar() {
 	return actionbar;
     }
 

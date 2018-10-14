@@ -19,7 +19,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ScoreboardInfo;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class CMIScoreboardManager {
 

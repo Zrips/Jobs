@@ -59,7 +59,7 @@ import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ConfigManager {
     private Jobs plugin;
