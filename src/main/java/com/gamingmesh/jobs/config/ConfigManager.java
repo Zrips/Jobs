@@ -183,29 +183,55 @@ public class ConfigManager {
 	    myKey = myKey.split("-")[0];
 	}
 
-	CMIMaterial material = CMIMaterial.get(myKey + (subType));
+	CMIMaterial material = null;
 
-	if (material == null)
-	    material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
+	switch (actionType) {
+	case KILL:
+	case MILK:
+	case MMKILL:
+	case BREED:
+	case SHEAR:
+	case EXPLORE:
+	case CUSTOMKILL:
+	    break;
+	case TNTBREAK:
+	case VTRADE:
+	case SMELT:
+	case REPAIR:
+	case PLACE:
+	case EAT:
+	case FISH:
+	case ENCHANT:
+	case DYE:
+	case DRINK:
+	case CRAFT:
+	case BREW:
+	case BREAK:
+	    material = CMIMaterial.get(myKey + (subType));
 
-	if (material == null) {
-	    // try integer method
-	    Integer matId = null;
-	    try {
-		matId = Integer.valueOf(myKey);
-	    } catch (NumberFormatException e) {
-	    }
-	    if (matId != null) {
-		material = CMIMaterial.get(matId);
-		if (material != null) {
-		    Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " is using ID: " + myKey + "!");
-		    Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
+	    if (material == null)
+		material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
+
+	    if (material == null) {
+		// try integer method
+		Integer matId = null;
+		try {
+		    matId = Integer.valueOf(myKey);
+		} catch (NumberFormatException e) {
+		}
+		if (matId != null) {
+		    material = CMIMaterial.get(matId);
+		    if (material != null) {
+			Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " is using ID: " + myKey + "!");
+			Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
+		    }
 		}
 	    }
-	}
+	    break;
+	default:
+	    break;
 
-	if (actionType == ActionType.EXPLORE)
-	    material = null;
+	}
 
 	c: if (material != null) {
 
@@ -261,7 +287,7 @@ public class ConfigManager {
 	} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
 
 	    // check entities
-	    EntityType entity = EntityType.fromName(myKey);
+	    EntityType entity = EntityType.fromName(myKey.toUpperCase());
 	    if (entity == null) {
 		try {
 		    entity = EntityType.valueOf(myKey.toUpperCase());
@@ -278,42 +304,44 @@ public class ConfigManager {
 		    Jobs.getGCManager().setBreederFinder(true);
 	    }
 
-	    switch (myKey.toLowerCase()) {
-	    case "skeletonwither":
-		type = "SkeletonWither";
-		id = 51;
-		meta = "1";
-		break;
-	    case "skeletonstray":
-		type = "SkeletonStray";
-		id = 51;
-		meta = "2";
-		break;
-	    case "zombievillager":
-		type = "ZombieVillager";
-		id = 54;
-		meta = "1";
-		break;
-	    case "zombiehusk":
-		type = "ZombieHusk";
-		id = 54;
-		meta = "2";
-		break;
-	    case "horseskeleton":
-		type = "HorseSkeleton";
-		id = 100;
-		meta = "1";
-		break;
-	    case "horsezombie":
-		type = "HorseZombie";
-		id = 100;
-		meta = "2";
-		break;
-	    case "guardianelder":
-		type = "GuardianElder";
-		id = 68;
-		meta = "1";
-		break;
+	    if (entity == null) {
+		switch (myKey.toLowerCase()) {
+		case "skeletonwither":
+		    type = CMIEntityType.WITHER_SKELETON.getOneWordName();
+		    id = 51;
+		    meta = "1";
+		    break;
+		case "skeletonstray":
+		    type = CMIEntityType.STRAY.getOneWordName();
+		    id = 51;
+		    meta = "2";
+		    break;
+		case "zombievillager":
+		    type = CMIEntityType.ZOMBIE_VILLAGER.getOneWordName();
+		    id = 54;
+		    meta = "1";
+		    break;
+		case "zombiehusk":
+		    type = CMIEntityType.HUSK.getOneWordName();
+		    id = 54;
+		    meta = "2";
+		    break;
+		case "horseskeleton":
+		    type = CMIEntityType.SKELETON_HORSE.getOneWordName();
+		    id = 100;
+		    meta = "1";
+		    break;
+		case "horsezombie":
+		    type = CMIEntityType.ZOMBIE_HORSE.getOneWordName();
+		    id = 100;
+		    meta = "2";
+		    break;
+		case "guardianelder":
+		    type = CMIEntityType.ELDER_GUARDIAN.getOneWordName();
+		    id = 68;
+		    meta = "1";
+		    break;
+		}
 	    }
 
 	} else if (actionType == ActionType.ENCHANT) {
@@ -1029,42 +1057,45 @@ public class ConfigManager {
 				    Jobs.getGCManager().setBreederFinder(true);
 			    }
 
-			    switch (key.toLowerCase()) {
-			    case "skeletonwither":
-				type = CMIEntityType.WITHER_SKELETON.getOneWordName();
-				id = 51;
-				meta = "1";
-				break;
-			    case "skeletonstray":
-				type = CMIEntityType.STRAY.getOneWordName();
-				id = 51;
-				meta = "2";
-				break;
-			    case "zombievillager":
-				type = CMIEntityType.ZOMBIE_VILLAGER.getOneWordName();
-				id = 54;
-				meta = "1";
-				break;
-			    case "zombiehusk":
-				type = CMIEntityType.HUSK.getOneWordName();
-				id = 54;
-				meta = "2";
-				break;
-			    case "horseskeleton":
-				type = CMIEntityType.SKELETON_HORSE.getOneWordName();
-				id = 100;
-				meta = "1";
-				break;
-			    case "horsezombie":
-				type = CMIEntityType.ZOMBIE_HORSE.getOneWordName();
-				id = 100;
-				meta = "2";
-				break;
-			    case "guardianelder":
-				type = CMIEntityType.ELDER_GUARDIAN.getOneWordName();
-				id = 68;
-				meta = "1";
-				break;
+			    // Pre 1.13 checks for custom names
+			    if (entity == null) {
+				switch (key.toLowerCase()) {
+				case "skeletonwither":
+				    type = CMIEntityType.WITHER_SKELETON.getOneWordName();
+				    id = 51;
+				    meta = "1";
+				    break;
+				case "skeletonstray":
+				    type = CMIEntityType.STRAY.getOneWordName();
+				    id = 51;
+				    meta = "2";
+				    break;
+				case "zombievillager":
+				    type = CMIEntityType.ZOMBIE_VILLAGER.getOneWordName();
+				    id = 54;
+				    meta = "1";
+				    break;
+				case "zombiehusk":
+				    type = CMIEntityType.HUSK.getOneWordName();
+				    id = 54;
+				    meta = "2";
+				    break;
+				case "horseskeleton":
+				    type = CMIEntityType.SKELETON_HORSE.getOneWordName();
+				    id = 100;
+				    meta = "1";
+				    break;
+				case "horsezombie":
+				    type = CMIEntityType.ZOMBIE_HORSE.getOneWordName();
+				    id = 100;
+				    meta = "2";
+				    break;
+				case "guardianelder":
+				    type = CMIEntityType.ELDER_GUARDIAN.getOneWordName();
+				    id = 68;
+				    meta = "1";
+				    break;
+				}
 			    }
 
 			} else if (actionType == ActionType.ENCHANT) {

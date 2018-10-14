@@ -1079,7 +1079,7 @@ public class JobsPaymentListener implements Listener {
 	    double damage = lVictim.getMetadata(entityDamageByPlayer).get(0).asDouble();
 	    double perc = (damage * 100D) / lVictim.getMaxHealth();
 	    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
-		return;
+		return; 
 	}
 
 	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
