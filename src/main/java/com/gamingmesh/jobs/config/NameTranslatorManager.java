@@ -141,9 +141,9 @@ public class NameTranslatorManager {
 	    ListOfNames.clear();
 	    for (String one : keys) {
 
-		String id = one.split("-")[0];
-		id = id.contains(":") ? id.split(":")[0] : id;
-		String meta = id.contains(":") ? id.split(":")[1] : "";
+		String split = one.split("-")[0];
+		String id = split.contains(":") ? split.split(":")[0] : split;
+		String meta = split.contains(":") ? split.split(":")[1] : "";
 
 		String MCName = one.split("-")[1];
 		String Name = ItemFile.getConfig().getString("ItemList." + one);
@@ -159,9 +159,9 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfEntities.clear();
 	    for (String one : keys) {
-		String id = one.split("-")[0];
-		id = one.contains(":") ? one.split(":")[0] : one;
-		String meta = one.contains(":") ? one.split(":")[1] : "";
+		String split = one.split("-")[0];
+		String id = split.contains(":") ? split.split(":")[0] : split;
+		String meta = split.contains(":") ? split.split(":")[1] : "";
 		String MCName = one.split("-")[1];
 		String Name = ItemFile.getConfig().getString("EntityList." + one);
 		ListOfEntities.add(new NameList(id, meta, Name, MCName));
@@ -192,10 +192,10 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfColors.clear();
 	    for (String one : keys) {
-		String id = one.contains(":") ? one.split(":")[0] : one;
-		String meta = one.contains(":") ? one.split(":")[1] : "";
-		String MCName = section.getString(one + ".MCName");
-		String Name = section.getString(one + ".Name");
+		String id = one.split("-")[0];
+		String meta = "";
+		String MCName = one.split("-")[1];
+		String Name = ItemFile.getConfig().getString("ColorList." + one);
 		ListOfColors.add(new NameList(id, meta, Name, MCName));
 	    }
 	    if (ListOfColors.size() != 0)
@@ -208,10 +208,10 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfPotionNames.clear();
 	    for (String one : keys) {
-		String id = one.contains(":") ? one.split(":")[0] : one;
-		String meta = one.contains(":") ? one.split(":")[1] : "";
-		String MCName = section.getString(one + ".MCName");
-		String Name = section.getString(one + ".Name");
+		String id = String.valueOf(CMIMaterial.POTION.getId());
+		String meta = one.split("-")[0];
+		String MCName = one.split("-")[1];
+		String Name = ItemFile.getConfig().getString("PotionNamesList." + one);
 		ListOfColors.add(new NameList(id, meta, Name, MCName));
 	    }
 	    if (ListOfPotionNames.size() != 0)
@@ -422,116 +422,51 @@ public class NameTranslatorManager {
 	    c.get("EnchantList.71.Name", "Curse Of Vanishing");
 
 	    // Color list
-	    c.get("ColorList.0.MCName", "white");
-	    c.get("ColorList.0.Name", "&fWhite");
-	    c.get("ColorList.1.MCName", "orange");
-	    c.get("ColorList.1.Name", "&6Orange");
-	    c.get("ColorList.2.MCName", "magenta");
-	    c.get("ColorList.2.Name", "&dMagenta");
-	    c.get("ColorList.3.MCName", "lightBlue");
-	    c.get("ColorList.3.Name", "&9Light blue");
-	    c.get("ColorList.4.MCName", "yellow");
-	    c.get("ColorList.4.Name", "&eYellow");
-	    c.get("ColorList.5.MCName", "lime");
-	    c.get("ColorList.5.Name", "&aLime");
-	    c.get("ColorList.6.MCName", "pink");
-	    c.get("ColorList.6.Name", "&dPink");
-	    c.get("ColorList.7.MCName", "gray");
-	    c.get("ColorList.7.Name", "&8Gray");
-	    c.get("ColorList.8.MCName", "silver");
-	    c.get("ColorList.8.Name", "&7Light gray");
-	    c.get("ColorList.9.MCName", "cyan");
-	    c.get("ColorList.9.Name", "&3Cyan");
-	    c.get("ColorList.10.MCName", "purple");
-	    c.get("ColorList.10.Name", "&5Purple");
-	    c.get("ColorList.11.MCName", "blue");
-	    c.get("ColorList.11.Name", "&1Blue");
-	    c.get("ColorList.12.MCName", "brown");
-	    c.get("ColorList.12.Name", "&4Brown");
-	    c.get("ColorList.13.MCName", "green");
-	    c.get("ColorList.13.Name", "&2Green");
-	    c.get("ColorList.14.MCName", "red");
-	    c.get("ColorList.14.Name", "&cRed");
-	    c.get("ColorList.15.MCName", "black");
-	    c.get("ColorList.15.Name", "&0Black");
+	    c.get("ColorList.0-white", "&fWhite");
+	    c.get("ColorList.1-orange", "&6Orange");
+	    c.get("ColorList.2-magenta", "&dMagenta");
+	    c.get("ColorList.3-lightBlue", "&9Light blue");
+	    c.get("ColorList.4-yellow", "&eYellow");
+	    c.get("ColorList.5-lime", "&aLime");
+	    c.get("ColorList.6-pink", "&dPink");
+	    c.get("ColorList.7-gray", "&8Gray");
+	    c.get("ColorList.8-silver", "&7Light gray");
+	    c.get("ColorList.9-cyan", "&3Cyan");
+	    c.get("ColorList.10-purple", "&5Purple");
+	    c.get("ColorList.11-blue", "&1Blue");
+	    c.get("ColorList.12-brown", "&4Brown");
+	    c.get("ColorList.13-green", "&2Green");
+	    c.get("ColorList.14-red", "&cRed");
+	    c.get("ColorList.15-black", "&0Black");
 
-	    // Potion name list
-	    c.get("PotionNamesList.373.MCName", "POTION");
-	    c.get("PotionNamesList.373.Name", "Potion");
-	    c.get("PotionNamesList.373:16.MCName", "AWKWARD_POTION");
-	    c.get("PotionNamesList.373:16.Name", "Awkward potion");
-	    c.get("PotionNamesList.373:32.MCName", "THICK_POTION");
-	    c.get("PotionNamesList.373:32.Name", "Thick potion");
-	    c.get("PotionNamesList.373:64.MCName", "MUNDANE_POTION");
-	    c.get("PotionNamesList.373:64.Name", "Mundane potion");
-	    c.get("PotionNamesList.373:8193.MCName", "REGENERATION_POTION");
-	    c.get("PotionNamesList.373:8193.Name", "Regeneration potion");
-	    c.get("PotionNamesList.373:8194.MCName", "SWIFTNESS_POTION");
-	    c.get("PotionNamesList.373:8194.Name", "Swiftness potion");
-	    c.get("PotionNamesList.373:8195.MCName", "FIRE_RESISTANCE_POTION");
-	    c.get("PotionNamesList.373:8195.Name", "Fire resistance potion");
-	    c.get("PotionNamesList.373:8196.MCName", "POISON_POTION");
-	    c.get("PotionNamesList.373:8196.Name", "Poison potion");
-	    c.get("PotionNamesList.373:8197.MCName", "HEALING_POTION");
-	    c.get("PotionNamesList.373:8197.Name", "Healing potion");
-	    c.get("PotionNamesList.373:8198.MCName", "NIGHT_VISION_POTION");
-	    c.get("PotionNamesList.373:8198.Name", "Night vision potion");
-	    c.get("PotionNamesList.373:8200.MCName", "WEAKNESS_POTION");
-	    c.get("PotionNamesList.373:8200.Name", "Weakness potion");
-	    c.get("PotionNamesList.373:8201.MCName", "STRENGTH_POTION");
-	    c.get("PotionNamesList.373:8201.Name", "Strength potion");
-	    c.get("PotionNamesList.373:8202.MCName", "SLOWNESS_POTION");
-	    c.get("PotionNamesList.373:8202.Name", "Slowness potion");
-	    c.get("PotionNamesList.373:8204.MCName", "HARMING_POTION");
-	    c.get("PotionNamesList.373:8204.Name", "Harming potion");
-	    c.get("PotionNamesList.373:8205.MCName", "WATER_BREATHING_POTION");
-	    c.get("PotionNamesList.373:8205.Name", "Water breathing potion");
-	    c.get("PotionNamesList.373:8206.MCName", "INVISIBILITY_POTION");
-	    c.get("PotionNamesList.373:8206.Name", "Inivisibility potion");
-	    c.get("PotionNamesList.373:8225.MCName", "REGENERATION_POTION2");
-	    c.get("PotionNamesList.373:8225.Name", "Regeneration potion 2");
-	    c.get("PotionNamesList.373:8226.MCName", "SWIFTNESS_POTION2");
-	    c.get("PotionNamesList.373:8226.Name", "Swiftness potion 2");
-	    c.get("PotionNamesList.373:8228.MCName", "POISON_POTION2");
-	    c.get("PotionNamesList.373:8228.Name", "Poison potion 2");
-	    c.get("PotionNamesList.373:8229.MCName", "HEALING_POTION2");
-	    c.get("PotionNamesList.373:8229.Name", "Healing potion 2");
-	    c.get("PotionNamesList.373:8233.MCName", "STRENGTH_POTION2");
-	    c.get("PotionNamesList.373:8233.Name", "Strength potion 2");
-	    c.get("PotionNamesList.373:8235.MCName", "LEAPING_POTION2");
-	    c.get("PotionNamesList.373:8235.Name", "Leaping potion 2");
-	    c.get("PotionNamesList.373:8236.MCName", "HARMING_POTION2");
-	    c.get("PotionNamesList.373:8236.Name", "Harming potion 2");
-	    c.get("PotionNamesList.373:8257.MCName", "REGENERATION_POTION3");
-	    c.get("PotionNamesList.373:8257.Name", "Regeneration potion 3");
-	    c.get("PotionNamesList.373:8258.MCName", "SWIFTNESS_POTION3");
-	    c.get("PotionNamesList.373:8258.Name", "Swiftness potion 3");
-	    c.get("PotionNamesList.373:8259.MCName", "FIRE_RESISTANCE_POTION3");
-	    c.get("PotionNamesList.373:8259.Name", "Fire resistance potion 3");
-	    c.get("PotionNamesList.373:8260.MCName", "POISON_POTION3");
-	    c.get("PotionNamesList.373:8260.Name", "Poison potion 3");
-	    c.get("PotionNamesList.373:8262.MCName", "NIGHT_VISION_POTION2");
-	    c.get("PotionNamesList.373:8262.Name", "Night vision potion 2");
-	    c.get("PotionNamesList.373:8264.MCName", "WEAKNESS_POTION2");
-	    c.get("PotionNamesList.373:8264.Name", "Weakness potion 2");
-	    c.get("PotionNamesList.373:8265.MCName", "STRENGTH_POTION3");
-	    c.get("PotionNamesList.373:8265.Name", "Strength potion 3");
-	    c.get("PotionNamesList.373:8266.MCName", "SLOWNESS_POTION2");
-	    c.get("PotionNamesList.373:8266.Name", "Slowness potion 2");
-	    c.get("PotionNamesList.373:8267.MCName", "LEAPING_POTION3");
-	    c.get("PotionNamesList.373:8267.Name", "Leaping potion 3");
-	    c.get("PotionNamesList.373:8269.MCName", "WATER_BREATHING_POTION2");
-	    c.get("PotionNamesList.373:8269.Name", "Water breathing potion 2");
-	    c.get("PotionNamesList.373:8270.MCName", "INVISIBILITY_POTION2");
-	    c.get("PotionNamesList.373:8270.Name", "Invisibility potion 2");
-	    c.get("PotionNamesList.373:8289.MCName", "REGENERATION_POTION4");
-	    c.get("PotionNamesList.373:8289.Name", "Regeneration potion 4");
-	    c.get("PotionNamesList.373:8290.MCName", "SWIFTNESS_POTION4");
-	    c.get("PotionNamesList.373:8290.Name", "Swiftness potion 4");
-	    c.get("PotionNamesList.373:8292.MCName", "POISON_POTION4");
-	    c.get("PotionNamesList.373:8292.Name", "Poison potion 4");
-	    c.get("PotionNamesList.373:8297.MCName", "STRENGTH_POTION4");
-	    c.get("PotionNamesList.373:8297.Name", "Strength potion 4");
+	    for (CMIMaterial one : CMIMaterial.values()) {
+		if (one.getMaterial() == null)
+		    continue;
+
+		if (!one.isPotion())
+		    continue;
+
+		String n = one.getLegacyId() + (one.getLegacyData() == -1 ? "" : ":" + one.getLegacyData());
+
+		String name = null;
+
+		if (c.getC().isConfigurationSection("PotionNamesList." + n)) {
+		    name = c.getC().getString("PotionNamesList." + n + ".Name");
+		}
+
+		if (name == null) {
+		    n = one.getLegacyData() + "-" + one.toString();
+		    if (c.getC().isConfigurationSection("PotionNamesList." + n)) {
+			name = c.getC().getString("PotionNamesList." + n);
+		    }
+		}
+
+		if (name == null) {
+		    name = one.getName();
+		}
+
+		c.get("PotionNamesList." + one.getLegacyData() + "-" + one.toString(), name);
+	    }
 
 	    try {
 		c.getW().save(f);
