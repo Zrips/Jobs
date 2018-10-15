@@ -22,7 +22,6 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ItemManager {
@@ -2433,17 +2432,19 @@ public class ItemManager {
 	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 		if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
 		    org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
-		    switch (slab.getType()) {
-		    case TOP:
+		    org.bukkit.block.data.type.Slab.Type t = slab.getType();
+		    switch (t.toString()) {
+		    case "TOP":
 			return SlabType.TOP;
-		    case BOTTOM:
+		    case "BOTTOM":
 			return SlabType.BOTTOM;
-		    case DOUBLE:
+		    case "DOUBLE":
 			return SlabType.DOUBLE;
 		    }
 		}
 		return SlabType.NOTSLAB;
 	    }
+
 	    if (block.getType().name().contains("STEP")) {
 		switch (CMIMaterial.get(block).getLegacyId()) {
 		case 44:
