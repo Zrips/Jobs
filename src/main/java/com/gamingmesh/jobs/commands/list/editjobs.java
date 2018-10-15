@@ -450,7 +450,6 @@ public class editjobs implements Cmd {
 
 		}
 
-
 		c: if (material != null) {
 
 		    // Need to include thos ones and count as regular blocks
@@ -479,11 +478,15 @@ public class editjobs implements Cmd {
 			    break;
 			}
 		    }
-		    if (material == CMIMaterial.REDSTONE_ORE && actionT == ActionType.BREAK) {
+		    if (material == CMIMaterial.REDSTONE_ORE && actionT == ActionType.BREAK && Version.isCurrentLower(Version.v1_13_R1)) {
 			player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
 			player.sendMessage(ChatColor.GOLD + "Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
 			player.sendMessage(ChatColor.GOLD + "In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 			player.sendMessage(ChatColor.GOLD + "In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
+			material = CMIMaterial.LEGACY_GLOWING_REDSTON_ORE;
+		    } else if (material == CMIMaterial.LEGACY_GLOWING_REDSTON_ORE && actionT == ActionType.BREAK && Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+			player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " is using GLOWING_REDSTONE_ORE instead of REDSTONE_ORE.");
+			player.sendMessage(ChatColor.GOLD + "Automatically changing block to REDSTONE_ORE.  Please update your configuration.");
 			material = CMIMaterial.REDSTONE_ORE;
 		    }
 

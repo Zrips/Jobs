@@ -375,7 +375,7 @@ public class JobsPaymentListener implements Listener {
 	    FurnaceBrewingHandling.removeBrewing(block);
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
-	
+
 	FastPayment fp = Jobs.FastPayment.get(player.getName());
 	if (fp != null) {
 	    if (fp.getTime() > System.currentTimeMillis()) {
@@ -837,7 +837,7 @@ public class JobsPaymentListener implements Listener {
 	    Integer level = oneEnchant.getValue();
 	    if (level == null)
 		continue;
-
+	    
 	    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
 	}
 	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
@@ -1079,7 +1079,7 @@ public class JobsPaymentListener implements Listener {
 	    double damage = lVictim.getMetadata(entityDamageByPlayer).get(0).asDouble();
 	    double perc = (damage * 100D) / lVictim.getMaxHealth();
 	    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
-		return; 
+		return;
 	}
 
 	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
