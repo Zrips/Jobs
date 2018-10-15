@@ -138,7 +138,7 @@ public class LanguageManager {
 	    c.get("general.error.noinfoByPlayer", "&cNo information found by [%playername%] player name!");
 	    c.get("general.error.ingame", "&cYou can use this command only in game!");
 	    c.get("general.error.fromconsole", "&cYou can use this command only from console!");
-	    c.get("general.error.worldisdisabled", "&cYou cant use command in this world!");
+	    c.get("general.error.worldisdisabled", "&cYou can't use command in this world!");
 
 	    c.get("general.error.newFurnaceRegistration", "&eRegistered new ownership for furnace &7[current]&e/&f[max]");
 	    c.get("general.error.newBrewingRegistration", "&eRegistered new ownership for brewing stand &7[current]&e/&f[max]");
@@ -327,7 +327,7 @@ public class LanguageManager {
 	    c.get("command.give.help.args", "[playername] [jobname] [itemname]");
 	    Jobs.getGCManager().commandArgs.put("give", Arrays.asList("[playername]", "[jobname]", "[jobitemname]"));
 	    c.get("command.give.output.notonline", "&4Player [%playername%] is not online!");
-	    c.get("command.give.output.noitem", "&4Cant find any item by given name!");
+	    c.get("command.give.output.noitem", "&4Can't find any item by given name!");
 
 	    c.get("command.info.help.title", "&2*** &eJobs&2 ***");
 	    c.get("command.info.help.info", "Show how much each job is getting paid and for what.");
@@ -358,45 +358,45 @@ public class LanguageManager {
 	    c.get("command.info.gui.max", "&eMax level:&f ");
 	    c.get("command.info.gui.back", "&e<<< Back");
 
-	    c.get("command.info.output.break.info", "Break");
+	    c.get("command.info.output.break.info", "&eBreak");
 	    c.get("command.info.output.break.none", "%jobname% does not get money for breaking blocks.");
-	    c.get("command.info.output.tntbreak.info", "TNTBreak");
+	    c.get("command.info.output.tntbreak.info", "&eTNTBreak");
 	    c.get("command.info.output.tntbreak.none", "%jobname% does not get money for breaking blocks with tnt.");
-	    c.get("command.info.output.place.info", "Place");
+	    c.get("command.info.output.place.info", "&ePlace");
 	    c.get("command.info.output.place.none", "%jobname% does not get money for placing blocks.");
-	    c.get("command.info.output.kill.info", "Kill");
+	    c.get("command.info.output.kill.info", "&eKill");
 	    c.get("command.info.output.kill.none", "%jobname% does not get money for killing monsters.");
-	    c.get("command.info.output.mmkill.info", "MMKill");
+	    c.get("command.info.output.mmkill.info", "&eMMKill");
 	    c.get("command.info.output.mmkill.none", "%jobname% does not get money for killing Mythic monsters.");
-	    c.get("command.info.output.fish.info", "Fish");
+	    c.get("command.info.output.fish.info", "&eFish");
 	    c.get("command.info.output.fish.none", "%jobname% does not get money from fishing.");
-	    c.get("command.info.output.craft.info", "Craft");
+	    c.get("command.info.output.craft.info", "&eCraft");
 	    c.get("command.info.output.craft.none", "%jobname% does not get money from crafting.");
-		c.get("command.info.output.drink.info", "Drink");
+		c.get("command.info.output.drink.info", "&eDrink");
 	    c.get("command.info.output.drink.none", "%jobname% does not get money for drinking.");
-	    c.get("command.info.output.smelt.info", "Smelt");
+	    c.get("command.info.output.smelt.info", "&eSmelt");
 	    c.get("command.info.output.smelt.none", "%jobname% does not get money from smelting.");
-	    c.get("command.info.output.brew.info", "Brew");
+	    c.get("command.info.output.brew.info", "&eBrew");
 	    c.get("command.info.output.brew.none", "%jobname% does not get money from brewing.");
-	    c.get("command.info.output.eat.info", "Eat");
+	    c.get("command.info.output.eat.info", "&eEat");
 	    c.get("command.info.output.eat.none", "%jobname% does not get money from eating food.");
-	    c.get("command.info.output.dye.info", "Dye");
+	    c.get("command.info.output.dye.info", "&eDye");
 	    c.get("command.info.output.dye.none", "%jobname% does not get money from dyeing.");
-	    c.get("command.info.output.enchant.info", "Enchant");
+	    c.get("command.info.output.enchant.info", "&eEnchant");
 	    c.get("command.info.output.enchant.none", "%jobname% does not get money from enchanting.");
-	    c.get("command.info.output.repair.info", "Repair");
+	    c.get("command.info.output.repair.info", "&eRepair");
 	    c.get("command.info.output.repair.none", "%jobname% does not get money from repairing.");
-	    c.get("command.info.output.breed.info", "Breed");
+	    c.get("command.info.output.breed.info", "&eBreed");
 	    c.get("command.info.output.breed.none", "%jobname% does not get money from breeding.");
-	    c.get("command.info.output.tame.info", "Tame");
+	    c.get("command.info.output.tame.info", "&eTame");
 	    c.get("command.info.output.tame.none", "%jobname% does not get money from taming.");
-	    c.get("command.info.output.milk.info", "Milk");
+	    c.get("command.info.output.milk.info", "&eMilk");
 	    c.get("command.info.output.milk.none", "%jobname% does not get money from milking cows.");
-	    c.get("command.info.output.shear.info", "Shear");
+	    c.get("command.info.output.shear.info", "&eShear");
 	    c.get("command.info.output.shear.none", "%jobname% does not get money from shearing sheeps.");
-	    c.get("command.info.output.explore.info", "Explore");
+	    c.get("command.info.output.explore.info", "&eExplore");
 	    c.get("command.info.output.explore.none", "%jobname% does not get money from exploring.");
-	    c.get("command.info.output.custom-kill.info", "Custom kill");
+	    c.get("command.info.output.custom-kill.info", "&eCustom kill");
 	    c.get("command.info.output.custom-kill.none", "%jobname% does not get money from custom player kills.");
 
 	    c.get("command.playerinfo.help.info", "Show how much each job is getting paid and for what on another player.");
@@ -487,7 +487,7 @@ public class LanguageManager {
 	    c.get("command.top.help.info", "Shows top %amount% players by jobs name.");
 	    c.get("command.top.help.args", "[jobname]");
 	    Jobs.getGCManager().commandArgs.put("top", Arrays.asList("[jobname]"));
-	    c.get("command.top.error.nojob", "Cant find any job with this name.");
+	    c.get("command.top.error.nojob", "Can't find any job with this name.");
 	    c.get("command.top.output.topline", "&aTop&e %amount% &aplayers by &e%jobname% &ajob");
 	    c.get("command.top.output.list", "&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp");
 	    c.get("command.top.output.prev", "&e<<<<< Prev page &2|");
@@ -496,7 +496,7 @@ public class LanguageManager {
 
 	    c.get("command.gtop.help.info", "Shows top %amount% players by global jobs level.");
 	    c.get("command.gtop.help.args", "");
-	    c.get("command.gtop.error.nojob", "Cant find any information.");
+	    c.get("command.gtop.error.nojob", "Can't find any information.");
 	    c.get("command.gtop.output.topline", "&aTop&e %amount% &aplayers by global job level");
 	    c.get("command.gtop.output.list", "&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp");
 	    c.get("command.gtop.output.prev", "&e<<<<< Prev page &2|");
@@ -604,7 +604,7 @@ public class LanguageManager {
 
 	    c.get("message.cowtimer", "&eYou still need to wait &6%time% &esec to get paid for this job.");
 	    c.get("message.blocktimer", "&eYou need to wait: &3[time] &esec more to get paid for this!");
-	    c.get("message.placeblocktimer", "&eYou cant place block faster than &6[time] &esec interval in same place!");
+	    c.get("message.placeblocktimer", "&eYou can't place block faster than &6[time] &esec interval in same place!");
 	    c.get("message.taxes", "&3[amount] &eserver taxes where transfered to this account");
 
 	    c.get("message.boostStarted", "&eJobs boost time have been started!");

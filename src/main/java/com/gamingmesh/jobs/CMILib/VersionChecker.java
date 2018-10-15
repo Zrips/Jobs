@@ -167,7 +167,7 @@ public class VersionChecker {
 		    if (player != null)
 			player.sendMessage(one);
 		    else
-			Bukkit.getConsoleSender().sendMessage(one);
+			Jobs.consoleMsg(one);
 	    }
 	});
     }

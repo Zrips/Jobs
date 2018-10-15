@@ -15,7 +15,6 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.NameList;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class NameTranslatorManager {
 

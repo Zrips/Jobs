@@ -928,7 +928,7 @@ public class JobsPlayer {
 
 	this.qProgression.put(job.getName(), g);
 
-	List<QuestProgression> pr = new ArrayList<QuestProgression>();
+	List<QuestProgression> pr = new ArrayList<>();
 	for (Entry<String, QuestProgression> one : tmp.entrySet()) {
 	    pr.add(one.getValue());
 	}

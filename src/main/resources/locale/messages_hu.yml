@@ -127,6 +127,13 @@ command:
       args: '[játékos]'
     output:
       reseted: '&eA fizetési határértékek alaphelyzetbe álltak: &2%playername%'
+  resetquest:
+    help:
+      info: 'A játékosok küldetés visszaállítása'
+      args: '[játékos] (munkanév)'
+      output:
+        reseted: '&eKüldetés visszaállítva: &2%playername%'
+        noQuests: '&eNincs egy küldetés sem.'
   help:
     output:
       info: '/jobs - A további lehetőségekért.'
@@ -196,7 +203,7 @@ command:
   stats:
     help:
       info: 'Kilistázza azokat a munkákat, amelyikbe beléptél.'
-      args: '[játékosnév]'
+      args: '[játékos]'
     error:
       nojob: '&cElőször csatlakozz egy munkához.'
     output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
@@ -383,7 +390,7 @@ command:
   clearownership:
     help:
       info: 'Tulajdonjog törlése.'
-      args: '(játékosnév)'
+      args: '(játékos)'
     output:
       cleared: '&2Eltávolítva &7[furnaces] &2kemence &7[brewing] &2főzet'
   quests:
@@ -566,7 +573,7 @@ command:
   edititembonus:
     help:
       info: 'Elembónusz bónuszának szerkesztése'
-      args: '[list/add/remove] [munka név] [itemBoostName]'
+      args: '[list/add/remove] [munkanév] [itemBoostName]'
 message:
   skillup:
     broadcast: '%playername% játékost előléptették a %titlename% %jobname% munkában.'
