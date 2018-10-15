@@ -108,7 +108,7 @@ command:
       reseted: '&eGeldlimit wurde für &2%playername% zurückgesetzt.'
   help:
     output:
-      info: '&eBenutze &c/jobs [Befehl] ?&efür mehr Informationen über einen Befehl.
+      info: '&eBenutze &c/jobs [Befehl] ?&efür mehr Informationen über einen Befehl.'
       usage: 'Verwendung: %usage%'
       title: '&e-------&e ======= &6Jobs &e======= &e-------'
       page: '&e-----&e ====== Seite &6[1] &evon &6[2] &e====== &e-----'
