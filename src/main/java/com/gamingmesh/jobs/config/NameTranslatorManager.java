@@ -15,6 +15,7 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.NameList;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class NameTranslatorManager {
 
@@ -86,22 +87,24 @@ public class NameTranslatorManager {
 	    case ENCHANT:
 		for (NameList one : ListOfEnchants) {
 		    String ids = one.getId();
+		    ids = one.getMinecraftName();
+		    if (ids.equalsIgnoreCase(info.getName().contains(":") ? info.getName().split(":")[0] : info.getName())) {
+			return one.getName() + (info.getName().contains(":") ? ":" + info.getName().split(":")[1] : "");
+		    }
+
 		    if (ids.equalsIgnoreCase(String.valueOf(info.getId()))) {
 			return one.getName() + " " + info.getMeta();
 		    }
-		}
-		for (NameList one : ListOfNames) {
-		    String ids = one.getId() + ":" + one.getMeta();
+		    ids = one.getId() + ":" + one.getMeta();
 		    if (!one.getMeta().equalsIgnoreCase("") && ids.equalsIgnoreCase(info.getId() + ":" + info.getMeta()) && !one.getId().equalsIgnoreCase("0")) {
 			return one.getName();
 		    }
-		}
-		for (NameList one : ListOfNames) {
-		    String ids = one.getId();
+		    ids = one.getId();
 		    if (ids.equalsIgnoreCase(String.valueOf(info.getId())) && !one.getId().equalsIgnoreCase("0")) {
 			return one.getName();
 		    }
 		}
+
 		break;
 	    case CUSTOMKILL:
 	    case EXPLORE:
