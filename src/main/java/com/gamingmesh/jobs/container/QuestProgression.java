@@ -49,7 +49,7 @@ public class QuestProgression {
 	return validUntil < System.currentTimeMillis();
     }
 
-    public boolean isComplited() {
+    public boolean isCompleted() {
 	return amountDone >= quest.getAmount();
     }
 
@@ -61,10 +61,10 @@ public class QuestProgression {
 	if (!quest.getTargetName().equalsIgnoreCase(action.getName()) && !quest.getTargetName().equalsIgnoreCase(action.getNameWithSub()))
 	    return;
 
-	if (!isComplited())
+	if (!isCompleted())
 	    amountDone++;
 
-	if (!isComplited())
+	if (!isCompleted())
 	    return;
 
 	if (!jPlayer.isOnline())

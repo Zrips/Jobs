@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.CMILib.RawMessage;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class quests implements Cmd {
@@ -54,9 +55,11 @@ public class quests implements Cmd {
 	if (sender instanceof Player) {
 	    for (JobProgression jobProg : jPlayer.getJobProgression()) {
 		List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
+		Debug.D("Quest size: " + list.size());
 		for (QuestProgression q : list) {
 		    String progressLine = Jobs.getCommandManager().jobProgressMessage(q.getQuest().getAmount(), q.getAmountDone());
-		    if (q.isComplited())
+
+		    if (q.isCompleted())
 			progressLine = Jobs.getLanguage().getMessage("command.quests.output.completed");
 		    RawMessage rm = new RawMessage();
 		    String msg = Jobs.getLanguage().getMessage("command.quests.output.questLine", "[progress]",

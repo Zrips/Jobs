@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -76,7 +77,7 @@ public class JobsPlayer {
     private HashMap<String, Boolean> permissionsCache = null;
     private Long lastPermissionUpdate = -1L;
 
-    private HashMap<String, List<QuestProgression>> qProgression = new HashMap<>();
+    private HashMap<String, HashMap<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
 
     public JobsPlayer(String userName, OfflinePlayer player) {
@@ -827,12 +828,12 @@ public class JobsPlayer {
 
     public boolean inDailyQuest(Job job, String questName) {
 
-	List<QuestProgression> qpl = this.qProgression.get(job.getName());
+	HashMap<String, QuestProgression> qpl = this.qProgression.get(job.getName());
 	if (qpl == null)
 	    return false;
 
-	for (QuestProgression one : qpl) {
-	    if (one.getQuest().getConfigName().equalsIgnoreCase(questName))
+	for (Entry<String, QuestProgression> one : qpl.entrySet()) {
+	    if (one.getValue().getQuest().getConfigName().equalsIgnoreCase(questName))
 		return true;
 	}
 
@@ -844,15 +845,15 @@ public class JobsPlayer {
 	if (!this.isInJob(job))
 	    return ls;
 
-	List<QuestProgression> qpl = this.qProgression.get(job.getName());
+	HashMap<String, QuestProgression> qpl = this.qProgression.get(job.getName());
 
 	if (qpl == null)
 	    return ls;
 
-	for (QuestProgression one : qpl) {
-
-	    if (!one.isEnded() && (type == null || type.name().equals(one.getQuest().getAction().name())))
-		ls.add(one.getQuest().getConfigName().toLowerCase());
+	for (Entry<String, QuestProgression> one : qpl.entrySet()) {
+	    QuestProgression prog = one.getValue();
+	    if (!prog.isEnded() && (type == null || type.name().equals(prog.getQuest().getAction().name())))
+		ls.add(prog.getQuest().getConfigName().toLowerCase());
 	}
 
 	return ls;
@@ -881,23 +882,16 @@ public class JobsPlayer {
 
     public List<QuestProgression> getQuestProgressions(Job job, ActionType type) {
 	if (!this.isInJob(job))
-	    return null;
-	List<QuestProgression> g = new ArrayList<>();
+	    return new ArrayList<>();
+	HashMap<String, QuestProgression> g = new HashMap<>();
 
 	if (this.qProgression.get(job.getName()) != null)
-	    g = new ArrayList<>(this.qProgression.get(job.getName()));
+	    g = new HashMap<>(this.qProgression.get(job.getName()));
 
-	List<QuestProgression> tmp = new ArrayList<>();
+	HashMap<String, QuestProgression> tmp = new HashMap<>();
 
-	if (!g.isEmpty()) {
-	    if (g.get(0).isEnded()) {
-		g.clear();
-		this.qProgression.clear();
-	    }
-	}
-
-	for (QuestProgression one : new ArrayList<QuestProgression>(g)) {
-	    QuestProgression qp = one;
+	for (Entry<String, QuestProgression> one : (new HashMap<String, QuestProgression>(g)).entrySet()) {
+	    QuestProgression qp = one.getValue();
 	    if (qp == null || !qp.isValid()) {
 		Quest q = job.getNextQuest(getQuestNameList(job, type), this.getJobProgression(job).getLevel());
 
@@ -909,11 +903,11 @@ public class JobsPlayer {
 		if (g.size() >= job.getMaxDailyQuests())
 		    continue;
 
-		g.add(qp);
+		g.put(qp.getQuest().getConfigName(), qp);
 	    }
 
 	    if (type == null || type.name().equals(qp.getQuest().getAction().name()))
-		tmp.add(qp);
+		tmp.put(qp.getQuest().getConfigName(), qp);
 	}
 
 	this.qProgression.put(job.getName(), g);
@@ -925,14 +919,21 @@ public class JobsPlayer {
 		if (q == null)
 		    continue;
 		QuestProgression qp = new QuestProgression(q);
-		g.add(qp);
+		g.put(qp.getQuest().getConfigName(), qp);
 
 		if (type == null || type.name().equals(qp.getQuest().getAction().name()))
-		    tmp.add(qp);
+		    tmp.put(qp.getQuest().getConfigName(), qp);
 	    }
 	}
+
 	this.qProgression.put(job.getName(), g);
-	return tmp;
+
+	List<QuestProgression> pr = new ArrayList<QuestProgression>();
+	for (Entry<String, QuestProgression> one : tmp.entrySet()) {
+	    pr.add(one.getValue());
+	}
+
+	return pr;
     }
 
     public int getDoneQuests() {

@@ -240,6 +240,11 @@ public class LanguageManager {
 	    c.get("command.resetlimit.help.args", "[playername]");
 	    c.get("command.resetlimit.output.reseted", "&ePayment limits have been reset for: &2%playername%");
 
+	    c.get("command.resetquest.help.info", "Resets players quest");
+	    c.get("command.resetquest.help.args", "[playername] (job)");
+	    c.get("command.resetquest.output.reseted", "&eQuest have been reset for: &2%playername%");
+	    c.get("command.resetquest.output.noQuests", "&eCan't find any quests");
+
 	    c.get("command.points.help.info", "Shows how much points player have.");
 	    c.get("command.points.help.args", "[playername]");
 	    Jobs.getGCManager().commandArgs.put("points", Arrays.asList("[playername]"));
