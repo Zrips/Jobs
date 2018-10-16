@@ -624,7 +624,7 @@ public class ItemManager {
 	ACACIA_SLAB(126, 4, 23730, "Acacia Wood Slab", "Acacia Slab"),
 	ACACIA_STAIRS(163, 0, 17453, "Acacia Stairs"),
 	ACACIA_TRAPDOOR(-1, -1, 18343, "Acacia Trapdoor"),
-	ACACIA_WOOD(-1, -1, 21861, "Acacia Wood", "Acacia Log"),
+	ACACIA_WOOD(-1, -1, 21861, "Acacia Wood"),
 	ACTIVATOR_RAIL(157, 0, 5834, "Activator Rail"),
 	AIR(0, 0, 9648, "Air"),
 	ALLIUM(38, 2, 6871, "Allium", "RED_ROSE"),

@@ -313,9 +313,9 @@ public class PlayerManager {
 	    }
 
 	if (points != null)
-	    Jobs.getPlayerManager().getPointsData().addPlayer(jPlayer.getPlayerUUID(), points);
+	    getPointsData().addPlayer(jPlayer.getPlayerUUID(), points);
 	else
-	    Jobs.getPlayerManager().getPointsData().addPlayer(jPlayer.getPlayerUUID());
+	    getPointsData().addPlayer(jPlayer.getPlayerUUID());
 
 	if (logs != null)
 	    jPlayer.setLog(logs);
@@ -753,11 +753,11 @@ public class PlayerManager {
 	if (prog == null)
 	    return data;
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-	data = Jobs.getPlayerManager().getItemBoostByNBT(prog, iih);
+	data = getItemBoostByNBT(prog, iih);
 	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
 	    if (OneArmor == null || OneArmor.getType() == Material.AIR)
 		continue;
-	    BoostMultiplier armorboost = Jobs.getPlayerManager().getItemBoostByNBT(prog, OneArmor);
+	    BoostMultiplier armorboost = getItemBoostByNBT(prog, OneArmor);
 	    data.add(armorboost);
 	}
 
@@ -828,10 +828,10 @@ public class PlayerManager {
     public void updateOldItems(Player player) {
 
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-	if (iih != null && !iih.getType().equals(Material.AIR) && Jobs.getPlayerManager().containsItemBoostByNBT(iih) && !Jobs.getReflections().hasNbt(iih, "JobsItemBoost")) {
+	if (iih != null && !iih.getType().equals(Material.AIR) && containsItemBoostByNBT(iih) && !Jobs.getReflections().hasNbt(iih, "JobsItemBoost")) {
 	    boolean changed = false;
 	    for (Job one : Jobs.getJobs()) {
-		JobItems jitem = Jobs.getPlayerManager().getOldItemBoost(one, iih);
+		JobItems jitem = getOldItemBoost(one, iih);
 		if (jitem == null)
 		    continue;
 
@@ -851,7 +851,7 @@ public class PlayerManager {
 		continue;
 	    boolean changed = false;
 	    for (Job one : Jobs.getJobs()) {
-		JobItems jitem = Jobs.getPlayerManager().getOldItemBoost(one, item);
+		JobItems jitem = getOldItemBoost(one, item);
 		if (jitem == null)
 		    continue;
 		item = Jobs.getReflections().setNbt(item, "JobsItemBoost", one.getName(), jitem.getNode());
@@ -946,12 +946,12 @@ public class PlayerManager {
 		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
 	}
 
-	boost.add(BoostOf.Permission, Jobs.getPlayerManager().getBoost(player, prog, force));
+	boost.add(BoostOf.Permission, getBoost(player, prog, force));
 	boost.add(BoostOf.Global, prog.getBoost());
 	if (Jobs.getGCManager().useDynamicPayment)
 	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
 //	boost.add(BoostOf.Item, Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog));
-	boost.add(BoostOf.Item, Jobs.getPlayerManager().getItemBoostNBT(player.getPlayer(), prog));
+	boost.add(BoostOf.Item, getItemBoostNBT(player.getPlayer(), prog));
 	boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
 
 	return boost;
@@ -969,7 +969,7 @@ public class PlayerManager {
 	    public void run() {
 		if (!player.isOnline())
 		    return;
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+		JobsPlayer jPlayer = getJobsPlayer(player);
 		if (jPlayer == null)
 		    return;
 		if (player.hasPermission("jobs.*"))
@@ -979,12 +979,12 @@ public class PlayerManager {
 		    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
 			continue;
 		    short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
-		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(jPlayer, PlayerMaxJobs))
+		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, PlayerMaxJobs))
 			break;
 		    if (jPlayer.isInJob(one))
 			continue;
 		    if (player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
-			Jobs.getPlayerManager().joinJob(jPlayer, one);
+			joinJob(jPlayer, one);
 		}
 		return;
 	    }

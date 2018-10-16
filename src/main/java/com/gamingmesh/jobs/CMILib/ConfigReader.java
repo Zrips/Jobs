@@ -35,7 +35,7 @@ public class ConfigReader extends YamlConfiguration {
 
     public ConfigReader(File file) throws Exception {
 	super();
-	comments = new HashMap<String, String>();
+	comments = new HashMap<>();
 	this.file = file;
 	this.config = getyml(file);
     }
