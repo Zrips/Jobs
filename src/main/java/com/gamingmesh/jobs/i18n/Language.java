@@ -64,12 +64,13 @@ public class Language {
 	String msg = "";
 	try {
 	    if (customlocale == null || !customlocale.contains(key))
-		msg = enlocale.contains(key) == true ? Colors(enlocale.getString(key)) : missing;
+		msg = enlocale.isString(key) ? Colors(enlocale.getString(key)) : missing;
 	    else
-		msg = customlocale.contains(key) == true ? Colors(customlocale.getString(key)) : missing;
+		msg = customlocale.isString(key) ? Colors(customlocale.getString(key)) : missing;
 	} catch (Exception e) {
-	    Bukkit.getServer().getConsoleSender().sendMessage(Colors("&e[Jobs] &2Can't read language file. Plugin will be disabled."));
+	    Bukkit.getServer().getConsoleSender().sendMessage(Colors("&e[Jobs] &2Can't read language file for: " + key));
 	    Bukkit.getServer().getPluginManager().disablePlugin(plugin);
+	    e.printStackTrace();
 	    throw e;
 	}
 	if (variables.length > 0)
