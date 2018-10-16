@@ -1116,7 +1116,7 @@ Jobs:
         income: 0.25
         points: 0.25
         experience: 0.25
-      GRASS:
+      GRASS_BLOCK:
         income: 0.3
         points: 0.3
         experience: 0.3

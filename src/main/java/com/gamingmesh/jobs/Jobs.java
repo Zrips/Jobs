@@ -783,6 +783,9 @@ public class Jobs extends JavaPlugin {
 	    YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
 	    jobShopItems.saveDefaultConfig();
 
+	    YmlMaker restrictedBlocks = new YmlMaker(this, "restrictedBlocks.yml");
+	    restrictedBlocks.saveDefaultConfig();
+	    
 	    setPermissionHandler(new PermissionHandler(this));
 	    setJobsClassloader();
 	    setPlayerManager();
