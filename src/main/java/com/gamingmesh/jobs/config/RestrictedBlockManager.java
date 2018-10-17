@@ -13,10 +13,7 @@ public class RestrictedBlockManager {
 
     public HashMap<Integer, Integer> restrictedBlocksTimer = new HashMap<>();
 
-    private Jobs plugin;
-
-    public RestrictedBlockManager(Jobs plugin) {
-	this.plugin = plugin;
+    public RestrictedBlockManager() {
     }
 
     /**

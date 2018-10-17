@@ -64,8 +64,8 @@ public class JobsPlayer {
 
     private int userid = -1;
 
-    List<BossBarInfo> barMap = new ArrayList<>();
-    List<String> updateBossBarFor = new ArrayList<>();
+    private List<BossBarInfo> barMap = new ArrayList<>();
+    private List<String> updateBossBarFor = new ArrayList<>();
     // save lock
 //    public final Object saveLock = new Object();
 
@@ -80,9 +80,9 @@ public class JobsPlayer {
     private HashMap<String, HashMap<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
 
-    public JobsPlayer(String userName, OfflinePlayer player) {
+    public JobsPlayer(String userName, OfflinePlayer OffPlayer) {
 	this.userName = userName;
-	this.OffPlayer = player;
+	this.OffPlayer = OffPlayer;
 	this.player = Bukkit.getPlayer(userName);
     }
 

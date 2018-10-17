@@ -300,8 +300,8 @@ public class Jobs extends JavaPlugin {
 	pManager = new PlayerManager();
     }
 
-    public static void setRestrictedBlockManager(Jobs plugin) {
-	RBManager = new RestrictedBlockManager(plugin);
+    public static void setRestrictedBlockManager() {
+	RBManager = new RestrictedBlockManager();
     }
 
     public static RestrictedBlockManager getRestrictedBlockManager() {

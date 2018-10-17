@@ -64,7 +64,7 @@ public enum CMIChatColor {
     public static String deColorize(String text) {
 	if (text == null)
 	    return null;
-	return text.replace("�", "&");
+	return text.replace("§", "&");
     }
 
     public static String stripColor(String text) {
@@ -86,7 +86,7 @@ public enum CMIChatColor {
     }
 
     public String getBukkitColorCode() {
-	return "�" + c;
+	return "§" + c;
     }
 
     public char getChar() {

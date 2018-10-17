@@ -1,7 +1,5 @@
 package com.gamingmesh.jobs.container;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
@@ -77,9 +75,8 @@ public class QuestProgression {
 
 	jPlayer.addDoneQuest();
 
-	List<String> cmds = quest.getRewardCmds();
-	for (String one : cmds) {
-	    ServerCommandEvent ev = new ServerCommandEvent(Bukkit.getConsoleSender(), one.replace("[playerName]", jPlayer.getUserName()));
+	for (String one : quest.getRewardCmds()) {
+	    ServerCommandEvent ev = new ServerCommandEvent(Bukkit.getConsoleSender(), one.replace("[playerName]", jPlayer.getPlayer().getName()));
 	    Bukkit.getPluginManager().callEvent(ev);
 	    if (!ev.isCancelled()) {
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ev.getCommand().startsWith("/") ? ev.getCommand().substring(1) : ev.getCommand());

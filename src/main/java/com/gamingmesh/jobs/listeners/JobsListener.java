@@ -574,14 +574,6 @@ public class JobsListener implements Listener {
 
 	String format = event.getFormat();
 
-	// check if the player is in the job
-	if (jPlayer != null)
-	    for (Job job : Jobs.getJobs()) {
-		if (!jPlayer.isInJob(job))
-		    format = format.replace("%1$s", "");
-		return;
-	    }
-
 	format = format.replace("%1$s", honorific + "%1$s");
 	event.setFormat(format);
     }
@@ -598,13 +590,6 @@ public class JobsListener implements Listener {
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";
 	String format = event.getFormat();
-	// check if the player is in the job
-	if (jPlayer != null)
-	    for (Job job : Jobs.getJobs()) {
-		if (!jPlayer.isInJob(job))
-		    format = format.replace("{jobs}", "");
-		return;
-	    }
 	if (!format.contains("{jobs}"))
 	    return;
 	format = format.replace("{jobs}", honorific);
@@ -623,13 +608,6 @@ public class JobsListener implements Listener {
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";
 	String format = event.getFormat();
-	// check if the player is in the job
-	if (jPlayer != null)
-	    for (Job job : Jobs.getJobs()) {
-		if (!jPlayer.isInJob(job))
-		    format = format.replace("{jobs}", "");
-		return;
-	    }
 	if (!format.contains("{jobs}"))
 	    return;
 	format = format.replace("{jobs}", honorific);

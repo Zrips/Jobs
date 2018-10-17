@@ -352,7 +352,7 @@ public class GeneralConfigManager {
 	Jobs.setRestrictedAreaManager(this.plugin);
 	Jobs.getRestrictedAreaManager().load();
 	// restricted blocks
-	Jobs.setRestrictedBlockManager(this.plugin);
+	Jobs.setRestrictedBlockManager();
 	Jobs.getRestrictedBlockManager().load();
 	// Item/Block/mobs name list
 	Jobs.setNameTranslatorManager(this.plugin);
@@ -552,7 +552,7 @@ public class GeneralConfigManager {
 	c.getW().addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
 	modifyChat = c.get("modify-chat.use", true);
 	modifyChatPrefix = c.get("modify-chat.prefix", "&c[", true);
-	modifyChatSuffix = c.get("modify-chat.suffix", "&c]&r", true);
+	modifyChatSuffix = c.get("modify-chat.suffix", "&c]&r ", true);
 	modifyChatSeparator = c.get("modify-chat.separator", " ", true);
 
 	c.getW().addComment("UseCustomNames", "Do you want to use custom item/block/mob/enchant/color names",

@@ -151,7 +151,7 @@ public class NameTranslatorManager {
 		String Name = ItemFile.getConfig().getString("ItemList." + one);
 		ListOfNames.add(new NameList(id, meta, Name, MCName));
 	    }
-	    if (ListOfNames.size() != 0)
+	    if (ListOfNames.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfNames.size() + " custom item names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The ItemList section not found in " + ItemFile.fileName + " file.");
@@ -168,7 +168,7 @@ public class NameTranslatorManager {
 		String Name = ItemFile.getConfig().getString("EntityList." + one);
 		ListOfEntities.add(new NameList(id, meta, Name, MCName));
 	    }
-	    if (ListOfEntities.size() != 0)
+	    if (ListOfEntities.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfEntities.size() + " custom entity names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The EntityList section not found in " + ItemFile.fileName + " file.");
@@ -184,7 +184,7 @@ public class NameTranslatorManager {
 		String Name = section.getString(one + ".Name");
 		ListOfEnchants.add(new NameList(id, meta, Name, MCName));
 	    }
-	    if (ListOfEnchants.size() != 0)
+	    if (ListOfEnchants.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfEnchants.size() + " custom enchant names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The EnchantList section not found in " + ItemFile.fileName + " file.");
@@ -200,7 +200,7 @@ public class NameTranslatorManager {
 		String Name = ItemFile.getConfig().getString("ColorList." + one);
 		ListOfColors.add(new NameList(id, meta, Name, MCName));
 	    }
-	    if (ListOfColors.size() != 0)
+	    if (ListOfColors.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfColors.size() + " custom color names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The ColorList section not found in " + ItemFile.fileName + " file.");
@@ -216,7 +216,7 @@ public class NameTranslatorManager {
 		String Name = ItemFile.getConfig().getString("PotionNamesList." + one);
 		ListOfColors.add(new NameList(id, meta, Name, MCName));
 	    }
-	    if (ListOfPotionNames.size() != 0)
+	    if (ListOfPotionNames.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfPotionNames.size() + " custom potion names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The PotionNamesList section not found in " + ItemFile.fileName + " file.");

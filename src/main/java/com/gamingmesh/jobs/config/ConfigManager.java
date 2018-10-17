@@ -771,13 +771,13 @@ public class ConfigManager {
 			name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.getStringList("lore") != null && itemSection.getStringList("lore").size() != 0)
+		    if (itemSection.getStringList("lore") != null && !itemSection.getStringList("lore").isEmpty())
 			for (String eachLine : itemSection.getStringList("lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.getStringList("enchants") != null && itemSection.getStringList("enchants").size() != 0)
+		    if (itemSection.getStringList("enchants") != null && !itemSection.getStringList("enchants").isEmpty())
 			for (String eachLine : itemSection.getStringList("enchants")) {
 
 			    if (!eachLine.contains("="))
@@ -826,13 +826,13 @@ public class ConfigManager {
 			name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.getStringList("lore") != null && itemSection.getStringList("lore").size() != 0)
+		    if (itemSection.getStringList("lore") != null && !itemSection.getStringList("lore").isEmpty())
 			for (String eachLine : itemSection.getStringList("lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.getStringList("enchants") != null && itemSection.getStringList("enchants").size() != 0)
+		    if (itemSection.getStringList("enchants") != null && !itemSection.getStringList("enchants").isEmpty())
 			for (String eachLine : itemSection.getStringList("enchants")) {
 
 			    if (!eachLine.contains("="))
