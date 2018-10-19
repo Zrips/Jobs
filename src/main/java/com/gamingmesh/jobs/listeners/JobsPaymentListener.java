@@ -219,7 +219,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (player == null)
+	if (player == null || !player.isOnline())
 	    return;
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0)
@@ -284,7 +284,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (player == null)
+	if (player == null || !player.isOnline())
 	    return;
 
 	// check if in creative
@@ -359,7 +359,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (!player.isOnline())
+	if (player == null || !player.isOnline())
 	    return;
 
 	// check if in creative
@@ -429,7 +429,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (!player.isOnline())
+	if (player == null || !player.isOnline())
 	    return;
 
 	// check if in creative
@@ -492,7 +492,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = (Player) event.getOwner();
 
-	if (player == null)
+	if (player == null || !player.isOnline())
 	    return;
 	// check if in creative
 	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative())
@@ -755,7 +755,7 @@ public class JobsPaymentListener implements Listener {
 	// Checking if this is only item rename
 	ItemStack FirstSlot = null;
 	try {
-	    FirstSlot = event.getInventory().getItem(0);
+	    FirstSlot = inv.getItem(0);
 	} catch (NullPointerException e) {
 	    return;
 	}
@@ -770,7 +770,7 @@ public class JobsPaymentListener implements Listener {
 	if (resultStack.hasItemMeta())
 	    if (resultStack.getItemMeta().getDisplayName() != null)
 		NewName = resultStack.getItemMeta().getDisplayName();
-	if (OriginalName != NewName && event.getInventory().getItem(1) == null)
+	if (OriginalName != NewName && inv.getItem(1) == null)
 	    if (!Jobs.getGCManager().PayForRenaming)
 		return;
 
@@ -1121,7 +1121,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (!player.isOnline())
+	if (player == null || !player.isOnline())
 	    return;
 
 	// check if in creative
@@ -1151,7 +1151,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = (Player) event.getRemover();
 
-	if (!player.isOnline())
+	if (player == null || !player.isOnline())
 	    return;
 
 	// check if in creative
@@ -1500,7 +1500,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player p = event.getPlayer();
 
-	if (!p.isOnline())
+	if (p == null || !p.isOnline())
 	    return;
 
 	// check if in creative
@@ -1534,7 +1534,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (!player.isOnline())
+	if (player == null || !player.isOnline())
 	    return;
 
 	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())

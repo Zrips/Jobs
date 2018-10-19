@@ -362,7 +362,7 @@ public class ShopManager {
 
 	    if (NameSection.isList("Icon.Lore")) {
 		List<String> lore = new ArrayList<>();
-		if (NameSection.getStringList("Icon.Lore") != null)
+		if (NameSection.getStringList("Icon.Lore") != null && !NameSection.getStringList("Icon.Lore").isEmpty())
 		    for (String eachLine : NameSection.getStringList("Icon.Lore")) {
 			lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 		    }
@@ -399,7 +399,7 @@ public class ShopManager {
 
 	    if (NameSection.isList("PerformCommands")) {
 		List<String> cmd = new ArrayList<>();
-		if (NameSection.getStringList("PerformCommands") != null)
+		if (NameSection.getStringList("PerformCommands") != null && !NameSection.getStringList("PerformCommands").isEmpty())
 		    for (String eachLine : NameSection.getStringList("PerformCommands")) {
 			cmd.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 		    }
@@ -433,13 +433,13 @@ public class ShopManager {
 			name = ChatColor.translateAlternateColorCodes('&', itemSection.getString("Name"));
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.getStringList("Lore") != null)
+		    if (itemSection.getStringList("Lore") != null && !itemSection.getStringList("Lore").isEmpty())
 			for (String eachLine : itemSection.getStringList("Lore")) {
 			    lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.getStringList("Enchants") != null)
+		    if (itemSection.getStringList("Enchants") != null && !itemSection.getStringList("Enchants").isEmpty())
 			for (String eachLine : itemSection.getStringList("Enchants")) {
 
 			    if (!eachLine.contains("="))

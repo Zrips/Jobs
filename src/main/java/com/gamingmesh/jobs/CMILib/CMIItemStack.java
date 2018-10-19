@@ -167,18 +167,17 @@ public class CMIItemStack {
 	ItemMeta meta = this.getItemStack().getItemMeta();
 	if (meta != null) {
 	    List<String> lore = meta.getLore();
-	    if (lore == null) {
+	    if (lore == null || lore.isEmpty()) {
 		lore = new ArrayList<>();
 		meta.setLore(lore);
 	    }
 
-	    return meta.getLore() == null ? new ArrayList<String>() : meta.getLore();
+	    return meta.getLore() == null ? new ArrayList<>() : meta.getLore();
 	}
-	return new ArrayList<String>();
+	return new ArrayList<>();
     }
 
     public String getRealName() {
-
 	return material.getName();
     }
 

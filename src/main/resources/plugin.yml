@@ -17,8 +17,6 @@ permissions:
     children:
       jobs.admin: true
       jobs.autojoin.*: true
-      jobs.use: true
-      jobs.command.*: true
   jobs.autojoin.*:
     default: false
   jobs.admin:

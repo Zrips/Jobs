@@ -18,12 +18,9 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class WorldGuardManager {
 
-    @SuppressWarnings("unused")
-	private Jobs plugin;
-    WorldGuardPlugin wg;
+    private WorldGuardPlugin wg;
 
-    public WorldGuardManager(Jobs plugin) {
-	this.plugin = plugin;
+    public WorldGuardManager() {
 	Plugin pl = Bukkit.getPluginManager().getPlugin("WorldGuard");
 	if (pl != null && (pl instanceof WorldGuardPlugin)) {
 	    wg = (WorldGuardPlugin) pl;
@@ -40,7 +37,7 @@ public class WorldGuardManager {
 	    }
 	} catch (Exception | NoSuchMethodError e) {
 	}
-	return new ArrayList<RestrictedArea>();
+	return new ArrayList<>();
     }
 
     public boolean inArea(Location loc, String name) {

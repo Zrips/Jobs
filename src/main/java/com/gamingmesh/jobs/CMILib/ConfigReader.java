@@ -25,7 +25,7 @@ import com.google.common.io.Files;
 
 public class ConfigReader extends YamlConfiguration {
     private HashMap<String, String> comments;
-    YamlConfiguration config;
+    private YamlConfiguration config;
     private String p = null;
     private File file = null;
 

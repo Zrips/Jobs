@@ -209,7 +209,7 @@ public class Jobs extends JavaPlugin {
     private boolean setWorldGuard() {
 	Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
 	if (plugin != null) {
-	    worldGuardManager = new WorldGuardManager(this);
+	    worldGuardManager = new WorldGuardManager();
 	    consoleMsg("&e[Jobs] WorldGuard detected.");
 	    return true;
 	}
@@ -1102,7 +1102,7 @@ public class Jobs extends JavaPlugin {
 			else
 				jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Exception e) {
-		    consoleMsg("[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
+		    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
 
 		// JobsPayment event

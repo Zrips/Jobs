@@ -281,7 +281,7 @@ public class ConfigManager {
 		material = CMIMaterial.LEGACY_GLOWING_REDSTON_ORE;
 	    } else if (material == CMIMaterial.LEGACY_GLOWING_REDSTON_ORE && actionType == ActionType.BREAK && Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 		Jobs.getPluginLogger().warning("Job " + jobName + " is using GLOWING_REDSTONE_ORE instead of REDSTONE_ORE.");
-		Jobs.getPluginLogger().warning("Automatically changing block to REDSTONE_ORE.  Please update your configuration.");
+		Jobs.getPluginLogger().warning("Automatically changing block to REDSTONE_ORE. Please update your configuration.");
 		material = CMIMaterial.REDSTONE_ORE;
 	    }
 	    // END HACK
@@ -1038,13 +1038,13 @@ public class ConfigManager {
 			     */
 			    if (material == CMIMaterial.REDSTONE_ORE && actionType == ActionType.BREAK && Version.isCurrentLower(Version.v1_13_R1)) {
 				Jobs.getPluginLogger().warning("Job " + jobKey + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
-				Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE.  Please update your configuration.");
+				Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE. Please update your configuration.");
 				Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 				Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
 				material = CMIMaterial.LEGACY_GLOWING_REDSTON_ORE;
 			    } else if (material == CMIMaterial.LEGACY_GLOWING_REDSTON_ORE && actionType == ActionType.BREAK && Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 				Jobs.getPluginLogger().warning("Job " + job.getName() + " is using GLOWING_REDSTONE_ORE instead of REDSTONE_ORE.");
-				Jobs.getPluginLogger().warning("Automatically changing block to REDSTONE_ORE.  Please update your configuration.");
+				Jobs.getPluginLogger().warning("Automatically changing block to REDSTONE_ORE. Please update your configuration.");
 				material = CMIMaterial.REDSTONE_ORE;
 			    }
 			    // END HACK
