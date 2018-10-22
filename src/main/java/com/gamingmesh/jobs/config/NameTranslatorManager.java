@@ -214,7 +214,7 @@ public class NameTranslatorManager {
 		String meta = one.split("-")[0];
 		String MCName = one.split("-")[1];
 		String Name = ItemFile.getConfig().getString("PotionNamesList." + one);
-		ListOfColors.add(new NameList(id, meta, Name, MCName));
+		ListOfPotionNames.add(new NameList(id, meta, Name, MCName));
 	    }
 	    if (ListOfPotionNames.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfPotionNames.size() + " custom potion names!");

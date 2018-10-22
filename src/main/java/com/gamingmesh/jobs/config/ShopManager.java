@@ -116,8 +116,8 @@ public class ShopManager {
 	}
 
 	if (player.getInventory().firstEmpty() == -1) {
-		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.InvFull"));
-		return;
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.InvFull"));
+	    return;
 	}
 
 	for (String one : item.getCommands()) {
