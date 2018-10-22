@@ -108,11 +108,16 @@ public class ShopManager {
 		return;
 	    }
 
-	    if (item.getRequiredTotalLevels() != -1 && Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()) {
-		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoTotalLevel", "%totalLevel%", Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels()));
+	    if (item.getRequiredTotalLevels() != -1 && jPlayer.getTotalLevels() < item.getRequiredTotalLevels()) {
+		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoTotalLevel", "%totalLevel%", jPlayer.getTotalLevels()));
 		return;
 	    }
 
+	}
+
+	if (player.getInventory().firstEmpty() == -1) {
+		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.InvFull"));
+		return;
 	}
 
 	for (String one : item.getCommands()) {

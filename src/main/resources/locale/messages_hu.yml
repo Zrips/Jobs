@@ -52,7 +52,7 @@ command:
       label: 'Jobs'
   moneyboost:
     help:
-      info: 'Növeli a pénzszerzést minden játékos számára'
+      info: 'Növeli a pénzszerzést minden játékos számára.'
       args: '[munkanév] [arány]'
     output:
       allreset: '&aMinden pénzbővítés kikapcsolva.'
@@ -63,7 +63,7 @@ command:
       infostats: '&c-----> &aPénz aránya x%boost% engedélyezve&c <-------'
   pointboost:
     help:
-      info: 'Növeli a játékosok pontszerzését minden játékos számára'
+      info: 'Növeli a játékosok pontszerzését minden játékos számára.'
       args: '[munkanév] [arány]'
     output:
       allreset: '&aMinden pont lendülete kikapcsolva.'
@@ -74,7 +74,7 @@ command:
       infostats: '&c-----> &aPontszám x%boost% engedélyezve&c <-------'
   expboost:
     help:
-      info: 'Növeli az összes játékos nyereségét'
+      info: 'Növeli az összes játékos nyereségét.'
       args: '[munkanév] [arány]'
     output:
       allreset: '&aMinden tapasztalat növelés kikapcsolva.'
@@ -85,7 +85,7 @@ command:
       infostats: '&c-----> &aTapasztalat arány x%boost% engedélyezve&c <-------'
   bonus:
     help:
-      info: 'A munkabónuszok megjelenítése'
+      info: 'A munkabónuszok megjelenítése.'
       args: '[munkanév]'
     output:
       topline: '&7**************** &2[pénz] &6[pontok] &e[exp] &7****************'
@@ -123,17 +123,17 @@ command:
       notenabled: '&cA pénzkorlát nem engedélyezett.'
   resetlimit:
     help:
-      info: 'A játékosok fizetési limitjeinek visszaállítása'
+      info: 'A játékosok fizetési limitjeinek visszaállítása.'
       args: '[játékos]'
     output:
       reseted: '&eA fizetési határértékek alaphelyzetbe álltak: &2%playername%'
   resetquest:
     help:
-      info: 'A játékosok küldetés visszaállítása'
+      info: 'A játékosok küldetés visszaállítása.'
       args: '[játékos] (munkanév)'
-      output:
-        reseted: '&eKüldetés visszaállítva: &2%playername%'
-        noQuests: '&eNincs egy küldetés sem.'
+    output:
+      reseted: '&eKüldetés visszaállítva: &2%playername%'
+      noQuests: '&eNincs egy küldetés sem.'
   help:
     output:
       info: '/jobs - A további lehetőségekért.'
@@ -220,11 +220,12 @@ command:
       reqTotalLevel: '&6Szükséges teljes szint: &e%totalLevel%'
       cantOpen: '&cNem nyithatod meg ezt az oldalt!'
       NoPermForItem: '&cNincs jogosultságod erre az elemre!'
-      NoPermToBuy: '&cNincs jogosultságod ennek az elemnek a megvásárlásához!'
+      NoPermToBuy: '&cNincs jogod ennek az elemnek a megvásárlásához!'
       NoJobReqForitem: '&cNincs szükséged munkára (&6%jobname%&e) szükséges (&6%joblevel%&e) szint'
       NoPoints: '&cNincs elég pontod!'
       NoTotalLevel: '&cA teljes munka szintje túl alacsony (%totalLevel%)'
       Paid: '&eFizettél, és &6%amount% &eehhez az elemhez.'
+      InvFull: '&cAz eszköztárad tele van.'
   archive:
     help:
       info: 'A felhasználó által archivált összes munkát jeleníti meg.'
@@ -356,9 +357,9 @@ command:
     success: '&cElhagytad az összes munkát!'
   explored:
     help:
-      info: 'Ellenőrzi, ki látogatta meg ezt a darabot'
+      info: 'Ellenőrzi, ki látogatta meg ezt a darabot.'
     error:
-      noexplore: '&cSenki nem látogatta meg ezt a darabot'
+      noexplore: '&cSenki nem látogatta meg ezt a darabot.'
     list: '&a%place%. %playername%'
   browse:
     help:
@@ -392,14 +393,14 @@ command:
       info: 'Tulajdonjog törlése.'
       args: '(játékos)'
     output:
-      cleared: '&2Eltávolítva &7[furnaces] &2kemence &7[brewing] &2főzet'
+      cleared: '&2Eltávolítva &7[furnaces] &2kemence &7[brewing] &2főzet.'
   quests:
     help:
       info: 'Lásd a rendelkezésre álló küldetések listáját.'
       args: '(játékosnév)'
     error:
       noquests: '&cNincsenek küldetések.'
-    toplineseparator: '&7*********************** &6[playerName]&2(&f[questsDone]&2)
+    toplineseparator: '&7*********************** &6[playerName]&2 (&f[questsDone]&2)
       &7***********************'
     output:
       completed: '&2      !Kész!&r      '
@@ -413,7 +414,7 @@ command:
       info: 'Játékos kirúgása a munkából.'
       args: '[játékos] [munkanév]'
     error:
-      nojob: '&cA játékosnak nincs munkája %jobname%.'
+      nojob: '&cA játékosnak nincs ilyen munkája %jobname%.'
     output:
       target: '%jobname% munkából kirúgva.'
   fireall:
@@ -439,11 +440,11 @@ command:
     error:
       nojob: '&cNem találok semmilyen munkát ezzel a névvel.'
     output:
-      topline: '&aA top&e %amount% &ajátékosok a(z) &e%jobname% &amunkából'
+      topline: '&aA top&e %amount% &ajátékosok a(z) &e%jobname% &amunkából.'
       list: '&e%number%&a. &e%playername% &alvl &e%level% %exp% exp'
       prev: '&e<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>'
-      show: '&2Megjelenítés innen &e[from]&2, amíg &e[until] &2top lista'
+      show: '&2Megjelenítés innen &e[from]&2, amíg &e[until] &2top lista.'
   gtop:
     help:
       info: 'A top %amount% legjobb játékosokat mutatja a globális munkákon.'
@@ -455,7 +456,7 @@ command:
       list: '&e%number%&a. &e%playername% &alvl &e%level%&e %exp% &aexp'
       prev: '&e<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>'
-      show: '&2Megjelenítés innen &e[from]&2, amíg &e[until] &2a globális top lista'
+      show: '&2Megjelenítés innen &e[from]&2, amíg &e[until] &2a globális top lista.'
   area:
     help:
       info: 'Korlátozott területek módosítása.'
@@ -463,20 +464,20 @@ command:
       addUsage: '&eHasználat: &6/Jobs area add [arénanév/wg:worldGuardarénanév] [bónusz]'
       removeUsage: '&eHasználat: &6/Jobs area remove [arénanév]'
     output:
-      addedNew: '&eHozzáadott új korlátozott területet &6%bonus% &ebónusszal'
-      removed: '&eEltávolított korlátozott terület &6%name%'
+      addedNew: '&eHozzáadott új korlátozott területet &6%bonus% &ebónusszal.'
+      removed: '&eEltávolított korlátozott terület &6%name%.'
       list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
         &6%bonus%'
       wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
-      noAreas: '&eNincs mentett korlátozott terület'
-      noAreasByLoc: '&eEzen a helyen nincs korlátozott terület'
+      noAreas: '&eNincs mentett korlátozott terület.'
+      noAreasByLoc: '&eEzen a helyen nincs korlátozott terület.'
       areaList: '&eKorlátozott területek a tartózkodási hely szerint: &6%list%'
       selected1: '&eElső hely kiválasztva: &6%x%:%y%:%z%'
       selected2: '&eMásodik hely kiválasztva: &6%x%:%y%:%z%'
-      select: '&eVálassz 2 pontot a(z) (%tool%) eszközzel'
-      exist: '&eA név szerinti korlátozás már létezik'
-      dontExist: '&eA név szerinti korlátozás nem létezik'
-      wgDontExist: '&eWorldGuard a név szerint ez a név nem létezik'
+      select: '&eVálassz 2 pontot a(z) (%tool%) eszközzel.'
+      exist: '&eA név szerinti korlátozás már létezik.'
+      dontExist: '&eA név szerinti korlátozás nem létezik.'
+      wgDontExist: '&eWorldGuard a név szerint ez a név nem létezik.'
   log:
     help:
       info: 'Megjeleníti a statisztikákat.'
@@ -488,7 +489,7 @@ command:
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>>'
-      nodata: '&cAz adatok nem találhatóak'
+      nodata: '&cAz adatok nem találhatóak.'
   glog:
     help:
       info: 'Globális statisztikákat mutat.'
@@ -500,7 +501,7 @@ command:
       exp: '&etapasztalat: %amount% '
       points: '&6pontok: %amount%'
       bottomline: '&7**************************************************************'
-      nodata: '&cAz adatok nem találhatóak'
+      nodata: '&cAz adatok nem találhatóak.'
   transfer:
     help:
       info: 'A játékos munkájának áthelyezése régi munkáról egy új munkába.'
@@ -539,15 +540,15 @@ command:
       target: 'Vesztettél %xplost% tapasztalatot a(z) %jobname% munkában.'
   signupdate:
     help:
-      info: 'Manuálisan frissíti a táblát a nevével'
+      info: 'Manuálisan frissíti a táblát a nevével.'
       args: '[munkanév]'
   bp:
     help:
-      info: 'Megmutatja a blokk védelmet körülötted. (10 blokk sugarú)'
+      info: 'Megmutatja a blokk védelmet körülötted (10 blokk sugarú).'
       args: ''
     output:
-      found: '&e&6%amount% &edb levédett blokk körülötted'
-      notFound: '&eNincs védett blokk körülötted'
+      found: '&e&6%amount% &edb levédett blokk körülötted.'
+      notFound: '&eNincs védett blokk körülötted.'
   reload:
     help:
       info: 'A konfigurációs fájlok újratöltése.'
@@ -572,7 +573,7 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
   edititembonus:
     help:
-      info: 'Elembónusz bónuszának szerkesztése'
+      info: 'Elembónusz bónuszának szerkesztése.'
       args: '[list/add/remove] [munkanév] [itemBoostName]'
 message:
   skillup:
@@ -584,7 +585,7 @@ message:
   cowtimer: '&eMég várnod kell &6%time% &emásodpercet, hogy fizetni kell ezt a munkát.'
   blocktimer: '&eKérlek, várj &3[time] &emásodpercet, hogy újra küldjön pénzt!'
   placeblocktimer: '&eNem lehet gyorsabban lerakni blokkokat &6[time] &esec intervallumot ugyanazon a helyen!'
-  taxes: '&3[amount] &eszerver adókat, amennyiben átutalták erre a fiókra'
+  taxes: '&3[amount] &eszerver adókat, amennyiben átutalták erre a fiókra.'
   boostStarted: '&eMegkezdődött a munka növelése!'
   boostStoped: '&eA munka növelési ideje befejeződött!'
   crafting:

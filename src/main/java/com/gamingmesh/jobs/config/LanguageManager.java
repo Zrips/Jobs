@@ -309,7 +309,6 @@ public class LanguageManager {
 	    c.get("command.shop.info.reqJobsList", "  &6%jobsname%&e: &e%level% lvl");
 	    c.get("command.shop.info.reqTotalLevel", "&6Required total level: &e%totalLevel%");
 	    c.get("command.shop.info.cantOpen", "&cCan't open this page");
-
 	    c.get("command.shop.info.NoPermForItem", "&cYou don't have required permissions for this item!");
 	    c.get("command.shop.info.NoPermToBuy", "&cNo permissions to buy this item");
 	    c.get("command.shop.info.NoJobReqForitem", "&cYou don't have required job (&6%jobname%&e) with required (&6%joblevel%&e) level");
@@ -317,6 +316,7 @@ public class LanguageManager {
 	    c.get("command.shop.info.NoTotalLevel", "&cTotal jobs level is too low (%totalLevel%)");
 	    c.get("command.shop.info.Paid", "&eYou have paid &6%amount% &efor this item");
 	    c.get("command.shop.info.reqJobsList", "  &6%jobsname%&e: &e%level% lvl");
+	    c.get("command.shop.info.InvFull", "&cYour inventory is full.");
 
 	    c.get("command.archive.help.info", "Shows all jobs saved in archive by user.");
 	    c.get("command.archive.help.args", "[playername]");

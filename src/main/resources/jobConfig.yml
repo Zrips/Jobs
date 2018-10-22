@@ -436,7 +436,7 @@ Jobs:
         income: 5.0
         experience: 3.0
     # Explore options. Each number represents players number in exploring that chunk
-    # 1 means that player is first in this chunk, 2 is second and so on, so you can give money not only for first player ho discovers that chunk
+    # 1 means that player is first in this chunk, 2 is second and so on, so you can give money not only for first player who discovers that chunk
     Explore:
       1:
         income: 5.0
