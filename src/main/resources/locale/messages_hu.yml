@@ -3,7 +3,7 @@ economy:
     nomoney: '&cSajnálom, nincs pénz a nemzeti bankban!'
 limitedItem:
   error:
-    levelup: '&cBe kell lépned a szintbe [jobname], hogy használd ezt az elemet!'
+    levelup: '&cBe kell lépned a(z) [jobname] szintbe, hogy használd ezt az elemet!'
 general:
   Spawner: '&r[type] Spawner'
   info:
@@ -36,7 +36,7 @@ general:
 command:
   help:
     output:
-      info: 'Típus /jobs [command] ? további információ a varázslatról.'
+      info: 'Típus /jobs [command] ? további információ a parancsról.'
       cmdUsage: '&2Használat: &7[command]'
       cmdInfoFormat: '[command] &f- &2[description]'
       cmdFormat: '&7/[command]&f[arguments]'
@@ -101,7 +101,7 @@ command:
       finalExplanation: ' &eNem tartalmazza a Petpay és az idéző bónusz/penaltyFinal bónuszt'
   convert:
     help:
-      info: 'Adatbázis-rendszert alakít át egyik rendszerről a másikra. Ha jelenleg sqlite fut, ez átalakul MySQL-hez és vise versa.'
+      info: 'Adatbázis-rendszert alakít át egyik rendszerről a másikra. Ha jelenleg SQLite fut, ez átalakul MySQL-hez és vise versa.'
       args: ''
   limit:
     help:
@@ -115,11 +115,11 @@ command:
       pointstime: '&eA pontkorlátig hátralévő idő visszaáll: &2%time%'
       pointsLimit: '&ePont limit: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4Elérted a pénzkorlátot az adott időben!'
-      reachedmoneylimit2: '&eA korlátot ellenőrizheti &2/jobs limit &eparanccsal'
+      reachedmoneylimit2: '&eA korlátot ellenőrizheted a &2/jobs limit &eparanccsal.'
       reachedexplimit: '&4Elérted a határidőt a meghatározott időben!'
-      reachedexplimit2: '&eA korlátot ellenőrizheted &2/jobs limit &eparanccsal'
+      reachedexplimit2: '&eA korlátot ellenőrizheted a &2/jobs limit &eparanccsal.'
       reachedpointslimit: '&4Elérted a határidőt a meghatározott időben!'
-      reachedpointslimit2: '&eA korlátot ellenőrizheti &2/jobs limit &eparanccsal'
+      reachedpointslimit2: '&eA korlátot ellenőrizheted a &2/jobs limit &eparanccsal.'
       notenabled: '&cA pénzkorlát nem engedélyezett.'
   resetlimit:
     help:
@@ -171,13 +171,13 @@ command:
         exp: '        -> &eTapasztalat: &6%amount%'
         points: '        -> &ePontok: &6%amount%'
       modify:
-        newValue: '&eAdd meg az új értéket'
+        newValue: '&eAdd meg az új értéket.'
         enter: '&eAdj meg egy új nevet vagy kattints '
         hand: '&6BAL '
-        handHover: '&6A bal egérgombbal kattintva információt kapsz a kezedben lévő tárgyról'
+        handHover: '&6A bal egérgombbal kattintva információt kapsz a kezedben lévő tárgyról.'
         or: '&evagy '
         look: '&6NÉZD'
-        lookHover: '&6A bal gombbal kattintva információt kapsz a blokkról, amit keresel'
+        lookHover: '&6A bal gombbal kattintva információt kapsz a blokkról, amit keresel.'
   blockinfo:
     help:
       info: 'Megjeleníti a megtekinteni kívánt blokkadatokat.'
@@ -209,7 +209,7 @@ command:
     output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
   shop:
     help:
-      info: 'Megnyitja a különleges munkahelyek boltját.'
+      info: 'Megnyitja a különleges munkák boltját.'
       args: ''
     info:
       title: '&e------- &8Munkák piac &e-------'
@@ -219,7 +219,7 @@ command:
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6Szükséges teljes szint: &e%totalLevel%'
       cantOpen: '&cNem nyithatod meg ezt az oldalt!'
-      NoPermForItem: '&cNincs jogosultságod erre az elemre!'
+      NoPermForItem: '&cNincs jogod ehhez az elemhez!'
       NoPermToBuy: '&cNincs jogod ennek az elemnek a megvásárlásához!'
       NoJobReqForitem: '&cNincs szükséged munkára (&6%jobname%&e) szükséges (&6%joblevel%&e) szint'
       NoPoints: '&cNincs elég pontod!'
@@ -239,13 +239,13 @@ command:
       args: '[játékos] [munkanév] [tárgynév]'
     output:
       notonline: '&4[%playername%] nem elérhető!'
-      noitem: '&4Nincs találhat sem egy tárgyat, sem egy adott névvel!'
+      noitem: '&4Nincs találat ezzel a névvel lévő tárgyról!'
   info:
     help:
       title: '&2*** &eJobs&2 ***'
       info: 'Megmutatja, hogy mennyi minden munkát fizet, és miért.'
       penalty: '&eEz a munka &c[penalty]% &ebüntetés miatt túl sok játékos dolgozik benne.'
-      bonus: '&eEz a munka &2[bonus]% &ebónusz, mert nem elég játékos dolgozik benne.'
+      bonus: '&eEz a munka &2[bonus]% &ebónusza van, mert nem elég játékos dolgozik benne.'
       args: '[munkanév] [akció]'
       actions: '&eAz érvényes akciók: &f%actions%'
       max: ' - &eMax. szint:&f '
@@ -291,7 +291,7 @@ command:
         none: '%jobname% nem kap pénzt, ha barkácsol.'
       drink:
         info: '&eMegisz'
-        none: '%jobname% nem kap pénzt, ha iszik.'
+        none: '%jobname% nem kap pénzt, ha iszik italokat.'
       smelt:
         info: '&eOlvaszt'
         none: '%jobname% nem kap pénzt, ha olvaszt.'
@@ -312,7 +312,7 @@ command:
         none: '%jobname% nem kap pénzt, ha javít.'
       breed:
         info: '&eTenyészt'
-        none: '%jobname% nem kap pénzt, ha tenészt.'
+        none: '%jobname% nem kap pénzt, ha tenyészt.'
       tame:
         info: '&eMegszelídít'
         none: '%jobname% nem kap pénzt, ha szelídít.'
@@ -323,14 +323,14 @@ command:
         info: '&eNyír'
         none: '%jobname% nem kap pénzt, ha bárányokat nyír.'
       explore:
-        info: '&eFeltör'
-        none: '%jobname% nem kap pénzt felfedezni.'
+        info: '&eFeltár'
+        none: '%jobname% nem kap pénzt, ha felfedezik.'
       custom-kill:
         info: '&eEgyéni gyilkolás'
         none: '%jobname% nem kap pénzt, ha játékost gyilkol.'
   playerinfo:
     help:
-      info: 'Megmutassa, hogy mennyi minden munkát fizet, és mi van egy másik játékosnál.'
+      info: 'Megmutassa mennyi minden munkát fizet, és mi van egy másik játékosnál.'
       args: '[játékos] [munkanév] [akció]'
   join:
     help:
@@ -340,7 +340,7 @@ command:
       alreadyin: '&cMár csatlakoztál a(z) %jobname%&c munkához!'
       fullslots: '&cNem tudsz csatlakozni a(z) %jobname%&c munkához, mert nincsenek rendelkezésre álló helyek.'
       maxjobs: '&cMár túl sok munkát vállaltál.'
-      rejoin: '&cNem csatlakozhatsz ebbe a munkába. Várj [time]'
+      rejoin: '&cNem csatlakozhatsz ebbe a munkába. Várj [time].'
     rejoin: '&aKattints ide, hogy újra csatlakozz ebbe a munkába: '
     success: '&aSikeresen csatlakoztál a(z) %jobname%&a munkához!'
     confirm: '&2Kattints ide, hogy a &7[jobname]&2 munkát megerősítse.'
@@ -383,7 +383,7 @@ command:
         bonus: ' &2Bónusz: &a[amount]%'
         list: ' &6[jobname]'
         newMax: '&eMaximális szint: &f[max]'
-      click: '&bTovábbi információkért kattints a munkára!'
+      click: '&bTovábbi információkért kattints a munkára.'
       detailed: '&bKattints ide a munka részleteinek mutatásához.'
       jobHeader: '&2========== [jobname] ========='
       chooseJob: '&7&n&oMunka ebben a szakmában'
@@ -396,7 +396,7 @@ command:
       cleared: '&2Eltávolítva &7[furnaces] &2kemence &7[brewing] &2főzet.'
   quests:
     help:
-      info: 'Lásd a rendelkezésre álló küldetések listáját.'
+      info: 'Megmutassa a rendelkezésre álló küldetések listáját.'
       args: '(játékosnév)'
     error:
       noquests: '&cNincsenek küldetések.'
@@ -414,7 +414,7 @@ command:
       info: 'Játékos kirúgása a munkából.'
       args: '[játékos] [munkanév]'
     error:
-      nojob: '&cA játékosnak nincs ilyen munkája %jobname%.'
+      nojob: '&cA játékosnak nincs ilyen munkája: %jobname%.'
     output:
       target: '%jobname% munkából kirúgva.'
   fireall:
@@ -422,7 +422,7 @@ command:
       info: 'Tűzoltás minden munkából.'
       args: '[játékos]'
     error:
-      nojobs: '&cA játékosnak nincsenek olyan munkái, amelyekről ki lehet rúgni!'
+      nojobs: '&cA játékosnak nincsenek olyan munkái, amelyekről ki lehet rúgni.'
     output:
       target: 'Minden munkából kirúgtak.'
   employ:
@@ -444,7 +444,7 @@ command:
       list: '&e%number%&a. &e%playername% &alvl &e%level% %exp% exp'
       prev: '&e<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>'
-      show: '&2Megjelenítés innen &e[from]&2, amíg &e[until] &2top lista.'
+      show: '&2Megjelenítés &e[from]&2-tól/-től &e[until]&2-ig.'
   gtop:
     help:
       info: 'A top %amount% legjobb játékosokat mutatja a globális munkákon.'
@@ -466,8 +466,7 @@ command:
     output:
       addedNew: '&eHozzáadott új korlátozott területet &6%bonus% &ebónusszal.'
       removed: '&eEltávolított korlátozott terület &6%name%.'
-      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
-        &6%bonus%'
+      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%'
       wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
       noAreas: '&eNincs mentett korlátozott terület.'
       noAreasByLoc: '&eEzen a helyen nincs korlátozott terület.'
@@ -484,8 +483,7 @@ command:
       args: '[játékos]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
-      list: '&7* &6%number%. &3%action%: &6%item% &emennyiség: %qty% &6pénz: %money% &eexp:
-        %exp%'
+      list: '&7* &6%number%. &3%action%: &6%item% &emennyiség: %qty% &6pénz: %money% &eexp: %exp%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>>'
@@ -507,7 +505,7 @@ command:
       info: 'A játékos munkájának áthelyezése régi munkáról egy új munkába.'
       args: '[játékos] [régimunka] [újmunka]'
     output:
-      target: 'Átkerültél %oldjobname% munkából %newjobname% munkába.'
+      target: 'Átkerültél %oldjobname% munkából a(z) %newjobname% munkába.'
   promote:
     help:
       info: 'Támogasd a játékos X szintjét egy munkában.'
@@ -519,13 +517,13 @@ command:
       info: 'Módosítsa a játékos tapasztalat feladatát.'
       args: '[játékos] [munkanév] [set/add/take] [mennyiség]'
     output:
-      target: '&eA tapasztalat változott %jobname% &eés most itt vagy &6%level%lvl &eés &6%exp%exp.'
+      target: '&eA tapasztalat változott %jobname%&e, most van &6%level%lvl &eés &6%exp%exp.'
   demote:
     help:
       info: 'Eldobja a játékos X szintjét a munkában.'
       args: '[játékos] [munkanév] [szintek]'
     output:
-      target: 'Lemerült %levelslost% szintet a(z) %jobname% munkában.'
+      target: 'Levéve %levelslost% szint a(z) %jobname% munkában.'
   grantxp:
     help:
       info: 'Megadja a játékosnak az X munkát.'
@@ -534,7 +532,7 @@ command:
       target: 'Megadták %xpgained% tapasztalatot a(z) %jobname% munkában.'
   removexp:
     help:
-      info: 'Eltávolítsa az X tapasztalatot a játékostól a munkában.'
+      info: 'Eltávolít X tapasztalatot a játékostól a munkában.'
       args: '[játékos] [munkanév] [xp]'
     output:
       target: 'Vesztettél %xplost% tapasztalatot a(z) %jobname% munkában.'
@@ -547,7 +545,7 @@ command:
       info: 'Megmutatja a blokk védelmet körülötted (10 blokk sugarú).'
       args: ''
     output:
-      found: '&e&6%amount% &edb levédett blokk körülötted.'
+      found: '&e&6%amount% &edb védett blokk van körülötted.'
       notFound: '&eNincs védett blokk körülötted.'
   reload:
     help:
@@ -582,11 +580,11 @@ message:
   levelup:
     broadcast: '%playername% %joblevel% szintet lépett a(z) %jobname% munkában.'
     nobroadcast: '&aSzintet léptél a(z) %jobname% &amunkában! Szint:&6 %joblevel%&a.'
-  cowtimer: '&eMég várnod kell &6%time% &emásodpercet, hogy fizetni kell ezt a munkát.'
+  cowtimer: '&eMég várnod kell &6%time% &emásodpercet, hogy fizesse ezt a munkát.'
   blocktimer: '&eKérlek, várj &3[time] &emásodpercet, hogy újra küldjön pénzt!'
   placeblocktimer: '&eNem lehet gyorsabban lerakni blokkokat &6[time] &esec intervallumot ugyanazon a helyen!'
   taxes: '&3[amount] &eszerver adókat, amennyiben átutalták erre a fiókra.'
-  boostStarted: '&eMegkezdődött a munka növelése!'
+  boostStarted: '&eMegkezdődött a munka pénz gyorsítása!'
   boostStoped: '&eA munka növelési ideje befejeződött!'
   crafting:
     fullinventory: '&cAz eszköztárad megtelt!'

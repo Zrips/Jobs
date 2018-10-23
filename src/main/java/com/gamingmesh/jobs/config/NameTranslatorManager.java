@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.ItemManager.colorNames;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.NameList;
@@ -111,7 +112,7 @@ public class NameTranslatorManager {
 	    case SHEAR:
 		for (NameList one : ListOfColors) {
 		    String ids = one.getMinecraftName();
-		    if (ids.equalsIgnoreCase(String.valueOf(info.getName()))) {
+		    if (ids.equalsIgnoreCase(info.getName())) {
 			return one.getName();
 		    }
 		}
@@ -122,7 +123,7 @@ public class NameTranslatorManager {
 	    case DRINK:
 		for (NameList one : ListOfPotionNames) {
 		    String ids = one.getMinecraftName();
-		    if (ids.equalsIgnoreCase(String.valueOf(info.getName()))) {
+		    if (ids.equalsIgnoreCase(info.getName())) {
 			return one.getName();
 		    }
 		}
@@ -423,23 +424,31 @@ public class NameTranslatorManager {
 	    c.get("EnchantList.71.MCName", "CURSE_OF_VANISHING");
 	    c.get("EnchantList.71.Name", "Curse Of Vanishing");
 
-	    // Color list
-	    c.get("ColorList.0-white", "&fWhite");
-	    c.get("ColorList.1-orange", "&6Orange");
-	    c.get("ColorList.2-magenta", "&dMagenta");
-	    c.get("ColorList.3-lightBlue", "&9Light blue");
-	    c.get("ColorList.4-yellow", "&eYellow");
-	    c.get("ColorList.5-lime", "&aLime");
-	    c.get("ColorList.6-pink", "&dPink");
-	    c.get("ColorList.7-gray", "&8Gray");
-	    c.get("ColorList.8-silver", "&7Light gray");
-	    c.get("ColorList.9-cyan", "&3Cyan");
-	    c.get("ColorList.10-purple", "&5Purple");
-	    c.get("ColorList.11-blue", "&1Blue");
-	    c.get("ColorList.12-brown", "&4Brown");
-	    c.get("ColorList.13-green", "&2Green");
-	    c.get("ColorList.14-red", "&cRed");
-	    c.get("ColorList.15-black", "&0Black");
+	    for (colorNames cn : colorNames.values()) {
+		if (cn.getName() == null)
+		    continue;
+
+		String n = cn.getId() + (cn.getId() == -1 ? "" : ":" + cn.getName());
+
+		String name = null;
+
+		if (c.getC().isConfigurationSection("ColorList." + n)) {
+		    name = c.getC().getString("ColorList." + n + ".Name");
+		}
+
+		if (name == null) {
+		    n = cn.getId() + "-" + cn.toString();
+		    if (c.getC().isConfigurationSection("ColorList." + n)) {
+			name = c.getC().getString("ColorList." + n);
+		    }
+		}
+
+		if (name == null) {
+		    name = cn.getName();
+		}
+
+		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
+	    }
 
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.getMaterial() == null)
