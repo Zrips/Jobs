@@ -2091,7 +2091,7 @@ ColorList:
   2-Magenta: '&dMagenta'
   3-LIGHT_BLUE: '&9Bleu clair'
   4-Yellow: '&eJaune'
-  5-Lime: '&aVert Clair'
+  5-LIME_GREEN: '&aVert Clair'
   6-Pink: '&dRose'
   7-Gray: '&8Gris'
   8-LIGHT_GRAY: '&7Gris clair'
