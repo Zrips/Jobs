@@ -2091,7 +2091,7 @@ ColorList:
   2-Magenta: '&dMagenta'
   3-LIGHT_BLUE: '&9Bleu clair'
   4-Yellow: '&eJaune'
-  5-LIME_GREEN: '&aVert Clair'
+  5-Lime: '&aVert Clair'
   6-Pink: '&dRose'
   7-Gray: '&8Gris'
   8-LIGHT_GRAY: '&7Gris clair'
@@ -2102,3 +2102,42 @@ ColorList:
   13-Green: '&2Vert'
   14-Red: '&cRouge'
   15-Black: '&0Noir'
+PotionNamesList:
+  0-POTION: Potion
+  16-AWKWARD_POTION: Potion banale
+  32-THICK_POTION: Potion épaisse
+  64-MUNDANE_POTION: Potion étrange
+  8193-REGENERATION_POTION: Potion de regénération
+  8194-SWIFTNESS_POTION: Potion de rapidité
+  8195-FIRE_RESISTANCE_POTION: Potion de résistance au feu
+  8196-POISON_POTION: Potion de poison
+  8197-HEALING_POTION: Potion de soin instantané
+  8198-NIGHT_VISION_POTION: Potion de vision nocturne
+  8200-WEAKNESS_POTION: Potion de faiblesse
+  8201-STRENGTH_POTION: Potion de force
+  8202-SLOWNESS_POTION: Potion de lenteur
+  8204-HARMING_POTION: Potion de dégâts
+  8205-WATER_BREATHING_POTION: Potion d'apnée
+  8206-INVISIBILITY_POTION: Potion d'invisibilité
+  8225-REGENERATION_POTION2: Potion de regénération ralongée
+  8226-SWIFTNESS_POTION2: Potion de rapidité ralongée
+  8228-POISON_POTION2: Potion de poison ralongée
+  8229-HEALING_POTION2: Potion de soin instantanée II
+  8233-STRENGTH_POTION2: Potion de force ralongée rallongé
+  8235-LEAPING_POTION2: Potion de sauts améliorés II
+  8236-HARMING_POTION2: Potion de dégâts II
+  8257-REGENERATION_POTION3: Potion de regénération II
+  8258-SWIFTNESS_POTION3: Potion de rapidité II
+  8259-FIRE_RESISTANCE_POTION3: Potion de résistance au feu persistante
+  8260-POISON_POTION3: Potion de poison II
+  8262-NIGHT_VISION_POTION2: Potion de vision nocturne ralongée
+  8264-WEAKNESS_POTION2: Potion de faiblesse ralongée
+  8265-STRENGTH_POTION3: Potion de force II
+  8266-SLOWNESS_POTION2: Potion de lenteur rallongée
+  8267-LEAPING_POTION3: Potion de sauts améliorés II
+  8269-WATER_BREATHING_POTION2: Potion d'apnée ralongée
+  8270-INVISIBILITY_POTION2: Potion invisibilité rallongée
+  8289-REGENERATION_POTION4: Potion de regénération persistante II
+  8290-SWIFTNESS_POTION4: Potion de rapidité persistante II
+  8292-POISON_POTION4: Potion de poison persistante II
+  8297-STRENGTH_POTION4: Potion de force persistante II
