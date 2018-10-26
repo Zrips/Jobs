@@ -1923,120 +1923,65 @@ ItemList:
     MCName: record_wait
     Name: Disque Wait
 EntityList:
-  '-1':
-    MCName: Player
-    Name: Joueur
-  '50':
-    MCName: Creeper
-    Name: Creeper
-  '51':
-    MCName: Skeleton
-    Name: Squelette
-  '51:1':
-    MCName: Skeleton
-    Name: Wither Squelette
-  '52':
-    MCName: Spider
-    Name: Araignée
-  '53':
-    MCName: Giant
-    Name: Géant
-  '54':
-    MCName: Zombie
-    Name: Zombie
-  '54:1':
-    MCName: Zombie
-    Name: Zombie Villageois
-  '55':
-    MCName: Slime
-    Name: Slime
-  '56':
-    MCName: Ghast
-    Name: Ghast
-  '57':
-    MCName: PigZombie
-    Name: Cochon zombie
-  '58':
-    MCName: Enderman
-    Name: Enderman
-  '59':
-    MCName: CaveSpider
-    Name: Araignée bleu
-  '60':
-    MCName: Silverfish
-    Name: Poisson d'argent
-  '61':
-    MCName: Blaze
-    Name: Blaze
-  '62':
-    MCName: LavaSlime
-    Name: Cube de magma
-  '63':
-    MCName: EnderDragon
-    Name: EnderDragon
-  '64':
-    MCName: WitherBoss
-    Name: WitherBoss
-  '65':
-    MCName: Bat
-    Name: Chauve souris
-  '66':
-    MCName: Witch
-    Name: Sorcière
-  '67':
-    MCName: Endermite
-    Name: Endermite
-  '68':
-    MCName: Guardian
-    Name: Gardien
-  '68:1':
-    MCName: Guardian
-    Name: Elder Gardien
-  '69':
-    MCName: Shulker
-    Name: Shulker
-  '90':
-    MCName: Pig
-    Name: Cochon
-  '91':
-    MCName: Sheep
-    Name: Mouton
-  '92':
-    MCName: Cow
-    Name: Vache
-  '93':
-    MCName: Chicken
-    Name: Poule
-  '94':
-    MCName: Squid
-    Name: Poulpe
-  '95':
-    MCName: Wolf
-    Name: Loup
-  '96':
-    MCName: MushroomCow
-    Name: Champimeuh
-  '97':
-    MCName: SnowMan
-    Name: Bonhomme de neige
-  '98':
-    MCName: Ozelot
-    Name: Ocelot
-  '99':
-    MCName: VillagerGolem
-    Name: Golem de Fer
-  '100':
-    MCName: EntityHorse
-    Name: Cheval
-  '101':
-    MCName: Rabbit
-    Name: Lapin
-  '120':
-    MCName: Villager
-    Name: Villageois
-  '200':
-    MCName: EnderCrystal
-    Name: Cristal du néant
+  -1-PLAYER: Joueur
+  4-ELDER_GUARDIAN: Grand gardien
+  5-WITHER_SKELETON: Wither squelette
+  6-STRAY: Vagabon
+  23-HUSK: Zombie momifié
+  27-ZOMBIE_VILLAGER: Zombie-villageois
+  28-SKELETON_HORSE: Cheval-squelette
+  29-ZOMBIE_HORSE: Cheval-zombie
+  30-ARMOR_STAND: Porte-armure
+  31-DONKEY: Âne
+  32-MULE: Mule
+  34-EVOKER: Evocateur
+  35-VEX: Vex
+  36-VINDICATOR: Vindicateur
+  37-ILLUSIONER: Illusioneur
+  50-CREEPER: Creeper
+  51-SKELETON: Squelette
+  52-SPIDER: Araignée
+  53-GIANT: Géant
+  54-ZOMBIE: Zombie
+  55-SLIME: Slime
+  56-GHAST: Ghast
+  57-PIG_ZOMBIE: Cochon zombie
+  58-ENDERMAN: Enderman
+  59-CAVE_SPIDER: Araignée bleu
+  60-SILVERFISH: Poisson d'argent
+  61-BLAZE: Blaze
+  62-MAGMA_CUBE: Cube de magma
+  63-ENDER_DRAGON: EnderDragon
+  64-WITHER: WitherBoss
+  65-BAT: Chauve-souris
+  66-WITCH: Sorcière
+  67-ENDERMITE: Endermite
+  68-GUARDIAN: Gardien
+  69-SHULKER: Shulker
+  90-PIG: Cochon
+  91-SHEEP: Mouton
+  92-COW: Vache
+  93-CHICKEN: Poule
+  94-SQUID: Poulpe
+  95-WOLF: Loup
+  96-MUSHROOM_COW: Champimeuh
+  97-SNOWMAN: Bonhomme de neige
+  98-OCELOT: Ocelot
+  99-IRON_GOLEM: Golem de Fer
+  100-HORSE: Cheval
+  101-RABBIT: Lapin
+  102-POLAR_BEAR: Ours blanc
+  103-LLAMA: Lama
+  105-PARROT: Perroquet
+  120-VILLAGER: Villageois
+  901-TURTLE: Tortue
+  902-PHANTOM: Phantom
+  904-COD: Morue
+  905-SALMON: Saumon
+  906-PUFFERFISH: Poisson-globe
+  907-TROPICAL_FISH: Poisson tropical
+  908-DROWNED: Noyé
+  909-DOLPHIN: Dauphin
 EnchantList:
   '0':
     MCName: PROTECTION_ENVIRONMENTAL
@@ -2068,6 +2013,9 @@ EnchantList:
   '9':
     MCName: FROST_WALKER
     Name: Semelles givrantes
+  '10':
+    MCName: CURSE_OF_BINDING
+    Name: Malédiction du lien éternel
   '16':
     MCName: DAMAGE_ALL
     Name: Tranchant
@@ -2086,6 +2034,9 @@ EnchantList:
   '21':
     MCName: LOOT_BONUS_MOBS
     Name: Butin
+  '22':
+    MCName: SWEEPING_EDGE
+    Name: Affilage
   '32':
     MCName: DIG_SPEED
     Name: Efficacité
@@ -2106,7 +2057,7 @@ EnchantList:
     Name: Frappe
   '50':
     MCName: ARROW_FIRE
-    Name: Flame
+    Name: Flamme
   '51':
     MCName: ARROW_INFINITE
     Name: Infinité
@@ -2116,55 +2067,77 @@ EnchantList:
   '62':
     MCName: LURE
     Name: Appât
+  '65':
+    MCName: LOYALTY
+    Name: Loyauté
+  '66':
+    MCName: IMPALING
+    Name: Empalement
+  '67':
+    MCName: RIPTIDE
+    Name: Impulsion
+  '68':
+    MCName: CHANNELING
+    Name: Canalisation
   '70':
     MCName: MENDING
     Name: Raccommodage
+  '71':
+    MCName: CURSE_OF_VANISHING
+    Name: Malédiction de disparition
 ColorList:
-  '0':
-    MCName: white
-    Name: '&fBlanc'
-  '1':
-    MCName: orange
-    Name: '&6Orange'
-  '2':
-    MCName: magenta
-    Name: '&dMagenta'
-  '3':
-    MCName: lightBlue
-    Name: '%9Bleu Clair'
-  '4':
-    MCName: yellow
-    Name: '&eJaune'
-  '5':
-    MCName: lime
-    Name: '&aVert clair'
-  '6':
-    MCName: pink
-    Name: '&dRose'
-  '7':
-    MCName: gray
-    Name: '&8Gris'
-  '8':
-    MCName: silver
-    Name: '&7Gris clair'
-  '9':
-    MCName: cyan
-    Name: '&3Cyan'
-  '10':
-    MCName: purple
-    Name: '&5Violet'
-  '11':
-    MCName: blue
-    Name: '&1Bleu'
-  '12':
-    MCName: brown
-    Name: '&4Marron'
-  '13':
-    MCName: green
-    Name: '&2Vert'
-  '14':
-    MCName: red
-    Name: '&cRouge'
-  '15':
-    MCName: black
-    Name: '&0Noir'
+  0-White: '&fBlanc'
+  1-Orange: '&6Orange'
+  2-Magenta: '&dMagenta'
+  3-LIGHT_BLUE: '&9Bleu clair'
+  4-Yellow: '&eJaune'
+  5-LIME_GREEN: '&aVert Clair'
+  6-Pink: '&dRose'
+  7-Gray: '&8Gris'
+  8-LIGHT_GRAY: '&7Gris clair'
+  9-Cyan: '&3Cyan'
+  10-Purple: '&5Violet'
+  11-Blue: '&1Bleu'
+  12-Brown: '&4Marron'
+  13-Green: '&2Vert'
+  14-Red: '&cRouge'
+  15-Black: '&0Noir'
+PotionNamesList:
+  0-POTION: Potion
+  16-AWKWARD_POTION: Potion banale
+  32-THICK_POTION: Potion épaisse
+  64-MUNDANE_POTION: Potion étrange
+  8193-REGENERATION_POTION: Potion de regénération
+  8194-SWIFTNESS_POTION: Potion de rapidité
+  8195-FIRE_RESISTANCE_POTION: Potion de résistance au feu
+  8196-POISON_POTION: Potion de poison
+  8197-HEALING_POTION: Potion de soin instantané
+  8198-NIGHT_VISION_POTION: Potion de vision nocturne
+  8200-WEAKNESS_POTION: Potion de faiblesse
+  8201-STRENGTH_POTION: Potion de force
+  8202-SLOWNESS_POTION: Potion de lenteur
+  8204-HARMING_POTION: Potion de dégâts
+  8205-WATER_BREATHING_POTION: Potion d'apnée
+  8206-INVISIBILITY_POTION: Potion d'invisibilité
+  8225-REGENERATION_POTION2: Potion de regénération ralongée
+  8226-SWIFTNESS_POTION2: Potion de rapidité ralongée
+  8228-POISON_POTION2: Potion de poison ralongée
+  8229-HEALING_POTION2: Potion de soin instantanée II
+  8233-STRENGTH_POTION2: Potion de force ralongée rallongé
+  8235-LEAPING_POTION2: Potion de sauts améliorés II
+  8236-HARMING_POTION2: Potion de dégâts II
+  8257-REGENERATION_POTION3: Potion de regénération II
+  8258-SWIFTNESS_POTION3: Potion de rapidité II
+  8259-FIRE_RESISTANCE_POTION3: Potion de résistance au feu persistante
+  8260-POISON_POTION3: Potion de poison II
+  8262-NIGHT_VISION_POTION2: Potion de vision nocturne ralongée
+  8264-WEAKNESS_POTION2: Potion de faiblesse ralongée
+  8265-STRENGTH_POTION3: Potion de force II
+  8266-SLOWNESS_POTION2: Potion de lenteur rallongée
+  8267-LEAPING_POTION3: Potion de sauts améliorés II
+  8269-WATER_BREATHING_POTION2: Potion d'apnée ralongée
+  8270-INVISIBILITY_POTION2: Potion invisibilité rallongée
+  8289-REGENERATION_POTION4: Potion de regénération persistante II
+  8290-SWIFTNESS_POTION4: Potion de rapidité persistante II
+  8292-POISON_POTION4: Potion de poison persistante II
+  8297-STRENGTH_POTION4: Potion de force persistante II
