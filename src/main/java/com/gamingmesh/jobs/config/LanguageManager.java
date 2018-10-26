@@ -88,16 +88,20 @@ public class LanguageManager {
 	    e1.printStackTrace();
 	}
 
-	for (String lang : languages) {
-	    YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + lang + ".yml");
-	    langFile.saveDefaultConfig();
-	}
+	String ls = Jobs.getGCManager().localeString;
+
+	if (ls == null || ls.equals(""))
+	    return;
+
+	YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + ls + ".yml");
+	langFile.saveDefaultConfig();
+
 	languages.clear();
 	languages.add("en");
 
-	File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + Jobs.getGCManager().localeString + ".yml");
-	if (!customLocaleFile.exists() && !Jobs.getGCManager().localeString.equalsIgnoreCase("en"))
-	    languages.add(Jobs.getGCManager().localeString);
+	File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + ls + ".yml");
+	if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
+	    languages.add(ls);
 
 	for (String lang : languages) {
 	    File f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
@@ -372,7 +376,7 @@ public class LanguageManager {
 	    c.get("command.info.output.fish.none", "%jobname% does not get money from fishing.");
 	    c.get("command.info.output.craft.info", "&eCraft");
 	    c.get("command.info.output.craft.none", "%jobname% does not get money from crafting.");
-		c.get("command.info.output.drink.info", "&eDrink");
+	    c.get("command.info.output.drink.info", "&eDrink");
 	    c.get("command.info.output.drink.none", "%jobname% does not get money for drinking.");
 	    c.get("command.info.output.smelt.info", "&eSmelt");
 	    c.get("command.info.output.smelt.none", "%jobname% does not get money from smelting.");

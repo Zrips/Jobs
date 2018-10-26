@@ -144,8 +144,7 @@ public class GuiManager {
 
 	    if (job.getMaxSlots() != null)
 		Lore.add(Jobs.getLanguage().getMessage("command.info.gui.leftSlots") + ((job.getMaxSlots() - Jobs.getUsedSlots(job)) > 0 ? (job.getMaxSlots() - Jobs
-		    .getUsedSlots(
-			job)) : 0));
+		    .getUsedSlots(job)) : 0));
 
 	    Lore.add(Jobs.getLanguage().getMessage("command.info.gui.actions"));
 	    for (ActionType actionType : ActionType.values()) {

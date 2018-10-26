@@ -44,7 +44,7 @@ Jobs:
     slots: 1
     # [OPTIONAL] Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.
     # In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60
-    # This only aplies after players level is higher than provided particular limit.
+    # This only applies after players level is higher than provided particular limit.
     softIncomeLimit: 50
     softExpLimit: 40
     softPointsLimit: 60
@@ -81,7 +81,7 @@ Jobs:
     Gui:
     # name of the block
       Item: LOG:2
-    # If you want to use this instaed of Item name.
+    # If you want to use this instead of Item name.
     # id of block
     #  Id: 17
     # data of block, usually its 0, but in example Diorite will have id of 1 and data of 3
@@ -334,7 +334,7 @@ Jobs:
       Light_blue:
         income: 2.0
         experience: 5.0
-      Lime:
+      'Lime Green':
         income: 2.0
         experience: 5.0
       Magenta:
@@ -352,7 +352,7 @@ Jobs:
       Red:
         income: 2.0
         experience: 5.0
-      Silver:
+      'Light Gray':
         income: 2.0
         experience: 5.0
       White:
@@ -783,8 +783,7 @@ Jobs:
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
     Gui:
-      Id: 108
-      Data: 0
+      Item: BRICK_STAIRS
     Place:
       STONE-2:
         income: 1.3
@@ -1160,8 +1159,7 @@ Jobs:
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
     Gui:
-      Id: 290
-      Data: 0
+      Item: WOODEN_HOE
     Tame:
       Wolf:
         income: 5.0
@@ -1348,7 +1346,7 @@ Jobs:
         points: 1
         experience: 1.0
     Place:
-      WHEAT-0:
+      CROPS-0:
         income: 3.0
         points: 3
         experience: 3.0
@@ -1550,8 +1548,7 @@ Jobs:
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
     Gui:
-      Id: 61
-      Data: 0
+      Item: CRAFTING_TABLE
     Craft:
       '280':
         income: 0.1
@@ -1797,8 +1794,7 @@ Jobs:
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
     Gui:
-      Id: 346
-      Data: 0
+      Item: FISHING_ROD
     Fish:
       '349-0':
         income: 15.0

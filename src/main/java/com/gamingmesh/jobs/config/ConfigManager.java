@@ -685,7 +685,7 @@ public class ConfigManager {
 
 		    String node = permissionKey.toLowerCase();
 		    if (permissionSection == null) {
-			Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid permission key" + permissionKey + "!");
+			Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid permission key " + permissionKey + "!");
 			continue;
 		    }
 		    boolean value = permissionSection.getBoolean("value", true);

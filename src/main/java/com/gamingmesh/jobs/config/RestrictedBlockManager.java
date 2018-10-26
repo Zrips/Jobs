@@ -23,9 +23,9 @@ public class RestrictedBlockManager {
      */
     public synchronized void load() {
 	// No file create/load when boolean is false
-	if (!Jobs.getGCManager().useBlockProtection) {
+	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
-	}
+
 	ConfigReader cfg = null;
 	try {
 	    cfg = new ConfigReader("restrictedBlocks.yml");
@@ -82,7 +82,7 @@ public class RestrictedBlockManager {
 	    }
 	}
 
-	if (restrictedBlocksTimer.size() != 0)
+	if (restrictedBlocksTimer.size() > 0)
 	    Jobs.consoleMsg("&e[Jobs] Loaded " + this.restrictedBlocksTimer.size() + " protected blocks timers!");
 	cfg.save();
     }

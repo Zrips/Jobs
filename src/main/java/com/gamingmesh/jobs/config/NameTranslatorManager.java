@@ -224,14 +224,20 @@ public class NameTranslatorManager {
     }
 
     synchronized void load() {
+	String ls = Jobs.getGCManager().localeString;
+
+	if (ls == null || ls.equals(""))
+	    return;
 
 	File file = new File(plugin.getDataFolder(), "TranslatableWords.yml");
-	File file2 = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + Jobs.getGCManager().localeString + ".yml");
+	File file2 = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
 	if (file.exists())
 	    file.renameTo(file2);
 
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<>();
+
+	languages.clear();
 
 	try {
 	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "Words_"));
@@ -246,9 +252,9 @@ public class NameTranslatorManager {
 
 	languages.addAll(Jobs.getLanguageManager().getLanguages());
 
-	File customLocaleFile = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + Jobs.getGCManager().localeString + ".yml");
-	if (!customLocaleFile.exists() && !Jobs.getGCManager().localeString.equalsIgnoreCase("en"))
-	    languages.add(Jobs.getGCManager().localeString);
+	File customLocaleFile = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
+	if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
+	    languages.add(ls);
 
 	for (String lang : languages) {
 

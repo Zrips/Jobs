@@ -30,10 +30,6 @@ public class FurnaceBrewingHandling {
     static HashMap<UUID, List<blockLoc>> brewingMap = new HashMap<>();
 
     public static void load() {
-    // No file creating when the boolean is false
-    if (!Jobs.getGCManager().isFurnacesReassign() || !Jobs.getGCManager().isBrewingStandsReassign())
-    	return;
-
 	YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
 	if (!f.exists())
 	    return;
@@ -122,17 +118,14 @@ public class FurnaceBrewingHandling {
 	    }
 
 	if (totalf > 0 || totalb > 0)
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + totalf + " furnaces and " + totalb + " brewing stands for reassigning");
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + totalf + " furnaces and " + totalb + " brewing stands for reassigning.");
     }
 
     public static void save() {
-	// No file saving when the boolean is false
-	if (!Jobs.getGCManager().isFurnacesReassign() || !Jobs.getGCManager().isBrewingStandsReassign())
-		return;
-
 	YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
 
-	f.createNewFile();
+	if (!f.exists())
+	    f.createNewFile();
 
 	f.saveDefaultConfig();
 	FileConfiguration config = f.getConfig();
