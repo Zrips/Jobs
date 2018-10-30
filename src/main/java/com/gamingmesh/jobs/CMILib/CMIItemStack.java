@@ -172,7 +172,7 @@ public class CMIItemStack {
 		meta.setLore(lore);
 	    }
 
-	    return meta.getLore() == null ? new ArrayList<>() : meta.getLore();
+	    return meta.getLore() == null ? new ArrayList<String>() : meta.getLore();
 	}
 	return new ArrayList<>();
     }
