@@ -140,8 +140,9 @@ public class BufferedEconomy {
 		this.ServerTaxesAccount = Bukkit.getOfflinePlayer(ServerTaxesAccountname);
 
 	    if (Jobs.getGCManager().UseTaxes && Jobs.getGCManager().TransferToServerAccount && ServerTaxesAccount != null) {
-		economy.depositPlayer(ServerTaxesAccount, TaxesAmount);
-
+	    	if(TaxesAmount > 0) {
+				economy.depositPlayer(ServerTaxesAccount, TaxesAmount);
+			}
 		if (ServerTaxesAccount.isOnline()) {
 		    if (!Jobs.getActionbarToggleList().containsKey(ServerTaxesAccountname) && Jobs.getGCManager().ActionBarsMessageByDefault)
 			Jobs.getActionbarToggleList().put(ServerTaxesAccountname, true);
