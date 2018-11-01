@@ -113,7 +113,6 @@ public class JobsSQLite extends JobsDAO {
 	return prest;
     }
 
-    @SuppressWarnings("resource")
     @Override
     public boolean createTable(String query) {
 	Statement statement = null;
@@ -170,7 +169,6 @@ public class JobsSQLite extends JobsDAO {
 	}
     }
 
-    @SuppressWarnings("resource")
     @Override
     public boolean addCollumn(String table, String collumn, String type) {
 	Statement statement;
@@ -190,7 +188,6 @@ public class JobsSQLite extends JobsDAO {
 	}
     }
 
-    @SuppressWarnings("resource")
     @Override
     public boolean truncate(String table) {
 	Statement statement = null;

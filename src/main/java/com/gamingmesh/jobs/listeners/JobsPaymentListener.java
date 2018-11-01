@@ -219,7 +219,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (player == null || !player.isOnline())
+	if (!player.isOnline())
 	    return;
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0)
@@ -284,7 +284,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (player == null || !player.isOnline())
+	if (!player.isOnline())
 	    return;
 
 	// check if in creative
@@ -1500,7 +1500,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player p = event.getPlayer();
 
-	if (p == null || !p.isOnline())
+	if (!p.isOnline())
 	    return;
 
 	// check if in creative
@@ -1534,7 +1534,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	if (player == null || !player.isOnline())
+	if (!player.isOnline())
 	    return;
 
 	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())

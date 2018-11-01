@@ -600,6 +600,7 @@ public class Jobs extends JavaPlugin {
 	GconfigManager.reload();
 	lManager.reload();
 	configManager.reload();
+	FurnaceBrewingHandling.load();
 	usedSlots.clear();
 	for (Job job : jobs) {
 	    usedSlots.put(job, dao.getSlotsTaken(job));
@@ -785,7 +786,7 @@ public class Jobs extends JavaPlugin {
 
 	    YmlMaker restrictedBlocks = new YmlMaker(this, "restrictedBlocks.yml");
 	    restrictedBlocks.saveDefaultConfig();
-	    
+
 	    setPermissionHandler(new PermissionHandler(this));
 	    setJobsClassloader();
 	    setPlayerManager();
@@ -838,10 +839,7 @@ public class Jobs extends JavaPlugin {
 	    dao.loadBlockProtection();
 	    exploreManager.load();
 
-	    FurnaceBrewingHandling.load();
-
 	    consoleMsg("&e[Jobs] Plugin has been enabled successfully.");
-	    lManager.reload();
 
 	    cManager.fillCommands();
 

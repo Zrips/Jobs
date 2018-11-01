@@ -113,7 +113,6 @@ public class JobsMySQL extends JobsDAO {
 	return prest;
     }
 
-    @SuppressWarnings("resource")
     @Override
     public boolean createTable(String query) {
 	Jobs.consoleMsg(query);
@@ -137,7 +136,6 @@ public class JobsMySQL extends JobsDAO {
 	return true;
     }
 
-    @SuppressWarnings("resource")
     @Override
     public boolean isTable(String table) {
 	Statement statement;
@@ -158,7 +156,6 @@ public class JobsMySQL extends JobsDAO {
 	}
     }
 
-    @SuppressWarnings("resource")
     @Override
     public boolean isCollumn(String table, String collumn) {
 	Statement statement;
@@ -180,7 +177,6 @@ public class JobsMySQL extends JobsDAO {
 	}
     }
 
-    @SuppressWarnings("resource")
     @Override
     public boolean addCollumn(String table, String collumn, String type) {
 	Statement statement;
@@ -202,7 +198,6 @@ public class JobsMySQL extends JobsDAO {
 	}
     }
 
-    @SuppressWarnings("resource")
     @Override
     public boolean truncate(String table) {
 	Statement statement = null;
@@ -226,7 +221,6 @@ public class JobsMySQL extends JobsDAO {
 	}
     }
 
-    @SuppressWarnings("resource")
     @Override
     public boolean drop(String table) {
 	Statement statement = null;

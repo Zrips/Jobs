@@ -90,27 +90,41 @@ public class LanguageManager {
 
 	String ls = Jobs.getGCManager().localeString;
 
-	if (ls == null || ls.equals(""))
-	    return;
-
-	YmlMaker langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + ls + ".yml");
-	langFile.saveDefaultConfig();
-
 	languages.clear();
 	languages.add("en");
 
-	File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + ls + ".yml");
-	if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
-	    languages.add(ls);
+	YmlMaker langFile = null;
+	if (ls == null || ls.equals("")) {
+	    langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_en.yml");
+	    langFile.saveDefaultConfig();
+	} else {
+	    langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + ls + ".yml");
+	    langFile.saveDefaultConfig();
+
+	    File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + ls + ".yml");
+	    if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
+	        languages.add(ls);
+	}
 
 	for (String lang : languages) {
-	    File f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+		File f = null;
+		if (ls == null || ls.equals("")) {
+			f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_en.yml");
 
-	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
-	    if ((f.length() / 1024) > 1024) {
-		f.delete();
-		f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
-	    }
+			// Fail safe if file get corrupted and being created with corrupted data, we need to re-create it
+			if ((f.length() / 1024) > 1024) {
+				f.delete();
+				f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_en.yml");
+			}
+		} else {
+			f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+
+			// Fail safe if file get corrupted and being created with corrupted data, we need to re-create it
+			if ((f.length() / 1024) > 1024) {
+				f.delete();
+				f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+			}
+		}
 
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
@@ -152,11 +166,11 @@ public class LanguageManager {
 	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
 	    c.get("command.help.output.cmdUsage", "&2Usage: &7[command]");
 	    c.get("command.help.output.label", "Jobs");
-	    
+
 	    c.get("command.help.output.cmdInfoFormat", "[command] &f- &2[description]");
 	    c.get("command.help.output.cmdFormat", "&7/[command]&f[arguments]");
 	    c.get("command.help.output.helpPageDescription", "&2* [description]");
-	    
+
 	    c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");
 	    c.get("command.help.output.page", "&e-----&e ====== Page &6[1] &eof &6[2] &e====== &e-----");
 	    c.get("command.help.output.fliperSimbols", "&e----------");
@@ -461,7 +475,7 @@ public class LanguageManager {
 	    c.get("command.clearownership.help.info", "Clear block ownership");
 	    c.get("command.clearownership.help.args", "(playername)");
 	    c.get("command.clearownership.output.cleared", "&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands");
-	    
+
 	    c.get("command.quests.help.info", "List available quests");
 	    c.get("command.quests.help.args", "(playername)");
 	    c.get("command.quests.error.noquests", "&cThere are no quests");
