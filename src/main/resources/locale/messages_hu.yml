@@ -53,7 +53,7 @@ command:
   moneyboost:
     help:
       info: 'Növeli a pénzszerzést minden játékos számára.'
-      args: '[munkanév] [arány]'
+      args: '[jobname] [arány]'
     output:
       allreset: '&aMinden pénzbővítés kikapcsolva.'
       jobsboostreset: '&cPénznövekedés a(z) %jobname% munkánál kikapcsolva.'
@@ -64,7 +64,7 @@ command:
   pointboost:
     help:
       info: 'Növeli a játékosok pontszerzését minden játékos számára.'
-      args: '[munkanév] [arány]'
+      args: '[jobname] [arány]'
     output:
       allreset: '&aMinden pont lendülete kikapcsolva.'
       jobsboostreset: '&cPontok lendületei %jobname% visszaállítva.'
@@ -75,7 +75,7 @@ command:
   expboost:
     help:
       info: 'Növeli az összes játékos nyereségét.'
-      args: '[munkanév] [arány]'
+      args: '[jobname] [arány]'
     output:
       allreset: '&aMinden tapasztalat növelés kikapcsolva.'
       jobsboostreset: '&cTapasztalat lendület a(z) %jobname% munkánál kikapcsolva.'
@@ -86,7 +86,7 @@ command:
   bonus:
     help:
       info: 'A munkabónuszok megjelenítése.'
-      args: '[munkanév]'
+      args: '[jobname]'
     output:
       topline: '&7**************** &2[pénz] &6[pontok] &e[exp] &7****************'
       permission: ' &eJog bónusz: %money% %points% %exp%'
@@ -124,13 +124,13 @@ command:
   resetlimit:
     help:
       info: 'A játékosok fizetési limitjeinek visszaállítása.'
-      args: '[játékos]'
+      args: '[playername]'
     output:
       reseted: '&eA fizetési határértékek alaphelyzetbe álltak: &2%playername%'
   resetquest:
     help:
       info: 'A játékosok küldetés visszaállítása.'
-      args: '[játékos] (munkanév)'
+      args: '[playername] [jobname]'
     output:
       reseted: '&eKüldetés visszaállítva: &2%playername%'
       noQuests: '&eNincs egy küldetés sem.'
@@ -145,13 +145,13 @@ command:
   points:
     help:
       info: 'Megmutatja, hogy mennyi pontot kapott a játékos.'
-      args: '[játékos]'
+      args: '[playername]'
     currentpoints: ' &eJelenlegi pontod: &6%currentpoints%'
     totalpoints: ' &eAz összegyűjtött pontok összege eddig: &6%totalpoints%'
   editpoints:
     help:
       info: 'Játékos pontok szerkesztése.'
-      args: '[set/add/take] [játékos] [összeg]'
+      args: '[set/add/take] [playername] [összeg]'
     output:
       set: '&e(&6%playername%&e) játékosnak pont beállítva &6%amount%'
       add: '&e(&6%playername%&e) játékosnak van további &6%amount% &epontja. Most van &6%total%'
@@ -203,7 +203,7 @@ command:
   stats:
     help:
       info: 'Kilistázza azokat a munkákat, amelyikbe beléptél.'
-      args: '[játékos]'
+      args: '[playername]'
     error:
       nojob: '&cElőször csatlakozz egy munkához.'
     output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
@@ -229,14 +229,14 @@ command:
   archive:
     help:
       info: 'A felhasználó által archivált összes munkát jeleníti meg.'
-      args: '[játékos]'
+      args: '[playername]'
     error:
       nojob: '&cNincs mentett munka.'
     output: 'lvl %joblevel% (%getbackjoblevel%) %jobname%'
   give:
     help:
       info: 'A tárgyakat a feladatok neve és az elemek kategóriája alapján adja meg. A játékos neve opcionális.'
-      args: '[játékos] [munkanév] [tárgynév]'
+      args: '[playername] [jobname] [jobitemname]'
     output:
       notonline: '&4[%playername%] nem elérhető!'
       noitem: '&4Nincs találat ezzel a névvel lévő tárgyról!'
@@ -246,7 +246,7 @@ command:
       info: 'Megmutatja, hogy mennyi minden munkát fizet, és miért.'
       penalty: '&eEz a munka &c[penalty]% &ebüntetés miatt túl sok játékos dolgozik benne.'
       bonus: '&eEz a munka &2[bonus]% &ebónusza van, mert nem elég játékos dolgozik benne.'
-      args: '[munkanév] [akció]'
+      args: '[jobname] [action]'
       actions: '&eAz érvényes akciók: &f%actions%'
       max: ' - &eMax. szint:&f '
       newMax: '&eMaximális szint: &f[max]'
@@ -307,6 +307,9 @@ command:
       enchant:
         info: '&eVarázs'
         none: '%jobname% nem kap pénzt, ha varázsól.'
+      vtrade:
+        info: '&eFalusi kereskedelem'
+        none: '%jobname% nem kap pénzt, ha kereskedik egy falusival.'
       repair:
         info: '&eJavít'
         none: '%jobname% nem kap pénzt, ha javít.'
@@ -331,11 +334,11 @@ command:
   playerinfo:
     help:
       info: 'Megmutassa mennyi minden munkát fizet, és mi van egy másik játékosnál.'
-      args: '[játékos] [munkanév] [akció]'
+      args: '[playername] [jobname] [action]'
   join:
     help:
       info: 'Csatlakozás a megadott munkához.'
-      args: '[munkanév]'
+      args: '[jobname]'
     error:
       alreadyin: '&cMár csatlakoztál a(z) %jobname%&c munkához!'
       fullslots: '&cNem tudsz csatlakozni a(z) %jobname%&c munkához, mert nincsenek rendelkezésre álló helyek.'
@@ -347,7 +350,7 @@ command:
   leave:
     help:
       info: 'Elhagyja a megadott munkát.'
-      args: '[munkanév]'
+      args: '[jobname]'
     success: '&cSikeresen elhagytad a(z)&7 %jobname%&c munkát!'
   leaveall:
     help:
@@ -391,13 +394,13 @@ command:
   clearownership:
     help:
       info: 'Tulajdonjog törlése.'
-      args: '(játékos)'
+      args: '[playername]'
     output:
       cleared: '&2Eltávolítva &7[furnaces] &2kemence &7[brewing] &2főzet.'
   quests:
     help:
       info: 'Megmutassa a rendelkezésre álló küldetések listáját.'
-      args: '(játékosnév)'
+      args: '[playername]'
     error:
       noquests: '&cNincsenek küldetések.'
     toplineseparator: '&7*********************** &6[playerName]&2 (&f[questsDone]&2)
@@ -412,7 +415,7 @@ command:
   fire:
     help:
       info: 'Játékos kirúgása a munkából.'
-      args: '[játékos] [munkanév]'
+      args: '[playername] [jobname]'
     error:
       nojob: '&cA játékosnak nincs ilyen munkája: %jobname%.'
     output:
@@ -420,7 +423,7 @@ command:
   fireall:
     help:
       info: 'Tűzoltás minden munkából.'
-      args: '[játékos]'
+      args: '[playername]'
     error:
       nojobs: '&cA játékosnak nincsenek olyan munkái, amelyekről ki lehet rúgni.'
     output:
@@ -428,7 +431,7 @@ command:
   employ:
     help:
       info: 'Megfogja a játékost, hogy a megadott munkához csatlakozzon.'
-      args: '[játékos] [munkanév]'
+      args: '[playername] [jobname]'
     error:
       alreadyin: '&cA játékos már dolgozik %jobname% munkánál.'
     output:
@@ -436,7 +439,7 @@ command:
   top:
     help:
       info: 'Top %amount% játékosok a ranglistán.'
-      args: '[munkanév]'
+      args: '[jobname]'
     error:
       nojob: '&cNem találok semmilyen munkát ezzel a névvel.'
     output:
@@ -480,7 +483,7 @@ command:
   log:
     help:
       info: 'Megjeleníti a statisztikákat.'
-      args: '[játékos]'
+      args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
       list: '&7* &6%number%. &3%action%: &6%item% &emennyiség: %qty% &6pénz: %money% &eexp: %exp%'
@@ -503,43 +506,43 @@ command:
   transfer:
     help:
       info: 'A játékos munkájának áthelyezése régi munkáról egy új munkába.'
-      args: '[játékos] [régimunka] [újmunka]'
+      args: '[playername] [oldjob] [newjob]'
     output:
       target: 'Átkerültél %oldjobname% munkából a(z) %newjobname% munkába.'
   promote:
     help:
       info: 'Támogasd a játékos X szintjét egy munkában.'
-      args: '[játékos] [munkanév] [szintek]'
+      args: '[playername] [jobname] [levels]'
     output:
       target: 'Előléptettek %levelsgained% szintet a(z) %jobname% munkában.'
   exp:
     help:
       info: 'Módosítsa a játékos tapasztalat feladatát.'
-      args: '[játékos] [munkanév] [set/add/take] [mennyiség]'
+      args: '[playername] [jobname] [set/add/take] [amount]'
     output:
       target: '&eA tapasztalat változott %jobname%&e, most van &6%level%lvl &eés &6%exp%exp.'
   demote:
     help:
       info: 'Eldobja a játékos X szintjét a munkában.'
-      args: '[játékos] [munkanév] [szintek]'
+      args: '[playername] [jobname] [levels]'
     output:
       target: 'Levéve %levelslost% szint a(z) %jobname% munkában.'
   grantxp:
     help:
       info: 'Megadja a játékosnak az X munkát.'
-      args: '[játékos] [munkanév] [xp]'
+      args: '[playername] [jobname] [xp]'
     output:
       target: 'Megadták %xpgained% tapasztalatot a(z) %jobname% munkában.'
   removexp:
     help:
       info: 'Eltávolít X tapasztalatot a játékostól a munkában.'
-      args: '[játékos] [munkanév] [xp]'
+      args: '[playername] [jobname] [xp]'
     output:
       target: 'Vesztettél %xplost% tapasztalatot a(z) %jobname% munkában.'
   signupdate:
     help:
       info: 'Manuálisan frissíti a táblát a nevével.'
-      args: '[munkanév]'
+      args: '[jobname]'
   bp:
     help:
       info: 'Megmutatja a blokk védelmet körülötted (10 blokk sugarú).'
@@ -553,7 +556,7 @@ command:
   toggle:
     help:
       info: 'A fizetős kimenet a cselekvési sávon (actionbar) vagy a bossbar-on.'
-      args: '<actionbar/bossbar>'
+      args: '[actionbar/bossbar]'
     output:
       turnedoff: '&4Ez a funkció ki van kapcsolva!'
       paid:
@@ -572,7 +575,7 @@ command:
   edititembonus:
     help:
       info: 'Elembónusz bónuszának szerkesztése.'
-      args: '[list/add/remove] [munkanév] [itemBoostName]'
+      args: '[list/add/remove] [jobname] [itemBoostName]'
 message:
   skillup:
     broadcast: '%playername% játékost előléptették a %titlename% %jobname% munkában.'

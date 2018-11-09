@@ -44,7 +44,7 @@ public class ShopManager {
     }
 
     public void openInventory(Player player, int page) {
-	Inventory inv = Jobs.getShopManager().CreateJobsGUI(player, page);
+	Inventory inv = CreateJobsGUI(player, page);
 	if (inv == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.cantOpen"));
 	    return;
@@ -116,7 +116,7 @@ public class ShopManager {
 	}
 
 	if (player.getInventory().firstEmpty() == -1) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.InvFull"));
+	    player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
 	    return;
 	}
 
@@ -135,7 +135,7 @@ public class ShopManager {
 
 	    ItemStack itemStack = mat.newItemStack();
 	    itemStack.setAmount(one.getAmount());
-	    
+
 	    ItemMeta meta = itemStack.getItemMeta();
 
 	    if (one.getName() != null)
@@ -260,7 +260,7 @@ public class ShopManager {
 
 	    ItemStack GUIitem = mat.newItemStack();
 	    GUIitem.setAmount(item.getIconAmount());
-	    
+
 	    ItemMeta meta = GUIitem.getItemMeta();
 
 	    if (item.getIconName() != null)

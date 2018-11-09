@@ -264,6 +264,12 @@ Jobs:
         income: 2.0
         points: 2.0
         experience: 2.0
+    # Payment for trading a villager. Checks results only
+    VTrade:
+      EMERALD:
+        income: 1.0
+        points: 1.0
+        experience: 2.0
     # killing a mob
     Kill:
       # mob name

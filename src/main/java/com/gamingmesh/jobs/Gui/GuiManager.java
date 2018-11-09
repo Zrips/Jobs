@@ -150,8 +150,7 @@ public class GuiManager {
 	    for (ActionType actionType : ActionType.values()) {
 		List<JobInfo> info = job.getJobInfo(actionType);
 		if (info != null && !info.isEmpty()) {
-		    Lore.add(ChatColor.translateAlternateColorCodes('&', Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase()
-			+ ".info")));
+		    Lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
 		}
 	    }
 
@@ -209,8 +208,7 @@ public class GuiManager {
 		continue;
 
 	    ArrayList<String> Lore = new ArrayList<>();
-	    Lore.add(ChatColor.translateAlternateColorCodes('&', Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase()
-		+ ".info")));
+	    Lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
 	    int y = 1;
 	    for (int z = 0; z < info.size(); z++) {
 
@@ -259,8 +257,7 @@ public class GuiManager {
 
 		    GuiItem = job.getGuiItem();
 		    Lore = new ArrayList<>();
-		    Lore.add(ChatColor.translateAlternateColorCodes('&', Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase()
-			+ ".info")));
+		    Lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
 		    i++;
 		}
 		y++;

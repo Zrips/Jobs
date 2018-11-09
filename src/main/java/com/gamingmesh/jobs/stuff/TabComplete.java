@@ -96,6 +96,13 @@ public class TabComplete implements TabCompleter {
 				}
 			}
 			break;
+		    case "[newjob]":
+			if (sender instanceof Player) {
+				for (Job job : Jobs.getJobs()) {
+				    temp.add(job.getName());
+				}
+			}
+			break;
 		    }
 
 		    StringUtil.copyPartialMatches(PartOfCommand, temp, completionList);

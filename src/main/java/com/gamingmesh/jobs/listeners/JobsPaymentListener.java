@@ -837,7 +837,7 @@ public class JobsPaymentListener implements Listener {
 	    Integer level = oneEnchant.getValue();
 	    if (level == null)
 		continue;
-	    
+
 	    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
 	}
 	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));

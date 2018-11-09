@@ -217,7 +217,7 @@ public class LanguageManager {
 
 	    c.get("command.edititembonus.help.info", "Edit item boost bonus");
 	    c.get("command.edititembonus.help.args", "[list/add/remove] [jobsName] [itemBoostName]");
-	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("add%%remove", "[jobname]", "[jobitemname]"));
+	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("list%%add%%remove", "[jobsName]", "[jobitemname]"));
 
 	    c.get("command.bonus.help.info", "Show job bonuses");
 	    c.get("command.bonus.help.args", "[jobname]");
@@ -256,10 +256,12 @@ public class LanguageManager {
 
 	    c.get("command.resetlimit.help.info", "Resets players payment limits");
 	    c.get("command.resetlimit.help.args", "[playername]");
+	    Jobs.getGCManager().commandArgs.put("resetlimit", Arrays.asList("[playername]"));
 	    c.get("command.resetlimit.output.reseted", "&ePayment limits have been reset for: &2%playername%");
 
 	    c.get("command.resetquest.help.info", "Resets players quest");
-	    c.get("command.resetquest.help.args", "[playername] (job)");
+	    c.get("command.resetquest.help.args", "[playername] [jobname]");
+	    Jobs.getGCManager().commandArgs.put("clearownership", Arrays.asList("[playername]", "[jobname]"));
 	    c.get("command.resetquest.output.reseted", "&eQuest have been reset for: &2%playername%");
 	    c.get("command.resetquest.output.noQuests", "&eCan't find any quests");
 
@@ -334,7 +336,6 @@ public class LanguageManager {
 	    c.get("command.shop.info.NoTotalLevel", "&cTotal jobs level is too low (%totalLevel%)");
 	    c.get("command.shop.info.Paid", "&eYou have paid &6%amount% &efor this item");
 	    c.get("command.shop.info.reqJobsList", "  &6%jobsname%&e: &e%level% lvl");
-	    c.get("command.shop.info.InvFull", "&cYour inventory is full.");
 
 	    c.get("command.archive.help.info", "Shows all jobs saved in archive by user.");
 	    c.get("command.archive.help.args", "[playername]");
@@ -342,7 +343,7 @@ public class LanguageManager {
 	    c.get("command.archive.error.nojob", "There is no jobs saved.");
 
 	    c.get("command.give.help.info", "Gives item by jobs name and item category name. Player name is optional");
-	    c.get("command.give.help.args", "[playername] [jobname] [itemname]");
+	    c.get("command.give.help.args", "[playername] [jobname] [jobitemname]");
 	    Jobs.getGCManager().commandArgs.put("give", Arrays.asList("[playername]", "[jobname]", "[jobitemname]"));
 	    c.get("command.give.output.notonline", "&4Player [%playername%] is not online!");
 	    c.get("command.give.output.noitem", "&4Can't find any item by given name!");
@@ -402,6 +403,8 @@ public class LanguageManager {
 	    c.get("command.info.output.dye.none", "%jobname% does not get money from dyeing.");
 	    c.get("command.info.output.enchant.info", "&eEnchant");
 	    c.get("command.info.output.enchant.none", "%jobname% does not get money from enchanting.");
+	    c.get("command.info.output.vtrade.info", "&eVillager trade");
+	    c.get("command.info.output.vtrade.none", "%jobname% does not get money for trading a villager.");
 	    c.get("command.info.output.repair.info", "&eRepair");
 	    c.get("command.info.output.repair.none", "%jobname% does not get money from repairing.");
 	    c.get("command.info.output.breed.info", "&eBreed");
@@ -473,11 +476,13 @@ public class LanguageManager {
 	    c.get("command.browse.output.chooseJobHover", "&7Click here to get this job");
 
 	    c.get("command.clearownership.help.info", "Clear block ownership");
-	    c.get("command.clearownership.help.args", "(playername)");
+	    c.get("command.clearownership.help.args", "[playername]");
+	    Jobs.getGCManager().commandArgs.put("clearownership", Arrays.asList("[playername]"));
 	    c.get("command.clearownership.output.cleared", "&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands");
 
 	    c.get("command.quests.help.info", "List available quests");
-	    c.get("command.quests.help.args", "(playername)");
+	    c.get("command.quests.help.args", "[playername]");
+	    Jobs.getGCManager().commandArgs.put("quests", Arrays.asList("[playername]"));
 	    c.get("command.quests.error.noquests", "&cThere are no quests");
 	    c.get("command.quests.toplineseparator", "&7*********************** &6[playerName]&2(&f[questsDone]&2) &7***********************");
 	    c.get("command.quests.output.completed", "&2      !Completed!&r      ");
@@ -522,7 +527,8 @@ public class LanguageManager {
 	    c.get("command.gtop.output.show", "&2Show from &e[from] &2until &e[until] &2global top list");
 
 	    c.get("command.area.help.info", "Modify restricted areas.");
-	    c.get("command.area.help.args", "add/remove/info/list");
+	    c.get("command.area.help.args", "[add/remove/info/list]");
+	    Jobs.getGCManager().commandArgs.put("area", Arrays.asList("add%%remove%%info%%list"));
 	    c.get("command.area.help.addUsage", "&eUsage: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]");
 	    c.get("command.area.help.removeUsage", "&eUsage: &6/Jobs area remove [areaName]");
 	    c.get("command.area.output.addedNew", "&eAdded new restricted area with &6%bonus% &ebonus");
@@ -564,7 +570,7 @@ public class LanguageManager {
 
 	    c.get("command.transfer.help.info", "Transfer a player's job from an old job to a new job.");
 	    c.get("command.transfer.help.args", "[playername] [oldjob] [newjob]");
-	    Jobs.getGCManager().commandArgs.put("transfer", Arrays.asList("[playername]", "[oldjob]", "[jobname]"));
+	    Jobs.getGCManager().commandArgs.put("transfer", Arrays.asList("[playername]", "[oldjob]", "[newjob]"));
 	    c.get("command.transfer.output.target", "You have been transferred from %oldjobname% to %newjobname%.");
 
 	    c.get("command.promote.help.info", "Promote the player X levels in a job.");
@@ -574,7 +580,7 @@ public class LanguageManager {
 
 	    c.get("command.exp.help.info", "Change the player exp for job.");
 	    c.get("command.exp.help.args", "[playername] [jobname] [set/add/take] [amount]");
-	    Jobs.getGCManager().commandArgs.put("exp", Arrays.asList("[playername]", "[jobname]", "take%%set%%add"));
+	    Jobs.getGCManager().commandArgs.put("exp", Arrays.asList("[playername]", "[jobname]", "set%%add%%take"));
 	    c.get("command.exp.output.target", "&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.");
 
 	    c.get("command.demote.help.info", "Demote the player X levels in a job.");
@@ -604,7 +610,8 @@ public class LanguageManager {
 	    c.get("command.reload.help.info", "Reload configurations.");
 
 	    c.get("command.toggle.help.info", "Toggles payment output on action bar or bossbar.");
-	    c.get("command.toggle.help.args", "[actionbar/bossbar]");
+	    c.get("command.toggle.help.args", "actionbar/bossbar");
+	    Jobs.getGCManager().commandArgs.put("toggle", Arrays.asList("actionBar%%bossBar"));
 	    c.get("command.toggle.output.turnedoff", "&4This feature are turned off!");
 	    c.get("command.toggle.output.paid.main", "&aYou got:");
 	    c.get("command.toggle.output.paid.money", "&e[amount] money");
@@ -612,7 +619,6 @@ public class LanguageManager {
 	    c.get("command.toggle.output.paid.points", "&6[points] points");
 	    c.get("command.toggle.output.on", "&aToggled: &aON");
 	    c.get("command.toggle.output.off", "&aToggled: &4OFF");
-	    Jobs.getGCManager().commandArgs.put("toggle", Arrays.asList("ActionBar%%BossBar"));
 
 	    c.get("message.skillup.broadcast", "%playername% has been promoted to a %titlename% %jobname%.");
 	    c.get("message.skillup.nobroadcast", "Congratulations, you have been promoted to a %titlename% %jobname%.");
@@ -628,7 +634,7 @@ public class LanguageManager {
 	    c.get("message.boostStarted", "&eJobs boost time have been started!");
 	    c.get("message.boostStoped", "&eJobs boost time have been ended!");
 
-	    c.get("message.crafting.fullinventory", "Your inventory is full!");
+	    c.get("message.crafting.fullinventory", "&cYour inventory is full!");
 
 	    c.get("signs.List", "&0[number].&8[player]&7:&4[level]");
 	    c.get("signs.SpecialList.p1", "&b** &8First &b**");
