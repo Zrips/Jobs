@@ -1,16 +1,18 @@
 package com.gamingmesh.jobs.Gui;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+
+import org.bukkit.inventory.Inventory;
 
 import com.gamingmesh.jobs.container.Job;
 
 public class GuiInfoList {
 
     private String name;
-    private List<Job> jobList = new ArrayList<>();
+    private HashMap<Integer, Job> jobList = new HashMap<Integer, Job>();
     private Boolean jobInfo = false;
     private int backButton = 27;
+    private Inventory inv = null;
 
     public GuiInfoList(String name) {
 	this.name = name;
@@ -28,12 +30,12 @@ public class GuiInfoList {
 	return name;
     }
 
-    public List<Job> getJobList() {
+    public HashMap<Integer, Job> getJobList() {
 	return jobList;
     }
 
-    public void setJobList(List<Job> jobList) {
-	this.jobList = jobList;
+    public void addJob(int slot, Job job) {
+	this.jobList.put(slot, job);
     }
 
     public void setJobInfo(Boolean jobInfo) {
@@ -42,5 +44,13 @@ public class GuiInfoList {
 
     public Boolean isJobInfo() {
 	return jobInfo;
+    }
+
+    public Inventory getInv() {
+	return inv;
+    }
+
+    public void setInv(Inventory inv) {
+	this.inv = inv;
     }
 }
