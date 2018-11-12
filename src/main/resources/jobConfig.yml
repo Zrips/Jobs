@@ -272,6 +272,10 @@ Jobs:
         income: 1.0
         points: 1.0
         experience: 2.0
+      # you can add enchanted book with sub-id
+      ENCHANTED_BOOK-12:
+        income: 1.0
+        experience: 2.0
     # killing a mob
     Kill:
       # mob name
