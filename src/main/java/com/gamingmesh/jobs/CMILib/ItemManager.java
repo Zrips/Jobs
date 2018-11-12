@@ -1706,6 +1706,7 @@ public class ItemManager {
 	public static CMIMaterial get(String id) {
 	    Integer ids = null;
 	    Integer data = null;
+	    
 	    id = id.replace("_", "").replace(" ", "").toLowerCase();
 	    try {
 		ids = Integer.parseInt(id);
@@ -1785,7 +1786,13 @@ public class ItemManager {
 		    return one;
 		if (one.getName().replace("_", "").replace(" ", "").equalsIgnoreCase(id))
 		    return one;
+		
 	    }
+	    for (CMIMaterial one : CMIMaterial.values()) {
+		if (one.name().replace("_", "").toLowerCase().endsWith(id))
+		    return one;		
+	    }
+	    
 	    return CMIMaterial.NONE;
 	}
 
