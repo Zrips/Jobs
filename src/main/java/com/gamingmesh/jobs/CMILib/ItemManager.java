@@ -362,7 +362,6 @@ public class ItemManager {
     }
 
     public enum CMIEntityType {
-
 	PLAYER(-1, "Player"),
 	DROPPED_ITEM(1, "Item"),
 	EXPERIENCE_ORB(2, "Experience Orb"),

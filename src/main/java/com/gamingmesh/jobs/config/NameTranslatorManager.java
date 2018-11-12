@@ -146,9 +146,9 @@ public class NameTranslatorManager {
 
 		String split = one.split("-")[0];
 		String id = split.contains(":") ? split.split(":")[0] : split;
-		String meta = split.contains(":") ? split.split(":")[1] : "";
+		String meta = split.contains(":") && split.split(":").length > 1 ? split.split(":")[1] : "";
 
-		String MCName = one.split("-")[1];
+		String MCName = one.contains("-") && one.split("-").length > 1 ? one.split("-")[1] : "";
 		String Name = ItemFile.getConfig().getString("ItemList." + one);
 		ListOfNames.add(new NameList(id, meta, Name, MCName));
 	    }

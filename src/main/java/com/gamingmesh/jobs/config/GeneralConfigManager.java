@@ -37,6 +37,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.resources.jfep.Parser;
+import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -941,7 +942,7 @@ public class GeneralConfigManager {
 
 	guiFiller = tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : tmat.newItemStack();
 	ItemMeta meta = guiFiller.getItemMeta();
-	meta.setDisplayName(" ");
+	meta.setDisplayName(ChatColor.RED + "");
 	guiFiller.setItemMeta(meta);
 
 //	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
