@@ -32,6 +32,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
@@ -446,9 +447,9 @@ public class GeneralConfigManager {
 
 	c.getW().addComment("selectionTool", "Tool used when selecting bounds for restricted area");
 	if (CMIMaterial.get(getSelectionTooldID) == null)
-		getSelectionTooldID = 294;
+	    getSelectionTooldID = 294;
 	else
-		getSelectionTooldID = c.get("selectionTool", 294);
+	    getSelectionTooldID = c.get("selectionTool", 294);
 
 	c.getW().addComment("MultiServerCompatability", "Enable if you are using one data base for multiple servers across bungee network",
 	    "This will force to load players data every time he is logging in to have most up to date data instead of having preloaded data",
@@ -844,11 +845,11 @@ public class GeneralConfigManager {
 	BossBarEnabled = c.get("BossBar.Enabled", true);
 
 	if (BossBarEnabled == true) {
-		if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
-			Jobs.consoleMsg("&c[Jobs] Your server version don't support BossBar. This feature will be disabled.");
-			c.getW().set("BossBar.Enabled", false);
-			BossBarEnabled = false;
-		}
+	    if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
+		Jobs.consoleMsg("&c[Jobs] Your server version don't support BossBar. This feature will be disabled.");
+		c.getW().set("BossBar.Enabled", false);
+		BossBarEnabled = false;
+	    }
 	}
 
 	c.getW().addComment("BossBar.Messages.EnabledByDefault", "When this set to true player will see Bossbar messages by default");
@@ -932,10 +933,14 @@ public class GeneralConfigManager {
 	c.getW().addComment("JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top & /jobs gtop");
 	JobsTopAmount = c.get("JobsTop.AmountToShow", 15);
 
-	Material tmat = Material.getMaterial(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
-	guiBackButton = new ItemStack(tmat == null ? Material.JACK_O_LANTERN : tmat, 1, (byte) c.get("JobsGUI.BackButton.Data", 0));
-	tmat = Material.getMaterial(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
-	guiFiller = new ItemStack(tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.getMaterial() : tmat, 1, (byte) c.get("JobsGUI.Filler.Data", 15));
+	CMIMaterial tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
+	guiBackButton = tmat == null ? CMIMaterial.JACK_O_LANTERN.newItemStack() : tmat.newItemStack();
+
+	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
+	guiFiller = tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : tmat.newItemStack();
+	ItemMeta meta = guiFiller.getItemMeta();
+	meta.setDisplayName("");
+	guiFiller.setItemMeta(meta);
 
 //	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
 //	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);

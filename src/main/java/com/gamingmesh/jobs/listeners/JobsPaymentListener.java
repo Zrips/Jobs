@@ -1104,7 +1104,7 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
-	if (event.getSpawnReason() == SpawnReason.SPAWNER || event.getSpawnReason() == SpawnReason.SPAWNER_EGG) {
+	if (event.getSpawnReason().equals(SpawnReason.SPAWNER) || event.getSpawnReason().equals(SpawnReason.SPAWNER_EGG)) {
 	    LivingEntity creature = event.getEntity();
 	    creature.setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(this.plugin, true));
 	}
