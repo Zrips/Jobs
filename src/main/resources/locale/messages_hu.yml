@@ -247,7 +247,7 @@ command:
       penalty: '&eEz a munka &c[penalty]% &ebüntetés miatt túl sok játékos dolgozik benne.'
       bonus: '&eEz a munka &2[bonus]% &ebónusza van, mert nem elég játékos dolgozik benne.'
       args: '[jobname] [action]'
-      actions: '&eAz érvényes akciók: &f%actions%'
+      actions: '&eÉrvényes akciók: &f%actions%'
       max: ' - &eMax. szint:&f '
       newMax: '&eMaximális szint: &f[max]'
       material: '&7%material%'
@@ -270,67 +270,67 @@ command:
     output:
       break:
         info: '&eEltör'
-        none: '%jobname% nem kap pénzt a blokkok kitörésére.'
+        none: '%jobname%&c nem kap pénzt a blokkok kitörésére.'
       tntbreak:
         info: '&eTNT robbantás'
-        none: '%jobname% nem kap pénzt, ha a blokkot tnt-vel robbantja ki.'
+        none: '%jobname%&c nem kap pénzt, ha a blokkot tnt-vel robbantja ki.'
       place:
         info: '&eLerak'
-        none: '%jobname% nem kap pénzt, ha blokkot helyez le.'
+        none: '%jobname%&c nem kap pénzt, ha blokkot helyez le.'
       kill:
         info: '&eMegöl'
-        none: '%jobname% nem kap pénzt, ha szörnyet gyilkol.'
+        none: '%jobname%&c nem kap pénzt, ha szörnyet gyilkol.'
       mmkill:
         info: '&eMMKill'
-        none: '%jobname% nem kap pénzt, ha Mythic szörnyeket gyilkol.'
+        none: '%jobname%&c nem kap pénzt, ha Mythic szörnyeket gyilkol.'
       fish:
         info: '&eHorgász'
-        none: '%jobname% nem kap pénzt, ha horgászik.'
+        none: '%jobname%&c nem kap pénzt, ha horgászik.'
       craft:
         info: '&eBarkácsol'
-        none: '%jobname% nem kap pénzt, ha barkácsol.'
+        none: '%jobname%&c nem kap pénzt, ha barkácsol.'
       drink:
         info: '&eMegisz'
-        none: '%jobname% nem kap pénzt, ha iszik italokat.'
+        none: '%jobname%&c nem kap pénzt, ha iszik italokat.'
       smelt:
         info: '&eOlvaszt'
-        none: '%jobname% nem kap pénzt, ha olvaszt.'
+        none: '%jobname%&c nem kap pénzt, ha olvaszt.'
       brew:
         info: '&eFőzés'
-        none: '%jobname% nem kap pénzt, ha bájitalt főz.'
+        none: '%jobname%&c nem kap pénzt, ha bájitalt főz.'
       eat:
         info: '&eElfogyaszt'
-        none: '%jobname% nem kap pénzt, ha étkezik.'
+        none: '%jobname%&c nem kap pénzt, ha étkezik.'
       dye:
         info: '&eFesték'
-        none: '%jobname% nem kap pénzt, ha fest.'
+        none: '%jobname%&c nem kap pénzt, ha fest.'
       enchant:
         info: '&eVarázs'
-        none: '%jobname% nem kap pénzt, ha varázsól.'
+        none: '%jobname%&c nem kap pénzt, ha varázsól.'
       vtrade:
         info: '&eFalusi kereskedelem'
-        none: '%jobname% nem kap pénzt, ha kereskedik egy falusival.'
+        none: '%jobname%&c nem kap pénzt, ha kereskedik egy falusival.'
       repair:
         info: '&eJavít'
-        none: '%jobname% nem kap pénzt, ha javít.'
+        none: '%jobname%&c nem kap pénzt, ha javít.'
       breed:
         info: '&eTenyészt'
-        none: '%jobname% nem kap pénzt, ha tenyészt.'
+        none: '%jobname%&c nem kap pénzt, ha tenyészt.'
       tame:
         info: '&eMegszelídít'
-        none: '%jobname% nem kap pénzt, ha szelídít.'
+        none: '%jobname%&c nem kap pénzt, ha szelídít.'
       milk:
         info: '&eTej'
-        none: '%jobname% nem kap pénzt, ha megfej egy tehenet.'
+        none: '%jobname%&c nem kap pénzt, ha megfej egy tehenet.'
       shear:
         info: '&eNyír'
-        none: '%jobname% nem kap pénzt, ha bárányokat nyír.'
+        none: '%jobname%&c nem kap pénzt, ha bárányokat nyír.'
       explore:
         info: '&eFeltár'
-        none: '%jobname% nem kap pénzt, ha felfedezik.'
+        none: '%jobname%&c nem kap pénzt, ha felfedezik.'
       custom-kill:
         info: '&eEgyéni gyilkolás'
-        none: '%jobname% nem kap pénzt, ha játékost gyilkol.'
+        none: '%jobname%&c nem kap pénzt, ha játékost gyilkol.'
   playerinfo:
     help:
       info: 'Megmutassa mennyi minden munkát fizet, és mi van egy másik játékosnál.'
@@ -346,7 +346,7 @@ command:
       rejoin: '&cNem csatlakozhatsz ebbe a munkába. Várj [time].'
     rejoin: '&aKattints ide, hogy újra csatlakozz ebbe a munkába: '
     success: '&aSikeresen csatlakoztál a(z) %jobname%&a munkához!'
-    confirm: '&2Kattints ide, hogy a &7[jobname]&2 munkát megerősítse.'
+    confirm: '&2Kattints ide, hogy a(z) &7[jobname]&2 munkát megerősítse.'
   leave:
     help:
       info: 'Elhagyja a megadott munkát.'
@@ -427,7 +427,7 @@ command:
     error:
       nojobs: '&cA játékosnak nincsenek olyan munkái, amelyekről ki lehet rúgni.'
     output:
-      target: 'Minden munkából kirúgtak.'
+      target: '&cMinden munkából kirúgtak.'
   employ:
     help:
       info: 'Megfogja a játékost, hogy a megadott munkához csatlakozzon.'
@@ -463,7 +463,7 @@ command:
   area:
     help:
       info: 'Korlátozott területek módosítása.'
-      args: 'add/remove/info/list'
+      args: '[add/remove/info/list]'
       addUsage: '&eHasználat: &6/Jobs area add [arénanév/wg:worldGuardarénanév] [bónusz]'
       removeUsage: '&eHasználat: &6/Jobs area remove [arénanév]'
     output:
@@ -508,37 +508,37 @@ command:
       info: 'A játékos munkájának áthelyezése régi munkáról egy új munkába.'
       args: '[playername] [oldjob] [newjob]'
     output:
-      target: 'Átkerültél %oldjobname% munkából a(z) %newjobname% munkába.'
+      target: '&cÁtkerültél %oldjobname%&c munkából a(z) %newjobname%&c munkába.'
   promote:
     help:
       info: 'Támogasd a játékos X szintjét egy munkában.'
       args: '[playername] [jobname] [levels]'
     output:
-      target: 'Előléptettek %levelsgained% szintet a(z) %jobname% munkában.'
+      target: '&aElőléptettek&r %levelsgained%&a szintet a(z) %jobname%&a munkában.'
   exp:
     help:
       info: 'Módosítsa a játékos tapasztalat feladatát.'
       args: '[playername] [jobname] [set/add/take] [amount]'
     output:
-      target: '&eA tapasztalat változott %jobname%&e, most van &6%level%lvl &eés &6%exp%exp.'
+      target: '&eA tapasztalat változott %jobname%&e, most van &6%level%lvl &eés &6%exp%&eexp.'
   demote:
     help:
       info: 'Eldobja a játékos X szintjét a munkában.'
       args: '[playername] [jobname] [levels]'
     output:
-      target: 'Levéve %levelslost% szint a(z) %jobname% munkában.'
+      target: '&cLevéve&r %levelslost%&c szint a(z) %jobname%&c munkában.'
   grantxp:
     help:
       info: 'Megadja a játékosnak az X munkát.'
       args: '[playername] [jobname] [xp]'
     output:
-      target: 'Megadták %xpgained% tapasztalatot a(z) %jobname% munkában.'
+      target: '&aMegadták&r %xpgained%&a tapasztalatot a(z) %jobname%&a munkában.'
   removexp:
     help:
       info: 'Eltávolít X tapasztalatot a játékostól a munkában.'
       args: '[playername] [jobname] [xp]'
     output:
-      target: 'Vesztettél %xplost% tapasztalatot a(z) %jobname% munkában.'
+      target: '&cVesztettél&r %xplost%&c tapasztalatot a(z) %jobname%&c munkában.'
   signupdate:
     help:
       info: 'Manuálisan frissíti a táblát a nevével.'
@@ -548,7 +548,7 @@ command:
       info: 'Megmutatja a blokk védelmet körülötted (10 blokk sugarú).'
       args: ''
     output:
-      found: '&e&6%amount% &edb védett blokk van körülötted.'
+      found: '&6%amount%&e db védett blokk van körülötted.'
       notFound: '&eNincs védett blokk körülötted.'
   reload:
     help:
@@ -574,12 +574,12 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
   edititembonus:
     help:
-      info: 'Elembónusz bónuszának szerkesztése.'
+      info: 'Tárgybónusz szerkesztése.'
       args: '[list/add/remove] [jobname] [itemBoostName]'
 message:
   skillup:
     broadcast: '%playername% játékost előléptették a %titlename% %jobname% munkában.'
-    nobroadcast: 'Gratulálok, a(z) %titlename% %jobname% munkába.'
+    nobroadcast: '&aGratulálok, képességet léptél a(z)&r %titlename% %jobname%&a munkában.'
   levelup:
     broadcast: '%playername% %joblevel% szintet lépett a(z) %jobname% munkában.'
     nobroadcast: '&aSzintet léptél a(z) %jobname% &amunkában! Szint:&6 %joblevel%&a.'

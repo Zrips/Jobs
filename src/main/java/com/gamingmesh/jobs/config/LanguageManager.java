@@ -216,8 +216,8 @@ public class LanguageManager {
 	    c.get("command.itembonus.output.list", "&e[jobname]: %money% %points% %exp%");
 
 	    c.get("command.edititembonus.help.info", "Edit item boost bonus");
-	    c.get("command.edititembonus.help.args", "[list/add/remove] [jobsName] [itemBoostName]");
-	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("list%%add%%remove", "[jobsName]", "[jobitemname]"));
+	    c.get("command.edititembonus.help.args", "[list/add/remove] [jobname] [itemBoostName]");
+	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("[list%%add%%remove]", "[jobname]", "[jobitemname]"));
 
 	    c.get("command.bonus.help.info", "Show job bonuses");
 	    c.get("command.bonus.help.args", "[jobname]");
@@ -261,7 +261,7 @@ public class LanguageManager {
 
 	    c.get("command.resetquest.help.info", "Resets players quest");
 	    c.get("command.resetquest.help.args", "[playername] [jobname]");
-	    Jobs.getGCManager().commandArgs.put("clearownership", Arrays.asList("[playername]", "[jobname]"));
+	    Jobs.getGCManager().commandArgs.put("resetquest", Arrays.asList("[playername]", "[jobname]"));
 	    c.get("command.resetquest.output.reseted", "&eQuest have been reset for: &2%playername%");
 	    c.get("command.resetquest.output.noQuests", "&eCan't find any quests");
 
@@ -273,7 +273,7 @@ public class LanguageManager {
 
 	    c.get("command.editpoints.help.info", "Edit players points.");
 	    c.get("command.editpoints.help.args", "[set/add/take] [playername] [amount]");
-	    Jobs.getGCManager().commandArgs.put("editpoints", Arrays.asList("set%%add%%take", "[playername]"));
+	    Jobs.getGCManager().commandArgs.put("editpoints", Arrays.asList("[set%%add%%take]", "[playername]"));
 	    c.get("command.editpoints.output.set", "&ePlayers (&6%playername%&e) points was set to &6%amount%");
 	    c.get("command.editpoints.output.add", "&ePlayer (&6%playername%&e) got aditinal &6%amount% &epoints. Now he has &6%total%");
 	    c.get("command.editpoints.output.take", "&ePlayer (&6%playername%&e) lost &6%amount% &epoints. Now he has &6%total%");
@@ -491,7 +491,7 @@ public class LanguageManager {
 
 	    c.get("command.fire.help.info", "Fire the player from the job.");
 	    c.get("command.fire.help.args", "[playername] [jobname]");
-	    Jobs.getGCManager().commandArgs.put("fire", Arrays.asList("[playername]", "[oldjob]"));
+	    Jobs.getGCManager().commandArgs.put("fire", Arrays.asList("[playername]", "[jobname]"));
 	    c.get("command.fire.error.nojob", "Player does not have the job %jobname%.");
 	    c.get("command.fire.output.target", "You have been fired from %jobname%.");
 
@@ -528,7 +528,7 @@ public class LanguageManager {
 
 	    c.get("command.area.help.info", "Modify restricted areas.");
 	    c.get("command.area.help.args", "[add/remove/info/list]");
-	    Jobs.getGCManager().commandArgs.put("area", Arrays.asList("add%%remove%%info%%list"));
+	    Jobs.getGCManager().commandArgs.put("area", Arrays.asList("[add%%remove%%info%%list]"));
 	    c.get("command.area.help.addUsage", "&eUsage: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]");
 	    c.get("command.area.help.removeUsage", "&eUsage: &6/Jobs area remove [areaName]");
 	    c.get("command.area.output.addedNew", "&eAdded new restricted area with &6%bonus% &ebonus");
@@ -580,7 +580,7 @@ public class LanguageManager {
 
 	    c.get("command.exp.help.info", "Change the player exp for job.");
 	    c.get("command.exp.help.args", "[playername] [jobname] [set/add/take] [amount]");
-	    Jobs.getGCManager().commandArgs.put("exp", Arrays.asList("[playername]", "[jobname]", "set%%add%%take"));
+	    Jobs.getGCManager().commandArgs.put("exp", Arrays.asList("[playername]", "[jobname]", "[set%%add%%take]"));
 	    c.get("command.exp.output.target", "&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.");
 
 	    c.get("command.demote.help.info", "Demote the player X levels in a job.");
@@ -610,8 +610,8 @@ public class LanguageManager {
 	    c.get("command.reload.help.info", "Reload configurations.");
 
 	    c.get("command.toggle.help.info", "Toggles payment output on action bar or bossbar.");
-	    c.get("command.toggle.help.args", "actionbar/bossbar");
-	    Jobs.getGCManager().commandArgs.put("toggle", Arrays.asList("actionBar%%bossBar"));
+	    c.get("command.toggle.help.args", "[actionbar/bossbar]");
+	    Jobs.getGCManager().commandArgs.put("toggle", Arrays.asList("[actionbar%%bossbar]"));
 	    c.get("command.toggle.output.turnedoff", "&4This feature are turned off!");
 	    c.get("command.toggle.output.paid.main", "&aYou got:");
 	    c.get("command.toggle.output.paid.money", "&e[amount] money");

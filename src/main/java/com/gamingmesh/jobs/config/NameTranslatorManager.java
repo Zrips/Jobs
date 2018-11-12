@@ -12,7 +12,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ItemManager.colorNames;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.NameList;
@@ -430,7 +429,24 @@ public class NameTranslatorManager {
 	    c.get("EnchantList.71.MCName", "CURSE_OF_VANISHING");
 	    c.get("EnchantList.71.Name", "Curse Of Vanishing");
 
-	    for (colorNames cn : colorNames.values()) {
+	    // Color list
+	    c.get("ColorList.0-white", "&fWhite");
+	    c.get("ColorList.1-orange", "&6Orange");
+	    c.get("ColorList.2-magenta", "&dMagenta");
+	    c.get("ColorList.3-LIGHT_BLUE", "&9Light blue");
+	    c.get("ColorList.4-yellow", "&eYellow");
+	    c.get("ColorList.5-LIME_GREEN", "&aLime");
+	    c.get("ColorList.6-pink", "&dPink");
+	    c.get("ColorList.7-gray", "&8Gray");
+	    c.get("ColorList.8-LIGHT_GRAY", "&7Light gray");
+	    c.get("ColorList.9-cyan", "&3Cyan");
+	    c.get("ColorList.10-purple", "&5Purple");
+	    c.get("ColorList.11-blue", "&1Blue");
+	    c.get("ColorList.12-brown", "&4Brown");
+	    c.get("ColorList.13-green", "&2Green");
+	    c.get("ColorList.14-red", "&cRed");
+	    c.get("ColorList.15-black", "&0Black");
+/**	    for (colorNames cn : colorNames.values()) {
 		if (cn.getName() == null)
 		    continue;
 
@@ -454,7 +470,7 @@ public class NameTranslatorManager {
 		}
 
 		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
-	    }
+	    }*/
 
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.getMaterial() == null)

@@ -9,7 +9,7 @@ import com.gamingmesh.jobs.container.Job;
 public class GuiInfoList {
 
     private String name;
-    private HashMap<Integer, Job> jobList = new HashMap<Integer, Job>();
+    private HashMap<Integer, Job> jobList = new HashMap<>();
     private Boolean jobInfo = false;
     private int backButton = 27;
     private Inventory inv = null;
