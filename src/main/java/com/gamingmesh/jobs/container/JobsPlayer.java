@@ -34,6 +34,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.Perm;
 import com.gamingmesh.jobs.stuff.TimeManage;
@@ -242,7 +243,7 @@ public class JobsPlayer {
 
 	ArrayList<BoostCounter> counterList = new ArrayList<>();
 	counterList.add(new BoostCounter(type, Boost, time));
-
+	
 	boostCounter.put(JobName, counterList);
 	return Boost;
     }
@@ -260,6 +261,7 @@ public class JobsPlayer {
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName().toLowerCase());
 	if (Boost == null || v1 != null && v1 > Boost)
 	    Boost = v1;
+	Debug.D(Boost +" "+ JobName + " " + type);
 	return Boost == null ? 0D : Boost;
     }
 

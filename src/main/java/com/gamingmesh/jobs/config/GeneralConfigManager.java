@@ -938,8 +938,7 @@ public class GeneralConfigManager {
 	guiBackButton = tmat == null ? CMIMaterial.JACK_O_LANTERN.newItemStack() : tmat.newItemStack();
 
 	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
-	Debug.D(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
-	Debug.D( CMIMaterial.get(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE")));
+
 	guiFiller = tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : tmat.newItemStack();
 	ItemMeta meta = guiFiller.getItemMeta();
 	meta.setDisplayName(" ");

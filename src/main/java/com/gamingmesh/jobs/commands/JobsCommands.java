@@ -426,7 +426,7 @@ public class JobsCommands implements CommandExecutor {
     public static String jobInfoMessage(JobsPlayer player, Job job, ActionType type) {
 
 	// money exp boost
-	Boost boost = Jobs.getPlayerManager().getFinalBonus(player, job);
+	Boost boost = Jobs.getPlayerManager().getFinalBonus(player, job, true);
 
 	StringBuilder message = new StringBuilder();
 
