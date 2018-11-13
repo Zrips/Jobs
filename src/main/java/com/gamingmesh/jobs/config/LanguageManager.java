@@ -93,38 +93,18 @@ public class LanguageManager {
 	languages.clear();
 	languages.add("en");
 
-	YmlMaker langFile = null;
-	if (ls == null || ls.equals("")) {
-	    langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_en.yml");
-	    langFile.saveDefaultConfig();
-	} else {
-	    langFile = new YmlMaker(plugin, "locale" + File.separator + "messages_" + ls + ".yml");
-	    langFile.saveDefaultConfig();
-
-	    File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + ls + ".yml");
-	    if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
-	        languages.add(ls);
-	}
+	File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + ls + ".yml");
+	if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
+	    languages.add(ls);
 
 	for (String lang : languages) {
-		File f = null;
-		if (ls == null || ls.equals("")) {
-			f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_en.yml");
+	    File f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 
-			// Fail safe if file get corrupted and being created with corrupted data, we need to re-create it
-			if ((f.length() / 1024) > 1024) {
-				f.delete();
-				f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_en.yml");
-			}
-		} else {
-			f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
-
-			// Fail safe if file get corrupted and being created with corrupted data, we need to re-create it
-			if ((f.length() / 1024) > 1024) {
-				f.delete();
-				f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
-			}
-		}
+	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
+	    if ((f.length() / 1024) > 1024) {
+	    	f.delete();
+	    	f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+	    }
 
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();

@@ -236,20 +236,14 @@ public class NameTranslatorManager {
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<>();
 
-	languages.clear();
-
 	try {
 	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "Words_"));
 	} catch (ClassNotFoundException e1) {
 	    e1.printStackTrace();
 	}
 
-	for (String lang : languages) {
-	    YmlMaker langFile = new YmlMaker(plugin, "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
-	    langFile.saveDefaultConfig();
-	}
-
-	languages.addAll(Jobs.getLanguageManager().getLanguages());
+	languages.clear();
+	languages.add("en");
 
 	File customLocaleFile = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
 	if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
