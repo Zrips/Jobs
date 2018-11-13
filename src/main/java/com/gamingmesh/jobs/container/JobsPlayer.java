@@ -26,7 +26,6 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -58,9 +57,6 @@ public class JobsPlayer {
     // player online status
     private volatile boolean isOnline = false;
 
-    private OfflinePlayer OffPlayer = null;
-    private Player player = null;
-
     private HashMap<CurrencyType, Integer> limits = new HashMap<>();
 
     private int userid = -1;
@@ -81,10 +77,8 @@ public class JobsPlayer {
     private HashMap<String, HashMap<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
 
-    public JobsPlayer(String userName, OfflinePlayer OffPlayer) {
+    public JobsPlayer(String userName) {
 	this.userName = userName;
-	this.OffPlayer = OffPlayer;
-	this.player = Bukkit.getPlayer(userName);
     }
 
     public ArchivedJobs getArchivedJobs() {
@@ -148,10 +142,6 @@ public class JobsPlayer {
 	return true;
     }
 
-    public void setPlayer(Player player) {
-	this.player = player;
-    }
-
     public void loadLogFromDao() {
 	Jobs.getJobsDAO().loadLog(this);
     }
@@ -196,14 +186,9 @@ public class JobsPlayer {
      */
     public Player getPlayer() {
 	if (this.playerUUID != null) {
-	    Player p = Bukkit.getPlayer(this.playerUUID);
-	    if (p != null) {
-		this.player = p;
-		this.OffPlayer = p;
-		this.userName = player.getName();
-	    }
+	    return Bukkit.getPlayer(this.playerUUID);
 	}
-	return this.player;
+	return null;
     }
 
     /**
@@ -243,7 +228,7 @@ public class JobsPlayer {
 
 	ArrayList<BoostCounter> counterList = new ArrayList<>();
 	counterList.add(new BoostCounter(type, Boost, time));
-	
+
 	boostCounter.put(JobName, counterList);
 	return Boost;
     }
@@ -261,7 +246,7 @@ public class JobsPlayer {
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName().toLowerCase());
 	if (Boost == null || v1 != null && v1 > Boost)
 	    Boost = v1;
-	Debug.D(Boost +" "+ JobName + " " + type);
+	Debug.D(Boost + " " + JobName + " " + type);
 	return Boost == null ? 0D : Boost;
     }
 
@@ -332,9 +317,8 @@ public class JobsPlayer {
      * @return true if have
      */
     public boolean havePermission(String perm) {
-	if (this.player == null)
-	    this.player = Bukkit.getPlayer(this.getPlayerUUID());
-	if (this.player != null)
+	Player player = Bukkit.getPlayer(this.getPlayerUUID());
+	if (player != null)
 	    return Perm.hasPermission(player, perm);
 	return false;
     }
@@ -356,10 +340,9 @@ public class JobsPlayer {
      * @return the userName
      */
     public String getUserName() {
+	Player player = Bukkit.getPlayer(this.getPlayerUUID());
 	if (player != null)
 	    userName = player.getName();
-	if (userName == null && OffPlayer != null)
-	    userName = OffPlayer.getName();
 	return userName;
     }
 
@@ -368,10 +351,6 @@ public class JobsPlayer {
      * @return the playerUUID
      */
     public UUID getPlayerUUID() {
-	if (this.playerUUID == null && player != null)
-	    this.playerUUID = player.getUniqueId();
-	if (this.playerUUID == null && this.OffPlayer != null)
-	    this.playerUUID = OffPlayer.getUniqueId();
 	return this.playerUUID;
     }
 

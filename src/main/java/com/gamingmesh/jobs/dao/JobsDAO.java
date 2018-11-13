@@ -1231,8 +1231,9 @@ public abstract class JobsDAO {
 
     public JobsPlayer loadFromDao(OfflinePlayer player) {
 
-	JobsPlayer jPlayer = new JobsPlayer(player.getName(), player);
-	jPlayer.playerUUID = player.getUniqueId();
+	JobsPlayer jPlayer = new JobsPlayer(player.getName());
+	jPlayer.setPlayerUUID(player.getUniqueId());
+
 	List<JobsDAOData> list = getAllJobs(player);
 //	synchronized (jPlayer.saveLock) {
 	jPlayer.progression.clear();

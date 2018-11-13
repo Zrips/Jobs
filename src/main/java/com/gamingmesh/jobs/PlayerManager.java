@@ -61,7 +61,7 @@ import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
-//    private Map<String, JobsPlayer> players = Collections.synchronizedMap(new HashMap<String, JobsPlayer>());
+
     private ConcurrentHashMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<>();
     private ConcurrentHashMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<>();
@@ -175,7 +175,6 @@ public class PlayerManager {
 	}
 
 	this.addPlayer(jPlayer);
-	jPlayer.setPlayer(player);
 	AutoJoinJobs(player);
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
@@ -294,7 +293,7 @@ public class PlayerManager {
 	if (info.getName() == null)
 	    return null;
 
-	JobsPlayer jPlayer = new JobsPlayer(info.getName(), null);
+	JobsPlayer jPlayer = new JobsPlayer(info.getName());
 	jPlayer.setPlayerUUID(info.getUuid());
 	jPlayer.setUserId(info.getID());
 	jPlayer.setDoneQuests(info.getQuestsDone());
