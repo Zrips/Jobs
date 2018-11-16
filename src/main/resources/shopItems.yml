@@ -16,8 +16,13 @@ Items:
       - "&6Efficiency V"
       - "&6Unbreaking III"
       - "&eAnd one tasty apple!"
-      # (Optional - default: false) Hides icon if player dont have permission to get this item
+      # (Optional - default: false) Hides icon if player don't have permission to get this item
       HideWithoutPermission: true
+      # (Optional) When you want to use Player Head material with skin then use this
+      #CustomHead:
+      #  PlayerName: playerName
+      #  Using the current player (if have job) who opened the gui. The PlayerName string is ignoring if this exist.
+      #  UseCurrentPlayer: true
     # (Optional) List of permissions required to buy this item
     RequiredPermission:
     - jobs.item.pickaxe
@@ -27,9 +32,9 @@ Items:
     - Woodcutter-10
     # (Optional) Total level from all jobs player currently in
     RequiredTotalLevels: 100
-    # (Optional) Performs comands on item purchase
+    # (Optional) Performs commands on item purchase
     # use 'msg ' at start of command to send nice message to player
-    # all other commands will be performed normaly as they would be executed from console
+    # all other commands will be performed normally as they would be executed from console
     # use [player] variable to include buyers name
     PerformCommands:
     - "msg &eThanks for buying this super pick axe!"

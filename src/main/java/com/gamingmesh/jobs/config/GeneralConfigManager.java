@@ -31,12 +31,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.LocaleReader;
@@ -933,15 +931,12 @@ public class GeneralConfigManager {
 	c.getW().addComment("JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top & /jobs gtop");
 	JobsTopAmount = c.get("JobsTop.AmountToShow", 15);
 
-	CMIMaterial tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
+	CMIMaterial tmat = null;
+	tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
 	guiBackButton = tmat == null ? CMIMaterial.JACK_O_LANTERN.newItemStack() : tmat.newItemStack();
 
 	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
-
 	guiFiller = tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : tmat.newItemStack();
-	ItemMeta meta = guiFiller.getItemMeta();
-	meta.setDisplayName(ChatColor.RED + "");
-	guiFiller.setItemMeta(meta);
 
 //	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
 //	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);

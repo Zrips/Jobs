@@ -29,6 +29,9 @@ public class ShopItem {
 
     private List<JobItems> items = new ArrayList<>();
 
+    private String PlayerName;
+    private boolean useCurrentPlayer = false;
+
     public ShopItem(String NodeName, double price, int IconId) {
 	this.NodeName = NodeName;
 	this.price = price;
@@ -141,5 +144,21 @@ public class ShopItem {
 
     public void setRequiredTotalLevels(int RequiredTotalLevels) {
 	this.RequiredTotalLevels = RequiredTotalLevels;
+    }
+
+    public String getCustomHead() {
+	return PlayerName;
+    }
+
+    public void setCustomHead(String PlayerName) {
+	this.PlayerName = PlayerName;
+    }
+
+    public boolean getCustomHeadOwner() {
+	return useCurrentPlayer;
+    }
+
+    public void setCustomHeadOwner(boolean useCurrentPlayer) {
+	this.useCurrentPlayer = useCurrentPlayer;
     }
 }

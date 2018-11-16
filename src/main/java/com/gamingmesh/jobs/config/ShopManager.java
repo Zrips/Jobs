@@ -10,6 +10,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
@@ -289,8 +291,7 @@ public class ShopManager {
 		    if (prog != null && prog.getLevel() < one.getValue())
 			levelColor = ChatColor.DARK_RED.toString();
 
-		    Lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobsList", "%jobsname%", jobColor + one.getKey(), "%level%", levelColor + one
-			.getValue()));
+		    Lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobsList", "%jobsname%", jobColor + one.getKey(), "%level%", levelColor + one.getValue()));
 		}
 	    }
 
@@ -300,18 +301,41 @@ public class ShopManager {
 	    }
 
 	    meta.setLore(Lore);
+
+	    if (item.getCustomHead() != null) {
+	    GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
+
+	    SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
+	    // Fix skull meta
+	    skullMeta.setDisplayName(item.getIconName());
+	    skullMeta.setLore(Lore);
+
+	    if (item.getCustomHeadOwner())
+	    skullMeta.setOwner(Jobs.getPlayerManager().getJobsPlayer(player).getUserName());
+	    else {
+	    try {
+		    @SuppressWarnings("deprecation")
+			OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
+		    skullMeta.setOwner(offPlayer.getName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    }
+		GUIitem.setItemMeta(skullMeta);
+	    } else
 	    GUIitem.setItemMeta(meta);
+
 	    GuiInv.setItem(i, GUIitem);
 	}
 
 	ItemStack Item = new ItemStack(Material.ARROW);
 
 	ItemMeta meta = Item.getItemMeta();
-	int pervSlot = getPrevButtonSlot(GuiSize, page);
-	if (pervSlot != -1) {
+	int prevSlot = getPrevButtonSlot(GuiSize, page);
+	if (prevSlot != -1) {
 	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.prevPage"));
 	    Item.setItemMeta(meta);
-	    GuiInv.setItem(pervSlot, Item);
+	    GuiInv.setItem(prevSlot, Item);
 	}
 
 	int nextSlot = getnextButtonSlot(GuiSize, page);
@@ -356,6 +380,12 @@ public class ShopManager {
 	    int IconId = NameSection.getInt("Icon.Id");
 	    ShopItem Sitem = new ShopItem(category, price, IconId);
 
+	    if (NameSection.isString("Icon.CustomHead.PlayerName"))
+		Sitem.setCustomHead(NameSection.getString("Icon.CustomHead.PlayerName"));
+
+	    if (NameSection.isBoolean("Icon.CustomHead.UseCurrentPlayer"))
+		Sitem.setCustomHeadOwner(NameSection.getBoolean("Icon.CustomHead.UseCurrentPlayer"));
+
 	    if (NameSection.isInt("Icon.Data"))
 		Sitem.setIconData(NameSection.getInt("Icon.Data"));
 
@@ -367,7 +397,7 @@ public class ShopManager {
 
 	    if (NameSection.isList("Icon.Lore")) {
 		List<String> lore = new ArrayList<>();
-		if (NameSection.getStringList("Icon.Lore") != null && !NameSection.getStringList("Icon.Lore").isEmpty())
+		if (!NameSection.getStringList("Icon.Lore").isEmpty())
 		    for (String eachLine : NameSection.getStringList("Icon.Lore")) {
 			lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 		    }
@@ -379,7 +409,8 @@ public class ShopManager {
 	    }
 
 	    if (NameSection.isList("RequiredPermission"))
-		Sitem.setRequiredPerm(NameSection.getStringList("RequiredPermission"));
+	    if (!NameSection.getStringList("RequiredPermission").isEmpty())
+	    	Sitem.setRequiredPerm(NameSection.getStringList("RequiredPermission"));
 
 	    if (NameSection.isInt("RequiredTotalLevels"))
 		Sitem.setRequiredTotalLevels(NameSection.getInt("RequiredTotalLevels"));
@@ -404,7 +435,7 @@ public class ShopManager {
 
 	    if (NameSection.isList("PerformCommands")) {
 		List<String> cmd = new ArrayList<>();
-		if (NameSection.getStringList("PerformCommands") != null && !NameSection.getStringList("PerformCommands").isEmpty())
+		if (!NameSection.getStringList("PerformCommands").isEmpty())
 		    for (String eachLine : NameSection.getStringList("PerformCommands")) {
 			cmd.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 		    }
