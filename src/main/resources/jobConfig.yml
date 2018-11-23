@@ -786,11 +786,11 @@ Jobs:
         income: 5
         points: 5
         experience: 5
-      cobblestone_wall:
+      cobblestone:
         income: 2.5
         points: 2.5
         experience: 2.5
-      mossy_cobblestone_wall:
+      mossy_cobblestone:
         income: 2.5
         points: 2.5
         experience: 2.5
