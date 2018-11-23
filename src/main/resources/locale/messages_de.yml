@@ -306,7 +306,7 @@ command:
       header: 'Derzeit sind folgende Jobs verfügbar:'
       footer: 'Für mehr Informationen, gebe /jobs info [Jobname] ein.'
       totalWorkers: ' &7Arbeiter: &e[amount]'
-      penalty: ' &4Penalty: &c[amount]%'
+      penalty: ' &4Abzug: &c[amount]%'
       bonus: ' &2Bonus: &a[amount]%'
   fire:
     help:
@@ -349,9 +349,9 @@ command:
       info: 'Zeigt die %amount% höchsten Level an.'
       args: ''
     error:
-      nojob: 'Keine Informationen abrufbar.'
+      nojob: 'Es sind keine Informationen abrufbar.'
     output:
-      topline: '&aTop&e %amount% &aSpieler nach glbalen Joblevel'
+      topline: '&aTop&e %amount% &aSpieler nach globalen Joblevel'
       list: '&e%number%&a. &e%playername% &aLevel &e%level% &amit&e %exp% &aeXP'
       prev: '&e<<<<< Vorherige Seite &2|'
       next: '&2|&e Nächste Seite >>>>'
