@@ -2143,7 +2143,7 @@ Jobs:
         income: 2.0
         points: 2
         experience: 2.0
-      shulker_box:
+      SHULKER:
         income: 5.0
         points: 5
         experience: 5.0
