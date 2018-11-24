@@ -359,7 +359,7 @@ command:
       info: 'Alle Jobs verlernen.'
     error:
       nojobs: 'Du hast keine Jobs!'
-    success: 'Du hast keine Jobs mehr.'$
+    success: 'Du hast keine Jobs mehr.'
   explored:
     help:
       info: Überprüft, wer diesen Chunk besucht hat.
