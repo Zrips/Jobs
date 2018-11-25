@@ -18,16 +18,13 @@ import com.gamingmesh.jobs.container.NameList;
 
 public class NameTranslatorManager {
 
-    private Jobs plugin;
-
     public ArrayList<NameList> ListOfNames = new ArrayList<>();
     public ArrayList<NameList> ListOfPotionNames = new ArrayList<>();
     public ArrayList<NameList> ListOfEntities = new ArrayList<>();
     public ArrayList<NameList> ListOfEnchants = new ArrayList<>();
     public ArrayList<NameList> ListOfColors = new ArrayList<>();
 
-    public NameTranslatorManager(Jobs plugin) {
-	this.plugin = plugin;
+    public NameTranslatorManager() {
     }
 
     public String Translate(String materialName, JobInfo info) {
@@ -134,7 +131,7 @@ public class NameTranslatorManager {
     }
 
     public void readFile() {
-	YmlMaker ItemFile = new YmlMaker(plugin, "TranslatableWords" + File.separator + "Words_" + Jobs.getGCManager().localeString + ".yml");
+	YmlMaker ItemFile = new YmlMaker(Jobs.getInstance(), "TranslatableWords" + File.separator + "Words_" + Jobs.getGCManager().localeString + ".yml");
 	ItemFile.saveDefaultConfig();
 
 	if (ItemFile.getConfig().isConfigurationSection("ItemList")) {
@@ -228,35 +225,35 @@ public class NameTranslatorManager {
 	if (ls == null || ls.equals(""))
 	    return;
 
-	File file = new File(plugin.getDataFolder(), "TranslatableWords.yml");
-	File file2 = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
+	File file = new File(Jobs.getFolder(), "TranslatableWords.yml");
+	File file2 = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
 	if (file.exists())
 	    file.renameTo(file2);
 
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<>();
 
-	try {
+/**	try {
 	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "Words_"));
 	} catch (ClassNotFoundException e1) {
 	    e1.printStackTrace();
-	}
+	}*/
 
 	languages.clear();
 	languages.add("en");
 
-	File customLocaleFile = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
+	File customLocaleFile = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
 	if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
 	    languages.add(ls);
 
 	for (String lang : languages) {
 
-	    File f = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+	    File f = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
 
 	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
 	    if ((f.length() / 1024) > 1024) {
 		f.delete();
-		f = new File(plugin.getDataFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+		f = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
 	    }
 
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
@@ -429,7 +426,7 @@ public class NameTranslatorManager {
 	    c.get("ColorList.2-magenta", "&dMagenta");
 	    c.get("ColorList.3-LIGHT_BLUE", "&9Light blue");
 	    c.get("ColorList.4-yellow", "&eYellow");
-	    c.get("ColorList.5-LIME_GREEN", "&aLime");
+	    c.get("ColorList.5-lime", "&aLime");
 	    c.get("ColorList.6-pink", "&dPink");
 	    c.get("ColorList.7-gray", "&8Gray");
 	    c.get("ColorList.8-LIGHT_GRAY", "&7Light gray");

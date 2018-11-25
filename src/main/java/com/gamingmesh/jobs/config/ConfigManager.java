@@ -62,10 +62,8 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ConfigManager {
-    private Jobs plugin;
 
-    public ConfigManager(Jobs plugin) {
-	this.plugin = plugin;
+    public ConfigManager() {
     }
 
     public void reload() throws IOException {
@@ -74,7 +72,7 @@ public class ConfigManager {
     }
 
     public void changeJobsSettings(String path, Object value) {
-	File f = new File(plugin.getDataFolder(), "jobConfig.yml");
+	File f = new File(Jobs.getFolder(), "jobConfig.yml");
 	InputStreamReader s = null;
 	try {
 	    s = new InputStreamReader(new FileInputStream(f), "UTF-8");
@@ -402,7 +400,7 @@ public class ConfigManager {
      * @throws IOException 
      */
     private void loadJobSettings() throws IOException {
-	File f = new File(plugin.getDataFolder(), "jobConfig.yml");
+	File f = new File(Jobs.getFolder(), "jobConfig.yml");
 	InputStreamReader s = new InputStreamReader(new FileInputStream(f), "UTF-8");
 
 	ArrayList<Job> jobs = new ArrayList<>();

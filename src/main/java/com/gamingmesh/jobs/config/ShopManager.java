@@ -33,12 +33,10 @@ import com.gamingmesh.jobs.container.ShopItem;
 import com.gamingmesh.jobs.stuff.Perm;
 
 public class ShopManager {
-    private Jobs plugin;
     public List<ShopItem> list = new ArrayList<>();
     public HashMap<String, Integer> GuiList = new HashMap<>();
 
-    public ShopManager(Jobs plugin) {
-	this.plugin = plugin;
+    public ShopManager() {
     }
 
     public List<ShopItem> getShopItemList() {
@@ -303,29 +301,29 @@ public class ShopManager {
 	    meta.setLore(Lore);
 
 	    if (item.getCustomHead() != null) {
-	    GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
+		GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
 
-	    SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
-	    // Fix skull meta
-	    skullMeta.setDisplayName(item.getIconName());
-	    skullMeta.setLore(Lore);
+		SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
+		// Fix skull meta
+		skullMeta.setDisplayName(item.getIconName());
+		skullMeta.setLore(Lore);
 
-	    if (item.getCustomHeadOwner())
-	    skullMeta.setOwner(Jobs.getPlayerManager().getJobsPlayer(player).getUserName());
+		if (item.isHeadOwner())
+		    skullMeta.setOwner(Jobs.getPlayerManager().getJobsPlayer(player).getUserName());
 	    else {
-	    try {
-		    @SuppressWarnings("deprecation")
-			OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
-		    skullMeta.setOwner(offPlayer.getName());
-		} catch (Exception e) {
-			e.printStackTrace();
+		    try {
+		        @SuppressWarnings("deprecation")
+		        OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
+		        skullMeta.setOwner(offPlayer.getName());
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
 		}
-	    }
 		GUIitem.setItemMeta(skullMeta);
-	    } else
-	    GUIitem.setItemMeta(meta);
+		} else
+		    GUIitem.setItemMeta(meta);
 
-	    GuiInv.setItem(i, GUIitem);
+		GuiInv.setItem(i, GUIitem);
 	}
 
 	ItemStack Item = new ItemStack(Material.ARROW);
@@ -350,7 +348,7 @@ public class ShopManager {
 
     public void load() {
 	list.clear();
-	File file = new File(plugin.getDataFolder(), "shopItems.yml");
+	File file = new File(Jobs.getFolder(), "shopItems.yml");
 	YamlConfiguration f = YamlConfiguration.loadConfiguration(file);
 
 	if (!f.isConfigurationSection("Items"))

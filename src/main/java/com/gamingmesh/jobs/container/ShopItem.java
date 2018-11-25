@@ -154,7 +154,7 @@ public class ShopItem {
 	this.PlayerName = PlayerName;
     }
 
-    public boolean getCustomHeadOwner() {
+    public boolean isHeadOwner() {
 	return useCurrentPlayer;
     }
 

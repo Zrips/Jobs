@@ -324,7 +324,7 @@ public class ItemManager {
 	Magenta(2, "Magenta"),
 	LIGHT_BLUE(3, "Light Blue"), // TODO: Not work, github issue: #267
 	Yellow(4, "Yellow"),
-	LIME_GREEN(5, "Lime Green"), // TODO: Not work, github issue: #267
+	Lime(5, "Lime Green"),
 	Pink(6, "Pink"),
 	Gray(7, "Gray"),
 	LIGHT_GRAY(8, "Light Gray"), // TODO: Not work, github issue: #267
@@ -1706,7 +1706,7 @@ public class ItemManager {
 	public static CMIMaterial get(String id) {
 	    Integer ids = null;
 	    Integer data = null;
-	    
+
 	    id = id.replace("_", "").replace(" ", "").toLowerCase();
 	    try {
 		ids = Integer.parseInt(id);
@@ -1786,13 +1786,13 @@ public class ItemManager {
 		    return one;
 		if (one.getName().replace("_", "").replace(" ", "").equalsIgnoreCase(id))
 		    return one;
-		
+
 	    }
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.name().replace("_", "").toLowerCase().endsWith(id))
-		    return one;		
+		    return one;
 	    }
-	    
+
 	    return CMIMaterial.NONE;
 	}
 

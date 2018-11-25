@@ -342,19 +342,19 @@ public class GeneralConfigManager {
 	Jobs.getJobsDAO().cleanJobs();
 	Jobs.getJobsDAO().cleanUsers();
 	// Load locale
-	Jobs.setLanguageManager(this.plugin);
+	Jobs.setLanguageManager();
 	Jobs.getLanguageManager().load();
 	// title settings
-	Jobs.setTitleManager(this.plugin);
+	Jobs.setTitleManager();
 	Jobs.gettitleManager().load();
 	// restricted areas
-	Jobs.setRestrictedAreaManager(this.plugin);
+	Jobs.setRestrictedAreaManager();
 	Jobs.getRestrictedAreaManager().load();
 	// restricted blocks
 	Jobs.setRestrictedBlockManager();
 	Jobs.getRestrictedBlockManager().load();
 	// Item/Block/mobs name list
-	Jobs.setNameTranslatorManager(this.plugin);
+	Jobs.setNameTranslatorManager();
 	Jobs.getNameTranslatorManager().load();
 	// signs information
 	Jobs.setSignUtil(this.plugin);
@@ -362,7 +362,7 @@ public class GeneralConfigManager {
 	// Schedule
 	Jobs.setScheduleManager(this.plugin);
 	// Shop
-	Jobs.setShopManager(this.plugin);
+	Jobs.setShopManager();
 	Jobs.getShopManager().load();
     }
 
@@ -372,7 +372,7 @@ public class GeneralConfigManager {
      * loads from Jobs/generalConfig.yml
      */
     private synchronized void loadGeneralSettings() {
-	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
+	File f = new File(Jobs.getFolder(), "generalConfig.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 	CommentedYamlConfiguration write = new CommentedYamlConfiguration();
 	LocaleReader c = new LocaleReader(conf, write);

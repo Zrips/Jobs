@@ -163,13 +163,14 @@ public class JobsListener implements Listener {
 	    event.setCancelled(true);
 
 	Block block = event.getClickedBlock();
+	Location loc = null;
 	if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-	    Location loc = block.getLocation();
+	    loc = block.getLocation();
 	    Jobs.getSelectionManager().placeLoc1(player, loc);
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.area.output.selected1", "%x%", loc.getBlockX(), "%y%", loc.getBlockY(), "%z%", loc.getBlockZ()));
 	    event.setCancelled(true);
 	} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-	    Location loc = block.getLocation();
+	    loc = block.getLocation();
 	    Jobs.getSelectionManager().placeLoc2(player, loc);
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.area.output.selected2", "%x%", loc.getBlockX(), "%y%", loc.getBlockY(), "%z%", loc.getBlockZ()));
 	    event.setCancelled(true);
@@ -209,9 +210,8 @@ public class JobsListener implements Listener {
     public void onShopGuiClose(InventoryCloseEvent event) {
 	if (Jobs.getShopManager().GuiList.isEmpty())
 	    return;
-	Player player = (Player) event.getPlayer();
-	if (Jobs.getShopManager().GuiList.containsKey(player.getName())) {
-	    Jobs.getShopManager().GuiList.remove(player.getName());
+	if (Jobs.getShopManager().GuiList.containsKey(event.getPlayer().getName())) {
+	    Jobs.getShopManager().GuiList.remove(event.getPlayer().getName());
 	}
     }
 
@@ -219,8 +219,7 @@ public class JobsListener implements Listener {
     public void onGuiClose(InventoryCloseEvent event) {
 	if (Jobs.getGUIManager().GuiList.isEmpty())
 	    return;
-	Player player = (Player) event.getPlayer();
-	Jobs.getGUIManager().GuiList.remove(player.getUniqueId());
+	Jobs.getGUIManager().GuiList.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -831,7 +830,6 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event) {
-
 	Action action = event.getAction();
 	if (action == Action.PHYSICAL)
 	    return;

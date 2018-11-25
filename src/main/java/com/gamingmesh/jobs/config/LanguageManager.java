@@ -2,25 +2,17 @@ package com.gamingmesh.jobs.config;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.LocaleReader;
 
 public class LanguageManager {
-    private Jobs plugin;
 
-    public LanguageManager(Jobs plugin) {
-	this.plugin = plugin;
+    public LanguageManager() {
     }
 
     private List<String> languages = new ArrayList<>();
@@ -29,7 +21,7 @@ public class LanguageManager {
 	return languages;
     }
 
-    public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
+/**    public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
 	List<String> result = new ArrayList<>();
 	try {
 	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
@@ -72,7 +64,7 @@ public class LanguageManager {
 		}
 	}
 	return listOfCommands;
-    }
+    }*/
 
     /**
      * Method to load the language file configuration
@@ -81,29 +73,31 @@ public class LanguageManager {
      */
     synchronized void load() {
 	languages = new ArrayList<>();
-
-	try {
-	    languages.addAll(getClassesFromPackage("locale", "messages_"));
-	} catch (ClassNotFoundException e1) {
-	    e1.printStackTrace();
-	}
+/**	try {
+		languages.addAll(getClassesFromPackage("locale", "messages_"));
+	} catch (ClassNotFoundException e) {
+	    e.printStackTrace();
+	}*/
 
 	String ls = Jobs.getGCManager().localeString;
+
+	if (ls == null || ls.equals(""))
+	    return;
 
 	languages.clear();
 	languages.add("en");
 
-	File customLocaleFile = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + ls + ".yml");
+	File customLocaleFile = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + ls + ".yml");
 	if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
 	    languages.add(ls);
 
 	for (String lang : languages) {
-	    File f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+	    File f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 
 	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
 	    if ((f.length() / 1024) > 1024) {
 	    	f.delete();
-	    	f = new File(plugin.getDataFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+	    	f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    }
 
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
@@ -196,8 +190,8 @@ public class LanguageManager {
 	    c.get("command.itembonus.output.list", "&e[jobname]: %money% %points% %exp%");
 
 	    c.get("command.edititembonus.help.info", "Edit item boost bonus");
-	    c.get("command.edititembonus.help.args", "[list/add/remove] [jobname] [itemBoostName]");
-	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("[list%%add%%remove]", "[jobname]", "[jobitemname]"));
+	    c.get("command.edititembonus.help.args", "list/add/remove [jobname] [itemBoostName]");
+	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("list%%add%%remove", "[jobname]", "[jobitemname]"));
 
 	    c.get("command.bonus.help.info", "Show job bonuses");
 	    c.get("command.bonus.help.args", "[jobname]");
@@ -252,8 +246,8 @@ public class LanguageManager {
 	    c.get("command.points.totalpoints", " &eTotal amount of collected points until now: &6%totalpoints%");
 
 	    c.get("command.editpoints.help.info", "Edit players points.");
-	    c.get("command.editpoints.help.args", "[set/add/take] [playername] [amount]");
-	    Jobs.getGCManager().commandArgs.put("editpoints", Arrays.asList("[set%%add%%take]", "[playername]"));
+	    c.get("command.editpoints.help.args", "set/add/take [playername] [amount]");
+	    Jobs.getGCManager().commandArgs.put("editpoints", Arrays.asList("set%%add%%take", "[playername]"));
 	    c.get("command.editpoints.output.set", "&ePlayers (&6%playername%&e) points was set to &6%amount%");
 	    c.get("command.editpoints.output.add", "&ePlayer (&6%playername%&e) got aditinal &6%amount% &epoints. Now he has &6%total%");
 	    c.get("command.editpoints.output.take", "&ePlayer (&6%playername%&e) lost &6%amount% &epoints. Now he has &6%total%");
@@ -507,8 +501,8 @@ public class LanguageManager {
 	    c.get("command.gtop.output.show", "&2Show from &e[from] &2until &e[until] &2global top list");
 
 	    c.get("command.area.help.info", "Modify restricted areas.");
-	    c.get("command.area.help.args", "[add/remove/info/list]");
-	    Jobs.getGCManager().commandArgs.put("area", Arrays.asList("[add%%remove%%info%%list]"));
+	    c.get("command.area.help.args", "add/remove/info/list");
+	    Jobs.getGCManager().commandArgs.put("area", Arrays.asList("add%%remove%%info%%list"));
 	    c.get("command.area.help.addUsage", "&eUsage: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]");
 	    c.get("command.area.help.removeUsage", "&eUsage: &6/Jobs area remove [areaName]");
 	    c.get("command.area.output.addedNew", "&eAdded new restricted area with &6%bonus% &ebonus");
@@ -559,8 +553,8 @@ public class LanguageManager {
 	    c.get("command.promote.output.target", "You have been promoted %levelsgained% levels in %jobname%.");
 
 	    c.get("command.exp.help.info", "Change the player exp for job.");
-	    c.get("command.exp.help.args", "[playername] [jobname] [set/add/take] [amount]");
-	    Jobs.getGCManager().commandArgs.put("exp", Arrays.asList("[playername]", "[jobname]", "[set%%add%%take]"));
+	    c.get("command.exp.help.args", "[playername] [jobname] set/add/take [amount]");
+	    Jobs.getGCManager().commandArgs.put("exp", Arrays.asList("[playername]", "[jobname]", "set%%add%%take"));
 	    c.get("command.exp.output.target", "&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.");
 
 	    c.get("command.demote.help.info", "Demote the player X levels in a job.");
@@ -590,8 +584,8 @@ public class LanguageManager {
 	    c.get("command.reload.help.info", "Reload configurations.");
 
 	    c.get("command.toggle.help.info", "Toggles payment output on action bar or bossbar.");
-	    c.get("command.toggle.help.args", "[actionbar/bossbar]");
-	    Jobs.getGCManager().commandArgs.put("toggle", Arrays.asList("[actionbar%%bossbar]"));
+	    c.get("command.toggle.help.args", "actionbar/bossbar");
+	    Jobs.getGCManager().commandArgs.put("toggle", Arrays.asList("actionbar%%bossbar"));
 	    c.get("command.toggle.output.turnedoff", "&4This feature are turned off!");
 	    c.get("command.toggle.output.paid.main", "&aYou got:");
 	    c.get("command.toggle.output.paid.money", "&e[amount] money");

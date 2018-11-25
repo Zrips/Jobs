@@ -17,10 +17,7 @@ public class TitleManager {
 
     protected List<Title> titles = new ArrayList<>();
 
-    private Jobs plugin;
-
-    public TitleManager(Jobs plugin) {
-	this.plugin = plugin;
+    public TitleManager() {
     }
 
     /**
@@ -52,7 +49,7 @@ public class TitleManager {
     synchronized void load() {
 	this.titles.clear();
 
-	File f = new File(plugin.getDataFolder(), "titleConfig.yml");
+	File f = new File(Jobs.getFolder(), "titleConfig.yml");
 	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
 

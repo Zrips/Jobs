@@ -74,14 +74,14 @@ command:
       infostats: '&c-----> &aPontszám x%boost% engedélyezve&c <-------'
   expboost:
     help:
-      info: 'Növeli az összes játékos nyereségét.'
+      info: 'Növeli az összes játékos xp nyereségét.'
       args: '[jobname] [arány]'
     output:
       allreset: '&aMinden tapasztalat növelés kikapcsolva.'
       jobsboostreset: '&cTapasztalat lendület a(z) %jobname% munkánál kikapcsolva.'
       nothingtoreset: '&cSemmi nem állítható vissza.'
       boostalladded: '&aTapasztalat növelése %boost% minden munkához hozzáadva!'
-      boostadded: '&aTapasztalat növelése &e%boost% &ahozzáadva &e%jobname% &amunkához!'
+      boostadded: '&aTapasztalat növelése &e%boost% &ahozzáadva a(z) &e%jobname% &amunkához!'
       infostats: '&c-----> &aTapasztalat arány x%boost% engedélyezve&c <-------'
   bonus:
     help:
@@ -151,9 +151,9 @@ command:
   editpoints:
     help:
       info: 'Játékos pontok szerkesztése.'
-      args: '[set/add/take] [playername] [összeg]'
+      args: 'set/add/take [playername] [összeg]'
     output:
-      set: '&e(&6%playername%&e) játékosnak pont beállítva &6%amount%'
+      set: '&e(&6%playername%&e) játékosnak &6%amount%&e pont beállítva'
       add: '&e(&6%playername%&e) játékosnak van további &6%amount% &epontja. Most van &6%total%'
       take: '&e(&6%playername%&e) játékos vesztett &6%amount% &epontot. Most van &6%total%'
   editjobs:
@@ -180,7 +180,7 @@ command:
         lookHover: '&6A bal gombbal kattintva információt kapsz a blokkról, amit keresel.'
   blockinfo:
     help:
-      info: 'Megjeleníti a megtekinteni kívánt blokkadatokat.'
+      info: 'Megjeleníti az éppen látótérben lévő blokk adatokat.'
       args: ''
     output:
       name: ' &eBlokk név: &6%blockname%'
@@ -215,7 +215,7 @@ command:
       title: '&e------- &8Munkák piac &e-------'
       currentPoints: '&eNeked van: &6%currentpoints%'
       price: '&eEgyenleg: &6%price%'
-      reqJobs: '&eKötelező munkák:'
+      reqJobs: '&eSzükséges munkák:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6Szükséges teljes szint: &e%totalLevel%'
       cantOpen: '&cNem nyithatod meg ezt az oldalt!'
@@ -249,7 +249,7 @@ command:
       args: '[jobname] [action]'
       actions: '&eÉrvényes akciók: &f%actions%'
       max: ' - &eMax. szint:&f '
-      newMax: '&eMaximális szint: &f[max]'
+      newMax: ' &eMaximális szint: &f[max]'
       material: '&7%material%'
       levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &aszintek)'
       levelFrom: ' &a(&e%levelFrom% &aszint)'
@@ -306,7 +306,7 @@ command:
         none: '%jobname%&c nem kap pénzt, ha fest.'
       enchant:
         info: '&eVarázs'
-        none: '%jobname%&c nem kap pénzt, ha varázsól.'
+        none: '%jobname%&c nem kap pénzt, ha varázsol.'
       vtrade:
         info: '&eFalusi kereskedelem'
         none: '%jobname%&c nem kap pénzt, ha kereskedik egy falusival.'
@@ -343,7 +343,7 @@ command:
       alreadyin: '&cMár csatlakoztál a(z) %jobname%&c munkához!'
       fullslots: '&cNem tudsz csatlakozni a(z) %jobname%&c munkához, mert nincsenek rendelkezésre álló helyek.'
       maxjobs: '&cMár túl sok munkát vállaltál.'
-      rejoin: '&cNem csatlakozhatsz ebbe a munkába. Várj [time].'
+      rejoin: '&cNem csatlakozhatsz ebbe a munkába időintervallum miatt. Várj [time].'
     rejoin: '&aKattints ide, hogy újra csatlakozz ebbe a munkába: '
     success: '&aSikeresen csatlakoztál a(z) %jobname%&a munkához!'
     confirm: '&2Kattints ide, hogy a(z) &7[jobname]&2 munkát megerősítse.'
@@ -362,7 +362,7 @@ command:
     help:
       info: 'Ellenőrzi, ki látogatta meg ezt a darabot.'
     error:
-      noexplore: '&cSenki nem látogatta meg ezt a darabot.'
+      noexplore: '&cSenki sem látogatta meg ezt a darabot.'
     list: '&a%place%. %playername%'
   browse:
     help:
@@ -459,11 +459,11 @@ command:
       list: '&e%number%&a. &e%playername% &alvl &e%level%&e %exp% &aexp'
       prev: '&e<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>'
-      show: '&2Megjelenítés innen &e[from]&2, amíg &e[until] &2a globális top lista.'
+      show: '&2Megjelenítés &e[from]&2-tól/-től, &e[until]&2-ig &2a globális top listán.'
   area:
     help:
       info: 'Korlátozott területek módosítása.'
-      args: '[add/remove/info/list]'
+      args: 'add/remove/info/list'
       addUsage: '&eHasználat: &6/Jobs area add [arénanév/wg:worldGuardarénanév] [bónusz]'
       removeUsage: '&eHasználat: &6/Jobs area remove [arénanév]'
     output:
@@ -508,7 +508,7 @@ command:
       info: 'A játékos munkájának áthelyezése régi munkáról egy új munkába.'
       args: '[playername] [oldjob] [newjob]'
     output:
-      target: '&cÁtkerültél %oldjobname%&c munkából a(z) %newjobname%&c munkába.'
+      target: '&cÁtkerültél a(z) %oldjobname%&c munkából a(z) %newjobname%&c munkába.'
   promote:
     help:
       info: 'Támogasd a játékos X szintjét egy munkában.'
@@ -518,7 +518,7 @@ command:
   exp:
     help:
       info: 'Módosítsa a játékos tapasztalat feladatát.'
-      args: '[playername] [jobname] [set/add/take] [amount]'
+      args: '[playername] [jobname] set/add/take [amount]'
     output:
       target: '&eA tapasztalat változott %jobname%&e, most van &6%level%lvl &eés &6%exp%&eexp.'
   demote:
@@ -556,7 +556,7 @@ command:
   toggle:
     help:
       info: 'A fizetős kimenet a cselekvési sávon (actionbar) vagy a bossbar-on.'
-      args: '[actionbar/bossbar]'
+      args: 'actionbar/bossbar'
     output:
       turnedoff: '&4Ez a funkció ki van kapcsolva!'
       paid:
@@ -575,7 +575,7 @@ command:
   edititembonus:
     help:
       info: 'Tárgybónusz szerkesztése.'
-      args: '[list/add/remove] [jobname] [itemBoostName]'
+      args: 'list/add/remove [jobname] [itemBoostName]'
 message:
   skillup:
     broadcast: '%playername% játékost előléptették a %titlename% %jobname% munkában.'

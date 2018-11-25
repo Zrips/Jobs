@@ -135,7 +135,6 @@ public class Jobs extends JavaPlugin {
     private static Reflections reflections = null;
 
     private static Logger pLogger = null;
-    private static File dataFolder = null;
     private static JobsClassLoader classLoader = null;
     private static JobsDAO dao = null;
     private static List<Job> jobs = null;
@@ -248,8 +247,8 @@ public class Jobs extends JavaPlugin {
 	return DBManager;
     }
 
-    public static void setShopManager(Jobs plugin) {
-	shopManager = new ShopManager(plugin);
+    public static void setShopManager() {
+	shopManager = new ShopManager();
     }
 
     public static ShopManager getShopManager() {
@@ -257,7 +256,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public void setConfigManager() {
-	configManager = new ConfigManager(this);
+	configManager = new ConfigManager();
     }
 
     public static ConfigManager getConfigManager() {
@@ -308,16 +307,16 @@ public class Jobs extends JavaPlugin {
 	return RBManager;
     }
 
-    public static void setRestrictedAreaManager(Jobs plugin) {
-	RAManager = new RestrictedAreaManager(plugin);
+    public static void setRestrictedAreaManager() {
+	RAManager = new RestrictedAreaManager();
     }
 
     public static RestrictedAreaManager getRestrictedAreaManager() {
 	return RAManager;
     }
 
-    public static void setTitleManager(Jobs plugin) {
-	titleManager = new TitleManager(plugin);
+    public static void setTitleManager() {
+	titleManager = new TitleManager();
     }
 
     public static TitleManager gettitleManager() {
@@ -356,8 +355,8 @@ public class Jobs extends JavaPlugin {
 	return NameTranslatorManager;
     }
 
-    public static void setNameTranslatorManager(Jobs plugin) {
-	NameTranslatorManager = new NameTranslatorManager(plugin);
+    public static void setNameTranslatorManager() {
+	NameTranslatorManager = new NameTranslatorManager();
     }
 
     public static GuiManager getGUIManager() {
@@ -428,8 +427,8 @@ public class Jobs extends JavaPlugin {
 	return lmManager;
     }
 
-    public static void setLanguageManager(Jobs plugin) {
-	lmManager = new LanguageManager(plugin);
+    public static void setLanguageManager() {
+	lmManager = new LanguageManager();
     }
 
     /**
@@ -447,20 +446,11 @@ public class Jobs extends JavaPlugin {
 	return pLogger;
     }
 
-    /**
-     * Sets the data folder
-     * @param dir - the data folder
-     */
-    public void setDataFolder(File dataFolder) {
-	Jobs.dataFolder = dataFolder;
-    }
-
-    /**
-     * Retrieves the data folder
-     * @return data folder
-     */
     public static File getFolder() {
-	return dataFolder;
+    File folder = Jobs.getInstance().getDataFolder();
+    if (!folder.exists())
+    	folder.mkdirs();
+	return folder;
     }
 
     /**
@@ -795,7 +785,6 @@ public class Jobs extends JavaPlugin {
 	    setExplore();
 	    setBBManager();
 	    setPluginLogger(getLogger());
-	    setDataFolder(getDataFolder());
 	    setLoging();
 	    setGCManager();
 	    setConfigManager();

@@ -170,7 +170,7 @@ public class ScheduleManager {
      * loads from Jobs/schedule.yml
      */
     public void load() {
-	File f = new File(plugin.getDataFolder(), "schedule.yml");
+	File f = new File(Jobs.getFolder(), "schedule.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 
 	conf.options().copyDefaults(true);
