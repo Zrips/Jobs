@@ -22,13 +22,34 @@ general:
     noHelpPage: '&cEs gibt keine Hilfeseite mit dieser Nummer.'
     notNumber: '&eBitte benutze Nummern!'
     job: '&cDer ausgewählte Job existiert nicht!'
+    noCommand: '&cEs gibt keinen Befehl mit diesem Namen!'
     permission: '&cDu hast keine Berechtigung für diesen Befehl!'
     noinfo: '&cKeine Informationen vorhanden.'
     noinfoByPlayer: '&cKeine Informationen für [%playername%] gefunden!'
     ingame: '&cDer Befehl kann nur ingame benutzt werden!'
     fromconsole: '&cDer Befehl kann nur in der Konsole benutzt werden!'
     worldisdisabled: '&cDer Befehl kann nicht in dieser Welt ausgeführt werden!'
+    newFurnaceRegistration: '&eNeuer Besitzer für den Zaun &7[current]&e/&f[max] registriert'
+    newBrewingRegistration: '&eNeuer Besitzer für den Braustand &7[current]&e/&f[max]'
+    noFurnaceRegistration: '&cDu hast die maximale Anzahl an Zäune erreicht!'
+    noBrewingRegistration: '&cDu hast die maximale Anzahl an Brauständen erreicht!'
 command:
+  help:
+    output:
+      info: Type /jobs [cmd] ? um Infos über einen Befehl anzusehen.
+      cmdUsage: '&2Verwende: &7[command]'
+      label: Jobs
+      cmdInfoFormat: '[command] &f- &2[description]'
+      cmdFormat: '&7/[command]&f[arguments]'
+      helpPageDescription: '&2* [description]'
+      title: '&e-------&e ======= &6Jobs &e======= &e-------'
+      page: '&e-----&e ====== Seite &6[1] &evon &6[2] &e====== &e-----'
+      fliperSimbols: '&e----------'
+      prevPage: '&2----<< &6Zurück '
+      prevPageOff: '&7----<< Zurück '
+      nextPage: '&6 Nächste Seite &2>>----'
+      nextPageOff: '&7 Nächste Seite >>----'
+      pageCount: '&2[current]/[total]'
   moneyboost:
     help:
       info: 'Der Geldbonus für alle Spieler wird erhöht.'
@@ -62,9 +83,19 @@ command:
       boostalladded: 'Ein XP-Bonus um %boost% wurde für alle Jobs hinzugefügt!'
       boostadded: 'Es wurde ein XP-Bonus um &e%boost% &afür &e%jobname% hinzugefügt!'
       infostats: '&c-----> &aXP x%boost% eingeschaltet&c <-------'
+  itembonus:
+    help:
+      info: Item-Bonus überprüfen
+      args: ''
+    output:
+      list: '&e[jobname]: %money% %points% %exp%'
+  edititembonus:
+    help:
+      info: Itemboostbonus bearbeiten
+      args: '[list/add/remove] [jobsName] [itemBoostName]'
   bonus:
     help:
-      info: 'Job Boni anzeigen'
+      info: 'Jobs Boni anzeigen'
       args: '[Jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
@@ -80,7 +111,8 @@ command:
       finalExplanation: ' &ePetpay und Spawner Bonus/Strafe nicht eingerechnet'
   convert:
     help:
-      info: 'Konvertiert das Datenbanksystem vom einen zum anderen. Benutzt du momentan sqlite, wird zu MySQL konvertiert und andersherum.'
+      info: 'Konvertiert das Datenbanksystem vom einen zum anderen. Benutzt du momentan sqlite, 
+        wird zu MySQL konvertiert und andersherum.'
       args: ''
   limit:
     help:
@@ -106,14 +138,13 @@ command:
       args: '[Spielername]'
     output:
       reseted: '&eGeldlimit wurde für &2%playername% zurückgesetzt.'
-  help:
+  resetquest:
+    help:
+      info: Quest des Spielers zurücksetzen
+      args: '[playername] (job)'
     output:
-      info: '&eBenutze &c/jobs [Befehl] ?&efür mehr Informationen über einen Befehl.'
-      usage: 'Verwendung: %usage%'
-      title: '&e-------&e ======= &6Jobs &e======= &e-------'
-      page: '&e-----&e ====== Seite &6[1] &evon &6[2] &e====== &e-----'
-      prev: '&e--- <<<<< &6Vorherige Seite &e|'
-      next: '&e|&6 Nächste Seite &e>>>> ---'
+      reseted: '&eDie Quest wurde für &2%playername% zurückgesetzt'
+      noQuests: '&eEs konnte keine Quest gefunden werden'
   points:
     help:
       info: 'Zeigt die Punkteanzahl einzelner Spieler an.'
@@ -122,12 +153,34 @@ command:
     totalpoints: ' &eAnzahl der insgesamt gesammelter Punkte: &6%totalpoints%'
   editpoints:
     help:
-      info: 'Spielerpunkte bearbeiten.'
+      info: 'Spielerpunkte bearbeiten'
       args: '[set/add/take] [Spielername] [Anzahl]'
     output:
-      set: '&eDie Punkte von (&6%playername%&e) wurden auf &6%amount% gesetzt'
+      set: '&eDie Punkte von (&6%playername%&e) wurden auf &6%amount% gesetzt.'
       add: '&e(&6%playername%&e) hat &6%amount% &ePunkte bekommen. Er hat jetzt &6%total% Punkte.'
-      take: '&e(&6%playername%&e) hat &6%amount% &ePunkte verloren. Er hat jetzt &6%total Punkte'
+      take: '&e(&6%playername%&e) wurden &6%amount% &ePunkte entzogen. Er hat jetzt &6%total Punkte.'
+  editjobs:
+    help:
+      info: Aktueller Job bearbeiten.
+      args: ''
+      list:
+        job: '&eJobs:'
+        jobs: '  -> [&e%jobname%&r]'
+        actions: '    -> [&e%actionname%&r]'
+        material: '      -> [&e%materialname%&r]      '
+        materialRemove: '&c[X]'
+        materialAdd: '      -> &e[&2+&e]'
+        money: '        -> &eGeld: &6%amount%'
+        exp: '        -> &eExp: &6%amount%'
+        points: '        -> &ePunkte: &6%amount%'
+      modify:
+        newValue: '&eNeuer Wert eingeben'
+        enter: '&eGib einen neuen Namen ein oder klicke '
+        hand: '&6HAND '
+        handHover: '&6Klick mich um Infos über das Item in deiner Hand auszulesen.'
+        or: '&eor '
+        look: '&6ANSCHAUEN'
+        lookHover: '&6Klick mich um Infos über den Block, den du gerade anschaust, auszulesen.'
   blockinfo:
     help:
       info: 'Zeigt Blockinformationen an.'
@@ -135,7 +188,7 @@ command:
     output:
       name: ' &eName des Blocks: &6%blockname%'
       id: ' &eID des Blocks: &6%blockid%'
-      data: ' &eData des Blocks: &6%blockdata%'
+      data: ' &eDaten des Blocks: &6%blockdata%'
       usage: ' &eNutzung: &6%first% &eoder &6%second%'
   iteminfo:
     help:
@@ -144,7 +197,7 @@ command:
     output:
       name: ' &eName des Items: &6%itemname%'
       id: ' &eID des Items: &6%itemid%'
-      data: ' &eData des Items: &6%itemdata%'
+      data: ' &eDaten des Items: &6%itemdata%'
       usage: ' &eNutzung: &6%first% &eoder &6%second%'
   entitylist:
     help:
@@ -159,7 +212,7 @@ command:
     output: 'Level %joblevel% %jobname% : %jobxp%/%jobmaxxp% XP'
   shop:
     help:
-      info: 'Öffnet den speziellen Job-Shop.'
+      info: 'Öffnet den atemberaubenden Job-Shop.'
       args: ''
     info:
       title: '&e------- &8Jobshop &e-------'
@@ -168,7 +221,7 @@ command:
       reqJobs: '&eBenötigte Jobs:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&Benötigtes Gesamtlevel: &e%totalLevel%'
-      cantOpen: '&cSeite kann nicht geöffnet werden'
+      cantOpen: '&cDie Seite kann nicht geöffnet werden'
       NoPermForItem: '&cDir ist es nicht erlaubt, dieses Item zu nutzen!'
       NoPermToBuy: '&cDir ist es nicht erlaubt, dieses Item zu kaufen!'
       NoJobReqForitem: '&cDu hast nicht den benötigten Job (&6%jobname%&e) mit dem Level (&6%joblevel%&e)'
@@ -184,20 +237,21 @@ command:
     output: 'Level %joblevel% %jobname%'
   give:
     help:
-      info: 'Vergibt je nach Job Items. Spielername ist optional.'
+      info: 'Vergibt je nach Job Items. Der Spielername ist optional.'
       args: '[Spielername] [Jobname] [Item]'
     output:
       notonline: '&4[%playername%] ist nicht online!'
-      noitem: '&4Kein solches Item vorhanden!'
+      noitem: '&4Es ist kein solches Item vorhanden!'
   info:
     help:
       title: '&2*** &eJobs&2 ***'
-      info: 'Zeigt an, wie die Bezahlung eines Jobs ist.'
-      penalty: '&eDieser Job hat eine &c[penalty]% &eLohnreduktion, weil zu viele Spieler darin arbeiten.'
-      bonus: '&eDieser Job hat einen &2[bonus]% &eBonus, weil nicht so viele Spieler darin arbeiten.'
+      info: 'Zeigt an die Bezahlung eines Jobs an.'
+      penalty: '&eWeil zu viele Spieler diesen Job ausführen, gibt es eine &c[penalty]% &eLohnreduktio.'
+      bonus: '&eWeil wenige Spieler diesen Job ausführen, gibt es einen &2[bonus]% &eBonus.'
       args: '[Jobname] [Tätigkeit]'
       actions: '&eGültige Tätigkeiten sind: &f%actions%'
-      max: ' - &eMaximale Level:&f '
+      max: ' - &eMaximales Level:&f '
+      newMax: ' &eMaximales Level: &f[max]'
       material: '&7%material%'
       levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &alevels)'
       levelFrom: ' &a(von &e%levelFrom% &alevel)'
@@ -237,6 +291,9 @@ command:
       craft:
         info: 'Craften'
         none: '%jobname% bekommt kein Geld für das Craften.'
+      drink:
+        info: Drink
+        none: '%jobname% bekommt kein Geld fürs Trinken.'
       smelt:
         info: 'Schmelzen/Kochen'
         none: '%jobname% bekommt kein Geld für das Schmelzen.'
@@ -252,6 +309,9 @@ command:
       enchant:
         info: 'Verzaubern'
         none: '%jobname% bekommt kein Geld für das Verzaubern.'
+      vtrade:
+        info: '&eVillager trade'
+        none: '%jobname% bekommt kein für das Handeln mit Dorfbewohner.'
       repair:
         info: 'Reparieren'
         none: '%jobname% bekommt kein Geld für das Reparieren.'
@@ -285,7 +345,10 @@ command:
       alreadyin: 'Du bist bereits %jobname%.'
       fullslots: 'Du kannst kein %jobname% werden, keine freie Arbeitsstelle vorhanden.'
       maxjobs: 'Du hast das Maximum an Jobs bereits erreicht.'
+      rejoin: '&cDu kannst den Job nicht wieder beitreten. Bitte warte [time].'
+    rejoin: '&aKlick mich, um den Job wieder beizutreten: '
     success: 'Du bist nun %jobname%.'
+    confirm: '&2Klick mich um den Beitritt für &7[jobname] &2 zu bestätigen.'
   leave:
     help:
       info: 'Ausgewählten Job verlernen.'
@@ -297,6 +360,12 @@ command:
     error:
       nojobs: 'Du hast keine Jobs!'
     success: 'Du hast keine Jobs mehr.'
+  explored:
+    help:
+      info: Überprüft, wer diesen Chunk besucht hat.
+    error:
+      noexplore: Niemand hat diesen chunk besucht. 
+    list: '&e%place%. %playername%'
   browse:
     help:
       info: 'Zeigt alle verfügbaren Jobs an.'
@@ -306,8 +375,45 @@ command:
       header: 'Derzeit sind folgende Jobs verfügbar:'
       footer: 'Für mehr Informationen, gebe /jobs info [Jobname] ein.'
       totalWorkers: ' &7Arbeiter: &e[amount]'
-      penalty: ' &4Penalty: &c[amount]%'
+      penalty: ' &4Abzug: &c[amount]%'
       bonus: ' &2Bonus: &a[amount]%'
+      newHeader: '&2========== [amount] Verfügbare Jobs ========='
+      description: '[description]'
+      list: '    &8[place]. &7[jobname]'
+      console:
+        newHeader: '&2========== [amount] Verfügbare Jobs ========='
+        description: '[description]'
+        totalWorkers: ' &7Arbeiter: &e[amount]'
+        penalty: ' &4Abzug: &c[amount]%'
+        bonus: ' &2Bonus: &a[amount]%'
+        list: ' &6[jobname]'
+        newMax: ' &eMax. Level: &f[max]'
+      click: '&bKlick mich um mehr über die Jobs zu erfahren!'
+      detailed: '&bKlick mich um eine detailierte Liste über die Jobstätigkeiten zu bekommen.'
+      jobHeader: '&2========== [jobname] ========='
+      chooseJob: '&7&n&oWähle diesen Job'
+      chooseJobHover: '&7Klick hier um den Job auszuüben'
+  clearownership:
+    help:
+      info: Blockbesitzer entfernen
+      args: (playername)
+    output:
+      cleared: '&2Es wurden &7[furnaces] &2Zäune und &7[brewing] &2Braustände entfernt.'
+  quests:
+    help:
+      info: Verfügbare Quests auflisten
+      args: (playername)
+    error:
+      noquests: '&cHier sind keine Quests'
+    toplineseparator: '&7*********************** &6[playerName]&2(&f[questsDone]&2)
+      &7***********************'
+    output:
+      completed: '&2      !Abgeschlossen!&r      '
+      questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      hover:
+      - '&f[jobName]'
+      - '[desc]'
+      - '&7Neue Quest in: [time]'
   fire:
     help:
       info: 'Einen Spieler feuern.'
@@ -349,9 +455,9 @@ command:
       info: 'Zeigt die %amount% höchsten Level an.'
       args: ''
     error:
-      nojob: 'Keine Informationen abrufbar.'
+      nojob: 'Es sind keine Informationen abrufbar.'
     output:
-      topline: '&aTop&e %amount% &aSpieler nach glbalen Joblevel'
+      topline: '&aTop&e %amount% &aSpieler nach globalen Joblevel'
       list: '&e%number%&a. &e%playername% &aLevel &e%level% &amit&e %exp% &aeXP'
       prev: '&e<<<<< Vorherige Seite &2|'
       next: '&2|&e Nächste Seite >>>>'
@@ -382,7 +488,10 @@ command:
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
-      list: '&7* &6%number%. &3%action%: &6%item% &eMenge: %qty% &6Geld: %money%0 &eexp: %exp%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
+      money: '&6Geld: %amount% '
+      exp: '&eExp: %amount% '
+      points: '&6Punkte: %amount%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Vorherige Seite &2|'
       next: '&2|&e Nächste Seite >>>>'
@@ -393,7 +502,10 @@ command:
       args: ''
     output:
       topline: '&7*********************** &6Globale Statistiken &7***********************'
-      list: '&7* &6%number%. &3%username% &e%action%: &6%item% &eMenge: %qty% &6Geld: %money% &eexp: %eXP%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
+      money: '&6Geld: %amount% '
+      exp: '&eExp: %amount% '
+      points: '&6Punkte: %amount%'
       bottomline: '&7**************************************************************'
       nodata: '&cKeine Daten gefunden'
   transfer:
@@ -477,21 +589,19 @@ message:
 signs:
   List: '&0[number].&8[player]&7:&4[level]'
   SpecialList:
-    '1':
-      '1': '&b** &8Erster &b**'
-      '2': '&9[player]'
-      '3': '&8Level [level]'
-      '4': '&b************'
-    '2':
-      '1': '&b** &8Zweiter &b**'
-      '2': '&9[player]'
-      '3': '&8Level [level]'
-      '4': '&b************'
-    '3':
-      '1': '&b** &8Dritter &b**'
-      '2': '&9[player]'
-      '3': '&8Level [level]'
-      '4': '&b************'
+    p1: '&b** &8Erster &b**'
+    p2: '&b** &8Zweiter &b**'
+    p3: '&b** &8Dritter &b**'
+    p4: '&b** &8Vierter &b**'
+    p5: '&b** &8Fünfter &b**'
+    p6: '&b** &8Sechster &b**'
+    p7: '&b** &8Siebter &b**'
+    p8: '&b** &8Achter &b**'
+    p9: '&b** &8Neunter &b**'
+    p10: '&b** &8Zehnter &b**'
+    name: '&9[player]'
+    level: '&8[level] level'
+    bottom: '&b************'
   cantcreate: '&4Du kannst dieses Schild nicht erstellen!'
   cantdestroy: '&4Du kannst dieses Schild nicht zerstören!'
   topline: '&6[Jobs]'
