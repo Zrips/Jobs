@@ -222,26 +222,9 @@ public class JobsPaymentListener implements Listener {
 	if (!player.isOnline())
 	    return;
 
-	if (Jobs.getGCManager().CowMilkingTimer > 0)
-	    if (cow.hasMetadata(CowMetadata)) {
-		long time = cow.getMetadata(CowMetadata).get(0).asLong();
-		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
-
-		    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
-		    player.sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
-
-		    if (Jobs.getGCManager().CancelCowMilking)
-			event.setCancelled(true);
-		    return;
-		}
-	    }
-
 	ItemStack itemInHand = Jobs.getNms().getItemInMainHand(player);
 
-	if (itemInHand == null)
-	    return;
-
-	if (itemInHand.getType() != Material.BUCKET)
+	if (itemInHand != null && itemInHand.getType() != Material.BUCKET)
 	    return;
 
 	// check if in creative
@@ -255,6 +238,23 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
+
+	// Fix bug when the player has not joined a job, milk a cow and get paid
+	for (com.gamingmesh.jobs.container.Job jobs : Jobs.getJobs()) {
+		if (jPlayer.isInJob(jobs) && Jobs.getGCManager().CowMilkingTimer > 0) {
+		    if (cow.hasMetadata(CowMetadata)) {
+			long time = cow.getMetadata(CowMetadata).get(0).asLong();
+			if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
+			    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
+			    jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
+
+			    if (Jobs.getGCManager().CancelCowMilking)
+				event.setCancelled(true);
+			    return;
+			}
+		    }
+	    }
+	}
 
 	Jobs.action(jPlayer, new EntityActionInfo(cow, ActionType.MILK));
 

@@ -841,10 +841,6 @@ public class Jobs extends JavaPlugin {
 
     @Override
     public void onDisable() {
-	// it will not run longer if it is a server error
-	if (!isEnabled())
-	return;
-
 	GUIManager.CloseInventories();
 	shopManager.CloseInventories();
 	dao.saveExplore();
@@ -854,7 +850,7 @@ public class Jobs extends JavaPlugin {
 
 	shutdown();
 	consoleMsg("&e[Jobs] &2Plugin has been disabled successfully.");
-	this.setEnabled(false);
+	setEnabled(false);
     }
 
     @SuppressWarnings("unused")

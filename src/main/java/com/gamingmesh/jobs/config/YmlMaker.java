@@ -12,18 +12,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.gamingmesh.jobs.Jobs;
-
 public class YmlMaker {
-    Jobs Plugin;
     public String fileName;
     private JavaPlugin plugin;
     public File ConfigFile;
     private FileConfiguration Configuration;
-
-    public YmlMaker(Jobs Plugin) {
-	this.Plugin = Plugin;
-    }
 
     public YmlMaker(JavaPlugin plugin, String fileName) {
 	if (plugin == null) {
@@ -31,24 +24,22 @@ public class YmlMaker {
 	}
 	this.plugin = plugin;
 	this.fileName = fileName;
+
 	File dataFolder = plugin.getDataFolder();
-	if (dataFolder == null) {
-	    throw new IllegalStateException();
-	}
-	this.ConfigFile = new File(dataFolder.toString() + File.separatorChar + this.fileName);
+	if (!dataFolder.exists())
+		dataFolder.mkdirs();
+	ConfigFile = new File(dataFolder, fileName);
     }
 
     public void reloadConfig() {
 	InputStreamReader f = null;
 	try {
-	    f = new InputStreamReader(new FileInputStream(this.ConfigFile), "UTF-8");
-	} catch (UnsupportedEncodingException e1) {
-	    e1.printStackTrace();
-	} catch (FileNotFoundException e1) {
+	    f = new InputStreamReader(new FileInputStream(ConfigFile), "UTF-8");
+	} catch (UnsupportedEncodingException | FileNotFoundException e1) {
 	    e1.printStackTrace();
 	}
 
-	this.Configuration = YamlConfiguration.loadConfiguration(f);
+	Configuration = YamlConfiguration.loadConfiguration(f);
 	if (f != null)
 	    try {
 		f.close();
@@ -58,31 +49,35 @@ public class YmlMaker {
     }
 
     public FileConfiguration getConfig() {
-	if (this.Configuration == null) {
+	if (Configuration == null)
 	    reloadConfig();
-	}
-	return this.Configuration;
+	return Configuration;
+    }
+
+    public File getConfigFile() {
+	if (ConfigFile == null)
+    	ConfigFile = new File(plugin.getDataFolder(), fileName);
+	return ConfigFile;
     }
 
     public void saveConfig() {
-	if ((this.Configuration == null) || (this.ConfigFile == null)) {
+	if ((Configuration == null) || (ConfigFile == null))
 	    return;
-	}
 	try {
-	    getConfig().save(this.ConfigFile);
+	    getConfig().save(ConfigFile);
 	} catch (IOException ex) {
-	    this.plugin.getLogger().log(Level.SEVERE, "Could not save config to " + this.ConfigFile, ex);
+	    plugin.getLogger().log(Level.SEVERE, "Could not save config to " + ConfigFile, ex);
 	}
     }
 
     public boolean exists() {
-	return this.ConfigFile.exists();
+    return ConfigFile != null && ConfigFile.exists() ? false : ConfigFile.exists();
     }
 
     public void createNewFile() {
-	if (!this.ConfigFile.exists()) {
+	if (ConfigFile != null && !ConfigFile.exists()) {
 	    try {
-		this.ConfigFile.createNewFile();
+		ConfigFile.createNewFile();
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }
@@ -90,8 +85,7 @@ public class YmlMaker {
     }
 
     public void saveDefaultConfig() {
-	if (!this.ConfigFile.exists()) {
-	    this.plugin.saveResource(this.fileName, false);
-	}
+	if (ConfigFile != null && !ConfigFile.exists())
+	    plugin.saveResource(fileName, false);
     }
 }
