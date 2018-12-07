@@ -46,6 +46,7 @@ permissions:
       jobs.command.fire: true
       jobs.command.fireall: true
       jobs.command.employ: true
+      jobs.command.bonus: true
       jobs.command.edititembonus: true
       jobs.command.promote: true
       jobs.command.points: true
@@ -65,6 +66,8 @@ permissions:
       jobs.command.fixnames: true
       jobs.command.signupdate: true
       jobs.command.moneyboost: true
+      jobs.command.exp: true
+      jobs.command.clearownership: true
       jobs.command.expboost: true
       jobs.command.iteminfo: true
       jobs.command.blockinfo: true
@@ -194,3 +197,9 @@ permissions:
   jobs.command.edititembonus:
     description: Grants access to the edititembonus command
     default: op
+  jobs.area.add:
+    description: Grants access to the area add command
+    default: false
+  jobs.area.remove:
+    description: Grants access to the area remove command
+    default: false

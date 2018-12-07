@@ -22,18 +22,20 @@ public class demote implements Cmd {
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-
-	Job job = Jobs.getJob(args[1]);
-	if (job == null) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.error.job"));
-	    return true;
-	}
-
 	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
 	}
-	
+
+	if (!Jobs.hasPermission(jPlayer.getPlayer(), "jobs.command.demote", true))
+	    return true;
+
+	Job job = Jobs.getJob(args[1]);
+	if (job == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+	    return true;
+	}
+
 	try {
 	    // check if player already has the job
 	    if (jPlayer.isInJob(job)) {
@@ -51,7 +53,7 @@ public class demote implements Cmd {
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    }
 	} catch (Exception e) {
-	    sender.sendMessage(ChatColor.RED + Jobs.getLanguage().getMessage("general.admin.error"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;
     }

@@ -1276,26 +1276,20 @@ public class Jobs extends JavaPlugin {
 	return smanager;
     }
 
-    public static boolean hasPermission(Object sender, String perm, boolean inform) {
+    public static boolean hasPermission(Object sender, String perm, boolean rawEnable) {
 	if (sender instanceof Player) {
 	    if (((Player) sender).hasPermission(perm))
 		return true;
-	    if (!inform)
+	    if (!rawEnable) {
+		((Player) sender).sendMessage(lManager.getMessage("general.error.permission"));
 		return false;
+	    }
 	    RawMessage rm = new RawMessage();
 	    rm.add(lManager.getMessage("general.error.permission"), "&2" + perm);
 	    rm.show((Player) sender);
-	    sendMessage(Bukkit.getServer().getConsoleSender(), lManager.getMessage("general.error.permission"));
 	    return false;
 	}
 	return true;
-    }
-
-    public static void sendMessage(Object sender, String msg) {
-	if (sender instanceof Player)
-	    ((Player) sender).sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
-	else
-	    ((CommandSender) sender).sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
     }
 
     public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd) {

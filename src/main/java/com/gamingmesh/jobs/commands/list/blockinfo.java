@@ -26,6 +26,8 @@ public class blockinfo implements Cmd {
 	}
 
 	Player player = (Player) sender;
+	if (!Jobs.hasPermission(player, "jobs.command.blockinfo", true))
+	    return true;
 
 	Block block = Util.getTargetBlock(player, 15);
 

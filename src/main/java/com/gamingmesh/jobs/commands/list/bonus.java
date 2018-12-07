@@ -29,21 +29,21 @@ public class bonus implements Cmd {
 	}
 
 	Player player = (Player) sender;
+	if (!Jobs.hasPermission(player, "jobs.command.bonus", true))
+	    return true;
 
 	Job job = Jobs.getJob(args[0]);
-
 	if (job == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	if (jPlayer == null)
 	    return false;
 
 	Jobs.getPlayerManager().updateOldItems(player);
-	
+
 	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job, true, true);
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));

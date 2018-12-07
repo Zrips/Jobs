@@ -20,7 +20,6 @@ import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -93,9 +92,8 @@ public class JobsCommands implements CommandExecutor {
 		RawMessage rm = new RawMessage();
 		rm.add(Jobs.getLanguage().getMessage("general.error.permission"), "&2" + label + ".command." + cmd);
 		rm.show(sender);
-		Jobs.sendMessage(Bukkit.getServer().getConsoleSender(), Jobs.getLanguage().getMessage("general.error.permission"));
-	    } else
-		Jobs.sendMessage(sender, Jobs.getLanguage().getMessage("general.error.permission"));
+	    }
+		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
 

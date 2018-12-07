@@ -20,18 +20,20 @@ public class employ implements Cmd {
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+	if (jPlayer == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
+	    return true;
+	}
+
+	if (!Jobs.hasPermission(jPlayer.getPlayer(), "jobs.command.employ", true))
+	    return true;
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
-	
-	if (jPlayer == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
-	    return true;
-	}
-	
+
 	if (jPlayer.isInJob(job)) {
 	    // already in job message
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.employ.error.alreadyin", "%jobname%", job.getChatColor() + job.getName()));

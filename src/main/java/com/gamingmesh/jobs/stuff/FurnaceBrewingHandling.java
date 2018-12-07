@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -186,9 +185,7 @@ public class FurnaceBrewingHandling {
     }
 
     public static boolean removeFurnace(Block block) {
-
 	UUID uuid = null;
-
 	if (block.hasMetadata(JobsPaymentListener.furnaceOwnerMetadata)) {
 	    List<MetadataValue> data = block.getMetadata(JobsPaymentListener.furnaceOwnerMetadata);
 	    if (!data.isEmpty()) {
@@ -203,6 +200,7 @@ public class FurnaceBrewingHandling {
 	if (ls == null)
 	    return true;
 
+	// TODO Fix error when removing the furnaces from the file, but removing all
 	for (blockLoc one : ls) {
 	    if (!one.getLocation().equals(block.getLocation()))
 		continue;
@@ -211,11 +209,9 @@ public class FurnaceBrewingHandling {
 	    return true;
 	}
 	return false;
-
     }
 
     public static boolean removeBrewing(Block block) {
-
 	UUID uuid = null;
 	if (block.hasMetadata(JobsPaymentListener.brewingOwnerMetadata)) {
 	    List<MetadataValue> data = block.getMetadata(JobsPaymentListener.brewingOwnerMetadata);
@@ -230,6 +226,8 @@ public class FurnaceBrewingHandling {
 	List<blockLoc> ls = brewingMap.get(uuid);
 	if (ls == null)
 	    return true;
+
+	// TODO Fix error when removing the brewers from the file, but removing all
 	for (blockLoc one : ls) {
 	    if (!one.getLocation().equals(block.getLocation()))
 		continue;
@@ -237,9 +235,7 @@ public class FurnaceBrewingHandling {
 	    ls.remove(one);
 	    return true;
 	}
-
 	return false;
-
     }
 
     public enum ownershipFeedback {
@@ -248,9 +244,8 @@ public class FurnaceBrewingHandling {
 
     public static ownershipFeedback registerFurnaces(Player player, Block block) {
 
-	if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE)) {
+	if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE))
 	    return ownershipFeedback.invalid;
-	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
@@ -294,9 +289,8 @@ public class FurnaceBrewingHandling {
 
     public static ownershipFeedback registerBrewingStand(Player player, Block block) {
 
-	if (block.getType() != Material.BREWING_STAND) {
+	if (!CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND))
 	    return ownershipFeedback.invalid;
-	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
@@ -346,9 +340,8 @@ public class FurnaceBrewingHandling {
 	    if (block == null)
 		continue;
 
-	    if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE)) {
+	    if (!CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && !CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE))
 		continue;
-	    }
 	    block.removeMetadata(JobsPaymentListener.furnaceOwnerMetadata, Jobs.getInstance());
 	}
 	return ls.size();
@@ -363,9 +356,8 @@ public class FurnaceBrewingHandling {
 	    if (block == null)
 		continue;
 
-	    if (block.getType() != Material.BREWING_STAND) {
+	    if (!CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND))
 		continue;
-	    }
 	    block.removeMetadata(JobsPaymentListener.brewingOwnerMetadata, Jobs.getInstance());
 	}
 	return ls.size();

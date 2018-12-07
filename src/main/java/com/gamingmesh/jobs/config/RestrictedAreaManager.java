@@ -22,10 +22,7 @@ public class RestrictedAreaManager {
 
     protected HashMap<String, RestrictedArea> restrictedAreas = new HashMap<>();
 
-    private Jobs plugin;
-
-    public RestrictedAreaManager(Jobs plugin) {
-	this.plugin = plugin;
+    public RestrictedAreaManager() {
     }
 
     public boolean isExist(String name) {
@@ -62,7 +59,7 @@ public class RestrictedAreaManager {
     }
 
     private void save() {
-	File f = new File(plugin.getDataFolder(), "restrictedAreas.yml");
+	File f = new File(Jobs.getFolder(), "restrictedAreas.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 	conf.options().indent(2);
 	conf.options().copyDefaults(true);
@@ -178,7 +175,7 @@ public class RestrictedAreaManager {
      */
     public synchronized void load() {
 	this.restrictedAreas.clear();
-	File f = new File(plugin.getDataFolder(), "restrictedAreas.yml");
+	File f = new File(Jobs.getFolder(), "restrictedAreas.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 	conf.options().indent(2);
 	conf.options().copyDefaults(true);

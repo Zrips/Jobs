@@ -1453,7 +1453,7 @@ public class ItemManager {
 	TORCH(50, 0, 6063, "Torch"),
 	TOTEM_OF_UNDYING(449, 0, 10139, "Totem Of Undying"),
 	TRAPPED_CHEST(146, 0, 18970, "Trapped Chest"),
-	TRIDENT(-1, -1, 7534, "Trident"),
+	TRIDENT(455, 0, 7534, "Trident"),
 	TRIPWIRE(132, 0, 8810, "Tripwire"),
 	TRIPWIRE_HOOK(131, 0, 8130, "Tripwire Hook"),
 	TROPICAL_FISH(349, 2, 24879, "Tropical Fish"),

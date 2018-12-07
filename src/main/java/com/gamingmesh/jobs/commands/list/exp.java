@@ -59,11 +59,13 @@ public class exp implements Cmd {
 	    return false;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(playerName);
-
 	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
 	}
+
+	if (!Jobs.hasPermission(jPlayer.getPlayer(), "jobs.command.exp", true))
+	    return true;
 
 	if (job == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
