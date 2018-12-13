@@ -35,7 +35,6 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
-import com.gamingmesh.jobs.stuff.Perm;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
@@ -319,7 +318,7 @@ public class JobsPlayer {
     public boolean havePermission(String perm) {
 	Player player = Bukkit.getPlayer(this.getPlayerUUID());
 	if (player != null)
-	    return Perm.hasPermission(player, perm);
+	    return player.hasPermission(perm);
 	return false;
     }
 

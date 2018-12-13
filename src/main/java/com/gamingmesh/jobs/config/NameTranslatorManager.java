@@ -419,6 +419,12 @@ public class NameTranslatorManager {
 	    c.get("EnchantList.70.Name", "Mending");
 	    c.get("EnchantList.71.MCName", "CURSE_OF_VANISHING");
 	    c.get("EnchantList.71.Name", "Curse Of Vanishing");
+	    c.get("EnchantList.72.MCName", "MULTISHOT");
+	    c.get("EnchantList.72.Name", "Multishot");
+	    c.get("EnchantList.73.MCName", "PIERCING");
+	    c.get("EnchantList.73.Name", "Piercing");
+	    c.get("EnchantList.74.MCName", "QUICK_CHARGE");
+	    c.get("EnchantList.74.Name", "Quick Charge");
 
 	    // Color list
 	    c.get("ColorList.0-white", "&fWhite");

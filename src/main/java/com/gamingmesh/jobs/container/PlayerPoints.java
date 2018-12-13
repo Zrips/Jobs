@@ -18,21 +18,21 @@ public class PlayerPoints {
     }
 
     public void addPoints(double points) {
-	this.current += points;
-	this.total += points;
+	current += points;
+	total += points;
     }
-    
+
     public void setPoints(double points) {
-	this.current = points;
-	this.total = points;
+	current = points;
+	total = points;
     }
-    
+
     public void takePoints(double points) {
-	this.current -= points;
+	current -= points;
     }
 
     public boolean havePoints(double points) {
-	return this.current >= points;
+	return current >= points;
     }
 
     public double getCurrentPoints() {
@@ -46,7 +46,7 @@ public class PlayerPoints {
     public boolean isNewEntry() {
 	return newEntry;
     }
-    
+
     public void setNewEntry(boolean newEntry) {
 	this.newEntry = newEntry;
     }

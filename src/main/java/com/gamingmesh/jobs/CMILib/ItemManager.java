@@ -664,6 +664,7 @@ public class ItemManager {
 	BLACK_CARPET(171, 15, 6056, "Black Carpet"),
 	BLACK_CONCRETE(251, 15, 13338, "Black Concrete", "CONCRETE"),
 	BLACK_CONCRETE_POWDER(252, 15, 16150, "Black Concrete Powder", "CONCRETE_POWDER"),
+	BLACK_DYE(351, -1, 26753, "Black Dye"),
 	BLACK_GLAZED_TERRACOTTA(250, 0, 29678, "Black Glazed Terracotta"),
 	BLACK_SHULKER_BOX(234, 0, 24076, "Black Shulker Box"),
 	BLACK_STAINED_GLASS(95, 15, 13941, "Black Stained Glass"),
@@ -679,6 +680,7 @@ public class ItemManager {
 	BLUE_CARPET(171, 11, 13292, "Blue Carpet"),
 	BLUE_CONCRETE(251, 11, 18756, "Blue Concrete"),
 	BLUE_CONCRETE_POWDER(252, 11, 17773, "Blue Concrete Powder"),
+	BLUE_DYE(351, -1, 12344, "Blue Dye"),
 	BLUE_GLAZED_TERRACOTTA(246, 0, 23823, "Blue Glazed Terracotta"),
 	BLUE_ICE(-1, -1, 22449, "Blue Ice"),
 	BLUE_ORCHID(38, 1, 13432, "Blue Orchid"),
@@ -710,6 +712,7 @@ public class ItemManager {
 	BROWN_CARPET(171, 12, 23352, "Brown Carpet"),
 	BROWN_CONCRETE(251, 12, 19006, "Brown Concrete"),
 	BROWN_CONCRETE_POWDER(252, 12, 21485, "Brown Concrete Powder"),
+	BROWN_DYE(351, -1, 4237, "Brown Dye"),
 	BROWN_GLAZED_TERRACOTTA(247, 0, 5655, "Brown Glazed Terracotta"),
 	BROWN_MUSHROOM(39, 0, 9665, "Brown Mushroom"),
 	BROWN_MUSHROOM_BLOCK(99, 0, 6291, "Brown Mushroom Block", "HUGE_MUSHROOM_1"),
@@ -1219,44 +1222,50 @@ public class ItemManager {
 	POTATOES(142, 0, 10879, "Potatoes"),
 
 	// Potions
-	POTION(373, 0, 24020, "Potion"),
-	AWKWARD_POTION(373, 16, 24020, "Awkard Potion"),
-	THICK_POTION(373, 32, 24020, "Thick Potion"),
-	MUNDANE_POTION(373, 64, 24020, "Mundane Potion"),
-	REGENERATION_POTION(373, 8193, 24020, "Regeneration Potion"),
-	SWIFTNESS_POTION(373, 8194, 24020, "Swiftness Potion"),
-	FIRE_RESISTANCE_POTION(373, 8195, 24020, "Fire Resistance Potion"),
-	POISON_POTION(373, 8196, 24020, "Poison Potion"),
-	HEALING_POTION(373, 8197, 24020, "Healing Potion"),
-	NIGHT_VISION_POTION(373, 8198, 24020, "Night Vision Potion"),
-	WEAKNESS_POTION(373, 8200, 24020, "Weakness Potion"),
-	STRENGTH_POTION(373, 8201, 24020, "Strenght Potion"),
-	SLOWNESS_POTION(373, 8202, 24020, "Slowness Potion"),
-	HARMING_POTION(373, 8204, 24020, "Harming Potion"),
-	WATER_BREATHING_POTION(373, 8205, 24020, "Water Breathing Potion"),
-	INVISIBILITY_POTION(373, 8206, 24020, "Invisibility Potion"),
-	REGENERATION_POTION2(373, 8225, 24020, "Regeneration Potion"),
-	SWIFTNESS_POTION2(373, 8226, 24020, "Swiftness Potion2"),
-	POISON_POTION2(373, 8228, 24020, "Poison Potion2"),
-	HEALING_POTION2(373, 8229, 24020, "Healing Potion2"),
-	STRENGTH_POTION2(373, 8233, 24020, "Strength Potion2"),
-	LEAPING_POTION2(373, 8235, 24020, "Leaping Potion2"),
-	HARMING_POTION2(373, 8236, 24020, "Harming Potion2"),
-	REGENERATION_POTION3(373, 8257, 24020, "Regeneration Potion3"),
-	SWIFTNESS_POTION3(373, 8258, 24020, "Swiftness Potion3"),
-	FIRE_RESISTANCE_POTION3(373, 8259, 24020, "Fire Resistance potion3"),
-	POISON_POTION3(373, 8260, 24020, "Poison Potion3"),
-	NIGHT_VISION_POTION2(373, 8262, 24020, "Night Vision Potion2"),
-	WEAKNESS_POTION2(373, 8264, 24020, "Weakness Potion2"),
-	STRENGTH_POTION3(373, 8265, 24020, "Strength Potion3"),
-	SLOWNESS_POTION2(373, 8266, 24020, "Slowness Potion2"),
-	LEAPING_POTION3(373, 8267, 24020, "Leaping Potion3"),
-	WATER_BREATHING_POTION2(373, 8269, 24020, "Water Breathing Potion2"),
-	INVISIBILITY_POTION2(373, 8270, 24020, "Invisibility Potion2"),
-	REGENERATION_POTION4(373, 8289, 24020, "Regeneration Potion4"),
-	SWIFTNESS_POTION4(373, 8290, 24020, "Swiftness Potion4"),
-	POISON_POTION4(373, 8292, 24020, "Poison Potion4"),
-	STRENGTH_POTION4(373, 8297, 24020, "Strength Potion4"),
+	POTION(373, 0, 24020, "Potion", "POTION_WATER"),
+	POTION_AWKWARD(373, 16, 24020, "Awkard Potion"),
+	POTION_FIRE_RESISTANCE_1(373, 8195, 24020, "Fire Resistance Potion"),
+	POTION_FIRE_RESISTANCE_2(373, 8259, 24020, "Fire Resistance potion 2"),
+	POTION_HARMING_1(373, 8204, 24020, "Harming Potion"),
+	POTION_HARMING_2(373, 8236, 24020, "Harming Potion 2"),
+	POTION_HEALING_1(373, 8197, 24020, "Healing Potion"),
+	POTION_HEALING_2(373, 8229, 24020, "Healing Potion 2"),
+	POTION_INVISIBILITY_1(373, 8206, 24020, "Invisibility Potion"),
+	POTION_INVISIBILITY_2(373, 8270, 24020, "Invisibility Potion 2"),
+	POTION_LEAPING_1(373, 8267, 24020, "Leaping Potion"),
+	POTION_LEAPING_2(373, 8235, 24020, "Leaping Potion 2"),
+	POTION_LUCK(-1, -1, 24020, "Luck Potion"),
+	POTION_MUNDANE(373, 64, 24020, "Mundane Potion"),
+	POTION_NIGHT_VISION_1(373, 8198, 24020, "Night Vision Potion"),
+	POTION_NIGHT_VISION_2(373, 8262, 24020, "Night Vision Potion 2"),
+	POTION_POISON_1(373, 8196, 24020, "Poison Potion"),
+	POTION_POISON_2(373, 8228, 24020, "Poison Potion 2"),
+	POTION_POISON_3(373, 8260, 24020, "Poison Potion 3"),
+	POTION_POISON_4(373, 8292, 24020, "Poison Potion 4"),
+	POTION_REGENERATION_1(373, 8193, 24020, "Regeneration Potion"),
+	POTION_REGENERATION_2(373, 8225, 24020, "Regeneration Potion 2"),
+	POTION_REGENERATION_3(373, 8257, 24020, "Regeneration Potion 3"),
+	POTION_REGENERATION_4(373, 8289, 24020, "Regeneration Potion 4"),
+	POTION_SLOW_FALLING_1(-1, -1, 24020, "Slow Falling Potion"),
+	POTION_SLOW_FALLING_2(-1, -1, 24020, "Slow Falling Potion 2"),
+	POTION_SLOWNESS_1(373, 8202, 24020, "Slowness Potion"),
+	POTION_SLOWNESS_2(373, 8266, 24020, "Slowness Potion 2"),
+	POTION_STRENGTH_1(373, 8201, 24020, "Strength Potion"),
+	POTION_STRENGTH_2(373, 8233, 24020, "Strength Potion 2"),
+	POTION_STRENGTH_3(373, 8265, 24020, "Strength Potion 3"),
+	POTION_STRENGTH_4(373, 8297, 24020, "Strength Potion 4"),
+	POTION_SWIFTNESS_1(373, 8194, 24020, "Swiftness Potion"),
+	POTION_SWIFTNESS_2(373, 8226, 24020, "Swiftness Potion 2"),
+	POTION_SWIFTNESS_3(373, 8258, 24020, "Swiftness Potion 3"),
+	POTION_SWIFTNESS_4(373, 8290, 24020, "Swiftness Potion 4"),
+	POTION_THICK(373, 32, 24020, "Thick Potion"),
+	POTION_TURTLE_MASTER_1(-1, -1, 24020, "Turtle Master Potion"),
+	POTION_TURTLE_MASTER_2(-1, -1, 24020, "Turtle Master Potion 2"),
+	POTION_TURTLE_MASTER_3(-1, -1, 24020, "Turtle Master Potion 3"),
+	POTION_WATER_BREATHING_1(373, 8205, 24020, "Water Breathing Potion"),
+	POTION_WATER_BREATHING_2(373, 8269, 24020, "Water Breathing Potion 2"),
+	POTION_WEAKNESS_1(373, 8200, 24020, "Weakness Potion"),
+	POTION_WEAKNESS_2(373, 8264, 24020, "Weakness Potion 2"),
 
 	POTTED_ACACIA_SAPLING(-1, -1, 14096, "Potted Acacia Sapling"),
 	POTTED_ALLIUM(-1, -1, 13184, "Potted Allium"),
@@ -1411,7 +1420,7 @@ public class ItemManager {
 	SPRUCE_TRAPDOOR(-1, -1, 10289, "Spruce Trapdoor"),
 	SPRUCE_WOOD(-1, -1, 32328, "Spruce Wood"),
 	SQUID_SPAWN_EGG(383, 94, 10682, "Spawn Squid", "Squid Spawn Egg"),
-	STICK(280, 0, 9773, "Stick", "STICK"),
+	STICK(280, 0, 9773, "Stick"),
 	STICKY_PISTON(29, 0, 18127, "Sticky Piston", "PISTON_STICKY_BASE"),
 	STONE(1, 0, 22948, "Stone"),
 	STONE_AXE(275, 0, 6338, "Stone Axe"),
@@ -1444,6 +1453,8 @@ public class ItemManager {
 	SUGAR(353, 0, 30638, "Sugar"),
 	SUGAR_CANE(338, 0, 7726, "Sugar Canes", "Sugar Cane"),
 	SUNFLOWER(175, 0, 7408, "Sunflower"),
+	SUSPICIOUS_STEW(-1, -1, 7245, "Suspicious Stew"),
+	SWEET_BERRIES(-1, -1, 9451, "Sweet Berries"),
 	TALL_GRASS(31, 1, 21559, "Tall Grass"),
 	TALL_SEAGRASS(-1, -1, 27189, "Tall Seagrass"),
 	TERRACOTTA(172, 0, 16544, "Terracotta", "HARD_CLAY"),
@@ -1483,6 +1494,7 @@ public class ItemManager {
 	WHITE_CARPET(171, 0, 15117, "White Carpet"),
 	WHITE_CONCRETE(251, 0, 6281, "White Concrete"),
 	WHITE_CONCRETE_POWDER(252, 0, 10363, "White Concrete Powder"),
+	WHITE_DYE(351, -1, 5276, "White Dye"),
 	WHITE_GLAZED_TERRACOTTA(235, 0, 11326, "White Glazed Terracotta"),
 	WHITE_SHULKER_BOX(219, 0, 31750, "White Shulker Box"),
 	WHITE_STAINED_GLASS(95, 0, 31190, "White Stained Glass"),
@@ -1592,7 +1604,7 @@ public class ItemManager {
 
 	public int getId() {
 	    if (version.isEqualOrHigher(Version.v1_13_R1)) {
-		return this.id;
+		return id;
 	    }
 	    return getLegacyId();
 	}
@@ -2128,43 +2140,49 @@ public class ItemManager {
 	public boolean isPotion() {
 	    switch (this) {
 	    case POTION:
-	    case AWKWARD_POTION:
-	    case THICK_POTION:
-	    case MUNDANE_POTION:
-	    case REGENERATION_POTION:
-	    case SWIFTNESS_POTION:
-	    case FIRE_RESISTANCE_POTION:
-	    case POISON_POTION:
-	    case HEALING_POTION:
-	    case NIGHT_VISION_POTION:
-	    case WEAKNESS_POTION:
-	    case STRENGTH_POTION:
-	    case SLOWNESS_POTION:
-	    case HARMING_POTION:
-	    case WATER_BREATHING_POTION:
-	    case INVISIBILITY_POTION:
-	    case REGENERATION_POTION2:
-	    case SWIFTNESS_POTION2:
-	    case POISON_POTION2:
-	    case HEALING_POTION2:
-	    case STRENGTH_POTION2:
-	    case LEAPING_POTION2:
-	    case HARMING_POTION2:
-	    case REGENERATION_POTION3:
-	    case SWIFTNESS_POTION3:
-	    case FIRE_RESISTANCE_POTION3:
-	    case POISON_POTION3:
-	    case NIGHT_VISION_POTION2:
-	    case WEAKNESS_POTION2:
-	    case STRENGTH_POTION3:
-	    case SLOWNESS_POTION2:
-	    case LEAPING_POTION3:
-	    case WATER_BREATHING_POTION2:
-	    case INVISIBILITY_POTION2:
-	    case REGENERATION_POTION4:
-	    case SWIFTNESS_POTION4:
-	    case POISON_POTION4:
-	    case STRENGTH_POTION4:
+	    case POTION_AWKWARD:
+	    case POTION_FIRE_RESISTANCE_1:
+	    case POTION_FIRE_RESISTANCE_2:
+	    case POTION_HARMING_1:
+	    case POTION_HARMING_2:
+	    case POTION_HEALING_1:
+	    case POTION_HEALING_2:
+	    case POTION_INVISIBILITY_1:
+	    case POTION_INVISIBILITY_2:
+	    case POTION_LEAPING_1:
+	    case POTION_LEAPING_2:
+	    case POTION_LUCK:
+	    case POTION_MUNDANE:
+	    case POTION_NIGHT_VISION_1:
+	    case POTION_NIGHT_VISION_2:
+	    case POTION_POISON_1:
+	    case POTION_POISON_2:
+	    case POTION_POISON_3:
+	    case POTION_POISON_4:
+	    case POTION_REGENERATION_1:
+	    case POTION_REGENERATION_2:
+	    case POTION_REGENERATION_3:
+	    case POTION_REGENERATION_4:
+	    case POTION_SLOW_FALLING_1:
+	    case POTION_SLOW_FALLING_2:
+	    case POTION_SLOWNESS_1:
+	    case POTION_SLOWNESS_2:
+	    case POTION_STRENGTH_1:
+	    case POTION_STRENGTH_2:
+	    case POTION_STRENGTH_3:
+	    case POTION_STRENGTH_4:
+	    case POTION_SWIFTNESS_1:
+	    case POTION_SWIFTNESS_2:
+	    case POTION_SWIFTNESS_3:
+	    case POTION_SWIFTNESS_4:
+	    case POTION_THICK:
+	    case POTION_TURTLE_MASTER_1:
+	    case POTION_TURTLE_MASTER_2:
+	    case POTION_TURTLE_MASTER_3:
+	    case POTION_WATER_BREATHING_1:
+	    case POTION_WATER_BREATHING_2:
+	    case POTION_WEAKNESS_1:
+	    case POTION_WEAKNESS_2:
 		return true;
 	    default:
 		break;
@@ -2374,13 +2392,17 @@ public class ItemManager {
 	    case CYAN_DYE:
 	    case LIGHT_GRAY_DYE:
 	    case GRAY_DYE:
+	    case BLACK_DYE:
 	    case PINK_DYE:
+	    case BLUE_DYE:
+	    case BROWN_DYE:
 	    case LIME_DYE:
 	    case DANDELION_YELLOW:
 	    case LIGHT_BLUE_DYE:
 	    case MAGENTA_DYE:
 	    case ORANGE_DYE:
 	    case BONE_MEAL:
+	    case WHITE_DYE:
 		return true;
 	    default:
 		break;

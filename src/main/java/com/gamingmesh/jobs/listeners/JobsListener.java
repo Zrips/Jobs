@@ -729,6 +729,12 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void onChunkChangeMove(PlayerMoveEvent event) {
+	if (event.isCancelled())
+	    return;
+
+	if (event.getPlayer() == null || !event.getPlayer().isOnline())
+		return;
+
 	//disabling plugin in world
 	if (event.getTo() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
 	    return;
