@@ -44,7 +44,6 @@ public class PermissionHandler {
     }
 
     public void recalculatePermissions(JobsPlayer jPlayer) {
-
 	if (jPlayer == null)
 	    return;
 
@@ -56,9 +55,9 @@ public class PermissionHandler {
 
 	// remove old permissions
 	String permName = "jobs.players." + player.getName();
-	Permission permission = this.plugin.getServer().getPluginManager().getPermission(permName);
+	Permission permission = plugin.getServer().getPluginManager().getPermission(permName);
 	if (permission != null) {
-	    this.plugin.getServer().getPluginManager().removePermission(permission);
+	    plugin.getServer().getPluginManager().removePermission(permission);
 	    changed = true;
 	}
 
@@ -73,16 +72,15 @@ public class PermissionHandler {
 		if (job != null) {
 		    for (JobPermission perm : job.getPermissions()) {
 			if (perm.getLevelRequirement() <= 0) {
-			    if (perm.isValue()) {
+			    if (perm.isValue())
 				permissions.put(perm.getNode(), true);
-			    } else {
+			    else {
 				/*
 				 * If the key exists, don't put a false node in
 				 * This is in case we already have a true node there
 				 */
-				if (!permissions.containsKey(perm.getNode())) {
+				if (!permissions.containsKey(perm.getNode()))
 				    permissions.put(perm.getNode(), false);
-				}
 			    }
 			}
 		    }
@@ -117,16 +115,15 @@ public class PermissionHandler {
 			for (Entry<String, Boolean> one : Condition.getPerformPerm().entrySet()) {
 			    String perm = one.getKey();
 			    boolean node = one.getValue();
-			    if (node) {
+			    if (node)
 				permissions.put(perm, true);
-			    } else {
+			    else {
 				/*
 				 * If the key exists, don't put a false node in
 				 * This is in case we already have a true node there
 				 */
-				if (!permissions.containsKey(perm)) {
+				if (!permissions.containsKey(perm))
 				    permissions.put(perm, false);
-				}
 			    }
 			}
 
@@ -141,12 +138,11 @@ public class PermissionHandler {
 			     * If the key exists, don't put a false node in
 			     * This is in case we already have a true node there
 			     */
-			    if (perm.isValue()) {
+			    if (perm.isValue())
 				permissions.put(perm.getNode(), true);
-			    } else {
-				if (!permissions.containsKey(perm.getNode())) {
+			    else {
+				if (!permissions.containsKey(perm.getNode()))
 				    permissions.put(perm.getNode(), false);
-				}
 			    }
 			}
 		    }
@@ -180,16 +176,15 @@ public class PermissionHandler {
 			for (Entry<String, Boolean> one : Condition.getPerformPerm().entrySet()) {
 			    String perm = one.getKey();
 			    boolean node = one.getValue();
-			    if (node) {
+			    if (node)
 				permissions.put(perm, true);
-			    } else {
+			    else {
 				/*
 				 * If the key exists, don't put a false node in
 				 * This is in case we already have a true node there
 				 */
-				if (!permissions.containsKey(perm)) {
+				if (!permissions.containsKey(perm))
 				    permissions.put(perm, false);
-				}
 			    }
 			}
 		    }
@@ -198,7 +193,7 @@ public class PermissionHandler {
 
 	    // add new permissions (if applicable)
 	    if (permissions.size() > 0) {
-		this.plugin.getServer().getPluginManager().addPermission(new Permission(permName, PermissionDefault.FALSE, permissions));
+		plugin.getServer().getPluginManager().addPermission(new Permission(permName, PermissionDefault.FALSE, permissions));
 		changed = true;
 	    }
 	}
@@ -210,14 +205,13 @@ public class PermissionHandler {
 	// find old attachment
 	PermissionAttachment attachment = null;
 	for (PermissionAttachmentInfo pai : player.getEffectivePermissions()) {
-	    if (pai.getAttachment() != null && pai.getAttachment().getPlugin() instanceof Jobs) {
+	    if (pai.getAttachment() != null && pai.getAttachment().getPlugin() instanceof Jobs)
 		attachment = pai.getAttachment();
-	    }
 	}
 
 	// create if attachment doesn't exist
 	if (attachment == null) {
-	    attachment = player.addAttachment(this.plugin);
+	    attachment = player.addAttachment(plugin);
 	    attachment.setPermission(permName, true);
 	}
 
@@ -226,8 +220,8 @@ public class PermissionHandler {
     }
 
     public void registerPermissions() {
-	PluginManager pm = this.plugin.getServer().getPluginManager();
-	for (World world : this.plugin.getServer().getWorlds()) {
+	PluginManager pm = plugin.getServer().getPluginManager();
+	for (World world : plugin.getServer().getWorlds()) {
 	    if (pm.getPermission("jobs.world." + world.getName().toLowerCase()) == null)
 		pm.addPermission(new Permission("jobs.world." + world.getName().toLowerCase(), PermissionDefault.TRUE));
 	}
@@ -245,22 +239,23 @@ public class PermissionHandler {
     }
 
     public boolean hasWorldPermission(Player player, String world) {
-	if (!player.hasPermission("jobs.use")) {
+	if (!player.hasPermission("jobs.use"))
 	    return false;
-	}
+
 	return player.hasPermission("jobs.world." + world.toLowerCase());
     }
 
     public boolean hasWorldPermission(JobsPlayer player) {
 	if (player.getPlayer() == null)
 	    return false;
+
 	return hasWorldPermission(player, player.getPlayer().getWorld().getName());
     }
 
     public boolean hasWorldPermission(JobsPlayer player, String world) {
-	if (!Jobs.getPermissionManager().hasPermission(player, "jobs.use")) {
+	if (!Jobs.getPermissionManager().hasPermission(player, "jobs.use"))
 	    return false;
-	}
+
 	return Jobs.getPermissionManager().hasPermission(player, "jobs.world." + world.toLowerCase());
     }
 

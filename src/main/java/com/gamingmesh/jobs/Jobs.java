@@ -735,7 +735,7 @@ public class Jobs extends JavaPlugin {
     public void onEnable() {
 
 	instance = this;
-	this.setEnabled(true);
+	setEnabled(true);
 
 	versionCheckManager = new VersionChecker(this);
 
@@ -752,12 +752,12 @@ public class Jobs extends JavaPlugin {
 		setNms((NMS) nmsClass.getConstructor().newInstance());
 	    } else {
 		System.out.println("Something went wrong, please note down version and contact author, version: " + version);
-		this.setEnabled(false);
+		setEnabled(false);
 	    }
 	} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
 	    | SecurityException e) {
 	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + version);
-	    this.setEnabled(false);
+	    setEnabled(false);
 	    e.printStackTrace();
 	    return;
 	}
@@ -835,7 +835,7 @@ public class Jobs extends JavaPlugin {
 	} catch (Exception e) {
 		e.printStackTrace();
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
-	    this.setEnabled(false);
+	    setEnabled(false);
 	}
     }
 

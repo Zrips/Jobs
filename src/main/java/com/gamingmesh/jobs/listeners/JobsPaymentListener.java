@@ -118,7 +118,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void villagerTradeInventoryClick(InventoryClickEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
@@ -204,7 +204,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCowMilking(PlayerInteractEntityEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
@@ -260,13 +260,13 @@ public class JobsPaymentListener implements Listener {
 
 	Long Timer = System.currentTimeMillis();
 
-	cow.setMetadata(CowMetadata, new FixedMetadataValue(this.plugin, Timer));
+	cow.setMetadata(CowMetadata, new FixedMetadataValue(plugin, Timer));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityShear(PlayerShearEntityEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
@@ -278,7 +278,7 @@ public class JobsPaymentListener implements Listener {
 
 	// mob spawner, no payment or experience
 	if (sheep.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
-	    sheep.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), this.plugin);
+	    sheep.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
 	    return;
 	}
 
@@ -304,7 +304,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrewEvent(BrewEvent event) {
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
@@ -348,7 +348,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
@@ -412,7 +412,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	Block block = event.getBlock();
 
@@ -448,7 +448,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
@@ -475,7 +475,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAnimalTame(EntityTameEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
@@ -486,7 +486,7 @@ public class JobsPaymentListener implements Listener {
 
 	// mob spawner, no payment or experience
 	if (animal.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
-	    animal.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), this.plugin);
+	    animal.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
 	    return;
 	}
 
@@ -513,7 +513,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryCraft(CraftItemEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
@@ -665,7 +665,7 @@ public class JobsPaymentListener implements Listener {
 	for (int i = 0; i < preInv.length; i++) {
 	    preInv[i] = preInv[i] != null ? preInv[i].clone() : null;
 	}
-	return Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
+	return Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		final ItemStack[] postInv = player.getInventory().getContents();
@@ -715,7 +715,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryRepair(InventoryClickEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
@@ -791,7 +791,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEnchantItem(EnchantItemEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getEnchanter() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEnchanter().getWorld()))
@@ -847,7 +847,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToFurnace(InventoryMoveItemEvent event) {
 	try {
-	    if (!this.plugin.isEnabled())
+	    if (!plugin.isEnabled())
 		return;
 	    if (event.getDestination().getType() != InventoryType.FURNACE)
 		return;
@@ -871,7 +871,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToBrewingStand(InventoryMoveItemEvent event) {
 	try {
-	    if (!this.plugin.isEnabled())
+	    if (!plugin.isEnabled())
 		return;
 	    if (event.getDestination().getType() != InventoryType.BREWING)
 		return;
@@ -894,7 +894,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onFurnaceSmelt(FurnaceSmeltEvent event) {
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
@@ -961,7 +961,7 @@ public class JobsPaymentListener implements Listener {
 	    damage = s;
 	if (ent.hasMetadata(entityDamageByPlayer))
 	    damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
-	ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(this.plugin, damage));
+	ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(plugin, damage));
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -987,7 +987,7 @@ public class JobsPaymentListener implements Listener {
 	if (shooter instanceof Player) {
 	    if (ent.hasMetadata(entityDamageByPlayer))
 		damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
-	    ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(this.plugin, damage));
+	    ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(plugin, damage));
 	}
 
     }
@@ -995,7 +995,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
@@ -1106,14 +1106,14 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	if (event.getSpawnReason().equals(SpawnReason.SPAWNER) || event.getSpawnReason().equals(SpawnReason.SPAWNER_EGG)) {
 	    LivingEntity creature = event.getEntity();
-	    creature.setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(this.plugin, true));
+	    creature.setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(plugin, true));
 	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHangingPlaceEvent(HangingPlaceEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
@@ -1140,7 +1140,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHangingBreakEvent(HangingBreakByEntityEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
@@ -1266,7 +1266,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureBreed(CreatureSpawnEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
@@ -1314,7 +1314,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerEat(FoodLevelChangeEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
@@ -1354,7 +1354,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTntExplode(EntityExplodeEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity()))
@@ -1419,7 +1419,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
@@ -1487,7 +1487,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
@@ -1520,7 +1520,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler
     public void onExplore(JobsChunkChangeEvent event) {
 	// make sure plugin is enabled
-	if (!this.plugin.isEnabled())
+	if (!plugin.isEnabled())
 	    return;
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))

@@ -99,31 +99,31 @@ public class PlayerManager {
     }
 
     public void addPlayerToMap(PlayerInfo info) {
-	this.PlayerUUIDMap.put(info.getUuid(), info);
-	this.PlayerIDMap.put(info.getID(), info);
+	PlayerUUIDMap.put(info.getUuid(), info);
+	PlayerIDMap.put(info.getID(), info);
 	if (info.getName() != null)
-	    this.PlayerNameMap.put(info.getName().toLowerCase(), info);
+	    PlayerNameMap.put(info.getName().toLowerCase(), info);
     }
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
 	if (jPlayer.getUserName() != null)
-	    this.playersCache.put(jPlayer.getUserName().toLowerCase(), jPlayer);
+	    playersCache.put(jPlayer.getUserName().toLowerCase(), jPlayer);
 	if (jPlayer.getPlayerUUID() != null)
-	    this.playersUUIDCache.put(jPlayer.getPlayerUUID(), jPlayer);
+	    playersUUIDCache.put(jPlayer.getPlayerUUID(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
 	if (jPlayer.getUserName() != null)
-	    this.players.put(jPlayer.getUserName().toLowerCase(), jPlayer);
+	    players.put(jPlayer.getUserName().toLowerCase(), jPlayer);
 	if (jPlayer.getPlayerUUID() != null)
-	    this.playersUUID.put(jPlayer.getPlayerUUID(), jPlayer);
+	    playersUUID.put(jPlayer.getPlayerUUID(), jPlayer);
     }
 
     public JobsPlayer removePlayer(Player player) {
 	if (player == null)
 	    return null;
-	this.players.remove(player.getName().toLowerCase());
-	JobsPlayer jPlayer = this.playersUUID.remove(player.getUniqueId());
+	players.remove(player.getName().toLowerCase());
+	JobsPlayer jPlayer = playersUUID.remove(player.getUniqueId());
 	return jPlayer;
     }
 
@@ -167,14 +167,14 @@ public class PlayerManager {
      */
     public void playerJoin(Player player) {
 
-	JobsPlayer jPlayer = this.playersUUIDCache.get(player.getUniqueId());
+	JobsPlayer jPlayer = playersUUIDCache.get(player.getUniqueId());
 
 	if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
 	    jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 	    jPlayer.loadLogFromDao();
 	}
 
-	this.addPlayer(jPlayer);
+	addPlayer(jPlayer);
 	AutoJoinJobs(player);
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
@@ -188,7 +188,7 @@ public class PlayerManager {
      * @param playername
      */
     public void playerQuit(Player player) {
-	JobsPlayer jPlayer = this.getJobsPlayer(player);
+	JobsPlayer jPlayer = getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
 	if (Jobs.getGCManager().saveOnDisconnect()) {
@@ -209,12 +209,12 @@ public class PlayerManager {
 	 * 2) Perform save on all players on copied list.
 	 * 3) Garbage collect the real list to remove any offline players with saved data
 	 */
-	ArrayList<JobsPlayer> list = new ArrayList<>(this.players.values());
+	ArrayList<JobsPlayer> list = new ArrayList<>(players.values());
 
 	for (JobsPlayer jPlayer : list)
 	    jPlayer.save();
 
-	Iterator<JobsPlayer> iter = this.players.values().iterator();
+	Iterator<JobsPlayer> iter = players.values().iterator();
 	while (iter.hasNext()) {
 	    JobsPlayer jPlayer = iter.next();
 	    if (!jPlayer.isOnline() && jPlayer.isSaved())
@@ -261,10 +261,10 @@ public class PlayerManager {
     }
 
     public JobsPlayer getJobsPlayer(UUID uuid) {
-	JobsPlayer jPlayer = this.playersUUID.get(uuid);
+	JobsPlayer jPlayer = playersUUID.get(uuid);
 	if (jPlayer != null)
 	    return jPlayer;
-	return this.playersUUIDCache.get(uuid);
+	return playersUUIDCache.get(uuid);
     }
 
     /**
@@ -273,10 +273,10 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {
-	JobsPlayer jPlayer = this.players.get(playerName.toLowerCase());
+	JobsPlayer jPlayer = players.get(playerName.toLowerCase());
 	if (jPlayer != null)
 	    return jPlayer;
-	return this.playersCache.get(playerName.toLowerCase());
+	return playersCache.get(playerName.toLowerCase());
     }
 
     /**
@@ -376,10 +376,9 @@ public class PlayerManager {
 	if (!jPlayer.isInJob(job))
 	    return false;
 
-	// JobsJoin event
 	JobsLeaveEvent jobsleaveevent = new JobsLeaveEvent(jPlayer, job);
 	Bukkit.getServer().getPluginManager().callEvent(jobsleaveevent);
-	// If event is canceled, dont do anything
+	// If event is canceled, don't do anything
 	if (jobsleaveevent.isCancelled())
 	    return false;
 
@@ -704,7 +703,7 @@ public class PlayerManager {
      * Perform reload
      */
     public void reload() {
-	for (JobsPlayer jPlayer : this.players.values()) {
+	for (JobsPlayer jPlayer : players.values()) {
 	    for (JobProgression progression : jPlayer.getJobProgression()) {
 		String jobName = progression.getJob().getName();
 		Job job = Jobs.getJob(jobName);
@@ -793,7 +792,7 @@ public class PlayerManager {
 		    continue;
 
 	    for (String onelore : oneItem.getLore()) {
-		if (lore.size() == 0 || !lore.contains(onelore))
+		if (lore.size() < 0 || !lore.contains(onelore))
 		    continue main;
 	    }
 
@@ -930,7 +929,7 @@ public class PlayerManager {
 		boost.add(BoostOf.PetPay, new BoostMultiplier().add(amount));
 	}
 
-	if (victim != null && victim.hasMetadata(this.getMobSpawnerMetadata())) {
+	if (victim != null && victim.hasMetadata(getMobSpawnerMetadata())) {
 	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner");
 	    if (amount != null)
 		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));

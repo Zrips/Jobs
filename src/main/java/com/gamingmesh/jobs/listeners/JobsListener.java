@@ -139,8 +139,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onSelection(PlayerInteractEvent event) {
-	if (event.getPlayer() == null)
-	    return;
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
 	    return;
@@ -210,9 +208,8 @@ public class JobsListener implements Listener {
     public void onShopGuiClose(InventoryCloseEvent event) {
 	if (Jobs.getShopManager().GuiList.isEmpty())
 	    return;
-	if (Jobs.getShopManager().GuiList.containsKey(event.getPlayer().getName())) {
+	if (Jobs.getShopManager().GuiList.containsKey(event.getPlayer().getName()))
 	    Jobs.getShopManager().GuiList.remove(event.getPlayer().getName());
-	}
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -284,9 +281,9 @@ public class JobsListener implements Listener {
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
-	if (!Jobs.getGCManager().MultiServerCompatability()) {
+	if (!Jobs.getGCManager().MultiServerCompatability())
 	    Jobs.getPlayerManager().playerJoin(event.getPlayer());
-	} else {
+	else {
 	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 		@Override
 		public void run() {

@@ -36,13 +36,12 @@ public class HookEconomyTask implements Runnable {
 
     @Override
     public void run() {
-
 	if (setVault())
 	    return;
 
 	// no Economy found
-	Jobs.setEconomy(this.plugin, new BlackholeEconomy());
-	Bukkit.getServer().getLogger().severe("==================== " + this.plugin.getDescription().getName() + " ====================");
+	Jobs.setEconomy(plugin, new BlackholeEconomy());
+	Bukkit.getServer().getLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
 	Bukkit.getServer().getLogger().severe("Vault is required by this plugin for economy support!");
 	Bukkit.getServer().getLogger().severe("Please install them first!");
 	Bukkit.getServer().getLogger().severe("You can find the latest versions here:");
@@ -63,8 +62,8 @@ public class HookEconomyTask implements Runnable {
 	if (economy == null)
 	    return false;
 
-	Jobs.setEconomy(this.plugin, new VaultEconomy(economy));
-	Jobs.consoleMsg("&e[" + this.plugin.getDescription().getName() + "] Successfully linked with Vault.");
+	Jobs.setEconomy(plugin, new VaultEconomy(economy));
+	Jobs.consoleMsg("&e[" + plugin.getDescription().getName() + "] Successfully linked with Vault.");
 	return true;
     }
 
