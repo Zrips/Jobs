@@ -52,7 +52,7 @@ public class MythicMobs4Listener implements Listener {
 	if (pDamager == null)
 	    return;
 	// check if in creative
-	if (pDamager.getGameMode().equals(GameMode.CREATIVE) && !pDamager.hasPermission("jobs.paycreative"))
+	if (pDamager.getGameMode().equals(GameMode.CREATIVE) && !pDamager.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))

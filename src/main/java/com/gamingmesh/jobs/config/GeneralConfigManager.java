@@ -49,6 +49,7 @@ public class GeneralConfigManager {
     protected boolean economyAsync;
     protected boolean isBroadcastingSkillups;
     protected boolean isBroadcastingLevelups;
+    protected boolean payInCreative;
     protected boolean payExploringWhenFlying;
     protected boolean addXpPlayer;
     protected boolean hideJobsWithoutPermission;
@@ -220,6 +221,15 @@ public class GeneralConfigManager {
      */
     public synchronized boolean isBroadcastingLevelups() {
 	return isBroadcastingLevelups;
+    }
+
+    /**
+     * Function that tells if the player should be paid while in creative
+     * @return true - pay in creative
+     * @return false - do not pay in creative
+     */
+    public synchronized boolean payInCreative() {
+	return payInCreative;
     }
 
     /**
@@ -528,6 +538,9 @@ public class GeneralConfigManager {
 	    "Option to allow payment to be made when killing mobs from a spawner.",
 	    "Use jobs.nearspawner.[amount] to define multiplayer. Example jobs.nearspawner.-0.5 will pay half of payment, jobs.nearspawner.-1 will not pay at all");
 	payNearSpawner = c.get("enable-pay-near-spawner", false);
+
+	c.getW().addComment("enable-pay-creative", "Option to allow payment to be made in creative mode. This ignoring when a group has 'jobs.paycreative' permission.");
+	payInCreative = c.get("enable-pay-creative", false);
 
 	c.getW().addComment("enable-pay-for-exploring-when-flying", "Option to allow payment to be made for exploring when player flies");
 	payExploringWhenFlying = c.get("enable-pay-for-exploring-when-flying", false);

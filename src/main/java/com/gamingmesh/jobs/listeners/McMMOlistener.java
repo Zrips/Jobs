@@ -51,7 +51,7 @@ public class McMMOlistener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative"))
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
