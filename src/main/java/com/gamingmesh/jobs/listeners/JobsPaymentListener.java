@@ -241,18 +241,18 @@ public class JobsPaymentListener implements Listener {
 
 	// Fix bug when the player has not joined a job, milk a cow and get paid
 	for (com.gamingmesh.jobs.container.Job jobs : Jobs.getJobs()) {
-		if (jPlayer.isInJob(jobs) && Jobs.getGCManager().CowMilkingTimer > 0) {
-		    if (cow.hasMetadata(CowMetadata)) {
-			long time = cow.getMetadata(CowMetadata).get(0).asLong();
-			if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
-			    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
-			    jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
+	    if (jPlayer.isInJob(jobs) && Jobs.getGCManager().CowMilkingTimer > 0) {
+		if (cow.hasMetadata(CowMetadata)) {
+		    long time = cow.getMetadata(CowMetadata).get(0).asLong();
+		    if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
+			long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
+			jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
 
-			    if (Jobs.getGCManager().CancelCowMilking)
-				event.setCancelled(true);
-			    return;
-			}
+			if (Jobs.getGCManager().CancelCowMilking)
+			    event.setCancelled(true);
+			return;
 		    }
+		}
 	    }
 	}
 
@@ -1522,11 +1522,12 @@ public class JobsPaymentListener implements Listener {
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
+
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
 	    return;
-	if (event.isCancelled())
-	    return;
+	if (event.isCancelled()) 
+	    return; 
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
@@ -1535,9 +1536,8 @@ public class JobsPaymentListener implements Listener {
 	if (!player.isOnline())
 	    return;
 
-	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())
+	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isOnGround())
 	    return;
-
 	ExploreRespond respond = Jobs.getExplore().ChunkRespond(player, event.getNewChunk());
 
 	if (!respond.isNewChunk())

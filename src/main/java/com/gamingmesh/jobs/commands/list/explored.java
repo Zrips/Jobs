@@ -29,7 +29,7 @@ public class explored implements Cmd {
 
 	if (!worlds.containsKey(world.getName())) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
-	    return false;
+	    return true;
 	}
 
 	ExploreRegion regions = worlds.get(world.getName());

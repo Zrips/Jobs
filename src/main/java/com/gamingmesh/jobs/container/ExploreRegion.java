@@ -6,9 +6,9 @@ import org.bukkit.Chunk;
 
 public class ExploreRegion {
 
-	int x;
-	int z;
-	private HashMap<String, ExploreChunk> chunks = new HashMap<>();
+    int x;
+    int z;
+    private HashMap<String, ExploreChunk> chunks = new HashMap<>();
 
     public ExploreRegion(int x, int z) {
 	this.x = x;

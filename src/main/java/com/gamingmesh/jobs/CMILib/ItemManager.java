@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ItemManager {
@@ -30,7 +29,6 @@ public class ItemManager {
     static HashMap<String, CMIItemStack> byBukkitName = new HashMap<>();
     static HashMap<String, CMIItemStack> byMojangName = new HashMap<>();
     static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<>();
-    private final static Version version = Jobs.getVersionCheckManager().getVersion();
 
     @SuppressWarnings("deprecation")
     public static void load() {
@@ -1222,50 +1220,44 @@ public class ItemManager {
 	POTATOES(142, 0, 10879, "Potatoes"),
 
 	// Potions
-	POTION(373, 0, 24020, "Potion", "POTION_WATER"),
-	POTION_AWKWARD(373, 16, 24020, "Awkard Potion"),
-	POTION_FIRE_RESISTANCE_1(373, 8195, 24020, "Fire Resistance Potion"),
-	POTION_FIRE_RESISTANCE_2(373, 8259, 24020, "Fire Resistance potion 2"),
-	POTION_HARMING_1(373, 8204, 24020, "Harming Potion"),
-	POTION_HARMING_2(373, 8236, 24020, "Harming Potion 2"),
-	POTION_HEALING_1(373, 8197, 24020, "Healing Potion"),
-	POTION_HEALING_2(373, 8229, 24020, "Healing Potion 2"),
-	POTION_INVISIBILITY_1(373, 8206, 24020, "Invisibility Potion"),
-	POTION_INVISIBILITY_2(373, 8270, 24020, "Invisibility Potion 2"),
-	POTION_LEAPING_1(373, 8267, 24020, "Leaping Potion"),
-	POTION_LEAPING_2(373, 8235, 24020, "Leaping Potion 2"),
-	POTION_LUCK(-1, -1, 24020, "Luck Potion"),
-	POTION_MUNDANE(373, 64, 24020, "Mundane Potion"),
-	POTION_NIGHT_VISION_1(373, 8198, 24020, "Night Vision Potion"),
-	POTION_NIGHT_VISION_2(373, 8262, 24020, "Night Vision Potion 2"),
-	POTION_POISON_1(373, 8196, 24020, "Poison Potion"),
-	POTION_POISON_2(373, 8228, 24020, "Poison Potion 2"),
-	POTION_POISON_3(373, 8260, 24020, "Poison Potion 3"),
-	POTION_POISON_4(373, 8292, 24020, "Poison Potion 4"),
-	POTION_REGENERATION_1(373, 8193, 24020, "Regeneration Potion"),
-	POTION_REGENERATION_2(373, 8225, 24020, "Regeneration Potion 2"),
-	POTION_REGENERATION_3(373, 8257, 24020, "Regeneration Potion 3"),
-	POTION_REGENERATION_4(373, 8289, 24020, "Regeneration Potion 4"),
-	POTION_SLOW_FALLING_1(-1, -1, 24020, "Slow Falling Potion"),
-	POTION_SLOW_FALLING_2(-1, -1, 24020, "Slow Falling Potion 2"),
-	POTION_SLOWNESS_1(373, 8202, 24020, "Slowness Potion"),
-	POTION_SLOWNESS_2(373, 8266, 24020, "Slowness Potion 2"),
-	POTION_STRENGTH_1(373, 8201, 24020, "Strength Potion"),
-	POTION_STRENGTH_2(373, 8233, 24020, "Strength Potion 2"),
-	POTION_STRENGTH_3(373, 8265, 24020, "Strength Potion 3"),
-	POTION_STRENGTH_4(373, 8297, 24020, "Strength Potion 4"),
-	POTION_SWIFTNESS_1(373, 8194, 24020, "Swiftness Potion"),
-	POTION_SWIFTNESS_2(373, 8226, 24020, "Swiftness Potion 2"),
-	POTION_SWIFTNESS_3(373, 8258, 24020, "Swiftness Potion 3"),
-	POTION_SWIFTNESS_4(373, 8290, 24020, "Swiftness Potion 4"),
-	POTION_THICK(373, 32, 24020, "Thick Potion"),
-	POTION_TURTLE_MASTER_1(-1, -1, 24020, "Turtle Master Potion"),
-	POTION_TURTLE_MASTER_2(-1, -1, 24020, "Turtle Master Potion 2"),
-	POTION_TURTLE_MASTER_3(-1, -1, 24020, "Turtle Master Potion 3"),
-	POTION_WATER_BREATHING_1(373, 8205, 24020, "Water Breathing Potion"),
-	POTION_WATER_BREATHING_2(373, 8269, 24020, "Water Breathing Potion 2"),
-	POTION_WEAKNESS_1(373, 8200, 24020, "Weakness Potion"),
-	POTION_WEAKNESS_2(373, 8264, 24020, "Weakness Potion 2"),
+	POTION(373, 0, 24020, "Potion"),
+	AWKWARD_POTION(373, 16, 24020, "Awkard Potion"),
+	THICK_POTION(373, 32, 24020, "Thick Potion"),
+	MUNDANE_POTION(373, 64, 24020, "Mundane Potion"),
+	REGENERATION_POTION(373, 8193, 24020, "Regeneration Potion"),
+	SWIFTNESS_POTION(373, 8194, 24020, "Swiftness Potion"),
+	FIRE_RESISTANCE_POTION(373, 8195, 24020, "Fire Resistance Potion"),
+	POISON_POTION(373, 8196, 24020, "Poison Potion"),
+	HEALING_POTION(373, 8197, 24020, "Healing Potion"),
+	NIGHT_VISION_POTION(373, 8198, 24020, "Night Vision Potion"),
+	WEAKNESS_POTION(373, 8200, 24020, "Weakness Potion"),
+	STRENGTH_POTION(373, 8201, 24020, "Strenght Potion"),
+	SLOWNESS_POTION(373, 8202, 24020, "Slowness Potion"),
+	HARMING_POTION(373, 8204, 24020, "Harming Potion"),
+	WATER_BREATHING_POTION(373, 8205, 24020, "Water Breathing Potion"),
+	INVISIBILITY_POTION(373, 8206, 24020, "Invisibility Potion"),
+	REGENERATION_POTION2(373, 8225, 24020, "Regeneration Potion"),
+	SWIFTNESS_POTION2(373, 8226, 24020, "Swiftness Potion2"),
+	POISON_POTION2(373, 8228, 24020, "Poison Potion2"),
+	HEALING_POTION2(373, 8229, 24020, "Healing Potion2"),
+	STRENGTH_POTION2(373, 8233, 24020, "Strength Potion2"),
+	LEAPING_POTION2(373, 8235, 24020, "Leaping Potion2"),
+	HARMING_POTION2(373, 8236, 24020, "Harming Potion2"),
+	REGENERATION_POTION3(373, 8257, 24020, "Regeneration Potion3"),
+	SWIFTNESS_POTION3(373, 8258, 24020, "Swiftness Potion3"),
+	FIRE_RESISTANCE_POTION3(373, 8259, 24020, "Fire Resistance potion3"),
+	POISON_POTION3(373, 8260, 24020, "Poison Potion3"),
+	NIGHT_VISION_POTION2(373, 8262, 24020, "Night Vision Potion2"),
+	WEAKNESS_POTION2(373, 8264, 24020, "Weakness Potion2"),
+	STRENGTH_POTION3(373, 8265, 24020, "Strength Potion3"),
+	SLOWNESS_POTION2(373, 8266, 24020, "Slowness Potion2"),
+	LEAPING_POTION3(373, 8267, 24020, "Leaping Potion3"),
+	WATER_BREATHING_POTION2(373, 8269, 24020, "Water Breathing Potion2"),
+	INVISIBILITY_POTION2(373, 8270, 24020, "Invisibility Potion2"),
+	REGENERATION_POTION4(373, 8289, 24020, "Regeneration Potion4"),
+	SWIFTNESS_POTION4(373, 8290, 24020, "Swiftness Potion4"),
+	POISON_POTION4(373, 8292, 24020, "Poison Potion4"),
+	STRENGTH_POTION4(373, 8297, 24020, "Strength Potion4"),
 
 	POTTED_ACACIA_SAPLING(-1, -1, 14096, "Potted Acacia Sapling"),
 	POTTED_ALLIUM(-1, -1, 13184, "Potted Allium"),
@@ -1538,40 +1530,39 @@ public class ItemManager {
 	LEGACY_STATIONARY_WATER(9, 0, -1, "Stationary Water"),
 	LEGACY_STATIONARY_LAVA(11, 0, -1, "Stationary Lava"),
 	LEGACY_BURNING_FURNACE(62, 0, -1, "Burning Furnace"),
-	LEGACY_NETHER_WARTS(115, -1, -1, "Nether Warts"),
+	LEGACY_NETHER_WARTS(115, 0, -1, "Nether Warts"),
 	LEGACY_IRON_DOOR_BLOCK(71, 0, -1, "Iron Door Block"),
 	LEGACY_GLOWING_REDSTON_ORE(74, 0, -1, "Glowing Redstone Ore"),
-	LEGACY_SUGAR_CANE_BLOCK(83, -1, -1, "Sugar Cane Block"),
+	LEGACY_SUGAR_CANE_BLOCK(83, 0, -1, "Sugar Cane Block"),
 	LEGACY_RAW_FISH(349, 0, -1, "Raw Fish"),
 	LEGACY_SKULL(144, 0, -1, "Skull"),
-
-//	LEGACY_SIGN_POST(63, -1, -1, "Sign Post", ""),
-//	LEGACY_REDSTONE_TORCH_OFF(75, -1, -1, "LEGACY_REDSTONE_TORCH_OFF", ""),
-//	LEGACY_CAKE_BLOCK(92, -1, -1, "LEGACY_CAKE_BLOCK", ""),
+	LEGACY_SIGN_POST(63, 0, -1, "Sign Post"),
+	LEGACY_BED_BLOCK(26, 0, -1, "Bed Block"),
+	LEGACY_REDSTONE_TORCH_OFF(75, 0, -1, "Redstone Torch Off"),
+	LEGACY_CAKE_BLOCK(92, 0, -1, "Cake Block"),
 	LEGACY_DIODE_BLOCK_OFF(93, 0, -1, "Diode Block Off"),
 	LEGACY_DIODE_BLOCK_ON(94, 0, -1, "Diode Block On"),
 //	LEGACY_BREWING_STAND(117, -1, -1, "LEGACY_BREWING_STAND", ""),
-//	LEGACY_CAULDRON(118, -1, -1, "LEGACY_CAULDRON", ""),
+//	LEGACY_CAULDRON(118, 0, -1, "LEGACY_CAULDRON", ""),
 //	LEGACY_REDSTONE_LAMP_ON(124, -1, -1, "LEGACY_REDSTONE_LAMP_ON", ""),
 //	LEGACY_WOOD_DOUBLE_STEP(125, -1, -1, "LEGACY_WOOD_DOUBLE_STEP", ""),
 //	LEGACY_FLOWER_POT(140, -1, -1, "LEGACY_FLOWER_POT", ""),
-	LEGACY_REDSTONE_COMPARATOR_OFF(149, 0, -1, "Redstone Comparator Off"),
-	LEGACY_REDSTONE_COMPARATOR_ON(150, 0, -1, "Redstone Comparator On"),
+	LEGACY_REDSTONE_COMPARATOR_OFF(149, 0, -1, "Redstone Comparator Off", ""),
+	LEGACY_REDSTONE_COMPARATOR_ON(150, 0, -1, "Redstone Comparator On", ""),
 //	LEGACY_STANDING_BANNER(176, -1, -1, "LEGACY_STANDING_BANNER", ""),
 //	LEGACY_WALL_BANNER(177, -1, -1, "LEGACY_WALL_BANNER", ""),
 //	LEGACY_DAYLIGHT_DETECTOR_INVERTED(178, -1, -1, "LEGACY_DAYLIGHT_DETECTOR_INVERTED", ""),
 //	LEGACY_DOUBLE_STONE_SLAB2(181, -1, -1, "LEGACY_DOUBLE_STONE_SLAB2", ""),
-//	LEGACY_PURPUR_DOUBLE_SLAB(204, -1, -1, "LEGACY_PURPUR_DOUBLE_SLAB", ""),
-//	LEGACY_COMMAND_REPEATING(210, -1, -1, "LEGACY_COMMAND_REPEATING", ""),
-//	LEGACY_COMMAND_CHAIN(211, -1, -1, "LEGACY_COMMAND_CHAIN", ""),	
-	
 	LEGACY_WOODEN_DOOR_BLOCK(64, 0, -1, "Wooden Door Block"),
 	LEGACY_SPRUCE_DOOR(193, 0, -1, "Spruce Door Block"),
 	LEGACY_BIRCH_DOOR(194, 0, -1, "Birch Door Block"),
 	LEGACY_JUNGLE_DOOR(195, 0, -1, "Jungle Door Block"),
 	LEGACY_ACACIA_DOOR(196, 0, -1, "Acacia Door Block"),
 	LEGACY_DARK_OAK_DOOR(197, 0, -1, "Dark Oak Door Block"),
-	LEGACY_WHEAT(59, 0, -1, "Wheat Block", "Crops");
+//	LEGACY_PURPUR_DOUBLE_SLAB(204, -1, -1, "LEGACY_PURPUR_DOUBLE_SLAB", ""),
+//	LEGACY_COMMAND_REPEATING(210, -1, -1, "LEGACY_COMMAND_REPEATING", ""),
+//	LEGACY_COMMAND_CHAIN(211, -1, -1, "LEGACY_COMMAND_CHAIN", ""),
+	LEGACY_WHEAT(59, 0, -1, "Wheat Block");
 
 	private int legacyId;
 	private int legacyData;
@@ -1599,12 +1590,12 @@ public class ItemManager {
 	}
 
 	public int getLegacyId() {
-	    return legacyId;
+	    return this.legacyId;
 	}
 
 	public int getId() {
-	    if (version.isEqualOrHigher(Version.v1_13_R1)) {
-		return id;
+	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+		return this.id;
 	    }
 	    return getLegacyId();
 	}
@@ -1613,7 +1604,6 @@ public class ItemManager {
 	    return mat == null ? null : mat;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void updateMaterial() {
 	    if (mat == null) {
 		for (Material one : Material.class.getEnumConstants()) {
@@ -1653,7 +1643,6 @@ public class ItemManager {
 	    return newItemStack(1);
 	}
 
-	@SuppressWarnings("deprecation")
 	public ItemStack newItemStack(int amount) {
 	    if (mat == null) {
 		for (Material one : Material.class.getEnumConstants()) {
@@ -1663,21 +1652,19 @@ public class ItemManager {
 		    break;
 		}
 	    }
-	    if (version.isEqualOrHigher(Version.v1_13_R1)) {
+	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 		ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat);
 		stack.setAmount(amount);
 		return stack;
 	    }
-
 	    ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
 	    stack.setAmount(amount);
 	    return stack;
-
 	}
 
 	@Deprecated
 	public short getData() {
-	    if (version.isEqualOrHigher(Version.v1_13_R1)) {
+	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 		return 0;
 	    }
 	    return (short) legacyData;
@@ -1689,7 +1676,7 @@ public class ItemManager {
 
 	public static CMIMaterial getRandom(CMIMaterial mat) {
 
-	    List<CMIMaterial> ls = new ArrayList<>();
+	    List<CMIMaterial> ls = new ArrayList<CMIMaterial>();
 
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.getLegacyId() == -1)
@@ -1715,10 +1702,30 @@ public class ItemManager {
 	    return ls.isEmpty() ? CMIMaterial.NONE : ls.get(0);
 	}
 
+	public CMIMaterial getByColorId(int id) {
+	    return getByColorId(this, id);
+	}
+
+	public static CMIMaterial getByColorId(CMIMaterial mat, int id) {
+	    if (mat == null)
+		return CMIMaterial.NONE;
+	    for (CMIMaterial one : CMIMaterial.values()) {
+		if (one.getLegacyId() == -1)
+		    continue;
+		if (one.getLegacyId() != mat.getLegacyId())
+		    continue;
+		if (one.getLegacyData() == id)
+		    return one;
+	    }
+
+	    return mat;
+	}
+
 	public static CMIMaterial get(String id) {
+	    if (id == null)
+		return CMIMaterial.NONE;
 	    Integer ids = null;
 	    Integer data = null;
-
 	    id = id.replace("_", "").replace(" ", "").toLowerCase();
 	    try {
 		ids = Integer.parseInt(id);
@@ -1798,18 +1805,13 @@ public class ItemManager {
 		    return one;
 		if (one.getName().replace("_", "").replace(" ", "").equalsIgnoreCase(id))
 		    return one;
-
 	    }
-	    for (CMIMaterial one : CMIMaterial.values()) {
-		if (one.name().replace("_", "").toLowerCase().endsWith(id))
-		    return one;
-	    }
-
 	    return CMIMaterial.NONE;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static CMIMaterial get(Material mat) {
+	    if (mat == null)
+		return CMIMaterial.NONE;
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.getMaterial() == null)
 		    continue;
@@ -1820,7 +1822,6 @@ public class ItemManager {
 	    return CMIMaterial.NONE;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static CMIMaterial get(int id) {
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.getMaterial() == null)
@@ -1838,12 +1839,13 @@ public class ItemManager {
 	}
 
 	public static CMIMaterial get(ItemStack item) {
+	    if (item == null)
+		return CMIMaterial.NONE;
 //	    if (CMIMaterial.isMonsterEgg(item.getType())) {
 //		int tid = CMI.getInstance().getNMS().getEggId(item);
 //		return get(item.getType().getId(), tid);
 //	    }
-	    @SuppressWarnings("deprecation")
-	    CMIMaterial m = get(item.getType().getId(), item.getData().getData());
+	    CMIMaterial m = Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? get(item.getType().getId()) : get(item.getType().getId(), item.getData().getData());
 
 	    if (m == null) {
 		CMIItemStack cm = byBukkitName.get(item.getType().toString().toLowerCase().replace("_", ""));
@@ -1854,13 +1856,15 @@ public class ItemManager {
 	    return m == null ? CMIMaterial.NONE : m;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static CMIMaterial get(Block block) {
+	    if (block == null)
+		return CMIMaterial.NONE;
 	    byte data = block.getData();
 	    if (block.getState() instanceof Skull) {
 		Skull skull = (Skull) block.getState();
 		data = (byte) skull.getSkullType().ordinal();
 	    }
+
 	    CMIMaterial m = get(block.getType().getId(), data);
 	    if (m == null) {
 		CMIItemStack cm = byBukkitName.get(block.getType().toString().replace("_", "").toLowerCase());
@@ -2032,6 +2036,96 @@ public class ItemManager {
 	    return false;
 	}
 
+	public static boolean isStairs(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isStairs();
+	}
+
+	public boolean isStairs() {
+	    switch (this) {
+	    case ACACIA_STAIRS:
+	    case BIRCH_STAIRS:
+	    case BRICK_STAIRS:
+	    case COBBLESTONE_STAIRS:
+	    case DARK_OAK_STAIRS:
+	    case DARK_PRISMARINE_STAIRS:
+	    case JUNGLE_STAIRS:
+	    case NETHER_BRICK_STAIRS:
+	    case OAK_STAIRS:
+	    case PRISMARINE_BRICK_STAIRS:
+	    case PRISMARINE_STAIRS:
+	    case PURPUR_STAIRS:
+	    case QUARTZ_STAIRS:
+	    case RED_SANDSTONE_STAIRS:
+	    case SANDSTONE_STAIRS:
+	    case SPRUCE_STAIRS:
+	    case STONE_BRICK_STAIRS:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
+	public static boolean isPotion(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isPotion();
+	}
+
+	public boolean isPotion() {
+	    switch (this) {
+	    case POTION:
+	    case LINGERING_POTION:
+	    case SPLASH_POTION:
+
+	    case AWKWARD_POTION:
+	    case THICK_POTION:
+	    case MUNDANE_POTION:
+	    case REGENERATION_POTION:
+	    case SWIFTNESS_POTION:
+	    case FIRE_RESISTANCE_POTION:
+	    case POISON_POTION:
+	    case HEALING_POTION:
+	    case NIGHT_VISION_POTION:
+	    case WEAKNESS_POTION:
+	    case STRENGTH_POTION:
+	    case SLOWNESS_POTION:
+	    case HARMING_POTION:
+	    case WATER_BREATHING_POTION:
+	    case INVISIBILITY_POTION:
+	    case REGENERATION_POTION2:
+	    case SWIFTNESS_POTION2:
+	    case POISON_POTION2:
+	    case HEALING_POTION2:
+	    case STRENGTH_POTION2:
+	    case LEAPING_POTION2:
+	    case HARMING_POTION2:
+	    case REGENERATION_POTION3:
+	    case SWIFTNESS_POTION3:
+	    case FIRE_RESISTANCE_POTION3:
+	    case POISON_POTION3:
+	    case NIGHT_VISION_POTION2:
+	    case WEAKNESS_POTION2:
+	    case STRENGTH_POTION3:
+	    case SLOWNESS_POTION2:
+	    case LEAPING_POTION3:
+	    case WATER_BREATHING_POTION2:
+	    case INVISIBILITY_POTION2:
+	    case REGENERATION_POTION4:
+	    case SWIFTNESS_POTION4:
+	    case POISON_POTION4:
+	    case STRENGTH_POTION4:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
 	public static boolean isBoat(Material mat) {
 	    CMIMaterial m = CMIMaterial.get(mat);
 	    if (m == null)
@@ -2130,66 +2224,6 @@ public class ItemManager {
 	    return false;
 	}
 
-	public static boolean isPotion(Material mat) {
-	    CMIMaterial m = CMIMaterial.get(mat);
-	    if (m == null)
-		return false;
-	    return m.isPotion();
-	}
-
-	public boolean isPotion() {
-	    switch (this) {
-	    case POTION:
-	    case POTION_AWKWARD:
-	    case POTION_FIRE_RESISTANCE_1:
-	    case POTION_FIRE_RESISTANCE_2:
-	    case POTION_HARMING_1:
-	    case POTION_HARMING_2:
-	    case POTION_HEALING_1:
-	    case POTION_HEALING_2:
-	    case POTION_INVISIBILITY_1:
-	    case POTION_INVISIBILITY_2:
-	    case POTION_LEAPING_1:
-	    case POTION_LEAPING_2:
-	    case POTION_LUCK:
-	    case POTION_MUNDANE:
-	    case POTION_NIGHT_VISION_1:
-	    case POTION_NIGHT_VISION_2:
-	    case POTION_POISON_1:
-	    case POTION_POISON_2:
-	    case POTION_POISON_3:
-	    case POTION_POISON_4:
-	    case POTION_REGENERATION_1:
-	    case POTION_REGENERATION_2:
-	    case POTION_REGENERATION_3:
-	    case POTION_REGENERATION_4:
-	    case POTION_SLOW_FALLING_1:
-	    case POTION_SLOW_FALLING_2:
-	    case POTION_SLOWNESS_1:
-	    case POTION_SLOWNESS_2:
-	    case POTION_STRENGTH_1:
-	    case POTION_STRENGTH_2:
-	    case POTION_STRENGTH_3:
-	    case POTION_STRENGTH_4:
-	    case POTION_SWIFTNESS_1:
-	    case POTION_SWIFTNESS_2:
-	    case POTION_SWIFTNESS_3:
-	    case POTION_SWIFTNESS_4:
-	    case POTION_THICK:
-	    case POTION_TURTLE_MASTER_1:
-	    case POTION_TURTLE_MASTER_2:
-	    case POTION_TURTLE_MASTER_3:
-	    case POTION_WATER_BREATHING_1:
-	    case POTION_WATER_BREATHING_2:
-	    case POTION_WEAKNESS_1:
-	    case POTION_WEAKNESS_2:
-		return true;
-	    default:
-		break;
-	    }
-	    return false;
-	}
-
 	public static boolean isWool(Material mat) {
 	    CMIMaterial m = CMIMaterial.get(mat);
 	    if (m == null)
@@ -2215,6 +2249,38 @@ public class ItemManager {
 	    case RED_WOOL:
 	    case WHITE_WOOL:
 	    case YELLOW_WOOL:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
+	public static boolean isCarpet(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isCarpet();
+	}
+
+	public boolean isCarpet() {
+	    switch (this) {
+	    case BLACK_CARPET:
+	    case BLUE_CARPET:
+	    case BROWN_CARPET:
+	    case CYAN_CARPET:
+	    case GRAY_CARPET:
+	    case GREEN_CARPET:
+	    case LIGHT_BLUE_CARPET:
+	    case LIGHT_GRAY_CARPET:
+	    case LIME_CARPET:
+	    case MAGENTA_CARPET:
+	    case ORANGE_CARPET:
+	    case PINK_CARPET:
+	    case PURPLE_CARPET:
+	    case RED_CARPET:
+	    case WHITE_CARPET:
+	    case YELLOW_CARPET:
 		return true;
 	    default:
 		break;
@@ -2255,6 +2321,26 @@ public class ItemManager {
 	    return false;
 	}
 
+	public static boolean isLeatherArmor(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isLeatherArmor();
+	}
+
+	public boolean isLeatherArmor() {
+	    switch (this) {
+	    case LEATHER_BOOTS:
+	    case LEATHER_CHESTPLATE:
+	    case LEATHER_HELMET:
+	    case LEATHER_LEGGINGS:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
 	public static boolean isAir(Material mat) {
 	    CMIMaterial m = CMIMaterial.get(mat);
 	    if (m == null)
@@ -2285,6 +2371,14 @@ public class ItemManager {
 	    switch (this) {
 	    case OAK_DOOR:
 	    case IRON_DOOR:
+
+	    case LEGACY_SPRUCE_DOOR:
+	    case LEGACY_BIRCH_DOOR:
+	    case LEGACY_JUNGLE_DOOR:
+	    case LEGACY_ACACIA_DOOR:
+	    case LEGACY_DARK_OAK_DOOR:
+	    case LEGACY_WOODEN_DOOR_BLOCK:
+
 //	    case SPRUCE_DOOR_ITEM:
 //	    case BIRCH_DOOR_ITEM:
 //	    case JUNGLE_DOOR_ITEM:
@@ -2320,6 +2414,99 @@ public class ItemManager {
 	    case JUNGLE_FENCE_GATE:
 	    case OAK_FENCE_GATE:
 	    case SPRUCE_FENCE_GATE:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
+	public static boolean isFence(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isFence();
+	}
+
+	public boolean isFence() {
+	    switch (this) {
+	    case ACACIA_FENCE:
+	    case BIRCH_FENCE:
+	    case DARK_OAK_FENCE:
+	    case JUNGLE_FENCE:
+	    case NETHER_BRICK_FENCE:
+	    case OAK_FENCE:
+	    case SPRUCE_FENCE:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
+	public static boolean isGlassPane(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isGlassPane();
+	}
+
+	public boolean isGlassPane() {
+	    switch (this) {
+	    case BLACK_STAINED_GLASS_PANE:
+	    case BLUE_STAINED_GLASS_PANE:
+	    case BROWN_STAINED_GLASS_PANE:
+	    case CYAN_STAINED_GLASS_PANE:
+	    case GRAY_STAINED_GLASS_PANE:
+	    case GREEN_STAINED_GLASS_PANE:
+	    case LIGHT_BLUE_STAINED_GLASS_PANE:
+	    case LIGHT_GRAY_STAINED_GLASS_PANE:
+	    case LIME_STAINED_GLASS_PANE:
+	    case MAGENTA_STAINED_GLASS_PANE:
+	    case ORANGE_STAINED_GLASS_PANE:
+	    case PINK_STAINED_GLASS_PANE:
+	    case PURPLE_STAINED_GLASS_PANE:
+	    case RED_STAINED_GLASS_PANE:
+	    case WHITE_STAINED_GLASS_PANE:
+	    case YELLOW_STAINED_GLASS_PANE:
+	    case GLASS_PANE:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
+	public static boolean isSign(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isSign();
+	}
+
+	public boolean isSign() {
+	    switch (this) {
+	    case SIGN:
+	    case WALL_SIGN:
+	    case LEGACY_SIGN_POST:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
+	public static boolean isWall(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isWall();
+	}
+
+	public boolean isWall() {
+	    switch (this) {
+	    case COBBLESTONE_WALL:
+	    case MOSSY_COBBLESTONE_WALL:
 		return true;
 	    default:
 		break;
@@ -2392,17 +2579,13 @@ public class ItemManager {
 	    case CYAN_DYE:
 	    case LIGHT_GRAY_DYE:
 	    case GRAY_DYE:
-	    case BLACK_DYE:
 	    case PINK_DYE:
-	    case BLUE_DYE:
-	    case BROWN_DYE:
 	    case LIME_DYE:
 	    case DANDELION_YELLOW:
 	    case LIGHT_BLUE_DYE:
 	    case MAGENTA_DYE:
 	    case ORANGE_DYE:
 	    case BONE_MEAL:
-	    case WHITE_DYE:
 		return true;
 	    default:
 		break;
@@ -2455,26 +2638,25 @@ public class ItemManager {
 	    return false;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static SlabType getSlabType(Block block) {
 	    if (!isSlab(block.getType()))
 		return SlabType.NOTSLAB;
+
 	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 		if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
 		    org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
-		    org.bukkit.block.data.type.Slab.Type t = slab.getType();
-		    switch (t.toString()) {
-		    case "TOP":
+		    switch (slab.getType()) {
+		    case TOP:
 			return SlabType.TOP;
-		    case "BOTTOM":
+		    case BOTTOM:
 			return SlabType.BOTTOM;
-		    case "DOUBLE":
+		    case DOUBLE:
 			return SlabType.DOUBLE;
 		    }
+
 		}
 		return SlabType.NOTSLAB;
 	    }
-
 	    if (block.getType().name().contains("STEP")) {
 		switch (CMIMaterial.get(block).getLegacyId()) {
 		case 44:
@@ -2519,6 +2701,7 @@ public class ItemManager {
 		    }
 		}
 	    }
+
 	    return SlabType.NOTSLAB;
 	}
 

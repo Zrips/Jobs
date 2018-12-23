@@ -8,9 +8,9 @@ import com.gamingmesh.jobs.Jobs;
 
 public class ExploreChunk {
 
-	private int x;
-	private int z;
-	private Set<String> playerNames = new HashSet<>();
+    private int x;
+    private int z;
+    private Set<String> playerNames = new HashSet<>();
     private Integer dbId = null;
     private boolean updated = false;
 
