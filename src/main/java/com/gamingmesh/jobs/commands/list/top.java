@@ -12,6 +12,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 
 public class top implements Cmd {
@@ -21,7 +22,7 @@ public class top implements Cmd {
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (args.length != 1 && args.length != 2) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.top.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.top.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
 	    return true;
 	}
 
@@ -52,54 +53,51 @@ public class top implements Cmd {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return false;
 	}
-	int showPageNum = Jobs.getGCManager().JobsTopAmount;
-	int st = (page * showPageNum) - showPageNum;
 
-	List<TopList> FullList = Jobs.getJobsDAO().toplist(args[0], st);
+	Job job = Jobs.getJob(args[0]);
+
+	if (job == null) {
+	    return false;
+	}
+
+	int workingIn = Jobs.getUsedSlots(job);
+	PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, workingIn, page);
+
+	List<TopList> FullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart());
 	if (FullList.size() <= 0) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    return true;
 	}
 
-	Job job = Jobs.getJob(args[0]);
-	String jobName = args[0];
-	if (job != null)
-	    jobName = job.getName();
-
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", jobName, "%amount%", showPageNum));
-	    int i = st;
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", job.getName(), "%amount%", pi.getPerPageCount()));
+	    int i = pi.getStart();
 	    for (TopList One : FullList) {
 		i++;
 		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
 
-		player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.list", "%number%", i, "%playername%", PlayerName, "%level%", One.getLevel(), "%exp%",
-		    One.getExp()));
+		player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.list",
+		    "%number%", i,
+		    "%playername%", PlayerName,
+		    "%level%", One.getLevel(),
+		    "%exp%", One.getExp()));
 	    }
+	    Jobs.getInstance().ShowPagination(sender, pi, "jobs top " + job.getName());
 	} else {
 
 	    List<String> ls = new ArrayList<>();
 
-	    int i = st;
+	    int i = pi.getStart();
 	    for (TopList one : FullList) {
 		i++;
 		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", i, "%playername%", playername, "%level%", one.getLevel()));
 	    }
 
-	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", jobName), ls);
-
+	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", job.getName()), ls);
 	    plugin.getCMIScoreboardManager().addNew(player);
 
-	    int prev = page < 2 ? 1 : page - 1;
-	    int next = page + 1;
-
-	    RawMessage rm = new RawMessage();
-	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.prev"),
-		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", prev * showPageNum - showPageNum, "[until]", (prev * showPageNum)), "jobs top " + jobName + " " + prev);
-	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.next"),
-		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", (next * showPageNum), "[until]", (next * showPageNum + showPageNum)), "jobs top " + jobName + " " + next);
-	    rm.show(player);
+	    Jobs.getInstance().ShowPagination(sender, pi, "jobs top " + job.getName());
 	}
 	return true;
     }
