@@ -61,6 +61,17 @@ public class gtop implements Cmd {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list", "%number%", i, "%playername%", PlayerName, "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
 	    }
+	    
+	    int prev = page < 2 ? 1 : page - 1;
+	    int next = page + 1;
+
+	    RawMessage rm = new RawMessage();
+	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.prev"),
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", prev * showPageNum - showPageNum, "[until]", (prev * showPageNum)), "jobs gtop " + prev);
+	    rm.add(Jobs.getLanguage().getMessage("command.gtop.output.next"),
+		Jobs.getLanguage().getMessage("command.gtop.output.show", "[from]", (next * showPageNum), "[until]", (next * showPageNum + showPageNum)), "jobs gtop " + next);
+	    rm.show(player);
+	    
 	} else {
 
 	    List<String> ls = new ArrayList<>();
