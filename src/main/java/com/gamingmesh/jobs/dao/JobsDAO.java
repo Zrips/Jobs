@@ -1157,7 +1157,7 @@ public abstract class JobsDAO {
 		    continue;
 		TopList top = new TopList(info, res.getInt("totallvl"), 0);
 		names.add(top);
-		if (names.size() >= 15)
+		if (names.size() >= Jobs.getGCManager().JobsTopAmount)
 		    break;
 	    }
 	} catch (SQLException e) {
@@ -1958,7 +1958,7 @@ public abstract class JobsDAO {
 	ResultSet res = null;
 	try {
 	    prest = conn.prepareStatement("SELECT `userid`, `level`, `experience` FROM `" + prefix
-		+ "jobs` WHERE `job` LIKE ? ORDER BY `level` DESC, LOWER(experience) DESC LIMIT " + limit + ", 15;");
+		+ "jobs` WHERE `job` LIKE ? ORDER BY `level` DESC, LOWER(experience) DESC LIMIT " + limit + ", "+Jobs.getGCManager().JobsTopAmount+";");
 	    prest.setString(1, jobsname);
 	    res = prest.executeQuery();
 

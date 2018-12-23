@@ -40,7 +40,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.gamingmesh.jobs.CMILib.*;
+import com.gamingmesh.jobs.CMILib.ActionBarTitleMessages;
+import com.gamingmesh.jobs.CMILib.ItemManager;
+import com.gamingmesh.jobs.CMILib.RawMessage;
+import com.gamingmesh.jobs.CMILib.VersionChecker;
 import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.MyPet.MyPetManager;
 import com.gamingmesh.jobs.MythicMobs.MythicMobInterface;
@@ -96,6 +99,7 @@ import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.Loging;
+import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
@@ -447,9 +451,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public static File getFolder() {
-    File folder = Jobs.getInstance().getDataFolder();
-    if (!folder.exists())
-    	folder.mkdirs();
+	File folder = Jobs.getInstance().getDataFolder();
+	if (!folder.exists())
+	    folder.mkdirs();
 	return folder;
     }
 
@@ -563,8 +567,8 @@ public class Jobs extends JavaPlugin {
 
 	dao.getMap().clear();
 	if (pManager.getPlayersCache().size() != 0)
-		consoleMsg("&e[Jobs] Preloaded " + pManager.getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
-				/ 1000d) * 100) / 100D));
+	    consoleMsg("&e[Jobs] Preloaded " + pManager.getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
+		/ 1000d) * 100) / 100D));
     }
 
     /**
@@ -796,9 +800,9 @@ public class Jobs extends JavaPlugin {
 
 	    startup();
 
-		if (GconfigManager.SignsEnabled) {
-	    	YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
-			jobSigns.saveDefaultConfig();
+	    if (GconfigManager.SignsEnabled) {
+		YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
+		jobSigns.saveDefaultConfig();
 	    }
 
 	    // register the listeners
@@ -807,18 +811,18 @@ public class Jobs extends JavaPlugin {
 
 	    setMcMMOlistener();
 	    if (McMMOlistener.CheckmcMMO())
-	    	getServer().getPluginManager().registerEvents(McMMOlistener, this);
+		getServer().getPluginManager().registerEvents(McMMOlistener, this);
 
 	    setMyPetManager();
 	    setWorldGuard();
 
 	    setMythicManager();
 	    if (MythicManager != null && MythicManager.Check() && GconfigManager.MythicMobsEnabled)
-	    	MythicManager.registerListener();
+		MythicManager.registerListener();
 
 	    setPistonProtectionListener();
 	    if (GconfigManager.useBlockProtection)
-	    	getServer().getPluginManager().registerEvents(PistonProtectionListener, this);
+		getServer().getPluginManager().registerEvents(PistonProtectionListener, this);
 
 	    // register economy
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
@@ -833,7 +837,7 @@ public class Jobs extends JavaPlugin {
 	    cManager.fillCommands();
 
 	} catch (Exception e) {
-		e.printStackTrace();
+	    e.printStackTrace();
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
 	    setEnabled(false);
 	}
@@ -854,7 +858,7 @@ public class Jobs extends JavaPlugin {
     }
 
     @SuppressWarnings("unused")
-	@Deprecated
+    @Deprecated
     private static void checkDailyQuests(JobsPlayer jPlayer, JobProgression prog, ActionInfo info) {
 	checkDailyQuests(jPlayer, prog.getJob(), info);
     }
@@ -932,7 +936,7 @@ public class Jobs extends JavaPlugin {
 		if (GconfigManager.useMinimumOveralPayment && income > 0) {
 		    double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
 		    if (income < maxLimit)
-		    	income = maxLimit;
+			income = maxLimit;
 		}
 	    }
 
@@ -943,7 +947,7 @@ public class Jobs extends JavaPlugin {
 		if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
 		    double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
 		    if (pointAmount < maxLimit)
-		    	pointAmount = maxLimit;
+			pointAmount = maxLimit;
 		}
 	    }
 
@@ -1048,7 +1052,7 @@ public class Jobs extends JavaPlugin {
 		if (GconfigManager.useMinimumOveralPayment && expAmount > 0) {
 		    double maxLimit = expAmount * GconfigManager.MinimumOveralPaymentLimit;
 		    if (expAmount < maxLimit)
-		    	expAmount = maxLimit;
+			expAmount = maxLimit;
 		}
 
 		if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
@@ -1081,9 +1085,9 @@ public class Jobs extends JavaPlugin {
 		try {
 		    if (expAmount != 0D && GconfigManager.BossBarEnabled)
 			if (GconfigManager.BossBarShowOnEachAction)
-				BBManager.ShowJobProgression(jPlayer, prog);
+			    BBManager.ShowJobProgression(jPlayer, prog);
 			else
-				jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
+			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Exception e) {
 		    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
@@ -1188,7 +1192,7 @@ public class Jobs extends JavaPlugin {
 		} else
 		    BpManager.add(block, cd);
 	    } else
-	    	BpManager.add(block, BpManager.getBlockDelayTime(block));
+		BpManager.add(block, BpManager.getBlockDelayTime(block));
 	}
 
 	return true;
@@ -1212,9 +1216,9 @@ public class Jobs extends JavaPlugin {
 	if (level <= 16)
 	    return (level * level) + (6 * level);
 	else if (level <= 31)
-		return (int) ((2.5 * level * level) - (40.5 * level) + 360);
+	    return (int) ((2.5 * level * level) - (40.5 * level) + 360);
 	else
-		return (int) ((4.5 * level * level) - (162.5 * level) + 2220);
+	    return (int) ((4.5 * level * level) - (162.5 * level) + 2220);
     }
 
     // xp calculation for one current lvl
@@ -1290,6 +1294,14 @@ public class Jobs extends JavaPlugin {
 	    return false;
 	}
 	return true;
+    }
+
+    public void ShowPagination(CommandSender sender, PageInfo pi, String cmd) {
+	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), cmd, null);
+    }
+
+    public void ShowPagination(CommandSender sender, PageInfo pi, String cmd, String pagePref) {
+	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), cmd, pagePref);
     }
 
     public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd) {
