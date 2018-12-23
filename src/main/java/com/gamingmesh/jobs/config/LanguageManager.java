@@ -2,11 +2,19 @@ package com.gamingmesh.jobs.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.LocaleReader;
 
@@ -21,7 +29,7 @@ public class LanguageManager {
 	return languages;
     }
 
-/**    public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
+    public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
 	List<String> result = new ArrayList<>();
 	try {
 	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
@@ -64,7 +72,7 @@ public class LanguageManager {
 		}
 	}
 	return listOfCommands;
-    }*/
+    }
 
     /**
      * Method to load the language file configuration
@@ -72,12 +80,20 @@ public class LanguageManager {
      * loads from Jobs/locale/messages_en.yml
      */
     synchronized void load() {
+
+	// This should be present to copy over default locale files into locale folder if file doesn't exist. Grabs all files from plugin file.
 	languages = new ArrayList<>();
-/**	try {
-		languages.addAll(getClassesFromPackage("locale", "messages_"));
+	try {
+	    languages.addAll(getClassesFromPackage("locale", "messages_"));
 	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
-	}*/
+	}
+	for (Iterator<String> e1 = this.languages.iterator(); e1.hasNext();) {
+	    String lang = e1.next();
+	    YmlMaker langFile = new YmlMaker(Jobs.getInstance(), "locale" + File.separator + "messages_" + lang + ".yml");
+	    langFile.saveDefaultConfig();
+	}
+	//Up to here.
 
 	String ls = Jobs.getGCManager().localeString;
 
@@ -96,8 +112,8 @@ public class LanguageManager {
 
 	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
 	    if ((f.length() / 1024) > 1024) {
-	    	f.delete();
-	    	f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+		f.delete();
+		f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    }
 
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
