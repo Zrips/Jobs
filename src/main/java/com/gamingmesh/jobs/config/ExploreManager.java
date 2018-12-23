@@ -44,10 +44,7 @@ public class ExploreManager {
 	    return;
 	Jobs.consoleMsg("&e[Jobs] Loading explorer data");
 	Jobs.getJobsDAO().loadExplore();
-	if (getSize() != 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded explorer data (" + getSize() + ")");
-	else
-		Jobs.consoleMsg("&e[Jobs] Loaded explorer data.");
+	Jobs.consoleMsg("&e[Jobs] Loaded explorer data" + (getSize() != 0 ? " (" + getSize() + ")" : "."));
     }
 
     public HashMap<String, ExploreRegion> getWorlds() {

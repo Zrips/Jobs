@@ -369,7 +369,7 @@ public class ConfigManager {
 		return null;
 	    }
 	    Jobs.getExplore().setExploreEnabled();
-	    Jobs.getExplore().setPlayerAmount(amount + 1);
+	    Jobs.getExplore().setPlayerAmount(amount);
 	} else if (actionType == ActionType.CRAFT && myKey.startsWith("!")) {
 	    type = myKey.substring(1, myKey.length());
 	} else if (actionType == ActionType.DRINK) {
