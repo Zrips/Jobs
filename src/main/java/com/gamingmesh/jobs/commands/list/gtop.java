@@ -11,9 +11,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PageInfo;
-import com.gamingmesh.jobs.CMILib.RawMessage;
 
 public class gtop implements Cmd {
 
@@ -46,7 +44,7 @@ public class gtop implements Cmd {
 	    page = 1;
 
 	PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, Jobs.getPlayerManager().getPlayersCache().size(), page);
-	
+
 	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(pi.getStart());
 	if (FullList.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.error.nojob"));

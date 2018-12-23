@@ -259,7 +259,7 @@ public class NameTranslatorManager {
 	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
 	    if ((f.length() / 1024) > 1024) {
 			f.delete();
-			f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
+			f = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
 	    }
 
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
