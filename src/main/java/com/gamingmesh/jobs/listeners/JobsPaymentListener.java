@@ -1526,8 +1526,8 @@ public class JobsPaymentListener implements Listener {
 	//disabling plugin in world
 	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
 	    return;
-	if (event.isCancelled()) 
-	    return; 
+	if (event.isCancelled())
+	    return;
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
