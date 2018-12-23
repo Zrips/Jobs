@@ -245,7 +245,6 @@ public class JobsPlayer {
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName().toLowerCase());
 	if (Boost == null || v1 != null && v1 > Boost)
 	    Boost = v1;
-	Debug.D(Boost + " " + JobName + " " + type);
 	return Boost == null ? 0D : Boost;
     }
 

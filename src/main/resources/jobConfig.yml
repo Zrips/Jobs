@@ -208,7 +208,9 @@ Jobs:
     #   Wolf
     #   Zombie
     #   ZombieVillager
-    #   ZombieHusk
+    #   Husk
+    #   Phantom
+    #   Drowned
     #
     # NOTE: mob names are case sensitive.
     #
@@ -2144,6 +2146,18 @@ Jobs:
         points: 2
         experience: 2.0
       SHULKER:
+        income: 5.0
+        points: 5
+        experience: 5.0
+      PHANTOM:
+        income: 5.0
+        points: 5
+        experience: 5.0
+      DROWNED:
+        income: 5.0
+        points: 5
+        experience: 5.0
+      HUSK:
         income: 5.0
         points: 5
         experience: 5.0
