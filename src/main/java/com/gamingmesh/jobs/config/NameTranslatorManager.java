@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.config;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -233,11 +234,16 @@ public class NameTranslatorManager {
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<>();
 
-/**	try {
-	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "Words_"));
+	try {
+	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "messages_"));
 	} catch (ClassNotFoundException e1) {
 	    e1.printStackTrace();
-	}*/
+	}
+	for (Iterator<String> e1 = Jobs.getLanguageManager().getLanguages().iterator(); e1.hasNext();) {
+	    String lang = e1.next();
+	    YmlMaker langFile = new YmlMaker(Jobs.getInstance(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+	    langFile.saveDefaultConfig();
+	}
 
 	languages.clear();
 	languages.add("en");
@@ -252,8 +258,8 @@ public class NameTranslatorManager {
 
 	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
 	    if ((f.length() / 1024) > 1024) {
-		f.delete();
-		f = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+			f.delete();
+			f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    }
 
 	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
