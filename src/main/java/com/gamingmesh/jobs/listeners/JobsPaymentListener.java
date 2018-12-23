@@ -376,7 +376,7 @@ public class JobsPaymentListener implements Listener {
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 
-	FastPayment fp = Jobs.FastPayment.get(player.getName());
+	FastPayment fp = Jobs.FastPayment.get(player.getUniqueId());
 	if (fp != null) {
 	    if (fp.getTime() > System.currentTimeMillis()) {
 		if (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
@@ -385,7 +385,7 @@ public class JobsPaymentListener implements Listener {
 		    return;
 		}
 	    }
-	    Jobs.FastPayment.remove(player.getName());
+	    Jobs.FastPayment.remove(player.getUniqueId());
 	}
 
 	// restricted area multiplier

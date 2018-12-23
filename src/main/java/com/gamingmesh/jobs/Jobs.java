@@ -156,7 +156,7 @@ public class Jobs extends JavaPlugin {
     public static BufferedPaymentThread paymentThread = null;
     private static DatabaseSaveThread saveTask = null;
 
-    public static HashMap<String, FastPayment> FastPayment = new HashMap<>();
+    public static HashMap<UUID, FastPayment> FastPayment = new HashMap<>();
 
     private static NMS nms = null;
 
@@ -1102,7 +1102,7 @@ public class Jobs extends JavaPlugin {
 		    expAmount = JobsExpGainEvent.getExp();
 
 		FastPayment.clear();
-		FastPayment.put(jPlayer.getUserName(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), income, pointAmount, expAmount), prog
+		FastPayment.put(jPlayer.getPlayerUUID(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), income, pointAmount, expAmount), prog
 		    .getJob()));
 
 		economy.pay(jPlayer, income, pointAmount, expAmount);
