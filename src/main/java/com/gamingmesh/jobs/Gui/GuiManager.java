@@ -22,6 +22,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class GuiManager {
 
@@ -75,8 +76,11 @@ public class GuiManager {
 	if (title.length() > 32)
 	    title = title.substring(0, 30) + "..";
 
+	int neededSlots = JobsList.size() + ((JobsList.size() / Jobs.getGCManager().getJobsGUIGroupAmount()) * Jobs.getGCManager().getJobsGUISkipAmount()) + Jobs.getGCManager().getJobsGUIStartPosition();
+	int neededRows = (int) Math.ceil(neededSlots / 9D);
+
 	// Resizing GUI in case we have more jobs then we could fit in current setup
-	GuiSize = GuiSize - 18 - ((Jobs.getGCManager().getJobsGUIRows() - 2) * 2) < JobsList.size() ? 2 * 9 + ((JobsList.size() % 9) * 9) : GuiSize;
+	GuiSize = Jobs.getGCManager().getJobsGUIRows() > neededRows ? GuiSize : neededRows * 9;
 
 	// Lets avoid oversized GUI
 	GuiSize = GuiSize > 54 ? 54 : GuiSize;
@@ -95,7 +99,7 @@ public class GuiManager {
 	    if (group > Jobs.getGCManager().getJobsGUIGroupAmount()) {
 		group = 1;
 		// Only add skip if we can fit all of them in max sized Gui
-		if (JobsList.size() <= 42){
+		if (JobsList.size() <= 42) {
 		    pos += Jobs.getGCManager().getJobsGUISkipAmount();
 
 		}
