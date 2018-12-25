@@ -874,13 +874,31 @@ public class Jobs extends JavaPlugin {
 
     @Override
     public void onDisable() {
-	GUIManager.CloseInventories();
-	shopManager.CloseInventories();
-	dao.saveExplore();
-	dao.saveBlockProtection();
-
-	FurnaceBrewingHandling.save();
-
+	try {
+	    GUIManager.CloseInventories();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	try {
+	    shopManager.CloseInventories();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	try {
+	    dao.saveExplore();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	try {
+	    dao.saveBlockProtection();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	try {
+	    FurnaceBrewingHandling.save();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
 	shutdown();
 	consoleMsg("&e[Jobs] &2Plugin has been disabled successfully.");
 	setEnabled(false);
