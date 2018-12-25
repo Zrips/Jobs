@@ -2,79 +2,79 @@ package com.gamingmesh.jobs.Signs;
 
 public class Sign {
 
-	private int Category = 0;
-	private String World = null;
-	private double x = 0.01;
-	private double y = 0.01;
-	private double z = 0.01;
-	private int Number = 0;
-	private String JobName = null;
-	private boolean special = false;
+    private int Category = 0;
+    private String World = null;
+    private double x = 0.01;
+    private double y = 0.01;
+    private double z = 0.01;
+    private int Number = 0;
+    private String JobName = null;
+    private boolean special = false;
 
-	public Sign() {
-	}
-	
-	public void setSpecial(boolean special) {
-		this.special = special;
-	}
+    public Sign() {
+    }
 
-	public boolean isSpecial() {
-		return special;
-	}
-	
-	public void setJobName(String JobName) {
-		this.JobName = JobName;
-	}
+    public void setSpecial(boolean special) {
+	this.special = special;
+    }
 
-	public String GetJobName() {
-		return JobName;
-	}
-	
-	public void setCategory(int Category) {
-		this.Category = Category;
-	}
+    public boolean isSpecial() {
+	return special;
+    }
 
-	public int GetCategory() {
-		return Category;
-	}
+    public void setJobName(String JobName) {
+	this.JobName = JobName;
+    }
 
-	public void setWorld(String World) {
-		this.World = World;
-	}
+    public String GetJobName() {
+	return JobName;
+    }
 
-	public String GetWorld() {
-		return World;
-	}
+    public void setCategory(int Category) {
+	this.Category = Category;
+    }
 
-	public void setX(double x) {
-		this.x = x;
-	}
+    public int GetCategory() {
+	return Category;
+    }
 
-	public double GetX() {
-		return x;
-	}
+    public void setWorld(String World) {
+	this.World = World;
+    }
 
-	public void setY(double y) {
-		this.y = y;
-	}
+    public String GetWorld() {
+	return World;
+    }
 
-	public double GetY() {
-		return y;
-	}
+    public void setX(double x) {
+	this.x = x;
+    }
 
-	public void setZ(double z) {
-		this.z = z;
-	}
+    public double GetX() {
+	return x;
+    }
 
-	public double GetZ() {
-		return z;
-	}
+    public void setY(double y) {
+	this.y = y;
+    }
 
-	public void setNumber(int Number) {
-		this.Number = Number;
-	}
+    public double GetY() {
+	return y;
+    }
 
-	public int GetNumber() {
-		return Number;
-	}
+    public void setZ(double z) {
+	this.z = z;
+    }
+
+    public double GetZ() {
+	return z;
+    }
+
+    public void setNumber(int Number) {
+	this.Number = Number;
+    }
+
+    public int GetNumber() {
+	return Number;
+    }
 }

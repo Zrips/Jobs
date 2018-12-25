@@ -49,6 +49,8 @@ import com.gamingmesh.jobs.MyPet.MyPetManager;
 import com.gamingmesh.jobs.MythicMobs.MythicMobInterface;
 import com.gamingmesh.jobs.MythicMobs.MythicMobs2;
 import com.gamingmesh.jobs.MythicMobs.MythicMobs4;
+import com.gamingmesh.jobs.Placeholders.Placeholder;
+import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
@@ -188,6 +190,23 @@ public class Jobs extends JavaPlugin {
 
     public static MyPetManager getMyPetManager() {
 	return myPetManager;
+    }
+
+    private Placeholder Placeholder;
+    private boolean PlaceholderAPIEnabled = false;
+
+    public Placeholder getPlaceholderAPIManager() {
+	if (Placeholder == null)
+	    Placeholder = new Placeholder(this);
+	return Placeholder;
+    }
+
+    private boolean setupPlaceHolderAPI() {
+	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
+	    return false;
+	if ((new PlaceholderAPIHook(this)).hook())
+	    Bukkit.getConsoleSender().sendMessage("[Jobs] PlaceholderAPI hooked.");
+	return true;
     }
 
     public static WorldGuardManager getWorldGuardManager() {
@@ -765,6 +784,16 @@ public class Jobs extends JavaPlugin {
 	    e.printStackTrace();
 	    return;
 	}
+	try {
+	    if (setupPlaceHolderAPI()) {
+		consoleMsg("PlaceholderAPI was found - Enabling capabilities.");
+		PlaceholderAPIEnabled = true;
+	    } else {
+		consoleMsg("PlaceholderAPI nope");
+	    }
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
 
 	try {
 
@@ -1329,5 +1358,9 @@ public class Jobs extends JavaPlugin {
 	    pageCount > CurrentPage ? ">>>" : null, pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : null);
 	if (pageCount != 0)
 	    rm.show(sender);
+    }
+
+    public boolean isPlaceholderAPIEnabled() {
+	return PlaceholderAPIEnabled;
     }
 }

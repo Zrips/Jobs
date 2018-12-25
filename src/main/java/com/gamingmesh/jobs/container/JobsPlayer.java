@@ -201,6 +201,8 @@ public class JobsPlayer {
 	double Boost = 0D;
 	if (!this.isOnline())
 	    return Boost;
+	if (type == null)
+	    return Boost;
 
 	long time = System.currentTimeMillis();
 

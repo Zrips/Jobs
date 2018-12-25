@@ -135,6 +135,8 @@ public class LanguageManager {
 	    c.get("general.info.time.mins", "&e%mins% &6min ");
 	    c.get("general.info.time.secs", "&e%secs% &6sec ");
 	    c.get("general.info.invalidPage", "&cInvalid page");
+	    c.get("general.info.true", "&2True");
+	    c.get("general.info.false", "&cFalse");
 	    c.get("general.admin.error", "&cThere was an error in the command.");
 	    c.get("general.admin.success", "&eYour command has been performed.");
 	    c.get("general.error.noHelpPage", "&cThere is no help page by this number!");

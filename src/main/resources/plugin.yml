@@ -5,7 +5,7 @@ version: 4.9.4
 api-version: 1.13
 website: https://www.spigotmc.org/resources/4216/
 author: phrstbrn
-softdepend: [Vault, MythicMobs, McMMO, WorldGuard, MyPet]
+softdepend: [Vault, MythicMobs, McMMO, WorldGuard, MyPet, PlaceholderAPI]
 commands:
   jobs:
     description: Jobs
