@@ -51,7 +51,7 @@ public class Placeholder {
 	user_canjoin_$1("jobname/number");
 
 	private String[] vars;
-	private List<Integer> groups = new ArrayList<Integer>();
+	private List<Integer> groups = new ArrayList<>();
 	private ChatFilterRule rule = null;
 	private boolean hidden = false;
 
@@ -62,7 +62,7 @@ public class Placeholder {
 	    Matcher matcher = numericalRule.getMatcher(this.toString());
 	    if (matcher != null) {
 		rule = new ChatFilterRule();
-		List<String> ls = new ArrayList<String>();
+		List<String> ls = new ArrayList<>();
 		ls.add("(%" + pref + "_)" + this.toString().replaceAll("\\$\\d", "([^\"^%]*)") + "(%)");
 //		For MVdWPlaceholderAPI
 //		ls.add("(\\{" + pref + this.toString().replaceAll("\\$\\d", "([^\"^%]*)" + "(\\})"));
@@ -173,7 +173,7 @@ public class Placeholder {
 	}
 
 	public List<String> getComplexRegexMatchers(String text) {
-	    List<String> lsInLs = new ArrayList<String>();
+	    List<String> lsInLs = new ArrayList<>();
 	    if (!this.isComplex())
 		return lsInLs;
 
@@ -188,7 +188,7 @@ public class Placeholder {
 
 	public List<String> getComplexValues(String text) {
 
-	    List<String> lsInLs = new ArrayList<String>();
+	    List<String> lsInLs = new ArrayList<>();
 	    if (!this.isComplex() || text == null)
 		return lsInLs;
 
@@ -225,7 +225,7 @@ public class Placeholder {
     }
 
     public List<String> updatePlaceHolders(Player player, List<String> messages) {
-	List<String> ms = new ArrayList<String>(messages);
+	List<String> ms = new ArrayList<>(messages);
 	for (int i = 0, l = messages.size(); i < l; ++i) {
 	    ms.set(i, updatePlaceHolders(player, messages.get(i)));
 	}
@@ -442,7 +442,7 @@ public class Placeholder {
 	    }
 	}
 
-	List<String> values = new ArrayList<String>();
+	List<String> values = new ArrayList<>();
 
 	if (placeHolder.isComplex()) {
 	    values = placeHolder.getComplexValues(value);
@@ -480,6 +480,8 @@ public class Placeholder {
 	switch (placeHolder) {
 	case maxjobs:
 	    return String.valueOf(Jobs.getGCManager().getMaxJobs());
+	default:
+		break;
 	}
 
 	return null;
