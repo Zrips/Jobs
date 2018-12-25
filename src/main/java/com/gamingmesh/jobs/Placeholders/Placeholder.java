@@ -449,27 +449,28 @@ public class Placeholder {
 	    if (values.isEmpty())
 		return "";
 	    Job j = getJobFromValue(values.get(0));
-
+	    if (j == null)
+		return "";
 	    // Global placeholders by jobname
 	    switch (placeHolder) {
 	    case name_$1:
-		return j == null ? "" : j.getName();
+		return j.getName();
 	    case shortname_$1:
-		return j == null ? "" : j.getShortName();
+		return j.getShortName();
 	    case chatcolor_$1:
-		return j == null ? "" : j.getChatColor().toString();
+		return j.getChatColor().toString();
 	    case description_$1:
-		return j == null ? "" : j.getDescription();
+		return j.getDescription();
 	    case maxdailyq_$1:
-		return j == null ? "" : String.valueOf(j.getMaxDailyQuests());
+		return String.valueOf(j.getMaxDailyQuests());
 	    case maxlvl_$1:
-		return j == null ? "" : String.valueOf(j.getMaxLevel());
+		return String.valueOf(j.getMaxLevel());
 	    case maxviplvl_$1:
-		return j == null ? "" : String.valueOf(j.getVipMaxLevel());
+		return String.valueOf(j.getVipMaxLevel());
 	    case totalplayers_$1:
-		return j == null ? "" : String.valueOf(j.getTotalPlayers());
+		return String.valueOf(j.getTotalPlayers());
 	    case maxslots_$1:
-		return j == null ? "" : String.valueOf(j.getMaxSlots());
+		return String.valueOf(j.getMaxSlots());
 	    default:
 		break;
 	    }
