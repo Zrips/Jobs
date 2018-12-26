@@ -876,25 +876,9 @@ public class Jobs extends JavaPlugin {
     public void onDisable() {
 	try {
 	    GUIManager.CloseInventories();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	try {
 	    shopManager.CloseInventories();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	try {
 	    dao.saveExplore();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	try {
 	    dao.saveBlockProtection();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	try {
 	    FurnaceBrewingHandling.save();
 	} catch (Exception e) {
 	    e.printStackTrace();

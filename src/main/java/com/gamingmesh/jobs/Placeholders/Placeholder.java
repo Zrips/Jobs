@@ -33,10 +33,23 @@ public class Placeholder {
 	user_furncount,
 	user_maxfurncount,
 	user_doneq,
+	user_seen,
 	user_totallevels,
+	total_players,
+	user_issaved,
 	user_displayhonorific,
 	user_joinedjobcount,
 	maxjobs,
+	explimit,
+	pointslimit,
+	moneylimit,
+	payexplimam,
+	paymonlimam,
+	paypoinlimam,
+	paymexplimlef,
+	paymonlimlef,
+	paypoinlimlef,
+
 	name_$1("number/name"),
 	shortname_$1("number/name"),
 	chatcolor_$1("number/name"),
@@ -48,7 +61,9 @@ public class Placeholder {
 	maxslots_$1("number/name"),
 	user_boost_$1_$2("jobname/number", "money/exp/points"),
 	user_isin_$1("jobname/number"),
-	user_canjoin_$1("jobname/number");
+	user_canjoin_$1("jobname/number"),
+	bonus_$1("jobname/number"),
+	user_level("jobname/number");
 
 	private String[] vars;
 	private List<Integer> groups = new ArrayList<>();
@@ -357,6 +372,12 @@ public class Placeholder {
 
 	if (placeHolder == null)
 	    return null;
+
+	List<String> vals = placeHolder.getComplexValues(value);
+	if (vals.size() < 2)
+	    return "";
+	JobProgression j = getProgFromValue(user, vals.get(0));
+
 	// Placeholders by JobsPLayer object
 	if (user != null) {
 	    switch (placeHolder) {
@@ -372,28 +393,46 @@ public class Placeholder {
 		return String.valueOf(user.getMaxFurnacesAllowed());
 	    case user_doneq:
 		return String.valueOf(user.getDoneQuests());
+	    case user_seen:
+	    return String.valueOf(user.getSeen());
 	    case user_totallevels:
 		return String.valueOf(user.getTotalLevels());
+	    case user_issaved:
+		return String.valueOf(user.isSaved());
 	    case user_displayhonorific:
 		return String.valueOf(user.getDisplayHonorific());
 	    case user_joinedjobcount:
 		return String.valueOf(user.getJobProgression().size());
+	    case user_level:
+	    return j == null ? "" : String.valueOf(user.getLevelAfterRejoin(j));
+	    case total_players:
+	    return j == null ? "" : String.valueOf(j.getJob().getTotalPlayers());
 	    case user_boost_$1_$2:
-		List<String> values = placeHolder.getComplexValues(value);
-		if (values.size() < 2)
-		    return "";
-		JobProgression j = getProgFromValue(user, values.get(0));
-		if (j == null)
-		    return "";
-		return simplifyDouble(user.getBoost(j.getJob().getName(), CurrencyType.getByName(values.get(1))));
+		return j == null ? "" : simplifyDouble(user.getBoost(j.getJob().getName(), CurrencyType.getByName(vals.get(1))));
 	    case user_isin_$1:
-		values = placeHolder.getComplexValues(value);
-		if (values.isEmpty())
+		vals = placeHolder.getComplexValues(value);
+		if (vals.isEmpty())
 		    return "";
-		Job job = getJobFromValue(values.get(0));
-		if (job == null)
-		    return "";
-		return convert(user.isInJob(job));
+		Job jobs = getJobFromValue(vals.get(0));
+		return jobs == null ? "" : convert(user.isInJob(jobs));
+	    case explimit:
+		return String.valueOf(user.getLimit(CurrencyType.EXP));
+	    case moneylimit:
+		return String.valueOf(user.getLimit(CurrencyType.MONEY));
+	    case pointslimit:
+		return String.valueOf(user.getLimit(CurrencyType.POINTS));
+	    case payexplimam:
+		return String.valueOf(user.getPaymentLimit().GetAmount(CurrencyType.EXP));
+	    case paymonlimam:
+		return String.valueOf(user.getPaymentLimit().GetAmount(CurrencyType.MONEY));
+	    case paypoinlimam:
+		return String.valueOf(user.getPaymentLimit().GetAmount(CurrencyType.POINTS));
+	    case paymexplimlef:
+		return String.valueOf(user.getPaymentLimit().GetLeftTime(CurrencyType.EXP));
+	    case paymonlimlef:
+		return String.valueOf(user.getPaymentLimit().GetLeftTime(CurrencyType.MONEY));
+	    case paypoinlimlef:
+		return String.valueOf(user.getPaymentLimit().GetLeftTime(CurrencyType.POINTS));
 
 	    default:
 		break;
@@ -448,29 +487,31 @@ public class Placeholder {
 	    values = placeHolder.getComplexValues(value);
 	    if (values.isEmpty())
 		return "";
-	    Job j = getJobFromValue(values.get(0));
-	    if (j == null)
+	    Job jo = getJobFromValue(values.get(0));
+	    if (jo == null)
 		return "";
 	    // Global placeholders by jobname
 	    switch (placeHolder) {
 	    case name_$1:
-		return j.getName();
+		return jo.getName();
 	    case shortname_$1:
-		return j.getShortName();
+		return jo.getShortName();
 	    case chatcolor_$1:
-		return j.getChatColor().toString();
+		return jo.getChatColor().toString();
 	    case description_$1:
-		return j.getDescription();
+		return jo.getDescription();
 	    case maxdailyq_$1:
-		return String.valueOf(j.getMaxDailyQuests());
+		return String.valueOf(jo.getMaxDailyQuests());
 	    case maxlvl_$1:
-		return String.valueOf(j.getMaxLevel());
+		return String.valueOf(jo.getMaxLevel());
 	    case maxviplvl_$1:
-		return String.valueOf(j.getVipMaxLevel());
+		return String.valueOf(jo.getVipMaxLevel());
+	    case bonus_$1:
+		return String.valueOf(jo.getBonus());
 	    case totalplayers_$1:
-		return String.valueOf(j.getTotalPlayers());
+		return String.valueOf(jo.getTotalPlayers());
 	    case maxslots_$1:
-		return String.valueOf(j.getMaxSlots());
+		return String.valueOf(jo.getMaxSlots());
 	    default:
 		break;
 	    }

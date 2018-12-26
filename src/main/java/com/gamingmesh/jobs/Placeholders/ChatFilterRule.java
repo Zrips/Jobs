@@ -23,9 +23,9 @@ public class ChatFilterRule {
     private String replaceWith;
     private ChatFilterBlockType blockType;
     private String ruleName;
-    private List<Pattern> pattern = new ArrayList<Pattern>();
+    private List<Pattern> pattern = new ArrayList<>();
     private String messageToStaff;
-    private List<String> commands = new ArrayList<String>();
+    private List<String> commands = new ArrayList<>();
     private String group;
 
     public ChatFilterRule(String ruleName, String group, List<String> list, String replaceWith, ChatFilterBlockType blockType, String messageToStaff, List<String> commands) {
