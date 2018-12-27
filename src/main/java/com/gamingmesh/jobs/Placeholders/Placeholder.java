@@ -35,20 +35,30 @@ public class Placeholder {
 	user_doneq,
 	user_seen,
 	user_totallevels,
-	total_players,
 	user_issaved,
 	user_displayhonorific,
 	user_joinedjobcount,
+	user_boost_$1_$2("jobname/number", "money/exp/points"),
+	user_isin_$1("jobname/number"),
+	user_canjoin_$1("jobname/number"),
+	user_jlevel_$1("jobname/number"),
+	user_jexp_$1("jobname/number"),
+	user_jmaxexp_$1("jobname/number"),
+	user_jmaxlvl_$1("jobname/number"),
+	
 	maxjobs,
-	explimit,
-	pointslimit,
-	moneylimit,
-	payexplimam,
-	paymonlimam,
-	paypoinlimam,
-	paymexplimlef,
-	paymonlimlef,
-	paypoinlimlef,
+
+	limit_exp,
+	limit_points,
+	limit_money,
+	plimit_exp,
+	plimit_money,
+	plimit_points,
+	plimit_tleft_exp,
+	plimit_tleft_money,
+	plimit_tleft_points,
+
+	total_workers,
 
 	name_$1("number/name"),
 	shortname_$1("number/name"),
@@ -59,11 +69,7 @@ public class Placeholder {
 	maxviplvl_$1("number/name"),
 	totalplayers_$1("number/name"),
 	maxslots_$1("number/name"),
-	user_boost_$1_$2("jobname/number", "money/exp/points"),
-	user_isin_$1("jobname/number"),
-	user_canjoin_$1("jobname/number"),
-	bonus_$1("jobname/number"),
-	user_level("jobname/number");
+	bonus_$1("jobname/number");
 
 	private String[] vars;
 	private List<Integer> groups = new ArrayList<>();
@@ -394,19 +400,23 @@ public class Placeholder {
 	    case user_doneq:
 		return String.valueOf(user.getDoneQuests());
 	    case user_seen:
-	    return String.valueOf(user.getSeen());
+		return String.valueOf(user.getSeen());
 	    case user_totallevels:
 		return String.valueOf(user.getTotalLevels());
 	    case user_issaved:
-		return String.valueOf(user.isSaved());
+		return convert(user.isSaved());
 	    case user_displayhonorific:
 		return String.valueOf(user.getDisplayHonorific());
 	    case user_joinedjobcount:
 		return String.valueOf(user.getJobProgression().size());
-	    case user_level:
-	    return j == null ? "" : String.valueOf(user.getLevelAfterRejoin(j));
-	    case total_players:
-	    return j == null ? "" : String.valueOf(j.getJob().getTotalPlayers());
+	    case user_jlevel_$1:
+		return j == null ? "" : String.valueOf(j.getLevel());
+	    case user_jexp_$1:
+		return j == null ? "" : String.valueOf(j.getExperience());
+	    case user_jmaxexp_$1:
+		return j == null ? "" : String.valueOf(j.getMaxExperience());
+	    case user_jmaxlvl_$1:
+		return j == null ? "" : String.valueOf(j.getJob().getMaxLevel(user));
 	    case user_boost_$1_$2:
 		return j == null ? "" : simplifyDouble(user.getBoost(j.getJob().getName(), CurrencyType.getByName(vals.get(1))));
 	    case user_isin_$1:
@@ -415,23 +425,23 @@ public class Placeholder {
 		    return "";
 		Job jobs = getJobFromValue(vals.get(0));
 		return jobs == null ? "" : convert(user.isInJob(jobs));
-	    case explimit:
+	    case limit_exp:
 		return String.valueOf(user.getLimit(CurrencyType.EXP));
-	    case moneylimit:
+	    case limit_money:
 		return String.valueOf(user.getLimit(CurrencyType.MONEY));
-	    case pointslimit:
+	    case limit_points:
 		return String.valueOf(user.getLimit(CurrencyType.POINTS));
-	    case payexplimam:
+	    case plimit_exp:
 		return String.valueOf(user.getPaymentLimit().GetAmount(CurrencyType.EXP));
-	    case paymonlimam:
+	    case plimit_money:
 		return String.valueOf(user.getPaymentLimit().GetAmount(CurrencyType.MONEY));
-	    case paypoinlimam:
+	    case plimit_points:
 		return String.valueOf(user.getPaymentLimit().GetAmount(CurrencyType.POINTS));
-	    case paymexplimlef:
+	    case plimit_tleft_exp:
 		return String.valueOf(user.getPaymentLimit().GetLeftTime(CurrencyType.EXP));
-	    case paymonlimlef:
+	    case plimit_tleft_money:
 		return String.valueOf(user.getPaymentLimit().GetLeftTime(CurrencyType.MONEY));
-	    case paypoinlimlef:
+	    case plimit_tleft_points:
 		return String.valueOf(user.getPaymentLimit().GetLeftTime(CurrencyType.POINTS));
 
 	    default:
@@ -521,8 +531,14 @@ public class Placeholder {
 	switch (placeHolder) {
 	case maxjobs:
 	    return String.valueOf(Jobs.getGCManager().getMaxJobs());
+	case total_workers:
+	    int count = 0;
+	    for (Job one : Jobs.getJobs()) {
+		count += one.getTotalPlayers();
+	    }
+	    return String.valueOf(count);
 	default:
-		break;
+	    break;
 	}
 
 	return null;
