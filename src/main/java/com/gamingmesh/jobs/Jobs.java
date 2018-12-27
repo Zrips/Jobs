@@ -205,7 +205,7 @@ public class Jobs extends JavaPlugin {
 	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
 	    return false;
 	if ((new PlaceholderAPIHook(this)).hook())
-	    Bukkit.getConsoleSender().sendMessage("[Jobs] PlaceholderAPI hooked.");
+	    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
 	return true;
     }
 
@@ -786,10 +786,8 @@ public class Jobs extends JavaPlugin {
 	}
 	try {
 	    if (setupPlaceHolderAPI()) {
-		consoleMsg("PlaceholderAPI was found - Enabling capabilities.");
+		consoleMsg("&ePlaceholderAPI was found - Enabling capabilities.");
 		PlaceholderAPIEnabled = true;
-	    } else {
-		consoleMsg("PlaceholderAPI nope");
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();

@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -13,6 +14,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class Placeholder {
 
@@ -38,38 +40,32 @@ public class Placeholder {
 	user_issaved,
 	user_displayhonorific,
 	user_joinedjobcount,
-	user_boost_$1_$2("jobname/number", "money/exp/points"),
-	user_isin_$1("jobname/number"),
-	user_canjoin_$1("jobname/number"),
-	user_jlevel_$1("jobname/number"),
-	user_jexp_$1("jobname/number"),
-	user_jmaxexp_$1("jobname/number"),
-	user_jmaxlvl_$1("jobname/number"),
-	
+	user_boost_$1_$2("jname/number", "money/exp/points"),
+	user_isin_$1("jname/number"),
+	user_canjoin_$1("jname/number"),
+	user_jlevel_$1("jname/number"),
+	user_jexp_$1("jname/number"),
+	user_jmaxexp_$1("jname/number"),
+	user_jmaxlvl_$1("jname/number"),
+
 	maxjobs,
 
-	limit_exp,
-	limit_points,
-	limit_money,
-	plimit_exp,
-	plimit_money,
-	plimit_points,
-	plimit_tleft_exp,
-	plimit_tleft_money,
-	plimit_tleft_points,
+	limit_$1("money/exp/points"),
+	plimit_$1("money/exp/points"),
+	plimit_tleft_$1("money/exp/points"),
 
 	total_workers,
 
-	name_$1("number/name"),
-	shortname_$1("number/name"),
-	chatcolor_$1("number/name"),
-	description_$1("number/name"),
-	maxdailyq_$1("number/name"),
-	maxlvl_$1("number/name"),
-	maxviplvl_$1("number/name"),
-	totalplayers_$1("number/name"),
-	maxslots_$1("number/name"),
-	bonus_$1("jobname/number");
+	name_$1("jname/number"),
+	shortname_$1("jname/number"),
+	chatcolor_$1("jname/number"),
+	description_$1("jname/number"),
+	maxdailyq_$1("jname/number"),
+	maxlvl_$1("jname/number"),
+	maxviplvl_$1("jname/number"),
+	totalplayers_$1("jname/number"),
+	maxslots_$1("jname/number"),
+	bonus_$1("jname/number");
 
 	private String[] vars;
 	private List<Integer> groups = new ArrayList<>();
@@ -108,7 +104,7 @@ public class Placeholder {
 		if (one.isComplex())
 		    continue;
 //		String n = one.name().replace("_", "");
-		if (one.name().equalsIgnoreCase(name)) {
+		if (one.getName().equalsIgnoreCase(name)) {
 		    return one;
 		}
 	    }
@@ -116,7 +112,7 @@ public class Placeholder {
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
 		if (one.isComplex())
 		    continue;
-		String n = one.name();
+		String n = one.getName();
 		if (n.equalsIgnoreCase(name)) {
 		    return one;
 		}
@@ -151,7 +147,7 @@ public class Placeholder {
 			return one;
 		    }
 		} else {
-		    String n = one.name();
+		    String n = one.getName();
 		    if (n.equals(name))
 			return one;
 		}
@@ -159,11 +155,15 @@ public class Placeholder {
 	    return null;
 	}
 
+	public String getName() {
+	    return pref + "_" + this.name();
+	}
+
 	public String getFull() {
 	    if (this.isComplex()) {
-		String name = this.name();
+		String name = this.getName();
 		int i = 0;
-		for (String one : this.name().split("_")) {
+		for (String one : this.getName().split("_")) {
 		    if (!one.startsWith("$"))
 			continue;
 		    if (vars.length >= i - 1)
@@ -173,14 +173,14 @@ public class Placeholder {
 
 		return "%" + name + "%";
 	    }
-	    return "%" + this.name() + "%";
+	    return "%" + this.getName() + "%";
 	}
 
 	public String getMVdW() {
 	    if (this.isComplex()) {
-		String name = this.name();
+		String name = this.getName();
 		int i = 0;
-		for (String one : this.name().split("_")) {
+		for (String one : this.getName().split("_")) {
 		    if (!one.startsWith("$"))
 			continue;
 		    if (vars.length >= i - 1)
@@ -190,7 +190,7 @@ public class Placeholder {
 
 		return name;
 	    }
-	    return this.name();
+	    return this.getName();
 	}
 
 	public List<String> getComplexRegexMatchers(String text) {
@@ -326,8 +326,9 @@ public class Placeholder {
 		    if (with.startsWith("$"))
 			with = "\\" + with;
 		    message = message.replaceFirst(group, with);
+
 		} catch (Exception e) {
-//		    e.printStackTrace();
+		    e.printStackTrace();
 		}
 	    }
 	}
@@ -379,11 +380,6 @@ public class Placeholder {
 	if (placeHolder == null)
 	    return null;
 
-	List<String> vals = placeHolder.getComplexValues(value);
-	if (vals.size() < 2)
-	    return "";
-	JobProgression j = getProgFromValue(user, vals.get(0));
-
 	// Placeholders by JobsPLayer object
 	if (user != null) {
 	    switch (placeHolder) {
@@ -400,7 +396,7 @@ public class Placeholder {
 	    case user_doneq:
 		return String.valueOf(user.getDoneQuests());
 	    case user_seen:
-		return String.valueOf(user.getSeen());
+		return TimeManage.to24hourShort(System.currentTimeMillis() - user.getSeen());
 	    case user_totallevels:
 		return String.valueOf(user.getTotalLevels());
 	    case user_issaved:
@@ -409,44 +405,49 @@ public class Placeholder {
 		return String.valueOf(user.getDisplayHonorific());
 	    case user_joinedjobcount:
 		return String.valueOf(user.getJobProgression().size());
-	    case user_jlevel_$1:
-		return j == null ? "" : String.valueOf(j.getLevel());
-	    case user_jexp_$1:
-		return j == null ? "" : String.valueOf(j.getExperience());
-	    case user_jmaxexp_$1:
-		return j == null ? "" : String.valueOf(j.getMaxExperience());
-	    case user_jmaxlvl_$1:
-		return j == null ? "" : String.valueOf(j.getJob().getMaxLevel(user));
-	    case user_boost_$1_$2:
-		return j == null ? "" : simplifyDouble(user.getBoost(j.getJob().getName(), CurrencyType.getByName(vals.get(1))));
-	    case user_isin_$1:
-		vals = placeHolder.getComplexValues(value);
-		if (vals.isEmpty())
-		    return "";
-		Job jobs = getJobFromValue(vals.get(0));
-		return jobs == null ? "" : convert(user.isInJob(jobs));
-	    case limit_exp:
-		return String.valueOf(user.getLimit(CurrencyType.EXP));
-	    case limit_money:
-		return String.valueOf(user.getLimit(CurrencyType.MONEY));
-	    case limit_points:
-		return String.valueOf(user.getLimit(CurrencyType.POINTS));
-	    case plimit_exp:
-		return String.valueOf(user.getPaymentLimit().GetAmount(CurrencyType.EXP));
-	    case plimit_money:
-		return String.valueOf(user.getPaymentLimit().GetAmount(CurrencyType.MONEY));
-	    case plimit_points:
-		return String.valueOf(user.getPaymentLimit().GetAmount(CurrencyType.POINTS));
-	    case plimit_tleft_exp:
-		return String.valueOf(user.getPaymentLimit().GetLeftTime(CurrencyType.EXP));
-	    case plimit_tleft_money:
-		return String.valueOf(user.getPaymentLimit().GetLeftTime(CurrencyType.MONEY));
-	    case plimit_tleft_points:
-		return String.valueOf(user.getPaymentLimit().GetLeftTime(CurrencyType.POINTS));
-
 	    default:
 		break;
 	    }
+
+	    if (placeHolder.isComplex()) {
+		List<String> vals = placeHolder.getComplexValues(value);
+		if (vals.isEmpty())
+		    return "";
+		JobProgression j = getProgFromValue(user, vals.get(0));
+		switch (placeHolder) {
+		case limit_$1:
+		    CurrencyType t = CurrencyType.getByName(vals.get(0));
+		    return String.valueOf(user.getLimit(t));
+		case plimit_$1:
+		    t = CurrencyType.getByName(vals.get(0));
+		    return String.valueOf(user.getPaymentLimit().GetAmount(t));
+		case plimit_tleft_$1:
+		    t = CurrencyType.getByName(vals.get(0));
+		    return TimeManage.to24hourShort(user.getPaymentLimit().GetLeftTime(t));
+		case user_jlevel_$1:
+		    return j == null ? "" : String.valueOf(j.getLevel());
+		case user_jexp_$1:
+		    return j == null ? "" : String.valueOf(j.getExperience());
+		case user_jmaxexp_$1:
+		    return j == null ? "" : String.valueOf(j.getMaxExperience());
+		case user_jmaxlvl_$1:
+		    return j == null ? "" : String.valueOf(j.getJob().getMaxLevel(user));
+		case user_boost_$1_$2:
+		    if (vals.size() < 2)
+			return "";
+		    return j == null ? "" : simplifyDouble(user.getBoost(j.getJob().getName(), CurrencyType.getByName(vals.get(1))));
+		case user_isin_$1:
+		    vals = placeHolder.getComplexValues(value);
+		    if (vals.isEmpty())
+			return "";
+		    Job jobs = getJobFromValue(vals.get(0));
+		    return jobs == null ? "" : convert(user.isInJob(jobs));
+
+		default:
+		    break;
+		}
+	    }
+
 	}
 
 	// Placeholders by player object

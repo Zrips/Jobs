@@ -291,6 +291,8 @@ public class JobsPlayer {
     }
 
     public int getLimit(CurrencyType type) {
+	if (type == null)
+	    return 0;
 	Integer value = this.limits.get(type);
 	return value == null ? 0 : value;
     }

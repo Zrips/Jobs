@@ -302,6 +302,14 @@ public class LanguageManager {
 	    c.get("command.iteminfo.output.id", " &eItem id: &6%itemid%");
 	    c.get("command.iteminfo.output.data", " &eItem data: &6%itemdata%");
 	    c.get("command.iteminfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
+	    
+		
+	    c.get("command.placeholders.help.info", "List out all placeholders");
+	    c.get("command.placeholders.help.args", "(parse) (placeholder)");
+	    c.get("command.placeholders.output.list", "&e[place]. &7[placeholder]");
+	    c.get("command.placeholders.output.outputResult", " &eresult: &7[result]");
+	    c.get("command.placeholders.output.parse", "&6[placeholder] &7by [source] &6result &8|&f[result]&8|");
+
 
 	    c.get("command.entitylist.help.info", "Shows all possible entities can be used with plugin.");
 	    c.get("command.entitylist.help.args", "");
