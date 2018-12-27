@@ -17,7 +17,7 @@ public class level implements Cmd {
     }
 
     @Override
-    @JobCommand(1600)
+    @JobCommand(1290)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length < 4) {
 	    Jobs.getCommandManager().sendUsage(sender, "level");
