@@ -240,7 +240,8 @@ public class LanguageManager {
 	    c.get("command.limit.output.pointsLimit", "&ePoint limit: &2%current%&e/&2%total%");
 	    c.get("command.limit.output.reachedmoneylimit", "&4You have reached money limit in given time!");
 	    c.get("command.limit.output.reachedmoneylimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
-	    c.get("command.limit.output.reachedexplimit", "&4You have reached exp limit in given time!");
+		c.get("command.limit.output.reachedmoneylimit3", "&eMoney earned is now reduced exponentially...but you still earn a little!!");
+		c.get("command.limit.output.reachedexplimit", "&4You have reached exp limit in given time!");
 	    c.get("command.limit.output.reachedexplimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
 	    c.get("command.limit.output.reachedpointslimit", "&4You have reached exp limit in given time!");
 	    c.get("command.limit.output.reachedpointslimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
@@ -302,8 +303,8 @@ public class LanguageManager {
 	    c.get("command.iteminfo.output.id", " &eItem id: &6%itemid%");
 	    c.get("command.iteminfo.output.data", " &eItem data: &6%itemdata%");
 	    c.get("command.iteminfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
-	    
-		
+
+
 	    c.get("command.placeholders.help.info", "List out all placeholders");
 	    c.get("command.placeholders.help.args", "(parse) (placeholder)");
 	    c.get("command.placeholders.output.list", "&e[place]. &7[placeholder]");

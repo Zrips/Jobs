@@ -107,6 +107,9 @@ public class PaymentData {
 	    return false;
 	return true;
     }
+    public double percentOverLimit(CurrencyType type,int limit){
+		return ((this.payments.get(type) / limit)-1)*100;
+	}
 
     public boolean IsOverTimeLimit(CurrencyType type) {
 	if (this.GetTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) > System.currentTimeMillis())
