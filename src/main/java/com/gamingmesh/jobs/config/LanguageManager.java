@@ -583,6 +583,11 @@ public class LanguageManager {
 	    Jobs.getGCManager().commandArgs.put("exp", Arrays.asList("[playername]", "[jobname]", "set%%add%%take"));
 	    c.get("command.exp.output.target", "&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.");
 
+	    c.get("command.level.help.info", "Change the player level for job.");
+	    c.get("command.level.help.args", "[playername] [jobname] set/add/take [amount]");
+	    Jobs.getGCManager().commandArgs.put("level", Arrays.asList("[playername]", "[jobname]", "set%%add%%take"));
+	    c.get("command.level.output.target", "&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.");
+
 	    c.get("command.demote.help.info", "Demote the player X levels in a job.");
 	    c.get("command.demote.help.args", "[playername] [jobname] [levels]");
 	    Jobs.getGCManager().commandArgs.put("demote", Arrays.asList("[playername]", "[jobname]", "[levels]"));

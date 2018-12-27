@@ -9,7 +9,6 @@ import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceHolders;
 import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceholderType;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PageInfo;
 
 public class placeholders implements Cmd {
@@ -60,7 +59,7 @@ public class placeholders implements Cmd {
 	    if (player != null && !one.isComplex())
 		extra = plugin.getPlaceholderAPIManager().updatePlaceHolders(player, Jobs.getLanguage().getMessage("command.placeholders.output.outputResult",
 		    "[result]", Jobs.getInstance().getPlaceholderAPIManager().updatePlaceHolders(player, one.getFull())));
-	   
+
 	    String place = one.getFull();
 	    String hover = "";
 	    if (plugin.isPlaceholderAPIEnabled()) {
