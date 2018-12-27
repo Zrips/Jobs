@@ -29,6 +29,7 @@ public class ItemManager {
     static HashMap<String, CMIItemStack> byBukkitName = new HashMap<>();
     static HashMap<String, CMIItemStack> byMojangName = new HashMap<>();
     static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<>();
+    static final Version version = Version.getCurrent();
 
     @SuppressWarnings("deprecation")
     public static void load() {
@@ -2655,18 +2656,20 @@ public class ItemManager {
 	    if (!isSlab(block.getType()))
 		return SlabType.NOTSLAB;
 
-	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-		if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
-		    org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
-		    switch (slab.getType()) {
-		    case TOP:
-			return SlabType.TOP;
-		    case BOTTOM:
-			return SlabType.BOTTOM;
-		    case DOUBLE:
-			return SlabType.DOUBLE;
-		    }
+	    if (version.isEqualOrHigher(Version.v1_13_R1)) {
+		try {
+		    if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
+			org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
+			org.bukkit.block.data.type.Slab.Type t = slab.getType();
+			if (t.equals(org.bukkit.block.data.type.Slab.Type.TOP))
+			    return SlabType.TOP;
+			if (t.equals(org.bukkit.block.data.type.Slab.Type.BOTTOM))
+			    return SlabType.BOTTOM;
+			if (t.equals(org.bukkit.block.data.type.Slab.Type.DOUBLE))
+			    return SlabType.DOUBLE;
 
+		    }
+		} catch (NoClassDefFoundError e) {
 		}
 		return SlabType.NOTSLAB;
 	    }

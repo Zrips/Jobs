@@ -443,6 +443,10 @@ public class Placeholder {
 		    Job jobs = getJobFromValue(vals.get(0));
 		    return jobs == null ? "" : convert(user.isInJob(jobs));
 
+		case maxjobs:
+		    Double max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max");
+		    max = max == null ? Jobs.getGCManager().getMaxJobs() : max;
+		    return String.valueOf(max);
 		default:
 		    break;
 		}
