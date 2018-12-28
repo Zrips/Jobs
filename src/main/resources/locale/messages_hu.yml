@@ -198,6 +198,14 @@ command:
       id: ' &eTárgy ID: &6%itemid%'
       data: ' &eTárgy adat: &6%itemdata%'
       usage: ' &eHasználat: &6%first% &evagy &6%second%'
+  placeholders:
+    help:
+      info: 'Listázza az összes helyőrzőt'
+      args: '(parse) (placeholder)'
+      output:
+        list: '&e[place]. &7[placeholder]'
+        outputResult: ' &eeredmény: &7[result]'
+        parse: '&6[placeholder] &b[source]-val/-vel &6eredmény &8|&f[result]&8|'
   entitylist:
     help:
       info: 'Megmutatja, hogy minden lehetséges entitás használható a pluginnal.'
@@ -522,7 +530,13 @@ command:
       info: 'Módosítsa a játékos tapasztalat feladatát.'
       args: '[playername] [jobname] set/add/take [amount]'
     output:
-      target: '&eA tapasztalat változott %jobname%&e, most van &6%level%lvl &eés &6%exp%&eexp.'
+      target: '&eA tapasztalat megváltozott a(z) %jobname%&e munkában, most van &6%level%lvl &eés &6%exp%&eexp.'
+  level:
+    help:
+      info: 'Módosítsa a játékos szint feladatát.'
+      args: '[playername] [jobname] set/add/take [amount]'
+    output:
+      target: '&eA szint megváltozott a(z) %jobname%&e munkában, most van &6%level%lvl &eés &6%exp%&eexp.'
   demote:
     help:
       info: 'Eldobja a játékos X szintjét a munkában.'

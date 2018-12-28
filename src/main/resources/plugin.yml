@@ -67,6 +67,7 @@ permissions:
       jobs.command.signupdate: true
       jobs.command.moneyboost: true
       jobs.command.exp: true
+      jobs.command.level: true
       jobs.command.clearownership: true
       jobs.command.expboost: true
       jobs.command.iteminfo: true
@@ -184,6 +185,9 @@ permissions:
     default: true
   jobs.command.exp:
     description: Grants access to the exp command
+    default: op
+  jobs.command.level:
+    description: Grants access to the level command
     default: op
   jobs.command.quests:
     description: Grants access to the quests command
