@@ -27,9 +27,6 @@ public class demote implements Cmd {
 	    return true;
 	}
 
-	if (!Jobs.hasPermission(jPlayer.getPlayer(), "jobs.command.demote", true))
-	    return true;
-
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
