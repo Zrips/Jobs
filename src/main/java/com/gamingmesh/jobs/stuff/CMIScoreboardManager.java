@@ -16,9 +16,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ScoreboardInfo;
+
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class CMIScoreboardManager {
@@ -76,23 +78,28 @@ public class CMIScoreboardManager {
 	    Object boards = boardClass.getConstructor().newInstance();
 
 	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+		Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+		board.clearSlot(DisplaySlot.SIDEBAR);
+		board.registerNewObjective("Scoreboards", "dummy");
 
-//		Class<?> enums = getNMSClass("IScoreboardCriteria$EnumScoreboardHealthDisplay");
-//		Class<?> chatbase = getNMSClass("IChatBaseComponent$ChatSerializer");
-////		Class<?> ser = getNMSClass("IChatBaseComponent$ChatSerializer");
-//		Method mm = chatbase.getMethod("a", String.class);
-//		Object serealized = mm.invoke(chatbase,  "{\"text\": \"" + ChatColor.translateAlternateColorCodes('&', "JobsDummy") + "\"}");
-//		Object e = enums.getEnumConstants()[0];
-//		Class<?> IScoreboardCriterias = getNMSClass("ScoreboardBaseCriteria");
-//		Constructor<?> IScoreboardCriteriasConst = IScoreboardCriterias.getConstructor(String.class);
-//		Object IScoreboardCriteria = IScoreboardCriteriasConst.newInstance("JobsDummy");
-//		Method m = boards.getClass().getMethod("registerNewObjective", String.class, getNMSClass("IScoreboardCriteria"), chatbase, enums);
-//		Object obj = m.invoke(boards, objName, "JobsDummy", IScoreboardCriteria, serealized, e);
-//		
-//		Class<?> p1 = getNMSClass("PacketPlayOutScoreboardObjective");
-//		Constructor<?> p11 = p1.getConstructor(obj.getClass(), int.class);
-//		Object pp1 = p11.newInstance(obj, 1);
-//		sendPacket(player, pp1);
+		player.setScoreboard(board);
+
+		// TODO We using soon the scoreboard packets
+/**		Class<?> enums = getNMSClass("IScoreboardCriteria$EnumScoreboardHealthDisplay");
+		Class<?> chatbase = getNMSClass("IChatBaseComponent$ChatSerializer");
+		Method mm = chatbase.getMethod("a", String.class);
+		Object serealized = mm.invoke(chatbase, "{\"text\": \"" + ChatColor.translateAlternateColorCodes('&', "JobsDummy") + "\"}");
+		Object e = enums.getEnumConstants()[0];
+		Class<?> IScoreboardCriterias = getNMSClass("ScoreboardBaseCriteria");
+		Constructor<?> IScoreboardCriteriasConst = IScoreboardCriterias.getConstructor(String.class);
+		Object IScoreboardCriteria = IScoreboardCriteriasConst.newInstance("JobsDummy");
+		Method m = boards.getClass().getMethod("registerNewObjective", String.class, getNMSClass("IScoreboardCriteria"), chatbase, enums);
+		Object obj = m.invoke(boards, objName, "JobsDummy", IScoreboardCriteria, serealized, e);
+
+		Class<?> p1 = getNMSClass("PacketPlayOutScoreboardObjective");
+		Constructor<?> p11 = p1.getConstructor(obj.getClass(), int.class);
+		Object pp1 = p11.newInstance(obj, 1);
+		sendPacket(player, pp1);*/
 	    } else {
 		Method m = boards.getClass().getMethod("registerObjective", String.class, getNMSClass("IScoreboardCriteria"));
 
@@ -117,58 +124,103 @@ public class CMIScoreboardManager {
 	    Class<?> boardClass = getNMSClass("Scoreboard");
 	    Object boards = boardClass.getConstructor().newInstance();
 	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-//		
-//		Class<?> enums = getNMSClass("IScoreboardCriteria$EnumScoreboardHealthDisplay");
-//
-//		Class<?> chatbase = getNMSClass("IChatBaseComponent$ChatSerializer");
-////		Class<?> ser = getNMSClass("IChatBaseComponent$ChatSerializer");
-//		Method mm2 = chatbase.getMethod("a", String.class);
-//		Object serealized = mm2.invoke(chatbase,  "{\"text\": \"" + ChatColor.translateAlternateColorCodes('&', "JobsDummy") + "\"}");
-//		Object e = enums.getEnumConstants()[0];
-//		Class<?> IScoreboardCriterias = getNMSClass("ScoreboardBaseCriteria");
-//		Constructor<?> IScoreboardCriteriasConst = IScoreboardCriterias.getConstructor(String.class);
-//		Object IScoreboardCriteria = IScoreboardCriteriasConst.newInstance("JobsDummy");
-//		Method m = boards.getClass().getMethod("registerNewObjective", String.class, getNMSClass("IScoreboardCriteria"), chatbase, enums);
-//		Object obj = m.invoke(boards, objName, "JobsDummy", IScoreboardCriteria, serealized, e);
-//		
-//
-//		Method mm = obj.getClass().getMethod("setDisplayName", String.class);
-//		mm.invoke(obj, ChatColor.translateAlternateColorCodes('&', displayName));
-//
-//		Class<?> p1 = getNMSClass("PacketPlayOutScoreboardObjective");
-//		Constructor<?> p11 = p1.getConstructor(obj.getClass(), int.class);
-//		Object pp1 = p11.newInstance(obj, 1);
-//		sendPacket(player, pp1);
-//
-//		Class<?> p2 = getNMSClass("PacketPlayOutScoreboardObjective");
-//		Constructor<?> p12 = p2.getConstructor(obj.getClass(), int.class);
-//		Object pp2 = p12.newInstance(obj, 0);
-//		sendPacket(player, pp2);
-//
-//		Class<?> packetClass = getNMSClass("PacketPlayOutScoreboardDisplayObjective");
-//		Constructor<?> packetConstructor = packetClass.getConstructor(int.class, getNMSClass("ScoreboardObjective"));
-//		Object packet = packetConstructor.newInstance(1, obj);
-//		sendPacket(player, packet);
-//
-//		for (int i = 0; i < 15; i++) {
-//		    if (i >= lines.size())
-//			break;
-//
-//		    String ln = ChatColor.translateAlternateColorCodes('&', lines.get(i));
-//		    Class<?> ScoreboardScoreClass = getNMSClass("ScoreboardScore");
-//		    Constructor<?> packetConstructor2 = ScoreboardScoreClass.getConstructor(getNMSClass("Scoreboard"), getNMSClass("ScoreboardObjective"), String.class);
-//		    Object packet2 = packetConstructor2.newInstance(boards, obj, ln);
-//		    Method mc = packet2.getClass().getMethod("setScore", int.class);
-//		    mc.invoke(packet2, 15 - i);
-//
-//		    Class<?> PacketPlayOutScoreboardScoreClass = getNMSClass("PacketPlayOutScoreboardScore");
-//		    Constructor<?> PacketPlayOutScoreboardScoreConstructor = PacketPlayOutScoreboardScoreClass.getConstructor(getNMSClass("ScoreboardScore"));
-//		    Object PacketPlayOutScoreboardScore = PacketPlayOutScoreboardScoreConstructor.newInstance(packet2);
-//
-//		    sendPacket(player, PacketPlayOutScoreboardScore);
-//
-//		}
+		Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+		Objective sidebar = board.registerNewObjective("sidebar", "dummy");
+		sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
 
+		player.setScoreboard(board);
+
+		for (int i = 1; i <= 15; i++) {
+		    Team team = board.registerNewTeam("SLOT_" + i);
+		    team.addEntry(getSlotColor(i));
+		}
+
+		if (displayName.length() > 32)
+		    displayName = displayName.substring(0, 32);
+
+		if (!sidebar.getDisplayName().equals(displayName))
+		    sidebar.setDisplayName(displayName);
+
+		for (int i = 0; i < 15; i++) {
+		    if (i >= lines.size())
+			break;
+
+		    int slot = lines.size();
+
+		    if (slot < 15) {
+		        for (int x = (slot +1); x <= 15; x++) {
+		        String entry = getSlotColor(x);
+		        if (board.getEntries().contains(entry))
+		            board.resetScores(entry);
+		        }
+			}
+
+			for (String line : lines) {
+			    Team team = board.getTeam("SLOT_" + slot);
+			    String entry = getSlotColor(slot);
+			    if (!board.getEntries().contains(entry))
+			        sidebar.getScore(entry).setScore(slot);
+
+			    String pre = getMaxLengthofDName(line);
+			    String suf = getMaxLengthofDName(ChatColor.getLastColors(pre) + getSecondMaxLengthofList(line));
+			    if (!team.getPrefix().equals(pre))
+			        team.setPrefix(pre);
+
+			    if (!team.getSuffix().equals(suf))
+			        team.setSuffix(suf);
+
+			    slot--;
+			    }
+		}
+
+		// TODO We using soon the scoreboard packets
+/**		Class<?> enums = getNMSClass("IScoreboardCriteria$EnumScoreboardHealthDisplay");
+
+		Class<?> chatbase = getNMSClass("IChatBaseComponent$ChatSerializer");
+		Method mm2 = chatbase.getMethod("a", String.class);
+		Object serealized = mm2.invoke(chatbase, "{\"text\": \"" + ChatColor.translateAlternateColorCodes('&', "JobsDummy") + "\"}");
+		Object e = enums.getEnumConstants()[0];
+		Class<?> IScoreboardCriterias = getNMSClass("ScoreboardBaseCriteria");
+		Constructor<?> IScoreboardCriteriasConst = IScoreboardCriterias.getConstructor(String.class);
+		Object IScoreboardCriteria = IScoreboardCriteriasConst.newInstance("JobsDummy");
+		Method m = boards.getClass().getMethod("registerNewObjective", String.class, getNMSClass("IScoreboardCriteria"), chatbase, enums);
+		Object obj = m.invoke(boards, objName, "JobsDummy", IScoreboardCriteria, serealized, e);
+
+		Method mm = obj.getClass().getMethod("setDisplayName", String.class);
+		mm.invoke(obj, ChatColor.translateAlternateColorCodes('&', displayName));
+
+		Class<?> p1 = getNMSClass("PacketPlayOutScoreboardObjective");
+		Constructor<?> p11 = p1.getConstructor(obj.getClass(), int.class);
+		Object pp1 = p11.newInstance(obj, 1);
+		sendPacket(player, pp1);
+
+		Class<?> p2 = getNMSClass("PacketPlayOutScoreboardObjective");
+		Constructor<?> p12 = p2.getConstructor(obj.getClass(), int.class);
+		Object pp2 = p12.newInstance(obj, 0);
+		sendPacket(player, pp2);
+
+		Class<?> packetClass = getNMSClass("PacketPlayOutScoreboardDisplayObjective");
+		Constructor<?> packetConstructor = packetClass.getConstructor(int.class, getNMSClass("ScoreboardObjective"));
+		Object packet = packetConstructor.newInstance(1, obj);
+		sendPacket(player, packet);
+
+		for (int i = 0; i < 15; i++) {
+		    if (i >= lines.size())
+			break;
+
+		    String ln = ChatColor.translateAlternateColorCodes('&', lines.get(i));
+		    Class<?> ScoreboardScoreClass = getNMSClass("ScoreboardScore");
+		    Constructor<?> packetConstructor2 = ScoreboardScoreClass.getConstructor(getNMSClass("Scoreboard"), getNMSClass("ScoreboardObjective"), String.class);
+		    Object packet2 = packetConstructor2.newInstance(boards, obj, ln);
+		    Method mc = packet2.getClass().getMethod("setScore", int.class);
+		    mc.invoke(packet2, 15 - i);
+
+		    Class<?> PacketPlayOutScoreboardScoreClass = getNMSClass("PacketPlayOutScoreboardScore");
+		    Constructor<?> PacketPlayOutScoreboardScoreConstructor = PacketPlayOutScoreboardScoreClass.getConstructor(getNMSClass("ScoreboardScore"));
+		    Object PacketPlayOutScoreboardScore = PacketPlayOutScoreboardScoreConstructor.newInstance(packet2);
+
+		    sendPacket(player, PacketPlayOutScoreboardScore);
+		}*/
 	    } else {
 
 		Method m = boards.getClass().getMethod("registerObjective", String.class, getNMSClass("IScoreboardCriteria"));
@@ -241,5 +293,20 @@ public class CMIScoreboardManager {
 	Field conField = nmsPlayer.getClass().getField("playerConnection");
 	Object con = conField.get(nmsPlayer);
 	return con;
+    }
+
+    private String getMaxLengthofDName(String s) {
+	return s.length() > 16 ? s.substring(0, 16) : s;
+    }
+
+    private String getSecondMaxLengthofList(String s) {
+	if (s.length() > 32) {
+	    s = s.substring(0, 32);
+	}
+	return s.length() > 16 ? s.substring(16, s.length()) : "";
+    }
+
+    private String getSlotColor(int slot) {
+	return ChatColor.values()[slot].toString();
     }
 }

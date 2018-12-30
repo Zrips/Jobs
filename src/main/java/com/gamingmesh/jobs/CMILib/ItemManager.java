@@ -970,7 +970,7 @@ public class ItemManager {
 	GREEN_GLAZED_TERRACOTTA(248, 0, 6958, "Green Glazed Terracotta"),
 	GREEN_SHULKER_BOX(232, 0, 9377, "Green Shulker Box"),
 	GREEN_STAINED_GLASS(95, 13, 22503, "Green Stained Glass"),
-	GREEN_STAINED_GLASS_PANE(160, 13, 4767, "Green Stained Glass Pane"),
+	GREEN_STAINED_GLASS_PANE(160, 13, 4767, "Green Stained Glass Pane", "STAINED_GLASS_PANE"),
 	GREEN_TERRACOTTA(159, 13, 4105, "Green Terracotta"),
 	GREEN_WALL_BANNER(117, 2, 15046, "Green Banner"),
 	GREEN_WOOL(35, 13, 25085, "Green Wool"),

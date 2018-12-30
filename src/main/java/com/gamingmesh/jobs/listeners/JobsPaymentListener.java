@@ -309,7 +309,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 	Block block = event.getBlock();
-	if (block == null)
+	if (!Jobs.getGCManager().isBrewingStandsReassign())
 	    return;
 	if (!block.hasMetadata(brewingOwnerMetadata))
 	    return;
@@ -368,9 +368,9 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
-	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	if (Jobs.getGCManager().isFurnacesReassign() && CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 	    FurnaceBrewingHandling.removeFurnace(block);
-	if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
+	if (Jobs.getGCManager().isBrewingStandsReassign() && CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
 	    FurnaceBrewingHandling.removeBrewing(block);
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
@@ -898,7 +898,7 @@ public class JobsPaymentListener implements Listener {
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 	Block block = event.getBlock();
-	if (block == null)
+	if (!Jobs.getGCManager().isFurnacesReassign())
 	    return;
 
 	if (!block.hasMetadata(furnaceOwnerMetadata))
@@ -1431,6 +1431,9 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) || CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE)) {
+	    if (!Jobs.getGCManager().isFurnacesReassign())
+			return;
+
 	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(event.getPlayer(), block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
@@ -1456,6 +1459,9 @@ public class JobsPaymentListener implements Listener {
 		    "[max]", jPlayer.getMaxFurnacesAllowed() == 0 ? "-" : jPlayer.getMaxFurnacesAllowed()));
 	    }
 	} else if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND)) {
+	    if (!Jobs.getGCManager().isBrewingStandsReassign())
+			return;
+
 	    ownershipFeedback done = FurnaceBrewingHandling.registerBrewingStand(event.getPlayer(), block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
