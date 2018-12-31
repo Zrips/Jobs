@@ -809,13 +809,13 @@ public class Jobs extends JavaPlugin {
 	    restrictedBlocks.saveDefaultConfig();
 
 	    setPermissionHandler(new PermissionHandler(this));
+	    setPluginLogger(getLogger());
 	    setJobsClassloader();
 	    setPlayerManager();
 	    setLanguage();
 	    setGUIManager();
 	    setExplore();
 	    setBBManager();
-	    setPluginLogger(getLogger());
 	    setLoging();
 	    setGCManager();
 	    setConfigManager();

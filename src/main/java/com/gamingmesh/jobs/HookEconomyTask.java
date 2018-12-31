@@ -41,12 +41,12 @@ public class HookEconomyTask implements Runnable {
 
 	// no Economy found
 	Jobs.setEconomy(plugin, new BlackholeEconomy());
-	Bukkit.getServer().getLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
-	Bukkit.getServer().getLogger().severe("Vault is required by this plugin for economy support!");
-	Bukkit.getServer().getLogger().severe("Please install them first!");
-	Bukkit.getServer().getLogger().severe("You can find the latest versions here:");
-	Bukkit.getServer().getLogger().severe("https://www.spigotmc.org/resources/vault.34315/");
-	Bukkit.getServer().getLogger().severe("==============================================");
+	Jobs.getPluginLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
+	Jobs.getPluginLogger().severe("Vault is required by this plugin for economy support!");
+	Jobs.getPluginLogger().severe("Please install them first!");
+	Jobs.getPluginLogger().severe("You can find the latest versions here:");
+	Jobs.getPluginLogger().severe("https://www.spigotmc.org/resources/vault.34315/");
+	Jobs.getPluginLogger().severe("==============================================");
     }
 
     private boolean setVault() {

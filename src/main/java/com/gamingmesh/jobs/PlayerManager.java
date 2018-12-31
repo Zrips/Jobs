@@ -543,7 +543,7 @@ public class PlayerManager {
 			if (player != null && player.getLocation() != null)
 			    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
 		} else
-		    Bukkit.getConsoleSender().sendMessage("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
 	} catch (Exception e) {
 	}
@@ -568,7 +568,7 @@ public class PlayerManager {
 	for (String line : message.split("\n")) {
 	    if (Jobs.getGCManager().isBroadcastingLevelups()) {
 		if (Jobs.getGCManager().BroadcastingLevelUpLevels.contains(oldLevel + 1) || Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
-		    Bukkit.getServer().broadcastMessage(line);
+		    Jobs.consoleMsg(line);
 	    } else if (player != null) {
 		if (Jobs.getGCManager().LevelChangeActionBar)
 		    Jobs.getActionBar().send(player, line);
@@ -588,7 +588,7 @@ public class PlayerManager {
 					player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
 					    levelUpEvent.getTitleChangePitch());
 		    } else
-		    Bukkit.getConsoleSender().sendMessage("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
 	    } catch (Exception e) {
 	    }
@@ -607,7 +607,7 @@ public class PlayerManager {
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
 	    for (String line : message.split("\n")) {
 		if (Jobs.getGCManager().isBroadcastingSkillups())
-		    Bukkit.getServer().broadcastMessage(line);
+		    Jobs.consoleMsg(line);
 		else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
 			Jobs.getActionBar().send(player, line);

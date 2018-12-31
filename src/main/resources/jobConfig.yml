@@ -345,10 +345,10 @@ Jobs:
       Green:
         income: 2.0
         experience: 5.0
-      Light_blue:
+      Navy:
         income: 2.0
         experience: 5.0
-      'Lime Green':
+      Lime:
         income: 2.0
         experience: 5.0
       Magenta:
@@ -366,7 +366,7 @@ Jobs:
       Red:
         income: 2.0
         experience: 5.0
-      'Light Gray':
+      Silver:
         income: 2.0
         experience: 5.0
       White:
@@ -1749,7 +1749,7 @@ Jobs:
         income: 4.0
         points: 4.0
         experience: 5.0
-      'Light Blue':
+      Navy:
         income: 4.0
         points: 4.0
         experience: 5.0
@@ -1765,7 +1765,7 @@ Jobs:
         income: 4.0
         points: 4.0
         experience: 5.0
-      'Light Gray':
+      Silver:
         income: 4.0
         points: 4.0
         experience: 5.0

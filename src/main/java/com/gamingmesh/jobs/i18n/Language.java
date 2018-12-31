@@ -68,7 +68,7 @@ public class Language {
 	    else
 		msg = customlocale.isString(key) ? Colors(customlocale.getString(key)) : missing;
 	} catch (Exception e) {
-	    Bukkit.getServer().getConsoleSender().sendMessage(Colors("&e[Jobs] &2Can't read language file for: " + key));
+	    Jobs.consoleMsg("&e[Jobs] &2Can't read language file for: " + key);
 	    Bukkit.getServer().getPluginManager().disablePlugin(plugin);
 	    e.printStackTrace();
 	    throw e;

@@ -321,12 +321,12 @@ public class ItemManager {
 	White(0, "White"),
 	Orange(1, "Orange"),
 	Magenta(2, "Magenta"),
-	LIGHT_BLUE(3, "Light Blue"), // TODO: Not work, github issue: #267
+	Navy(3, "Navy Blue"),
 	Yellow(4, "Yellow"),
 	Lime(5, "Lime Green"),
 	Pink(6, "Pink"),
 	Gray(7, "Gray"),
-	LIGHT_GRAY(8, "Light Gray"), // TODO: Not work, github issue: #267
+	Silver(8, "Silver"),
 	Cyan(9, "Cyan"),
 	Purple(10, "Purple"),
 	Blue(11, "Blue"),

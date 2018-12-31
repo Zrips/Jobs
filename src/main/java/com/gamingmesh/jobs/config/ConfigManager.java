@@ -101,12 +101,12 @@ public class ConfigManager {
 	    if (s != null)
 		s.close();
 	} catch (Exception e) {
-	    Bukkit.getServer().getLogger().severe("==================== Jobs ====================");
-	    Bukkit.getServer().getLogger().severe("Unable to load jobConfig.yml!");
-	    Bukkit.getServer().getLogger().severe("Check your config for formatting issues!");
-	    Bukkit.getServer().getLogger().severe("No jobs were loaded!");
-	    Bukkit.getServer().getLogger().severe("Error: " + e.getMessage());
-	    Bukkit.getServer().getLogger().severe("==============================================");
+	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
+	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
+	    Jobs.getPluginLogger().severe("Check your config for formatting issues!");
+	    Jobs.getPluginLogger().severe("No jobs were loaded!");
+	    Jobs.getPluginLogger().severe("Error: " + e.getMessage());
+	    Jobs.getPluginLogger().severe("==============================================");
 	    return;
 	} finally {
 	    if (s != null)
@@ -421,12 +421,12 @@ public class ConfigManager {
 	    conf.load(s);
 	    s.close();
 	} catch (Exception e) {
-	    Bukkit.getServer().getLogger().severe("==================== Jobs ====================");
-	    Bukkit.getServer().getLogger().severe("Unable to load jobConfig.yml!");
-	    Bukkit.getServer().getLogger().severe("Check your config for formatting issues!");
-	    Bukkit.getServer().getLogger().severe("No jobs were loaded!");
-	    Bukkit.getServer().getLogger().severe("Error: " + e.getMessage());
-	    Bukkit.getServer().getLogger().severe("==============================================");
+	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
+	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
+	    Jobs.getPluginLogger().severe("Check your config for formatting issues!");
+	    Jobs.getPluginLogger().severe("No jobs were loaded!");
+	    Jobs.getPluginLogger().severe("Error: " + e.getMessage());
+	    Jobs.getPluginLogger().severe("==============================================");
 	    return;
 	} finally {
 	    s.close();
