@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import com.gamingmesh.jobs.commands.list.info;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -126,17 +125,10 @@ public class JobsPlayer {
 	Integer value = this.limits.get(type);
 	if (data.IsReachedLimit(type, value == null ? 0 : value)) {
 	    if (player.isOnline() && !data.isInformed() && !data.isReseted()) {
-			if(Jobs.getGCManager().useMaxPaymentCurve) {
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit"));
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit2"));
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit3"));
-			}else {
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit"));
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit2"));
-			}
-			data.setInformed();
-
-		}
+		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit"));
+		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit2"));
+		data.setInformed();
+	    }
 	    if (data.IsAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline()) {
 		Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(data.GetLeftTime(type))));
 	    }
@@ -147,11 +139,6 @@ public class JobsPlayer {
 	data.AddAmount(type, amount);
 	return true;
     }
-    public double percentOverLimit(CurrencyType type){
-		Integer value = this.limits.get(type);
-		PaymentData data = getPaymentLimit();
-		return data.percentOverLimit(type,value == null ? 0 : value);
-	}
 
     public void loadLogFromDao() {
 	Jobs.getJobsDAO().loadLog(this);
@@ -697,6 +684,7 @@ public class JobsPlayer {
 
     /**
      * Performs player save
+     * @param dao
      */
     public void save() {
 //	synchronized (saveLock) {

@@ -708,7 +708,7 @@ public class Jobs extends JavaPlugin {
 
     /**
      * Sets the permission handler
-     * @param permissionHandler - the permission handler
+     * @param h - the permission handler
      */
     public void setPermissionHandler(PermissionHandler permissionHandler) {
 	Jobs.permissionHandler = permissionHandler;
@@ -907,7 +907,8 @@ public class Jobs extends JavaPlugin {
      * 
      * Give correct experience and income
      * @param jPlayer - the player
-     * @param info - the action
+     * @param action - the action
+     * @param multiplier - the payment/xp multiplier
      */
 
     public static void action(JobsPlayer jPlayer, ActionInfo info) {
@@ -978,15 +979,9 @@ public class Jobs extends JavaPlugin {
 			pointAmount = maxLimit;
 		}
 	    }
+
 	    if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
-            if(GconfigManager.useMaxPaymentCurve ){
-                double percentOver =jPlayer.percentOverLimit(CurrencyType.MONEY);
-                float factor = GconfigManager.maxPaymentCurveFactor;
-                double percentLoss = 100/((1/factor*percentOver*percentOver)+1);
-                income = income - (income*percentLoss/100);
-            }else {
-                income = 0D;
-            }
+		income = 0D;
 		if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
 		    pointAmount = 0D;
 	    }
