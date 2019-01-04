@@ -27,6 +27,9 @@ public class log implements Cmd {
 	    return false;
 	}
 
+    if (!Jobs.hasPermission(sender, "jobs.commands.log", true))
+	return true;
+
 	if (args.length != 1 && args.length != 0) {
 	    Jobs.getCommandManager().sendUsage(sender, "log");
 	    return true;
@@ -35,9 +38,9 @@ public class log implements Cmd {
 	if (args.length == 0)
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	else if (args.length == 1) {
-	    if (!Jobs.hasPermission(sender, "jobs.commands.log.others", true)) {
+	    if (!Jobs.hasPermission(sender, "jobs.commands.log.others", true))
 		return true;
-	    }
+
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	}
 

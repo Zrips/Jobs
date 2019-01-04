@@ -14,7 +14,7 @@ public class JobsMySQL extends JobsDAO {
 	private Jobs plugin;
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl) {
-	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?autoReconnect=true&useSSL=" + ssl + "&verifyServerCertificate=" + certificate, username, password, prefix);
+	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&autoReConnect=true&useSSL=" + ssl + "&verifyServerCertificate=" + certificate, username, password, prefix);
 	this.plugin = plugin;
 	this.database = database;
 	this.setDbType(DataBaseType.MySQL);

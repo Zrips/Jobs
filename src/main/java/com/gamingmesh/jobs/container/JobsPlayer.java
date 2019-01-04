@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import com.gamingmesh.jobs.commands.list.info;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -147,11 +146,12 @@ public class JobsPlayer {
 	data.AddAmount(type, amount);
 	return true;
     }
-    public double percentOverLimit(CurrencyType type){
-		Integer value = this.limits.get(type);
-		PaymentData data = getPaymentLimit();
-		return data.percentOverLimit(type,value == null ? 0 : value);
-	}
+
+    public double percentOverLimit(CurrencyType type) {
+	Integer value = limits.get(type);
+	PaymentData data = getPaymentLimit();
+	return data.percentOverLimit(type, value == null ? 0 : value);
+    }
 
     public void loadLogFromDao() {
 	Jobs.getJobsDAO().loadLog(this);
@@ -170,7 +170,7 @@ public class JobsPlayer {
     }
 
     public synchronized void hideBossBars() {
-	for (BossBarInfo one : this.barMap) {
+	for (BossBarInfo one : barMap) {
 	    one.getBar().setVisible(false);
 	}
     }

@@ -17,6 +17,9 @@ public class shop implements Cmd {
 	    return true;
 	}
 
+    if (!Jobs.hasPermission(sender, "jobs.commands.shop", true))
+	return true;
+
 	if (args.length != 0 && args.length != 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "shop");
 	    return true;

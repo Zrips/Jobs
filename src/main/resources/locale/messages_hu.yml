@@ -118,6 +118,7 @@ command:
       pointsLimit: '&ePont limit: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4Elérted a pénzkorlátot az adott időben!'
       reachedmoneylimit2: '&eA korlátot ellenőrizheted a &2/jobs limit &eparanccsal.'
+      reachedmoneylimit3: '&eA szerzett pénz most már exponenciálisan csökkentve... De még mindig egy kicsit keres!!'
       reachedexplimit: '&4Elérted a határidőt a meghatározott időben!'
       reachedexplimit2: '&eA korlátot ellenőrizheted a &2/jobs limit &eparanccsal.'
       reachedpointslimit: '&4Elérted a határidőt a meghatározott időben!'

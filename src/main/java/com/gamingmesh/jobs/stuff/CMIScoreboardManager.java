@@ -221,19 +221,4 @@ public class CMIScoreboardManager {
 	Object con = conField.get(nmsPlayer);
 	return con;
     }
-
-    private String getMaxLengthofDName(String s) {
-	return s.length() > 16 ? s.substring(0, 16) : s;
-    }
-
-    private String getSecondMaxLengthofList(String s) {
-	if (s.length() > 32) {
-	    s = s.substring(0, 32);
-	}
-	return s.length() > 16 ? s.substring(16, s.length()) : "";
-    }
-
-    private String getSlotColor(int slot) {
-	return ChatColor.values()[slot].toString();
-    }
 }

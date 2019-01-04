@@ -568,7 +568,7 @@ public class PlayerManager {
 	for (String line : message.split("\n")) {
 	    if (Jobs.getGCManager().isBroadcastingLevelups()) {
 		if (Jobs.getGCManager().BroadcastingLevelUpLevels.contains(oldLevel + 1) || Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
-		    Jobs.consoleMsg(line);
+		    Bukkit.getServer().broadcastMessage(line);
 	    } else if (player != null) {
 		if (Jobs.getGCManager().LevelChangeActionBar)
 		    Jobs.getActionBar().send(player, line);
@@ -607,7 +607,7 @@ public class PlayerManager {
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
 	    for (String line : message.split("\n")) {
 		if (Jobs.getGCManager().isBroadcastingSkillups())
-		    Jobs.consoleMsg(line);
+		    Bukkit.getServer().broadcastMessage(line);
 		else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
 			Jobs.getActionBar().send(player, line);

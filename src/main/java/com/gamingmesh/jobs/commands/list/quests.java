@@ -20,6 +20,9 @@ public class quests implements Cmd {
     @Override
     @JobCommand(400)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+	if (!Jobs.hasPermission(sender, "jobs.commands.quests", true))
+	return true;
+
 	JobsPlayer jPlayer = null;
 
 	if (args.length >= 1 && args[0].equals("next")) {

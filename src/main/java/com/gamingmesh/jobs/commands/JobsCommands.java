@@ -299,10 +299,6 @@ public class JobsCommands implements CommandExecutor {
     /**
      * Check Job joining permission
      */
-    public boolean hasJobPermission(Player sender, Job job) {
-	return hasJobPermission((CommandSender) sender, job);
-    }
-
     public boolean hasJobPermission(CommandSender sender, Job job) {
 	if (!sender.hasPermission("jobs.use")) {
 	    return false;

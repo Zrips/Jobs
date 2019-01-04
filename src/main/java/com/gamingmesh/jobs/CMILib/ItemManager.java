@@ -623,6 +623,7 @@ public class ItemManager {
 	ACACIA_STAIRS(163, 0, 17453, "Acacia Stairs"),
 	ACACIA_TRAPDOOR(-1, -1, 18343, "Acacia Trapdoor"),
 	ACACIA_WOOD(-1, -1, 21861, "Acacia Wood"),
+	ACACIA_WOOD_BARK(-1, -1, 156, "Acacia Wood With Bark"),
 	ACTIVATOR_RAIL(157, 0, 5834, "Activator Rail"),
 	AIR(0, 0, 9648, "Air"),
 	ALLIUM(38, 2, 6871, "Allium", "RED_ROSE"),
@@ -658,6 +659,7 @@ public class ItemManager {
 	BIRCH_STAIRS(135, 0, 7657, "Birch Wood Stairs", "Birch Stairs"),
 	BIRCH_TRAPDOOR(-1, -1, 32585, "Birch Trapdoor"),
 	BIRCH_WOOD(-1, -1, 20913, "Birch Wood"),
+	BIRCH_WOOD_BARK(-1, -1, 18354, "Birch Wood With Bark"),
 	BLACK_BANNER(425, 0, 9365, "Banner", "Black Banner"),
 	BLACK_BED(355, 15, 20490, "Black Bed"),
 	BLACK_CARPET(171, 15, 6056, "Black Carpet"),
@@ -823,6 +825,7 @@ public class ItemManager {
 	DARK_OAK_STAIRS(164, 0, 22921, "Dark Oak Stairs"),
 	DARK_OAK_TRAPDOOR(-1, -1, 10355, "Dark Oak Trapdoor"),
 	DARK_OAK_WOOD(-1, -1, 16995, "Dark Oak Wood"),
+	DARK_OAK_WOOD_BARK(-1, -1, 7354, "Dark Oak Wood With Bark"),
 	DARK_PRISMARINE(168, 2, 19940, "Dark Prismarine"),
 	DARK_PRISMARINE_SLAB(-1, -1, 7577, "Dark Prismarine Slab"),
 	DARK_PRISMARINE_STAIRS(-1, -1, 26511, "Dark Prismarine Stairs"),
@@ -1029,6 +1032,7 @@ public class ItemManager {
 	JUNGLE_STAIRS(136, 0, 20636, "Jungle Wood Stairs", "Jungle Stairs"),
 	JUNGLE_TRAPDOOR(-1, -1, 8626, "Jungle Trapdoor"),
 	JUNGLE_WOOD(-1, -1, 10341, "Jungle Wood"),
+	JUNGLE_WOOD_BARK(-1, -1, 458, "Jungle Wood With Bark"),
 	KELP(-1, -1, 21916, "Kelp"),
 	KELP_PLANT(-1, -1, 29697, "Kelp Plant"),
 	KNOWLEDGE_BOOK(453, 0, 12646, "Knowledge Book"),
@@ -1163,6 +1167,7 @@ public class ItemManager {
 	OAK_STAIRS(53, 0, 5449, "Oak Stairs", "WOOD_STAIRS"),
 	OAK_TRAPDOOR(96, 0, 16927, "Oak Trapdoor", "Trapdoor"),
 	OAK_WOOD(-1, -1, 7378, "Oak Wood"),
+	OAK_WOOD_BARK(-1, -1, 2894, "Oak Wood With Bark"),
 	OBSERVER(218, 0, 10726, "Observer"),
 	OBSIDIAN(49, 0, 32723, "Obsidian"),
 	OCELOT_SPAWN_EGG(383, 98, 30080, "Spawn Ocelot", "Ocelot Spawn Egg"),
@@ -1418,6 +1423,7 @@ public class ItemManager {
 	SPRUCE_STAIRS(134, 0, 11192, "Spruce Wood Stairs", "Spruce Stairs"),
 	SPRUCE_TRAPDOOR(-1, -1, 10289, "Spruce Trapdoor"),
 	SPRUCE_WOOD(-1, -1, 32328, "Spruce Wood"),
+	SPRUCE_WOOD_BARK(-1, -1, 22156, "Spruce Wood With Bark"),
 	SQUID_SPAWN_EGG(383, 94, 10682, "Spawn Squid", "Squid Spawn Egg"),
 	STICK(280, 0, 9773, "Stick"),
 	STICKY_PISTON(29, 0, 18127, "Sticky Piston", "PISTON_STICKY_BASE"),
@@ -2085,6 +2091,9 @@ public class ItemManager {
 
 	public boolean isPotion() {
 	    switch (this) {
+	    case LINGERING_POTION:
+	    case SPLASH_POTION:
+
 	    case POTION:
 	    case POTION_AWKWARD:
 	    case POTION_FIRE_RESISTANCE_1:

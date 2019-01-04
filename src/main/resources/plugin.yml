@@ -41,6 +41,7 @@ permissions:
       jobs.command.join: true
       jobs.command.leave: true
       jobs.command.leaveall: true
+      jobs.command.log: true
       jobs.command.info: true
       jobs.command.playerinfo: true
       jobs.command.fire: true
@@ -50,6 +51,7 @@ permissions:
       jobs.command.edititembonus: true
       jobs.command.promote: true
       jobs.command.points: true
+      jobs.command.quests: true
       jobs.command.demote: true
       jobs.command.grantxp: true
       jobs.command.removexp: true
@@ -62,6 +64,7 @@ permissions:
       jobs.command.limit: true
       jobs.command.give: true
       jobs.command.signs: true
+      jobs.command.shop: true
       jobs.command.stats: true
       jobs.command.fixnames: true
       jobs.command.signupdate: true
@@ -71,6 +74,7 @@ permissions:
       jobs.command.clearownership: true
       jobs.command.expboost: true
       jobs.command.iteminfo: true
+      jobs.command.itembonus: true
       jobs.command.blockinfo: true
   jobs.command.browse:
     description: Grants access to the browse command

@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import com.gamingmesh.jobs.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -126,9 +125,9 @@ public class GeneralConfigManager {
     public double MonsterDamagePercentage;
     public double DynamicPaymentMaxPenalty;
     public double DynamicPaymentMaxBonus;
-	public boolean useMaxPaymentCurve;
-	public float maxPaymentCurveFactor;
-	public double TaxesAmount;
+    public boolean useMaxPaymentCurve;
+    public float maxPaymentCurveFactor;
+    public double TaxesAmount;
     public String SoundLevelupSound, SoundTitleChangeSound, ServerAcountName, ServertaxesAcountName;
     public ArrayList<String> keys;
     public boolean hideJobsInfoWithoutPermission;
@@ -619,9 +618,9 @@ public class GeneralConfigManager {
 	DynamicPaymentMaxBonus = c.get("Economy.DynamicPayment.MaxBonus", 100.0);
 	c.getW().addComment("Economy.MaxPayment.curve.use", "Enabling this feature will mean players will still earn once they reach cap but " +
 			"will loose a percentage the higher over cap they go. Controlled by a factor. math is ```100/((1/factor*percentOver^2)+1)```");
-	useMaxPaymentCurve = c.get("Economy.MaxPayment.curve.use",false);
-	int temp = c.get("Economy.MaxPayment.curve.factor",10);
-	maxPaymentCurveFactor = ((float)temp)/1000;
+	useMaxPaymentCurve = c.get("Economy.MaxPayment.curve.use", false);
+	int temp = c.get("Economy.MaxPayment.curve.factor", 10);
+	maxPaymentCurveFactor = ((float) temp) / 1000;
 	c.getW().addComment("Economy.UseServerAcount", "Server economy account", "With this enabled, players will get money from defined user (server account)",
 	    "If this account don't have enough money to pay for players for, player will get message");
 	UseServerAccount = c.get("Economy.UseServerAcount", false);
