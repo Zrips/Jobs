@@ -131,8 +131,8 @@ public class BufferedEconomy {
 	    }
 
 	    boolean hasMoney = false;
-	    String ServerAccountname = Jobs.getGCManager().ServerAcountName;
-	    String ServerTaxesAccountname = Jobs.getGCManager().ServertaxesAcountName;
+	    String ServerAccountname = Jobs.getGCManager().ServerAccountName;
+	    String ServerTaxesAccountname = Jobs.getGCManager().ServertaxesAccountName;
 	    if (this.ServerAccount == null)
 		this.ServerAccount = Bukkit.getOfflinePlayer(ServerAccountname);
 
@@ -145,11 +145,9 @@ public class BufferedEconomy {
 		if (ServerTaxesAccount.isOnline()) {
 		    if (!Jobs.getActionbarToggleList().containsKey(ServerTaxesAccountname) && Jobs.getGCManager().ActionBarsMessageByDefault)
 			Jobs.getActionbarToggleList().put(ServerTaxesAccountname, true);
-		    if (Jobs.getActionbarToggleList().containsKey(ServerTaxesAccountname) && Jobs.getActionbarToggleList().get(ServerTaxesAccountname)) {
-			Jobs.getActionBar();
+		    if (Jobs.getActionbarToggleList().containsKey(ServerTaxesAccountname) && Jobs.getActionbarToggleList().get(ServerTaxesAccountname))
 			Jobs.getActionBar().send(Bukkit.getPlayer(ServerAccountname), Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100)
 			    / 100.0));
-		    }
 		}
 	    }
 
@@ -184,14 +182,14 @@ public class BufferedEconomy {
 			Jobs.getActionBar().send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
 			continue;
 		    }
-		    if (Jobs.getGCManager().isEconomyAsync()) {
+		    if (Jobs.getGCManager().isEconomyAsync())
 			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);
-		    } else
+		    else
 			Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 		} else {
-		    if (Jobs.getGCManager().isEconomyAsync()) {
+		    if (Jobs.getGCManager().isEconomyAsync())
 			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);
-		    } else
+		    else
 			Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 		}
 		try {
@@ -211,19 +209,19 @@ public class BufferedEconomy {
     }
 
     public void ShowActionBar(BufferedPayment payment) {
-	if (!payment.getOfflinePlayer().isOnline()) {
+	if (!payment.getOfflinePlayer().isOnline())
 	    return;
-	}
+
 	String playername = payment.getOfflinePlayer().getName();
-	if ((!Jobs.getActionbarToggleList().containsKey(playername)) && (Jobs.getGCManager().ActionBarsMessageByDefault)) {
+	if ((!Jobs.getActionbarToggleList().containsKey(playername)) && (Jobs.getGCManager().ActionBarsMessageByDefault))
 	    Jobs.getActionbarToggleList().put(playername, Boolean.valueOf(true));
-	}
-	if (playername == null) {
+
+	if (playername == null)
 	    return;
-	}
-	if (!Jobs.getActionbarToggleList().containsKey(playername)) {
+
+	if (!Jobs.getActionbarToggleList().containsKey(playername))
 	    return;
-	}
+
 	Boolean show = Jobs.getActionbarToggleList().get(playername);
 	Player abp = Bukkit.getPlayer(payment.getOfflinePlayer().getUniqueId());
 	if ((abp != null) && (show.booleanValue())) {

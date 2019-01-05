@@ -100,8 +100,8 @@ public class GeneralConfigManager {
     private boolean useTnTFinder = false;
     public boolean CancelCowMilking;
     public boolean fixAtMaxLevel, ToggleActionBar, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
-	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAcountChat,
-	EmptyServerAcountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
+	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
+	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
 
     private int JobsGUIRows, JobsGUIBackButton,
@@ -128,7 +128,7 @@ public class GeneralConfigManager {
     public boolean useMaxPaymentCurve;
     public float maxPaymentCurveFactor;
     public double TaxesAmount;
-    public String SoundLevelupSound, SoundTitleChangeSound, ServerAcountName, ServertaxesAcountName;
+    public String SoundLevelupSound, SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName;
     public ArrayList<String> keys;
     public boolean hideJobsInfoWithoutPermission;
     public boolean UseTaxes;
@@ -621,15 +621,15 @@ public class GeneralConfigManager {
 	useMaxPaymentCurve = c.get("Economy.MaxPayment.curve.use", false);
 	int temp = c.get("Economy.MaxPayment.curve.factor", 10);
 	maxPaymentCurveFactor = ((float) temp) / 1000;
-	c.getW().addComment("Economy.UseServerAcount", "Server economy account", "With this enabled, players will get money from defined user (server account)",
+	c.getW().addComment("Economy.UseServerAccount", "Server economy account", "With this enabled, players will get money from defined user (server account)",
 	    "If this account don't have enough money to pay for players for, player will get message");
-	UseServerAccount = c.get("Economy.UseServerAcount", false);
-	c.getW().addComment("Economy.AcountName", "Username should be with Correct capitalization");
-	ServerAcountName = c.get("Economy.AcountName", "Server");
+	UseServerAccount = c.get("Economy.UseServerAccount", false);
+	c.getW().addComment("Economy.AccountName", "Username should be with Correct capitalization");
+	ServerAccountName = c.get("Economy.AccountName", "Server");
 	c.getW().addComment("Economy.Taxes.use", "Do you want to use taxes feature for jobs payment");
 	UseTaxes = c.get("Economy.Taxes.use", false);
 	c.getW().addComment("Economy.Taxes.AccountName", "Username should be with Correct capitalization, it can be same as setup in server account before");
-	ServertaxesAcountName = c.get("Economy.Taxes.AccountName", "Server");
+	ServertaxesAccountName = c.get("Economy.Taxes.AccountName", "Server");
 	c.getW().addComment("Economy.Taxes.Amount", "Amount in percentage");
 	TaxesAmount = c.get("Economy.Taxes.Amount", 15.0);
 	c.getW().addComment("Economy.Taxes.TransferToServerAccount", "Do you want to transfer taxes to server account");
@@ -869,12 +869,12 @@ public class GeneralConfigManager {
 	c.getW().addComment("ShowActionBars", "You can enable/disable message shown for players in action bar");
 	TitleChangeActionBar = c.get("ShowActionBars.OnTitleChange", true);
 	LevelChangeActionBar = c.get("ShowActionBars.OnLevelChange", true);
-	EmptyServerAcountActionBar = c.get("ShowActionBars.OnEmptyServerAcount", true);
+	EmptyServerAccountActionBar = c.get("ShowActionBars.OnEmptyServerAccount", true);
 
 	c.getW().addComment("ShowChatMessage", "Chat messages", "You can enable/disable message shown for players in chat");
 	TitleChangeChat = c.get("ShowChatMessage.OnTitleChange", true);
 	LevelChangeChat = c.get("ShowChatMessage.OnLevelChange", true);
-	EmptyServerAcountChat = c.get("ShowChatMessage.OnEmptyServerAcount", true);
+	EmptyServerAccountChat = c.get("ShowChatMessage.OnEmptyServerAccount", true);
 
 	c.getW().addComment("Sounds", "Sounds", "Extra sounds on some events",
 	    "All sounds can be found in https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");

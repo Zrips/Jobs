@@ -19,14 +19,14 @@ public class employ implements Cmd {
 	    return true;
 	}
 
+	if (!Jobs.hasPermission(sender, "jobs.command.employ", true))
+	    return true;
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
 	}
-
-	if (!Jobs.hasPermission(jPlayer.getPlayer(), "jobs.command.employ", true))
-	    return true;
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
