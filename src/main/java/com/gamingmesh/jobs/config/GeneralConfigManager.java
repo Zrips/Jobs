@@ -76,7 +76,7 @@ public class GeneralConfigManager {
     private int ResetTimeMinute;
 
     // Limits
-    public HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
+    private HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
 
     public boolean PayForRenaming, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,

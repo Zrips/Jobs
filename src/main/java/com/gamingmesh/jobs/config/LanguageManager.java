@@ -231,7 +231,7 @@ public class LanguageManager {
 	    c.get("command.convert.help.args", "");
 
 	    c.get("command.limit.help.info", "Shows payment limits for jobs");
-	    c.get("command.limit.help.args", "");
+	    c.get("command.limit.help.args", "[playername]");
 	    c.get("command.limit.output.moneytime", "&eTime left until money limit resets: &2%time%");
 	    c.get("command.limit.output.moneyLimit", "&eMoney limit: &2%current%&e/&2%total%");
 	    c.get("command.limit.output.exptime", "&eTime left until Exp limit resets: &2%time%");

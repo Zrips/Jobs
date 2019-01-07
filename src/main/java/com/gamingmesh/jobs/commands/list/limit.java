@@ -16,46 +16,53 @@ public class limit implements Cmd {
     @Override
     @JobCommand(700)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (args.length > 0) {
+	if (args.length != 0 && args.length != 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "limit");
 	    return true;
 	}
 
-	if (!(sender instanceof Player)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
-	    return false;
-	}
+	JobsPlayer JPlayer = null;
+	if (args.length >= 1)
+	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+	else if (sender instanceof Player)
+		JPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
-	Player player = (Player) sender;
 	boolean disabled = true;
 	for (CurrencyType type : CurrencyType.values()) {
-	    if (Jobs.getGCManager().currencyLimitUse.get(type).isEnabled()) {
+	    if (Jobs.getGCManager().getLimit(type).isEnabled()) {
 		disabled = false;
 		break;
 	    }
 	}
 
 	if (disabled) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.notenabled"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.notenabled"));
 	    return true;
 	}
-	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+
+	if (JPlayer == null) {
+	    if (args.length >= 1)
+		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
+	    else if (!(sender instanceof Player))
+		Jobs.getCommandManager().sendUsage(sender, "limit");
+	    return true;
+	}
 
 	for (CurrencyType type : CurrencyType.values()) {
-	    if (!Jobs.getGCManager().currencyLimitUse.get(type).isEnabled())
+	    if (!Jobs.getGCManager().getLimit(type).isEnabled())
 		continue;
 	    PaymentData limit = JPlayer.getPaymentLimit();
 	    if (limit == null) {
-		int lefttime1 = Jobs.getGCManager().currencyLimitUse.get(type).getTimeLimit() * 1000;
-		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort((long) lefttime1)));
-		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "Limit",
+		int lefttime1 = Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000;
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort((long) lefttime1)));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "Limit",
 		    "%current%", "0.0",
 		    "%total%", JPlayer.getLimit(type)));
 		continue;
 	    }
 	    if (limit.GetLeftTime(type) > 0) {
-		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(limit.GetLeftTime(type))));
-		player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "Limit",
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(limit.GetLeftTime(type))));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "Limit",
 		    "%current%", (int) (limit.GetAmount(type) * 100) / 100D,
 		    "%total%", JPlayer.getLimit(type)));
 	    }

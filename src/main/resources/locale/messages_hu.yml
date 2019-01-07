@@ -108,9 +108,9 @@ command:
   limit:
     help:
       info: 'Megmutatja a fizetési határértékeket a munkahelyekért.'
-      args: ''
+      args: '[playername]'
     output:
-      moneytime: '&eAz idő marad, amíg a pénzkorlát visszaáll: &2%time%'
+      moneytime: '&eIdő maradt, míg a pénzkorlát visszaáll: &2%time%'
       moneyLimit: '&ePénzkorlát: &2%current%&e/&2%total%'
       exptime: '&eAz exp limitig hátralévő idő marad vissza: &2%time%'
       expLimit: '&eExp limit: &2%current%&e/&2%total%'

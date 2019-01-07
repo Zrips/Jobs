@@ -291,7 +291,7 @@ public class JobsPlayer {
 	for (JobProgression prog : progression) {
 	    TotalLevel += prog.getLevel();
 	}
-	Parser eq = Jobs.getGCManager().currencyLimitUse.get(type).getMaxEquation();
+	Parser eq = Jobs.getGCManager().getLimit(type).getMaxEquation();
 	eq.setVariable("totallevel", TotalLevel);
 	limits.put(type, (int) eq.getValue());
 	setSaved(false);
