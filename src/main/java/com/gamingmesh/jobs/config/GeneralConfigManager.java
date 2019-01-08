@@ -556,7 +556,7 @@ public class GeneralConfigManager {
 	modifyChatSuffix = c.get("modify-chat.suffix", "&c]&r ", true);
 	modifyChatSeparator = c.get("modify-chat.separator", " ", true);
 
-	c.getW().addComment("UseCustomNames", "Do you want to use custom item/block/mob/enchant/color names",
+	c.getW().addComment("UseCustomNames", "Do you want to use custom item/block/mob/enchant/color names?",
 	    "With this set to true names like Stone:1 will be translated to Granite", "Name list is in TranslatableWords.yml file");
 	UseCustomNames = c.get("UseCustomNames", true);
 
@@ -568,7 +568,7 @@ public class GeneralConfigManager {
 	economyAsync = c.get("economy-async", true);
 
 	c.getW().addComment("Economy.PaymentMethods",
-	    "By disabling one of thies, players no longer will get particular payment.",
+	    "By disabling one of these, players no longer will get particular payment.",
 	    "Useful for removing particular payment method without editing whole jobConfig file");
 	PaymentMethodsMoney = c.get("Economy.PaymentMethods.Money", true);
 	PaymentMethodsPoints = c.get("Economy.PaymentMethods.Points", true);
@@ -579,8 +579,8 @@ public class GeneralConfigManager {
 	    "Amounts are in percentage, above 0 will increase payments",
 	    "Amount belove 0 will decrease payments",
 	    "If action pays negative amount, then value above 0 will increase that negative value",
-	    "So is placing diamond ore takes from you 10 bucks, then by setting 50 for money income, you will be charged 15 bucks for placing it",
-	    "If you are getting paid 10 for placing wood, then same value of 50 for money income, will result you getting 15 bucks",
+	    "So if placing diamond ore takes 10 bucks from you, then by setting 50 for money income, you will be charged 15 bucks for placing it",
+	    "If you are getting paid 10 for placing wood, then same value of 50 for money income, will result in you getting 15 bucks",
 	    "This only effects base income value");
 	for (CurrencyType one : CurrencyType.values()) {
 	    generalMulti.put(one, c.get("Economy.GeneralMulti." + one.name(), 0D) / 100D);
@@ -597,7 +597,7 @@ public class GeneralConfigManager {
 	useMinimumOveralPoints = c.get("Economy.MinimumOveralPoints.use", true);
 	MinimumOveralPointsLimit = c.get("Economy.MinimumOveralPoints.limit", 0.1);
 
-	c.getW().addComment("Economy.DynamicPayment.use", "Do you want to use dinamic payment dependent on how many players already working for jobs",
+	c.getW().addComment("Economy.DynamicPayment.use", "Do you want to use dynamic payment dependent on how many players already working for jobs?",
 	    "This can help automatically lift up payments for not so popular jobs and lower for most popular ones");
 	useDynamicPayment = c.get("Economy.DynamicPayment.use", false);
 
@@ -626,13 +626,13 @@ public class GeneralConfigManager {
 	UseServerAccount = c.get("Economy.UseServerAccount", false);
 	c.getW().addComment("Economy.AccountName", "Username should be with Correct capitalization");
 	ServerAccountName = c.get("Economy.AccountName", "Server");
-	c.getW().addComment("Economy.Taxes.use", "Do you want to use taxes feature for jobs payment");
+	c.getW().addComment("Economy.Taxes.use", "Do you want to use taxes feature for jobs payment?");
 	UseTaxes = c.get("Economy.Taxes.use", false);
 	c.getW().addComment("Economy.Taxes.AccountName", "Username should be with Correct capitalization, it can be same as setup in server account before");
 	ServertaxesAccountName = c.get("Economy.Taxes.AccountName", "Server");
 	c.getW().addComment("Economy.Taxes.Amount", "Amount in percentage");
 	TaxesAmount = c.get("Economy.Taxes.Amount", 15.0);
-	c.getW().addComment("Economy.Taxes.TransferToServerAccount", "Do you want to transfer taxes to server account");
+	c.getW().addComment("Economy.Taxes.TransferToServerAccount", "Do you want to transfer taxes to server account?");
 	TransferToServerAccount = c.get("Economy.Taxes.TransferToServerAccount", true);
 	c.getW().addComment("Economy.Taxes.TakeFromPlayersPayment",
 	    "With this true, taxes will be taken from players payment and he will get less money than its shown in jobs info",
@@ -742,9 +742,9 @@ public class GeneralConfigManager {
 	limit.setAnnouncementDelay(c.get("Economy.Limit.Exp.AnnouncementDelay", 30));
 	currencyLimitUse.put(CurrencyType.EXP, limit);
 
-	c.getW().addComment("Economy.Repair.PayForRenaming", "Do you want to give money for only renaming items in anvil",
-	    "Players will get full pay as they would for remaining two items when they only renaming one",
-	    "This is not big issue, but if you want to disable it, you can");
+	c.getW().addComment("Economy.Repair.PayForRenaming", "Do you want to give money for only renaming items in anvil?",
+	    "Players will get full pay as they would for remaining two items when they only rename one",
+	    "This is not a big issue, but if you want to disable it, you can");
 	PayForRenaming = c.get("Economy.Repair.PayForRenaming", true);
 
 	c.getW().addComment("Economy.Crafting.PayForEachCraft",
@@ -761,7 +761,7 @@ public class GeneralConfigManager {
 	CowMilkingTimer = c.get("Economy.MilkingCow.Timer", 30) * 1000;
 
 	c.getW().addComment("ExploitProtections.Furnaces.Reassign",
-	    "When enabled, players interacted furnaces will be saved into file and will be reassigned after restart to keep giving out money",
+	    "When enabled, players interacted furnaces will be saved into a file and will be reassigned after restart to keep giving out money",
 	    "Players will no longer need to click on furnace to get paid from it after server restart");
 	FurnacesReassign = c.get("ExploitProtections.Furnaces.Reassign", true);
 	c.getW().addComment("ExploitProtections.Furnaces.MaxDefaultAvailable",
@@ -794,7 +794,7 @@ public class GeneralConfigManager {
 	globalblocktimer = c.get("ExploitProtections.General.GlobalBlockTimer.timer", 3);
 
 	c.getW().addComment("ExploitProtections.General.SilkTouchProtection", "Enable silk touch protection.",
-	    "With this enabled players wont get paid for breaked blocks from restrictedblocks list with silk touch tool.");
+	    "With this enabled players wont get paid for broken blocks from restrictedblocks list with silk touch tool.");
 	useSilkTouchProtection = c.get("ExploitProtections.General.SilkTouchProtection", false);
 
 	c.getW().addComment("ExploitProtections.General.MonsterDamage.Use", "This section controls how much damage player should do to monster for player to get paid",
@@ -834,7 +834,7 @@ public class GeneralConfigManager {
 
 	c.getW().addComment("old-job",
 	    "Old job save", "Players can leave job and return later with some level loss during that",
-	    "You can fix players level if hes job level is at max level");
+	    "You can fix players level if his job level is at max level");
 	levelLossPercentage = c.get("old-job.level-loss-percentage", 30);
 	fixAtMaxLevel = c.get("old-job.fix-at-max-level", true);
 	c.getW().addComment("old-job.level-loss-from-max-level",
@@ -896,15 +896,15 @@ public class GeneralConfigManager {
 	    "This is update for same job signs, to avoid huge lag if you have bunch of same type signs. Keep it from 1 to as many sec you want");
 	InfoUpdateInterval = c.get("Signs.InfoUpdateInterval", 5);
 
-	c.getW().addComment("Scoreboard.ShowToplist", "This will enables to show top list in scoreboard instead of chat");
+	c.getW().addComment("Scoreboard.ShowToplist", "This will enable to show top list in scoreboard instead of chat");
 	ShowToplistInScoreboard = c.get("Scoreboard.ShowToplist", true);
 
 	c.getW().addComment("Scoreboard.interval", "For how long to show scoreboard");
 	ToplistInScoreboardInterval = c.get("Scoreboard.interval", 10);
 
-	c.getW().addComment("JobsBrowse.ShowTotalWorkers", "Do you want to show total amount of workers for job in jobs browse window");
+	c.getW().addComment("JobsBrowse.ShowTotalWorkers", "Do you want to show total amount of workers for job in jobs browse window?");
 	ShowTotalWorkers = c.get("JobsBrowse.ShowTotalWorkers", true);
-	c.getW().addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show penalty and bonus in jobs browse window. Only works if this feature is enabled");
+	c.getW().addComment("JobsBrowse.ShowPenaltyBonus", "Do you want to show penalty and bonus in jobs browse window? Only works if this feature is enabled");
 	ShowPenaltyBonus = c.get("JobsBrowse.ShowPenaltyBonus", true);
 
 	c.getW().addComment("JobsBrowse.UseNewLook", "Defines if you want to use new /jobs browse look or old one");
@@ -912,9 +912,9 @@ public class GeneralConfigManager {
 	c.getW().addComment("JobsBrowse.AmountToShow", "Defines amount of jobs to be shown in one page for /jobs browse");
 	BrowseAmountToShow = c.get("JobsBrowse.AmountToShow", 5);
 
-	c.getW().addComment("JobsGUI.OpenOnBrowse", "Do you want to show GUI when performing /jobs browse command");
+	c.getW().addComment("JobsGUI.OpenOnBrowse", "Do you want to show GUI when performing /jobs browse command?");
 	JobsGUIOpenOnBrowse = c.get("JobsGUI.OpenOnBrowse", true);
-	c.getW().addComment("JobsGUI.ShowChatBrowse", "Do you want to show chat information when performing /jobs browse command");
+	c.getW().addComment("JobsGUI.ShowChatBrowse", "Do you want to show chat information when performing /jobs browse command?");
 	JobsGUIShowChatBrowse = c.get("JobsGUI.ShowChatBrowse", true);
 	c.getW().addComment("JobsGUI.SwitcheButtons", "With true left mouse button will join job and right will show more info",
 	    "With false left mouse button will show more info, right will join job", "Don't forget to adjust locale file");
@@ -925,9 +925,9 @@ public class GeneralConfigManager {
 	JobsGUIBackButton = c.get("JobsGUI.BackButtonSlot", 37);
 	c.getW().addComment("JobsGUI.StartPosition", "Defines start position in gui from which job icons will be shown");
 	JobsGUIStartPosition = c.get("JobsGUI.StartPosition", 11);
-	c.getW().addComment("JobsGUI.GroupAmount", "Defines By how many jobs we need to group up");
+	c.getW().addComment("JobsGUI.GroupAmount", "Defines by how many jobs we need to group up");
 	JobsGUIGroupAmount = c.get("JobsGUI.GroupAmount", 7);
-	c.getW().addComment("JobsGUI.SkipAmount", "Defines By how many slot we need to skip after group");
+	c.getW().addComment("JobsGUI.SkipAmount", "Defines by how many slots we need to skip after group");
 	JobsGUISkipAmount = c.get("JobsGUI.SkipAmount", 2);
 
 	c.getW().addComment("JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top & /jobs gtop");
@@ -940,7 +940,7 @@ public class GeneralConfigManager {
 	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
 	guiFiller = tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : tmat.newItemStack();
 
-//	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost");
+//	c.getW().addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost?");
 //	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);
 
 	try {
