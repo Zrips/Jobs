@@ -65,6 +65,7 @@ public class JobsManager {
 	c.get("mysql-table-prefix", "jobs_");
 	c.get("verify-server-certificate", false);
 	c.get("use-ssl", false);
+	c.get("auto-reconnect", false);
 
 	if (storageMethod.equalsIgnoreCase("mysql")) {
 	    DbType = DataBaseType.MySQL;
@@ -107,8 +108,9 @@ public class JobsManager {
 
 	boolean certificate = config.getBoolean("verify-server-certificate", false);
 	boolean ssl = config.getBoolean("use-ssl", false);
+	boolean autoReconnect = config.getBoolean("auto-reconnect");
 	if (plugin.isEnabled()) {
-	    JobsMySQL data = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl);
+	    JobsMySQL data = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect);
 	    data.initialize();
 	    return data;
 	}

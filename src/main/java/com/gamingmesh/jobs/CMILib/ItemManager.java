@@ -771,7 +771,7 @@ public class ItemManager {
 	COBWEB(30, 0, 9469, "Cobweb", "WEB"),
 	COCOA(127, 0, 29709, "Cocoa"),
 	COCOA_BEANS(351, 3, 27381, "Coco Beans"),
-	COD(349, 0, 24691, "Raw Cod"),
+	COD(-1, -1, 24691, "Raw Cod"),
 	COD_BUCKET(-1, -1, 28601, "Bucket of Cod"),
 	COD_SPAWN_EGG(-1, -1, 27248, "Cod Spawn Egg"),
 	COMMAND_BLOCK(137, 0, 4355, "Command Block", "COMMAND"),
@@ -2167,6 +2167,25 @@ public class ItemManager {
 	    return false;
 	}
 
+	public static boolean isAnvil(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isAnvil();
+	}
+
+	public boolean isAnvil() {
+	    switch (this) {
+	    case ANVIL:
+	    case CHIPPED_ANVIL:
+	    case DAMAGED_ANVIL:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
 	public static boolean isSapling(Material mat) {
 	    CMIMaterial m = CMIMaterial.get(mat);
 	    if (m == null)
@@ -2390,24 +2409,15 @@ public class ItemManager {
 	    switch (this) {
 	    case OAK_DOOR:
 	    case IRON_DOOR:
-
 	    case LEGACY_SPRUCE_DOOR:
 	    case LEGACY_BIRCH_DOOR:
 	    case LEGACY_JUNGLE_DOOR:
 	    case LEGACY_ACACIA_DOOR:
 	    case LEGACY_DARK_OAK_DOOR:
 	    case LEGACY_WOODEN_DOOR_BLOCK:
-
-//	    case SPRUCE_DOOR_ITEM:
-//	    case BIRCH_DOOR_ITEM:
-//	    case JUNGLE_DOOR_ITEM:
-//	    case ACACIA_DOOR_ITEM:
-//	    case DARK_OAK_DOOR_ITEM:
-//	    case WOODEN_DOOR:
 	    case ACACIA_DOOR:
 	    case BIRCH_DOOR:
 	    case DARK_OAK_DOOR:
-//	    case IRON_DOOR_BLOCK:
 	    case JUNGLE_DOOR:
 	    case SPRUCE_DOOR:
 		return true;
