@@ -396,7 +396,7 @@ command:
       console:
         newHeader: '&2========== [amount] saadaolevat ametit ========='
         description: '[description]'
-        totalWorkers: ' &7Töötajad: &e[amount]'
+        totalWorkers: ' &7Töötajaid: &e[amount]'
         penalty: ' &4Trahv: &c[amount]%'
         bonus: ' &2Boonus: &a[amount]%'
         list: ' &6[jobname]'
