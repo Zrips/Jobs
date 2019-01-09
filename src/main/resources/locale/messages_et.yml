@@ -370,7 +370,7 @@ command:
   leaveall:
     help:
       info: Lahku kõikidest ametitest.
-          error:
+    error:
       nojobs: Sul pole ühtegi ametit, millest lahkuda!
     success: Oled kõigist ametitest lahkunud.
   explored:
