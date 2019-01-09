@@ -118,7 +118,7 @@ command:
       args: ''
   limit:
     help:
-      info: Näitab tööde tasupiiranguid
+      info: Näitab ametite tasupiiranguid
       args: ''
     output:
       moneytime: '&eAega rahapiirangu lähtestamiseni: &2%time%'
