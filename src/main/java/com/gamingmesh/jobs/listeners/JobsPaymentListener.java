@@ -1540,6 +1540,10 @@ public class JobsPaymentListener implements Listener {
 	if (!player.isOnline())
 	    return;
 
+	// check if in spectator, #330
+	if (player.getGameMode().equals(GameMode.SPECTATOR))
+	    return;
+
 	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isOnGround())
 	    return;
 	ExploreRespond respond = Jobs.getExplore().ChunkRespond(player, event.getNewChunk());
