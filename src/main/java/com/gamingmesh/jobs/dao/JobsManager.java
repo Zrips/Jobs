@@ -29,19 +29,19 @@ public class JobsManager {
 	if (dao != null)
 	    dao.closeConnections();
 	switch (DbType) {
-	case MySQL:
+	case SqLite:
 	    DbType = DataBaseType.SqLite;
 	    dao = startSqlite();
 	    dao.setDbType(DbType);
 	    break;
-	case SqLite:
+	case MySQL:
 	    DbType = DataBaseType.MySQL;
 	    dao = startMysql();
 	    dao.setDbType(DbType);
 	    break;
 	}
 
-	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
+	File f = new File(Jobs.getFolder(), "generalConfig.yml");
 	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 
 	config.set("storage.method", DbType.toString());
@@ -74,7 +74,7 @@ public class JobsManager {
 	    DbType = DataBaseType.SqLite;
 	    dao = startSqlite();
 	} else {
-	    Jobs.consoleMsg("&cInvalid storage method!  Changing method to sqlite!");
+	    Jobs.consoleMsg("&cInvalid storage method! Changing method to sqlite!");
 	    c.getC().set("storage.method", "sqlite");
 	    DbType = DataBaseType.SqLite;
 	    dao = startSqlite();
@@ -83,7 +83,7 @@ public class JobsManager {
     }
 
     private synchronized JobsMySQL startMysql() {
-	File f = new File(plugin.getDataFolder(), "generalConfig.yml");
+	File f = new File(Jobs.getFolder(), "generalConfig.yml");
 	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 	String legacyUrl = config.getString("mysql-url");
 	if (legacyUrl != null) {
@@ -118,7 +118,7 @@ public class JobsManager {
     }
 
     private synchronized JobsSQLite startSqlite() {
-	JobsSQLite data = new JobsSQLite(plugin, plugin.getDataFolder());
+	JobsSQLite data = new JobsSQLite(plugin, Jobs.getFolder());
 	data.initialize();
 	return data;
     }
