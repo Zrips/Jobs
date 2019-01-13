@@ -505,7 +505,9 @@ Jobs:
         # This can be set to same level as levelFrom, so this command will be executed only once
         levelUntil: 100
       kit:
-        command: manuaddp [player] essentials.kits.woodcutter
+        command: 
+        - manuaddp [player] essentials.kits.woodcutter
+        - msg [player] Now you can use woodcutter kit!
         levelFrom: 150
         levelUntil: 150
     # Getting more money when equipped with specific weapon/tool are wearing armor
