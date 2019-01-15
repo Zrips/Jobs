@@ -57,9 +57,9 @@ command:
       info: 'Növeli a pénzszerzést minden játékos számára.'
       args: '[jobname] [arány]'
     output:
-      allreset: '&aMinden pénzbővítés kikapcsolva.'
+      allreset: '&aMinden pénznövekedés kikapcsolva.'
       jobsboostreset: '&cPénznövekedés a(z) %jobname% munkánál kikapcsolva.'
-      nothingtoreset: '&cSemmi nem állítható vissza.'
+      nothingtoreset: '&cSemmi sem állítható vissza.'
       boostalladded: '&aPénznövekedés %boost% minden munkához hozzáadva!'
       boostadded: '&aPénznövekedés &e%boost% &ahozzáadva a következőhöz: &e%jobname%!'
       infostats: '&c-----> &aPénz aránya x%boost% engedélyezve&c <-------'
@@ -69,7 +69,7 @@ command:
       args: '[jobname] [arány]'
     output:
       allreset: '&aMinden pont lendülete kikapcsolva.'
-      jobsboostreset: '&cPontok lendületei %jobname% visszaállítva.'
+      jobsboostreset: '&cPont lendület a(z) %jobname% munkánál visszaállítva.'
       nothingtoreset: '&cSemmi nem állítható vissza.'
       boostalladded: '&aA pontok növelése %boost% minden munkához hozzáadva!'
       boostadded: '&aA pontok növelése &e%boost% &ahozzáadva a(z) &e%jobname% &amunkához!'
@@ -103,7 +103,7 @@ command:
       finalExplanation: ' &eNem tartalmazza a Petpay és az idéző bónusz/penaltyFinal bónuszt'
   convert:
     help:
-      info: 'Adatbázis-rendszert alakít át egyik rendszerről a másikra. Ha jelenleg SQLite fut, ez átalakul MySQL-hez és vise versa.'
+      info: 'Adatbázis-rendszert alakít át egyik rendszerről a másikra. Ha jelenleg SQLite fut, ez átalakul MySQL-re és vise versa.'
       args: ''
   limit:
     help:
@@ -132,7 +132,7 @@ command:
       reseted: '&eA fizetési határértékek alaphelyzetbe álltak: &2%playername%'
   resetquest:
     help:
-      info: 'A játékosok küldetés visszaállítása.'
+      info: 'A játékosok küldetéseinek visszaállítása.'
       args: '[playername] [jobname]'
     output:
       reseted: '&eKüldetés visszaállítva: &2%playername%'
@@ -213,7 +213,7 @@ command:
       args: ''
   stats:
     help:
-      info: 'Kilistázza azokat a munkákat, amelyikbe beléptél.'
+      info: 'Listázza azokat a munkákat, amelyikbe beléptél.'
       args: '[playername]'
     error:
       nojob: '&cElőször csatlakozz egy munkához.'
@@ -232,7 +232,7 @@ command:
       cantOpen: '&cNem nyithatod meg ezt az oldalt!'
       NoPermForItem: '&cNincs jogod ehhez az elemhez!'
       NoPermToBuy: '&cNincs jogod ennek az elemnek a megvásárlásához!'
-      NoJobReqForitem: '&cNincs szükséged munkára (&6%jobname%&e) szükséges (&6%joblevel%&e) szint'
+      NoJobReqForitem: '&cNincs szükséged a(z) (&6%jobname%&c) munkára, szükséges (&6%joblevel%&c) szint'
       NoPoints: '&cNincs elég pontod!'
       NoTotalLevel: '&cA teljes munka szintje túl alacsony (%totalLevel%)'
       Paid: '&eFizettél, és &6%amount% &eehhez az elemhez.'
@@ -478,8 +478,8 @@ command:
       addUsage: '&eHasználat: &6/Jobs area add [arénanév/wg:worldGuardarénanév] [bónusz]'
       removeUsage: '&eHasználat: &6/Jobs area remove [arénanév]'
     output:
-      addedNew: '&eHozzáadott új korlátozott területet &6%bonus% &ebónusszal.'
-      removed: '&eEltávolított korlátozott terület &6%name%.'
+      addedNew: '&eÚj korlátozott terület hozzáadva &6%bonus% &ebónusszal.'
+      removed: '&eKorlátozott terület &6%name%&e névvel eltávolítva.'
       list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%'
       wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
       noAreas: '&eNincs mentett korlátozott terület.'
@@ -522,7 +522,7 @@ command:
       target: '&cÁtkerültél a(z) %oldjobname%&c munkából a(z) %newjobname%&c munkába.'
   promote:
     help:
-      info: 'Támogasd a játékos X szintjét egy munkában.'
+      info: 'Támogat egy játékost X szintjét egy munkában.'
       args: '[playername] [jobname] [levels]'
     output:
       target: '&aElőléptettek&r %levelsgained%&a szintet a(z) %jobname%&a munkában.'
@@ -530,12 +530,16 @@ command:
     help:
       info: 'Módosítsa a játékos tapasztalat feladatát.'
       args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cEnnek a játékosnak először csatlakoznia kell egy munkához.'
     output:
       target: '&eA tapasztalat megváltozott a(z) %jobname%&e munkában, most van &6%level%lvl &eés &6%exp%&eexp.'
   level:
     help:
       info: 'Módosítsa a játékos szint feladatát.'
       args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cEnnek a játékosnak először csatlakoznia kell egy munkához.'
     output:
       target: '&eA szint megváltozott a(z) %jobname%&e munkában, most van &6%level%lvl &eés &6%exp%&eexp.'
   demote:

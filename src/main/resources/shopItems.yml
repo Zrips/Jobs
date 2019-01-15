@@ -73,7 +73,7 @@ Items:
     - Digger-5
     PerformCommands:
     - "msg &eThanks [player] for buying this shovel!"
-    - "give [player] 269 1"
+    - "give [player] wooden_shovel 1"
   LureEnchantBook:
     Price: 100.0
     Icon:

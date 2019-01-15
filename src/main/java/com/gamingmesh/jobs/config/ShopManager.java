@@ -76,42 +76,40 @@ public class ShopManager {
 	ShopItem item = ls.get(slot);
 	PlayerPoints pointsInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(player.getUniqueId());
 
-	if (!player.hasPermission("jobs.items.bypass")) {
-	    for (String onePerm : item.getRequiredPerm()) {
-		if (!player.hasPermission(onePerm)) {
-		    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPermForItem"));
-		    return;
-		}
-	    }
-
-	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
-	    if (jPlayer == null)
+	//if (!player.hasPermission("jobs.items.bypass")) {
+	for (String onePerm : item.getRequiredPerm()) {
+	    if (!player.hasPermission(onePerm)) {
+		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPermForItem"));
 		return;
+	    }
+	}
 
-	    for (Entry<String, Integer> oneJob : item.getRequiredJobs().entrySet()) {
-		Job tempJob = Jobs.getJob(oneJob.getKey());
-		if (tempJob == null)
-		    continue;
-		JobProgression playerJob = jPlayer.getJobProgression(tempJob);
-		if (playerJob == null || playerJob.getLevel() < oneJob.getValue()) {
-		    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoJobReqForitem",
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+
+	if (jPlayer == null)
+	    return;
+
+	for (Entry<String, Integer> oneJob : item.getRequiredJobs().entrySet()) {
+	    Job tempJob = Jobs.getJob(oneJob.getKey());
+	    if (tempJob == null)
+		continue;
+	    JobProgression playerJob = jPlayer.getJobProgression(tempJob);
+	    if (playerJob == null || playerJob.getLevel() < oneJob.getValue()) {
+		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoJobReqForitem",
 			"%jobname%", tempJob.getName(),
 			"%joblevel%", oneJob.getValue()));
-		    return;
-		}
-	    }
-
-	    if (pointsInfo == null || pointsInfo.getCurrentPoints() < item.getPrice()) {
-		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
 		return;
 	    }
+	}
 
-	    if (item.getRequiredTotalLevels() != -1 && jPlayer.getTotalLevels() < item.getRequiredTotalLevels()) {
-		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoTotalLevel", "%totalLevel%", jPlayer.getTotalLevels()));
-		return;
-	    }
+	if (pointsInfo == null || pointsInfo.getCurrentPoints() < item.getPrice()) {
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
+	    return;
+	}
 
+	if (item.getRequiredTotalLevels() != -1 && jPlayer.getTotalLevels() < item.getRequiredTotalLevels()) {
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoTotalLevel", "%totalLevel%", jPlayer.getTotalLevels()));
+	    return;
 	}
 
 	if (player.getInventory().firstEmpty() == -1) {
@@ -160,10 +158,8 @@ public class ShopManager {
 
 	}
 
-	if (!player.hasPermission("jobs.items.bypass")) {
-	    pointsInfo.takePoints(item.getPrice());
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPrice()));
-	}
+	pointsInfo.takePoints(item.getPrice());
+	player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPrice()));
 
 	player.getOpenInventory().getTopInventory().setContents(CreateJobsGUI(player, page).getContents());
 
