@@ -156,7 +156,7 @@ command:
   editpoints:
     help:
       info: Muuda mängijate punkte.
-      args: 'set/add/take [playername] [amount]'
+      args: set/add/take [playername] [amount]
     output:
       set: '&eMängija (&6%playername%&e) punktide arv muudetud: &6%amount%'
       add: '&eMängija (&6%playername%&e) sai juurde &6%amount% &epunkti. Nüüd on tal
@@ -201,7 +201,7 @@ command:
       name: ' &eEseme nimi: &6%itemname%'
       id: ' &eEseme id: &6%itemid%'
       data: ' &eEseme andmed: &6%itemdata%'
-      usage: ' &eKasutus: &6%first% &eor &6%second%'
+      usage: ' &eKasutus: &6%first% &evõi &6%second%'
   placeholders:
     help:
       info: Nimetab kõik kohatäited
@@ -220,7 +220,7 @@ command:
       args: '[playername]'
     error:
       nojob: Palun liitu esmalt mõne ametiga.
-    output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+    output: '%joblevel%. tasemega %jobname%: %jobxp%/%jobmaxxp% kogemust'
   shop:
     help:
       info: Avab eriliste ametite poe.
@@ -230,8 +230,8 @@ command:
       currentPoints: '&eSul on: &6%currentpoints%'
       price: '&eHind: &6%price%'
       reqJobs: '&eVajalikud ametid:'
-      reqJobsList: '  &6%jobsname%&e: &e%level% tase'
-      reqTotalLevel: '&6Vajalik tase: &e%totalLevel%'
+      reqJobsList: '  &6%jobsname%&e: &e%level%. tase'
+      reqTotalLevel: '&6Nõutud üldine tase: &e%totalLevel%'
       cantOpen: '&cSeda lehte ei saa avada'
       NoPermForItem: '&cSul puuduvad sellele esemele vajalikud õigused!'
       NoPermToBuy: '&cPuudub selle eseme ostmise õigus'
@@ -537,7 +537,7 @@ command:
   exp:
     help:
       info: Muuda mängija kogemust ametis.
-      args: '[playername] [jobname] [set/add/take] [amount]'
+      args: '[playername] [jobname] set/add/take [amount]'
     output:
       target: '&eSu kogemust muudeti ametis %jobname% &e, nüüd on sul tase &6%level%
         &ening &6%exp%exp kogemust.'
@@ -576,7 +576,7 @@ command:
   toggle:
     help:
       info: Lülitab tasude kuvamist tegumiribal või bossiribal.
-      args: '[actionbar/bossbar]'
+      args: actionbar/bossbar
     output:
       turnedoff: '&4See funktsioon on välja lülitatud!'
       paid:
@@ -616,7 +616,7 @@ signs:
     p9: '&b** &8Üheksas &b**'
     p10: '&b** &8Kümnes &b**'
     name: '&9[player]'
-    level: '&8[level] level'
+    level: '&8[level]. tase'
     bottom: '&b************'
   cantcreate: '&4Sa ei saa seda silti luua!'
   cantdestroy: '&4Sa ei saa seda silti lõhkuda!'
