@@ -502,7 +502,7 @@ command:
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
-      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &ekogus: %qty% %money%%exp%%points%'
       money: '&6raha: %amount% '
       exp: '&ekogemusi: %amount% '
       points: '&6punkte: %amount%'
@@ -516,7 +516,7 @@ command:
       args: ''
     output:
       topline: '&7*********************** &6Üldine statistika &7***********************'
-      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &ekogus: %qty% %money%%exp%%points%'
       money: '&6raha: %amount% '
       exp: '&ekogemusi: %amount% '
       points: '&6punkte: %amount%'
