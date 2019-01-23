@@ -71,7 +71,7 @@ public class FurnaceBrewingHandling {
 			    totalf += blist.size();
 			}
 		    }
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    e.printStackTrace();
 		}
 	    }
@@ -111,7 +111,7 @@ public class FurnaceBrewingHandling {
 			    totalb += blist.size();
 			}
 		    }
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    e.printStackTrace();
 		}
 	    }

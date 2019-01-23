@@ -66,7 +66,7 @@
 			<artifactId>MythicMobs</artifactId>
 			<version>4.5.1</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/MythicMobs-4.5.0.jar</systemPath>
+			<systemPath>${basedir}/libs/MythicMobs-4.5.1.jar</systemPath>
 		</dependency>
 		<!-- WorldGuard -->
 		<dependency>

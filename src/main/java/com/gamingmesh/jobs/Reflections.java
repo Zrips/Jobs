@@ -108,7 +108,7 @@ public class Reflections {
 	    Method meth2 = res.getClass().getMethod(ff, IStack);
 	    Object name = meth2.invoke(res, nmsStack);
 	    return name.toString();
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return item != null ? item.getType().name() : "";
 	}
     }
@@ -138,7 +138,7 @@ public class Reflections {
 	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
 	    meth2.invoke(nmsStack, tag);
 	    return (ItemStack) asBukkitCopy(nmsStack);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	    return null;
 	}
@@ -154,7 +154,7 @@ public class Reflections {
 	    Method meth = nbt.getClass().getMethod("getCompound", String.class);
 	    Object res = meth.invoke(nbt, base);
 	    return res != null;
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return false;
 	}
     }
@@ -167,7 +167,7 @@ public class Reflections {
 	    Method methTag = nmsStack.getClass().getMethod("getTag");
 	    Object tag = methTag.invoke(nmsStack);
 	    return tag;
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return null;
 	}
     }
@@ -189,7 +189,7 @@ public class Reflections {
 	    Method meth = compoundRes.getClass().getMethod("getString", String.class);
 	    Object res = meth.invoke(compoundRes, path);
 	    return res;
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return null;
 	}
     }
@@ -219,7 +219,7 @@ public class Reflections {
 	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
 	    meth2.invoke(nmsStack, tag);
 	    return (ItemStack) asBukkitCopy(nmsStack);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	    return null;
 	}
@@ -229,7 +229,7 @@ public class Reflections {
 	try {
 	    Method meth = CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
 	    return meth.invoke(CraftItemStack, item);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return null;
 	}
     }
@@ -238,7 +238,7 @@ public class Reflections {
 	try {
 	    Method meth = CraftItemStack.getMethod("asBukkitCopy", IStack);
 	    return meth.invoke(CraftItemStack, item);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return null;
 	}
     }

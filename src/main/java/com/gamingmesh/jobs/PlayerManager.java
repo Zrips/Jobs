@@ -545,7 +545,7 @@ public class PlayerManager {
 		} else
 		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	}
 
 	String message;
@@ -590,7 +590,7 @@ public class PlayerManager {
 		    } else
 		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 	    // user would skill up
 	    if (Jobs.getGCManager().isBroadcastingSkillups())

@@ -77,7 +77,7 @@ public class ItemReflection {
 	    Object res2 = secmeth.invoke(nmsStack);
 	    Object res = meth.invoke(reg, res2);
 	    return res.toString();
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return null;
 	}
     }
@@ -124,7 +124,7 @@ public class ItemReflection {
 	    Method meth2 = res.getClass().getMethod(ff, IStack);
 	    Object name = meth2.invoke(res, nmsStack);
 	    return name.toString();
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return item != null ? item.getType().name() : "";
 	}
     }
@@ -138,7 +138,7 @@ public class ItemReflection {
 	    Method nameThingy = Item.getMethod("j", IStack);
 	    Object resThingy = nameThingy.invoke(res, nmsStack);
 	    return resThingy.toString();
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return null;
 	}
     }
@@ -147,7 +147,7 @@ public class ItemReflection {
 	try {
 	    Method meth = CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
 	    return meth.invoke(CraftItemStack, item);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return null;
 	}
     }
@@ -156,7 +156,7 @@ public class ItemReflection {
 	try {
 	    Method meth = CraftItemStack.getMethod("asBukkitCopy", IStack);
 	    return meth.invoke(CraftItemStack, item);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return null;
 	}
     }

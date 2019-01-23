@@ -33,13 +33,13 @@ public class GiveItem {
 	    ItemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
 	itemStack.setItemMeta(ItemMeta);
 	player.getInventory().addItem(itemStack);
-	player.getPlayer().updateInventory();
+	player.updateInventory();
 	return true;
     }
 
     public static boolean GiveItemForPlayer(Player player, ItemStack item) {
 	player.getInventory().addItem(item);
-	player.getPlayer().updateInventory();
+	player.updateInventory();
 	return true;
     }
 }

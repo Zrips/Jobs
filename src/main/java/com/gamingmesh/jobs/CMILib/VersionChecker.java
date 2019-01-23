@@ -42,13 +42,13 @@ public class VersionChecker {
 
 	    try {
 		version = Integer.parseInt(lVersion);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		e.printStackTrace();
 	    }
 	} else {
 	    try {
 		version = Integer.parseInt(v);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		e.printStackTrace();
 	    }
 	}
@@ -87,7 +87,7 @@ public class VersionChecker {
 	Version() {
 	    try {
 		this.value = Integer.valueOf(this.name().replaceAll("[^\\d.]", ""));
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 	    shortVersion = this.name().substring(0, this.name().length() - 3);
 	}
@@ -181,7 +181,7 @@ public class VersionChecker {
 	    String version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
 	    if (version.length() <= 7)
 		return version;
-	} catch (Exception ex) {
+	} catch (Throwable ex) {
 	    Jobs.consoleMsg("&cFailed to check for " + plugin.getDescription().getName() + " update on spigot web page.");
 	}
 	return null;

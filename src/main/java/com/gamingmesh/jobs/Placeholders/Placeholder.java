@@ -87,7 +87,7 @@ public class Placeholder {
 		    try {
 			int id = Integer.parseInt(matcher.group(1).substring(1));
 			groups.add(id);
-		    } catch (Exception e) {
+		    } catch (Throwable e) {
 			e.printStackTrace();
 		    }
 		}
@@ -220,7 +220,7 @@ public class Placeholder {
 		    for (Integer oneG : groups) {
 			lsInLs.add(matcher.group(oneG + 1));
 		    }
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
 		break;
 	    }
@@ -268,7 +268,7 @@ public class Placeholder {
 		if (placeholder.contains("%"))
 		    if (!placeholder.equals(me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, placeholder)))
 			return JobsPlaceholderType.PAPI;
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 
 	    }
 	}
@@ -291,7 +291,7 @@ public class Placeholder {
 	    try {
 		if (message.contains("%"))
 		    message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 
 	    }
 	}
@@ -326,7 +326,7 @@ public class Placeholder {
 			with = "\\" + with;
 		    message = message.replaceFirst(group, with);
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    e.printStackTrace();
 		}
 	    }
@@ -349,7 +349,7 @@ public class Placeholder {
 	    int id = Integer.parseInt(value);
 	    if (id > 0)
 		j = user.getJobProgression().get(id - 1);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    Job job = Jobs.getJob(value);
 	    if (job != null)
 		j = user.getJobProgression(job);
@@ -363,7 +363,7 @@ public class Placeholder {
 	    int id = Integer.parseInt(value);
 	    if (id > 0)
 		j = Jobs.getJobs().get(id - 1);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    j = Jobs.getJob(value);
 	}
 	return j;

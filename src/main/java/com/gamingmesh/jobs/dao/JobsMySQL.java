@@ -14,7 +14,8 @@ public class JobsMySQL extends JobsDAO {
 	private Jobs plugin;
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
-	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&autoReConnect=" + autoReconnect + "&useSSL=" + ssl + "&verifyServerCertificate=" + certificate, username, password, prefix);
+	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&autoReConnect=" + autoReconnect + "&useSSL=" + ssl
+			+ "&verifyServerCertificate=" + certificate, username, password, prefix);
 	this.plugin = plugin;
 	this.database = database;
 	this.setDbType(DataBaseType.MySQL);
@@ -43,7 +44,7 @@ public class JobsMySQL extends JobsDAO {
     protected synchronized void setupConfig() throws SQLException {
 	JobsConnection conn = getConnection();
 	if (conn == null) {
-	    Jobs.consoleMsg("&cCould not run database updates!  Could not connect to MySQL!");
+	    Jobs.consoleMsg("&cCould not run database updates! Could not connect to MySQL!");
 	    return;
 	}
 	PreparedStatement prest = null;
@@ -82,7 +83,7 @@ public class JobsMySQL extends JobsDAO {
     protected synchronized void checkUpdate() throws SQLException {
 	JobsConnection conn = getConnection();
 	if (conn == null) {
-	    Jobs.consoleMsg("&cCould not run database updates!  Could not connect to MySQL!");
+	    Jobs.consoleMsg("&cCould not run database updates! Could not connect to MySQL!");
 	    return;
 	}
 	createDefaultUsersBase();
@@ -170,7 +171,6 @@ public class JobsMySQL extends JobsDAO {
 	    statement.close();
 	    return true;
 	} catch (SQLException e) {
-//	    e.printStackTrace();
 	    Jobs.consoleMsg("Not a culumn |" + "SELECT " + collumn + " FROM " + table + "|");
 	    close(statement);
 	    return false;
@@ -193,7 +193,6 @@ public class JobsMySQL extends JobsDAO {
 	    return true;
 	} catch (SQLException e) {
 	    close(statement);
-//	    e.printStackTrace();
 	    return false;
 	}
     }

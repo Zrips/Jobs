@@ -208,12 +208,12 @@ public class JobsCommands implements CommandExecutor {
 		    listOfCommands.add(name);
 		}
 	    }
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	} finally {
 	    if (jarFile != null)
 		try {
 		    jarFile.close();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
 	}
 	return listOfCommands;

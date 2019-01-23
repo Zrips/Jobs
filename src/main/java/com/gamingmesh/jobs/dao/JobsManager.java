@@ -57,15 +57,15 @@ public class JobsManager {
     public void start(LocaleReader c) {
 	c.getW().addComment("storage.method", "storage method, can be MySQL or sqlite");
 	String storageMethod = c.get("storage.method", "sqlite");
-	c.getW().addComment("mysql-username", "Requires Mysql.");
-	c.get("mysql-username", "root");
-	c.get("mysql-password", "");
-	c.get("mysql-hostname", "localhost:3306");
-	c.get("mysql-database", "minecraft");
-	c.get("mysql-table-prefix", "jobs_");
-	c.get("verify-server-certificate", false);
-	c.get("use-ssl", false);
-	c.get("auto-reconnect", false);
+	c.getW().addComment("mysql", "Requires Mysql.");
+	c.get("mysql.username", "root");
+	c.get("mysql.password", "");
+	c.get("mysql.hostname", "localhost:3306");
+	c.get("mysql.database", "minecraft");
+	c.get("mysql.table-prefix", "jobs_");
+	c.get("mysql.verify-server-certificate", false);
+	c.get("mysql.use-ssl", false);
+	c.get("mysql.auto-reconnect", false);
 
 	if (storageMethod.equalsIgnoreCase("mysql")) {
 	    DbType = DataBaseType.MySQL;
@@ -85,30 +85,30 @@ public class JobsManager {
     private synchronized JobsMySQL startMysql() {
 	File f = new File(Jobs.getFolder(), "generalConfig.yml");
 	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
-	String legacyUrl = config.getString("mysql-url");
+	String legacyUrl = config.getString("mysql.url");
 	if (legacyUrl != null) {
 	    String jdbcString = "jdbc:mysql://";
 	    if (legacyUrl.toLowerCase().startsWith(jdbcString)) {
 		legacyUrl = legacyUrl.substring(jdbcString.length());
 		String[] parts = legacyUrl.split("/");
 		if (parts.length >= 2) {
-		    config.set("mysql-hostname", parts[0]);
-		    config.set("mysql-database", parts[1]);
+		    config.set("mysql.hostname", parts[0]);
+		    config.set("mysql.database", parts[1]);
 		}
 	    }
 	}
-	String username = config.getString("mysql-username");
+	String username = config.getString("mysql.username");
 	if (username == null) {
-	    Jobs.getPluginLogger().severe("mysql-username property invalid or missing");
+	    Jobs.getPluginLogger().severe("mysql username property invalid or missing");
 	}
-	String password = config.getString("mysql-password");
-	String hostname = config.getString("mysql-hostname");
-	String database = config.getString("mysql-database");
-	String prefix = config.getString("mysql-table-prefix");
+	String password = config.getString("mysql.password");
+	String hostname = config.getString("mysql.hostname");
+	String database = config.getString("mysql.database");
+	String prefix = config.getString("mysql.table-prefix");
 
-	boolean certificate = config.getBoolean("verify-server-certificate", false);
-	boolean ssl = config.getBoolean("use-ssl", false);
-	boolean autoReconnect = config.getBoolean("auto-reconnect");
+	boolean certificate = config.getBoolean("mysql.verify-server-certificate", false);
+	boolean ssl = config.getBoolean("mysql.use-ssl", false);
+	boolean autoReconnect = config.getBoolean("mysql.auto-reconnect");
 	if (plugin.isEnabled()) {
 	    JobsMySQL data = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect);
 	    data.initialize();
