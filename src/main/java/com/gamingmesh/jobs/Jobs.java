@@ -955,7 +955,7 @@ public class Jobs extends JavaPlugin {
 	    if (income == 0D && pointAmount == 0D)
 		return;
 
-	    Boost boost = pManager.getFinalBonus(jPlayer, Jobs.getNoneJob());
+	    Boost boost = pManager.getFinalBonus(jPlayer, noneJob);
 
 	    // Calculate income
 
