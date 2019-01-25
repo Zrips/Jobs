@@ -110,11 +110,11 @@ Jobs:
         Amount: 300
         # Command list to be performed after quest is finished.
         # Use [playerName] to insert players name who finished that quest
-        RewardCommands: 
+        RewardCommands:
         - "money give [playerName] 500"
         - "msg [playerName] Completed quest!"
         # Quest description to be used to explain quest requirements or rewards for player
-        RewardDesc: 
+        RewardDesc:
         - "Break 300 Oak wood"
         - "Get 500 bucks for this"
         # Defines chance in getting this quest. 
@@ -167,50 +167,9 @@ Jobs:
     # 
     # For kill tags (Kill and custom-kill), the name is the name of the
     # mob.
-    # Available mobs:
-    #   Bat
-    #   Blaze
-    #   Cave_spider
-    #   Chicken
-    #   Cow
-    #   Creeper
-    #   Ender_dragon
-    #   Enderman
-    #   Endermite
-    #   Ghast
-    #   Giant
-    #   Guardian
-    #   GuardianElder
-    #   Horse
-    #   HorseZombie
-    #   HorseSkeleton
-    #   Iron_golem
-    #   Magma_cube
-    #   Mushroom_cow
-    #   Ocelot
-    #   Pig
-    #   Player
-    #   Polar_Bear
-    #   Rabbit
-    #   Sheep
-    #   Silverfish
-    #   Skeleton
-    #   SkeletonWither
-    #   SkeletonStray
-    #   Shulker
-    #   Slime
-    #   Snowman
-    #   Spider
-    #   Squid
-    #   Villager
-    #   Witch
-    #   Wither
-    #   Wolf
-    #   Zombie
-    #   ZombieVillager
-    #   Husk
-    #   Phantom
-    #   Drowned
+    # To get a list of all available entity types, check the
+    # bukkit JavaDocs for a complete list of entity types
+    # https://minecraft.gamepedia.com/Mob#List_of_mobs
     #
     # NOTE: mob names are case sensitive.
     #
@@ -222,7 +181,7 @@ Jobs:
     # payment for breaking a block
     Break:
       # block name/id (with optional sub-type)
-      LOG:
+      log:
         # base income, can be not used if using point system
         income: 5.0
         # base points, can be not used if using income system
@@ -243,39 +202,39 @@ Jobs:
         experience: -1.0
     # payment for drinking a potion
     Drink:
-      POTION:
+      potion:
         income: 0.5
         experience: 2.0
-      POTION_REGENERATION_2:
+      potion_regeneration_2:
         income: 1.3
         experience: 2.0
-      POTION_HEALING_1:
+      potion_healing_1:
         income: 1.4
         experience: 2.0
     # payment for breaking a block with tnt
     TNTBreak:
-      LOG:
+      log:
         income: 5.0
         points: 5.0
         experience: 5.0
     # payment for placing a block
     Place:
-      SAPLING:
+      sapling:
         income: 1.0
         points: 1.0
         experience: 1.0
-      WOOD:
+      wood:
         income: 2.0
         points: 2.0
         experience: 2.0
     # Payment for trading a villager. Checks results only
     VTrade:
-      EMERALD:
+      emerald:
         income: 1.0
         points: 1.0
         experience: 2.0
       # you can add enchanted book with sub-id
-      ENCHANTED_BOOK-12:
+      enchanted_book-12:
         income: 1.0
         experience: 2.0
     # killing a mob
@@ -377,16 +336,16 @@ Jobs:
         experience: 5.0
     # dyeing armor
     Dye:
-      LEATHER_BOOTS:
+      leather_boots:
         income: 1.0
         experience: 1.0
-      LEATHER_CHESTPLATE:
+      leather_chestplate:
         income: 1.0
         experience: 1.0
-      LEATHER_HELMET:
+      leather_helmet:
         income: 1.0
         experience: 1.0
-      LEATHER_LEGGINGS:
+      leather_leggings:
         income: 1.0
         experience: 1.0
       351:
@@ -394,23 +353,27 @@ Jobs:
         experience: 1.0
     # Catching fish
     Fish:
-      '349':
+      raw_fish:
+        income: 20.0
+        experience: 25.0
+      # If you are using below version 1.13
+      legacy_raw_fish:
         income: 20.0
         experience: 25.0
     # Repairing items
     Repair:
-      WOOD_SWORD:
+      wood_sword:
         income: 1.0
         experience: 1.0
-      IRON_SWORD:
+      iron_sword:
         income: 2.0
         experience: 2.0
     # Crafting items
     Craft:
-      WOOD_SWORD:
+      wood_sword:
         income: 1.5
         experience: 3.0
-      LEATHER_BOOTS:
+      leather_boots:
         income: 1.0
         experience: 6.0
       # Add ! at front when you want to pay for crafted items with special names. Always use double quotation marks, same as example
@@ -419,19 +382,19 @@ Jobs:
         experience: 6.0
     # Smelting ores
     Smelt:
-      IRON_INGOT:
+      iron_ingot:
         income: 2.0
         experience: 8.0
-      GOLD_INGOT:
+      gold_ingot:
         income: 4.5
         experience: 12
     # Enchanting items
     Enchant:
       # You can set item for which player will get money
-      WOOD_SWORD:
+      wood_sword:
         income: 1.5
         experience: 3.0
-      LEATHER_BOOTS:
+      leather_boots:
         income: 1.0
         experience: 6.0
       # Or/and you can give money for each enchantment they got
@@ -443,10 +406,10 @@ Jobs:
         experience: 20.0
     # Brewing potions
     Brew:
-      NETHER_STALK:
+      nether_stalk:
         income: 5.0
         experience: 3.0
-      REDSTONE:
+      redstone:
         income: 5.0
         experience: 3.0
     # Explore options. Each number represents players number in exploring that chunk
@@ -505,7 +468,7 @@ Jobs:
         # This can be set to same level as levelFrom, so this command will be executed only once
         levelUntil: 100
       kit:
-        command: 
+        command:
         - manuaddp [player] essentials.kits.woodcutter
         - msg [player] Now you can use woodcutter kit!
         levelFrom: 150
@@ -703,7 +666,7 @@ Jobs:
         points: 0.25
         experience: 0.5
     Break:
-      #new 1.13 blocks (some changed blocks are below
+      #new 1.13 blocks (some changed blocks are below)
       tube_coral_block:
         income: 2
         points: 2
@@ -723,8 +686,8 @@ Jobs:
       horn_coral_block:
         income: 2
         points: 2
-        experience: 3     
-      #origial blocks 
+        experience: 3
+      #origial blocks
       andesite:
         income: 1
         points: 1
@@ -865,7 +828,7 @@ Jobs:
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
     Gui:
-      Item: BRICK_STAIRS
+      Item: brick_stairs
     Place:
       #new 1.13 blocks
       stripped_oak_wood:
@@ -916,7 +879,6 @@ Jobs:
         income: 2
         points: 2
         experience: 3
-      #old blocks
       stone:
         income: 1.3
         points: 1.3
@@ -1663,7 +1625,7 @@ Jobs:
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
     Gui:
-      Item: WOODEN_HOE
+      Item: wooden_hoe
     Tame:
       Wolf:
         income: 5.0
@@ -2036,7 +1998,6 @@ Jobs:
     ChatColour: RED
     chat-display: full
     max-level: 200
-    #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -2182,7 +2143,6 @@ Jobs:
     ChatColour: AQUA
     chat-display: full
     max-level: 200
-    #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -2223,14 +2183,13 @@ Jobs:
     ChatColour: RED
     chat-display: full
     max-level: 200
-    #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
     Gui:
-      Item: CRAFTING_TABLE
+      Item: crafting_table
     Craft:
       stick:
         income: 0.1
@@ -2256,11 +2215,11 @@ Jobs:
         income: 3.0
         points: 3.0
         experience: 3.0
-      'tnt':
+      tnt:
         income: 4.0
         points: 4.0
         experience: 4.0
-      'chest':
+      chest:
         income: 1.3
         points: 1.3
         experience: 1.3
@@ -2472,7 +2431,7 @@ Jobs:
         income: 2.5
         points: 2.5
         experience: 2.5
-      'hopper':
+      hopper:
         income: 7.0
         points: 7.0
         experience: 7.0
@@ -2745,7 +2704,7 @@ Jobs:
         points: 7.0
         experience: 7.0
     Smelt:
-      COOKED_CHICKEN:
+      cooked_chicken:
         income: 3.0
         points: 3.0
         experience: 3.0
@@ -2761,14 +2720,13 @@ Jobs:
     ChatColour: AQUA
     chat-display: full
     max-level: 200
-    #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
     Gui:
-      Item: FISHING_ROD
+      Item: fishing_rod
     Fish:
       cod:
         income: 15.0
@@ -2798,7 +2756,6 @@ Jobs:
     ChatColour: DARK_PURPLE
     chat-display: full
     max-level: 200
-    #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
@@ -2828,71 +2785,71 @@ Jobs:
         income: 3.5
         points: 3.5
         experience: 7.0
-      IRON_SWORD:
+      iron_sword:
         income: 4.0
         points: 4.0
         experience: 8.0
-      IRON_BOOTS:
+      iron_boots:
         income: 8.0
         points: 8.0
         experience: 16.0
-      IRON_CHESTPLATE:
+      iron_chestplate:
         income: 16.0
         points: 16.0
         experience: 32.0
-      IRON_HELMET:
+      iron_helmet:
         income: 10.0
         points: 10.0
         experience: 20.0
-      IRON_LEGGINGS:
+      iron_leggings:
         income: 14.0
         points: 14.0
         experience: 28.0
-      GOLD_SWORD:
+      gold_sword:
         income: 6.0
         points: 6.0
         experience: 12.0
-      GOLD_BOOTS:
+      gold_boots:
         income: 12.0
         points: 12.0
         experience: 24.0
-      GOLD_CHESTPLATE:
+      gold_chestplate:
         income: 24.0
         points: 24.0
         experience: 48.0
-      GOLD_HELMET:
+      gold_helmet:
         income: 15.0
         points: 15.0
         experience: 30.0
-      GOLD_LEGGINGS:
+      gold_leggings:
         income: 21.0
         points: 21.0
         experience: 42.0
-      DIAMOND_SWORD:
+      diamond_sword:
         income: 8.0
         points: 8.0
         experience: 16.0
-      DIAMOND_PICKAXE:
+      diamond_pickaxe:
         income: 12.0
         points: 12.0
         experience: 24.0
-      DIAMOND_AXE:
+      diamond_axe:
         income: 12.0
         points: 12.0
         experience: 24.0
-      DIAMOND_HELMET:
+      diamond_helmet:
         income: 20.0
         points: 20.0
         experience: 40.0
-      DIAMOND_CHESTPLATE:
+      diamond_chestplate:
         income: 32.0
         points: 32.0
         experience: 64.0
-      DIAMOND_LEGGINGS:
+      diamond_leggings:
         income: 28.0
         points: 28.0
         experience: 40.0
-      DIAMOND_BOOTS:
+      diamond_boots:
         income: 16.0
         points: 16.0
         experience: 32.0
@@ -2901,32 +2858,32 @@ Jobs:
         points: 20.0
         experience: 40.0
     Repair:
-      WOOD_SWORD:
+      wood_sword:
         income: 1.0
         points: 1.0
         experience: 1.0
-      IRON_SWORD:
+      iron_sword:
         income: 2.0
         points: 2.0
         experience: 2.0
-      GOLD_SWORD:
+      gold_sword:
         income: 3.0
         points: 3.0
         experience: 3.0
-      DIAMOND_SWORD:
+      diamond_sword:
         income: 4.0
         points: 4.0
         experience: 4.0
     Smelt:
-      IRON_INGOT:
+      iron_ingot:
         income: 1.3
         points: 1.3
         experience: 2.0
-      GOLD_INGOT:
+      gold_ingot:
         income: 5.0
         points: 5.0
         experience: 10
-      DIAMOND:
+      diamond:
         income: 7.0
         points: 7.0
         experience: 20
@@ -3031,95 +2988,95 @@ Jobs:
       Id: 116
       Data: 0
     Enchant:
-      WOOD_SWORD:
+      wood_sword:
         income: 1.5
         points: 1.5
         experience: 3.0
-      LEATHER_BOOTS:
+      leather_boots:
         income: 1.0
         points: 1.0
         experience: 6.0
-      LEATHER_CHESTPLATE:
+      leather_chestplate:
         income: 2.0
         points: 2.0
         experience: 6.0
-      LEATHER_HELMET:
+      leather_helmet:
         income: 1.0
         points: 1.0
         experience: 6.0
-      LEATHER_LEGGINGS:
+      leather_leggings:
         income: 2.0
         points: 2.0
         experience: 6.0
-      IRON_SWORD:
+      iron_sword:
         income: 3.0
         points: 3.0
         experience: 6.0
-      IRON_BOOTS:
+      iron_boots:
         income: 2.5
         points: 2.5
         experience: 9.0
-      IRON_CHESTPLATE:
+      iron_chestplate:
         income: 4.5
         points: 4.5
         experience: 9.0
-      IRON_HELMET:
+      iron_helmet:
         income: 2.5
         points: 2.5
         experience: 9.0
-      IRON_LEGGINGS:
+      iron_leggings:
         income: 4.5
         points: 4.5
         experience: 9.0
-      GOLD_SWORD:
+      gold_sword:
         income: 4.5
         points: 4.5
         experience: 15.0
-      GOLD_BOOTS:
+      gold_boots:
         income: 2.5
         points: 2.5
         experience: 15.0
-      GOLD_CHESTPLATE:
+      gold_chestplate:
         income: 5.5
         points: 5.5
         experience: 15.0
-      GOLD_HELMET:
+      gold_helmet:
         income: 2.5
         points: 2.5
         experience: 15.0
-      GOLD_LEGGINGS:
+      gold_leggings:
         income: 5.5
         points: 5.5
         experience: 15.0
-      DIAMOND_SWORD:
+      diamond_sword:
         income: 9.0
         points: 9.0
         experience: 30.0
-      DIAMOND_SPADE:
+      diamond_spade:
         income: 5.0
         points: 5.0
         experience: 30.0
-      DIAMOND_PICKAXE:
+      diamond_pickaxe:
         income: 10.0
         points: 10.0
         experience: 30.0
-      DIAMOND_AXE:
+      diamond_axe:
         income: 10.0
         points: 10.0
         experience: 30.0
-      DIAMOND_HELMET:
+      diamond_helmet:
         income: 6.0
         points: 6.0
         experience: 30.0
-      DIAMOND_CHESTPLATE:
+      diamond_chestplate:
         income: 12.0
         points: 12.0
         experience: 50.0
-      DIAMOND_LEGGINGS:
+      diamond_leggings:
         income: 12.0
         points: 12.0
         experience: 50.0
-      DIAMOND_BOOTS:
+      diamond_boots:
         income: 6.0
         points: 6.0
         experience: 30.0
@@ -3472,7 +3429,6 @@ Jobs:
         income: 5
         points: 5
         experience: 5
-      #Frost Walker 2
       frost_walker-1:
         income: 10
         points: 10
@@ -3481,7 +3437,6 @@ Jobs:
         income: 20
         points: 20
         experience: 20
-      #Impaling 5
       impaling-1:
         income: 10
         points: 10
@@ -3502,7 +3457,6 @@ Jobs:
         income: 50
         points: 50
         experience: 50
-      #Loyalty 3
       loyalty-1:
         income: 10
         points: 10

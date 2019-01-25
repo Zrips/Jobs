@@ -46,7 +46,7 @@ public class ScheduleManager {
 	public void run() {
 	    try {
 		scheduler();
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 	}
     };

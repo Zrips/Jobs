@@ -140,7 +140,7 @@ public class PermissionManager {
 		    double t = Double.parseDouble(uno.getKey().replace(perm, ""));
 		    if (amount == null || t > amount)
 			amount = t;
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
 	    }
 	}

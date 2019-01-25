@@ -16,6 +16,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
+import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
@@ -76,9 +77,15 @@ public class TabComplete implements TabCompleter {
 		    case "[jobitemname]":
 			Job oneJob = Jobs.getJob(args[i - 1]);
 			if (oneJob != null)
-			    for (Entry<String, JobItems> item : oneJob.getItemBonus().entrySet()) {
-				temp.add(item.getValue().getNode());
-			    }
+		    if (args[3].equals("items")) {
+			for (Entry<String, JobItems> item : oneJob.getItemBonus().entrySet()) {
+			    temp.add(item.getValue().getNode());
+			}
+		    } else if (args[3].equals("limiteditems")) {
+			for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
+			    temp.add(limitedItem.getValue().getNode());
+			}
+		    }
 			break;
 		    case "[oldjob]":
 			JobsPlayer onePlayerJob = Jobs.getPlayerManager().getJobsPlayer(args[i - 1]);

@@ -29,7 +29,7 @@ public class RestrictedBlockManager {
 	ConfigReader cfg = null;
 	try {
 	    cfg = new ConfigReader("restrictedBlocks.yml");
-	} catch (Exception e1) {
+	} catch (Throwable e1) {
 	    e1.printStackTrace();
 	}
 	if (cfg == null)

@@ -658,7 +658,7 @@ public class JobsListener implements Listener {
 	Map<Enchantment, Integer> enchants = new HashMap<>();
 	try {
 	    enchants = iih.getEnchantments();
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    return;
 	}
 	if (enchants.isEmpty())
@@ -675,7 +675,7 @@ public class JobsListener implements Listener {
 	String meinOk = null;
 
 	mein: for (JobProgression one : prog) {
-	    for (JobLimitedItems oneItem : one.getJob().getLimitedItems()) {
+	    for (JobLimitedItems oneItem : one.getJob().getLimitedItems().values()) {
 		if (one.getLevel() >= oneItem.getLevel())
 		    continue;
 		if (!isThisItem(oneItem, iih.getType().getId(), name, lore, enchants))

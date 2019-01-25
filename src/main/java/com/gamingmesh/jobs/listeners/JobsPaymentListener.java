@@ -861,7 +861,7 @@ public class JobsPaymentListener implements Listener {
 
 	    if (block.hasMetadata(furnaceOwnerMetadata))
 		FurnaceBrewingHandling.removeFurnace(block);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
     }
@@ -885,7 +885,7 @@ public class JobsPaymentListener implements Listener {
 
 	    if (block.hasMetadata(brewingOwnerMetadata))
 		FurnaceBrewingHandling.removeBrewing(block);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
     }
@@ -915,7 +915,7 @@ public class JobsPaymentListener implements Listener {
 	UUID uuid = null;
 	try {
 	    uuid = UUID.fromString(playerName);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	}
 	if (uuid == null)
 	    return;
@@ -1025,7 +1025,7 @@ public class JobsPaymentListener implements Listener {
 	    try {
 		// So lets remove meta in case some plugin removes entity in wrong way.
 		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-	    } catch (Exception ex) {
+	    } catch (Throwable t) {
 	    }
 	    return;
 	}

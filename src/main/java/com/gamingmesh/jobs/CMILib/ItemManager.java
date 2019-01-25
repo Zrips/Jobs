@@ -52,7 +52,7 @@ public class ItemManager {
 	    String mojangName = one.name();
 	    try {
 		mojangName = ItemReflection.getItemMinecraftName(new ItemStack(mat));
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 	    CMIItemStack cm = new CMIItemStack(one);
 
@@ -93,7 +93,7 @@ public class ItemManager {
 		String mojangName = one.name();
 		try {
 		    mojangName = ItemReflection.getItemMinecraftName(new ItemStack(one));
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
 		cm.setMojangName(mojangName);
 		String n = mojangName.toLowerCase().replace("_", "").replace(" ", "").replace("minecraft:", "");
@@ -139,7 +139,7 @@ public class ItemManager {
 	    String a = name.split("-")[1];
 	    try {
 		amount = Integer.parseInt(a);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 	    name = name.split("-")[0];
 	}
@@ -149,13 +149,13 @@ public class ItemManager {
 	if (name.contains(":")) {
 	    try {
 		data = (short) Integer.parseInt(name.split(":")[1]);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 	    try {
 		CMIEntityType e = CMIEntityType.getByName(name.split(":")[1]);
 		if (e != null)
 		    data = e.getType().getTypeId();
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 	    name = name.split(":")[0];
 	}
@@ -184,7 +184,7 @@ public class ItemManager {
 			try {
 			    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(d));
 			    skullMeta.setOwner(offPlayer.getName());
-			} catch (Exception e) {
+			} catch (Throwable e) {
 			    break main;
 			}
 			skull.setItemMeta(skullMeta);
@@ -205,7 +205,7 @@ public class ItemManager {
 	    if (cm == null) {
 		try {
 		    cm = byId.get(Integer.parseInt(name));
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
 
 		if (cm == null) {
@@ -516,7 +516,7 @@ public class ItemManager {
 	    Integer id = null;
 	    try {
 		id = Integer.parseInt(main);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 
 	    for (CMIEntityType one : CMIEntityType.values()) {
@@ -1263,9 +1263,9 @@ public class ItemManager {
 	POTION_SWIFTNESS_3(373, 8258, 24020, "Swiftness Potion 3"),
 	POTION_SWIFTNESS_4(373, 8290, 24020, "Swiftness Potion 4"),
 	POTION_THICK(373, 32, 24020, "Thick Potion"),
-	POTION_TURTLE_MASTER_1(-1, -1, 24020, "Turtle Master Potion"),
-	POTION_TURTLE_MASTER_2(-1, -1, 24020, "Turtle Master Potion 2"),
-	POTION_TURTLE_MASTER_3(-1, -1, 24020, "Turtle Master Potion 3"),
+	POTION_TURTLE_MASTER_1(-1, -1, -1, "Turtle Master Potion"),
+	POTION_TURTLE_MASTER_2(-1, -1, -1, "Turtle Master Potion 2"),
+	POTION_TURTLE_MASTER_3(-1, -1, -1, "Turtle Master Potion 3"),
 	POTION_WATER_BREATHING_1(373, 8205, 24020, "Water Breathing Potion"),
 	POTION_WATER_BREATHING_2(373, 8269, 24020, "Water Breathing Potion 2"),
 	POTION_WEAKNESS_1(373, 8200, 24020, "Weakness Potion"),
@@ -1545,7 +1545,7 @@ public class ItemManager {
 	LEGACY_BURNING_FURNACE(62, 0, -1, "Burning Furnace"),
 	LEGACY_NETHER_WARTS(115, 0, -1, "Nether Warts"),
 	LEGACY_IRON_DOOR_BLOCK(71, 0, -1, "Iron Door Block"),
-	LEGACY_GLOWING_REDSTON_ORE(74, 0, -1, "Glowing Redstone Ore"),
+	LEGACY_GLOWING_REDSTONE_ORE(74, 0, -1, "Glowing Redstone Ore"),
 	LEGACY_SUGAR_CANE_BLOCK(83, 0, -1, "Sugar Cane Block"),
 	LEGACY_RAW_FISH(349, 0, -1, "Raw Fish"),
 	LEGACY_SKULL(144, 0, -1, "Skull"),
@@ -1742,19 +1742,19 @@ public class ItemManager {
 	    id = id.replace("_", "").replace(" ", "").toLowerCase();
 	    try {
 		ids = Integer.parseInt(id);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		if (id.contains(":")) {
 		    try {
 			ids = Integer.parseInt(id.split(":")[0]);
 			data = Integer.parseInt(id.split(":")[1]);
 			return get(ids, data);
-		    } catch (Exception ex) {
+		    } catch (Throwable ex) {
 		    }
 
 		    try {
 			data = Integer.parseInt(id.split(":")[1]);
 			id = id.split(":")[0];
-		    } catch (Exception ex) {
+		    } catch (Throwable ex) {
 		    }
 		}
 	    }

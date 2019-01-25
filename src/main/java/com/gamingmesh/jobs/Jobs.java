@@ -579,7 +579,7 @@ public class Jobs extends JavaPlugin {
 		if (jPlayer == null)
 		    continue;
 		pManager.addPlayerToCache(jPlayer);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		e.printStackTrace();
 	    }
 	}
@@ -789,7 +789,7 @@ public class Jobs extends JavaPlugin {
 		consoleMsg("&ePlaceholderAPI was found - Enabling capabilities.");
 		PlaceholderAPIEnabled = true;
 	    }
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
 
@@ -863,7 +863,7 @@ public class Jobs extends JavaPlugin {
 
 	    cManager.fillCommands();
 
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
 	    setEnabled(false);
@@ -878,7 +878,7 @@ public class Jobs extends JavaPlugin {
 	    dao.saveExplore();
 	    dao.saveBlockProtection();
 	    FurnaceBrewingHandling.save();
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
 	shutdown();
@@ -955,7 +955,7 @@ public class Jobs extends JavaPlugin {
 	    if (income == 0D && pointAmount == 0D)
 		return;
 
-	    Boost boost = pManager.getFinalBonus(jPlayer, Jobs.getNoneJob());
+	    Boost boost = pManager.getFinalBonus(jPlayer, noneJob);
 
 	    // Calculate income
 
@@ -1121,7 +1121,7 @@ public class Jobs extends JavaPlugin {
 			    BBManager.ShowJobProgression(jPlayer, prog);
 			else
 			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
 

@@ -46,7 +46,7 @@ public class Job {
     // items
     private HashMap<String, JobItems> jobItems;
     // limited items
-    private List<JobLimitedItems> jobLimitedItems;
+    private HashMap<String, JobLimitedItems> jobLimitedItems;
     // job name
     private String jobName = "N/A";
     // job short name (for use in multiple jobs)
@@ -108,7 +108,7 @@ public class Job {
      */
     public Job(String jobName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, HashMap<String, JobItems> jobItems,
-	List<JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, String bossbar, Long rejoinCD) {
+	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, String bossbar, Long rejoinCD) {
 	this.jobName = jobName;
 	this.jobShortName = jobShortName;
 	this.description = description;
@@ -379,8 +379,12 @@ public class Job {
      * Get the limited item nodes for this job
      * @return Limited items for this job
      */
-    public List<JobLimitedItems> getLimitedItems() {
-	return Collections.unmodifiableList(jobLimitedItems);
+    public HashMap<String, JobLimitedItems> getLimitedItems() {
+	return jobLimitedItems;
+    }
+
+    public JobLimitedItems getLimitedITems(String key) {
+    return jobLimitedItems.get(key.toLowerCase());
     }
 
     public String getBossbar() {

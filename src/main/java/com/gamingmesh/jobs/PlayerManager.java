@@ -545,7 +545,7 @@ public class PlayerManager {
 		} else
 		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	}
 
 	String message;
@@ -590,7 +590,7 @@ public class PlayerManager {
 		    } else
 		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 	    // user would skill up
 	    if (Jobs.getGCManager().isBroadcastingSkillups())
@@ -707,9 +707,8 @@ public class PlayerManager {
 	    for (JobProgression progression : jPlayer.getJobProgression()) {
 		String jobName = progression.getJob().getName();
 		Job job = Jobs.getJob(jobName);
-		if (job != null) {
+		if (job != null)
 		    progression.setJob(job);
-		}
 	    }
 	    if (jPlayer.isOnline()) {
 		jPlayer.reloadHonorific();
@@ -727,12 +726,18 @@ public class PlayerManager {
 
     public BoostMultiplier getItemBoostNBT(Player player, Job prog) {
 
-	HashMap<Job, ItemBonusCache> cj = cache.get(player.getUniqueId());
+	HashMap<Job, ItemBonusCache> cj = null;
 
 	if (cj == null) {
 	    cj = new HashMap<>();
 	    cache.put(player.getUniqueId(), cj);
 	}
+
+	if (cache.get(player.getUniqueId()) != null)
+	    cj = cache.get(player.getUniqueId());
+
+	if (cj == null)
+	    return null;
 
 	ItemBonusCache c = cj.get(prog);
 	if (c == null) {

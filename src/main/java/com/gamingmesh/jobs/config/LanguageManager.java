@@ -63,12 +63,12 @@ public class LanguageManager {
 		    listOfCommands.add(name);
 		}
 	    }
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	} finally {
 	    if (jarFile != null)
 		try {
 		    jarFile.close();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
 	}
 	return listOfCommands;
@@ -342,7 +342,7 @@ public class LanguageManager {
 	    c.get("command.archive.error.nojob", "There is no jobs saved.");
 
 	    c.get("command.give.help.info", "Gives item by jobs name and item category name. Player name is optional");
-	    c.get("command.give.help.args", "[playername] [jobname] [jobitemname]");
+	    c.get("command.give.help.args", "[playername] [jobname] [items/limiteditems] [jobitemname]");
 	    Jobs.getGCManager().commandArgs.put("give", Arrays.asList("[playername]", "[jobname]", "[jobitemname]"));
 	    c.get("command.give.output.notonline", "&4Player [%playername%] is not online!");
 	    c.get("command.give.output.noitem", "&4Can't find any item by given name!");

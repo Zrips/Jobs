@@ -103,7 +103,7 @@ command:
       finalExplanation: ' &eNem tartalmazza a Petpay és az idéző bónusz/penaltyFinal bónuszt'
   convert:
     help:
-      info: 'Adatbázis-rendszert alakít át egyik rendszerről a másikra. Ha jelenleg SQLite fut, ez átalakul MySQL-re és vise versa.'
+      info: 'Adatbázis-rendszert alakít át egyik rendszerről a másikra. Ha jelenleg SQLite fut, ez átalakul MySQL-re és oda-vissza.'
       args: ''
   limit:
     help:
@@ -118,7 +118,7 @@ command:
       pointsLimit: '&ePont limit: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4Elérted a pénzkorlátot az adott időben!'
       reachedmoneylimit2: '&eA korlátot ellenőrizheted a &2/jobs limit &eparanccsal.'
-      reachedmoneylimit3: '&eA szerzett pénz most már exponenciálisan csökkentve... De még mindig egy kicsit keres!!'
+      reachedmoneylimit3: '&eA szerzett pénz most már exponenciálisan csökkentve... De még mindig egy kicsit keres!'
       reachedexplimit: '&4Elérted a határidőt a meghatározott időben!'
       reachedexplimit2: '&eA korlátot ellenőrizheted a &2/jobs limit &eparanccsal.'
       reachedpointslimit: '&4Elérted a határidőt a meghatározott időben!'
@@ -247,7 +247,7 @@ command:
   give:
     help:
       info: 'A tárgyakat a feladatok neve és az elemek kategóriája alapján adja meg. A játékos neve opcionális.'
-      args: '[playername] [jobname] [jobitemname]'
+      args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
       notonline: '&4[%playername%] nem elérhető!'
       noitem: '&4Nincs találat ezzel a névvel lévő tárgyról!'

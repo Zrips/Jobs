@@ -100,7 +100,7 @@ public class ConfigManager {
 	    conf.load(s);
 	    if (s != null)
 		s.close();
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
 	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
 	    Jobs.getPluginLogger().severe("Check your config for formatting issues!");
@@ -276,8 +276,8 @@ public class ConfigManager {
 		Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE. Please update your configuration.");
 		Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 		Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
-		material = CMIMaterial.LEGACY_GLOWING_REDSTON_ORE;
-	    } else if (material == CMIMaterial.LEGACY_GLOWING_REDSTON_ORE && actionType == ActionType.BREAK && Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+		material = CMIMaterial.LEGACY_GLOWING_REDSTONE_ORE;
+	    } else if (material == CMIMaterial.LEGACY_GLOWING_REDSTONE_ORE && actionType == ActionType.BREAK && Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 		Jobs.getPluginLogger().warning("Job " + jobName + " is using GLOWING_REDSTONE_ORE instead of REDSTONE_ORE.");
 		Jobs.getPluginLogger().warning("Automatically changing block to REDSTONE_ORE. Please update your configuration.");
 		material = CMIMaterial.REDSTONE_ORE;
@@ -420,7 +420,7 @@ public class ConfigManager {
 	try {
 	    conf.load(s);
 	    s.close();
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
 	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
 	    Jobs.getPluginLogger().severe("Check your config for formatting issues!");
@@ -522,7 +522,7 @@ public class ConfigManager {
 		maxExpEquation.setVariable("numjobs", 1);
 		maxExpEquation.setVariable("joblevel", 1);
 		maxExpEquation.getValue();
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid leveling-progression-equation property. Skipping job!");
 		continue;
 	    }
@@ -537,7 +537,7 @@ public class ConfigManager {
 		    incomeEquation.setVariable("joblevel", 1);
 		    incomeEquation.setVariable("baseincome", 1);
 		    incomeEquation.getValue();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid income-progression-equation property. Skipping job!");
 		    continue;
 		}
@@ -552,7 +552,7 @@ public class ConfigManager {
 		expEquation.setVariable("joblevel", 1);
 		expEquation.setVariable("baseexperience", 1);
 		expEquation.getValue();
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid experience-progression-equation property. Skipping job!");
 		continue;
 	    }
@@ -567,7 +567,7 @@ public class ConfigManager {
 		    pointsEquation.setVariable("joblevel", 1);
 		    pointsEquation.setVariable("basepoints", 1);
 		    pointsEquation.getValue();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid points-progression-equation property. Skipping job!");
 		    continue;
 		}
@@ -634,7 +634,7 @@ public class ConfigManager {
 			    try {
 				OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
 				skullMeta.setOwner(offPlayer.getName());
-			    } catch (Exception e) {
+			    } catch (Throwable e) {
 			    }
 			} else
 			    skullMeta.setOwner(skullOwner);
@@ -664,7 +664,7 @@ public class ConfigManager {
 			    try {
 				OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
 				skullMeta.setOwner(offPlayer.getName());
-			    } catch (Exception e) {
+			    } catch (Throwable e) {
 			    }
 			} else
 			    skullMeta.setOwner(skullOwner);
@@ -806,7 +806,7 @@ public class ConfigManager {
 	    }
 
 	    // Limited Items
-	    ArrayList<JobLimitedItems> jobLimitedItems = new ArrayList<>();
+	    HashMap<String, JobLimitedItems> jobLimitedItems = new HashMap<>();
 	    ConfigurationSection LimitedItemsSection = jobSection.getConfigurationSection("limitedItems");
 	    if (LimitedItemsSection != null) {
 		for (String itemKey : LimitedItemsSection.getKeys(false)) {
@@ -850,7 +850,7 @@ public class ConfigManager {
 
 		    int level = itemSection.getInt("level");
 
-		    jobLimitedItems.add(new JobLimitedItems(node, id, name, lore, enchants, level));
+		    jobLimitedItems.put(node.toLowerCase(), new JobLimitedItems(node, id, 0, 1, name, lore, enchants, level));
 		}
 	    }
 
@@ -904,7 +904,7 @@ public class ConfigManager {
 			quest.setDescription(desc);
 			quests.add(quest);
 
-		    } catch (Exception e) {
+		    } catch (Throwable e) {
 			Jobs.consoleMsg("&c[Jobs] Can't load " + one + " quest for " + jobName);
 			e.printStackTrace();
 		    }
@@ -1039,8 +1039,8 @@ public class ConfigManager {
 				Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE. Please update your configuration.");
 				Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 				Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
-				material = CMIMaterial.LEGACY_GLOWING_REDSTON_ORE;
-			    } else if (material == CMIMaterial.LEGACY_GLOWING_REDSTON_ORE && actionType == ActionType.BREAK && Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+				material = CMIMaterial.LEGACY_GLOWING_REDSTONE_ORE;
+			    } else if (material == CMIMaterial.LEGACY_GLOWING_REDSTONE_ORE && actionType == ActionType.BREAK && Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 				Jobs.getPluginLogger().warning("Job " + job.getName() + " is using GLOWING_REDSTONE_ORE instead of REDSTONE_ORE.");
 				Jobs.getPluginLogger().warning("Automatically changing block to REDSTONE_ORE. Please update your configuration.");
 				material = CMIMaterial.REDSTONE_ORE;

@@ -310,7 +310,7 @@ public class ShopManager {
 		        @SuppressWarnings("deprecation")
 		        OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
 		        skullMeta.setOwner(offPlayer.getName());
-		    } catch (Exception e) {
+		    } catch (Throwable e) {
 		        e.printStackTrace();
 		    }
 		}
