@@ -18,7 +18,7 @@ general:
     'true': '&2Tõene'
     'false': '&cVäär'
   admin:
-    error: '&Käskluses esines viga.'
+    error: '&cKäskluses esines viga.'
     success: '&eKäsklus viidi täide.'
   error:
     noHelpPage: '&cSellise leheküljega abileht puudub!'
