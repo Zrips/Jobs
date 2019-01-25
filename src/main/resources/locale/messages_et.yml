@@ -249,7 +249,7 @@ command:
   give:
     help:
       info: Annab eseme ametinime ja eseme kategooria järgi. Mängija nimi on valikuline. 
-      args: '[playername] [jobname] [jobitemname]'
+      args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
       notonline: '&4Mängija [%playername%] pole võrgus!'
       noitem: '&4Antud nimele vastavaid esemeid ei leitud!'
