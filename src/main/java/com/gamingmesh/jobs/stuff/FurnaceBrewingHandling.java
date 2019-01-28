@@ -289,7 +289,7 @@ public class FurnaceBrewingHandling {
 
     public static ownershipFeedback registerBrewingStand(Player player, Block block) {
 
-	if (!CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND))
+	if (!CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) && !CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BREWING_STAND))
 	    return ownershipFeedback.invalid;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);

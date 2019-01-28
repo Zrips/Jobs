@@ -1458,7 +1458,7 @@ public class JobsPaymentListener implements Listener {
 		    "[current]", jPlayer.getFurnaceCount(),
 		    "[max]", jPlayer.getMaxFurnacesAllowed() == 0 ? "-" : jPlayer.getMaxFurnacesAllowed()));
 	    }
-	} else if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND)) {
+	} else if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) || CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BREWING_STAND)) {
 	    if (!Jobs.getGCManager().isBrewingStandsReassign())
 			return;
 
