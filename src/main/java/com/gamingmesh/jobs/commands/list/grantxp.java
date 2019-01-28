@@ -21,6 +21,10 @@ public class grantxp implements Cmd {
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+	if (jPlayer == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
+	    return true;
+	}
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
@@ -30,17 +34,12 @@ public class grantxp implements Cmd {
 	double xpGained;
 	try {
 	    xpGained = Double.parseDouble(args[2]);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    return true;
 	}
 	if (xpGained <= 0) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
-	    return true;
-	}
-
-	if (jPlayer == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
 	}
 

@@ -104,9 +104,9 @@ public class JobsPlayer {
     }
 
     public PaymentData getPaymentLimit() {
-	if (paymentLimits == null) {
+	if (paymentLimits == null)
 	    paymentLimits = Jobs.getJobsDAO().getPlayersLimits(this);
-	}
+
 	if (paymentLimits == null)
 	    paymentLimits = new PaymentData();
 	return paymentLimits;
@@ -124,21 +124,21 @@ public class JobsPlayer {
 	PaymentData data = getPaymentLimit();
 	Integer value = this.limits.get(type);
 	if (data.IsReachedLimit(type, value == null ? 0 : value)) {
-	    if (player.isOnline() && !data.isInformed() && !data.isReseted()) {
-			if(Jobs.getGCManager().useMaxPaymentCurve) {
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit"));
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit2"));
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit3"));
-			}else {
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit"));
-				player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + type.getName().toLowerCase() + "limit2"));
-			}
-			data.setInformed();
+	    String name = type.getName().toLowerCase();
 
+	    if (player.isOnline() && !data.isInformed() && !data.isReseted()) {
+		if (Jobs.getGCManager().useMaxPaymentCurve) {
+		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit"));
+		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit2"));
+		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit3"));
+		} else {
+		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit"));
+		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit2"));
 		}
-	    if (data.IsAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline()) {
-		Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(data.GetLeftTime(type))));
+		data.setInformed();
 	    }
+	    if (data.IsAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline())
+		Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("command.limit.output." + name + "time", "%time%", TimeManage.to24hourShort(data.GetLeftTime(type))));
 	    if (data.isReseted())
 		data.setReseted(false);
 	    return false;
@@ -196,9 +196,9 @@ public class JobsPlayer {
      * @return the player
      */
     public Player getPlayer() {
-	if (this.playerUUID != null) {
-	    return Bukkit.getPlayer(this.playerUUID);
-	}
+	if (playerUUID != null)
+	    return Bukkit.getPlayer(playerUUID);
+
 	return null;
     }
 
@@ -365,7 +365,7 @@ public class JobsPlayer {
      * @return the playerUUID
      */
     public UUID getPlayerUUID() {
-	return this.playerUUID;
+	return playerUUID;
     }
 
     public void setPlayerUUID(UUID playerUUID) {
@@ -419,9 +419,9 @@ public class JobsPlayer {
 	Job job = jp.getJob();
 	int maxLevel = this.getMaxJobLevelAllowed(job);
 	if (jp.getLevel() == maxLevel) {
-	    if (Jobs.getGCManager().fixAtMaxLevel) {
+	    if (Jobs.getGCManager().fixAtMaxLevel)
 		level = jp.getLevel();
-	    } else {
+	    else {
 		level = jp.getLevel();
 		level = (int) ((level - (level * (Jobs.getGCManager().levelLossPercentageFromMax / 100.0))));
 		if (level < 1)
@@ -446,9 +446,8 @@ public class JobsPlayer {
 	    if (jp.getLevel() == maxLevel) {
 		if (!Jobs.getGCManager().fixAtMaxLevel)
 		    exp = (exp - (exp * (Jobs.getGCManager().levelLossPercentageFromMax / 100.0)));
-	    } else {
+	    } else
 		exp = (exp - (exp * (Jobs.getGCManager().levelLossPercentage / 100.0)));
-	    }
 	}
 	return exp.intValue();
     }
@@ -461,7 +460,7 @@ public class JobsPlayer {
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
 	if (prog != null) {
-	    progression.remove(prog);
+	    progression.remove(prog);//TODO
 	    reloadMaxExperience();
 	    reloadLimits();
 	    reloadHonorific();
@@ -502,9 +501,9 @@ public class JobsPlayer {
 
 	int maxLevel = job.getMaxLevel(this);
 
-	if (maxLevel > 0 && newLevel > maxLevel) {
+	if (maxLevel > 0 && newLevel > maxLevel)
 	    newLevel = maxLevel;
-	}
+
 	setLevel(job, newLevel);
 	Jobs.getPlayerManager().performCommandOnLevelUp(this, job, newLevel - 1);
 //	}
@@ -523,9 +522,9 @@ public class JobsPlayer {
 	if (levels <= 0)
 	    return;
 	int newLevel = prog.getLevel() - levels;
-	if (newLevel < 1) {
+	if (newLevel < 1)
 	    newLevel = 1;
-	}
+
 	setLevel(job, newLevel);
 //	}
     }
@@ -565,9 +564,9 @@ public class JobsPlayer {
 
 		int maxLevel = getMaxJobLevelAllowed(newjob);
 
-		if (newjob.getMaxLevel() > 0 && prog.getLevel() > maxLevel) {
+		if (newjob.getMaxLevel() > 0 && prog.getLevel() > maxLevel)
 		    prog.setLevel(maxLevel);
-		}
+
 		reloadMaxExperience();
 		reloadLimits();
 		reloadHonorific();

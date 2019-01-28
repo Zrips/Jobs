@@ -383,8 +383,8 @@ public class Job {
 	return jobLimitedItems;
     }
 
-    public JobLimitedItems getLimitedITems(String key) {
-    return jobLimitedItems.get(key.toLowerCase());
+    public JobLimitedItems getLimitedItems(String key) {
+	return jobLimitedItems.get(key.toLowerCase());
     }
 
     public String getBossbar() {

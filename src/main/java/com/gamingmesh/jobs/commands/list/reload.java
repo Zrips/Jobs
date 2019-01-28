@@ -13,7 +13,7 @@ public class reload implements Cmd {
 	try {
 	    Jobs.reload();
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    Jobs.consoleMsg("&4There was an error when performing a reload: ");
 	    e.printStackTrace();

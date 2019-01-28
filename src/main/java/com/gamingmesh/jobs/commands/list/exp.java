@@ -24,6 +24,9 @@ public class exp implements Cmd {
 	    return true;
 	}
 
+	if (!Jobs.hasPermission(sender, "jobs.command.exp", true))
+	    return true;
+
 	Action action = Action.Add;
 	int amount = 0;
 	String playerName = null;
@@ -64,9 +67,6 @@ public class exp implements Cmd {
 	    return true;
 	}
 
-	if (!Jobs.hasPermission(jPlayer.getPlayer(), "jobs.command.exp", true))
-	    return true;
-
 	if (job == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
@@ -75,7 +75,6 @@ public class exp implements Cmd {
 	try {
 	    // check if player already has the job
 	    if (jPlayer.isInJob(job)) {
-
 		JobProgression prog = jPlayer.getJobProgression(job);
 		switch (action) {
 		case Add:
@@ -90,14 +89,13 @@ public class exp implements Cmd {
 		}
 
 		Player player = jPlayer.getPlayer();
-		if (player != null) {
+		if (player != null)
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.exp.output.target", "%jobname%", job.getChatColor() + job.getName(), "%level%", prog.getLevel(), "%exp%", prog.getExperience()));
-		}
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    } else
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.exp.error.nojob"));
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;

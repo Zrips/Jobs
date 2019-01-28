@@ -35,12 +35,11 @@ public class fireall implements Cmd {
 	try {
 	    Jobs.getPlayerManager().leaveAllJobs(jPlayer);
 	    Player player = jPlayer.getPlayer();
-	    if (player != null) {
+	    if (player != null)
 		player.sendMessage(Jobs.getLanguage().getMessage("command.fireall.output.target"));
-	    }
 
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;

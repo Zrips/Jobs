@@ -72,11 +72,10 @@ public class editjobs implements Cmd {
 	    }
 
 	    if (args.length == 4) {
-
 		Integer page = null;
 		try {
 		    page = Integer.parseInt(args[3]);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
 
 		if (page != null) {
@@ -92,7 +91,6 @@ public class editjobs implements Cmd {
 		    showPath(player, job, actionT, null);
 		    PageInfo pi = new PageInfo(15, action.size(), page);
 		    for (JobInfo one : action) {
-
 			if (!pi.isEntryOk())
 			    continue;
 
@@ -169,9 +167,7 @@ public class editjobs implements Cmd {
 	    }
 	    break;
 	case "modify":
-
 	    if (args.length == 5) {
-
 		Job job = Jobs.getJob(args[1]);
 
 		if (job == null)
@@ -212,7 +208,6 @@ public class editjobs implements Cmd {
 	    }
 
 	    if (args.length == 6) {
-
 		Job job = Jobs.getJob(args[1]);
 
 		if (job == null)
@@ -249,7 +244,7 @@ public class editjobs implements Cmd {
 
 		try {
 		    value = Double.parseDouble(args[5]);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    return false;
 		}
 
@@ -284,7 +279,6 @@ public class editjobs implements Cmd {
 	    // remove miner break stone:1
 
 	    if (args.length == 4) {
-
 		Job job = Jobs.getJob(args[1]);
 
 		if (job == null)
@@ -327,7 +321,6 @@ public class editjobs implements Cmd {
 	    // add miner break stone:1
 
 	    if (args.length == 3) {
-
 		Job job = Jobs.getJob(args[1]);
 
 		if (job == null)
@@ -358,7 +351,6 @@ public class editjobs implements Cmd {
 	    }
 
 	    if (args.length == 4) {
-
 		Job job = Jobs.getJob(args[1]);
 
 		if (job == null)

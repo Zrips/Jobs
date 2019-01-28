@@ -39,12 +39,11 @@ public class fire implements Cmd {
 	try {
 	    Jobs.getPlayerManager().leaveJob(jPlayer, job);
 	    Player player = jPlayer.getPlayer();
-	    if (player != null) {
+	    if (player != null)
 		player.sendMessage(Jobs.getLanguage().getMessage("command.fire.output.target", "%jobname%", job.getChatColor() + job.getName()));
-	    }
 
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;

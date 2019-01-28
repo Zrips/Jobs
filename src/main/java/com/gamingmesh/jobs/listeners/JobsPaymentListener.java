@@ -745,6 +745,12 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = (Player) event.getWhoClicked();
 
+	//Check if inventory is full and using shift click, possible money dupping fix
+	if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
+	    player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
+	    return;
+	}
+
 	ItemStack resultStack = event.getCurrentItem();
 
 	if (resultStack == null)

@@ -47,7 +47,7 @@ public class employ implements Cmd {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.employ.output.target", "%jobname%", job.getChatColor() + job.getName()));
 
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;

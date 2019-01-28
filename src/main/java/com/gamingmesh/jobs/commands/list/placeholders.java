@@ -25,7 +25,7 @@ public class placeholders implements Cmd {
 	if (args.length > 0 && args[0].startsWith("-p:")) {
 	    try {
 		page = Integer.parseInt(args[0].substring("-p:".length()));
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 	    }
 	}
 
@@ -81,9 +81,8 @@ public class placeholders implements Cmd {
 	    rm.show(sender);
 	}
 
-	if (player != null) {
+	if (player != null)
 	    plugin.ShowPagination(sender, pi, "jobs placeholders", "-p:");
-	}
 	return true;
     }
 }

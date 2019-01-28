@@ -20,14 +20,14 @@ public class promote implements Cmd {
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+	if (jPlayer == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
+	    return true;
+	}
 
 	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
-	    return true;
-	}
-	if (jPlayer == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
 	}
 	try {
@@ -37,15 +37,14 @@ public class promote implements Cmd {
 		Jobs.getPlayerManager().promoteJob(jPlayer, job, levelsGained);
 
 		Player player = jPlayer.getPlayer();
-		if (player != null) {
+		if (player != null)
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.promote.output.target",
 			"%jobname%", job.getChatColor() + job.getName(),
 			"%levelsgained%", levelsGained));
-		}
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    }
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;

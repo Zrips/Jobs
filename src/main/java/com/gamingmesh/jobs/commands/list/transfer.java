@@ -49,7 +49,7 @@ public class transfer implements Cmd {
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    }
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;
