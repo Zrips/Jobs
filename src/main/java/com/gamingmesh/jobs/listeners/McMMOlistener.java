@@ -55,6 +55,9 @@ public class McMMOlistener implements Listener {
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
+	    return;
+
 	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
     }
 
@@ -83,9 +86,8 @@ public class McMMOlistener implements Listener {
 	    return 0D;
 
 	HashMap<AbilityType, Long> InfoMap = map.get(player.getName());
-	if (InfoMap == null) {
+	if (InfoMap == null)
 	    return 0D;
-	}
 
 	Long t = InfoMap.get(AbilityType.TREE_FELLER);
 	if (t != null) {

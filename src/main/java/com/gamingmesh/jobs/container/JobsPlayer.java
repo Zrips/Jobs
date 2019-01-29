@@ -460,7 +460,7 @@ public class JobsPlayer {
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
 	if (prog != null) {
-	    progression.remove(prog);//TODO
+	    progression.remove(prog);
 	    reloadMaxExperience();
 	    reloadLimits();
 	    reloadHonorific();
