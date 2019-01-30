@@ -313,6 +313,11 @@ public class ConfigReader extends YamlConfiguration {
 	return config.getInt(path);
     }
 
+    public int get(String path, Integer boo) {
+	path = process(path, boo);
+	return config.getInt(path);
+    }
+
     public List<Integer> getIntList(String path, List<Integer> list) {
 	path = process(path, list);
 	return config.getIntegerList(path);

@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.config;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -13,10 +12,8 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.container.LocaleReader;
+import com.gamingmesh.jobs.CMILib.ConfigReader;
 
 public class LanguageManager {
 
@@ -116,12 +113,15 @@ public class LanguageManager {
 		f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    }
 
-	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
-	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
-
-	    LocaleReader c = new LocaleReader(config, writer);
-
-	    c.getC().options().copyDefaults(true);
+	    ConfigReader c = null;
+	    try {
+		c = new ConfigReader(f);
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
+	    if (c == null)
+		continue;
+	    c.copyDefaults(true);
 
 	    Jobs.getGCManager().commandArgs.clear();
 
@@ -309,7 +309,6 @@ public class LanguageManager {
 	    c.get("command.placeholders.output.list", "&e[place]. &7[placeholder]");
 	    c.get("command.placeholders.output.outputResult", " &eresult: &7[result]");
 	    c.get("command.placeholders.output.parse", "&6[placeholder] &7by [source] &6result &8|&f[result]&8|");
-
 
 	    c.get("command.entitylist.help.info", "Shows all possible entities that can be used with the plugin.");
 	    c.get("command.entitylist.help.args", "");
@@ -677,11 +676,7 @@ public class LanguageManager {
 	    Jobs.getGCManager().keys = new ArrayList<>(c.getC().getConfigurationSection("signs.secondline").getKeys(false));
 
 	    // Write back config
-	    try {
-		c.getW().save(f);
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    c.save();
 	}
     }
 }

@@ -3,13 +3,14 @@ package com.gamingmesh.jobs.config;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.container.LocaleReader;
+import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -49,35 +50,26 @@ public class TitleManager {
     synchronized void load() {
 	this.titles.clear();
 
-	File f = new File(Jobs.getFolder(), "titleConfig.yml");
-	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
-	CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
+	ConfigReader c = null;
+	try {
+	    c = new ConfigReader("titleConfig.yml");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	if (c == null)
+	    return;
+	c.copyDefaults(true);
 
-	LocaleReader c = new LocaleReader(config, writer);
-
-	StringBuilder header = new StringBuilder()
-	    .append("Title configuration")
-	    .append(System.getProperty("line.separator"))
-	    .append(System.getProperty("line.separator"))
-	    .append("Stores the titles people gain at certain levels.")
-	    .append(System.getProperty("line.separator"))
-	    .append("Each title requres to have a name, short name (used when the player has more than")
-	    .append(System.getProperty("line.separator"))
-	    .append("1 job) the colour of the title and the level requrirement to attain the title.")
-	    .append(System.getProperty("line.separator"))
-	    .append(System.getProperty("line.separator"))
-	    .append("It is recommended but not required to have a title at level 0.")
-	    .append(System.getProperty("line.separator"))
-	    .append(System.getProperty("line.separator"))
-	    .append("Titles are completely optional.")
-	    .append(System.getProperty("line.separator"))
-	    .append("Posible variable are {level} to add current jobs level.")
-	    .append(System.getProperty("line.separator"))
-	    .append("Optionaly you can set different titles based by job.")
-	    .append(System.getProperty("line.separator"))
-	    .append("  JobName: Miner");
-	c.getC().options().header(header.toString());
-	c.getC().options().copyDefaults(true);
+	c.header(Arrays.asList(
+	    "Title configuration",
+	    "Stores the titles people gain at certain levels.",
+	    "Each title requres to have a name, short name (used when the player has more than",
+	    "1 job) the colour of the title and the level requrirement to attain the title.",
+	    "It is recommended but not required to have a title at level 0.",
+	    "Titles are completely optional.",
+	    "Posible variable are {level} to add current jobs level.",
+	    "Optionaly you can set different titles based by job.",
+	    "  JobName: Miner"));
 
 	ConfigurationSection titleSection = c.getC().getConfigurationSection("Titles");
 	if (titleSection == null) {
@@ -138,11 +130,7 @@ public class TitleManager {
 		ChatColor.matchColor(c.get("Titles.Legendary.ChatColour", "BLACK")),
 		c.get("Titles.Legendary.levelReq", 200),
 		null));
-	    try {
-		c.getC().save(f);
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    c.save();
 	} else
 	    for (String titleKey : titleSection.getKeys(false)) {
 		String jobName = null;
@@ -176,6 +164,6 @@ public class TitleManager {
 		this.titles.add(new Title(titleName, titleShortName, titleColor, levelReq, jobName));
 	    }
 	if (titles.size() != 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + titles.size() + " titles!");
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + titles.size() + " titles!");
     }
 }

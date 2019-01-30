@@ -10,10 +10,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.JobInfo;
-import com.gamingmesh.jobs.container.LocaleReader;
 import com.gamingmesh.jobs.container.NameList;
 
 public class NameTranslatorManager {
@@ -253,16 +253,19 @@ public class NameTranslatorManager {
 
 	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
 	    if ((f.length() / 1024) > 1024) {
-			f.delete();
-			f = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+		f.delete();
+		f = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
 	    }
+	    ConfigReader c = null;
+	    try {
+		c = new ConfigReader(f);
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
+	    if (c == null)
+		continue;
 
-	    YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
-	    CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
-
-	    LocaleReader c = new LocaleReader(config, writer);
-
-	    c.getC().options().copyDefaults(true);
+	    c.copyDefaults(true);
 
 	    for (CMIMaterial one : CMIMaterial.values()) {
 		if (one.getMaterial() == null)
@@ -444,30 +447,30 @@ public class NameTranslatorManager {
 	    c.get("ColorList.13-green", "&2Green");
 	    c.get("ColorList.14-red", "&cRed");
 	    c.get("ColorList.15-black", "&0Black");
-/**	    for (colorNames cn : colorNames.values()) {
-		if (cn.getName() == null)
-		    continue;
-
-		String n = cn.getId() + (cn.getId() == -1 ? "" : ":" + cn.getName());
-
-		String name = null;
-
-		if (c.getC().isConfigurationSection("ColorList." + n)) {
-		    name = c.getC().getString("ColorList." + n + ".Name");
-		}
-
-		if (name == null) {
-		    n = cn.getId() + "-" + cn.toString();
-		    if (c.getC().isConfigurationSection("ColorList." + n)) {
-			name = c.getC().getString("ColorList." + n);
-		    }
-		}
-
-		if (name == null) {
-		    name = cn.getName();
-		}
-
-		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
+	    /**	    for (colorNames cn : colorNames.values()) {
+	    		if (cn.getName() == null)
+	    		    continue;
+	    
+	    		String n = cn.getId() + (cn.getId() == -1 ? "" : ":" + cn.getName());
+	    
+	    		String name = null;
+	    
+	    		if (c.getC().isConfigurationSection("ColorList." + n)) {
+	    		    name = c.getC().getString("ColorList." + n + ".Name");
+	    		}
+	    
+	    		if (name == null) {
+	    		    n = cn.getId() + "-" + cn.toString();
+	    		    if (c.getC().isConfigurationSection("ColorList." + n)) {
+	    			name = c.getC().getString("ColorList." + n);
+	    		    }
+	    		}
+	    
+	    		if (name == null) {
+	    		    name = cn.getName();
+	    		}
+	    
+	    		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
 	    }*/
 
 	    for (CMIMaterial one : CMIMaterial.values()) {
@@ -499,11 +502,7 @@ public class NameTranslatorManager {
 		c.get("PotionNamesList." + one.getLegacyData() + "-" + one.toString(), name);
 	    }
 
-	    try {
-		c.getW().save(f);
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    c.save();
 	}
 	readFile();
     }

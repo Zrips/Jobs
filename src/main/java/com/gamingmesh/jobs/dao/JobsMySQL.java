@@ -11,11 +11,11 @@ import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 public class JobsMySQL extends JobsDAO {
     private String database;
     @SuppressWarnings("unused")
-	private Jobs plugin;
+    private Jobs plugin;
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
 	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&autoReConnect=" + autoReconnect + "&useSSL=" + ssl
-			+ "&verifyServerCertificate=" + certificate, username, password, prefix);
+	    + "&verifyServerCertificate=" + certificate, username, password, prefix);
 	this.plugin = plugin;
 	this.database = database;
 	this.setDbType(DataBaseType.MySQL);
@@ -122,17 +122,19 @@ public class JobsMySQL extends JobsDAO {
 	    Jobs.consoleMsg("&cCould not create table: query is empty or null.");
 	    return false;
 	}
-
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return false;
 	try {
-	    statement = getConnection().createStatement();
+	    statement = conn.createStatement();
 	    statement.execute(query);
 	    statement.close();
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("&cCould not create table, SQLException: " + e.getMessage());
-	    close(statement);
+	    this.close(statement);
 	    return false;
 	} finally {
-	    close(statement);
+	    this.close(statement);
 	}
 	return true;
     }
@@ -140,19 +142,41 @@ public class JobsMySQL extends JobsDAO {
     @Override
     public boolean isTable(String table) {
 	Statement statement;
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return false;
 	try {
-	    statement = getConnection().createStatement();
+	    statement = conn.createStatement();
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("&cCould not check if its table, SQLException: " + e.getMessage());
 	    return false;
 	}
 	try {
-	    statement.executeQuery("SELECT * FROM `" + table+"`;");
-	    statement.close();
-	    return true;
+	    ResultSet tables = conn.getMetaData().getTables(null, null, table, null);
+	    if (tables.next()) {
+		tables.close();
+		return true;
+	    }
+	    tables.close();
+	    return false;
 	} catch (SQLException e) {
-//	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM " + table + "|");
-	    close(statement);
+	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
+	}
+	try {
+
+	    PreparedStatement insert = conn.prepareStatement("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';");
+	    ResultSet res = insert.executeQuery();
+	    if (res.next()) {
+		res.close();
+		insert.close();
+		return true;
+	    }
+	    res.close();
+	    insert.close();
+	    return false;
+	} catch (SQLException e) {
+	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
+	    JobsDAO.close(statement);
 	    return false;
 	}
     }
