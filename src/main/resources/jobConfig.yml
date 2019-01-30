@@ -199,7 +199,17 @@ Jobs:
       13:
         # you can use minuses to take away money if the player break this block
         income: -1.0
-        experience: -1.0
+        experience: -1.0        
+    # payment for stripping wood logs, only for 1.13+ servers
+    StripLogs:
+      STRIPPED_ACACIA_LOG:
+        income: 1.0
+        points: 1.0
+        experience: 1.0
+      STRIPPED_OAK_LOG:
+        income: 1.0
+        points: 1.0
+        experience: 1.0
     # payment for drinking a potion
     Drink:
       potion:

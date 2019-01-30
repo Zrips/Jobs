@@ -381,6 +381,8 @@ public class LanguageManager {
 	    c.get("command.info.output.tntbreak.none", "%jobname% does not get money for breaking blocks with TNT.");
 	    c.get("command.info.output.place.info", "&ePlace");
 	    c.get("command.info.output.place.none", "%jobname% does not get money for placing blocks.");
+	    c.get("command.info.output.striplogs.info", "&eStrip logs");
+	    c.get("command.info.output.striplogs.none", "%jobname% does not get money for stripping logs.");
 	    c.get("command.info.output.kill.info", "&eKill");
 	    c.get("command.info.output.kill.none", "%jobname% does not get money for killing monsters.");
 	    c.get("command.info.output.mmkill.info", "&eMMKill");

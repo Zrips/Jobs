@@ -47,6 +47,7 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
@@ -83,6 +84,7 @@ import org.bukkit.projectiles.ProjectileSource;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.actions.BlockActionInfo;
 import com.gamingmesh.jobs.actions.CustomKillInfo;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
@@ -97,6 +99,7 @@ import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -1438,7 +1441,7 @@ public class JobsPaymentListener implements Listener {
 
 	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) || CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE)) {
 	    if (!Jobs.getGCManager().isFurnacesReassign())
-			return;
+		return;
 
 	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(event.getPlayer(), block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
@@ -1466,7 +1469,7 @@ public class JobsPaymentListener implements Listener {
 	    }
 	} else if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) || CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BREWING_STAND)) {
 	    if (!Jobs.getGCManager().isBrewingStandsReassign())
-			return;
+		return;
 
 	    ownershipFeedback done = FurnaceBrewingHandling.registerBrewingStand(event.getPlayer(), block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
@@ -1491,6 +1494,25 @@ public class JobsPaymentListener implements Listener {
 		Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.newBrewingRegistration",
 		    "[current]", jPlayer.getBrewingStandCount(),
 		    "[max]", jPlayer.getMaxBrewingStandsAllowed() == 0 ? "-" : jPlayer.getMaxBrewingStandsAllowed()));
+	    }
+	} else if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) &&
+	    block.getType().toString().endsWith("_LOG") &&
+	    !block.getType().toString().startsWith("STRIPPED_") &&
+	    event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+	    ItemStack iih = Jobs.getNms().getItemInMainHand(event.getPlayer());
+	    if (iih.getType().toString().endsWith("_AXE")) {
+		final Location loc = event.getClickedBlock().getLocation();
+		final JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		    @Override
+		    public void run() {
+			Block b = loc.getBlock();
+			if (b.getType().toString().startsWith("STRIPPED_")) {
+			    Jobs.action(jPlayer, new BlockActionInfo(b, ActionType.STRIPLOGS), b);
+			}
+			return;
+		    }
+		}, 1);
 	    }
 	}
     }

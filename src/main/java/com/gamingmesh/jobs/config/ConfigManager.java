@@ -206,6 +206,7 @@ public class ConfigManager {
 	case CRAFT:
 	case BREW:
 	case BREAK:
+	case STRIPLOGS:
 	    material = CMIMaterial.get(myKey + (subType));
 
 	    if (material == null)
@@ -254,7 +255,7 @@ public class ConfigManager {
 	    }
 
 	    // Break and Place actions MUST be blocks
-	    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE) {
+	    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
 		if (!material.isBlock()) {
 		    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
 			+ "(" + myKey + ")! Material must be a block!");
@@ -969,6 +970,7 @@ public class ConfigManager {
 			case CRAFT:
 			case BREW:
 			case BREAK:
+			case STRIPLOGS:
 			    material = CMIMaterial.get(myKey + (subType));
 
 			    if (material == null)
@@ -1017,7 +1019,7 @@ public class ConfigManager {
 			    }
 
 			    // Break and Place actions MUST be blocks
-			    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE) {
+			    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
 				if (!material.isBlock()) {
 				    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + material
 					+ " (" + key + ")! Material must be a block!");
@@ -1134,6 +1136,7 @@ public class ConfigManager {
 			}
 
 			if (type == null) {
+			    Debug.D("type null");
 			    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
 			    continue;
 			}
