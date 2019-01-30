@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.listeners;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -15,7 +16,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
@@ -25,7 +25,7 @@ public class McMMOlistener implements Listener {
     private Jobs plugin;
     public boolean mcMMOPresent = false;
 
-    HashMap<String, HashMap<AbilityType, Long>> map = new HashMap<>();
+    HashMap<UUID, HashMap<String, Long>> map = new HashMap<>();
 
     public McMMOlistener(Jobs plugin) {
 	this.plugin = plugin;
@@ -63,20 +63,21 @@ public class McMMOlistener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void OnAbilityOn(McMMOPlayerAbilityActivateEvent event) {
-	HashMap<AbilityType, Long> InfoMap = new HashMap<>();
-	if (map.containsKey(event.getPlayer().getName()))
-	    InfoMap = map.get(event.getPlayer().getName());
-	InfoMap.put(event.getAbility(), System.currentTimeMillis() + (event.getAbility().getMaxLength() * 1000));
-	map.put(event.getPlayer().getName(), InfoMap);
+	HashMap<String, Long> InfoMap = map.get(event.getPlayer().getUniqueId());
+	if (InfoMap == null) {
+	    InfoMap = new HashMap<>();
+	    map.put(event.getPlayer().getUniqueId(), InfoMap);
+	}
+	InfoMap.put(event.getAbility().toString(), System.currentTimeMillis() + (event.getAbility().getMaxLength() * 1000));
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void OnAbilityOff(McMMOPlayerAbilityDeactivateEvent event) {
-	if (map.containsKey(event.getPlayer().getName())) {
-	    HashMap<AbilityType, Long> InfoMap = map.get(event.getPlayer().getName());
-	    InfoMap.remove(event.getAbility());
+	HashMap<String, Long> InfoMap = map.get(event.getPlayer().getUniqueId());
+	if (InfoMap != null) {
+	    InfoMap.remove(event.getAbility().toString());
 	    if (InfoMap.isEmpty())
-		map.remove(event.getPlayer().getName());
+		map.remove(event.getPlayer().getUniqueId());
 	}
     }
 
@@ -85,29 +86,29 @@ public class McMMOlistener implements Listener {
 	if (player == null)
 	    return 0D;
 
-	HashMap<AbilityType, Long> InfoMap = map.get(player.getName());
+	HashMap<String, Long> InfoMap = map.get(player.getUniqueId());
 	if (InfoMap == null)
 	    return 0D;
 
-	Long t = InfoMap.get(AbilityType.TREE_FELLER);
+	Long t = InfoMap.get("TREE_FELLER");
 	if (t != null) {
 	    if (t < System.currentTimeMillis())
-		return -(1-Jobs.getGCManager().TreeFellerMultiplier);
-	    map.remove(AbilityType.TREE_FELLER);
+		return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
+	    InfoMap.remove("TREE_FELLER");
 	}
 
-	t = InfoMap.get(AbilityType.GIGA_DRILL_BREAKER);
+	t = InfoMap.get("GIGA_DRILL_BREAKER");
 	if (t != null) {
 	    if (t < System.currentTimeMillis())
-		return -(1-Jobs.getGCManager().gigaDrillMultiplier);
-	    map.remove(AbilityType.GIGA_DRILL_BREAKER);
+		return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
+	    InfoMap.remove("GIGA_DRILL_BREAKER");
 	}
 
-	t = InfoMap.get(AbilityType.SUPER_BREAKER);
+	t = InfoMap.get("SUPER_BREAKER");
 	if (t != null) {
 	    if (t < System.currentTimeMillis())
-		return -(1-Jobs.getGCManager().superBreakerMultiplier);
-	    map.remove(AbilityType.SUPER_BREAKER);
+		return -(1 - Jobs.getGCManager().superBreakerMultiplier);
+	    InfoMap.remove("SUPER_BREAKER");
 	}
 
 	return 0D;
@@ -125,8 +126,9 @@ public class McMMOlistener implements Listener {
 		// Still enabling event listener for repair
 		return true;
 	    }
+
 	    mcMMOPresent = true;
-	    Jobs.consoleMsg("&e[Jobs] &6mcMMO was found - Enabling capabilities.");
+	    Jobs.consoleMsg("&e[Jobs] &6mcMMO" + McMMO.getDescription().getVersion() + " was found - Enabling capabilities.");
 	    return true;
 	}
 	return false;
