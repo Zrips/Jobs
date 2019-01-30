@@ -33,6 +33,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -882,9 +883,9 @@ public class JobsPlayer {
 	    g = new HashMap<>(this.qProgression.get(job.getName()));
 
 	HashMap<String, QuestProgression> tmp = new HashMap<>();
-
 	for (Entry<String, QuestProgression> one : (new HashMap<String, QuestProgression>(g)).entrySet()) {
 	    QuestProgression qp = one.getValue();
+
 	    if (qp == null || !qp.isValid()) {
 		Quest q = job.getNextQuest(getQuestNameList(job, type), this.getJobProgression(job).getLevel());
 
@@ -898,9 +899,13 @@ public class JobsPlayer {
 
 		g.put(qp.getQuest().getConfigName(), qp);
 	    }
-
-	    if (type == null || type.name().equals(qp.getQuest().getAction().name()))
+	    if (qp.getQuest() == null) {
+		g.remove(one.getKey());
+		continue;
+	    }
+	    if (type == null || type.name().equals(qp.getQuest().getAction().name())) {
 		tmp.put(qp.getQuest().getConfigName(), qp);
+	    }
 	}
 
 	this.qProgression.put(job.getName(), g);
