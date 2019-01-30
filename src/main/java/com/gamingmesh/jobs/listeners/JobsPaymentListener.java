@@ -172,7 +172,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -230,7 +230,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -290,7 +290,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -365,7 +365,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode() == GameMode.CREATIVE && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -435,7 +435,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -459,7 +459,7 @@ public class JobsPaymentListener implements Listener {
 	Player player = event.getPlayer();
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -497,7 +497,7 @@ public class JobsPaymentListener implements Listener {
 	if (player == null || !player.isOnline())
 	    return;
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -558,7 +558,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -786,7 +786,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -823,7 +823,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -1064,7 +1064,7 @@ public class JobsPaymentListener implements Listener {
 	if (pDamager == null)
 	    return;
 	// check if in creative
-	if (pDamager.getGameMode().equals(GameMode.CREATIVE) && !pDamager.hasPermission("jobs.paycreative"))
+	if (!payIfCreative(pDamager))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
@@ -1132,7 +1132,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1162,7 +1162,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1200,9 +1200,8 @@ public class JobsPaymentListener implements Listener {
 	if (player == null || !player.isOnline())
 	    return;
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
-
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
@@ -1234,7 +1233,7 @@ public class JobsPaymentListener implements Listener {
 	Player pDamager = (Player) e.getDamager();
 
 	// check if in creative
-	if (pDamager.getGameMode().equals(GameMode.CREATIVE) && !pDamager.hasPermission("jobs.paycreative"))
+	if (!payIfCreative(pDamager))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
@@ -1303,7 +1302,7 @@ public class JobsPaymentListener implements Listener {
 
 	if (player != null && closest < 30.0) {
 	    // check if in creative
-	    if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	    if (!payIfCreative(player))
 		return;
 
 	    if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1342,7 +1341,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1395,7 +1394,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1534,7 +1533,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (p.getGameMode().equals(GameMode.CREATIVE) && !p.hasPermission("jobs.paycreative"))
+	if (!payIfCreative(p))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(p, p.getLocation().getWorld().getName()))
@@ -1569,7 +1568,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in spectator, #330
-	if (player.getGameMode().equals(GameMode.SPECTATOR))
+	if (player.getGameMode().toString().equals("SPECTATOR"))
 	    return;
 
 	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isOnGround())
@@ -1580,7 +1579,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!payIfCreative(player))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1591,5 +1590,11 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE));
+    }
+
+    private static boolean payIfCreative(Player player) {
+	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative() && !player.hasPermission("jobs.paycreative"))
+	    return false;
+	return true;
     }
 }
