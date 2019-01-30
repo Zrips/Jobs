@@ -53,6 +53,10 @@ public class Util {
 	return is;
     }
 
+    public static String firstToUpperCase(String name) {
+	return name.toLowerCase().replace("_", " ").substring(0, 1).toUpperCase() + name.toLowerCase().replace("_", " ").substring(1);
+    }
+
     @SuppressWarnings("deprecation")
     public static EntityType getEntityType(ItemStack is) {
 	if (is.getItemMeta() instanceof BlockStateMeta) {

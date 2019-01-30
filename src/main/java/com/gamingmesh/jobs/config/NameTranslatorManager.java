@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
@@ -16,6 +17,7 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class NameTranslatorManager {
 
@@ -177,11 +179,8 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfEnchants.clear();
 	    for (String one : keys) {
-		String id = one.contains(":") ? one.split(":")[0] : one;
-		String meta = one.contains(":") ? one.split(":")[1] : "";
-		String MCName = section.getString(one + ".MCName");
-		String Name = section.getString(one + ".Name");
-		ListOfEnchants.add(new NameList(id, meta, Name, MCName));
+		String name = section.getString(one);
+		ListOfEnchants.add(new NameList(one, one, one, name));
 	    }
 	    if (ListOfEnchants.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfEnchants.size() + " custom enchant names!");
@@ -234,7 +233,7 @@ public class NameTranslatorManager {
 
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<>();
-	
+
 	// This should be present to copy over default files into TranslatableWords folder if file doesn't exist. Grabs all files from plugin file.
 	try {
 	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "Words_"));
@@ -247,7 +246,7 @@ public class NameTranslatorManager {
 	    langFile.saveDefaultConfig();
 	}
 	//Up to here.
-	
+
 	languages.add("en");
 
 	File customLocaleFile = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
@@ -361,81 +360,100 @@ public class NameTranslatorManager {
 		c.get("EntityList." + one.getId() + "-" + one.toString(), name);
 	    }
 
-	    // Enchant list
-	    c.get("EnchantList.0.MCName", "PROTECTION_ENVIRONMENTAL");
-	    c.get("EnchantList.0.Name", "Protection");
-	    c.get("EnchantList.1.MCName", "PROTECTION_FIRE");
-	    c.get("EnchantList.1.Name", "Fire Protection");
-	    c.get("EnchantList.2.MCName", "PROTECTION_FALL");
-	    c.get("EnchantList.2.Name", "Feather Falling");
-	    c.get("EnchantList.3.MCName", "PROTECTION_EXPLOSIONS");
-	    c.get("EnchantList.3.Name", "Blast Protection");
-	    c.get("EnchantList.4.MCName", "ROTECTION_PROJECTILE");
-	    c.get("EnchantList.4.Name", "Projectile Protection");
-	    c.get("EnchantList.5.MCName", "OXYGEN");
-	    c.get("EnchantList.5.Name", "Respiration");
-	    c.get("EnchantList.6.MCName", "DIG_SPEED");
-	    c.get("EnchantList.6.Name", "Aqua Affinity");
-	    c.get("EnchantList.7.MCName", "THORNS");
-	    c.get("EnchantList.7.Name", "Thorns");
-	    c.get("EnchantList.8.MCName", "DEPTH_STRIDER");
-	    c.get("EnchantList.8.Name", "Depth Strider");
-	    c.get("EnchantList.9.MCName", "FROST_WALKER");
-	    c.get("EnchantList.9.Name", "Frost Walker");
-	    c.get("EnchantList.10.MCName", "CURSE_OF_BINDING");
-	    c.get("EnchantList.10.Name", "Curse of Binding");
-	    c.get("EnchantList.16.MCName", "DAMAGE_ALL");
-	    c.get("EnchantList.16.Name", "Sharpness");
-	    c.get("EnchantList.17.MCName", "DAMAGE_UNDEAD");
-	    c.get("EnchantList.17.Name", "Smite");
-	    c.get("EnchantList.18.MCName", "DAMAGE_ARTHROPODS");
-	    c.get("EnchantList.18.Name", "Bane of Arthropods");
-	    c.get("EnchantList.19.MCName", "KNOCKBACK");
-	    c.get("EnchantList.19.Name", "Knockback");
-	    c.get("EnchantList.20.MCName", "FIRE_ASPECT");
-	    c.get("EnchantList.20.Name", "Fire Aspect");
-	    c.get("EnchantList.21.MCName", "LOOT_BONUS_MOBS");
-	    c.get("EnchantList.21.Name", "Looting");
-	    c.get("EnchantList.22.MCName", "SWEEPING_EDGE");
-	    c.get("EnchantList.22.Name", "Sweeping Edge");
-	    c.get("EnchantList.32.MCName", "DIG_SPEED");
-	    c.get("EnchantList.32.Name", "Efficiency");
-	    c.get("EnchantList.33.MCName", "SILK_TOUCH");
-	    c.get("EnchantList.33.Name", "Silk Touch");
-	    c.get("EnchantList.34.MCName", "DURABILITY");
-	    c.get("EnchantList.34.Name", "Unbreaking");
-	    c.get("EnchantList.35.MCName", "LOOT_BONUS_BLOCKS");
-	    c.get("EnchantList.35.Name", "Fortune");
-	    c.get("EnchantList.48.MCName", "ARROW_DAMAGE");
-	    c.get("EnchantList.48.Name", "Power");
-	    c.get("EnchantList.49.MCName", "ARROW_KNOCKBACK");
-	    c.get("EnchantList.49.Name", "Punch");
-	    c.get("EnchantList.50.MCName", "ARROW_FIRE");
-	    c.get("EnchantList.50.Name", "Flame");
-	    c.get("EnchantList.51.MCName", "ARROW_INFINITE");
-	    c.get("EnchantList.51.Name", "Infinity");
-	    c.get("EnchantList.61.MCName", "LUCK");
-	    c.get("EnchantList.61.Name", "Luck of the Sea");
-	    c.get("EnchantList.62.MCName", "LURE");
-	    c.get("EnchantList.62.Name", "Lure");
-	    c.get("EnchantList.65.MCName", "LOYALTY");
-	    c.get("EnchantList.65.Name", "Loyalty");
-	    c.get("EnchantList.66.MCName", "IMPALING");
-	    c.get("EnchantList.66.Name", "Impaling");
-	    c.get("EnchantList.67.MCName", "RIPTIDE");
-	    c.get("EnchantList.67.Name", "Riptide");
-	    c.get("EnchantList.68.MCName", "CHANNELING");
-	    c.get("EnchantList.68.Name", "Channeling");
-	    c.get("EnchantList.70.MCName", "MENDING");
-	    c.get("EnchantList.70.Name", "Mending");
-	    c.get("EnchantList.71.MCName", "CURSE_OF_VANISHING");
-	    c.get("EnchantList.71.Name", "Curse Of Vanishing");
-	    c.get("EnchantList.72.MCName", "MULTISHOT");
-	    c.get("EnchantList.72.Name", "Multishot");
-	    c.get("EnchantList.73.MCName", "PIERCING");
-	    c.get("EnchantList.73.Name", "Piercing");
-	    c.get("EnchantList.74.MCName", "QUICK_CHARGE");
-	    c.get("EnchantList.74.Name", "Quick Charge");
+	    for (Enchantment one : Enchantment.values()) {
+
+		if (one == null)
+		    continue;
+		if (one.getName() == null)
+		    continue;
+
+		String name = Util.firstToUpperCase(one.getName().toString()).replace("_", " ");
+		if (c.getC().isConfigurationSection("EnchantList"))
+		    for (String onek : c.getC().getConfigurationSection("EnchantList").getKeys(false)) {
+			String old = c.getC().getString("EnchantList." + onek + ".MCName");
+			if (old != null && old.equalsIgnoreCase(one.getName())) {
+			    name = c.getC().getString("EnchantList." + onek + ".Name");
+			    break;
+			}
+		    }
+		c.get("EnchantList." + one.getName(), name);
+	    }
+
+//	    // Enchant list
+//	    c.get("EnchantList.0.MCName", "PROTECTION_ENVIRONMENTAL");
+//	    c.get("EnchantList.0.Name", "Protection");
+//	    c.get("EnchantList.1.MCName", "PROTECTION_FIRE");
+//	    c.get("EnchantList.1.Name", "Fire Protection");
+//	    c.get("EnchantList.2.MCName", "PROTECTION_FALL");
+//	    c.get("EnchantList.2.Name", "Feather Falling");
+//	    c.get("EnchantList.3.MCName", "PROTECTION_EXPLOSIONS");
+//	    c.get("EnchantList.3.Name", "Blast Protection");
+//	    c.get("EnchantList.4.MCName", "ROTECTION_PROJECTILE");
+//	    c.get("EnchantList.4.Name", "Projectile Protection");
+//	    c.get("EnchantList.5.MCName", "OXYGEN");
+//	    c.get("EnchantList.5.Name", "Respiration");
+//	    c.get("EnchantList.6.MCName", "DIG_SPEED");
+//	    c.get("EnchantList.6.Name", "Aqua Affinity");
+//	    c.get("EnchantList.7.MCName", "THORNS");
+//	    c.get("EnchantList.7.Name", "Thorns");
+//	    c.get("EnchantList.8.MCName", "DEPTH_STRIDER");
+//	    c.get("EnchantList.8.Name", "Depth Strider");
+//	    c.get("EnchantList.9.MCName", "FROST_WALKER");
+//	    c.get("EnchantList.9.Name", "Frost Walker");
+//	    c.get("EnchantList.10.MCName", "CURSE_OF_BINDING");
+//	    c.get("EnchantList.10.Name", "Curse of Binding");
+//	    c.get("EnchantList.16.MCName", "DAMAGE_ALL");
+//	    c.get("EnchantList.16.Name", "Sharpness");
+//	    c.get("EnchantList.17.MCName", "DAMAGE_UNDEAD");
+//	    c.get("EnchantList.17.Name", "Smite");
+//	    c.get("EnchantList.18.MCName", "DAMAGE_ARTHROPODS");
+//	    c.get("EnchantList.18.Name", "Bane of Arthropods");
+//	    c.get("EnchantList.19.MCName", "KNOCKBACK");
+//	    c.get("EnchantList.19.Name", "Knockback");
+//	    c.get("EnchantList.20.MCName", "FIRE_ASPECT");
+//	    c.get("EnchantList.20.Name", "Fire Aspect");
+//	    c.get("EnchantList.21.MCName", "LOOT_BONUS_MOBS");
+//	    c.get("EnchantList.21.Name", "Looting");
+//	    c.get("EnchantList.22.MCName", "SWEEPING_EDGE");
+//	    c.get("EnchantList.22.Name", "Sweeping Edge");
+//	    c.get("EnchantList.32.MCName", "DIG_SPEED");
+//	    c.get("EnchantList.32.Name", "Efficiency");
+//	    c.get("EnchantList.33.MCName", "SILK_TOUCH");
+//	    c.get("EnchantList.33.Name", "Silk Touch");
+//	    c.get("EnchantList.34.MCName", "DURABILITY");
+//	    c.get("EnchantList.34.Name", "Unbreaking");
+//	    c.get("EnchantList.35.MCName", "LOOT_BONUS_BLOCKS");
+//	    c.get("EnchantList.35.Name", "Fortune");
+//	    c.get("EnchantList.48.MCName", "ARROW_DAMAGE");
+//	    c.get("EnchantList.48.Name", "Power");
+//	    c.get("EnchantList.49.MCName", "ARROW_KNOCKBACK");
+//	    c.get("EnchantList.49.Name", "Punch");
+//	    c.get("EnchantList.50.MCName", "ARROW_FIRE");
+//	    c.get("EnchantList.50.Name", "Flame");
+//	    c.get("EnchantList.51.MCName", "ARROW_INFINITE");
+//	    c.get("EnchantList.51.Name", "Infinity");
+//	    c.get("EnchantList.61.MCName", "LUCK");
+//	    c.get("EnchantList.61.Name", "Luck of the Sea");
+//	    c.get("EnchantList.62.MCName", "LURE");
+//	    c.get("EnchantList.62.Name", "Lure");
+//	    c.get("EnchantList.65.MCName", "LOYALTY");
+//	    c.get("EnchantList.65.Name", "Loyalty");
+//	    c.get("EnchantList.66.MCName", "IMPALING");
+//	    c.get("EnchantList.66.Name", "Impaling");
+//	    c.get("EnchantList.67.MCName", "RIPTIDE");
+//	    c.get("EnchantList.67.Name", "Riptide");
+//	    c.get("EnchantList.68.MCName", "CHANNELING");
+//	    c.get("EnchantList.68.Name", "Channeling");
+//	    c.get("EnchantList.70.MCName", "MENDING");
+//	    c.get("EnchantList.70.Name", "Mending");
+//	    c.get("EnchantList.71.MCName", "CURSE_OF_VANISHING");
+//	    c.get("EnchantList.71.Name", "Curse Of Vanishing");
+//	    c.get("EnchantList.72.MCName", "MULTISHOT");
+//	    c.get("EnchantList.72.Name", "Multishot");
+//	    c.get("EnchantList.73.MCName", "PIERCING");
+//	    c.get("EnchantList.73.Name", "Piercing");
+//	    c.get("EnchantList.74.MCName", "QUICK_CHARGE");
+//	    c.get("EnchantList.74.Name", "Quick Charge");
 
 	    // Color list
 	    c.get("ColorList.0-white", "&fWhite");
