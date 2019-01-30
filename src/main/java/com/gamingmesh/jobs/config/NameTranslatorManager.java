@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.config;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -131,6 +132,7 @@ public class NameTranslatorManager {
     }
 
     public void readFile() {
+
 	YmlMaker ItemFile = new YmlMaker(Jobs.getInstance(), "TranslatableWords" + File.separator + "Words_" + Jobs.getGCManager().localeString + ".yml");
 	ItemFile.saveDefaultConfig();
 
@@ -232,15 +234,20 @@ public class NameTranslatorManager {
 
 	// Just copying default language files, except en, that one will be generated
 	List<String> languages = new ArrayList<>();
-
-	languages.clear();
-
+	
+	// This should be present to copy over default files into TranslatableWords folder if file doesn't exist. Grabs all files from plugin file.
 	try {
 	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "Words_"));
-	} catch (ClassNotFoundException e1) {
-	    e1.printStackTrace();
+	} catch (ClassNotFoundException e) {
+	    e.printStackTrace();
 	}
-
+	for (Iterator<String> e1 = languages.iterator(); e1.hasNext();) {
+	    String lang = e1.next();
+	    YmlMaker langFile = new YmlMaker(Jobs.getInstance(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+	    langFile.saveDefaultConfig();
+	}
+	//Up to here.
+	
 	languages.add("en");
 
 	File customLocaleFile = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
