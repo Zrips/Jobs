@@ -96,8 +96,8 @@ public class ShopManager {
 	    JobProgression playerJob = jPlayer.getJobProgression(tempJob);
 	    if (playerJob == null || playerJob.getLevel() < oneJob.getValue()) {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoJobReqForitem",
-			"%jobname%", tempJob.getName(),
-			"%joblevel%", oneJob.getValue()));
+		    "%jobname%", tempJob.getName(),
+		    "%joblevel%", oneJob.getValue()));
 		return;
 	    }
 	}
@@ -125,37 +125,8 @@ public class ShopManager {
 	}
 
 	for (JobItems one : item.getitems()) {
-	    CMIMaterial mat = CMIMaterial.get(one.getId(), one.getData());
-
-	    if (mat == null)
-		continue;
-
-	    ItemStack itemStack = mat.newItemStack();
-	    itemStack.setAmount(one.getAmount());
-
-	    ItemMeta meta = itemStack.getItemMeta();
-
-	    if (one.getName() != null)
-		meta.setDisplayName(one.getName());
-
-	    if (one.getLore() != null && !one.getLore().isEmpty())
-		meta.setLore(one.getLore());
-	    itemStack.setItemMeta(meta);
-
-	    if (itemStack.getType() == Material.ENCHANTED_BOOK) {
-		EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) itemStack.getItemMeta();
-		for (Entry<Enchantment, Integer> oneEnch : one.getEnchants().entrySet()) {
-		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
-		}
-		if (bookMeta != null)
-		    itemStack.setItemMeta(bookMeta);
-	    } else
-		for (Entry<Enchantment, Integer> oneEnch : one.getEnchants().entrySet()) {
-		    itemStack.addUnsafeEnchantment(oneEnch.getKey(), oneEnch.getValue());
-		}
-
+	    ItemStack itemStack = one.getItemStack(player).clone();
 	    player.getInventory().addItem(itemStack);
-
 	}
 
 	pointsInfo.takePoints(item.getPrice());
@@ -305,20 +276,20 @@ public class ShopManager {
 
 		if (item.isHeadOwner())
 		    skullMeta.setOwner(Jobs.getPlayerManager().getJobsPlayer(player).getUserName());
-	    else {
+		else {
 		    try {
-		        @SuppressWarnings("deprecation")
-		        OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
-		        skullMeta.setOwner(offPlayer.getName());
+			@SuppressWarnings("deprecation")
+			OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
+			skullMeta.setOwner(offPlayer.getName());
 		    } catch (Throwable e) {
-		        e.printStackTrace();
+			e.printStackTrace();
 		    }
 		}
 		GUIitem.setItemMeta(skullMeta);
-		} else
-		    GUIitem.setItemMeta(meta);
+	    } else
+		GUIitem.setItemMeta(meta);
 
-		GuiInv.setItem(i, GUIitem);
+	    GuiInv.setItem(i, GUIitem);
 	}
 
 	ItemStack Item = new ItemStack(Material.ARROW);
@@ -402,8 +373,8 @@ public class ShopManager {
 	    }
 
 	    if (NameSection.isList("RequiredPermission"))
-	    if (!NameSection.getStringList("RequiredPermission").isEmpty())
-	    	Sitem.setRequiredPerm(NameSection.getStringList("RequiredPermission"));
+		if (!NameSection.getStringList("RequiredPermission").isEmpty())
+		    Sitem.setRequiredPerm(NameSection.getStringList("RequiredPermission"));
 
 	    if (NameSection.isInt("RequiredTotalLevels"))
 		Sitem.setRequiredTotalLevels(NameSection.getInt("RequiredTotalLevels"));
@@ -449,7 +420,7 @@ public class ShopManager {
 
 		    int id = itemSection.getInt("Id");
 
-		    int data = 0;
+		    Integer data = null;
 		    if (itemSection.isInt("Data"))
 			data = itemSection.getInt("Data");
 
@@ -486,7 +457,7 @@ public class ShopManager {
 				enchants.put(ench, level);
 			}
 
-		    items.add(new JobItems(node, id, data, amount, name, lore, enchants, new BoostMultiplier()));
+		    items.add(new JobItems(node, data == null ? CMIMaterial.get(id) : CMIMaterial.get(id, data), amount, name, lore, enchants, new BoostMultiplier(), new ArrayList<Job>()));
 		}
 		Sitem.setitems(items);
 	    }
@@ -508,7 +479,7 @@ public class ShopManager {
 	}
 
 	if (!list.isEmpty())
-		Jobs.consoleMsg("&e[Jobs] Loaded " + list.size() + " shop items!");
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + list.size() + " shop items!");
 
 	return;
     }

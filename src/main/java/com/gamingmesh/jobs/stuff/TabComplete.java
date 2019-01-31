@@ -12,6 +12,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
@@ -77,15 +78,15 @@ public class TabComplete implements TabCompleter {
 		    case "[jobitemname]":
 			Job oneJob = Jobs.getJob(args[i - 1]);
 			if (oneJob != null)
-		    if (args[3].equals("items")) {
-			for (Entry<String, JobItems> item : oneJob.getItemBonus().entrySet()) {
-			    temp.add(item.getValue().getNode());
-			}
-		    } else if (args[3].equals("limiteditems")) {
-			for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
-			    temp.add(limitedItem.getValue().getNode());
-			}
-		    }
+			    if (args[3].equals("items")) {
+				for (Entry<String, JobItems> item : ItemBoostManager.getItemsMapByJob(oneJob).entrySet()) {
+				    temp.add(item.getValue().getNode());
+				}
+			    } else if (args[3].equals("limiteditems")) {
+				for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
+				    temp.add(limitedItem.getValue().getNode());
+				}
+			    }
 			break;
 		    case "[oldjob]":
 			JobsPlayer onePlayerJob = Jobs.getPlayerManager().getJobsPlayer(args[i - 1]);
@@ -105,9 +106,9 @@ public class TabComplete implements TabCompleter {
 			break;
 		    case "[newjob]":
 			if (sender instanceof Player) {
-				for (Job job : Jobs.getJobs()) {
-				    temp.add(job.getName());
-				}
+			    for (Job job : Jobs.getJobs()) {
+				temp.add(job.getName());
+			    }
 			}
 			break;
 		    }

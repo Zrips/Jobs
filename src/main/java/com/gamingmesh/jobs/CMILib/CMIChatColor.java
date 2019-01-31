@@ -67,6 +67,15 @@ public enum CMIChatColor {
 	return text.replace("§", "&");
     }
 
+    public static List<String> deColorize(List<String> text) {
+	if (text == null)
+	    return null;
+	for (int i = 0; i < text.size(); i++) {
+	    text.set(i, deColorize(text.get(i)));
+	}
+	return text;
+    }
+
     public static String stripColor(String text) {
 	if (text == null)
 	    return null;

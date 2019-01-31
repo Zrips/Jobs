@@ -367,10 +367,12 @@ public class Job {
      * Get the item nodes for this job
      * @return Items for this job
      */
+    @Deprecated
     public HashMap<String, JobItems> getItemBonus() {
 	return jobItems;
     }
 
+    @Deprecated
     public JobItems getItemBonus(String key) {
 	return jobItems.get(key.toLowerCase());
     }

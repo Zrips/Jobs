@@ -27,6 +27,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.Jobs;
@@ -34,23 +35,40 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class JobItems {
     private String node;
-    private int id;
-    private int data;
-    private int amount;
-    private String name;
-    private List<String> lore;
-    private HashMap<Enchantment, Integer> enchants;
+    ItemStack item;
     private BoostMultiplier boostMultiplier = new BoostMultiplier();
+    private List<Job> jobs = new ArrayList<Job>();
 
-    public JobItems(String node, int id, int data, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier) {
+    public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs) {
+
+	try {
+	    item = mat.newItemStack();
+	    item.setAmount(amount);
+	    ItemMeta meta = item.getItemMeta();
+	    if (name != null)
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+	    if (lore != null && !lore.isEmpty()) {
+		meta.setLore(lore);
+	    }
+	    if (enchants != null)
+		if (mat == CMIMaterial.ENCHANTED_BOOK) {
+		    EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
+		    for (Entry<Enchantment, Integer> oneEnch : bookMeta.getEnchants().entrySet()) {
+			bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
+		    }
+		} else
+		    for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
+			meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
+		    }
+	    item.setItemMeta(meta);
+	    item = Jobs.getReflections().setNbt(item, "JobsItemBoost", node);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
 	this.node = node;
-	this.id = id;
-	this.data = data;
-	this.amount = amount;
-	this.name = name;
-	this.lore = lore;
-	this.enchants = enchants;
 	this.boostMultiplier = boostMultiplier;
+	this.jobs = jobs;
     }
 
     public String getNode() {
@@ -58,33 +76,22 @@ public class JobItems {
     }
 
     public ItemStack getItemStack(Player player) {
-	return getItemStack(player, null);
-    }
-
-    public ItemStack getItemStack(Player player, Job job) {
+	if (player == null)
+	    return this.item;
 	try {
-	    CMIMaterial cm = CMIMaterial.get(id, data);
-	    ItemStack item = cm.newItemStack();
-	    item.setAmount(amount);
+	    ItemStack item = this.item.clone();
+
 	    ItemMeta meta = item.getItemMeta();
-	    if (this.name != null)
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-	    if (lore != null && !lore.isEmpty()) {
+	    if (meta.hasDisplayName())
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', meta.getDisplayName().replace("[player]", player == null ? "[player]" : player.getName())));
+	    if (meta.hasLore()) {
 		List<String> TranslatedLore = new ArrayList<>();
-		for (String oneLore : lore) {
-		    TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player.getName())));
+		for (String oneLore : meta.getLore()) {
+		    TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player == null ? "[player]" : player.getName())));
 		}
 		meta.setLore(TranslatedLore);
 	    }
-	    if (enchants != null)
-		for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
-		    meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
-		}
 	    item.setItemMeta(meta);
-
-	    if (job != null)
-		item = Jobs.getReflections().setNbt(item, "JobsItemBoost", job.getName(), node);
-
 	    return item;
 	} catch (Exception e) {
 
@@ -92,31 +99,15 @@ public class JobItems {
 	return null;
     }
 
-    public int getId() {
-	return id;
-    }
-
-    public int getData() {
-	return data;
-    }
-
-    public int getAmount() {
-	return amount;
-    }
-
-    public String getName() {
-	return name;
-    }
-
-    public List<String> getLore() {
-	return lore;
-    }
-
-    public HashMap<Enchantment, Integer> getEnchants() {
-	return enchants;
-    }
-
     public BoostMultiplier getBoost() {
 	return boostMultiplier.clone();
+    }
+
+    public List<Job> getJobs() {
+	return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
+	this.jobs = jobs;
     }
 }

@@ -16,6 +16,7 @@ public class Reflections {
 
     private Class<?> NBTTagCompound;
     private Class<?> NBTBase;
+    private Class<?> NBTTagList;
 
     private Class<?> CraftItemStack;
     private Class<?> Item;
@@ -43,6 +44,11 @@ public class Reflections {
 	}
 	try {
 	    NBTBase = getMinecraftClass("NBTBase");
+	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	    e.printStackTrace();
+	}
+	try {
+	    NBTTagList = getMinecraftClass("NBTTagList");
 	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
 	    e.printStackTrace();
 	}
@@ -77,7 +83,7 @@ public class Reflections {
 	    Object nmsStack = asNMSCopy(item);
 	    Method itemMeth = Item.getMethod("getById", int.class);
 	    @SuppressWarnings("deprecation")
-		Object res = itemMeth.invoke(Item, item.getType().getId());
+	    Object res = itemMeth.invoke(Item, item.getType().getId());
 
 	    String ff = "b";
 	    switch (Jobs.getVersionCheckManager().getVersion()) {
@@ -144,6 +150,28 @@ public class Reflections {
 	}
     }
 
+    public ItemStack removeNbt(ItemStack item, String path) {
+	if (item == null)
+	    return null;
+	try {
+	    Object nmsStack = asNMSCopy(item);
+	    Method methTag = nmsStack.getClass().getMethod("getTag");
+	    Object tag = methTag.invoke(nmsStack);
+	    if (tag == null)
+		return item;
+
+	    Method meth = tag.getClass().getMethod("remove", String.class);
+	    meth.invoke(tag, path);
+
+	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
+	    meth2.invoke(nmsStack, tag);
+	    return (ItemStack) asBukkitCopy(nmsStack);
+	} catch (Throwable e) {
+	    e.printStackTrace();
+	    return null;
+	}
+    }
+
     public boolean hasNbt(ItemStack item, String base) {
 	if (item == null)
 	    return false;
@@ -152,6 +180,21 @@ public class Reflections {
 	    if (nbt == null)
 		return false;
 	    Method meth = nbt.getClass().getMethod("getCompound", String.class);
+	    Object res = meth.invoke(nbt, base);
+	    return res != null;
+	} catch (Throwable e) {
+	    return false;
+	}
+    }
+
+    public boolean hasNbtString(ItemStack item, String base) {
+	if (item == null)
+	    return false;
+	try {
+	    Object nbt = getNbt(item);
+	    if (nbt == null)
+		return false;
+	    Method meth = nbt.getClass().getMethod("getString", String.class);
 	    Object res = meth.invoke(nbt, base);
 	    return res != null;
 	} catch (Throwable e) {
@@ -172,29 +215,60 @@ public class Reflections {
 	}
     }
 
-    public Object getNbt(ItemStack item, String base, String path) {
-	if (item == null)
-	    return null;
-	try {
-	    Object nbt = getNbt(item);
-	    if (nbt == null)
-		return null;
+//    public Object getNbt(ItemStack item, String base, String path) {
+//	if (item == null)
+//	    return null;
+//	try {
+//	    Object nbt = getNbt(item);
+//	    if (nbt == null)
+//		return null;
+//
+//	    Method compoundMeth = nbt.getClass().getMethod("getCompound", String.class);
+//	    Object compoundRes = compoundMeth.invoke(nbt, base);
+//
+//	    if (compoundRes == null)
+//		return null;
+//
+//	    Method meth = compoundRes.getClass().getMethod("getString", String.class);
+//	    Object res = meth.invoke(compoundRes, path);
+//	    return res;
+//	} catch (Throwable e) {
+//	    return null;
+//	}
+//    }
+//
+//    public ItemStack setNbt(ItemStack item, String base, String path, String value) {
+//	if (item == null)
+//	    return null;
+//	try {
+//	    Object nmsStack = asNMSCopy(item);
+//	    Method methTag = nmsStack.getClass().getMethod("getTag");
+//	    Object tag = methTag.invoke(nmsStack);
+//	    if (tag == null)
+//		tag = NBTTagCompound.newInstance();
+//
+//	    Method compountMeth = tag.getClass().getMethod("getCompound", String.class);
+//	    Object compountTag = compountMeth.invoke(tag, base);
+//
+//	    if (compountTag == null)
+//		compountTag = NBTTagCompound.newInstance();
+//
+//	    Method meth = compountTag.getClass().getMethod("setString", String.class, String.class);
+//	    meth.invoke(compountTag, path, value);
+//
+//	    Method mm = tag.getClass().getMethod("set", String.class, NBTBase);
+//	    mm.invoke(tag, base, compountTag);
+//
+//	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
+//	    meth2.invoke(nmsStack, tag);
+//	    return (ItemStack) asBukkitCopy(nmsStack);
+//	} catch (Throwable e) {
+//	    e.printStackTrace();
+//	    return null;
+//	}
+//    }
 
-	    Method compoundMeth = nbt.getClass().getMethod("getCompound", String.class);
-	    Object compoundRes = compoundMeth.invoke(nbt, base);
-
-	    if (compoundRes == null)
-		return null;
-
-	    Method meth = compoundRes.getClass().getMethod("getString", String.class);
-	    Object res = meth.invoke(compoundRes, path);
-	    return res;
-	} catch (Throwable e) {
-	    return null;
-	}
-    }
-
-    public ItemStack setNbt(ItemStack item, String base, String path, String value) {
+    public ItemStack setNbt(ItemStack item, String path, String value) {
 	if (item == null)
 	    return null;
 	try {
@@ -204,23 +278,30 @@ public class Reflections {
 	    if (tag == null)
 		tag = NBTTagCompound.newInstance();
 
-	    Method compountMeth = tag.getClass().getMethod("getCompound", String.class);
-	    Object compountTag = compountMeth.invoke(tag, base);
-
-	    if (compountTag == null)
-		compountTag = NBTTagCompound.newInstance();
-
-	    Method meth = compountTag.getClass().getMethod("setString", String.class, String.class);
-	    meth.invoke(compountTag, path, value);
-
-	    Method mm = tag.getClass().getMethod("set", String.class, NBTBase);
-	    mm.invoke(tag, base, compountTag);
+	    Method meth = tag.getClass().getMethod("setString", String.class, String.class);
+	    meth.invoke(tag, path, value);
 
 	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
 	    meth2.invoke(nmsStack, tag);
 	    return (ItemStack) asBukkitCopy(nmsStack);
 	} catch (Throwable e) {
 	    e.printStackTrace();
+	    return null;
+	}
+    }
+
+    public Object getNbt(ItemStack item, String path) {
+	if (item == null)
+	    return null;
+	try {
+	    Object nbt = getNbt(item);
+	    if (nbt == null)
+		return null;
+
+	    Method meth = nbt.getClass().getMethod("getString", String.class);
+	    Object res = meth.invoke(nbt, path);
+	    return res;
+	} catch (Throwable e) {
 	    return null;
 	}
     }

@@ -42,6 +42,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionType;
 
+import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
@@ -752,7 +753,7 @@ public class ConfigManager {
 		}
 	    }
 
-	    // Items
+	    // Items **OUTDATED** Moved to ItemBoostManager!!
 	    HashMap<String, JobItems> jobItems = new HashMap<>();
 	    ConfigurationSection itemsSection = jobSection.getConfigurationSection("items");
 	    if (itemsSection != null) {
@@ -803,8 +804,10 @@ public class ConfigManager {
 		    if (itemSection.isDouble("expBoost"))
 			b.add(CurrencyType.EXP, itemSection.getDouble("expBoost") - 1);
 
-		    jobItems.put(node.toLowerCase(), new JobItems(node, id, 0, 1, name, lore, enchants, b));
+		    jobItems.put(node.toLowerCase(), new JobItems(node, CMIMaterial.get(id), 1, name, lore, enchants, b, new ArrayList<Job>()));
 		}
+
+		Jobs.consoleMsg("&cRemove Items section from " + jobKey + " job, as of Jobs 4.10.0 version this was moved to boostedItems.yml file!");
 	    }
 
 	    // Limited Items
@@ -1185,11 +1188,9 @@ public class ConfigManager {
 	    Jobs.consoleMsg("&6[Jobs] Explorer jobs manager are not enabled!");
 	} else
 	    Jobs.consoleMsg("&e[Jobs] Explorer job manager registered!");
-	//try {
-	//	conf.save(f);
-	//} catch (IOException e) {
-	//	e.printStackTrace();
-	//}
+
+	// Lets load item boosts
+	ItemBoostManager.load();
     }
 
     private double updateValue(CurrencyType type, double amount) {

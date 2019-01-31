@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
@@ -40,7 +41,7 @@ public class edititembonus implements Cmd {
 	    return false;
 
 	actions action = null;
-	Job job = null;
+//	Job job = null;
 	JobItems jobitem = null;
 
 	for (String one : args) {
@@ -49,15 +50,15 @@ public class edititembonus implements Cmd {
 		if (action != null)
 		    continue;
 	    }
-	    if (job == null) {
-		job = Jobs.getJob(one);
-		if (job != null)
-		    continue;
-	    }
+//	    if (job == null) {
+//		job = Jobs.getJob(one);
+//		if (job != null)
+//		    continue;
+//	    }
 
-	    if (job != null) {
-		jobitem = job.getItemBonus(one);
-	    }
+//	    if (job != null) {
+	    jobitem = ItemBoostManager.getItemByKey(one);
+//	    }
 	}
 
 	if (action == null)
@@ -77,17 +78,15 @@ public class edititembonus implements Cmd {
 
 	switch (action) {
 	case add:
-	    if (job == null || jobitem == null)
+	    if (jobitem == null)
 		return false;
-	    iih = Jobs.getReflections().setNbt(iih, "JobsItemBoost", job.getName(), jobitem.getNode());
+	    iih = Jobs.getReflections().setNbt(iih, "JobsItemBoost", jobitem.getNode());
 	    Jobs.getNms().setItemInMainHand(player, iih);
 	    break;
 	case list:
 	    break;
 	case remove:
-	    if (job == null)
-		return false;
-	    iih = Jobs.getReflections().removeNbt(iih, "JobsItemBoost", job.getName());
+	    iih = Jobs.getReflections().removeNbt(iih, "JobsItemBoost");
 	    Jobs.getNms().setItemInMainHand(player, iih);
 	    break;
 	default:
@@ -96,15 +95,17 @@ public class edititembonus implements Cmd {
 	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
-	for (Job one : Jobs.getJobs()) {
-	    BoostMultiplier boost = Jobs.getPlayerManager().getItemBoostByNBT(one, iih);
-	    boolean any = false;
-	    for (CurrencyType oneC : CurrencyType.values()) {
-		if (boost.get(oneC) != 0D)
-		    any = true;
-	    }
-	    if (!any)
-		continue;
+
+	Object key = Jobs.getReflections().getNbt(iih, "JobsItemBoost");
+
+	if (key == null)
+	    return true;
+
+	JobItems item = ItemBoostManager.getItemByKey((String) key);
+
+	BoostMultiplier boost = item.getBoost();
+
+	for (Job one : item.getJobs()) {
 	    String msg = Jobs.getLanguage().getMessage("command.itembonus.output.list",
 		"[jobname]", one.getName(),
 		"%money%", mc + formatText((int) (boost.get(CurrencyType.MONEY) * 100)),

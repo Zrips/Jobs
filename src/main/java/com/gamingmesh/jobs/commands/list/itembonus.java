@@ -14,6 +14,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.CMILib.RawMessage;
@@ -28,8 +29,8 @@ public class itembonus implements Cmd {
 	    return false;
 	}
 
-    if (!Jobs.hasPermission(sender, "jobs.commands.itembonus", true))
-	return true;
+	if (!Jobs.hasPermission(sender, "jobs.commands.itembonus", true))
+	    return true;
 
 	Player player = (Player) sender;
 
@@ -37,8 +38,6 @@ public class itembonus implements Cmd {
 
 	if (jPlayer == null)
 	    return false;
-
-	Jobs.getPlayerManager().updateOldItems(player);
 
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 
@@ -56,8 +55,11 @@ public class itembonus implements Cmd {
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
 
 	for (ItemStack oneI : items) {
-	    for (Job one : Jobs.getJobs()) {
-		BoostMultiplier boost = Jobs.getPlayerManager().getItemBoostByNBT(one, oneI);
+	    JobItems jitem = Jobs.getPlayerManager().getJobsItemByNbt(oneI);
+	    if (jitem == null)
+		continue;
+	    for (Job one : jitem.getJobs()) {
+		BoostMultiplier boost = jitem.getBoost();
 		boolean any = false;
 		for (CurrencyType oneC : CurrencyType.values()) {
 		    if (boost.get(oneC) != 0D)

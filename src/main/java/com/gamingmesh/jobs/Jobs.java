@@ -613,6 +613,7 @@ public class Jobs extends JavaPlugin {
 	GconfigManager.reload();
 	lManager.reload();
 	configManager.reload();
+
 	FurnaceBrewingHandling.load();
 	usedSlots.clear();
 	for (Job job : jobs) {
@@ -979,13 +980,13 @@ public class Jobs extends JavaPlugin {
 		}
 	    }
 	    if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
-			if (GconfigManager.useMaxPaymentCurve) {
-			    double percentOver = jPlayer.percentOverLimit(CurrencyType.MONEY);
-			    float factor = GconfigManager.maxPaymentCurveFactor;
-			    double percentLoss = 100 / ((1 / factor * percentOver * percentOver) + 1);
-			    income = income - (income * percentLoss / 100);
-			} else
-			    income = 0D;
+		if (GconfigManager.useMaxPaymentCurve) {
+		    double percentOver = jPlayer.percentOverLimit(CurrencyType.MONEY);
+		    float factor = GconfigManager.maxPaymentCurveFactor;
+		    double percentLoss = 100 / ((1 / factor * percentOver * percentOver) + 1);
+		    income = income - (income * percentLoss / 100);
+		} else
+		    income = 0D;
 		if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
 		    pointAmount = 0D;
 	    }

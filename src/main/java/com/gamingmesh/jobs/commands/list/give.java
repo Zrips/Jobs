@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
@@ -63,23 +64,27 @@ public class give implements Cmd {
 	    return true;
 	}
 
-	if (job == null || name == null || itemName == null) {
+	if (name == null || itemName == null) {
 	    Jobs.getCommandManager().sendUsage(sender, "give");
 	    return true;
 	}
 
 	switch (name) {
 	case items:
-	    JobItems jItem = job.getItemBonus(itemName);
+	    JobItems jItem = ItemBoostManager.getItemByKey(itemName);
 
 	    if (jItem == null || jItem.getItemStack(player) == null) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.noitem"));
 		return true;
 	    }
 
-	    GiveItem.GiveItemForPlayer(player, jItem.getItemStack(player, job));
+	    GiveItem.GiveItemForPlayer(player, jItem.getItemStack(player));
 	    break;
 	case limiteditems:
+	    if (job == null) {
+		Jobs.getCommandManager().sendUsage(sender, "give");
+		return true;
+	    }
 	    JobLimitedItems jLItem = job.getLimitedItems().get(itemName.toLowerCase());
 
 	    if (jLItem == null || jLItem.getItemStack(player) == null) {

@@ -232,20 +232,20 @@ public class PlayerManager {
 	for (Entry<UUID, JobsPlayer> one : playersUUIDCache.entrySet()) {
 	    JobsPlayer jPlayer = one.getValue();
 	    if (resetID)
-	    jPlayer.setUserId(-1);
+		jPlayer.setUserId(-1);
 	    JobsDAO dao = Jobs.getJobsDAO();
 	    dao.updateSeen(jPlayer);
 	    if (jPlayer.getUserId() == -1)
 		continue;
 	    for (JobProgression oneJ : jPlayer.getJobProgression())
-	    	dao.insertJob(jPlayer, oneJ);
+		dao.insertJob(jPlayer, oneJ);
 	    dao.saveLog(jPlayer);
 	    dao.savePoints(jPlayer);
 	    dao.recordPlayersLimits(jPlayer);
 	    i++;
 	    y++;
 	    if (y >= 1000) {
-	    Jobs.consoleMsg("&e[Jobs] Saved " + i + "/" + total + " players data");
+		Jobs.consoleMsg("&e[Jobs] Saved " + i + "/" + total + " players data");
 		y = 0;
 	    }
 	}
@@ -540,11 +540,11 @@ public class PlayerManager {
 	    if (Jobs.getGCManager().SoundLevelupUse) {
 		Sound sound = levelUpEvent.getSound();
 		if (sound != null) {
-			if (player != null && player.getLocation() != null)
-			    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
+		    if (player != null && player.getLocation() != null)
+			player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
 		} else
 		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
-		}
+	    }
 	} catch (Throwable e) {
 	}
 
@@ -584,24 +584,24 @@ public class PlayerManager {
 		if (Jobs.getGCManager().SoundTitleChangeUse) {
 		    Sound sound = levelUpEvent.getTitleChangeSound();
 		    if (sound != null) {
-		    	if (player != null && player.getLocation() != null)
-					player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
-					    levelUpEvent.getTitleChangePitch());
+			if (player != null && player.getLocation() != null)
+			    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
+				levelUpEvent.getTitleChangePitch());
 		    } else
-		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+			Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
 	    } catch (Throwable e) {
 	    }
 	    // user would skill up
 	    if (Jobs.getGCManager().isBroadcastingSkillups())
-	    	message = Jobs.getLanguage().getMessage("message.skillup.broadcast");
+		message = Jobs.getLanguage().getMessage("message.skillup.broadcast");
 	    else
-	    	message = Jobs.getLanguage().getMessage("message.skillup.nobroadcast");
+		message = Jobs.getLanguage().getMessage("message.skillup.nobroadcast");
 
 	    if (player != null)
-	    	message = message.replace("%playername%", player.getDisplayName());
+		message = message.replace("%playername%", player.getDisplayName());
 	    else
-	    	message = message.replace("%playername%", jPlayer.getUserName());
+		message = message.replace("%playername%", jPlayer.getUserName());
 
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitleColor() + levelUpEvent.getNewTitleName());
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
@@ -726,7 +726,7 @@ public class PlayerManager {
 
     public BoostMultiplier getItemBoostNBT(Player player, Job prog) {
 
-	HashMap<Job, ItemBonusCache> cj = null;
+	HashMap<Job, ItemBonusCache> cj = cache.get(player.getUniqueId());
 
 	if (cj == null) {
 	    cj = new HashMap<>();
@@ -756,137 +756,73 @@ public class PlayerManager {
 	if (prog == null)
 	    return data;
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-	data = getItemBoostByNBT(prog, iih);
+	JobItems jitem = getJobsItemByNbt(iih);
+	if (jitem != null && jitem.getJobs().contains(prog))
+	    data.add(jitem.getBoost());
+
 	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
 	    if (OneArmor == null || OneArmor.getType() == Material.AIR)
 		continue;
-	    BoostMultiplier armorboost = getItemBoostByNBT(prog, OneArmor);
-	    data.add(armorboost);
+	    JobItems armorboost = getJobsItemByNbt(OneArmor);
+
+	    if (armorboost == null || !armorboost.getJobs().contains(prog))
+		return data;
+
+	    data.add(armorboost.getBoost());
 	}
 
 	return data;
     }
 
-    @SuppressWarnings("deprecation")
-    public JobItems getOldItemBoost(Job prog, ItemStack item) {
-	if (prog.getItemBonus().isEmpty())
-	    return null;
-	if (item == null)
-	    return null;
-
-	ItemMeta meta = item.getItemMeta();
-	String name = null;
-	List<String> lore = new ArrayList<>();
-
-	if (item.hasItemMeta()) {
-	    if (meta.hasDisplayName())
-		name = meta.getDisplayName();
-	    if (meta.hasLore())
-		lore = meta.getLore();
-	}
-
-	Map<Enchantment, Integer> enchants = item.getEnchantments();
-
-	main: for (Entry<String, JobItems> one : prog.getItemBonus().entrySet()) {
-	    JobItems oneItem = one.getValue();
-	    if (oneItem.getId() != item.getType().getId())
-		continue;
-
-	    if (oneItem.getName() != null && name != null)
-		if (!oneItem.getName().replaceAll("&", "§").equalsIgnoreCase(name))
-		    continue;
-
-	    for (String onelore : oneItem.getLore()) {
-		if (lore.size() < 0 || !lore.contains(onelore))
-		    continue main;
-	    }
-
-	    for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
-		if (oneItem.getEnchants().containsKey(oneE.getKey())) {
-		    if (oneItem.getEnchants().get(oneE.getKey()) < oneE.getValue()) {
-			continue main;
-		    }
-		} else
-		    continue main;
-	    }
-
-	    return oneItem;
-	}
-	return null;
-    }
-
     public boolean containsItemBoostByNBT(ItemStack item) {
 	if (item == null)
 	    return false;
-	for (Job one : Jobs.getJobs()) {
-	    if (one.getItemBonus().isEmpty())
-		continue;
-	    if (!Jobs.getReflections().hasNbt(item, "JobsItemBoost"))
-		continue;
-	    return true;
-	}
-	return false;
+	return Jobs.getReflections().hasNbtString(item, "JobsItemBoost") || Jobs.getReflections().hasNbt(item, "JobsItemBoost");
     }
 
-    public void updateOldItems(Player player) {
+//    public BoostMultiplier getItemBoostByNBT(Job prog, ItemStack item) {
+//	BoostMultiplier bonus = new BoostMultiplier();
+////	if (prog.getItemBonus().isEmpty())
+////	    return bonus;
+//	if (item == null)
+//	    return bonus;
+//
+//	if (!Jobs.getReflections().hasNbtString(item, "JobsItemBoost"))
+//	    return bonus;
+//
+////	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost", prog.getName());
+//	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost");
+//
+//	if (itemName == null)
+//	    return bonus;
+//	JobItems b = ItemBoostManager.getItemByKey((String) itemName);
+//	if (b == null)
+//	    return bonus;
+//
+//	return b.getBoost();
+//    }
 
-	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-	if (iih != null && !iih.getType().equals(Material.AIR) && containsItemBoostByNBT(iih) && !Jobs.getReflections().hasNbt(iih, "JobsItemBoost")) {
-	    boolean changed = false;
-	    for (Job one : Jobs.getJobs()) {
-		JobItems jitem = getOldItemBoost(one, iih);
-		if (jitem == null)
-		    continue;
-
-		iih = Jobs.getReflections().setNbt(iih, "JobsItemBoost", one.getName(), jitem.getNode());
-		changed = true;
-	    }
-	    if (changed)
-		Jobs.getNms().setItemInMainHand(player, iih);
-	}
-
-	ItemStack[] cont = player.getInventory().getArmorContents();
-
-	boolean gchanged = false;
-	for (int i = 0; i < cont.length; i++) {
-	    ItemStack item = cont[i];
-	    if (item == null || item.getType().equals(Material.AIR) || Jobs.getReflections().hasNbt(iih, "JobsItemBoost"))
-		continue;
-	    boolean changed = false;
-	    for (Job one : Jobs.getJobs()) {
-		JobItems jitem = getOldItemBoost(one, item);
-		if (jitem == null)
-		    continue;
-		item = Jobs.getReflections().setNbt(item, "JobsItemBoost", one.getName(), jitem.getNode());
-		changed = true;
-	    }
-	    if (changed) {
-		cont[i] = item;
-		gchanged = true;
-	    }
-	}
-	if (gchanged)
-	    player.getInventory().setArmorContents(cont);
-    }
-
-    public BoostMultiplier getItemBoostByNBT(Job prog, ItemStack item) {
-	BoostMultiplier bonus = new BoostMultiplier();
-	if (prog.getItemBonus().isEmpty())
-	    return bonus;
+    public JobItems getJobsItemByNbt(ItemStack item) {
 	if (item == null)
-	    return bonus;
+	    return null;
 
-	if (!Jobs.getReflections().hasNbt(item, "JobsItemBoost"))
-	    return bonus;
+//	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost", prog.getName());
+	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost");
 
-	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost", prog.getName());
-
-	if (itemName == null)
-	    return bonus;
-	JobItems b = prog.getItemBonus((String) itemName);
+	if (itemName == null) {
+	    return null;
+	}
+	JobItems b = ItemBoostManager.getItemByKey((String) itemName);
 	if (b == null)
-	    return bonus;
+	    return null;
 
+	return b;
+    }
+
+    public BoostMultiplier getJobsBoostByNbt(ItemStack item) {
+	JobItems b = getJobsItemByNbt(item);
+	if (b == null)
+	    return null;
 	return b.getBoost();
     }
 
