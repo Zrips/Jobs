@@ -76,17 +76,24 @@ public class TabComplete implements TabCompleter {
 			}
 			break;
 		    case "[jobitemname]":
-			Job oneJob = Jobs.getJob(args[i - 1]);
-			if (oneJob != null)
-			    if (args[3].equals("items")) {
-				for (Entry<String, JobItems> item : ItemBoostManager.getItemsMapByJob(oneJob).entrySet()) {
-				    temp.add(item.getValue().getNode());
-				}
-			    } else if (args[3].equals("limiteditems")) {
-				for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
-				    temp.add(limitedItem.getValue().getNode());
-				}
+			if (args[3].equals("items")) {
+			    for (Entry<String, JobItems> one : ItemBoostManager.getItems().entrySet()) {
+				temp.add(one.getValue().getNode());
 			    }
+			} else if (args[3].equals("limiteditems")) {
+			    Job oneJob = Jobs.getJob(args[i - 1]);
+			    if (oneJob != null)
+				if (args[3].equals("limiteditems")) {
+				    for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
+					temp.add(limitedItem.getValue().getNode());
+				    }
+				}
+			}
+			break;
+		    case "[boosteditems]":
+			for (Entry<String, JobItems> one : ItemBoostManager.getItems().entrySet()) {
+			    temp.add(one.getValue().getNode());
+			}
 			break;
 		    case "[oldjob]":
 			JobsPlayer onePlayerJob = Jobs.getPlayerManager().getJobsPlayer(args[i - 1]);

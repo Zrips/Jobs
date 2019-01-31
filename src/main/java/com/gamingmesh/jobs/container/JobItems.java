@@ -38,9 +38,11 @@ public class JobItems {
     ItemStack item;
     private BoostMultiplier boostMultiplier = new BoostMultiplier();
     private List<Job> jobs = new ArrayList<Job>();
+    private int fromLevel = 0;
+    private int untilLevel = Integer.MAX_VALUE;
 
     public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs) {
-
+	mat = mat == null ? CMIMaterial.STONE : mat;
 	try {
 	    item = mat.newItemStack();
 	    item.setAmount(amount);
@@ -103,11 +105,35 @@ public class JobItems {
 	return boostMultiplier.clone();
     }
 
+    public BoostMultiplier getBoost(JobProgression job) {
+	if (job == null || !this.jobs.contains(job.getJob()))
+	    return new BoostMultiplier();
+	if (job.getLevel() < getFromLevel() || job.getLevel() > getUntilLevel())
+	    return new BoostMultiplier();
+	return boostMultiplier.clone();
+    }
+
     public List<Job> getJobs() {
 	return jobs;
     }
 
     public void setJobs(List<Job> jobs) {
 	this.jobs = jobs;
+    }
+
+    public int getFromLevel() {
+	return fromLevel;
+    }
+
+    public void setFromLevel(int fromLevel) {
+	this.fromLevel = fromLevel;
+    }
+
+    public int getUntilLevel() {
+	return untilLevel;
+    }
+
+    public void setUntilLevel(int untilLevel) {
+	this.untilLevel = untilLevel;
     }
 }

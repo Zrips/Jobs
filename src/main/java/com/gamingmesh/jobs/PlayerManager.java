@@ -58,6 +58,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.economy.PointsData;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
@@ -758,7 +759,7 @@ public class PlayerManager {
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 	JobItems jitem = getJobsItemByNbt(iih);
 	if (jitem != null && jitem.getJobs().contains(prog))
-	    data.add(jitem.getBoost());
+	    data.add(jitem.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
 
 	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
 	    if (OneArmor == null || OneArmor.getType() == Material.AIR)
@@ -768,7 +769,7 @@ public class PlayerManager {
 	    if (armorboost == null || !armorboost.getJobs().contains(prog))
 		return data;
 
-	    data.add(armorboost.getBoost());
+	    data.add(armorboost.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
 	}
 
 	return data;
@@ -777,40 +778,33 @@ public class PlayerManager {
     public boolean containsItemBoostByNBT(ItemStack item) {
 	if (item == null)
 	    return false;
-	return Jobs.getReflections().hasNbtString(item, "JobsItemBoost") || Jobs.getReflections().hasNbt(item, "JobsItemBoost");
+	return Jobs.getReflections().hasNbtString(item, "JobsItemBoost");
     }
-
-//    public BoostMultiplier getItemBoostByNBT(Job prog, ItemStack item) {
-//	BoostMultiplier bonus = new BoostMultiplier();
-////	if (prog.getItemBonus().isEmpty())
-////	    return bonus;
-//	if (item == null)
-//	    return bonus;
-//
-//	if (!Jobs.getReflections().hasNbtString(item, "JobsItemBoost"))
-//	    return bonus;
-//
-////	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost", prog.getName());
-//	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost");
-//
-//	if (itemName == null)
-//	    return bonus;
-//	JobItems b = ItemBoostManager.getItemByKey((String) itemName);
-//	if (b == null)
-//	    return bonus;
-//
-//	return b.getBoost();
-//    }
 
     public JobItems getJobsItemByNbt(ItemStack item) {
 	if (item == null)
 	    return null;
 
-//	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost", prog.getName());
 	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost");
 
-	if (itemName == null) {
-	    return null;
+	if (itemName == null || ((String) itemName).isEmpty()) {
+
+	    // Checking old boost items and converting to new format if needed
+	    if (Jobs.getReflections().hasNbt(item, "JobsItemBoost")) {
+		for (Job one : Jobs.getJobs()) {
+		    itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost", one.getName());
+		    if (itemName != null) {
+			JobItems b = ItemBoostManager.getItemByKey((String) itemName);
+			if (b != null) {
+			    ItemStack ic = Jobs.getReflections().setNbt(item, "JobsItemBoost", b.getNode());
+			    item.setItemMeta(ic.getItemMeta());
+			}
+			break;
+		    }
+		}
+	    }
+	    if (itemName == null)
+		return null;
 	}
 	JobItems b = ItemBoostManager.getItemByKey((String) itemName);
 	if (b == null)
@@ -819,12 +813,12 @@ public class PlayerManager {
 	return b;
     }
 
-    public BoostMultiplier getJobsBoostByNbt(ItemStack item) {
-	JobItems b = getJobsItemByNbt(item);
-	if (b == null)
-	    return null;
-	return b.getBoost();
-    }
+//    public BoostMultiplier getJobsBoostByNbt(ItemStack item) {
+//	JobItems b = getJobsItemByNbt(item);
+//	if (b == null)
+//	    return null;
+//	return b.getBoost();
+//    }
 
     public enum BoostOf {
 	McMMO, PetPay, NearSpawner, Permission, Global, Dynamic, Item, Area

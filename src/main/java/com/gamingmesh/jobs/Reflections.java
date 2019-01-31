@@ -215,27 +215,27 @@ public class Reflections {
 	}
     }
 
-//    public Object getNbt(ItemStack item, String base, String path) {
-//	if (item == null)
-//	    return null;
-//	try {
-//	    Object nbt = getNbt(item);
-//	    if (nbt == null)
-//		return null;
-//
-//	    Method compoundMeth = nbt.getClass().getMethod("getCompound", String.class);
-//	    Object compoundRes = compoundMeth.invoke(nbt, base);
-//
-//	    if (compoundRes == null)
-//		return null;
-//
-//	    Method meth = compoundRes.getClass().getMethod("getString", String.class);
-//	    Object res = meth.invoke(compoundRes, path);
-//	    return res;
-//	} catch (Throwable e) {
-//	    return null;
-//	}
-//    }
+    public Object getNbt(ItemStack item, String base, String path) {
+	if (item == null)
+	    return null;
+	try {
+	    Object nbt = getNbt(item);
+	    if (nbt == null)
+		return null;
+
+	    Method compoundMeth = nbt.getClass().getMethod("getCompound", String.class);
+	    Object compoundRes = compoundMeth.invoke(nbt, base);
+
+	    if (compoundRes == null)
+		return null;
+
+	    Method meth = compoundRes.getClass().getMethod("getString", String.class);
+	    Object res = meth.invoke(compoundRes, path);
+	    return res;
+	} catch (Throwable e) {
+	    return null;
+	}
+    }
 //
 //    public ItemStack setNbt(ItemStack item, String base, String path, String value) {
 //	if (item == null)

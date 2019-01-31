@@ -21,7 +21,7 @@ import com.gamingmesh.jobs.container.JobItems;
 
 public class ItemBoostManager {
 
-    static HashMap<String, JobItems> items = new HashMap<String, JobItems>();
+    private static HashMap<String, JobItems> items = new HashMap<String, JobItems>();
 
     public ItemBoostManager() {
 
@@ -82,24 +82,59 @@ public class ItemBoostManager {
 
 	Set<String> keys = cfg.getC().getKeys(false);
 
+	cfg.addComment("exampleBoost", "Name which will be used to identify this particular item boost",
+	    "This is EXAMPLE boost and will be ignored");
+	cfg.addComment("exampleBoost.id", "Item Id which can be any material name as of 1.13 update",
+	    "This is only used when performing command like /jobs give, but boost itself is not dependent on item type",
+	    "You can use ingame command /jobs edititemboost to give particular boost to any item you are holding");
+	cfg.get("exampleBoost.id", "Golden_shovel");
+	cfg.addComment("exampleBoost.name", "(Optional) Item custom name", "Custom colors like &2 &5 can be used");
+	cfg.get("exampleBoost.name", "&2Custom item name");
+	cfg.addComment("exampleBoost.lore", "(Optional) Item custom lore", "Same as name, supports color codes");
+	cfg.get("exampleBoost.lore", Arrays.asList("&2Some random", "&5Lore with some", "&7Colors"));
+	cfg.addComment("exampleBoost.enchants", "(Optional) Item custom enchants",
+	    "All enchantment names can be found https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html");
+	cfg.get("exampleBoost.enchants", Arrays.asList("FIRE_ASPECT=1", "DAMAGE_ALL=1"));
+	cfg.addComment("exampleBoost.moneyBoost", "[Required] Money boost: 1.1 is equals 10% more income when 0.9 is equals 10% less from base income");
+	for (CurrencyType oneC : CurrencyType.values()) {
+	    cfg.get("exampleBoost." + oneC.toString().toLowerCase() + "Boost", 1D);
+	}
+	cfg.addComment("exampleBoost.jobs", "[Required] Jobs which should receive this boost",
+	    "Can be specific jobs or use 'all' to give this boost for every job");
+	cfg.get("exampleBoost.jobs", Arrays.asList("Miner", "Woodcutter", "All"));
+
+	cfg.addComment("exampleBoost.levelFrom", "(Optional) Defines level of job from which this boost should be applied",
+	    "Keep in mind that if boost have multiple jobs, then level will be checked by job which is requesting boost value");
+	cfg.get("exampleBoost.levelFrom", 0);
+	cfg.addComment("exampleBoost.levelUntil", "(Optional) Defines level of job until which this boost should be applied");
+	cfg.get("exampleBoost.levelUntil", 50);
+
 	for (String one : keys) {
 	    if (!cfg.getC().isConfigurationSection(one))
 		continue;
 
-	    CMIMaterial mat = CMIMaterial.get(cfg.get(one + ".id", "Stone"));
-	    if (mat == null) {
-		Jobs.getPluginLogger().warning("Cant load " + one + " boosted item!");
+	    // Ignoring example job
+	    if (one.equalsIgnoreCase("exampleBoost"))
 		continue;
+
+	    CMIMaterial mat = null;
+
+	    if (cfg.getC().isString(one + ".id")) {
+		mat = CMIMaterial.get(cfg.get(one + ".id", "Stone"));
 	    }
+
 	    String name = null;
-	    if (cfg.getC().isString(one + ".name"))
+
+	    if (cfg.getC().isString(one + ".name")) {
 		name = cfg.get(one + ".name", "");
+	    }
 
 	    List<String> lore = new ArrayList<>();
-	    if (cfg.getC().getStringList(one + ".lore") != null && !cfg.getC().getStringList(one + ".lore").isEmpty())
+	    if (cfg.getC().getStringList(one + ".lore") != null && !cfg.getC().getStringList(one + ".lore").isEmpty()) {
 		for (String eachLine : cfg.get(one + ".lore", Arrays.asList(""))) {
 		    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 		}
+	    }
 
 	    HashMap<Enchantment, Integer> enchants = new HashMap<>();
 	    if (cfg.getC().getStringList(one + ".enchants") != null && !cfg.getC().getStringList(one + ".enchants").isEmpty())
@@ -132,7 +167,10 @@ public class ItemBoostManager {
 		    Jobs.getPluginLogger().warning("Cant determine job by " + oneJ + " name for " + one + " boosted item!");
 		    continue;
 		}
-		jobs.add(job);
+		if (oneJ.equalsIgnoreCase("all")) {
+		    jobs.addAll(Jobs.getJobs());
+		} else if (job != null)
+		    jobs.add(job);
 	    }
 
 	    if (jobs.isEmpty()) {
@@ -140,7 +178,18 @@ public class ItemBoostManager {
 		continue;
 	    }
 	    JobItems item = new JobItems(one.toLowerCase(), mat, 1, name, lore, enchants, b, jobs);
+
+	    if (cfg.getC().isInt(one + ".levelFrom")) {
+		item.setFromLevel(cfg.get(one + ".levelFrom", 0));
+	    }
+	    if (cfg.getC().isInt(one + ".levelUntil")) {
+		item.setUntilLevel(cfg.get(one + ".levelUntil", 1000));
+	    }
+
+	    Jobs.consoleMsg(one.toLowerCase() + " " + (item == null) + "");
 	    for (Job oneJ : jobs) {
+		if (oneJ == null)
+		    continue;
 		oneJ.getItemBonus().put(one.toLowerCase(), item);
 	    }
 
@@ -171,5 +220,13 @@ public class ItemBoostManager {
 
     public static JobItems getItemByKey(String key) {
 	return items.get(key.toLowerCase());
+    }
+
+    public static HashMap<String, JobItems> getItems() {
+	return items;
+    }
+
+    public static void setItems(HashMap<String, JobItems> items) {
+	ItemBoostManager.items = items;
     }
 }

@@ -59,7 +59,7 @@ public class itembonus implements Cmd {
 	    if (jitem == null)
 		continue;
 	    for (Job one : jitem.getJobs()) {
-		BoostMultiplier boost = jitem.getBoost();
+		BoostMultiplier boost = jitem.getBoost(jPlayer.getJobProgression(one));
 		boolean any = false;
 		for (CurrencyType oneC : CurrencyType.values()) {
 		    if (boost.get(oneC) != 0D)

@@ -209,7 +209,7 @@ public class LanguageManager {
 
 	    c.get("command.edititembonus.help.info", "Edit item boost bonus");
 	    c.get("command.edititembonus.help.args", "list/add/remove [jobname] [itemBoostName]");
-	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("list%%add%%remove", "[jobname]", "[jobitemname]"));
+	    Jobs.getGCManager().commandArgs.put("edititembonus", Arrays.asList("list%%add%%remove", "[boosteditems]"));
 
 	    c.get("command.bonus.help.info", "Show job bonuses");
 	    c.get("command.bonus.help.args", "[jobname]");

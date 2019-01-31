@@ -103,6 +103,9 @@ public class edititembonus implements Cmd {
 
 	JobItems item = ItemBoostManager.getItemByKey((String) key);
 
+	if (item == null)
+	    return true; 
+
 	BoostMultiplier boost = item.getBoost();
 
 	for (Job one : item.getJobs()) {

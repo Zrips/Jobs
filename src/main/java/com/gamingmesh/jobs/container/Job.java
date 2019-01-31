@@ -369,6 +369,8 @@ public class Job {
      */
     @Deprecated
     public HashMap<String, JobItems> getItemBonus() {
+	if (jobItems == null)
+	    jobItems = new HashMap<String, JobItems>();
 	return jobItems;
     }
 

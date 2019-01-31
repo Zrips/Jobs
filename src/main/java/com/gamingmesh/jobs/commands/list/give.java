@@ -63,8 +63,11 @@ public class give implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.notonline", "%playername%", args[0]));
 	    return true;
 	}
+	
+	if (name == null)
+	    name = actions.items;
 
-	if (name == null || itemName == null) {
+	if (itemName == null) {
 	    Jobs.getCommandManager().sendUsage(sender, "give");
 	    return true;
 	}
