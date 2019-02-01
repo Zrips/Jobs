@@ -51,73 +51,80 @@ public class TabComplete implements TabCompleter {
 			continue;
 
 		    String arg = ArgsList.get(i - 1);
-		    List<String> temp = new ArrayList<>();
+		    List<String> t2 = new ArrayList<>();
 
 		    if (arg.contains("%%"))
 			for (String one : arg.split("%%")) {
-			    temp.add(one);
+			    t2.add(one);
 			}
+		    else
+			t2.add(arg);
 
-		    switch (arg) {
-		    case "[jobname]":
-			List<Job> Jobsai = Jobs.getJobs();
-			for (Job one : Jobsai) {
-			    temp.add(one.getName());
-			}
-			break;
-		    case "[playername]":
-			for (Player player : Bukkit.getOnlinePlayers()) {
-			    temp.add(player.getName());
-			}
-			break;
-		    case "[action]":
-			for (ActionType action : ActionType.values()) {
-			    temp.add(action.getName());
-			}
-			break;
-		    case "[jobitemname]":
-			if (args[3].equals("items")) {
+		    List<String> temp = new ArrayList<>();
+		    for (String ar : t2) {
+			switch (ar) {
+			case "[jobname]":
+			    List<Job> Jobsai = Jobs.getJobs();
+			    for (Job one : Jobsai) {
+				temp.add(one.getName());
+			    }
+			    break;
+			case "[playername]":
+			    for (Player player : Bukkit.getOnlinePlayers()) {
+				temp.add(player.getName());
+			    }
+			    break;
+			case "[action]":
+			    for (ActionType action : ActionType.values()) {
+				temp.add(action.getName());
+			    }
+			    break;
+			case "[jobitemname]":
 			    for (Entry<String, JobItems> one : ItemBoostManager.getItems().entrySet()) {
 				temp.add(one.getValue().getNode());
 			    }
-			} else if (args[3].equals("limiteditems")) {
-			    Job oneJob = Jobs.getJob(args[i - 1]);
-			    if (oneJob != null)
-				if (args[3].equals("limiteditems")) {
-				    for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
-					temp.add(limitedItem.getValue().getNode());
+			    if (args.length > 3 && args[3].equals("limiteditems")) {
+				Job oneJob = Jobs.getJob(args[i - 1]);
+				if (oneJob != null)
+				    if (args[3].equals("limiteditems")) {
+					for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
+					    temp.add(limitedItem.getValue().getNode());
+					}
 				    }
-				}
-			}
-			break;
-		    case "[boosteditems]":
-			for (Entry<String, JobItems> one : ItemBoostManager.getItems().entrySet()) {
-			    temp.add(one.getValue().getNode());
-			}
-			break;
-		    case "[oldjob]":
-			JobsPlayer onePlayerJob = Jobs.getPlayerManager().getJobsPlayer(args[i - 1]);
-			if (onePlayerJob != null)
-			    for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
-				temp.add(oneOldJob.getJob().getName());
 			    }
-			break;
-		    case "[oldplayerjob]":
-			if (sender instanceof Player) {
-			    onePlayerJob = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+			    break;
+			case "[boosteditems]":
+			    for (Entry<String, JobItems> one : ItemBoostManager.getItems().entrySet()) {
+				temp.add(one.getValue().getNode());
+			    }
+			    break;
+			case "[oldjob]":
+			    JobsPlayer onePlayerJob = Jobs.getPlayerManager().getJobsPlayer(args[i - 1]);
 			    if (onePlayerJob != null)
 				for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
 				    temp.add(oneOldJob.getJob().getName());
 				}
-			}
-			break;
-		    case "[newjob]":
-			if (sender instanceof Player) {
-			    for (Job job : Jobs.getJobs()) {
-				temp.add(job.getName());
+			    break;
+			case "[oldplayerjob]":
+			    if (sender instanceof Player) {
+				onePlayerJob = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+				if (onePlayerJob != null)
+				    for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
+					temp.add(oneOldJob.getJob().getName());
+				    }
 			    }
+			    break;
+			case "[newjob]":
+			    if (sender instanceof Player) {
+				for (Job job : Jobs.getJobs()) {
+				    temp.add(job.getName());
+				}
+			    }
+			    break;
+			default:
+			    temp.add(ar);
+			    break;
 			}
-			break;
 		    }
 
 		    StringUtil.copyPartialMatches(PartOfCommand, temp, completionList);
