@@ -45,7 +45,6 @@ public class ItemBoostManager {
 	    for (Entry<String, JobItems> oneI : one.getItemBonus().entrySet()) {
 		JobItems item = oneI.getValue();
 		cfg.getC().set(oneI.getKey() + ".id", CMIMaterial.get(item.getItemStack(null)).toString());
-//		Jobs.consoleMsg(cfg.getString(oneI.getKey() + ".id") + "   " + item.getItemStack(null).toString());
 		cfg.getC().set(oneI.getKey() + ".jobs", Arrays.asList(one.getName()));
 		if (item.getItemStack(null).hasItemMeta()) {
 		    cfg.getC().set(oneI.getKey() + ".name", item.getItemStack(null).getItemMeta().hasDisplayName() ? CMIChatColor.deColorize(item.getItemStack(null).getItemMeta().getDisplayName()) : null);
@@ -186,7 +185,6 @@ public class ItemBoostManager {
 		item.setUntilLevel(cfg.get(one + ".levelUntil", 1000));
 	    }
 
-	    Jobs.consoleMsg(one.toLowerCase() + " " + (item == null) + "");
 	    for (Job oneJ : jobs) {
 		if (oneJ == null)
 		    continue;
