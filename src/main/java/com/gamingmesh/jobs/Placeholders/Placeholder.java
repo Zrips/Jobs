@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class Placeholder {
@@ -39,6 +40,8 @@ public class Placeholder {
 	user_issaved,
 	user_displayhonorific,
 	user_joinedjobcount,
+	user_points,
+	user_total_points,
 	user_boost_$1_$2("jname/number", "money/exp/points"),
 	user_isin_$1("jname/number"),
 	user_canjoin_$1("jname/number"),
@@ -103,26 +106,23 @@ public class Placeholder {
 		if (one.isComplex())
 		    continue;
 //		String n = one.name().replace("_", "");
-		if (one.getName().equalsIgnoreCase(name)) {
+		if (one.getName().equalsIgnoreCase(name))
 		    return one;
-		}
 	    }
 	    name = pref + name;
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
 		if (one.isComplex())
 		    continue;
 		String n = one.getName();
-		if (n.equalsIgnoreCase(name)) {
+		if (n.equalsIgnoreCase(name))
 		    return one;
-		}
 	    }
 	    name = "%" + pref + "_" + original + "%";
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
 		if (!one.isComplex())
 		    continue;
-		if (!one.getComplexRegexMatchers(name).isEmpty()) {
+		if (!one.getComplexRegexMatchers(name).isEmpty())
 		    return one;
-		}
 	    }
 //	    For MVdWPlaceholderAPI
 //	    if (Jobs.getInstance().isMVdWPlaceholderAPIEnabled() && original.startsWith(pref+"_")) {
@@ -379,7 +379,7 @@ public class Placeholder {
 	if (placeHolder == null)
 	    return null;
 
-	// Placeholders by JobsPLayer object
+	// Placeholders by JobsPlayer object
 	if (user != null) {
 	    switch (placeHolder) {
 	    case user_id:
@@ -398,6 +398,12 @@ public class Placeholder {
 		return TimeManage.to24hourShort(System.currentTimeMillis() - user.getSeen());
 	    case user_totallevels:
 		return String.valueOf(user.getTotalLevels());
+	    case user_points:
+	    PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
+	    return String.valueOf(pointInfo.getCurrentPoints());
+	    case user_total_points:
+	    pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
+	    return String.valueOf(pointInfo.getTotalPoints());
 	    case user_issaved:
 		return convert(user.isSaved());
 	    case user_displayhonorific:
@@ -469,23 +475,19 @@ public class Placeholder {
 		    if (job == null)
 			return "";
 
-		    if (!Jobs.getCommandManager().hasJobPermission(player, job)) {
+		    if (!Jobs.getCommandManager().hasJobPermission(player, job))
 			return convert(false);
-		    }
 
-		    if (user.isInJob(job)) {
+		    if (user.isInJob(job))
 			return convert(false);
-		    }
 
-		    if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
+		    if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots())
 			return convert(false);
-		    }
 
 		    int confMaxJobs = Jobs.getGCManager().getMaxJobs();
 		    short PlayerMaxJobs = (short) user.getJobProgression().size();
-		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(user, PlayerMaxJobs)) {
+		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(user, PlayerMaxJobs))
 			return convert(false);
-		    }
 
 		    return convert(true);
 

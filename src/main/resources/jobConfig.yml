@@ -196,17 +196,17 @@ Jobs:
         # if not given, then there is no limit
         # this can be used for any action
         until-level: 30
-      13:
+      gravel:
         # you can use minuses to take away money if the player break this block
         income: -1.0
-        experience: -1.0        
+        experience: -1.0
     # payment for stripping wood logs, only for 1.13+ servers
     StripLogs:
-      STRIPPED_ACACIA_LOG:
+      stripped_acacia_log:
         income: 1.0
         points: 1.0
         experience: 1.0
-      STRIPPED_OAK_LOG:
+      stripped_oak_log:
         income: 1.0
         points: 1.0
         experience: 1.0
@@ -314,7 +314,7 @@ Jobs:
       Green:
         income: 2.0
         experience: 5.0
-      Light_Blue:
+      Navy:
         income: 2.0
         experience: 5.0
       Lime:
@@ -1723,7 +1723,7 @@ Jobs:
         income: 4.0
         points: 4.0
         experience: 5.0
-      Light_Blue:
+      Navy:
         income: 4.0
         points: 4.0
         experience: 5.0

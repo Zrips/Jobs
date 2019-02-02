@@ -86,10 +86,8 @@ public class TabComplete implements TabCompleter {
 			    if (args.length > 3 && args[3].equals("limiteditems")) {
 				Job oneJob = Jobs.getJob(args[i - 1]);
 				if (oneJob != null)
-				    if (args[3].equals("limiteditems")) {
-					for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
-					    temp.add(limitedItem.getValue().getNode());
-					}
+				    for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
+					temp.add(limitedItem.getValue().getNode());
 				    }
 			    }
 			    break;

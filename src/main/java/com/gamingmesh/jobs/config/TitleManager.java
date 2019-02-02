@@ -1,13 +1,10 @@
 package com.gamingmesh.jobs.config;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
@@ -53,7 +50,7 @@ public class TitleManager {
 	ConfigReader c = null;
 	try {
 	    c = new ConfigReader("titleConfig.yml");
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
 	if (c == null)

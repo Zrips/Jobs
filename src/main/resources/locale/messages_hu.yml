@@ -85,6 +85,16 @@ command:
       boostalladded: '&aTapasztalat növelése %boost% minden munkához hozzáadva!'
       boostadded: '&aTapasztalat növelése &e%boost% &ahozzáadva a(z) &e%jobname% &amunkához!'
       infostats: '&c-----> &aTapasztalat arány x%boost% engedélyezve&c <-------'
+  itembonus:
+    help:
+      info: 'Ellenőrzi az elem bónuszt.'
+      args: ''
+    output:
+      list: '&e[jobname]: %money% %points% %exp%'
+  edititembonus:
+    help:
+      info: 'Tárgybónusz szerkesztése.'
+      args: 'list/add/remove [jobname] [boosteditems]'
   bonus:
     help:
       info: 'A munkabónuszok megjelenítése.'
@@ -247,7 +257,7 @@ command:
   give:
     help:
       info: 'A tárgyakat a feladatok neve és az elemek kategóriája alapján adja meg. A játékos neve opcionális.'
-      args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
+      args: '[playername] [jobname]/[jobitemname] [items/limiteditems] [jobitemname]'
     output:
       notonline: '&4[%playername%] nem elérhető!'
       noitem: '&4Nincs találat ezzel a névvel lévő tárgyról!'
@@ -288,6 +298,9 @@ command:
       place:
         info: '&eLerak'
         none: '%jobname%&c nem kap pénzt, ha blokkot helyez le.'
+      striplogs:
+        info: '&eFa hántolás'
+        none: '%jobname% nem kap pénzt a fák hántolásáért.'
       kill:
         info: '&eMegöl'
         none: '%jobname%&c nem kap pénzt, ha szörnyet gyilkol.'
@@ -445,6 +458,7 @@ command:
       args: '[playername] [jobname]'
     error:
       alreadyin: '&cA játékos már dolgozik %jobname% munkánál.'
+      fullslots: '&cNem tudsz csatlakozni a(z) %jobname%&c munkához, mert nincsenek rendelkezésre álló helyek.'
     output:
       target: '&aMost már a(z) %jobname%&a munkánál dolgozik.'
   top:
@@ -587,16 +601,6 @@ command:
         points: '&6[points] pontot,'
       'on': '&aEngedélyezve: &aIgen'
       'off': '&aEngedélyezve: &4Nem'
-  itembonus:
-    help:
-      info: 'Ellenőrzi a bónuszt.'
-      args: ''
-    output:
-      list: '&e[jobname]: %money% %points% %exp%'
-  edititembonus:
-    help:
-      info: 'Tárgybónusz szerkesztése.'
-      args: 'list/add/remove [jobname] [itemBoostName]'
 message:
   skillup:
     broadcast: '%playername% játékost előléptették a %titlename% %jobname% munkában.'

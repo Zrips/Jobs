@@ -505,6 +505,7 @@ public class LanguageManager {
 	    c.get("command.employ.help.args", "[playername] [jobname]");
 	    Jobs.getGCManager().commandArgs.put("employ", Arrays.asList("[playername]", "[jobname]"));
 	    c.get("command.employ.error.alreadyin", "Player is already in the job %jobname%.");
+	    c.get("command.employ.error.fullslots", "You cannot join the job %jobname%, there are no slots available.");
 	    c.get("command.employ.output.target", "You have been employed as a %jobname%.");
 
 	    c.get("command.top.help.info", "Shows top %amount% players by jobs name.");

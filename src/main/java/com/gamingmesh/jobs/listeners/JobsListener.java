@@ -157,7 +157,7 @@ public class JobsListener implements Listener {
 	if (!player.hasPermission("jobs.area.select"))
 	    return;
 
-	if (player.getGameMode() == GameMode.CREATIVE)
+	if (player.getGameMode().equals(GameMode.CREATIVE))
 	    event.setCancelled(true);
 
 	Block block = event.getClickedBlock();
@@ -189,6 +189,9 @@ public class JobsListener implements Listener {
 	    return;
 
 	Player player = (Player) event.getWhoClicked();
+
+	if (player == null)
+	    return;
 
 	if (!Jobs.getShopManager().GuiList.containsKey(player.getName()))
 	    return;
@@ -348,6 +351,9 @@ public class JobsListener implements Listener {
 
 	Player player = event.getPlayer();
 
+	if (player == null)
+	    return;
+
 	if (!isInteractOk(player))
 	    return;
 
@@ -387,6 +393,9 @@ public class JobsListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
+
+	if (player == null)
+	    return;
 
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
@@ -444,6 +453,9 @@ public class JobsListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
+
+	if (player == null)
+	    return;
 
 	if (!player.hasPermission("jobs.command.signs")) {
 	    event.setCancelled(true);
@@ -640,7 +652,10 @@ public class JobsListener implements Listener {
 	    return;
 	Player player = event.getPlayer();
 
-	ItemStack iih = player.getItemInHand();
+	if (player == null)
+	    return;
+
+	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 
 	if (iih == null)
 	    return;
@@ -810,22 +825,20 @@ public class JobsListener implements Listener {
 			newArmorType = ArmorTypes.matchType(hotbarItem);
 			newArmorPiece = hotbarItem;
 			oldArmorPiece = event.getClickedInventory().getItem(event.getSlot());
-		    } else {
+		    } else
 			newArmorType = ArmorTypes.matchType(oldArmorPiece != null && oldArmorPiece.getType() != Material.AIR ? oldArmorPiece : event.getCursor());
-		    }
 		}
-	    } else {
+	    } else
 		newArmorType = ArmorTypes.matchType(oldArmorPiece != null && oldArmorPiece.getType() != Material.AIR ? oldArmorPiece : event.getCursor());
-	    }
+
 	    if (newArmorType != null && event.getRawSlot() == newArmorType.getSlot()) {
 		EquipMethod method = EquipMethod.DRAG;
 		if (event.getAction().equals(InventoryAction.HOTBAR_SWAP) || numberkey)
 		    method = EquipMethod.HOTBAR_SWAP;
 		JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent((Player) event.getWhoClicked(), method, newArmorType, oldArmorPiece, newArmorPiece);
 		Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
-		if (armorEquipEvent.isCancelled()) {
+		if (armorEquipEvent.isCancelled())
 		    event.setCancelled(true);
-		}
 	    }
 	}
     }

@@ -39,6 +39,14 @@ public class employ implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.employ.error.alreadyin", "%jobname%", job.getChatColor() + job.getName()));
 	    return true;
 	}
+
+	if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
+	    String message = Jobs.getLanguage().getMessage("command.join.error.fullslots");
+	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
+	    sender.sendMessage(message);
+	    return true;
+	}
+
 	try {
 	    // check if player already has the job
 	    Jobs.getPlayerManager().joinJob(jPlayer, job);

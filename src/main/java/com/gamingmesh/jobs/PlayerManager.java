@@ -22,21 +22,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
@@ -58,7 +54,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.economy.PointsData;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
@@ -727,18 +722,12 @@ public class PlayerManager {
 
     public BoostMultiplier getItemBoostNBT(Player player, Job prog) {
 
-	HashMap<Job, ItemBonusCache> cj = cache.get(player.getUniqueId());
+	HashMap<Job, ItemBonusCache> cj = cache == null ? new HashMap<Job, ItemBonusCache>() : cache.get(player.getUniqueId());
 
 	if (cj == null) {
 	    cj = new HashMap<>();
 	    cache.put(player.getUniqueId(), cj);
 	}
-
-	if (cache.get(player.getUniqueId()) != null)
-	    cj = cache.get(player.getUniqueId());
-
-	if (cj == null)
-	    return null;
 
 	ItemBonusCache c = cj.get(prog);
 	if (c == null) {
@@ -762,7 +751,7 @@ public class PlayerManager {
 	    data.add(jitem.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
 
 	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
-	    if (OneArmor == null || OneArmor.getType() == Material.AIR)
+	    if (OneArmor == null || OneArmor.getType() == org.bukkit.Material.AIR)
 		continue;
 	    JobItems armorboost = getJobsItemByNbt(OneArmor);
 

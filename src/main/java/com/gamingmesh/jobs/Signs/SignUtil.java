@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.Signs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -17,10 +16,8 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class SignUtil {
 
@@ -279,7 +276,7 @@ public class SignUtil {
 		    return;
 		}
 	    }, timelapse * Jobs.getGCManager().InfoUpdateInterval * 20L);
-	} catch (Exception | Error e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
 	return true;

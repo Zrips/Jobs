@@ -21,7 +21,7 @@ import com.gamingmesh.jobs.container.JobItems;
 
 public class ItemBoostManager {
 
-    private static HashMap<String, JobItems> items = new HashMap<String, JobItems>();
+    private static HashMap<String, JobItems> items = new HashMap<>();
 
     public ItemBoostManager() {
 
@@ -32,7 +32,7 @@ public class ItemBoostManager {
 	ConfigReader cfg = null;
 	try {
 	    cfg = new ConfigReader("boostedItems.yml");
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
 
@@ -50,7 +50,7 @@ public class ItemBoostManager {
 		    cfg.getC().set(oneI.getKey() + ".name", item.getItemStack(null).getItemMeta().hasDisplayName() ? CMIChatColor.deColorize(item.getItemStack(null).getItemMeta().getDisplayName()) : null);
 		    cfg.getC().set(oneI.getKey() + ".lore", item.getItemStack(null).getItemMeta().hasLore() ? CMIChatColor.deColorize(item.getItemStack(null).getItemMeta().getLore()) : null);
 		}
-		List<String> ench = new ArrayList<String>();
+		List<String> ench = new ArrayList<>();
 		for (Entry<Enchantment, Integer> oneE : item.getItemStack(null).getEnchantments().entrySet()) {
 		    ench.add(oneE.getKey().getName() + "=" + oneE.getValue());
 		}
@@ -72,7 +72,7 @@ public class ItemBoostManager {
 	    cfg = null;
 	    try {
 		cfg = new ConfigReader("boostedItems.yml");
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		e.printStackTrace();
 	    }
 	    if (cfg == null)
@@ -159,16 +159,16 @@ public class ItemBoostManager {
 
 	    List<String> jobsS = cfg.get(one + ".jobs", Arrays.asList(""));
 
-	    List<Job> jobs = new ArrayList<Job>();
+	    List<Job> jobs = new ArrayList<>();
 	    for (String oneJ : jobsS) {
 		Job job = Jobs.getJob(oneJ);
 		if (job == null && !oneJ.equalsIgnoreCase("all")) {
 		    Jobs.getPluginLogger().warning("Cant determine job by " + oneJ + " name for " + one + " boosted item!");
 		    continue;
 		}
-		if (oneJ.equalsIgnoreCase("all")) {
+		if (oneJ.equalsIgnoreCase("all"))
 		    jobs.addAll(Jobs.getJobs());
-		} else if (job != null)
+		else if (job != null)
 		    jobs.add(job);
 	    }
 
@@ -178,12 +178,11 @@ public class ItemBoostManager {
 	    }
 	    JobItems item = new JobItems(one.toLowerCase(), mat, 1, name, lore, enchants, b, jobs);
 
-	    if (cfg.getC().isInt(one + ".levelFrom")) {
+	    if (cfg.getC().isInt(one + ".levelFrom"))
 		item.setFromLevel(cfg.get(one + ".levelFrom", 0));
-	    }
-	    if (cfg.getC().isInt(one + ".levelUntil")) {
+
+	    if (cfg.getC().isInt(one + ".levelUntil"))
 		item.setUntilLevel(cfg.get(one + ".levelUntil", 1000));
-	    }
 
 	    for (Job oneJ : jobs) {
 		if (oneJ == null)
@@ -199,7 +198,7 @@ public class ItemBoostManager {
     }
 
     public static List<JobItems> getItemsByJob(Job job) {
-	List<JobItems> ls = new ArrayList<JobItems>();
+	List<JobItems> ls = new ArrayList<>();
 	for (Entry<String, JobItems> one : items.entrySet()) {
 	    if (one.getValue().getJobs().contains(job))
 		ls.add(one.getValue());
@@ -208,7 +207,7 @@ public class ItemBoostManager {
     }
 
     public static HashMap<String, JobItems> getItemsMapByJob(Job job) {
-	HashMap<String, JobItems> i = new HashMap<String, JobItems>();
+	HashMap<String, JobItems> i = new HashMap<>();
 	for (Entry<String, JobItems> one : items.entrySet()) {
 	    if (one.getValue().getJobs().contains(job))
 		i.put(one.getKey(), one.getValue());
