@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
@@ -70,8 +69,9 @@ public class bonus implements Cmd {
 
 	rm.addText(msg);
 	rm.addHoverText(Jobs.getLanguage().getMessage("command.bonus.output.finalExplanation"));
+	rm.build();
 	rm.show(player);
-	
+
 	return true;
     }
 
