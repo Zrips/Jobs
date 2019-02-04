@@ -206,6 +206,8 @@ public class LanguageManager {
 	    c.get("command.itembonus.help.info", "Check item bonus");
 	    c.get("command.itembonus.help.args", "");
 	    c.get("command.itembonus.output.list", "&e[jobname]: %money% %points% %exp%");
+	    c.get("command.itembonus.output.hover", "&7%itemtype%");
+	    c.get("command.itembonus.output.hoverLevelLimits", "&7From level: %from% \n&7Until level: %until%");
 
 	    c.get("command.edititembonus.help.info", "Edit item boost bonus");
 	    c.get("command.edititembonus.help.args", "list/add/remove [jobname] [itemBoostName]");

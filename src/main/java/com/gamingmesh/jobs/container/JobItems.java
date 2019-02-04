@@ -35,6 +35,7 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class JobItems {
     private String node;
+    private String legacyKey = null;
     ItemStack item;
     private BoostMultiplier boostMultiplier = new BoostMultiplier();
     private List<Job> jobs = new ArrayList<Job>();
@@ -135,5 +136,13 @@ public class JobItems {
 
     public void setUntilLevel(int untilLevel) {
 	this.untilLevel = untilLevel;
+    }
+
+    public String getLegacyKey() {
+	return legacyKey;
+    }
+
+    public void setLegacyKey(String legacyKey) {
+	this.legacyKey = legacyKey;
     }
 }

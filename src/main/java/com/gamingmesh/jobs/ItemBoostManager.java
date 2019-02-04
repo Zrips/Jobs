@@ -21,7 +21,8 @@ import com.gamingmesh.jobs.container.JobItems;
 
 public class ItemBoostManager {
 
-    private static HashMap<String, JobItems> items = new HashMap<>();
+    private static HashMap<String, JobItems> items = new HashMap<String, JobItems>();
+    private static HashMap<String, JobItems> legacy = new HashMap<String, JobItems>();
 
     public ItemBoostManager() {
 
@@ -39,24 +40,28 @@ public class ItemBoostManager {
 	if (cfg == null)
 	    return;
 	items.clear();
+	legacy.clear();
 	// Converting from existing records in Jobs from old format which was located in jobConfig.yml file 
 	boolean save = false;
 	for (Job one : Jobs.getJobs()) {
 	    for (Entry<String, JobItems> oneI : one.getItemBonus().entrySet()) {
 		JobItems item = oneI.getValue();
-		cfg.getC().set(oneI.getKey() + ".id", CMIMaterial.get(item.getItemStack(null)).toString());
-		cfg.getC().set(oneI.getKey() + ".jobs", Arrays.asList(one.getName()));
+
+		String name = one.getName() + "_" + oneI.getKey();
+
+		cfg.getC().set(name + ".id", CMIMaterial.get(item.getItemStack(null)).toString());
+		cfg.getC().set(name + ".jobs", Arrays.asList(one.getName()));
 		if (item.getItemStack(null).hasItemMeta()) {
-		    cfg.getC().set(oneI.getKey() + ".name", item.getItemStack(null).getItemMeta().hasDisplayName() ? CMIChatColor.deColorize(item.getItemStack(null).getItemMeta().getDisplayName()) : null);
-		    cfg.getC().set(oneI.getKey() + ".lore", item.getItemStack(null).getItemMeta().hasLore() ? CMIChatColor.deColorize(item.getItemStack(null).getItemMeta().getLore()) : null);
+		    cfg.getC().set(name + ".name", item.getItemStack(null).getItemMeta().hasDisplayName() ? CMIChatColor.deColorize(item.getItemStack(null).getItemMeta().getDisplayName()) : null);
+		    cfg.getC().set(name + ".lore", item.getItemStack(null).getItemMeta().hasLore() ? CMIChatColor.deColorize(item.getItemStack(null).getItemMeta().getLore()) : null);
 		}
 		List<String> ench = new ArrayList<>();
 		for (Entry<Enchantment, Integer> oneE : item.getItemStack(null).getEnchantments().entrySet()) {
 		    ench.add(oneE.getKey().getName() + "=" + oneE.getValue());
 		}
-		cfg.getC().set(oneI.getKey() + ".enchants", ench);
+		cfg.getC().set(name + ".enchants", ench);
 		for (CurrencyType oneC : CurrencyType.values()) {
-		    cfg.getC().set(oneI.getKey() + "." + oneC.toString().toLowerCase() + "Boost", ((int) (item.getBoost().get(oneC) * 100D) / 100D) + 1D);
+		    cfg.getC().set(name + "." + oneC.toString().toLowerCase() + "Boost", ((int) (item.getBoost().get(oneC) * 100D) / 100D) + 1D);
 		}
 		save = true;
 	    }
@@ -81,7 +86,10 @@ public class ItemBoostManager {
 
 	Set<String> keys = cfg.getC().getKeys(false);
 
-	cfg.addComment("exampleBoost", "Name which will be used to identify this particular item boost",
+	cfg.addComment("exampleBoost", "Attention! If category name has _ in it, that means its legacy item which was converted from jobConfig.yml file",
+	    "Keep this format until you will be sure that all legacy items have been converted throw usage, which is automatic process when player uses items with boost in them",
+	    "",
+	    "Name which will be used to identify this particular item boost",
 	    "This is EXAMPLE boost and will be ignored");
 	cfg.addComment("exampleBoost.id", "Item Id which can be any material name as of 1.13 update",
 	    "This is only used when performing command like /jobs give, but boost itself is not dependent on item type",
@@ -100,7 +108,7 @@ public class ItemBoostManager {
 	}
 	cfg.addComment("exampleBoost.jobs", "[Required] Jobs which should receive this boost",
 	    "Can be specific jobs or use 'all' to give this boost for every job");
-	cfg.get("exampleBoost.jobs", Arrays.asList("Miner", "Woodcutter", "All"));
+	cfg.get("exampleBoost.jobs", Arrays.asList("Miner", "Woodcutter", "all"));
 
 	cfg.addComment("exampleBoost.levelFrom", "(Optional) Defines level of job from which this boost should be applied",
 	    "Keep in mind that if boost have multiple jobs, then level will be checked by job which is requesting boost value");
@@ -190,6 +198,11 @@ public class ItemBoostManager {
 		oneJ.getItemBonus().put(one.toLowerCase(), item);
 	    }
 
+	    // Lets add into legacy map
+	    if (one.contains("_")) {
+		item.setLegacyKey((one.split("_")[1]).toLowerCase());
+		legacy.put(item.getLegacyKey(), item);
+	    }
 	    items.put(one.toLowerCase(), item);
 
 	}
@@ -216,11 +229,19 @@ public class ItemBoostManager {
     }
 
     public static JobItems getItemByKey(String key) {
-	return items.get(key.toLowerCase());
+	JobItems item = items.get(key.toLowerCase());
+	if (item != null) {
+	    return item;
+	}
+	return legacy.get(key.toLowerCase());
     }
 
     public static HashMap<String, JobItems> getItems() {
 	return items;
+    }
+
+    public static HashMap<String, JobItems> getLegacyItems() {
+	return legacy;
     }
 
     public static void setItems(HashMap<String, JobItems> items) {
