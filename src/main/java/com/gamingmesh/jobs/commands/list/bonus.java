@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.PlayerManager.BoostOf;
+import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Boost;
@@ -61,17 +62,16 @@ public class bonus implements Cmd {
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 
+	RawMessage rm = new RawMessage();
 	String msg = Jobs.getLanguage().getMessage("command.bonus.output.final",
 	    "%money%", mc + formatText(boost.getFinal(CurrencyType.MONEY, true, true)),
 	    "%points%", pc + formatText(boost.getFinal(CurrencyType.POINTS, true, true)),
 	    "%exp%", ec + formatText(boost.getFinal(CurrencyType.EXP, true, true)));
 
-	String txt = "[\"\",{\"text\":\"" + msg
-	    + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + Jobs.getLanguage().getMessage(
-		"command.bonus.output.finalExplanation") + "\"}]}}}]";
-
-	Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + player.getName() + " " + txt);
-
+	rm.addText(msg);
+	rm.addHoverText(Jobs.getLanguage().getMessage("command.bonus.output.finalExplanation"));
+	rm.show(player);
+	
 	return true;
     }
 

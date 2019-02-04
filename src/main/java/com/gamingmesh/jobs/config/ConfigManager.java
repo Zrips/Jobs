@@ -1139,7 +1139,6 @@ public class ConfigManager {
 			}
 
 			if (type == null) {
-			    Debug.D("type null");
 			    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
 			    continue;
 			}

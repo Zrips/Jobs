@@ -65,12 +65,6 @@ public class ExploreManager {
 
     public ExploreRespond ChunkRespond(String player, String world, int x, int z) {
 
-//	int ChunkX = x;
-//	int ChunkZ = z;
-
-//	int RegionX = (int) Math.floor(ChunkX / 32D);
-//	int RegionZ = (int) Math.floor(ChunkZ / 32D);
-
 	ExploreRegion eRegions = worlds.get(world);
 	if (eRegions == null) {
 	    int RegionX = (int) Math.floor(x / 32D);
@@ -85,30 +79,6 @@ public class ExploreManager {
 	worlds.put(world, eRegions);
 
 	return chunk.addPlayer(player);
-
-//	if (!worlds.containsKey(worldName)) {
-//	    ExploreChunk eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
-//	    if (!isNew)
-//		eChunk.setOldChunk();
-//	    ExploreRegion eRegion = new ExploreRegion(RegionX, RegionZ);
-//	    eRegion.addChunk(eChunk);
-//	    worlds.put(worldName, eRegion);
-//	    Debug.D("new chunk " + eChunk.isNew());
-//	    return new ExploreRespond(eChunk.getCount(), true);
-//	}
-//	ExploreRegion eRegion = worlds.get(worldName);
-//	ExploreChunk eChunk = eRegion.getChunk(ChunkX + ":" + ChunkZ);
-//
-//	if (eChunk == null) {
-//	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
-//	    if (!isNew)
-//		eChunk.setOldChunk();
-//	    eRegion.addChunk(eChunk);
-//	    Debug.D("new chunk " + eChunk.isNew());
-//	    return new ExploreRespond(eChunk.getCount(), true);
-//	}
-//	eChunk.setOldChunk();
-//	return eChunk.addPlayer(player);
     }
 
     public void load(ResultSet res) {
