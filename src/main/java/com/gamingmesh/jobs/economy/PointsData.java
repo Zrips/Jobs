@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.economy;
 import java.util.HashMap;
 import java.util.UUID;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.PlayerPoints;
 
 public class PointsData {
@@ -25,11 +26,11 @@ public class PointsData {
     }
 
     public void addPlayer(UUID uuid, double points, double total) {
-	if (!Pointbase.containsKey(uuid))
-	    Pointbase.put(uuid, new PlayerPoints(points, total));
+    addPlayer(uuid, new PlayerPoints(points,total));
     }
 
     public void addPlayer(UUID uuid, PlayerPoints points) {
+    if (Jobs.getGCManager().MultiServerCompatability()&&Pointbase.containsKey(uuid)) Pointbase.remove(uuid);
 	if (!Pointbase.containsKey(uuid))
 	    Pointbase.put(uuid, points);
     }
