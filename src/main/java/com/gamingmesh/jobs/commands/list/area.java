@@ -26,9 +26,8 @@ public class area implements Cmd {
 	}
 	Player player = (Player) sender;
 
-	if (args.length == 0) {
+	if (args.length == 0)
 	    return false;
-	}
 
 	RestrictedAreaManager ra = Jobs.getRestrictedAreaManager();
 
@@ -37,7 +36,7 @@ public class area implements Cmd {
 	    double bonus = 0D;
 	    try {
 		bonus = Double.parseDouble(args[2]);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		return false;
 	    }
 	    Boolean wg = false;
@@ -53,7 +52,7 @@ public class area implements Cmd {
 	    }
 
 	    if (!wg && !Jobs.getSelectionManager().hasPlacedBoth(player)) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.select", "%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTooldID).getName()));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.select", "%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getName()));
 		return true;
 	    }
 

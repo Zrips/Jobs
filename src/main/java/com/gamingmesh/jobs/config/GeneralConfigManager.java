@@ -67,7 +67,7 @@ public class GeneralConfigManager {
     public boolean PaymentMethodsPoints;
     public boolean PaymentMethodsExp;
     private HashMap<CurrencyType, Double> generalMulti = new HashMap<>();
-    public int getSelectionTooldID;
+    private String getSelectionTool = "";
 
     private int ResetTimeHour;
     private int ResetTimeMinute;
@@ -357,10 +357,10 @@ public class GeneralConfigManager {
 	Jobs.setNameTranslatorManager();
 	Jobs.getNameTranslatorManager().load();
 	// signs information
-	Jobs.setSignUtil(this.plugin);
+	Jobs.setSignUtil(plugin);
 	Jobs.getSignUtil().LoadSigns();
 	// Schedule
-	Jobs.setScheduleManager(this.plugin);
+	Jobs.setScheduleManager(plugin);
 	// Shop
 	Jobs.setShopManager();
 	Jobs.getShopManager().load();
@@ -374,12 +374,12 @@ public class GeneralConfigManager {
     private synchronized void loadGeneralSettings() {
 	try {
 	    c = new ConfigReader("generalConfig.yml");
-	} catch (Exception e1) {
-	    e1.printStackTrace();
+	} catch (Throwable t) {
+	    t.printStackTrace();
 	}
-	if (c == null){
+	if (c == null)
 	    return;
-	}
+
 	c.header(Arrays.asList("General configuration.",
 	    "  The general configuration for the jobs plugin mostly includes how often the plugin",
 	    "  saves user data (when the user is in the game), the storage method, whether",
@@ -392,36 +392,16 @@ public class GeneralConfigManager {
 	localeString = c.get("locale-language", "en");
 	try {
 	    int i = localeString.indexOf('_');
-	    if (i == -1) {
+	    if (i == -1)
 		locale = new Locale(localeString);
-	    } else {
+	    else
 		locale = new Locale(localeString.substring(0, i), localeString.substring(i + 1));
-	    }
 	} catch (IllegalArgumentException e) {
 	    locale = Locale.getDefault();
 	    Jobs.getPluginLogger().warning("Invalid locale \"" + localeString + "\" defaulting to " + locale.getLanguage());
 	}
 
 	Jobs.getDBManager().start();
-
-//	c.getW().addComment("storage-method", "storage method, can be MySQL, sqlite");
-//	storageMethod = c.get("storage-method", "sqlite");
-//	if (storageMethod.equalsIgnoreCase("mysql")) {
-//	    startMysql();
-//	} else if (storageMethod.equalsIgnoreCase("sqlite")) {
-//	    startSqlite();
-//	} else {
-//	    Jobs.getPluginLogger().warning("Invalid storage method!  Changing method to sqlite!");
-//	    c.getC().set("storage-method", "sqlite");
-//	    startSqlite();
-//	}
-//
-//	c.getW().addComment("mysql-username", "Requires Mysql.");
-//	c.get("mysql-username", "root");
-//	c.get("mysql-password", "");
-//	c.get("mysql-hostname", "localhost:3306");
-//	c.get("mysql-database", "minecraft");
-//	c.get("mysql-table-prefix", "jobs_");
 
 	c.addComment("save-period", "How often in minutes you want it to save. This must be a non-zero number");
 	c.get("save-period", 10);
@@ -436,18 +416,15 @@ public class GeneralConfigManager {
 	    "Only enable this if you have a multi-server setup, or have a really good reason for enabling this.", "Turning this on will decrease database performance.");
 	saveOnDisconnect = c.get("save-on-disconnect", false);
 
-	c.addComment("selectionTool", "Tool used when selecting bounds for restricted area");
-	if (CMIMaterial.get(getSelectionTooldID) == null)
-	    getSelectionTooldID = 294;
-	else
-	    getSelectionTooldID = c.get("selectionTool", 294);
+	c.addComment("selectionTool", "Tool used when selecting bounds for restricted area.");
+	getSelectionTool = c.get("selectionTool", "golden_hoe");
 
 	c.addComment("MultiServerCompatability", "Enable if you are using one data base for multiple servers across bungee network",
 	    "This will force to load players data every time he is logging in to have most up to date data instead of having preloaded data",
 	    "This will enable automatically save-on-disconnect feature");
 	MultiServerCompatability = c.get("MultiServerCompatability", false);
 	if (MultiServerCompatability)
-	    saveOnDisconnect = true;
+	    c.set("save-on-disconnect", true);
 
 	c.addComment("Optimizations.NewVersion",
 	    "When set to true staff will be informed about new Jobs plugin version", "You need to have jobs.versioncheck permission node");
@@ -600,7 +577,7 @@ public class GeneralConfigManager {
 	    DynamicPaymentEquation.setVariable("totaljobs", 10);
 	    DynamicPaymentEquation.setVariable("jobstotalplayers", 10);
 	    DynamicPaymentEquation.getValue();
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    Jobs.consoleMsg("&cDynamic payment equation has an invalid property. Disabling feature!");
 	    useDynamicPayment = false;
 	}
@@ -654,7 +631,7 @@ public class GeneralConfigManager {
 	    Equation.setVariable("totallevel", 1);
 	    Equation.getValue();
 	    limit.setMaxEquation(Equation);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    Jobs.getPluginLogger().warning("MoneyLimit has an invalid value. Disabling money limit!");
 	    limit.setEnabled(false);
 	}
@@ -688,7 +665,7 @@ public class GeneralConfigManager {
 	    Equation.setVariable("totallevel", 1);
 	    Equation.getValue();
 	    limit.setMaxEquation(Equation);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    Jobs.getPluginLogger().warning("PointLimit has an invalid value. Disabling money limit!");
 	    limit.setEnabled(false);
 	}
@@ -722,7 +699,7 @@ public class GeneralConfigManager {
 	    Equation.setVariable("totallevel", 1);
 	    Equation.getValue();
 	    limit.setMaxEquation(Equation);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    Jobs.getPluginLogger().warning("ExpLimit has an invalid value. Disabling money limit!");
 	    limit.setEnabled(false);
 	}
@@ -928,7 +905,7 @@ public class GeneralConfigManager {
 	tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
 	guiBackButton = tmat == null ? CMIMaterial.JACK_O_LANTERN.newItemStack() : tmat.newItemStack();
 
-	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "STAINED_GLASS_PANE"));
+	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "GREEN_STAINED_GLASS_PANE"));
 	guiFiller = tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : tmat.newItemStack();
 
 //	c.addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost?");
@@ -937,8 +914,8 @@ public class GeneralConfigManager {
 	c.save();
     }
 
-    public int getSelectionTooldID() {
-	return getSelectionTooldID;
+    public String getSelectionTool() {
+	return getSelectionTool;
     }
 
     public boolean isShowNewVersion() {

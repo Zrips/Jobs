@@ -21,8 +21,8 @@ import com.gamingmesh.jobs.container.JobItems;
 
 public class ItemBoostManager {
 
-    private static HashMap<String, JobItems> items = new HashMap<String, JobItems>();
-    private static HashMap<String, JobItems> legacy = new HashMap<String, JobItems>();
+    private static HashMap<String, JobItems> items = new HashMap<>();
+    private static HashMap<String, JobItems> legacy = new HashMap<>();
 
     public ItemBoostManager() {
 
@@ -137,14 +137,14 @@ public class ItemBoostManager {
 	    }
 
 	    List<String> lore = new ArrayList<>();
-	    if (cfg.getC().getStringList(one + ".lore") != null && !cfg.getC().getStringList(one + ".lore").isEmpty()) {
+	    if (cfg.getC().contains(one + ".lore") && !cfg.getC().getStringList(one + ".lore").isEmpty()) {
 		for (String eachLine : cfg.get(one + ".lore", Arrays.asList(""))) {
 		    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 		}
 	    }
 
 	    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-	    if (cfg.getC().getStringList(one + ".enchants") != null && !cfg.getC().getStringList(one + ".enchants").isEmpty())
+	    if (cfg.getC().contains(one + ".enchants") && !cfg.getC().getStringList(one + ".enchants").isEmpty())
 		for (String eachLine : cfg.get(one + ".enchants", Arrays.asList(""))) {
 		    if (!eachLine.contains("="))
 			continue;

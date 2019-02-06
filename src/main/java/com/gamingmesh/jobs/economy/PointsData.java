@@ -26,11 +26,12 @@ public class PointsData {
     }
 
     public void addPlayer(UUID uuid, double points, double total) {
-    addPlayer(uuid, new PlayerPoints(points,total));
+	addPlayer(uuid, new PlayerPoints(points, total));
     }
 
     public void addPlayer(UUID uuid, PlayerPoints points) {
-    if (Jobs.getGCManager().MultiServerCompatability()&&Pointbase.containsKey(uuid)) Pointbase.remove(uuid);
+	if (Jobs.getGCManager().MultiServerCompatability() && Pointbase.containsKey(uuid))
+	    Pointbase.remove(uuid);
 	if (!Pointbase.containsKey(uuid))
 	    Pointbase.put(uuid, points);
     }

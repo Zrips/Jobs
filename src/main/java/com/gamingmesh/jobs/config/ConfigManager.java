@@ -437,9 +437,13 @@ public class ConfigManager {
 	//conf.options().header(new StringBuilder().append("Jobs configuration.").append(System.getProperty("line.separator")).append(System.getProperty("line.separator")).append("Stores information about each job.").append(System.getProperty("line.separator")).append(System.getProperty("line.separator")).append("For example configurations, visit http://dev.bukkit.org/bukkit-plugins/jobs-reborn/.").append(System.getProperty("line.separator")).toString());
 
 	ConfigurationSection jobsSection = conf.getConfigurationSection("Jobs");
-	//if (jobsSection == null) {
-	//	jobsSection = conf.createSection("Jobs");
-	//}
+	if (jobsSection == null) {
+	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
+		Jobs.getPluginLogger().severe("Jobs section not found in jobConfig file!");
+		Jobs.getPluginLogger().severe("Check the config for fix the issue.");
+	    Jobs.getPluginLogger().severe("==============================================");
+		return;
+	}
 	for (String jobKey : jobsSection.getKeys(false)) {
 
 	    // Ignoring example job

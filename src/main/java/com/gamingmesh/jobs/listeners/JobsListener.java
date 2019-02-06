@@ -71,6 +71,7 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
 import com.gamingmesh.jobs.api.JobsAreaSelectionEvent;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
@@ -149,9 +150,7 @@ public class JobsListener implements Listener {
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 	if (iih == null || iih.getType() == Material.AIR)
 	    return;
-	@SuppressWarnings("deprecation")
-	int heldItemId = iih.getType().getId();
-	if (heldItemId != Jobs.getGCManager().getSelectionTooldID())
+	if (!iih.getType().equals(CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial()))
 	    return;
 
 	if (!player.hasPermission("jobs.area.select"))

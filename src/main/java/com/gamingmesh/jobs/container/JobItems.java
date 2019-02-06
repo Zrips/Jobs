@@ -36,9 +36,9 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 public class JobItems {
     private String node;
     private String legacyKey = null;
-    ItemStack item;
+    private ItemStack item;
     private BoostMultiplier boostMultiplier = new BoostMultiplier();
-    private List<Job> jobs = new ArrayList<Job>();
+    private List<Job> jobs = new ArrayList<>();
     private int fromLevel = 0;
     private int untilLevel = Integer.MAX_VALUE;
 
@@ -48,24 +48,29 @@ public class JobItems {
 	    item = mat.newItemStack();
 	    item.setAmount(amount);
 	    ItemMeta meta = item.getItemMeta();
+	    if (meta == null)
+		return;
+
 	    if (name != null)
 		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-	    if (lore != null && !lore.isEmpty()) {
+	    if (lore != null && !lore.isEmpty())
 		meta.setLore(lore);
-	    }
-	    if (enchants != null)
+
+	    if (enchants != null) {
 		if (mat == CMIMaterial.ENCHANTED_BOOK) {
 		    EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
 		    for (Entry<Enchantment, Integer> oneEnch : bookMeta.getEnchants().entrySet()) {
 			bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
 		    }
-		} else
+		} else {
 		    for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
 			meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
 		    }
+		}
+	    }
 	    item.setItemMeta(meta);
 	    item = Jobs.getReflections().setNbt(item, "JobsItemBoost", node);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
 
@@ -80,7 +85,7 @@ public class JobItems {
 
     public ItemStack getItemStack(Player player) {
 	if (player == null)
-	    return this.item;
+	    return item;
 	try {
 	    ItemStack item = this.item.clone();
 
@@ -96,8 +101,7 @@ public class JobItems {
 	    }
 	    item.setItemMeta(meta);
 	    return item;
-	} catch (Exception e) {
-
+	} catch (Throwable e) {
 	}
 	return null;
     }

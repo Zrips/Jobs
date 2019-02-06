@@ -41,7 +41,7 @@ public class employ implements Cmd {
 	}
 
 	if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
-	    String message = Jobs.getLanguage().getMessage("command.join.error.fullslots");
+	    String message = Jobs.getLanguage().getMessage("command.employ.error.fullslots");
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
 	    sender.sendMessage(message);
 	    return true;

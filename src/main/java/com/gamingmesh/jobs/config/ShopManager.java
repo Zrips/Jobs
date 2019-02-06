@@ -17,7 +17,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -322,7 +321,7 @@ public class ShopManager {
 
 	ConfigurationSection ConfCategory = f.getConfigurationSection("Items");
 	ArrayList<String> categoriesList = new ArrayList<>(ConfCategory.getKeys(false));
-	if (categoriesList.size() == 0)
+	if (categoriesList.isEmpty())
 	    return;
 	int i = 0;
 	int y = 1;
@@ -433,13 +432,13 @@ public class ShopManager {
 			name = ChatColor.translateAlternateColorCodes('&', itemSection.getString("Name"));
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.getStringList("Lore") != null && !itemSection.getStringList("Lore").isEmpty())
+		    if (itemSection.contains("Lore") && !itemSection.getStringList("Lore").isEmpty())
 			for (String eachLine : itemSection.getStringList("Lore")) {
 			    lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.getStringList("Enchants") != null && !itemSection.getStringList("Enchants").isEmpty())
+		    if (itemSection.contains("Enchants") && !itemSection.getStringList("Enchants").isEmpty())
 			for (String eachLine : itemSection.getStringList("Enchants")) {
 
 			    if (!eachLine.contains("="))
@@ -487,9 +486,8 @@ public class ShopManager {
     public void CloseInventories() {
 	for (Entry<String, Integer> one : GuiList.entrySet()) {
 	    Player player = Bukkit.getPlayer(one.getKey());
-	    if (player != null) {
+	    if (player != null)
 		player.closeInventory();
-	    }
 	}
     }
 }
