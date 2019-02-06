@@ -206,8 +206,8 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfPotionNames.clear();
 	    for (String one : keys) {
-		String id = String.valueOf(CMIMaterial.POTION.getId());
-		String meta = one.split("-")[0];
+		String id = one.split("-")[0];
+		String meta = "";
 		String MCName = one.split("-")[1];
 		String Name = ItemFile.getConfig().getString("PotionNamesList." + one);
 		ListOfPotionNames.add(new NameList(id, meta, Name, MCName));
@@ -263,7 +263,7 @@ public class NameTranslatorManager {
 	    ConfigReader c = null;
 	    try {
 		c = new ConfigReader(f);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		e.printStackTrace();
 	    }
 	    if (c == null)

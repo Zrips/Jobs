@@ -60,7 +60,6 @@ import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ConfigManager {
@@ -439,10 +438,10 @@ public class ConfigManager {
 	ConfigurationSection jobsSection = conf.getConfigurationSection("Jobs");
 	if (jobsSection == null) {
 	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
-		Jobs.getPluginLogger().severe("Jobs section not found in jobConfig file!");
-		Jobs.getPluginLogger().severe("Check the config for fix the issue.");
+	    Jobs.getPluginLogger().severe("Jobs section not found in jobConfig file!");
+	    Jobs.getPluginLogger().severe("Check the config for fix the issue.");
 	    Jobs.getPluginLogger().severe("==============================================");
-		return;
+	    return;
 	}
 	for (String jobKey : jobsSection.getKeys(false)) {
 
@@ -776,13 +775,13 @@ public class ConfigManager {
 			name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.getStringList("lore") != null && !itemSection.getStringList("lore").isEmpty())
+		    if (itemSection.contains("lore") && !itemSection.getStringList("lore").isEmpty())
 			for (String eachLine : itemSection.getStringList("lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.getStringList("enchants") != null && !itemSection.getStringList("enchants").isEmpty())
+		    if (itemSection.contains("enchants") && !itemSection.getStringList("enchants").isEmpty())
 			for (String eachLine : itemSection.getStringList("enchants")) {
 
 			    if (!eachLine.contains("="))
@@ -833,13 +832,13 @@ public class ConfigManager {
 			name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.getStringList("lore") != null && !itemSection.getStringList("lore").isEmpty())
+		    if (itemSection.contains("lore") && !itemSection.getStringList("lore").isEmpty())
 			for (String eachLine : itemSection.getStringList("lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.getStringList("enchants") != null && !itemSection.getStringList("enchants").isEmpty())
+		    if (itemSection.contains("enchants") && !itemSection.getStringList("enchants").isEmpty())
 			for (String eachLine : itemSection.getStringList("enchants")) {
 
 			    if (!eachLine.contains("="))

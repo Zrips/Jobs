@@ -758,27 +758,29 @@ public class JobsPaymentListener implements Listener {
 	if (resultStack == null)
 	    return;
 
-	// Checking if this is only item rename
-	ItemStack FirstSlot = null;
-	try {
-	    FirstSlot = inv.getItem(0);
-	} catch (NullPointerException e) {
-	    return;
-	}
-	if (FirstSlot == null)
-	    return;
-
-	String OriginalName = null;
-	String NewName = null;
-	if (FirstSlot.hasItemMeta())
-	    if (FirstSlot.getItemMeta().getDisplayName() != null)
-		OriginalName = FirstSlot.getItemMeta().getDisplayName();
-	if (resultStack.hasItemMeta())
-	    if (resultStack.getItemMeta().getDisplayName() != null)
-		NewName = resultStack.getItemMeta().getDisplayName();
-	if (OriginalName != NewName && inv.getItem(1) == null)
-	    if (!Jobs.getGCManager().PayForRenaming)
+	if (inv.getItem(1).getType() != Material.ENCHANTED_BOOK) {
+	    // Checking if this is only item rename
+	    ItemStack FirstSlot = null;
+	    try {
+		FirstSlot = inv.getItem(0);
+	    } catch (NullPointerException e) {
 		return;
+	    }
+	    if (FirstSlot == null)
+		return;
+
+	    String OriginalName = null;
+	    String NewName = null;
+	    if (FirstSlot.hasItemMeta())
+		if (FirstSlot.getItemMeta().getDisplayName() != null)
+		    OriginalName = FirstSlot.getItemMeta().getDisplayName();
+	    if (resultStack.hasItemMeta())
+		if (resultStack.getItemMeta().getDisplayName() != null)
+		    NewName = resultStack.getItemMeta().getDisplayName();
+	    if (OriginalName != NewName && inv.getItem(1) == null)
+		if (!Jobs.getGCManager().PayForRenaming)
+		    return;
+	}
 
 	// Check for world permissions
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -791,7 +793,26 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
+
+	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1).getType() == Material.ENCHANTED_BOOK) {
+	    Map<Enchantment, Integer> enchants = resultStack.getEnchantments();
+	    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
+			Enchantment enchant = oneEnchant.getKey();
+			if (enchant == null)
+			    continue;
+
+			String enchantName = enchant.getName();
+			if (enchantName == null)
+			    continue;
+
+			Integer level = oneEnchant.getValue();
+			if (level == null)
+			    continue;
+
+			Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
+		}
+	} else
+	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1543,8 +1564,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Player drinking a potion
-	if (CMIMaterial.get(Jobs.getNms().getItemInMainHand(p).getType()).isPotion())
-	    Jobs.action(jPlayer, new PotionDrinkInfo(CMIMaterial.get(Jobs.getNms().getItemInMainHand(p).getType()).name(), ActionType.DRINK));
+	Jobs.action(jPlayer, new PotionDrinkInfo(Jobs.getNms().getItemInMainHand(p), ActionType.DRINK));
     }
 
     @EventHandler

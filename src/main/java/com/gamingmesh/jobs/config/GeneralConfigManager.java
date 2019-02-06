@@ -76,7 +76,7 @@ public class GeneralConfigManager {
     // Limits
     private HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
 
-    public boolean PayForRenaming, PayForEachCraft, SignsEnabled,
+    public boolean PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
 	EnableAnounceMessage, useSilkTouchProtection, UseCustomNames,
 	UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
@@ -714,6 +714,9 @@ public class GeneralConfigManager {
 	    "Players will get full pay as they would for remaining two items when they only rename one",
 	    "This is not a big issue, but if you want to disable it, you can");
 	PayForRenaming = c.get("Economy.Repair.PayForRenaming", true);
+
+	c.addComment("Economy.Enchant.PayForEnchantingOnAnvil", "Do you want to give money for enchanting items in anvil?");
+	PayForEnchantingOnAnvil = c.get("Economy.Enchant.PayForEnchantingOnAnvil", false);
 
 	c.addComment("Economy.Crafting.PayForEachCraft",
 	    "With this true, player will get money for all crafted items instead of each crafting action (like with old payment mechanic)",
