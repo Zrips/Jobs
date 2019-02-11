@@ -20,27 +20,25 @@ public class quests implements Cmd {
     @Override
     @JobCommand(400)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (!Jobs.hasPermission(sender, "jobs.commands.quests", true))
-	return true;
-
 	JobsPlayer jPlayer = null;
 
 	if (args.length >= 1 && args[0].equals("next")) {
-
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	    jPlayer.resetQuests();
 	} else {
 	    if (args.length >= 1) {
-		if (!Jobs.hasPermission(sender, "jobs.command.admin.quests", true)) {
+		if (!Jobs.hasPermission(sender, "jobs.command.admin.quests", true))
 		    return true;
-		}
+
 		jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-	    } else if (sender instanceof Player) {
+	    } else if (sender instanceof Player)
 		jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
-	    }
 	}
 
 	if (jPlayer == null) {
+	    if (!Jobs.hasPermission(sender, "jobs.command.quests", true))
+		return true;
+
 	    if (args.length >= 1)
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    else

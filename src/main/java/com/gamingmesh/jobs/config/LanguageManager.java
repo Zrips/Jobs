@@ -116,7 +116,7 @@ public class LanguageManager {
 	    ConfigReader c = null;
 	    try {
 		c = new ConfigReader(f);
-	    } catch (Exception e) {
+	    } catch (Throwable e) {
 		e.printStackTrace();
 	    }
 	    if (c == null)
@@ -678,7 +678,7 @@ public class LanguageManager {
 	    c.get("scoreboard.gtopline", "&2Global top list");
 	    c.get("scoreboard.line", "&2%number%. &e%playername% (&6%level%&e)");
 
-	    Jobs.getGCManager().keys = new ArrayList<>(c.getC().getConfigurationSection("signs.secondline").getKeys(false));
+	    Jobs.getGCManager().keys = new ArrayList<String>(c.getC().getConfigurationSection("signs.secondline").getKeys(false));
 
 	    // Write back config
 	    c.save();

@@ -39,7 +39,7 @@ public class SignUtil {
 	    return;
 
 	Signs.GetAllSigns().clear();
-	File file = new File(plugin.getDataFolder(), "Signs.yml");
+	File file = new File(Jobs.getFolder(), "Signs.yml");
 	YamlConfiguration f = YamlConfiguration.loadConfiguration(file);
 
 	if (!f.isConfigurationSection("Signs"))
@@ -47,7 +47,7 @@ public class SignUtil {
 
 	ConfigurationSection ConfCategory = f.getConfigurationSection("Signs");
 	ArrayList<String> categoriesList = new ArrayList<>(ConfCategory.getKeys(false));
-	if (categoriesList.size() == 0)
+	if (categoriesList.isEmpty())
 	    return;
 	for (String category : categoriesList) {
 	    ConfigurationSection NameSection = ConfCategory.getConfigurationSection(category);
@@ -70,7 +70,7 @@ public class SignUtil {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
-	File f = new File(plugin.getDataFolder(), "Signs.yml");
+	File f = new File(Jobs.getFolder(), "Signs.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 
 	CommentedYamlConfiguration writer = new CommentedYamlConfiguration();
@@ -126,9 +126,8 @@ public class SignUtil {
 	    double SignsZ = one.GetZ();
 	    int number = one.GetNumber() - 1;
 
-	    if (!JobName.equalsIgnoreCase("gtoplist")) {
+	    if (!JobName.equalsIgnoreCase("gtoplist"))
 		PlayerList = Jobs.getJobsDAO().toplist(SignJobName, number);
-	    }
 
 	    if (PlayerList.isEmpty())
 		continue;
