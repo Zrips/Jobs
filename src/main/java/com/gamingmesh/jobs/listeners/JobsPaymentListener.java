@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -184,9 +185,9 @@ public class JobsPaymentListener implements Listener {
 	ItemStack toStore = event.getCursor();
 	// Make sure we are actually traded anything
 	if (hasItems(toCraft))
-	    if (event.isShiftClick()) {
+	    if (event.isShiftClick())
 		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.VTRADE);
-	    } else {
+	    else {
 		// The items are stored in the cursor. Make sure there's enough space.
 		if (isStackSumLegal(toCraft, toStore)) {
 		    int newItemsCount = toCraft.getAmount();
@@ -367,13 +368,13 @@ public class JobsPaymentListener implements Listener {
 	if (!payIfCreative(player))
 	    return;
 
+	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	    FurnaceBrewingHandling.removeFurnace(block);
+	if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
+	    FurnaceBrewingHandling.removeBrewing(block);
+
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
-
-	if (Jobs.getGCManager().isFurnacesReassign() && CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
-	    FurnaceBrewingHandling.removeFurnace(block);
-	if (Jobs.getGCManager().isBrewingStandsReassign() && CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
-	    FurnaceBrewingHandling.removeBrewing(block);
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 
@@ -797,20 +798,20 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1).getType() == Material.ENCHANTED_BOOK) {
 	    Map<Enchantment, Integer> enchants = resultStack.getEnchantments();
 	    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
-			Enchantment enchant = oneEnchant.getKey();
-			if (enchant == null)
-			    continue;
+	    Enchantment enchant = oneEnchant.getKey();
+	    if (enchant == null)
+		continue;
 
-			String enchantName = enchant.getName();
-			if (enchantName == null)
-			    continue;
+	    String enchantName = enchant.getName();
+	    if (enchantName == null)
+		continue;
 
-			Integer level = oneEnchant.getValue();
-			if (level == null)
-			    continue;
+	    Integer level = oneEnchant.getValue();
+	    if (level == null)
+		continue;
 
-			Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
-		}
+	    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
+	    }
 	} else
 	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
     }
@@ -1526,9 +1527,8 @@ public class JobsPaymentListener implements Listener {
 		    @Override
 		    public void run() {
 			Block b = loc.getBlock();
-			if (b.getType().toString().startsWith("STRIPPED_")) {
+			if (b.getType().toString().startsWith("STRIPPED_"))
 			    Jobs.action(jPlayer, new BlockActionInfo(b, ActionType.STRIPLOGS), b);
-			}
 			return;
 		    }
 		}, 1);
@@ -1590,7 +1590,7 @@ public class JobsPaymentListener implements Listener {
 	if (player.getGameMode().toString().equals("SPECTATOR"))
 	    return;
 
-	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isOnGround())
+	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())
 	    return;
 	ExploreRespond respond = Jobs.getExplore().ChunkRespond(player, event.getNewChunk());
 
