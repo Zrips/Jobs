@@ -15,9 +15,6 @@ public class TitleManager {
 
     protected List<Title> titles = new ArrayList<>();
 
-    public TitleManager() {
-    }
-
     /**
      * Function to return the title for a given level
      * @return the correct title
@@ -27,13 +24,11 @@ public class TitleManager {
 	Title title = null;
 	for (Title t : titles) {
 	    if (title == null) {
-		if (t.getLevelReq() <= level && (t.getJobName() == null || t.getJobName().equalsIgnoreCase(jobName))) {
+		if (t.getLevelReq() <= level && (t.getJobName() == null || t.getJobName().equalsIgnoreCase(jobName)))
 		    title = t;
-		}
 	    } else {
-		if (t.getLevelReq() <= level && t.getLevelReq() > title.getLevelReq() && (t.getJobName() == null || t.getJobName().equalsIgnoreCase(jobName))) {
+		if (t.getLevelReq() <= level && t.getLevelReq() > title.getLevelReq() && (t.getJobName() == null || t.getJobName().equalsIgnoreCase(jobName)))
 		    title = t;
-		}
 	    }
 	}
 	return title;
@@ -45,7 +40,7 @@ public class TitleManager {
      * loads from Jobs/titleConfig.yml
      */
     synchronized void load() {
-	this.titles.clear();
+	titles.clear();
 
 	ConfigReader c = null;
 	try {
@@ -72,56 +67,56 @@ public class TitleManager {
 	if (titleSection == null) {
 	    titleSection = c.getC().createSection("Titles");
 
-	    this.titles.add(new Title(
+	    titles.add(new Title(
 		c.get("Titles.Novice.Name", "N"),
 		c.get("Titles.Novice.ShortName", "N"),
 		ChatColor.matchColor(c.get("Titles.Novice.ChatColour", "YELLOW")),
 		c.get("Titles.Novice.levelReq", 0),
 		null));
 
-	    this.titles.add(new Title(
+	    titles.add(new Title(
 		c.get("Titles.Apprentice.Name", "A"),
 		c.get("Titles.Apprentice.ShortName", "A"),
 		ChatColor.matchColor(c.get("Titles.Apprentice.ChatColour", "WHITE")),
 		c.get("Titles.Apprentice.levelReq", 25),
 		null));
 
-	    this.titles.add(new Title(
+	    titles.add(new Title(
 		c.get("Titles.Initiate.Name", "I"),
 		c.get("Titles.Initiate.ShortName", "I"),
 		ChatColor.matchColor(c.get("Titles.Initiate.ChatColour", "GOLD")),
 		c.get("Titles.Initiate.levelReq", 50),
 		null));
 
-	    this.titles.add(new Title(
+	    titles.add(new Title(
 		c.get("Titles.Journeyman.Name", "J"),
 		c.get("Titles.Journeyman.ShortName", "J"),
 		ChatColor.matchColor(c.get("Titles.Journeyman.ChatColour", "DARK_GREEN")),
 		c.get("Titles.Journeyman.levelReq", 75),
 		null));
 
-	    this.titles.add(new Title(
+	    titles.add(new Title(
 		c.get("Titles.Adept.Name", "Ad"),
 		c.get("Titles.Adept.ShortName", "Ad"),
 		ChatColor.matchColor(c.get("Titles.Adept.ChatColour", "DARK_PURPLE")),
 		c.get("Titles.Adept.levelReq", 100),
 		null));
 
-	    this.titles.add(new Title(
+	    titles.add(new Title(
 		c.get("Titles.Master.Name", "M"),
 		c.get("Titles.Master.ShortName", "M"),
 		ChatColor.matchColor(c.get("Titles.Master.ChatColour", "GRAY")),
 		c.get("Titles.Master.levelReq", 125),
 		null));
 
-	    this.titles.add(new Title(
+	    titles.add(new Title(
 		c.get("Titles.Grandmaster.Name", "GM"),
 		c.get("Titles.Grandmaster.ShortName", "GM"),
 		ChatColor.matchColor(c.get("Titles.Grandmaster.ChatColour", "DARK_GRAY")),
 		c.get("Titles.Grandmaster.levelReq", 150),
 		null));
 
-	    this.titles.add(new Title(
+	    titles.add(new Title(
 		c.get("Titles.Legendary.Name", "L"),
 		c.get("Titles.Legendary.ShortName", "L"),
 		ChatColor.matchColor(c.get("Titles.Legendary.ChatColour", "BLACK")),
@@ -136,9 +131,8 @@ public class TitleManager {
 		ChatColor titleColor = ChatColor.matchColor(titleSection.getString(titleKey + ".ChatColour", ""));
 		int levelReq = titleSection.getInt(titleKey + ".levelReq", -1);
 
-		if (titleSection.isString(titleKey + ".JobName")) {
+		if (titleSection.isString(titleKey + ".JobName"))
 		    jobName = titleSection.getString(titleKey + ".JobName");
-		}
 
 		if (titleName == null) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid Name property. Skipping!");
@@ -158,9 +152,9 @@ public class TitleManager {
 		    continue;
 		}
 
-		this.titles.add(new Title(titleName, titleShortName, titleColor, levelReq, jobName));
+		titles.add(new Title(titleName, titleShortName, titleColor, levelReq, jobName));
 	    }
-	if (titles.size() != 0)
+	if (titles.size() > 0)
 	    Jobs.consoleMsg("&e[Jobs] Loaded " + titles.size() + " titles!");
     }
 }

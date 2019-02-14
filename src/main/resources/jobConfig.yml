@@ -105,7 +105,11 @@ Jobs:
         # Quest action can be any valid job action. Look at lower for all possible action types
         Action: Break
         # Target id or name. Comes in same format as it is for regular job action
+        # You can use only string or list to add more items in one quest
         Target: "17-0"
+        # Target:
+        # - "17-0"
+        # - stone
         # Amount of actions players should perform to complete this quest
         Amount: 300
         # Command list to be performed after quest is finished.
@@ -150,6 +154,17 @@ Jobs:
         RewardDesc:
         - "Cook some chicken breasts"
         - "Get 300 for this!"
+      4:
+        Name: "Strip logs"
+        Action: StripLogs
+        Target:
+        - stripped_birch_log
+        - stripped_acacia_log
+        Amount: 50
+        RewardCommands:
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Strip 50 birch and acacia logs!"
     ########################################################################
     # Section used to configure what items the job gets paid for, how much
     # they get paid and how much experience they gain.

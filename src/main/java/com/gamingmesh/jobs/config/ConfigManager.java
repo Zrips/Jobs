@@ -378,7 +378,7 @@ public class ConfigManager {
 	    type = myKey;
 	    PotionType potion = PotionType.valueOf(myKey);
 	    if (potion != null)
-		type = potion.name().toUpperCase().replace("_", "").toLowerCase();
+		type = potion.name().toString().replace("_", "").toLowerCase();
 	}
 
 	if (type == null) {
@@ -620,16 +620,15 @@ public class ConfigManager {
 			GUIitem = material.newItemStack();
 		    if (guiSection.contains("Enchantments")) {
 			List<String> enchants = guiSection.getStringList("Enchantments");
-			if (enchants.size() > 0) {
+			if (!enchants.isEmpty()) {
 			    for (String str4 : enchants) {
 				String[] enchantid = str4.split(":");
 				if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
 				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
 				    enchantMeta.addStoredEnchant(Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]), true);
 				    GUIitem.setItemMeta(enchantMeta);
-				} else {
+				} else
 				    GUIitem.addUnsafeEnchantment(Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]));
-				}
 			    }
 			}
 		    } else if (guiSection.contains("CustomSkull")) {
@@ -657,9 +656,8 @@ public class ConfigManager {
 				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
 				    enchantMeta.addStoredEnchant(Enchantment.getByName(id[0]), Integer.parseInt(id[1]), true);
 				    GUIitem.setItemMeta(enchantMeta);
-				} else {
+				} else
 				    GUIitem.addUnsafeEnchantment(Enchantment.getByName(id[0]), Integer.parseInt(id[1]));
-				}
 			    }
 			}
 		    } else if (guiSection.contains("CustomSkull")) {
@@ -723,15 +721,13 @@ public class ConfigManager {
 
 	    // Command on leave
 	    List<String> JobsCommandOnLeave = new ArrayList<>();
-	    if (jobSection.isList("cmd-on-leave")) {
+	    if (jobSection.isList("cmd-on-leave"))
 		JobsCommandOnLeave = jobSection.getStringList("cmd-on-leave");
-	    }
 
 	    // Command on join
 	    List<String> JobsCommandOnJoin = new ArrayList<>();
-	    if (jobSection.isList("cmd-on-join")) {
+	    if (jobSection.isList("cmd-on-join"))
 		JobsCommandOnJoin = jobSection.getStringList("cmd-on-join");
-	    }
 
 	    // Commands
 	    ArrayList<JobCommands> jobCommand = new ArrayList<>();
@@ -883,7 +879,15 @@ public class ConfigManager {
 			String name = sqsection.getString("Name", one);
 
 			ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
-			KeyValues kv = getKeyValue(sqsection.getString("Target"), actionType, jobName);
+			KeyValues kv = null;
+			if (sqsection.isString("Target"))
+			    kv = getKeyValue(sqsection.getString("Target"), actionType, jobName);
+			else if (sqsection.isList("Target")) {
+			    for (int i = 0; i < sqsection.getStringList("Target").size(); i++) {
+					kv = getKeyValue(sqsection.getStringList("Target").get(i), actionType, jobName);
+			    }
+			}
+
 			if (kv == null)
 			    continue;
 			int amount = sqsection.getInt("Amount");
@@ -894,13 +898,11 @@ public class ConfigManager {
 
 			Quest quest = new Quest(name, job, actionType);
 
-			if (sqsection.contains("fromLevel") && sqsection.isInt("fromLevel")) {
+			if (sqsection.contains("fromLevel") && sqsection.isInt("fromLevel"))
 			    quest.setMinLvl(sqsection.getInt("fromLevel"));
-			}
 
-			if (sqsection.contains("toLevel") && sqsection.isInt("toLevel")) {
+			if (sqsection.contains("toLevel") && sqsection.isInt("toLevel"))
 			    quest.setMaxLvl(sqsection.getInt("toLevel"));
-			}
 
 			quest.setConfigName(one);
 			quest.setAmount(amount);
@@ -1137,8 +1139,17 @@ public class ConfigManager {
 			    }
 			    Jobs.getExplore().setExploreEnabled();
 			    Jobs.getExplore().setPlayerAmount(amount + 1);
-			} else if (actionType == ActionType.CRAFT && myKey.startsWith("!")) {
+			} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
 			    type = myKey.substring(1, myKey.length());
+			else if (actionType == ActionType.DRINK) {
+			    type = myKey;
+			    try {
+					PotionType potion = PotionType.valueOf(myKey);
+					if (potion != null)
+						type = potion.name().toString().replace("_", "").toLowerCase();
+			    } catch (IllegalArgumentException i) {
+					Jobs.getPluginLogger().warning("Job" + jobKey + " has an invalid potion " + myKey + "!");
+			    }
 			}
 
 			if (type == null) {
@@ -1178,17 +1189,16 @@ public class ConfigManager {
 		job.setJobInfo(actionType, jobInfo);
 	    }
 
-	    if (jobKey.equalsIgnoreCase("none")) {
+	    if (jobKey.equalsIgnoreCase("none"))
 		Jobs.setNoneJob(job);
-	    } else {
+	    else
 		jobs.add(job);
-	    }
 	}
 
 	Jobs.consoleMsg("&e[Jobs] Loaded " + Jobs.getJobs().size() + " jobs!");
-	if (!Jobs.getExplore().isExploreEnabled()) {
+	if (!Jobs.getExplore().isExploreEnabled())
 	    Jobs.consoleMsg("&6[Jobs] Explorer jobs manager are not enabled!");
-	} else
+	else
 	    Jobs.consoleMsg("&e[Jobs] Explorer job manager registered!");
 
 	// Lets load item boosts
