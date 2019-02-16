@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -296,6 +295,12 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
+	ItemStack item = Jobs.getNms().getItemInMainHand(player);
+
+	// Prevent item durability loss
+	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability() - item.getDurability() != item.getType().getMaxDurability())
+	    return;
+
 	// pay
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jDamager == null)
@@ -395,6 +400,10 @@ public class JobsPaymentListener implements Listener {
 	// Item in hand
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
 
+	// Prevent item durability loss
+	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability() - item.getDurability() != item.getType().getMaxDurability())
+	    return;
+
 	// Protection for block break with silktouch
 	if (Jobs.getGCManager().useSilkTouchProtection && item != null) {
 	    for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
@@ -463,6 +472,12 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	ItemStack item = Jobs.getNms().getItemInMainHand(player);
+
+	// Prevent item durability loss
+	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability() - item.getDurability() != item.getType().getMaxDurability())
 	    return;
 
 	if (event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH) && event.getCaught() instanceof Item) {
@@ -847,6 +862,12 @@ public class JobsPaymentListener implements Listener {
 	if (!payIfCreative(player))
 	    return;
 
+	ItemStack item = inv.getItem(0);
+
+	// Prevent item durability loss
+	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability() - item.getDurability() != item.getType().getMaxDurability())
+	    return;
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
 	if (jPlayer == null)
@@ -1089,6 +1110,12 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
+	    return;
+
+	ItemStack item = Jobs.getNms().getItemInMainHand(pDamager);
+
+	// Prevent item durability loss
+	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability() - item.getDurability() != item.getType().getMaxDurability())
 	    return;
 
 	// pay
@@ -1521,6 +1548,9 @@ public class JobsPaymentListener implements Listener {
 	    event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	    ItemStack iih = Jobs.getNms().getItemInMainHand(event.getPlayer());
 	    if (iih.getType().toString().endsWith("_AXE")) {
+		// Prevent item durability loss
+		if (!Jobs.getGCManager().payItemDurabilityLoss && iih.getType().getMaxDurability() - iih.getDurability() != iih.getType().getMaxDurability())
+		    return;
 		final Location loc = event.getClickedBlock().getLocation();
 		final JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {

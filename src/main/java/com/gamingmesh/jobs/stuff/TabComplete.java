@@ -27,6 +27,9 @@ public class TabComplete implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 	List<String> completionList = new ArrayList<>();
 
+	if (!args[0].equalsIgnoreCase("jobs"))
+	    return Collections.emptyList();
+
 	if (args.length == 1) {
 	    String PartOfCommand = args[0];
 	    List<String> temp = new ArrayList<>();
