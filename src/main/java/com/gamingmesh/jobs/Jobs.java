@@ -92,10 +92,12 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.McMMO.McMMO1_X_listener;
+import com.gamingmesh.jobs.McMMO.McMMO2_X_listener;
+import com.gamingmesh.jobs.McMMO.McMMOManager;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
-import com.gamingmesh.jobs.listeners.McMMOlistener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
@@ -129,7 +131,7 @@ public class Jobs extends JavaPlugin {
     private static JobsManager DBManager = null;
 
     private static PistonProtectionListener PistonProtectionListener = null;
-    private static McMMOlistener McMMOlistener = null;
+    private static McMMOManager McMMOManager = null;
 
     private static MythicMobInterface MythicManager = null;
     private static MyPetManager myPetManager = null;
@@ -168,12 +170,26 @@ public class Jobs extends JavaPlugin {
 
     protected static SelectionManager smanager = null;
 
-    public void setMcMMOlistener() {
-	McMMOlistener = new McMMOlistener(this);
+    private void setMcMMOlistener() {
+	try {
+	    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
+	    getServer().getPluginManager().registerEvents(new McMMO2_X_listener(this), this);
+	} catch (Exception e) {
+	    getServer().getPluginManager().registerEvents(new McMMO1_X_listener(this), this);
+	}
     }
 
-    public static McMMOlistener getMcMMOlistener() {
-	return McMMOlistener;
+    @Deprecated
+    public static McMMOManager getMcMMOlistener() {
+	if (McMMOManager == null)
+	    McMMOManager = new McMMOManager();
+	return McMMOManager;
+    }
+
+    public static McMMOManager getMcMMOManager() {
+	if (McMMOManager == null)
+	    McMMOManager = new McMMOManager();
+	return McMMOManager;
     }
 
     public void setPistonProtectionListener() {
@@ -837,9 +853,9 @@ public class Jobs extends JavaPlugin {
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
 
-	    setMcMMOlistener();
-	    if (McMMOlistener.CheckmcMMO())
-		getServer().getPluginManager().registerEvents(McMMOlistener, this);
+	   
+	    if (getMcMMOManager().CheckmcMMO())
+		 setMcMMOlistener();
 
 	    setMyPetManager();
 	    setWorldGuard();
