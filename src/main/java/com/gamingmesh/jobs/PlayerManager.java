@@ -34,6 +34,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 
+import com.gamingmesh.jobs.CMILib.ItemReflection;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
@@ -54,6 +56,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.economy.PointsData;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
@@ -749,6 +752,16 @@ public class PlayerManager {
 	JobItems jitem = getJobsItemByNbt(iih);
 	if (jitem != null && jitem.getJobs().contains(prog))
 	    data.add(jitem.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
+
+	// Lets check offhand
+	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
+	    iih = ItemReflection.getItemInOffHand(player);
+	    if (iih != null) {
+		jitem = getJobsItemByNbt(iih);
+		if (jitem != null && jitem.getJobs().contains(prog))
+		    data.add(jitem.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
+	    }
+	}
 
 	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
 	    if (OneArmor == null || OneArmor.getType() == org.bukkit.Material.AIR)
