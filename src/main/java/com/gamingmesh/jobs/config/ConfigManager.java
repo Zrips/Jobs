@@ -46,6 +46,7 @@ import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIPotionType;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -233,7 +234,7 @@ public class ConfigManager {
 
 	}
 
-	c: if (material != null) {
+	c: if (material != null && material.getMaterial() != null) {
 
 	    // Need to include thos ones and count as regular blocks
 	    switch (myKey.replace("_", "").toLowerCase()) {
@@ -359,9 +360,9 @@ public class ConfigManager {
 		}
 	    }
 	    type = myKey;
-	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL) {
+	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL)
 	    type = myKey;
-	} else if (actionType == ActionType.EXPLORE) {
+	else if (actionType == ActionType.EXPLORE) {
 	    type = myKey;
 	    int amount = 10;
 	    try {
@@ -372,13 +373,18 @@ public class ConfigManager {
 	    }
 	    Jobs.getExplore().setExploreEnabled();
 	    Jobs.getExplore().setPlayerAmount(amount);
-	} else if (actionType == ActionType.CRAFT && myKey.startsWith("!")) {
+	} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
 	    type = myKey.substring(1, myKey.length());
-	} else if (actionType == ActionType.DRINK) {
+	else if (actionType == ActionType.DRINK) {
 	    type = myKey;
-	    PotionType potion = PotionType.valueOf(myKey);
-	    if (potion != null)
-		type = potion.name().toString().replace("_", "").toLowerCase();
+	    try {
+		PotionType potion = PotionType.valueOf(myKey);
+		if (potion != null)
+		    type = potion.name().toString().replace("_", "").toLowerCase();
+	    } catch (IllegalArgumentException i) {
+		// Ignoring the not invalid potion
+		// Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid potion " + myKey + "!");
+	    }
 	}
 
 	if (type == null) {
@@ -884,7 +890,7 @@ public class ConfigManager {
 			    kv = getKeyValue(sqsection.getString("Target"), actionType, jobName);
 			else if (sqsection.isList("Target")) {
 			    for (int i = 0; i < sqsection.getStringList("Target").size(); i++) {
-					kv = getKeyValue(sqsection.getStringList("Target").get(i), actionType, jobName);
+				kv = getKeyValue(sqsection.getStringList("Target").get(i), actionType, jobName);
 			    }
 			}
 
@@ -1126,9 +1132,9 @@ public class ConfigManager {
 				}
 			    }
 			    type = myKey;
-			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL) {
+			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL)
 			    type = myKey;
-			} else if (actionType == ActionType.EXPLORE) {
+			else if (actionType == ActionType.EXPLORE) {
 			    type = myKey;
 			    int amount = 10;
 			    try {
@@ -1142,13 +1148,16 @@ public class ConfigManager {
 			} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
 			    type = myKey.substring(1, myKey.length());
 			else if (actionType == ActionType.DRINK) {
-			    type = myKey;
+			//    type = myKey;
 			    try {
-					PotionType potion = PotionType.valueOf(myKey);
-					if (potion != null)
-						type = potion.name().toString().replace("_", "").toLowerCase();
+				CMIPotionType potion = CMIPotionType.getByName(key);
+				if (potion != null) {
+				    type = potion.toString();
+				    id = potion.getId();
+				}
 			    } catch (IllegalArgumentException i) {
-					Jobs.getPluginLogger().warning("Job" + jobKey + " has an invalid potion " + myKey + "!");
+				// Ignoring the not invalid potion
+				Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid potion " + key + "!");
 			    }
 			}
 

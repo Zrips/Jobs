@@ -11,8 +11,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
 public class JobsSQLite extends JobsDAO {
-    @SuppressWarnings("unused")
-	private Jobs plugin;
 
     public void initialize() {
 	try {
@@ -22,8 +20,7 @@ public class JobsSQLite extends JobsDAO {
 	}
     }
 
-    public JobsSQLite initialize(Jobs plugin, File dir) {
-	this.plugin = plugin;
+    public JobsSQLite initialize(File dir) {
 	if (!dir.exists())
 	    dir.mkdirs();
 	try {

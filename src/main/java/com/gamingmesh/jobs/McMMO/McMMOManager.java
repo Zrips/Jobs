@@ -15,10 +15,6 @@ public class McMMOManager {
 
     private HashMap<UUID, HashMap<String, Long>> map = new HashMap<>();
 
-    public McMMOManager() {
-	// TODO Auto-generated constructor stub
-    }
-
     public double getMultiplier(Player player) {
 
 	if (player == null)

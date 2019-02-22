@@ -37,7 +37,7 @@ public class JobConditions {
 		int jobLevel = 0;
 		try {
 		    jobLevel = Integer.valueOf(one.toLowerCase().replace("j:", "").split("-")[1]);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    continue;
 		}
 		requiresJobs.put(jobName, jobLevel);

@@ -22,9 +22,6 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class TabComplete implements TabCompleter {
-    public TabComplete() {
-	Debug.D("created tab complete");
-    }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {

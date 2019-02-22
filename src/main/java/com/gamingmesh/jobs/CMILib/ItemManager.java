@@ -20,6 +20,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
@@ -357,6 +358,195 @@ public class ItemManager {
 		    return one;
 	    }
 	    return colorNames.White;
+	}
+    }
+
+    public enum CMIPotionType {
+	Awkward(373, 16, "Awkard Potion"),
+	Fire_Resistance_1(373, 8195, "Fire Resistance Potion"),
+	Fire_Resistance_2(373, 8259, "Fire Resistance potion 2"),
+	Harming_1(373, 8204, "Harming Potion"),
+	Harming_2(373, 8236, "Harming Potion 2"),
+	Healing_1(373, 8197, "Healing Potion"),
+	Healing_2(373, 8229, "Healing Potion 2"),
+	Invisibility_1(373, 8206, "Invisibility Potion"),
+	Invisibility_2(373, 8270, "Invisibility Potion 2"),
+	Leaping_1(373, 8267, "Leaping Potion"),
+	Leaping_2(373, 8235, "Leaping Potion 2"),
+	Luck(-1, -1, "Luck Potion"),
+	Mundane(373, 64, "Mundane Potion"),
+	Night_Vision_1(373, 8198, "Night Vision Potion"),
+	Night_Vision_2(373, 8262, "Night Vision Potion 2"),
+	Poison_1(373, 8196, "Poison Potion"),
+	Poison_2(373, 8228, "Poison Potion 2"),
+	Poison_3(373, 8260, "Poison Potion 3"),
+	Poison_4(373, 8292, "Poison Potion 4"),
+	Regeneration_1(373, 8193, "Regeneration Potion"),
+	Regeneration_2(373, 8225, "Regeneration Potion 2"),
+	Regeneration_3(373, 8257, "Regeneration Potion 3"),
+	Regeneration_4(373, 8289, "Regeneration Potion 4"),
+	Slow_Falling_1(-1, -1, "Slow Falling Potion"),
+	Slow_Falling_2(-1, -1, "Slow Falling Potion 2"),
+	Slowness_1(373, 8202, "Slowness Potion"),
+	Slowness_2(373, 8266, "Slowness Potion 2"),
+	Strength_1(373, 8201, "Strength Potion"),
+	Strength_2(373, 8233, "Strength Potion 2"),
+	Strength_3(373, 8265, "Strength Potion 3"),
+	Strength_4(373, 8297, "Strength Potion 4"),
+	Swiftness_1(373, 8194, "Swiftness Potion"),
+	Swiftness_2(373, 8226, "Swiftness Potion 2"),
+	Swiftness_3(373, 8258, "Swiftness Potion 3"),
+	Swiftness_4(373, 8290, "Swiftness Potion 4"),
+	Thick(373, 32, "Thick Potion"),
+	Turtle_Master_1(-1, -1, "Turtle Master Potion"),
+	Turtle_Master_2(-1, -1, "Turtle Master Potion 2"),
+	Turtle_Master_3(-1, -1, "Turtle Master Potion 3"),
+	Water_Breathing_1(373, 8205, "Water Breathing Potion"),
+	Water_Breathing_2(373, 8269, "Water Breathing Potion 2"),
+	Weakness_1(373, 8200, "Weakness Potion"),
+	Weakness_2(373, 8264, "Weakness Potion 2"),
+	Water(373, 0, "Water Potion");
+
+	private int id;
+	private int subId;
+	private String name;
+	PotionType type = null;
+
+	CMIPotionType(int id, int subId, String name) {
+	    this.id = id;
+	    this.subId = subId;
+	    this.name = name;
+	}
+
+	public int getId() {
+	    return id;
+	}
+
+	public int getSubId() {
+	    return subId;
+	}
+
+	public String getName() {
+	    return name;
+	}
+
+	public String getOneWordName() {
+	    return name.replace(" ", "");
+	}
+
+	public static CMIPotionType getById(int id) {
+	    for (CMIPotionType one : CMIPotionType.values()) {
+		if (one.getId() == id)
+		    return one;
+	    }
+	    return CMIPotionType.Water;
+	}
+
+	public static CMIPotionType getByType(PotionType potion) {
+	    return getByName(potion.toString());
+	}
+
+	public static CMIPotionType getByName(String name) {
+	    String main = name;
+	    String sub = null;
+
+	    if (name.contains("_")) {
+		main = name.split("_")[0];
+		sub = name.split("_")[1];
+	    }
+	    if (name.contains(":")) {
+		main = name.split(":")[0];
+		sub = name.split(":")[1];
+	    }
+
+	    String updated = (main + (sub == null ? "" : sub)).toLowerCase();
+	    String reverse = ((sub == null ? "" : sub) + main).toLowerCase();
+
+	    CMIPotionType type = null;
+
+	    Integer id = null;
+	    try {
+		id = Integer.parseInt(main);
+	    } catch (Throwable e) {
+	    }
+
+	    for (CMIPotionType one : CMIPotionType.values()) {
+		if (one.name().replace("_", "").equalsIgnoreCase(updated) || one.name.replace(" ", "").equalsIgnoreCase(updated)) {
+		    type = one;
+		    break;
+		}
+	    }
+	    if (type == null)
+		for (CMIPotionType one : CMIPotionType.values()) {
+		    if (one.name.replace("_", "").contains(updated)) {
+			type = one;
+			break;
+		    }
+		}
+
+	    if (sub != null) {
+		if (type == null)
+		    for (CMIPotionType one : CMIPotionType.values()) {
+			if (one.name().replace("_", "").equalsIgnoreCase(reverse) || one.name.replace(" ", "").equalsIgnoreCase(reverse)) {
+			    type = one;
+			    break;
+			}
+		    }
+		if (type == null)
+		    for (CMIPotionType one : CMIPotionType.values()) {
+			if (one.name.replace("_", "").contains(reverse)) {
+			    type = one;
+			    break;
+			}
+		    }
+	    }
+
+	    if (id != null) {
+		if (type == null)
+		    for (CMIPotionType one : CMIPotionType.values()) {
+			if (one.getId() == id) {
+			    type = one;
+			    break;
+			}
+		    }
+	    }
+
+	    if (type == null)
+		for (CMIPotionType one : CMIPotionType.values()) {
+		    if (one.name.contains("_"))
+			continue;
+		    if (one.name.equalsIgnoreCase(main)) {
+			type = one;
+			break;
+		    }
+		}
+
+	    return type;
+	}
+
+	public PotionType getType() {
+	    if (type != null)
+		return type;
+	    for (PotionType one : PotionType.values()) {
+		if (one.toString().equalsIgnoreCase(this.name())) {
+		    type = one;
+		    break;
+		}
+	    }
+	    return type;
+	}
+
+	public static String getRealNameByType(PotionType type) {
+	    if (type == null)
+		return null;
+	    CMIPotionType ctype = CMIPotionType.getByType(type);
+	    if (ctype != null)
+		return ctype.getName();
+	    String name = type.name();
+
+	    name = name.toLowerCase().replace("_", " ");
+	    name = name.substring(0, 1).toUpperCase() + name.substring(1);
+	    return name;
 	}
     }
 
@@ -1224,53 +1414,6 @@ public class ItemManager {
 	PORKCHOP(319, 0, 30896, "Raw Porkchop"),
 	POTATO(392, 0, 21088, "Potato", "Potatoitem"),
 	POTATOES(142, 0, 10879, "Potatoes"),
-
-	// Potions
-	POTION(373, 0, 24020, "Potion", "POTION_WATER"),
-	POTION_AWKWARD(373, 16, 24020, "Awkard Potion"),
-	POTION_FIRE_RESISTANCE_1(373, 8195, 24020, "Fire Resistance Potion"),
-	POTION_FIRE_RESISTANCE_2(373, 8259, 24020, "Fire Resistance potion 2"),
-	POTION_HARMING_1(373, 8204, 24020, "Harming Potion"),
-	POTION_HARMING_2(373, 8236, 24020, "Harming Potion 2"),
-	POTION_HEALING_1(373, 8197, 24020, "Healing Potion"),
-	POTION_HEALING_2(373, 8229, 24020, "Healing Potion 2"),
-	POTION_INVISIBILITY_1(373, 8206, 24020, "Invisibility Potion"),
-	POTION_INVISIBILITY_2(373, 8270, 24020, "Invisibility Potion 2"),
-	POTION_LEAPING_1(373, 8267, 24020, "Leaping Potion"),
-	POTION_LEAPING_2(373, 8235, 24020, "Leaping Potion 2"),
-	POTION_LUCK(-1, -1, 24020, "Luck Potion"),
-	POTION_MUNDANE(373, 64, 24020, "Mundane Potion"),
-	POTION_NIGHT_VISION_1(373, 8198, 24020, "Night Vision Potion"),
-	POTION_NIGHT_VISION_2(373, 8262, 24020, "Night Vision Potion 2"),
-	POTION_POISON_1(373, 8196, 24020, "Poison Potion"),
-	POTION_POISON_2(373, 8228, 24020, "Poison Potion 2"),
-	POTION_POISON_3(373, 8260, 24020, "Poison Potion 3"),
-	POTION_POISON_4(373, 8292, 24020, "Poison Potion 4"),
-	POTION_REGENERATION_1(373, 8193, 24020, "Regeneration Potion"),
-	POTION_REGENERATION_2(373, 8225, 24020, "Regeneration Potion 2"),
-	POTION_REGENERATION_3(373, 8257, 24020, "Regeneration Potion 3"),
-	POTION_REGENERATION_4(373, 8289, 24020, "Regeneration Potion 4"),
-	POTION_SLOW_FALLING_1(-1, -1, 24020, "Slow Falling Potion"),
-	POTION_SLOW_FALLING_2(-1, -1, 24020, "Slow Falling Potion 2"),
-	POTION_SLOWNESS_1(373, 8202, 24020, "Slowness Potion"),
-	POTION_SLOWNESS_2(373, 8266, 24020, "Slowness Potion 2"),
-	POTION_STRENGTH_1(373, 8201, 24020, "Strength Potion"),
-	POTION_STRENGTH_2(373, 8233, 24020, "Strength Potion 2"),
-	POTION_STRENGTH_3(373, 8265, 24020, "Strength Potion 3"),
-	POTION_STRENGTH_4(373, 8297, 24020, "Strength Potion 4"),
-	POTION_SWIFTNESS_1(373, 8194, 24020, "Swiftness Potion"),
-	POTION_SWIFTNESS_2(373, 8226, 24020, "Swiftness Potion 2"),
-	POTION_SWIFTNESS_3(373, 8258, 24020, "Swiftness Potion 3"),
-	POTION_SWIFTNESS_4(373, 8290, 24020, "Swiftness Potion 4"),
-	POTION_THICK(373, 32, 24020, "Thick Potion"),
-	POTION_TURTLE_MASTER_1(-1, -1, -1, "Turtle Master Potion"),
-	POTION_TURTLE_MASTER_2(-1, -1, -1, "Turtle Master Potion 2"),
-	POTION_TURTLE_MASTER_3(-1, -1, -1, "Turtle Master Potion 3"),
-	POTION_WATER_BREATHING_1(373, 8205, 24020, "Water Breathing Potion"),
-	POTION_WATER_BREATHING_2(373, 8269, 24020, "Water Breathing Potion 2"),
-	POTION_WEAKNESS_1(373, 8200, 24020, "Weakness Potion"),
-	POTION_WEAKNESS_2(373, 8264, 24020, "Weakness Potion 2"),
-
 	POTTED_ACACIA_SAPLING(-1, -1, 14096, "Potted Acacia Sapling"),
 	POTTED_ALLIUM(-1, -1, 13184, "Potted Allium"),
 	POTTED_AZURE_BLUET(-1, -1, 8754, "Potted Azure Bluet"),
@@ -2075,69 +2218,6 @@ public class ItemManager {
 	    case SANDSTONE_STAIRS:
 	    case SPRUCE_STAIRS:
 	    case STONE_BRICK_STAIRS:
-		return true;
-	    default:
-		break;
-	    }
-	    return false;
-	}
-
-	public static boolean isPotion(Material mat) {
-	    CMIMaterial m = CMIMaterial.get(mat);
-	    if (m == null)
-		return false;
-	    return m.isPotion();
-	}
-
-	public boolean isPotion() {
-	    switch (this) {
-	    case LINGERING_POTION:
-	    case SPLASH_POTION:
-
-	    case POTION:
-	    case POTION_AWKWARD:
-	    case POTION_FIRE_RESISTANCE_1:
-	    case POTION_FIRE_RESISTANCE_2:
-	    case POTION_HARMING_1:
-	    case POTION_HARMING_2:
-	    case POTION_HEALING_1:
-	    case POTION_HEALING_2:
-	    case POTION_INVISIBILITY_1:
-	    case POTION_INVISIBILITY_2:
-	    case POTION_LEAPING_1:
-	    case POTION_LEAPING_2:
-	    case POTION_LUCK:
-	    case POTION_MUNDANE:
-	    case POTION_NIGHT_VISION_1:
-	    case POTION_NIGHT_VISION_2:
-	    case POTION_POISON_1:
-	    case POTION_POISON_2:
-	    case POTION_POISON_3:
-	    case POTION_POISON_4:
-	    case POTION_REGENERATION_1:
-	    case POTION_REGENERATION_2:
-	    case POTION_REGENERATION_3:
-	    case POTION_REGENERATION_4:
-	    case POTION_SLOW_FALLING_1:
-	    case POTION_SLOW_FALLING_2:
-	    case POTION_SLOWNESS_1:
-	    case POTION_SLOWNESS_2:
-	    case POTION_STRENGTH_1:
-	    case POTION_STRENGTH_2:
-	    case POTION_STRENGTH_3:
-	    case POTION_STRENGTH_4:
-	    case POTION_SWIFTNESS_1:
-	    case POTION_SWIFTNESS_2:
-	    case POTION_SWIFTNESS_3:
-	    case POTION_SWIFTNESS_4:
-	    case POTION_THICK:
-	    case POTION_TURTLE_MASTER_1:
-	    case POTION_TURTLE_MASTER_2:
-	    case POTION_TURTLE_MASTER_3:
-	    case POTION_WATER_BREATHING_1:
-	    case POTION_WATER_BREATHING_2:
-	    case POTION_WEAKNESS_1:
-	    case POTION_WEAKNESS_2:
 		return true;
 	    default:
 		break;

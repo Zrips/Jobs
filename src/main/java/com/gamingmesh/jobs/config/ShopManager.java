@@ -34,9 +34,6 @@ public class ShopManager {
     public List<ShopItem> list = new ArrayList<>();
     public HashMap<String, Integer> GuiList = new HashMap<>();
 
-    public ShopManager() {
-    }
-
     public List<ShopItem> getShopItemList() {
 	return list;
     }

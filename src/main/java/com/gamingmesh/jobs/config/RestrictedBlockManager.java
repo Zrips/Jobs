@@ -13,9 +13,6 @@ public class RestrictedBlockManager {
 
     public HashMap<Integer, Integer> restrictedBlocksTimer = new HashMap<>();
 
-    public RestrictedBlockManager() {
-    }
-
     /**
      * Method to load the restricted areas configuration
      * 

@@ -227,13 +227,13 @@ Jobs:
         experience: 1.0
     # payment for drinking a potion
     Drink:
-      potion:
+      water:
         income: 0.5
         experience: 2.0
-      potion_regeneration_2:
+      regeneration_2:
         income: 1.3
         experience: 2.0
-      potion_healing_1:
+      healing_1:
         income: 1.4
         experience: 2.0
     # payment for breaking a block with tnt

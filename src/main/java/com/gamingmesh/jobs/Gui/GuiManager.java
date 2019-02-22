@@ -27,9 +27,6 @@ public class GuiManager {
 
     public HashMap<UUID, GuiInfoList> GuiList = new HashMap<>();
 
-    public GuiManager() {
-    }
-
     public void CloseInventories() {
 	for (Entry<UUID, GuiInfoList> one : GuiList.entrySet()) {
 	    Player player = Bukkit.getPlayer(one.getKey());

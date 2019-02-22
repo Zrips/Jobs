@@ -56,7 +56,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.economy.PointsData;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
@@ -72,9 +71,6 @@ public class PlayerManager {
     private HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<>();
     private HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<>();
     private HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<>();
-
-    public PlayerManager() {
-    }
 
     public PointsData getPointsData() {
 	return PointsDatabase;
@@ -789,14 +785,14 @@ public class PlayerManager {
 
 	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost");
 
-	if (itemName == null || ((String) itemName).isEmpty()) {
+	if (itemName == null || itemName.toString().isEmpty()) {
 
 	    // Checking old boost items and converting to new format if needed
 	    if (Jobs.getReflections().hasNbt(item, "JobsItemBoost")) {
 		for (Job one : Jobs.getJobs()) {
 		    itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost", one.getName());
 		    if (itemName != null) {
-			JobItems b = ItemBoostManager.getItemByKey((String) itemName);
+			JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
 			if (b != null) {
 			    ItemStack ic = Jobs.getReflections().setNbt(item, "JobsItemBoost", b.getNode());
 			    item.setItemMeta(ic.getItemMeta());
@@ -808,7 +804,7 @@ public class PlayerManager {
 	    if (itemName == null)
 		return null;
 	}
-	JobItems b = ItemBoostManager.getItemByKey((String) itemName);
+	JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
 	if (b == null)
 	    return null;
 

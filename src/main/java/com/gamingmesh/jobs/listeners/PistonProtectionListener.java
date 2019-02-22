@@ -13,9 +13,6 @@ import com.gamingmesh.jobs.Jobs;
 
 public class PistonProtectionListener implements Listener {
 
-    public PistonProtectionListener() {
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void OnBlockMove(BlockPistonExtendEvent event) {
 

@@ -56,9 +56,8 @@ public class JobsMySQL extends JobsDAO {
 	    prest.setString(1, database);
 	    prest.setString(2, getPrefix() + "config");
 	    res = prest.executeQuery();
-	    if (res.next()) {
+	    if (res.next())
 		rows = res.getInt(1);
-	    }
 	} finally {
 	    close(res);
 	    close(prest);
@@ -131,10 +130,10 @@ public class JobsMySQL extends JobsDAO {
 	    statement.close();
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("&cCould not create table, SQLException: " + e.getMessage());
-	    this.close(statement);
+	    close(statement);
 	    return false;
 	} finally {
-	    this.close(statement);
+	    close(statement);
 	}
 	return true;
     }
@@ -176,7 +175,7 @@ public class JobsMySQL extends JobsDAO {
 	    return false;
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
-	    JobsDAO.close(statement);
+	    close(statement);
 	    return false;
 	}
     }

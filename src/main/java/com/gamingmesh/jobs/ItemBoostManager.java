@@ -24,10 +24,6 @@ public class ItemBoostManager {
     private static HashMap<String, JobItems> items = new HashMap<>();
     private static HashMap<String, JobItems> legacy = new HashMap<>();
 
-    public ItemBoostManager() {
-
-    }
-
     public static void load() {
 
 	ConfigReader cfg = null;

@@ -10,9 +10,6 @@ public class PointsData {
 
     private HashMap<UUID, PlayerPoints> Pointbase = new HashMap<>();
 
-    public PointsData() {
-    }
-
     public HashMap<UUID, PlayerPoints> getPointBase() {
 	return Pointbase;
     }

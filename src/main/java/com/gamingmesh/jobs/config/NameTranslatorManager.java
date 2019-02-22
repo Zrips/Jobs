@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIPotionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
 import com.gamingmesh.jobs.stuff.Util;
@@ -496,33 +497,24 @@ public class NameTranslatorManager {
 	    		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
 	    }*/
 
-	    for (CMIMaterial one : CMIMaterial.values()) {
-		if (one.getMaterial() == null)
-		    continue;
-
-		if (!one.isPotion())
-		    continue;
-
-		String n = one.getLegacyId() + (one.getLegacyData() == -1 ? "" : ":" + one.getLegacyData());
+	    for (CMIPotionType one : CMIPotionType.values()) {
+		String n = String.valueOf(one.getSubId());
 
 		String name = null;
 
-		if (c.getC().isConfigurationSection("PotionNamesList." + n)) {
+		if (c.getC().isConfigurationSection("PotionNamesList." + n))
 		    name = c.getC().getString("PotionNamesList." + n + ".Name");
-		}
 
 		if (name == null) {
-		    n = one.getLegacyData() + "-" + one.toString();
-		    if (c.getC().isConfigurationSection("PotionNamesList." + n)) {
+		    n = n + "-" + one.toString();
+		    if (c.getC().isConfigurationSection("PotionNamesList." + n))
 			name = c.getC().getString("PotionNamesList." + n);
-		    }
 		}
 
-		if (name == null) {
+		if (name == null)
 		    name = one.getName();
-		}
 
-		c.get("PotionNamesList." + one.getLegacyData() + "-" + one.toString(), name);
+		c.get("PotionNamesList." + one.getSubId() + "-" + one.toString(), name);
 	    }
 
 	    c.save();

@@ -78,6 +78,7 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
@@ -774,29 +775,25 @@ public class JobsPaymentListener implements Listener {
 	if (resultStack == null)
 	    return;
 
-	if (inv.getItem(1).getType() != Material.ENCHANTED_BOOK) {
-	    // Checking if this is only item rename
-	    ItemStack FirstSlot = null;
-	    try {
-		FirstSlot = inv.getItem(0);
-	    } catch (NullPointerException e) {
-		return;
-	    }
-	    if (FirstSlot == null)
-		return;
-
-	    String OriginalName = null;
-	    String NewName = null;
-	    if (FirstSlot.hasItemMeta())
-		if (FirstSlot.getItemMeta().getDisplayName() != null)
-		    OriginalName = FirstSlot.getItemMeta().getDisplayName();
-	    if (resultStack.hasItemMeta())
-		if (resultStack.getItemMeta().getDisplayName() != null)
-		    NewName = resultStack.getItemMeta().getDisplayName();
-	    if (OriginalName != NewName && inv.getItem(1) == null)
-		if (!Jobs.getGCManager().PayForRenaming)
-		    return;
+	// Checking if this is only item rename
+	ItemStack FirstSlot = null;
+	try {
+	    FirstSlot = inv.getItem(0);
+	} catch (NullPointerException e) {
+	    return;
 	}
+	if (FirstSlot == null)
+	    return;
+
+	String OriginalName = null;
+	String NewName = null;
+	if (FirstSlot.hasItemMeta() && FirstSlot.getItemMeta().getDisplayName() != null)
+	    OriginalName = FirstSlot.getItemMeta().getDisplayName();
+	if (resultStack.hasItemMeta() && resultStack.getItemMeta().getDisplayName() != null)
+	    NewName = resultStack.getItemMeta().getDisplayName();
+	if (OriginalName != NewName && inv.getItem(1) == null)
+	    if (!Jobs.getGCManager().PayForRenaming)
+		return;
 
 	// Check for world permissions
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1593,8 +1590,15 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
+	if (event.getItem().getType() != Material.POTION)
+	    return;
+
 	// Player drinking a potion
-	Jobs.action(jPlayer, new PotionDrinkInfo(Jobs.getNms().getItemInMainHand(p), ActionType.DRINK));
+	PotionMeta meta = (PotionMeta) event.getItem().getItemMeta();
+	if (meta == null)
+	    return;
+
+	Jobs.action(jPlayer, new PotionDrinkInfo(meta.getBasePotionData().getType(), ActionType.DRINK));
     }
 
     @EventHandler

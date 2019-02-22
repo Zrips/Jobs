@@ -22,9 +22,6 @@ public class RestrictedAreaManager {
 
     protected HashMap<String, RestrictedArea> restrictedAreas = new HashMap<>();
 
-    public RestrictedAreaManager() {
-    }
-
     public boolean isExist(String name) {
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
 	    if (area.getKey().equalsIgnoreCase(name))

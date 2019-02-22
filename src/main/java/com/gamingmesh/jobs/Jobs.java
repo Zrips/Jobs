@@ -174,7 +174,7 @@ public class Jobs extends JavaPlugin {
 	try {
 	    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
 	    getServer().getPluginManager().registerEvents(new McMMO2_X_listener(this), this);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    getServer().getPluginManager().registerEvents(new McMMO1_X_listener(this), this);
 	}
     }
@@ -853,9 +853,9 @@ public class Jobs extends JavaPlugin {
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
 
-	   
+
 	    if (getMcMMOManager().CheckmcMMO())
-		 setMcMMOlistener();
+		setMcMMOlistener();
 
 	    setMyPetManager();
 	    setWorldGuard();
