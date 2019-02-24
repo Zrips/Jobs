@@ -108,13 +108,13 @@ public class SignUtil {
 
 	List<TopList> PlayerList = new ArrayList<>();
 
-	if (JobName.equalsIgnoreCase("gtoplist"))
+	if (JobName.contains("gtoplist"))
 	    PlayerList = Jobs.getJobsDAO().getGlobalTopList(0);
 
 	for (com.gamingmesh.jobs.Signs.Sign one : new ArrayList<>(Signs.GetAllSigns())) {
 	    String SignJobName = one.GetJobName();
 
-	    if (!JobName.equalsIgnoreCase(SignJobName))
+	    if (!JobName.contains(SignJobName))
 		continue;
 
 	    World world = Bukkit.getWorld(one.GetWorld());
@@ -126,7 +126,7 @@ public class SignUtil {
 	    double SignsZ = one.GetZ();
 	    int number = one.GetNumber() - 1;
 
-	    if (!JobName.equalsIgnoreCase("gtoplist"))
+	    if (!JobName.contains("gtoplist"))
 		PlayerList = Jobs.getJobsDAO().toplist(SignJobName, number);
 
 	    if (PlayerList.isEmpty())

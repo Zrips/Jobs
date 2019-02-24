@@ -448,7 +448,7 @@ public class JobsListener implements Listener {
 	if (!ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[Jobs]"))
 	    return;
 
-	if (!signtype.equalsIgnoreCase("toplist") && !signtype.equalsIgnoreCase("gtoplist"))
+	if (!(signtype.contains("toplist") || signtype.contains("gtoplist")))
 	    return;
 
 	Player player = event.getPlayer();
@@ -466,7 +466,7 @@ public class JobsListener implements Listener {
 
 	final Job job = Jobs.getJob(jobname);
 
-	if (job == null && !signtype.equalsIgnoreCase("gtoplist")) {
+	if (job == null && !signtype.contains("gtoplist")) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return;
 	}
@@ -499,7 +499,7 @@ public class JobsListener implements Listener {
 	signInfo.setY(loc.getY());
 	signInfo.setZ(loc.getZ());
 	signInfo.setCategory(category);
-	if (!signtype.equalsIgnoreCase("gtoplist") && job != null)
+	if (!signtype.contains("gtoplist") && job != null)
 	    signInfo.setJobName(job.getName());
 	else
 	    signInfo.setJobName("gtoplist");
@@ -512,7 +512,7 @@ public class JobsListener implements Listener {
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
-		if (!signtype.equalsIgnoreCase("gtoplist") && job != null)
+		if (!signtype.contains("gtoplist") && job != null)
 		    Jobs.getSignUtil().SignUpdate(job.getName());
 		else
 		    Jobs.getSignUtil().SignUpdate("gtoplist");
