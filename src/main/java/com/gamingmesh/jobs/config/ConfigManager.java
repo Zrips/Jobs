@@ -1191,8 +1191,18 @@ public class ConfigManager {
 			    }
 			}
 
+			Integer itemSoftIncomeLimit = softIncomeLimit;
+			if(section.isInt("softIncomeLimit"))
+				itemSoftIncomeLimit = section.getInt("softIncomeLimit");
+			Integer itemSoftExpLimit = softExpLimit;
+			if(section.isInt("softExpLimit"))
+				itemSoftExpLimit = section.getInt("softExpLimit");
+			Integer itemSoftPointsLimit = softPointsLimit;
+			if(section.isInt("softPointsLimit"))
+				itemSoftPointsLimit = section.getInt("softPointsLimit");
+
 			jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, fromlevel,
-			    untilLevel, section.getCurrentPath(), softIncomeLimit, softExpLimit, softPointsLimit));
+			    untilLevel, section.getCurrentPath(), itemSoftIncomeLimit, itemSoftExpLimit, itemSoftPointsLimit));
 		    }
 		}
 		job.setJobInfo(actionType, jobInfo);
