@@ -241,19 +241,16 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	// Fix bug when the player has not joined a job, milk a cow and get paid
-	for (com.gamingmesh.jobs.container.Job jobs : Jobs.getJobs()) {
-	    if (jPlayer.isInJob(jobs) && Jobs.getGCManager().CowMilkingTimer > 0) {
-		if (cow.hasMetadata(CowMetadata)) {
-		    long time = cow.getMetadata(CowMetadata).get(0).asLong();
-		    if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
-			long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
-			jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
+	if (Jobs.getGCManager().CowMilkingTimer > 0) {
+	    if (cow.hasMetadata(CowMetadata)) {
+		long time = cow.getMetadata(CowMetadata).get(0).asLong();
+		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
+		    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
+		    jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
 
-			if (Jobs.getGCManager().CancelCowMilking)
-			    event.setCancelled(true);
-			return;
-		    }
+		    if (Jobs.getGCManager().CancelCowMilking)
+			event.setCancelled(true);
+		    return;
 		}
 	    }
 	}
@@ -1626,6 +1623,10 @@ public class JobsPaymentListener implements Listener {
 
 	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())
 	    return;
+
+	if (!Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
+	    return;
+
 	ExploreRespond respond = Jobs.getExplore().ChunkRespond(player, event.getNewChunk());
 
 	if (!respond.isNewChunk())

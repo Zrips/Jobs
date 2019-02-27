@@ -49,6 +49,7 @@ public class GeneralConfigManager {
     protected boolean isBroadcastingLevelups;
     protected boolean payInCreative;
     protected boolean payExploringWhenFlying;
+    public boolean payExploringWhenGliding;
     protected boolean addXpPlayer;
     public boolean payItemDurabilityLoss;
     protected boolean hideJobsWithoutPermission;
@@ -516,6 +517,11 @@ public class GeneralConfigManager {
 	c.addComment("enable-pay-for-exploring-when-flying", "Option to allow payment to be made for exploring when player flies");
 	payExploringWhenFlying = c.get("enable-pay-for-exploring-when-flying", false);
 
+	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R1)) {
+	    c.addComment("enable-pay-for-exploring-when-gliding", "Option to allow payment to be made for exploring when player gliding.");
+	    payExploringWhenGliding = c.get("enable-pay-for-exploring-when-gliding", false);
+	}
+
 	c.addComment("add-xp-player", "Adds the Jobs xp received to the player's Minecraft XP bar");
 	addXpPlayer = c.get("add-xp-player", false);
 
@@ -821,26 +827,20 @@ public class GeneralConfigManager {
 	c.addComment("ActionBars.Messages.EnabledByDefault", "When this set to true player will see action bar messages by default");
 	ActionBarsMessageByDefault = c.get("ActionBars.Messages.EnabledByDefault", true);
 
-	c.addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
-	BossBarEnabled = c.get("BossBar.Enabled", true);
+	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R1)) {
+	    c.addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
+	    BossBarEnabled = c.get("BossBar.Enabled", true);
 
-	if (BossBarEnabled == true) {
-	    if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1)) {
-		Jobs.consoleMsg("&c[Jobs] Your server version don't support BossBar. This feature will be disabled.");
-		c.set("BossBar.Enabled", false);
-		BossBarEnabled = false;
-	    }
+	    c.addComment("BossBar.Messages.EnabledByDefault", "When this set to true player will see Bossbar messages by default");
+	    BossBarsMessageByDefault = c.get("BossBar.Messages.EnabledByDefault", true);
+
+	    c.addComment("BossBar.ShowOnEachAction", "If enabled boss bar will update after each action",
+			"If disabled, BossBar will update only on each payment. This can save some server resources");
+	    BossBarShowOnEachAction = c.get("BossBar.ShowOnEachAction", false);
+	    c.addComment("BossBar.Timer", "How long in sec to show BossBar for player",
+			"If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
+	    BossBarTimer = c.get("BossBar.Timer", economyBatchDelay + 1);
 	}
-
-	c.addComment("BossBar.Messages.EnabledByDefault", "When this set to true player will see Bossbar messages by default");
-	BossBarsMessageByDefault = c.get("BossBar.Messages.EnabledByDefault", true);
-
-	c.addComment("BossBar.ShowOnEachAction", "If enabled boss bar will update after each action",
-	    "If disabled, BossBar will update only on each payment. This can save some server resources");
-	BossBarShowOnEachAction = c.get("BossBar.ShowOnEachAction", false);
-	c.addComment("BossBar.Timer", "How long in sec to show BossBar for player",
-	    "If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
-	BossBarTimer = c.get("BossBar.Timer", economyBatchDelay + 1);
 
 	c.addComment("ShowActionBars", "You can enable/disable message shown for players in action bar");
 	TitleChangeActionBar = c.get("ShowActionBars.OnTitleChange", true);
@@ -855,11 +855,11 @@ public class GeneralConfigManager {
 	c.addComment("Sounds", "Sounds", "Extra sounds on some events",
 	    "All sounds can be found in https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
 	SoundLevelupUse = c.get("Sounds.LevelUp.use", true);
-	SoundLevelupSound = c.get("Sounds.LevelUp.sound", "ENTITY_PLAYER_LEVELUP");
+	SoundLevelupSound = c.get("Sounds.LevelUp.sound", Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP");
 	SoundLevelupVolume = c.get("Sounds.LevelUp.volume", 1);
 	SoundLevelupPitch = c.get("Sounds.LevelUp.pitch", 3);
 	SoundTitleChangeUse = c.get("Sounds.TitleChange.use", true);
-	SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", "ENTITY_PLAYER_LEVELUP");
+	SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP");
 	SoundTitleChangeVolume = c.get("Sounds.TitleChange.volume", 1);
 	SoundTitleChangePitch = c.get("Sounds.TitleChange.pitch", 3);
 
