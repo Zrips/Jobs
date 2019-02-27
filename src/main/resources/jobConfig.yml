@@ -211,6 +211,12 @@ Jobs:
         # if not given, then there is no limit
         # this can be used for any action
         until-level: 30
+        # (OPTIONAL) Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.
+        # In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60
+        # This only applies after players level is higher than provided particular limit.
+        softIncomeLimit: 50
+        softExpLimit: 40
+        softPointsLimit: 60
       gravel:
         # you can use minuses to take away money if the player break this block
         income: -1.0
