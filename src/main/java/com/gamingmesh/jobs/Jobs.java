@@ -331,11 +331,13 @@ public class Jobs extends JavaPlugin {
      * @return the player manager
      */
     public static PlayerManager getPlayerManager() {
+	if (pManager == null)
+	    pManager = new PlayerManager();
 	return pManager;
     }
 
     public void setPlayerManager() {
-	pManager = new PlayerManager();
+
     }
 
     public static void setRestrictedBlockManager() {
@@ -567,14 +569,14 @@ public class Jobs extends JavaPlugin {
 	loadAllPlayersData();
 	// add all online players
 	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
-	    pManager.playerJoin(online);
+	    getPlayerManager().playerJoin(online);
 	}
     }
 
     public static void loadAllPlayersData() {
 	long time = System.currentTimeMillis();
 	// Cloning to avoid issues
-	HashMap<UUID, PlayerInfo> temp = new HashMap<>(pManager.getPlayersInfoUUIDMap());
+	HashMap<UUID, PlayerInfo> temp = new HashMap<>(getPlayerManager().getPlayersInfoUUIDMap());
 	HashMap<Integer, List<JobsDAOData>> playersJobs = dao.getAllJobs();
 	HashMap<Integer, PlayerPoints> playersPoints = dao.getAllPoints();
 	HashMap<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
@@ -585,7 +587,7 @@ public class Jobs extends JavaPlugin {
 	    Entry<UUID, PlayerInfo> one = it.next();
 	    try {
 		int id = one.getValue().getID();
-		JobsPlayer jPlayer = pManager.getJobsPlayerOffline(
+		JobsPlayer jPlayer = getPlayerManager().getJobsPlayerOffline(
 		    one.getValue(),
 		    playersJobs.get(id),
 		    playersPoints.get(id),
@@ -594,15 +596,15 @@ public class Jobs extends JavaPlugin {
 		    playersLimits.get(id));
 		if (jPlayer == null)
 		    continue;
-		pManager.addPlayerToCache(jPlayer);
+		getPlayerManager().addPlayerToCache(jPlayer);
 	    } catch (Throwable e) {
 		e.printStackTrace();
 	    }
 	}
 
 	dao.getMap().clear();
-	if (pManager.getPlayersCache().size() != 0)
-	    consoleMsg("&e[Jobs] Preloaded " + pManager.getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
+	if (getPlayerManager().getPlayersCache().size() != 0)
+	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
 		/ 1000d) * 100) / 100D));
     }
 
@@ -635,7 +637,7 @@ public class Jobs extends JavaPlugin {
 	for (Job job : jobs) {
 	    usedSlots.put(job, dao.getSlotsTaken(job));
 	}
-	pManager.reload();
+	getPlayerManager().reload();
 	permissionHandler.registerPermissions();
 
 	// set the system to auto save
@@ -667,7 +669,7 @@ public class Jobs extends JavaPlugin {
 	if (paymentThread != null)
 	    paymentThread.shutdown();
 
-	pManager.saveAll();
+	getPlayerManager().saveAll();
 
 	if (dao != null) {
 	    dao.closeConnections();
@@ -679,7 +681,7 @@ public class Jobs extends JavaPlugin {
      */
     public static void ChangeDatabase() {
 	DBManager.switchDataBase();
-	pManager.reload();
+	getPlayerManager().reload();
     }
 
     /**
@@ -828,7 +830,6 @@ public class Jobs extends JavaPlugin {
 	    setPermissionHandler(new PermissionHandler(this));
 	    setPluginLogger(getLogger());
 	    setJobsClassloader();
-	    setPlayerManager();
 	    setLanguage();
 	    setGUIManager();
 	    setExplore();
@@ -852,7 +853,6 @@ public class Jobs extends JavaPlugin {
 	    // register the listeners
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
-
 
 	    if (getMcMMOManager().CheckmcMMO())
 		setMcMMOlistener();
