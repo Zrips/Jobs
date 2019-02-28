@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.Signs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ import org.bukkit.block.Skull;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.TopList;
@@ -111,6 +113,8 @@ public class SignUtil {
 	if (JobName.contains("gtoplist"))
 	    PlayerList = Jobs.getJobsDAO().getGlobalTopList(0);
 
+	HashMap<String, List<TopList>> temp = new HashMap<String, List<TopList>>();
+
 	for (com.gamingmesh.jobs.Signs.Sign one : new ArrayList<>(Signs.GetAllSigns())) {
 	    String SignJobName = one.GetJobName();
 
@@ -126,8 +130,13 @@ public class SignUtil {
 	    double SignsZ = one.GetZ();
 	    int number = one.GetNumber() - 1;
 
-	    if (!JobName.contains("gtoplist"))
-		PlayerList = Jobs.getJobsDAO().toplist(SignJobName, number);
+	    if (!JobName.contains("gtoplist")) {
+		PlayerList = temp.get(SignJobName);
+		if (PlayerList == null) {
+		    PlayerList = Jobs.getJobsDAO().toplist(SignJobName);
+		    temp.put(SignJobName, PlayerList);
+		}
+	    }
 
 	    if (PlayerList.isEmpty())
 		continue;
@@ -143,9 +152,9 @@ public class SignUtil {
 	    org.bukkit.block.Sign sign = (org.bukkit.block.Sign) block.getState();
 	    if (!one.isSpecial()) {
 		for (int i = 0; i < 4; i++) {
-		    if (i >= PlayerList.size())
+		    if (i + number + 1 >= PlayerList.size())
 			break;
-		    String PlayerName = PlayerList.get(i).getPlayerName();
+		    String PlayerName = PlayerList.get(i + number).getPlayerName();
 
 		    if (PlayerName != null && PlayerName.length() > 8) {
 			String PlayerNameStrip = PlayerName.split("(?<=\\G.{7})")[0];
@@ -158,7 +167,7 @@ public class SignUtil {
 		    String line = Jobs.getLanguage().getMessage("signs.List");
 		    line = line.replace("[number]", String.valueOf(i + number + 1));
 		    line = line.replace("[player]", PlayerName);
-		    line = line.replace("[level]", String.valueOf(PlayerList.get(i).getLevel()));
+		    line = line.replace("[level]", String.valueOf(PlayerList.get(i + number).getLevel()));
 
 		    sign.setLine(i, line);
 		}
@@ -166,11 +175,8 @@ public class SignUtil {
 		if (!UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse))
 		    timelapse--;
 	    } else {
-
 		TopList pl = PlayerList.get(one.GetNumber() - 1);
-
 		String PlayerName = pl.getPlayerName();
-
 		if (PlayerName.length() > 8) {
 		    String PlayerNameStrip = PlayerName.split("(?<=\\G.{7})")[0];
 		    PlayerName = PlayerNameStrip + "~";

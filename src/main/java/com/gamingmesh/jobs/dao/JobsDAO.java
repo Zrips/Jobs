@@ -34,6 +34,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public abstract class JobsDAO {
@@ -1949,6 +1950,15 @@ public abstract class JobsDAO {
      * @param toplist - toplist by jobs name
      * @return 
      */
+    public ArrayList<TopList> toplist(String jobsname) {
+	return toplist(jobsname, 0);
+    }
+
+    /**
+     * Show top list
+     * @param toplist - toplist by jobs name
+     * @return 
+     */
     public ArrayList<TopList> toplist(String jobsname, int limit) {
 	ArrayList<TopList> jobs = new ArrayList<>();
 	JobsConnection conn = getConnection();
@@ -1958,7 +1968,7 @@ public abstract class JobsDAO {
 	ResultSet res = null;
 	try {
 	    prest = conn.prepareStatement("SELECT `userid`, `level`, `experience` FROM `" + prefix
-		+ "jobs` WHERE `job` LIKE ? ORDER BY `level` DESC, LOWER(experience) DESC LIMIT " + limit + ", "+Jobs.getGCManager().JobsTopAmount+";");
+		+ "jobs` WHERE `job` LIKE ? ORDER BY `level` DESC, LOWER(experience) DESC LIMIT " + limit + ", 50;");
 	    prest.setString(1, jobsname);
 	    res = prest.executeQuery();
 
@@ -1970,21 +1980,7 @@ public abstract class JobsDAO {
 
 		if (info.getName() == null)
 		    continue;
-
-		String name = info.getName();
-		Player player = Bukkit.getPlayer(name);
-		if (player != null) {
-
-		    JobsPlayer jobsinfo = Jobs.getPlayerManager().getJobsPlayer(player);
-		    Job job = Jobs.getJob(jobsname);
-		    if (job != null && jobsinfo != null) {
-			JobProgression prog = jobsinfo.getJobProgression(job);
-			if (prog != null)
-			    jobs.add(new TopList(info, prog.getLevel(), (int) prog.getExperience()));
-		    }
-		} else {
-		    jobs.add(new TopList(info, res.getInt("level"), res.getInt("experience")));
-		}
+		jobs.add(new TopList(info, res.getInt("level"), res.getInt("experience")));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
