@@ -34,7 +34,6 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public abstract class JobsDAO {
@@ -1383,7 +1382,7 @@ public abstract class JobsDAO {
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
-	    prest = conn.prepareStatement("SELECT `id` FROM `" + prefix + "users` WHERE `player_uuid` = ?;");
+	    prest = conn.prepareStatement("SELECT `id`,`donequests` FROM `" + prefix + "users` WHERE `player_uuid` = ?;");
 	    prest.setString(1, player.getPlayerUUID().toString());
 	    res = prest.executeQuery();
 	    res.next();
