@@ -181,15 +181,11 @@ public class Jobs extends JavaPlugin {
 
     @Deprecated
     public static McMMOManager getMcMMOlistener() {
-	if (McMMOManager == null)
-	    McMMOManager = new McMMOManager();
-	return McMMOManager;
+	return McMMOManager == null ? new McMMOManager() : McMMOManager;
     }
 
     public static McMMOManager getMcMMOManager() {
-	if (McMMOManager == null)
-	    McMMOManager = new McMMOManager();
-	return McMMOManager;
+	return McMMOManager == null ? new McMMOManager() : McMMOManager;
     }
 
     public void setPistonProtectionListener() {
@@ -212,9 +208,7 @@ public class Jobs extends JavaPlugin {
     private boolean PlaceholderAPIEnabled = false;
 
     public Placeholder getPlaceholderAPIManager() {
-	if (Placeholder == null)
-	    Placeholder = new Placeholder(this);
-	return Placeholder;
+	return Placeholder == null ? new Placeholder(this) : Placeholder;
     }
 
     private boolean setupPlaceHolderAPI() {
@@ -275,15 +269,11 @@ public class Jobs extends JavaPlugin {
     }
 
     public static Reflections getReflections() {
-	if (reflections == null)
-	    reflections = new Reflections();
-	return reflections;
+	return reflections == null ? new Reflections() : reflections;
     }
 
     public static JobsManager getDBManager() {
-	if (DBManager == null)
-	    DBManager = new JobsManager(instance);
-	return DBManager;
+	return DBManager == null ? new JobsManager(instance) : DBManager;
     }
 
     public static void setShopManager() {
@@ -315,7 +305,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public static ActionBarTitleMessages getActionBar() {
-	return actionbar;
+	return actionbar == null ? new ActionBarTitleMessages() : actionbar;
     }
 
     public static void setNms(NMS nms) {
@@ -427,9 +417,7 @@ public class Jobs extends JavaPlugin {
      * @return the scoreboard manager
      */
     public CMIScoreboardManager getCMIScoreboardManager() {
-	if (CMIScoreboardManager == null)
-	    CMIScoreboardManager = new CMIScoreboardManager(this);
-	return CMIScoreboardManager;
+	return CMIScoreboardManager == null ? new CMIScoreboardManager(this) : CMIScoreboardManager;
     }
 
     protected static Jobs instance;
@@ -777,6 +765,13 @@ public class Jobs extends JavaPlugin {
 	instance = this;
 	setEnabled(true);
 
+	if (instance == null) {
+	    System.out.println("Plugin instance is null. Plugin will be disabled.");
+	    System.out.println("Try restart your server completely. If this not work contact the developers.");
+	    setEnabled(false);
+	    return;
+	}
+
 	versionCheckManager = new VersionChecker(this);
 
 	ItemManager.load();
@@ -812,7 +807,6 @@ public class Jobs extends JavaPlugin {
 
 	try {
 
-	    setActionBar();
 	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
 	    jobConfig.saveDefaultConfig();
 
@@ -838,6 +832,7 @@ public class Jobs extends JavaPlugin {
 	    setConfigManager();
 	    setCommandManager();
 	    setBpManager();
+	    setActionBar();
 
 	    getCommand("jobs").setExecutor(cManager);
 	    this.getCommand("jobs").setTabCompleter(new TabComplete());
@@ -889,6 +884,8 @@ public class Jobs extends JavaPlugin {
 
     @Override
     public void onDisable() {
+	if (instance == null) return;
+
 	try {
 	    GUIManager.CloseInventories();
 	    shopManager.CloseInventories();
