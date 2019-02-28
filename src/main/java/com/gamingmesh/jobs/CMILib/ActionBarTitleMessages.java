@@ -97,7 +97,7 @@ public class ActionBarTitleMessages {
 	    Object player = getHandle.invoke(receivingPacket);
 	    Object connection = playerConnection.get(player);
 	    sendPacket.invoke(connection, packet);
-	} catch (Exception ex) {
+	} catch (Throwable t) {
 //	    Bukkit.getLogger().log(Level.SEVERE, "Error {0}", ex);
 	}
 
@@ -105,7 +105,7 @@ public class ActionBarTitleMessages {
 	    Object player = getHandle.invoke(receivingPacket);
 	    Object connection = playerConnection.get(player);
 	    sendPacket.invoke(connection, packet);
-	} catch (Exception ex) {
+	} catch (Throwable t) {
 //	    Bukkit.getLogger().log(Level.SEVERE, "Error {0}", ex);
 	}
     }

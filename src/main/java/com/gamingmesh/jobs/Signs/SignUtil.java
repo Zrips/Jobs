@@ -113,9 +113,9 @@ public class SignUtil {
 	if (JobName.contains("gtoplist"))
 	    PlayerList = Jobs.getJobsDAO().getGlobalTopList(0);
 
-	HashMap<String, List<TopList>> temp = new HashMap<String, List<TopList>>();
+	HashMap<String, List<TopList>> temp = new HashMap<>();
 
-	for (com.gamingmesh.jobs.Signs.Sign one : new ArrayList<>(Signs.GetAllSigns())) {
+	for (com.gamingmesh.jobs.Signs.Sign one : new ArrayList<com.gamingmesh.jobs.Signs.Sign>(Signs.GetAllSigns())) {
 	    String SignJobName = one.GetJobName();
 
 	    if (!JobName.contains(SignJobName))
