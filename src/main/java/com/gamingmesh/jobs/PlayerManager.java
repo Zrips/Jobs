@@ -56,6 +56,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.economy.PointsData;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 
 public class PlayerManager {
@@ -633,6 +634,7 @@ public class PlayerManager {
 	for (JobCommands command : job.getCommands()) {
 	    if (newLevel >= command.getLevelFrom() && newLevel <= command.getLevelUntil()) {
 		for (String commandString : new ArrayList<String>(command.getCommands())) {
+		    Debug.D("cmd: |" + commandString);
 		    commandString = commandString.replace("[player]", player.getName());
 		    commandString = commandString.replace("[oldlevel]", String.valueOf(oldLevel));
 		    commandString = commandString.replace("[newlevel]", String.valueOf(newLevel));
