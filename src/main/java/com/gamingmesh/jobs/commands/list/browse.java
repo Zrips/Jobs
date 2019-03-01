@@ -24,7 +24,7 @@ public class browse implements Cmd {
 	if (Jobs.getGCManager().BrowseUseNewLook) {
 	    List<Job> jobList = new ArrayList<>(Jobs.getJobs());
 
-	    if (jobList.size() == 0) {
+	    if (jobList.isEmpty()) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
 		return true;
 	    }
@@ -33,7 +33,7 @@ public class browse implements Cmd {
 		Inventory inv = null;
 		try {
 		    inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
 		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getUniqueId());
 		    return true;
@@ -53,7 +53,7 @@ public class browse implements Cmd {
 			try {
 			    page = Integer.parseInt(one.substring("-p:".length()));
 			    continue;
-			} catch (Exception e) {
+			} catch (Throwable e) {
 			}
 		    }
 		}
@@ -63,7 +63,7 @@ public class browse implements Cmd {
 		    try {
 			j = Jobs.getJob(one.substring("-j:".length()));
 			continue;
-		    } catch (Exception e) {
+		    } catch (Throwable e) {
 		    }
 		}
 	    }
@@ -231,12 +231,11 @@ public class browse implements Cmd {
 			builder.append(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (job.getBonus() * 100)));
 
 		lines.add(builder.toString());
-		if (!job.getDescription().isEmpty()) {
+		if (!job.getDescription().isEmpty())
 		    lines.add("  - " + job.getDescription().replace("/n", ""));
-		}
 	    }
 
-	    if (lines.size() == 0) {
+	    if (lines.isEmpty()) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
 		return true;
 	    }
@@ -246,7 +245,7 @@ public class browse implements Cmd {
 		Inventory inv = null;
 		try {
 		    inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
 		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getName());
 		    return true;

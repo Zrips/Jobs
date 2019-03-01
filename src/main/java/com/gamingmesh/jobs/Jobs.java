@@ -181,11 +181,15 @@ public class Jobs extends JavaPlugin {
 
     @Deprecated
     public static McMMOManager getMcMMOlistener() {
-	return McMMOManager == null ? new McMMOManager() : McMMOManager;
+	if (McMMOManager == null)
+	    McMMOManager = new McMMOManager();
+	return McMMOManager;
     }
 
     public static McMMOManager getMcMMOManager() {
-	return McMMOManager == null ? new McMMOManager() : McMMOManager;
+	if (McMMOManager == null)
+	    McMMOManager = new McMMOManager();
+	return McMMOManager;
     }
 
     public void setPistonProtectionListener() {
@@ -208,7 +212,9 @@ public class Jobs extends JavaPlugin {
     private boolean PlaceholderAPIEnabled = false;
 
     public Placeholder getPlaceholderAPIManager() {
-	return Placeholder == null ? new Placeholder(this) : Placeholder;
+	if (Placeholder == null)
+	    Placeholder = new Placeholder(this);
+	return Placeholder;
     }
 
     private boolean setupPlaceHolderAPI() {
@@ -269,11 +275,15 @@ public class Jobs extends JavaPlugin {
     }
 
     public static Reflections getReflections() {
-	return reflections == null ? new Reflections() : reflections;
+	if (reflections == null)
+	    reflections = new Reflections();
+	return reflections;
     }
 
     public static JobsManager getDBManager() {
-	return DBManager == null ? new JobsManager(instance) : DBManager;
+	if (DBManager == null)
+	    DBManager = new JobsManager(instance);
+	return DBManager;
     }
 
     public static void setShopManager() {
@@ -305,7 +315,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public static ActionBarTitleMessages getActionBar() {
-	return actionbar == null ? new ActionBarTitleMessages() : actionbar;
+	if (actionbar == null)
+	    actionbar = new ActionBarTitleMessages();
+	return actionbar;
     }
 
     public static void setNms(NMS nms) {
@@ -324,10 +336,6 @@ public class Jobs extends JavaPlugin {
 	if (pManager == null)
 	    pManager = new PlayerManager();
 	return pManager;
-    }
-
-    public void setPlayerManager() {
-
     }
 
     public static void setRestrictedBlockManager() {
@@ -419,7 +427,9 @@ public class Jobs extends JavaPlugin {
      * @return the scoreboard manager
      */
     public CMIScoreboardManager getCMIScoreboardManager() {
-	return CMIScoreboardManager == null ? new CMIScoreboardManager(this) : CMIScoreboardManager;
+	if (CMIScoreboardManager == null)
+	    CMIScoreboardManager = new CMIScoreboardManager(this);
+	return CMIScoreboardManager;
     }
 
     protected static Jobs instance;
@@ -969,7 +979,7 @@ public class Jobs extends JavaPlugin {
 	    if (income == 0D && pointAmount == 0D)
 		return;
 
-	    Boost boost = pManager.getFinalBonus(jPlayer, noneJob);
+	    Boost boost = getPlayerManager().getFinalBonus(jPlayer, noneJob);
 
 	    // Calculate income
 
@@ -1071,7 +1081,7 @@ public class Jobs extends JavaPlugin {
 			    player.giveExp(expInt);
 		    }
 		}
-		Boost boost = pManager.getFinalBonus(jPlayer, prog.getJob(), ent, victim);
+		Boost boost = getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
 
 		// Calculate income
 		if (income != 0D) {
@@ -1164,7 +1174,7 @@ public class Jobs extends JavaPlugin {
 		}
 
 		if (prog.addExperience(expAmount))
-		    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
+			getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
 	    }
 
 	    //need to update bp
@@ -1316,7 +1326,7 @@ public class Jobs extends JavaPlugin {
 	}
 
 	if (prog.addExperience(payment.getExp()))
-	    pManager.performLevelUp(jPlayer, prog.getJob(), oldLevel);
+		getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
     }
 
     public static void consoleMsg(String msg) {

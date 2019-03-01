@@ -214,7 +214,7 @@ public class SignUtil {
 		sign.setLine(3, line1);
 		sign.update();
 
-		if (!UpdateHead(sign, PlayerName, timelapse))
+		if (!UpdateHead(sign, pl.getPlayerName(), timelapse))
 		    timelapse--;
 	    }
 
