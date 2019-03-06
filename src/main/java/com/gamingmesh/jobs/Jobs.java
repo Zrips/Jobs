@@ -280,9 +280,11 @@ public class Jobs extends JavaPlugin {
 	return reflections;
     }
 
+    public static void setDBManager() {
+	DBManager = new JobsManager(instance);
+    }
+
     public static JobsManager getDBManager() {
-	if (DBManager == null)
-	    DBManager = new JobsManager(instance);
 	return DBManager;
     }
 
@@ -834,6 +836,7 @@ public class Jobs extends JavaPlugin {
 	    setPermissionHandler(new PermissionHandler(this));
 	    setPluginLogger(getLogger());
 	    setJobsClassloader();
+	    setDBManager();
 	    setLanguage();
 	    setGUIManager();
 	    setExplore();

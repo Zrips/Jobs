@@ -364,7 +364,7 @@ public class ItemManager {
     public enum CMIPotionType {
 	Awkward(373, 16, "Awkard Potion"),
 	Fire_Resistance_1(373, 8195, "Fire Resistance Potion"),
-	Fire_Resistance_2(373, 8259, "Fire Resistance potion 2"),
+	Fire_Resistance_2(373, 8259, "Fire Resistance Potion 2"),
 	Harming_1(373, 8204, "Harming Potion"),
 	Harming_2(373, 8236, "Harming Potion 2"),
 	Healing_1(373, 8197, "Healing Potion"),

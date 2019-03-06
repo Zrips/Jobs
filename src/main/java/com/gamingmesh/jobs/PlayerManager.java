@@ -603,6 +603,7 @@ public class PlayerManager {
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
 	    for (String line : message.split("\n")) {
 		if (Jobs.getGCManager().isBroadcastingSkillups())
+		if (Jobs.getGCManager().BroadcastingSkillUpLevels.contains(oldLevel + 1) || Jobs.getGCManager().BroadcastingSkillUpLevels.contains(0))
 		    Bukkit.getServer().broadcastMessage(line);
 		else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
