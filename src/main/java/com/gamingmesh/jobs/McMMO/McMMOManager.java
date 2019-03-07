@@ -48,27 +48,6 @@ public class McMMOManager {
 			return -(1 - Jobs.getGCManager().superBreakerMultiplier);
 			InfoMap.remove(SuperAbilityType.SUPER_BREAKER);
 		}
-	} else { //Don't report errors if using pre-overhaul mcmmo
-		Long t = InfoMap.get(AbilityType.TREE_FELLER);
-		if (t != null) {
-			if (t < System.currentTimeMillis())
-			return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
-			InfoMap.remove(AbilityType.TREE_FELLER);
-		}
-
-		t = InfoMap.get(AbilityType.GIGA_DRILL_BREAKER);
-		if (t != null) {
-			if (t < System.currentTimeMillis())
-			return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
-			InfoMap.remove(AbilityType.GIGA_DRILL_BREAKER);
-		}
-
-		t = InfoMap.get(AbilityType.SUPER_BREAKER);
-		if (t != null) {
-			if (t < System.currentTimeMillis())
-			return -(1 - Jobs.getGCManager().superBreakerMultiplier);
-			InfoMap.remove(AbilityType.SUPER_BREAKER);
-		}
 	}
 
 	return 0D;
@@ -79,6 +58,7 @@ public class McMMOManager {
 	if (McMMO != null) {
 	    try {
 		Class.forName("com.gmail.nossr50.api.AbilityAPI");
+		Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
 	    } catch (ClassNotFoundException e) {
 		// Disabling skill API check;
 		mcMMOPresent = false;
