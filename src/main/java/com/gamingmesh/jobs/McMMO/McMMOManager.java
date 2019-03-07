@@ -8,13 +8,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gmail.nossr50.datatypes.skills;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 
 public class McMMOManager {
 
     public boolean mcMMOPresent = false;
 	
-	public boolean mcMMOOverHaul = false;
+    public boolean mcMMOOverHaul = false;
 
     private HashMap<UUID, HashMap<String, Long>> map = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class McMMOManager {
 			return -(1 - Jobs.getGCManager().superBreakerMultiplier);
 			InfoMap.remove(SuperAbilityType.SUPER_BREAKER);
 		}
-	} else {
+	} else { //Don't report errors if using pre-overhaul mcmmo
 		Long t = InfoMap.get(AbilityType.TREE_FELLER);
 		if (t != null) {
 			if (t < System.currentTimeMillis())
