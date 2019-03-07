@@ -8,10 +8,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gmail.nossr50.datatypes.skills;
 
 public class McMMOManager {
 
     public boolean mcMMOPresent = false;
+	
+	public boolean mcMMOOverHaul = false;
 
     private HashMap<UUID, HashMap<String, Long>> map = new HashMap<>();
 
@@ -23,26 +26,49 @@ public class McMMOManager {
 	HashMap<String, Long> InfoMap = map.get(player.getUniqueId());
 	if (InfoMap == null)
 	    return 0D;
+	
+	if (mcMMOOverHaul = true) {
+		Long t = InfoMap.get(SuperAbilityType.TREE_FELLER);
+		if (t != null) {
+			if (t < System.currentTimeMillis())
+			return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
+			InfoMap.remove(SuperAbilityType.TREE_FELLER);
+		}
 
-	Long t = InfoMap.get("TREE_FELLER");
-	if (t != null) {
-	    if (t < System.currentTimeMillis())
-		return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
-	    InfoMap.remove("TREE_FELLER");
-	}
+		t = InfoMap.get(SuperAbilityType.GIGA_DRILL_BREAKER);
+		if (t != null) {
+			if (t < System.currentTimeMillis())
+			return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
+			InfoMap.remove(SuperAbilityType.GIGA_DRILL_BREAKER);
+		}
 
-	t = InfoMap.get("GIGA_DRILL_BREAKER");
-	if (t != null) {
-	    if (t < System.currentTimeMillis())
-		return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
-	    InfoMap.remove("GIGA_DRILL_BREAKER");
-	}
+		t = InfoMap.get(SuperAbilityType.SUPER_BREAKER);
+		if (t != null) {
+			if (t < System.currentTimeMillis())
+			return -(1 - Jobs.getGCManager().superBreakerMultiplier);
+			InfoMap.remove(SuperAbilityType.SUPER_BREAKER);
+		}
+	} else {
+		Long t = InfoMap.get(AbilityType.TREE_FELLER);
+		if (t != null) {
+			if (t < System.currentTimeMillis())
+			return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
+			InfoMap.remove(AbilityType.TREE_FELLER);
+		}
 
-	t = InfoMap.get("SUPER_BREAKER");
-	if (t != null) {
-	    if (t < System.currentTimeMillis())
-		return -(1 - Jobs.getGCManager().superBreakerMultiplier);
-	    InfoMap.remove("SUPER_BREAKER");
+		t = InfoMap.get(AbilityType.GIGA_DRILL_BREAKER);
+		if (t != null) {
+			if (t < System.currentTimeMillis())
+			return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
+			InfoMap.remove(AbilityType.GIGA_DRILL_BREAKER);
+		}
+
+		t = InfoMap.get(AbilityType.SUPER_BREAKER);
+		if (t != null) {
+			if (t < System.currentTimeMillis())
+			return -(1 - Jobs.getGCManager().superBreakerMultiplier);
+			InfoMap.remove(AbilityType.SUPER_BREAKER);
+		}
 	}
 
 	return 0D;
@@ -62,6 +88,7 @@ public class McMMOManager {
 	    }
 
 	    mcMMOPresent = true;
+		mcMMOOverHaul = true;
 	    Jobs.consoleMsg("&e[Jobs] &6mcMMO" + McMMO.getDescription().getVersion() + " was found - Enabling capabilities.");
 	    return true;
 	}
