@@ -68,7 +68,7 @@ public class McMMOManager {
 	    }
 
 	    mcMMOPresent = true;
-		mcMMOOverHaul = true;
+	    mcMMOOverHaul = true;
 	    Jobs.consoleMsg("&e[Jobs] &6mcMMO" + McMMO.getDescription().getVersion() + " was found - Enabling capabilities.");
 	    return true;
 	}
