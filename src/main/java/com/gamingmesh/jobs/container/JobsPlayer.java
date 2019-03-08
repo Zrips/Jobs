@@ -690,7 +690,8 @@ public class JobsPlayer {
 
 	honorific = builder.toString().trim();
 	if (honorific.length() > 0)
-	    honorific = Jobs.getGCManager().getModifyChatPrefix() + honorific + Jobs.getGCManager().getModifyChatSuffix();
+	    honorific = org.bukkit.ChatColor.translateAlternateColorCodes('&',
+	    	Jobs.getGCManager().getModifyChatPrefix() + honorific + Jobs.getGCManager().getModifyChatSuffix());
 
     }
 
