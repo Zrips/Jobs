@@ -93,7 +93,7 @@ public class JobsCommands implements CommandExecutor {
 		RawMessage rm = new RawMessage();
 		rm.add(Jobs.getLanguage().getMessage("general.error.permission"), "&2" + label + ".command." + cmd);
 		rm.show(sender);
-	    }
+	    } else
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
@@ -129,9 +129,8 @@ public class JobsCommands implements CommandExecutor {
 	String key = "command." + cmd + ".help.args";
 	if (Jobs.getLanguage().containsKey(key) && !Jobs.getLanguage().getMessage(key).isEmpty()) {
 	    cmdString = cmdString.replace("[arguments]", " " + Jobs.getLanguage().getMessage(key));
-	} else {
+	} else
 	    cmdString = cmdString.replace("[arguments]", "");
-	}
 	return cmdString;
     }
 
@@ -146,7 +145,7 @@ public class JobsCommands implements CommandExecutor {
 
 	Map<String, Integer> commands = GetCommands(sender);
 
-	if (commands.size() == 0) {
+	if (commands.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
@@ -301,9 +300,9 @@ public class JobsCommands implements CommandExecutor {
      * Check Job joining permission
      */
     public boolean hasJobPermission(CommandSender sender, Job job) {
-	if (!sender.hasPermission("jobs.use")) {
+	if (!sender.hasPermission("jobs.use"))
 	    return false;
-	}
+
 	return sender.hasPermission("jobs.join." + job.getName().toLowerCase());
     }
 
@@ -336,9 +335,8 @@ public class JobsCommands implements CommandExecutor {
 
 	if (type == null) {
 	    type = "";
-	} else {
+	} else
 	    type = type.toLowerCase();
-	}
 
 	List<String> message = new ArrayList<>();
 
@@ -361,11 +359,10 @@ public class JobsCommands implements CommandExecutor {
 
 	if (Jobs.getGCManager().useDynamicPayment) {
 	    if ((int) (job.getBonus() * 100) / 100.0 != 0) {
-		if ((int) (job.getBonus() * 100) / 100.0 < 0) {
+		if ((int) (job.getBonus() * 100) / 100.0 < 0)
 		    message.add(Jobs.getLanguage().getMessage("command.info.help.penalty", "[penalty]", (int) (job.getBonus() * 100) / 100.0 * -1));
-		} else {
+		else
 		    message.add(Jobs.getLanguage().getMessage("command.info.help.bonus", "[bonus]", (int) (job.getBonus() * 100) / 100.0));
-		}
 	    }
 	}
 

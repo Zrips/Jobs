@@ -35,7 +35,7 @@ public class removexp implements Cmd {
 	double xpLost;
 	try {
 	    xpLost = Double.parseDouble(args[2]);
-	} catch (Exception e) {
+	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    return true;
 	}

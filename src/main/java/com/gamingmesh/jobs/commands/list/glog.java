@@ -51,7 +51,7 @@ public class glog implements Cmd {
 		    if (JPlayer == null)
 			continue;
 		    HashMap<String, Log> logList = JPlayer.getLog();
-		    if (logList.size() == 0)
+		    if (logList.isEmpty())
 			continue;
 
 		    for (Entry<String, Log> l : logList.entrySet()) {
@@ -93,16 +93,15 @@ public class glog implements Cmd {
 			    "%money%", moneyS,
 			    "%exp%", expS,
 			    "%points%", pointsS));
-		    
-		    
+
 		    count++;
 
 		    if (count > max)
 			break;
 		}
-		if (unsortMap.size() == 0) {
+		if (unsortMap.isEmpty())
 		    sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.nodata"));
-		}
+
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.bottomline"));
 
 		return;

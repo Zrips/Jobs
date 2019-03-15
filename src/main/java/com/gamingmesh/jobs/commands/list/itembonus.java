@@ -30,9 +30,6 @@ public class itembonus implements Cmd {
 	    return false;
 	}
 
-	if (!Jobs.hasPermission(sender, "jobs.commands.itembonus", true))
-	    return true;
-
 	Player player = (Player) sender;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);

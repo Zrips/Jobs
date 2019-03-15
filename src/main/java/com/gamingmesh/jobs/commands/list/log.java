@@ -27,9 +27,6 @@ public class log implements Cmd {
 	    return false;
 	}
 
-    if (!Jobs.hasPermission(sender, "jobs.commands.log", true))
-	return true;
-
 	if (args.length != 1 && args.length != 0) {
 	    Jobs.getCommandManager().sendUsage(sender, "log");
 	    return true;

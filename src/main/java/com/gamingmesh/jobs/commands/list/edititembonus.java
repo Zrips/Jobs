@@ -101,7 +101,7 @@ public class edititembonus implements Cmd {
 	if (key == null)
 	    return true;
 
-	JobItems item = ItemBoostManager.getItemByKey((String) key);
+	JobItems item = ItemBoostManager.getItemByKey(key.toString());
 
 	if (item == null)
 	    return true; 

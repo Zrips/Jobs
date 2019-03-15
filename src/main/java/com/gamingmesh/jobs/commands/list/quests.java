@@ -36,9 +36,6 @@ public class quests implements Cmd {
 	}
 
 	if (jPlayer == null) {
-	    if (!Jobs.hasPermission(sender, "jobs.command.quests", true))
-		return true;
-
 	    if (args.length >= 1)
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    else

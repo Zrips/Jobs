@@ -29,8 +29,6 @@ public class bonus implements Cmd {
 	}
 
 	Player player = (Player) sender;
-	if (!Jobs.hasPermission(player, "jobs.command.bonus", true))
-	    return true;
 
 	Job job = Jobs.getJob(args[0]);
 	if (job == null) {

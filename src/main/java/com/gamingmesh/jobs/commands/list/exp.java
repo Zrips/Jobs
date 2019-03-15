@@ -24,11 +24,8 @@ public class exp implements Cmd {
 	    return true;
 	}
 
-	if (!Jobs.hasPermission(sender, "jobs.command.exp", true))
-	    return true;
-
 	Action action = Action.Add;
-	int amount = 0;
+	double amount = 0;
 	String playerName = null;
 	Job job = null;
 
@@ -46,7 +43,7 @@ public class exp implements Cmd {
 	    }
 
 	    try {
-		amount = Integer.parseInt(one);
+		amount = Double.parseDouble(one);
 		continue;
 	    } catch (NumberFormatException e) {
 	    }

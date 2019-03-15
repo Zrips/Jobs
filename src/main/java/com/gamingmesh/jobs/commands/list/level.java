@@ -24,9 +24,6 @@ public class level implements Cmd {
 	    return true;
 	}
 
-	if (!Jobs.hasPermission(sender, "jobs.command.level", true))
-	    return true;
-
 	Action action = Action.Add;
 	int amount = 0;
 	String playerName = null;

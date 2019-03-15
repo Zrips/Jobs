@@ -19,9 +19,6 @@ public class employ implements Cmd {
 	    return true;
 	}
 
-	if (!Jobs.hasPermission(sender, "jobs.command.employ", true))
-	    return true;
-
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));

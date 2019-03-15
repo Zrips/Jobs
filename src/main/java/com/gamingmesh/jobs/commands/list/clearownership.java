@@ -19,11 +19,8 @@ public class clearownership implements Cmd {
 	    if (!Jobs.hasPermission(sender, "jobs.command.admin.clearownership", true))
 		    return true;
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-	} else if (sender instanceof Player) {
-	    if (!Jobs.hasPermission(sender, "jobs.command.clearownership", true))
-		    return true;
+	} else if (sender instanceof Player)
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
-	}
 
 	if (jPlayer == null) {
 	    if (args.length >= 1)
