@@ -24,48 +24,37 @@ public class exp implements Cmd {
 	    return true;
 	}
 
-	Action action = Action.Add;
-	double amount = 0;
-	String playerName = null;
-	Job job = null;
-
-	for (String one : args) {
-	    switch (one.toLowerCase()) {
-	    case "add":
-		action = Action.Add;
-		continue;
-	    case "set":
-		action = Action.Set;
-		continue;
-	    case "take":
-		action = Action.Take;
-		continue;
-	    }
-
-	    try {
-		amount = Double.parseDouble(one);
-		continue;
-	    } catch (NumberFormatException e) {
-	    }
-
-	    if (job == null && Jobs.getJob(one) != null) {
-		job = Jobs.getJob(one);
-		continue;
-	    }
-	    playerName = one;
-	}
-
-	if (playerName == null)
-	    return false;
-
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(playerName);
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
 	}
 
+	Job job = Jobs.getJob(args[1]);
 	if (job == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+	    return true;
+	}
+
+	Action action = Action.Add;
+
+	switch (args[2].toLowerCase()) {
+	    case "add":
+		action = Action.Add;
+		break;
+	    case "set":
+		action = Action.Set;
+		break;
+	    case "take":
+		action = Action.Take;
+		break;
+	}
+
+	double amount = 0.0;
+	try {
+		amount = Double.parseDouble(args[3]);
+	} catch (Throwable e) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    return true;
 	}
 
