@@ -15,8 +15,8 @@ general:
       mins: '&e%mins% &6perc '
       secs: '&e%secs% &6másodperc '
     invalidPage: '&cÉrvénytelen oldal'
-    true: '&2Igaz'
-    false: '&cHamis'
+    'true': '&2Igaz'
+    'false': '&cHamis'
   admin:
     error: '&cHiba történt a parancsban.'
     success: '&eA parancs végrehajtásra került.'
@@ -40,6 +40,7 @@ command:
     output:
       info: 'Típus /jobs [command] ? további információ a parancsról.'
       cmdUsage: '&2Használat: &7[command]'
+      label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
       cmdFormat: '&7/[command]&f[arguments]'
       helpPageDescription: '&2* [description]'
@@ -51,7 +52,6 @@ command:
       nextPage: '&6 Következő &2>>----'
       nextPageOff: '&7 Következő >>----'
       pageCount: '&2[current]/[total]'
-      label: 'Jobs'
   moneyboost:
     help:
       info: 'Növeli a pénzszerzést minden játékos számára.'
@@ -149,14 +149,6 @@ command:
     output:
       reseted: '&eKüldetés visszaállítva: &2%playername%'
       noQuests: '&eNincs egy küldetés sem.'
-  help:
-    output:
-      info: '/jobs - A további lehetőségekért.'
-      usage: 'Használat: %usage%'
-      title: '&8&m-------&7 &8&m=======&6 Munkák &8&m=======&7 &8&m-------'
-      page: '&8&m-----&7 &8&m======&e Oldal &6[1]&7/&6[2] &8&m======&7 &8&m-----'
-      prev: '&8&m---&c <<< &6Előző oldal &e|'
-      next: '&e|&6 Következő oldal &c>>> &8&m---'
   points:
     help:
       info: 'Megmutatja, hogy mennyi pontot kapott a játékos.'
@@ -215,10 +207,10 @@ command:
     help:
       info: 'Listázza az összes helyőrzőt'
       args: '(parse) (placeholder)'
-      output:
-        list: '&e[place]. &7[placeholder]'
-        outputResult: ' &eeredmény: &7[result]'
-        parse: '&6[placeholder] &b[source]-val/-vel &6eredmény &8|&f[result]&8|'
+    output:
+      list: '&e[place]. &7[placeholder]'
+      outputResult: ' &eeredmény: &7[result]'
+      parse: '&6[placeholder] &b[source]-val/-vel &6eredmény &8|&f[result]&8|'
   entitylist:
     help:
       info: 'Megmutatja, hogy minden lehetséges entitás használható a pluginnal.'
@@ -248,14 +240,12 @@ command:
       NoPoints: '&cNincs elég pontod!'
       NoTotalLevel: '&cA teljes munka szintje túl alacsony (%totalLevel%)'
       Paid: '&eFizettél, és &6%amount% &eehhez az elemhez.'
-      InvFull: '&cAz eszköztárad tele van.'
   archive:
     help:
       info: 'A felhasználó által archivált összes munkát jeleníti meg.'
       args: '[playername]'
     error:
       nojob: '&cNincs mentett munka.'
-    output: 'lvl %joblevel% (%getbackjoblevel%) %jobname%'
   give:
     help:
       info: 'A tárgyakat a feladatok neve és az elemek kategóriája alapján adja meg. A játékos neve opcionális.'
@@ -352,7 +342,7 @@ command:
         info: '&eNyír'
         none: '%jobname%&c nem kap pénzt, ha bárányokat nyír.'
       explore:
-        info: '&eFeltár'
+        info: '&eFelfedez'
         none: '%jobname%&c nem kap pénzt, ha felfedezik.'
       custom-kill:
         info: '&eEgyéni gyilkolás'
@@ -460,7 +450,7 @@ command:
       args: '[playername] [jobname]'
     error:
       alreadyin: '&cA játékos már dolgozik %jobname% munkánál.'
-      fullslots: '&cNem tudsz csatlakozni a(z) %jobname%&c munkához, mert nincsenek rendelkezésre álló helyek.'
+      fullslots: '&cNem csatlakozhatsz a(z)&e %jobname%&c munkához. Nincs elég férőhely.'
     output:
       target: '&aMost már a(z) %jobname%&a munkánál dolgozik.'
   top:
@@ -513,7 +503,10 @@ command:
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
-      list: '&7* &6%number%. &3%action%: &6%item% &emennyiség: %qty% &6pénz: %money% &eexp: %exp%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &emennyiség: %qty% %money%%exp%%points%'
+      money: '&6pénz: %amount% '
+      exp: '&eexp: %amount% '
+      points: '&6pontok: %amount%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>>'
@@ -593,7 +586,7 @@ command:
   toggle:
     help:
       info: 'A fizetős kimenet a cselekvési sávon (actionbar) vagy a bossbar-on.'
-      args: 'actionbar/bossbar'
+      args: actionbar/bossbar
     output:
       turnedoff: '&4Ez a funkció ki van kapcsolva!'
       paid:

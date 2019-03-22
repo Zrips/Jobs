@@ -35,9 +35,9 @@ public class WorldGuardManager {
 		    continue;
 		return Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
 	    }
-	} catch (Exception | NoSuchMethodError e) {
+	} catch (Throwable e) {
 	}
-	return new ArrayList<>();
+	return new ArrayList<RestrictedArea>();
     }
 
     public boolean inArea(Location loc, String name) {

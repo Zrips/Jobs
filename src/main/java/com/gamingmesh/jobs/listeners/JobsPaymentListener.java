@@ -804,7 +804,7 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1).getType() == Material.ENCHANTED_BOOK) {
+	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1).getType().equals(Material.ENCHANTED_BOOK)) {
 	    Map<Enchantment, Integer> enchants = resultStack.getEnchantments();
 	    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
 	    Enchantment enchant = oneEnchant.getKey();
@@ -1624,7 +1624,8 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())
 	    return;
 
-	if (!Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
+	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R1)
+		    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
 	    return;
 
 	ExploreRespond respond = Jobs.getExplore().ChunkRespond(player, event.getNewChunk());
