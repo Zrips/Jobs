@@ -28,7 +28,7 @@ public class WorldGuardManager {
     public WorldGuardManager() {
 	Plugin pl = Bukkit.getPluginManager().getPlugin("WorldGuard");
 	if (pl != null && (pl instanceof WorldGuardPlugin)) {
-	    if (wg != null && wg.getDescription().getVersion().equals("6.1")) {
+	    if (pl.getDescription().getVersion().equals("6.1")) {
 		wg = (WorldGuardPlugin) pl;
 		useOld = true;
 	    }
