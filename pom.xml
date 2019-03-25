@@ -68,11 +68,27 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/MythicMobs-4.5.5.jar</systemPath>
 		</dependency>
-		<!-- WorldGuard -->
+		<!-- WorldGuard old version -->
 		<dependency>
 			<groupId>com.sk89q</groupId>
 			<artifactId>worldguard</artifactId>
 			<version>6.1</version>
+		</dependency>
+		<!-- WorldGuard new version -->
+		<dependency>
+			<groupId>com.sk89q.worldguard</groupId>
+			<artifactId>worldguard-legacy</artifactId>
+			<version>7.0.0-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>bukkit</artifactId>
+					<groupId>org.bukkit</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>bukkit-classloader-check</artifactId>
+					<groupId>org.sk89q.bukkit</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- WorldEdit -->
 		<dependency>

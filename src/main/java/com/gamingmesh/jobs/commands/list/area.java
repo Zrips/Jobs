@@ -26,63 +26,70 @@ public class area implements Cmd {
 	}
 	Player player = (Player) sender;
 
-	if (args.length == 0)
-	    return false;
-
 	RestrictedAreaManager ra = Jobs.getRestrictedAreaManager();
 
-	if (args.length == 3 && args[0].equalsIgnoreCase("add") && player.hasPermission("jobs.area.add")) {
-	    String name = args[1];
-	    double bonus = 0D;
-	    try {
-		bonus = Double.parseDouble(args[2]);
-	    } catch (Throwable e) {
-		return false;
-	    }
-	    Boolean wg = false;
+	if (args.length == 3) {
+	    if (args[0].equalsIgnoreCase("add")) {
+		if (!Jobs.hasPermission(player, "jobs.area.add", true))
+		    return true;
 
-	    if (name.startsWith("wg:")) {
-		wg = true;
-		name = name.substring("wg:".length(), name.length());
-	    }
+		String name = args[1];
+		double bonus = 0D;
+		try {
+		    bonus = Double.parseDouble(args[2]);
+		} catch (Throwable e) {
+		    return false;
+		}
+		boolean wg = false;
 
-	    if (ra.isExist(name)) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.exist"));
-		return true;
-	    }
+		if (name.startsWith("wg:")) {
+		    wg = true;
+		    name = name.substring("wg:".length(), name.length());
+		}
 
-	    if (!wg && !Jobs.getSelectionManager().hasPlacedBoth(player)) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.select", "%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getName()));
-		return true;
-	    }
-
-	    if (wg && Jobs.getWorldGuardManager() != null) {
-		name = Jobs.getWorldGuardManager().getNameByName(name);
-		if (name == null) {
-		    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.wgDontExist"));
+		if (ra.isExist(name)) {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.exist"));
 		    return true;
 		}
-	    }
 
-	    if (!wg)
-		ra.addNew(new RestrictedArea(name, Jobs.getSelectionManager().getSelectionCuboid(player), bonus), true);
-	    else
-		ra.addNew(new RestrictedArea(name, name, bonus), true);
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.addedNew", "%bonus%", bonus));
-	    return true;
-	}
+		if (!wg && !Jobs.getSelectionManager().hasPlacedBoth(player)) {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.select", "%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getName()));
+		    return true;
+		}
 
-	if (args.length == 2 && args[0].equalsIgnoreCase("remove") && player.hasPermission("jobs.area.remove")) {
-	    String name = args[1];
+		if (wg && Jobs.getWorldGuardManager() != null) {
+		    name = Jobs.getWorldGuardManager().getNameByName(name);
+		    if (name == null) {
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.wgDontExist"));
+			return true;
+		    }
+		}
 
-	    if (!ra.isExist(name)) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.dontExist"));
+		if (!wg)
+		    ra.addNew(new RestrictedArea(name, Jobs.getSelectionManager().getSelectionCuboid(player), bonus), true);
+		else
+		    ra.addNew(new RestrictedArea(name, name, bonus), true);
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.addedNew", "%bonus%", bonus));
 		return true;
 	    }
+	}
 
-	    ra.remove(name, true);
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.removed", "%name%", name));
-	    return true;
+	if (args.length == 2) {
+	    if (args[0].equalsIgnoreCase("remove")) {
+		if (!Jobs.hasPermission(player, "jobs.area.remove", true))
+		    return true;
+
+		String name = args[1];
+
+		if (!ra.isExist(name)) {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.dontExist"));
+		    return true;
+		}
+
+		ra.remove(name);
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.removed", "%name%", name));
+		return true;
+	    }
 	}
 
 	if (args.length == 1 && args[0].equalsIgnoreCase("info")) {
@@ -139,11 +146,12 @@ public class area implements Cmd {
 	    return true;
 	}
 
-	if (args.length > 1) {
+	if (args.length > 0) {
 	    if (args[0].equalsIgnoreCase("add")) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.help.addUsage"));
 		return true;
 	    }
+
 	    if (args[0].equalsIgnoreCase("remove")) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.help.removeUsage"));
 		return true;

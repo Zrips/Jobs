@@ -12,28 +12,46 @@ import org.bukkit.plugin.Plugin;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.RestrictedArea;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 
 public class WorldGuardManager {
 
     private WorldGuardPlugin wg;
+    private boolean useOld = false;
 
     public WorldGuardManager() {
 	Plugin pl = Bukkit.getPluginManager().getPlugin("WorldGuard");
 	if (pl != null && (pl instanceof WorldGuardPlugin)) {
-	    wg = (WorldGuardPlugin) pl;
+	    if (wg != null && wg.getDescription().getVersion().equals("6.1")) {
+		wg = (WorldGuardPlugin) pl;
+		useOld = true;
+	    }
 	}
     }
 
     public List<RestrictedArea> getArea(Location loc) {
 	try {
-	    ApplicableRegionSet regions = wg.getRegionContainer().get(loc.getWorld()).getApplicableRegions(loc);
-	    for (ProtectedRegion one : regions.getRegions()) {
-		if (!Jobs.getRestrictedAreaManager().isExist(one.getId()))
-		    continue;
-		return Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
+	    if (useOld) {
+		ApplicableRegionSet regions = wg.getRegionContainer().get(loc.getWorld()).getApplicableRegions(loc);
+		for (ProtectedRegion one : regions.getRegions()) {
+		    if (!Jobs.getRestrictedAreaManager().isExist(one.getId()))
+			continue;
+		    return Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
+		}
+	    } else {
+		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		RegionManager regions = container.get(BukkitAdapter.adapt(loc.getWorld()));
+		for (ProtectedRegion one : regions.getRegions().values()) {
+		    if (!Jobs.getRestrictedAreaManager().isExist(one.getId()))
+			continue;
+		    return Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
+		}
 	    }
 	} catch (Throwable e) {
 	}
@@ -41,20 +59,38 @@ public class WorldGuardManager {
     }
 
     public boolean inArea(Location loc, String name) {
-	ApplicableRegionSet regions = wg.getRegionContainer().get(loc.getWorld()).getApplicableRegions(loc);
-	for (ProtectedRegion one : regions.getRegions()) {
-	    if (!one.getId().equalsIgnoreCase(name))
-		continue;
-	    if (!one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
-		continue;
-	    return true;
+	if (useOld) {
+	    ApplicableRegionSet regions = wg.getRegionContainer().get(loc.getWorld()).getApplicableRegions(loc);
+	    for (ProtectedRegion one : regions.getRegions()) {
+		if (!one.getId().equalsIgnoreCase(name))
+		    continue;
+		if (!one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
+		    continue;
+		return true;
+	    }
+	} else {
+	    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+	    RegionManager regions = container.get(BukkitAdapter.adapt(loc.getWorld()));
+	    for (ProtectedRegion one : regions.getRegions().values()) {
+		if (!one.getId().equalsIgnoreCase(name))
+		    continue;
+		if (!one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
+		    continue;
+		return true;
+	    }
 	}
 	return false;
     }
 
     public String getNameByName(String name) {
 	for (World one : Bukkit.getWorlds()) {
-	    Map<String, ProtectedRegion> regions = wg.getRegionContainer().get(one).getRegions();
+	    Map<String, ProtectedRegion> regions = null;
+	    if (useOld) {
+		regions = wg.getRegionContainer().get(one).getRegions();
+	    } else {
+		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+		regions = container.get(BukkitAdapter.adapt(one)).getRegions();
+	    }
 	    for (Entry<String, ProtectedRegion> oneR : regions.entrySet()) {
 		if (!oneR.getKey().equalsIgnoreCase(name))
 		    continue;

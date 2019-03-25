@@ -40,15 +40,27 @@ public class RestrictedAreaManager {
 	    save();
     }
 
-    public void remove(String name, boolean save) {
+    public void remove(String name) {
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
 	    if (area.getKey().equalsIgnoreCase(name)) {
 		restrictedAreas.remove(area.getKey());
 		break;
 	    }
 	}
-	if (save)
-	    save();
+	File f = new File(Jobs.getFolder(), "restrictedAreas.yml");
+	if (f.exists()) {
+	    YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
+	    conf.options().indent(2);
+	    conf.options().copyDefaults(true);
+	    StringBuilder header = new StringBuilder();
+	    header = addHeader(header);
+	    conf.set("restrictedareas." + name, null);
+	    try {
+		conf.save(f);
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	}
     }
 
     public HashMap<String, RestrictedArea> getRestrictedAres() {
@@ -98,9 +110,8 @@ public class RestrictedAreaManager {
 	for (RestrictedArea area : getRestrictedAreasByLoc(player.getLocation())) {
 	    if (area.inRestrictedArea(player.getLocation()))
 		return area.getMultiplier();
-	    if (area.getWgName() != null && Jobs.getWorldGuardManager() != null && Jobs.getWorldGuardManager().inArea(player.getLocation(), area.getWgName())) {
+	    if (area.getWgName() != null && Jobs.getWorldGuardManager() != null && Jobs.getWorldGuardManager().inArea(player.getLocation(), area.getWgName()))
 		return area.getMultiplier();
-	    }
 
 	}
 	return 0D;
@@ -113,9 +124,8 @@ public class RestrictedAreaManager {
 		areas.add(area.getValue());
 	}
 
-	if (Jobs.getWorldGuardManager() != null) {
+	if (Jobs.getWorldGuardManager() != null)
 	    areas.addAll(Jobs.getWorldGuardManager().getArea(loc));
-	}
 
 	return areas;
     }
@@ -171,7 +181,7 @@ public class RestrictedAreaManager {
      * loads from Jobs/restrictedAreas.yml
      */
     public synchronized void load() {
-	this.restrictedAreas.clear();
+	restrictedAreas.clear();
 	File f = new File(Jobs.getFolder(), "restrictedAreas.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 	conf.options().indent(2);
@@ -186,10 +196,9 @@ public class RestrictedAreaManager {
 	    for (String areaKey : areaSection.getKeys(false)) {
 		double multiplier = conf.getDouble("restrictedareas." + areaKey + ".multiplier", 0.0);
 
-		if (conf.isBoolean("restrictedareas." + areaKey + ".WG")) {
-		    RestrictedArea ar = new RestrictedArea(areaKey, areaKey, multiplier);
-		    addNew(ar);
-		} else {
+		if (conf.isBoolean("restrictedareas." + areaKey + ".WG"))
+		    addNew(new RestrictedArea(areaKey, areaKey, multiplier));
+		else {
 
 		    String worldName = conf.getString("restrictedareas." + areaKey + ".world");
 		    World world = Bukkit.getServer().getWorld(worldName);
@@ -205,7 +214,7 @@ public class RestrictedAreaManager {
 	    }
 	}
 
-	if (restrictedAreas.size() != 0)
+	if (restrictedAreas.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedAreas.size() + " restricted areas!");
 
 	try {

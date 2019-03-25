@@ -42,6 +42,7 @@ public class Placeholder {
 	user_joinedjobcount,
 	user_points,
 	user_total_points,
+	user_archived_jobs,
 	user_boost_$1_$2("jname/number", "money/exp/points"),
 	user_isin_$1("jname/number"),
 	user_canjoin_$1("jname/number"),
@@ -73,9 +74,6 @@ public class Placeholder {
 	private List<Integer> groups = new ArrayList<>();
 	private ChatFilterRule rule = null;
 	private boolean hidden = false;
-
-	JobsPlaceHolders() {
-	}
 
 	JobsPlaceHolders(String... vars) {
 	    Matcher matcher = numericalRule.getMatcher(this.toString());
@@ -383,33 +381,35 @@ public class Placeholder {
 	if (user != null) {
 	    switch (placeHolder) {
 	    case user_id:
-		return String.valueOf(user.getUserId());
+		return Integer.toString(user.getUserId());
 	    case user_bstandcount:
-		return String.valueOf(user.getBrewingStandCount());
+		return Integer.toString(user.getBrewingStandCount());
 	    case user_maxbstandcount:
-		return String.valueOf(user.getMaxBrewingStandsAllowed());
+		return Integer.toString(user.getMaxBrewingStandsAllowed());
 	    case user_furncount:
-		return String.valueOf(user.getFurnaceCount());
+		return Integer.toString(user.getFurnaceCount());
 	    case user_maxfurncount:
-		return String.valueOf(user.getMaxFurnacesAllowed());
+		return Integer.toString(user.getMaxFurnacesAllowed());
 	    case user_doneq:
-		return String.valueOf(user.getDoneQuests());
+		return Integer.toString(user.getDoneQuests());
 	    case user_seen:
 		return TimeManage.to24hourShort(System.currentTimeMillis() - user.getSeen());
 	    case user_totallevels:
-		return String.valueOf(user.getTotalLevels());
+		return Integer.toString(user.getTotalLevels());
 	    case user_points:
 	    PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
-	    return String.valueOf(pointInfo.getCurrentPoints());
+	    return Double.toString(pointInfo.getCurrentPoints());
 	    case user_total_points:
 	    pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
-	    return String.valueOf(pointInfo.getTotalPoints());
+	    return Double.toString(pointInfo.getTotalPoints());
 	    case user_issaved:
 		return convert(user.isSaved());
 	    case user_displayhonorific:
-		return String.valueOf(user.getDisplayHonorific());
+		return user.getDisplayHonorific();
 	    case user_joinedjobcount:
-		return String.valueOf(user.getJobProgression().size());
+		return Integer.toString(user.getJobProgression().size());
+	    case user_archived_jobs:
+		return Integer.toString(user.getArchivedJobs().getArchivedJobs().size());
 	    default:
 		break;
 	    }
@@ -422,21 +422,21 @@ public class Placeholder {
 		switch (placeHolder) {
 		case limit_$1:
 		    CurrencyType t = CurrencyType.getByName(vals.get(0));
-		    return String.valueOf(user.getLimit(t));
+		    return Integer.toString(user.getLimit(t));
 		case plimit_$1:
 		    t = CurrencyType.getByName(vals.get(0));
-		    return String.valueOf(user.getPaymentLimit().GetAmount(t));
+		    return Double.toString(user.getPaymentLimit().GetAmount(t));
 		case plimit_tleft_$1:
 		    t = CurrencyType.getByName(vals.get(0));
 		    return TimeManage.to24hourShort(user.getPaymentLimit().GetLeftTime(t));
 		case user_jlevel_$1:
-		    return j == null ? "" : String.valueOf(j.getLevel());
+		    return j == null ? "" : Integer.toString(j.getLevel());
 		case user_jexp_$1:
-		    return j == null ? "" : String.valueOf(j.getExperience());
+		    return j == null ? "" : Double.toString(j.getExperience());
 		case user_jmaxexp_$1:
-		    return j == null ? "" : String.valueOf(j.getMaxExperience());
+		    return j == null ? "" : Integer.toString(j.getMaxExperience());
 		case user_jmaxlvl_$1:
-		    return j == null ? "" : String.valueOf(j.getJob().getMaxLevel(user));
+		    return j == null ? "" : Integer.toString(j.getJob().getMaxLevel(user));
 		case user_boost_$1_$2:
 		    if (vals.size() < 2)
 			return "";
@@ -451,7 +451,7 @@ public class Placeholder {
 		case maxjobs:
 		    Double max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max");
 		    max = max == null ? Jobs.getGCManager().getMaxJobs() : max;
-		    return String.valueOf(max);
+		    return Double.toString(max);
 		default:
 		    break;
 		}
@@ -517,17 +517,17 @@ public class Placeholder {
 	    case description_$1:
 		return jo.getDescription();
 	    case maxdailyq_$1:
-		return String.valueOf(jo.getMaxDailyQuests());
+		return Integer.toString(jo.getMaxDailyQuests());
 	    case maxlvl_$1:
-		return String.valueOf(jo.getMaxLevel());
+		return Integer.toString(jo.getMaxLevel());
 	    case maxviplvl_$1:
-		return String.valueOf(jo.getVipMaxLevel());
+		return Integer.toString(jo.getVipMaxLevel());
 	    case bonus_$1:
-		return String.valueOf(jo.getBonus());
+		return Double.toString(jo.getBonus());
 	    case totalplayers_$1:
-		return String.valueOf(jo.getTotalPlayers());
+		return Integer.toString(jo.getTotalPlayers());
 	    case maxslots_$1:
-		return String.valueOf(jo.getMaxSlots());
+		return Integer.toString(jo.getMaxSlots());
 	    default:
 		break;
 	    }
@@ -536,13 +536,13 @@ public class Placeholder {
 	// Global placeholders
 	switch (placeHolder) {
 	case maxjobs:
-	    return String.valueOf(Jobs.getGCManager().getMaxJobs());
+	    return Integer.toString(Jobs.getGCManager().getMaxJobs());
 	case total_workers:
 	    int count = 0;
 	    for (Job one : Jobs.getJobs()) {
 		count += one.getTotalPlayers();
 	    }
-	    return String.valueOf(count);
+	    return Integer.toString(count);
 	default:
 	    break;
 	}
