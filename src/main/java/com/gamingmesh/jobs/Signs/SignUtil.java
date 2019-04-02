@@ -175,6 +175,8 @@ public class SignUtil {
 		if (!UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse))
 		    timelapse--;
 	    } else {
+	    	if (one.GetNumber() > PlayerList.size())
+	    		continue;
 		TopList pl = PlayerList.get(one.GetNumber() - 1);
 		String PlayerName = pl.getPlayerName();
 		if (PlayerName.length() > 8) {
