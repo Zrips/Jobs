@@ -91,6 +91,8 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      hover: '&7%itemtype%'
+      hoverLevelLimits: "&7Tasemest: %from% \n&7Tasemeni: %until%"
   edititembonus:
     help:
       info: Muuda eseme võimendusboonust
@@ -129,6 +131,8 @@ command:
       pointsLimit: '&ePunktipiirang: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4Oled määratud aja jooksul jõudnud rahapiiranguni!'
       reachedmoneylimit2: '&eOma piirangut saad näha käsklusega &2/jobs limit'
+      reachedmoneylimit3: '&eTeenitud raha on nüüd astmeliselt vähendatud... 
+      Aga natuke teenid sa ikka!'
       reachedexplimit: '&4Oled määratud aja jooksul jõudnud kogemuste piiranguni!'
       reachedexplimit2: '&eOma piirangut saad näha käsklusega &2/jobs limit'
       reachedpointslimit: '&4Oled määratud aja jooksul jõudnud punktide piiranguni!'
@@ -292,6 +296,9 @@ command:
       place:
         info: '&eAsetamine'
         none: 'Ametis %jobname% ei saa plokkide asetamise eest raha.'
+      striplogs:
+        info: '&eTüvede koorimine'
+        none: 'Ametis %jobname% ei saa puutüvede koorimise eest raha.'
       kill:
         info: '&eTapmine'
         none: '%Ametis jobname% ei saa koletiste tapmise eest raha.'
@@ -449,6 +456,7 @@ command:
       args: '[playername] [jobname]'
     error:
       alreadyin: Mängijal on juba amet %jobname%.
+      fullslots: Ametiga %jobname% ei saa liituda, puuduvad vabad kohad.
     output:
       target: Sind on palgatud ametisse %jobname%.
   top:
@@ -536,7 +544,16 @@ command:
       target: Sind kõrgendati %levelsgained% taseme võrra ametis %jobname%.
   exp:
     help:
-      info: Muuda mängija kogemust ametis.
+      info: Muuda mängija kogemust ametis.      
+      args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cSee mängija peab kõigepealt ametiga liituma.'
+    output:
+      target: '&eSu kogemust muudeti ametis %jobname%&e, nüüd on sul &6%level%. tase
+        &ening &6%exp% kogemust.'
+  level:
+    help:
+      info: Muuda mängija taset teatud ametis.
       args: '[playername] [jobname] set/add/take [amount]'
     output:
       target: '&eSu kogemust muudeti ametis %jobname%&e, nüüd on sul &6%level%. tase
