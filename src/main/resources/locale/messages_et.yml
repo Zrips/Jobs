@@ -18,7 +18,7 @@ general:
     'true': '&2Tõene'
     'false': '&cVäär'
   admin:
-    error: '&Käskluses esines viga.'
+    error: '&cKäskluses esines viga.'
     success: '&eKäsklus viidi täide.'
   error:
     noHelpPage: '&cSellise leheküljega abileht puudub!'
@@ -91,6 +91,8 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      hover: '&7%itemtype%'
+      hoverLevelLimits: "&7Tasemest: %from% \n&7Tasemeni: %until%"
   edititembonus:
     help:
       info: Muuda eseme võimendusboonust
@@ -114,7 +116,7 @@ command:
   convert:
     help:
       info: 'Konverteerib põhilise andmesüsteemi ühest süsteemist teise. Kui hetkel on selleks
-       sqlite, muutub see Mysql-iks ja vastupidi.'
+       SQLite, muutub see MySQL-iks ja vastupidi.'
       args: ''
   limit:
     help:
@@ -129,6 +131,8 @@ command:
       pointsLimit: '&ePunktipiirang: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4Oled määratud aja jooksul jõudnud rahapiiranguni!'
       reachedmoneylimit2: '&eOma piirangut saad näha käsklusega &2/jobs limit'
+      reachedmoneylimit3: '&eTeenitud raha on nüüd astmeliselt vähendatud... 
+      Aga natuke teenid sa ikka!'
       reachedexplimit: '&4Oled määratud aja jooksul jõudnud kogemuste piiranguni!'
       reachedexplimit2: '&eOma piirangut saad näha käsklusega &2/jobs limit'
       reachedpointslimit: '&4Oled määratud aja jooksul jõudnud punktide piiranguni!'
@@ -167,7 +171,7 @@ command:
       info: Muuda praeguseid ameteid.
       args: ''
       list:
-        job: '&Ametid:'
+        job: '&eAmetid:'
         jobs: '  -> [&e%jobname%&r]'
         actions: '    -> [&e%actionname%&r]'
         material: '      -> [&e%materialname%&r]      '
@@ -229,7 +233,7 @@ command:
       title: '&e------- &8Ametite pood &e-------'
       currentPoints: '&eSul on: &6%currentpoints%'
       price: '&eHind: &6%price%'
-      reqJobs: '&eVajalikud ametid:'
+      reqJobs: '&eNõutud ametid:'
       reqJobsList: '  &6%jobsname%&e: &e%level%. tase'
       reqTotalLevel: '&6Nõutud üldine tase: &e%totalLevel%'
       cantOpen: '&cSeda lehte ei saa avada'
@@ -249,7 +253,7 @@ command:
   give:
     help:
       info: Annab eseme ametinime ja eseme kategooria järgi. Mängija nimi on valikuline. 
-      args: '[playername] [jobname] [jobitemname]'
+      args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
       notonline: '&4Mängija [%playername%] pole võrgus!'
       noitem: '&4Antud nimele vastavaid esemeid ei leitud!'
@@ -275,11 +279,11 @@ command:
     gui:
       pickjob: '&eVali oma amet!'
       jobinfo: '&e[jobname] teave!'
-      actions: '&eLubatud tegevused on:'
+      actions: '&eLubatud tegevused:'
       leftClick: '&eVasakklõps rohkema teabe saamiseks'
       rightClick: '&eParemklõps ametiga liitumiseks'
       leftSlots: '&eVabu kohti:&f '
-      working: '&2&nJuba töötavad'
+      working: '&2&nOled juba liitunud'
       max: '&eMaksimaalne tase:&f '
       back: '&e<<< Tagasi'
     output:
@@ -292,6 +296,9 @@ command:
       place:
         info: '&eAsetamine'
         none: 'Ametis %jobname% ei saa plokkide asetamise eest raha.'
+      striplogs:
+        info: '&eTüvede koorimine'
+        none: 'Ametis %jobname% ei saa puutüvede koorimise eest raha.'
       kill:
         info: '&eTapmine'
         none: '%Ametis jobname% ei saa koletiste tapmise eest raha.'
@@ -387,7 +394,7 @@ command:
     output:
       header: 'Sa tohid liituda järgnevate ametitega:'
       footer: Rohkema teabe saamiseks kirjuta /jobs info [TööNimi]
-      totalWorkers: ' &7Töötajad: &e[amount]'
+      totalWorkers: ' &7Töötajaid: &e[amount]'
       penalty: ' &4Trahv: &c[amount]%'
       bonus: ' &2Boonus: &a[amount]%'
       newHeader: '&2========== [amount] saadaolevat ametit ========='
@@ -449,6 +456,7 @@ command:
       args: '[playername] [jobname]'
     error:
       alreadyin: Mängijal on juba amet %jobname%.
+      fullslots: Ametiga %jobname% ei saa liituda, puuduvad vabad kohad.
     output:
       target: Sind on palgatud ametisse %jobname%.
   top:
@@ -458,8 +466,8 @@ command:
     error:
       nojob: Selle nimetusega ameteid ei leitud.
     output:
-      topline: '&aParimad&e %amount% &amängijat &e%jobname% &aametis'
-      list: '&e%number%&a. &e%playername% &atase &e%level% &akogemusega&e %exp% &aexp'
+      topline: '&aParimad&e %amount% &amängijat ametis &e%jobname%'
+      list: '&e%number%&a. &e%playername% - &e%level% &atase &e%exp% &akogemusega'
       prev: '&e<<<<< Eelmine leht &2|'
       next: '&2|&e Järgmine leht >>>>'
       show: '&2Näita parimate nimekirja alates &e[from] &2kuni &e[until]'
@@ -471,7 +479,7 @@ command:
       nojob: Mistahes teavet ei leitud.
     output:
       topline: '&aParimad&e %amount% &amängijat üldise ametitaseme järgi'
-      list: '&e%number%&a. &e%playername% &atase &e%level% &akogemusega&e %exp% &aexp'
+      list: '&e%number%&a. &e%playername% - &e%level% &atase &e%exp% &akogemusega'
       prev: '&e<<<<< Eelmine leht &2|'
       next: '&2|&e Järgmine leht >>>>'
       show: '&2Näita üldiste parimate nimekirja alates &e[from] &2kuni &e[until]'
@@ -536,14 +544,23 @@ command:
       target: Sind kõrgendati %levelsgained% taseme võrra ametis %jobname%.
   exp:
     help:
-      info: Muuda mängija kogemust ametis.
+      info: Muuda mängija kogemust ametis.      
+      args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cSee mängija peab kõigepealt ametiga liituma.'
+    output:
+      target: '&eSu kogemust muudeti ametis %jobname%&e, nüüd on sul &6%level%. tase
+        &ening &6%exp% kogemust.'
+  level:
+    help:
+      info: Muuda mängija taset teatud ametis.
       args: '[playername] [jobname] set/add/take [amount]'
     output:
-      target: '&eSu kogemust muudeti ametis %jobname% &e, nüüd on sul tase &6%level%
-        &ening &6%exp%exp kogemust.'
+      target: '&eSu kogemust muudeti ametis %jobname%&e, nüüd on sul &6%level%. tase
+        &ening &6%exp% kogemust.'
   demote:
     help:
-      info: Alanda mängijat ametis.
+      info: Alanda mängijat teatud ametis X taseme võrra.
       args: '[playername] [jobname] [levels]'
     output:
       target: Sind alandati %levelslost% taseme võrra ametis %jobname%.
@@ -569,7 +586,7 @@ command:
       args: ''
     output:
       found: '&eSinu ümber leiti &6%amount% &ekaitstud plokki'
-      notFound: '&Sinu ümber ei leitud kaitstud plokke'
+      notFound: '&eSinu ümber ei leitud kaitstud plokke'
   reload:
     help:
       info: Laadi seadistused uuesti.
@@ -591,8 +608,8 @@ message:
     broadcast: '%playername% ülendati ametinimetusse %titlename% ametis %jobname%.'
     nobroadcast: Palju õnne, sind on ülendatud ametinimetusse %titlename% ametis %jobname%.
   levelup:
-    broadcast: '%playername% on nüüd tasemel %joblevel% ametis %jobname%.'
-    nobroadcast: Oled nüüd tasemel %joblevel% ametis %jobname%.
+    broadcast: '%playername% on nüüd %joblevel%. tasemel ametis %jobname%.'
+    nobroadcast: Oled nüüd %joblevel%. tasemel ametis %jobname%.
   cowtimer: '&ePead veel &6%time% &esekundit ootama, et selle töö eest palka saada.'
   blocktimer: '&ePead ootama &3[time] &esekundit veel, et selle eest palka saada!'
   placeblocktimer: '&eSa ei saa samasse kohta plokke asetada kiiremini kui &6[time] 
