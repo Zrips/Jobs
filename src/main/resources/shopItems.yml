@@ -3,10 +3,8 @@ Items:
     # (REQUIRED) Item price in Jobs Points
     Price: 10000.0
     Icon:
-      # (REQUIRED) Icon item id
-      Id: 278
-      # (Optional - Default: 0) Icon item data value
-      Data: 0
+      # (REQUIRED) Icon item
+      Id: diamond_pickaxe
       # (Optional - Default: 1) Icon item amount
       Amount: 1
       # (Optional) Icon name. Supports usual color codes
@@ -42,10 +40,8 @@ Items:
     GiveItems:
       # Can be any word
       PickAxe:
-        # (Required) Item id
-        Id: 278
-        # (Optional - Default: 0) Item data
-        Data: 0
+        # (Required) Item name
+        Id: diamond_pickaxe
         # (Optional - Default: 1) Item amount
         Amount: 1
         # (Optional) Item name
@@ -59,12 +55,12 @@ Items:
         - DURABILITY=3
       # Can be any word
       Apple:
-        # (Required) Item id
+        # (Required) Item name
         Id: 260
   WoodenShovel:
     Price: 100.0
     Icon:
-      Id: 269
+      Id: wooden_shovel
       Name: "&eWooden shovel"
       HideWithoutPermission: true
     RequiredPermission:
@@ -77,7 +73,7 @@ Items:
   LureEnchantBook:
     Price: 100.0
     Icon:
-      Id: 403
+      Id: enchanted_book
       Name: "&eEnchant book"
       Lore:
       - "&eContains Lure 3 enchant"
@@ -88,19 +84,15 @@ Items:
     - Fisherman-100
     PerformCommands:
     - "msg &eThanks [player] for buying this book!"
-    # (Optional) Gives items by defined criteria
     GiveItems:
-      # Can be any word
       Book:
-        # (Required) Item id
-        Id: 403
-        # (Optional) Item enchants
+        Id: enchanted_book
         Enchants:
         - LURE=3
   Elytra:
     Price: 100000.0
     Icon:
-      Id: 443
+      Id: elytra
       Name: "&eAngel wings"
       HideWithoutPermission: true
     RequiredPermission:
@@ -109,8 +101,6 @@ Items:
     - "msg &eThanks [player] for buying Angel Wings!"
     # (Optional) Gives items by defined criteria
     GiveItems:
-      # Can be any word
       Elytra:
-        # (Required) Item id
-        Id: 443
+        Id: elytra
         

@@ -88,7 +88,6 @@ public class JobItems {
 	    return item;
 	try {
 	    ItemStack item = this.item.clone();
-
 	    ItemMeta meta = item.getItemMeta();
 	    if (meta.hasDisplayName())
 		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', meta.getDisplayName().replace("[player]", player == null ? "[player]" : player.getName())));
@@ -111,7 +110,7 @@ public class JobItems {
     }
 
     public BoostMultiplier getBoost(JobProgression job) {
-	if (job == null || !this.jobs.contains(job.getJob()))
+	if (job == null || !jobs.contains(job.getJob()))
 	    return new BoostMultiplier();
 	if (job.getLevel() < getFromLevel() || job.getLevel() > getUntilLevel())
 	    return new BoostMultiplier();

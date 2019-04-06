@@ -23,7 +23,7 @@ import com.gamingmesh.jobs.container.TopList;
 
 public class SignUtil {
 
-    public SignInfo Signs = new SignInfo();
+    private SignInfo Signs = new SignInfo();
     private Jobs plugin;
 
     public SignUtil(Jobs plugin) {
@@ -175,8 +175,9 @@ public class SignUtil {
 		if (!UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse))
 		    timelapse--;
 	    } else {
-	    	if (one.GetNumber() > PlayerList.size())
-	    		continue;
+		if (one.GetNumber() > PlayerList.size())
+			continue;
+
 		TopList pl = PlayerList.get(one.GetNumber() - 1);
 		String PlayerName = pl.getPlayerName();
 		if (PlayerName.length() > 8) {

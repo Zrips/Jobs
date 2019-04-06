@@ -44,15 +44,16 @@ public class ItemBoostManager {
 		JobItems item = oneI.getValue();
 
 		String name = one.getName() + "_" + oneI.getKey();
+		org.bukkit.inventory.ItemStack stack = item.getItemStack(null);
 
-		cfg.getC().set(name + ".id", CMIMaterial.get(item.getItemStack(null)).toString());
+		cfg.getC().set(name + ".id", CMIMaterial.get(stack).toString());
 		cfg.getC().set(name + ".jobs", Arrays.asList(one.getName()));
-		if (item.getItemStack(null).hasItemMeta()) {
-		    cfg.getC().set(name + ".name", item.getItemStack(null).getItemMeta().hasDisplayName() ? CMIChatColor.deColorize(item.getItemStack(null).getItemMeta().getDisplayName()) : null);
-		    cfg.getC().set(name + ".lore", item.getItemStack(null).getItemMeta().hasLore() ? CMIChatColor.deColorize(item.getItemStack(null).getItemMeta().getLore()) : null);
+		if (stack.hasItemMeta()) {
+		    cfg.getC().set(name + ".name", stack.getItemMeta().hasDisplayName() ? CMIChatColor.deColorize(stack.getItemMeta().getDisplayName()) : null);
+		    cfg.getC().set(name + ".lore", stack.getItemMeta().hasLore() ? CMIChatColor.deColorize(stack.getItemMeta().getLore()) : null);
 		}
 		List<String> ench = new ArrayList<>();
-		for (Entry<Enchantment, Integer> oneE : item.getItemStack(null).getEnchantments().entrySet()) {
+		for (Entry<Enchantment, Integer> oneE : stack.getEnchantments().entrySet()) {
 		    ench.add(oneE.getKey().getName() + "=" + oneE.getValue());
 		}
 		cfg.getC().set(name + ".enchants", ench);

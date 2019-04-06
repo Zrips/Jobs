@@ -13,8 +13,7 @@ public class ShopItem {
     private int slot = -1;
     private int page = -1;
 
-    private int IconId = 1;
-    private int IconData = 0;
+    private String IconMaterial = null;
     private int IconAmount = 1;
     private String IconName = null;
     private List<String> IconLore = new ArrayList<>();
@@ -32,10 +31,9 @@ public class ShopItem {
     private String PlayerName;
     private boolean useCurrentPlayer = false;
 
-    public ShopItem(String NodeName, double price, int IconId) {
+    public ShopItem(String NodeName, double price) {
 	this.NodeName = NodeName;
 	this.price = price;
-	this.IconId = IconId;
     }
 
     public void setPage(Integer page) {
@@ -106,16 +104,12 @@ public class ShopItem {
 	return NodeName;
     }
 
-    public int getIconId() {
-	return IconId;
+    public String getIconMaterial() {
+	return IconMaterial;
     }
 
-    public int getIconData() {
-	return IconData;
-    }
-
-    public void setIconData(int IconData) {
-	this.IconData = IconData;
+    public void setIconMaterial(String IconMaterial) {
+	this.IconMaterial = IconMaterial;
     }
 
     public double getPrice() {

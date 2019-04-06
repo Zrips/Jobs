@@ -121,7 +121,7 @@ public class ShopManager {
 	}
 
 	for (JobItems one : item.getitems()) {
-	    ItemStack itemStack = one.getItemStack(player).clone();
+	    ItemStack itemStack = one.getItemStack(player);
 	    player.getInventory().addItem(itemStack);
 	}
 
@@ -205,7 +205,7 @@ public class ShopManager {
 
 	    ArrayList<String> Lore = new ArrayList<>();
 
-	    CMIMaterial mat = CMIMaterial.get(item.getIconId(), item.getIconData());
+	    CMIMaterial mat = CMIMaterial.get(item.getIconMaterial());
 
 	    if (item.isHideWithoutPerm()) {
 		for (String onePerm : item.getRequiredPerm()) {
@@ -274,7 +274,6 @@ public class ShopManager {
 		    skullMeta.setOwner(Jobs.getPlayerManager().getJobsPlayer(player).getUserName());
 		else {
 		    try {
-			@SuppressWarnings("deprecation")
 			OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
 			skullMeta.setOwner(offPlayer.getName());
 		    } catch (Throwable e) {
@@ -318,8 +317,10 @@ public class ShopManager {
 
 	ConfigurationSection ConfCategory = f.getConfigurationSection("Items");
 	ArrayList<String> categoriesList = new ArrayList<>(ConfCategory.getKeys(false));
+
 	if (categoriesList.isEmpty())
 	    return;
+
 	int i = 0;
 	int y = 1;
 	for (String category : categoriesList) {
@@ -332,22 +333,14 @@ public class ShopManager {
 
 	    double price = NameSection.getDouble("Price");
 
-	    if (!NameSection.isInt("Icon.Id")) {
-		Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid Icon Id property. Skipping!");
+	    ShopItem Sitem = new ShopItem(category, price);
+
+	    if (NameSection.isString("Icon.Id"))
+		Sitem.setIconMaterial(NameSection.getString("Icon.Id"));
+	    else {
+		Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid Icon name property. Skipping!");
 		continue;
 	    }
-
-	    int IconId = NameSection.getInt("Icon.Id");
-	    ShopItem Sitem = new ShopItem(category, price, IconId);
-
-	    if (NameSection.isString("Icon.CustomHead.PlayerName"))
-		Sitem.setCustomHead(NameSection.getString("Icon.CustomHead.PlayerName"));
-
-	    if (NameSection.isBoolean("Icon.CustomHead.UseCurrentPlayer"))
-		Sitem.setCustomHeadOwner(NameSection.getBoolean("Icon.CustomHead.UseCurrentPlayer"));
-
-	    if (NameSection.isInt("Icon.Data"))
-		Sitem.setIconData(NameSection.getInt("Icon.Data"));
 
 	    if (NameSection.isInt("Icon.Amount"))
 		Sitem.setIconAmount(NameSection.getInt("Icon.Amount"));
@@ -364,13 +357,19 @@ public class ShopManager {
 		Sitem.setIconLore(lore);
 	    }
 
-	    if (NameSection.isBoolean("Icon.HideWithoutPermission")) {
-		Sitem.setHideWithoutPerm(NameSection.getBoolean("Icon.HideWithoutPermission"));
-	    }
+	    if (NameSection.isString("Icon.CustomHead.PlayerName"))
+		Sitem.setCustomHead(NameSection.getString("Icon.CustomHead.PlayerName"));
 
-	    if (NameSection.isList("RequiredPermission"))
+	    if (NameSection.isBoolean("Icon.CustomHead.UseCurrentPlayer"))
+		Sitem.setCustomHeadOwner(NameSection.getBoolean("Icon.CustomHead.UseCurrentPlayer"));
+
+	    if (NameSection.isBoolean("Icon.HideWithoutPermission"))
+		Sitem.setHideWithoutPerm(NameSection.getBoolean("Icon.HideWithoutPermission"));
+
+	    if (NameSection.isList("RequiredPermission")) {
 		if (!NameSection.getStringList("RequiredPermission").isEmpty())
 		    Sitem.setRequiredPerm(NameSection.getStringList("RequiredPermission"));
+	    }
 
 	    if (NameSection.isInt("RequiredTotalLevels"))
 		Sitem.setRequiredTotalLevels(NameSection.getInt("RequiredTotalLevels"));
@@ -414,11 +413,13 @@ public class ShopManager {
 
 		    String node = oneItemName.toLowerCase();
 
-		    int id = itemSection.getInt("Id");
-
-		    Integer data = null;
-		    if (itemSection.isInt("Data"))
-			data = itemSection.getInt("Data");
+		    String id = null;
+		    if (itemSection.isString("Id"))
+		    id = itemSection.getString("Id");
+		    else {
+			Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid GiveItems name property. Skipping!");
+			continue;
+		    }
 
 		    int amount = 1;
 		    if (itemSection.isInt("Amount"))
@@ -453,7 +454,7 @@ public class ShopManager {
 				enchants.put(ench, level);
 			}
 
-		    items.add(new JobItems(node, data == null ? CMIMaterial.get(id) : CMIMaterial.get(id, data), amount, name, lore, enchants, new BoostMultiplier(), new ArrayList<Job>()));
+		    items.add(new JobItems(node, id == null ? CMIMaterial.STONE : CMIMaterial.get(id), amount, name, lore, enchants, new BoostMultiplier(), new ArrayList<Job>()));
 		}
 		Sitem.setitems(items);
 	    }
