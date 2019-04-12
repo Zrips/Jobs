@@ -407,6 +407,7 @@ public class editjobs implements Cmd {
 		case SHEAR:
 		case EXPLORE:
 		case CUSTOMKILL:
+		case DRINK:
 		    break;
 		case TNTBREAK:
 		case VTRADE:
@@ -417,7 +418,6 @@ public class editjobs implements Cmd {
 		case FISH:
 		case ENCHANT:
 		case DYE:
-		case DRINK:
 		case CRAFT:
 		case BREW:
 		case BREAK:
@@ -578,7 +578,7 @@ public class editjobs implements Cmd {
 		    type = myKey.substring(1, myKey.length());
 		else if (actionT == ActionType.DRINK) {
 		    type = myKey;
-		    CMIPotionType potion = CMIPotionType.valueOf(myKey);
+		    CMIPotionType potion = CMIPotionType.getByName(myKey);
 			if (potion != null) {
 			    type = potion.toString();
 			    id = potion.getId();

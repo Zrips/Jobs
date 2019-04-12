@@ -40,7 +40,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
@@ -64,9 +63,6 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ConfigManager {
-
-    public ConfigManager() {
-    }
 
     public void reload() throws IOException {
 	// job settings
@@ -193,6 +189,7 @@ public class ConfigManager {
 	case SHEAR:
 	case EXPLORE:
 	case CUSTOMKILL:
+	case DRINK:
 	    break;
 	case TNTBREAK:
 	case VTRADE:
@@ -203,7 +200,6 @@ public class ConfigManager {
 	case FISH:
 	case ENCHANT:
 	case DYE:
-	case DRINK:
 	case CRAFT:
 	case BREW:
 	case BREAK:
@@ -376,14 +372,10 @@ public class ConfigManager {
 	} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
 	    type = myKey.substring(1, myKey.length());
 	else if (actionType == ActionType.DRINK) {
-	    type = myKey;
-	    try {
-		PotionType potion = PotionType.valueOf(myKey);
-		if (potion != null)
-		    type = potion.name().toString().replace("_", "").toLowerCase();
-	    } catch (IllegalArgumentException i) {
-		// Ignoring the not invalid potion
-		// Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid potion " + myKey + "!");
+	    CMIPotionType potion = CMIPotionType.getByName(type);
+	    if (potion != null) {
+		type = potion.toString();
+		id = potion.getId();
 	    }
 	}
 
@@ -439,7 +431,6 @@ public class ConfigManager {
 	} finally {
 	    s.close();
 	}
-	//conf.options().header(new StringBuilder().append("Jobs configuration.").append(System.getProperty("line.separator")).append(System.getProperty("line.separator")).append("Stores information about each job.").append(System.getProperty("line.separator")).append(System.getProperty("line.separator")).append("For example configurations, visit http://dev.bukkit.org/bukkit-plugins/jobs-reborn/.").append(System.getProperty("line.separator")).toString());
 
 	ConfigurationSection jobsSection = conf.getConfigurationSection("Jobs");
 	if (jobsSection == null) {
@@ -592,13 +583,10 @@ public class ConfigManager {
 		if (guiSection.contains("Item") && guiSection.isString("Item")) {
 		    String item = guiSection.getString("Item");
 		    String subType = "";
-		    @SuppressWarnings("unused")
-		    String meta = "";
 
 		    if (item.contains("-")) {
 			// uses subType
 			subType = ":" + item.split("-")[1];
-			meta = item.split("-")[1];
 			item = item.split("-")[0];
 		    }
 
@@ -651,7 +639,7 @@ public class ConfigManager {
 			    skullMeta.setOwner(skullOwner);
 			GUIitem.setItemMeta(skullMeta);
 		    }
-		} else if (guiSection.contains("Id") && guiSection.contains("Data") && guiSection.isInt("Id") && guiSection.isInt("Data")) {
+		} else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
 		    GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
 		    if (guiSection.contains("Enchantments")) {
 			List<String> enchants = guiSection.getStringList("Enchantments");
@@ -873,7 +861,6 @@ public class ConfigManager {
 	    job.setPointsEquation(pointsEquation);
 
 	    if (jobSection.contains("Quests")) {
-
 		List<Quest> quests = new ArrayList<>();
 		ConfigurationSection qsection = jobSection.getConfigurationSection("Quests");
 
@@ -895,7 +882,8 @@ public class ConfigManager {
 			}
 
 			if (kv == null)
-			    continue;
+			    kv = getKeyValue("STONE", actionType, jobName);
+
 			int amount = sqsection.getInt("Amount");
 			int chance = sqsection.getInt("Chance", 100);
 
@@ -904,10 +892,10 @@ public class ConfigManager {
 
 			Quest quest = new Quest(name, job, actionType);
 
-			if (sqsection.contains("fromLevel") && sqsection.isInt("fromLevel"))
+			if (sqsection.isInt("fromLevel"))
 			    quest.setMinLvl(sqsection.getInt("fromLevel"));
 
-			if (sqsection.contains("toLevel") && sqsection.isInt("toLevel"))
+			if (sqsection.isInt("toLevel"))
 			    quest.setMaxLvl(sqsection.getInt("toLevel"));
 
 			quest.setConfigName(one);
@@ -970,6 +958,7 @@ public class ConfigManager {
 			case SHEAR:
 			case EXPLORE:
 			case CUSTOMKILL:
+			case DRINK:
 			    break;
 			case TNTBREAK:
 			case VTRADE:
@@ -980,7 +969,6 @@ public class ConfigManager {
 			case FISH:
 			case ENCHANT:
 			case DYE:
-			case DRINK:
 			case CRAFT:
 			case BREW:
 			case BREAK:
@@ -1148,16 +1136,10 @@ public class ConfigManager {
 			} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
 			    type = myKey.substring(1, myKey.length());
 			else if (actionType == ActionType.DRINK) {
-			//    type = myKey;
-			    try {
-				CMIPotionType potion = CMIPotionType.getByName(key);
-				if (potion != null) {
-				    type = potion.toString();
-				    id = potion.getId();
-				}
-			    } catch (IllegalArgumentException i) {
-				// Ignoring the not invalid potion
-				Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid potion " + key + "!");
+			    CMIPotionType potion = CMIPotionType.getByName(key);
+			    if (potion != null) {
+				type = potion.toString();
+				id = potion.getId();
 			    }
 			}
 

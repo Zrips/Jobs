@@ -56,7 +56,7 @@ Items:
       # Can be any word
       Apple:
         # (Required) Item name
-        Id: 260
+        Id: apple
   WoodenShovel:
     Price: 100.0
     Icon:

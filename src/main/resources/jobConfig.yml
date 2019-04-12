@@ -91,6 +91,9 @@ Jobs:
     # enchants in the item
       Enchantments:
       - 'DURABILITY:1'
+    # You can use the custom player head:
+    # Item: player_head
+    #   CustomSkull: Notch
     # Defines maximum amount of daily quests player can have from THIS job
     # This will not have effect on overall quest amount player will have
     maxDailyQuests: 3
