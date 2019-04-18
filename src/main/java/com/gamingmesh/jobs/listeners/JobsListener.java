@@ -111,12 +111,8 @@ public class JobsListener implements Listener {
 	if (msg == null)
 	    return;
 
-	Bukkit.getServer().getScheduler().runTask(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		player.performCommand(msg + event.getMessage());
-	    }
-	});
+	Bukkit.getServer().getScheduler().runTask(plugin, () ->
+	    player.performCommand(msg + event.getMessage()));
 	event.setCancelled(true);
     }
 

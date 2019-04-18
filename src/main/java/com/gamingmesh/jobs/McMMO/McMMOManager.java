@@ -27,46 +27,46 @@ public class McMMOManager {
 	    return 0D;
 
 	if (mcMMOOverHaul) {
-	    Long t = InfoMap.get(SuperAbilityType.TREE_FELLER);
+	    Long t = InfoMap.get(SuperAbilityType.TREE_FELLER.getName());
 	    if (t != null) {
 		if (t < System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
-	    InfoMap.remove(SuperAbilityType.TREE_FELLER);
+		InfoMap.remove(SuperAbilityType.TREE_FELLER.getName());
 	    }
 
-	    t = InfoMap.get(SuperAbilityType.GIGA_DRILL_BREAKER);
+	    t = InfoMap.get(SuperAbilityType.GIGA_DRILL_BREAKER.getName());
 	    if (t != null) {
 		if (t < System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
-	    InfoMap.remove(SuperAbilityType.GIGA_DRILL_BREAKER);
+		InfoMap.remove(SuperAbilityType.GIGA_DRILL_BREAKER.getName());
 	    }
 
-	    t = InfoMap.get(SuperAbilityType.SUPER_BREAKER);
+	    t = InfoMap.get(SuperAbilityType.SUPER_BREAKER.getName());
 	    if (t != null) {
 		if (t < System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().superBreakerMultiplier);
-	    InfoMap.remove(SuperAbilityType.SUPER_BREAKER);
+		InfoMap.remove(SuperAbilityType.SUPER_BREAKER.getName());
 	    }
 	} else if (mcMMOPresent) {
 	    Long t = InfoMap.get("TREE_FELLER");
 	    if (t != null) {
 		if (t < System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
-	    InfoMap.remove("TREE_FELLER");
+		InfoMap.remove("TREE_FELLER");
 	    }
 
 	    t = InfoMap.get("GIGA_DRILL_BREAKER");
 	    if (t != null) {
 		if (t < System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
-	    InfoMap.remove("GIGA_DRILL_BREAKER");
+		InfoMap.remove("GIGA_DRILL_BREAKER");
 	    }
 
 	    t = InfoMap.get("SUPER_BREAKER");
 	    if (t != null) {
 		if (t < System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().superBreakerMultiplier);
-	    InfoMap.remove("SUPER_BREAKER");
+		InfoMap.remove("SUPER_BREAKER");
 	    }
 	}
 
@@ -78,12 +78,14 @@ public class McMMOManager {
 	if (McMMO != null) {
 	    try {
 		Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
+		mcMMOOverHaul = true;
 	    } catch (ClassNotFoundException c) {
 		// Disabling skill API check;
 		mcMMOOverHaul = false;
 		Jobs.consoleMsg("&e[Jobs] &6mcMMO was found - &cBut your McMMO version is outdated, please update for full support.");
 		try {
 		    Class.forName("com.gmail.nossr50.api.AbilityAPI");
+		    mcMMOPresent = true;
 		} catch (ClassNotFoundException e) {
 		    // Disabling skill API check;
 		    mcMMOPresent = false;
@@ -95,8 +97,6 @@ public class McMMOManager {
 		return true;
 	    }
 
-	    mcMMOPresent = true;
-	    mcMMOOverHaul = true;
 	    Jobs.consoleMsg("&e[Jobs] &6mcMMO" + McMMO.getDescription().getVersion() + " was found - Enabling capabilities.");
 	    return true;
 	}
