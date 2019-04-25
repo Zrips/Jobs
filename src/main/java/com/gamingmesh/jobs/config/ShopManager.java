@@ -415,7 +415,7 @@ public class ShopManager {
 
 		    String id = null;
 		    if (itemSection.isString("Id"))
-		    id = itemSection.getString("Id");
+			id = itemSection.getString("Id");
 		    else {
 			Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid GiveItems name property. Skipping!");
 			continue;

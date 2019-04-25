@@ -69,9 +69,6 @@ public class SignUtil {
 
     // Signs save file
     public void saveSigns() {
-	if (!Jobs.getGCManager().SignsEnabled)
-	    return;
-
 	File f = new File(Jobs.getFolder(), "Signs.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 

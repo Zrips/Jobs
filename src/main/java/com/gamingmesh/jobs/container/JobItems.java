@@ -37,6 +37,7 @@ public class JobItems {
     private String node;
     private String legacyKey = null;
     private ItemStack item;
+    private HashMap<Enchantment, Integer> enchants;
     private BoostMultiplier boostMultiplier = new BoostMultiplier();
     private List<Job> jobs = new ArrayList<>();
     private int fromLevel = 0;
@@ -47,6 +48,7 @@ public class JobItems {
 	try {
 	    item = mat.newItemStack();
 	    item.setAmount(amount);
+	    this.enchants = enchants;
 	    ItemMeta meta = item.getItemMeta();
 	    if (meta == null)
 		return;
@@ -98,6 +100,11 @@ public class JobItems {
 		}
 		meta.setLore(TranslatedLore);
 	    }
+	    if (enchants != null) {
+		for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
+		    meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
+		}
+	    }
 	    item.setItemMeta(meta);
 	    return item;
 	} catch (Throwable e) {
@@ -123,6 +130,10 @@ public class JobItems {
 
     public void setJobs(List<Job> jobs) {
 	this.jobs = jobs;
+    }
+
+    public HashMap<Enchantment, Integer> getEnchants() {
+	return enchants;
     }
 
     public int getFromLevel() {

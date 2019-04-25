@@ -394,12 +394,13 @@ public class JobsListener implements Listener {
 
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
-	if (FirstLine.equalsIgnoreCase(Jobs.getLanguage().getMessage("signs.topline")))
+	if (FirstLine.contains(Jobs.getLanguage().getMessage("signs.topline"))) {
 	    if (!player.hasPermission("jobs.command.signs")) {
 		event.setCancelled(true);
 		player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
 		return;
 	    }
+	}
 
 	Location loc = block.getLocation();
 
@@ -685,10 +686,10 @@ public class JobsListener implements Listener {
 	String meinOk = null;
 
 	mein: for (JobProgression one : prog) {
-	    for (JobLimitedItems oneItem : one.getJob().getLimitedItems().values()) {
-		if (one.getLevel() >= oneItem.getLevel())
+	    for (Entry<String, JobLimitedItems> oneItem : one.getJob().getLimitedItems().entrySet()) {
+		if (one.getLevel() >= oneItem.getValue().getLevel())
 		    continue;
-		if (!isThisItem(oneItem, iih.getType().getId(), name, lore, enchants))
+		if (!isThisItem(oneItem.getValue(), iih.getType().getId(), name, lore, enchants))
 		    continue;
 		meinOk = one.getJob().getName();
 		break mein;
@@ -739,7 +740,7 @@ public class JobsListener implements Listener {
 	if (event.isCancelled())
 	    return;
 	if (event.getPlayer() == null || !event.getPlayer().isOnline())
-		return;
+	    return;
 
 	//disabling plugin in world
 	if (event.getTo() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
