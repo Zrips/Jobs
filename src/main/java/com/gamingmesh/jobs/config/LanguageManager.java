@@ -17,9 +17,6 @@ import com.gamingmesh.jobs.CMILib.ConfigReader;
 
 public class LanguageManager {
 
-    public LanguageManager() {
-    }
-
     private List<String> languages = new ArrayList<>();
 
     public List<String> getLanguages() {
@@ -95,7 +92,7 @@ public class LanguageManager {
 	String ls = Jobs.getGCManager().localeString;
 
 	if (ls == null || ls.equals(""))
-	    return;
+	    ls = "en";
 
 	languages.clear();
 	languages.add("en");
