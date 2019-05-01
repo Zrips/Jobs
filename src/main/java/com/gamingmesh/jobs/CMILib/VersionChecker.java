@@ -22,7 +22,7 @@ public class VersionChecker {
 	version = Version.getCurrent();
     }
 
-    private static Version version = Version.v1_13_R2;
+    private static Version version = Version.v1_14_R1;
 
     public Version getVersion() {
 	return Version.getCurrent();
@@ -151,25 +151,22 @@ public class VersionChecker {
 	if (!Jobs.getGCManager().isShowNewVersion())
 	    return;
 
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		String currentVersion = plugin.getDescription().getVersion();
-		String newVersion = getNewVersion();
-		if (newVersion == null || newVersion.equalsIgnoreCase(currentVersion))
-		    return;
-		List<String> msg = Arrays.asList(
-		    ChatColor.GREEN + "*********************** " + plugin.getDescription().getName() + " **************************",
-		    ChatColor.GREEN + "* " + newVersion + " is now available! Your version: " + currentVersion,
-		    ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + plugin.getDescription().getWebsite(),
-		    ChatColor.GREEN + "************************************************************");
-		for (String one : msg)
-		    if (player != null)
-			player.sendMessage(one);
-		    else
-			Jobs.consoleMsg(one);
-	    }
-	});
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+	    String currentVersion = plugin.getDescription().getVersion();
+	    String newVersion = getNewVersion();
+	    if (newVersion == null || newVersion.equalsIgnoreCase(currentVersion))
+		return;
+	    List<String> msg = Arrays.asList(
+			ChatColor.GREEN + "*********************** " + plugin.getDescription().getName() + " **************************",
+			ChatColor.GREEN + "* " + newVersion + " is now available! Your version: " + currentVersion,
+			ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + plugin.getDescription().getWebsite(),
+			ChatColor.GREEN + "************************************************************");
+	    for (String one : msg)
+			if (player != null)
+			    player.sendMessage(one);
+			else
+			    Jobs.consoleMsg(one);
+		});
     }
 
     public String getNewVersion() {
@@ -181,7 +178,7 @@ public class VersionChecker {
 	    String version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
 	    if (version.length() <= 7)
 		return version;
-	} catch (Throwable ex) {
+	} catch (Throwable t) {
 	    Jobs.consoleMsg("&cFailed to check for " + plugin.getDescription().getName() + " update on spigot web page.");
 	}
 	return null;

@@ -1,6 +1,3 @@
-/**
- * Copyright (C) 2017 Zrips
- */
 package com.gamingmesh.jobs.CMILib;
 
 import java.util.ArrayList;
@@ -10,14 +7,17 @@ import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
@@ -30,15 +30,19 @@ public class CMIItemStack {
 
     private String bukkitName = null;
     private String mojangName = null;
-    private CMIMaterial material = null;
+    private CMIMaterial cmiMaterial = null;
+    private Material material = null;
     private ItemStack item;
 
     public CMIItemStack(Material material) {
-	this.material = CMIMaterial.get(material);
+	this.material = material;
+	this.cmiMaterial = CMIMaterial.get(material);
     }
 
-    public CMIItemStack(CMIMaterial material) {
-	this.material = material;
+    public CMIItemStack(CMIMaterial cmiMaterial) {
+	this.cmiMaterial = cmiMaterial;
+	if (cmiMaterial != null)
+	    this.material = cmiMaterial.getMaterial();
     }
 
     public CMIItemStack(ItemStack item) {
@@ -54,7 +58,8 @@ public class CMIItemStack {
 	cm.setDurability(durability);
 	cm.setBukkitName(bukkitName);
 	cm.setMojangName(mojangName);
-	cm.setCMIMaterial(material);
+	cm.setCMIMaterial(cmiMaterial);
+	cm.setMaterial(material);
 	cm.setItemStack(this.item != null ? this.item.clone() : null);
 	return cm;
     }
@@ -63,7 +68,7 @@ public class CMIItemStack {
 	return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
 	this.id = id;
     }
 
@@ -73,17 +78,19 @@ public class CMIItemStack {
 
     public boolean isTool() {
 	return getMaxDurability() > 0;
-    }
+        }
 
     public short getDurability() {
-	return this.getItemStack().getDurability();
+    	return this.getItemStack().getDurability();
     }
 
     public short getMaxDurability() {
-	return material.getMaxDurability();
+    	return this.material.getMaxDurability();
     }
 
     public void setData(short data) {
+//    	CMIMaterial got = CMIMaterial.get(id, data);
+//    	if (got != null && got.getLegacyData() == data)
 	this.data = data;
     }
 
@@ -101,7 +108,7 @@ public class CMIItemStack {
 
     public String getDisplayName() {
 	ItemMeta meta = this.getItemStack().getItemMeta();
-	return meta == null || meta.getDisplayName() == null || meta.getDisplayName().isEmpty() ? this.material.getName() : meta.getDisplayName();
+	return meta == null || meta.getDisplayName() == null || meta.getDisplayName().isEmpty() ? getRealName() : meta.getDisplayName();
     }
 
     public CMIItemStack addLore(String string) {
@@ -110,7 +117,7 @@ public class CMIItemStack {
 	ItemMeta meta = this.getItemStack().getItemMeta();
 	List<String> lore = meta.getLore();
 	if (lore == null)
-	    lore = new ArrayList<>();
+	    lore = new ArrayList<String>();
 	lore.add(ChatColor.translateAlternateColorCodes('&', string));
 	meta.setLore(lore);
 	this.getItemStack().setItemMeta(meta);
@@ -139,58 +146,78 @@ public class CMIItemStack {
     }
 
     public CMIItemStack addEnchant(Enchantment enchant, Integer level) {
-	if (enchant == null)
-	    return this;
-	ItemMeta meta = this.getItemStack().getItemMeta();
-	meta.addEnchant(enchant, level, true);
-	this.getItemStack().setItemMeta(meta);
-	return this;
+    if (enchant == null)
+        return this;
+    ItemMeta meta = this.getItemStack().getItemMeta();
+    meta.addEnchant(enchant, level, true);
+    this.getItemStack().setItemMeta(meta);
+    return this;
     }
 
     public CMIItemStack addEnchant(HashMap<Enchantment, Integer> enchants) {
-	if (enchants == null || enchants.isEmpty())
-	    return this;
-	for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
-	    this.addEnchant(oneEnch.getKey(), oneEnch.getValue());
-	}
-	return this;
+    if (enchants == null || enchants.isEmpty())
+        return this;
+    for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
+        this.addEnchant(oneEnch.getKey(), oneEnch.getValue());
+    }
+    return this;
     }
 
     public CMIItemStack clearEnchants() {
-	ItemMeta meta = this.getItemStack().getItemMeta();
-	meta.getEnchants().clear();
-	this.getItemStack().setItemMeta(meta);
-	return this;
+    ItemMeta meta = this.getItemStack().getItemMeta();
+    meta.getEnchants().clear();
+    this.getItemStack().setItemMeta(meta);
+    return this;
     }
 
     public List<String> getLore() {
-	ItemMeta meta = this.getItemStack().getItemMeta();
-	if (meta != null) {
-	    List<String> lore = meta.getLore();
-	    if (lore == null || lore.isEmpty()) {
-		lore = new ArrayList<>();
-		meta.setLore(lore);
-	    }
+    ItemMeta meta = this.getItemStack().getItemMeta();
+//    List<String> lore = null;
+    if (meta != null) {
+        List<String> lore = meta.getLore();
+        if (lore == null) {
+    	lore = new ArrayList<String>();
+    	meta.setLore(lore);
+//    	this.getItemStack().setItemMeta(meta);
+        }
 
-	    return meta.getLore() == null ? new ArrayList<String>() : meta.getLore();
-	}
-	return new ArrayList<>();
+        return meta.getLore() == null ? new ArrayList<String>() : meta.getLore();
+    }
+    return new ArrayList<String>();
     }
 
     public String getRealName() {
-	return material.getName();
+    return this.getCMIType() == null || this.getCMIType() == CMIMaterial.NONE ? this.getType().name() : this.getCMIType().getName();
+//    if (this.getItemStack() != null) {
+    //
+////        String translated = CMI.getInstance().getItemManager().getTranslatedName(this.getItemStack());
+////        if (translated != null)
+////    	return translated;
+//        try {
+//    	return CMI.getInstance().getRef().getItemMinecraftName(this.getItemStack());
+//        } catch (Exception e) {
+//        }
+//    }
+//    return CMI.getInstance().getItemManager().getRealName(this, true).getName();
     }
 
     public String getBukkitName() {
-	return bukkitName == null || bukkitName.isEmpty() ? null : bukkitName;
+    return bukkitName == null || bukkitName.isEmpty() ? null : bukkitName;
     }
 
     public void setBukkitName(String bukkitName) {
-	this.bukkitName = bukkitName;
+    this.bukkitName = bukkitName;
     }
 
     public String getMojangName() {
-	return mojangName == null || mojangName.isEmpty() ? null : mojangName;
+//    if (getCMIType().isSkull() && !Version.isCurrentEqualOrHigher(Version.v1_13_R1))
+//        mojangName = "skull";
+//    try {
+//        mojangName = CMI.getInstance().getRef().getItemMinecraftName(getItemStack()).replace("minecraft:", "");
+//    } catch (Exception e) {
+    //
+//    }
+    return mojangName == null || mojangName.isEmpty() ? this.getCMIType().getMaterial().name() : mojangName;
     }
 
     public void setMojangName(String mojangName) {
@@ -199,13 +226,13 @@ public class CMIItemStack {
     }
 
     public Material getType() {
-	if (material == null)
-	    return null;
-	return material.getMaterial();
+	if (material == null && cmiMaterial != null)
+	    return cmiMaterial.getMaterial();
+	return material;
     }
 
     public CMIMaterial getCMIType() {
-	return material;
+	return cmiMaterial == null ? CMIMaterial.get(material) : cmiMaterial;
     }
 
     @Deprecated
@@ -214,31 +241,40 @@ public class CMIItemStack {
     }
 
     public void setMaterial(Material material) {
-	this.material = CMIMaterial.get(material);
+	this.cmiMaterial = CMIMaterial.get(material);
+	this.material = material;
     }
 
     public void setCMIMaterial(CMIMaterial material) {
-	this.material = material;
+	this.cmiMaterial = material;
+	this.material = material == null ? null : material.getMaterial();
     }
 
     @SuppressWarnings("deprecation")
     public ItemStack getItemStack() {
 	if (item == null) {
-	    if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_13_R1)) {
-		this.item = new ItemStack(material.getMaterial(), this.amount == 0 ? 1 : this.amount);
+	    if (cmiMaterial.isMonsterEgg()) {
+		if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+		    this.item = new ItemStack(this.getType());
+		    this.item.setAmount(this.getAmount());
+		} else
+		    this.item = new ItemStack(this.getType(), this.amount == 0 ? 1 : this.amount, data == 0 ? (short) 90 : data);
 	    } else {
-		this.item = new ItemStack(material.getMaterial(), this.amount == 0 ? 1 : this.amount, data);
+		if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+		    this.item = new ItemStack(this.getType());
+		    this.item.setAmount(this.getAmount());
+		} else
+		    this.item = new ItemStack(this.getType(), this.amount == 0 ? 1 : this.amount, data);
 	    }
 
-	    if (this.item.getType() == Material.POTION || item.getType().name().contains("SPLASH_POTION") || item.getType().name().contains("TIPPED_ARROW")) {
+	    if (this.getCMIType().isPotion() || item.getType().name().contains("SPLASH_POTION") || item.getType().name().contains("TIPPED_ARROW")) {
 		PotionMeta potion = (PotionMeta) item.getItemMeta();
 		PotionEffectType effect = PotionEffectType.getById(data);
 		if (effect != null) {
-		    potion.addCustomEffect(new PotionEffect(PotionEffectType.getById(data), 60, 0), true);
+		    potion.addCustomEffect(new PotionEffect(effect, 60, 0), true);
 		}
 		item.setItemMeta(potion);
 		item.setDurability((short) 0);
-
 		potion = (PotionMeta) item.getItemMeta();
 		potion.setDisplayName(this.getRealName());
 		item.setItemMeta(potion);
@@ -249,44 +285,48 @@ public class CMIItemStack {
 
     @SuppressWarnings("deprecation")
     public CMIItemStack setItemStack(ItemStack item) {
-	this.item = item;
+	this.item = item == null ? null : item;
 	if (item != null) {
-	    this.id = item.getType().getId();
 	    this.amount = item.getAmount();
-	    this.material = CMIMaterial.get(item);
-	    if ((material.isBlock() || material.isSolid())) {
-		data = item.getData().getData();
+	    this.material = item.getType();
+	    this.cmiMaterial = CMIMaterial.get(this.material);
+	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2))
+		this.id = item.getType().getId();
+	    else if (cmiMaterial != null) {
+		this.id = cmiMaterial.getId();
 	    }
-	    if (item.getType().getMaxDurability() - item.getDurability() < 0) {
+	    if ((this.getType().isBlock() || this.getType().isSolid()))
 		data = item.getData().getData();
-	    }
 
-	    if (item.getType().getMaxDurability() > 15) {
+	    if (item.getType().getMaxDurability() - item.getDurability() < 0)
+		data = item.getData().getData();
+
+	    if (item.getType().getMaxDurability() > 15)
 		data = (short) 0;
-	    }
 
-	    if (item.getType() == Material.POTION || item.getType().name().contains("SPLASH_POTION") || item.getType().name().contains("TIPPED_ARROW")) {
-	    	PotionMeta meta = (PotionMeta) item.getItemMeta();
-	    	if (meta instanceof PotionMeta) {
-	    		PotionMeta potionMeta = (PotionMeta) meta;
-	    		try {
-	    		    if (potionMeta != null && potionMeta.getBasePotionData() != null && potionMeta.getBasePotionData() != null && potionMeta.getBasePotionData().getType().getEffectType() != null) {
-	    			data = (short) potionMeta.getBasePotionData().getType().getEffectType().getId();
-	    		    }
-	    		} catch (NoSuchMethodError e) {
-	    		}
-	    	}
+	    if (CMIMaterial.SPAWNER.equals(item.getType()))
+		data = getEntityType().getTypeId();
+	    else if (item.getType() == Material.POTION || item.getType().name().contains("SPLASH_POTION") || item.getType().name().contains("TIPPED_ARROW")) {
+		PotionMeta potion = (PotionMeta) item.getItemMeta();
+		try {
+		    if (potion != null && potion.getBasePotionData() != null && potion.getBasePotionData().getType() != null && potion.getBasePotionData().getType().getEffectType() != null) {
+			data = (short) potion.getBasePotionData().getType().getEffectType().getId();
+		    }
+		} catch (NoSuchMethodError e) {
+		}
 	    }
 	}
 	return this;
     }
 
     public int getAmount() {
-	return amount;
+	return amount <= 0 ? 1 : amount;
     }
 
     public void setAmount(int amount) {
 	this.amount = amount;
+	if (item != null)
+	    this.item.setAmount(this.amount == 0 ? item.getAmount() : this.amount);
     }
 
     public boolean isSimilar(ItemStack item) {
@@ -296,54 +336,117 @@ public class CMIItemStack {
     public boolean isSimilar(CMIItemStack item) {
 	if (item == null)
 	    return false;
-	return this.material.equals(item.material) && this.getData() == item.getData();
+
+	try {
+	    if ((item.getCMIType().isPotion() || item.getCMIType().equals(CMIMaterial.TIPPED_ARROW)) &&
+		(this.getCMIType().isPotion() || this.getCMIType().equals(CMIMaterial.TIPPED_ARROW)) &&
+		this.getType().equals(item.getType())) {
+		PotionMeta potion = (PotionMeta) item.getItemStack().getItemMeta();
+		PotionMeta potion2 = (PotionMeta) this.getItemStack().getItemMeta();
+		try {
+		    if (potion != null && potion.getBasePotionData() != null) {
+			PotionData base1 = potion.getBasePotionData();
+			if (base1.getType() != null) {
+			    if (potion2 != null && potion2.getBasePotionData() != null) {
+				PotionData base2 = potion2.getBasePotionData();
+				if (base2.getType() != null) {
+				    if (base1.getType().equals(base2.getType()) && base1.isExtended() == base2.isExtended() && base1.isUpgraded() == base2.isUpgraded())
+					return true;
+				}
+			    }
+			}
+		    }
+		    return false;
+		} catch (NoSuchMethodError e) {
+		}
+	    }
+	} catch (Throwable e) {
+	    e.printStackTrace();
+	}
+	try {
+	    if (this.getItemStack().getItemMeta() instanceof EnchantmentStorageMeta && item.getItemStack().getItemMeta() instanceof EnchantmentStorageMeta) {
+		EnchantmentStorageMeta meta1 = (EnchantmentStorageMeta) this.getItemStack().getItemMeta();
+		EnchantmentStorageMeta meta2 = (EnchantmentStorageMeta) item.getItemStack().getItemMeta();
+
+		for (Entry<Enchantment, Integer> one : meta1.getEnchants().entrySet()) {
+		    if (!meta2.getEnchants().containsKey(one.getKey()) || meta2.getEnchants().get(one.getKey()) != one.getValue())
+			return false;
+		}
+
+		for (Entry<Enchantment, Integer> one : meta1.getStoredEnchants().entrySet()) {
+		    if (!meta2.getStoredEnchants().containsKey(one.getKey()) || meta2.getStoredEnchants().get(one.getKey()) != one.getValue())
+			return false;
+		}
+	    }
+	} catch (Throwable e) {
+	    e.printStackTrace();
+	}
+
+	if ((item.getCMIType() == CMIMaterial.SPAWNER || item.getCMIType().isMonsterEgg()) && (getCMIType() == CMIMaterial.SPAWNER || getCMIType().isMonsterEgg())) {
+	    if (this.cmiMaterial != item.cmiMaterial)
+		return false;
+	    if (getEntityType() != item.getEntityType())
+		return false;
+	    return true;
+	}
+
+	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1))
+	    return this.cmiMaterial == item.cmiMaterial;
+	return this.cmiMaterial == item.cmiMaterial && this.getData() == item.getData();
     }
 
-//    public boolean hasNbtTag() {
-//	return CMI.getInstance().getRef().hasNbt(this.getItemStack());
-//    }
+    public EntityType getEntityType() {
+	if (this.getItemStack() == null)
+	    return null;
+	ItemStack is = this.getItemStack().clone();
+	if (is.getItemMeta() instanceof org.bukkit.inventory.meta.BlockStateMeta) {
+	    org.bukkit.inventory.meta.BlockStateMeta bsm = (org.bukkit.inventory.meta.BlockStateMeta) is.getItemMeta();
+	    if (bsm.getBlockState() instanceof CreatureSpawner) {
+		CreatureSpawner bs = (CreatureSpawner) bsm.getBlockState();
+		return bs.getSpawnedType();
+	    }
+	}
 
-//    public List<Recipe> getRecipesFor() {
-//	ItemStack i = getItemStack().clone();
-//	i.getData().setData((byte) data);
-//	if (i.getType().getMaxDurability() > 15)
-//	    i.setDurability((short) 0);
-//	return Bukkit.getRecipesFor(i);
-//    }
-//
-//    public List<Recipe> getRecipesFrom() {
-//	ItemStack i = getItemStack().clone();
-//	i.getData().setData((byte) data);
-//	if (i.getType().getMaxDurability() > 15)
-//	    i.setDurability((short) 0);
-//	Iterator<Recipe> it = Bukkit.recipeIterator();
-//	List<Recipe> recipes = new ArrayList<Recipe>();
-//	while (it.hasNext()) {
-//	    Recipe rec = it.next();
-//	    for (ItemStack one : CMI.getInstance().getRecipeManager().getIngredientsList(rec)) {
-//		if (one.isSimilar(i)) {
-//		    recipes.add(rec);
-//		    break;
-//		}
-//	    }
-//	}
-//
-//	return recipes;
-//    }
+	return EntityType.fromId(is.getData().getData());
+    }
 
     public void setDurability(short durability) {
 	this.durability = durability;
     }
 
-//    public Set<Enchantment> getValidEnchants() {
-//	Set<Enchantment> enchants = new HashSet<Enchantment>();
-//	for (Enchantment one : CMIEnchantment.values()) {
-//	    if (!CMIEnchantment.isEnabled(one))
-//		continue;
-//	    if (one.canEnchantItem(this.getItemStack()))
-//		enchants.add(one);
-//	}
-//	return enchants;
-//    }
+    public String toOneLiner() {
+	String liner = this.getType().toString();
+	if (this.getCMIType().isPotion() || this.getType().name().contains("TIPPED_ARROW")) {
+	    PotionMeta potion = (PotionMeta) item.getItemMeta();
+	    try {
+		if (potion != null && potion.getBasePotionData() != null && potion.getBasePotionData().getType() != null && potion.getBasePotionData().getType().getEffectType() != null) {
+		    liner += ":" + potion.getBasePotionData().getType().getEffectType().getName() + "-" + potion.getBasePotionData().isUpgraded() + "-" + potion.getBasePotionData().isExtended();
+		}
+	    } catch (NoSuchMethodError e) {
+	    }
+	} else {
+	    if (Version.isCurrentLower(Version.v1_13_R1))
+		liner += ":" + this.getData();
+	}
+	if (this.getItemStack().getItemMeta() instanceof EnchantmentStorageMeta) {
+	    EnchantmentStorageMeta meta = (EnchantmentStorageMeta) this.getItemStack().getItemMeta();
+	    String s = "";
+	    for (Entry<Enchantment, Integer> one : meta.getStoredEnchants().entrySet()) {
+		if (!s.isEmpty())
+		    s += ";";
+		s += one.getKey().getName() + "x" + one.getValue();
+	    }
+
+	    for (Entry<Enchantment, Integer> one : meta.getEnchants().entrySet()) {
+		if (!s.isEmpty())
+		    s += ";";
+		s += one.getKey().getName() + "x" + one.getValue();
+	    }
+	    if (!s.isEmpty())
+		liner += ":" + s;
+	}
+
+	return liner;
+    }
 
 }

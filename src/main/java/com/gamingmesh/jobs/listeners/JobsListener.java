@@ -484,12 +484,14 @@ public class JobsListener implements Listener {
 	}
 
 	com.gamingmesh.jobs.Signs.Sign signInfo = new com.gamingmesh.jobs.Signs.Sign();
+	com.gamingmesh.jobs.Signs.SignUtil signUtil = Jobs.getSignUtil();
 
 	Location loc = sign.getLocation();
 
 	int category = 1;
-	if (Jobs.getSignUtil().getSigns().GetAllSigns().size() > 0)
-	    category = Jobs.getSignUtil().getSigns().GetAllSigns().get(Jobs.getSignUtil().getSigns().GetAllSigns().size() - 1).GetCategory() + 1;
+	if (signUtil.getSigns().GetAllSigns().size() > 0)
+	    category = signUtil.getSigns().GetAllSigns().get(signUtil.getSigns().GetAllSigns().size() - 1).GetCategory() + 1;
+
 	signInfo.setNumber(Number);
 	signInfo.setWorld(loc.getWorld().getName());
 	signInfo.setX(loc.getX());
@@ -502,17 +504,17 @@ public class JobsListener implements Listener {
 	    signInfo.setJobName("gtoplist");
 	signInfo.setSpecial(special);
 
-	Jobs.getSignUtil().getSigns().addSign(signInfo);
-	Jobs.getSignUtil().saveSigns();
+	signUtil.getSigns().addSign(signInfo);
+	signUtil.saveSigns();
 	event.setCancelled(true);
 
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		if (!signtype.contains("gtoplist") && job != null)
-		    Jobs.getSignUtil().SignUpdate(job.getName());
+		    signUtil.SignUpdate(job.getName());
 		else
-		    Jobs.getSignUtil().SignUpdate("gtoplist");
+		    signUtil.SignUpdate("gtoplist");
 		return;
 	    }
 	}, 1L);

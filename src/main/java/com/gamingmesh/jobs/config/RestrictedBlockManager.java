@@ -26,8 +26,8 @@ public class RestrictedBlockManager {
 	ConfigReader cfg = null;
 	try {
 	    cfg = new ConfigReader("restrictedBlocks.yml");
-	} catch (Throwable e1) {
-	    e1.printStackTrace();
+	} catch (Throwable t) {
+	    t.printStackTrace();
 	}
 	if (cfg == null)
 	    return;
@@ -43,7 +43,7 @@ public class RestrictedBlockManager {
 	    for (String one : lss) {
 		if (((cfg.getC().isString("blocksTimer." + one + ".id")) || (cfg.getC().isInt("blocksTimer." + one + ".id"))) && (cfg.getC().isInt("blocksTimer." + one
 		    + ".cd"))) {
-		    CMIItemStack cm = ItemManager.getItem(cfg.getC().getString("blocksTimer." + one + ".id"));
+		    CMIItemStack cm = ItemManager.getItem(CMIMaterial.get(cfg.getC().getString("blocksTimer." + one + ".id")));
 		    if ((cm == null) || (!cm.getCMIType().isBlock())) {
 			Jobs.consoleMsg("&e[Jobs] Your defined (" + one + ") protected block id/name is not correct!");
 			continue;
