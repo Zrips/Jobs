@@ -581,9 +581,9 @@ public class JobsPaymentListener implements Listener {
 	// For dye check
 	List<ItemStack> DyeStack = new ArrayList<>();
 	int y = -1;
-	int first = 0;
-	int second = 0;
-	int third = 0;
+	CMIMaterial first = null;
+	CMIMaterial second = null;
+	CMIMaterial third = null;
 	boolean leather = false;
 	for (int i = 0; i < sourceItems.length; i++) {
 	    if (sourceItems[i] == null)
@@ -592,15 +592,15 @@ public class JobsPaymentListener implements Listener {
 	    if (CMIMaterial.isDye(sourceItems[i].getType()))
 		DyeStack.add(sourceItems[i]);
 
-	    int id = sourceItems[i].getType().getId();
-	    if (id > 0) {
+	    CMIMaterial mat = CMIMaterial.get(sourceItems[i]);
+	    if (mat != CMIMaterial.NONE) {
 		y++;
 		if (y == 0)
-		    first = id;
+		    first = mat;
 		if (y == 1)
-		    second = id;
+		    second = mat;
 		if (y == 2)
-		    third = id;
+		    third = mat;
 	    }
 
 	    switch (CMIMaterial.get(sourceItems[i])) {
@@ -624,7 +624,7 @@ public class JobsPaymentListener implements Listener {
 
 	// Check Dyes
 	if (y >= 2) {
-	    if ((CMIMaterial.get(third).isDye() || CMIMaterial.get(second).isDye()) && leather) {
+	    if ((third != null && third.isDye() || second != null && second.isDye()) && leather) {
 		Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
 		for (ItemStack OneDye : DyeStack) {
 		    Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
@@ -715,7 +715,9 @@ public class JobsPaymentListener implements Listener {
 	    return b == null;
 	else if (b == null)
 	    return false;
-	return a.getType().getId() == b.getType().getId() && a.getDurability() == b.getDurability() && Objects.equal(a.getData(), b.getData()) && Objects.equal(a.getEnchantments(), b
+	CMIMaterial mat1 = CMIMaterial.get(a);
+	CMIMaterial mat2 = CMIMaterial.get(b);
+	return mat1 == mat2 && a.getDurability() == b.getDurability() && Objects.equal(a.getData(), b.getData()) && Objects.equal(a.getEnchantments(), b
 	    .getEnchantments());
     }
 
@@ -807,19 +809,19 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1).getType().equals(Material.ENCHANTED_BOOK)) {
 	    Map<Enchantment, Integer> enchants = resultStack.getEnchantments();
 	    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
-	    Enchantment enchant = oneEnchant.getKey();
-	    if (enchant == null)
-		continue;
+		Enchantment enchant = oneEnchant.getKey();
+		if (enchant == null)
+		    continue;
 
-	    String enchantName = enchant.getName();
-	    if (enchantName == null)
-		continue;
+		String enchantName = enchant.getName();
+		if (enchantName == null)
+		    continue;
 
-	    Integer level = oneEnchant.getValue();
-	    if (level == null)
-		continue;
+		Integer level = oneEnchant.getValue();
+		if (level == null)
+		    continue;
 
-	    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
+		Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
 	    }
 	} else
 	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
@@ -1625,7 +1627,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R1)
-		    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
+	    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
 	    return;
 
 	ExploreRespond respond = Jobs.getExplore().ChunkRespond(player, event.getNewChunk());

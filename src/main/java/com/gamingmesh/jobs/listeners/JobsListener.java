@@ -691,7 +691,7 @@ public class JobsListener implements Listener {
 	    for (Entry<String, JobLimitedItems> oneItem : one.getJob().getLimitedItems().entrySet()) {
 		if (one.getLevel() >= oneItem.getValue().getLevel())
 		    continue;
-		if (!isThisItem(oneItem.getValue(), iih.getType().getId(), name, lore, enchants))
+		if (!isThisItem(oneItem.getValue(), CMIMaterial.get(iih), name, lore, enchants))
 		    continue;
 		meinOk = one.getJob().getName();
 		break mein;
@@ -704,9 +704,9 @@ public class JobsListener implements Listener {
 	}
     }
 
-    private static boolean isThisItem(JobLimitedItems oneItem, int id, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
+    private static boolean isThisItem(JobLimitedItems oneItem, CMIMaterial mat, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
 
-	if (oneItem.getId() != id)
+	if (oneItem.getType() != mat)
 	    return false;
 
 	if (oneItem.getName() != null && name != null) {

@@ -33,8 +33,11 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class JobLimitedItems {
     private String node;
+    @Deprecated
     private int id;
+    @Deprecated
     private int data;
+    CMIMaterial mat;
     private int amount;
     private String name;
     private List<String> lore;
@@ -58,8 +61,8 @@ public class JobLimitedItems {
 
     public ItemStack getItemStack(Player player) {
 	try {
-	    CMIMaterial cm = CMIMaterial.get(id, data);
-	    ItemStack item = cm.newItemStack();
+	    mat = CMIMaterial.get(id, data);
+	    ItemStack item = mat.newItemStack();
 	    item.setAmount(amount);
 	    ItemMeta meta = item.getItemMeta();
 	    if (this.name != null)
@@ -83,8 +86,13 @@ public class JobLimitedItems {
 	return null;
     }
 
+    @Deprecated
     public int getId() {
 	return id;
+    }
+    
+    public CMIMaterial getType(){
+	return mat;
     }
 
     public String getName() {

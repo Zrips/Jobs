@@ -20,31 +20,31 @@ package com.gamingmesh.jobs.container;
 
 public class NameList {
 
-	private String id;
-	private String meta;
-	private String Name;
-	private String MinecraftName;
+    private String id;
+    private String meta;
+    private String Name;
+    private String MinecraftName;
 
-	public NameList(String id, String meta, String Name, String MinecraftName) {
-		this.id = id;
-		this.meta = meta;
-		this.Name = Name;
-		this.MinecraftName = MinecraftName;
-	}
+    public NameList(String id, String meta, String Name, String MinecraftName) {
+	this.id = id;
+	this.meta = meta;
+	this.Name = Name;
+	this.MinecraftName = MinecraftName;
+    }
 
-	public String getName() {
-		return Name;
-	}
+    public String getName() {
+	return Name;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+	return id;
+    }
 
-	public String getMeta() {
-		return meta;
-	}
+    public String getMeta() {
+	return meta;
+    }
 
-	public String getMinecraftName() {
-		return MinecraftName;
-	}
+    public String getMinecraftName() {
+	return MinecraftName;
+    }
 }
