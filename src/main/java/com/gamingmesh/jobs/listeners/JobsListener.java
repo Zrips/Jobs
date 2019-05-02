@@ -642,7 +642,6 @@ public class JobsListener implements Listener {
 	}, 1L);
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLimitedItemInteract(PlayerInteractEvent event) {
 	//disabling plugin in world

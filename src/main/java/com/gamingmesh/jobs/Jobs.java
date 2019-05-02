@@ -179,6 +179,12 @@ public class Jobs extends JavaPlugin {
 	}
     }
 
+    /**
+    * Gets the McMMO Listener
+    * 
+    * @return McMMO Listener
+    * @deprecated Use the getMcMMOManager()
+    */
     @Deprecated
     public static McMMOManager getMcMMOlistener() {
 	if (McMMOManager == null)
@@ -285,6 +291,8 @@ public class Jobs extends JavaPlugin {
     }
 
     public static JobsManager getDBManager() {
+	if (DBManager == null)
+	    DBManager = new JobsManager(instance);
 	return DBManager;
     }
 
@@ -680,7 +688,7 @@ public class Jobs extends JavaPlugin {
      * Executes close connections
      */
     public static void ChangeDatabase() {
-	DBManager.switchDataBase();
+	getDBManager().switchDataBase();
 	getPlayerManager().reload();
     }
 
