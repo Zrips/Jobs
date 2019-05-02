@@ -794,7 +794,7 @@ Jobs:
         income: 2.5
         points: 2.5
         experience: 2.5
-      nether_brick:
+      nether_bricks:
         income: 1.0
         points: 1
         experience: 1.0
@@ -1385,7 +1385,7 @@ Jobs:
         income: 1.5
         points: 1.5
         experience: 2
-      nether_brick:
+      nether_bricks:
         income: 1.5
         points: 1.5
         experience: 2

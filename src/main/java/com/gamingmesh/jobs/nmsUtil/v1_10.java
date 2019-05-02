@@ -51,9 +51,9 @@ public class v1_10 implements NMS {
 	    break;
 	case ZOMBIE:
 	    Zombie zombie = (Zombie) entity;
-	    if (zombie.isVillager() && zombie.getVillagerProfession() != Profession.HUSK)
+	    if (zombie.isVillager() && zombie.getVillagerProfession().toString().equals("HUSK"))
 		return "ZombieVillager";
-	    if (zombie.getVillagerProfession() == Profession.HUSK)
+	    if (zombie.getVillagerProfession().toString().equals("HUSK"))
 		return "ZombieHusk";
 	    break;
 	default:

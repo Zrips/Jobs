@@ -11,7 +11,7 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class RestrictedBlockManager {
 
-    public HashMap<Integer, Integer> restrictedBlocksTimer = new HashMap<>();
+    public HashMap<CMIMaterial, Integer> restrictedBlocksTimer = new HashMap<>();
 
     /**
      * Method to load the restricted areas configuration
@@ -49,7 +49,7 @@ public class RestrictedBlockManager {
 			continue;
 		    }
 
-		    this.restrictedBlocksTimer.put(cm.getCMIType().getId(), cfg.getC().getInt("blocksTimer." + one + ".cd"));
+		    this.restrictedBlocksTimer.put(cm.getCMIType(), cfg.getC().getInt("blocksTimer." + one + ".cd"));
 
 		    cfg.set("blocksTimer." + cm.getCMIType().name(), cfg.getC().getInt("blocksTimer." + one + ".cd"));
 
@@ -74,7 +74,7 @@ public class RestrictedBlockManager {
 			continue;
 		    }
 
-		    this.restrictedBlocksTimer.put(mat.getId(), timer);
+		    this.restrictedBlocksTimer.put(mat, timer);
 		}
 	    }
 	}

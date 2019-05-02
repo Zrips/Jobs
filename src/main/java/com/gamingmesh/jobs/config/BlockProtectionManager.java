@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
 
@@ -145,16 +146,14 @@ public class BlockProtectionManager {
 	return reg;
     }
 
-    @SuppressWarnings("deprecation")
     public Integer getBlockDelayTime(Block block) {
-	Integer time = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getType().getId());	
+	Integer time = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(CMIMaterial.get(block));
 	if (time == null && Jobs.getGCManager().useGlobalTimer)
-	    time = Jobs.getGCManager().globalblocktimer;	
+	    time = Jobs.getGCManager().globalblocktimer;
 	return time;
     }
-    
-    @SuppressWarnings("deprecation")
-    public boolean isInBp(Block block) {	
-	return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(block.getType().getId()) != null;
+
+    public boolean isInBp(Block block) {
+	return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(CMIMaterial.get(block)) != null;
     }
 }

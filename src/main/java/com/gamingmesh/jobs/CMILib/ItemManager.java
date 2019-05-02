@@ -28,16 +28,24 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ItemManager {
 
-    static HashMap<Integer, CMIItemStack> byId = new HashMap<>();
-    static HashMap<String, CMIItemStack> byBukkitName = new HashMap<>();
-    static HashMap<String, CMIItemStack> byMojangName = new HashMap<>();
-    static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<>();
+    static HashMap<Integer, CMIItemStack> byId = new HashMap<Integer, CMIItemStack>();
+    static HashMap<String, CMIItemStack> byBukkitName = new HashMap<String, CMIItemStack>();
+    static HashMap<String, CMIItemStack> byMojangName = new HashMap<String, CMIItemStack>();
+    static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<CMIMaterial, CMIItemStack>();
     static HashMap<Material, CMIMaterial> byRealMaterial = new HashMap<Material, CMIMaterial>();
-    static final Version version = Version.getCurrent();
+
+    public HashMap<Integer, CMIItemStack> idMap() {
+	return byId;
+    }
+
+    public HashMap<String, CMIItemStack> byBukkitNameMap() {
+	return byBukkitName;
+    }
 
     public static void load() {
 	for (CMIMaterial one : CMIMaterial.values()) {
@@ -46,8 +54,9 @@ public class ItemManager {
 	    one.updateMaterial();
 	    Material mat = one.getMaterial();
 
-	    if (mat == null)
+	    if (mat == null) {
 		continue;
+	    }
 
 	    Integer id = one.getId();
 	    short data = one.getLegacyData();
@@ -58,7 +67,7 @@ public class ItemManager {
 	    ;
 	    try {
 		mojangName = ItemReflection.getItemMinecraftName(new ItemStack(mat));
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
 
@@ -106,7 +115,7 @@ public class ItemManager {
 		String mojangName = one.name();
 		try {
 		    mojangName = ItemReflection.getItemMinecraftName(new ItemStack(one));
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		}
 		mojangName = mojangName == null ? mat.toString() : mojangName;
 		cm.setMojangName(mojangName);
@@ -120,7 +129,7 @@ public class ItemManager {
 	    }
 	}
 
-}
+    }
 
     @Deprecated
     public CMIItemStack getItem(Material mat) {
@@ -166,7 +175,7 @@ public class ItemManager {
 	    String a = name.split("-")[1];
 	    try {
 		amount = Integer.parseInt(a);
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 	    }
 	    name = name.split("-")[0];
 	}
@@ -176,13 +185,13 @@ public class ItemManager {
 	if (name.contains(":")) {
 	    try {
 		data = (short) Integer.parseInt(name.split(":")[1]);
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 	    }
 	    try {
 		CMIEntityType e = CMIEntityType.getByName(name.split(":")[1]);
 		if (e != null)
 		    data = (short) e.getId();
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 	    }
 	    name = name.split(":")[0];
 	}
@@ -211,7 +220,7 @@ public class ItemManager {
 			try {
 			    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(d));
 			    skullMeta.setOwningPlayer(offPlayer);
-			} catch (Throwable e) {
+			} catch (Exception e) {
 			    break main;
 			}
 			skull.setItemMeta(skullMeta);
@@ -250,16 +259,16 @@ public class ItemManager {
 		    cm = byId.get(Integer.parseInt(name));
 		    CMIMaterial t = CMIMaterial.get(original);
 		    if (t != null) {
-			cm = byMaterial.get(t);
+			cm = this.byMaterial.get(t);
 		    }
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		}
 	    }
 
 	    if (cm == null) {
 		try {
 		    cm = byId.get(Integer.parseInt(name));
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		}
 
 		if (cm == null) {
@@ -346,7 +355,7 @@ public class ItemManager {
 		try {
 		    d = Integer.parseInt(split.length > 0 ? split[0] : subdata);
 		    type = PotionEffectType.getById(d);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		}
 		try {
 
@@ -363,13 +372,13 @@ public class ItemManager {
 		    if (split.length > 1) {
 			try {
 			    upgraded = Boolean.parseBoolean(split[1]);
-			} catch (Throwable e) {
+			} catch (Exception e) {
 			}
 		    }
 		    if (split.length > 2) {
 			try {
 			    extended = Boolean.parseBoolean(split[2]);
-			} catch (Throwable e) {
+			} catch (Exception e) {
 			}
 		    }
 		    ItemStack item = ncm.getItemStack();
@@ -378,7 +387,7 @@ public class ItemManager {
 		    PotionMeta meta = (PotionMeta) item.getItemMeta();
 		    meta.setBasePotionData(new PotionData(PotionType.getByEffect(type), extended, upgraded));
 		    item.setItemMeta(meta);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		    e.printStackTrace();
 		}
 
@@ -399,6 +408,7 @@ public class ItemManager {
     }
 
     public List<Recipe> getRecipesFor(ItemStack result) {
+
 	List<Recipe> results = new ArrayList<Recipe>();
 	Iterator<Recipe> iter = Bukkit.recipeIterator();
 	while (iter.hasNext()) {
@@ -421,6 +431,32 @@ public class ItemManager {
 	return cm.getType();
     }
 
+//    public CMIMaterial getRealName(CMIItemStack item) {
+//	return getRealName(item, false);
+//    }
+//
+//    public CMIMaterial getRealName(CMIItemStack item, boolean safe) {
+//
+////	for (CMIMaterial one : CMIMaterial.values()) {
+////	    if (one.getId() == item.getId() && one.getDataList().contains(item.getData()))
+////		return one;
+////	}
+////	if (safe)
+////	    for (CMIMaterial one : CMIMaterial.values()) {
+////		if (one.getId() == item.getId())
+////		    return one;
+////	    }
+////	return safe ? CMIMaterial.AIR : null;
+//	return item.getRealName();
+//    }
+
+//    private static CMIMaterialLegacy proccessItemName(CMIMaterialLegacy one) {
+//	if (one.getName().contains("[colorNames]"))
+//	    one.setName(one.getName().replace("[colorNames]", colorNames.getById(one.getData()).getName()));
+//	else if (one.getName().contains("[entityNames]"))
+//	    one.setName(one.getName().replace("[entityNames]", CMIEntityType.getById(one.getData()).getName()));
+//	return one;
+//    }
     public enum SlabType {
 	TOP,
 	BOTTOM,
@@ -432,12 +468,12 @@ public class ItemManager {
 	White(0, "White", CMIMaterial.BONE_MEAL, new Color(249, 255, 254)),
 	Orange(1, "Orange", CMIMaterial.ORANGE_DYE, new Color(249, 128, 29)),
 	Magenta(2, "Magenta", CMIMaterial.MAGENTA_DYE, new Color(199, 78, 189)),
-	Navy(3, "Navy", CMIMaterial.LIGHT_BLUE_DYE, new Color(58, 179, 218)),
+	Light_Blue(3, "Light Blue", CMIMaterial.LIGHT_BLUE_DYE, new Color(58, 179, 218)),
 	Yellow(4, "Yellow", CMIMaterial.DANDELION_YELLOW, new Color(254, 216, 61)),
 	Lime(5, "Lime", CMIMaterial.LIME_DYE, new Color(128, 199, 31)),
 	Pink(6, "Pink", CMIMaterial.PINK_DYE, new Color(243, 139, 170)),
 	Gray(7, "Gray", CMIMaterial.GRAY_DYE, new Color(71, 79, 82)),
-	Silver(8, "Silver", CMIMaterial.LIGHT_GRAY_DYE, new Color(157, 157, 151)),
+	Light_Gray(8, "Light Gray", CMIMaterial.LIGHT_GRAY_DYE, new Color(157, 157, 151)),
 	Cyan(9, "Cyan", CMIMaterial.CYAN_DYE, new Color(22, 156, 156)),
 	Purple(10, "Purple", CMIMaterial.PURPLE_DYE, new Color(137, 50, 184)),
 	Blue(11, "Blue", CMIMaterial.LAPIS_LAZULI, new Color(60, 68, 170)),
@@ -505,13 +541,24 @@ public class ItemManager {
 		    return one;
 	    }
 
+//		if (c == null) {
+//	    try {
+//		net.minecraft.server.v1_13_R2.BlockPosition blockPosition = new net.minecraft.server.v1_13_R2.BlockPosition(b.getX(), b.getY(), b.getZ());
+//		net.minecraft.server.v1_13_R2.WorldServer worldServer = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) b.getWorld()).getHandle();
+//		IBlockData t = worldServer.getType(blockPosition);
+//		net.minecraft.server.v1_13_R2.Block bl = t.getBlock();
+//		c = new Color(bl.n(t).i().rgb, true);
+//	    } catch (Exception | Error e) {
+//	    }
+//	}
+
 	    return null;
 	}
 
 	public Color getColor() {
 	    return color;
 	}
-}
+    }
 
     public enum CMIPotionType {
 	Awkward(373, 16, "Awkard Potion"),
@@ -562,9 +609,11 @@ public class ItemManager {
 	private int id;
 	private String name;
 	PotionType type = null;
+	private int data;
 
-	CMIPotionType(int id, String name) {
+	CMIPotionType(int id, int data, String name) {
 	    this.id = id;
+	    this.data = data;
 	    this.name = name;
 	}
 
@@ -694,9 +743,14 @@ public class ItemManager {
 	    name = name.substring(0, 1).toUpperCase() + name.substring(1);
 	    return name;
 	}
+
+	public int getSubId() {
+	    return data;
+	}
     }
 
     public enum CMIEntityType {
+
 	DROPPED_ITEM(1, "Item"),
 	EXPERIENCE_ORB(2, "Experience Orb"),
 	AREA_EFFECT_CLOUD(3, "Area Effect Cloud"),
@@ -880,7 +934,7 @@ public class ItemManager {
 	    Integer id = null;
 	    try {
 		id = Integer.parseInt(main);
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 	    }
 
 	    for (CMIEntityType one : CMIEntityType.values()) {
@@ -983,6 +1037,7 @@ public class ItemManager {
 	}
 
 	public CMIMaterial getSpawnEggMaterial() {
+
 	    CMIMaterial m = CMIMaterial.get((this.equals(CMIEntityType.MUSHROOM_COW) ? "Mooshroom".toLowerCase() : this.toString().toLowerCase()) + "_spawn_egg");
 
 	    if (m != null && m.isMonsterEgg())
@@ -1053,7 +1108,7 @@ public class ItemManager {
 	BLACK_STAINED_GLASS(95, 15, 13941, "Black Stained Glass", "STAINED_GLASS"),
 	BLACK_STAINED_GLASS_PANE(160, 15, 13201, "Black Stained Glass Pane", "STAINED_GLASS_PANE"),
 	BLACK_TERRACOTTA(159, 15, 26691, "Black Terracotta", "STAINED_CLAY"),
-	BLACK_WALL_BANNER(177, 0, 4919, "Black Banner"),
+	BLACK_WALL_BANNER(117, 0, 4919, "Black Banner"),
 	BLACK_WOOL(35, 15, 16693, "Black Wool"),
 	BLAZE_POWDER(377, 0, 18941, "Blaze Powder"),
 	BLAZE_ROD(369, 0, 8289, "Blaze Rod"),
@@ -1070,7 +1125,7 @@ public class ItemManager {
 	BLUE_STAINED_GLASS(95, 11, 7107, "Blue Stained Glass"),
 	BLUE_STAINED_GLASS_PANE(160, 11, 28484, "Blue Stained Glass Pane"),
 	BLUE_TERRACOTTA(159, 11, 5236, "Blue Terracotta"),
-	BLUE_WALL_BANNER(177, 4, 17757, "Blue Banner"),
+	BLUE_WALL_BANNER(117, 4, 17757, "Blue Banner"),
 	BLUE_WOOL(35, 11, 15738, "Blue Wool"),
 	BONE(352, 0, 5686, "Bone"),
 	BONE_BLOCK(216, 0, 17312, "Bone Block"),
@@ -1101,7 +1156,7 @@ public class ItemManager {
 	BROWN_STAINED_GLASS(95, 12, 20945, "Brown Stained Glass"),
 	BROWN_STAINED_GLASS_PANE(160, 12, 17557, "Brown Stained Glass Pane"),
 	BROWN_TERRACOTTA(159, 12, 23664, "Brown Terracotta"),
-	BROWN_WALL_BANNER(177, 3, 14731, "Brown Banner"),
+	BROWN_WALL_BANNER(117, 3, 14731, "Brown Banner"),
 	BROWN_WOOL(35, 12, 32638, "Brown Wool"),
 	BUBBLE_COLUMN(null, null, 13758, "Bubble Column"),
 	BUBBLE_CORAL(null, null, 12464, "Bubble Coral"),
@@ -1141,7 +1196,7 @@ public class ItemManager {
 	CLAY_BALL(337, 0, 24603, "Clay Ball"),
 	CLOCK(347, 0, 14980, "Clock", "watch"),
 	COAL(263, 0, 29067, "Coal"),
-	COAL_BLOCK(173, 0, 27968, "Block of Coal"),
+	COAL_BLOCK(173, 0, 27968, "Block of Coal", "COAL_BLOCK"),
 	COAL_ORE(16, 0, 30965, "Coal Ore"),
 	COARSE_DIRT(3, 1, 15411, "Coarse Dirt"),
 	COBBLESTONE(4, 0, 32147, "Cobblestone"),
@@ -1186,7 +1241,7 @@ public class ItemManager {
 	CYAN_STAINED_GLASS(95, 9, 30604, "Cyan Stained Glass"),
 	CYAN_STAINED_GLASS_PANE(160, 9, 11784, "Cyan Stained Glass Pane"),
 	CYAN_TERRACOTTA(159, 9, 25940, "Cyan Terracotta"),
-	CYAN_WALL_BANNER(177, 6, 10889, "Cyan Banner"),
+	CYAN_WALL_BANNER(117, 6, 10889, "Cyan Banner"),
 	CYAN_WOOL(35, 9, 12221, "Cyan Wool"),
 	DAMAGED_ANVIL(145, 2, 10274, "Damaged Anvil"),
 	DANDELION(37, 0, 30558, "Dandelion", "YELLOW_FLOWER"),
@@ -1231,10 +1286,10 @@ public class ItemManager {
 	DEAD_TUBE_CORAL_FAN(null, null, 17628, "Dead Tube Coral Fan"),
 	DEAD_TUBE_CORAL_WALL_FAN(null, null, 5128, "Dead Tube Coral Wall Fan"),
 	DEBUG_STICK(null, null, 24562, "Debug Stick"),
-	DETECTOR_RAIL(28, 0, 13475, "Detector Rail"),
+	DETECTOR_RAIL(28, 0, 13475, "Detector Rail", "DETECTOR_RAIL"),
 	DIAMOND(264, 0, 20865, "Diamond"),
 	DIAMOND_AXE(279, 0, 27277, "Diamond Axe"),
-	DIAMOND_BLOCK(57, 0, 5944, "Block of Diamond"),
+	DIAMOND_BLOCK(57, 0, 5944, "Block of Diamond", "DIAMOND_BLOCK"),
 	DIAMOND_BOOTS(313, 0, 16522, "Diamond Boots"),
 	DIAMOND_CHESTPLATE(311, 0, 32099, "Diamond Chestplate"),
 	DIAMOND_HELMET(310, 0, 10755, "Diamond Helmet"),
@@ -1272,9 +1327,9 @@ public class ItemManager {
 	ENDER_CHEST(130, 0, 32349, "Ender Chest"),
 	ENDER_EYE(381, 0, 24860, "Eye of Ender"),
 	ENDER_PEARL(368, 0, 5259, "Ender Pearl"),
-	END_CRYSTAL(426, 0, 19090, "End Crystal", "ENDER_CRYSTAL"),
+	END_CRYSTAL(426, 0, 19090, "End Crystal"),
 	END_GATEWAY(209, 0, 26605, "End Gateway"),
-	END_PORTAL(119, 0, 16782, "End Portal", "ENDER_PORTAL"),
+	END_PORTAL(119, 0, 16782, "End Portal"),
 	END_PORTAL_FRAME(120, 0, 15480, "End Portal Frame", "ENDER_PORTAL_FRAME"),
 	END_ROD(198, 0, 24832, "End Rod"),
 	END_STONE(121, 0, 29686, "End Stone", "ENDER_STONE"),
@@ -1321,7 +1376,7 @@ public class ItemManager {
 	GOLDEN_PICKAXE(285, 0, 10901, "Golden Pickaxe", "GOLD_PICKAXE"),
 	GOLDEN_SHOVEL(284, 0, 15597, "Golden Shovel", "GOLD_SPADE"),
 	GOLDEN_SWORD(283, 0, 10505, "Golden Sword", "GOLD_SWORD"),
-	GOLD_BLOCK(41, 0, 27392, "Block of Gold"),
+	GOLD_BLOCK(41, 0, 27392, "Block of Gold", "GOLD_BLOCK"),
 	GOLD_INGOT(266, 0, 28927, "Gold Ingot"),
 	GOLD_NUGGET(371, 0, 28814, "Gold Nugget"),
 	GOLD_ORE(14, 0, 32625, "Gold Ore"),
@@ -1341,7 +1396,7 @@ public class ItemManager {
 	GRAY_STAINED_GLASS(95, 7, 29979, "Gray Stained Glass"),
 	GRAY_STAINED_GLASS_PANE(160, 7, 25272, "Gray Stained Glass Pane"),
 	GRAY_TERRACOTTA(159, 7, 18004, "Gray Terracotta"),
-	GRAY_WALL_BANNER(177, 8, 24275, "Gray Banner"),
+	GRAY_WALL_BANNER(117, 8, 24275, "Gray Banner"),
 	GRAY_WOOL(35, 7, 27209, "Gray Wool"),
 	GREEN_BANNER(425, 2, 10698, "Green Banner"),
 	GREEN_BED(355, 13, 13797, "Green Bed"),
@@ -1353,11 +1408,11 @@ public class ItemManager {
 	GREEN_STAINED_GLASS(95, 13, 22503, "Green Stained Glass"),
 	GREEN_STAINED_GLASS_PANE(160, 13, 4767, "Green Stained Glass Pane"),
 	GREEN_TERRACOTTA(159, 13, 4105, "Green Terracotta"),
-	GREEN_WALL_BANNER(177, 2, 15046, "Green Banner"),
+	GREEN_WALL_BANNER(117, 2, 15046, "Green Banner"),
 	GREEN_WOOL(35, 13, 25085, "Green Wool"),
 	GUARDIAN_SPAWN_EGG(383, 68, 20113, "Spawn Guardian", "Guardian Spawn Egg"),
 	GUNPOWDER(289, 0, 29974, "Gunpowder", "SULPHUR"),
-	HAY_BLOCK(170, 0, 17461, "Hay Bale"),
+	HAY_BLOCK(170, 0, 17461, "Hay Bale", "HAY_BLOCK"),
 	HEART_OF_THE_SEA(null, null, 11807, "Heart of the Sea"),
 	HEAVY_WEIGHTED_PRESSURE_PLATE(148, 0, 16970, "Heavy Weighted Pressure Plate", "IRON_PLATE"),
 	HOPPER(154, 0, 31974, "Hopper"),
@@ -1378,7 +1433,7 @@ public class ItemManager {
 	INK_SAC(351, 0, 7184, "Ink Sac", "Ink Sack"),
 	IRON_AXE(258, 0, 15894, "Iron Axe"),
 	IRON_BARS(101, 0, 9378, "Iron Bars", "IRON_FENCE"),
-	IRON_BLOCK(42, 0, 24754, "Block of Iron"),
+	IRON_BLOCK(42, 0, 24754, "Block of Iron", "IRON_BLOCK"),
 	IRON_BOOTS(309, 0, 8531, "Iron Boots"),
 	IRON_CHESTPLATE(307, 0, 28112, "Iron Chestplate"),
 	IRON_DOOR(330, 0, 4788, "Iron Door"),
@@ -1394,13 +1449,13 @@ public class ItemManager {
 	IRON_SWORD(267, 0, 10904, "Iron Sword"),
 	IRON_TRAPDOOR(167, 0, 17095, "Iron Trapdoor"),
 	ITEM_FRAME(389, 0, 27318, "Item Frame"),
-	JACK_O_LANTERN(91, 0, 31612, "Jack o'Lantern"),
+	JACK_O_LANTERN(91, 0, 31612, "Jack o'Lantern", "JACK_O_LANTERN"),
 	JUKEBOX(84, 0, 19264, "Jukebox"),
 	JUNGLE_BOAT(446, 0, 4495, "Jungle Boat", "BOAT_JUNGLE"),
 	JUNGLE_BUTTON(null, null, 25317, "Jungle Button"),
 	JUNGLE_DOOR(429, 0, 28163, "Jungle Door", "JUNGLE_DOOR_ITEM"),
 	JUNGLE_FENCE(190, 0, 14358, "Jungle Fence"),
-	JUNGLE_FENCE_GATE(185, 0, 21360, "Jungle Fence Gate"),
+	JUNGLE_FENCE_GATE(185, 0, 21360, "Jungle Fence Gate", "JUNGLE_FENCE_GATE"),
 	JUNGLE_LEAVES(18, 3, 5133, "Jungle Leaves"),
 	JUNGLE_LOG(17, 3, 20721, "Jungle Log"),
 	JUNGLE_PLANKS(5, 3, 26445, "Jungle Wood Plank", "Jungle Planks"),
@@ -1414,18 +1469,18 @@ public class ItemManager {
 	KELP_PLANT(null, null, 29697, "Kelp Plant"),
 	KNOWLEDGE_BOOK(453, 0, 12646, "Knowledge Book"),
 	LADDER(65, 0, 23599, "Ladder"),
-	LAPIS_BLOCK(22, 0, 14485, "Lapis Lazuli Block"),
+	LAPIS_BLOCK(22, 0, 14485, "Lapis Lazuli Block", "LAPIS_BLOCK"),
 	LAPIS_LAZULI(351, 4, 11075, "Lapis Lazuli"),
-	LAPIS_ORE(21, 0, 22934, "Lapis Lazuli Ore"),
+	LAPIS_ORE(21, 0, 22934, "Lapis Lazuli Ore", "LAPIS_ORE"),
 	LARGE_FERN(175, 3, 30177, "Large Fern", "DOUBLE_PLANT"),
 	LAVA(10, 0, 8415, "Flowing Lava"),
 	LAVA_BUCKET(327, 0, 9228, "Lava Bucket"),
 	LEAD(420, 0, 29539, "Lead", "Leash"),
 	LEATHER(334, 0, 16414, "Leather"),
 	LEATHER_BOOTS(301, 0, 15282, "Leather Boots"),
-	LEATHER_CHESTPLATE(299, 0, 29275, "Leather Tunic"),
-	LEATHER_HELMET(298, 0, 11624, "Leather Cap"),
-	LEATHER_LEGGINGS(300, 0, 28210, "Leather Pants"),
+	LEATHER_CHESTPLATE(299, 0, 29275, "Leather Tunic", "LEATHER_CHESTPLATE"),
+	LEATHER_HELMET(298, 0, 11624, "Leather Cap", "LEATHER_HELMET"),
+	LEATHER_LEGGINGS(300, 0, 28210, "Leather Pants", "LEATHER_LEGGINGS"),
 	LEVER(69, 0, 15319, "Lever"),
 	LIGHT_BLUE_BANNER(425, 12, 18060, "Light Blue Banner"),
 	LIGHT_BLUE_BED(355, 3, 20957, "Light Blue Bed"),
@@ -1438,7 +1493,7 @@ public class ItemManager {
 	LIGHT_BLUE_STAINED_GLASS(95, 3, 17162, "Light Blue Stained Glass"),
 	LIGHT_BLUE_STAINED_GLASS_PANE(160, 3, 18721, "Light Blue Stained Glass Pane"),
 	LIGHT_BLUE_TERRACOTTA(159, 3, 31779, "Light Blue Terracotta"),
-	LIGHT_BLUE_WALL_BANNER(177, 12, 12011, "Light Blue Banner"),
+	LIGHT_BLUE_WALL_BANNER(117, 12, 12011, "Light Blue Banner"),
 	LIGHT_BLUE_WOOL(35, 3, 21073, "Light Blue Wool"),
 	LIGHT_GRAY_BANNER(425, 7, 11417, "Light Gray Banner"),
 	LIGHT_GRAY_BED(355, 8, 5090, "Light Gray Bed"),
@@ -1451,7 +1506,7 @@ public class ItemManager {
 	LIGHT_GRAY_STAINED_GLASS(95, 8, 5843, "Light Gray Stained Glass"),
 	LIGHT_GRAY_STAINED_GLASS_PANE(160, 8, 19008, "Light Gray Stained Glass Pane"),
 	LIGHT_GRAY_TERRACOTTA(159, 8, 26388, "Light Gray Terracotta"),
-	LIGHT_GRAY_WALL_BANNER(177, 7, 31088, "Light Gray Banner"),
+	LIGHT_GRAY_WALL_BANNER(117, 7, 31088, "Light Gray Banner"),
 	LIGHT_GRAY_WOOL(35, 8, 22936, "Light Gray Wool"),
 	LIGHT_WEIGHTED_PRESSURE_PLATE(147, 0, 14875, "Light Weighted Pressure Plate", "GOLD_PLATE"),
 	LILAC(175, 1, 22837, "Lilac"),
@@ -1467,7 +1522,7 @@ public class ItemManager {
 	LIME_STAINED_GLASS(95, 5, 24266, "Lime Stained Glass"),
 	LIME_STAINED_GLASS_PANE(160, 5, 10610, "Lime Stained Glass Pane"),
 	LIME_TERRACOTTA(159, 5, 24013, "Lime Terracotta"),
-	LIME_WALL_BANNER(177, 10, 21422, "Lime Banner"),
+	LIME_WALL_BANNER(117, 10, 21422, "Lime Banner"),
 	LIME_WOOL(35, 5, 10443, "Lime Wool"),
 	LINGERING_POTION(441, 0, 25857, "Lingering Potion"),
 	LLAMA_SPAWN_EGG(383, 103, 23640, "Spawn Llama", "Llama Spawn Egg"),
@@ -1482,7 +1537,7 @@ public class ItemManager {
 	MAGENTA_STAINED_GLASS(95, 2, 26814, "Magenta Stained Glass"),
 	MAGENTA_STAINED_GLASS_PANE(160, 2, 14082, "Magenta Stained Glass Pane"),
 	MAGENTA_TERRACOTTA(159, 2, 25900, "Magenta Terracotta"),
-	MAGENTA_WALL_BANNER(177, 13, 23291, "Magenta Banner"),
+	MAGENTA_WALL_BANNER(117, 13, 23291, "Magenta Banner"),
 	MAGENTA_WOOL(35, 2, 11853, "Magenta Wool"),
 	MAGMA_BLOCK(213, 0, 25927, "Magma Block", "MAGMA"),
 	MAGMA_CREAM(378, 0, 25097, "Magma Cream"),
@@ -1523,12 +1578,12 @@ public class ItemManager {
 	NETHER_BRICKS(112, 0, 27802, "Nether Bricks"),
 	NETHER_BRICK_FENCE(113, 0, 5286, "Nether Brick Fence", "NETHER_FENCE"),
 	NETHER_BRICK_SLAB(44, 6, 26586, "Nether Brick Slab"),
-	NETHER_BRICK_STAIRS(114, 0, 12085, "Nether Brick Stairs"),
+	NETHER_BRICK_STAIRS(114, 0, 12085, "Nether Brick Stairs", "NETHER_BRICK_STAIRS"),
 	NETHER_PORTAL(90, 0, 19469, "Nether Portal", "PORTAL"),
 	NETHER_QUARTZ_ORE(153, 0, 4807, "Nether Quartz Ore", "QUARTZ_ORE"),
 	NETHER_STAR(399, 0, 12469, "Nether Star"),
 	NETHER_WART(372, 0, 29227, "Nether Wart", "NETHER_STALK"),
-	NETHER_WART_BLOCK(214, 0, 15486, "Nether Wart Block"),
+	NETHER_WART_BLOCK(214, 0, 15486, "Nether Wart Block", "NETHER_WART_BLOCK"),
 	NOTE_BLOCK(25, 0, 20979, "Note Block", "NOTE_BLOCK"),
 	OAK_BOAT(333, 0, 17570, "Boat", "Oak Boat"),
 	OAK_BUTTON(143, 0, 13510, "Oak Button", "Wooden_button"),
@@ -1559,7 +1614,7 @@ public class ItemManager {
 	ORANGE_STAINED_GLASS_PANE(160, 1, 21089, "Orange Stained Glass Pane"),
 	ORANGE_TERRACOTTA(159, 1, 18684, "Orange Terracotta"),
 	ORANGE_TULIP(38, 5, 26038, "Orange Tulip"),
-	ORANGE_WALL_BANNER(177, 114, 9936, "Orange Banner"),
+	ORANGE_WALL_BANNER(117, 114, 9936, "Orange Banner"),
 	ORANGE_WOOL(35, 1, 23957, "Orange Wool"),
 	OXEYE_DAISY(38, 8, 11709, "Oxeye Daisy"),
 	PACKED_ICE(174, 0, 28993, "Packed Ice"),
@@ -1583,7 +1638,7 @@ public class ItemManager {
 	PINK_STAINED_GLASS_PANE(160, 6, 24637, "Pink Stained Glass Pane"),
 	PINK_TERRACOTTA(159, 6, 23727, "Pink Terracotta"),
 	PINK_TULIP(38, 7, 27319, "Pink Tulip"),
-	PINK_WALL_BANNER(177, 9, 9421, "Pink Banner"),
+	PINK_WALL_BANNER(117, 9, 9421, "Pink Banner"),
 	PINK_WOOL(35, 6, 7611, "Pink Wool"),
 	PISTON(33, 0, 21130, "Piston", "PISTON_BASE"),
 	PISTON_HEAD(34, 0, 30226, "Piston Head", "PISTON_EXTENSION"),
@@ -1600,7 +1655,47 @@ public class ItemManager {
 	PORKCHOP(319, 0, 30896, "Raw Porkchop"),
 	POTATO(392, 0, 21088, "Potato", "Potatoitem"),
 	POTATOES(142, 0, 10879, "Potatoes"),
+
+	// Potions
 	POTION(373, 0, 24020, "Potion"),
+	AWKWARD_POTION(373, 16, 24020, "Awkard Potion"),
+	THICK_POTION(373, 32, 24020, "Thick Potion"),
+	MUNDANE_POTION(373, 64, 24020, "Mundane Potion"),
+	REGENERATION_POTION(373, 8193, 24020, "Regeneration Potion"),
+	SWIFTNESS_POTION(373, 8194, 24020, "Swiftness Potion"),
+	FIRE_RESISTANCE_POTION(373, 8195, 24020, "Fire Resistance Potion"),
+	POISON_POTION(373, 8196, 24020, "Poison Potion"),
+	HEALING_POTION(373, 8197, 24020, "Healing Potion"),
+	NIGHT_VISION_POTION(373, 8198, 24020, "Night Vision Potion"),
+	WEAKNESS_POTION(373, 8200, 24020, "Weakness Potion"),
+	STRENGTH_POTION(373, 8201, 24020, "Strenght Potion"),
+	SLOWNESS_POTION(373, 8202, 24020, "Slowness Potion"),
+	HARMING_POTION(373, 8204, 24020, "Harming Potion"),
+	WATER_BREATHING_POTION(373, 8205, 24020, "Water Breathing Potion"),
+	INVISIBILITY_POTION(373, 8206, 24020, "Invisibility Potion"),
+	REGENERATION_POTION2(373, 8225, 24020, "Regeneration Potion"),
+	SWIFTNESS_POTION2(373, 8226, 24020, "Swiftness Potion2"),
+	POISON_POTION2(373, 8228, 24020, "Poison Potion2"),
+	HEALING_POTION2(373, 8229, 24020, "Healing Potion2"),
+	STRENGTH_POTION2(373, 8233, 24020, "Strength Potion2"),
+	LEAPING_POTION2(373, 8235, 24020, "Leaping Potion2"),
+	HARMING_POTION2(373, 8236, 24020, "Harming Potion2"),
+	REGENERATION_POTION3(373, 8257, 24020, "Regeneration Potion3"),
+	SWIFTNESS_POTION3(373, 8258, 24020, "Swiftness Potion3"),
+	FIRE_RESISTANCE_POTION3(373, 8259, 24020, "Fire Resistance potion3"),
+	POISON_POTION3(373, 8260, 24020, "Poison Potion3"),
+	NIGHT_VISION_POTION2(373, 8262, 24020, "Night Vision Potion2"),
+	WEAKNESS_POTION2(373, 8264, 24020, "Weakness Potion2"),
+	STRENGTH_POTION3(373, 8265, 24020, "Strength Potion3"),
+	SLOWNESS_POTION2(373, 8266, 24020, "Slowness Potion2"),
+	LEAPING_POTION3(373, 8267, 24020, "Leaping Potion3"),
+	WATER_BREATHING_POTION2(373, 8269, 24020, "Water Breathing Potion2"),
+	INVISIBILITY_POTION2(373, 8270, 24020, "Invisibility Potion2"),
+	REGENERATION_POTION4(373, 8289, 24020, "Regeneration Potion4"),
+	SWIFTNESS_POTION4(373, 8290, 24020, "Swiftness Potion4"),
+	POISON_POTION4(373, 8292, 24020, "Poison Potion4"),
+	STRENGTH_POTION4(373, 8297, 24020, "Strength Potion4"),
+
 	POTTED_ACACIA_SAPLING(null, null, 14096, "Potted Acacia Sapling"),
 	POTTED_ALLIUM(null, null, 13184, "Potted Allium"),
 	POTTED_AZURE_BLUET(null, null, 8754, "Potted Azure Bluet"),
@@ -1649,7 +1744,7 @@ public class ItemManager {
 	PURPLE_STAINED_GLASS(95, 10, 21845, "Purple Stained Glass"),
 	PURPLE_STAINED_GLASS_PANE(160, 10, 10948, "Purple Stained Glass Pane"),
 	PURPLE_TERRACOTTA(159, 10, 10387, "Purple Terracotta"),
-	PURPLE_WALL_BANNER(177, 5, 14298, "Purple Banner"),
+	PURPLE_WALL_BANNER(117, 5, 14298, "Purple Banner"),
 	PURPLE_WOOL(35, 10, 11922, "Purple Wool"),
 	PURPUR_BLOCK(201, 0, 7538, "Purpur Block"),
 	PURPUR_PILLAR(202, 0, 26718, "Purpur Pillar"),
@@ -1667,19 +1762,19 @@ public class ItemManager {
 	RABBIT_STEW(413, 0, 10611, "Rabbit Stew"),
 	RAIL(66, 0, 13285, "Rail", "RAILS"),
 	REDSTONE(331, 0, 11233, "Redstone", "Redstone Dust"),
-	REDSTONE_BLOCK(152, 0, 19496, "Block of Redstone"),
+	REDSTONE_BLOCK(152, 0, 19496, "Block of Redstone", "REDSTONE_BLOCK"),
 	REDSTONE_LAMP(123, 0, 8217, "Redstone Lamp", "REDSTONE_LAMP_OFF"),
 	REDSTONE_ORE(73, 0, 10887, "Redstone Ore"),
 	REDSTONE_TORCH(76, 0, 22547, "Redstone Torch(on)", "REDSTONE_TORCH_ON"),
 	REDSTONE_WALL_TORCH(76, 0, 7595, "Redstone Wall Torch"),
-	REDSTONE_WIRE(55, 0, 25984, "Redstone Dust"),
+	REDSTONE_WIRE(55, 0, 25984, "Redstone Dust", "REDSTONE_WIRE"),
 	RED_BANNER(425, 1, 26961, "Red Banner"),
 	RED_BED(355, 14, 30910, "Red Bed", "Red Bed"),
 	RED_CARPET(171, 14, 5424, "Red Carpet"),
 	RED_CONCRETE(251, 14, 8032, "Red Concrete"),
 	RED_CONCRETE_POWDER(252, 14, 13286, "Red Concrete Powder"),
 	RED_GLAZED_TERRACOTTA(249, 0, 24989, "Red Glazed Terracotta"),
-	RED_MUSHROOM(40, 0, 19728, "Red Mushroom"),
+	RED_MUSHROOM(40, 0, 19728, "Red Mushroom", "RED_MUSHROOM"),
 	RED_MUSHROOM_BLOCK(100, 0, 20766, "Red Mushroom Block", "HUGE_MUSHROOM_2"),
 	RED_NETHER_BRICKS(215, 0, 18056, "Red Nether Bricks", "RED_NETHER_BRICK"),
 	RED_SAND(12, 1, 16279, "Red Sand"),
@@ -1691,7 +1786,7 @@ public class ItemManager {
 	RED_STAINED_GLASS_PANE(160, 14, 8630, "Red Stained Glass Pane"),
 	RED_TERRACOTTA(159, 14, 5086, "Red Terracotta"),
 	RED_TULIP(38, 4, 16781, "Red Tulip"),
-	RED_WALL_BANNER(177, 1, 4378, "Red Banner"),
+	RED_WALL_BANNER(117, 1, 4378, "Red Banner"),
 	RED_WOOL(35, 14, 11621, "Red Wool"),
 	REPEATER(356, 0, 28823, "Redstone Repeater", "Diode"),
 	REPEATING_COMMAND_BLOCK(null, null, 12405, "Repeating Command Block"),
@@ -1737,7 +1832,7 @@ public class ItemManager {
 	SPECTRAL_ARROW(439, 0, 4568, "Spectral Arrow"),
 	SPIDER_EYE(375, 0, 9318, "Spider Eye"),
 	SPIDER_SPAWN_EGG(383, 52, 14984, "Spawn Spider", "Spider Spawn Egg"),
-	SPLASH_POTION(438, 0, 30248, "Splash Potion"),
+	SPLASH_POTION(438, 0, 30248, "Splash Potion", "SPLASH_POTION"),
 	SPONGE(19, 0, 15860, "Sponge", "SPONGE"),
 	SPRUCE_BOAT(444, 0, 9606, "Spruce Boat", "BOAT_SPRUCE"),
 	SPRUCE_BUTTON(null, null, 23281, "Spruce Button"),
@@ -1791,7 +1886,7 @@ public class ItemManager {
 	TALL_SEAGRASS(null, null, 27189, "Tall Seagrass"),
 	TERRACOTTA(172, 0, 16544, "Terracotta", "HARD_CLAY"),
 	TIPPED_ARROW(440, 0, 25164, "Tipped Arrow"),
-	TNT(46, 0, 7896, "TNT"),
+	TNT(46, 0, 7896, "TNT", "TNT"),
 	TNT_MINECART(407, 0, 4277, "Minecart with TNT", "explosiveminecart"),
 	TORCH(50, 0, 6063, "Torch"),
 	TOTEM_OF_UNDYING(449, 0, 10139, "Totem Of Undying"),
@@ -1812,7 +1907,7 @@ public class ItemManager {
 	VEX_SPAWN_EGG(383, 35, 27751, "Spawn Vex", "Vex Spawn Egg"),
 	VILLAGER_SPAWN_EGG(383, 120, 30348, "Spawn Villager", "Villager Spawn Egg"),
 	VINDICATOR_SPAWN_EGG(383, 36, 25324, "Spawn Vindicator", "Vindicator Spawn Egg"),
-	VINE(106, 0, 14564, "Vines"),
+	VINE(106, 0, 14564, "Vines", "VINE"),
 	VOID_AIR(null, null, 13668, "Void Air"),
 	WALL_SIGN(68, 0, 10644, "Wall Sign"),
 	WALL_TORCH(50, 0, 25890, "Wall Torch"),
@@ -1832,7 +1927,7 @@ public class ItemManager {
 	WHITE_STAINED_GLASS_PANE(160, 0, 10557, "White Stained Glass Pane"),
 	WHITE_TERRACOTTA(159, 0, 20975, "White Terracotta"),
 	WHITE_TULIP(38, 6, 9742, "White Tulip"),
-	WHITE_WALL_BANNER(177, 15, 15967, "White Banner"),
+	WHITE_WALL_BANNER(425, 15, 15967, "White Banner"),
 	WHITE_WOOL(35, 0, 8624, "White Wool", "Wool"),
 	WITCH_SPAWN_EGG(383, 66, 11837, "Spawn Witch", "Witch Spawn Egg"),
 	WITHER_SKELETON_SKULL(397, 1, 31487, "Mob Head (Wither Skeleton)", "Wither Skeleton Skull"),
@@ -1856,7 +1951,7 @@ public class ItemManager {
 	YELLOW_STAINED_GLASS(95, 4, 12182, "Yellow Stained Glass"),
 	YELLOW_STAINED_GLASS_PANE(160, 4, 20298, "Yellow Stained Glass Pane"),
 	YELLOW_TERRACOTTA(159, 4, 32129, "Yellow Terracotta"),
-	YELLOW_WALL_BANNER(177, 11, 32004, "Yellow Banner"),
+	YELLOW_WALL_BANNER(425, 11, 32004, "Yellow Banner"),
 	YELLOW_WOOL(35, 4, 29507, "Yellow Wool"),
 	ZOMBIE_HEAD(397, 2, 9304, "Mob Head (Zombie)", "Zombie Head"),
 	ZOMBIE_HORSE_SPAWN_EGG(383, 29, 4275, "Spawn Zombie Horse", "Zombie Horse Spawn Egg"),
@@ -1932,10 +2027,10 @@ public class ItemManager {
 	POLISHED_DIORITE_STAIRS(null, null, 4625, "Polished Diorite Stairs"),
 	POLISHED_GRANITE_SLAB(null, null, 4521, "Polished Granite Slab"),
 	POLISHED_GRANITE_STAIRS(null, null, 29588, "Polished Granite Stairs"),
-	POTTED_BAMBOO(null, null, 22542, "Air"),
-	POTTED_CORNFLOWER(null, null, 28917, "Air"),
-	POTTED_LILY_OF_THE_VALLEY(null, null, 9364, "Air"),
-	POTTED_WITHER_ROSE(null, null, 26876, "Air"),
+	POTTED_BAMBOO(null, null, 22542, "Potted Bamboo"),
+	POTTED_CORNFLOWER(null, null, 28917, "Potted CornFlower"),
+	POTTED_LILY_OF_THE_VALLEY(null, null, 9364, "Potted Lily Of The Valley"),
+	POTTED_WITHER_ROSE(null, null, 26876, "Potted Wither Rose"),
 	PRISMARINE_WALL(null, null, 18184, "Prismarine Wall"),
 	RAVAGER_SPAWN_EGG(null, null, 31284, "Ravager Spawn Egg"),
 	RED_DYE(null, null, 5728, "Red Dye"),
@@ -1956,13 +2051,13 @@ public class ItemManager {
 	SMOOTH_SANDSTONE_STAIRS(null, null, 21183, "Smooth Sandstone Stairs"),
 	SMOOTH_STONE_SLAB(null, null, 24129, "Smooth Stone Slab"),
 	SPRUCE_SIGN(null, null, 21502, "Spruce Sign"),
-	SPRUCE_WALL_SIGN(null, null, 7352, "Air"),
+	SPRUCE_WALL_SIGN(null, null, 7352, "Spruce Wall Sign"),
 	STONECUTTER(null, null, 25170, "Stonecutter"),
 	STONE_BRICK_WALL(null, null, 29073, "Stone Brick Wall"),
 	STONE_STAIRS(null, null, 23784, "Stone Stairs"),
 	SUSPICIOUS_STEW(null, null, 8173, "Suspicious Stew"),
 	SWEET_BERRIES(null, null, 19747, "Sweet Berries"),
-	SWEET_BERRY_BUSH(null, null, 11958, "Air"),
+	SWEET_BERRY_BUSH(null, null, 11958, "Sweet Berry Bush"),
 	TRADER_LLAMA_SPAWN_EGG(null, null, 13512, "Trader Llama Spawn Egg"),
 	WANDERING_TRADER_SPAWN_EGG(null, null, 12312, "Wandering Trader Spawn Egg"),
 	WHITE_DYE(null, null, 10758, "White Dye"),
@@ -1987,7 +2082,7 @@ public class ItemManager {
 	LEGACY_CAKE_BLOCK(92, 0, null, "Cake Block"),
 	LEGACY_DIODE_BLOCK_OFF(93, 0, null, "Diode Block Off"),
 	LEGACY_DIODE_BLOCK_ON(94, 0, null, "Diode Block On"),
-	LEGACY_BREWING_STAND(117, null, null, "Brewing Stand"),
+	LEGACY_BREWING_STAND(117, null, null, "LEGACY_BREWING_STAND"),
 //	LEGACY_CAULDRON(118, 0, null, "LEGACY_CAULDRON", ""),
 //	LEGACY_REDSTONE_LAMP_ON(124, null, null, "LEGACY_REDSTONE_LAMP_ON", ""),
 //	LEGACY_WOOD_DOUBLE_STEP(125, null, null, "LEGACY_WOOD_DOUBLE_STEP", ""),
@@ -2179,19 +2274,19 @@ public class ItemManager {
 	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
 		try {
 		    ids = Integer.parseInt(id);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		    if (id.contains(":")) {
 			try {
 			    ids = Integer.parseInt(id.split(":")[0]);
 			    data = Integer.parseInt(id.split(":")[1]);
 			    return get(ids, data);
-			} catch (Throwable t) {
+			} catch (Exception ex) {
 			}
 
 			try {
 			    data = Integer.parseInt(id.split(":")[1]);
 			    id = id.split(":")[0];
-			} catch (Throwable t) {
+			} catch (Exception ex) {
 			}
 		    }
 		}
@@ -2264,6 +2359,15 @@ public class ItemManager {
 		if (one.getName().replace("_", "").replace(" ", "").equalsIgnoreCase(id))
 		    return one;
 	    }
+
+	    if (mat == null) {
+		if (id.contains(":")) {
+		    ci = byBukkitName.get(id.split(":")[0]);
+		    if (ci != null)
+			return ci.getCMIType();
+		}
+	    }
+
 	    return CMIMaterial.NONE;
 	}
 
@@ -2585,6 +2689,44 @@ public class ItemManager {
 	    case POTION:
 	    case LINGERING_POTION:
 	    case SPLASH_POTION:
+
+	    case AWKWARD_POTION:
+	    case THICK_POTION:
+	    case MUNDANE_POTION:
+	    case REGENERATION_POTION:
+	    case SWIFTNESS_POTION:
+	    case FIRE_RESISTANCE_POTION:
+	    case POISON_POTION:
+	    case HEALING_POTION:
+	    case NIGHT_VISION_POTION:
+	    case WEAKNESS_POTION:
+	    case STRENGTH_POTION:
+	    case SLOWNESS_POTION:
+	    case HARMING_POTION:
+	    case WATER_BREATHING_POTION:
+	    case INVISIBILITY_POTION:
+	    case REGENERATION_POTION2:
+	    case SWIFTNESS_POTION2:
+	    case POISON_POTION2:
+	    case HEALING_POTION2:
+	    case STRENGTH_POTION2:
+	    case LEAPING_POTION2:
+	    case HARMING_POTION2:
+	    case REGENERATION_POTION3:
+	    case SWIFTNESS_POTION3:
+	    case FIRE_RESISTANCE_POTION3:
+	    case POISON_POTION3:
+	    case NIGHT_VISION_POTION2:
+	    case WEAKNESS_POTION2:
+	    case STRENGTH_POTION3:
+	    case SLOWNESS_POTION2:
+	    case LEAPING_POTION3:
+	    case WATER_BREATHING_POTION2:
+	    case INVISIBILITY_POTION2:
+	    case REGENERATION_POTION4:
+	    case SWIFTNESS_POTION4:
+	    case POISON_POTION4:
+	    case STRENGTH_POTION4:
 		return true;
 	    default:
 		break;
@@ -2629,12 +2771,6 @@ public class ItemManager {
 	    case JUNGLE_SAPLING:
 	    case ACACIA_SAPLING:
 	    case DARK_OAK_SAPLING:
-	    case POTTED_ACACIA_SAPLING:
-	    case POTTED_BIRCH_SAPLING:
-	    case POTTED_DARK_OAK_SAPLING:
-	    case POTTED_JUNGLE_SAPLING:
-	    case POTTED_OAK_SAPLING:
-	    case POTTED_SPRUCE_SAPLING:
 		return true;
 	    default:
 		break;
@@ -2968,6 +3104,10 @@ public class ItemManager {
 	    case POTTED_RED_TULIP:
 	    case POTTED_SPRUCE_SAPLING:
 	    case POTTED_WHITE_TULIP:
+	    case POTTED_BAMBOO:
+	    case POTTED_CORNFLOWER:
+	    case POTTED_LILY_OF_THE_VALLEY:
+	    case POTTED_WITHER_ROSE:
 		return true;
 	    default:
 		break;

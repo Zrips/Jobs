@@ -1144,6 +1144,7 @@ public class ConfigManager {
 			}
 
 			if (type == null) {
+				Jobs.consoleMsg("here2 " + material);
 			    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
 			    continue;
 			}

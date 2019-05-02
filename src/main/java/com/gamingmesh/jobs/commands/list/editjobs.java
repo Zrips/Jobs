@@ -454,17 +454,14 @@ public class editjobs implements Cmd {
 		    switch (key.replace("_", "").toLowerCase()) {
 		    case "itemframe":
 			type = "ITEM_FRAME";
-			id = 18;
 			meta = "1";
 			break c;
 		    case "painting":
 			type = "PAINTING";
-			id = 9;
 			meta = "1";
 			break c;
 		    case "armorstand":
 			type = "ARMOR_STAND";
-			id = 30;
 			meta = "1";
 			break c;
 		    }
@@ -487,9 +484,8 @@ public class editjobs implements Cmd {
 			player.sendMessage(ChatColor.GOLD + "Automatically changing block to REDSTONE_ORE. Please update your configuration.");
 			material = CMIMaterial.REDSTONE_ORE;
 		    }
-
-		    type = material.toString();
 		    id = material.getId();
+		    type = material.toString();
 		} else if (actionT == ActionType.KILL || actionT == ActionType.TAME || actionT == ActionType.BREED || actionT == ActionType.MILK) {
 
 		    // check entities
