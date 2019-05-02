@@ -113,7 +113,7 @@ public class JobsPlayer {
     }
 
     public boolean isUnderLimit(CurrencyType type, Double amount) {
-	Player player = this.getPlayer();
+	Player player = getPlayer();
 	if (player == null)
 	    return true;
 	if (amount == 0)
@@ -122,7 +122,7 @@ public class JobsPlayer {
 	if (!limit.isEnabled())
 	    return true;
 	PaymentData data = getPaymentLimit();
-	Integer value = this.limits.get(type);
+	Integer value = limits.get(type);
 	if (data.IsReachedLimit(type, value == null ? 0 : value)) {
 	    String name = type.getName().toLowerCase();
 
@@ -212,14 +212,14 @@ public class JobsPlayer {
 
     public double getBoost(String JobName, CurrencyType type, boolean force) {
 	double Boost = 0D;
-	if (!this.isOnline())
+	if (!isOnline())
 	    return Boost;
 	if (type == null)
 	    return Boost;
 
 	long time = System.currentTimeMillis();
 
-	if (this.boostCounter.containsKey(JobName)) {
+	if (boostCounter.containsKey(JobName)) {
 	    ArrayList<BoostCounter> counterList = boostCounter.get(JobName);
 	    for (BoostCounter counter : counterList) {
 		if (counter.getType() != type)
@@ -306,7 +306,7 @@ public class JobsPlayer {
     public int getLimit(CurrencyType type) {
 	if (type == null)
 	    return 0;
-	Integer value = this.limits.get(type);
+	Integer value = limits.get(type);
 	return value == null ? 0 : value;
     }
 
@@ -331,7 +331,7 @@ public class JobsPlayer {
      * @return true if have
      */
     public boolean havePermission(String perm) {
-	Player player = Bukkit.getPlayer(this.getPlayerUUID());
+	Player player = Bukkit.getPlayer(getPlayerUUID());
 	if (player != null)
 	    return player.hasPermission(perm);
 	return false;
@@ -354,7 +354,7 @@ public class JobsPlayer {
      * @return the userName
      */
     public String getUserName() {
-	Player player = Bukkit.getPlayer(this.getPlayerUUID());
+	Player player = Bukkit.getPlayer(getPlayerUUID());
 	if (player != null)
 	    userName = player.getName();
 	return userName;
@@ -388,7 +388,7 @@ public class JobsPlayer {
 	    int level = 1;
 	    int exp = 0;
 
-	    JobProgression archived = this.getArchivedJobProgression(job);
+	    JobProgression archived = getArchivedJobProgression(job);
 	    if (archived != null) {
 		level = getLevelAfterRejoin(archived);
 		exp = getExpAfterRejoin(archived, level);
@@ -417,7 +417,7 @@ public class JobsPlayer {
 	    level = 1;
 
 	Job job = jp.getJob();
-	int maxLevel = this.getMaxJobLevelAllowed(job);
+	int maxLevel = getMaxJobLevelAllowed(job);
 	if (jp.getLevel() == maxLevel) {
 	    if (Jobs.getGCManager().fixAtMaxLevel)
 		level = jp.getLevel();
@@ -442,7 +442,7 @@ public class JobsPlayer {
 
 	if (exp > 0) {
 	    Job job = jp.getJob();
-	    int maxLevel = this.getMaxJobLevelAllowed(job);
+	    int maxLevel = getMaxJobLevelAllowed(job);
 	    if (jp.getLevel() == maxLevel) {
 		if (!Jobs.getGCManager().fixAtMaxLevel)
 		    exp = (exp - (exp * (Jobs.getGCManager().levelLossPercentageFromMax / 100.0)));
@@ -581,7 +581,7 @@ public class JobsPlayer {
 
     public int getMaxJobLevelAllowed(Job job) {
 	int maxLevel = 0;
-	if (this.havePermission("jobs." + job.getName() + ".vipmaxlevel"))
+	if (havePermission("jobs." + job.getName() + ".vipmaxlevel"))
 	    maxLevel = job.getVipMaxLevel() > job.getMaxLevel() ? job.getVipMaxLevel() : job.getMaxLevel();
 	else
 	    maxLevel = job.getMaxLevel();
@@ -709,9 +709,9 @@ public class JobsPlayer {
 	    dao.updateSeen(this);
 	    setSaved(true);
 
-	    if (this.getPlayer() == null || !this.getPlayer().isOnline()) {
+	    if (getPlayer() == null || !getPlayer().isOnline()) {
 		Jobs.getPlayerManager().addPlayerToCache(this);
-		Jobs.getPlayerManager().removePlayer(this.getPlayer());
+		Jobs.getPlayerManager().removePlayer(getPlayer());
 	    }
 	}
 //	}
@@ -747,8 +747,8 @@ public class JobsPlayer {
      * @return true if online, otherwise false
      */
     public boolean isOnline() {
-	if (this.getPlayer() != null)
-	    return this.getPlayer().isOnline();
+	if (getPlayer() != null)
+	    return getPlayer().isOnline();
 	return isOnline;
     }
 
@@ -822,7 +822,7 @@ public class JobsPlayer {
 
     public boolean inDailyQuest(Job job, String questName) {
 
-	HashMap<String, QuestProgression> qpl = this.qProgression.get(job.getName());
+	HashMap<String, QuestProgression> qpl = qProgression.get(job.getName());
 	if (qpl == null)
 	    return false;
 
@@ -836,10 +836,10 @@ public class JobsPlayer {
 
     private List<String> getQuestNameList(Job job, ActionType type) {
 	List<String> ls = new ArrayList<>();
-	if (!this.isInJob(job))
+	if (!isInJob(job))
 	    return ls;
 
-	HashMap<String, QuestProgression> qpl = this.qProgression.get(job.getName());
+	HashMap<String, QuestProgression> qpl = qProgression.get(job.getName());
 
 	if (qpl == null)
 	    return ls;
@@ -854,8 +854,8 @@ public class JobsPlayer {
     }
 
     public void resetQuests() {
-	for (JobProgression one : this.getJobProgression()) {
-	    for (QuestProgression oneQ : this.getQuestProgressions(one.getJob())) {
+	for (JobProgression one : getJobProgression()) {
+	    for (QuestProgression oneQ : getQuestProgressions(one.getJob())) {
 		oneQ.setValidUntil(0L);
 	    }
 	}
@@ -864,8 +864,8 @@ public class JobsPlayer {
 
     public List<QuestProgression> getQuestProgressions() {
 	List<QuestProgression> g = new ArrayList<>();
-	for (JobProgression one : this.getJobProgression()) {
-	    g.addAll(this.getQuestProgressions(one.getJob()));
+	for (JobProgression one : getJobProgression()) {
+	    g.addAll(getQuestProgressions(one.getJob()));
 	}
 	return g;
     }
@@ -875,19 +875,19 @@ public class JobsPlayer {
     }
 
     public List<QuestProgression> getQuestProgressions(Job job, ActionType type) {
-	if (!this.isInJob(job))
-	    return new ArrayList<>();
+	if (!isInJob(job))
+	    return new ArrayList<QuestProgression>();
 	HashMap<String, QuestProgression> g = new HashMap<>();
 
-	if (this.qProgression.get(job.getName()) != null)
-	    g = new HashMap<>(this.qProgression.get(job.getName()));
+	if (qProgression.get(job.getName()) != null)
+	    g = new HashMap<String, QuestProgression>(qProgression.get(job.getName()));
 
 	HashMap<String, QuestProgression> tmp = new HashMap<>();
 	for (Entry<String, QuestProgression> one : (new HashMap<String, QuestProgression>(g)).entrySet()) {
 	    QuestProgression qp = one.getValue();
 
 	    if (qp == null || !qp.isValid()) {
-		Quest q = job.getNextQuest(getQuestNameList(job, type), this.getJobProgression(job).getLevel());
+		Quest q = job.getNextQuest(getQuestNameList(job, type), getJobProgression(job).getLevel());
 
 		if (q == null)
 		    continue;
@@ -908,11 +908,9 @@ public class JobsPlayer {
 	    }
 	}
 
-	this.qProgression.put(job.getName(), g);
-
 	if (g.size() < job.getMaxDailyQuests()) {
 	    for (int i = g.size(); i < job.getMaxDailyQuests(); i++) {
-		Quest q = job.getNextQuest(getQuestNameList(job, type), this.getJobProgression(job).getLevel());
+		Quest q = job.getNextQuest(getQuestNameList(job, type), getJobProgression(job).getLevel());
 
 		if (q == null)
 		    continue;
@@ -924,7 +922,7 @@ public class JobsPlayer {
 	    }
 	}
 
-	this.qProgression.put(job.getName(), g);
+	qProgression.put(job.getName(), g);
 
 	List<QuestProgression> pr = new ArrayList<>();
 	for (Entry<String, QuestProgression> one : tmp.entrySet()) {
@@ -947,11 +945,11 @@ public class JobsPlayer {
     }
 
     public int getFurnaceCount() {
-	return FurnaceBrewingHandling.getTotalFurnaces(this.getPlayerUUID());
+	return FurnaceBrewingHandling.getTotalFurnaces(getPlayerUUID());
     }
 
     public int getBrewingStandCount() {
-	return FurnaceBrewingHandling.getTotalBrewingStands(this.getPlayerUUID());
+	return FurnaceBrewingHandling.getTotalBrewingStands(getPlayerUUID());
     }
 
     public int getMaxBrewingStandsAllowed() {

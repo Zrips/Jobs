@@ -153,19 +153,21 @@ public class VersionChecker {
 	Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 	    String currentVersion = plugin.getDescription().getVersion();
 	    String newVersion = getNewVersion();
+
 	    if (newVersion == null || newVersion.equalsIgnoreCase(currentVersion))
 		return;
+
 	    List<String> msg = Arrays.asList(
-			ChatColor.GREEN + "*********************** " + plugin.getDescription().getName() + " **************************",
-			ChatColor.GREEN + "* " + newVersion + " is now available! Your version: " + currentVersion,
-			ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + plugin.getDescription().getWebsite(),
-			ChatColor.GREEN + "************************************************************");
-	    for (String one : msg)
-			if (player != null)
-			    player.sendMessage(one);
-			else
-			    Jobs.consoleMsg(one);
-		});
+		ChatColor.GREEN + "*********************** " + plugin.getDescription().getName() + " **************************",
+		ChatColor.GREEN + "* " + newVersion + " is now available! Your version: " + currentVersion,
+		ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + plugin.getDescription().getWebsite(),
+		ChatColor.GREEN + "************************************************************");
+		for (String one : msg)
+		    if (player != null)
+			player.sendMessage(one);
+		    else
+			Jobs.consoleMsg(one);
+	});
     }
 
     public String getNewVersion() {
