@@ -3240,6 +3240,30 @@ public class ItemManager {
 	    return false;
 	}
 
+	public static boolean isWallSign(Material mat) {
+	    CMIMaterial m = CMIMaterial.get(mat);
+	    if (m == null)
+		return false;
+	    return m.isWallSign();
+	}
+
+	public boolean isWallSign() {
+	    switch (this) {
+	    case WALL_SIGN:
+
+	    case ACACIA_WALL_SIGN:
+	    case BIRCH_WALL_SIGN:
+	    case DARK_OAK_WALL_SIGN:
+	    case JUNGLE_WALL_SIGN:
+	    case OAK_WALL_SIGN:
+	    case SPRUCE_WALL_SIGN:
+		return true;
+	    default:
+		break;
+	    }
+	    return false;
+	}
+
 	public static boolean isWall(Material mat) {
 	    CMIMaterial m = CMIMaterial.get(mat);
 	    if (m == null)

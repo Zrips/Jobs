@@ -18,6 +18,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.TopList;
 
@@ -173,7 +175,7 @@ public class SignUtil {
 		    timelapse--;
 	    } else {
 		if (one.GetNumber() > PlayerList.size())
-			continue;
+			return true;
 
 		TopList pl = PlayerList.get(one.GetNumber() - 1);
 		String PlayerName = pl.getPlayerName();
@@ -227,8 +229,19 @@ public class SignUtil {
     public boolean UpdateHead(final org.bukkit.block.Sign sign, final String Playername, int timelapse) {
 	try {
 	    timelapse = timelapse < 1 ? 1 : timelapse;
-	    org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getData();
-	    BlockFace directionFacing = signMat.getFacing();
+	    BlockFace directionFacing = null;
+	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
+		org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getData();
+		directionFacing = signMat.getFacing();
+	    } else {
+		if (CMIMaterial.isWallSign(sign.getType())) {
+		    org.bukkit.block.data.type.WallSign data = (org.bukkit.block.data.type.WallSign) sign.getBlockData();
+		    directionFacing = data.getFacing();
+		} else {
+		    org.bukkit.block.data.type.Sign data = (org.bukkit.block.data.type.Sign) sign.getBlockData();
+		    directionFacing = data.getRotation();
+		}
+	    }
 
 	    final Location loc = sign.getLocation().clone();
 	    loc.add(0, 1, 0);
