@@ -247,7 +247,7 @@ public class browse implements Cmd {
 		    inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
 		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
-		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getName());
+		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getUniqueId());
 		    return true;
 		}
 		if (inv == null)
