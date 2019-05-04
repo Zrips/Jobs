@@ -524,7 +524,7 @@ public class JobsPaymentListener implements Listener {
 
     }
 
-    @SuppressWarnings({ "deprecation", "incomplete-switch" })
+    @SuppressWarnings("incomplete-switch")
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryCraft(CraftItemEvent event) {
 	// make sure plugin is enabled
@@ -1128,7 +1128,7 @@ public class JobsPaymentListener implements Listener {
 
 	if (Jobs.getGCManager().MonsterDamageUse && lVictim.hasMetadata(entityDamageByPlayer)) {
 	    double damage = lVictim.getMetadata(entityDamageByPlayer).get(0).asDouble();
-	    double perc = (damage * 100D) / lVictim.getMaxHealth();
+	    double perc = (damage * 100D) / Jobs.getNms().getMaxHealth((Player) lVictim);
 	    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
 		return;
 	}
@@ -1477,9 +1477,6 @@ public class JobsPaymentListener implements Listener {
 
 	Block block = event.getClickedBlock();
 	if (block == null)
-	    return;
-
-	if (event.isCancelled())
 	    return;
 
 	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) || CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE)) {

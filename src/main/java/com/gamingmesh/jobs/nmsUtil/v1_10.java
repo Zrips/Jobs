@@ -72,4 +72,8 @@ public class v1_10 implements NMS {
 	player.getInventory().setItemInHand(item);
     }
 
+    @Override
+    public double getMaxHealth(Player player) {
+	return player.getMaxHealth();
+    }
 }

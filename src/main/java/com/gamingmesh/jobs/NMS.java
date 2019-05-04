@@ -16,4 +16,6 @@ public interface NMS {
     public ItemStack getItemInMainHand(Player player);
 
     public void setItemInMainHand(Player player, ItemStack item);
+
+    public double getMaxHealth(Player player);
 }

@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.nmsUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -48,5 +49,10 @@ public class v1_12 implements NMS {
     @Override
     public void setItemInMainHand(Player player, ItemStack item) {
 	player.getInventory().setItemInMainHand(item);
+    }
+
+    @Override
+    public double getMaxHealth(Player player) {
+	return player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
     }
 }
