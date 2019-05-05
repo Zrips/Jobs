@@ -53,6 +53,7 @@ public class SignUtil {
 	ArrayList<String> categoriesList = new ArrayList<>(ConfCategory.getKeys(false));
 	if (categoriesList.isEmpty())
 	    return;
+
 	for (String category : categoriesList) {
 	    ConfigurationSection NameSection = ConfCategory.getConfigurationSection(category);
 	    com.gamingmesh.jobs.Signs.Sign newTemp = new com.gamingmesh.jobs.Signs.Sign();
@@ -175,7 +176,7 @@ public class SignUtil {
 		    timelapse--;
 	    } else {
 		if (one.GetNumber() > PlayerList.size())
-			return true;
+		    return true;
 
 		TopList pl = PlayerList.get(one.GetNumber() - 1);
 		String PlayerName = pl.getPlayerName();

@@ -524,7 +524,6 @@ public class JobsPaymentListener implements Listener {
 
     }
 
-    @SuppressWarnings("incomplete-switch")
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryCraft(CraftItemEvent event) {
 	// make sure plugin is enabled
@@ -609,6 +608,8 @@ public class JobsPaymentListener implements Listener {
 	    case LEATHER_HELMET:
 	    case LEATHER_LEGGINGS:
 		leather = true;
+	    default:
+		break;
 	    }
 	}
 
@@ -1128,7 +1129,7 @@ public class JobsPaymentListener implements Listener {
 
 	if (Jobs.getGCManager().MonsterDamageUse && lVictim.hasMetadata(entityDamageByPlayer)) {
 	    double damage = lVictim.getMetadata(entityDamageByPlayer).get(0).asDouble();
-	    double perc = (damage * 100D) / Jobs.getNms().getMaxHealth((Player) lVictim);
+	    double perc = (damage * 100D) / Jobs.getNms().getMaxHealth(lVictim);
 	    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
 		return;
 	}

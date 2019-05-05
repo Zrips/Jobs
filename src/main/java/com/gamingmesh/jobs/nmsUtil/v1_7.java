@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
 import org.bukkit.entity.Horse.Variant;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -62,7 +63,7 @@ public class v1_7 implements NMS {
     }
 
     @Override
-    public double getMaxHealth(Player player) {
-	return player.getMaxHealth();
+    public double getMaxHealth(LivingEntity entity) {
+	return entity.getMaxHealth();
     }
 }

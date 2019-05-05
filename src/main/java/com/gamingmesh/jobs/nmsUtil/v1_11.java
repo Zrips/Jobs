@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -51,7 +52,7 @@ public class v1_11 implements NMS {
     }
 
     @Override
-    public double getMaxHealth(Player player) {
-	return player.getMaxHealth();
+    public double getMaxHealth(LivingEntity entity) {
+	return entity.getMaxHealth();
     }
 }

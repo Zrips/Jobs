@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Guardian;
 import org.bukkit.entity.Horse;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Zombie;
@@ -68,7 +69,7 @@ public class v1_8 implements NMS {
     }
 
     @Override
-    public double getMaxHealth(Player player) {
-	return player.getMaxHealth();
+    public double getMaxHealth(LivingEntity entity) {
+	return entity.getMaxHealth();
     }
 }

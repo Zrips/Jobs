@@ -3,6 +3,7 @@ package com.gamingmesh.jobs;
 import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -17,5 +18,5 @@ public interface NMS {
 
     public void setItemInMainHand(Player player, ItemStack item);
 
-    public double getMaxHealth(Player player);
+    public double getMaxHealth(LivingEntity entity);
 }
