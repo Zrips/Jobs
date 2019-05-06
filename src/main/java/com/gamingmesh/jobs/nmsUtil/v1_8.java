@@ -72,4 +72,9 @@ public class v1_8 implements NMS {
     public double getMaxHealth(LivingEntity entity) {
 	return entity.getMaxHealth();
     }
+
+    @Override
+    public short getDurability(ItemStack item) {
+	return item.getDurability();
+    }
 }

@@ -13,7 +13,6 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton.SkeletonType;
-import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -76,5 +75,10 @@ public class v1_10 implements NMS {
     @Override
     public double getMaxHealth(LivingEntity entity) {
 	return entity.getMaxHealth();
+    }
+
+    @Override
+    public short getDurability(ItemStack item) {
+	return item.getDurability();
     }
 }

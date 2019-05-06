@@ -406,7 +406,7 @@ public class ItemManager {
     }
 
     public List<Recipe> getRecipesFor(ItemStack result) {
-	List<Recipe> results = new ArrayList<Recipe>();
+	List<Recipe> results = new ArrayList<>();
 	Iterator<Recipe> iter = Bukkit.recipeIterator();
 	while (iter.hasNext()) {
 	    Recipe recipe = iter.next();
@@ -414,9 +414,8 @@ public class ItemManager {
 	    if (stack.getType() != result.getType()) {
 		continue;
 	    }
-	    if (result.getDurability() == -1 || result.getDurability() == stack.getDurability()) {
+	    if (Jobs.getNms().getDurability(result) == -1 || Jobs.getNms().getDurability(result) == Jobs.getNms().getDurability(stack))
 		results.add(recipe);
-	    }
 	}
 	return results;
     }

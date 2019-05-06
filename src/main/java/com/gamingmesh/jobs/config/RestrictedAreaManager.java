@@ -194,7 +194,7 @@ public class RestrictedAreaManager {
 	ConfigurationSection areaSection = conf.getConfigurationSection("restrictedareas");
 	if (areaSection != null) {
 	    for (String areaKey : areaSection.getKeys(false)) {
-		double multiplier = conf.getDouble("restrictedareas." + areaKey + ".multiplier", 0.0);
+		double multiplier = conf.getDouble("restrictedareas." + areaKey + ".multiplier", 0d);
 
 		if (conf.isBoolean("restrictedareas." + areaKey + ".WG"))
 		    addNew(new RestrictedArea(areaKey, areaKey, multiplier));
@@ -204,11 +204,11 @@ public class RestrictedAreaManager {
 		    World world = Bukkit.getServer().getWorld(worldName);
 		    if (world == null)
 			continue;
-		    Location point1 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point1.x", 0.0), conf.getDouble("restrictedareas." + areaKey
-			+ ".point1.y", 0.0), conf.getDouble("restrictedareas." + areaKey + ".point1.z", 0.0));
+		    Location point1 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point1.x", 0d), conf.getDouble("restrictedareas." + areaKey
+			+ ".point1.y", 0d), conf.getDouble("restrictedareas." + areaKey + ".point1.z", 0d));
 
-		    Location point2 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point2.x", 0.0), conf.getDouble("restrictedareas." + areaKey
-			+ ".point2.y", 0.0), conf.getDouble("restrictedareas." + areaKey + ".point2.z", 0.0));
+		    Location point2 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point2.x", 0d), conf.getDouble("restrictedareas." + areaKey
+			+ ".point2.y", 0d), conf.getDouble("restrictedareas." + areaKey + ".point2.z", 0d));
 		    addNew(new RestrictedArea(areaKey, new CuboidArea(point1, point2), multiplier));
 		}
 	    }

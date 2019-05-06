@@ -19,4 +19,6 @@ public interface NMS {
     public void setItemInMainHand(Player player, ItemStack item);
 
     public double getMaxHealth(LivingEntity entity);
+
+    public short getDurability(ItemStack item);
 }

@@ -56,4 +56,9 @@ public class v1_12 implements NMS {
     public double getMaxHealth(LivingEntity entity) {
 	return entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
     }
+
+    @Override
+    public short getDurability(ItemStack item) {
+	return item.getDurability();
+    }
 }

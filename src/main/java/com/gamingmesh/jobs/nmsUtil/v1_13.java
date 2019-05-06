@@ -10,6 +10,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 
 import com.gamingmesh.jobs.NMS;
 
@@ -39,5 +40,10 @@ public class v1_13 implements NMS {
     @Override
     public double getMaxHealth(LivingEntity entity) {
 	return entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
+    }
+
+    @Override
+    public short getDurability(ItemStack item) {
+	return (short) ((Damageable) item.getItemMeta()).getDamage();
     }
 }
