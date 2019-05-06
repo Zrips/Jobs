@@ -49,6 +49,7 @@ import com.gamingmesh.jobs.MyPet.MyPetManager;
 import com.gamingmesh.jobs.MythicMobs.MythicMobInterface;
 import com.gamingmesh.jobs.MythicMobs.MythicMobs2;
 import com.gamingmesh.jobs.MythicMobs.MythicMobs4;
+import com.gamingmesh.jobs.Placeholders.NewPlaceholderAPIHook;
 import com.gamingmesh.jobs.Placeholders.Placeholder;
 import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
 import com.gamingmesh.jobs.Signs.SignUtil;
@@ -226,8 +227,14 @@ public class Jobs extends JavaPlugin {
     private boolean setupPlaceHolderAPI() {
 	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
 	    return false;
-	if ((new PlaceholderAPIHook(this)).hook())
-	    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
+	if (!getServer().getPluginManager().getPlugin("PlaceholderAPI").getDescription().getVersion().contains("2.10.0")) {
+	    if ((new NewPlaceholderAPIHook(this)).register())
+		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
+	} else {
+	    if ((new PlaceholderAPIHook(this)).hook())
+		consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version. In the PlaceholderAPI"
+			+ " new version has removed the extension and we using the latest.");
+	}
 	return true;
     }
 

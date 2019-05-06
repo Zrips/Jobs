@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -332,9 +333,16 @@ public class Placeholder {
 	return message;
     }
 
+    public String getValue(OfflinePlayer player, JobsPlaceHolders placeHolder) {
+	return getValue(player.getPlayer(), placeHolder, null);
+    }
+
     public String getValue(Player player, JobsPlaceHolders placeHolder) {
 	return getValue(player, placeHolder, null);
+    }
 
+    public String getValue(OfflinePlayer player, JobsPlaceHolders placeHolder, String value) {
+	return getValue(player != null ? player.getUniqueId() : null, placeHolder, value);
     }
 
     public String getValue(Player player, JobsPlaceHolders placeHolder, String value) {
