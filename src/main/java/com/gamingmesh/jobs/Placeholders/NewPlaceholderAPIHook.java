@@ -1,6 +1,6 @@
 package com.gamingmesh.jobs.Placeholders;
 
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceHolders;
@@ -16,7 +16,7 @@ public class NewPlaceholderAPIHook extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, String identifier) {
+    public String onPlaceholderRequest(Player player, String identifier) {
 	JobsPlaceHolders placeHolder = JobsPlaceHolders.getByName(identifier);
 	if (placeHolder == null)
 	    return null;

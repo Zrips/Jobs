@@ -227,7 +227,8 @@ public class Jobs extends JavaPlugin {
     private boolean setupPlaceHolderAPI() {
 	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
 	    return false;
-	if (!getServer().getPluginManager().getPlugin("PlaceholderAPI").getDescription().getVersion().contains("2.10.0")) {
+	if (getVersionCheckManager().convertVersion(getServer().getPluginManager()
+		    .getPlugin("PlaceholderAPI").getDescription().getVersion()) >= getVersionCheckManager().convertVersion("2.10.0")) {
 	    if ((new NewPlaceholderAPIHook(this)).register())
 		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
 	} else {
