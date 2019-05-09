@@ -438,10 +438,12 @@ public class LanguageManager {
 	    c.get("command.leave.help.args", "[oldplayerjob]");
 	    Jobs.getGCManager().commandArgs.put("leave", Arrays.asList("[oldplayerjob]"));
 	    c.get("command.leave.success", "You have left the job %jobname%.");
+	    c.get("command.leave.confirmationNeed", "&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!");
 
 	    c.get("command.leaveall.help.info", "Leave all your jobs.");
 	    c.get("command.leaveall.error.nojobs", "You do not have any jobs to leave!");
 	    c.get("command.leaveall.success", "You have left all your jobs.");
+	    c.get("command.leaveall.confirmationNeed", "&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!");
 
 	    c.get("command.explored.help.info", "Check who visited this chunk");
 	    c.get("command.explored.error.noexplore", "No one visited this chunk");

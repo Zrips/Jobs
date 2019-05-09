@@ -163,6 +163,9 @@ public class GeneralConfigManager {
 
     private boolean ShowNewVersion;
 
+    public boolean EnableConfirmation;
+    public int ConfirmExpiryTime;
+
     public HashMap<String, List<String>> getCommandArgs() {
 	return commandArgs;
     }
@@ -921,6 +924,11 @@ public class GeneralConfigManager {
 
 //	c.addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost?");
 //	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);
+
+	c.addComment("JobsLeave.EnableConfirmation", "Allows to confirm the /jobs leave and leaveall commands, to confirm the leave.");
+	EnableConfirmation = c.get("JobsLeave.EnableConfirmation", false);
+	c.addComment("JobsLeave.ConfirmExpiryTime", "Specify the confirm expiry time.", "Time in seconds.");
+	ConfirmExpiryTime = c.get("JobsLeave.ConfirmExpiryTime", 10);
 
 	c.save();
     }
