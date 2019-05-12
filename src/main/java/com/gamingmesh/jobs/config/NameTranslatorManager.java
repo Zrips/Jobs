@@ -26,9 +26,6 @@ public class NameTranslatorManager {
     public ArrayList<NameList> ListOfEnchants = new ArrayList<>();
     public ArrayList<NameList> ListOfColors = new ArrayList<>();
 
-    public NameTranslatorManager() {
-    }
-
     public String Translate(String materialName, JobInfo info) {
 	// Translating name to user friendly
 	if (Jobs.getGCManager().UseCustomNames)
@@ -498,7 +495,7 @@ public class NameTranslatorManager {
 	    }*/
 
 	    for (CMIPotionType one : CMIPotionType.values()) {
-		String n = String.valueOf(one.getSubId());
+		String n = String.valueOf(one.getId());
 
 		String name = null;
 
@@ -514,7 +511,7 @@ public class NameTranslatorManager {
 		if (name == null)
 		    name = one.getName();
 
-		c.get("PotionNamesList." + one.getSubId() + "-" + one.toString(), name);
+		c.get("PotionNamesList." + one.getId() + "-" + one.toString(), name);
 	    }
 
 	    c.save();
