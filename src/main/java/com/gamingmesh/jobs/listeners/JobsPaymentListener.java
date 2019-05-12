@@ -81,6 +81,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.potion.Potion;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.gamingmesh.jobs.Jobs;
@@ -1473,7 +1474,7 @@ public class JobsPaymentListener implements Listener {
 	}
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent event) {
 	if (!plugin.isEnabled())
 	    return;
@@ -1571,11 +1572,8 @@ public class JobsPaymentListener implements Listener {
     public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
 	if (!plugin.isEnabled())
 	    return;
-	//disabling plugin in world
-	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
-	    return;
 
-	if (event.isCancelled())
+	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
 	    return;
 
 	Player p = event.getPlayer();
@@ -1583,7 +1581,6 @@ public class JobsPaymentListener implements Listener {
 	if (!p.isOnline())
 	    return;
 
-	// check if in creative
 	if (!payIfCreative(p))
 	    return;
 
@@ -1594,15 +1591,20 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	if (event.getItem().getType() != Material.POTION)
+	if (event.getItem().getType() != CMIMaterial.POTION.getMaterial())
 	    return;
 
-	// Player drinking a potion
+	if (Version.isCurrentEqualOrLower(Version.v1_8_R3)) {
+	    Potion potion = Potion.fromItemStack(event.getItem());
+	    Jobs.action(jPlayer, new PotionDrinkInfo(potion.getType().name(), ActionType.DRINK));
+	    return;
+	}
 	PotionMeta meta = (PotionMeta) event.getItem().getItemMeta();
 	if (meta == null)
 	    return;
 
-	Jobs.action(jPlayer, new PotionDrinkInfo(meta.getBasePotionData().getType(), ActionType.DRINK));
+	String name = meta.getBasePotionData().getType().name();
+	Jobs.action(jPlayer, new PotionDrinkInfo(meta.getBasePotionData().isExtended() ? "EXTENDED_" + name : name, ActionType.DRINK));
     }
 
     @EventHandler

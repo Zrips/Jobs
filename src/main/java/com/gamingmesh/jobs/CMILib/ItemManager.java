@@ -28,6 +28,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ItemManager {
@@ -36,7 +37,7 @@ public class ItemManager {
     static HashMap<String, CMIItemStack> byBukkitName = new HashMap<>();
     static HashMap<String, CMIItemStack> byMojangName = new HashMap<>();
     static HashMap<CMIMaterial, CMIItemStack> byMaterial = new HashMap<>();
-    static HashMap<Material, CMIMaterial> byRealMaterial = new HashMap<Material, CMIMaterial>();
+    static HashMap<Material, CMIMaterial> byRealMaterial = new HashMap<>();
 
     public HashMap<Integer, CMIItemStack> idMap() {
 	return byId;
@@ -396,7 +397,7 @@ public class ItemManager {
     }
 
     public List<Recipe> getAllRecipes() {
-	List<Recipe> results = new ArrayList<Recipe>();
+	List<Recipe> results = new ArrayList<>();
 	Iterator<Recipe> iter = Bukkit.recipeIterator();
 	while (iter.hasNext()) {
 	    Recipe recipe = iter.next();
@@ -557,59 +558,57 @@ public class ItemManager {
     }
 
     public enum CMIPotionType {
-	Awkward(373, 16, "Awkard Potion"),
-	Fire_Resistance_1(373, 8195, "Fire Resistance Potion"),
-	Fire_Resistance_2(373, 8259, "Fire Resistance Potion 2"),
-	Harming_1(373, 8204, "Harming Potion"),
-	Harming_2(373, 8236, "Harming Potion 2"),
-	Healing_1(373, 8197, "Healing Potion"),
-	Healing_2(373, 8229, "Healing Potion 2"),
-	Invisibility_1(373, 8206, "Invisibility Potion"),
-	Invisibility_2(373, 8270, "Invisibility Potion 2"),
-	Leaping_1(373, 8267, "Leaping Potion"),
-	Leaping_2(373, 8235, "Leaping Potion 2"),
-	Luck(-1, -1, "Luck Potion"),
-	Mundane(373, 64, "Mundane Potion"),
-	Night_Vision_1(373, 8198, "Night Vision Potion"),
-	Night_Vision_2(373, 8262, "Night Vision Potion 2"),
-	Poison_1(373, 8196, "Poison Potion"),
-	Poison_2(373, 8228, "Poison Potion 2"),
-	Poison_3(373, 8260, "Poison Potion 3"),
-	Poison_4(373, 8292, "Poison Potion 4"),
-	Regeneration_1(373, 8193, "Regeneration Potion"),
-	Regeneration_2(373, 8225, "Regeneration Potion 2"),
-	Regeneration_3(373, 8257, "Regeneration Potion 3"),
-	Regeneration_4(373, 8289, "Regeneration Potion 4"),
-	Slow_Falling_1(-1, -1, "Slow Falling Potion"),
-	Slow_Falling_2(-1, -1, "Slow Falling Potion 2"),
-	Slowness_1(373, 8202, "Slowness Potion"),
-	Slowness_2(373, 8266, "Slowness Potion 2"),
-	Strength_1(373, 8201, "Strength Potion"),
-	Strength_2(373, 8233, "Strength Potion 2"),
-	Strength_3(373, 8265, "Strength Potion 3"),
-	Strength_4(373, 8297, "Strength Potion 4"),
-	Swiftness_1(373, 8194, "Swiftness Potion"),
-	Swiftness_2(373, 8226, "Swiftness Potion 2"),
-	Swiftness_3(373, 8258, "Swiftness Potion 3"),
-	Swiftness_4(373, 8290, "Swiftness Potion 4"),
-	Thick(373, 32, "Thick Potion"),
-	Turtle_Master_1(-1, -1, "Turtle Master Potion"),
-	Turtle_Master_2(-1, -1, "Turtle Master Potion 2"),
-	Turtle_Master_3(-1, -1, "Turtle Master Potion 3"),
-	Water_Breathing_1(373, 8205, "Water Breathing Potion"),
-	Water_Breathing_2(373, 8269, "Water Breathing Potion 2"),
-	Weakness_1(373, 8200, "Weakness Potion"),
-	Weakness_2(373, 8264, "Weakness Potion 2"),
-	Water(373, 0, "Water Potion");
+	Awkward(16, "Awkward"),
+	Fire_Resistance(8195, "Fire Resistance"),
+	Extended_Fire_Resistance(8259, "Extended Fire Resistance"),
+	Harming(8204, "Harming"),
+	Extended_Harming(8236, "Extended Harming"),
+	Healing(8197, "Healing"),
+	Extended_Healing(8229, "Extended Healing"),
+	Invisibility(8206, "Invisibility"),
+	Extended_Invisibility(8270, "Extended Invisibility"),
+	Leaping(8267, "Leaping"),
+	Extended_Leaping(8235, "Extended Leaping"),
+	Luck(-1, "Luck"),
+	Mundane(64, "Mundane"),
+	Night_Vision(8198, "Night Vision"),
+	Extended_Night_Vision(8262, "Extended Night Vision"),
+	Poison(8196, "Poison"),
+	Extended_Poison(8228, "Extended Poison"),
+	//Poison_3(8260, "Poison 3"),
+	//Poison_4(8292, "Poison 4"),
+	Regeneration(8193, "Regeneration"),
+	Extended_Regeneration(8225, "Extended Regeneration"),
+	//Regeneration_3(8257, "Regeneration Potion 3"),
+	//Regeneration_4(8289, "Regeneration Potion 4"),
+	Slow_Falling(-1, "Slow Falling"),
+	Extended_Slow_Falling(-1, "Extended Slow Falling"),
+	Slowness(8202, "Slowness"),
+	Extended_Slowness(8266, "Extended Slowness"),
+	Strength(8201, "Strength Potion"),
+	Extended_Strength(8233, "Extended Strength"),
+	//Strength_3(8265, "Strength Potion 3"),
+	//Strength_4(8297, "Strength Potion 4"),
+	Swiftness(8194, "Swiftness"),
+	Extended_Swiftness(8226, "Extended Swiftness"),
+	//Swiftness_3(8258, "Swiftness Potion 3"),
+	//Swiftness_4(8290, "Swiftness Potion 4"),
+	Thick(32, "Thick"),
+	Turtle_Master(-1, "Turtle Master"),
+	Extended_Turtle_Master(-1, "Extended Turtle Master"),
+	//Turtle_Master_3(-1, "Turtle Master Potion 3"),
+	Water_Breathing(8205, "Water Breathing"),
+	Extended_Water_Breathing(8269, "Extended Water Breathing"),
+	Weakness(8200, "Weakness"),
+	Extended_Weakness(8264, "Extended Weakness"),
+	Water(0, "Water");
 
 	private int id;
 	private String name;
 	PotionType type = null;
-	private int data;
 
-	CMIPotionType(int id, int data, String name) {
+	CMIPotionType(int id, String name) {
 	    this.id = id;
-	    this.data = data;
 	    this.name = name;
 	}
 
@@ -738,10 +737,6 @@ public class ItemManager {
 	    name = name.toLowerCase().replace("_", " ");
 	    name = name.substring(0, 1).toUpperCase() + name.substring(1);
 	    return name;
-	}
-
-	public int getSubId() {
-	    return data;
 	}
     }
 
