@@ -929,12 +929,6 @@ public class Jobs extends JavaPlugin {
 	setEnabled(false);
     }
 
-    @SuppressWarnings("unused")
-    @Deprecated
-    private static void checkDailyQuests(JobsPlayer jPlayer, JobProgression prog, ActionInfo info) {
-	checkDailyQuests(jPlayer, prog.getJob(), info);
-    }
-
     private static void checkDailyQuests(JobsPlayer jPlayer, Job job, ActionInfo info) {
 	if (!job.getQuests().isEmpty()) {
 	    List<QuestProgression> q = jPlayer.getQuestProgressions(job, info.getType());

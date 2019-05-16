@@ -1332,7 +1332,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	SpawnReason reason = event.getSpawnReason();
-	if (!reason.toString().equalsIgnoreCase("BREEDING"))
+	if (!reason.toString().equalsIgnoreCase("BREEDING") && !reason.toString().equalsIgnoreCase("EGG"))
 	    return;
 
 	LivingEntity animal = event.getEntity();
