@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.Signs;
 
 public class Sign {
 
-    private int Category = 0;
     private String World = null;
     private double x = 0.01;
     private double y = 0.01;
@@ -10,9 +9,6 @@ public class Sign {
     private int Number = 0;
     private String JobName = null;
     private boolean special = false;
-
-    public Sign() {
-    }
 
     public void setSpecial(boolean special) {
 	this.special = special;
@@ -26,23 +22,15 @@ public class Sign {
 	this.JobName = JobName;
     }
 
-    public String GetJobName() {
+    public String getJobName() {
 	return JobName;
-    }
-
-    public void setCategory(int Category) {
-	this.Category = Category;
-    }
-
-    public int GetCategory() {
-	return Category;
     }
 
     public void setWorld(String World) {
 	this.World = World;
     }
 
-    public String GetWorld() {
+    public String getWorld() {
 	return World;
     }
 
@@ -50,7 +38,7 @@ public class Sign {
 	this.x = x;
     }
 
-    public double GetX() {
+    public double getX() {
 	return x;
     }
 
@@ -58,7 +46,7 @@ public class Sign {
 	this.y = y;
     }
 
-    public double GetY() {
+    public double getY() {
 	return y;
     }
 
@@ -66,7 +54,7 @@ public class Sign {
 	this.z = z;
     }
 
-    public double GetZ() {
+    public double getZ() {
 	return z;
     }
 
@@ -74,7 +62,7 @@ public class Sign {
 	this.Number = Number;
     }
 
-    public int GetNumber() {
+    public int getNumber() {
 	return Number;
     }
 }

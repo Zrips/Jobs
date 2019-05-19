@@ -136,17 +136,25 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onSelection(PlayerInteractEvent event) {
-	//disabling plugin in world
-	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
+	Player player = event.getPlayer();
+
+	if (player == null)
 	    return;
+
+	if (event.getClickedBlock() == null)
+	    return;
+
 	if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK)
 	    return;
-	Player player = event.getPlayer();
 
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 	if (iih == null || iih.getType() == Material.AIR)
 	    return;
+
 	if (!iih.getType().equals(CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial()))
+	    return;
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
 	    return;
 
 	if (!player.hasPermission("jobs.area.select"))
@@ -156,14 +164,12 @@ public class JobsListener implements Listener {
 	    event.setCancelled(true);
 
 	Block block = event.getClickedBlock();
-	Location loc = null;
+	Location loc = block.getLocation();
 	if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-	    loc = block.getLocation();
 	    Jobs.getSelectionManager().placeLoc1(player, loc);
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.area.output.selected1", "%x%", loc.getBlockX(), "%y%", loc.getBlockY(), "%z%", loc.getBlockZ()));
 	    event.setCancelled(true);
 	} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-	    loc = block.getLocation();
 	    Jobs.getSelectionManager().placeLoc2(player, loc);
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.area.output.selected2", "%x%", loc.getBlockX(), "%y%", loc.getBlockY(), "%z%", loc.getBlockZ()));
 	    event.setCancelled(true);
@@ -406,11 +412,11 @@ public class JobsListener implements Listener {
 
 	for (com.gamingmesh.jobs.Signs.Sign one : Jobs.getSignUtil().getSigns().GetAllSigns()) {
 
-	    if (one.GetX() != loc.getBlockX())
+	    if (one.getX() != loc.getBlockX())
 		continue;
-	    if (one.GetY() != loc.getBlockY())
+	    if (one.getY() != loc.getBlockY())
 		continue;
-	    if (one.GetZ() != loc.getBlockZ())
+	    if (one.getZ() != loc.getBlockZ())
 		continue;
 
 	    if (!player.hasPermission("jobs.command.signs")) {
@@ -488,16 +494,11 @@ public class JobsListener implements Listener {
 
 	Location loc = sign.getLocation();
 
-	int category = 1;
-	if (signUtil.getSigns().GetAllSigns().size() > 0)
-	    category = signUtil.getSigns().GetAllSigns().get(signUtil.getSigns().GetAllSigns().size() - 1).GetCategory() + 1;
-
 	signInfo.setNumber(Number);
 	signInfo.setWorld(loc.getWorld().getName());
 	signInfo.setX(loc.getX());
 	signInfo.setY(loc.getY());
 	signInfo.setZ(loc.getZ());
-	signInfo.setCategory(category);
 	if (!signtype.contains("gtoplist") && job != null)
 	    signInfo.setJobName(job.getName());
 	else
@@ -644,21 +645,18 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLimitedItemInteract(PlayerInteractEvent event) {
-	//disabling plugin in world
-	if (event.getClickedBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getClickedBlock().getWorld()))
-	    return;
 	Player player = event.getPlayer();
-
 	if (player == null)
 	    return;
 
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
+	if (iih == null || iih.getType() == Material.AIR)
+	    return;
 
-	if (iih == null)
+	if (event.getClickedBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getClickedBlock().getWorld()))
 	    return;
 
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	if (JPlayer == null)
 	    return;
 

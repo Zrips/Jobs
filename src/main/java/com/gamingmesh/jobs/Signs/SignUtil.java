@@ -57,7 +57,6 @@ public class SignUtil {
 	for (String category : categoriesList) {
 	    ConfigurationSection NameSection = ConfCategory.getConfigurationSection(category);
 	    com.gamingmesh.jobs.Signs.Sign newTemp = new com.gamingmesh.jobs.Signs.Sign();
-	    newTemp.setCategory(Integer.valueOf(category));
 	    newTemp.setWorld(NameSection.getString("World"));
 	    newTemp.setX(NameSection.getDouble("X"));
 	    newTemp.setY(NameSection.getDouble("Y"));
@@ -83,14 +82,16 @@ public class SignUtil {
 	if (!conf.isConfigurationSection("Signs"))
 	    conf.createSection("Signs");
 
+	int i = 0;
 	for (com.gamingmesh.jobs.Signs.Sign one : Signs.GetAllSigns()) {
-	    String path = "Signs." + String.valueOf(one.GetCategory());
-	    writer.set(path + ".World", one.GetWorld());
-	    writer.set(path + ".X", one.GetX());
-	    writer.set(path + ".Y", one.GetY());
-	    writer.set(path + ".Z", one.GetZ());
-	    writer.set(path + ".Number", one.GetNumber());
-	    writer.set(path + ".JobName", one.GetJobName());
+	    ++i;
+	    String path = "Signs." + i;
+	    writer.set(path + ".World", one.getWorld());
+	    writer.set(path + ".X", one.getX());
+	    writer.set(path + ".Y", one.getY());
+	    writer.set(path + ".Z", one.getZ());
+	    writer.set(path + ".Number", one.getNumber());
+	    writer.set(path + ".JobName", one.getJobName());
 	    writer.set(path + ".Special", one.isSpecial());
 	}
 
@@ -116,19 +117,19 @@ public class SignUtil {
 	HashMap<String, List<TopList>> temp = new HashMap<>();
 
 	for (com.gamingmesh.jobs.Signs.Sign one : new ArrayList<com.gamingmesh.jobs.Signs.Sign>(Signs.GetAllSigns())) {
-	    String SignJobName = one.GetJobName();
+	    String SignJobName = one.getJobName();
 
 	    if (!JobName.contains(SignJobName))
 		continue;
 
-	    World world = Bukkit.getWorld(one.GetWorld());
+	    World world = Bukkit.getWorld(one.getWorld());
 	    if (world == null)
 		continue;
 
-	    double SignsX = one.GetX();
-	    double SignsY = one.GetY();
-	    double SignsZ = one.GetZ();
-	    int number = one.GetNumber() - 1;
+	    double SignsX = one.getX();
+	    double SignsY = one.getY();
+	    double SignsZ = one.getZ();
+	    int number = one.getNumber() - 1;
 
 	    if (!JobName.contains("gtoplist")) {
 		PlayerList = temp.get(SignJobName);
@@ -175,17 +176,17 @@ public class SignUtil {
 		if (!UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse))
 		    timelapse--;
 	    } else {
-		if (one.GetNumber() > PlayerList.size())
+		if (one.getNumber() > PlayerList.size())
 		    return true;
 
-		TopList pl = PlayerList.get(one.GetNumber() - 1);
+		TopList pl = PlayerList.get(one.getNumber() - 1);
 		String PlayerName = pl.getPlayerName();
 		if (PlayerName.length() > 8) {
 		    String PlayerNameStrip = PlayerName.split("(?<=\\G.{7})")[0];
 		    PlayerName = PlayerNameStrip + "~";
 		}
-		String line1 = Jobs.getLanguage().getMessage("signs.SpecialList.p" + one.GetNumber(),
-		    "[number]", one.GetNumber() + number + 1,
+		String line1 = Jobs.getLanguage().getMessage("signs.SpecialList.p" + one.getNumber(),
+		    "[number]", one.getNumber() + number + 1,
 		    "[player]", PlayerName,
 		    "[level]", pl.getLevel(),
 		    "[job]", JobName);
@@ -193,7 +194,7 @@ public class SignUtil {
 		sign.setLine(0, line1);
 
 		line1 = Jobs.getLanguage().getMessage("signs.SpecialList.name",
-		    "[number]", one.GetNumber() + number + 1,
+		    "[number]", one.getNumber() + number + 1,
 		    "[player]", PlayerName,
 		    "[level]", pl.getLevel(),
 		    "[job]", JobName);
@@ -201,7 +202,7 @@ public class SignUtil {
 		sign.setLine(1, line1);
 
 		line1 = Jobs.getLanguage().getMessage("signs.SpecialList.level",
-		    "[number]", one.GetNumber() + number + 1,
+		    "[number]", one.getNumber() + number + 1,
 		    "[player]", PlayerName,
 		    "[level]", pl.getLevel(),
 		    "[job]", JobName);
@@ -209,7 +210,7 @@ public class SignUtil {
 		sign.setLine(2, line1);
 
 		line1 = Jobs.getLanguage().getMessage("signs.SpecialList.bottom",
-		    "[number]", one.GetNumber() + number + 1,
+		    "[number]", one.getNumber() + number + 1,
 		    "[player]", PlayerName,
 		    "[level]", pl.getLevel(),
 		    "[job]", JobName);

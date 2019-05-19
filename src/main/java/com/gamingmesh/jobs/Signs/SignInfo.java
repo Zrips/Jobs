@@ -7,9 +7,6 @@ public class SignInfo {
 
     private List<Sign> AllSigns = new ArrayList<>();
 
-    public SignInfo() {
-    }
-
     public void setAllSigns(List<Sign> AllSigns) {
 	this.AllSigns = AllSigns;
     }

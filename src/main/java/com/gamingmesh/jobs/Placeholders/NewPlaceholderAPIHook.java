@@ -25,8 +25,18 @@ public class NewPlaceholderAPIHook extends PlaceholderExpansion {
     }
 
     @Override
+    public boolean persist() {
+	return true;
+    }
+
+    @Override
+    public boolean canRegister() {
+	return true;
+    }
+
+    @Override
     public String getAuthor() {
-	return null;
+	return plugin.getDescription().getAuthors().toString();
     }
 
     @Override

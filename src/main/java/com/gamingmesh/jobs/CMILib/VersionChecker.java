@@ -19,10 +19,7 @@ public class VersionChecker {
 
     public VersionChecker(Jobs plugin) {
 	this.plugin = plugin;
-	version = Version.getCurrent();
     }
-
-    private static Version version = Version.v1_14_R1;
 
     public Version getVersion() {
 	return Version.getCurrent();
@@ -130,19 +127,19 @@ public class VersionChecker {
 	}
 
 	public static boolean isCurrentEqualOrHigher(Version v) {
-	    return version.getValue() >= v.getValue();
+	    return getCurrent().getValue() >= v.getValue();
 	}
 
 	public static boolean isCurrentHigher(Version v) {
-	    return version.getValue() > v.getValue();
+	    return getCurrent().getValue() > v.getValue();
 	}
 
 	public static boolean isCurrentLower(Version v) {
-	    return version.getValue() < v.getValue();
+	    return getCurrent().getValue() < v.getValue();
 	}
 
 	public static boolean isCurrentEqualOrLower(Version v) {
-	    return version.getValue() <= v.getValue();
+	    return getCurrent().getValue() <= v.getValue();
 	}
     }
 
