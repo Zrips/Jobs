@@ -531,9 +531,9 @@ public class GeneralConfigManager {
 	c.addComment("add-xp-player", "Adds the Jobs xp received to the player's Minecraft XP bar");
 	addXpPlayer = c.get("add-xp-player", false);
 
-	c.addComment("enable-pay-when-item-durability-loss", "Allows, when losing maximum durability of item then it does not pay the player until it is repaired.",
+	c.addComment("allow-pay-for-durability-loss", "Allows, when losing maximum durability of item then it does not pay the player until it is repaired.",
 		"E.g. the player wants to enchant a item with enchanting table and the item has durability loss then not paying.");
-	payItemDurabilityLoss = c.get("enable-pay-when-item-durability-loss", true);
+	payItemDurabilityLoss = c.get("allow-pay-for-durability-loss", true);
 
 	c.addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
 	modifyChat = c.get("modify-chat.use", false);

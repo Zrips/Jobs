@@ -399,18 +399,19 @@ public class JobsPaymentListener implements Listener {
 
 	// Item in hand
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
+	if (item != null && !item.getType().equals(Material.AIR)) {
+	    // Prevent item durability loss
+	    if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
+				- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+		return;
 
-	// Prevent item durability loss
-	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-		    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
-	    return;
-
-	// Protection for block break with silktouch
-	if (Jobs.getGCManager().useSilkTouchProtection && item != null) {
-	    for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
-		if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH")) {
-		    if (Jobs.getBpManager().isInBp(block))
-			return;
+	    // Protection for block break with silktouch
+	    if (Jobs.getGCManager().useSilkTouchProtection) {
+		for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
+		    if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH")) {
+			if (Jobs.getBpManager().isInBp(block))
+			    return;
+		    }
 		}
 	    }
 	}
@@ -1115,11 +1116,12 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	ItemStack item = Jobs.getNms().getItemInMainHand(pDamager);
-
-	// Prevent item durability loss
-	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-		    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
-	    return;
+	if (item != null && !item.getType().equals(Material.AIR)) {
+	    // Prevent item durability loss
+	    if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
+				- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+		return;
+	}
 
 	// pay
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(pDamager);

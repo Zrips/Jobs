@@ -72,6 +72,7 @@ import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
 import com.gamingmesh.jobs.api.JobsAreaSelectionEvent;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
@@ -878,6 +879,7 @@ public class JobsListener implements Listener {
 	ArmorTypes type = ArmorTypes.matchType(item);
 	if (ArmorTypes.matchType(item) == null)
 	    return;
+
 	Location loc = event.getBlock().getLocation();
 	for (Player p : loc.getWorld().getPlayers()) {
 	    Location ploc = p.getLocation();
@@ -890,9 +892,19 @@ public class JobsListener implements Listener {
 
 		    if (!(event.getBlock().getState() instanceof Dispenser))
 			continue;
-		    Dispenser dispenser = (Dispenser) event.getBlock().getState();
-		    org.bukkit.material.Dispenser dis = (org.bukkit.material.Dispenser) dispenser.getData();
-		    BlockFace directionFacing = dis.getFacing();
+
+		    Dispenser dispenser = null;
+		    BlockFace directionFacing = null;
+		    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
+			dispenser = (Dispenser) event.getBlock().getState();
+			org.bukkit.material.Dispenser dis = (org.bukkit.material.Dispenser) dispenser.getData();
+			directionFacing = dis.getFacing();
+		    } else {
+			dispenser = (Dispenser) event.getBlock().getState();
+			org.bukkit.block.data.type.Dispenser dis = (org.bukkit.block.data.type.Dispenser) dispenser.getBlockData();
+			directionFacing = dis.getFacing();
+		    }
+
 		    if (directionFacing == BlockFace.EAST &&
 			ploc.getBlockX() != loc.getBlockX() &&
 			ploc.getX() <= loc.getX() + 2.3 &&
