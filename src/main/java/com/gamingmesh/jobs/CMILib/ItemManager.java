@@ -3447,12 +3447,15 @@ public class ItemManager {
 	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 		if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
 		    org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
-		    switch (slab.getType()) {
-		    case TOP:
+		    org.bukkit.block.data.type.Slab.Type type = slab.getType();
+		    
+		    // Sadly we have to convert into a string for backwards compatibility.
+		    switch (type.toString()) {
+		    case "TOP":
 			return SlabType.TOP;
-		    case BOTTOM:
+		    case "BOTTOM":
 			return SlabType.BOTTOM;
-		    case DOUBLE:
+		    case "DOUBLE":
 			return SlabType.DOUBLE;
 		    }
 
