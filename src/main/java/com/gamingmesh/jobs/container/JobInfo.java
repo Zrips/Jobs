@@ -20,6 +20,7 @@ package com.gamingmesh.jobs.container;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.resources.jfep.Parser;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class JobInfo {
     private ActionType actionType;

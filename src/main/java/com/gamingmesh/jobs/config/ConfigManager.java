@@ -873,9 +873,9 @@ public class ConfigManager {
 
 			ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
 			KeyValues kv = null;
-			if (sqsection.isString("Target")){
+			if (sqsection.isString("Target")) {
 			    kv = getKeyValue(sqsection.getString("Target"), actionType, jobName);
-			}else if (sqsection.isList("Target")) {
+			} else if (sqsection.isList("Target")) {
 			    List<String> list = sqsection.getStringList("Target");
 			    for (int i = 0; i < list.size(); i++) {
 				kv = getKeyValue(list.get(i), actionType, jobName);
@@ -949,7 +949,7 @@ public class ConfigManager {
 			    myKey = myKey.split("-")[0];
 			}
 
-			CMIMaterial material = null;
+			CMIMaterial material = CMIMaterial.NONE;
 
 			switch (actionType) {
 			case KILL:
@@ -976,10 +976,10 @@ public class ConfigManager {
 			case STRIPLOGS:
 			    material = CMIMaterial.get(myKey + (subType));
 
-			    if (material == null)
+			    if (material == CMIMaterial.NONE)
 				material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
 
-			    if (material == null) {
+			    if (material == CMIMaterial.NONE) {
 				// try integer method
 				Integer matId = null;
 				try {
@@ -1000,7 +1000,7 @@ public class ConfigManager {
 
 			}
 
-			c: if (material != null && material.getMaterial() != null) {
+			c: if (material != null && material != CMIMaterial.NONE && material.getMaterial() != null) {
 
 			    // Need to include those ones and count as regular blocks
 			    switch (key.replace("_", "").toLowerCase()) {
@@ -1111,7 +1111,7 @@ public class ConfigManager {
 			    }
 
 			} else if (actionType == ActionType.ENCHANT) {
-			    Enchantment enchant = Enchantment.getByName(myKey);
+			    Enchantment enchant = Enchantment.getByName(myKey.toUpperCase());
 			    if (enchant != null) {
 				if (Jobs.getVersionCheckManager().getVersion().isEqualOrLower(Version.v1_12_R1)) {
 				    try {
@@ -1119,6 +1119,10 @@ public class ConfigManager {
 				    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				    }
 				}
+			    }
+			    if (enchant == null && material == CMIMaterial.NONE) {
+				Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
+				continue;
 			    }
 			    type = myKey;
 			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL)
@@ -1145,7 +1149,6 @@ public class ConfigManager {
 			}
 
 			if (type == null) {
-				Jobs.consoleMsg("here2 " + material);
 			    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
 			    continue;
 			}
