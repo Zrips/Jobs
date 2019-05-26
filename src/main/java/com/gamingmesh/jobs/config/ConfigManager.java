@@ -873,11 +873,12 @@ public class ConfigManager {
 
 			ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
 			KeyValues kv = null;
-			if (sqsection.isString("Target"))
+			if (sqsection.isString("Target")){
 			    kv = getKeyValue(sqsection.getString("Target"), actionType, jobName);
-			else if (sqsection.isList("Target")) {
-			    for (int i = 0; i < sqsection.getStringList("Target").size(); i++) {
-				kv = getKeyValue(sqsection.getStringList("Target").get(i), actionType, jobName);
+			}else if (sqsection.isList("Target")) {
+			    List<String> list = sqsection.getStringList("Target");
+			    for (int i = 0; i < list.size(); i++) {
+				kv = getKeyValue(list.get(i), actionType, jobName);
 			    }
 			}
 

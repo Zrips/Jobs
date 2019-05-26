@@ -176,8 +176,10 @@ public class Jobs extends JavaPlugin {
 	try {
 	    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
 	    getServer().getPluginManager().registerEvents(new McMMO2_X_listener(this), this);
+	    consoleMsg("&e[Jobs] Registered McMMO 2.x listener");
 	} catch (Throwable e) {
 	    getServer().getPluginManager().registerEvents(new McMMO1_X_listener(this), this);
+	    consoleMsg("&e[Jobs] Registered McMMO 1.x listener");
 	}
     }
 
@@ -1355,7 +1357,7 @@ public class Jobs extends JavaPlugin {
     public static boolean hasPermission(Object sender, String perm, boolean rawEnable) {
 	if (!(sender instanceof Player))
 	    return true;
-	
+
 	if (((Player) sender).hasPermission(perm))
 	    return true;
 	if (!rawEnable) {

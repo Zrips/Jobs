@@ -25,46 +25,45 @@ public class McMMOManager {
 	HashMap<String, Long> InfoMap = map.get(player.getUniqueId());
 	if (InfoMap == null)
 	    return 0D;
-
 	if (mcMMOOverHaul) {
-	    Long t = InfoMap.get(SuperAbilityType.TREE_FELLER.getName());
+	    Long t = InfoMap.get(SuperAbilityType.TREE_FELLER.toString());
 	    if (t != null) {
-		if (t < System.currentTimeMillis())
+		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
-		InfoMap.remove(SuperAbilityType.TREE_FELLER.getName());
+		InfoMap.remove(SuperAbilityType.TREE_FELLER.toString());
 	    }
-
-	    t = InfoMap.get(SuperAbilityType.GIGA_DRILL_BREAKER.getName());
+	    
+	    t = InfoMap.get(SuperAbilityType.GIGA_DRILL_BREAKER.toString());
 	    if (t != null) {
-		if (t < System.currentTimeMillis())
+		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
-		InfoMap.remove(SuperAbilityType.GIGA_DRILL_BREAKER.getName());
+		InfoMap.remove(SuperAbilityType.GIGA_DRILL_BREAKER.toString());
 	    }
-
-	    t = InfoMap.get(SuperAbilityType.SUPER_BREAKER.getName());
+	    
+	    t = InfoMap.get(SuperAbilityType.SUPER_BREAKER.toString());
 	    if (t != null) {
-		if (t < System.currentTimeMillis())
+		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().superBreakerMultiplier);
-		InfoMap.remove(SuperAbilityType.SUPER_BREAKER.getName());
+		InfoMap.remove(SuperAbilityType.SUPER_BREAKER.toString());
 	    }
 	} else if (mcMMOPresent) {
 	    Long t = InfoMap.get("TREE_FELLER");
 	    if (t != null) {
-		if (t < System.currentTimeMillis())
+		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
 		InfoMap.remove("TREE_FELLER");
 	    }
 
 	    t = InfoMap.get("GIGA_DRILL_BREAKER");
 	    if (t != null) {
-		if (t < System.currentTimeMillis())
+		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
 		InfoMap.remove("GIGA_DRILL_BREAKER");
 	    }
 
 	    t = InfoMap.get("SUPER_BREAKER");
 	    if (t != null) {
-		if (t < System.currentTimeMillis())
+		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().superBreakerMultiplier);
 		InfoMap.remove("SUPER_BREAKER");
 	    }

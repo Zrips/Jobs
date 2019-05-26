@@ -66,8 +66,9 @@ public class McMMO1_X_listener implements Listener {
 
 	try {
 	    Object ab = event.getClass().getMethod("getAbility").invoke(event);
-	    int maxLenght = (int) ab.getClass().getMethod("getMaxLength").invoke(ab);
-	    InfoMap.put(String.valueOf(ab), System.currentTimeMillis() + (maxLenght * 1000));
+//	    Lets use fixed timer as this tend to return 0
+//	    int maxLenght = (int) ab.getClass().getMethod("getMaxLength").invoke(ab);
+	    InfoMap.put(String.valueOf(ab), System.currentTimeMillis() + (30 * 1000));
 	} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 	    e.printStackTrace();
 	}

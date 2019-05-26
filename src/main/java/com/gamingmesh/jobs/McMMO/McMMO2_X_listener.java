@@ -13,8 +13,10 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
+import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
 public class McMMO2_X_listener implements Listener {
@@ -56,18 +58,22 @@ public class McMMO2_X_listener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void OnAbility(McMMOPlayerAbilityEvent event) {
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void OnAbilityOn(McMMOPlayerAbilityActivateEvent event) {
 	HashMap<String, Long> InfoMap = Jobs.getMcMMOManager().getMap().get(event.getPlayer().getUniqueId());
 	if (InfoMap == null) {
 	    InfoMap = new HashMap<>();
 	    Jobs.getMcMMOManager().getMap().put(event.getPlayer().getUniqueId(), InfoMap);
 	}
-
-	InfoMap.put(event.getAbility().toString(), System.currentTimeMillis() + (event.getAbility().getMaxLength() * 1000));
+	InfoMap.put(event.getAbility().toString(), System.currentTimeMillis() + (30 * 1000));
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void OnAbilityOff(McMMOPlayerAbilityDeactivateEvent event) {
+	Debug.D("active " + event.getAbility());
 	HashMap<String, Long> InfoMap = Jobs.getMcMMOManager().getMap().get(event.getPlayer().getUniqueId());
 	if (InfoMap != null) {
 	    InfoMap.remove(event.getAbility().toString());
