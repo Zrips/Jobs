@@ -207,7 +207,7 @@ permissions:
     default: op
   jobs.area.add:
     description: Grants access to the area add command
-    default: false
+    default: op
   jobs.area.remove:
     description: Grants access to the area remove command
-    default: false
+    default: op
