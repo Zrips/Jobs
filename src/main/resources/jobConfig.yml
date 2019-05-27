@@ -104,17 +104,15 @@ Jobs:
       # Quest identification. Can be any ONE word or number or both of them. This doesn't have any real meaning but it can't repeat.
       1:
         # Quest name used for quests list, don't forget to enclose it with " "
-        Name: "Break Oak wood"
-        # Quest action can be any valid job action. Look at lower for all possible action types
-        Action: Break
-        # Target id or name. Comes in same format as it is for regular job action
-        # You can use only string or list to add more items in one quest
-        Target: "17-0"
-        # Target:
-        # - "17-0"
-        # - stone
-        # Amount of actions players should perform to complete this quest
-        Amount: 300
+        Name: "Break Oak wood"  
+        # List of objectives this quest will require for it to count as finished
+        # you can have as many objectives as you want
+        Objectives:
+        # This should be in a format as [actionType];[actionTarget];[amount]
+        # [actionType] can be any valid job action. Look lower for all possible action types
+        # [actionTarget] can be material name, block type, entity name and so on. This is defined in same way as any generic payable job action
+        # [amount] is how many times player should perform this action to complete quest
+        - Break;17-0;300
         # Command list to be performed after quest is finished.
         # Use [playerName] to insert players name who finished that quest
         RewardCommands:
@@ -131,15 +129,14 @@ Jobs:
         # Defines to which job level you want to give out this quest. 
         # Keep in mind that player will keep quest even if he is over level limit if he got new one while being under
         # In example: player with level 2 takes quests and levels up to level 5, he still can finish this quest and after next quest reset (check general config file) he will no longer have option to get this quest
-        toLevel: 3
+        toLevel: 5
         # Defines from which level you want to give option to get this quest
         # You can use both limitations to have limited quests for particular job level ranges
-        fromLevel: 5
+        fromLevel: 3
       2:
         Name: "Zombie killer"
-        Action: Kill
-        Target: Zombie
-        Amount: 50
+        Objectives:
+        - Kill;Zombie;50
         RewardCommands:
         - "money give [playerName] 2000"
         - "msg [playerName] Completed quest!"
@@ -148,9 +145,8 @@ Jobs:
         - "Get 2000 for this!"
       3:
         Name: "Chicken cooker"
-        Action: Smelt
-        Target: "COOKED_CHICKEN"
-        Amount: 20
+        Objectives:
+        - "Smelt;COOKED_CHICKEN;20"
         RewardCommands:
         - "money give [playerName] 300"
         - "msg [playerName] Completed quest!"
@@ -159,15 +155,13 @@ Jobs:
         - "Get 300 for this!"
       4:
         Name: "Strip logs"
-        Action: StripLogs
-        Target:
-        - stripped_birch_log
-        - stripped_acacia_log
-        Amount: 50
+        Objectives:
+        - "StripLogs;stripped_birch_log;25"
+        - "StripLogs;stripped_acacia_log;25"
         RewardCommands:
         - "msg [playerName] Completed quest!"
         RewardDesc:
-        - "Strip 50 birch and acacia logs!"
+        - "Strip 25 birch and acacia logs each!"
     ########################################################################
     # Section used to configure what items the job gets paid for, how much
     # they get paid and how much experience they gain.
@@ -575,7 +569,21 @@ Jobs:
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
-    rejoinCooldown: 10
+    rejoinCooldown: 10    
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Woodpecker"
+        Objectives:
+        - Break;oak_log;50
+        - Break;birch_log;50
+        - Break;jungle_log;50
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Break logs and get money"
+        - "Get 100 for this!"
     Gui:
       Id: 17
       Data: 2
@@ -679,6 +687,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "DarkOne"
+        Objectives:
+        - Break;stone;50
+        - Break;granite;50
+        - Break;sandstone;50
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Break blocks and get money"
+        - "Get 100 for this!"
     Gui:
       Id: 270
       Data: 0
@@ -861,6 +883,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Architect"
+        Objectives:
+        - Place;spruce_planks;50
+        - Place;birch_planks;50
+        - Place;wool;50
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Place blocks and get money"
+        - "Get 100 for this!"
     Gui:
       Item: brick_stairs
     Place:
@@ -1603,6 +1639,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Ground Mole"
+        Objectives:
+        - Break;dirt;50
+        - Break;grass_block;50
+        - Break;gravel;50
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Dig blocks and get money"
+        - "Get 100 for this!"
     Gui:
       Id: 269
       Data: 0
@@ -1658,6 +1708,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Regular Joe"
+        Objectives:
+        - Breed;Sheep;10
+        - Shear;White;10
+        - Milk;Cow;3
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Be a farmer and get money"
+        - "Get 100 for this!"
     Gui:
       Item: wooden_hoe
     Tame:
@@ -2037,6 +2101,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Predator"
+        Objectives:
+        - Kill;Wolf;10
+        - Kill;Creeper;3
+        - Kill;Skeleton;10
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Kill everything what moves and get money"
+        - "Get 100 for this!"
     Gui:
       Id: 261
       Data: 0
@@ -2182,6 +2260,18 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Galileo"
+        Objectives:
+        - Explore;1;30
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Go on a trip and get money"
+        - "Get 100 for this!"
     Gui:
       Id: 301
       Data: 0
@@ -2222,6 +2312,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Master Crafter"
+        Objectives:
+        - Craft;dispenser;10
+        - Craft;chest;10
+        - Craft;ladder;30
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Craft and get money"
+        - "Get 100 for this!"
     Gui:
       Item: crafting_table
     Craft:
@@ -2759,6 +2863,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Catcher"
+        Objectives:
+        - Fish;cod;2
+        - Fish;salmon;2
+        - Fish;tropical_fish;2
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Catch fish and get money"
+        - "Get 100 for this!"
     Gui:
       Item: fishing_rod
     Fish:
@@ -2795,6 +2913,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "War never ends"
+        Objectives:
+        - Craft;wooden_sword;2
+        - Craft;iron_chestplate;2
+        - Craft;gold_leggings;2
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Craft weapons and get money"
+        - "Get 100 for this!"
     Gui:
       Id: 58
       Data: 0
@@ -2933,6 +3065,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Heavy drinker"
+        Objectives:
+        - Brew;glowstone_dust;2
+        - Brew;redstone;2
+        - Brew;sugar;2
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Brew some stuff and get money"
+        - "Get 100 for this!"
     Gui:
       Id: 379
       Data: 0
@@ -3018,6 +3164,20 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
+    maxDailyQuests: 1    
+    Quests:
+      1:
+        Name: "Harry the wizard"
+        Objectives:
+        - Enchant;wood_sword;1
+        - Enchant;diamond_sword;1
+        - Enchant;ARROW_DAMAGE;1
+        RewardCommands:
+        - "money give [playerName] 100"
+        - "msg [playerName] Completed quest!"
+        RewardDesc:
+        - "Be a wizard and get money"
+        - "Get 100 for this!"
     Gui:
       Id: 116
       Data: 0
