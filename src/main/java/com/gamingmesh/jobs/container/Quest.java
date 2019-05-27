@@ -2,7 +2,11 @@ package com.gamingmesh.jobs.container;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
 
@@ -11,50 +15,21 @@ public class Quest {
     private String configName;
     private String questName;
     private Job job;
-    private ActionType action = null;
     private Long validUntil = 0L;
-
-    private int id;
-    private String meta;
-    private String name;
 
     private int chance = 0;
     private Integer minLvl = null;
     private Integer maxLvl = null;
 
-    private int amount = Integer.MAX_VALUE;
-
     private List<String> rewardCmds = new ArrayList<>();
     private List<String> rewards = new ArrayList<>();
 
-    public Quest(String questName, Job job, ActionType action) {
+    private HashMap<String, QuestObjective> objectives = new HashMap<String, QuestObjective>();
+    private Set<ActionType> actions = new HashSet<ActionType>();
+
+    public Quest(String questName, Job job) {
 	this.questName = questName;
 	this.job = job;
-	this.action = action;
-    }
-
-    public int getTargetId() {
-	return id;
-    }
-
-    public void setTargetId(int id) {
-	this.id = id;
-    }
-
-    public String getTargetMeta() {
-	return meta;
-    }
-
-    public void setTargetMeta(String meta) {
-	this.meta = meta;
-    }
-
-    public String getTargetName() {
-	return name;
-    }
-
-    public void setTargetName(String name) {
-	this.name = name;
     }
 
     public List<String> getRewardCmds() {
@@ -71,14 +46,6 @@ public class Quest {
 
     public void setDescription(List<String> rewards) {
 	this.rewards = rewards;
-    }
-
-    public int getAmount() {
-	return amount;
-    }
-
-    public void setAmount(int amount) {
-	this.amount = amount;
     }
 
     public Long getValidUntil() {
@@ -106,14 +73,6 @@ public class Quest {
 
     public void setValidUntil(Long validUntil) {
 	this.validUntil = validUntil;
-    }
-
-    public ActionType getAction() {
-	return action;
-    }
-
-    public void setAction(ActionType action) {
-	this.action = action;
     }
 
     public Job getJob() {
@@ -177,4 +136,34 @@ public class Quest {
 	return true;
     }
 
+    public HashMap<String, QuestObjective> getObjectives() {
+	return objectives;
+    }
+
+    public boolean hasObjective(QuestObjective objective) {
+	for (Entry<String, QuestObjective> one : this.objectives.entrySet()) {
+	    if (one.getValue().getTargetId() == objective.getTargetId() &&
+		one.getValue().getAction() == objective.getAction() &&
+		objective.getAmount() == one.getValue().getAmount() &&
+		objective.getTargetName() == one.getValue().getTargetName())
+		return true;
+	}
+	return false;
+    }
+
+    public void setObjectives(HashMap<String, QuestObjective> objectives) {
+	this.objectives = objectives;
+	for (Entry<String, QuestObjective> one : objectives.entrySet()) {
+	    actions.add(one.getValue().getAction());
+	}
+    }
+
+    public void addObjective(QuestObjective objective) {
+	this.objectives.put(objective.getTargetName(), objective); 
+	actions.add(objective.getAction());
+    }
+
+    public boolean hasAction(ActionType action) {
+	return this.actions.contains(action);
+    }
 }

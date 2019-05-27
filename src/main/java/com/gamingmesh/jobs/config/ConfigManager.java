@@ -58,6 +58,7 @@ import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.Quest;
+import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
@@ -870,28 +871,46 @@ public class ConfigManager {
 			ConfigurationSection sqsection = qsection.getConfigurationSection(one);
 
 			String name = sqsection.getString("Name", one);
+			Quest quest = new Quest(name, job);
 
-			ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
 			KeyValues kv = null;
 			if (sqsection.isString("Target")) {
+			    ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
 			    kv = getKeyValue(sqsection.getString("Target"), actionType, jobName);
-			} else if (sqsection.isList("Target")) {
-			    List<String> list = sqsection.getStringList("Target");
-			    for (int i = 0; i < list.size(); i++) {
-				kv = getKeyValue(list.get(i), actionType, jobName);
+
+			    if (kv != null) {
+				int amount = sqsection.getInt("Amount", 1);
+				QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(), kv.getType() + kv.getSubType(), amount);
+				quest.addObjective(objective);
 			    }
 			}
 
-			if (kv == null)
-			    kv = getKeyValue("STONE", actionType, jobName);
+			if (sqsection.isList("Objectives")) {
+			    List<String> list = sqsection.getStringList("Objectives");
+			    for (String oneObjective : list) {
+				String[] split = oneObjective.split(";");
+				if (split.length != 3) {
+				    Jobs.getPluginLogger().warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");
+				    continue;
+				}
+				try {
+				    ActionType actionType = ActionType.getByName(split[0]);
+				    kv = getKeyValue(split[1], actionType, jobName);
+				    if (kv != null) {
+					int amount = Integer.parseInt(split[2]);
+					QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(), kv.getType() + kv.getSubType(), amount);
+					quest.addObjective(objective);
+				    }
+				} catch (Exception | Error e) {
+				    Jobs.getPluginLogger().warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");
+				}
+			    }
+			}
 
-			int amount = sqsection.getInt("Amount");
 			int chance = sqsection.getInt("Chance", 100);
 
 			List<String> commands = sqsection.getStringList("RewardCommands");
 			List<String> desc = sqsection.getStringList("RewardDesc");
-
-			Quest quest = new Quest(name, job, actionType);
 
 			if (sqsection.isInt("fromLevel"))
 			    quest.setMinLvl(sqsection.getInt("fromLevel"));
@@ -900,11 +919,7 @@ public class ConfigManager {
 			    quest.setMaxLvl(sqsection.getInt("toLevel"));
 
 			quest.setConfigName(one);
-			quest.setAmount(amount);
 			quest.setChance(chance);
-			quest.setTargetId(kv.getId());
-			quest.setTargetMeta(kv.getMeta());
-			quest.setTargetName(kv.getType() + kv.getSubType());
 			quest.setRewardCmds(commands);
 			quest.setDescription(desc);
 			quests.add(quest);

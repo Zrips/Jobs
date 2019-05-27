@@ -15,6 +15,7 @@ import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIPotionType;
+import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
 import com.gamingmesh.jobs.stuff.Util;
@@ -28,9 +29,13 @@ public class NameTranslatorManager {
     public ArrayList<NameList> ListOfColors = new ArrayList<>();
 
     public String Translate(String materialName, JobInfo info) {
+	return Translate(materialName, info.getActionType(), info.getId(), info.getMeta(), info.getName());
+    }
+
+    public String Translate(String materialName, ActionType action, Integer id, String meta, String mame) {
 	// Translating name to user friendly
 	if (Jobs.getGCManager().UseCustomNames)
-	    switch (info.getActionType()) {
+	    switch (action) {
 	    case BREAK:
 	    case TNTBREAK:
 	    case EAT:
@@ -50,13 +55,13 @@ public class NameTranslatorManager {
 		}
 		for (NameList one : ListOfNames) {
 		    String ids = one.getId() + ":" + one.getMeta();
-		    if (!one.getMeta().equalsIgnoreCase("") && ids.equalsIgnoreCase(info.getId() + ":" + info.getMeta()) && !one.getId().equalsIgnoreCase("0")) {
+		    if (!one.getMeta().equalsIgnoreCase("") && ids.equalsIgnoreCase(id + ":" + meta) && !one.getId().equalsIgnoreCase("0")) {
 			return one.getName();
 		    }
 		}
 		for (NameList one : ListOfNames) {
 		    String ids = one.getId();
-		    if (ids.equalsIgnoreCase(String.valueOf(info.getId())) && !one.getId().equalsIgnoreCase("0")) {
+		    if (ids.equalsIgnoreCase(String.valueOf(id)) && !one.getId().equalsIgnoreCase("0")) {
 			return one.getName();
 		    }
 		}
@@ -67,15 +72,15 @@ public class NameTranslatorManager {
 	    case TAME:
 		for (NameList one : ListOfEntities) {
 		    String ids = one.getId() + ":" + one.getMeta();
-		    if (!one.getMeta().equalsIgnoreCase("") && ids.equalsIgnoreCase(info.getId() + ":" + info.getMeta()) && !one.getId().equalsIgnoreCase("0")) {
+		    if (!one.getMeta().equalsIgnoreCase("") && ids.equalsIgnoreCase(id + ":" + meta) && !one.getId().equalsIgnoreCase("0")) {
 			return one.getName();
 		    }
 		    ids = one.getId();
-		    if (ids.equalsIgnoreCase(String.valueOf(info.getId())) && !one.getId().equalsIgnoreCase("0")) {
+		    if (ids.equalsIgnoreCase(String.valueOf(id)) && !one.getId().equalsIgnoreCase("0")) {
 			return one.getName();
 		    }
 		    ids = one.getMinecraftName();
-		    if (ids.equalsIgnoreCase(info.getName())) {
+		    if (ids.equalsIgnoreCase(mame)) {
 			return one.getName();
 		    }
 		}
@@ -99,7 +104,7 @@ public class NameTranslatorManager {
 	    case SHEAR:
 		for (NameList one : ListOfColors) {
 		    String ids = one.getMinecraftName();
-		    if (ids.equalsIgnoreCase(info.getName())) {
+		    if (ids.equalsIgnoreCase(mame)) {
 			return one.getName();
 		    }
 		}
@@ -110,7 +115,7 @@ public class NameTranslatorManager {
 	    case DRINK:
 		for (NameList one : ListOfPotionNames) {
 		    String ids = one.getMinecraftName();
-		    if (ids.equalsIgnoreCase(info.getName())) {
+		    if (ids.equalsIgnoreCase(mame)) {
 			return one.getName();
 		    }
 		}

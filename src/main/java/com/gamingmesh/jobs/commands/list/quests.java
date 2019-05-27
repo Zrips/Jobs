@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,9 +12,11 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.stuff.TimeManage;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class quests implements Cmd {
 
@@ -53,13 +56,13 @@ public class quests implements Cmd {
 	    for (JobProgression jobProg : jPlayer.getJobProgression()) {
 		List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
 		for (QuestProgression q : list) {
-		    String progressLine = Jobs.getCommandManager().jobProgressMessage(q.getQuest().getAmount(), q.getAmountDone());
+		    String progressLine = Jobs.getCommandManager().jobProgressMessage(q.getTotalAmountNeeded(), q.getTotalAmountDone());
 
 		    if (q.isCompleted())
 			progressLine = Jobs.getLanguage().getMessage("command.quests.output.completed");
 		    RawMessage rm = new RawMessage();
 		    String msg = Jobs.getLanguage().getMessage("command.quests.output.questLine", "[progress]",
-			progressLine, "[questName]", q.getQuest().getQuestName(), "[done]", q.getAmountDone(), "[required]", q.getQuest().getAmount());
+			progressLine, "[questName]", q.getQuest().getQuestName(), "[done]", q.getTotalAmountDone(), "[required]", q.getTotalAmountNeeded());
 
 		    List<String> hoverMsgs = Jobs.getLanguage().getMessageList("command.quests.output.hover");
 		    List<String> hoverList = new ArrayList<>();
@@ -74,6 +77,18 @@ public class quests implements Cmd {
 			    }
 			} else
 			    hoverList.add(current);
+
+		    }
+
+		    for (Entry<String, QuestObjective> oneObjective : q.getQuest().getObjectives().entrySet()) {
+			
+			hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +
+			    Jobs.getNameTranslatorManager().Translate(oneObjective.getKey(), oneObjective.getValue().getAction(), oneObjective.getValue().getTargetId(), oneObjective.getValue()
+				.getTargetMeta(), oneObjective.getValue().getTargetName())
+			    + " " + q.getAmountDone(oneObjective.getValue()) + "/"
+			    + oneObjective.getValue().getAmount());
+			
+			
 		    }
 
 		    String hover = "";
