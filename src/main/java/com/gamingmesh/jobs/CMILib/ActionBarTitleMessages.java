@@ -169,8 +169,8 @@ public class ActionBarTitleMessages {
 		}
 
 	    } catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException ex) {
-			simpleTitleMessages = true;
-			Bukkit.getLogger().log(Level.SEVERE, "Your server can't fully support title messages. They will be shown in chat instead.");
+		simpleTitleMessages = true;
+		Bukkit.getLogger().log(Level.SEVERE, "Your server can't fully support title messages. They will be shown in chat instead.");
 	    }
 	    return;
 	});

@@ -52,7 +52,7 @@ public class exp implements Cmd {
 
 	double amount = 0.0;
 	try {
-		amount = Double.parseDouble(args[3]);
+	    amount = Double.parseDouble(args[3]);
 	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    return true;
@@ -80,7 +80,7 @@ public class exp implements Cmd {
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    } else
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.exp.error.nojob"));
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.exp.error.nojob"));
 	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}

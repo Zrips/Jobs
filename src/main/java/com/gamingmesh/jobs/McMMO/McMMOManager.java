@@ -18,7 +18,6 @@ public class McMMOManager {
     private HashMap<UUID, HashMap<String, Long>> map = new HashMap<>();
 
     public double getMultiplier(Player player) {
-
 	if (player == null)
 	    return 0D;
 
@@ -32,14 +31,14 @@ public class McMMOManager {
 		    return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
 		InfoMap.remove(SuperAbilityType.TREE_FELLER.toString());
 	    }
-	    
+
 	    t = InfoMap.get(SuperAbilityType.GIGA_DRILL_BREAKER.toString());
 	    if (t != null) {
 		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
 		InfoMap.remove(SuperAbilityType.GIGA_DRILL_BREAKER.toString());
 	    }
-	    
+
 	    t = InfoMap.get(SuperAbilityType.SUPER_BREAKER.toString());
 	    if (t != null) {
 		if (t > System.currentTimeMillis())

@@ -147,48 +147,48 @@ public class CMIItemStack {
     }
 
     public CMIItemStack addEnchant(Enchantment enchant, Integer level) {
-    if (enchant == null)
-        return this;
-    ItemMeta meta = getItemStack().getItemMeta();
-    meta.addEnchant(enchant, level, true);
-    getItemStack().setItemMeta(meta);
-    return this;
+	if (enchant == null)
+	    return this;
+	ItemMeta meta = getItemStack().getItemMeta();
+	meta.addEnchant(enchant, level, true);
+	getItemStack().setItemMeta(meta);
+	return this;
     }
 
     public CMIItemStack addEnchant(HashMap<Enchantment, Integer> enchants) {
-    if (enchants == null || enchants.isEmpty())
-        return this;
-    for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
-        addEnchant(oneEnch.getKey(), oneEnch.getValue());
-    }
-    return this;
+	if (enchants == null || enchants.isEmpty())
+	    return this;
+	for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
+	    addEnchant(oneEnch.getKey(), oneEnch.getValue());
+	}
+	return this;
     }
 
     public CMIItemStack clearEnchants() {
-    ItemMeta meta = getItemStack().getItemMeta();
-    meta.getEnchants().clear();
-    getItemStack().setItemMeta(meta);
-    return this;
+	ItemMeta meta = getItemStack().getItemMeta();
+	meta.getEnchants().clear();
+	getItemStack().setItemMeta(meta);
+	return this;
     }
 
     public List<String> getLore() {
-    ItemMeta meta = this.getItemStack().getItemMeta();
+	ItemMeta meta = this.getItemStack().getItemMeta();
 //    List<String> lore = null;
-    if (meta != null) {
-        List<String> lore = meta.getLore();
-        if (lore == null) {
-    	lore = new ArrayList<String>();
-    	meta.setLore(lore);
+	if (meta != null) {
+	    List<String> lore = meta.getLore();
+	    if (lore == null) {
+		lore = new ArrayList<String>();
+		meta.setLore(lore);
 //    	this.getItemStack().setItemMeta(meta);
-        }
+	    }
 
-        return meta.getLore() == null ? new ArrayList<String>() : meta.getLore();
-    }
-    return new ArrayList<String>();
+	    return meta.getLore() == null ? new ArrayList<String>() : meta.getLore();
+	}
+	return new ArrayList<String>();
     }
 
     public String getRealName() {
-    return getCMIType() == null || getCMIType() == CMIMaterial.NONE ? getType().name() : getCMIType().getName();
+	return getCMIType() == null || getCMIType() == CMIMaterial.NONE ? getType().name() : getCMIType().getName();
 //    if (this.getItemStack() != null) {
     //
 ////        String translated = CMI.getInstance().getItemManager().getTranslatedName(this.getItemStack());
@@ -203,11 +203,11 @@ public class CMIItemStack {
     }
 
     public String getBukkitName() {
-    return bukkitName == null || bukkitName.isEmpty() ? null : bukkitName;
+	return bukkitName == null || bukkitName.isEmpty() ? null : bukkitName;
     }
 
     public void setBukkitName(String bukkitName) {
-    this.bukkitName = bukkitName;
+	this.bukkitName = bukkitName;
     }
 
     public String getMojangName() {
@@ -218,7 +218,7 @@ public class CMIItemStack {
 //    } catch (Exception e) {
     //
 //    }
-    return mojangName == null || mojangName.isEmpty() ? getCMIType().getMaterial().name() : mojangName;
+	return mojangName == null || mojangName.isEmpty() ? getCMIType().getMaterial().name() : mojangName;
     }
 
     public void setMojangName(String mojangName) {

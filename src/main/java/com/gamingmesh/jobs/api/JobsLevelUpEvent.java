@@ -2,14 +2,11 @@ package com.gamingmesh.jobs.api;
 
 import org.bukkit.Sound;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
 
-public final class JobsLevelUpEvent extends Event implements Cancellable {
-    private static final HandlerList handlers = new HandlerList();
+public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     private JobsPlayer player;
     private String JobName;
     private Title OldTitle;
@@ -156,14 +153,5 @@ public final class JobsLevelUpEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean cancelled) {
 	this.cancelled = cancelled;
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-	return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-	return handlers;
     }
 }

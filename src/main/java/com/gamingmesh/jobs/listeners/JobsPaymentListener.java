@@ -402,7 +402,7 @@ public class JobsPaymentListener implements Listener {
 	if (item != null && !item.getType().equals(Material.AIR)) {
 	    // Prevent item durability loss
 	    if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-				- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+			- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
 		return;
 
 	    // Protection for block break with silktouch
@@ -715,7 +715,6 @@ public class JobsPaymentListener implements Listener {
 	return stack != null && stack.getAmount() > 0;
     }
 
-    @SuppressWarnings("deprecation")
     private static boolean hasSameItem(ItemStack a, ItemStack b) {
 	if (a == null)
 	    return b == null;
@@ -723,8 +722,8 @@ public class JobsPaymentListener implements Listener {
 	    return false;
 	CMIMaterial mat1 = CMIMaterial.get(a);
 	CMIMaterial mat2 = CMIMaterial.get(b);
-	return mat1 == mat2 && a.getDurability() == b.getDurability() && Objects.equal(a.getData(), b.getData()) && Objects.equal(a.getEnchantments(), b
-	    .getEnchantments());
+	return mat1 == mat2 && Jobs.getNms().getDurability(a) == Jobs.getNms().getDurability(b) && Objects.equal(a.getData(), b.getData()) &&
+	    Objects.equal(a.getEnchantments(), b.getEnchantments());
     }
 
     private static boolean isStackSumLegal(ItemStack a, ItemStack b) {
@@ -812,7 +811,7 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1).getType().equals(Material.ENCHANTED_BOOK)) {
+	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1) != null && inv.getItem(1).getType().equals(Material.ENCHANTED_BOOK)) {
 	    Map<Enchantment, Integer> enchants = resultStack.getEnchantments();
 	    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
 		Enchantment enchant = oneEnchant.getKey();
@@ -1119,7 +1118,7 @@ public class JobsPaymentListener implements Listener {
 	if (item != null && !item.getType().equals(Material.AIR)) {
 	    // Prevent item durability loss
 	    if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-				- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+			- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
 		return;
 	}
 

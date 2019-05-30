@@ -396,11 +396,11 @@ public class Placeholder {
 	    case user_totallevels:
 		return Integer.toString(user.getTotalLevels());
 	    case user_points:
-	    PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
-	    return Double.toString(pointInfo.getCurrentPoints());
+		PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
+		return Double.toString(pointInfo.getCurrentPoints());
 	    case user_total_points:
-	    pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
-	    return Double.toString(pointInfo.getTotalPoints());
+		pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
+		return Double.toString(pointInfo.getTotalPoints());
 	    case user_issaved:
 		return convert(user.isSaved());
 	    case user_displayhonorific:

@@ -16,7 +16,6 @@ import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.stuff.TimeManage;
-import com.gamingmesh.jobs.stuff.Util;
 
 public class quests implements Cmd {
 
@@ -81,18 +80,14 @@ public class quests implements Cmd {
 		    }
 
 		    for (Entry<String, QuestObjective> oneObjective : q.getQuest().getObjectives().entrySet()) {
-			
 			hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +
 			    Jobs.getNameTranslatorManager().Translate(oneObjective.getKey(), oneObjective.getValue().getAction(), oneObjective.getValue().getTargetId(), oneObjective.getValue()
 				.getTargetMeta(), oneObjective.getValue().getTargetName())
 			    + " " + q.getAmountDone(oneObjective.getValue()) + "/"
 			    + oneObjective.getValue().getAmount());
-			
-			
 		    }
 
 		    String hover = "";
-
 		    for (String one : hoverList) {
 			if (!hover.isEmpty())
 			    hover += "\n";

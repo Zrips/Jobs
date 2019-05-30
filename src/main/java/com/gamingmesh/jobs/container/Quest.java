@@ -24,8 +24,8 @@ public class Quest {
     private List<String> rewardCmds = new ArrayList<>();
     private List<String> rewards = new ArrayList<>();
 
-    private HashMap<String, QuestObjective> objectives = new HashMap<String, QuestObjective>();
-    private Set<ActionType> actions = new HashSet<ActionType>();
+    private HashMap<String, QuestObjective> objectives = new HashMap<>();
+    private Set<ActionType> actions = new HashSet<>();
 
     public Quest(String questName, Job job) {
 	this.questName = questName;

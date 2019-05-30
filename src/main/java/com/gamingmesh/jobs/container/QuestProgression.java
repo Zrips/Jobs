@@ -12,7 +12,7 @@ public class QuestProgression {
 //    private int amountDone = 0;
     private Long validUntil;
     private boolean givenReward = false;
-    private HashMap<QuestObjective, Integer> done = new HashMap<QuestObjective, Integer>();
+    private HashMap<QuestObjective, Integer> done = new HashMap<>();
 
     public QuestProgression(Quest quest) {
 	this.quest = quest;

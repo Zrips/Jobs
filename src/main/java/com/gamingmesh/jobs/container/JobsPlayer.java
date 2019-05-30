@@ -33,7 +33,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -907,7 +906,7 @@ public class JobsPlayer {
 
 		g.put(qp.getQuest().getConfigName(), qp);
 	    }
-	    
+
 	    if (qp.getQuest() == null) {
 		g.remove(one.getKey());
 		continue;
