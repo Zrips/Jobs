@@ -807,6 +807,11 @@ public class JobsPaymentListener implements Listener {
 	if (!payIfCreative(player))
 	    return;
 
+	// Fix money dupping issue when clicking continuously in the result item, but if in the
+	// cursor have item, then dupping the money, #438
+	if (event.isLeftClick() && !player.getInventory().contains(inv.getItem(2)))
+	    return;
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
