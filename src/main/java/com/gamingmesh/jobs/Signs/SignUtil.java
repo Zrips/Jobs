@@ -157,8 +157,8 @@ public class SignUtil {
 			break;
 		    String PlayerName = PlayerList.get(i + number).getPlayerName();
 
-		    if (PlayerName != null && PlayerName.length() > 8) {
-			String PlayerNameStrip = PlayerName.split("(?<=\\G.{7})")[0];
+		    if (PlayerName != null && PlayerName.length() > 15) {
+			String PlayerNameStrip = PlayerName.split("(?<=\\G.{15})")[0];
 			PlayerName = PlayerNameStrip + "~";
 		    }
 
@@ -181,10 +181,14 @@ public class SignUtil {
 
 		TopList pl = PlayerList.get(one.getNumber() - 1);
 		String PlayerName = pl.getPlayerName();
-		if (PlayerName.length() > 8) {
-		    String PlayerNameStrip = PlayerName.split("(?<=\\G.{7})")[0];
+		if (PlayerName != null && PlayerName.length() > 15) {
+		    String PlayerNameStrip = PlayerName.split("(?<=\\G.{15})")[0];
 		    PlayerName = PlayerNameStrip + "~";
 		}
+
+		if (PlayerName == null)
+		    PlayerName = "Unknown";
+
 		String line1 = Jobs.getLanguage().getMessage("signs.SpecialList.p" + one.getNumber(),
 		    "[number]", one.getNumber() + number + 1,
 		    "[player]", PlayerName,
