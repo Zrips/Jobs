@@ -25,7 +25,7 @@ public class NameTranslatorManager {
     public ArrayList<NameList> ListOfNames = new ArrayList<>();
     public ArrayList<NameList> ListOfPotionNames = new ArrayList<>();
     public ArrayList<NameList> ListOfEntities = new ArrayList<>();
-    public HashMap<String, NameList> ListOfEnchants = new HashMap<String, NameList>();
+    public HashMap<String, NameList> ListOfEnchants = new HashMap<>();
     public ArrayList<NameList> ListOfColors = new ArrayList<>();
 
     public String Translate(String materialName, JobInfo info) {
@@ -354,22 +354,21 @@ public class NameTranslatorManager {
 	    }
 
 	    for (Enchantment one : Enchantment.values()) {
-
 		if (one == null)
 		    continue;
-		if (one.getName() == null)
+		if (Jobs.getNms().getEnchantName(one) == null)
 		    continue;
 
-		String name = Util.firstToUpperCase(one.getName().toString()).replace("_", " ");
+		String name = Util.firstToUpperCase(Jobs.getNms().getEnchantName(one).toString()).replace("_", " ");
 		if (c.getC().isConfigurationSection("EnchantList"))
 		    for (String onek : c.getC().getConfigurationSection("EnchantList").getKeys(false)) {
 			String old = c.getC().getString("EnchantList." + onek + ".MCName");
-			if (old != null && old.equalsIgnoreCase(one.getName())) {
+			if (old != null && old.equalsIgnoreCase(Jobs.getNms().getEnchantName(one))) {
 			    name = c.getC().getString("EnchantList." + onek + ".Name");
 			    break;
 			}
 		    }
-		c.get("EnchantList." + one.getName(), name);
+		c.get("EnchantList." + Jobs.getNms().getEnchantName(one), name);
 	    }
 
 	    // Color list

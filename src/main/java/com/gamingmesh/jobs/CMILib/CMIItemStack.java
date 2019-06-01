@@ -435,13 +435,13 @@ public class CMIItemStack {
 	    for (Entry<Enchantment, Integer> one : meta.getStoredEnchants().entrySet()) {
 		if (!s.isEmpty())
 		    s += ";";
-		s += one.getKey().getName() + "x" + one.getValue();
+		s += Jobs.getNms().getEnchantName(one.getKey()) + "x" + one.getValue();
 	    }
 
 	    for (Entry<Enchantment, Integer> one : meta.getEnchants().entrySet()) {
 		if (!s.isEmpty())
 		    s += ";";
-		s += one.getKey().getName() + "x" + one.getValue();
+		s += Jobs.getNms().getEnchantName(one.getKey()) + "x" + one.getValue();
 	    }
 	    if (!s.isEmpty())
 		liner += ":" + s;

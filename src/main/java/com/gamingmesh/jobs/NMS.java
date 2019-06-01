@@ -2,6 +2,7 @@ package com.gamingmesh.jobs;
 
 import java.util.List;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -21,4 +22,8 @@ public interface NMS {
     public double getMaxHealth(LivingEntity entity);
 
     public short getDurability(ItemStack item);
+
+    public Enchantment getEnchantment(String type);
+
+    public String getEnchantName(Enchantment type);
 }

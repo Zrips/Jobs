@@ -620,10 +620,10 @@ public class ConfigManager {
 				String[] enchantid = str4.split(":");
 				if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
 				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-				    enchantMeta.addStoredEnchant(Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]), true);
+				    enchantMeta.addStoredEnchant(Jobs.getNms().getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]), true);
 				    GUIitem.setItemMeta(enchantMeta);
 				} else
-				    GUIitem.addUnsafeEnchantment(Enchantment.getByName(enchantid[0]), Integer.parseInt(enchantid[1]));
+				    GUIitem.addUnsafeEnchantment(Jobs.getNms().getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]));
 			    }
 			}
 		    } else if (guiSection.contains("CustomSkull")) {
@@ -649,10 +649,10 @@ public class ConfigManager {
 				String[] id = str4.split(":");
 				if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
 				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-				    enchantMeta.addStoredEnchant(Enchantment.getByName(id[0]), Integer.parseInt(id[1]), true);
+				    enchantMeta.addStoredEnchant(Jobs.getNms().getEnchantment(id[0]), Integer.parseInt(id[1]), true);
 				    GUIitem.setItemMeta(enchantMeta);
 				} else
-				    GUIitem.addUnsafeEnchantment(Enchantment.getByName(id[0]), Integer.parseInt(id[1]));
+				    GUIitem.addUnsafeEnchantment(Jobs.getNms().getEnchantment(id[0]), Integer.parseInt(id[1]));
 			    }
 			}
 		    } else if (guiSection.contains("CustomSkull")) {
@@ -778,7 +778,7 @@ public class ConfigManager {
 			    if (!eachLine.contains("="))
 				continue;
 
-			    Enchantment ench = Enchantment.getByName(eachLine.split("=")[0]);
+			    Enchantment ench = Jobs.getNms().getEnchantment(eachLine.split("=")[0]);
 			    Integer level = -1;
 			    try {
 				level = Integer.parseInt(eachLine.split("=")[1]);
@@ -835,7 +835,7 @@ public class ConfigManager {
 			    if (!eachLine.contains("="))
 				continue;
 
-			    Enchantment ench = Enchantment.getByName(eachLine.split("=")[0]);
+			    Enchantment ench = Jobs.getNms().getEnchantment(eachLine.split("=")[0]);
 			    Integer level = -1;
 			    try {
 				level = Integer.parseInt(eachLine.split("=")[1]);
@@ -1126,7 +1126,7 @@ public class ConfigManager {
 			    }
 
 			} else if (actionType == ActionType.ENCHANT) {
-			    Enchantment enchant = Enchantment.getByName(myKey.toUpperCase());
+			    Enchantment enchant = Jobs.getNms().getEnchantment(myKey);
 			    if (enchant != null) {
 				if (Jobs.getVersionCheckManager().getVersion().isEqualOrLower(Version.v1_12_R1)) {
 				    try {

@@ -3274,417 +3274,69 @@ Jobs:
         income: 6.0
         points: 6.0
         experience: 30.0
-      #Power
-      ARROW_DAMAGE-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      ARROW_DAMAGE-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      ARROW_DAMAGE-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      ARROW_DAMAGE-4:
-        income: 40.0
-        points: 40.0
-        experience: 40.0
-      ARROW_DAMAGE-5:
-        income: 50.0
-        points: 50.0
-        experience: 50.0
-      #Flame
-      ARROW_FIRE:
-        income: 10.0
-        points: 10.0
-        experience: 30.0
-      #Infinity
-      ARROW_INFINITE:
-        income: 20.0
-        points: 20.0
-        experience: 50.0
-      #Punch
-      ARROW_KNOCKBACK-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      ARROW_KNOCKBACK-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      #Sharpness
-      DAMAGE_ALL-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      DAMAGE_ALL-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      DAMAGE_ALL-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      DAMAGE_ALL-4:
-        income: 40.0
-        points: 40.0
-        experience: 40.0
-      DAMAGE_ALL-5:
-        income: 50.0
-        points: 50.0
-        experience: 50.0
-      #Bane of Arthropods
-      DAMAGE_ARTHROPODS-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      DAMAGE_ARTHROPODS-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      DAMAGE_ARTHROPODS-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      DAMAGE_ARTHROPODS-4:
-        income: 40.0
-        points: 40.0
-        experience: 40.0
-      DAMAGE_ARTHROPODS-5:
-        income: 50.0
-        points: 50.0
-        experience: 50.0
-      #Smite
-      DAMAGE_UNDEAD-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      DAMAGE_UNDEAD-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      DAMAGE_UNDEAD-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      DAMAGE_UNDEAD-4:
-        income: 40.0
-        points: 40.0
-        experience: 40.0
-      DAMAGE_UNDEAD-5:
-        income: 50.0
-        points: 50.0
-        experience: 50.0
-      DEPTH_STRIDER-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      DEPTH_STRIDER-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      DEPTH_STRIDER-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      #Efficiency
-      DIG_SPEED-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      DIG_SPEED-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      DIG_SPEED-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      DIG_SPEED-4:
-        income: 40.0
-        points: 40.0
-        experience: 40.0
-      DIG_SPEED-5:
-        income: 50.0
-        points: 50.0
-        experience: 50.0
-      #Unbreaking
-      DURABILITY-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      DURABILITY-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      DURABILITY-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      FIRE_ASPECT-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      FIRE_ASPECT-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      KNOCKBACK-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      KNOCKBACK-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      #Fortune
-      LOOT_BONUS_BLOCKS-1:
-        income: 20.0
-        points: 20.0
-        experience: 100.0
-      LOOT_BONUS_BLOCKS-2:
-        income: 40.0
-        points: 40.0
-        experience: 200.0
-      LOOT_BONUS_BLOCKS-3:
-        income: 80.0
-        points: 80.0
-        experience: 300.0
-      #Looting
-      LOOT_BONUS_MOBS-1:
-        income: 10.0
-        points: 10.0
-        experience: 20.0
-      LOOT_BONUS_MOBS-2:
-        income: 20.0
-        points: 20.0
-        experience: 40.0
-      LOOT_BONUS_MOBS-3:
-        income: 30.0
-        points: 30.0
-        experience: 60.0
-      #Luck of the Sea
-      LUCK-1:
-        income: 15.0
-        points: 15.0
-        experience: 10.0
-      LUCK-2:
-        income: 25.0
-        points: 25.0
-        experience: 20.0
-      LUCK-3:
-        income: 35.0
-        points: 35.0
-        experience: 30.0
-      LURE-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      LURE-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      LURE-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      #Respiration
-      OXYGEN-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      OXYGEN-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      OXYGEN-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      #Protection
-      PROTECTION_ENVIRONMENTAL-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      PROTECTION_ENVIRONMENTAL-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      PROTECTION_ENVIRONMENTAL-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      PROTECTION_ENVIRONMENTAL-4:
-        income: 40.0
-        points: 40.0
-        experience: 40.0
-      #Blast Protection
-      PROTECTION_EXPLOSIONS-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      PROTECTION_EXPLOSIONS-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      PROTECTION_EXPLOSIONS-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      PROTECTION_EXPLOSIONS-4:
-        income: 40.0
-        points: 40.0
-        experience: 40.0
-      #Feather Falling
-      PROTECTION_FALL-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      PROTECTION_FALL-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      PROTECTION_FALL-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      PROTECTION_FALL-4:
-        income: 40.0
-        points: 40.0
-        experience: 40.0
-      #Fire Protection
-      PROTECTION_FIRE-1:
-        income: 5.0
-        points: 5.0
-        experience: 10.0
-      PROTECTION_FIRE-2:
-        income: 10.0
-        points: 10.0
-        experience: 20.0
-      PROTECTION_FIRE-3:
-        income: 20.0
-        points: 20.0
-        experience: 30.0
-      PROTECTION_FIRE-4:
-        income: 30.0
-        points: 30.0
-        experience: 40.0
-      PROTECTION_PROJECTILE-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      PROTECTION_PROJECTILE-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      PROTECTION_PROJECTILE-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      PROTECTION_PROJECTILE-4:
-        income: 40.0
-        points: 40.0
-        experience: 40.0
-      SILK_TOUCH:
-        income: 100.0
-        points: 100.0
-        experience: 300.0
-      THORNS-1:
-        income: 10.0
-        points: 10.0
-        experience: 10.0
-      THORNS-2:
-        income: 20.0
-        points: 20.0
-        experience: 20.0
-      THORNS-3:
-        income: 30.0
-        points: 30.0
-        experience: 30.0
-      #Aqua Affinity
-      WATER_WORKER:
-        income: 30.0
-        points: 30.0
-        experience: 100.0
-      #1.13 enchantments
-      channeling:
-        income: 10
-        points: 10
-        experience: 10
-      #Curse of Binding
-      binding_curse:
-        income: 5
-        points: 5
-        experience: 5
-      #Curse of Vanishing
-      vanishing_curse:
-        income: 5
-        points: 5
-        experience: 5
-      frost_walker-1:
-        income: 10
-        points: 10
-        experience: 10
-      frost_walker-2:
-        income: 20
-        points: 20
-        experience: 20
-      impaling-1:
-        income: 10
-        points: 10
-        experience: 10
-      impaling-2:
-        income: 20
-        points: 20
-        experience: 20
-      impaling-3:
-        income: 30
-        points: 30
-        experience: 30
-      impaling-4:
-        income: 40
-        points: 40
-        experience: 40
-      impaling-5:
-        income: 50
-        points: 50
-        experience: 50
-      loyalty-1:
-        income: 10
-        points: 10
-        experience: 10
-      loyalty-2:
-        income: 20
-        points: 20
-        experience: 20
-      loyalty-3:
-        income: 30
-        points: 30
-        experience: 30
-      mending:
-        income: 10
-        points: 10
-        experience: 10
-      riptide:
-        income: 20
-        points: 20
-        experience: 20
-      sweeping_edge:
-        income: 15
-        points: 15
-        experience: 15
-      multishot:
-        income: 5
-        points: 5
-      piercing:
-        income: 7
-        points: 5
-        experience: 11
-      quick_charge:
-        income: 6
-        points: 4
+      # 1.13+: power
+      # 1.12 and under: arrow_damage
+      #power-1:
+      #  income: 10.0
+      #  points: 10.0
+      #  experience: 10.0
+      #arrow_damage-2:
+      #  income: 20.0
+      # 1.13+: flame
+      # 1.12 and under: arrow_fire
+      #arrow_fire:
+      #  income: 10.0
+      #  points: 10.0
+      #  experience: 30.0
+      # 1.13+: infinity
+      # 1.12 and under: arrow_infinite
+      #arrow_infinite:
+      #  income: 20.0
+      #  points: 20.0
+      #  experience: 50.0
+      # 1.13+: punch
+      # 1.12 and under: arrow_knockback
+      #punch-2:
+      #  income: 20.0
+      #  points: 20.0
+      #  experience: 20.0
+      # 1.13+: sharpness
+      # 1.12 and under: damage_all
+      #damage_all-5:
+      #  income: 50.0
+      #  points: 50.0
+      #  experience: 50.0
+      # 1.13+: bane_of_arthropods
+      # 1.12 and under: damage_arthropods
+      #damage_arthropods-4:
+      #  income: 40.0
+      #  points: 40.0
+      #  experience: 40.0
+      # 1.13+: smite
+      # 1.12 under: damage_undead
+      #damage_undead-1:
+      #  income: 10.0
+      #  points: 10.0
+      #depth_strider-3:
+      #  income: 30.0
+      #  points: 30.0
+      #  experience: 30.0
+      # 1.13+: efficiency
+      # 1.12 under: dig_speed
+      #efficiency-5:
+      #  income: 50.0
+      #  points: 50.0
+      #  experience: 50.0
+      # 1.13+: unbreaking
+      # 1.12 under: durability
+      #durability-1:
+      #  income: 10.0
+      #  points: 10.0
+      #  experience: 10.0
+      #fire_aspect-2:
+      #  income: 20.0
+      #  points: 20.0
+      #  experience: 20.0
   None:
     fullname: None
     shortname: N

@@ -408,7 +408,7 @@ public class JobsPaymentListener implements Listener {
 	    // Protection for block break with silktouch
 	    if (Jobs.getGCManager().useSilkTouchProtection) {
 		for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
-		    if (one.getKey().getName().equalsIgnoreCase("SILK_TOUCH")) {
+		    if (Jobs.getNms().getEnchantName(one.getKey()).equalsIgnoreCase("SILK_TOUCH")) {
 			if (Jobs.getBpManager().isInBp(block))
 			    return;
 		    }
@@ -775,7 +775,6 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	ItemStack resultStack = event.getCurrentItem();
-
 	if (resultStack == null)
 	    return;
 
@@ -823,7 +822,7 @@ public class JobsPaymentListener implements Listener {
 		if (enchant == null)
 		    continue;
 
-		String enchantName = enchant.getName();
+		String enchantName = Jobs.getNms().getEnchantName(enchant);
 		if (enchantName == null)
 		    continue;
 
@@ -886,7 +885,7 @@ public class JobsPaymentListener implements Listener {
 	    if (enchant == null)
 		continue;
 
-	    String enchantName = enchant.getName();
+	    String enchantName = Jobs.getNms().getEnchantName(enchant);
 	    if (enchantName == null)
 		continue;
 

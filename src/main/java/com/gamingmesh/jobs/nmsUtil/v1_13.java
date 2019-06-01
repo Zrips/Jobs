@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -45,5 +46,15 @@ public class v1_13 implements NMS {
     @Override
     public short getDurability(ItemStack item) {
 	return (short) ((Damageable) item.getItemMeta()).getDamage();
+    }
+
+    @Override
+    public Enchantment getEnchantment(String type) {
+	return Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(type.toLowerCase()));
+    }
+
+    @Override
+    public String getEnchantName(Enchantment type) {
+	return type.getKey().getKey();
     }
 }

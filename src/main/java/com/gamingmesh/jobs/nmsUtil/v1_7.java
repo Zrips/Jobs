@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
@@ -70,5 +71,15 @@ public class v1_7 implements NMS {
     @Override
     public short getDurability(ItemStack item) {
 	return item.getDurability();
+    }
+
+    @Override
+    public Enchantment getEnchantment(String type) {
+	return Enchantment.getByName(type.toUpperCase());
+    }
+
+    @Override
+    public String getEnchantName(Enchantment type) {
+	return type.getName();
     }
 }

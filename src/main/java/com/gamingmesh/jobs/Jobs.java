@@ -102,7 +102,6 @@ import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.PageInfo;
@@ -184,10 +183,10 @@ public class Jobs extends JavaPlugin {
     }
 
     /**
-    * Gets the McMMO Listener
+    * Gets the {@link #McMMOManager} file
     * 
-    * @return McMMO Listener
-    * @deprecated Use the getMcMMOManager()
+    * @return McMMO Manager
+    * @deprecated Use instead {@link #getMcMMOManager()}
     */
     @Deprecated
     public static McMMOManager getMcMMOlistener() {

@@ -442,7 +442,7 @@ public class ShopManager {
 			    if (!eachLine.contains("="))
 				continue;
 
-			    Enchantment ench = Enchantment.getByName(eachLine.split("=")[0]);
+			    Enchantment ench = Jobs.getNms().getEnchantment(eachLine.split("=")[0]);
 			    Integer level = -1;
 			    try {
 				level = Integer.parseInt(eachLine.split("=")[1]);

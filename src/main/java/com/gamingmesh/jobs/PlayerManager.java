@@ -603,8 +603,7 @@ public class PlayerManager {
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
 	    for (String line : message.split("\n")) {
 		if (Jobs.getGCManager().isBroadcastingSkillups()) {
-		    if (Jobs.getGCManager().BroadcastingSkillUpLevels.contains(oldLevel + 1) || Jobs.getGCManager().BroadcastingSkillUpLevels.contains(0))
-			Bukkit.getServer().broadcastMessage(line);
+		    Bukkit.getServer().broadcastMessage(line);
 		} else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
 			Jobs.getActionBar().send(player, line);
@@ -847,8 +846,8 @@ public class PlayerManager {
 	if (player == null || prog == null)
 	    return boost;
 
-	if (Jobs.getMcMMOlistener().mcMMOPresent || Jobs.getMcMMOlistener().mcMMOOverHaul)
-	    boost.add(BoostOf.McMMO, new BoostMultiplier().add(Jobs.getMcMMOlistener().getMultiplier(player.getPlayer())));
+	if (Jobs.getMcMMOManager().mcMMOPresent || Jobs.getMcMMOManager().mcMMOOverHaul)
+	    boost.add(BoostOf.McMMO, new BoostMultiplier().add(Jobs.getMcMMOManager().getMultiplier(player.getPlayer())));
 
 	if (ent != null && (ent instanceof Tameable)) {
 	    Tameable t = (Tameable) ent;

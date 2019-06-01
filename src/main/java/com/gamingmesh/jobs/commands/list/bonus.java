@@ -54,7 +54,7 @@ public class bonus implements Cmd {
 	    printBoost(sender, boost, BoostOf.NearSpawner);
 	printBoost(sender, boost, BoostOf.PetPay);
 
-	if (Jobs.getMcMMOlistener().mcMMOPresent || Jobs.getMcMMOlistener().mcMMOOverHaul && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
+	if (Jobs.getMcMMOManager().mcMMOPresent || Jobs.getMcMMOManager().mcMMOOverHaul && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
 	    printBoost(sender, boost, BoostOf.McMMO);
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));

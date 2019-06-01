@@ -42,7 +42,6 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 public class GeneralConfigManager {
     private Jobs plugin;
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
-    public List<Integer> BroadcastingSkillUpLevels = new ArrayList<>();
     protected Locale locale;
     protected int savePeriod;
     protected boolean economyAsync;
@@ -490,8 +489,6 @@ public class GeneralConfigManager {
 
 	c.addComment("broadcast.on-skill-up.use", "Do all players get a message when someone goes up a skill level?");
 	isBroadcastingSkillups = c.get("broadcast.on-skill-up.use", false);
-	c.addComment("broadcast.on-skill-up.levels", "For what skill levels you want to broadcast message? Keep it at 0 if you want for all of them");
-	BroadcastingSkillUpLevels = c.getIntList("broadcast.on-skill-up.levels", Arrays.asList(0));
 
 	c.addComment("broadcast.on-level-up.use", "Do all players get a message when someone goes up a level?");
 	isBroadcastingLevelups = c.get("broadcast.on-level-up.use", false);
