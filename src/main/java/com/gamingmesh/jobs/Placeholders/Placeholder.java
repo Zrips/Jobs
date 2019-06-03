@@ -1,7 +1,9 @@
 package com.gamingmesh.jobs.Placeholders;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -397,10 +399,12 @@ public class Placeholder {
 		return Integer.toString(user.getTotalLevels());
 	    case user_points:
 		PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
-		return Double.toString(pointInfo.getCurrentPoints());
+		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+		return format.format(pointInfo.getCurrentPoints());
 	    case user_total_points:
+		format = NumberFormat.getInstance(Locale.ENGLISH);
 		pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(user.getPlayerUUID());
-		return Double.toString(pointInfo.getTotalPoints());
+		return format.format(pointInfo.getTotalPoints());
 	    case user_issaved:
 		return convert(user.isSaved());
 	    case user_displayhonorific:
@@ -431,7 +435,8 @@ public class Placeholder {
 		case user_jlevel_$1:
 		    return j == null ? "" : Integer.toString(j.getLevel());
 		case user_jexp_$1:
-		    return j == null ? "" : Double.toString(j.getExperience());
+		    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+		    return j == null ? "" : format.format(j.getExperience());
 		case user_jmaxexp_$1:
 		    return j == null ? "" : Integer.toString(j.getMaxExperience());
 		case user_jmaxlvl_$1:
