@@ -140,8 +140,9 @@ public class BufferedEconomy {
 		this.ServerTaxesAccount = Bukkit.getOfflinePlayer(ServerTaxesAccountname);
 
 	    if (Jobs.getGCManager().UseTaxes && Jobs.getGCManager().TransferToServerAccount && ServerTaxesAccount != null) {
-	    	if (TaxesAmount > 0)
-				economy.depositPlayer(ServerTaxesAccount, TaxesAmount);
+		if (TaxesAmount > 0)
+		    economy.depositPlayer(ServerTaxesAccount, TaxesAmount);
+
 		if (ServerTaxesAccount.isOnline()) {
 		    if (!Jobs.getActionbarToggleList().containsKey(ServerTaxesAccountname) && Jobs.getGCManager().ActionBarsMessageByDefault)
 			Jobs.getActionbarToggleList().put(ServerTaxesAccountname, true);
@@ -178,7 +179,6 @@ public class BufferedEconomy {
 
 		if (Jobs.getGCManager().UseServerAccount) {
 		    if (!hasMoney) {
-			Jobs.getActionBar();
 			Jobs.getActionBar().send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
 			continue;
 		    }
@@ -199,7 +199,7 @@ public class BufferedEconomy {
 			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId());
 			Jobs.getBBManager().ShowJobProgression(jPlayer);
 		    }
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
 	    }
 	    // empty payment cache

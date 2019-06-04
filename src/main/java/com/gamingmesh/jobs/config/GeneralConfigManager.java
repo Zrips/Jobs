@@ -50,6 +50,7 @@ public class GeneralConfigManager {
     protected boolean payInCreative;
     protected boolean payExploringWhenFlying;
     public boolean payExploringWhenGliding;
+    public boolean disablePaymentIfRiding;
     protected boolean addXpPlayer;
     public boolean payItemDurabilityLoss;
     protected boolean hideJobsWithoutPermission;
@@ -524,6 +525,9 @@ public class GeneralConfigManager {
 	    c.addComment("enable-pay-for-exploring-when-gliding", "Option to allow payment to be made for exploring when player gliding.");
 	    payExploringWhenGliding = c.get("enable-pay-for-exploring-when-gliding", false);
 	}
+
+	c.addComment("disablePaymentIfRiding", "Disables the payment when the player riding on an entity.");
+	disablePaymentIfRiding = c.get("disablePaymentIfRiding", false);
 
 	c.addComment("add-xp-player", "Adds the Jobs xp received to the player's Minecraft XP bar");
 	addXpPlayer = c.get("add-xp-player", false);

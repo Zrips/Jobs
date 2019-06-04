@@ -176,6 +176,10 @@ public class JobsPaymentListener implements Listener {
 	if (!payIfCreative(player))
 	    return;
 
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
 	if (jPlayer == null)
@@ -237,6 +241,10 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
+
 	// pay
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
@@ -294,6 +302,10 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
+
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
 
 	// Prevent item durability loss
@@ -344,6 +356,10 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
+
 	ItemStack contents = event.getContents().getIngredient();
 
 	if (contents == null)
@@ -371,6 +387,10 @@ public class JobsPaymentListener implements Listener {
 
 	// check if in creative
 	if (!payIfCreative(player))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
@@ -452,6 +472,10 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
@@ -474,6 +498,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
@@ -519,6 +547,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	// pay
@@ -569,6 +601,10 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	if (!event.isLeftClick() && !event.isRightClick())
@@ -806,6 +842,10 @@ public class JobsPaymentListener implements Listener {
 	if (!payIfCreative(player))
 	    return;
 
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
+
 	// Fix money dupping issue when clicking continuously in the result item, but if in the
 	// cursor have item, then dupping the money, #438
 	if (event.isLeftClick() && !player.getInventory().contains(inv.getItem(2)))
@@ -865,6 +905,10 @@ public class JobsPaymentListener implements Listener {
 
 	// check if in creative
 	if (!payIfCreative(player))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	ItemStack item = inv.getItem(0);
@@ -982,6 +1026,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -1118,6 +1166,10 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
 	    return;
 
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && pDamager.isInsideVehicle())
+	    return;
+
 	ItemStack item = Jobs.getNms().getItemInMainHand(pDamager);
 	if (item != null && !item.getType().equals(Material.AIR)) {
 	    // Prevent item durability loss
@@ -1194,6 +1246,10 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
@@ -1222,6 +1278,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -1260,6 +1320,9 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
@@ -1293,6 +1356,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && pDamager.isInsideVehicle())
 	    return;
 
 	// pay
@@ -1364,6 +1431,10 @@ public class JobsPaymentListener implements Listener {
 	    if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 		return;
 
+	    // check if player is riding
+	    if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+		return;
+
 	    // pay
 	    JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
 	    if (jDamager == null)
@@ -1401,6 +1472,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	// Item in hand
@@ -1454,6 +1529,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -1553,6 +1632,9 @@ public class JobsPaymentListener implements Listener {
 	    event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	    ItemStack iih = Jobs.getNms().getItemInMainHand(event.getPlayer());
 	    if (iih.getType().toString().endsWith("_AXE")) {
+		// check if player is riding
+		if (Jobs.getGCManager().disablePaymentIfRiding && event.getPlayer().isInsideVehicle())
+		    return;
 		// Prevent item durability loss
 		if (!Jobs.getGCManager().payItemDurabilityLoss && iih.getType().getMaxDurability()
 			    - Jobs.getNms().getDurability(iih) != iih.getType().getMaxDurability())
@@ -1590,6 +1672,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(p, p.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
@@ -1636,6 +1722,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R1)
