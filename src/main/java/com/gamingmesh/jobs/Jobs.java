@@ -55,6 +55,7 @@ import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
+import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.BlockProtectionManager;
 import com.gamingmesh.jobs.config.BossBarManager;
@@ -997,6 +998,17 @@ public class Jobs extends JavaPlugin {
 
 	    Boost boost = getPlayerManager().getFinalBonus(jPlayer, noneJob);
 
+        JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income, pointAmount);
+        Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
+        // If event is canceled, don't do anything
+        if (JobsPrePaymentEvent.isCancelled()) {
+            income = 0D;
+            pointAmount = 0D;
+        } else {
+            income = JobsPrePaymentEvent.getAmount();
+            pointAmount = JobsPrePaymentEvent.getPoints();
+        }
+
 	    // Calculate income
 
 	    if (income != 0D) {
@@ -1097,7 +1109,19 @@ public class Jobs extends JavaPlugin {
 			    player.giveExp(expInt);
 		    }
 		}
+
 		Boost boost = getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
+
+		JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), income, pointAmount);
+		Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
+		// If event is canceled, don't do anything
+		if (JobsPrePaymentEvent.isCancelled()) {
+            income = 0D;
+            pointAmount = 0D;
+        } else {
+		    income = JobsPrePaymentEvent.getAmount();
+		    pointAmount = JobsPrePaymentEvent.getPoints();
+        }
 
 		// Calculate income
 		if (income != 0D) {
