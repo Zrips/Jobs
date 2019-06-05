@@ -14,6 +14,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
     private boolean cancelled = false;
 
     public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, double money, double points) {
+        this.job = job;
         this.offlinePlayer = offlinePlayer;
         this.money = money;
         this.points = points;
