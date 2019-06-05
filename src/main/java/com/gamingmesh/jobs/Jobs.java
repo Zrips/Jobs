@@ -30,6 +30,7 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.logging.Logger;
 
+import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -997,6 +998,17 @@ public class Jobs extends JavaPlugin {
 
 	    Boost boost = getPlayerManager().getFinalBonus(jPlayer, noneJob);
 
+        JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income, pointAmount);
+        Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
+        // If event is canceled, don't do anything
+        if (JobsPrePaymentEvent.isCancelled()) {
+            income = 0D;
+            pointAmount = 0D;
+        } else {
+            income = JobsPrePaymentEvent.getAmount();
+            pointAmount = JobsPrePaymentEvent.getPoints();
+        }
+
 	    // Calculate income
 
 	    if (income != 0D) {
@@ -1097,7 +1109,19 @@ public class Jobs extends JavaPlugin {
 			    player.giveExp(expInt);
 		    }
 		}
+
 		Boost boost = getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
+
+		JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), income, pointAmount);
+		Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
+		// If event is canceled, don't do anything
+		if (JobsPrePaymentEvent.isCancelled()) {
+            income = 0D;
+            pointAmount = 0D;
+        } else {
+		    income = JobsPrePaymentEvent.getAmount();
+		    pointAmount = JobsPrePaymentEvent.getPoints();
+        }
 
 		// Calculate income
 		if (income != 0D) {
