@@ -105,6 +105,11 @@ public class GeneralConfigManager {
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
 
+    public boolean FireworkLevelupUse, UseRandom, UseFlicker, UseTrail;
+    public String FireworkType;
+    public List<String> FwColors = new ArrayList<>();
+    public int FireworkPower, ShootTime;
+
     private int JobsGUIRows, JobsGUIBackButton,
 	JobsGUIStartPosition,
 	JobsGUIGroupAmount,
@@ -869,6 +874,21 @@ public class GeneralConfigManager {
 	SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP");
 	SoundTitleChangeVolume = c.get("Sounds.TitleChange.volume", 1);
 	SoundTitleChangePitch = c.get("Sounds.TitleChange.pitch", 3);
+
+	c.addComment("Fireworks", "Extra firework shooting in some events");
+	FireworkLevelupUse = c.get("Fireworks.LevelUp.use", false);
+	c.addComment("Fireworks.LevelUp.Random", "Makes the firework to randomize, such as random colors, type, power and so on.",
+	    "These are under settings will not be work, when this enabled.");
+	UseRandom = c.get("Fireworks.LevelUp.Random", true);
+	UseFlicker = c.get("Fireworks.LevelUp.flicker", true);
+	UseTrail = c.get("Fireworks.LevelUp.trail", true);
+	c.addComment("Fireworks.LevelUp.type", "Firework types",
+	    "All types can be found in https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/FireworkEffect.Type.html");
+	FireworkType = c.get("Fireworks.LevelUp.type", "STAR");
+	FwColors = c.get("Fireworks.LevelUp.colors", Arrays.asList("230,0,0", "0,90,0", "0,0,104"));
+	FireworkPower = c.get("Fireworks.LevelUp.power", 1);
+	c.addComment("Fireworks.LevelUp.ShootTime", "Fire shooting time in ticks.", "Example: 20 tick = 1 second");
+	ShootTime = c.get("Fireworks.LevelUp.ShootTime", 20);
 
 	c.addComment("Signs", "You can disable this to save SMALL amount of server resources");
 	SignsEnabled = c.get("Signs.Enable", true);

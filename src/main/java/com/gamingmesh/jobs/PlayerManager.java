@@ -22,17 +22,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Sound;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.gamingmesh.jobs.CMILib.ItemReflection;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
@@ -58,6 +65,7 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class PlayerManager {
 
@@ -542,6 +550,71 @@ public class PlayerManager {
 		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 	    }
 	} catch (Throwable e) {
+	}
+
+	if (Jobs.getGCManager().FireworkLevelupUse) {
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
+		@Override
+		public void run() {
+		    Firework f = (Firework) player.getWorld().spawn(player.getLocation(), Firework.class);
+		    FireworkMeta fm = f.getFireworkMeta();
+		    if (Jobs.getGCManager().UseRandom) {
+			Random r = new Random();
+			int rt = r.nextInt(4) + 1;
+			Type type = Type.BALL;
+			if (rt == 1) type = Type.BALL;
+			if (rt == 2) type = Type.BALL_LARGE;
+			if (rt == 3) type = Type.BURST;
+			if (rt == 4) type = Type.CREEPER;
+			if (rt == 5) type = Type.STAR;
+			int r1i = r.nextInt(17) + 1;
+			int r2i = r.nextInt(17) + 1;
+			Color c1 = Util.getColor(r1i);
+			Color c2 = Util.getColor(r2i);
+			FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1).withFade(c2).with(type).trail(r.nextBoolean()).build();
+			fm.addEffect(effect);
+			int rp = r.nextInt(2) + 1;
+			fm.setPower(rp);
+		    } else {
+			Pattern comma = Pattern.compile(",", 16);
+			List<String> colorStrings = Jobs.getGCManager().FwColors;
+			Color[] colors = new Color[colorStrings.size()];
+			for (int s = 0; s < colorStrings.size(); s++) {
+			    String colorString = colorStrings.get(s);
+			    String[] sSplit = comma.split(colorString);
+			    if (sSplit.length < 3) {
+				Jobs.consoleMsg("[Jobs] &cInvalid color " + colorString + "! Colors must be 3 comma-separated numbers ranging from 0 to 255.");
+				return;
+			    }
+			    int[] colorRGB = new int[3];
+			    for (int i = 0; i < 3; i++) {
+				String colorInt = sSplit[i];
+				try {
+				    colorRGB[i] = Integer.valueOf(colorInt).intValue();
+				} catch (NumberFormatException e) {
+				    Jobs.consoleMsg("[Jobs] &cInvalid color component " + colorInt + ", it must be an integer.");
+				}
+			    }
+			    try {
+				colors[s] = Color.fromRGB(colorRGB[0], colorRGB[1], colorRGB[2]);
+			    } catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				Jobs.consoleMsg("[Jobs] &cFailed to add color! " + e);
+			    }
+			}
+			fm.addEffect(FireworkEffect.builder()
+				    .flicker(Jobs.getGCManager().UseFlicker)
+				    .trail(Jobs.getGCManager().UseTrail)
+				    .with(Type.valueOf(Jobs.getGCManager().FireworkType))
+				    .withColor(colors)
+				    .withFade(colors)
+				    .build());
+			fm.setPower(Jobs.getGCManager().FireworkPower);
+		    }
+
+		    f.setFireworkMeta(fm);
+		}
+	    }, Jobs.getGCManager().ShootTime);
 	}
 
 	String message;
