@@ -556,6 +556,8 @@ public class PlayerManager {
 	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
 		@Override
 		public void run() {
+		    if (player == null || !player.isOnline())
+			return;
 		    Firework f = (Firework) player.getWorld().spawn(player.getLocation(), Firework.class);
 		    FireworkMeta fm = f.getFireworkMeta();
 		    if (Jobs.getGCManager().UseRandom) {
