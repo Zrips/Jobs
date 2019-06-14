@@ -241,7 +241,7 @@ public class FurnaceBrewingHandling {
 
     public static ownershipFeedback registerFurnaces(Player player, Block block) {
 	CMIMaterial cmat = CMIMaterial.get(block);
-	if (!cmat.equals(CMIMaterial.FURNACE) && !cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE) && !cmat.equals(CMIMaterial.SMOKER))
+	if (!cmat.equals(CMIMaterial.FURNACE) && !cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE) && !cmat.equals(CMIMaterial.SMOKER) && !cmat.equals(CMIMaterial.BLAST_FURNACE))
 	    return ownershipFeedback.invalid;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -337,7 +337,7 @@ public class FurnaceBrewingHandling {
 	    if (block == null)
 		continue;
 	    CMIMaterial cmat = CMIMaterial.get(block);
-	    if (!cmat.equals(CMIMaterial.FURNACE) && !cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE) && !cmat.equals(CMIMaterial.SMOKER))
+	    if (!cmat.equals(CMIMaterial.FURNACE) && !cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE) && !cmat.equals(CMIMaterial.SMOKER) && !cmat.equals(CMIMaterial.BLAST_FURNACE))
 		continue;
 	    block.removeMetadata(JobsPaymentListener.furnaceOwnerMetadata, Jobs.getInstance());
 	}
