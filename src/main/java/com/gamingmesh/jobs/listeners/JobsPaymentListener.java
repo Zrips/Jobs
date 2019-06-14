@@ -49,6 +49,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -394,10 +395,12 @@ public class JobsPaymentListener implements Listener {
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
-
-	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	CMIMaterial cmat = CMIMaterial.get(block);
+	if (cmat.equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 	    FurnaceBrewingHandling.removeFurnace(block);
-	if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
+	if (cmat.equals(CMIMaterial.SMOKER) && block.hasMetadata(furnaceOwnerMetadata))
+	    FurnaceBrewingHandling.removeFurnace(block);
+	if (cmat.equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
 	    FurnaceBrewingHandling.removeBrewing(block);
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1551,10 +1554,14 @@ public class JobsPaymentListener implements Listener {
 	    if (block == null)
 		continue;
 
-	    if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	    CMIMaterial cmat = CMIMaterial.get(block);
+
+	    if (cmat.equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+		FurnaceBrewingHandling.removeFurnace(block);
+	    if (cmat.equals(CMIMaterial.SMOKER) && block.hasMetadata(furnaceOwnerMetadata))
 		FurnaceBrewingHandling.removeFurnace(block);
 
-	    if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
+	    if (cmat.equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
 		FurnaceBrewingHandling.removeBrewing(block);
 
 	    if (Jobs.getGCManager().useBlockProtection)
@@ -1577,8 +1584,8 @@ public class JobsPaymentListener implements Listener {
 	Block block = event.getClickedBlock();
 	if (block == null)
 	    return;
-
-	if (CMIMaterial.get(block).equals(CMIMaterial.FURNACE) || CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BURNING_FURNACE)) {
+	CMIMaterial cmat = CMIMaterial.get(block);
+	if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE) || cmat.equals(CMIMaterial.SMOKER)) {
 	    if (!Jobs.getGCManager().isFurnacesReassign())
 		return;
 
