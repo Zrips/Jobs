@@ -102,6 +102,7 @@ import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -311,7 +312,7 @@ public class JobsPaymentListener implements Listener {
 
 	// Prevent item durability loss
 	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-		    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+	    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
 	    return;
 
 	// pay
@@ -423,13 +424,13 @@ public class JobsPaymentListener implements Listener {
 	if (item != null && !item.getType().equals(Material.AIR)) {
 	    // Prevent item durability loss
 	    if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-			- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+		- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
 		return;
 
 	    // Protection for block break with silktouch
 	    if (Jobs.getGCManager().useSilkTouchProtection) {
 		for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
-		    if (CMIEnchantment.getName(one.getKey()).equalsIgnoreCase("SILK_TOUCH")) {
+		    if (CMIEnchantment.get(one.getKey()) == CMIEnchantment.SILK_TOUCH) {
 			if (Jobs.getBpManager().isInBp(block))
 			    return;
 		    }
@@ -509,7 +510,7 @@ public class JobsPaymentListener implements Listener {
 
 	// Prevent item durability loss
 	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-		    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+	    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
 	    return;
 
 	if (event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH) && event.getCaught() instanceof Item) {
@@ -863,7 +864,10 @@ public class JobsPaymentListener implements Listener {
 		if (enchant == null)
 		    continue;
 
-		String enchantName = CMIEnchantment.getName(enchant);
+		CMIEnchantment e = CMIEnchantment.get(enchant);
+
+		String enchantName = e == null ? null : e.toString();
+
 		if (enchantName == null)
 		    continue;
 
@@ -916,7 +920,7 @@ public class JobsPaymentListener implements Listener {
 
 	// Prevent item durability loss
 	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-		    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+	    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -930,7 +934,10 @@ public class JobsPaymentListener implements Listener {
 	    if (enchant == null)
 		continue;
 
-	    String enchantName = CMIEnchantment.getName(enchant);
+	    CMIEnchantment e = CMIEnchantment.get(enchant);
+
+	    String enchantName = e == null ? null : e.toString();
+
 	    if (enchantName == null)
 		continue;
 
@@ -1175,7 +1182,7 @@ public class JobsPaymentListener implements Listener {
 	if (item != null && !item.getType().equals(Material.AIR)) {
 	    // Prevent item durability loss
 	    if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-			- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+		- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
 		return;
 	}
 
@@ -1638,7 +1645,7 @@ public class JobsPaymentListener implements Listener {
 		    return;
 		// Prevent item durability loss
 		if (!Jobs.getGCManager().payItemDurabilityLoss && iih.getType().getMaxDurability()
-			    - Jobs.getNms().getDurability(iih) != iih.getType().getMaxDurability())
+		    - Jobs.getNms().getDurability(iih) != iih.getType().getMaxDurability())
 		    return;
 
 		final Location loc = event.getClickedBlock().getLocation();

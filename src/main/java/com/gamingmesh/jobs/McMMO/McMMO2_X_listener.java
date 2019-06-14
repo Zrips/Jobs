@@ -73,7 +73,6 @@ public class McMMO2_X_listener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void OnAbilityOff(McMMOPlayerAbilityDeactivateEvent event) {
-	Debug.D("active " + event.getAbility());
 	HashMap<String, Long> InfoMap = Jobs.getMcMMOManager().getMap().get(event.getPlayer().getUniqueId());
 	if (InfoMap != null) {
 	    InfoMap.remove(event.getAbility().toString());

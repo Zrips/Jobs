@@ -55,7 +55,7 @@ public class ItemBoostManager {
 		}
 		List<String> ench = new ArrayList<>();
 		for (Entry<Enchantment, Integer> oneE : stack.getEnchantments().entrySet()) {
-		    ench.add(CMIEnchantment.getName(oneE.getKey()) + "=" + oneE.getValue());
+		    ench.add(CMIEnchantment.get(oneE.getKey()) + "=" + oneE.getValue());
 		}
 		cfg.getC().set(name + ".enchants", ench);
 		for (CurrencyType oneC : CurrencyType.values()) {
@@ -146,7 +146,7 @@ public class ItemBoostManager {
 		for (String eachLine : cfg.get(one + ".enchants", Arrays.asList(""))) {
 		    if (!eachLine.contains("="))
 			continue;
-		    Enchantment ench = CMIEnchantment.get(eachLine.split("=")[0]);
+		    Enchantment ench = CMIEnchantment.getEnchantment(eachLine.split("=")[0]);
 		    Integer level = -1;
 		    try {
 			level = Integer.parseInt(eachLine.split("=")[1]);

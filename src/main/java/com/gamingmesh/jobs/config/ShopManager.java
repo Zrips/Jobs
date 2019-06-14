@@ -443,7 +443,7 @@ public class ShopManager {
 			    if (!eachLine.contains("="))
 				continue;
 
-			    Enchantment ench = CMIEnchantment.get(eachLine.split("=")[0]);
+			    Enchantment ench = CMIEnchantment.getEnchantment(eachLine.split("=")[0]);
 			    Integer level = -1;
 			    try {
 				level = Integer.parseInt(eachLine.split("=")[1]);
