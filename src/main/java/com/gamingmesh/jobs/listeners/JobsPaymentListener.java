@@ -85,6 +85,7 @@ import org.bukkit.potion.Potion;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.actions.BlockActionInfo;
@@ -428,7 +429,7 @@ public class JobsPaymentListener implements Listener {
 	    // Protection for block break with silktouch
 	    if (Jobs.getGCManager().useSilkTouchProtection) {
 		for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
-		    if (Jobs.getNms().getEnchantName(one.getKey()).equalsIgnoreCase("SILK_TOUCH")) {
+		    if (CMIEnchantment.getName(one.getKey()).equalsIgnoreCase("SILK_TOUCH")) {
 			if (Jobs.getBpManager().isInBp(block))
 			    return;
 		    }
@@ -862,7 +863,7 @@ public class JobsPaymentListener implements Listener {
 		if (enchant == null)
 		    continue;
 
-		String enchantName = Jobs.getNms().getEnchantName(enchant);
+		String enchantName = CMIEnchantment.getName(enchant);
 		if (enchantName == null)
 		    continue;
 
@@ -929,7 +930,7 @@ public class JobsPaymentListener implements Listener {
 	    if (enchant == null)
 		continue;
 
-	    String enchantName = Jobs.getNms().getEnchantName(enchant);
+	    String enchantName = CMIEnchantment.getName(enchant);
 	    if (enchantName == null)
 		continue;
 

@@ -21,6 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
@@ -442,7 +443,7 @@ public class ShopManager {
 			    if (!eachLine.contains("="))
 				continue;
 
-			    Enchantment ench = Jobs.getNms().getEnchantment(eachLine.split("=")[0]);
+			    Enchantment ench = CMIEnchantment.get(eachLine.split("=")[0]);
 			    Integer level = -1;
 			    try {
 				level = Integer.parseInt(eachLine.split("=")[1]);

@@ -62,14 +62,4 @@ public class v1_12 implements NMS {
     public short getDurability(ItemStack item) {
 	return item.getDurability();
     }
-
-    @Override
-    public Enchantment getEnchantment(String type) {
-	return Enchantment.getByName(type.toUpperCase());
-    }
-
-    @Override
-    public String getEnchantName(Enchantment type) {
-	return type.getName();
-    }
 }

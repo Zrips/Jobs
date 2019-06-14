@@ -43,6 +43,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIPotionType;
@@ -61,6 +62,7 @@ import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ConfigManager {
@@ -620,10 +622,10 @@ public class ConfigManager {
 				String[] enchantid = str4.split(":");
 				if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
 				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-				    enchantMeta.addStoredEnchant(Jobs.getNms().getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]), true);
+				    enchantMeta.addStoredEnchant(CMIEnchantment.get(enchantid[0]), Integer.parseInt(enchantid[1]), true);
 				    GUIitem.setItemMeta(enchantMeta);
 				} else
-				    GUIitem.addUnsafeEnchantment(Jobs.getNms().getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]));
+				    GUIitem.addUnsafeEnchantment(CMIEnchantment.get(enchantid[0]), Integer.parseInt(enchantid[1]));
 			    }
 			}
 		    } else if (guiSection.contains("CustomSkull")) {
@@ -649,10 +651,10 @@ public class ConfigManager {
 				String[] id = str4.split(":");
 				if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
 				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-				    enchantMeta.addStoredEnchant(Jobs.getNms().getEnchantment(id[0]), Integer.parseInt(id[1]), true);
+				    enchantMeta.addStoredEnchant(CMIEnchantment.get(id[0]), Integer.parseInt(id[1]), true);
 				    GUIitem.setItemMeta(enchantMeta);
 				} else
-				    GUIitem.addUnsafeEnchantment(Jobs.getNms().getEnchantment(id[0]), Integer.parseInt(id[1]));
+				    GUIitem.addUnsafeEnchantment(CMIEnchantment.get(id[0]), Integer.parseInt(id[1]));
 			    }
 			}
 		    } else if (guiSection.contains("CustomSkull")) {
@@ -778,7 +780,7 @@ public class ConfigManager {
 			    if (!eachLine.contains("="))
 				continue;
 
-			    Enchantment ench = Jobs.getNms().getEnchantment(eachLine.split("=")[0]);
+			    Enchantment ench = CMIEnchantment.get(eachLine.split("=")[0]);
 			    Integer level = -1;
 			    try {
 				level = Integer.parseInt(eachLine.split("=")[1]);
@@ -835,7 +837,7 @@ public class ConfigManager {
 			    if (!eachLine.contains("="))
 				continue;
 
-			    Enchantment ench = Jobs.getNms().getEnchantment(eachLine.split("=")[0]);
+			    Enchantment ench = CMIEnchantment.get(eachLine.split("=")[0]);
 			    Integer level = -1;
 			    try {
 				level = Integer.parseInt(eachLine.split("=")[1]);
@@ -1126,7 +1128,7 @@ public class ConfigManager {
 			    }
 
 			} else if (actionType == ActionType.ENCHANT) {
-			    Enchantment enchant = Jobs.getNms().getEnchantment(myKey);
+			    Enchantment enchant = CMIEnchantment.get(myKey);
 			    if (enchant != null) {
 				if (Jobs.getVersionCheckManager().getVersion().isEqualOrLower(Version.v1_12_R1)) {
 				    try {
@@ -1136,6 +1138,7 @@ public class ConfigManager {
 				}
 			    }
 			    if (enchant == null && material == CMIMaterial.NONE) {
+				Debug.D("doing2");
 				Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
 				continue;
 			    }

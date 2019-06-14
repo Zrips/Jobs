@@ -48,6 +48,7 @@ public class ItemManager {
     }
 
     public static void load() {
+	CMIEnchantment.saveEnchants();
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one == null)
 		continue;

@@ -11,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
@@ -347,19 +348,19 @@ public class NameTranslatorManager {
 	    for (Enchantment one : Enchantment.values()) {
 		if (one == null)
 		    continue;
-		if (Jobs.getNms().getEnchantName(one) == null)
+		if (CMIEnchantment.getName(one) == null)
 		    continue;
 
-		String name = Util.firstToUpperCase(Jobs.getNms().getEnchantName(one).toString()).replace("_", " ");
+		String name = Util.firstToUpperCase(CMIEnchantment.getName(one).toString()).replace("_", " ");
 		if (c.getC().isConfigurationSection("EnchantList"))
 		    for (String onek : c.getC().getConfigurationSection("EnchantList").getKeys(false)) {
 			String old = c.getC().getString("EnchantList." + onek + ".MCName");
-			if (old != null && old.equalsIgnoreCase(Jobs.getNms().getEnchantName(one))) {
+			if (old != null && old.equalsIgnoreCase(CMIEnchantment.getName(one))) {
 			    name = c.getC().getString("EnchantList." + onek + ".Name");
 			    break;
 			}
 		    }
-		c.get("EnchantList." + Jobs.getNms().getEnchantName(one), name);
+		c.get("EnchantList." + CMIEnchantment.getName(one), name);
 	    }
 
 	    // Color list

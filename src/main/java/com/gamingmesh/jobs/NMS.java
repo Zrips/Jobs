@@ -23,7 +23,7 @@ public interface NMS {
 
     public short getDurability(ItemStack item);
 
-    public Enchantment getEnchantment(String type);
-
-    public String getEnchantName(Enchantment type);
+//    public Enchantment getEnchantment(String type);
+//
+//    public String getEnchantName(Enchantment type);
 }

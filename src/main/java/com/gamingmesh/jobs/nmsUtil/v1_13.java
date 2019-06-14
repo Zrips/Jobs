@@ -47,14 +47,4 @@ public class v1_13 implements NMS {
     public short getDurability(ItemStack item) {
 	return (short) ((Damageable) item.getItemMeta()).getDamage();
     }
-
-    @Override
-    public Enchantment getEnchantment(String type) {
-	return Enchantment.getByKey(org.bukkit.NamespacedKey.minecraft(type.toLowerCase()));
-    }
-
-    @Override
-    public String getEnchantName(Enchantment type) {
-	return type.getKey().getKey();
-    }
 }
