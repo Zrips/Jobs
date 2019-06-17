@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>4.12.0</version>
+	<version>4.13.0</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -182,14 +182,14 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-				<configuration>
-					<outputDirectory>C:\Users\Arte\Desktop\Server 1.14\plugins</outputDirectory>
-				</configuration>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-jar-plugin</artifactId> -->
+<!-- 				<version>2.3.1</version> -->
+<!-- 				<configuration> -->
+<!-- 					<outputDirectory>C:\Users\Arte\Desktop\Server 1.14\plugins</outputDirectory> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
 		</plugins>
 	</build>
 </project>
