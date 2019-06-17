@@ -17,7 +17,7 @@ public class Quest {
     private Job job;
     private Long validUntil = 0L;
 
-    private int chance = 0;
+    private int chance = 100;
     private Integer minLvl = null;
     private Integer maxLvl = null;
 

@@ -33,6 +33,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -911,35 +912,35 @@ public class JobsPlayer {
 		g.remove(one.getKey());
 		continue;
 	    }
-
-	    for (Entry<String, QuestObjective> oneObjective : qp.getQuest().getObjectives().entrySet()) {
-		if (type == null || type.name().equals(oneObjective.getValue().getAction().name())) {
-		    tmp.put(qp.getQuest().getConfigName(), qp);
-		    break;
-		}
-	    }
 	}
 
 	if (g.size() < job.getMaxDailyQuests()) {
-	    for (int i = g.size(); i < job.getMaxDailyQuests(); i++) {
+	    int i = 0;
+	    while (i <= job.getQuests().size()) {
+		++i;
 		Quest q = job.getNextQuest(getQuestNameList(job, type), getJobProgression(job).getLevel());
-
 		if (q == null)
 		    continue;
 		QuestProgression qp = new QuestProgression(q);
 		g.put(qp.getQuest().getConfigName(), qp);
-
-		for (Entry<String, QuestObjective> oneObjective : qp.getQuest().getObjectives().entrySet()) {
-		    if (type == null || type.name().equals(oneObjective.getValue().getAction().name())) {
-			tmp.put(qp.getQuest().getConfigName(), qp);
-			break;
-		    }
-		}
-
+		if (g.size() >= job.getMaxDailyQuests())
+		    break;
 	    }
 	}
 
 	qProgression.put(job.getName(), g);
+
+	for (Entry<String, QuestProgression> oneJ : g.entrySet()) {
+	    if (type == null) {
+		tmp.put(oneJ.getValue().getQuest().getConfigName(), oneJ.getValue());
+	    } else
+		for (Entry<String, QuestObjective> one : oneJ.getValue().getQuest().getObjectives().entrySet()) {
+		    if (type.name().equals(one.getValue().getAction().name())) {
+			tmp.put(oneJ.getValue().getQuest().getConfigName(), oneJ.getValue());
+			break;
+		    }
+		}
+	}
 
 	List<QuestProgression> pr = new ArrayList<>();
 	for (Entry<String, QuestProgression> one : tmp.entrySet()) {
@@ -947,6 +948,92 @@ public class JobsPlayer {
 	}
 
 	return pr;
+    }
+
+    public String getQuestProgressionString() {
+	String prog = "";
+
+	for (QuestProgression one : this.getQuestProgressions()) {
+	    if (one.getQuest().getObjectives().isEmpty())
+		continue;
+	    if (!prog.isEmpty())
+		prog += ";:;";
+	    prog += one.getQuest().getJob().getName() + ":" + one.getQuest().getConfigName() + ":" + one.getValidUntil() + ":";
+	    for (Entry<String, QuestObjective> oneO : one.getQuest().getObjectives().entrySet()) {
+		prog += oneO.getValue().getAction().toString() + ";" + oneO.getKey() + ";" + one.getAmountDone(oneO.getValue()) + ":;:";
+	    }
+	    prog = prog.endsWith(":;:") ? prog.substring(0, prog.length() - 3) : prog;
+	}
+
+	return prog.isEmpty() ? null : prog.endsWith(";:") ? prog.substring(0, prog.length() - 2) : prog;
+    }
+
+    public void setQuestProgressionFromString(String qprog) {
+	if (qprog == null || qprog.isEmpty())
+	    return;
+	String[] byJob = qprog.split(";:;");
+
+	for (String one : byJob) {
+
+	    try {
+		String jname = one.split(":")[0];
+		Job job = Jobs.getJob(jname);
+
+		if (job == null)
+		    continue;
+
+		one = one.substring(jname.length() + 1);
+		String qname = one.split(":")[0];
+		Quest quest = job.getQuest(qname);
+
+		if (quest == null)
+		    continue;
+
+		one = one.substring(qname.length() + 1);
+		String longS = one.split(":")[0];
+		Long validUntil = Long.parseLong(longS);
+		one = one.substring(longS.length() + 1);
+
+		HashMap<String, QuestProgression> currentProgression = qProgression.get(job.getName());
+
+		if (currentProgression == null) {
+		    currentProgression = new HashMap<String, QuestProgression>();
+		    qProgression.put(job.getName(), currentProgression);
+		}
+
+		QuestProgression qp = currentProgression.get(qname.toLowerCase());
+		if (qp == null) {
+		    qp = new QuestProgression(quest);
+		    qp.setValidUntil(validUntil);
+		    currentProgression.put(qname.toLowerCase(), qp);
+		}
+
+		for (String oneA : one.split(":;:")) {
+
+		    String prog = oneA.split(";")[0];
+		    ActionType action = ActionType.getByName(prog);
+		    if (action == null)
+			continue;
+		    if (oneA.length() < prog.length() + 1)
+			continue;
+		    oneA = oneA.substring(prog.length() + 1);
+
+		    String target = oneA.split(";")[0];
+		    QuestObjective obj = quest.getObjectives().get(target);
+
+		    if (obj == null)
+			continue;
+
+		    oneA = oneA.substring(target.length() + 1);
+		    String doneS = oneA.split(";")[0];
+		    int done = Integer.parseInt(doneS);
+		    qp.setAmountDone(obj, done);
+		}
+
+	    } catch (Exception | Error e) {
+		e.printStackTrace();
+	    }
+	}
     }
 
     public int getDoneQuests() {

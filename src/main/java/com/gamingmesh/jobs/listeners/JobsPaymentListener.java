@@ -570,6 +570,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryCraft(CraftItemEvent event) {
+
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;

@@ -9,7 +9,6 @@ import org.bukkit.event.server.ServerCommandEvent;
 public class QuestProgression {
 
     private Quest quest;
-//    private int amountDone = 0;
     private Long validUntil;
     private boolean givenReward = false;
     private HashMap<QuestObjective, Integer> done = new HashMap<>();
@@ -49,8 +48,9 @@ public class QuestProgression {
     }
 
     public void setAmountDone(QuestObjective objective, int amountDone) {
-	if (quest.hasObjective(objective))
+	if (quest.hasObjective(objective)) {
 	    done.put(objective, amountDone);
+	}
     }
 
     public Long getValidUntil() {

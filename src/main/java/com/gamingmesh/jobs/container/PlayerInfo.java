@@ -6,20 +6,26 @@ import com.gamingmesh.jobs.Jobs;
 
 public class PlayerInfo {
 
-	private int id;
-	private String name = "Unknown";
-	private Long seen;
-	private Integer questsDone;
-	private UUID uuid;
-	private JobsPlayer player;
+    private int id;
+    private String name = "Unknown";
+    private Long seen;
+    private Integer questsDone;
+    private String questProgression;
+    private UUID uuid;
+    private JobsPlayer player;
 
-    public PlayerInfo(String name, int id, UUID uuid, Long seen, Integer questsDone) {
+    public PlayerInfo(String name, int id, UUID uuid, Long seen, Integer questsDone, String questProgression) {
 	this.name = name;
 	this.id = id;
 	this.uuid = uuid;
 	this.seen = seen;
 	this.questsDone = questsDone;
+	this.questProgression = questProgression;
 	player = Jobs.getPlayerManager().getJobsPlayer(uuid);
+    }
+
+    public PlayerInfo(String name, int id, UUID uuid, Long seen, Integer questsDone) {
+	this(name, id, uuid, seen, questsDone, null);
     }
 
     public String getName() {
@@ -54,5 +60,13 @@ public class PlayerInfo {
 
     public void setQuestsDone(Integer questsDone) {
 	this.questsDone = questsDone;
+    }
+
+    public String getQuestProgression() {
+	return questProgression;
+    }
+
+    public void setQuestProgression(String questProgression) {
+	this.questProgression = questProgression;
     }
 }

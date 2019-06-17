@@ -175,6 +175,14 @@ public class PlayerManager {
 
 	if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
 	    jPlayer = Jobs.getJobsDAO().loadFromDao(player);
+
+	    // Lets load quest progresion
+	    PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(player.getUniqueId());
+	    if (info != null) {
+		jPlayer.setDoneQuests(info.getQuestsDone());
+		jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+	    }
+
 	    jPlayer.loadLogFromDao();
 	}
 
@@ -301,7 +309,8 @@ public class PlayerManager {
 	jPlayer.setPlayerUUID(info.getUuid());
 	jPlayer.setUserId(info.getID());
 	jPlayer.setDoneQuests(info.getQuestsDone());
-
+	jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+	
 	if (jobs != null)
 	    for (JobsDAOData jobdata : jobs) {
 		if (Jobs.getJob(jobdata.getJobName()) == null)
@@ -564,11 +573,16 @@ public class PlayerManager {
 			Random r = new Random();
 			int rt = r.nextInt(4) + 1;
 			Type type = Type.BALL;
-			if (rt == 1) type = Type.BALL;
-			if (rt == 2) type = Type.BALL_LARGE;
-			if (rt == 3) type = Type.BURST;
-			if (rt == 4) type = Type.CREEPER;
-			if (rt == 5) type = Type.STAR;
+			if (rt == 1)
+			    type = Type.BALL;
+			if (rt == 2)
+			    type = Type.BALL_LARGE;
+			if (rt == 3)
+			    type = Type.BURST;
+			if (rt == 4)
+			    type = Type.CREEPER;
+			if (rt == 5)
+			    type = Type.STAR;
 			int r1i = r.nextInt(17) + 1;
 			int r2i = r.nextInt(17) + 1;
 			Color c1 = Util.getColor(r1i);
@@ -605,12 +619,12 @@ public class PlayerManager {
 			    }
 			}
 			fm.addEffect(FireworkEffect.builder()
-				    .flicker(Jobs.getGCManager().UseFlicker)
-				    .trail(Jobs.getGCManager().UseTrail)
-				    .with(Type.valueOf(Jobs.getGCManager().FireworkType))
-				    .withColor(colors)
-				    .withFade(colors)
-				    .build());
+			    .flicker(Jobs.getGCManager().UseFlicker)
+			    .trail(Jobs.getGCManager().UseTrail)
+			    .with(Type.valueOf(Jobs.getGCManager().FireworkType))
+			    .withColor(colors)
+			    .withFade(colors)
+			    .build());
 			fm.setPower(Jobs.getGCManager().FireworkPower);
 		    }
 

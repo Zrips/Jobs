@@ -47,6 +47,7 @@ public class NameTranslatorManager {
 	    case REPAIR:
 	    case BREW:
 	    case FISH:
+	    case STRIPLOGS:
 		CMIMaterial mat = CMIMaterial.get(materialName);		
 		NameList nameLs = ListOfNames.get(mat);		
 		if (nameLs == null)
