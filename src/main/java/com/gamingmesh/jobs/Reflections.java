@@ -16,10 +16,10 @@ public class Reflections {
 
     private Class<?> NBTTagCompound;
     private Class<?> NBTBase;
-    private Class<?> NBTTagList;
+//    private Class<?> NBTTagList;
 
     private Class<?> CraftItemStack;
-    private Class<?> Item;
+//    private Class<?> Item;
     private Class<?> IStack;
 
     public Reflections() {
@@ -47,22 +47,22 @@ public class Reflections {
 	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
 	    e.printStackTrace();
 	}
-	try {
+	/*try {
 	    NBTTagList = getMinecraftClass("NBTTagList");
 	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
 	    e.printStackTrace();
-	}
+	}*/
 
 	try {
 	    CraftItemStack = getBukkitClass("inventory.CraftItemStack");
 	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
 	    e.printStackTrace();
 	}
-	try {
+	/*try {
 	    Item = getMinecraftClass("Item");
 	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
 	    e.printStackTrace();
-	}
+	}*/
 	try {
 	    IStack = getMinecraftClass("ItemStack");
 	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {

@@ -48,10 +48,11 @@ public class NameTranslatorManager {
 	    case BREW:
 	    case FISH:
 	    case STRIPLOGS:
-		CMIMaterial mat = CMIMaterial.get(materialName);		
-		NameList nameLs = ListOfNames.get(mat);		
+		CMIMaterial mat = CMIMaterial.get(materialName);
+		NameList nameLs = ListOfNames.get(mat);
 		if (nameLs == null)
 		    return mat.getName();
+
 		return nameLs.getName();
 	    case BREED:
 	    case KILL:
@@ -73,7 +74,6 @@ public class NameTranslatorManager {
 		}
 		break;
 	    case ENCHANT:
-
 		String name = materialName;
 		String level = "";
 		if (name.contains(":")) {
@@ -96,7 +96,6 @@ public class NameTranslatorManager {
 		    }
 		}
 		break;
-
 	    case MMKILL:
 		return Jobs.getMythicManager().getDisplayName(materialName);
 	    case DRINK:
@@ -123,7 +122,6 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfNames.clear();
 	    for (String one : keys) {
-
 		String split = one.split("-")[0];
 		String id = split.contains(":") ? split.split(":")[0] : split;
 		String meta = split.contains(":") && split.split(":").length > 1 ? split.split(":")[1] : "";
@@ -173,10 +171,9 @@ public class NameTranslatorManager {
 	    ListOfColors.clear();
 	    for (String one : keys) {
 		String id = one.split("-")[0];
-		String meta = "";
 		String MCName = one.split("-")[1];
 		String Name = ItemFile.getConfig().getString("ColorList." + one);
-		ListOfColors.add(new NameList(id, meta, Name, MCName));
+		ListOfColors.add(new NameList(id, "", Name, MCName));
 	    }
 	    if (ListOfColors.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfColors.size() + " custom color names!");
@@ -189,10 +186,9 @@ public class NameTranslatorManager {
 	    ListOfPotionNames.clear();
 	    for (String one : keys) {
 		String id = one.split("-")[0];
-		String meta = "";
 		String MCName = one.split("-")[1];
 		String Name = ItemFile.getConfig().getString("PotionNamesList." + one);
-		ListOfPotionNames.add(new NameList(id, meta, Name, MCName));
+		ListOfPotionNames.add(new NameList(id, "", Name, MCName));
 	    }
 	    if (ListOfPotionNames.size() > 0)
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfPotionNames.size() + " custom potion names!");
@@ -416,15 +412,18 @@ public class NameTranslatorManager {
 		    name = c.getC().getString("PotionNamesList." + n + ".Name");
 
 		if (name == null) {
-		    n = n + "-" + one.toString();
-		    if (c.getC().isConfigurationSection("PotionNamesList." + n))
+		    n = (one.getId() == -1 ? "" : n + "-" + one.toString());
+		    if (n == "")
+			continue;
+
+		    if (c.getC().isString("PotionNamesList." + n))
 			name = c.getC().getString("PotionNamesList." + n);
 		}
 
 		if (name == null)
 		    name = one.getName();
 
-		c.get("PotionNamesList." + one.getId() + "-" + one.toString(), name);
+		c.get("PotionNamesList." + n.toString(), name);
 	    }
 
 	    c.save();

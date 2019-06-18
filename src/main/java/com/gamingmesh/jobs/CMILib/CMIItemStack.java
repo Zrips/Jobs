@@ -236,6 +236,12 @@ public class CMIItemStack {
 	return cmiMaterial == null ? CMIMaterial.get(material) : cmiMaterial;
     }
 
+    /**
+     * Gets the material
+     * 
+     * @deprecated Use {@link #getType()}
+     * @return Material
+     */
     @Deprecated
     public Material getMaterial() {
 	return getType();

@@ -63,7 +63,6 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.economy.PointsData;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -310,7 +309,7 @@ public class PlayerManager {
 	jPlayer.setUserId(info.getID());
 	jPlayer.setDoneQuests(info.getQuestsDone());
 	jPlayer.setQuestProgressionFromString(info.getQuestProgression());
-	
+
 	if (jobs != null)
 	    for (JobsDAOData jobdata : jobs) {
 		if (Jobs.getJob(jobdata.getJobName()) == null)
@@ -567,12 +566,15 @@ public class PlayerManager {
 		public void run() {
 		    if (player == null || !player.isOnline())
 			return;
+
 		    Firework f = (Firework) player.getWorld().spawn(player.getLocation(), Firework.class);
 		    FireworkMeta fm = f.getFireworkMeta();
+
 		    if (Jobs.getGCManager().UseRandom) {
 			Random r = new Random();
 			int rt = r.nextInt(4) + 1;
 			Type type = Type.BALL;
+
 			if (rt == 1)
 			    type = Type.BALL;
 			if (rt == 2)
@@ -583,25 +585,32 @@ public class PlayerManager {
 			    type = Type.CREEPER;
 			if (rt == 5)
 			    type = Type.STAR;
+
 			int r1i = r.nextInt(17) + 1;
 			int r2i = r.nextInt(17) + 1;
+
 			Color c1 = Util.getColor(r1i);
 			Color c2 = Util.getColor(r2i);
-			FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1).withFade(c2).with(type).trail(r.nextBoolean()).build();
+
+			FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1)
+				    .withFade(c2).with(type).trail(r.nextBoolean()).build();
 			fm.addEffect(effect);
+
 			int rp = r.nextInt(2) + 1;
 			fm.setPower(rp);
 		    } else {
 			Pattern comma = Pattern.compile(",", 16);
 			List<String> colorStrings = Jobs.getGCManager().FwColors;
 			Color[] colors = new Color[colorStrings.size()];
+
 			for (int s = 0; s < colorStrings.size(); s++) {
 			    String colorString = colorStrings.get(s);
 			    String[] sSplit = comma.split(colorString);
 			    if (sSplit.length < 3) {
 				Jobs.consoleMsg("[Jobs] &cInvalid color " + colorString + "! Colors must be 3 comma-separated numbers ranging from 0 to 255.");
-				return;
+				continue;
 			    }
+
 			    int[] colorRGB = new int[3];
 			    for (int i = 0; i < 3; i++) {
 				String colorInt = sSplit[i];
@@ -611,13 +620,14 @@ public class PlayerManager {
 				    Jobs.consoleMsg("[Jobs] &cInvalid color component " + colorInt + ", it must be an integer.");
 				}
 			    }
+
 			    try {
 				colors[s] = Color.fromRGB(colorRGB[0], colorRGB[1], colorRGB[2]);
 			    } catch (IllegalArgumentException e) {
-				e.printStackTrace();
 				Jobs.consoleMsg("[Jobs] &cFailed to add color! " + e);
 			    }
 			}
+
 			fm.addEffect(FireworkEffect.builder()
 			    .flicker(Jobs.getGCManager().UseFlicker)
 			    .trail(Jobs.getGCManager().UseTrail)
@@ -625,6 +635,7 @@ public class PlayerManager {
 			    .withColor(colors)
 			    .withFade(colors)
 			    .build());
+
 			fm.setPower(Jobs.getGCManager().FireworkPower);
 		    }
 

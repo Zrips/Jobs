@@ -15,7 +15,6 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class quests implements Cmd {

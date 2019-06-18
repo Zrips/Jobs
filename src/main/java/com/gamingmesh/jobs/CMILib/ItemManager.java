@@ -130,6 +130,13 @@ public class ItemManager {
 
     }
 
+    /**
+     * Gets the item by material
+     * 
+     * @deprecated Use {@link #getItem(Material)}
+     * @param mat Material
+     * @return {@link CMIItemStack}
+     */
     @Deprecated
     public CMIItemStack getItem(Material mat) {
 	CMIItemStack cm = byMaterial.get(CMIMaterial.get(mat));
@@ -1534,7 +1541,7 @@ public class ItemManager {
 	MAGMA_CREAM(378, 0, 25097, "Magma Cream"),
 	MAGMA_CUBE_SPAWN_EGG(383, 62, 26638, "Spawn Magma Cube", "Magma Cube Spawn Egg"),
 	MAP(395, 0, 21655, "Empty Map"),
-	MELON_BLOCK(103, 0, 25172, "Melon"),
+	MELON(103, 0, 25172, "Melonblock", "MELON_BLOCK"),
 	MELON_SEEDS(362, 0, 18340, "Melon Seeds"),
 	MELON_SLICE(360, 0, 5347, "Melon Slice"),
 	MELON_STEM(105, 0, 8247, "Melon Stem"),
@@ -2080,11 +2087,23 @@ public class ItemManager {
 	    return name;
 	}
 
+	/**
+	 * Get the legacy id from the material enum
+	 * 
+	 * @deprecated Not used, above 1.13
+	 * @return legacy id
+	 */
 	@Deprecated
 	public Integer getLegacyId() {
 	    return this.legacyId == null ? 0 : this.legacyId;
 	}
 
+	/**
+	 * Get the id from the material enum
+	 * 
+	 * @deprecated If the id is exist under 1.13 then success
+	 * @return id
+	 */
 	@Deprecated
 	public Integer getId() {
 	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
@@ -2155,6 +2174,12 @@ public class ItemManager {
 	    return stack;
 	}
 
+	/**
+	 * Get the data
+	 * 
+	 * @deprecated Not used, above 1.13+
+	 * @return data
+	 */
 	@Deprecated
 	public short getData() {
 	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
@@ -2163,6 +2188,12 @@ public class ItemManager {
 	    return getLegacyData();
 	}
 
+	/**
+	 * Get the legacy data
+	 * 
+	 * @deprecated Not used, above 1.13+
+	 * @return legacy data
+	 */
 	@Deprecated
 	public short getLegacyData() {
 	    return legacyData == null ? 0 : legacyData.shortValue();
@@ -3448,7 +3479,7 @@ public class ItemManager {
 		if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
 		    org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
 		    org.bukkit.block.data.type.Slab.Type type = slab.getType();
-		    
+
 		    // Sadly we have to convert into a string for backwards compatibility.
 		    switch (type.toString()) {
 		    case "TOP":
