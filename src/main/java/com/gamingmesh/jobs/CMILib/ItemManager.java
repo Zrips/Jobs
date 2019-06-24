@@ -133,7 +133,7 @@ public class ItemManager {
     /**
      * Gets the item by material
      * 
-     * @deprecated Use {@link #getItem(Material)}
+     * @deprecated Use {@link #getItem(ItemStack)}
      * @param mat Material
      * @return {@link CMIItemStack}
      */
@@ -829,12 +829,12 @@ public class ItemManager {
 	LLAMA(103, "Llama"),
 	LLAMA_SPIT(104, "Llama Spit"),
 	PARROT(105, "Parrot"),
+	COD(112, "Cod"),
 	VILLAGER(120, "Villager"),
 	ENDER_CRYSTAL(200, "End Crystal"),
 	TURTLE(901, "Turtle"),
 	PHANTOM(902, "Phantom"),
 	TRIDENT(903, "Trident"),
-	COD(904, "Cod"),
 	SALMON(905, "Salmon"),
 	PUFFERFISH(906, "Pufferfish"),
 	TROPICAL_FISH(907, "Tropical Fish"),

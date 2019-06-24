@@ -394,6 +394,10 @@ public class ConfigManager {
      */
     private void loadJobSettings() throws IOException {
 	File f = new File(Jobs.getFolder(), "jobConfig.yml");
+	if (!f.exists()) {
+	    YmlMaker jobConfig = new YmlMaker(Jobs.getInstance(), "jobConfig.yml");
+	    jobConfig.saveDefaultConfig();
+	}
 	InputStreamReader s = new InputStreamReader(new FileInputStream(f), "UTF-8");
 
 	ArrayList<Job> jobs = new ArrayList<>();
