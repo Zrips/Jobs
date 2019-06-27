@@ -103,11 +103,11 @@ import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.TabComplete;
+import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -151,7 +151,17 @@ public class Jobs extends JavaPlugin {
     private static List<Job> jobs = null;
     private static Job noneJob = null;
     private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<>();
+    /**
+     * Gets the actionbar toggle map
+     * @deprecated Moved to {@link ToggleBarHandling}
+     */
+    @Deprecated
     public static WeakHashMap<String, Boolean> actionbartoggle = new WeakHashMap<>();
+    /**
+     * Gets the bossbar toggle map
+     * @deprecated Moved to {@link ToggleBarHandling}
+     */
+    @Deprecated
     public static WeakHashMap<String, Boolean> BossBartoggle = new WeakHashMap<>();
 //	public static WeakHashMap<String, Double> GlobalBoost = new WeakHashMap<String, Double>();
     private static BufferedEconomy economy = null;
@@ -392,10 +402,20 @@ public class Jobs extends JavaPlugin {
 	return BBManager;
     }
 
+    /**
+     * Gets the actionbar toggle map
+     * @deprecated Moved to {@link ToggleBarHandling}
+     */
+    @Deprecated
     public static WeakHashMap<String, Boolean> getActionbarToggleList() {
 	return actionbartoggle;
     }
 
+    /**
+     * Gets the bossbar toggle map
+     * @deprecated Moved to {@link ToggleBarHandling}
+     */
+    @Deprecated
     public static WeakHashMap<String, Boolean> getBossBarToggleList() {
 	return BossBartoggle;
     }
@@ -624,8 +644,8 @@ public class Jobs extends JavaPlugin {
 
 	dao.getMap().clear();
 	if (getPlayerManager().getPlayersCache().size() != 0)
-	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " + ((int) (((System.currentTimeMillis() - time)
-		/ 1000d) * 100) / 100D));
+	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " + 
+	((int) (((System.currentTimeMillis() - time) / 1000d) * 100) / 100D));
     }
 
     /**
@@ -633,7 +653,6 @@ public class Jobs extends JavaPlugin {
      * @throws IOException 
      */
     public static void reload() throws IOException {
-
 	if (saveTask != null) {
 	    saveTask.shutdown();
 	    saveTask = null;
@@ -653,6 +672,7 @@ public class Jobs extends JavaPlugin {
 	configManager.reload();
 
 	FurnaceBrewingHandling.load();
+	ToggleBarHandling.load();
 	usedSlots.clear();
 	for (Job job : jobs) {
 	    usedSlots.put(job, dao.getSlotsTaken(job));
@@ -889,7 +909,7 @@ public class Jobs extends JavaPlugin {
 	    setWorldGuard();
 
 	    setMythicManager();
-	    if (MythicManager != null && MythicManager.Check() && GconfigManager.MythicMobsEnabled)
+	    if (GconfigManager.MythicMobsEnabled && MythicManager != null && MythicManager.Check())
 		MythicManager.registerListener();
 
 	    setPistonProtectionListener();
@@ -926,6 +946,7 @@ public class Jobs extends JavaPlugin {
 	    dao.saveExplore();
 	    dao.saveBlockProtection();
 	    FurnaceBrewingHandling.save();
+	    ToggleBarHandling.save();
 	} catch (Throwable e) {
 	    e.printStackTrace();
 	}

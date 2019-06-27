@@ -621,7 +621,7 @@ public class JobsPlayer {
 		if (method.equals(DisplayMethod.NONE))
 		    continue;
 		if (gotTitle) {
-		    builder.append(Jobs.getGCManager().getModifyChatSeparator());
+		    builder.append(Jobs.getGCManager().modifyChatSeparator);
 		    gotTitle = false;
 		}
 		Title title = Jobs.gettitleManager().getTitle(prog.getLevel(), prog.getJob().getName());
@@ -691,7 +691,7 @@ public class JobsPlayer {
 	honorific = builder.toString().trim();
 	if (honorific.length() > 0)
 	    honorific = org.bukkit.ChatColor.translateAlternateColorCodes('&',
-		Jobs.getGCManager().getModifyChatPrefix() + honorific + Jobs.getGCManager().getModifyChatSuffix());
+		Jobs.getGCManager().modifyChatPrefix + honorific + Jobs.getGCManager().modifyChatSuffix);
 
     }
 

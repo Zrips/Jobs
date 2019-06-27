@@ -49,7 +49,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -103,7 +102,6 @@ import com.gamingmesh.jobs.container.ExploreRespond;
 import com.gamingmesh.jobs.container.FastPayment;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -570,7 +568,6 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryCraft(CraftItemEvent event) {
-
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
@@ -1311,19 +1308,22 @@ public class JobsPaymentListener implements Listener {
 	if (!ent.getType().toString().equalsIgnoreCase("ARMOR_STAND"))
 	    return;
 	Location loc = event.getLocation();
-	Collection<Entity> ents = loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
+	Collection<Entity> ents = Version.isCurrentEqualOrLower(Version.v1_8_R1)
+		    ? null : loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
 	double dis = Double.MAX_VALUE;
 	Player player = null;
-	for (Entity one : ents) {
-	    if (!(one instanceof Player))
-		continue;
-	    Player p = (Player) one;
-	    if (!Jobs.getNms().getItemInMainHand(p).getType().toString().equalsIgnoreCase("ARMOR_STAND"))
-		continue;
-	    double d = p.getLocation().distance(loc);
-	    if (d < dis) {
-		dis = d;
-		player = p;
+	if (ents != null) {
+	    for (Entity one : ents) {
+		if (!(one instanceof Player))
+		    continue;
+		Player p = (Player) one;
+		if (!Jobs.getNms().getItemInMainHand(p).getType().toString().equalsIgnoreCase("ARMOR_STAND"))
+		    continue;
+		double d = p.getLocation().distance(loc);
+		if (d < dis) {
+		    dis = d;
+		    player = p;
+		}
 	    }
 	}
 

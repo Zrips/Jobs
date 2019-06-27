@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
@@ -18,7 +17,6 @@ public class gtop implements Cmd {
     @Override
     @JobCommand(600)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-
 	if (args.length != 1 && args.length != 0) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
 	    return true;
@@ -26,11 +24,14 @@ public class gtop implements Cmd {
 
 	if (!(sender instanceof Player))
 	    return false;
-	Player player = (Player) sender;
 
-	if (args.length > 0 && args[0].equalsIgnoreCase("clear")) {
-	    player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
-	    return true;
+	Player player = (Player) sender;
+	if (args.length == 1) {
+	    if (args[0].equalsIgnoreCase("clear")) {
+		//player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+		plugin.getCMIScoreboardManager().removeScoreBoard(player);
+		return true;
+	    }
 	}
 
 	int page = 1;
@@ -59,7 +60,7 @@ public class gtop implements Cmd {
 		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list", 
 		    "%number%", i, 
-		    "%playername%", PlayerName, 
+		    "%playername%", PlayerName,
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
 	    }
@@ -73,9 +74,9 @@ public class gtop implements Cmd {
 	    for (TopList one : FullList) {
 		i++;
 		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
-		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", 
-		    "%number%", i, 
-		    "%playername%", playername, 
+		ls.add(Jobs.getLanguage().getMessage("scoreboard.line",
+		    "%number%", i,
+		    "%playername%", playername,
 		    "%level%", one.getLevel()));
 	    }
 

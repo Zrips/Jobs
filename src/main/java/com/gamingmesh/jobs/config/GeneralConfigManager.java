@@ -100,7 +100,7 @@ public class GeneralConfigManager {
     public boolean useBreederFinder = false;
     private boolean useTnTFinder = false;
     public boolean CancelCowMilking;
-    public boolean fixAtMaxLevel, ToggleActionBar, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
+    public boolean fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
@@ -285,14 +285,32 @@ public class GeneralConfigManager {
 	return modifyChat;
     }
 
+    /**
+     * Get the chat prefix string from file
+     * @deprecated Use {@link #modifyChatPrefix}
+     * @return
+     */
+    @Deprecated
     public String getModifyChatPrefix() {
 	return modifyChatPrefix;
     }
 
+    /**
+     * Get the chat suffix string from file
+     * @deprecated Use {@link #modifyChatSuffix}
+     * @return
+     */
+    @Deprecated
     public String getModifyChatSuffix() {
 	return modifyChatSuffix;
     }
 
+    /**
+     * Get the chat separator string from file
+     * @deprecated Use {@link #modifyChatSeparator}
+     * @return
+     */
+    @Deprecated
     public String getModifyChatSeparator() {
 	return modifyChatSeparator;
     }

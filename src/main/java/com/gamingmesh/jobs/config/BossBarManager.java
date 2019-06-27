@@ -17,6 +17,7 @@ import com.gamingmesh.jobs.container.BossBarInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class BossBarManager {
@@ -35,7 +36,6 @@ public class BossBarManager {
 	    return;
 
 	List<String> temp = new ArrayList<>();
-
 	temp.addAll(player.getUpdateBossBarFor());
 
 	for (String one : temp) {
@@ -50,14 +50,15 @@ public class BossBarManager {
     public synchronized void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg) {
 	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
 	    return;
-	String playername = player.getUserName();
-	if (!Jobs.getBossBarToggleList().containsKey(playername) && Jobs.getGCManager().BossBarsMessageByDefault)
-	    Jobs.getBossBarToggleList().put(playername, true);
 
-	if (!Jobs.getBossBarToggleList().containsKey(playername))
+	String playername = player.getUserName();
+	if (!ToggleBarHandling.getBossBarToggle().containsKey(playername) && Jobs.getGCManager().BossBarsMessageByDefault)
+	    ToggleBarHandling.getBossBarToggle().put(playername, true);
+
+	if (!ToggleBarHandling.getBossBarToggle().containsKey(playername))
 	    return;
 
-	Boolean show = Jobs.getBossBarToggleList().get(playername);
+	Boolean show = ToggleBarHandling.getBossBarToggle().get(playername);
 
 	if (!show)
 	    return;
@@ -133,7 +134,6 @@ public class BossBarManager {
 	OldOne.setId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
-
 		for (BossBarInfo one : player.getBossBarInfo()) {
 		    if (!one.getPlayerName().equalsIgnoreCase(player.getUserName()))
 			continue;
