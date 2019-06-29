@@ -53,6 +53,7 @@ public class GeneralConfigManager {
     public boolean disablePaymentIfRiding;
     protected boolean addXpPlayer;
     public boolean payItemDurabilityLoss;
+    public List<String> WhiteListedItems = new ArrayList<>();
     protected boolean hideJobsWithoutPermission;
     protected int maxJobs;
     protected boolean payNearSpawner;
@@ -557,7 +558,9 @@ public class GeneralConfigManager {
 
 	c.addComment("allow-pay-for-durability-loss", "Allows, when losing maximum durability of item then it does not pay the player until it is repaired.",
 		"E.g. the player wants to enchant a item with enchanting table and the item has durability loss then not paying.");
-	payItemDurabilityLoss = c.get("allow-pay-for-durability-loss", true);
+	payItemDurabilityLoss = c.get("allow-pay-for-durability-loss.Use", true);
+	WhiteListedItems = c.get("allow-pay-for-durability-loss.WhiteListedItems",
+		Arrays.asList("wooden_pickaxe=DURABILITY-1", "fishing_rod"));
 
 	c.addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
 	modifyChat = c.get("modify-chat.use", false);

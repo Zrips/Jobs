@@ -307,11 +307,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	ItemStack item = Jobs.getNms().getItemInMainHand(player);
-
-	// Prevent item durability loss
-	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-	    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+	if (!payForItemDurabilityLoss(player))
 	    return;
 
 	// pay
@@ -393,6 +389,7 @@ public class JobsPaymentListener implements Listener {
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
+
 	CMIMaterial cmat = CMIMaterial.get(block);
 	if (cmat.equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 	    FurnaceBrewingHandling.removeFurnace(block);
@@ -420,16 +417,14 @@ public class JobsPaymentListener implements Listener {
 	    Jobs.FastPayment.remove(player.getUniqueId());
 	}
 
+	if (!payForItemDurabilityLoss(player))
+	    return;
+
 	// restricted area multiplier
 
 	// Item in hand
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
 	if (item != null && !item.getType().equals(Material.AIR)) {
-	    // Prevent item durability loss
-	    if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-		- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
-		return;
-
 	    // Protection for block break with silktouch
 	    if (Jobs.getGCManager().useSilkTouchProtection) {
 		for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
@@ -509,11 +504,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	ItemStack item = Jobs.getNms().getItemInMainHand(player);
-
-	// Prevent item durability loss
-	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-	    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+	if (!payForItemDurabilityLoss(player))
 	    return;
 
 	if (event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH) && event.getCaught() instanceof Item) {
@@ -919,11 +910,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	ItemStack item = inv.getItem(0);
-
-	// Prevent item durability loss
-	if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-	    - Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
+	if (!payForItemDurabilityLoss(player))
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -1181,13 +1168,8 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && pDamager.isInsideVehicle())
 	    return;
 
-	ItemStack item = Jobs.getNms().getItemInMainHand(pDamager);
-	if (item != null && !item.getType().equals(Material.AIR)) {
-	    // Prevent item durability loss
-	    if (!Jobs.getGCManager().payItemDurabilityLoss && item.getType().getMaxDurability()
-		- Jobs.getNms().getDurability(item) != item.getType().getMaxDurability())
-		return;
-	}
+	if (!payForItemDurabilityLoss(pDamager))
+	    return;
 
 	// pay
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(pDamager);
@@ -1774,6 +1756,51 @@ public class JobsPaymentListener implements Listener {
     private static boolean payIfCreative(Player player) {
 	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative() && !player.hasPermission("jobs.paycreative"))
 	    return false;
+	return true;
+    }
+
+    // Prevent item durability loss
+    private static boolean payForItemDurabilityLoss(Player p) {
+	ItemStack hand = Jobs.getNms().getItemInMainHand(p);
+
+	if (!Jobs.getGCManager().payItemDurabilityLoss && hand != null && !hand.getType().equals(Material.AIR)
+	    && hand.getType().getMaxDurability() - Jobs.getNms().getDurability(hand) != hand.getType().getMaxDurability()) {
+	    for (String whiteList : Jobs.getGCManager().WhiteListedItems) {
+		String item = whiteList.contains("=") ? whiteList.split("=")[0] : whiteList;
+		if (item.contains("-")) {
+		    item = item.split("-")[0];
+		}
+
+		CMIMaterial mat = CMIMaterial.get(item);
+		if (mat == null) {
+		    mat = CMIMaterial.get(item.replace(" ", "_").toUpperCase());
+		}
+
+		if (mat == null) {
+		    // try integer method
+		    Integer matId = null;
+		    try {
+			matId = Integer.valueOf(item);
+		    } catch (NumberFormatException e) {
+		    }
+		    if (matId != null) {
+			mat = CMIMaterial.get(matId);
+		    }
+		}
+
+		if (whiteList.contains("=") && whiteList.split("=").length == 2) {
+		    if (!hand.getEnchantments().containsKey(CMIEnchantment.getEnchantment(whiteList.split("=")[1]))) {
+			return false;
+		    }
+		}
+
+		if (mat != null && hand.getType().equals(mat.getMaterial())) {
+		    return true;
+		}
+	    }
+	    return false;
+	}
+
 	return true;
     }
 }
