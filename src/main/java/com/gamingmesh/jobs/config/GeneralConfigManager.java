@@ -558,7 +558,10 @@ public class GeneralConfigManager {
 
 	c.addComment("allow-pay-for-durability-loss", "Allows, when losing maximum durability of item then it does not pay the player until it is repaired.",
 		"E.g. the player wants to enchant a item with enchanting table and the item has durability loss then not paying.");
+	c.addComment("allow-pay-for-durability-loss.Use", "Do not disable this if you don't know what mean this option.");
 	payItemDurabilityLoss = c.get("allow-pay-for-durability-loss.Use", true);
+	c.addComment("allow-pay-for-durability-loss.WhiteListedItems", "What items (tools) are whitelisted the player get paid, when this item has durability loss?",
+			"Enchantments are supported, usage:", "itemName=ENCHANTMENT_NAME-level");
 	WhiteListedItems = c.get("allow-pay-for-durability-loss.WhiteListedItems",
 		Arrays.asList("wooden_pickaxe=DURABILITY-1", "fishing_rod"));
 
