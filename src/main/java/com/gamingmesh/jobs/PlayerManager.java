@@ -529,6 +529,36 @@ public class PlayerManager {
 	if (prog == null)
 	    return;
 
+	// when the player loses income
+	if (prog.getLevel() < oldLevel) {
+	    String message = Jobs.getLanguage().getMessage("message.leveldown.message");
+
+	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
+
+	    if (player != null)
+		message = message.replace("%playername%", player.getDisplayName());
+	    else
+		message = message.replace("%playername%", jPlayer.getUserName());
+
+	    message = message.replace("%joblevel%", "" + prog.getLevel());
+
+	    if (player != null) {
+		for (String line : message.split("\n")) {
+		    if (Jobs.getGCManager().LevelChangeActionBar)
+			Jobs.getActionBar().send(player, line);
+		    if (Jobs.getGCManager().LevelChangeChat)
+			player.sendMessage(line);
+		}
+		}
+
+	    jPlayer.reloadHonorific();
+	    Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+	    performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
+	    Jobs.getSignUtil().SignUpdate(job.getName());
+	    Jobs.getSignUtil().SignUpdate("gtoplist");
+	    return;
+	}
+
 	// LevelUp event
 	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(
 	    jPlayer,
