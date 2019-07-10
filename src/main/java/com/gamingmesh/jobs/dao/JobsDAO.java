@@ -1254,11 +1254,12 @@ public abstract class JobsDAO {
 	    // add the progression level.
 	    jPlayer.progression.add(jobProgression);
 
+	    jPlayer.getArchivedJobs().addArchivedJob(jobProgression);
 	}
 	jPlayer.reloadMaxExperience();
 	jPlayer.reloadLimits();
 	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(player.getUniqueId()));
-	Jobs.getJobsDAO().loadPoints(jPlayer);
+	loadPoints(jPlayer);
 //	}
 	return jPlayer;
     }
@@ -1764,9 +1765,7 @@ public abstract class JobsDAO {
 
     /**
      * Save player-explore information
-     * @param jobexplore - the information getting saved
      */
-
     public void saveExplore() {
 	insertExplore();
 	updateExplore();
