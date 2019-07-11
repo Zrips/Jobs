@@ -4,22 +4,18 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.container.ArchivedJobs;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.PlayerPoints;
-import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class Placeholder {
@@ -35,13 +31,6 @@ public class Placeholder {
     private static ChatFilterRule numericalRule = new ChatFilterRule().setPattern("(\\$\\d)");
 
     public enum JobsPlaceHolders {
-	user_withoutjob_level,
-	user_withoutjob_exp,
-	user_withoutjob_job,
-	user_withoutjob_points,
-	user_withoutjob_totalpoints,
-	user_withoutjob_archived_jobs,
-
 	user_id,
 	user_bstandcount,
 	user_maxbstandcount,
@@ -386,48 +375,6 @@ public class Placeholder {
     public String getValue(UUID uuid, JobsPlaceHolders placeHolder, String value) {
 	if (placeHolder == null)
 	    return null;
-
-	if (uuid != null) {
-	    Player p = Bukkit.getPlayer(uuid);
-	    for (JobsDAOData data : Jobs.getJobsDAO().getAllJobs(p.getName(), uuid)) {
-		if (data != null) {
-		    switch (placeHolder) {
-			case user_withoutjob_level:
-		    return Integer.toString(data.getLevel());
-			case user_withoutjob_exp:
-		    return Double.toString(data.getExperience());
-			case user_withoutjob_job:
-		    return data.getJobName();
-			default:
-		    break;
-		    }
-		}
-	    }
-	}
-
-	for (Map.Entry<Integer, PlayerPoints> points : Jobs.getJobsDAO().getAllPoints().entrySet()) {
-	    if (points != null) {
-		switch (placeHolder) {
-	    case user_withoutjob_points:
-		return Double.toString(points.getValue().getCurrentPoints());
-	    case user_withoutjob_totalpoints:
-		return Double.toString(points.getValue().getTotalPoints());
-	    default:
-		break;
-		}
-	    }
-	}
-
-	for (Map.Entry<Integer, ArchivedJobs> archived : Jobs.getJobsDAO().getAllArchivedJobs().entrySet()) {
-	    if (archived != null) {
-		switch (placeHolder) {
-	    case user_withoutjob_archived_jobs:
-		return Integer.toString(archived.getValue().getArchivedJobs().size());
-	    default:
-		break;
-		}
-	    }
-	}
 
 	JobsPlayer user = Jobs.getPlayerManager().getJobsPlayer(uuid);
 	// Placeholders by JobsPlayer object
