@@ -503,7 +503,7 @@ public class editjobs implements Cmd {
 
 			// using breeder finder
 			if (actionT == ActionType.BREED)
-			    Jobs.getGCManager().setBreederFinder(true);
+			    Jobs.getGCManager().useBreederFinder = true;
 		    }
 
 		    if (entity == null) {

@@ -32,7 +32,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.ShopItem;
 
 public class ShopManager {
-    public List<ShopItem> list = new ArrayList<>();
+    private List<ShopItem> list = new ArrayList<>();
     public HashMap<String, Integer> GuiList = new HashMap<>();
 
     public List<ShopItem> getShopItemList() {

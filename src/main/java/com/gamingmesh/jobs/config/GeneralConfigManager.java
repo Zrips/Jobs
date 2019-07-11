@@ -71,7 +71,7 @@ public class GeneralConfigManager {
     public boolean PaymentMethodsPoints;
     public boolean PaymentMethodsExp;
     private HashMap<CurrencyType, Double> generalMulti = new HashMap<>();
-    private String getSelectionTool = "";
+    private String getSelectionTool;
 
     private int ResetTimeHour;
     private int ResetTimeMinute;
@@ -81,12 +81,10 @@ public class GeneralConfigManager {
     private HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
 
     public boolean PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
-	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useCoreProtect, BlockPlaceUse,
-	EnableAnounceMessage, useSilkTouchProtection, UseCustomNames,
-	UseJobsBrowse, PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
+	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
+	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
 	BrowseUseNewLook;
-    public int globalblocktimer, CowMilkingTimer,
-	CoreProtectInterval, BlockPlaceInterval, InfoUpdateInterval;
+    public int globalblocktimer, CowMilkingTimer, InfoUpdateInterval;
     public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
     public String localeString = "";
 
@@ -104,7 +102,7 @@ public class GeneralConfigManager {
     public boolean fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, JobsGUIOpenOnJoin;
+	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons;
 
     public boolean FireworkLevelupUse, UseRandom, UseFlicker, UseTrail;
     public String FireworkType;
@@ -160,7 +158,7 @@ public class GeneralConfigManager {
 
     public List<Schedule> BoostSchedule = new ArrayList<>();
 
-    public HashMap<String, List<String>> commandArgs = new HashMap<>();
+    private HashMap<String, List<String>> commandArgs = new HashMap<>();
 
     public boolean DBCleaningJobsUse;
     public int DBCleaningJobsLvl;
@@ -184,12 +182,23 @@ public class GeneralConfigManager {
 	this.plugin = plugin;
     }
 
+    /**
+     * @deprecated Use {@link #useBreederFinder}
+     * Sets the breeder finder boolean
+     * @param state boolean
+     */
+    @Deprecated
     public void setBreederFinder(boolean state) {
 	this.useBreederFinder = state;
     }
 
+    /**
+     * @deprecated Use {@link #useBreederFinder}
+     * @return boolean
+     */
+    @Deprecated
     public boolean isUseBreederFinder() {
-	return this.useBreederFinder;
+	return useBreederFinder;
     }
 
     public void setTntFinder(boolean state) {
@@ -197,7 +206,7 @@ public class GeneralConfigManager {
     }
 
     public boolean isUseTntFinder() {
-	return this.useTnTFinder;
+	return useTnTFinder;
     }
 
     /**

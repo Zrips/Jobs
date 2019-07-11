@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,21 +17,27 @@ public class placeholders implements Cmd {
     @Override
     @JobCommand(1400)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-
 	Player player = null;
 	if (sender instanceof Player)
 	    player = (Player) sender;
 
 	int page = 1;
-	if (args.length > 0 && args[0].startsWith("-p:")) {
-	    try {
-		page = Integer.parseInt(args[0].substring("-p:".length()));
-	    } catch (Throwable e) {
+	if (args.length > 0) {
+	    if (sender instanceof Player && args[0].startsWith("-p:")) {
+		try {
+		    page = Integer.parseInt(args[0].substring("-p:".length()));
+		} catch (Throwable e) {
+		}
+	    } else if (!(sender instanceof Player)) {
+		player = Bukkit.getPlayer(args[0]);
+		if (player == null) {
+		    Jobs.consoleMsg("&cPlayer cannot be null!");
+		    return false;
+		}
 	    }
 	}
 
 	if (args.length >= 2 && args[0].equalsIgnoreCase("parse")) {
-
 	    String placeholder = args[1];
 	    JobsPlaceholderType type = plugin.getPlaceholderAPIManager().getPlaceHolderType(player, placeholder);
 
@@ -42,7 +49,7 @@ public class placeholders implements Cmd {
 	    return true;
 	}
 
-	PageInfo pi = new PageInfo(player != null ? 10 : JobsPlaceHolders.values().length, JobsPlaceHolders.values().length, page);
+	PageInfo pi = new PageInfo(sender instanceof Player ? 10 : JobsPlaceHolders.values().length, JobsPlaceHolders.values().length, page);
 
 	for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
 	    if (one.isHidden())

@@ -303,7 +303,7 @@ public class ConfigManager {
 
 		// using breeder finder
 		if (actionType == ActionType.BREED)
-		    Jobs.getGCManager().setBreederFinder(true);
+		    Jobs.getGCManager().useBreederFinder = true;
 	    }
 
 	    if (entity == null) {
@@ -1077,7 +1077,7 @@ public class ConfigManager {
 
 				// using breeder finder
 				if (actionType == ActionType.BREED)
-				    Jobs.getGCManager().setBreederFinder(true);
+				    Jobs.getGCManager().useBreederFinder = true;
 			    }
 
 			    // Pre 1.13 checks for custom names

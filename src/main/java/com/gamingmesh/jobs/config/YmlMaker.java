@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class YmlMaker {
     public String fileName;
     private JavaPlugin plugin;
-    public File ConfigFile;
+    private File ConfigFile;
     private FileConfiguration Configuration;
 
     public YmlMaker(JavaPlugin plugin, String fileName) {

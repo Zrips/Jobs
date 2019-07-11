@@ -41,14 +41,11 @@ public class ScheduleManager {
 	    Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
     }
 
-    private Runnable autoTimer = new Runnable() {
-	@Override
-	public void run() {
+    private Runnable autoTimer = () -> {
 	    try {
 		scheduler();
 	    } catch (Throwable e) {
 	    }
-	}
     };
 
     public int getDateByInt() {
