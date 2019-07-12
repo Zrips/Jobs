@@ -374,6 +374,9 @@ public abstract class JobsDAO {
     public final synchronized void setUp() throws SQLException {
 	setupConfig();
 
+	if (getConnection() == null)
+	    return;
+
 	try {
 	    for (DBTables one : DBTables.values()) {
 		createDefaultTable(one);
@@ -403,7 +406,7 @@ public abstract class JobsDAO {
 
     public boolean isConnected() {
 	try {
-	    return pool.getConnection() != null;
+	    return pool != null && pool.getConnection() != null && !pool.getConnection().isClosed();
 	} catch (SQLException e) {
 	    return false;
 	}
@@ -2047,7 +2050,7 @@ public abstract class JobsDAO {
      */
     protected JobsConnection getConnection() {
 	try {
-	    return pool.getConnection();
+	    return isConnected() ? pool.getConnection() : null;
 	} catch (SQLException e) {
 	    Jobs.getPluginLogger().severe("Unable to connect to the database: " + e.getMessage());
 	    return null;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
@@ -28,7 +29,7 @@ public class gtop implements Cmd {
 	Player player = (Player) sender;
 	if (args.length == 1) {
 	    if (args[0].equalsIgnoreCase("clear")) {
-		//player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+		player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
 		plugin.getCMIScoreboardManager().removeScoreBoard(player);
 		return true;
 	    }

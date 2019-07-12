@@ -33,6 +33,7 @@ public class ScheduleManager {
     public void start() {
 	if (Jobs.getGCManager().BoostSchedule.isEmpty())
 	    return;
+	cancel();
 	autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoTimer, 20, 30 * 20L);
     }
 

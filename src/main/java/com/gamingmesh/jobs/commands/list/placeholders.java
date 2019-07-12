@@ -49,7 +49,8 @@ public class placeholders implements Cmd {
 	    return true;
 	}
 
-	PageInfo pi = new PageInfo(sender instanceof Player ? 10 : JobsPlaceHolders.values().length, JobsPlaceHolders.values().length, page);
+	PageInfo pi = new PageInfo(sender instanceof Player ? Jobs.getGCManager().PlaceholdersPage
+		    : JobsPlaceHolders.values().length, JobsPlaceHolders.values().length, page);
 
 	for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
 	    if (one.isHidden())

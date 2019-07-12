@@ -119,7 +119,7 @@ public class GeneralConfigManager {
     public ItemStack guiBackButton;
     public ItemStack guiFiller;
 
-    public int JobsTopAmount;
+    public int JobsTopAmount, PlaceholdersPage;
 
     public Integer levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
 	SoundTitleChangePitch, ToplistInScoreboardInterval;
@@ -966,8 +966,10 @@ public class GeneralConfigManager {
 	c.addComment("JobsGUI.SkipAmount", "Defines by how many slots we need to skip after group");
 	JobsGUISkipAmount = c.get("JobsGUI.SkipAmount", 2);
 
-	c.addComment("JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top & /jobs gtop");
-	JobsTopAmount = c.get("JobsTop.AmountToShow", 15);
+	c.addComment("PageRow.JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top & /jobs gtop");
+	JobsTopAmount = c.get("PageRow.JobsTop.AmountToShow", 15);
+	c.addComment("PageRow.Placeholders.AmountToShow", "Defines amount of placeholders to be shown in one page for /jobs placeholders");
+	PlaceholdersPage = c.get("PageRow.Placeholders.AmountToShow", 10);
 
 	CMIMaterial tmat = null;
 	tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));

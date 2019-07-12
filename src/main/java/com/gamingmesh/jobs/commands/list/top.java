@@ -19,12 +19,6 @@ public class top implements Cmd {
     @Override
     @JobCommand(500)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-
-	if (args.length != 1 && args.length != 2) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.top.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
-	    return true;
-	}
-
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
 	    return false;
@@ -32,8 +26,14 @@ public class top implements Cmd {
 
 	Player player = (Player) sender;
 
+	if (args.length != 1 && args.length != 2) {
+		player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
+	    return false;
+	}
+
 	if (args[0].equalsIgnoreCase("clear")) {
 	    player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+	    plugin.getCMIScoreboardManager().removeScoreBoard(player);
 	    return true;
 	}
 
@@ -67,6 +67,8 @@ public class top implements Cmd {
 	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    return true;
 	}
+
+	player.sendMessage(Jobs.getLanguage().getMessage("command.top.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", job.getName(), "%amount%", pi.getPerPageCount()));
