@@ -47,7 +47,7 @@ public class JobsManager {
 	File f = new File(Jobs.getFolder(), "generalConfig.yml");
 	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
 
-	config.set("storage.method", DbType.toString());
+	config.set("storage.method", DbType.toString().toLowerCase());
 	try {
 	    config.save(f);
 	} catch (IOException e) {

@@ -53,7 +53,6 @@ public class convert implements Cmd {
 
 	    Jobs.getJobsDAO().saveExplore();
 	    Jobs.getJobsDAO().saveBlockProtection();
-	    Jobs.loadAllPlayersData();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
@@ -62,6 +61,8 @@ public class convert implements Cmd {
 
 	try {
 	    Jobs.reload();
+
+	    Jobs.loadAllPlayersData();
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
