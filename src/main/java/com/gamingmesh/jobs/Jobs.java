@@ -693,8 +693,11 @@ public class Jobs extends JavaPlugin {
 	dao.loadPlayerData();
 
 	// Schedule
-	scheduleManager.load();
-	scheduleManager.start();
+	if (GconfigManager.enableSchedule) {
+	    scheduleManager.load();
+	    scheduleManager.start();
+	} else
+	    scheduleManager.cancel();
 
 	permissionManager = new PermissionManager();
     }

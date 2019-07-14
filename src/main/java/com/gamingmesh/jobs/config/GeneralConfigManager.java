@@ -73,6 +73,8 @@ public class GeneralConfigManager {
     private HashMap<CurrencyType, Double> generalMulti = new HashMap<>();
     private String getSelectionTool;
 
+    public boolean enableSchedule;
+
     private int ResetTimeHour;
     private int ResetTimeMinute;
     private ConfigReader c = null;
@@ -533,6 +535,9 @@ public class GeneralConfigManager {
 	    "Any daily quests given before reset will be invalid and new ones will be given out");
 	ResetTimeHour = c.get("DailyQuests.ResetTime.Hour", 4);
 	ResetTimeMinute = c.get("DailyQuests.ResetTime.Minute", 0);
+
+	c.addComment("ScheduleManager", "Enables the schedule manager to boost the server.", "By default this has been disabled for causing memory leak.");
+	enableSchedule = c.get("ScheduleManager.Use", false);
 
 	c.addComment("max-jobs", "Maximum number of jobs a player can join.", "Use 0 for no maximum", "Keep in mind that jobs.max.[amount] will bypass this setting");
 	maxJobs = c.get("max-jobs", 3);
