@@ -54,7 +54,7 @@ public class v1_12 implements NMS {
 
     @Override
     public double getMaxHealth(LivingEntity entity) {
-	return entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
+	return entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
     }
 
     @Override
