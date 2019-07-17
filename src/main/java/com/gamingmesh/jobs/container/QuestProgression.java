@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
+import com.gamingmesh.jobs.Jobs;
+
 public class QuestProgression {
 
     private Quest quest;
@@ -79,12 +81,22 @@ public class QuestProgression {
     }
 
     public void processQuest(JobsPlayer jPlayer, ActionInfo action) {
-
 	if (!quest.hasAction(action.getType()))
 	    return;
 
 	if (!quest.getObjectives().containsKey(action.getName()) && !quest.getObjectives().containsKey(action.getNameWithSub()))
 	    return;
+
+	if (quest.getRestrictedAreas() != null && !quest.getRestrictedAreas().isEmpty()) {
+	    for (String area : quest.getRestrictedAreas()) {
+		for (Entry<String, RestrictedArea> a : Jobs.getRestrictedAreaManager().getRestrictedAres().entrySet()) {
+		    if (quest.getRestrictedAreas().contains(a.getKey()) && a.getKey().equalsIgnoreCase(area)
+				&& a.getValue().inRestrictedArea(jPlayer.getPlayer().getLocation())) {
+			return;
+		    }
+		}
+	    }
+	}
 
 	if (!isCompleted()) {
 	    QuestObjective objective = quest.getObjectives().get(action.getName());

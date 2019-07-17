@@ -907,6 +907,7 @@ public class ConfigManager {
 
 			List<String> commands = sqsection.getStringList("RewardCommands");
 			List<String> desc = sqsection.getStringList("RewardDesc");
+			List<String> areas = sqsection.getStringList("RestrictedAreas");
 
 			if (sqsection.isInt("fromLevel"))
 			    quest.setMinLvl(sqsection.getInt("fromLevel"));
@@ -918,6 +919,7 @@ public class ConfigManager {
 			quest.setChance(chance);
 			quest.setRewardCmds(commands);
 			quest.setDescription(desc);
+			quest.setRestrictedArea(areas);
 			quests.add(quest);
 
 		    } catch (Throwable e) {

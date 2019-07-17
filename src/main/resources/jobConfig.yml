@@ -122,13 +122,18 @@ Jobs:
         RewardDesc:
         - "Break 300 Oak wood"
         - "Get 500 bucks for this"
-        # Defines chance in getting this quest. 
+        # Restricted areas to do not get income in quest in the player current location
+        RestrictedAreas:
+        - "Arenas"
+        - "myarena"
+        # Defines chance in getting this quest.
         # If you have set 10 quests and player can have only 2, then quests with biggest chance will be picked most likely
         # This will allow to have some rare quests with legendary rewards
         Chance: 40
-        # Defines to which job level you want to give out this quest. 
+        # Defines to which job level you want to give out this quest.
         # Keep in mind that player will keep quest even if he is over level limit if he got new one while being under
-        # In example: player with level 2 takes quests and levels up to level 5, he still can finish this quest and after next quest reset (check general config file) he will no longer have option to get this quest
+        # In example: player with level 2 takes quests and levels up to level 5, he still can finish this quest and after next quest reset (check general config file)
+        # he will no longer have option to get this quest
         toLevel: 5
         # Defines from which level you want to give option to get this quest
         # You can use both limitations to have limited quests for particular job level ranges
@@ -569,8 +574,8 @@ Jobs:
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
-    rejoinCooldown: 10    
-    maxDailyQuests: 1    
+    rejoinCooldown: 10
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Woodpecker"
@@ -883,7 +888,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Architect"
@@ -1639,7 +1644,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Ground Mole"
@@ -1708,7 +1713,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Regular Joe"
@@ -2101,7 +2106,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Predator"
@@ -2260,7 +2265,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Galileo"
@@ -2312,7 +2317,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Master Crafter"
@@ -2863,7 +2868,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Catcher"
@@ -2913,7 +2918,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "War never ends"
@@ -3065,7 +3070,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Heavy drinker"
@@ -3164,7 +3169,7 @@ Jobs:
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
     rejoinCooldown: 10
-    maxDailyQuests: 1    
+    maxDailyQuests: 1
     Quests:
       1:
         Name: "Harry the wizard"
