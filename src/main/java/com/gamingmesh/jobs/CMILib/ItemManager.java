@@ -813,6 +813,7 @@ public class ItemManager {
 	ENDERMITE(67, "Endermite"),
 	GUARDIAN(68, "Guardian"),
 	SHULKER(69, "Shulker"),
+	CAT(75, "Cat"),
 	PIG(90, "Pig"),
 	SHEEP(91, "Sheep"),
 	COW(92, "Cow"),
