@@ -46,12 +46,10 @@ public class JobItems {
     public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs) {
 	mat = mat == null ? CMIMaterial.STONE : mat;
 	try {
-	    item = mat.newItemStack();
-	    item.setAmount(amount);
 	    this.enchants = enchants;
+	    item = mat.newItemStack();
+
 	    ItemMeta meta = item.getItemMeta();
-	    if (meta == null)
-		return;
 
 	    if (name != null)
 		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
@@ -71,6 +69,7 @@ public class JobItems {
 		}
 	    }
 	    item.setItemMeta(meta);
+	    item.setAmount(amount);
 	    item = Jobs.getReflections().setNbt(item, "JobsItemBoost", node);
 	} catch (Throwable e) {
 	    e.printStackTrace();

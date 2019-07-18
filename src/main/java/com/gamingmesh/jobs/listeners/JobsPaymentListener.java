@@ -707,12 +707,6 @@ public class JobsPaymentListener implements Listener {
 
     }
 
-    @SuppressWarnings("unused")
-    @Deprecated
-    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack) {
-	return schedulePostDetection(player, compareItem, jPlayer, resultStack, ActionType.CRAFT);
-    }
-
     // HACK! The API doesn't allow us to easily determine the resulting number of
     // crafted items, so we're forced to compare the inventory before and after.
     private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack, final ActionType type) {

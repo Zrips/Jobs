@@ -347,6 +347,9 @@ command:
       custom-kill:
         info: '&eEgyéni gyilkolás'
         none: '%jobname%&c nem kap pénzt, ha játékost gyilkol.'
+      collect:
+        info: '&eGyűjtés'
+        none: '%jobname%&c nem kap pénzt, ha gyűjtöget anyagokat.'
   playerinfo:
     help:
       info: 'Megmutassa mennyi minden munkát fizet, és mi van egy másik játékosnál.'

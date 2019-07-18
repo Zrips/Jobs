@@ -418,6 +418,8 @@ public class LanguageManager {
 	    c.get("command.info.output.explore.none", "%jobname% does not get money from exploring.");
 	    c.get("command.info.output.custom-kill.info", "&eCustom kill");
 	    c.get("command.info.output.custom-kill.none", "%jobname% does not get money from custom player kills.");
+	    c.get("command.info.output.collect.info", "&eCollect");
+	    c.get("command.info.output.collect.none", "%jobname% does not get money for collecting blocks.");
 
 	    c.get("command.playerinfo.help.info", "Show how much each job is getting paid and for what on another player.");
 	    c.get("command.playerinfo.help.args", "[playername] [jobname] [action]");
