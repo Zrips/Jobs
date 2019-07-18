@@ -40,7 +40,8 @@ public enum ActionType {
     MILK("Milk"),
     EXPLORE("Explore"),
     EAT("Eat"),
-    CUSTOMKILL("custom-kill");
+    CUSTOMKILL("custom-kill"),
+    COLLECT("Collect");
 
     private String name;
 

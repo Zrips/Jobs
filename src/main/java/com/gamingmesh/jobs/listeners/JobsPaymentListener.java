@@ -33,6 +33,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.Levelled;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -89,6 +91,7 @@ import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.actions.BlockActionInfo;
+import com.gamingmesh.jobs.actions.BlockCollectInfo;
 import com.gamingmesh.jobs.actions.CustomKillInfo;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.actions.EntityActionInfo;
@@ -435,6 +438,7 @@ public class JobsPaymentListener implements Listener {
 		}
 	    }
 	}
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
@@ -1572,6 +1576,26 @@ public class JobsPaymentListener implements Listener {
 	if (block == null)
 	    return;
 	CMIMaterial cmat = CMIMaterial.get(block);
+
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
+	    if (jPlayer != null) {
+		if (cmat.equals(CMIMaterial.COMPOSTER)) {
+		    Levelled level = (Levelled) block.getBlockData();
+		    if (level.getLevel() == level.getMaximumLevel()) {
+			Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.COLLECT), block);
+		    }
+		}
+
+		if (cmat.equals(CMIMaterial.SWEET_BERRY_BUSH)) {
+		    Ageable age = (Ageable) block.getBlockData();
+		    if (!Jobs.getNms().getItemInMainHand(event.getPlayer()).getType().equals(CMIMaterial.BONE_MEAL.getMaterial())) {
+			Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, age.getAge()), block);
+		    }
+		}
+	    }
+	}
+
 	if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE) || cmat.equals(CMIMaterial.SMOKER) || cmat.equals(CMIMaterial.BLAST_FURNACE)) {
 	    if (!Jobs.getGCManager().isFurnacesReassign())
 		return;

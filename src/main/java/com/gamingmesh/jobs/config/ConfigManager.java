@@ -370,6 +370,8 @@ public class ConfigManager {
 		type = potion.toString();
 		id = potion.getId();
 	    }
+	} else if (actionType == ActionType.COLLECT) {
+	    type = myKey;
 	}
 
 	if (type == null) {
@@ -1151,6 +1153,8 @@ public class ConfigManager {
 				type = potion.toString();
 				id = potion.getId();
 			    }
+			} else if (actionType == ActionType.COLLECT) {
+			    type = myKey;
 			}
 
 			if (type == null) {
