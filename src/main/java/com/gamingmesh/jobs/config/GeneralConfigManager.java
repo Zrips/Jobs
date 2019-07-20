@@ -571,13 +571,13 @@ public class GeneralConfigManager {
 	addXpPlayer = c.get("add-xp-player", false);
 
 	c.addComment("allow-pay-for-durability-loss", "Allows, when losing maximum durability of item then it does not pay the player until it is repaired.",
-		"E.g. the player wants to enchant a item with enchanting table and the item has durability loss then not paying.");
+	    "E.g. the player wants to enchant a item with enchanting table and the item has durability loss then not paying.");
 	c.addComment("allow-pay-for-durability-loss.Use", "Do not disable this if you don't know what mean this option.");
 	payItemDurabilityLoss = c.get("allow-pay-for-durability-loss.Use", true);
 	c.addComment("allow-pay-for-durability-loss.WhiteListedItems", "What items (tools) are whitelisted the player get paid, when this item has durability loss?",
-			"Enchantments are supported, usage:", "itemName=ENCHANTMENT_NAME-level");
+	    "Enchantments are supported, usage:", "itemName=ENCHANTMENT_NAME-level");
 	WhiteListedItems = c.get("allow-pay-for-durability-loss.WhiteListedItems",
-		Arrays.asList("wooden_pickaxe=DURABILITY-1", "fishing_rod"));
+	    Arrays.asList("wooden_pickaxe=DURABILITY-1", "fishing_rod"));
 
 	c.addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
 	modifyChat = c.get("modify-chat.use", false);
@@ -629,8 +629,13 @@ public class GeneralConfigManager {
 	c.addComment("Economy.DynamicPayment.use", "Do you want to use dynamic payment dependent on how many players already working for jobs?",
 	    "This can help automatically lift up payments for not so popular jobs and lower for most popular ones");
 	useDynamicPayment = c.get("Economy.DynamicPayment.use", false);
-
-	String maxExpEquationInput = c.get("Economy.DynamicPayment.equation", "((totalworkers / totaljobs) - jobstotalplayers)/10.0");
+	
+	c.addComment("Economy.DynamicPayment.equation", "totalworkers: The total number of players on the server who have jobs",
+	    "totaljobs: The number of jobs that are enabled",
+	    "jobstotalplayers: The number of people in that particular job", 
+	    "Exponential equation: totalworkers / totaljobs / jobstotalplayers - 1",
+	    "Linear equation: ((totalworkers / totaljobs) - jobstotalplayers)/10.0");
+	String maxExpEquationInput = c.get("Economy.DynamicPayment.equation", "totalworkers / totaljobs / jobstotalplayers - 1");
 	try {
 	    DynamicPaymentEquation = new Parser(maxExpEquationInput);
 	    // test equation
@@ -643,8 +648,8 @@ public class GeneralConfigManager {
 	    useDynamicPayment = false;
 	}
 
-	DynamicPaymentMaxPenalty = c.get("Economy.DynamicPayment.MaxPenalty", 25.0);
-	DynamicPaymentMaxBonus = c.get("Economy.DynamicPayment.MaxBonus", 100.0);
+	DynamicPaymentMaxPenalty = c.get("Economy.DynamicPayment.MaxPenalty", 50.0);
+	DynamicPaymentMaxBonus = c.get("Economy.DynamicPayment.MaxBonus", 300.0);
 	c.addComment("Economy.MaxPayment.curve.use", "Enabling this feature will mean players will still earn once they reach cap but " +
 	    "will loose a percentage the higher over cap they go. Controlled by a factor. math is ```100/((1/factor*percentOver^2)+1)```");
 	useMaxPaymentCurve = c.get("Economy.MaxPayment.curve.use", false);
@@ -885,10 +890,10 @@ public class GeneralConfigManager {
 	    BossBarsMessageByDefault = c.get("BossBar.Messages.EnabledByDefault", true);
 
 	    c.addComment("BossBar.ShowOnEachAction", "If enabled boss bar will update after each action",
-			"If disabled, BossBar will update only on each payment. This can save some server resources");
+		"If disabled, BossBar will update only on each payment. This can save some server resources");
 	    BossBarShowOnEachAction = c.get("BossBar.ShowOnEachAction", false);
 	    c.addComment("BossBar.Timer", "How long in sec to show BossBar for player",
-			"If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
+		"If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
 	    BossBarTimer = c.get("BossBar.Timer", economyBatchDelay + 1);
 	}
 
