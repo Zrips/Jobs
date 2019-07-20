@@ -1034,8 +1034,8 @@ public abstract class JobsDAO {
 	int i = list.size();
 	try {
 	    statement = conns.createStatement();
-	    if (Jobs.getDBManager().getDbType().toString().equalsIgnoreCase("sqlite")) {
-		statement.executeUpdate("DELETE from `" + getPrefix() + table + "`");
+	    if (Jobs.getDBManager().getDbType().toString().equalsIgnoreCase("mysql")) {
+		statement.executeUpdate("TRUNCATE TABLE `" + getPrefix() + table + "`");
 	    } else {
 		statement.executeUpdate("DELETE from `" + getPrefix() + table + "`");
 	    }
