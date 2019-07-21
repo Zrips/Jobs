@@ -48,14 +48,9 @@ public class top implements Cmd {
 	if (page < 1)
 	    page = 1;
 
-	if (Jobs.getJob(args[0]) == null) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
-	    return false;
-	}
-
 	Job job = Jobs.getJob(args[0]);
-
 	if (job == null) {
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return false;
 	}
 
