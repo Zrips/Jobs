@@ -37,6 +37,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -648,11 +649,36 @@ public class Jobs extends JavaPlugin {
 	((int) (((System.currentTimeMillis() - time) / 1000d) * 100) / 100D));
     }
 
+    public static void reload() throws IOException {
+	reload(true);
+    }
+
     /**
      * Reloads all data
-     * @throws IOException 
+     * @throws IOException
      */
-    public static void reload() throws IOException {
+    public static void reload(boolean startup) throws IOException {
+	// unregister all registered listeners by this plugin and register again
+	// this reduces the server memory leak
+	if (!startup) {
+	    HandlerList.unregisterAll(instance);
+
+	    getInstance().getServer().getPluginManager().registerEvents(new JobsListener(instance), instance);
+	    getInstance().getServer().getPluginManager().registerEvents(new JobsPaymentListener(instance), instance);
+
+	    if (GconfigManager.useBlockProtection)
+		getInstance().getServer().getPluginManager().registerEvents(PistonProtectionListener, instance);
+
+	    if (getMcMMOManager().CheckmcMMO()) {
+		try {
+		    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
+		    getInstance().getServer().getPluginManager().registerEvents(new McMMO2_X_listener(instance), instance);
+		} catch (Exception e) {
+		    getInstance().getServer().getPluginManager().registerEvents(new McMMO1_X_listener(instance), instance);
+		}
+	    }
+	}
+
 	if (saveTask != null) {
 	    saveTask.shutdown();
 	    saveTask = null;
@@ -717,6 +743,8 @@ public class Jobs extends JavaPlugin {
 	if (dao != null) {
 	    dao.closeConnections();
 	}
+
+	HandlerList.unregisterAll(instance);
     }
 
     /**
@@ -867,9 +895,6 @@ public class Jobs extends JavaPlugin {
 	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
 	    jobConfig.saveDefaultConfig();
 
-	    YmlMaker jobSchedule = new YmlMaker(this, "schedule.yml");
-	    jobSchedule.saveDefaultConfig();
-
 	    YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
 	    jobShopItems.saveDefaultConfig();
 
@@ -892,7 +917,7 @@ public class Jobs extends JavaPlugin {
 	    setActionBar();
 
 	    getCommand("jobs").setExecutor(cManager);
-	    this.getCommand("jobs").setTabCompleter(new TabComplete());
+	    getCommand("jobs").setTabCompleter(new TabComplete());
 
 	    startup();
 

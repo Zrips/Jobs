@@ -49,8 +49,9 @@ public class MyPetManager {
 
     public void setup() {
 	Plugin pl = Bukkit.getPluginManager().getPlugin("MyPet");
-	if (pl == null)
+	if (pl == null || !Bukkit.getPluginManager().isPluginEnabled("MyPet"))
 	    return;
+
 	mp = MyPetApi.getPlayerManager();
 	mppm = MyPetApi.getMyPetManager();
 	enabled = true;

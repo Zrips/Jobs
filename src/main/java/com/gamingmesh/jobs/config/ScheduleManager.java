@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.config;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -168,8 +167,10 @@ public class ScheduleManager {
      * loads from Jobs/schedule.yml
      */
     public void load() {
-	File f = new File(Jobs.getFolder(), "schedule.yml");
-	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
+	YmlMaker jobSchedule = new YmlMaker(plugin, "schedule.yml");
+	jobSchedule.saveDefaultConfig();
+
+	YamlConfiguration conf = YamlConfiguration.loadConfiguration(jobSchedule.getConfigFile());
 
 	conf.options().copyDefaults(true);
 

@@ -11,7 +11,7 @@ public class reload implements Cmd {
     @JobCommand(2900)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	try {
-	    Jobs.reload();
+	    Jobs.reload(true);
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
