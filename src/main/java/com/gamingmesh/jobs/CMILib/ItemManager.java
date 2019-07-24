@@ -830,15 +830,18 @@ public class ItemManager {
 	LLAMA(103, "Llama"),
 	LLAMA_SPIT(104, "Llama Spit"),
 	PARROT(105, "Parrot"),
+	PUFFERFISH(108, "Pufferfish"),
+	SALMON(109, "Salmon"),
+	TROPICAL_FISH(111, "Tropical Fish"),
 	COD(112, "Cod"),
+	PANDA(113, "Panda"),
+	PILLAGER(114, "Pillager"),
 	VILLAGER(120, "Villager"),
+	FOX(121, "Fox"),
 	ENDER_CRYSTAL(200, "End Crystal"),
 	TURTLE(901, "Turtle"),
 	PHANTOM(902, "Phantom"),
 	TRIDENT(903, "Trident"),
-	SALMON(905, "Salmon"),
-	PUFFERFISH(906, "Pufferfish"),
-	TROPICAL_FISH(907, "Tropical Fish"),
 	DROWNED(908, "Drowned"),
 	DOLPHIN(909, "Dolphin"),
 	LINGERING_POTION(910, "Lingering Potion"),
@@ -849,12 +852,9 @@ public class ItemManager {
 	COMPLEX_PART(915, "Complex Part"),
 	TIPPED_ARROW(916, "Tipped Arrow"),
 
-	PANDA(916, "Panda"),
-	PILLAGER(916, "Pillager"),
-	RAVAGER(916, "Ravager"),
+	RAVAGER(916, "Ravager"), // Same ID with Cave_spider
 	TRADER_LLAMA(916, "Trader Llama"),
 	WANDERING_TRADER(916, "Wandering Trader"),
-	FOX(916, "Fox"),
 	UNKNOWN(999, "Unknown");
 
 	private int id;
