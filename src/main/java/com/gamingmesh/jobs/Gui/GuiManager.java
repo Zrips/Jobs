@@ -134,11 +134,15 @@ public class GuiManager {
 		Lore.add(Jobs.getLanguage().getMessage("command.info.gui.leftSlots") + ((job.getMaxSlots() - Jobs.getUsedSlots(job)) > 0 ? (job.getMaxSlots() - Jobs
 		    .getUsedSlots(job)) : 0));
 
-	    Lore.add(Jobs.getLanguage().getMessage("command.info.gui.actions"));
-	    for (ActionType actionType : ActionType.values()) {
-		List<JobInfo> info = job.getJobInfo(actionType);
-		if (info != null && !info.isEmpty()) {
-		    Lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
+	    if (Jobs.getGCManager().ShowActionNames) {
+		Lore.add("");
+		Lore.add(Jobs.getLanguage().getMessage("command.info.gui.actions"));
+
+		for (ActionType actionType : ActionType.values()) {
+		    List<JobInfo> info = job.getJobInfo(actionType);
+		    if (info != null && !info.isEmpty()) {
+			Lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
+		    }
 		}
 	    }
 

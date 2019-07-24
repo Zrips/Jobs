@@ -104,7 +104,7 @@ public class GeneralConfigManager {
     public boolean fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons;
+	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames;
 
     public boolean FireworkLevelupUse, UseRandom, UseFlicker, UseTrail;
     public String FireworkType;
@@ -965,6 +965,8 @@ public class GeneralConfigManager {
 	c.addComment("JobsGUI.SwitcheButtons", "With true left mouse button will join job and right will show more info",
 	    "With false left mouse button will show more info, right will join job", "Don't forget to adjust locale file");
 	JobsGUISwitcheButtons = c.get("JobsGUI.SwitcheButtons", false);
+	c.addComment("JobsGUI.ShowActionNames", "Do you want to show the action names in GUI?");
+	ShowActionNames = c.get("JobsGUI.ShowActionNames", true);
 	c.addComment("JobsGUI.Rows", "Defines size in rows of GUI");
 	JobsGUIRows = c.get("JobsGUI.Rows", 5);
 	c.addComment("JobsGUI.BackButtonSlot", "Defines back button slot in GUI");
