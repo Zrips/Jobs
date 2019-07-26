@@ -1571,7 +1571,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	CMIMaterial cmat = CMIMaterial.get(block);
 
-	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !event.useInteractedBlock().equals(org.bukkit.event.Event.Result.DENY)) {
 	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	    if (jPlayer != null) {
 		if (cmat.equals(CMIMaterial.COMPOSTER)) {
