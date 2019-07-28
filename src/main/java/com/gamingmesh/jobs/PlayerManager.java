@@ -62,7 +62,6 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -73,16 +72,11 @@ public class PlayerManager {
     private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<>();
     private ConcurrentHashMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<>();
 
-    private PointsData PointsDatabase = new PointsData();
     private final String mobSpawnerMetadata = "jobsMobSpawner";
 
     private HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<>();
     private HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<>();
     private HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<>();
-
-    public PointsData getPointsData() {
-	return PointsDatabase;
-    }
 
     public int getMapSize() {
 	return PlayerUUIDMap.size();
@@ -324,9 +318,9 @@ public class PlayerManager {
 	    }
 
 	if (points != null)
-	    getPointsData().addPlayer(jPlayer.getPlayerUUID(), points);
+	    Jobs.getPointsData().addPlayer(jPlayer.getPlayerUUID(), points);
 	else
-	    getPointsData().addPlayer(jPlayer.getPlayerUUID());
+	    Jobs.getPointsData().addPlayer(jPlayer.getPlayerUUID());
 
 	if (logs != null)
 	    jPlayer.setLog(logs);
@@ -549,7 +543,7 @@ public class PlayerManager {
 		    if (Jobs.getGCManager().LevelChangeChat)
 			player.sendMessage(line);
 		}
-		}
+	    }
 
 	    jPlayer.reloadHonorific();
 	    Jobs.getPermissionHandler().recalculatePermissions(jPlayer);

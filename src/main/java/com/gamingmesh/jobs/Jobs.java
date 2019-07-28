@@ -95,6 +95,7 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.McMMO.McMMO1_X_listener;
 import com.gamingmesh.jobs.McMMO.McMMO2_X_listener;
 import com.gamingmesh.jobs.McMMO.McMMOManager;
@@ -183,6 +184,8 @@ public class Jobs extends JavaPlugin {
     protected static VersionChecker versionCheckManager = null;
 
     protected static SelectionManager smanager = null;
+
+    private static PointsData pointsDatabase = null;
 
     private void setMcMMOlistener() {
 	try {
@@ -317,6 +320,17 @@ public class Jobs extends JavaPlugin {
 	if (DBManager == null)
 	    DBManager = new JobsManager(instance);
 	return DBManager;
+    }
+
+    public static void setPointsDatabase() {
+	pointsDatabase = new PointsData();
+    }
+
+    public static PointsData getPointsData() {
+	if (pointsDatabase == null)
+	    pointsDatabase = new PointsData();
+
+	return pointsDatabase;
     }
 
     public static void setShopManager() {
@@ -904,6 +918,7 @@ public class Jobs extends JavaPlugin {
 	    setPermissionHandler(new PermissionHandler(this));
 	    setPluginLogger(getLogger());
 	    setJobsClassloader();
+	    setPointsDatabase();
 	    setDBManager();
 	    setLanguage();
 	    setGUIManager();

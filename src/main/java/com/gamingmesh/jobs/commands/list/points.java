@@ -38,7 +38,7 @@ public class points implements Cmd {
 	    return true;
 	}
 
-	PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(jPlayer.getPlayerUUID());
+	PlayerPoints pointInfo = Jobs.getPointsData().getPlayerPointsInfo(jPlayer.getPlayerUUID());
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getUserName()));
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.points.currentpoints", "%currentpoints%", (int) (pointInfo.getCurrentPoints() * 100) / 100D));

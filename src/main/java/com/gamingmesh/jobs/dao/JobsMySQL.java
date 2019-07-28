@@ -130,7 +130,6 @@ public class JobsMySQL extends JobsDAO {
 	    statement.close();
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("&cCould not create table, SQLException: " + e.getMessage());
-	    close(statement);
 	    return false;
 	} finally {
 	    close(statement);

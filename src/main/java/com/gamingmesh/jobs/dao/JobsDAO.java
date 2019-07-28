@@ -1430,7 +1430,7 @@ public abstract class JobsDAO {
 
 	PreparedStatement prest = null;
 	try {
-	    PlayerPoints pointInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(jPlayer.getPlayerUUID());
+	    PlayerPoints pointInfo = Jobs.getPointsData().getPlayerPointsInfo(jPlayer.getPlayerUUID());
 	    prest = conn.prepareStatement("INSERT INTO `" + prefix + "points` (`totalpoints`, `currentpoints`, `userid`) VALUES (?, ?, ?);");
 	    prest.setDouble(1, pointInfo.getTotalPoints());
 	    prest.setDouble(2, pointInfo.getCurrentPoints());
@@ -1455,9 +1455,9 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 
 	    if (res.next()) {
-		Jobs.getPlayerManager().getPointsData().addPlayer(player.getPlayerUUID(), res.getDouble("currentpoints"), res.getDouble("totalpoints"));
+		Jobs.getPointsData().addPlayer(player.getPlayerUUID(), res.getDouble("currentpoints"), res.getDouble("totalpoints"));
 	    } else {
-		Jobs.getPlayerManager().getPointsData().addPlayer(player.getPlayerUUID());
+		Jobs.getPointsData().addPlayer(player.getPlayerUUID());
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();

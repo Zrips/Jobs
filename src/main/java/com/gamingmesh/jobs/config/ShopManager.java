@@ -71,7 +71,7 @@ public class ShopManager {
 	    return;
 
 	ShopItem item = ls.get(slot);
-	PlayerPoints pointsInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(player.getUniqueId());
+	PlayerPoints pointsInfo = Jobs.getPointsData().getPlayerPointsInfo(player.getUniqueId());
 
 	//if (!player.hasPermission("jobs.items.bypass")) {
 	for (String onePerm : item.getRequiredPerm()) {
@@ -193,7 +193,7 @@ public class ShopManager {
 	if (title.length() > 32)
 	    title = title.substring(0, 30) + "..";
 
-	PlayerPoints pointsInfo = Jobs.getPlayerManager().getPointsData().getPlayerPointsInfo(player.getUniqueId());
+	PlayerPoints pointsInfo = Jobs.getPointsData().getPlayerPointsInfo(player.getUniqueId());
 	double points = 0D;
 	if (pointsInfo != null)
 	    points = (int) (pointsInfo.getCurrentPoints() * 100.0) / 100.0;

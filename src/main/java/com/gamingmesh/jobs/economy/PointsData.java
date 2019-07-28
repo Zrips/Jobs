@@ -10,6 +10,9 @@ public class PointsData {
 
     private HashMap<UUID, PlayerPoints> Pointbase = new HashMap<>();
 
+    public PointsData() {
+    }
+
     public HashMap<UUID, PlayerPoints> getPointBase() {
 	return Pointbase;
     }
@@ -29,6 +32,7 @@ public class PointsData {
     public void addPlayer(UUID uuid, PlayerPoints points) {
 	if (Jobs.getGCManager().MultiServerCompatability() && Pointbase.containsKey(uuid))
 	    Pointbase.remove(uuid);
+
 	if (!Pointbase.containsKey(uuid))
 	    Pointbase.put(uuid, points);
     }
