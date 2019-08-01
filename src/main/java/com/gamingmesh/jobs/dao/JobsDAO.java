@@ -860,7 +860,6 @@ public abstract class JobsDAO {
 	    }
 	    prest.executeBatch();
 	    conn.commit();
-	    conn.setAutoCommit(true);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	} finally {
@@ -1256,8 +1255,6 @@ public abstract class JobsDAO {
 	    // calculate the max level
 	    // add the progression level.
 	    jPlayer.progression.add(jobProgression);
-
-	    jPlayer.getArchivedJobs().addArchivedJob(jobProgression);
 	}
 	jPlayer.reloadMaxExperience();
 	jPlayer.reloadLimits();
