@@ -370,12 +370,16 @@ command:
     help:
       info: 'Elhagyja a megadott munkát.'
       args: '[jobname]'
+    confirmationNeed: '&cBiztos vagy benne, hogy elhagyod a(z)&e [jobname]&c munkát? Írd be a parancsot újra&6 [time]
+        másodpercen belül, &chogy megerősítsd!'
     success: '&cSikeresen elhagytad a(z)&7 %jobname%&c munkát!'
   leaveall:
     help:
       info: 'Elhagyja az összes jelenlegi munkát.'
     error:
       nojobs: '&cNincs egyetlen munkád sem!'
+    confirmationNeed: '&cBiztos vagy benne, hogy elhagyod az összes munkát? Írd be a parancsot újra&6 [time]
+        másodpercen belül, &chogy megerősítsd!'
     success: '&cElhagytad az összes munkát!'
   explored:
     help:

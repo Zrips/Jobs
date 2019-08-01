@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.stuff;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Color;
@@ -23,6 +24,7 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 public class Util {
 
     private static HashMap<UUID, String> jobsEditorMap = new HashMap<>();
+    public static List<String> confirmLeave = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
     public static ItemStack setEntityType(ItemStack is, EntityType type) throws IllegalArgumentException {
