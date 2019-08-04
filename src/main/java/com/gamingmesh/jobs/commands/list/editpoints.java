@@ -61,6 +61,8 @@ public class editpoints implements Cmd {
 		"%playername%", jPlayer.getUserName(),
 		"%amount%", amount));
 	    break;
+	default:
+	    break;
 	}
 	return true;
     }

@@ -121,12 +121,12 @@ public class JobsSQLite extends JobsDAO {
 
 	    statement = getConnection().createStatement();
 	    statement.execute(query);
-	    statement.close();
 	    return true;
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("&cCould not create table, SQLException: " + e.getMessage());
-	    close(statement);
 	    return false;
+	} finally {
+	    close(statement);
 	}
     }
 
@@ -177,11 +177,11 @@ public class JobsSQLite extends JobsDAO {
 	}
 	try {
 	    statement.executeQuery("ALTER TABLE `" + table + "` ADD `" + collumn + "` " + type);
-	    statement.close();
 	    return true;
 	} catch (SQLException e) {
-	    close(statement);
 	    return false;
+	} finally {
+	    close(statement);
 	}
     }
 
@@ -197,14 +197,14 @@ public class JobsSQLite extends JobsDAO {
 	    statement = getConnection().createStatement();
 	    query = "DELETE FROM `" + table + "`;";
 	    statement.executeQuery(query);
-	    statement.close();
 	    return true;
 	} catch (SQLException e) {
 	    if (!(e.getMessage().toLowerCase().contains("locking") || e.getMessage().toLowerCase().contains("locked")) &&
 		!e.toString().contains("not return ResultSet"))
 		Jobs.consoleMsg("&cError in wipeTable() query: " + e);
-	    close(statement);
 	    return false;
+	} finally {
+	    close(statement);
 	}
     }
 
@@ -220,13 +220,11 @@ public class JobsSQLite extends JobsDAO {
 	    statement = getConnection().createStatement();
 	    query = "DROP TABLE IF EXISTS `" + table + "`;";
 	    statement.executeQuery(query);
-	    statement.close();
 	    return true;
 	} catch (SQLException e) {
 	    if (!(e.getMessage().toLowerCase().contains("locking") || e.getMessage().toLowerCase().contains("locked")) &&
 		!e.toString().contains("not return ResultSet"))
 		Jobs.consoleMsg("&cError in dropTable() query: " + e);
-	    close(statement);
 	    return false;
 	} finally {
 	    close(statement);

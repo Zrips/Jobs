@@ -83,11 +83,11 @@ public class Schedule {
     }
 
     public void setBoost(CurrencyType type, double amount) {
-	this.BM.add(type, amount - 1);
+	BM.add(type, amount - 1);
     }
 
     public double getBoost(CurrencyType type) {
-	return this.BM.get(type);
+	return BM.get(type);
     }
 
     public BoostMultiplier getBoost() {
@@ -138,13 +138,14 @@ public class Schedule {
     }
 
     public void setJobs(List<String> JobsNameList) {
-	for (int z = 0; z < JobsNameList.size(); z++) {
+	JobsList.clear();
 
+	List<Job> jobl = Jobs.getJobs();
+	for (int z = 0; z < JobsNameList.size(); z++) {
 	    if (JobsNameList.get(z).equalsIgnoreCase("all")) {
-		JobsList.clear();
-		List<Job> jobl = Jobs.getJobs();
 		if (jobl != null)
 		    JobsList.addAll(Jobs.getJobs());
+
 		return;
 	    }
 
@@ -177,7 +178,7 @@ public class Schedule {
 	for (String one : msg) {
 	    temp.add(ChatColor.translateAlternateColorCodes('&', one.replace("[until]", Until).replace("[from]", From)));
 	}
-	this.MessageOnStart.addAll(temp);
+	MessageOnStart.addAll(temp);
     }
 
     public List<String> GetMessageOnStart() {
@@ -189,7 +190,7 @@ public class Schedule {
 	for (String one : msg) {
 	    temp.add(ChatColor.translateAlternateColorCodes('&', one.replace("[until]", Until).replace("[from]", From)));
 	}
-	this.MessageOnStop.addAll(temp);
+	MessageOnStop.addAll(temp);
     }
 
     public List<String> GetMessageOnStop() {
@@ -201,7 +202,7 @@ public class Schedule {
 	for (String one : msg) {
 	    temp.add(ChatColor.translateAlternateColorCodes('&', one.replace("[until]", Until).replace("[from]", From)));
 	}
-	this.MessageToBroadcast.addAll(temp);
+	MessageToBroadcast.addAll(temp);
     }
 
     public List<String> GetMessageToBroadcast() {

@@ -105,6 +105,7 @@ public class NameTranslatorManager {
 			return one.getName();
 		    }
 		}
+		break;
 	    default:
 		break;
 	    }

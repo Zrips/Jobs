@@ -48,6 +48,8 @@ public class exp implements Cmd {
 	    case "take":
 		action = Action.Take;
 		break;
+	    default:
+		break;
 	}
 
 	double amount = 0.0;
@@ -71,6 +73,8 @@ public class exp implements Cmd {
 		    break;
 		case Take:
 		    prog.takeExperience(amount);
+		    break;
+		default:
 		    break;
 		}
 

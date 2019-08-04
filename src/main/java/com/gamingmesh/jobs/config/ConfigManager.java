@@ -250,6 +250,8 @@ public class ConfigManager {
 		id = 30;
 		meta = "1";
 		break c;
+	    default:
+		break;
 	    }
 
 	    // Break and Place actions MUST be blocks
@@ -341,6 +343,11 @@ public class ConfigManager {
 		case "guardianelder":
 		    type = CMIEntityType.ELDER_GUARDIAN.name();
 		    id = 68;
+		    meta = "1";
+		    break;
+		default:
+		    type = CMIEntityType.getByName(myKey.toUpperCase()).name();
+		    id = CMIEntityType.getByName(myKey.toUpperCase()).getId();
 		    meta = "1";
 		    break;
 		}
@@ -1034,6 +1041,8 @@ public class ConfigManager {
 				id = 30;
 				meta = "1";
 				break c;
+			    default:
+				break;
 			    }
 
 			    // Break and Place actions MUST be blocks
@@ -1120,6 +1129,11 @@ public class ConfigManager {
 				case "guardianelder":
 				    type = CMIEntityType.ELDER_GUARDIAN.name();
 				    id = 68;
+				    meta = "1";
+				    break;
+				default:
+				    type = CMIEntityType.getByName(myKey.toUpperCase()).name();
+				    id = CMIEntityType.getByName(myKey.toUpperCase()).getId();
 				    meta = "1";
 				    break;
 				}

@@ -377,10 +377,13 @@ public class editjobs implements Cmd {
 		case "offhand":
 		    item = ItemReflection.getItemInOffHand(player);
 		    key = item.getType().name() + "-" + item.getData().getData();
+		    break;
 		case "looking":
 		case "lookingat":
 		    Block block = Util.getTargetBlock(player, 30);
 		    key = block.getType().name() + "-" + block.getData();
+		    break;
+		default:
 		    break;
 		}
 
@@ -464,6 +467,8 @@ public class editjobs implements Cmd {
 			type = "ARMOR_STAND";
 			meta = "1";
 			break c;
+		    default:
+			break;
 		    }
 
 		    if (actionT == ActionType.BREAK || actionT == ActionType.PLACE || actionT == ActionType.STRIPLOGS) {
@@ -543,6 +548,11 @@ public class editjobs implements Cmd {
 			id = 68;
 			meta = "1";
 			break;
+		    default:
+			type = CMIEntityType.getByName(myKey.toUpperCase()).name();
+			id = CMIEntityType.getByName(myKey.toUpperCase()).getId();
+			meta = "1";
+			break;
 		    }
 		    }
 
@@ -617,6 +627,8 @@ public class editjobs implements Cmd {
 		return true;
 	    }
 
+	    break;
+	default:
 	    break;
 	}
 

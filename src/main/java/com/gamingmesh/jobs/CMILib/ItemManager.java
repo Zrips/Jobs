@@ -240,6 +240,8 @@ public class ItemManager {
 	    }
 
 	    break;
+	default:
+	    break;
 	}
 
 	main: if (cm == null) {
@@ -3489,6 +3491,8 @@ public class ItemManager {
 			return SlabType.BOTTOM;
 		    case "DOUBLE":
 			return SlabType.DOUBLE;
+		    default:
+			break;
 		    }
 
 		}
@@ -3536,6 +3540,8 @@ public class ItemManager {
 		    default:
 			return SlabType.DOUBLE;
 		    }
+		default:
+		    break;
 		}
 	    }
 

@@ -157,6 +157,8 @@ public class ScheduleManager {
 	    return "saturday";
 	case 1:
 	    return "sunday";
+	default:
+	    break;
 	}
 	return "all";
     }

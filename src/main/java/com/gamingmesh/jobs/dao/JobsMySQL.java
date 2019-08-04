@@ -127,7 +127,6 @@ public class JobsMySQL extends JobsDAO {
 	try {
 	    statement = conn.createStatement();
 	    statement.execute(query);
-	    statement.close();
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("&cCould not create table, SQLException: " + e.getMessage());
 	    return false;
@@ -174,8 +173,9 @@ public class JobsMySQL extends JobsDAO {
 	    return false;
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
-	    close(statement);
 	    return false;
+	} finally {
+	    close(statement);
 	}
     }
 
@@ -190,12 +190,12 @@ public class JobsMySQL extends JobsDAO {
 	}
 	try {
 	    statement.executeQuery("SELECT `" + collumn + "` FROM `" + table + "`;");
-	    statement.close();
 	    return true;
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("Not a culumn |" + "SELECT " + collumn + " FROM " + table + "|");
-	    close(statement);
 	    return false;
+	} finally {
+	    close(statement);
 	}
     }
 
@@ -211,11 +211,11 @@ public class JobsMySQL extends JobsDAO {
 	try {
 	    Jobs.consoleMsg("Creating culumn |" + "ALTER TABLE `" + table + "` ADD COLUMN `" + collumn + "` " + type + ";" + "|");
 	    statement.executeUpdate("ALTER TABLE `" + table + "` ADD COLUMN `" + collumn + "` " + type + ";");
-	    statement.close();
 	    return true;
 	} catch (SQLException e) {
-	    close(statement);
 	    return false;
+	} finally {
+	    close(statement);
 	}
     }
 
@@ -231,14 +231,13 @@ public class JobsMySQL extends JobsDAO {
 	    statement = getConnection().createStatement();
 	    query = "DELETE FROM " + table + ";";
 	    statement.executeUpdate(query);
-	    statement.close();
-
 	    return true;
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("&cCould not wipe table, SQLException: " + e.getMessage());
-	    close(statement);
 	    e.printStackTrace();
 	    return false;
+	} finally {
+	    close(statement);
 	}
     }
 
@@ -254,14 +253,13 @@ public class JobsMySQL extends JobsDAO {
 	    statement = getConnection().createStatement();
 	    query = "DROP TABLE IF EXISTS `" + table + "`;";
 	    statement.executeUpdate(query);
-	    statement.close();
-
 	    return true;
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("&cCould not wipe table, SQLException: " + e.getMessage());
-	    close(statement);
 	    e.printStackTrace();
 	    return false;
+	} finally {
+	    close(statement);
 	}
     }
 }

@@ -192,7 +192,7 @@ public class Jobs extends JavaPlugin {
 	    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
 	    getServer().getPluginManager().registerEvents(new McMMO2_X_listener(this), this);
 	    consoleMsg("&e[Jobs] Registered McMMO 2.x listener");
-	} catch (Throwable e) {
+	} catch (ClassNotFoundException e) {
 	    getServer().getPluginManager().registerEvents(new McMMO1_X_listener(this), this);
 	    consoleMsg("&e[Jobs] Registered McMMO 1.x listener");
 	}
@@ -247,10 +247,10 @@ public class Jobs extends JavaPlugin {
 	    return false;
 	if (getVersionCheckManager().convertVersion(getServer().getPluginManager()
 	    .getPlugin("PlaceholderAPI").getDescription().getVersion()) >= getVersionCheckManager().convertVersion("2.10.0")) {
-	    if ((new NewPlaceholderAPIHook(this)).register())
+	    if (new NewPlaceholderAPIHook(this).register())
 		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
 	} else {
-	    if ((new PlaceholderAPIHook(this)).hook())
+	    if (new PlaceholderAPIHook(this).hook())
 		consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version. In the PlaceholderAPI"
 		    + " new version has removed the extension and we using the latest.");
 	}
@@ -687,7 +687,7 @@ public class Jobs extends JavaPlugin {
 		try {
 		    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
 		    getInstance().getServer().getPluginManager().registerEvents(new McMMO2_X_listener(instance), instance);
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
 		    getInstance().getServer().getPluginManager().registerEvents(new McMMO1_X_listener(instance), instance);
 		}
 	    }

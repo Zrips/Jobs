@@ -40,6 +40,8 @@ public class level implements Cmd {
 	    case "take":
 		action = Action.Take;
 		continue;
+	    default:
+		break;
 	    }
 
 	    try {
@@ -82,6 +84,8 @@ public class level implements Cmd {
 		    break;
 		case Take:
 		    prog.setLevel(amount);
+		    break;
+		default:
 		    break;
 		}
 
