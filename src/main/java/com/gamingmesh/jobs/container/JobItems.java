@@ -91,11 +91,11 @@ public class JobItems {
 	    ItemStack item = this.item.clone();
 	    ItemMeta meta = item.getItemMeta();
 	    if (meta.hasDisplayName())
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', meta.getDisplayName().replace("[player]", player == null ? "[player]" : player.getName())));
+		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', meta.getDisplayName().replace("[player]", player.getName())));
 	    if (meta.hasLore()) {
 		List<String> TranslatedLore = new ArrayList<>();
 		for (String oneLore : meta.getLore()) {
-		    TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player == null ? "[player]" : player.getName())));
+		    TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player.getName())));
 		}
 		meta.setLore(TranslatedLore);
 	    }

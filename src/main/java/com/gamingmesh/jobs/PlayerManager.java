@@ -535,6 +535,7 @@ public class PlayerManager {
 		message = message.replace("%playername%", jPlayer.getUserName());
 
 	    message = message.replace("%joblevel%", "" + prog.getLevel());
+	    message = message.replace("%lostLevel%", "" + oldLevel);
 
 	    if (player != null) {
 		for (String line : message.split("\n")) {

@@ -636,7 +636,7 @@ public class LanguageManager {
 
 	    c.get("message.levelup.broadcast", "%playername% is now a level %joblevel% %jobname%.");
 	    c.get("message.levelup.nobroadcast", "You are now level %joblevel% %jobname%.");
-	    c.get("message.leveldown.message", "&cYou lost level in&e %jobname%&c job! Level:&6 %joblevel%&c.");
+	    c.get("message.leveldown.message", "&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.");
 
 	    c.get("message.cowtimer", "&eYou still need to wait &6%time% &esec to get paid for this job.");
 	    c.get("message.blocktimer", "&eYou need to wait &3[time] &esec more to get paid for this!");
