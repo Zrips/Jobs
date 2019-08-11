@@ -10,6 +10,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
 
 public class resetquest implements Cmd {
@@ -54,7 +55,13 @@ public class resetquest implements Cmd {
 
 	for (QuestProgression one : quests) {
 	    one.setValidUntil(System.currentTimeMillis());
+	    for (java.util.Map.Entry<String, QuestObjective> obj : one.getQuest().getObjectives().entrySet()) {
+		one.setAmountDone(obj.getValue(), 0);
+	    }
 	}
+
+	jPlayer.setDoneQuests(0);
+	jPlayer.getQuestProgressions(job).clear();
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.reseted", "%playername%", jPlayer.getUserName()));
 

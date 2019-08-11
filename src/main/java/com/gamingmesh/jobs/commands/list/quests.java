@@ -67,8 +67,7 @@ public class quests implements Cmd {
 		    List<String> hoverMsgs = Jobs.getLanguage().getMessageList("command.quests.output.hover");
 		    List<String> hoverList = new ArrayList<>();
 
-		    for (int i = 0; i < hoverMsgs.size(); i++) {
-			String current = hoverMsgs.get(i);
+		    for (String current : hoverMsgs) {
 			current = current.replace("[jobName]", jobProg.getJob().getName());
 			current = current.replace("[time]", TimeManage.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
 			if (current.contains("[desc]")) {
@@ -77,7 +76,6 @@ public class quests implements Cmd {
 			    }
 			} else
 			    hoverList.add(current);
-
 		    }
 
 		    for (Entry<String, QuestObjective> oneObjective : q.getQuest().getObjectives().entrySet()) {
