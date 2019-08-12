@@ -347,7 +347,7 @@ Jobs:
       Green:
         income: 2.0
         experience: 5.0
-      Navy:
+      Light_Blue:
         income: 2.0
         experience: 5.0
       Lime:
@@ -1826,7 +1826,7 @@ Jobs:
         income: 4.0
         points: 4.0
         experience: 5.0
-      Navy:
+      Light_Blue:
         income: 4.0
         points: 4.0
         experience: 5.0

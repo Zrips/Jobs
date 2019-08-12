@@ -1131,6 +1131,8 @@ public class Jobs extends JavaPlugin {
 	    }
 
 	} else {
+	    FastPayment.clear();
+
 	    for (JobProgression prog : progression) {
 		int level = prog.getLevel();
 
@@ -1263,7 +1265,6 @@ public class Jobs extends JavaPlugin {
 		else
 		    expAmount = JobsExpGainEvent.getExp();
 
-		FastPayment.clear();
 		FastPayment.put(jPlayer.getPlayerUUID(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), income, pointAmount, expAmount), prog
 		    .getJob()));
 

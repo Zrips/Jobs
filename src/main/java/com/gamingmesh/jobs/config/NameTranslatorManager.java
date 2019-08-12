@@ -365,12 +365,12 @@ public class NameTranslatorManager {
 	    c.get("ColorList.0-white", "&fWhite");
 	    c.get("ColorList.1-orange", "&6Orange");
 	    c.get("ColorList.2-magenta", "&dMagenta");
-	    c.get("ColorList.3-navy", "&9Navy");
+	    c.get("ColorList.3-light_blue", "&9Light Blue");
 	    c.get("ColorList.4-yellow", "&eYellow");
 	    c.get("ColorList.5-lime", "&aLime");
 	    c.get("ColorList.6-pink", "&dPink");
 	    c.get("ColorList.7-gray", "&8Gray");
-	    c.get("ColorList.8-silver", "&7Silver");
+	    c.get("ColorList.8-light_gray", "&7Light Gray");
 	    c.get("ColorList.9-cyan", "&3Cyan");
 	    c.get("ColorList.10-purple", "&5Purple");
 	    c.get("ColorList.11-blue", "&1Blue");
