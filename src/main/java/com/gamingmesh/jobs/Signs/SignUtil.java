@@ -275,10 +275,8 @@ public class SignUtil {
 	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 		@Override
 		public void run() {
-
 		    Block b = loc.getBlock();
 		    final Material type = b.getType();
-		    final BlockData data = b.getBlockData();
 
 		    b.setType(Material.AIR);
 
@@ -288,10 +286,22 @@ public class SignUtil {
 			    Block b = loc.getBlock();
 
 			    b.setType(type);
-			    b.setBlockData(data);
+			    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
+				byte data = b.getData();
+				try {
+				    Block.class.getMethod("setData", byte.class).invoke(b, data);
+				} catch (Exception e) {
+				    e.printStackTrace();
+				}
+			    } else {
+				BlockData data = b.getBlockData();
+				b.setBlockData(data);
+			    }
+
 			    Skull skull = (Skull) b.getState();
 			    if (skull == null)
 				return;
+
 			    skull.setOwner(Playername);
 			    skull.update();
 			    return;
