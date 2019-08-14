@@ -104,24 +104,28 @@ public class PlayerManager {
     }
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
-	if (jPlayer.getUserName() != null)
+	if (jPlayer.getUserName() != null && playersCache.get(jPlayer.getUserName().toLowerCase()) == null)
 	    playersCache.put(jPlayer.getUserName().toLowerCase(), jPlayer);
-	if (jPlayer.getPlayerUUID() != null)
+	if (jPlayer.getPlayerUUID() != null && playersUUIDCache.get(jPlayer.getPlayerUUID()) == null)
 	    playersUUIDCache.put(jPlayer.getPlayerUUID(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
-	if (jPlayer.getUserName() != null)
+	if (jPlayer.getUserName() != null && players.get(jPlayer.getUserName().toLowerCase()) == null)
 	    players.put(jPlayer.getUserName().toLowerCase(), jPlayer);
-	if (jPlayer.getPlayerUUID() != null)
+	if (jPlayer.getPlayerUUID() != null && playersUUID.get(jPlayer.getPlayerUUID()) == null)
 	    playersUUID.put(jPlayer.getPlayerUUID(), jPlayer);
     }
 
     public JobsPlayer removePlayer(Player player) {
 	if (player == null)
 	    return null;
-	players.remove(player.getName().toLowerCase());
-	JobsPlayer jPlayer = playersUUID.remove(player.getUniqueId());
+
+	if (players.get(player.getName()) != null)
+	    players.remove(player.getName().toLowerCase());
+
+	JobsPlayer jPlayer = playersUUID.get(player.getUniqueId()) != null ?
+		    playersUUID.remove(player.getUniqueId()) : null;
 	return jPlayer;
     }
 
@@ -197,6 +201,7 @@ public class PlayerManager {
 	JobsPlayer jPlayer = getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
+
 	if (Jobs.getGCManager().saveOnDisconnect()) {
 	    jPlayer.onDisconnect();
 	    jPlayer.save();
