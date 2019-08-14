@@ -629,10 +629,10 @@ public class GeneralConfigManager {
 	c.addComment("Economy.DynamicPayment.use", "Do you want to use dynamic payment dependent on how many players already working for jobs?",
 	    "This can help automatically lift up payments for not so popular jobs and lower for most popular ones");
 	useDynamicPayment = c.get("Economy.DynamicPayment.use", false);
-	
+
 	c.addComment("Economy.DynamicPayment.equation", "totalworkers: The total number of players on the server who have jobs",
 	    "totaljobs: The number of jobs that are enabled",
-	    "jobstotalplayers: The number of people in that particular job", 
+	    "jobstotalplayers: The number of people in that particular job",
 	    "Exponential equation: totalworkers / totaljobs / jobstotalplayers - 1",
 	    "Linear equation: ((totalworkers / totaljobs) - jobstotalplayers)/10.0");
 	String maxExpEquationInput = c.get("Economy.DynamicPayment.equation", "totalworkers / totaljobs / jobstotalplayers - 1");
@@ -823,8 +823,9 @@ public class GeneralConfigManager {
 
 	c.addComment("ExploitProtections.General.KeepDataFor",
 	    "For how long in days to keep block protection data in data base", "This will clean block data which ones have -1 as cooldown value",
-	    "Data base cleanup will be performed on each server startup");
+	    "Data base cleanup will be performed on each server startup", "This cant be more then 30 days");
 	BlockProtectionDays = c.get("ExploitProtections.General.KeepDataFor", 14);
+	BlockProtectionDays = BlockProtectionDays > 30 ? 30 : BlockProtectionDays;
 
 	c.addComment("ExploitProtections.General.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");
 	useGlobalTimer = c.get("ExploitProtections.General.GlobalBlockTimer.use", true);
