@@ -109,14 +109,17 @@ public class SignUtil {
 		newTemp.setType(SignTopType.getType(NameSection.getString("Type")));
 
 	    newTemp.setNumber(NameSection.getInt("Number"));
-	    if (NameSection.isString("JobName"))
-		newTemp.setJobName(NameSection.getString("JobName"));
+	    if (NameSection.isString("JobName")) {
+		SignTopType t = SignTopType.getType(NameSection.getString("JobName"));
+		if (t == null)
+		    newTemp.setJobName(NameSection.getString("JobName"));
+	    }
 	    newTemp.setSpecial(NameSection.getBoolean("Special"));
 
-	    HashMap<String, jobsSign> old = SignsByType.get(newTemp.getJobName().toLowerCase());
+	    HashMap<String, jobsSign> old = SignsByType.get(newTemp.getIdentifier().toLowerCase());
 	    if (old == null) {
 		old = new HashMap<String, jobsSign>();
-		SignsByType.put(newTemp.getJobName().toLowerCase(), old);
+		SignsByType.put(newTemp.getIdentifier().toLowerCase(), old);
 	    }
 	    String loc = newTemp.locToBlockString();
 	    if (loc == null) {
@@ -170,6 +173,8 @@ public class SignUtil {
     public boolean SignUpdate(SignTopType type) {
 	return SignUpdate(null, type);
     }
+
+    public static Integer questSignUpdateShed = null;
 
     public boolean SignUpdate(Job job, SignTopType type) {
 	if (!Jobs.getGCManager().SignsEnabled)
@@ -248,8 +253,10 @@ public class SignUtil {
 	    org.bukkit.block.Sign sign = (org.bukkit.block.Sign) block.getState();
 	    if (!jSign.isSpecial()) {
 		for (int i = 0; i < 4; i++) {
-		    if (i + number >= PlayerList.size())
-			break;
+		    if (i + number >= PlayerList.size()) {
+			sign.setLine(i, "");
+			continue;
+		    }
 		    String PlayerName = PlayerList.get(i + number).getPlayerName();
 
 		    if (PlayerName == null)

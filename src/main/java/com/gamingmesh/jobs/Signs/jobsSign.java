@@ -147,7 +147,7 @@ public class jobsSign {
     }
 
     public SignTopType getType() {
-	return type == null ? SignTopType.toplist : type;
+	return type == null ? SignTopType.getType(jobName) == null ? SignTopType.toplist : SignTopType.getType(jobName) : type;
     }
 
     public void setType(SignTopType type) {

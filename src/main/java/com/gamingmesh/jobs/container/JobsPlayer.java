@@ -26,10 +26,12 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Signs.SignTopType;
+import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
@@ -506,7 +508,6 @@ public class JobsPlayer {
 	    newLevel = maxLevel;
 
 	setLevel(job, newLevel);
-	Jobs.getPlayerManager().performCommandOnLevelUp(this, job, newLevel - 1);
 //	}
     }
 
@@ -1060,9 +1061,19 @@ public class JobsPlayer {
 	this.doneQuests = doneQuests;
     }
 
-    public void addDoneQuest() {	
-	Jobs.getSignUtil().SignUpdate(SignTopType.questtoplist);
+    public void addDoneQuest() {
 	this.doneQuests++;
+	this.setSaved(false);
+
+	if (SignUtil.questSignUpdateShed == null) {
+	    SignUtil.questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
+		@Override
+		public void run() {
+		    Jobs.getSignUtil().SignUpdate(SignTopType.questtoplist);
+		    SignUtil.questSignUpdateShed = null;
+		}
+	    }, Jobs.getGCManager().getSavePeriod() * 60 * 20L);
+	}
     }
 
     public int getFurnaceCount() {
