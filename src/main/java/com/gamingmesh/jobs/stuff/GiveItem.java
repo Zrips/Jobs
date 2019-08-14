@@ -14,7 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class GiveItem {
-    public static boolean GiveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore, HashMap<Enchantment, Integer> hashMap) {
+    public static void GiveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore,
+	    HashMap<Enchantment, Integer> hashMap) {
 	ItemStack itemStack = CMIMaterial.get(id, meta).newItemStack();
 	itemStack.setAmount(qty);
 	ItemMeta ItemMeta = itemStack.getItemMeta();
@@ -24,22 +25,23 @@ public class GiveItem {
 	    for (String oneLore : lore) {
 		TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player.getName())));
 	    }
+
 	    ItemMeta.setLore(TranslatedLore);
 	}
+
 	for (Entry<Enchantment, Integer> OneEnchant : hashMap.entrySet()) {
 	    ItemMeta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
 	}
+
 	if (name != null)
 	    ItemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+
 	itemStack.setItemMeta(ItemMeta);
-	player.getInventory().addItem(itemStack);
-	player.updateInventory();
-	return true;
+	GiveItemForPlayer(player, itemStack);
     }
 
-    public static boolean GiveItemForPlayer(Player player, ItemStack item) {
+    public static void GiveItemForPlayer(Player player, ItemStack item) {
 	player.getInventory().addItem(item);
 	player.updateInventory();
-	return true;
     }
 }

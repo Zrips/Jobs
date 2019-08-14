@@ -42,6 +42,8 @@ public class JobsManager {
 	    dao = startMysql();
 	    dao.setDbType(DbType);
 	    break;
+	default:
+	    break;
 	}
 
 	File f = new File(Jobs.getFolder(), "generalConfig.yml");

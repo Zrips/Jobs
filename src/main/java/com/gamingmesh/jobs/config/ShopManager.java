@@ -30,6 +30,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.ShopItem;
+import com.gamingmesh.jobs.stuff.GiveItem;
 
 public class ShopManager {
     private List<ShopItem> list = new ArrayList<>();
@@ -123,7 +124,7 @@ public class ShopManager {
 
 	for (JobItems one : item.getitems()) {
 	    ItemStack itemStack = one.getItemStack(player);
-	    player.getInventory().addItem(itemStack);
+	    GiveItem.GiveItemForPlayer(player, itemStack);
 	}
 
 	pointsInfo.takePoints(item.getPrice());

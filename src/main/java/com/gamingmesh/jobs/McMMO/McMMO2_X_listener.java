@@ -15,7 +15,6 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
-import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
 public class McMMO2_X_listener implements Listener {
@@ -54,10 +53,6 @@ public class McMMO2_X_listener implements Listener {
 	    return;
 
 	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void OnAbility(McMMOPlayerAbilityEvent event) {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
