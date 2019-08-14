@@ -23,7 +23,6 @@ import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class SignUtil {
 
@@ -99,9 +98,9 @@ public class SignUtil {
 	    jobsSign newTemp = new jobsSign();
 	    if (NameSection.isString("World")) {
 		newTemp.setWorldName(NameSection.getString("World"));
-		newTemp.setX((int) NameSection.getDouble("X"));
-		newTemp.setY((int) NameSection.getDouble("Y"));
-		newTemp.setZ((int) NameSection.getDouble("Z"));
+		newTemp.getLocation().setX((int) NameSection.getDouble("X"));
+		newTemp.getLocation().setY((int) NameSection.getDouble("Y"));
+		newTemp.getLocation().setZ((int) NameSection.getDouble("Z"));
 	    } else {
 		newTemp.setLoc(NameSection.getString("Loc"));
 	    }
@@ -232,6 +231,8 @@ public class SignUtil {
 		    PlayerList = Jobs.getJobsDAO().toplist(SignJobName);
 		    temp.put(SignJobName, PlayerList);
 		}
+		break;
+	    default:
 		break;
 	    }
 
