@@ -64,9 +64,9 @@
 		<dependency>
 			<groupId>io.lumine.xikage.mythicmobs</groupId>
 			<artifactId>MythicMobs</artifactId>
-			<version>4.5.9</version>
+			<version>4.6.5</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/MythicMobs-4.5.9.jar</systemPath>
+			<systemPath>${basedir}/libs/MythicMobs-4.6.5.jar</systemPath>
 		</dependency>
 		<!-- WorldGuard old version -->
 		<dependency>
