@@ -98,9 +98,9 @@ public class SignUtil {
 	    jobsSign newTemp = new jobsSign();
 	    if (NameSection.isString("World")) {
 		newTemp.setWorldName(NameSection.getString("World"));
-		newTemp.getLocation().setX((int) NameSection.getDouble("X"));
-		newTemp.getLocation().setY((int) NameSection.getDouble("Y"));
-		newTemp.getLocation().setZ((int) NameSection.getDouble("Z"));
+		newTemp.setX((int) NameSection.getDouble("X"));
+		newTemp.setY((int) NameSection.getDouble("Y"));
+		newTemp.setZ((int) NameSection.getDouble("Z"));
 	    } else {
 		newTemp.setLoc(NameSection.getString("Loc"));
 	    }
