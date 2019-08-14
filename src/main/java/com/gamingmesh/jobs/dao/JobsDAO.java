@@ -1132,8 +1132,8 @@ public abstract class JobsDAO {
     }
 
     /**
-     * Get all jobs from archive by player
-     * @param player - targeted player
+     * Get player list by total job level
+     * @param start - starting entry
      * @return info - information about jobs
      */
     public List<TopList> getGlobalTopList(int start) {
@@ -1158,6 +1158,47 @@ public abstract class JobsDAO {
 		if (info.getName() == null)
 		    continue;
 		TopList top = new TopList(info, res.getInt("totallvl"), 0);
+		names.add(top);
+		if (names.size() >= Jobs.getGCManager().JobsTopAmount)
+		    break;
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+	return names;
+    }
+
+    /**
+     * Get players by quests done
+     * @param start - starting entry
+     * @param size - max count of entries
+     * @return info - information about jobs
+     */
+    public List<TopList> getQuestTopList(int start) {
+	JobsConnection conn = getConnection();
+
+	List<TopList> names = new ArrayList<>();
+
+	if (conn == null)
+	    return names;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    prest = conn.prepareStatement("SELECT `id`, `player_uuid`, `donequests` FROM `" + prefix
+		+ "users` ORDER BY `donequests` DESC, LOWER(seen) DESC LIMIT " + start + ", " + (start + Jobs.getGCManager().JobsTopAmount + 1) + ";");
+
+	    res = prest.executeQuery();
+
+	    while (res.next()) {
+		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt("id"));
+		if (info == null)
+		    continue;
+		if (info.getName() == null)
+		    continue;
+		TopList top = new TopList(info, res.getInt("donequests"), 0);
 		names.add(top);
 		if (names.size() >= Jobs.getGCManager().JobsTopAmount)
 		    break;

@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Skull;
@@ -21,19 +21,58 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
+import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class SignUtil {
 
-    private SignInfo Signs = new SignInfo();
+    private HashMap<String, HashMap<String, jobsSign>> SignsByType = new HashMap<String, HashMap<String, jobsSign>>();
+    private HashMap<String, jobsSign> SignsByLocation = new HashMap<String, jobsSign>();
     private Jobs plugin;
 
     public SignUtil(Jobs plugin) {
 	this.plugin = plugin;
     }
 
-    public SignInfo getSigns() {
-	return Signs;
+    public HashMap<String, HashMap<String, jobsSign>> getSigns() {
+	return SignsByType;
+    }
+
+    public boolean removeSign(Location loc) {
+	jobsSign jSign = SignsByLocation.remove(jobsSign.locToBlockString(loc));
+	if (jSign == null)
+	    return false;
+
+	HashMap<String, jobsSign> sub = SignsByType.get(jSign.getIdentifier().toLowerCase());
+	if (sub != null) {
+	    sub.remove(jSign.locToBlockString());
+	}
+	return true;
+    }
+
+    public jobsSign getSign(Location loc) {
+	if (loc == null)
+	    return null;
+	return SignsByLocation.get(jobsSign.locToBlockString(loc));
+    }
+
+    public void addSign(jobsSign jSign) {
+	if (jSign == null)
+	    return;
+	SignsByLocation.put(jSign.locToBlockString(), jSign);
+
+	HashMap<String, jobsSign> old = SignsByType.get(jSign.getIdentifier().toLowerCase());
+	if (old == null) {
+	    old = new HashMap<String, jobsSign>();
+	    SignsByType.put(jSign.getIdentifier().toLowerCase(), old);
+	}
+
+	String loc = jSign.locToBlockString();
+	if (loc == null) {
+	    return;
+	}
+	old.put(loc, jSign);
     }
 
     // Sign file
@@ -42,7 +81,8 @@ public class SignUtil {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
-	Signs.GetAllSigns().clear();
+	SignsByType.clear();
+	SignsByLocation.clear();
 	File file = new File(Jobs.getFolder(), "Signs.yml");
 	YamlConfiguration f = YamlConfiguration.loadConfiguration(file);
 
@@ -56,16 +96,37 @@ public class SignUtil {
 
 	for (String category : categoriesList) {
 	    ConfigurationSection NameSection = ConfCategory.getConfigurationSection(category);
-	    com.gamingmesh.jobs.Signs.Sign newTemp = new com.gamingmesh.jobs.Signs.Sign();
-	    newTemp.setWorld(NameSection.getString("World"));
-	    newTemp.setX(NameSection.getDouble("X"));
-	    newTemp.setY(NameSection.getDouble("Y"));
-	    newTemp.setZ(NameSection.getDouble("Z"));
+	    jobsSign newTemp = new jobsSign();
+	    if (NameSection.isString("World")) {
+		newTemp.setWorldName(NameSection.getString("World"));
+		newTemp.setX((int) NameSection.getDouble("X"));
+		newTemp.setY((int) NameSection.getDouble("Y"));
+		newTemp.setZ((int) NameSection.getDouble("Z"));
+	    } else {
+		newTemp.setLoc(NameSection.getString("Loc"));
+	    }
+	    if (NameSection.isString("Type"))
+		newTemp.setType(SignTopType.getType(NameSection.getString("Type")));
+
 	    newTemp.setNumber(NameSection.getInt("Number"));
-	    newTemp.setJobName(NameSection.getString("JobName"));
+	    if (NameSection.isString("JobName"))
+		newTemp.setJobName(NameSection.getString("JobName"));
 	    newTemp.setSpecial(NameSection.getBoolean("Special"));
-	    Signs.addSign(newTemp);
+
+	    HashMap<String, jobsSign> old = SignsByType.get(newTemp.getJobName().toLowerCase());
+	    if (old == null) {
+		old = new HashMap<String, jobsSign>();
+		SignsByType.put(newTemp.getJobName().toLowerCase(), old);
+	    }
+	    String loc = newTemp.locToBlockString();
+	    if (loc == null) {
+		Jobs.consoleMsg("&cFailed to load (" + category + ") sign location");
+		continue;
+	    }
+	    old.put(loc, newTemp);
+	    SignsByLocation.put(loc, newTemp);
 	}
+	Jobs.consoleMsg("&e[Jobs] Loaded " + SignsByLocation.size() + " top list signs");
 	return;
     }
 
@@ -83,16 +144,15 @@ public class SignUtil {
 	    conf.createSection("Signs");
 
 	int i = 0;
-	for (com.gamingmesh.jobs.Signs.Sign one : Signs.GetAllSigns()) {
+	for (Entry<String, jobsSign> one : SignsByLocation.entrySet()) {
+	    jobsSign sign = one.getValue();
 	    ++i;
 	    String path = "Signs." + i;
-	    writer.set(path + ".World", one.getWorld());
-	    writer.set(path + ".X", one.getX());
-	    writer.set(path + ".Y", one.getY());
-	    writer.set(path + ".Z", one.getZ());
-	    writer.set(path + ".Number", one.getNumber());
-	    writer.set(path + ".JobName", one.getJobName());
-	    writer.set(path + ".Special", one.isSpecial());
+	    writer.set(path + ".Loc", sign.locToBlockString());
+	    writer.set(path + ".Number", sign.getNumber());
+	    writer.set(path + ".Type", sign.getType().toString());
+	    writer.set(path + ".JobName", sign.getJobName());
+	    writer.set(path + ".Special", sign.isSpecial());
 	}
 
 	try {
@@ -103,7 +163,15 @@ public class SignUtil {
 	return;
     }
 
-    public boolean SignUpdate(String JobName) {
+    public boolean SignUpdate(Job job) {
+	return SignUpdate(job, SignTopType.toplist);
+    }
+
+    public boolean SignUpdate(SignTopType type) {
+	return SignUpdate(null, type);
+    }
+
+    public boolean SignUpdate(Job job, SignTopType type) {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return true;
 
@@ -111,115 +179,134 @@ public class SignUtil {
 
 	List<TopList> PlayerList = new ArrayList<>();
 
-	if (JobName.contains("gtoplist"))
-	    PlayerList = Jobs.getJobsDAO().getGlobalTopList(0);
+	if (type == null && job == null)
+	    return false;
+
+	if (type == null && job != null)
+	    type = SignTopType.toplist;
+
+	if (type == null)
+	    type = SignTopType.toplist;
 
 	HashMap<String, List<TopList>> temp = new HashMap<>();
 
-	for (com.gamingmesh.jobs.Signs.Sign one : new ArrayList<com.gamingmesh.jobs.Signs.Sign>(Signs.GetAllSigns())) {
-	    String SignJobName = one.getJobName();
+	String JobNameOrType = jobsSign.getIdentifier(job, type);
 
-	    if (!JobName.contains(SignJobName))
+	HashMap<String, jobsSign> signs = this.SignsByType.get(JobNameOrType.toLowerCase());
+
+	if (signs == null)
+	    return false;
+
+	switch (type) {
+	case toplist:
+	    break;
+	case gtoplist:
+	    PlayerList = Jobs.getJobsDAO().getGlobalTopList(0);
+	    break;
+	case questtoplist:
+	    PlayerList = Jobs.getJobsDAO().getQuestTopList(0);
+	    break;
+	default:
+	    break;
+	}
+
+	boolean save = false;
+	for (Entry<String, jobsSign> one : (new HashMap<String, jobsSign>(signs)).entrySet()) {
+	    jobsSign jSign = one.getValue();
+	    String SignJobName = jSign.getJobName();
+	    Location loc = jSign.getLocation();
+	    if (loc == null)
 		continue;
 
-	    World world = Bukkit.getWorld(one.getWorld());
-	    if (world == null)
-		continue;
+	    int number = jSign.getNumber() - 1;
 
-	    double SignsX = one.getX();
-	    double SignsY = one.getY();
-	    double SignsZ = one.getZ();
-	    int number = one.getNumber() - 1;
-
-	    if (!JobName.contains("gtoplist")) {
+	    switch (type) {
+	    case toplist:
 		PlayerList = temp.get(SignJobName);
 		if (PlayerList == null) {
 		    PlayerList = Jobs.getJobsDAO().toplist(SignJobName);
 		    temp.put(SignJobName, PlayerList);
 		}
+		break;
 	    }
 
 	    if (PlayerList.isEmpty())
 		continue;
 
-	    Location nloc = new Location(world, SignsX, SignsY, SignsZ);
-	    Block block = nloc.getBlock();
+	    Block block = loc.getBlock();
 	    if (!(block.getState() instanceof org.bukkit.block.Sign)) {
-		Signs.GetAllSigns().remove(one);
-		saveSigns();
+
+		HashMap<String, jobsSign> tt = this.SignsByType.get(JobNameOrType.toLowerCase());
+		if (tt != null) {
+		    tt.remove(jSign.locToBlockString());
+		}
+		this.SignsByLocation.remove(jSign.locToBlockString());
+		save = true;
 		continue;
 	    }
 
 	    org.bukkit.block.Sign sign = (org.bukkit.block.Sign) block.getState();
-	    if (!one.isSpecial()) {
+	    if (!jSign.isSpecial()) {
 		for (int i = 0; i < 4; i++) {
-		    if (i + number + 1 >= PlayerList.size())
+		    if (i + number >= PlayerList.size())
 			break;
 		    String PlayerName = PlayerList.get(i + number).getPlayerName();
-
-		    if (PlayerName != null && PlayerName.length() > 15) {
-			String PlayerNameStrip = PlayerName.split("(?<=\\G.{15})")[0];
-			PlayerName = PlayerNameStrip + "~";
-		    }
 
 		    if (PlayerName == null)
 			PlayerName = "Unknown";
 
-		    String line = Jobs.getLanguage().getMessage("signs.List");
-		    line = line.replace("[number]", String.valueOf(i + number + 1));
-		    line = line.replace("[player]", PlayerName);
-		    line = line.replace("[level]", String.valueOf(PlayerList.get(i + number).getLevel()));
+		    if (PlayerName.length() > 15) {
+			PlayerName = PlayerName.split("(?<=\\G.{15})")[0] + "~";
+		    }
 
+		    String line = "";
+		    switch (type) {
+		    case toplist:
+		    case gtoplist:
+			line = Jobs.getLanguage().getMessage("signs.List", "[number]", i + number + 1, "[player]", PlayerName, "[level]", PlayerList.get(i + number).getLevel());
+			break;
+		    case questtoplist:
+			line = Jobs.getLanguage().getMessage("signs.questList", "[number]", i + number + 1, "[player]", PlayerName, "[quests]", PlayerList.get(i + number).getLevel());
+			break;
+		    default:
+			break;
+		    }
 		    sign.setLine(i, line);
 		}
 		sign.update();
 		if (!UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse))
 		    timelapse--;
 	    } else {
-		if (one.getNumber() > PlayerList.size())
+		if (jSign.getNumber() > PlayerList.size())
 		    return true;
 
-		TopList pl = PlayerList.get(one.getNumber() - 1);
+		TopList pl = PlayerList.get(jSign.getNumber() - 1);
 		String PlayerName = pl.getPlayerName();
-		if (PlayerName != null && PlayerName.length() > 15) {
-		    String PlayerNameStrip = PlayerName.split("(?<=\\G.{15})")[0];
-		    PlayerName = PlayerNameStrip + "~";
-		}
 
 		if (PlayerName == null)
 		    PlayerName = "Unknown";
 
-		String line1 = Jobs.getLanguage().getMessage("signs.SpecialList.p" + one.getNumber(),
-		    "[number]", one.getNumber() + number + 1,
-		    "[player]", PlayerName,
-		    "[level]", pl.getLevel(),
-		    "[job]", JobName);
+		if (PlayerName.length() > 15) {
+		    PlayerName = PlayerName.split("(?<=\\G.{15})")[0] + "~";
+		}
 
-		sign.setLine(0, line1);
+		int no = jSign.getNumber() + number + 1;
+		sign.setLine(0, translateSignLine("signs.SpecialList.p" + jSign.getNumber(), no, PlayerName, pl.getLevel(), SignJobName));
+		sign.setLine(1, translateSignLine("signs.SpecialList.name", no, PlayerName, pl.getLevel(), SignJobName));
 
-		line1 = Jobs.getLanguage().getMessage("signs.SpecialList.name",
-		    "[number]", one.getNumber() + number + 1,
-		    "[player]", PlayerName,
-		    "[level]", pl.getLevel(),
-		    "[job]", JobName);
+		switch (type) {
+		case toplist:
+		case gtoplist:
+		    sign.setLine(2, Jobs.getLanguage().getMessage("signs.SpecialList.level", "[number]", no, "[player]", PlayerName, "[level]", pl.getLevel(), "[job]", SignJobName));
+		    break;
+		case questtoplist:
+		    sign.setLine(2, Jobs.getLanguage().getMessage("signs.SpecialList.quests", "[number]", no, "[player]", PlayerName, "[quests]", pl.getLevel(), "[job]", SignJobName));
+		    break;
+		default:
+		    break;
+		}
 
-		sign.setLine(1, line1);
-
-		line1 = Jobs.getLanguage().getMessage("signs.SpecialList.level",
-		    "[number]", one.getNumber() + number + 1,
-		    "[player]", PlayerName,
-		    "[level]", pl.getLevel(),
-		    "[job]", JobName);
-
-		sign.setLine(2, line1);
-
-		line1 = Jobs.getLanguage().getMessage("signs.SpecialList.bottom",
-		    "[number]", one.getNumber() + number + 1,
-		    "[player]", PlayerName,
-		    "[level]", pl.getLevel(),
-		    "[job]", JobName);
-
-		sign.setLine(3, line1);
+		sign.setLine(3, translateSignLine("signs.SpecialList.bottom", no, PlayerName, pl.getLevel(), SignJobName));
 		sign.update();
 
 		if (!UpdateHead(sign, pl.getPlayerName(), timelapse))
@@ -229,7 +316,19 @@ public class SignUtil {
 	    timelapse++;
 
 	}
+	if (save)
+	    saveSigns();
+
 	return true;
+
+    }
+
+    private static String translateSignLine(String path, int number, String playerName, int level, String jobname) {
+	return Jobs.getLanguage().getMessage(path,
+	    "[number]", number,
+	    "[player]", playerName,
+	    "[level]", level,
+	    "[job]", jobname);
     }
 
     public boolean UpdateHead(final org.bukkit.block.Sign sign, final String Playername, int timelapse) {

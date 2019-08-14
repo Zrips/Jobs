@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
@@ -51,6 +53,25 @@ public class Util {
 	    is.setDurability(type.getTypeId());
 	}
 	return is;
+    }
+
+    public static World getWorld(String name) {
+	World w = null;
+	w = Bukkit.getWorld(name);
+
+	if (w != null)
+	    return w;
+
+	name = name.replace("_", "").replace(".", "").replace("-", "");
+
+	for (World one : Bukkit.getWorlds()) {
+	    String n = one.getName().replace("_", "").replace(".", "").replace("-", "");
+	    if (!n.equalsIgnoreCase(name))
+		continue;
+	    return one;
+	}
+
+	return null;
     }
 
     public static String firstToUpperCase(String name) {

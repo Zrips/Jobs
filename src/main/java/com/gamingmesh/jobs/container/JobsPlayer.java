@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
@@ -1059,7 +1060,8 @@ public class JobsPlayer {
 	this.doneQuests = doneQuests;
     }
 
-    public void addDoneQuest() {
+    public void addDoneQuest() {	
+	Jobs.getSignUtil().SignUpdate(SignTopType.questtoplist);
 	this.doneQuests++;
     }
 

@@ -649,6 +649,7 @@ public class LanguageManager {
 	    c.get("message.crafting.fullinventory", "&cYour inventory is full!");
 
 	    c.get("signs.List", "&0[number].&8[player]&7:&4[level]");
+	    c.get("signs.questList", "&0[number].&8[player]&7:&4[quests]");
 	    c.get("signs.SpecialList.p1", "&b** &8First &b**");
 	    c.get("signs.SpecialList.p2", "&b** &8Second &b**");
 	    c.get("signs.SpecialList.p3", "&b** &8Third &b**");
@@ -661,6 +662,7 @@ public class LanguageManager {
 	    c.get("signs.SpecialList.p10", "&b** &8Tenth &b**");
 	    c.get("signs.SpecialList.name", "&9[player]");
 	    c.get("signs.SpecialList.level", "&8[level] level");
+	    c.get("signs.SpecialList.quests", "&8[quests] quests");
 	    c.get("signs.SpecialList.bottom", "&b************");
 	    c.get("signs.cantcreate", "&4You can't create this sign!");
 	    c.get("signs.cantdestroy", "&4You can't destroy this sign!");

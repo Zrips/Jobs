@@ -74,6 +74,9 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
+import com.gamingmesh.jobs.Signs.SignTopType;
+import com.gamingmesh.jobs.Signs.SignUtil;
+import com.gamingmesh.jobs.Signs.jobsSign;
 import com.gamingmesh.jobs.api.JobsAreaSelectionEvent;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ArmorTypes;
@@ -112,8 +115,7 @@ public class JobsListener implements Listener {
 	if (msg == null)
 	    return;
 
-	Bukkit.getServer().getScheduler().runTask(plugin, () ->
-	    player.performCommand(msg + event.getMessage()));
+	Bukkit.getServer().getScheduler().runTask(plugin, () -> player.performCommand(msg + event.getMessage()));
 	event.setCancelled(true);
     }
 
@@ -250,14 +252,14 @@ public class JobsListener implements Listener {
 		    Inventory inv = Jobs.getGUIManager().CreateJobsSubGUI(player, job);
 		    Inventory top = player.getOpenInventory().getTopInventory();
 //		    if (top.getSize() == Jobs.getGCManager().getJobsGUIRows() * 9)
-			top.setContents(inv.getContents());
+		    top.setContents(inv.getContents());
 		}
 	    } else if (joblist.isJobInfo()) {
 		if (slot == joblist.getbackButton()) {
 		    Inventory inv = Jobs.getGUIManager().CreateJobsGUI(player);
 		    Inventory top = player.getOpenInventory().getTopInventory();
 //		    if (top.getSize() == Jobs.getGCManager().getJobsGUIRows() * 9)
-			top.setContents(inv.getContents());
+		    top.setContents(inv.getContents());
 		}
 	    } else if (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
 		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
@@ -409,27 +411,17 @@ public class JobsListener implements Listener {
 	    }
 	}
 
-	Location loc = block.getLocation();
+	jobsSign jSign = Jobs.getSignUtil().getSign(block.getLocation());
+	if (jSign == null)
+	    return;
 
-	for (com.gamingmesh.jobs.Signs.Sign one : Jobs.getSignUtil().getSigns().GetAllSigns()) {
-
-	    if (one.getX() != loc.getBlockX())
-		continue;
-	    if (one.getY() != loc.getBlockY())
-		continue;
-	    if (one.getZ() != loc.getBlockZ())
-		continue;
-
-	    if (!player.hasPermission("jobs.command.signs")) {
-		event.setCancelled(true);
-		player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
-		return;
-	    }
-
-	    Jobs.getSignUtil().getSigns().removeSign(one);
-	    Jobs.getSignUtil().saveSigns();
-	    break;
+	if (!player.hasPermission("jobs.command.signs")) {
+	    event.setCancelled(true);
+	    player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
+	    return;
 	}
+	if (Jobs.getSignUtil().removeSign(block.getLocation()))
+	    Jobs.getSignUtil().saveSigns();
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -449,10 +441,12 @@ public class JobsListener implements Listener {
 
 	final String signtype = ChatColor.stripColor(event.getLine(1));
 
+	SignTopType type = SignTopType.getType(signtype);
+
 	if (!ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[Jobs]"))
 	    return;
 
-	if (!(signtype.contains("toplist") || signtype.contains("gtoplist")))
+	if (type == null)
 	    return;
 
 	Player player = event.getPlayer();
@@ -470,7 +464,7 @@ public class JobsListener implements Listener {
 
 	final Job job = Jobs.getJob(jobname);
 
-	if (job == null && !signtype.contains("gtoplist")) {
+	if (type == SignTopType.toplist && job == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return;
 	}
@@ -490,33 +484,27 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	com.gamingmesh.jobs.Signs.Sign signInfo = new com.gamingmesh.jobs.Signs.Sign();
-	com.gamingmesh.jobs.Signs.SignUtil signUtil = Jobs.getSignUtil();
+	jobsSign signInfo = new jobsSign();
+	SignUtil signUtil = Jobs.getSignUtil();
 
 	Location loc = sign.getLocation();
-
+	signInfo.setLoc(loc);
 	signInfo.setNumber(Number);
-	signInfo.setWorld(loc.getWorld().getName());
-	signInfo.setX(loc.getX());
-	signInfo.setY(loc.getY());
-	signInfo.setZ(loc.getZ());
-	if (!signtype.contains("gtoplist") && job != null)
+
+	if (job != null)
 	    signInfo.setJobName(job.getName());
-	else
-	    signInfo.setJobName("gtoplist");
+	signInfo.setType(type);
+
 	signInfo.setSpecial(special);
 
-	signUtil.getSigns().addSign(signInfo);
+	signUtil.addSign(signInfo);
 	signUtil.saveSigns();
 	event.setCancelled(true);
 
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
-		if (!signtype.contains("gtoplist") && job != null)
-		    signUtil.SignUpdate(job.getName());
-		else
-		    signUtil.SignUpdate("gtoplist");
+		signUtil.SignUpdate(job, type);
 		return;
 	    }
 	}, 1L);

@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.commands.list;
 import org.bukkit.command.CommandSender;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
@@ -13,7 +14,7 @@ public class signupdate implements Cmd {
     @JobCommand(2700)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!Jobs.getGCManager().SignsEnabled)
-    	return true;
+	    return true;
 
 	if (args.length != 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "signupdate");
@@ -22,14 +23,14 @@ public class signupdate implements Cmd {
 
 	Job oldjob = Jobs.getJob(args[0]);
 
-	if (oldjob == null && !args[0].equalsIgnoreCase("gtoplist")) {
+	SignTopType type = SignTopType.getType(args[0]);
+
+	if (type == SignTopType.toplist && oldjob == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
-	if (!args[0].equalsIgnoreCase("gtoplist") && oldjob != null)
-	    Jobs.getSignUtil().SignUpdate(oldjob.getName());
-	else
-	    Jobs.getSignUtil().SignUpdate("gtoplist");
+
+	Jobs.getSignUtil().SignUpdate(oldjob, type);
 
 	return true;
     }
