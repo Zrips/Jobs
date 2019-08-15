@@ -104,7 +104,7 @@ Jobs:
       # Quest identification. Can be any ONE word or number or both of them. This doesn't have any real meaning but it can't repeat.
       1:
         # Quest name used for quests list, don't forget to enclose it with " "
-        Name: "Break Oak wood"  
+        Name: "Break Oak wood"
         # List of objectives this quest will require for it to count as finished
         # you can have as many objectives as you want
         Objectives:
@@ -243,17 +243,6 @@ Jobs:
         income: 1.0
         points: 1.0
         experience: 1.0
-    # payment for drinking a potion
-    Drink:
-      water:
-        income: 0.5
-        experience: 2.0
-      regeneration_2:
-        income: 1.3
-        experience: 2.0
-      healing_1:
-        income: 1.4
-        experience: 2.0
     # payment for breaking a block with tnt
     TNTBreak:
       log:

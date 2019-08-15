@@ -881,14 +881,12 @@ public class JobsListener implements Listener {
 		    if (!(event.getBlock().getState() instanceof Dispenser))
 			continue;
 
-		    Dispenser dispenser = null;
+		    Dispenser dispenser = (Dispenser) event.getBlock().getState();
 		    BlockFace directionFacing = null;
 		    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
-			dispenser = (Dispenser) event.getBlock().getState();
 			org.bukkit.material.Dispenser dis = (org.bukkit.material.Dispenser) dispenser.getData();
 			directionFacing = dis.getFacing();
 		    } else {
-			dispenser = (Dispenser) event.getBlock().getState();
 			org.bukkit.block.data.type.Dispenser dis = (org.bukkit.block.data.type.Dispenser) dispenser.getBlockData();
 			directionFacing = dis.getFacing();
 		    }

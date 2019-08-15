@@ -10,11 +10,13 @@ import com.gamingmesh.jobs.stuff.Util;
 public class jobsSign {
 
     private String worldName;
+
     private Integer x;
     private Integer y;
     private Integer z;
     private World world;
     private Location loc;
+
     private Integer number;
     private String jobName;
     private Boolean special;
@@ -110,21 +112,21 @@ public class jobsSign {
 	if (split.length > 0)
 	    try {
 		x = Integer.parseInt(split[1]);
-	    } catch (Exception e) {
+	    } catch (NumberFormatException e) {
 		return;
 	    }
 
 	if (split.length > 1)
 	    try {
 		y = Integer.parseInt(split[2]);
-	    } catch (Exception e) {
+	    } catch (NumberFormatException e) {
 		return;
 	    }
 
 	if (split.length > 2)
 	    try {
 		z = Integer.parseInt(split[3]);
-	    } catch (Exception e) {
+	    } catch (NumberFormatException e) {
 		return;
 	    }
 

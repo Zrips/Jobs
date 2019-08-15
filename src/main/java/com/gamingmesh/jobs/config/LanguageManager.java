@@ -390,8 +390,6 @@ public class LanguageManager {
 	    c.get("command.info.output.fish.none", "%jobname% does not get money from fishing.");
 	    c.get("command.info.output.craft.info", "&eCraft");
 	    c.get("command.info.output.craft.none", "%jobname% does not get money from crafting.");
-	    c.get("command.info.output.drink.info", "&eDrink");
-	    c.get("command.info.output.drink.none", "%jobname% does not get money for drinking.");
 	    c.get("command.info.output.smelt.info", "&eSmelt");
 	    c.get("command.info.output.smelt.none", "%jobname% does not get money from smelting.");
 	    c.get("command.info.output.brew.info", "&eBrew");
