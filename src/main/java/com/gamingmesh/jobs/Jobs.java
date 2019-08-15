@@ -752,6 +752,7 @@ public class Jobs extends JavaPlugin {
 	if (paymentThread != null)
 	    paymentThread.shutdown();
 
+	Bukkit.getOnlinePlayers().forEach(p -> getPlayerManager().getJobsPlayer(p).clearBossMaps());
 	getPlayerManager().saveAll();
 
 	if (dao != null) {

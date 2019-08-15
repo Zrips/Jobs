@@ -202,11 +202,10 @@ public class PlayerManager {
 	if (jPlayer == null)
 	    return;
 
+	jPlayer.onDisconnect();
 	if (Jobs.getGCManager().saveOnDisconnect()) {
-	    jPlayer.onDisconnect();
 	    jPlayer.save();
-	} else
-	    jPlayer.onDisconnect();
+	}
     }
 
     /**

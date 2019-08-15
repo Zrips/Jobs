@@ -26,7 +26,6 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -739,6 +738,7 @@ public class JobsPlayer {
 
     public void clearBossMaps() {
 	for (BossBarInfo one : barMap) {
+	    one.getBar().removeAll();
 	    one.cancel();
 	}
 	barMap.clear();
