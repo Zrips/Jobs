@@ -18,6 +18,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.Reflections;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.container.ScoreboardInfo;
 
@@ -211,7 +212,7 @@ public class CMIScoreboardManager {
     }
 
     private static Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
-	return Class.forName("net.minecraft.server." + Jobs.getVersionCheckManager().getVersion() + "." + nmsClassString);
+	return Reflections.getMinecraftClass(nmsClassString);
     }
 
     private static Object getConnection(Player player) throws SecurityException, NoSuchMethodException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {

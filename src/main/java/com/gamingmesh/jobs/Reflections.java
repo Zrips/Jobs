@@ -74,7 +74,7 @@ public class Reflections {
 	return Class.forName("org.bukkit.craftbukkit." + Jobs.getVersionCheckManager().getVersion() + "." + nmsClassString);
     }
 
-    public Class<?> getMinecraftClass(String nmsClassString) throws ClassNotFoundException {
+    public static Class<?> getMinecraftClass(String nmsClassString) throws ClassNotFoundException {
 	return Class.forName("net.minecraft.server." + Jobs.getVersionCheckManager().getVersion() + "." + nmsClassString);
     }
 

@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.stuff;
 
-import java.util.WeakHashMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,8 +12,8 @@ import com.gamingmesh.jobs.config.YmlMaker;
 
 public class ToggleBarHandling {
 
-    static WeakHashMap<String, Boolean> actionBarToggle = new WeakHashMap<>();
-    static WeakHashMap<String, Boolean> bossBarToggle = new WeakHashMap<>();
+    static Map<String, Boolean> actionBarToggle = new HashMap<>();
+    static Map<String, Boolean> bossBarToggle = new HashMap<>();
 
     public static void load() {
 	YmlMaker f = new YmlMaker(Jobs.getInstance(), "actionBarBossbar.yml");
@@ -67,17 +68,17 @@ public class ToggleBarHandling {
 	    }
 	}
 
-	bossBarToggle.clear();
-	actionBarToggle.clear();
+	bossBarToggle = null;
+	actionBarToggle = null;
 
 	f.saveConfig();
     }
 
-    public static WeakHashMap<String, Boolean> getActionBarToggle() {
+    public static Map<String, Boolean> getActionBarToggle() {
 	return actionBarToggle;
     }
 
-    public static WeakHashMap<String, Boolean> getBossBarToggle() {
+    public static Map<String, Boolean> getBossBarToggle() {
 	return bossBarToggle;
     }
 }

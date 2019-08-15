@@ -64,7 +64,7 @@ public class blockLoc {
 	    y = Integer.parseInt(split[2]);
 	    z = Integer.parseInt(split[3]);
 	    return true;
-	} catch (Throwable e) {
+	} catch (NumberFormatException e) {
 	    return false;
 	}
     }
