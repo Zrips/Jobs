@@ -74,16 +74,13 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.potion.Potion;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.gamingmesh.jobs.Jobs;
@@ -98,7 +95,6 @@ import com.gamingmesh.jobs.actions.EntityActionInfo;
 import com.gamingmesh.jobs.actions.ExploreActionInfo;
 import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.actions.ItemNameActionInfo;
-import com.gamingmesh.jobs.actions.PotionDrinkInfo;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.ExploreRespond;
@@ -649,6 +645,7 @@ public class JobsPaymentListener implements Listener {
 	    case LEATHER_HELMET:
 	    case LEATHER_LEGGINGS:
 		leather = true;
+		break;
 	    default:
 		break;
 	    }
@@ -1673,49 +1670,6 @@ public class JobsPaymentListener implements Listener {
 		}, 1);
 	    }
 	}
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
-	if (!plugin.isEnabled())
-	    return;
-
-	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
-	    return;
-
-	Player p = event.getPlayer();
-
-	if (!p.isOnline())
-	    return;
-
-	if (!payIfCreative(p))
-	    return;
-
-	if (!Jobs.getPermissionHandler().hasWorldPermission(p, p.getLocation().getWorld().getName()))
-	    return;
-
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
-	    return;
-
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
-	if (jPlayer == null)
-	    return;
-
-	if (event.getItem().getType() != CMIMaterial.POTION.getMaterial())
-	    return;
-
-	if (Version.isCurrentEqualOrLower(Version.v1_8_R3)) {
-	    Potion potion = Potion.fromItemStack(event.getItem());
-	    Jobs.action(jPlayer, new PotionDrinkInfo(potion.getType().name(), ActionType.DRINK));
-	    return;
-	}
-	PotionMeta meta = (PotionMeta) event.getItem().getItemMeta();
-	if (meta == null)
-	    return;
-
-	String name = meta.getBasePotionData().getType().name();
-	Jobs.action(jPlayer, new PotionDrinkInfo(meta.getBasePotionData().isExtended() ? "EXTENDED_" + name : name, ActionType.DRINK));
     }
 
     @EventHandler

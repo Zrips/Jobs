@@ -45,7 +45,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIPotionType;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -190,7 +189,6 @@ public class ConfigManager {
 	case SHEAR:
 	case EXPLORE:
 	case CUSTOMKILL:
-	case DRINK:
 	    break;
 	case TNTBREAK:
 	case VTRADE:
@@ -371,13 +369,7 @@ public class ConfigManager {
 	    Jobs.getExplore().setPlayerAmount(amount);
 	} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
 	    type = myKey.substring(1, myKey.length());
-	else if (actionType == ActionType.DRINK) {
-	    CMIPotionType potion = CMIPotionType.getByName(type);
-	    if (potion != null) {
-		type = potion.toString();
-		id = potion.getId();
-	    }
-	} else if (actionType == ActionType.COLLECT) {
+	else if (actionType == ActionType.COLLECT) {
 	    type = myKey;
 	}
 
@@ -981,7 +973,6 @@ public class ConfigManager {
 			case SHEAR:
 			case EXPLORE:
 			case CUSTOMKILL:
-			case DRINK:
 			    break;
 			case TNTBREAK:
 			case VTRADE:
@@ -1161,13 +1152,7 @@ public class ConfigManager {
 			    Jobs.getExplore().setPlayerAmount(amount + 1);
 			} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
 			    type = myKey.substring(1, myKey.length());
-			else if (actionType == ActionType.DRINK) {
-			    CMIPotionType potion = CMIPotionType.getByName(key);
-			    if (potion != null) {
-				type = potion.toString();
-				id = potion.getId();
-			    }
-			} else if (actionType == ActionType.COLLECT) {
+			else if (actionType == ActionType.COLLECT) {
 			    type = myKey;
 			}
 

@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIPotionType;
 import com.gamingmesh.jobs.CMILib.ItemReflection;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
@@ -410,7 +409,6 @@ public class editjobs implements Cmd {
 		case SHEAR:
 		case EXPLORE:
 		case CUSTOMKILL:
-		case DRINK:
 		    break;
 		case TNTBREAK:
 		case VTRADE:
@@ -582,13 +580,8 @@ public class editjobs implements Cmd {
 		    Jobs.getExplore().setPlayerAmount(amount + 1);
 		} else if (actionT == ActionType.CRAFT && myKey.startsWith("!"))
 		    type = myKey.substring(1, myKey.length());
-		else if (actionT == ActionType.DRINK) {
+		else if (actionT == ActionType.COLLECT) {
 		    type = myKey;
-		    CMIPotionType potion = CMIPotionType.getByName(myKey);
-			if (potion != null) {
-			    type = potion.toString();
-			    id = potion.getId();
-			}
 		}
 
 		if (type == null) {

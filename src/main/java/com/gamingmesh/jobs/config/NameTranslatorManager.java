@@ -15,7 +15,6 @@ import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIPotionType;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
@@ -24,7 +23,6 @@ import com.gamingmesh.jobs.stuff.Util;
 public class NameTranslatorManager {
 
     public HashMap<CMIMaterial, NameList> ListOfNames = new HashMap<>();
-    public ArrayList<NameList> ListOfPotionNames = new ArrayList<>();
     public ArrayList<NameList> ListOfEntities = new ArrayList<>();
     public HashMap<String, NameList> ListOfEnchants = new HashMap<>();
     public ArrayList<NameList> ListOfColors = new ArrayList<>();
@@ -98,14 +96,6 @@ public class NameTranslatorManager {
 		break;
 	    case MMKILL:
 		return Jobs.getMythicManager().getDisplayName(materialName);
-	    case DRINK:
-		for (NameList one : ListOfPotionNames) {
-		    String ids = one.getMinecraftName();
-		    if (ids.equalsIgnoreCase(mame)) {
-			return one.getName();
-		    }
-		}
-		break;
 	    default:
 		break;
 	    }
@@ -180,21 +170,6 @@ public class NameTranslatorManager {
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfColors.size() + " custom color names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The ColorList section not found in " + ItemFile.fileName + " file.");
-
-	if (ItemFile.getConfig().isConfigurationSection("PotionNamesList")) {
-	    ConfigurationSection section = ItemFile.getConfig().getConfigurationSection("PotionNamesList");
-	    Set<String> keys = section.getKeys(false);
-	    ListOfPotionNames.clear();
-	    for (String one : keys) {
-		String id = one.split("-")[0];
-		String MCName = one.split("-")[1];
-		String Name = ItemFile.getConfig().getString("PotionNamesList." + one);
-		ListOfPotionNames.add(new NameList(id, "", Name, MCName));
-	    }
-	    if (ListOfPotionNames.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfPotionNames.size() + " custom potion names!");
-	} else
-	    Jobs.consoleMsg("&c[Jobs] The PotionNamesList section not found in " + ItemFile.fileName + " file.");
     }
 
     synchronized void load() {
@@ -403,29 +378,6 @@ public class NameTranslatorManager {
 	    
 	    		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
 	    }*/
-
-	    for (CMIPotionType one : CMIPotionType.values()) {
-		String n = String.valueOf(one.getId());
-
-		String name = null;
-
-		if (c.getC().isConfigurationSection("PotionNamesList." + n))
-		    name = c.getC().getString("PotionNamesList." + n + ".Name");
-
-		if (name == null) {
-		    n = (one.getId() == -1 ? "" : n + "-" + one.toString());
-		    if (n == "")
-			continue;
-
-		    if (c.getC().isString("PotionNamesList." + n))
-			name = c.getC().getString("PotionNamesList." + n);
-		}
-
-		if (name == null)
-		    name = one.getName();
-
-		c.get("PotionNamesList." + n.toString(), name);
-	    }
 
 	    c.save();
 	}
