@@ -23,6 +23,7 @@ import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class SignUtil {
 
@@ -376,6 +377,7 @@ public class SignUtil {
 
 	    if (skull == null)
 		return false;
+
 	    if (skull.getOwner() != null && skull.getOwner().equalsIgnoreCase(Playername))
 		return false;
 
@@ -383,37 +385,15 @@ public class SignUtil {
 		@Override
 		public void run() {
 		    Block b = loc.getBlock();
-		    final Material type = b.getType();
+		    if (!(b.getState() instanceof Skull))
+			return;
 
-		    b.setType(Material.AIR);
+		    Skull skull = (Skull) b.getState();
+		    if (skull == null)
+			return;
 
-		    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			@Override
-			public void run() {
-			    Block b = loc.getBlock();
-
-			    b.setType(type);
-			    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
-				byte data = b.getData();
-				try {
-				    Block.class.getMethod("setData", byte.class).invoke(b, data);
-				} catch (Exception e) {
-				    e.printStackTrace();
-				}
-			    } else {
-				BlockData data = b.getBlockData();
-				b.setBlockData(data);
-			    }
-
-			    Skull skull = (Skull) b.getState();
-			    if (skull == null)
-				return;
-
-			    skull.setOwner(Playername);
-			    skull.update();
-			    return;
-			}
-		    }, 1L);
+		    skull.setOwner(Playername);
+		    skull.update();
 		    return;
 		}
 	    }, timelapse * Jobs.getGCManager().InfoUpdateInterval * 20L);
