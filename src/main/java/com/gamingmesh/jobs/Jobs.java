@@ -659,8 +659,8 @@ public class Jobs extends JavaPlugin {
 
 	dao.getMap().clear();
 	if (getPlayerManager().getPlayersCache().size() != 0)
-	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " + 
-	((int) (((System.currentTimeMillis() - time) / 1000d) * 100) / 100D));
+	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " +
+		((int) (((System.currentTimeMillis() - time) / 1000d) * 100) / 100D));
     }
 
     public static void reload() throws IOException {
@@ -988,7 +988,8 @@ public class Jobs extends JavaPlugin {
 	    GUIManager.CloseInventories();
 	    shopManager.CloseInventories();
 	    dao.saveExplore();
-	    dao.saveBlockProtection();
+
+	    Jobs.getBpManager().saveCache();
 	    FurnaceBrewingHandling.save();
 	    ToggleBarHandling.save();
 	} catch (Throwable e) {

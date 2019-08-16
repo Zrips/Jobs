@@ -1628,7 +1628,7 @@ public abstract class JobsDAO {
      * Save block protection information
      * @param jobBlockProtection - the information getting saved
      */
-    public void saveBlockProtection() {
+    public void saveBlockProtection(String world, HashMap<String, BlockProtection> cache) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
@@ -1641,83 +1641,55 @@ public abstract class JobsDAO {
 	    update = conn.prepareStatement("UPDATE `" + prefix + "blocks` SET `recorded` = ?, `resets` = ? WHERE `id` = ?;");
 	    delete = conn.prepareStatement("DELETE from `" + getPrefix() + "blocks` WHERE `id` = ?;");
 
-	    Jobs.getPluginLogger().info("Saving blocks");
-
 	    conn.setAutoCommit(false);
-	    int inserted = 0;
-	    int updated = 0;
-	    int deleted = 0;
+
 	    Long current = System.currentTimeMillis();
 	    Long mark = System.currentTimeMillis() - (Jobs.getGCManager().BlockProtectionDays * 24L * 60L * 60L * 1000L);
 
-	    for (Entry<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> worlds : Jobs.getBpManager().getMap().entrySet()) {
-		for (Entry<String, HashMap<String, HashMap<String, BlockProtection>>> regions : worlds.getValue().entrySet()) {
-		    for (Entry<String, HashMap<String, BlockProtection>> chunks : regions.getValue().entrySet()) {
-			for (Entry<String, BlockProtection> block : chunks.getValue().entrySet()) {
-			    if (block.getValue() == null)
-				continue;
-			    switch (block.getValue().getAction()) {
-			    case DELETE:
-				delete.setInt(1, block.getValue().getId());
-				delete.addBatch();
+	    for (Entry<String, BlockProtection> block : cache.entrySet()) {
+		if (block.getValue() == null)
+		    continue;
+		switch (block.getValue().getAction()) {
+		case DELETE:
+		    delete.setInt(1, block.getValue().getId());
+		    delete.addBatch();
 
-				deleted++;
-				if (deleted % 10000 == 0) {
-				    delete.executeBatch();
-				    Jobs.consoleMsg("&6[Jobs] Removed " + deleted + " old block protection entries.");
-				}
-				break;
-			    case INSERT:
-				if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
-				    continue;
-				insert.setString(1, worlds.getKey().getName());
-				insert.setInt(2, block.getValue().getPos().getBlockX());
-				insert.setInt(3, block.getValue().getPos().getBlockY());
-				insert.setInt(4, block.getValue().getPos().getBlockZ());
-				insert.setLong(5, block.getValue().getRecorded());
-				insert.setLong(6, block.getValue().getTime());
-				insert.addBatch();
+		    break;
+		case INSERT:
+		    if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
+			continue;
+		    insert.setString(1, world);
+		    insert.setInt(2, block.getValue().getPos().getBlockX());
+		    insert.setInt(3, block.getValue().getPos().getBlockY());
+		    insert.setInt(4, block.getValue().getPos().getBlockZ());
+		    insert.setLong(5, block.getValue().getRecorded());
+		    insert.setLong(6, block.getValue().getTime());
+		    insert.addBatch();
+		    block.getValue().setAction(DBAction.NONE);
 
-				inserted++;
-				if (inserted % 10000 == 0) {
-				    insert.executeBatch();
-				    Jobs.consoleMsg("&6[Jobs] Added " + inserted + " new block protection entries.");
-				}
-				break;
-			    case UPDATE:
-				if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
-				    continue;
-				update.setLong(1, block.getValue().getRecorded());
-				update.setLong(2, block.getValue().getTime());
-				update.setInt(3, block.getValue().getId());
-				update.addBatch();
+		    break;
+		case UPDATE:
+		    if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
+			continue;
+		    update.setLong(1, block.getValue().getRecorded());
+		    update.setLong(2, block.getValue().getTime());
+		    update.setInt(3, block.getValue().getId());
+		    update.addBatch();
+		    block.getValue().setAction(DBAction.NONE);
 
-				updated++;
-				if (updated % 10000 == 0) {
-				    update.executeBatch();
-				    Jobs.consoleMsg("&6[Jobs] Upadated " + updated + " old block protection entries.");
-				}
-				break;
-			    case NONE:
-				if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
-				    continue;
-				if (block.getValue().getTime() == -1 && block.getValue().getRecorded() > mark)
-				    continue;
+		    break;
+		case NONE:
+		    if (block.getValue().getTime() < current && block.getValue().getTime() != -1)
+			continue;
+		    if (block.getValue().getTime() == -1 && block.getValue().getRecorded() > mark)
+			continue;
 
-				delete.setInt(1, block.getValue().getId());
-				delete.addBatch();
+		    delete.setInt(1, block.getValue().getId());
+		    delete.addBatch();
 
-				deleted++;
-				if (deleted % 10000 == 0) {
-				    delete.executeBatch();
-				    Jobs.getPluginLogger().info("[Jobs] Removed " + deleted + " old block protection entries.");
-				}
-				break;
-			    default:
-				continue;
-			    }
-			}
-		    }
+		    break;
+		default:
+		    continue;
 		}
 	    }
 
@@ -1725,16 +1697,7 @@ public abstract class JobsDAO {
 	    update.executeBatch();
 	    delete.executeBatch();
 	    conn.commit();
-	    conn.setAutoCommit(true);
-	    if (inserted > 0) {
-		Jobs.consoleMsg("&6[Jobs] Added " + inserted + " new block protection entries.");
-	    }
-	    if (updated > 0) {
-		Jobs.consoleMsg("&6[Jobs] Updated " + updated + " with new block protection entries.");
-	    }
-	    if (deleted > 0) {
-		Jobs.consoleMsg("&6[Jobs] Deleted " + deleted + " old block protection entries.");
-	    }
+
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {

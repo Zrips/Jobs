@@ -823,9 +823,9 @@ public class GeneralConfigManager {
 
 	c.addComment("ExploitProtections.General.KeepDataFor",
 	    "For how long in days to keep block protection data in data base", "This will clean block data which ones have -1 as cooldown value",
-	    "Data base cleanup will be performed on each server startup", "This cant be more then 30 days");
+	    "Data base cleanup will be performed on each server startup", "This cant be more then 14 days");
 	BlockProtectionDays = c.get("ExploitProtections.General.KeepDataFor", 14);
-	BlockProtectionDays = BlockProtectionDays > 30 ? 30 : BlockProtectionDays;
+	BlockProtectionDays = BlockProtectionDays > 14 ? 14 : BlockProtectionDays;
 
 	c.addComment("ExploitProtections.General.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");
 	useGlobalTimer = c.get("ExploitProtections.General.GlobalBlockTimer.use", true);

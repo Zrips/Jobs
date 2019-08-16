@@ -57,4 +57,8 @@ public class JobsConnection {
     public synchronized DatabaseMetaData getMetaData() throws SQLException {
 	return conn.getMetaData();
     }
+
+    public synchronized void setClientInfo(String path, String value) throws SQLException {
+	conn.setClientInfo(path, value);
+    }
 }

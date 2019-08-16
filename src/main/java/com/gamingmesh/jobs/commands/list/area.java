@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,6 +15,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.config.RestrictedAreaManager;
 import com.gamingmesh.jobs.container.CuboidArea;
 import com.gamingmesh.jobs.container.RestrictedArea;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class area implements Cmd {
 
@@ -25,6 +27,19 @@ public class area implements Cmd {
 	    return false;
 	}
 	Player player = (Player) sender;
+
+	Location center = player.getLocation();
+	Debug.D("adding " + Jobs.getBpManager().getSize());
+	for (int x = -16; x < 16; x++) {
+	    for (int z = -16; z < 16; z++) {
+		Location lc = center.clone().add(x, 0, z);
+		for (int y = 250; y > 1; y--) {
+		    lc.setY(y);
+		    Jobs.getBpManager().add(lc, 100);
+		}
+	    }
+	}
+	Debug.D("added " + Jobs.getBpManager().getSize());
 
 	RestrictedAreaManager ra = Jobs.getRestrictedAreaManager();
 

@@ -52,7 +52,8 @@ public class convert implements Cmd {
 	    Jobs.getPlayerManager().clearCache();
 
 	    Jobs.getJobsDAO().saveExplore();
-	    Jobs.getJobsDAO().saveBlockProtection();
+//	    Do we really need to convert Block protection?
+//	    Jobs.getJobsDAO().saveBlockProtection();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");

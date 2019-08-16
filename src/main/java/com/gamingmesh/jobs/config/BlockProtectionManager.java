@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.config;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -16,6 +17,7 @@ import com.gamingmesh.jobs.container.DBAction;
 public class BlockProtectionManager {
 
     private HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> map = new HashMap<>();
+    private HashMap<World, HashMap<String, BlockProtection>> tempCache = new HashMap<>();
 
     public Long timer = 0L;
 
@@ -83,7 +85,35 @@ public class BlockProtectionManager {
 	chunks.put(chunk, Bpm);
 	regions.put(region, chunks);
 	map.put(loc.getWorld(), regions);
+	addToCache(loc, Bp);
 	return Bp;
+    }
+
+    private void addToCache(Location loc, BlockProtection Bp) {
+	if (!Jobs.getGCManager().useBlockProtection)
+	    return;
+	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
+	HashMap<String, BlockProtection> locations = tempCache.get(loc.getWorld());
+	if (locations == null) {
+	    locations = new HashMap<String, BlockProtection>();
+	    tempCache.put(loc.getWorld(), locations);
+	}
+
+	locations.put(v, Bp);
+
+	if (locations.size() > 100) {
+	    Jobs.getJobsDAO().saveBlockProtection(loc.getWorld().getName(), new HashMap<String, BlockProtection>(locations));
+	    locations.clear();
+	}
+    }
+
+    public void saveCache() {
+	if (!Jobs.getGCManager().useBlockProtection)
+	    return;
+	for (Entry<World, HashMap<String, BlockProtection>> one : tempCache.entrySet()) {
+	    Jobs.getJobsDAO().saveBlockProtection(one.getKey().getName(), one.getValue());
+	}
+	tempCache.clear();
     }
 
     public BlockProtection remove(Block block) {
