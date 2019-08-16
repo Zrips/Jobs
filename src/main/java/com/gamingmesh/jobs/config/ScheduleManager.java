@@ -52,7 +52,7 @@ public class ScheduleManager {
 	return TimeManage.timeInInt();
     }
 
-    private boolean scheduler() {
+    private static boolean scheduler() {
 	if (Jobs.getGCManager().BoostSchedule.isEmpty())
 	    return false;
 
