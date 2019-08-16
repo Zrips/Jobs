@@ -68,8 +68,8 @@ public class ToggleBarHandling {
 	    }
 	}
 
-	bossBarToggle = null;
-	actionBarToggle = null;
+	bossBarToggle.clear();
+	actionBarToggle.clear();
 
 	f.saveConfig();
     }
