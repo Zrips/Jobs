@@ -127,15 +127,6 @@ public class ScheduleManager {
 	    }
 
 	}
-
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		scheduler();
-		return;
-	    }
-	}, 30 * 20L);
-
 	return true;
     }
 

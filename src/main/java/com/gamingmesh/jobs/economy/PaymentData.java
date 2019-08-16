@@ -50,7 +50,7 @@ public class PaymentData {
     public Double GetAmount(CurrencyType type) {
 	if (!payments.containsKey(type))
 	    return 0D;
-	return payments.get(type);
+	return (int) (payments.get(type) * 100) / 100.0;
     }
 
     public Double GetAmountBylimit(CurrencyType type, int limit) {
@@ -75,7 +75,7 @@ public class PaymentData {
     }
 
     public void AddNewAmount(CurrencyType type, Double Payment) {
-	AddNewAmount( type,  Payment, null);
+	AddNewAmount(type, Payment, null);
     }
 
     public void AddNewAmount(CurrencyType type, Double Payment, Long time) {
