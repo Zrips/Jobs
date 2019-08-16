@@ -670,9 +670,9 @@ public class ItemManager {
 	COMPLEX_PART(915, "Complex Part"),
 	TIPPED_ARROW(916, "Tipped Arrow"),
 
-	RAVAGER(916, "Ravager"), // Same ID with Cave_spider
-	TRADER_LLAMA(916, "Trader Llama"),
-	WANDERING_TRADER(916, "Wandering Trader"),
+	RAVAGER(917, "Ravager"),
+	TRADER_LLAMA(918, "Trader Llama"),
+	WANDERING_TRADER(919, "Wandering Trader"),
 	UNKNOWN(999, "Unknown");
 
 	private int id;
