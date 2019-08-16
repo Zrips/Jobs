@@ -63,7 +63,7 @@ public class ItemManager {
 
 	    String bukkitName = one.name();
 	    String mojangName = one.name();
-	    ;
+	    
 	    try {
 		mojangName = ItemReflection.getItemMinecraftName(new ItemStack(mat));
 	    } catch (Throwable e) {
@@ -632,7 +632,6 @@ public class ItemManager {
 	ENDERMITE(67, "Endermite"),
 	GUARDIAN(68, "Guardian"),
 	SHULKER(69, "Shulker"),
-	CAT(75, "Cat"),
 	PIG(90, "Pig"),
 	SHEEP(91, "Sheep"),
 	COW(92, "Cow"),
@@ -641,7 +640,7 @@ public class ItemManager {
 	WOLF(95, "Wolf"),
 	MUSHROOM_COW(96, "Mushroom Cow", "Mooshroom"),
 	SNOWMAN(97, "Snowman"),
-	OCELOT(98, "Ocelot"),
+	OCELOT(98, "Ocelot", "Cat"),
 	IRON_GOLEM(99, "Iron Golem"),
 	HORSE(100, "Horse"),
 	RABBIT(101, "Rabbit"),
@@ -733,7 +732,7 @@ public class ItemManager {
 	}
 
 	public static CMIEntityType getByName(String name) {
-	    String main = name;
+	   String main = name;
 	    String sub = null;
 
 	    if (name.contains("_")) {
@@ -753,7 +752,7 @@ public class ItemManager {
 	    Integer id = null;
 	    try {
 		id = Integer.parseInt(main);
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 	    }
 
 	    for (CMIEntityType one : CMIEntityType.values()) {
@@ -762,6 +761,20 @@ public class ItemManager {
 		    break;
 		}
 	    }
+	    
+	    if (type == null)
+		for (CMIEntityType one : CMIEntityType.values()) {
+		    if (one.secondaryName == null)
+			continue;
+
+		    String oneN = one.secondaryName;
+		    oneN = oneN.replace("_", "");
+		    if (oneN.equalsIgnoreCase(name)) {
+			type = one;
+			break;
+		    }
+		}
+	    
 	    if (type == null)
 		for (CMIEntityType one : CMIEntityType.values()) {
 		    if (one.name.replace("_", "").contains(updated)) {
@@ -802,18 +815,6 @@ public class ItemManager {
 		    if (one.name.contains("_"))
 			continue;
 		    if (one.name.equalsIgnoreCase(main)) {
-			type = one;
-			break;
-		    }
-		}
-	    if (type == null)
-		for (CMIEntityType one : CMIEntityType.values()) {
-		    if (one.secondaryName == null)
-			continue;
-
-		    String oneN = one.secondaryName;
-		    oneN = oneN.replace("_", "");
-		    if (oneN.equalsIgnoreCase(name)) {
 			type = one;
 			break;
 		    }
