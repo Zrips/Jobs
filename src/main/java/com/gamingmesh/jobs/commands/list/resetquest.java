@@ -16,7 +16,7 @@ import com.gamingmesh.jobs.container.QuestProgression;
 public class resetquest implements Cmd {
 
     @Override
-    @JobCommand(700)
+    @JobCommand(709)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length != 0 && args.length != 1 && args.length != 2) {
 	    Jobs.getCommandManager().sendUsage(sender, "resetquest");

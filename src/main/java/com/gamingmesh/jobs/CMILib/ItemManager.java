@@ -2163,12 +2163,10 @@ public class ItemManager {
 		    return one;
 	    }
 
-	    if (mat == null) {
-		if (id.contains(":")) {
-		    ci = byBukkitName.get(id.split(":")[0]);
-		    if (ci != null)
-			return ci.getCMIType();
-		}
+	    if (id.contains(":")) {
+		ci = byBukkitName.get(id.split(":")[0]);
+		if (ci != null)
+		    return ci.getCMIType();
 	    }
 	    return CMIMaterial.NONE;
 	}

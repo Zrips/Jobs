@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.commands;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
@@ -41,7 +42,6 @@ import com.gamingmesh.jobs.stuff.PageInfo;
 public class JobsCommands implements CommandExecutor {
     private static final String label = "jobs";
     private static final String packagePath = "com.gamingmesh.jobs.commands.list";
-    private static final List<String> hidenCommands = new ArrayList<>();
     private Map<String, Integer> CommandList = new HashMap<>();
 
     protected Jobs plugin;
@@ -120,7 +120,7 @@ public class JobsCommands implements CommandExecutor {
 	return args.length <= 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length);
     }
 
-    private static boolean hasCommandPermission(CommandSender sender, String cmd) {
+    private boolean hasCommandPermission(CommandSender sender, String cmd) {
 	return sender.hasPermission("jobs.command." + cmd);
     }
 
@@ -142,13 +142,12 @@ public class JobsCommands implements CommandExecutor {
     }
 
     protected boolean help(CommandSender sender, int page) {
-
 	Map<String, Integer> commands = GetCommands(sender);
-
 	if (commands.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
+
 	commands = sort(commands);
 
 	PageInfo pi = new PageInfo(7, commands.size(), page);
@@ -213,7 +212,7 @@ public class JobsCommands implements CommandExecutor {
 	    if (jarFile != null)
 		try {
 		    jarFile.close();
-		} catch (Throwable e) {
+		} catch (IOException e) {
 		}
 	}
 	return listOfCommands;
@@ -222,8 +221,9 @@ public class JobsCommands implements CommandExecutor {
     public Map<String, Integer> GetCommands(CommandSender sender) {
 	Map<String, Integer> temp = new HashMap<>();
 	for (Entry<String, Integer> cmd : CommandList.entrySet()) {
-	    if (!hasCommandPermission(sender, cmd.getKey()))
+	    if (sender instanceof Player && !hasCommandPermission(sender, cmd.getKey()))
 		continue;
+
 	    temp.put(cmd.getKey(), cmd.getValue());
 	}
 	return temp;
@@ -248,9 +248,8 @@ public class JobsCommands implements CommandExecutor {
 	    for (Method met : OneClass.getValue().getMethods()) {
 		if (!met.isAnnotationPresent(JobCommand.class))
 		    continue;
+
 		String cmd = OneClass.getKey();
-		if (hidenCommands.contains(met.getName().toLowerCase()))
-		    continue;
 		CommandList.put(cmd, met.getAnnotation(JobCommand.class).value());
 		break;
 	    }
@@ -261,7 +260,7 @@ public class JobsCommands implements CommandExecutor {
 	Class<?> nmsClass = null;
 	try {
 	    nmsClass = Class.forName(packagePath + "." + cmd.toLowerCase());
-	} catch (ClassNotFoundException | IllegalArgumentException | SecurityException e) {
+	} catch (ClassNotFoundException e) {
 	}
 	return nmsClass;
     }

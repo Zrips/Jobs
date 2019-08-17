@@ -57,7 +57,6 @@ permissions:
       jobs.command.removexp: true
       jobs.command.transfer: true
       jobs.command.reload: true
-      jobs.command.help: true
       jobs.command.top: true
       jobs.command.gtop: true
       jobs.command.toggle: true
@@ -151,9 +150,6 @@ permissions:
   jobs.command.moneyboost:
     description: Grants access to the moneyboost command
     default: op
-  jobs.command.help:
-    description: Grants access to the help command
-    default: true
   jobs.command.toggle:
     description: Grants access to the toggle command
     default: true

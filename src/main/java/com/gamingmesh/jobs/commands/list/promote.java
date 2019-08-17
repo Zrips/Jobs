@@ -12,7 +12,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 public class promote implements Cmd {
 
     @Override
-    @JobCommand(1600)
+    @JobCommand(1603)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "promote");

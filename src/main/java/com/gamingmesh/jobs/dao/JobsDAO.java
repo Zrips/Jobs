@@ -340,6 +340,8 @@ public abstract class JobsDAO {
 		return this.mySQL.replace("[tableName]", prefix + this.tableName);
 	    case SqLite:
 		return this.sQlite.replace("[tableName]", this.tableName);
+	    default:
+		break;
 	    }
 	    return "";
 	}
@@ -1636,12 +1638,11 @@ public abstract class JobsDAO {
 	PreparedStatement update = null;
 	PreparedStatement delete = null;
 	try {
+	    conn.setAutoCommit(false);
 
 	    insert = conn.prepareStatement("INSERT INTO `" + prefix + "blocks` (`world`, `x`, `y`, `z`, `recorded`, `resets`) VALUES (?, ?, ?, ?, ?, ?);");
 	    update = conn.prepareStatement("UPDATE `" + prefix + "blocks` SET `recorded` = ?, `resets` = ? WHERE `id` = ?;");
 	    delete = conn.prepareStatement("DELETE from `" + getPrefix() + "blocks` WHERE `id` = ?;");
-
-	    conn.setAutoCommit(false);
 
 	    Long current = System.currentTimeMillis();
 	    Long mark = System.currentTimeMillis() - (Jobs.getGCManager().BlockProtectionDays * 24L * 60L * 60L * 1000L);

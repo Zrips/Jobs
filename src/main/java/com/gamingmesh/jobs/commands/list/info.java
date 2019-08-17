@@ -12,7 +12,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 public class info implements Cmd {
 
     @Override
-    @JobCommand(300)
+    @JobCommand(287)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));

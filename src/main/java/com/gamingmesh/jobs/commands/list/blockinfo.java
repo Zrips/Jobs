@@ -14,7 +14,7 @@ public class blockinfo implements Cmd {
 
     @Override
     @SuppressWarnings("deprecation")
-    @JobCommand(1450)
+    @JobCommand(1472)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));

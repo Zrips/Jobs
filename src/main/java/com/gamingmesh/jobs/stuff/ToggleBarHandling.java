@@ -55,16 +55,20 @@ public class ToggleBarHandling {
 	if (Jobs.getGCManager().BossBarEnabled) {
 	    config.set("bossBar", null);
 
-	    for (Entry<String, Boolean> one : bossBarToggle.entrySet()) {
-		config.set("bossBar." + one.getKey(), one.getValue());
+	    if (!bossBarToggle.isEmpty()) {
+		for (Entry<String, Boolean> one : bossBarToggle.entrySet()) {
+		    config.set("bossBar." + one.getKey(), one.getValue());
+		}
 	    }
 	}
 
 	if (Jobs.getGCManager().ActionBarsMessageByDefault) {
 	    config.set("actionBar", null);
 
-	    for (Entry<String, Boolean> one : actionBarToggle.entrySet()) {
-		config.set("actionBar." + one.getKey(), one.getValue());
+	    if (!actionBarToggle.isEmpty()) {
+		for (Entry<String, Boolean> one : actionBarToggle.entrySet()) {
+		    config.set("actionBar." + one.getKey(), one.getValue());
+		}
 	    }
 	}
 

@@ -17,7 +17,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 public class archive implements Cmd {
 
     @Override
-    @JobCommand(1400)
+    @JobCommand(1401)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {

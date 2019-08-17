@@ -9,7 +9,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 public class entitylist implements Cmd {
 
     @Override
-    @JobCommand(1450)
+    @JobCommand(1452)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (args.length != 0) {

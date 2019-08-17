@@ -23,7 +23,7 @@ import com.gamingmesh.jobs.CMILib.RawMessage;
 public class itembonus implements Cmd {
 
     @Override
-    @JobCommand(300)
+    @JobCommand(125)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));

@@ -20,7 +20,7 @@ import com.gamingmesh.jobs.stuff.Debug;
 public class area implements Cmd {
 
     @Override
-    @JobCommand(300)
+    @JobCommand(308)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
