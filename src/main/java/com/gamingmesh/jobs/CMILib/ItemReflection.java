@@ -33,27 +33,27 @@ public class ItemReflection {
     private static void initialize() {
 	try {
 	    CraftServerClass = getBukkitClass("CraftServer");
-	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
 	try {
 	    CraftServer = CraftServerClass.cast(Bukkit.getServer());
-	} catch (SecurityException | IllegalArgumentException e) {
+	} catch (ClassCastException e) {
 	    e.printStackTrace();
 	}
 	try {
 	    CraftItemStack = getBukkitClass("inventory.CraftItemStack");
-	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
 	try {
 	    Item = getMinecraftClass("Item");
-	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
 	try {
 	    IStack = getMinecraftClass("ItemStack");
-	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
     }

@@ -29,13 +29,13 @@ public class Util {
     public static List<String> confirmLeave = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
-    public static ItemStack setEntityType(ItemStack is, EntityType type) throws IllegalArgumentException {
+    public static ItemStack setEntityType(ItemStack is, EntityType type) {
 	boolean useMeta;
 	try {
 	    ItemStack testis = CMIMaterial.SPAWNER.newItemStack();
 	    ItemMeta meta = testis.getItemMeta();
 	    useMeta = meta instanceof BlockStateMeta;
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    useMeta = false;
 	}
 
@@ -126,7 +126,7 @@ public class Util {
 		continue;
 
 	    if (lookingFor == null) {
-		if (!CMIMaterial.AIR.equals(material) && !CMIMaterial.CAVE_AIR.equals(material) && !CMIMaterial.VOID_AIR.equals(material)) {
+		if (!CMIMaterial.isAir(material)) {
 		    break;
 		}
 	    } else {

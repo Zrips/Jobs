@@ -27,12 +27,9 @@ public class expboost implements Cmd {
 		return true;
 	    }
 
-	String PlayerName = sender.getName();
-	String jobName = args[0];
-	Job job = Jobs.getJob(jobName);
-
-	if (PlayerName == null) {
-	    Jobs.getCommandManager().sendUsage(sender, "expboost");
+	Job job = Jobs.getJob(args[0]);
+	if (job == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
@@ -40,6 +37,7 @@ public class expboost implements Cmd {
 	    for (Job one : Jobs.getJobs()) {
 		one.addBoost(CurrencyType.EXP, 1.0);
 	    }
+
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.allreset"));
 	    return true;
 	} else if (args[0].equalsIgnoreCase("reset")) {
@@ -59,7 +57,6 @@ public class expboost implements Cmd {
 	}
 
 	if (args[0].equalsIgnoreCase("all")) {
-
 	    for (Job one : Jobs.getJobs()) {
 		one.addBoost(CurrencyType.EXP, rate);
 	    }
@@ -67,10 +64,7 @@ public class expboost implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.boostalladded", "%boost%", rate));
 	    return true;
 	}
-	if (job == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
-	    return true;
-	}
+
 	job.addBoost(CurrencyType.EXP, rate);
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
 	return true;

@@ -28,19 +28,18 @@ public class moneyboost implements Cmd {
 		return true;
 	    }
 
-	String PlayerName = sender.getName();
-	String jobName = args[0];
-	Job job = Jobs.getJob(jobName);
-
-	if (PlayerName == null) {
-	    Jobs.getCommandManager().sendUsage(sender, "moneyboost");
+	Job job = Jobs.getJob(args[0]);
+	if (job == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+
 
 	if (args[0].equalsIgnoreCase("reset") && args[1].equalsIgnoreCase("all")) {
 	    for (Job one : Jobs.getJobs()) {
 		one.addBoost(CurrencyType.MONEY, 1.0);
 	    }
+
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.allreset"));
 	    return true;
 	} else if (args[0].equalsIgnoreCase("reset")) {
@@ -60,7 +59,6 @@ public class moneyboost implements Cmd {
 	}
 
 	if (args[0].equalsIgnoreCase("all")) {
-
 	    for (Job one : Jobs.getJobs()) {
 		one.addBoost(CurrencyType.MONEY, rate);
 	    }
@@ -68,10 +66,7 @@ public class moneyboost implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.boostalladded", "%boost%", rate));
 	    return true;
 	}
-	if (job == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
-	    return true;
-	}
+
 	job.addBoost(CurrencyType.MONEY, rate);
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
 	return true;

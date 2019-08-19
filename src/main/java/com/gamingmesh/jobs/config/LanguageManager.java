@@ -157,7 +157,7 @@ public class LanguageManager {
 	    c.get("command.help.output.label", "Jobs");
 
 	    c.get("command.help.output.cmdInfoFormat", "[command] &f- &2[description]");
-	    c.get("command.help.output.cmdFormat", "&7/[command]&f[arguments]");
+	    c.get("command.help.output.cmdFormat", "&7/[command] &f[arguments]");
 	    c.get("command.help.output.helpPageDescription", "&2* [description]");
 
 	    c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");
@@ -485,10 +485,10 @@ public class LanguageManager {
 	    c.get("command.quests.help.args", "[playername]");
 	    Jobs.getGCManager().getCommandArgs().put("quests", Arrays.asList("[playername]"));
 	    c.get("command.quests.error.noquests", "&cThere are no quests");
-	    c.get("command.quests.toplineseparator", "&7*********************** &6[playerName]&2(&f[questsDone]&2) &7***********************");
+	    c.get("command.quests.toplineseparator", "&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************");
 	    c.get("command.quests.output.completed", "&2      !Completed!&r      ");
 	    c.get("command.quests.output.questLine", "[progress] &7[questName] &f[done]&7/&8[required]");
-	    c.get("command.quests.output.hover", Arrays.asList("&f[jobName]", "[desc]", "&7New quest in: [time]"));
+	    c.get("command.quests.output.hover", "&f[jobName] \n[desc] \n&7New quest in: [time]");
 
 	    c.get("command.fire.help.info", "Fire the player from the job.");
 	    c.get("command.fire.help.args", "[playername] [jobname]");

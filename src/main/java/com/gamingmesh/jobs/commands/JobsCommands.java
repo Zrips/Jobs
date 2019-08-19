@@ -36,8 +36,9 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.Title;
+import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.stuff.PageInfo;
+import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsCommands implements CommandExecutor {
     private static final String label = "jobs";
@@ -488,17 +489,12 @@ public class JobsCommands implements CommandExecutor {
      * @return the message
      */
     public String jobStatsMessage(JobProgression jobProg) {
-	Title t = null;
-	for (Title title : new ArrayList<Title>()) {
-	    if (t == null)
-		t = title;
-	}
 	String message = Jobs.getLanguage().getMessage("command.stats.output",
 	    "%joblevel%", jobProg.getLevel(),
 	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName(),
 	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(),
-	    "%titlename%", t == null ? "" : t.getName());
+	    "%titlename%", Jobs.gettitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName()).getName());
 	return " " + jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) + " " + message;
     }
 
@@ -538,5 +534,19 @@ public class JobsCommands implements CommandExecutor {
 	    "%jobxp%", Math.round(exp * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(level));
 	return " " + jobProgressMessage(jobProg.getMaxExperience(level), exp) + " " + message;
+    }
+
+    public String jobsQuestMessage(QuestProgression qp, JobProgression prog) {
+	String hoverMsg = Jobs.getLanguage().getMessage("command.quests.output.hover");
+	hoverMsg = hoverMsg.replace("[jobName]", prog.getJob().getName())
+			.replace("[time]", TimeManage.to24hourShort(qp.getValidUntil() - System.currentTimeMillis()));
+
+	if (hoverMsg.contains("[desc]")) {
+	    for (String one : qp.getQuest().getDescription()) {
+		hoverMsg = hoverMsg.replace("[desc]", one);
+	    }
+	}
+
+	return hoverMsg;
     }
 }

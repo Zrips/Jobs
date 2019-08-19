@@ -76,7 +76,7 @@ public class editjobs implements Cmd {
 		Integer page = null;
 		try {
 		    page = Integer.parseInt(args[3]);
-		} catch (Throwable e) {
+		} catch (NumberFormatException e) {
 		}
 
 		if (page != null) {

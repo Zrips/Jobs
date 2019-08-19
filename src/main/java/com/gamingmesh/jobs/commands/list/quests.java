@@ -15,7 +15,6 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class quests implements Cmd {
 
@@ -64,19 +63,8 @@ public class quests implements Cmd {
 		    String msg = Jobs.getLanguage().getMessage("command.quests.output.questLine", "[progress]",
 			progressLine, "[questName]", q.getQuest().getQuestName(), "[done]", q.getTotalAmountDone(), "[required]", q.getTotalAmountNeeded());
 
-		    List<String> hoverMsgs = Jobs.getLanguage().getMessageList("command.quests.output.hover");
 		    List<String> hoverList = new ArrayList<>();
-
-		    for (String current : hoverMsgs) {
-			current = current.replace("[jobName]", jobProg.getJob().getName());
-			current = current.replace("[time]", TimeManage.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
-			if (current.contains("[desc]")) {
-			    for (String one : q.getQuest().getDescription()) {
-				hoverList.add(one);
-			    }
-			} else
-			    hoverList.add(current);
-		    }
+		    hoverList.add(Jobs.getCommandManager().jobsQuestMessage(q, jobProg));
 
 		    for (Entry<String, QuestObjective> oneObjective : q.getQuest().getObjectives().entrySet()) {
 			hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +

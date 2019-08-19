@@ -63,7 +63,7 @@ public class ItemManager {
 
 	    String bukkitName = one.name();
 	    String mojangName = one.name();
-	    
+
 	    try {
 		mojangName = ItemReflection.getItemMinecraftName(new ItemStack(mat));
 	    } catch (Throwable e) {
@@ -132,7 +132,6 @@ public class ItemManager {
 
     /**
      * Gets the item by material
-     * 
      * @deprecated Use {@link #getItem(ItemStack)}
      * @param mat Material
      * @return {@link CMIItemStack}
@@ -181,7 +180,7 @@ public class ItemManager {
 	    String a = name.split("-")[1];
 	    try {
 		amount = Integer.parseInt(a);
-	    } catch (Throwable e) {
+	    } catch (NumberFormatException e) {
 	    }
 	    name = name.split("-")[0];
 	}
@@ -191,7 +190,7 @@ public class ItemManager {
 	if (name.contains(":")) {
 	    try {
 		data = (short) Integer.parseInt(name.split(":")[1]);
-	    } catch (Throwable e) {
+	    } catch (NumberFormatException e) {
 	    }
 	    try {
 		CMIEntityType e = CMIEntityType.getByName(name.split(":")[1]);
@@ -276,7 +275,7 @@ public class ItemManager {
 	    if (cm == null) {
 		try {
 		    cm = byId.get(Integer.parseInt(name));
-		} catch (Throwable e) {
+		} catch (NumberFormatException e) {
 		}
 
 		if (cm == null) {
@@ -354,7 +353,7 @@ public class ItemManager {
 
 	if (ncm != null && subdata != null) {
 
-	    if (ncm.getCMIType().isPotion() || ncm.getCMIType().equals(CMIMaterial.SPLASH_POTION) || ncm.getCMIType().equals(CMIMaterial.TIPPED_ARROW)) {
+	    if (ncm.getCMIType().isPotion() || ncm.getCMIType().equals(CMIMaterial.TIPPED_ARROW)) {
 		Integer d = null;
 		PotionEffectType type = null;
 		Boolean upgraded = false;
@@ -632,6 +631,7 @@ public class ItemManager {
 	ENDERMITE(67, "Endermite"),
 	GUARDIAN(68, "Guardian"),
 	SHULKER(69, "Shulker"),
+	CAT(75, "Cat"),
 	PIG(90, "Pig"),
 	SHEEP(91, "Sheep"),
 	COW(92, "Cow"),
@@ -640,7 +640,7 @@ public class ItemManager {
 	WOLF(95, "Wolf"),
 	MUSHROOM_COW(96, "Mushroom Cow", "Mooshroom"),
 	SNOWMAN(97, "Snowman"),
-	OCELOT(98, "Ocelot", "Cat"),
+	OCELOT(98, "Ocelot"),
 	IRON_GOLEM(99, "Iron Golem"),
 	HORSE(100, "Horse"),
 	RABBIT(101, "Rabbit"),
@@ -732,7 +732,7 @@ public class ItemManager {
 	}
 
 	public static CMIEntityType getByName(String name) {
-	   String main = name;
+	    String main = name;
 	    String sub = null;
 
 	    if (name.contains("_")) {
@@ -752,7 +752,7 @@ public class ItemManager {
 	    Integer id = null;
 	    try {
 		id = Integer.parseInt(main);
-	    } catch (Exception e) {
+	    } catch (NumberFormatException e) {
 	    }
 
 	    for (CMIEntityType one : CMIEntityType.values()) {
@@ -761,7 +761,7 @@ public class ItemManager {
 		    break;
 		}
 	    }
-	    
+
 	    if (type == null)
 		for (CMIEntityType one : CMIEntityType.values()) {
 		    if (one.secondaryName == null)
@@ -774,7 +774,7 @@ public class ItemManager {
 			break;
 		    }
 		}
-	    
+
 	    if (type == null)
 		for (CMIEntityType one : CMIEntityType.values()) {
 		    if (one.name.replace("_", "").contains(updated)) {
@@ -1910,7 +1910,6 @@ public class ItemManager {
 
 	/**
 	 * Get the legacy id from the material enum
-	 * 
 	 * @deprecated Not used, above 1.13
 	 * @return legacy id
 	 */
@@ -1921,7 +1920,6 @@ public class ItemManager {
 
 	/**
 	 * Get the id from the material enum
-	 * 
 	 * @deprecated If the id is exist under 1.13 then success
 	 * @return id
 	 */
@@ -1997,7 +1995,6 @@ public class ItemManager {
 
 	/**
 	 * Get the data
-	 * 
 	 * @deprecated Not used, above 1.13+
 	 * @return data
 	 */
@@ -2011,7 +2008,6 @@ public class ItemManager {
 
 	/**
 	 * Get the legacy data
-	 * 
 	 * @deprecated Not used, above 1.13+
 	 * @return legacy data
 	 */
@@ -2021,7 +2017,6 @@ public class ItemManager {
 	}
 
 	public static CMIMaterial getRandom(CMIMaterial mat) {
-
 	    List<CMIMaterial> ls = new ArrayList<CMIMaterial>();
 
 	    for (CMIMaterial one : CMIMaterial.values()) {
@@ -2077,7 +2072,7 @@ public class ItemManager {
 	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
 		try {
 		    ids = Integer.parseInt(id);
-		} catch (Throwable e) {
+		} catch (NumberFormatException e) {
 		    if (id.contains(":")) {
 			try {
 			    ids = Integer.parseInt(id.split(":")[0]);
@@ -2089,7 +2084,7 @@ public class ItemManager {
 			try {
 			    data = Integer.parseInt(id.split(":")[1]);
 			    id = id.split(":")[0];
-			} catch (Throwable t) {
+			} catch (NumberFormatException t) {
 			}
 		    }
 		}
