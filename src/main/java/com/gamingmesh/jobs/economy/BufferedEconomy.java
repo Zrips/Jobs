@@ -18,22 +18,21 @@
 
 package com.gamingmesh.jobs.economy;
 
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.api.JobsPaymentEvent;
+import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.ToggleBarHandling;
+import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.api.JobsPaymentEvent;
-import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ToggleBarHandling;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
-import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 
 public class BufferedEconomy {
     private Jobs plugin;
@@ -222,6 +221,9 @@ public class BufferedEconomy {
 
 	if (!ToggleBarHandling.getActionBarToggle().containsKey(playername))
 	    return;
+
+	if (payment.getAmount() == 0.0D && payment.getPoints() == 0.0D && payment.getExp() == 0.0D)
+		return;
 
 	Boolean show = ToggleBarHandling.getActionBarToggle().get(playername);
 	Player abp = Bukkit.getPlayer(payment.getOfflinePlayer().getUniqueId());
