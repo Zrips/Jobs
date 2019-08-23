@@ -1027,7 +1027,8 @@ public class Jobs extends JavaPlugin {
 
 	    Boost boost = getPlayerManager().getFinalBonus(jPlayer, noneJob);
 
-	    JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income, pointAmount);
+	    JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income,
+			pointAmount, block, ent, victim, info);
 	    Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
 	    // If event is canceled, don't do anything
 	    if (JobsPrePaymentEvent.isCancelled()) {
@@ -1143,7 +1144,8 @@ public class Jobs extends JavaPlugin {
 
 		Boost boost = getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
 
-		JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), income, pointAmount);
+		JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income,
+		    pointAmount, block, ent, victim, info);
 		Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
 		// If event is canceled, don't do anything
 		if (JobsPrePaymentEvent.isCancelled()) {
