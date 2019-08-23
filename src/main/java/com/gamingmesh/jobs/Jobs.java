@@ -18,34 +18,14 @@
 
 package com.gamingmesh.jobs;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.WeakHashMap;
-import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.gamingmesh.jobs.CMILib.ActionBarTitleMessages;
 import com.gamingmesh.jobs.CMILib.ItemManager;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.CMILib.VersionChecker;
 import com.gamingmesh.jobs.Gui.GuiManager;
+import com.gamingmesh.jobs.McMMO.McMMO1_X_listener;
+import com.gamingmesh.jobs.McMMO.McMMO2_X_listener;
+import com.gamingmesh.jobs.McMMO.McMMOManager;
 import com.gamingmesh.jobs.MyPet.MyPetManager;
 import com.gamingmesh.jobs.MythicMobs.MythicMobInterface;
 import com.gamingmesh.jobs.MythicMobs.MythicMobs2;
@@ -58,60 +38,38 @@ import com.gamingmesh.jobs.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
-import com.gamingmesh.jobs.config.BlockProtectionManager;
-import com.gamingmesh.jobs.config.BossBarManager;
-import com.gamingmesh.jobs.config.ConfigManager;
-import com.gamingmesh.jobs.config.ExploreManager;
-import com.gamingmesh.jobs.config.GeneralConfigManager;
-import com.gamingmesh.jobs.config.LanguageManager;
-import com.gamingmesh.jobs.config.NameTranslatorManager;
-import com.gamingmesh.jobs.config.RestrictedAreaManager;
-import com.gamingmesh.jobs.config.RestrictedBlockManager;
-import com.gamingmesh.jobs.config.ScheduleManager;
-import com.gamingmesh.jobs.config.ShopManager;
-import com.gamingmesh.jobs.config.TitleManager;
-import com.gamingmesh.jobs.config.YmlMaker;
-import com.gamingmesh.jobs.container.ActionInfo;
-import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.ArchivedJobs;
-import com.gamingmesh.jobs.container.BlockProtection;
-import com.gamingmesh.jobs.container.Boost;
-import com.gamingmesh.jobs.container.CurrencyType;
-import com.gamingmesh.jobs.container.DBAction;
-import com.gamingmesh.jobs.container.FastPayment;
-import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.container.JobInfo;
-import com.gamingmesh.jobs.container.JobProgression;
-import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.Log;
-import com.gamingmesh.jobs.container.PlayerInfo;
-import com.gamingmesh.jobs.container.PlayerPoints;
-import com.gamingmesh.jobs.container.QuestProgression;
+import com.gamingmesh.jobs.config.*;
+import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.dao.JobsClassLoader;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.dao.JobsManager;
-import com.gamingmesh.jobs.economy.BufferedEconomy;
-import com.gamingmesh.jobs.economy.BufferedPayment;
-import com.gamingmesh.jobs.economy.Economy;
-import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.economy.PointsData;
-import com.gamingmesh.jobs.McMMO.McMMO1_X_listener;
-import com.gamingmesh.jobs.McMMO.McMMO2_X_listener;
-import com.gamingmesh.jobs.McMMO.McMMOManager;
+import com.gamingmesh.jobs.economy.*;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
-import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
-import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
-import com.gamingmesh.jobs.stuff.Loging;
-import com.gamingmesh.jobs.stuff.PageInfo;
-import com.gamingmesh.jobs.stuff.TabComplete;
-import com.gamingmesh.jobs.stuff.ToggleBarHandling;
+import com.gamingmesh.jobs.stuff.*;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 public class Jobs extends JavaPlugin {
     private static String version = "";
@@ -1248,6 +1206,15 @@ public class Jobs extends JavaPlugin {
 		if (income == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
 
+		// JobsPayment event
+        JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount);
+        Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
+        // If event is canceled, don't do anything
+        if (JobsExpGainEvent.isCancelled())
+            expAmount = 0D;
+        else
+            expAmount = JobsExpGainEvent.getExp();
+
 		try {
 		    if (expAmount != 0D && GconfigManager.BossBarEnabled)
 			if (GconfigManager.BossBarShowOnEachAction)
@@ -1257,15 +1224,6 @@ public class Jobs extends JavaPlugin {
 		} catch (Throwable e) {
 		    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
-
-		// JobsPayment event
-		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount);
-		Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
-		// If event is canceled, don't do anything
-		if (JobsExpGainEvent.isCancelled())
-		    expAmount = 0D;
-		else
-		    expAmount = JobsExpGainEvent.getExp();
 
 		FastPayment.put(jPlayer.getPlayerUUID(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), income, pointAmount, expAmount), prog
 		    .getJob()));
