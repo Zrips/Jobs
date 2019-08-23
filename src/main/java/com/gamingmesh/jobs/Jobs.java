@@ -422,6 +422,10 @@ public class Jobs extends JavaPlugin {
     }
 
     public static JobsCommands getCommandManager() {
+	if (cManager == null) {
+	    cManager = new JobsCommands(getInstance());
+	}
+
 	return cManager;
     }
 
@@ -890,7 +894,7 @@ public class Jobs extends JavaPlugin {
 	    setBpManager();
 	    setActionBar();
 
-	    getCommand("jobs").setExecutor(cManager);
+	    getCommand("jobs").setExecutor(getCommandManager());
 	    getCommand("jobs").setTabCompleter(new TabComplete());
 
 	    startup();
@@ -1207,13 +1211,13 @@ public class Jobs extends JavaPlugin {
 		    continue;
 
 		// JobsPayment event
-        JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount);
-        Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
-        // If event is canceled, don't do anything
-        if (JobsExpGainEvent.isCancelled())
-            expAmount = 0D;
-        else
-            expAmount = JobsExpGainEvent.getExp();
+		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount);
+		Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
+		// If event is canceled, don't do anything
+		if (JobsExpGainEvent.isCancelled())
+		    expAmount = 0D;
+		else
+		    expAmount = JobsExpGainEvent.getExp();
 
 		try {
 		    if (expAmount != 0D && GconfigManager.BossBarEnabled)

@@ -209,21 +209,16 @@ public class BufferedEconomy {
     }
 
     public void ShowActionBar(BufferedPayment payment) {
-	if (!payment.getOfflinePlayer().isOnline())
+	if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline())
 	    return;
 
 	String playername = payment.getOfflinePlayer().getName();
-	if ((!ToggleBarHandling.getActionBarToggle().containsKey(playername)) && (Jobs.getGCManager().ActionBarsMessageByDefault))
-	    ToggleBarHandling.getActionBarToggle().put(playername, Boolean.valueOf(true));
 
-	if (playername == null)
-	    return;
+	if (Jobs.getGCManager().ActionBarsMessageByDefault && !ToggleBarHandling.getActionBarToggle().containsKey(playername))
+	    ToggleBarHandling.getActionBarToggle().put(playername, true);
 
 	if (!ToggleBarHandling.getActionBarToggle().containsKey(playername))
 	    return;
-
-	if (payment.getAmount() == 0.0D && payment.getPoints() == 0.0D && payment.getExp() == 0.0D)
-		return;
 
 	Boolean show = ToggleBarHandling.getActionBarToggle().get(playername);
 	Player abp = Bukkit.getPlayer(payment.getOfflinePlayer().getUniqueId());
