@@ -2,3 +2,5 @@
 - Fixed %titlename% placeholder does not showed anything
 - Re-added Cat, Cat is ALIVE!!
 - Re-worked the quest list to support crowdin
+- Implement more API event methods to PrePaymentEvent
+- Fixed issue when the JobsExpGainEvent called when the income 0.
