@@ -479,6 +479,7 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
+
 	Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.PLACE), block);
     }
 
@@ -1009,7 +1010,7 @@ public class JobsPaymentListener implements Listener {
 	UUID uuid = null;
 	try {
 	    uuid = UUID.fromString(playerName);
-	} catch (Throwable e) {
+	} catch (IllegalArgumentException e) {
 	}
 	if (uuid == null)
 	    return;
@@ -1702,7 +1703,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R1)
+	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R2)
 	    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
 	    return;
 

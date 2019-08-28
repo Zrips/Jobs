@@ -9,13 +9,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class GiveItem {
     public static void GiveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore,
-	    HashMap<Enchantment, Integer> hashMap) {
+	    HashMap<Enchantment, Integer> enchants) {
 	ItemStack itemStack = CMIMaterial.get(id, meta).newItemStack();
 	itemStack.setAmount(qty);
 	ItemMeta ItemMeta = itemStack.getItemMeta();
@@ -29,8 +30,17 @@ public class GiveItem {
 	    ItemMeta.setLore(TranslatedLore);
 	}
 
-	for (Entry<Enchantment, Integer> OneEnchant : hashMap.entrySet()) {
-	    ItemMeta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
+	if (enchants != null) {
+	    if (itemStack.getType() == CMIMaterial.ENCHANTED_BOOK.getMaterial()) {
+		EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) ItemMeta;
+		for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
+		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), false);
+		}
+	    } else {
+		for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
+		    ItemMeta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
+		}
+	    }
 	}
 
 	if (name != null)

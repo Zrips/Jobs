@@ -59,7 +59,7 @@ public class JobItems {
 	    if (enchants != null) {
 		if (mat == CMIMaterial.ENCHANTED_BOOK) {
 		    EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
-		    for (Entry<Enchantment, Integer> oneEnch : bookMeta.getEnchants().entrySet()) {
+		    for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
 			bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
 		    }
 		} else {
@@ -100,13 +100,20 @@ public class JobItems {
 		meta.setLore(TranslatedLore);
 	    }
 	    if (enchants != null) {
-		for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
-		    meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
+		if (item.getType() == CMIMaterial.ENCHANTED_BOOK.getMaterial()) {
+		    EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
+		    for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
+			bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
+		    }
+		} else {
+		    for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
+			meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
+		    }
 		}
 	    }
 	    item.setItemMeta(meta);
 	    return item;
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	}
 	return null;
     }

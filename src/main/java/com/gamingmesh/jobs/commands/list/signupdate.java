@@ -21,16 +21,27 @@ public class signupdate implements Cmd {
 	    return true;
 	}
 
+	if (args[0].equalsIgnoreCase("all")) {
+	    Jobs.getJobs().forEach(Jobs.getSignUtil()::SignUpdate);
+	    return true;
+	}
+
 	Job oldjob = Jobs.getJob(args[0]);
-
-	SignTopType type = SignTopType.getType(args[0]);
-
-	if (type == SignTopType.toplist && oldjob == null) {
+	if (oldjob == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
-	Jobs.getSignUtil().SignUpdate(oldjob, type);
+	if (args.length == 2) {
+	    SignTopType type = SignTopType.getType(args[1]);
+	    if (type != null) {
+		Jobs.getSignUtil().SignUpdate(oldjob, type);
+	    }
+
+	    return true;
+	}
+
+	Jobs.getSignUtil().SignUpdate(oldjob);
 
 	return true;
     }

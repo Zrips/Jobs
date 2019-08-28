@@ -238,7 +238,7 @@ public class JobsListener implements Listener {
 	    return;
 
 	event.setCancelled(true);
-	final ItemStack clicked = event.getCurrentItem();
+	//final ItemStack clicked = event.getCurrentItem();
 
 	GuiInfoList joblist = Jobs.getGUIManager().GuiList.get(player.getUniqueId());
 
@@ -272,14 +272,15 @@ public class JobsListener implements Listener {
 	}
 	player.updateInventory();
 
-	if (event.getClick().isShiftClick() && clicked != null && !clicked.getType().equals(Material.AIR))
+	// hack, we don't need to remove items
+	/*if (event.getClick().isShiftClick() && clicked != null && !clicked.getType().equals(Material.AIR))
 	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 		@Override
 		public void run() {
 		    player.getInventory().remove(clicked);
 		    player.updateInventory();
 		}
-	    }, 1L);
+	    }, 1L);*/
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
