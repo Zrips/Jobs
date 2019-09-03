@@ -126,8 +126,12 @@ public class SignUtil {
 	    old.put(loc, newTemp);
 	    SignsByLocation.put(loc, newTemp);
 	}
-	Jobs.consoleMsg("&e[Jobs] Loaded " + SignsByLocation.size() + " top list signs");
-	return;
+
+	if (!SignsByLocation.isEmpty()) {
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + SignsByLocation.size() + " top list signs");
+	}
+
+	signUpdate();
     }
 
     // Signs save file
@@ -163,6 +167,21 @@ public class SignUtil {
 	return;
     }
 
+    private int update = -1;
+
+    public void signUpdate() {
+	if (update == -1) {
+	    update = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+		@Override
+		public void run() {
+		    for (Entry<String, HashMap<String, jobsSign>> one : SignsByType.entrySet()) {
+			SignUpdate(Jobs.getJob(one.getKey()));
+		    }
+		}
+	    }, 60 * 20L, Jobs.getGCManager().InfoUpdateInterval * 20L);
+	}
+    }
+
     public boolean SignUpdate(Job job) {
 	return SignUpdate(job, SignTopType.toplist);
     }
@@ -171,33 +190,27 @@ public class SignUtil {
 	return SignUpdate(null, type);
     }
 
-    public static Integer questSignUpdateShed = null;
-
     public boolean SignUpdate(Job job, SignTopType type) {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return true;
 
-	int timelapse = 1;
+	if (update == -1) {
+	    signUpdate();
+	}
 
-	List<TopList> PlayerList = new ArrayList<>();
-
-	if (type == null && job == null)
+	if (job == null)
 	    return false;
-
-	if (type == null && job != null)
-	    type = SignTopType.toplist;
 
 	if (type == null)
 	    type = SignTopType.toplist;
 
-	HashMap<String, List<TopList>> temp = new HashMap<>();
-
 	String JobNameOrType = jobsSign.getIdentifier(job, type);
-
 	HashMap<String, jobsSign> signs = this.SignsByType.get(JobNameOrType.toLowerCase());
 
 	if (signs == null)
 	    return false;
+
+	List<TopList> PlayerList = new ArrayList<>();
 
 	switch (type) {
 	case toplist:
@@ -211,6 +224,8 @@ public class SignUtil {
 	default:
 	    break;
 	}
+
+	HashMap<String, List<TopList>> temp = new HashMap<>();
 
 	boolean save = false;
 	for (Entry<String, jobsSign> one : (new HashMap<String, jobsSign>(signs)).entrySet()) {
@@ -280,8 +295,7 @@ public class SignUtil {
 		    sign.setLine(i, line);
 		}
 		sign.update();
-		if (!UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse))
-		    timelapse--;
+		UpdateHead(sign, PlayerList.get(0).getPlayerName());
 	    } else {
 		if (jSign.getNumber() > PlayerList.size())
 		    return true;
@@ -315,11 +329,8 @@ public class SignUtil {
 		sign.setLine(3, translateSignLine("signs.SpecialList.bottom", no, PlayerName, pl.getLevel(), SignJobName));
 		sign.update();
 
-		if (!UpdateHead(sign, pl.getPlayerName(), timelapse))
-		    timelapse--;
+		UpdateHead(sign, pl.getPlayerName());
 	    }
-
-	    timelapse++;
 
 	}
 	if (save)
@@ -337,9 +348,8 @@ public class SignUtil {
 	    "[job]", jobname);
     }
 
-    public boolean UpdateHead(final org.bukkit.block.Sign sign, final String Playername, int timelapse) {
+    public boolean UpdateHead(final org.bukkit.block.Sign sign, final String Playername) {
 	try {
-	    timelapse = timelapse < 1 ? 1 : timelapse;
 	    BlockFace directionFacing = null;
 	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
 		org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getData();
@@ -378,22 +388,8 @@ public class SignUtil {
 	    if (skull.getOwner() != null && skull.getOwner().equalsIgnoreCase(Playername))
 		return false;
 
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    Block b = loc.getBlock();
-		    if (!(b.getState() instanceof Skull))
-			return;
-
-		    Skull skull = (Skull) b.getState();
-		    if (skull == null)
-			return;
-
-		    skull.setOwner(Playername);
-		    skull.update();
-		    return;
-		}
-	    }, timelapse * Jobs.getGCManager().InfoUpdateInterval * 20L);
+	    skull.setOwner(Playername);
+	    skull.update();
 	} catch (Throwable e) {
 	    e.printStackTrace();
 	}

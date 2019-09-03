@@ -29,22 +29,22 @@ public class Reflections {
     private void initialize() {
 	try {
 	    CraftServerClass = getBukkitClass("CraftServer");
-	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
 	try {
 	    CraftServer = CraftServerClass.cast(Bukkit.getServer());
-	} catch (SecurityException | IllegalArgumentException e) {
+	} catch (ClassCastException e) {
 	    e.printStackTrace();
 	}
 	try {
 	    NBTTagCompound = getMinecraftClass("NBTTagCompound");
-	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
 	try {
 	    NBTBase = getMinecraftClass("NBTBase");
-	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
 	/*try {
@@ -55,7 +55,7 @@ public class Reflections {
 
 	try {
 	    CraftItemStack = getBukkitClass("inventory.CraftItemStack");
-	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
 	/*try {
@@ -65,7 +65,7 @@ public class Reflections {
 	}*/
 	try {
 	    IStack = getMinecraftClass("ItemStack");
-	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
+	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
     }

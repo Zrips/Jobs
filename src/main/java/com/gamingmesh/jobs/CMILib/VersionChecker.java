@@ -83,7 +83,7 @@ public class VersionChecker {
 	Version() {
 	    try {
 		this.value = Integer.valueOf(this.name().replaceAll("[^\\d.]", ""));
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 	    }
 	    shortVersion = this.name().substring(0, this.name().length() - 3);
 	}

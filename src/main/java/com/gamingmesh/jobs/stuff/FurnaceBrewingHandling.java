@@ -195,13 +195,18 @@ public class FurnaceBrewingHandling {
 	    }
 	}
 
+	if (uuid == null) {
+	    return false;
+	}
+
 	List<blockLoc> ls = furnaceMap.get(uuid);
 	if (ls == null)
-	    return true;
+	    return false;
 
 	for (blockLoc one : ls) {
 	    if (!one.getLocation().equals(block.getLocation()))
 		continue;
+
 	    block.removeMetadata(JobsPaymentListener.furnaceOwnerMetadata, Jobs.getInstance());
 	    ls.remove(one);
 	    return true;
@@ -221,13 +226,18 @@ public class FurnaceBrewingHandling {
 	    }
 	}
 
+	if (uuid == null) {
+	    return false;
+	}
+
 	List<blockLoc> ls = brewingMap.get(uuid);
 	if (ls == null)
-	    return true;
+	    return false;
 
 	for (blockLoc one : ls) {
 	    if (!one.getLocation().equals(block.getLocation()))
 		continue;
+
 	    block.removeMetadata(JobsPaymentListener.brewingOwnerMetadata, Jobs.getInstance());
 	    ls.remove(one);
 	    return true;

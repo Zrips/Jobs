@@ -66,7 +66,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -843,28 +842,24 @@ public class Jobs extends JavaPlugin {
 //	itemManager = new ItemManager(this);
 
 	try {
-	    Class<?> nmsClass;
-	    nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + version);
+	    Class<?> nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + version);
 	    if (NMS.class.isAssignableFrom(nmsClass)) {
 		setNms((NMS) nmsClass.getConstructor().newInstance());
 	    } else {
 		System.out.println("Something went wrong, please note down version and contact author, version: " + version);
 		setEnabled(false);
+		return;
 	    }
-	} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-	    | SecurityException e) {
+	} catch (Exception e) {
 	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + version);
 	    setEnabled(false);
 	    e.printStackTrace();
 	    return;
 	}
-	try {
-	    if (setupPlaceHolderAPI()) {
-		consoleMsg("&ePlaceholderAPI was found - Enabling capabilities.");
-		PlaceholderAPIEnabled = true;
-	    }
-	} catch (Throwable e) {
-	    e.printStackTrace();
+
+	if (setupPlaceHolderAPI()) {
+	    consoleMsg("&ePlaceholderAPI was found - Enabling capabilities.");
+	    PlaceholderAPIEnabled = true;
 	}
 
 	try {

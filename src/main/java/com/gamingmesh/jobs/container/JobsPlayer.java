@@ -30,7 +30,6 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Signs.SignTopType;
-import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
@@ -1061,16 +1060,18 @@ public class JobsPlayer {
 	this.doneQuests = doneQuests;
     }
 
+    private Integer questSignUpdateShed = null;
+
     public void addDoneQuest() {
 	this.doneQuests++;
 	this.setSaved(false);
 
-	if (SignUtil.questSignUpdateShed == null) {
-	    SignUtil.questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
+	if (questSignUpdateShed == null) {
+	    questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
 		@Override
 		public void run() {
 		    Jobs.getSignUtil().SignUpdate(SignTopType.questtoplist);
-		    SignUtil.questSignUpdateShed = null;
+		    questSignUpdateShed = null;
 		}
 	    }, Jobs.getGCManager().getSavePeriod() * 60 * 20L);
 	}

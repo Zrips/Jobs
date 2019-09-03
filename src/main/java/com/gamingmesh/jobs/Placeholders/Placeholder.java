@@ -90,7 +90,7 @@ public class Placeholder {
 		    try {
 			int id = Integer.parseInt(matcher.group(1).substring(1));
 			groups.add(id);
-		    } catch (Throwable e) {
+		    } catch (Exception e) {
 			e.printStackTrace();
 		    }
 		}
@@ -220,7 +220,7 @@ public class Placeholder {
 		    for (Integer oneG : groups) {
 			lsInLs.add(matcher.group(oneG + 1));
 		    }
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		}
 		break;
 	    }
@@ -264,12 +264,9 @@ public class Placeholder {
 		return JobsPlaceholderType.Jobs;
 	}
 	if (plugin.isPlaceholderAPIEnabled()) {
-	    try {
-		if (placeholder.contains("%"))
-		    if (!placeholder.equals(me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, placeholder)))
-			return JobsPlaceholderType.PAPI;
-	    } catch (Throwable e) {
-
+	    if (placeholder.contains("%")) {
+		if (!placeholder.equals(me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, placeholder)))
+		    return JobsPlaceholderType.PAPI;
 	    }
 	}
 //	For MVdWPlaceholderAPI
@@ -282,18 +279,13 @@ public class Placeholder {
     }
 
     public String updatePlaceHolders(Player player, String message) {
-
 	if (message == null)
 	    return null;
 	if (message.contains("%"))
 	    message = translateOwnPlaceHolder(player, message);
 	if (plugin.isPlaceholderAPIEnabled()) {
-	    try {
-		if (message.contains("%"))
-		    message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message);
-	    } catch (Throwable e) {
-
-	    }
+	    if (message.contains("%"))
+		message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message);
 	}
 //	For MVdWPlaceholderAPI
 //	if (plugin.isMVdWPlaceholderAPIEnabled()) {
@@ -325,8 +317,7 @@ public class Placeholder {
 		    if (with.startsWith("$"))
 			with = "\\" + with;
 		    message = message.replaceFirst(group, with);
-
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		    e.printStackTrace();
 		}
 	    }
@@ -348,7 +339,7 @@ public class Placeholder {
 	    int id = Integer.parseInt(value);
 	    if (id > 0)
 		j = user.getJobProgression().get(id - 1);
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    Job job = Jobs.getJob(value);
 	    if (job != null)
 		j = user.getJobProgression(job);
@@ -362,7 +353,7 @@ public class Placeholder {
 	    int id = Integer.parseInt(value);
 	    if (id > 0)
 		j = Jobs.getJobs().get(id - 1);
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    j = Jobs.getJob(value);
 	}
 	return j;
@@ -376,7 +367,7 @@ public class Placeholder {
 	if (placeHolder == null)
 	    return null;
 
-	JobsPlayer user = Jobs.getPlayerManager().getJobsPlayer(uuid);
+	JobsPlayer user = uuid == null ? null : Jobs.getPlayerManager().getJobsPlayer(uuid);
 	// Placeholders by JobsPlayer object
 	if (user != null) {
 	    switch (placeHolder) {

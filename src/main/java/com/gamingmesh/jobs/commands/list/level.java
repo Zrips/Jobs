@@ -75,14 +75,18 @@ public class level implements Cmd {
 	    // check if player already has the job
 	    if (jPlayer.isInJob(job)) {
 		JobProgression prog = jPlayer.getJobProgression(job);
+		int total = 0;
+
 		switch (action) {
 		case Set:
 		    prog.setLevel(amount);
 		    break;
 		case Add:
-		    prog.setLevel(amount);
+		    total = (prog.getLevel() + amount);
+		    prog.setLevel(total);
 		    break;
 		case Take:
+		    total = (prog.getLevel() - amount);
 		    prog.setLevel(amount);
 		    break;
 		default:

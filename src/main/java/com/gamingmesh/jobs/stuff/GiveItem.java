@@ -34,7 +34,7 @@ public class GiveItem {
 	    if (itemStack.getType() == CMIMaterial.ENCHANTED_BOOK.getMaterial()) {
 		EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) ItemMeta;
 		for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
-		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), false);
+		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
 		}
 	    } else {
 		for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {

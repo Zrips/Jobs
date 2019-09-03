@@ -47,11 +47,12 @@ public class area implements Cmd {
 	    if (args[0].equalsIgnoreCase("add")) {
 		if (!Jobs.hasPermission(player, "jobs.area.add", true))
 		    return true;
+
 		String name = args[1];
 		double bonus = 0D;
 		try {
 		    bonus = Double.parseDouble(args[2]);
-		} catch (Throwable e) {
+		} catch (NumberFormatException e) {
 		    return false;
 		}
 		boolean wg = false;
