@@ -35,43 +35,28 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class Job {
-    // job info
+
     private EnumMap<ActionType, List<JobInfo>> jobInfo = new EnumMap<>(ActionType.class);
-    // permissions
     private List<JobPermission> jobPermissions;
-    // commands
     private List<JobCommands> jobCommands;
-    // conditions
     private List<JobConditions> jobConditions;
-    // items
     private HashMap<String, JobItems> jobItems;
-    // limited items
     private HashMap<String, JobLimitedItems> jobLimitedItems;
-    // job name
     private String jobName = "N/A";
+    private String fullName;
     // job short name (for use in multiple jobs)
     private String jobShortName;
-    // short description of the job
     private String description;
-    // job chat colour
     private ChatColor jobColour;
-    // job leveling equation
     private Parser maxExpEquation;
-    // display method
     private DisplayMethod displayMethod;
-    // max level
     private int maxLevel;
-    // vip max level
     private int vipmaxLevel = 0;
     // max number of people allowed with this job on the server.
     private Integer maxSlots;
-    // Commands to be performed on player job join
     private List<String> CmdOnJoin = new ArrayList<>();
-    // Commands to be performed on player job leave
     private List<String> CmdOnLeave = new ArrayList<>();
-    // Item for GUI
     private ItemStack GUIitem;
-    // Item for GUI
     private Long rejoinCd = 0L;
 
     private int totalPlayers = -1;
@@ -90,6 +75,7 @@ public class Job {
     /**
      * Constructor
      * @param jobName - the name of the job
+     * @param fullName - the full name of the job
      * @param jobShortName - the shortened version of the name of the job.
      * @param description - a short description of the job.
      * @param jobColour - the colour of the job title as displayed in chat.
@@ -106,10 +92,11 @@ public class Job {
      * @param CmdOnLeave - commands performed on player leave
      * @param jobConditions - jobs conditions
      */
-    public Job(String jobName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
+    public Job(String jobName, String fullName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, HashMap<String, JobItems> jobItems,
 	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, String bossbar, Long rejoinCD) {
 	this.jobName = jobName;
+	this.fullName = fullName;
 	this.jobShortName = jobShortName;
 	this.description = description;
 	this.jobColour = jobColour;
@@ -241,6 +228,14 @@ public class Job {
      */
     public String getName() {
 	return jobName;
+    }
+
+    /**
+     * Get the job full name
+     * @return the job full name
+     */
+    public String getFullName() {
+	return fullName;
     }
 
     /**

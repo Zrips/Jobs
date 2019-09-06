@@ -418,7 +418,7 @@ public class ConfigManager {
 	try {
 	    conf.load(s);
 	    s.close();
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
 	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
 	    Jobs.getPluginLogger().severe("Check your config for formatting issues!");
@@ -438,19 +438,23 @@ public class ConfigManager {
 	    Jobs.getPluginLogger().severe("==============================================");
 	    return;
 	}
+
 	for (String jobKey : jobsSection.getKeys(false)) {
 
 	    // Ignoring example job
 	    if (jobKey.equalsIgnoreCase("exampleJob"))
 		continue;
 
+	    // Translating unicode
+	    jobKey = StringEscapeUtils.unescapeJava(jobKey);
+
 	    ConfigurationSection jobSection = jobsSection.getConfigurationSection(jobKey);
-	    String jobName = jobSection.getString("fullname", null);
+	    String jobFullName = jobSection.getString("fullname", null);
 
 	    // Translating unicode
-	    jobName = StringEscapeUtils.unescapeJava(jobName);
+	    jobFullName = StringEscapeUtils.unescapeJava(jobFullName);
 
-	    if (jobName == null) {
+	    if (jobFullName == null) {
 		Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid fullname property. Skipping job!");
 		continue;
 	    }
@@ -603,7 +607,7 @@ public class ConfigManager {
 			if (matId != null) {
 			    material = CMIMaterial.get(matId);
 			    if (material != null) {
-				Jobs.getPluginLogger().warning("Job " + jobName + " is using GUI item ID: " + item + "!");
+				Jobs.getPluginLogger().warning("Job " + jobFullName + " is using GUI item ID: " + item + "!");
 				Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
 			    }
 			}
@@ -850,7 +854,7 @@ public class ConfigManager {
 		}
 	    }
 
-	    Job job = new Job(jobName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
+	    Job job = new Job(jobKey, jobFullName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
 		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem, bossbar, rejoinCd);
 
 	    job.setFullDescription(fDescription);
@@ -873,7 +877,7 @@ public class ConfigManager {
 			KeyValues kv = null;
 			if (sqsection.isString("Target")) {
 			    ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
-			    kv = getKeyValue(sqsection.getString("Target"), actionType, jobName);
+			    kv = getKeyValue(sqsection.getString("Target"), actionType, jobFullName);
 
 			    if (kv != null) {
 				int amount = sqsection.getInt("Amount", 1);
@@ -892,7 +896,7 @@ public class ConfigManager {
 				}
 				try {
 				    ActionType actionType = ActionType.getByName(split[0]);
-				    kv = getKeyValue(split[1], actionType, jobName);
+				    kv = getKeyValue(split[1], actionType, jobFullName);
 				    if (kv != null) {
 					int amount = Integer.parseInt(split[2]);
 					QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(), kv.getType() + kv.getSubType(), amount);
@@ -924,12 +928,12 @@ public class ConfigManager {
 			quests.add(quest);
 
 		    } catch (Throwable e) {
-			Jobs.consoleMsg("&c[Jobs] Can't load " + one + " quest for " + jobName);
+			Jobs.consoleMsg("&c[Jobs] Can't load " + one + " quest for " + jobFullName);
 			e.printStackTrace();
 		    }
 		}
 
-		Jobs.consoleMsg("&e[Jobs] Loaded " + quests.size() + " quests for " + jobName);
+		Jobs.consoleMsg("&e[Jobs] Loaded " + quests.size() + " quests for " + jobFullName);
 		job.setQuests(quests);
 	    }
 	    job.setMaxDailyQuests(jobSection.getInt("maxDailyQuests", 1));

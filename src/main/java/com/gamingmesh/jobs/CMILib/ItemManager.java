@@ -1988,7 +1988,7 @@ public class ItemManager {
 		stack.setAmount(amount);
 		return stack;
 	    }
-	    ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
+	    ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat, 1, this.getLegacyData());
 	    stack.setAmount(amount);
 	    return stack;
 	}

@@ -69,14 +69,14 @@ public class exp implements Cmd {
 		switch (action) {
 		case Add:
 		    total = (prog.getExperience() + amount);
-		    prog.addExperience(amount);
+		    prog.addExperience(total);
 		    break;
 		case Set:
 		    prog.setExperience(amount);
 		    break;
 		case Take:
 		    total = (prog.getExperience() - amount);
-		    prog.takeExperience(amount);
+		    prog.takeExperience(total);
 		    break;
 		default:
 		    break;
