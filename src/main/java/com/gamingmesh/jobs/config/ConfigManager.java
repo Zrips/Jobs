@@ -98,7 +98,7 @@ public class ConfigManager {
 	    conf.load(s);
 	    if (s != null)
 		s.close();
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
 	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
 	    Jobs.getPluginLogger().severe("Check your config for formatting issues!");
@@ -291,10 +291,7 @@ public class ConfigManager {
 	    // check entities
 	    EntityType entity = EntityType.fromName(myKey.toUpperCase());
 	    if (entity == null) {
-		try {
-		    entity = EntityType.valueOf(myKey.toUpperCase());
-		} catch (IllegalArgumentException e) {
-		}
+		entity = EntityType.valueOf(myKey.toUpperCase());
 	    }
 
 	    if (entity != null && entity.isAlive()) {
@@ -635,7 +632,7 @@ public class ConfigManager {
 			    try {
 				OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
 				skullMeta.setOwner(offPlayer.getName());
-			    } catch (Throwable e) {
+			    } catch (IllegalArgumentException e) {
 			    }
 			} else
 			    skullMeta.setOwner(skullOwner);
@@ -664,7 +661,7 @@ public class ConfigManager {
 			    try {
 				OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
 				skullMeta.setOwner(offPlayer.getName());
-			    } catch (Throwable e) {
+			    } catch (IllegalArgumentException e) {
 			    }
 			} else
 			    skullMeta.setOwner(skullOwner);

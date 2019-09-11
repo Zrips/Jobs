@@ -75,7 +75,7 @@ public class ItemBoostManager {
 	    cfg = null;
 	    try {
 		cfg = new ConfigReader("boostedItems.yml");
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
 	    if (cfg == null)

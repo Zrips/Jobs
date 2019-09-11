@@ -3285,6 +3285,35 @@ public class ItemManager {
 	    return false;
 	}
 
+    public static byte getBlockData(Block block) {
+	@SuppressWarnings("deprecation")
+	byte data = block.getData();
+	if (block.getType() == CMIMaterial.COCOA.getMaterial())
+	    switch (data) {
+	    case 0:
+	    case 1:
+	    case 2:
+	    case 3:
+		data = 0;
+		break;
+	    case 4:
+	    case 5:
+	    case 6:
+	    case 7:
+		data = 1;
+		break;
+	    case 8:
+	    case 9:
+	    case 10:
+	    case 11:
+		data = 2;
+		break;
+	    default:
+		break;
+	    }
+	return data;
+    }
+
 	public static SlabType getSlabType(Block block) {
 	    if (!isSlab(block.getType()))
 		return SlabType.NOTSLAB;

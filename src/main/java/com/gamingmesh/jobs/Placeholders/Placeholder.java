@@ -52,6 +52,7 @@ public class Placeholder {
 	user_jexp_$1("jname/number"),
 	user_jmaxexp_$1("jname/number"),
 	user_jmaxlvl_$1("jname/number"),
+	user_job$1("jname/number"),
 
 	maxjobs,
 
@@ -441,6 +442,8 @@ public class Placeholder {
 			return "";
 		    Job jobs = getJobFromValue(vals.get(0));
 		    return jobs == null ? "" : convert(user.isInJob(jobs));
+		case user_job$1:
+		    return j == null ? "" : j.getJob().getName();
 
 		case maxjobs:
 		    Double max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max");
