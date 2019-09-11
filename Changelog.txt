@@ -4,3 +4,9 @@
 - Re-worked the quest list to support crowdin
 - Implement more API event methods to PrePaymentEvent
 - Fixed issue when the JobsExpGainEvent called when the income 0.
+- Fixed issue when used the enchanted books, then can't enchanted properly
+- Added argument for signUpdate command
+- Removed hack for removing items from inventory when in browse GUI
+- Fixed issue when the player gliding is not valid in 1.9.1 version
+- Fixed signs updating
+- Level, exp adding and taking amounts now correctly calculating.
