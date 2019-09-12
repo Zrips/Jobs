@@ -882,7 +882,7 @@ public class PlayerManager {
 	    data.add(jitem.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
 
 	// Lets check offhand
-	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
+	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
 	    iih = ItemReflection.getItemInOffHand(player);
 	    if (iih != null) {
 		jitem = getJobsItemByNbt(iih);
