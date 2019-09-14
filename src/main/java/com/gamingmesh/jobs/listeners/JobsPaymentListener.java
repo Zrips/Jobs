@@ -18,34 +18,25 @@
 
 package com.gamingmesh.jobs.listeners;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import com.gamingmesh.jobs.CMILib.CMIEnchantment;
+import com.gamingmesh.jobs.CMILib.ItemManager;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.actions.*;
+import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
+import com.gamingmesh.jobs.container.*;
+import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
+import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
+import com.google.common.base.Objects;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Tameable;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -53,23 +44,11 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
-import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -83,27 +62,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
-import com.gamingmesh.jobs.actions.BlockActionInfo;
-import com.gamingmesh.jobs.actions.BlockCollectInfo;
-import com.gamingmesh.jobs.actions.CustomKillInfo;
-import com.gamingmesh.jobs.actions.EnchantActionInfo;
-import com.gamingmesh.jobs.actions.EntityActionInfo;
-import com.gamingmesh.jobs.actions.ExploreActionInfo;
-import com.gamingmesh.jobs.actions.ItemActionInfo;
-import com.gamingmesh.jobs.actions.ItemNameActionInfo;
-import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
-import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.ExploreRespond;
-import com.gamingmesh.jobs.container.FastPayment;
-import com.gamingmesh.jobs.container.JobProgression;
-import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
-import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
-import com.google.common.base.Objects;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class JobsPaymentListener implements Listener {
     private Jobs plugin;
@@ -450,6 +410,10 @@ public class JobsPaymentListener implements Listener {
 	Block block = event.getBlock();
 
 	if (block == null)
+	    return;
+
+	if (Version.isCurrentEqualOrLower(Version.v1_12_R1)
+		&& ItemManager.getItem(event.getItemInHand()).isSimilar(ItemManager.getItem(CMIMaterial.BONE_MEAL)))
 	    return;
 
 	//disabling plugin in world
