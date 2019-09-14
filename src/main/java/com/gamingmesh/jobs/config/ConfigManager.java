@@ -1138,7 +1138,8 @@ public class ConfigManager {
 				continue;
 			    }
 			    type = enchant == null ? myKey : enchant.toString();
-			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL)
+			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
+				    || actionType == ActionType.SHEAR)
 			    type = myKey;
 			else if (actionType == ActionType.EXPLORE) {
 			    type = myKey;
@@ -1153,9 +1154,6 @@ public class ConfigManager {
 			    Jobs.getExplore().setPlayerAmount(amount + 1);
 			} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
 			    type = myKey.substring(1, myKey.length());
-			else if (actionType == ActionType.COLLECT) {
-			    type = myKey;
-			}
 
 			if (type == null) {
 			    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");

@@ -5,7 +5,7 @@
 - Implement more API event methods to PrePaymentEvent
 - Fixed issue when the JobsExpGainEvent called when the income 0.
 - Fixed issue when used the enchanted books, then can't enchanted properly
-- Added argument for signUpdate command
+- Added argument for signUpdate command, to update all signs
 - Removed hack for removing items from inventory when in browse GUI
 - Fixed issue when the player gliding is not valid in 1.9.1 version
 - Fixed signs updating
@@ -13,3 +13,6 @@
 - New placeholder %jobsr_user_job_(jname/number)% to show the player job.
 - Added option to ignore the boosted items usage in off hand.
 - Fixed money dupping issue when left clicked to block and earn income
+- Fixed 1.11 & 1.12 entities don't work
+- Fix bone meals dupping issue when interacted with seeds
+- Should fixed issue when the JobsPrePaymentEvent getJob method always returns null

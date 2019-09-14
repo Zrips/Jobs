@@ -95,10 +95,7 @@ public class editjobs implements Cmd {
 			if (!pi.isEntryOk())
 			    continue;
 
-			String materialName = one.getName().toLowerCase().replace('_', ' ');
-			materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
-			materialName = Jobs.getNameTranslatorManager().Translate(materialName, one);
-			materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
+			String materialName = one.getRealisticName();
 
 			RawMessage rm = new RawMessage();
 			rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.material", "%materialname%", materialName), one.getName(), "jobs editjobs list " + job.getName() + " " + actionT
@@ -494,10 +491,7 @@ public class editjobs implements Cmd {
 		    // check entities
 		    EntityType entity = EntityType.fromName(myKey.toUpperCase());
 		    if (entity == null) {
-			try {
-			    entity = EntityType.valueOf(myKey.toUpperCase());
-			} catch (IllegalArgumentException e) {
-			}
+			entity = EntityType.valueOf(myKey.toUpperCase());
 		    }
 
 		    if (entity != null && entity.isAlive()) {
@@ -565,7 +559,8 @@ public class editjobs implements Cmd {
 			}
 		    }
 		    type = myKey;
-		} else if (actionT == ActionType.CUSTOMKILL || actionT == ActionType.SHEAR || actionT == ActionType.MMKILL)
+		} else if (actionT == ActionType.CUSTOMKILL || actionT == ActionType.SHEAR || actionT == ActionType.MMKILL
+			    || actionT == ActionType.COLLECT)
 		    type = myKey;
 		else if (actionT == ActionType.EXPLORE) {
 		    type = myKey;
@@ -580,9 +575,6 @@ public class editjobs implements Cmd {
 		    Jobs.getExplore().setPlayerAmount(amount + 1);
 		} else if (actionT == ActionType.CRAFT && myKey.startsWith("!"))
 		    type = myKey.substring(1, myKey.length());
-		else if (actionT == ActionType.COLLECT) {
-		    type = myKey;
-		}
 
 		if (type == null) {
 		    player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " has an invalid " + actionT.getName() + " type property: " + key + "!");
