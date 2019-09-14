@@ -1,8 +1,6 @@
 package com.gamingmesh.jobs.nmsUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.gamingmesh.jobs.NMS;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -10,7 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.NMS;
+import java.util.ArrayList;
+import java.util.List;
 
 public class v1_11 implements NMS {
     @Override
@@ -22,22 +21,6 @@ public class v1_11 implements NMS {
 
     @Override
     public String getRealType(Entity entity) {
-	switch (entity.getType().name()) {
-	case "WITHER_SKELETON":
-	    return "skeletonwither";
-	case "STRAY":
-	    return "SkeletonStray";
-	case "ZOMBIE_VILLAGER":
-	    return "ZombieVillager";
-	case "HUSK":
-	    return "ZombieHusk";
-	case "SKELETON_HORSE":
-	    return "HorseSkeleton";
-	case "ZOMBIE_HORSE":
-	    return "HorseZombie";
-	case "ELDER_GUARDIAN":
-	    return "GuardianElder";
-	}
 	return entity.getType().name();
     }
 
