@@ -12,3 +12,4 @@
 - Level, exp adding and taking amounts now correctly calculating.
 - New placeholder %jobsr_user_job_(jname/number)% to show the player job.
 - Added option to ignore the boosted items usage in off hand.
+- Fixed money dupping issue when left clicked to block and earn income
