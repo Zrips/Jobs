@@ -224,8 +224,8 @@ public class Job {
     }
 
     /**
-     * Get the job name in the config
-     * @return the job name in the config
+     * Get the job name from the config
+     * @return the job name from the config
      */
     public String getJobKeyName() {
 	return jobName;
