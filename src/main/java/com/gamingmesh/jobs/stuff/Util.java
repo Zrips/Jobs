@@ -26,6 +26,7 @@ import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 public class Util {
 
     private static HashMap<UUID, String> jobsEditorMap = new HashMap<>();
+    private static HashMap<UUID, String> questsEditorMap = new HashMap<>();
     public static List<String> confirmLeave = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
@@ -92,6 +93,10 @@ public class Util {
 
     public static HashMap<UUID, String> getJobsEditorMap() {
 	return jobsEditorMap;
+    }
+
+    public static HashMap<UUID, String> getQuestsEditorMap() {
+	return questsEditorMap;
     }
 
     public static Block getTargetBlock(Player player, int distance, boolean ignoreNoneSolids) {

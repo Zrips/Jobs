@@ -20,7 +20,7 @@ public class quests implements Cmd {
 
     @Override
     @JobCommand(400)
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
 	JobsPlayer jPlayer = null;
 
 	if (args.length >= 1 && args[0].equals("next")) {

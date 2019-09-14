@@ -12,6 +12,7 @@ import com.gamingmesh.jobs.Jobs;
 
 public class Quest {
 
+    private String path;
     private String configName;
     private String questName;
     private Job job;
@@ -114,6 +115,14 @@ public class Quest {
 
     public void setConfigName(String configName) {
 	this.configName = configName;
+    }
+
+    public void setCurrentPath(String path) {
+	this.path = path;
+    }
+
+    public String getCurrentPath() {
+	return path;
     }
 
     public Integer getMinLvl() {

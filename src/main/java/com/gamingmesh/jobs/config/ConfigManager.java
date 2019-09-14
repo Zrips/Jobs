@@ -69,6 +69,16 @@ public class ConfigManager {
 	loadJobSettings();
     }
 
+    public YamlConfiguration getJobConfig() {
+	File f = new File(Jobs.getFolder(), "jobConfig.yml");
+	if (!f.exists()) {
+	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
+	    return null;
+	}
+
+	return YamlConfiguration.loadConfiguration(f);
+    }
+
     public void changeJobsSettings(String path, Object value) {
 	File f = new File(Jobs.getFolder(), "jobConfig.yml");
 	InputStreamReader s = null;
@@ -922,6 +932,7 @@ public class ConfigManager {
 			quest.setRewardCmds(commands);
 			quest.setDescription(desc);
 			quest.setRestrictedArea(areas);
+			quest.setCurrentPath(sqsection.getCurrentPath());
 			quests.add(quest);
 
 		    } catch (Throwable e) {
