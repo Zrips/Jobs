@@ -18,21 +18,14 @@
 
 package com.gamingmesh.jobs.container;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.resources.jfep.Parser;
+import com.gamingmesh.jobs.stuff.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.ChatColor;
+import java.util.*;
 
 public class Job {
 
@@ -227,15 +220,15 @@ public class Job {
      * @return the job name
      */
     public String getName() {
-	return jobName;
+	return fullName;
     }
 
     /**
-     * Get the job full name
-     * @return the job full name
+     * Get the job name from the config
+     * @return the job name from the config
      */
-    public String getFullName() {
-	return fullName;
+    public String getJobKeyName() {
+	return jobName;
     }
 
     /**
@@ -275,8 +268,8 @@ public class Job {
      * @param level - current level
      * @return the correct max exp for this level
      */
-    public double getMaxExp(Map<String, Double> param) {
-	for (Map.Entry<String, Double> temp : param.entrySet()) {
+    public double getMaxExp(Map<String, Double> level) {
+	for (Map.Entry<String, Double> temp : level.entrySet()) {
 	    maxExpEquation.setVariable(temp.getKey(), temp.getValue());
 	}
 	return maxExpEquation.getValue();
