@@ -802,9 +802,20 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
+	// Fix for possible money duplication bugs.
+	switch (event.getClick()) {
+	    case UNKNOWN:
+	    case WINDOW_BORDER_LEFT:
+	    case WINDOW_BORDER_RIGHT:
+	    case NUMBER_KEY:
+		return;
+	    default:
+		break;
+	}
+
 	// Fix money dupping issue when clicking continuously in the result item, but if in the
 	// cursor have item, then dupping the money, #438
-	if (event.isLeftClick() && !player.getInventory().contains(inv.getItem(2)))
+	if (event.isLeftClick() && !event.getCursor().getType().equals(Material.AIR))
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
