@@ -179,14 +179,14 @@ public class BufferedEconomy {
 		    continue;
 
 		// JobsPayment event
-		JobsPaymentEvent JobsPaymentEvent = new JobsPaymentEvent(payment.getOfflinePlayer(), payment.get(CurrencyType.MONEY), payment.get(CurrencyType.POINTS));
+		JobsPaymentEvent JobsPaymentEvent = new JobsPaymentEvent(payment.getOfflinePlayer(), payment.getPayment());
 		Bukkit.getServer().getPluginManager().callEvent(JobsPaymentEvent);
 		// If event is canceled, dont do anything
 		if (JobsPaymentEvent.isCancelled())
 		    continue;
 
-		payment.set(CurrencyType.MONEY, JobsPaymentEvent.getAmount());
-		payment.set(CurrencyType.POINTS, JobsPaymentEvent.getPoints());
+		// Do we need this?
+		payment.getPayment().putAll(JobsPaymentEvent.getPayment());
 
 		if (Jobs.getGCManager().UseServerAccount) {
 		    if (!hasMoney) {

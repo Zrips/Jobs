@@ -48,18 +48,21 @@ public class BufferedPayment {
     }
 
     @Deprecated
-    public Double getAmount() {
-	return this.payments.get(CurrencyType.MONEY);
+    public Double getAmount() {	
+	Double amount = this.payments.get(CurrencyType.MONEY);
+	return amount == null ? 0 : amount;
     }
 
     @Deprecated
     public double getPoints() {
-	return this.payments.get(CurrencyType.POINTS);
+	Double amount = this.payments.get(CurrencyType.POINTS);
+	return amount == null ? 0 : amount;
     }
 
     @Deprecated
     public double getExp() {
-	return this.payments.get(CurrencyType.EXP);
+	Double amount = this.payments.get(CurrencyType.EXP);
+	return amount == null ? 0 : amount;
     }
 
     @Deprecated

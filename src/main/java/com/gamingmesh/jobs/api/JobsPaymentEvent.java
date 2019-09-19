@@ -1,38 +1,72 @@
 package com.gamingmesh.jobs.api;
 
+import java.util.HashMap;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.gamingmesh.jobs.container.CurrencyType;
+
 public final class JobsPaymentEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private OfflinePlayer offlinePlayer;
-    private double money;
-    private double points;
     private boolean cancelled = false;
 
+    private HashMap<CurrencyType, Double> payments = new HashMap<CurrencyType, Double>();
+
+    @Deprecated
     public JobsPaymentEvent(OfflinePlayer offlinePlayer, double money, double points) {
 	super(true);
 	this.offlinePlayer = offlinePlayer;
-	this.money = money;
-	this.points = points;
+	payments.put(CurrencyType.MONEY, money);
+	payments.put(CurrencyType.POINTS, points);
+    }
+
+    public JobsPaymentEvent(OfflinePlayer offlinePlayer, HashMap<CurrencyType, Double> payments) {
+	super(true);
+	this.offlinePlayer = offlinePlayer;
+	this.payments = payments;
     }
 
     public OfflinePlayer getPlayer() {
 	return offlinePlayer;
     }
 
-    public double getAmount() {
-	return money;
+    @Deprecated
+    public Double getAmount() {
+	Double amount = this.payments.get(CurrencyType.MONEY);
+	return amount == null ? 0 : amount;
     }
 
+    @Deprecated
     public double getPoints() {
-	return points;
+	Double amount = this.payments.get(CurrencyType.POINTS);
+	return amount == null ? 0 : amount;
     }
 
+    @Deprecated
+    public void setAmount(double amount) {
+	this.payments.put(CurrencyType.MONEY, amount);
+    }
+
+    @Deprecated
     public void setPoints(double points) {
-	this.points = points;
+	this.payments.put(CurrencyType.POINTS, points);
+    }
+
+    public Double get(CurrencyType type) {
+	Double amount = this.payments.get(type);
+	return amount == null ? 0 : amount;
+    }
+
+    public Double set(CurrencyType type, double amount) {
+	return this.payments.put(type, amount);
+    }
+
+    public HashMap<CurrencyType, Double> getPayment() {
+	return payments;
     }
 
     @Override
@@ -43,10 +77,6 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean cancelled) {
 	this.cancelled = cancelled;
-    }
-
-    public void setAmount(double money) {
-	this.money = money;
     }
 
     @Override
