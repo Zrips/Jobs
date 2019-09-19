@@ -19,14 +19,16 @@
 package com.gamingmesh.jobs.container;
 
 public enum CurrencyType {
-    MONEY("Money"),
-    EXP("Exp"),
-    POINTS("Points");
+    MONEY("Money", 1),
+    EXP("Exp", 2),
+    POINTS("Points", 3);
 
     private String name;
+    private int id = 0;
 
-    private CurrencyType(String name) {
+    private CurrencyType(String name, int id) {
 	this.name = name;
+	this.id = id;
     }
 
     public String getName() {
@@ -39,5 +41,17 @@ public enum CurrencyType {
 		return one;
 	}
 	return null;
+    }
+
+    public static CurrencyType get(int id) {
+	for (CurrencyType one : values()) {
+	    if (one.getId() == id)
+		return one;
+	}
+	return null;
+    }
+
+    public int getId() {
+	return id;
     }
 }

@@ -12,7 +12,9 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.ExploreRespond;
+import com.gamingmesh.jobs.container.JobsWorld;
 import com.gamingmesh.jobs.dao.JobsDAO.ExploreDataTableFields;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class ExploreManager {
 
@@ -83,13 +85,18 @@ public class ExploreManager {
 
     public void load(ResultSet res) {
 	try {
-	    String world = res.getString(ExploreDataTableFields.worldname.getCollumn());
+	    int worldId = res.getInt(ExploreDataTableFields.worldid.getCollumn());
 	    int x = res.getInt(ExploreDataTableFields.chunkX.getCollumn());
 	    int z = res.getInt(ExploreDataTableFields.chunkZ.getCollumn());
 	    String names = res.getString(ExploreDataTableFields.playerNames.getCollumn());
 	    int id = res.getInt("id");
 
-	    ExploreRegion eRegions = worlds.get(world);
+	    JobsWorld jobsWorld = Util.getJobsWorld(worldId);
+
+	    if (jobsWorld == null)
+		return;
+
+	    ExploreRegion eRegions = worlds.get(jobsWorld.getName());
 	    if (eRegions == null) {
 		int RegionX = (int) Math.floor(x / 32D);
 		int RegionZ = (int) Math.floor(z / 32D);
@@ -102,32 +109,11 @@ public class ExploreManager {
 	    chunk.setDbId(id);
 
 	    eRegions.addChunk(chunk);
-	    worlds.put(world, eRegions);
+	    worlds.put(jobsWorld.getName(), eRegions);
 
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
     }
-//
-//    public void addChunk(String player, String worldName, int x, int z) {
-//	int ChunkX = x;
-//	int ChunkZ = z;
-//	int RegionX = (int) Math.floor(ChunkX / 32D);
-//	int RegionZ = (int) Math.floor(ChunkZ / 32D);
-//	if (!worlds.containsKey(worldName)) {
-//	    ExploreChunk eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
-//	    eChunk.setOldChunk();
-//	    ExploreRegion eRegion = new ExploreRegion(RegionX, RegionZ);
-//	    eRegion.addChunk(eChunk);
-//	    worlds.put(worldName, eRegion);
-//	}
-//	ExploreRegion eRegion = worlds.get(worldName);
-//	ExploreChunk eChunk = eRegion.getChunk(ChunkX + ":" + ChunkZ);
-//	if (eChunk == null) {
-//	    eChunk = new ExploreChunk(player, ChunkX, ChunkZ);
-//	    eChunk.setOldChunk();
-//	    eRegion.addChunk(eChunk);
-//	} else
-//	    eChunk.setOldChunk();
-//    }
+
 }

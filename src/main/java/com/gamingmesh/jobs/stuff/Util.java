@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -22,12 +23,15 @@ import org.bukkit.util.BlockIterator;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.container.JobsWorld;
 
 public class Util {
 
     private static HashMap<UUID, String> jobsEditorMap = new HashMap<>();
     private static HashMap<UUID, String> questsEditorMap = new HashMap<>();
     public static List<String> confirmLeave = new ArrayList<>();
+
+    private static HashMap<String, JobsWorld> jobsWorlds = new HashMap<>();
 
     @SuppressWarnings("deprecation")
     public static ItemStack setEntityType(ItemStack is, EntityType type) {
@@ -197,5 +201,27 @@ public class Util {
 	    c = Color.YELLOW;
 
 	return c == null ? Color.BLACK : c;
+    }
+
+    public static JobsWorld getJobsWorld(String name) {
+	return jobsWorlds.get(name.toLowerCase());
+    }
+
+    public static JobsWorld getJobsWorld(int id) {
+	for (Entry<String, JobsWorld> one : jobsWorlds.entrySet()) {
+	    if (one.getValue().getId() == id)
+		return one.getValue();
+	}
+	return null;
+    }
+
+    public static HashMap<String, JobsWorld> getJobsWorlds() {
+	return jobsWorlds;
+    }
+
+    public static void addJobsWorld(JobsWorld jobsWorld) {
+	if (jobsWorld == null || jobsWorld.getId() == 0)
+	    return;
+	Util.jobsWorlds.put(jobsWorld.getName().toLowerCase(), jobsWorld);
     }
 }

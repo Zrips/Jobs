@@ -6,14 +6,14 @@ public class Convert {
 
     private int id;
     private UUID uuid;
-    private String jobname;
+    private int jobid;
     private int level;
     private int exp;
 
-    public Convert(int id, UUID uuid, String jobname, int level, int exp) {
+    public Convert(int id, UUID uuid, int jobid, int level, int exp) {
 	this.id = id;
 	this.uuid = uuid;
-	this.jobname = jobname;
+	this.jobid = jobid;
 	this.level = level;
 	this.exp = exp;
     }
@@ -21,23 +21,23 @@ public class Convert {
     public Convert() {
     }
 
-    public int GetId() {
+    public int getId() {
 	return id;
     }
 
-    public UUID GetUserUUID() {
+    public UUID getUserUUID() {
 	return uuid;
     }
 
-    public String GetJobName() {
-	return jobname;
+    public int getJobId() {
+	return jobid;
     }
 
-    public int GetLevel() {
+    public int getLevel() {
 	return level;
     }
 
-    public int GetExp() {
+    public int getExp() {
 	return exp;
     }
 }

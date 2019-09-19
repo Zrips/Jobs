@@ -110,6 +110,7 @@ public class Jobs extends JavaPlugin {
     private static List<Job> jobs = null;
     private static Job noneJob = null;
     private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<>();
+    private static WeakHashMap<Integer, Job> jobsIds = new WeakHashMap<>();
     /**
      * Gets the actionbar toggle map
      * @deprecated Moved to {@link ToggleBarHandling}
@@ -571,6 +572,10 @@ public class Jobs extends JavaPlugin {
 	return null;
     }
 
+    public static Job getJob(int id) {
+	return getJobsIds().get(id);
+    }
+
     /**
      * Executes startup
      * @throws IOException 
@@ -581,7 +586,6 @@ public class Jobs extends JavaPlugin {
 	} catch (IOException e1) {
 	    e1.printStackTrace();
 	}
-
 	loadAllPlayersData();
 	// add all online players
 	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
@@ -671,6 +675,9 @@ public class Jobs extends JavaPlugin {
 	GconfigManager.reload();
 	lManager.reload();
 	configManager.reload();
+
+	Jobs.getDBManager().getDB().loadAllJobsWorlds();
+	Jobs.getDBManager().getDB().loadAllJobsNames();
 
 	FurnaceBrewingHandling.load();
 	ToggleBarHandling.load();
@@ -1466,5 +1473,9 @@ public class Jobs extends JavaPlugin {
 
     public boolean isPlaceholderAPIEnabled() {
 	return PlaceholderAPIEnabled;
+    }
+
+    public static WeakHashMap<Integer, Job> getJobsIds() {
+	return jobsIds;
     }
 }

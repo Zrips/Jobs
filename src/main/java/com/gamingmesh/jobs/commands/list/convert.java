@@ -32,7 +32,7 @@ public class convert implements Cmd {
 	List<Convert> archivelist = null;
 
 	try {
-	    archivelist = Jobs.getJobsDAO().convertDatabase("archive");
+	    archivelist = Jobs.getJobsDAO().convertDatabase();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
@@ -47,7 +47,7 @@ public class convert implements Cmd {
 	    Jobs.getJobsDAO().truncateAllTables();
 	    Jobs.getPlayerManager().convertChacheOfPlayers(true);
 
-	    Jobs.getJobsDAO().continueConvertions(archivelist, "archive");
+	    Jobs.getJobsDAO().continueConvertions(archivelist);
 	    Jobs.getPlayerManager().clearMaps();
 	    Jobs.getPlayerManager().clearCache();
 

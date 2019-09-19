@@ -65,6 +65,8 @@ public class Job {
     private List<Quest> quests = new ArrayList<>();
     private int maxDailyQuests = 1;
 
+    private int id = 0;
+
     /**
      * Constructor
      * @param jobName - the name of the job
@@ -478,5 +480,15 @@ public class Job {
 
     public void setMaxDailyQuests(int maxDailyQuests) {
 	this.maxDailyQuests = maxDailyQuests;
+    }
+
+    public int getId() {
+	return id;
+    }
+
+    public void setId(int id) {
+	this.id = id;
+	if (id != 0)
+	    Jobs.getJobsIds().put(id, this);
     }
 }
