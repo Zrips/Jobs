@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ import com.gamingmesh.jobs.stuff.Util;
 public class editquests implements Cmd {
 
     @SuppressWarnings("deprecation")
-	@Override
+    @Override
     @JobCommand(721)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (sender instanceof Player) {
@@ -45,7 +46,7 @@ public class editquests implements Cmd {
 		switch (args[0]) {
 		case "list":
 		    if (args.length == 1) {
-			showPath(player, null, null, null);
+			showPath(player, null, null, null, null);
 
 			for (Job one : Jobs.getJobs()) {
 			    RawMessage rm = new RawMessage();
@@ -63,18 +64,18 @@ public class editquests implements Cmd {
 			if (job == null)
 			    return false;
 
-			showPath(player, job, null, null);
+			showPath(player, job, null, null, null);
 
-			List<Quest> quests = job.getQuests();
-			if (quests == null || quests.isEmpty()) {
-			    return false;
-			}
+			for (ActionType oneI : ActionType.values()) {
+			    List<JobInfo> action = job.getJobInfo(oneI);
+			    if (action == null || action.isEmpty())
+				continue;
 
-			for (Quest one : job.getQuests()) {
 			    RawMessage rm = new RawMessage();
-			    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.quests", "%questname%", one.getQuestName()),
-					one.getQuestName(), "jobs editquests list " + job.getName() + " " + one.getQuestName()
-				+ " 1");
+			    for (Quest one : job.getQuests()) {
+				rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.actions", "%actionname%", oneI.getName()),
+					oneI.getName(), "jobs editquests list " + job.getName() + " " + oneI.getName() + " " + one.getConfigName() + " 1");
+			    }
 			    rm.show(sender);
 			}
 
@@ -82,10 +83,10 @@ public class editquests implements Cmd {
 			return true;
 		    }
 
-		    if (args.length == 4) {
+		    if (args.length == 5) {
 			Integer page = null;
 			try {
-			    page = Integer.parseInt(args[3]);
+			    page = Integer.parseInt(args[4]);
 			} catch (NumberFormatException e) {
 			}
 
@@ -94,24 +95,24 @@ public class editquests implements Cmd {
 			    if (job == null)
 				return false;
 
-			    Quest quest = null;
-			    for (Quest one : job.getQuests()) {
-				if (one.getQuestName().equalsIgnoreCase(args[2])) {
-				    quest = one;
-				    break;
-				}
-			    }
+			    ActionType actionT = ActionType.getByName(args[2]);
+			    if (actionT == null)
+				return false;
 
+			    List<JobInfo> action = job.getJobInfo(actionT);
+			    if (action == null || action.isEmpty())
+				return false;
+
+			    showPath(player, job, actionT, null, null);
+
+			    Quest quest = job.getQuest(args[3]);
 			    if (quest == null) {
-				return true;
+				return false;
 			    }
 
 			    HashMap<String, QuestObjective> obj = quest.getObjectives();
 			    if (obj == null || obj.isEmpty())
 				return false;
-
-			    obj.entrySet().forEach(one -> showPath(player, job,
-					obj.get(one.getValue().getTargetName()).getAction(), null));
 
 			    QuestObjective o = null;
 			    PageInfo pi = new PageInfo(15, obj.size(), page);
@@ -121,7 +122,7 @@ public class editquests implements Cmd {
 				    continue;
 
 				o = one.getValue();
-				String target = o.getTargetName();
+				String target = o == null ? "STONE" : o.getTargetName();
 
 				String objName = target.toLowerCase().replace('_', ' ');
 				objName = Character.toUpperCase(objName.charAt(0)) + objName.substring(1);
@@ -131,45 +132,81 @@ public class editquests implements Cmd {
 
 				RawMessage rm = new RawMessage();
 				rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.objectives", "%objectivename%", objName),
-				    target, "jobs editquests list " + job.getName() + " " + quest.getQuestName() + " " + target);
+				    target, "jobs editquests list " + job.getName() + " " + actionT.getName() + " " + quest.getConfigName() + " " + target);
 				rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.objectiveRemove"),
-				    "&cRemove", "jobs editquests remove " + job.getName() + " " + quest.getQuestName() + " " + target);
+				    "&cRemove", "jobs editquests remove " + job.getName() + " " + actionT.getName()
+						+ " " + quest.getConfigName() + " " + target);
 				rm.show(sender);
 			    }
 
 			    RawMessage rm = new RawMessage();
 			    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.objectiveAdd"),
-					"&eAdd new", "jobs editquests add " + job.getName() + " " + quest.getQuestName()
+					"&eAdd new", "jobs editquests add " + job.getName() + " " + quest.getConfigName()
 					+ " " + (o == null ? "Unknown" : o.getAction().getName()));
 			    rm.show(sender);
 
 			    Util.getQuestsEditorMap().remove(player.getUniqueId());
 
 			    Jobs.getInstance().ShowPagination(sender, pi.getTotalPages(), page,
-					"jobs editquests list " + job.getName() + " " + quest.getQuestName() + " " + 0);
+					"jobs editquests list " + job.getName() + " " + quest.getConfigName() + " " + 0);
 			    return true;
 			}
 		    }
-		    break;
-		case "remove":
-		    if (args.length == 4) {
+
+			if (args.length == 4) {
 			Job job = Jobs.getJob(args[1]);
 			if (job == null)
+			    return false;
+
+			ActionType actionT = ActionType.getByName(args[2]);
+			if (actionT == null)
+			    return false;
+
+			List<JobInfo> action = job.getJobInfo(actionT);
+			if (action == null || action.isEmpty())
+			    return false;
+
+			showPath(player, job, actionT, null, null);
+
+			Quest quest = job.getQuest(args[3]);
+			if (quest == null) {
+			    return false;
+			}
+
+			HashMap<String, QuestObjective> obj = quest.getObjectives();
+			if (obj == null || obj.isEmpty())
+			    return false;
+
+			player.performCommand("jobs editquests list " + job.getName() + " " + actionT.getName() + " "
+				    + quest.getConfigName() + " 1");
+			return true;
+			}
+		    break;
+		case "remove":
+		    if (args.length == 5) {
+			Job job = Jobs.getJob(args[1]);
+			if (job == null)
+			    return false;
+
+			ActionType actionT = ActionType.getByName(args[2]);
+			if (actionT == null)
+			    return false;
+
+			List<JobInfo> action = job.getJobInfo(actionT);
+			if (action == null || action.isEmpty())
 			    return false;
 
 			List<Quest> quests = job.getQuests();
 			if (quests == null || quests.isEmpty())
 			    return false;
 
-			Quest q = null;
-			for (Quest n : quests) {
-			    if (n.getQuestName().equalsIgnoreCase(args[2])) {
-				q = n;
-				break;
-			    }
+			Quest q = job.getQuest(args[3]);
+			if (q == null) {
+			    return false;
 			}
 
-			if (q == null) {
+			String target = args[4];
+			if (target == null) {
 			    return true;
 			}
 
@@ -177,7 +214,7 @@ public class editquests implements Cmd {
 
 			Jobs.getConfigManager().changeJobsSettings(q.getCurrentPath(), null);
 
-			player.performCommand("jobs editquests list " + job.getName() + " " + q.getQuestName() + " 1");
+			player.performCommand("jobs editquests list " + job.getName() + " " + q.getConfigName() + " 1");
 
 			Util.getQuestsEditorMap().remove(player.getUniqueId());
 
@@ -190,14 +227,7 @@ public class editquests implements Cmd {
 			if (job == null)
 			    return false;
 
-			Quest q = null;
-			for (Quest n : job.getQuests()) {
-			    if (n.getQuestName().equalsIgnoreCase(args[2])) {
-				q = n;
-				break;
-			    }
-			}
-
+			Quest q = job.getQuest(args[2]);
 			if (q == null) {
 			    return true;
 			}
@@ -222,15 +252,15 @@ public class editquests implements Cmd {
 			rm.add(Jobs.getLanguage().getMessage("command.editquests.help.modify.enter"));
 			rm.add(Jobs.getLanguage().getMessage("command.editquests.help.modify.hand"),
 			    Jobs.getLanguage().getMessage("command.editquests.help.modify.handHover"), "jobs editquests add " + job.getName()
-			    + " " + q.getQuestName() + " " + actionT.getName() + " hand " + amount);
+			    + " " + q.getConfigName() + " " + actionT.getName() + " hand " + amount);
 			rm.add(Jobs.getLanguage().getMessage("command.editquests.help.modify.or"));
 			rm.add(Jobs.getLanguage().getMessage("command.editquests.help.modify.look"),
 			    Jobs.getLanguage().getMessage("command.editquests.help.modify.lookHover"), "jobs editquests add " + job.getName()
-			    + " " + q.getQuestName() + " " + actionT.getName() + " looking " + amount);
+			    + " " + q.getConfigName() + " " + actionT.getName() + " looking " + amount);
 			rm.show(sender);
 
 			Util.getQuestsEditorMap().put(player.getUniqueId(), "jobs editquests add " + job.getName() +
-			    " " + q.getQuestName() + " " + actionT.getName() + " " + amount);
+			    " " + q.getConfigName() + " " + actionT.getName() + " " + amount);
 			return true;
 		    }
 
@@ -239,16 +269,9 @@ public class editquests implements Cmd {
 			if (job == null)
 			    return false;
 
-			Quest q = null;
-			for (Quest n : job.getQuests()) {
-			    if (n.getQuestName().equalsIgnoreCase(args[2])) {
-				q = n;
-				break;
-			    }
-			}
-
+			Quest q = job.getQuest(args[2]);
 			if (q == null) {
-			    return false;
+			    return true;
 			}
 
 			ActionType actionT = ActionType.getByName(args[3]);
@@ -360,19 +383,19 @@ public class editquests implements Cmd {
 
 			    if (actionT == ActionType.BREAK || actionT == ActionType.PLACE || actionT == ActionType.STRIPLOGS) {
 				if (!material.isBlock()) {
-				    player.sendMessage(ChatColor.GOLD + "Quest " + q.getQuestName() + " has an invalid " + actionT.getName() + " type property: " + material
+				    player.sendMessage(ChatColor.GOLD + "Quest " + q.getConfigName() + " has an invalid " + actionT.getName() + " type property: " + material
 				+ "(" + key + ")! Material must be a block!");
 				    break;
 				}
 			    }
 			    if (material == CMIMaterial.REDSTONE_ORE && actionT == ActionType.BREAK && Version.isCurrentLower(Version.v1_13_R1)) {
-				player.sendMessage(ChatColor.GOLD + "Quest " + q.getQuestName() + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
+				player.sendMessage(ChatColor.GOLD + "Quest " + q.getConfigName() + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
 				player.sendMessage(ChatColor.GOLD + "Automatically changing block to GLOWING_REDSTONE_ORE. Please update your configuration.");
 				player.sendMessage(ChatColor.GOLD + "In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 				player.sendMessage(ChatColor.GOLD + "In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
 				material = CMIMaterial.LEGACY_GLOWING_REDSTONE_ORE;
 			    } else if (material == CMIMaterial.LEGACY_GLOWING_REDSTONE_ORE && actionT == ActionType.BREAK && Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-				player.sendMessage(ChatColor.GOLD + "Quest " + q.getQuestName() + " is using GLOWING_REDSTONE_ORE instead of REDSTONE_ORE.");
+				player.sendMessage(ChatColor.GOLD + "Quest " + q.getConfigName() + " is using GLOWING_REDSTONE_ORE instead of REDSTONE_ORE.");
 				player.sendMessage(ChatColor.GOLD + "Automatically changing block to REDSTONE_ORE. Please update your configuration.");
 				material = CMIMaterial.REDSTONE_ORE;
 			    }
@@ -461,7 +484,7 @@ public class editquests implements Cmd {
 			    try {
 				a = Integer.valueOf(myKey);
 			    } catch (NumberFormatException e) {
-				player.sendMessage(ChatColor.GOLD + "Quest " + q.getQuestName() + " has an invalid " + actionT.getName() + " type property: " + key + "!");
+				player.sendMessage(ChatColor.GOLD + "Quest " + q.getConfigName() + " has an invalid " + actionT.getName() + " type property: " + key + "!");
 				break;
 			    }
 
@@ -471,7 +494,7 @@ public class editquests implements Cmd {
 			    type = myKey.substring(1, myKey.length());
 
 			if (type == null) {
-			    player.sendMessage(ChatColor.GOLD + "Quest " + q.getQuestName() + " has an invalid " + actionT.getName() + " type property: " + key + "!");
+			    player.sendMessage(ChatColor.GOLD + "Quest " + q.getConfigName() + " has an invalid " + actionT.getName() + " type property: " + key + "!");
 			    break;
 			}
 
@@ -490,25 +513,37 @@ public class editquests implements Cmd {
 			    amount = 3;
 			}
 
-			QuestObjective questObj = new QuestObjective(actionT, id, meta, type + subType, amount);
+			// TODO add ability to register new objectives without restart
+			//QuestObjective questObj = new QuestObjective(actionT, id, meta, type + subType, amount);
 
-			player.performCommand("jobs editquests list " + job.getName() + " " + actionT.getName() + " " + q.getQuestName());
+			player.performCommand("jobs editquests list " + job.getName() + " " + actionT.getName() + " " + q.getConfigName());
 
 			String path = q.getCurrentPath();
-			path = path.replace("/", ".");
-
 			org.bukkit.configuration.file.YamlConfiguration file = Jobs.getConfigManager().getJobConfig();
-			for (String a : file.getConfigurationSection(path).getKeys(false)) {
+
+			for (String a : file.getConfigurationSection(path.replace("/", ".")).getKeys(false)) {
 			    if (a.equals("Target")) {
-				Jobs.getConfigManager().changeJobsSettings(file.getString(a + ".Target"), (type + subType).toLowerCase());
-				Jobs.getConfigManager().changeJobsSettings(file.getString(a + ".Action"), actionT.getName());
+				path = path.replace("/", ".");
+
+				Jobs.getConfigManager().changeJobsSettings(file.getString(path + "." + a), (type + subType).toLowerCase());
+				Jobs.getConfigManager().changeJobsSettings(file.getString(path + ".Action"), actionT.getName());
+				break;
 			    } else if (a.equals("Objectives")) {
-				List<String> list = file.getStringList(a + ".Objectives");
+				path = path.replace("/", ".");
+
+				List<String> list = file.getStringList(path + "." + a);
 				list.add(actionT.getName() + ";" + (type + subType).toLowerCase() + ";" + amount);
 
-				Jobs.consoleMsg(org.apache.commons.lang.StringUtils.join(list, ", "));
+				File f = new File(Jobs.getFolder(), "jobConfig.yml");
+				file.set(path + "." + a, list);
 
-				Jobs.getConfigManager().changeJobsSettings(a + ".Objectives", list);
+				try {
+				    file.save(f);
+				} catch (java.io.IOException e) {
+				    e.printStackTrace();
+				}
+
+				break;
 			    }
 			}
 
@@ -525,7 +560,7 @@ public class editquests implements Cmd {
 	return false;
     }
 
-    private static void showPath(Player player, Job job, ActionType action, JobInfo jInfo) {
+    private static void showPath(Player player, Job job, ActionType action, JobInfo jInfo, Quest q) {
 	RawMessage rm = new RawMessage();
 	rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.quest"), "&eQuest list", "jobs editquests");
 	rm.show(player);
@@ -546,16 +581,13 @@ public class editquests implements Cmd {
 	    rm.show(player);
 	}
 
-	if (action != null && job != null && jInfo != null) {
+	if (action != null && job != null && jInfo != null && q != null) {
 	    rm = new RawMessage();
 
-	    String materialName = jInfo.getName().toLowerCase().replace('_', ' ');
-	    materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
-	    materialName = Jobs.getNameTranslatorManager().Translate(materialName, jInfo);
-	    materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
+	    String materialName = jInfo.getRealisticName();
 
-	    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.material", "%materialname%", jInfo.getName()),
-			jInfo.getName(), "jobs editquests list " + job.getName() + " " + action.getName()
+	    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.quests", "%questname%", q.getConfigName()),
+			jInfo.getName(), "jobs editquests list " + job.getName() + " " + action.getName() + " " + q.getConfigName()
 		+ " " + materialName);
 	    rm.show(player);
 	}

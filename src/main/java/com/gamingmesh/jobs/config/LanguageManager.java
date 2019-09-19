@@ -289,6 +289,23 @@ public class LanguageManager {
 	    c.get("command.editjobs.help.modify.look", "&6LOOKING AT");
 	    c.get("command.editjobs.help.modify.lookHover", "&6Press to grab info from block you are looking");
 
+	    c.get("command.editquests.help.info", "Edit current quests.");
+	    c.get("command.editquests.help.args", "");
+	    c.get("command.editquests.help.list.quest", "&eQuests:");
+	    c.get("command.editquests.help.list.jobs", "  -> [&e%jobname%&r]");
+	    c.get("command.editquests.help.list.quests", "  -> [&e%questname%&r]");
+	    c.get("command.editquests.help.list.actions", "    -> [&e%actionname%&r]");
+	    c.get("command.editquests.help.list.objectives", "      -> [&e%objectivename%&r]");
+	    c.get("command.editquests.help.list.objectiveRemove", "&c[X]");
+	    c.get("command.editquests.help.list.objectiveAdd", "      -> &e[&2+&e]");
+	    c.get("command.editquests.help.modify.newValue", "&eEnter new value");
+	    c.get("command.editquests.help.modify.enter", "&eEnter new name or press ");
+	    c.get("command.editquests.help.modify.hand", "&6HAND ");
+	    c.get("command.editquests.help.modify.handHover", "&6Press to grab info from item in your hand");
+	    c.get("command.editquests.help.modify.or", "&eor ");
+	    c.get("command.editquests.help.modify.look", "&6LOOKING AT");
+	    c.get("command.editquests.help.modify.lookHover", "&6Press to grab info from block you are looking");
+
 	    c.get("command.blockinfo.help.info", "Shows information for the block you are looking at.");
 	    c.get("command.blockinfo.help.args", "");
 	    c.get("command.blockinfo.output.name", " &eBlock name: &6%blockname%");

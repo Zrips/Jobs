@@ -16,3 +16,4 @@
 - Fixed 1.11 & 1.12 entities don't work
 - Fix bone meals dupping issue when interacted with seeds
 - Should fixed issue when the JobsPrePaymentEvent getJob method always returns null
+- Fixed income dupping issue and repair action not work correctly.
