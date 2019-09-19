@@ -1,18 +1,23 @@
+---
 economy:
   error:
     nomoney: '&c你的帳戶資金不足!'
 limitedItem:
   error:
-    levelup: '&c你需要讓你的職業 [職業] 升級才能使用此物品!'
+    levelup: '&cYou need to level up in [jobname] to use this item!'
 general:
+  Spawner: '&r[type] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
     time:
-      day: '&e%days% &6天 '
+      days: '&e%days% &6days '
       hours: '&e%hours% &6小时 '
       mins: '&e%mins% &6分 '
       secs: '&e%secs% &6秒 '
+    invalidPage: '&cInvalid page'
+    'true': '&2True'
+    'false': '&cFalse'
   admin:
     error: '&c執行指令出錯.'
     success: '&a你的指令執行成功.'
@@ -20,17 +25,38 @@ general:
     noHelpPage: '&c幫助頁面沒有這個頁數!'
     notNumber: '&e請使用數字!'
     job: '&c你選擇的職業不存在!'
+    noCommand: '&cThere is no command by this name!'
     permission: '&c你沒有權限這樣做!'
     noinfo: '&c沒有找到資訊!'
     noinfoByPlayer: '&c沒有找到玩家 [%playername%] 的資訊!'
     ingame: '&c你只能在遊戲中使用!'
     fromconsole: '&c你只能在控制台使用這條指令!'
     worldisdisabled: '&c你不能在這個世界使用這個指令!'
+    newFurnaceRegistration: '&eRegistered new ownership for furnace &7[current]&e/&f[max]'
+    newBrewingRegistration: '&eRegistered new ownership for brewing stand &7[current]&e/&f[max]'
+    noFurnaceRegistration: '&cYou''ve reached max furnace count!'
+    noBrewingRegistration: '&cYou''ve reached max brewing stand count!'
 command:
+  help:
+    output:
+      info: 输入 /jobs [cmd] ? 查看關於此指令的更多資訊.
+      cmdUsage: '&2Usage: &7[command]'
+      label: Jobs
+      cmdInfoFormat: '[command] &f- &2[description]'
+      cmdFormat: '&7/[command] &f[arguments]'
+      helpPageDescription: '&2* [description]'
+      title: '&e---&e ===== &6Jobs 插件 - &d繁體中文化 Ogoo &e===== &e---'
+      page: '&e-----&e ====== 第 &6[1] &e頁 - 共 &6[2] 頁 &e====== &e-----'
+      fliperSimbols: '&e----------'
+      prevPage: '&2----<< &6Prev '
+      prevPageOff: '&7----<< Prev '
+      nextPage: '&6 Next &2>>----'
+      nextPageOff: '&7 Next >>----'
+      pageCount: '&2[current]/[total]'
   moneyboost:
     help:
       info: 加成玩家得到的遊戲幣
-      args: '[職業] [倍率]'
+      args: '[jobname] [rate]'
     output:
       allreset: 遊戲幣加成重置
       jobsboostreset: '%jobname% 職業的遊戲幣加成重置'
@@ -41,7 +67,7 @@ command:
   pointboost:
     help:
       info: 加成玩家得到的點數
-      args: '[職業] [倍率]'
+      args: '[jobname] [rate]'
     output:
       allreset: 點數加成重置
       jobsboostreset: '%jobname% 職業的點數加成重置'
@@ -52,7 +78,7 @@ command:
   expboost:
     help:
       info: 加成玩家得到的經驗
-      args: '[職業] [倍率]'
+      args: '[jobname] [rate]'
     output:
       allreset: 經驗加成重置
       jobsboostreset: '%jobname% 職業的經驗加成重置'
@@ -60,12 +86,24 @@ command:
       boostalladded: 所有職業的經驗獲得加成了 %boost% 倍
       boostadded: '%jobname% 職業的經驗獲得加成了 %boost% 倍'
       infostats: '&c-----> &a經驗獲得 x%boost% 倍正在進行&c <-------'
+  itembonus:
+    help:
+      info: Check item bonus
+      args: ''
+    output:
+      list: '&e[jobname]: %money% %points% %exp%'
+      hover: '&7%itemtype%'
+      hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
+  edititembonus:
+    help:
+      info: Edit item boost bonus
+      args: list/add/remove [jobname] [itemBoostName]
   bonus:
     help:
       info: 顯示職業的加成
-      args: '[職業]'
+      args: '[jobname]'
     output:
-      topline: '&7**************** &2[遊戲幣] &6[點數] &e[經驗] &7****************'
+      topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
       permission: ' &e權限加成: %money% %points% %exp%'
       item: ' &e物品加成: %money% %points% %exp%'
       global: ' &e全局加成: %money% %points% %exp%'
@@ -83,7 +121,7 @@ command:
   limit:
     help:
       info: 顯示職業的報酬限制
-      args: ''
+      args: '[playername]'
     output:
       moneytime: '&e遊戲幣限制重置剩餘時間: &2%time%'
       moneyLimit: '&e遊戲幣限制: &2%current%&e/&2%total%'
@@ -93,6 +131,7 @@ command:
       pointsLimit: '&e點數限制: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4你達到了一段時間内的遊戲幣限制!'
       reachedmoneylimit2: '&e你可以通過 &2/jobs limit &e查看你的限制'
+      reachedmoneylimit3: '&eMoney earned is now reduced exponentially... But you still earn a little!'
       reachedexplimit: '&4你達到了一段時間内的經驗限制!'
       reachedexplimit2: '&e你可以通過 &2/jobs limit &e查看你的限制'
       reachedpointslimit: '&4你達到了一段時間内的點數限制!'
@@ -101,31 +140,72 @@ command:
   resetlimit:
     help:
       info: 重置玩家的報酬限制
-      args: '[玩家]'
+      args: '[playername]'
     output:
-      reseted: '&e&2%playername% &e的限制已重置'
-  help:
+      reseted: '&ePayment limits have been reset for: &2%playername%'
+  resetquest:
+    help:
+      info: Resets a player's quest
+      args: '[playername] [jobname]'
     output:
-      info: 输入 /jobs [cmd] ? 查看關於此指令的更多資訊.
-      usage: '使用: %usage%'
-      title: '&e---&e ===== &6Jobs 插件 - &d繁體中文化 Ogoo &e===== &e---'
-      page: '&e-----&e ====== 第 &6[1] &e頁 - 共 &6[2] 頁 &e====== &e-----'
-      prev: '&e--- <<<<< &6上一頁 &e|'
-      next: '&e|&6 下一頁 &e>>>> ---'
+      reseted: '&eQuest has been reset for: &2%playername%'
+      noQuests: '&eCan''t find any quests'
   points:
     help:
       info: 顯示玩家的點數.
-      args: '[玩家]'
+      args: '[playername]'
     currentpoints: ' &e目前點數: &6%currentpoints%'
     totalpoints: ' &e總點數: &6%totalpoints%'
   editpoints:
     help:
       info: 更改玩家的點數.
-      args: '[set/add/take] [玩家] [數量]'
+      args: set/add/take [playername] [amount]
     output:
       set: '&e玩家 (&6%playername%&e) 的點數設置為 &6%amount%'
       add: '&e玩家 (&6%playername%&e) 的點數增加了 &6%amount% &e. 現在共 &6%total%'
       take: '&e玩家 (&6%playername%&e) 的點數减少了 &6%amount% &e. 現在共 &6%total%'
+  editjobs:
+    help:
+      info: Edit current jobs.
+      args: ''
+      list:
+        job: '&eJobs:'
+        jobs: '  -> [&e%jobname%&r]'
+        actions: '    -> [&e%actionname%&r]'
+        material: '      -> [&e%materialname%&r]      '
+        materialRemove: '&c[X]'
+        materialAdd: '      -> &e[&2+&e]'
+        money: '        -> &eMoney: &6%amount%'
+        exp: '        -> &eExp: &6%amount%'
+        points: '        -> &ePoints: &6%amount%'
+      modify:
+        newValue: '&eEnter new value'
+        enter: '&eEnter new name or press '
+        hand: '&6HAND '
+        handHover: '&6Press to grab info from item in your hand'
+        or: '&eor '
+        look: '&6LOOKING AT'
+        lookHover: '&6Press to grab info from block you are looking'
+  editquests:
+    help:
+      info: Edit current quests.
+      args: ''
+      list:
+        quest: '&eQuests:'
+        jobs: '  -> [&e%jobname%&r]'
+        quests: '  -> [&e%questname%&r]'
+        actions: '    -> [&e%actionname%&r]'
+        objectives: '      -> [&e%objectivename%&r]'
+        objectiveRemove: '&c[X]'
+        objectiveAdd: '      -> &e[&2+&e]'
+      modify:
+        newValue: '&eEnter new value'
+        enter: '&eEnter new name or press '
+        hand: '&6HAND '
+        handHover: '&6Press to grab info from item in your hand'
+        or: '&eor '
+        look: '&6LOOKING AT'
+        lookHover: '&6Press to grab info from block you are looking'
   blockinfo:
     help:
       info: 顯示你正在看的方塊的資訊.
@@ -144,6 +224,14 @@ command:
       id: ' &e物品ID: &6%itemid%'
       data: ' &e物品資料: &6%itemdata%'
       usage: ' &e使用: &6%first% &e或 &6%second%'
+  placeholders:
+    help:
+      info: List out all placeholders
+      args: (parse) (placeholder)
+    output:
+      list: '&e[place]. &7[placeholder]'
+      outputResult: ' &eresult: &7[result]'
+      parse: '&6[placeholder] &7by [source] &6result &8|&f[result]&8|'
   entitylist:
     help:
       info: 顯示插件可用的所有生物列表.
@@ -151,10 +239,10 @@ command:
   stats:
     help:
       info: 顯示你目前職業的資訊.
-      args: '[玩家]'
+      args: '[playername]'
     error:
       nojob: 請先加入一個職業.
-    output: ' LV.%joblevel% %jobname% : %jobxp%/%jobmaxxp% 經驗'
+    output: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
   shop:
     help:
       info: 打開特殊商店.
@@ -176,33 +264,33 @@ command:
   archive:
     help:
       info: 查看保存的所有職業.
-      args: '[玩家]'
+      args: '[playername]'
     error:
       nojob: 沒有保存的職業.
-    output: LV.%joblevel% (%getbackjoblevel%) %jobname%
   give:
     help:
-      info: '玩家名可選. 给玩家職業以物品'
-      args: '[玩家] [職業] [物品]'
+      info: 玩家名可選. 给玩家職業以物品
+      args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
       notonline: '&4玩家 [%playername%] 不在線上!'
       noitem: '&4沒有找到此物品!'
   info:
     help:
       title: '&2*** &eJobs&2 ***'
-      info: '顯示一個職業的詳細資訊.'
-      penalty: '&e這個職業擁有 &2[bonus]% &e懲罰因為就業人數過多.'
+      info: 顯示一個職業的詳細資訊.
+      penalty: '&eThis job has a penalty of &c[penalty]% &ebecause there are too many players working in it.'
       bonus: '&e這個職業擁有 &2[bonus]% &e加成因為就業人數較少.'
-      args: '[職業] [動作]'
+      args: '[jobname] [action]'
       actions: '&e所有可用的動作: &f%actions%'
       max: ' - &e最高等級:&f '
+      newMax: ' &eMax level: &f[max]'
       material: '&7%material%'
       levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &a級)'
       levelFrom: ' &a(從 &e%levelFrom% &a級)'
       levelUntil: ' &a(到 &e%levelUntil% &a級)'
       money: ' &2%money%$'
-      points: ' &6%points%點數'
-      exp: ' &e%exp%經驗'
+      points: ' &6%points%pts'
+      exp: ' &e%exp%xp'
     gui:
       pickjob: '&e選擇你的職業!'
       jobinfo: '&e[jobname] 資訊!'
@@ -215,86 +303,106 @@ command:
       back: '&e<<< 返回'
     output:
       break:
-        info: 破壞
+        info: '破壞'
         none: '%jobname% 不會從破壞獲得報酬'
       tntbreak:
-        info: 爆破
+        info: '爆破'
         none: '%jobname% 不會從爆破獲得報酬'
       place:
-        info: 放置
+        info: '放置'
         none: '%jobname% 不會從放置獲得報酬'
+      striplogs:
+        info: '&eStrip logs'
+        none: '%jobname% does not get money for stripping logs.'
       kill:
-        info: 擊殺
+        info: '擊殺'
         none: '%jobname% 不會從擊殺獲得報酬'
       mmkill:
-        info: 特殊擊殺
+        info: '特殊擊殺'
         none: '%jobname% 不會從特殊擊殺獲得報酬'
       fish:
-        info: 釣鱼
+        info: '釣鱼'
         none: '%jobname% 不會從釣鱼獲得報酬'
       craft:
-        info: 合成
+        info: '合成'
         none: '%jobname% 不會從合成獲得報酬'
       smelt:
-        info: 熔煉
+        info: '熔煉'
         none: '%jobname% 不會從熔煉獲得報酬'
       brew:
-        info: 釀造
+        info: '釀造'
         none: '%jobname% 不會從釀造獲得報酬'
       eat:
-        info: 進食
+        info: '進食'
         none: '%jobname% 不會從進食獲得報酬'
       dye:
-        info: 染色
+        info: '染色'
         none: '%jobname% 不會從染色獲得報酬'
       enchant:
-        info: 附魔
+        info: '附魔'
         none: '%jobname% 不會從附魔獲得報酬'
+      vtrade:
+        info: '&eVillager trade'
+        none: '%jobname% does not get money for trading a villager.'
       repair:
-        info: 修復
+        info: '修復'
         none: '%jobname% 不會從修復獲得報酬'
       breed:
-        info: 繁殖
+        info: '繁殖'
         none: '%jobname% 不會從繁殖獲得報酬'
       tame:
-        info: 馴服
+        info: '馴服'
         none: '%jobname% 不會從馴服獲得報酬'
       milk:
-        info: 擠奶
+        info: '擠奶'
         none: '%jobname% 不會從擠奶獲得報酬'
       shear:
-        info: 剪毛
+        info: '剪毛'
         none: '%jobname% 不會從剪毛獲得報酬'
       explore:
-        info: 探索
+        info: '探索'
         none: '%jobname% 不會從探索獲得報酬'
       custom-kill:
-        info: 自定義擊殺
+        info: '自定義擊殺'
         none: '%jobname% 不會從自定義擊殺獲得報酬'
+      collect:
+        info: '&eCollect'
+        none: '%jobname% does not get money for collecting blocks.'
   playerinfo:
     help:
       info: 查看玩家的職業資訊.
-      args: '[玩家] [職業] [動作]'
+      args: '[playername] [jobname] [action]'
   join:
     help:
       info: 加入選擇的職業.
-      args: '[職業]'
+      args: '[jobname]'
     error:
       alreadyin: 你已經加入了職業 %jobname%.
       fullslots: 你不能加入職業 %jobname%, 已經滿员.
       maxjobs: 你已經加入了很多的職業了.
+      rejoin: '&cCan''t rejoin this job. Wait [time]'
+    rejoin: '&aClick to rejoin this job: '
     success: 你加入了職業 %jobname%.
+    confirm: '&2Click to confirm joining action for the &7[jobname] &2job.'
   leave:
     help:
       info: 離開選擇的職業.
-      args: '[職業]'
+      args: '[oldplayerjob]'
     success: 你離開了職業 %jobname%.
+    confirmationNeed: '&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!'
   leaveall:
     help:
       info: 離開你所有的職業.
     error:
       nojobs: 你沒有任何職業!
     success: 你已經徹底失業.
+    confirmationNeed: '&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!'
+  explored:
+    help:
+      info: Check who visited this chunk
+    error:
+      noexplore: No one visited this chunk
+    list: '&e%place%. %playername%'
   browse:
     help:
       info: 查看你可加入的職業.
@@ -302,14 +410,47 @@ command:
       nojobs: 你沒有可加入的職業.
     output:
       header: '你可以加入以下職業:'
-      footer: 更多的資訊請输入 /jobs info [職業]
+      footer: For more information type in /jobs info [JobName]
       totalWorkers: ' &7就職中: &e[amount]'
       penalty: ' &4懲罰: &c[amount]%'
       bonus: ' &2加成: &a[amount]%'
+      newHeader: '&2========== [amount] Available Jobs ========='
+      description: '[description]'
+      list: '    &8[place]. &7[jobname]'
+      console:
+        newHeader: '&2========== [amount] Available Jobs ========='
+        description: '[description]'
+        totalWorkers: ' &7Workers: &e[amount]'
+        penalty: ' &4Penalty: &c[amount]%'
+        bonus: ' &2Bonus: &a[amount]%'
+        list: ' &6[jobname]'
+        newMax: ' &eMax level: &f[max]'
+      click: '&bClick on the job to see more info about it!'
+      detailed: '&bClick to see more detailed list on job actions'
+      jobHeader: '&2========== [jobname] ========='
+      chooseJob: '&7&n&oChoose this job'
+      chooseJobHover: '&7Click here to get this job'
+  clearownership:
+    help:
+      info: Clear block ownership
+      args: '[playername]'
+    output:
+      cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+  quests:
+    help:
+      info: List available quests
+      args: '[playername]'
+    error:
+      noquests: '&cThere are no quests'
+    toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    output:
+      completed: '&2      !Completed!&r      '
+      questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
     help:
       info: 將玩家從指定職業開除.
-      args: '[玩家] [職業]'
+      args: '[playername] [jobname]'
     error:
       nojob: 玩家沒有加入職業 %jobname%.
     output:
@@ -317,7 +458,7 @@ command:
   fireall:
     help:
       info: 將玩家撤銷所有職業.
-      args: '[玩家]'
+      args: '[playername]'
     error:
       nojobs: 玩家不能被開除, 因為玩家根本沒有職業!
     output:
@@ -325,20 +466,21 @@ command:
   employ:
     help:
       info: 聘請玩家當職業.
-      args: '[玩家] [職業]'
+      args: '[playername] [jobname]'
     error:
       alreadyin: 玩家已經加入了職業 %jobname%.
+      fullslots: You cannot join the job %jobname%, there are no slots available.
     output:
       target: 你被聘請為一名 %jobname%.
   top:
     help:
       info: 顯示指定職業最高等的%amount%名玩家.
-      args: '[職業]'
+      args: '[jobname]'
     error:
       nojob: 沒有這個職業.
     output:
       topline: '&a前&e %amount% &a個職業為 &e%jobname% &a的玩家'
-      list: '&e%number%&a. &e%playername% &aLV.&e%level% &a,&e %exp% &a經驗'
+      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
       prev: '&e<<<<< 上一頁 &2|'
       next: '&2|&e 下一頁 >>>>'
       show: '&2顯示 &e[from] &2到 &e[until] &2的排行榜'
@@ -358,13 +500,13 @@ command:
     help:
       info: 编輯管制區域.
       args: add/remove/info/list
-      addUsage: '&e使用: &6/jobs area add [區域名] [加成]'
-      removeUsage: '&e使用: &6/jobs area remove [區域名]'
+      addUsage: '&eUsage: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]'
+      removeUsage: '&eUsage: &6/Jobs area remove [areaName]'
     output:
       addedNew: '&e添加了新的管制區域, 加成 &6%bonus%'
       removed: '&e移除了管制區域 &6%name%'
-      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
-        &6%bonus%'
+      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%'
+      wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
       noAreas: '&e沒有保存的管制區域'
       noAreasByLoc: '&e這裡沒有管制區域'
       areaList: '&e這裡的管制區域: &6%list%'
@@ -373,14 +515,17 @@ command:
       select: '&e用 (%tool%) 選擇兩個點'
       exist: '&e這個名字的管制區域已經存在'
       dontExist: '&e這個名字的管制區域不存在'
+      wgDontExist: '&eWorldGuard area by this name does not exist'
   log:
     help:
       info: 顯示統計資訊.
-      args: '[玩家]'
+      args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
-      list: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% &6遊戲幣: %money% &e經驗:
-        %exp%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
+      money: '&6money: %amount% '
+      exp: '&eexp: %amount% '
+      points: '&6points: %amount%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< 上一頁 &2|'
       next: '&2|&e 下一頁 >>>>'
@@ -391,43 +536,62 @@ command:
       args: ''
     output:
       topline: '&7*********************** &6Global statistics &7***********************'
-      list: '&7* &6%number%. &3%username% &e%action%: &6%item% &eqty: %qty% &6遊戲幣: %money% &e經驗: %exp%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
+      money: '&6money: %amount% '
+      exp: '&eexp: %amount% '
+      points: '&6points: %amount%'
       bottomline: '&7**************************************************************'
       nodata: '&c沒有資料'
   transfer:
     help:
       info: 將玩家的職業從一個換到另一個.
-      args: '[玩家] [原職業] [新職業]'
+      args: '[playername] [oldjob] [newjob]'
     output:
       target: 你的職業由 %oldjobname% 變更為了 %newjobname%.
   promote:
     help:
       info: 升級玩家的職業等級.
-      args: '[玩家] [職業] [級]'
+      args: '[playername] [jobname] [levels]'
     output:
       target: 你的 %jobname% 職業被提升了 %levelsgained% 級.
+  exp:
+    help:
+      info: Change the player exp for job.
+      args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cThis player must first join a job.'
+    output:
+      target: '&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+  level:
+    help:
+      info: Change the player's level in a job.
+      args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cThis player must first join a job.'
+    output:
+      target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
   demote:
     help:
       info: 降低玩家的職業等級.
-      args: '[玩家] [職業] [級]'
+      args: '[playername] [jobname] [levels]'
     output:
       target: 你的 %jobname% 職業被降低了 %levelslost% 級.
   grantxp:
     help:
       info: 提升玩家的職業經驗.
-      args: '[玩家] [職業] [經驗]'
+      args: '[playername] [jobname] [xp]'
     output:
       target: 你的 %jobname% 職業經驗增加了 %xpgained%.
   removexp:
     help:
       info: 减少玩家的職業經驗.
-      args: '[玩家] [職業] [經驗]'
+      args: '[playername] [jobname] [xp]'
     output:
       target: 你的 %jobname% 職業經驗减少了 %xplost%.
   signupdate:
     help:
       info: 手動更新指定的告示牌
-      args: '[職業]'
+      args: '[jobname]'
   bp:
     help:
       info: 顯示你周围10格受保護的方塊
@@ -441,7 +605,7 @@ command:
   toggle:
     help:
       info: 切換報酬顯示 Boss血條 | 側邊欄.
-      args: '[actionbar/bossbar]'
+      args: actionbar/bossbar
     output:
       turnedoff: '&4這個特性被關閉!'
       paid:
@@ -456,8 +620,10 @@ message:
     broadcast: '%playername% 獲得了升級 %titlename% %jobname%.'
     nobroadcast: 恭喜, 你升級為了 %titlename% %jobname%.
   levelup:
-    broadcast: '%playername% 現在是一名 LV.%joblevel% %jobname%.'
-    nobroadcast: 你現在是一名 LV.%joblevel% %jobname%.
+    broadcast: '%playername% is now a level %joblevel% %jobname%.'
+    nobroadcast: You are now level %joblevel% %jobname%.
+  leveldown:
+    message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
   cowtimer: '&e你還需要等待 &6%time% &e秒來獲得職業報酬.'
   blocktimer: '&e你需要等待: &3[time] &e秒來獲得職業報酬!'
   placeblocktimer: '&e你放置方塊的速度不能超過 &6[time] &e秒一個!'
@@ -465,25 +631,25 @@ message:
   boostStarted: '&e職業加成時間已經開始!'
   boostStoped: '&e職業加成時間结束了!'
   crafting:
-    fullinventory: 你的背包滿了!
+    fullinventory: '你的背包滿了!'
 signs:
   List: '&0[number].&8[player]&7:&4LV.[level]'
+  questList: '&0[number].&8[player]&7:&4[quests]'
   SpecialList:
-    '1':
-      '1': '&b** &8第一 &b**'
-      '2': '&9[player]'
-      '3': '&8[level] 級'
-      '4': '&b************'
-    '2':
-      '1': '&b** &8第二 &b**'
-      '2': '&9[player]'
-      '3': '&8[level] 級'
-      '4': '&b************'
-    '3':
-      '1': '&b** &8第三 &b**'
-      '2': '&9[player]'
-      '3': '&8[level] 級'
-      '4': '&b************'
+    p1: '&b** &8First &b**'
+    p2: '&b** &8Second &b**'
+    p3: '&b** &8Third &b**'
+    p4: '&b** &8Fourth &b**'
+    p5: '&b** &8Fifth &b**'
+    p6: '&b** &8Sixth &b**'
+    p7: '&b** &8Seventh &b**'
+    p8: '&b** &8Eight &b**'
+    p9: '&b** &8Ninth &b**'
+    p10: '&b** &8Tenth &b**'
+    name: '&9[player]'
+    level: '&8[level] level'
+    quests: '&8[quests] quests'
+    bottom: '&b************'
   cantcreate: '&4你不能創建這個告示牌!'
   cantdestroy: '&4你不能破壞這個告示牌!'
   topline: '&0[Jobs]'
