@@ -1023,7 +1023,7 @@ public class Jobs extends JavaPlugin {
 	    Boost boost = getPlayerManager().getFinalBonus(jPlayer, noneJob);
 
 	    JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income,
-			pointAmount, block, ent, victim, info);
+		pointAmount, block, ent, victim, info);
 	    Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
 	    // If event is canceled, don't do anything
 	    if (JobsPrePaymentEvent.isCancelled()) {
@@ -1082,7 +1082,13 @@ public class Jobs extends JavaPlugin {
 	    if (pointAmount != 0D)
 		jPlayer.setSaved(false);
 
-	    economy.pay(jPlayer, income, pointAmount, 0.0);
+	    HashMap<CurrencyType, Double> payments = new HashMap<CurrencyType, Double>();
+	    if (income != 0D)
+		payments.put(CurrencyType.MONEY, income);
+	    if (pointAmount != 0D)
+		payments.put(CurrencyType.POINTS, pointAmount);
+
+	    economy.pay(jPlayer, payments);
 
 	    if (GconfigManager.LoggingUse) {
 		HashMap<CurrencyType, Double> amounts = new HashMap<>();
@@ -1226,10 +1232,18 @@ public class Jobs extends JavaPlugin {
 		    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
 
-		FastPayment.put(jPlayer.getPlayerUUID(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), income, pointAmount, expAmount), prog
+		HashMap<CurrencyType, Double> payments = new HashMap<CurrencyType, Double>();
+		if (income != 0D)
+		    payments.put(CurrencyType.MONEY, income);
+		if (pointAmount != 0D)
+		    payments.put(CurrencyType.POINTS, pointAmount);
+		if (expAmount != 0D)
+		    payments.put(CurrencyType.EXP, expAmount);
+
+		FastPayment.put(jPlayer.getPlayerUUID(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), payments), prog
 		    .getJob()));
 
-		economy.pay(jPlayer, income, pointAmount, expAmount);
+		economy.pay(jPlayer, payments);
 		int oldLevel = prog.getLevel();
 
 		if (GconfigManager.LoggingUse) {
@@ -1365,34 +1379,28 @@ public class Jobs extends JavaPlugin {
 
     public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
 	// JobsPayment event
-	JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, payment.getExp());
+	JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, payment.get(CurrencyType.EXP));
 	Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
 	// If event is canceled, don't do anything
 	if (JobsExpGainEvent.isCancelled())
 	    return;
 
-	if (!jPlayer.isUnderLimit(CurrencyType.MONEY, payment.getAmount()))
-	    return;
-	if (!jPlayer.isUnderLimit(CurrencyType.EXP, payment.getExp()))
-	    return;
-	if (!jPlayer.isUnderLimit(CurrencyType.POINTS, payment.getPoints()))
-	    return;
+	for (CurrencyType one : CurrencyType.values()) {
+	    if (!jPlayer.isUnderLimit(one, payment.get(one)))
+		return;
+	}
 
-	economy.pay(jPlayer, payment.getAmount(), payment.getPoints(), payment.getExp());
+	economy.pay(jPlayer, payment.getPayment());
 
 	JobProgression prog = jPlayer.getJobProgression(job);
 
 	int oldLevel = prog.getLevel();
 
 	if (GconfigManager.LoggingUse) {
-	    HashMap<CurrencyType, Double> amounts = new HashMap<>();
-	    amounts.put(CurrencyType.MONEY, payment.getAmount());
-	    amounts.put(CurrencyType.EXP, payment.getExp());
-	    amounts.put(CurrencyType.POINTS, payment.getPoints());
-	    loging.recordToLog(jPlayer, info, amounts);
+	    loging.recordToLog(jPlayer, info, payment.getPayment());
 	}
 
-	if (prog.addExperience(payment.getExp()))
+	if (prog.addExperience(payment.get(CurrencyType.EXP)))
 	    getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
     }
 

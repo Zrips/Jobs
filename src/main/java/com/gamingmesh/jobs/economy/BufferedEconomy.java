@@ -21,6 +21,7 @@ package com.gamingmesh.jobs.economy;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
@@ -53,9 +54,19 @@ public class BufferedEconomy {
      * @param player - player to be paid
      * @param amount - amount to be paid
      */
-    public void pay(JobsPlayer player, double amount, double points, double exp) {
-	pay(new BufferedPayment(player.getPlayer(), amount, points, exp));
+    public void pay(JobsPlayer player, HashMap<CurrencyType, Double> payments) {
+	pay(new BufferedPayment(player.getPlayer(), payments));
     }
+
+//    /**
+//     * Add payment to player's payment buffer
+//     * @param player - player to be paid
+//     * @param amount - amount to be paid
+//     */
+//    @Deprecated
+//    public void pay(JobsPlayer player, double amount, double points, double exp) {
+//	pay(new BufferedPayment(player.getPlayer(), amount, points, exp));
+//    }
 
     /**
      * Add payment to player's payment buffer
@@ -89,12 +100,12 @@ public class BufferedEconomy {
 	    // combine all payments using paymentCache
 	    while (!payments.isEmpty()) {
 		BufferedPayment payment = payments.remove();
-		TotalAmount += payment.getAmount();
-		TotalPoints += payment.getPoints();
+		TotalAmount += payment.get(CurrencyType.MONEY);
+		TotalPoints += payment.get(CurrencyType.POINTS);
 
 		if (Jobs.getGCManager().UseTaxes) {
-		    TaxesAmount += payment.getAmount() * (Jobs.getGCManager().TaxesAmount / 100.0);
-		    TaxesPoints += payment.getPoints() * (Jobs.getGCManager().TaxesAmount / 100.0);
+		    TaxesAmount += payment.get(CurrencyType.MONEY) * (Jobs.getGCManager().TaxesAmount / 100.0);
+		    TaxesPoints += payment.get(CurrencyType.POINTS) * (Jobs.getGCManager().TaxesAmount / 100.0);
 		}
 
 		if (payment.getOfflinePlayer() == null)
@@ -104,26 +115,26 @@ public class BufferedEconomy {
 		if (paymentCache.containsKey(uuid)) {
 		    BufferedPayment existing = paymentCache.get(uuid);
 
-		    double money = payment.getAmount();
-		    double points = payment.getPoints();
-		    double exp = payment.getExp();
+		    double money = payment.get(CurrencyType.MONEY);
+		    double points = payment.get(CurrencyType.POINTS);
+		    double exp = payment.get(CurrencyType.EXP);
 
 		    if (Jobs.getGCManager().TakeFromPlayersPayment && Jobs.getGCManager().UseTaxes) {
 			money = money - (money * (Jobs.getGCManager().TaxesAmount / 100.0));
 			points = points - (points * (Jobs.getGCManager().TaxesAmount / 100.0));
 		    }
 
-		    existing.setAmount(existing.getAmount() + money);
-		    existing.setPoints(existing.getPoints() + points);
-		    existing.setExp(existing.getExp() + exp);
+		    existing.set(CurrencyType.MONEY, existing.get(CurrencyType.MONEY) + money);
+		    existing.set(CurrencyType.POINTS, existing.get(CurrencyType.POINTS) + points);
+		    existing.set(CurrencyType.EXP, existing.get(CurrencyType.EXP) + exp);
 		} else {
 
-		    double money = payment.getAmount();
-		    double points = payment.getPoints();
+		    double money = payment.get(CurrencyType.MONEY);
+		    double points = payment.get(CurrencyType.POINTS);
 
 		    if (Jobs.getGCManager().TakeFromPlayersPayment && Jobs.getGCManager().UseTaxes) {
-			payment.setAmount(money - (money * (Jobs.getGCManager().TaxesAmount / 100.0)));
-			payment.setPoints(points - (points * (Jobs.getGCManager().TaxesAmount / 100.0)));
+			payment.set(CurrencyType.MONEY, money - (money * (Jobs.getGCManager().TaxesAmount / 100.0)));
+			payment.set(CurrencyType.POINTS, points - (points * (Jobs.getGCManager().TaxesAmount / 100.0)));
 		    }
 
 		    paymentCache.put(uuid, payment);
@@ -168,14 +179,14 @@ public class BufferedEconomy {
 		    continue;
 
 		// JobsPayment event
-		JobsPaymentEvent JobsPaymentEvent = new JobsPaymentEvent(payment.getOfflinePlayer(), payment.getAmount(), payment.getPoints());
+		JobsPaymentEvent JobsPaymentEvent = new JobsPaymentEvent(payment.getOfflinePlayer(), payment.get(CurrencyType.MONEY), payment.get(CurrencyType.POINTS));
 		Bukkit.getServer().getPluginManager().callEvent(JobsPaymentEvent);
 		// If event is canceled, dont do anything
 		if (JobsPaymentEvent.isCancelled())
 		    continue;
 
-		payment.setAmount(JobsPaymentEvent.getAmount());
-		payment.setPoints(JobsPaymentEvent.getPoints());
+		payment.set(CurrencyType.MONEY, JobsPaymentEvent.getAmount());
+		payment.set(CurrencyType.POINTS, JobsPaymentEvent.getPoints());
 
 		if (Jobs.getGCManager().UseServerAccount) {
 		    if (!hasMoney) {
@@ -220,25 +231,24 @@ public class BufferedEconomy {
 	if (!ToggleBarHandling.getActionBarToggle().containsKey(playername))
 	    return;
 
-	if (payment.getAmount() == 0.0D && payment.getPoints() == 0.0D && payment.getExp() == 0.0D)
+	if (!payment.containsPayment())
 	    return;
 
 	Boolean show = ToggleBarHandling.getActionBarToggle().get(playername);
 	Player abp = Bukkit.getPlayer(payment.getOfflinePlayer().getUniqueId());
 	if ((abp != null) && (show.booleanValue())) {
 	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
-	    if (payment.getAmount() != 0.0D) {
+	    if (payment.get(CurrencyType.MONEY) != 0D) {
 		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", new Object[] { "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(),
-		    new Object[] { Double.valueOf(payment
-			.getAmount()) }) });
+		    new Object[] { Double.valueOf(payment.get(CurrencyType.MONEY)) }) });
 	    }
-	    if (payment.getPoints() != 0.0D) {
+	    if (payment.get(CurrencyType.POINTS) != 0D) {
 		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", new Object[] { "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(),
-		    new Object[] { Double.valueOf(payment.getPoints()) }) });
+		    new Object[] { Double.valueOf(payment.get(CurrencyType.POINTS)) }) });
 	    }
-	    if (payment.getExp() != 0.0D) {
+	    if (payment.get(CurrencyType.EXP) != 0D) {
 		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", new Object[] { "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), new Object[] {
-		    Double.valueOf(payment.getExp()) }) });
+		    Double.valueOf(payment.get(CurrencyType.EXP)) }) });
 	    }
 	    Jobs.getActionBar().send(abp, Message);
 	}

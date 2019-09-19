@@ -18,46 +18,83 @@
 
 package com.gamingmesh.jobs.economy;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import org.bukkit.OfflinePlayer;
+
+import com.gamingmesh.jobs.container.CurrencyType;
 
 public class BufferedPayment {
     private OfflinePlayer offlinePlayer;
-    private double amount = 0.0;
-    private double points = 0.0;
-    private double exp = 0.0;
+    private HashMap<CurrencyType, Double> payments = new HashMap<CurrencyType, Double>();
 
+    @Deprecated
     public BufferedPayment(OfflinePlayer offlinePlayer, double amount, double points, double exp) {
 	this.offlinePlayer = offlinePlayer;
-	this.amount = amount;
-	this.points = points;
-	this.exp = exp;
+	this.payments.put(CurrencyType.MONEY, amount);
+	this.payments.put(CurrencyType.EXP, exp);
+	this.payments.put(CurrencyType.POINTS, points);
+    }
+
+    public BufferedPayment(OfflinePlayer offlinePlayer, HashMap<CurrencyType, Double> payments) {
+	this.offlinePlayer = offlinePlayer;
+	// This can contain only one value instead of all posible ones
+	this.payments.putAll(payments);
     }
 
     public OfflinePlayer getOfflinePlayer() {
 	return offlinePlayer;
     }
 
-    public double getAmount() {
-	return amount;
+    @Deprecated
+    public Double getAmount() {
+	return this.payments.get(CurrencyType.MONEY);
     }
-    
+
+    @Deprecated
     public double getPoints() {
-	return points;
+	return this.payments.get(CurrencyType.POINTS);
     }
 
+    @Deprecated
     public double getExp() {
-	return exp;
+	return this.payments.get(CurrencyType.EXP);
     }
 
+    @Deprecated
     public void setAmount(double amount) {
-	this.amount = amount;
+	this.payments.put(CurrencyType.MONEY, amount);
     }
-    
+
+    @Deprecated
     public void setPoints(double points) {
-	this.points = points;
+	this.payments.put(CurrencyType.POINTS, points);
     }
-    
+
+    @Deprecated
     public void setExp(double exp) {
-	this.exp = exp;
+	this.payments.put(CurrencyType.EXP, exp);
+    }
+
+    public Double get(CurrencyType type) {
+	Double amount = this.payments.get(type);
+	return amount == null ? 0 : amount;
+    }
+
+    public Double set(CurrencyType type, double amount) {
+	return this.payments.put(type, amount);
+    }
+
+    public boolean containsPayment() {
+	for (Entry<CurrencyType, Double> one : payments.entrySet()) {
+	    if (one.getValue() != 0D)
+		return true;
+	}
+	return false;
+    }
+
+    public HashMap<CurrencyType, Double> getPayment() {
+	return payments;
     }
 }
