@@ -140,7 +140,7 @@ public class editquests implements Cmd {
 			    RawMessage rm = new RawMessage();
 			    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.objectiveAdd"),
 					"&eAdd new", "jobs editquests add " + job.getName() + " " + quest.getQuestName()
-					+ " " + o.getAction().getName());
+					+ " " + (o == null ? "Unknown" : o.getAction().getName()));
 			    rm.show(sender);
 
 			    Util.getQuestsEditorMap().remove(player.getUniqueId());
