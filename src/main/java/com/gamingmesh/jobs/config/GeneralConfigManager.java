@@ -105,7 +105,7 @@ public class GeneralConfigManager {
     public boolean fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames;
+	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, UseInversedClickToLeave, ShowActionNames;
 
     public boolean FireworkLevelupUse, UseRandom, UseFlicker, UseTrail;
     public String FireworkType;
@@ -969,9 +969,13 @@ public class GeneralConfigManager {
 	JobsGUIOpenOnBrowse = c.get("JobsGUI.OpenOnBrowse", true);
 	c.addComment("JobsGUI.ShowChatBrowse", "Do you want to show chat information when performing /jobs browse command?");
 	JobsGUIShowChatBrowse = c.get("JobsGUI.ShowChatBrowse", true);
-	c.addComment("JobsGUI.SwitcheButtons", "With true left mouse button will join job and right will show more info",
-	    "With false left mouse button will show more info, right will join job", "Don't forget to adjust locale file");
+	c.addComment("JobsGUI.SwitcheButtons", "With true left mouse button will join job and right will show more info.",
+	    "With false left mouse button will show more info, right will join job or inversely.", "Don't forget to adjust locale file!");
 	JobsGUISwitcheButtons = c.get("JobsGUI.SwitcheButtons", false);
+	c.addComment("JobsGUI.UseInversedClickToLeave", "Do you want to use the left/right click button to leave from job?",
+	    "This option click type depend from SwitcheButtons option, if true using the left button and inversely.",
+	    "Don't forget to adjust locale file");
+	UseInversedClickToLeave = c.get("JobsGUI.UseInversedClickToLeave", false);
 	c.addComment("JobsGUI.ShowActionNames", "Do you want to show the action names in GUI?");
 	ShowActionNames = c.get("JobsGUI.ShowActionNames", true);
 	c.addComment("JobsGUI.Rows", "Defines size in rows of GUI");
