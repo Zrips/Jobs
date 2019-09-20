@@ -513,37 +513,32 @@ public class editquests implements Cmd {
 			    amount = 3;
 			}
 
-			// TODO add ability to register new objectives without restart
-			//QuestObjective questObj = new QuestObjective(actionT, id, meta, type + subType, amount);
+			q.addObjective(new QuestObjective(actionT, id, meta, (type + subType), amount));
 
-			player.performCommand("jobs editquests list " + job.getName() + " " + actionT.getName() + " " + q.getConfigName());
+			player.performCommand("jobs editquests list " + job.getName() + " " + q.getConfigName() + " 1");
 
 			String path = q.getCurrentPath();
+			path = path.replace("/", ".");
+
 			org.bukkit.configuration.file.YamlConfiguration file = Jobs.getConfigManager().getJobConfig();
 
-			for (String a : file.getConfigurationSection(path.replace("/", ".")).getKeys(false)) {
-			    if (a.equals("Target")) {
-				path = path.replace("/", ".");
+			String j = "Jobs." + job.getJobKeyName() + ".";
 
-				Jobs.getConfigManager().changeJobsSettings(file.getString(path + "." + a), (type + subType).toLowerCase());
-				Jobs.getConfigManager().changeJobsSettings(file.getString(path + ".Action"), actionT.getName());
-				break;
-			    } else if (a.equals("Objectives")) {
-				path = path.replace("/", ".");
-
-				List<String> list = file.getStringList(path + "." + a);
+			if (path.equals("Target")) {
+			    Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Target"), (type + subType).toLowerCase());
+			    Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Action"), actionT.getName());
+			} else if (path.equals("Objectives")) {
+			    for (String l : file.getConfigurationSection(j + "Quests").getKeys(false)) {
+				List<String> list = file.getStringList(j + "Quests." + l + ".Objectives");
 				list.add(actionT.getName() + ";" + (type + subType).toLowerCase() + ";" + amount);
 
-				File f = new File(Jobs.getFolder(), "jobConfig.yml");
-				file.set(path + "." + a, list);
+				file.set(j + "Quests." + l + ".Objectives", list);
+			    }
 
-				try {
-				    file.save(f);
-				} catch (java.io.IOException e) {
-				    e.printStackTrace();
-				}
-
-				break;
+			    try {
+				file.save(Jobs.getConfigManager().getJobFile());
+			    } catch (java.io.IOException e) {
+				e.printStackTrace();
 			    }
 			}
 
