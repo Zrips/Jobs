@@ -155,11 +155,10 @@ public class BufferedEconomy {
 		    economy.depositPlayer(ServerTaxesAccount, TaxesAmount);
 
 		if (ServerTaxesAccount.isOnline()) {
-		    if (!ToggleBarHandling.getActionBarToggle().containsKey(ServerTaxesAccountname) && Jobs.getGCManager().ActionBarsMessageByDefault)
-			ToggleBarHandling.getActionBarToggle().put(ServerTaxesAccountname, true);
-		    if (ToggleBarHandling.getActionBarToggle().containsKey(ServerTaxesAccountname) && ToggleBarHandling.getActionBarToggle().get(ServerTaxesAccountname))
-			Jobs.getActionBar().send(Bukkit.getPlayer(ServerAccountname), Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100)
-			    / 100.0));
+		    if (Jobs.getGCManager().ActionBarsMessageByDefault) {
+			Jobs.getActionBar().send(Bukkit.getPlayer(ServerAccountname),
+				    Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100) / 100.0));
+		    }
 		}
 	    }
 
@@ -223,18 +222,16 @@ public class BufferedEconomy {
 	if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline())
 	    return;
 
-	String playername = payment.getOfflinePlayer().getName();
-
-	if (Jobs.getGCManager().ActionBarsMessageByDefault && !ToggleBarHandling.getActionBarToggle().containsKey(playername))
-	    ToggleBarHandling.getActionBarToggle().put(playername, true);
-
-	if (!ToggleBarHandling.getActionBarToggle().containsKey(playername))
+	if (!Jobs.getGCManager().ActionBarsMessageByDefault)
 	    return;
 
 	if (!payment.containsPayment())
 	    return;
 
-	Boolean show = ToggleBarHandling.getActionBarToggle().get(playername);
+	String playerUUID = payment.getOfflinePlayer().getUniqueId().toString();
+
+	Boolean show = ToggleBarHandling.getActionBarToggle().get(playerUUID) == null ? true :
+		    ToggleBarHandling.getActionBarToggle().get(playerUUID);
 	Player abp = Bukkit.getPlayer(payment.getOfflinePlayer().getUniqueId());
 	if ((abp != null) && (show.booleanValue())) {
 	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");

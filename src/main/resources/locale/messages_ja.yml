@@ -1,3 +1,4 @@
+---
 economy:
   error:
     nomoney: '&cごめんなさい><お支払いできるお金がありません。'
@@ -14,6 +15,9 @@ general:
       hours: '&e%hours% &6時間 '
       mins: '&e%mins% &6分 '
       secs: '&e%secs% &6秒 '
+    invalidPage: '&cInvalid page'
+    'true': '&2True'
+    'false': '&cFalse'
   admin:
     error: '&cコマンドでエラーが発生しました'
     success: '&eコマンドを実行しました'
@@ -28,33 +32,53 @@ general:
     ingame: '&cこのコマンドはゲーム中のみ利用できます'
     fromconsole: '&cコンソールで実行する必要があります'
     worldisdisabled: '&cこのワールドではこのコマンドを実行できません'
+    newFurnaceRegistration: '&eRegistered new ownership for furnace &7[current]&e/&f[max]'
+    newBrewingRegistration: '&eRegistered new ownership for brewing stand &7[current]&e/&f[max]'
+    noFurnaceRegistration: '&cYou''ve reached max furnace count!'
+    noBrewingRegistration: '&cYou''ve reached max brewing stand count!'
 command:
+  help:
+    output:
+      info: '&2/jobs [cmd] ?&eでコマンドの詳細を表示します'
+      cmdUsage: '&2Usage: &7[command]'
+      label: Jobs
+      cmdInfoFormat: '[command] &f- &2[description]'
+      cmdFormat: '&7/[command] &f[arguments]'
+      helpPageDescription: '&2* [description]'
+      title: '&e-------&e ======= &6Jobs &e======= &e-------'
+      page: '&e-----&e ====== &6[2] 中 &6[1] &eページ &e====== &e-----'
+      fliperSimbols: '&e----------'
+      prevPage: '&2----<< &6Prev '
+      prevPageOff: '&7----<< Prev '
+      nextPage: '&6 Next &2>>----'
+      nextPageOff: '&7 Next >>----'
+      pageCount: '&2[current]/[total]'
   moneyboost:
     help:
       info: '[職業名]の収入(お金)を[倍率]倍にします'
-      args: '[職業名] [倍率]'
+      args: '[jobname] [rate]'
     output:
       allreset: 上げた収入(お金)をリセットしました
       jobsboostreset: '&a%jobname% の収入(お金)をリセットしました'
-      nothingtoreset: 'リセットする項目がありません'
+      nothingtoreset: リセットする項目がありません
       boostalladded: 全てのジョブの収入を %boost% 倍上げました
       boostadded: '&e%jobname% に対する収入(お金)を &e%boost% 倍に設定しました'
       infostats: '&c-----> &a収入(お金)が %boost% 倍に設定されました&c <-------'
   pointboost:
     help:
       info: '[職業名]の獲得ポイントを[倍率]倍にします'
-      args: '[職業名] [倍率]'
+      args: '[jobname] [rate]'
     output:
       allreset: 上げた獲得ポイントをリセットしました
       jobsboostreset: '&a%jobname% のポイント獲得をリセットしました'
       nothingtoreset: リセットする項目がありません
       boostalladded: 全ての職業の獲得ポイントを %boost% 倍に設定しました
-      boostadded:  '&e%jobname% に対する獲得ポイントを &e%boost% 倍に設定しました'
+      boostadded: '&e%jobname% に対する獲得ポイントを &e%boost% 倍に設定しました'
       infostats: '&c-----> &a獲得ポイントが %boost% 倍に設定されました&c <-------'
   expboost:
     help:
       info: '[職業名]の獲得経験値を[倍率]倍にします'
-      args: '[職業名] [倍率]'
+      args: '[jobname] [rate]'
     output:
       allreset: 上げた獲得経験値をリセットしました
       jobsboostreset: '&a%jobname% の獲得経験値をリセットしました'
@@ -62,10 +86,22 @@ command:
       boostalladded: 全ての職業に対する獲得経験値を &e%boost% 倍に設定しました
       boostadded: '&e%jobname% の獲得経験値が &e%boost% 倍に設定しました  '
       infostats: '&c-----> &a獲得経験値が %boost% 倍に設定されました&c <-------'
+  itembonus:
+    help:
+      info: Check item bonus
+      args: ''
+    output:
+      list: '&e[jobname]: %money% %points% %exp%'
+      hover: '&7%itemtype%'
+      hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
+  edititembonus:
+    help:
+      info: Edit item boost bonus
+      args: list/add/remove [jobname] [itemBoostName]
   bonus:
     help:
       info: ボーナスを表示します
-      args: '[職業名]'
+      args: '[jobname]'
     output:
       topline: '&7**************** &2[収入(お金)] &6[獲得ポイント] &e[獲得経験値] &7****************'
       permission: '&e権限ボーナス: %money% %points% %exp%'
@@ -80,12 +116,12 @@ command:
       finalExplanation: '&eペットボーナスとスポナーボーナスは含まれていません'
   convert:
     help:
-      info: 'データベースシステムを使っていないデータベースシステムにをコンバートします'
+      info: データベースシステムを使っていないデータベースシステムにをコンバートします
       args: ''
   limit:
     help:
-      info: 'ジョブの支払い限度を表示します'
-      args: ''
+      info: ジョブの支払い限度を表示します
+      args: '[playername]'
     output:
       moneytime: '&eお金の支払い上限がリセットされるまでの時間 : &2%time% '
       moneyLimit: '&eお金の支払い上限 : &2%current%&e/&2%total%'
@@ -95,6 +131,7 @@ command:
       pointsLimit: '&eポイント獲得上限: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4お金の支払い上限に達しました'
       reachedmoneylimit2: '&2/jobs limit &eコマンドで上限を確認できます'
+      reachedmoneylimit3: '&eMoney earned is now reduced exponentially... But you still earn a little!'
       reachedexplimit: '&4経験値獲得上限に達しました'
       reachedexplimit2: '&2/jobs limit &eコマンドで上限を確認できます'
       reachedpointslimit: '&4ポイント獲得上限に達しました'
@@ -103,39 +140,33 @@ command:
   resetlimit:
     help:
       info: '[player]の上限をリセットします'
-      args: '[player]'
+      args: '[playername]'
     output:
       reseted: '&2%playername% &eの支払い上限をリセットしました'
-  help:
+  resetquest:
+    help:
+      info: Resets a player's quest
+      args: '[playername] [jobname]'
     output:
-      info: '&2/jobs [cmd] ?&eでコマンドの詳細を表示します'
-      usage: '使い方: %usage%'
-      title: '&e-------&e ======= &6Jobs &e======= &e-------'
-      page: '&e-----&e ====== &6[2] 中 &6[1] &eページ &e====== &e-----'
-      prev: '&e--- <<<<< &6前のページ &e|'
-      prevOff: '&7--- <<<<< 前のページ &e|'
-      fliperSimbols: '&e----------'
-      next: '&e|&6 次のページ &e>>>> ---'
-      nextOff: '&e|&7 次のページ >>>> ---'
+      reseted: '&eQuest has been reset for: &2%playername%'
+      noQuests: '&eCan''t find any quests'
   points:
     help:
       info: '[player]の所有ポイントを表示します'
-      args: '[player]'
+      args: '[playername]'
     currentpoints: '&e現在のポイント: &6%currentpoints%'
     totalpoints: '&e集めたポイントの合計: &6%totalpoints%'
   editpoints:
     help:
       info: '[player]のポイントを編集します'
-      args: '[set/add/take] [player] [amount]'
+      args: set/add/take [playername] [amount]
     output:
       set: '&e(&6%playername%&e) の所持ポイントを &6%amount% &eにしました'
-      add: '&6%playername%&e に &6%amount%&e ポイント与えましました
-              &e結果 &6%playername% &eの所持ポイントは &6%total%&e ポイントになりました'
-      take: '&6%playername%&e から &6%amount% &eポイント奪いました
-        &e結果 &6%playername% &eの所持ポイントは &6%total% &eポイントになりました'
+      add: '&6%playername%&e に &6%amount%&e ポイント与えましました &e結果 &6%playername% &eの所持ポイントは &6%total%&e ポイントになりました'
+      take: '&6%playername%&e から &6%amount% &eポイント奪いました &e結果 &6%playername% &eの所持ポイントは &6%total% &eポイントになりました'
   editjobs:
     help:
-      info: '存在する職業を編集します'
+      info: 存在する職業を編集します
       args: ''
       list:
         job: '&e職業:'
@@ -155,9 +186,29 @@ command:
         or: '&eまたは '
         look: '&6見ている'
         lookHover: '&6見ているブロック・エンティティを指定します'
+  editquests:
+    help:
+      info: Edit current quests.
+      args: ''
+      list:
+        quest: '&eQuests:'
+        jobs: '  -> [&e%jobname%&r]'
+        quests: '  -> [&e%questname%&r]'
+        actions: '    -> [&e%actionname%&r]'
+        objectives: '      -> [&e%objectivename%&r]'
+        objectiveRemove: '&c[X]'
+        objectiveAdd: '      -> &e[&2+&e]'
+      modify:
+        newValue: '&eEnter new value'
+        enter: '&eEnter new name or press '
+        hand: '&6HAND '
+        handHover: '&6Press to grab info from item in your hand'
+        or: '&eor '
+        look: '&6LOOKING AT'
+        lookHover: '&6Press to grab info from block you are looking'
   blockinfo:
     help:
-      info: '今見ているブロックの情報を表示します'
+      info: 今見ているブロックの情報を表示します
       args: ''
     output:
       name: '&eブロック名: &6%blockname%'
@@ -166,27 +217,35 @@ command:
       usage: '&e結果: &6%first% &eまたは &6%second%'
   iteminfo:
     help:
-      info: '持っているアイテムの情報を表示します'
+      info: 持っているアイテムの情報を表示します
       args: ''
     output:
       name: '&eItem name: &6%itemname%'
       id: '&eItem id: &6%itemid%'
       data: '&eItem data: &6%itemdata%'
       usage: '&e結果: &6%first% &eまたは &6%second%'
+  placeholders:
+    help:
+      info: List out all placeholders
+      args: (parse) (placeholder)
+    output:
+      list: '&e[place]. &7[placeholder]'
+      outputResult: ' &eresult: &7[result]'
+      parse: '&6[placeholder] &7by [source] &6result &8|&f[result]&8|'
   entitylist:
     help:
-      info: 'プラグインで認識できる全てのエンティティを表示します'
+      info: プラグインで認識できる全てのエンティティを表示します
       args: ''
   stats:
     help:
-      info: 'あなたの各職業のレベルを表示します'
-      args: '[player]'
+      info: あなたの各職業のレベルを表示します
+      args: '[playername]'
     error:
-      nojob: '少なくとも１つは職業についている必要があります'
+      nojob: 少なくとも１つは職業についている必要があります
     output: '%jobname% レベル%joblevel% : 経験値 %jobxp%/%jobmaxxp%'
   shop:
     help:
-      info: 'Jobsショップを開きます'
+      info: Jobsショップを開きます
       args: ''
     info:
       title: '&e------- &8Jobs ショップ &e-------'
@@ -204,26 +263,27 @@ command:
       Paid: '&eあなたは所持ポイントから &6%amount% &eポイントを払いこのアイテムを買いました'
   archive:
     help:
-      info: '各ユーザーの離職中のジョブを表示します'
-      args: '[player]'
+      info: 各ユーザーの離職中のジョブを表示します
+      args: '[playername]'
     error:
-      nojob: '離職中のジョブはありません'
+      nojob: 離職中のジョブはありません
   give:
     help:
       info: '[player]はオプションです'
-      args: '[player] [jobname] [itemname]'
+      args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
       notonline: '&4[%playername%] さんはオフラインです'
       noitem: '&4指定された名前は見つけられませんでした'
   info:
     help:
       title: '&2*** &eJobs&2 ***'
-      info: '各職業でどのくらい報酬を得れているのかを確認できます'
+      info: 各職業でどのくらい報酬を得れているのかを確認できます
       penalty: '&eこの職業は人が多いので&c[penalty]% &eペナルティーがあります'
       bonus: '&eこの職業は人が少ないので &2[bonus]% &eボーナスが得られます'
-      args: '[職業名] [動作]'
+      args: '[jobname] [action]'
       actions: '&e有効なアクション: &f%actions%'
       max: '- &e最大レベル:&f '
+      newMax: ' &eMax level: &f[max]'
       material: '&7%material%'
       levelRange: '&a(&e%levelFrom% &a- &e%levelUntil% &aレベル)'
       levelFrom: '&a( &e%levelFrom% &aレベルから)'
@@ -251,14 +311,17 @@ command:
       place:
         info: '建築'
         none: '%jobname% はブロックの設置で報酬を得ることはできません'
+      striplogs:
+        info: '&eStrip logs'
+        none: '%jobname% does not get money for stripping logs.'
       kill:
         info: '討伐'
         none: '%jobname% はモンスターの討伐で報酬を得ることはできません'
       mmkill:
-        info: MMKill
+        info: 'MMKill'
         none: '%jobname% はMythicモンスターの討伐で報酬を得ることはできません'
       fish:
-        info: Fish
+        info: 'Fish'
         none: '%jobname% は釣りで報酬を得ることはできません'
       craft:
         info: 'クラフト'
@@ -278,6 +341,9 @@ command:
       enchant:
         info: 'エンチャント'
         none: '%jobname% はエンチャントで報酬を得ることはできません'
+      vtrade:
+        info: '&eVillager trade'
+        none: '%jobname% does not get money for trading a villager.'
       repair:
         info: '修理'
         none: '%jobname% は修理で報酬を得ることはできません'
@@ -299,52 +365,92 @@ command:
       custom-kill:
         info: 'カスタムキル'
         none: '%jobname% はカスタムプレイヤーの討伐で報酬を得ることはできません'
+      collect:
+        info: '&eCollect'
+        none: '%jobname% does not get money for collecting blocks.'
   playerinfo:
     help:
-      info: '各職業で他のプレイヤーがどのくらい報酬を得れているのかを確認できます(?)'
+      info: 各職業で他のプレイヤーがどのくらい報酬を得れているのかを確認できます(?)
       args: '[playername] [jobname] [action]'
   join:
     help:
       info: '[職業名]の職業に就きます'
-      args: '[職業名]'
+      args: '[jobname]'
     error:
       alreadyin: '%jobname% はすでに就いている職業です'
       fullslots: '%jobname% に就くことができませんでした。利用可能なスロットがありません'
-      maxjobs: '就ける職業の上限に達しています'
+      maxjobs: 就ける職業の上限に達しています
       rejoin: '&cこのジョブに再び就くには [time] 待つ必要があります'
+    rejoin: '&aClick to rejoin this job: '
     success: '%jobname% に就きました'
+    confirm: '&2Click to confirm joining action for the &7[jobname] &2job.'
   leave:
     help:
       info: '[職業名]を離職します'
-      args: '[職業名]'
+      args: '[oldplayerjob]'
     success: '%jobname% を離職しました'
+    confirmationNeed: '&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!'
   leaveall:
     help:
-      info: '就いている全ての職業を離職します'
+      info: 就いている全ての職業を離職します
     error:
-      nojobs: '離職できる職業はありません'
-    success: '就いている全ての職業を離職しました'
+      nojobs: 離職できる職業はありません
+    success: 就いている全ての職業を離職しました
+    confirmationNeed: '&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!'
   explored:
     help:
-      info: 'このチャンクに来たことのある人を確認できます'
+      info: このチャンクに来たことのある人を確認できます
     error:
-      noexplore: '誰もこのチャンクを訪れたことがありません'
+      noexplore: 誰もこのチャンクを訪れたことがありません
     list: '&e%place%. %playername%'
   browse:
     help:
-      info: '利用可能な職業の一覧を表示します'
+      info: 利用可能な職業の一覧を表示します
     error:
-      nojobs: 'あなたが就ける職業はありません'
+      nojobs: あなたが就ける職業はありません
     output:
       header: '次の職業に就くことができます:'
       footer: '"/jobs info [職業名]" で詳細な情報が見れます'
       totalWorkers: '&7プレイヤー数: &e[amount]'
       penalty: '&4ペナルティー: &c[amount]%'
       bonus: '&2ボーナス: &a[amount]%'
+      newHeader: '&2========== [amount] Available Jobs ========='
+      description: '[description]'
+      list: '    &8[place]. &7[jobname]'
+      console:
+        newHeader: '&2========== [amount] Available Jobs ========='
+        description: '[description]'
+        totalWorkers: ' &7Workers: &e[amount]'
+        penalty: ' &4Penalty: &c[amount]%'
+        bonus: ' &2Bonus: &a[amount]%'
+        list: ' &6[jobname]'
+        newMax: ' &eMax level: &f[max]'
+      click: '&bClick on the job to see more info about it!'
+      detailed: '&bClick to see more detailed list on job actions'
+      jobHeader: '&2========== [jobname] ========='
+      chooseJob: '&7&n&oChoose this job'
+      chooseJobHover: '&7Click here to get this job'
+  clearownership:
+    help:
+      info: Clear block ownership
+      args: '[playername]'
+    output:
+      cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+  quests:
+    help:
+      info: List available quests
+      args: '[playername]'
+    error:
+      noquests: '&cThere are no quests'
+    toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    output:
+      completed: '&2      !Completed!&r      '
+      questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
     help:
       info: '[player]に[職業名]を強制的に離職させます'
-      args: '[player] [職業名]'
+      args: '[playername] [jobname]'
     error:
       nojob: '%jobname%に就いていません'
     output:
@@ -352,25 +458,26 @@ command:
   fireall:
     help:
       info: '[player]に就いてる職業全てを強制的に離職させます'
-      args: '[player]'
+      args: '[playername]'
     error:
-      nojobs: 'プレイヤーが職業についていないため離職させられませんでした'
+      nojobs: プレイヤーが職業についていないため離職させられませんでした
     output:
-      target: '全ての職業を離職させられました'
+      target: 全ての職業を離職させられました
   employ:
     help:
       info: '[player]を[職業名]に就かせます'
-      args: '[player] [職業名]'
+      args: '[playername] [jobname]'
     error:
-      alreadyin: 'プレイヤーはすでに %jobname% に就いています'
+      alreadyin: プレイヤーはすでに %jobname% に就いています
+      fullslots: You cannot join the job %jobname%, there are no slots available.
     output:
       target: '%jobname% に就かされました'
   top:
     help:
       info: '[職業名]の上位%amount%名を表示します'
-      args: '[職業名]'
+      args: '[jobname]'
     error:
-      nojob: '存在しない職業名です'
+      nojob: 存在しない職業名です
     output:
       topline: '&aトップ &e%jobname%'
       list: '&e%number%&a. &e%playername% &aレベル:&e%level% 経験値:%exp%'
@@ -379,10 +486,10 @@ command:
       show: '&e[from] &2 から &e[until] &2までのリストを表示します'
   gtop:
     help:
-      info: '合計レベルの上位%amount%名を表示します'
+      info: 合計レベルの上位%amount%名を表示します
       args: ''
     error:
-      nojob: '情報がありません'
+      nojob: 情報がありません
     output:
       topline: '&aトップ&e %amount% &a合計レベル'
       list: '&e%number%&a. &e%playername% &aレベル &e%level% 経験値:%exp%'
@@ -391,15 +498,14 @@ command:
       show: '&e[from] &2から &e[until] &2のリストを表示します'
   area:
     help:
-      info: 'エリアを変更します'
+      info: エリアを変更します
       args: add/remove/info/list
       addUsage: '&e使い方: &6/Jobs area add [エリア名/wg:WorldGuardのエリア名] [ボーナス]'
       removeUsage: '&e使い方: &6/Jobs area remove [エリア名]'
     output:
       addedNew: '&e新しいエリアを ボーナス:&6%bonus% &eで作成しました'
       removed: '&eエリア &6%name% &eを削除しました'
-      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
-        &6%bonus%'
+      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%'
       wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
       noAreas: '&e作成されたエリアはありません'
       noAreasByLoc: '&eこの場所に作成されたエリアはありません'
@@ -412,8 +518,8 @@ command:
       wgDontExist: '&eこの名前のWorldGuardエリア名は存在しません'
   log:
     help:
-      info: '統計情報を表示します'
-      args: '[player]'
+      info: 統計情報を表示します
+      args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
       ls: '&7* &6%number%. &3%action%: &6%item% &e数量: %qty% %money% %exp% %points%'
@@ -426,7 +532,7 @@ command:
       nodata: '&cデータがありません'
   glog:
     help:
-      info: 'グローバル統計を表示します'
+      info: グローバル統計を表示します
       args: ''
     output:
       topline: '&7*********************** &6 グローバル統計 &7***********************'
@@ -439,57 +545,67 @@ command:
   transfer:
     help:
       info: '[player]の職業を[現在の職業]から[次に就く職業]へ移行します(経験値そのまま)'
-      args: '[player] [現在の職業] [次に就く職業]'
+      args: '[playername] [oldjob] [newjob]'
     output:
-      target: 'あなたの職業を %oldjobname% から %newjobname% へ移行しました'
+      target: あなたの職業を %oldjobname% から %newjobname% へ移行しました
   promote:
     help:
       info: '[player]の[職業名]レベルを[レベル]上げます'
-      args: '[player] [職業名] [レベル]'
+      args: '[playername] [jobname] [levels]'
     output:
       target: '%jobname% のレベルを %levelsgained% 上げました'
   exp:
     help:
       info: '[player]の[職業名]の経験値を編集します'
-      args: '[player] [職業名] [set/add/take] [数値]'
+      args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cThis player must first join a job.'
     output:
       target: '&eあなたの %jobname% の経験値が変更されました &e今のあなたの状態 &6%level%レベル &6%exp%経験値'
+  level:
+    help:
+      info: Change the player's level in a job.
+      args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cThis player must first join a job.'
+    output:
+      target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
   demote:
     help:
       info: '[player]の[職業名]のレベルを[レベル]下げます'
-      args: '[player] [職業名] [レベル]'
+      args: '[playername] [jobname] [levels]'
     output:
-      target: 'あなたは %jobname% のレベルを %levelslost% 下げました'
+      target: あなたは %jobname% のレベルを %levelslost% 下げました
   grantxp:
     help:
       info: '[player]の[職業名]に[数値]経験値を与えます'
-      args: '[player] [職業名] [数値]'
+      args: '[playername] [jobname] [xp]'
     output:
       target: '%jobname% に %xpgained% 経験値が与えられました'
   removexp:
     help:
       info: '[player]の[職業名]から[数値]経験値を奪います'
-      args: '[player] [職業名] [数値]'
+      args: '[playername] [jobname] [xp]'
     output:
-      target: '%jobname% から %xplost% 経験値を奪われました' 
+      target: '%jobname% から %xplost% 経験値を奪われました'
   signupdate:
     help:
-      info: '手動で看板を更新します'
+      info: 手動で看板を更新します
       args: '[jobname]'
   bp:
     help:
-      info: '半径10ブロック以内の報酬を受け取れないブロッックを表示します'
+      info: 半径10ブロック以内の報酬を受け取れないブロッックを表示します
       args: ''
     output:
       found: '&eあなたが報酬を受け取れないブロックが &6%amount% 個見つかりました'
       notFound: '&eあなたが報酬を受け取れないブロックはありません'
   reload:
     help:
-      info: '設定ファイル群をリロードします'
+      info: 設定ファイル群をリロードします
   toggle:
     help:
-      info: 'アクションバーまたはボスバーの報酬表示を切り替えます'
-      args: '[actionbar/bossbar]'
+      info: アクションバーまたはボスバーの報酬表示を切り替えます
+      args: actionbar/bossbar
     output:
       turnedoff: '&4この機能はオフになっています'
       paid:
@@ -506,6 +622,8 @@ message:
   levelup:
     broadcast: '%playername% の %jobname% のレベルが %joblevel% に上がりました'
     nobroadcast: '%jobname% のレベルが %joblevel% に上がりました'
+  leveldown:
+    message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
   cowtimer: '&eYou still need to wait &6%time% &esec to get paid for this job.'
   blocktimer: '&eこのジョブの報酬を受け取るには: &3[time] &esec 待つ必要があります'
   placeblocktimer: '&eあなたがこの場所で報酬を得るには&6[time] &e秒待つ必要があります'
@@ -516,6 +634,7 @@ message:
     fullinventory: 'インベントリがいっぱいです'
 signs:
   List: '&0[number].&8[player]&7:&4[level]'
+  questList: '&0[number].&8[player]&7:&4[quests]'
   SpecialList:
     p1: '&b** &81位 &b**'
     p2: '&b** &82位 &b**'
@@ -529,6 +648,7 @@ signs:
     p10: '&b** &810位 &b**'
     name: '&9[player]'
     level: '&8レベル : [level]'
+    quests: '&8[quests] quests'
     bottom: '&b************'
   cantcreate: '&4あなたにこの看板を作る権限はありません'
   cantdestroy: '&4あなたにこの看板を破壊する権限はありません'

@@ -265,7 +265,11 @@ public class JobsListener implements Listener {
 		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
 		Job job = Jobs.getGUIManager().getJobBySlot(player, slot);
 		if (job != null) {
-		    Bukkit.dispatchCommand(player, "jobs join " + job.getName());
+		    if (Jobs.getGCManager().UseInversedClickToLeave && Jobs.getPlayerManager().getJobsPlayer(player).isInJob(job)) {
+			Bukkit.dispatchCommand(player, "jobs leave " + job.getName());
+		    } else {
+			Bukkit.dispatchCommand(player, "jobs join " + job.getName());
+		    }
 		    player.getOpenInventory().getTopInventory().setContents(Jobs.getGUIManager().CreateJobsGUI(player).getContents());
 		}
 	    }

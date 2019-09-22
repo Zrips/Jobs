@@ -64,23 +64,32 @@ import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ConfigManager {
 
+    private File jobFile = null;
+
+    public ConfigManager() {
+	this.jobFile = new File(Jobs.getFolder(), "jobConfig.yml");
+    }
+
     public void reload() throws IOException {
 	// job settings
 	loadJobSettings();
     }
 
     public YamlConfiguration getJobConfig() {
-	File f = new File(Jobs.getFolder(), "jobConfig.yml");
-	if (!f.exists()) {
+	if (!jobFile.exists()) {
 	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
 	    return null;
 	}
 
-	return YamlConfiguration.loadConfiguration(f);
+	return YamlConfiguration.loadConfiguration(jobFile);
+    }
+
+    public File getJobFile() {
+	return jobFile;
     }
 
     public void changeJobsSettings(String path, Object value) {
-	File f = new File(Jobs.getFolder(), "jobConfig.yml");
+	File f = jobFile;
 	InputStreamReader s = null;
 	try {
 	    s = new InputStreamReader(new FileInputStream(f), "UTF-8");
@@ -401,7 +410,7 @@ public class ConfigManager {
      * @throws IOException 
      */
     private void loadJobSettings() throws IOException {
-	File f = new File(Jobs.getFolder(), "jobConfig.yml");
+	File f = jobFile;
 	if (!f.exists()) {
 	    YmlMaker jobConfig = new YmlMaker(Jobs.getInstance(), "jobConfig.yml");
 	    jobConfig.saveDefaultConfig();
@@ -897,7 +906,7 @@ public class ConfigManager {
 			    List<String> list = sqsection.getStringList("Objectives");
 			    for (String oneObjective : list) {
 				String[] split = oneObjective.split(";");
-				if (split.length != 3) {
+				if (split.length < 2) {
 				    Jobs.getPluginLogger().warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");
 				    continue;
 				}
@@ -905,7 +914,11 @@ public class ConfigManager {
 				    ActionType actionType = ActionType.getByName(split[0]);
 				    kv = getKeyValue(split[1], actionType, jobFullName);
 				    if (kv != null) {
-					int amount = Integer.parseInt(split[2]);
+					int amount = 1;
+					if (split.length == 3) {
+					    amount = Integer.parseInt(split[2]);
+					}
+
 					QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(), kv.getType() + kv.getSubType(), amount);
 					quest.addObjective(objective);
 				    }

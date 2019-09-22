@@ -51,14 +51,12 @@ public class BossBarManager {
 	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
 	    return;
 
-	String playername = player.getUserName();
-	if (!ToggleBarHandling.getBossBarToggle().containsKey(playername) && Jobs.getGCManager().BossBarsMessageByDefault)
-	    ToggleBarHandling.getBossBarToggle().put(playername, true);
-
-	if (!ToggleBarHandling.getBossBarToggle().containsKey(playername))
+	String playerUUID = player.getPlayer().getUniqueId().toString();
+	if (!Jobs.getGCManager().BossBarsMessageByDefault)
 	    return;
 
-	Boolean show = ToggleBarHandling.getBossBarToggle().get(playername);
+	Boolean show = ToggleBarHandling.getBossBarToggle().get(playerUUID) == null ? true :
+	    ToggleBarHandling.getBossBarToggle().get(playerUUID);
 
 	if (!show)
 	    return;

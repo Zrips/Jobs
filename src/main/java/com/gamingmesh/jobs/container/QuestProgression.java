@@ -56,7 +56,7 @@ public class QuestProgression {
     }
 
     public Long getValidUntil() {
-	return validUntil;
+	return quest.getValidUntil();
     }
 
     public void setValidUntil(Long validUntil) {
@@ -64,7 +64,7 @@ public class QuestProgression {
     }
 
     public boolean isValid() {
-	return validUntil.equals(quest.getValidUntil());
+	return validUntil.equals(getValidUntil());
     }
 
     public boolean isEnded() {

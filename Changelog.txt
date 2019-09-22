@@ -16,3 +16,7 @@
 - Fixed 1.11 & 1.12 entities don't work
 - Fix bone meals dupping issue when interacted with seeds
 - Should fixed issue when the JobsPrePaymentEvent getJob method always returns null
+- Fixed income dupping issue and repair action not work correctly.
+- Updated translations to the latest
+- Jobs toggles will not be saved from now instantly when get income
+- Added option to leave from job in jobs GUI.
