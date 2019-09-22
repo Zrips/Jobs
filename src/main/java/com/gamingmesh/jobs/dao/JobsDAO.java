@@ -437,8 +437,18 @@ public abstract class JobsDAO {
 		unique += "`" + one.getCollumn() + "`";
 	    }
 
-	    if (!unique.isEmpty())
-		unique = " , UNIQUE KEY template_" + tableName + " (" + unique + ")";
+	    if (!unique.isEmpty()) {
+		switch (dbType) {
+		case MySQL:
+		    unique = " , UNIQUE KEY template_" + tableName + " (" + unique + ")";
+		    break;
+		case SqLite:
+		    unique = " , UNIQUE (" + unique + ")";
+		    break;
+		default:
+		    break;
+		}
+	    }
 
 	    return getQR().replace("[fields]", rp + unique);
 	}
