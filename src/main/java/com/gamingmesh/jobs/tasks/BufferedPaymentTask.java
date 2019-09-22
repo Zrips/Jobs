@@ -18,8 +18,6 @@
 
 package com.gamingmesh.jobs.tasks;
 
-import org.bukkit.Bukkit;
-
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
@@ -40,7 +38,7 @@ public class BufferedPaymentTask implements Runnable {
     @Override
     public void run() {
 	if (payment.get(CurrencyType.MONEY) > 0)
-	    Bukkit.getScheduler().runTask(Jobs.getInstance(), () -> economy.depositPlayer(payment.getOfflinePlayer(), payment.get(CurrencyType.MONEY)));
+	    economy.depositPlayer(payment.getOfflinePlayer(), payment.get(CurrencyType.MONEY));
 	else {
 	    if (!economy.withdrawPlayer(payment.getOfflinePlayer(), -payment.get(CurrencyType.MONEY)))
 		bufferedEconomy.pay(payment);
