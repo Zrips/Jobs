@@ -78,11 +78,6 @@ public abstract class JobsDAO {
 	    return type;
 	}
 
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
-
 	@Override
 	public boolean isUnique() {
 	    return unique;
@@ -116,11 +111,6 @@ public abstract class JobsDAO {
 	    return type;
 	}
 
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
-
 	@Override
 	public boolean isUnique() {
 	    return unique;
@@ -150,11 +140,6 @@ public abstract class JobsDAO {
 	public String getType() {
 	    return type;
 	}
-
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
 
 	@Override
 	public boolean isUnique() {
@@ -186,11 +171,6 @@ public abstract class JobsDAO {
 	    return type;
 	}
 
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
-
 	@Override
 	public boolean isUnique() {
 	    return false;
@@ -221,11 +201,6 @@ public abstract class JobsDAO {
 	public String getType() {
 	    return type;
 	}
-
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
 
 	@Override
 	public boolean isUnique() {
@@ -259,11 +234,6 @@ public abstract class JobsDAO {
 	    return type;
 	}
 
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
-
 	@Override
 	public boolean isUnique() {
 	    return false;
@@ -293,11 +263,6 @@ public abstract class JobsDAO {
 	public String getType() {
 	    return ttype;
 	}
-
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
 
 	@Override
 	public boolean isUnique() {
@@ -332,11 +297,6 @@ public abstract class JobsDAO {
 	    return type;
 	}
 
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
-
 	@Override
 	public boolean isUnique() {
 	    return false;
@@ -364,11 +324,6 @@ public abstract class JobsDAO {
 	public String getType() {
 	    return type;
 	}
-
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
 
 	@Override
 	public boolean isUnique() {
@@ -399,11 +354,6 @@ public abstract class JobsDAO {
 	public String getType() {
 	    return type;
 	}
-
-//	@Override
-//	public TablesFieldsType getFieldType() {
-//	    return fieldType;
-//	}
 
 	@Override
 	public boolean isUnique() {
