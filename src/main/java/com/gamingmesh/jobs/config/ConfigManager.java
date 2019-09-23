@@ -18,17 +18,15 @@
 
 package com.gamingmesh.jobs.config;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
+import com.gamingmesh.jobs.CMILib.CMIEnchantment;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.ItemBoostManager;
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.*;
+import com.gamingmesh.jobs.resources.jfep.Parser;
+import com.gamingmesh.jobs.stuff.ChatColor;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -40,27 +38,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.gamingmesh.jobs.ItemBoostManager;
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
-import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.BoostMultiplier;
-import com.gamingmesh.jobs.container.CurrencyType;
-import com.gamingmesh.jobs.container.DisplayMethod;
-import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.container.JobCommands;
-import com.gamingmesh.jobs.container.JobConditions;
-import com.gamingmesh.jobs.container.JobInfo;
-import com.gamingmesh.jobs.container.JobItems;
-import com.gamingmesh.jobs.container.JobLimitedItems;
-import com.gamingmesh.jobs.container.JobPermission;
-import com.gamingmesh.jobs.container.Quest;
-import com.gamingmesh.jobs.container.QuestObjective;
-import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class ConfigManager {
 
@@ -303,7 +285,7 @@ public class ConfigManager {
 	    }
 	    // END HACK
 
-	    type = material.toString();
+	    type = material.getMaterial().toString();
 	    id = material.getId();
 	} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
 

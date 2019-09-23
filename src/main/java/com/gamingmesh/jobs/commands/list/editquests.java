@@ -401,7 +401,7 @@ public class editquests implements Cmd {
 			    material = CMIMaterial.REDSTONE_ORE;
 			}
 			id = material.getId();
-			type = material.toString();
+			type = material.getMaterial().toString();
 		    } else if (actionT == ActionType.KILL || actionT == ActionType.TAME || actionT == ActionType.BREED || actionT == ActionType.MILK) {
 
 			// check entities

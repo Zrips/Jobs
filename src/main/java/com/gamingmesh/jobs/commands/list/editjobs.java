@@ -1,19 +1,11 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ItemReflection;
+import com.gamingmesh.jobs.CMILib.RawMessage;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.ActionType;
@@ -22,9 +14,16 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.PageInfo;
-import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.stuff.Util;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public class editjobs implements Cmd {
 
@@ -485,7 +484,7 @@ public class editjobs implements Cmd {
 			material = CMIMaterial.REDSTONE_ORE;
 		    }
 		    id = material.getId();
-		    type = material.toString();
+		    type = material.getMaterial().toString();
 		} else if (actionT == ActionType.KILL || actionT == ActionType.TAME || actionT == ActionType.BREED || actionT == ActionType.MILK) {
 
 		    // check entities
