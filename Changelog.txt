@@ -21,3 +21,4 @@
 - Jobs toggles will not be saved from now instantly when get income
 - Added option to leave from job in jobs GUI.
 - Quest objective amount is now optional (default 1)
+- Fixed issue when used 1.12 and lower versions then some materials not work correctly.

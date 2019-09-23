@@ -73,10 +73,12 @@ public class editquests implements Cmd {
 
 			RawMessage rm = new RawMessage();
 			for (Quest one : job.getQuests()) {
-			    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.actions", "%actionname%", oneI.getName()),
-				oneI.getName(), "jobs editquests list " + job.getName() + " " + oneI.getName() + " " + one.getConfigName() + " 1");
+			    if (one.getJob().isSame(job)) {
+				rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.actions", "%actionname%", oneI.getName()),
+				    oneI.getName(), "jobs editquests list " + job.getName() + " " + oneI.getName() + " " + one.getConfigName() + " 1");
+				rm.show(sender);
+			    }
 			}
-			rm.show(sender);
 		    }
 
 		    Util.getQuestsEditorMap().remove(player.getUniqueId());
@@ -122,6 +124,10 @@ public class editquests implements Cmd {
 				continue;
 
 			    o = one.getValue();
+
+			    if (o != null && !o.getAction().equals(actionT))
+				continue;
+
 			    String target = o == null ? "STONE" : o.getTargetName();
 
 			    String objName = target.toLowerCase().replace('_', ' ');
@@ -197,25 +203,55 @@ public class editquests implements Cmd {
 		    if (action == null || action.isEmpty())
 			return false;
 
-		    List<Quest> quests = job.getQuests();
-		    if (quests == null || quests.isEmpty())
-			return false;
-
 		    Quest q = job.getQuest(args[3]);
 		    if (q == null) {
 			return false;
 		    }
+
+		    HashMap<String, QuestObjective> obj = q.getObjectives();
+		    if (obj == null || obj.isEmpty())
+			return false;
 
 		    String target = args[4];
 		    if (target == null) {
 			return true;
 		    }
 
-		    quests.remove(q);
+			org.bukkit.configuration.file.YamlConfiguration file = Jobs.getConfigManager().getJobConfig();
+			String j = "Jobs." + job.getJobKeyName() + ".Quests." + q.getConfigName() + ".";
 
-		    Jobs.getConfigManager().changeJobsSettings(q.getCurrentPath(), null);
+			if (file.isString(j + "Target")) {
+			    Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Target"), target);
+			    Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Action"), actionT.getName());
+			} else if (file.isList(j + "Objectives")) {
+			    List<String> list = file.getStringList(j + "Objectives");
+			    for (String s : list) {
+				String[] split = s.split(";");
+				if (split[1].contains(target.toLowerCase())) {
+				    list.remove(s);
+				    break;
+				}
+			    }
 
-		    player.performCommand("jobs editquests list " + job.getName() + " " + q.getConfigName() + " 1");
+			    File f = Jobs.getConfigManager().getJobFile();
+			    file.set(j + "Objectives", list);
+
+			    try {
+				file.save(f);
+			    } catch (java.io.IOException e) {
+				e.printStackTrace();
+			    }
+			}
+
+			for (Entry<String, QuestObjective> one : obj.entrySet()) {
+			    if (one.getKey().equalsIgnoreCase(target)) {
+				obj.remove(one.getKey());
+				break;
+			    }
+			}
+
+		    player.performCommand("jobs editquests list " + job.getName() + " " + actionT.getName()
+				+ " " + q.getConfigName() + " 1");
 
 		    Util.getQuestsEditorMap().remove(player.getUniqueId());
 
@@ -516,25 +552,19 @@ public class editquests implements Cmd {
 
 		    q.addObjective(new QuestObjective(actionT, id, meta, (type + subType), amount));
 
-		    player.performCommand("jobs editquests list " + job.getName() + " " + q.getConfigName() + " 1");
-
-		    String path = q.getCurrentPath();
-		    path = path.replace("/", ".");
+		    player.performCommand("jobs editquests list " + job.getName() + " " + actionT.getName() + " " + q.getConfigName() + " 1");
 
 		    org.bukkit.configuration.file.YamlConfiguration file = Jobs.getConfigManager().getJobConfig();
+		    String j = "Jobs." + job.getJobKeyName() + ".Quests." + q.getConfigName() + ".";
 
-		    String j = "Jobs." + job.getJobKeyName() + ".";
-
-		    if (path.equals("Target")) {
+		    if (file.isString(j + "Target")) {
 			Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Target"), (type + subType).toLowerCase());
 			Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Action"), actionT.getName());
-		    } else if (path.equals("Objectives")) {
-			for (String l : file.getConfigurationSection(j + "Quests").getKeys(false)) {
-			    List<String> list = file.getStringList(j + "Quests." + l + ".Objectives");
-			    list.add(actionT.getName() + ";" + (type + subType).toLowerCase() + ";" + amount);
+		    } else if (file.isList(j + "Objectives")) {
+			List<String> list = file.getStringList(j + "Objectives");
+			list.add(actionT.getName() + ";" + (type + subType).toLowerCase() + ";" + amount);
 
-			    file.set(j + "Quests." + l + ".Objectives", list);
-			}
+			file.set(j + "Objectives", list);
 
 			try {
 			    file.save(Jobs.getConfigManager().getJobFile());

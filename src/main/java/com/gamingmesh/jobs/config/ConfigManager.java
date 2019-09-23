@@ -927,7 +927,6 @@ public class ConfigManager {
 			quest.setRewardCmds(commands);
 			quest.setDescription(desc);
 			quest.setRestrictedArea(areas);
-			quest.setCurrentPath(sqsection.getCurrentPath());
 			quests.add(quest);
 
 		    } catch (Throwable e) {
