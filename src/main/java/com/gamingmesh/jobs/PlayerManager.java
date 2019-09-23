@@ -63,6 +63,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -78,6 +79,15 @@ public class PlayerManager {
     private HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<>();
     private HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<>();
     private HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<>();
+
+    /**
+     * @deprecated Use {@link Jobs}.{@link Jobs#getPointsData} instead
+     * @return {@link PointsData}
+     */
+    @Deprecated
+    public PointsData getPointsData() {
+	return Jobs.getPointsData();
+    }
 
     public int getMapSize() {
 	return PlayerUUIDMap.size();

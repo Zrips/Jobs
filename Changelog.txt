@@ -20,3 +20,4 @@
 - Updated translations to the latest
 - Jobs toggles will not be saved from now instantly when get income
 - Added option to leave from job in jobs GUI.
+- Quest objective amount is now optional (default 1)
