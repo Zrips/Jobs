@@ -936,6 +936,8 @@ public class Jobs extends JavaPlugin {
 
 	    cManager.fillCommands();
 
+	    getDBManager().getDB().triggerTableIdUpdate();
+
 	} catch (Throwable e) {
 	    e.printStackTrace();
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");

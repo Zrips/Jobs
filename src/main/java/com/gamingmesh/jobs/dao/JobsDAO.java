@@ -661,6 +661,7 @@ public abstract class JobsDAO {
 
 		if (jobId == 0) {
 		    ls.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
+		    converted = false;
 		} else {
 		    Job job = Jobs.getJob(jobId);
 		    ls.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
@@ -724,6 +725,7 @@ public abstract class JobsDAO {
 		    job = Jobs.getJob(jobid);
 		} else {
 		    job = Jobs.getJob(jobName);
+		    converted = false;
 		}
 
 		if (job == null)
@@ -882,6 +884,9 @@ public abstract class JobsDAO {
 	}
     }
 
+    int convertSchedId = -1;
+    boolean converted = true;
+
     public void recordNewWorld(String worldName) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
@@ -938,6 +943,112 @@ public abstract class JobsDAO {
 	}
 
 	return;
+    }
+
+    public void triggerTableIdUpdate() {
+	// Lets convert old fields
+	if (convertSchedId > 0)
+	    Bukkit.getServer().getScheduler().cancelTask(convertSchedId);
+	if (!converted) {
+	    convertSchedId = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		@Override
+		public void run() {
+		    Jobs.consoleMsg("&6[Jobs] Converting to new database format");
+		    convertID();
+		    Jobs.consoleMsg("&6[Jobs] Converted to new database format");
+		    converted = true;
+		    return;
+		}
+	    }, 60L);
+	}
+    }
+
+    private void convertID() {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement exploreStatement = null;
+	try {
+	    exploreStatement = conn.prepareStatement("UPDATE `" + DBTables.ExploreDataTable.getTableName() + "` SET `" + ExploreDataTableFields.worldid.getCollumn() + "` = ?, `"
+		+ ExploreDataTableFields.worldname
+		    .getCollumn() + "` = ? WHERE `" + ExploreDataTableFields.worldname.getCollumn() + "` = ?;");
+	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
+		exploreStatement.setInt(1, jobsWorld.getValue().getId());
+		exploreStatement.setString(2, null);
+		exploreStatement.setString(3, jobsWorld.getKey());
+		exploreStatement.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(exploreStatement);
+	}
+
+	PreparedStatement bpStatement = null;
+	try {
+	    bpStatement = conn.prepareStatement("UPDATE `" + DBTables.BlocksTable.getTableName() + "` SET `" + BlockTableFields.worldid.getCollumn() + "` = ?, `" + BlockTableFields.world
+		.getCollumn() + "` = ? WHERE `" + BlockTableFields.world.getCollumn() + "` = ?;");
+	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
+		bpStatement.setInt(1, jobsWorld.getValue().getId());
+		bpStatement.setString(2, null);
+		bpStatement.setString(3, jobsWorld.getKey());
+		bpStatement.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(bpStatement);
+	}
+
+	PreparedStatement archiveStatement = null;
+	try {
+	    archiveStatement = conn.prepareStatement("UPDATE `" + DBTables.ArchiveTable.getTableName() + "` SET `" + ArchiveTableFields.jobid.getCollumn() + "` = ?, `" + ArchiveTableFields.job
+		.getCollumn() + "` = ? WHERE `" + ArchiveTableFields.job.getCollumn() + "` = ?;");
+	    for (Job job : Jobs.getJobs()) {
+		archiveStatement.setInt(1, job.getId());
+		archiveStatement.setString(2, null);
+		archiveStatement.setString(3, job.getName());
+		archiveStatement.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(archiveStatement);
+	}
+
+	PreparedStatement usersStatement = null;
+	try {
+	    usersStatement = conn.prepareStatement("UPDATE `" + DBTables.JobsTable.getTableName() + "` SET `" + JobsTableFields.jobid.getCollumn() + "` = ?, `" + JobsTableFields.job
+		.getCollumn() + "` = ? WHERE `" + JobsTableFields.job.getCollumn() + "` = ?;");
+	    for (Job job : Jobs.getJobs()) {
+		usersStatement.setInt(1, job.getId());
+		usersStatement.setString(2, null);
+		usersStatement.setString(3, job.getName());
+		usersStatement.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(usersStatement);
+	}
+	
+	PreparedStatement limitsStatement = null;
+	try {
+	    limitsStatement = conn.prepareStatement("UPDATE `" + DBTables.LimitsTable.getTableName() + "` SET `" + LimitTableFields.typeid.getCollumn() + "` = ?, `" + LimitTableFields.type
+		.getCollumn() + "` = ? WHERE `" + LimitTableFields.type.getCollumn() + "` = ?;");
+	    for (CurrencyType type : CurrencyType.values()) {
+		limitsStatement.setInt(1, type.getId());
+		limitsStatement.setString(2, null);
+		limitsStatement.setString(3, type.getName());
+		limitsStatement.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(limitsStatement);
+	}
+	
+	
     }
 
     public void recordNewJobName(Job job) {

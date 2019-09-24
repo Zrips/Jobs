@@ -521,7 +521,7 @@ public class GeneralConfigManager {
 //	PurgeUse = c.get("Optimizations.Purge.Use", false);
 
 	c.addComment("Logging.Use", "With this set to true all players jobs actions will be logged to database for easy to see statistics",
-	    "This is still in development and in feature it will expand");
+	    "This is still in development and in future it will expand");
 	LoggingUse = c.get("Logging.Use", false);
 
 	c.addComment("broadcast.on-skill-up.use", "Do all players get a message when someone goes up a skill level?");
