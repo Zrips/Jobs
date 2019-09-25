@@ -16,6 +16,8 @@ Items:
       - "&eAnd one tasty apple!"
       # (Optional - default: false) Hides icon if player don't have permission to get this item
       HideWithoutPermission: true
+      # (Optional - default: false) Hides icon if player don't have enough point levels to get this icon
+      HideIfThereIsNoEnoughPoints: false
       # (Optional) When you want to use Player Head material with skin then use this
       #CustomHead:
       #  PlayerName: playerName

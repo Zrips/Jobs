@@ -205,6 +205,11 @@ public class ShopManager {
 
 	    ShopItem item = ls.get(i);
 
+	    if (item.isHideIfNoEnoughPoints() && item.getRequiredTotalLevels() != -1 &&
+			Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()) {
+		continue;
+	    }
+
 	    ArrayList<String> Lore = new ArrayList<>();
 
 	    CMIMaterial mat = CMIMaterial.get(item.getIconMaterial());
@@ -344,18 +349,16 @@ public class ShopManager {
 		continue;
 	    }
 
-	    if (NameSection.isInt("Icon.Amount"))
-		Sitem.setIconAmount(NameSection.getInt("Icon.Amount"));
+		Sitem.setIconAmount(NameSection.getInt("Icon.Amount", 1));
 
 	    if (NameSection.isString("Icon.Name"))
 		Sitem.setIconName(ChatColor.translateAlternateColorCodes('&', NameSection.getString("Icon.Name")));
 
 	    if (NameSection.isList("Icon.Lore")) {
 		List<String> lore = new ArrayList<>();
-		if (!NameSection.getStringList("Icon.Lore").isEmpty())
-		    for (String eachLine : NameSection.getStringList("Icon.Lore")) {
-			lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
-		    }
+		for (String eachLine : NameSection.getStringList("Icon.Lore")) {
+		    lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
+		}
 		Sitem.setIconLore(lore);
 	    }
 
@@ -365,12 +368,15 @@ public class ShopManager {
 	    if (NameSection.isBoolean("Icon.CustomHead.UseCurrentPlayer"))
 		Sitem.setCustomHeadOwner(NameSection.getBoolean("Icon.CustomHead.UseCurrentPlayer"));
 
+	    if (NameSection.isBoolean("Icon.HideIfThereIsNoEnoughPoints")) {
+		Sitem.setHideIfThereIsNoEnoughPoints(NameSection.getBoolean("Icon.HideIfThereIsNoEnoughPoints"));
+	    }
+
 	    if (NameSection.isBoolean("Icon.HideWithoutPermission"))
 		Sitem.setHideWithoutPerm(NameSection.getBoolean("Icon.HideWithoutPermission"));
 
-	    if (NameSection.isList("RequiredPermission")) {
-		if (!NameSection.getStringList("RequiredPermission").isEmpty())
-		    Sitem.setRequiredPerm(NameSection.getStringList("RequiredPermission"));
+	    if (NameSection.isList("RequiredPermission") && !NameSection.getStringList("RequiredPermission").isEmpty()) {
+		Sitem.setRequiredPerm(NameSection.getStringList("RequiredPermission"));
 	    }
 
 	    if (NameSection.isInt("RequiredTotalLevels"))
@@ -396,10 +402,9 @@ public class ShopManager {
 
 	    if (NameSection.isList("PerformCommands")) {
 		List<String> cmd = new ArrayList<>();
-		if (!NameSection.getStringList("PerformCommands").isEmpty())
-		    for (String eachLine : NameSection.getStringList("PerformCommands")) {
-			cmd.add(ChatColor.translateAlternateColorCodes('&', eachLine));
-		    }
+		for (String eachLine : NameSection.getStringList("PerformCommands")) {
+		    cmd.add(ChatColor.translateAlternateColorCodes('&', eachLine));
+		}
 		Sitem.setCommands(cmd);
 	    }
 
@@ -423,22 +428,20 @@ public class ShopManager {
 			continue;
 		    }
 
-		    int amount = 1;
-		    if (itemSection.isInt("Amount"))
-			amount = itemSection.getInt("Amount");
+		    int amount = itemSection.getInt("Amount", 1);
 
 		    String name = null;
 		    if (itemSection.isString("Name"))
 			name = ChatColor.translateAlternateColorCodes('&', itemSection.getString("Name"));
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.contains("Lore") && !itemSection.getStringList("Lore").isEmpty())
+		    if (itemSection.contains("Lore"))
 			for (String eachLine : itemSection.getStringList("Lore")) {
 			    lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.contains("Enchants") && !itemSection.getStringList("Enchants").isEmpty())
+		    if (itemSection.contains("Enchants"))
 			for (String eachLine : itemSection.getStringList("Enchants")) {
 
 			    if (!eachLine.contains("="))

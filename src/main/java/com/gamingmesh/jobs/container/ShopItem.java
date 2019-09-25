@@ -19,6 +19,8 @@ public class ShopItem {
     private List<String> IconLore = new ArrayList<>();
 
     private boolean HideWithoutPerm = false;
+    private boolean hideNoEnoughPoint = false;
+
     private int RequiredTotalLevels = -1;
 
     private List<String> RequiredPerm = new ArrayList<>();
@@ -82,6 +84,14 @@ public class ShopItem {
 
     public List<String> getRequiredPerm() {
 	return RequiredPerm;
+    }
+
+    public void setHideIfThereIsNoEnoughPoints(boolean hideNoEnoughPoint) {
+	this.hideNoEnoughPoint = hideNoEnoughPoint;
+    }
+
+    public boolean isHideIfNoEnoughPoints() {
+	return hideNoEnoughPoint;
     }
 
     public void setHideWithoutPerm(boolean HideWithoutPerm) {
