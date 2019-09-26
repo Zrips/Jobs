@@ -205,11 +205,6 @@ public class ShopManager {
 
 	    ShopItem item = ls.get(i);
 
-	    if (item.isHideIfNoEnoughPoints() && item.getRequiredTotalLevels() != -1 &&
-			Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()) {
-		continue;
-	    }
-
 	    ArrayList<String> Lore = new ArrayList<>();
 
 	    CMIMaterial mat = CMIMaterial.get(item.getIconMaterial());
@@ -222,6 +217,12 @@ public class ShopManager {
 			break;
 		    }
 		}
+	    }
+
+	    if (item.isHideIfNoEnoughPoints() && item.getRequiredTotalLevels() != -1 &&
+			Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()) {
+		mat = CMIMaterial.STONE_BUTTON;
+		Lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
 	    }
 
 	    if (mat == null)
