@@ -203,14 +203,15 @@ public class Jobs extends JavaPlugin {
     private boolean setupPlaceHolderAPI() {
 	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
 	    return false;
-	if (getVersionCheckManager().convertVersion(getServer().getPluginManager()
-	    .getPlugin("PlaceholderAPI").getDescription().getVersion()) >= getVersionCheckManager().convertVersion("2.10.0")) {
+
+	if (Integer.parseInt(getServer().getPluginManager().getPlugin("PlaceholderAPI")
+	    .getDescription().getVersion().replace(".", "")) >= Integer.parseInt("2100")) {
 	    if (new NewPlaceholderAPIHook(this).register())
 		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
 	} else {
 	    if (new PlaceholderAPIHook(this).hook())
-		consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version. In the PlaceholderAPI"
-		    + " new version has removed the extension and we using the latest.");
+		consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version of PlaceholderAPI. Please update "
+			    + "to the latest version.");
 	}
 	return true;
     }
@@ -640,20 +641,21 @@ public class Jobs extends JavaPlugin {
 	// unregister all registered listeners by this plugin and register again
 	// this reduces the server memory leak
 	if (!startup) {
+	    org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
 	    HandlerList.unregisterAll(instance);
 
-	    getInstance().getServer().getPluginManager().registerEvents(new JobsListener(instance), instance);
-	    getInstance().getServer().getPluginManager().registerEvents(new JobsPaymentListener(instance), instance);
+	    pm.registerEvents(new JobsListener(instance), instance);
+	    pm.registerEvents(new JobsPaymentListener(instance), instance);
 
 	    if (GconfigManager.useBlockProtection)
-		getInstance().getServer().getPluginManager().registerEvents(PistonProtectionListener, instance);
+		pm.registerEvents(PistonProtectionListener, instance);
 
 	    if (getMcMMOManager().CheckmcMMO()) {
 		try {
 		    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
-		    getInstance().getServer().getPluginManager().registerEvents(new McMMO2_X_listener(instance), instance);
+		    pm.registerEvents(new McMMO2_X_listener(instance), instance);
 		} catch (ClassNotFoundException e) {
-		    getInstance().getServer().getPluginManager().registerEvents(new McMMO1_X_listener(instance), instance);
+		    pm.registerEvents(new McMMO1_X_listener(instance), instance);
 		}
 	    }
 	}
