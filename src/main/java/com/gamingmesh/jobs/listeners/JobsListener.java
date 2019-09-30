@@ -425,6 +425,7 @@ public class JobsListener implements Listener {
 	    player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
 	    return;
 	}
+
 	if (Jobs.getSignUtil().removeSign(block.getLocation()))
 	    Jobs.getSignUtil().saveSigns();
     }
@@ -444,13 +445,11 @@ public class JobsListener implements Listener {
 
 	Sign sign = (Sign) block.getState();
 
-	final String signtype = ChatColor.stripColor(event.getLine(1));
-
-	SignTopType type = SignTopType.getType(signtype);
-
 	if (!ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[Jobs]"))
 	    return;
 
+	final String signtype = ChatColor.stripColor(event.getLine(1));
+	final SignTopType type = SignTopType.getType(signtype);
 	if (type == null)
 	    return;
 
@@ -490,7 +489,6 @@ public class JobsListener implements Listener {
 	}
 
 	jobsSign signInfo = new jobsSign();
-	SignUtil signUtil = Jobs.getSignUtil();
 
 	Location loc = sign.getLocation();
 	signInfo.setLoc(loc);
@@ -501,6 +499,8 @@ public class JobsListener implements Listener {
 	signInfo.setType(type);
 
 	signInfo.setSpecial(special);
+
+	final SignUtil signUtil = Jobs.getSignUtil();
 
 	signUtil.addSign(signInfo);
 	signUtil.saveSigns();
@@ -659,12 +659,7 @@ public class JobsListener implements Listener {
 	String name = null;
 	List<String> lore = new ArrayList<>();
 
-	Map<Enchantment, Integer> enchants = new HashMap<>();
-	try {
-	    enchants = iih.getEnchantments();
-	} catch (Throwable e) {
-	    return;
-	}
+	Map<Enchantment, Integer> enchants = new HashMap<>(iih.getEnchantments());
 	if (enchants.isEmpty())
 	    return;
 

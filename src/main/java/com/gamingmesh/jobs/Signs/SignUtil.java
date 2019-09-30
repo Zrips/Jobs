@@ -72,6 +72,13 @@ public class SignUtil {
 	old.put(loc, jSign);
     }
 
+    public void cancelSignTask() {
+	if (update > -1) {
+	    Bukkit.getScheduler().cancelTask(update);
+	    update = -1;
+	}
+    }
+
     // Sign file
     public void LoadSigns() {
 	// Boolean false does not create a file
@@ -131,6 +138,7 @@ public class SignUtil {
 	    Jobs.consoleMsg("&e[Jobs] Loaded " + SignsByLocation.size() + " top list signs");
 	}
 
+	cancelSignTask();
 	signUpdate();
     }
 
@@ -164,7 +172,9 @@ public class SignUtil {
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
-	return;
+
+	cancelSignTask();
+	signUpdate();
     }
 
     private int update = -1;
@@ -175,10 +185,12 @@ public class SignUtil {
 		@Override
 		public void run() {
 		    for (Entry<String, HashMap<String, jobsSign>> one : SignsByType.entrySet()) {
-			SignUpdate(Jobs.getJob(one.getKey()));
+			for (Entry<String, jobsSign> j : SignsByLocation.entrySet()) {
+			    SignUpdate(Jobs.getJob(one.getKey()), j.getValue().getType());
+			}
 		    }
 		}
-	    }, 60 * 20L, Jobs.getGCManager().InfoUpdateInterval * 20L);
+	    }, 30 * 20L, Jobs.getGCManager().InfoUpdateInterval * 20L);
 	}
     }
 
@@ -194,18 +206,17 @@ public class SignUtil {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return true;
 
-	if (update == -1) {
-	    signUpdate();
-	}
-
-	if (job == null)
-	    return false;
+	signUpdate();
 
 	if (type == null)
 	    type = SignTopType.toplist;
 
-	String JobNameOrType = jobsSign.getIdentifier(job, type);
-	HashMap<String, jobsSign> signs = this.SignsByType.get(JobNameOrType.toLowerCase());
+	String JobNameOrType = null;
+	HashMap<String, jobsSign> signs = null;
+	if (job != null) {
+	    JobNameOrType = jobsSign.getIdentifier(job, type);
+	    signs = this.SignsByType.get(JobNameOrType.toLowerCase());
+	}
 
 	if (signs == null)
 	    return false;
@@ -255,9 +266,11 @@ public class SignUtil {
 	    Block block = loc.getBlock();
 	    if (!(block.getState() instanceof org.bukkit.block.Sign)) {
 
-		HashMap<String, jobsSign> tt = this.SignsByType.get(JobNameOrType.toLowerCase());
-		if (tt != null) {
-		    tt.remove(jSign.locToBlockString());
+		if (JobNameOrType != null) {
+		    HashMap<String, jobsSign> tt = this.SignsByType.get(JobNameOrType.toLowerCase());
+		    if (tt != null) {
+			tt.remove(jSign.locToBlockString());
+		    }
 		}
 		this.SignsByLocation.remove(jSign.locToBlockString());
 		save = true;
