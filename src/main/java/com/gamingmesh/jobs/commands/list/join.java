@@ -33,55 +33,53 @@ public class join implements Cmd {
 	}
 
 	Player pSender = (Player) sender;
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
-
-	String jobName = args[0];
-	Job job = Jobs.getJob(jobName);
+	Job job = Jobs.getJob(args[0]);
 	if (job == null) {
 	    // job does not exist
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
 	if (!Jobs.getCommandManager().hasJobPermission(pSender, job)) {
 	    // you do not have permission to join the job
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
 
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
 	if (jPlayer.isInJob(job)) {
 	    // already in job message
 	    String message = Jobs.getLanguage().getMessage("command.join.error.alreadyin");
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
-	    sender.sendMessage(message);
+	    pSender.sendMessage(message);
 	    return true;
 	}
 
 	if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
 	    String message = Jobs.getLanguage().getMessage("command.join.error.fullslots");
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
-	    sender.sendMessage(message);
+	    pSender.sendMessage(message);
 	    return true;
 	}
 
 	int confMaxJobs = Jobs.getGCManager().getMaxJobs();
 	short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
 	if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(jPlayer, PlayerMaxJobs)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
 	    return true;
 	}
 
 	if (args.length == 2 && args[1].equalsIgnoreCase("-needConfirmation")) {
 	    RawMessage rm = new RawMessage();
 	    rm.add(Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()), Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()), "jobs join " + job.getName());	    
-	    rm.show(sender);
+	    rm.show(pSender);
 	    return true;
 	}
 
 	JobProgression ajp = jPlayer.getArchivedJobProgression(job);
 	if (ajp != null) {
 	    if (!ajp.canRejoin()) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", ajp.getRejoinTimeMessage()));
+		pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", ajp.getRejoinTimeMessage()));
 		return true;
 	    }
 	}
@@ -90,7 +88,7 @@ public class join implements Cmd {
 
 	String message = Jobs.getLanguage().getMessage("command.join.success");
 	message = message.replace("%jobname%", job.getChatColor() + job.getName());
-	sender.sendMessage(message);
+	pSender.sendMessage(message);
 	return true;
     }
 }

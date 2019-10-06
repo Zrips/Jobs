@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.config;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -62,7 +63,7 @@ public class LanguageManager {
 	    if (jarFile != null)
 		try {
 		    jarFile.close();
-		} catch (Throwable e) {
+		} catch (IOException e) {
 		}
 	}
 	return listOfCommands;
@@ -90,8 +91,7 @@ public class LanguageManager {
 	//Up to here.
 
 	String ls = Jobs.getGCManager().localeString;
-
-	if (ls == null || ls.equals(""))
+	if (ls.equals(""))
 	    ls = "en";
 
 	languages.clear();

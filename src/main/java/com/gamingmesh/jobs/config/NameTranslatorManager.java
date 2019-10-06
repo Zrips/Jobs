@@ -174,8 +174,7 @@ public class NameTranslatorManager {
 
     synchronized void load() {
 	String ls = Jobs.getGCManager().localeString;
-
-	if (ls == null || ls.equals(""))
+	if (ls.equals(""))
 	    return;
 
 	File file = new File(Jobs.getFolder(), "TranslatableWords.yml");

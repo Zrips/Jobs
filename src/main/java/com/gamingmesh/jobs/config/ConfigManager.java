@@ -342,9 +342,6 @@ public class ConfigManager {
 		    meta = "1";
 		    break;
 		default:
-		    type = CMIEntityType.getByName(myKey.toUpperCase()).name();
-		    id = CMIEntityType.getByName(myKey.toUpperCase()).getId();
-		    meta = "1";
 		    break;
 		}
 	    }
@@ -400,8 +397,9 @@ public class ConfigManager {
 	InputStreamReader s = new InputStreamReader(new FileInputStream(f), "UTF-8");
 
 	ArrayList<Job> jobs = new ArrayList<>();
-	Jobs.setJobs(jobs);
+
 	Jobs.setNoneJob(null);
+
 	if (!f.exists()) {
 	    try {
 		f.createNewFile();
@@ -1129,9 +1127,6 @@ public class ConfigManager {
 				    meta = "1";
 				    break;
 				default:
-				    type = CMIEntityType.getByName(myKey.toUpperCase()).name();
-				    id = CMIEntityType.getByName(myKey.toUpperCase()).getId();
-				    meta = "1";
 				    break;
 				}
 			    }
@@ -1211,6 +1206,8 @@ public class ConfigManager {
 		Jobs.setNoneJob(job);
 	    else
 		jobs.add(job);
+
+	    Jobs.setJobs(jobs);
 	}
 
 	Jobs.consoleMsg("&e[Jobs] Loaded " + Jobs.getJobs().size() + " jobs!");
