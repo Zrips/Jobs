@@ -587,7 +587,7 @@ public class Jobs extends JavaPlugin {
      */
     public void startup() {
 	try {
-	    reload(false);
+	    reload(true);
 	} catch (IOException e1) {
 	    e1.printStackTrace();
 	}
@@ -633,7 +633,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public static void reload() throws IOException {
-	reload(true);
+	reload(false);
     }
 
     /**
