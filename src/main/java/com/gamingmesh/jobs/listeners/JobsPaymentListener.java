@@ -356,7 +356,8 @@ public class JobsPaymentListener implements Listener {
 	    FurnaceBrewingHandling.removeFurnace(block);
 	else if (cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 	    FurnaceBrewingHandling.removeFurnace(block);
-	else if (cmat.equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
+	else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)
+		    && block.hasMetadata(brewingOwnerMetadata))
 	    FurnaceBrewingHandling.removeBrewing(block);
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1110,7 +1111,7 @@ public class JobsPaymentListener implements Listener {
 	if (e.getDamager() instanceof Player) {
 	    pDamager = (Player) e.getDamager();
 	    // Checking if killer is MyPet animal
-	} else if (Jobs.getMyPetManager().isMyPet(e.getDamager())) {
+	} else if (Jobs.getMyPetManager() != null && Jobs.getMyPetManager().isMyPet(e.getDamager())) {
 	    UUID uuid = Jobs.getMyPetManager().getOwnerOfPet(e.getDamager());
 	    if (uuid != null)
 		pDamager = Bukkit.getPlayer(uuid);
@@ -1518,8 +1519,8 @@ public class JobsPaymentListener implements Listener {
 		FurnaceBrewingHandling.removeFurnace(block);
 	    else if (cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 		FurnaceBrewingHandling.removeFurnace(block);
-
-	    else if (cmat.equals(CMIMaterial.BREWING_STAND) && block.hasMetadata(brewingOwnerMetadata))
+	    else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)
+			    && block.hasMetadata(brewingOwnerMetadata))
 		FurnaceBrewingHandling.removeBrewing(block);
 
 	    if (Jobs.getGCManager().useBlockProtection)

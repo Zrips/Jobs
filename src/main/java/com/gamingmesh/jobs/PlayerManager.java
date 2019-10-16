@@ -998,7 +998,7 @@ public class PlayerManager {
 	    }
 	}
 
-	if (ent != null && Jobs.getMyPetManager().isMyPet(ent)) {
+	if (ent != null && Jobs.getMyPetManager() != null && Jobs.getMyPetManager().isMyPet(ent)) {
 	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
 	    if (amount != null)
 		boost.add(BoostOf.PetPay, new BoostMultiplier().add(amount));

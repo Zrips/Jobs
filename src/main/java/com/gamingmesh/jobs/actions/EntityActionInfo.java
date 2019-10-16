@@ -20,11 +20,10 @@ package com.gamingmesh.jobs.actions;
 
 import org.bukkit.entity.Entity;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
-public class EntityActionInfo extends BaseActionInfo implements ActionInfo {
+public class EntityActionInfo extends BaseActionInfo {
     private Entity entity;
 
     public EntityActionInfo(Entity entity, ActionType type) {

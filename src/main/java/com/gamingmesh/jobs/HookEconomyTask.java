@@ -40,7 +40,7 @@ public class HookEconomyTask implements Runnable {
 	    return;
 
 	// no Economy found
-	Jobs.setEconomy(plugin, new BlackholeEconomy());
+	Jobs.setEconomy(new BlackholeEconomy());
 	Jobs.getPluginLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
 	Jobs.getPluginLogger().severe("Vault is required by this plugin for economy support!");
 	Jobs.getPluginLogger().severe("Please install them first!");
@@ -62,7 +62,7 @@ public class HookEconomyTask implements Runnable {
 	if (economy == null)
 	    return false;
 
-	Jobs.setEconomy(plugin, new VaultEconomy(economy));
+	Jobs.setEconomy(new VaultEconomy(economy));
 	Jobs.consoleMsg("&e[" + plugin.getDescription().getName() + "] Successfully linked with Vault.");
 	return true;
     }

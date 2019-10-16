@@ -40,7 +40,6 @@ import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 
 public class GeneralConfigManager {
-    private Jobs plugin;
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
     protected Locale locale;
     protected int savePeriod;
@@ -179,10 +178,6 @@ public class GeneralConfigManager {
 
     public CurrencyLimit getLimit(CurrencyType type) {
 	return currencyLimitUse.get(type);
-    }
-
-    public GeneralConfigManager(Jobs plugin) {
-	this.plugin = plugin;
     }
 
     /**
@@ -384,27 +379,18 @@ public class GeneralConfigManager {
 	Jobs.getJobsDAO().cleanJobs();
 	Jobs.getJobsDAO().cleanUsers();
 	// Load locale
-	Jobs.setLanguageManager();
 	Jobs.getLanguageManager().load();
 	// title settings
-	Jobs.setTitleManager();
 	Jobs.gettitleManager().load();
 	// restricted areas
-	Jobs.setRestrictedAreaManager();
 	Jobs.getRestrictedAreaManager().load();
 	// restricted blocks
-	Jobs.setRestrictedBlockManager();
 	Jobs.getRestrictedBlockManager().load();
 	// Item/Block/mobs name list
-	Jobs.setNameTranslatorManager();
 	Jobs.getNameTranslatorManager().load();
 	// signs information
-	Jobs.setSignUtil(plugin);
 	Jobs.getSignUtil().LoadSigns();
-	// Schedule
-	Jobs.setScheduleManager(plugin);
 	// Shop
-	Jobs.setShopManager();
 	Jobs.getShopManager().load();
     }
 

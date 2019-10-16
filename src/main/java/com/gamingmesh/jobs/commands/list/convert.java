@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,8 +18,7 @@ public class convert implements Cmd {
 
     @Override
     @JobCommand(2600)
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-
+    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (sender instanceof Player) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.fromconsole"));
 	    return true;
@@ -29,55 +29,58 @@ public class convert implements Cmd {
 	    return true;
 	}
 
-	List<Convert> archivelist = null;
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+	    @Override
+	    public void run() {
+	    List<Convert> archivelist = null;
+	    try {
+		archivelist = Jobs.getJobsDAO().convertDatabase();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+		Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
+		return;
+	    }
 
-	try {
-	    archivelist = Jobs.getJobsDAO().convertDatabase();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	    Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
-	    return true;
-	}
+	    Jobs.ChangeDatabase();
 
-	Jobs.ChangeDatabase();
+	    if (archivelist == null)
+		return;
 
-	if (archivelist == null)
-	    return false;
-	try {
-	    Jobs.getJobsDAO().truncateAllTables();
-	    Jobs.getPlayerManager().convertChacheOfPlayers(true);
+	    try {
+		Jobs.getJobsDAO().truncateAllTables();
+		Jobs.getPlayerManager().convertChacheOfPlayers(true);
 
-	    Jobs.getJobsDAO().continueConvertions(archivelist);
-	    Jobs.getPlayerManager().clearMaps();
-	    Jobs.getPlayerManager().clearCache();
+		Jobs.getJobsDAO().continueConvertions(archivelist);
+		Jobs.getPlayerManager().clearMaps();
+		Jobs.getPlayerManager().clearCache();
 
-	    Jobs.getJobsDAO().saveExplore();
+		Jobs.getJobsDAO().saveExplore();
 //	    Do we really need to convert Block protection?
 //	    Jobs.getJobsDAO().saveBlockProtection();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	    Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
-	    return true;
-	}
+	    } catch (SQLException e) {
+		e.printStackTrace();
+		Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
+		return;
+	    }
 
-	try {
-	    Jobs.reload();
+	    try {
+		Jobs.reload();
+		Jobs.loadAllPlayersData();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	    }
+	});
 
-	    Jobs.loadAllPlayersData();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-
-	String from = "MysSQL";
-	String to = "SqLite";
+	String from = "MySQL";
+	String to = "SQLite";
 
 	if (!Jobs.getDBManager().getDbType().equals(DataBaseType.SqLite)) {
-	    from = "SqLite";
+	    from = "SQLite";
 	    to = "MySQL";
 	}
 
 	Jobs.consoleMsg("&eData base was converted from &2" + from + " &eto &2" + to + "&e!");
-
 	return true;
     }
 }

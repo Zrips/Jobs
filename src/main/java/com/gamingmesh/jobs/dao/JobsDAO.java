@@ -1018,7 +1018,7 @@ public abstract class JobsDAO {
 
 	PreparedStatement usersStatement = null;
 	try {
-	    usersStatement = conn.prepareStatement("UPDATE `" + DBTables.JobsTable.getTableName() + "` SET `" + JobsTableFields.jobid.getCollumn() + "` = ?, `" + JobsTableFields.job
+	    usersStatement = conn.prepareStatement("UPDATE `" + getJobsTableName() + "` SET `" + JobsTableFields.jobid.getCollumn() + "` = ?, `" + JobsTableFields.job
 		.getCollumn() + "` = ? WHERE `" + JobsTableFields.job.getCollumn() + "` = ?;");
 	    for (Job job : Jobs.getJobs()) {
 		usersStatement.setInt(1, job.getId());
@@ -1578,8 +1578,9 @@ public abstract class JobsDAO {
 	ResultSet res = null;
 	try {
 
-	    prest = conn.prepareStatement("SELECT " + JobsTableFields.userid.getCollumn() + ", COUNT(*) AS amount, sum(" + JobsTableFields.level.getCollumn() + ") AS totallvl FROM `" + DBTables.JobsTable
-		.getTableName() + "` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + ",100;");
+	    prest = conn.prepareStatement("SELECT " + JobsTableFields.userid.getCollumn()
+		+ ", COUNT(*) AS amount, sum(" + JobsTableFields.level.getCollumn() + ") AS totallvl FROM `" + getJobsTableName()
+		+ "` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + ",100;");
 	    res = prest.executeQuery();
 
 	    while (res.next()) {

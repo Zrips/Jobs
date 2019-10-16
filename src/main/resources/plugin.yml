@@ -4,7 +4,7 @@ main: com.gamingmesh.jobs.Jobs
 version: ${project.version}
 api-version: 1.13
 website: https://www.spigotmc.org/resources/4216/
-author: phrstbrn
+authors: [phrstbrn, Zrips, montlikadani]
 softdepend: [Vault, MythicMobs, McMMO, WorldGuard, MyPet, PlaceholderAPI]
 commands:
   jobs:

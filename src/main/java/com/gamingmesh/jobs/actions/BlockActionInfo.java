@@ -21,10 +21,9 @@ package com.gamingmesh.jobs.actions;
 import org.bukkit.block.Block;
 
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
-import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
-public class BlockActionInfo extends MaterialActionInfo implements ActionInfo {
+public class BlockActionInfo extends MaterialActionInfo {
     public BlockActionInfo(Block block, ActionType type) {
 	super(block.getType(), CMIMaterial.getBlockData(block), type);
     }

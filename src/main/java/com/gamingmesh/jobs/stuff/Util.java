@@ -148,59 +148,44 @@ public class Util {
     }
 
     public static Color getColor(int a) {
-	Color c = null;
-	if (a == 1)
-	    c = Color.AQUA;
-
-	if (a == 2)
-	    c = Color.BLACK;
-
-	if (a == 3)
-	    c = Color.BLUE;
-
-	if (a == 4)
-	    c = Color.FUCHSIA;
-
-	if (a == 5)
-	    c = Color.GRAY;
-
-	if (a == 6)
-	    c = Color.GREEN;
-
-	if (a == 7)
-	    c = Color.LIME;
-
-	if (a == 8)
-	    c = Color.MAROON;
-
-	if (a == 9)
-	    c = Color.NAVY;
-
-	if (a == 10)
-	    c = Color.OLIVE;
-
-	if (a == 11)
-	    c = Color.ORANGE;
-
-	if (a == 12)
-	    c = Color.PURPLE;
-
-	if (a == 13)
-	    c = Color.RED;
-
-	if (a == 14)
-	    c = Color.SILVER;
-
-	if (a == 15)
-	    c = Color.TEAL;
-
-	if (a == 16)
-	    c = Color.WHITE;
-
-	if (a == 17)
-	    c = Color.YELLOW;
-
-	return c == null ? Color.BLACK : c;
+	switch (a) {
+	case 1:
+	    return Color.AQUA;
+	case 2:
+	    return Color.BLACK;
+	case 3:
+	    return Color.BLUE;
+	case 4:
+	    return Color.FUCHSIA;
+	case 5:
+	    return Color.GRAY;
+	case 6:
+	    return Color.GREEN;
+	case 7:
+	    return Color.LIME;
+	case 8:
+	    return Color.MAROON;
+	case 9:
+	    return Color.NAVY;
+	case 10:
+	    return Color.OLIVE;
+	case 11:
+	    return Color.ORANGE;
+	case 12:
+	    return Color.PURPLE;
+	case 13:
+	    return Color.RED;
+	case 14:
+	    return Color.SILVER;
+	case 15:
+	    return Color.TEAL;
+	case 16:
+	    return Color.WHITE;
+	case 17:
+	    return Color.YELLOW;
+	default:
+	    return Color.BLACK;
+	}
     }
 
     public static JobsWorld getJobsWorld(String name) {

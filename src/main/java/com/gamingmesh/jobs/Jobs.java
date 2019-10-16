@@ -175,7 +175,7 @@ public class Jobs extends JavaPlugin {
 	return McMMOManager;
     }
 
-    public void setPistonProtectionListener() {
+    private void setPistonProtectionListener() {
 	PistonProtectionListener = new PistonProtectionListener();
     }
 
@@ -183,11 +183,15 @@ public class Jobs extends JavaPlugin {
 	return PistonProtectionListener;
     }
 
-    public void setMyPetManager() {
+    private void setMyPetManager() {
 	myPetManager = new MyPetManager();
     }
 
     public static MyPetManager getMyPetManager() {
+	if (myPetManager == null && getInstance().getServer().getPluginManager().getPlugin("MyPet") != null) {
+	    myPetManager = new MyPetManager();
+	}
+
 	return myPetManager;
     }
 
@@ -249,7 +253,7 @@ public class Jobs extends JavaPlugin {
 	return MythicManager;
     }
 
-    public void setLoging() {
+    private void setLoging() {
 	loging = new Loging();
     }
 
@@ -257,7 +261,7 @@ public class Jobs extends JavaPlugin {
 	return loging;
     }
 
-    public void setBpManager() {
+    private void setBpManager() {
 	BpManager = new BlockProtectionManager();
     }
 
@@ -271,7 +275,7 @@ public class Jobs extends JavaPlugin {
 	return reflections;
     }
 
-    public static void setDBManager() {
+    private void setDBManager() {
 	DBManager = new JobsManager(instance);
     }
 
@@ -281,7 +285,7 @@ public class Jobs extends JavaPlugin {
 	return DBManager;
     }
 
-    public static void setPointsDatabase() {
+    private void setPointsDatabase() {
 	pointsDatabase = new PointsData();
     }
 
@@ -292,15 +296,15 @@ public class Jobs extends JavaPlugin {
 	return pointsDatabase;
     }
 
-    public static void setShopManager() {
-	shopManager = new ShopManager();
-    }
-
     public static ShopManager getShopManager() {
+	if (shopManager == null) {
+	    shopManager = new ShopManager();
+	}
+
 	return shopManager;
     }
 
-    public void setConfigManager() {
+    private void setConfigManager() {
 	configManager = new ConfigManager();
     }
 
@@ -308,15 +312,15 @@ public class Jobs extends JavaPlugin {
 	return configManager;
     }
 
-    public void setGCManager() {
-	GconfigManager = new GeneralConfigManager(this);
+    private void setGCManager() {
+	GconfigManager = new GeneralConfigManager();
     }
 
     public static GeneralConfigManager getGCManager() {
 	return GconfigManager;
     }
 
-    public void setActionBar() {
+    private void setActionBar() {
 	actionbar = new ActionBarTitleMessages();
     }
 
@@ -326,7 +330,7 @@ public class Jobs extends JavaPlugin {
 	return actionbar;
     }
 
-    public static void setNms(NMS nms) {
+    private void setNms(NMS nms) {
 	Jobs.nms = nms;
     }
 
@@ -344,31 +348,31 @@ public class Jobs extends JavaPlugin {
 	return pManager;
     }
 
-    public static void setRestrictedBlockManager() {
-	RBManager = new RestrictedBlockManager();
-    }
-
     public static RestrictedBlockManager getRestrictedBlockManager() {
+	if (RBManager == null) {
+	    RBManager = new RestrictedBlockManager();
+	}
+
 	return RBManager;
     }
 
-    public static void setRestrictedAreaManager() {
-	RAManager = new RestrictedAreaManager();
-    }
-
     public static RestrictedAreaManager getRestrictedAreaManager() {
+	if (RAManager == null) {
+	    RAManager = new RestrictedAreaManager();
+	}
+
 	return RAManager;
     }
 
-    public static void setTitleManager() {
-	titleManager = new TitleManager();
-    }
-
     public static TitleManager gettitleManager() {
+	if (titleManager == null) {
+	    titleManager = new TitleManager();
+	}
+
 	return titleManager;
     }
 
-    public void setBBManager() {
+    private void setBBManager() {
 	BBManager = new BossBarManager(this);
     }
 
@@ -399,26 +403,26 @@ public class Jobs extends JavaPlugin {
      * @return the schedule manager
      */
     public static ScheduleManager getScheduleManager() {
+	if (scheduleManager == null) {
+	    scheduleManager = new ScheduleManager(getInstance());
+	}
+
 	return scheduleManager;
     }
 
-    public static void setScheduleManager(Jobs plugin) {
-	scheduleManager = new ScheduleManager(plugin);
-    }
-
     public static NameTranslatorManager getNameTranslatorManager() {
-	return NameTranslatorManager;
-    }
+	if (NameTranslatorManager == null) {
+	    NameTranslatorManager = new NameTranslatorManager();
+	}
 
-    public static void setNameTranslatorManager() {
-	NameTranslatorManager = new NameTranslatorManager();
+	return NameTranslatorManager;
     }
 
     public static GuiManager getGUIManager() {
 	return GUIManager;
     }
 
-    public void setGUIManager() {
+    private void setGUIManager() {
 	GUIManager = new GuiManager();
     }
 
@@ -430,7 +434,7 @@ public class Jobs extends JavaPlugin {
 	return cManager;
     }
 
-    public void setCommandManager() {
+    private void setCommandManager() {
 	cManager = new JobsCommands(this);
     }
 
@@ -438,7 +442,7 @@ public class Jobs extends JavaPlugin {
 	return exploreManager;
     }
 
-    public void setExplore() {
+    private void setExplore() {
 	exploreManager = new ExploreManager();
     }
 
@@ -463,11 +467,11 @@ public class Jobs extends JavaPlugin {
      * @return the sign manager
      */
     public static SignUtil getSignUtil() {
-	return signManager;
-    }
+	if (signManager == null) {
+	    signManager = new SignUtil(getInstance());
+	}
 
-    public static void setSignUtil(Jobs plugin) {
-	signManager = new SignUtil(plugin);
+	return signManager;
     }
 
     /**
@@ -478,22 +482,22 @@ public class Jobs extends JavaPlugin {
 	return lManager;
     }
 
-    public void setLanguage() {
+    private void setLanguage() {
 	lManager = new Language(this);
     }
 
     public static LanguageManager getLanguageManager() {
-	return lmManager;
-    }
+	if (lmManager == null) {
+	    lmManager = new LanguageManager();
+	}
 
-    public static void setLanguageManager() {
-	lmManager = new LanguageManager();
+	return lmManager;
     }
 
     /**
      * Sets the plugin logger
      */
-    public void setPluginLogger(Logger pLogger) {
+    private void setPluginLogger(Logger pLogger) {
 	Jobs.pLogger = pLogger;
     }
 
@@ -506,7 +510,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public static File getFolder() {
-	File folder = Jobs.getInstance().getDataFolder();
+	File folder = getInstance().getDataFolder();
 	if (!folder.exists())
 	    folder.mkdirs();
 	return folder;
@@ -583,7 +587,7 @@ public class Jobs extends JavaPlugin {
      */
     public void startup() {
 	try {
-	    reload();
+	    reload(false);
 	} catch (IOException e1) {
 	    e1.printStackTrace();
 	}
@@ -603,8 +607,7 @@ public class Jobs extends JavaPlugin {
 	HashMap<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
 	HashMap<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
 	HashMap<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
-	Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator();
-	while (it.hasNext()) {
+	for (Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator(); it.hasNext();) {
 	    Entry<UUID, PlayerInfo> one = it.next();
 	    try {
 		int id = one.getValue().getID();
@@ -618,7 +621,7 @@ public class Jobs extends JavaPlugin {
 		if (jPlayer == null)
 		    continue;
 		getPlayerManager().addPlayerToCache(jPlayer);
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
 	}
@@ -639,7 +642,6 @@ public class Jobs extends JavaPlugin {
      */
     public static void reload(boolean startup) throws IOException {
 	// unregister all registered listeners by this plugin and register again
-	// this reduces the server memory leak
 	if (!startup) {
 	    org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
 	    HandlerList.unregisterAll(instance);
@@ -678,8 +680,8 @@ public class Jobs extends JavaPlugin {
 	lManager.reload();
 	configManager.reload();
 
-	Jobs.getDBManager().getDB().loadAllJobsWorlds();
-	Jobs.getDBManager().getDB().loadAllJobsNames();
+	getDBManager().getDB().loadAllJobsWorlds();
+	getDBManager().getDB().loadAllJobsNames();
 
 	FurnaceBrewingHandling.load();
 	ToggleBarHandling.load();
@@ -704,10 +706,10 @@ public class Jobs extends JavaPlugin {
 
 	// Schedule
 	if (GconfigManager.enableSchedule) {
-	    scheduleManager.load();
-	    scheduleManager.start();
+	    getScheduleManager().load();
+	    getScheduleManager().start();
 	} else
-	    scheduleManager.cancel();
+	    getScheduleManager().cancel();
 
 	permissionManager = new PermissionManager();
     }
@@ -777,7 +779,7 @@ public class Jobs extends JavaPlugin {
 	return classLoader;
     }
 
-    public void setJobsClassloader() {
+    private void setJobsClassloader() {
 	classLoader = new JobsClassLoader(this);
     }
 
@@ -785,7 +787,7 @@ public class Jobs extends JavaPlugin {
      * Sets the permission handler
      * @param permissionHandler - the permission handler
      */
-    public void setPermissionHandler(PermissionHandler permissionHandler) {
+    private void setPermissionHandler(PermissionHandler permissionHandler) {
 	Jobs.permissionHandler = permissionHandler;
     }
 
@@ -809,8 +811,8 @@ public class Jobs extends JavaPlugin {
      * Sets the economy handler
      * @param eco - the economy handler
      */
-    public static void setEconomy(Jobs plugin, Economy eco) {
-	economy = new BufferedEconomy(plugin, eco);
+    public static void setEconomy(Economy eco) {
+	economy = new BufferedEconomy(getInstance(), eco);
     }
 
     /**
@@ -915,16 +917,19 @@ public class Jobs extends JavaPlugin {
 	    if (getMcMMOManager().CheckmcMMO())
 		setMcMMOlistener();
 
-	    setMyPetManager();
+	    if (getServer().getPluginManager().isPluginEnabled("MyPet")) {
+		setMyPetManager();
+	    }
 	    setWorldGuard();
 
 	    setMythicManager();
 	    if (GconfigManager.MythicMobsEnabled && MythicManager != null && MythicManager.Check())
 		MythicManager.registerListener();
 
-	    setPistonProtectionListener();
-	    if (GconfigManager.useBlockProtection)
+	    if (GconfigManager.useBlockProtection) {
+		setPistonProtectionListener();
 		getServer().getPluginManager().registerEvents(PistonProtectionListener, this);
+	    }
 
 	    // register economy
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
@@ -957,7 +962,7 @@ public class Jobs extends JavaPlugin {
 	    shopManager.CloseInventories();
 	    dao.saveExplore();
 
-	    Jobs.getBpManager().saveCache();
+	    getBpManager().saveCache();
 	    FurnaceBrewingHandling.save();
 	    ToggleBarHandling.save();
 	} catch (Throwable e) {

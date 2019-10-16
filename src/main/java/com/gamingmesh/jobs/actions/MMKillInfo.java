@@ -18,11 +18,10 @@
 
 package com.gamingmesh.jobs.actions;
 
-import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
-public class MMKillInfo extends BaseActionInfo implements ActionInfo {
+public class MMKillInfo extends BaseActionInfo {
 	private String name;
 
 	public MMKillInfo(String name, ActionType type) {

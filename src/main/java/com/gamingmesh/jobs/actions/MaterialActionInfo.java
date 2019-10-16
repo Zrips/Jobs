@@ -20,11 +20,10 @@ package com.gamingmesh.jobs.actions;
 
 import org.bukkit.Material;
 
-import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
-public abstract class MaterialActionInfo extends BaseActionInfo implements ActionInfo {
+public abstract class MaterialActionInfo extends BaseActionInfo {
     private Material material;
     private byte data;
     public MaterialActionInfo(Material material, byte data, ActionType type) {

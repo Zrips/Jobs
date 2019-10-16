@@ -29,10 +29,9 @@ public class bonus implements Cmd {
 	}
 
 	Player player = (Player) sender;
-
 	Job job = Jobs.getJob(args[0]);
 	if (job == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+		player.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
@@ -42,7 +41,7 @@ public class bonus implements Cmd {
 
 	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job, true, true);
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
+	player.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
 
 	printBoost(sender, boost, BoostOf.Permission);
 	printBoost(sender, boost, BoostOf.Item);
@@ -57,7 +56,7 @@ public class bonus implements Cmd {
 	if (Jobs.getMcMMOManager().mcMMOPresent || Jobs.getMcMMOManager().mcMMOOverHaul && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
 	    printBoost(sender, boost, BoostOf.McMMO);
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+	player.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 
 	RawMessage rm = new RawMessage();
 	String msg = Jobs.getLanguage().getMessage("command.bonus.output.final",

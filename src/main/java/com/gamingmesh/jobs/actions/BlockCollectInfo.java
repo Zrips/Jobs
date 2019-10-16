@@ -2,11 +2,10 @@ package com.gamingmesh.jobs.actions;
 
 import org.bukkit.block.Block;
 
-import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
-public class BlockCollectInfo extends BaseActionInfo implements ActionInfo {
+public class BlockCollectInfo extends BaseActionInfo {
     private Block block;
     private int age;
 

@@ -20,10 +20,9 @@ package com.gamingmesh.jobs.actions;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 
-public class ItemActionInfo extends MaterialActionInfo implements ActionInfo {
+public class ItemActionInfo extends MaterialActionInfo {
     @SuppressWarnings("deprecation")
     public ItemActionInfo(ItemStack items, ActionType type) {
 	super(items.getType(), items.getData().getData(), type);
