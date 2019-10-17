@@ -51,6 +51,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -226,14 +227,18 @@ public class JobsListener implements Listener {
 	Jobs.getGUIManager().GuiList.remove(event.getPlayer().getUniqueId());
     }
 
+    // Prevent item drag in Gui
+    @EventHandler
+    public void onGuiDrag(InventoryDragEvent e) {
+	Player player = (Player) e.getWhoClicked();
+	if (Jobs.getGUIManager().GuiList.containsKey(player.getUniqueId())) {
+	    e.setCancelled(true);
+	}
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onGuiLeftClick(InventoryClickEvent event) {
-
-	if (Jobs.getGUIManager().GuiList.isEmpty())
-	    return;
-
 	final Player player = (Player) event.getWhoClicked();
-
 	if (!Jobs.getGUIManager().GuiList.containsKey(player.getUniqueId()))
 	    return;
 
