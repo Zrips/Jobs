@@ -473,10 +473,10 @@ public abstract class JobsDAO {
     }
 
     public final synchronized void setUp() throws SQLException {
-	setupConfig();
-
 	if (getConnection() == null)
 	    return;
+
+	setupConfig();
 
 	try {
 	    for (DBTables one : DBTables.values()) {

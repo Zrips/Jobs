@@ -40,6 +40,10 @@ public class GuiManager {
 	return GuiList.containsKey(player.getUniqueId());
     }
 
+    public GuiInfoList getGuiInfo(Player p) {
+	return GuiList.get(p.getUniqueId());
+    }
+
     public Job getJobBySlot(Player player, int slot) {
 	GuiInfoList info = GuiList.get(player.getUniqueId());
 	return info.getJobList().get(slot);
@@ -81,7 +85,7 @@ public class GuiManager {
 	// Lets avoid oversized GUI
 	GuiSize = GuiSize > 54 ? 54 : GuiSize;
 
-	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, title);
+	Inventory GuiInv = Bukkit.createInventory(new JobsInventoryHolder(player), GuiSize, title);
 
 	int i = 0;
 	int pos = Jobs.getGCManager().getJobsGUIStartPosition() - 1;
@@ -179,7 +183,7 @@ public class GuiManager {
 
     public Inventory CreateJobsSubGUI(Player player, Job job) {
 
-	Inventory tempInv = Bukkit.createInventory(null, 54, "");
+	Inventory tempInv = Bukkit.createInventory(new JobsInventoryHolder(player), 54, "");
 
 	ItemStack GuiItem = job.getGuiItem();
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -282,7 +286,7 @@ public class GuiManager {
 	String title = Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName());
 	if (title.length() > 32)
 	    title = title.substring(0, 30) + "..";
-	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, title);
+	Inventory GuiInv = Bukkit.createInventory(new JobsInventoryHolder(player), GuiSize, title);
 
 	for (int i1 = 0; i1 < items.size(); i1++) {
 	    GuiInv.setItem(i1, items.get(i1));

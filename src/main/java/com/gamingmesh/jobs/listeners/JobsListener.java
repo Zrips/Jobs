@@ -75,6 +75,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Gui.GuiInfoList;
+import com.gamingmesh.jobs.Gui.JobsInventoryHolder;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.Signs.jobsSign;
@@ -231,7 +232,7 @@ public class JobsListener implements Listener {
     @EventHandler
     public void onGuiDrag(InventoryDragEvent e) {
 	Player player = (Player) e.getWhoClicked();
-	if (Jobs.getGUIManager().GuiList.containsKey(player.getUniqueId())) {
+	if (Jobs.getGUIManager().isInGui(player) && e.getView().getTopInventory().getHolder() instanceof JobsInventoryHolder) {
 	    e.setCancelled(true);
 	}
     }
@@ -239,36 +240,37 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onGuiLeftClick(InventoryClickEvent event) {
 	final Player player = (Player) event.getWhoClicked();
-	if (!Jobs.getGUIManager().GuiList.containsKey(player.getUniqueId()))
+	if (!Jobs.getGUIManager().isInGui(player))
 	    return;
 
 	event.setCancelled(true);
 	//final ItemStack clicked = event.getCurrentItem();
 
-	GuiInfoList joblist = Jobs.getGUIManager().GuiList.get(player.getUniqueId());
+	Inventory top = player.getOpenInventory().getTopInventory();
+	if (!(top.getHolder() instanceof JobsInventoryHolder)) {
+	    return;
+	}
 
 	int slot = event.getRawSlot();
-
 	if (slot >= 0) {
+	    GuiInfoList joblist = Jobs.getGUIManager().getGuiInfo(player);
+	    Job job = Jobs.getGUIManager().getJobBySlot(player, slot);
+
 	    if (!joblist.isJobInfo() && (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT ||
 		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT)) {
-		Job job = Jobs.getGUIManager().getJobBySlot(player, slot);
 		if (job != null) {
 		    Inventory inv = Jobs.getGUIManager().CreateJobsSubGUI(player, job);
-		    Inventory top = player.getOpenInventory().getTopInventory();
 //		    if (top.getSize() == Jobs.getGCManager().getJobsGUIRows() * 9)
-		    top.setContents(inv.getContents());
+			top.setContents(inv.getContents());
 		}
 	    } else if (joblist.isJobInfo()) {
 		if (slot == joblist.getbackButton()) {
 		    Inventory inv = Jobs.getGUIManager().CreateJobsGUI(player);
-		    Inventory top = player.getOpenInventory().getTopInventory();
 //		    if (top.getSize() == Jobs.getGCManager().getJobsGUIRows() * 9)
 		    top.setContents(inv.getContents());
 		}
 	    } else if (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
 		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
-		Job job = Jobs.getGUIManager().getJobBySlot(player, slot);
 		if (job != null) {
 		    if (Jobs.getGCManager().UseInversedClickToLeave && Jobs.getPlayerManager().getJobsPlayer(player).isInJob(job)) {
 			Bukkit.dispatchCommand(player, "jobs leave " + job.getName());

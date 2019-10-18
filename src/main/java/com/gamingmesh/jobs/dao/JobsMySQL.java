@@ -10,13 +10,10 @@ import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
 public class JobsMySQL extends JobsDAO {
     private String database;
-    @SuppressWarnings("unused")
-    private Jobs plugin;
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
-	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&autoReConnect=" + autoReconnect + "&useSSL=" + ssl
+	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
 	    + "&verifyServerCertificate=" + certificate, username, password, prefix);
-	this.plugin = plugin;
 	this.database = database;
 	this.setDbType(DataBaseType.MySQL);
     }
@@ -30,7 +27,6 @@ public class JobsMySQL extends JobsDAO {
     }
 
     public JobsMySQL initialize(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
-	this.plugin = plugin;
 	JobsMySQL dao = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect);
 	try {
 	    dao.setUp();
