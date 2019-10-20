@@ -232,8 +232,12 @@ public class JobsListener implements Listener {
     @EventHandler
     public void onGuiDrag(InventoryDragEvent e) {
 	Player player = (Player) e.getWhoClicked();
-	if (Jobs.getGUIManager().isInGui(player) && e.getView().getTopInventory().getHolder() instanceof JobsInventoryHolder) {
-	    e.setCancelled(true);
+	if (Jobs.getGUIManager().isInGui(player)) {
+	    if (Version.isCurrentEqualOrLower(Version.v1_12_R1) && e.getInventory().getHolder() instanceof JobsInventoryHolder
+		|| Version.isCurrentEqualOrHigher(Version.v1_13_R1) && e.getView().getTopInventory().getHolder()
+		    instanceof JobsInventoryHolder) {
+		e.setCancelled(true);
+	    }
 	}
     }
 
