@@ -1,2419 +1,1111 @@
 ItemList:
-  '0':
-    MCName: air
-    Name: Воздух
-  '1':
-    MCName: stone
-    Name: Камень
-  '1:0':
-    MCName: stone
-    Name: Камень
-  '1:1':
-    MCName: stone
-    Name: Гранит
-  '1:2':
-    MCName: stone
-    Name: Полированый Гранит
-  '1:3':
-    MCName: stone
-    Name: Диорит
-  '1:4':
-    MCName: stone
-    Name: Полированый Диорит
-  '1:5':
-    MCName: stone
-    Name: Андезит
-  '1:6':
-    MCName: stone
-    Name: Полированый Андезит
-  '2':
-    MCName: grass
-    Name: Трава
-  '3':
-    MCName: dirt
-    Name: Земля
-  '3:0':
-    MCName: dirt
-    Name: Земля
-  '3:1':
-    MCName: dirt
-    Name: Каменистая земля
-  '3:2':
-    MCName: dirt
-    Name: Подзол
-  '4':
-    MCName: cobblestone
-    Name: Булыжник
-  '5':
-    MCName: planks
-    Name: Доски
-  '5:0':
-    MCName: planks
-    Name: Дубовые доски
-  '5:1':
-    MCName: planks
-    Name: Еловые доски
-  '5:2':
-    MCName: planks
-    Name: Берёзовые доски
-  '5:3':
-    MCName: planks
-    Name: Джунглевые доски
-  '5:4':
-    MCName: planks
-    Name: Акациевые доски
-  '5:5':
-    MCName: planks
-    Name: Доски из тёмного дуба
-  '6':
-    MCName: sapling
-    Name: Саженец
-  '6:0':
-    MCName: sapling
-    Name: Дубовый саженец
-  '6:1':
-    MCName: sapling
-    Name: Еловый саженец
-  '6:2':
-    MCName: sapling
-    Name: Берёзовый саженец
-  '6:3':
-    MCName: sapling
-    Name: Джунглиевый саженец
-  '6:4':
-    MCName: sapling
-    Name: Акациевый саженец
-  '6:5':
-    MCName: sapling
-    Name: Саженец тёмного дуба
-  '7':
-    MCName: bedrock
-    Name: Коренная порода
-  '8':
-    MCName: flowing_water
-    Name: Вода
-  '9':
-    MCName: water
-    Name: Неподвижная вода
-  '10':
-    MCName: flowing_lava
-    Name: Лава
-  '11':
-    MCName: lava
-    Name: Неподвижная лава
-  '12':
-    MCName: sand
-    Name: Песок
-  '12:0':
-    MCName: sand
-    Name: Песок
-  '12:1':
-    MCName: sand
-    Name: Красный песок
-  '13':
-    MCName: gravel
-    Name: Гравий
-  '14':
-    MCName: gold_ore
-    Name: Золотая руда
-  '15':
-    MCName: iron_ore
-    Name: Железная руда
-  '16':
-    MCName: coal_ore
-    Name: Угольная руда
-  '17':
-    MCName: log
-    Name: Древесина
-  '17:0':
-    MCName: log
-    Name: Дубовая древесина
-  '17:1':
-    MCName: log
-    Name: Хвойная древесина
-  '17:2':
-    MCName: log
-    Name: Берёзовая древесина
-  '17:3':
-    MCName: log
-    Name: Джунглевая древесина
-  '18':
-    MCName: leaves
-    Name: Листва
-  '18:0':
-    MCName: leaves
-    Name: Дубовая листва
-  '18:1':
-    MCName: leaves
-    Name: Хвойная листва
-  '18:2':
-    MCName: leaves
-    Name: Берёзовая листва
-  '18:3':
-    MCName: leaves
-    Name: Джунглевая листва
-  '19':
-    MCName: sponge
-    Name: Губка
-  '19:1':
-    MCName: sponge
-    Name: Влажная губка
-  '20':
-    MCName: glass
-    Name: Стекло
-  '21':
-    MCName: lapis_ore
-    Name: Лазуритовая руда
-  '22':
-    MCName: lapis_block
-    Name: Лазуритовый блок
-  '23':
-    MCName: dispenser
-    Name: Раздатчик
-  '24':
-    MCName: sandstone
-    Name: Песчаник
-  '24:1':
-    MCName: sandstone
-    Name: Декоративный песчаник
-  '24:2':
-    MCName: sandstone
-    Name: Гладкий песчаник
-  '25':
-    MCName: noteblock
-    Name: Музыкальный блок
-  '26':
-    MCName: bed
-    Name: Кровать
-  '27':
-    MCName: golden_rail
-    Name: Электрические рельсы
-  '28':
-    MCName: detector_rail
-    Name: Нажимные рельсы
-  '29':
-    MCName: sticky_piston
-    Name: Липкий поршень
-  '30':
-    MCName: web
-    Name: Паутина
-  '31':
-    MCName: tallgrass
-    Name: Высокая трава
-  '31:1':
-    MCName: tallgrass
-    Name: Высокая трава
-  '31:2':
-    MCName: tallgrass
-    Name: Папоротник
-  '32':
-    MCName: deadbush
-    Name: Сухой куст
-  '33':
-    MCName: piston
-    Name: Поршень
-  '34':
-    MCName: piston_head
-    Name: Головка поршня
-  '35':
-    MCName: wool
-    Name: Шерсть
-  '35:0':
-    MCName: wool
-    Name: Белая шерсть
-  '35:1':
-    MCName: wool
-    Name: Оранжевая шерсть
-  '35:2':
-    MCName: wool
-    Name: Сиреневая шерсть
-  '35:3':
-    MCName: wool
-    Name: Светло-синяя шерсть
-  '35:4':
-    MCName: wool
-    Name: Жёлтая шерсть
-  '35:5':
-    MCName: wool
-    Name: Лаймовая шерсть
-  '35:6':
-    MCName: wool
-    Name: Розовая шерсть
-  '35:7':
-    MCName: wool
-    Name: Серая шерсть
-  '35:8':
-    MCName: wool
-    Name: Светло-серая шерсть
-  '35:9':
-    MCName: wool
-    Name: Бирюзовая шерсть
-  '35:10':
-    MCName: wool
-    Name: Фиолетовая шерсть
-  '35:11':
-    MCName: wool
-    Name: Синяя шерсть
-  '35:12':
-    MCName: wool
-    Name: Коричневая шерсть
-  '35:13':
-    MCName: wool
-    Name: Зелёная шерсть
-  '35:14':
-    MCName: wool
-    Name: Красная шерсть
-  '35:15':
-    MCName: wool
-    Name: Чёрная шерсть
-  '37':
-    MCName: yellow_flower
-    Name: Одуванчик
-  '38':
-    MCName: red_flower
-    Name: Цветы
-  '38:0':
-    MCName: red_flower
-    Name: Мак
-  '38:1':
-    MCName: red_flower
-    Name: Синяя орхидея
-  '38:2':
-    MCName: red_flower
-    Name: Лук
-  '38:3':
-    MCName: red_flower
-    Name: Хаустония серая
-  '38:4':
-    MCName: red_flower
-    Name: Красный тюльпан
-  '38:5':
-    MCName: red_flower
-    Name: Оранжевый тюльпан
-  '38:6':
-    MCName: red_flower
-    Name: Белый тюльпан
-  '38:7':
-    MCName: red_flower
-    Name: Розовый тюльпан
-  '38:8':
-    MCName: red_flower
-    Name: Нивяник
-  '39':
-    MCName: brown_mushroom
-    Name: Коричневый гриб
-  '40':
-    MCName: red_mushroom
-    Name: Красный гриб
-  '41':
-    MCName: gold_block
-    Name: Золотой блок
-  '42':
-    MCName: iron_block
-    Name: Железный блок
-  '43':
-    MCName: double_stone_slab
-    Name: Все двойные плиты
-  '43:0':
-    MCName: double_stone_slab
-    Name: Двойная каменная плита
-  '43:1':
-    MCName: double_stone_slab
-    Name: Двойная песчаниковая плита
-  '43:2':
-    MCName: double_stone_slab
-    Name: Двойная деревянная плита
-  '43:3':
-    MCName: double_stone_slab
-    Name: Двойная булыжниковая плита
-  '43:4':
-    MCName: double_stone_slab
-    Name: Двойная кирпичная плита
-  '43:5':
-    MCName: double_stone_slab
-    Name: Двойная каменнокирпичная плита
-  '43:6':
-    MCName: double_stone_slab
-    Name: Двойная плита из адского кирпича
-  '43:7':
-    MCName: double_stone_slab
-    Name: Двойная кварцевая плита
-  '44':
-    MCName: stone_slab
-    Name: Все плиты
-  '44:0':
-    MCName: stone_slab
-    Name: Каменная плита
-  '44:1':
-    MCName: stone_slab
-    Name: Песчаниковая плита
-  '44:2':
-    MCName: stone_slab
-    Name: Деревянная плита
-  '44:3':
-    MCName: stone_slab
-    Name: Булыжниковая плита
-  '44:4':
-    MCName: stone_slab
-    Name: Кирпичная плита
-  '44:5':
-    MCName: stone_slab
-    Name: Каменнокирпичная плита
-  '44:6':
-    MCName: stone_slab
-    Name: Плита из адского кирпича
-  '44:7':
-    MCName: stone_slab
-    Name: Кварцевая плита
-  '45':
-    MCName: brick_block
-    Name: Кирпичный блок
-  '46':
-    MCName: tnt
-    Name: ТНТ
-  '47':
-    MCName: bookshelf
-    Name: Книжный шкаф
-  '48':
-    MCName: mossy_cobblestone
-    Name: Замшелый булыжник
-  '49':
-    MCName: obsidian
-    Name: Обсидиан
-  '50':
-    MCName: torch
-    Name: Факел
-  '51':
-    MCName: fire
-    Name: Огонь
-  '52':
-    MCName: mob_spawner
-    Name: Спаунер мобов
-  '53':
-    MCName: oak_stairs
-    Name: Дубовые ступени
-  '54':
-    MCName: chest
-    Name: Сундук
-  '55':
-    MCName: redstone_wire
-    Name: Красный провод
-  '56':
-    MCName: diamond_ore
-    Name: Алмазная руда
-  '57':
-    MCName: diamond_block
-    Name: Алмазный блок
-  '58':
-    MCName: crafting_table
-    Name: Верстак
-  '59':
-    MCName: wheat
-    Name: Пшеница
-  '60':
-    MCName: farmland
-    Name: Грядка
-  '61':
-    MCName: furnace
-    Name: Печь
-  '62':
-    MCName: lit_furnace
-    Name: Горящая печь
-  '63':
-    MCName: standing_sign
-    Name: Напольная табличка
-  '64':
-    MCName: wooden_door
-    Name: Деревянная дверь
-  '65':
-    MCName: ladder
-    Name: Лестница
-  '66':
-    MCName: rail
-    Name: Рельсы
-  '67':
-    MCName: stone_stairs
-    Name: Булыжниковые ступени
-  '68':
-    MCName: wall_sign
-    Name: Настенная табличка
-  '69':
-    MCName: lever
-    Name: Рычаг
-  '70':
-    MCName: stone_pressure_plate
-    Name: Каменная нажимная пластина
-  '71':
-    MCName: iron_door
-    Name: Железная дверь
-  '72':
-    MCName: wooden_pressure_plate
-    Name: Деревянная нажимная пластина
-  '73':
-    MCName: redstone_ore
-    Name: Красная руда
-  '74':
-    MCName: lit_redstone_ore
-    Name: Светящаяся красная руда
-  '75':
-    MCName: unlit_redstone_torch
-    Name: Красный факел (выкл)
-  '76':
-    MCName: redstone_torch
-    Name: Красный факел (вкл)
-  '77':
-    MCName: stone_button
-    Name: Каменная кнопка
-  '78':
-    MCName: snow_layer
-    Name: Снег
-  '79':
-    MCName: ice
-    Name: Лёд
-  '80':
-    MCName: snow
-    Name: Блок снега
-  '81':
-    MCName: cactus
-    Name: Кактус
-  '82':
-    MCName: clay
-    Name: Глиняный блок
-  '83':
-    MCName: reeds
-    Name: Сахарный тростник
-  '84':
-    MCName: jukebox
-    Name: Проигрыватель
-  '85':
-    MCName: fence
-    Name: Забор
-  '86':
-    MCName: pumpkin
-    Name: Тыква
-  '87':
-    MCName: netherrack
-    Name: Адский камень
-  '88':
-    MCName: soul_sand
-    Name: Песок душ
-  '89':
-    MCName: glowstone
-    Name: Светокамень
-  '90':
-    MCName: portal
-    Name: Блок портала Нижнего мира
-  '91':
-    MCName: lit_pumpkin
-    Name: Светильник Джека
-  '92':
-    MCName: cake
-    Name: Торт
-  '93':
-    MCName: unpowered_repeater
-    Name: Красный повторитель (выкл)
-  '94':
-    MCName: powered_repeater
-    Name: Красный повторитель (вкл)
-  '95':
-    MCName: stained_glass
-    Name: Окрашенное стекло
-  '95:0':
-    MCName: stained_glass
-    Name: Белое окрашенное стекло
-  '95:1':
-    MCName: stained_glass
-    Name: Оранжевое окрашенное стекло
-  '95:2':
-    MCName: stained_glass
-    Name: Сиреневое окрашенное стекло
-  '95:3':
-    MCName: stained_glass
-    Name: Светло-синее окрашенное стекло
-  '95:4':
-    MCName: stained_glass
-    Name: Жёлтое окрашенное стекло
-  '95:5':
-    MCName: stained_glass
-    Name: Лаймовое окрашенное стекло
-  '95:6':
-    MCName: stained_glass
-    Name: Розовое окрашенное стекло
-  '95:7':
-    MCName: stained_glass
-    Name: Серое окрашенное стекло
-  '95:8':
-    MCName: stained_glass
-    Name: Светло-серое окрашенное стекло
-  '95:9':
-    MCName: stained_glass
-    Name: Бирюзовое окрашенное стекло
-  '95:10':
-    MCName: stained_glass
-    Name: Фиолетовое окрашенное стекло
-  '95:11':
-    MCName: stained_glass
-    Name: Синее окрашенное стекло
-  '95:12':
-    MCName: stained_glass
-    Name: Коричневое окрашенное стекло
-  '95:13':
-    MCName: stained_glass
-    Name: Зелёное окрашенное стекло
-  '95:14':
-    MCName: stained_glass
-    Name: Красное окрашенное стекло
-  '95:15':
-    MCName: stained_glass
-    Name: Чёрное окрашенное стекло
-  '96':
-    MCName: trapdoor
-    Name: Люк
-  '97':
-    MCName: monster_egg
-    Name: Камень чешуйниц
-  '97:1':
-    MCName: monster_egg
-    Name: Cobblestone Monster Egg
-  '97:2':
-    MCName: monster_egg
-    Name: Stone Brick Monster Egg
-  '97:3':
-    MCName: monster_egg
-    Name: Mossy Stone Brick Monster Egg
-  '97:4':
-    MCName: monster_egg
-    Name: Cracked Stone Brick Monster Egg
-  '97:5':
-    MCName: monster_egg
-    Name: Chiseled Stone Brick Monster Egg
-  '98':
-    MCName: stonebrick
-    Name: Каменный кирпич
-  '98:1':
-    MCName: stonebrick
-    Name: Замшелый каменный кирпич
-  '98:2':
-    MCName: stonebrick
-    Name: Потресканный каменный кирпич
-  '98:3':
-    MCName: stonebrick
-    Name: Резной каменный кирпич
-  '99':
-    MCName: brown_mushroom_block
-    Name: Блок коричневого гриба
-  '100':
-    MCName: red_mushroom_block
-    Name: Блок красного гриба
-  '101':
-    MCName: iron_bars
-    Name: Железная решётка
-  '102':
-    MCName: glass_pane
-    Name: Стеклянная панель
-  '103':
-    MCName: melon_block
-    Name: Арбуз
-  '104':
-    MCName: pumpkin_stem
-    Name: Pumpkin Stem
-  '105':
-    MCName: melon_stem
-    Name: Melon Stem
-  '106':
-    MCName: vine
-    Name: Лианы
-  '107':
-    MCName: fence_gate
-    Name: Ворота
-  '108':
-    MCName: brick_stairs
-    Name: Кирпичные ступени
-  '109':
-    MCName: stone_brick_stairs
-    Name: Каменнокирпичные ступени
-  '110':
-    MCName: mycelium
-    Name: Мицелий
-  '111':
-    MCName: waterlily
-    Name: Кувшинка
-  '112':
-    MCName: nether_brick
-    Name: Блок адского кирпича
-  '113':
-    MCName: nether_brick_fence
-    Name: Адский забор
-  '114':
-    MCName: nether_brick_stairs
-    Name: Ступени из адского кирпича
-  '115':
-    MCName: nether_wart
-    Name: Адский нарост
-  '116':
-    MCName: enchanting_table
-    Name: Стол зачаровывания
-  '117':
-    MCName: brewing_stand
-    Name: Варочная стойка
-  '118':
-    MCName: cauldron
-    Name: Котёл
-  '119':
-    MCName: end_portal
-    Name: Блок портала Края
-  '120':
-    MCName: end_portal_frame
-    Name: Рамка портала Края
-  '121':
-    MCName: end_stone
-    Name: Камень Края
-  '122':
-    MCName: dragon_egg
-    Name: Яйцо дракона
-  '123':
-    MCName: redstone_lamp
-    Name: Лампа (выкл.)
-  '124':
-    MCName: lit_redstone_lamp
-    Name: Лампа (вкл.)
-  '125':
-    MCName: double_wooden_slab
-    Name: Все двойные деревянные плиты
-  '125:0':
-    MCName: double_wooden_slab
-    Name: Двойная дубовая плита
-  '125:1':
-    MCName: double_wooden_slab
-    Name: Двойная сосновая плита
-  '125:2':
-    MCName: double_wooden_slab
-    Name: Двойная берёзовая плита
-  '125:3':
-    MCName: double_wooden_slab
-    Name: Двойная плита из дерева джунглей
-  '125:4':
-    MCName: double_wooden_slab
-    Name: Двойная акациевая плита
-  '125:5':
-    MCName: double_wooden_slab
-    Name: Двойная плита из тёмного дуба
-  '126':
-    MCName: wooden_slab
-    Name: Все деревянные плиты
-  '126:0':
-    MCName: wooden_slab
-    Name: Дубовая плита
-  '126:1':
-    MCName: wooden_slab
-    Name: Хвойная плита
-  '126:2':
-    MCName: wooden_slab
-    Name: Берёзовая плита
-  '126:3':
-    MCName: wooden_slab
-    Name: Плита из дерева джунглей
-  '126:4':
-    MCName: wooden_slab
-    Name: Акациевая плита
-  '126:5':
-    MCName: wooden_slab
-    Name: Плита из тёмного дуба
-  '127':
-    MCName: cocoa
-    Name: Плод какао
-  '128':
-    MCName: sandstone_stairs
-    Name: Песчаниковые ступени
-  '129':
-    MCName: emerald_ore
-    Name: Изумрудная руда
-  '130':
-    MCName: ender_chest
-    Name: Сундук Края
-  '131':
-    MCName: tripwire_hook
-    Name: Натяжной датчик
-  '132':
-    MCName: tripwire_hook
-    Name: Растяжка
-  '133':
-    MCName: emerald_block
-    Name: Изумрудный блок
-  '134':
-    MCName: spruce_stairs
-    Name: Еловые ступени
-  '135':
-    MCName: birch_stairs
-    Name: Берёзовые ступени
-  '136':
-    MCName: jungle_stairs
-    Name: Ступени из дерева джунглей
-  '137':
-    MCName: command_block
-    Name: Командный блок
-  '138':
-    MCName: beacon
-    Name: Маяк
-  '139':
-    MCName: cobblestone_wall
-    Name: Булыжниковая стена
-  '139:1':
-    MCName: cobblestone_wall
-    Name: Замшелая булыжниковая стена
-  '140':
-    MCName: flower_pot
-    Name: Цветочный горшок
-  '141':
-    MCName: carrots
-    Name: Морковь
-  '142':
-    MCName: potatoes
-    Name: Картофель
-  '143':
-    MCName: wooden_button
-    Name: Деревянная кнопка
-  '144':
-    MCName: skull
-    Name: Голова
-  '145':
-    MCName: anvil
-    Name: Наковальня
-  '146':
-    MCName: trapped_chest
-    Name: Сундук-ловушка
-  '147':
-    MCName: light_weighted_pressure_plate
-    Name: Утяжелённая нажимная пластина (Лёгкая)
-  '148':
-    MCName: heavy_weighted_pressure_plate
-    Name: Утяжелённая нажимная пластина (Тяжёлая)
-  '149':
-    MCName: unpowered_comparator
-    Name: Компаратор (неактивный)
-  '150':
-    MCName: powered_comparator
-    Name: Компаратор (активный)
-  '151':
-    MCName: daylight_detector
-    Name: Датчик дневного света
-  '152':
-    MCName: redstone_block
-    Name: Блок красного камня
-  '153':
-    MCName: quartz_ore
-    Name: Кварцевая руда Нижнего мира
-  '154':
-    MCName: hopper
-    Name: Загрузочная воронка
-  '155':
-    MCName: quartz_block
-    Name: Кварцевый блок
-  '155:1':
-    MCName: quartz_block
-    Name: Резной кварцевый блок
-  '155:2':
-    MCName: quartz_block
-    Name: Кварцевый пилон
-  '156':
-    MCName: quartz_stairs
-    Name: Кварцевые ступени
-  '157':
-    MCName: activator_rail
-    Name: Активирующие рельсы
-  '158':
-    MCName: dropper
-    Name: Выбрасыватель
-  '159':
-    MCName: stained_hardened_clay
-    Name: Вся цветная обожжённая глина
-  '159:0':
-    MCName: stained_hardened_clay
-    Name: Белая обожжённая глина
-  '159:1':
-    MCName: stained_hardened_clay
-    Name: Оранжевая обожжённая глина
-  '159:2':
-    MCName: stained_hardened_clay
-    Name: Сиреневая обожжённая глина
-  '159:3':
-    MCName: stained_hardened_clay
-    Name: Светло-синяя обожжённая глина
-  '159:4':
-    MCName: stained_hardened_clay
-    Name: Жёлтая обожжённая глина
-  '159:5':
-    MCName: stained_hardened_clay
-    Name: Лаймовая обожжённая глина
-  '159:6':
-    MCName: stained_hardened_clay
-    Name: Розовая обожжённая глина
-  '159:7':
-    MCName: stained_hardened_clay
-    Name: Серая обожжённая глина
-  '159:8':
-    MCName: stained_hardened_clay
-    Name: Светло-серая обожжённая глина
-  '159:9':
-    MCName: stained_hardened_clay
-    Name: Бирюзовая обожжённая глина
-  '159:10':
-    MCName: stained_hardened_clay
-    Name: Фиолетовая обожжённая глина
-  '159:11':
-    MCName: stained_hardened_clay
-    Name: Синяя обожжённая глина
-  '159:12':
-    MCName: stained_hardened_clay
-    Name: Коричневая обожжённая глина
-  '159:13':
-    MCName: stained_hardened_clay
-    Name: Зелёная обожжённая глина
-  '159:14':
-    MCName: stained_hardened_clay
-    Name: Красная обожжённая глина
-  '159:15':
-    MCName: stained_hardened_clay
-    Name: Чёрная обожжённая глина
-  '160':
-    MCName: stained_glass_pane
-    Name: Окрашенная стеклянная панель
-  '160:0':
-    MCName: stained_glass_pane
-    Name: Белая стеклянная панель
-  '160:1':
-    MCName: stained_glass_pane
-    Name: Оранжевая стеклянная панель
-  '160:2':
-    MCName: stained_glass_pane
-    Name: Сиреневая стеклянная панель
-  '160:3':
-    MCName: stained_glass_pane
-    Name: Светло-синяя стеклянная панель
-  '160:4':
-    MCName: stained_glass_pane
-    Name: Жёлтая стеклянная панель
-  '160:5':
-    MCName: stained_glass_pane
-    Name: Лаймовая стеклянная панель
-  '160:6':
-    MCName: stained_glass_pane
-    Name: Розовая стеклянная панель
-  '160:7':
-    MCName: stained_glass_pane
-    Name: Серая стеклянная панель
-  '160:8':
-    MCName: stained_glass_pane
-    Name: Светло-серая стеклянная панель
-  '160:9':
-    MCName: stained_glass_pane
-    Name: Бирюзовая стеклянная панель
-  '160:10':
-    MCName: stained_glass_pane
-    Name: Фиолетовая стеклянная панель
-  '160:11':
-    MCName: stained_glass_pane
-    Name: Синяя стеклянная панель
-  '160:12':
-    MCName: stained_glass_pane
-    Name: Коричневая стеклянная панель
-  '160:13':
-    MCName: stained_glass_pane
-    Name: Зелёная стеклянная панель
-  '160:14':
-    MCName: stained_glass_pane
-    Name: Красная стеклянная панель
-  '160:15':
-    MCName: stained_glass_pane
-    Name: Чёрная стеклянная панель
-  '161':
-    MCName: leaves2
-    Name: Листва (акация и тёмный дуб)
-  '161:0':
-    MCName: leaves2
-    Name: Листва акации
-  '161:1':
-    MCName: leaves2
-    Name: Листва тёмного дуба
-  '162':
-    MCName: logs2
-    Name: Древесина (акация и тёмный дуб)
-  '162:0':
-    MCName: logs2
-    Name: Древесина акации
-  '162:1':
-    MCName: logs2
-    Name: Древесина тёмного дуба
-  '163':
-    MCName: acacia_stairs
-    Name: Ступени из акации
-  '164':
-    MCName: dark_oak_stairs
-    Name: Ступени из тёмного дуба
-  '165':
-    MCName: slime
-    Name: Блок слизи
-  '166':
-    MCName: barrier
-    Name: Барьер
-  '167':
-    MCName: iron_trapdoor
-    Name: Железный люк
-  '168':
-    MCName: prismarine
-    Name: Призмарин
-  '168:0':
-    MCName: prismarine
-    Name: Призмарин
-  '168:1':
-    MCName: prismarine
-    Name: Призмариновый кирпич
-  '168:2':
-    MCName: prismarine
-    Name: Тёмный призмарин
-  '169':
-    MCName: sea_lantern
-    Name: Морской фонарь
-  '170':
-    MCName: hay_block
-    Name: Сноп сена
-  '171':
-    MCName: carpet
-    Name: Ковёр
-  '171:0':
-    MCName: carpet
-    Name: Белый Ковёр
-  '171:1':
-    MCName: carpet
-    Name: Оранжевый Ковёр
-  '171:2':
-    MCName: carpet
-    Name: Сиреневый Ковёр
-  '171:3':
-    MCName: carpet
-    Name: Светло-синий Ковёр
-  '171:4':
-    MCName: carpet
-    Name: Жёлтый Ковёр
-  '171:5':
-    MCName: carpet
-    Name: Лаймовый Ковёр
-  '171:6':
-    MCName: carpet
-    Name: Розовый Ковёр
-  '171:7':
-    MCName: carpet
-    Name: Серый Ковёр
-  '171:8':
-    MCName: carpet
-    Name: Светло-серый Ковёр
-  '171:9':
-    MCName: carpet
-    Name: Бирюзовый Ковёр
-  '171:10':
-    MCName: carpet
-    Name: Фиолетовый Ковёр
-  '171:11':
-    MCName: carpet
-    Name: Синий Ковёр
-  '171:12':
-    MCName: carpet
-    Name: Коричневый Ковёр
-  '171:13':
-    MCName: carpet
-    Name: Зелёный Ковёр
-  '171:14':
-    MCName: carpet
-    Name: Красный Ковёр
-  '171:15':
-    MCName: carpet
-    Name: Чёрный Ковёр
-  '172':
-    MCName: hardened_clay
-    Name: Обожжённая глина
-  '173':
-    MCName: coal_block
-    Name: Угольный блок
-  '174':
-    MCName: packed_ice
-    Name: Плотный лёд
-  '175':
-    MCName: double_plant
-    Name: Цветы
-  '175:0':
-    MCName: double_plant
-    Name: Подсолнечник
-  '175:1':
-    MCName: double_plant
-    Name: Сирень
-  '175:2':
-    MCName: double_plant
-    Name: Высокая трава
-  '175:3':
-    MCName: double_plant
-    Name: Папоротник
-  '175:4':
-    MCName: double_plant
-    Name: Розовый куст
-  '175:5':
-    MCName: double_plant
-    Name: Пион
-  '176':
-    MCName: standing_banner
-    Name: Напольный флаг
-  '177':
-    MCName: wall_banner
-    Name: Настенный флаг
-  '178':
-    MCName: daylight_detector_inverted
-    Name: Инвертированный датчик дневного света
-  '179':
-    MCName: red_sandstone
-    Name: Красный песчаник
-  '179:1':
-    MCName: chiseled_red_sandstone
-    Name: Декоративный красный песчаник
-  '179:2':
-    MCName: cut_red_sandstone
-    Name: Гладкий красный песчаник
-  '180':
-    MCName: red_sandstone_stairs
-    Name: Ступени из красного песчаника
-  '181':
-    MCName: stone_slab2
-    Name: Двойная плита из красного песчаника
-  '182':
-    MCName: double_stone_slab2
-    Name: Плита из красного песчаника
-  '183':
-    MCName: spruce_fence_gate
-    Name: Еловые ворота
-  '184':
-    MCName: birch_fence_gate
-    Name: Берёзовые ворота
-  '185':
-    MCName: jungle_fence_gate
-    Name: Джунглевые ворота
-  '186':
-    MCName: dark_oak_fence_gate
-    Name: Ворота из тёмного дуба
-  '187':
-    MCName: acacia_fence_gate
-    Name: Акациевые ворота
-  '188':
-    MCName: spruce_fence
-    Name: Еловый забор
-  '189':
-    MCName: birch_fence
-    Name: Берёзовый забор
-  '190':
-    MCName: jungle_fence
-    Name: Джунглевый забор
-  '191':
-    MCName: dark_oak_fence
-    Name: Забор из тёмного дуба
-  '192':
-    MCName: acacia_fence
-    Name: Акациевый забор
-  '193':
-    MCName: spruce_door
-    Name: Еловая дверь
-  '194':
-    MCName: birch_door
-    Name: Берёзовая дверь
-  '195':
-    MCName: jungle_door
-    Name: Джунглевая дверь
-  '196':
-    MCName: acacia_door
-    Name: Дверь из акации
-  '197':
-    MCName: dark_oak_door
-    Name: Дверь из тёмного дуба
-  '198':
-    MCName: end_rod
-    Name: Стержень Края
-  '199':
-    MCName: chorus_plant
-    Name: Растение коруса
-  '200':
-    MCName: chorus_flower
-    Name: Цветок коруса
-  '201':
-    MCName: purpur_block
-    Name: Пурпурный блок
-  '202':
-    MCName: purpur_pillar
-    Name: Пурпурный пилон
-  '203':
-    MCName: purpur_stairs
-    Name: Пурпурные ступени
-  '204':
-    MCName: purpur_double_slab
-    Name: Двойная пурпурная плита
-  '205':
-    MCName: purpur_slab
-    Name: Пурпурная плита
-  '206':
-    MCName: end_bricks
-    Name: Каменный кирпич Края
-  '207':
-    MCName: beetroots
-    Name: Семена свёклы
-  '208':
-    MCName: grass_path
-    Name: Травяная тропинка
-  '209':
-    MCName: end_gateway
-    Name: Блок врат Края
-  '212':
-    MCName: frosted_ice
-    Name: Подмороженный лёд
-  '213':
-    MCName: magma
-    Name: Магмовый блок
-  '214':
-    MCName: nether_warp_block
-    Name: Блок адского нароста
-  '215':
-    MCName: bone_block
-    Name: Красный адский кирпич
-  '216':
-    MCName: red_nether_brick
-    Name: Костяной блок
-  '218':
-    MCName: observer
-    Name: Наблюдатель
-  '219':
-    MCName: white_shulker_box
-    Name: Белый шалкеровый ящик
-  '220':
-    MCName: orange_shulker_box
-    Name: Оранжевый шалкеровый ящик
-  '221':
-    MCName: magenta_shulker_box
-    Name: Сиреневый шалкеровый ящик
-  '222':
-    MCName: light_blue_shulker_box
-    Name: Светло-синий шалкеровый ящик
-  '223':
-    MCName: yellow_shulker_box
-    Name: Жёлтый шалкеровый ящик
-  '224':
-    MCName: lime_shulker_box
-    Name: Лаймовый шалкеровый ящик
-  '225':
-    MCName: pink_shulker_box
-    Name: Розовый шалкеровый ящик
-  '226':
-    MCName: gray_shulker_box
-    Name: Серый шалкеровый ящик
-  '227':
-    MCName: light_gray_shulker_box
-    Name: Светло-серый шалкеровый ящик
-  '228':
-    MCName: cyan_shulker_box
-    Name: Бирюзовый шалкеровый ящик
-  '229':
-    MCName: purple_shulker_box
-    Name: Шалкеровый ящик
-  '230':
-    MCName: blue_shulker_box
-    Name: Синий шалкеровый ящик
-  '231':
-    MCName: brown_shulker_box
-    Name: Коричневый шалкеровый ящик
-  '232':
-    MCName: green_shulker_box
-    Name: Зелёный шалкеровый ящик
-  '233':
-    MCName: red_shulker_box
-    Name: Красный шалкеровый ящик
-  '234':
-    MCName: white_shulker_box
-    Name: Чёрный шалкеровый ящик
-  '235':
-    MCName: white_glazed_terracotta
-    Name: Белая глазурованная керамика
-  '236':
-    MCName: orange_glazed_terracotta
-    Name: Оранжевая глазурованная керамика
-  '237':
-    MCName: magenta_glazed_terracotta
-    Name: Сиреневая глазурованная керамика
-  '238':
-    MCName: light_blue_glazed_terracotta
-    Name: Светло-синяя глазурованная керамика
-  '239':
-    MCName: yellow_glazed_terracotta
-    Name: Жёлтая глазурованная керамика
-  '240':
-    MCName: lime_glazed_terracotta
-    Name: Lime глазурованная керамика
-  '241':
-    MCName: pink_glazed_terracotta
-    Name: Розовая глазурованная керамика
-  '242':
-    MCName: gray_glazed_terracotta
-    Name: Серая глазурованная керамика
-  '243':
-    MCName: light_gray_glazed_terracotta
-    Name: Светло-серая глазурованная керамика
-  '244':
-    MCName: cyan_glazed_terracotta
-    Name: Бирюзовая глазурованная керамика
-  '245':
-    MCName: purple_glazed_terracotta
-    Name: Фиолетовая глазурованная керамика
-  '246':
-    MCName: blue_glazed_terracotta
-    Name: Синяя глазурованная керамика
-  '247':
-    MCName: brown_glazed_terracotta
-    Name: Коричневая глазурованная керамика
-  '248':
-    MCName: green_glazed_terracotta
-    Name: Зелёная глазурованная керамика
-  '249':
-    MCName: red_glazed_terracotta
-    Name: Красная глазурованная керамика
-  '250':
-    MCName: black_glazed_terracotta
-    Name: Чёрная глазурованная керамика
-  '251':
-    MCName: concrete
-    Name: Бетон
-  '251:0':
-    MCName: concrete
-    Name: Белый бетон
-  '251:1':
-    MCName: concrete
-    Name: Оранжевый бетон
-  '251:2':
-    MCName: concrete
-    Name: Сиреневый бетон
-  '251:3':
-    MCName: concrete
-    Name: Светло-синий бетон
-  '251:4':
-    MCName: concrete
-    Name: Жёлтый бетон
-  '251:5':
-    MCName: concrete
-    Name: Лаймовый бетон
-  '251:6':
-    MCName: concrete
-    Name: Розовый бетон
-  '251:7':
-    MCName: concrete
-    Name: Серый бетон
-  '251:8':
-    MCName: concrete
-    Name: Светло-серый бетон
-  '251:9':
-    MCName: concrete
-    Name: Бирюзовый бетон
-  '251:10':
-    MCName: concrete
-    Name: Фиолетовый бетон
-  '251:11':
-    MCName: concrete
-    Name: Синий бетон
-  '251:12':
-    MCName: concrete
-    Name: Коричневый бетон
-  '251:13':
-    MCName: concrete
-    Name: Зелёный бетон
-  '251:14':
-    MCName: concrete
-    Name: Красный бетон
-  '251:15':
-    MCName: concrete
-    Name: Чёрный бетон
-  '252':
-    MCName: concrete_powder
-    Name: Цемент
-  '252:0':
-    MCName: concrete_powder
-    Name: Белый цемент
-  '252:1':
-    MCName: concrete_powder
-    Name: Оранжевый цемент
-  '252:2':
-    MCName: concrete_powder
-    Name: Сиреневый цемент
-  '252:3':
-    MCName: concrete_powder
-    Name: Светло-синий цемент
-  '252:4':
-    MCName: concrete_powder
-    Name: Жёлтый цемент
-  '252:5':
-    MCName: concrete_powder
-    Name: Лаймовый цемент
-  '252:6':
-    MCName: concrete_powder
-    Name: Розовый цемент
-  '252:7':
-    MCName: concrete_powder
-    Name: Серый цемент
-  '252:8':
-    MCName: concrete_powder
-    Name: Светло-серый цемент
-  '252:9':
-    MCName: concrete_powder
-    Name: Бирюзовый цемент
-  '252:10':
-    MCName: concrete_powder
-    Name: Фиолетовый цемент
-  '252:11':
-    MCName: concrete_powder
-    Name: Синий цемент
-  '252:12':
-    MCName: concrete_powder
-    Name: Коричневый цемент
-  '252:13':
-    MCName: concrete_powder
-    Name: Зелёный цемент
-  '252:14':
-    MCName: concrete_powder
-    Name: Красный цемент
-  '252:15':
-    MCName: concrete_powder
-    Name: Чёрный цемент
-  '256':
-    MCName: iron_shovel
-    Name: Железная лопата
-  '257':
-    MCName: iron_pickaxe
-    Name: Железная кирка
-  '258':
-    MCName: iron_axe
-    Name: Железный топор
-  '259':
-    MCName: flint_and_steel
-    Name: Огниво
-  '260':
-    MCName: apple
-    Name: Яблоко
-  '261':
-    MCName: bow
-    Name: Лук
-  '262':
-    MCName: arrow
-    Name: Стрела
-  '263':
-    MCName: coal
-    Name: Уголь
-  '263:1':
-    MCName: coal
-    Name: Древесный уголь
-  '264':
-    MCName: diamond
-    Name: Алмаз
-  '265':
-    MCName: iron_ingot
-    Name: Железный слиток
-  '266':
-    MCName: gold_ingot
-    Name: Золотой слиток
-  '267':
-    MCName: iron_sword
-    Name: Железный меч
-  '268':
-    MCName: wooden_sword
-    Name: Деревянный меч
-  '269':
-    MCName: wooden_shovel
-    Name: Деревянная лопата
-  '270':
-    MCName: wooden_pickaxe
-    Name: Деревянная кирка
-  '271':
-    MCName: wooden_axe
-    Name: Деревянный топор
-  '272':
-    MCName: stone_sword
-    Name: Каменный меч
-  '273':
-    MCName: stone_shovel
-    Name: Каменная лопата
-  '274':
-    MCName: stone_pickaxe
-    Name: Каменная кирка
-  '275':
-    MCName: stone_axe
-    Name: Каменный топор
-  '276':
-    MCName: diamond_sword
-    Name: Алмазный меч
-  '277':
-    MCName: diamond_shovel
-    Name: Алмазная лопата
-  '278':
-    MCName: diamond_pickaxe
-    Name: Алмазная кирка
-  '279':
-    MCName: diamond_axe
-    Name: Алмазный топор
-  '280':
-    MCName: stick
-    Name: Палка
-  '281':
-    MCName: bowl
-    Name: Миска
-  '282':
-    MCName: mushroom_stew
-    Name: Тушёные грибы
-  '283':
-    MCName: golden_sword
-    Name: Золотой меч
-  '284':
-    MCName: golden_shovel
-    Name: Золотая лопата
-  '285':
-    MCName: golden_pickaxe
-    Name: Золотая кирка
-  '286':
-    MCName: golden_axe
-    Name: Золотой топор
-  '287':
-    MCName: string
-    Name: Нить
-  '288':
-    MCName: feather
-    Name: Перо
-  '289':
-    MCName: gunpowder
-    Name: Порох
-  '290':
-    MCName: wooden_hoe
-    Name: Деревянная мотыга
-  '291':
-    MCName: stone_hoe
-    Name: Каменная мотыга
-  '292':
-    MCName: iron_hoe
-    Name: Железная мотыга
-  '293':
-    MCName: diamond_hoe
-    Name: Алмазная мотыга
-  '294':
-    MCName: golden_hoe
-    Name: Золотая мотыга
-  '295':
-    MCName: wheat_seeds
-    Name: Семена пшеницы
-  '296':
-    MCName: wheat
-    Name: Пшеница
-  '297':
-    MCName: bread
-    Name: Хлеб
-  '298':
-    MCName: leather_helmet
-    Name: Кожаный шлем
-  '299':
-    MCName: leather_chestplate
-    Name: Кожаная кираса
-  '300':
-    MCName: leather_leggings
-    Name: Кожаные поножи
-  '301':
-    MCName: leather_boots
-    Name: Кожаные ботинки
-  '302':
-    MCName: chainmail_helmet
-    Name: Кольчужный шлем
-  '303':
-    MCName: chainmail_chestplate
-    Name: Кольчужная кираса
-  '304':
-    MCName: chainmail_leggings
-    Name: Кольчужные поножи
-  '305':
-    MCName: chainmail_boots
-    Name: Кольчужные ботинки
-  '306':
-    MCName: iron_helmet
-    Name: Железный шлем
-  '307':
-    MCName: iron_chestplate
-    Name: Железная кираса
-  '308':
-    MCName: iron_leggings
-    Name: Железные поножи
-  '309':
-    MCName: iron_boots
-    Name: Железные ботинки
-  '310':
-    MCName: diamond_helmet
-    Name: Алмазный шлем
-  '311':
-    MCName: diamond_chestplate
-    Name: Алмазная кираса
-  '312':
-    MCName: diamond_leggings
-    Name: Алмазные поножи
-  '313':
-    MCName: diamond_boots
-    Name: Алмазные ботинки
-  '314':
-    MCName: golden_helmet
-    Name: Золотой шлем
-  '315':
-    MCName: golden_chestplate
-    Name: Золотая кираса
-  '316':
-    MCName: golden_leggings
-    Name: Золотые поножи
-  '317':
-    MCName: golden_boots
-    Name: Золотые ботинки
-  '318':
-    MCName: flint_and_steel
-    Name: Кремень
-  '319':
-    MCName: porkchop
-    Name: Сырая свинина
-  '320':
-    MCName: cooked_porkchop
-    Name: Жареная свинина
-  '321':
-    MCName: painting
-    Name: Картина
-  '322':
-    MCName: golden_apple
-    Name: Золотое яблоко
-  '322:1':
-    MCName: golden_apple
-    Name: Зачарованное золотое яблоко
-  '323':
-    MCName: sign
-    Name: Табличка
-  '324':
-    MCName: wooden_door
-    Name: Деревянная дверь
-  '325':
-    MCName: bucket
-    Name: Ведро
-  '326':
-    MCName: water_bucket
-    Name: Ведро воды
-  '327':
-    MCName: lava_bucket
-    Name: Ведро лавы
-  '328':
-    MCName: minecart
-    Name: Вагонетка
-  '329':
-    MCName: saddle
-    Name: Седло
-  '330':
-    MCName: iron_door
-    Name: Железная дверь
-  '331':
-    MCName: redstone
-    Name: Красная пыль
-  '332':
-    MCName: snowball
-    Name: Снежок
-  '333':
-    MCName: boat
-    Name: Дубовая лодка
-  '334':
-    MCName: leather
-    Name: Кожа
-  '335':
-    MCName: milk_bucket
-    Name: Молоко
-  '336':
-    MCName: brick
-    Name: Кирпич
-  '337':
-    MCName: clay_ball
-    Name: Глина
-  '338':
-    MCName: reeds
-    Name: Сахарный тростник
-  '339':
-    MCName: paper
-    Name: Бумага
-  '340':
-    MCName: book
-    Name: Книга
-  '341':
-    MCName: slime_ball
-    Name: Слизь
-  '342':
-    MCName: chest_minecart
-    Name: Вагонетка с сундуком
-  '343':
-    MCName: furnace_minecart
-    Name: Вагонетка с печью
-  '344':
-    MCName: egg
-    Name: Яйцо
-  '345':
-    MCName: compass
-    Name: Компас
-  '346':
-    MCName: fishing_rod
-    Name: Удочка
-  '347':
-    MCName: clock
-    Name: Часы
-  '348':
-    MCName: glowstone_dust
-    Name: Светопыль
-  '349':
-    MCName: fish
-    Name: Сырая рыба
-  '349:1':
-    MCName: fish
-    Name: Сырой лосось
-  '349:2':
-    MCName: fish
-    Name: Рыба-клоун
-  '349:3':
-    MCName: fish
-    Name: Иглобрюх
-  '350':
-    MCName: cooked_fish
-    Name: Жареная рыба
-  '350:1':
-    MCName: cooked_fish
-    Name: Жареный лосось
-  '351':
-    MCName: dye
-    Name: Все красители
-  '351:0':
-    MCName: dye
-    Name: Чернильный мешок
-  '351:1':
-    MCName: dye
-    Name: Красный краситель
-  '351:2':
-    MCName: dye
-    Name: Кактусовая зелень
-  '351:3':
-    MCName: dye
-    Name: Какао-бобы
-  '351:4':
-    MCName: dye
-    Name: Лазурит
-  '351:5':
-    MCName: dye
-    Name: Фиолетовый краситель
-  '351:6':
-    MCName: dye
-    Name: Сиреневый краситель
-  '351:7':
-    MCName: dye
-    Name: Светло-серый краситель
-  '351:8':
-    MCName: dye
-    Name: Серый краситель
-  '351:9':
-    MCName: dye
-    Name: Розовый краситель
-  '351:10':
-    MCName: dye
-    Name: Лаймовый краситель
-  '351:11':
-    MCName: dye
-    Name: Жёлтый краситель
-  '351:12':
-    MCName: dye
-    Name: Светло-синий краситель
-  '351:13':
-    MCName: dye
-    Name: Сиреневый краситель
-  '351:14':
-    MCName: dye
-    Name: Оранжевый краситель
-  '351:15':
-    MCName: dye
-    Name: Костная мука
-  '352':
-    MCName: bone
-    Name: Кость
-  '353':
-    MCName: sugar
-    Name: Сахар
-  '354':
-    MCName: cake
-    Name: Торт
-  '355':
-    MCName: bed
-    Name: Кровать
-  '356':
-    MCName: repeater
-    Name: Красный повторитель
-  '357':
-    MCName: cookie
-    Name: Печенье
-  '358':
-    MCName: filled_map
-    Name: Карта
-  '359':
-    MCName: shears
-    Name: Ножницы
-  '360':
-    MCName: melon
-    Name: Ломтик арбуза
-  '361':
-    MCName: pumpkin_seeds
-    Name: Семена тыквы
-  '362':
-    MCName: melon_seeds
-    Name: Семена арбуза
-  '363':
-    MCName: beef
-    Name: Сырая говядина
-  '364':
-    MCName: cooked_beef
-    Name: Жареная говядина
-  '365':
-    MCName: chicken
-    Name: Сырая курятина
-  '366':
-    MCName: cooked_chicken
-    Name: Жареная курятина
-  '367':
-    MCName: rotten_flesh
-    Name: Гнилая плоть
-  '368':
-    MCName: ender_pearl
-    Name: Жемчуг Края
-  '369':
-    MCName: blaze_rod
-    Name: Огненный стержень
-  '370':
-    MCName: ghast_tear
-    Name: Слеза гаста
-  '371':
-    MCName: gold_nugget
-    Name: Золотой самородок
-  '372':
-    MCName: nether_wart
-    Name: Семена адского нароста
-  '373':
-    MCName: potion
-    Name: Зелья
-  '374':
-    MCName: glass_bottle
-    Name: Колба
-  '375':
-    MCName: spider_eye
-    Name: Паучий глаз
-  '376':
-    MCName: fermented_spider_eye
-    Name: Приготовленный паучий глаз
-  '377':
-    MCName: blaze_powder
-    Name: Огненный порошок
-  '378':
-    MCName: magma_cream
-    Name: Лавовый крем
-  '379':
-    MCName: brewing_stand
-    Name: Варочная стойка
-  '380':
-    MCName: cauldron
-    Name: Котёл
-  '381':
-    MCName: ender_eye
-    Name: Око Края
-  '382':
-    MCName: speckled_melon
-    Name: Сверкающий ломтик арбуза
-  '383:50':
-    MCName: spawn_egg
-    Name: Яйцо призыва крипера
-  '383:51':
-    MCName: spawn_egg
-    Name: Яйцо призыва скелета
-  '383:52':
-    MCName: spawn_egg
-    Name: Яйцо призыва паука
-  '383:54':
-    MCName: spawn_egg
-    Name: Яйцо призыва зомби
-  '383:55':
-    MCName: spawn_egg
-    Name: Яйцо призыва слизня
-  '383:56':
-    MCName: spawn_egg
-    Name: Яйцо призыва гаста
-  '383:57':
-    MCName: spawn_egg
-    Name: Яйцо призыва зомби-свиночеловека
-  '383:58':
-    MCName: spawn_egg
-    Name: Яйцо призыва странника Края
-  '383:59':
-    MCName: spawn_egg
-    Name: Яйцо призыва пещерного паука
-  383:60:
-    MCName: spawn_egg
-    Name: Яйцо призыва чешуйницы
-  383:61:
-    MCName: spawn_egg
-    Name: Яйцо призыва ифрита
-  383:62:
-    MCName: spawn_egg
-    Name: Яйцо призыва лавового куба
-  383:65:
-    MCName: spawn_egg
-    Name: Яйцо призыва летучей мыши
-  383:66:
-    MCName: spawn_egg
-    Name: Яйцо призыва ведьмы
-  383:67:
-    MCName: spawn_egg
-    Name: Яйцо призыва чешуйницы Края
-  383:68:
-    MCName: spawn_egg
-    Name: Яйцо призыва стража
-  383:69:
-    MCName: spawn_egg
-    Name: Яйцо призыва шалкера
-  383:90:
-    MCName: spawn_egg
-    Name: Яйцо призыва свиньи
-  383:91:
-    MCName: spawn_egg
-    Name: Яйцо призыва овцы
-  383:92:
-    MCName: spawn_egg
-    Name: Яйцо призыва коровы
-  383:93:
-    MCName: spawn_egg
-    Name: Яйцо призыва курицы
-  383:94:
-    MCName: spawn_egg
-    Name: Яйцо призыва спрута
-  383:95:
-    MCName: spawn_egg
-    Name: Яйцо призыва волка
-  383:96:
-    MCName: spawn_egg
-    Name: Яйцо призыва грибной коровы
-  383:98:
-    MCName: spawn_egg
-    Name: Яйцо призыва оцелота
-  383:100:
-    MCName: spawn_egg
-    Name: Яйцо призыва лошади
-  383:101:
-    MCName: spawn_egg
-    Name: Яйцо призыва кролика
-  383:102:
-    MCName: spawn_egg
-    Name: Яйцо призыва кролика
-  383:120:
-    MCName: spawn_egg
-    Name: Яйцо призыва деревенского жителя
-  '384':
-    MCName: experience_bottle
-    Name: Зелье опыта
-  '385':
-    MCName: fire_charge
-    Name: Огненный шар
-  '386':
-    MCName: writable_book
-    Name: Book and Quill
-  '387':
-    MCName: written_book
-    Name: Written Book
-  '388':
-    MCName: emerald
-    Name: Изумруд
-  '389':
-    MCName: item_frame
-    Name: Рамка
-  '390':
-    MCName: flower_pot
-    Name: Цветочный горшок
-  '391':
-    MCName: carrot
-    Name: Морковь
-  '392':
-    MCName: potato
-    Name: Картофель
-  '393':
-    MCName: baked_potato
-    Name: Печёный картофель
-  '394':
-    MCName: poisonous_potato
-    Name: Ядовитый картофель
-  '395':
-    MCName: map
-    Name: Пустая карта
-  '396':
-    MCName: golden_carrot
-    Name: Золотая морковь
-  '397':
-    MCName: skull
-    Name: Голова (Скелет)
-  '397:1':
-    MCName: skull
-    Name: Голова (Визер-скелет)
-  '397:2':
-    MCName: skull
-    Name: Голова (Зомби)
-  '397:3':
-    MCName: skull
-    Name: Голова (Человек)
-  '397:4':
-    MCName: skull
-    Name: Голова (Крипер)
-  '398':
-    MCName: carrot_on_a_stick
-    Name: Удочка с морковью
-  '399':
-    MCName: nether_star
-    Name: Звезда Нижнего мира
-  '400':
-    MCName: pumpkin_pie
-    Name: Тыквенный пирог
-  '401':
-    MCName: fireworks
-    Name: Ракета
-  '402':
-    MCName: firework_charge
-    Name: Звёздочка
-  '403':
-    MCName: enchanted_book
-    Name: Зачарованная книга
-  '404':
-    MCName: comparator
-    Name: Компаратор
-  '405':
-    MCName: netherbrick
-    Name: Адский кирпич
-  '406':
-    MCName: quartz
-    Name: Кварц Нижнего мира
-  '407':
-    MCName: tnt_minecart
-    Name: Вагонетка с ТНТ
-  '408':
-    MCName: hopper_minecart
-    Name: Вагонетка с воронкой
-  '409':
-    MCName: prismarine_shard
-    Name: Призмариновый осколок
-  '410':
-    MCName: prismarine_crystals
-    Name: Призмариновый кристалл
-  '411':
-    MCName: rabbit
-    Name: Сырая крольчатина
-  '412':
-    MCName: cooked_rabbit
-    Name: Жареная крольчатина
-  '413':
-    MCName: rabbit_stew
-    Name: Тушёный кролик
-  '414':
-    MCName: rabbit_foot
-    Name: Кроличья лапка
-  '415':
-    MCName: rabbit_hide
-    Name: Кроличья шкурка
-  '416':
-    MCName: armor_stand
-    Name: Стойка для брони
-  '417':
-    MCName: iron_horse_armor
-    Name: Железная конская броня
-  '418':
-    MCName: golden_horse_armor
-    Name: Золотая конская броня
-  '419':
-    MCName: diamond_horse_armor
-    Name: Алмазная конская броня
-  '420':
-    MCName: lead
-    Name: Поводок
-  '421':
-    MCName: name_tag
-    Name: Бирка
-  '422':
-    MCName: command_block_minecart
-    Name: Вагонетка с командным блоком
-  '423':
-    MCName: mutton
-    Name: Сырая баранина
-  '424':
-    MCName: cooked_mutton
-    Name: Жареная баранина
-  '425':
-    MCName: banner
-    Name: Флаг
-  '426':
-    MCName: end_crystal
-    Name: Кристал Края
-  '427':
-    MCName: spruce_door
-    Name: Еловая дверь
-  '428':
-    MCName: birch_door
-    Name: Берёзовая дверь
-  '429':
-    MCName: jungle_door
-    Name: Дверь из тропического дерева
-  '430':
-    MCName: acacia_door
-    Name: Акациевая дверь
-  '431':
-    MCName: dark_oak_door
-    Name: Тёмнодубовая дверь
-  '432':
-    MCName: chorus_fruit
-    Name: Плод коруса
-  '433':
-    MCName: chorus_fruit_popped
-    Name: Приготовленный плод коруса
-  '434':
-    MCName: beetroot
-    Name: Свёкла
-  '435':
-    MCName: beetroot_seeds
-    Name: Семена свёклы
-  '436':
-    MCName: beetroot_soup
-    Name: Свекольный суп
-  '437':
-    MCName: dragon_breath
-    Name: Драконье дыхание
-  '438':
-    MCName: thrown_potion
-    Name: Взрывающееся зелье
-  '439':
-    MCName: spectral_arrow
-    Name: Призрачная стрела
-  '440':
-    MCName: tipped_arrow
-    Name: Выпущенная стрела
-  '441':
-    MCName: lingering_potion
-    Name: Оседающее зелье
-  '442':
-    MCName: shield
-    Name: Щит
-  '443':
-    MCName: elytra
-    Name: Элитры
-  '444':
-    MCName: spruce_boat
-    Name: Еловая лодка
-  '445':
-    MCName: birch_boat
-    Name: Берёзовая лодка
-  '446':
-    MCName: jungle_boat
-    Name: Джунглевая лодка
-  '447':
-    MCName: acacia_boat
-    Name: Акациевая лодка
-  '448':
-    MCName: dark_oak_boat
-    Name: Лодка из тёмного дуба
-  '2256':
-    MCName: record_13
-    Name: 13 Disc
-  '2257':
-    MCName: record_cat
-    Name: Cat Disc
-  '2258':
-    MCName: record_blocks
-    Name: Blocks Disc
-  '2259':
-    MCName: record_chirp
-    Name: Chirp Disc
-  '2260':
-    MCName: record_far
-    Name: Far Disc
-  '2261':
-    MCName: record_mall
-    Name: Mall Disc
-  '2262':
-    MCName: record_mellohi
-    Name: Mellohi Disc
-  '2263':
-    MCName: record_stal
-    Name: Stal Disc
-  '2264':
-    MCName: record_strad
-    Name: Strad Disc
-  '2265':
-    MCName: record_ward
-    Name: Ward Disc
-  '2266':
-    MCName: record_11
-    Name: 11 Disc
-  '2267':
-    MCName: record_wait
-    Name: Wait Disc
+  ACACIA_BOAT: Акациевая лодка
+  ACACIA_BUTTON: Акациевая кнопка
+  ACACIA_DOOR: Акациевая дверь
+  ACACIA_FENCE: Акациевый забор
+  ACACIA_FENCE_GATE: Акациевые ворота
+  ACACIA_LEAVES: Листва акации
+  ACACIA_LOG: Древесина акации
+  ACACIA_PLANKS: Акациевые доски
+  ACACIA_PRESSURE_PLATE: Воздух
+  ACACIA_SAPLING: Акациевый саженец
+  ACACIA_SLAB: Акациевая плита
+  ACACIA_STAIRS: Ступени из акации
+  ACACIA_TRAPDOOR: Акациевая люк
+  ACACIA_WOOD: Акациевая дерево
+  ACTIVATOR_RAIL: Активирующие рельсы
+  AIR: Воздух
+  ALLIUM: Лук
+  ANDESITE: Андезит
+  ANVIL: Наковальня
+  APPLE: Яблоко
+  ARMOR_STAND: Стойка для брони
+  ARROW: Стрела
+  ATTACHED_MELON_STEM: Стебель арбуза
+  ATTACHED_PUMPKIN_STEM: Стебель тыквы
+  AZURE_BLUET: Хаустония серая
+  BAKED_POTATO: Печёный картофель
+  BARRIER: Барьер
+  BAT_SPAWN_EGG: Яйцо призыва летучей мыши
+  BEACON: Маяк
+  BEDROCK: Коренная порода
+  BEEF: Сырая говядина
+  BEETROOT: Свёкла
+  BEETROOTS: Семена свёклы
+  BEETROOT_SEEDS: Семена свёклы
+  BEETROOT_SOUP: Свекольный суп
+  BIRCH_BOAT: Берёзовая лодка
+  BIRCH_BUTTON: Берёзовая кнопка
+  BIRCH_DOOR: Берёзовая дверь
+  BIRCH_FENCE: Берёзовый забор
+  BIRCH_FENCE_GATE: Берёзовые ворота
+  BIRCH_LEAVES: Берёзовая листва
+  BIRCH_LOG: Берёзовая древесина
+  BIRCH_PLANKS: Берёзовые доски
+  BIRCH_PRESSURE_PLATE: Берёзовая нажимная пластина
+  BIRCH_SAPLING: Берёзовый саженец
+  BIRCH_SLAB: Берёзовая плита
+  BIRCH_STAIRS: Берёзовые ступени
+  BIRCH_TRAPDOOR: Берёзовый люк
+  BIRCH_WOOD: Берёзовое дерево
+  BLACK_BANNER: Черный флаг
+  BLACK_BED: Кровать
+  BLACK_CARPET: Чёрный Ковёр
+  BLACK_CONCRETE: Чёрный бетон
+  BLACK_CONCRETE_POWDER: Чёрный цемент
+  BLACK_GLAZED_TERRACOTTA: Чёрная глазурованная керамика
+  BLACK_SHULKER_BOX: Чёрный шалкеровый ящик
+  BLACK_STAINED_GLASS: Чёрное окрашенное стекло
+  BLACK_STAINED_GLASS_PANE: Чёрная стеклянная панель
+  BLACK_TERRACOTTA: Чёрная обожжённая глина
+  BLACK_WALL_BANNER: Настенный флаг
+  BLACK_WOOL: Чёрная шерсть
+  BLAZE_POWDER: Огненный порошок
+  BLAZE_ROD: Огненный стержень
+  BLAZE_SPAWN_EGG: Яйцо призыва ифрита
+  BLUE_BANNER: Фиолетовая глазурованная керамика
+  BLUE_BED: Кровать
+  BLUE_CARPET: Синий Ковёр
+  BLUE_CONCRETE: Синий бетон
+  BLUE_CONCRETE_POWDER: Синий цемент
+  BLUE_GLAZED_TERRACOTTA: Синяя глазурованная керамика
+  BLUE_ICE: Синий лёд
+  BLUE_ORCHID: Синяя орхидея
+  BLUE_SHULKER_BOX: Синий шалкеровый ящик
+  BLUE_STAINED_GLASS: Синее окрашенное стекло
+  BLUE_STAINED_GLASS_PANE: Синяя стеклянная панель
+  BLUE_TERRACOTTA: Синяя обожжённая глина
+  BLUE_WALL_BANNER: Настенный флаг
+  BLUE_WOOL: Синяя шерсть
+  BONE: Кость
+  BONE_BLOCK: Костяной блок
+  BONE_MEAL: Костная мука
+  BOOK: Книга
+  BOOKSHELF: Книжный шкаф
+  BOW: Лук
+  BOWL: Миска
+  BRAIN_CORAL: Мозговой коралл
+  BRAIN_CORAL_BLOCK: Блок мозгового коралла
+  BRAIN_CORAL_FAN: Веерный мозговой коралл
+  BRAIN_CORAL_WALL_FAN: Настенный веерный мозговой коралл
+  BREAD: Хлеб
+  BREWING_STAND: Варочная стойка
+  BRICK: Кирпич
+  BRICKS: Кирпичный блок
+  BRICK_SLAB: Кирпичная плита
+  BRICK_STAIRS: Кирпичные ступени
+  BROWN_BANNER: Флаг
+  BROWN_BED: Кровать
+  BROWN_CARPET: Коричневый Ковёр
+  BROWN_CONCRETE: Коричневый бетон
+  BROWN_CONCRETE_POWDER: Коричневый цемент
+  BROWN_GLAZED_TERRACOTTA: Коричневая глазурованная керамика
+  BROWN_MUSHROOM: Коричневый гриб
+  BROWN_MUSHROOM_BLOCK: Блок коричневого гриба
+  BROWN_SHULKER_BOX: Коричневый шалкеровый ящик
+  BROWN_STAINED_GLASS: Коричневое окрашенное стекло
+  BROWN_STAINED_GLASS_PANE: Коричневая стеклянная панель
+  BROWN_TERRACOTTA: Коричневая обожжённая глина
+  BROWN_WALL_BANNER: Настенный флаг
+  BROWN_WOOL: Коричневая шерсть
+  BUBBLE_COLUMN: Столб пузырей
+  BUBBLE_CORAL: Пузырчатый коралл
+  BUBBLE_CORAL_BLOCK: Блок пузырчатого коралла
+  BUBBLE_CORAL_FAN: Веерный пузырчатого коралл
+  BUBBLE_CORAL_WALL_FAN: Стена веерного пузырчатого коралла
+  BUCKET: Ведро
+  CACTUS: Кактус
+  CAKE: Торт
+  CARROT: Морковь
+  CARROTS: Морковь
+  CARROT_ON_A_STICK: Удочка с морковью
+  CARVED_PUMPKIN: Резная тыква
+  CAULDRON: Котёл
+  CAVE_AIR: Воздух
+  CAVE_SPIDER_SPAWN_EGG: Яйцо призыва пещерного паука
+  CHAINMAIL_BOOTS: Кольчужные ботинки
+  CHAINMAIL_CHESTPLATE: Кольчужная кираса
+  CHAINMAIL_HELMET: Кольчужный шлем
+  CHAINMAIL_LEGGINGS: Кольчужные поножи
+  CHAIN_COMMAND_BLOCK: Воздух
+  CHARCOAL: Древесный уголь
+  CHEST: Сундук
+  CHEST_MINECART: Вагонетка с сундуком
+  CHICKEN: Сырая курятина
+  CHICKEN_SPAWN_EGG: Яйцо призыва курицы
+  CHIPPED_ANVIL: Наковальня
+  CHISELED_QUARTZ_BLOCK: Резной кварцевый блок
+  CHISELED_RED_SANDSTONE: Декоративный красный песчаник
+  CHISELED_SANDSTONE: Декоративный песчаник
+  CHISELED_STONE_BRICKS: Резной каменный кирпич
+  CHORUS_FLOWER: Цветок коруса
+  CHORUS_FRUIT: Плод коруса
+  CHORUS_PLANT: Растение коруса
+  CLAY: Глиняный блок
+  CLAY_BALL: Глина
+  CLOCK: Часы
+  COAL: Уголь
+  COAL_BLOCK: Угольный блок
+  COAL_ORE: Угольная руда
+  COARSE_DIRT: Каменистая земля
+  COBBLESTONE: Булыжник
+  COBBLESTONE_SLAB: Булыжниковая плита
+  COBBLESTONE_STAIRS: Булыжниковые ступени
+  COBBLESTONE_WALL: Булыжниковый забор
+  COBWEB: Паутина
+  COCOA: Плод какао
+  COCOA_BEANS: Какао-бобы
+  COD: Треска
+  COD_BUCKET: Ведро с треской
+  COD_SPAWN_EGG: Яйцо спауна трески
+  COMMAND_BLOCK: Командный блок
+  COMMAND_BLOCK_MINECART: Вагонетка с командным блоком
+  COMPARATOR: Компаратор
+  COMPASS: Компас
+  CONDUIT: Морской проводник
+  COOKED_BEEF: Жареная говядина
+  COOKED_CHICKEN: Жареная курятина
+  COOKED_COD: Жареная рыба
+  COOKED_MUTTON: Жареная баранина
+  COOKED_PORKCHOP: Жареная свинина
+  COOKED_RABBIT: Жареная крольчатина
+  COOKED_SALMON: Жареный лосось
+  COOKIE: Печенье
+  COW_SPAWN_EGG: Яйцо призыва коровы
+  CRACKED_STONE_BRICKS: Потресканный каменный кирпич
+  CRAFTING_TABLE: Верстак
+  CREEPER_HEAD: Голова (Крипер)
+  CREEPER_SPAWN_EGG: Яйцо призыва крипера
+  CREEPER_WALL_HEAD: Голова
+  CUT_RED_SANDSTONE: Резной красный песчаник
+  CUT_SANDSTONE: Резной песчаник
+  CYAN_BANNER: Флаг
+  CYAN_BED: Кровать
+  CYAN_CARPET: Бирюзовый Ковёр
+  CYAN_CONCRETE: Бирюзовый бетон
+  CYAN_CONCRETE_POWDER: Бирюзовый цемент
+  CYAN_DYE: Сиреневый краситель
+  CYAN_GLAZED_TERRACOTTA: Бирюзовая глазурованная керамика
+  CYAN_SHULKER_BOX: Бирюзовый шалкеровый ящик
+  CYAN_STAINED_GLASS: Бирюзовое окрашенное стекло
+  CYAN_STAINED_GLASS_PANE: Бирюзовая стеклянная панель
+  CYAN_TERRACOTTA: Бирюзовая обожжённая глина
+  CYAN_WALL_BANNER: Настенный флаг
+  CYAN_WOOL: Бирюзовая шерсть
+  DAMAGED_ANVIL: Наковальня
+  DANDELION: Одуванчик
+  DARK_OAK_BOAT: Лодка из тёмного дуба
+  DARK_OAK_BUTTON: Кнопка из тёмного дуба
+  DARK_OAK_DOOR: Тёмнодубовая дверь
+  DARK_OAK_FENCE: Забор из тёмного дуба
+  DARK_OAK_FENCE_GATE: Ворота из тёмного дуба
+  DARK_OAK_LEAVES: Листва тёмного дуба
+  DARK_OAK_LOG: Древесина тёмного дуба
+  DARK_OAK_PLANKS: Доски из тёмного дуба
+  DARK_OAK_PRESSURE_PLATE: Нажимная плита из тёмного дуба
+  DARK_OAK_SAPLING: Саженец тёмного дуба
+  DARK_OAK_SLAB: Плита из тёмного дуба
+  DARK_OAK_STAIRS: Ступени из тёмного дуба
+  DARK_OAK_TRAPDOOR: Люк из тёмного дуба
+  DARK_OAK_WOOD: Тёмный дуба
+  DARK_PRISMARINE: Тёмный призмарин
+  DARK_PRISMARINE_SLAB: Плита из тёмный призмарина
+  DARK_PRISMARINE_STAIRS: Ступеньки из тёмный призмарина
+  DAYLIGHT_DETECTOR: Датчик дневного света
+  DEAD_BRAIN_CORAL: Мёртвый мозговой коралл
+  DEAD_BRAIN_CORAL_BLOCK: Блок мёртвый мозгового коралла
+  DEAD_BRAIN_CORAL_FAN: Веер мёртвый мозгового коралла
+  DEAD_BRAIN_CORAL_WALL_FAN: стена веера мёртвого мозгового коралла
+  DEAD_BUBBLE_CORAL: Мёртвый пузырчатый коралл
+  DEAD_BUBBLE_CORAL_BLOCK: Блок мёртвого пузырчатого коралла
+  DEAD_BUBBLE_CORAL_FAN: Веер мёртвого пузырчатого коралла
+  DEAD_BUBBLE_CORAL_WALL_FAN: Стена веерного мёртвого пузырчатого коралла
+  DEAD_BUSH: Сухой куст
+  DEAD_FIRE_CORAL: Огненный коралл
+  DEAD_FIRE_CORAL_BLOCK: Блок огненного коралла
+  DEAD_FIRE_CORAL_FAN: Мёртвый огненный веерный коралл
+  DEAD_FIRE_CORAL_WALL_FAN: Стена мёртвый огненного веерного коралла
+  DEAD_HORN_CORAL: Роговый коралл
+  DEAD_HORN_CORAL_BLOCK: Блок роговый коралла
+  DEAD_HORN_CORAL_FAN: Мёртвый роговой веерный коралл
+  DEAD_HORN_CORAL_WALL_FAN: Стена мёртвого рогового веерного коралла
+  DEAD_TUBE_CORAL: Мёртвый трубчатый коралл
+  DEAD_TUBE_CORAL_BLOCK: Блок мёртвого трубчатого коралла
+  DEAD_TUBE_CORAL_FAN: Мёртвый трубчатый веерный коралл
+  DEAD_TUBE_CORAL_WALL_FAN: Стена мёртвого трубчатого веерного коралла
+  DEBUG_STICK: Воздух
+  DETECTOR_RAIL: Нажимные рельсы
+  DIAMOND: Алмаз
+  DIAMOND_AXE: Алмазный топор
+  DIAMOND_BLOCK: Алмазный блок
+  DIAMOND_BOOTS: Алмазные ботинки
+  DIAMOND_CHESTPLATE: Алмазная кираса
+  DIAMOND_HELMET: Алмазный шлем
+  DIAMOND_HOE: Алмазная мотыга
+  DIAMOND_HORSE_ARMOR: Алмазная конская броня
+  DIAMOND_LEGGINGS: Алмазные поножи
+  DIAMOND_ORE: Алмазная руда
+  DIAMOND_PICKAXE: Алмазная кирка
+  DIAMOND_SHOVEL: Алмазная лопата
+  DIAMOND_SWORD: Алмазный меч
+  DIORITE: Диорит
+  DIRT: Земля
+  DISPENSER: Раздатчик
+  DOLPHIN_SPAWN_EGG: Яйцо спауна дильфина
+  DONKEY_SPAWN_EGG: Spawn Donkey
+  DRAGON_BREATH: Драконье дыхание
+  DRAGON_EGG: Яйцо дракона
+  DRAGON_HEAD: Голова (Скелет)
+  DRAGON_WALL_HEAD: Голова
+  DRIED_KELP: Сушёная ламинария
+  DRIED_KELP_BLOCK: Блок сушёная ламинарии
+  DROPPER: Выбрасыватель
+  DROWNED_SPAWN_EGG: Яйцо призыва утопленника
+  EGG: Яйцо
+  ELDER_GUARDIAN_SPAWN_EGG: Spawn Elder Guardian
+  ELYTRA: Элитры
+  EMERALD: Изумруд
+  EMERALD_BLOCK: Изумрудный блок
+  EMERALD_ORE: Изумрудная руда
+  ENCHANTED_BOOK: Зачарованная книга
+  ENCHANTED_GOLDEN_APPLE: Зачарованное золотое яблоко
+  ENCHANTING_TABLE: Стол зачаровывания
+  ENDERMAN_SPAWN_EGG: Яйцо призыва странника Края
+  ENDERMITE_SPAWN_EGG: Яйцо призыва чешуйницы Края
+  ENDER_CHEST: Сундук Края
+  ENDER_EYE: Око Края
+  ENDER_PEARL: Жемчуг Края
+  END_CRYSTAL: Кристал Края
+  END_GATEWAY: Блок врат Края
+  END_PORTAL: Блок портала Края
+  END_PORTAL_FRAME: Рамка портала Края
+  END_ROD: Стержень Края
+  END_STONE: Камень Края
+  END_STONE_BRICKS: Каменный кирпич Края
+  EVOKER_SPAWN_EGG: Spawn Evoker
+  EXPERIENCE_BOTTLE: Зелье опыта
+  FARMLAND: Грядка
+  FEATHER: Перо
+  FERMENTED_SPIDER_EYE: Приготовленный паучий глаз
+  FERN: Папоротник
+  FILLED_MAP: Карта
+  FIRE: Огонь
+  FIREWORK_ROCKET: Ракета
+  FIREWORK_STAR: Звёздочка
+  FIRE_CHARGE: Огненный шар
+  FIRE_CORAL: Огненный коралл
+  FIRE_CORAL_BLOCK: Блок огненного коралла
+  FIRE_CORAL_FAN: Мёртвый огненный веерный коралл
+  FIRE_CORAL_WALL_FAN: Стена мёртвого огненного веерного коралла
+  FISHING_ROD: Удочка
+  FLINT: Кремень
+  FLINT_AND_STEEL: Огниво
+  FLOWER_POT: Цветочный горшок
+  FROSTED_ICE: Подмороженный лёд
+  FURNACE: Печь
+  FURNACE_MINECART: Вагонетка с печью
+  GHAST_SPAWN_EGG: Яйцо призыва гаста
+  GHAST_TEAR: Слеза гаста
+  GLASS: Стекло
+  GLASS_BOTTLE: Колба
+  GLASS_PANE: Стеклянная панель
+  GLISTERING_MELON_SLICE: Сверкающий ломтик арбуза
+  GLOWSTONE: Светокамень
+  GLOWSTONE_DUST: Светопыль
+  GOLDEN_APPLE: Золотое яблоко
+  GOLDEN_AXE: Золотой топор
+  GOLDEN_BOOTS: Золотые ботинки
+  GOLDEN_CARROT: Золотая морковь
+  GOLDEN_CHESTPLATE: Золотая кираса
+  GOLDEN_HELMET: Золотой шлем
+  GOLDEN_HOE: Золотая мотыга
+  GOLDEN_HORSE_ARMOR: Золотая конская броня
+  GOLDEN_LEGGINGS: Золотые поножи
+  GOLDEN_PICKAXE: Золотая кирка
+  GOLDEN_SHOVEL: Золотая лопата
+  GOLDEN_SWORD: Золотой меч
+  GOLD_BLOCK: Золотой блок
+  GOLD_INGOT: Золотой слиток
+  GOLD_NUGGET: Золотой самородок
+  GOLD_ORE: Золотая руда
+  GRANITE: Гранит
+  GRASS: Высокая трава
+  GRASS_BLOCK: Трава
+  GRASS_PATH: Травяная тропинка
+  GRAVEL: Гравий
+  GRAY_BANNER: Флаг
+  GRAY_BED: Кровать
+  GRAY_CARPET: Серый Ковёр
+  GRAY_CONCRETE: Серый бетон
+  GRAY_CONCRETE_POWDER: Серый цемент
+  GRAY_DYE: Серый краситель
+  GRAY_GLAZED_TERRACOTTA: Серая глазурованная керамика
+  GRAY_SHULKER_BOX: Серый шалкеровый ящик
+  GRAY_STAINED_GLASS: Серое окрашенное стекло
+  GRAY_STAINED_GLASS_PANE: Серая стеклянная панель
+  GRAY_TERRACOTTA: Серая обожжённая глина
+  GRAY_WALL_BANNER: Настенный флаг
+  GRAY_WOOL: Серая шерсть
+  GREEN_BANNER: Флаг
+  GREEN_BED: Кровать
+  GREEN_CARPET: Зелёный Ковёр
+  GREEN_CONCRETE: Зелёный бетон
+  GREEN_CONCRETE_POWDER: Зелёный цемент
+  GREEN_GLAZED_TERRACOTTA: Зелёная глазурованная керамика
+  GREEN_SHULKER_BOX: Зелёный шалкеровый ящик
+  GREEN_STAINED_GLASS: Зелёное окрашенное стекло
+  GREEN_STAINED_GLASS_PANE: Зелёная стеклянная панель
+  GREEN_TERRACOTTA: Зелёная обожжённая глина
+  GREEN_WALL_BANNER: Настенный флаг
+  GREEN_WOOL: Зелёная шерсть
+  GUARDIAN_SPAWN_EGG: Яйцо призыва стража
+  GUNPOWDER: Порох
+  HAY_BLOCK: Сноп сена
+  HEART_OF_THE_SEA: Сердце моря
+  HEAVY_WEIGHTED_PRESSURE_PLATE: Утяжелённая нажимная пластина (Тяжёлая)
+  HOPPER: Загрузочная воронка
+  HOPPER_MINECART: Вагонетка с воронкой
+  HORN_CORAL: Роговый коралл
+  HORN_CORAL_BLOCK: Блок рогового коралла
+  HORN_CORAL_FAN: Мёртвый роговой веерный коралл
+  HORN_CORAL_WALL_FAN: Стена мёртвый рогового веерного коралла
+  HORSE_SPAWN_EGG: Яйцо призыва лошади
+  HUSK_SPAWN_EGG: Яйцо спауна кадавра
+  ICE: Лёд
+  INFESTED_CHISELED_STONE_BRICKS: Заражённый резной блок кирпича
+  INFESTED_COBBLESTONE: Заражённый булыжник
+  INFESTED_CRACKED_STONE_BRICKS: Заражённый разбитый блок кирпича
+  INFESTED_MOSSY_STONE_BRICKS: Заражённый блок замшелого кирпича
+  INFESTED_STONE: Камень чешуйниц
+  INFESTED_STONE_BRICKS: Stone Brick Monster Egg
+  INK_SAC: Чернильный мешок
+  IRON_AXE: Железный топор
+  IRON_BARS: Железная решётка
+  IRON_BLOCK: Железный блок
+  IRON_BOOTS: Железные ботинки
+  IRON_CHESTPLATE: Железная кираса
+  IRON_DOOR: Железная дверь
+  IRON_HELMET: Железный шлем
+  IRON_HOE: Железная мотыга
+  IRON_HORSE_ARMOR: Железная конская броня
+  IRON_INGOT: Железный слиток
+  IRON_LEGGINGS: Железные поножи
+  IRON_NUGGET: Iron Nugget
+  IRON_ORE: Железная руда
+  IRON_PICKAXE: Железная кирка
+  IRON_SHOVEL: Железная лопата
+  IRON_SWORD: Железный меч
+  IRON_TRAPDOOR: Железный люк
+  ITEM_FRAME: Рамка
+  JACK_O_LANTERN: Светильник Джека
+  JUKEBOX: Проигрыватель
+  JUNGLE_BOAT: Джунглевая лодка
+  JUNGLE_BUTTON: Кнопка из джунглевого дерева
+  JUNGLE_DOOR: Дверь из тропического дерева
+  JUNGLE_FENCE: Джунглевый забор
+  JUNGLE_FENCE_GATE: Джунглевые ворота
+  JUNGLE_LEAVES: Джунглевая листва
+  JUNGLE_LOG: Джунглевая древесина
+  JUNGLE_PLANKS: Джунглевые доски
+  JUNGLE_PRESSURE_PLATE: Джунглевая нажимная плита
+  JUNGLE_SAPLING: Джунглиевый саженец
+  JUNGLE_SLAB: Двойная каменная плита
+  JUNGLE_STAIRS: Ступени из дерева джунглей
+  JUNGLE_TRAPDOOR: Джунглевый люк
+  JUNGLE_WOOD: Джунглевое дерево
+  KELP: Ламинария
+  KELP_PLANT: Ламинария
+  KNOWLEDGE_BOOK: Книга знаний
+  LADDER: Лестница
+  LAPIS_BLOCK: Лазуритовый блок
+  LAPIS_LAZULI: Лазурит
+  LAPIS_ORE: Лазуритовая руда
+  LARGE_FERN: Папоротник
+  LAVA: Лава
+  LAVA_BUCKET: Ведро лавы
+  LEAD: Поводок
+  LEATHER: Кожа
+  LEATHER_BOOTS: Кожаные ботинки
+  LEATHER_CHESTPLATE: Кожаная кираса
+  LEATHER_HELMET: Кожаный шлем
+  LEATHER_LEGGINGS: Кожаные поножи
+  LEVER: Рычаг
+  LIGHT_BLUE_BANNER: Флаг
+  LIGHT_BLUE_BED: Кровать
+  LIGHT_BLUE_CARPET: Светло-синий Ковёр
+  LIGHT_BLUE_CONCRETE: Светло-синий бетон
+  LIGHT_BLUE_CONCRETE_POWDER: Светло-синий цемент
+  LIGHT_BLUE_DYE: Светло-синий краситель
+  LIGHT_BLUE_GLAZED_TERRACOTTA: Светло-синяя глазурованная керамика
+  LIGHT_BLUE_SHULKER_BOX: Светло-синий шалкеровый ящик
+  LIGHT_BLUE_STAINED_GLASS: Светло-синее окрашенное стекло
+  LIGHT_BLUE_STAINED_GLASS_PANE: Светло-синяя стеклянная панель
+  LIGHT_BLUE_TERRACOTTA: Светло-синяя обожжённая глина
+  LIGHT_BLUE_WALL_BANNER: Настенный флаг
+  LIGHT_BLUE_WOOL: Светло-синяя шерсть
+  LIGHT_GRAY_BANNER: Флаг
+  LIGHT_GRAY_BED: Кровать
+  LIGHT_GRAY_CARPET: Светло-серый Ковёр
+  LIGHT_GRAY_CONCRETE: Светло-серый бетон
+  LIGHT_GRAY_CONCRETE_POWDER: Светло-серый цемент
+  LIGHT_GRAY_DYE: Светло-серый краситель
+  LIGHT_GRAY_GLAZED_TERRACOTTA: Светло-серая глазурованная керамика
+  LIGHT_GRAY_SHULKER_BOX: Светло-серый шалкеровый ящик
+  LIGHT_GRAY_STAINED_GLASS: Светло-серое окрашенное стекло
+  LIGHT_GRAY_STAINED_GLASS_PANE: Светло-серая стеклянная панель
+  LIGHT_GRAY_TERRACOTTA: Светло-серая обожжённая глина
+  LIGHT_GRAY_WALL_BANNER: Настенный флаг
+  LIGHT_GRAY_WOOL: Светло-серая шерсть
+  LIGHT_WEIGHTED_PRESSURE_PLATE: Утяжелённая нажимная пластина (Лёгкая)
+  LILAC: Сирень
+  LILY_PAD: Кувшинка
+  LIME_BANNER: Флаг
+  LIME_BED: Кровать
+  LIME_CARPET: Лаймовый Ковёр
+  LIME_CONCRETE: Лаймовый бетон
+  LIME_CONCRETE_POWDER: Лаймовый цемент
+  LIME_DYE: Лаймовый краситель
+  LIME_GLAZED_TERRACOTTA: Лаймовая глазурованная керамика
+  LIME_SHULKER_BOX: Лаймовый шалкеровый ящик
+  LIME_STAINED_GLASS: Лаймовое окрашенное стекло
+  LIME_STAINED_GLASS_PANE: Лаймовая стеклянная панель
+  LIME_TERRACOTTA: Лаймовая обожжённая глина
+  LIME_WALL_BANNER: Настенный флаг
+  LIME_WOOL: Лаймовая шерсть
+  LINGERING_POTION: Оседающее зелье
+  LLAMA_SPAWN_EGG: Spawn Llama
+  MAGENTA_BANNER: Флаг
+  MAGENTA_BED: Кровать
+  MAGENTA_CARPET: Сиреневый Ковёр
+  MAGENTA_CONCRETE: Сиреневый бетон
+  MAGENTA_CONCRETE_POWDER: Сиреневый цемент
+  MAGENTA_DYE: Сиреневый краситель
+  MAGENTA_GLAZED_TERRACOTTA: Сиреневая глазурованная керамика
+  MAGENTA_SHULKER_BOX: Сиреневый шалкеровый ящик
+  MAGENTA_STAINED_GLASS: Сиреневое окрашенное стекло
+  MAGENTA_STAINED_GLASS_PANE: Сиреневая стеклянная панель
+  MAGENTA_TERRACOTTA: Сиреневая обожжённая глина
+  MAGENTA_WALL_BANNER: Настенный флаг
+  MAGENTA_WOOL: Сиреневая шерсть
+  MAGMA_BLOCK: Магмовый блок
+  MAGMA_CREAM: Лавовый крем
+  MAGMA_CUBE_SPAWN_EGG: Яйцо призыва лавового куба
+  MAP: Пустая карта
+  MELON: Арбуз
+  MELON_SEEDS: Семена арбуза
+  MELON_SLICE: Ломтик арбуза
+  MELON_STEM: Стручок арбуза
+  MILK_BUCKET: Молоко
+  MINECART: Вагонетка
+  MOOSHROOM_SPAWN_EGG: Яйцо призыва грибной коровы
+  MOSSY_COBBLESTONE: Замшелый булыжник
+  MOSSY_COBBLESTONE_WALL: Забор из замшелого булыжника
+  MOSSY_STONE_BRICKS: Замшелый каменный кирпич
+  MOVING_PISTON: Piston Moving Piece
+  MULE_SPAWN_EGG: Spawn Mule
+  MUSHROOM_STEM: Грибной стручок
+  MUSHROOM_STEW: Тушёные грибы
+  MUSIC_DISC_11: 11 Диск
+  MUSIC_DISC_13: 13 Диск
+  MUSIC_DISC_BLOCKS: Blocks Диск
+  MUSIC_DISC_CAT: Cat Диск
+  MUSIC_DISC_CHIRP: Chirp Диск
+  MUSIC_DISC_FAR: Far Диск
+  MUSIC_DISC_MALL: Mall Диск
+  MUSIC_DISC_MELLOHI: Mellohi Диск
+  MUSIC_DISC_STAL: Stal Диск
+  MUSIC_DISC_STRAD: Strad Диск
+  MUSIC_DISC_WAIT: Wait Диск
+  MUSIC_DISC_WARD: Ward Диск
+  MUTTON: Сырая баранина
+  MYCELIUM: Мицелий
+  NAME_TAG: Бирка
+  NAUTILUS_SHELL: Ракушка наутилуса
+  NETHERRACK: Адский камень
+  NETHER_BRICK: Адский кирпич
+  NETHER_BRICKS: Блок адского кирпича
+  NETHER_BRICK_FENCE: Адский забор
+  NETHER_BRICK_SLAB: Плита из адского кирпича
+  NETHER_BRICK_STAIRS: Ступени из адского кирпича
+  NETHER_PORTAL: Блок портала Нижнего мира
+  NETHER_QUARTZ_ORE: Кварцевая руда Нижнего мира
+  NETHER_STAR: Звезда Нижнего мира
+  NETHER_WART: Семена адского нароста
+  NETHER_WART_BLOCK: Блок адского нароста
+  NOTE_BLOCK: Музыкальный блок
+  OAK_BOAT: Дубовая лодка
+  OAK_BUTTON: Деревянная кнопка
+  OAK_DOOR: Деревянная дверь
+  OAK_FENCE: Забор
+  OAK_FENCE_GATE: Ворота
+  OAK_LEAVES: Дубовая листва
+  OAK_LOG: Дубовая древесина
+  OAK_PLANKS: Дубовые доски
+  OAK_PRESSURE_PLATE: Деревянная нажимная пластина
+  OAK_SAPLING: Дубовый саженец
+  OAK_SLAB: Дубовая плита
+  OAK_STAIRS: Дубовые ступени
+  OAK_TRAPDOOR: Люк
+  OAK_WOOD: Дубовое дерево
+  OBSERVER: Наблюдатель
+  OBSIDIAN: Обсидиан
+  OCELOT_SPAWN_EGG: Яйцо призыва оцелота
+  ORANGE_BANNER: Флаг
+  ORANGE_BED: Кровать
+  ORANGE_CARPET: Оранжевый Ковёр
+  ORANGE_CONCRETE: Оранжевый бетон
+  ORANGE_CONCRETE_POWDER: Оранжевый цемент
+  ORANGE_DYE: Оранжевый краситель
+  ORANGE_GLAZED_TERRACOTTA: Оранжевая глазурованная керамика
+  ORANGE_SHULKER_BOX: Оранжевый шалкеровый ящик
+  ORANGE_STAINED_GLASS: Оранжевое окрашенное стекло
+  ORANGE_STAINED_GLASS_PANE: Оранжевая стеклянная панель
+  ORANGE_TERRACOTTA: Оранжевая обожжённая глина
+  ORANGE_TULIP: Оранжевый тюльпан
+  ORANGE_WALL_BANNER: Настенный флаг
+  ORANGE_WOOL: Оранжевая шерсть
+  OXEYE_DAISY: Нивяник
+  PACKED_ICE: Плотный лёд
+  PAINTING: Картина
+  PAPER: Бумага
+  PARROT_SPAWN_EGG: Spawn Parrot
+  PEONY: Пион
+  PETRIFIED_OAK_SLAB: Окаменелая дубовая плита
+  PHANTOM_MEMBRANE: Мембрана фантома
+  PHANTOM_SPAWN_EGG: Воздух
+  PIG_SPAWN_EGG: Яйцо призыва свиньи
+  PINK_BANNER: Флаг
+  PINK_BED: Кровать
+  PINK_CARPET: Розовый Ковёр
+  PINK_CONCRETE: Розовый бетон
+  PINK_CONCRETE_POWDER: Розовый цемент
+  PINK_DYE: Розовый краситель
+  PINK_GLAZED_TERRACOTTA: Розовая глазурованная керамика
+  PINK_SHULKER_BOX: Розовый шалкеровый ящик
+  PINK_STAINED_GLASS: Розовое окрашенное стекло
+  PINK_STAINED_GLASS_PANE: Розовая стеклянная панель
+  PINK_TERRACOTTA: Розовая обожжённая глина
+  PINK_TULIP: Розовый тюльпан
+  PINK_WALL_BANNER: Настенный флаг
+  PINK_WOOL: Розовая шерсть
+  PISTON: Поршень
+  PISTON_HEAD: Головка поршня
+  PLAYER_HEAD: Голова (Человек)
+  PLAYER_WALL_HEAD: Голова
+  PODZOL: Подзол
+  POISONOUS_POTATO: Ядовитый картофель
+  POLAR_BEAR_SPAWN_EGG: Яйцо призыва кролика
+  POLISHED_ANDESITE: Полированый Андезит
+  POLISHED_DIORITE: Полированый Диорит
+  POLISHED_GRANITE: Полированый Гранит
+  POPPED_CHORUS_FRUIT: Приготовленный плод коруса
+  POPPY: Мак
+  PORKCHOP: Сырая свинина
+  POTATO: Картофель
+  POTATOES: Картофель
+  POTION: Зелья
+  POTTED_ACACIA_SAPLING: Воздух
+  POTTED_ALLIUM: Воздух
+  POTTED_AZURE_BLUET: Воздух
+  POTTED_BIRCH_SAPLING: Воздух
+  POTTED_BLUE_ORCHID: Воздух
+  POTTED_BROWN_MUSHROOM: Воздух
+  POTTED_CACTUS: Воздух
+  POTTED_DANDELION: Воздух
+  POTTED_DARK_OAK_SAPLING: Воздух
+  POTTED_DEAD_BUSH: Воздух
+  POTTED_FERN: Воздух
+  POTTED_JUNGLE_SAPLING: Воздух
+  POTTED_OAK_SAPLING: Воздух
+  POTTED_ORANGE_TULIP: Воздух
+  POTTED_OXEYE_DAISY: Воздух
+  POTTED_PINK_TULIP: Воздух
+  POTTED_POPPY: Воздух
+  POTTED_RED_MUSHROOM: Воздух
+  POTTED_RED_TULIP: Воздух
+  POTTED_SPRUCE_SAPLING: Воздух
+  POTTED_WHITE_TULIP: Воздух
+  POWERED_RAIL: Электрические рельсы
+  PRISMARINE: Призмарин
+  PRISMARINE_BRICKS: Призмариновый кирпич
+  PRISMARINE_BRICK_SLAB: Полублок из призмаринового кирпича
+  PRISMARINE_BRICK_STAIRS: Ступенька из призмаринового кирпича
+  PRISMARINE_CRYSTALS: Призмариновый кристалл
+  PRISMARINE_SHARD: Призмариновый осколок
+  PRISMARINE_SLAB: Полублок из призмарина
+  PRISMARINE_STAIRS: Ступенька из призмарина
+  PUFFERFISH: Иглобрюх
+  PUFFERFISH_BUCKET: Ведро с иглобрюхом
+  PUFFERFISH_SPAWN_EGG: Воздух
+  PUMPKIN: Тыква
+  PUMPKIN_PIE: Тыквенный пирог
+  PUMPKIN_SEEDS: Семена тыквы
+  PUMPKIN_STEM: Стебель тыквы
+  PURPLE_BANNER: Флаг
+  PURPLE_BED: Кровать
+  PURPLE_CARPET: Фиолетовый Ковёр
+  PURPLE_CONCRETE: Фиолетовый бетон
+  PURPLE_CONCRETE_POWDER: Фиолетовый цемент
+  PURPLE_DYE: Фиолетовый краситель
+  PURPLE_GLAZED_TERRACOTTA: Фиолетовая глазурованная керамика
+  PURPLE_SHULKER_BOX: Шалкеровый ящик
+  PURPLE_STAINED_GLASS: Фиолетовое окрашенное стекло
+  PURPLE_STAINED_GLASS_PANE: Фиолетовая стеклянная панель
+  PURPLE_TERRACOTTA: Фиолетовая обожжённая глина
+  PURPLE_WALL_BANNER: Настенный флаг
+  PURPLE_WOOL: Фиолетовая шерсть
+  PURPUR_BLOCK: Пурпурный блок
+  PURPUR_PILLAR: Пурпурный пилон
+  PURPUR_SLAB: Пурпурная плита
+  PURPUR_STAIRS: Пурпурные ступени
+  QUARTZ: Кварц Нижнего мира
+  QUARTZ_BLOCK: Кварцевый блок
+  QUARTZ_PILLAR: Кварцевый пилон
+  QUARTZ_SLAB: Кварцевая плита
+  QUARTZ_STAIRS: Кварцевые ступени
+  RABBIT: Сырая крольчатина
+  RABBIT_FOOT: Кроличья лапка
+  RABBIT_HIDE: Кроличья шкурка
+  RABBIT_SPAWN_EGG: Яйцо призыва кролика
+  RABBIT_STEW: Тушёный кролик
+  RAIL: Рельсы
+  REDSTONE: Красная пыль
+  REDSTONE_BLOCK: Блок красного камня
+  REDSTONE_LAMP: Лампа (выкл.)
+  REDSTONE_ORE: Красная руда
+  REDSTONE_TORCH: Красный факел (вкл)
+  REDSTONE_WALL_TORCH: Красный факел (вкл)
+  REDSTONE_WIRE: Красный провод
+  RED_BANNER: Флаг
+  RED_BED: Кровать
+  RED_CARPET: Красный Ковёр
+  RED_CONCRETE: Красный бетон
+  RED_CONCRETE_POWDER: Красный цемент
+  RED_GLAZED_TERRACOTTA: Красная глазурованная керамика
+  RED_MUSHROOM: Красный гриб
+  RED_MUSHROOM_BLOCK: Блок красного гриба
+  RED_NETHER_BRICKS: Красный адский кирпич
+  RED_SAND: Красный песок
+  RED_SANDSTONE: Красный песчаник
+  RED_SANDSTONE_SLAB: Плита из красного песчаника
+  RED_SANDSTONE_STAIRS: Ступени из красного песчаника
+  RED_SHULKER_BOX: Красный шалкеровый ящик
+  RED_STAINED_GLASS: Красное окрашенное стекло
+  RED_STAINED_GLASS_PANE: Красная стеклянная панель
+  RED_TERRACOTTA: Красная обожжённая глина
+  RED_TULIP: Красный тюльпан
+  RED_WALL_BANNER: Настенный флаг
+  RED_WOOL: Красная шерсть
+  REPEATER: Красный повторитель
+  REPEATING_COMMAND_BLOCK: Воздух
+  ROSE_BUSH: Розовый куст
+  ROTTEN_FLESH: Гнилая плоть
+  SADDLE: Седло
+  SALMON: Сырой лосось
+  SALMON_BUCKET: Воздух
+  SALMON_SPAWN_EGG: Воздух
+  SAND: Песок
+  SANDSTONE: Песчаник
+  SANDSTONE_SLAB: Песчаниковая плита
+  SANDSTONE_STAIRS: Песчаниковые ступени
+  SCUTE: Щиток
+  SEAGRASS: Подводная трава
+  SEA_LANTERN: Морской фонарь
+  SEA_PICKLE: Морской рассол
+  SHEARS: Ножницы
+  SHEEP_SPAWN_EGG: Яйцо призыва овцы
+  SHIELD: Щит
+  SHULKER_BOX: Шалкеровый ящик
+  SHULKER_SHELL: Оболочка шалкера
+  SHULKER_SPAWN_EGG: Яйцо призыва шалкера
+  SIGN: Табличка
+  SILVERFISH_SPAWN_EGG: Яйцо призыва чешуйницы
+  SKELETON_HORSE_SPAWN_EGG: Spawn Skeleton Horse
+  SKELETON_SKULL: Голова (Скелет)
+  SKELETON_SPAWN_EGG: Яйцо призыва скелета
+  SKELETON_WALL_SKULL: Голова
+  SLIME_BALL: Слизь
+  SLIME_BLOCK: Блок слизи
+  SLIME_SPAWN_EGG: Яйцо призыва слизня
+  SMOOTH_QUARTZ: Воздух
+  SMOOTH_RED_SANDSTONE: Гладкий красный песчаник
+  SMOOTH_SANDSTONE: Гладкий песчаник
+  SMOOTH_STONE: Воздух
+  SNOW: Снег
+  SNOWBALL: Снежок
+  SNOW_BLOCK: Блок снега
+  SOUL_SAND: Песок душ
+  SPAWNER: Спаунер мобов
+  SPECTRAL_ARROW: Призрачная стрела
+  SPIDER_EYE: Паучий глаз
+  SPIDER_SPAWN_EGG: Яйцо призыва паука
+  SPLASH_POTION: Взрывающееся зелье
+  SPONGE: Губка
+  SPRUCE_BOAT: Еловая лодка
+  SPRUCE_BUTTON: Воздух
+  SPRUCE_DOOR: Еловая дверь
+  SPRUCE_FENCE: Еловый забор
+  SPRUCE_FENCE_GATE: Еловые ворота
+  SPRUCE_LEAVES: Хвойная листва
+  SPRUCE_LOG: Хвойная древесина
+  SPRUCE_PLANKS: Еловые доски
+  SPRUCE_PRESSURE_PLATE: Воздух
+  SPRUCE_SAPLING: Еловый саженец
+  SPRUCE_SLAB: Хвойная плита
+  SPRUCE_STAIRS: Еловые ступени
+  SPRUCE_TRAPDOOR: Воздух
+  SPRUCE_WOOD: Воздух
+  SQUID_SPAWN_EGG: Яйцо призыва спрута
+  STICK: Палка
+  STICKY_PISTON: Липкий поршень
+  STONE: Камень
+  STONE_AXE: Каменный топор
+  STONE_BRICKS: Каменный кирпич
+  STONE_BRICK_SLAB: Каменнокирпичная плита
+  STONE_BRICK_STAIRS: Каменнокирпичные ступени
+  STONE_BUTTON: Каменная кнопка
+  STONE_HOE: Каменная мотыга
+  STONE_PICKAXE: Каменная кирка
+  STONE_PRESSURE_PLATE: Каменная нажимная пластина
+  STONE_SHOVEL: Каменная лопата
+  STONE_SLAB: Каменная плита
+  STONE_SWORD: Каменный меч
+  STRAY_SPAWN_EGG: Spawn Stray
+  STRING: Нить
+  STRIPPED_ACACIA_LOG: Обтёсанная древесина акации
+  STRIPPED_ACACIA_WOOD: Обтёсанная кора акации
+  STRIPPED_BIRCH_LOG: Обтёсанная древесина берёзы
+  STRIPPED_BIRCH_WOOD: Обтёсанная кора берёзы
+  STRIPPED_DARK_OAK_LOG: Обтёсанная древесина тёмного дуба
+  STRIPPED_DARK_OAK_WOOD: Обтёсанная кора тёмного дуба
+  STRIPPED_JUNGLE_LOG: Обтёсанная древесина джунглей
+  STRIPPED_JUNGLE_WOOD: Обтёсанная кора джунглей
+  STRIPPED_OAK_LOG: Обтёсанная древесина дуба
+  STRIPPED_OAK_WOOD: Обтёсанная кора дуба
+  STRIPPED_SPRUCE_LOG: Обтёсанная древесина ель
+  STRIPPED_SPRUCE_WOOD: Обтёсанная кора ель
+  STRUCTURE_BLOCK: Структурный блок
+  STRUCTURE_VOID: Пустота
+  SUGAR: Сахар
+  SUGAR_CANE: Сахарный тростник
+  SUNFLOWER: Подсолнечник
+  TALL_GRASS: Высокая трава
+  TALL_SEAGRASS: Высокая подводная трава
+  TERRACOTTA: Обожжённая глина
+  TIPPED_ARROW: Выпущенная стрела
+  TNT: ТНТ
+  TNT_MINECART: Вагонетка с ТНТ
+  TORCH: Факел
+  TOTEM_OF_UNDYING: Тотем бессмертия
+  TRAPPED_CHEST: Сундук-ловушка
+  TRIDENT: Трезубец
+  TRIPWIRE: Растяжка
+  TRIPWIRE_HOOK: Натяжной датчик
+  TROPICAL_FISH: Рыба-клоун
+  TROPICAL_FISH_BUCKET: Ведро с рыбой-клоуном
+  TROPICAL_FISH_SPAWN_EGG: Воздух
+  TUBE_CORAL: Трубчатый коралл
+  TUBE_CORAL_BLOCK: Блок трубчатого коралла
+  TUBE_CORAL_FAN: Веерный трубчатый коралл
+  TUBE_CORAL_WALL_FAN: Стена веерного трубчатого коралла
+  TURTLE_EGG: Яйцо черепахи
+  TURTLE_HELMET: Шлем черепахи
+  TURTLE_SPAWN_EGG: Воздух
+  VEX_SPAWN_EGG: Spawn Vex
+  VILLAGER_SPAWN_EGG: Яйцо призыва деревенского жителя
+  VINDICATOR_SPAWN_EGG: Spawn Vindicator
+  VINE: Лианы
+  VOID_AIR: Воздух
+  WALL_SIGN: Настенная табличка
+  WALL_TORCH: Факел
+  WATER: Вода
+  WATER_BUCKET: Ведро воды
+  WET_SPONGE: Влажная губка
+  WHEAT: Пшеница
+  WHEAT_SEEDS: Семена пшеницы
+  WHITE_BANNER: Флаг
+  WHITE_BED: Кровать
+  WHITE_CARPET: Белый Ковёр
+  WHITE_CONCRETE: Белый бетон
+  WHITE_CONCRETE_POWDER: Белый цемент
+  WHITE_GLAZED_TERRACOTTA: Белая глазурованная керамика
+  WHITE_SHULKER_BOX: Белый шалкеровый ящик
+  WHITE_STAINED_GLASS: Белое окрашенное стекло
+  WHITE_STAINED_GLASS_PANE: Белая стеклянная панель
+  WHITE_TERRACOTTA: Белая обожжённая глина
+  WHITE_TULIP: Белый тюльпан
+  WHITE_WALL_BANNER: Настенный флаг
+  WHITE_WOOL: Белая шерсть
+  WITCH_SPAWN_EGG: Яйцо призыва ведьмы
+  WITHER_SKELETON_SKULL: Голова (Визер-скелет)
+  WITHER_SKELETON_SPAWN_EGG: Spawn Wither Skeleton
+  WITHER_SKELETON_WALL_SKULL: Голова
+  WOLF_SPAWN_EGG: Яйцо призыва волка
+  WOODEN_AXE: Деревянный топор
+  WOODEN_HOE: Деревянная мотыга
+  WOODEN_PICKAXE: Деревянная кирка
+  WOODEN_SHOVEL: Деревянная лопата
+  WOODEN_SWORD: Деревянный меч
+  WRITABLE_BOOK: Book and Quill
+  WRITTEN_BOOK: Written Book
+  YELLOW_BANNER: Флаг
+  YELLOW_BED: Кровать
+  YELLOW_CARPET: Жёлтый Ковёр
+  YELLOW_CONCRETE: Жёлтый бетон
+  YELLOW_CONCRETE_POWDER: Жёлтый цемент
+  YELLOW_GLAZED_TERRACOTTA: Жёлтая глазурованная керамика
+  YELLOW_SHULKER_BOX: Жёлтый шалкеровый ящик
+  YELLOW_STAINED_GLASS: Жёлтое окрашенное стекло
+  YELLOW_STAINED_GLASS_PANE: Жёлтая стеклянная панель
+  YELLOW_TERRACOTTA: Жёлтая обожжённая глина
+  YELLOW_WALL_BANNER: Настенный флаг
+  YELLOW_WOOL: Жёлтая шерсть
+  ZOMBIE_HEAD: Голова (Зомби)
+  ZOMBIE_HORSE_SPAWN_EGG: Spawn Zombie Horse
+  ZOMBIE_PIGMAN_SPAWN_EGG: Яйцо призыва зомби-свиночеловека
+  ZOMBIE_SPAWN_EGG: Яйцо призыва зомби
+  ZOMBIE_VILLAGER_SPAWN_EGG: Spawn Zombie Villager
+  ZOMBIE_WALL_HEAD: Голова
+  ACACIA_SIGN: Табличка из акации
+  ACACIA_WALL_SIGN: Табличка из акации
+  ANDESITE_SLAB: Полублок из андезита
+  ANDESITE_STAIRS: Ступеньки из андезита
+  ANDESITE_WALL: Забор из андезита
+  BAMBOO: Бамбук
+  BAMBOO_SAPLING: Саженец бамбука
+  BARREL: Бочка
+  BELL: Колокол
+  BIRCH_SIGN: Табличка из берёзы
+  BIRCH_WALL_SIGN: Табличка из берёзы
+  BLACK_DYE: Черный краситель
+  BLAST_FURNACE: Доменная печь
+  BLUE_DYE: Синий краситель
+  BRICK_WALL: Забор из кирпичей
+  BROWN_DYE: Коричневый краситель
+  CAMPFIRE: Костёр
+  CARTOGRAPHY_TABLE: Стол картографа
+  CAT_SPAWN_EGG: Воздух
+  CORNFLOWER: Василек
+  CREEPER_BANNER_PATTERN: Паттер для банера "Крипер"
+  CROSSBOW: Арбалет
+  CUT_RED_SANDSTONE_SLAB: Полублок из красного песчаника
+  CUT_SANDSTONE_SLAB: Полублок песчаника
+  DARK_OAK_SIGN: Табличка из тёмного дуба
+  DARK_OAK_WALL_SIGN: Табличка из тёмного дуба
+  DIORITE_SLAB: Полублок из диорита
+  DIORITE_STAIRS: Ступеньки из диорита
+  DIORITE_WALL: Забор из диорита
+  END_STONE_BRICK_SLAB: Полублок из камня энда
+  END_STONE_BRICK_STAIRS: Ступеньки из камня энда
+  END_STONE_BRICK_WALL: Кирпичная забор из камня энда
+  FLETCHING_TABLE: Стол лучника
+  FLOWER_BANNER_PATTERN: Воздух
+  FOX_SPAWN_EGG: Воздух
+  GLOBE_BANNER_PATTERN: Узор флага "Глобус"
+  GRANITE_SLAB: Полублок из гранита
+  GRANITE_STAIRS: Ступеньки из гранита
+  GRANITE_WALL: Гранитная забор
+  GREEN_DYE: Зелёный краситель
+  GRINDSTONE: Точило
+  JIGSAW: Воздух
+  JUNGLE_SIGN: Табличка из джунгевой древесины
+  JUNGLE_WALL_SIGN: Табличка из джунгевой древесины
+  LANTERN: Фонарь
+  LEATHER_HORSE_ARMOR: Кожанная броня для лошади
+  LECTERN: Кафедра
+  LILY_OF_THE_VALLEY: Ландыш
+  LOOM: Ткацкий станок
+  MOJANG_BANNER_PATTERN: Узор флага "Моджанг"
+  MOSSY_COBBLESTONE_SLAB: Полублок из замшелого булыжника
+  MOSSY_COBBLESTONE_STAIRS: Ступеньки из замшелого булыжника
+  MOSSY_STONE_BRICK_SLAB: Полублок из замшелого кирпича
+  MOSSY_STONE_BRICK_STAIRS: Ступеньки из замшелого кирпича
+  MOSSY_STONE_BRICK_WALL: Забор из замшелого кирпича
+  NETHER_BRICK_WALL: Забор из незер кирпича
+  OAK_SIGN: Табличка из дуба
+  OAK_WALL_SIGN: Табличка из дуба
+  PANDA_SPAWN_EGG: Воздух
+  PILLAGER_SPAWN_EGG: Воздух
+  POLISHED_ANDESITE_STAIRS: Ступеньки из полированного андезита
+  POLISHED_ANDESITE_SLAB: Полублоки из полированного андезита
+  POLISHED_DIORITE_SLAB: Полублоки из полированного диорита
+  POLISHED_DIORITE_STAIRS: Ступеньки из полированного диорита
+  POLISHED_GRANITE_SLAB: Полублоки из полированного гранита
+  POLISHED_GRANITE_STAIRS: Ступеньки из полированного гранита
+  POTTED_BAMBOO: Бамбук в горшке
+  POTTED_CORNFLOWER: Воздух
+  POTTED_LILY_OF_THE_VALLEY: Ландыш в горшке
+  POTTED_WITHER_ROSE: Роза визера в горшке
+  PRISMARINE_WALL: Забор из призмарина
+  RAVAGER_SPAWN_EGG: Воздух
+  RED_DYE: Красный краситель
+  RED_NETHER_BRICK_SLAB: Полублоки из красного кирпича ада
+  RED_NETHER_BRICK_STAIRS: Ступеньки из красного кирпича ада
+  RED_NETHER_BRICK_WALL: Забор из красного кирпича ада
+  RED_SANDSTONE_WALL: Забор из красного песчаника
+  SANDSTONE_WALL: Забор из песчаника
+  SCAFFOLDING: Строительные леса
+  SKULL_BANNER_PATTERN: Узор флага "Череп"
+  SMITHING_TABLE: Стол кузнеца
+  SMOKER: Коптильня
+  SMOOTH_QUARTZ_SLAB: Полублоки из кварца
+  SMOOTH_QUARTZ_STAIRS: Ступеньки из кварца
+  SMOOTH_RED_SANDSTONE_SLAB: Полублоки из сглаженного красного песчаника
+  SMOOTH_RED_SANDSTONE_STAIRS: Ступеньки из сглаженного красного песчаника
+  SMOOTH_SANDSTONE_SLAB: Полублоки из сглаженного песчаника
+  SMOOTH_SANDSTONE_STAIRS: ВСтупеньки из сглаженного песчаника
+  SMOOTH_STONE_SLAB: Полублоки из изсглаженного камня
+  SPRUCE_SIGN: Табличка из ели
+  SPRUCE_WALL_SIGN: Табличка из ели
+  STONECUTTER: Камнерез
+  STONE_BRICK_WALL: Забор из каменнго кирпича
+  STONE_STAIRS: Каменные ступеньки
+  SUSPICIOUS_STEW: Подозрительный суп
+  SWEET_BERRIES: Сладкие ягоды
+  SWEET_BERRY_BUSH: Куст сладких ягод
+  TRADER_LLAMA_SPAWN_EGG: Воздух
+  WANDERING_TRADER_SPAWN_EGG: Воздух
+  WHITE_DYE: Белый краситель
+  WITHER_ROSE: Роза визера
+  YELLOW_DYE: Жёлтый краситель
+  COMPOSTER: Компостер
+  LEGACY_STATIONARY_WATER: Неподвижная вода
+  LEGACY_STATIONARY_LAVA: Неподвижная лава
+  LEGACY_BURNING_FURNACE: Горящая печь
+  LEGACY_NETHER_WARTS: Адский нарост
+  LEGACY_IRON_DOOR_BLOCK: Железная дверь
+  LEGACY_GLOWING_REDSTONE_ORE: Светящаяся красная руда
+  LEGACY_SUGAR_CANE_BLOCK: Сахарный тростник
+  LEGACY_RAW_FISH: Сырая рыба
+  LEGACY_SKULL: Голова
+  LEGACY_SIGN_POST: Напольная табличка
+  LEGACY_BED_BLOCK: Кровать
+  LEGACY_REDSTONE_TORCH_OFF: Красный факел (выкл)
+  LEGACY_REDSTONE_TORCH_ON: Красный факел (вкл)
+  LEGACY_CAKE_BLOCK: Торт
+  LEGACY_DIODE_BLOCK_OFF: Красный повторитель (выкл)
+  LEGACY_DIODE_BLOCK_ON: Красный повторитель (вкл)
+  LEGACY_BREWING_STAND: Варочная стойка
+  LEGACY_REDSTONE_COMPARATOR_OFF: Компаратор (неактивный)
+  LEGACY_REDSTONE_COMPARATOR_ON: Компаратор (активный)
 EntityList:
-  '-1':
-    MCName: Player
-    Name: Игрок
-  '50':
-    MCName: Creeper
-    Name: Крипер
-  '51':
-    MCName: Skeleton
-    Name: Скелет
-  '51:1':
-    MCName: Skeleton
-    Name: Скелет-иссушитель
-  '51:2':
-    MCName: Skeleton
-    Name: Зимогор
-  '52':
-    MCName: Spider
-    Name: Паук
-  '53':
-    MCName: Giant
-    Name: Гигант
-  '54':
-    MCName: Zombie
-    Name: Зомби
-  '54:1':
-    MCName: Zombie
-    Name: Зомби-житель
-  '54:2':
-    MCName: Zombie
-    Name: Кадавр
-  '55':
-    MCName: Slime
-    Name: Слизень
-  '56':
-    MCName: Ghast
-    Name: Гаст
-  '57':
-    MCName: PigZombie
-    Name: Зомби-свиночеловек
-  '58':
-    MCName: Enderman
-    Name: Странник Края
-  '59':
-    MCName: CaveSpider
-    Name: Пещерный паук
-  '60':
-    MCName: Silverfish
-    Name: Чешуйница
-  '61':
-    MCName: Blaze
-    Name: Ифрит
-  '62':
-    MCName: LavaSlime
-    Name: Лавовый куб
-  '63':
-    MCName: EnderDragon
-    Name: Дракон Края
-  '64':
-    MCName: WitherBoss
-    Name: Иссушитель
-  '65':
-    MCName: Bat
-    Name: Летучая мышь
-  '66':
-    MCName: Witch
-    Name: Ведьма
-  '67':
-    MCName: Endermite
-    Name: Чешуйница Края
-  '68':
-    MCName: Guardian
-    Name: Страж
-  '68:1':
-    MCName: Guardian
-    Name: Древний страж
-  '69':
-    MCName: Shulker
-    Name: Шалкер
-  '90':
-    MCName: Pig
-    Name: Свинья
-  '91':
-    MCName: Sheep
-    Name: Овца
-  '92':
-    MCName: Cow
-    Name: Корова
-  '93':
-    MCName: Chicken
-    Name: Курица
-  '94':
-    MCName: Squid
-    Name: Спрут
-  '95':
-    MCName: Wolf
-    Name: Волк
-  '96':
-    MCName: MushroomCow
-    Name: Грибная корова
-  '97':
-    MCName: SnowMan
-    Name: Снежный голем
-  '98':
-    MCName: Ozelot
-    Name: Оцелот
-  '99':
-    MCName: VillagerGolem
-    Name: Железный голем
-  '100':
-    MCName: EntityHorse
-    Name: Лошадь
-  '101':
-    MCName: Rabbit
-    Name: Кролик
-  '102':
-    MCName: PolarBear
-    Name: Белый медведь
-  '120':
-    MCName: Villager
-    Name: Деревенский житель
-  '200':
-    MCName: EnderCrystal
-    Name: Кристалл Края
+  4-ELDER_GUARDIAN: Древний страж
+  5-WITHER_SKELETON: Визер скелет
+  6-STRAY: Зимигор
+  23-HUSK: Кадавр
+  27-ZOMBIE_VILLAGER: Зомби-житель
+  28-SKELETON_HORSE: Лошадь скелет
+  29-ZOMBIE_HORSE: Зомби лошадь
+  30-ARMOR_STAND: Стойка для брони
+  31-DONKEY: Осёл
+  32-MULE: Мул
+  34-EVOKER: Призыватель
+  35-VEX: Досаждатель
+  36-VINDICATOR: Поборник
+  37-ILLUSIONER: Иллюзор
+  50-CREEPER: Крипер
+  51-SKELETON: Скелет
+  52-SPIDER: Паук
+  53-GIANT: Гигант
+  54-ZOMBIE: Зомби
+  55-SLIME: Слизень
+  56-GHAST: Гаст
+  57-PIG_ZOMBIE: Зомби-свиночеловек
+  58-ENDERMAN: Странник Края
+  59-CAVE_SPIDER: Пещерный паук
+  60-SILVERFISH: Чешуйница
+  61-BLAZE: Ифрит
+  62-MAGMA_CUBE: Лавовый куб
+  63-ENDER_DRAGON: Дракон Края
+  64-WITHER: Иссушитель
+  65-BAT: Летучая мышь
+  66-WITCH: Ведьма
+  67-ENDERMITE: Чешуйница Края
+  68-GUARDIAN: Страж
+  69-SHULKER: Шалкер
+  90-PIG: Свинья
+  91-SHEEP: Овца
+  92-COW: Корова
+  93-CHICKEN: Курица
+  94-SQUID: Спрут
+  95-WOLF: Волк
+  96-MUSHROOM_COW: Грибная корова
+  97-SNOWMAN: Снежный голем
+  98-OCELOT: Оцелот
+  99-IRON_GOLEM: Железный голем
+  100-HORSE: Лошадь
+  101-RABBIT: Кролик
+  102-POLAR_BEAR: Белый медведь
+  103-LLAMA: Лама
+  105-PARROT: Попугай
+  108-PUFFERFISH: Иглобрюх
+  109-SALMON: Лосось
+  111-TROPICAL_FISH: Тропическая рыба
+  112-COD: Треска
+  113-PANDA: Панда
+  114-PILLAGER: Налётчик
+  120-VILLAGER: Деревенский житель
+  121-FOX: Лиса
+  901-TURTLE: Черепаха
+  902-PHANTOM: Фантом
+  908-DROWNED: Утопленник
+  909-DOLPHIN: Дельчин
+  914-PLAYER: Игрок
+  917-RAVAGER: Разоритель
+  918-TRADER_LLAMA: Лама торговца
+  919-WANDERING_TRADER: Странствующий торговец
 EnchantList:
-  '0':
-    MCName: PROTECTION_ENVIRONMENTAL
-    Name: Защита
-  '1':
-    MCName: PROTECTION_FIRE
-    Name: Огнеупорность
-  '2':
-    MCName: PROTECTION_FALL
-    Name: Невесомость
-  '3':
-    MCName: PROTECTION_EXPLOSIONS
-    Name: Взрывоустойчивость
-  '4':
-    MCName: ROTECTION_PROJECTILE
-    Name: Защита от снарядов
-  '5':
-    MCName: OXYGEN
-    Name: Подводное дыхание
-  '6':
-    MCName: DIG_SPEED
-    Name: Подводник
-  '7':
-    MCName: THORNS
-    Name: Шипы
-  '8':
-    MCName: DEPTH_STRIDER
-    Name: Подводная ходьба
-  '9':
-    MCName: FROST_WALKER
-    Name: Ледяная Поступь
-  '16':
-    MCName: DAMAGE_ALL
-    Name: Острота
-  '17':
-    MCName: DAMAGE_UNDEAD
-    Name: Небесная кара
-  '18':
-    MCName: DAMAGE_ARTHROPODS
-    Name: Бич членистоногих
-  '19':
-    MCName: KNOCKBACK
-    Name: Отдача
-  '20':
-    MCName: FIRE_ASPECT
-    Name: Заговор огня
-  '21':
-    MCName: LOOT_BONUS_MOBS
-    Name: Добыча
-  '22':
-    MCName: SWEEPING_EDGE
-    Name: Разящий клинок
-  '32':
-    MCName: DIG_SPEED
-    Name: Эффективность
-  '33':
-    MCName: SILK_TOUCH
-    Name: Шёлковое касание
-  '34':
-    MCName: DURABILITY
-    Name: Прочность
-  '35':
-    MCName: LOOT_BONUS_BLOCKS
-    Name: Удача
-  '48':
-    MCName: ARROW_DAMAGE
-    Name: Сила
-  '49':
-    MCName: ARROW_KNOCKBACK
-    Name: Откидывание
-  '50':
-    MCName: ARROW_FIRE
-    Name: Горящая стрела
-  '51':
-    MCName: ARROW_INFINITE
-    Name: Бесконечность
-  '61':
-    MCName: LUCK
-    Name: Везучий рыбак
-  '62':
-    MCName: LURE
-    Name: Приманка
-  '70':
-    MCName: MENDING
-    Name: Починка
+  Fire protection: Огнеупорность
+  Sharpness: Острота
+  Flame: Горящая стрела
+  Aqua affinity: Родство с водой
+  Punch: Отбрасывание
+  Loyalty: Верность
+  Depth strider: Подводная ходьба
+  Vanishing curse: Vanishing curse
+  Unbreaking: Прочность
+  Knockback: Отдача
+  Luck of the sea: Морская удача
+  Binding curse: Binding curse
+  Fortune: Удача
+  Protection: Защита
+  Efficiency: Эффективность
+  Mending: Починка
+  Frost walker: Ходьба по воде
+  Lure: Приманка
+  Looting: Добыча
+  Piercing: Пронзающая стрела
+  Blast protection: Взрывоустойчивость
+  Smite: Небесная кара
+  Multishot: Тройной выстрел
+  Fire aspect: Заговор огня
+  Channeling: Громовержец
+  Sweeping: Разящий клинок
+  Thorns: Шипы
+  Bane of arthropods: Бич членистоногих
+  Respiration: Подводное дыхание
+  Riptide: Тягун
+  Silk touch: Шёлковое касание
+  Quick charge: Быстрая перезарядка
+  Projectile protection: Защита от снарядов
+  Impaling: Пронзатель
+  Feather falling: Невесомость
+  Power: Сила
+  Infinity: Бессконечность
 ColorList:
-  '0':
-    MCName: white
-    Name: '&fБелый'
-  '1':
-    MCName: orange
-    Name: '&6Оранжевый'
-  '2':
-    MCName: magenta
-    Name: '&dСиреневый'
-  '3':
-    MCName: lightBlue
-    Name: '%9Светло-синий'
-  '4':
-    MCName: yellow
-    Name: '&eЖёлтый'
-  '5':
-    MCName: lime
-    Name: '&aЛаймовый'
-  '6':
-    MCName: pink
-    Name: '&dРозовый'
-  '7':
-    MCName: gray
-    Name: '&8Серый'
-  '8':
-    MCName: silver
-    Name: '&7Светло-серый'
-  '9':
-    MCName: cyan
-    Name: '&3Бирюзовый'
-  '10':
-    MCName: purple
-    Name: '&5Фиолетовый'
-  '11':
-    MCName: blue
-    Name: '&1Синий'
-  '12':
-    MCName: brown
-    Name: '&4Коричневый'
-  '13':
-    MCName: green
-    Name: '&2Зелёный'
-  '14':
-    MCName: red
-    Name: '&cКрасный'
-  '15':
-    MCName: black
-    Name: '&0Чёрный'
+  0-white: '&fБелый'
+  1-orange: '&6Оражевый'
+  2-magenta: '&dМаджента'
+  3-light_blue: '&9Светло-синий'
+  4-yellow: '&eЖёлтый'
+  5-lime: '&aЛаймовый'
+  6-pink: '&dРозовый'
+  7-gray: '&8Серый'
+  8-light_gray: '&7Светло-серый'
+  9-cyan: '&3Голубой'
+  10-purple: '&5Фиолетовый'
+  11-blue: '&1Синий'
+  12-brown: '&4Коричневый'
+  13-green: '&2Зелёный'
+  14-red: '&cКрасный'
+  15-black: '&0Черный'
