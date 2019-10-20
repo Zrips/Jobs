@@ -26,14 +26,14 @@ public class area implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
 	    return false;
 	}
-	Player player = (Player) sender;
 
+	Player player = (Player) sender;
 	Location center = player.getLocation();
 	Debug.D("adding " + Jobs.getBpManager().getSize());
-	for (int x = -16; x < 16; x++) {
-	    for (int z = -16; z < 16; z++) {
+	for (int x = 0; x < 16; x++) {
+	    for (int z = 0; z < 16; z++) {
 		Location lc = center.clone().add(x, 0, z);
-		for (int y = 250; y > 1; y--) {
+		for (int y = player.getWorld().getHighestBlockYAt(x, z) + 1; y > 1; y--) {
 		    lc.setY(y);
 		    Jobs.getBpManager().add(lc, 100);
 		}
