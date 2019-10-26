@@ -234,7 +234,7 @@ Jobs:
         points: 1.5
         experience: 1.5
     # Payment for cooking raw foods
-    Cook:
+    Bake:
       beef:
         income: 1.0
         experience: 1.0

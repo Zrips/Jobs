@@ -369,6 +369,7 @@ public class editquests implements Cmd {
 		    case ENCHANT:
 		    case DYE:
 		    case CRAFT:
+		    case BAKE:
 		    case BREW:
 		    case BREAK:
 		    case STRIPLOGS:
@@ -513,7 +514,7 @@ public class editquests implements Cmd {
 			}
 			type = myKey;
 		    } else if (actionT == ActionType.CUSTOMKILL || actionT == ActionType.SHEAR || actionT == ActionType.MMKILL
-			|| actionT == ActionType.COLLECT)
+			|| actionT == ActionType.COLLECT || actionT == ActionType.BAKE)
 			type = myKey;
 		    else if (actionT == ActionType.EXPLORE) {
 			type = myKey;

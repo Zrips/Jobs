@@ -50,7 +50,7 @@ public class JobsPayment14Listener implements Listener {
 	    if (jPlayer == null)
 		return;
 
-	    Jobs.action(jPlayer, new ItemActionInfo(event.getResult(), ActionType.COOK));
+	    Jobs.action(jPlayer, new ItemActionInfo(event.getResult(), ActionType.BAKE));
 	    it.remove();
 	}
     }
