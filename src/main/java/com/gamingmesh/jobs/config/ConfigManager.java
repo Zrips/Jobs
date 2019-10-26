@@ -201,6 +201,7 @@ public class ConfigManager {
 	case ENCHANT:
 	case DYE:
 	case CRAFT:
+	case COOK:
 	case BREW:
 	case BREAK:
 	case STRIPLOGS:
@@ -349,7 +350,8 @@ public class ConfigManager {
 	} else if (actionType == ActionType.ENCHANT) {
 	    CMIEnchantment enchant = CMIEnchantment.get(myKey);
 	    type = enchant == null ? myKey : enchant.toString();
-	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL)
+	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL
+		    || actionType == ActionType.COLLECT || actionType == ActionType.COOK)
 	    type = myKey;
 	else if (actionType == ActionType.EXPLORE) {
 	    type = myKey;
@@ -364,9 +366,6 @@ public class ConfigManager {
 	    Jobs.getExplore().setPlayerAmount(amount);
 	} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
 	    type = myKey.substring(1, myKey.length());
-	else if (actionType == ActionType.COLLECT) {
-	    type = myKey;
-	}
 
 	if (type == null) {
 	    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
@@ -988,6 +987,7 @@ public class ConfigManager {
 			case ENCHANT:
 			case DYE:
 			case CRAFT:
+			case COOK:
 			case BREW:
 			case BREAK:
 			case STRIPLOGS:
@@ -1139,7 +1139,7 @@ public class ConfigManager {
 			    }
 			    type = enchant == null ? myKey : enchant.toString();
 			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
-				    || actionType == ActionType.SHEAR)
+				    || actionType == ActionType.SHEAR || actionType == ActionType.COOK)
 			    type = myKey;
 			else if (actionType == ActionType.EXPLORE) {
 			    type = myKey;

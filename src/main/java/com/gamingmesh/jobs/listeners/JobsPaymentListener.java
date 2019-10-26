@@ -1703,7 +1703,7 @@ public class JobsPaymentListener implements Listener {
 	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE));
     }
 
-    private static boolean payIfCreative(Player player) {
+    static boolean payIfCreative(Player player) {
 	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative() && !player.hasPermission("jobs.paycreative"))
 	    return false;
 	return true;

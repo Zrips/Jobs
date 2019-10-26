@@ -22,6 +22,7 @@ import com.gamingmesh.jobs.CMILib.ActionBarTitleMessages;
 import com.gamingmesh.jobs.CMILib.ItemManager;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.CMILib.VersionChecker;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.McMMO.McMMO1_X_listener;
 import com.gamingmesh.jobs.McMMO.McMMO2_X_listener;
@@ -47,6 +48,7 @@ import com.gamingmesh.jobs.dao.JobsManager;
 import com.gamingmesh.jobs.economy.*;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.listeners.JobsListener;
+import com.gamingmesh.jobs.listeners.JobsPayment14Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
@@ -648,6 +650,9 @@ public class Jobs extends JavaPlugin {
 
 	    pm.registerEvents(new JobsListener(instance), instance);
 	    pm.registerEvents(new JobsPaymentListener(instance), instance);
+	    if (versionCheckManager.getVersion().isEqualOrHigher(Version.v1_14_R1)) {
+		pm.registerEvents(new JobsPayment14Listener(), instance);
+	    }
 
 	    if (GconfigManager.useBlockProtection)
 		pm.registerEvents(PistonProtectionListener, instance);
@@ -913,6 +918,9 @@ public class Jobs extends JavaPlugin {
 	    // register the listeners
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
+	    if (versionCheckManager.getVersion().isEqualOrHigher(Version.v1_14_R1)) {
+		getServer().getPluginManager().registerEvents(new JobsPayment14Listener(), this);
+	    }
 
 	    if (getMcMMOManager().CheckmcMMO())
 		setMcMMOlistener();

@@ -233,6 +233,14 @@ Jobs:
         income: 1.5
         points: 1.5
         experience: 1.5
+    # Payment for cooking raw foods
+    Cook:
+      beef:
+        income: 1.0
+        experience: 1.0
+      porkchop:
+        income: 0.5
+        points: 0.4
     # payment for stripping wood logs, only for 1.13+ servers
     StripLogs:
       stripped_acacia_log:
