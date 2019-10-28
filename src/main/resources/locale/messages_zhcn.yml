@@ -368,6 +368,9 @@ command:
       collect:
         info: '&eCollect'
         none: '%jobname% does not get money for collecting blocks.'
+      bake:
+        info: '&eBake'
+        none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
       info: 查看玩家的职业信息.
@@ -474,7 +477,7 @@ command:
       target: 你被雇佣为一名 %jobname%.
   top:
     help:
-      info: 显示指定职业最强的%amount%名玩家.
+      info: Shows top players by jobs name.
       args: '[jobname]'
     error:
       nojob: 没有这个职业.

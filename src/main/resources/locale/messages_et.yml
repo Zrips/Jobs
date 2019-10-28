@@ -368,6 +368,9 @@ command:
       collect:
         info: '&eCollect'
         none: '%jobname% does not get money for collecting blocks.'
+      bake:
+        info: '&eBake'
+        none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
       info: Näitab, kui palju ja mille eest igas ametis mõni mängija raha saab.
@@ -474,7 +477,7 @@ command:
       target: Sind on palgatud ametisse %jobname%.
   top:
     help:
-      info: Näitab %amount% parimat mängijat ametinimetuse järgi.
+      info: Shows top players by jobs name.
       args: '[jobname]'
     error:
       nojob: Selle nimetusega ameteid ei leitud.

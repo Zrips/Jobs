@@ -368,6 +368,9 @@ command:
       collect:
         info: '&eCollect'
         none: '%jobname% does not get money for collecting blocks.'
+      bake:
+        info: '&eBake'
+        none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
       info: Muestra cuanto se paga a alguien y por que acción.
@@ -474,7 +477,7 @@ command:
       target: You have been employed as a %jobname%.
   top:
     help:
-      info: Shows top %amount% players by jobs name.
+      info: Shows top players by jobs name.
       args: '[jobname]'
     error:
       nojob: Can't find any job with this name.

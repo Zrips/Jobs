@@ -1,191 +1,191 @@
 ---
 economy:
   error:
-    nomoney: 'Atsiprašome, nacionalinis bankas nebeturi pinigu!'
+    nomoney: '&cAtsiprašome, serverio bankas pasiekė bankrotą!'
 limitedItem:
   error:
-    levelup: '&cYou need to level up in [jobname] to use this item!'
+    levelup: '&cTau reikia pasikelti lygi [jobname] kad naudoti šį daikta!'
 general:
   Spawner: '&r[type] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
     time:
-      days: '&e%days% &6days '
-      hours: '&e%hours% &6hours '
+      days: '&e%days% &6dienos '
+      hours: '&e%hours% &6valandos '
       mins: '&e%mins% &6min '
-      secs: '&e%secs% &6sec '
-    invalidPage: '&cInvalid page'
+      secs: '&e%secs% &6sek '
+    invalidPage: '&cKlaidingas puslapis'
     'true': '&2True'
     'false': '&cFalse'
   admin:
-    error: '&cThere was an error in the command.'
-    success: '&eYour command has been performed.'
+    error: '&cĮvestoje komandoje rasta klaida'
+    success: '&eTavo komanda sėkmingai panaudota'
   error:
-    noHelpPage: '&cThere is no help page by this number!'
-    notNumber: '&ePlease use numbers!'
-    job: '&cThe job you selected does not exist!'
-    noCommand: '&cThere is no command by this name!'
-    permission: '&cYou do not have permission to do that!'
-    noinfo: '&cNo information found!'
-    noinfoByPlayer: '&cNo information found by [%playername%] player name!'
-    ingame: '&cYou can use this command only in game!'
-    fromconsole: '&cYou can use this command only from console!'
-    worldisdisabled: '&cYou can''t use command in this world!'
-    newFurnaceRegistration: '&eRegistered new ownership for furnace &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eRegistered new ownership for brewing stand &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cYou''ve reached max furnace count!'
-    noBrewingRegistration: '&cYou''ve reached max brewing stand count!'
+    noHelpPage: '&cPagalbos puslapis su nurodytu skaičiu nerastas'
+    notNumber: '&ePrašau naudokite skaičius'
+    job: '&cPasirinktas darbas neegzistuoja'
+    noCommand: '&cNėra komandos naudojant šiuos žodžius'
+    permission: '&cTu neturi leidimo atlikti šį veiksmą'
+    noinfo: '&cNėrasta jokios informacijos'
+    noinfoByPlayer: '&cJokios informacijos pas žaidėja [%playername%] nerasta!'
+    ingame: '&cŠią komanda gali naudoti tik žaidime'
+    fromconsole: '&cŠią komandą galite naudoti tik per Konsole'
+    worldisdisabled: '&cJūs negalite naudoti šios komandos šiame pasaulyje'
+    newFurnaceRegistration: '&ePriregistruota nauja lydykla &7[current]&e/&f[max]'
+    newBrewingRegistration: '&ePriregistruotas naujas breweris &7[current]&e/&f[max]'
+    noFurnaceRegistration: '&cPasiekei maksimalų lydyklu skaičių'
+    noBrewingRegistration: '&cPasiekei maksimalų brewerio skaičių'
 command:
   help:
     output:
-      info: Rasyk &2/jobs [cmd] ? &edel detalesnes informacijos.
-      cmdUsage: '&2Usage: &7[command]'
+      info: Rašykite /jobs [cmd] ? kad rasti daugiau informacijos apie komanda.
+      cmdUsage: '&2Komanda: &7[command]'
       label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
       cmdFormat: '&7/[command] &f[arguments]'
       helpPageDescription: '&2* [description]'
-      title: '&e-------&e ======= &6Jobs &e======= &e-------'
-      page: '&e-----&e ====== Page &6[1] &eof &6[2] &e====== &e-----'
+      title: '&e-------&e ======= &6Darbai &e======= &e-------'
+      page: '&e-----&e ====== Puslais &6[1] &eiš &6[2] &e====== &e-----'
       fliperSimbols: '&e----------'
-      prevPage: '&2----<< &6Prev '
-      prevPageOff: '&7----<< Prev '
-      nextPage: '&6 Next &2>>----'
-      nextPageOff: '&7 Next >>----'
+      prevPage: '&2----<< &6Atgal '
+      prevPageOff: '&7----<< Atgal '
+      nextPage: '&6 Kitas &2>>----'
+      nextPageOff: '&7 Kitas >>----'
       pageCount: '&2[current]/[total]'
   moneyboost:
     help:
-      info: Boosts money gain for all players
+      info: Paspartina pinigų gavima darbuotojams
       args: '[jobname] [rate]'
     output:
-      allreset: All money boosts turned off
-      jobsboostreset: Money boost has been turned off for %jobname%
-      nothingtoreset: Nothing to reset
-      boostalladded: Money boost of %boost% added for all jobs!
-      boostadded: Money boost of &e%boost% &aadded for &e%jobname%!
-      infostats: '&c-----> &aMoney rate x%boost% enabled&c <-------'
+      allreset: Visi pinigų gavimo paspartinimai išjungti
+      jobsboostreset: Pinigų paspartinimas darbui %jobname% dabar išjungtas
+      nothingtoreset: Nėra ką atstatyti
+      boostalladded: Pinigų paspartinimas %boost% pridėtas visiems darbams!
+      boostadded: Pinigų paspartinimas &e%boost% &apridėtas &e%jobname% darbui!
+      infostats: '&c-----> &aPinigų spartinimas x%boost% įjungtas&c <-------'
   pointboost:
     help:
-      info: Boosts point gain for all players
+      info: Paspartina taškų gavimą žaidėjams
       args: '[jobname] [rate]'
     output:
-      allreset: All point boosts turned off
-      jobsboostreset: Point boost has been turned off for %jobname%
-      nothingtoreset: Nothing to reset
-      boostalladded: Points boost of %boost% added for all jobs!
-      boostadded: Points boost of &e%boost% &aadded for &e%jobname%!
-      infostats: '&c-----> &aPoints rate x%boost% enabled&c <-------'
+      allreset: Visi taškų paspartinimai išjungti
+      jobsboostreset: Taškų gavimo paspartinimas išjungtas darbui %jobname%
+      nothingtoreset: Nėra ką atstatyti
+      boostalladded: Taškų paspartinimas %boost% pridėtas visiems darbams!
+      boostadded: Taškų paspartinimas &e%boost% &apridėtas &e%jobname% darbui!
+      infostats: '&c-----> &aTaškų spartinimas x%boost% įjungtas&c <-------'
   expboost:
     help:
-      info: Boosts exp gain for all players
+      info: Paspartina EXP gavimą žaidėjams
       args: '[jobname] [rate]'
     output:
-      allreset: All exp boosts turned off
-      jobsboostreset: Exp boost has been turned off for %jobname%
-      nothingtoreset: Nothing to reset
-      boostalladded: Exp boost of %boost% added for all jobs!
-      boostadded: Exp boost of &e%boost% &aadded for &e%jobname%!
-      infostats: '&c-----> &aExp rate x%boost% enabled&c <-------'
+      allreset: Visi EXP paspartinimai išjungti
+      jobsboostreset: EXP paspartinimas išjungtas darbui %jobname%
+      nothingtoreset: Nėra ką atstatyti
+      boostalladded: EXP spartinimas %boost% pridėtas visiems darbams!
+      boostadded: EXP spartinimas &e%boost% &apridėtas darbui &e%jobname%!
+      infostats: '&c-----> &aEXP spartinimas x%boost% įjungtas&c <-------'
   itembonus:
     help:
-      info: Check item bonus
+      info: Patikrinti daiktų bonusus
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
+      hoverLevelLimits: "&7Nuo lygio: %from% \n&7Iki lygio: %until%"
   edititembonus:
     help:
-      info: Edit item boost bonus
+      info: Koreguoti daiktu bonusus
       args: list/add/remove [jobname] [itemBoostName]
   bonus:
     help:
-      info: Show job bonuses
+      info: Parodyti darbų bonusus
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &ePerm bonus: %money% %points% %exp%'
-      item: ' &eItem bonus: %money% %points% %exp%'
-      global: ' &eGlobal bonus: %money% %points% %exp%'
-      dynamic: ' &eDynamic bonus: %money% %points% %exp%'
-      nearspawner: ' &eSpawner bonus: %money% %points% %exp%'
-      petpay: ' &ePetPay bonus: %money% %points% %exp%'
-      area: ' &eArea bonus: %money% %points% %exp%'
-      mcmmo: ' &eMcMMO bonus: %money% %points% %exp%'
-      final: ' &eFinal bonus: %money% %points% %exp%'
-      finalExplanation: ' &eDoes not include Petpay and Near spawner bonus/penalty'
+      permission: ' &eLeidimu bonusas: %money% %points% %exp%'
+      item: ' &eDaiktų bonusas: %money% %points% %exp%'
+      global: ' &eBendras bonusas: %money% %points% %exp%'
+      dynamic: ' &eDinaminis bonusas: %money% %points% %exp%'
+      nearspawner: ' &eSpawner bonusas: %money% %points% %exp%'
+      petpay: ' &eGyvūno bonusas: %money% %points% %exp%'
+      area: ' &eZonos bonusas: %money% %points% %exp%'
+      mcmmo: ' &eMcMMO bonusas: %money% %points% %exp%'
+      final: ' &eFinalinis bonusas: %money% %points% %exp%'
+      finalExplanation: ' &eNeįeina Gyvūno bonusas ir Spawnerio bonusas'
   convert:
     help:
-      info: Converts the database system from one system to another. If you are currently running SQLite, this will convert it to MySQL and vice versa.
+      info: Konvertuoja duomenų bazės sistema iš vieno į kitą. Jei šiuo metu įjungtas SQLite, viskas bus sukonvertuota į MySQL
       args: ''
   limit:
     help:
-      info: Shows payment limits for jobs
+      info: Parodo pinigų limita darbui
       args: '[playername]'
     output:
-      moneytime: '&eTime left until money limit resets: &2%time%'
-      moneyLimit: '&eMoney limit: &2%current%&e/&2%total%'
-      exptime: '&eTime left until Exp limit resets: &2%time%'
-      expLimit: '&eExp limit: &2%current%&e/&2%total%'
+      moneytime: '&eLiko laiko iki pinigų gavimo atstatymo: &2%time%'
+      moneyLimit: '&ePinigų limitas: &2%current%&e/&2%total%'
+      exptime: '&eIki EXP limito atsatymo likes laikas: &2%time%'
+      expLimit: '&eEXP limitas: &2%current%&e/&2%total%'
       pointstime: '&eTime left until Point limit resets: &2%time%'
-      pointsLimit: '&ePoint limit: &2%current%&e/&2%total%'
-      reachedmoneylimit: '&4You have reached money limit in given time!'
-      reachedmoneylimit2: '&eYou can check your limit with &2/jobs limit &ecommand'
-      reachedmoneylimit3: '&eMoney earned is now reduced exponentially... But you still earn a little!'
-      reachedexplimit: '&4You have reached exp limit in given time!'
-      reachedexplimit2: '&eYou can check your limit with &2/jobs limit &ecommand'
-      reachedpointslimit: '&4You have reached exp limit in given time!'
-      reachedpointslimit2: '&eYou can check your limit with &2/jobs limit &ecommand'
-      notenabled: '&eMoney limit is not enabled'
+      pointsLimit: '&eTaškų limitas: &2%current%&e/&2%total%'
+      reachedmoneylimit: '&4Tu pasiekei pinigų limitą per nustatyta laika!'
+      reachedmoneylimit2: '&eSavo limitus gali patikrinti parašęs &ecommand'
+      reachedmoneylimit3: '&eŠiuo metu uždirbi mažiau pinigu, bet uždirbi visvien kažką!'
+      reachedexplimit: '&4Tu pasiekei EXP limitą nustatytam laikui!'
+      reachedexplimit2: '&eSavo limitus gali pasitikrinti &2/jobs limit &ecommand'
+      reachedpointslimit: '&4Tu pasiekei EXP limitą nustatytam laikui!'
+      reachedpointslimit2: '&eSavo limitus gali pasitikrint &2/jobs limit &ecommand'
+      notenabled: '&ePinigų limitas nėra įjungtas'
   resetlimit:
     help:
-      info: Resets a player's payment limits
+      info: Atstato žaidėjo užmokeščio limitą
       args: '[playername]'
     output:
-      reseted: '&ePayment limits have been reset for: &2%playername%'
+      reseted: '&eUžmokeščio limita atstatyti žaidėjui: &2%playername%'
   resetquest:
     help:
-      info: Resets a player's quest
+      info: Atstato žaidėjo Questus
       args: '[playername] [jobname]'
     output:
-      reseted: '&eQuest has been reset for: &2%playername%'
-      noQuests: '&eCan''t find any quests'
+      reseted: '&eQuestai atstatyti žaidėjui: &2%playername%'
+      noQuests: '&eNepavyko atrasti jokių Questu'
   points:
     help:
-      info: Shows how much points does a player have.
+      info: Parodo kiek taškų žaidėjas turi
       args: '[playername]'
-    currentpoints: ' &eCurrent point amount: &6%currentpoints%'
-    totalpoints: ' &eTotal amount of collected points until now: &6%totalpoints%'
+    currentpoints: ' &eTaškų kiekis: &6%currentpoints%'
+    totalpoints: ' &eBendrai uždirbti taškai iki dabar: &6%totalpoints%'
   editpoints:
     help:
-      info: Edit player's points.
+      info: Tvarkyti žaidėjo taškus
       args: set/add/take [playername] [amount]
     output:
-      set: '&ePlayers (&6%playername%&e) points was set to &6%amount%'
-      add: '&ePlayer (&6%playername%&e) got additional &6%amount% &epoints. Now they have &6%total%'
-      take: '&ePlayer (&6%playername%&e) lost &6%amount% &epoints. Now they have &6%total%'
+      set: '&eŽaidėjo (&6%playername%&e) taškai nustatyti į &6%amount%'
+      add: '&eŽaidėjas (&6%playername%&e) gavo &6%amount% &etaškų. Dabar turi &6%total%'
+      take: '&eŽaidėjas (&6%playername%&e) prarado &6%amount% &etaškų. Dabar turi &6%total%'
   editjobs:
     help:
-      info: Edit current jobs.
+      info: Koreguoti dabartinius darbus
       args: ''
       list:
-        job: '&eJobs:'
+        job: '&eDarbai:'
         jobs: '  -> [&e%jobname%&r]'
         actions: '    -> [&e%actionname%&r]'
         material: '      -> [&e%materialname%&r]      '
         materialRemove: '&c[X]'
         materialAdd: '      -> &e[&2+&e]'
-        money: '        -> &eMoney: &6%amount%'
-        exp: '        -> &eExp: &6%amount%'
-        points: '        -> &ePoints: &6%amount%'
+        money: '        -> &ePinigai: &6%amount%'
+        exp: '        -> &eEXP: &6%amount%'
+        points: '        -> &eTaškai: &6%amount%'
       modify:
-        newValue: '&eEnter new value'
-        enter: '&eEnter new name or press '
-        hand: '&6HAND '
-        handHover: '&6Press to grab info from item in your hand'
-        or: '&eor '
-        look: '&6LOOKING AT'
-        lookHover: '&6Press to grab info from block you are looking'
+        newValue: '&eĮrašykite naują kieki'
+        enter: '&eĮrašykite nauja vardą arba spauskite '
+        hand: '&6RANKA '
+        handHover: '&6Paspauskite, kad paimti informacijos iš daikto rankoje'
+        or: '&earba '
+        look: '&6Žiūrite į'
+        lookHover: '&6Paspauskite, kad paimti informacija iš bloko į kurį žiūrite'
   editquests:
     help:
       info: Edit current quests.
@@ -208,29 +208,29 @@ command:
         lookHover: '&6Press to grab info from block you are looking'
   blockinfo:
     help:
-      info: Shows information for the block you are looking at.
+      info: Parodo informacija apie bloką į kurį žiūrite.
       args: ''
     output:
-      name: ' &eBlock name: &6%blockname%'
-      id: ' &eBlock id: &6%blockid%'
-      data: ' &eBlock data: &6%blockdata%'
-      usage: ' &eUsage: &6%first% &eor &6%second%'
+      name: ' &eBloko pavadinimas: &6%blockname%'
+      id: ' &eBloko ID: &6%blockid%'
+      data: ' &eBloko data: &6%blockdata%'
+      usage: ' &eNaudojimas: &6%first% &earba &6%second%'
   iteminfo:
     help:
-      info: Shows information for the item you are holding.
+      info: Parodo informacija apie daikta kurį laikote rankoje
       args: ''
     output:
-      name: ' &eItem name: &6%itemname%'
-      id: ' &eItem id: &6%itemid%'
-      data: ' &eItem data: &6%itemdata%'
-      usage: ' &eUsage: &6%first% &eor &6%second%'
+      name: ' &eDaiktas: &6%itemname%'
+      id: ' &eDaikto ID: &6%itemid%'
+      data: ' &eDaikto data: &6%itemdata%'
+      usage: ' &eNaudojimas: &6%first% &earba &6%second%'
   placeholders:
     help:
-      info: List out all placeholders
+      info: Parodyti visus placeholders
       args: (parse) (placeholder)
     output:
       list: '&e[place]. &7[placeholder]'
-      outputResult: ' &eresult: &7[result]'
+      outputResult: ' &erezultatas: &7[result]'
       parse: '&6[placeholder] &7by [source] &6result &8|&f[result]&8|'
   entitylist:
     help:
@@ -238,52 +238,52 @@ command:
       args: ''
   stats:
     help:
-      info: Parodyti visu i kuriuos esate isidarbine darbu informacija.
+      info: Parodyti visus pasiektu lygius darbuose kuriuose ęsate
       args: '[playername]'
     error:
-      nojob: Prasome isidarbinti visu pirma.
-    output: 'lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+      nojob: Pirmiausia pradėk dirbti kažką
+    output: 'Lygis %joblevel% - Darbas%jobname% : %jobxp%/%jobmaxxp% xp'
   shop:
     help:
-      info: Opens special jobs shop.
+      info: Atidaro ypatinga darbų parduotuve
       args: ''
     info:
-      title: '&e------- &8Jobs shop &e-------'
-      currentPoints: '&eYou have: &6%currentpoints%'
-      price: '&ePrice: &6%price%'
-      reqJobs: '&eRequired jobs:'
+      title: '&e------- &8Ypatinga darbų parduotuvė &e-------'
+      currentPoints: '&eTu turi: &6%currentpoints%'
+      price: '&eKaina: &6%price%'
+      reqJobs: '&eTuri dirbti:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
-      reqTotalLevel: '&6Required total level: &e%totalLevel%'
-      cantOpen: '&cCan''t open this page'
-      NoPermForItem: '&cYou don''t have required permissions for this item!'
-      NoPermToBuy: '&cNo permissions to buy this item'
-      NoJobReqForitem: '&cYou don''t have the required job (&6%jobname%&e) with required (&6%joblevel%&e) level'
-      NoPoints: '&cYou don''t have enough points'
-      NoTotalLevel: '&cTotal jobs level is too low (%totalLevel%)'
-      Paid: '&eYou have paid &6%amount% &efor this item'
+      reqTotalLevel: '&6Reikalingas bendras lygis: &e%totalLevel%'
+      cantOpen: '&cNegali atidaryti šio puslapio'
+      NoPermForItem: '&cTu neturi leidimo šiam daiktui!'
+      NoPermToBuy: '&cNeturi leidimo šiam daiktui'
+      NoJobReqForitem: '&cTu nedirbi (&6%jobname%&e) su reikiamu lygiu (&6%joblevel%&e)'
+      NoPoints: '&cTau nepakanka taškų'
+      NoTotalLevel: '&cBendras darbų lygis per žemas (%totalLevel%)'
+      Paid: '&eTu sumokėjai &6%amount% &euž šį daiktą'
   archive:
     help:
-      info: Shows all jobs saved in archive by user.
+      info: Parodo visus archyvuotus darbus.
       args: '[playername]'
     error:
-      nojob: There is no jobs saved.
+      nojob: Nėra išsaugoti jokie darbai
   give:
     help:
-      info: Gives item by jobs name and item category name. Player name is optional
+      info: Duoda daikta pagal darbo varda ir daikto kategorija
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Player [%playername%] is not online!'
-      noitem: '&4Can''t find any item by given name!'
+      notonline: '&4Žaidėjas [%playername%] nėra prisijungęs!'
+      noitem: '&4Negaliu rasti jokio daikto pagal nurodyta pavadinimą!'
   info:
     help:
-      title: '&2*** &eDarbas&2 ***'
-      info: Parodo kiek gali uzdirbti is kiekvieno darbo uz tamtikra veikla.
-      penalty: '&eThis job has a penalty of &c[penalty]% &ebecause there are too many players working in it.'
-      bonus: '&eThis job has a bonus of &2[bonus]% &ebecause there are not enough players working in it.'
+      title: '&2*** &eDarbai&2 ***'
+      info: Parodo kiek ir už ką gauni dirbdamas kiekviena darbą
+      penalty: '&eŠis darbas gauna bauda &c[penalty]% &enes dirba per daug žmonių.'
+      bonus: '&eŠis darbas gauna bonusa &2[bonus]% &enes dirba per mažai žmonių.'
       args: '[jobname] [action]'
-      actions: '&eValid actions are: &f%actions%'
-      max: ' - &emax level:&f '
-      newMax: ' &eMax level: &f[max]'
+      actions: '&eGalimi veiksmai: &f%actions%'
+      max: ' - &emaksimalus lygis:&f '
+      newMax: ' &eMaksimalus lygis: &f[max]'
       material: '&7%material%'
       levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &alevels)'
       levelFrom: ' &a(from &e%levelFrom% &alevel)'
@@ -292,159 +292,162 @@ command:
       points: ' &6%points%pts'
       exp: ' &e%exp%xp'
     gui:
-      pickjob: '&ePick your job!'
-      jobinfo: '&e[jobname] info!'
-      actions: '&eValid actions are:'
-      leftClick: '&eLeft Click for more info'
-      rightClick: '&eRight click to join job'
-      leftSlots: '&eLeft slots:&f '
-      working: '&2&nAlready working'
-      max: '&eMax level:&f '
-      back: '&e<<< Back'
+      pickjob: '&eIšsirink savo darbą!'
+      jobinfo: '&e[jobname] informacija!'
+      actions: '&eGalimi veiksmai:'
+      leftClick: '&eKairys mygtukas daugiau info'
+      rightClick: '&eDešinys mygtukas pradėti dirbti'
+      leftSlots: '&eLiko vietu:&f '
+      working: '&2&nJau dirbi'
+      max: '&eMaksimalus lygis:&f '
+      back: '&e<<< Grįžti'
     output:
       break:
-        info: 'Sudauzyti'
-        none: '%jobname% does not get money for breaking blocks.'
+        info: '&eNumušti'
+        none: '%jobname% negauna pinigų už blokų numušima'
       tntbreak:
-        info: '&eTNTBreak'
-        none: '%jobname% does not get money for breaking blocks with TNT.'
+        info: '&eTNT naikinimas'
+        none: '%jobname% negauna pinigų už blokų naikinimą su TNT'
       place:
-        info: 'Padeti'
-        none: '%jobname% does not get money for placing blocks.'
+        info: '&eStatyti'
+        none: '%jobname% negauna pinigų už blokų statyma'
       striplogs:
-        info: '&eStrip logs'
-        none: '%jobname% does not get money for stripping logs.'
+        info: '&eNužievinimas'
+        none: '%jobname% negauna pinigų už žievės nuėmima'
       kill:
-        info: 'Uzmusti'
-        none: '%jobname% does not get money for killing monsters.'
+        info: '&eŽudymas'
+        none: '%jobname% negauna pinigų už monstrų žudyma'
       mmkill:
-        info: '&eMMKill'
-        none: '%jobname% does not get money for killing Mythic monsters.'
+        info: '&eMythic monstrai'
+        none: '%jobname% negauna pinigų už Mythic monstrų žudyma.'
       fish:
-        info: 'Suzvejoti'
-        none: '%jobname% does not get money from fishing.'
+        info: '&eŽvejyba'
+        none: '%jobname% negauna pinigų už pagautas žuvis.'
       craft:
         info: 'Pagaminti'
-        none: '%jobname% does not get money from crafting.'
+        none: '%jobname% negauna pinigų už craftinima.'
       smelt:
         info: 'Islidyti'
-        none: '%jobname% does not get money from smelting.'
+        none: '%jobname% negauna pinigų už smeltinima.'
       brew:
-        info: 'Isvirti'
-        none: '%jobname% does not get money from brewing.'
+        info: '&eBrewingas'
+        none: '%jobname% negauna pinigų už brewinima.'
       eat:
-        info: '&eEat'
-        none: '%jobname% does not get money from eating food.'
+        info: '&eValgymas'
+        none: '%jobname% negauna pinigų už suvalgyta maista.'
       dye:
-        info: '&eDye'
-        none: '%jobname% does not get money from dyeing.'
+        info: '&eSpalvos'
+        none: '%jobname% negauna pinigų už spalvinima'
       enchant:
         info: 'Patobulinti'
-        none: '%jobname% does not get money from enchanting.'
+        none: '%jobname% negauna pinigų už enchantinima.'
       vtrade:
         info: '&eVillager trade'
-        none: '%jobname% does not get money for trading a villager.'
+        none: '%jobname% negauna pinigų treidindami su Villageriais'
       repair:
         info: 'Sutaisyti'
-        none: '%jobname% does not get money from repairing.'
+        none: '%jobname% negauna pinigų už repairinima.'
       breed:
         info: 'Veisti'
-        none: '%jobname% does not get money from breeding.'
+        none: '%jobname% negauna pinigų už breedinima.'
       tame:
-        info: 'Prijaukinti'
-        none: '%jobname% does not get money from taming.'
+        info: '&eJaukinimas'
+        none: '%jobname% negauna pinigų už jaukinimą su lead.'
       milk:
-        info: '&eMilk'
-        none: '%jobname% does not get money from milking cows.'
+        info: '&eMelžimas'
+        none: '%jobname% negauna pinigų už melžima.'
       shear:
-        info: '&eShear'
-        none: '%jobname% does not get money from shearing sheep.'
+        info: '&eApkirpimas'
+        none: '%jobname% negauna pinigų už avių apkirpimą.'
       explore:
-        info: '&eExplore'
-        none: '%jobname% does not get money from exploring.'
+        info: '&eKeliones'
+        none: '%jobname% negauna pinigų keliaudamas po pasauli.'
       custom-kill:
         info: '&eCustom kill'
-        none: '%jobname% does not get money from custom player kills.'
+        none: '%jobname% negauna pinigų už custom player žudyma.'
       collect:
-        info: '&eCollect'
-        none: '%jobname% does not get money for collecting blocks.'
+        info: '&eRinkimas'
+        none: '%jobname% negauna pinigų už blokų rinkimą.'
+      bake:
+        info: '&eBake'
+        none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
-      info: Parodo kiek kitas zaidejas uzdirba is tam tikru darbu.
+      info: Parodyti kiek ir už ką kitas darbuotojas gauna iš kiekvieno darbo
       args: '[playername] [jobname] [action]'
   join:
     help:
-      info: Isidarbinti i pasirinkta darba.
+      info: Prisijungti prie pasirinkto darbo
       args: '[jobname]'
     error:
-      alreadyin: Jus jau esate isidarbines i %jobname%.
-      fullslots: Tu negali isidarbinti %jobname%, turi maksimalu darbu skaiciu.
-      maxjobs: Tu jau istojai i maksimaliai leistinus darbus.
-      rejoin: '&cCan''t rejoin this job. Wait [time]'
-    rejoin: '&aClick to rejoin this job: '
-    success: Tu istojai i %jobname%.
-    confirm: '&2Click to confirm joining action for the &7[jobname] &2job.'
+      alreadyin: Tu jau dirbi %jobname%.
+      fullslots: Tu negali prisijungti prie %jobname%, darbe nėra vietų.
+      maxjobs: Tu jau pasiekei savo darbų limitą.
+      rejoin: '&cNegali prisijungti prie šio darbo vėl, teks palaukti [time]'
+    rejoin: '&aPaspausk, kad prisijungti vėl prie: '
+    success: Tu pradėjai dirbti %jobname%.
+    confirm: '&2Paspausk, kad patvirtinti prisijungimą prie &7[jobname] &2darbo.'
   leave:
     help:
-      info: Iseiti is pasirinkto darbo.
+      info: Mesti pasirinkta darbą
       args: '[oldplayerjob]'
-    success: Tu isejai is %jobname%.
-    confirmationNeed: '&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!'
+    success: Tu metei darbą - %jobname%.
+    confirmationNeed: '&cAr tikrai norite išeiti iš &e [jobname]&c darbo? Parašykite tapačia komanda vėl per &6 [time] sekundes &c,kad patvirtinti!'
   leaveall:
     help:
-      info: Iseiti is visu darbu.
+      info: Spjauti per petį į visus darbus, apsisukti ir nebedirbti
     error:
-      nojobs: Tu negali iseiti is darbo kol nesi isidarbines!
-    success: Tu isejai is visu darbu.
-    confirmationNeed: '&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!'
+      nojobs: Umm, kaip tu žadi mesti darbą jo netūrėdamas?!
+    success: Metei savo visus darbus, apsisukai ir išėjai. Sveikinu bedarbi
+    confirmationNeed: '&cAr tikrai nori mesti visus savo darbus? Parašyk tapačia komanda per &6 [time] sekundes &c, kad patvirtinti!'
   explored:
     help:
-      info: Check who visited this chunk
+      info: Patikrinti kas buvo Chunke
     error:
-      noexplore: No one visited this chunk
+      noexplore: Niekas nebuvo šiame Chunke
     list: '&e%place%. %playername%'
   browse:
     help:
-      info: Darbu sarasas i kuriuos gali istoti.
+      info: Peržiūrėti darbus, kuriuos galite dirbti
     error:
-      nojobs: Nera darbu
+      nojobs: Nėra darbų prie kurių gali prisijungti
     output:
-      header: 'Tu gali isidarbinti i situos darbus:'
-      footer: Del daugiau informacijos rasyk /jobs info [JobName]
-      totalWorkers: ' &7Workers: &e[amount]'
-      penalty: ' &4Penalty: &c[amount]%'
-      bonus: ' &2Bonus: &a[amount]%'
-      newHeader: '&2========== [amount] Available Jobs ========='
+      header: 'Tu gali pradėti dirbti šiuos darbus:'
+      footer: Daugiau informacijos rasi parašęs /jobs info [JobName]
+      totalWorkers: ' &7Darbininkai: &e[amount]'
+      penalty: ' &4Bauda: &c[amount]%'
+      bonus: ' &2Bonusas: &a[amount]%'
+      newHeader: '&2========== [amount] Galimi darbai ========='
       description: '[description]'
       list: '    &8[place]. &7[jobname]'
       console:
-        newHeader: '&2========== [amount] Available Jobs ========='
+        newHeader: '&2========== [amount] Galimi darbai ========='
         description: '[description]'
-        totalWorkers: ' &7Workers: &e[amount]'
-        penalty: ' &4Penalty: &c[amount]%'
-        bonus: ' &2Bonus: &a[amount]%'
+        totalWorkers: ' &7Darbininkai: &e[amount]'
+        penalty: ' &4Bauda: &c[amount]%'
+        bonus: ' &2Bonusas: &a[amount]%'
         list: ' &6[jobname]'
-        newMax: ' &eMax level: &f[max]'
-      click: '&bClick on the job to see more info about it!'
-      detailed: '&bClick to see more detailed list on job actions'
+        newMax: ' &eMaksimalus lygis: &f[max]'
+      click: '&bPaspauskite ant darbo, kad pamatyti daugiau informacijos!'
+      detailed: '&bPaspausk, kad pamatyti detalia informacija darbo'
       jobHeader: '&2========== [jobname] ========='
-      chooseJob: '&7&n&oChoose this job'
-      chooseJobHover: '&7Click here to get this job'
+      chooseJob: '&7&n&oPasirinkti šį darba'
+      chooseJobHover: '&7Spausk čia, kad gauti šį darba'
   clearownership:
     help:
-      info: Clear block ownership
+      info: Pašalinti bloko savininką
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+      cleared: '&2Pašalintos &7[furnaces] &2furnaces ir &7[brewing] &2brewing stendai'
   quests:
     help:
-      info: List available quests
+      info: Peržiūrėti galimus Questus
       args: '[playername]'
     error:
-      noquests: '&cThere are no quests'
-    toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+      noquests: '&cNėra jokių Questu'
+    toplineseparator: '&7*********************** &6[playerName]&2(&f[questsDone]&2) &7***********************'
     output:
-      completed: '&2      !Completed!&r      '
+      completed: '&2      !Atliktas!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
@@ -474,7 +477,7 @@ command:
       target: Tu buvai idarbintas i %jobname%.
   top:
     help:
-      info: Parodo top 10 zaidejus pagal darbo pavadinima.
+      info: Shows top players by jobs name.
       args: '[jobname]'
     error:
       nojob: Nebuvo rastas joks darbas su tokiu pavadinimu.

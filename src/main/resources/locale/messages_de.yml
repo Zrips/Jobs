@@ -368,6 +368,9 @@ command:
       collect:
         info: '&eSammeln'
         none: '%jobname% bekommt kein Geld für das Zerstören von Blöcken.'
+      bake:
+        info: '&eBake'
+        none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
       info: Zeigt an, wie und für was der Job eines Spielers bezahlt wird.
@@ -474,7 +477,7 @@ command:
       target: Du wurdest als %jobname% angestellt.
   top:
     help:
-      info: Zeigt die Top %amount% Spieler dieses Berufs.
+      info: Shows top players by jobs name.
       args: '[jobname]'
     error:
       nojob: Konnte keinen Beruf mit diesem Namen finden.
