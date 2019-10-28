@@ -1707,6 +1707,34 @@ public abstract class JobsDAO {
 	return;
     }
 
+    public JobsPlayer loadFromDao(JobsPlayer jPlayer) {
+
+	List<JobsDAOData> list = getAllJobs(jPlayer.getUserName(), jPlayer.getUniqueId());
+//	synchronized (jPlayer.saveLock) {
+	jPlayer.progression.clear();
+	for (JobsDAOData jobdata : list) {
+	    if (!plugin.isEnabled())
+		return null;
+
+	    // add the job
+	    Job job = Jobs.getJob(jobdata.getJobName());
+	    if (job == null)
+		continue;
+
+	    // create the progression object
+	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
+	    // calculate the max level
+	    // add the progression level.
+	    jPlayer.progression.add(jobProgression);
+	}
+	jPlayer.reloadMaxExperience();
+	jPlayer.reloadLimits();
+	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(jPlayer.getUniqueId()));
+	loadPoints(jPlayer);
+//	}
+	return jPlayer;
+    }
+
     public JobsPlayer loadFromDao(OfflinePlayer player) {
 
 	JobsPlayer jPlayer = new JobsPlayer(player.getName());

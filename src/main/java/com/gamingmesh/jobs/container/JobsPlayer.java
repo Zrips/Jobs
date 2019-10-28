@@ -365,11 +365,24 @@ public class JobsPlayer {
      * get the playerUUID
      * @return the playerUUID
      */
+    @Deprecated
     public UUID getPlayerUUID() {
+	return getUniqueId();
+    }
+
+    /**
+     * get the playerUUID
+     * @return the playerUUID
+     */
+    public UUID getUniqueId() {
 	return playerUUID;
     }
 
     public void setPlayerUUID(UUID playerUUID) {
+	setUniqueId(playerUUID);
+    }
+    
+    public void setUniqueId(UUID playerUUID) {
 	this.playerUUID = playerUUID;
     }
 

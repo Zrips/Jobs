@@ -452,8 +452,10 @@ public class GeneralConfigManager {
 	    "This will force to load players data every time he is logging in to have most up to date data instead of having preloaded data",
 	    "This will enable automatically save-on-disconnect feature");
 	MultiServerCompatability = c.get("MultiServerCompatability", false);
-	if (MultiServerCompatability)
+	if (MultiServerCompatability) {
 	    c.set("save-on-disconnect", true);
+	    saveOnDisconnect = true;
+	}
 
 	c.addComment("Optimizations.NewVersion",
 	    "When set to true staff will be informed about new Jobs plugin version", "You need to have jobs.versioncheck permission node");

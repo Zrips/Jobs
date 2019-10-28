@@ -134,8 +134,7 @@ public class PlayerManager {
 	if (players.get(player.getName()) != null)
 	    players.remove(player.getName().toLowerCase());
 
-	JobsPlayer jPlayer = playersUUID.get(player.getUniqueId()) != null ?
-		    playersUUID.remove(player.getUniqueId()) : null;
+	JobsPlayer jPlayer = playersUUID.get(player.getUniqueId()) != null ? playersUUID.remove(player.getUniqueId()) : null;
 	return jPlayer;
     }
 
@@ -182,7 +181,10 @@ public class PlayerManager {
 	JobsPlayer jPlayer = playersUUIDCache.get(player.getUniqueId());
 
 	if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
-	    jPlayer = Jobs.getJobsDAO().loadFromDao(player);
+	    if (jPlayer != null)
+		jPlayer = Jobs.getJobsDAO().loadFromDao(jPlayer);
+	    else
+		jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 
 	    // Lets load quest progresion
 	    PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(player.getUniqueId());
@@ -214,6 +216,7 @@ public class PlayerManager {
 
 	jPlayer.onDisconnect();
 	if (Jobs.getGCManager().saveOnDisconnect()) {
+	    jPlayer.setSaved(false);
 	    jPlayer.save();
 	}
     }
@@ -920,6 +923,7 @@ public class PlayerManager {
 	    return false;
 	return Jobs.getReflections().hasNbtString(item, JobsItemBoost);
     }
+
     private final String JobsItemBoost = "JobsItemBoost";
 
     public JobItems getJobsItemByNbt(ItemStack item) {
