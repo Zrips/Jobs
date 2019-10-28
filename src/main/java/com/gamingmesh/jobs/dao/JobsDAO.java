@@ -35,6 +35,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -1031,7 +1032,7 @@ public abstract class JobsDAO {
 	} finally {
 	    close(usersStatement);
 	}
-	
+
 	PreparedStatement limitsStatement = null;
 	try {
 	    limitsStatement = conn.prepareStatement("UPDATE `" + DBTables.LimitsTable.getTableName() + "` SET `" + LimitTableFields.typeid.getCollumn() + "` = ?, `" + LimitTableFields.type
@@ -1047,8 +1048,7 @@ public abstract class JobsDAO {
 	} finally {
 	    close(limitsStatement);
 	}
-	
-	
+
     }
 
     public void recordNewJobName(Job job) {
@@ -2187,9 +2187,21 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return;
 	PreparedStatement prest = null;
+	PreparedStatement prestDel = null;
 	ResultSet res = null;
 
 	Jobs.getBpManager().timer = 0L;
+
+	try {
+	    Long mark = System.currentTimeMillis() - (Jobs.getGCManager().BlockProtectionDays * 24L * 60L * 60L * 1000L);
+	    prestDel = conn.prepareStatement("DELETE FROM `" + DBTables.BlocksTable.getTableName() + "` WHERE `" + BlockTableFields.recorded.getCollumn() + "` < ?;");
+	    prestDel.setLong(1, mark);
+	    prestDel.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prestDel);
+	}
 
 	try {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.BlocksTable.getTableName() + "`;");
