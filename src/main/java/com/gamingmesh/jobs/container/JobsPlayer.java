@@ -481,6 +481,7 @@ public class JobsPlayer {
 	progression.clear();
 	reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(this);
+	reloadLimits();
 	return true;
 //	}
     }
@@ -543,6 +544,7 @@ public class JobsPlayer {
 	if (level != prog.getLevel()) {
 	    prog.setLevel(level);
 	    reloadHonorific();
+	    reloadLimits();
 	    Jobs.getPermissionHandler().recalculatePermissions(this);
 	}
 //	}
