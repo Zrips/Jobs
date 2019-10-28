@@ -73,6 +73,30 @@ public class Language {
 	    e.printStackTrace();
 	    throw e;
 	}
+
+	if (msg.isEmpty() || msg.equals(missing)) {
+	    msg = "";
+	    try {
+
+		List<String> ls = null;
+		if (customlocale.isList(key))
+		    ls = ColorsArray(customlocale.getStringList(key), true);
+		else if (enlocale.isList(key))
+		    ls = !enlocale.getStringList(key).isEmpty() ? ColorsArray(enlocale.getStringList(key), true) : Arrays.asList(missing);
+		if (ls != null)
+		    for (String one : ls) {
+			if (!msg.isEmpty())
+			    msg += "\n";
+			msg += one;
+		    }
+	    } catch (Throwable e) {
+		Jobs.consoleMsg("&e[Jobs] &2Can't read language file for: " + key);
+		Bukkit.getServer().getPluginManager().disablePlugin(plugin);
+		e.printStackTrace();
+		throw e;
+	    }
+	}
+
 	if (variables.length > 0)
 	    for (int i = 0; i < variables.length; i++) {
 		if (variables.length >= i + 2)

@@ -116,15 +116,15 @@ public class PlayerManager {
     public void addPlayerToCache(JobsPlayer jPlayer) {
 	if (jPlayer.getUserName() != null && playersCache.get(jPlayer.getUserName().toLowerCase()) == null)
 	    playersCache.put(jPlayer.getUserName().toLowerCase(), jPlayer);
-	if (jPlayer.getPlayerUUID() != null && playersUUIDCache.get(jPlayer.getPlayerUUID()) == null)
-	    playersUUIDCache.put(jPlayer.getPlayerUUID(), jPlayer);
+	if (jPlayer.getUniqueId() != null && playersUUIDCache.get(jPlayer.getUniqueId()) == null)
+	    playersUUIDCache.put(jPlayer.getUniqueId(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
 	if (jPlayer.getUserName() != null && players.get(jPlayer.getUserName().toLowerCase()) == null)
 	    players.put(jPlayer.getUserName().toLowerCase(), jPlayer);
-	if (jPlayer.getPlayerUUID() != null && playersUUID.get(jPlayer.getPlayerUUID()) == null)
-	    playersUUID.put(jPlayer.getPlayerUUID(), jPlayer);
+	if (jPlayer.getUniqueId() != null && playersUUID.get(jPlayer.getUniqueId()) == null)
+	    playersUUID.put(jPlayer.getUniqueId(), jPlayer);
     }
 
     public JobsPlayer removePlayer(Player player) {
@@ -186,7 +186,7 @@ public class PlayerManager {
 	    else
 		jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 
-	    // Lets load quest progresion
+	    // Lets load quest progression
 	    PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(player.getUniqueId());
 	    if (info != null) {
 		jPlayer.setDoneQuests(info.getQuestsDone());
@@ -336,9 +336,9 @@ public class PlayerManager {
 	    }
 
 	if (points != null)
-	    Jobs.getPointsData().addPlayer(jPlayer.getPlayerUUID(), points);
+	    Jobs.getPointsData().addPlayer(jPlayer.getUniqueId(), points);
 	else
-	    Jobs.getPointsData().addPlayer(jPlayer.getPlayerUUID());
+	    Jobs.getPointsData().addPlayer(jPlayer.getUniqueId());
 
 	if (logs != null)
 	    jPlayer.setLog(logs);
@@ -771,7 +771,7 @@ public class PlayerManager {
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
 	int newLevel = oldLevel + 1;
-	Player player = Bukkit.getServer().getPlayer(jPlayer.getPlayerUUID());
+	Player player = Bukkit.getServer().getPlayer(jPlayer.getUniqueId());
 	JobProgression prog = jPlayer.getJobProgression(job);
 	if (prog == null)
 	    return;
