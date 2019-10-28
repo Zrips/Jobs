@@ -102,11 +102,15 @@ public class Placeholder {
 
 	public static JobsPlaceHolders getByName(String name) {
 	    String original = name;
-//	    name = name.replace("_", "");
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
 		if (one.isComplex())
 		    continue;
-//		String n = one.name().replace("_", "");
+		if (one.toString().equalsIgnoreCase(name))
+		    return one;
+	    }
+	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
+		if (one.isComplex())
+		    continue;
 		if (one.getName().equalsIgnoreCase(name))
 		    return one;
 	    }
@@ -114,8 +118,7 @@ public class Placeholder {
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
 		if (one.isComplex())
 		    continue;
-		String n = one.getName();
-		if (n.equalsIgnoreCase(name))
+		if (one.getName().equalsIgnoreCase(name))
 		    return one;
 	    }
 	    name = "%" + pref + "_" + original + "%";
