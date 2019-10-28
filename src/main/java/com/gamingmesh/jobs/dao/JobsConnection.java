@@ -51,7 +51,13 @@ public class JobsConnection {
     }
 
     public synchronized void commit() throws SQLException {
-	conn.commit();
+	if (conn.getAutoCommit()) {
+	    conn.setAutoCommit(false);
+	    conn.commit();
+	    conn.setAutoCommit(true);
+	} else {
+	    conn.commit();
+	}
     }
 
     public synchronized DatabaseMetaData getMetaData() throws SQLException {
