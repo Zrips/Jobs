@@ -95,6 +95,8 @@ public class NameTranslatorManager {
 		}
 		break;
 	    case MMKILL:
+		if (Jobs.getMythicManager() == null)
+		    return materialName; 
 		return Jobs.getMythicManager().getDisplayName(materialName);
 	    default:
 		break;
