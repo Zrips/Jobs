@@ -368,6 +368,9 @@ command:
       collect:
         info: '&eCollect'
         none: '%jobname% does not get money for collecting blocks.'
+      bake:
+        info: '&eBake'
+        none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
       info: Bir oyuncunun hangi meslekten ne kadar kazandığını gösterir.
@@ -474,7 +477,7 @@ command:
       target: Oyuncu başarıyla %jobname% mesleğine sokuldu.
   top:
     help:
-      info: Belirlenen bir mesleğe sahip en iyi %amount% oyuncu gösterilir.
+      info: Shows top players by jobs name.
       args: '[jobname]'
     error:
       nojob: Bu isimde bir meslek bulunamadı.

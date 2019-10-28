@@ -368,6 +368,9 @@ command:
       collect:
         info: '&eCollect'
         none: '%jobname% does not get money for collecting blocks.'
+      bake:
+        info: '&eBake'
+        none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
       info: 各職業で他のプレイヤーがどのくらい報酬を得れているのかを確認できます(?)
@@ -474,7 +477,7 @@ command:
       target: '%jobname% に就かされました'
   top:
     help:
-      info: '[職業名]の上位%amount%名を表示します'
+      info: Shows top players by jobs name.
       args: '[jobname]'
     error:
       nojob: 存在しない職業名です

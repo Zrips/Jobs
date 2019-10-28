@@ -4,18 +4,18 @@ economy:
     nomoney: '&c你的帳戶資金不足!'
 limitedItem:
   error:
-    levelup: '&cYou need to level up in [jobname] to use this item!'
+    levelup: '你的 [jobname] 職業等級不足以使用這個道具'
 general:
-  Spawner: '&r[type] Spawner'
+  Spawner: '&r[type] 生怪磚'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
     time:
-      days: '&e%days% &6days '
+      days: '&e%days% &6天 '
       hours: '&e%hours% &6小时 '
       mins: '&e%mins% &6分 '
       secs: '&e%secs% &6秒 '
-    invalidPage: '&cInvalid page'
+    invalidPage: '&c無效的頁面'
     'true': '&2True'
     'false': '&cFalse'
   admin:
@@ -48,10 +48,10 @@ command:
       title: '&e---&e ===== &6Jobs 插件 - &d繁體中文化 Ogoo &e===== &e---'
       page: '&e-----&e ====== 第 &6[1] &e頁 - 共 &6[2] 頁 &e====== &e-----'
       fliperSimbols: '&e----------'
-      prevPage: '&2----<< &6Prev '
-      prevPageOff: '&7----<< Prev '
-      nextPage: '&6 Next &2>>----'
-      nextPageOff: '&7 Next >>----'
+      prevPage: '&2----<< &6前一頁 '
+      prevPageOff: '&7----<< 前一頁 '
+      nextPage: '&6 下一頁 &2>>----'
+      nextPageOff: '&7 下一頁 >>----'
       pageCount: '&2[current]/[total]'
   moneyboost:
     help:
@@ -145,11 +145,11 @@ command:
       reseted: '&ePayment limits have been reset for: &2%playername%'
   resetquest:
     help:
-      info: Resets a player's quest
+      info: 重置玩家的任務
       args: '[playername] [jobname]'
     output:
-      reseted: '&eQuest has been reset for: &2%playername%'
-      noQuests: '&eCan''t find any quests'
+      reseted: '&e玩家 &2%playername% &e的任務已經被重置了'
+      noQuests: '&e沒有新的任務'
   points:
     help:
       info: 顯示玩家的點數.
@@ -166,20 +166,20 @@ command:
       take: '&e玩家 (&6%playername%&e) 的點數减少了 &6%amount% &e. 現在共 &6%total%'
   editjobs:
     help:
-      info: Edit current jobs.
+      info: 編輯現在的職業
       args: ''
       list:
-        job: '&eJobs:'
+        job: '&e職業:'
         jobs: '  -> [&e%jobname%&r]'
         actions: '    -> [&e%actionname%&r]'
         material: '      -> [&e%materialname%&r]      '
         materialRemove: '&c[X]'
         materialAdd: '      -> &e[&2+&e]'
-        money: '        -> &eMoney: &6%amount%'
-        exp: '        -> &eExp: &6%amount%'
+        money: '        -> &e收入: &6%amount%'
+        exp: '        -> &e經驗: &6%amount%'
         points: '        -> &ePoints: &6%amount%'
       modify:
-        newValue: '&eEnter new value'
+        newValue: '&e輸入新的數值'
         enter: '&eEnter new name or press '
         hand: '&6HAND '
         handHover: '&6Press to grab info from item in your hand'
@@ -368,6 +368,9 @@ command:
       collect:
         info: '&eCollect'
         none: '%jobname% does not get money for collecting blocks.'
+      bake:
+        info: '&eBake'
+        none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
       info: 查看玩家的職業資訊.
@@ -474,7 +477,7 @@ command:
       target: 你被聘請為一名 %jobname%.
   top:
     help:
-      info: 顯示指定職業最高等的%amount%名玩家.
+      info: Shows top players by jobs name.
       args: '[jobname]'
     error:
       nojob: 沒有這個職業.

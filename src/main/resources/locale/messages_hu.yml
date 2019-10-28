@@ -296,7 +296,7 @@ command:
       jobinfo: '&e[jobname] info!'
       actions: '&eÉrvényes akciók:'
       leftClick: '&eTovábbi információért kattints bal gombbal'
-      rightClick: '&eJobb kattintás a munkához'
+      rightClick: '&eJobb kattintás a munkához való csatlakozáshoz'
       leftSlots: '&eBal oldali helyek:&f '
       working: '&2&nMár dolgozol'
       max: '&eMax. szint:&f '
@@ -368,6 +368,9 @@ command:
       collect:
         info: '&eGyűjtés'
         none: '%jobname%&c nem kap pénzt, ha gyűjtöget anyagokat.'
+      bake:
+        info: '&eSütés'
+        none: '%jobname% nem kap pénzt, ha süt ételeket.'
   playerinfo:
     help:
       info: Megmutassa mennyi minden munkát fizet, és mi van egy másik játékosnál.
@@ -474,7 +477,7 @@ command:
       target: '&aMost már a(z) %jobname%&a munkánál dolgozik.'
   top:
     help:
-      info: Top %amount% játékosok a ranglistán.
+      info: Top játékosok megjelenítése munka alapján.
       args: '[jobname]'
     error:
       nojob: '&cNem találok semmilyen munkát ezzel a névvel.'
