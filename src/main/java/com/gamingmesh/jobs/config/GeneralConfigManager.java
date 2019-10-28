@@ -96,6 +96,7 @@ public class GeneralConfigManager {
     public boolean useBlockProtection;
     public int BlockProtectionDays;
 
+    public boolean applyToNegativeIncome;
     public boolean useMinimumOveralPayment;
     public boolean useMinimumOveralPoints;
     public boolean useBreederFinder = false;
@@ -606,6 +607,12 @@ public class GeneralConfigManager {
 	for (CurrencyType one : CurrencyType.values()) {
 	    generalMulti.put(one, c.get("Economy.GeneralMulti." + one.name(), 0D) / 100D);
 	}
+
+	c.addComment("Economy.ApplyToNegativeIncome",
+	    "When set to true income which is belove 0 will get bonus aplied to it",
+	    "In example, if you would loose 5 bucks for placing diamond block, with 100% payment bonus, that penalty disapears",
+	    "When this left at false penalty for action will remain unchanged");
+	applyToNegativeIncome = c.get("Economy.ApplyToNegativeIncome", false);
 
 	c.addComment("Economy.MinimumOveralPayment.use",
 	    "Determines minimum payment. In example if player uses McMMO treefeller and earns only 20%, but at same time he gets 25% penalty from dynamic payment. He can 'get' negative amount of money",

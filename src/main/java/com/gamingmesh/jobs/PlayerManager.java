@@ -918,25 +918,26 @@ public class PlayerManager {
     public boolean containsItemBoostByNBT(ItemStack item) {
 	if (item == null)
 	    return false;
-	return Jobs.getReflections().hasNbtString(item, "JobsItemBoost");
+	return Jobs.getReflections().hasNbtString(item, JobsItemBoost);
     }
+    private final String JobsItemBoost = "JobsItemBoost";
 
     public JobItems getJobsItemByNbt(ItemStack item) {
 	if (item == null)
 	    return null;
 
-	Object itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost");
+	Object itemName = Jobs.getReflections().getNbt(item, JobsItemBoost);
 
 	if (itemName == null || itemName.toString().isEmpty()) {
 
 	    // Checking old boost items and converting to new format if needed
-	    if (Jobs.getReflections().hasNbt(item, "JobsItemBoost")) {
+	    if (Jobs.getReflections().hasNbt(item, JobsItemBoost)) {
 		for (Job one : Jobs.getJobs()) {
-		    itemName = Jobs.getReflections().getNbt(item, "JobsItemBoost", one.getName());
+		    itemName = Jobs.getReflections().getNbt(item, JobsItemBoost, one.getName());
 		    if (itemName != null) {
 			JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
 			if (b != null) {
-			    ItemStack ic = Jobs.getReflections().setNbt(item, "JobsItemBoost", b.getNode());
+			    ItemStack ic = Jobs.getReflections().setNbt(item, JobsItemBoost, b.getNode());
 			    item.setItemMeta(ic.getItemMeta());
 			}
 			break;

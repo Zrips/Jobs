@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.container;
 
 import java.util.HashMap;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.PlayerManager.BoostOf;
 
 public class Boost {
@@ -44,7 +45,9 @@ public class Boost {
     }
 
     public double getFinalAmount(CurrencyType BT, double income) {
-	double f = income + ((income > 0D ? income : -income) * getFinal(BT, false, false));
+	double f = income;
+	if (income > 0 || income < 0 && Jobs.getGCManager().applyToNegativeIncome)
+	    f = income + ((income > 0D ? income : -income) * getFinal(BT, false, false));
 	if (income > 0 && f < 0 || income < 0 && f > 0)
 	    f = 0;
 	return f;

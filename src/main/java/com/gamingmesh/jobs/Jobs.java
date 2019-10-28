@@ -217,7 +217,7 @@ public class Jobs extends JavaPlugin {
 	} else {
 	    if (new PlaceholderAPIHook(this).hook())
 		consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version of PlaceholderAPI. Please update "
-			    + "to the latest version.");
+		    + "to the latest version.");
 	}
 	return true;
     }
@@ -1061,7 +1061,7 @@ public class Jobs extends JavaPlugin {
 	    // Calculate income
 
 	    if (income != 0D) {
-		income = income + (income * boost.getFinal(CurrencyType.MONEY));
+		income = boost.getFinalAmount(CurrencyType.MONEY, income);
 		if (GconfigManager.useMinimumOveralPayment && income > 0) {
 		    double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
 		    if (income < maxLimit)
@@ -1072,7 +1072,7 @@ public class Jobs extends JavaPlugin {
 	    // Calculate points
 
 	    if (pointAmount != 0D) {
-		pointAmount = pointAmount + (pointAmount * boost.getFinal(CurrencyType.POINTS));
+		pointAmount = boost.getFinalAmount(CurrencyType.POINTS, pointAmount);
 		if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
 		    double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
 		    if (pointAmount < maxLimit)
