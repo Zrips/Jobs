@@ -2,19 +2,21 @@ package com.gamingmesh.jobs.Gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMIGUI.CMIGui;
+import com.gamingmesh.jobs.CMIGUI.CMIGuiButton;
+import com.gamingmesh.jobs.CMIGUI.GUIManager;
+import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
+import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -25,31 +27,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class GuiManager {
 
-    public HashMap<UUID, GuiInfoList> GuiList = new HashMap<>();
-
-    public void CloseInventories() {
-	for (Entry<UUID, GuiInfoList> one : GuiList.entrySet()) {
-	    Player player = Bukkit.getPlayer(one.getKey());
-	    if (player != null) {
-		player.closeInventory();
-	    }
-	}
-    }
-
-    public boolean isInGui(Player player) {
-	return GuiList.containsKey(player.getUniqueId());
-    }
-
-    public GuiInfoList getGuiInfo(Player p) {
-	return GuiList.get(p.getUniqueId());
-    }
-
-    public Job getJobBySlot(Player player, int slot) {
-	GuiInfoList info = GuiList.get(player.getUniqueId());
-	return info.getJobList().get(slot);
-    }
-
-    public Inventory CreateJobsGUI(Player player) {
+    public void openJobsBrowseGUI(Player player) {
 
 	ArrayList<Job> JobsList = new ArrayList<>();
 	for (Job job : Jobs.getJobs()) {
@@ -59,22 +37,14 @@ public class GuiManager {
 	    JobsList.add(job);
 	}
 
-	GuiInfoList guiInfo = new GuiInfoList(player.getName());
-
-	if (!this.isInGui(player))
-	    player.closeInventory();
-
-	GuiList.put(player.getUniqueId(), guiInfo);
-
-	int GuiSize = Jobs.getGCManager().getJobsGUIRows() * 9;
-
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	List<JobProgression> pJobs = JPlayer.getJobProgression();
 
-	String title = Jobs.getLanguage().getMessage("command.info.gui.pickjob");
-	if (title.length() > 32)
-	    title = title.substring(0, 30) + "..";
+	CMIGui gui = new CMIGui(player);
+	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.pickjob"));
+	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
+
+	int GuiSize = Jobs.getGCManager().getJobsGUIRows() * 9;
 
 	int neededSlots = JobsList.size() + ((JobsList.size() / Jobs.getGCManager().getJobsGUIGroupAmount()) * Jobs.getGCManager().getJobsGUISkipAmount()) + Jobs.getGCManager().getJobsGUIStartPosition();
 	int neededRows = (int) Math.ceil(neededSlots / 9D);
@@ -85,7 +55,7 @@ public class GuiManager {
 	// Lets avoid oversized GUI
 	GuiSize = GuiSize > 54 ? 54 : GuiSize;
 
-	Inventory GuiInv = Bukkit.createInventory(new JobsInventoryHolder(player), GuiSize, title);
+	gui.setInvSize(GuiSize);
 
 	int i = 0;
 	int pos = Jobs.getGCManager().getJobsGUIStartPosition() - 1;
@@ -105,8 +75,6 @@ public class GuiManager {
 		}
 	    }
 
-//	    pos += 2;
-//	    for (int x = 1; x <= 7; x++) {
 	    pos++;
 	    if (i >= JobsList.size())
 		break main;
@@ -152,6 +120,8 @@ public class GuiManager {
 
 	    Lore.add("");
 	    Lore.add(Jobs.getLanguage().getMessage("command.info.gui.leftClick"));
+	    if (JPlayer.isInJob(job))
+		Lore.add(Jobs.getLanguage().getMessage("command.info.gui.middleClick"));
 	    Lore.add(Jobs.getLanguage().getMessage("command.info.gui.rightClick"));
 
 	    ItemStack GuiItem = job.getGuiItem();
@@ -161,27 +131,37 @@ public class GuiManager {
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
 
-	    guiInfo.addJob(pos, job);
-	    GuiInv.setItem(pos, GuiItem);
+	    gui.addButton(new CMIGuiButton(pos, GuiItem) {
+
+		@Override
+		public void click(GUIClickType type) {
+
+		    switch (type) {
+		    case Left:
+		    case LeftShift:
+			openSubJobsBrowseGUI(player, job);
+			break;
+		    case MiddleMouse:
+			Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "leave", job.getName() });
+			break;
+		    case Right:
+		    case RightShift:
+			Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "join", job.getName() });
+			break;
+		    default:
+			break;
+		    }
+		}
+	    });
 	    i++;
-//	    }
 
 	}
 
-	ItemStack filler = Jobs.getGCManager().guiFiller;
-
-	if (filler != null && filler.getType() != Material.AIR)
-	    for (int y = 0; y < GuiInv.getSize(); y++) {
-		ItemStack item = GuiInv.getItem(y);
-		if (item == null || item.getType() == Material.AIR) {
-		    GuiInv.setItem(y, filler);
-		}
-	    }
-	guiInfo.setInv(GuiInv);
-	return GuiInv;
+	gui.fillEmptyButtons();
+	gui.open();
     }
 
-    public Inventory CreateJobsSubGUI(Player player, Job job) {
+    public void openSubJobsBrowseGUI(Player player, Job job) {
 
 	Inventory tempInv = Bukkit.createInventory(new JobsInventoryHolder(player), 54, "");
 
@@ -251,7 +231,7 @@ public class GuiManager {
 		    meta.setLore(Lore);
 		    GuiItem.setItemMeta(meta);
 		    //GuiInv.setItem(i, GuiItem);
-		    tempInv.setItem(i, GuiItem);
+		    tempInv.setItem(i, GuiItem.clone());
 
 		    GuiItem = job.getGuiItem();
 		    Lore = new ArrayList<>();
@@ -265,7 +245,7 @@ public class GuiManager {
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
 	    //GuiInv.setItem(i, GuiItem);
-	    tempInv.setItem(i, GuiItem);
+	    tempInv.setItem(i, GuiItem.clone());
 	    i++;
 	}
 
@@ -274,22 +254,16 @@ public class GuiManager {
 		items.add(one);
 	}
 
-	GuiInfoList mainGui = GuiList.get(player.getUniqueId());
-	if (mainGui == null) {
-	    CreateJobsGUI(player);
-	    mainGui = GuiList.get(player.getUniqueId());
-	}
-
-	int GuiSize = mainGui != null && mainGui.getInv() != null ? mainGui.getInv().getSize() : Jobs.getGCManager().getJobsGUIRows() * 9;
+	int GuiSize = GUIManager.isOpenedGui(player) && GUIManager.getGui(player) != null ? GUIManager.getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
 	int backButton = Jobs.getGCManager().getJobsGUIBackButton();
 
-	String title = Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName());
-	if (title.length() > 32)
-	    title = title.substring(0, 30) + "..";
-	Inventory GuiInv = Bukkit.createInventory(new JobsInventoryHolder(player), GuiSize, title);
+	CMIGui gui = new CMIGui(player);
+	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
+	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
+	gui.setInvSize(GuiSize);
 
 	for (int i1 = 0; i1 < items.size(); i1++) {
-	    GuiInv.setItem(i1, items.get(i1));
+	    gui.addButton(new CMIGuiButton(i1, GuiItem));
 	}
 
 	ItemStack skull = Jobs.getGCManager().guiBackButton;
@@ -299,21 +273,14 @@ public class GuiManager {
 
 	skull.setItemMeta(skullMeta);
 
-	GuiInv.setItem(backButton, skull);
+	gui.addButton(new CMIGuiButton(backButton, skull) {
+	    @Override
+	    public void click(GUIClickType type) {
+		openJobsBrowseGUI(player);
+	    }
+	});
 
-	GuiInfoList guiInfo = new GuiInfoList(player.getName());
-	guiInfo.setJobInfo(true);
-	guiInfo.setbackButton(backButton);
-	GuiList.put(player.getUniqueId(), guiInfo);
-
-	ItemStack filler = Jobs.getGCManager().guiFiller;
-
-	for (int y = 0; y < GuiInv.getSize(); y++) {
-	    ItemStack item = GuiInv.getItem(y);
-	    if (item == null || item.getType() == Material.AIR)
-		GuiInv.setItem(y, filler);
-	}
-
-	return GuiInv;
+	gui.fillEmptyButtons();
+	gui.open();
     }
 }

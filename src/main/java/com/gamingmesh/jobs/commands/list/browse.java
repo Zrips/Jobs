@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.PageInfo;
-import com.gamingmesh.jobs.CMILib.RawMessage;
 
 public class browse implements Cmd {
 
@@ -30,18 +29,18 @@ public class browse implements Cmd {
 	    }
 
 	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
-		Inventory inv = null;
+//		Inventory inv = null;
 		try {
-		    inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
+		    Jobs.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
-		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getUniqueId());
+//		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getUniqueId());
 		    return true;
 		}
-		if (inv == null)
-		    return true;
-		if (Jobs.getGUIManager().isInGui((Player) sender))
-		    ((Player) sender).openInventory(inv);
+//		if (inv == null)
+//		    return true;
+//		if (Jobs.getGUIManager().isInGui((Player) sender))
+//		    ((Player) sender).openInventory(inv);
 		return true;
 	    }
 
@@ -242,19 +241,19 @@ public class browse implements Cmd {
 
 	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
 
-		Inventory inv = null;
 		try {
-		    inv = Jobs.getGUIManager().CreateJobsGUI((Player) sender);
+		     Jobs.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
-		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getUniqueId());
+//		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getUniqueId());
 		    return true;
 		}
-		if (inv == null)
-		    return true;
+//		if (inv == null)
+//		    return true;
 
-		if (Jobs.getGUIManager().isInGui((Player) sender))
-		    ((Player) sender).openInventory(inv);
+//		if (Jobs.getGUIManager().isInGui((Player) sender))
+//		    ((Player) sender).openInventory(inv);
+		return true;
 	    }
 
 	    if (Jobs.getGCManager().JobsGUIShowChatBrowse) {

@@ -51,7 +51,6 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -63,7 +62,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -74,8 +72,6 @@ import org.bukkit.plugin.PluginManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
-import com.gamingmesh.jobs.Gui.GuiInfoList;
-import com.gamingmesh.jobs.Gui.JobsInventoryHolder;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.Signs.jobsSign;
@@ -219,83 +215,6 @@ public class JobsListener implements Listener {
 	    return;
 	if (Jobs.getShopManager().GuiList.containsKey(event.getPlayer().getName()))
 	    Jobs.getShopManager().GuiList.remove(event.getPlayer().getName());
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onGuiClose(InventoryCloseEvent event) {
-	if (Jobs.getGUIManager().GuiList.isEmpty())
-	    return;
-	Jobs.getGUIManager().GuiList.remove(event.getPlayer().getUniqueId());
-    }
-
-    // Prevent item drag in Gui
-    @EventHandler
-    public void onGuiDrag(InventoryDragEvent e) {
-	Player player = (Player) e.getWhoClicked();
-	if (Jobs.getGUIManager().isInGui(player)) {
-	    if (Version.isCurrentEqualOrLower(Version.v1_12_R1) && e.getInventory().getHolder() instanceof JobsInventoryHolder
-		|| Version.isCurrentEqualOrHigher(Version.v1_13_R1) && e.getView().getTopInventory().getHolder()
-		    instanceof JobsInventoryHolder) {
-		e.setCancelled(true);
-	    }
-	}
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onGuiLeftClick(InventoryClickEvent event) {
-	final Player player = (Player) event.getWhoClicked();
-	if (!Jobs.getGUIManager().isInGui(player))
-	    return;
-
-	event.setCancelled(true);
-	//final ItemStack clicked = event.getCurrentItem();
-
-	Inventory top = player.getOpenInventory().getTopInventory();
-	if (!(top.getHolder() instanceof JobsInventoryHolder)) {
-	    return;
-	}
-
-	int slot = event.getRawSlot();
-	if (slot >= 0) {
-	    GuiInfoList joblist = Jobs.getGUIManager().getGuiInfo(player);
-	    Job job = Jobs.getGUIManager().getJobBySlot(player, slot);
-
-	    if (!joblist.isJobInfo() && (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT ||
-		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT)) {
-		if (job != null) {
-		    Inventory inv = Jobs.getGUIManager().CreateJobsSubGUI(player, job);
-//		    if (top.getSize() == Jobs.getGCManager().getJobsGUIRows() * 9)
-			top.setContents(inv.getContents());
-		}
-	    } else if (joblist.isJobInfo()) {
-		if (slot == joblist.getbackButton()) {
-		    Inventory inv = Jobs.getGUIManager().CreateJobsGUI(player);
-//		    if (top.getSize() == Jobs.getGCManager().getJobsGUIRows() * 9)
-		    top.setContents(inv.getContents());
-		}
-	    } else if (!Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.RIGHT ||
-		Jobs.getGCManager().JobsGUISwitcheButtons && event.getClick() == ClickType.LEFT) {
-		if (job != null) {
-		    if (Jobs.getGCManager().UseInversedClickToLeave && Jobs.getPlayerManager().getJobsPlayer(player).isInJob(job)) {
-			Bukkit.dispatchCommand(player, "jobs leave " + job.getName());
-		    } else {
-			Bukkit.dispatchCommand(player, "jobs join " + job.getName());
-		    }
-		    player.getOpenInventory().getTopInventory().setContents(Jobs.getGUIManager().CreateJobsGUI(player).getContents());
-		}
-	    }
-	}
-	player.updateInventory();
-
-	// hack, we don't need to remove items
-	/*if (event.getClick().isShiftClick() && clicked != null && !clicked.getType().equals(Material.AIR))
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    player.getInventory().remove(clicked);
-		    player.updateInventory();
-		}
-	    }, 1L);*/
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

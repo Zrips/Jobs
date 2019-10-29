@@ -41,7 +41,7 @@ import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsCommands implements CommandExecutor {
-    private static final String label = "jobs";
+    public static final String label = "jobs";
     private static final String packagePath = "com.gamingmesh.jobs.commands.list";
     private Map<String, Integer> CommandList = new HashMap<>();
 

@@ -21,6 +21,7 @@ package com.gamingmesh.jobs;
 import com.gamingmesh.jobs.CMILib.ActionBarTitleMessages;
 import com.gamingmesh.jobs.CMILib.ItemManager;
 import com.gamingmesh.jobs.CMILib.RawMessage;
+import com.gamingmesh.jobs.CMILib.Reflections;
 import com.gamingmesh.jobs.CMILib.VersionChecker;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Gui.GuiManager;
@@ -966,7 +967,7 @@ public class Jobs extends JavaPlugin {
 	    return;
 
 	try {
-	    GUIManager.CloseInventories();
+//	    GUIManager.CloseInventories();
 	    shopManager.CloseInventories();
 	    dao.saveExplore();
 

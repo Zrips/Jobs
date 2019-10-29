@@ -169,6 +169,9 @@ public class LanguageManager {
 	    c.get("command.help.output.nextPage", "&6 Next &2>>----");
 	    c.get("command.help.output.nextPageOff", "&7 Next >>----");
 	    c.get("command.help.output.pageCount", "&2[current]/[total]");
+	    c.get("command.help.output.pageCountHover", "&e[totalEntries] entries");
+	    c.get("command.help.output.prevPageGui", "&6Previous page ");
+	    c.get("command.help.output.nextPageGui", "&6Next Page");
 
 	    c.get("command.moneyboost.help.info", "Boosts money gain for all players");
 	    c.get("command.moneyboost.help.args", "[jobname] [rate]");
@@ -386,7 +389,8 @@ public class LanguageManager {
 	    c.get("command.info.gui.jobinfo", "&e[jobname] info!");
 	    c.get("command.info.gui.actions", "&eValid actions are:");
 	    c.get("command.info.gui.leftClick", "&eLeft Click for more info");
-	    c.get("command.info.gui.rightClick", "&eRight click to join job");
+	    c.get("command.info.gui.middleClick", "&eMiddle Click to leave this job");
+	    c.get("command.info.gui.rightClick", "&eRight Click to join job");
 	    c.get("command.info.gui.leftSlots", "&eLeft slots:&f ");
 	    c.get("command.info.gui.working", "&2&nAlready working");
 	    c.get("command.info.gui.max", "&eMax level:&f ");

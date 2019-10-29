@@ -2,25 +2,27 @@
  * Copyright (C) 2017 Zrips
  */
 
-package com.gamingmesh.jobs;
+package com.gamingmesh.jobs.CMILib;
 
 import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
+import com.gamingmesh.jobs.Jobs;
+
 public class Reflections {
 
     private Class<?> CraftServerClass;
     private Object CraftServer;
 
-    private Class<?> NBTTagCompound;
+    private static Class<?> NBTTagCompound;
     private Class<?> NBTBase;
 //    private Class<?> NBTTagList;
 
-    private Class<?> CraftItemStack;
+    private static Class<?> CraftItemStack;
 //    private Class<?> Item;
-    private Class<?> IStack;
+    private static Class<?> IStack;
 
     public Reflections() {
 	initialize();
@@ -161,7 +163,7 @@ public class Reflections {
 	}
     }
 
-    public Object getNbt(ItemStack item) {
+    public static Object getNbt(ItemStack item) {
 	if (item == null)
 	    return null;
 	try {
@@ -195,6 +197,7 @@ public class Reflections {
 	    return null;
 	}
     }
+
 //
 //    public ItemStack setNbt(ItemStack item, String base, String path, String value) {
 //	if (item == null)
@@ -226,8 +229,7 @@ public class Reflections {
 //	    return null;
 //	}
 //    }
-
-    public ItemStack setNbt(ItemStack item, String path, String value) {
+    public static ItemStack setNbt(ItemStack item, String path, String value) {
 	if (item == null)
 	    return null;
 	try {
@@ -236,20 +238,18 @@ public class Reflections {
 	    Object tag = methTag.invoke(nmsStack);
 	    if (tag == null)
 		tag = NBTTagCompound.newInstance();
-
 	    Method meth = tag.getClass().getMethod("setString", String.class, String.class);
 	    meth.invoke(tag, path, value);
-
 	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
 	    meth2.invoke(nmsStack, tag);
 	    return (ItemStack) asBukkitCopy(nmsStack);
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	    return null;
 	}
     }
 
-    public Object getNbt(ItemStack item, String path) {
+    public static Object getNbt(ItemStack item, String path) {
 	if (item == null)
 	    return null;
 	try {
@@ -265,7 +265,7 @@ public class Reflections {
 	}
     }
 
-    public Object asNMSCopy(ItemStack item) {
+    public static Object asNMSCopy(ItemStack item) {
 	try {
 	    Method meth = CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
 	    return meth.invoke(CraftItemStack, item);
@@ -274,7 +274,7 @@ public class Reflections {
 	}
     }
 
-    public Object asBukkitCopy(Object item) {
+    public static Object asBukkitCopy(Object item) {
 	try {
 	    Method meth = CraftItemStack.getMethod("asBukkitCopy", IStack);
 	    return meth.invoke(CraftItemStack, item);
