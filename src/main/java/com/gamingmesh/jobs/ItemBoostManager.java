@@ -159,7 +159,7 @@ public class ItemBoostManager {
 
 	    BoostMultiplier b = new BoostMultiplier();
 	    for (CurrencyType oneC : CurrencyType.values()) {
-		if (cfg.getC().isDouble(one + "." + oneC.toString().toLowerCase() + "Boost"))
+		if (cfg.getC().isDouble(one + "." + oneC.toString().toLowerCase() + "Boost") || cfg.getC().isInt(one + "." + oneC.toString().toLowerCase() + "Boost"))
 		    b.add(oneC, cfg.get(one + "." + oneC.toString().toLowerCase() + "Boost", 1D) - 1);
 	    }
 
