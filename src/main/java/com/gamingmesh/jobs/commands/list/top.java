@@ -27,7 +27,7 @@ public class top implements Cmd {
 	Player player = (Player) sender;
 
 	if (args.length != 1 && args.length != 2) {
-		player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return false;
 	}
 
@@ -84,8 +84,12 @@ public class top implements Cmd {
 	    List<String> ls = new ArrayList<>();
 
 	    int i = pi.getStart();
+	    int y = 0;
 	    for (TopList one : FullList) {
 		i++;
+		y++;
+		if (y > Jobs.getGCManager().JobsTopAmount)
+		    break;
 		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", i, "%playername%", playername, "%level%", one.getLevel()));
 	    }
