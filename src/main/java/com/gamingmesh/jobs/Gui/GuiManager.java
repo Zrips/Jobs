@@ -139,14 +139,16 @@ public class GuiManager {
 		    switch (type) {
 		    case Left:
 		    case LeftShift:
-			openSubJobsBrowseGUI(player, job);
+			openJobsBrowseGUI(player, job);
 			break;
 		    case MiddleMouse:
 			Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "leave", job.getName() });
+			openJobsBrowseGUI(player);
 			break;
 		    case Right:
 		    case RightShift:
 			Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "join", job.getName() });
+			openJobsBrowseGUI(player);
 			break;
 		    default:
 			break;
@@ -161,7 +163,7 @@ public class GuiManager {
 	gui.open();
     }
 
-    public void openSubJobsBrowseGUI(Player player, Job job) {
+    public void openJobsBrowseGUI(Player player, Job job) {
 
 	Inventory tempInv = Bukkit.createInventory(new JobsInventoryHolder(player), 54, "");
 
