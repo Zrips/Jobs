@@ -25,3 +25,18 @@
 - Added option to jobs shop to hide icon if a player there are no enough points to buy a item
 - Fixed issue for inventory dragging when a player is in jobs GUI.
 - Added new action type: Bake, to cooking foods with campfire.
+- Fix for issue with jobs limits not being recalculated after levelup
+- Fix for possible issue if you have MMKill in your config file while not having MythicMobs installed
+- Fix for missing locale in itembonus command when you are not in that job
+- From now on by default negative income (aka penalty) will not get bonus recalculation. This can be changed in config file to behave as previously
+- Fix for new PlaceHolderAPI not working correctly
+- Fix for issue with autocommit when recording data into database
+- Fix for BlockProtection data failing to be cleared out by defined day count
+- Fix for multiverse support not working as it should
+- Fix for some locale lines not being processes correctly as they changed type from a string into a list
+- Updated GUI handling into CMI type one to have glitch protection and to be more developer friendly
+- Now you can leave job by middle clicking that job you are in
+- Fix for top list not being limited to defined amount in config file
+- Fix for issue with itemboosts not wanting to recognize full number boosts
+- Added extra information for informational message when block material is not recognized as a block. /jobs blockinfo we do have that one, you can use it.
+- Some other small tweaks under the hood
