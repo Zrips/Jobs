@@ -164,8 +164,7 @@ public class GuiManager {
     }
 
     public void openJobsBrowseGUI(Player player, Job job) {
-
-	Inventory tempInv = Bukkit.createInventory(new JobsInventoryHolder(player), 54, "");
+	Inventory tempInv = Bukkit.createInventory(player, 54, "");
 
 	ItemStack GuiItem = job.getGuiItem();
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
