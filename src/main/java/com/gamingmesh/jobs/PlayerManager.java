@@ -42,6 +42,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.gamingmesh.jobs.CMILib.ItemReflection;
+import com.gamingmesh.jobs.CMILib.Reflections;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
@@ -930,7 +931,7 @@ public class PlayerManager {
 	if (item == null)
 	    return null;
 
-	Object itemName = Jobs.getReflections().getNbt(item, JobsItemBoost);
+	Object itemName = Reflections.getNbt(item, JobsItemBoost);
 
 	if (itemName == null || itemName.toString().isEmpty()) {
 
@@ -941,7 +942,7 @@ public class PlayerManager {
 		    if (itemName != null) {
 			JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
 			if (b != null) {
-			    ItemStack ic = Jobs.getReflections().setNbt(item, JobsItemBoost, b.getNode());
+			    ItemStack ic = Reflections.setNbt(item, JobsItemBoost, b.getNode());
 			    item.setItemMeta(ic.getItemMeta());
 			}
 			break;

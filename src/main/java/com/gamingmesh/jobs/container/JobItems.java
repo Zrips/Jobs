@@ -30,8 +30,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.Reflections;
 
 public class JobItems {
     private String node;
@@ -70,7 +70,7 @@ public class JobItems {
 	    }
 	    item.setItemMeta(meta);
 	    item.setAmount(amount);
-	    item = Jobs.getReflections().setNbt(item, "JobsItemBoost", node);
+	    item = Reflections.setNbt(item, "JobsItemBoost", node);
 	} catch (Throwable e) {
 	    e.printStackTrace();
 	}

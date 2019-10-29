@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.Reflections;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.BoostMultiplier;
@@ -80,7 +81,7 @@ public class edititembonus implements Cmd {
 	case add:
 	    if (jobitem == null)
 		return false;
-	    iih = Jobs.getReflections().setNbt(iih, "JobsItemBoost", jobitem.getNode());
+	    iih = Reflections.setNbt(iih, "JobsItemBoost", jobitem.getNode());
 	    Jobs.getNms().setItemInMainHand(player, iih);
 	    break;
 	case list:
@@ -96,7 +97,7 @@ public class edititembonus implements Cmd {
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
 
-	Object key = Jobs.getReflections().getNbt(iih, "JobsItemBoost");
+	Object key = Reflections.getNbt(iih, "JobsItemBoost");
 
 	if (key == null)
 	    return true;

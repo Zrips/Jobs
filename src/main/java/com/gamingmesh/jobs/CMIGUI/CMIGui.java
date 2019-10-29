@@ -20,6 +20,7 @@ import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIFieldType;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIRows;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.InvType;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.stuff.PageInfo;
 
 public class CMIGui {
@@ -301,7 +302,7 @@ public class CMIGui {
     }
 
     public void addPagination(PageInfo pi, Object cmd, String pagePref) {
-	addPagination(pi, Jobs.getCommandManager().label + " " + cmd.getClass().getSimpleName(), pagePref);
+	addPagination(pi, JobsCommands.label + " " + cmd.getClass().getSimpleName(), pagePref);
     }
 
     public void addPagination(PageInfo pi, String cmd, String pagePref) {

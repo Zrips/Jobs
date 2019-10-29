@@ -35,7 +35,6 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -1431,7 +1430,7 @@ public abstract class JobsDAO {
 		if (job == null)
 		    continue;
 
-		list.add(new Convert(res.getInt("id"), jPlayer.getPlayerUUID(), job.getId(), res.getInt(ArchiveTableFields.level.getCollumn()), res.getInt(ArchiveTableFields.experience.getCollumn())));
+		list.add(new Convert(res.getInt("id"), jPlayer.getUniqueId(), job.getId(), res.getInt(ArchiveTableFields.level.getCollumn()), res.getInt(ArchiveTableFields.experience.getCollumn())));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1889,7 +1888,7 @@ public abstract class JobsDAO {
 		+ "`, `" + UserTableFields.seen.getCollumn()
 		+ "`, `" + UserTableFields.donequests.getCollumn()
 		+ "`) VALUES (?, ?, ?, ?);");
-	    prestt.setString(1, player.getPlayerUUID().toString());
+	    prestt.setString(1, player.getUniqueId().toString());
 	    prestt.setString(2, player.getUserName());
 	    prestt.setLong(3, player.getSeen());
 	    prestt.setInt(4, 0);
@@ -1904,7 +1903,7 @@ public abstract class JobsDAO {
 	try {
 	    prest = conn.prepareStatement("SELECT `id`,`" + UserTableFields.donequests.getCollumn()
 		+ "` FROM `" + DBTables.UsersTable.getTableName() + "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
-	    prest.setString(1, player.getPlayerUUID().toString());
+	    prest.setString(1, player.getUniqueId().toString());
 	    res = prest.executeQuery();
 	    res.next();
 	    int id = res.getInt("id");
@@ -1912,7 +1911,7 @@ public abstract class JobsDAO {
 	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
 		player.getUserName(),
 		id,
-		player.getPlayerUUID(),
+		player.getUniqueId(),
 		player.getSeen(),
 		res.getInt(UserTableFields.donequests.getCollumn())));
 	} catch (SQLException e) {
@@ -1940,7 +1939,7 @@ public abstract class JobsDAO {
 
 	PreparedStatement prest = null;
 	try {
-	    PlayerPoints pointInfo = Jobs.getPointsData().getPlayerPointsInfo(jPlayer.getPlayerUUID());
+	    PlayerPoints pointInfo = Jobs.getPointsData().getPlayerPointsInfo(jPlayer.getUniqueId());
 	    prest = conn.prepareStatement("INSERT INTO `" + DBTables.PointsTable.getTableName() + "` (`" + PointsTableFields.totalpoints.getCollumn() + "`, `" + PointsTableFields.currentpoints.getCollumn()
 		+ "`, `" + PointsTableFields.userid.getCollumn() + "`) VALUES (?, ?, ?);");
 	    prest.setDouble(1, pointInfo.getTotalPoints());
@@ -1967,9 +1966,9 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 
 	    if (res.next()) {
-		Jobs.getPointsData().addPlayer(player.getPlayerUUID(), res.getDouble(PointsTableFields.currentpoints.getCollumn()), res.getDouble(PointsTableFields.totalpoints.getCollumn()));
+		Jobs.getPointsData().addPlayer(player.getUniqueId(), res.getDouble(PointsTableFields.currentpoints.getCollumn()), res.getDouble(PointsTableFields.totalpoints.getCollumn()));
 	    } else {
-		Jobs.getPointsData().addPlayer(player.getPlayerUUID());
+		Jobs.getPointsData().addPlayer(player.getUniqueId());
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
