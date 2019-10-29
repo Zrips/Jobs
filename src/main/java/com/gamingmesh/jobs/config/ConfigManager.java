@@ -258,7 +258,7 @@ public class ConfigManager {
 	    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
 		if (!material.isBlock()) {
 		    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
-			+ "(" + myKey + ")! Material must be a block!");
+			+ "(" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
 		    return null;
 		}
 	    }
@@ -1044,7 +1044,7 @@ public class ConfigManager {
 			    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
 				if (!material.isBlock()) {
 				    Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + material
-					+ " (" + key + ")! Material must be a block!");
+					+ " (" + key + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
 				    continue;
 				}
 			    }
