@@ -15,12 +15,15 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMIGUI.CMIGui;
+import com.gamingmesh.jobs.CMIGUI.CMIGuiButton;
+import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
+import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIRows;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.BoostMultiplier;
@@ -34,104 +37,9 @@ import com.gamingmesh.jobs.stuff.GiveItem;
 
 public class ShopManager {
     private List<ShopItem> list = new ArrayList<>();
-    public HashMap<String, Integer> GuiList = new HashMap<>();
 
     public List<ShopItem> getShopItemList() {
 	return list;
-    }
-
-    public void openInventory(Player player, int page) {
-	Inventory inv = CreateJobsGUI(player, page);
-	if (inv == null) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.cantOpen"));
-	    return;
-	}
-	Inventory topinv = player.getOpenInventory().getTopInventory();
-	if (topinv != null)
-	    player.closeInventory();
-	GuiList.put(player.getName(), page);
-	player.openInventory(inv);
-    }
-
-    public void checkSlot(Player player, int slot, int page) {
-
-	List<ShopItem> ls = getItemsByPage(page);
-
-	int GuiSize = getGuiSize(ls, page);
-	if (slot == getPrevButtonSlot(GuiSize, page)) {
-	    openInventory(player, page - 1);
-	    return;
-	}
-
-	if (slot == getnextButtonSlot(GuiSize, page)) {
-	    openInventory(player, page + 1);
-	    return;
-	}
-
-	if (slot > ls.size() - 1)
-	    return;
-
-	ShopItem item = ls.get(slot);
-	PlayerPoints pointsInfo = Jobs.getPointsData().getPlayerPointsInfo(player.getUniqueId());
-
-	//if (!player.hasPermission("jobs.items.bypass")) {
-	for (String onePerm : item.getRequiredPerm()) {
-	    if (!player.hasPermission(onePerm)) {
-		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPermForItem"));
-		return;
-	    }
-	}
-
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
-	if (jPlayer == null)
-	    return;
-
-	for (Entry<String, Integer> oneJob : item.getRequiredJobs().entrySet()) {
-	    Job tempJob = Jobs.getJob(oneJob.getKey());
-	    if (tempJob == null)
-		continue;
-	    JobProgression playerJob = jPlayer.getJobProgression(tempJob);
-	    if (playerJob == null || playerJob.getLevel() < oneJob.getValue()) {
-		player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoJobReqForitem",
-		    "%jobname%", tempJob.getName(),
-		    "%joblevel%", oneJob.getValue()));
-		return;
-	    }
-	}
-
-	if (pointsInfo == null || pointsInfo.getCurrentPoints() < item.getPrice()) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
-	    return;
-	}
-
-	if (item.getRequiredTotalLevels() != -1 && jPlayer.getTotalLevels() < item.getRequiredTotalLevels()) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoTotalLevel", "%totalLevel%", jPlayer.getTotalLevels()));
-	    return;
-	}
-
-	if (player.getInventory().firstEmpty() == -1) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
-	    return;
-	}
-
-	for (String one : item.getCommands()) {
-	    if (one.toLowerCase().startsWith("msg "))
-		player.sendMessage(one.substring(4, one.length()).replace("[player]", player.getName()));
-	    else
-		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("[player]", player.getName()));
-	}
-
-	for (JobItems one : item.getitems()) {
-	    ItemStack itemStack = one.getItemStack(player);
-	    GiveItem.GiveItemForPlayer(player, itemStack);
-	}
-
-	pointsInfo.takePoints(item.getPrice());
-	player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPrice()));
-
-	player.getOpenInventory().getTopInventory().setContents(CreateJobsGUI(player, page).getContents());
-
     }
 
     private List<ShopItem> getItemsByPage(Integer page) {
@@ -143,25 +51,25 @@ public class ShopManager {
 	return ls;
     }
 
-    private static int getGuiSize(List<ShopItem> ls, int page) {
-	int GuiSize = 9;
+    private static GUIRows getGuiSize(List<ShopItem> ls, int page) {
+	GUIRows GuiSize = GUIRows.r1;
 	if (ls.size() > 9)
-	    GuiSize = 18;
+	    GuiSize = GUIRows.r2;
 
 	if (ls.size() > 18)
-	    GuiSize = 27;
+	    GuiSize = GUIRows.r3;
 
 	if (ls.size() > 27)
-	    GuiSize = 36;
+	    GuiSize = GUIRows.r4;
 
 	if (ls.size() > 36)
-	    GuiSize = 45;
+	    GuiSize = GUIRows.r5;
 
 	if (ls.size() == 45)
-	    GuiSize = 54;
+	    GuiSize = GUIRows.r6;
 
-	if (page > 1 && GuiSize < 54)
-	    GuiSize += 9;
+	if (page > 1 && GuiSize != GUIRows.r6)
+	    GuiSize = GUIRows.getByRows(GuiSize.getRows() + 1);
 
 	return GuiSize;
     }
@@ -181,25 +89,31 @@ public class ShopManager {
 	return next;
     }
 
-    public Inventory CreateJobsGUI(Player player, Integer page) {
+    public boolean openShopGui(Player player, Integer page) {
 
 	List<ShopItem> ls = getItemsByPage(page);
 
-	if (ls.isEmpty())
-	    return null;
+	if (ls.isEmpty()) {
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.cantOpen"));
+	    return false;
+	}
 
-	int GuiSize = getGuiSize(ls, page);
+	GUIRows GuiSize = getGuiSize(ls, page);
 
-	String title = Jobs.getLanguage().getMessage("command.shop.info.title");
-	if (title.length() > 32)
-	    title = title.substring(0, 30) + "..";
+	CMIGui gui = new CMIGui(player);
+	gui.setInvSize(GuiSize);
+	gui.setTitle(Jobs.getLanguage().getMessage("command.shop.info.title"));
+
+//	String title = Jobs.getLanguage().getMessage("command.shop.info.title");
+//	if (title.length() > 32)
+//	    title = title.substring(0, 30) + "..";
 
 	PlayerPoints pointsInfo = Jobs.getPointsData().getPlayerPointsInfo(player.getUniqueId());
 	double points = 0D;
 	if (pointsInfo != null)
 	    points = (int) (pointsInfo.getCurrentPoints() * 100.0) / 100.0;
 
-	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, title);
+//	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, title);
 
 	for (int i = 0; i < ls.size(); i++) {
 
@@ -220,7 +134,7 @@ public class ShopManager {
 	    }
 
 	    if (item.isHideIfNoEnoughPoints() && item.getRequiredTotalLevels() != -1 &&
-			Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()) {
+		Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()) {
 		mat = CMIMaterial.STONE_BUTTON;
 		Lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
 	    }
@@ -291,28 +205,101 @@ public class ShopManager {
 		GUIitem.setItemMeta(skullMeta);
 	    } else
 		GUIitem.setItemMeta(meta);
+	    gui.addButton(new CMIGuiButton(i, GUIitem) {
+		@Override
+		public void click(GUIClickType type) {
 
-	    GuiInv.setItem(i, GUIitem);
+		    //if (!player.hasPermission("jobs.items.bypass")) {
+		    for (String onePerm : item.getRequiredPerm()) {
+			if (!player.hasPermission(onePerm)) {
+			    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPermForItem"));
+			    return;
+			}
+		    }
+
+		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+
+		    if (jPlayer == null)
+			return;
+
+		    for (Entry<String, Integer> oneJob : item.getRequiredJobs().entrySet()) {
+			Job tempJob = Jobs.getJob(oneJob.getKey());
+			if (tempJob == null)
+			    continue;
+			JobProgression playerJob = jPlayer.getJobProgression(tempJob);
+			if (playerJob == null || playerJob.getLevel() < oneJob.getValue()) {
+			    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoJobReqForitem",
+				"%jobname%", tempJob.getName(),
+				"%joblevel%", oneJob.getValue()));
+			    return;
+			}
+		    }
+
+		    if (pointsInfo == null || pointsInfo.getCurrentPoints() < item.getPrice()) {
+			player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
+			return;
+		    }
+
+		    if (item.getRequiredTotalLevels() != -1 && jPlayer.getTotalLevels() < item.getRequiredTotalLevels()) {
+			player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoTotalLevel", "%totalLevel%", jPlayer.getTotalLevels()));
+			return;
+		    }
+
+		    if (player.getInventory().firstEmpty() == -1) {
+			player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
+			return;
+		    }
+
+		    for (String one : item.getCommands()) {
+			if (one.toLowerCase().startsWith("msg "))
+			    player.sendMessage(one.substring(4, one.length()).replace("[player]", player.getName()));
+			else
+			    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("[player]", player.getName()));
+		    }
+
+		    for (JobItems one : item.getitems()) {
+			ItemStack itemStack = one.getItemStack(player);
+			GiveItem.GiveItemForPlayer(player, itemStack);
+		    }
+
+		    pointsInfo.takePoints(item.getPrice());
+		    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPrice()));
+
+		}
+	    });
 	}
 
 	ItemStack Item = new ItemStack(Material.ARROW);
 
 	ItemMeta meta = Item.getItemMeta();
-	int prevSlot = getPrevButtonSlot(GuiSize, page);
-	if (prevSlot != -1) {
+	int prevSlot = getPrevButtonSlot(GuiSize.getFields(), page);
+	if (prevSlot != -1 && page > 1) {
 	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.prevPage"));
 	    Item.setItemMeta(meta);
-	    GuiInv.setItem(prevSlot, Item);
+
+	    gui.addButton(new CMIGuiButton(prevSlot, Item) {
+		@Override
+		public void click(GUIClickType type) {
+		    openShopGui(player, page - 1);
+		}
+	    });
 	}
 
-	int nextSlot = getnextButtonSlot(GuiSize, page);
-	if (nextSlot != -1) {
+	int nextSlot = getnextButtonSlot(GuiSize.getFields(), page);
+	if (nextSlot != -1 && !getItemsByPage(page + 1).isEmpty()) {
 	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.nextPage"));
 	    Item.setItemMeta(meta);
-	    GuiInv.setItem(nextSlot, Item);
+	    gui.addButton(new CMIGuiButton(nextSlot, Item) {
+		@Override
+		public void click(GUIClickType type) {
+		    openShopGui(player, page + 1);
+		}
+	    });
 	}
-
-	return GuiInv;
+	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
+	gui.fillEmptyButtons();
+	gui.open();
+	return true;
     }
 
     public void load() {
@@ -350,7 +337,7 @@ public class ShopManager {
 		continue;
 	    }
 
-		Sitem.setIconAmount(NameSection.getInt("Icon.Amount", 1));
+	    Sitem.setIconAmount(NameSection.getInt("Icon.Amount", 1));
 
 	    if (NameSection.isString("Icon.Name"))
 		Sitem.setIconName(ChatColor.translateAlternateColorCodes('&', NameSection.getString("Icon.Name")));
@@ -485,13 +472,5 @@ public class ShopManager {
 	    Jobs.consoleMsg("&e[Jobs] Loaded " + list.size() + " shop items!");
 
 	return;
-    }
-
-    public void CloseInventories() {
-	for (Entry<String, Integer> one : GuiList.entrySet()) {
-	    Player player = Bukkit.getPlayer(one.getKey());
-	    if (player != null)
-		player.closeInventory();
-	}
     }
 }

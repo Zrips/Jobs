@@ -648,7 +648,7 @@ public class Jobs extends JavaPlugin {
 	if (!startup) {
 	    org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
 	    HandlerList.unregisterAll(instance);
-
+	    com.gamingmesh.jobs.CMIGUI.GUIManager.registerListener();
 	    pm.registerEvents(new JobsListener(instance), instance);
 	    pm.registerEvents(new JobsPaymentListener(instance), instance);
 	    if (versionCheckManager.getVersion().isEqualOrHigher(Version.v1_14_R1)) {
@@ -968,7 +968,7 @@ public class Jobs extends JavaPlugin {
 
 	try {
 //	    GUIManager.CloseInventories();
-	    shopManager.CloseInventories();
+//	    shopManager.CloseInventories();
 	    dao.saveExplore();
 
 	    getBpManager().saveCache();

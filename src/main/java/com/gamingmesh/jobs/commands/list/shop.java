@@ -31,7 +31,7 @@ public class shop implements Cmd {
 
 	Player player = (Player) sender;
 
-	Jobs.getShopManager().openInventory(player, page);
+	Jobs.getShopManager().openShopGui(player, page);
 
 	return true;
     }

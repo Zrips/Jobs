@@ -184,39 +184,6 @@ public class JobsListener implements Listener {
 	return;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onShopGuiClick(InventoryClickEvent event) {
-
-	if (Jobs.getShopManager().GuiList.isEmpty())
-	    return;
-
-	Player player = (Player) event.getWhoClicked();
-
-	if (player == null)
-	    return;
-
-	if (!Jobs.getShopManager().GuiList.containsKey(player.getName()))
-	    return;
-
-	event.setCancelled(true);
-
-	int tsize = player.getOpenInventory().getTopInventory().getSize();
-
-	if (event.getRawSlot() < 0 || event.getRawSlot() >= tsize)
-	    return;
-
-	Jobs.getShopManager().checkSlot(player, event.getRawSlot(), Jobs.getShopManager().GuiList.get(player.getName()));
-
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onShopGuiClose(InventoryCloseEvent event) {
-	if (Jobs.getShopManager().GuiList.isEmpty())
-	    return;
-	if (Jobs.getShopManager().GuiList.containsKey(event.getPlayer().getName()))
-	    Jobs.getShopManager().GuiList.remove(event.getPlayer().getName());
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PlayerJoinEvent event) {
 

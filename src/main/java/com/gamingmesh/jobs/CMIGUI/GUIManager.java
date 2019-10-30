@@ -26,6 +26,10 @@ public class GUIManager {
     public final static String LIProtection = "LIProtection";
 
     static {
+	registerListener();
+    }
+
+    public static void registerListener() {
 	Jobs.getInstance().getServer().getPluginManager().registerEvents(new GUIListener(Jobs.getInstance()), Jobs.getInstance());
     }
 
