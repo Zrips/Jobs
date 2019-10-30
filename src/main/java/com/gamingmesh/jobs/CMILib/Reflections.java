@@ -234,6 +234,8 @@ public class Reflections {
 	    return null;
 	try {
 	    Object nmsStack = asNMSCopy(item);
+	    if (nmsStack == null)
+		return item;
 	    Method methTag = nmsStack.getClass().getMethod("getTag");
 	    Object tag = methTag.invoke(nmsStack);
 	    if (tag == null)
