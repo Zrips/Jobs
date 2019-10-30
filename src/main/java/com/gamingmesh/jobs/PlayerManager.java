@@ -244,6 +244,8 @@ public class PlayerManager {
 	    if (!jPlayer.isOnline() && jPlayer.isSaved())
 		iter.remove();
 	}
+	
+	Jobs.getBpManager().saveCache();
     }
 
     /**

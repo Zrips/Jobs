@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.config;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -17,7 +18,7 @@ import com.gamingmesh.jobs.stuff.Debug;
 public class BlockProtectionManager {
 
     private HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> map = new HashMap<>();
-    private HashMap<World, HashMap<String, BlockProtection>> tempCache = new HashMap<>();
+    private ConcurrentHashMap<World, ConcurrentHashMap<String, BlockProtection>> tempCache = new ConcurrentHashMap<>();
 
     public Long timer = 0L;
 
@@ -94,24 +95,24 @@ public class BlockProtectionManager {
 	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
-	HashMap<String, BlockProtection> locations = tempCache.get(loc.getWorld());
+	ConcurrentHashMap<String, BlockProtection> locations = tempCache.get(loc.getWorld());
 	if (locations == null) {
-	    locations = new HashMap<String, BlockProtection>();
+	    locations = new ConcurrentHashMap<String, BlockProtection>();
 	    tempCache.put(loc.getWorld(), locations);
 	}
 
 	locations.put(v, Bp);
 
-	if (locations.size() > 1) {
-	    Jobs.getJobsDAO().saveBlockProtection(loc.getWorld().getName(), new HashMap<String, BlockProtection>(locations));
-	    locations.clear();
-	}
+//	if (locations.size() > 10) {
+//	    Jobs.getJobsDAO().saveBlockProtection(loc.getWorld().getName(), new HashMap<String, BlockProtection>(locations));
+//	    locations.clear();
+//	}
     }
 
     public void saveCache() {
 	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
-	for (Entry<World, HashMap<String, BlockProtection>> one : tempCache.entrySet()) {
+	for (Entry<World, ConcurrentHashMap<String, BlockProtection>> one : tempCache.entrySet()) {
 	    Jobs.getJobsDAO().saveBlockProtection(one.getKey().getName(), one.getValue());
 	}
 	tempCache.clear();

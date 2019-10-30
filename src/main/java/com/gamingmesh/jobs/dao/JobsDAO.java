@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -2115,7 +2116,7 @@ public abstract class JobsDAO {
      * Save block protection information
      * @param jobBlockProtection - the information getting saved
      */
-    public void saveBlockProtection(String world, HashMap<String, BlockProtection> cache) {
+    public void saveBlockProtection(String world, ConcurrentHashMap<String, BlockProtection> concurrentHashMap) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
@@ -2147,7 +2148,7 @@ public abstract class JobsDAO {
 	    Long current = System.currentTimeMillis();
 	    Long mark = System.currentTimeMillis() - (Jobs.getGCManager().BlockProtectionDays * 24L * 60L * 60L * 1000L);
 
-	    for (Entry<String, BlockProtection> block : cache.entrySet()) {
+	    for (Entry<String, BlockProtection> block : concurrentHashMap.entrySet()) {
 		if (block.getValue() == null)
 		    continue;
 		switch (block.getValue().getAction()) {
