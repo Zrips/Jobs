@@ -37,6 +37,7 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestProgression;
+import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -489,12 +490,13 @@ public class JobsCommands implements CommandExecutor {
      * @return the message
      */
     public String jobStatsMessage(JobProgression jobProg) {
+	Title title = Jobs.gettitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
 	String message = Jobs.getLanguage().getMessage("command.stats.output",
 	    "%joblevel%", jobProg.getLevel(),
 	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName(),
 	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(),
-	    "%titlename%", Jobs.gettitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName()).getName());
+	    "%titlename%", title == null ? "Unknown" : title.getName());
 	return " " + jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) + " " + message;
     }
 
