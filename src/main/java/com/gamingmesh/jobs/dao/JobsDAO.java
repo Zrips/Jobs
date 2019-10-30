@@ -2258,7 +2258,7 @@ public abstract class JobsDAO {
 		int z = res.getInt(BlockTableFields.z.getCollumn());
 		long resets = res.getLong(BlockTableFields.resets.getCollumn());
 		Location loc = new Location(world, x, y, z);
-		BlockProtection bp = Jobs.getBpManager().addP(loc, resets, true);
+		BlockProtection bp = Jobs.getBpManager().addP(loc, resets, true, false);
 		bp.setId(id);
 		long t = System.currentTimeMillis();
 		bp.setRecorded(res.getLong(BlockTableFields.recorded.getCollumn()));

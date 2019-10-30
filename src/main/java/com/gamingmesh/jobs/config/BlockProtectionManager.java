@@ -53,12 +53,12 @@ public class BlockProtectionManager {
 	if (cd == null)
 	    return;
 	if (cd != -1)
-	    addP(loc, System.currentTimeMillis() + (cd * 1000), paid);
+	    addP(loc, System.currentTimeMillis() + (cd * 1000), paid, true);
 	else
-	    addP(loc, -1L, paid);
+	    addP(loc, -1L, paid, true);
     }
 
-    public BlockProtection addP(Location loc, Long time, boolean paid) {
+    public BlockProtection addP(Location loc, Long time, boolean paid, boolean cache) {
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 	HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> regions = map.get(loc.getWorld());
 	if (regions == null)
@@ -85,7 +85,8 @@ public class BlockProtectionManager {
 	chunks.put(chunk, Bpm);
 	regions.put(region, chunks);
 	map.put(loc.getWorld(), regions);
-	addToCache(loc, Bp);
+	if (cache)
+	    addToCache(loc, Bp);
 	return Bp;
     }
 
