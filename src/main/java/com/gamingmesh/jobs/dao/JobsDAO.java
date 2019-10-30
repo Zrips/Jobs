@@ -1022,7 +1022,7 @@ public abstract class JobsDAO {
 		.getCollumn() + "` = ? WHERE `" + JobsTableFields.job.getCollumn() + "` = ?;");
 	    for (Job job : Jobs.getJobs()) {
 		usersStatement.setInt(1, job.getId());
-		usersStatement.setString(2, null);
+		usersStatement.setString(2, "");
 		usersStatement.setString(3, job.getName());
 		usersStatement.execute();
 	    }
@@ -1038,7 +1038,7 @@ public abstract class JobsDAO {
 		.getCollumn() + "` = ? WHERE `" + LimitTableFields.type.getCollumn() + "` = ?;");
 	    for (CurrencyType type : CurrencyType.values()) {
 		limitsStatement.setInt(1, type.getId());
-		limitsStatement.setString(2, null);
+		limitsStatement.setString(2, "");
 		limitsStatement.setString(3, type.getName());
 		limitsStatement.execute();
 	    }
@@ -1229,7 +1229,8 @@ public abstract class JobsDAO {
 		LimitTableFields.userid.getCollumn() + "`, `" +
 		LimitTableFields.typeid.getCollumn() + "`, `" +
 		LimitTableFields.collected.getCollumn() + "`, `" +
-		LimitTableFields.started.getCollumn() + "`) VALUES (?, ?, ?, ?);");
+		LimitTableFields.started.getCollumn() + "`, `" +
+		LimitTableFields.type.getCollumn() + "`) VALUES (?, ?, ?, ?, ?);");
 	    conn.setAutoCommit(false);
 	    for (CurrencyType type : CurrencyType.values()) {
 		if (limit == null)
@@ -1243,6 +1244,7 @@ public abstract class JobsDAO {
 		prest.setInt(2, type.getId());
 		prest.setDouble(3, limit.GetAmount(type));
 		prest.setLong(4, limit.GetTime(type));
+		prest.setString(5, "");
 		prest.addBatch();
 	    }
 	    prest.executeBatch();
@@ -1350,11 +1352,12 @@ public abstract class JobsDAO {
 	    int level = job.getLevel();
 	    Double exp = job.getExperience();
 	    prest = conn.prepareStatement("INSERT INTO `" + getJobsTableName() + "` (`" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.jobid.getCollumn()
-		+ "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "`) VALUES (?, ?, ?, ?);");
+		+ "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "`, `" + JobsTableFields.job.getCollumn() + "`) VALUES (?, ?, ?, ?, ?);");
 	    prest.setInt(1, jPlayer.getUserId());
 	    prest.setInt(2, job.getJob().getId());
 	    prest.setInt(3, level);
 	    prest.setInt(4, exp.intValue());
+	    prest.setString(5, "");
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1378,11 +1381,12 @@ public abstract class JobsDAO {
 	    if (exp < 0)
 		exp = 0;
 	    prest = conn.prepareStatement("INSERT INTO `" + getJobsTableName() + "` (`" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.jobid.getCollumn()
-		+ "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "`) VALUES (?, ?, ?, ?);");
+		+ "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "`, `" + JobsTableFields.job.getCollumn() + "`) VALUES (?, ?, ?, ?);");
 	    prest.setInt(1, jPlayer.getUserId());
 	    prest.setInt(2, prog.getJob().getId());
 	    prest.setInt(3, prog.getLevel());
 	    prest.setInt(4, exp);
+	    prest.setString(5, "");
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1463,7 +1467,8 @@ public abstract class JobsDAO {
 	    }
 
 	    insert = conns.prepareStatement("INSERT INTO `" + DBTables.ArchiveTable.getTableName() + "` (`" + ArchiveTableFields.userid.getCollumn()
-		+ "`, `" + ArchiveTableFields.jobid.getCollumn() + "`, `" + ArchiveTableFields.level.getCollumn() + "`, `" + ArchiveTableFields.experience.getCollumn() + "`) VALUES (?, ?, ?, ?);");
+		+ "`, `" + ArchiveTableFields.jobid.getCollumn() + "`, `" + ArchiveTableFields.level.getCollumn() + "`, `" + ArchiveTableFields.experience.getCollumn() + "`, `"
+		+ ArchiveTableFields.job.getCollumn() + "`) VALUES (?, ?, ?, ?, ?);");
 	    conns.setAutoCommit(false);
 	    while (i > 0) {
 		i--;
@@ -1478,6 +1483,7 @@ public abstract class JobsDAO {
 		insert.setInt(2, convertData.getJobId());
 		insert.setInt(3, convertData.getLevel());
 		insert.setInt(4, convertData.getExp());
+		insert.setString(5, "");
 		insert.addBatch();
 	    }
 	    insert.executeBatch();
@@ -1543,12 +1549,14 @@ public abstract class JobsDAO {
 		+ "`, `" + ArchiveTableFields.level.getCollumn()
 		+ "`, `" + ArchiveTableFields.experience.getCollumn()
 		+ "`, `" + ArchiveTableFields.left.getCollumn()
-		+ "`) VALUES (?, ?, ?, ?, ?);");
+		+ "`, `" + ArchiveTableFields.job.getCollumn()
+		+ "`) VALUES (?, ?, ?, ?, ?, ?);");
 	    prest.setInt(1, jPlayer.getUserId());
 	    prest.setInt(2, job.getId());
 	    prest.setInt(3, level);
 	    prest.setInt(4, exp.intValue());
 	    prest.setLong(5, System.currentTimeMillis());
+	    prest.setString(6, "");
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -2129,7 +2137,8 @@ public abstract class JobsDAO {
 		+ "`, `" + BlockTableFields.z.getCollumn()
 		+ "`, `" + BlockTableFields.recorded.getCollumn()
 		+ "`, `" + BlockTableFields.resets.getCollumn()
-		+ "`) VALUES (?, ?, ?, ?, ?, ?);");
+		+ "`, `" + BlockTableFields.world.getCollumn()
+		+ "`) VALUES (?, ?, ?, ?, ?, ?, ?);");
 	    update = conn.prepareStatement("UPDATE `" + DBTables.BlocksTable.getTableName() + "` SET `" + BlockTableFields.recorded.getCollumn()
 		+ "` = ?, `" + BlockTableFields.resets.getCollumn()
 		+ "` = ? WHERE `id` = ?;");
@@ -2157,6 +2166,7 @@ public abstract class JobsDAO {
 		    insert.setInt(4, block.getValue().getPos().getBlockZ());
 		    insert.setLong(5, block.getValue().getRecorded());
 		    insert.setLong(6, block.getValue().getTime());
+		    insert.setString(7, "");
 		    insert.addBatch();
 		    block.getValue().setAction(DBAction.NONE);
 
@@ -2305,7 +2315,8 @@ public abstract class JobsDAO {
 		+ "`, `" + ExploreDataTableFields.chunkX.getCollumn()
 		+ "`, `" + ExploreDataTableFields.chunkZ.getCollumn()
 		+ "`, `" + ExploreDataTableFields.playerNames.getCollumn()
-		+ "`) VALUES (?, ?, ?, ?);");
+		+ "`, `" + ExploreDataTableFields.worldname.getCollumn()
+		+ "`) VALUES (?, ?, ?, ?, ?);");
 	    conn.setAutoCommit(false);
 	    int i = 0;
 
@@ -2323,6 +2334,7 @@ public abstract class JobsDAO {
 			prest2.setInt(2, oneChunk.getValue().getX());
 			prest2.setInt(3, oneChunk.getValue().getZ());
 			prest2.setString(4, oneChunk.getValue().serializeNames());
+			prest2.setString(5, "");
 			prest2.addBatch();
 			i++;
 		    }

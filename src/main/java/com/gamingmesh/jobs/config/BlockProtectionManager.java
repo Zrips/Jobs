@@ -102,7 +102,7 @@ public class BlockProtectionManager {
 
 	locations.put(v, Bp);
 
-	if (locations.size() > 10) {
+	if (locations.size() > 1) {
 	    Jobs.getJobsDAO().saveBlockProtection(loc.getWorld().getName(), new HashMap<String, BlockProtection>(locations));
 	    locations.clear();
 	}
