@@ -970,13 +970,10 @@ public abstract class JobsDAO {
 	    return;
 	PreparedStatement exploreStatement = null;
 	try {
-	    exploreStatement = conn.prepareStatement("UPDATE `" + DBTables.ExploreDataTable.getTableName() + "` SET `" + ExploreDataTableFields.worldid.getCollumn() + "` = ?, `"
-		+ ExploreDataTableFields.worldname
-		    .getCollumn() + "` = ? WHERE `" + ExploreDataTableFields.worldname.getCollumn() + "` = ?;");
+	    exploreStatement = conn.prepareStatement("UPDATE `" + DBTables.ExploreDataTable.getTableName() + "` SET `" + ExploreDataTableFields.worldid.getCollumn() + "` = ? WHERE `" + ExploreDataTableFields.worldname.getCollumn() + "` = ?;");
 	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
 		exploreStatement.setInt(1, jobsWorld.getValue().getId());
-		exploreStatement.setString(2, null);
-		exploreStatement.setString(3, jobsWorld.getKey());
+		exploreStatement.setString(2, jobsWorld.getKey());
 		exploreStatement.execute();
 	    }
 	} catch (SQLException e) {
@@ -987,12 +984,10 @@ public abstract class JobsDAO {
 
 	PreparedStatement bpStatement = null;
 	try {
-	    bpStatement = conn.prepareStatement("UPDATE `" + DBTables.BlocksTable.getTableName() + "` SET `" + BlockTableFields.worldid.getCollumn() + "` = ?, `" + BlockTableFields.world
-		.getCollumn() + "` = ? WHERE `" + BlockTableFields.world.getCollumn() + "` = ?;");
+	    bpStatement = conn.prepareStatement("UPDATE `" + DBTables.BlocksTable.getTableName() + "` SET `" + BlockTableFields.worldid.getCollumn() + "` = ?,  WHERE `" + BlockTableFields.world.getCollumn() + "` = ?;");
 	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
 		bpStatement.setInt(1, jobsWorld.getValue().getId());
-		bpStatement.setString(2, null);
-		bpStatement.setString(3, jobsWorld.getKey());
+		bpStatement.setString(2, jobsWorld.getKey());
 		bpStatement.execute();
 	    }
 	} catch (SQLException e) {
@@ -1003,12 +998,10 @@ public abstract class JobsDAO {
 
 	PreparedStatement archiveStatement = null;
 	try {
-	    archiveStatement = conn.prepareStatement("UPDATE `" + DBTables.ArchiveTable.getTableName() + "` SET `" + ArchiveTableFields.jobid.getCollumn() + "` = ?, `" + ArchiveTableFields.job
-		.getCollumn() + "` = ? WHERE `" + ArchiveTableFields.job.getCollumn() + "` = ?;");
+	    archiveStatement = conn.prepareStatement("UPDATE `" + DBTables.ArchiveTable.getTableName() + "` SET `" + ArchiveTableFields.jobid.getCollumn() + "` = ?, WHERE `" + ArchiveTableFields.job.getCollumn() + "` = ?;");
 	    for (Job job : Jobs.getJobs()) {
 		archiveStatement.setInt(1, job.getId());
-		archiveStatement.setString(2, null);
-		archiveStatement.setString(3, job.getName());
+		archiveStatement.setString(2, job.getName());
 		archiveStatement.execute();
 	    }
 	} catch (SQLException e) {
@@ -1019,12 +1012,10 @@ public abstract class JobsDAO {
 
 	PreparedStatement usersStatement = null;
 	try {
-	    usersStatement = conn.prepareStatement("UPDATE `" + getJobsTableName() + "` SET `" + JobsTableFields.jobid.getCollumn() + "` = ?, `" + JobsTableFields.job
-		.getCollumn() + "` = ? WHERE `" + JobsTableFields.job.getCollumn() + "` = ?;");
+	    usersStatement = conn.prepareStatement("UPDATE `" + getJobsTableName() + "` SET `" + JobsTableFields.jobid.getCollumn() + "` = ? WHERE `" + JobsTableFields.job.getCollumn() + "` = ?;");
 	    for (Job job : Jobs.getJobs()) {
 		usersStatement.setInt(1, job.getId());
-		usersStatement.setString(2, "");
-		usersStatement.setString(3, job.getName());
+		usersStatement.setString(2, job.getName());
 		usersStatement.execute();
 	    }
 	} catch (SQLException e) {
@@ -1035,12 +1026,10 @@ public abstract class JobsDAO {
 
 	PreparedStatement limitsStatement = null;
 	try {
-	    limitsStatement = conn.prepareStatement("UPDATE `" + DBTables.LimitsTable.getTableName() + "` SET `" + LimitTableFields.typeid.getCollumn() + "` = ?, `" + LimitTableFields.type
-		.getCollumn() + "` = ? WHERE `" + LimitTableFields.type.getCollumn() + "` = ?;");
+	    limitsStatement = conn.prepareStatement("UPDATE `" + DBTables.LimitsTable.getTableName() + "` SET `" + LimitTableFields.typeid.getCollumn() + "` = ? WHERE `" + LimitTableFields.type.getCollumn() + "` = ?;");
 	    for (CurrencyType type : CurrencyType.values()) {
 		limitsStatement.setInt(1, type.getId());
-		limitsStatement.setString(2, "");
-		limitsStatement.setString(3, type.getName());
+		limitsStatement.setString(2, type.getName());
 		limitsStatement.execute();
 	    }
 	} catch (SQLException e) {
