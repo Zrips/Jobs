@@ -664,6 +664,10 @@ public abstract class JobsDAO {
 		    ls.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
 		    converted = false;
 		} else {
+		    // This should be removed when we switch over to id only method
+		    if (converted)
+			if (res.getString(JobsTableFields.job.getCollumn()) == null || res.getString(JobsTableFields.job.getCollumn()).isEmpty())
+			    converted = false;
 		    Job job = Jobs.getJob(jobId);
 		    ls.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
 		}
@@ -970,10 +974,11 @@ public abstract class JobsDAO {
 	    return;
 	PreparedStatement exploreStatement = null;
 	try {
-	    exploreStatement = conn.prepareStatement("UPDATE `" + DBTables.ExploreDataTable.getTableName() + "` SET `" + ExploreDataTableFields.worldid.getCollumn() + "` = ? WHERE `" + ExploreDataTableFields.worldname.getCollumn() + "` = ?;");
+	    exploreStatement = conn.prepareStatement("UPDATE `" + DBTables.ExploreDataTable.getTableName() + "` SET `" + ExploreDataTableFields.worldid.getCollumn() + "` = ? WHERE `"
+		+ ExploreDataTableFields.worldname.getCollumn() + "` = ?;");
 	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
 		exploreStatement.setInt(1, jobsWorld.getValue().getId());
-		exploreStatement.setString(2, jobsWorld.getKey());
+		exploreStatement.setString(2, jobsWorld.getValue().getName());
 		exploreStatement.execute();
 	    }
 	} catch (SQLException e) {
@@ -982,12 +987,28 @@ public abstract class JobsDAO {
 	    close(exploreStatement);
 	}
 
+	PreparedStatement exploreStatementBack = null;
+	try {
+	    exploreStatementBack = conn.prepareStatement("UPDATE `" + DBTables.ExploreDataTable.getTableName() + "` SET `" + ExploreDataTableFields.worldname.getCollumn() + "` = ? WHERE `"
+		+ ExploreDataTableFields.worldid.getCollumn() + "` = ?;");
+	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
+		exploreStatementBack.setString(1, jobsWorld.getValue().getName());
+		exploreStatementBack.setInt(2, jobsWorld.getValue().getId());
+		exploreStatementBack.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(exploreStatementBack);
+	}
+
 	PreparedStatement bpStatement = null;
 	try {
-	    bpStatement = conn.prepareStatement("UPDATE `" + DBTables.BlocksTable.getTableName() + "` SET `" + BlockTableFields.worldid.getCollumn() + "` = ?,  WHERE `" + BlockTableFields.world.getCollumn() + "` = ?;");
+	    bpStatement = conn.prepareStatement("UPDATE `" + DBTables.BlocksTable.getTableName() + "` SET `" + BlockTableFields.worldid.getCollumn() + "` = ?  WHERE `" + BlockTableFields.world
+		.getCollumn() + "` = ?;");
 	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
 		bpStatement.setInt(1, jobsWorld.getValue().getId());
-		bpStatement.setString(2, jobsWorld.getKey());
+		bpStatement.setString(2, jobsWorld.getValue().getName());
 		bpStatement.execute();
 	    }
 	} catch (SQLException e) {
@@ -996,9 +1017,25 @@ public abstract class JobsDAO {
 	    close(bpStatement);
 	}
 
+	PreparedStatement bpStatementback = null;
+	try {
+	    bpStatementback = conn.prepareStatement("UPDATE `" + DBTables.BlocksTable.getTableName() + "` SET `" + BlockTableFields.world.getCollumn() + "` = ?  WHERE `" + BlockTableFields.worldid
+		.getCollumn() + "` = ?;");
+	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
+		bpStatementback.setString(1, jobsWorld.getValue().getName());
+		bpStatementback.setInt(2, jobsWorld.getValue().getId());
+		bpStatementback.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(bpStatementback);
+	}
+
 	PreparedStatement archiveStatement = null;
 	try {
-	    archiveStatement = conn.prepareStatement("UPDATE `" + DBTables.ArchiveTable.getTableName() + "` SET `" + ArchiveTableFields.jobid.getCollumn() + "` = ?, WHERE `" + ArchiveTableFields.job.getCollumn() + "` = ?;");
+	    archiveStatement = conn.prepareStatement("UPDATE `" + DBTables.ArchiveTable.getTableName() + "` SET `" + ArchiveTableFields.jobid.getCollumn() + "` = ? WHERE `" + ArchiveTableFields.job
+		.getCollumn() + "` = ?;");
 	    for (Job job : Jobs.getJobs()) {
 		archiveStatement.setInt(1, job.getId());
 		archiveStatement.setString(2, job.getName());
@@ -1008,6 +1045,20 @@ public abstract class JobsDAO {
 	    e.printStackTrace();
 	} finally {
 	    close(archiveStatement);
+	}
+	PreparedStatement archiveStatementBack = null;
+	try {
+	    archiveStatementBack = conn.prepareStatement("UPDATE `" + DBTables.ArchiveTable.getTableName() + "` SET `" + ArchiveTableFields.job.getCollumn() + "` = ? WHERE `" + ArchiveTableFields.jobid
+		.getCollumn() + "` = ?;");
+	    for (Job job : Jobs.getJobs()) {
+		archiveStatementBack.setString(1, job.getName());
+		archiveStatementBack.setInt(2, job.getId());
+		archiveStatementBack.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(archiveStatementBack);
 	}
 
 	PreparedStatement usersStatement = null;
@@ -1023,10 +1074,24 @@ public abstract class JobsDAO {
 	} finally {
 	    close(usersStatement);
 	}
+	PreparedStatement usersStatementBack = null;
+	try {
+	    usersStatementBack = conn.prepareStatement("UPDATE `" + getJobsTableName() + "` SET `" + JobsTableFields.job.getCollumn() + "` = ? WHERE `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
+	    for (Job job : Jobs.getJobs()) {
+		usersStatementBack.setString(1, job.getName());
+		usersStatementBack.setInt(2, job.getId());
+		usersStatementBack.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(usersStatementBack);
+	}
 
 	PreparedStatement limitsStatement = null;
 	try {
-	    limitsStatement = conn.prepareStatement("UPDATE `" + DBTables.LimitsTable.getTableName() + "` SET `" + LimitTableFields.typeid.getCollumn() + "` = ? WHERE `" + LimitTableFields.type.getCollumn() + "` = ?;");
+	    limitsStatement = conn.prepareStatement("UPDATE `" + DBTables.LimitsTable.getTableName() + "` SET `" + LimitTableFields.typeid.getCollumn() + "` = ? WHERE `" + LimitTableFields.type
+		.getCollumn() + "` = ?;");
 	    for (CurrencyType type : CurrencyType.values()) {
 		limitsStatement.setInt(1, type.getId());
 		limitsStatement.setString(2, type.getName());
@@ -1038,6 +1103,20 @@ public abstract class JobsDAO {
 	    close(limitsStatement);
 	}
 
+	PreparedStatement limitsStatementBack = null;
+	try {
+	    limitsStatementBack = conn.prepareStatement("UPDATE `" + DBTables.LimitsTable.getTableName() + "` SET `" + LimitTableFields.type.getCollumn() + "` = ? WHERE `" + LimitTableFields.typeid
+		.getCollumn() + "` = ?;");
+	    for (CurrencyType type : CurrencyType.values()) {
+		limitsStatementBack.setString(1, type.getName());
+		limitsStatementBack.setInt(2, type.getId());
+		limitsStatementBack.execute();
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(limitsStatementBack);
+	}
     }
 
     public void recordNewJobName(Job job) {
@@ -1234,7 +1313,7 @@ public abstract class JobsDAO {
 		prest.setInt(2, type.getId());
 		prest.setDouble(3, limit.GetAmount(type));
 		prest.setLong(4, limit.GetTime(type));
-		prest.setString(5, "");
+		prest.setString(5, type.toString());
 		prest.addBatch();
 	    }
 	    prest.executeBatch();
@@ -1347,7 +1426,7 @@ public abstract class JobsDAO {
 	    prest.setInt(2, job.getJob().getId());
 	    prest.setInt(3, level);
 	    prest.setInt(4, exp.intValue());
-	    prest.setString(5, "");
+	    prest.setString(5, job.getJob().getName());
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1376,7 +1455,7 @@ public abstract class JobsDAO {
 	    prest.setInt(2, prog.getJob().getId());
 	    prest.setInt(3, prog.getLevel());
 	    prest.setInt(4, exp);
-	    prest.setString(5, "");
+	    prest.setString(5, prog.getJob().getName());
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1468,12 +1547,13 @@ public abstract class JobsDAO {
 		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(convertData.getUserUUID());
 		if (jPlayer == null)
 		    continue;
+		Job job = Jobs.getJob(convertData.getJobId());
 
 		insert.setInt(1, jPlayer.getUserId());
 		insert.setInt(2, convertData.getJobId());
 		insert.setInt(3, convertData.getLevel());
 		insert.setInt(4, convertData.getExp());
-		insert.setString(5, "");
+		insert.setString(5, job != null ? job.getName() : "");
 		insert.addBatch();
 	    }
 	    insert.executeBatch();
@@ -1546,7 +1626,7 @@ public abstract class JobsDAO {
 	    prest.setInt(3, level);
 	    prest.setInt(4, exp.intValue());
 	    prest.setLong(5, System.currentTimeMillis());
-	    prest.setString(6, "");
+	    prest.setString(6, job.getName());
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -2156,7 +2236,7 @@ public abstract class JobsDAO {
 		    insert.setInt(4, block.getValue().getPos().getBlockZ());
 		    insert.setLong(5, block.getValue().getRecorded());
 		    insert.setLong(6, block.getValue().getTime());
-		    insert.setString(7, "");
+		    insert.setString(7, world);
 		    insert.addBatch();
 		    block.getValue().setAction(DBAction.NONE);
 
@@ -2324,7 +2404,7 @@ public abstract class JobsDAO {
 			prest2.setInt(2, oneChunk.getValue().getX());
 			prest2.setInt(3, oneChunk.getValue().getZ());
 			prest2.setString(4, oneChunk.getValue().serializeNames());
-			prest2.setString(5, "");
+			prest2.setString(5, jobsWorld != null ? jobsWorld.getName() : "");
 			prest2.addBatch();
 			i++;
 		    }
