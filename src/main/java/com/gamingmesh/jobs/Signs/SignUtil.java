@@ -21,6 +21,7 @@ import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class SignUtil {
 
@@ -295,7 +296,7 @@ public class SignUtil {
 		}
 	    } else {
 		if (jSign.getNumber() > PlayerList.size())
-		    return true;
+		    continue;
 
 		TopList pl = PlayerList.get(jSign.getNumber() - 1);
 		String PlayerName = pl.getPlayerName();
