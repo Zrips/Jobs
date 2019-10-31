@@ -139,7 +139,6 @@ public class SignUtil {
 	}
 
 	cancelSignTask();
-	signUpdate();
     }
 
     // Signs save file
@@ -174,25 +173,9 @@ public class SignUtil {
 	}
 
 	cancelSignTask();
-	signUpdate();
     }
 
     private int update = -1;
-
-    public void signUpdate() {
-	if (update == -1) {
-	    update = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    for (Entry<String, HashMap<String, jobsSign>> one : SignsByType.entrySet()) {
-			for (Entry<String, jobsSign> j : SignsByLocation.entrySet()) {
-			    SignUpdate(Jobs.getJob(one.getKey()), j.getValue().getType());
-			}
-		    }
-		}
-	    }, 30 * 20L, Jobs.getGCManager().InfoUpdateInterval * 20L);
-	}
-    }
 
     public boolean SignUpdate(Job job) {
 	return SignUpdate(job, SignTopType.toplist);
@@ -206,8 +189,6 @@ public class SignUtil {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return true;
 
-	signUpdate();
-
 	if (type == null)
 	    type = SignTopType.toplist;
 
@@ -220,6 +201,7 @@ public class SignUtil {
 
 	if (signs == null)
 	    return false;
+	int timelapse = 1;
 
 	List<TopList> PlayerList = new ArrayList<>();
 
@@ -308,7 +290,9 @@ public class SignUtil {
 		    sign.setLine(i, line);
 		}
 		sign.update();
-		UpdateHead(sign, PlayerList.get(0).getPlayerName());
+		if (!UpdateHead(sign, ((TopList) PlayerList.get(0)).getPlayerName(), timelapse)) {
+		    timelapse--;
+		}
 	    } else {
 		if (jSign.getNumber() > PlayerList.size())
 		    return true;
@@ -341,10 +325,11 @@ public class SignUtil {
 
 		sign.setLine(3, translateSignLine("signs.SpecialList.bottom", no, PlayerName, pl.getLevel(), SignJobName));
 		sign.update();
-
-		UpdateHead(sign, pl.getPlayerName());
+		if (!UpdateHead(sign, pl.getPlayerName(), timelapse)) {
+		    timelapse--;
+		}
 	    }
-
+	    timelapse++;
 	}
 	if (save)
 	    saveSigns();
@@ -361,8 +346,9 @@ public class SignUtil {
 	    "[job]", jobname);
     }
 
-    public boolean UpdateHead(final org.bukkit.block.Sign sign, final String Playername) {
+    public boolean UpdateHead(final org.bukkit.block.Sign sign, final String Playername, int timelapse) {
 	try {
+	    timelapse = timelapse < 1 ? 1 : timelapse;
 	    BlockFace directionFacing = null;
 	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
 		org.bukkit.material.Sign signMat = (org.bukkit.material.Sign) sign.getData();
@@ -388,21 +374,27 @@ public class SignUtil {
 	    if (block == null || !(block.getState() instanceof Skull))
 		loc.add(directionFacing.getOppositeFace().getModX(), 0, directionFacing.getOppositeFace().getModZ());
 
-	    block = loc.getBlock();
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
+		@Override
+		public void run() {
 
-	    if (block == null || !(block.getState() instanceof Skull))
-		return false;
+		    Block b = loc.getBlock();
 
-	    Skull skull = (Skull) block.getState();
+		    if (b == null || !(b.getState() instanceof Skull))
+			return;
 
-	    if (skull == null)
-		return false;
+		    Skull skull = (Skull) b.getState();
 
-	    if (skull.getOwner() != null && skull.getOwner().equalsIgnoreCase(Playername))
-		return false;
+		    if (skull == null)
+			return;
 
-	    skull.setOwner(Playername);
-	    skull.update();
+		    if (skull.getOwner() != null && skull.getOwner().equalsIgnoreCase(Playername))
+			return;
+
+		    skull.setOwner(Playername);
+		    skull.update();
+		}
+	    }, timelapse * Jobs.getGCManager().InfoUpdateInterval * 20L);
 	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
