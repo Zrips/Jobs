@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -244,7 +244,7 @@ public class PlayerManager {
 	    if (!jPlayer.isOnline() && jPlayer.isSaved())
 		iter.remove();
 	}
-	
+
 	Jobs.getBpManager().saveCache();
     }
 
@@ -618,20 +618,29 @@ public class PlayerManager {
 		    FireworkMeta fm = f.getFireworkMeta();
 
 		    if (Jobs.getGCManager().UseRandom) {
-			Random r = new Random();
+			ThreadLocalRandom r = ThreadLocalRandom.current();
 			int rt = r.nextInt(4) + 1;
 			Type type = Type.BALL;
 
-			if (rt == 1)
+			switch (rt) {
+			case 1:
 			    type = Type.BALL;
-			if (rt == 2)
+			    break;
+			case 2:
 			    type = Type.BALL_LARGE;
-			if (rt == 3)
+			    break;
+			case 3:
 			    type = Type.BURST;
-			if (rt == 4)
+			    break;
+			case 4:
 			    type = Type.CREEPER;
-			if (rt == 5)
+			    break;
+			case 5:
 			    type = Type.STAR;
+			    break;
+			default:
+			    break;
+			}
 
 			int r1i = r.nextInt(17) + 1;
 			int r2i = r.nextInt(17) + 1;

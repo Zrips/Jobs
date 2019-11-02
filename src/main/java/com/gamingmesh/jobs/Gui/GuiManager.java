@@ -166,9 +166,7 @@ public class GuiManager {
     public void openJobsBrowseGUI(Player player, Job job) {
 	Inventory tempInv = Bukkit.createInventory(player, 54, "");
 
-	ItemStack GuiItem = job.getGuiItem();
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	Boost boost = Jobs.getPlayerManager().getFinalBonus(JPlayer, job);
 
 	int level = 1;
@@ -176,9 +174,9 @@ public class GuiManager {
 	if (prog != null)
 	    level = prog.getLevel();
 
+	ItemStack GuiItem = job.getGuiItem();
 	int numjobs = JPlayer.getJobProgression().size();
 
-	List<ItemStack> items = new ArrayList<>();
 	int i = 0;
 	for (ActionType actionType : ActionType.values()) {
 	    List<JobInfo> info = job.getJobInfo(actionType);
@@ -188,37 +186,43 @@ public class GuiManager {
 
 	    ArrayList<String> Lore = new ArrayList<>();
 	    Lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
+
 	    int y = 1;
 	    for (int z = 0; z < info.size(); z++) {
+		JobInfo jInfo = info.get(z);
+		if (jInfo == null) {
+		    continue;
+		}
 
-		String itemName = info.get(z).getRealisticName();
-
-		double income = info.get(z).getIncome(level, numjobs);
-
+		double income = jInfo.getIncome(level, numjobs);
 		income = boost.getFinalAmount(CurrencyType.MONEY, income);
 		String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
-		double xp = info.get(z).getExperience(level, numjobs);
+		double xp = jInfo.getExperience(level, numjobs);
 		xp = boost.getFinalAmount(CurrencyType.EXP, xp);
 		String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
-		double points = info.get(z).getPoints(level, numjobs);
+		double points = jInfo.getPoints(level, numjobs);
 		points = boost.getFinalAmount(CurrencyType.POINTS, points);
 		String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 
 		if (income == 0D && points == 0D && xp == 0D)
 		    continue;
 
+		String itemName = jInfo.getRealisticName();
 		String val = "";
 
 		if (income != 0.0)
-		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
+		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor +
+				String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
 
 		if (points != 0.0)
-		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
+				+ String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
 
 		if (xp != 0.0)
-		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
+		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
+				+ String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
 
 		Lore.add(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", itemName) + val);
 
@@ -227,11 +231,11 @@ public class GuiManager {
 
 		    if (z == info.size() - 1)
 			continue;
+
 		    ItemMeta meta = GuiItem.getItemMeta();
 		    meta.setDisplayName(job.getChatColor() + job.getName());
 		    meta.setLore(Lore);
 		    GuiItem.setItemMeta(meta);
-		    //GuiInv.setItem(i, GuiItem);
 		    tempInv.setItem(i, GuiItem.clone());
 
 		    GuiItem = job.getGuiItem();
@@ -245,11 +249,11 @@ public class GuiManager {
 	    meta.setDisplayName(job.getChatColor() + job.getName());
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
-	    //GuiInv.setItem(i, GuiItem);
 	    tempInv.setItem(i, GuiItem.clone());
 	    i++;
 	}
 
+	List<ItemStack> items = new ArrayList<>();
 	for (ItemStack one : tempInv.getContents()) {
 	    if (one != null)
 		items.add(one);
@@ -264,7 +268,7 @@ public class GuiManager {
 	gui.setInvSize(GuiSize);
 
 	for (int i1 = 0; i1 < items.size(); i1++) {
-	    gui.addButton(new CMIGuiButton(i1, GuiItem));
+	    gui.addButton(new CMIGuiButton(i1, items.get(i1)));
 	}
 
 	ItemStack skull = Jobs.getGCManager().guiBackButton;

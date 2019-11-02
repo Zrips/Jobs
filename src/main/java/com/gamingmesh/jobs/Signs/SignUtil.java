@@ -21,7 +21,6 @@ import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.config.CommentedYamlConfiguration;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class SignUtil {
 
@@ -291,7 +290,7 @@ public class SignUtil {
 		    sign.setLine(i, line);
 		}
 		sign.update();
-		if (!UpdateHead(sign, ((TopList) PlayerList.get(0)).getPlayerName(), timelapse)) {
+		if (!UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse)) {
 		    timelapse--;
 		}
 	    } else {

@@ -1265,7 +1265,7 @@ public class Jobs extends JavaPlugin {
 		if (expAmount != 0D)
 		    payments.put(CurrencyType.EXP, expAmount);
 
-		FastPayment.put(jPlayer.getPlayerUUID(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), payments), prog
+		FastPayment.put(jPlayer.getUniqueId(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), payments), prog
 		    .getJob()));
 
 		economy.pay(jPlayer, payments);

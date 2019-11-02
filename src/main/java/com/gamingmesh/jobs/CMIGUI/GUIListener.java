@@ -17,16 +17,9 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.Reflections;
 
-
 public class GUIListener implements Listener {
-    Jobs plugin;
-
-    public GUIListener(Jobs plugin) {
-	this.plugin = plugin;
-    }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onNormalInventoryClose(InventoryCloseEvent event) {

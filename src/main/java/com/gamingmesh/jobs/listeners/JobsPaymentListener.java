@@ -982,16 +982,16 @@ public class JobsPaymentListener implements Listener {
 	MetadataValue value = data.get(0);
 	String playerName = value.asString();
 
-	Player player = null;
 	UUID uuid = null;
 	try {
 	    uuid = UUID.fromString(playerName);
 	} catch (IllegalArgumentException e) {
 	}
+
 	if (uuid == null)
 	    return;
-	player = Bukkit.getPlayer(uuid);
 
+	Player player = Bukkit.getPlayer(uuid);
 	if (player == null || !player.isOnline())
 	    return;
 

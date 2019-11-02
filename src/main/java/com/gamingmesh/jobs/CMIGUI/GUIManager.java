@@ -30,7 +30,7 @@ public class GUIManager {
     }
 
     public static void registerListener() {
-	Jobs.getInstance().getServer().getPluginManager().registerEvents(new GUIListener(Jobs.getInstance()), Jobs.getInstance());
+	Jobs.getInstance().getServer().getPluginManager().registerEvents(new GUIListener(), Jobs.getInstance());
     }
 
     public enum GUIButtonLocation {
@@ -340,16 +340,12 @@ public class GUIManager {
 	for (Entry<Integer, CMIGuiButton> one : gui.getButtons().entrySet()) {
 	    if (one.getKey() > GuiInv.getSize())
 		continue;
-	    try {
-		ItemStack item = one.getValue().getItem(gui.getPlayer());
-		item = item == null ? null : item.clone();
-		if (item != null && one.getValue().isLocked()) {
-		    item = Reflections.setNbt(item, CMIGUIIcon, LIProtection);
-		}
-		GuiInv.setItem(one.getKey(), item);
-	    } catch (ArrayIndexOutOfBoundsException e) {
-		break;
+	    ItemStack item = one.getValue().getItem(gui.getPlayer());
+	    item = item == null ? null : item.clone();
+	    if (item != null && one.getValue().isLocked()) {
+		item = Reflections.setNbt(item, CMIGUIIcon, LIProtection);
 	    }
+	    GuiInv.setItem(one.getKey(), item);
 	}
 	gui.setInv(GuiInv);
     }

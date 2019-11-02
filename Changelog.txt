@@ -1,3 +1,6 @@
+# 4.15.0
+- Fixed issue for jobs browse when opened and showing the same actions.
+
 # 4.14.0
 - Fixed %titlename% placeholder does not showed anything
 - Re-added Cat, Cat is ALIVE!!
