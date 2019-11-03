@@ -17,17 +17,23 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.Reflections;
+import com.gamingmesh.jobs.container.Job;
 
 public class GUIListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onNormalInventoryClose(InventoryCloseEvent event) {
-	final Player player = (Player) event.getPlayer();
+	Player player = (Player) event.getPlayer();
 	if (GUIManager.isOpenedGui(player)) {
 	    if (GUIManager.removePlayer(player)) {
 		player.updateInventory();
 		clearIconItems(player);
+	    }
+
+	    if (Jobs.getGUIManager().isInGui(player)) {
+		Jobs.getGUIManager().GuiList.remove(player.getUniqueId());
 	    }
 	}
     }
@@ -61,13 +67,14 @@ public class GUIListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryClick(final InventoryClickEvent event) {
-	final Player player = (Player) event.getWhoClicked();
+	Player player = (Player) event.getWhoClicked();
 
 	if (!GUIManager.isOpenedGui(player))
 	    return;
 
 	CMIGui gui = GUIManager.getGui(player);
-	if (event.getClick() == ClickType.DOUBLE_CLICK || event.getHotbarButton() != -1) {
+	ClickType click = event.getClick();
+	if (click == ClickType.DOUBLE_CLICK || event.getHotbarButton() != -1) {
 	    event.setCancelled(true);
 	    return;
 	}
@@ -90,8 +97,10 @@ public class GUIListener implements Listener {
 	    return;
 	}
 
-	final List<Integer> buttons = new ArrayList<Integer>();
-	buttons.add(event.getRawSlot());
+	int slot = event.getRawSlot();
+
+	List<Integer> buttons = new ArrayList<Integer>();
+	buttons.add(slot);
 	if (!GUIManager.canClick(player, buttons)) {
 	    event.setCancelled(true);
 	}
@@ -99,13 +108,15 @@ public class GUIListener implements Listener {
 	if (GUIManager.isLockedPart(player, buttons))
 	    event.setCancelled(true);
 
-	InventoryAction action = event.getAction();
-	if (!GUIManager.processClick(player, event.getCurrentItem(), buttons, GUIManager.getClickType(event.isLeftClick(), event.isShiftClick(), action))) {
+	Job job = Jobs.getGUIManager().getJobBySlot(player, slot >= 0 ? slot : 0);
+	if (!GUIManager.processClick(player, event.getCurrentItem(), buttons,
+		    GUIManager.getClickType(event.isLeftClick(), event.isRightClick(), event.isShiftClick(), event.getAction()), job)) {
 	    event.setCancelled(true);
 	    return;
 	}
 
-	if (gui.isAllowShift() && event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) && event.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+	if (gui.isAllowShift() && event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) &&
+		    event.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 
 	    event.setCancelled(true);
 
@@ -124,8 +135,8 @@ public class GUIListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onInventoryMove(final InventoryDragEvent event) {
-	final Player player = (Player) event.getWhoClicked();
+    public void onInventoryMove(InventoryDragEvent event) {
+	Player player = (Player) event.getWhoClicked();
 
 	if (!GUIManager.isOpenedGui(player))
 	    return;
@@ -135,7 +146,7 @@ public class GUIListener implements Listener {
 	    return;
 	}
 
-	final List<Integer> buttons = new ArrayList<Integer>();
+	List<Integer> buttons = new ArrayList<Integer>();
 	buttons.addAll(event.getRawSlots());
 	if (!GUIManager.canClick(player, buttons)) {
 	    event.setCancelled(true);
@@ -145,10 +156,9 @@ public class GUIListener implements Listener {
 	    event.setCancelled(true);
 	}
 
-	if (!GUIManager.processClick(player, null, buttons, GUIManager.getClickType(true, false, null))) {
+	if (!GUIManager.processClick(player, null, buttons, GUIManager.getClickType(true, false, false, null), null)) {
 	    event.setCancelled(true);
 	    return;
-
 	}
     }
 }

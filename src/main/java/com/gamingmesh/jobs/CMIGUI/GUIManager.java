@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.Reflections;
+import com.gamingmesh.jobs.container.Job;
 
 public class GUIManager {
 
@@ -163,10 +164,21 @@ public class GUIManager {
 	}
     }
 
-    public static GUIClickType getClickType(boolean left, boolean shift, InventoryAction action) {
-
+    public static GUIClickType getClickType(boolean left, boolean right, boolean shift, InventoryAction action) {
 	if (!left && !shift && (action.equals(InventoryAction.NOTHING) || action.equals(InventoryAction.CLONE_STACK)))
 	    return GUIClickType.MiddleMouse;
+
+	if (!Jobs.getGCManager().JobsGUISwitcheButtons && left ||
+		    Jobs.getGCManager().JobsGUISwitcheButtons && right) {
+	    return GUIClickType.Left;
+	} else if (!Jobs.getGCManager().JobsGUISwitcheButtons && right ||
+		    Jobs.getGCManager().JobsGUISwitcheButtons && left) {
+	    if (Jobs.getGCManager().UseInversedClickToLeave) {
+		return GUIClickType.Left;
+	    }
+
+	    return GUIClickType.Right;
+	}
 
 	if (left && !shift) {
 	    return GUIClickType.Left;
@@ -179,20 +191,31 @@ public class GUIManager {
 	}
     }
 
-    public static boolean processClick(final Player player, ItemStack currentItem, List<Integer> buttons, final GUIClickType clickType) {
+    public static boolean processClick(final Player player, ItemStack currentItem, List<Integer> buttons, final GUIClickType clickType,
+		Job job) {
 	CMIGui gui = map.get(player.getUniqueId());
 	if (gui == null)
 	    return true;
 
 	for (Integer one : buttons) {
-
-	    final CMIGuiButton button = gui.getButtons().get(one);
-
 	    if (!gui.click(one, clickType, currentItem))
 		return false;
 
+	    final CMIGuiButton button = gui.getButtons().get(one);
 	    if (button == null)
 		continue;
+
+	    if (job != null) {
+		if (!Jobs.getGCManager().JobsGUISwitcheButtons && clickType.equals(GUIClickType.Right) ||
+		    Jobs.getGCManager().JobsGUISwitcheButtons && clickType.equals(GUIClickType.Left)) {
+		    if (Jobs.getGCManager().UseInversedClickToLeave) {
+			button.addCommand(GUIClickType.Left, "jobs leave " + job.getName());
+		    } else {
+			button.addCommand(GUIClickType.Right, "jobs join " + job.getName());
+		    }
+		}
+	    }
+
 	    boolean canClick = true;
 	    for (String oneC : button.getPermissions()) {
 		if (!player.hasPermission(oneC))
@@ -203,7 +226,6 @@ public class GUIManager {
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
 		    @Override
 		    public void run() {
-
 			for (GUIButtonCommand oneC : button.getCommands(clickType)) {
 			    performCommand(player, oneC.getCommand(), oneC.getCommandType());
 			}

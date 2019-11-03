@@ -879,9 +879,10 @@ public class JobsPlayer {
     public void resetQuests(Job job) {
 	for (QuestProgression oneQ : getQuestProgressions(job)) {
 	    oneQ.setValidUntil(0l);
-	    for (java.util.Map.Entry<String, QuestObjective> obj : oneQ.getQuest().getObjectives().entrySet()) {
+	    for (Entry<String, QuestObjective> obj : oneQ.getQuest().getObjectives().entrySet()) {
 		oneQ.setAmountDone(obj.getValue(), 0);
 	    }
+
 	    setDoneQuests(0);
 	    getQuestProgressions(job).clear();
 	}
@@ -889,15 +890,7 @@ public class JobsPlayer {
 
     public void resetQuests() {
 	for (JobProgression one : getJobProgression()) {
-	    for (QuestProgression oneQ : getQuestProgressions(one.getJob())) {
-		for (java.util.Map.Entry<String, QuestObjective> obj : oneQ.getQuest().getObjectives().entrySet()) {
-		    oneQ.setAmountDone(obj.getValue(), 0);
-		}
-		oneQ.setValidUntil(0L);
-	    }
-
-	    setDoneQuests(0);
-	    getQuestProgressions(one.getJob()).clear();
+	    resetQuests(one.getJob());
 	}
     }
 

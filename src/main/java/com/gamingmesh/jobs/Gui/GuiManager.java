@@ -2,7 +2,9 @@ package com.gamingmesh.jobs.Gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,8 +29,22 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class GuiManager {
 
-    public void openJobsBrowseGUI(Player player) {
+    public HashMap<UUID, GUIInfoList> GuiList = new HashMap<>();
 
+    public boolean isInGui(Player player) {
+	return GuiList.containsKey(player.getUniqueId());
+    }
+
+    public GUIInfoList getGuiInfo(Player p) {
+	return GuiList.get(p.getUniqueId());
+    }
+
+    public Job getJobBySlot(Player player, int slot) {
+	GUIInfoList info = GuiList.get(player.getUniqueId());
+	return info.getJobList().get(slot);
+    }
+
+    public void openJobsBrowseGUI(Player player) {
 	ArrayList<Job> JobsList = new ArrayList<>();
 	for (Job job : Jobs.getJobs()) {
 	    if (Jobs.getGCManager().getHideJobsWithoutPermission())
@@ -37,8 +53,10 @@ public class GuiManager {
 	    JobsList.add(job);
 	}
 
+	GUIInfoList guiInfo = new GUIInfoList(player.getName());
+	GuiList.put(player.getUniqueId(), guiInfo);
+
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	List<JobProgression> pJobs = JPlayer.getJobProgression();
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.pickjob"));
@@ -82,7 +100,7 @@ public class GuiManager {
 
 	    ArrayList<String> Lore = new ArrayList<>();
 
-	    for (JobProgression onePJob : pJobs) {
+	    for (JobProgression onePJob : JPlayer.getJobProgression()) {
 		if (onePJob.getJob().getName().equalsIgnoreCase(job.getName()))
 		    Lore.add(Jobs.getLanguage().getMessage("command.info.gui.working"));
 	    }
@@ -131,11 +149,12 @@ public class GuiManager {
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
 
+	    guiInfo.addJob(pos, job);
+
 	    gui.addButton(new CMIGuiButton(pos, GuiItem) {
 
 		@Override
 		public void click(GUIClickType type) {
-
 		    switch (type) {
 		    case Left:
 		    case LeftShift:
@@ -156,7 +175,6 @@ public class GuiManager {
 		}
 	    });
 	    i++;
-
 	}
 
 	gui.fillEmptyButtons();
