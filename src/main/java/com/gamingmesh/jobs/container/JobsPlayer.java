@@ -34,6 +34,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -381,7 +382,7 @@ public class JobsPlayer {
     public void setPlayerUUID(UUID playerUUID) {
 	setUniqueId(playerUUID);
     }
-    
+
     public void setUniqueId(UUID playerUUID) {
 	this.playerUUID = playerUUID;
     }
@@ -878,13 +879,10 @@ public class JobsPlayer {
 
     public void resetQuests(Job job) {
 	for (QuestProgression oneQ : getQuestProgressions(job)) {
-	    oneQ.setValidUntil(0l);
+	    oneQ.setValidUntil(oneQ.getQuest().getValidUntil());
 	    for (Entry<String, QuestObjective> obj : oneQ.getQuest().getObjectives().entrySet()) {
 		oneQ.setAmountDone(obj.getValue(), 0);
 	    }
-
-	    setDoneQuests(0);
-	    getQuestProgressions(job).clear();
 	}
     }
 
@@ -892,6 +890,16 @@ public class JobsPlayer {
 	for (JobProgression one : getJobProgression()) {
 	    resetQuests(one.getJob());
 	}
+    }
+
+    public void getNewQuests() {
+	qProgression.clear();
+    }
+
+    public void getNewQuests(Job job) {
+	HashMap<String, QuestProgression> prog = qProgression.get(job.getName());
+	if (prog != null)
+	    prog.clear();
     }
 
     public List<QuestProgression> getQuestProgressions() {
@@ -918,22 +926,8 @@ public class JobsPlayer {
 	for (Entry<String, QuestProgression> one : (new HashMap<String, QuestProgression>(g)).entrySet()) {
 	    QuestProgression qp = one.getValue();
 
-	    if (qp == null || !qp.isValid()) {
-		Quest q = job.getNextQuest(getQuestNameList(job, type), getJobProgression(job).getLevel());
-
-		if (q == null)
-		    continue;
-
-		qp = new QuestProgression(q);
-
-		if (g.size() >= job.getMaxDailyQuests())
-		    continue;
-
-		g.put(qp.getQuest().getConfigName(), qp);
-	    }
-
-	    if (qp.getQuest() == null) {
-		g.remove(one.getKey());
+	    if (qp.isEnded()) {
+		g.remove(one.getKey().toLowerCase());
 		continue;
 	    }
 	}
@@ -946,8 +940,19 @@ public class JobsPlayer {
 		if (q == null)
 		    continue;
 		QuestProgression qp = new QuestProgression(q);
-		g.put(qp.getQuest().getConfigName(), qp);
+		g.put(qp.getQuest().getConfigName().toLowerCase(), qp);
 		if (g.size() >= job.getMaxDailyQuests())
+		    break;
+	    }
+	}
+
+	if (g.size() > job.getMaxDailyQuests()) {
+	    int i = g.size();
+	    while (i > 0) {
+		--i;
+		g.remove(g.entrySet().iterator().next().getKey());
+
+		if (g.size() <= job.getMaxDailyQuests())
 		    break;
 	    }
 	}
@@ -956,11 +961,11 @@ public class JobsPlayer {
 
 	for (Entry<String, QuestProgression> oneJ : g.entrySet()) {
 	    if (type == null) {
-		tmp.put(oneJ.getValue().getQuest().getConfigName(), oneJ.getValue());
+		tmp.put(oneJ.getValue().getQuest().getConfigName().toLowerCase(), oneJ.getValue());
 	    } else
 		for (Entry<String, QuestObjective> one : oneJ.getValue().getQuest().getObjectives().entrySet()) {
 		    if (type.name().equals(one.getValue().getAction().name())) {
-			tmp.put(oneJ.getValue().getQuest().getConfigName(), oneJ.getValue());
+			tmp.put(oneJ.getValue().getQuest().getConfigName().toLowerCase(), oneJ.getValue());
 			break;
 		    }
 		}

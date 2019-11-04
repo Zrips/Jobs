@@ -7,11 +7,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class QuestProgression {
 
     private Quest quest;
-    private Long validUntil;
+    private long validUntil;
     private boolean givenReward = false;
     private HashMap<QuestObjective, Integer> done = new HashMap<>();
 
@@ -56,7 +57,7 @@ public class QuestProgression {
     }
 
     public Long getValidUntil() {
-	return quest.getValidUntil();
+	return this.validUntil;
     }
 
     public void setValidUntil(Long validUntil) {
@@ -64,7 +65,7 @@ public class QuestProgression {
     }
 
     public boolean isValid() {
-	return validUntil.equals(getValidUntil());
+	return validUntil == getValidUntil();
     }
 
     public boolean isEnded() {
@@ -91,7 +92,7 @@ public class QuestProgression {
 	    for (String area : quest.getRestrictedAreas()) {
 		for (Entry<String, RestrictedArea> a : Jobs.getRestrictedAreaManager().getRestrictedAres().entrySet()) {
 		    if (quest.getRestrictedAreas().contains(a.getKey()) && a.getKey().equalsIgnoreCase(area)
-				&& a.getValue().inRestrictedArea(jPlayer.getPlayer().getLocation())) {
+			&& a.getValue().inRestrictedArea(jPlayer.getPlayer().getLocation())) {
 			return;
 		    }
 		}
