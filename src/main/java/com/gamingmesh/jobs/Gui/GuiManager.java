@@ -29,21 +29,6 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class GuiManager {
 
-    public HashMap<UUID, GUIInfoList> GuiList = new HashMap<>();
-
-    public boolean isInGui(Player player) {
-	return GuiList.containsKey(player.getUniqueId());
-    }
-
-    public GUIInfoList getGuiInfo(Player p) {
-	return GuiList.get(p.getUniqueId());
-    }
-
-    public Job getJobBySlot(Player player, int slot) {
-	GUIInfoList info = GuiList.get(player.getUniqueId());
-	return info.getJobList().get(slot);
-    }
-
     public void openJobsBrowseGUI(Player player) {
 	ArrayList<Job> JobsList = new ArrayList<>();
 	for (Job job : Jobs.getJobs()) {
@@ -52,9 +37,6 @@ public class GuiManager {
 		    continue;
 	    JobsList.add(job);
 	}
-
-	GUIInfoList guiInfo = new GUIInfoList(player.getName());
-	GuiList.put(player.getUniqueId(), guiInfo);
 
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
@@ -149,8 +131,6 @@ public class GuiManager {
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
 
-	    guiInfo.addJob(pos, job);
-
 	    gui.addButton(new CMIGuiButton(pos, GuiItem) {
 
 		@Override
@@ -158,7 +138,12 @@ public class GuiManager {
 		    switch (type) {
 		    case Left:
 		    case LeftShift:
-			openJobsBrowseGUI(player, job);
+			if (Jobs.getGCManager().JobsGUISwitcheButtons) {
+			    Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "join", job.getName() });
+			    openJobsBrowseGUI(player);
+			} else {
+			    openJobsBrowseGUI(player, job);
+			}
 			break;
 		    case MiddleMouse:
 			Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "leave", job.getName() });
@@ -166,8 +151,12 @@ public class GuiManager {
 			break;
 		    case Right:
 		    case RightShift:
-			Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "join", job.getName() });
-			openJobsBrowseGUI(player);
+			if (Jobs.getGCManager().JobsGUISwitcheButtons) {
+			    openJobsBrowseGUI(player, job);
+			} else {
+			    Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "join", job.getName() });
+			    openJobsBrowseGUI(player);
+			}
 			break;
 		    default:
 			break;
@@ -232,15 +221,15 @@ public class GuiManager {
 
 		if (income != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor +
-				String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
+			String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
 
 		if (points != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
-				+ String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+			+ String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
 
 		if (xp != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
-				+ String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
+			+ String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
 
 		Lore.add(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", itemName) + val);
 
