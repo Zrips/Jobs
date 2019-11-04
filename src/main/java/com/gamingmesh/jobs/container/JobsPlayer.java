@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +77,7 @@ public class JobsPlayer {
 
     private HashMap<String, HashMap<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
+    private int skippedQuests = 0;
 
     public JobsPlayer(String userName) {
 	this.userName = userName;
@@ -355,7 +357,16 @@ public class JobsPlayer {
      * get the userName
      * @return the userName
      */
+    @Deprecated
     public String getUserName() {
+	return getName();
+    }
+
+    /**
+     * get the getName
+     * @return the getName
+     */
+    public String getName() {
 	Player player = Bukkit.getPlayer(getPlayerUUID());
 	if (player != null)
 	    userName = player.getName();
@@ -902,6 +913,46 @@ public class JobsPlayer {
 	    prog.clear();
     }
 
+    public void replaceQuest(Quest quest) {
+	HashMap<String, QuestProgression> orprog = qProgression.get(quest.getJob().getName());
+
+	Quest q = quest.getJob().getNextQuest(getQuestNameList(quest.getJob(), null), getJobProgression(quest.getJob()).getLevel());
+
+	if (q == null) {
+	    for (JobProgression one : this.getJobProgression()) {
+		if (one.getJob().isSame(quest.getJob()))
+		    continue;
+		q = one.getJob().getNextQuest(getQuestNameList(one.getJob(), null), getJobProgression(one.getJob()).getLevel());
+		if (q != null)
+		    break;
+	    }
+	}
+
+	if (q == null)
+	    return;
+
+	HashMap<String, QuestProgression> prog = qProgression.get(q.getJob().getName());
+	if (prog == null) {
+	    prog = new HashMap<String, QuestProgression>();
+	    qProgression.put(q.getJob().getName(), prog);
+	}
+
+	if (q.getConfigName().equals(quest.getConfigName()))
+	    return;
+
+	if (prog.containsKey(q.getConfigName().toLowerCase()))
+	    return;
+
+	if (q.getJob() != quest.getJob() && prog.size() >= q.getJob().getMaxDailyQuests())
+	    return;
+
+	if (orprog != null) {
+	    orprog.remove(quest.getConfigName().toLowerCase());
+	}
+	prog.put(q.getConfigName().toLowerCase(), new QuestProgression(q));
+	skippedQuests++;
+    }
+
     public List<QuestProgression> getQuestProgressions() {
 	List<QuestProgression> g = new ArrayList<>();
 	for (JobProgression one : getJobProgression()) {
@@ -928,6 +979,7 @@ public class JobsPlayer {
 
 	    if (qp.isEnded()) {
 		g.remove(one.getKey().toLowerCase());
+		skippedQuests = 0;
 		continue;
 	    }
 	}
@@ -1117,5 +1169,13 @@ public class JobsPlayer {
 	int max = maxV.intValue();
 
 	return max;
+    }
+
+    public int getSkippedQuests() {
+	return skippedQuests;
+    }
+
+    public void setSkippedQuests(int skippedQuests) {
+	this.skippedQuests = skippedQuests;
     }
 }

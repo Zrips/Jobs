@@ -505,6 +505,9 @@ public class LanguageManager {
 	    Jobs.getGCManager().getCommandArgs().put("clearownership", Arrays.asList("[playername]"));
 	    c.get("command.clearownership.output.cleared", "&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands");
 
+	    c.get("command.skipquest.help.info", "Skip defined quest and get new one");
+	    c.get("command.skipquest.help.args", "[jobname] [questname] (playerName)");
+	    
 	    c.get("command.quests.help.info", "List available quests");
 	    c.get("command.quests.help.args", "[playername]");
 	    Jobs.getGCManager().getCommandArgs().put("quests", Arrays.asList("[playername]"));
@@ -512,6 +515,8 @@ public class LanguageManager {
 	    c.get("command.quests.toplineseparator", "&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************");
 	    c.get("command.quests.output.completed", "&2      !Completed!&r      ");
 	    c.get("command.quests.output.questLine", "[progress] &7[questName] &f[done]&7/&8[required]");
+	    c.get("command.quests.output.skip", "&7Click to skip this quest");
+	    c.get("command.quests.output.skips", "&7Left skips: &f[skips]");
 	    c.get("command.quests.output.hover", "&f[jobName] \n[desc] \n&7New quest in: [time]");
 
 	    c.get("command.fire.help.info", "Fire the player from the job.");

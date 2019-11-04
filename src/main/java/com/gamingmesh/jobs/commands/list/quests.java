@@ -83,26 +83,21 @@ public class quests implements Cmd {
 			hover += one;
 		    }
 
-		    /*
-		    hover += "&f" + jobProg.getJob().getName();
-		    if (!q.getQuest().getDescription().isEmpty()) {
-		    
-		    for (String one : q.getQuest().getDescription()) {
-		    hover += "\n&7";
-		    hover += one;
-		    }
-		    }
-		    hover += "\n&7New quest in: &8" +
-		    TimeManage.to24hourShort(q.getValidUntil() -
-		    System.currentTimeMillis());
-		    */
-		    rm.add(msg, hover);
+		    if (list.size() < jobProg.getJob().getQuests().size() && Jobs.getGCManager().getDailyQuestsSkips() > jPlayer.getSkippedQuests()) {
+			if (Jobs.getGCManager().getDailyQuestsSkips() > 0) {
+			    hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skip");
+			    hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skips", "[skips]", (Jobs.getGCManager().getDailyQuestsSkips() - jPlayer.getSkippedQuests()));
+			}
+			rm.add(msg, hover, "jobs skipquest " + jobProg.getJob().getName() + " " + q.getQuest().getConfigName() + " " + jPlayer.getName());
+		    } else
+			rm.add(msg, hover);
 		    rm.show(sender);
 		}
 	    }
 	} else
 	    return true;
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+
 	return true;
     }
 }
