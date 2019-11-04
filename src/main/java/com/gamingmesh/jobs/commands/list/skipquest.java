@@ -12,18 +12,15 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Quest;
-import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class skipquest implements Cmd {
 
     @Override
     @JobCommand(709)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (args.length != 0 && args.length != 1 && args.length != 2 && args.length != 3) {
+	if (args.length != 2 && args.length != 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "skipquest");
-	    Debug.D("first");
 	    return true;
 	}
 

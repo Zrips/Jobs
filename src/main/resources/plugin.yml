@@ -75,8 +75,12 @@ permissions:
       jobs.command.iteminfo: true
       jobs.command.itembonus: true
       jobs.command.blockinfo: true
+      jobs.command.skipquest: true
   jobs.command.browse:
     description: Grants access to the browse command
+    default: true
+  jobs.command.skipquest:
+    description: Grants access to the skipquest command
     default: true
   jobs.command.top:
     description: Grants access to the top command
