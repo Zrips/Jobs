@@ -24,7 +24,7 @@ public class resetlimit implements Cmd {
 	}
 
 	jPlayer.resetPaymentLimit();
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetlimit.output.reseted", "%playername%", jPlayer.getUserName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetlimit.output.reseted", "%playername%", jPlayer.getName()));
 
 	return true;
     }

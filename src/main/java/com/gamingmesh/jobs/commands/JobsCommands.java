@@ -36,10 +36,8 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.stuff.PageInfo;
-import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsCommands implements CommandExecutor {
     public static final String label = "jobs";
@@ -403,10 +401,10 @@ public class JobsCommands implements CommandExecutor {
 	String t = type == "" ? "" : " " + type;
 
 	if (sender instanceof Player)
-	    if (sender.getName().equalsIgnoreCase(player.getUserName()))
+	    if (sender.getName().equalsIgnoreCase(player.getName()))
 		plugin.ShowPagination(sender, pi.getTotalPages(), page, "jobs info " + job.getName() + t);
 	    else
-		plugin.ShowPagination(sender, pi.getTotalPages(), page, "jobs playerinfo " + player.getUserName() + " " + job.getName() + t);
+		plugin.ShowPagination(sender, pi.getTotalPages(), page, "jobs playerinfo " + player.getName() + " " + job.getName() + t);
     }
 
     /**
@@ -536,19 +534,5 @@ public class JobsCommands implements CommandExecutor {
 	    "%jobxp%", Math.round(exp * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(level));
 	return " " + jobProgressMessage(jobProg.getMaxExperience(level), exp) + " " + message;
-    }
-
-    public String jobsQuestMessage(QuestProgression qp, JobProgression prog) {
-	String hoverMsg = Jobs.getLanguage().getMessage("command.quests.output.hover");
-	hoverMsg = hoverMsg.replace("[jobName]", prog.getJob().getName())
-			.replace("[time]", TimeManage.to24hourShort(qp.getValidUntil() - System.currentTimeMillis()));
-
-	if (hoverMsg.contains("[desc]")) {
-	    for (String one : qp.getQuest().getDescription()) {
-		hoverMsg = hoverMsg.replace("[desc]", one);
-	    }
-	}
-
-	return hoverMsg;
     }
 }

@@ -119,7 +119,7 @@ public class BossBarManager {
 		if (target == null)
 		    return;
 		bar.addPlayer(target);
-		OldOne = new BossBarInfo(player.getUserName(), jobProg.getJob().getName(), bar);
+		OldOne = new BossBarInfo(player.getName(), jobProg.getJob().getName(), bar);
 		player.getBossBarInfo().add(OldOne);
 	    }
 	    bar.setVisible(true);
@@ -133,7 +133,7 @@ public class BossBarManager {
 	    @Override
 	    public void run() {
 		for (BossBarInfo one : player.getBossBarInfo()) {
-		    if (!one.getPlayerName().equalsIgnoreCase(player.getUserName()))
+		    if (!one.getPlayerName().equalsIgnoreCase(player.getName()))
 			continue;
 
 		    if (!one.getJobName().equalsIgnoreCase(jobProg.getJob().getName()))

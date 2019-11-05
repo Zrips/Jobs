@@ -193,7 +193,7 @@ public class ShopManager {
 		skullMeta.setLore(Lore);
 
 		if (item.isHeadOwner())
-		    skullMeta.setOwner(Jobs.getPlayerManager().getJobsPlayer(player).getUserName());
+		    skullMeta.setOwner(Jobs.getPlayerManager().getJobsPlayer(player).getName());
 		else {
 		    try {
 			OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());

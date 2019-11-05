@@ -12,14 +12,12 @@ public class editpoints implements Cmd {
     @Override
     @JobCommand(475)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
-
 	if (args.length != 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "editpoints");
 	    return true;
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[1]);
-
 	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[1]));
 	    return true;
@@ -34,9 +32,8 @@ public class editpoints implements Cmd {
 	}
 
 	PlayerPoints pointInfo = Jobs.getPointsData().getPlayerPointsInfo(jPlayer.getUniqueId());
-
 	if (pointInfo == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", jPlayer.getUserName()));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", jPlayer.getName()));
 	    return true;
 	}
 
@@ -44,21 +41,21 @@ public class editpoints implements Cmd {
 	case "take":
 	    pointInfo.takePoints(amount);
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.editpoints.output.take",
-		"%playername%", jPlayer.getUserName(),
+		"%playername%", jPlayer.getName(),
 		"%amount%", amount,
 		"%total%", (int) (pointInfo.getCurrentPoints() * 100) / 100D));
 	    break;
 	case "add":
 	    pointInfo.addPoints(amount);
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.editpoints.output.add",
-		"%playername%", jPlayer.getUserName(),
+		"%playername%", jPlayer.getName(),
 		"%amount%", amount,
 		"%total%", (int) (pointInfo.getCurrentPoints() * 100) / 100D));
 	    break;
 	case "set":
 	    pointInfo.setPoints(amount);
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.editpoints.output.set",
-		"%playername%", jPlayer.getUserName(),
+		"%playername%", jPlayer.getName(),
 		"%amount%", amount));
 	    break;
 	default:

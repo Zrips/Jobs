@@ -16,7 +16,7 @@ public class PerformCommands {
 	    return;
 
 	for (String one : cmds) {
-	    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("[name]", jPlayer.getUserName()).replace("[jobname]", job.getName()));
+	    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("[name]", jPlayer.getName()).replace("[jobname]", job.getName()));
 	}
     }
 
@@ -27,7 +27,7 @@ public class PerformCommands {
 	    return;
 
 	for (String one : cmds) {
-	    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("[name]", jPlayer.getUserName()).replace("[jobname]", job.getName()));
+	    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("[name]", jPlayer.getName()).replace("[jobname]", job.getName()));
 	}
     }
 }

@@ -68,7 +68,7 @@ public class log implements Cmd {
 	unsortMap = Sorting.sortDoubleDESC(unsortMap);
 	int count = 0;
 	int max = 10;
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.topline", "%playername%", JPlayer.getUserName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.topline", "%playername%", JPlayer.getName()));
 	for (Entry<String, Log> l : logList.entrySet()) {
 	    Log one = l.getValue();
 	    HashMap<String, LogAmounts> AmountList = one.getAmountList();

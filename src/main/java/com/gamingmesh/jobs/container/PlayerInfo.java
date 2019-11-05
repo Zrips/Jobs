@@ -32,7 +32,7 @@ public class PlayerInfo {
 	if (player == null)
 	    player = Jobs.getPlayerManager().getJobsPlayer(uuid);
 	if (player != null)
-	    return player.getUserName();
+	    return player.getName();
 	return name;
     }
 

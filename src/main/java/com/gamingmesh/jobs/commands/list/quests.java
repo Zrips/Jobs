@@ -14,7 +14,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
-import com.gamingmesh.jobs.stuff.Debug;
+import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 
 public class quests implements Cmd {
@@ -50,7 +50,7 @@ public class quests implements Cmd {
 	    return true;
 	}
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.toplineseparator", "[playerName]", jPlayer.getUserName(), "[questsDone]", jPlayer.getDoneQuests()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.toplineseparator", "[playerName]", jPlayer.getName(), "[questsDone]", jPlayer.getDoneQuests()));
 	if (sender instanceof Player) {
 	    for (JobProgression jobProg : jPlayer.getJobProgression()) {
 		List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
@@ -65,8 +65,20 @@ public class quests implements Cmd {
 		    String msg = Jobs.getLanguage().getMessage("command.quests.output.questLine", "[progress]",
 			progressLine, "[questName]", q.getQuest().getQuestName(), "[done]", q.getTotalAmountDone(), "[required]", q.getTotalAmountNeeded());
 
+		    String hoverMsg = Jobs.getLanguage().getMessage("command.quests.output.hover");
 		    List<String> hoverList = new ArrayList<>();
-		    hoverList.add(Jobs.getCommandManager().jobsQuestMessage(q, jobProg));
+		    for (String current : hoverMsg.split("\n")) {
+			current = current.replace("[jobName]", jobProg.getJob().getName())
+				    .replace("[time]", TimeManage.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
+
+			if (current.contains("[desc]")) {
+			    for (String one : q.getQuest().getDescription()) {
+				hoverList.add(one);
+			    }
+			} else {
+			    hoverList.add(current);
+			}
+		    }
 
 		    for (Entry<String, QuestObjective> oneObjective : q.getQuest().getObjectives().entrySet()) {
 			hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +

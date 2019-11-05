@@ -1786,7 +1786,7 @@ public abstract class JobsDAO {
 
     public JobsPlayer loadFromDao(JobsPlayer jPlayer) {
 
-	List<JobsDAOData> list = getAllJobs(jPlayer.getUserName(), jPlayer.getUniqueId());
+	List<JobsDAOData> list = getAllJobs(jPlayer.getName(), jPlayer.getUniqueId());
 //	synchronized (jPlayer.saveLock) {
 	jPlayer.progression.clear();
 	for (JobsDAOData jobdata : list) {
@@ -1943,7 +1943,7 @@ public abstract class JobsDAO {
 		+ "` = ?, `" + UserTableFields.quests.getCollumn()
 		+ "` = ? WHERE `id` = ?;");
 	    prest.setLong(1, System.currentTimeMillis());
-	    prest.setString(2, player.getUserName());
+	    prest.setString(2, player.getName());
 	    prest.setInt(3, player.getDoneQuests());
 	    prest.setString(4, player.getQuestProgressionString());
 	    prest.setInt(5, player.getUserId());
@@ -1967,7 +1967,7 @@ public abstract class JobsDAO {
 		+ "`, `" + UserTableFields.donequests.getCollumn()
 		+ "`) VALUES (?, ?, ?, ?);");
 	    prestt.setString(1, player.getUniqueId().toString());
-	    prestt.setString(2, player.getUserName());
+	    prestt.setString(2, player.getName());
 	    prestt.setLong(3, player.getSeen());
 	    prestt.setInt(4, 0);
 	    prestt.executeUpdate();
@@ -1987,7 +1987,7 @@ public abstract class JobsDAO {
 	    int id = res.getInt("id");
 	    player.setUserId(id);
 	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
-		player.getUserName(),
+		player.getName(),
 		id,
 		player.getUniqueId(),
 		player.getSeen(),

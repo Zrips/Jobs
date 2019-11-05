@@ -115,15 +115,15 @@ public class PlayerManager {
     }
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
-	if (jPlayer.getUserName() != null && playersCache.get(jPlayer.getUserName().toLowerCase()) == null)
-	    playersCache.put(jPlayer.getUserName().toLowerCase(), jPlayer);
+	if (jPlayer.getName() != null && playersCache.get(jPlayer.getName().toLowerCase()) == null)
+	    playersCache.put(jPlayer.getName().toLowerCase(), jPlayer);
 	if (jPlayer.getUniqueId() != null && playersUUIDCache.get(jPlayer.getUniqueId()) == null)
 	    playersUUIDCache.put(jPlayer.getUniqueId(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
-	if (jPlayer.getUserName() != null && players.get(jPlayer.getUserName().toLowerCase()) == null)
-	    players.put(jPlayer.getUserName().toLowerCase(), jPlayer);
+	if (jPlayer.getName() != null && players.get(jPlayer.getName().toLowerCase()) == null)
+	    players.put(jPlayer.getName().toLowerCase(), jPlayer);
 	if (jPlayer.getUniqueId() != null && playersUUID.get(jPlayer.getUniqueId()) == null)
 	    playersUUID.put(jPlayer.getUniqueId(), jPlayer);
     }
@@ -554,7 +554,7 @@ public class PlayerManager {
 	    if (player != null)
 		message = message.replace("%playername%", player.getDisplayName());
 	    else
-		message = message.replace("%playername%", jPlayer.getUserName());
+		message = message.replace("%playername%", jPlayer.getName());
 
 	    message = message.replace("%joblevel%", "" + prog.getLevel());
 	    message = message.replace("%lostLevel%", "" + oldLevel);
@@ -714,7 +714,7 @@ public class PlayerManager {
 	if (player != null)
 	    message = message.replace("%playername%", player.getDisplayName());
 	else
-	    message = message.replace("%playername%", jPlayer.getUserName());
+	    message = message.replace("%playername%", jPlayer.getName());
 
 	message = message.replace("%joblevel%", "" + prog.getLevel());
 	for (String line : message.split("\n")) {
@@ -753,7 +753,7 @@ public class PlayerManager {
 	    if (player != null)
 		message = message.replace("%playername%", player.getDisplayName());
 	    else
-		message = message.replace("%playername%", jPlayer.getUserName());
+		message = message.replace("%playername%", jPlayer.getName());
 
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitleColor() + levelUpEvent.getNewTitleName());
 	    message = message.replace("%jobname%", job.getChatColor() + job.getName());

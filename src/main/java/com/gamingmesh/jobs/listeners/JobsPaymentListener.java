@@ -1151,7 +1151,7 @@ public class JobsPaymentListener implements Listener {
 
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
 	    Player VPlayer = (Player) lVictim;
-	    if (jDamager.getUserName().equalsIgnoreCase(VPlayer.getName()))
+	    if (jDamager.getName().equalsIgnoreCase(VPlayer.getName()))
 		return;
 	}
 
