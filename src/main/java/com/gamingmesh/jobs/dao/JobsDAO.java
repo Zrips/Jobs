@@ -477,6 +477,7 @@ public abstract class JobsDAO {
 	if (getConnection() == null)
 	    return;
 
+	vacuum();
 	setupConfig();
 
 	try {
@@ -2644,6 +2645,24 @@ public abstract class JobsDAO {
 	    Jobs.getPluginLogger().severe("Unable to connect to the database: " + e.getMessage());
 	    return null;
 	}
+    }
+
+    public synchronized void vacuum() {
+	if (dbType != DataBaseType.SqLite)
+	    return;
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("VACUUM;");
+	    prest.execute();
+	} catch (Exception | Error e) {
+	} finally {
+	    close(prest);
+	}
+	return;
     }
 
     /**
