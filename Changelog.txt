@@ -1,5 +1,6 @@
 # 4.15.0
 - Fixed issue when the quest description only showed one lines of list.
+- Added cost for skipping quests
 
 # 4.14.0
 - Fixed %titlename% placeholder does not showed anything

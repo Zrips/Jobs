@@ -507,7 +507,8 @@ public class LanguageManager {
 
 	    c.get("command.skipquest.help.info", "Skip defined quest and get new one");
 	    c.get("command.skipquest.help.args", "[jobname] [questname] (playerName)");
-	    
+	    c.get("command.skipquest.output.questSkipForCost", "&2You skipped the quest and paid:&e %amount%$");
+
 	    c.get("command.quests.help.info", "List available quests");
 	    c.get("command.quests.help.args", "[playername]");
 	    Jobs.getGCManager().getCommandArgs().put("quests", Arrays.asList("[playername]"));

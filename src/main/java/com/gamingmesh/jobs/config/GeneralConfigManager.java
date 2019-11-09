@@ -78,6 +78,7 @@ public class GeneralConfigManager {
     private int ResetTimeHour;
     private int ResetTimeMinute;
     private int DailyQuestsSkips;
+    public double skipQuestCost;
     private ConfigReader c = null;
 
     // Limits
@@ -526,8 +527,10 @@ public class GeneralConfigManager {
 	    "Any daily quests given before reset will be invalid and new ones will be given out");
 	ResetTimeHour = c.get("DailyQuests.ResetTime.Hour", 4);
 	ResetTimeMinute = c.get("DailyQuests.ResetTime.Minute", 0);
-	c.addComment("DailyQuests.Skips", "Defines amount of skips player can do on a quest","This allows player to abandon current quest and get new one");
+	c.addComment("DailyQuests.Skips", "Defines amount of skips player can do on a quest", "This allows player to abandon current quest and get new one");
 	DailyQuestsSkips = c.get("DailyQuests.Skips", 1);
+	c.addComment("DailyQuests.SkipQuestCost", "The cost of the quest skip (money).", "Default 0, disabling cost of skipping quest.");
+	skipQuestCost = c.get("DailyQuests.SkipQuestCost", 0d);
 
 	c.addComment("ScheduleManager", "Enables the schedule manager to boost the server.", "By default this has been disabled for causing memory leak.");
 	enableSchedule = c.get("ScheduleManager.Use", true);

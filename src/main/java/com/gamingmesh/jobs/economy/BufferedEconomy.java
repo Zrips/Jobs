@@ -49,6 +49,10 @@ public class BufferedEconomy {
 	this.economy = economy;
     }
 
+    public Economy getEconomy() {
+	return economy;
+    }
+
     /**
      * Add payment to player's payment buffer
      * @param player - player to be paid

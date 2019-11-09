@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestProgression;
+import com.gamingmesh.jobs.economy.BufferedEconomy;
 
 public class skipquest implements Cmd {
 
@@ -77,10 +78,26 @@ public class skipquest implements Cmd {
 	if (Jobs.getGCManager().getDailyQuestsSkips() <= jPlayer.getSkippedQuests())
 	    return false;
 
+	double amount = Jobs.getGCManager().skipQuestCost;
+	BufferedEconomy econ = Jobs.getEconomy();
+	if (amount > 0) {
+	    if (!econ.getEconomy().hasMoney(jPlayer.getPlayer(), amount)) {
+		sender.sendMessage(Jobs.getLanguage().getMessage("economy.error.nomoney"));
+		return false;
+	    }
+
+	    econ.getEconomy().withdrawPlayer(jPlayer.getPlayer(), amount);
+	}
+
 	jPlayer.replaceQuest(old);
 
 	if (jPlayer.isOnline())
 	    Bukkit.dispatchCommand(jPlayer.getPlayer(), "jobs quests");
+
+	if (amount > 0) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.skipquest.output.questSkipForCost", "%amount%", amount));
+	}
+
 	return true;
     }
 }
