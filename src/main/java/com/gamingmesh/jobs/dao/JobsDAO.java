@@ -1451,7 +1451,7 @@ public abstract class JobsDAO {
 	    if (exp < 0)
 		exp = 0;
 	    prest = conn.prepareStatement("INSERT INTO `" + getJobsTableName() + "` (`" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.jobid.getCollumn()
-		+ "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "`, `" + JobsTableFields.job.getCollumn() + "`) VALUES (?, ?, ?, ?);");
+		+ "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "`, `" + JobsTableFields.job.getCollumn() + "`) VALUES (?, ?, ?, ?, ?);");
 	    prest.setInt(1, jPlayer.getUserId());
 	    prest.setInt(2, prog.getJob().getId());
 	    prest.setInt(3, prog.getLevel());
