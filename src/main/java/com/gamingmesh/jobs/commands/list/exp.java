@@ -64,19 +64,16 @@ public class exp implements Cmd {
 	    // check if player already has the job
 	    if (jPlayer.isInJob(job)) {
 		JobProgression prog = jPlayer.getJobProgression(job);
-		double total = 0d;
 
 		switch (action) {
 		case Add:
-		    total = (prog.getExperience() + amount);
-		    prog.addExperience(total);
+		    prog.addExperience(amount);
 		    break;
 		case Set:
 		    prog.setExperience(amount);
 		    break;
 		case Take:
-		    total = (prog.getExperience() - amount);
-		    prog.takeExperience(total);
+		    prog.takeExperience(amount);
 		    break;
 		default:
 		    break;

@@ -291,9 +291,9 @@ public class ConfigManager {
 	} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
 
 	    // check entities
-	    EntityType entity = EntityType.fromName(myKey.toUpperCase());
+	    EntityType entity = EntityType.fromName(myKey);
 	    if (entity == null) {
-		entity = EntityType.valueOf(myKey.toUpperCase());
+		entity = EntityType.valueOf(myKey);
 	    }
 
 	    if (entity != null && entity.isAlive()) {
