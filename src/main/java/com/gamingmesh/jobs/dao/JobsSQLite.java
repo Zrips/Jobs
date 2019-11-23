@@ -114,7 +114,7 @@ public class JobsSQLite extends JobsDAO {
     public boolean createTable(String query) {
 	Statement statement = null;
 	try {
-	    if (query == null || query.equals("")) {
+	    if (query == null || query.isEmpty()) {
 		Jobs.consoleMsg("&cCould not create table: query is empty or null.");
 		return false;
 	    }

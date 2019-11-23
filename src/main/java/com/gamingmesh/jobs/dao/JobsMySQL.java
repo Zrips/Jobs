@@ -12,7 +12,8 @@ public class JobsMySQL extends JobsDAO {
     private String database;
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
-	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
+	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database
+	    + "?maxReconnects=1&useUnicode=true&characterEncoding=UTF-8&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
 	    + "&verifyServerCertificate=" + certificate, username, password, prefix);
 	this.database = database;
 	this.setDbType(DataBaseType.MySQL);
@@ -111,9 +112,8 @@ public class JobsMySQL extends JobsDAO {
 
     @Override
     public boolean createTable(String query) {
-	Jobs.consoleMsg(query);
 	Statement statement = null;
-	if (query == null || query.equals("")) {
+	if (query == null || query.isEmpty()) {
 	    Jobs.consoleMsg("&cCould not create table: query is empty or null.");
 	    return false;
 	}

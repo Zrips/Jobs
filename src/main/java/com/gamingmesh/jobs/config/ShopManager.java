@@ -208,8 +208,6 @@ public class ShopManager {
 	    gui.addButton(new CMIGuiButton(i, GUIitem) {
 		@Override
 		public void click(GUIClickType type) {
-
-		    //if (!player.hasPermission("jobs.items.bypass")) {
 		    for (String onePerm : item.getRequiredPerm()) {
 			if (!player.hasPermission(onePerm)) {
 			    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPermForItem"));
@@ -376,13 +374,17 @@ public class ShopManager {
 		    if (!one.contains("-"))
 			continue;
 
-		    String job = one.split("-")[0];
-		    int lvl = -1;
-		    try {
-			lvl = Integer.parseInt(one.split("-")[1]);
-		    } catch (NumberFormatException e) {
-			continue;
+		    String[] split = one.split("-");
+		    String job = split[0];
+		    int lvl = 1;
+		    if (split.length > 2) {
+			try {
+			    lvl = Integer.parseInt(split[1]);
+			} catch (NumberFormatException e) {
+			    continue;
+			}
 		    }
+
 		    RequiredJobs.put(job, lvl);
 		}
 		Sitem.setRequiredJobs(RequiredJobs);
@@ -435,15 +437,18 @@ public class ShopManager {
 			    if (!eachLine.contains("="))
 				continue;
 
-			    Enchantment ench = CMIEnchantment.getEnchantment(eachLine.split("=")[0]);
-			    Integer level = -1;
-			    try {
-				level = Integer.parseInt(eachLine.split("=")[1]);
-			    } catch (NumberFormatException e) {
-				continue;
+			    String[] split = eachLine.split("=");
+			    Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
+			    Integer level = 1;
+			    if (split.length > 2) {
+				try {
+				    level = Integer.parseInt(split[1]);
+				} catch (NumberFormatException e) {
+				    continue;
+				}
 			    }
 
-			    if (ench != null && level != -1)
+			    if (ench != null)
 				enchants.put(ench, level);
 			}
 

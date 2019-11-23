@@ -2,6 +2,8 @@
 - Fixed issue when the quest description only showed one lines of list.
 - Added cost for skipping quests
 - Fixed SQLException when inserting a job
+- Adding and taking exp should calculating correctly
+- Fixed exception if the enchantment level is null
 
 # 4.14.0
 - Fixed %titlename% placeholder does not showed anything
