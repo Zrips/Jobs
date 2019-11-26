@@ -1,20 +1,14 @@
 package com.gamingmesh.jobs.config;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class LanguageManager {
 
@@ -24,49 +18,9 @@ public class LanguageManager {
 	return languages;
     }
 
+    @Deprecated
     public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
-	List<String> result = new ArrayList<>();
-	try {
-	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
-		try {
-		    result.addAll(getClassesInSamePackageFromJar(pckgname, jarURL.toURI().getPath(), cleaner));
-		} catch (URISyntaxException e) {
-		}
-	    }
-	} catch (NullPointerException x) {
-	    throw new ClassNotFoundException(pckgname + " does not appear to be a valid package (Null pointer exception)");
-	}
-	return result;
-    }
-
-    private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath, String cleaner) {
-	JarFile jarFile = null;
-	List<String> listOfCommands = new ArrayList<>();
-	try {
-	    jarFile = new JarFile(jarPath);
-	    Enumeration<JarEntry> en = jarFile.entries();
-	    while (en.hasMoreElements()) {
-		JarEntry entry = en.nextElement();
-		String entryName = entry.getName();
-		packageName = packageName.replace(".", "/");
-		if (entryName != null && entryName.endsWith(".yml") && entryName.startsWith(packageName)) {
-		    String name = entryName.replace(packageName, "").replace(".yml", "").replace("/", "");
-		    if (name.contains("$"))
-			name = name.split("\\$")[0];
-		    if (cleaner != null)
-			name = name.replace(cleaner, "");
-		    listOfCommands.add(name);
-		}
-	    }
-	} catch (Throwable e) {
-	} finally {
-	    if (jarFile != null)
-		try {
-		    jarFile.close();
-		} catch (IOException e) {
-		}
-	}
-	return listOfCommands;
+	return Util.getFilesFromPackage(pckgname, cleaner, "yml");
     }
 
     /**
@@ -79,7 +33,7 @@ public class LanguageManager {
 	// This should be present to copy over default locale files into locale folder if file doesn't exist. Grabs all files from plugin file.
 	languages = new ArrayList<>();
 	try {
-	    languages.addAll(getClassesFromPackage("locale", "messages_"));
+	    languages.addAll(Util.getFilesFromPackage("locale", "messages_", "yml"));
 	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
@@ -91,7 +45,7 @@ public class LanguageManager {
 	//Up to here.
 
 	String ls = Jobs.getGCManager().localeString;
-	if (ls.equals(""))
+	if (ls.isEmpty())
 	    ls = "en";
 
 	languages.clear();

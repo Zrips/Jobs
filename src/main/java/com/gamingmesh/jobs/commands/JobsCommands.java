@@ -1,25 +1,13 @@
 package com.gamingmesh.jobs.commands;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -38,6 +26,8 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.stuff.PageInfo;
+import com.gamingmesh.jobs.stuff.Sorting;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class JobsCommands implements CommandExecutor {
     public static final String label = "jobs";
@@ -148,7 +138,7 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
-	commands = sort(commands);
+	commands = Sorting.sortDESC(commands);
 
 	PageInfo pi = new PageInfo(7, commands.size(), page);
 
@@ -174,50 +164,6 @@ public class JobsCommands implements CommandExecutor {
 	return true;
     }
 
-    private static List<String> getClassesFromPackage(String pckgname) throws ClassNotFoundException {
-	List<String> result = new ArrayList<>();
-	try {
-	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
-		try {
-		    result.addAll(getClassesInSamePackageFromJar(pckgname, jarURL.toURI().getPath()));
-		} catch (URISyntaxException e) {
-		}
-	    }
-	} catch (NullPointerException x) {
-	    throw new ClassNotFoundException(pckgname + " does not appear to be a valid package (Null pointer exception)");
-	}
-
-	return result;
-    }
-
-    private static List<String> getClassesInSamePackageFromJar(String packageName, String jarPath) {
-	JarFile jarFile = null;
-	List<String> listOfCommands = new ArrayList<>();
-	try {
-	    jarFile = new JarFile(jarPath);
-	    Enumeration<JarEntry> en = jarFile.entries();
-	    while (en.hasMoreElements()) {
-		JarEntry entry = en.nextElement();
-		String entryName = entry.getName();
-		packageName = packageName.replace(".", "/");
-		if (entryName != null && entryName.endsWith(".class") && entryName.startsWith(packageName)) {
-		    String name = entryName.replace(packageName, "").replace(".class", "").replace("/", "");
-		    if (name.contains("$"))
-			name = name.split("\\$")[0];
-		    listOfCommands.add(name);
-		}
-	    }
-	} catch (Throwable e) {
-	} finally {
-	    if (jarFile != null)
-		try {
-		    jarFile.close();
-		} catch (IOException e) {
-		}
-	}
-	return listOfCommands;
-    }
-
     public Map<String, Integer> GetCommands(CommandSender sender) {
 	Map<String, Integer> temp = new HashMap<>();
 	for (Entry<String, Integer> cmd : CommandList.entrySet()) {
@@ -233,7 +179,7 @@ public class JobsCommands implements CommandExecutor {
 	List<String> lm = new ArrayList<>();
 	HashMap<String, Class<?>> classes = new HashMap<>();
 	try {
-	    lm = getClassesFromPackage(packagePath);
+	    lm = Util.getFilesFromPackage(packagePath);
 	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
@@ -277,22 +223,6 @@ public class JobsCommands implements CommandExecutor {
 	    | SecurityException e) {
 	}
 	return cmdClass;
-    }
-
-    private static Map<String, Integer> sort(Map<String, Integer> unsortMap) {
-	List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
-	Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-	    @Override
-	    public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-		return (o1.getValue()).compareTo(o2.getValue());
-	    }
-	});
-	Map<String, Integer> sortedMap = new LinkedHashMap<>();
-	for (Iterator<Map.Entry<String, Integer>> it = list.iterator(); it.hasNext();) {
-	    Map.Entry<String, Integer> entry = it.next();
-	    sortedMap.put(entry.getKey(), entry.getValue());
-	}
-	return sortedMap;
     }
 
     /**

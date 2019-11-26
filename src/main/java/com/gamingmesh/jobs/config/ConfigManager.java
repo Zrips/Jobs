@@ -762,13 +762,13 @@ public class ConfigManager {
 			name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.contains("lore") && !itemSection.getStringList("lore").isEmpty())
+		    if (itemSection.contains("lore"))
 			for (String eachLine : itemSection.getStringList("lore")) {
 			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.contains("enchants") && !itemSection.getStringList("enchants").isEmpty())
+		    if (itemSection.contains("enchants"))
 			for (String eachLine : itemSection.getStringList("enchants")) {
 
 			    if (!eachLine.contains("="))

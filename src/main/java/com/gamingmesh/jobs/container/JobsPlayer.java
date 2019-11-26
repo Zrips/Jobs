@@ -333,7 +333,7 @@ public class JobsPlayer {
      * @return true if have
      */
     public boolean havePermission(String perm) {
-	Player player = Bukkit.getPlayer(getPlayerUUID());
+	Player player = Bukkit.getPlayer(getUniqueId());
 	if (player != null)
 	    return player.hasPermission(perm);
 	return false;
@@ -365,7 +365,7 @@ public class JobsPlayer {
      * @return the getName
      */
     public String getName() {
-	Player player = Bukkit.getPlayer(getPlayerUUID());
+	Player player = Bukkit.getPlayer(getUniqueId());
 	if (player != null)
 	    userName = player.getName();
 	return userName;
@@ -1141,11 +1141,11 @@ public class JobsPlayer {
     }
 
     public int getFurnaceCount() {
-	return FurnaceBrewingHandling.getTotalFurnaces(getPlayerUUID());
+	return FurnaceBrewingHandling.getTotalFurnaces(getUniqueId());
     }
 
     public int getBrewingStandCount() {
-	return FurnaceBrewingHandling.getTotalBrewingStands(getPlayerUUID());
+	return FurnaceBrewingHandling.getTotalBrewingStands(getUniqueId());
     }
 
     public int getMaxBrewingStandsAllowed() {

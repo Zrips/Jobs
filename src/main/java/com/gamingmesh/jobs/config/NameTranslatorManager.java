@@ -194,7 +194,7 @@ public class NameTranslatorManager {
 
 	// This should be present to copy over default files into TranslatableWords folder if file doesn't exist. Grabs all files from plugin file.
 	try {
-	    languages.addAll(LanguageManager.getClassesFromPackage("TranslatableWords", "Words_"));
+	    languages.addAll(Util.getFilesFromPackage("TranslatableWords", "Words_", "yml"));
 	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}

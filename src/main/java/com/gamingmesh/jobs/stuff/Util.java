@@ -1,10 +1,17 @@
 package com.gamingmesh.jobs.stuff;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -208,5 +215,62 @@ public class Util {
 	if (jobsWorld == null || jobsWorld.getId() == 0)
 	    return;
 	Util.jobsWorlds.put(jobsWorld.getName().toLowerCase(), jobsWorld);
+    }
+
+    public static List<String> getFilesFromPackage(String pckgname) throws ClassNotFoundException {
+	return getFilesFromPackage(pckgname, null, "class");
+    }
+
+    public static List<String> getFilesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
+	return getFilesFromPackage(pckgname, cleaner, "class");
+    }
+
+    public static List<String> getFilesFromPackage(String pckgname, String cleaner, String fileType) throws ClassNotFoundException {
+	List<String> result = new ArrayList<>();
+	try {
+	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
+		try {
+		    result.addAll(getFilesInSamePackageFromJar(pckgname, jarURL.toURI().getPath(), cleaner, fileType));
+		} catch (URISyntaxException e) {
+		}
+	    }
+	} catch (NullPointerException x) {
+	    throw new ClassNotFoundException(pckgname + " does not appear to be a valid package (Null pointer exception)");
+	}
+	return result;
+    }
+
+    public static List<String> getFilesInSamePackageFromJar(String packageName, String jarPath, String cleaner, String fileType) {
+	JarFile jarFile = null;
+	List<String> listOfCommands = new ArrayList<>();
+	try {
+	    jarFile = new JarFile(jarPath);
+	    Enumeration<JarEntry> en = jarFile.entries();
+	    while (en.hasMoreElements()) {
+		JarEntry entry = en.nextElement();
+		String entryName = entry.getName();
+
+		packageName = packageName.replace(".", "/");
+
+		if (entryName != null && entryName.endsWith("." + fileType) && entryName.startsWith(packageName)) {
+		    String name = entryName.replace(packageName, "").replace("." + fileType, "").replace("/", "");
+		    if (name.contains("$"))
+			name = name.split("\\$")[0];
+
+		    if (cleaner != null)
+			name = name.replace(cleaner, "");
+
+		    listOfCommands.add(name);
+		}
+	    }
+	} catch (Throwable e) {
+	} finally {
+	    if (jarFile != null)
+		try {
+		    jarFile.close();
+		} catch (IOException e) {
+		}
+	}
+	return listOfCommands;
     }
 }
