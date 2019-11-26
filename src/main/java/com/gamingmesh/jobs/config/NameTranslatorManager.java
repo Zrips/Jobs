@@ -176,11 +176,16 @@ public class NameTranslatorManager {
 
     synchronized void load() {
 	String ls = Jobs.getGCManager().localeString;
-	if (ls.equals(""))
+	if (ls.isEmpty())
 	    return;
 
+	File tWordsFolder = new File(Jobs.getFolder(), "TranslatableWords");
+	if (!tWordsFolder.exists()) {
+	    tWordsFolder.mkdirs();
+	}
+
 	File file = new File(Jobs.getFolder(), "TranslatableWords.yml");
-	File file2 = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
+	File file2 = new File(tWordsFolder, "Words_" + ls + ".yml");
 	if (file.exists())
 	    file.renameTo(file2);
 
@@ -202,18 +207,18 @@ public class NameTranslatorManager {
 
 	languages.add("en");
 
-	File customLocaleFile = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + ls + ".yml");
+	File customLocaleFile = new File(tWordsFolder, "Words_" + ls + ".yml");
 	if (!customLocaleFile.exists() && !ls.equalsIgnoreCase("en"))
 	    languages.add(ls);
 
 	for (String lang : languages) {
 
-	    File f = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+	    File f = new File(tWordsFolder, "Words_" + lang + ".yml");
 
 	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it
 	    if ((f.length() / 1024) > 1024) {
 		f.delete();
-		f = new File(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+		f = new File(tWordsFolder, "Words_" + lang + ".yml");
 	    }
 	    ConfigReader c = null;
 	    try {
