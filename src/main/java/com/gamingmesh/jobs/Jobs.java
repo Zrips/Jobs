@@ -19,7 +19,6 @@
 package com.gamingmesh.jobs;
 
 import com.gamingmesh.jobs.CMILib.ActionBarTitleMessages;
-import com.gamingmesh.jobs.CMILib.ItemManager;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.CMILib.Reflections;
 import com.gamingmesh.jobs.CMILib.VersionChecker;
@@ -851,8 +850,6 @@ public class Jobs extends JavaPlugin {
 	}
 
 	versionCheckManager = new VersionChecker(this);
-
-	ItemManager.load();
 
 	version = versionCheckManager.getVersion().getShortVersion();
 

@@ -12,9 +12,9 @@ import org.bukkit.enchantments.Enchantment;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
+import com.gamingmesh.jobs.CMILib.CMIEntityType;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
@@ -212,7 +212,6 @@ public class NameTranslatorManager {
 	    languages.add(ls);
 
 	for (String lang : languages) {
-
 	    File f = new File(tWordsFolder, "Words_" + lang + ".yml");
 
 	    // Fail safe if file get corrupted and being created with corrupted data, we need to recreate it

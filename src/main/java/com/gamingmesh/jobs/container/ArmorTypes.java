@@ -2,7 +2,7 @@ package com.gamingmesh.jobs.container;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 
 public enum ArmorTypes {
     HELMET(5), CHESTPLATE(6), LEGGINGS(7), BOOTS(8), ELYTRA(6);

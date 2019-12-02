@@ -19,8 +19,8 @@
 package com.gamingmesh.jobs.listeners;
 
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ItemManager;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.*;

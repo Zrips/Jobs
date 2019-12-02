@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.config.RestrictedAreaManager;
@@ -54,7 +54,8 @@ public class area implements Cmd {
 		}
 
 		if (!wg && !Jobs.getSelectionManager().hasPlacedBoth(player)) {
-		    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.select", "%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getName()));
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.select",
+				"%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getName()));
 		    return true;
 		}
 		if (wg && Jobs.getWorldGuardManager() != null) {

@@ -16,7 +16,7 @@ import com.gamingmesh.jobs.CMIGUI.GUIManager.CommandType;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIFieldType;
 import com.gamingmesh.jobs.CMILib.CMIItemStack;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.Reflections;
 
 public class CMIGuiButton {

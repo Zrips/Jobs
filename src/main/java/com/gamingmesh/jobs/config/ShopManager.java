@@ -25,7 +25,7 @@ import com.gamingmesh.jobs.CMIGUI.CMIGuiButton;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIRows;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
@@ -116,11 +116,8 @@ public class ShopManager {
 //	Inventory GuiInv = Bukkit.createInventory(null, GuiSize, title);
 
 	for (int i = 0; i < ls.size(); i++) {
-
 	    ShopItem item = ls.get(i);
-
 	    ArrayList<String> Lore = new ArrayList<>();
-
 	    CMIMaterial mat = CMIMaterial.get(item.getIconMaterial());
 
 	    if (item.isHideWithoutPerm()) {
@@ -158,7 +155,6 @@ public class ShopManager {
 	    if (!item.getRequiredJobs().isEmpty()) {
 		Lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobs"));
 		for (Entry<String, Integer> one : item.getRequiredJobs().entrySet()) {
-
 		    String jobColor = "";
 		    String levelColor = "";
 
@@ -198,7 +194,7 @@ public class ShopManager {
 		    try {
 			OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
 			skullMeta.setOwner(offPlayer.getName());
-		    } catch (Throwable e) {
+		    } catch (Exception e) {
 			e.printStackTrace();
 		    }
 		}

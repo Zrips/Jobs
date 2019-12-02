@@ -17,7 +17,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ChatColor;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 
 public class itembonus implements Cmd {
@@ -107,5 +107,4 @@ public class itembonus implements Cmd {
     private static String formatText(double amount) {
 	return ((amount > 0 ? "+" : "") + amount + "%");
     }
-
 }

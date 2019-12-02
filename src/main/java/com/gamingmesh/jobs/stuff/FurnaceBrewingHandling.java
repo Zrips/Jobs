@@ -15,7 +15,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;

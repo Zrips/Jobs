@@ -7,9 +7,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -19,7 +17,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class CMIItemStack {
@@ -149,9 +146,17 @@ public class CMIItemStack {
     public CMIItemStack addEnchant(Enchantment enchant, Integer level) {
 	if (enchant == null)
 	    return this;
-	ItemMeta meta = getItemStack().getItemMeta();
-	meta.addEnchant(enchant, level, true);
-	getItemStack().setItemMeta(meta);
+
+	if (getItemStack().getItemMeta() instanceof EnchantmentStorageMeta) {
+	    EnchantmentStorageMeta meta = (EnchantmentStorageMeta) getItemStack().getItemMeta();
+	    meta.addStoredEnchant(enchant, level, true);
+	    getItemStack().setItemMeta(meta);
+	} else {
+	    ItemMeta meta = getItemStack().getItemMeta();
+	    meta.addEnchant(enchant, level, true);
+	    getItemStack().setItemMeta(meta);
+	}
+
 	return this;
     }
 
@@ -311,12 +316,12 @@ public class CMIItemStack {
 	    if (item.getType().getMaxDurability() > 15)
 		data = (short) 0;
 
-	    if (CMIMaterial.SPAWNER.equals(item.getType()))
-		data = getEntityType().getTypeId();
-	    else if (item.getType() == Material.POTION || item.getType().name().contains("SPLASH_POTION") || item.getType().name().contains("TIPPED_ARROW")) {
+	    if (item.getType() == Material.POTION || item.getType().name().contains("SPLASH_POTION")
+			|| item.getType().name().contains("TIPPED_ARROW")) {
 		PotionMeta potion = (PotionMeta) item.getItemMeta();
 		try {
-		    if (potion != null && potion.getBasePotionData() != null && potion.getBasePotionData().getType() != null && potion.getBasePotionData().getType().getEffectType() != null) {
+		    if (potion != null && potion.getBasePotionData() != null && potion.getBasePotionData().getType() != null
+				&& potion.getBasePotionData().getType().getEffectType() != null) {
 			data = (short) potion.getBasePotionData().getType().getEffectType().getId();
 		    }
 		} catch (NoSuchMethodError e) {
@@ -392,29 +397,13 @@ public class CMIItemStack {
 	if ((item.getCMIType() == CMIMaterial.SPAWNER || item.getCMIType().isMonsterEgg()) && (getCMIType() == CMIMaterial.SPAWNER || getCMIType().isMonsterEgg())) {
 	    if (this.cmiMaterial != item.cmiMaterial)
 		return false;
-	    if (getEntityType() != item.getEntityType())
-		return false;
+
 	    return true;
 	}
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1))
 	    return this.cmiMaterial == item.cmiMaterial;
 	return this.cmiMaterial == item.cmiMaterial && this.getData() == item.getData();
-    }
-
-    public EntityType getEntityType() {
-	if (getItemStack() == null)
-	    return null;
-	ItemStack is = getItemStack().clone();
-	if (is.getItemMeta() instanceof org.bukkit.inventory.meta.BlockStateMeta) {
-	    org.bukkit.inventory.meta.BlockStateMeta bsm = (org.bukkit.inventory.meta.BlockStateMeta) is.getItemMeta();
-	    if (bsm.getBlockState() instanceof CreatureSpawner) {
-		CreatureSpawner bs = (CreatureSpawner) bsm.getBlockState();
-		return bs.getSpawnedType();
-	    }
-	}
-
-	return EntityType.fromId(is.getData().getData());
     }
 
     public void setDurability(short durability) {

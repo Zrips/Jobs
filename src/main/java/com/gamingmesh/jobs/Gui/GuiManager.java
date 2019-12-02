@@ -16,7 +16,7 @@ import com.gamingmesh.jobs.CMIGUI.CMIGui;
 import com.gamingmesh.jobs.CMIGUI.CMIGuiButton;
 import com.gamingmesh.jobs.CMIGUI.GUIManager;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;

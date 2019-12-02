@@ -5,9 +5,9 @@ import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIItemStack;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.ItemManager;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 
 public class RestrictedBlockManager {
 
@@ -49,7 +49,7 @@ public class RestrictedBlockManager {
 			continue;
 		    }
 
-		    this.restrictedBlocksTimer.put(cm.getCMIType(), cfg.getC().getInt("blocksTimer." + one + ".cd"));
+		    restrictedBlocksTimer.put(cm.getCMIType(), cfg.getC().getInt("blocksTimer." + one + ".cd"));
 
 		    cfg.set("blocksTimer." + cm.getCMIType().name(), cfg.getC().getInt("blocksTimer." + one + ".cd"));
 
@@ -74,13 +74,13 @@ public class RestrictedBlockManager {
 			continue;
 		    }
 
-		    this.restrictedBlocksTimer.put(mat, timer);
+		    restrictedBlocksTimer.put(mat, timer);
 		}
 	    }
 	}
 
 	if (restrictedBlocksTimer.size() > 0)
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + this.restrictedBlocksTimer.size() + " protected blocks timers!");
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedBlocksTimer.size() + " protected blocks timers!");
 	cfg.save();
     }
 }

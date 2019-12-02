@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -14,10 +13,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIEntityType;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ItemReflection;
 import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.ItemManager.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
@@ -507,8 +506,7 @@ public class editquests implements Cmd {
 			    if (Jobs.getVersionCheckManager().getVersion().isEqualOrLower(Version.v1_12_R1)) {
 				try {
 				    id = (int) enchant.getClass().getMethod("getId").invoke(enchant);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				    | NoSuchMethodException | SecurityException e) {
+				} catch (Exception e) {
 				}
 			    }
 			}
