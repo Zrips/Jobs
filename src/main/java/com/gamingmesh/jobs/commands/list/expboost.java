@@ -19,17 +19,21 @@ public class expboost implements Cmd {
 	}
 
 	double rate = 1.0;
-	if (!args[1].equalsIgnoreCase("all") && !args[0].equalsIgnoreCase("reset"))
+	if (!args[1].equalsIgnoreCase("all") && !args[0].equalsIgnoreCase("reset")) {
 	    try {
 		rate = Double.parseDouble(args[1]);
 	    } catch (NumberFormatException e) {
 		Jobs.getCommandManager().sendUsage(sender, "expboost");
 		return true;
 	    }
+	}
 
-	Job job = Jobs.getJob(args[0]);
-	if (job == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+	if (args[0].equalsIgnoreCase("all")) {
+	    for (Job one : Jobs.getJobs()) {
+		one.addBoost(CurrencyType.EXP, rate);
+	    }
+
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.boostalladded", "%boost%", rate));
 	    return true;
 	}
 
@@ -40,7 +44,15 @@ public class expboost implements Cmd {
 
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.allreset"));
 	    return true;
-	} else if (args[0].equalsIgnoreCase("reset")) {
+	}
+
+	Job job = Jobs.getJob(args[0]);
+	if (job == null) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+	    return true;
+	}
+
+	if (args[0].equalsIgnoreCase("reset")) {
 	    boolean found = false;
 	    for (Job one : Jobs.getJobs()) {
 		if (one.getName().equalsIgnoreCase(args[1])) {
@@ -54,15 +66,6 @@ public class expboost implements Cmd {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.jobsboostreset", "%jobname%", job.getName()));
 		return true;
 	    }
-	}
-
-	if (args[0].equalsIgnoreCase("all")) {
-	    for (Job one : Jobs.getJobs()) {
-		one.addBoost(CurrencyType.EXP, rate);
-	    }
-
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.boostalladded", "%boost%", rate));
-	    return true;
 	}
 
 	job.addBoost(CurrencyType.EXP, rate);
