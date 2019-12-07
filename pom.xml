@@ -13,22 +13,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<ciManagement>
-		<system>jenkins</system>
-		<url>http://ci.codemc.io/job/Jobs/</url>
-	</ciManagement>
-
-	<distributionManagement>
-		<repository>
-			<id>codemc-releases</id>
-			<url>https://repo.codemc.io/repository/maven-releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>codemc-snapshots</id>
-			<url>https://repo.codemc.io/repository/maven-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<dependencies>
 		<!-- Spigot -->
 		<dependency>
@@ -176,11 +160,6 @@
 		<repository>
 			<id>placeholderapi</id>
 			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-		</repository>
-		<!-- CodeMc repository -->
-		<repository>
-			<id>codemc-repo</id>
-			<url>https://repo.codemc.io/repository/maven-public/</url>
 		</repository>
 	</repositories>
 	<!-- Builds Plugin -->
