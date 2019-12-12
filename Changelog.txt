@@ -1,4 +1,6 @@
 # 4.15.0
+
+# 4.15.0 (Dev)
 - Fixed issue when the quest description only showed one lines of list.
 - Added cost for skipping quests
 - Fixed SQLException when inserting a job
