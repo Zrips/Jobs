@@ -991,7 +991,7 @@ public enum CMIMaterial {
     YELLOW_DYE(null, null, 5952, "Yellow Dye"),
     COMPOSTER(null, null, -4, "Composter"),
 
-    //1.15    
+    //1.15
     BEEHIVE("Beehive"),
     BEE_NEST("Bee Nest"),
     BEE_SPAWN_EGG("Bee Spawn Egg"),
@@ -1086,6 +1086,8 @@ public enum CMIMaterial {
     }
 
     public void updateMaterial() {
+	if (this.equals(CMIMaterial.NONE))
+	    return;
 	if (mat == null) {
 	    for (Material one : Material.class.getEnumConstants()) {
 		if (!one.name().replace("LEGACY_", "").replace("_", "").equalsIgnoreCase(this.name().replace("_", "")))
