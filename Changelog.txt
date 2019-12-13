@@ -1,4 +1,5 @@
 # 4.15.0
+- Fixed issue when used a dev-build of papi
 
 # 4.15.0 (Dev)
 - Fixed issue when the quest description only showed one lines of list.

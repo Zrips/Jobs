@@ -206,19 +206,27 @@ public class Jobs extends JavaPlugin {
 	return Placeholder;
     }
 
-    private boolean setupPlaceHolderAPI() {
+    @SuppressWarnings("deprecation")
+	private boolean setupPlaceHolderAPI() {
 	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
 	    return false;
 
-	if (Integer.parseInt(getServer().getPluginManager().getPlugin("PlaceholderAPI")
-	    .getDescription().getVersion().replace(".", "")) >= Integer.parseInt("2100")) {
-	    if (new NewPlaceholderAPIHook(this).register())
+	try {
+	    if (Integer.parseInt(getServer().getPluginManager().getPlugin("PlaceholderAPI")
+		.getDescription().getVersion().replace(".", "")) >= Integer.parseInt("2100")) {
+		if (new NewPlaceholderAPIHook(this).register())
+		    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
+	    } else {
+		if (new PlaceholderAPIHook(this).hook())
+		    consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version of PlaceholderAPI. Please update "
+		+ "to the latest version.");
+	    }
+	} catch (NumberFormatException e) { // when using a dev build
+	    if (new NewPlaceholderAPIHook(this).register()) {
 		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
-	} else {
-	    if (new PlaceholderAPIHook(this).hook())
-		consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version of PlaceholderAPI. Please update "
-		    + "to the latest version.");
+	    }
 	}
+
 	return true;
     }
 
@@ -1427,7 +1435,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public static void consoleMsg(String msg) {
-	Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+	if (msg != null) {
+	    Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+	}
     }
 
     public static SelectionManager getSelectionManager() {
