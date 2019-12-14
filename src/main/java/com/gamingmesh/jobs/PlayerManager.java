@@ -82,7 +82,7 @@ public class PlayerManager {
     private HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<>();
 
     /**
-     * @deprecated Use {@link Jobs}.{@link Jobs#getPointsData} instead
+     * @deprecated Use {@link Jobs#getPointsData} instead
      * @return {@link PointsData}
      */
     @Deprecated
@@ -311,12 +311,9 @@ public class PlayerManager {
      * @param player - the player who's job you're getting
      * @return the player job info of the player
      */
-    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points, HashMap<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
-
+    public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points,
+	    HashMap<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
 	if (info == null)
-	    return null;
-
-	if (info.getName() == null)
 	    return null;
 
 	JobsPlayer jPlayer = new JobsPlayer(info.getName());
@@ -327,11 +324,10 @@ public class PlayerManager {
 
 	if (jobs != null)
 	    for (JobsDAOData jobdata : jobs) {
-		if (Jobs.getJob(jobdata.getJobName()) == null)
-		    continue;
 		Job job = Jobs.getJob(jobdata.getJobName());
 		if (job == null)
 		    continue;
+
 		JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
 		jPlayer.progression.add(jobProgression);
 		jPlayer.reloadMaxExperience();
@@ -539,11 +535,11 @@ public class PlayerManager {
      * @param oldLevel
      */
     public void performLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
-
-	Player player = jPlayer.getPlayer();
 	JobProgression prog = jPlayer.getJobProgression(job);
 	if (prog == null)
 	    return;
+
+	Player player = jPlayer.getPlayer();
 
 	// when the player loses income
 	if (prog.getLevel() < oldLevel) {
@@ -604,7 +600,7 @@ public class PlayerManager {
 		} else
 		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 	    }
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	}
 
 	if (Jobs.getGCManager().FireworkLevelupUse) {
@@ -742,7 +738,7 @@ public class PlayerManager {
 		    } else
 			Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
 		}
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 	    }
 	    // user would skill up
 	    if (Jobs.getGCManager().isBroadcastingSkillups())

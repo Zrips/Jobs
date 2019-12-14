@@ -207,7 +207,7 @@ public class Jobs extends JavaPlugin {
     }
 
     @SuppressWarnings("deprecation")
-	private boolean setupPlaceHolderAPI() {
+    private boolean setupPlaceHolderAPI() {
 	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
 	    return false;
 
@@ -219,7 +219,7 @@ public class Jobs extends JavaPlugin {
 	    } else {
 		if (new PlaceholderAPIHook(this).hook())
 		    consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version of PlaceholderAPI. Please update "
-		+ "to the latest version.");
+			    + "to the latest version.");
 	    }
 	} catch (NumberFormatException e) { // when using a dev build
 	    if (new NewPlaceholderAPIHook(this).register()) {

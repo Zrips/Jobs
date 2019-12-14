@@ -172,15 +172,15 @@ public class LanguageManager {
 	    c.get("command.bonus.help.args", "[jobname]");
 	    Jobs.getGCManager().getCommandArgs().put("bonus", Arrays.asList("[jobname]"));
 	    c.get("command.bonus.output.topline", "&7**************** &2[money] &6[points] &e[exp] &7****************");
-	    c.get("command.bonus.output.permission", " &ePerm bonus: %money% %points% %exp%");
-	    c.get("command.bonus.output.item", " &eItem bonus: %money% %points% %exp%");
-	    c.get("command.bonus.output.global", " &eGlobal bonus: %money% %points% %exp%");
-	    c.get("command.bonus.output.dynamic", " &eDynamic bonus: %money% %points% %exp%");
-	    c.get("command.bonus.output.nearspawner", " &eSpawner bonus: %money% %points% %exp%");
-	    c.get("command.bonus.output.petpay", " &ePetPay bonus: %money% %points% %exp%");
-	    c.get("command.bonus.output.area", " &eArea bonus: %money% %points% %exp%");
-	    c.get("command.bonus.output.mcmmo", " &eMcMMO bonus: %money% %points% %exp%");
-	    c.get("command.bonus.output.final", " &eFinal bonus: %money% %points% %exp%");
+	    c.get("command.bonus.output.permission", " &ePerm bonus: &2%money% &6%points% &e%exp%");
+	    c.get("command.bonus.output.item", " &eItem bonus: &2%money% &6%points% &e%exp%");
+	    c.get("command.bonus.output.global", " &eGlobal bonus: &2%money% &6%points% &e%exp%");
+	    c.get("command.bonus.output.dynamic", " &eDynamic bonus: &2%money% &6%points% &e%exp%");
+	    c.get("command.bonus.output.nearspawner", " &eSpawner bonus: &2%money% &6%points% &e%exp%");
+	    c.get("command.bonus.output.petpay", " &ePetPay bonus: &2%money% &6%points% &e%exp%");
+	    c.get("command.bonus.output.area", " &eArea bonus: &2%money% &6%points% &e%exp%");
+	    c.get("command.bonus.output.mcmmo", " &eMcMMO bonus: &2%money% &6%points% &e%exp%");
+	    c.get("command.bonus.output.final", " &eFinal bonus: &2%money% &6%points% &e%exp%");
 	    c.get("command.bonus.output.finalExplanation", " &eDoes not include Petpay and Near spawner bonus/penalty");
 
 	    c.get("command.convert.help.info",
