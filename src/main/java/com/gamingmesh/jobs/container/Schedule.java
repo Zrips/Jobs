@@ -144,7 +144,7 @@ public class Schedule {
 	for (int z = 0; z < JobsNameList.size(); z++) {
 	    if (JobsNameList.get(z).equalsIgnoreCase("all")) {
 		if (jobl != null)
-		    JobsList.addAll(Jobs.getJobs());
+		    JobsList.addAll(jobl);
 
 		return;
 	    }

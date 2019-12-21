@@ -619,9 +619,6 @@ public class PlayerManager {
 			Type type = Type.BALL;
 
 			switch (rt) {
-			case 1:
-			    type = Type.BALL;
-			    break;
 			case 2:
 			    type = Type.BALL_LARGE;
 			    break;

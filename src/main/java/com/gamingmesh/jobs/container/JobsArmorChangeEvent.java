@@ -10,11 +10,11 @@ public final class JobsArmorChangeEvent extends PlayerEvent implements Cancellab
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancel = false;
-    private final EquipMethod equipType;
-    private final ArmorTypes type;
+    private EquipMethod equipType;
+    private ArmorTypes type;
     private ItemStack oldArmorPiece, newArmorPiece;
 
-    public JobsArmorChangeEvent(final Player player, final EquipMethod equipType, ArmorTypes type, final ItemStack oldArmorPiece, final ItemStack newArmorPiece) {
+    public JobsArmorChangeEvent(Player player, EquipMethod equipType, ArmorTypes type, ItemStack oldArmorPiece, ItemStack newArmorPiece) {
 	super(player);
 	this.equipType = equipType;
 	this.type = type;
@@ -22,42 +22,42 @@ public final class JobsArmorChangeEvent extends PlayerEvent implements Cancellab
 	this.newArmorPiece = newArmorPiece;
     }
 
-    public final static HandlerList getHandlerList() {
+    public static HandlerList getHandlerList() {
 	return handlers;
     }
 
     @Override
-    public final HandlerList getHandlers() {
+    public HandlerList getHandlers() {
 	return handlers;
     }
 
     @Override
-    public final void setCancelled(final boolean cancel) {
+    public void setCancelled(boolean cancel) {
 	this.cancel = cancel;
     }
 
     @Override
-    public final boolean isCancelled() {
+    public boolean isCancelled() {
 	return cancel;
     }
 
-    public final ArmorTypes getType() {
+    public ArmorTypes getType() {
 	return type;
     }
 
-    public final ItemStack getOldArmorPiece() {
+    public ItemStack getOldArmorPiece() {
 	return oldArmorPiece;
     }
 
-    public final void setOldArmorPiece(final ItemStack oldArmorPiece) {
+    public void setOldArmorPiece(ItemStack oldArmorPiece) {
 	this.oldArmorPiece = oldArmorPiece;
     }
 
-    public final ItemStack getNewArmorPiece() {
+    public ItemStack getNewArmorPiece() {
 	return newArmorPiece;
     }
 
-    public final void setNewArmorPiece(final ItemStack newArmorPiece) {
+    public void setNewArmorPiece(ItemStack newArmorPiece) {
 	this.newArmorPiece = newArmorPiece;
     }
 
