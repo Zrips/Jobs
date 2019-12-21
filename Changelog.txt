@@ -1,5 +1,6 @@
 # 4.15.0
 - Fixed issue when used a dev-build of papi
+- Bonus output colors can now be changed from config
 
 # 4.15.0 (Dev)
 - Fixed issue when the quest description only showed one lines of list.

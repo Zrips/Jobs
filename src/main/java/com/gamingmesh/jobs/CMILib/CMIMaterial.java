@@ -1082,7 +1082,7 @@ public enum CMIMaterial {
     }
 
     public Material getMaterial() {
-	return mat == null ? null : mat;
+	return mat;
     }
 
     public void updateMaterial() {
@@ -1228,7 +1228,6 @@ public enum CMIMaterial {
     }
 
     public static CMIMaterial get(String id) {
-
 	if (id == null)
 	    return CMIMaterial.NONE;
 	Integer ids = null;

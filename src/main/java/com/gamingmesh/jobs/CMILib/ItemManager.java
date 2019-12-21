@@ -17,6 +17,8 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import com.gamingmesh.jobs.Jobs;
+
 public class ItemManager {
 
     static HashMap<Material, CMIMaterial> byRealMaterial = new HashMap<Material, CMIMaterial>();
@@ -492,7 +494,8 @@ public class ItemManager {
 	    if (stack.getType() != result.getType()) {
 		continue;
 	    }
-	    if (result.getDurability() == -1 || result.getDurability() == stack.getDurability()) {
+	    if (Jobs.getNms().getDurability(result) == -1 ||
+			Jobs.getNms().getDurability(result) == Jobs.getNms().getDurability(stack)) {
 		results.add(recipe);
 	    }
 	}
