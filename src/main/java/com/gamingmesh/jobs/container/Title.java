@@ -31,7 +31,7 @@ public class Title {
     private ChatColor color = ChatColor.WHITE;
     private int levelReq = 0;
     private String jobName = null;
-    
+
     /**
      * Constructor
      * @param name - The long name of the title
@@ -47,7 +47,7 @@ public class Title {
         this.shortName = shortName;
         this.jobName = jobName;
     }
-    
+
     /**
      * Function to return the long name of the title
      * @return the long name of the title
@@ -55,7 +55,7 @@ public class Title {
     public String getName() {
         return name;
     }
-    
+
     /**
      * Function to return the job name of the title
      * @return the job name of the title
@@ -63,7 +63,7 @@ public class Title {
     public String getJobName() {
         return jobName;
     }
-    
+
     /**
      * Function to get the ChatColor of the title
      * @return the chat colour o the title
@@ -71,7 +71,7 @@ public class Title {
     public ChatColor getChatColor() {
         return color;
     }
-    
+
     /**
      * Function to get the levelRequirement of the title
      * @return the level requirement for the title
@@ -79,7 +79,7 @@ public class Title {
     public int getLevelReq() {
         return levelReq;
     }
-    
+
     /**
      * Function to get the short name of the title
      * @return the short name of the title

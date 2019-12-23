@@ -176,7 +176,7 @@ public class JobProgression {
 	while (canLevelUp()) {
 
 	    int maxLevel = this.jPlayer.getMaxJobLevelAllowed(this.getJob());
-	    // Don't level up at max level        	
+	    // Don't level up at max level
 	    if (job.getMaxLevel() > 0 && level >= maxLevel)
 		break;
 	    level++;
@@ -199,7 +199,7 @@ public class JobProgression {
     private boolean checkLevelDown() {
 	boolean ret = false;
 	while (canLevelDown()) {
-	    // Don't level down at 1       	
+	    // Don't level down at 1
 	    if (level <= 1)
 		break;
 	    level--;
@@ -244,7 +244,7 @@ public class JobProgression {
     public String getRejoinTimeMessage() {
 	if (leftOn == null)
 	    return "";
-	String msg = (TimeManage.to24hourShort(getLeftOn() + getJob().getRejoinCd() - System.currentTimeMillis()));
+	String msg = (TimeManage.to24hourShort(leftOn + getJob().getRejoinCd() - System.currentTimeMillis()));
 	return msg;
     }
 

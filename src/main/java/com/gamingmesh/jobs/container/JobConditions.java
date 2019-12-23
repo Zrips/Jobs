@@ -37,7 +37,7 @@ public class JobConditions {
 		int jobLevel = 0;
 		try {
 		    jobLevel = Integer.valueOf(one.toLowerCase().replace("j:", "").split("-")[1]);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		    continue;
 		}
 		requiresJobs.put(jobName, jobLevel);
@@ -52,7 +52,7 @@ public class JobConditions {
 	    String clean = one.toLowerCase().substring("p:".length());
 	    if (clean.contains("-")) {
 		String perm = clean.split("-")[0];
-		boolean n = clean.split("-")[1].equalsIgnoreCase("true") ? true : false;
+		boolean n = clean.split("-")[1].equalsIgnoreCase("true");
 		performPerm.put(perm, n);
 	    } else {
 		performPerm.put(clean, true);

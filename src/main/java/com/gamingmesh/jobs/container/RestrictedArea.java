@@ -47,7 +47,6 @@ public class RestrictedArea {
      * The multipler for the restricted area
      * @return - the multipler for this restricted area
      */
-
     public double getMultiplier() {
 	return multiplier;
     }
@@ -61,7 +60,7 @@ public class RestrictedArea {
     public boolean inRestrictedArea(Location loc) {
 	if (loc == null || area == null)
 	    return false;
-	
+
 	if (!loc.getWorld().getName().equals(area.getWorld().getName()))
 	    return false;
 	if (area.getLowLoc().getBlockX() > loc.getBlockX())

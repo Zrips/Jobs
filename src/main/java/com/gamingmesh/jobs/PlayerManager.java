@@ -366,7 +366,6 @@ public class PlayerManager {
      * @param job
      */
     public void joinJob(JobsPlayer jPlayer, Job job) {
-//	synchronized (jPlayer.saveLock) {
 	if (jPlayer.isInJob(job))
 	    return;
 	// let the user join the job
@@ -380,13 +379,13 @@ public class PlayerManager {
 	if (jobsjoinevent.isCancelled())
 	    return;
 
-	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
+	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () ->
+		    Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job)));
 	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
 	Jobs.takeSlot(job);
 	Jobs.getSignUtil().SignUpdate(job);
 	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
 	job.updateTotalPlayers();
-//	}
     }
 
     /**
@@ -395,7 +394,6 @@ public class PlayerManager {
      * @param job
      */
     public boolean leaveJob(JobsPlayer jPlayer, Job job) {
-//	synchronized (jPlayer.saveLock) {
 	if (!jPlayer.isInJob(job))
 	    return false;
 
@@ -419,7 +417,6 @@ public class PlayerManager {
 	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
 	job.updateTotalPlayers();
 	return true;
-//	}
     }
 
     /**
@@ -441,7 +438,6 @@ public class PlayerManager {
      * @param newjob - the new job
      */
     public boolean transferJob(JobsPlayer jPlayer, Job oldjob, Job newjob) {
-//	synchronized (jPlayer.saveLock) {
 	if (!jPlayer.transferJob(oldjob, newjob))
 	    return false;
 
@@ -452,7 +448,6 @@ public class PlayerManager {
 	dao.joinJob(jPlayer, jPlayer.getJobProgression(newjob));
 	newjob.updateTotalPlayers();
 	jPlayer.save();
-//	}
 	return true;
     }
 
@@ -463,13 +458,11 @@ public class PlayerManager {
      * @param levels - number of levels to promote
      */
     public void promoteJob(JobsPlayer jPlayer, Job job, int levels) {
-//	synchronized (jPlayer.saveLock) {
 	jPlayer.promoteJob(job, levels);
 	jPlayer.save();
 
 	Jobs.getSignUtil().SignUpdate(job);
 	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
-//	}
     }
 
     /**
@@ -479,12 +472,10 @@ public class PlayerManager {
      * @param levels - number of levels to demote
      */
     public void demoteJob(JobsPlayer jPlayer, Job job, int levels) {
-//	synchronized (jPlayer.saveLock) {
 	jPlayer.demoteJob(job, levels);
 	jPlayer.save();
 	Jobs.getSignUtil().SignUpdate(job);
 	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
-//	}
     }
 
     /**
@@ -494,7 +485,6 @@ public class PlayerManager {
      * @param experience - experience gained
      */
     public void addExperience(JobsPlayer jPlayer, Job job, double experience) {
-//	synchronized (jPlayer.saveLock) {
 	JobProgression prog = jPlayer.getJobProgression(job);
 	if (prog == null)
 	    return;
@@ -506,7 +496,6 @@ public class PlayerManager {
 	}
 
 	jPlayer.save();
-//	}
     }
 
     /**
@@ -516,7 +505,6 @@ public class PlayerManager {
      * @param experience - experience gained
      */
     public void removeExperience(JobsPlayer jPlayer, Job job, double experience) {
-//	synchronized (jPlayer.saveLock) {
 	JobProgression prog = jPlayer.getJobProgression(job);
 	if (prog == null)
 	    return;
@@ -525,7 +513,6 @@ public class PlayerManager {
 	jPlayer.save();
 	Jobs.getSignUtil().SignUpdate(job);
 	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
-//	}
     }
 
     /**

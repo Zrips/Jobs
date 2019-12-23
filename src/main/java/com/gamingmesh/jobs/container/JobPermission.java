@@ -27,15 +27,15 @@ public class JobPermission {
         this.value = value;
         this.levelRequirement = levelRequirement;
     }
-    
+
     public String getNode() {
         return node;
     }
-    
+
     public boolean isValue() {
         return value;
     }
-    
+
     public int getLevelRequirement() {
         return levelRequirement;
     }
