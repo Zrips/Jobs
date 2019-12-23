@@ -670,6 +670,7 @@ public abstract class JobsDAO {
 			if (res.getString(JobsTableFields.job.getCollumn()) == null || res.getString(JobsTableFields.job.getCollumn()).isEmpty())
 			    converted = false;
 		    Job job = Jobs.getJob(jobId);
+		    if (job != null)
 		    ls.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
 		}
 

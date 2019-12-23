@@ -112,7 +112,7 @@ public class Jobs extends JavaPlugin {
     private static List<Job> jobs = null;
     private static Job noneJob = null;
     private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<>();
-    private static WeakHashMap<Integer, Job> jobsIds = new WeakHashMap<>();
+    private static HashMap<Integer, Job> jobsIds = new HashMap<>();
     /**
      * Gets the actionbar toggle map
      * @deprecated Moved to {@link ToggleBarHandling}
@@ -731,13 +731,14 @@ public class Jobs extends JavaPlugin {
      * Executes clean shutdown
      */
     public static void shutdown() {
+	Bukkit.getOnlinePlayers().forEach(p -> getPlayerManager().getJobsPlayer(p).clearBossMaps());
+
 	if (saveTask != null)
 	    saveTask.shutdown();
 
 	if (paymentThread != null)
 	    paymentThread.shutdown();
 
-	Bukkit.getOnlinePlayers().forEach(p -> getPlayerManager().getJobsPlayer(p).clearBossMaps());
 	getPlayerManager().saveAll();
 
 	if (dao != null) {
@@ -1500,7 +1501,7 @@ public class Jobs extends JavaPlugin {
 	return PlaceholderAPIEnabled;
     }
 
-    public static WeakHashMap<Integer, Job> getJobsIds() {
+    public static HashMap<Integer, Job> getJobsIds() {
 	return jobsIds;
     }
 }

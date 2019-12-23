@@ -427,7 +427,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (Version.isCurrentEqualOrLower(Version.v1_12_R1)
-	    && ItemManager.getItem(event.getItemInHand()).isSimilar(ItemManager.getItem(CMIMaterial.BONE_MEAL)))
+	    && ItemManager.getItem(event.getItemInHand()).isSimilar(CMIMaterial.BONE_MEAL.newCMIItemStack()))
 	    return;
 
 	// check if in creative
