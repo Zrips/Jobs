@@ -39,6 +39,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,8 +75,8 @@ public class ConfigManager {
 	File f = jobFile;
 	InputStreamReader s = null;
 	try {
-	    s = new InputStreamReader(new FileInputStream(f), "UTF-8");
-	} catch (UnsupportedEncodingException | FileNotFoundException e1) {
+	    s = new InputStreamReader(new FileInputStream(f), StandardCharsets.UTF_8);
+	} catch (FileNotFoundException e1) {
 	    e1.printStackTrace();
 	}
 
@@ -97,8 +98,6 @@ public class ConfigManager {
 	conf.options().pathSeparator('/');
 	try {
 	    conf.load(s);
-	    if (s != null)
-		s.close();
 	} catch (Exception e) {
 	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
 	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
@@ -167,7 +166,6 @@ public class ConfigManager {
 
     @SuppressWarnings("deprecation")
     public KeyValues getKeyValue(String myKey, ActionType actionType, String jobName) {
-
 	String type = null;
 	String subType = "";
 	String meta = "";
@@ -393,9 +391,8 @@ public class ConfigManager {
 	    YmlMaker jobConfig = new YmlMaker(Jobs.getInstance(), "jobConfig.yml");
 	    jobConfig.saveDefaultConfig();
 	}
-	InputStreamReader s = new InputStreamReader(new FileInputStream(f), "UTF-8");
 
-	ArrayList<Job> jobs = new ArrayList<>();
+	InputStreamReader s = new InputStreamReader(new FileInputStream(f), StandardCharsets.UTF_8);
 
 	Jobs.setNoneJob(null);
 
@@ -412,7 +409,6 @@ public class ConfigManager {
 	conf.options().pathSeparator('/');
 	try {
 	    conf.load(s);
-	    s.close();
 	} catch (Exception e) {
 	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
 	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
@@ -434,8 +430,9 @@ public class ConfigManager {
 	    return;
 	}
 
-	for (String jobKey : jobsSection.getKeys(false)) {
+	ArrayList<Job> jobs = new ArrayList<>();
 
+	for (String jobKey : jobsSection.getKeys(false)) {
 	    // Ignoring example job
 	    if (jobKey.equalsIgnoreCase("exampleJob"))
 		continue;
@@ -607,20 +604,19 @@ public class ConfigManager {
 			    }
 			}
 		    }
+
 		    if (material != null)
 			GUIitem = material.newItemStack();
+
 		    if (guiSection.contains("Enchantments")) {
-			List<String> enchants = guiSection.getStringList("Enchantments");
-			if (!enchants.isEmpty()) {
-			    for (String str4 : enchants) {
-				String[] enchantid = str4.split(":");
-				if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
-				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-				    enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]), true);
-				    GUIitem.setItemMeta(enchantMeta);
-				} else
-				    GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]));
-			    }
+			for (String str4 : guiSection.getStringList("Enchantments")) {
+			    String[] enchantid = str4.split(":");
+			    if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
+				EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+				enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]), true);
+				GUIitem.setItemMeta(enchantMeta);
+			    } else
+				GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]));
 			}
 		    } else if (guiSection.contains("CustomSkull")) {
 			String skullOwner = guiSection.getString("CustomSkull");
@@ -639,17 +635,14 @@ public class ConfigManager {
 		} else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
 		    GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
 		    if (guiSection.contains("Enchantments")) {
-			List<String> enchants = guiSection.getStringList("Enchantments");
-			if (enchants.size() > 0) {
-			    for (String str4 : enchants) {
-				String[] id = str4.split(":");
-				if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
-				    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-				    enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
-				    GUIitem.setItemMeta(enchantMeta);
-				} else
-				    GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
-			    }
+			for (String str4 : guiSection.getStringList("Enchantments")) {
+			    String[] id = str4.split(":");
+			    if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
+				EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+				enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
+				GUIitem.setItemMeta(enchantMeta);
+			    } else
+				GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
 			}
 		    } else if (guiSection.contains("CustomSkull")) {
 			String skullOwner = guiSection.getString("CustomSkull");
@@ -1206,11 +1199,11 @@ public class ConfigManager {
 		Jobs.setNoneJob(job);
 	    else
 		jobs.add(job);
-
-	    Jobs.setJobs(jobs);
 	}
 
-	Jobs.consoleMsg("&e[Jobs] Loaded " + Jobs.getJobs().size() + " jobs!");
+	Jobs.setJobs(jobs);
+
+	Jobs.consoleMsg("&e[Jobs] Loaded " + jobs.size() + " jobs!");
 	if (!Jobs.getExplore().isExploreEnabled())
 	    Jobs.consoleMsg("&6[Jobs] Explorer jobs manager are not enabled!");
 	else

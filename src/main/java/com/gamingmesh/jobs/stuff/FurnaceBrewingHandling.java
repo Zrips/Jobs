@@ -30,14 +30,13 @@ public class FurnaceBrewingHandling {
 	if (!f.exists())
 	    return;
 
-	FileConfiguration config = f.getConfig();
-
 	int totalf = 0;
 	int totalb = 0;
 
+	FileConfiguration config = f.getConfig();
+
 	if (Jobs.getGCManager().isFurnacesReassign()) {
 	    ConfigurationSection section = config.getConfigurationSection("Furnace");
-
 	    if (section == null)
 		return;
 
@@ -49,10 +48,11 @@ public class FurnaceBrewingHandling {
 			ls.addAll(Arrays.asList(value.split(";")));
 		    else
 			ls.add(value);
-		    UUID uuid = UUID.fromString(one);
 
+		    UUID uuid = UUID.fromString(one);
 		    if (uuid == null)
 			continue;
+
 		    List<blockLoc> blist = new ArrayList<>();
 		    for (String oneL : ls) {
 			blockLoc bl = new blockLoc(oneL);
@@ -65,9 +65,10 @@ public class FurnaceBrewingHandling {
 
 			blist.add(bl);
 		    }
+
 		    if (!blist.isEmpty()) {
 			furnaceMap.put(uuid, blist);
-			totalf += blist.size();
+			totalf++;
 		    }
 		}
 	    } catch (Throwable e) {
@@ -77,7 +78,6 @@ public class FurnaceBrewingHandling {
 
 	if (Jobs.getGCManager().isBrewingStandsReassign()) {
 	    ConfigurationSection section = config.getConfigurationSection("Brewing");
-
 	    if (section == null)
 		return;
 
@@ -89,8 +89,8 @@ public class FurnaceBrewingHandling {
 			ls.addAll(Arrays.asList(value.split(";")));
 		    else
 			ls.add(value);
-		    UUID uuid = UUID.fromString(one);
 
+		    UUID uuid = UUID.fromString(one);
 		    if (uuid == null)
 			continue;
 
@@ -106,9 +106,10 @@ public class FurnaceBrewingHandling {
 
 			blist.add(bl);
 		    }
+
 		    if (!blist.isEmpty()) {
 			brewingMap.put(uuid, blist);
-			totalb += blist.size();
+			totalb++;
 		    }
 		}
 	    } catch (Throwable e) {
@@ -132,11 +133,8 @@ public class FurnaceBrewingHandling {
 	if (Jobs.getGCManager().isFurnacesReassign()) {
 	    config.set("Furnace", null);
 	    for (Entry<UUID, List<blockLoc>> one : furnaceMap.entrySet()) {
-
 		String full = "";
-
 		for (blockLoc oneL : one.getValue()) {
-
 		    if (!full.isEmpty())
 			full += ";";
 
@@ -150,11 +148,9 @@ public class FurnaceBrewingHandling {
 	if (Jobs.getGCManager().isBrewingStandsReassign()) {
 	    config.set("Brewing", null);
 	    for (Entry<UUID, List<blockLoc>> one : brewingMap.entrySet()) {
-
 		String full = "";
 
 		for (blockLoc oneL : one.getValue()) {
-
 		    if (!full.isEmpty())
 			full += ";";
 
@@ -171,16 +167,12 @@ public class FurnaceBrewingHandling {
 
     public static int getTotalFurnaces(UUID uuid) {
 	List<blockLoc> ls = furnaceMap.get(uuid);
-	if (ls == null)
-	    return 0;
-	return ls.size();
+	return ls == null ? 0 : ls.size();
     }
 
     public static int getTotalBrewingStands(UUID uuid) {
 	List<blockLoc> ls = brewingMap.get(uuid);
-	if (ls == null)
-	    return 0;
-	return ls.size();
+	return ls == null ? 0 : ls.size();
     }
 
     public static boolean removeFurnace(Block block) {
@@ -368,5 +360,13 @@ public class FurnaceBrewingHandling {
 	    block.removeMetadata(JobsPaymentListener.brewingOwnerMetadata, Jobs.getInstance());
 	}
 	return ls.size();
+    }
+
+    public static HashMap<UUID, List<blockLoc>> getBrewingMap() {
+	return brewingMap;
+    }
+
+    public static HashMap<UUID, List<blockLoc>> getFurnaceMap() {
+	return furnaceMap;
     }
 }

@@ -99,9 +99,7 @@ public class JobsManager {
     }
 
     private synchronized JobsMySQL startMysql() {
-
 	ConfigReader c = Jobs.getGCManager().getConfig();
-
 	String legacyUrl = c.getC().getString("mysql.url");
 	if (legacyUrl != null) {
 	    String jdbcString = "jdbc:mysql://";
@@ -114,9 +112,9 @@ public class JobsManager {
 		}
 	    }
 	}
-	
+
 	if (username == null) {
-	    Jobs.getPluginLogger().severe("mysql username property invalid or missing");
+	    username = "root";
 	}
 
 	if (plugin.isEnabled()) {

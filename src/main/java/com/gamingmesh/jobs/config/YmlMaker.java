@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -34,8 +34,8 @@ public class YmlMaker {
     public void reloadConfig() {
 	InputStreamReader f = null;
 	try {
-	    f = new InputStreamReader(new FileInputStream(ConfigFile), "UTF-8");
-	} catch (UnsupportedEncodingException | FileNotFoundException e1) {
+	    f = new InputStreamReader(new FileInputStream(ConfigFile), StandardCharsets.UTF_8);
+	} catch (FileNotFoundException e1) {
 	    e1.printStackTrace();
 	}
 

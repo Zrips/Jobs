@@ -65,7 +65,6 @@ public abstract class JobsDAO {
 
 	worldsTableFields(String type, boolean unique) {
 	    this.type = type;
-
 	    this.unique = unique;
 	}
 
@@ -98,7 +97,6 @@ public abstract class JobsDAO {
 
 	jobsNameTableFields(String type, boolean unique) {
 	    this.type = type;
-
 	    this.unique = unique;
 	}
 
@@ -129,7 +127,6 @@ public abstract class JobsDAO {
 
 	UserTableFields(String type) {
 	    this.type = type;
-
 	}
 
 	@Override
@@ -159,7 +156,6 @@ public abstract class JobsDAO {
 
 	JobsTableFields(String type) {
 	    this.type = type;
-
 	}
 
 	@Override
@@ -190,7 +186,6 @@ public abstract class JobsDAO {
 
 	ArchiveTableFields(String type) {
 	    this.type = type;
-
 	}
 
 	@Override
@@ -222,7 +217,6 @@ public abstract class JobsDAO {
 
 	BlockTableFields(String type) {
 	    this.type = type;
-
 	}
 
 	@Override
@@ -252,7 +246,6 @@ public abstract class JobsDAO {
 
 	LimitTableFields(String type) {
 	    this.ttype = type;
-
 	}
 
 	@Override
@@ -285,7 +278,6 @@ public abstract class JobsDAO {
 
 	LogTableFields(String type) {
 	    this.type = type;
-
 	}
 
 	@Override
@@ -313,7 +305,6 @@ public abstract class JobsDAO {
 
 	PointsTableFields(String type) {
 	    this.type = type;
-
 	}
 
 	@Override
@@ -1761,7 +1752,7 @@ public abstract class JobsDAO {
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
-	    prest = conn.prepareStatement("SELECT *  FROM `" + DBTables.UsersTable.getTableName() + "`;");
+	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.UsersTable.getTableName() + "`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
 		long seen = System.currentTimeMillis();
@@ -1787,9 +1778,7 @@ public abstract class JobsDAO {
     }
 
     public JobsPlayer loadFromDao(JobsPlayer jPlayer) {
-
 	List<JobsDAOData> list = getAllJobs(jPlayer.getName(), jPlayer.getUniqueId());
-//	synchronized (jPlayer.saveLock) {
 	jPlayer.progression.clear();
 	for (JobsDAOData jobdata : list) {
 	    if (!plugin.isEnabled())
@@ -1810,17 +1799,14 @@ public abstract class JobsDAO {
 	jPlayer.reloadLimits();
 	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(jPlayer.getUniqueId()));
 	loadPoints(jPlayer);
-//	}
 	return jPlayer;
     }
 
     public JobsPlayer loadFromDao(OfflinePlayer player) {
-
 	JobsPlayer jPlayer = new JobsPlayer(player.getName());
 	jPlayer.setPlayerUUID(player.getUniqueId());
 
 	List<JobsDAOData> list = getAllJobs(player);
-//	synchronized (jPlayer.saveLock) {
 	jPlayer.progression.clear();
 	for (JobsDAOData jobdata : list) {
 	    if (!plugin.isEnabled())
@@ -1841,7 +1827,6 @@ public abstract class JobsDAO {
 	jPlayer.reloadLimits();
 	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(player.getUniqueId()));
 	loadPoints(jPlayer);
-//	}
 	return jPlayer;
     }
 
@@ -1927,7 +1912,6 @@ public abstract class JobsDAO {
     }
 
     public void updateSeen(JobsPlayer player) {
-
 	if (player.getUserId() == -1) {
 	    insertPlayer(player);
 	    return;
@@ -1981,7 +1965,7 @@ public abstract class JobsDAO {
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
-	    prest = conn.prepareStatement("SELECT `id`,`" + UserTableFields.donequests.getCollumn()
+	    prest = conn.prepareStatement("SELECT `id`, `" + UserTableFields.donequests.getCollumn()
 		+ "` FROM `" + DBTables.UsersTable.getTableName() + "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
 	    prest.setString(1, player.getUniqueId().toString());
 	    res = prest.executeQuery();

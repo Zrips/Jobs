@@ -36,7 +36,8 @@ public class Util {
 
     private static HashMap<UUID, String> jobsEditorMap = new HashMap<>();
     private static HashMap<UUID, String> questsEditorMap = new HashMap<>();
-    public static List<String> confirmLeave = new ArrayList<>();
+    @Deprecated public static List<String> confirmLeave = new ArrayList<>();
+    public static List<UUID> leaveConfirm = new ArrayList<>();
 
     private static HashMap<String, JobsWorld> jobsWorlds = new HashMap<>();
 
