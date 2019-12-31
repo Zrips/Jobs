@@ -6,22 +6,23 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
 public class BlockCollectInfo extends BaseActionInfo {
-    private Block block;
-    private int age;
 
-    public BlockCollectInfo(Block block, ActionType type, int age) {
+    private Block block;
+    private int ageOrLevel;
+
+    public BlockCollectInfo(Block block, ActionType type, int ageOrLevel) {
 	super(type);
 	this.block = block;
-	this.age = age;
+	this.ageOrLevel = ageOrLevel;
     }
 
-	@Override
-	public String getName() {
-		return block.getType().name();
-	}
+    @Override
+    public String getName() {
+	return block.getType().name();
+    }
 
-	@Override
-	public String getNameWithSub() {
-		return getName() + ":" + age;
-	}
+    @Override
+    public String getNameWithSub() {
+	return getName() + ":" + ageOrLevel;
+    }
 }

@@ -233,6 +233,14 @@ Jobs:
         income: 1.5
         points: 1.5
         experience: 1.5
+      beehive-5:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
+      bee_nest-5:
+        income: 2.5
+        points: 2.5
+        experience: 2.5
     # Payment for cooking raw foods
     Bake:
       beef:

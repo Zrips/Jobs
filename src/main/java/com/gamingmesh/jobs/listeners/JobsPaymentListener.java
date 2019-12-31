@@ -35,6 +35,7 @@ import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.Levelled;
+import org.bukkit.block.data.type.Beehive;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -1536,18 +1537,26 @@ public class JobsPaymentListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
 	if (!plugin.isEnabled())
 	    return;
-	//disabling plugin in world
-	if (event.getPlayer() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
+
+	Player p = event.getPlayer();
+	if (p == null) {
+	    return;
+	}
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
 	    return;
 
 	Block block = event.getClickedBlock();
 	if (block == null)
 	    return;
+
 	CMIMaterial cmat = CMIMaterial.get(block);
+	final JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
+
+	Material hand = Jobs.getNms().getItemInMainHand(p).getType();
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !event.useInteractedBlock().equals(org.bukkit.event.Event.Result.DENY)
 		    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	    if (jPlayer != null) {
 		if (cmat.equals(CMIMaterial.COMPOSTER)) {
 		    Levelled level = (Levelled) block.getBlockData();
@@ -1558,8 +1567,21 @@ public class JobsPaymentListener implements Listener {
 
 		if (cmat.equals(CMIMaterial.SWEET_BERRY_BUSH)) {
 		    Ageable age = (Ageable) block.getBlockData();
-		    if (!Jobs.getNms().getItemInMainHand(event.getPlayer()).getType().equals(CMIMaterial.BONE_MEAL.getMaterial())) {
+		    if (!hand.equals(CMIMaterial.BONE_MEAL.getMaterial())) {
 			Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, age.getAge()), block);
+		    }
+		}
+	    }
+	}
+
+	if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && !event.useInteractedBlock().equals(org.bukkit.event.Event.Result.DENY)
+		    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+	    if (jPlayer != null) {
+		if (cmat.equals(CMIMaterial.BEEHIVE) || cmat.equals(CMIMaterial.BEE_NEST)) {
+		    Beehive beehive = (Beehive) block.getBlockData();
+		    if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && hand.equals(CMIMaterial.SHEARS.getMaterial())
+			    || hand.equals(CMIMaterial.GLASS_BOTTLE.getMaterial())) {
+			Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
 		    }
 		}
 	    }
@@ -1569,7 +1591,7 @@ public class JobsPaymentListener implements Listener {
 	    if (!Jobs.getGCManager().isFurnacesReassign())
 		return;
 
-	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(event.getPlayer(), block);
+	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(p, block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
 		if (block.hasMetadata(furnaceOwnerMetadata)) {
@@ -1580,24 +1602,23 @@ public class JobsPaymentListener implements Listener {
 		    MetadataValue value = data.get(0);
 		    String uuid = value.asString();
 
-		    if (!uuid.equals(event.getPlayer().getUniqueId().toString()))
+		    if (!uuid.equals(p.getUniqueId().toString()))
 			report = true;
 		} else
 		    report = true;
 
 		if (report)
-		    Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.noFurnaceRegistration"));
-	    } else if (done.equals(ownershipFeedback.newReg)) {
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
-		Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.newFurnaceRegistration",
+		    Jobs.getActionBar().send(p, Jobs.getLanguage().getMessage("general.error.noFurnaceRegistration"));
+	    } else if (done.equals(ownershipFeedback.newReg) && jPlayer != null) {
+		Jobs.getActionBar().send(p, Jobs.getLanguage().getMessage("general.error.newFurnaceRegistration",
 		    "[current]", jPlayer.getFurnaceCount(),
 		    "[max]", jPlayer.getMaxFurnacesAllowed() == 0 ? "-" : jPlayer.getMaxFurnacesAllowed()));
 	    }
-	} else if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) || CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BREWING_STAND)) {
+	} else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)) {
 	    if (!Jobs.getGCManager().isBrewingStandsReassign())
 		return;
 
-	    ownershipFeedback done = FurnaceBrewingHandling.registerBrewingStand(event.getPlayer(), block);
+	    ownershipFeedback done = FurnaceBrewingHandling.registerBrewingStand(p, block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
 		if (block.hasMetadata(brewingOwnerMetadata)) {
@@ -1608,16 +1629,15 @@ public class JobsPaymentListener implements Listener {
 		    MetadataValue value = data.get(0);
 		    String uuid = value.asString();
 
-		    if (!uuid.equals(event.getPlayer().getUniqueId().toString()))
+		    if (!uuid.equals(p.getUniqueId().toString()))
 			report = true;
 		} else
 		    report = true;
 
 		if (report)
-		    Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.noBrewingRegistration"));
-	    } else if (done.equals(ownershipFeedback.newReg)) {
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
-		Jobs.getActionBar().send(event.getPlayer(), Jobs.getLanguage().getMessage("general.error.newBrewingRegistration",
+		    Jobs.getActionBar().send(p, Jobs.getLanguage().getMessage("general.error.noBrewingRegistration"));
+	    } else if (done.equals(ownershipFeedback.newReg) && jPlayer != null) {
+		Jobs.getActionBar().send(p, Jobs.getLanguage().getMessage("general.error.newBrewingRegistration",
 		    "[current]", jPlayer.getBrewingStandCount(),
 		    "[max]", jPlayer.getMaxBrewingStandsAllowed() == 0 ? "-" : jPlayer.getMaxBrewingStandsAllowed()));
 	    }
@@ -1625,23 +1645,22 @@ public class JobsPaymentListener implements Listener {
 	    block.getType().toString().endsWith("_LOG") &&
 	    !block.getType().toString().startsWith("STRIPPED_") &&
 	    event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-	    ItemStack iih = Jobs.getNms().getItemInMainHand(event.getPlayer());
+	    ItemStack iih = Jobs.getNms().getItemInMainHand(p);
 	    if (iih.getType().toString().endsWith("_AXE")) {
 		// check if player is riding
-		if (Jobs.getGCManager().disablePaymentIfRiding && event.getPlayer().isInsideVehicle())
+		if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
 		    return;
 		// Prevent item durability loss
 		if (!Jobs.getGCManager().payItemDurabilityLoss && iih.getType().getMaxDurability()
 		    - Jobs.getNms().getDurability(iih) != iih.getType().getMaxDurability())
 		    return;
 
-		final Location loc = event.getClickedBlock().getLocation();
-		final JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
+		final Location loc = block.getLocation();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 		    @Override
 		    public void run() {
 			Block b = loc.getBlock();
-			if (b.getType().toString().startsWith("STRIPPED_"))
+			if (b.getType().toString().startsWith("STRIPPED_") && jPlayer != null)
 			    Jobs.action(jPlayer, new BlockActionInfo(b, ActionType.STRIPLOGS), b);
 			return;
 		    }
