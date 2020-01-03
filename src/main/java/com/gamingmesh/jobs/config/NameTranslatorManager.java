@@ -25,6 +25,7 @@ public class NameTranslatorManager {
     public HashMap<CMIMaterial, NameList> ListOfNames = new HashMap<>();
     public ArrayList<NameList> ListOfEntities = new ArrayList<>();
     public HashMap<String, NameList> ListOfEnchants = new HashMap<>();
+    public HashMap<String, NameList> ListOfMMEntities = new HashMap<>();
     public ArrayList<NameList> ListOfColors = new ArrayList<>();
 
     public String Translate(String materialName, JobInfo info) {
@@ -95,8 +96,11 @@ public class NameTranslatorManager {
 		}
 		break;
 	    case MMKILL:
+		NameList got = ListOfMMEntities.get(materialName.toLowerCase());
+		if (got != null && got.getName() != null)
+		    return got.getName();
 		if (Jobs.getMythicManager() == null)
-		    return materialName; 
+		    return materialName;
 		return Jobs.getMythicManager().getDisplayName(materialName);
 	    default:
 		break;
@@ -144,6 +148,19 @@ public class NameTranslatorManager {
 		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfEntities.size() + " custom entity names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The EntityList section not found in " + ItemFile.fileName + " file.");
+
+	if (ItemFile.getConfig().isConfigurationSection("MythicEntityList")) {
+	    ConfigurationSection section = ItemFile.getConfig().getConfigurationSection("MythicEntityList");
+	    Set<String> keys = section.getKeys(false);
+	    ListOfMMEntities.clear();
+	    for (String one : keys) {
+		String Name = ItemFile.getConfig().getString("MythicEntityList." + one);
+		ListOfMMEntities.put(one.toLowerCase(), new NameList(null, null, Name, Name));
+	    }
+	    if (ListOfMMEntities.size() > 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfMMEntities.size() + " custom MythicMobs names!");
+	} else
+	    Jobs.consoleMsg("&c[Jobs] The MythicEntityList section not found in " + ItemFile.fileName + " file.");
 
 	if (ItemFile.getConfig().isConfigurationSection("EnchantList")) {
 	    ConfigurationSection section = ItemFile.getConfig().getConfigurationSection("EnchantList");
@@ -383,6 +400,13 @@ public class NameTranslatorManager {
 	    
 	    		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
 	    }*/
+
+	    if (!c.getC().isConfigurationSection("MythicEntityList")) {
+		c.get("MythicEntityList.AngrySludge", "Angry Sludge");
+		c.get("MythicEntityList.SkeletalKnight", "Skeletal Knight");
+	    } else {
+		c.set("MythicEntityList", c.getC().get("MythicEntityList"));
+	    }
 
 	    c.save();
 	}

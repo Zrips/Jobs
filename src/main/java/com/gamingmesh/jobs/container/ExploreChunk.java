@@ -76,7 +76,7 @@ public class ExploreChunk {
     public String serializeNames() {
 	String s = "";
 	if (playerIds == null)
-	    return "";
+	    return null;
 	for (Integer one : this.playerIds) {
 	    if (!s.isEmpty())
 		s += ";";
@@ -86,12 +86,12 @@ public class ExploreChunk {
     }
 
     public void deserializeNames(String names) {
-	if (names.isEmpty()) {
+	if (names == null || names.isEmpty()) {
 	    this.full = true;
 	    playerIds = null;
 	    return;
 	}
-	
+
 	List<String> split = Arrays.asList(names.split(";"));
 	for (String one : split) {
 	    try {
