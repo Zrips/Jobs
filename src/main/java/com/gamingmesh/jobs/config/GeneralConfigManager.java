@@ -158,6 +158,8 @@ public class GeneralConfigManager {
 
     public Parser DynamicPaymentEquation;
 
+    public boolean ExploreCompact;
+
     public boolean DisabledWorldsUse;
     public List<String> DisabledWorldsList = new ArrayList<>();
 
@@ -507,6 +509,10 @@ public class GeneralConfigManager {
 	    "Only commands can be performed from disabled worlds with jobs.disabledworld.commands permission node");
 	DisabledWorldsUse = c.get("Optimizations.DisabledWorlds.Use", false);
 	DisabledWorldsList = c.get("Optimizations.DisabledWorlds.List", Arrays.asList(Bukkit.getWorlds().get(0).getName()));
+
+	c.addComment("Optimizations.Explore.Compact",
+	    "By setting this to true when there is max amount of players explored a chunk then it will be marked as fully explored and exact players who explored it will not be saved to save some memory");
+	ExploreCompact = c.get("Optimizations.Explore.Compact", true);
 
 //	c.addComment("Optimizations.Purge.Use", "By setting this to true, Jobs plugin will clean data base on startup from all jobs with level 1 and at 0 exp");
 //	PurgeUse = c.get("Optimizations.Purge.Use", false);

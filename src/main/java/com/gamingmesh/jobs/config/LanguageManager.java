@@ -425,6 +425,7 @@ public class LanguageManager {
 
 	    c.get("command.explored.help.info", "Check who visited this chunk");
 	    c.get("command.explored.error.noexplore", "No one visited this chunk");
+	    c.get("command.explored.fullExplore", "&aThis chunk is fully explored");
 	    c.get("command.explored.list", "&e%place%. %playername%");
 
 	    c.get("command.browse.help.info", "List the jobs available to you.");

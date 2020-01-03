@@ -26,6 +26,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.*;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -938,10 +939,10 @@ public class JobsPaymentListener implements Listener {
 	try {
 	    if (!plugin.isEnabled())
 		return;
-	    
+
 	    if (!Jobs.getGCManager().PreventHopperFillUps)
 		return;
-	    
+
 	    String type = event.getDestination().getType().toString();
 	    if (!type.equalsIgnoreCase("FURNACE") && !type.equalsIgnoreCase("SMOKER") && !type.equalsIgnoreCase("BLAST_FURNACE"))
 		return;
@@ -963,7 +964,7 @@ public class JobsPaymentListener implements Listener {
 		block = ((org.bukkit.block.BlastFurnace) event.getDestination().getHolder()).getBlock();
 		break;
 	    }
-	    
+
 	    if (block == null)
 		return;
 
@@ -1743,7 +1744,7 @@ public class JobsPaymentListener implements Listener {
 	    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
 	    return;
 
-	ExploreRespond respond = Jobs.getExplore().ChunkRespond(player, event.getNewChunk());
+	ExploreRespond respond = Jobs.getExplore().ChunkRespond(Jobs.getPlayerManager().getJobsPlayer(player).getUserId(), event.getNewChunk());
 
 	if (!respond.isNewChunk())
 	    return;

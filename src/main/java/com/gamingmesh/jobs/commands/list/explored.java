@@ -11,6 +11,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
+import com.gamingmesh.jobs.container.PlayerInfo;
 
 public class explored implements Cmd {
 
@@ -40,11 +41,17 @@ public class explored implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
 	    return false;
 	}
+	if (chunk.isFullyExplored() && Jobs.getGCManager().ExploreCompact) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.explored.fullExplore"));
+	    return true;
+	}
 
 	int i = 0;
-	for (String one : chunk.getPlayers()) {
+	for (Integer one : chunk.getPlayers()) {
 	    i++;
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.explored.list", "%place%", i, "%playername%", one));
+	    PlayerInfo ji = Jobs.getPlayerManager().getPlayerInfo(one);
+	    if (ji != null)
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.explored.list", "%place%", i, "%playername%", ji.getName()));
 	}
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 

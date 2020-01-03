@@ -525,7 +525,7 @@ public class editquests implements Cmd {
 			}
 
 			Jobs.getExplore().setExploreEnabled();
-			Jobs.getExplore().setPlayerAmount(a + 1);
+			Jobs.getExplore().setPlayerAmount(a);
 		    } else if (actionT == ActionType.CRAFT && myKey.startsWith("!"))
 			type = myKey.substring(1, myKey.length());
 

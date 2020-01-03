@@ -62,10 +62,14 @@ public class ExploreManager {
     }
 
     public ExploreRespond ChunkRespond(Player player, Chunk chunk) {
-	return ChunkRespond(player.getName(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+	return ChunkRespond(Jobs.getPlayerManager().getJobsPlayer(player).getUserId(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
     }
 
-    public ExploreRespond ChunkRespond(String player, String world, int x, int z) {
+    public ExploreRespond ChunkRespond(int playerId, Chunk chunk) {
+	return ChunkRespond(playerId, chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+    }
+
+    public ExploreRespond ChunkRespond(int playerId, String world, int x, int z) {
 
 	ExploreRegion eRegions = worlds.get(world);
 	if (eRegions == null) {
@@ -80,7 +84,7 @@ public class ExploreManager {
 	eRegions.addChunk(chunk);
 	worlds.put(world, eRegions);
 
-	return chunk.addPlayer(player);
+	return chunk.addPlayer(playerId);
     }
 
     public void load(ResultSet res) {

@@ -571,7 +571,7 @@ public class editjobs implements Cmd {
 			break;
 		    }
 		    Jobs.getExplore().setExploreEnabled();
-		    Jobs.getExplore().setPlayerAmount(amount + 1);
+		    Jobs.getExplore().setPlayerAmount(amount);
 		} else if (actionT == ActionType.CRAFT && myKey.startsWith("!"))
 		    type = myKey.substring(1, myKey.length());
 
