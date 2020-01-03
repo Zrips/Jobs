@@ -29,7 +29,12 @@ import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
-import org.bukkit.*;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
@@ -37,7 +42,16 @@ import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.block.data.type.Beehive;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -49,7 +63,12 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.BrewEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -358,7 +377,7 @@ public class JobsPaymentListener implements Listener {
 	else if (cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 	    FurnaceBrewingHandling.removeFurnace(block);
 	else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)
-		    && block.hasMetadata(brewingOwnerMetadata))
+	    && block.hasMetadata(brewingOwnerMetadata))
 	    FurnaceBrewingHandling.removeBrewing(block);
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -806,13 +825,13 @@ public class JobsPaymentListener implements Listener {
 
 	// Fix for possible money duplication bugs.
 	switch (event.getClick()) {
-	    case UNKNOWN:
-	    case WINDOW_BORDER_LEFT:
-	    case WINDOW_BORDER_RIGHT:
-	    case NUMBER_KEY:
-		return;
-	    default:
-		break;
+	case UNKNOWN:
+	case WINDOW_BORDER_LEFT:
+	case WINDOW_BORDER_RIGHT:
+	case NUMBER_KEY:
+	    return;
+	default:
+	    break;
 	}
 
 	// Fix money dupping issue when clicking continuously in the result item, but if in the
@@ -919,17 +938,38 @@ public class JobsPaymentListener implements Listener {
 	try {
 	    if (!plugin.isEnabled())
 		return;
-	    if (event.getDestination().getType() != InventoryType.FURNACE)
-		return;
+	    
 	    if (!Jobs.getGCManager().PreventHopperFillUps)
 		return;
+	    
+	    String type = event.getDestination().getType().toString();
+	    if (!type.equalsIgnoreCase("FURNACE") && !type.equalsIgnoreCase("SMOKER") && !type.equalsIgnoreCase("BLAST_FURNACE"))
+		return;
+
 	    if (event.getItem() == null || event.getItem().getType() == Material.AIR)
 		return;
-	    Furnace furnace = (Furnace) event.getDestination().getHolder();
-	    //disabling plugin in world
-	    if (!Jobs.getGCManager().canPerformActionInWorld(furnace.getWorld()))
+	    Block block = null;
+
+	    switch (type.toLowerCase()) {
+	    case "furnace":
+		block = ((Furnace) event.getDestination().getHolder()).getBlock();
+		break;
+	    case "smoker":
+		// This should be done in this way to have backwards compatibility
+		block = ((org.bukkit.block.Smoker) event.getDestination().getHolder()).getBlock();
+		break;
+	    case "blast_furnace":
+		// This should be done in this way to have backwards compatibility
+		block = ((org.bukkit.block.BlastFurnace) event.getDestination().getHolder()).getBlock();
+		break;
+	    }
+	    
+	    if (block == null)
 		return;
-	    Block block = furnace.getBlock();
+
+	    //disabling plugin in world
+	    if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+		return;
 
 	    if (block.hasMetadata(furnaceOwnerMetadata))
 		FurnaceBrewingHandling.removeFurnace(block);
@@ -1264,7 +1304,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	Location loc = event.getLocation();
 	Collection<Entity> ents = Version.isCurrentEqualOrLower(Version.v1_8_R1)
-		    ? null : loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
+	    ? null : loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
 	double dis = Double.MAX_VALUE;
 	Player player = null;
 	if (ents != null) {
@@ -1521,7 +1561,7 @@ public class JobsPaymentListener implements Listener {
 	    else if (cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 		FurnaceBrewingHandling.removeFurnace(block);
 	    else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)
-			    && block.hasMetadata(brewingOwnerMetadata))
+		&& block.hasMetadata(brewingOwnerMetadata))
 		FurnaceBrewingHandling.removeBrewing(block);
 
 	    if (Jobs.getGCManager().useBlockProtection)
@@ -1556,7 +1596,7 @@ public class JobsPaymentListener implements Listener {
 	Material hand = Jobs.getNms().getItemInMainHand(p).getType();
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !event.useInteractedBlock().equals(org.bukkit.event.Event.Result.DENY)
-		    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+	    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	    if (jPlayer != null) {
 		if (cmat.equals(CMIMaterial.COMPOSTER)) {
 		    Levelled level = (Levelled) block.getBlockData();
@@ -1575,12 +1615,12 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && !event.useInteractedBlock().equals(org.bukkit.event.Event.Result.DENY)
-		    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+	    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	    if (jPlayer != null) {
 		if (cmat.equals(CMIMaterial.BEEHIVE) || cmat.equals(CMIMaterial.BEE_NEST)) {
 		    Beehive beehive = (Beehive) block.getBlockData();
 		    if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && hand.equals(CMIMaterial.SHEARS.getMaterial())
-			    || hand.equals(CMIMaterial.GLASS_BOTTLE.getMaterial())) {
+			|| hand.equals(CMIMaterial.GLASS_BOTTLE.getMaterial())) {
 			Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
 		    }
 		}

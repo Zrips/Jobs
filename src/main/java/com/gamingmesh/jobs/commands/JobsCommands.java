@@ -110,7 +110,7 @@ public class JobsCommands implements CommandExecutor {
 	return args.length <= 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length);
     }
 
-    private boolean hasCommandPermission(CommandSender sender, String cmd) {
+    private static boolean hasCommandPermission(CommandSender sender, String cmd) {
 	return sender.hasPermission("jobs.command." + cmd);
     }
 

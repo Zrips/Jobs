@@ -72,7 +72,7 @@ public class bonus implements Cmd {
 	return true;
     }
 
-    private void printBoost(CommandSender sender, Boost boost, BoostOf type) {
+    private static void printBoost(CommandSender sender, Boost boost, BoostOf type) {
 	String prefix = ChatColor.GOLD + "*";
 	if (type != BoostOf.NearSpawner && type != BoostOf.PetPay)
 	    prefix = "";
