@@ -312,7 +312,7 @@ public class PlayerManager {
      * @return the player job info of the player
      */
     public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points,
-	    HashMap<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
+	HashMap<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
 	if (info == null)
 	    return null;
 
@@ -379,8 +379,8 @@ public class PlayerManager {
 	if (jobsjoinevent.isCancelled())
 	    return;
 
-	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () ->
-		    Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job)));
+	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
+
 	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
 	Jobs.takeSlot(job);
 	Jobs.getSignUtil().SignUpdate(job);
