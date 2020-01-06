@@ -21,6 +21,7 @@ package com.gamingmesh.jobs.config;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
@@ -41,6 +42,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +53,167 @@ public class ConfigManager {
 
     public ConfigManager() {
 	this.jobFile = new File(Jobs.getFolder(), "jobConfig.yml");
+	updateFile();
+    }
+
+    private void updateFile() {
+	ConfigReader cfg = null;
+	try {
+	    cfg = new ConfigReader(jobFile);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
+	if (cfg == null)
+	    return;
+
+	cfg.header(Arrays.asList("Jobs configuration.", "", "Edited by roracle to include 1.13 items and item names, prepping for 1.14 as well.",
+	    "",
+	    "Stores information about each job.",
+	    "",
+	    "NOTE: When having multiple jobs, both jobs will give the income payout to the player",
+	    "even if they give the pay for one action (make the configurations with this in mind)",
+	    "and each job will get the respective experience.",
+	    "",
+	    "e.g If player has 2 jobs where job1 gives 10 income and experience for killing a player ",
+	    "and job2 gives 5 income and experience for killing a player. When the user kills a player",
+	    "they will get 15 income and job1 will gain 10 experience and job2 will gain 5 experience."));
+
+	cfg.set("Jobs", cfg.getC().get("Jobs"));
+
+	String pt = "Jobs.exampleJob";
+	cfg.addComment(pt, "Must be one word",
+	    "This job will be ignored as this is just example of all possible actions.");
+	cfg.addComment(pt + ".fullname", "full name of the job (displayed when browsing a job, used when joining and leaving",
+	    "also can be used as a prefix for the user's name if the option is enabled.",
+	    "Shown as a prefix only when the user has 1 job.",
+	    "",
+	    "NOTE: Must be 1 word");
+	cfg.get(pt + ".fullname", "Woodcutter");
+
+	cfg.addComment(pt + ".shortname", "Shortened version of the name of the job. Used as a prefix when the user has more than 1 job.");
+	cfg.get(pt + ".shortname", "W");
+	cfg.get(pt + ".description", "Earns money felling and planting trees");
+
+	cfg.addComment(pt + ".FullDescription", "Full description of job to be shown in job browse command");
+	cfg.get(pt + ".FullDescription", Arrays.asList("&2Get money for:", "  &7Planting trees", "  &7Cutting down trees", "  &7Killing players"));
+
+	cfg.addComment(pt + ".ChatColour", "The colour of the name, for a full list of supported colours, go to the message config.");
+	cfg.get(pt + ".ChatColour", "GREEN");
+
+	cfg.addComment(pt + ".BossBarColour", "[OPTIONAL] The colour of the boss bar: GREEN, BLUE, RED, WHITE, YELLOW, PINK, PURPLE.");
+	cfg.get(pt + ".BossBarColour", "WHITE");
+
+	cfg.addComment(pt + ".chat-display", "Option to let you choose what kind of prefix this job adds to your name.", "options are: full, title, job, shortfull, shorttitle, shortjob and none");
+	cfg.get(pt + ".chat-display", "full");
+
+	cfg.addComment(pt + ".max-level", "[OPTIONAL] - the maximum level of this class");
+	cfg.get(pt + ".max-level", 10);
+
+	cfg.addComment(pt + ".vip-max-level", "[OPTIONAL] - the maximum level of this class with specific permission",
+	    "use jobs.[jobsname].vipmaxlevel, in this case it will be jobs.exampleJob.vipmaxlevel");
+	cfg.get(pt + ".vip-max-level", 20);
+
+	cfg.addComment(pt + ".slots", "[OPTIONAL] - the maximum number of users on the server that can have this job at any one time (includes offline players).");
+	cfg.get(pt + ".slots", 1);
+
+	cfg.addComment(pt + ".softIncomeLimit", "[OPTIONAL] Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.",
+	    "In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60",
+	    "This only applies after players level is higher than provided particular limit.");
+
+	cfg.get(pt + ".softIncomeLimit", 50);
+	cfg.get(pt + ".softExpLimit", 40);
+	cfg.get(pt + ".softPointsLimit", 60);
+
+	cfg.addComment(pt + ".leveling-progression-equation", "Equation used for calculating how much experience is needed to go to the next level.",
+	    "Available parameters:",
+	    "  numjobs - the number of jobs the player has",
+	    "  joblevel - the level the player has attained in the job.",
+	    " NOTE: Please take care of the brackets when modifying this equation.");
+	cfg.get(pt + ".leveling-progression-equation", "10*(joblevel)+(joblevel*joblevel*4)");
+
+	cfg.addComment(pt + ".income-progression-equation", "Equation used for calculating how much income is given per action for the job level.",
+	    "Available parameters:",
+	    "  numjobs - the number of jobs the player has",
+	    "  baseincome - the income for the action at level 1 (as set in the configuration).",
+	    "  joblevel - the level the player has attained in the job.",
+	    "NOTE: Please take care of the brackets when modifying this equation.");
+	cfg.get(pt + ".income-progression-equation", "baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))");
+
+	cfg.addComment(pt + ".points-progression-equation", "Equation used for calculating how much points is given per action for the job level.",
+	    "Available parameters:",
+	    "  numjobs - the number of jobs the player has",
+	    "  basepoints - the points for the action at level 1 (as set in the configuration).",
+	    "  joblevel - the level the player has attained in the job.",
+	    "NOTE: Please take care of the brackets when modifying this equation.");
+	cfg.get(pt + ".points-progression-equation", "basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))");
+
+	cfg.addComment(pt + ".experience-progression-equation", "Equation used for calculating how much experience is given per action for the job level.",
+	    "Available parameters:",
+	    "  numjobs - the number of jobs the player has",
+	    "  baseexperience - the experience for the action at level 1 (as set in the configuration).",
+	    "  joblevel - the level the player has attained in the job.",
+	    "NOTE: Please take care of the brackets when modifying this equation.");
+	cfg.get(pt + ".experience-progression-equation", "basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))");
+
+	cfg.addComment(pt + ".rejoinCooldown", "Defines how often in seconds player can rejoin this job. Can be bypassed with jobs.rejoinbypass");
+	cfg.get(pt + ".rejoinCooldown", 10);
+
+	cfg.addComment(pt + ".Gui", "GUI icon information when using GUI function");
+	cfg.addComment(pt + ".Gui.Item", "Name of the material");
+	cfg.get(pt + ".Gui.Item", "LOG:2");
+	cfg.addComment(pt + ".Gui.Enchantments", "Enchants of the item");
+	cfg.get(pt + ".Gui.Enchantments", Arrays.asList("DURABILITY:1"));
+
+	cfg.addComment(pt + ".maxDailyQuests", "You can use the custom player head:",
+	    "Item: player_head",
+	    "  CustomSkull: Notch",
+
+	    "",
+	    "Defines maximum amount of daily quests player can have from THIS job",
+	    "This will not have effect on overall quest amount player will have");
+	cfg.get(pt + ".maxDailyQuests", 3);
+
+	cfg.addComment(pt + ".Quests", "Daily quests",
+	    "Each job can have as many daily quests as you want",
+	    "Players will have access to quests from jobs he is currently working at");
+	cfg.addComment(pt + ".Quests.1", "Quest identification. Can be any ONE word or number or both of them. This doesn't have any real meaning but it can't repeat.");
+	cfg.addComment(pt + ".Quests.1.Name", "Quest name used for quests list, don't forget to enclose it with \" \"");
+	cfg.get(pt + ".Quests.1.Name", "Break Oak wood");
+	cfg.addComment(pt + ".Quests.1.Objectives", "This should be in a format as [actionType];[actionTarget];[amount]",
+	    "[actionType] can be any valid job action. Look lower for all possible action types",
+	    "[actionTarget] can be material name, block type, entity name and so on. This is defined in same way as any generic payable job action",
+	    "[amount] is how many times player should perform this action to complete quest");
+	cfg.get(pt + ".Quests.1.Objectives", "- Break;17-0;300");
+
+	cfg.addComment(pt + ".Quests.1.RewardCommands", "Command list to be performed after quest is finished.",
+	    "Use [playerName] to insert players name who finished that quest");
+	cfg.get(pt + ".Quests.1.RewardCommands", Arrays.asList("money give [playerName] 500", "msg [playerName] Completed quest!"));
+
+	cfg.addComment(pt + ".Quests.1.RewardDesc", "Quest description to be used to explain quest requirements or rewards for player");
+	cfg.get(pt + ".Quests.1.RewardDesc", Arrays.asList("Break 300 Oak wood", "Get 500 bucks for this"));
+
+	cfg.addComment(pt + ".Quests.1.RestrictedAreas", "Restricted areas where player cant progress his quest");
+	cfg.get(pt + ".Quests.1.RestrictedAreas", Arrays.asList("Arenas", "myarena"));
+
+	cfg.addComment(pt + ".Quests.1.Chance", "Defines chance in getting this quest.",
+	    "If you have set 10 quests and player can have only 2, then quests with biggest chance will be picked most likely",
+	    "This will allow to have some rare quests with legendary rewards");
+	cfg.get(pt + ".Quests.1.Chance", 40);
+
+	cfg.addComment(pt + ".Quests.1.fromLevel", "Defines from which level you want to give option to get this quest",
+	    "You can use both limitations to have limited quests for particular job level ranges");
+	cfg.get(pt + ".Quests.1.fromLevel", 3);
+	
+	cfg.addComment(pt + ".Quests.1.toLevel", "Defines to which job level you want to give out this quest.",
+	    "Keep in mind that player will keep quest even if he is over level limit if he got new one while being under",
+	    "In example: player with level 2 takes quests and levels up to level 5, he still can finish this quest and after next quest reset (check general config file)",
+	    "he will no longer have option to get this quest");
+	cfg.get(pt + ".Quests.1.toLevel", 5);
+
+
+	cfg.save();
+
     }
 
     public void reload() throws IOException {
@@ -349,7 +512,7 @@ public class ConfigManager {
 	    CMIEnchantment enchant = CMIEnchantment.get(myKey);
 	    type = enchant == null ? myKey : enchant.toString();
 	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL
-		    || actionType == ActionType.COLLECT || actionType == ActionType.BAKE)
+	    || actionType == ActionType.COLLECT || actionType == ActionType.BAKE)
 	    type = myKey;
 	else if (actionType == ActionType.EXPLORE) {
 	    type = myKey;
@@ -1132,7 +1295,7 @@ public class ConfigManager {
 			    }
 			    type = enchant == null ? myKey : enchant.toString();
 			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
-				    || actionType == ActionType.SHEAR || actionType == ActionType.BAKE)
+			    || actionType == ActionType.SHEAR || actionType == ActionType.BAKE)
 			    type = myKey;
 			else if (actionType == ActionType.EXPLORE) {
 			    type = myKey;

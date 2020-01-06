@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class VersionChecker {
     private Jobs plugin;
