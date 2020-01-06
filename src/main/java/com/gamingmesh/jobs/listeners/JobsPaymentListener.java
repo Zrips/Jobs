@@ -26,7 +26,6 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.*;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -40,8 +39,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.Ageable;
-import org.bukkit.block.data.Levelled;
-import org.bukkit.block.data.type.Beehive;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -1600,7 +1597,7 @@ public class JobsPaymentListener implements Listener {
 	    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	    if (jPlayer != null) {
 		if (cmat.equals(CMIMaterial.COMPOSTER)) {
-		    Levelled level = (Levelled) block.getBlockData();
+		    org.bukkit.block.data.Levelled level = (org.bukkit.block.data.Levelled) block.getBlockData();
 		    if (level.getLevel() == level.getMaximumLevel()) {
 			Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.COLLECT), block);
 		    }
@@ -1619,7 +1616,7 @@ public class JobsPaymentListener implements Listener {
 	    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	    if (jPlayer != null) {
 		if (cmat.equals(CMIMaterial.BEEHIVE) || cmat.equals(CMIMaterial.BEE_NEST)) {
-		    Beehive beehive = (Beehive) block.getBlockData();
+		    org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
 		    if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && hand.equals(CMIMaterial.SHEARS.getMaterial())
 			|| hand.equals(CMIMaterial.GLASS_BOTTLE.getMaterial())) {
 			Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
