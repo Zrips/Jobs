@@ -17,8 +17,8 @@ public class ExploreChunk {
     private boolean updated = false;
 
     public ExploreChunk(int playerId, int x, int z) {
-	this.x = x;
-	this.z = z;
+	this(x, z);
+
 	this.playerIds.add(playerId);
     }
 
@@ -70,14 +70,15 @@ public class ExploreChunk {
     }
 
     public Set<Integer> getPlayers() {
-	return playerIds == null ? new HashSet<>() : playerIds;
+	return playerIds == null ? new HashSet<Integer>() : playerIds;
     }
 
     public String serializeNames() {
-	String s = "";
 	if (playerIds == null)
 	    return null;
-	for (Integer one : this.playerIds) {
+
+	String s = "";
+	for (Integer one : playerIds) {
 	    if (!s.isEmpty())
 		s += ";";
 	    s += one;
@@ -90,6 +91,10 @@ public class ExploreChunk {
 	    this.full = true;
 	    playerIds = null;
 	    return;
+	}
+
+	if (playerIds == null) {
+	    playerIds = new HashSet<Integer>();
 	}
 
 	List<String> split = Arrays.asList(names.split(";"));

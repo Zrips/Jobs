@@ -946,6 +946,7 @@ public class JobsPaymentListener implements Listener {
 
 	    if (event.getItem() == null || event.getItem().getType() == Material.AIR)
 		return;
+
 	    Block block = null;
 
 	    switch (type.toLowerCase()) {
@@ -959,6 +960,8 @@ public class JobsPaymentListener implements Listener {
 	    case "blast_furnace":
 		// This should be done in this way to have backwards compatibility
 		block = ((org.bukkit.block.BlastFurnace) event.getDestination().getHolder()).getBlock();
+		break;
+	    default:
 		break;
 	    }
 

@@ -168,7 +168,6 @@ public class ConfigManager {
 	cfg.addComment(pt + ".maxDailyQuests", "You can use the custom player head:",
 	    "Item: player_head",
 	    "  CustomSkull: Notch",
-
 	    "",
 	    "Defines maximum amount of daily quests player can have from THIS job",
 	    "This will not have effect on overall quest amount player will have");
@@ -204,7 +203,7 @@ public class ConfigManager {
 	cfg.addComment(pt + ".Quests.1.fromLevel", "Defines from which level you want to give option to get this quest",
 	    "You can use both limitations to have limited quests for particular job level ranges");
 	cfg.get(pt + ".Quests.1.fromLevel", 3);
-	
+
 	cfg.addComment(pt + ".Quests.1.toLevel", "Defines to which job level you want to give out this quest.",
 	    "Keep in mind that player will keep quest even if he is over level limit if he got new one while being under",
 	    "In example: player with level 2 takes quests and levels up to level 5, he still can finish this quest and after next quest reset (check general config file)",
@@ -213,7 +212,6 @@ public class ConfigManager {
 
 
 	cfg.save();
-
     }
 
     public void reload() throws IOException {

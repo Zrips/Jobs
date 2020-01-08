@@ -857,9 +857,7 @@ public class PlayerManager {
     }
 
     public BoostMultiplier getItemBoostNBT(Player player, Job prog) {
-
-	HashMap<Job, ItemBonusCache> cj = cache == null ? new HashMap<Job, ItemBonusCache>() : cache.get(player.getUniqueId());
-
+	HashMap<Job, ItemBonusCache> cj = cache.get(player.getUniqueId());
 	if (cj == null) {
 	    cj = new HashMap<>();
 	    cache.put(player.getUniqueId(), cj);
@@ -925,7 +923,6 @@ public class PlayerManager {
 	Object itemName = Reflections.getNbt(item, JobsItemBoost);
 
 	if (itemName == null || itemName.toString().isEmpty()) {
-
 	    // Checking old boost items and converting to new format if needed
 	    if (Jobs.getReflections().hasNbt(item, JobsItemBoost)) {
 		for (Job one : Jobs.getJobs()) {

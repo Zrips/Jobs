@@ -113,19 +113,8 @@ public class Jobs extends JavaPlugin {
     private static Job noneJob = null;
     private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<>();
     private static HashMap<Integer, Job> jobsIds = new HashMap<>();
-    /**
-     * Gets the actionbar toggle map
-     * @deprecated Moved to {@link ToggleBarHandling}
-     */
-    @Deprecated
-    public static WeakHashMap<String, Boolean> actionbartoggle = new WeakHashMap<>();
-    /**
-     * Gets the bossbar toggle map
-     * @deprecated Moved to {@link ToggleBarHandling}
-     */
-    @Deprecated
-    public static WeakHashMap<String, Boolean> BossBartoggle = new WeakHashMap<>();
 //	public static WeakHashMap<String, Double> GlobalBoost = new WeakHashMap<String, Double>();
+
     private static BufferedEconomy economy = null;
     private static PermissionHandler permissionHandler = null;
     private static PermissionManager permissionManager = null;
@@ -156,19 +145,6 @@ public class Jobs extends JavaPlugin {
 	    getServer().getPluginManager().registerEvents(new McMMO1_X_listener(this), this);
 	    consoleMsg("&e[Jobs] Registered McMMO 1.x listener");
 	}
-    }
-
-    /**
-    * Gets the {@link #McMMOManager} file
-    * 
-    * @return McMMO Manager
-    * @deprecated Use instead {@link #getMcMMOManager()}
-    */
-    @Deprecated
-    public static McMMOManager getMcMMOlistener() {
-	if (McMMOManager == null)
-	    McMMOManager = new McMMOManager();
-	return McMMOManager;
     }
 
     public static McMMOManager getMcMMOManager() {
@@ -388,24 +364,6 @@ public class Jobs extends JavaPlugin {
 
     public static BossBarManager getBBManager() {
 	return BBManager;
-    }
-
-    /**
-     * Gets the actionbar toggle map
-     * @deprecated Moved to {@link ToggleBarHandling}
-     */
-    @Deprecated
-    public static WeakHashMap<String, Boolean> getActionbarToggleList() {
-	return actionbartoggle;
-    }
-
-    /**
-     * Gets the bossbar toggle map
-     * @deprecated Moved to {@link ToggleBarHandling}
-     */
-    @Deprecated
-    public static WeakHashMap<String, Boolean> getBossBarToggleList() {
-	return BossBartoggle;
     }
 
     /**
@@ -984,6 +942,7 @@ public class Jobs extends JavaPlugin {
 	    e.printStackTrace();
 	}
 	shutdown();
+	instance = null;
 	consoleMsg("&e[Jobs] &2Plugin has been disabled successfully.");
 	setEnabled(false);
     }
