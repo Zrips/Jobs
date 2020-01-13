@@ -899,8 +899,8 @@ public class Jobs extends JavaPlugin {
 	    if (GconfigManager.MythicMobsEnabled && MythicManager != null && MythicManager.Check())
 		MythicManager.registerListener();
 
+	    setPistonProtectionListener();
 	    if (GconfigManager.useBlockProtection) {
-		setPistonProtectionListener();
 		getServer().getPluginManager().registerEvents(PistonProtectionListener, this);
 	    }
 

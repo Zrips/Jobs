@@ -373,7 +373,7 @@ public class ShopManager {
 		    String[] split = one.split("-");
 		    String job = split[0];
 		    int lvl = 1;
-		    if (split.length > 2) {
+		    if (split.length > 1) {
 			try {
 			    lvl = Integer.parseInt(split[1]);
 			} catch (NumberFormatException e) {
