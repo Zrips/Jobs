@@ -1,6 +1,8 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -27,31 +29,28 @@ public class glog implements Cmd {
 	    Jobs.getCommandManager().sendUsage(sender, "glog");
 	    return true;
 	}
+
 	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		Map<LogAmounts, Double> unsortMap = new HashMap<>();
-
 		int time = TimeManage.timeInInt();
 
 		for (Integer OneP : Jobs.getJobsDAO().getLognameList(time, time)) {
-
 		    PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(OneP);
-
 		    if (info == null)
 			continue;
 
 		    String name = info.getName();
-
 		    if (name == null)
 			continue;
 
 		    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(info.getUuid());
-
 		    if (JPlayer == null)
 			continue;
+
 		    HashMap<String, Log> logList = JPlayer.getLog();
-		    if (logList.isEmpty())
+		    if (logList == null || logList.isEmpty())
 			continue;
 
 		    for (Entry<String, Log> l : logList.entrySet()) {
@@ -66,24 +65,42 @@ public class glog implements Cmd {
 		}
 
 		unsortMap = Sorting.sortDoubleDESCByLog(unsortMap);
+		if (unsortMap.isEmpty()) {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.nodata"));
+		    return;
+		}
 
 		int count = 1;
 		int max = 10;
 
+		double totalMoney = 0;
+		double totalExp = 0;
+		double totalPoints = 0;
+
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.topline"));
 		for (Entry<LogAmounts, Double> one : unsortMap.entrySet()) {
 		    LogAmounts info = one.getKey();
+
+			double money = info.get(CurrencyType.MONEY);
+			totalMoney = totalMoney + money;
+
 			String moneyS = "";
-			if (info.get(CurrencyType.MONEY) != 0D)
-			    moneyS = Jobs.getLanguage().getMessage("command.glog.output.money", "%amount%", info.get(CurrencyType.MONEY));
+			if (money != 0D)
+			    moneyS = Jobs.getLanguage().getMessage("command.glog.output.money", "%amount%", money);
+
+			double exp = info.get(CurrencyType.EXP);
+			totalExp = totalExp + exp;
 
 			String expS = "";
-			if (info.get(CurrencyType.EXP) != 0D)
-			    expS = Jobs.getLanguage().getMessage("command.glog.output.exp", "%amount%", info.get(CurrencyType.EXP));
+			if (exp != 0D)
+			    expS = Jobs.getLanguage().getMessage("command.glog.output.exp", "%amount%", exp);
+
+			double points = info.get(CurrencyType.POINTS);
+			totalPoints = totalPoints + points;
 
 			String pointsS = "";
-			if (info.get(CurrencyType.POINTS) != 0D)
-			    pointsS = Jobs.getLanguage().getMessage("command.glog.output.points", "%amount%", info.get(CurrencyType.POINTS));
+			if (points != 0D)
+			    pointsS = Jobs.getLanguage().getMessage("command.glog.output.points", "%amount%", points);
 
 			sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.ls",
 			    "%number%", count,
@@ -99,11 +116,12 @@ public class glog implements Cmd {
 		    if (count > max)
 			break;
 		}
-		if (unsortMap.isEmpty())
-		    sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.nodata"));
+
+		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.totalIncomes", "%money%", format.format(totalMoney),
+		    "%exp%", format.format(totalExp), "%points%", format.format(totalPoints)));
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.bottomline"));
-
 		return;
 	    }
 	});

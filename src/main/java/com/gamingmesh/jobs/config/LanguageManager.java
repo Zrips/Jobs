@@ -540,6 +540,7 @@ public class LanguageManager {
 	    c.get("command.log.output.money", "&6money: %amount% ");
 	    c.get("command.log.output.exp", "&eexp: %amount% ");
 	    c.get("command.log.output.points", "&6points: %amount%");
+	    c.get("command.log.output.totalIncomes", "    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%");
 	    c.get("command.log.output.bottomline", "&7***********************************************************");
 	    c.get("command.log.output.prev", "&e<<<<< Prev page &2|");
 	    c.get("command.log.output.next", "&2|&e Next Page >>>>");
@@ -552,6 +553,7 @@ public class LanguageManager {
 	    c.get("command.glog.output.money", "&6money: %amount% ");
 	    c.get("command.glog.output.exp", "&eexp: %amount% ");
 	    c.get("command.glog.output.points", "&6points: %amount%");
+	    c.get("command.glog.output.totalIncomes", "    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%");
 	    c.get("command.glog.output.bottomline", "&7**************************************************************");
 	    c.get("command.glog.output.nodata", "&cData not found");
 

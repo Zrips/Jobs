@@ -1,6 +1,8 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -21,7 +23,6 @@ public class log implements Cmd {
     @Override
     @JobCommand(1100)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-
 	if (!(sender instanceof Player) && args.length != 1) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
 	    return false;
@@ -31,6 +32,7 @@ public class log implements Cmd {
 	    Jobs.getCommandManager().sendUsage(sender, "log");
 	    return true;
 	}
+
 	JobsPlayer JPlayer = null;
 	if (args.length == 0)
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
@@ -47,8 +49,7 @@ public class log implements Cmd {
 	}
 
 	HashMap<String, Log> logList = JPlayer.getLog();
-
-	if (logList.size() == 0) {
+	if (logList == null || logList.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.bottomline"));
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.nodata"));
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.bottomline"));
@@ -58,56 +59,80 @@ public class log implements Cmd {
 	Map<String, Double> unsortMap = new HashMap<>();
 
 	for (Entry<String, Log> l : logList.entrySet()) {
-	    Log one = l.getValue();
-	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
-	    for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
+	    for (Entry<String, LogAmounts> oneMap : l.getValue().getAmountList().entrySet()) {
 		unsortMap.put(oneMap.getKey(), oneMap.getValue().get(CurrencyType.MONEY));
 	    }
 	}
 
 	unsortMap = Sorting.sortDoubleDESC(unsortMap);
+	if (unsortMap.isEmpty()) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.nodata"));
+	    return true;
+	}
+
 	int count = 0;
 	int max = 10;
+
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.topline", "%playername%", JPlayer.getName()));
 	for (Entry<String, Log> l : logList.entrySet()) {
 	    Log one = l.getValue();
 	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
+	    double totalMoney = 0;
+	    double totalExp = 0;
+	    double totalPoints = 0;
 	    for (Entry<String, Double> oneSorted : unsortMap.entrySet()) {
 		for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
 		    if (oneMap.getKey().equalsIgnoreCase(oneSorted.getKey())) {
 			count++;
 
+			LogAmounts amounts = oneMap.getValue();
+
+			double money = amounts.get(CurrencyType.MONEY);
+			totalMoney = totalMoney + money;
+
 			String moneyS = "";
-			if (oneMap.getValue().get(CurrencyType.MONEY) != 0D)
-			    moneyS = Jobs.getLanguage().getMessage("command.log.output.money", "%amount%", oneMap.getValue().get(CurrencyType.MONEY));
+			if (money != 0D)
+			    moneyS = Jobs.getLanguage().getMessage("command.log.output.money", "%amount%", money);
+
+			double exp = amounts.get(CurrencyType.EXP);
+			totalExp = totalExp + exp;
 
 			String expS = "";
-			if (oneMap.getValue().get(CurrencyType.EXP) != 0D)
-			    expS = Jobs.getLanguage().getMessage("command.log.output.exp", "%amount%", oneMap.getValue().get(CurrencyType.EXP));
+			if (exp != 0D)
+			    expS = Jobs.getLanguage().getMessage("command.log.output.exp", "%amount%", exp);
+
+			double points = amounts.get(CurrencyType.POINTS);
+			totalPoints = totalPoints + points;
 
 			String pointsS = "";
-			if (oneMap.getValue().get(CurrencyType.POINTS) != 0D)
-			    pointsS = Jobs.getLanguage().getMessage("command.log.output.points", "%amount%", oneMap.getValue().get(CurrencyType.POINTS));
+			if (points != 0D)
+			    pointsS = Jobs.getLanguage().getMessage("command.log.output.points", "%amount%", points);
 
 			sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.ls",
 			    "%number%", count,
 			    "%action%", one.getActionType(),
-			    "%item%", oneMap.getValue().getItemName().replace(":0", "").replace("_", " ").toLowerCase(),
-			    "%qty%", oneMap.getValue().getCount(),
+			    "%item%", amounts.getItemName().replace(":0", "").replace("_", " ").toLowerCase(),
+			    "%qty%", amounts.getCount(),
 			    "%money%", moneyS,
 			    "%exp%", expS,
 			    "%points%", pointsS));
 			break;
 		    }
 		}
+
 		if (count > max)
 		    break;
 	    }
+
+	    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.totalIncomes", "%money%", format.format(totalMoney),
+	    "%exp%", format.format(totalExp), "%points%", format.format(totalPoints)));
+
 	    if (count > max)
 		break;
 	}
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.bottomline"));
 
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.bottomline"));
 	return true;
     }
 }
