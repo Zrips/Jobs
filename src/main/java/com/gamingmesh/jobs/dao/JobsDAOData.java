@@ -30,7 +30,7 @@ package com.gamingmesh.jobs.dao;
 public class JobsDAOData {
     private String job;
     private int level;
-    private int experience;
+    private double experience;
 
     /**
      * Constructor class for the DAO side of things.
@@ -38,7 +38,18 @@ public class JobsDAOData {
      * @param level - the level of the job
      * @param experience - the experience of the job
      */
+    @Deprecated
     public JobsDAOData(String job, int level, int experience) {
+	this(job, level, (double) experience);
+    }
+
+    /**
+     * Constructor class for the DAO side of things.
+     * @param job - the name of the job
+     * @param level - the level of the job
+     * @param experience - the experience of the job
+     */
+    public JobsDAOData(String job, int level, double experience) {
 	this.job = job;
 	this.level = level;
 	this.experience = experience;

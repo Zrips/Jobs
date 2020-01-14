@@ -618,10 +618,10 @@ public abstract class JobsDAO {
 		int jobId = res.getInt(JobsTableFields.jobid.getCollumn());
 
 		if (jobId == 0) {
-		    jobs.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
+		    jobs.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		} else {
 		    Job job = Jobs.getJob(jobId);
-		    jobs.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
+		    jobs.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		}
 
 	    }
@@ -653,7 +653,7 @@ public abstract class JobsDAO {
 		int jobId = res.getInt(JobsTableFields.jobid.getCollumn());
 
 		if (jobId == 0) {
-		    ls.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
+		    ls.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		    converted = false;
 		} else {
 		    // This should be removed when we switch over to id only method
@@ -662,7 +662,7 @@ public abstract class JobsDAO {
 			    converted = false;
 		    Job job = Jobs.getJob(jobId);
 		    if (job != null)
-		    ls.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
+		    ls.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		}
 
 		map.put(id, ls);
@@ -1254,10 +1254,10 @@ public abstract class JobsDAO {
 
 		int jobId = res.getInt(JobsTableFields.jobid.getCollumn());
 		if (jobId == 0) {
-		    jobs.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
+		    jobs.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		} else {
 		    Job job = Jobs.getJob(jobId);
-		    jobs.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
+		    jobs.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		}
 	    }
 	} catch (SQLException e) {
@@ -1418,7 +1418,7 @@ public abstract class JobsDAO {
 	    prest.setInt(1, jPlayer.getUserId());
 	    prest.setInt(2, job.getJob().getId());
 	    prest.setInt(3, level);
-	    prest.setInt(4, exp.intValue());
+	    prest.setDouble(4, exp);
 	    prest.setString(5, job.getJob().getName());
 	    prest.execute();
 	} catch (SQLException e) {
@@ -1439,7 +1439,7 @@ public abstract class JobsDAO {
 	    return;
 	PreparedStatement prest = null;
 	try {
-	    int exp = (int) prog.getExperience();
+	    double exp = prog.getExperience();
 	    if (exp < 0)
 		exp = 0;
 	    prest = conn.prepareStatement("INSERT INTO `" + getJobsTableName() + "` (`" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.jobid.getCollumn()
@@ -1447,7 +1447,7 @@ public abstract class JobsDAO {
 	    prest.setInt(1, jPlayer.getUserId());
 	    prest.setInt(2, prog.getJob().getId());
 	    prest.setInt(3, prog.getLevel());
-	    prest.setInt(4, exp);
+	    prest.setDouble(4, exp);
 	    prest.setString(5, prog.getJob().getName());
 	    prest.execute();
 	} catch (SQLException e) {
@@ -1899,7 +1899,7 @@ public abstract class JobsDAO {
 		+ "` = ? WHERE `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
 	    for (JobProgression progression : player.getJobProgression()) {
 		prest.setInt(1, progression.getLevel());
-		prest.setInt(2, (int) progression.getExperience());
+		prest.setDouble(2, progression.getExperience());
 		prest.setInt(3, player.getUserId());
 		prest.setInt(4, progression.getJob().getId());
 		prest.execute();
