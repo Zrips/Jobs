@@ -77,8 +77,38 @@ public class JobsPlayer {
     private int doneQuests = 0;
     private int skippedQuests = 0;
 
+    private PlayerPoints pointsData = null;
+
     public JobsPlayer(String userName) {
 	this.userName = userName;
+    }
+
+    public PlayerPoints getPointsData() {
+	if (pointsData == null)
+	    pointsData = new PlayerPoints();
+	return pointsData;
+    }
+
+    public void addPoints(Double points) {
+	getPointsData().addPoints(points);
+    }
+
+    public void takePoints(Double points) {
+	getPointsData().takePoints(points);
+    }
+
+    public void setPoints(Double points) {
+	getPointsData().setPoints(points);
+    }
+
+    public void setPoints(PlayerPoints points) {
+	getPointsData().setPoints(points.getCurrentPoints());
+	getPointsData().setTotalPoints(points.getTotalPoints());
+	getPointsData().setNewEntry(points.isNewEntry());
+    }
+    
+    public boolean havePoints(double points) {
+	return getPointsData().getCurrentPoints() >= points;
     }
 
     public ArchivedJobs getArchivedJobs() {

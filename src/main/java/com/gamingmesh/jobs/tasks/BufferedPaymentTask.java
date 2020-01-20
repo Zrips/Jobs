@@ -45,6 +45,6 @@ public class BufferedPaymentTask implements Runnable {
 	}
 
 	if (payment.get(CurrencyType.POINTS) != 0D)
-	    Jobs.getPointsData().addPoints(payment.getOfflinePlayer().getUniqueId(), payment.get(CurrencyType.POINTS));
+	    Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId()).getPointsData().addPoints(payment.get(CurrencyType.POINTS));
     }
 }

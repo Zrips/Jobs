@@ -392,13 +392,11 @@ public class Placeholder {
 	    case user_totallevels:
 		return Integer.toString(user.getTotalLevels());
 	    case user_points:
-		PlayerPoints pointInfo = Jobs.getPointsData().getPlayerPointsInfo(user.getUniqueId());
 		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
-		return format.format(pointInfo.getCurrentPoints());
+		return format.format(user.getPointsData().getCurrentPoints());
 	    case user_total_points:
 		format = NumberFormat.getInstance(Locale.ENGLISH);
-		pointInfo = Jobs.getPointsData().getPlayerPointsInfo(user.getUniqueId());
-		return format.format(pointInfo.getTotalPoints());
+		return format.format(user.getPointsData().getTotalPoints());
 	    case user_issaved:
 		return convert(user.isSaved());
 	    case user_displayhonorific:

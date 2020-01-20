@@ -107,8 +107,11 @@ public class ShopManager {
 //	String title = Jobs.getLanguage().getMessage("command.shop.info.title");
 //	if (title.length() > 32)
 //	    title = title.substring(0, 30) + "..";
+	
+	
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
-	PlayerPoints pointsInfo = Jobs.getPointsData().getPlayerPointsInfo(player.getUniqueId());
+	PlayerPoints pointsInfo = jPlayer.getPointsData();
 	double points = 0D;
 	if (pointsInfo != null)
 	    points = (int) (pointsInfo.getCurrentPoints() * 100.0) / 100.0;

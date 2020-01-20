@@ -335,9 +335,7 @@ public class PlayerManager {
 	    }
 
 	if (points != null)
-	    Jobs.getPointsData().addPlayer(jPlayer.getUniqueId(), points);
-	else
-	    Jobs.getPointsData().addPlayer(jPlayer.getUniqueId());
+	    jPlayer.setPoints(points);
 
 	if (logs != null)
 	    jPlayer.setLog(logs);
