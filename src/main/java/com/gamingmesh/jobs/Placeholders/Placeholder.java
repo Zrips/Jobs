@@ -15,7 +15,6 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class Placeholder {

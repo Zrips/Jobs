@@ -97,7 +97,7 @@ public class Language {
 	    }
 	}
 
-	if (variables.length > 0)
+	if (variables != null && variables.length > 0)
 	    for (int i = 0; i < variables.length; i++) {
 		if (variables.length >= i + 2)
 		    msg = msg.replace(String.valueOf(variables[i]), String.valueOf(variables[i + 1]));
@@ -164,7 +164,7 @@ public class Language {
      * @return the message
      */
     public String getDefaultMessage(String key) {
-	return enlocale.contains(key) == true ? Colors(enlocale.getString(key)) : "Can't find locale";
+	return enlocale.contains(key) ? Colors(enlocale.getString(key)) : "Can't find locale";
     }
 
     /**

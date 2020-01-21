@@ -271,10 +271,13 @@ public class Jobs extends JavaPlugin {
 	return DBManager;
     }
 
-    private void setPointsDatabase() {
-	pointsDatabase = new PointsData();
-    }
 
+    /**
+     * Gets the PointsData
+     * @deprecated Use {@link JobsPlayer#getPointsData()}
+     * @return {@link PointsData}
+     */
+    @Deprecated
     public static PointsData getPointsData() {
 	if (pointsDatabase == null)
 	    pointsDatabase = new PointsData();
@@ -857,7 +860,6 @@ public class Jobs extends JavaPlugin {
 	    setPermissionHandler(new PermissionHandler(this));
 	    setPluginLogger(getLogger());
 	    setJobsClassloader();
-	    setPointsDatabase();
 	    setDBManager();
 	    setLanguage();
 	    setGUIManager();
