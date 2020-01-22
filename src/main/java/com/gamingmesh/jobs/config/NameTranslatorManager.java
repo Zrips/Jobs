@@ -112,9 +112,11 @@ public class NameTranslatorManager {
     }
 
     public void readFile() {
-
-	YmlMaker ItemFile = new YmlMaker(Jobs.getInstance(), "TranslatableWords" + File.separator + "Words_" + Jobs.getGCManager().localeString + ".yml");
-	ItemFile.saveDefaultConfig();
+	YmlMaker ItemFile = new YmlMaker(Jobs.getInstance(), "TranslatableWords" + File.separator + "Words_"
+	    + Jobs.getGCManager().localeString + ".yml");
+	if (!ItemFile.getConfigFile().getName().equalsIgnoreCase("en")) {
+	    ItemFile.saveDefaultConfig();
+	}
 
 	if (ItemFile.getConfig().isConfigurationSection("ItemList")) {
 	    ConfigurationSection section = ItemFile.getConfig().getConfigurationSection("ItemList");
@@ -193,7 +195,8 @@ public class NameTranslatorManager {
 	    Jobs.consoleMsg("&c[Jobs] The ColorList section not found in " + ItemFile.fileName + " file.");
     }
 
-    synchronized void load() {
+    @SuppressWarnings("deprecation")
+	synchronized void load() {
 	String ls = Jobs.getGCManager().localeString;
 	if (ls.isEmpty())
 	    return;

@@ -1017,8 +1017,10 @@ public class ConfigManager {
 
 		for (String one : qsection.getKeys(false)) {
 		    try {
-
 			ConfigurationSection sqsection = qsection.getConfigurationSection(one);
+			if (sqsection == null) {
+			    continue;
+			}
 
 			String name = sqsection.getString("Name", one);
 			Quest quest = new Quest(name, job);

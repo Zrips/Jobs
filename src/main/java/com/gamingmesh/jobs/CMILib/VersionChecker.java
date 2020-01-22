@@ -2,8 +2,8 @@ package com.gamingmesh.jobs.CMILib;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
 
@@ -150,7 +150,6 @@ public class VersionChecker {
 	Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 	    String currentVersion = plugin.getDescription().getVersion();
 	    String newVersion = getNewVersion();
-
 	    if (newVersion == null || newVersion.equalsIgnoreCase(currentVersion))
 		return;
 
@@ -169,12 +168,9 @@ public class VersionChecker {
 
     public String getNewVersion() {
 	try {
-	    HttpURLConnection con = (HttpURLConnection) new URL("https://www.spigotmc.org/api/general.php").openConnection();
-	    con.setDoOutput(true);
-	    con.setRequestMethod("POST");
-	    con.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=" + resource).getBytes("UTF-8"));
+	    URLConnection con = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resource).openConnection();
 	    String version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
-	    if (version.length() <= 7)
+	    if (version.length() <= 8)
 		return version;
 	} catch (Throwable t) {
 	    Jobs.consoleMsg("&cFailed to check for " + plugin.getDescription().getName() + " update on spigot web page.");
