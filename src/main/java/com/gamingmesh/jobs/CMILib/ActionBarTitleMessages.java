@@ -51,7 +51,7 @@ public class ActionBarTitleMessages {
 		    sub = consts[2].getClass();
 		}
 
-	    } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | NoSuchFieldException ex) {
+	    } catch (Exception ex) {
 		Bukkit.getLogger().log(Level.SEVERE, "Error {0}", ex);
 	    }
 	    // Title
@@ -60,7 +60,7 @@ public class ActionBarTitleMessages {
 		enumTitleAction = Class.forName(getEnumTitleActionClasspath());
 		nmsPacketPlayOutTitle = typePacketPlayOutTitle.getConstructor(enumTitleAction, nmsIChatBaseComponent);
 		fromString = Class.forName(getClassMessageClasspath()).getMethod("fromString", String.class);
-	    } catch (ClassNotFoundException | NoSuchMethodException | SecurityException ex) {
+	    } catch (Exception ex) {
 		simpleTitleMessages = true;
 	    }
 	}
@@ -98,15 +98,13 @@ public class ActionBarTitleMessages {
 	    Object connection = playerConnection.get(player);
 	    sendPacket.invoke(connection, packet);
 	} catch (Throwable t) {
-//	    Bukkit.getLogger().log(Level.SEVERE, "Error {0}", ex);
 	}
 
 	try {
 	    Object player = getHandle.invoke(receivingPacket);
 	    Object connection = playerConnection.get(player);
 	    sendPacket.invoke(connection, packet);
-	} catch (Throwable t) {
-//	    Bukkit.getLogger().log(Level.SEVERE, "Error {0}", ex);
+	} catch (Exception t) {
 	}
     }
 
@@ -139,6 +137,8 @@ public class ActionBarTitleMessages {
 		case v1_14_R2:
 		case v1_15_R1:
 		case v1_15_R2:
+		case v1_16_R1:
+		case v1_16_R2:
 		    receivingPacket.sendTitle(t, s, fadeIn, keep, fadeOut);
 		    break;
 		case v1_7_R1:
@@ -168,7 +168,7 @@ public class ActionBarTitleMessages {
 		    break;
 		}
 
-	    } catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException ex) {
+	    } catch (Exception ex) {
 		simpleTitleMessages = true;
 		Bukkit.getLogger().log(Level.SEVERE, "Your server can't fully support title messages. They will be shown in chat instead.");
 	    }

@@ -31,43 +31,22 @@ public class Reflections {
     private void initialize() {
 	try {
 	    CraftServerClass = getBukkitClass("CraftServer");
-	} catch (ClassNotFoundException e) {
-	    e.printStackTrace();
-	}
-	try {
 	    CraftServer = CraftServerClass.cast(Bukkit.getServer());
-	} catch (ClassCastException e) {
-	    e.printStackTrace();
-	}
-	try {
 	    NBTTagCompound = getMinecraftClass("NBTTagCompound");
-	} catch (ClassNotFoundException e) {
-	    e.printStackTrace();
-	}
-	try {
 	    NBTBase = getMinecraftClass("NBTBase");
-	} catch (ClassNotFoundException e) {
-	    e.printStackTrace();
-	}
 	/*try {
 	    NBTTagList = getMinecraftClass("NBTTagList");
 	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
 	    e.printStackTrace();
 	}*/
-
-	try {
 	    CraftItemStack = getBukkitClass("inventory.CraftItemStack");
-	} catch (ClassNotFoundException e) {
-	    e.printStackTrace();
-	}
 	/*try {
 	    Item = getMinecraftClass("Item");
 	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
 	    e.printStackTrace();
 	}*/
-	try {
 	    IStack = getMinecraftClass("ItemStack");
-	} catch (ClassNotFoundException e) {
+	} catch (ClassCastException | ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
     }

@@ -368,11 +368,8 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	CMIMaterial cmat = CMIMaterial.get(block);
-	if (cmat.equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
-	    FurnaceBrewingHandling.removeFurnace(block);
-	else if (cmat.equals(CMIMaterial.SMOKER) && block.hasMetadata(furnaceOwnerMetadata))
-	    FurnaceBrewingHandling.removeFurnace(block);
-	else if (cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.SMOKER)
+	    || cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 	    FurnaceBrewingHandling.removeFurnace(block);
 	else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)
 	    && block.hasMetadata(brewingOwnerMetadata))
@@ -565,7 +562,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	ItemStack resultStack = event.getRecipe().getResult();
-
 	if (resultStack == null)
 	    return;
 
@@ -594,8 +590,6 @@ public class JobsPaymentListener implements Listener {
 	if (!payIfCreative(player))
 	    return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	// Checking if item is been repaired, not crafted. Combining 2 items
 	ItemStack[] sourceItems = event.getInventory().getContents();
 	// For dye check
@@ -605,14 +599,14 @@ public class JobsPaymentListener implements Listener {
 	CMIMaterial second = null;
 	CMIMaterial third = null;
 	boolean leather = false;
-	for (int i = 0; i < sourceItems.length; i++) {
-	    if (sourceItems[i] == null)
+	for (ItemStack s : sourceItems) {
+	    if (s == null)
 		continue;
 
-	    if (CMIMaterial.isDye(sourceItems[i].getType()))
-		DyeStack.add(sourceItems[i]);
+	    if (CMIMaterial.isDye(s.getType()))
+		DyeStack.add(s);
 
-	    CMIMaterial mat = CMIMaterial.get(sourceItems[i]);
+	    CMIMaterial mat = CMIMaterial.get(s);
 	    if (mat != CMIMaterial.NONE) {
 		y++;
 		if (y == 0)
@@ -623,7 +617,7 @@ public class JobsPaymentListener implements Listener {
 		    third = mat;
 	    }
 
-	    switch (CMIMaterial.get(sourceItems[i])) {
+	    switch (CMIMaterial.get(s)) {
 	    case LEATHER_BOOTS:
 	    case LEATHER_CHESTPLATE:
 	    case LEATHER_HELMET:
@@ -635,6 +629,7 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
 
@@ -849,9 +844,7 @@ public class JobsPaymentListener implements Listener {
 		    continue;
 
 		CMIEnchantment e = CMIEnchantment.get(enchant);
-
 		String enchantName = e == null ? null : e.toString();
-
 		if (enchantName == null)
 		    continue;
 
@@ -915,9 +908,7 @@ public class JobsPaymentListener implements Listener {
 		continue;
 
 	    CMIEnchantment e = CMIEnchantment.get(enchant);
-
 	    String enchantName = e == null ? null : e.toString();
-
 	    if (enchantName == null)
 		continue;
 
@@ -1142,7 +1133,7 @@ public class JobsPaymentListener implements Listener {
 	    try {
 		// So lets remove meta in case some plugin removes entity in wrong way.
 		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-	    } catch (Throwable t) {
+	    } catch (Exception t) {
 	    }
 	    return;
 	}
@@ -1306,20 +1297,24 @@ public class JobsPaymentListener implements Listener {
 	Location loc = event.getLocation();
 	Collection<Entity> ents = Version.isCurrentEqualOrLower(Version.v1_8_R1)
 	    ? null : loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
+	if (ents == null) {
+	    return;
+	}
+
 	double dis = Double.MAX_VALUE;
 	Player player = null;
-	if (ents != null) {
-	    for (Entity one : ents) {
-		if (!(one instanceof Player))
-		    continue;
-		Player p = (Player) one;
-		if (!Jobs.getNms().getItemInMainHand(p).getType().toString().equalsIgnoreCase("ARMOR_STAND"))
-		    continue;
-		double d = p.getLocation().distance(loc);
-		if (d < dis) {
-		    dis = d;
-		    player = p;
-		}
+	for (Entity one : ents) {
+	    if (!(one instanceof Player))
+		continue;
+
+	    Player p = (Player) one;
+	    if (!Jobs.getNms().getItemInMainHand(p).getType().toString().equalsIgnoreCase("ARMOR_STAND"))
+		continue;
+
+	    double d = p.getLocation().distance(loc);
+	    if (d < dis) {
+		dis = d;
+		player = p;
 	    }
 	}
 
@@ -1555,11 +1550,8 @@ public class JobsPaymentListener implements Listener {
 
 	    CMIMaterial cmat = CMIMaterial.get(block);
 
-	    if (cmat.equals(CMIMaterial.FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
-		FurnaceBrewingHandling.removeFurnace(block);
-	    else if (cmat.equals(CMIMaterial.SMOKER) && block.hasMetadata(furnaceOwnerMetadata))
-		FurnaceBrewingHandling.removeFurnace(block);
-	    else if (cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	    if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.SMOKER)
+		|| cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
 		FurnaceBrewingHandling.removeFurnace(block);
 	    else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)
 		&& block.hasMetadata(brewingOwnerMetadata))
