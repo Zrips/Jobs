@@ -26,6 +26,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.*;
+import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -1123,8 +1124,8 @@ public class JobsPaymentListener implements Listener {
 	    if (e.getDamager().hasMetadata("NPC"))
 		return;
 
-	if (Jobs.getGCManager().MythicMobsEnabled && Jobs.getMythicManager() != null) {
-	    if (Jobs.getMythicManager().isMythicMob(lVictim))
+	if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
+		   && HookManager.getMythicManager().isMythicMob(lVictim)) {
 		return;
 	}
 
@@ -1144,8 +1145,8 @@ public class JobsPaymentListener implements Listener {
 	if (e.getDamager() instanceof Player) {
 	    pDamager = (Player) e.getDamager();
 	    // Checking if killer is MyPet animal
-	} else if (Jobs.getMyPetManager() != null && Jobs.getMyPetManager().isMyPet(e.getDamager())) {
-	    UUID uuid = Jobs.getMyPetManager().getOwnerOfPet(e.getDamager());
+	} else if (HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager())) {
+	    UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(e.getDamager());
 	    if (uuid != null)
 		pDamager = Bukkit.getPlayer(uuid);
 	    // Checking if killer is tamed animal

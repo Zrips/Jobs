@@ -18,6 +18,7 @@ import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
+import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class NameTranslatorManager {
@@ -101,9 +102,7 @@ public class NameTranslatorManager {
 		NameList got = ListOfMMEntities.get(materialName.toLowerCase());
 		if (got != null && got.getName() != null)
 		    return got.getName();
-		if (Jobs.getMythicManager() == null)
-		    return materialName;
-		return Jobs.getMythicManager().getDisplayName(materialName);
+		return HookManager.getMythicManager() == null ? materialName : HookManager.getMythicManager().getDisplayName(materialName);
 	    default:
 		break;
 	    }

@@ -14,6 +14,7 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.config.RestrictedAreaManager;
 import com.gamingmesh.jobs.container.CuboidArea;
 import com.gamingmesh.jobs.container.RestrictedArea;
+import com.gamingmesh.jobs.hooks.HookManager;
 
 public class area implements Cmd {
 
@@ -58,8 +59,8 @@ public class area implements Cmd {
 				"%tool%", CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getName()));
 		    return true;
 		}
-		if (wg && Jobs.getWorldGuardManager() != null) {
-		    name = Jobs.getWorldGuardManager().getNameByName(name);
+		if (wg && HookManager.getWorldGuardManager() != null) {
+		    name = HookManager.getWorldGuardManager().getNameByName(name);
 		    if (name == null) {
 			sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.wgDontExist"));
 			return true;

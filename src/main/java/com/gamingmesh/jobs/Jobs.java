@@ -24,18 +24,17 @@ import com.gamingmesh.jobs.CMILib.Reflections;
 import com.gamingmesh.jobs.CMILib.VersionChecker;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Gui.GuiManager;
-import com.gamingmesh.jobs.McMMO.McMMO1_X_listener;
-import com.gamingmesh.jobs.McMMO.McMMO2_X_listener;
-import com.gamingmesh.jobs.McMMO.McMMOManager;
-import com.gamingmesh.jobs.MyPet.MyPetManager;
-import com.gamingmesh.jobs.MythicMobs.MythicMobInterface;
-import com.gamingmesh.jobs.MythicMobs.MythicMobs2;
-import com.gamingmesh.jobs.MythicMobs.MythicMobs4;
 import com.gamingmesh.jobs.Placeholders.NewPlaceholderAPIHook;
 import com.gamingmesh.jobs.Placeholders.Placeholder;
 import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
+import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.hooks.McMMO.McMMOManager;
+import com.gamingmesh.jobs.hooks.MyPet.MyPetManager;
+import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobInterface;
+import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs2;
+import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs4;
+import com.gamingmesh.jobs.hooks.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.Signs.SignUtil;
-import com.gamingmesh.jobs.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
@@ -63,7 +62,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -73,7 +71,9 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 public class Jobs extends JavaPlugin {
+
     private static String version = "";
+
     private static PlayerManager pManager = null;
     private static JobsCommands cManager = null;
     private static Language lManager = null;
@@ -91,14 +91,17 @@ public class Jobs extends JavaPlugin {
     private static ShopManager shopManager = null;
     private static Loging loging = null;
     private static BlockProtectionManager BpManager = null;
-
     private static JobsManager DBManager = null;
 
     private static PistonProtectionListener PistonProtectionListener = null;
-    private static McMMOManager McMMOManager = null;
 
+    @Deprecated
+    private static McMMOManager McMMOManager = null;
+    @Deprecated
     private static MythicMobInterface MythicManager = null;
+    @Deprecated
     private static MyPetManager myPetManager = null;
+    @Deprecated
     private static WorldGuardManager worldGuardManager = null;
 
     private static ConfigManager configManager = null;
@@ -136,17 +139,7 @@ public class Jobs extends JavaPlugin {
 
     private static PointsData pointsDatabase = null;
 
-    private void setMcMMOlistener() {
-	try {
-	    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
-	    getServer().getPluginManager().registerEvents(new McMMO2_X_listener(this), this);
-	    consoleMsg("&e[Jobs] Registered McMMO 2.x listener");
-	} catch (ClassNotFoundException e) {
-	    getServer().getPluginManager().registerEvents(new McMMO1_X_listener(this), this);
-	    consoleMsg("&e[Jobs] Registered McMMO 1.x listener");
-	}
-    }
-
+    @Deprecated
     public static McMMOManager getMcMMOManager() {
 	if (McMMOManager == null)
 	    McMMOManager = new McMMOManager();
@@ -161,10 +154,7 @@ public class Jobs extends JavaPlugin {
 	return PistonProtectionListener;
     }
 
-    private void setMyPetManager() {
-	myPetManager = new MyPetManager();
-    }
-
+    @Deprecated
     public static MyPetManager getMyPetManager() {
 	if (myPetManager == null && getInstance().getServer().getPluginManager().getPlugin("MyPet") != null) {
 	    myPetManager = new MyPetManager();
@@ -206,10 +196,12 @@ public class Jobs extends JavaPlugin {
 	return true;
     }
 
+    @Deprecated
     public static WorldGuardManager getWorldGuardManager() {
 	return worldGuardManager;
     }
 
+    @Deprecated
     public void setMythicManager() {
 	try {
 	    Class.forName("net.elseland.xikage.MythicMobs.API.MythicMobsAPI");
@@ -225,16 +217,7 @@ public class Jobs extends JavaPlugin {
 	    consoleMsg("&e[Jobs] MythicMobs detected.");
     }
 
-    private boolean setWorldGuard() {
-	Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
-	if (plugin != null) {
-	    worldGuardManager = new WorldGuardManager();
-	    consoleMsg("&e[Jobs] WorldGuard detected.");
-	    return true;
-	}
-	return false;
-    }
-
+    @Deprecated
     public static MythicMobInterface getMythicManager() {
 	return MythicManager;
     }
@@ -626,13 +609,8 @@ public class Jobs extends JavaPlugin {
 	    if (GconfigManager.useBlockProtection)
 		pm.registerEvents(PistonProtectionListener, instance);
 
-	    if (getMcMMOManager().CheckmcMMO()) {
-		try {
-		    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
-		    pm.registerEvents(new McMMO2_X_listener(instance), instance);
-		} catch (ClassNotFoundException e) {
-		    pm.registerEvents(new McMMO1_X_listener(instance), instance);
-		}
+	    if (HookManager.getMcMMOManager().CheckmcMMO()) {
+		HookManager.setMcMMOlistener();
 	    }
 	}
 
@@ -888,17 +866,7 @@ public class Jobs extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new JobsPayment14Listener(), this);
 	    }
 
-	    if (getMcMMOManager().CheckmcMMO())
-		setMcMMOlistener();
-
-	    if (getServer().getPluginManager().isPluginEnabled("MyPet")) {
-		setMyPetManager();
-	    }
-	    setWorldGuard();
-
-	    setMythicManager();
-	    if (GconfigManager.MythicMobsEnabled && MythicManager != null && MythicManager.Check())
-		MythicManager.registerListener();
+	    HookManager.loadHooks();
 
 	    setPistonProtectionListener();
 	    if (GconfigManager.useBlockProtection) {

@@ -11,6 +11,7 @@ import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class bonus implements Cmd {
@@ -53,7 +54,8 @@ public class bonus implements Cmd {
 	    printBoost(sender, boost, BoostOf.NearSpawner);
 	printBoost(sender, boost, BoostOf.PetPay);
 
-	if (Jobs.getMcMMOManager().mcMMOPresent || Jobs.getMcMMOManager().mcMMOOverHaul && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
+	if (HookManager.getMcMMOManager().mcMMOPresent ||
+	    HookManager.getMcMMOManager().mcMMOOverHaul && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
 	    printBoost(sender, boost, BoostOf.McMMO);
 
 	player.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
