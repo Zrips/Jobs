@@ -784,11 +784,8 @@ public class ConfigManager {
 			GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
 			SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
 			if (skullOwner.length() == 36) {
-			    try {
-				OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
-				skullMeta.setOwner(offPlayer.getName());
-			    } catch (IllegalArgumentException e) {
-			    }
+			    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
+			    skullMeta.setOwner(offPlayer.getName());
 			} else
 			    skullMeta.setOwner(skullOwner);
 			GUIitem.setItemMeta(skullMeta);
@@ -810,11 +807,8 @@ public class ConfigManager {
 			GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
 			SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
 			if (skullOwner.length() == 36) {
-			    try {
-				OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
-				skullMeta.setOwner(offPlayer.getName());
-			    } catch (IllegalArgumentException e) {
-			    }
+			    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
+			    skullMeta.setOwner(offPlayer.getName());
 			} else
 			    skullMeta.setOwner(skullOwner);
 			GUIitem.setItemMeta(skullMeta);

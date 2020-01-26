@@ -692,14 +692,13 @@ public class Jobs extends JavaPlugin {
      * Executes clean shutdown
      */
     public static void shutdown() {
-	//Bukkit.getOnlinePlayers().forEach(p -> getPlayerManager().getJobsPlayer(p).clearBossMaps());
-
 	if (saveTask != null)
 	    saveTask.shutdown();
 
 	if (paymentThread != null)
 	    paymentThread.shutdown();
 
+	getPlayerManager().removePlayerAdditions();
 	getPlayerManager().saveAll();
 
 	if (dao != null) {

@@ -222,6 +222,13 @@ public class PlayerManager {
 	}
     }
 
+    public void removePlayerAdditions() {
+	for (JobsPlayer jPlayer : players.values()) {
+	    jPlayer.clearBossMaps();
+	    jPlayer.clearUpdateBossBarFor();
+	}
+    }
+
     /**
      * Save all the information of all of the players in the game
      */

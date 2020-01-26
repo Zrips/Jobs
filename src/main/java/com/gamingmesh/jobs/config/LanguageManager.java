@@ -299,7 +299,7 @@ public class LanguageManager {
 	    c.get("command.shop.info.currentPoints", "&eYou have: &6%currentpoints%");
 	    c.get("command.shop.info.price", "&ePrice: &6%price%");
 	    c.get("command.shop.info.reqJobs", "&eRequired jobs:");
-	    c.get("command.shop.info.reqJobsList", "  &e%jobsname%&e: &e%level% lvl");
+	    c.get("command.shop.info.reqJobsList", "  &6%jobsname%&e: &e%level% lvl");
 	    c.get("command.shop.info.reqTotalLevel", "&6Required total level: &e%totalLevel%");
 	    c.get("command.shop.info.reqJobsColor", "&4");
 	    c.get("command.shop.info.reqJobsLevelColor", "&4");

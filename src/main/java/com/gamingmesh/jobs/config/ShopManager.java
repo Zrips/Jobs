@@ -199,12 +199,8 @@ public class ShopManager {
 		if (item.isHeadOwner())
 		    skullMeta.setOwner(Jobs.getPlayerManager().getJobsPlayer(player).getName());
 		else {
-		    try {
-			OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
-			skullMeta.setOwner(offPlayer.getName());
-		    } catch (Exception e) {
-			e.printStackTrace();
-		    }
+		    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
+		    skullMeta.setOwner(offPlayer.getName());
 		}
 		GUIitem.setItemMeta(skullMeta);
 	    } else
