@@ -158,27 +158,32 @@ public class ShopManager {
 	    if (!item.getRequiredJobs().isEmpty()) {
 		Lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobs"));
 		for (Entry<String, Integer> one : item.getRequiredJobs().entrySet()) {
+		    Job job = Jobs.getJob(one.getKey());
+		    if (job == null) {
+			continue;
+			}
+
 		    String jobColor = "";
 		    String levelColor = "";
 
-		    Job job = Jobs.getJob(one.getKey());
-
 		    JobProgression prog = Jobs.getPlayerManager().getJobsPlayer(player).getJobProgression(job);
 		    if (prog == null) {
-			jobColor = ChatColor.DARK_RED.toString();
-			levelColor = ChatColor.DARK_RED.toString();
+			jobColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsColor");
+			levelColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsLevelColor");
 		    }
 
 		    if (prog != null && prog.getLevel() < one.getValue())
-			levelColor = ChatColor.DARK_RED.toString();
+			levelColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsLevelColor");
 
-		    Lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobsList", "%jobsname%", jobColor + one.getKey(), "%level%", levelColor + one.getValue()));
+		    Lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobsList", "%jobsname%",
+			jobColor + one.getKey(), "%level%", levelColor + one.getValue()));
 		}
 	    }
 
 	    if (item.getRequiredTotalLevels() != -1) {
 		Lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevel",
-		    "%totalLevel%", (Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels() ? ChatColor.DARK_RED + "" : "") + item.getRequiredTotalLevels()));
+		    "%totalLevel%", (Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()
+			? Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevelColor") : "") + item.getRequiredTotalLevels()));
 	    }
 
 	    meta.setLore(Lore);
