@@ -18,16 +18,15 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.15-R0.1-SNAPSHOT</version>
+			<version>1.15.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- MyPet -->
 		<dependency>
-			<groupId>de.Keyle.MyPet</groupId>
-			<artifactId>MyPet</artifactId>
-			<version>3.7</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/MyPet-3.7.jar</systemPath>
+			<groupId>de.keyle</groupId>
+			<artifactId>mypet</artifactId>
+			<version>3.9</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- McMMO -->
 		<dependency>
@@ -160,6 +159,14 @@
 		<repository>
 			<id>placeholderapi</id>
 			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+		</repository>
+		<!-- MyPet -->
+		<repository>
+			<id>mypet-repo</id>
+			<url>http://repo.keyle.de/</url>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
 		</repository>
 	</repositories>
 	<!-- Builds Plugin -->
