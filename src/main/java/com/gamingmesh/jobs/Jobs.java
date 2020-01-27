@@ -72,8 +72,6 @@ import java.util.logging.Logger;
 
 public class Jobs extends JavaPlugin {
 
-    private static String version = "";
-
     private static PlayerManager pManager = null;
     private static JobsCommands cManager = null;
     private static Language lManager = null;
@@ -109,7 +107,6 @@ public class Jobs extends JavaPlugin {
 
     private static Reflections reflections = null;
 
-    private static Logger pLogger = null;
     private static JobsClassLoader classLoader = null;
     private static JobsDAO dao = null;
     private static List<Job> jobs = null;
@@ -146,11 +143,9 @@ public class Jobs extends JavaPlugin {
 	return McMMOManager;
     }
 
-    private void setPistonProtectionListener() {
-	PistonProtectionListener = new PistonProtectionListener();
-    }
-
     public static PistonProtectionListener getPistonProtectionListener() {
+	if (PistonProtectionListener == null)
+	    PistonProtectionListener = new PistonProtectionListener();
 	return PistonProtectionListener;
     }
 
@@ -222,19 +217,15 @@ public class Jobs extends JavaPlugin {
 	return MythicManager;
     }
 
-    private void setLoging() {
-	loging = new Loging();
-    }
-
     public static Loging getLoging() {
+	if (loging == null)
+	    loging = new Loging();
 	return loging;
     }
 
-    private void setBpManager() {
-	BpManager = new BlockProtectionManager();
-    }
-
     public static BlockProtectionManager getBpManager() {
+	if (BpManager == null)
+	    BpManager = new BlockProtectionManager();
 	return BpManager;
     }
 
@@ -242,10 +233,6 @@ public class Jobs extends JavaPlugin {
 	if (reflections == null)
 	    reflections = new Reflections();
 	return reflections;
-    }
-
-    private void setDBManager() {
-	DBManager = new JobsManager(instance);
     }
 
     public static JobsManager getDBManager() {
@@ -271,38 +258,25 @@ public class Jobs extends JavaPlugin {
 	if (shopManager == null) {
 	    shopManager = new ShopManager();
 	}
-
 	return shopManager;
     }
 
-    private void setConfigManager() {
-	configManager = new ConfigManager();
-    }
-
     public static ConfigManager getConfigManager() {
+	if (configManager == null)
+	    configManager = new ConfigManager();
 	return configManager;
     }
 
-    private void setGCManager() {
-	GconfigManager = new GeneralConfigManager();
-    }
-
     public static GeneralConfigManager getGCManager() {
+	if (GconfigManager == null)
+	    GconfigManager = new GeneralConfigManager();
 	return GconfigManager;
-    }
-
-    private void setActionBar() {
-	actionbar = new ActionBarTitleMessages();
     }
 
     public static ActionBarTitleMessages getActionBar() {
 	if (actionbar == null)
 	    actionbar = new ActionBarTitleMessages();
 	return actionbar;
-    }
-
-    private void setNms(NMS nms) {
-	Jobs.nms = nms;
     }
 
     public static NMS getNms() {
@@ -372,31 +346,22 @@ public class Jobs extends JavaPlugin {
     }
 
     public static GuiManager getGUIManager() {
+	if (GUIManager == null)
+	    GUIManager = new GuiManager();
 	return GUIManager;
-    }
-
-    private void setGUIManager() {
-	GUIManager = new GuiManager();
     }
 
     public static JobsCommands getCommandManager() {
 	if (cManager == null) {
 	    cManager = new JobsCommands(getInstance());
 	}
-
 	return cManager;
     }
 
-    private void setCommandManager() {
-	cManager = new JobsCommands(this);
-    }
-
     public static ExploreManager getExplore() {
+	if (exploreManager == null)
+	    exploreManager = new ExploreManager();
 	return exploreManager;
-    }
-
-    private void setExplore() {
-	exploreManager = new ExploreManager();
     }
 
     /**
@@ -432,11 +397,9 @@ public class Jobs extends JavaPlugin {
      * @return the language manager
      */
     public static Language getLanguage() {
+	if (lManager == null)
+	    lManager = new Language(instance);
 	return lManager;
-    }
-
-    private void setLanguage() {
-	lManager = new Language(this);
     }
 
     public static LanguageManager getLanguageManager() {
@@ -448,18 +411,11 @@ public class Jobs extends JavaPlugin {
     }
 
     /**
-     * Sets the plugin logger
-     */
-    private void setPluginLogger(Logger pLogger) {
-	Jobs.pLogger = pLogger;
-    }
-
-    /**
      * Retrieves the plugin logger
      * @return the plugin logger
      */
     public static Logger getPluginLogger() {
-	return pLogger;
+	return instance.getLogger();
     }
 
     public static File getFolder() {
@@ -605,7 +561,7 @@ public class Jobs extends JavaPlugin {
 		pm.registerEvents(new JobsPayment14Listener(), instance);
 	    }
 
-	    if (GconfigManager.useBlockProtection)
+	    if (getGCManager().useBlockProtection)
 		pm.registerEvents(PistonProtectionListener, instance);
 
 	    if (HookManager.getMcMMOManager().CheckmcMMO()) {
@@ -627,9 +583,9 @@ public class Jobs extends JavaPlugin {
 	    dao.closeConnections();
 	}
 
-	GconfigManager.reload();
-	lManager.reload();
-	configManager.reload();
+	getGCManager().reload();
+	getLanguage().reload();
+	getConfigManager().reload();
 
 	getDBManager().getDB().loadAllJobsWorlds();
 	getDBManager().getDB().loadAllJobsNames();
@@ -641,28 +597,27 @@ public class Jobs extends JavaPlugin {
 	    usedSlots.put(job, dao.getSlotsTaken(job));
 	}
 	getPlayerManager().reload();
-	permissionHandler.registerPermissions();
+	getPermissionHandler().registerPermissions();
 
 	// set the system to auto save
-	if (GconfigManager.getSavePeriod() > 0) {
-	    saveTask = new DatabaseSaveThread(GconfigManager.getSavePeriod());
+	if (getGCManager().getSavePeriod() > 0) {
+	    saveTask = new DatabaseSaveThread(getGCManager().getSavePeriod());
 	    saveTask.start();
 	}
 
 	// schedule payouts to buffered payments
-	paymentThread = new BufferedPaymentThread(GconfigManager.getEconomyBatchDelay());
+	paymentThread = new BufferedPaymentThread(getGCManager().getEconomyBatchDelay());
 	paymentThread.start();
 
 	dao.loadPlayerData();
 
 	// Schedule
-	if (GconfigManager.enableSchedule) {
+	if (getGCManager().enableSchedule) {
 	    getScheduleManager().load();
 	    getScheduleManager().start();
 	} else
 	    getScheduleManager().cancel();
 
-	permissionManager = new PermissionManager();
     }
 
     /**
@@ -727,19 +682,9 @@ public class Jobs extends JavaPlugin {
      * @return the classloader
      */
     public static JobsClassLoader getJobsClassloader() {
+	if (classLoader == null)
+	    classLoader = new JobsClassLoader(instance);
 	return classLoader;
-    }
-
-    private void setJobsClassloader() {
-	classLoader = new JobsClassLoader(this);
-    }
-
-    /**
-     * Sets the permission handler
-     * @param permissionHandler - the permission handler
-     */
-    private void setPermissionHandler(PermissionHandler permissionHandler) {
-	Jobs.permissionHandler = permissionHandler;
     }
 
     /**
@@ -747,10 +692,14 @@ public class Jobs extends JavaPlugin {
      * @return the permission handler
      */
     public static PermissionHandler getPermissionHandler() {
+	if (permissionHandler == null)
+	    permissionHandler = new PermissionHandler(instance);
 	return permissionHandler;
     }
 
     public static PermissionManager getPermissionManager() {
+	if (permissionManager == null)
+	    permissionManager = new PermissionManager();
 	return permissionManager;
     }
 
@@ -779,6 +728,9 @@ public class Jobs extends JavaPlugin {
      * @return the version check manager
      */
     public static VersionChecker getVersionCheckManager() {
+	if (versionCheckManager == null)
+	    versionCheckManager = new VersionChecker(instance);
+
 	return versionCheckManager;
     }
 
@@ -795,23 +747,19 @@ public class Jobs extends JavaPlugin {
 	    return;
 	}
 
-	versionCheckManager = new VersionChecker(this);
-
-	version = versionCheckManager.getVersion().getShortVersion();
-
 //	itemManager = new ItemManager(this);
 
 	try {
-	    Class<?> nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + version);
+	    Class<?> nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + Version.getCurrent().getShortVersion());
 	    if (NMS.class.isAssignableFrom(nmsClass)) {
-		setNms((NMS) nmsClass.getConstructor().newInstance());
+		nms = (NMS) nmsClass.getConstructor().newInstance();
 	    } else {
-		System.out.println("Something went wrong, please note down version and contact author, version: " + version);
+		System.out.println("Something went wrong, please note down version and contact author, version: " + Version.getCurrent().toString());
 		setEnabled(false);
 		return;
 	    }
 	} catch (Exception e) {
-	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + version);
+	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + Version.getCurrent().toString());
 	    setEnabled(false);
 	    e.printStackTrace();
 	    return;
@@ -833,27 +781,14 @@ public class Jobs extends JavaPlugin {
 	    YmlMaker restrictedBlocks = new YmlMaker(this, "restrictedBlocks.yml");
 	    restrictedBlocks.saveDefaultConfig();
 
-	    setPermissionHandler(new PermissionHandler(this));
-	    setPluginLogger(getLogger());
-	    setJobsClassloader();
-	    setDBManager();
-	    setLanguage();
-	    setGUIManager();
-	    setExplore();
 	    setBBManager();
-	    setLoging();
-	    setGCManager();
-	    setConfigManager();
-	    setCommandManager();
-	    setBpManager();
-	    setActionBar();
 
 	    getCommand("jobs").setExecutor(getCommandManager());
 	    getCommand("jobs").setTabCompleter(new TabComplete());
 
 	    startup();
 
-	    if (GconfigManager.SignsEnabled) {
+	    if (getGCManager().SignsEnabled) {
 		YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
 		jobSigns.saveDefaultConfig();
 	    }
@@ -861,15 +796,14 @@ public class Jobs extends JavaPlugin {
 	    // register the listeners
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
-	    if (versionCheckManager.getVersion().isEqualOrHigher(Version.v1_14_R1)) {
+	    if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
 		getServer().getPluginManager().registerEvents(new JobsPayment14Listener(), this);
 	    }
 
 	    HookManager.loadHooks();
 
-	    setPistonProtectionListener();
-	    if (GconfigManager.useBlockProtection) {
-		getServer().getPluginManager().registerEvents(PistonProtectionListener, this);
+	    if (getGCManager().useBlockProtection) {
+		getServer().getPluginManager().registerEvents(getPistonProtectionListener(), this);
 	    }
 
 	    // register economy
@@ -878,11 +812,11 @@ public class Jobs extends JavaPlugin {
 	    // all loaded properly.
 
 	    dao.loadBlockProtection();
-	    exploreManager.load();
+	    getExplore().load();
 
 	    consoleMsg("&e[Jobs] Plugin has been enabled successfully.");
 
-	    cManager.fillCommands();
+	    getCommandManager().fillCommands();
 
 	    getDBManager().getDB().triggerTableIdUpdate();
 
@@ -1301,7 +1235,7 @@ public class Jobs extends JavaPlugin {
 
     // total xp calculation based by lvl
     private static int ExpToLevel(int level) {
-	if (version.equals("1_7")) {
+	if (Version.isCurrentEqualOrLower(Version.v1_7_R4)) {
 	    if (level <= 16)
 		return 17 * level;
 	    else if (level <= 31)
@@ -1319,7 +1253,7 @@ public class Jobs extends JavaPlugin {
 
     // xp calculation for one current lvl
     private static int deltaLevelToExp(int level) {
-	if (version.equals("1_7")) {
+	if (Version.isCurrentEqualOrLower(Version.v1_7_R4)) {
 	    if (level <= 16)
 		return 17;
 	    else if (level <= 31)
@@ -1397,14 +1331,6 @@ public class Jobs extends JavaPlugin {
 	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, pagePref);
     }
 
-//    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd) {
-//	ShowPagination(sender, pageCount, CurrentPage, cmd, null);
-//    }
-//
-//    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd, String pagePref) {
-//	ShowPagination(sender, pageCount, CurrentPage, 0, cmd, pagePref);
-//    }
-
     public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, int totalEntries, String cmd, String pagePref) {
 	if (!(sender instanceof Player))
 	    return;
@@ -1419,13 +1345,6 @@ public class Jobs extends JavaPlugin {
 	Prevpage = CurrentPage > 1 ? Prevpage : CurrentPage;
 
 	RawMessage rm = new RawMessage();
-//	rm.add((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")),
-//	    CurrentPage > 1 ? "<<<" : null, CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : null);
-//	rm.add(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount));
-//	rm.add(pageCount > CurrentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"),
-//	    pageCount > CurrentPage ? ">>>" : null, pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : null);
-//	if (pageCount != 0)
-//	    rm.show(sender);
 
 	rm.add((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")),
 	    CurrentPage > 1 ? "<<<" : ">|",
