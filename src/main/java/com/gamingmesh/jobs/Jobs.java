@@ -546,81 +546,6 @@ public class Jobs extends JavaPlugin {
     }
 
     /**
-     * Reloads all data
-     * @throws IOException
-     */
-    public static void reload(boolean startup) throws IOException {
-	// unregister all registered listeners by this plugin and register again
-	if (!startup) {
-	    org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
-	    HandlerList.unregisterAll(instance);
-	    com.gamingmesh.jobs.CMIGUI.GUIManager.registerListener();
-	    pm.registerEvents(new JobsListener(instance), instance);
-	    pm.registerEvents(new JobsPaymentListener(instance), instance);
-	    if (versionCheckManager.getVersion().isEqualOrHigher(Version.v1_14_R1)) {
-		pm.registerEvents(new JobsPayment14Listener(), instance);
-	    }
-
-	    if (getGCManager().useBlockProtection)
-		pm.registerEvents(PistonProtectionListener, instance);
-
-	    if (HookManager.getMcMMOManager().CheckmcMMO()) {
-		HookManager.setMcMMOlistener();
-	    }
-	}
-
-	if (saveTask != null) {
-	    saveTask.shutdown();
-	    saveTask = null;
-	}
-
-	if (paymentThread != null) {
-	    paymentThread.shutdown();
-	    paymentThread = null;
-	}
-	smanager = new SelectionManager();
-	if (dao != null) {
-	    dao.closeConnections();
-	}
-
-	getGCManager().reload();
-	getLanguage().reload();
-	getConfigManager().reload();
-
-	getDBManager().getDB().loadAllJobsWorlds();
-	getDBManager().getDB().loadAllJobsNames();
-
-	FurnaceBrewingHandling.load();
-	ToggleBarHandling.load();
-	usedSlots.clear();
-	for (Job job : jobs) {
-	    usedSlots.put(job, dao.getSlotsTaken(job));
-	}
-	getPlayerManager().reload();
-	getPermissionHandler().registerPermissions();
-
-	// set the system to auto save
-	if (getGCManager().getSavePeriod() > 0) {
-	    saveTask = new DatabaseSaveThread(getGCManager().getSavePeriod());
-	    saveTask.start();
-	}
-
-	// schedule payouts to buffered payments
-	paymentThread = new BufferedPaymentThread(getGCManager().getEconomyBatchDelay());
-	paymentThread.start();
-
-	dao.loadPlayerData();
-
-	// Schedule
-	if (getGCManager().enableSchedule) {
-	    getScheduleManager().load();
-	    getScheduleManager().start();
-	} else
-	    getScheduleManager().cancel();
-
-    }
-
-    /**
      * Executes clean shutdown
      */
     public static void shutdown() {
@@ -825,6 +750,84 @@ public class Jobs extends JavaPlugin {
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
 	    setEnabled(false);
 	}
+    }
+
+    /**
+     * Reloads all data
+     * @throws IOException
+     */
+    public static void reload(boolean startup) throws IOException {
+	// unregister all registered listeners by this plugin and register again
+	if (!startup) {
+	    org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
+	    HandlerList.unregisterAll(instance);
+	    com.gamingmesh.jobs.CMIGUI.GUIManager.registerListener();
+	    pm.registerEvents(new JobsListener(instance), instance);
+	    pm.registerEvents(new JobsPaymentListener(instance), instance);
+	    if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+		pm.registerEvents(new JobsPayment14Listener(), instance);
+	    }
+
+	    if (getGCManager().useBlockProtection)
+		pm.registerEvents(getPistonProtectionListener(), instance);
+
+	    if (HookManager.getMcMMOManager().CheckmcMMO()) {
+		HookManager.setMcMMOlistener();
+	    }
+	    if (HookManager.getMythicManager().Check()) {
+		HookManager.getMythicManager().registerListener();
+	    }
+	}
+
+	if (saveTask != null) {
+	    saveTask.shutdown();
+	    saveTask = null;
+	}
+
+	if (paymentThread != null) {
+	    paymentThread.shutdown();
+	    paymentThread = null;
+	}
+	smanager = new SelectionManager();
+	if (dao != null) {
+	    dao.closeConnections();
+	}
+
+	getGCManager().reload();
+	getLanguage().reload();
+	getConfigManager().reload();
+
+	getDBManager().getDB().loadAllJobsWorlds();
+	getDBManager().getDB().loadAllJobsNames();
+
+	FurnaceBrewingHandling.load();
+	ToggleBarHandling.load();
+	usedSlots.clear();
+	for (Job job : jobs) {
+	    usedSlots.put(job, dao.getSlotsTaken(job));
+	}
+	getPlayerManager().reload();
+	getPermissionHandler().registerPermissions();
+
+	// set the system to auto save
+	if (getGCManager().getSavePeriod() > 0) {
+	    saveTask = new DatabaseSaveThread(getGCManager().getSavePeriod());
+	    saveTask.start();
+	}
+
+	// schedule payouts to buffered payments
+	paymentThread = new BufferedPaymentThread(getGCManager().getEconomyBatchDelay());
+	paymentThread.start();
+
+	dao.loadPlayerData();
+
+	// Schedule
+	if (getGCManager().enableSchedule) {
+	    getScheduleManager().load();
+	    getScheduleManager().start();
+	} else
+	    getScheduleManager().cancel();
+
     }
 
     @Override
