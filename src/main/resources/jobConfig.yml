@@ -3357,15 +3357,14 @@ Jobs:
       #  income: 20.0
       #  points: 20.0
       #  experience: 20.0
+  # This is default job players will have if they dint joined any
+  # When playre joins any job, they will loose access to this one
+  # You can set this to give out some money for basic actions, like killing players or breaking some blocks but job will not be visible and you cant level it up
+  # leveling-progression-equation and experience-progression-equation doesnt have any impact for this job
   None:
     fullname: None
     shortname: N
     ChatColour: WHITE
     chat-display: none
-    leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))
-    experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
-    Kill:
-      Player:
-        income: 7.5
