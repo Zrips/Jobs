@@ -210,7 +210,6 @@ public class ConfigManager {
 	    "he will no longer have option to get this quest");
 	cfg.get(pt + ".Quests.1.toLevel", 5);
 
-
 	cfg.save();
     }
 
@@ -673,7 +672,7 @@ public class ConfigManager {
 	    }
 
 	    Parser maxExpEquation;
-	    String maxExpEquationInput = jobSection.getString("leveling-progression-equation");
+	    String maxExpEquationInput = jobKey.equalsIgnoreCase("None") ? "0" : jobSection.getString("leveling-progression-equation");
 	    try {
 		maxExpEquation = new Parser(maxExpEquationInput);
 		// test equation
@@ -702,7 +701,7 @@ public class ConfigManager {
 	    }
 
 	    Parser expEquation;
-	    String expEquationInput = jobSection.getString("experience-progression-equation");
+	    String expEquationInput = jobKey.equalsIgnoreCase("None") ? "0" : jobSection.getString("experience-progression-equation");
 	    try {
 		expEquation = new Parser(expEquationInput);
 		// test equation

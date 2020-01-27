@@ -33,7 +33,7 @@ public class HookManager {
 
 	if (Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.Check())
 	    MythicManager.registerListener();
-	}
+    }
 
     public static MyPetManager getMyPetManager() {
 	if (myPetManager == null) {
@@ -73,6 +73,10 @@ public class HookManager {
     }
 
     private static void setMythicManager() {
+
+	if (pm.getPlugin("MythicMobs") == null)
+	    return;
+	
 	try {
 	    Class.forName("net.elseland.xikage.MythicMobs.API.MythicMobsAPI");
 	    MythicManager = new MythicMobs2(Jobs.getInstance());
