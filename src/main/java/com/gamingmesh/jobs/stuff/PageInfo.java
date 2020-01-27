@@ -15,7 +15,7 @@ public class PageInfo {
     public PageInfo(int perPage, int totalEntries, int currentPage) {
 	this.perPage = perPage;
 	this.totalEntries = totalEntries;
-	this.currentPage = currentPage;
+	this.currentPage = currentPage < 1 ? 1 : currentPage;
 	calculate();
     }
 
@@ -24,15 +24,15 @@ public class PageInfo {
     }
 
     public int getPositionForOutput(int place) {
-	return start + place + 1;
+	return this.start + place + 1;
     }
 
     private void calculate() {
-	start = (currentPage - 1) * perPage;
-	end = start + perPage - 1;
-	if (end + 1 > totalEntries)
-	    end = totalEntries - 1;
-	totalPages = (int) Math.ceil((double) totalEntries / (double) perPage);
+	this.start = (this.currentPage - 1) * this.perPage;
+	this.end = this.start + this.perPage - 1;
+	if (this.end + 1 > this.totalEntries)
+	    this.end = this.totalEntries - 1;
+	this.totalPages = (int) Math.ceil((double) this.totalEntries / (double) this.perPage);
     }
 
     public boolean isInRange(int place) {
@@ -46,16 +46,24 @@ public class PageInfo {
 	return currentEntry - 1 >= start && currentEntry - 1 <= end;
     }
 
+    public boolean isContinue() {
+	return !isEntryOk();
+    }
+
+    public boolean isContinueNoAdd() {
+	return currentEntry - 1 >= start && currentEntry - 1 <= end;
+    }
+
     public boolean isBreak() {
 	return currentEntry - 1 > end;
     }
 
     public boolean isPageOk() {
-	return isPageOk(currentPage);
+	return isPageOk(this.currentPage);
     }
 
     public boolean isPageOk(int page) {
-	if (totalPages < page)
+	if (this.totalPages < page)
 	    return false;
 	if (page < 1)
 	    return false;
@@ -81,7 +89,12 @@ public class PageInfo {
     public int getTotalEntries() {
 	return totalEntries;
     }
-    public int getPerPageCount(){
-	return perPage;
+
+    public int getNextPageNumber() {
+	return this.getCurrentPage() + 1 > this.getTotalPages() ? this.getTotalPages() : this.getCurrentPage() + 1;
+    }
+
+    public int getPrevPageNumber() {
+	return this.getCurrentPage() - 1 < 1 ? 1 : this.getCurrentPage() - 1;
     }
 }

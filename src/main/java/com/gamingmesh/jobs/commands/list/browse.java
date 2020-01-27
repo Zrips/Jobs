@@ -115,7 +115,7 @@ public class browse implements Cmd {
 
 			rm.show(sender);
 		    }
-		    plugin.ShowPagination(sender, pi.getTotalPages(), page, "jobs browse", "-p:");
+		    plugin.ShowPagination(sender, pi, "jobs browse", "-p:");
 		} else {
 
 		    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));

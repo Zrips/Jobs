@@ -57,7 +57,7 @@ public class top implements Cmd {
 	int workingIn = Jobs.getUsedSlots(job);
 	PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, workingIn, page);
 
-	List<TopList> FullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart());
+	List<TopList> FullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart() - 1);
 	if (FullList.size() <= 0) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    return true;
@@ -66,14 +66,16 @@ public class top implements Cmd {
 	player.sendMessage(Jobs.getLanguage().getMessage("command.top.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", job.getName(), "%amount%", pi.getPerPageCount()));
-	    int i = pi.getStart();
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", job.getName(), "%amount%", Jobs.getGCManager().JobsTopAmount));
 	    for (TopList One : FullList) {
-		i++;
+		if (pi.isContinue())
+		    continue;
+		if (pi.isBreak())
+		    break;
 		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
 
 		player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.list",
-		    "%number%", i,
+		    "%number%", pi.getPositionForOutput(),
 		    "%playername%", PlayerName,
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
@@ -83,15 +85,13 @@ public class top implements Cmd {
 
 	    List<String> ls = new ArrayList<>();
 
-	    int i = pi.getStart();
-	    int y = 0;
 	    for (TopList one : FullList) {
-		i++;
-		y++;
-		if (y > Jobs.getGCManager().JobsTopAmount)
+		if (pi.isContinue())
+		    continue;
+		if (pi.isBreak())
 		    break;
 		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
-		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", i, "%playername%", playername, "%level%", one.getLevel()));
+		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", pi.getPositionForOutput(), "%playername%", playername, "%level%", one.getLevel()));
 	    }
 
 	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", job.getName()), ls);

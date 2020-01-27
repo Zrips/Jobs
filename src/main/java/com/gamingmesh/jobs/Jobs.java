@@ -185,7 +185,7 @@ public class Jobs extends JavaPlugin {
 	    } else {
 		if (new PlaceholderAPIHook(this).hook())
 		    consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version of PlaceholderAPI. Please update "
-			    + "to the latest version.");
+			+ "to the latest version.");
 	    }
 	} catch (NumberFormatException e) { // when using a dev build
 	    if (new NewPlaceholderAPIHook(this).register()) {
@@ -253,7 +253,6 @@ public class Jobs extends JavaPlugin {
 	    DBManager = new JobsManager(instance);
 	return DBManager;
     }
-
 
     /**
      * Gets the PointsData
@@ -1391,18 +1390,22 @@ public class Jobs extends JavaPlugin {
     }
 
     public void ShowPagination(CommandSender sender, PageInfo pi, String cmd) {
-	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), cmd, null);
+	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, null);
     }
 
     public void ShowPagination(CommandSender sender, PageInfo pi, String cmd, String pagePref) {
-	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), cmd, pagePref);
+	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, pagePref);
     }
 
-    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd) {
-	ShowPagination(sender, pageCount, CurrentPage, cmd, null);
-    }
+//    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd) {
+//	ShowPagination(sender, pageCount, CurrentPage, cmd, null);
+//    }
+//
+//    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd, String pagePref) {
+//	ShowPagination(sender, pageCount, CurrentPage, 0, cmd, pagePref);
+//    }
 
-    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, String cmd, String pagePref) {
+    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, int totalEntries, String cmd, String pagePref) {
 	if (!(sender instanceof Player))
 	    return;
 	if (!cmd.startsWith("/"))
@@ -1416,11 +1419,22 @@ public class Jobs extends JavaPlugin {
 	Prevpage = CurrentPage > 1 ? Prevpage : CurrentPage;
 
 	RawMessage rm = new RawMessage();
+//	rm.add((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")),
+//	    CurrentPage > 1 ? "<<<" : null, CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : null);
+//	rm.add(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount));
+//	rm.add(pageCount > CurrentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"),
+//	    pageCount > CurrentPage ? ">>>" : null, pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : null);
+//	if (pageCount != 0)
+//	    rm.show(sender);
+
 	rm.add((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")),
-	    CurrentPage > 1 ? "<<<" : null, CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : null);
-	rm.add(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount));
+	    CurrentPage > 1 ? "<<<" : ">|",
+	    CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : cmd + " " + pagePrefix + pageCount);
+	rm.add(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount), lManager.getMessage("command.help.output.pageCountHover", "[totalEntries]",
+	    totalEntries));
 	rm.add(pageCount > CurrentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"),
-	    pageCount > CurrentPage ? ">>>" : null, pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : null);
+	    pageCount > CurrentPage ? ">>>" : "|<",
+	    pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : cmd + " " + pagePrefix + 1);
 	if (pageCount != 0)
 	    rm.show(sender);
     }

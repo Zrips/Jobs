@@ -108,7 +108,7 @@ public class editjobs implements Cmd {
 		    rm.show(sender);
 		    Util.getJobsEditorMap().remove(player.getUniqueId());
 
-		    Jobs.getInstance().ShowPagination(sender, pi.getTotalPages(), page, "jobs editjobs list " + job.getName() + " " + actionT.getName());
+		    Jobs.getInstance().ShowPagination(sender, pi, "jobs editjobs list " + job.getName() + " " + actionT.getName());
 
 		    return true;
 		}
@@ -468,7 +468,7 @@ public class editjobs implements Cmd {
 		    if (actionT == ActionType.BREAK || actionT == ActionType.PLACE || actionT == ActionType.STRIPLOGS) {
 			if (!material.isBlock()) {
 			    player.sendMessage(ChatColor.GOLD + "Job " + job.getName() + " has an invalid " + actionT.getName() + " type property: " + material
-			+ "(" + key + ")! Material must be a block!");
+				+ "(" + key + ")! Material must be a block!");
 			    break;
 			}
 		    }
@@ -503,48 +503,48 @@ public class editjobs implements Cmd {
 		    }
 
 		    if (entity == null) {
-		    switch (key.toLowerCase()) {
-		    case "skeletonwither":
-			type = CMIEntityType.WITHER_SKELETON.name();
-			id = 51;
-			meta = "1";
-			break;
-		    case "skeletonstray":
-			type = CMIEntityType.STRAY.name();
-			id = 51;
-			meta = "2";
-			break;
-		    case "zombievillager":
-			type = CMIEntityType.ZOMBIE_VILLAGER.name();
-			id = 54;
-			meta = "1";
-			break;
-		    case "zombiehusk":
-			type = CMIEntityType.HUSK.name();
-			id = 54;
-			meta = "2";
-			break;
-		    case "horseskeleton":
-			type = CMIEntityType.SKELETON_HORSE.name();
-			id = 100;
-			meta = "1";
-			break;
-		    case "horsezombie":
-			type = CMIEntityType.ZOMBIE_HORSE.name();
-			id = 100;
-			meta = "2";
-			break;
-		    case "guardianelder":
-			type = CMIEntityType.ELDER_GUARDIAN.name();
-			id = 68;
-			meta = "1";
-			break;
-		    default:
-			type = CMIEntityType.getByName(myKey.toUpperCase()).name();
-			id = CMIEntityType.getByName(myKey.toUpperCase()).getId();
-			meta = "1";
-			break;
-		    }
+			switch (key.toLowerCase()) {
+			case "skeletonwither":
+			    type = CMIEntityType.WITHER_SKELETON.name();
+			    id = 51;
+			    meta = "1";
+			    break;
+			case "skeletonstray":
+			    type = CMIEntityType.STRAY.name();
+			    id = 51;
+			    meta = "2";
+			    break;
+			case "zombievillager":
+			    type = CMIEntityType.ZOMBIE_VILLAGER.name();
+			    id = 54;
+			    meta = "1";
+			    break;
+			case "zombiehusk":
+			    type = CMIEntityType.HUSK.name();
+			    id = 54;
+			    meta = "2";
+			    break;
+			case "horseskeleton":
+			    type = CMIEntityType.SKELETON_HORSE.name();
+			    id = 100;
+			    meta = "1";
+			    break;
+			case "horsezombie":
+			    type = CMIEntityType.ZOMBIE_HORSE.name();
+			    id = 100;
+			    meta = "2";
+			    break;
+			case "guardianelder":
+			    type = CMIEntityType.ELDER_GUARDIAN.name();
+			    id = 68;
+			    meta = "1";
+			    break;
+			default:
+			    type = CMIEntityType.getByName(myKey.toUpperCase()).name();
+			    id = CMIEntityType.getByName(myKey.toUpperCase()).getId();
+			    meta = "1";
+			    break;
+			}
 		    }
 
 		} else if (actionT == ActionType.ENCHANT) {
@@ -559,7 +559,7 @@ public class editjobs implements Cmd {
 		    }
 		    type = myKey;
 		} else if (actionT == ActionType.CUSTOMKILL || actionT == ActionType.SHEAR || actionT == ActionType.MMKILL
-			    || actionT == ActionType.COLLECT || actionT == ActionType.BAKE)
+		    || actionT == ActionType.COLLECT || actionT == ActionType.BAKE)
 		    type = myKey;
 		else if (actionT == ActionType.EXPLORE) {
 		    type = myKey;

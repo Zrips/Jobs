@@ -153,8 +153,7 @@ public class editquests implements Cmd {
 
 			Util.getQuestsEditorMap().remove(player.getUniqueId());
 
-			Jobs.getInstance().ShowPagination(sender, pi.getTotalPages(), page,
-			    "jobs editquests list " + job.getName() + " " + quest.getConfigName() + " " + 0);
+			Jobs.getInstance().ShowPagination(sender, pi, "jobs editquests list " + job.getName() + " " + quest.getConfigName() + " " + 0);
 			return true;
 		    }
 		}
@@ -216,41 +215,41 @@ public class editquests implements Cmd {
 			return true;
 		    }
 
-			org.bukkit.configuration.file.YamlConfiguration file = Jobs.getConfigManager().getJobConfig();
-			String j = "Jobs." + job.getJobKeyName() + ".Quests." + q.getConfigName() + ".";
+		    org.bukkit.configuration.file.YamlConfiguration file = Jobs.getConfigManager().getJobConfig();
+		    String j = "Jobs." + job.getJobKeyName() + ".Quests." + q.getConfigName() + ".";
 
-			if (file.isString(j + "Target")) {
-			    Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Target"), target);
-			    Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Action"), actionT.getName());
-			} else if (file.isList(j + "Objectives")) {
-			    List<String> list = file.getStringList(j + "Objectives");
-			    for (String s : list) {
-				String[] split = s.split(";");
-				if (split[1].contains(target.toLowerCase())) {
-				    list.remove(s);
-				    break;
-				}
-			    }
-
-			    File f = Jobs.getConfigManager().getJobFile();
-			    file.set(j + "Objectives", list);
-
-			    try {
-				file.save(f);
-			    } catch (java.io.IOException e) {
-				e.printStackTrace();
-			    }
-			}
-
-			for (Entry<String, QuestObjective> one : obj.entrySet()) {
-			    if (one.getKey().equalsIgnoreCase(target)) {
-				obj.remove(one.getKey());
+		    if (file.isString(j + "Target")) {
+			Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Target"), target);
+			Jobs.getConfigManager().changeJobsSettings(file.getString(j + "Action"), actionT.getName());
+		    } else if (file.isList(j + "Objectives")) {
+			List<String> list = file.getStringList(j + "Objectives");
+			for (String s : list) {
+			    String[] split = s.split(";");
+			    if (split[1].contains(target.toLowerCase())) {
+				list.remove(s);
 				break;
 			    }
 			}
 
+			File f = Jobs.getConfigManager().getJobFile();
+			file.set(j + "Objectives", list);
+
+			try {
+			    file.save(f);
+			} catch (java.io.IOException e) {
+			    e.printStackTrace();
+			}
+		    }
+
+		    for (Entry<String, QuestObjective> one : obj.entrySet()) {
+			if (one.getKey().equalsIgnoreCase(target)) {
+			    obj.remove(one.getKey());
+			    break;
+			}
+		    }
+
 		    player.performCommand("jobs editquests list " + job.getName() + " " + actionT.getName()
-				+ " " + q.getConfigName() + " 1");
+			+ " " + q.getConfigName() + " 1");
 
 		    Util.getQuestsEditorMap().remove(player.getUniqueId());
 
