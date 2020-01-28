@@ -29,7 +29,6 @@ public class LanguageManager {
      * loads from Jobs/locale/messages_en.yml
      */
     synchronized void load() {
-
 	// This should be present to copy over default locale files into locale folder if file doesn't exist. Grabs all files from plugin file.
 	languages = new ArrayList<>();
 	try {
@@ -92,7 +91,7 @@ public class LanguageManager {
 	    c.get("general.admin.success", "&eYour command has been performed.");
 	    c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
 	    c.get("general.error.notNumber", "&ePlease use numbers!");
-	    c.get("general.error.job", "&cThe job you selected does not exist!");
+	    c.get("general.error.job", "&cThe job you selected does not exist or you not joined to this!");
 	    c.get("general.error.noCommand", "&cThere is no command by this name!");
 	    c.get("general.error.permission", "&cYou do not have permission to do that!");
 	    c.get("general.error.noinfo", "&cNo information found!");
