@@ -148,7 +148,7 @@ public abstract class JobsDAO {
     public enum JobsTableFields implements JobsTableInterface {
 	userid("int"),
 	job("text"),
-	experience("int"),
+	experience("double"),
 	level("int"),
 	jobid("int");
 
