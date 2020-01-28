@@ -769,7 +769,7 @@ public class Jobs extends JavaPlugin {
 	    if (HookManager.getMcMMOManager().CheckmcMMO()) {
 		HookManager.setMcMMOlistener();
 	    }
-	    if (HookManager.getMythicManager().Check()) {
+	    if (HookManager.checkMythicMobs()) {
 		HookManager.getMythicManager().registerListener();
 	    }
 	}

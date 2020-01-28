@@ -31,7 +31,7 @@ public class HookManager {
 	setWorldGuard();
 	setMythicManager();
 
-	if (Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.Check())
+	if (checkMythicMobs())
 	    MythicManager.registerListener();
     }
 
@@ -60,6 +60,10 @@ public class HookManager {
 
     public static MythicMobInterface getMythicManager() {
 	return MythicManager;
+    }
+
+    public static boolean checkMythicMobs() {
+	return Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.Check();
     }
 
     private static boolean setWorldGuard() {
