@@ -971,7 +971,7 @@ public class Jobs extends JavaPlugin {
 		return;
 
 	    if (info.getType() == ActionType.BREAK && block != null)
-		BpManager.remove(block);
+		getBpManager().remove(block);
 
 	    if (pointAmount != 0D)
 		jPlayer.setSaved(false);
@@ -987,7 +987,7 @@ public class Jobs extends JavaPlugin {
 	    if (GconfigManager.LoggingUse) {
 		HashMap<CurrencyType, Double> amounts = new HashMap<>();
 		amounts.put(CurrencyType.MONEY, income);
-		loging.recordToLog(jPlayer, info, amounts);
+		getLoging().recordToLog(jPlayer, info, amounts);
 	    }
 
 	} else {
@@ -1145,7 +1145,7 @@ public class Jobs extends JavaPlugin {
 		    amounts.put(CurrencyType.MONEY, income);
 		    amounts.put(CurrencyType.EXP, expAmount);
 		    amounts.put(CurrencyType.POINTS, pointAmount);
-		    loging.recordToLog(jPlayer, info, amounts);
+		    getLoging().recordToLog(jPlayer, info, amounts);
 		}
 
 		if (prog.addExperience(expAmount))
@@ -1154,7 +1154,7 @@ public class Jobs extends JavaPlugin {
 
 	    //need to update bp
 	    if (block != null) {
-		BlockProtection bp = BpManager.getBp(block.getLocation());
+		BlockProtection bp = getBpManager().getBp(block.getLocation());
 		if (bp != null)
 		    bp.setPaid(true);
 	    }
@@ -1170,61 +1170,61 @@ public class Jobs extends JavaPlugin {
 		//player.sendMessage("This block is protected using Rukes' system!");
 		return false;
 	    }
-	    BlockProtection bp = BpManager.getBp(block.getLocation());
+	    BlockProtection bp = getBpManager().getBp(block.getLocation());
 	    if (bp != null) {
 		Long time = bp.getTime();
-		Integer cd = BpManager.getBlockDelayTime(block);
+		Integer cd = getBpManager().getBlockDelayTime(block);
 
 		if (time == -1L) {
-		    BpManager.add(block, cd);
+		    getBpManager().add(block, cd);
 		    return false;
 		}
 		if ((time < System.currentTimeMillis()) && (bp.getAction() != DBAction.DELETE)) {
-		    BpManager.remove(block);
+		    getBpManager().remove(block);
 		    return true;
 		}
 		if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
 		    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 		    if (inform) {
 			if (player.canGetPaid(info))
-			    actionbar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+			    getActionBar().send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 		    }
 		    return false;
 		}
-		BpManager.add(block, cd);
+		getBpManager().add(block, cd);
 		if ((cd == null || cd == 0) && GconfigManager.useGlobalTimer) {
-		    BpManager.add(block, GconfigManager.globalblocktimer);
+		    getBpManager().add(block, GconfigManager.globalblocktimer);
 		}
 	    } else if (GconfigManager.useGlobalTimer) {
-		BpManager.add(block, GconfigManager.globalblocktimer);
+		getBpManager().add(block, GconfigManager.globalblocktimer);
 	    }
 	} else if (info.getType() == ActionType.PLACE) {
-	    BlockProtection bp = BpManager.getBp(block.getLocation());
+	    BlockProtection bp = getBpManager().getBp(block.getLocation());
 	    if (bp != null) {
 		Long time = bp.getTime();
-		Integer cd = BpManager.getBlockDelayTime(block);
+		Integer cd = getBpManager().getBlockDelayTime(block);
 
 		if (time != -1L) {
 		    if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
-			BpManager.add(block, cd);
+			getBpManager().add(block, cd);
 			return true;
 		    }
 		    if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 			if (inform) {
 			    if (player.canGetPaid(info))
-				actionbar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+				getActionBar().send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 			}
-			BpManager.add(block, cd);
+			getBpManager().add(block, cd);
 			return false;
 		    }
 		} else if (bp.isPaid().booleanValue() && bp.getTime() == -1L && cd != null && cd == -1) {
-		    BpManager.add(block, cd);
+		    getBpManager().add(block, cd);
 		    return false;
 		} else
-		    BpManager.add(block, cd);
+		    getBpManager().add(block, cd);
 	    } else
-		BpManager.add(block, BpManager.getBlockDelayTime(block));
+		getBpManager().add(block, getBpManager().getBlockDelayTime(block));
 	}
 
 	return true;
@@ -1291,7 +1291,7 @@ public class Jobs extends JavaPlugin {
 	int oldLevel = prog.getLevel();
 
 	if (GconfigManager.LoggingUse) {
-	    loging.recordToLog(jPlayer, info, payment.getPayment());
+	    getLoging().recordToLog(jPlayer, info, payment.getPayment());
 	}
 
 	if (prog.addExperience(payment.get(CurrencyType.EXP)))
