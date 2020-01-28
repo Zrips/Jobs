@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -63,12 +62,8 @@ public class convert implements Cmd {
 		return;
 	    }
 
-	    try {
-		Jobs.reload();
-		Jobs.loadAllPlayersData();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    Jobs.reload();
+	    Jobs.loadAllPlayersData();
 	    }
 	});
 

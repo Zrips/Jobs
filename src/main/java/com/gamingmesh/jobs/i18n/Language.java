@@ -44,7 +44,10 @@ public class Language {
      * Reloads the config
      */
     public void reload() {
-	customlocale = new YmlMaker(plugin, "locale/messages_" + Jobs.getGCManager().localeString + ".yml").getConfig();
+	String ls = Jobs.getGCManager().localeString.toLowerCase();
+	if (!ls.equals("en")) {
+	    customlocale = new YmlMaker(plugin, "locale/messages_" + ls + ".yml").getConfig();
+	}
 	enlocale = new YmlMaker(plugin, "locale/messages_en.yml").getConfig();
 	if (customlocale == null)
 	    customlocale = enlocale;

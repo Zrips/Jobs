@@ -495,11 +495,7 @@ public class Jobs extends JavaPlugin {
      * @throws IOException 
      */
     public void startup() {
-	try {
-	    reload(true);
-	} catch (IOException e1) {
-	    e1.printStackTrace();
-	}
+	reload(true);
 	loadAllPlayersData();
 	// add all online players
 	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
@@ -539,10 +535,6 @@ public class Jobs extends JavaPlugin {
 	if (getPlayerManager().getPlayersCache().size() != 0)
 	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " +
 		((int) (((System.currentTimeMillis() - time) / 1000d) * 100) / 100D));
-    }
-
-    public static void reload() throws IOException {
-	reload(false);
     }
 
     /**
@@ -752,11 +744,14 @@ public class Jobs extends JavaPlugin {
 	}
     }
 
+    public static void reload() {
+	reload(false);
+    }
+
     /**
      * Reloads all data
-     * @throws IOException
      */
-    public static void reload(boolean startup) throws IOException {
+    public static void reload(boolean startup) {
 	// unregister all registered listeners by this plugin and register again
 	if (!startup) {
 	    org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
@@ -795,7 +790,11 @@ public class Jobs extends JavaPlugin {
 
 	getGCManager().reload();
 	getLanguage().reload();
-	getConfigManager().reload();
+	try {
+		getConfigManager().reload();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
 
 	getDBManager().getDB().loadAllJobsWorlds();
 	getDBManager().getDB().loadAllJobsNames();

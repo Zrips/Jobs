@@ -73,10 +73,9 @@ public class HookManager {
     }
 
     private static void setMythicManager() {
-
 	if (pm.getPlugin("MythicMobs") == null)
 	    return;
-	
+
 	try {
 	    Class.forName("net.elseland.xikage.MythicMobs.API.MythicMobsAPI");
 	    MythicManager = new MythicMobs2(Jobs.getInstance());
