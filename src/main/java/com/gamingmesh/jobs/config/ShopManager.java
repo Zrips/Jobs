@@ -90,9 +90,7 @@ public class ShopManager {
     }
 
     public boolean openShopGui(Player player, Integer page) {
-
 	List<ShopItem> ls = getItemsByPage(page);
-
 	if (ls.isEmpty()) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.cantOpen"));
 	    return false;
@@ -107,8 +105,7 @@ public class ShopManager {
 //	String title = Jobs.getLanguage().getMessage("command.shop.info.title");
 //	if (title.length() > 32)
 //	    title = title.substring(0, 30) + "..";
-	
-	
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
 	PlayerPoints pointsInfo = jPlayer.getPointsData();
@@ -401,13 +398,10 @@ public class ShopManager {
 	    if (NameSection.isConfigurationSection("GiveItems")) {
 		ConfigurationSection itemsSection = NameSection.getConfigurationSection("GiveItems");
 		Set<String> itemKeys = itemsSection.getKeys(false);
-
 		List<JobItems> items = new ArrayList<>();
 
 		for (String oneItemName : itemKeys) {
-
 		    ConfigurationSection itemSection = itemsSection.getConfigurationSection(oneItemName);
-
 		    String node = oneItemName.toLowerCase();
 
 		    String id = null;
@@ -433,14 +427,13 @@ public class ShopManager {
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
 		    if (itemSection.contains("Enchants"))
 			for (String eachLine : itemSection.getStringList("Enchants")) {
-
 			    if (!eachLine.contains("="))
 				continue;
 
 			    String[] split = eachLine.split("=");
 			    Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
 			    Integer level = 1;
-			    if (split.length > 2) {
+			    if (split.length > 1) {
 				try {
 				    level = Integer.parseInt(split[1]);
 				} catch (NumberFormatException e) {
