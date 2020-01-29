@@ -161,6 +161,7 @@ public class GeneralConfigManager {
     public boolean ExploreCompact;
 
     public boolean DisabledWorldsUse;
+    public boolean UseAsWhiteListWorldList;
     public List<String> DisabledWorldsList = new ArrayList<>();
 
     public List<Schedule> BoostSchedule = new ArrayList<>();
@@ -345,36 +346,48 @@ public class GeneralConfigManager {
     }
 
     public boolean canPerformActionInWorld(Entity ent) {
-	if (ent == null)
+	if (ent == null || ent.getWorld() == null)
 	    return true;
-	if (ent.getWorld() == null)
-	    return true;
+
 	return canPerformActionInWorld(ent.getWorld());
     }
 
     public boolean canPerformActionInWorld(Player player) {
 	if (player == null)
 	    return true;
+
 	return canPerformActionInWorld(player.getWorld());
     }
 
     public boolean canPerformActionInWorld(World world) {
-	if (world == null)
+	if (world == null || !DisabledWorldsUse)
 	    return true;
-	if (!this.DisabledWorldsUse)
-	    return true;
+
 	return canPerformActionInWorld(world.getName());
     }
 
     public boolean canPerformActionInWorld(String world) {
-	if (world == null)
+	if (world == null || !DisabledWorldsUse)
 	    return true;
-	if (!this.DisabledWorldsUse)
-	    return true;
-	if (this.DisabledWorldsList.isEmpty())
-	    return true;
-	if (this.DisabledWorldsList.contains(world))
+
+	if (UseAsWhiteListWorldList) {
+	    if (DisabledWorldsList.isEmpty()) {
+		return false;
+	    }
+
+	    if (DisabledWorldsList.contains(world)) {
+		return true;
+	    }
+
 	    return false;
+	}
+
+	if (DisabledWorldsList.isEmpty())
+	    return true;
+
+	if (DisabledWorldsList.contains(world))
+	    return false;
+
 	return true;
     }
 
@@ -407,7 +420,7 @@ public class GeneralConfigManager {
     private synchronized void loadGeneralSettings() {
 	try {
 	    c = new ConfigReader("generalConfig.yml");
-	} catch (Throwable t) {
+	} catch (Exception t) {
 	    t.printStackTrace();
 	}
 	if (c == null)
@@ -508,6 +521,9 @@ public class GeneralConfigManager {
 	c.addComment("Optimizations.DisabledWorlds.Use", "By setting this to true, Jobs plugin will be disabled in given worlds",
 	    "Only commands can be performed from disabled worlds with jobs.disabledworld.commands permission node");
 	DisabledWorldsUse = c.get("Optimizations.DisabledWorlds.Use", false);
+	c.addComment("Optimizations.DisabledWorlds.UseAsWhiteList", "If true, will changes the list behaviour, so if a world is added to list",
+	    "the payments will only works in the given worlds.");
+	UseAsWhiteListWorldList = c.get("Optimizations.DisabledWorlds.UseAsWhiteList", false);
 	DisabledWorldsList = c.get("Optimizations.DisabledWorlds.List", Arrays.asList(Bukkit.getWorlds().get(0).getName()));
 
 	c.addComment("Optimizations.Explore.Compact",
