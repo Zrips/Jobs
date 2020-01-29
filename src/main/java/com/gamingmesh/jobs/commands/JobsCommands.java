@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.commands;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,9 +69,7 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	String cmd = args[0].toLowerCase();
-
 	Cmd cmdClass = getCmdClass(cmd);
-
 	if (cmdClass == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noCommand"));
 	    return true;
@@ -141,7 +138,6 @@ public class JobsCommands implements CommandExecutor {
 	commands = Sorting.sortDESC(commands);
 
 	PageInfo pi = new PageInfo(7, commands.size(), page);
-
 	if (page > pi.getTotalPages() || page < 1) {
 	    Jobs.getActionBar().send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
 	    return true;
@@ -160,7 +156,6 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	plugin.ShowPagination(sender, pi, label + " ?");
-
 	return true;
     }
 
@@ -219,8 +214,7 @@ public class JobsCommands implements CommandExecutor {
 	    if (Cmd.class.isAssignableFrom(nmsClass)) {
 		cmdClass = (Cmd) nmsClass.getConstructor().newInstance();
 	    }
-	} catch (ClassNotFoundException | InstantiationException | IllegalArgumentException | IllegalAccessException | NoSuchMethodException | InvocationTargetException
-	    | SecurityException e) {
+	} catch (Exception e) {
 	}
 	return cmdClass;
     }
@@ -345,7 +339,6 @@ public class JobsCommands implements CommandExecutor {
      * @return the message
      */
     public static String jobInfoMessage(JobsPlayer player, Job job, ActionType type) {
-
 	// money exp boost
 	Boost boost = Jobs.getPlayerManager().getFinalBonus(player, job, true);
 

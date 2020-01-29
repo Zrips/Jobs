@@ -2540,12 +2540,17 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return jobs;
-	PreparedStatement prest = null;
-	ResultSet res = null;
 
 	Job job = Jobs.getJob(jobsname);
 	if (job == null)
 	    return jobs;
+
+	PreparedStatement prest = null;
+	ResultSet res = null;
+
+	if (limit < 0) {
+	    limit = 0;
+	}
 
 	try {
 	    prest = conn.prepareStatement("SELECT `" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "` FROM `"
@@ -2556,12 +2561,12 @@ public abstract class JobsDAO {
 
 	    while (res.next()) {
 		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt(JobsTableFields.userid.getCollumn()));
-
 		if (info == null)
 		    continue;
 
 		if (info.getName() == null)
 		    continue;
+
 		jobs.add(new TopList(info, res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
 	    }
 	} catch (SQLException e) {
@@ -2570,6 +2575,7 @@ public abstract class JobsDAO {
 	    close(res);
 	    close(prest);
 	}
+
 	return jobs;
     }
 
