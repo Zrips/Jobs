@@ -375,6 +375,7 @@ public class Placeholder {
 	JobsPlayer user = uuid == null ? null : Jobs.getPlayerManager().getJobsPlayer(uuid);
 	// Placeholders by JobsPlayer object
 	if (user != null) {
+	    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 	    switch (placeHolder) {
 	    case user_id:
 		return Integer.toString(user.getUserId());
@@ -393,7 +394,6 @@ public class Placeholder {
 	    case user_totallevels:
 		return Integer.toString(user.getTotalLevels());
 	    case user_points:
-		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		return format.format(user.getPointsData().getCurrentPoints());
 	    case user_total_points:
 		format = NumberFormat.getInstance(Locale.ENGLISH);
@@ -412,9 +412,9 @@ public class Placeholder {
 
 	    if (placeHolder.isComplex()) {
 		List<String> vals = placeHolder.getComplexValues(value);
-		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		if (vals.isEmpty())
 		    return "";
+
 		JobProgression j = getProgFromValue(user, vals.get(0));
 		switch (placeHolder) {
 		case limit_$1:
@@ -429,11 +429,13 @@ public class Placeholder {
 		case user_jlevel_$1:
 		    return j == null ? "" : Integer.toString(j.getLevel());
 		case user_jexp_$1:
+		    format = NumberFormat.getInstance(Locale.ENGLISH);
 		    return j == null ? "" : format.format(j.getExperience());
 		case user_jmaxexp_$1:
+		    format = NumberFormat.getInstance(Locale.ENGLISH);
 		    return j == null ? "" : format.format(j.getMaxExperience());
 		case user_jexpunf_$1:
-		    return j == null ? "" : Integer.toString(j.getExperience());
+		    return j == null ? "" : Double.toString(j.getExperience());
 		case user_jmaxexpunf_$1:
 		    return j == null ? "" : Integer.toString(j.getMaxExperience());
 		case user_jmaxlvl_$1:
@@ -460,52 +462,49 @@ public class Placeholder {
 		}
 	    }
 
-	}
+	    // Placeholders by player object
+	    if (user.isOnline()) {
+		Player player = user.getPlayer();
+		if (player != null) {
+		    List<String> values;
+		    switch (placeHolder) {
+		    case user_canjoin_$1:
+			values = placeHolder.getComplexValues(value);
+			if (values.isEmpty())
+			    return "";
 
-	// Placeholders by player object
-	if (user != null && user.isOnline()) {
-	    Player player = user.getPlayer();
-	    if (player != null) {
-		List<String> values;
-		switch (placeHolder) {
+			Job job = getJobFromValue(values.get(0));
+			if (job == null)
+			    return "";
 
-		case user_canjoin_$1:
-		    values = placeHolder.getComplexValues(value);
-		    if (values.isEmpty())
-			return "";
+			if (!Jobs.getCommandManager().hasJobPermission(player, job))
+			    return convert(false);
 
-		    Job job = getJobFromValue(values.get(0));
-		    if (job == null)
-			return "";
+			if (user.isInJob(job))
+			    return convert(false);
 
-		    if (!Jobs.getCommandManager().hasJobPermission(player, job))
-			return convert(false);
+			if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots())
+			    return convert(false);
 
-		    if (user.isInJob(job))
-			return convert(false);
+			int confMaxJobs = Jobs.getGCManager().getMaxJobs();
+			short PlayerMaxJobs = (short) user.getJobProgression().size();
+			if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(user, PlayerMaxJobs))
+			    return convert(false);
 
-		    if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots())
-			return convert(false);
+			return convert(true);
 
-		    int confMaxJobs = Jobs.getGCManager().getMaxJobs();
-		    short PlayerMaxJobs = (short) user.getJobProgression().size();
-		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !Jobs.getPlayerManager().getJobsLimit(user, PlayerMaxJobs))
-			return convert(false);
-
-		    return convert(true);
-
-		default:
-		    break;
+		    default:
+			break;
+	    }
 		}
 	    }
 	}
 
-	List<String> values = new ArrayList<>();
-
 	if (placeHolder.isComplex()) {
-	    values = placeHolder.getComplexValues(value);
+	    List<String> values = placeHolder.getComplexValues(value);
 	    if (values.isEmpty())
 		return "";
+
 	    Job jo = getJobFromValue(values.get(0));
 	    if (jo == null)
 		return "";

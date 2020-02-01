@@ -137,7 +137,6 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onSelection(PlayerInteractEvent event) {
 	Player player = event.getPlayer();
-
 	if (player == null)
 	    return;
 
@@ -185,10 +184,10 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
+
 	if (!Jobs.getGCManager().MultiServerCompatability())
 	    Jobs.getPlayerManager().playerJoin(event.getPlayer());
 	else {
@@ -222,6 +221,7 @@ public class JobsListener implements Listener {
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
+
 	Jobs.getPlayerManager().playerQuit(event.getPlayer());
     }
 
@@ -236,7 +236,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSignInteract(PlayerInteractEvent event) {
-
 	if (!plugin.isEnabled())
 	    return;
 
@@ -247,7 +246,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	Block block = event.getClickedBlock();
-
 	if (block == null)
 	    return;
 
@@ -255,7 +253,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
-
 	if (player == null)
 	    return;
 
@@ -269,7 +266,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	String command = ChatColor.stripColor(sign.getLine(1));
-
 	for (String key : Jobs.getGCManager().keys) {
 	    if (command.equalsIgnoreCase(ChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
 		command = key;
@@ -282,7 +278,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onSignDestroy(BlockBreakEvent event) {
-
 	if (!plugin.isEnabled())
 	    return;
 
@@ -290,7 +285,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	Block block = event.getBlock();
-
 	if (block == null)
 	    return;
 
@@ -298,7 +292,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
-
 	if (player == null)
 	    return;
 
@@ -335,8 +328,7 @@ public class JobsListener implements Listener {
 	    return;
 
 	Block block = event.getBlock();
-
-	if (!(block.getState() instanceof Sign))
+	if (block == null || !(block.getState() instanceof Sign))
 	    return;
 
 	Sign sign = (Sign) block.getState();
@@ -442,7 +434,6 @@ public class JobsListener implements Listener {
 	}
 
 	Job job = Jobs.getJob(ChatColor.stripColor(event.getLine(2)));
-
 	if (job == null)
 	    return;
 
@@ -460,17 +451,16 @@ public class JobsListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
 	if (!plugin.isEnabled())
 	    return;
+
 	if (!Jobs.getGCManager().getModifyChat())
 	    return;
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
-
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
-
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";
 
 	String format = event.getFormat();
-
 	format = format.replace("%1$s", honorific + "%1$s");
 	event.setFormat(format);
     }
@@ -480,15 +470,19 @@ public class JobsListener implements Listener {
     public void onPlayerChatLow(AsyncPlayerChatEvent event) {
 	if (!plugin.isEnabled())
 	    return;
+
 	if (Jobs.getGCManager().getModifyChat())
 	    return;
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";
+
 	String format = event.getFormat();
 	if (!format.contains("{jobs}"))
 	    return;
+
 	format = format.replace("{jobs}", honorific);
 	event.setFormat(format);
     }
@@ -498,15 +492,19 @@ public class JobsListener implements Listener {
     public void onPlayerChatHigh(AsyncPlayerChatEvent event) {
 	if (!plugin.isEnabled())
 	    return;
+
 	if (Jobs.getGCManager().getModifyChat())
 	    return;
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";
+
 	String format = event.getFormat();
 	if (!format.contains("{jobs}"))
 	    return;
+
 	format = format.replace("{jobs}", honorific);
 	event.setFormat(format);
     }
@@ -587,7 +585,6 @@ public class JobsListener implements Listener {
     }
 
     private static boolean isThisItem(JobLimitedItems oneItem, CMIMaterial mat, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
-
 	if (oneItem.getType() != mat)
 	    return false;
 
@@ -629,9 +626,9 @@ public class JobsListener implements Listener {
 	//disabling plugin in world
 	if (event.getTo() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
 	    return;
+
 	Chunk from = event.getFrom().getChunk();
 	Chunk to = event.getTo().getChunk();
-
 	if (from == to)
 	    return;
 
@@ -645,8 +642,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	boolean shift = false, numberkey = false;
-	if (event.isCancelled())
-	    return;
 	ClickType click = event.getClick();
 	if (click.equals(ClickType.SHIFT_LEFT) || click.equals(ClickType.SHIFT_RIGHT))
 	    shift = true;
@@ -658,13 +653,15 @@ public class JobsListener implements Listener {
 
 	if ((slotType != SlotType.ARMOR || slotType != SlotType.QUICKBAR) && !event.getInventory().getType().equals(InventoryType.CRAFTING))
 	    return;
-	if (!(event.getWhoClicked() instanceof Player))
+
+	if (event.getWhoClicked() == null || !(event.getWhoClicked() instanceof Player))
 	    return;
 
 	Player player = (Player) event.getWhoClicked();
 
 	if (event.getCurrentItem() == null)
 	    return;
+
 	ArmorTypes newArmorType = ArmorTypes.matchType(shift ? event.getCurrentItem() : event.getCursor());
 	if (!shift && newArmorType != null && event.getRawSlot() != newArmorType.getSlot())
 	    return;
@@ -673,6 +670,7 @@ public class JobsListener implements Listener {
 	    newArmorType = ArmorTypes.matchType(event.getCurrentItem());
 	    if (newArmorType == null)
 		return;
+
 	    boolean equipping = true;
 	    if (event.getRawSlot() == newArmorType.getSlot())
 		equipping = false;
@@ -728,12 +726,15 @@ public class JobsListener implements Listener {
 	Action action = event.getAction();
 	if (action == Action.PHYSICAL)
 	    return;
+
 	if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
 	    return;
-	Player player = event.getPlayer();
+
 	ArmorTypes newArmorType = ArmorTypes.matchType(event.getItem());
 	if (newArmorType == null)
 	    return;
+
+	Player player = event.getPlayer();
 	PlayerInventory inv = player.getInventory();
 	if (newArmorType.equals(ArmorTypes.HELMET) &&
 	    inv.getHelmet() == null ||

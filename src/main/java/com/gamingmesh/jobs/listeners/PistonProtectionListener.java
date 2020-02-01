@@ -15,11 +15,11 @@ public class PistonProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void OnBlockMove(BlockPistonExtendEvent event) {
+	if (event.isCancelled())
+	    return;
 
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
-	    return;
-	if (event.isCancelled())
 	    return;
 
 	if (!Jobs.getGCManager().useBlockProtection)
@@ -31,7 +31,6 @@ public class PistonProtectionListener implements Listener {
 	int y = dir.getModY();
 	int z = dir.getModZ();
 	for (Block one : event.getBlocks()) {
-
 	    Location oldLoc = one.getLocation();
 	    Location newLoc = oldLoc.clone().add(x, y, z);
 
@@ -51,11 +50,11 @@ public class PistonProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void OnBlockRetractMove(BlockPistonRetractEvent event) {
+	if (event.isCancelled())
+	    return;
 
 	//disabling plugin in world
 	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
-	    return;
-	if (event.isCancelled())
 	    return;
 
 	if (!Jobs.getGCManager().useBlockProtection)

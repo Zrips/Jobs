@@ -30,7 +30,7 @@ public class JobsPayment14Listener implements Listener {
 	if (event.isCancelled())
 	    return;
 
-	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	if (event.getBlock() == null || !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 
 	if (!(event.getBlock().getState() instanceof Campfire))
@@ -76,7 +76,6 @@ public class JobsPayment14Listener implements Listener {
 	    return;
 
 	Player p = ev.getPlayer();
-
 	if (!JobsPaymentListener.payIfCreative(p))
 	    return;
 
