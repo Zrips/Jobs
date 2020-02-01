@@ -412,6 +412,7 @@ public class Placeholder {
 
 	    if (placeHolder.isComplex()) {
 		List<String> vals = placeHolder.getComplexValues(value);
+		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		if (vals.isEmpty())
 		    return "";
 		JobProgression j = getProgFromValue(user, vals.get(0));
@@ -428,10 +429,8 @@ public class Placeholder {
 		case user_jlevel_$1:
 		    return j == null ? "" : Integer.toString(j.getLevel());
 		case user_jexp_$1:
-		    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		    return j == null ? "" : format.format(j.getExperience());
 		case user_jmaxexp_$1:
-		    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		    return j == null ? "" : format.format(j.getMaxExperience());
 		case user_jexpunf_$1:
 		    return j == null ? "" : Integer.toString(j.getExperience());
