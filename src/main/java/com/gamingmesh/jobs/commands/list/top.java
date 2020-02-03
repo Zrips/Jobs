@@ -72,17 +72,15 @@ public class top implements Cmd {
 		    continue;
 		if (pi.isBreak())
 		    break;
-		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
 
 		player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.list",
 		    "%number%", pi.getPositionForOutput(),
-		    "%playername%", PlayerName,
+		    "%playername%", One.getPlayerName(),
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
 	    }
 	    Jobs.getInstance().ShowPagination(sender, pi, "jobs top " + job.getName());
 	} else {
-
 	    List<String> ls = new ArrayList<>();
 
 	    for (TopList one : FullList) {
@@ -90,8 +88,9 @@ public class top implements Cmd {
 		    continue;
 		if (pi.isBreak())
 		    break;
-		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
-		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", pi.getPositionForOutput(), "%playername%", playername, "%level%", one.getLevel()));
+
+		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", pi.getPositionForOutput(),
+		    "%playername%", one.getPlayerName(), "%level%", one.getLevel()));
 	    }
 
 	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", job.getName()), ls);

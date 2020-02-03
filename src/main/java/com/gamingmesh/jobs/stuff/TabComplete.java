@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.StringUtil;
 
 import com.gamingmesh.jobs.ItemBoostManager;
@@ -25,7 +26,6 @@ public class TabComplete implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-
 	List<String> completionList = new ArrayList<>();
 
 	if (args.length == 1) {
@@ -65,13 +65,23 @@ public class TabComplete implements TabCompleter {
 		    for (String ar : t2) {
 			switch (ar) {
 			case "[jobname]":
-			    List<Job> Jobsai = Jobs.getJobs();
-			    for (Job one : Jobsai) {
+			case "[newjob]":
+			    for (Job one : Jobs.getJobs()) {
 				temp.add(one.getName());
 			    }
 			    break;
 			case "[playername]":
-			    for (Player player : Bukkit.getOnlinePlayers()) {
+			    pl: for (Player player : Bukkit.getOnlinePlayers()) {
+				// ignore hidden players
+				if (Jobs.getGCManager().FilterHiddenPlayerFromTabComplete && player.hasMetadata("vanished")) {
+				    // TODO add essentials & cmi support
+				    for (MetadataValue meta : player.getMetadata("vanished")) {
+					if (meta.asBoolean()) {
+					    continue pl;
+					}
+				    }
+				}
+
 				temp.add(player.getName());
 			    }
 			    break;
@@ -111,13 +121,6 @@ public class TabComplete implements TabCompleter {
 				    for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
 					temp.add(oneOldJob.getJob().getName());
 				    }
-			    }
-			    break;
-			case "[newjob]":
-			    if (sender instanceof Player) {
-				for (Job job : Jobs.getJobs()) {
-				    temp.add(job.getName());
-				}
 			    }
 			    break;
 			default:

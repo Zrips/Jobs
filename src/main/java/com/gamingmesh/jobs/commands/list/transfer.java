@@ -1,4 +1,3 @@
-
 package com.gamingmesh.jobs.commands.list;
 
 import org.bukkit.command.CommandSender;
@@ -25,16 +24,19 @@ public class transfer implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
 	}
+
 	Job oldjob = Jobs.getJob(args[1]);
-	Job newjob = Jobs.getJob(args[2]);
 	if (oldjob == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+
+	Job newjob = Jobs.getJob(args[2]);
 	if (newjob == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+
 	try {
 	    if (jPlayer.isInJob(oldjob) && !jPlayer.isInJob(newjob)) {
 		Jobs.getPlayerManager().transferJob(jPlayer, oldjob, newjob);
@@ -49,9 +51,10 @@ public class transfer implements Cmd {
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    }
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
+
 	return true;
     }
 }

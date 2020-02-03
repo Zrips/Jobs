@@ -994,7 +994,7 @@ public enum CMIMaterial {
     //1.15
     BEEHIVE("Beehive"),
     BEE_NEST("Bee Nest"),
-    BEE_SPAWN_EGG("Bee Spawn Egg"),
+    BEE_SPAWN_EGG(383, null, 15434, "Bee Spawn Egg"),
     HONEYCOMB("Honeycomb"),
     HONEYCOMB_BLOCK("Honeycomb Block"),
     HONEY_BLOCK("Honey Block"),
