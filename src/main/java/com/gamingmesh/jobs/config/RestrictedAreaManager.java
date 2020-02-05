@@ -90,7 +90,6 @@ public class RestrictedAreaManager {
 		conf.set("restrictedareas." + areaKey + ".point2.z", cuboid.getHighLoc().getBlockZ());
 	    } else
 		conf.set("restrictedareas." + areaKey + ".WG", true);
-
 	}
 
 	try {
@@ -114,7 +113,6 @@ public class RestrictedAreaManager {
 	    if (area.getWgName() != null && HookManager.getWorldGuardManager() != null
 			&& HookManager.getWorldGuardManager().inArea(player.getLocation(), area.getWgName()))
 		return area.getMultiplier();
-
 	}
 	return 0D;
     }

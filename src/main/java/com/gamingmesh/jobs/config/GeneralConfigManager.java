@@ -124,8 +124,8 @@ public class GeneralConfigManager {
     public ItemStack guiBackButton;
     public ItemStack guiFiller;
 
-    public boolean FilterHiddenPlayerFromTabComplete;
-    public int JobsTopAmount, PlaceholdersPage;
+    public boolean UsePerPermissionForLeaving, EnableConfirmation, FilterHiddenPlayerFromTabComplete;
+    public int JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime;
 
     public Integer levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
 	SoundTitleChangePitch, ToplistInScoreboardInterval;
@@ -175,9 +175,6 @@ public class GeneralConfigManager {
     public int DBCleaningUsersDays;
 
     private boolean ShowNewVersion;
-
-    public boolean EnableConfirmation;
-    public int ConfirmExpiryTime;
 
     public HashMap<String, List<String>> getCommandArgs() {
 	return commandArgs;
@@ -1019,6 +1016,9 @@ public class GeneralConfigManager {
 	JobsTopAmount = c.get("Commands.PageRow.JobsTop.AmountToShow", 15);
 	c.addComment("Commands.PageRow.Placeholders.AmountToShow", "Defines amount of placeholders to be shown in one page for /jobs placeholders");
 	PlaceholdersPage = c.get("Commands.PageRow.Placeholders.AmountToShow", 10);
+	c.addComment("Commands.JobsLeave.UsePerPermissionLeave", "Defines how job leave works.",
+	    "If this is true, then the user must have another permission to leave the job. jobs.command.leave.jobName");
+	UsePerPermissionForLeaving = c.get("Commands.JobsLeave.UsePerPermissionLeave", false);
 	c.addComment("Commands.JobsLeave.EnableConfirmation", "Allows to confirm the /jobs leave and leaveall commands, to confirm the leave.");
 	EnableConfirmation = c.get("Commands.JobsLeave.EnableConfirmation", false);
 	c.addComment("Commands.JobsLeave.ConfirmExpiryTime", "Specify the confirm expiry time.", "Time in seconds.");

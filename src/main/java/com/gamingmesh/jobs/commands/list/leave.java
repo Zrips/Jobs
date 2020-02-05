@@ -24,11 +24,15 @@ public class leave implements Cmd {
 	}
 
 	Player pSender = (Player) sender;
-
 	String jobName = args[0];
 	Job job = Jobs.getJob(jobName);
 	if (job == null) {
 	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+	    return true;
+	}
+
+	if (Jobs.getGCManager().UsePerPermissionForLeaving && !pSender.hasPermission("jobs.command.leave." + jobName.toLowerCase())) {
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
 
@@ -41,8 +45,8 @@ public class leave implements Cmd {
 		plugin.getServer().getScheduler().runTaskLater(plugin, () -> Util.leaveConfirm.remove(uuid),
 		    20 * Jobs.getGCManager().ConfirmExpiryTime);
 
-		pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.confirmationNeed", "[jobname]", jobName,
-			"[time]", Jobs.getGCManager().ConfirmExpiryTime));
+		pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.confirmationNeed", "[jobname]",
+		    job.getChatColor() + job.getName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime));
 		return true;
 	    }
 

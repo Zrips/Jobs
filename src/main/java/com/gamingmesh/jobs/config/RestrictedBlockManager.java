@@ -14,12 +14,10 @@ public class RestrictedBlockManager {
     public HashMap<CMIMaterial, Integer> restrictedBlocksTimer = new HashMap<>();
 
     /**
-     * Method to load the restricted areas configuration
-     * 
-     * loads from Jobs/restrictedAreas.yml
+     * Method to load the restricted blocks configuration
+     * loads from Jobs/restrictedBlocks.yml
      */
     public synchronized void load() {
-	// No file create/load when boolean is false
 	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
 

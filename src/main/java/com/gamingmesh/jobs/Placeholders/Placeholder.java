@@ -427,19 +427,19 @@ public class Placeholder {
 		    t = CurrencyType.getByName(vals.get(0));
 		    return TimeManage.to24hourShort(user.getPaymentLimit().GetLeftTime(t));
 		case user_jlevel_$1:
-		    return j == null ? "" : Integer.toString(j.getLevel());
+		    return j == null ? "0" : Integer.toString(j.getLevel());
 		case user_jexp_$1:
 		    format = NumberFormat.getInstance(Locale.ENGLISH);
-		    return j == null ? "" : format.format(j.getExperience());
+		    return j == null ? "0" : format.format(j.getExperience());
 		case user_jmaxexp_$1:
 		    format = NumberFormat.getInstance(Locale.ENGLISH);
-		    return j == null ? "" : format.format(j.getMaxExperience());
+		    return j == null ? "0" : format.format(j.getMaxExperience());
 		case user_jexpunf_$1:
-		    return j == null ? "" : Double.toString(j.getExperience());
+		    return j == null ? "0" : Double.toString(j.getExperience());
 		case user_jmaxexpunf_$1:
-		    return j == null ? "" : Integer.toString(j.getMaxExperience());
+		    return j == null ? "0" : Integer.toString(j.getMaxExperience());
 		case user_jmaxlvl_$1:
-		    return j == null ? "" : Integer.toString(j.getJob().getMaxLevel(user));
+		    return j == null ? "0" : Integer.toString(j.getJob().getMaxLevel(user));
 		case user_boost_$1_$2:
 		    if (vals.size() < 2)
 			return "";
@@ -451,7 +451,7 @@ public class Placeholder {
 		    Job jobs = getJobFromValue(vals.get(0));
 		    return jobs == null ? "" : convert(user.isInJob(jobs));
 		case user_job$1:
-		    return j == null ? "" : j.getJob().getName();
+		    return j == null ? "none" : j.getJob().getName();
 
 		case maxjobs:
 		    Double max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max");

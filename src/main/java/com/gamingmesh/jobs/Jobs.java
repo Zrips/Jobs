@@ -490,6 +490,14 @@ public class Jobs extends JavaPlugin {
 	return getJobsIds().get(id);
     }
 
+    public boolean isPlaceholderAPIEnabled() {
+	return PlaceholderAPIEnabled;
+    }
+
+    public static HashMap<Integer, Job> getJobsIds() {
+	return jobsIds;
+    }
+
     /**
      * Executes startup
      * @throws IOException 
@@ -653,7 +661,6 @@ public class Jobs extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
 	instance = this;
 	setEnabled(true);
 
@@ -1358,13 +1365,5 @@ public class Jobs extends JavaPlugin {
 	    pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : cmd + " " + pagePrefix + 1);
 	if (pageCount != 0)
 	    rm.show(sender);
-    }
-
-    public boolean isPlaceholderAPIEnabled() {
-	return PlaceholderAPIEnabled;
-    }
-
-    public static HashMap<Integer, Job> getJobsIds() {
-	return jobsIds;
     }
 }
