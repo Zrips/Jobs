@@ -79,7 +79,9 @@ public class ConfigManager {
 	    "and job2 gives 5 income and experience for killing a player. When the user kills a player",
 	    "they will get 15 income and job1 will gain 10 experience and job2 will gain 5 experience."));
 
-	cfg.set("Jobs", cfg.getC().get("Jobs"));
+	if (!cfg.contains("Jobs")) {
+	    cfg.set("Jobs", cfg.getC().get("Jobs"));
+	}
 
 	String pt = "Jobs.exampleJob";
 	cfg.addComment(pt, "Must be one word",
@@ -822,12 +824,12 @@ public class ConfigManager {
 	    if (permissionsSection != null) {
 		for (String permissionKey : permissionsSection.getKeys(false)) {
 		    ConfigurationSection permissionSection = permissionsSection.getConfigurationSection(permissionKey);
-
-		    String node = permissionKey.toLowerCase();
 		    if (permissionSection == null) {
 			Jobs.getPluginLogger().warning("Job " + jobKey + " has an invalid permission key " + permissionKey + "!");
 			continue;
 		    }
+
+		    String node = permissionKey.toLowerCase().replace('_', '.');
 		    boolean value = permissionSection.getBoolean("value", true);
 		    int levelRequirement = permissionSection.getInt("level", 0);
 		    jobPermissions.add(new JobPermission(node, value, levelRequirement));

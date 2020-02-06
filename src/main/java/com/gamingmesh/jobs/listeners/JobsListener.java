@@ -548,14 +548,12 @@ public class JobsListener implements Listener {
 	if (JPlayer == null)
 	    return;
 
-	List<JobProgression> prog = JPlayer.getJobProgression();
-
-	String name = null;
-	List<String> lore = new ArrayList<>();
-
 	Map<Enchantment, Integer> enchants = new HashMap<>(iih.getEnchantments());
 	if (enchants.isEmpty())
 	    return;
+
+	String name = null;
+	List<String> lore = new ArrayList<>();
 
 	if (iih.hasItemMeta()) {
 	    ItemMeta meta = iih.getItemMeta();
@@ -566,6 +564,7 @@ public class JobsListener implements Listener {
 	}
 
 	String meinOk = null;
+	List<JobProgression> prog = JPlayer.getJobProgression();
 
 	mein: for (JobProgression one : prog) {
 	    for (Entry<String, JobLimitedItems> oneItem : one.getJob().getLimitedItems().entrySet()) {

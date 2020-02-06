@@ -481,12 +481,14 @@ Jobs:
     # permissions granted for joining class
     permissions:
       # example node
-      aaaaaatest.node:
+      # NOTE: You should use "_" instead of "." dot, because the file will be saved on
+      # plugin load, so it will changes the configuration.
+      aaaaaatest_node:
         # true to give, false to revoke
         value: true
         # minimum level needed to grant permission. Use 0 for all levels
         level: 0
-      aaaaaatest.node2:
+      aaaaaatest_node2:
         value: true
         # Permission granted when reaching level 10
         level: 10
