@@ -27,7 +27,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class GuiManager {
 
-    public void openJobsBrowseGUI(Player player) {
+    public void openJobsBrowseGUI(final Player player) {
 	ArrayList<Job> JobsList = new ArrayList<>();
 	for (Job job : Jobs.getJobs()) {
 	    if (Jobs.getGCManager().getHideJobsWithoutPermission())
@@ -137,7 +137,11 @@ public class GuiManager {
 		    case Left:
 		    case LeftShift:
 			if (Jobs.getGCManager().JobsGUISwitcheButtons) {
-			    Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "join", job.getName() });
+			    if (!Jobs.getGCManager().DisableJoiningJobThroughGui) {
+				Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "join", job.getName() });
+			    } else {
+				player.sendMessage(Jobs.getLanguage().getMessage("command.info.gui.cantJoin"));
+			    }
 			    openJobsBrowseGUI(player);
 			} else {
 			    openJobsBrowseGUI(player, job);
@@ -152,7 +156,11 @@ public class GuiManager {
 			if (Jobs.getGCManager().JobsGUISwitcheButtons) {
 			    openJobsBrowseGUI(player, job);
 			} else {
-			    Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "join", job.getName() });
+			    if (!Jobs.getGCManager().DisableJoiningJobThroughGui) {
+				Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "join", job.getName() });
+			    } else {
+				player.sendMessage(Jobs.getLanguage().getMessage("command.info.gui.cantJoin"));
+			    }
 			    openJobsBrowseGUI(player);
 			}
 			break;

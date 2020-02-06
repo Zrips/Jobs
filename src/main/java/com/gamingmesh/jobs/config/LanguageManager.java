@@ -349,6 +349,7 @@ public class LanguageManager {
 	    c.get("command.info.gui.rightClick", "&eRight Click to join job");
 	    c.get("command.info.gui.leftSlots", "&eLeft slots:&f ");
 	    c.get("command.info.gui.working", "&2&nAlready working");
+	    c.get("command.info.gui.cantJoin", "&cYou can't join to the selected job.");
 	    c.get("command.info.gui.max", "&eMax level:&f ");
 	    c.get("command.info.gui.back", "&e<<< Back");
 

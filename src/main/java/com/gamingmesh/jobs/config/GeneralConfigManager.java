@@ -107,7 +107,8 @@ public class GeneralConfigManager {
     public boolean fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, UseInversedClickToLeave, ShowActionNames;
+	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, UseInversedClickToLeave, ShowActionNames,
+	DisableJoiningJobThroughGui;
 
     public boolean FireworkLevelupUse, UseRandom, UseFlicker, UseTrail;
     public String FireworkType;
@@ -997,6 +998,8 @@ public class GeneralConfigManager {
 	    "This option click type depend from SwitcheButtons option, if true using the left button and inversely.",
 	    "Don't forget to adjust locale file");
 	UseInversedClickToLeave = c.get("JobsGUI.UseInversedClickToLeave", false);
+	c.addComment("JobsGUI.DisableJoiningJobThroughGui", "Allows players to join a specified job via GUI.");
+	DisableJoiningJobThroughGui = c.get("JobsGUI.DisableJoiningJobThroughGui", false);
 	c.addComment("JobsGUI.ShowActionNames", "Do you want to show the action names in GUI?");
 	ShowActionNames = c.get("JobsGUI.ShowActionNames", true);
 	c.addComment("JobsGUI.Rows", "Defines size in rows of GUI");
