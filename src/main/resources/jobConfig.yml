@@ -1135,10 +1135,6 @@ Jobs:
         income: 1.5
         points: 1.5
         experience: 2
-      nether_brick_stairs:
-        income: 1.5
-        points: 1.5
-        experience: 2
       oak_stairs:
         income: 1.5
         points: 1.5
@@ -2675,70 +2671,6 @@ Jobs:
         income: 0.2
         points: 0.2
         experience: 0.2
-      white_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      orange_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      magenta_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      light_blue_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      yellow_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      lime_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      pink_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      gray_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      light_gray_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      cyan_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      purple_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      blue_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      brown_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      green_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      red_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
-      black_stained_glass:
-        income: 0.2
-        points: 0.2
-        experience: 0.2
       slime_block:
         income: 1.0
         points: 1.0
@@ -3360,8 +3292,8 @@ Jobs:
       #  points: 20.0
       #  experience: 20.0
   # This is default job players will have if they dint joined any
-  # When playre joins any job, they will loose access to this one
-  # You can set this to give out some money for basic actions, like killing players or breaking some blocks but job will not be visible and you cant level it up
+  # When players join any job, they will loose access to this one
+  # You can set this to give out some money for basic actions, like killing players or breaking some blocks but job will not be visible and you can't level it up
   # leveling-progression-equation and experience-progression-equation doesnt have any impact for this job
   None:
     fullname: None
