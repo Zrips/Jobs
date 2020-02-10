@@ -540,11 +540,7 @@ public class Placeholder {
 	case maxjobs:
 	    return Integer.toString(Jobs.getGCManager().getMaxJobs());
 	case total_workers:
-	    int count = 0;
-	    for (Job one : Jobs.getJobs()) {
-		count += one.getTotalPlayers();
-	    }
-	    return Integer.toString(count);
+	    return Integer.toString(Jobs.getJobsDAO().getTotalPlayers());
 	default:
 	    break;
 	}
