@@ -44,7 +44,7 @@ public class ChatFilterRule {
 	this.blockType = ChatFilterBlockType.None;
     }
 
-    public ChatFilterRule() { 
+    public ChatFilterRule() {
     }
 
     public List<Pattern> getPattern() {

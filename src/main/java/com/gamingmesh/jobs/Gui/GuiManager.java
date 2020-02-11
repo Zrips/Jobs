@@ -36,8 +36,6 @@ public class GuiManager {
 	    JobsList.add(job);
 	}
 
-	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.pickjob"));
 	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
@@ -54,6 +52,8 @@ public class GuiManager {
 	GuiSize = GuiSize > 54 ? 54 : GuiSize;
 
 	gui.setInvSize(GuiSize);
+
+	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
 	int i = 0;
 	int pos = Jobs.getGCManager().getJobsGUIStartPosition() - 1;
@@ -192,8 +192,11 @@ public class GuiManager {
 
 	int i = 0;
 	for (ActionType actionType : ActionType.values()) {
-	    List<JobInfo> info = job.getJobInfo(actionType);
+	    if (i > 54) {
+		break;
+	    }
 
+	    List<JobInfo> info = job.getJobInfo(actionType);
 	    if (info == null || info.isEmpty())
 		continue;
 

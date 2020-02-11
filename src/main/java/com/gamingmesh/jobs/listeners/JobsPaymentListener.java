@@ -1810,10 +1810,9 @@ public class JobsPaymentListener implements Listener {
 		    }
 		}
 
-		if (whiteList.contains("=") && whiteList.split("=").length == 2) {
-		    if (!hand.getEnchantments().containsKey(CMIEnchantment.getEnchantment(whiteList.split("=")[1]))) {
-			return false;
-		    }
+		if (whiteList.contains("=") && whiteList.split("=").length == 2 &&
+			    !hand.getEnchantments().containsKey(CMIEnchantment.getEnchantment(whiteList.split("=")[1]))) {
+		    return false;
 		}
 
 		if (mat != null && hand.getType().equals(mat.getMaterial())) {

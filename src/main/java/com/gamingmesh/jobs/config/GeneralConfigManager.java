@@ -185,25 +185,6 @@ public class GeneralConfigManager {
 	return currencyLimitUse.get(type);
     }
 
-    /**
-     * @deprecated Use {@link #useBreederFinder}
-     * Sets the breeder finder boolean
-     * @param state boolean
-     */
-    @Deprecated
-    public void setBreederFinder(boolean state) {
-	this.useBreederFinder = state;
-    }
-
-    /**
-     * @deprecated Use {@link #useBreederFinder}
-     * @return boolean
-     */
-    @Deprecated
-    public boolean isUseBreederFinder() {
-	return useBreederFinder;
-    }
-
     public void setTntFinder(boolean state) {
 	this.useTnTFinder = state;
     }

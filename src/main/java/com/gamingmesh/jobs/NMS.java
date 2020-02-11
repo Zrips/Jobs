@@ -21,8 +21,4 @@ public interface NMS {
     public double getMaxHealth(LivingEntity entity);
 
     public short getDurability(ItemStack item);
-
-//    public Enchantment getEnchantment(String type);
-//
-//    public String getEnchantName(Enchantment type);
 }

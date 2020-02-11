@@ -81,7 +81,6 @@ public class SignUtil {
 
     // Sign file
     public void LoadSigns() {
-	// Boolean false does not create a file
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
@@ -141,7 +140,6 @@ public class SignUtil {
 	cancelSignTask();
     }
 
-    // Signs save file
     public void saveSigns() {
 	File f = new File(Jobs.getFolder(), "Signs.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
