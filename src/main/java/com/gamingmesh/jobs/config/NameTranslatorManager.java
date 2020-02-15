@@ -55,7 +55,7 @@ public class NameTranslatorManager {
 		CMIMaterial mat = CMIMaterial.get(materialName.replace(" ", ""));
 		NameList nameLs = ListOfNames.get(mat);
 		if (nameLs == null) {
-		    return mat.getName();
+		    return mat.getName(); 
 		}
 
 		if (meta != null && !meta.isEmpty()) {

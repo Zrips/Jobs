@@ -10,7 +10,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.SlabType;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
