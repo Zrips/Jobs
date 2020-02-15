@@ -1171,13 +1171,12 @@ public class ConfigManager {
 			    continue;
 
 			if (material != null && material.getMaterial() != null && material.getMaterial() == Material.AIR) {
-			    log.warning("Job " + jobKey + " " + actionType.getName() + " cant recognize material! (" + key+")");
+			    log.warning("Job " + jobKey + " " + actionType.getName() + " cant recognize material! (" + key + ")");
 			    continue;
 			}
-			
+
 			if (material != null && Version.isCurrentLower(Version.v1_13_R1) && meta.isEmpty())
 			    meta = String.valueOf(material.getData());
-			
 
 			c: if (material != null && material != CMIMaterial.NONE && material.getMaterial() != null) {
 
