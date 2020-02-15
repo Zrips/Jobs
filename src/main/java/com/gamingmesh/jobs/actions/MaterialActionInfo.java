@@ -22,7 +22,6 @@ import org.bukkit.Material;
 
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public abstract class MaterialActionInfo extends BaseActionInfo {
     private Material material;

@@ -1022,16 +1022,17 @@ public class ConfigManager {
 				    ActionType actionType = ActionType.getByName(split[0]);
 				    String mats = split[1];
 				    String[] co = mats.split(",");
+
+				    int amount = 1;
+				    if (split.length == 3) {
+					amount = Integer.parseInt(split[2]);
+				    }
+
 				    if (co.length > 0) {
 					for (String c : co) {
 					    KeyValues kv = getKeyValue(c, actionType, jobFullName);
 					    if (kv == null) {
 						continue;
-					    }
-
-					    int amount = 1;
-					    if (split.length == 3) {
-						amount = Integer.parseInt(split[2]);
 					    }
 
 					    QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
@@ -1041,11 +1042,6 @@ public class ConfigManager {
 				    } else {
 					KeyValues kv = getKeyValue(mats, actionType, jobFullName);
 					if (kv != null) {
-					    int amount = 1;
-					    if (split.length == 3) {
-						amount = Integer.parseInt(split[2]);
-					    }
-
 					    QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
 						kv.getType() + kv.getSubType(), amount);
 					    quest.addObjective(objective);
@@ -1171,7 +1167,7 @@ public class ConfigManager {
 			    continue;
 
 			if (material != null && material.getMaterial() != null && material.getMaterial() == Material.AIR) {
-			    log.warning("Job " + jobKey + " " + actionType.getName() + " cant recognize material! (" + key + ")");
+			    log.warning("Job " + jobKey + " " + actionType.getName() + " cant recognize material! (" + key +")");
 			    continue;
 			}
 
