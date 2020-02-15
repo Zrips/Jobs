@@ -19,6 +19,7 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
 import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class NameTranslatorManager {
@@ -50,10 +51,28 @@ public class NameTranslatorManager {
 	    case BREW:
 	    case FISH:
 	    case STRIPLOGS:
+
 		CMIMaterial mat = CMIMaterial.get(materialName);
 		NameList nameLs = ListOfNames.get(mat);
-		if (nameLs == null)
+		if (nameLs == null) {
 		    return mat.getName();
+		} 
+
+		if (meta != null && !meta.isEmpty()) {
+		    mat = CMIMaterial.get(materialName + ":" + meta);
+		    nameLs = ListOfNames.get(mat);
+		    if (nameLs == null) {
+			return mat.getName();
+		    }
+		}
+
+		if (id != null && meta != null && !meta.isEmpty()) {
+		    mat = CMIMaterial.get(id + ":" + meta);
+		    nameLs = ListOfNames.get(mat);
+		    if (nameLs == null) {
+			return mat.getName();
+		    }
+		}
 
 		return nameLs.getName();
 	    case BREED:
@@ -195,7 +214,7 @@ public class NameTranslatorManager {
     }
 
     @SuppressWarnings("deprecation")
-	synchronized void load() {
+    synchronized void load() {
 	String ls = Jobs.getGCManager().localeString;
 	if (ls.isEmpty())
 	    return;

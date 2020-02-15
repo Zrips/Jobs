@@ -31,6 +31,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Util;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -1022,21 +1023,21 @@ public class ConfigManager {
 				    String mats = split[1];
 				    String[] co = mats.split(",");
 				    if (co.length > 0) {
-				    for (String c : co) {
-					KeyValues kv = getKeyValue(c, actionType, jobFullName);
-					if (kv == null) {
-					    continue;
-					}
+					for (String c : co) {
+					    KeyValues kv = getKeyValue(c, actionType, jobFullName);
+					    if (kv == null) {
+						continue;
+					    }
 
-					int amount = 1;
-					if (split.length == 3) {
-					    amount = Integer.parseInt(split[2]);
-					}
+					    int amount = 1;
+					    if (split.length == 3) {
+						amount = Integer.parseInt(split[2]);
+					    }
 
-					QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
-					    kv.getType() + kv.getSubType(), amount);
-					quest.addObjective(objective);
-				    }
+					    QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
+						kv.getType() + kv.getSubType(), amount);
+					    quest.addObjective(objective);
+					}
 				    } else {
 					KeyValues kv = getKeyValue(mats, actionType, jobFullName);
 					if (kv != null) {
@@ -1165,6 +1166,18 @@ public class ConfigManager {
 			    break;
 
 			}
+
+			if (actionType == ActionType.STRIPLOGS && Version.isCurrentLower(Version.v1_13_R1))
+			    continue;
+
+			if (material != null && material.getMaterial() != null && material.getMaterial() == Material.AIR) {
+			    log.warning("Job " + jobKey + " " + actionType.getName() + " cant recognize material! (" + key+")");
+			    continue;
+			}
+			
+			if (material != null && Version.isCurrentLower(Version.v1_13_R1) && meta.isEmpty())
+			    meta = String.valueOf(material.getData());
+			
 
 			c: if (material != null && material != CMIMaterial.NONE && material.getMaterial() != null) {
 

@@ -8,6 +8,7 @@ import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class blockinfo implements Cmd {
@@ -29,7 +30,10 @@ public class blockinfo implements Cmd {
 	Player player = (Player) sender;
 	Block block = Util.getTargetBlock(player, 15);
 
-	if (block == null || CMIMaterial.isAir(block.getState().getType()))
+	
+	Debug.D(block.getType(), CMIMaterial.get(block).toString());
+	
+	if (block == null || CMIMaterial.isAir(block.getType()))
 	    return true;
 
 	String dataString = CMIMaterial.getBlockData(block) == 0 ? "" : "-" + CMIMaterial.getBlockData(block);

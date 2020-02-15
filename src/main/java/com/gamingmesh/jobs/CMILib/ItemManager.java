@@ -18,6 +18,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ItemManager {
 
@@ -51,30 +52,30 @@ public class ItemManager {
 
 	    String mojangName = null;
 	    try {
-		mojangName = ItemReflection.getItemMinecraftName(new ItemStack(mat));
+		if (Version.isCurrentEqualOrLower(Version.v1_14_R1) || mat.isItem())
+		    mojangName = ItemReflection.getItemMinecraftName(new ItemStack(mat));
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
 	    mojangName = mojangName == null ? mat.toString().replace("_", "").replace(" ", "").toLowerCase()
-			: mojangName.replace("_", "").replace(" ", "").toLowerCase();
+		: mojangName.replace("_", "").replace(" ", "").toLowerCase();
 
 	    if (byName.containsKey(cmiName)) {
 		byName.put(cmiName + ":" + data, one);
 	    } else
 		byName.put(cmiName, one);
 
-	    if (byName.containsKey(materialName))
-		byName.put(materialName + ":" + data, one);
-	    else
-		byName.put(materialName, one);
+	    byName.put(materialName, one);
+	    if (!byName.containsKey(cmiName + ":" + data))
+		byName.put(cmiName + ":" + data, one);
 
 	    if (!one.getLegacyNames().isEmpty()) {
 		for (String oneL : one.getLegacyNames()) {
 		    String legacyName = oneL.replace("_", "").replace(" ", "").toLowerCase();
-		    if (byName.containsKey(legacyName) || data > 0)
+		    if (byName.containsKey(legacyName) || data > 0) {
 			byName.put(legacyName + ":" + data, one);
-		    else
-			byName.put(legacyName, one);
+		    }
+		    byName.put(legacyName, one);
 		}
 	    }
 
@@ -431,7 +432,7 @@ public class ItemManager {
 
 	if (ncm != null && subdata != null) {
 	    if (ncm.getCMIType().isPotion() || ncm.getCMIType().equals(CMIMaterial.SPLASH_POTION)
-			|| ncm.getCMIType().equals(CMIMaterial.TIPPED_ARROW)) {
+		|| ncm.getCMIType().equals(CMIMaterial.TIPPED_ARROW)) {
 		Integer d = null;
 		PotionEffectType type = null;
 		Boolean upgraded = false;
@@ -495,7 +496,7 @@ public class ItemManager {
 		continue;
 	    }
 	    if (Jobs.getNms().getDurability(result) == -1 ||
-			Jobs.getNms().getDurability(result) == Jobs.getNms().getDurability(stack)) {
+		Jobs.getNms().getDurability(result) == Jobs.getNms().getDurability(stack)) {
 		results.add(recipe);
 	    }
 	}
