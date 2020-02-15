@@ -51,12 +51,13 @@ public class NameTranslatorManager {
 	    case BREW:
 	    case FISH:
 	    case STRIPLOGS:
+		materialName = materialName.replace(" ", "");
 
-		CMIMaterial mat = CMIMaterial.get(materialName);
+		CMIMaterial mat = CMIMaterial.get(materialName.replace(" ", ""));
 		NameList nameLs = ListOfNames.get(mat);
 		if (nameLs == null) {
 		    return mat.getName();
-		} 
+		}
 
 		if (meta != null && !meta.isEmpty()) {
 		    mat = CMIMaterial.get(materialName + ":" + meta);
@@ -66,7 +67,7 @@ public class NameTranslatorManager {
 		    }
 		}
 
-		if (id != null && meta != null && !meta.isEmpty()) {
+		if (id != null && id > 0 && meta != null && !meta.isEmpty()) {
 		    mat = CMIMaterial.get(id + ":" + meta);
 		    nameLs = ListOfNames.get(mat);
 		    if (nameLs == null) {

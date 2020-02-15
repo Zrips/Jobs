@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ItemManager.SlabType;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.stuff.Debug;
@@ -1059,7 +1060,7 @@ public enum CMIMaterial {
     LEGACY_DIODE_BLOCK_OFF(93, 0, null, "Diode Block Off"),
     LEGACY_DIODE_BLOCK_ON(94, 0, null, "Diode Block On"),
     LEGACY_BREWING_STAND(117, null, null, "LEGACY_BREWING_STAND"),
-    
+
 //	LEGACY_CAULDRON(118, 0, null, "LEGACY_CAULDRON", ""),
 //	LEGACY_REDSTONE_LAMP_ON(124, null, null, "LEGACY_REDSTONE_LAMP_ON", ""),
 //	LEGACY_WOOD_DOUBLE_STEP(125, null, null, "LEGACY_WOOD_DOUBLE_STEP", ""),
@@ -1288,6 +1289,8 @@ public enum CMIMaterial {
 	    try {
 		ids = Integer.parseInt(id.split(":")[0]);
 		data = Integer.parseInt(id.split(":")[1]);
+		if (ids <= 0)
+		    return CMIMaterial.NONE;
 		return get(ids, data);
 	    } catch (Exception ex) {
 	    }
@@ -1300,7 +1303,7 @@ public enum CMIMaterial {
 		    return mat;
 		}
 		CMIMaterial mat1 = ItemManager.byName.get(id);
-		if (mat1 != null) {
+		if (mat1 != null && mat1.getLegacyId() > 0) {
 		    mat = get(mat1.getLegacyId(), data);
 		    if (mat != null) {
 			return mat;
