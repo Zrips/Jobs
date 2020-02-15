@@ -1160,14 +1160,13 @@ public class ConfigManager {
 			    break;
 			default:
 			    break;
-
 			}
 
 			if (actionType == ActionType.STRIPLOGS && Version.isCurrentLower(Version.v1_13_R1))
 			    continue;
 
 			if (material != null && material.getMaterial() != null && material.getMaterial() == Material.AIR) {
-			    log.warning("Job " + jobKey + " " + actionType.getName() + " cant recognize material! (" + key +")");
+			    log.warning("Job " + jobKey + " " + actionType.getName() + " cant recognize material! (" + key + ")");
 			    continue;
 			}
 
