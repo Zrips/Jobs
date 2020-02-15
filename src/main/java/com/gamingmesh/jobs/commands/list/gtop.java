@@ -42,6 +42,7 @@ public class gtop implements Cmd {
 	    } catch (NumberFormatException e) {
 		return true;
 	    }
+
 	if (page < 1)
 	    page = 1;
 
@@ -55,16 +56,14 @@ public class gtop implements Cmd {
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline", "%amount%", Jobs.getGCManager().JobsTopAmount));
-
 	    for (TopList One : FullList) {
-
 		if (pi.isBreak())
 		    break;
 
 		if (pi.isContinue())
 		    continue;
 
-		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
+		String PlayerName = One.getPlayerName();
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list",
 		    "%number%", pi.getPositionForOutput(),
 		    "%playername%", PlayerName,
@@ -74,11 +73,8 @@ public class gtop implements Cmd {
 
 	    Jobs.getInstance().ShowPagination(sender, pi, "jobs gtop");
 	} else {
-
 	    List<String> ls = new ArrayList<>();
-
 	    for (TopList one : FullList) {
-
 		if (pi.isBreak())
 		    break;
 
@@ -97,6 +93,7 @@ public class gtop implements Cmd {
 
 	    Jobs.getInstance().ShowPagination(sender, pi, "jobs gtop");
 	}
+
 	return true;
     }
 }

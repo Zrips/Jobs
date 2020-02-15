@@ -1022,16 +1022,17 @@ public class ConfigManager {
 				    ActionType actionType = ActionType.getByName(split[0]);
 				    String mats = split[1];
 				    String[] co = mats.split(",");
+
+				    int amount = 1;
+				    if (split.length == 3) {
+					amount = Integer.parseInt(split[2]);
+				    }
+
 				    if (co.length > 0) {
 					for (String c : co) {
 					    KeyValues kv = getKeyValue(c, actionType, jobFullName);
 					    if (kv == null) {
 						continue;
-					    }
-
-					    int amount = 1;
-					    if (split.length == 3) {
-						amount = Integer.parseInt(split[2]);
 					    }
 
 					    QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
@@ -1041,11 +1042,6 @@ public class ConfigManager {
 				    } else {
 					KeyValues kv = getKeyValue(mats, actionType, jobFullName);
 					if (kv != null) {
-					    int amount = 1;
-					    if (split.length == 3) {
-						amount = Integer.parseInt(split[2]);
-					    }
-
 					    QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
 						kv.getType() + kv.getSubType(), amount);
 					    quest.addObjective(objective);
@@ -1165,7 +1161,6 @@ public class ConfigManager {
 			    break;
 			default:
 			    break;
-
 			}
 
 			if (actionType == ActionType.STRIPLOGS && Version.isCurrentLower(Version.v1_13_R1))

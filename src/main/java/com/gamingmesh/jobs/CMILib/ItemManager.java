@@ -4,21 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class ItemManager {
 
@@ -279,26 +277,16 @@ public class ItemManager {
 	    data = 3;
 
 	    main: if (original.contains(":")) {
-
 		ItemStack old = headCache.get(original);
 		if (old != null) {
 		    cm.setItemStack(old);
 		} else {
 		    String d = original.split(":")[1];
-		    ItemStack skull = CMIMaterial.PLAYER_HEAD.newItemStack();
-		    SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-		    if (d.length() == 36) {
-			try {
-			    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(d));
-			    skullMeta.setOwningPlayer(offPlayer);
-			} catch (Exception e) {
-			    break main;
+		    ItemStack skull = Util.getSkull(d);
+		    if (skull == null) {
+			break main;
 			}
-			skull.setItemMeta(skullMeta);
-		    } else {
-			skullMeta.setOwner(d);
-			skull.setItemMeta(skullMeta);
-		    }
+
 		    headCache.put(original, skull);
 		    cm.setItemStack(skull);
 		}

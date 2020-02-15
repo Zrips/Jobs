@@ -19,7 +19,7 @@ public class browse implements Cmd {
     @Override
     @JobCommand(200)
     public boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
-	
+
 	if (Jobs.getGCManager().BrowseUseNewLook) {
 	    List<Job> jobList = new ArrayList<>(Jobs.getJobs());
 

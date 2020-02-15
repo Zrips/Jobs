@@ -53,7 +53,7 @@ public class Placeholder {
 	user_jexpunf_$1("jname/number"),
 	user_jmaxexpunf_$1("jname/number"),
 	user_jmaxlvl_$1("jname/number"),
-	user_job$1("jname/number"),
+	user_job_$1("jname/number"),
 
 	maxjobs,
 
@@ -448,9 +448,10 @@ public class Placeholder {
 		    vals = placeHolder.getComplexValues(value);
 		    if (vals.isEmpty())
 			return "";
+
 		    Job jobs = getJobFromValue(vals.get(0));
-		    return jobs == null ? "" : convert(user.isInJob(jobs));
-		case user_job$1:
+		    return jobs == null ? "no" : convert(user.isInJob(jobs));
+		case user_job_$1:
 		    return j == null ? "none" : j.getJob().getName();
 
 		case maxjobs:
