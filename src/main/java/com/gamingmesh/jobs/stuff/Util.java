@@ -7,6 +7,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -29,6 +30,7 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BlockIterator;
+import org.jetbrains.annotations.NotNull;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
@@ -69,8 +71,8 @@ public class Util {
 	return is;
     }
 
-	@SuppressWarnings("deprecation")
-	public static ItemStack getSkull(String skullOwner) {
+    @SuppressWarnings("deprecation")
+    public static ItemStack getSkull(String skullOwner) {
 	ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
 	SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
 	if (skullOwner.length() == 36) {
@@ -145,6 +147,15 @@ public class Util {
 	    distance = 1;
 
 	ArrayList<Block> blocks = new ArrayList<>();
+
+	try {
+	    Block bl = player.getTargetBlock(null, distance);
+	    if (!CMIMaterial.isAir(bl.getType())) {
+		return bl;
+	    }
+	} catch (Throwable e) {
+	}
+
 	Iterator<Block> itr = new BlockIterator(player, distance);
 	while (itr.hasNext()) {
 	    Block block = itr.next();
