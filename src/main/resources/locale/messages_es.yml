@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&c¡No existe este número de página de ayuda!'
     notNumber: '&ePor favor, utiliza números.'
-    job: '&cNo eres trabajador de esta profesión.'
+    job: '&cThe job you selected does not exist or you not joined to this'
     noCommand: '&c¡No hay ningún conjuro con este nombre!'
     permission: '&cNo tienes permiso para hacer esto.'
     noinfo: '&cNo se ha encontrado información.'
@@ -53,6 +53,9 @@ command:
       nextPage: '&6 Siguiente &2>>----'
       nextPageOff: '&7 Siguiente >>----'
       pageCount: '&2[current]/[total]'
+      pageCountHover: '&e[totalEntries] entries'
+      prevPageGui: '&6Previous page '
+      nextPageGui: '&6Next Page'
   moneyboost:
     help:
       info: Aumentar el salario de todos los jugadores
@@ -92,6 +95,7 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
       hoverLevelLimits: "&7Desde el nivel: %from% \n&7Hasta el nivel: %until%"
   edititembonus:
@@ -104,15 +108,15 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &7Prima por permiso: %money% %points% %exp%'
-      item: ' &7Prima por objeto: %money% %points% %exp%'
-      global: ' &7Prima global: %money% %points% %exp%'
-      dynamic: ' &7Prima dinámica: %money% %points% %exp%'
-      nearspawner: ' &7Prima por Spawner: %money% %points% %exp%'
-      petpay: ' &7Prima de Mascota: %money% %points% %exp%'
-      area: ' &7Prima por Región: %money% %points% %exp%'
-      mcmmo: ' &7Prima de mcMMO: %money% %points% %exp%'
-      final: ' &fPrima TOTAL: %money% %points% %exp%'
+      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
+      item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
+      global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eSpawner bonus: &2%money% &6%points% &e%exp%'
+      petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
+      area: ' &eArea bonus: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
+      final: ' &eFinal bonus: &2%money% &6%points% &e%exp%'
       finalExplanation: ' &eNo se incluye la prima de Mascota o la penalización de proximidad de spawner.'
   convert:
     help:
@@ -254,6 +258,9 @@ command:
       reqJobs: '&eProfesiones que necesitas:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6Nivel total que necesitas: &e%totalLevel%'
+      reqJobsColor: '&c'
+      reqJobsLevelColor: '&4'
+      reqTotalLevelColor: '&4'
       cantOpen: '&cNo se puede abrir esta página'
       NoPermForItem: '&c¡No tienes permiso para obtener este objeto!'
       NoPermToBuy: '&cNo tienes permiso para comprar este objeto.'
@@ -296,9 +303,11 @@ command:
       jobinfo: '&e[jobname] información'
       actions: '&eAcciones validas:'
       leftClick: '&eClic izquierdo para mas información'
+      middleClick: '&eMiddle Click to leave this job'
       rightClick: '&eClic derecho para trabajar en la profesión'
       leftSlots: '&ePuestos libres:&f '
       working: '&2&nTrabajando actualmente'
+      cantJoin: '&cYou can''t join to the selected job.'
       max: '&eNivel máximo:&f '
       back: '&e<<< Volver'
     output:
@@ -405,6 +414,7 @@ command:
       info: Comprobar quien ha visitado este chunk
     error:
       noexplore: Nadie a visitado este chunk
+    fullExplore: '&aThis chunk is fully explored'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -439,6 +449,12 @@ command:
       args: '[playername]'
     output:
       cleared: '&2Se han eliminado &7[furnaces] &2hornos y &7[brewing] &2Soportes para Pociones'
+  skipquest:
+    help:
+      info: Skip defined quest and get new one
+      args: '[jobname] [questname] (playerName)'
+    output:
+      questSkipForCost: '&2You skipped the quest and paid:&e %amount%$'
   quests:
     help:
       info: Ver la lista de misiones disponibles.
@@ -449,6 +465,8 @@ command:
     output:
       completed: '&2      !Completado!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      skip: '&7Click to skip this quest'
+      skips: '&7Left skips: &f[skips]'
       hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
     help:
@@ -529,6 +547,7 @@ command:
       money: '&6money: %amount% '
       exp: '&eexp: %amount% '
       points: '&6points: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Prev page &2|'
       next: '&2|&e Next Page >>>>'
@@ -543,6 +562,7 @@ command:
       money: '&6money: %amount% '
       exp: '&eexp: %amount% '
       points: '&6points: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cData not found'
   transfer:

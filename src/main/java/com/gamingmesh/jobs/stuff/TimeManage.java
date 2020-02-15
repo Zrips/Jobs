@@ -36,8 +36,6 @@ public class TimeManage {
 
 	String time = "";
 
-//	CMI.d(hours);
-
 	if (days > 0)
 	    time += Jobs.getLanguage().getMessage("general.info.time.days", "%days%", days);
 

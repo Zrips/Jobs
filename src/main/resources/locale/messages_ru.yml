@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&cНет страницы справочника с этим номером!'
     notNumber: '&eПожалуйста, используйте целые числа!'
-    job: '&cРаботы, что вы выбрали, не существует!'
+    job: '&cThe job you selected does not exist or you not joined to this'
     noCommand: '&cТакой команды не существует!'
     permission: '&cУ вас нет прав на совершение этого дествия!'
     noinfo: '&cИнформация не найдена!'
@@ -53,6 +53,9 @@ command:
       nextPage: '&6 Следующая страница &2>>----'
       nextPageOff: '&7 Следующая страница >>----'
       pageCount: '&2[current]/[total]'
+      pageCountHover: '&e[totalEntries] entries'
+      prevPageGui: '&6Previous page '
+      nextPageGui: '&6Next Page'
   moneyboost:
     help:
       info: Ускоряет получение денег для всех игроков
@@ -92,6 +95,7 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
       hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
   edititembonus:
@@ -104,15 +108,15 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &eНа основе привилегий: %money% %points% %exp%'
-      item: ' &eБонус на предмет: %money% %points% %exp%'
-      global: ' &eГлобальный: %money% %points% %exp%'
-      dynamic: ' &eДинамический бонус: %money% %points% %exp%'
-      nearspawner: ' &eБонус спавнера: %money% %points% %exp%'
-      petpay: ' &ePetPay бонус: %money% %points% %exp%'
-      area: ' &eНа основе местности: %money% %points% %exp%'
-      mcmmo: ' &eMcMMO бонус: %money% %points% %exp%'
-      final: ' &eИтого: %money% %points% %exp%'
+      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
+      item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
+      global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eSpawner bonus: &2%money% &6%points% &e%exp%'
+      petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
+      area: ' &eArea bonus: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
+      final: ' &eFinal bonus: &2%money% &6%points% &e%exp%'
       finalExplanation: ' &eНе включает бонусы/пенальти Petpay и Спавнеров'
   convert:
     help:
@@ -254,6 +258,9 @@ command:
       reqJobs: '&eТребуемые работы:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6Требуется совокупный уровень: &e%totalLevel%'
+      reqJobsColor: '&c'
+      reqJobsLevelColor: '&4'
+      reqTotalLevelColor: '&4'
       cantOpen: '&cНе могу открыть эту страницу'
       NoPermForItem: '&cУ Вас нет прав на совершение этого действия!'
       NoPermToBuy: '&cУ Вас нет прав на покупку этого товара!'
@@ -296,9 +303,11 @@ command:
       jobinfo: '&eИнформация о[jobname]!'
       actions: '&eДоступные действия:'
       leftClick: '&eНажмите ЛКМ, чтобы узнать подробнее'
+      middleClick: '&eMiddle Click to leave this job'
       rightClick: '&eНажмите ПКМ, чтобы устроиться на работу'
       leftSlots: '&e"Осталось вакансий":&f '
       working: '&2&nТекущая работа'
+      cantJoin: '&cYou can''t join to the selected job.'
       max: '&eМаксимальный уровень:&f '
       back: '&e<--Вернуться'
     output:
@@ -405,6 +414,7 @@ command:
       info: Проверить, кто посещал этот чанк.
     error:
       noexplore: Никто ещё не был замечен на этом чанке
+    fullExplore: '&aThis chunk is fully explored'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -439,6 +449,12 @@ command:
       args: '[playername]'
     output:
       cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+  skipquest:
+    help:
+      info: Skip defined quest and get new one
+      args: '[jobname] [questname] (playerName)'
+    output:
+      questSkipForCost: '&2Ты пропустил задание и заплатил:&e %amount%$'
   quests:
     help:
       info: Отобразить список доступных квестов.
@@ -449,6 +465,8 @@ command:
     output:
       completed: '&2      !Завершено!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      skip: '&7Click to skip this quest'
+      skips: '&7Left skips: &f[skips]'
       hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
     help:
@@ -529,6 +547,7 @@ command:
       money: '&6деньги: %amount% '
       exp: '&eexp: %amount% '
       points: '&6очки: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Prev page &2|'
       next: '&2|&e Next Page >>>>'
@@ -543,6 +562,7 @@ command:
       money: '&6деньги: %amount% '
       exp: '&eопыт: %amount% '
       points: '&6очки: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cДанные не найдены'
   transfer:

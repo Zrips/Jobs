@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&c帮助页面没有这个页数!'
     notNumber: '&e请使用数字!'
-    job: '&c你选择的职业不存在!'
+    job: '&cThe job you selected does not exist or you not joined to this'
     noCommand: '&cThere is no command by this name!'
     permission: '&c你没有权限这样做!'
     noinfo: '&c没有找到信息!'
@@ -53,6 +53,9 @@ command:
       nextPage: '&6 Next &2>>----'
       nextPageOff: '&7 Next >>----'
       pageCount: '&2[current]/[total]'
+      pageCountHover: '&e[totalEntries] entries'
+      prevPageGui: '&6Previous page '
+      nextPageGui: '&6Next Page'
   moneyboost:
     help:
       info: 加成玩家得到的游戏币
@@ -92,6 +95,7 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
       hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
   edititembonus:
@@ -104,15 +108,15 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &e权限加成: %money% %points% %exp%'
-      item: ' &e物品加成: %money% %points% %exp%'
-      global: ' &e全局加成: %money% %points% %exp%'
-      dynamic: ' &动态加成: %money% %points% %exp%'
-      nearspawner: ' &eSpawner bonus: %money% %points% %exp%'
-      petpay: ' &e宠物加成: %money% %points% %exp%'
-      area: ' &e区域加成: %money% %points% %exp%'
-      mcmmo: ' &eMcMMO加成: %money% %points% %exp%'
-      final: ' &e最终加成: %money% %points% %exp%'
+      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
+      item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
+      global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eSpawner bonus: &2%money% &6%points% &e%exp%'
+      petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
+      area: ' &eArea bonus: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
+      final: ' &eFinal bonus: &2%money% &6%points% &e%exp%'
       finalExplanation: ' &e不包括宠物和附近生成加成'
   convert:
     help:
@@ -254,6 +258,9 @@ command:
       reqJobs: '&e职业需求:'
       reqJobsList: '  &6%jobsname%&e: &eLV.%level%'
       reqTotalLevel: '&6总等级需求: &e%totalLevel%'
+      reqJobsColor: '&c'
+      reqJobsLevelColor: '&4'
+      reqTotalLevelColor: '&4'
       cantOpen: '&c不能打开这个页面'
       NoPermForItem: '&c你没有指定的权限使用此物品!'
       NoPermToBuy: '&c你没有制定的权限购买此物品'
@@ -296,9 +303,11 @@ command:
       jobinfo: '&e[jobname] 信息!'
       actions: '&e可用的动作:'
       leftClick: '&e左键查看更多信息'
+      middleClick: '&eMiddle Click to leave this job'
       rightClick: '&e右键加入职业'
       leftSlots: '&e剩余:&f '
       working: '&2&n已经就业'
+      cantJoin: '&cYou can''t join to the selected job.'
       max: '&e最高等级:&f '
       back: '&e<<< 返回'
     output:
@@ -405,6 +414,7 @@ command:
       info: Check who visited this chunk
     error:
       noexplore: No one visited this chunk
+    fullExplore: '&aThis chunk is fully explored'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -439,6 +449,12 @@ command:
       args: '[playername]'
     output:
       cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+  skipquest:
+    help:
+      info: Skip defined quest and get new one
+      args: '[jobname] [questname] (playerName)'
+    output:
+      questSkipForCost: '&2You skipped the quest and paid:&e %amount%$'
   quests:
     help:
       info: List available quests
@@ -449,6 +465,8 @@ command:
     output:
       completed: '&2      !Completed!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      skip: '&7Click to skip this quest'
+      skips: '&7Left skips: &f[skips]'
       hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
     help:
@@ -529,6 +547,7 @@ command:
       money: '&6money: %amount% '
       exp: '&eexp: %amount% '
       points: '&6points: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< 上一页 &2|'
       next: '&2|&e 下一页 >>>>'
@@ -543,6 +562,7 @@ command:
       money: '&6money: %amount% '
       exp: '&eexp: %amount% '
       points: '&6points: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&c没有数据'
   transfer:

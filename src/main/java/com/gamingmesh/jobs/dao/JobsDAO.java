@@ -1665,11 +1665,10 @@ public abstract class JobsDAO {
      */
     public List<TopList> getQuestTopList(int start) {
 	JobsConnection conn = getConnection();
-
 	List<TopList> names = new ArrayList<>();
-
 	if (conn == null)
 	    return names;
+
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
@@ -1683,10 +1682,10 @@ public abstract class JobsDAO {
 		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt("id"));
 		if (info == null)
 		    continue;
-		if (info.getName() == null)
-		    continue;
+
 		TopList top = new TopList(info, res.getInt(UserTableFields.donequests.getCollumn()), 0);
 		names.add(top);
+
 		if (names.size() >= Jobs.getGCManager().JobsTopAmount)
 		    break;
 	    }
@@ -2546,9 +2545,6 @@ public abstract class JobsDAO {
 	    while (res.next()) {
 		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt(JobsTableFields.userid.getCollumn()));
 		if (info == null)
-		    continue;
-
-		if (info.getName() == null)
 		    continue;
 
 		jobs.add(new TopList(info, res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));

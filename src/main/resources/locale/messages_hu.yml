@@ -22,9 +22,9 @@ general:
     error: '&cHiba történt a parancsban.'
     success: '&eA parancs végrehajtásra került.'
   error:
-    noHelpPage: '&cNincs több segítség oldal szám!'
+    noHelpPage: '&cNincs segítség ezzel az oldalszámmal!'
     notNumber: '&eKérlek, használj számokat!'
-    job: '&cEz a munka nem létezik!'
+    job: '&cA kiválasztott munka nem létezik, vagy nem csatlakoztál ehhez'
     noCommand: '&cNincs ilyen parancs ezzel a névvel!'
     permission: '&cNincs jogosultságod a használatára!'
     noinfo: '&cNincs információ találva!'
@@ -53,6 +53,9 @@ command:
       nextPage: '&6 Következő &2>>----'
       nextPageOff: '&7 Következő >>----'
       pageCount: '&2[current]/[total]'
+      pageCountHover: '&e[totalEntries] bejegyzések'
+      prevPageGui: '&6Előző oldal '
+      nextPageGui: '&6Következő oldal'
   moneyboost:
     help:
       info: Növeli a pénzszerzést minden játékos számára
@@ -92,6 +95,7 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
       hoverLevelLimits: "&7Szinttől: %from%\n&7Szintig: %until%"
   edititembonus:
@@ -104,15 +108,15 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &eJog bónusz: %money% %points% %exp%'
-      item: ' &eTárgy bónusz: %money% %points% %exp%'
-      global: ' &eGlobális bónusz: %money% %points% %exp%'
-      dynamic: ' &eDinamikus bónusz: %money% %points% %exp%'
-      nearspawner: ' &eIdéző bónusz: %money% %points% %exp%'
-      petpay: ' &ePetPay bónusz: %money% %points% %exp%'
-      area: ' &eTerület bónusz: %money% %points% %exp%'
-      mcmmo: ' &eMcMMO bónusz: %money% %points% %exp%'
-      final: ' &eVégső bónusz: %money% %points% %exp%'
+      permission: ' &eJog bónusz: &2%money% &6%points% &e%exp%'
+      item: ' &eTárgy bónusz: &2%money% &6%points% &e%exp%'
+      global: ' &eGlobális bónusz: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eDinamikus bónusz: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eIdéző bónusz: &2%money% &6%points% &e%exp%'
+      petpay: ' &ePetPay bónusz: &2%money% &6%points% &e%exp%'
+      area: ' &eTerület bónusz: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eMcMMO bónusz: &2%money% &6%points% &e%exp%'
+      final: ' &eVégső bónusz: &2%money% &6%points% &e%exp%'
       finalExplanation: ' &eNem tartalmazza a Petpay és az idéző bónusz/penaltyFinal bónuszt'
   convert:
     help:
@@ -254,6 +258,9 @@ command:
       reqJobs: '&eSzükséges munkák:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6Szükséges teljes szint: &e%totalLevel%'
+      reqJobsColor: '&c'
+      reqJobsLevelColor: '&4'
+      reqTotalLevelColor: '&4'
       cantOpen: '&cNem nyithatod meg ezt az oldalt!'
       NoPermForItem: '&cNincs jogod ehhez az elemhez!'
       NoPermToBuy: '&cNincs jogod ennek az elemnek a megvásárlásához!'
@@ -296,9 +303,11 @@ command:
       jobinfo: '&e[jobname] info!'
       actions: '&eÉrvényes akciók:'
       leftClick: '&eTovábbi információért kattints bal gombbal'
+      middleClick: '&eKözépkattintás a munka elhagyásához'
       rightClick: '&eJobb kattintás a munkához való csatlakozáshoz'
-      leftSlots: '&eBal oldali helyek:&f '
+      leftSlots: '&eMaradt helyek:&f '
       working: '&2&nMár dolgozol'
+      cantJoin: '&cNem csatlakozhatsz a kiválasztott munkához.'
       max: '&eMax. szint:&f '
       back: '&e<<< Vissza'
     output:
@@ -405,6 +414,7 @@ command:
       info: Ellenőrzi, ki látogatta meg ezt a darabot.
     error:
       noexplore: '&cSenki sem látogatta meg ezt a darabot.'
+    fullExplore: '&aEzt a darabot teljesen felfedezték'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -439,6 +449,12 @@ command:
       args: '[playername]'
     output:
       cleared: '&2Eltávolítva &7[furnaces] &2kemence &7[brewing] &2főzet.'
+  skipquest:
+    help:
+      info: Hagyja ki a meghatározott küldetést, és szerezzen újat
+      args: '[jobname] [questname] (játékos név)'
+    output:
+      questSkipForCost: '&2Átugrottad a küldetést és fizettél:&e %amount%$'
   quests:
     help:
       info: Megmutassa a rendelkezésre álló küldetések listáját.
@@ -449,6 +465,8 @@ command:
     output:
       completed: '&2      !Teljesítve!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      skip: '&7Kattints, hogy hagyja ki ezt a küldetést'
+      skips: '&7Maradt ugrások: &f[skips]'
       hover: "&f[jobName] \n[desc] \n&7Következő küldetés: [time]"
   fire:
     help:
@@ -529,6 +547,7 @@ command:
       money: '&6pénz: %amount% '
       exp: '&eexp: %amount% '
       points: '&6pontok: %amount%'
+      totalIncomes: '    &6Összes pénz:&2 %money%&6, Összes exp:&2 %exp%&6, Összes pontok:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Előző oldal &2|'
       next: '&2|&e Következő oldal >>>>'
@@ -543,6 +562,7 @@ command:
       money: '&6pénz: %amount% '
       exp: '&etapasztalat: %amount% '
       points: '&6pontok: %amount%'
+      totalIncomes: '    &6Összes pénz:&2 %money%&6, Összes exp:&2 %exp%&6, Összes pontok:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cAz adatok nem találhatóak.'
   transfer:
