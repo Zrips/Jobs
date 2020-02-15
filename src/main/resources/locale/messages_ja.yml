@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&cこの番号のヘルプページはありません。'
     notNumber: '&e数値ではありません'
-    job: '&c存在しないジョブです'
+    job: '&cThe job you selected does not exist or you not joined to this'
     noCommand: '&c存在しないコマンドです'
     permission: '&c権限を持っていないため実行できません'
     noinfo: '&c情報はありません'
@@ -53,6 +53,9 @@ command:
       nextPage: '&6 Next &2>>----'
       nextPageOff: '&7 Next >>----'
       pageCount: '&2[current]/[total]'
+      pageCountHover: '&e[totalEntries] entries'
+      prevPageGui: '&6Previous page '
+      nextPageGui: '&6Next Page'
   moneyboost:
     help:
       info: '[職業名]の収入(お金)を[倍率]倍にします'
@@ -92,6 +95,7 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
       hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
   edititembonus:
@@ -104,15 +108,15 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[収入(お金)] &6[獲得ポイント] &e[獲得経験値] &7****************'
-      permission: '&e権限ボーナス: %money% %points% %exp%'
-      item: '&eアイテムボーナス: %money% %points% %exp%'
-      global: '&eグローバルボーナス: %money% %points% %exp%'
-      dynamic: '&eダイナミックボーナス: %money% %points% %exp%'
-      nearspawner: '&eスポナーボーナス: %money% %points% %exp%'
-      petpay: '&eペットペイボーナス: %money% %points% %exp%'
-      area: '&eエリアボーナス: %money% %points% %exp%'
-      mcmmo: '&eMcMMO ボーナス: %money% %points% %exp%'
-      final: '&e最終ボーナス: %money% %points% %exp%'
+      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
+      item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
+      global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eSpawner bonus: &2%money% &6%points% &e%exp%'
+      petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
+      area: ' &eArea bonus: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
+      final: ' &eFinal bonus: &2%money% &6%points% &e%exp%'
       finalExplanation: '&eペットボーナスとスポナーボーナスは含まれていません'
   convert:
     help:
@@ -254,6 +258,9 @@ command:
       reqJobs: '&e必要な職業:'
       reqJobsList: ' &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6必要な合計レベル: &e%totalLevel%'
+      reqJobsColor: '&c'
+      reqJobsLevelColor: '&4'
+      reqTotalLevelColor: '&4'
       cantOpen: '&cこのページを開くことはできません'
       NoPermForItem: '&cあなたはこのアイテムに必要な権限を持っていません'
       NoPermToBuy: '&c権限がないため購入できません'
@@ -296,9 +303,11 @@ command:
       jobinfo: '&e[職業名] info!'
       actions: '&e有効な行動:'
       leftClick: '&eクリックで詳しい情報'
+      middleClick: '&eMiddle Click to leave this job'
       rightClick: '&e右クリックで職業に就きます'
       leftSlots: '&e左のスロット:&f '
       working: '&2&nすでに選択している職業です'
+      cantJoin: '&cYou can''t join to the selected job.'
       max: '&e最大レベル:&f '
       back: '&e<<< 戻る'
     output:
@@ -405,6 +414,7 @@ command:
       info: このチャンクに来たことのある人を確認できます
     error:
       noexplore: 誰もこのチャンクを訪れたことがありません
+    fullExplore: '&aThis chunk is fully explored'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -439,6 +449,12 @@ command:
       args: '[playername]'
     output:
       cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+  skipquest:
+    help:
+      info: Skip defined quest and get new one
+      args: '[jobname] [questname] (playerName)'
+    output:
+      questSkipForCost: '&2You skipped the quest and paid:&e %amount%$'
   quests:
     help:
       info: List available quests
@@ -449,6 +465,8 @@ command:
     output:
       completed: '&2      !Completed!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      skip: '&7Click to skip this quest'
+      skips: '&7Left skips: &f[skips]'
       hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
     help:
@@ -529,6 +547,7 @@ command:
       money: '&6収入(お金): %amount% '
       exp: '&e獲得経験値: %amount% '
       points: '&6ポイント: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< 前のぺージ &2|'
       next: '&2|&e 次のページ >>>>'
@@ -543,6 +562,7 @@ command:
       money: '&6収入(お金): %amount% '
       exp: '&e獲得経験値: %amount% '
       points: '&6ポイント: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cデータがありません'
   transfer:

@@ -15,7 +15,7 @@ general:
       hours: '&e%hours% &6tundi '
       mins: '&e%mins% &6minutit '
       secs: '&e%secs% &6sekundit '
-    invalidPage: '&cInvalid page'
+    invalidPage: '&cSobimatu leht'
     'true': '&2Tõene'
     'false': '&cVäär'
   admin:
@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&cSellise leheküljega abileht puudub!'
     notNumber: '&ePalun kasuta numbreid!'
-    job: '&cValitud ametit pole olemas!'
+    job: '&cValitud ametit pole olemas või sa pole sellega liitunud'
     noCommand: '&cSellise nimega käsklus puudub!'
     permission: '&cSul puudub selle tegemiseks luba!'
     noinfo: '&cTeavet ei leitud!'
@@ -53,6 +53,9 @@ command:
       nextPage: '&6 Järgmine &2>>----'
       nextPageOff: '&7 Järgmine >>----'
       pageCount: '&2[current]/[total]'
+      pageCountHover: '&e[totalEntries] üksust'
+      prevPageGui: '&6Eelmine leht '
+      nextPageGui: '&6Järgmine leht'
   moneyboost:
     help:
       info: Võimendab raha saamist kõikide mängijate jaoks
@@ -60,7 +63,7 @@ command:
     output:
       allreset: Kõik palgavõimendused on väljalülitatud
       jobsboostreset: Palgavõimendus on ameti %jobname% jaoks välja lülitatud
-      nothingtoreset: Nothing to reset
+      nothingtoreset: Pole midagi lähtestada
       boostalladded: Palgavõimendus suurusega %boost% on lisatud kõikidele ametitele!
       boostadded: Palgavõimendus suurusega &e%boost% &aon lisatud ametile &e%jobname%!
       infostats: '&c-----> &aRahavõimendus x%boost% lubatud&c <-------'
@@ -71,7 +74,7 @@ command:
     output:
       allreset: Kõik punktivõimendused on välja lülitatud
       jobsboostreset: Punktivõimendus on ameti %jobname% jaoks välja lülitatud
-      nothingtoreset: Nothing to reset
+      nothingtoreset: Pole midagi lähtestada
       boostalladded: Punktivõimendus suurusega %boost% on lisatud kõikidele ametitele!
       boostadded: Punktivõimendus suurusega &e%boost% &aon lisatud ametile &e%jobname%!
       infostats: '&c-----> &aPunktivõimendus x%boost% lubatud&c <-------'
@@ -82,7 +85,7 @@ command:
     output:
       allreset: Kõik kogemuste võimendused on välja lülitatud
       jobsboostreset: Kogemuste võimendus on ameti %jobname% jaoks välja lülitatud
-      nothingtoreset: Nothing to reset
+      nothingtoreset: Pole midagi lähtestada
       boostalladded: Kogemuste võimendus suurusega %boost% on lisatud kõikidele ametitele!
       boostadded: Kogemuste võimendus suurusega &e%boost% &aon lisatud ametile &e%jobname%!
       infostats: '&c-----> &aKogemuste võimendus x%boost% lubatud&c <-------'
@@ -92,6 +95,7 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
       hoverLevelLimits: "&7Tasemest: %from% \n&7Tasemeni: %until%"
   edititembonus:
@@ -104,19 +108,19 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &eLoa boonus: %money% %points% %exp%'
-      item: ' &eEseme boonus: %money% %points% %exp%'
-      global: ' &eÜldine boonus: %money% %points% %exp%'
-      dynamic: ' &eDünaamiline boonus: %money% %points% %exp%'
-      nearspawner: ' &eTekitaja boonus: %money% %points% %exp%'
-      petpay: ' &ePetPay boonus: %money% %points% %exp%'
-      area: ' &eAla boonus: %money% %points% %exp%'
-      mcmmo: ' &eMcMMO boonus: %money% %points% %exp%'
-      final: ' &eLõplik boonus: %money% %points% %exp%'
-      finalExplanation: ' &eDoes not include Petpay and Near spawner bonus/penalty'
+      permission: ' &eLoa boonus: &2%money% &6%points% &e%exp%'
+      item: ' &eEseme boonus: &2%money% &6%points% &e%exp%'
+      global: ' &eÜldine boonus: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eDünaamiline boonus: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eTekitaja boonus: &2%money% &6%points% &e%exp%'
+      petpay: ' &ePetPay boonus: &2%money% &6%points% &e%exp%'
+      area: ' &eAla boonus: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eMcMMO boonus: &2%money% &6%points% &e%exp%'
+      final: ' &eLõplik boonus: &2%money% &6%points% &e%exp%'
+      finalExplanation: ' &eEi sisalda Petpay ja lähedal oleva tekitaja boonust/trahvi'
   convert:
     help:
-      info: Converts the database system from one system to another. If you are currently running SQLite, this will convert it to MySQL and vice versa.
+      info: Konverteerib andmebaasi ühest süsteemist teise. Kui hetkel käitad SQLite'i, muutub see MySQL-iks ning vastupidi.
       args: ''
   limit:
     help:
@@ -188,10 +192,10 @@ command:
         lookHover: '&6Vajuta, et hankida teave vaadatavalt plokilt'
   editquests:
     help:
-      info: Edit current quests.
+      info: Muuda praeguseid eesmärke.
       args: ''
       list:
-        quest: '&eQuests:'
+        quest: '&eEesmärgid:'
         jobs: '  -> [&e%jobname%&r]'
         quests: '  -> [&e%questname%&r]'
         actions: '    -> [&e%actionname%&r]'
@@ -199,13 +203,13 @@ command:
         objectiveRemove: '&c[X]'
         objectiveAdd: '      -> &e[&2+&e]'
       modify:
-        newValue: '&eEnter new value'
-        enter: '&eEnter new name or press '
-        hand: '&6HAND '
-        handHover: '&6Press to grab info from item in your hand'
-        or: '&eor '
-        look: '&6LOOKING AT'
-        lookHover: '&6Press to grab info from block you are looking'
+        newValue: '&eSisesta uus väärtus'
+        enter: '&eSisesta uus väärtus või vajuta '
+        hand: '&6KÄSI '
+        handHover: '&6Vajuta, et hankida teave käes olevalt esemelt'
+        or: '&evõi '
+        look: '&6VAADATAV PLOKK'
+        lookHover: '&6Vajuta, et hankida teave vaadatavalt plokilt'
   blockinfo:
     help:
       info: Näitab vaadatava ploki teavet.
@@ -227,7 +231,7 @@ command:
   placeholders:
     help:
       info: Nimetab kõik kohatäited
-      args: (parse) (placeholder)
+      args: (töötlemine) (kohatäide)
     output:
       list: '&e[place]. &7[placeholder]'
       outputResult: ' &etulemus: &7[result]'
@@ -254,6 +258,9 @@ command:
       reqJobs: '&eNõutud ametid:'
       reqJobsList: '  &6%jobsname%&e: &e%level%. tase'
       reqTotalLevel: '&6Nõutud üldine tase: &e%totalLevel%'
+      reqJobsColor: '&c'
+      reqJobsLevelColor: '&4'
+      reqTotalLevelColor: '&4'
       cantOpen: '&cSeda lehte ei saa avada'
       NoPermForItem: '&cSul puuduvad sellele esemele vajalikud õigused!'
       NoPermToBuy: '&cPuudub selle eseme ostmise õigus'
@@ -289,16 +296,18 @@ command:
       levelFrom: ' &a(alates &e%levelFrom% &atasemest)'
       levelUntil: ' &a(kuni &e%levelUntil% &atasemeni)'
       money: ' &2%money%$'
-      points: ' &6%points%pts'
-      exp: ' &e%exp%xp'
+      points: ' &6%points% punkti'
+      exp: ' &e%exp% kogemust'
     gui:
       pickjob: '&eVali oma amet!'
       jobinfo: '&e[jobname] teave!'
       actions: '&eLubatud tegevused:'
       leftClick: '&eVasakklõps rohkema teabe saamiseks'
+      middleClick: '&eKeskklõps ametist lahkumiseks'
       rightClick: '&eParemklõps ametiga liitumiseks'
       leftSlots: '&eVabu kohti:&f '
       working: '&2&nOled juba liitunud'
+      cantJoin: '&cSa ei saa valitud ametiga liituda.'
       max: '&eMaksimaalne tase:&f '
       back: '&e<<< Tagasi'
     output:
@@ -316,7 +325,7 @@ command:
         none: 'Ametis %jobname% ei saa puutüvede koorimise eest raha.'
       kill:
         info: '&eTapmine'
-        none: '%jobname% does not get money for killing monsters.'
+        none: 'Ametis %jobname% ei saa koletiste tapmise eest raha.'
       mmkill:
         info: '&eMK tapmine'
         none: 'Ametis %jobname% ei saa Müütiliste Koletiste tapmise eest raha.'
@@ -366,11 +375,11 @@ command:
         info: '&eTehislikud tapmised'
         none: 'Ametis %jobname% ei saa raha mängijate tehislike tapmiste eest raha.'
       collect:
-        info: '&eCollect'
-        none: '%jobname% does not get money for collecting blocks.'
+        info: '&eKogu'
+        none: 'Ametis %jobname% ei saa plokkide kogumise eest raha.'
       bake:
-        info: '&eBake'
-        none: '%jobname% does not get money for cooking foods.'
+        info: '&eKüpseta'
+        none: 'Ametis %jobname% ei saa toitude küpsetamise eest raha.'
   playerinfo:
     help:
       info: Näitab, kui palju ja mille eest igas ametis mõni mängija raha saab.
@@ -386,25 +395,26 @@ command:
       rejoin: '&cSelle ametiga ei saa uuesti liituda. Oota [time]'
     rejoin: '&aKlõpsa ametiga taasliitumiseks: '
     success: Oled liitunud ametiga %jobname%.
-    confirm: '&2Click to confirm joining action for the &7[jobname] &2job.'
+    confirm: '&2Klõpsa ametiga &7[jobname] &2 liitumise kinnitamiseks.'
   leave:
     help:
       info: Lahku valitud ametist.
       args: '[oldplayerjob]'
     success: Oled lahkunud ametist %jobname%.
-    confirmationNeed: '&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!'
+    confirmationNeed: '&cKas soovid kindlasti ametist&e [jobname]&c lahkuda? Kinnitamiseks kirjuta&6 [time] sekundi &c jooksul käsklus uuesti!'
   leaveall:
     help:
       info: Lahku kõikidest ametitest.
     error:
       nojobs: Sul pole ühtegi ametit, millest lahkuda!
     success: Oled kõigist ametitest lahkunud.
-    confirmationNeed: '&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!'
+    confirmationNeed: '&cKas soovid kindlasti lahkuda kõigist ametitest? Kinnitamiseks kirjuta&6 [time] sekundi &c jooksul käsklus uuesti!'
   explored:
     help:
       info: Vaata, kes on seda kamakat külastanud
     error:
       noexplore: Keegi pole seda kamakat külastanud
+    fullExplore: '&aSee kamakas on täielikult avastatud'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -413,7 +423,7 @@ command:
       nojobs: Pole ühtegi ametit, millega sa saaksid liituda.
     output:
       header: 'Sa tohid liituda järgnevate ametitega:'
-      footer: For more information type in /jobs info [JobName]
+      footer: Rohkema teabe saamiseks kirjuta /jobs info [TööNimi]
       totalWorkers: ' &7Töötajaid: &e[amount]'
       penalty: ' &4Trahv: &c[amount]%'
       bonus: ' &2Boonus: &a[amount]%'
@@ -439,6 +449,12 @@ command:
       args: '[playername]'
     output:
       cleared: '&2Eemaldati &7[furnaces] &2ahju ja &7[brewing] &2pruulimisalust'
+  skipquest:
+    help:
+      info: Jäta valitud eesmärk vahele ja hangi uus
+      args: '[ametinimi] [eesmärginimi] (mängijanimi)'
+    output:
+      questSkipForCost: '&2Sa jätsid eesmärgi vahele ning maksid:&e %amount%$'
   quests:
     help:
       info: Loetle saadaolevad eesmärgid
@@ -449,7 +465,9 @@ command:
     output:
       completed: '&2      !Saavutatud!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
-      hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
+      skip: '&7Klõpsa eesmärgi vahelejätmiseks'
+      skips: '&7Vahelejätmisi alles: &f[skips]'
+      hover: "&f[jobName] \n[desc] \n&7Uus eesmärk tuleb: [time]"
   fire:
     help:
       info: Vallanda mängija ametist.
@@ -477,7 +495,7 @@ command:
       target: Sind on palgatud ametisse %jobname%.
   top:
     help:
-      info: Shows top players by jobs name.
+      info: Näitab parimaid mängijaid ametinimetuse järgi.
       args: '[jobname]'
     error:
       nojob: Selle nimetusega ameteid ei leitud.
@@ -529,6 +547,7 @@ command:
       money: '&6raha: %amount% '
       exp: '&ekogemusi: %amount% '
       points: '&6punkte: %amount%'
+      totalIncomes: '    &6Raha kokku:&2 %money%&6, kogemusi kokku:&2 %exp%&6, punkte kokku:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Eelmine leht &2|'
       next: '&2|&e Järgmine leht >>>>'
@@ -543,6 +562,7 @@ command:
       money: '&6raha: %amount% '
       exp: '&ekogemusi: %amount% '
       points: '&6punkte: %amount%'
+      totalIncomes: '    &6Raha kokku:&2 %money%&6, kogemusi kokku:&2 %exp%&6, punkte kokku:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cAndmeid ei leitud'
   transfer:
@@ -570,7 +590,7 @@ command:
       info: Muuda mängija taset teatud ametis.
       args: '[playername] [jobname] set/add/take [amount]'
     error:
-      nojob: '&cThis player must first join a job.'
+      nojob: '&cSee mängija peab kõigepealt ametiga liituma.'
     output:
       target: '&eSu kogemust muudeti ametis %jobname%&e, nüüd on sul &6%level%. tase &ening &6%exp% kogemust.'
   demote:
@@ -626,7 +646,7 @@ message:
     broadcast: '%playername% on nüüd %joblevel%. tasemel ametis %jobname%.'
     nobroadcast: Oled nüüd %joblevel%. tasemel ametis %jobname%.
   leveldown:
-    message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
+    message: '&cSa kaotasid&e %lostLevel%&c. taseme ametis&e %jobname%&c! Hetkel&6 %joblevel%&c. tase.'
   cowtimer: '&ePead veel &6%time% &esekundit ootama, et selle töö eest palka saada.'
   blocktimer: '&ePead ootama &3[time] &esekundit veel, et selle eest palka saada!'
   placeblocktimer: '&eSa ei saa samasse kohta plokke asetada kiiremini kui &6[time] &esekundit!'
@@ -651,7 +671,7 @@ signs:
     p10: '&b** &8Kümnes &b**'
     name: '&9[player]'
     level: '&8[level]. tase'
-    quests: '&8[quests] quests'
+    quests: '&8[quests] eesmärki'
     bottom: '&b************'
   cantcreate: '&4Sa ei saa seda silti luua!'
   cantdestroy: '&4Sa ei saa seda silti lõhkuda!'

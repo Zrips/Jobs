@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&cPagalbos puslapis su nurodytu skaičiu nerastas'
     notNumber: '&ePrašau naudokite skaičius'
-    job: '&cPasirinktas darbas neegzistuoja'
+    job: '&cThe job you selected does not exist or you not joined to this'
     noCommand: '&cNėra komandos naudojant šiuos žodžius'
     permission: '&cTu neturi leidimo atlikti šį veiksmą'
     noinfo: '&cNėrasta jokios informacijos'
@@ -53,6 +53,9 @@ command:
       nextPage: '&6 Kitas &2>>----'
       nextPageOff: '&7 Kitas >>----'
       pageCount: '&2[current]/[total]'
+      pageCountHover: '&e[totalEntries] entries'
+      prevPageGui: '&6Previous page '
+      nextPageGui: '&6Next Page'
   moneyboost:
     help:
       info: Paspartina pinigų gavima darbuotojams
@@ -92,6 +95,7 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
       hoverLevelLimits: "&7Nuo lygio: %from% \n&7Iki lygio: %until%"
   edititembonus:
@@ -104,15 +108,15 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &eLeidimu bonusas: %money% %points% %exp%'
-      item: ' &eDaiktų bonusas: %money% %points% %exp%'
-      global: ' &eBendras bonusas: %money% %points% %exp%'
-      dynamic: ' &eDinaminis bonusas: %money% %points% %exp%'
-      nearspawner: ' &eSpawner bonusas: %money% %points% %exp%'
-      petpay: ' &eGyvūno bonusas: %money% %points% %exp%'
-      area: ' &eZonos bonusas: %money% %points% %exp%'
-      mcmmo: ' &eMcMMO bonusas: %money% %points% %exp%'
-      final: ' &eFinalinis bonusas: %money% %points% %exp%'
+      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
+      item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
+      global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eSpawner bonus: &2%money% &6%points% &e%exp%'
+      petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
+      area: ' &eArea bonus: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
+      final: ' &eFinal bonus: &2%money% &6%points% &e%exp%'
       finalExplanation: ' &eNeįeina Gyvūno bonusas ir Spawnerio bonusas'
   convert:
     help:
@@ -254,6 +258,9 @@ command:
       reqJobs: '&eTuri dirbti:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6Reikalingas bendras lygis: &e%totalLevel%'
+      reqJobsColor: '&c'
+      reqJobsLevelColor: '&4'
+      reqTotalLevelColor: '&4'
       cantOpen: '&cNegali atidaryti šio puslapio'
       NoPermForItem: '&cTu neturi leidimo šiam daiktui!'
       NoPermToBuy: '&cNeturi leidimo šiam daiktui'
@@ -296,9 +303,11 @@ command:
       jobinfo: '&e[jobname] informacija!'
       actions: '&eGalimi veiksmai:'
       leftClick: '&eKairys mygtukas daugiau info'
+      middleClick: '&eMiddle Click to leave this job'
       rightClick: '&eDešinys mygtukas pradėti dirbti'
       leftSlots: '&eLiko vietu:&f '
       working: '&2&nJau dirbi'
+      cantJoin: '&cYou can''t join to the selected job.'
       max: '&eMaksimalus lygis:&f '
       back: '&e<<< Grįžti'
     output:
@@ -405,6 +414,7 @@ command:
       info: Patikrinti kas buvo Chunke
     error:
       noexplore: Niekas nebuvo šiame Chunke
+    fullExplore: '&aThis chunk is fully explored'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -439,6 +449,12 @@ command:
       args: '[playername]'
     output:
       cleared: '&2Pašalintos &7[furnaces] &2furnaces ir &7[brewing] &2brewing stendai'
+  skipquest:
+    help:
+      info: Skip defined quest and get new one
+      args: '[jobname] [questname] (playerName)'
+    output:
+      questSkipForCost: '&2You skipped the quest and paid:&e %amount%$'
   quests:
     help:
       info: Peržiūrėti galimus Questus
@@ -449,6 +465,8 @@ command:
     output:
       completed: '&2      !Atliktas!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      skip: '&7Click to skip this quest'
+      skips: '&7Left skips: &f[skips]'
       hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
     help:
@@ -529,6 +547,7 @@ command:
       money: '&6money: %amount% '
       exp: '&eexp: %amount% '
       points: '&6points: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Prev page &2|'
       next: '&2|&e Next Page >>>>'
@@ -543,6 +562,7 @@ command:
       money: '&6money: %amount% '
       exp: '&eexp: %amount% '
       points: '&6points: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cData not found'
   transfer:

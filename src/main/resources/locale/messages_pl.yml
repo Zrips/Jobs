@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&cNie ma strony pomocy z tym numerem!'
     notNumber: '&eProszę użyj numerów!'
-    job: '&cPracę jaką wybrałeś/aś nie istnieje!'
+    job: '&cPraca która wybrałeś/aś nie istnieje lub do niej nie dołączyłeś/aś'
     noCommand: '&cNie ma komendy z tą nazwą!'
     permission: '&cNie masz uprawnień do zrobienia tego!'
     noinfo: '&cBrak informacji znalezionych!'
@@ -53,6 +53,9 @@ command:
       nextPage: '&6 Nast &2>>----'
       nextPageOff: '&7 Nast >>----'
       pageCount: '&2[current]/[total]'
+      pageCountHover: '&e[totalEntries] wejścia'
+      prevPageGui: '&6Poprzednia strona '
+      nextPageGui: '&6Następna Strona'
   moneyboost:
     help:
       info: Zwiększa zysk pieniężny dla wszystkich graczy
@@ -92,6 +95,7 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
       hoverLevelLimits: "&7Z levelu: %from% \n&7Do levelu: %until%"
   edititembonus:
@@ -104,15 +108,15 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &eBonus permisji: %money% %points% %exp%'
-      item: ' &eBonus przedmiotu: %money% %points% %exp%'
-      global: ' &eBonus globalny: %money% %points% %exp%'
-      dynamic: ' &eDynamiczny bonus: %money% %points% %exp%'
-      nearspawner: ' &eBonus spawneru: %money% %points% %exp%'
-      petpay: ' &eBunus PetPay: %money% %points% %exp%'
-      area: ' &eBonus obszaru: %money% %points% %exp%'
-      mcmmo: ' &eBonus McMMO: %money% %points% %exp%'
-      final: ' &eŁączny bonus: %money% %points% %exp%'
+      permission: ' &eBonus permisji: &2%money% &6%points% &e%exp%'
+      item: ' &eBonus itemu: &2%money% &6%points% &e%exp%'
+      global: ' &eBonus globalny: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eBonus dynamiczny: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eBonus spawneru: &2%money% &6%points% &e%exp%'
+      petpay: ' &eBonus PetPay: &2%money% &6%points% &e%exp%'
+      area: ' &eBonus miejscowy: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eBonus McMMO: &2%money% &6%points% &e%exp%'
+      final: ' &eBonus końcowy: &2%money% &6%points% &e%exp%'
       finalExplanation: ' &eNie obejmuje bonusów Petpay i pobliskich spawnerów'
   convert:
     help:
@@ -242,7 +246,7 @@ command:
       args: '[playername]'
     error:
       nojob: Proszę dołącz do pracy najpierw.
-    output: 'Level %joblevel% dla%jobname%: %jobxp%/%jobmaxxp% xp'
+    output: 'Level %joblevel% dla %jobname%: %jobxp%/%jobmaxxp% xp'
   shop:
     help:
       info: Otwiera specjalny sklep prac.
@@ -254,6 +258,9 @@ command:
       reqJobs: '&eWymagana praca:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6Wymagany całkowity level: &e%totalLevel%'
+      reqJobsColor: '&c'
+      reqJobsLevelColor: '&4'
+      reqTotalLevelColor: '&4'
       cantOpen: '&cNie można otworzyć tej strony'
       NoPermForItem: '&cNie masz wymaganych permisji do tego przedmiotu!'
       NoPermToBuy: '&cBrak permisji aby kupić ten przedmiot'
@@ -296,9 +303,11 @@ command:
       jobinfo: '&e[jobname] informacje!'
       actions: '&eMożliwe akcje to:'
       leftClick: '&eNaciśnij lewym po więcej informacji'
+      middleClick: '&eNaciśnij środkowym aby opuścić tą pracę'
       rightClick: '&eNaciścij prawym aby dołączyć do pracy'
       leftSlots: '&ePozostałe miejsca:&f '
       working: '&2&nJuż pracujesz'
+      cantJoin: '&cNie możesz dołączyć do wybranej pracy.'
       max: '&eMax level:&f '
       back: '&e<<< Powrót'
     output:
@@ -369,8 +378,8 @@ command:
         info: '&eZbierz'
         none: '%jobname% nie otrzymuje pieniędzy za zbieranie bloków.'
       bake:
-        info: '&eBake'
-        none: '%jobname% does not get money for cooking foods.'
+        info: '&Upiecz'
+        none: '%jobname% nie otrzymuje pieniędzy za gotowanie jedzenia.'
   playerinfo:
     help:
       info: Wyświetla jak dużo za każdą pracę otrzymuje się płacy i za co na innym graczu.
@@ -405,6 +414,7 @@ command:
       info: Sprawdź kto odwiedził ten chunk
     error:
       noexplore: Nikt nie odwiedził tego chunku
+    fullExplore: '&aTen chunk jest w pełni przepodróżowany'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -439,6 +449,12 @@ command:
       args: '[playername]'
     output:
       cleared: '&2Usunięto &7[furnaces] &pieców i &7[brewing] &2stojaki do warzenia'
+  skipquest:
+    help:
+      info: Pomiń dany quest i otrzymaj nowy
+      args: '[jobname] [questname] (playerName)'
+    output:
+      questSkipForCost: '&2Pominąłeś/ełaś quest i zapłaciłeś/aś:&e %amount%$'
   quests:
     help:
       info: Wyświetla listę dostępnych questów
@@ -449,6 +465,8 @@ command:
     output:
       completed: '&2      !Ukończono!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
+      skip: '&7Kliknij aby pominąć ten quest'
+      skips: '&7Pozostałe pominięcia: &f[skips]'
       hover: "&f[jobName] \n[desc] \n&7Nowy quest za: [time]"
   fire:
     help:
@@ -477,7 +495,7 @@ command:
       target: Zostałeś/aś zatrudniony/a jako %jobname%.
   top:
     help:
-      info: Shows top players by jobs name.
+      info: Wyświetla top graczy poprzez nazwę pracy.
       args: '[jobname]'
     error:
       nojob: Nie można znaleźć żadnej pracy z tą nazwą.
@@ -529,6 +547,7 @@ command:
       money: '&6pieniądze: &6%amount% '
       exp: '&eexp: &%amount% '
       points: '&epunkty: &6%amount%'
+      totalIncomes: '    &6Razem pieniędzy:&2 %money%&6, Razem exp:&2 %exp%&6, Razem punktów:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Poprz str &2|'
       next: '&2|&e Nast Str >>>>'
@@ -543,6 +562,7 @@ command:
       money: '&6pieniądze: &6%amount% '
       exp: '&eexp: &%amount% '
       points: '&epunkty: &6%amount%'
+      totalIncomes: '    &6Razem pieniędzy:&2 %money%&6, Razem exp:&2 %exp%&6, Razem punktów:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cDane nie znalezione'
   transfer:
