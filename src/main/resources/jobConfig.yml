@@ -108,11 +108,14 @@ Jobs:
         # List of objectives this quest will require for it to count as finished
         # you can have as many objectives as you want
         Objectives:
-        # This should be in a format as [actionType];[actionTarget];[amount]
+        # This should be in a format as [actionType];[actionTarget, actionTarget];[amount]
         # [actionType] can be any valid job action. Look lower for all possible action types
-        # [actionTarget] can be material name, block type, entity name and so on. This is defined in same way as any generic payable job action
+        # [actionTarget] can be material name, block type, entity name and so on.
+        #   - This is defined in same way as any generic payable job action.
+        #   - You can use multiple names separated by commas "," to avoid creating many rows.
         # [amount] is how many times player should perform this action to complete quest
         - Break;17-0;300
+        #- Place;stone,cobblestone;5
         # Command list to be performed after quest is finished.
         # Use [playerName] to insert players name who finished that quest
         RewardCommands:

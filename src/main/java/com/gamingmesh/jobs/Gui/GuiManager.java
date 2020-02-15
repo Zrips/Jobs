@@ -192,7 +192,7 @@ public class GuiManager {
 
 	int i = 0;
 	for (ActionType actionType : ActionType.values()) {
-	    if (i > 54) {
+	    if (i > tempInv.getMaxStackSize()) {
 		break;
 	    }
 
@@ -275,7 +275,8 @@ public class GuiManager {
 		items.add(one);
 	}
 
-	int GuiSize = GUIManager.isOpenedGui(player) && GUIManager.getGui(player) != null ? GUIManager.getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
+	int GuiSize = GUIManager.isOpenedGui(player) && GUIManager.getGui(player) != null ?
+	    GUIManager.getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
 	int backButton = Jobs.getGCManager().getJobsGUIBackButton();
 
 	CMIGui gui = new CMIGui(player);

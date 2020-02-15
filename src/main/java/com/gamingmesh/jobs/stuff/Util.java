@@ -17,6 +17,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -26,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BlockIterator;
 
 import com.gamingmesh.jobs.Jobs;
@@ -65,6 +67,20 @@ public class Util {
 	    is.setDurability(type.getTypeId());
 	}
 	return is;
+    }
+
+	@SuppressWarnings("deprecation")
+	public static ItemStack getSkull(String skullOwner) {
+	ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
+	SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+	if (skullOwner.length() == 36) {
+	    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
+	    skullMeta.setOwner(offPlayer.getName());
+	} else
+	    skullMeta.setOwner(skullOwner);
+
+	item.setItemMeta(skullMeta);
+	return item;
     }
 
     public static World getWorld(String name) {
