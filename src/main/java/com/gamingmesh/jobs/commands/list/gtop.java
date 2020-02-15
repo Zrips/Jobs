@@ -47,7 +47,7 @@ public class gtop implements Cmd {
 
 	PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, Jobs.getPlayerManager().getPlayersCache().size(), page);
 
-	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(pi.getStart());
+	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(pi.getStart() - 1);
 	if (FullList.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.error.nojob"));
 	    return true;
@@ -55,12 +55,18 @@ public class gtop implements Cmd {
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline", "%amount%", Jobs.getGCManager().JobsTopAmount));
-	    int i = pi.getStart();
+
 	    for (TopList One : FullList) {
-		i++;
+
+		if (pi.isBreak())
+		    break;
+
+		if (pi.isContinue())
+		    continue;
+
 		String PlayerName = One.getPlayerName() != null ? One.getPlayerName() : "Unknown";
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list", 
-		    "%number%", i, 
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list",
+		    "%number%", pi.getPositionForOutput(),
 		    "%playername%", PlayerName,
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
@@ -71,12 +77,17 @@ public class gtop implements Cmd {
 
 	    List<String> ls = new ArrayList<>();
 
-	    int i = pi.getStart();
 	    for (TopList one : FullList) {
-		i++;
+
+		if (pi.isBreak())
+		    break;
+
+		if (pi.isContinue())
+		    continue;
+
 		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line",
-		    "%number%", i,
+		    "%number%", pi.getPositionForOutput(),
 		    "%playername%", playername,
 		    "%level%", one.getLevel()));
 	    }
