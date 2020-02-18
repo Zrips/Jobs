@@ -1190,6 +1190,18 @@ public abstract class JobsDAO {
 	    while (res.next()) {
 		count += res.getInt(1);
 	    }
+
+	    if (count == 0) {
+		Job job = Jobs.getJob(JobName);
+		if (job != null && job.getId() != 0) {
+		    prest2 = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid + "` = ?;");
+		    prest2.setInt(1, job.getId());
+		    res2 = prest2.executeQuery();
+		    while (res2.next()) {
+			count += res2.getInt(1);
+		    }
+		}
+	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {

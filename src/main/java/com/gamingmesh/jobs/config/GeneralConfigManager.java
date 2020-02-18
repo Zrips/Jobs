@@ -501,7 +501,7 @@ public class GeneralConfigManager {
 	c.addComment("Optimizations.DisabledWorlds.Use", "By setting this to true, Jobs plugin will be disabled in given worlds",
 	    "Only commands can be performed from disabled worlds with jobs.disabledworld.commands permission node");
 	DisabledWorldsUse = c.get("Optimizations.DisabledWorlds.Use", false);
-	c.addComment("Optimizations.DisabledWorlds.UseAsWhiteList", "If true, will changes the list behaviour, so if a world is added to list",
+	c.addComment("Optimizations.DisabledWorlds.UseAsWhiteList", "If true, will changes the list behavior, so if a world is added to list",
 	    "the payments will only works in the given worlds.");
 	UseAsWhiteListWorldList = c.get("Optimizations.DisabledWorlds.UseAsWhiteList", false);
 	DisabledWorldsList = c.get("Optimizations.DisabledWorlds.List", Arrays.asList(Bukkit.getWorlds().get(0).getName()));
