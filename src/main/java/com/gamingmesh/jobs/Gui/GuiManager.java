@@ -192,10 +192,6 @@ public class GuiManager {
 
 	int i = 0;
 	for (ActionType actionType : ActionType.values()) {
-	    if (i > tempInv.getMaxStackSize()) {
-		break;
-	    }
-
 	    List<JobInfo> info = job.getJobInfo(actionType);
 	    if (info == null || info.isEmpty())
 		continue;
@@ -248,6 +244,10 @@ public class GuiManager {
 		    if (z == info.size() - 1)
 			continue;
 
+		    if (i >= 54) {
+			break;
+		    }
+
 		    ItemMeta meta = GuiItem.getItemMeta();
 		    meta.setDisplayName(job.getChatColor() + job.getName());
 		    meta.setLore(Lore);
@@ -259,8 +259,15 @@ public class GuiManager {
 		    Lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
 		    i++;
 		}
+
 		y++;
 	    }
+
+	    // TODO: Make new page when the gui size is bigger than 54
+	    if (i >= 54) {
+		break;
+	    }
+
 	    ItemMeta meta = GuiItem.getItemMeta();
 	    meta.setDisplayName(job.getChatColor() + job.getName());
 	    meta.setLore(Lore);
