@@ -315,6 +315,9 @@ public class ShopManager {
 	int y = 1;
 	for (String category : categoriesList) {
 	    ConfigurationSection NameSection = ConfCategory.getConfigurationSection(category);
+	    if (NameSection == null) {
+		    continue;
+		}
 
 	    if (!NameSection.isDouble("Price")) {
 		Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid Price property. Skipping!");
