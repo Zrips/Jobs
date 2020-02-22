@@ -1635,11 +1635,14 @@ public abstract class JobsDAO {
      */
     public List<TopList> getGlobalTopList(int start) {
 	JobsConnection conn = getConnection();
-
 	List<TopList> names = new ArrayList<>();
-
 	if (conn == null)
 	    return names;
+
+	if (start < 0) {
+	    start = 0;
+	}
+
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
@@ -1653,10 +1656,10 @@ public abstract class JobsDAO {
 		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt(JobsTableFields.userid.getCollumn()));
 		if (info == null)
 		    continue;
-		if (info.getName() == null)
-		    continue;
+
 		TopList top = new TopList(info, res.getInt("totallvl"), 0);
 		names.add(top);
+
 		if (names.size() >= Jobs.getGCManager().JobsTopAmount)
 		    break;
 	    }
@@ -1666,6 +1669,7 @@ public abstract class JobsDAO {
 	    close(res);
 	    close(prest);
 	}
+
 	return names;
     }
 
@@ -1680,6 +1684,10 @@ public abstract class JobsDAO {
 	List<TopList> names = new ArrayList<>();
 	if (conn == null)
 	    return names;
+
+	if (start < 0) {
+	    start = 0;
+	}
 
 	PreparedStatement prest = null;
 	ResultSet res = null;

@@ -297,9 +297,6 @@ public class JobsPaymentListener implements Listener {
 	if (block == null || !Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
 	    return;
 
-	if (!Jobs.getGCManager().isBrewingStandsReassign())
-	    return;
-
 	if (!block.hasMetadata(brewingOwnerMetadata))
 	    return;
 
@@ -1004,9 +1001,6 @@ public class JobsPaymentListener implements Listener {
 	if (block == null || !Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
 	    return;
 
-	if (!Jobs.getGCManager().isFurnacesReassign())
-	    return;
-
 	if (!block.hasMetadata(furnaceOwnerMetadata))
 	    return;
 
@@ -1593,10 +1587,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Player p = event.getPlayer();
-	if (p == null) {
-	    return;
-	}
-
 	if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
 	    return;
 
@@ -1641,17 +1631,17 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
-	if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE) || cmat.equals(CMIMaterial.SMOKER) || cmat.equals(CMIMaterial.BLAST_FURNACE)) {
-	    if (!Jobs.getGCManager().isFurnacesReassign())
-		return;
-
+	if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE)
+		    || cmat.equals(CMIMaterial.SMOKER) || cmat.equals(CMIMaterial.BLAST_FURNACE)) {
 	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(p, block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
+
 		if (block.hasMetadata(furnaceOwnerMetadata)) {
 		    List<MetadataValue> data = block.getMetadata(furnaceOwnerMetadata);
 		    if (data.isEmpty())
 			return;
+
 		    // only care about first
 		    MetadataValue value = data.get(0);
 		    String uuid = value.asString();
@@ -1669,16 +1659,15 @@ public class JobsPaymentListener implements Listener {
 		    "[max]", jPlayer.getMaxFurnacesAllowed() == 0 ? "-" : jPlayer.getMaxFurnacesAllowed()));
 	    }
 	} else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)) {
-	    if (!Jobs.getGCManager().isBrewingStandsReassign())
-		return;
-
 	    ownershipFeedback done = FurnaceBrewingHandling.registerBrewingStand(p, block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
+
 		if (block.hasMetadata(brewingOwnerMetadata)) {
 		    List<MetadataValue> data = block.getMetadata(brewingOwnerMetadata);
 		    if (data.isEmpty())
 			return;
+
 		    // only care about first
 		    MetadataValue value = data.get(0);
 		    String uuid = value.asString();
@@ -1717,7 +1706,6 @@ public class JobsPaymentListener implements Listener {
 			Block b = loc.getBlock();
 			if (b.getType().toString().startsWith("STRIPPED_") && jPlayer != null)
 			    Jobs.action(jPlayer, new BlockActionInfo(b, ActionType.STRIPLOGS), b);
-			return;
 		    }
 		}, 1);
 	    }

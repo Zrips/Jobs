@@ -247,9 +247,7 @@ public class FurnaceBrewingHandling {
 	    return ownershipFeedback.invalid;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	int max = jPlayer.getMaxFurnacesAllowed();
-
 	int have = jPlayer.getFurnaceCount();
 
 	boolean owner = false;
@@ -277,24 +275,25 @@ public class FurnaceBrewingHandling {
 
 	block.setMetadata(JobsPaymentListener.furnaceOwnerMetadata, new FixedMetadataValue(Jobs.getInstance(), player.getUniqueId().toString()));
 
+	if (!Jobs.getGCManager().isFurnacesReassign()) {
+	    return ownershipFeedback.newReg;
+	}
+
 	List<blockLoc> ls = furnaceMap.get(player.getUniqueId());
 	if (ls == null)
 	    ls = new ArrayList<blockLoc>();
+
 	ls.add(new blockLoc(block.getLocation()));
 	furnaceMap.put(player.getUniqueId(), ls);
-
 	return ownershipFeedback.newReg;
     }
 
     public static ownershipFeedback registerBrewingStand(Player player, Block block) {
-
 	if (!CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND) && !CMIMaterial.get(block).equals(CMIMaterial.LEGACY_BREWING_STAND))
 	    return ownershipFeedback.invalid;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	int max = jPlayer.getMaxBrewingStandsAllowed();
-
 	int have = jPlayer.getBrewingStandCount();
 
 	boolean owner = false;
@@ -313,6 +312,7 @@ public class FurnaceBrewingHandling {
 		    return ownershipFeedback.notOwn;
 	    }
 	}
+
 	if (owner)
 	    return ownershipFeedback.old;
 
@@ -321,12 +321,16 @@ public class FurnaceBrewingHandling {
 
 	block.setMetadata(JobsPaymentListener.brewingOwnerMetadata, new FixedMetadataValue(Jobs.getInstance(), player.getUniqueId().toString()));
 
+	if (!Jobs.getGCManager().isBrewingStandsReassign()) {
+	    return ownershipFeedback.newReg;
+	}
+
 	List<blockLoc> ls = brewingMap.get(player.getUniqueId());
 	if (ls == null)
 	    ls = new ArrayList<blockLoc>();
+
 	ls.add(new blockLoc(block.getLocation()));
 	brewingMap.put(player.getUniqueId(), ls);
-
 	return ownershipFeedback.newReg;
     }
 
@@ -334,15 +338,19 @@ public class FurnaceBrewingHandling {
 	List<blockLoc> ls = furnaceMap.remove(uuid);
 	if (ls == null)
 	    return 0;
+
 	for (blockLoc one : ls) {
 	    Block block = one.getBlock();
 	    if (block == null)
 		continue;
+
 	    CMIMaterial cmat = CMIMaterial.get(block);
 	    if (!cmat.equals(CMIMaterial.FURNACE) && !cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE) && !cmat.equals(CMIMaterial.SMOKER) && !cmat.equals(CMIMaterial.BLAST_FURNACE))
 		continue;
+
 	    block.removeMetadata(JobsPaymentListener.furnaceOwnerMetadata, Jobs.getInstance());
 	}
+
 	return ls.size();
     }
 
