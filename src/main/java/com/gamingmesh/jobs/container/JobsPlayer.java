@@ -91,20 +91,26 @@ public class JobsPlayer {
 
     public void addPoints(Double points) {
 	getPointsData().addPoints(points);
+	Jobs.getJobsDAO().savePoints(this);
     }
 
     public void takePoints(Double points) {
 	getPointsData().takePoints(points);
+	Jobs.getJobsDAO().savePoints(this);
     }
 
     public void setPoints(Double points) {
 	getPointsData().setPoints(points);
+	Jobs.getJobsDAO().savePoints(this);
     }
 
     public void setPoints(PlayerPoints points) {
-	getPointsData().setPoints(points.getCurrentPoints());
-	getPointsData().setTotalPoints(points.getTotalPoints());
-	getPointsData().setNewEntry(points.isNewEntry());
+	PlayerPoints data = getPointsData();
+	data.setPoints(points.getCurrentPoints());
+	data.setTotalPoints(points.getTotalPoints());
+	data.setNewEntry(points.isNewEntry());
+
+	Jobs.getJobsDAO().savePoints(this);
     }
     
     public boolean havePoints(double points) {

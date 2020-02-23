@@ -258,6 +258,7 @@ public class ShopManager {
 		    }
 
 		    pointsInfo.takePoints(item.getPrice());
+		    Jobs.getJobsDAO().savePoints(jPlayer);
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPrice()));
 
 		}
