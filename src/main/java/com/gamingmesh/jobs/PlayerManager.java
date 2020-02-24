@@ -390,7 +390,7 @@ public class PlayerManager {
 	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
 	Jobs.takeSlot(job);
 	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
+	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
 	job.updateTotalPlayers();
     }
 
@@ -420,7 +420,7 @@ public class PlayerManager {
 	Jobs.leaveSlot(job);
 
 	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
+	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
 	job.updateTotalPlayers();
 	return true;
     }
@@ -468,7 +468,7 @@ public class PlayerManager {
 	jPlayer.save();
 
 	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
+	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
     }
 
     /**
@@ -481,7 +481,7 @@ public class PlayerManager {
 	jPlayer.demoteJob(job, levels);
 	jPlayer.save();
 	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
+	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
     }
 
     /**
@@ -498,7 +498,7 @@ public class PlayerManager {
 	if (prog.addExperience(experience)) {
 	    performLevelUp(jPlayer, job, oldLevel);
 	    Jobs.getSignUtil().SignUpdate(job);
-	    Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
+	    Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
 	}
 
 	jPlayer.save();
@@ -518,7 +518,7 @@ public class PlayerManager {
 
 	jPlayer.save();
 	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
+	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
     }
 
     /**
@@ -561,7 +561,7 @@ public class PlayerManager {
 	    Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	    performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
 	    Jobs.getSignUtil().SignUpdate(job);
-	    Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
+	    Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
 	    return;
 	}
 
@@ -758,7 +758,7 @@ public class PlayerManager {
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
 	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(SignTopType.gtoplist);
+	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
     }
 
     /**

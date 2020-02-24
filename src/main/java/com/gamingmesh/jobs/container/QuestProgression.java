@@ -123,7 +123,7 @@ public class QuestProgression {
 
 	givenReward = true;
 
-	jPlayer.addDoneQuest();
+	jPlayer.addDoneQuest(quest.getJob());
 
 	for (String one : quest.getRewardCmds()) {
 	    ServerCommandEvent ev = new ServerCommandEvent(Bukkit.getConsoleSender(), one.replace("[playerName]", jPlayer.getPlayer().getName()));

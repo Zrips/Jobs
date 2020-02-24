@@ -19,7 +19,7 @@ public class jobsSign {
 
     private Integer number;
     private String jobName;
-    private Boolean special;
+    private boolean special = false;
     private SignTopType type;
 
     public void setSpecial(boolean special) {
@@ -27,7 +27,7 @@ public class jobsSign {
     }
 
     public boolean isSpecial() {
-	return special == null ? false : special;
+	return special;
     }
 
     public void setJobName(String JobName) {
@@ -100,9 +100,9 @@ public class jobsSign {
     }
 
     public void setLoc(String string) {
-
 	if (!string.contains(";"))
 	    return;
+
 	String[] split = string.replace(",", ".").split(";");
 
 	Integer x = 0;
@@ -133,11 +133,12 @@ public class jobsSign {
 	World world = Util.getWorld(split[0]);
 	if (world == null)
 	    return;
+
 	this.setLoc(new Location(world, x, y, z));
     }
 
     public SignTopType getType() {
-	return type == null ? SignTopType.getType(jobName) == null ? SignTopType.toplist : SignTopType.getType(jobName) : type;
+	return type == null ? SignTopType.toplist : type;
     }
 
     public void setType(SignTopType type) {
@@ -149,6 +150,6 @@ public class jobsSign {
     }
 
     public static String getIdentifier(Job job, SignTopType type) {
-	return job != null ? job.getName() : type == null ? SignTopType.toplist.toString() : type.toString();
+	return job != null ? job.getName() : (type == null ? SignTopType.toplist : type).toString();
     }
 }

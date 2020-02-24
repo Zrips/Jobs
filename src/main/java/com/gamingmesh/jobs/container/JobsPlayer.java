@@ -1163,7 +1163,7 @@ public class JobsPlayer {
 
     private Integer questSignUpdateShed = null;
 
-    public void addDoneQuest() {
+    public void addDoneQuest(final Job job) {
 	this.doneQuests++;
 	this.setSaved(false);
 
@@ -1171,7 +1171,7 @@ public class JobsPlayer {
 	    questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
 		@Override
 		public void run() {
-		    Jobs.getSignUtil().SignUpdate(SignTopType.questtoplist);
+		    Jobs.getSignUtil().SignUpdate(job, SignTopType.questtoplist);
 		    questSignUpdateShed = null;
 		}
 	    }, Jobs.getGCManager().getSavePeriod() * 60 * 20L);

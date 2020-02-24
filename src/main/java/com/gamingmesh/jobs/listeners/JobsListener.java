@@ -342,7 +342,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
-
 	if (player == null)
 	    return;
 
@@ -353,22 +352,20 @@ public class JobsListener implements Listener {
 	}
 
 	String jobname = ChatColor.stripColor(event.getLine(2)).toLowerCase();
-
 	final Job job = Jobs.getJob(jobname);
-
-	if (type == SignTopType.toplist && job == null) {
+	if ((type == SignTopType.toplist || type == SignTopType.questtoplist) && job == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return;
 	}
 
 	boolean special = false;
-	int Number = 0;
 	String numberString = ChatColor.stripColor(event.getLine(3)).toLowerCase();
 	if (numberString.contains("s")) {
 	    numberString = numberString.replace("s", "");
 	    special = true;
 	}
 
+	int Number = 0;
 	try {
 	    Number = Integer.parseInt(numberString);
 	} catch (NumberFormatException e) {
@@ -381,26 +378,19 @@ public class JobsListener implements Listener {
 	Location loc = sign.getLocation();
 	signInfo.setLoc(loc);
 	signInfo.setNumber(Number);
-
 	if (job != null)
 	    signInfo.setJobName(job.getName());
 	signInfo.setType(type);
-
 	signInfo.setSpecial(special);
 
 	final SignUtil signUtil = Jobs.getSignUtil();
-
 	signUtil.addSign(signInfo);
 	signUtil.saveSigns();
+
 	event.setCancelled(true);
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		signUtil.SignUpdate(job, type);
-		return;
-	    }
-	}, 1L);
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
+	    signUtil.SignUpdate(job, type), 1L);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
