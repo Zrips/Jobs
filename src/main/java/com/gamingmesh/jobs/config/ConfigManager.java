@@ -344,6 +344,7 @@ public class ConfigManager {
 	case KILL:
 	case MILK:
 	case MMKILL:
+	case BOSS:
 	case BREED:
 	case SHEAR:
 	case EXPLORE:
@@ -510,7 +511,7 @@ public class ConfigManager {
 	    CMIEnchantment enchant = CMIEnchantment.get(myKey);
 	    type = enchant == null ? myKey : enchant.toString();
 	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.SHEAR || actionType == ActionType.MMKILL
-	    || actionType == ActionType.COLLECT || actionType == ActionType.BAKE)
+	    || actionType == ActionType.COLLECT || actionType == ActionType.BAKE || actionType == ActionType.BOSS)
 	    type = myKey;
 	else if (actionType == ActionType.EXPLORE) {
 	    type = myKey;
@@ -1117,6 +1118,7 @@ public class ConfigManager {
 			case KILL:
 			case MILK:
 			case MMKILL:
+			case BOSS:
 			case BREED:
 			case SHEAR:
 			case EXPLORE:
@@ -1297,7 +1299,7 @@ public class ConfigManager {
 
 			    type = enchant == null ? myKey : enchant.toString();
 			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
-			    || actionType == ActionType.SHEAR || actionType == ActionType.BAKE)
+			    || actionType == ActionType.SHEAR || actionType == ActionType.BAKE || actionType == ActionType.BOSS)
 			    type = myKey;
 			else if (actionType == ActionType.EXPLORE) {
 			    type = myKey;

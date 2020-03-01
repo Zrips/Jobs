@@ -352,6 +352,7 @@ public class editquests implements Cmd {
 		    case KILL:
 		    case MILK:
 		    case MMKILL:
+		    case BOSS:
 		    case BREED:
 		    case SHEAR:
 		    case EXPLORE:
@@ -511,7 +512,7 @@ public class editquests implements Cmd {
 			}
 			type = myKey;
 		    } else if (actionT == ActionType.CUSTOMKILL || actionT == ActionType.SHEAR || actionT == ActionType.MMKILL
-			|| actionT == ActionType.COLLECT || actionT == ActionType.BAKE)
+			|| actionT == ActionType.COLLECT || actionT == ActionType.BAKE || actionT == ActionType.BOSS)
 			type = myKey;
 		    else if (actionT == ActionType.EXPLORE) {
 			type = myKey;

@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.hooks;
 import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.hooks.Boss.BossManager;
 import com.gamingmesh.jobs.hooks.McMMO.McMMO1_X_listener;
 import com.gamingmesh.jobs.hooks.McMMO.McMMO2_X_listener;
 import com.gamingmesh.jobs.hooks.McMMO.McMMOManager;
@@ -18,6 +19,7 @@ public class HookManager {
     private static MythicMobInterface MythicManager = null;
     private static MyPetManager myPetManager = null;
     private static WorldGuardManager worldGuardManager = null;
+    private static BossManager bossManager = null;
 
     private static PluginManager pm = null;
 
@@ -30,12 +32,13 @@ public class HookManager {
 	setMyPetManager();
 	setWorldGuard();
 	setMythicManager();
+	setBossManager();
 
 	if (checkMythicMobs())
 	    MythicManager.registerListener();
     }
 
-    public static MyPetManager getMyPetManager() {
+	public static MyPetManager getMyPetManager() {
 	if (myPetManager == null) {
 	    setMyPetManager();
 	}
@@ -58,7 +61,14 @@ public class HookManager {
 	return McMMOManager;
     }
 
-    public static MythicMobInterface getMythicManager() {
+    public static BossManager getBossManager() {
+	if (bossManager == null)
+	    setBossManager();
+
+	return bossManager;
+    }
+
+	public static MythicMobInterface getMythicManager() {
 	return MythicManager;
     }
 
@@ -115,6 +125,13 @@ public class HookManager {
 	if (pm.getPlugin("MyPet") != null && pm.isPluginEnabled("MyPet")) {
 	    myPetManager = new MyPetManager();
 	    Jobs.consoleMsg("&e[Jobs] MyPet detected.");
+	}
+    }
+
+    private static void setBossManager() {
+	if (pm.getPlugin("Boss") != null && pm.isPluginEnabled("Boss")) {
+	    bossManager = new BossManager();
+	    Jobs.consoleMsg("&e[Jobs] Boss detected.");
 	}
     }
 }
