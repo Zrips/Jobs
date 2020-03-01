@@ -1160,12 +1160,9 @@ public abstract class JobsDAO {
 	}
 
 	for (Job one : Jobs.getJobs()) {
-	    if (one.getId() != 0)
-		continue;
-	    this.recordNewJobName(one);
+	    if (one.getId() == 0)
+		recordNewJobName(one);
 	}
-
-	return;
     }
 
     /**
