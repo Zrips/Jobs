@@ -21,6 +21,14 @@
 			<version>1.15.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- Boss -->
+		<dependency>
+			<groupId>org.mineacademy.boss.api</groupId>
+			<artifactId>boss-api</artifactId>
+			<version>3.1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/BossAPI_3.1.0.jar</systemPath>
+		</dependency>
 		<!-- MyPet -->
 		<dependency>
 			<groupId>de.keyle</groupId>
