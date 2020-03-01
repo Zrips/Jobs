@@ -40,39 +40,35 @@ public class FurnaceBrewingHandling {
 	    if (section == null)
 		return;
 
-	    try {
-		for (String one : section.getKeys(false)) {
-		    String value = section.getString(one);
-		    List<String> ls = new ArrayList<>();
-		    if (value.contains(";"))
-			ls.addAll(Arrays.asList(value.split(";")));
-		    else
-			ls.add(value);
+	    for (String one : section.getKeys(false)) {
+		String value = section.getString(one);
+		List<String> ls = new ArrayList<>();
+		if (value.contains(";"))
+		    ls.addAll(Arrays.asList(value.split(";")));
+		else
+		    ls.add(value);
 
-		    UUID uuid = UUID.fromString(one);
-		    if (uuid == null)
+		UUID uuid = UUID.fromString(one);
+		if (uuid == null)
+		    continue;
+
+		List<blockLoc> blist = new ArrayList<>();
+		for (String oneL : ls) {
+		    blockLoc bl = new blockLoc(oneL);
+		    Block block = bl.getBlock();
+		    if (block == null)
 			continue;
 
-		    List<blockLoc> blist = new ArrayList<>();
-		    for (String oneL : ls) {
-			blockLoc bl = new blockLoc(oneL);
-			Block block = bl.getBlock();
-			if (block == null)
-			    continue;
+		    block.removeMetadata(JobsPaymentListener.furnaceOwnerMetadata, Jobs.getInstance());
+		    block.setMetadata(JobsPaymentListener.furnaceOwnerMetadata, new FixedMetadataValue(Jobs.getInstance(), one));
 
-			block.removeMetadata(JobsPaymentListener.furnaceOwnerMetadata, Jobs.getInstance());
-			block.setMetadata(JobsPaymentListener.furnaceOwnerMetadata, new FixedMetadataValue(Jobs.getInstance(), one));
-
-			blist.add(bl);
-		    }
-
-		    if (!blist.isEmpty()) {
-			furnaceMap.put(uuid, blist);
-			totalf++;
-		    }
+		    blist.add(bl);
 		}
-	    } catch (Throwable e) {
-		e.printStackTrace();
+
+		if (!blist.isEmpty()) {
+		    furnaceMap.put(uuid, blist);
+		    totalf++;
+		}
 	    }
 	}
 
@@ -81,39 +77,35 @@ public class FurnaceBrewingHandling {
 	    if (section == null)
 		return;
 
-	    try {
-		for (String one : section.getKeys(false)) {
-		    String value = section.getString(one);
-		    List<String> ls = new ArrayList<>();
-		    if (value.contains(";"))
-			ls.addAll(Arrays.asList(value.split(";")));
-		    else
-			ls.add(value);
+	    for (String one : section.getKeys(false)) {
+		String value = section.getString(one);
+		List<String> ls = new ArrayList<>();
+		if (value.contains(";"))
+		    ls.addAll(Arrays.asList(value.split(";")));
+		else
+		    ls.add(value);
 
-		    UUID uuid = UUID.fromString(one);
-		    if (uuid == null)
+		UUID uuid = UUID.fromString(one);
+		if (uuid == null)
+		    continue;
+
+		List<blockLoc> blist = new ArrayList<>();
+		for (String oneL : ls) {
+		    blockLoc bl = new blockLoc(oneL);
+		    Block block = bl.getBlock();
+		    if (block == null)
 			continue;
 
-		    List<blockLoc> blist = new ArrayList<>();
-		    for (String oneL : ls) {
-			blockLoc bl = new blockLoc(oneL);
-			Block block = bl.getBlock();
-			if (block == null)
-			    continue;
+		    block.removeMetadata(JobsPaymentListener.brewingOwnerMetadata, Jobs.getInstance());
+		    block.setMetadata(JobsPaymentListener.brewingOwnerMetadata, new FixedMetadataValue(Jobs.getInstance(), one));
 
-			block.removeMetadata(JobsPaymentListener.brewingOwnerMetadata, Jobs.getInstance());
-			block.setMetadata(JobsPaymentListener.brewingOwnerMetadata, new FixedMetadataValue(Jobs.getInstance(), one));
-
-			blist.add(bl);
-		    }
-
-		    if (!blist.isEmpty()) {
-			brewingMap.put(uuid, blist);
-			totalb++;
-		    }
+		    blist.add(bl);
 		}
-	    } catch (Throwable e) {
-		e.printStackTrace();
+
+		if (!blist.isEmpty()) {
+		    brewingMap.put(uuid, blist);
+		    totalb++;
+		}
 	    }
 	}
 

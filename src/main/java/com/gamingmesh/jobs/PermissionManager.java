@@ -120,19 +120,27 @@ public class PermissionManager {
     }
 
     public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
+	if (jPlayer == null)
+	    return 0D;
+
+	if (jPlayer.getPlayer() == null)
+	    return 0D;
+
 	perm = perm.toLowerCase();
 	if (!perm.endsWith("."))
 	    perm += ".";
-	if (jPlayer == null)
-	    return 0D;
-	if (jPlayer.getPlayer() == null)
-	    return 0D;
+
 	HashMap<String, Boolean> permissions = jPlayer.getPermissionsCache();
 	if (force || permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
 	    permissions = getAll(jPlayer.getPlayer());
 	    jPlayer.setPermissionsCache(permissions);
 	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
 	}
+
+	if (permissions == null) {
+	    return 0D;
+	}
+
 	Double amount = null;
 	for (Entry<String, Boolean> uno : permissions.entrySet()) {
 	    if (uno.getKey().startsWith(perm)) {
@@ -140,10 +148,11 @@ public class PermissionManager {
 		    double t = Double.parseDouble(uno.getKey().replace(perm, ""));
 		    if (amount == null || t > amount)
 			amount = t;
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		}
 	    }
 	}
+
 	return amount == null ? 0D : amount;
     }
 

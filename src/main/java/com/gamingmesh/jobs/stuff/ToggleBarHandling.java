@@ -27,11 +27,9 @@ public class ToggleBarHandling {
 
 	    if (section != null) {
 		for (String one : section.getKeys(false)) {
-		    if (section.getBoolean(one)) {
-			continue;
+		    if (!section.getBoolean(one)) {
+			bossBarToggle.put(one, section.getBoolean(one));
 		    }
-
-		    bossBarToggle.put(one, section.getBoolean(one));
 		}
 	    }
 	}
@@ -41,11 +39,9 @@ public class ToggleBarHandling {
 
 	    if (section != null) {
 		for (String one : section.getKeys(false)) {
-		    if (section.getBoolean(one)) {
-			continue;
+		    if (!section.getBoolean(one)) {
+			actionBarToggle.put(one, section.getBoolean(one));
 		    }
-
-		    actionBarToggle.put(one, section.getBoolean(one));
 		}
 	    }
 	}
@@ -65,11 +61,9 @@ public class ToggleBarHandling {
 
 	    if (!bossBarToggle.isEmpty()) {
 		for (Entry<String, Boolean> one : bossBarToggle.entrySet()) {
-		    if (one.getValue()) {
-			continue;
+		    if (!one.getValue()) {
+			config.set("bossBar." + one.getKey(), one.getValue());
 		    }
-
-		    config.set("bossBar." + one.getKey(), one.getValue());
 		}
 	    }
 	}
@@ -79,11 +73,9 @@ public class ToggleBarHandling {
 
 	    if (!actionBarToggle.isEmpty()) {
 		for (Entry<String, Boolean> one : actionBarToggle.entrySet()) {
-		    if (one.getValue()) {
-			continue;
+		    if (!one.getValue()) {
+			config.set("actionBar." + one.getKey(), one.getValue());
 		    }
-
-		    config.set("actionBar." + one.getKey(), one.getValue());
 		}
 	    }
 	}

@@ -117,6 +117,10 @@ public class Job {
 	this.boost.add(type, Point - 1D);
     }
 
+    public void addBoost(CurrencyType type, double point, int hour, int minute, int second) {
+	boost.add(type, point - 1D, hour, minute, second);
+    }
+
     public void setBoost(BoostMultiplier BM) {
 	this.boost = BM;
     }

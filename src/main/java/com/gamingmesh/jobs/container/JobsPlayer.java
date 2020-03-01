@@ -105,10 +105,9 @@ public class JobsPlayer {
     }
 
     public void setPoints(PlayerPoints points) {
-	PlayerPoints data = getPointsData();
-	data.setPoints(points.getCurrentPoints());
-	data.setTotalPoints(points.getTotalPoints());
-	data.setNewEntry(points.isNewEntry());
+	getPointsData().setPoints(points.getCurrentPoints());
+	getPointsData().setTotalPoints(points.getTotalPoints());
+	getPointsData().setNewEntry(points.isNewEntry());
 
 	Jobs.getJobsDAO().savePoints(this);
     }

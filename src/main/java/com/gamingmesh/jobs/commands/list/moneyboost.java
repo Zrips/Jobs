@@ -13,28 +13,87 @@ public class moneyboost implements Cmd {
     @Override
     @JobCommand(2400)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (args.length > 2 || args.length <= 1) {
+	if (args.length > 3 || args.length <= 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "moneyboost");
 	    return true;
 	}
 
+	String time = "";
 	double rate = 1.0;
-	if (!args[1].equalsIgnoreCase("all") && !args[0].equalsIgnoreCase("reset")) {
-	    try {
-		rate = Double.parseDouble(args[1]);
-	    } catch (NumberFormatException e) {
-		Jobs.getCommandManager().sendUsage(sender, "moneyboost");
-		return true;
+	if (args[0].equalsIgnoreCase("all")) {
+		if (args.length == 3) {
+		    time = args[1].toLowerCase();
+
+		    try {
+			rate = Double.parseDouble(args[2]);
+		    } catch (NumberFormatException e) {
+			Jobs.getCommandManager().sendUsage(sender, "moneyboost");
+			return true;
+		    }
+		} else {
+		    try {
+			rate = Double.parseDouble(args[1]);
+		    } catch (NumberFormatException e) {
+			Jobs.getCommandManager().sendUsage(sender, "moneyboost");
+			return true;
+		    }
+		}
+	} else if (!args[1].equalsIgnoreCase("reset")) {
+	    if (args.length == 3) {
+		time = args[1].toLowerCase();
+
+		try {
+		    rate = Double.parseDouble(args[2]);
+		} catch (NumberFormatException e) {
+		    Jobs.getCommandManager().sendUsage(sender, "moneyboost");
+		    return true;
+		}
+	    } else if (!args[1].equalsIgnoreCase("all")) {
+		try {
+		    rate = Double.parseDouble(args[1]);
+		} catch (NumberFormatException e) {
+		    Jobs.getCommandManager().sendUsage(sender, "moneyboost");
+		    return true;
+		}
 	    }
 	}
 
-	if (args[0].equalsIgnoreCase("all")) {
-	    for (Job one : Jobs.getJobs()) {
-		one.addBoost(CurrencyType.MONEY, rate);
+	if (args[0].equalsIgnoreCase("all") && args.length > 2) {
+	    int sec = 0;
+	    int min = 0;
+	    int hour = 0;
+
+	    if (!time.isEmpty()) {
+		if (time.contains("s")) {
+		    sec = Integer.parseInt(time.split("s")[0]);
+		}
+
+		if (time.contains("m")) {
+		    min = Integer.parseInt(time.split("m")[0]);
+		}
+
+		if (time.contains("h")) {
+		    hour = Integer.parseInt(time.split("h")[0]);
+		}
 	    }
 
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.boostalladded", "%boost%", rate));
-	    return true;
+	    boolean succeed = false;
+	    for (Job one : Jobs.getJobs()) {
+		if (time.isEmpty()) {
+		    one.addBoost(CurrencyType.MONEY, rate);
+		    succeed = true;
+		} else if (sec != 0 || min != 0 || hour != 0) {
+		    sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.boostadded", "%boost%", rate,
+			"%jobname%", one.getName()));
+		    one.addBoost(CurrencyType.MONEY, rate, hour, min, sec);
+		    succeed = true;
+		}
+	    }
+
+	    if (succeed) {
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.boostalladded", "%boost%", rate));
+		return true;
+	    }
 	}
 
 	if (args[0].equalsIgnoreCase("reset") && args[1].equalsIgnoreCase("all")) {
@@ -64,6 +123,31 @@ public class moneyboost implements Cmd {
 
 	    if (found) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.jobsboostreset", "%jobname%", job.getName()));
+		return true;
+	    }
+	}
+
+	if (!time.isEmpty()) {
+	    int sec = 0;
+	    int min = 0;
+	    int hour = 0;
+
+	    if (time.contains("s")) {
+		sec = Integer.parseInt(time.split("s")[0]);
+	    }
+
+	    if (time.contains("m")) {
+		min = Integer.parseInt(time.split("m")[0]);
+	    }
+
+	    if (time.contains("h")) {
+		hour = Integer.parseInt(time.split("h")[0]);
+	    }
+
+	    if (sec != 0 || min != 0 || hour != 0) {
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.boostadded", "%boost%", rate,
+		    "%jobname%", job.getName()));
+		job.addBoost(CurrencyType.MONEY, rate, hour, min, sec);
 		return true;
 	    }
 	}
