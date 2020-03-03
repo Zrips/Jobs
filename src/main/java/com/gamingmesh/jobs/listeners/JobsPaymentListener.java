@@ -1609,24 +1609,20 @@ public class JobsPaymentListener implements Listener {
 		    }
 		}
 
-		if (cmat.equals(CMIMaterial.SWEET_BERRY_BUSH)) {
+		if (cmat.equals(CMIMaterial.SWEET_BERRY_BUSH) && !hand.equals(CMIMaterial.BONE_MEAL.getMaterial())) {
 		    Ageable age = (Ageable) block.getBlockData();
-		    if (!hand.equals(CMIMaterial.BONE_MEAL.getMaterial())) {
-			Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, age.getAge()), block);
-		    }
+		    Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, age.getAge()), block);
 		}
 	    }
 	}
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && !event.useInteractedBlock().equals(org.bukkit.event.Event.Result.DENY)
 	    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-	    if (jPlayer != null) {
-		if (cmat.equals(CMIMaterial.BEEHIVE) || cmat.equals(CMIMaterial.BEE_NEST)) {
-		    org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
-		    if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && hand.equals(CMIMaterial.SHEARS.getMaterial())
-			|| hand.equals(CMIMaterial.GLASS_BOTTLE.getMaterial())) {
-			Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
-		    }
+	    if (jPlayer != null && cmat.equals(CMIMaterial.BEEHIVE) || cmat.equals(CMIMaterial.BEE_NEST)) {
+		org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
+		if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand.equals(CMIMaterial.SHEARS.getMaterial())
+		    || hand.equals(CMIMaterial.GLASS_BOTTLE.getMaterial()))) {
+		    Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
 		}
 	    }
 	}
