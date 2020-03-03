@@ -309,7 +309,7 @@ public class JobsCommands implements CommandExecutor {
 	PageInfo pi = new PageInfo(15, message.size(), page);
 
 	if (page > pi.getTotalPages()) {
-	    player.getPlayer().sendMessage(Jobs.getLanguage().getMessage("general.info.invalidPage"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.info.invalidPage"));
 	    return;
 	}
 
