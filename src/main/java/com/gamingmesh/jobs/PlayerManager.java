@@ -1024,9 +1024,8 @@ public class PlayerManager {
 	if (Jobs.getGCManager().useDynamicPayment)
 	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
 //	boost.add(BoostOf.Item, Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog));
-        boost.add(BoostOf.Item, getItemBoostNBT(player.getPlayer(), prog));
-        boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
-        
+	boost.add(BoostOf.Item, getItemBoostNBT(player.getPlayer(), prog));
+	boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
 	return boost;
     }
 
