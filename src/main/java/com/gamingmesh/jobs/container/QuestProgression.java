@@ -11,17 +11,21 @@ import com.gamingmesh.jobs.Jobs;
 public class QuestProgression {
 
     private Quest quest;
+
     private long validUntil;
     private boolean givenReward = false;
+
     private HashMap<QuestObjective, Integer> done = new HashMap<>();
 
     public QuestProgression(Quest quest) {
 	this.quest = quest;
+
 	validUntil = quest.getValidUntil();
     }
 
     public Quest getQuest() {
-	return quest == null ? null : quest.getJob().getQuest(quest.getConfigName());
+	Quest q = quest == null ? null : (quest.getJob() == null ? null : quest.getJob().getQuest(quest.getConfigName()));
+	return q;
     }
 
     public void setQuest(Quest quest) {

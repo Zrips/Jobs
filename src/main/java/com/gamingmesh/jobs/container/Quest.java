@@ -12,8 +12,8 @@ import com.gamingmesh.jobs.Jobs;
 
 public class Quest {
 
-    private String configName;
-    private String questName;
+    private String configName = "";
+    private String questName = "";
     private Job job;
     private Long validUntil = 0L;
 

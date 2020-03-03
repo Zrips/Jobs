@@ -446,10 +446,15 @@ public class Job {
     }
 
     public Quest getQuest(String name) {
+	if (name == null || name.trim().isEmpty()) {
+	    return null;
+	}
+
 	for (Quest one : quests) {
 	    if (one.getConfigName().equalsIgnoreCase(name))
 		return one;
 	}
+
 	return null;
     }
 
