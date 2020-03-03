@@ -983,7 +983,7 @@ public class PlayerManager {
     public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim, boolean force, boolean getall) {
 	Boost boost = new Boost();
 
-	if (player == null || prog == null)
+	if (player == null || !player.isOnline() || prog == null)
 	    return boost;
 
 	if (HookManager.getMcMMOManager().mcMMOPresent || HookManager.getMcMMOManager().mcMMOOverHaul)
@@ -1024,10 +1024,8 @@ public class PlayerManager {
 	if (Jobs.getGCManager().useDynamicPayment)
 	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
 //	boost.add(BoostOf.Item, Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog));
-        if (player.isOnline()) {
-            boost.add(BoostOf.Item, getItemBoostNBT(player.getPlayer(), prog));
-            boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
-        }
+        boost.add(BoostOf.Item, getItemBoostNBT(player.getPlayer(), prog));
+        boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
         
 	return boost;
     }
