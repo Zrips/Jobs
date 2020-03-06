@@ -485,7 +485,7 @@ public class LanguageManager {
 	    c.get("command.fire.output.target", "You have been fired from %jobname%.");
 
 	    c.get("command.fireall.help.info", "Fire player from all their jobs.");
-	    c.get("command.fireall.help.args", "[playername]");
+	    c.get("command.fireall.help.args", "[playername]/all");
 	    Jobs.getGCManager().getCommandArgs().put("fireall", Arrays.asList("[playername]"));
 	    c.get("command.fireall.error.nojobs", "Player does not have any jobs to be fired from!");
 	    c.get("command.fireall.output.target", "You have been fired from all your jobs.");
