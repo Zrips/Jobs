@@ -350,15 +350,16 @@ public class FurnaceBrewingHandling {
 	List<blockLoc> ls = brewingMap.remove(uuid);
 	if (ls == null)
 	    return 0;
+
 	for (blockLoc one : ls) {
 	    Block block = one.getBlock();
 	    if (block == null)
 		continue;
 
-	    if (!CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND))
-		continue;
-	    block.removeMetadata(JobsPaymentListener.brewingOwnerMetadata, Jobs.getInstance());
+	    if (CMIMaterial.get(block).equals(CMIMaterial.BREWING_STAND))
+		block.removeMetadata(JobsPaymentListener.brewingOwnerMetadata, Jobs.getInstance());
 	}
+
 	return ls.size();
     }
 

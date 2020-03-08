@@ -84,10 +84,15 @@ public class blockLoc {
 	World w = this.w == null ? Bukkit.getWorld(worldName) : this.w;
 	if (w == null)
 	    return null;
+
+	w = Bukkit.getWorld(w.getName());
+	if (w == null) {
+	    return null;
+	}
+
 	this.w = w;
 
 	Location loc = new Location(w, x, y, z);
-
 	return loc;
     }
 }
