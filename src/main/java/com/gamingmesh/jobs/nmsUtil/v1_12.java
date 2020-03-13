@@ -1,6 +1,8 @@
 package com.gamingmesh.jobs.nmsUtil;
 
 import com.gamingmesh.jobs.NMS;
+
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -8,11 +10,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class v1_12 implements NMS {
+
     @Override
     public List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
 	List<Block> blocks = new ArrayList<>();
@@ -43,5 +48,12 @@ public class v1_12 implements NMS {
     @Override
     public short getDurability(ItemStack item) {
 	return item.getDurability();
+    }
+
+    @Override
+    public void setSkullOwner(SkullMeta meta, OfflinePlayer player) {
+	if (meta != null && player != null) {
+	    meta.setOwner(player.getName());
+	}
     }
 }

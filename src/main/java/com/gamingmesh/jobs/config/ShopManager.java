@@ -193,11 +193,12 @@ public class ShopManager {
 		skullMeta.setDisplayName(item.getIconName());
 		skullMeta.setLore(Lore);
 
-		if (item.isHeadOwner())
-		    skullMeta.setOwner(Jobs.getPlayerManager().getJobsPlayer(player).getName());
-		else {
+		if (item.isHeadOwner()) {
+		    Jobs.getNms().setSkullOwner(skullMeta, Jobs.getPlayerManager().getJobsPlayer(player).getPlayer());
+		} else {
+		    @SuppressWarnings("deprecation")
 		    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
-		    skullMeta.setOwner(offPlayer.getName());
+		    Jobs.getNms().setSkullOwner(skullMeta, offPlayer);
 		}
 		GUIitem.setItemMeta(skullMeta);
 	    } else

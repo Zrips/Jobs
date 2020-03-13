@@ -19,7 +19,7 @@ public class PistonProtectionListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 
 	if (!Jobs.getGCManager().useBlockProtection)
@@ -54,7 +54,7 @@ public class PistonProtectionListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 
 	if (!Jobs.getGCManager().useBlockProtection)

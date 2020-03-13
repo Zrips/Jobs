@@ -107,7 +107,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
 	    return;
 
 	// If event is nothing or place, do nothing
@@ -193,7 +193,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 	//disabling plugin in world
-	if (player == null || !player.isOnline() || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+	if (!player.isOnline() || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
 	    return;
 
 	if (!(event.getRightClicked() instanceof LivingEntity))
@@ -240,7 +240,6 @@ public class JobsPaymentListener implements Listener {
 	Jobs.action(jPlayer, new EntityActionInfo(cow, ActionType.MILK));
 
 	Long Timer = System.currentTimeMillis();
-
 	cow.setMetadata(CowMetadata, new FixedMetadataValue(plugin, Timer));
     }
 
@@ -252,7 +251,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 	//disabling plugin in world
-	if (player == null || !player.isOnline() || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+	if (!player.isOnline() || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
 	    return;
 
 	if (!(event.getEntity() instanceof Sheep))
@@ -294,7 +293,7 @@ public class JobsPaymentListener implements Listener {
 
 	Block block = event.getBlock();
 	//disabling plugin in world
-	if (block == null || !Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
 	    return;
 
 	if (!block.hasMetadata(brewingOwnerMetadata))
@@ -340,11 +339,11 @@ public class JobsPaymentListener implements Listener {
 
 	Block block = event.getBlock();
 	//disabling plugin in world
-	if (block == null || !Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
 	    return;
 
 	Player player = event.getPlayer();
-	if (player == null || !player.isOnline())
+	if (!player.isOnline())
 	    return;
 
 	// check if in creative
@@ -413,8 +412,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Block block = event.getBlock();
-	if (block == null)
-	    return;
 
 	//disabling plugin in world
 	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
@@ -425,7 +422,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
-	if (player == null || !player.isOnline())
+	if (!player.isOnline())
 	    return;
 
 	if (Version.isCurrentEqualOrLower(Version.v1_12_R1)
@@ -458,7 +455,7 @@ public class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 	//disabling plugin in world
-	if (player == null || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
 	    return;
 
 	// check if in creative
@@ -492,9 +489,13 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
+
 	// Entity that died must be living
+	if (!event.getEntity().isDead()) {
+	    return;
+	}
 
 	LivingEntity animal = event.getEntity();
 	// mob spawner, no payment or experience
@@ -504,7 +505,7 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	Player player = (Player) event.getOwner();
-	if (player == null || !player.isOnline())
+	if (!player.isOnline())
 	    return;
 
 	// check if in creative
@@ -534,7 +535,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getWhoClicked() == null || !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
 	    return;
 
 	// If event is nothing or place, do nothing
@@ -741,7 +742,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getWhoClicked() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
 	    return;
 
 	// If event is nothing or place, do nothing
@@ -791,10 +792,12 @@ public class JobsPaymentListener implements Listener {
 
 	String OriginalName = null;
 	String NewName = null;
-	if (FirstSlot.hasItemMeta() && FirstSlot.getItemMeta().getDisplayName() != null)
+	if (FirstSlot.hasItemMeta())
 	    OriginalName = FirstSlot.getItemMeta().getDisplayName();
-	if (resultStack.hasItemMeta() && resultStack.getItemMeta().getDisplayName() != null)
+
+	if (resultStack.hasItemMeta())
 	    NewName = resultStack.getItemMeta().getDisplayName();
+
 	if (OriginalName != NewName && inv.getItem(1) == null)
 	    if (!Jobs.getGCManager().PayForRenaming)
 		return;
@@ -863,7 +866,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getEnchanter() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEnchanter().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEnchanter().getWorld()))
 	    return;
 
 	Inventory inv = event.getInventory();
@@ -928,7 +931,7 @@ public class JobsPaymentListener implements Listener {
 	    if (!type.equalsIgnoreCase("FURNACE") && !type.equalsIgnoreCase("SMOKER") && !type.equalsIgnoreCase("BLAST_FURNACE"))
 		return;
 
-	    if (event.getItem() == null || event.getItem().getType() == Material.AIR)
+	    if (event.getItem().getType() == Material.AIR)
 		return;
 
 	    Block block = null;
@@ -975,7 +978,7 @@ public class JobsPaymentListener implements Listener {
 	    if (!Jobs.getGCManager().PreventBrewingStandFillUps)
 		return;
 
-	    if (event.getItem() == null || event.getItem().getType() == Material.AIR)
+	    if (event.getItem().getType() == Material.AIR)
 		return;
 
 	    BrewingStand stand = (BrewingStand) event.getDestination().getHolder();
@@ -998,7 +1001,7 @@ public class JobsPaymentListener implements Listener {
 
 	Block block = event.getBlock();
 	//disabling plugin in world
-	if (block == null || !Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
 	    return;
 
 	if (!block.hasMetadata(furnaceOwnerMetadata))
@@ -1077,27 +1080,26 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityDamageByProjectile(EntityDamageByEntityEvent event) {
 	//disabling plugin in world
-	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	    return;
+
+	Entity damager = event.getDamager();
+	if (!(damager instanceof Projectile))
 	    return;
 
 	Entity ent = event.getEntity();
-	Entity damager = event.getDamager();
-	if (!(damager instanceof Projectile))
+	if (!(ent instanceof Damageable))
 	    return;
 
 	Projectile projectile = (Projectile) damager;
 	ProjectileSource shooter = projectile.getShooter();
 	double damage = event.getFinalDamage();
-
-	if (!(ent instanceof Damageable))
-	    return;
-
 	double s = ((Damageable) ent).getHealth();
 
 	if (damage > s)
 	    damage = s;
 
-	if (shooter instanceof Player) {
+	if (shooter != null && shooter instanceof Player) {
 	    if (ent.hasMetadata(entityDamageByPlayer))
 		damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
 	    ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(plugin, damage));
@@ -1112,10 +1114,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
-	if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
+	if (event.getEntity().getLastDamageCause() != null && !(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
 	    return;
 
 	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
@@ -1224,7 +1226,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
 	//disabling plugin in world
-	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
 	if (event.getSpawnReason().equals(SpawnReason.SPAWNER) || event.getSpawnReason().equals(SpawnReason.SPAWNER_EGG)) {
@@ -1275,11 +1277,11 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
-	if (!(event.getRemover() instanceof Player))
+	if (event.getRemover() == null || !(event.getRemover() instanceof Player))
 	    return;
 
 	Player player = (Player) event.getRemover();
-	if (player == null || !player.isOnline())
+	if (!player.isOnline())
 	    return;
 
 	// check if in creative
@@ -1394,7 +1396,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(SlimeSplitEvent event) {
 	//disabling plugin in world
-	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
 	if (!event.getEntity().hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
@@ -1419,7 +1421,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
 	if (!Jobs.getGCManager().useBreederFinder)
@@ -1472,7 +1474,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
 	if (!(event.getEntity() instanceof Player))
@@ -1485,7 +1487,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Player player = (Player) event.getEntity();
-	if (player == null || !player.isOnline())
+	if (!player.isOnline())
 	    return;
 
 	// check if in creative
@@ -1515,7 +1517,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	//disabling plugin in world
-	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity()))
 	    return;
 
 	if (!Jobs.getGCManager().isUseTntFinder())

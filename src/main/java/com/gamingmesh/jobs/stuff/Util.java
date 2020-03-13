@@ -20,13 +20,8 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BlockIterator;
 
@@ -38,44 +33,18 @@ public class Util {
 
     private static HashMap<UUID, String> jobsEditorMap = new HashMap<>();
     private static HashMap<UUID, String> questsEditorMap = new HashMap<>();
-    public static List<UUID> leaveConfirm = new ArrayList<>();
 
     private static HashMap<String, JobsWorld> jobsWorlds = new HashMap<>();
 
-    @SuppressWarnings("deprecation")
-    public static ItemStack setEntityType(ItemStack is, EntityType type) {
-	boolean useMeta;
-	try {
-	    ItemStack testis = CMIMaterial.SPAWNER.newItemStack();
-	    ItemMeta meta = testis.getItemMeta();
-	    useMeta = meta instanceof BlockStateMeta;
-	} catch (Exception e) {
-	    useMeta = false;
-	}
-
-	if (useMeta) {
-	    BlockStateMeta bsm = (BlockStateMeta) is.getItemMeta();
-	    BlockState bs = bsm.getBlockState();
-	    ((CreatureSpawner) bs).setSpawnedType(type);
-	    ((CreatureSpawner) bs).setCreatureTypeByName(type.name());
-	    bsm.setBlockState(bs);
-
-	    String cap = type.name().toLowerCase().replace("_", " ").substring(0, 1).toUpperCase() + type.name().toLowerCase().replace("_", " ").substring(1);
-	    bsm.setDisplayName(Jobs.getLanguage().getMessage("general.Spawner", "[type]", cap));
-	    is.setItemMeta(bsm);
-	} else {
-	    is.setDurability(type.getTypeId());
-	}
-	return is;
-    }
+    public static List<UUID> leaveConfirm = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
     public static ItemStack getSkull(String skullOwner) {
 	ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
 	SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
 	if (skullOwner.length() == 36) {
-	    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
-	    skullMeta.setOwner(offPlayer.getName());
+	    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(skullOwner);
+	    Jobs.getNms().setSkullOwner(skullMeta, offPlayer);
 	} else
 	    skullMeta.setOwner(skullOwner);
 
@@ -104,18 +73,6 @@ public class Util {
 
     public static String firstToUpperCase(String name) {
 	return name.toLowerCase().replace("_", " ").substring(0, 1).toUpperCase() + name.toLowerCase().replace("_", " ").substring(1);
-    }
-
-    @SuppressWarnings("deprecation")
-    public static EntityType getEntityType(ItemStack is) {
-	if (is.getItemMeta() instanceof BlockStateMeta) {
-	    BlockStateMeta bsm = (BlockStateMeta) is.getItemMeta();
-	    if (bsm.getBlockState() instanceof CreatureSpawner) {
-		CreatureSpawner bs = (CreatureSpawner) bsm.getBlockState();
-		return bs.getSpawnedType();
-	    }
-	}
-	return EntityType.fromId(is.getData().getData());
     }
 
     public static HashMap<UUID, String> getJobsEditorMap() {

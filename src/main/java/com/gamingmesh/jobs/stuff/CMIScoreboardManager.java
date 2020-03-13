@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.stuff;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
@@ -25,11 +24,6 @@ import com.gamingmesh.jobs.container.ScoreboardInfo;
 public class CMIScoreboardManager {
 
     private ConcurrentHashMap<UUID, ScoreboardInfo> timerMap = new ConcurrentHashMap<>();
-    private Jobs plugin;
-
-    public CMIScoreboardManager(Jobs plugin) {
-	this.plugin = plugin;
-    }
 
     private void RunScheduler() {
 	Iterator<Entry<UUID, ScoreboardInfo>> MeinMapIter = timerMap.entrySet().iterator();
@@ -41,25 +35,20 @@ public class CMIScoreboardManager {
 		if (player != null) {
 		    removeScoreBoard(player);
 		    player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+
 		    if (Map.getValue().getObj() != null) {
 			Objective obj = player.getScoreboard().getObjective(Map.getValue().getObj().getName());
 			if (obj != null)
 			    obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		    }
 		}
+
 		timerMap.remove(Map.getKey());
 	    }
 	}
 
 	if (timerMap.size() > 0)
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    RunScheduler();
-		    return;
-		}
-	    }, 20L);
-	return;
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), this::RunScheduler, 20L);
     }
 
     public void addNew(Player player) {
@@ -96,7 +85,7 @@ public class CMIScoreboardManager {
 		Object pp1 = p11.newInstance(obj, 1);
 		sendPacket(player, pp1);
 	    }
-	} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
     }
@@ -196,7 +185,7 @@ public class CMIScoreboardManager {
 
 		}
 	    }
-	} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
     }
@@ -206,7 +195,7 @@ public class CMIScoreboardManager {
 	try {
 	    sendPacket = getNMSClass("PlayerConnection").getMethod("sendPacket", getNMSClass("Packet"));
 	    sendPacket.invoke(getConnection(player), packet);
-	} catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
     }
@@ -215,7 +204,7 @@ public class CMIScoreboardManager {
 	return Reflections.getMinecraftClass(nmsClassString);
     }
 
-    private static Object getConnection(Player player) throws SecurityException, NoSuchMethodException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+    private static Object getConnection(Player player) throws Exception {
 	Method getHandle = player.getClass().getMethod("getHandle");
 	Object nmsPlayer = getHandle.invoke(player);
 	Field conField = nmsPlayer.getClass().getField("playerConnection");

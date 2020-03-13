@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.nmsUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
@@ -14,10 +15,13 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import com.gamingmesh.jobs.NMS;
 
+@SuppressWarnings("deprecation")
 public class v1_7 implements NMS {
+
     @Override
     public List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
 	List<Block> blocks = new ArrayList<>();
@@ -49,6 +53,7 @@ public class v1_7 implements NMS {
 	default:
 	    break;
 	}
+
 	return name;
     }
 
@@ -70,5 +75,12 @@ public class v1_7 implements NMS {
     @Override
     public short getDurability(ItemStack item) {
 	return item.getDurability();
+    }
+
+    @Override
+    public void setSkullOwner(SkullMeta meta, OfflinePlayer player) {
+	if (meta != null && player != null) {
+	    meta.setOwner(player.getName());
+	}
     }
 }
