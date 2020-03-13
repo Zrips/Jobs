@@ -94,7 +94,7 @@ public class TabComplete implements TabCompleter {
 			    for (Entry<String, JobItems> one : ItemBoostManager.getItems().entrySet()) {
 				temp.add(one.getValue().getNode());
 			    }
-			    if (args.length > 3 && args[3].equals("limiteditems")) {
+			    if (args.length > 3 && args[3].equalsIgnoreCase("limiteditems")) {
 				Job oneJob = Jobs.getJob(args[i - 1]);
 				if (oneJob != null)
 				    for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {

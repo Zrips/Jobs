@@ -1337,6 +1337,8 @@ public enum CMIMaterial {
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
 	    mat = ItemManager.byRealMaterial.get(block.getType());
+	    if (mat == null)
+		return CMIMaterial.NONE;
 	}
 
 	if (mat != null)

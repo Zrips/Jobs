@@ -29,8 +29,11 @@ import com.gamingmesh.jobs.stuff.Sorting;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class JobsCommands implements CommandExecutor {
+
     public static final String label = "jobs";
+
     private static final String packagePath = "com.gamingmesh.jobs.commands.list";
+
     private Map<String, Integer> CommandList = new HashMap<>();
 
     protected Jobs plugin;
@@ -45,7 +48,6 @@ public class JobsCommands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
 	if (sender instanceof Player) {
 	    if (!Jobs.getGCManager().canPerformActionInWorld(((Player) sender).getWorld()) && !sender.hasPermission("jobs.disabledworld.commands")) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.worldisdisabled"));
@@ -115,9 +117,10 @@ public class JobsCommands implements CommandExecutor {
 	String cmdString = Jobs.getLanguage().getMessage("command.help.output.cmdFormat", "[command]", Jobs.getLanguage().getMessage("command.help.output.label") + " " + cmd);
 	String key = "command." + cmd + ".help.args";
 	if (Jobs.getLanguage().containsKey(key) && !Jobs.getLanguage().getMessage(key).isEmpty()) {
-	    cmdString = cmdString.replace("[arguments]", " " + Jobs.getLanguage().getMessage(key));
+	    cmdString = cmdString.replace("[arguments]", Jobs.getLanguage().getMessage(key));
 	} else
 	    cmdString = cmdString.replace("[arguments]", "");
+
 	return cmdString;
     }
 
