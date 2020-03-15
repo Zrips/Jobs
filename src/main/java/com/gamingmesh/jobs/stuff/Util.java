@@ -53,9 +53,7 @@ public class Util {
     }
 
     public static World getWorld(String name) {
-	World w = null;
-	w = Bukkit.getWorld(name);
-
+	World w = Bukkit.getWorld(name);
 	if (w != null)
 	    return w;
 
@@ -63,9 +61,8 @@ public class Util {
 
 	for (World one : Bukkit.getWorlds()) {
 	    String n = one.getName().replace("_", "").replace(".", "").replace("-", "");
-	    if (!n.equalsIgnoreCase(name))
-		continue;
-	    return one;
+	    if (n.equalsIgnoreCase(name))
+		return one;
 	}
 
 	return null;

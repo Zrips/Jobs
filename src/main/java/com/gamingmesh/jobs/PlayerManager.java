@@ -91,6 +91,10 @@ public class PlayerManager {
 	return Jobs.getPointsData();
     }
 
+    public String getMobSpawnerMetadata() {
+	return mobSpawnerMetadata;
+    }
+
     public int getMapSize() {
 	return PlayerUUIDMap.size();
     }
@@ -1061,9 +1065,5 @@ public class PlayerManager {
 		return;
 	    }
 	}, Jobs.getGCManager().AutoJobJoinDelay * 20L);
-    }
-
-    public String getMobSpawnerMetadata() {
-	return mobSpawnerMetadata;
     }
 }

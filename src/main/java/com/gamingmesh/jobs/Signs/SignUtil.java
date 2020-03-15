@@ -28,12 +28,6 @@ public class SignUtil {
     private HashMap<String, HashMap<String, jobsSign>> SignsByType = new HashMap<String, HashMap<String, jobsSign>>();
     private HashMap<String, jobsSign> SignsByLocation = new HashMap<String, jobsSign>();
 
-    private Jobs plugin;
-
-    public SignUtil(Jobs plugin) {
-	this.plugin = plugin;
-    }
-
     public HashMap<String, HashMap<String, jobsSign>> getSigns() {
 	return SignsByType;
     }
@@ -73,7 +67,6 @@ public class SignUtil {
 	old.put(loc, jSign);
     }
 
-    // Sign file
     public void LoadSigns() {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
@@ -353,7 +346,7 @@ public class SignUtil {
 	if (directionFacing != null && (block == null || !(block.getState() instanceof Skull)))
 	    loc.add(directionFacing.getOppositeFace().getModX(), 0, directionFacing.getOppositeFace().getModZ());
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
 	    @Override
 	    public void run() {
 		Block b = loc.getBlock();

@@ -387,7 +387,7 @@ public class Jobs extends JavaPlugin {
      */
     public static SignUtil getSignUtil() {
 	if (signManager == null) {
-	    signManager = new SignUtil(getInstance());
+	    signManager = new SignUtil();
 	}
 
 	return signManager;

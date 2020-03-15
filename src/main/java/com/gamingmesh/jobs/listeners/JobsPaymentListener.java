@@ -1134,8 +1134,8 @@ public class JobsPaymentListener implements Listener {
 		return;
 
 	if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
-		   && HookManager.getMythicManager().isMythicMob(lVictim)) {
-		return;
+		    && HookManager.getMythicManager().isMythicMob(lVictim)) {
+	    return;
 	}
 
 	// mob spawner, no payment or experience
@@ -1742,10 +1742,6 @@ public class JobsPaymentListener implements Listener {
 	    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
 	    return;
 
-	ExploreRespond respond = Jobs.getExplore().ChunkRespond(Jobs.getPlayerManager().getJobsPlayer(player).getUserId(), event.getNewChunk());
-	if (!respond.isNewChunk())
-	    return;
-
 	// check if in creative
 	if (!payIfCreative(player))
 	    return;
@@ -1755,6 +1751,10 @@ public class JobsPaymentListener implements Listener {
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
+	    return;
+
+	ExploreRespond respond = Jobs.getExplore().ChunkRespond(jPlayer.getUserId(), event.getNewChunk());
+	if (!respond.isNewChunk())
 	    return;
 
 	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE));
@@ -1771,7 +1771,7 @@ public class JobsPaymentListener implements Listener {
     private static boolean payForItemDurabilityLoss(Player p) {
 	ItemStack hand = Jobs.getNms().getItemInMainHand(p);
 
-	if (!Jobs.getGCManager().payItemDurabilityLoss && hand != null && !hand.getType().equals(Material.AIR)
+	if (!Jobs.getGCManager().payItemDurabilityLoss && !hand.getType().equals(Material.AIR)
 	    && hand.getType().getMaxDurability() - Jobs.getNms().getDurability(hand) != hand.getType().getMaxDurability()) {
 	    for (String whiteList : Jobs.getGCManager().WhiteListedItems) {
 		String item = whiteList.contains("=") ? whiteList.split("=")[0] : whiteList;
