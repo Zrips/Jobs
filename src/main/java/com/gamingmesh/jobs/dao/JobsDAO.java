@@ -1457,11 +1457,11 @@ public abstract class JobsDAO {
      * @throws SQLException 
      */
     public List<Convert> convertDatabase() throws SQLException {
+	List<Convert> list = new ArrayList<>();
 	JobsConnection conn = getConnection();
 	if (conn == null)
-	    return null;
+	    return list;
 
-	List<Convert> list = new ArrayList<>();
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
@@ -1472,6 +1472,7 @@ public abstract class JobsDAO {
 		PlayerInfo pi = Jobs.getPlayerManager().getPlayerInfo(id);
 		if (pi == null)
 		    continue;
+
 		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pi.getUuid());
 		if (jPlayer == null)
 		    continue;
@@ -1491,18 +1492,12 @@ public abstract class JobsDAO {
 
 		list.add(new Convert(res.getInt("id"), jPlayer.getUniqueId(), job.getId(), res.getInt(ArchiveTableFields.level.getCollumn()), res.getInt(ArchiveTableFields.experience.getCollumn())));
 	    }
-	} catch (SQLException e) {
-	    e.printStackTrace();
 	} finally {
 	    close(res);
 	    close(prest);
 	}
 
-	try {
-	    conn.closeConnection();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+	conn.closeConnection();
 	return list;
     }
 

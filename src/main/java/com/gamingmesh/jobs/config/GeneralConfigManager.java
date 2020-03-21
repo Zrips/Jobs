@@ -669,7 +669,7 @@ public class GeneralConfigManager {
 	UseServerAccount = c.get("Economy.UseServerAccount", false);
 	c.addComment("Economy.AccountName", "Username should be with Correct capitalization");
 	ServerAccountName = c.get("Economy.AccountName", "Server");
-	c.addComment("Economy.Taxes.use", "Do you want to use taxes feature for jobs payment?");
+	c.addComment("Economy.Taxes.use", "Do you want to use taxes feature for jobs payment?", "You can bypass taxes with permission jobs.tax.bypass");
 	UseTaxes = c.get("Economy.Taxes.use", false);
 	c.addComment("Economy.Taxes.AccountName", "Username should be with Correct capitalization, it can be same as setup in server account before");
 	ServertaxesAccountName = c.get("Economy.Taxes.AccountName", "Server");

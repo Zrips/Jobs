@@ -42,9 +42,6 @@ public class convert implements Cmd {
 
 	    Jobs.ChangeDatabase();
 
-	    if (archivelist == null)
-		return;
-
 	    try {
 		Jobs.getJobsDAO().truncateAllTables();
 		Jobs.getPlayerManager().convertChacheOfPlayers(true);
