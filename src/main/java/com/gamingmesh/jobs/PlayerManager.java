@@ -44,7 +44,6 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import com.gamingmesh.jobs.CMILib.ItemReflection;
 import com.gamingmesh.jobs.CMILib.Reflections;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
-import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
@@ -392,9 +391,10 @@ public class PlayerManager {
 	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
 
 	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
+
 	Jobs.takeSlot(job);
-	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
+	Jobs.getSignUtil().updateAllSign(job);
+
 	job.updateTotalPlayers();
     }
 
@@ -423,8 +423,7 @@ public class PlayerManager {
 	PerformCommands.PerformCommandsOnLeave(jPlayer, job);
 	Jobs.leaveSlot(job);
 
-	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
+	Jobs.getSignUtil().updateAllSign(job);
 	job.updateTotalPlayers();
 	return true;
     }
@@ -471,8 +470,7 @@ public class PlayerManager {
 	jPlayer.promoteJob(job, levels);
 	jPlayer.save();
 
-	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
+	Jobs.getSignUtil().updateAllSign(job);
     }
 
     /**
@@ -484,8 +482,8 @@ public class PlayerManager {
     public void demoteJob(JobsPlayer jPlayer, Job job, int levels) {
 	jPlayer.demoteJob(job, levels);
 	jPlayer.save();
-	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
+
+	Jobs.getSignUtil().updateAllSign(job);
     }
 
     /**
@@ -501,8 +499,7 @@ public class PlayerManager {
 	int oldLevel = prog.getLevel();
 	if (prog.addExperience(experience)) {
 	    performLevelUp(jPlayer, job, oldLevel);
-	    Jobs.getSignUtil().SignUpdate(job);
-	    Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
+	    Jobs.getSignUtil().updateAllSign(job);
 	}
 
 	jPlayer.save();
@@ -521,8 +518,7 @@ public class PlayerManager {
 	prog.addExperience(-experience);
 
 	jPlayer.save();
-	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
+	Jobs.getSignUtil().updateAllSign(job);
     }
 
     /**
@@ -564,8 +560,7 @@ public class PlayerManager {
 	    jPlayer.reloadHonorific();
 	    Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	    performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
-	    Jobs.getSignUtil().SignUpdate(job);
-	    Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
+	    Jobs.getSignUtil().updateAllSign(job);
 	    return;
 	}
 
@@ -761,8 +756,7 @@ public class PlayerManager {
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
-	Jobs.getSignUtil().SignUpdate(job);
-	Jobs.getSignUtil().SignUpdate(job, SignTopType.gtoplist);
+	Jobs.getSignUtil().updateAllSign(job);
     }
 
     /**

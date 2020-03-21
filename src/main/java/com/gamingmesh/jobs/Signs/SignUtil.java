@@ -162,6 +162,12 @@ public class SignUtil {
 	}
     }
 
+    public void updateAllSign(Job job) {
+	for (SignTopType types : SignTopType.values()) {
+	    SignUpdate(job, types);
+	}
+    }
+
     public boolean SignUpdate(Job job) {
 	return SignUpdate(job, SignTopType.toplist);
     }

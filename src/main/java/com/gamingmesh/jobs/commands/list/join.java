@@ -49,16 +49,12 @@ public class join implements Cmd {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
 	if (jPlayer.isInJob(job)) {
 	    // already in job message
-	    String message = Jobs.getLanguage().getMessage("command.join.error.alreadyin");
-	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
-	    pSender.sendMessage(message);
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.alreadyin", "%jobname%", job.getChatColor() + job.getName()));
 	    return true;
 	}
 
 	if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
-	    String message = Jobs.getLanguage().getMessage("command.join.error.fullslots");
-	    message = message.replace("%jobname%", job.getChatColor() + job.getName());
-	    pSender.sendMessage(message);
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.fullslots", "%jobname%", job.getChatColor() + job.getName()));
 	    return true;
 	}
 
@@ -71,7 +67,8 @@ public class join implements Cmd {
 
 	if (args.length == 2 && args[1].equalsIgnoreCase("-needConfirmation")) {
 	    RawMessage rm = new RawMessage();
-	    rm.add(Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()), Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()), "jobs join " + job.getName());	    
+	    rm.add(Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()),
+		    Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()), "jobs join " + job.getName());
 	    rm.show(pSender);
 	    return true;
 	}
@@ -85,10 +82,7 @@ public class join implements Cmd {
 	}
 
 	Jobs.getPlayerManager().joinJob(jPlayer, job);
-
-	String message = Jobs.getLanguage().getMessage("command.join.success");
-	message = message.replace("%jobname%", job.getChatColor() + job.getName());
-	pSender.sendMessage(message);
+	pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.success", "%jobname%", job.getChatColor() + job.getName()));
 	return true;
     }
 }
