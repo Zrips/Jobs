@@ -11,8 +11,6 @@ jobs:
     - uses: actions/checkout@v1
 
     - uses: actions/download-artifact@v1.0.0
-      with:
-        name: my-artifact
     - run: cat my-artifact
   
     - name: Set up JDK 1.8
