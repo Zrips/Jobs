@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -38,8 +39,11 @@ public class stats implements Cmd {
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getName()));
 	for (JobProgression jobProg : jPlayer.getJobProgression()) {
-	    String[] msg = Jobs.getCommandManager().jobStatsMessage(jobProg).split("\n");
-	    sender.sendMessage(msg);
+	    for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg).split("\n")) {
+		RawMessage rm = new RawMessage();
+		rm.add(msg, Jobs.getLanguage().getMessage("command.info.gui.leftClick"), "jobs info " + jobProg.getJob().getName());
+		rm.show(sender);
+	    }
 	}
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	return true;
