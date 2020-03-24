@@ -68,9 +68,12 @@ public enum CMIEnchantment {
 		break;
 	    }
 
-	    if (one.getKey().toString().split(":")[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
-		enchantment = one;
-		break;
+	    try {
+		if (one.getKey().toString().split(":")[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
+		    enchantment = one;
+		    break;
+		}
+	    } catch (Exception | Error e) {
 	    }
 	}
 

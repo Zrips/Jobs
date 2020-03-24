@@ -29,7 +29,6 @@ public class give implements Cmd {
     @Override
     @JobCommand(2500)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-
 	Player player = null;
 	Job job = null;
 	actions name = null;
@@ -60,10 +59,10 @@ public class give implements Cmd {
 	    player = (Player) sender;
 
 	if (player == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.notonline", "%playername%", args[0]));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.notonline"));
 	    return true;
 	}
-	
+
 	if (name == null)
 	    name = actions.items;
 
@@ -75,7 +74,6 @@ public class give implements Cmd {
 	switch (name) {
 	case items:
 	    JobItems jItem = ItemBoostManager.getItemByKey(itemName);
-
 	    if (jItem == null || jItem.getItemStack(player) == null) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.noitem"));
 		return true;
@@ -88,8 +86,8 @@ public class give implements Cmd {
 		Jobs.getCommandManager().sendUsage(sender, "give");
 		return true;
 	    }
-	    JobLimitedItems jLItem = job.getLimitedItems().get(itemName.toLowerCase());
 
+	    JobLimitedItems jLItem = job.getLimitedItems().get(itemName.toLowerCase());
 	    if (jLItem == null || jLItem.getItemStack(player) == null) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.noitem"));
 		return true;
