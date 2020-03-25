@@ -874,6 +874,13 @@ public class ConfigManager {
 		}
 	    }
 
+	    // Commands
+	    List<String> worldBlacklist = new ArrayList<>();	    
+	    if(jobSection.isList("world-blacklist")) {		
+		worldBlacklist = jobSection.getStringList("world-blacklist");
+	    }
+	    
+
 	    // Items **OUTDATED** Moved to ItemBoostManager!!
 	    HashMap<String, JobItems> jobItems = new HashMap<>();
 	    ConfigurationSection itemsSection = jobSection.getConfigurationSection("items");
@@ -979,7 +986,7 @@ public class ConfigManager {
 	    }
 
 	    Job job = new Job(jobKey, jobFullName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
-		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem, bossbar, rejoinCd);
+		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem, bossbar, rejoinCd, worldBlacklist);
 
 	    job.setFullDescription(fDescription);
 	    job.setMoneyEquation(incomeEquation);

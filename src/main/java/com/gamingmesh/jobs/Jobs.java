@@ -799,9 +799,9 @@ public class Jobs extends JavaPlugin {
 	getGCManager().reload();
 	getLanguage().reload();
 	try {
-		getConfigManager().reload();
+	    getConfigManager().reload();
 	} catch (IOException e) {
-		e.printStackTrace();
+	    e.printStackTrace();
 	}
 
 	getDBManager().getDB().loadAllJobsWorlds();
@@ -909,6 +909,10 @@ public class Jobs extends JavaPlugin {
 
 	    if (noneJob == null)
 		return;
+
+	    if (noneJob.isWorldBlackListed(block, ent) || noneJob.isWorldBlackListed(victim))
+		return;
+
 	    JobInfo jobinfo = noneJob.getJobInfo(info, 1);
 
 	    checkDailyQuests(jPlayer, noneJob, info);
@@ -1002,6 +1006,10 @@ public class Jobs extends JavaPlugin {
 	    FastPayment.clear();
 
 	    for (JobProgression prog : progression) {
+
+		if (prog.getJob().isWorldBlackListed(block, ent) || prog.getJob().isWorldBlackListed(victim))
+		    return;
+
 		int level = prog.getLevel();
 
 		JobInfo jobinfo = prog.getJob().getJobInfo(info, level);

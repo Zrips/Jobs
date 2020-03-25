@@ -526,6 +526,10 @@ Jobs:
         - msg [player] Now you can use woodcutter kit!
         levelFrom: 150
         levelUntil: 150
+    # World list in which this job will not work. World name should be exact
+    world-blacklist:
+    - plotworld
+    - teamworld
     # Getting more money when equipped with specific weapon/tool are wearing armor
     items:
       # Just name, don't have any impact
