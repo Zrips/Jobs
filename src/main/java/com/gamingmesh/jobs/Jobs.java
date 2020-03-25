@@ -1008,7 +1008,7 @@ public class Jobs extends JavaPlugin {
 	    for (JobProgression prog : progression) {
 
 		if (prog.getJob().isWorldBlackListed(block, ent) || prog.getJob().isWorldBlackListed(victim))
-		    return;
+		    continue;
 
 		int level = prog.getLevel();
 
