@@ -1,6 +1,8 @@
 package com.gamingmesh.jobs.commands.list;
 
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -11,6 +13,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.dao.JobsDAO.DBTables;
 
 public class fireall implements Cmd {
 
@@ -23,22 +26,22 @@ public class fireall implements Cmd {
 	}
 
 	if (args[0].equalsIgnoreCase("all")) {
-	    boolean success = false;
-	    for (Player player : Bukkit.getOnlinePlayers()) {
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-		List<JobProgression> jobs = jPlayer.getJobProgression();
-		if (jobs.isEmpty()) {
-		    continue;
-		}
 
-		Jobs.getPlayerManager().leaveAllJobs(jPlayer);
+	    if (sender instanceof Player) {
+		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.fromconsole"));
+		return true;
+	    } 
 
-		player.sendMessage(Jobs.getLanguage().getMessage("command.fireall.output.target"));
-		success = true;
+	    Jobs.getDBManager().getDB().truncate(DBTables.JobsTable.getTableName());
+
+	    for (Entry<UUID, JobsPlayer> one : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
+		one.getValue().leaveAllJobs();
+		// No need to save as we are clearing database with more efficient method
+		one.getValue().setSaved(true);
 	    }
 
-	    sender.sendMessage(Jobs.getLanguage().getMessage(success ? "general.admin.success" : "command.fireall.error.nojobs"));
-		return true;
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
+	    return true;
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
