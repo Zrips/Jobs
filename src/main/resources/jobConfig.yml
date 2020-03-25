@@ -102,7 +102,7 @@ Jobs:
     # Players will have access to quests from jobs he is currently working at
     Quests:
       # Quest identification. Can be any ONE word or number or both of them. This doesn't have any real meaning but it can't repeat.
-      1:
+      first:
         # Quest name used for quests list, don't forget to enclose it with " "
         Name: "Break Oak wood"
         # List of objectives this quest will require for it to count as finished
@@ -141,7 +141,7 @@ Jobs:
         # Defines from which level you want to give option to get this quest
         # You can use both limitations to have limited quests for particular job level ranges
         fromLevel: 3
-      2:
+      second:
         Name: "Zombie killer"
         Objectives:
         - Kill;Zombie;50
@@ -151,7 +151,7 @@ Jobs:
         RewardDesc:
         - "Kill 50 zombies"
         - "Get 2000 for this!"
-      3:
+      third:
         Name: "Chicken cooker"
         Objectives:
         - "Smelt;COOKED_CHICKEN;20"
@@ -161,7 +161,7 @@ Jobs:
         RewardDesc:
         - "Cook some chicken breasts"
         - "Get 300 for this!"
-      4:
+      fourth:
         Name: "Strip logs"
         Objectives:
         - "StripLogs;stripped_birch_log;25"
