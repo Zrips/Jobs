@@ -1117,7 +1117,7 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
-	if (event.getEntity().getLastDamageCause() != null && !(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
+	if (event.getEntity().getLastDamageCause() == null || !(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
 	    return;
 
 	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
