@@ -225,8 +225,7 @@ public class BufferedEconomy {
 
 	String playerUUID = payment.getOfflinePlayer().getUniqueId().toString();
 
-	Boolean show = ToggleBarHandling.getActionBarToggle().get(playerUUID) == null ? true :
-		    ToggleBarHandling.getActionBarToggle().get(playerUUID);
+	Boolean show = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID, true);
 	Player abp = Bukkit.getPlayer(payment.getOfflinePlayer().getUniqueId());
 	if ((abp != null) && (show.booleanValue())) {
 	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");

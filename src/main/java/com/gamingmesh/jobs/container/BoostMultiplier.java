@@ -51,10 +51,7 @@ public class BoostMultiplier {
     }
 
     public double get(CurrencyType type) {
-	if (!map.containsKey(type))
-	    return 0D;
-
-	return map.get(type);
+	return map.getOrDefault(type, 0D);
     }
 
     public Long getTime() {

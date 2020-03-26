@@ -81,8 +81,7 @@ public class BufferedPayment {
     }
 
     public Double get(CurrencyType type) {
-	Double amount = this.payments.get(type);
-	return amount == null ? 0 : amount;
+	return payments.getOrDefault(type, 0d);
     }
 
     public Double set(CurrencyType type, double amount) {

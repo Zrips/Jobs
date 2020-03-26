@@ -49,8 +49,7 @@ public class QuestProgression {
     }
 
     public int getAmountDone(QuestObjective objective) {
-	Integer amountDone = done.get(objective);
-	return amountDone == null ? 0 : amountDone;
+	return done.getOrDefault(objective, 0);
     }
 
     public void setAmountDone(QuestObjective objective, int amountDone) {

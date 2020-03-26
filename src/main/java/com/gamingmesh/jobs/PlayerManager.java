@@ -119,16 +119,16 @@ public class PlayerManager {
     }
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
-	if (jPlayer.getName() != null && playersCache.get(jPlayer.getName().toLowerCase()) == null)
+	if (jPlayer.getName() != null && !playersCache.containsKey(jPlayer.getName().toLowerCase()))
 	    playersCache.put(jPlayer.getName().toLowerCase(), jPlayer);
-	if (jPlayer.getUniqueId() != null && playersUUIDCache.get(jPlayer.getUniqueId()) == null)
+	if (jPlayer.getUniqueId() != null && !playersUUIDCache.containsKey(jPlayer.getUniqueId()))
 	    playersUUIDCache.put(jPlayer.getUniqueId(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
-	if (jPlayer.getName() != null && players.get(jPlayer.getName().toLowerCase()) == null)
+	if (jPlayer.getName() != null && !players.containsKey(jPlayer.getName().toLowerCase()))
 	    players.put(jPlayer.getName().toLowerCase(), jPlayer);
-	if (jPlayer.getUniqueId() != null && playersUUID.get(jPlayer.getUniqueId()) == null)
+	if (jPlayer.getUniqueId() != null && !playersUUID.containsKey(jPlayer.getUniqueId()))
 	    playersUUID.put(jPlayer.getUniqueId(), jPlayer);
     }
 
@@ -136,10 +136,10 @@ public class PlayerManager {
 	if (player == null)
 	    return null;
 
-	if (players.get(player.getName()) != null)
+	if (players.containsKey(player.getName()))
 	    players.remove(player.getName().toLowerCase());
 
-	JobsPlayer jPlayer = playersUUID.get(player.getUniqueId()) != null ? playersUUID.remove(player.getUniqueId()) : null;
+	JobsPlayer jPlayer = playersUUID.containsKey(player.getUniqueId()) ? playersUUID.remove(player.getUniqueId()) : null;
 	return jPlayer;
     }
 
@@ -790,11 +790,8 @@ public class PlayerManager {
      * @return True if he have permission
      */
     public boolean getJobsLimit(JobsPlayer jPlayer, Short currentCount) {
-
 	Double max = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max");
-
 	max = max == null ? Jobs.getGCManager().getMaxJobs() : max;
-
 	if (max > currentCount)
 	    return true;
 

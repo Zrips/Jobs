@@ -94,8 +94,7 @@ public class PermissionManager {
     }
 
     private int getDelay(String perm) {
-	Integer delay = permDelay.get(perm);
-	return delay == null ? 1 : delay;
+	return permDelay.getOrDefault(perm, 1);
     }
 
     public PermissionManager() {
@@ -167,8 +166,8 @@ public class PermissionManager {
 	    jPlayer.setPermissionsCache(permissions);
 	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
 	}
-	Boolean resul = permissions.get(perm);
-	return resul == null ? false : resul;
+
+	return permissions.getOrDefault(perm, false);
     }
 
 }

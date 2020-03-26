@@ -523,9 +523,7 @@ public class Jobs extends JavaPlugin {
      * @return the number of slots
      */
     public static int getUsedSlots(Job job) {
-	if (usedSlots.containsKey(job))
-	    return usedSlots.get(job);
-	return 0;
+	return usedSlots.getOrDefault(job, 0);
     }
 
     /**

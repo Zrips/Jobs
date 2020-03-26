@@ -60,18 +60,14 @@ public class BlockProtectionManager {
 
     public BlockProtection addP(Location loc, Long time, boolean paid, boolean cache) {
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
-	HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> regions = map.get(loc.getWorld());
-	if (regions == null)
-	    regions = new HashMap<>();
-	String region = locToRegion(loc);
-	HashMap<String, HashMap<String, BlockProtection>> chunks = regions.get(region);
-	if (chunks == null)
-	    chunks = new HashMap<>();
-	String chunk = locToChunk(loc);
-	HashMap<String, BlockProtection> Bpm = chunks.get(chunk);
-	if (Bpm == null)
-	    Bpm = new HashMap<>();
 
+	HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> regions = map.getOrDefault(loc.getWorld(), new HashMap<>());
+
+	String region = locToRegion(loc);
+	HashMap<String, HashMap<String, BlockProtection>> chunks = regions.getOrDefault(region, new HashMap<>());
+
+	String chunk = locToChunk(loc);
+	HashMap<String, BlockProtection> Bpm = chunks.getOrDefault(chunk, new HashMap<>());
 	BlockProtection Bp = Bpm.get(v);
 
 	if (Bp == null)

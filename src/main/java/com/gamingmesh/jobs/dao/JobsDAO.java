@@ -795,10 +795,7 @@ public abstract class JobsDAO {
     private HashMap<Integer, ArrayList<JobsDAOData>> map = new HashMap<>();
 
     public List<JobsDAOData> getAllJobs(PlayerInfo pInfo) {
-	List<JobsDAOData> list = map.get(pInfo.getID());
-	if (list != null)
-	    return list;
-	return new ArrayList<JobsDAOData>();
+	return map.getOrDefault(pInfo.getID(), new ArrayList<JobsDAOData>());
     }
 
     public void cleanUsers() {

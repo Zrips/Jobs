@@ -55,9 +55,7 @@ public class BossBarManager {
 	if (!Jobs.getGCManager().BossBarsMessageByDefault)
 	    return;
 
-	Boolean show = ToggleBarHandling.getBossBarToggle().get(playerUUID) == null ? true :
-	    ToggleBarHandling.getBossBarToggle().get(playerUUID);
-
+	Boolean show = ToggleBarHandling.getBossBarToggle().getOrDefault(playerUUID, true);
 	if (!show)
 	    return;
 

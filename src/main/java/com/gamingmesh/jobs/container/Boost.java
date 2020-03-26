@@ -20,9 +20,7 @@ public class Boost {
     }
 
     public BoostMultiplier get(BoostOf boostoff) {
-	if (!map.containsKey(boostoff))
-	    return new BoostMultiplier();
-	return map.get(boostoff);
+	return map.getOrDefault(boostoff, new BoostMultiplier());
     }
 
     public double get(BoostOf boostoff, CurrencyType BT) {

@@ -19,18 +19,14 @@ public final class Log {
     }
 
     public void add(String item, HashMap<CurrencyType, Double> amounts) {
-	LogAmounts LAmount = this.amountMap.get(item);
-	if (LAmount == null)
-	    LAmount = new LogAmounts(item);
+	LogAmounts LAmount = amountMap.getOrDefault(item, new LogAmounts(item));
 	LAmount.addCount();
 	LAmount.add(amounts);
 	this.amountMap.put(item, LAmount);
     }
 
     public void add(String item, int count, HashMap<CurrencyType, Double> amounts) {
-	LogAmounts LAmount = this.amountMap.get(item);
-	if (LAmount == null)
-	    LAmount = new LogAmounts(item);
+	LogAmounts LAmount = amountMap.getOrDefault(item, new LogAmounts(item));
 	LAmount.setCount(count);
 	LAmount.add(amounts);
 	LAmount.setNewEntry(false);
