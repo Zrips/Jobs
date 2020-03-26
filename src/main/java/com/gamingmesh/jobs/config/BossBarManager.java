@@ -1,4 +1,3 @@
-
 package com.gamingmesh.jobs.config;
 
 import java.text.DecimalFormat;
@@ -10,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BossBarInfo;
@@ -110,22 +108,15 @@ public class BossBarManager {
 	    bar.setTitle(message);
 
 	double percentage = jobProg.getExperience() / jobProg.getMaxExperience();
-	try {
-	    bar.setProgress(percentage);
-	    if (OldOne == null) {
-		Player target = Bukkit.getPlayer(player.getPlayer().getUniqueId());
-		if (target == null)
-		    return;
-		bar.addPlayer(target);
-		OldOne = new BossBarInfo(player.getName(), jobProg.getJob().getName(), bar);
-		player.getBossBarInfo().add(OldOne);
-	    }
-	    bar.setVisible(true);
-	} catch (NoSuchMethodError e) {
+	bar.setProgress(percentage > 1.0 ? 1.0 : percentage);
+
+	if (OldOne == null) {
+	    bar.addPlayer(player.getPlayer());
+	    OldOne = new BossBarInfo(player.getName(), jobProg.getJob().getName(), bar);
+	    player.getBossBarInfo().add(OldOne);
 	}
 
-	if (OldOne == null)
-	    return;
+	bar.setVisible(true);
 
 	OldOne.setId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
