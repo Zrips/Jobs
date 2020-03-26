@@ -57,14 +57,10 @@ public class SignUtil {
 
 	SignsByLocation.put(jSign.locToBlockString(), jSign);
 
-	HashMap<String, jobsSign> old = SignsByType.get(jSign.getIdentifier().toLowerCase());
-	if (old == null) {
-	    old = new HashMap<String, jobsSign>();
-	    SignsByType.put(jSign.getIdentifier().toLowerCase(), old);
-	}
+	HashMap<String, jobsSign> old = new HashMap<>();
+	old.put(jSign.locToBlockString(), jSign);
 
-	String loc = jSign.locToBlockString();
-	old.put(loc, jSign);
+	SignsByType.put(jSign.getIdentifier().toLowerCase(), old);
     }
 
     public void LoadSigns() {

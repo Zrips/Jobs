@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,11 +25,10 @@ public class fireall implements Cmd {
 	}
 
 	if (args[0].equalsIgnoreCase("all")) {
-
 	    if (sender instanceof Player) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.fromconsole"));
 		return true;
-	    } 
+	    }
 
 	    Jobs.getDBManager().getDB().truncate(DBTables.JobsTable.getTableName());
 
