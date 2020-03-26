@@ -28,12 +28,6 @@ import com.gamingmesh.jobs.Placeholders.NewPlaceholderAPIHook;
 import com.gamingmesh.jobs.Placeholders.Placeholder;
 import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
 import com.gamingmesh.jobs.hooks.HookManager;
-import com.gamingmesh.jobs.hooks.McMMO.McMMOManager;
-import com.gamingmesh.jobs.hooks.MyPet.MyPetManager;
-import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobInterface;
-import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs2;
-import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs4;
-import com.gamingmesh.jobs.hooks.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
@@ -93,15 +87,6 @@ public class Jobs extends JavaPlugin {
 
     private static PistonProtectionListener PistonProtectionListener = null;
 
-    @Deprecated
-    private static McMMOManager McMMOManager = null;
-    @Deprecated
-    private static MythicMobInterface MythicManager = null;
-    @Deprecated
-    private static MyPetManager myPetManager = null;
-    @Deprecated
-    private static WorldGuardManager worldGuardManager = null;
-
     private static ConfigManager configManager = null;
     private static GeneralConfigManager GconfigManager = null;
 
@@ -136,26 +121,10 @@ public class Jobs extends JavaPlugin {
 
     private static PointsData pointsDatabase = null;
 
-    @Deprecated
-    public static McMMOManager getMcMMOManager() {
-	if (McMMOManager == null)
-	    McMMOManager = new McMMOManager();
-	return McMMOManager;
-    }
-
     public static PistonProtectionListener getPistonProtectionListener() {
 	if (PistonProtectionListener == null)
 	    PistonProtectionListener = new PistonProtectionListener();
 	return PistonProtectionListener;
-    }
-
-    @Deprecated
-    public static MyPetManager getMyPetManager() {
-	if (myPetManager == null && getInstance().getServer().getPluginManager().getPlugin("MyPet") != null) {
-	    myPetManager = new MyPetManager();
-	}
-
-	return myPetManager;
     }
 
     private Placeholder Placeholder;
@@ -189,32 +158,6 @@ public class Jobs extends JavaPlugin {
 	}
 
 	return true;
-    }
-
-    @Deprecated
-    public static WorldGuardManager getWorldGuardManager() {
-	return worldGuardManager;
-    }
-
-    @Deprecated
-    public void setMythicManager() {
-	try {
-	    Class.forName("net.elseland.xikage.MythicMobs.API.MythicMobsAPI");
-	    MythicManager = new MythicMobs2(this);
-	} catch (ClassNotFoundException e) {
-	    try {
-		Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
-		MythicManager = new MythicMobs4(this);
-	    } catch (ClassNotFoundException ex) {
-	    }
-	}
-	if (MythicManager != null)
-	    consoleMsg("&e[Jobs] MythicMobs detected.");
-    }
-
-    @Deprecated
-    public static MythicMobInterface getMythicManager() {
-	return MythicManager;
     }
 
     public static Loging getLoging() {
@@ -488,7 +431,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public static Job getJob(int id) {
-	return getJobsIds().get(id);
+	return jobsIds.get(id);
     }
 
     public boolean isPlaceholderAPIEnabled() {

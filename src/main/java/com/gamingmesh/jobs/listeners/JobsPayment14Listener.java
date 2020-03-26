@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.listeners;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.block.Campfire;
 import org.bukkit.entity.Player;
@@ -20,7 +21,7 @@ import com.gamingmesh.jobs.container.PlayerCamp;
 
 public class JobsPayment14Listener implements Listener {
 
-    private Map<Player, PlayerCamp> campPlayers = new HashMap<>();
+    private final Map<PlayerCamp, Player> campPlayers = new HashMap<>();
 
     @EventHandler(priority = EventPriority.LOW)
     public void onCook(BlockCookEvent event) {
@@ -36,22 +37,23 @@ public class JobsPayment14Listener implements Listener {
 	if (!(event.getBlock().getState() instanceof Campfire))
 	    return;
 
-	for (Iterator<Map.Entry<Player, PlayerCamp>> it = campPlayers.entrySet().iterator(); it.hasNext();) {
-	    Map.Entry<Player, PlayerCamp> camps = it.next();
+	for (Iterator<Entry<PlayerCamp, Player>> it = campPlayers.entrySet().iterator(); it.hasNext();) {
+	    Entry<PlayerCamp, Player> camps = it.next();
 	    if (camps == null) {
 		continue;
 	    }
 
-	    if (!camps.getValue().getBlock().getLocation().equals(event.getBlock().getLocation())) {
+	    PlayerCamp camp = camps.getKey();
+	    if (!camp.getBlock().getLocation().equals(event.getBlock().getLocation())) {
 		continue;
 	    }
 
-	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(camps.getKey());
+	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(camps.getValue());
 	    if (jPlayer == null)
 		return;
 
 	    Jobs.action(jPlayer, new ItemActionInfo(event.getSource(), ActionType.BAKE));
-	    if (camps.getValue().getItem().equals(event.getSource())) {
+	    if (camp.getItem().equals(event.getSource())) {
 		it.remove();
 	    }
 	}
@@ -79,6 +81,6 @@ public class JobsPayment14Listener implements Listener {
 	if (!JobsPaymentListener.payIfCreative(p))
 	    return;
 
-	campPlayers.put(p, new PlayerCamp(ev.getItem(), click));
+	campPlayers.put(new PlayerCamp(ev.getItem(), click), p);
     }
 }
