@@ -143,11 +143,11 @@ public class Job {
     }
 
     public int getTotalPlayers() {
-	if (this.totalPlayers == -1) {
-	    this.totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(this.jobName);
-	    updateBonus();
+	if (totalPlayers == -1) {
+	    updateTotalPlayers();
 	}
-	return this.totalPlayers;
+
+	return totalPlayers;
     }
 
     public void updateTotalPlayers() {

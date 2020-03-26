@@ -1174,25 +1174,29 @@ public abstract class JobsDAO {
 
 	int count = 0;
 	PreparedStatement prest = null;
-	PreparedStatement prest2 = null;
 	ResultSet res = null;
-	ResultSet res2 = null;
 	try {
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.job + "` = ?;");
 	    prest.setString(1, JobName);
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		count += res.getInt(1);
+		count++;
 	    }
 
 	    if (count == 0) {
+		close(prest);
+		close(res);
+
+		prest = null;
+		res = null;
+
 		Job job = Jobs.getJob(JobName);
 		if (job != null && job.getId() != 0) {
-		    prest2 = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid + "` = ?;");
-		    prest2.setInt(1, job.getId());
-		    res2 = prest2.executeQuery();
-		    while (res2.next()) {
-			count += res2.getInt(1);
+		    prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid + "` = ?;");
+		    prest.setInt(1, job.getId());
+		    res = prest.executeQuery();
+		    while (res.next()) {
+			count++;
 		    }
 		}
 	    }
@@ -1201,9 +1205,8 @@ public abstract class JobsDAO {
 	} finally {
 	    close(res);
 	    close(prest);
-	    close(res2);
-	    close(prest2);
 	}
+
 	return count;
     }
 
