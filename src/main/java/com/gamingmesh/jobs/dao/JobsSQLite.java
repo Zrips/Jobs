@@ -46,33 +46,9 @@ public class JobsSQLite extends JobsDAO {
 	    return;
 	}
 
-	PreparedStatement prest = null;
-	ResultSet res = null;
-	int rows = 0;
-	try {
-	    // Check for config table
-	    prest = conn.prepareStatement("SELECT COUNT(*) FROM sqlite_master WHERE name = ?;");
-	    prest.setString(1, getPrefix() + "config");
-	    res = prest.executeQuery();
-	    if (res.next()) {
-		rows = res.getInt(1);
-	    }
-	} finally {
-	    close(res);
-	    close(prest);
-	}
-
-	if (rows == 0) {
-	    PreparedStatement insert = null;
-	    try {
-		executeSQL("CREATE TABLE `" + getPrefix() + "config` (`key` varchar(50) NOT NULL PRIMARY KEY, `value` int NOT NULL);");
-		insert = conn.prepareStatement("INSERT INTO `" + getPrefix() + "config` (`key`, `value`) VALUES (?, ?);");
-		insert.setString(1, "version");
-		insert.setInt(2, 1);
-		insert.execute();
-	    } finally {
-		close(insert);
-	    }
+	String name = getPrefix() + "config";
+	if (isTable(name)) {
+	    drop(name);
 	}
     }
 

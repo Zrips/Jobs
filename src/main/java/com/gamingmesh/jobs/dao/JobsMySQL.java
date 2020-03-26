@@ -9,13 +9,11 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
 public class JobsMySQL extends JobsDAO {
-    private String database;
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
 	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database
 	    + "?maxReconnects=1&useUnicode=true&character_set_server=utf8mb4&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
 	    + "&verifyServerCertificate=" + certificate, username, password, prefix);
-	this.database = database;
 	this.setDbType(DataBaseType.MySQL);
     }
 
@@ -44,34 +42,10 @@ public class JobsMySQL extends JobsDAO {
 	    Jobs.consoleMsg("&cCould not run database updates! Could not connect to MySQL!");
 	    return;
 	}
-	PreparedStatement prest = null;
-	int rows = 0;
-	ResultSet res = null;
-	try {
-	    // Check for config table
-	    prest = conn.prepareStatement("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = ? AND table_name = ?;");
-	    prest.setString(1, database);
-	    prest.setString(2, getPrefix() + "config");
-	    res = prest.executeQuery();
-	    if (res.next())
-		rows = res.getInt(1);
-	} finally {
-	    close(res);
-	    close(prest);
-	}
 
-	if (rows == 0) {
-	    PreparedStatement insert = null;
-	    try {
-		executeSQL("CREATE TABLE `" + getPrefix() + "config` (`key` varchar(50) NOT NULL PRIMARY KEY, `value` int NOT NULL);");
-
-		insert = conn.prepareStatement("INSERT INTO `" + getPrefix() + "config` (`key`, `value`) VALUES (?, ?);");
-		insert.setString(1, "version");
-		insert.setInt(2, 1);
-		insert.execute();
-	    } finally {
-		close(insert);
-	    }
+	String name = getPrefix() + "config";
+	if (isTable(name)) {
+	    drop(name);
 	}
     }
 
