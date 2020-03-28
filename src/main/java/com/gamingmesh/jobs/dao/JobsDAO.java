@@ -1179,8 +1179,8 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.job + "` = ?;");
 	    prest.setString(1, JobName);
 	    res = prest.executeQuery();
-	    while (res.next()) {
-		count++;
+	    if (res.next()) {
+		count += res.getInt(1);
 	    }
 
 	    if (count == 0) {
@@ -1195,8 +1195,8 @@ public abstract class JobsDAO {
 		    prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid + "` = ?;");
 		    prest.setInt(1, job.getId());
 		    res = prest.executeQuery();
-		    while (res.next()) {
-			count++;
+		    if (res.next()) {
+			count += res.getInt(1);
 		    }
 		}
 	    }

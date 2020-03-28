@@ -920,78 +920,70 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToFurnace(InventoryMoveItemEvent event) {
-	try {
-	    if (!plugin.isEnabled())
-		return;
+	if (!plugin.isEnabled())
+	   return;
 
-	    if (!Jobs.getGCManager().PreventHopperFillUps)
-		return;
+	if (!Jobs.getGCManager().PreventHopperFillUps)
+	    return;
 
-	    String type = event.getDestination().getType().toString();
-	    if (!type.equalsIgnoreCase("FURNACE") && !type.equalsIgnoreCase("SMOKER") && !type.equalsIgnoreCase("BLAST_FURNACE"))
-		return;
+	String type = event.getDestination().getType().toString();
+	if (!type.equalsIgnoreCase("FURNACE") && !type.equalsIgnoreCase("SMOKER") && !type.equalsIgnoreCase("BLAST_FURNACE"))
+	    return;
 
-	    if (event.getItem().getType() == Material.AIR)
-		return;
+	if (event.getItem().getType() == Material.AIR)
+	    return;
 
-	    Block block = null;
+	Block block = null;
 
-	    switch (type.toLowerCase()) {
-	    case "furnace":
-		block = ((Furnace) event.getDestination().getHolder()).getBlock();
-		break;
-	    case "smoker":
-		// This should be done in this way to have backwards compatibility
-		block = ((org.bukkit.block.Smoker) event.getDestination().getHolder()).getBlock();
-		break;
-	    case "blast_furnace":
-		// This should be done in this way to have backwards compatibility
-		block = ((org.bukkit.block.BlastFurnace) event.getDestination().getHolder()).getBlock();
-		break;
-	    default:
-		break;
-	    }
-
-	    if (block == null)
-		return;
-
-	    //disabling plugin in world
-	    if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
-		return;
-
-	    if (block.hasMetadata(furnaceOwnerMetadata))
-		FurnaceBrewingHandling.removeFurnace(block);
-	} catch (Throwable e) {
-	    e.printStackTrace();
+	switch (type.toLowerCase()) {
+	case "furnace":
+	    block = ((Furnace) event.getDestination().getHolder()).getBlock();
+	    break;
+	case "smoker":
+	    // This should be done in this way to have backwards compatibility
+	    block = ((org.bukkit.block.Smoker) event.getDestination().getHolder()).getBlock();
+	    break;
+	case "blast_furnace":
+	    // This should be done in this way to have backwards compatibility
+	    block = ((org.bukkit.block.BlastFurnace) event.getDestination().getHolder()).getBlock();
+	    break;
+	default:
+	    break;
 	}
+
+	if (block == null)
+	    return;
+
+	//disabling plugin in world
+	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+	   return;
+
+	if (block.hasMetadata(furnaceOwnerMetadata))
+	    FurnaceBrewingHandling.removeFurnace(block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToBrewingStand(InventoryMoveItemEvent event) {
-	try {
-	    if (!plugin.isEnabled())
-		return;
+	if (!plugin.isEnabled())
+	    return;
 
-	    if (event.getDestination().getType() != InventoryType.BREWING)
-		return;
+	if (event.getDestination().getType() != InventoryType.BREWING)
+	    return;
 
-	    if (!Jobs.getGCManager().PreventBrewingStandFillUps)
-		return;
+	if (!Jobs.getGCManager().PreventBrewingStandFillUps)
+	    return;
 
-	    if (event.getItem().getType() == Material.AIR)
-		return;
+	if (event.getItem().getType() == Material.AIR)
+	    return;
 
-	    BrewingStand stand = (BrewingStand) event.getDestination().getHolder();
-	    //disabling plugin in world
-	    if (!Jobs.getGCManager().canPerformActionInWorld(stand.getWorld()))
-		return;
+	BrewingStand stand = (BrewingStand) event.getDestination().getHolder();
+	//disabling plugin in world
+	if (!Jobs.getGCManager().canPerformActionInWorld(stand.getWorld()))
+	    return;
 
-	    Block block = stand.getBlock();
-	    if (block.hasMetadata(brewingOwnerMetadata))
-		FurnaceBrewingHandling.removeBrewing(block);
-	} catch (Throwable e) {
-	    e.printStackTrace();
-	}
+	Block block = stand.getBlock();
+	if (block.hasMetadata(brewingOwnerMetadata))
+	    FurnaceBrewingHandling.removeBrewing(block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
