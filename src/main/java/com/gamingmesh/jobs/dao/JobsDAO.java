@@ -1110,9 +1110,18 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
+
 	PreparedStatement prestt = null;
 	ResultSet res2 = null;
 	try {
+	    prestt = conn.prepareStatement("DELETE FROM `" + DBTables.JobNameTable.getTableName()
+		+ "` WHERE `" + jobsNameTableFields.name.getCollumn() + "` = ?;");
+	    prestt.setString(1, job.getName());
+	    prestt.execute();
+
+	    close(prestt);
+	    prestt = null;
+
 	    prestt = conn.prepareStatement("INSERT INTO `" + DBTables.JobNameTable.getTableName() + "` (`" + jobsNameTableFields.name.getCollumn() + "`) VALUES (?);",
 		Statement.RETURN_GENERATED_KEYS);
 	    prestt.setString(1, job.getName());
