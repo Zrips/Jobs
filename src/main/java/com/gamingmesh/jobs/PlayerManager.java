@@ -978,7 +978,10 @@ public class PlayerManager {
     public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim, boolean force, boolean getall) {
 	Boost boost = new Boost();
 
-	if (player == null || !player.isOnline() || prog == null)
+	if (player == null || !player.isOnline())
+	    return boost;
+
+	if (prog == null)
 	    return boost;
 
 	if (HookManager.getMcMMOManager().mcMMOPresent || HookManager.getMcMMOManager().mcMMOOverHaul)

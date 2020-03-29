@@ -64,8 +64,6 @@ public class pointboost implements Cmd {
 						one.addBoost(CurrencyType.POINTS, rate);
 						succeed = true;
 					} else if (sec != 0 || min != 0 || hour != 0) {
-						sender.sendMessage(Jobs.getLanguage().getMessage("command.pointboost.output.boostadded",
-								"%boost%", rate, "%jobname%", one.getName()));
 						one.addBoost(CurrencyType.POINTS, rate, hour, min, sec);
 						succeed = true;
 					}

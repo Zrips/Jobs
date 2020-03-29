@@ -456,12 +456,17 @@ public abstract class JobsDAO {
 
     protected JobsDAO(Jobs plugin, String driverName, String url, String username, String password, String pr) {
 	this.plugin = plugin;
+
 	prefix = pr;
+
 	try {
-	    pool = new JobsConnectionPool(driverName, url, username, password);
-	} catch (Exception e) {
-	    e.printStackTrace();
+	    Class.forName(driverName);
+	} catch (ClassNotFoundException c) {
+	    c.printStackTrace();
+	    return;
 	}
+
+	pool = new JobsConnectionPool(url, username, password);
     }
 
     public final synchronized void setUp() throws SQLException {

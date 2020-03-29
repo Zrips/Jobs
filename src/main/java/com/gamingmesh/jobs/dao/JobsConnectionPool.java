@@ -1,10 +1,7 @@
 package com.gamingmesh.jobs.dao;
 
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import com.gamingmesh.jobs.Jobs;
 
 public class JobsConnectionPool {
 
@@ -13,12 +10,7 @@ public class JobsConnectionPool {
     private String username;
     private String password;
 
-    public JobsConnectionPool(String driverName, String url, String username, String password)
-	    throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-	Driver driver = (Driver) Class.forName(driverName, true, Jobs.getJobsClassloader()).newInstance();
-	JobsDrivers jDriver = new JobsDrivers(driver);
-	DriverManager.registerDriver(jDriver);
-
+    public JobsConnectionPool(String url, String username, String password) {
 	this.url = url;
 	this.username = username;
 	this.password = password;

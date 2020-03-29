@@ -64,8 +64,6 @@ public class expboost implements Cmd {
 						one.addBoost(CurrencyType.EXP, rate);
 						succeed = true;
 					} else if (sec != 0 || min != 0 || hour != 0) {
-						sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.boostadded",
-								"%boost%", rate, "%jobname%", one.getName()));
 						one.addBoost(CurrencyType.EXP, rate, hour, min, sec);
 						succeed = true;
 					}

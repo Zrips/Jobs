@@ -34,7 +34,6 @@ import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.*;
 import com.gamingmesh.jobs.container.*;
-import com.gamingmesh.jobs.dao.JobsClassLoader;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.dao.JobsManager;
@@ -92,7 +91,6 @@ public class Jobs extends JavaPlugin {
 
     private static Reflections reflections = null;
 
-    private static JobsClassLoader classLoader = null;
     private static JobsDAO dao = null;
     private static List<Job> jobs = null;
     private static Job noneJob = null;
@@ -542,16 +540,6 @@ public class Jobs extends JavaPlugin {
     public static void leaveSlot(Job job) {
 	if (usedSlots.containsKey(job))
 	    usedSlots.put(job, usedSlots.get(job) - 1);
-    }
-
-    /**
-     * Returns the jobs classloader
-     * @return the classloader
-     */
-    public static JobsClassLoader getJobsClassloader() {
-	if (classLoader == null)
-	    classLoader = new JobsClassLoader(instance);
-	return classLoader;
     }
 
     /**
