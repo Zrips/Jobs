@@ -1999,19 +1999,15 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
-	PreparedStatement prest2 = null;
-	try {
-	    prest2 = conn.prepareStatement("DELETE FROM `" + DBTables.PointsTable.getTableName() + "` WHERE `" + PointsTableFields.userid.getCollumn() + "` = ?;");
-	    prest2.setInt(1, jPlayer.getUserId());
-	    prest2.execute();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(prest2);
-	}
-
 	PreparedStatement prest = null;
 	try {
+	    prest = conn.prepareStatement("DELETE FROM `" + DBTables.PointsTable.getTableName() + "` WHERE `" + PointsTableFields.userid.getCollumn() + "` = ?;");
+	    prest.setInt(1, jPlayer.getUserId());
+	    prest.execute();
+
+	    close(prest);
+	    prest = null;
+
 	    PlayerPoints pointInfo = jPlayer.getPointsData();
 	    prest = conn.prepareStatement("INSERT INTO `" + DBTables.PointsTable.getTableName() + "` (`" + PointsTableFields.totalpoints.getCollumn() + "`, `" + PointsTableFields.currentpoints.getCollumn()
 		+ "`, `" + PointsTableFields.userid.getCollumn() + "`) VALUES (?, ?, ?);");
