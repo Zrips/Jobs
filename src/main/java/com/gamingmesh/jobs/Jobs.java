@@ -1065,7 +1065,7 @@ public class Jobs extends JavaPlugin {
 		try {
 		    if (expAmount != 0D && GconfigManager.BossBarEnabled)
 			if (GconfigManager.BossBarShowOnEachAction)
-			    BBManager.ShowJobProgression(jPlayer, prog);
+			    BBManager.ShowJobProgression(jPlayer, prog, expAmount);
 			else
 			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Throwable e) {

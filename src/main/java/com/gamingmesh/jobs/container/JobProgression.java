@@ -26,6 +26,7 @@ public class JobProgression {
     private Job job;
     private JobsPlayer jPlayer;
     private double experience;
+    private Double lastExperience;
     private int level;
     private transient int maxExperience = -1;
     private Long leftOn = null;
@@ -166,7 +167,6 @@ public class JobProgression {
      * @returns if level up was performed
      */
     private boolean checkLevelUp() {
-
 	if (level == 1 && experience < 0)
 	    experience = 0;
 	if (experience < 0)
@@ -189,6 +189,9 @@ public class JobProgression {
 	if (experience > maxExperience)
 	    experience = maxExperience;
 
+	if (lastExperience == null)
+	    lastExperience = experience;
+
 	return ret;
     }
 
@@ -208,6 +211,8 @@ public class JobProgression {
 	    ret = true;
 	    reloadMaxExperience();
 	}
+	if (lastExperience == null)
+	    lastExperience = experience;
 	return ret;
     }
 
@@ -246,6 +251,14 @@ public class JobProgression {
 	    return "";
 	String msg = (TimeManage.to24hourShort(leftOn + getJob().getRejoinCd() - System.currentTimeMillis()));
 	return msg;
+    }
+
+    public Double getLastExperience() {
+	return lastExperience == null ? experience : lastExperience;
+    }
+
+    public void setLastExperience(Double lastExperience) {
+	this.lastExperience = lastExperience;
     }
 
 }

@@ -1453,10 +1453,10 @@ public class JobsPaymentListener implements Listener {
 		return;
 
 	    // pay
-	    JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
-	    if (jDamager == null)
+	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	    if (jPlayer == null)
 		return;
-	    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.BREED));
+	    Jobs.action(jPlayer, new EntityActionInfo(animal, ActionType.BREED));
 	}
     }
 

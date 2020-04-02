@@ -291,6 +291,8 @@ public class LanguageManager {
 	    Jobs.getGCManager().getCommandArgs().put("stats", Arrays.asList("[playername]"));
 	    c.get("command.stats.error.nojob", "Please join a job first.");
 	    c.get("command.stats.output", "Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp");
+	    c.get("command.stats.bossBarOutput", "Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%");
+	    c.get("command.stats.bossBarGain", " &7(&f%gain%&7)");
 
 	    c.get("command.shop.help.info", "Opens special jobs shop.");
 	    c.get("command.shop.help.args", "");

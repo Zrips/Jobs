@@ -38,14 +38,17 @@ public class BossBarManager {
 
 	for (String one : temp) {
 	    for (JobProgression oneJob : player.getJobProgression()) {
-		if (one.equalsIgnoreCase(oneJob.getJob().getName()))
-		    ShowJobProgression(player, oneJob);
+		if (one.equalsIgnoreCase(oneJob.getJob().getName())) {
+		    Double lastExp = oneJob.getLastExperience();
+
+		    ShowJobProgression(player, oneJob, oneJob.getExperience() - lastExp);
+		}
 	    }
 	}
 	player.clearUpdateBossBarFor();
     }
 
-    public synchronized void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg) {
+    public synchronized void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
 	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
 	    return;
 
@@ -70,11 +73,22 @@ public class BossBarManager {
 	}
 	NumberFormat formatter = new DecimalFormat("#0.00");
 
-	String message = Jobs.getLanguage().getMessage("command.stats.output",
+	String gain = "";
+	if (expGain != 0) {
+	    expGain = (int) (expGain * 100) / 100D;
+	    if (expGain > 0)
+		gain = "+" + expGain;
+	    else
+		gain = "" + expGain;
+	    gain = Jobs.getLanguage().getMessage("command.stats.bossBarGain", "%gain%", gain);
+	}
+
+	String message = Jobs.getLanguage().getMessage("command.stats.bossBarOutput",
 	    "%joblevel%", Integer.valueOf(jobProg.getLevel()).toString(),
 	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName(),
 	    "%jobxp%", formatter.format(Math.round(jobProg.getExperience() * 100.0) / 100.0),
-	    "%jobmaxxp%", jobProg.getMaxExperience());
+	    "%jobmaxxp%", jobProg.getMaxExperience(),
+	    "%gain%", gain);
 
 	if (bar == null) {
 	    BarColor color = getColor(jobProg.getJob());
