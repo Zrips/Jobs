@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class QuestProgression {
 
@@ -34,8 +35,10 @@ public class QuestProgression {
 
     public int getTotalAmountNeeded() {
 	int amountNeeded = 0;
-	for (Entry<String, QuestObjective> one : quest.getObjectives().entrySet()) {
-	    amountNeeded += one.getValue().getAmount();
+	for (Entry<ActionType, HashMap<String, QuestObjective>> oneA : quest.getObjectives().entrySet()) {
+	    for (Entry<String, QuestObjective> one : oneA.getValue().entrySet()) {
+		amountNeeded += one.getValue().getAmount();
+	    }
 	}
 	return amountNeeded;
     }
@@ -75,10 +78,12 @@ public class QuestProgression {
     }
 
     public boolean isCompleted() {
-	for (Entry<String, QuestObjective> one : quest.getObjectives().entrySet()) {
-	    Integer amountDone = this.done.get(one.getValue());
-	    if (amountDone == null || amountDone < one.getValue().getAmount())
-		return false;
+	for (Entry<ActionType, HashMap<String, QuestObjective>> oneA : quest.getObjectives().entrySet()) {
+	    for (Entry<String, QuestObjective> one : oneA.getValue().entrySet()) {
+		Integer amountDone = this.done.get(one.getValue());
+		if (amountDone == null || amountDone < one.getValue().getAmount())
+		    return false;
+	    }
 	}
 	return true;
     }
@@ -87,7 +92,8 @@ public class QuestProgression {
 	if (!quest.hasAction(action.getType()))
 	    return;
 
-	if (!quest.getObjectives().containsKey(action.getName()) && !quest.getObjectives().containsKey(action.getNameWithSub()))
+	if (!quest.getObjectives().containsKey(action.getType()) || !quest.getObjectives().get(action.getType()).containsKey(action.getNameWithSub()) && !quest.getObjectives().get(action.getType())
+	    .containsKey(action.getName()))
 	    return;
 
 	if (quest.getRestrictedAreas() != null && !quest.getRestrictedAreas().isEmpty()) {
@@ -102,16 +108,24 @@ public class QuestProgression {
 	}
 
 	if (!isCompleted()) {
-	    QuestObjective objective = quest.getObjectives().get(action.getName());
-	    if (objective == null)
-		objective = quest.getObjectives().get(action.getNameWithSub());
-	    Integer old = done.get(objective);
-	    if (old == null)
-		old = 0;
-	    if (old < objective.getAmount())
-		done.put(objective, old + 1);
-	    else {
-		done.put(objective, objective.getAmount());
+	    HashMap<String, QuestObjective> byAction = quest.getObjectives().get(action.getType());
+
+	    QuestObjective objective = null;
+	    if (byAction != null) {
+		objective = byAction.get(action.getName());
+		if (objective == null)
+		    objective = byAction.get(action.getNameWithSub());
+	    }
+
+	    if (objective != null) {
+		Integer old = done.get(objective);
+		if (old == null)
+		    old = 0;
+		if (old < objective.getAmount())
+		    done.put(objective, old + 1);
+		else {
+		    done.put(objective, objective.getAmount());
+		}
 	    }
 	}
 

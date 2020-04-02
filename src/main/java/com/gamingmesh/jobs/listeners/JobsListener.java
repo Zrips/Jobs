@@ -83,6 +83,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent.EquipMethod;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class JobsListener implements Listener {
@@ -419,7 +420,7 @@ public class JobsListener implements Listener {
     }
 
     // Adding to chat prefix job name
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
 	if (!plugin.isEnabled())
 	    return;
@@ -429,6 +430,7 @@ public class JobsListener implements Listener {
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
+	Debug.D(honorific);
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";
 

@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.commands.list;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
+import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestObjective;
@@ -69,7 +71,7 @@ public class quests implements Cmd {
 		    List<String> hoverList = new ArrayList<>();
 		    for (String current : hoverMsg.split("\n")) {
 			current = current.replace("[jobName]", jobProg.getJob().getName())
-				    .replace("[time]", TimeManage.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
+			    .replace("[time]", TimeManage.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
 
 			if (current.contains("[desc]")) {
 			    for (String one : q.getQuest().getDescription()) {
@@ -80,12 +82,14 @@ public class quests implements Cmd {
 			}
 		    }
 
-		    for (Entry<String, QuestObjective> oneObjective : q.getQuest().getObjectives().entrySet()) {
-			hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +
-			    Jobs.getNameTranslatorManager().Translate(oneObjective.getKey(), oneObjective.getValue().getAction(), oneObjective.getValue().getTargetId(), oneObjective.getValue()
-				.getTargetMeta(), oneObjective.getValue().getTargetName())
-			    + " " + q.getAmountDone(oneObjective.getValue()) + "/"
-			    + oneObjective.getValue().getAmount());
+		    for (Entry<ActionType, HashMap<String, QuestObjective>> oneAction : q.getQuest().getObjectives().entrySet()) {
+			for (Entry<String, QuestObjective> oneObjective : oneAction.getValue().entrySet()) {
+			    hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +
+				Jobs.getNameTranslatorManager().Translate(oneObjective.getKey(), oneObjective.getValue().getAction(), oneObjective.getValue().getTargetId(), oneObjective.getValue()
+				    .getTargetMeta(), oneObjective.getValue().getTargetName())
+				+ " " + q.getAmountDone(oneObjective.getValue()) + "/"
+				+ oneObjective.getValue().getAmount());
+			}
 		    }
 
 		    String hover = "";

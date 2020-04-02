@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class Quest {
 
@@ -25,7 +26,7 @@ public class Quest {
     private List<String> rewards = new ArrayList<>();
     private List<String> area = new ArrayList<>();
 
-    private HashMap<String, QuestObjective> objectives = new HashMap<>();
+    private HashMap<ActionType, HashMap<String, QuestObjective>> objectives = new HashMap<>();
     private Set<ActionType> actions = new HashSet<>();
 
     public Quest(String questName, Job job) {
@@ -145,12 +146,16 @@ public class Quest {
 	return true;
     }
 
-    public HashMap<String, QuestObjective> getObjectives() {
+    public HashMap<ActionType, HashMap<String, QuestObjective>> getObjectives() {
 	return objectives;
     }
 
     public boolean hasObjective(QuestObjective objective) {
-	for (Entry<String, QuestObjective> one : this.objectives.entrySet()) {
+	HashMap<String, QuestObjective> old = objectives.get(objective.getAction());
+	if (old == null)
+	    return false;
+
+	for (Entry<String, QuestObjective> one : old.entrySet()) {
 	    if (one.getValue().getTargetId() == objective.getTargetId() &&
 		one.getValue().getAction() == objective.getAction() &&
 		objective.getAmount() == one.getValue().getAmount() &&
@@ -160,15 +165,21 @@ public class Quest {
 	return false;
     }
 
-    public void setObjectives(HashMap<String, QuestObjective> objectives) {
+    public void setObjectives(HashMap<ActionType, HashMap<String, QuestObjective>> objectives) {
 	this.objectives = objectives;
-	for (Entry<String, QuestObjective> one : objectives.entrySet()) {
-	    actions.add(one.getValue().getAction());
+	for (Entry<ActionType, HashMap<String, QuestObjective>> one : objectives.entrySet()) {
+	    actions.add(one.getKey());
 	}
     }
 
     public void addObjective(QuestObjective objective) {
-	this.objectives.put(objective.getTargetName(), objective); 
+	HashMap<String, QuestObjective> old = objectives.get(objective.getAction());
+	if (old == null) {
+	    old = new HashMap<String, QuestObjective>();
+	    old.put(objective.getTargetName(), objective);
+	    objectives.put(objective.getAction(), old);
+	}
+	old.put(objective.getTargetName(), objective);
 	actions.add(objective.getAction());
     }
 

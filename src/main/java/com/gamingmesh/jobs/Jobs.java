@@ -792,8 +792,9 @@ public class Jobs extends JavaPlugin {
 	if (!job.getQuests().isEmpty()) {
 	    List<QuestProgression> q = jPlayer.getQuestProgressions(job, info.getType());
 	    for (QuestProgression one : q) {
-		if (one != null)
+		if (one != null) {
 		    one.processQuest(jPlayer, info);
+		}
 	    }
 	}
     }

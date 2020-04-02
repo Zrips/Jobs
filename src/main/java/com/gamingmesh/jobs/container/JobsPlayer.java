@@ -106,7 +106,7 @@ public class JobsPlayer {
 	getPointsData().setTotalPoints(points.getTotalPoints());
 	getPointsData().setNewEntry(points.isNewEntry());
     }
-    
+
     public boolean havePoints(double points) {
 	return getPointsData().getCurrentPoints() >= points;
     }
@@ -907,10 +907,12 @@ public class JobsPlayer {
 	    if (prog.isEnded())
 		continue;
 
-	    for (Entry<String, QuestObjective> oneObjective : prog.getQuest().getObjectives().entrySet()) {
-		if (type == null || type.name().equals(oneObjective.getValue().getAction().name())) {
-		    ls.add(prog.getQuest().getConfigName().toLowerCase());
-		    break;
+	    for (Entry<ActionType, HashMap<String, QuestObjective>> oneAction : prog.getQuest().getObjectives().entrySet()) {
+		for (Entry<String, QuestObjective> oneObjective : oneAction.getValue().entrySet()) {
+		    if (type == null || type.name().equals(oneObjective.getValue().getAction().name())) {
+			ls.add(prog.getQuest().getConfigName().toLowerCase());
+			break;
+		    }
 		}
 	    }
 	}
@@ -921,8 +923,10 @@ public class JobsPlayer {
     public void resetQuests(Job job) {
 	for (QuestProgression oneQ : getQuestProgressions(job)) {
 	    oneQ.setValidUntil(oneQ.getQuest().getValidUntil());
-	    for (Entry<String, QuestObjective> obj : oneQ.getQuest().getObjectives().entrySet()) {
-		oneQ.setAmountDone(obj.getValue(), 0);
+	    for (Entry<ActionType, HashMap<String, QuestObjective>> base : oneQ.getQuest().getObjectives().entrySet()) {
+		for (Entry<String, QuestObjective> obj : base.getValue().entrySet()) {
+		    oneQ.setAmountDone(obj.getValue(), 0);
+		}
 	    }
 	}
     }
@@ -1044,13 +1048,16 @@ public class JobsPlayer {
 	for (Entry<String, QuestProgression> oneJ : g.entrySet()) {
 	    if (type == null) {
 		tmp.put(oneJ.getValue().getQuest().getConfigName().toLowerCase(), oneJ.getValue());
-	    } else
-		for (Entry<String, QuestObjective> one : oneJ.getValue().getQuest().getObjectives().entrySet()) {
-		    if (type.name().equals(one.getValue().getAction().name())) {
-			tmp.put(oneJ.getValue().getQuest().getConfigName().toLowerCase(), oneJ.getValue());
-			break;
+	    } else {
+		HashMap<String, QuestObjective> old = oneJ.getValue().getQuest().getObjectives().get(type);
+		if (old != null)
+		    for (Entry<String, QuestObjective> one : old.entrySet()) {
+			if (type.name().equals(one.getValue().getAction().name())) {
+			    tmp.put(oneJ.getValue().getQuest().getConfigName().toLowerCase(), oneJ.getValue());
+			    break;
+			}
 		    }
-		}
+	    }
 	}
 
 	List<QuestProgression> pr = new ArrayList<>();
@@ -1070,8 +1077,10 @@ public class JobsPlayer {
 	    if (!prog.isEmpty())
 		prog += ";:;";
 	    prog += one.getQuest().getJob().getName() + ":" + one.getQuest().getConfigName() + ":" + one.getValidUntil() + ":";
-	    for (Entry<String, QuestObjective> oneO : one.getQuest().getObjectives().entrySet()) {
-		prog += oneO.getValue().getAction().toString() + ";" + oneO.getKey() + ";" + one.getAmountDone(oneO.getValue()) + ":;:";
+	    for (Entry<ActionType, HashMap<String, QuestObjective>> oneA : one.getQuest().getObjectives().entrySet()) {
+		for (Entry<String, QuestObjective> oneO : oneA.getValue().entrySet()) {
+		    prog += oneO.getValue().getAction().toString() + ";" + oneO.getKey() + ";" + one.getAmountDone(oneO.getValue()) + ":;:";
+		}
 	    }
 	    prog = prog.endsWith(":;:") ? prog.substring(0, prog.length() - 3) : prog;
 	}
@@ -1130,7 +1139,11 @@ public class JobsPlayer {
 		    oneA = oneA.substring(prog.length() + 1);
 
 		    String target = oneA.split(";")[0];
-		    QuestObjective obj = quest.getObjectives().get(target);
+		    HashMap<String, QuestObjective> old = quest.getObjectives().get(action);
+		    if (old == null)
+			continue;
+		    
+		    QuestObjective obj = old.get(target);
 
 		    if (obj == null)
 			continue;
