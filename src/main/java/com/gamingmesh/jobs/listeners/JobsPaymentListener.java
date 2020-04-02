@@ -492,12 +492,13 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
-	// Entity that died must be living
-	if (!event.getEntity().isDead()) {
+	LivingEntity animal = event.getEntity();
+	
+	// Entity being tamed must be alive
+	if (animal.isDead()) {
 	    return;
 	}
 
-	LivingEntity animal = event.getEntity();
 	// mob spawner, no payment or experience
 	if (animal.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
 	    animal.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
