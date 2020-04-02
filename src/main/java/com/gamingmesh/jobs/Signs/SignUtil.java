@@ -22,6 +22,7 @@ import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class SignUtil {
 
@@ -160,6 +161,8 @@ public class SignUtil {
 
     public void updateAllSign(Job job) {
 	for (SignTopType types : SignTopType.values()) {
+	    if (types == SignTopType.questtoplist)
+		continue;
 	    SignUpdate(job, types);
 	}
     }
@@ -320,8 +323,8 @@ public class SignUtil {
 	    "[job]", jobname);
     }
 
-	@SuppressWarnings("deprecation")
-	public boolean UpdateHead(final Sign sign, final String Playername, int timelapse) {
+    @SuppressWarnings("deprecation")
+    public boolean UpdateHead(final Sign sign, final String Playername, int timelapse) {
 	if (Playername == null)
 	    return false;
 

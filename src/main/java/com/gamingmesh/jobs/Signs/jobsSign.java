@@ -146,10 +146,14 @@ public class jobsSign {
     }
 
     public String getIdentifier() {
-	return this.jobName != null ? this.jobName : this.getType().toString();
+	if (this.getType() !=  SignTopType.toplist)
+	    return this.getType().toString();
+	return this.jobName != null ? this.jobName + ":" + this.getType().toString() : this.getType().toString();
     }
 
     public static String getIdentifier(Job job, SignTopType type) {
-	return job != null ? job.getName() : (type == null ? SignTopType.toplist : type).toString();
+	if (type !=  SignTopType.toplist)
+	    return type.toString();
+	return job != null ? job.getName() + ":" + type.toString() : type.toString();
     }
 }

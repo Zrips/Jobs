@@ -21,6 +21,7 @@ package com.gamingmesh.jobs.container;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.stuff.Debug;
 
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -232,6 +233,7 @@ public class Job {
 		return info;
 	    }
 	}
+
 	for (JobInfo info : getJobInfo(action.getType())) {
 	    if (info.getName().equalsIgnoreCase(action.getName())) {
 		if (!info.isInLevelRange(level))

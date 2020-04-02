@@ -336,7 +336,7 @@ public class JobsListener implements Listener {
 
 	String jobname = ChatColor.stripColor(event.getLine(2)).toLowerCase();
 	final Job job = Jobs.getJob(jobname);
-	if ((type == SignTopType.toplist || type == SignTopType.questtoplist) && job == null) {
+	if (type == SignTopType.toplist && job == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return;
 	}
@@ -430,7 +430,6 @@ public class JobsListener implements Listener {
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
-	Debug.D(honorific);
 	if (honorific.equalsIgnoreCase(" "))
 	    honorific = "";
 

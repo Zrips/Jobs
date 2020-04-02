@@ -36,6 +36,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -625,7 +626,7 @@ public abstract class JobsDAO {
 		} else {
 		    Job job = Jobs.getJob(jobId);
 		    if (job != null)
-		    jobs.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
+			jobs.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		}
 	    }
 	} catch (SQLException e) {
@@ -2549,7 +2550,6 @@ public abstract class JobsDAO {
 	Job job = Jobs.getJob(jobsname);
 	if (job == null)
 	    return jobs;
-
 	PreparedStatement prest = null;
 	ResultSet res = null;
 
