@@ -1656,7 +1656,7 @@ public abstract class JobsDAO {
 
 	    prest = conn.prepareStatement("SELECT " + JobsTableFields.userid.getCollumn()
 		+ ", COUNT(*) AS amount, sum(" + JobsTableFields.level.getCollumn() + ") AS totallvl FROM `" + getJobsTableName()
-		+ "` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + ",100;");
+		+ "` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + "," + (Jobs.getGCManager().JobsTopAmount * 2) + ";");
 	    res = prest.executeQuery();
 
 	    while (res.next()) {
@@ -1667,7 +1667,7 @@ public abstract class JobsDAO {
 		TopList top = new TopList(info, res.getInt("totallvl"), 0);
 		names.add(top);
 
-		if (names.size() >= Jobs.getGCManager().JobsTopAmount)
+		if (names.size() >= Jobs.getGCManager().JobsTopAmount * 2)
 		    break;
 	    }
 	} catch (SQLException e) {

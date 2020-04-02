@@ -58,7 +58,12 @@ public class SignUtil {
 
 	SignsByLocation.put(jSign.locToBlockString(), jSign);
 
-	HashMap<String, jobsSign> old = new HashMap<>();
+	HashMap<String, jobsSign> old = SignsByType.get(jSign.getIdentifier().toLowerCase());
+	if (old == null) {
+	    old = new HashMap<String, jobsSign>();
+	    SignsByType.put(jSign.getIdentifier().toLowerCase(), old);
+	}
+
 	old.put(jSign.locToBlockString(), jSign);
 
 	SignsByType.put(jSign.getIdentifier().toLowerCase(), old);
@@ -172,19 +177,17 @@ public class SignUtil {
     }
 
     public boolean SignUpdate(Job job, SignTopType type) {
+
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return true;
-
-	if (job == null) {
-	    return false;
-	}
 
 	if (type == null)
 	    type = SignTopType.toplist;
 
 	String JobNameOrType = jobsSign.getIdentifier(job, type);
+
 	HashMap<String, jobsSign> signs = this.SignsByType.get(JobNameOrType.toLowerCase());
-	if (signs == null)
+	if (signs == null || signs.isEmpty())
 	    return false;
 
 	List<TopList> PlayerList = new ArrayList<>();

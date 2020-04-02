@@ -56,16 +56,14 @@ public class gtop implements Cmd {
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline", "%amount%", Jobs.getGCManager().JobsTopAmount));
+	    int i = 0;
 	    for (TopList One : FullList) {
-		if (pi.isBreak())
+		i++;
+		if (i> Jobs.getGCManager().JobsTopAmount)
 		    break;
-
-		if (pi.isContinue())
-		    continue;
-
 		String PlayerName = One.getPlayerName();
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list",
-		    "%number%", pi.getPositionForOutput(),
+		    "%number%", pi.getPositionForOutput(i-1),
 		    "%playername%", PlayerName,
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
@@ -74,16 +72,15 @@ public class gtop implements Cmd {
 	    Jobs.getInstance().ShowPagination(sender, pi, "jobs gtop");
 	} else {
 	    List<String> ls = new ArrayList<>();
+	    int i = 0;
 	    for (TopList one : FullList) {
-		if (pi.isBreak())
+		i++;
+		if (i> Jobs.getGCManager().JobsTopAmount)
 		    break;
-
-		if (pi.isContinue())
-		    continue;
 
 		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line",
-		    "%number%", pi.getPositionForOutput(),
+		    "%number%", pi.getPositionForOutput(i),
 		    "%playername%", playername,
 		    "%level%", one.getLevel()));
 	    }
