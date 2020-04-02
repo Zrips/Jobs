@@ -1,7 +1,5 @@
 package com.gamingmesh.jobs.container;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 public class BoostMultiplier {
@@ -30,15 +28,8 @@ public class BoostMultiplier {
 	return this;
     }
 
-    public BoostMultiplier add(CurrencyType type, double amount, int hour, int minute, int second) {
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(new Date());
-
-	cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + hour);
-	cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + minute);
-	cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + second);
-
-	time = cal.getTimeInMillis();
+    public BoostMultiplier add(CurrencyType type, double amount, long time) {
+	this.time = time;
 	return add(type, amount);
     }
 

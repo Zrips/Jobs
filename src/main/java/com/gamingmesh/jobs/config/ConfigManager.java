@@ -262,8 +262,6 @@ public class ConfigManager {
 
 	cfg.addComment(pt + ".Break.gravel.income", "you can use minuses to take away money if the player break this block");
 	cfg.get(pt + ".Break.gravel.income", -1D);
-	
-	
 
 	cfg.save();
     }
@@ -1082,7 +1080,7 @@ public class ConfigManager {
 				try {
 				    ActionType actionType = ActionType.getByName(split[0]);
 				    String mats = split[1];
-				    String[] co = mats.split(",");
+				    String[] co = mats.contains(",") ? mats.split(",") : new String[0];
 
 				    int amount = 1;
 				    if (split.length == 3) {

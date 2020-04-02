@@ -45,12 +45,6 @@ public class Boost {
     public double getFinalAmount(CurrencyType BT, double income) {
 	double f = income;
 
-	for (BoostOf one : BoostOf.values()) {
-	    if (map.containsKey(one) && !map.get(one).isValid()) {
-		return f;
-	    }
-	}
-
 	if (income > 0 || income < 0 && Jobs.getGCManager().applyToNegativeIncome)
 	    f = income + ((income > 0D ? income : -income) * getFinal(BT, false, false));
 
