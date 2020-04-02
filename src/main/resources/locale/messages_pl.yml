@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Zwiększa zysk pieniężny dla wszystkich graczy
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Wszystkie boostery pieniężne zostały wyłączone
       jobsboostreset: Boost pieniężny został wyłączony dla %jobname%
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Zwiększa zysk punktów dla wszystkich graczy
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Wszystkie boosty punktowe zostały wyłączone
       jobsboostreset: Boost punktów został wyłączony dla %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Zwiększa zysk exp dla wszystkich graczy
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Wszystkie boosty exp wyłączone
       jobsboostreset: Exp boost został wyłączony dla %jobname%
@@ -279,7 +279,7 @@ command:
       info: Daje przedmiot poprzez nazwę pracy i nazwę kategorii przedmiotu. Nazwa gracza jest opcjonalna
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Gracz [%playername%] nie jest online!'
+      notonline: '&4Gracz z tą nazwą nie jest online!'
       noitem: '&4Nie można znaleźć żadnego przedmiotu z daną nazwą!'
   info:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: Zwalnia gracza z wszystkich jego prac.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: Gracz nie ma żadnych prac z których może być zwolniony!
     output:

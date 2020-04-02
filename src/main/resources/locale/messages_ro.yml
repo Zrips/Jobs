@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Boosts money gain for all players
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: All money boosts turned off
       jobsboostreset: Money boost has been turned off for %jobname%
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Boosts point gain for all players
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: All point boosts turned off
       jobsboostreset: Point boost has been turned off for %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Boosts exp gain for all players
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: All exp boosts turned off
       jobsboostreset: Exp boost has been turned off for %jobname%
@@ -279,7 +279,7 @@ command:
       info: Gives item by jobs name and item category name. Player name is optional
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Player [%playername%] is not online!'
+      notonline: '&4Player with that name is not online!'
       noitem: '&4Can''t find any item by given name!'
   info:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: Fire player from all their jobs.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: Player does not have any jobs to be fired from!
     output:

@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Võimendab raha saamist kõikide mängijate jaoks
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Kõik palgavõimendused on väljalülitatud
       jobsboostreset: Palgavõimendus on ameti %jobname% jaoks välja lülitatud
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Võimendab punktide saamist kõikide mängijate jaoks
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Kõik punktivõimendused on välja lülitatud
       jobsboostreset: Punktivõimendus on ameti %jobname% jaoks välja lülitatud
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Võimendab kogemuste saamist kõikide mängijate jaoks
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Kõik kogemuste võimendused on välja lülitatud
       jobsboostreset: Kogemuste võimendus on ameti %jobname% jaoks välja lülitatud
@@ -231,7 +231,7 @@ command:
   placeholders:
     help:
       info: Nimetab kõik kohatäited
-      args: (töötlemine) (kohatäide)
+      args: (parse) (placeholder)
     output:
       list: '&e[place]. &7[placeholder]'
       outputResult: ' &etulemus: &7[result]'
@@ -279,7 +279,7 @@ command:
       info: Annab eseme ametinime ja eseme kategooria järgi. Mängija nimi on valikuline.
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Mängija [%playername%] pole võrgus!'
+      notonline: '&4Selle nimega mängijat pole võrgus!'
       noitem: '&4Antud nimele vastavaid esemeid ei leitud!'
   info:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: Vallanda mängija kõigist ametitest.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: Mängijal pole ühtegi ametit!
     output:

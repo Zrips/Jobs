@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: '[職業名]の収入(お金)を[倍率]倍にします'
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: 上げた収入(お金)をリセットしました
       jobsboostreset: '&a%jobname% の収入(お金)をリセットしました'
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: '[職業名]の獲得ポイントを[倍率]倍にします'
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: 上げた獲得ポイントをリセットしました
       jobsboostreset: '&a%jobname% のポイント獲得をリセットしました'
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: '[職業名]の獲得経験値を[倍率]倍にします'
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: 上げた獲得経験値をリセットしました
       jobsboostreset: '&a%jobname% の獲得経験値をリセットしました'
@@ -279,7 +279,7 @@ command:
       info: '[player]はオプションです'
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4[%playername%] さんはオフラインです'
+      notonline: '&4Player with that name is not online!'
       noitem: '&4指定された名前は見つけられませんでした'
   info:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: '[player]に就いてる職業全てを強制的に離職させます'
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: プレイヤーが職業についていないため離職させられませんでした
     output:

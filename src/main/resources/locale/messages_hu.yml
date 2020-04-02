@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Növeli a pénzszerzést minden játékos számára
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Minden pénznövekedés kikapcsolva
       jobsboostreset: '&cPénznövekedés a(z) %jobname% munkánál kikapcsolva'
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Növeli a játékosok pontszerzését minden játékos számára
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: '&aMinden pont lendülete kikapcsolva.'
       jobsboostreset: '&cPont lendület a(z) %jobname% munkánál visszaállítva.'
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Növeli az összes játékos exp nyereségét.
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: '&aMinden tapasztalat növelés kikapcsolva.'
       jobsboostreset: '&cTapasztalat lendület a(z) %jobname% munkánál kikapcsolva.'
@@ -279,7 +279,7 @@ command:
       info: A tárgyakat a feladatok neve és az elemek kategóriája alapján adja meg. A játékos neve opcionális.
       args: '[playername] [jobname]/[jobitemname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4[%playername%] nem elérhető!'
+      notonline: '&4Játékos ezzel a névvel nem elérhető!'
       noitem: '&4Nincs találat ezzel a névvel lévő tárgyról!'
   info:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: Kirúgás minden munkából.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: '&cA játékosnak nincsenek olyan munkái, amelyekről ki lehet rúgni.'
     output:

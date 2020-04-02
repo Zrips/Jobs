@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Paspartina pinigų gavima darbuotojams
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Visi pinigų gavimo paspartinimai išjungti
       jobsboostreset: Pinigų paspartinimas darbui %jobname% dabar išjungtas
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Paspartina taškų gavimą žaidėjams
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Visi taškų paspartinimai išjungti
       jobsboostreset: Taškų gavimo paspartinimas išjungtas darbui %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Paspartina EXP gavimą žaidėjams
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Visi EXP paspartinimai išjungti
       jobsboostreset: EXP paspartinimas išjungtas darbui %jobname%
@@ -108,7 +108,7 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
+      permission: ' &eLeidimu bonusas: &2%money% &6%points% &e%exp%'
       item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
       global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
       dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
@@ -279,7 +279,7 @@ command:
       info: Duoda daikta pagal darbo varda ir daikto kategorija
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Žaidėjas [%playername%] nėra prisijungęs!'
+      notonline: '&4Player with that name is not online!'
       noitem: '&4Negaliu rasti jokio daikto pagal nurodyta pavadinimą!'
   info:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: Fire player from all their jobs.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: Player does not have any jobs to be fired from!
     output:

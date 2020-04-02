@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Aumenta o ganho de dinheiro para todos os jogadores
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Todo o impulso de aumento de dinheiro desativado
       jobsboostreset: O impulso de dinheiro foi desativado para %jobname%
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Aumenta o impulso de ganho de pontos para todos os jogadores
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Todos os pontos impulsos foram desativados
       jobsboostreset: O impulso de pontos foi desativado para %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Aumenta o bônus ganho de experiência para todos os jogadores
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Todos os impulsos de experiência foram desativados
       jobsboostreset: O impulso de experiência foi desativado para %jobname%
@@ -279,7 +279,7 @@ command:
       info: Fornece item por profissão e por categoria de item o nome do jogador é opcional
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Jogador[%playername%] não esta online!'
+      notonline: '&4Player with that name is not online!'
       noitem: '&4Não foi possível encontrar nenhum item com o mesmo nome!'
   info:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: Despedir jogador de todas as suas profissões.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: O jogador não tem quaisquer profissões para ser despedido!
     output:

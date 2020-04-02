@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&cНет страницы справочника с этим номером!'
     notNumber: '&eПожалуйста, используйте целые числа!'
-    job: '&cThe job you selected does not exist or you not joined to this'
+    job: '&cУказанной профессии не существует или вы не устроились в ней'
     noCommand: '&cТакой команды не существует!'
     permission: '&cУ вас нет прав на совершение этого дествия!'
     noinfo: '&cИнформация не найдена!'
@@ -54,12 +54,12 @@ command:
       nextPageOff: '&7 Следующая страница >>----'
       pageCount: '&2[current]/[total]'
       pageCountHover: '&e[totalEntries] entries'
-      prevPageGui: '&6Previous page '
-      nextPageGui: '&6Next Page'
+      prevPageGui: '&6Предыдущая страница '
+      nextPageGui: '&6Следующая страница'
   moneyboost:
     help:
       info: Ускоряет получение денег для всех игроков
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Ускорение получения денег отключено
       jobsboostreset: Ускорение получения денег %jobname% было отключено
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Ускоряет получение очков для всех игроков
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Ускорение получения очков отключено
       jobsboostreset: Ускорение получения очков %jobname% было отключено
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Ускоряет получение опыта для всех игроков
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Ускорение получения опыта отключено
       jobsboostreset: Ускорение получения опыта %jobname% было отключено
@@ -135,7 +135,7 @@ command:
       pointsLimit: '&eЛимит очков: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4Вы достигли предела денег, которые можно получить!'
       reachedmoneylimit2: '&eВы можете проверить лимит командой &2/jobs limit'
-      reachedmoneylimit3: '&eMoney earned is now reduced exponentially... But you still earn a little!'
+      reachedmoneylimit3: '&eВаш заработок постепенно уменьшается... Но вы еще можете заработать немного!'
       reachedexplimit: '&4Вы достигли предела опыта, которые можно получить!'
       reachedexplimit2: '&eВы можете проверить лимит командой &2/jobs limit'
       reachedpointslimit: '&4Вы достигли предела очков, которые можно получить!'
@@ -203,8 +203,8 @@ command:
         objectiveRemove: '&c[X]'
         objectiveAdd: '      -> &e[&2+&e]'
       modify:
-        newValue: '&eEnter new value'
-        enter: '&eEnter new name or press '
+        newValue: '&eВведите новое значение'
+        enter: '&eВведите новое название или нажмите '
         hand: '&6HAND '
         handHover: '&6Press to grab info from item in your hand'
         or: '&eor '
@@ -279,7 +279,7 @@ command:
       info: Выдать предмет по названию Работы либо по категории. Имя игрока необязательно.
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&Игрок [%playername%] не на сервере!'
+      notonline: '&4Этот игрок не в сети!'
       noitem: '&4Нет предмета с таким именем!'
   info:
     help:
@@ -303,11 +303,11 @@ command:
       jobinfo: '&eИнформация о[jobname]!'
       actions: '&eДоступные действия:'
       leftClick: '&eНажмите ЛКМ, чтобы узнать подробнее'
-      middleClick: '&eMiddle Click to leave this job'
+      middleClick: '&eКликните средней кнопкой мыши чтобы покинуть эту профессию'
       rightClick: '&eНажмите ПКМ, чтобы устроиться на работу'
       leftSlots: '&e"Осталось вакансий":&f '
       working: '&2&nТекущая работа'
-      cantJoin: '&cYou can''t join to the selected job.'
+      cantJoin: '&cВы не можете устроиться в указанной профессии.'
       max: '&eМаксимальный уровень:&f '
       back: '&e<--Вернуться'
     output:
@@ -321,8 +321,8 @@ command:
         info: 'Размещение блоков'
         none: '%jobname% не получает денег за размещение блоков.'
       striplogs:
-        info: '&eStrip logs'
-        none: '%jobname% does not get money for stripping logs.'
+        info: '&eНарубить брёвен'
+        none: '%jobname% не зарабатывает на рубке брёвен.'
       kill:
         info: 'Сражение с мобами'
         none: '%jobname% не получает денег за убийство мобов.'
@@ -351,8 +351,8 @@ command:
         info: 'Зачарование'
         none: '%jobname% не получает денег за зачарование.'
       vtrade:
-        info: '&eVillager trade'
-        none: '%jobname% does not get money for trading a villager.'
+        info: '&eТорговля с жителями'
+        none: '%jobname% не зарабатывает на торговле с жителями.'
       repair:
         info: 'Восстановление предметов'
         none: '%jobname% не получает денег за восстановление предметов.'
@@ -375,11 +375,11 @@ command:
         info: 'Специальное ликвидация'
         none: '%jobname% не получает денег за убийство игрока.'
       collect:
-        info: '&eCollect'
-        none: '%jobname% does not get money for collecting blocks.'
+        info: '&eДобыча'
+        none: '%jobname% не зарабатывает на добыче блоков.'
       bake:
-        info: '&eBake'
-        none: '%jobname% does not get money for cooking foods.'
+        info: '&eВыпекание'
+        none: '%jobname% не зарабатывает на выпекании еды.'
   playerinfo:
     help:
       info: Вывести информацию о игроке.
@@ -393,7 +393,7 @@ command:
       fullslots: Невозможно устроиться на %jobname% - нет свободных мест.
       maxjobs: Слишком много работ.
       rejoin: '&cВы не можете устроиться прямо сейчас. Подождите [time]'
-    rejoin: '&aClick to rejoin this job: '
+    rejoin: '&aКликните чтобы заново устроиться на эту профессию: '
     success: Вы устроились на %jobname%.
     confirm: '&2Кликните, чтобы подтвердить приём на работу &7[jobname]'
   leave:
@@ -401,20 +401,20 @@ command:
       info: Уволиться с работы.
       args: '[oldplayerjob]'
     success: Вы уволились с %jobname%.
-    confirmationNeed: '&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!'
+    confirmationNeed: '&cВы действительно хотите покинуть профессию&e [jobname]&c? Для подтверждения, введите команду повторно в течение&6 [time] секунд!'
   leaveall:
     help:
       info: Уволиться со всех работ.
     error:
       nojobs: Нет работ с которых можно уволится!
     success: Вы уволились со всех работ.
-    confirmationNeed: '&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!'
+    confirmationNeed: '&cВы действительно хотите покинуть все ваши профессии? Для подтверждения, введите команду повторно в течение&6 [time] секунд!'
   explored:
     help:
       info: Проверить, кто посещал этот чанк.
     error:
       noexplore: Никто ещё не был замечен на этом чанке
-    fullExplore: '&aThis chunk is fully explored'
+    fullExplore: '&aЭта область исследована полностью'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: Fire player from all their jobs.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: Player does not have any jobs to be fired from!
     output:

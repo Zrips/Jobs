@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Booster le gain d'argent pour tous les joueurs
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Tous les boost d'argent ont été désactivés
       jobsboostreset: Le boost d'argent pour le métier %jobname% a été désactivé
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Booster les points pour tous les joueurs
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Tous les boosts de points ont été désactivés
       jobsboostreset: Le boost de points pour le métier %jobname% a été désactivé
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Booster l'XP pour tous les joueurs
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Tous les boost d'XP ont été désactivés
       jobsboostreset: Le boost d'EXP pour le métier %jobname% a été désactivé
@@ -279,7 +279,7 @@ command:
       info: Donne un objet par nom de métier et nom de catégorie d'objet. Le pseudo est facultatif.
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Player [%playername%] est hors-ligne !'
+      notonline: '&4Player with that name is not online!'
       noitem: '&4Ce nom ne correspond à aucun objet !'
   info:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: Renvoie le joueur de tous ses métiers.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: Le joueur n'a aucun métier!
     output:

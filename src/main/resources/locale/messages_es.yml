@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Aumentar el salario de todos los jugadores
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Se han anulado el aumento de salario
       jobsboostreset: Se ha anulado el aumento de salario de la profesión %jobname%
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Aumentar los puntos de todos los jugadores
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Se ha anulado el aumento de puntos
       jobsboostreset: Se ha anulado el aumento de puntos de la profesión %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Aumentar la Experiencia de todos los jugadores
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Se ha anulado el aumento de experiencia
       jobsboostreset: Se ha anulado el aumento de Experiencia para la profesión de %jobname%
@@ -279,7 +279,7 @@ command:
       info: Obtener el objeto a partir del nombre o la categoría. El nombre de jugador es opcional.
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4%playername% no esta conectado.'
+      notonline: '&4¡El jugador con ese nombre no está conectado!'
       noitem: '&4No se han encontrado jugadores con ese nombre.'
   info:
     help:
@@ -345,7 +345,7 @@ command:
         info: '&eEat'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por comer.'
       dye:
-        info: '&eDye'
+        info: '&eTeñir'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por teñir ropa.'
       enchant:
         info: '&eEnchant'
@@ -354,32 +354,32 @@ command:
         info: '&eComercio de aldeanos'
         none: '%jobname% does not get money for trading a villager.'
       repair:
-        info: '&eRepair'
+        info: '&eReparar'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por reparar.'
       breed:
-        info: '&eBreed'
+        info: '&eCriar'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por criar animales.'
       tame:
-        info: '&eTame'
+        info: '&eDomesticar'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por domar animales.'
       milk:
-        info: '&eMilk'
+        info: '&eOrdeñar'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por ordeñar vacas.'
       shear:
-        info: '&eShear'
+        info: '&eEsquilar'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por esquilar ovejas.'
       explore:
-        info: '&eExplore'
+        info: '&eExplorar'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por explorar el mundo.'
       custom-kill:
         info: '&eCustom kill'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por asesinar jugadores específicos.'
       collect:
-        info: '&eCollect'
+        info: '&eRecoger'
         none: '%jobname% does not get money for collecting blocks.'
       bake:
-        info: '&eBake'
-        none: '%jobname% does not get money for cooking foods.'
+        info: '&eHornear'
+        none: '%jobname% no recibe dinero por cocinar alimentos.'
   playerinfo:
     help:
       info: Muestra cuanto se paga a alguien y por que acción.
@@ -393,7 +393,7 @@ command:
       fullslots: No puedes trabajar en la profesión de %jobname%, ya que no hay puestos libres.
       maxjobs: No puedes trabajar en más profesiones.
       rejoin: '&cNo te puedes volver a trabajar en esta profesión. Debes esperar [time]'
-    rejoin: '&aClick to rejoin this job: '
+    rejoin: '&aHaz clic para unirte a este trabajo: '
     success: Ahora trabajas de %jobname%.
     confirm: '&2Clic aquí para trabajar en la profesión de &7[jobname]&2.'
   leave:
@@ -431,13 +431,13 @@ command:
       description: '[description]'
       list: '    &8[place]. &7[jobname]'
       console:
-        newHeader: '&2========== [amount] Available Jobs ========='
+        newHeader: '&2========== [amount] Trabajos Disponibles ========='
         description: '[description]'
-        totalWorkers: ' &7Workers: &e[amount]'
-        penalty: ' &4Penalty: &c[amount]%'
+        totalWorkers: ' &7Trabajadores: &e[amount]'
+        penalty: ' &4Penalización: &c[amount]%'
         bonus: ' &2Bonus: &a[amount]%'
         list: ' &6[jobname]'
-        newMax: ' &eMax level: &f[max]'
+        newMax: ' &eNivel Máx: &f[max]'
       click: '&b¡Clic en la profesión para obtener más información!'
       detailed: '&bClic aquí para mostrar los detalles de la profesión.'
       jobHeader: '&2========== [jobname] ========='
@@ -467,7 +467,7 @@ command:
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
       skip: '&7Click to skip this quest'
       skips: '&7Left skips: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
+      hover: "&f[jobName] \n[desc] \n&7Nueva misión en: [time]"
   fire:
     help:
       info: Fire the player from the job.
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: Fire player from all their jobs.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: Player does not have any jobs to be fired from!
     output:
@@ -543,15 +543,15 @@ command:
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
-      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
-      money: '&6money: %amount% '
+      ls: '&7* &6%number%. &3%action%: &6%item% &ecantidad: %qty% %money%%exp%%points%'
+      money: '&6dinero: %amount% '
       exp: '&eexp: %amount% '
-      points: '&6points: %amount%'
+      points: '&6puntos: %amount%'
       totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Prev page &2|'
       next: '&2|&e Next Page >>>>'
-      nodata: '&cData not found'
+      nodata: '&cDatos no encontrados'
   glog:
     help:
       info: Shows global statistics.
@@ -559,12 +559,12 @@ command:
     output:
       topline: '&7*********************** &6Global statistics &7***********************'
       ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
-      money: '&6money: %amount% '
+      money: '&6dinero: %amount% '
       exp: '&eexp: %amount% '
-      points: '&6points: %amount%'
+      points: '&6puntos: %amount%'
       totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7**************************************************************'
-      nodata: '&cData not found'
+      nodata: '&cDatos no encontrados'
   transfer:
     help:
       info: Transfer a player's job from an old job to a new job.
@@ -633,9 +633,9 @@ command:
       turnedoff: '&4This feature is turned off!'
       paid:
         main: '&aYou got:'
-        money: '&e[amount] money'
+        money: '&e[amount] dinero'
         exp: '&7[exp] exp'
-        points: '&6[points] points'
+        points: '&6[points] puntos'
       'on': '&aToggled: &aON'
       'off': '&aToggled: &4OFF'
 message:
@@ -670,21 +670,21 @@ signs:
     p9: '&b** &8Ninth &b**'
     p10: '&b** &8Tenth &b**'
     name: '&9[player]'
-    level: '&8[level] level'
-    quests: '&8[quests] quests'
+    level: '&8nivel [level]'
+    quests: '&8misiones [quests]'
     bottom: '&b************'
   cantcreate: '&4You can''t create this sign!'
   cantdestroy: '&4You can''t destroy this sign!'
   topline: '&0[Jobs]'
   secondline:
-    join: '&0Join'
-    leave: '&0Leave'
+    join: '&0Unirse'
+    leave: '&0Salir'
     toggle: '&0Toggle'
     top: '&0Top'
-    browse: '&0Browse'
+    browse: '&0Navegar'
     stats: '&0Stats'
     limit: '&0Limit'
-    info: '&0Info'
+    info: '&0Información'
     archive: '&0Archive'
 scoreboard:
   topline: '&2Top &e%jobname%'

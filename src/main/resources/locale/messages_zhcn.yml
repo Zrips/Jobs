@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: 加成玩家得到的游戏币
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: 游戏币加成重置
       jobsboostreset: '%jobname% 职业的游戏币加成重置'
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: 加成玩家得到的点数
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: 点数加成重置
       jobsboostreset: '%jobname% 职业的点数加成重置'
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: 加成玩家得到的经验
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: 经验加成重置
       jobsboostreset: '%jobname% 职业的经验加成重置'
@@ -279,7 +279,7 @@ command:
       info: 玩家名可选. 给玩家职业以物品
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4玩家 [%playername%] 不在线!'
+      notonline: '&4Player with that name is not online!'
       noitem: '&4没有找到此物品!'
   info:
     help:
@@ -479,7 +479,7 @@ command:
   fireall:
     help:
       info: 将玩家撤销所有职业.
-      args: '[playername]'
+      args: '[playername]/all'
     error:
       nojobs: 玩家不能被炒鱿鱼, 因为玩家根本没有职业!
     output:
