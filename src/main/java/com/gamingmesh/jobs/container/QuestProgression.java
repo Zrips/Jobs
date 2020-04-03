@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class QuestProgression {
 

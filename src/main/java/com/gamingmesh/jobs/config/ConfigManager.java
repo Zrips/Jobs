@@ -263,6 +263,9 @@ public class ConfigManager {
 	cfg.addComment(pt + ".Break.gravel.income", "you can use minuses to take away money if the player break this block");
 	cfg.get(pt + ".Break.gravel.income", -1D);
 
+	cfg.addComment(pt + ".permissions.firstNode.permission", "The permission node");
+	cfg.get(pt + ".permissions.firstNode.permission", "aaaaaatest.node");
+
 	cfg.save();
     }
 
@@ -863,7 +866,7 @@ public class ConfigManager {
 			continue;
 		    }
 
-		    String node = permissionKey.toLowerCase().replace('_', '.');
+		    String node = permissionSection.getString("permission");
 		    boolean value = permissionSection.getBoolean("value", true);
 		    int levelRequirement = permissionSection.getInt("level", 0);
 		    jobPermissions.add(new JobPermission(node, value, levelRequirement));

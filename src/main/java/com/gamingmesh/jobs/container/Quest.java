@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class Quest {
 
