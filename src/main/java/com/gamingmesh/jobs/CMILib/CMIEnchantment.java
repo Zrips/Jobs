@@ -63,9 +63,12 @@ public enum CMIEnchantment {
 	String temp = this.toString().toLowerCase().replace("_", "");
 
 	for (Enchantment one : Enchantment.values()) {
-	    if (one.getName().toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
-		enchantment = one;
-		break;
+	    try {
+		if (one.getName().toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
+		    enchantment = one;
+		    break;
+		}
+	    } catch (Exception | Error e) {
 	    }
 
 	    try {
