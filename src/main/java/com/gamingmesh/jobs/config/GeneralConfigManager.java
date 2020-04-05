@@ -28,6 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
@@ -121,8 +122,8 @@ public class GeneralConfigManager {
 
     private String DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
 
-    public CMIMaterial guiBackButton;
-    public CMIMaterial guiFiller;
+    public ItemStack guiBackButton;
+    public ItemStack guiFiller;
 
     public boolean UsePerPermissionForLeaving, EnableConfirmation, FilterHiddenPlayerFromTabComplete;
     public int JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime;
@@ -1009,10 +1010,10 @@ public class GeneralConfigManager {
 
 	CMIMaterial tmat = null;
 	tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN").toUpperCase());
-	guiBackButton = tmat == null ? CMIMaterial.JACK_O_LANTERN : tmat;
+	guiBackButton = tmat == null ? CMIMaterial.JACK_O_LANTERN.newItemStack() : tmat.newItemStack();
 
 	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "GREEN_STAINED_GLASS_PANE").toUpperCase());
-	guiFiller = tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE : tmat;
+	guiFiller = tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : tmat.newItemStack();
 
 //	c.addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost?");
 //	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);

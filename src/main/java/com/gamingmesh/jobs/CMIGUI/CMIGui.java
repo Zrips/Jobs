@@ -228,7 +228,7 @@ public class CMIGui {
 
     public void addEmptyButton(int slot) {
 	ItemStack MiscInfo = filler.newItemStack();
-	if (!MiscInfo.getType().isAir()) {
+	if (!MiscInfo.getType().equals(org.bukkit.Material.AIR)) {
 	    ItemMeta MiscInfoMeta = MiscInfo.getItemMeta();
 	    MiscInfoMeta.setDisplayName(" ");
 	    MiscInfo.setItemMeta(MiscInfoMeta);

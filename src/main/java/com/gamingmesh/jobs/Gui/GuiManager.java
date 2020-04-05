@@ -16,6 +16,7 @@ import com.gamingmesh.jobs.CMIGUI.CMIGui;
 import com.gamingmesh.jobs.CMIGUI.CMIGuiButton;
 import com.gamingmesh.jobs.CMIGUI.GUIManager;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -37,7 +38,7 @@ public class GuiManager {
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.pickjob"));
-	gui.setFiller(Jobs.getGCManager().guiFiller);
+	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
 
 	int GuiSize = Jobs.getGCManager().getJobsGUIRows() * 9;
 
@@ -287,14 +288,14 @@ public class GuiManager {
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
-	gui.setFiller(Jobs.getGCManager().guiFiller);
+	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
 	gui.setInvSize(GuiSize);
 
 	for (int i1 = 0; i1 < items.size(); i1++) {
 	    gui.addButton(new CMIGuiButton(i1, items.get(i1)));
 	}
 
-	ItemStack skull = Jobs.getGCManager().guiBackButton.newItemStack();
+	ItemStack skull = Jobs.getGCManager().guiBackButton;
 
 	ItemMeta skullMeta = skull.getItemMeta();
 	skullMeta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.back"));
