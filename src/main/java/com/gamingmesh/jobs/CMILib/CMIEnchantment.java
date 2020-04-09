@@ -56,9 +56,10 @@ public enum CMIEnchantment {
     private List<String> customNames = new ArrayList<String>();
     private Enchantment enchantment;
 
-    CMIEnchantment(String... subName) {
+	@SuppressWarnings("deprecation")
+	CMIEnchantment(String... subName) {
 	if (subName != null)
-	    this.subName = Arrays.asList(subName);
+	    this.subName.addAll(Arrays.asList(subName));
 
 	String temp = this.toString().toLowerCase().replace("_", "");
 
@@ -81,13 +82,56 @@ public enum CMIEnchantment {
 	}
 
 	// Worst case scenario
-	if (enchantment == null)
+	if (enchantment == null) {
 	    for (Enchantment one : Enchantment.values()) {
 		if (one.toString().toLowerCase().replace("_", "").contains(temp)) {
 		    enchantment = one;
 		    break;
 		}
 	    }
+	}
+
+	// now checks for subnames
+	if (enchantment == null) {
+	    for (Enchantment one : Enchantment.values()) {
+		for (String subs : this.subName) {
+		    try {
+		    if (one.getName().toLowerCase().replace("_", "").contains(subs.toLowerCase().replace("_", ""))) {
+			enchantment = one;
+		    break;
+		    }
+		    } catch (Exception | Error e) {
+		    }
+
+		    try {
+			if (one.getKey().toString().split(":")[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
+			    enchantment = one;
+			    break;
+			}
+		    } catch (Exception | Error e) {
+		    }
+		}
+
+		if (enchantment != null) {
+		    break;
+		}
+	    }
+	}
+
+	if (enchantment == null) {
+	    for (Enchantment one : Enchantment.values()) {
+		for (String subs : this.subName) {
+		    if (one.toString().toLowerCase().replace("_", "").contains(subs.toLowerCase().replace("_", ""))) {
+			enchantment = one;
+		    break;
+		    }
+		}
+
+		if (enchantment != null) {
+		    break;
+		}
+	    }
+	}
     }
 
     public List<String> getSubNames() {
