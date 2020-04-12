@@ -74,12 +74,9 @@ public class BossBarManager {
 	NumberFormat formatter = new DecimalFormat("#0.00");
 
 	String gain = "";
-	if (expGain != 0) {
+	if (expGain > 0) {
 	    expGain = (int) (expGain * 100) / 100D;
-	    if (expGain > 0)
-		gain = "+" + expGain;
-	    else
-		gain = "" + expGain;
+	    gain = expGain > 0 ? "+" + expGain : "" + expGain;
 	    gain = Jobs.getLanguage().getMessage("command.stats.bossBarGain", "%gain%", gain);
 	}
 
