@@ -1,8 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,7 +7,6 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
-import com.gamingmesh.jobs.container.Convert;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
 public class convert implements Cmd {
@@ -28,41 +24,7 @@ public class convert implements Cmd {
 	    return true;
 	}
 
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-	    List<Convert> archivelist = null;
-	    try {
-		archivelist = Jobs.getJobsDAO().convertDatabase();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-		Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
-		return;
-	    }
-
-	    Jobs.ChangeDatabase();
-
-	    try {
-		Jobs.getJobsDAO().truncateAllTables();
-		Jobs.getPlayerManager().convertChacheOfPlayers(true);
-
-		Jobs.getJobsDAO().continueConvertions(archivelist);
-		Jobs.getPlayerManager().clearMaps();
-		Jobs.getPlayerManager().clearCache();
-
-		Jobs.getJobsDAO().saveExplore();
-//	    Do we really need to convert Block protection?
-//	    Jobs.getJobsDAO().saveBlockProtection();
-	    } catch (SQLException e) {
-		e.printStackTrace();
-		Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
-		return;
-	    }
-
-	    Jobs.reload();
-	    Jobs.loadAllPlayersData();
-	    }
-	});
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> Jobs.convertDatabase());
 
 	String from = "MySQL";
 	String to = "SQLite";

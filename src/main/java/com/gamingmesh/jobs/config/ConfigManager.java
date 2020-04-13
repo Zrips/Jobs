@@ -269,9 +269,13 @@ public class ConfigManager {
 	cfg.save();
     }
 
-    public void reload() throws IOException {
+    public void reload() {
 	// job settings
-	loadJobSettings();
+	try {
+	    loadJobSettings();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
     }
 
     public YamlConfiguration getJobConfig() {

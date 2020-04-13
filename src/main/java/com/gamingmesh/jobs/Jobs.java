@@ -59,6 +59,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -510,9 +511,31 @@ public class Jobs extends JavaPlugin {
     /**
      * Executes close connections
      */
-    public static void ChangeDatabase() {
-	getDBManager().switchDataBase();
-	getPlayerManager().reload();
+    public static void convertDatabase() {
+	try {
+	    List<Convert> archivelist = dao.convertDatabase();
+
+	    getDBManager().switchDataBase();
+	    getPlayerManager().reload();
+
+	    dao.truncateAllTables();
+	    getPlayerManager().convertChacheOfPlayers(true);
+
+	    dao.continueConvertions(archivelist);
+	    getPlayerManager().clearMaps();
+	    getPlayerManager().clearCache();
+
+	    dao.saveExplore();
+//    Do we really need to convert Block protection?
+//    Jobs.getJobsDAO().saveBlockProtection();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
+	    return;
+	}
+
+	reload();
+	loadAllPlayersData();
     }
 
     /**
@@ -592,14 +615,6 @@ public class Jobs extends JavaPlugin {
     @Override
     public void onEnable() {
 	instance = this;
-	setEnabled(true);
-
-	if (instance == null) {
-	    System.out.println("Plugin instance is null. Plugin will be disabled.");
-	    System.out.println("Try restart your server completely. If this not work contact the developers.");
-	    setEnabled(false);
-	    return;
-	}
 
 //	itemManager = new ItemManager(this);
 
@@ -625,7 +640,6 @@ public class Jobs extends JavaPlugin {
 	}
 
 	try {
-
 	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
 	    jobConfig.saveDefaultConfig();
 
@@ -673,7 +687,6 @@ public class Jobs extends JavaPlugin {
 	    getCommandManager().fillCommands();
 
 	    getDBManager().getDB().triggerTableIdUpdate();
-
 	} catch (Throwable e) {
 	    e.printStackTrace();
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
@@ -727,11 +740,7 @@ public class Jobs extends JavaPlugin {
 
 	getGCManager().reload();
 	getLanguage().reload();
-	try {
-	    getConfigManager().reload();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+	getConfigManager().reload();
 
 	getDBManager().getDB().loadAllJobsWorlds();
 	getDBManager().getDB().loadAllJobsNames();
@@ -740,7 +749,7 @@ public class Jobs extends JavaPlugin {
 	ToggleBarHandling.load();
 	usedSlots.clear();
 	for (Job job : jobs) {
-	    usedSlots.put(job, dao.getSlotsTaken(job));
+	    usedSlots.put(job, getDBManager().getDB().getSlotsTaken(job));
 	}
 	getPlayerManager().reload();
 	getPermissionHandler().registerPermissions();
@@ -755,7 +764,7 @@ public class Jobs extends JavaPlugin {
 	paymentThread = new BufferedPaymentThread(getGCManager().getEconomyBatchDelay());
 	paymentThread.start();
 
-	dao.loadPlayerData();
+	getDBManager().getDB().loadPlayerData();
 
 	// Schedule
 	if (getGCManager().enableSchedule) {
@@ -771,17 +780,14 @@ public class Jobs extends JavaPlugin {
 	if (instance == null)
 	    return;
 
-	try {
-//	    GUIManager.CloseInventories();
-//	    shopManager.CloseInventories();
-	    dao.saveExplore();
+//	GUIManager.CloseInventories();
+//	shopManager.CloseInventories();
+	dao.saveExplore();
 
-	    getBpManager().saveCache();
-	    FurnaceBrewingHandling.save();
-	    ToggleBarHandling.save();
-	} catch (Throwable e) {
-	    e.printStackTrace();
-	}
+	getBpManager().saveCache();
+	FurnaceBrewingHandling.save();
+	ToggleBarHandling.save();
+
 	shutdown();
 	instance = null;
 	consoleMsg("&e[Jobs] &2Plugin has been disabled successfully.");

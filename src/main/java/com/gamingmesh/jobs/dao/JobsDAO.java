@@ -649,21 +649,20 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 	    while (res.next()) {
 		int id = res.getInt(JobsTableFields.userid.getCollumn());
-		List<JobsDAOData> ls = map.get(id);
-		if (ls == null)
-		    ls = new ArrayList<>();
+		String jobName = res.getString(JobsTableFields.job.getCollumn());
+		List<JobsDAOData> ls = new ArrayList<>();
 
 		int jobId = res.getInt(JobsTableFields.jobid.getCollumn());
 		if (jobId == 0) {
-		    ls.add(new JobsDAOData(res.getString(JobsTableFields.job.getCollumn()), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
+		    ls.add(new JobsDAOData(jobName, res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		    converted = false;
 		} else {
 		    // This should be removed when we switch over to id only method
 		    if (converted)
-			if (res.getString(JobsTableFields.job.getCollumn()) == null || res.getString(JobsTableFields.job.getCollumn()).isEmpty())
+			if (jobName == null || jobName.isEmpty())
 			    converted = false;
 
-		    Job job = Jobs.getJob(jobId);
+		    Job job = Jobs.getJob(jobName);
 		    if (job != null)
 			ls.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		}
@@ -1479,13 +1478,7 @@ public abstract class JobsDAO {
 		String jobName = res.getString(ArchiveTableFields.job.getCollumn());
 		int jobid = res.getInt(ArchiveTableFields.jobid.getCollumn());
 
-		Job job = null;
-		if (jobid != 0) {
-		    job = Jobs.getJob(jobid);
-		} else {
-		    job = Jobs.getJob(jobName);
-		}
-
+		Job job = jobid != 0 ? Jobs.getJob(jobid) : Jobs.getJob(jobName);
 		if (job == null)
 		    continue;
 
@@ -1740,27 +1733,26 @@ public abstract class JobsDAO {
 
     public void loadPlayerData() {
 	Jobs.getPlayerManager().clearMaps();
+
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
+
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.UsersTable.getTableName() + "`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		long seen = System.currentTimeMillis();
-		try {
-		    seen = res.getLong(UserTableFields.seen.getCollumn());
-		    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
-			res.getString(UserTableFields.username.getCollumn()),
-			res.getInt("id"),
-			UUID.fromString(res.getString(UserTableFields.player_uuid.getCollumn())),
-			seen,
-			res.getInt(UserTableFields.donequests.getCollumn()),
-			res.getString(UserTableFields.quests.getCollumn())));
-		} catch (Exception e) {
-		}
+		long seen = res.getLong(UserTableFields.seen.getCollumn());
+
+		Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
+		res.getString(UserTableFields.username.getCollumn()),
+		res.getInt("id"),
+		UUID.fromString(res.getString(UserTableFields.player_uuid.getCollumn())),
+		seen,
+		res.getInt(UserTableFields.donequests.getCollumn()),
+		res.getString(UserTableFields.quests.getCollumn())));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1768,6 +1760,7 @@ public abstract class JobsDAO {
 	    close(res);
 	    close(prest);
 	}
+
 	return;
     }
 
