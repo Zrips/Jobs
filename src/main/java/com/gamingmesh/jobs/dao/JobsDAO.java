@@ -1190,28 +1190,13 @@ public abstract class JobsDAO {
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
-	    prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.job + "` = ?;");
-	    prest.setString(1, JobName);
-	    res = prest.executeQuery();
-	    if (res.next()) {
-		count += res.getInt(1);
-	    }
-
-	    if (count == 0) {
-		close(prest);
-		close(res);
-
-		prest = null;
-		res = null;
-
-		Job job = Jobs.getJob(JobName);
-		if (job != null && job.getId() != 0) {
-		    prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid + "` = ?;");
-		    prest.setInt(1, job.getId());
-		    res = prest.executeQuery();
-		    if (res.next()) {
-			count += res.getInt(1);
-		    }
+	    Job job = Jobs.getJob(JobName);
+	    if (job != null && job.getId() != 0) {
+		prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid + "` = ?;");
+		prest.setInt(1, job.getId());
+		res = prest.executeQuery();
+		if (res.next()) {
+		    count += res.getInt(1);
 		}
 	    }
 	} catch (SQLException e) {
