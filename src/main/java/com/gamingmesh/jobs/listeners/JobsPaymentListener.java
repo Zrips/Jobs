@@ -204,7 +204,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	ItemStack itemInHand = Jobs.getNms().getItemInMainHand(player);
-	if (itemInHand == null || itemInHand.getType() != Material.BUCKET)
+	if (itemInHand == null || (itemInHand.getType() != Material.BUCKET && itemInHand.getType() != Material.BOWL))
 	    return;
 
 	// check if in creative
@@ -493,7 +493,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	LivingEntity animal = event.getEntity();
-	
+
 	// Entity being tamed must be alive
 	if (animal.isDead()) {
 	    return;
