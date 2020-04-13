@@ -204,8 +204,13 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	ItemStack itemInHand = Jobs.getNms().getItemInMainHand(player);
-	if (itemInHand == null || (itemInHand.getType() != Material.BUCKET && itemInHand.getType() != Material.BOWL))
+	if (itemInHand == null)
 	    return;
+
+	if ((cow.getType() == EntityType.COW && itemInHand.getType() != Material.BUCKET)
+	    || (cow.getType() == EntityType.MUSHROOM_COW && itemInHand.getType() != Material.BOWL)) {
+	    return;
+	}
 
 	// check if in creative
 	if (!payIfCreative(player))
