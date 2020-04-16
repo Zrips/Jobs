@@ -404,6 +404,7 @@ public class ConfigManager {
 	case MILK:
 	case MMKILL:
 	case BOSS:
+	case TAME:
 	case BREED:
 	case SHEAR:
 	case EXPLORE:
@@ -1185,6 +1186,7 @@ public class ConfigManager {
 			case MMKILL:
 			case BOSS:
 			case BREED:
+			case TAME:
 			case SHEAR:
 			case EXPLORE:
 			case CUSTOMKILL:

@@ -356,6 +356,7 @@ public class editquests implements Cmd {
 		    case MMKILL:
 		    case BOSS:
 		    case BREED:
+		    case TAME:
 		    case SHEAR:
 		    case EXPLORE:
 		    case CUSTOMKILL:

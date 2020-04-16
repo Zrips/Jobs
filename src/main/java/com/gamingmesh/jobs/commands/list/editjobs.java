@@ -401,6 +401,7 @@ public class editjobs implements Cmd {
 		case MILK:
 		case MMKILL:
 		case BOSS:
+		case TAME:
 		case BREED:
 		case SHEAR:
 		case EXPLORE:
