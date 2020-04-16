@@ -650,7 +650,9 @@ public abstract class JobsDAO {
 	    while (res.next()) {
 		int id = res.getInt(JobsTableFields.userid.getCollumn());
 		String jobName = res.getString(JobsTableFields.job.getCollumn());
-		List<JobsDAOData> ls = new ArrayList<>();
+		List<JobsDAOData> ls = map.get(id);
+		if (ls == null)
+		    ls = new ArrayList<>();
 
 		int jobId = res.getInt(JobsTableFields.jobid.getCollumn());
 		if (jobId == 0) {
@@ -662,7 +664,7 @@ public abstract class JobsDAO {
 			if (jobName == null || jobName.isEmpty())
 			    converted = false;
 
-		    Job job = Jobs.getJob(jobName);
+		    Job job = Jobs.getJob(jobId);
 		    if (job != null)
 			ls.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
 		}

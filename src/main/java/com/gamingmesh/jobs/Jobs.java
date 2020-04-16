@@ -749,7 +749,7 @@ public class Jobs extends JavaPlugin {
 	ToggleBarHandling.load();
 	usedSlots.clear();
 	for (Job job : jobs) {
-	    usedSlots.put(job, getDBManager().getDB().getSlotsTaken(job));
+	    usedSlots.put(job, dao.getSlotsTaken(job));
 	}
 	getPlayerManager().reload();
 	getPermissionHandler().registerPermissions();
@@ -764,7 +764,7 @@ public class Jobs extends JavaPlugin {
 	paymentThread = new BufferedPaymentThread(getGCManager().getEconomyBatchDelay());
 	paymentThread.start();
 
-	getDBManager().getDB().loadPlayerData();
+	dao.loadPlayerData();
 
 	// Schedule
 	if (getGCManager().enableSchedule) {
