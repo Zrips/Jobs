@@ -474,6 +474,9 @@ public class LanguageManager {
 	    Jobs.getGCManager().getCommandArgs().put("quests", Arrays.asList("[playername]"));
 	    c.get("command.quests.error.noquests", "&cThere are no quests");
 	    c.get("command.quests.toplineseparator", "&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************");
+	    c.get("command.quests.status.changed", "&2The quests status has been changed to&r %status%");
+	    c.get("command.quests.status.started", "&aStarted");
+	    c.get("command.quests.status.stopped", "&cStopped");
 	    c.get("command.quests.output.completed", "&2      !Completed!&r      ");
 	    c.get("command.quests.output.questLine", "[progress] &7[questName] &f[done]&7/&8[required]");
 	    c.get("command.quests.output.skip", "&7Click to skip this quest");

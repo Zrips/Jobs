@@ -88,6 +88,10 @@ public class QuestProgression {
     }
 
     public void processQuest(JobsPlayer jPlayer, ActionInfo action) {
+	if (quest.isStopped()) {
+	    return;
+	}
+
 	if (!quest.hasAction(action.getType()))
 	    return;
 

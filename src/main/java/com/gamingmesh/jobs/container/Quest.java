@@ -25,12 +25,22 @@ public class Quest {
     private List<String> rewards = new ArrayList<>();
     private List<String> area = new ArrayList<>();
 
+    private boolean stopped = false;
+
     private HashMap<ActionType, HashMap<String, QuestObjective>> objectives = new HashMap<>();
     private Set<ActionType> actions = new HashSet<>();
 
     public Quest(String questName, Job job) {
 	this.questName = questName;
 	this.job = job;
+    }
+
+    public boolean isStopped() {
+	return stopped;
+    }
+
+    public void setStopped(boolean stopped) {
+	this.stopped = stopped;
     }
 
     public List<String> getRewardCmds() {
