@@ -56,17 +56,23 @@ public class Boost {
 
     public double getFinal(CurrencyType BT, boolean percent, boolean excludeExtra) {
 	double r = 0D;
+
 	for (BoostOf one : BoostOf.values()) {
 	    if (!map.containsKey(one))
 		continue;
+
 	    if (excludeExtra && (one == BoostOf.NearSpawner || one == BoostOf.PetPay))
 		continue;
+
+	    if (!map.get(one).isValid())
+		continue;
+
 	    r += map.get(one).get(BT);
 	}
+
 	if (r < -1)
 	    r = -1;
-	if (percent)
-	    return (int) (r * 100);
-	return r;
+
+	return percent ? (int) (r * 100) : r;
     }
 }

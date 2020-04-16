@@ -101,20 +101,11 @@ public class expboost implements Cmd {
 				return true;
 			}
 
-			boolean found = false;
-			for (Job one : Jobs.getJobs()) {
-				if (one.getName().equalsIgnoreCase(args[1])) {
-					one.addBoost(CurrencyType.EXP, 1.0);
-					found = true;
-					break;
-				}
-			}
+			job.addBoost(CurrencyType.EXP, 1.0);
 
-			if (found) {
-				sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.jobsboostreset", "%jobname%",
-						job.getName()));
-				return true;
-			}
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.jobsboostreset", "%jobname%",
+					job.getName()));
+			return true;
 		}
 
 		Job job = Jobs.getJob(args[0]);
