@@ -55,9 +55,9 @@ public class quests implements Cmd {
 	if (args.length >= 1) {
 	    Boolean stopped = null;
 	    String cmd = args.length == 1 ? args[0] : args[1];
-	    if (cmd.equalsIgnoreCase("stop")) {
+	    if (cmd.equalsIgnoreCase("stop") && Jobs.hasPermission(sender, "jobs.command.admin.quests.stop", false)) {
 		stopped = true;
-	    } else if (cmd.equalsIgnoreCase("start")) {
+	    } else if (cmd.equalsIgnoreCase("start") && Jobs.hasPermission(sender, "jobs.command.admin.quests.start", false)) {
 		stopped = false;
 	    }
 

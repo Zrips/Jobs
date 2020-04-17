@@ -28,6 +28,15 @@ permissions:
   jobs.use:
     description: Grants ability to use this plugin
     default: true
+  jobs.command.admin.*:
+    description: Grants player access to all commands
+    default: false
+    children:
+      jobs.command.*: true
+      jobs.command.admin.stats: true
+      jobs.command.admin.archive: true
+      jobs.command.admin.quests.stop: true
+      jobs.command.admin.quests.start: true
   jobs.command.*:
     description: Grants player access to all commands
     default: false
@@ -35,8 +44,6 @@ permissions:
       jobs.command.archive: true
       jobs.command.browse: true
       jobs.command.stats: true
-      jobs.command.admin.stats: true
-      jobs.command.admin.archive: true
       jobs.command.archive: true
       jobs.command.join: true
       jobs.command.leave: true
