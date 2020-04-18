@@ -39,7 +39,7 @@ import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
     // the player the object belongs to
-    private String userName;
+    private String userName = "Unknown";
     // progression of the player in each job
     public UUID playerUUID;
     public ArrayList<JobProgression> progression = new ArrayList<>();
@@ -80,7 +80,7 @@ public class JobsPlayer {
     private PlayerPoints pointsData = null;
 
     public JobsPlayer(String userName) {
-	this.userName = userName;
+	this.userName = userName == null ? "Unknown" : userName;
     }
 
     public PlayerPoints getPointsData() {

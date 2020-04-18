@@ -118,14 +118,14 @@ public class PlayerManager {
     }
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
-	if (jPlayer.getName() != null && !playersCache.containsKey(jPlayer.getName().toLowerCase()))
+	if (!playersCache.containsKey(jPlayer.getName().toLowerCase()))
 	    playersCache.put(jPlayer.getName().toLowerCase(), jPlayer);
 	if (jPlayer.getUniqueId() != null && !playersUUIDCache.containsKey(jPlayer.getUniqueId()))
 	    playersUUIDCache.put(jPlayer.getUniqueId(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
-	if (jPlayer.getName() != null && !players.containsKey(jPlayer.getName().toLowerCase()))
+	if (!players.containsKey(jPlayer.getName().toLowerCase()))
 	    players.put(jPlayer.getName().toLowerCase(), jPlayer);
 	if (jPlayer.getUniqueId() != null && !playersUUID.containsKey(jPlayer.getUniqueId()))
 	    playersUUID.put(jPlayer.getUniqueId(), jPlayer);

@@ -70,14 +70,13 @@ public enum CMIEnchantment {
 		    break;
 		}
 	    } catch (Exception | Error e) {
-	    }
-
-	    try {
-		if (one.getKey().toString().split(":")[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
-		    enchantment = one;
-		    break;
+		try {
+		    if (one.getKey().toString().split(":")[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
+			enchantment = one;
+			break;
+		    }
+		} catch (Exception | Error ex) {
 		}
-	    } catch (Exception | Error e) {
 	    }
 	}
 
@@ -93,42 +92,33 @@ public enum CMIEnchantment {
 
 	// now checks for subnames
 	if (enchantment == null) {
-	    for (Enchantment one : Enchantment.values()) {
+	    en: for (Enchantment one : Enchantment.values()) {
 		for (String subs : this.subName) {
 		    try {
 		    if (one.getName().toLowerCase().replace("_", "").contains(subs.toLowerCase().replace("_", ""))) {
 			enchantment = one;
-		    break;
+		    break en;
 		    }
 		    } catch (Exception | Error e) {
-		    }
-
-		    try {
-			if (one.getKey().toString().split(":")[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
-			    enchantment = one;
-			    break;
+			try {
+			    if (one.getKey().toString().split(":")[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
+				enchantment = one;
+				break en;
+			    }
+			} catch (Exception | Error ex) {
 			}
-		    } catch (Exception | Error e) {
 		    }
-		}
-
-		if (enchantment != null) {
-		    break;
 		}
 	    }
 	}
 
 	if (enchantment == null) {
-	    for (Enchantment one : Enchantment.values()) {
+	    o: for (Enchantment one : Enchantment.values()) {
 		for (String subs : this.subName) {
 		    if (one.toString().toLowerCase().replace("_", "").contains(subs.toLowerCase().replace("_", ""))) {
 			enchantment = one;
-		    break;
+		    break o;
 		    }
-		}
-
-		if (enchantment != null) {
-		    break;
 		}
 	    }
 	}

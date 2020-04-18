@@ -15,7 +15,7 @@ public class PlayerInfo {
     private JobsPlayer player;
 
     public PlayerInfo(String name, int id, UUID uuid, Long seen, Integer questsDone, String questProgression) {
-	this.name = name;
+	this.name = name == null ? "Unknown" : name;
 	this.id = id;
 	this.uuid = uuid;
 	this.seen = seen;
