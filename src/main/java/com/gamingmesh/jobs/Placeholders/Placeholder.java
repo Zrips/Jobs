@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +45,8 @@ public class Placeholder {
 	user_points,
 	user_total_points,
 	user_archived_jobs,
+	user_jobs,
+
 	user_boost_$1_$2("jname/number", "money/exp/points"),
 	user_isin_$1("jname/number"),
 	user_canjoin_$1("jname/number"),
@@ -406,6 +409,14 @@ public class Placeholder {
 		return Integer.toString(user.getJobProgression().size());
 	    case user_archived_jobs:
 		return Integer.toString(user.getArchivedJobs().getArchivedJobs().size());
+	    case user_jobs:
+		List<JobProgression> l = user.getJobProgression();
+		if (l.isEmpty()) {
+		    return "none";
+		}
+
+		JobProgression prog = l.get(ThreadLocalRandom.current().nextInt(l.size()));
+		return prog.getJob().getName();
 	    default:
 		break;
 	    }
