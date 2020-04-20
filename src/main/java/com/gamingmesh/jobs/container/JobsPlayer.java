@@ -1019,7 +1019,8 @@ public class JobsPlayer {
 	    int i = 0;
 	    while (i <= job.getQuests().size()) {
 		++i;
-		Quest q = job.getNextQuest(getQuestNameList(job, type), getJobProgression(job).getLevel());
+		List<String> currentQuests = new ArrayList<>(g.keySet());
+		Quest q = job.getNextQuest(currentQuests, getJobProgression(job).getLevel());
 		if (q == null)
 		    continue;
 		QuestProgression qp = new QuestProgression(q);
