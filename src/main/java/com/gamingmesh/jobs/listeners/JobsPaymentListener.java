@@ -1631,7 +1631,7 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && !event.useInteractedBlock().equals(org.bukkit.event.Event.Result.DENY)
-	    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+	    && event.getAction() == Action.RIGHT_CLICK_BLOCK && !p.isSneaking()) {
 	    if (jPlayer != null && cmat.equals(CMIMaterial.BEEHIVE) || cmat.equals(CMIMaterial.BEE_NEST)) {
 		org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
 		if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand.equals(CMIMaterial.SHEARS.getMaterial())
