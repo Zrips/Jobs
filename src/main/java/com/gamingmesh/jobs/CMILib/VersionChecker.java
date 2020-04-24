@@ -37,17 +37,9 @@ public class VersionChecker {
 		lVersion += s;
 	    }
 
-	    try {
-		version = Integer.parseInt(lVersion);
-	    } catch (Throwable e) {
-		e.printStackTrace();
-	    }
+	    version = Integer.parseInt(lVersion);
 	} else {
-	    try {
-		version = Integer.parseInt(v);
-	    } catch (Throwable e) {
-		e.printStackTrace();
-	    }
+	    version = Integer.parseInt(v);
 	}
 	return version;
     }
@@ -148,9 +140,12 @@ public class VersionChecker {
 	    return;
 
 	Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-	    String currentVersion = plugin.getDescription().getVersion();
 	    String newVersion = getNewVersion();
-	    if (newVersion == null || newVersion.equalsIgnoreCase(currentVersion))
+	    if (newVersion == null)
+		return;
+
+	    String currentVersion = plugin.getDescription().getVersion();
+	    if (Integer.parseInt(newVersion.replace(".", "")) <= Integer.parseInt(currentVersion.replace(".", "")))
 		return;
 
 	    List<String> msg = Arrays.asList(
