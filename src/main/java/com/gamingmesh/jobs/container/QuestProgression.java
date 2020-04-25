@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class QuestProgression {
 
@@ -50,7 +51,7 @@ public class QuestProgression {
 	return amountDone;
     }
 
-    public int getAmountDone(QuestObjective objective) {
+    public int getAmountDone(QuestObjective objective) {	
 	return done.getOrDefault(objective, 0);
     }
 

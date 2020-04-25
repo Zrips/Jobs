@@ -39,17 +39,17 @@ public class exp implements Cmd {
 	Action action = Action.Add;
 
 	switch (args[2].toLowerCase()) {
-	    case "add":
-		action = Action.Add;
-		break;
-	    case "set":
-		action = Action.Set;
-		break;
-	    case "take":
-		action = Action.Take;
-		break;
-	    default:
-		break;
+	case "add":
+	    action = Action.Add;
+	    break;
+	case "set":
+	    action = Action.Set;
+	    break;
+	case "take":
+	    action = Action.Take;
+	    break;
+	default:
+	    break;
 	}
 
 	double amount = 0.0;
@@ -67,7 +67,9 @@ public class exp implements Cmd {
 
 		switch (action) {
 		case Add:
-		    prog.addExperience(amount);
+		    int oldLevel = prog.getLevel();
+		    if (prog.addExperience(amount))
+			Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
 		    break;
 		case Set:
 		    prog.setExperience(amount);
@@ -81,11 +83,11 @@ public class exp implements Cmd {
 
 		Player player = jPlayer.getPlayer();
 		if (player != null)
-		    player.sendMessage(Jobs.getLanguage().getMessage("command.exp.output.target", "%jobname%", job.getChatColor() + job.getName(), "%level%", prog.getLevel(), "%exp%", prog.getExperience()));
-
+		    player.sendMessage(Jobs.getLanguage().getMessage("command.exp.output.target", "%jobname%", job.getChatColor() + job.getName(), "%level%", prog.getLevel(), "%exp%", prog
+			.getExperience()));
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    } else
-			sender.sendMessage(Jobs.getLanguage().getMessage("command.exp.error.nojob"));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.exp.error.nojob"));
 	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
