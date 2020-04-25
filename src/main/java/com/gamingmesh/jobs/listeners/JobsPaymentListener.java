@@ -27,6 +27,7 @@ import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -941,7 +942,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToFurnace(InventoryMoveItemEvent event) {
 	if (!plugin.isEnabled())
-	   return;
+	    return;
 
 	if (!Jobs.getGCManager().PreventHopperFillUps)
 	    return;
@@ -976,7 +977,7 @@ public class JobsPaymentListener implements Listener {
 
 	//disabling plugin in world
 	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
-	   return;
+	    return;
 
 	if (block.hasMetadata(furnaceOwnerMetadata))
 	    FurnaceBrewingHandling.removeFurnace(block);
@@ -1146,7 +1147,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 
 	if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
-		    && HookManager.getMythicManager().isMythicMob(lVictim)) {
+	    && HookManager.getMythicManager().isMythicMob(lVictim)) {
 	    return;
 	}
 
@@ -1642,7 +1643,7 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE)
-		    || cmat.equals(CMIMaterial.SMOKER) || cmat.equals(CMIMaterial.BLAST_FURNACE)) {
+	    || cmat.equals(CMIMaterial.SMOKER) || cmat.equals(CMIMaterial.BLAST_FURNACE)) {
 	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(p, block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
@@ -1781,45 +1782,27 @@ public class JobsPaymentListener implements Listener {
 
     // Prevent item durability loss
     private static boolean payForItemDurabilityLoss(Player p) {
+
+	if (Jobs.getGCManager().payItemDurabilityLoss)
+	    return true;
+
 	ItemStack hand = Jobs.getNms().getItemInMainHand(p);
+	CMIMaterial cmat = CMIMaterial.get(hand);
 
-	if (!Jobs.getGCManager().payItemDurabilityLoss && !hand.getType().equals(Material.AIR)
-	    && hand.getType().getMaxDurability() - Jobs.getNms().getDurability(hand) != hand.getType().getMaxDurability()) {
-	    for (String whiteList : Jobs.getGCManager().WhiteListedItems) {
-		String item = whiteList.contains("=") ? whiteList.split("=")[0] : whiteList;
-		if (item.contains("-")) {
-		    item = item.split("-")[0];
-		}
-
-		CMIMaterial mat = CMIMaterial.get(item);
-		if (mat == null) {
-		    mat = CMIMaterial.get(item.replace(" ", "_").toUpperCase());
-		}
-
-		if (mat == null) {
-		    // try integer method
-		    Integer matId = null;
-		    try {
-			matId = Integer.valueOf(item);
-		    } catch (NumberFormatException e) {
-		    }
-		    if (matId != null) {
-			mat = CMIMaterial.get(matId);
-		    }
-		}
-
-		if (whiteList.contains("=") && whiteList.split("=").length == 2 &&
-			    !hand.getEnchantments().containsKey(CMIEnchantment.getEnchantment(whiteList.split("=")[1]))) {
-		    return false;
-		}
-
-		if (mat != null && hand.getType().equals(mat.getMaterial())) {
-		    return true;
-		}
-	    }
+	HashMap<Enchantment, Integer> got = Jobs.getGCManager().whiteListedItems.get(cmat);
+	if (got == null)
 	    return false;
-	}
 
+	if (Jobs.getNms().getDurability(hand) == 0)
+	    return true;
+
+	for (Entry<Enchantment, Integer> oneG : got.entrySet()) {
+	    if (!hand.getEnchantments().containsKey(oneG.getKey()))
+		return false;
+	    if (oneG.getValue() != null && hand.getEnchantments().get(oneG.getKey()) != oneG.getValue())
+		return false;
+	}
+	
 	return true;
     }
 }

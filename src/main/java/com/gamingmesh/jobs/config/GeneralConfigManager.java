@@ -26,11 +26,13 @@ import java.util.Locale;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
@@ -38,6 +40,7 @@ import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.resources.jfep.Parser;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class GeneralConfigManager {
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
@@ -53,7 +56,7 @@ public class GeneralConfigManager {
     protected boolean addXpPlayer;
     public boolean boostedItemsInOffHand;
     public boolean payItemDurabilityLoss;
-    public List<String> WhiteListedItems = new ArrayList<>();
+    public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<CMIMaterial, HashMap<Enchantment, Integer>>();
     protected boolean hideJobsWithoutPermission;
     protected int maxJobs;
     protected boolean payNearSpawner;
@@ -579,8 +582,38 @@ public class GeneralConfigManager {
 	payItemDurabilityLoss = c.get("allow-pay-for-durability-loss.Use", true);
 	c.addComment("allow-pay-for-durability-loss.WhiteListedItems", "What items (tools) are whitelisted the player get paid, when this item has durability loss?",
 	    "Enchantments are supported, usage:", "itemName=ENCHANTMENT_NAME-level");
-	WhiteListedItems = c.get("allow-pay-for-durability-loss.WhiteListedItems",
+	List<String> tempList = c.get("allow-pay-for-durability-loss.WhiteListedItems",
 	    Arrays.asList("wooden_pickaxe=DURABILITY-1", "fishing_rod"));
+	whiteListedItems.clear();
+
+	for (String one : tempList) {
+	    String mname = one.contains("=") ? one.split("=")[0] : one;
+	    String ench = one.contains("=") ? one.split("=")[1] : null;
+	    String value = ench != null && ench.contains("-") ? ench.split("-")[1] : null;
+	    ench = value != null && ench != null ? ench.substring(0, ench.length() - (value.length() + 1)) : ench;
+	    CMIMaterial mat = CMIMaterial.get(mname);
+	    if (mat == CMIMaterial.NONE) {
+		Jobs.consoleMsg("Failed to recognize " + one + " entry from config file");
+		continue;
+	    }
+	    Enchantment enchant = null;
+	    if (ench != null) {
+		enchant = CMIEnchantment.getEnchantment(ench);
+	    }
+	    Integer level = null;
+	    if (value != null) {
+		try {
+		    level = Integer.parseInt(value);
+		} catch (Throwable e) {
+		}
+	    }
+	    HashMap<Enchantment, Integer> submap = new HashMap<Enchantment, Integer>();
+	    if (enchant != null)
+		submap.put(enchant, level);
+	    
+	    whiteListedItems.put(mat, submap);
+	}
+	    Debug.D("Loaded materials ",whiteListedItems.size());
 
 	c.addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
 	modifyChat = c.get("modify-chat.use", false);
