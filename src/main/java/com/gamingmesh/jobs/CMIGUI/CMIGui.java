@@ -228,10 +228,12 @@ public class CMIGui {
 
     public void addEmptyButton(int slot) {
 	ItemStack MiscInfo = filler.newItemStack();
-	if (!MiscInfo.getType().equals(org.bukkit.Material.AIR)) {
+	if (!CMIMaterial.isAir(MiscInfo.getType())) {
 	    ItemMeta MiscInfoMeta = MiscInfo.getItemMeta();
-	    MiscInfoMeta.setDisplayName(" ");
-	    MiscInfo.setItemMeta(MiscInfoMeta);
+	    if (MiscInfoMeta != null) {
+		MiscInfoMeta.setDisplayName(" ");
+		MiscInfo.setItemMeta(MiscInfoMeta);
+	    }
 	}
 	addButton(new CMIGuiButton(slot, GUIFieldType.Locked, MiscInfo));
     }
