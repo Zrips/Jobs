@@ -38,13 +38,7 @@ public class PistonProtectionListener implements Listener {
 	    if (bp != null) {
 		Jobs.getBpManager().addP(newLoc, bp, true, true);
 		Jobs.getBpManager().remove(oldLoc);
-	    } else {
-		Integer cd = Jobs.getBpManager().getBlockDelayTime(one);
-		if (cd != null)
-		    Jobs.getBpManager().add(newLoc, cd);
-		else if (Jobs.getGCManager().useGlobalTimer)
-		    Jobs.getBpManager().add(newLoc, Jobs.getGCManager().globalblocktimer);
-	    }
+	    } 
 	}
     }
 
@@ -73,13 +67,7 @@ public class PistonProtectionListener implements Listener {
 	    if (bp != null) {
 		Jobs.getBpManager().addP(newLoc, bp, true, true);
 		Jobs.getBpManager().remove(oldLoc);
-	    } else {
-		Integer cd = Jobs.getBpManager().getBlockDelayTime(one);
-		if (cd != null)
-		    Jobs.getBpManager().add(newLoc, cd);
-		else if (Jobs.getGCManager().useGlobalTimer)
-		    Jobs.getBpManager().add(newLoc, Jobs.getGCManager().globalblocktimer);
-	    }
+	    } 
 	}
     }
 }

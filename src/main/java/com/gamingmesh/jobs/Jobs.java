@@ -1128,7 +1128,7 @@ public class Jobs extends JavaPlugin {
 		Integer cd = getBpManager().getBlockDelayTime(block);
 
 		if (time == -1L) {
-		    getBpManager().add(block, cd);
+		    getBpManager().remove(block);
 		    return false;
 		}
 		if ((time < System.currentTimeMillis()) && (bp.getAction() != DBAction.DELETE)) {
@@ -1147,8 +1147,6 @@ public class Jobs extends JavaPlugin {
 		if ((cd == null || cd == 0) && GconfigManager.useGlobalTimer) {
 		    getBpManager().add(block, GconfigManager.globalblocktimer);
 		}
-	    } else if (GconfigManager.useGlobalTimer) {
-		getBpManager().add(block, GconfigManager.globalblocktimer);
 	    }
 	} else if (info.getType() == ActionType.PLACE) {
 	    BlockProtection bp = getBpManager().getBp(block.getLocation());
