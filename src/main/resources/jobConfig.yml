@@ -1742,7 +1742,7 @@ Jobs:
         Name: "Regular Joe"
         Objectives:
         - Breed;Sheep;10
-        - Shear;White;10
+        - Shear;WHITE;10
         - Milk;Cow;3
         RewardCommands:
         - "money give [playerName] 100"
