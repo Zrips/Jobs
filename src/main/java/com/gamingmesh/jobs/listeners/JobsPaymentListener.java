@@ -228,20 +228,27 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-
-	boolean found = false;
-	t: for (JobProgression prog : jPlayer.getJobProgression()) {
-	    for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(ActionType.MILK)) {
-		if (info.getActionType() == ActionType.MILK) {
-		    found = true;
-		    break t;
-		}
+	
+    boolean found = false;
+    t: for (JobProgression prog : jPlayer.getJobProgression()) {
+        for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(ActionType.MILK)) {
+        if (info.getActionType() == ActionType.MILK) {
+            found = true;
+            break t;
+        }
+        }
+	    for (Quest q : prog.getJob().getQuests()) {
+			if (q != null && q.hasAction(ActionType.MILK)) {
+	            found = true;
+	            break t;
+			}
 	    }
-	}
+    }
 
-	if (!found) {
-	    return;
-	}
+    if (!found) {
+        return;
+    }
+
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
 	    if (cow.hasMetadata(CowMetadata)) {
@@ -634,6 +641,7 @@ public class JobsPaymentListener implements Listener {
 	    case LEATHER_CHESTPLATE:
 	    case LEATHER_HELMET:
 	    case LEATHER_LEGGINGS:
+	    case LEATHER_HORSE_ARMOR:
 		leather = true;
 		break;
 	    default:
@@ -654,7 +662,7 @@ public class JobsPaymentListener implements Listener {
 
 	// Check Dyes
 	if (y >= 2) {
-	    if ((third != null && third.isDye() || second != null && second.isDye()) && leather) {
+	    if ((third != null && third.isDye() || second != null && second.isDye() || first != null && first.isDye()) && leather) {
 		Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
 		for (ItemStack OneDye : DyeStack) {
 		    Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
