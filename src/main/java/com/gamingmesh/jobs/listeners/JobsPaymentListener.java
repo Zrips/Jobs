@@ -27,7 +27,6 @@ import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.hooks.HookManager;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -228,27 +227,27 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
-	
-    boolean found = false;
-    t: for (JobProgression prog : jPlayer.getJobProgression()) {
-        for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(ActionType.MILK)) {
-        if (info.getActionType() == ActionType.MILK) {
-            found = true;
-            break t;
-        }
-        }
-	    for (Quest q : prog.getJob().getQuests()) {
-			if (q != null && q.hasAction(ActionType.MILK)) {
-	            found = true;
-	            break t;
-			}
+
+	boolean found = false;
+	t: for (JobProgression prog : jPlayer.getJobProgression()) {
+	    for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(ActionType.MILK)) {
+		if (info.getActionType() == ActionType.MILK) {
+		    found = true;
+		    break t;
+		}
 	    }
-    }
 
-    if (!found) {
-        return;
-    }
+	    for (Quest q : prog.getJob().getQuests()) {
+		if (q != null && q.hasAction(ActionType.MILK)) {
+		    found = true;
+		    break t;
+		}
+	    }
+	}
 
+	if (!found) {
+	    return;
+	}
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
 	    if (cow.hasMetadata(CowMetadata)) {
@@ -1600,7 +1599,7 @@ public class JobsPaymentListener implements Listener {
 		    return;
 
 	    BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.TNTBREAK);
-	    Jobs.action(jPlayer, bInfo);
+	    Jobs.action(jPlayer, bInfo, block);
 	}
     }
 

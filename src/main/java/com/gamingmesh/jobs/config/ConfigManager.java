@@ -186,7 +186,7 @@ public class ConfigManager {
 	    "[actionType] can be any valid job action. Look lower for all possible action types",
 	    "[actionTarget] can be material name, block type, entity name and so on. This is defined in same way as any generic payable job action",
 	    "[amount] is how many times player should perform this action to complete quest");
-	cfg.get(questPt + ".Objectives", "- Break;17-0;300");
+	cfg.get(questPt + ".Objectives", "Break;17-0;300");
 
 	cfg.addComment(questPt + ".RewardCommands", "Command list to be performed after quest is finished.",
 	    "Use [playerName] to insert players name who finished that quest");

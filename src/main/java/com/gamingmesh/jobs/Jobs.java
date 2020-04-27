@@ -830,23 +830,21 @@ public class Jobs extends JavaPlugin {
     }
 
     public static void action(JobsPlayer jPlayer, ActionInfo info, Block block, Entity ent, LivingEntity victim) {
-
 	if (jPlayer == null)
 	    return;
 
 	List<JobProgression> progression = jPlayer.getJobProgression();
 	int numjobs = progression.size();
-	// no job
 
 	if (!isBpOk(jPlayer, info, block, true))
 	    return;
 
+	// no job
 	if (numjobs == 0) {
-
 	    if (noneJob == null)
 		return;
 
-	    if (noneJob.isWorldBlackListed(block, ent) || noneJob.isWorldBlackListed(victim))
+	    if (noneJob.isWorldBlackListed(block) || noneJob.isWorldBlackListed(block, ent) || noneJob.isWorldBlackListed(victim))
 		return;
 
 	    JobInfo jobinfo = noneJob.getJobInfo(info, 1);
@@ -942,8 +940,8 @@ public class Jobs extends JavaPlugin {
 	    FastPayment.clear();
 
 	    for (JobProgression prog : progression) {
-
-		if (prog.getJob().isWorldBlackListed(block, ent) || prog.getJob().isWorldBlackListed(victim))
+		if (prog.getJob().isWorldBlackListed(block) || prog.getJob().isWorldBlackListed(block, ent)
+		    || prog.getJob().isWorldBlackListed(victim))
 		    continue;
 
 		int level = prog.getLevel();
