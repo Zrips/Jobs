@@ -96,9 +96,7 @@ public class ExploreManager {
 	    String names = res.getString(ExploreDataTableFields.playerNames.getCollumn());
 	    int id = res.getInt("id");
 
-	    JobsWorld jobsWorld = null;
-	    if (worldName != null)
-		jobsWorld = Util.getJobsWorld(worldName);
+	    JobsWorld jobsWorld = Util.getJobsWorld(worldName);
 	    if (jobsWorld == null)
 		jobsWorld = Util.getJobsWorld(worldId);
 

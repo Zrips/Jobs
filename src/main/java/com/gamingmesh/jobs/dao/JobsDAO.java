@@ -2463,7 +2463,16 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.ExploreDataTable.getTableName() + "`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
-		Jobs.getExplore().load(res);
+		String worldName = res.getString(ExploreDataTableFields.worldname.getCollumn());
+		if (worldName == null || Bukkit.getWorld(worldName) == null) {
+		    PreparedStatement prest2 = null;
+		    prest2 = conn.prepareStatement("DELETE FROM `" + DBTables.ExploreDataTable.getTableName() + "` WHERE `" + ExploreDataTableFields.worldname.getCollumn() + "` = ?;");
+		    prest2.setString(1, worldName);
+		    prest2.execute();
+		    close(prest2);
+		} else {
+		    Jobs.getExplore().load(res);
+		}
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
