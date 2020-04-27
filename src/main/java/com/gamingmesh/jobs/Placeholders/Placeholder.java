@@ -37,6 +37,9 @@ public class Placeholder {
 	user_furncount,
 	user_maxfurncount,
 	user_doneq,
+	user_dailyquests_pending,
+	user_dailyquests_completed,
+	user_dailyquests_total,
 	user_seen,
 	user_totallevels,
 	user_issaved,
@@ -380,6 +383,15 @@ public class Placeholder {
 	if (user != null) {
 	    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 	    switch (placeHolder) {
+	    case user_dailyquests_pending:
+	    	Integer pendingQuests = (int) user.getQuestProgressions().stream().filter(q -> !q.isCompleted()).count();
+	    	return Integer.toString(pendingQuests);
+	    case user_dailyquests_completed:
+	    	Integer completedQuests = (int) user.getQuestProgressions().stream().filter(q -> q.isCompleted()).count();
+	    	return Integer.toString(completedQuests);
+	    case user_dailyquests_total:
+	    	Integer dailyquests = user.getQuestProgressions().size();
+	    	return Integer.toString(dailyquests);
 	    case user_id:
 		return Integer.toString(user.getUserId());
 	    case user_bstandcount:
