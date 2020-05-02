@@ -1091,7 +1091,7 @@ public class JobsPaymentListener implements Listener {
 	if (damage > s)
 	    damage = s;
 
-	if (ent.hasMetadata(entityDamageByPlayer))
+	if (ent.hasMetadata(entityDamageByPlayer) && !ent.getMetadata(entityDamageByPlayer).isEmpty())
 	    damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
 
 	ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(plugin, damage));
@@ -1120,11 +1120,11 @@ public class JobsPaymentListener implements Listener {
 	    damage = s;
 
 	if (shooter != null && shooter instanceof Player) {
-	    if (ent.hasMetadata(entityDamageByPlayer))
+	    if (ent.hasMetadata(entityDamageByPlayer) && !ent.getMetadata(entityDamageByPlayer).isEmpty())
 		damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
+
 	    ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(plugin, damage));
 	}
-
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1218,7 +1218,8 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
-	if (Jobs.getGCManager().MonsterDamageUse && lVictim.hasMetadata(entityDamageByPlayer)) {
+	if (Jobs.getGCManager().MonsterDamageUse && lVictim.hasMetadata(entityDamageByPlayer)
+	    && !lVictim.getMetadata(entityDamageByPlayer).isEmpty()) {
 	    double damage = lVictim.getMetadata(entityDamageByPlayer).get(0).asDouble();
 	    double perc = (damage * 100D) / Jobs.getNms().getMaxHealth(lVictim);
 	    if (perc < Jobs.getGCManager().MonsterDamagePercentage)

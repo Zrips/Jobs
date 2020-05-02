@@ -38,7 +38,7 @@ public class PistonProtectionListener implements Listener {
 	    if (bp != null) {
 		Jobs.getBpManager().addP(newLoc, bp, true, true);
 		Jobs.getBpManager().remove(oldLoc);
-	    } 
+	    }
 	}
     }
 
@@ -67,7 +67,7 @@ public class PistonProtectionListener implements Listener {
 	    if (bp != null) {
 		Jobs.getBpManager().addP(newLoc, bp, true, true);
 		Jobs.getBpManager().remove(oldLoc);
-	    } 
+	    }
 	}
     }
 }
