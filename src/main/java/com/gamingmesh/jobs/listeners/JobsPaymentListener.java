@@ -686,8 +686,16 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().PayForEachCraft) {
 	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
 		Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
-	    else
-		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+	    else {
+		    if (Material.AIR.equals(resultStack.getType()) && event.getCurrentItem() != null) {
+			    // Recipe result is unknown for this material
+			    if (Material.TIPPED_ARROW.equals(event.getCurrentItem().getType())) {
+				    Jobs.action(jPlayer, new ItemActionInfo(event.getCurrentItem(), ActionType.CRAFT));
+			    }
+		    } else {
+			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+		    }
+	    }
 	    return;
 	}
 
