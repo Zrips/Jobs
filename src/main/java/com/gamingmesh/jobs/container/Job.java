@@ -223,22 +223,25 @@ public class Job {
     }
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
-	for (JobInfo info : getJobInfo(action.getType())) {
-	    if (info.getName().equalsIgnoreCase(action.getNameWithSub()) || (info.getName() + ":" + info.getMeta()).equalsIgnoreCase(action.getNameWithSub())) {
-		if (!info.isInLevelRange(level))
-		    break;
-		return info;
-	    }
-	}
+        for (JobInfo info : getJobInfo(action.getType())) {
+            if (info.getName().equalsIgnoreCase(action.getNameWithSub()) ||
+                    (info.getName() + ":" + info.getMeta()).equalsIgnoreCase(action.getNameWithSub())) {
+                if (!info.isInLevelRange(level)) {
+                    break;
+                }
+                return info;
+            }
+        }
 
-	for (JobInfo info : getJobInfo(action.getType())) {
-	    if (info.getName().equalsIgnoreCase(action.getName())) {
-		if (!info.isInLevelRange(level))
-		    break;
-		return info;
-	    }
-	}
-	return null;
+        for (JobInfo info : getJobInfo(action.getType())) {
+            if (info.getName().equalsIgnoreCase(action.getName())) {
+                if (!info.isInLevelRange(level)) {
+                    break;
+                }
+                return info;
+            }
+        }
+        return null;
     }
 
     /**
