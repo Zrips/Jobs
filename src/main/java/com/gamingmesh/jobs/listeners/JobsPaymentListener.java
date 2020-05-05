@@ -1790,7 +1790,6 @@ public class JobsPaymentListener implements Listener {
 
     // Prevent item durability loss
     private static boolean payForItemDurabilityLoss(Player p) {
-
 	if (Jobs.getGCManager().payItemDurabilityLoss)
 	    return true;
 
@@ -1810,7 +1809,7 @@ public class JobsPaymentListener implements Listener {
 	    if (oneG.getValue() != null && hand.getEnchantments().get(oneG.getKey()) != oneG.getValue())
 		return false;
 	}
-	
+
 	return true;
     }
 }

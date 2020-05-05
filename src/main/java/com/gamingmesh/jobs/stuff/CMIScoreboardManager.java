@@ -37,9 +37,12 @@ public class CMIScoreboardManager {
 		    player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
 
 		    if (Map.getValue().getObj() != null) {
-			Objective obj = player.getScoreboard().getObjective(Map.getValue().getObj().getName());
-			if (obj != null)
-			    obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+			try {
+			    Objective obj = player.getScoreboard().getObjective(Map.getValue().getObj().getName());
+			    if (obj != null)
+				obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+			} catch (IllegalStateException e) {
+			}
 		    }
 		}
 
