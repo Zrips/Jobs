@@ -1749,12 +1749,12 @@ public abstract class JobsDAO {
 		long seen = res.getLong(UserTableFields.seen.getCollumn());
 
 		Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
-		res.getString(UserTableFields.username.getCollumn()),
-		res.getInt("id"),
-		UUID.fromString(res.getString(UserTableFields.player_uuid.getCollumn())),
-		seen,
-		res.getInt(UserTableFields.donequests.getCollumn()),
-		res.getString(UserTableFields.quests.getCollumn())));
+		    res.getString(UserTableFields.username.getCollumn()),
+		    res.getInt("id"),
+		    UUID.fromString(res.getString(UserTableFields.player_uuid.getCollumn())),
+		    seen,
+		    res.getInt(UserTableFields.donequests.getCollumn()),
+		    res.getString(UserTableFields.quests.getCollumn())));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -2201,9 +2201,9 @@ public abstract class JobsDAO {
 			continue;
 
 		    insert.setInt(1, worldId);
-		    insert.setInt(2, block.getValue().getPos().getBlockX());
-		    insert.setInt(3, block.getValue().getPos().getBlockY());
-		    insert.setInt(4, block.getValue().getPos().getBlockZ());
+		    insert.setInt(2, block.getValue().getX());
+		    insert.setInt(3, block.getValue().getY());
+		    insert.setInt(4, block.getValue().getZ());
 		    insert.setLong(5, block.getValue().getRecorded());
 		    insert.setLong(6, block.getValue().getTime());
 		    insert.setString(7, world);
@@ -2267,7 +2267,7 @@ public abstract class JobsDAO {
 	PreparedStatement prestDel = null;
 	ResultSet res = null;
 
-	Jobs.getBpManager().timer = 0L;
+	Long timer = System.currentTimeMillis();
 
 	try {
 	    Long mark = System.currentTimeMillis() - (Jobs.getGCManager().BlockProtectionDays * 24L * 60L * 60L * 1000L);
@@ -2308,9 +2308,9 @@ public abstract class JobsDAO {
 		int z = res.getInt(BlockTableFields.z.getCollumn());
 		long resets = res.getLong(BlockTableFields.resets.getCollumn());
 		Location loc = new Location(world, x, y, z);
+
 		BlockProtection bp = Jobs.getBpManager().addP(loc, resets, true, false);
 		bp.setId(id);
-		long t = System.currentTimeMillis();
 		bp.setRecorded(res.getLong(BlockTableFields.recorded.getCollumn()));
 		bp.setAction(DBAction.NONE);
 		i++;
@@ -2320,10 +2320,9 @@ public abstract class JobsDAO {
 		    Jobs.consoleMsg("&6[Jobs] Loading (" + i + ") BP");
 		    ii = 0;
 		}
-		Jobs.getBpManager().timer += System.currentTimeMillis() - t;
 	    }
 	    if (i > 0) {
-		Jobs.consoleMsg("&e[Jobs] Loaded " + i + " block protection entries. " + Jobs.getBpManager().timer);
+		Jobs.consoleMsg("&e[Jobs] Loaded " + i + " block protection entries. " + (System.currentTimeMillis() - timer) + "ms");
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
