@@ -27,6 +27,7 @@ import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
@@ -1226,7 +1227,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
-	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
+	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), pDamager, lVictim);
 
 	// Payment for killing player with particular job, except NPC's
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
@@ -1239,7 +1240,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 
 	    for (JobProgression job : jobs) {
-		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), e.getDamager(), lVictim);
+		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), pDamager, lVictim);
 	    }
 	}
     }

@@ -991,6 +991,7 @@ public class Jobs extends JavaPlugin {
 
 		JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), income,
 		    pointAmount, block, ent, victim, info);
+
 		Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
 		// If event is canceled, don't do anything
 		if (JobsPrePaymentEvent.isCancelled()) {
