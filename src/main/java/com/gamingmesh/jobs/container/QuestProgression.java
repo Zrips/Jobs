@@ -132,6 +132,8 @@ public class QuestProgression {
 	    }
 	}
 
+	jPlayer.setSaved(false);
+
 	if (!isCompleted())
 	    return;
 
