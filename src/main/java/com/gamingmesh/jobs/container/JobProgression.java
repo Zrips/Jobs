@@ -92,6 +92,7 @@ public class JobProgression {
     public boolean addExperience(double experience) {
 	jPlayer.setSaved(false);
 	this.experience += experience;
+	this.lastExperience = getLastExperience() + experience;
 	return checkLevelUp();
     }
 
@@ -114,6 +115,7 @@ public class JobProgression {
     public boolean takeExperience(double experience) {
 	jPlayer.setSaved(false);
 	this.experience -= experience;
+	this.lastExperience = getLastExperience() + experience;
 	return checkLevelUp();
     }
 
@@ -189,9 +191,6 @@ public class JobProgression {
 	if (experience > maxExperience)
 	    experience = maxExperience;
 
-	if (lastExperience == null)
-	    lastExperience = experience;
-
 	return ret;
     }
 
@@ -211,8 +210,6 @@ public class JobProgression {
 	    ret = true;
 	    reloadMaxExperience();
 	}
-	if (lastExperience == null)
-	    lastExperience = experience;
 	return ret;
     }
 
@@ -254,7 +251,7 @@ public class JobProgression {
     }
 
     public Double getLastExperience() {
-	return lastExperience == null ? experience : lastExperience;
+	return lastExperience == null ? 0D : lastExperience;
     }
 
     public void setLastExperience(Double lastExperience) {
