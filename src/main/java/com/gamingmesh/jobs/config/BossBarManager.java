@@ -119,7 +119,8 @@ public class BossBarManager {
 	    bar.setTitle(message);
 
 	double percentage = jobProg.getExperience() / jobProg.getMaxExperience();
-	bar.setProgress(percentage > 1.0 ? 1.0 : percentage);
+	percentage = percentage > 1D ? 1D : percentage < 0 ? 0 : percentage;
+	bar.setProgress(percentage);
 
 	if (OldOne == null) {
 	    bar.addPlayer(player.getPlayer());

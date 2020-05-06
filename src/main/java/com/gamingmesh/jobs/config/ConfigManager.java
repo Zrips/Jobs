@@ -1363,6 +1363,7 @@ public class ConfigManager {
 				log.warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
 				continue;
 			    }
+			    Jobs.consoleMsg("Recognized: " + myKey + " " + enchant);
 
 			    type = enchant == null ? myKey : enchant.toString();
 			} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
