@@ -516,13 +516,10 @@ public class RawMessage {
 	if (!player.isOnline())
 	    return this;
 
-//	CMI.getInstance().d("|" + combined + "|");
-
 	if (softCombined) {
 	    for (String one : softCombine()) {
 		if (one.isEmpty())
 		    continue;
-//		CMI.getInstance().d("=" + one + "=");
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + player.getName() + " " + one);
 	    }
 	} else {

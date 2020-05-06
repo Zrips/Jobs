@@ -40,7 +40,6 @@ import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class GeneralConfigManager {
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
@@ -343,9 +342,6 @@ public class GeneralConfigManager {
     }
 
     public boolean canPerformActionInWorld(World world) {
-	if (world == null || !DisabledWorldsUse)
-	    return true;
-
 	return canPerformActionInWorld(world.getName());
     }
 
@@ -610,10 +606,9 @@ public class GeneralConfigManager {
 	    HashMap<Enchantment, Integer> submap = new HashMap<Enchantment, Integer>();
 	    if (enchant != null)
 		submap.put(enchant, level);
-	    
+
 	    whiteListedItems.put(mat, submap);
 	}
-	    Debug.D("Loaded materials ",whiteListedItems.size());
 
 	c.addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
 	modifyChat = c.get("modify-chat.use", false);

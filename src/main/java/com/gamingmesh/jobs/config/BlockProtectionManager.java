@@ -174,7 +174,6 @@ public class BlockProtectionManager {
     public Integer getBlockDelayTime(Block block) {
 	Integer time = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(CMIMaterial.get(block));
 	if (time == null && Jobs.getGCManager().useGlobalTimer) {
-	    Debug.D("using global " + block.getType());
 	    time = Jobs.getGCManager().globalblocktimer;
 	}
 	return time;

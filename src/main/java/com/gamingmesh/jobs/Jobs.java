@@ -949,7 +949,7 @@ public class Jobs extends JavaPlugin {
 		JobInfo jobinfo = prog.getJob().getJobInfo(info, level);
 
 		checkDailyQuests(jPlayer, prog.getJob(), info);
-				
+
 		if (jobinfo == null)
 		    continue;
 
