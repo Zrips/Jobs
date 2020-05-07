@@ -27,7 +27,6 @@ import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
 import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.hooks.HookManager;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling.ownershipFeedback;
 import com.google.common.base.Objects;
