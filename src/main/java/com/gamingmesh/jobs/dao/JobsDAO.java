@@ -1745,12 +1745,21 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.UsersTable.getTableName() + "`;");
 	    res = prest.executeQuery();
 	    while (res.next()) {
+		String uuid = res.getString(UserTableFields.player_uuid.getCollumn());
+		if (uuid == null || uuid.isEmpty()) {
+		    PreparedStatement ps = conn.prepareStatement("DELETE FROM `" + DBTables.UsersTable.getTableName()
+				+ "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
+		    ps.setString(1, uuid);
+		    ps.execute();
+		    continue;
+		}
+
 		long seen = res.getLong(UserTableFields.seen.getCollumn());
 
 		Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
 		    res.getString(UserTableFields.username.getCollumn()),
 		    res.getInt("id"),
-		    UUID.fromString(res.getString(UserTableFields.player_uuid.getCollumn())),
+		    UUID.fromString(uuid),
 		    seen,
 		    res.getInt(UserTableFields.donequests.getCollumn()),
 		    res.getString(UserTableFields.quests.getCollumn())));
