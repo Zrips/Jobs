@@ -39,7 +39,7 @@ public class Job {
     private HashMap<String, JobItems> jobItems;
     private HashMap<String, JobLimitedItems> jobLimitedItems;
     private String jobName = "N/A";
-    private String fullName;
+    private String fullName = "N/A";
     // job short name (for use in multiple jobs)
     private String jobShortName;
     private String description;
@@ -95,8 +95,8 @@ public class Job {
     public Job(String jobName, String fullName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, HashMap<String, JobItems> jobItems,
 	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
-	this.jobName = jobName;
-	this.fullName = fullName;
+	this.jobName = jobName == null ? "" : jobName;
+	this.fullName = fullName == null ? "" : fullName;
 	this.jobShortName = jobShortName;
 	this.description = description;
 	this.jobColour = jobColour;
@@ -145,8 +145,6 @@ public class Job {
     public boolean isSame(Job job) {
 	if (job == null)
 	    return false;
-	if (this.getName() == null && job.getName() == null)
-	    return true;
 	return this.getName().equalsIgnoreCase(job.getName());
     }
 
