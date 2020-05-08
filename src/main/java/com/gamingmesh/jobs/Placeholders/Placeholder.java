@@ -384,14 +384,14 @@ public class Placeholder {
 	    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 	    switch (placeHolder) {
 	    case user_dailyquests_pending:
-	    	Integer pendingQuests = (int) user.getQuestProgressions().stream().filter(q -> !q.isCompleted()).count();
-	    	return Integer.toString(pendingQuests);
+		Integer pendingQuests = (int) user.getQuestProgressions().stream().filter(q -> !q.isCompleted()).count();
+		return Integer.toString(pendingQuests);
 	    case user_dailyquests_completed:
-	    	Integer completedQuests = (int) user.getQuestProgressions().stream().filter(q -> q.isCompleted()).count();
-	    	return Integer.toString(completedQuests);
+		Integer completedQuests = (int) user.getQuestProgressions().stream().filter(q -> q.isCompleted()).count();
+		return Integer.toString(completedQuests);
 	    case user_dailyquests_total:
-	    	Integer dailyquests = user.getQuestProgressions().size();
-	    	return Integer.toString(dailyquests);
+		Integer dailyquests = user.getQuestProgressions().size();
+		return Integer.toString(dailyquests);
 	    case user_id:
 		return Integer.toString(user.getUserId());
 	    case user_bstandcount:

@@ -55,7 +55,7 @@ public class GeneralConfigManager {
     protected boolean addXpPlayer;
     public boolean boostedItemsInOffHand;
     public boolean payItemDurabilityLoss;
-    public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<CMIMaterial, HashMap<Enchantment, Integer>>();
+    public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
     protected boolean hideJobsWithoutPermission;
     protected int maxJobs;
     protected boolean payNearSpawner;
@@ -76,6 +76,8 @@ public class GeneralConfigManager {
     private String getSelectionTool;
 
     public boolean enableSchedule;
+
+    public int jobExpiryTime;
 
     private int ResetTimeHour;
     private int ResetTimeMinute;
@@ -533,8 +535,12 @@ public class GeneralConfigManager {
 	c.addComment("DailyQuests.SkipQuestCost", "The cost of the quest skip (money).", "Default 0, disabling cost of skipping quest.");
 	skipQuestCost = c.get("DailyQuests.SkipQuestCost", 0d);
 
-	c.addComment("ScheduleManager", "Enables the schedule manager to boost the server.", "By default this has been disabled for causing memory leak.");
+	c.addComment("ScheduleManager", "Enables the schedule manager to boost the server.");
 	enableSchedule = c.get("ScheduleManager.Use", true);
+
+	c.addComment("JobExpirationTime", "Fire players if their work time has expired at a job.", "Setting time to 0, will not works.",
+	    "For this to work, the player needs to get a new job for the timer to start.", "Counting in hours");
+	jobExpiryTime = c.get("JobExpirationTime", 0);
 
 	c.addComment("max-jobs", "Maximum number of jobs a player can join.", "Use 0 for no maximum", "Keep in mind that jobs.max.[amount] will bypass this setting");
 	maxJobs = c.get("max-jobs", 3);
@@ -600,10 +606,10 @@ public class GeneralConfigManager {
 	    if (value != null) {
 		try {
 		    level = Integer.parseInt(value);
-		} catch (Throwable e) {
+		} catch (NumberFormatException e) {
 		}
 	    }
-	    HashMap<Enchantment, Integer> submap = new HashMap<Enchantment, Integer>();
+	    HashMap<Enchantment, Integer> submap = new HashMap<>();
 	    if (enchant != null)
 		submap.put(enchant, level);
 

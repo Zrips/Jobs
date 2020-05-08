@@ -939,10 +939,15 @@ public class Jobs extends JavaPlugin {
 	} else {
 	    FastPayment.clear();
 
+	    List<Job> expiredJobs = new ArrayList<>();
 	    for (JobProgression prog : progression) {
 		if (prog.getJob().isWorldBlackListed(block) || prog.getJob().isWorldBlackListed(block, ent)
 		    || prog.getJob().isWorldBlackListed(victim))
 		    continue;
+
+		if (jPlayer.isLeftTimeEnded(prog.getJob())) {
+		    expiredJobs.add(prog.getJob());
+		}
 
 		int level = prog.getLevel();
 
@@ -1109,6 +1114,9 @@ public class Jobs extends JavaPlugin {
 		if (bp != null)
 		    bp.setPaid(true);
 	    }
+
+	    expiredJobs.forEach(j -> getPlayerManager().leaveJob(jPlayer, j));
+	    expiredJobs.clear();
 	}
     }
 

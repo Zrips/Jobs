@@ -19,7 +19,9 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -76,6 +78,8 @@ public class JobsPlayer {
     private HashMap<String, HashMap<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
     private int skippedQuests = 0;
+
+    private final HashMap<UUID, HashMap<Job, Long>> leftTimes = new HashMap<>();
 
     private PlayerPoints pointsData = null;
 
@@ -1234,5 +1238,41 @@ public class JobsPlayer {
 
     public void setSkippedQuests(int skippedQuests) {
 	this.skippedQuests = skippedQuests;
+    }
+
+    public HashMap<UUID, HashMap<Job, Long>> getLeftTimes() {
+	return leftTimes;
+    }
+
+    public boolean isLeftTimeEnded(Job job) {
+	UUID uuid = getUniqueId();
+	if (!leftTimes.containsKey(uuid))
+	    return false;
+
+	HashMap<Job, Long> map = leftTimes.get(uuid);
+	if (!map.containsKey(job))
+	    return false;
+
+	return map.get(job).longValue() < System.currentTimeMillis();
+    }
+
+    public void setLeftTime(Job job) {
+	UUID uuid = getUniqueId();
+
+	if (leftTimes.containsKey(uuid))
+	    leftTimes.remove(uuid);
+
+	int hour = Jobs.getGCManager().jobExpiryTime;
+	if (hour == 0)
+	    return;
+
+	Calendar cal = Calendar.getInstance();
+	cal.setTime(new Date());
+
+	cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + hour);
+
+	HashMap<Job, Long> map = new HashMap<>();
+	map.put(job, cal.getTimeInMillis());
+	leftTimes.put(uuid, map);
     }
 }

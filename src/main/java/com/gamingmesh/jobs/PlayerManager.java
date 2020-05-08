@@ -388,6 +388,7 @@ public class PlayerManager {
 	    return;
 
 	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
+	jPlayer.setLeftTime(job);
 
 	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
 
@@ -421,6 +422,8 @@ public class PlayerManager {
 	    return false;
 	PerformCommands.PerformCommandsOnLeave(jPlayer, job);
 	Jobs.leaveSlot(job);
+
+	jPlayer.getLeftTimes().remove(jPlayer.getUniqueId());
 
 	Jobs.getSignUtil().updateAllSign(job);
 	job.updateTotalPlayers();
