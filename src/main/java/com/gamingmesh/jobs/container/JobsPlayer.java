@@ -1056,7 +1056,7 @@ public class JobsPlayer {
 	    Quest q = oneJ.getValue().getQuest();
 	    if (q == null) {
 		continue;
-		}
+	    }
 
 	    if (type == null) {
 		tmp.put(q.getConfigName().toLowerCase(), oneJ.getValue());
@@ -1088,7 +1088,7 @@ public class JobsPlayer {
 	    Quest q = one.getQuest();
 	    if (q == null) {
 		continue;
-		}
+	    }
 
 	    if (q.getObjectives().isEmpty())
 		continue;
@@ -1160,7 +1160,7 @@ public class JobsPlayer {
 		    HashMap<String, QuestObjective> old = quest.getObjectives().get(action);
 		    if (old == null)
 			continue;
-		    
+
 		    QuestObjective obj = old.get(target);
 
 		    if (obj == null)
@@ -1171,6 +1171,9 @@ public class JobsPlayer {
 		    int done = Integer.parseInt(doneS);
 		    qp.setAmountDone(obj, done);
 		}
+
+		if (qp.isCompleted())
+		    qp.setGivenReward(true);
 
 	    } catch (Exception | Error e) {
 		e.printStackTrace();

@@ -158,4 +158,12 @@ public class QuestProgression {
 	return;
 
     }
+
+    public boolean isGivenReward() {
+	return givenReward;
+    }
+
+    public void setGivenReward(boolean givenReward) {
+	this.givenReward = givenReward;
+    }
 }
