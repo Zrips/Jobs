@@ -6,8 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -1748,7 +1750,7 @@ public abstract class JobsDAO {
 		String uuid = res.getString(UserTableFields.player_uuid.getCollumn());
 		if (uuid == null || uuid.isEmpty()) {
 		    PreparedStatement ps = conn.prepareStatement("DELETE FROM `" + DBTables.UsersTable.getTableName()
-				+ "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
+			+ "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
 		    ps.setString(1, uuid);
 		    ps.execute();
 		    continue;
@@ -2469,18 +2471,25 @@ public abstract class JobsDAO {
 	try {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.ExploreDataTable.getTableName() + "`;");
 	    res = prest.executeQuery();
+	    Set<Integer> missingWorlds = new HashSet<Integer>();
 	    while (res.next()) {
-		String worldName = res.getString(ExploreDataTableFields.worldname.getCollumn());
-		if (worldName == null || Bukkit.getWorld(worldName) == null) {
-		    PreparedStatement prest2 = null;
-		    prest2 = conn.prepareStatement("DELETE FROM `" + DBTables.ExploreDataTable.getTableName() + "` WHERE `" + ExploreDataTableFields.worldname.getCollumn() + "` = ?;");
-		    prest2.setString(1, worldName);
-		    prest2.execute();
-		    close(prest2);
+		int worldId = res.getInt(ExploreDataTableFields.worldid.getCollumn());
+		JobsWorld jworld = Util.getJobsWorld(worldId);
+		if (jworld == null || jworld.getWorld() == null) {
+		    missingWorlds.add(worldId);
 		} else {
 		    Jobs.getExplore().load(res);
 		}
 	    }
+
+	    for (Integer one : missingWorlds) {
+		PreparedStatement prest2 = null;
+		prest2 = conn.prepareStatement("DELETE FROM `" + DBTables.ExploreDataTable.getTableName() + "` WHERE `" + ExploreDataTableFields.worldid.getCollumn() + "` = ?;");
+		prest2.setInt(1, one);
+		prest2.execute();
+		close(prest2);
+	    }
+
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -2669,6 +2678,15 @@ public abstract class JobsDAO {
     }
 
     protected static void close(Statement stmt) {
+	if (stmt != null)
+	    try {
+		stmt.close();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    }
+    }
+
+    protected static void close(PreparedStatement stmt) {
 	if (stmt != null)
 	    try {
 		stmt.close();
