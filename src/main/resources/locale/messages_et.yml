@@ -42,9 +42,9 @@ command:
       info: Kirjuta /jobs [cmd] ? et saada käskluse kohta rohkem teavet.
       cmdUsage: '&2Kasutamine: &7[command]'
       label: Jobs
-      cmdInfoFormat: '[command] &f- &2[description]'
-      cmdFormat: '&7/[command] &f[arguments]'
-      helpPageDescription: '&2* [description]'
+      cmdInfoFormat: '[käsklus] &f- &2[kirjeldus]'
+      cmdFormat: '&7/[käsklus] &f[parameetrid]'
+      helpPageDescription: '&2* [kirjeldus]'
       title: '&e-------&e ======= &6Jobs &e======= &e-------'
       page: '&e-----&e ====== Leht &6[1] &e/ &6[2] &e====== &e-----'
       fliperSimbols: '&e----------'
@@ -52,7 +52,7 @@ command:
       prevPageOff: '&7----<< Eelmine '
       nextPage: '&6 Järgmine &2>>----'
       nextPageOff: '&7 Järgmine >>----'
-      pageCount: '&2[current]/[total]'
+      pageCount: '&2[praegune]/[kokku]'
       pageCountHover: '&e[totalEntries] üksust'
       prevPageGui: '&6Eelmine leht '
       nextPageGui: '&6Järgmine leht'
@@ -163,7 +163,7 @@ command:
   editpoints:
     help:
       info: Muuda mängijate punkte.
-      args: set/add/take [playername] [amount]
+      args: set/add/take [mängijanimi] [summa]
     output:
       set: '&eMängija (&6%playername%&e) punktide arv muudetud: &6%amount%'
       add: '&eMängija (&6%playername%&e) sai juurde &6%amount% &epunkti. Nüüd on tal &6%total%&e punkti'
@@ -231,9 +231,9 @@ command:
   placeholders:
     help:
       info: Nimetab kõik kohatäited
-      args: (parse) (placeholder)
+      args: (parse) (kohatäide)
     output:
-      list: '&e[place]. &7[placeholder]'
+      list: '&e[koht]. &7[kohatäide]'
       outputResult: ' &etulemus: &7[result]'
       parse: '&6[placeholder] &7[source] poolt, &6tulemus &8|&f[result]&8|'
   entitylist:
@@ -247,6 +247,8 @@ command:
     error:
       nojob: Palun liitu esmalt mõne ametiga.
     output: '%joblevel%. tasemega %jobname%: %jobxp%/%jobmaxxp% kogemust'
+    bossBarOutput: '%joblevel%. tasemega %jobname%: %jobxp%/%jobmaxxp% kogemust%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: Avab eriliste ametite poe.
@@ -429,14 +431,14 @@ command:
       bonus: ' &2Boonus: &a[amount]%'
       newHeader: '&2========== [amount] saadaolevat ametit ========='
       description: '[description]'
-      list: '    &8[place]. &7[jobname]'
+      list: '    &8[koht]. &7[töönimi]'
       console:
         newHeader: '&2========== [amount] saadaolevat ametit ========='
         description: '[description]'
         totalWorkers: ' &7Töötajaid: &e[amount]'
         penalty: ' &4Trahv: &c[amount]%'
         bonus: ' &2Boonus: &a[amount]%'
-        list: ' &6[jobname]'
+        list: ' &6[töönimi]'
         newMax: ' &eMaksimaalne tase: &f[max]'
       click: '&bKlõpsa ametile, et selle kohta rohkem teavet saada!'
       detailed: '&bKlõpsa, et näha täpsemat nimekirja ameti tegevuste kohta'
@@ -580,7 +582,7 @@ command:
   exp:
     help:
       info: Muuda mängija kogemust ametis.
-      args: '[playername] [jobname] set/add/take [amount]'
+      args: '[mängijanimi] [töönimi] set/add/take [summa]'
     error:
       nojob: '&cSee mängija peab kõigepealt ametiga liituma.'
     output:
@@ -588,7 +590,7 @@ command:
   level:
     help:
       info: Muuda mängija taset teatud ametis.
-      args: '[playername] [jobname] set/add/take [amount]'
+      args: '[playername] [jobname] set/add/take [summa]'
     error:
       nojob: '&cSee mängija peab kõigepealt ametiga liituma.'
     output:

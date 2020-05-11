@@ -107,7 +107,7 @@ command:
       info: Meslek bonuslarını gösterir
       args: '[jobname]'
     output:
-      topline: '&7**************** &2[Para] &6[Puan] &e[EXP] &7****************'
+      topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
       permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
       item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
       global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
@@ -247,6 +247,8 @@ command:
     error:
       nojob: Lütfen önce bir mesleğe giriniz.
     output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: Özel meslek marketini açar.
@@ -462,6 +464,10 @@ command:
     error:
       noquests: '&cThere are no quests'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    status:
+      changed: '&2The quests status has been changed to&r %status%'
+      started: '&aStarted'
+      stopped: '&cStopped'
     output:
       completed: '&2      !Completed!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'

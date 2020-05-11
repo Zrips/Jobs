@@ -247,6 +247,8 @@ command:
     error:
       nojob: '&cElőször csatlakozz egy munkához.'
     output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: Megnyitja a különleges munkák boltját.
@@ -462,6 +464,10 @@ command:
     error:
       noquests: '&cNincsenek küldetések.'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    status:
+      changed: '&2A küldetések állapota megváltoztatva&r %status%'
+      started: '&aElindítva'
+      stopped: '&cLeállítva'
     output:
       completed: '&2      !Teljesítve!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
