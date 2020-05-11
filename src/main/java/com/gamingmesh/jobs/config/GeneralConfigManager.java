@@ -159,6 +159,7 @@ public class GeneralConfigManager {
     //BossBar
     public boolean BossBarEnabled;
     public boolean BossBarShowOnEachAction;
+    public int SegementCount;
     public int BossBarTimer;
     public boolean BossBarsMessageByDefault;
 
@@ -936,6 +937,8 @@ public class GeneralConfigManager {
 	    c.addComment("BossBar.ShowOnEachAction", "If enabled boss bar will update after each action",
 		"If disabled, BossBar will update only on each payment. This can save some server resources");
 	    BossBarShowOnEachAction = c.get("BossBar.ShowOnEachAction", false);
+	    c.addComment("BossBar.SegementCount", "Defines in how many parts bossabr will be split visually","Valid options: 1, 6, 10, 12, 20");
+	    SegementCount = c.get("BossBar.SegementCount", 1);
 	    c.addComment("BossBar.Timer", "How long in sec to show BossBar for player",
 		"If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
 	    BossBarTimer = c.get("BossBar.Timer", economyBatchDelay + 1);

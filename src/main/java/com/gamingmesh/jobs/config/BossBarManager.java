@@ -113,7 +113,22 @@ public class BossBarManager {
 		    break;
 		}
 	    }
-	    bar = Bukkit.createBossBar(message, color, BarStyle.SEGMENTED_20);
+	    BarStyle style = BarStyle.SOLID;
+	    switch(Jobs.getGCManager().SegementCount) {
+	    case 6: 
+		style = BarStyle.SEGMENTED_6;
+		break;
+	    case 10: 
+		style = BarStyle.SEGMENTED_10;
+		break;
+	    case 12: 
+		style = BarStyle.SEGMENTED_12;
+		break;
+	    case 20: 
+		style = BarStyle.SEGMENTED_20;
+		break;
+	    }
+	    bar = Bukkit.createBossBar(message, color, style);
 	} else
 	    bar.setTitle(message);
 
