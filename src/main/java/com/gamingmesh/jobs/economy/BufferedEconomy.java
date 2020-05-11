@@ -23,6 +23,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 import org.bukkit.Bukkit;

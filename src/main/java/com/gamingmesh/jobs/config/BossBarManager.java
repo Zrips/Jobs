@@ -2,8 +2,6 @@ package com.gamingmesh.jobs.config;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -11,12 +9,12 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.container.BossBarInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class BossBarManager {
 
@@ -32,16 +30,9 @@ public class BossBarManager {
 
 	if (player == null)
 	    return;
-
-	List<String> temp = new ArrayList<>();
-	temp.addAll(player.getUpdateBossBarFor());
-
-	for (String one : temp) {
-	    for (JobProgression oneJob : player.getJobProgression()) {
-		if (one.equalsIgnoreCase(oneJob.getJob().getName())) {
-		    ShowJobProgression(player, oneJob, oneJob.getLastExperience());
-		    oneJob.setLastExperience(0D);
-		}
+	for (JobProgression oneJob : player.getJobProgression()) {
+	    if (oneJob.getLastExperience() != 0) {
+		ShowJobProgression(player, oneJob, oneJob.getLastExperience());
 	    }
 	}
 	player.clearUpdateBossBarFor();
@@ -114,17 +105,17 @@ public class BossBarManager {
 		}
 	    }
 	    BarStyle style = BarStyle.SOLID;
-	    switch(Jobs.getGCManager().SegementCount) {
-	    case 6: 
+	    switch (Jobs.getGCManager().SegementCount) {
+	    case 6:
 		style = BarStyle.SEGMENTED_6;
 		break;
-	    case 10: 
+	    case 10:
 		style = BarStyle.SEGMENTED_10;
 		break;
-	    case 12: 
+	    case 12:
 		style = BarStyle.SEGMENTED_12;
 		break;
-	    case 20: 
+	    case 20:
 		style = BarStyle.SEGMENTED_20;
 		break;
 	    }
@@ -162,6 +153,7 @@ public class BossBarManager {
 	    }
 	}, Jobs.getGCManager().BossBarTimer * 20L));
 
+	jobProg.setLastExperience(0D);
     }
 
     private static BarColor getColor(Job job) {
