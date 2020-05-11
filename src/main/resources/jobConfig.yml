@@ -226,7 +226,7 @@ Jobs:
         # you can use minuses to take away money if the player break this block
         income: -1.0
         experience: -1.0
-    # Payment for collecting sweet berries or collect from composter
+    # Payment for collecting things like sweet berry bush, composter or honey
     Collect:
       sweet_berry_bush-3:
         income: 0.5
