@@ -360,17 +360,6 @@ public class JobsPlayer {
     }
 
     /**
-     * Check if have permission
-     * @return true if have
-     */
-    public boolean havePermission(String perm) {
-	Player player = Bukkit.getPlayer(getUniqueId());
-	if (player != null)
-	    return player.hasPermission(perm);
-	return false;
-    }
-
-    /**
      * Get the job progression with the certain job
      * @return the job progression
      */
@@ -639,7 +628,7 @@ public class JobsPlayer {
 
     public int getMaxJobLevelAllowed(Job job) {
 	int maxLevel = 0;
-	if (havePermission("jobs." + job.getName() + ".vipmaxlevel"))
+	if (getPlayer().hasPermission("jobs." + job.getName() + ".vipmaxlevel"))
 	    maxLevel = job.getVipMaxLevel() > job.getMaxLevel() ? job.getVipMaxLevel() : job.getMaxLevel();
 	else
 	    maxLevel = job.getMaxLevel();

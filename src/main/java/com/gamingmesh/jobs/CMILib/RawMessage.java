@@ -19,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
-
 public class RawMessage {
 
     private List<String> parts = new ArrayList<>();
@@ -83,22 +82,21 @@ public class RawMessage {
 	if (text.equalsIgnoreCase(" "))
 	    return text;
 	text = CMIChatColor.deColorize(text);
-	List<String> splited = new ArrayList<>();
-
+	List<String> splited = new ArrayList<String>();
 	if (text.contains(" ")) {
 	    for (String one : text.split(" ")) {
-		/**if (this.isBreakLine() && one.contains("\\n")) {
-		    String[] split = one.split("\\\\n");
-		    for (int i = 0; i < split.length; i++) {
-			if (i < split.length - 1) {
-			    splited.add(split[i] + "\n");
-			} else {
-			    splited.add(split[i]);
-			}
-		    }
-		} else {*/
+//		if (this.isBreakLine() && one.contains("\\n")) {
+//		    String[] split = one.split("\\\\n");
+//		    for (int i = 0; i < split.length; i++) {
+//			if (i < split.length - 1) {
+//			    splited.add(split[i] + "\n");
+//			} else {
+//			    splited.add(split[i]);
+//			}
+//		    }
+//		} else {
 		splited.add(one);
-		//}
+//		}
 		splited.add(" ");
 	    }
 	    if (text.length() > 1 && text.endsWith(" "))
@@ -125,9 +123,10 @@ public class RawMessage {
 	    }
 
 	    if (one.contains("&")) {
-		Pattern pattern = Pattern.compile("(&[0123456789abcdefklmnor])");
+		Pattern pattern = Pattern.compile("(&[0123456789abcdefklmnorABCDEFKLMNOR])");
 		Matcher match = pattern.matcher(one);
 		while (match.find()) {
+
 		    String color = CMIChatColor.getLastColors(match.group(0));
 		    CMIChatColor c = CMIChatColor.getColor(color);
 		    if (c != null) {
@@ -136,7 +135,7 @@ public class RawMessage {
 			} else if (c.isReset()) {
 			    formats.clear();
 			    lastColor = null;
-			    firstBlockColor = null;
+//			    firstBlockColor = null;
 			} else if (c.isColor()) {
 			    lastColor = c;
 			    formats.clear();
@@ -159,6 +158,7 @@ public class RawMessage {
 
 	    newText += colorString + one;
 	}
+
 	return newText;
     }
 
@@ -256,7 +256,7 @@ public class RawMessage {
     }
 
     public RawMessage add(String text, String hoverText, String command, String suggestion, String url) {
-
+	
 	if (text == null)
 	    return this;
 	text = provessText(text);
@@ -267,7 +267,7 @@ public class RawMessage {
 	String f = "{\"text\":\"" + ChatColor.translateAlternateColorCodes('&', makeMessyText(text)).replace(colorReplacerPlaceholder, "&") + "\"";
 
 	if (hoverText != null && !hoverText.isEmpty()) {
-		hoverText = provessText(hoverText);
+	    hoverText = provessText(hoverText);
 	    hoverText = hoverText.replace(" \n", " \\n");
 	    hoverText = hoverText.replace("\n", "\\n");
 	    f += ",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[{\"text\":\"" + ChatColor.translateAlternateColorCodes('&', hoverText) + "\"}]}}";
@@ -281,8 +281,8 @@ public class RawMessage {
 	    suggestion = suggestion.replace(" \\n", " \\\\n");
 	    suggestion = suggestion.replace(" \n", " \\\\n");
 
-	if (suggestion != null)
-	    f += ",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + CMIChatColor.deColorize(suggestion) + "\"}";
+	    if (suggestion != null)
+		f += ",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + CMIChatColor.deColorize(suggestion) + "\"}";
 	}
 	if (url != null) {
 	    url = provessText(url);
@@ -294,7 +294,7 @@ public class RawMessage {
 	if (command != null) {
 	    if (!command.startsWith("/"))
 		command = "/" + command;
-	command = provessText(command);
+	    command = provessText(command);
 	    f += ",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + command + "\"}";
 	}
 //	}
@@ -406,8 +406,8 @@ public class RawMessage {
 	    loreS = ",Lore:[" + loreS + "]";
 	}
 	f += ",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{id:" + itemName + ",Count:1b,tag:{display:{Name:\\\"" + CMIChatColor.translateAlternateColorCodes(ItemName) + "\\\"" + loreS
-		    + "}"
-		    + Enchants + "}}\"}";
+	    + "}"
+	    + Enchants + "}}\"}";
 
 	if (suggestion != null)
 	    f += ",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + suggestion + "\"}";

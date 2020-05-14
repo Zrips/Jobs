@@ -118,6 +118,9 @@ public class BossBarManager {
 	    case 20:
 		style = BarStyle.SEGMENTED_20;
 		break;
+	    default:
+		style = BarStyle.SEGMENTED_6;
+		break;
 	    }
 	    bar = Bukkit.createBossBar(message, color, style);
 	} else

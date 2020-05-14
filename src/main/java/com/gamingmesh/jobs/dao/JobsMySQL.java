@@ -192,14 +192,13 @@ public class JobsMySQL extends JobsDAO {
     @Override
     public boolean truncate(String table) {
 	Statement statement = null;
-	String query = null;
 	try {
 	    if (!this.isTable(table)) {
 		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
 	    statement = getConnection().createStatement();
-	    query = "DELETE FROM " + table + ";";
+	    String query = "DELETE FROM " + table + ";";
 	    statement.executeUpdate(query);
 	    return true;
 	} catch (SQLException e) {

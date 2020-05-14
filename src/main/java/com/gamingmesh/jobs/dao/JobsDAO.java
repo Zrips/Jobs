@@ -487,6 +487,7 @@ public abstract class JobsDAO {
 	}
     }
 
+    @Deprecated
     protected abstract void setupConfig() throws SQLException;
 
     protected abstract void checkUpdate() throws SQLException;
@@ -1522,11 +1523,9 @@ public abstract class JobsDAO {
 		Convert convertData = list.get(i);
 
 		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(convertData.getUserUUID());
-		if (jPlayer == null)
-		    continue;
 		Job job = Jobs.getJob(convertData.getJobId());
 
-		insert.setInt(1, jPlayer.getUserId());
+		insert.setInt(1, jPlayer != null ? jPlayer.getUserId() : -1);
 		insert.setInt(2, convertData.getJobId());
 		insert.setInt(3, convertData.getLevel());
 		insert.setInt(4, convertData.getExp());

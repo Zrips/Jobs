@@ -424,7 +424,7 @@ public class Placeholder {
 	    case user_jobs:
 		List<JobProgression> l = user.getJobProgression();
 		if (l.isEmpty()) {
-		    return "none";
+		    return "";
 		}
 
 		JobProgression prog = l.get(ThreadLocalRandom.current().nextInt(l.size()));
@@ -475,7 +475,7 @@ public class Placeholder {
 		    Job jobs = getJobFromValue(vals.get(0));
 		    return jobs == null ? "no" : convert(user.isInJob(jobs));
 		case user_job_$1:
-		    return j == null ? "none" : j.getJob().getName();
+		    return j == null ? "" : j.getJob().getName();
 
 		case maxjobs:
 		    Double max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max");

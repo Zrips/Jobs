@@ -20,7 +20,6 @@ package com.gamingmesh.jobs.container;
 
 import java.util.HashMap;
 
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobProgression {
@@ -255,7 +254,7 @@ public class JobProgression {
 	return lastExperience == null ? 0D : lastExperience;
     }
 
-    public void setLastExperience(Double lastExperience) { 
+    public void setLastExperience(Double lastExperience) {
 	this.lastExperience = lastExperience;
     }
 
