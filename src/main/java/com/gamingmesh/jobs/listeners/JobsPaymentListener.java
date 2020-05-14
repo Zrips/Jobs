@@ -228,24 +228,7 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	boolean found = false;
-	t: for (JobProgression prog : jPlayer.getJobProgression()) {
-	    for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(ActionType.MILK)) {
-		if (info.getActionType() == ActionType.MILK) {
-		    found = true;
-		    break t;
-		}
-	    }
-
-	    for (Quest q : prog.getJob().getQuests()) {
-		if (q != null && q.hasAction(ActionType.MILK)) {
-		    found = true;
-		    break t;
-		}
-	    }
-	}
-
-	if (!found) {
+	if (!Jobs.isPlayerHaveAction(jPlayer, ActionType.MILK)) {
 	    return;
 	}
 

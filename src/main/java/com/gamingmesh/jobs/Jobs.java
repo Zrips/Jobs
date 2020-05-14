@@ -539,6 +539,37 @@ public class Jobs extends JavaPlugin {
     }
 
     /**
+     * Checks if player have the given {@link ActionType} in jobs.
+     * @param jPlayer {@link JobsPlayer}
+     * @param type {@link ActionType}
+     * @return true if the player have the given action
+     */
+    public static boolean isPlayerHaveAction(JobsPlayer jPlayer, ActionType type) {
+	if (jPlayer == null || type == null)
+	    return false;
+
+	boolean found = false;
+
+	t: for (JobProgression prog : jPlayer.getJobProgression()) {
+	    for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(type)) {
+		if (info.getActionType() == type) {
+		    found = true;
+		    break t;
+		}
+	    }
+
+	    for (Quest q : prog.getJob().getQuests()) {
+		if (q != null && q.hasAction(type)) {
+		    found = true;
+		    break t;
+		}
+	    }
+	}
+
+	return found;
+    }
+
+    /**
      * Function to get the number of slots used on the server for this job
      * @param job - the job
      * @return the number of slots
