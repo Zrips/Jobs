@@ -1990,13 +1990,6 @@ public abstract class JobsDAO {
 	    return;
 	PreparedStatement prest = null;
 	try {
-	    prest = conn.prepareStatement("DELETE FROM `" + DBTables.PointsTable.getTableName() + "` WHERE `" + PointsTableFields.userid.getCollumn() + "` = ?;");
-	    prest.setInt(1, jPlayer.getUserId());
-	    prest.execute();
-
-	    close(prest);
-	    prest = null;
-
 	    PlayerPoints pointInfo = jPlayer.getPointsData();
 	    prest = conn.prepareStatement("INSERT INTO `" + DBTables.PointsTable.getTableName() + "` (`" + PointsTableFields.totalpoints.getCollumn() + "`, `" + PointsTableFields.currentpoints.getCollumn()
 		+ "`, `" + PointsTableFields.userid.getCollumn() + "`) VALUES (?, ?, ?);");

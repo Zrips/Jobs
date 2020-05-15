@@ -628,7 +628,7 @@ public class JobsPlayer {
 
     public int getMaxJobLevelAllowed(Job job) {
 	int maxLevel = 0;
-	if (getPlayer().hasPermission("jobs." + job.getName() + ".vipmaxlevel"))
+	if (getPlayer() != null && getPlayer().hasPermission("jobs." + job.getName() + ".vipmaxlevel"))
 	    maxLevel = job.getVipMaxLevel() > job.getMaxLevel() ? job.getVipMaxLevel() : job.getMaxLevel();
 	else
 	    maxLevel = job.getMaxLevel();
@@ -795,9 +795,7 @@ public class JobsPlayer {
      * @return true if online, otherwise false
      */
     public boolean isOnline() {
-	if (getPlayer() != null)
-	    return getPlayer().isOnline();
-	return isOnline;
+	return getPlayer() != null ? getPlayer().isOnline() : isOnline;
     }
 
     public boolean isSaved() {
