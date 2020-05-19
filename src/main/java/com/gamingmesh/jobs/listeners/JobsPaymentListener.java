@@ -773,7 +773,11 @@ public class JobsPaymentListener implements Listener {
 	if (!(inv instanceof AnvilInventory) && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory))
 	    return;
 
-	if (!event.getSlotType().equals(SlotType.RESULT) || (event.getSlot() != 2 && event.getSlot() != 1))
+	int slot = event.getSlot();
+	if (!event.getSlotType().equals(SlotType.RESULT) || (slot != 2 && slot != 1))
+	    return;
+
+	if (!(inv instanceof StonecutterInventory) && slot == 1)
 	    return;
 
 	if (!(event.getWhoClicked() instanceof Player))
