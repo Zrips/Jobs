@@ -1745,13 +1745,11 @@ public abstract class JobsDAO {
 	try {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.UsersTable.getTableName() + "`;");
 	    res = prest.executeQuery();
+	    List<String> uuids = new ArrayList<>();
 	    while (res.next()) {
 		String uuid = res.getString(UserTableFields.player_uuid.getCollumn());
 		if (uuid == null || uuid.isEmpty()) {
-		    PreparedStatement ps = conn.prepareStatement("DELETE FROM `" + DBTables.UsersTable.getTableName()
-			+ "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
-		    ps.setString(1, uuid);
-		    ps.execute();
+		    uuids.add(uuid);
 		    continue;
 		}
 
@@ -1765,6 +1763,16 @@ public abstract class JobsDAO {
 		    res.getInt(UserTableFields.donequests.getCollumn()),
 		    res.getString(UserTableFields.quests.getCollumn())));
 	    }
+
+	    for (String u : uuids) {
+		PreparedStatement ps = conn.prepareStatement("DELETE FROM `" + DBTables.UsersTable.getTableName()
+		+ "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
+		ps.setString(1, u);
+		ps.execute();
+		close(ps);
+	    }
+
+	    uuids.clear();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {

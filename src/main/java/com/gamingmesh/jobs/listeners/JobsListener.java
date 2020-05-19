@@ -86,9 +86,8 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class JobsListener implements Listener {
-    // hook to the main plugin
-    private Jobs plugin;
 
+    private Jobs plugin;
     private HashMap<UUID, Long> interactDelay = new HashMap<>();
 
     public JobsListener(Jobs plugin) {
@@ -108,7 +107,6 @@ public class JobsListener implements Listener {
 	    return;
 
 	final String msg = Util.getJobsEditorMap().remove(player.getUniqueId());
-
 	if (msg == null)
 	    return;
 

@@ -75,6 +75,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
+import org.bukkit.inventory.GrindstoneInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -769,10 +770,8 @@ public class JobsPaymentListener implements Listener {
 
 	Inventory inv = event.getInventory();
 	// must be anvil inventory
-	if (!(inv instanceof AnvilInventory))
+	if (!(inv instanceof AnvilInventory) && !(inv instanceof GrindstoneInventory))
 	    return;
-
-	// Must be "container" slot 9
 
 	if (!event.getSlotType().equals(SlotType.RESULT) || event.getSlot() != 2)
 	    return;
