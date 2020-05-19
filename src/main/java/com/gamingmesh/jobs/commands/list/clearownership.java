@@ -34,7 +34,6 @@ public class clearownership implements Cmd {
 	int brewing = FurnaceBrewingHandling.clearBrewingStands(jPlayer.getUniqueId());
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.clearownership.output.cleared", "[furnaces]", furnace, "[brewing]", brewing));
-
 	return true;
     }
 }

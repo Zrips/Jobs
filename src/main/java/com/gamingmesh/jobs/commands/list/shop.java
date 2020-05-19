@@ -29,10 +29,7 @@ public class shop implements Cmd {
 	    } catch (NumberFormatException e) {
 	    }
 
-	Player player = (Player) sender;
-
-	Jobs.getShopManager().openShopGui(player, page);
-
+	Jobs.getShopManager().openShopGui((Player) sender, page);
 	return true;
     }
 }

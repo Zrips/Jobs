@@ -78,6 +78,7 @@ import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.GrindstoneInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.StonecutterInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
@@ -536,7 +537,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
-
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -770,10 +770,10 @@ public class JobsPaymentListener implements Listener {
 
 	Inventory inv = event.getInventory();
 	// must be anvil inventory
-	if (!(inv instanceof AnvilInventory) && !(inv instanceof GrindstoneInventory))
+	if (!(inv instanceof AnvilInventory) && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory))
 	    return;
 
-	if (!event.getSlotType().equals(SlotType.RESULT) || event.getSlot() != 2)
+	if (!event.getSlotType().equals(SlotType.RESULT) || (event.getSlot() != 2 && event.getSlot() != 1))
 	    return;
 
 	if (!(event.getWhoClicked() instanceof Player))
@@ -843,6 +843,11 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
+
+	if (inv instanceof StonecutterInventory) {
+	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+	    return;
+	}
 
 	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1) != null && inv.getItem(1).getType().equals(Material.ENCHANTED_BOOK)) {
 	    Map<Enchantment, Integer> enchants = resultStack.getEnchantments();

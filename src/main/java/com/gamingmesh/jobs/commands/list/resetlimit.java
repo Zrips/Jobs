@@ -17,7 +17,6 @@ public class resetlimit implements Cmd {
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-
 	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
 	    return true;
@@ -25,7 +24,6 @@ public class resetlimit implements Cmd {
 
 	jPlayer.resetPaymentLimit();
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetlimit.output.reseted", "%playername%", jPlayer.getName()));
-
 	return true;
     }
 }
