@@ -132,6 +132,8 @@ public class QuestProgression {
 	    }
 	}
 
+	jPlayer.setSaved(false);
+
 	if (!isCompleted())
 	    return;
 
@@ -155,5 +157,13 @@ public class QuestProgression {
 
 	return;
 
+    }
+
+    public boolean isGivenReward() {
+	return givenReward;
+    }
+
+    public void setGivenReward(boolean givenReward) {
+	this.givenReward = givenReward;
     }
 }

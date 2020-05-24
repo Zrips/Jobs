@@ -75,9 +75,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
+import org.bukkit.inventory.GrindstoneInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.StonecutterInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
@@ -229,24 +231,7 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	boolean found = false;
-	t: for (JobProgression prog : jPlayer.getJobProgression()) {
-	    for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(ActionType.MILK)) {
-		if (info.getActionType() == ActionType.MILK) {
-		    found = true;
-		    break t;
-		}
-	    }
-
-	    for (Quest q : prog.getJob().getQuests()) {
-		if (q != null && q.hasAction(ActionType.MILK)) {
-		    found = true;
-		    break t;
-		}
-	    }
-	}
-
-	if (!found) {
+	if (!Jobs.isPlayerHaveAction(jPlayer, ActionType.MILK)) {
 	    return;
 	}
 
@@ -553,7 +538,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
-
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -616,13 +600,19 @@ public class JobsPaymentListener implements Listener {
 
 	// Checking if item is been repaired, not crafted. Combining 2 items
 	ItemStack[] sourceItems = event.getInventory().getContents();
+
 	// For dye check
 	List<ItemStack> DyeStack = new ArrayList<>();
+
 	int y = -1;
+
 	CMIMaterial first = null;
 	CMIMaterial second = null;
 	CMIMaterial third = null;
+
 	boolean leather = false;
+	boolean shulker = false;
+
 	for (ItemStack s : sourceItems) {
 	    if (s == null)
 		continue;
@@ -633,6 +623,7 @@ public class JobsPaymentListener implements Listener {
 	    CMIMaterial mat = CMIMaterial.get(s);
 	    if (mat != CMIMaterial.NONE) {
 		y++;
+
 		if (y == 0)
 		    first = mat;
 		if (y == 1)
@@ -648,6 +639,25 @@ public class JobsPaymentListener implements Listener {
 	    case LEATHER_LEGGINGS:
 	    case LEATHER_HORSE_ARMOR:
 		leather = true;
+		break;
+	    case SHULKER_BOX:
+	    case BLACK_SHULKER_BOX:
+	    case BLUE_SHULKER_BOX:
+	    case BROWN_SHULKER_BOX:
+	    case CYAN_SHULKER_BOX:
+	    case GRAY_SHULKER_BOX:
+	    case GREEN_SHULKER_BOX:
+	    case LIGHT_BLUE_SHULKER_BOX:
+	    case LIGHT_GRAY_SHULKER_BOX:
+	    case LIME_SHULKER_BOX:
+	    case MAGENTA_SHULKER_BOX:
+	    case ORANGE_SHULKER_BOX:
+	    case PINK_SHULKER_BOX:
+	    case PURPLE_SHULKER_BOX:
+	    case RED_SHULKER_BOX:
+	    case WHITE_SHULKER_BOX:
+	    case YELLOW_SHULKER_BOX:
+		shulker = true;
 		break;
 	    default:
 		break;
@@ -667,11 +677,13 @@ public class JobsPaymentListener implements Listener {
 
 	// Check Dyes
 	if (y >= 2) {
-	    if ((third != null && third.isDye() || second != null && second.isDye() || first != null && first.isDye()) && leather) {
+	    if ((third != null && third.isDye() || second != null && second.isDye() || first != null && first.isDye())
+		&& (leather || shulker)) {
 		Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
 		for (ItemStack OneDye : DyeStack) {
 		    Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
 		}
+
 		return;
 	    }
 	}
@@ -803,12 +815,14 @@ public class JobsPaymentListener implements Listener {
 
 	Inventory inv = event.getInventory();
 	// must be anvil inventory
-	if (!(inv instanceof AnvilInventory))
+	if (!(inv instanceof AnvilInventory) && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory))
 	    return;
 
-	// Must be "container" slot 9
+	int slot = event.getSlot();
+	if (!event.getSlotType().equals(SlotType.RESULT) || (slot != 2 && slot != 1))
+	    return;
 
-	if (!event.getSlotType().equals(SlotType.RESULT) || event.getSlot() != 2)
+	if (!(inv instanceof StonecutterInventory) && slot == 1)
 	    return;
 
 	if (!(event.getWhoClicked() instanceof Player))
@@ -878,6 +892,11 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
+
+	if (inv instanceof StonecutterInventory) {
+	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+	    return;
+	}
 
 	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1) != null && inv.getItem(1).getType().equals(Material.ENCHANTED_BOOK)) {
 	    Map<Enchantment, Integer> enchants = resultStack.getEnchantments();
@@ -1243,7 +1262,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
-	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
+	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), pDamager, lVictim);
 
 	// Payment for killing player with particular job, except NPC's
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
@@ -1256,7 +1275,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 
 	    for (JobProgression job : jobs) {
-		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), e.getDamager(), lVictim);
+		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), pDamager, lVictim);
 	    }
 	}
     }
@@ -1807,7 +1826,6 @@ public class JobsPaymentListener implements Listener {
 
     // Prevent item durability loss
     private static boolean payForItemDurabilityLoss(Player p) {
-
 	if (Jobs.getGCManager().payItemDurabilityLoss)
 	    return true;
 

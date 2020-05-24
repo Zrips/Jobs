@@ -8,7 +8,7 @@ limitedItem:
 general:
   Spawner: '&r[type] Spawner'
   info:
-    toplineseparator: '7*********************** &6%playername% &7***********************'
+    toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
     time:
       days: '&e%days% &6Dias '
@@ -247,6 +247,8 @@ command:
     error:
       nojob: Entre primeiro em uma Profissão.
     output: 'Nível %joblevel% para %jobname%: %jobxp%/%jobmaxxp% exp'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: Abre uma loja de profissão especial.
@@ -462,6 +464,10 @@ command:
     error:
       noquests: '&cNão há missões disponíveis'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    status:
+      changed: '&2The quests status has been changed to&r %status%'
+      started: '&aStarted'
+      stopped: '&cStopped'
     output:
       completed: '&2      !Completado!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'

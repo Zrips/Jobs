@@ -56,7 +56,6 @@ public class info implements Cmd {
 	}
 
 	Jobs.getCommandManager().jobInfoMessage(sender, jPlayer, job, type, page);
-
 	return true;
     }
 

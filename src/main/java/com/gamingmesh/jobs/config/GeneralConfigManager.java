@@ -40,7 +40,6 @@ import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class GeneralConfigManager {
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
@@ -56,7 +55,7 @@ public class GeneralConfigManager {
     protected boolean addXpPlayer;
     public boolean boostedItemsInOffHand;
     public boolean payItemDurabilityLoss;
-    public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<CMIMaterial, HashMap<Enchantment, Integer>>();
+    public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
     protected boolean hideJobsWithoutPermission;
     protected int maxJobs;
     protected boolean payNearSpawner;
@@ -77,6 +76,8 @@ public class GeneralConfigManager {
     private String getSelectionTool;
 
     public boolean enableSchedule;
+
+    public int jobExpiryTime;
 
     private int ResetTimeHour;
     private int ResetTimeMinute;
@@ -158,6 +159,7 @@ public class GeneralConfigManager {
     //BossBar
     public boolean BossBarEnabled;
     public boolean BossBarShowOnEachAction;
+    public int SegementCount;
     public int BossBarTimer;
     public boolean BossBarsMessageByDefault;
 
@@ -343,9 +345,6 @@ public class GeneralConfigManager {
     }
 
     public boolean canPerformActionInWorld(World world) {
-	if (world == null || !DisabledWorldsUse)
-	    return true;
-
 	return canPerformActionInWorld(world.getName());
     }
 
@@ -537,8 +536,12 @@ public class GeneralConfigManager {
 	c.addComment("DailyQuests.SkipQuestCost", "The cost of the quest skip (money).", "Default 0, disabling cost of skipping quest.");
 	skipQuestCost = c.get("DailyQuests.SkipQuestCost", 0d);
 
-	c.addComment("ScheduleManager", "Enables the schedule manager to boost the server.", "By default this has been disabled for causing memory leak.");
+	c.addComment("ScheduleManager", "Enables the schedule manager to boost the server.");
 	enableSchedule = c.get("ScheduleManager.Use", true);
+
+	c.addComment("JobExpirationTime", "Fire players if their work time has expired at a job.", "Setting time to 0, will not works.",
+	    "For this to work, the player needs to get a new job for the timer to start.", "Counting in hours");
+	jobExpiryTime = c.get("JobExpirationTime", 0);
 
 	c.addComment("max-jobs", "Maximum number of jobs a player can join.", "Use 0 for no maximum", "Keep in mind that jobs.max.[amount] will bypass this setting");
 	maxJobs = c.get("max-jobs", 3);
@@ -604,16 +607,15 @@ public class GeneralConfigManager {
 	    if (value != null) {
 		try {
 		    level = Integer.parseInt(value);
-		} catch (Throwable e) {
+		} catch (NumberFormatException e) {
 		}
 	    }
-	    HashMap<Enchantment, Integer> submap = new HashMap<Enchantment, Integer>();
+	    HashMap<Enchantment, Integer> submap = new HashMap<>();
 	    if (enchant != null)
 		submap.put(enchant, level);
-	    
+
 	    whiteListedItems.put(mat, submap);
 	}
-	    Debug.D("Loaded materials ",whiteListedItems.size());
 
 	c.addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");
 	modifyChat = c.get("modify-chat.use", false);
@@ -935,6 +937,8 @@ public class GeneralConfigManager {
 	    c.addComment("BossBar.ShowOnEachAction", "If enabled boss bar will update after each action",
 		"If disabled, BossBar will update only on each payment. This can save some server resources");
 	    BossBarShowOnEachAction = c.get("BossBar.ShowOnEachAction", false);
+	    c.addComment("BossBar.SegementCount", "Defines in how many parts bossabr will be split visually","Valid options: 1, 6, 10, 12, 20");
+	    SegementCount = c.get("BossBar.SegementCount", 1);
 	    c.addComment("BossBar.Timer", "How long in sec to show BossBar for player",
 		"If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
 	    BossBarTimer = c.get("BossBar.Timer", economyBatchDelay + 1);

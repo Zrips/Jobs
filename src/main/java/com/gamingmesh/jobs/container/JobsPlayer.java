@@ -19,7 +19,9 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -76,6 +78,8 @@ public class JobsPlayer {
     private HashMap<String, HashMap<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
     private int skippedQuests = 0;
+
+    private final HashMap<UUID, HashMap<Job, Long>> leftTimes = new HashMap<>();
 
     private PlayerPoints pointsData = null;
 
@@ -356,17 +360,6 @@ public class JobsPlayer {
     }
 
     /**
-     * Check if have permission
-     * @return true if have
-     */
-    public boolean havePermission(String perm) {
-	Player player = Bukkit.getPlayer(getUniqueId());
-	if (player != null)
-	    return player.hasPermission(perm);
-	return false;
-    }
-
-    /**
      * Get the job progression with the certain job
      * @return the job progression
      */
@@ -635,7 +628,7 @@ public class JobsPlayer {
 
     public int getMaxJobLevelAllowed(Job job) {
 	int maxLevel = 0;
-	if (havePermission("jobs." + job.getName() + ".vipmaxlevel"))
+	if (getPlayer() != null && getPlayer().hasPermission("jobs." + job.getName() + ".vipmaxlevel"))
 	    maxLevel = job.getVipMaxLevel() > job.getMaxLevel() ? job.getVipMaxLevel() : job.getMaxLevel();
 	else
 	    maxLevel = job.getMaxLevel();
@@ -802,9 +795,7 @@ public class JobsPlayer {
      * @return true if online, otherwise false
      */
     public boolean isOnline() {
-	if (getPlayer() != null)
-	    return getPlayer().isOnline();
-	return isOnline;
+	return getPlayer() != null ? getPlayer().isOnline() : isOnline;
     }
 
     public boolean isSaved() {
@@ -1024,12 +1015,16 @@ public class JobsPlayer {
 	    int i = 0;
 	    while (i <= job.getQuests().size()) {
 		++i;
+
 		List<String> currentQuests = new ArrayList<>(g.keySet());
 		Quest q = job.getNextQuest(currentQuests, getJobProgression(job).getLevel());
 		if (q == null)
 		    continue;
+
 		QuestProgression qp = new QuestProgression(q);
-		g.put(qp.getQuest().getConfigName().toLowerCase(), qp);
+		if (qp.getQuest() != null)
+		    g.put(qp.getQuest().getConfigName().toLowerCase(), qp);
+
 		if (g.size() >= job.getMaxDailyQuests())
 		    break;
 	    }
@@ -1052,7 +1047,7 @@ public class JobsPlayer {
 	    Quest q = oneJ.getValue().getQuest();
 	    if (q == null) {
 		continue;
-		}
+	    }
 
 	    if (type == null) {
 		tmp.put(q.getConfigName().toLowerCase(), oneJ.getValue());
@@ -1084,7 +1079,7 @@ public class JobsPlayer {
 	    Quest q = one.getQuest();
 	    if (q == null) {
 		continue;
-		}
+	    }
 
 	    if (q.getObjectives().isEmpty())
 		continue;
@@ -1156,7 +1151,7 @@ public class JobsPlayer {
 		    HashMap<String, QuestObjective> old = quest.getObjectives().get(action);
 		    if (old == null)
 			continue;
-		    
+
 		    QuestObjective obj = old.get(target);
 
 		    if (obj == null)
@@ -1167,6 +1162,9 @@ public class JobsPlayer {
 		    int done = Integer.parseInt(doneS);
 		    qp.setAmountDone(obj, done);
 		}
+
+		if (qp.isCompleted())
+		    qp.setGivenReward(true);
 
 	    } catch (Exception | Error e) {
 		e.printStackTrace();
@@ -1234,5 +1232,41 @@ public class JobsPlayer {
 
     public void setSkippedQuests(int skippedQuests) {
 	this.skippedQuests = skippedQuests;
+    }
+
+    public HashMap<UUID, HashMap<Job, Long>> getLeftTimes() {
+	return leftTimes;
+    }
+
+    public boolean isLeftTimeEnded(Job job) {
+	UUID uuid = getUniqueId();
+	if (!leftTimes.containsKey(uuid))
+	    return false;
+
+	HashMap<Job, Long> map = leftTimes.get(uuid);
+	if (!map.containsKey(job))
+	    return false;
+
+	return map.get(job).longValue() < System.currentTimeMillis();
+    }
+
+    public void setLeftTime(Job job) {
+	UUID uuid = getUniqueId();
+
+	if (leftTimes.containsKey(uuid))
+	    leftTimes.remove(uuid);
+
+	int hour = Jobs.getGCManager().jobExpiryTime;
+	if (hour == 0)
+	    return;
+
+	Calendar cal = Calendar.getInstance();
+	cal.setTime(new Date());
+
+	cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + hour);
+
+	HashMap<Job, Long> map = new HashMap<>();
+	map.put(job, cal.getTimeInMillis());
+	leftTimes.put(uuid, map);
     }
 }

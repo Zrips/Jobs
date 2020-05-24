@@ -18,8 +18,10 @@ public class gtop implements Cmd {
     @Override
     @JobCommand(600)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+	int amount = Jobs.getGCManager().JobsTopAmount;
+
 	if (args.length != 1 && args.length != 0) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.help.info", "%amount%", amount));
 	    return true;
 	}
 
@@ -27,26 +29,25 @@ public class gtop implements Cmd {
 	    return false;
 
 	Player player = (Player) sender;
+	int page = 1;
 	if (args.length == 1) {
 	    if (args[0].equalsIgnoreCase("clear")) {
 		player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
 		plugin.getCMIScoreboardManager().removeScoreBoard(player);
 		return true;
 	    }
-	}
 
-	int page = 1;
-	if (args.length == 1)
 	    try {
 		page = Integer.parseInt(args[0]);
 	    } catch (NumberFormatException e) {
 		return true;
 	    }
+	}
 
 	if (page < 1)
 	    page = 1;
 
-	PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, Jobs.getPlayerManager().getPlayersCache().size(), page);
+	PageInfo pi = new PageInfo(amount, Jobs.getPlayerManager().getPlayersCache().size(), page);
 
 	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(pi.getStart() - 1);
 	if (FullList.isEmpty()) {
@@ -55,42 +56,40 @@ public class gtop implements Cmd {
 	}
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline", "%amount%", Jobs.getGCManager().JobsTopAmount));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline", "%amount%", amount));
+
 	    int i = 0;
 	    for (TopList One : FullList) {
-		i++;
-		if (i> Jobs.getGCManager().JobsTopAmount)
+		if (i > amount)
 		    break;
+
 		String PlayerName = One.getPlayerName();
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list",
 		    "%number%", pi.getPositionForOutput(i-1),
 		    "%playername%", PlayerName,
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
+		++i;
 	    }
-
-	    Jobs.getInstance().ShowPagination(sender, pi, "jobs gtop");
 	} else {
 	    List<String> ls = new ArrayList<>();
 	    int i = 0;
 	    for (TopList one : FullList) {
-		i++;
-		if (i> Jobs.getGCManager().JobsTopAmount)
+		if (i > amount)
 		    break;
 
-		String playername = one.getPlayerName() != null ? one.getPlayerName() : "Unknown";
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line",
 		    "%number%", pi.getPositionForOutput(i),
-		    "%playername%", playername,
+		    "%playername%", one.getPlayerName(),
 		    "%level%", one.getLevel()));
+		++i;
 	    }
 
 	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.gtopline"), ls);
 	    plugin.getCMIScoreboardManager().addNew(player);
-
-	    Jobs.getInstance().ShowPagination(sender, pi, "jobs gtop");
 	}
 
+	Jobs.getInstance().ShowPagination(sender, pi, "jobs gtop");
 	return true;
     }
 }

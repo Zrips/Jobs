@@ -265,21 +265,28 @@ public class PlayerManager {
 	int y = 0;
 	int i = 0;
 	int total = playersUUIDCache.size();
+
 	for (Entry<UUID, JobsPlayer> one : playersUUIDCache.entrySet()) {
 	    JobsPlayer jPlayer = one.getValue();
+
 	    if (resetID)
 		jPlayer.setUserId(-1);
+
 	    JobsDAO dao = Jobs.getJobsDAO();
 	    dao.updateSeen(jPlayer);
-	    if (jPlayer.getUserId() == -1)
+
+	    if (!resetID && jPlayer.getUserId() == -1)
 		continue;
+
 	    for (JobProgression oneJ : jPlayer.getJobProgression())
 		dao.insertJob(jPlayer, oneJ);
 	    dao.saveLog(jPlayer);
 	    dao.savePoints(jPlayer);
 	    dao.recordPlayersLimits(jPlayer);
+
 	    i++;
 	    y++;
+
 	    if (y >= 1000) {
 		Jobs.consoleMsg("&e[Jobs] Saved " + i + "/" + total + " players data");
 		y = 0;
@@ -388,6 +395,7 @@ public class PlayerManager {
 	    return;
 
 	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
+	jPlayer.setLeftTime(job);
 
 	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
 
@@ -421,6 +429,8 @@ public class PlayerManager {
 	    return false;
 	PerformCommands.PerformCommandsOnLeave(jPlayer, job);
 	Jobs.leaveSlot(job);
+
+	jPlayer.getLeftTimes().remove(jPlayer.getUniqueId());
 
 	Jobs.getSignUtil().updateAllSign(job);
 	job.updateTotalPlayers();
@@ -1022,7 +1032,8 @@ public class PlayerManager {
 	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
 //	boost.add(BoostOf.Item, Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog));
 	boost.add(BoostOf.Item, getItemBoostNBT(player.getPlayer(), prog));
-	boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
+	if (!Jobs.getRestrictedAreaManager().getRestrictedAres().isEmpty())
+	    boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
 	return boost;
     }
 

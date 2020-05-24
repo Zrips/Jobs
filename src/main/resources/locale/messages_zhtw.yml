@@ -247,6 +247,8 @@ command:
     error:
       nojob: 請先加入一個職業.
     output: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: 打開特殊商店.
@@ -462,6 +464,10 @@ command:
     error:
       noquests: '&cThere are no quests'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    status:
+      changed: '&2The quests status has been changed to&r %status%'
+      started: '&aStarted'
+      stopped: '&cStopped'
     output:
       completed: '&2      !Completed!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
@@ -656,7 +662,7 @@ message:
   crafting:
     fullinventory: '你的背包滿了!'
 signs:
-  List: '&0[number].&8[player]&7:&4LV.[level]'
+  List: '&0[number].&8[player]&7:&4[level]'
   questList: '&0[number].&8[player]&7:&4[quests]'
   SpecialList:
     p1: '&b** &8First &b**'

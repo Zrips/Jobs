@@ -247,6 +247,8 @@ command:
     error:
       nojob: Сперва устройтесь на работу.
     output: 'Уровень%joblevel% %jobname% : %jobxp%/%jobmaxxp% опыта'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: Открывает специальный магазин за бонусные очки.
@@ -462,6 +464,10 @@ command:
     error:
       noquests: '&cКвесты не найдены'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    status:
+      changed: '&2The quests status has been changed to&r %status%'
+      started: '&aStarted'
+      stopped: '&cStopped'
     output:
       completed: '&2      !Завершено!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'

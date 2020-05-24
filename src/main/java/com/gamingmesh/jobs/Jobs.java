@@ -539,6 +539,37 @@ public class Jobs extends JavaPlugin {
     }
 
     /**
+     * Checks if player have the given {@link ActionType} in jobs.
+     * @param jPlayer {@link JobsPlayer}
+     * @param type {@link ActionType}
+     * @return true if the player have the given action
+     */
+    public static boolean isPlayerHaveAction(JobsPlayer jPlayer, ActionType type) {
+	if (jPlayer == null || type == null)
+	    return false;
+
+	boolean found = false;
+
+	t: for (JobProgression prog : jPlayer.getJobProgression()) {
+	    for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(type)) {
+		if (info.getActionType() == type) {
+		    found = true;
+		    break t;
+		}
+	    }
+
+	    for (Quest q : prog.getJob().getQuests()) {
+		if (q != null && q.hasAction(type)) {
+		    found = true;
+		    break t;
+		}
+	    }
+	}
+
+	return found;
+    }
+
+    /**
      * Function to get the number of slots used on the server for this job
      * @param job - the job
      * @return the number of slots
@@ -676,8 +707,6 @@ public class Jobs extends JavaPlugin {
 
 	    // register economy
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
-
-	    // all loaded properly.
 
 	    dao.loadBlockProtection();
 	    getExplore().load();
@@ -939,10 +968,15 @@ public class Jobs extends JavaPlugin {
 	} else {
 	    FastPayment.clear();
 
+	    List<Job> expiredJobs = new ArrayList<>();
 	    for (JobProgression prog : progression) {
 		if (prog.getJob().isWorldBlackListed(block) || prog.getJob().isWorldBlackListed(block, ent)
 		    || prog.getJob().isWorldBlackListed(victim))
 		    continue;
+
+		if (jPlayer.isLeftTimeEnded(prog.getJob())) {
+		    expiredJobs.add(prog.getJob());
+		}
 
 		int level = prog.getLevel();
 
@@ -991,6 +1025,7 @@ public class Jobs extends JavaPlugin {
 
 		JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), income,
 		    pointAmount, block, ent, victim, info);
+
 		Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
 		// If event is canceled, don't do anything
 		if (JobsPrePaymentEvent.isCancelled()) {
@@ -1108,6 +1143,9 @@ public class Jobs extends JavaPlugin {
 		if (bp != null)
 		    bp.setPaid(true);
 	    }
+
+	    expiredJobs.forEach(j -> getPlayerManager().leaveJob(jPlayer, j));
+	    expiredJobs.clear();
 	}
     }
 

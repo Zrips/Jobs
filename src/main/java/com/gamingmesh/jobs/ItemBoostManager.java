@@ -25,19 +25,21 @@ public class ItemBoostManager {
     private static HashMap<String, JobItems> items = new HashMap<>();
     private static HashMap<String, JobItems> legacy = new HashMap<>();
 
-    public static void load() {
-
+	@SuppressWarnings("deprecation")
+	public static void load() {
 	ConfigReader cfg = null;
 	try {
 	    cfg = new ConfigReader("boostedItems.yml");
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
 
 	if (cfg == null)
 	    return;
+
 	items.clear();
 	legacy.clear();
+
 	// Converting from existing records in Jobs from old format which was located in jobConfig.yml file 
 	boolean save = false;
 	for (Job one : Jobs.getJobs()) {
@@ -63,6 +65,7 @@ public class ItemBoostManager {
 		}
 		save = true;
 	    }
+
 	    one.getItemBonus().clear();
 	}
 

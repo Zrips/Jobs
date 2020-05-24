@@ -11,7 +11,6 @@ public class entitylist implements Cmd {
     @Override
     @JobCommand(1452)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-
 	if (args.length != 0) {
 	    Jobs.getCommandManager().sendUsage(sender, "entitylist");
 	    return true;
@@ -24,7 +23,6 @@ public class entitylist implements Cmd {
 
 	int i = 0;
 	for (EntityType type : EntityType.values()) {
-
 	    if (!type.isAlive())
 		continue;
 	    if (!type.isSpawnable())
@@ -43,7 +41,6 @@ public class entitylist implements Cmd {
 	}
 
 	sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&', msg));
-
 	return true;
     }
 

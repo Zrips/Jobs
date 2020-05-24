@@ -2,8 +2,6 @@ package com.gamingmesh.jobs.config;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -11,12 +9,12 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.container.BossBarInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class BossBarManager {
 
@@ -32,17 +30,9 @@ public class BossBarManager {
 
 	if (player == null)
 	    return;
-
-	List<String> temp = new ArrayList<>();
-	temp.addAll(player.getUpdateBossBarFor());
-
-	for (String one : temp) {
-	    for (JobProgression oneJob : player.getJobProgression()) {
-		if (one.equalsIgnoreCase(oneJob.getJob().getName())) {
-		    Double lastExp = oneJob.getLastExperience();
-
-		    ShowJobProgression(player, oneJob, oneJob.getExperience() - lastExp);
-		}
+	for (JobProgression oneJob : player.getJobProgression()) {
+	    if (oneJob.getLastExperience() != 0) {
+		ShowJobProgression(player, oneJob, oneJob.getLastExperience());
 	    }
 	}
 	player.clearUpdateBossBarFor();
@@ -74,7 +64,7 @@ public class BossBarManager {
 	NumberFormat formatter = new DecimalFormat("#0.00");
 
 	String gain = "";
-	if (expGain > 0) {
+	if (expGain != 0) {
 	    expGain = (int) (expGain * 100) / 100D;
 	    gain = expGain > 0 ? "+" + expGain : "" + expGain;
 	    gain = Jobs.getLanguage().getMessage("command.stats.bossBarGain", "%gain%", gain);
@@ -114,12 +104,31 @@ public class BossBarManager {
 		    break;
 		}
 	    }
-	    bar = Bukkit.createBossBar(message, color, BarStyle.SEGMENTED_20);
+	    BarStyle style = BarStyle.SOLID;
+	    switch (Jobs.getGCManager().SegementCount) {
+	    case 6:
+		style = BarStyle.SEGMENTED_6;
+		break;
+	    case 10:
+		style = BarStyle.SEGMENTED_10;
+		break;
+	    case 12:
+		style = BarStyle.SEGMENTED_12;
+		break;
+	    case 20:
+		style = BarStyle.SEGMENTED_20;
+		break;
+	    default:
+		style = BarStyle.SEGMENTED_6;
+		break;
+	    }
+	    bar = Bukkit.createBossBar(message, color, style);
 	} else
 	    bar.setTitle(message);
 
 	double percentage = jobProg.getExperience() / jobProg.getMaxExperience();
-	bar.setProgress(percentage > 1.0 ? 1.0 : percentage);
+	percentage = percentage > 1D ? 1D : percentage < 0 ? 0 : percentage;
+	bar.setProgress(percentage);
 
 	if (OldOne == null) {
 	    bar.addPlayer(player.getPlayer());
@@ -147,6 +156,7 @@ public class BossBarManager {
 	    }
 	}, Jobs.getGCManager().BossBarTimer * 20L));
 
+	jobProg.setLastExperience(0D);
     }
 
     private static BarColor getColor(Job job) {

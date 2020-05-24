@@ -12,9 +12,9 @@ public class ExploreChunk {
     private int x;
     private int z;
     private Set<Integer> playerIds = new HashSet<>();
-    private boolean full = false;
-    private Integer dbId = null;
-    private boolean updated = false;
+    private Boolean full;
+    private Integer dbId;
+    private Boolean updated;
 
     public ExploreChunk(int playerId, int x, int z) {
 	this(x, z);
@@ -28,7 +28,7 @@ public class ExploreChunk {
     }
 
     public ExploreRespond addPlayer(int playerId) {
-	if (full) {
+	if (isFullyExplored()) {
 	    return new ExploreRespond(Jobs.getExplore().getPlayerAmount() + 1, false);
 	}
 	boolean newChunkForPlayer = false;
@@ -50,13 +50,13 @@ public class ExploreChunk {
     }
 
     public boolean isAlreadyVisited(int playerId) {
-	if (full)
+	if (isFullyExplored())
 	    return true;
 	return playerIds.contains(playerId);
     }
 
     public int getCount() {
-	if (full)
+	if (isFullyExplored())
 	    return Jobs.getExplore().getPlayerAmount();
 	return playerIds.size();
     }
@@ -131,14 +131,17 @@ public class ExploreChunk {
     }
 
     public boolean isUpdated() {
-	return updated;
+	return updated == null ? false : updated;
     }
 
     public void setUpdated(boolean updated) {
-	this.updated = updated;
+	if (!updated)
+	    this.updated = null;
+	else
+	    this.updated = true;
     }
 
     public boolean isFullyExplored() {
-	return full;
+	return full == null ? false : full;
     }
 }

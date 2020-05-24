@@ -107,7 +107,7 @@ command:
       info: ボーナスを表示します
       args: '[jobname]'
     output:
-      topline: '&7**************** &2[収入(お金)] &6[獲得ポイント] &e[獲得経験値] &7****************'
+      topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
       permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
       item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
       global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
@@ -203,13 +203,13 @@ command:
         objectiveRemove: '&c[X]'
         objectiveAdd: '      -> &e[&2+&e]'
       modify:
-        newValue: '&eEnter new value'
-        enter: '&eEnter new name or press '
-        hand: '&6HAND '
-        handHover: '&6Press to grab info from item in your hand'
-        or: '&eor '
-        look: '&6LOOKING AT'
-        lookHover: '&6Press to grab info from block you are looking'
+        newValue: '&e新しい値をチャット欄に入力'
+        enter: '&e追加するブロック・エンティティの名前 '
+        hand: '&6手に持っている '
+        handHover: '&6手に持っているアイテムを指定します'
+        or: '&eまたは '
+        look: '&6見ている'
+        lookHover: '&6見ているブロック・エンティティを指定します'
   blockinfo:
     help:
       info: 今見ているブロックの情報を表示します
@@ -247,6 +247,8 @@ command:
     error:
       nojob: 少なくとも１つは職業についている必要があります
     output: '%jobname% レベル%joblevel% : 経験値 %jobxp%/%jobmaxxp%'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: Jobsショップを開きます
@@ -462,6 +464,10 @@ command:
     error:
       noquests: '&cThere are no quests'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    status:
+      changed: '&2The quests status has been changed to&r %status%'
+      started: '&aStarted'
+      stopped: '&cStopped'
     output:
       completed: '&2      !Completed!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'

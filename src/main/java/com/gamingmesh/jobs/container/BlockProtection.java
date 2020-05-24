@@ -4,53 +4,84 @@ import org.bukkit.util.Vector;
 
 public class BlockProtection {
 
+    private static long pre = (int) (System.currentTimeMillis() / 10000000000L) * 10000000000L;
+
     private int id;
-    private Long time;
-    private Long recorded;
-    private DBAction action = DBAction.INSERT;
-    private Boolean paid = true;
-    private Vector pos;
+    private Integer time;
+    private Integer recorded;
+    private DBAction action;
+    private Boolean paid;
+    private int x = 0;
+    private int y = 0;
+    private int z = 0;
 
     public BlockProtection(Vector pos) {
-	this.pos = pos;
+	this(DBAction.INSERT, pos);
     }
 
+    @Deprecated
     public BlockProtection(DBAction action, Vector pos) {
+	this(action, pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
+    }
+
+    public BlockProtection(DBAction action, int x, int y, int z) {
 	this.action = action;
-	this.pos = pos;
+	if (action == DBAction.NONE)
+	    action = null;
+	this.x = x;
+	this.y = y;
+	this.z = z;
     }
 
     public Long getTime() {
-	return time;
+	return deconvert(time);
+    }
+
+    private static int convert(long time) {
+	if (time == -1L)
+	    return -1;
+	return (int) ((time - pre) / 1000L);
+    }
+
+    private static Long deconvert(Integer time) {
+	return time == null ? -1L : ((time.longValue() * 1000L) + pre);
     }
 
     public void setTime(Long time) {
-	this.time = time;
-	this.recorded = System.currentTimeMillis();
+	if (time == -1)
+	    this.time = null;
+	else
+	    this.time = convert(time);
+	this.recorded = convert(System.currentTimeMillis());
     }
 
     public DBAction getAction() {
-	return action;
+	return action == null ? DBAction.NONE : action;
     }
 
     public void setAction(DBAction action) {
+	if (action == DBAction.NONE)
+	    action = null;
 	this.action = action;
     }
 
     public Long getRecorded() {
-	return recorded;
+	return deconvert(recorded);
     }
 
     public Boolean isPaid() {
-	return paid;
+	return paid == null ? true : paid;
     }
 
     public void setPaid(Boolean paid) {
-	this.paid = paid;
+	if (!paid)
+	    this.paid = paid;
+	else
+	    this.paid = null;
     }
 
     public void setRecorded(Long recorded) {
-	this.recorded = recorded;
+	this.recorded = convert(recorded);
     }
 
     public int getId() {
@@ -61,11 +92,33 @@ public class BlockProtection {
 	this.id = id;
     }
 
+    @Deprecated
     public Vector getPos() {
-	return pos;
+	return new Vector(x, y, z);
     }
 
+    @Deprecated
     public void setPos(Vector pos) {
-	this.pos = pos;
+	x = pos.getBlockX();
+	y = pos.getBlockY();
+	z = pos.getBlockZ();
+    }
+
+    public void setPos(int x, int y, int z) {
+	this.x = x;
+	this.y = y;
+	this.z = z;
+    }
+
+    public int getX() {
+	return x;
+    }
+
+    public int getY() {
+	return y;
+    }
+
+    public int getZ() {
+	return z;
     }
 }

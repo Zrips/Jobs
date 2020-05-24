@@ -49,16 +49,15 @@ public class iteminfo implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.id", "%itemid%", iih.getType().getId()));
 	if (!tool)
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.data", "%itemdata%", iih.getData().getData()));
-		
+
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.usage", "%first%", "",
 		"%second%", iih.getType().name() + dataString));
 	else
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.usage", "%first%", iih.getType().getId() + dataString,
 		"%second%", iih.getType().name() + dataString));
-	
-	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 
+	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	return true;
     }
 }

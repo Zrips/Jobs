@@ -247,6 +247,8 @@ command:
     error:
       nojob: Please join a job first.
     output: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: Opens special jobs shop.
@@ -462,6 +464,10 @@ command:
     error:
       noquests: '&cThere are no quests'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    status:
+      changed: '&2The quests status has been changed to&r %status%'
+      started: '&aStarted'
+      stopped: '&cStopped'
     output:
       completed: '&2      !Completed!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'

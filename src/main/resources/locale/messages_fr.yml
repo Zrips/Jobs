@@ -94,8 +94,8 @@ command:
       info: Vérifier l'objet bonus
       args: ''
     output:
-      list: '&e[jobname] : %money% %points% %exp%'
-      notAplyingList: '&e[jobname] : %money% %points% %exp%'
+      list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
       hoverLevelLimits: "&7Du niveau: %from%\n&7Au niveau: %until%"
   edititembonus:
@@ -247,6 +247,8 @@ command:
     error:
       nojob: Vous n'avez pas de métier.
     output: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: Ouvre les shops de métiers.
@@ -462,6 +464,10 @@ command:
     error:
       noquests: '&cIl n''y a pas de quête'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    status:
+      changed: '&2The quests status has been changed to&r %status%'
+      started: '&aStarted'
+      stopped: '&cStopped'
     output:
       completed: '&2      ! Terminé !&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
@@ -656,8 +662,8 @@ message:
   crafting:
     fullinventory: 'Votre inventaire est plein!'
 signs:
-  List: '&0[number].&8[player]&7 :&4[level]'
-  questList: '&0[number].&8[player]&7 :&4[quests]'
+  List: '&0[number].&8[player]&7:&4[level]'
+  questList: '&0[number].&8[player]&7:&4[quests]'
   SpecialList:
     p1: '&b** &8Premier &b**'
     p2: '&b** &8Deuxième &b**'

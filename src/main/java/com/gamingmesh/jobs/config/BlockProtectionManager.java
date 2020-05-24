@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.util.Vector;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
@@ -18,8 +17,6 @@ public class BlockProtectionManager {
 
     private HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> map = new HashMap<>();
     private ConcurrentHashMap<World, ConcurrentHashMap<String, BlockProtection>> tempCache = new ConcurrentHashMap<>();
-
-    public Long timer = 0L;
 
     public HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> getMap() {
 	return this.map;
@@ -71,7 +68,7 @@ public class BlockProtectionManager {
 	BlockProtection Bp = Bpm.get(v);
 
 	if (Bp == null)
-	    Bp = new BlockProtection(DBAction.INSERT, new Vector(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+	    Bp = new BlockProtection(DBAction.INSERT, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	else
 	    Bp.setAction(DBAction.UPDATE);
 
@@ -175,8 +172,9 @@ public class BlockProtectionManager {
 
     public Integer getBlockDelayTime(Block block) {
 	Integer time = Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(CMIMaterial.get(block));
-	if (time == null && Jobs.getGCManager().useGlobalTimer)
+	if (time == null && Jobs.getGCManager().useGlobalTimer) {
 	    time = Jobs.getGCManager().globalblocktimer;
+	}
 	return time;
     }
 

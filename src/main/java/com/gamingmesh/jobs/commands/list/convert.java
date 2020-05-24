@@ -24,7 +24,7 @@ public class convert implements Cmd {
 	    return true;
 	}
 
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> Jobs.convertDatabase());
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, Jobs::convertDatabase);
 
 	String from = "MySQL";
 	String to = "SQLite";

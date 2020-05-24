@@ -37,9 +37,9 @@ public class BufferedPaymentTask implements Runnable {
 
     @Override
     public void run() {
-	if (payment.get(CurrencyType.MONEY) > 0)
+	if (payment.get(CurrencyType.MONEY) > 0) {
 	    economy.depositPlayer(payment.getOfflinePlayer(), payment.get(CurrencyType.MONEY));
-	else {
+	} else {
 	    if (!economy.withdrawPlayer(payment.getOfflinePlayer(), -payment.get(CurrencyType.MONEY)))
 		bufferedEconomy.pay(payment);
 	}

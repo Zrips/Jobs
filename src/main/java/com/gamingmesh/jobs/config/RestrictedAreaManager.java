@@ -23,6 +23,8 @@ public class RestrictedAreaManager {
 
     protected HashMap<String, RestrictedArea> restrictedAreas = new HashMap<>();
 
+    private boolean worldGuardArea = false;
+
     public boolean isExist(String name) {
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
 	    if (area.getKey().equalsIgnoreCase(name))
@@ -110,8 +112,7 @@ public class RestrictedAreaManager {
 	for (RestrictedArea area : getRestrictedAreasByLoc(player.getLocation())) {
 	    if (area.inRestrictedArea(player.getLocation()))
 		return area.getMultiplier();
-	    if (area.getWgName() != null && HookManager.getWorldGuardManager() != null
-			&& HookManager.getWorldGuardManager().inArea(player.getLocation(), area.getWgName()))
+	    if (area.getWgName() != null && HookManager.getWorldGuardManager() != null && HookManager.getWorldGuardManager().inArea(player.getLocation(), area.getWgName()))
 		return area.getMultiplier();
 	}
 	return 0D;
@@ -124,7 +125,7 @@ public class RestrictedAreaManager {
 		areas.add(area.getValue());
 	}
 
-	if (HookManager.getWorldGuardManager() != null)
+	if (worldGuardArea && HookManager.getWorldGuardManager() != null)
 	    areas.addAll(HookManager.getWorldGuardManager().getArea(loc));
 
 	return areas;
@@ -196,9 +197,10 @@ public class RestrictedAreaManager {
 	    for (String areaKey : areaSection.getKeys(false)) {
 		double multiplier = conf.getDouble("restrictedareas." + areaKey + ".multiplier", 0d);
 
-		if (conf.isBoolean("restrictedareas." + areaKey + ".WG"))
+		if (conf.isBoolean("restrictedareas." + areaKey + ".WG")) {
 		    addNew(new RestrictedArea(areaKey, areaKey, multiplier));
-		else {
+		    worldGuardArea = true;
+		} else {
 
 		    String worldName = conf.getString("restrictedareas." + areaKey + ".world");
 		    World world = Bukkit.getServer().getWorld(worldName);
@@ -215,7 +217,7 @@ public class RestrictedAreaManager {
 	}
 
 	if (restrictedAreas.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedAreas.size() + " restricted areas!");
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedAreas.size() + " restricted areas!");
 
 	try {
 	    conf.save(f);
