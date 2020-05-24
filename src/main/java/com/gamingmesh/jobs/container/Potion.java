@@ -19,25 +19,29 @@
 package com.gamingmesh.jobs.container;
 
 /**
- * <a href="https://minecraft.gamepedia.com/Potion#Java_Edition">Minecraft-WIKI reference</a>
+ * <a href="https://minecraft.gamepedia.com/Potion#Java_Edition">Minecraft-WIKI reference for names</a><br>
+ * <a href="https://papermc.io/javadocs/paper/1.13/org/bukkit/potion/PotionType.html">API reference for internals</a>
  */
 public enum Potion {
-    NIGHT_VISION("Night Vision"),
-    INVISIBILITY("Invisibility"),
-    LEAPING("Leaping"),
+    AWKWARD("Awkward"),
     FIRE_RESISTANCE("Fire Resistance"),
-    SWIFTNESS("Swiftness"),
-    SLOWNESS("Slowness"),
-    WATER_BREATHING("Water Breathing"),
-    HEALING("Instant Health"),
-    HARMING("Harming"),
-    POISON("Poison"),
-    REGENERATION("Regeneration"),
-    STRENGTH("Strength"),
-    WEAKNESS("Weakness"),
+    INSTANT_DAMAGE("Harming"),
+    INSTANT_HEAL("Instant Health"),
+    INVISIBILITY("Invisibility"),
+    JUMP("Leaping"),
     LUCK("Luck"),
+    MUNDANE("Mundane"),
+    NIGHT_VISION("Night Vision"),
+    POISON("Poison"),
+    REGEN("Regeneration"),
+    SLOW_FALLING("Slow Falling"),
+    SLOWNESS("Slowness"),
+    SPEED("Swiftness"),
+    STRENGTH("Strength"),
+    THICK("Thick"),
     TURTLE_MASTER("The Turtle Master"),
-    SLOW_FALLING("Slow Falling");
+    WATER_BREATHING("Water Breathing"),
+    WEAKNESS("Weakness");
 
     private final String name;
 
