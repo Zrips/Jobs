@@ -1015,12 +1015,16 @@ public class JobsPlayer {
 	    int i = 0;
 	    while (i <= job.getQuests().size()) {
 		++i;
+
 		List<String> currentQuests = new ArrayList<>(g.keySet());
 		Quest q = job.getNextQuest(currentQuests, getJobProgression(job).getLevel());
 		if (q == null)
 		    continue;
+
 		QuestProgression qp = new QuestProgression(q);
-		g.put(qp.getQuest().getConfigName().toLowerCase(), qp);
+		if (qp.getQuest() != null)
+		    g.put(qp.getQuest().getConfigName().toLowerCase(), qp);
+
 		if (g.size() >= job.getMaxDailyQuests())
 		    break;
 	    }

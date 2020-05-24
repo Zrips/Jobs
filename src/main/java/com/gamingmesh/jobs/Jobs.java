@@ -708,8 +708,6 @@ public class Jobs extends JavaPlugin {
 	    // register economy
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
 
-	    // all loaded properly.
-
 	    dao.loadBlockProtection();
 	    getExplore().load();
 
