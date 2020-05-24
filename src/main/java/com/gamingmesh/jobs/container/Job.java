@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs.container;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -29,6 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 
 public class Job {
 
@@ -223,22 +225,27 @@ public class Job {
     }
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
-	for (JobInfo info : getJobInfo(action.getType())) {
-	    if (info.getName().equalsIgnoreCase(action.getNameWithSub()) || (info.getName() + ":" + info.getMeta()).equalsIgnoreCase(action.getNameWithSub())) {
-		if (!info.isInLevelRange(level))
-		    break;
-		return info;
-	    }
-	}
 
-	for (JobInfo info : getJobInfo(action.getType())) {
-	    if (info.getName().equalsIgnoreCase(action.getName())) {
-		if (!info.isInLevelRange(level))
-		    break;
-		return info;
-	    }
-	}
-	return null;
+        BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
+            if (actionInfo instanceof PotionItemActionInfo) {
+                return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion()) ||
+                        (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion());
+            } else {
+                return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
+                        (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+                        jobInfo.getName().equalsIgnoreCase(action.getName());
+            }
+        };
+
+        for (JobInfo info : getJobInfo(action.getType())) {
+            if (condition.test(info, action)) {
+                if (!info.isInLevelRange(level)) {
+                    break;
+                }
+                return info;
+            }
+        }
+        return null;
     }
 
     /**

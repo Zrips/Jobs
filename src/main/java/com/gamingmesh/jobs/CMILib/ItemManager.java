@@ -16,6 +16,7 @@ import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.container.Potion;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class ItemManager {
@@ -58,7 +59,12 @@ public class ItemManager {
 	    mojangName = mojangName == null ? mat.toString().replace("_", "").replace(" ", "").toLowerCase()
 		: mojangName.replace("_", "").replace(" ", "").toLowerCase();
 
-	    if (byName.containsKey(cmiName)) {
+	    if (one.isCanHavePotionType()) {
+		    for (Potion p : Potion.values()) {
+			    byName.put(cmiName + ":" + p.getName(), one);
+		    }
+		}
+	    else if (byName.containsKey(cmiName)) {
 		byName.put(cmiName + ":" + data, one);
 	    } else
 		byName.put(cmiName, one);

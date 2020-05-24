@@ -1270,6 +1270,11 @@ public enum CMIMaterial {
 	    } catch (Exception ex) {
 	    }
 	}
+        try {
+            String metaTag = id.split(":")[1];
+            ItemManager.byName.get(id + ":" + metaTag);
+        } catch (Exception ex) {
+        }
 
 	CMIMaterial mat = ItemManager.byName.get(id);
 	if (mat != null) {
@@ -1567,6 +1572,10 @@ public enum CMIMaterial {
 	    break;
 	}
 	return false;
+    }
+
+    public boolean isCanHavePotionType() {
+        return isPotion() || this == CMIMaterial.TIPPED_ARROW;
     }
 
     public static boolean isBoat(Material mat) {
