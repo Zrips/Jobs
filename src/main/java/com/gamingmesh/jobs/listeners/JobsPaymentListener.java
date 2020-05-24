@@ -77,6 +77,7 @@ import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
@@ -608,6 +609,11 @@ public class JobsPaymentListener implements Listener {
 	if (!payIfCreative(player))
 	    return;
 
+	ItemStack currentItem = event.getCurrentItem();
+	if (currentItem == null) {
+		return;
+	}
+
 	// Checking if item is been repaired, not crafted. Combining 2 items
 	ItemStack[] sourceItems = event.getInventory().getContents();
 	// For dye check
@@ -672,13 +678,16 @@ public class JobsPaymentListener implements Listener {
 
 	// If we need to pay only by each craft action we will skip calculation how much was crafted
 	if (!Jobs.getGCManager().PayForEachCraft) {
-	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
-		Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
-	    else {
-		    if (Material.AIR.equals(resultStack.getType()) && event.getCurrentItem() != null) {
-			    // Recipe result is unknown for this material
-			    if (Material.TIPPED_ARROW.equals(event.getCurrentItem().getType())) {
-				    Jobs.action(jPlayer, new ItemActionInfo(event.getCurrentItem(), ActionType.CRAFT));
+	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
+		    Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta()
+				    .getDisplayName()), ActionType.CRAFT));
+	    } else {
+		    if (currentItem.hasItemMeta()) {
+		    	if (currentItem.getItemMeta() instanceof PotionMeta) {
+				    PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
+				    Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
+			    } else {
+				    Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.CRAFT));
 			    }
 		    } else {
 			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
@@ -1818,7 +1827,7 @@ public class JobsPaymentListener implements Listener {
 	    if (oneG.getValue() != null && hand.getEnchantments().get(oneG.getKey()) != oneG.getValue())
 		return false;
 	}
-	
+
 	return true;
     }
 }
