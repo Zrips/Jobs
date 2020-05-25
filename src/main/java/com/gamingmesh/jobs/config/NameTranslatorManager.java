@@ -55,8 +55,16 @@ public class NameTranslatorManager {
 		CMIMaterial mat = CMIMaterial.get(materialName.replace(" ", ""));
 		NameList nameLs = ListOfNames.get(mat);
 
-		if (nameLs != null) {
-		    return nameLs.getName();
+		    if (nameLs != null) {
+		    	if (meta != null && !meta.isEmpty()) {
+				    NameList nameMeta = ListOfNames.get(CMIMaterial.get(meta));
+				    if (nameMeta != null) {
+					    return nameLs.getName() + ":" + nameMeta.getName();
+				    } else {
+					    return nameLs.getName() + ":" + meta;
+				    }
+			    }
+				return nameLs.getName();
 		}
 
 		if (mame != null && !mame.isEmpty()) {
@@ -419,26 +427,26 @@ public class NameTranslatorManager {
 	    /**	    for (colorNames cn : colorNames.values()) {
 	    		if (cn.getName() == null)
 	    		    continue;
-	    
+
 	    		String n = cn.getId() + (cn.getId() == -1 ? "" : ":" + cn.getName());
-	    
+
 	    		String name = null;
-	    
+
 	    		if (c.getC().isConfigurationSection("ColorList." + n)) {
 	    		    name = c.getC().getString("ColorList." + n + ".Name");
 	    		}
-	    
+
 	    		if (name == null) {
 	    		    n = cn.getId() + "-" + cn.toString();
 	    		    if (c.getC().isConfigurationSection("ColorList." + n)) {
 	    			name = c.getC().getString("ColorList." + n);
 	    		    }
 	    		}
-	    
+
 	    		if (name == null) {
 	    		    name = cn.getName();
 	    		}
-	    
+
 	    		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
 	    }*/
 

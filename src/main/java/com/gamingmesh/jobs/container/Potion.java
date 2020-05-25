@@ -19,46 +19,46 @@
 package com.gamingmesh.jobs.container;
 
 /**
- * <a href="https://minecraft.gamepedia.com/Potion#Java_Edition">Minecraft-WIKI reference for names</a><br>
- * <a href="https://papermc.io/javadocs/paper/1.13/org/bukkit/potion/PotionType.html">API reference for internals</a>
+ * <a href="https://papermc.io/javadocs/paper/1.13/org/bukkit/potion/PotionType.html">API reference for names</a>
  */
 public enum Potion {
-    AWKWARD("Awkward"),
-    FIRE_RESISTANCE("Fire Resistance"),
-    INSTANT_DAMAGE("Harming"),
-    INSTANT_HEAL("Instant Health"),
-    INVISIBILITY("Invisibility"),
-    JUMP("Leaping"),
-    LUCK("Luck"),
-    MUNDANE("Mundane"),
-    NIGHT_VISION("Night Vision"),
-    POISON("Poison"),
-    REGEN("Regeneration"),
-    SLOW_FALLING("Slow Falling"),
-    SLOWNESS("Slowness"),
-    SPEED("Swiftness"),
-    STRENGTH("Strength"),
-    THICK("Thick"),
-    TURTLE_MASTER("The Turtle Master"),
-    WATER_BREATHING("Water Breathing"),
-    WEAKNESS("Weakness");
+    AWKWARD("AWKWARD"),
+    FIRE_RESISTANCE("FIRE_RESISTANCE"),
+    INSTANT_DAMAGE("INSTANT_DAMAGE"),
+    INSTANT_HEAL("INSTANT_HEAL"),
+    INVISIBILITY("INVISIBILITY"),
+    JUMP("JUMP"),
+    LUCK("LUCK"),
+    MUNDANE("MUNDANE"),
+    NIGHT_VISION("NIGHT_VISION"),
+    POISON("POISON"),
+    REGEN("REGEN"),
+    SLOW_FALLING("SLOW_FALLING"),
+    SLOWNESS("SLOWNESS"),
+    SPEED("SPEED"),
+    STRENGTH("STRENGTH"),
+    THICK("THICK"),
+    TURTLE_MASTER("TURTLE_MASTER"),
+    WATER_BREATHING("WATER_BREATHING"),
+    WEAKNESS("WEAKNESS");
 
     private final String name;
 
     Potion(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public static Potion getByName(String name) {
-	name = name.replace("_", "");
-	for (Potion one : Potion.values()) {
-	    if (one.name.equalsIgnoreCase(name))
-		return one;
-	}
-	return null;
+        name = name.replace("_", "");
+        for (Potion one : Potion.values()) {
+            if (one.name.equalsIgnoreCase(name)) {
+                return one;
+            }
+        }
+        return null;
     }
 }

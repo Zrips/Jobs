@@ -61,7 +61,7 @@ public class ItemManager {
 
 	    if (one.isCanHavePotionType()) {
 		    for (Potion p : Potion.values()) {
-			    byName.put(cmiName + ":" + p.getName(), one);
+			    byName.put(cmiName + ":" + p.getName().toLowerCase(), one);
 		    }
 		}
 	    else if (byName.containsKey(cmiName)) {
