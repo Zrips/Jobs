@@ -18,6 +18,7 @@ import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
+import com.gamingmesh.jobs.container.Potion;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -55,9 +56,13 @@ public class NameTranslatorManager {
 		CMIMaterial mat = CMIMaterial.get(materialName.replace(" ", ""));
 		NameList nameLs = ListOfNames.get(mat);
 
-		if (nameLs != null) {
-		    return nameLs.getName();
+	    if (nameLs != null) {
+		if (meta != null && !meta.isEmpty() && mat.isCanHavePotionType() && Potion.getByName(meta) != null) {
+		    return nameLs.getName() + ":" + meta;
 		}
+
+		return nameLs.getName();
+	    }
 
 		if (mame != null && !mame.isEmpty()) {
 		    mat = CMIMaterial.get(materialName.replace(" ", ""));
@@ -72,13 +77,14 @@ public class NameTranslatorManager {
 		    mat = CMIMaterial.get(materialName + ":" + meta);
 		    nameLs = ListOfNames.get(mat);
 		    if (nameLs == null) {
-		    	mat = CMIMaterial.get(materialName.replace(" ", ""));
-		    	nameLs = ListOfNames.get(mat);
-		    	NameList nameMeta = ListOfNames.get(CMIMaterial.get(meta.replace(" ", "")));
-		    	if (nameLs != null && nameMeta != null) {
-		    		return nameLs + ":" + nameMeta;
-			    }
-				return mat.getName();
+			mat = CMIMaterial.get(materialName.replace(" ", ""));
+			nameLs = ListOfNames.get(mat);
+			NameList nameMeta = ListOfNames.get(CMIMaterial.get(meta.replace(" ", "")));
+			if (nameLs != null && nameMeta != null) {
+			    return nameLs + ":" + nameMeta;
+			}
+
+			return mat.getName();
 		    }
 		}
 
@@ -419,26 +425,26 @@ public class NameTranslatorManager {
 	    /**	    for (colorNames cn : colorNames.values()) {
 	    		if (cn.getName() == null)
 	    		    continue;
-	    
+
 	    		String n = cn.getId() + (cn.getId() == -1 ? "" : ":" + cn.getName());
-	    
+
 	    		String name = null;
-	    
+
 	    		if (c.getC().isConfigurationSection("ColorList." + n)) {
 	    		    name = c.getC().getString("ColorList." + n + ".Name");
 	    		}
-	    
+
 	    		if (name == null) {
 	    		    n = cn.getId() + "-" + cn.toString();
 	    		    if (c.getC().isConfigurationSection("ColorList." + n)) {
 	    			name = c.getC().getString("ColorList." + n);
 	    		    }
 	    		}
-	    
+
 	    		if (name == null) {
 	    		    name = cn.getName();
 	    		}
-	    
+
 	    		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
 	    }*/
 

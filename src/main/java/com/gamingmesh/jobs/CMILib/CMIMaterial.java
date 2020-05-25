@@ -1270,11 +1270,14 @@ public enum CMIMaterial {
 	    } catch (Exception ex) {
 	    }
 	}
-        try {
-            String metaTag = id.split(":")[1];
-            ItemManager.byName.get(id + ":" + metaTag);
-        } catch (Exception ex) {
-        }
+
+	if (id.contains(":")) {
+	    String metaTag = id.split(":")[1];
+	    CMIMaterial mat = ItemManager.byName.get(id + ":" + metaTag);
+	    if (mat != null) {
+		return mat;
+	    }
+	}
 
 	CMIMaterial mat = ItemManager.byName.get(id);
 	if (mat != null) {
