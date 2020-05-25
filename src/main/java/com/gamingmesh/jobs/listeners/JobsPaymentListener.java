@@ -683,10 +683,10 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
+	// when we trying to craft tipped arrow effects
 	ItemStack currentItem = event.getCurrentItem();
 	if (currentItem != null) {
 	    if (currentItem.hasItemMeta() && currentItem.getItemMeta() instanceof PotionMeta) {
-		Jobs.consoleMsg(currentItem + " " + currentItem.hasItemMeta() + " " + currentItem.getItemMeta());
 		PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
 		Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
 	    } else {

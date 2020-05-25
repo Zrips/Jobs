@@ -431,6 +431,10 @@ Jobs:
       "!Healing Bandage":
         income: 1.0
         experience: 6.0
+      # If you add ":" after the tipped_arrow then you can use effect names like in example
+      tipped_arrow:slowness:
+        income: 3.0
+        points: 3.0
     # Smelting ores
     Smelt:
       iron_ingot:

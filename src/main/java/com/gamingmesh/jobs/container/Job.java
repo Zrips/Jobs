@@ -227,7 +227,6 @@ public class Job {
     public JobInfo getJobInfo(ActionInfo action, int level) {
 	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
 	if (actionInfo instanceof PotionItemActionInfo) {
-		Jobs.consoleMsg(jobInfo.getName() + ":" + jobInfo.getMeta());
 	    return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion()) ||
 	    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion());
 	}
