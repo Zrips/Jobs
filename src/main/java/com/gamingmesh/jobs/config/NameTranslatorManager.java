@@ -18,6 +18,7 @@ import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
+import com.gamingmesh.jobs.container.Potion;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -56,13 +57,8 @@ public class NameTranslatorManager {
 		NameList nameLs = ListOfNames.get(mat);
 
 		    if (nameLs != null) {
-		    	if (meta != null && !meta.isEmpty()) {
-				    NameList nameMeta = ListOfNames.get(CMIMaterial.get(meta));
-				    if (nameMeta != null) {
-					    return nameLs.getName() + ":" + nameMeta.getName();
-				    } else {
-					    return nameLs.getName() + ":" + meta;
-				    }
+		    	if (meta != null && !meta.isEmpty() && mat.isCanHavePotionType() && Potion.getByName(meta) != null) {
+		    		return nameLs.getName() + ":" + meta;
 			    }
 				return nameLs.getName();
 		}
