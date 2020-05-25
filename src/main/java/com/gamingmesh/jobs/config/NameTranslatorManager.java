@@ -56,12 +56,13 @@ public class NameTranslatorManager {
 		CMIMaterial mat = CMIMaterial.get(materialName.replace(" ", ""));
 		NameList nameLs = ListOfNames.get(mat);
 
-		    if (nameLs != null) {
-		    	if (meta != null && !meta.isEmpty() && mat.isCanHavePotionType() && Potion.getByName(meta) != null) {
-		    		return nameLs.getName() + ":" + meta;
-			    }
-				return nameLs.getName();
+	    if (nameLs != null) {
+		if (meta != null && !meta.isEmpty() && mat.isCanHavePotionType() && Potion.getByName(meta) != null) {
+		    return nameLs.getName() + ":" + meta;
 		}
+
+		return nameLs.getName();
+	    }
 
 		if (mame != null && !mame.isEmpty()) {
 		    mat = CMIMaterial.get(materialName.replace(" ", ""));
@@ -76,13 +77,14 @@ public class NameTranslatorManager {
 		    mat = CMIMaterial.get(materialName + ":" + meta);
 		    nameLs = ListOfNames.get(mat);
 		    if (nameLs == null) {
-		    	mat = CMIMaterial.get(materialName.replace(" ", ""));
-		    	nameLs = ListOfNames.get(mat);
-		    	NameList nameMeta = ListOfNames.get(CMIMaterial.get(meta.replace(" ", "")));
-		    	if (nameLs != null && nameMeta != null) {
-		    		return nameLs + ":" + nameMeta;
-			    }
-				return mat.getName();
+			mat = CMIMaterial.get(materialName.replace(" ", ""));
+			nameLs = ListOfNames.get(mat);
+			NameList nameMeta = ListOfNames.get(CMIMaterial.get(meta.replace(" ", "")));
+			if (nameLs != null && nameMeta != null) {
+			    return nameLs + ":" + nameMeta;
+			}
+
+			return mat.getName();
 		    }
 		}
 

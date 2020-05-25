@@ -53,6 +53,7 @@ public enum Potion {
     }
 
     public static Potion getByName(String name) {
+        name = name.replace("_", "");
         for (Potion one : Potion.values()) {
             if (one.name.equalsIgnoreCase(name)) {
                 return one;

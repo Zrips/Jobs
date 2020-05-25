@@ -60,9 +60,9 @@ public class ItemManager {
 		: mojangName.replace("_", "").replace(" ", "").toLowerCase();
 
 	    if (one.isCanHavePotionType()) {
-		    for (Potion p : Potion.values()) {
-			    byName.put(cmiName + ":" + p.getName().toLowerCase(), one);
-		    }
+		for (Potion p : Potion.values()) {
+		    byName.put(cmiName + ":" + p.getName().toLowerCase(), one);
+		}
 		}
 	    else if (byName.containsKey(cmiName)) {
 		byName.put(cmiName + ":" + data, one);

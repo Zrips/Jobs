@@ -225,27 +225,29 @@ public class Job {
     }
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
+	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
+	if (actionInfo instanceof PotionItemActionInfo) {
+		Jobs.consoleMsg(jobInfo.getName() + ":" + jobInfo.getMeta());
+	    return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion()) ||
+	    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion());
+	}
 
-        BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
-            if (actionInfo instanceof PotionItemActionInfo) {
-                return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion()) ||
-                        (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion());
-            } else {
-                return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
-                        (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
-                        jobInfo.getName().equalsIgnoreCase(action.getName());
-            }
-        };
+	return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
+		(jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+		jobInfo.getName().equalsIgnoreCase(action.getName());
+	};
 
-        for (JobInfo info : getJobInfo(action.getType())) {
-            if (condition.test(info, action)) {
-                if (!info.isInLevelRange(level)) {
-                    break;
-                }
-                return info;
-            }
-        }
-        return null;
+	for (JobInfo info : getJobInfo(action.getType())) {
+	    if (condition.test(info, action)) {
+		if (!info.isInLevelRange(level)) {
+		    break;
+		}
+
+		return info;
+	    }
+	}
+
+	return null;
     }
 
     /**

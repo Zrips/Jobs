@@ -395,6 +395,9 @@ public class ConfigManager {
 	    subType = ":" + myKey.split("-")[1];
 	    meta = myKey.split("-")[1];
 	    myKey = myKey.split("-")[0];
+	} else if (myKey.contains(":")) { // when we uses tipped arrow effect types
+	    meta = myKey.split(":")[1];
+	    myKey = myKey.split(":")[0];
 	}
 
 	CMIMaterial material = null;
@@ -584,8 +587,15 @@ public class ConfigManager {
 	    }
 	    Jobs.getExplore().setExploreEnabled();
 	    Jobs.getExplore().setPlayerAmount(amount);
-	} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
-	    type = myKey.substring(1, myKey.length());
+	} else if (actionType == ActionType.CRAFT) {
+	    if (myKey.startsWith("!")) {
+		type = myKey.substring(1, myKey.length());
+	    }
+
+	    if (myKey.contains(":")) {
+		subType = myKey.split(":")[1];
+	    }
+	}
 
 	if (type == null) {
 	    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
@@ -1176,6 +1186,9 @@ public class ConfigManager {
 			    subType = ":" + myKey.split("-")[1];
 			    meta = myKey.split("-")[1];
 			    myKey = myKey.split("-")[0];
+			} else if (myKey.contains(":")) { // when we uses tipped arrow effect types
+			    meta = myKey.split(":")[1];
+			    myKey = myKey.split(":")[0];
 			}
 
 			CMIMaterial material = CMIMaterial.NONE;
@@ -1380,8 +1393,15 @@ public class ConfigManager {
 
 			    Jobs.getExplore().setExploreEnabled();
 			    Jobs.getExplore().setPlayerAmount(amount);
-			} else if (actionType == ActionType.CRAFT && myKey.startsWith("!"))
-			    type = myKey.substring(1, myKey.length());
+			} else if (actionType == ActionType.CRAFT) {
+			    if (myKey.startsWith("!")) {
+				type = myKey.substring(1, myKey.length());
+			    }
+
+			    if (myKey.contains(":")) {
+				subType = myKey.split(":")[1];
+			    }
+			}
 
 			if (type == null) {
 			    log.warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
