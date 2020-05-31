@@ -1269,9 +1269,6 @@ public class JobsPaymentListener implements Listener {
 		return;
 
 	    List<JobProgression> jobs = jPlayer.getJobProgression();
-	    if (jobs == null)
-		return;
-
 	    for (JobProgression job : jobs) {
 		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), pDamager, lVictim);
 	    }

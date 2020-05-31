@@ -509,7 +509,7 @@ public enum CMIMaterial {
     MAGMA_CREAM(378, 0, 25097, "Magma Cream"),
     MAGMA_CUBE_SPAWN_EGG(383, 62, 26638, "Magma Cube Spawn Egg", "Spawn Magma Cube"),
     MAP(395, 0, 21655, "Empty Map"),
-    MELON(103, 0, 25172, "Melon", "Melon_Block"),
+    MELON(103, 0, 25172, "Melon Block"),
     MELON_SEEDS(362, 0, 18340, "Melon Seeds"),
     MELON_SLICE(360, 0, 5347, "Melon Slice"),
     MELON_STEM(105, 0, 8247, "Melon Stem"),
@@ -1018,6 +1018,7 @@ public enum CMIMaterial {
     LEGACY_DIODE_BLOCK_OFF(93, 0, null, "Diode Block Off"),
     LEGACY_DIODE_BLOCK_ON(94, 0, null, "Diode Block On"),
     LEGACY_BREWING_STAND(117, null, null, "LEGACY_BREWING_STAND"),
+    LEGACY_MELON_BLOCK(103, 0, null, "Melon Block"),
 
 //	LEGACY_CAULDRON(118, 0, null, "LEGACY_CAULDRON", ""),
 //	LEGACY_REDSTONE_LAMP_ON(124, null, null, "LEGACY_REDSTONE_LAMP_ON", ""),
