@@ -42,7 +42,19 @@ import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 
 public class GeneralConfigManager {
+
+    public ArrayList<String> keys;
+
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
+    public List<String> FwColors = new ArrayList<>();
+    public List<String> DisabledWorldsList = new ArrayList<>();
+    public List<Schedule> BoostSchedule = new ArrayList<>();
+
+    public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
+    private HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
+    private HashMap<CurrencyType, Double> generalMulti = new HashMap<>();
+    private HashMap<String, List<String>> commandArgs = new HashMap<>();
+
     protected Locale locale;
     protected int savePeriod;
     protected boolean economyAsync;
@@ -51,11 +63,11 @@ public class GeneralConfigManager {
     protected boolean payInCreative;
     protected boolean payExploringWhenFlying;
     public boolean payExploringWhenGliding;
+    public boolean disablePaymentIfMaxLevelReached;
     public boolean disablePaymentIfRiding;
     protected boolean addXpPlayer;
     public boolean boostedItemsInOffHand;
     public boolean payItemDurabilityLoss;
-    public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
     protected boolean hideJobsWithoutPermission;
     protected int maxJobs;
     protected boolean payNearSpawner;
@@ -72,7 +84,6 @@ public class GeneralConfigManager {
     public boolean PaymentMethodsMoney;
     public boolean PaymentMethodsPoints;
     public boolean PaymentMethodsExp;
-    private HashMap<CurrencyType, Double> generalMulti = new HashMap<>();
     private String getSelectionTool;
 
     public boolean enableSchedule;
@@ -84,9 +95,6 @@ public class GeneralConfigManager {
     private int DailyQuestsSkips;
     public double skipQuestCost;
     private ConfigReader c = null;
-
-    // Limits
-    private HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
 
     public boolean PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
@@ -116,7 +124,6 @@ public class GeneralConfigManager {
 
     public boolean FireworkLevelupUse, UseRandom, UseFlicker, UseTrail;
     public String FireworkType;
-    public List<String> FwColors = new ArrayList<>();
     public int FireworkPower, ShootTime;
 
     private int JobsGUIRows, JobsGUIBackButton,
@@ -145,7 +152,6 @@ public class GeneralConfigManager {
     public float maxPaymentCurveFactor;
     public double TaxesAmount;
     public String SoundLevelupSound, SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName;
-    public ArrayList<String> keys;
     public boolean hideJobsInfoWithoutPermission;
     public boolean UseTaxes;
     public boolean TransferToServerAccount;
@@ -169,11 +175,6 @@ public class GeneralConfigManager {
 
     public boolean DisabledWorldsUse;
     public boolean UseAsWhiteListWorldList;
-    public List<String> DisabledWorldsList = new ArrayList<>();
-
-    public List<Schedule> BoostSchedule = new ArrayList<>();
-
-    private HashMap<String, List<String>> commandArgs = new HashMap<>();
 
     public boolean DBCleaningJobsUse;
     public int DBCleaningJobsLvl;
@@ -545,6 +546,9 @@ public class GeneralConfigManager {
 
 	c.addComment("max-jobs", "Maximum number of jobs a player can join.", "Use 0 for no maximum", "Keep in mind that jobs.max.[amount] will bypass this setting");
 	maxJobs = c.get("max-jobs", 3);
+
+	c.addComment("disable-payment-if-max-level-reached", "Disabling the payment if the user reached the maximum level of a job.");
+	disablePaymentIfMaxLevelReached = c.get("disable-payment-if-max-level-reached", false);
 
 	c.addComment("hide-jobs-without-permission", "Hide jobs from player if they lack the permission to join the job");
 	hideJobsWithoutPermission = c.get("hide-jobs-without-permission", false);

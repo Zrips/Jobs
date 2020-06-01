@@ -987,6 +987,10 @@ public class Jobs extends JavaPlugin {
 		if (jobinfo == null)
 		    continue;
 
+		if (GconfigManager.disablePaymentIfMaxLevelReached && prog.getLevel() >= prog.getJob().getMaxLevel()) {
+		    continue;
+		}
+
 		Double income = jobinfo.getIncome(level, numjobs);
 		Double pointAmount = jobinfo.getPoints(level, numjobs);
 		Double expAmount = jobinfo.getExperience(level, numjobs);
