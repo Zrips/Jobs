@@ -225,28 +225,31 @@ public class Job {
     }
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
-	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
-	if (actionInfo instanceof PotionItemActionInfo) {
-	    return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion()) ||
-	    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion());
-	}
+        BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
+            if (actionInfo instanceof PotionItemActionInfo) {
+                return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion()) ||
+                        (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithPotion());
+            }
+            return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
+                    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+                    jobInfo.getName().equalsIgnoreCase(action.getName());
+        };
 
-	return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
-		(jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
-		jobInfo.getName().equalsIgnoreCase(action.getName());
-	};
-
-	for (JobInfo info : getJobInfo(action.getType())) {
-	    if (condition.test(info, action)) {
-		if (!info.isInLevelRange(level)) {
-		    break;
-		}
-
-		return info;
-	    }
-	}
-
-	return null;
+        String shortActionName = action.getName().replaceFirst(".+?_", "");
+        for (JobInfo info : getJobInfo(action.getType())) {
+            if (condition.test(info, action)) {
+                if (!info.isInLevelRange(level)) {
+                    break;
+                }
+                return info;
+            }
+            Jobs.consoleMsg("ActionName: " + action.getName() + " | Shortname:" + shortActionName + " | JobInfoName: " + info.getName());
+            if ((shortActionName + ":ALL").equalsIgnoreCase(info.getName())) {
+                Jobs.consoleMsg("&eALL Block reached!");
+                return info;
+            }
+        }
+        return null;
     }
 
     /**

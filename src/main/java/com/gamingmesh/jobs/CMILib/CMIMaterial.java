@@ -775,6 +775,7 @@ public enum CMIMaterial {
     SPRUCE_TRAPDOOR(10289, "Spruce Trapdoor"),
     SPRUCE_WOOD(32328, "Spruce Wood"),
     SQUID_SPAWN_EGG(383, 94, 10682, "Squid Spawn Egg", "Spawn Squid"),
+    STAINED_GLASS(10095, "Stained Glass"),
     STICK(280, 0, 9773, "Stick"),
     STICKY_PISTON(29, 0, 18127, "Sticky Piston", "PISTON_STICKY_BASE"),
     STONE(1, 0, 22948, "Stone"),
