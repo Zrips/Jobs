@@ -775,7 +775,6 @@ public enum CMIMaterial {
     SPRUCE_TRAPDOOR(10289, "Spruce Trapdoor"),
     SPRUCE_WOOD(32328, "Spruce Wood"),
     SQUID_SPAWN_EGG(383, 94, 10682, "Squid Spawn Egg", "Spawn Squid"),
-    STAINED_GLASS(10095, "Stained Glass"),
     STICK(280, 0, 9773, "Stick"),
     STICKY_PISTON(29, 0, 18127, "Sticky Piston", "PISTON_STICKY_BASE"),
     STONE(1, 0, 22948, "Stone"),
@@ -1198,7 +1197,7 @@ public enum CMIMaterial {
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one.getLegacyId() == null)
 		continue;
-	    if (one.getLegacyId() != mat.getLegacyId())
+	    if (!one.getLegacyId().equals(mat.getLegacyId()))
 		continue;
 	    ls.add(one);
 	}
@@ -1229,7 +1228,7 @@ public enum CMIMaterial {
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one.getLegacyId() == null)
 		continue;
-	    if (one.getLegacyId() != mat.getLegacyId())
+	    if (!one.getLegacyId().equals(mat.getLegacyId()))
 		continue;
 	    if (one.getLegacyData() == id)
 		return one;
@@ -1241,9 +1240,9 @@ public enum CMIMaterial {
     public static CMIMaterial get(String id) {
 	if (id == null)
 	    return CMIMaterial.NONE;
-	Integer ids = null;
-	Integer data = null;
-	id = id.replace("_", "").replace(" ", "").replace("minecraft:", "").toLowerCase();
+	Integer ids;
+	Integer data;
+	id = id.replaceAll("_| |minecraft:", "").toLowerCase();
 
 	if (id.contains(":")) {
 	    try {
@@ -1252,7 +1251,7 @@ public enum CMIMaterial {
 		if (ids <= 0)
 		    return CMIMaterial.NONE;
 		return get(ids, data);
-	    } catch (Exception ex) {
+	    } catch (Exception ignored) {
 	    }
 
 	    try {
@@ -1269,7 +1268,7 @@ public enum CMIMaterial {
 			return mat;
 		    }
 		}
-	    } catch (Exception ex) {
+	    } catch (Exception ignored) {
 	    }
 	}
 
@@ -1291,7 +1290,7 @@ public enum CMIMaterial {
 	    if (mat != null) {
 		return mat;
 	    }
-	} catch (Exception ex) {
+	} catch (Exception ignored) {
 	}
 
 	return CMIMaterial.NONE;
@@ -2508,5 +2507,14 @@ public enum CMIMaterial {
 
     public void setBukkitName(String bukkitName) {
 	this.bukkitName = bukkitName;
+    }
+
+    public static String getGeneralMaterialName(String fullName) {
+        fullName = fullName.toUpperCase();
+        if (fullName.startsWith("STRIPPED")) {
+            return fullName.replaceFirst("_[^_]+", "");
+        } else {
+            return fullName.replaceFirst(".+?_", "");
+        }
     }
 }

@@ -1229,7 +1229,7 @@ public class ConfigManager {
 				Integer matId = null;
 				try {
 				    matId = Integer.valueOf(myKey);
-				} catch (NumberFormatException e) {
+				} catch (NumberFormatException ignored) {
 				}
 				if (matId != null) {
 				    material = CMIMaterial.get(matId);
@@ -1402,7 +1402,10 @@ public class ConfigManager {
 				subType = myKey.split(":")[1];
 			    }
 			}
-
+			if (subType.equalsIgnoreCase(":ALL")) {
+				meta = "ALL";
+				type = CMIMaterial.getGeneralMaterialName(type);
+			}
 			if (type == null) {
 			    log.warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
 			    continue;

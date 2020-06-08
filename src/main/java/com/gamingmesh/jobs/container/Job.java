@@ -18,6 +18,7 @@
 
 package com.gamingmesh.jobs.container;
 
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import com.gamingmesh.jobs.resources.jfep.Parser;
@@ -235,7 +236,7 @@ public class Job {
                     jobInfo.getName().equalsIgnoreCase(action.getName());
         };
 
-        String shortActionName = action.getName().replaceFirst(".+?_", "");
+        String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
         for (JobInfo info : getJobInfo(action.getType())) {
             if (condition.test(info, action)) {
                 if (!info.isInLevelRange(level)) {
