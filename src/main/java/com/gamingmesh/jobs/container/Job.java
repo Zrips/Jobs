@@ -244,9 +244,7 @@ public class Job {
                 }
                 return info;
             }
-            Jobs.consoleMsg("ActionName: " + action.getName() + " | Shortname:" + shortActionName + " | JobInfoName: " + info.getName());
             if ((shortActionName + ":ALL").equalsIgnoreCase(info.getName())) {
-                Jobs.consoleMsg("&eALL Block reached!");
                 return info;
             }
         }
