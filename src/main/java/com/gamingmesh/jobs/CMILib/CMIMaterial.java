@@ -2510,11 +2510,18 @@ public enum CMIMaterial {
     }
 
     public static String getGeneralMaterialName(String fullName) {
-        fullName = fullName.toUpperCase();
-        if (fullName.startsWith("STRIPPED")) {
-            return fullName.replaceFirst("_[^_]+", "");
-        } else {
-            return fullName.replaceFirst(".+?_", "");
+        String newName = fullName.toUpperCase();
+        if (newName.startsWith("STRIPPED")) {
+            return newName.replaceFirst("_[^_]+", "");
         }
+        else if (newName.matches("^(DARK|LIGHT).+")) {
+            return newName.replaceFirst(".+?_.+?_", "");
+        }
+        else if (newName.matches(
+                "^(WHITE|ORANGE|MAGENTA|YELLOW|LIME|PINK|GRAY|CYAN|PURPLE|BLUE|BROWN|GREEN|RED|BLACK|" +
+                "OAK|SPRUCE|BIRCH|JUNGLE|ACACIA).+")) {
+            return newName.replaceFirst(".+?_", "");
+        }
+        return fullName;
     }
 }

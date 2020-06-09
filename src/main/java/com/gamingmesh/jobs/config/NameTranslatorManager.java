@@ -1,11 +1,8 @@
 package com.gamingmesh.jobs.config;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -51,6 +48,9 @@ public class NameTranslatorManager {
 	    case BREW:
 	    case FISH:
 	    case STRIPLOGS:
+		String fallbackMaterialName = Arrays.stream(materialName.split("\\s|:"))
+				.map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
+				.collect(Collectors.joining(" ")); // returns capitalized word (from this -> To This)
 		materialName = materialName.replace(" ", "");
 
 		CMIMaterial mat = CMIMaterial.get(materialName.replace(" ", ""));
@@ -82,6 +82,9 @@ public class NameTranslatorManager {
 			NameList nameMeta = ListOfNames.get(CMIMaterial.get(meta.replace(" ", "")));
 			if (nameLs != null && nameMeta != null) {
 			    return nameLs + ":" + nameMeta;
+			}
+			if (mat.equals(CMIMaterial.NONE)) {
+				return fallbackMaterialName;
 			}
 
 			return mat.getName();
