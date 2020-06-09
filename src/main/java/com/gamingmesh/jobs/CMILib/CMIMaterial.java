@@ -1197,7 +1197,7 @@ public enum CMIMaterial {
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one.getLegacyId() == null)
 		continue;
-	    if (one.getLegacyId() != mat.getLegacyId())
+	    if (!one.getLegacyId().equals(mat.getLegacyId()))
 		continue;
 	    ls.add(one);
 	}
@@ -1228,7 +1228,7 @@ public enum CMIMaterial {
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one.getLegacyId() == null)
 		continue;
-	    if (one.getLegacyId() != mat.getLegacyId())
+	    if (!one.getLegacyId().equals(mat.getLegacyId()))
 		continue;
 	    if (one.getLegacyData() == id)
 		return one;
@@ -1240,9 +1240,9 @@ public enum CMIMaterial {
     public static CMIMaterial get(String id) {
 	if (id == null)
 	    return CMIMaterial.NONE;
-	Integer ids = null;
-	Integer data = null;
-	id = id.replace("_", "").replace(" ", "").replace("minecraft:", "").toLowerCase();
+	Integer ids;
+	Integer data;
+	id = id.replaceAll("_| |minecraft:", "").toLowerCase();
 
 	if (id.contains(":")) {
 	    try {
@@ -1251,7 +1251,7 @@ public enum CMIMaterial {
 		if (ids <= 0)
 		    return CMIMaterial.NONE;
 		return get(ids, data);
-	    } catch (Exception ex) {
+	    } catch (Exception ignored) {
 	    }
 
 	    try {
@@ -1268,7 +1268,7 @@ public enum CMIMaterial {
 			return mat;
 		    }
 		}
-	    } catch (Exception ex) {
+	    } catch (Exception ignored) {
 	    }
 	}
 
@@ -1290,7 +1290,7 @@ public enum CMIMaterial {
 	    if (mat != null) {
 		return mat;
 	    }
-	} catch (Exception ex) {
+	} catch (Exception ignored) {
 	}
 
 	return CMIMaterial.NONE;
@@ -2507,5 +2507,21 @@ public enum CMIMaterial {
 
     public void setBukkitName(String bukkitName) {
 	this.bukkitName = bukkitName;
+    }
+
+    public static String getGeneralMaterialName(String fullName) {
+        String newName = fullName.toUpperCase();
+        if (newName.startsWith("STRIPPED")) {
+            return newName.replaceFirst("_[^_]+", "");
+        }
+        else if (newName.matches("^(DARK|LIGHT).+")) {
+            return newName.replaceFirst(".+?_.+?_", "");
+        }
+        else if (newName.matches(
+                "^(WHITE|ORANGE|MAGENTA|YELLOW|LIME|PINK|GRAY|CYAN|PURPLE|BLUE|BROWN|GREEN|RED|BLACK|" +
+                "OAK|SPRUCE|BIRCH|JUNGLE|ACACIA).+")) {
+            return newName.replaceFirst(".+?_", "");
+        }
+        return fullName;
     }
 }

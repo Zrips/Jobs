@@ -18,7 +18,9 @@
 
 package com.gamingmesh.jobs.container;
 
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -224,23 +226,24 @@ public class Job {
     }
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
-	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
-	return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
-	    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
-	    jobInfo.getName().equalsIgnoreCase(action.getName());
-	};
+	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) ->
+            jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
+	        (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+	        jobInfo.getName().equalsIgnoreCase(action.getName());
 
-	for (JobInfo info : getJobInfo(action.getType())) {
-	    if (condition.test(info, action)) {
-		if (!info.isInLevelRange(level)) {
-		    break;
-		}
-
-		return info;
-	    }
-	}
-
-	return null;
+        String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
+        for (JobInfo info : getJobInfo(action.getType())) {
+            if (condition.test(info, action)) {
+                if (!info.isInLevelRange(level)) {
+                    break;
+                }
+                return info;
+            }
+            if ((shortActionName + ":ALL").equalsIgnoreCase(info.getName())) {
+                return info;
+            }
+        }
+        return null;
     }
 
     /**
