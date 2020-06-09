@@ -465,25 +465,22 @@ public class Jobs extends JavaPlugin {
 	HashMap<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
 	for (Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator(); it.hasNext();) {
 	    Entry<UUID, PlayerInfo> one = it.next();
-	    try {
-		int id = one.getValue().getID();
-		JobsPlayer jPlayer = getPlayerManager().getJobsPlayerOffline(
-		    one.getValue(),
-		    playersJobs.get(id),
-		    playersPoints.get(id),
-		    playersLogs.get(id),
-		    playersArchives.get(id),
-		    playersLimits.get(id));
-		if (jPlayer == null)
-		    continue;
-		getPlayerManager().addPlayerToCache(jPlayer);
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
+	    int id = one.getValue().getID();
+	    JobsPlayer jPlayer = getPlayerManager().getJobsPlayerOffline(
+		one.getValue(),
+		playersJobs.get(id),
+		playersPoints.get(id),
+		playersLogs.get(id),
+		playersArchives.get(id),
+		playersLimits.get(id));
+	    if (jPlayer == null)
+		continue;
+
+	    getPlayerManager().addPlayerToCache(jPlayer);
 	}
 
 	dao.getMap().clear();
-	if (getPlayerManager().getPlayersCache().size() != 0)
+	if (!getPlayerManager().getPlayersCache().isEmpty())
 	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " +
 		((int) (((System.currentTimeMillis() - time) / 1000d) * 100) / 100D));
     }

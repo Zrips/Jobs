@@ -22,30 +22,31 @@ package com.gamingmesh.jobs.container;
  * <a href="https://papermc.io/javadocs/paper/1.13/org/bukkit/potion/PotionType.html">API reference for names</a>
  */
 public enum Potion {
-    AWKWARD("AWKWARD"),
-    FIRE_RESISTANCE("FIRE_RESISTANCE"),
-    INSTANT_DAMAGE("INSTANT_DAMAGE"),
-    INSTANT_HEAL("INSTANT_HEAL"),
-    INVISIBILITY("INVISIBILITY"),
-    JUMP("JUMP"),
-    LUCK("LUCK"),
-    MUNDANE("MUNDANE"),
-    NIGHT_VISION("NIGHT_VISION"),
-    POISON("POISON"),
-    REGEN("REGEN"),
-    SLOW_FALLING("SLOW_FALLING"),
-    SLOWNESS("SLOWNESS"),
-    SPEED("SPEED"),
-    STRENGTH("STRENGTH"),
-    THICK("THICK"),
-    TURTLE_MASTER("TURTLE_MASTER"),
-    WATER_BREATHING("WATER_BREATHING"),
-    WEAKNESS("WEAKNESS");
+    AWKWARD("awkward"),
+    FIRE_RESISTANCE("fire_resistance"),
+    INSTANT_DAMAGE("instant_damage"),
+    INSTANT_HEAL("instant_heal"),
+    INVISIBILITY("invisibility"),
+    JUMP("jump"),
+    LUCK("luck"),
+    MUNDANE("mundane"),
+    NIGHT_VISION("night_vision"),
+    LONG_NIGHT_VISION("long_night_vision"),
+    POISON("poison"),
+    REGEN("regen"),
+    SLOW_FALLING("slow_falling"),
+    SLOWNESS("slowness"),
+    SPEED("speed"),
+    STRENGTH("strength"),
+    THICK("thick"),
+    TURTLE_MASTER("turtle_master"),
+    WATER_BREATHING("water_breathing"),
+    WEAKNESS("weakness");
 
     private final String name;
 
     Potion(String name) {
-        this.name = name;
+        this.name = name.toUpperCase();
     }
 
     public String getName() {
@@ -53,12 +54,12 @@ public enum Potion {
     }
 
     public static Potion getByName(String name) {
-        name = name.replace("_", "");
         for (Potion one : Potion.values()) {
             if (one.name.equalsIgnoreCase(name)) {
                 return one;
             }
         }
+
         return null;
     }
 }
