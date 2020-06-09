@@ -12,9 +12,9 @@ public class JobsMySQL extends JobsDAO {
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
 	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database
-	    + "?maxReconnects=1&useUnicode=true&character_set_server=utf8mb4&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
+	    + "?maxReconnects=1&useUnicode=true&characterEncoding=UTF-8&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
 	    + "&verifyServerCertificate=" + certificate, username, password, prefix);
-	this.setDbType(DataBaseType.MySQL);
+	setDbType(DataBaseType.MySQL);
     }
 
     public void initialize() {
@@ -193,7 +193,7 @@ public class JobsMySQL extends JobsDAO {
     public boolean truncate(String table) {
 	Statement statement = null;
 	try {
-	    if (!this.isTable(table)) {
+	    if (!isTable(table)) {
 		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
@@ -215,7 +215,7 @@ public class JobsMySQL extends JobsDAO {
 	Statement statement = null;
 	String query = null;
 	try {
-	    if (!this.isTable(table)) {
+	    if (!isTable(table)) {
 		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
