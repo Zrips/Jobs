@@ -226,11 +226,10 @@ public class Job {
     }
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
-	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
-	return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
-	    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
-	    jobInfo.getName().equalsIgnoreCase(action.getName());
-	};
+	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) ->
+            jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
+	        (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+	        jobInfo.getName().equalsIgnoreCase(action.getName());
 
         String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
         for (JobInfo info : getJobInfo(action.getType())) {
