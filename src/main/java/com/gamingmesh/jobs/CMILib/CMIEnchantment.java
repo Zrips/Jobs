@@ -49,11 +49,11 @@ public enum CMIEnchantment {
     UNBREAKING("DURABILITY"),
     VANISHING_CURSE;
 
-    private static HashMap<String, CMIEnchantment> map = new HashMap<String, CMIEnchantment>();
-    private static HashMap<Enchantment, CMIEnchantment> emap = new HashMap<Enchantment, CMIEnchantment>();
+    private static HashMap<String, CMIEnchantment> map = new HashMap<>();
+    private static HashMap<Enchantment, CMIEnchantment> emap = new HashMap<>();
 
-    private List<String> subName = new ArrayList<String>();
-    private List<String> customNames = new ArrayList<String>();
+    private List<String> subName = new ArrayList<>();
+    private List<String> customNames = new ArrayList<>();
     private Enchantment enchantment;
 
 	@SuppressWarnings("deprecation")
@@ -83,7 +83,7 @@ public enum CMIEnchantment {
 	// Worst case scenario
 	if (enchantment == null) {
 	    for (Enchantment one : Enchantment.values()) {
-		if (one.toString().toLowerCase().replace("_", "").contains(temp)) {
+		if (one.toString().toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
 		    enchantment = one;
 		    break;
 		}
@@ -95,7 +95,7 @@ public enum CMIEnchantment {
 	    en: for (Enchantment one : Enchantment.values()) {
 		for (String subs : this.subName) {
 		    try {
-		    if (one.getName().toLowerCase().replace("_", "").contains(subs.toLowerCase().replace("_", ""))) {
+		    if (one.getName().toLowerCase().replace("_", "").equalsIgnoreCase(subs.toLowerCase().replace("_", ""))) {
 			enchantment = one;
 		    break en;
 		    }
@@ -115,7 +115,7 @@ public enum CMIEnchantment {
 	if (enchantment == null) {
 	    o: for (Enchantment one : Enchantment.values()) {
 		for (String subs : this.subName) {
-		    if (one.toString().toLowerCase().replace("_", "").contains(subs.toLowerCase().replace("_", ""))) {
+		    if (one.toString().toLowerCase().replace("_", "").equalsIgnoreCase(subs.toLowerCase().replace("_", ""))) {
 			enchantment = one;
 		    break o;
 		    }
