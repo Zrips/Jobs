@@ -1080,7 +1080,7 @@ public enum CMIMaterial {
 
     @Deprecated
     public Integer getLegacyId() {
-	return this.legacyId == null ? 0 : this.legacyId;
+	return legacyId == null ? 0 : legacyId;
     }
 
     @Deprecated
@@ -1192,11 +1192,9 @@ public enum CMIMaterial {
     }
 
     public static CMIMaterial getRandom(CMIMaterial mat) {
-	List<CMIMaterial> ls = new ArrayList<CMIMaterial>();
+	List<CMIMaterial> ls = new ArrayList<>();
 
 	for (CMIMaterial one : CMIMaterial.values()) {
-	    if (one.getLegacyId() == null)
-		continue;
 	    if (!one.getLegacyId().equals(mat.getLegacyId()))
 		continue;
 	    ls.add(one);
@@ -1226,8 +1224,6 @@ public enum CMIMaterial {
 	if (mat == null)
 	    return CMIMaterial.NONE;
 	for (CMIMaterial one : CMIMaterial.values()) {
-	    if (one.getLegacyId() == null)
-		continue;
 	    if (!one.getLegacyId().equals(mat.getLegacyId()))
 		continue;
 	    if (one.getLegacyData() == id)
@@ -1240,13 +1236,12 @@ public enum CMIMaterial {
     public static CMIMaterial get(String id) {
 	if (id == null)
 	    return CMIMaterial.NONE;
-	Integer ids;
 	Integer data;
 	id = id.replaceAll("_| |minecraft:", "").toLowerCase();
 
 	if (id.contains(":")) {
 	    try {
-		ids = Integer.parseInt(id.split(":")[0]);
+		Integer ids = Integer.parseInt(id.split(":")[0]);
 		data = Integer.parseInt(id.split(":")[1]);
 		if (ids <= 0)
 		    return CMIMaterial.NONE;
@@ -2510,18 +2505,20 @@ public enum CMIMaterial {
     }
 
     public static String getGeneralMaterialName(String fullName) {
-        String newName = fullName.toUpperCase();
-        if (newName.startsWith("STRIPPED")) {
-            return newName.replaceFirst("_[^_]+", "");
-        }
-        else if (newName.matches("^(DARK|LIGHT).+")) {
-            return newName.replaceFirst(".+?_.+?_", "");
-        }
-        else if (newName.matches(
-                "^(WHITE|ORANGE|MAGENTA|YELLOW|LIME|PINK|GRAY|CYAN|PURPLE|BLUE|BROWN|GREEN|RED|BLACK|" +
-                "OAK|SPRUCE|BIRCH|JUNGLE|ACACIA).+")) {
-            return newName.replaceFirst(".+?_", "");
-        }
-        return fullName;
+	String newName = fullName.toUpperCase();
+	if (newName.startsWith("STRIPPED")) {
+	    return newName.replaceFirst("_[^_]+", "");
+	}
+
+	if (newName.matches("^(DARK|LIGHT).+")) {
+	    return newName.replaceFirst(".+?_.+?_", "");
+	}
+
+	if (newName.matches("^(WHITE|ORANGE|MAGENTA|YELLOW|LIME|PINK|GRAY|CYAN|PURPLE|BLUE|BROWN|GREEN|RED|BLACK|" +
+		    "OAK|SPRUCE|BIRCH|JUNGLE|ACACIA).+")) {
+	    return newName.replaceFirst(".+?_", "");
+	}
+
+	return fullName;
     }
 }

@@ -1402,13 +1402,15 @@ public class ConfigManager {
 				subType = myKey.split(":")[1];
 			    }
 			}
+
 			if (type == null) {
 			    log.warning("Job " + jobKey + " has an invalid " + actionType.getName() + " type property: " + key + "!");
 			    continue;
 			}
+
 			if (":ALL".equalsIgnoreCase(subType)) {
-				meta = "ALL";
-				type = CMIMaterial.getGeneralMaterialName(type);
+			    meta = "ALL";
+			    type = CMIMaterial.getGeneralMaterialName(type);
 			}
 
 			if (actionType == ActionType.TNTBREAK)

@@ -226,6 +226,20 @@ Jobs:
         # you can use minuses to take away money if the player break this block
         income: -1.0
         experience: -1.0
+      # you can use here "-all" sub name to specify if we detect all wool colours
+      wool-all:
+        income: 2.0
+        points: 1.0
+        experience: 1.0
+      log-all:
+        income: 1.0
+        points: 1.0
+        experience: 1.0
+      # you should start material name like this, to detect if that material is exists
+      white_banner-all:
+        income: 1.0
+        points: 1.0
+        experience: 1.0
     # Payment for collecting things like sweet berry bush, composter or honey
     Collect:
       sweet_berry_bush-3:
