@@ -1184,6 +1184,8 @@ public class Jobs extends JavaPlugin {
 		if ((cd == null || cd == 0) && GconfigManager.useGlobalTimer) {
 		    getBpManager().add(block, GconfigManager.globalblocktimer);
 		}
+	    } else if (GconfigManager.useGlobalTimer) {
+		getBpManager().add(block, GconfigManager.globalblocktimer);
 	    }
 	} else if (info.getType() == ActionType.PLACE) {
 	    BlockProtection bp = getBpManager().getBp(block.getLocation());
