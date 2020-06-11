@@ -121,7 +121,7 @@ public class Job {
     }
 
     public void addBoost(CurrencyType type, double Point) {
-	this.boost.add(type, Point - 1D);
+	boost.add(type, Point);
     }
 
     public void addBoost(CurrencyType type, double point, int hour, int minute, int second) {
@@ -133,7 +133,7 @@ public class Job {
 	cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + second);
 
 	long time = cal.getTimeInMillis();
-	boost.add(type, point - 1D, time);
+	boost.add(type, point, time);
     }
 
     public void setBoost(BoostMultiplier BM) {
