@@ -21,7 +21,7 @@ public class gtop implements Cmd {
 	int amount = Jobs.getGCManager().JobsTopAmount;
 
 	if (args.length != 1 && args.length != 0) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.help.info", "%amount%", amount));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.help.info"));
 	    return true;
 	}
 

@@ -512,7 +512,7 @@ public class LanguageManager {
 	    c.get("command.top.output.next", "&2|&e Next Page >>>>");
 	    c.get("command.top.output.show", "&2Show from &e[from] &2until &e[until] &2top list");
 
-	    c.get("command.gtop.help.info", "Shows top %amount% players by global jobs level.");
+	    c.get("command.gtop.help.info", "Shows top players by global jobs level.");
 	    c.get("command.gtop.help.args", "");
 	    c.get("command.gtop.error.nojob", "Can't find any information.");
 	    c.get("command.gtop.output.topline", "&aTop&e %amount% &aplayers by global job level");
