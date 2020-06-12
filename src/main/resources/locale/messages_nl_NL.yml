@@ -1,3 +1,4 @@
+---
 economy:
   error:
     nomoney: '&cSorry, geen geld over in de nationale bank.'
@@ -15,6 +16,8 @@ general:
       mins: '&e%mins% &6minuten '
       secs: '&e%secs% &6seconden '
     invalidPage: '&cOngeldige pagina'
+    'true': '&2True'
+    'false': '&cFalse'
   admin:
     error: '&cEr is een fout opgetreden in de command.'
     success: '&eJe command is uitgevoerd.'
@@ -40,7 +43,7 @@ command:
       cmdUsage: '&2Gebruik: &7[command]'
       label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
-      cmdFormat: '&7/[command]&f[arguments]'
+      cmdFormat: '&7/[command] &f[arguments]'
       helpPageDescription: '&2* [description]'
       title: '&e-------&e ======= &6Banen &e======= &e-------'
       page: '&e-----&e ====== Pagina &6[1] &eof &6[2] &e====== &e-----'
@@ -50,10 +53,13 @@ command:
       nextPage: '&6 Volgende &2>>----'
       nextPageOff: '&7 Volgende >>----'
       pageCount: '&2[current]/[total]'
+      pageCountHover: '&e[totalEntries] entries'
+      prevPageGui: '&6Previous page '
+      nextPageGui: '&6Next Page'
   moneyboost:
     help:
       info: Verhoogt de geldwinst voor alle spelers
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Alle geldboosts zijn uitgeschakeld
       jobsboostreset: Geldboost voor %jobname% is uitgeschakeld
@@ -64,7 +70,7 @@ command:
   pointboost:
     help:
       info: Verhoogt de punten voor alle spelers
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Punten verhoging uitgeschakeld
       jobsboostreset: Punten verhoging voor %jobname% is uitgeschakeld
@@ -75,7 +81,7 @@ command:
   expboost:
     help:
       info: Verhoogt de exp voor alle spelers
-      args: '[jobname] [rate]'
+      args: '[jobname]/all/reset [rate]/all'
     output:
       allreset: Alle xp verhoging uitgeschakeld
       jobsboostreset: Exp verhoging voor %jobname% is uitgeschakeld
@@ -89,10 +95,13 @@ command:
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
+      notAplyingList: '&7[jobname]: %money% %points% %exp%'
+      hover: '&7%itemtype%'
+      hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
   edititembonus:
     help:
       info: Verander de itembonus
-      args: '[list/add/remove] [jobname] [itemBoostName]'
+      args: list/add/remove [jobname] [itemBoostName]
   bonus:
     help:
       info: Toon baan bonussen
@@ -116,7 +125,7 @@ command:
   limit:
     help:
       info: Laat betalingslimieten zien voor banen
-      args: ''
+      args: '[playername]'
     output:
       moneytime: '&eResterende tijd totdat geldlimiet opnieuw wordt ingesteld: &2%time%'
       moneyLimit: '&eMoney limiet: &2%current%&e/&2%total%'
@@ -126,6 +135,7 @@ command:
       pointsLimit: '&ePunt limiet: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4Je hebt binnen een bepaalde tijd de limiet bereikt!'
       reachedmoneylimit2: '&eJe kan je limiet bekijken met &2/jobs limit &ecommand'
+      reachedmoneylimit3: '&eMoney earned is now reduced exponentially... But you still earn a little!'
       reachedexplimit: '&4Je hebt binnen een bepaalde tijd de limiet bereikt!'
       reachedexplimit2: '&eJe kan je limiet bekijken met &2/jobs limit &ecommand'
       reachedpointslimit: '&4Je hebt binnen een bepaalde tijd de limiet bereikt!'
@@ -153,13 +163,11 @@ command:
   editpoints:
     help:
       info: Verander spelers punten.
-      args: '[set/add/take] [playername] [amount]'
+      args: set/add/take [playername] [amount]
     output:
       set: '&eSpeler (&6%playername%&e) punten is gezet naar &6%amount%'
-      add: '&eSpeler (&6%playername%&e) heeft &6%amount% &eextra punten. Nu heeft
-        de speler &6%total%'
-      take: '&eSpeler (&6%playername%&e) verloor &6%amount% &epunten. Nu heeft de
-        speler &6%total%'
+      add: '&eSpeler (&6%playername%&e) heeft &6%amount% &eextra punten. Nu heeft de speler &6%total%'
+      take: '&eSpeler (&6%playername%&e) verloor &6%amount% &epunten. Nu heeft de speler &6%total%'
   editjobs:
     help:
       info: Verander de banen.
@@ -182,6 +190,26 @@ command:
         or: '&eof '
         look: '&6KIJKEN NAAR'
         lookHover: '&6Druk op om informatie te zoeken van blok dat je zoekt'
+  editquests:
+    help:
+      info: Edit current quests.
+      args: ''
+      list:
+        quest: '&eQuests:'
+        jobs: '  -> [&e%jobname%&r]'
+        quests: '  -> [&e%questname%&r]'
+        actions: '    -> [&e%actionname%&r]'
+        objectives: '      -> [&e%objectivename%&r]'
+        objectiveRemove: '&c[X]'
+        objectiveAdd: '      -> &e[&2+&e]'
+      modify:
+        newValue: '&eEnter new value'
+        enter: '&eEnter new name or press '
+        hand: '&6HAND '
+        handHover: '&6Press to grab info from item in your hand'
+        or: '&eor '
+        look: '&6LOOKING AT'
+        lookHover: '&6Press to grab info from block you are looking'
   blockinfo:
     help:
       info: Toont blokinformatie waar u naar kijkt.
@@ -200,6 +228,14 @@ command:
       id: ' &eItem id: &6%itemid%'
       data: ' &eItem data: &6%itemdata%'
       usage: ' &eGebruik: &6%first% &eor &6%second%'
+  placeholders:
+    help:
+      info: List out all placeholders
+      args: (parse) (placeholder)
+    output:
+      list: '&e[place]. &7[placeholder]'
+      outputResult: ' &eresult: &7[result]'
+      parse: '&6[placeholder] &7by [source] &6result &8|&f[result]&8|'
   entitylist:
     help:
       info: Toont alle mogelijke entities kunnen worden gebruikt met een plugin.
@@ -211,6 +247,8 @@ command:
     error:
       nojob: Sluit eerst aan bij een baan.
     output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
       info: Open speciale banen winkel.
@@ -222,11 +260,13 @@ command:
       reqJobs: '&eBenodigde baan:'
       reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
       reqTotalLevel: '&6Benodigde level: &e%totalLevel%'
+      reqJobsColor: '&c'
+      reqJobsLevelColor: '&4'
+      reqTotalLevelColor: '&4'
       cantOpen: '&cKan deze pagina niet openen'
       NoPermForItem: '&cJe hebt niet genoeg permissies voor dit!'
       NoPermToBuy: '&cGeen permissies om dit te kopen'
-      NoJobReqForitem: '&cJe hebt niet de benodigde baan (&6%jobname%&e) met de benodigde
-        (&6%joblevel%&e) level'
+      NoJobReqForitem: '&cJe hebt niet de benodigde baan (&6%jobname%&e) met de benodigde (&6%joblevel%&e) level'
       NoPoints: '&cJe hebt niet genoeg punten'
       NoTotalLevel: '&cTotale banen level is te laag (%totalLevel%)'
       Paid: '&eJe hebt &6%amount% &ebetaald voor dit item'
@@ -239,7 +279,7 @@ command:
   give:
     help:
       info: Geeft item op taaknaam en itemcategorienaam. Spelernaam is optioneel
-      args: '[playername] [jobname] [jobitemname]'
+      args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
       notonline: '&4Speler [%playername%] is niet online!'
       noitem: '&4Kan geen item vinden met die naam!'
@@ -247,8 +287,7 @@ command:
     help:
       title: '&2*** &eBanen&2 ***'
       info: Laat zien hoeveel een baan wordt betaald en voor wat.
-      penalty: '&eDeze baan heeft &c[penalty]% &eboete vanwege te veel spelers die
-        erin werken.'
+      penalty: '&eDeze baan heeft &c[penalty]% &eboete vanwege te veel spelers die erin werken.'
       bonus: '&eDeze baan heeft &2[bonus]% &ebonus omdat er weinig spelers erin werken.'
       args: '[jobname] [action]'
       actions: '&eGeldige acties zijn: &f%actions%'
@@ -266,9 +305,11 @@ command:
       jobinfo: '&e[jobname] informatie!'
       actions: '&eGeldige acties zijn:'
       leftClick: '&eLinker Muisknop voor meer info'
+      middleClick: '&eMiddle Click to leave this job'
       rightClick: '&eRechter Muisknop om aan te sluiten bij de baan'
       leftSlots: '&eOpen plaatsen:&f '
       working: '&2&nal aan het werken'
+      cantJoin: '&cYou can''t join to the selected job.'
       max: '&eMaximale level:&f '
       back: '&e<<< Terug'
     output:
@@ -281,6 +322,9 @@ command:
       place:
         info: '&ePlaatsen'
         none: '%jobname% geeft geen geld voor plaatsen van blokken.'
+      striplogs:
+        info: '&eStrip logs'
+        none: '%jobname% does not get money for stripping logs.'
       kill:
         info: '&eSlachten'
         none: '%jobname% geen geen gelf voor monsters slachten.'
@@ -293,9 +337,6 @@ command:
       craft:
         info: '&eCraften'
         none: '%jobname% geeft geen geld voor craften.'
-      drink:
-        info: '&eDrinken'
-        none: '%jobname% geeft geen geld voor drinken.'
       smelt:
         info: '&eSmelten'
         none: '%jobname% geeft geen geld voor smelten.'
@@ -335,6 +376,12 @@ command:
       custom-kill:
         info: '&eCustom kill'
         none: '%jobname% geeft geen geld voor custom-spelers slachten.'
+      collect:
+        info: '&eCollect'
+        none: '%jobname% does not get money for collecting blocks.'
+      bake:
+        info: '&eBake'
+        none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
       info: Laat zien hoeveel elke baan wordt betaald en voor wat op een andere speler.
@@ -356,17 +403,20 @@ command:
       info: Verlaat de geselecteerde baan.
       args: '[oldplayerjob]'
     success: Je hebt de baan %jobname% verlaten.
+    confirmationNeed: '&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!'
   leaveall:
     help:
       info: Verlaat al je banen.
     error:
       nojobs: Je hebt geen baan om te verlaten!
     success: Je hebt al je banen verlaten.
+    confirmationNeed: '&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!'
   explored:
     help:
       info: Bekijk wie allemaal deze chunk heeft bezocht
     error:
       noexplore: Niemand heeft deze chunk bezocht
+    fullExplore: '&aThis chunk is fully explored'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -392,7 +442,7 @@ command:
         newMax: ' &eMaximale level: &f[max]'
       click: '&bKlik om meer informatie over de baan te krijgen!'
       detailed: '&bKlik om een ​​meer gedetailleerde lijst weer te geven.'
-      jobHeader: '&2========== [baannaam] ========='
+      jobHeader: '&2========== [jobname] ========='
       chooseJob: '&7&n&oKies deze baan'
       chooseJobHover: '&7Klik hier om de baan te krijgen'
   clearownership:
@@ -401,228 +451,248 @@ command:
       args: '[playername]'
     output:
       cleared: '&2Verwijderd &7[furnaces] &2Ovens end &7[brewing] &2brouwerij'
+  skipquest:
+    help:
+      info: Skip defined quest and get new one
+      args: '[jobname] [questname] (playerName)'
+    output:
+      questSkipForCost: '&2You skipped the quest and paid:&e %amount%$'
   quests:
     help:
       info: Lijst van beschikbare zoektochten
       args: '[playername]'
     error:
       noquests: '&cEr zijn geen zoektochten'
-    toplineseparator: '&7*********************** &6[playerName]&2(&f[questsDone]&2)
-      &7***********************'
+    toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
+    status:
+      changed: '&2The quests status has been changed to&r %status%'
+      started: '&aStarted'
+      stopped: '&cStopped'
     output:
       completed: '&2      !Voltooid!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
-      hover:
-      - '&f[jobName]'
-      - '[desc]'
-      - '&7Nieuwe zoektocht in: [time]'
+      skip: '&7Click to skip this quest'
+      skips: '&7Left skips: &f[skips]'
+      hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
     help:
-      info: Ontsla de speler van de baan.
+      info: Fire the player from the job.
       args: '[playername] [jobname]'
     error:
-      nojob: Speler heeft geen baan %jobname%.
+      nojob: Player does not have the job %jobname%.
     output:
-      target: Je bent ontslagen van %jobname%.
+      target: You have been fired from %jobname%.
   fireall:
     help:
-      info: Ontsla alle spelers van de baan
-      args: '[playername]'
+      info: Fire player from all their jobs.
+      args: '[playername]/all'
     error:
-      nojobs: Speler heeft geen ene baan om ontslagen te worden.
+      nojobs: Player does not have any jobs to be fired from!
     output:
-      target: Je bent onstlagen van al je banen.
+      target: You have been fired from all your jobs.
   employ:
     help:
-      info: Zet de speler aan het werk.
+      info: Employ the player to the job.
       args: '[playername] [jobname]'
     error:
-      alreadyin: Speler is al in de baan %jobname%.
+      alreadyin: Player is already in the job %jobname%.
+      fullslots: You cannot join the job %jobname%, there are no slots available.
     output:
-      target: Je bent aangenomen als een %jobname%.
+      target: You have been employed as a %jobname%.
   top:
     help:
-      info: Laat de top %amount% spelers zien van hun banen.
+      info: Shows top players by jobs name.
       args: '[jobname]'
     error:
-      nojob: Kan geen banen vinden met die naam.
+      nojob: Can't find any job with this name.
     output:
-      topline: '&aTop&e %amount% &aspelers van &e%jobname% &abaan'
-      list: '&e%number%&a. &e%playername% &alvl &e%level% &amet&e %exp% &aexp'
-      prev: '&e<<<<< Vorige Pagina &2|'
-      next: '&2|&e Volgende Pagina >>>>'
-      show: '&2Laat zien van &e[from] &2tot &e[until] &2top lijst'
+      topline: '&aTop&e %amount% &aplayers by &e%jobname% &ajob'
+      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
+      prev: '&e<<<<< Prev page &2|'
+      next: '&2|&e Next Page >>>>'
+      show: '&2Show from &e[from] &2until &e[until] &2top list'
   gtop:
     help:
-      info: Laat de top %amount% spelers zien van globale baan level.
+      info: Shows top players by global jobs level.
       args: ''
     error:
-      nojob: Kan geen informatie vinden.
+      nojob: Can't find any information.
     output:
-      topline: '&aTop&e %amount% &aspelers van globale baan level'
-      list: '&e%number%&a. &e%playername% &alvl &e%level% &amet&e %exp% &aexp'
-      prev: '&e<<<<< Vorige pagina &2|'
-      next: '&2|&e Volgende Pagina >>>>'
-      show: '&2Laat zien van &e[from] &2tot &e[until] &2globale top lijst'
+      topline: '&aTop&e %amount% &aplayers by global job level'
+      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
+      prev: '&e<<<<< Prev page &2|'
+      next: '&2|&e Next Page >>>>'
+      show: '&2Show from &e[from] &2until &e[until] &2global top list'
   area:
     help:
-      info: Pas beperkte gebieden aan.
-      args: '[add/remove/info/list]'
-      addUsage: '&eGebruik: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]'
-      removeUsage: '&eGebruik: &6/Jobs area remove [areaName]'
+      info: Modify restricted areas.
+      args: add/remove/info/list
+      addUsage: '&eUsage: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]'
+      removeUsage: '&eUsage: &6/Jobs area remove [areaName]'
     output:
-      addedNew: '&eNieuw beperkt gebied toegevoegd met &6%bonus% &ebonus'
-      removed: '&eBeperkte gebieden verwijderd &6%name%'
-      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%)
-        &6%bonus%'
+      addedNew: '&eAdded a new restricted area with &6%bonus% &ebonus'
+      removed: '&eRemoved the restricted area &6%name%'
+      list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%'
       wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
-      noAreas: '&eEr zijn geen opgeslagen beperkte areas'
-      noAreasByLoc: '&eEr zijn geen beperkte gebieden bij dit gebied'
-      areaList: '&eBeperkte gebieden bij jou in de buurt: &6%list%'
-      selected1: '&eEerste punt geselecteerd: &6%x%:%y%:%z%'
-      selected2: '&eTweede punt geselecteerd: &6%x%:%y%:%z%'
-      select: '&eSelecteer 2 punten met de selectie tool (%tool%)'
-      exist: '&eBeperkte gebieden met deze naam bestaat al.'
-      dontExist: '&eBeperkte gebied met deze naam bestaat niet'
-      wgDontExist: '&eWorldGuard area bij deze naam bestaat niet'
+      noAreas: '&eThere are no saved restricted areas'
+      noAreasByLoc: '&eThere are no restricted areas in this location'
+      areaList: '&eRestricted areas by your location: &6%list%'
+      selected1: '&eSelected the first point: &6%x%:%y%:%z%'
+      selected2: '&eSelected the second point: &6%x%:%y%:%z%'
+      select: '&eSelect 2 points with the selection tool (%tool%)'
+      exist: '&eRestriction area by this name already exists'
+      dontExist: '&eRestriction area by this name does not exist'
+      wgDontExist: '&eWorldGuard area by this name does not exist'
   log:
     help:
-      info: Laat statistieken zien
+      info: Shows statistics.
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
       ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
       money: '&6money: %amount% '
       exp: '&eexp: %amount% '
-      points: '&6punten: %amount%'
+      points: '&6points: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7***********************************************************'
-      prev: '&e<<<<< Vorige pagina &2|'
-      next: '&2|&e Volgende Pagina >>>>'
-      nodata: '&cData niet gevonden'
+      prev: '&e<<<<< Prev page &2|'
+      next: '&2|&e Next Page >>>>'
+      nodata: '&cData not found'
   glog:
     help:
-      info: Laat globale statistieken zien
+      info: Shows global statistics.
       args: ''
     output:
-      topline: '&7*********************** &6Globale statistieken &7***********************'
+      topline: '&7*********************** &6Global statistics &7***********************'
       ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
-      money: '&6geld: %amount% '
+      money: '&6money: %amount% '
       exp: '&eexp: %amount% '
-      points: '&6punten: %amount%'
+      points: '&6points: %amount%'
+      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7**************************************************************'
-      nodata: '&cData niet gevonden'
+      nodata: '&cData not found'
   transfer:
     help:
-      info: Breng de baan van een speler over van een oude baan naar een nieuwe baan
+      info: Transfer a player's job from an old job to a new job.
       args: '[playername] [oldjob] [newjob]'
     output:
-      target: Je bent geruild van %oldjobname% naar %newjobname%.
+      target: You have been transferred from %oldjobname% to %newjobname%.
   promote:
     help:
-      info: Promoveer de speler X levels in een baan.
+      info: Promote the player X levels in a job.
       args: '[playername] [jobname] [levels]'
     output:
-      target: Je bent gepromoveerd van %levelsgained% levels bij %jobname%.
+      target: You have been promoted %levelsgained% levels in %jobname%.
   exp:
     help:
-      info: Verander de speler xp voor baan.
-      args: '[playername] [jobname] [set/add/take] [amount]'
+      info: Change the player exp for job.
+      args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cThis player must first join a job.'
     output:
-      target: '&eJou exp was gewijzigd voor %jobname% &een nu ben je bij &6%level%lvl
-        &een met &6%exp%exp.'
+      target: '&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+  level:
+    help:
+      info: Change the player's level in a job.
+      args: '[playername] [jobname] set/add/take [amount]'
+    error:
+      nojob: '&cThis player must first join a job.'
+    output:
+      target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
   demote:
     help:
-      info: Degradeer de speler X levels bij een baan.
+      info: Demote the player X levels in a job.
       args: '[playername] [jobname] [levels]'
     output:
-      target: Je bent %levelslost% levels gedegradeert van %jobname%.
+      target: You have been demoted %levelslost% levels in %jobname%.
   grantxp:
     help:
-      info: Verleen de speler X exp bij een baan.
+      info: Grants the player X experience in a job.
       args: '[playername] [jobname] [xp]'
     output:
-      target: Verleen de speler %xpgained% exp bij %jobname%.
+      target: You have been granted %xpgained% experience in %jobname%.
   removexp:
     help:
-      info: Verwijder X exp van de speler in een baan.
+      info: Remove X experience from the player in a job.
       args: '[playername] [jobname] [xp]'
     output:
-      target: Je hebt %xplost% experience verloren bij %jobname%.
+      target: You have lost %xplost% experience in %jobname%.
   signupdate:
     help:
-      info: Updatet het bord handmatig.
+      info: Manually updates a sign by its name
       args: '[jobname]'
   bp:
     help:
-      info: Laat de blokken protectie zien van een radius van 10
+      info: Shows block protections around you in 10 block radius
       args: ''
     output:
-      found: '&eGevonden &6%amount% &ebeschermde blokken van jou'
-      notFound: '&eGeen beschermde blokken in de buurt van jou'
+      found: '&eFound &6%amount% &eprotected blocks around you'
+      notFound: '&eNo protected blocks found around you'
   reload:
     help:
-      info: Herlaad configuraties.
+      info: Reload configurations.
   toggle:
     help:
-      info: Schakelt de betalingsoutput op de actiebalk of de actionbar.
-      args: '[actionbar/bossbar]'
+      info: Toggles payment output on action bar or bossbar.
+      args: actionbar/bossbar
     output:
-      turnedoff: '&4Deze functie is uitgeschakeld!'
+      turnedoff: '&4This feature is turned off!'
       paid:
-        main: '&aJe hebt:'
-        money: '&e[amount] geld'
+        main: '&aYou got:'
+        money: '&e[amount] money'
         exp: '&7[exp] exp'
-        points: '&6[points] punten'
-      'on': '&aGeschakeld: &aON'
-      'off': '&aGeschakeld: &4OFF'
+        points: '&6[points] points'
+      'on': '&aToggled: &aON'
+      'off': '&aToggled: &4OFF'
 message:
   skillup:
-    broadcast: '%playername% is gepromoveerd naar een %titlename% %jobname%.'
-    nobroadcast: Gefeliciteerd, je bent gepromoveerd naar een %titlename% %jobname%.
+    broadcast: '%playername% has been promoted to a %titlename% %jobname%.'
+    nobroadcast: Congratulations, you have been promoted to a %titlename% %jobname%.
   levelup:
-    broadcast: '%playername% is nu level %joblevel% %jobname%.'
-    nobroadcast: Jij bent nu level %joblevel% %jobname%.
-  cowtimer: '&eJe moet nog &6%time% &eseconden wachten om betaald te worden voor je
-    baan.'
-  blocktimer: '&eJe moet nog: &3[time] &eseconden wachten om betaald te worden voor
-    dit!'
-  placeblocktimer: '&eJe kan blokken niet sneller plaatsen dan &6[time] &eseconden
-    same place!'
-  taxes: '&3[amount] &eserver belastingen zijn overgeboekt naar deze account'
-  boostStarted: '&eBanen boost tijd is gestart!'
-  boostStoped: '&eBanen boost tijd is over'
+    broadcast: '%playername% is now a level %joblevel% %jobname%.'
+    nobroadcast: You are now level %joblevel% %jobname%.
+  leveldown:
+    message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
+  cowtimer: '&eYou still need to wait &6%time% &esec to get paid for this job.'
+  blocktimer: '&eYou need to wait &3[time] &esec more to get paid for this!'
+  placeblocktimer: '&eYou can''t place blocks faster than &6[time] &esec in the same place!'
+  taxes: '&3[amount] &eserver taxes were transferred to this account'
+  boostStarted: '&eJobs boost time have been started!'
+  boostStoped: '&eJobs boost time have been ended!'
   crafting:
-    fullinventory: '&cJe inventaris is vol!'
+    fullinventory: '&cYour inventory is full!'
 signs:
   List: '&0[number].&8[player]&7:&4[level]'
+  questList: '&0[number].&8[player]&7:&4[quests]'
   SpecialList:
-    p1: '&b** &8Eerste &b**'
-    p2: '&b** &8Tweede &b**'
-    p3: '&b** &8Derde &b**'
-    p4: '&b** &8Vierde &b**'
-    p5: '&b** &8Vijfde &b**'
-    p6: '&b** &8Zesde &b**'
-    p7: '&b** &8Zevende &b**'
-    p8: '&b** &8Achtste &b**'
-    p9: '&b** &8Negende &b**'
-    p10: '&b** &8Tiende &b**'
+    p1: '&b** &8First &b**'
+    p2: '&b** &8Second &b**'
+    p3: '&b** &8Third &b**'
+    p4: '&b** &8Fourth &b**'
+    p5: '&b** &8Fifth &b**'
+    p6: '&b** &8Sixth &b**'
+    p7: '&b** &8Seventh &b**'
+    p8: '&b** &8Eight &b**'
+    p9: '&b** &8Ninth &b**'
+    p10: '&b** &8Tenth &b**'
     name: '&9[player]'
     level: '&8[level] level'
+    quests: '&8[quests] quests'
     bottom: '&b************'
-  cantcreate: '&4Je kan deze bord niet maken!'
-  cantdestroy: '&4Je kan deze bord niet kapot maken!'
+  cantcreate: '&4You can''t create this sign!'
+  cantdestroy: '&4You can''t destroy this sign!'
   topline: '&0[Jobs]'
   secondline:
     join: '&0Join'
-    leave: '&0Verlaten'
+    leave: '&0Leave'
     toggle: '&0Toggle'
     top: '&0Top'
-    browse: '&0BZoeken'
-    stats: '&0Statistieken'
-    limit: '&0Limiet'
-    info: '&0Informatie'
-    archive: '&0archief'
+    browse: '&0Browse'
+    stats: '&0Stats'
+    limit: '&0Limit'
+    info: '&0Info'
+    archive: '&0Archive'
 scoreboard:
   topline: '&2Top &e%jobname%'
-  gtopline: '&2Globale top lijst'
+  gtopline: '&2Global top list'
   line: '&2%number%. &e%playername% (&6%level%&e)'

@@ -513,7 +513,7 @@ command:
       show: '&2Şuan &e[from] &2kadar &e[until] &2kadarı gösteriliyor'
   gtop:
     help:
-      info: Genel olarak en yüksek mesleğe sahip %amount% oyuncuyu gösterir.
+      info: Shows top players by global jobs level.
       args: ''
     error:
       nojob: Bir bilgi bulunamadı.

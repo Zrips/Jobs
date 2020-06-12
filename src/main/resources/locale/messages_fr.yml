@@ -513,7 +513,7 @@ command:
       show: '&2Montre la Top List de &e[from] &2jusqu''à &e[until]'
   gtop:
     help:
-      info: Affiche le top %amount% des joueurs par niveau global de métiers.
+      info: Shows top players by global jobs level.
       args: ''
     error:
       nojob: Impossible de trouver des informations.

@@ -513,7 +513,7 @@ command:
       show: '&2顯示 &e[from] &2到 &e[until] &2的排行榜'
   gtop:
     help:
-      info: 顯示全部職業中最高等的 %amount% 名玩家.
+      info: Shows top players by global jobs level.
       args: ''
     error:
       nojob: 沒有找到任何資訊, 你這是新服吧23333.

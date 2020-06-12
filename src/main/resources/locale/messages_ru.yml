@@ -471,7 +471,7 @@ command:
     output:
       completed: '&2      !Завершено!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
-      skip: '&7Click to skip this quest'
+      skip: '&7Нажмите, чтобы пропустить это задание'
       skips: '&7Left skips: &f[skips]'
       hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
   fire:
@@ -513,7 +513,7 @@ command:
       show: '&2Show from &e[from] &2until &e[until] &2top list'
   gtop:
     help:
-      info: Shows top %amount% players by global jobs level.
+      info: Shows top players by global jobs level.
       args: ''
     error:
       nojob: Can't find any information.
@@ -598,16 +598,16 @@ command:
     error:
       nojob: '&cThis player must first join a job.'
     output:
-      target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eВаш уровень изменился для работы %jobname% &eи сейчас вы &6%level%lvl &eопыта &6%exp%exp.'
   demote:
     help:
-      info: Demote the player X levels in a job.
+      info: Снизить уровень работы игрока X.
       args: '[playername] [jobname] [levels]'
     output:
-      target: You have been demoted %levelslost% levels in %jobname%.
+      target: Вас понизили на %levelslost% уровней в работе %jobname%.
   grantxp:
     help:
-      info: Grants the player X experience in a job.
+      info: Повысить уровень работы у игрока X.
       args: '[playername] [jobname] [xp]'
     output:
       target: You have been granted %xpgained% experience in %jobname%.
@@ -694,5 +694,5 @@ signs:
     archive: '&0Archive'
 scoreboard:
   topline: '&2Top &e%jobname%'
-  gtopline: '&2Global top list'
+  gtopline: 'Глобальный топ'
   line: '&2%number%. &e%playername% (&6%level%&e)'

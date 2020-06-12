@@ -285,7 +285,7 @@ command:
       noitem: '&4Nincs találat ezzel a névvel lévő tárgyról!'
   info:
     help:
-      title: '&2*** &eJobs&2 ***'
+      title: '&2*** &eMunkák&2 ***'
       info: Megmutatja, hogy mennyi minden munkát fizet, és miért.
       penalty: '&eEz a munka &c[penalty]% &ebüntetés miatt túl sok játékos dolgozik benne.'
       bonus: '&eEz a munka &2[bonus]% &ebónusza van, mert nem elég játékos dolgozik benne.'
@@ -299,10 +299,10 @@ command:
       levelUntil: ' &a(amíg &e%levelUntil% &aszint)'
       money: ' &2%money%$'
       points: ' &6%points% pont'
-      exp: ' &e%exp%xp'
+      exp: ' &e%exp%tapasztalat'
     gui:
       pickjob: '&eVálassz egy munkát!'
-      jobinfo: '&e[jobname] info!'
+      jobinfo: '&e[jobname] információ!'
       actions: '&eÉrvényes akciók:'
       leftClick: '&eTovábbi információért kattints bal gombbal'
       middleClick: '&eKözépkattintás a munka elhagyásához'
@@ -513,7 +513,7 @@ command:
       show: '&2Megjelenítés &e[from]&2-tól/től &e[until]&2-ig.'
   gtop:
     help:
-      info: A top %amount% legjobb játékosokat mutatja a globális munkákon.
+      info: Megmutatja a legjobb játékosokat a globális munkákon.
       args: ''
     error:
       nojob: '&cNem találok semmilyen információt.'
@@ -551,7 +551,7 @@ command:
       topline: '&7************************* &6%playername% &7*************************'
       ls: '&7* &6%number%. &3%action%: &6%item% &emennyiség: %qty% %money%%exp%%points%'
       money: '&6pénz: %amount% '
-      exp: '&eexp: %amount% '
+      exp: '&eTapasztalat: %amount% '
       points: '&6pontok: %amount%'
       totalIncomes: '    &6Összes pénz:&2 %money%&6, Összes exp:&2 %exp%&6, Összes pontok:&2 %points%'
       bottomline: '&7***********************************************************'
@@ -686,13 +686,13 @@ signs:
     join: '&0Csatlakozás'
     leave: '&0Elhagyás'
     toggle: '&0Váltás'
-    top: '&0Top'
+    top: '&0Toplista'
     browse: '&0Böngészés'
     stats: '&0Statizstika'
-    limit: '&0Limit'
-    info: '&0Info'
+    limit: '&0Korlát'
+    info: '&0Infó'
     archive: '&0Archív'
 scoreboard:
-  topline: '&2Top &e%jobname%'
+  topline: '&2Legjobb &e%jobname%'
   gtopline: '&2Globális top lista'
   line: '&2%number%. &e%playername% (&6%level%&e)'

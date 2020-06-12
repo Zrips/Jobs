@@ -513,7 +513,7 @@ command:
       show: '&2Show from &e[from] &2until &e[until] &2top list'
   gtop:
     help:
-      info: Shows top %amount% players by global jobs level.
+      info: Shows top players by global jobs level.
       args: ''
     error:
       nojob: Can't find any information.

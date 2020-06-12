@@ -513,7 +513,7 @@ command:
       show: '&e[from] &2 から &e[until] &2までのリストを表示します'
   gtop:
     help:
-      info: 合計レベルの上位%amount%名を表示します
+      info: Shows top players by global jobs level.
       args: ''
     error:
       nojob: 情報がありません

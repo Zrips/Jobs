@@ -513,7 +513,7 @@ command:
       show: '&2Ukazat top list od &e[from] &2do &e[until]'
   gtop:
     help:
-      info: Zobrazí %amount% hráčů podle globální úrovně práce.
+      info: Shows top players by global jobs level.
       args: ''
     error:
       nojob: Nenasli jsme zadne informace.

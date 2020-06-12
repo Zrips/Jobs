@@ -1,71 +1,71 @@
 ---
 economy:
   error:
-    nomoney: '&cSorry, no money left in national bank!'
+    nomoney: '&cBeklager, ikke mer penger igjen i nasjonalbanken!'
 limitedItem:
   error:
-    levelup: '&cYou need to level up in [jobname] to use this item!'
+    levelup: '&cDu må levle opp i [jobname] for å bruke dette itemet!'
 general:
   Spawner: '&r[type] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
     time:
-      days: '&e%days% &6days '
-      hours: '&e%hours% &6hours '
-      mins: '&e%mins% &6min '
-      secs: '&e%secs% &6sec '
-    invalidPage: '&cInvalid page'
-    'true': '&2True'
-    'false': '&cFalse'
+      days: '&e%days% &6dager '
+      hours: '&e%hours% &6timer '
+      mins: '&e%mins% &6minutter '
+      secs: '&e%secs% &6sekunder '
+    invalidPage: '&cUgyldig side'
+    'true': '&2Aktivert'
+    'false': '&cDeaktivert'
   admin:
-    error: '&cThere was an error in the command.'
-    success: '&eYour command has been performed.'
+    error: '&cDet var en feil i kommandoen. Prøv igjen.'
+    success: '&eKommandoen din er utført.'
   error:
-    noHelpPage: '&cThere is no help page by this number!'
-    notNumber: '&ePlease use numbers!'
-    job: '&cThe job you selected does not exist or you not joined to this'
-    noCommand: '&cThere is no command by this name!'
-    permission: '&cYou do not have permission to do that!'
-    noinfo: '&cNo information found!'
-    noinfoByPlayer: '&cNo information found by [%playername%] player name!'
-    ingame: '&cYou can use this command only in game!'
-    fromconsole: '&cYou can use this command only from console!'
-    worldisdisabled: '&cYou can''t use command in this world!'
-    newFurnaceRegistration: '&eRegistered new ownership for furnace &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eRegistered new ownership for brewing stand &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cYou''ve reached max furnace count!'
-    noBrewingRegistration: '&cYou''ve reached max brewing stand count!'
+    noHelpPage: '&cDet er ingen hjelpeside med dette nummeret!'
+    notNumber: '&eVennligst bruk tall!'
+    job: '&cJobben du har valgt, eksisterer ikke, eller så er du ikke med på dette'
+    noCommand: '&cDet er ingen kommando med det navnet!'
+    permission: '&cDu har ikke tilgang til å gjøre dette!'
+    noinfo: '&cIngen informasjon er funnet!'
+    noinfoByPlayer: '&cIngen informasjon funnet ved brukernavnet [%playername%]!'
+    ingame: '&cDu kan bare bruke denne kommandoen i spillet!'
+    fromconsole: '&cDu kan bare bruke denne kommandoen fra konsoll!'
+    worldisdisabled: '&cDu kan ikke bruke denne kommandoen i denne verdenen!'
+    newFurnaceRegistration: '&eRegistrerte nytt eierskap for ovn &7[current]&e/&f[max]'
+    newBrewingRegistration: '&eRegistrerte nytt eierskap for brewing stand &7[current]&e/&f[max]'
+    noFurnaceRegistration: '&cDu har maks antall ovner!'
+    noBrewingRegistration: '&cDu har nådd maks antall brewing stander!'
 command:
   help:
     output:
-      info: Type /jobs [cmd] ? for more information about a command.
-      cmdUsage: '&2Usage: &7[command]'
+      info: Skriv /jobs [cmd] ? for mer informasjon om en kommando.
+      cmdUsage: '&2Bruk: &7[command]'
       label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
       cmdFormat: '&7/[command] &f[arguments]'
       helpPageDescription: '&2* [description]'
       title: '&e-------&e ======= &6Jobs &e======= &e-------'
-      page: '&e-----&e ====== Page &6[1] &eof &6[2] &e====== &e-----'
+      page: '&e-----&e ====== Side &6[1] &eav &6[2] &e====== &e-----'
       fliperSimbols: '&e----------'
-      prevPage: '&2----<< &6Prev '
-      prevPageOff: '&7----<< Prev '
-      nextPage: '&6 Next &2>>----'
-      nextPageOff: '&7 Next >>----'
+      prevPage: '&2----<< &6Forrige '
+      prevPageOff: '&7----<< Forrige '
+      nextPage: '&6 Neste &2>>----'
+      nextPageOff: '&7 Neste >>----'
       pageCount: '&2[current]/[total]'
       pageCountHover: '&e[totalEntries] entries'
-      prevPageGui: '&6Previous page '
-      nextPageGui: '&6Next Page'
+      prevPageGui: '&6Forrige side '
+      nextPageGui: '&6Neste side'
   moneyboost:
     help:
-      info: Boosts money gain for all players
+      info: Øker pengegevinsten for alle spillere
       args: '[jobname]/all/reset [rate]/all'
     output:
-      allreset: All money boosts turned off
-      jobsboostreset: Money boost has been turned off for %jobname%
-      nothingtoreset: Nothing to reset
-      boostalladded: Money boost of %boost% added for all jobs!
-      boostadded: Money boost of &e%boost% &aadded for &e%jobname%!
+      allreset: Pengeøkning er slått av
+      jobsboostreset: Pengeøkning er slått av for %jobname%
+      nothingtoreset: Ikke noe å resette
+      boostalladded: Pengeøkning på %boost% er lagt til for alle jobber!
+      boostadded: Pengeøkning på &e%boost% &aer lagt til for &e%jobname%!
       infostats: '&c-----> &aMoney rate x%boost% enabled&c <-------'
   pointboost:
     help:
@@ -74,7 +74,7 @@ command:
     output:
       allreset: All point boosts turned off
       jobsboostreset: Point boost has been turned off for %jobname%
-      nothingtoreset: Nothing to reset
+      nothingtoreset: Ikke noe å resette
       boostalladded: Points boost of %boost% added for all jobs!
       boostadded: Points boost of &e%boost% &aadded for &e%jobname%!
       infostats: '&c-----> &aPoints rate x%boost% enabled&c <-------'
@@ -85,7 +85,7 @@ command:
     output:
       allreset: All exp boosts turned off
       jobsboostreset: Exp boost has been turned off for %jobname%
-      nothingtoreset: Nothing to reset
+      nothingtoreset: Ikke noe å resette
       boostalladded: Exp boost of %boost% added for all jobs!
       boostadded: Exp boost of &e%boost% &aadded for &e%jobname%!
       infostats: '&c-----> &aExp rate x%boost% enabled&c <-------'
@@ -185,7 +185,7 @@ command:
       modify:
         newValue: '&eEnter new value'
         enter: '&eEnter new name or press '
-        hand: '&6HAND '
+        hand: '&6HÅND '
         handHover: '&6Press to grab info from item in your hand'
         or: '&eor '
         look: '&6LOOKING AT'
@@ -205,9 +205,9 @@ command:
       modify:
         newValue: '&eEnter new value'
         enter: '&eEnter new name or press '
-        hand: '&6HAND '
+        hand: '&6HÅND '
         handHover: '&6Press to grab info from item in your hand'
-        or: '&eor '
+        or: '&eeller '
         look: '&6LOOKING AT'
         lookHover: '&6Press to grab info from block you are looking'
   blockinfo:
@@ -347,7 +347,7 @@ command:
         info: '&eEat'
         none: '%jobname% does not get money from eating food.'
       dye:
-        info: '&eDye'
+        info: '&eFarge'
         none: '%jobname% does not get money from dyeing.'
       enchant:
         info: '&eEnchant'
@@ -508,7 +508,7 @@ command:
     output:
       topline: '&aTop&e %amount% &aplayers by &e%jobname% &ajob'
       list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
-      prev: '&e<<<<< Prev page &2|'
+      prev: '&e<<<<< Forrige side &2|'
       next: '&2|&e Next Page >>>>'
       show: '&2Show from &e[from] &2until &e[until] &2top list'
   gtop:
@@ -520,8 +520,8 @@ command:
     output:
       topline: '&aTop&e %amount% &aplayers by global job level'
       list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
-      prev: '&e<<<<< Prev page &2|'
-      next: '&2|&e Next Page >>>>'
+      prev: '&e<<<<< Forrige side &2|'
+      next: '&2|&e Neste side >>>>'
       show: '&2Show from &e[from] &2until &e[until] &2global top list'
   area:
     help:
@@ -545,7 +545,7 @@ command:
       wgDontExist: '&eWorldGuard area by this name does not exist'
   log:
     help:
-      info: Shows statistics.
+      info: Vis statistikk.
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
@@ -638,10 +638,10 @@ command:
     output:
       turnedoff: '&4This feature is turned off!'
       paid:
-        main: '&aYou got:'
+        main: '&aDu fikk:'
         money: '&e[amount] money'
         exp: '&7[exp] exp'
-        points: '&6[points] points'
+        points: '&6[points] poeng'
       'on': '&aToggled: &aON'
       'off': '&aToggled: &4OFF'
 message:
@@ -665,7 +665,7 @@ signs:
   List: '&0[number].&8[player]&7:&4[level]'
   questList: '&0[number].&8[player]&7:&4[quests]'
   SpecialList:
-    p1: '&b** &8First &b**'
+    p1: '&b** &8Først &b**'
     p2: '&b** &8Second &b**'
     p3: '&b** &8Third &b**'
     p4: '&b** &8Fourth &b**'
@@ -694,5 +694,5 @@ signs:
     archive: '&0Archive'
 scoreboard:
   topline: '&2Top &e%jobname%'
-  gtopline: '&2Global top list'
+  gtopline: '&2Global toppliste'
   line: '&2%number%. &e%playername% (&6%level%&e)'
