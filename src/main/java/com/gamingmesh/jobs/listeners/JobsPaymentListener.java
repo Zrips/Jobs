@@ -1362,7 +1362,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Location loc = event.getLocation();
-	Collection<Entity> ents = Version.isCurrentEqualOrLower(Version.v1_8_R1)
+	Collection<Entity> ents = Version.isCurrentEqualOrLower(Version.v1_8_R1) || loc.getWorld() == null
 	    ? null : loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
 	if (ents == null) {
 	    return;

@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -801,19 +802,18 @@ public abstract class JobsDAO {
 	return map;
     }
 
-    private HashMap<Integer, ArrayList<JobsDAOData>> map = new HashMap<>();
-
-    public List<JobsDAOData> getAllJobs(PlayerInfo pInfo) {
-	return map.getOrDefault(pInfo.getID(), new ArrayList<JobsDAOData>());
-    }
-
     public void cleanUsers() {
 	if (!Jobs.getGCManager().DBCleaningUsersUse)
 	    return;
+
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
-	long mark = System.currentTimeMillis() - (Jobs.getGCManager().DBCleaningUsersDays * 24 * 60 * 60 * 1000);
+
+	Calendar cal = Calendar.getInstance();
+	cal.add(Calendar.DATE, -Jobs.getGCManager().DBCleaningUsersDays);
+	long mark = cal.getTimeInMillis();
+
 	PreparedStatement prest = null;
 	try {
 	    prest = conn.prepareStatement("DELETE FROM `" + DBTables.UsersTable.getTableName() + "` WHERE `" + UserTableFields.seen.getCollumn() + "` < ?;");
@@ -829,9 +829,11 @@ public abstract class JobsDAO {
     public void cleanJobs() {
 	if (!Jobs.getGCManager().DBCleaningJobsUse)
 	    return;
+
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
+
 	PreparedStatement prest = null;
 	try {
 	    prest = conn.prepareStatement("DELETE FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.level.getCollumn() + "` <= ?;");
@@ -2693,10 +2695,6 @@ public abstract class JobsDAO {
 	    } catch (SQLException e) {
 		e.printStackTrace();
 	    }
-    }
-
-    public HashMap<Integer, ArrayList<JobsDAOData>> getMap() {
-	return map;
     }
 
     public String getJobsTableName() {

@@ -479,7 +479,6 @@ public class Jobs extends JavaPlugin {
 	    getPlayerManager().addPlayerToCache(jPlayer);
 	}
 
-	dao.getMap().clear();
 	if (!getPlayerManager().getPlayersCache().isEmpty())
 	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " +
 		((int) (((System.currentTimeMillis() - time) / 1000d) * 100) / 100D));
