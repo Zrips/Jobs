@@ -37,6 +37,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.Ageable;
@@ -451,6 +452,14 @@ public class JobsPaymentListener implements Listener {
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
+
+	// Prevent money duplication when placing plant blocks
+	Material placedBlock = event.getBlockPlaced().getRelative(BlockFace.DOWN).getType();
+	if (Jobs.getGCManager().preventCropResizePayment && (placedBlock == CMIMaterial.SUGAR_CANE.getMaterial()
+		    || placedBlock == CMIMaterial.KELP.getMaterial()
+		    || placedBlock == CMIMaterial.CACTUS.getMaterial() || placedBlock == CMIMaterial.BAMBOO.getMaterial())) {
+	    return;
+	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)

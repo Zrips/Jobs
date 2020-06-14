@@ -67,6 +67,7 @@ public class GeneralConfigManager {
     public boolean disablePaymentIfRiding;
     protected boolean addXpPlayer;
     public boolean boostedItemsInOffHand;
+    public boolean preventCropResizePayment;
     public boolean payItemDurabilityLoss;
     protected boolean hideJobsWithoutPermission;
     protected int maxJobs;
@@ -582,6 +583,10 @@ public class GeneralConfigManager {
 	    c.addComment("enable-boosted-items-in-offhand", "Do the jobs boost ignore the boosted items usage in off hand?");
 	    boostedItemsInOffHand = c.get("enable-boosted-items-in-offhand", true);
 	}
+
+	c.addComment("enable-payment-for-planting-blocks", "Do you want to prevent crop resizing payment when placing more cactus?",
+	    "This option is only related to: sugar_cane, cactus, kelp, bamboo");
+	preventCropResizePayment = c.get("prevent-crop-resize-payment", false);
 
 	c.addComment("allow-pay-for-durability-loss", "Allows, when losing maximum durability of item then it does not pay the player until it is repaired.",
 	    "E.g. the player wants to enchant a item with enchanting table and the item has durability loss then not paying.");
