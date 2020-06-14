@@ -584,7 +584,7 @@ public class GeneralConfigManager {
 	    boostedItemsInOffHand = c.get("enable-boosted-items-in-offhand", true);
 	}
 
-	c.addComment("enable-payment-for-planting-blocks", "Do you want to prevent crop resizing payment when placing more cactus?",
+	c.addComment("prevent-crop-resize-payment", "Do you want to prevent crop resizing payment when placing more cactus?",
 	    "This option is only related to: sugar_cane, cactus, kelp, bamboo");
 	preventCropResizePayment = c.get("prevent-crop-resize-payment", false);
 
