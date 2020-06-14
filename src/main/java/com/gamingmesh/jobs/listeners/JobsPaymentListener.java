@@ -813,7 +813,8 @@ public class JobsPaymentListener implements Listener {
 
 	Inventory inv = event.getInventory();
 	// must be anvil inventory
-	if (!(inv instanceof AnvilInventory) && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory))
+	if (!(inv instanceof AnvilInventory) && (Version.isCurrentEqualOrHigher(Version.v1_14_R1)
+			&& !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory)))
 	    return;
 
 	int slot = event.getSlot();

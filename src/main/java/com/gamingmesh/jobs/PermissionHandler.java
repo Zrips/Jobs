@@ -87,6 +87,7 @@ public class PermissionHandler {
 
 		    for (JobConditions Condition : job.getConditions()) {
 			boolean ok = true;
+
 			for (String oneReq : Condition.getRequiredPerm()) {
 			    if (!player.hasPermission(oneReq)) {
 				ok = false;
@@ -98,6 +99,7 @@ public class PermissionHandler {
 			    String jobName = oneReq.getKey();
 			    int jobLevel = oneReq.getValue();
 			    boolean found = false;
+
 			    for (JobProgression oneJob : jPlayer.getJobProgression()) {
 				if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
 				    found = true;
@@ -106,12 +108,14 @@ public class PermissionHandler {
 				    break;
 				}
 			    }
+
 			    if (!found)
 				ok = false;
 			}
 
 			if (!ok)
 			    continue;
+
 			for (Entry<String, Boolean> one : Condition.getPerformPerm().entrySet()) {
 			    String perm = one.getKey();
 			    boolean node = one.getValue();
@@ -149,6 +153,7 @@ public class PermissionHandler {
 
 		    for (JobConditions Condition : prog.getJob().getConditions()) {
 			boolean ok = true;
+
 			for (String oneReq : Condition.getRequiredPerm()) {
 			    if (!player.hasPermission(oneReq)) {
 				ok = false;
@@ -160,19 +165,24 @@ public class PermissionHandler {
 			    String jobName = oneReq.getKey();
 			    int jobLevel = oneReq.getValue();
 			    boolean found = false;
+
 			    for (JobProgression oneJob : jPlayer.getJobProgression()) {
 				if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
 				    found = true;
+
 				if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
 				    ok = false;
 				    break;
 				}
 			    }
+
 			    if (!found)
 				ok = false;
 			}
+
 			if (!ok)
 			    continue;
+
 			for (Entry<String, Boolean> one : Condition.getPerformPerm().entrySet()) {
 			    String perm = one.getKey();
 			    boolean node = one.getValue();
