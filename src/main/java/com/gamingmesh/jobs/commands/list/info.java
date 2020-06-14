@@ -27,19 +27,26 @@ public class info implements Cmd {
 
 	Player pSender = (Player) sender;
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
-
-	String jobName = args[0];
-	Job job = Jobs.getJob(jobName);
-	if (job == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+	if (jPlayer == null) {
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", pSender.getName()));
 	    return true;
 	}
 
-	if (Jobs.getGCManager().hideJobsInfoWithoutPermission)
-	    if (!Jobs.getCommandManager().hasJobPermission(pSender, job)) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
-		return true;
-	    }
+	Job job = Jobs.getJob(args[0]);
+	if (job == null) {
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+	    return true;
+	}
+
+	if (Jobs.getGCManager().hideJobsInfoWithoutPermission && !Jobs.getCommandManager().hasJobPermission(pSender, job)) {
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+	    return true;
+	}
+
+	if (Jobs.getGCManager().jobsInfoOpensBrowse) {
+	    Jobs.getGUIManager().openJobsBrowseGUI(pSender, job, true);
+	    return true;
+	}
 
 	String type = "";
 	if (args.length >= 2) {
@@ -55,7 +62,7 @@ public class info implements Cmd {
 	} catch (NumberFormatException e) {
 	}
 
-	Jobs.getCommandManager().jobInfoMessage(sender, jPlayer, job, type, page);
+	Jobs.getCommandManager().jobInfoMessage(pSender, jPlayer, job, type, page);
 	return true;
     }
 

@@ -411,6 +411,14 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
+	// Prevent money duplication when breaking plant blocks
+	Material brokenBlock = block.getRelative(BlockFace.DOWN).getType();
+	if (Jobs.getGCManager().preventCropResizePayment && (brokenBlock == CMIMaterial.SUGAR_CANE.getMaterial()
+		    || brokenBlock == CMIMaterial.KELP.getMaterial()
+		    || brokenBlock == CMIMaterial.CACTUS.getMaterial() || brokenBlock == CMIMaterial.BAMBOO.getMaterial())) {
+	    return;
+	}
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;

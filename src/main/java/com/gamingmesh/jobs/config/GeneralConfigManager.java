@@ -111,13 +111,9 @@ public class GeneralConfigManager {
     public boolean useBlockProtection;
     public int BlockProtectionDays;
 
-    public boolean applyToNegativeIncome;
-    public boolean useMinimumOveralPayment;
-    public boolean useMinimumOveralPoints;
-    public boolean useBreederFinder = false;
     private boolean useTnTFinder = false;
-    public boolean CancelCowMilking;
-    public boolean fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
+    public boolean applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useBreederFinder = false,
+	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, UseInversedClickToLeave, ShowActionNames,
@@ -137,7 +133,7 @@ public class GeneralConfigManager {
     public ItemStack guiBackButton;
     public ItemStack guiFiller;
 
-    public boolean UsePerPermissionForLeaving, EnableConfirmation, FilterHiddenPlayerFromTabComplete;
+    public boolean UsePerPermissionForLeaving, EnableConfirmation, FilterHiddenPlayerFromTabComplete, jobsInfoOpensBrowse;
     public int JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime;
 
     public Integer levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
@@ -1053,6 +1049,8 @@ public class GeneralConfigManager {
 	EnableConfirmation = c.get("Commands.JobsLeave.EnableConfirmation", false);
 	c.addComment("Commands.JobsLeave.ConfirmExpiryTime", "Specify the confirm expiry time.", "Time in seconds.");
 	ConfirmExpiryTime = c.get("Commands.JobsLeave.ConfirmExpiryTime", 10);
+	c.addComment("Commands.JobsInfo.open-browse", "Open up the jobs browse action list, when your performed /jobs info command?");
+	jobsInfoOpensBrowse = c.get("Commands.JobsInfo.open-browse", false);
 
 	CMIMaterial tmat = null;
 	tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN").toUpperCase());

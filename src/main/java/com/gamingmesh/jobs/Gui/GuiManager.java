@@ -177,6 +177,10 @@ public class GuiManager {
     }
 
     public void openJobsBrowseGUI(Player player, Job job) {
+	openJobsBrowseGUI(player, job, false);
+    }
+
+    public void openJobsBrowseGUI(Player player, Job job, boolean fromCommand) {
 	Inventory tempInv = Bukkit.createInventory(player, 54, "");
 
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -293,6 +297,10 @@ public class GuiManager {
 
 	for (int i1 = 0; i1 < items.size(); i1++) {
 	    gui.addButton(new CMIGuiButton(i1, items.get(i1)));
+	}
+
+	if (fromCommand) {
+	    return;
 	}
 
 	ItemStack skull = Jobs.getGCManager().guiBackButton;
