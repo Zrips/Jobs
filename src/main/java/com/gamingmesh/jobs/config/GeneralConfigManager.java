@@ -46,8 +46,7 @@ public class GeneralConfigManager {
     public ArrayList<String> keys;
 
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
-    public List<String> FwColors = new ArrayList<>();
-    public List<String> DisabledWorldsList = new ArrayList<>();
+    public List<String> FwColors = new ArrayList<>(), DisabledWorldsList = new ArrayList<>();
     public List<Schedule> BoostSchedule = new ArrayList<>();
 
     public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
@@ -56,129 +55,54 @@ public class GeneralConfigManager {
     private HashMap<String, List<String>> commandArgs = new HashMap<>();
 
     protected Locale locale;
-    protected int savePeriod;
-    protected boolean economyAsync;
-    protected boolean isBroadcastingSkillups;
-    protected boolean isBroadcastingLevelups;
-    protected boolean payInCreative;
-    protected boolean payExploringWhenFlying;
-    public boolean payExploringWhenGliding;
-    public boolean disablePaymentIfMaxLevelReached;
-    public boolean disablePaymentIfRiding;
-    protected boolean addXpPlayer;
-    public boolean boostedItemsInOffHand;
-    public boolean preventCropResizePayment;
-    public boolean payItemDurabilityLoss;
-    protected boolean hideJobsWithoutPermission;
-    protected int maxJobs;
-    protected boolean payNearSpawner;
-    protected boolean modifyChat;
-    public String modifyChatPrefix;
-    public String modifyChatSuffix;
-    public String modifyChatSeparator;
-    protected int economyBatchDelay;
-    protected boolean saveOnDisconnect;
-    protected boolean MultiServerCompatability;
-//    public boolean LocalOfflinePlayersData;
-    public boolean MythicMobsEnabled;
-    public boolean LoggingUse;
-    public boolean PaymentMethodsMoney;
-    public boolean PaymentMethodsPoints;
-    public boolean PaymentMethodsExp;
-    private String getSelectionTool;
-
-    public boolean enableSchedule;
-
-    public int jobExpiryTime;
-
-    private int ResetTimeHour;
-    private int ResetTimeMinute;
-    private int DailyQuestsSkips;
-    public double skipQuestCost;
     private ConfigReader c = null;
 
-    public boolean PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
+    protected boolean economyAsync, isBroadcastingSkillups, isBroadcastingLevelups, payInCreative, payExploringWhenFlying,
+    addXpPlayer, hideJobsWithoutPermission, payNearSpawner, modifyChat, saveOnDisconnect, MultiServerCompatability;
+
+    public String modifyChatPrefix, modifyChatSuffix, modifyChatSeparator, FireworkType, SoundLevelupSound,
+    SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName, localeString = "";
+    private String getSelectionTool, DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
+
+    public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime,
+    globalblocktimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
+    SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays;
+    protected int savePeriod, maxJobs, economyBatchDelay;
+    private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips, FurnacesMaxDefault, BrewingStandsMaxDefault,
+    BrowseAmountToShow, JobsGUIRows, JobsGUIBackButton, JobsGUIStartPosition, JobsGUIGroupAmount, JobsGUISkipAmount;
+
+    public double skipQuestCost, MinimumOveralPaymentLimit, MinimumOveralPointsLimit, MonsterDamagePercentage,
+    DynamicPaymentMaxPenalty, DynamicPaymentMaxBonus, TaxesAmount;
+
+    public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
+
+    public Integer levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
+	SoundTitleChangePitch, ToplistInScoreboardInterval;
+
+    public float maxPaymentCurveFactor;
+
+    private boolean FurnacesReassign, BrewingStandsReassign, useTnTFinder = false, ShowNewVersion;
+
+    public boolean useBlockProtection, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
-	BrowseUseNewLook;
-    public int globalblocktimer, CowMilkingTimer, InfoUpdateInterval;
-    public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
-    public String localeString = "";
-
-    private boolean FurnacesReassign, BrewingStandsReassign;
-    private int FurnacesMaxDefault, BrewingStandsMaxDefault, BrowseAmountToShow;
-
-    public boolean useBlockProtection;
-    public int BlockProtectionDays;
-
-    private boolean useTnTFinder = false;
-    public boolean applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useBreederFinder = false,
+	BrowseUseNewLook, payExploringWhenGliding, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
+    boostedItemsInOffHand, preventCropResizePayment, payItemDurabilityLoss,
+    applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useBreederFinder = false,
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, UseInversedClickToLeave, ShowActionNames,
-	DisableJoiningJobThroughGui;
+	DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UseFlicker, UseTrail, UsePerPermissionForLeaving,
+	EnableConfirmation, FilterHiddenPlayerFromTabComplete, jobsInfoOpensBrowse, MonsterDamageUse = false, useMaxPaymentCurve,
+	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
+	BossBarEnabled, BossBarShowOnEachAction, BossBarsMessageByDefault, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
+	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
+	LoggingUse;
 
-    public boolean FireworkLevelupUse, UseRandom, UseFlicker, UseTrail;
-    public String FireworkType;
-    public int FireworkPower, ShootTime;
-
-    private int JobsGUIRows, JobsGUIBackButton,
-	JobsGUIStartPosition,
-	JobsGUIGroupAmount,
-	JobsGUISkipAmount;
-
-    private String DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
-
-    public ItemStack guiBackButton;
-    public ItemStack guiFiller;
-
-    public boolean UsePerPermissionForLeaving, EnableConfirmation, FilterHiddenPlayerFromTabComplete, jobsInfoOpensBrowse;
-    public int JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime;
-
-    public Integer levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
-	SoundTitleChangePitch, ToplistInScoreboardInterval;
-    public double MinimumOveralPaymentLimit;
-    public double MinimumOveralPointsLimit;
-
-    public boolean MonsterDamageUse = false;
-    public double MonsterDamagePercentage;
-    public double DynamicPaymentMaxPenalty;
-    public double DynamicPaymentMaxBonus;
-    public boolean useMaxPaymentCurve;
-    public float maxPaymentCurveFactor;
-    public double TaxesAmount;
-    public String SoundLevelupSound, SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName;
-    public boolean hideJobsInfoWithoutPermission;
-    public boolean UseTaxes;
-    public boolean TransferToServerAccount;
-    public boolean TakeFromPlayersPayment;
-
-    public int AutoJobJoinDelay;
-    public boolean AutoJobJoinUse;
-
-    public boolean AllowDelevel;
-
-    //BossBar
-    public boolean BossBarEnabled;
-    public boolean BossBarShowOnEachAction;
-    public int SegementCount;
-    public int BossBarTimer;
-    public boolean BossBarsMessageByDefault;
+    public ItemStack guiBackButton, guiFiller;
 
     public Parser DynamicPaymentEquation;
-
-    public boolean ExploreCompact;
-
-    public boolean DisabledWorldsUse;
-    public boolean UseAsWhiteListWorldList;
-
-    public boolean DBCleaningJobsUse;
-    public int DBCleaningJobsLvl;
-    public boolean DBCleaningUsersUse;
-    public int DBCleaningUsersDays;
-
-    private boolean ShowNewVersion;
 
     public HashMap<String, List<String>> getCommandArgs() {
 	return commandArgs;
@@ -632,8 +556,8 @@ public class GeneralConfigManager {
 	    "With this set to true names like Stone:1 will be translated to Granite", "Name list is in TranslatableWords.yml file");
 	UseCustomNames = c.get("UseCustomNames", true);
 
-	c.addComment("economy-batch-delay", "Changes how often, in seconds, players are paid out.  Default is 5 seconds.",
-	    "Setting this too low may cause tick lag.  Increase this to improve economy performance (at the cost of delays in payment)");
+	c.addComment("economy-batch-delay", "Changes how often, in seconds, players are paid out. Default is 5 seconds.",
+	    "Setting this too low may cause tick lag. Increase this to improve economy performance (at the cost of delays in payment)");
 	economyBatchDelay = c.get("economy-batch-delay", 5);
 
 	c.addComment("economy-async", "Enable async economy calls.", "Disable this if you have issues with payments or your plugin is not thread safe.");
@@ -659,8 +583,8 @@ public class GeneralConfigManager {
 	}
 
 	c.addComment("Economy.ApplyToNegativeIncome",
-	    "When set to true income which is belove 0 will get bonus aplied to it",
-	    "In example, if you would loose 5 bucks for placing diamond block, with 100% payment bonus, that penalty disapears",
+	    "When set to true income which is belove 0 will get bonus applied to it",
+	    "In example, if you would loose 5 bucks for placing diamond block, with 100% payment bonus, that penalty disappears",
 	    "When this left at false penalty for action will remain unchanged");
 	applyToNegativeIncome = c.get("Economy.ApplyToNegativeIncome", false);
 
@@ -942,8 +866,8 @@ public class GeneralConfigManager {
 	    c.addComment("BossBar.ShowOnEachAction", "If enabled boss bar will update after each action",
 		"If disabled, BossBar will update only on each payment. This can save some server resources");
 	    BossBarShowOnEachAction = c.get("BossBar.ShowOnEachAction", false);
-	    c.addComment("BossBar.SegementCount", "Defines in how many parts bossabr will be split visually","Valid options: 1, 6, 10, 12, 20");
-	    SegementCount = c.get("BossBar.SegementCount", 1);
+	    c.addComment("BossBar.SegmentCount", "Defines in how many parts bossbar will be split visually", "Valid options: 1, 6, 10, 12, 20");
+	    SegmentCount = c.get("BossBar.SegmentCount", 1);
 	    c.addComment("BossBar.Timer", "How long in sec to show BossBar for player",
 		"If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
 	    BossBarTimer = c.get("BossBar.Timer", economyBatchDelay + 1);

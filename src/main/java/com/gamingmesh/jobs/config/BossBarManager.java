@@ -105,7 +105,7 @@ public class BossBarManager {
 		}
 	    }
 	    BarStyle style = BarStyle.SOLID;
-	    switch (Jobs.getGCManager().SegementCount) {
+	    switch (Jobs.getGCManager().SegmentCount) {
 	    case 6:
 		style = BarStyle.SEGMENTED_6;
 		break;

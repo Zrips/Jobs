@@ -915,7 +915,7 @@ public class JobsPlayer {
 		continue;
 	    }
 
-	    oneQ.setValidUntil(oneQ.getQuest().getValidUntil());
+	    oneQ.setValidUntil(System.currentTimeMillis());
 	    for (Entry<ActionType, HashMap<String, QuestObjective>> base : oneQ.getQuest().getObjectives().entrySet()) {
 		for (Entry<String, QuestObjective> obj : base.getValue().entrySet()) {
 		    oneQ.setAmountDone(obj.getValue(), 0);

@@ -730,7 +730,7 @@ public class ConfigManager {
 	    if (jobSection.contains("BossBarColour")) {
 		bossbar = jobSection.getString("BossBarColour", "");
 		if (bossbar.isEmpty()) {
-		    color = ChatColor.WHITE;
+		    bossbar = "GREEN";
 		    log.warning("Job " + jobKey + " has an invalid BossBarColour property.");
 		}
 	    }
@@ -1249,7 +1249,7 @@ public class ConfigManager {
 			    continue;
 
 			if (material != null && material.getMaterial() != null && material.getMaterial() == Material.AIR) {
-			    log.warning("Job " + jobKey + " " + actionType.getName() + " cant recognize material! (" + key + ")");
+			    log.warning("Job " + jobKey + " " + actionType.getName() + " can't recognize material! (" + key + ")");
 			    continue;
 			}
 

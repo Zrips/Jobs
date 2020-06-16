@@ -661,10 +661,7 @@ public class Jobs extends JavaPlugin {
 	    return;
 	}
 
-	if (setupPlaceHolderAPI()) {
-	    consoleMsg("&ePlaceholderAPI was found - Enabling capabilities.");
-	    PlaceholderAPIEnabled = true;
-	}
+	PlaceholderAPIEnabled = setupPlaceHolderAPI();
 
 	try {
 	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
@@ -947,7 +944,7 @@ public class Jobs extends JavaPlugin {
 	    if (pointAmount != 0D)
 		jPlayer.setSaved(false);
 
-	    HashMap<CurrencyType, Double> payments = new HashMap<CurrencyType, Double>();
+	    HashMap<CurrencyType, Double> payments = new HashMap<>();
 	    if (income != 0D)
 		payments.put(CurrencyType.MONEY, income);
 	    if (pointAmount != 0D)
@@ -1111,7 +1108,7 @@ public class Jobs extends JavaPlugin {
 		    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
 
-		HashMap<CurrencyType, Double> payments = new HashMap<CurrencyType, Double>();
+		HashMap<CurrencyType, Double> payments = new HashMap<>();
 		if (income != 0D)
 		    payments.put(CurrencyType.MONEY, income);
 		if (pointAmount != 0D)

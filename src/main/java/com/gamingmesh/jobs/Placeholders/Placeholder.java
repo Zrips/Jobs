@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.Placeholders;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -409,7 +410,8 @@ public class Placeholder {
 	    case user_totallevels:
 		return Integer.toString(user.getTotalLevels());
 	    case user_points:
-		return format.format(user.getPointsData().getCurrentPoints());
+		DecimalFormat dec = new DecimalFormat("00.0");
+		return dec.format(user.getPointsData().getCurrentPoints());
 	    case user_total_points:
 		format = NumberFormat.getInstance(Locale.ENGLISH);
 		return format.format(user.getPointsData().getTotalPoints());

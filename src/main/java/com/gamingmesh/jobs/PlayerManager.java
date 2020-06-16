@@ -1038,34 +1038,38 @@ public class PlayerManager {
     }
 
     public void AutoJoinJobs(final Player player) {
-	if (player == null)
+	if (player == null || player.isOp() || !Jobs.getGCManager().AutoJobJoinUse)
 	    return;
-	if (player.isOp())
-	    return;
-	if (!Jobs.getGCManager().AutoJobJoinUse)
-	    return;
+
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
 	    @Override
 	    public void run() {
 		if (!player.isOnline())
 		    return;
+
 		JobsPlayer jPlayer = getJobsPlayer(player);
 		if (jPlayer == null)
 		    return;
+
 		if (player.hasPermission("jobs.*"))
 		    return;
+
 		int confMaxJobs = Jobs.getGCManager().getMaxJobs();
 		for (Job one : Jobs.getJobs()) {
 		    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
 			continue;
+
 		    short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
 		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, PlayerMaxJobs))
 			break;
+
 		    if (jPlayer.isInJob(one))
 			continue;
+
 		    if (player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
 			joinJob(jPlayer, one);
 		}
+
 		return;
 	    }
 	}, Jobs.getGCManager().AutoJobJoinDelay * 20L);
