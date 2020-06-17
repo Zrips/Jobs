@@ -793,8 +793,8 @@ public class JobsPaymentListener implements Listener {
 	else if (b == null)
 	    return false;
 
-	CMIMaterial mat1 = CMIMaterial.get(a);
-	CMIMaterial mat2 = CMIMaterial.get(b);
+	CMIMaterial mat1 = CMIMaterial.get(a),
+	    mat2 = CMIMaterial.get(b);
 	return mat1 == mat2 && Jobs.getNms().getDurability(a) == Jobs.getNms().getDurability(b) && Objects.equal(a.getData(), b.getData()) &&
 	    Objects.equal(a.getEnchantments(), b.getEnchantments());
     }
@@ -838,7 +838,7 @@ public class JobsPaymentListener implements Listener {
 	if (!event.getSlotType().equals(SlotType.RESULT) || (slot != 2 && slot != 1))
 	    return;
 
-	if (!(inv instanceof StonecutterInventory) && slot == 1)
+	if ((Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !(inv instanceof StonecutterInventory)) && slot == 1)
 	    return;
 
 	if (!(event.getWhoClicked() instanceof Player))
@@ -909,7 +909,7 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	if (inv instanceof StonecutterInventory) {
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && inv instanceof StonecutterInventory) {
 	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 	    return;
 	}
