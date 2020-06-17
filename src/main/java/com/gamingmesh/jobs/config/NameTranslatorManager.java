@@ -21,11 +21,9 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class NameTranslatorManager {
 
-    public HashMap<CMIMaterial, NameList> ListOfNames = new HashMap<>();
-    public ArrayList<NameList> ListOfEntities = new ArrayList<>();
-    public HashMap<String, NameList> ListOfEnchants = new HashMap<>();
-    public HashMap<String, NameList> ListOfMMEntities = new HashMap<>();
-    public ArrayList<NameList> ListOfColors = new ArrayList<>();
+	private final HashMap<CMIMaterial, NameList> ListOfNames = new HashMap<>();
+    private final ArrayList<NameList> ListOfEntities = new ArrayList<>(), ListOfColors = new ArrayList<>();
+    private final HashMap<String, NameList> ListOfEnchants = new HashMap<>(), ListOfMMEntities = new HashMap<>();
 
     public String Translate(String materialName, JobInfo info) {
 	return Translate(materialName, info.getActionType(), info.getId(), info.getMeta(), info.getName());

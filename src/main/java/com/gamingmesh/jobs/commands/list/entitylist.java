@@ -16,10 +16,9 @@ public class entitylist implements Cmd {
 	    return true;
 	}
 
-	String msg = "";
-
-	String c1 = "&e";
-	String c2 = "&6";
+	String msg = "",
+	    c1 = "&e",
+	    c2 = "&6";
 
 	int i = 0;
 	for (EntityType type : EntityType.values()) {

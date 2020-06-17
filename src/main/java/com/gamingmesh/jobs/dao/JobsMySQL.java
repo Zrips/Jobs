@@ -12,7 +12,7 @@ public class JobsMySQL extends JobsDAO {
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
 	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database
-	    + "?maxReconnects=1&useUnicode=true&characterEncoding=UTF-8&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
+	    + "?maxReconnects=1&useUnicode=true&characterEncoding=utf8&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
 	    + "&verifyServerCertificate=" + certificate, username, password, prefix);
 	setDbType(DataBaseType.MySQL);
     }

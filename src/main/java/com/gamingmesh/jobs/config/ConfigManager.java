@@ -385,9 +385,9 @@ public class ConfigManager {
 
     @SuppressWarnings("deprecation")
     public KeyValues getKeyValue(String myKey, ActionType actionType, String jobName) {
-	String type = null;
-	String subType = "";
-	String meta = "";
+	String type = null,
+	    subType = "",
+	    meta = "";
 	int id = 0;
 
 	if (myKey.contains("-")) {
@@ -904,8 +904,8 @@ public class ConfigManager {
 			continue;
 		    }
 
-		    List<String> requires = permissionSection.getStringList("requires");
-		    List<String> perform = permissionSection.getStringList("perform");
+		    List<String> requires = permissionSection.getStringList("requires"),
+				perform = permissionSection.getStringList("perform");
 		    jobConditions.add(new JobConditions(ConditionKey.toLowerCase(), requires, perform));
 		}
 	    }
@@ -1132,9 +1132,9 @@ public class ConfigManager {
 
 			int chance = sqsection.getInt("Chance", 100);
 
-			List<String> commands = sqsection.getStringList("RewardCommands");
-			List<String> desc = sqsection.getStringList("RewardDesc");
-			List<String> areas = sqsection.getStringList("RestrictedAreas");
+			List<String> commands = sqsection.getStringList("RewardCommands"),
+			    desc = sqsection.getStringList("RewardDesc"),
+			    areas = sqsection.getStringList("RestrictedAreas");
 
 			if (sqsection.isInt("fromLevel"))
 			    quest.setMinLvl(sqsection.getInt("fromLevel"));
@@ -1159,9 +1159,9 @@ public class ConfigManager {
 	    }
 	    job.setMaxDailyQuests(jobSection.getInt("maxDailyQuests", 1));
 
-	    Integer softIncomeLimit = null;
-	    Integer softExpLimit = null;
-	    Integer softPointsLimit = null;
+	    Integer softIncomeLimit = null,
+			softExpLimit = null,
+			softPointsLimit = null;
 	    if (jobSection.isInt("softIncomeLimit"))
 		softIncomeLimit = jobSection.getInt("softIncomeLimit");
 	    if (jobSection.isInt("softExpLimit"))
@@ -1175,10 +1175,10 @@ public class ConfigManager {
 		if (typeSection != null) {
 		    for (String key : typeSection.getKeys(false)) {
 			ConfigurationSection section = typeSection.getConfigurationSection(key);
-			String myKey = key;
-			String type = null;
-			String subType = "";
-			String meta = "";
+			String myKey = key,
+			    type = null,
+			    subType = "",
+			    meta = "";
 			int id = 0;
 
 			if (myKey.contains("-")) {

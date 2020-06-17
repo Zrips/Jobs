@@ -70,12 +70,11 @@ public class glog implements Cmd {
 		    return;
 		}
 
-		int count = 1;
-		int max = 10;
+		int count = 1, max = 10;
 
-		double totalMoney = 0;
-		double totalExp = 0;
-		double totalPoints = 0;
+		double totalMoney = 0,
+		    totalExp = 0,
+		    totalPoints = 0;
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.topline"));
 		for (Entry<LogAmounts, Double> one : unsortMap.entrySet()) {

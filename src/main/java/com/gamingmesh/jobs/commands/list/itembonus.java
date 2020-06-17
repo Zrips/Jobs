@@ -69,9 +69,15 @@ public class itembonus implements Cmd {
 		    if (boost.get(oneC) != 0D)
 			any = true;
 		}
+
 		if (!any)
 		    continue;
-		String msg = null;
+
+	    String mc = ChatColor.DARK_GREEN.toString(),
+		    pc = ChatColor.GOLD.toString(),
+		    ec = ChatColor.YELLOW.toString(),
+		    msg = null;
+
 		if (jPlayer.isInJob(one))
 		    msg = Jobs.getLanguage().getMessage("command.itembonus.output.list",
 			"[jobname]", one.getName(),
@@ -99,10 +105,6 @@ public class itembonus implements Cmd {
 	}
 	return true;
     }
-
-    String mc = ChatColor.DARK_GREEN.toString();
-    String pc = ChatColor.GOLD.toString();
-    String ec = ChatColor.YELLOW.toString();
 
     private static String formatText(double amount) {
 	return ((amount > 0 ? "+" : "") + amount + "%");

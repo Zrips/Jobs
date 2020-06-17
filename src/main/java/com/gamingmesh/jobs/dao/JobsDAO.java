@@ -414,7 +414,7 @@ public abstract class JobsDAO {
 
 	public String getQuery() {
 	    String rp = "";
-	    List<JobsTableInterface> uniques = new ArrayList<JobsTableInterface>();
+	    List<JobsTableInterface> uniques = new ArrayList<>();
 	    for (JobsTableInterface one : this.getInterface()) {
 		if (one.isUnique()) {
 		    uniques.add(one);
@@ -1125,14 +1125,6 @@ public abstract class JobsDAO {
 	PreparedStatement prestt = null;
 	ResultSet res2 = null;
 	try {
-	    prestt = conn.prepareStatement("DELETE FROM `" + DBTables.JobNameTable.getTableName()
-		+ "` WHERE `" + jobsNameTableFields.name.getCollumn() + "` = ?;");
-	    prestt.setString(1, job.getName());
-	    prestt.execute();
-
-	    close(prestt);
-	    prestt = null;
-
 	    prestt = conn.prepareStatement("INSERT INTO `" + DBTables.JobNameTable.getTableName() + "` (`" + jobsNameTableFields.name.getCollumn() + "`) VALUES (?);",
 		Statement.RETURN_GENERATED_KEYS);
 	    prestt.setString(1, job.getName());

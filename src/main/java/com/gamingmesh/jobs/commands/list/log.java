@@ -77,9 +77,9 @@ public class log implements Cmd {
 	for (Entry<String, Log> l : logList.entrySet()) {
 	    Log one = l.getValue();
 	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
-	    double totalMoney = 0;
-	    double totalExp = 0;
-	    double totalPoints = 0;
+	    double totalMoney = 0,
+			totalExp = 0,
+			totalPoints = 0;
 	    for (Entry<String, Double> oneSorted : unsortMap.entrySet()) {
 		for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
 		    if (oneMap.getKey().equalsIgnoreCase(oneSorted.getKey())) {

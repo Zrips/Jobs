@@ -40,9 +40,7 @@ public class pointboost implements Cmd {
 			}
 
 			if (args.length > 2) {
-				int sec = 0;
-				int min = 0;
-				int hour = 0;
+				int sec = 0, min = 0, hour = 0;
 
 				if (!time.isEmpty()) {
 					if (time.contains("s")) {
@@ -133,9 +131,7 @@ public class pointboost implements Cmd {
 		}
 
 		if (!time.isEmpty()) {
-			int sec = 0;
-			int min = 0;
-			int hour = 0;
+			int sec = 0, min = 0, hour = 0;
 
 			if (time.contains("s")) {
 				sec = Integer.parseInt(time.split("s")[0]);

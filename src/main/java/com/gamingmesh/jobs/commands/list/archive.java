@@ -13,7 +13,6 @@ import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
-
 public class archive implements Cmd {
 
     @Override
@@ -37,7 +36,6 @@ public class archive implements Cmd {
 	}
 
 	Set<JobProgression> AllJobs = jPlayer.getArchivedJobs().getArchivedJobs();
-
 	if (AllJobs.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.archive.error.nojob"));
 	    return true;

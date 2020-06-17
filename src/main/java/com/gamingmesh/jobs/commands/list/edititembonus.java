@@ -66,14 +66,11 @@ public class edititembonus implements Cmd {
 	    return false;
 
 	Player player = (Player) sender;
-
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	if (jPlayer == null)
 	    return false;
 
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-
 	if (iih == null || iih.getType().equals(Material.AIR))
 	    return false;
 
@@ -92,22 +89,23 @@ public class edititembonus implements Cmd {
 	    break;
 	default:
 	    break;
-
 	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
 
 	Object key = Reflections.getNbt(iih, "JobsItemBoost");
-
 	if (key == null)
 	    return true;
 
 	JobItems item = ItemBoostManager.getItemByKey(key.toString());
-
 	if (item == null)
-	    return true; 
+	    return true;
 
 	BoostMultiplier boost = item.getBoost();
+
+	String mc = ChatColor.DARK_GREEN.toString(),
+	    pc = ChatColor.GOLD.toString(),
+	    ec = ChatColor.YELLOW.toString();
 
 	for (Job one : item.getJobs()) {
 	    String msg = Jobs.getLanguage().getMessage("command.itembonus.output.list",
@@ -119,10 +117,6 @@ public class edititembonus implements Cmd {
 	}
 	return true;
     }
-
-    String mc = ChatColor.DARK_GREEN.toString();
-    String pc = ChatColor.GOLD.toString();
-    String ec = ChatColor.YELLOW.toString();
 
     private static String formatText(double amount) {
 	return ((amount > 0 ? "+" : "") + amount + "%");
