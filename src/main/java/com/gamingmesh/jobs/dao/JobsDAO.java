@@ -940,9 +940,8 @@ public abstract class JobsDAO {
 	}
 
 	for (World one : Bukkit.getWorlds()) {
-	    if (Util.getJobsWorld(one.getName()) != null)
-		continue;
-	    this.recordNewWorld(one.getName());
+	    if (Util.getJobsWorld(one.getName()) == null)
+		recordNewWorld(one.getName());
 	}
 
 	return;
@@ -1709,7 +1708,7 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.UsersTable.getTableName() + "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
 	    prest.setString(1, uuid.toString());
 	    res = prest.executeQuery();
-	    while (res.next()) {
+	    if (res.next()) {
 		pInfo = new PlayerInfo(
 		    res.getString(UserTableFields.username.getCollumn()),
 		    res.getInt("id"), uuid,

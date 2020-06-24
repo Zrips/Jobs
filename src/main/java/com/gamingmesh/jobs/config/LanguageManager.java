@@ -18,11 +18,6 @@ public class LanguageManager {
 	return languages;
     }
 
-    @Deprecated
-    public static List<String> getClassesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
-	return Util.getFilesFromPackage(pckgname, cleaner, "yml");
-    }
-
     /**
      * Method to load the language file configuration
      * 
