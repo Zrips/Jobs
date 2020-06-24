@@ -11,9 +11,7 @@ public class jobsSign {
 
     private String worldName;
 
-    private Integer x;
-    private Integer y;
-    private Integer z;
+    private Integer x, y, z;
     private World world;
     private Location loc;
 
@@ -105,9 +103,7 @@ public class jobsSign {
 
 	String[] split = string.replace(",", ".").split(";");
 
-	Integer x = 0;
-	Integer y = 0;
-	Integer z = 0;
+	int x = 0, y = 0, z = 0;
 
 	if (split.length > 0)
 	    try {

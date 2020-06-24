@@ -539,14 +539,12 @@ public class JobsPlayer {
     public void promoteJob(Job job, int levels) {
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
-	if (prog == null)
+	if (prog == null || levels <= 0)
 	    return;
-	if (levels <= 0)
-	    return;
-	int oldLevel = prog.getLevel();
-	int newLevel = oldLevel + levels;
 
-	int maxLevel = job.getMaxLevel(this);
+	int oldLevel = prog.getLevel(),
+	    newLevel = oldLevel + levels,
+	    maxLevel = job.getMaxLevel(this);
 
 	if (maxLevel > 0 && newLevel > maxLevel)
 	    newLevel = maxLevel;
@@ -563,10 +561,9 @@ public class JobsPlayer {
     public void demoteJob(Job job, int levels) {
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
-	if (prog == null)
+	if (prog == null || levels <= 0)
 	    return;
-	if (levels <= 0)
-	    return;
+
 	int newLevel = prog.getLevel() - levels;
 	if (newLevel < 1)
 	    newLevel = 1;
@@ -618,7 +615,6 @@ public class JobsPlayer {
 		reloadLimits();
 		reloadHonorific();
 		Jobs.getPermissionHandler().recalculatePermissions(this);
-
 		return true;
 	    }
 	}

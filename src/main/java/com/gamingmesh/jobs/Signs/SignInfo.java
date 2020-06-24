@@ -5,10 +5,11 @@ import java.util.List;
 
 public class SignInfo {
 
-    private List<jobsSign> AllSigns = new ArrayList<>();
+    private final List<jobsSign> AllSigns = new ArrayList<>();
 
     public void setAllSigns(List<jobsSign> AllSigns) {
-	this.AllSigns = AllSigns;
+	this.AllSigns.clear();
+	this.AllSigns.addAll(AllSigns == null ? new ArrayList<>() : AllSigns);
     }
 
     public List<jobsSign> GetAllSigns() {

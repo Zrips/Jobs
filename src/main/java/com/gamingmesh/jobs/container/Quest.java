@@ -48,7 +48,8 @@ public class Quest {
     }
 
     public void setRewardCmds(List<String> rewardCmds) {
-	this.rewardCmds = rewardCmds;
+	this.rewardCmds.clear();
+	this.rewardCmds.addAll(rewardCmds == null ? new ArrayList<>() : rewardCmds);
     }
 
     public List<String> getDescription() {
@@ -56,7 +57,8 @@ public class Quest {
     }
 
     public void setDescription(List<String> rewards) {
-	this.rewards = rewards;
+	this.rewards.clear();
+	this.rewards.addAll(rewards == null ? new ArrayList<>() : rewards);
     }
 
     public List<String> getRestrictedAreas() {
@@ -64,7 +66,8 @@ public class Quest {
     }
 
     public void setRestrictedArea(List<String> area) {
-	this.area = area;
+	this.area.clear();
+	this.area.addAll(area == null ? new ArrayList<>() : area);
     }
 
     public Long getValidUntil() {
@@ -95,7 +98,7 @@ public class Quest {
     }
 
     public Job getJob() {
-	return Jobs.getJob(this.job.getName());
+	return Jobs.getJob(job.getName());
     }
 
     public void setJob(Job job) {
@@ -146,10 +149,10 @@ public class Quest {
 	if (level == null)
 	    return true;
 
-	if (this.getMinLvl() != null && level < this.getMinLvl())
+	if (getMinLvl() != null && level < getMinLvl())
 	    return false;
 
-	if (this.getMaxLvl() != null && level > this.getMaxLvl())
+	if (getMaxLvl() != null && level > getMaxLvl())
 	    return false;
 
 	return true;
@@ -184,7 +187,7 @@ public class Quest {
     public void addObjective(QuestObjective objective) {
 	HashMap<String, QuestObjective> old = objectives.get(objective.getAction());
 	if (old == null) {
-	    old = new HashMap<String, QuestObjective>();
+	    old = new HashMap<>();
 	    old.put(objective.getTargetName(), objective);
 	    objectives.put(objective.getAction(), old);
 	}

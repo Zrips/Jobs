@@ -89,13 +89,13 @@ import java.util.*;
 import java.util.Map.Entry;
 
 public class JobsPaymentListener implements Listener {
+
     private Jobs plugin;
-    public static final String furnaceOwnerMetadata = "jobsFurnaceOwner";
-    public static final String brewingOwnerMetadata = "jobsBrewingOwner";
-    private final String BlockMetadata = "BlockOwner";
-    public static final String VegyMetadata = "VegyTimer";
-    private final String CowMetadata = "CowTimer";
-    private final String entityDamageByPlayer = "JobsEntityDamagePlayer";
+
+    public static final String furnaceOwnerMetadata = "jobsFurnaceOwner",
+	brewingOwnerMetadata = "jobsBrewingOwner", VegyMetadata = "VegyTimer";
+
+    private final String BlockMetadata = "BlockOwner", CowMetadata = "CowTimer", entityDamageByPlayer = "JobsEntityDamagePlayer";
 
     public JobsPaymentListener(Jobs plugin) {
 	this.plugin = plugin;
@@ -618,9 +618,7 @@ public class JobsPaymentListener implements Listener {
 
 	int y = -1;
 
-	CMIMaterial first = null;
-	CMIMaterial second = null;
-	CMIMaterial third = null;
+	CMIMaterial first = null, second = null, third = null;
 
 	boolean leather = false;
 	boolean shulker = false;
@@ -700,24 +698,19 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
-	// when we trying to craft tipped arrow effects
-	ItemStack currentItem = event.getCurrentItem();
-	if (currentItem != null) {
-	    if (currentItem.hasItemMeta() && currentItem.getItemMeta() instanceof PotionMeta) {
-		PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
-		Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
-	    } else {
-		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.CRAFT));
-	    }
-
-	    return;
-	}
-
 	// If we need to pay only by each craft action we will skip calculation how much was crafted
 	if (!Jobs.getGCManager().PayForEachCraft) {
-	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
+	    ItemStack currentItem = event.getCurrentItem();
+
+	    // when we trying to craft tipped arrow effects
+	    if (currentItem != null && currentItem.hasItemMeta() && currentItem.getItemMeta() instanceof PotionMeta) {
+		PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
+		Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
+	    } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
 		Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta()
 		.getDisplayName()), ActionType.CRAFT));
+	    } else if (currentItem != null) {
+		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.CRAFT));
 	    }
 
 	    return;

@@ -363,7 +363,7 @@ public class ShopManager {
 	    if (NameSection.isBoolean("Icon.HideWithoutPermission"))
 		Sitem.setHideWithoutPerm(NameSection.getBoolean("Icon.HideWithoutPermission"));
 
-	    if (NameSection.isList("RequiredPermission") && !NameSection.getStringList("RequiredPermission").isEmpty()) {
+	    if (NameSection.isList("RequiredPermission")) {
 		Sitem.setRequiredPerm(NameSection.getStringList("RequiredPermission"));
 	    }
 

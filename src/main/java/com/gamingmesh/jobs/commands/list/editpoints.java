@@ -32,11 +32,6 @@ public class editpoints implements Cmd {
 	}
 
 	PlayerPoints pointInfo = jPlayer.getPointsData();
-	if (pointInfo == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", jPlayer.getName()));
-	    return true;
-	}
-
 	switch (args[0].toLowerCase()) {
 	case "take":
 	    pointInfo.takePoints(amount);
@@ -63,6 +58,7 @@ public class editpoints implements Cmd {
 	}
 
 	Jobs.getJobsDAO().savePoints(jPlayer);
+	Jobs.getJobsDAO().loadPoints(jPlayer);
 	return true;
     }
 }

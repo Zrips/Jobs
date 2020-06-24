@@ -16,19 +16,18 @@ public class ShopItem {
     private String IconMaterial = null;
     private int IconAmount = 1;
     private String IconName = null;
-    private List<String> IconLore = new ArrayList<>();
+    private final List<String> IconLore = new ArrayList<>();
 
     private boolean HideWithoutPerm = false;
     private boolean hideNoEnoughPoint = false;
 
     private int RequiredTotalLevels = -1;
 
-    private List<String> RequiredPerm = new ArrayList<>();
     private HashMap<String, Integer> RequiredJobs = new HashMap<>();
 
-    private List<String> Commands = new ArrayList<>();
-
-    private List<JobItems> items = new ArrayList<>();
+    private final List<String> RequiredPerm = new ArrayList<>();
+    private final List<String> Commands = new ArrayList<>();
+    private final List<JobItems> items = new ArrayList<>();
 
     private String PlayerName;
     private boolean useCurrentPlayer = false;
@@ -55,7 +54,8 @@ public class ShopItem {
     }
 
     public void setitems(List<JobItems> items) {
-	this.items = items;
+	this.items.clear();
+	this.items.addAll(items == null ? new ArrayList<>() : items);
     }
 
     public List<JobItems> getitems() {
@@ -63,7 +63,8 @@ public class ShopItem {
     }
 
     public void setCommands(List<String> Commands) {
-	this.Commands = Commands;
+	this.Commands.clear();
+	this.Commands.addAll(Commands == null ? new ArrayList<>() : Commands);
     }
 
     public List<String> getCommands() {
@@ -79,7 +80,8 @@ public class ShopItem {
     }
 
     public void setRequiredPerm(List<String> RequiredPerm) {
-	this.RequiredPerm = RequiredPerm;
+	this.RequiredPerm.clear();
+	this.RequiredPerm.addAll(RequiredPerm == null ? new ArrayList<>() : RequiredPerm);
     }
 
     public List<String> getRequiredPerm() {
@@ -103,7 +105,8 @@ public class ShopItem {
     }
 
     public void setIconLore(List<String> IconLore) {
-	this.IconLore = IconLore;
+	this.IconLore.clear();
+	this.IconLore.addAll(IconLore == null ? new ArrayList<>() : IconLore);
     }
 
     public List<String> getIconLore() {

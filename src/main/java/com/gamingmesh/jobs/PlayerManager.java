@@ -205,7 +205,6 @@ public class PlayerManager {
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-
 	return;
     }
 
@@ -776,10 +775,11 @@ public class PlayerManager {
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
 	int newLevel = oldLevel + 1;
-	Player player = Bukkit.getServer().getPlayer(jPlayer.getUniqueId());
+	Player player = Bukkit.getPlayer(jPlayer.getUniqueId());
 	JobProgression prog = jPlayer.getJobProgression(job);
 	if (prog == null)
 	    return;
+
 	for (JobCommands command : job.getCommands()) {
 	    if (newLevel >= command.getLevelFrom() && newLevel <= command.getLevelUntil()) {
 		for (String commandString : new ArrayList<String>(command.getCommands())) {
@@ -860,7 +860,7 @@ public class PlayerManager {
 	}
     }
 
-    private HashMap<UUID, HashMap<Job, ItemBonusCache>> cache = new HashMap<>();
+    private final HashMap<UUID, HashMap<Job, ItemBonusCache>> cache = new HashMap<>();
 
     public void resetiItemBonusCache(UUID uuid) {
 	cache.remove(uuid);
@@ -875,20 +875,20 @@ public class PlayerManager {
 
 	ItemBonusCache c = cj.get(prog);
 	if (c == null) {
-	    c = new ItemBonusCache(player, prog);
-	    c.recheck();
+	    c = new ItemBonusCache();
+	    c.setBoostMultiplier(getInventoryBoost(player, prog));
 	    cj.put(prog, c);
 	    return c.getBoostMultiplier();
 	}
+
 	return c.getBoostMultiplier();
     }
 
     public BoostMultiplier getInventoryBoost(Player player, Job prog) {
 	BoostMultiplier data = new BoostMultiplier();
-	if (player == null)
+	if (player == null || prog == null)
 	    return data;
-	if (prog == null)
-	    return data;
+
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 	JobItems jitem = getJobsItemByNbt(iih);
 	if (jitem != null && jitem.getJobs().contains(prog))
@@ -919,9 +919,7 @@ public class PlayerManager {
     }
 
     public boolean containsItemBoostByNBT(ItemStack item) {
-	if (item == null)
-	    return false;
-	return Jobs.getReflections().hasNbtString(item, JobsItemBoost);
+	return item == null ? false : Jobs.getReflections().hasNbtString(item, JobsItemBoost);
     }
 
     private final String JobsItemBoost = "JobsItemBoost";

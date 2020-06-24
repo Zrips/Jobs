@@ -77,7 +77,7 @@ public class JobItems {
 
 	this.node = node;
 	this.boostMultiplier = boostMultiplier;
-	this.jobs = jobs;
+	setJobs(jobs);
     }
 
     public String getNode() {
@@ -135,7 +135,8 @@ public class JobItems {
     }
 
     public void setJobs(List<Job> jobs) {
-	this.jobs = jobs;
+	this.jobs.clear();
+	this.jobs.addAll(jobs == null ? new ArrayList<>() : jobs);
     }
 
     public HashMap<Enchantment, Integer> getEnchants() {

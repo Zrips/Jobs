@@ -20,6 +20,7 @@ package com.gamingmesh.jobs.container;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
+import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.ChatColor;
 
@@ -145,9 +146,7 @@ public class Job {
     }
 
     public boolean isSame(Job job) {
-	if (job == null)
-	    return false;
-	return this.getName().equalsIgnoreCase(job.getName());
+	return job == null ? false : getName().equalsIgnoreCase(job.getName());
     }
 
     public int getTotalPlayers() {
@@ -166,22 +165,26 @@ public class Job {
     public void updateBonus() {
 	if (!Jobs.getGCManager().useDynamicPayment)
 	    return;
+
 	Parser eq = Jobs.getGCManager().DynamicPaymentEquation;
 	eq.setVariable("totalworkers", Jobs.getJobsDAO().getTotalPlayers());
 	eq.setVariable("totaljobs", Jobs.getJobs().size());
 	eq.setVariable("jobstotalplayers", getTotalPlayers());
+
 	double now = eq.getValue();
 	if (now > Jobs.getGCManager().DynamicPaymentMaxBonus)
 	    now = Jobs.getGCManager().DynamicPaymentMaxBonus;
 	if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty * -1)
 	    now = Jobs.getGCManager().DynamicPaymentMaxPenalty * -1;
+
 	this.bonus = (now / 100D);
     }
 
     public double getBonus() {
-	if (this.bonus == null)
+	if (bonus == null)
 	    updateBonus();
-	return this.bonus == null ? 0D : this.bonus;
+
+	return bonus == null ? 0D : bonus;
     }
 
     public List<String> getCmdOnJoin() {
@@ -226,6 +229,11 @@ public class Job {
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
 	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
+	if (actionInfo instanceof PotionItemActionInfo) {
+	    return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithSub()) ||
+	    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithSub());
+	}
+
 	return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
 	    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
 	    jobInfo.getName().equalsIgnoreCase(action.getName());
@@ -327,19 +335,19 @@ public class Job {
     }
 
     public int getMaxLevel(JobsPlayer player) {
-	if (player == null)
-	    return getMaxLevel();
-	return player.getMaxJobLevelAllowed(this);
+	return player == null ? getMaxLevel() : player.getMaxJobLevelAllowed(this);
     }
 
     public int getMaxLevel(CommandSender sender) {
 	if (sender == null)
 	    return getMaxLevel();
+
 	if (sender instanceof Player) {
 	    JobsPlayer player = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	    if (player != null)
 		return player.getMaxJobLevelAllowed(this);
 	}
+
 	return getMaxLevel() > getVipMaxLevel() ? getMaxLevel() : getVipMaxLevel();
     }
 
@@ -458,7 +466,8 @@ public class Job {
     }
 
     public void setFullDescription(List<String> fDescription) {
-	this.fDescription = fDescription;
+	this.fDescription.clear();
+	this.fDescription.addAll(fDescription == null ? new ArrayList<>() : fDescription);
     }
 
     public List<Quest> getQuests() {
@@ -480,7 +489,7 @@ public class Job {
 
     public void setQuests(List<Quest> quests) {
 	this.quests.clear();
-	this.quests = quests;
+	this.quests.addAll(quests == null ? new ArrayList<>() : quests);
     }
 
 //    public Quest getNextQuest() {
@@ -499,7 +508,6 @@ public class Job {
 	    for (Quest one : ls) {
 		if (one.getChance() >= target)
 		    if (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase())) {
-
 			if (!one.isInLevelRange(level))
 			    continue;
 
