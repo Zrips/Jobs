@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -87,7 +88,10 @@ public class ActionBarTitleMessages {
 	    }
 
 	    Object serialized = nmsChatSerializer.getMethod("a", String.class).invoke(null, "{\"text\": \"" + ChatColor.translateAlternateColorCodes('&', msg) + "\"}");
-	    if (Version.isCurrentHigher(Version.v1_11_R1))
+	    if (Version.isCurrentEqualOrHigher(Version.v1_16_R1)) {
+		packet = packetType.getConstructor(nmsIChatBaseComponent, sub, UUID.class)
+		    .newInstance(serialized, consts[2], receivingPacket.getUniqueId());
+	    } else if (Version.isCurrentHigher(Version.v1_11_R1))
 		packet = packetType.getConstructor(nmsIChatBaseComponent, sub).newInstance(serialized, consts[2]);
 	    else if (Version.isCurrentHigher(Version.v1_7_R4)) {
 		packet = packetType.getConstructor(nmsIChatBaseComponent, byte.class).newInstance(serialized, (byte) 2);
