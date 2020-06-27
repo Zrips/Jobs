@@ -21,9 +21,9 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class ItemManager {
 
-    static HashMap<Material, CMIMaterial> byRealMaterial = new HashMap<Material, CMIMaterial>();
-    static HashMap<Integer, CMIMaterial> byId = new HashMap<Integer, CMIMaterial>();
-    static HashMap<String, CMIMaterial> byName = new HashMap<String, CMIMaterial>();
+    static HashMap<Material, CMIMaterial> byRealMaterial = new HashMap<>();
+    static HashMap<Integer, CMIMaterial> byId = new HashMap<>();
+    static HashMap<String, CMIMaterial> byName = new HashMap<>();
 
     public HashMap<Integer, CMIMaterial> idMap() {
 	return byId;
@@ -218,7 +218,7 @@ public class ItemManager {
 	return cm;
     }
 
-    HashMap<String, ItemStack> headCache = new HashMap<String, ItemStack>();
+    HashMap<String, ItemStack> headCache = new HashMap<>();
 
     public CMIItemStack getItem(String name) {
 //	if (byBukkitName.isEmpty())
@@ -471,7 +471,7 @@ public class ItemManager {
     }
 
     public List<Recipe> getAllRecipes() {
-	List<Recipe> results = new ArrayList<Recipe>();
+	List<Recipe> results = new ArrayList<>();
 	Iterator<Recipe> iter = Bukkit.recipeIterator();
 	while (iter.hasNext()) {
 	    Recipe recipe = iter.next();
@@ -481,7 +481,7 @@ public class ItemManager {
     }
 
     public List<Recipe> getRecipesFor(ItemStack result) {
-	List<Recipe> results = new ArrayList<Recipe>();
+	List<Recipe> results = new ArrayList<>();
 	Iterator<Recipe> iter = Bukkit.recipeIterator();
 	while (iter.hasNext()) {
 	    Recipe recipe = iter.next();

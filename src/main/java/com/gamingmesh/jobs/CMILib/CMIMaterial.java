@@ -2653,10 +2653,7 @@ public enum CMIMaterial {
     }
 
     public boolean equals(Material mat) {
-	if (getMaterial() == null) {
-	    return false;
-	}
-	return this.getMaterial().equals(mat);
+	return getMaterial() == null ? false : getMaterial().equals(mat);
     }
 
     public List<String> getLegacyNames() {
@@ -2681,7 +2678,7 @@ public enum CMIMaterial {
 
     public String getMojangName() {
 	if (mojangName == null)
-	    mojangName = Reflections.getItemMinecraftName(this.newItemStack());
+	    mojangName = ItemReflection.getItemMinecraftName(newItemStack());
 	return mojangName;
     }
 

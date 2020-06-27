@@ -116,10 +116,11 @@ public class ActionBarTitleMessages {
 	sendTitle(receivingPacket, title, subtitle, 0, 20, 20);
     }
 
-    public static void sendTitle(final Player receivingPacket, final Object title, final Object subtitle, final int fadeIn, final int keep, final int fadeOut) {
+    @SuppressWarnings("deprecation")
+	public static void sendTitle(final Player receivingPacket, final Object title, final Object subtitle, final int fadeIn, final int keep, final int fadeOut) {
 	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () -> {
-	    String t = title == null ? null : CMIChatColor.translateAlternateColorCodes((String) title);
-	    String s = subtitle == null ? null : CMIChatColor.translateAlternateColorCodes((String) subtitle);
+	    String t = title == null ? null : CMIChatColor.translate((String) title);
+	    String s = subtitle == null ? null : CMIChatColor.translate((String) subtitle);
 
 	    if (simpleTitleMessages) {
 		receivingPacket.sendMessage(t);
