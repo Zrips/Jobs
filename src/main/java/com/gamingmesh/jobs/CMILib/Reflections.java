@@ -4,18 +4,21 @@
 
 package com.gamingmesh.jobs.CMILib;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class Reflections {
 
     private Class<?> CraftServerClass;
     private Object CraftServer;
 
+    private static Class<?> Item;
     private static Class<?> NBTTagCompound;
     private Class<?> NBTBase;
 //    private Class<?> NBTTagList;
@@ -45,10 +48,28 @@ public class Reflections {
 	} catch (ClassNotFoundException | SecurityException | IllegalArgumentException e) {
 	    e.printStackTrace();
 	}*/
+	    Item = getMinecraftClass("Item");
 	    IStack = getMinecraftClass("ItemStack");
 	} catch (ClassCastException | ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    public static String toJson(ItemStack item) {
+	if (item == null)
+	    return null;
+
+	Object nmsStack = asNMSCopy(item);
+
+	try {
+	    Method meth = IStack.getMethod("save", NBTTagCompound);
+	    Object res = meth.invoke(nmsStack, NBTTagCompound.newInstance());
+	    return res.toString();
+	} catch (Throwable e) {
+	    e.printStackTrace();
+	}
+
+	return null;
     }
 
     private static Class<?> getBukkitClass(String nmsClassString) throws ClassNotFoundException {
@@ -268,4 +289,29 @@ public class Reflections {
 	return CraftServer;
     }
 
+    public static String getItemMinecraftName(ItemStack item) {
+	try {
+
+	    Object nmsStack = asNMSCopy(item);
+
+	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+		Object pre = nmsStack.getClass().getMethod("getItem").invoke(nmsStack);
+		Object n = pre.getClass().getMethod("getName").invoke(pre);
+		Class<?> ll = Class.forName("net.minecraft.server." + Version.getCurrent() + ".LocaleLanguage");
+		Object lla = ll.getMethod("a").invoke(ll);
+		return (String) lla.getClass().getMethod("a", String.class).invoke(lla, (String) n);
+	    }
+
+	    Field field = Item.getField("REGISTRY");
+	    Object reg = field.get(field);
+	    Method meth = reg.getClass().getMethod("b", Object.class);
+	    meth.setAccessible(true);
+	    Method secmeth = nmsStack.getClass().getMethod("getItem");
+	    Object res2 = secmeth.invoke(nmsStack);
+	    Object res = meth.invoke(reg, res2);
+	    return res.toString();
+	} catch (Exception e) {
+	    return null;
+	}
+    }
 }
