@@ -25,13 +25,16 @@ public class ScheduleManager {
     private Jobs plugin;
     private int autoTimerBukkitId = -1;
 
+    public static final List<Schedule> BOOSTSCHEDULE = new ArrayList<>();
+
     public ScheduleManager(Jobs plugin) {
 	this.plugin = plugin;
     }
 
     public void start() {
-	if (Jobs.getGCManager().BoostSchedule.isEmpty())
+	if (BOOSTSCHEDULE.isEmpty())
 	    return;
+
 	cancel();
 	autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoTimer, 20, 30 * 20L);
     }
@@ -41,19 +44,14 @@ public class ScheduleManager {
 	    Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
     }
 
-    private Runnable autoTimer = () -> {
-	    try {
-		scheduler();
-	    } catch (Throwable e) {
-	    }
-    };
+    private Runnable autoTimer = this::scheduler;
 
     public int getDateByInt() {
 	return TimeManage.timeInInt();
     }
 
-    private static boolean scheduler() {
-	if (Jobs.getGCManager().BoostSchedule.isEmpty())
+    private boolean scheduler() {
+	if (BOOSTSCHEDULE.isEmpty())
 	    return false;
 
 	DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -65,7 +63,7 @@ public class ScheduleManager {
 
 	String CurrentDayName = GetWeekDay();
 
-	for (Schedule one : Jobs.getGCManager().BoostSchedule) {
+	for (Schedule one : BOOSTSCHEDULE) {
 
 	    int From = one.GetFrom();
 	    int Until = one.GetUntil();
@@ -160,6 +158,8 @@ public class ScheduleManager {
      * loads from Jobs/schedule.yml
      */
     public void load() {
+	BOOSTSCHEDULE.clear();
+
 	YmlMaker jobSchedule = new YmlMaker(plugin, "schedule.yml");
 	jobSchedule.saveDefaultConfig();
 
@@ -175,10 +175,7 @@ public class ScheduleManager {
 	for (String OneSection : sections) {
 	    ConfigurationSection path = conf.getConfigurationSection("Boost." + OneSection);
 
-	    if (!path.contains("Enabled"))
-		continue;
-
-	    if (!conf.getConfigurationSection("Boost." + OneSection).getBoolean("Enabled"))
+	    if (!path.contains("Enabled") || !conf.getConfigurationSection("Boost." + OneSection).getBoolean("Enabled"))
 		continue;
 
 	    Schedule sched = new Schedule();
@@ -226,9 +223,10 @@ public class ScheduleManager {
 	    if (path.contains("Points") && path.isDouble("Points"))
 		sched.setBoost(CurrencyType.POINTS, path.getDouble("Points", 0D));
 
-	    Jobs.getGCManager().BoostSchedule.add(sched);
+	    BOOSTSCHEDULE.add(sched);
 	}
-	if (Jobs.getGCManager().BoostSchedule.size() != 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + Jobs.getGCManager().BoostSchedule.size() + " schedulers!");
+
+	if (!BOOSTSCHEDULE.isEmpty())
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + BOOSTSCHEDULE.size() + " schedulers!");
     }
 }

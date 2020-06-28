@@ -47,7 +47,10 @@ public class GeneralConfigManager {
 
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
     public List<String> FwColors = new ArrayList<>(), DisabledWorldsList = new ArrayList<>();
-    public List<Schedule> BoostSchedule = new ArrayList<>();
+    /**
+     * @deprecated use {@link ScheduleManager}
+     */
+    @Deprecated public List<Schedule> BoostSchedule = new ArrayList<>();
 
     public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
     private HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
