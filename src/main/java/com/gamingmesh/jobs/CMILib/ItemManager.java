@@ -15,7 +15,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.Potion;
 import com.gamingmesh.jobs.stuff.Util;
 

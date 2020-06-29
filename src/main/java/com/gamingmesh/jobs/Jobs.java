@@ -49,7 +49,6 @@ import com.gamingmesh.jobs.stuff.*;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;

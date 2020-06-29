@@ -17,7 +17,7 @@ import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIFieldType;
 import com.gamingmesh.jobs.CMILib.CMIItemStack;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.Reflections;
+import com.gamingmesh.jobs.CMILib.CMIReflections;
 
 public class CMIGuiButton {
 
@@ -25,7 +25,7 @@ public class CMIGuiButton {
     private GUIFieldType fieldType = GUIFieldType.Locked;
     private boolean closeInv = false;
 
-    private HashMap<GUIClickType, List<GUIButtonCommand>> commandMap = new HashMap<GUIClickType, List<GUIButtonCommand>>();
+    private HashMap<GUIClickType, List<GUIButtonCommand>> commandMap = new HashMap<>();
 
     private List<String> permissions = new ArrayList<String>();
     private ItemStack item = null;
@@ -260,7 +260,7 @@ public class CMIGuiButton {
 	    ItemStack i = item.clone();
 
 	    if (isLocked()) {
-		i = Reflections.setNbt(item, GUIManager.CMIGUIIcon, GUIManager.LIProtection);
+		i = CMIReflections.setNbt(item, GUIManager.CMIGUIIcon, GUIManager.LIProtection);
 	    }
 
 	    ItemMeta meta = i.getItemMeta();

@@ -18,8 +18,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.Reflections;
-
+import com.gamingmesh.jobs.CMILib.CMIReflections;
 
 public class GUIListener implements Listener {
     Jobs plugin;
@@ -41,14 +40,14 @@ public class GUIListener implements Listener {
 
     private static void clearIconItems(Player player) {
 	for (ItemStack one : player.getInventory().getContents()) {
-	    Object res = Reflections.getNbt(one, GUIManager.CMIGUIIcon);
+	    Object res = CMIReflections.getNbt(one, GUIManager.CMIGUIIcon);
 	    if (res == null || !(res instanceof String) || !((String) res).equalsIgnoreCase(GUIManager.LIProtection))
 		continue;
 	    player.getInventory().remove(one);
 	}
     }
 
-    private HashMap<UUID, Long> LastClick = new HashMap<UUID, Long>();
+    private HashMap<UUID, Long> LastClick = new HashMap<>();
 
     private boolean canClickByTimer(UUID uuid) {
 	Long time = LastClick.get(uuid);
@@ -97,7 +96,7 @@ public class GUIListener implements Listener {
 	    return;
 	}
 
-	final List<Integer> buttons = new ArrayList<Integer>();
+	final List<Integer> buttons = new ArrayList<>();
 	buttons.add(event.getRawSlot());
 	if (!GUIManager.canClick(player, buttons)) {
 	    event.setCancelled(true);
@@ -142,7 +141,7 @@ public class GUIListener implements Listener {
 	    return;
 	}
 
-	final List<Integer> buttons = new ArrayList<Integer>();
+	final List<Integer> buttons = new ArrayList<>();
 	buttons.addAll(event.getRawSlots());
 	if (!GUIManager.canClick(player, buttons)) {
 	    event.setCancelled(true);

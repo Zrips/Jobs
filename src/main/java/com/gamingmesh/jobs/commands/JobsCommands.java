@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
@@ -142,7 +143,7 @@ public class JobsCommands implements CommandExecutor {
 
 	PageInfo pi = new PageInfo(7, commands.size(), page);
 	if (page > pi.getTotalPages() || page < 1) {
-	    Jobs.getActionBar().send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
+	    ActionBarManager.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
 	    return true;
 	}
 

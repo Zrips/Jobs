@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;

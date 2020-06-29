@@ -1218,7 +1218,6 @@ public enum CMIMaterial {
     }
 
     CMIMaterial(Integer legacyId, Integer legacyData, Integer id, List<CMIMaterialCriteria> criteria, String name, String... legacyName) {
-
 	this.legacyId = legacyId;
 	this.legacyData = legacyData;
 	this.id = id;
@@ -1354,8 +1353,7 @@ public enum CMIMaterial {
     }
 
     public static CMIMaterial getRandom(CMIMaterial mat) {
-
-	List<CMIMaterial> ls = new ArrayList<CMIMaterial>();
+	List<CMIMaterial> ls = new ArrayList<>();
 
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one.getLegacyId() == null)
@@ -1401,16 +1399,15 @@ public enum CMIMaterial {
     }
 
     public static CMIMaterial get(String id) {
-
 	if (id == null)
 	    return CMIMaterial.NONE;
-	Integer ids = null;
+
 	Integer data = null;
 	id = id.replace("_", "").replace(" ", "").replace("minecraft:", "").toLowerCase();
 
 	if (id.contains(":")) {
 	    try {
-		ids = Integer.parseInt(id.split(":")[0]);
+		Integer ids = Integer.parseInt(id.split(":")[0]);
 		data = Integer.parseInt(id.split(":")[1]);
 		if (ids <= 0)
 		    return CMIMaterial.NONE;
@@ -1498,12 +1495,8 @@ public enum CMIMaterial {
 	if (block == null)
 	    return CMIMaterial.NONE;
 
-	try {
-	    if (Bukkit.getWorld(block.getWorld().getUID()) == null)
-		return CMIMaterial.NONE;
-	} catch (Throwable e) {
-	    e.printStackTrace();
-	}
+	if (Bukkit.getWorld(block.getWorld().getUID()) == null)
+	    return CMIMaterial.NONE;
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
 	    return ItemManager.byRealMaterial.get(block.getType());
@@ -2408,6 +2401,8 @@ public enum CMIMaterial {
 	case CRIMSON_WALL_SIGN:
 	case WARPED_WALL_SIGN:
 	    return true;
+	default:
+	    break;
 	}
 	return false;
     }
@@ -2644,7 +2639,8 @@ public enum CMIMaterial {
 	return false;
     }
 
-    public static CMISlabType getSlabType(Block block) {
+    @SuppressWarnings("deprecation")
+	public static CMISlabType getSlabType(Block block) {
 	if (!isSlab(block.getType()))
 	    return CMISlabType.NOTSLAB;
 
@@ -2658,6 +2654,8 @@ public enum CMIMaterial {
 		    return CMISlabType.BOTTOM;
 		case DOUBLE:
 		    return CMISlabType.DOUBLE;
+		default:
+		    break;
 		}
 
 	    }
@@ -2705,6 +2703,8 @@ public enum CMIMaterial {
 		default:
 		    return CMISlabType.DOUBLE;
 		}
+		default:
+		    break;
 	    }
 	}
 
@@ -2770,14 +2770,12 @@ public enum CMIMaterial {
     }
 
     public List<String> getLegacyNames() {
-	if (legacyName == null)
-	    return new ArrayList<String>();
-	return legacyName;
+	return legacyName == null ? new ArrayList<>() : legacyName;
     }
 
     public void addLegacyName(String legacyName) {
 	if (legacyName == null)
-	    this.legacyName = new ArrayList<String>();
+	    this.legacyName = new ArrayList<>();
 	this.legacyName.add(legacyName);
     }
 

@@ -17,8 +17,8 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.Reflections;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.CMIReflections;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.ScoreboardInfo;
 
 public class CMIScoreboardManager {
@@ -204,7 +204,7 @@ public class CMIScoreboardManager {
     }
 
     private static Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
-	return Reflections.getMinecraftClass(nmsClassString);
+	return CMIReflections.getMinecraftClass(nmsClassString);
     }
 
     private static Object getConnection(Player player) throws Exception {

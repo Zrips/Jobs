@@ -15,8 +15,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class RawMessage {
 
-    List<String> parts = new ArrayList<String>();
-    List<String> cleanParts = new ArrayList<String>();
+    List<String> parts = new ArrayList<>();
+    List<String> cleanParts = new ArrayList<>();
 
     private String unfinished = "";
     private String unfinishedClean = "";
@@ -29,8 +29,8 @@ public class RawMessage {
 //    private boolean colorizeEntireWithLast = true;
 
     public void clear() {
-	parts = new ArrayList<String>();
-	cleanParts = new ArrayList<String>();
+	parts = new ArrayList<>();
+	cleanParts = new ArrayList<>();
 	combined = "";
 	combinedClean = "";
     }
@@ -63,10 +63,10 @@ public class RawMessage {
 	return add(text, hoverText, command, suggestion, null);
     }
 
-    Set<CMIChatColor> formats = new HashSet<CMIChatColor>();
+    Set<CMIChatColor> formats = new HashSet<>();
     CMIChatColor lastColor = null;
 
-    Set<CMIChatColor> savedFormats = new HashSet<CMIChatColor>();
+    Set<CMIChatColor> savedFormats = new HashSet<>();
     CMIChatColor savedLastColor = null;
 
     CMIChatColor firstBlockColor = null;
@@ -91,7 +91,7 @@ public class RawMessage {
 	    text = text.replaceAll(decolmatch.group(), string);
 	}
 
-	List<String> splited = new ArrayList<String>();
+	List<String> splited = new ArrayList<>();
 	if (text.contains(" ")) {
 	    for (String one : text.split(" ")) {
 //		if (this.isBreakLine() && one.contains("\\n")) {
@@ -120,7 +120,7 @@ public class RawMessage {
 
 	Pattern prepattern = Pattern.compile(CMIChatColor.hexColorRegex);
 
-	List<String> plt = new ArrayList<String>(splited);
+	List<String> plt = new ArrayList<>(splited);
 	splited.clear();
 	for (String one : plt) {
 	    Matcher match = prepattern.matcher(one);
@@ -234,10 +234,10 @@ public class RawMessage {
 			    }
 			    one = one.replace(c.getColorCode(), c.getColorCode() + form);
 			} else if (c.getHex() != null) {
-			    String form = "";
-			    for (CMIChatColor oneC : formats) {
-				form += oneC.getColorCode();
-			    }
+			    //String form = "";
+			    //for (CMIChatColor oneC : formats) {
+				//form += oneC.getColorCode();
+			    //}
 
 //			    CMIDebug.d("*"+net.md_5.bungee.api.ChatColor.of("#" + c.getHex())+ "_"+net.md_5.bungee.api.ChatColor.of("#FF00FF")+ "+");
 
@@ -567,7 +567,7 @@ public class RawMessage {
     }
 
     public List<String> softCombine() {
-	List<String> ls = new ArrayList<String>();
+	List<String> ls = new ArrayList<>();
 	String f = "";
 	for (String part : parts) {
 	    if (f.isEmpty())

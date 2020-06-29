@@ -2,16 +2,13 @@ package com.gamingmesh.jobs.CMILib;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public enum CMIEntityType {
 
@@ -264,7 +261,7 @@ public enum CMIEntityType {
     private String name;
     private String secondaryName;
     EntityType type = null;
-    public static HashMap<String, ItemStack> cache = new HashMap<String, ItemStack>();
+    public static HashMap<String, ItemStack> cache = new HashMap<>();
 
     CMIEntityType(int id, String name, List<String> headTextures) {
 	this(id, name, null, headTextures);

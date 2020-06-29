@@ -58,7 +58,6 @@ public class editpoints implements Cmd {
 	}
 
 	Jobs.getJobsDAO().savePoints(jPlayer);
-	Jobs.getJobsDAO().loadPoints(jPlayer);
 	return true;
     }
 }

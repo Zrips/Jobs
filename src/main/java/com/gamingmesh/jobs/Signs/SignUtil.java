@@ -19,14 +19,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
 
 public class SignUtil {
 
-    private HashMap<String, HashMap<String, jobsSign>> SignsByType = new HashMap<String, HashMap<String, jobsSign>>();
-    private HashMap<String, jobsSign> SignsByLocation = new HashMap<String, jobsSign>();
+    private HashMap<String, HashMap<String, jobsSign>> SignsByType = new HashMap<>();
+    private HashMap<String, jobsSign> SignsByLocation = new HashMap<>();
 
     public HashMap<String, HashMap<String, jobsSign>> getSigns() {
 	return SignsByType;

@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
-import org.jetbrains.annotations.Nullable;
 
 public class CMIChatColor {
 
@@ -203,7 +202,7 @@ public class CMIChatColor {
     }
 
     public static CMIChatColor getRandomColor() {
-	List<CMIChatColor> ls = new ArrayList<CMIChatColor>();
+	List<CMIChatColor> ls = new ArrayList<>();
 	for (Entry<String, CMIChatColor> one : BY_NAME.entrySet()) {
 	    if (!one.getValue().isColor())
 		continue;

@@ -18,8 +18,9 @@
 
 package com.gamingmesh.jobs.economy;
 
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ActionBarManager;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.api.JobsPaymentEvent;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -159,7 +160,7 @@ public class BufferedEconomy {
 
 		if (ServerTaxesAccount.isOnline()) {
 		    if (Jobs.getGCManager().ActionBarsMessageByDefault) {
-			Jobs.getActionBar().send(Bukkit.getPlayer(ServerAccountname),
+			    ActionBarManager.send(Bukkit.getPlayer(ServerAccountname),
 			    Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100) / 100.0));
 		    }
 		}
@@ -191,7 +192,7 @@ public class BufferedEconomy {
 
 		if (Jobs.getGCManager().UseServerAccount) {
 		    if (!hasMoney) {
-			Jobs.getActionBar().send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
+			ActionBarManager.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
 			continue;
 		    }
 		}
@@ -242,7 +243,7 @@ public class BufferedEconomy {
 		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", new Object[] { "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), new Object[] {
 		    Double.valueOf(payment.get(CurrencyType.EXP)) }) });
 	    }
-	    Jobs.getActionBar().send(abp, Message);
+	    ActionBarManager.send(abp, Message);
 	}
     }
 }

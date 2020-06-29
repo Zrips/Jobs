@@ -12,7 +12,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 
 public class ItemReflection {
 

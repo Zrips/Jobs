@@ -7,15 +7,14 @@ package com.gamingmesh.jobs.CMILib;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
 
 public class CMIReflections {
 
-    private Class<?> CraftServerClass;
-    private Object CraftServer;
+    //private Class<?> CraftServerClass;
+    //private Object CraftServer;
 
     private static Class<?> NBTTagCompound;
     private Class<?> NBTBase;
@@ -31,8 +30,8 @@ public class CMIReflections {
 
     private void initialize() {
 	try {
-	    CraftServerClass = getBukkitClass("CraftServer");
-	    CraftServer = CraftServerClass.cast(Bukkit.getServer());
+	    //CraftServerClass = getBukkitClass("CraftServer");
+	    //CraftServer = CraftServerClass.cast(Bukkit.getServer());
 	    NBTTagCompound = getMinecraftClass("NBTTagCompound");
 	    NBTBase = getMinecraftClass("NBTBase");
 	    /*try {

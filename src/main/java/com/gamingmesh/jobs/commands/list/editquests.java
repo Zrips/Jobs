@@ -17,7 +17,7 @@ import com.gamingmesh.jobs.CMILib.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ItemReflection;
 import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.ActionType;

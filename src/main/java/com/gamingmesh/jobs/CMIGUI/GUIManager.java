@@ -16,11 +16,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.Reflections;
+import com.gamingmesh.jobs.CMILib.CMIReflections;
 
 public class GUIManager {
 
-    private static HashMap<UUID, CMIGui> map = new HashMap<UUID, CMIGui>();
+    private static HashMap<UUID, CMIGui> map = new HashMap<>();
 
     public final static String CMIGUIIcon = "CMIGUIIcon";
     public final static String LIProtection = "LIProtection";
@@ -346,7 +346,7 @@ public class GUIManager {
 		ItemStack item = one.getValue().getItem(gui.getPlayer());
 		item = item == null ? null : item.clone();
 		if (item != null && one.getValue().isLocked()) {
-		    item = Reflections.setNbt(item, CMIGUIIcon, LIProtection);
+		    item = CMIReflections.setNbt(item, CMIGUIIcon, LIProtection);
 		}
 		GuiInv.setItem(one.getKey(), item);
 	    } catch (ArrayIndexOutOfBoundsException e) {
