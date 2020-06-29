@@ -15,8 +15,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class RawMessage {
 
-    List<String> parts = new ArrayList<>();
-    List<String> cleanParts = new ArrayList<>();
+    List<String> parts = new ArrayList<String>();
+    List<String> cleanParts = new ArrayList<String>();
 
     private String unfinished = "";
     private String unfinishedClean = "";
@@ -29,8 +29,8 @@ public class RawMessage {
 //    private boolean colorizeEntireWithLast = true;
 
     public void clear() {
-	parts = new ArrayList<>();
-	cleanParts = new ArrayList<>();
+	parts = new ArrayList<String>();
+	cleanParts = new ArrayList<String>();
 	combined = "";
 	combinedClean = "";
     }
@@ -63,17 +63,19 @@ public class RawMessage {
 	return add(text, hoverText, command, suggestion, null);
     }
 
-    Set<CMIChatColor> formats = new HashSet<>();
+    Set<CMIChatColor> formats = new HashSet<CMIChatColor>();
     CMIChatColor lastColor = null;
 
-    Set<CMIChatColor> savedFormats = new HashSet<>();
+    Set<CMIChatColor> savedFormats = new HashSet<CMIChatColor>();
     CMIChatColor savedLastColor = null;
 
     CMIChatColor firstBlockColor = null;
 
     private String intoJsonColored(String text) {
-	if (text.equalsIgnoreCase(" "))
+	if (text.equalsIgnoreCase(" ")) {
+	    text = "{\"text\":\" \"}";
 	    return text;
+	}
 
 	text = CMIChatColor.deColorize(text);
 
@@ -89,7 +91,7 @@ public class RawMessage {
 	    text = text.replaceAll(decolmatch.group(), string);
 	}
 
-	List<String> splited = new ArrayList<>();
+	List<String> splited = new ArrayList<String>();
 	if (text.contains(" ")) {
 	    for (String one : text.split(" ")) {
 //		if (this.isBreakLine() && one.contains("\\n")) {
@@ -118,7 +120,7 @@ public class RawMessage {
 
 	Pattern prepattern = Pattern.compile(CMIChatColor.hexColorRegex);
 
-	List<String> plt = new ArrayList<>(splited);
+	List<String> plt = new ArrayList<String>(splited);
 	splited.clear();
 	for (String one : plt) {
 	    Matcher match = prepattern.matcher(one);
@@ -232,10 +234,10 @@ public class RawMessage {
 			    }
 			    one = one.replace(c.getColorCode(), c.getColorCode() + form);
 			} else if (c.getHex() != null) {
-			    //String form = "";
-			    //for (CMIChatColor oneC : formats) {
-				//form += oneC.getColorCode();
-			    //}
+			    String form = "";
+			    for (CMIChatColor oneC : formats) {
+				form += oneC.getColorCode();
+			    }
 
 //			    CMIDebug.d("*"+net.md_5.bungee.api.ChatColor.of("#" + c.getHex())+ "_"+net.md_5.bungee.api.ChatColor.of("#FF00FF")+ "+");
 
@@ -412,7 +414,6 @@ public class RawMessage {
 	    return this;
 
 	text = processText(text);
-
 	if (dontBreakLine) {
 	    text = text.replace("\n", "\\\\n");
 	    text = text.replace("\\n", "\\\\n");
@@ -545,7 +546,7 @@ public class RawMessage {
 	    f += ",\"insertion\":\"" + insertion + "\"";
 	}
 
-	String res = Reflections.toJson(item);
+	String res = CMIReflections.toJson(item);
 
 	f += ",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"" + res + "\"}";
 
@@ -566,7 +567,7 @@ public class RawMessage {
     }
 
     public List<String> softCombine() {
-	List<String> ls = new ArrayList<>();
+	List<String> ls = new ArrayList<String>();
 	String f = "";
 	for (String part : parts) {
 	    if (f.isEmpty())

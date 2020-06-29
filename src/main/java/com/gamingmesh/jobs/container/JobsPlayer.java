@@ -31,6 +31,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ActionBarManager;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
@@ -174,7 +176,7 @@ public class JobsPlayer {
 		data.setInformed();
 	    }
 	    if (data.IsAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline())
-		Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("command.limit.output." + name + "time", "%time%", TimeManage.to24hourShort(data.GetLeftTime(type))));
+		ActionBarManager.send(player, Jobs.getLanguage().getMessage("command.limit.output." + name + "time", "%time%", TimeManage.to24hourShort(data.GetLeftTime(type))));
 	    if (data.isReseted())
 		data.setReseted(false);
 	    return false;
@@ -733,8 +735,7 @@ public class JobsPlayer {
 
 	honorific = builder.toString().trim();
 	if (honorific.length() > 0)
-	    honorific = org.bukkit.ChatColor.translateAlternateColorCodes('&',
-		Jobs.getGCManager().modifyChatPrefix + honorific + Jobs.getGCManager().modifyChatSuffix);
+	    honorific = CMIChatColor.translate(Jobs.getGCManager().modifyChatPrefix + honorific + Jobs.getGCManager().modifyChatSuffix);
 
     }
 

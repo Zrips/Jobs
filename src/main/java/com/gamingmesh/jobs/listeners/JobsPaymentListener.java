@@ -18,10 +18,11 @@
 
 package com.gamingmesh.jobs.listeners;
 
+import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ItemManager;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
@@ -414,8 +415,8 @@ public class JobsPaymentListener implements Listener {
 	// Prevent money duplication when breaking plant blocks
 	Material brokenBlock = block.getRelative(BlockFace.DOWN).getType();
 	if (Jobs.getGCManager().preventCropResizePayment && (brokenBlock == CMIMaterial.SUGAR_CANE.getMaterial()
-		    || brokenBlock == CMIMaterial.KELP.getMaterial()
-		    || brokenBlock == CMIMaterial.CACTUS.getMaterial() || brokenBlock == CMIMaterial.BAMBOO.getMaterial())) {
+	    || brokenBlock == CMIMaterial.KELP.getMaterial()
+	    || brokenBlock == CMIMaterial.CACTUS.getMaterial() || brokenBlock == CMIMaterial.BAMBOO.getMaterial())) {
 	    return;
 	}
 
@@ -464,8 +465,8 @@ public class JobsPaymentListener implements Listener {
 	// Prevent money duplication when placing plant blocks
 	Material placedBlock = event.getBlockPlaced().getRelative(BlockFace.DOWN).getType();
 	if (Jobs.getGCManager().preventCropResizePayment && (placedBlock == CMIMaterial.SUGAR_CANE.getMaterial()
-		    || placedBlock == CMIMaterial.KELP.getMaterial()
-		    || placedBlock == CMIMaterial.CACTUS.getMaterial() || placedBlock == CMIMaterial.BAMBOO.getMaterial())) {
+	    || placedBlock == CMIMaterial.KELP.getMaterial()
+	    || placedBlock == CMIMaterial.CACTUS.getMaterial() || placedBlock == CMIMaterial.BAMBOO.getMaterial())) {
 	    return;
 	}
 
@@ -708,7 +709,7 @@ public class JobsPaymentListener implements Listener {
 		Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
 	    } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
 		Jobs.action(jPlayer, new ItemNameActionInfo(ChatColor.stripColor(resultStack.getItemMeta()
-		.getDisplayName()), ActionType.CRAFT));
+		    .getDisplayName()), ActionType.CRAFT));
 	    } else if (currentItem != null) {
 		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.CRAFT));
 	    }
@@ -824,7 +825,7 @@ public class JobsPaymentListener implements Listener {
 	Inventory inv = event.getInventory();
 	// must be anvil inventory
 	if (!(inv instanceof AnvilInventory) && (Version.isCurrentEqualOrHigher(Version.v1_14_R1)
-			&& !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory)))
+	    && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory)))
 	    return;
 
 	int slot = event.getSlot();
@@ -1713,9 +1714,9 @@ public class JobsPaymentListener implements Listener {
 		    report = true;
 
 		if (report)
-		    Jobs.getActionBar().send(p, Jobs.getLanguage().getMessage("general.error.noFurnaceRegistration"));
+		    ActionBarManager.send(p, Jobs.getLanguage().getMessage("general.error.noFurnaceRegistration"));
 	    } else if (done.equals(ownershipFeedback.newReg) && jPlayer != null) {
-		Jobs.getActionBar().send(p, Jobs.getLanguage().getMessage("general.error.newFurnaceRegistration",
+		ActionBarManager.send(p, Jobs.getLanguage().getMessage("general.error.newFurnaceRegistration",
 		    "[current]", jPlayer.getFurnaceCount(),
 		    "[max]", jPlayer.getMaxFurnacesAllowed() == 0 ? "-" : jPlayer.getMaxFurnacesAllowed()));
 	    }
@@ -1739,9 +1740,9 @@ public class JobsPaymentListener implements Listener {
 		    report = true;
 
 		if (report)
-		    Jobs.getActionBar().send(p, Jobs.getLanguage().getMessage("general.error.noBrewingRegistration"));
+		    ActionBarManager.send(p, Jobs.getLanguage().getMessage("general.error.noBrewingRegistration"));
 	    } else if (done.equals(ownershipFeedback.newReg) && jPlayer != null) {
-		Jobs.getActionBar().send(p, Jobs.getLanguage().getMessage("general.error.newBrewingRegistration",
+		ActionBarManager.send(p, Jobs.getLanguage().getMessage("general.error.newBrewingRegistration",
 		    "[current]", jPlayer.getBrewingStandCount(),
 		    "[max]", jPlayer.getMaxBrewingStandsAllowed() == 0 ? "-" : jPlayer.getMaxBrewingStandsAllowed()));
 	    }

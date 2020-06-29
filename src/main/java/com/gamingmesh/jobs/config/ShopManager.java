@@ -24,6 +24,7 @@ import com.gamingmesh.jobs.CMIGUI.CMIGui;
 import com.gamingmesh.jobs.CMIGUI.CMIGuiButton;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIRows;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.container.BoostMultiplier;
@@ -158,7 +159,7 @@ public class ShopManager {
 		    Job job = Jobs.getJob(one.getKey());
 		    if (job == null) {
 			continue;
-			}
+		    }
 
 		    String jobColor = "";
 		    String levelColor = "";
@@ -318,8 +319,8 @@ public class ShopManager {
 	for (String category : categoriesList) {
 	    ConfigurationSection NameSection = ConfCategory.getConfigurationSection(category);
 	    if (NameSection == null) {
-		    continue;
-		}
+		continue;
+	    }
 
 	    if (!NameSection.isDouble("Price")) {
 		Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid Price property. Skipping!");
@@ -340,12 +341,12 @@ public class ShopManager {
 	    Sitem.setIconAmount(NameSection.getInt("Icon.Amount", 1));
 
 	    if (NameSection.isString("Icon.Name"))
-		Sitem.setIconName(ChatColor.translateAlternateColorCodes('&', NameSection.getString("Icon.Name")));
+		Sitem.setIconName(CMIChatColor.translate(NameSection.getString("Icon.Name")));
 
 	    if (NameSection.isList("Icon.Lore")) {
 		List<String> lore = new ArrayList<>();
 		for (String eachLine : NameSection.getStringList("Icon.Lore")) {
-		    lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
+		    lore.add(CMIChatColor.translate(eachLine));
 		}
 		Sitem.setIconLore(lore);
 	    }
@@ -395,7 +396,7 @@ public class ShopManager {
 	    if (NameSection.isList("PerformCommands")) {
 		List<String> cmd = new ArrayList<>();
 		for (String eachLine : NameSection.getStringList("PerformCommands")) {
-		    cmd.add(ChatColor.translateAlternateColorCodes('&', eachLine));
+		    cmd.add(CMIChatColor.translate(eachLine));
 		}
 		Sitem.setCommands(cmd);
 	    }
@@ -421,12 +422,12 @@ public class ShopManager {
 
 		    String name = null;
 		    if (itemSection.isString("Name"))
-			name = ChatColor.translateAlternateColorCodes('&', itemSection.getString("Name"));
+			name = CMIChatColor.translate(itemSection.getString("Name"));
 
 		    List<String> lore = new ArrayList<>();
 		    if (itemSection.contains("Lore"))
 			for (String eachLine : itemSection.getStringList("Lore")) {
-			    lore.add(ChatColor.translateAlternateColorCodes('&', eachLine));
+			    lore.add(CMIChatColor.translate(eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();

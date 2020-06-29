@@ -6,7 +6,7 @@ import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 

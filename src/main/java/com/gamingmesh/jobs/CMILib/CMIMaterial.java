@@ -13,9 +13,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.CMILib.ItemManager.SlabType;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
-
 public enum CMIMaterial {
     NONE(null, "None"),
     ACACIA_BOAT(447, 0, 27326, "Acacia Boat", "BOAT_ACACIA"),
@@ -77,7 +74,7 @@ public enum CMIMaterial {
     BLACK_STAINED_GLASS(95, 15, 13941, Arrays.asList(CMIMaterialCriteria.seeThrow), "Black Stained Glass", "STAINED_GLASS"),
     BLACK_STAINED_GLASS_PANE(160, 15, 13201, Arrays.asList(CMIMaterialCriteria.seeThrow), "Black Stained Glass Pane", "STAINED_GLASS_PANE"),
     BLACK_TERRACOTTA(159, 15, 26691, "Black Terracotta", "STAINED_CLAY"),
-    BLACK_WALL_BANNER(177, 0, 4919, "Black Banner"),
+    BLACK_WALL_BANNER(117, 0, 4919, "Black Banner"),
     BLACK_WOOL(35, 15, 16693, "Black Wool"),
     BLAZE_POWDER(377, 0, 18941, "Blaze Powder"),
     BLAZE_ROD(369, 0, 8289, "Blaze Rod"),
@@ -94,7 +91,7 @@ public enum CMIMaterial {
     BLUE_STAINED_GLASS(95, 11, 7107, Arrays.asList(CMIMaterialCriteria.seeThrow), "Blue Stained Glass"),
     BLUE_STAINED_GLASS_PANE(160, 11, 28484, Arrays.asList(CMIMaterialCriteria.seeThrow), "Blue Stained Glass Pane"),
     BLUE_TERRACOTTA(159, 11, 5236, "Blue Terracotta"),
-    BLUE_WALL_BANNER(177, 4, 17757, "Blue Banner"),
+    BLUE_WALL_BANNER(117, 4, 17757, "Blue Banner"),
     BLUE_WOOL(35, 11, 15738, "Blue Wool"),
     BONE(352, 0, 5686, "Bone"),
     BONE_BLOCK(216, 0, 17312, "Bone Block"),
@@ -125,7 +122,7 @@ public enum CMIMaterial {
     BROWN_STAINED_GLASS(95, 12, 20945, Arrays.asList(CMIMaterialCriteria.seeThrow), "Brown Stained Glass"),
     BROWN_STAINED_GLASS_PANE(160, 12, 17557, Arrays.asList(CMIMaterialCriteria.seeThrow), "Brown Stained Glass Pane"),
     BROWN_TERRACOTTA(159, 12, 23664, "Brown Terracotta"),
-    BROWN_WALL_BANNER(177, 3, 14731, "Brown Banner"),
+    BROWN_WALL_BANNER(117, 3, 14731, "Brown Banner"),
     BROWN_WOOL(35, 12, 32638, "Brown Wool"),
     BUBBLE_COLUMN(13758, "Bubble Column"),
     BUBBLE_CORAL(12464, "Bubble Coral"),
@@ -136,8 +133,8 @@ public enum CMIMaterial {
     CACTUS(81, 0, 12191, "Cactus"),
     CACTUS_GREEN(351, 2, 17296, "Cactus Green"),
     CAKE(354, 0, 27048, "Cake"),
-    CARROT(391, 0, 22824, "Carrot", "Carrotitem"),
-    CARROTS(141, 0, 17258, "Carrots"),
+    CARROT(141, 0, 22824, "Carrot", "Carrotitem"),
+    CARROTS(391, 0, 17258, "Carrots"),
     CARROT_ON_A_STICK(398, 0, 27809, "Carrot on a Stick", "carrotstick"),
     CARVED_PUMPKIN(25833, "Carved Pumpkin"),
     CAULDRON(380, 0, 26531, "Cauldron", "CAULDRON_ITEM"),
@@ -210,7 +207,7 @@ public enum CMIMaterial {
     CYAN_STAINED_GLASS(95, 9, 30604, Arrays.asList(CMIMaterialCriteria.seeThrow), "Cyan Stained Glass"),
     CYAN_STAINED_GLASS_PANE(160, 9, 11784, Arrays.asList(CMIMaterialCriteria.seeThrow), "Cyan Stained Glass Pane"),
     CYAN_TERRACOTTA(159, 9, 25940, "Cyan Terracotta"),
-    CYAN_WALL_BANNER(177, 6, 10889, "Cyan Banner"),
+    CYAN_WALL_BANNER(117, 6, 10889, "Cyan Banner"),
     CYAN_WOOL(35, 9, 12221, "Cyan Wool"),
     DAMAGED_ANVIL(145, 2, 10274, "Damaged Anvil"),
     DANDELION(37, 0, 30558, "Dandelion", "YELLOW_FLOWER"),
@@ -296,8 +293,8 @@ public enum CMIMaterial {
     ENDER_CHEST(130, 0, 32349, "Ender Chest"),
     ENDER_EYE(381, 0, 24860, "Eye of Ender"),
     ENDER_PEARL(368, 0, 5259, "Ender Pearl"),
-    END_CRYSTAL(426, 0, 19090, "End Crystal", "ENDER_CRYSTAL"),
-    END_GATEWAY(209, 0, 26605, "End Gateway", "ENDER_GATEWAY"),
+    END_CRYSTAL(426, 0, 19090, "End Crystal"),
+    END_GATEWAY(209, 0, 26605, "End Gateway"),
     END_PORTAL(119, 0, 16782, "End Portal"),
     END_PORTAL_FRAME(120, 0, 15480, "End Portal Frame", "ENDER_PORTAL_FRAME"),
     END_ROD(198, 0, 24832, "End Rod"),
@@ -345,7 +342,7 @@ public enum CMIMaterial {
     GOLDEN_PICKAXE(285, 0, 10901, "Golden Pickaxe", "GOLD_PICKAXE"),
     GOLDEN_SHOVEL(284, 0, 15597, "Golden Shovel", "GOLD_SPADE"),
     GOLDEN_SWORD(283, 0, 10505, "Golden Sword", "GOLD_SWORD"),
-    GOLD_BLOCK(41, 0, 27392, "Block of Gold"),
+    GOLD_BLOCK(41, 0, 27392, "Block of Gold", "GOLD_BLOCK"),
     GOLD_INGOT(266, 0, 28927, "Gold Ingot"),
     GOLD_NUGGET(371, 0, 28814, "Gold Nugget"),
     GOLD_ORE(14, 0, 32625, "Gold Ore"),
@@ -365,7 +362,7 @@ public enum CMIMaterial {
     GRAY_STAINED_GLASS(95, 7, 29979, Arrays.asList(CMIMaterialCriteria.seeThrow), "Gray Stained Glass"),
     GRAY_STAINED_GLASS_PANE(160, 7, 25272, Arrays.asList(CMIMaterialCriteria.seeThrow), "Gray Stained Glass Pane"),
     GRAY_TERRACOTTA(159, 7, 18004, "Gray Terracotta"),
-    GRAY_WALL_BANNER(177, 8, 24275, "Gray Banner"),
+    GRAY_WALL_BANNER(117, 8, 24275, "Gray Banner"),
     GRAY_WOOL(35, 7, 27209, "Gray Wool"),
     GREEN_BANNER(425, 2, 10698, "Green Banner"),
     GREEN_BED(355, 13, 13797, "Green Bed"),
@@ -377,11 +374,11 @@ public enum CMIMaterial {
     GREEN_STAINED_GLASS(95, 13, 22503, Arrays.asList(CMIMaterialCriteria.seeThrow), "Green Stained Glass"),
     GREEN_STAINED_GLASS_PANE(160, 13, 4767, Arrays.asList(CMIMaterialCriteria.seeThrow), "Green Stained Glass Pane"),
     GREEN_TERRACOTTA(159, 13, 4105, "Green Terracotta"),
-    GREEN_WALL_BANNER(177, 2, 15046, "Green Banner"),
+    GREEN_WALL_BANNER(117, 2, 15046, "Green Banner"),
     GREEN_WOOL(35, 13, 25085, "Green Wool"),
     GUARDIAN_SPAWN_EGG(383, 68, 20113, "Guardian Spawn Egg", "Spawn Guardian"),
     GUNPOWDER(289, 0, 29974, "Gunpowder", "SULPHUR"),
-    HAY_BLOCK(170, 0, 17461, "Hay Bale"),
+    HAY_BLOCK(170, 0, 17461, "Hay Bale", "HAY_BLOCK"),
     HEART_OF_THE_SEA(11807, "Heart of the Sea"),
     HEAVY_WEIGHTED_PRESSURE_PLATE(148, 0, 16970, "Heavy Weighted Pressure Plate", "IRON_PLATE"),
     HOPPER(154, 0, 31974, "Hopper"),
@@ -402,7 +399,7 @@ public enum CMIMaterial {
     INK_SAC(351, 0, 7184, "Ink Sac", "Ink Sack"),
     IRON_AXE(258, 0, 15894, "Iron Axe"),
     IRON_BARS(101, 0, 9378, Arrays.asList(CMIMaterialCriteria.seeThrow), "Iron Bars", "IRON_FENCE"),
-    IRON_BLOCK(42, 0, 24754, "Block of Iron"),
+    IRON_BLOCK(42, 0, 24754, "Block of Iron", "IRON_BLOCK"),
     IRON_BOOTS(309, 0, 8531, "Iron Boots"),
     IRON_CHESTPLATE(307, 0, 28112, "Iron Chestplate"),
     IRON_DOOR(330, 0, 4788, "Iron Door"),
@@ -418,7 +415,7 @@ public enum CMIMaterial {
     IRON_SWORD(267, 0, 10904, "Iron Sword"),
     IRON_TRAPDOOR(167, 0, 17095, "Iron Trapdoor"),
     ITEM_FRAME(389, 0, 27318, "Item Frame"),
-    JACK_O_LANTERN(91, 0, 31612, "Jack o'Lantern"),
+    JACK_O_LANTERN(91, 0, 31612, "Jack o'Lantern", "JACK_O_LANTERN"),
     JUKEBOX(84, 0, 19264, "Jukebox"),
     JUNGLE_BOAT(446, 0, 4495, "Jungle Boat", "BOAT_JUNGLE"),
     JUNGLE_BUTTON(25317, "Jungle Button"),
@@ -438,18 +435,18 @@ public enum CMIMaterial {
     KELP_PLANT(29697, "Kelp Plant"),
     KNOWLEDGE_BOOK(453, 0, 12646, "Knowledge Book"),
     LADDER(65, 0, 23599, "Ladder"),
-    LAPIS_BLOCK(22, 0, 14485, "Lapis Lazuli Block"),
+    LAPIS_BLOCK(22, 0, 14485, "Lapis Lazuli Block", "LAPIS_BLOCK"),
     LAPIS_LAZULI(351, 4, 11075, "Lapis Lazuli"),
-    LAPIS_ORE(21, 0, 22934, "Lapis Lazuli Ore"),
+    LAPIS_ORE(21, 0, 22934, "Lapis Lazuli Ore", "LAPIS_ORE"),
     LARGE_FERN(175, 3, 30177, "Large Fern", "DOUBLE_PLANT"),
     LAVA(10, 0, 8415, "Flowing Lava"),
     LAVA_BUCKET(327, 0, 9228, "Lava Bucket"),
     LEAD(420, 0, 29539, "Lead", "Leash"),
     LEATHER(334, 0, 16414, "Leather"),
     LEATHER_BOOTS(301, 0, 15282, "Leather Boots"),
-    LEATHER_CHESTPLATE(299, 0, 29275, "Leather Tunic"),
-    LEATHER_HELMET(298, 0, 11624, "Leather Cap"),
-    LEATHER_LEGGINGS(300, 0, 28210, "Leather Pants"),
+    LEATHER_CHESTPLATE(299, 0, 29275, "Leather Tunic", "LEATHER_CHESTPLATE"),
+    LEATHER_HELMET(298, 0, 11624, "Leather Cap", "LEATHER_HELMET"),
+    LEATHER_LEGGINGS(300, 0, 28210, "Leather Pants", "LEATHER_LEGGINGS"),
     LEVER(69, 0, 15319, "Lever"),
     LIGHT_BLUE_BANNER(425, 12, 18060, "Light Blue Banner"),
     LIGHT_BLUE_BED(355, 3, 20957, "Light Blue Bed"),
@@ -462,7 +459,7 @@ public enum CMIMaterial {
     LIGHT_BLUE_STAINED_GLASS(95, 3, 17162, Arrays.asList(CMIMaterialCriteria.seeThrow), "Light Blue Stained Glass"),
     LIGHT_BLUE_STAINED_GLASS_PANE(160, 3, 18721, Arrays.asList(CMIMaterialCriteria.seeThrow), "Light Blue Stained Glass Pane"),
     LIGHT_BLUE_TERRACOTTA(159, 3, 31779, "Light Blue Terracotta"),
-    LIGHT_BLUE_WALL_BANNER(177, 12, 12011, "Light Blue Banner"),
+    LIGHT_BLUE_WALL_BANNER(117, 12, 12011, "Light Blue Banner"),
     LIGHT_BLUE_WOOL(35, 3, 21073, "Light Blue Wool"),
     LIGHT_GRAY_BANNER(425, 7, 11417, "Light Gray Banner"),
     LIGHT_GRAY_BED(355, 8, 5090, "Light Gray Bed"),
@@ -475,7 +472,7 @@ public enum CMIMaterial {
     LIGHT_GRAY_STAINED_GLASS(95, 8, 5843, Arrays.asList(CMIMaterialCriteria.seeThrow), "Light Gray Stained Glass"),
     LIGHT_GRAY_STAINED_GLASS_PANE(160, 8, 19008, Arrays.asList(CMIMaterialCriteria.seeThrow), "Light Gray Stained Glass Pane"),
     LIGHT_GRAY_TERRACOTTA(159, 8, 26388, "Light Gray Terracotta"),
-    LIGHT_GRAY_WALL_BANNER(177, 7, 31088, "Light Gray Banner"),
+    LIGHT_GRAY_WALL_BANNER(117, 7, 31088, "Light Gray Banner"),
     LIGHT_GRAY_WOOL(35, 8, 22936, "Light Gray Wool"),
     LIGHT_WEIGHTED_PRESSURE_PLATE(147, 0, 14875, "Light Weighted Pressure Plate", "GOLD_PLATE"),
     LILAC(175, 1, 22837, "Lilac"),
@@ -491,7 +488,7 @@ public enum CMIMaterial {
     LIME_STAINED_GLASS(95, 5, 24266, Arrays.asList(CMIMaterialCriteria.seeThrow), "Lime Stained Glass"),
     LIME_STAINED_GLASS_PANE(160, 5, 10610, Arrays.asList(CMIMaterialCriteria.seeThrow), "Lime Stained Glass Pane"),
     LIME_TERRACOTTA(159, 5, 24013, "Lime Terracotta"),
-    LIME_WALL_BANNER(177, 10, 21422, "Lime Banner"),
+    LIME_WALL_BANNER(117, 10, 21422, "Lime Banner"),
     LIME_WOOL(35, 5, 10443, "Lime Wool"),
     LINGERING_POTION(441, 0, 25857, "Lingering Potion"),
     LLAMA_SPAWN_EGG(383, 103, 23640, "Llama Spawn Egg", "Spawn Llama"),
@@ -506,13 +503,13 @@ public enum CMIMaterial {
     MAGENTA_STAINED_GLASS(95, 2, 26814, Arrays.asList(CMIMaterialCriteria.seeThrow), "Magenta Stained Glass"),
     MAGENTA_STAINED_GLASS_PANE(160, 2, 14082, Arrays.asList(CMIMaterialCriteria.seeThrow), "Magenta Stained Glass Pane"),
     MAGENTA_TERRACOTTA(159, 2, 25900, "Magenta Terracotta"),
-    MAGENTA_WALL_BANNER(177, 13, 23291, "Magenta Banner"),
+    MAGENTA_WALL_BANNER(117, 13, 23291, "Magenta Banner"),
     MAGENTA_WOOL(35, 2, 11853, "Magenta Wool"),
     MAGMA_BLOCK(213, 0, 25927, "Magma Block", "MAGMA"),
     MAGMA_CREAM(378, 0, 25097, "Magma Cream"),
     MAGMA_CUBE_SPAWN_EGG(383, 62, 26638, "Magma Cube Spawn Egg", "Spawn Magma Cube"),
     MAP(395, 0, 21655, "Empty Map"),
-    MELON(103, 0, 25172, "Melon Block"),
+    MELON(103, 0, 25172, "Melon", "Melon_Block"),
     MELON_SEEDS(362, 0, 18340, "Melon Seeds"),
     MELON_SLICE(360, 0, 5347, "Melon Slice"),
     MELON_STEM(105, 0, 8247, "Melon Stem"),
@@ -547,12 +544,12 @@ public enum CMIMaterial {
     NETHER_BRICKS(112, 0, 27802, "Nether Bricks"),
     NETHER_BRICK_FENCE(113, 0, 5286, Arrays.asList(CMIMaterialCriteria.seeThrow), "Nether Brick Fence", "NETHER_FENCE"),
     NETHER_BRICK_SLAB(44, 6, 26586, "Nether Brick Slab"),
-    NETHER_BRICK_STAIRS(114, 0, 12085, "Nether Brick Stairs"),
+    NETHER_BRICK_STAIRS(114, 0, 12085, "Nether Brick Stairs", "NETHER_BRICK_STAIRS"),
     NETHER_PORTAL(90, 0, 19469, "Nether Portal", "PORTAL"),
     NETHER_QUARTZ_ORE(153, 0, 4807, "Nether Quartz Ore", "QUARTZ_ORE"),
     NETHER_STAR(399, 0, 12469, "Nether Star"),
     NETHER_WART(372, 0, 29227, "Nether Wart", "NETHER_STALK"),
-    NETHER_WART_BLOCK(214, 0, 15486, "Nether Wart Block"),
+    NETHER_WART_BLOCK(214, 0, 15486, "Nether Wart Block", "NETHER_WART_BLOCK"),
     NOTE_BLOCK(25, 0, 20979, "Note Block", "NOTE_BLOCK"),
     OAK_BOAT(333, 0, 17570, "Boat", "Oak Boat"),
     OAK_BUTTON(143, 0, 13510, "Oak Button", "Wooden_button"),
@@ -583,7 +580,7 @@ public enum CMIMaterial {
     ORANGE_STAINED_GLASS_PANE(160, 1, 21089, Arrays.asList(CMIMaterialCriteria.seeThrow), "Orange Stained Glass Pane"),
     ORANGE_TERRACOTTA(159, 1, 18684, "Orange Terracotta"),
     ORANGE_TULIP(38, 5, 26038, "Orange Tulip"),
-    ORANGE_WALL_BANNER(177, 114, 9936, "Orange Banner"),
+    ORANGE_WALL_BANNER(117, 114, 9936, "Orange Banner"),
     ORANGE_WOOL(35, 1, 23957, "Orange Wool"),
     OXEYE_DAISY(38, 8, 11709, "Oxeye Daisy"),
     PACKED_ICE(174, 0, 28993, "Packed Ice"),
@@ -607,7 +604,7 @@ public enum CMIMaterial {
     PINK_STAINED_GLASS_PANE(160, 6, 24637, Arrays.asList(CMIMaterialCriteria.seeThrow), "Pink Stained Glass Pane"),
     PINK_TERRACOTTA(159, 6, 23727, "Pink Terracotta"),
     PINK_TULIP(38, 7, 27319, "Pink Tulip"),
-    PINK_WALL_BANNER(177, 9, 9421, "Pink Banner"),
+    PINK_WALL_BANNER(117, 9, 9421, "Pink Banner"),
     PINK_WOOL(35, 6, 7611, "Pink Wool"),
     PISTON(33, 0, 21130, "Piston", "PISTON_BASE"),
     PISTON_HEAD(34, 0, 30226, "Piston Head", "PISTON_EXTENSION"),
@@ -624,7 +621,47 @@ public enum CMIMaterial {
     PORKCHOP(319, 0, 30896, "Raw Porkchop"),
     POTATO(392, 0, 21088, "Potato", "Potatoitem"),
     POTATOES(142, 0, 10879, "Potatoes"),
+
+    // Potions
     POTION(373, 0, 24020, "Potion"),
+//    AWKWARD_POTION(373, 16, 24020, "Awkard Potion"),
+//    THICK_POTION(373, 32, 24020, "Thick Potion"),
+//    MUNDANE_POTION(373, 64, 24020, "Mundane Potion"),
+//    REGENERATION_POTION(373, 8193, 24020, "Regeneration Potion"),
+//    SWIFTNESS_POTION(373, 8194, 24020, "Swiftness Potion"),
+//    FIRE_RESISTANCE_POTION(373, 8195, 24020, "Fire Resistance Potion"),
+//    POISON_POTION(373, 8196, 24020, "Poison Potion"),
+//    HEALING_POTION(373, 8197, 24020, "Healing Potion"),
+//    NIGHT_VISION_POTION(373, 8198, 24020, "Night Vision Potion"),
+//    WEAKNESS_POTION(373, 8200, 24020, "Weakness Potion"),
+//    STRENGTH_POTION(373, 8201, 24020, "Strenght Potion"),
+//    SLOWNESS_POTION(373, 8202, 24020, "Slowness Potion"),
+//    HARMING_POTION(373, 8204, 24020, "Harming Potion"),
+//    WATER_BREATHING_POTION(373, 8205, 24020, "Water Breathing Potion"),
+//    INVISIBILITY_POTION(373, 8206, 24020, "Invisibility Potion"),
+//    REGENERATION_POTION2(373, 8225, 24020, "Regeneration Potion"),
+//    SWIFTNESS_POTION2(373, 8226, 24020, "Swiftness Potion2"),
+//    POISON_POTION2(373, 8228, 24020, "Poison Potion2"),
+//    HEALING_POTION2(373, 8229, 24020, "Healing Potion2"),
+//    STRENGTH_POTION2(373, 8233, 24020, "Strength Potion2"),
+//    LEAPING_POTION2(373, 8235, 24020, "Leaping Potion2"),
+//    HARMING_POTION2(373, 8236, 24020, "Harming Potion2"),
+//    REGENERATION_POTION3(373, 8257, 24020, "Regeneration Potion3"),
+//    SWIFTNESS_POTION3(373, 8258, 24020, "Swiftness Potion3"),
+//    FIRE_RESISTANCE_POTION3(373, 8259, 24020, "Fire Resistance potion3"),
+//    POISON_POTION3(373, 8260, 24020, "Poison Potion3"),
+//    NIGHT_VISION_POTION2(373, 8262, 24020, "Night Vision Potion2"),
+//    WEAKNESS_POTION2(373, 8264, 24020, "Weakness Potion2"),
+//    STRENGTH_POTION3(373, 8265, 24020, "Strength Potion3"),
+//    SLOWNESS_POTION2(373, 8266, 24020, "Slowness Potion2"),
+//    LEAPING_POTION3(373, 8267, 24020, "Leaping Potion3"),
+//    WATER_BREATHING_POTION2(373, 8269, 24020, "Water Breathing Potion2"),
+//    INVISIBILITY_POTION2(373, 8270, 24020, "Invisibility Potion2"),
+//    REGENERATION_POTION4(373, 8289, 24020, "Regeneration Potion4"),
+//    SWIFTNESS_POTION4(373, 8290, 24020, "Swiftness Potion4"),
+//    POISON_POTION4(373, 8292, 24020, "Poison Potion4"),
+//    STRENGTH_POTION4(373, 8297, 24020, "Strength Potion4"),
+
     POTTED_ACACIA_SAPLING(14096, " Acacia Sapling"),
     POTTED_ALLIUM(13184, "Potted Allium"),
     POTTED_AZURE_BLUET(8754, "Potted Azure Bluet"),
@@ -673,7 +710,7 @@ public enum CMIMaterial {
     PURPLE_STAINED_GLASS(95, 10, 21845, Arrays.asList(CMIMaterialCriteria.seeThrow), "Purple Stained Glass"),
     PURPLE_STAINED_GLASS_PANE(160, 10, 10948, Arrays.asList(CMIMaterialCriteria.seeThrow), "Purple Stained Glass Pane"),
     PURPLE_TERRACOTTA(159, 10, 10387, "Purple Terracotta"),
-    PURPLE_WALL_BANNER(177, 5, 14298, "Purple Banner"),
+    PURPLE_WALL_BANNER(117, 5, 14298, "Purple Banner"),
     PURPLE_WOOL(35, 10, 11922, "Purple Wool"),
     PURPUR_BLOCK(201, 0, 7538, "Purpur Block"),
     PURPUR_PILLAR(202, 0, 26718, "Purpur Pillar"),
@@ -691,19 +728,19 @@ public enum CMIMaterial {
     RABBIT_STEW(413, 0, 10611, "Rabbit Stew"),
     RAIL(66, 0, 13285, "Rail", "RAILS"),
     REDSTONE(331, 0, 11233, "Redstone", "Redstone Dust"),
-    REDSTONE_BLOCK(152, 0, 19496, "Block of Redstone"),
+    REDSTONE_BLOCK(152, 0, 19496, "Block of Redstone", "REDSTONE_BLOCK"),
     REDSTONE_LAMP(123, 0, 8217, "Redstone Lamp", "REDSTONE_LAMP_OFF"),
     REDSTONE_ORE(73, 0, 10887, "Redstone Ore"),
     REDSTONE_TORCH(76, 0, 22547, "Redstone Torch(on)", "REDSTONE_TORCH_ON"),
     REDSTONE_WALL_TORCH(76, 0, 7595, "Redstone Wall Torch"),
-    REDSTONE_WIRE(55, 0, 25984, "Redstone Dust"),
+    REDSTONE_WIRE(55, 0, 25984, "Redstone Dust", "REDSTONE_WIRE"),
     RED_BANNER(425, 1, 26961, "Red Banner"),
     RED_BED(355, 14, 30910, "Red Bed", "Red Bed"),
     RED_CARPET(171, 14, 5424, "Red Carpet"),
     RED_CONCRETE(251, 14, 8032, "Red Concrete"),
     RED_CONCRETE_POWDER(252, 14, 13286, "Red Concrete Powder"),
     RED_GLAZED_TERRACOTTA(249, 0, 24989, "Red Glazed Terracotta"),
-    RED_MUSHROOM(40, 0, 19728, "Red Mushroom"),
+    RED_MUSHROOM(40, 0, 19728, "Red Mushroom", "RED_MUSHROOM"),
     RED_MUSHROOM_BLOCK(100, 0, 20766, "Red Mushroom Block", "HUGE_MUSHROOM_2"),
     RED_NETHER_BRICKS(215, 0, 18056, "Red Nether Bricks", "RED_NETHER_BRICK"),
     RED_SAND(12, 1, 16279, "Red Sand"),
@@ -715,7 +752,7 @@ public enum CMIMaterial {
     RED_STAINED_GLASS_PANE(160, 14, 8630, Arrays.asList(CMIMaterialCriteria.seeThrow), "Red Stained Glass Pane"),
     RED_TERRACOTTA(159, 14, 5086, "Red Terracotta"),
     RED_TULIP(38, 4, 16781, "Red Tulip"),
-    RED_WALL_BANNER(177, 1, 4378, "Red Banner"),
+    RED_WALL_BANNER(117, 1, 4378, "Red Banner"),
     RED_WOOL(35, 14, 11621, "Red Wool"),
     REPEATER(356, 0, 28823, "Redstone Repeater", "Diode"),
     REPEATING_COMMAND_BLOCK(12405, "Repeating Command Block"),
@@ -761,7 +798,7 @@ public enum CMIMaterial {
     SPECTRAL_ARROW(439, 0, 4568, "Spectral Arrow"),
     SPIDER_EYE(375, 0, 9318, "Spider Eye"),
     SPIDER_SPAWN_EGG(383, 52, 14984, "Spider Spawn Egg", "Spawn Spider"),
-    SPLASH_POTION(438, 0, 30248, "Splash Potion"),
+    SPLASH_POTION(438, 0, 30248, "Splash Potion", "SPLASH_POTION"),
     SPONGE(19, 0, 15860, "Sponge", "SPONGE"),
     SPRUCE_BOAT(444, 0, 9606, "Spruce Boat", "BOAT_SPRUCE"),
     SPRUCE_BUTTON(23281, "Spruce Button"),
@@ -815,7 +852,7 @@ public enum CMIMaterial {
     TALL_SEAGRASS(27189, "Tall Seagrass"),
     TERRACOTTA(172, 0, 16544, "Terracotta", "HARD_CLAY"),
     TIPPED_ARROW(440, 0, 25164, "Tipped Arrow"),
-    TNT(46, 0, 7896, "TNT"),
+    TNT(46, 0, 7896, "TNT", "TNT"),
     TNT_MINECART(407, 0, 4277, "Minecart with TNT", "explosiveminecart"),
     TORCH(50, 0, 6063, "Torch"),
     TOTEM_OF_UNDYING(449, 0, 10139, "Totem Of Undying", "Totem"),
@@ -994,7 +1031,7 @@ public enum CMIMaterial {
     YELLOW_DYE(5952, "Yellow Dye"),
     COMPOSTER(-4, "Composter"),
 
-    //1.15
+    //1.15    
     BEEHIVE("Beehive"),
     BEE_NEST("Bee Nest"),
     BEE_SPAWN_EGG("Bee Spawn Egg"),
@@ -1003,7 +1040,7 @@ public enum CMIMaterial {
     HONEY_BLOCK("Honey Block"),
     HONEY_BOTTLE("Honey Bottle"),
 
-   //1.16
+    //1.16
     ANCIENT_DEBRIS("ancient debris"),
     BASALT("basalt"),
     BLACKSTONE("blackstone"),
@@ -1113,7 +1150,7 @@ public enum CMIMaterial {
     LEGACY_BURNING_FURNACE(62, 0, null, "Burning Furnace"),
     LEGACY_NETHER_WARTS(115, 0, null, "Nether Warts"),
     LEGACY_IRON_DOOR_BLOCK(71, 0, null, "Iron Door Block"),
-    LEGACY_GLOWING_REDSTONE_ORE(74, 0, null, "Glowing Redstone Ore"),
+    LEGACY_GLOWING_REDSTON_ORE(74, 0, null, "Glowing Redstone Ore"),
     LEGACY_SUGAR_CANE_BLOCK(83, 0, null, "Sugar Cane Block"),
     LEGACY_RAW_FISH(349, 0, null, "Raw Fish"),
     LEGACY_SKULL(144, 0, null, "Skull"),
@@ -1124,9 +1161,8 @@ public enum CMIMaterial {
     LEGACY_CAKE_BLOCK(92, 0, null, "Cake Block"),
     LEGACY_DIODE_BLOCK_OFF(93, 0, null, "Diode Block Off"),
     LEGACY_DIODE_BLOCK_ON(94, 0, null, "Diode Block On"),
-    LEGACY_BREWING_STAND(117, null, null, "LEGACY_BREWING_STAND"),
-    LEGACY_MELON_BLOCK(103, 0, null, "Melon Block"),
 
+//	LEGACY_BREWING_STAND(117, null, null, "LEGACY_BREWING_STAND", ""),
 //	LEGACY_CAULDRON(118, 0, null, "LEGACY_CAULDRON", ""),
 //	LEGACY_REDSTONE_LAMP_ON(124, null, null, "LEGACY_REDSTONE_LAMP_ON", ""),
 //	LEGACY_WOOD_DOUBLE_STEP(125, null, null, "LEGACY_WOOD_DOUBLE_STEP", ""),
@@ -1143,10 +1179,12 @@ public enum CMIMaterial {
     LEGACY_JUNGLE_DOOR(195, 0, null, "Jungle Door Block"),
     LEGACY_ACACIA_DOOR(196, 0, null, "Acacia Door Block"),
     LEGACY_DARK_OAK_DOOR(197, 0, null, "Dark Oak Door Block"),
+    LEGACY_GLOWING_REDSTONE_ORE(74, 0, null, "Glowing Redstone Ore"),
+    LEGACY_BREWING_STAND(117, null, null, "LEGACY_BREWING_STAND"),
 //	LEGACY_PURPUR_DOUBLE_SLAB(204, null, null, "LEGACY_PURPUR_DOUBLE_SLAB", ""),
 //	LEGACY_COMMAND_REPEATING(210, null, null, "LEGACY_COMMAND_REPEATING", ""),
 //	LEGACY_COMMAND_CHAIN(211, null, null, "LEGACY_COMMAND_CHAIN", ""),
-    LEGACY_WHEAT(59, 0, null, "Wheat");
+    LEGACY_WHEAT(59, 0, null, "Wheat Block");
 
     private Integer legacyId;
     private Integer legacyData;
@@ -1156,6 +1194,7 @@ public enum CMIMaterial {
     private String bukkitName;
     private String mojangName;
     private Set<CMIMaterialCriteria> criteria;
+
     Material mat;
 
     CMIMaterial(Integer id, String name, String... legacyName) {
@@ -1179,6 +1218,7 @@ public enum CMIMaterial {
     }
 
     CMIMaterial(Integer legacyId, Integer legacyData, Integer id, List<CMIMaterialCriteria> criteria, String name, String... legacyName) {
+
 	this.legacyId = legacyId;
 	this.legacyData = legacyData;
 	this.id = id;
@@ -1196,7 +1236,7 @@ public enum CMIMaterial {
 
     @Deprecated
     public Integer getLegacyId() {
-	return legacyId == null ? 0 : legacyId;
+	return this.legacyId == null ? 0 : this.legacyId;
     }
 
     @Deprecated
@@ -1208,7 +1248,7 @@ public enum CMIMaterial {
     }
 
     public Material getMaterial() {
-	return mat;
+	return mat == null ? null : mat;
     }
 
     public void updateMaterial() {
@@ -1258,13 +1298,15 @@ public enum CMIMaterial {
 	if (mat == null) {
 	    updateMaterial();
 	}
-
 	if (mat == null) {
 	    return new ItemStack(Material.STONE);
 	}
 
-	if (!mat.isItem())
-	    return new ItemStack(Material.STONE);
+	try {
+	    if (!mat.isItem())
+		return new ItemStack(Material.STONE);
+	} catch (Throwable e) {
+	}
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 	    ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat);
@@ -1284,17 +1326,16 @@ public enum CMIMaterial {
 	if (mat == null) {
 	    updateMaterial();
 	}
-
 	if (mat == null) {
 	    return new CMIItemStack(CMIMaterial.STONE);
 	}
-
 	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 	    CMIItemStack stack = new CMIItemStack(mat == null ? Material.STONE : mat);
 	    stack.setAmount(amount);
 	    return stack;
 	}
 	ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
+
 	stack.setAmount(amount);
 	return new CMIItemStack(stack);
     }
@@ -1313,10 +1354,13 @@ public enum CMIMaterial {
     }
 
     public static CMIMaterial getRandom(CMIMaterial mat) {
-	List<CMIMaterial> ls = new ArrayList<>();
+
+	List<CMIMaterial> ls = new ArrayList<CMIMaterial>();
 
 	for (CMIMaterial one : CMIMaterial.values()) {
-	    if (one.getLegacyId() == null || !one.getLegacyId().equals(mat.getLegacyId()))
+	    if (one.getLegacyId() == null)
+		continue;
+	    if (one.getLegacyId() != mat.getLegacyId())
 		continue;
 	    ls.add(one);
 	}
@@ -1345,7 +1389,9 @@ public enum CMIMaterial {
 	if (mat == null)
 	    return CMIMaterial.NONE;
 	for (CMIMaterial one : CMIMaterial.values()) {
-	    if (one.getLegacyId() == null || !one.getLegacyId().equals(mat.getLegacyId()))
+	    if (one.getLegacyId() == null)
+		continue;
+	    if (one.getLegacyId() != mat.getLegacyId())
 		continue;
 	    if (one.getLegacyData() == id)
 		return one;
@@ -1355,19 +1401,21 @@ public enum CMIMaterial {
     }
 
     public static CMIMaterial get(String id) {
+
 	if (id == null)
 	    return CMIMaterial.NONE;
-	Integer data;
-	id = id.replaceAll("_| |minecraft:", "").toLowerCase();
+	Integer ids = null;
+	Integer data = null;
+	id = id.replace("_", "").replace(" ", "").replace("minecraft:", "").toLowerCase();
 
 	if (id.contains(":")) {
 	    try {
-		Integer ids = Integer.parseInt(id.split(":")[0]);
+		ids = Integer.parseInt(id.split(":")[0]);
 		data = Integer.parseInt(id.split(":")[1]);
 		if (ids <= 0)
 		    return CMIMaterial.NONE;
 		return get(ids, data);
-	    } catch (Exception ignored) {
+	    } catch (Exception ex) {
 	    }
 
 	    try {
@@ -1384,19 +1432,12 @@ public enum CMIMaterial {
 			return mat;
 		    }
 		}
-	    } catch (Exception ignored) {
-	    }
-	}
-
-	if (id.contains(":")) {
-	    String metaTag = id.split(":")[1];
-	    CMIMaterial mat = ItemManager.byName.get(id + ":" + metaTag);
-	    if (mat != null) {
-		return mat;
+	    } catch (Exception ex) {
 	    }
 	}
 
 	CMIMaterial mat = ItemManager.byName.get(id);
+
 	if (mat != null) {
 	    return mat;
 	}
@@ -1406,7 +1447,7 @@ public enum CMIMaterial {
 	    if (mat != null) {
 		return mat;
 	    }
-	} catch (Exception ignored) {
+	} catch (Exception ex) {
 	}
 
 	return CMIMaterial.NONE;
@@ -1442,8 +1483,7 @@ public enum CMIMaterial {
 	    return CMIMaterial.NONE;
 	CMIMaterial mat = null;
 	if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
-	    mat = Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? get(item.getType().getId())
-		: get(item.getType().getId(), item.getData().getData());
+	    mat = Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? get(item.getType().getId()) : get(item.getType().getId(), item.getData().getData());
 	    if (mat == null) {
 		mat = ItemManager.byName.get(item.getType().toString().toLowerCase().replace("_", ""));
 	    }
@@ -1469,7 +1509,7 @@ public enum CMIMaterial {
 	    return ItemManager.byRealMaterial.get(block.getType());
 	}
 
-	byte data = Version.isCurrentEqualOrLower(Version.v1_13_R1) ? getBlockData(block) : 0;
+	byte data = Version.isCurrentEqualOrLower(Version.v1_13_R1) ? block.getData() : 0;
 	if (block.getState() instanceof Skull) {
 	    Skull skull = (Skull) block.getState();
 	    data = (byte) skull.getSkullType().ordinal();
@@ -1481,7 +1521,9 @@ public enum CMIMaterial {
 	    mat = ItemManager.byRealMaterial.get(block.getType());
 	}
 
-	mat = ItemManager.byName.get(block.getType().toString().replace("_", "").toLowerCase());
+	if (mat == null) {
+	    mat = ItemManager.byName.get(block.getType().toString().replace("_", "").toLowerCase());
+	}
 
 	if (mat == null && Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
 	    mat = get(block.getType().getId(), Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : data);
@@ -1494,7 +1536,6 @@ public enum CMIMaterial {
 	if (mat != null) {
 	    return mat;
 	}
-
 	mat = ItemManager.byId.get(id);
 	return mat == null ? CMIMaterial.NONE : mat;
     }
@@ -1503,7 +1544,6 @@ public enum CMIMaterial {
 	CMIMaterial mat = ItemManager.byId.get(id);
 	if (mat != null)
 	    return mat;
-
 	return CMIMaterial.NONE;
     }
 
@@ -1586,7 +1626,7 @@ public enum CMIMaterial {
 	case TURTLE_EGG:
 	case TURTLE_SPAWN_EGG:
 
-	// 1.14
+	    // 1.14
 	case CAT_SPAWN_EGG:
 	case FOX_SPAWN_EGG:
 	case PANDA_SPAWN_EGG:
@@ -1595,10 +1635,9 @@ public enum CMIMaterial {
 	case TRADER_LLAMA_SPAWN_EGG:
 	case WANDERING_TRADER_SPAWN_EGG:
 
-	// 1.15
+	    // 1.15
 	case BEE_SPAWN_EGG:
 
-	// 1.16
 	case HOGLIN_SPAWN_EGG:
 	case PIGLIN_SPAWN_EGG:
 	case STRIDER_SPAWN_EGG:
@@ -1710,15 +1749,49 @@ public enum CMIMaterial {
 	case POTION:
 	case LINGERING_POTION:
 	case SPLASH_POTION:
+
+//	case AWKWARD_POTION:
+//	case THICK_POTION:
+//	case MUNDANE_POTION:
+//	case REGENERATION_POTION:
+//	case SWIFTNESS_POTION:
+//	case FIRE_RESISTANCE_POTION:
+//	case POISON_POTION:
+//	case HEALING_POTION:
+//	case NIGHT_VISION_POTION:
+//	case WEAKNESS_POTION:
+//	case STRENGTH_POTION:
+//	case SLOWNESS_POTION:
+//	case HARMING_POTION:
+//	case WATER_BREATHING_POTION:
+//	case INVISIBILITY_POTION:
+//	case REGENERATION_POTION2:
+//	case SWIFTNESS_POTION2:
+//	case POISON_POTION2:
+//	case HEALING_POTION2:
+//	case STRENGTH_POTION2:
+//	case LEAPING_POTION2:
+//	case HARMING_POTION2:
+//	case REGENERATION_POTION3:
+//	case SWIFTNESS_POTION3:
+//	case FIRE_RESISTANCE_POTION3:
+//	case POISON_POTION3:
+//	case NIGHT_VISION_POTION2:
+//	case WEAKNESS_POTION2:
+//	case STRENGTH_POTION3:
+//	case SLOWNESS_POTION2:
+//	case LEAPING_POTION3:
+//	case WATER_BREATHING_POTION2:
+//	case INVISIBILITY_POTION2:
+//	case REGENERATION_POTION4:
+//	case SWIFTNESS_POTION4:
+//	case POISON_POTION4:
+//	case STRENGTH_POTION4:
 	    return true;
 	default:
 	    break;
 	}
 	return false;
-    }
-
-    public boolean isCanHavePotionType() {
-        return isPotion() || this == CMIMaterial.TIPPED_ARROW;
     }
 
     public static boolean isBoat(Material mat) {
@@ -1986,24 +2059,28 @@ public enum CMIMaterial {
 	case GOLDEN_HELMET:
 	case IRON_HELMET:
 	case LEATHER_HELMET:
+
 	case NETHERITE_CHESTPLATE:
 	case CHAINMAIL_CHESTPLATE:
 	case DIAMOND_CHESTPLATE:
 	case GOLDEN_CHESTPLATE:
 	case IRON_CHESTPLATE:
 	case LEATHER_CHESTPLATE:
+
 	case NETHERITE_LEGGINGS:
 	case CHAINMAIL_LEGGINGS:
 	case DIAMOND_LEGGINGS:
 	case GOLDEN_LEGGINGS:
 	case IRON_LEGGINGS:
 	case LEATHER_LEGGINGS:
+
 	case NETHERITE_BOOTS:
 	case CHAINMAIL_BOOTS:
 	case DIAMOND_BOOTS:
 	case GOLDEN_BOOTS:
 	case IRON_BOOTS:
 	case LEATHER_BOOTS:
+
 	case SHIELD:
 	case TURTLE_HELMET:
 	    return true;
@@ -2053,24 +2130,28 @@ public enum CMIMaterial {
 	case IRON_PICKAXE:
 	case STONE_PICKAXE:
 	case WOODEN_PICKAXE:
+
 	case NETHERITE_SHOVEL:
 	case DIAMOND_SHOVEL:
 	case GOLDEN_SHOVEL:
 	case IRON_SHOVEL:
 	case STONE_SHOVEL:
 	case WOODEN_SHOVEL:
+
 	case NETHERITE_AXE:
 	case DIAMOND_AXE:
 	case GOLDEN_AXE:
 	case IRON_AXE:
 	case STONE_AXE:
 	case WOODEN_AXE:
+
 	case NETHERITE_HOE:
 	case DIAMOND_HOE:
 	case GOLDEN_HOE:
 	case IRON_HOE:
 	case STONE_HOE:
 	case WOODEN_HOE:
+
 	case SHEARS:
 	case FISHING_ROD:
 	    return true;
@@ -2196,6 +2277,7 @@ public enum CMIMaterial {
 	case SPRUCE_DOOR:
 	case CRIMSON_DOOR:
 	case WARPED_DOOR:
+
 	    return true;
 	default:
 	    break;
@@ -2244,6 +2326,7 @@ public enum CMIMaterial {
 	case NETHER_BRICK_FENCE:
 	case OAK_FENCE:
 	case SPRUCE_FENCE:
+
 	case CRIMSON_FENCE:
 	case WARPED_FENCE:
 	    return true;
@@ -2306,6 +2389,29 @@ public enum CMIMaterial {
 	return false;
     }
 
+    public static boolean isWallSign(Material mat) {
+	CMIMaterial m = get(mat);
+	if (m == null)
+	    return false;
+	return m.isWallSign();
+    }
+
+    public boolean isWallSign() {
+	switch (this) {
+	case WALL_SIGN:
+	case ACACIA_WALL_SIGN:
+	case BIRCH_WALL_SIGN:
+	case DARK_OAK_WALL_SIGN:
+	case JUNGLE_WALL_SIGN:
+	case OAK_WALL_SIGN:
+	case SPRUCE_WALL_SIGN:
+	case CRIMSON_WALL_SIGN:
+	case WARPED_WALL_SIGN:
+	    return true;
+	}
+	return false;
+    }
+
     public static boolean isSign(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
 	if (m == null)
@@ -2318,46 +2424,31 @@ public enum CMIMaterial {
 	case SIGN:
 	case WALL_SIGN:
 	case LEGACY_SIGN_POST:
+
 	case ACACIA_SIGN:
 	case ACACIA_WALL_SIGN:
+
 	case BIRCH_SIGN:
 	case BIRCH_WALL_SIGN:
+
 	case DARK_OAK_SIGN:
 	case DARK_OAK_WALL_SIGN:
+
 	case JUNGLE_SIGN:
 	case JUNGLE_WALL_SIGN:
+
 	case OAK_SIGN:
 	case OAK_WALL_SIGN:
+
 	case SPRUCE_SIGN:
 	case SPRUCE_WALL_SIGN:
+
 	case CRIMSON_SIGN:
 	case CRIMSON_WALL_SIGN:
+
 	case WARPED_SIGN:
 	case WARPED_WALL_SIGN:
-	    return true;
-	default:
-	    break;
-	}
-	return false;
-    }
 
-    public static boolean isWallSign(Material mat) {
-	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isWallSign();
-    }
-
-    public boolean isWallSign() {
-	switch (this) {
-	case WALL_SIGN:
-
-	case ACACIA_WALL_SIGN:
-	case BIRCH_WALL_SIGN:
-	case DARK_OAK_WALL_SIGN:
-	case JUNGLE_WALL_SIGN:
-	case OAK_WALL_SIGN:
-	case SPRUCE_WALL_SIGN:
 	    return true;
 	default:
 	    break;
@@ -2540,6 +2631,7 @@ public enum CMIMaterial {
 	case SMOOTH_RED_SANDSTONE_SLAB:
 	case SMOOTH_SANDSTONE_SLAB:
 	case SMOOTH_STONE_SLAB:
+
 	case BLACKSTONE_SLAB:
 	case CRIMSON_SLAB:
 	case POLISHED_BLACKSTONE_BRICK_SLAB:
@@ -2550,6 +2642,95 @@ public enum CMIMaterial {
 	    break;
 	}
 	return false;
+    }
+
+    public static CMISlabType getSlabType(Block block) {
+	if (!isSlab(block.getType()))
+	    return CMISlabType.NOTSLAB;
+
+	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+	    if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
+		org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
+		switch (slab.getType()) {
+		case TOP:
+		    return CMISlabType.TOP;
+		case BOTTOM:
+		    return CMISlabType.BOTTOM;
+		case DOUBLE:
+		    return CMISlabType.DOUBLE;
+		}
+
+	    }
+	    return CMISlabType.NOTSLAB;
+	}
+	if (block.getType().name().contains("STEP")) {
+	    switch (CMIMaterial.get(block).getLegacyId()) {
+	    case 44:
+		switch (block.getData()) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		    return CMISlabType.BOTTOM;
+		default:
+		    return CMISlabType.DOUBLE;
+		}
+	    case 126:
+		switch (block.getData()) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		    return CMISlabType.BOTTOM;
+		default:
+		    return CMISlabType.DOUBLE;
+		}
+	    case 182:
+		switch (block.getData()) {
+		case 0:
+		    return CMISlabType.BOTTOM;
+		default:
+		    return CMISlabType.DOUBLE;
+		}
+	    case 205:
+		switch (block.getData()) {
+		case 0:
+		    return CMISlabType.BOTTOM;
+		default:
+		    return CMISlabType.DOUBLE;
+		}
+	    }
+	}
+
+	return CMISlabType.NOTSLAB;
+    }
+
+    public boolean isCanHavePotionType() {
+	return isPotion() || this == CMIMaterial.TIPPED_ARROW;
+    }
+
+    public static String getGeneralMaterialName(String fullName) {
+	String newName = fullName.toUpperCase();
+	if (newName.startsWith("STRIPPED")) {
+	    return newName.replaceFirst("_[^_]+", "");
+	}
+
+	if (newName.matches("^(DARK|LIGHT).+")) {
+	    return newName.replaceFirst(".+?_.+?_", "");
+	}
+
+	if (newName.matches("^(WHITE|ORANGE|MAGENTA|YELLOW|LIME|PINK|GRAY|CYAN|PURPLE|BLUE|BROWN|GREEN|RED|BLACK|" +
+	    "OAK|SPRUCE|BIRCH|JUNGLE|ACACIA).+")) {
+	    return newName.replaceFirst(".+?_", "");
+	}
+
+	return fullName;
     }
 
     public static byte getBlockData(Block block) {
@@ -2581,88 +2762,22 @@ public enum CMIMaterial {
 	return data;
     }
 
-    public static SlabType getSlabType(Block block) {
-	if (!isSlab(block.getType()))
-	    return SlabType.NOTSLAB;
-
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
-		// This needs to be in String format for backwards compatibility
-		String slab = ((org.bukkit.block.data.type.Slab) block.getBlockData()).getType().toString();
-		switch (slab) {
-		case "TOP":
-		    return SlabType.TOP;
-		case "BOTTOM":
-		    return SlabType.BOTTOM;
-		case "DOUBLE":
-		    return SlabType.DOUBLE;
-		default:
-		    break;
-		}
-	    }
-	    return SlabType.NOTSLAB;
-	}
-	if (block.getType().name().contains("STEP")) {
-	    switch (CMIMaterial.get(block).getLegacyId()) {
-	    case 44:
-		switch (block.getData()) {
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		    return SlabType.BOTTOM;
-		default:
-		    return SlabType.DOUBLE;
-		}
-	    case 126:
-		switch (block.getData()) {
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		    return SlabType.BOTTOM;
-		default:
-		    return SlabType.DOUBLE;
-		}
-	    case 182:
-		switch (block.getData()) {
-		case 0:
-		    return SlabType.BOTTOM;
-		default:
-		    return SlabType.DOUBLE;
-		}
-	    case 205:
-		switch (block.getData()) {
-		case 0:
-		    return SlabType.BOTTOM;
-		default:
-		    return SlabType.DOUBLE;
-		}
-	    default:
-		break;
-	    }
-	}
-
-	return SlabType.NOTSLAB;
-    }
-
     public boolean equals(Material mat) {
-	return getMaterial() == null ? false : getMaterial().equals(mat);
+	if (getMaterial() == null) {
+	    return false;
+	}
+	return this.getMaterial().equals(mat);
     }
 
     public List<String> getLegacyNames() {
-	return legacyName == null ? new ArrayList<>() : legacyName;
+	if (legacyName == null)
+	    return new ArrayList<String>();
+	return legacyName;
     }
 
     public void addLegacyName(String legacyName) {
 	if (legacyName == null)
-	    this.legacyName = new ArrayList<>();
+	    this.legacyName = new ArrayList<String>();
 	this.legacyName.add(legacyName);
     }
 
@@ -2678,7 +2793,7 @@ public enum CMIMaterial {
 
     public String getMojangName() {
 	if (mojangName == null)
-	    mojangName = ItemReflection.getItemMinecraftName(newItemStack());
+	    mojangName = CMIReflections.getItemMinecraftName(this.newItemStack());
 	return mojangName;
     }
 
@@ -2691,24 +2806,8 @@ public enum CMIMaterial {
     }
 
     public boolean containsCriteria(CMIMaterialCriteria criteria) {
-	return this.criteria == null || criteria == null ? false : this.criteria.contains(criteria);
-    }
-
-    public static String getGeneralMaterialName(String fullName) {
-	String newName = fullName.toUpperCase();
-	if (newName.startsWith("STRIPPED")) {
-	    return newName.replaceFirst("_[^_]+", "");
-	}
-
-	if (newName.matches("^(DARK|LIGHT).+")) {
-	    return newName.replaceFirst(".+?_.+?_", "");
-	}
-
-	if (newName.matches("^(WHITE|ORANGE|MAGENTA|YELLOW|LIME|PINK|GRAY|CYAN|PURPLE|BLUE|BROWN|GREEN|RED|BLACK|" +
-		    "OAK|SPRUCE|BIRCH|JUNGLE|ACACIA).+")) {
-	    return newName.replaceFirst(".+?_", "");
-	}
-
-	return fullName;
+	if (this.criteria == null || criteria == null)
+	    return false;
+	return this.criteria.contains(criteria);
     }
 }

@@ -69,8 +69,10 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.ActionBarManager;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.Signs.jobsSign;
@@ -369,8 +371,7 @@ public class JobsListener implements Listener {
 
 	event.setCancelled(true);
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
-	    signUtil.SignUpdate(job, type), 1L);
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> signUtil.SignUpdate(job, type), 1L);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -413,7 +414,7 @@ public class JobsListener implements Listener {
 
     private static String Convert(String line) {
 	Pattern ReplacePatern = Pattern.compile("&([0-9a-fk-or])");
-	return ReplacePatern.matcher(ChatColor.translateAlternateColorCodes('&', line)).replaceAll("\u00a7$1");
+	return ReplacePatern.matcher(CMIChatColor.translate(line)).replaceAll("\u00a7$1");
     }
 
     // Adding to chat prefix job name
@@ -493,8 +494,7 @@ public class JobsListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
-	    Jobs.getBpManager().remove(event.getBlock()), 1L);
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -542,7 +542,7 @@ public class JobsListener implements Listener {
 
 	if (meinOk != null) {
 	    event.setCancelled(true);
-	    Jobs.getActionBar().send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", meinOk));
+	    ActionBarManager.send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", meinOk));
 	}
     }
 
@@ -551,7 +551,7 @@ public class JobsListener implements Listener {
 	    return false;
 
 	if (oneItem.getName() != null && name != null) {
-	    if (!ChatColor.translateAlternateColorCodes('&', oneItem.getName()).equalsIgnoreCase(name)) {
+	    if (!CMIChatColor.translate(oneItem.getName()).equalsIgnoreCase(name)) {
 		return false;
 	    }
 	}

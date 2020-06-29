@@ -41,9 +41,9 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.gamingmesh.jobs.CMILib.ItemReflection;
-import com.gamingmesh.jobs.CMILib.Reflections;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.CMILib.ActionBarManager;
+import com.gamingmesh.jobs.CMILib.CMIReflections;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
@@ -559,7 +559,7 @@ public class PlayerManager {
 	    if (player != null) {
 		for (String line : message.split("\n")) {
 		    if (Jobs.getGCManager().LevelChangeActionBar)
-			Jobs.getActionBar().send(player, line);
+			ActionBarManager.send(player, line);
 		    if (Jobs.getGCManager().LevelChangeChat)
 			player.sendMessage(line);
 		}
@@ -716,7 +716,7 @@ public class PlayerManager {
 		    Bukkit.getServer().broadcastMessage(line);
 	    } else if (player != null) {
 		if (Jobs.getGCManager().LevelChangeActionBar)
-		    Jobs.getActionBar().send(player, line);
+		    ActionBarManager.send(player, line);
 		if (Jobs.getGCManager().LevelChangeChat)
 		    player.sendMessage(line);
 	    }
@@ -755,7 +755,7 @@ public class PlayerManager {
 		    Bukkit.getServer().broadcastMessage(line);
 		} else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
-			Jobs.getActionBar().send(player, line);
+			ActionBarManager.send(player, line);
 		    if (Jobs.getGCManager().TitleChangeChat)
 			player.sendMessage(line);
 		}
@@ -896,7 +896,7 @@ public class PlayerManager {
 
 	// Lets check offhand
 	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
-	    iih = ItemReflection.getItemInOffHand(player);
+	    iih = CMIReflections.getItemInOffHand(player);
 	    if (iih != null) {
 		jitem = getJobsItemByNbt(iih);
 		if (jitem != null && jitem.getJobs().contains(prog))
@@ -928,7 +928,7 @@ public class PlayerManager {
 	if (item == null)
 	    return null;
 
-	Object itemName = Reflections.getNbt(item, JobsItemBoost);
+	Object itemName = CMIReflections.getNbt(item, JobsItemBoost);
 
 	if (itemName == null || itemName.toString().isEmpty()) {
 	    // Checking old boost items and converting to new format if needed
@@ -938,7 +938,7 @@ public class PlayerManager {
 		    if (itemName != null) {
 			JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
 			if (b != null) {
-			    ItemStack ic = Reflections.setNbt(item, JobsItemBoost, b.getNode());
+			    ItemStack ic = CMIReflections.setNbt(item, JobsItemBoost, b.getNode());
 			    item.setItemMeta(ic.getItemMeta());
 			}
 			break;

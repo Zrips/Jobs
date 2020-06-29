@@ -18,11 +18,12 @@
 
 package com.gamingmesh.jobs;
 
-import com.gamingmesh.jobs.CMILib.ActionBarTitleMessages;
 import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.CMILib.Reflections;
+import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.CMILib.ActionBarManager;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
+import com.gamingmesh.jobs.CMILib.CMIReflections;
 import com.gamingmesh.jobs.CMILib.VersionChecker;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
 import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.Placeholders.NewPlaceholderAPIHook;
 import com.gamingmesh.jobs.Placeholders.Placeholder;
@@ -90,7 +91,7 @@ public class Jobs extends JavaPlugin {
     private static ConfigManager configManager = null;
     private static GeneralConfigManager GconfigManager = null;
 
-    private static Reflections reflections = null;
+    private static CMIReflections reflections = null;
 
     private static JobsDAO dao = null;
     private static List<Job> jobs = null;
@@ -111,8 +112,6 @@ public class Jobs extends JavaPlugin {
     public static HashMap<UUID, FastPayment> FastPayment = new HashMap<>();
 
     private static NMS nms = null;
-
-    private static ActionBarTitleMessages actionbar = null;
 
     protected static VersionChecker versionCheckManager = null;
 
@@ -171,9 +170,9 @@ public class Jobs extends JavaPlugin {
 	return BpManager;
     }
 
-    public static Reflections getReflections() {
+    public static CMIReflections getReflections() {
 	if (reflections == null)
-	    reflections = new Reflections();
+	    reflections = new CMIReflections();
 	return reflections;
     }
 
@@ -213,12 +212,6 @@ public class Jobs extends JavaPlugin {
 	if (GconfigManager == null)
 	    GconfigManager = new GeneralConfigManager();
 	return GconfigManager;
-    }
-
-    public static ActionBarTitleMessages getActionBar() {
-	if (actionbar == null)
-	    actionbar = new ActionBarTitleMessages();
-	return actionbar;
     }
 
     public static NMS getNms() {
@@ -1172,7 +1165,7 @@ public class Jobs extends JavaPlugin {
 		    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 		    if (inform) {
 			if (player.canGetPaid(info))
-			    getActionBar().send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+			    ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 		    }
 		    return false;
 		}
@@ -1198,7 +1191,7 @@ public class Jobs extends JavaPlugin {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 			if (inform) {
 			    if (player.canGetPaid(info))
-				getActionBar().send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+				ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 			}
 			getBpManager().add(block, cd);
 			return false;
@@ -1285,7 +1278,7 @@ public class Jobs extends JavaPlugin {
 
     public static void consoleMsg(String msg) {
 	if (msg != null) {
-	    Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+	    Bukkit.getServer().getConsoleSender().sendMessage(CMIChatColor.translate(msg));
 	}
     }
 

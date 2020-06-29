@@ -35,7 +35,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Schedule;

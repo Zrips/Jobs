@@ -30,8 +30,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.Reflections;
+import com.gamingmesh.jobs.CMILib.CMIReflections;
 
 public class JobItems {
     private String node;
@@ -52,7 +53,7 @@ public class JobItems {
 	    ItemMeta meta = item.getItemMeta();
 
 	    if (name != null)
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+		meta.setDisplayName(CMIChatColor.translate(name));
 	    if (lore != null && !lore.isEmpty())
 		meta.setLore(lore);
 
@@ -70,7 +71,7 @@ public class JobItems {
 	    }
 	    item.setItemMeta(meta);
 	    item.setAmount(amount);
-	    item = Reflections.setNbt(item, "JobsItemBoost", node);
+	    item = CMIReflections.setNbt(item, "JobsItemBoost", node);
 	} catch (Throwable e) {
 	    e.printStackTrace();
 	}
@@ -91,11 +92,11 @@ public class JobItems {
 	    ItemStack item = this.item.clone();
 	    ItemMeta meta = item.getItemMeta();
 	    if (meta.hasDisplayName())
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', meta.getDisplayName().replace("[player]", player.getName())));
+		meta.setDisplayName(CMIChatColor.translate(meta.getDisplayName().replace("[player]", player.getName())));
 	    if (meta.hasLore()) {
 		List<String> TranslatedLore = new ArrayList<>();
 		for (String oneLore : meta.getLore()) {
-		    TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player.getName())));
+		    TranslatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
 		}
 		meta.setLore(TranslatedLore);
 	    }

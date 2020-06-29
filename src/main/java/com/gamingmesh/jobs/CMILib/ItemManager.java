@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.Potion;
 import com.gamingmesh.jobs.stuff.Util;
 
@@ -52,7 +52,7 @@ public class ItemManager {
 	    String mojangName = null;
 	    try {
 		if (Version.isCurrentEqualOrLower(Version.v1_14_R1) || mat.isItem())
-		    mojangName = ItemReflection.getItemMinecraftName(new ItemStack(mat));
+		    mojangName = CMIReflections.getItemMinecraftName(new ItemStack(mat));
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
@@ -63,8 +63,7 @@ public class ItemManager {
 		for (Potion p : Potion.values()) {
 		    byName.put(cmiName + ":" + p.getName().toLowerCase(), one);
 		}
-		}
-	    else if (byName.containsKey(cmiName)) {
+	    } else if (byName.containsKey(cmiName)) {
 		byName.put(cmiName + ":" + data, one);
 	    } else
 		byName.put(cmiName, one);
@@ -291,7 +290,7 @@ public class ItemManager {
 		    ItemStack skull = Util.getSkull(d);
 		    if (skull == null) {
 			break main;
-			}
+		    }
 
 		    headCache.put(original, skull);
 		    cm.setItemStack(skull);

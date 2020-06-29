@@ -8,9 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
-
 public class RawMessageManager {
 
     private static Object packet;
@@ -43,8 +40,8 @@ public class RawMessageManager {
 		sub = consts[2].getClass();
 	    }
 	} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | NoSuchFieldException ex) {
-	    Jobs.consoleMsg("Error {0} ");
-	    Jobs.consoleMsg(ex.toString());
+	    Bukkit.getConsoleSender().sendMessage("Error {0} ");
+	    Bukkit.getConsoleSender().sendMessage(ex.toString());
 	}
     }
 
@@ -79,7 +76,7 @@ public class RawMessageManager {
 	    sendPacket.invoke(connection, packet);
 	} catch (Exception ex) {
 	    ex.printStackTrace();
-	    Jobs.consoleMsg("Failed to show json message with packets, using command approach");
+	    Bukkit.getConsoleSender().sendMessage("Failed to show json message with packets, using command approach");
 	    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:tellraw \"" + receivingPacket.getName() + "\" " + json);
 	}
     }

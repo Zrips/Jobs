@@ -18,11 +18,12 @@
 
 package com.gamingmesh.jobs.config;
 
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.CMILib.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.*;
@@ -704,7 +705,7 @@ public class ConfigManager {
 		continue;
 	    }
 
-	    String description = org.bukkit.ChatColor.translateAlternateColorCodes('&', jobSection.getString("description", ""));
+	    String description = CMIChatColor.translate(jobSection.getString("description", ""));
 
 	    List<String> fDescription = new ArrayList<>();
 	    if (jobSection.contains("FullDescription")) {
@@ -713,7 +714,7 @@ public class ConfigManager {
 		else if (jobSection.isList("FullDescription"))
 		    fDescription.addAll(jobSection.getStringList("FullDescription"));
 		for (int i = 0; i < fDescription.size(); i++) {
-		    fDescription.set(i, org.bukkit.ChatColor.translateAlternateColorCodes('&', fDescription.get(i)));
+		    fDescription.set(i, CMIChatColor.translate(fDescription.get(i)));
 		}
 	    }
 
@@ -905,7 +906,7 @@ public class ConfigManager {
 		    }
 
 		    List<String> requires = permissionSection.getStringList("requires"),
-				perform = permissionSection.getStringList("perform");
+			perform = permissionSection.getStringList("perform");
 		    jobConditions.add(new JobConditions(ConditionKey.toLowerCase(), requires, perform));
 		}
 	    }
@@ -971,7 +972,7 @@ public class ConfigManager {
 		    List<String> lore = new ArrayList<>();
 		    if (itemSection.contains("lore"))
 			for (String eachLine : itemSection.getStringList("lore")) {
-			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
+			    lore.add(CMIChatColor.translate(eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
@@ -1027,7 +1028,7 @@ public class ConfigManager {
 		    List<String> lore = new ArrayList<>();
 		    if (itemSection.contains("lore"))
 			for (String eachLine : itemSection.getStringList("lore")) {
-			    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
+			    lore.add(CMIChatColor.translate(eachLine));
 			}
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
@@ -1160,8 +1161,8 @@ public class ConfigManager {
 	    job.setMaxDailyQuests(jobSection.getInt("maxDailyQuests", 1));
 
 	    Integer softIncomeLimit = null,
-			softExpLimit = null,
-			softPointsLimit = null;
+		softExpLimit = null,
+		softPointsLimit = null;
 	    if (jobSection.isInt("softIncomeLimit"))
 		softIncomeLimit = jobSection.getInt("softIncomeLimit");
 	    if (jobSection.isInt("softExpLimit"))

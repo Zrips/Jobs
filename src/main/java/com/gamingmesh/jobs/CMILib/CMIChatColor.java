@@ -11,8 +11,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
-
-import com.gamingmesh.jobs.CMILib.VersionChecker.Version;
+import org.jetbrains.annotations.Nullable;
 
 public class CMIChatColor {
 
@@ -85,14 +84,14 @@ public class CMIChatColor {
 
 	if (Version.isCurrentLower(Version.v1_16_R1) && name.equalsIgnoreCase("Hex"))
 	    return;
-
 	BY_CHAR.put(Character.valueOf(c), this);
 	BY_NAME.put(this.getName().toLowerCase().replace("_", ""), this);
     }
 
     public static String translate(String text) {
+
 	if (text == null)
-	    return "";
+	    return null;
 
 	if (text.contains("#")) {
 
@@ -120,23 +119,14 @@ public class CMIChatColor {
     }
 
     public static String colorize(String text) {
-	return text == null ? "" : translate(text);
-    }
-
-    public static List<String> deColorize(List<String> text) {
 	if (text == null)
-	    return new ArrayList<>();
-
-	for (int i = 0; i < text.size(); i++) {
-	    text.set(i, deColorize(text.get(i)));
-	}
-
-	return text;
+	    return null;
+	return translate(text);
     }
 
     public static String deColorize(String text) {
 	if (text == null)
-	    return "";
+	    return null;
 
 	text = CMIChatColor.translate(text);
 	return text.replace("§", "&");
@@ -144,14 +134,14 @@ public class CMIChatColor {
 
     public static String stripColor(String text) {
 	if (text == null)
-	    return "";
+	    return null;
 	text = CMIChatColor.translate(text);
 	return ChatColor.stripColor(text);
     }
 
     public static String getLastColors(String text) {
 	if (text == null)
-	    return "";
+	    return null;
 //	text = CMIChatColor.translate(text);
 	return ChatColor.getLastColors(text);
     }
@@ -228,7 +218,9 @@ public class CMIChatColor {
     }
 
     public Color getRGBColor() {
-	return blue < 0 ? null : Color.fromBGR(blue, green, red);
+	if (blue < 0)
+	    return null;
+	return Color.fromBGR(blue, green, red);
     }
 
     public String getHex() {
@@ -259,5 +251,12 @@ public class CMIChatColor {
 	    hex = "0" + hex;
 	}
 	return "#" + hex;
+    }
+
+    public static List<String> deColorize(List<String> lore) {
+	for (int i = 0; i < lore.size(); i++) {
+	    lore.set(i, deColorize(lore.get(i)));
+	}
+	return lore;
     }
 }
