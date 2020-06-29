@@ -168,7 +168,7 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfNames.clear();
 	    for (String one : keys) {
-		String split = one.split("-")[0];
+		String split = one.contains("-") ? one.split("-")[0] : one;
 		String id = split.contains(":") ? split.split(":")[0] : split;
 		String meta = split.contains(":") && split.split(":").length > 1 ? split.split(":")[1] : "";
 
@@ -186,10 +186,10 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfEntities.clear();
 	    for (String one : keys) {
-		String split = one.split("-")[0];
+		String split = one.contains("-") ? one.split("-")[0] : one;
 		String id = split.contains(":") ? split.split(":")[0] : split;
 		String meta = split.contains(":") ? split.split(":")[1] : "";
-		String MCName = one.split("-")[1];
+		String MCName = one.contains("-") && one.split(":").length > 1 ? one.split("-")[1] : one;
 		String Name = ItemFile.getConfig().getString("EntityList." + one);
 		ListOfEntities.add(new NameList(id, meta, Name, MCName));
 	    }
@@ -229,7 +229,7 @@ public class NameTranslatorManager {
 	    Set<String> keys = section.getKeys(false);
 	    ListOfColors.clear();
 	    for (String one : keys) {
-		String id = one.split("-")[0];
+		String id = one.contains("-") ? one.split("-")[0] : one;
 		String MCName = one.split("-")[1];
 		String Name = ItemFile.getConfig().getString("ColorList." + one);
 		ListOfColors.add(new NameList(id, "", Name, MCName));
