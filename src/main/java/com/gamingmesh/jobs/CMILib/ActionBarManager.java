@@ -39,8 +39,7 @@ public class ActionBarManager {
 		    consts = ChatMessageclz.getEnumConstants();
 		    sub = consts[2].getClass();
 		}
-	    } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | NoSuchFieldException ex) {
-		Bukkit.getConsoleSender().sendMessage("Error {0} ");
+	    } catch (Exception ex) {
 		Bukkit.getConsoleSender().sendMessage(ex.toString());
 	    }
 	}
@@ -54,11 +53,7 @@ public class ActionBarManager {
     }
 
     public static void send(Player receivingPacket, String msg) {
-	if (receivingPacket == null)
-	    return;
-	if (!receivingPacket.isOnline())
-	    return;
-	if (msg == null)
+	if (receivingPacket == null || !receivingPacket.isOnline() || msg == null)
 	    return;
 
 	try {

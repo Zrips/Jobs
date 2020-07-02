@@ -2562,7 +2562,7 @@ public enum CMIMaterial {
 	return false;
     }
 
-    @SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation")
 	public static CMISlabType getSlabType(Block block) {
 	if (!isSlab(block.getType()))
 	    return CMISlabType.NOTSLAB;
