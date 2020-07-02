@@ -211,15 +211,18 @@ public class GuiManager {
 		}
 
 		double income = jInfo.getIncome(level, numjobs);
-		income = boost.getFinalAmount(CurrencyType.MONEY, income);
+		income = boost.getFinalAmount(CurrencyType.MONEY, income) + ((Jobs.getPlayerManager().getInventoryBoost(player, job)
+		    .get(CurrencyType.MONEY)) + 1);
 		String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
 		double xp = jInfo.getExperience(level, numjobs);
-		xp = boost.getFinalAmount(CurrencyType.EXP, xp);
+		xp = boost.getFinalAmount(CurrencyType.EXP, xp) + ((Jobs.getPlayerManager().getInventoryBoost(player, job)
+			    .get(CurrencyType.EXP)) + 1);
 		String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
 		double points = jInfo.getPoints(level, numjobs);
-		points = boost.getFinalAmount(CurrencyType.POINTS, points);
+		points = boost.getFinalAmount(CurrencyType.POINTS, points) + ((Jobs.getPlayerManager().getInventoryBoost(player, job)
+			    .get(CurrencyType.POINTS)) + 1);
 		String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 
 		if (income == 0D && points == 0D && xp == 0D)
