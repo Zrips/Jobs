@@ -164,6 +164,8 @@ public class ConfigManager {
 	cfg.addComment(pt + ".Gui", "GUI icon information when using GUI function");
 	cfg.addComment(pt + ".Gui.Item", "Name of the material");
 	cfg.get(pt + ".Gui.Item", "LOG:2");
+	cfg.addComment(pt + ".Gui.slot", "Slot number to show the item in the specified row");
+	cfg.get(pt + ".Gui.slot", 5);
 	cfg.addComment(pt + ".Gui.Enchantments", "Enchants of the item");
 	cfg.get(pt + ".Gui.Enchantments", Arrays.asList("DURABILITY:1"));
 
@@ -603,6 +605,11 @@ public class ConfigManager {
 	    return null;
 	}
 
+	if (":ALL".equalsIgnoreCase(subType)) {
+	    meta = "ALL";
+	    type = CMIMaterial.getGeneralMaterialName(type);
+	}
+
 	KeyValues kv = new KeyValues();
 	kv.setId(id);
 	kv.setMeta(meta);
@@ -802,6 +809,7 @@ public class ConfigManager {
 	    }
 
 	    // Gui item
+	    int guiSlot = -1;
 	    ItemStack GUIitem = CMIMaterial.GREEN_WOOL.newItemStack();
 	    if (jobSection.contains("Gui")) {
 		ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
@@ -838,37 +846,29 @@ public class ConfigManager {
 
 		    if (material != null)
 			GUIitem = material.newItemStack();
-
-		    if (guiSection.contains("Enchantments")) {
-			for (String str4 : guiSection.getStringList("Enchantments")) {
-			    String[] enchantid = str4.split(":");
-			    if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
-				EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-				enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]), true);
-				GUIitem.setItemMeta(enchantMeta);
-			    } else
-				GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(enchantid[0]), Integer.parseInt(enchantid[1]));
-			}
-		    } else if (guiSection.contains("CustomSkull")) {
-			GUIitem = Util.getSkull(guiSection.getString("CustomSkull"));
-		    }
 		} else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
 		    GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
-		    if (guiSection.contains("Enchantments")) {
-			for (String str4 : guiSection.getStringList("Enchantments")) {
-			    String[] id = str4.split(":");
-			    if ((GUIitem.getItemMeta() instanceof EnchantmentStorageMeta)) {
-				EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-				enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
-				GUIitem.setItemMeta(enchantMeta);
-			    } else
-				GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
-			}
-		    } else if (guiSection.contains("CustomSkull")) {
-			GUIitem = Util.getSkull(guiSection.getString("CustomSkull"));
-		    }
 		} else
 		    log.warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
+
+	    if (guiSection.isList("Enchantments")) {
+		for (String str4 : guiSection.getStringList("Enchantments")) {
+		    String[] id = str4.split(":");
+		    if (GUIitem.getItemMeta() instanceof EnchantmentStorageMeta) {
+			EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+			enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
+			GUIitem.setItemMeta(enchantMeta);
+		    } else
+			GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
+		}
+	    }
+
+	    if (guiSection.isString("CustomSkull")) {
+		GUIitem = Util.getSkull(guiSection.getString("CustomSkull"));
+	    }
+
+	    if (guiSection.getInt("slot", -1) >= 0)
+		guiSlot = guiSection.getInt("slot");
 	    }
 
 	    // Permissions
@@ -1056,7 +1056,7 @@ public class ConfigManager {
 	    }
 
 	    Job job = new Job(jobKey, jobFullName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
-		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem, bossbar, rejoinCd, worldBlacklist);
+		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem, guiSlot, bossbar, rejoinCd, worldBlacklist);
 
 	    job.setFullDescription(fDescription);
 	    job.setMoneyEquation(incomeEquation);
@@ -1176,6 +1176,10 @@ public class ConfigManager {
 		if (typeSection != null) {
 		    for (String key : typeSection.getKeys(false)) {
 			ConfigurationSection section = typeSection.getConfigurationSection(key);
+			if (section == null) {
+			    continue;
+			}
+
 			String myKey = key,
 			    type = null,
 			    subType = "",

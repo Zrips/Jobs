@@ -60,24 +60,26 @@ public class GuiManager {
 
 	// Changing start position to 0 in case we have more jobs then we can fit in current setup
 	pos = JobsList.size() > 28 ? JobsList.size() <= 42 ? 0 : -1 : pos;
+
 	int group = 0;
 	main: for (int z = 0; z < JobsList.size(); z++) {
 	    group++;
 
 	    if (group > Jobs.getGCManager().getJobsGUIGroupAmount()) {
 		group = 1;
+
 		// Only add skip if we can fit all of them in max sized Gui
 		if (JobsList.size() <= 42) {
 		    pos += Jobs.getGCManager().getJobsGUISkipAmount();
-
 		}
 	    }
 
 	    pos++;
+
 	    if (i >= JobsList.size())
 		break main;
-	    Job job = JobsList.get(i);
 
+	    Job job = JobsList.get(i);
 	    ArrayList<String> Lore = new ArrayList<>();
 
 	    for (JobProgression onePJob : JPlayer.getJobProgression()) {
@@ -123,13 +125,16 @@ public class GuiManager {
 	    Lore.add(Jobs.getLanguage().getMessage("command.info.gui.rightClick"));
 
 	    ItemStack GuiItem = job.getGuiItem();
-
 	    ItemMeta meta = GuiItem.getItemMeta();
 	    meta.setDisplayName(job.getChatColor() + job.getName());
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
 
-	    gui.addButton(new CMIGuiButton(pos, GuiItem) {
+	    int lastPos = pos;
+	    if (job.getGuiSlot() >= 0)
+		lastPos = job.getGuiSlot();
+
+	    gui.addButton(new CMIGuiButton(lastPos, GuiItem) {
 
 		@Override
 		public void click(GUIClickType type) {

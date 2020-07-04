@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.CMILib;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.block.CreatureSpawner;
@@ -261,7 +260,6 @@ public enum CMIEntityType {
     private String name;
     private String secondaryName;
     EntityType type = null;
-    public static HashMap<String, ItemStack> cache = new HashMap<>();
 
     CMIEntityType(int id, String name, List<String> headTextures) {
 	this(id, name, null, headTextures);
@@ -335,6 +333,7 @@ public enum CMIEntityType {
 	    main = name.split("_")[0];
 	    sub = name.split("_")[1];
 	}
+
 	if (name.contains(":")) {
 	    main = name.split(":")[0];
 	    sub = name.split(":")[1];
@@ -348,7 +347,7 @@ public enum CMIEntityType {
 	Integer id = null;
 	try {
 	    id = Integer.parseInt(main);
-	} catch (Exception e) {
+	} catch (NumberFormatException e) {
 	}
 
 	for (CMIEntityType one : CMIEntityType.values()) {

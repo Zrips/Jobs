@@ -1364,7 +1364,7 @@ public enum CMIMaterial {
 	    return CMIMaterial.NONE;
 
 	Integer data = null;
-	id = id.replace("_", "").replace(" ", "").replace("minecraft:", "").toLowerCase();
+	id = id.replaceAll("_| |minecraft:", "").toLowerCase();
 
 	if (id.contains(":")) {
 	    try {
@@ -1392,10 +1392,15 @@ public enum CMIMaterial {
 		}
 	    } catch (Exception ex) {
 	    }
+
+	    String metaTag = id.split(":")[1];
+	    CMIMaterial mat = ItemManager.byName.get(id + ":" + metaTag);
+	    if (mat != null) {
+		return mat;
+	    }
 	}
 
 	CMIMaterial mat = ItemManager.byName.get(id);
-
 	if (mat != null) {
 	    return mat;
 	}

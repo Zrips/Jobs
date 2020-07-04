@@ -36,26 +36,36 @@ import java.util.function.BiPredicate;
 public class Job {
 
     private EnumMap<ActionType, List<JobInfo>> jobInfo = new EnumMap<>(ActionType.class);
+
     private List<JobPermission> jobPermissions;
     private List<JobCommands> jobCommands;
     private List<JobConditions> jobConditions;
+
     private HashMap<String, JobItems> jobItems;
     private HashMap<String, JobLimitedItems> jobLimitedItems;
+
     private String jobName = "N/A";
     private String fullName = "N/A";
+
     // job short name (for use in multiple jobs)
     private String jobShortName;
     private String description;
+
     private ChatColor jobColour;
     private Parser maxExpEquation;
     private DisplayMethod displayMethod;
+
     private int maxLevel;
     private int vipmaxLevel = 0;
+
     // max number of people allowed with this job on the server.
     private Integer maxSlots;
-    private List<String> CmdOnJoin = new ArrayList<>();
-    private List<String> CmdOnLeave = new ArrayList<>();
+
+    private List<String> CmdOnJoin = new ArrayList<>(), CmdOnLeave = new ArrayList<>();
+
     private ItemStack GUIitem;
+    private int guiSlot = 0;
+
     private Long rejoinCd = 0L;
 
     private int totalPlayers = -1;
@@ -75,29 +85,9 @@ public class Job {
 
     private int id = 0;
 
-    /**
-     * Constructor
-     * @param jobName - the name of the job
-     * @param fullName - the full name of the job
-     * @param jobShortName - the shortened version of the name of the job.
-     * @param description - a short description of the job.
-     * @param jobColour - the colour of the job title as displayed in chat.
-     * @param maxExpEquation - the equation by which the exp needed to level up is calculated
-     * @param displayMethod - the display method for this job.
-     * @param maxLevel - the maximum level allowed (null for no max level)
-     * @param vipmaxLevel - the maximum vip level allowed (null for no max level)
-     * @param maxSlots - the maximum number of people allowed to have this job at one time (null for no limits)
-     * @param jobPermissions - permissions gained for having the job
-     * @param jobCommands - commands to perform on levelup
-     * @param jobItems - items with boost
-     * @param jobLimitedItems - limited items by lvl
-     * @param CmdOnJoin - commands performed on player join
-     * @param CmdOnLeave - commands performed on player leave
-     * @param jobConditions - jobs conditions
-     */
     public Job(String jobName, String fullName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, HashMap<String, JobItems> jobItems,
-	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
+	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
 	this.jobName = jobName == null ? "" : jobName;
 	this.fullName = fullName == null ? "" : fullName;
 	this.jobShortName = jobShortName;
@@ -116,6 +106,7 @@ public class Job {
 	this.CmdOnJoin = CmdOnJoin;
 	this.CmdOnLeave = CmdOnLeave;
 	this.GUIitem = GUIitem;
+	this.guiSlot = guiSlot;
 	this.bossbar = bossbar;
 	this.rejoinCd = rejoinCD;
 	this.worldBlacklist = worldBlacklist;
@@ -199,6 +190,10 @@ public class Job {
 	return GUIitem;
     }
 
+    public int getGuiSlot() {
+	return guiSlot;
+    }
+
     /**
      * Sets job info for action type
      * @param type - The action type
@@ -213,7 +208,6 @@ public class Job {
      * @param type - The action type
      * @return Job info list
      */
-
     public List<JobInfo> getJobInfo(ActionType type) {
 	return jobInfo.get(type);
     }
@@ -222,7 +216,6 @@ public class Job {
      * Gets the job info list
      * @return Job info list
      */
-
     public EnumMap<ActionType, List<JobInfo>> getJobInfoList() {
 	return jobInfo;
     }
