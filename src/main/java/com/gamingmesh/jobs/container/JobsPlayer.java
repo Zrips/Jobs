@@ -685,7 +685,7 @@ public class JobsPlayer {
 			if (gotTitle) {
 			    builder.append(" ");
 			}
-			String honorificpart = prog.getJob().getChatColor() + prog.getJob().getName() + ChatColor.WHITE;
+			String honorificpart = prog.getJob().getNameWithColor() + ChatColor.WHITE;
 			if (honorificpart.contains("{level}"))
 			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
 			builder.append(honorificpart);

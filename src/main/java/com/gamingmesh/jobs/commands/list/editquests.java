@@ -49,8 +49,8 @@ public class editquests implements Cmd {
 
 		    for (Job one : Jobs.getJobs()) {
 			RawMessage rm = new RawMessage();
-			rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.jobs", "%jobname%", one.getChatColor()
-			    + one.getName()), one.getName(), "jobs editquests list " + one.getName());
+			rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.jobs", "%jobname%", one.getNameWithColor()),
+			    one.getName(), "jobs editquests list " + one.getName());
 			rm.show(sender);
 		    }
 
@@ -595,8 +595,8 @@ public class editquests implements Cmd {
 
 	if (job != null) {
 	    rm = new RawMessage();
-	    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.jobs", "%jobname%", job.getChatColor()
-		+ job.getName()), job.getName(), "jobs editquests list " + job.getName());
+	    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.jobs", "%jobname%", job.getNameWithColor()),
+		job.getName(), "jobs editquests list " + job.getName());
 	    rm.show(player);
 	}
 

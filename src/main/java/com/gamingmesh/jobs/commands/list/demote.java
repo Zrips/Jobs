@@ -42,7 +42,7 @@ public class demote implements Cmd {
 		Player player = Bukkit.getServer().getPlayer(jPlayer.getUniqueId());
 		if (player != null) {
 		    String message = Jobs.getLanguage().getMessage("command.demote.output.target",
-			"%jobname%", job.getChatColor() + job.getName() + ChatColor.WHITE,
+			"%jobname%", job.getNameWithColor() + ChatColor.WHITE,
 			"%levelslost%", levelsLost);
 		    player.sendMessage(message);
 		}

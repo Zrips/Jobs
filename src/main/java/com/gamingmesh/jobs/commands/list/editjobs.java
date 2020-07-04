@@ -45,7 +45,7 @@ public class editjobs implements Cmd {
 		showPath(player, null, null, null);
 		for (Job one : Jobs.getJobs()) {
 		    RawMessage rm = new RawMessage();
-		    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", one.getChatColor() + one.getName()), one.getName(), "jobs editjobs list " + one.getName());
+		    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", one.getNameWithColor()), one.getName(), "jobs editjobs list " + one.getName());
 		    rm.show(sender);
 		}
 		Util.getJobsEditorMap().remove(player.getUniqueId());

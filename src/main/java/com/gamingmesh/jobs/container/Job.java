@@ -258,6 +258,10 @@ public class Job {
 	return fullName;
     }
 
+    public String getNameWithColor() {
+	return jobColour + fullName;
+    }
+
     /**
      * Get the job name from the config
      * @return the job name from the config

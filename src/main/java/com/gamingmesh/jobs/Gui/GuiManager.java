@@ -126,7 +126,7 @@ public class GuiManager {
 
 	    ItemStack GuiItem = job.getGuiItem();
 	    ItemMeta meta = GuiItem.getItemMeta();
-	    meta.setDisplayName(job.getChatColor() + job.getName());
+	    meta.setDisplayName(job.getNameWithColor());
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
 
@@ -222,12 +222,12 @@ public class GuiManager {
 
 		double xp = jInfo.getExperience(level, numjobs);
 		xp = boost.getFinalAmount(CurrencyType.EXP, xp) + ((Jobs.getPlayerManager().getInventoryBoost(player, job)
-			    .get(CurrencyType.EXP)) + 1);
+		    .get(CurrencyType.EXP)) + 1);
 		String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
 		double points = jInfo.getPoints(level, numjobs);
 		points = boost.getFinalAmount(CurrencyType.POINTS, points) + ((Jobs.getPlayerManager().getInventoryBoost(player, job)
-			    .get(CurrencyType.POINTS)) + 1);
+		    .get(CurrencyType.POINTS)) + 1);
 		String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 
 		if (income == 0D && points == 0D && xp == 0D)
@@ -237,16 +237,16 @@ public class GuiManager {
 		String val = "";
 
 		if (income != 0.0)
-		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor +
-			String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
+		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor
+		    + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
 
 		if (points != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
-			+ String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+		    + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
 
 		if (xp != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
-			+ String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
+		    + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
 
 		Lore.add(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", itemName) + val);
 
@@ -261,7 +261,7 @@ public class GuiManager {
 		    }
 
 		    ItemMeta meta = GuiItem.getItemMeta();
-		    meta.setDisplayName(job.getChatColor() + job.getName());
+		    meta.setDisplayName(job.getNameWithColor());
 		    meta.setLore(Lore);
 		    GuiItem.setItemMeta(meta);
 		    tempInv.setItem(i, GuiItem.clone());
@@ -281,7 +281,7 @@ public class GuiManager {
 	    }
 
 	    ItemMeta meta = GuiItem.getItemMeta();
-	    meta.setDisplayName(job.getChatColor() + job.getName());
+	    meta.setDisplayName(job.getNameWithColor());
 	    meta.setLore(Lore);
 	    GuiItem.setItemMeta(meta);
 	    tempInv.setItem(i, GuiItem.clone());
@@ -307,23 +307,20 @@ public class GuiManager {
 	    gui.addButton(new CMIGuiButton(i1, items.get(i1)));
 	}
 
-	if (fromCommand) {
-	    return;
+	if (!fromCommand) {
+	    ItemStack skull = Jobs.getGCManager().guiBackButton;
+	    ItemMeta skullMeta = skull.getItemMeta();
+
+	    skullMeta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.back"));
+	    skull.setItemMeta(skullMeta);
+
+	    gui.addButton(new CMIGuiButton(backButton, skull) {
+		@Override
+		public void click(GUIClickType type) {
+		    openJobsBrowseGUI(player);
+		}
+	    });
 	}
-
-	ItemStack skull = Jobs.getGCManager().guiBackButton;
-
-	ItemMeta skullMeta = skull.getItemMeta();
-	skullMeta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.back"));
-
-	skull.setItemMeta(skullMeta);
-
-	gui.addButton(new CMIGuiButton(backButton, skull) {
-	    @Override
-	    public void click(GUIClickType type) {
-		openJobsBrowseGUI(player);
-	    }
-	});
 
 	gui.fillEmptyButtons();
 	gui.open();

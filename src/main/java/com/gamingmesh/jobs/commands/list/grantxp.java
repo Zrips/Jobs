@@ -50,7 +50,7 @@ public class grantxp implements Cmd {
 	    Player player = jPlayer.getPlayer();
 	    if (player != null) {
 		String message = Jobs.getLanguage().getMessage("command.grantxp.output.target",
-		    "%jobname%", job.getChatColor() + job.getName(),
+		    "%jobname%", job.getNameWithColor(),
 		    "%xpgained%", xpGained);
 		player.sendMessage(message);
 	    }

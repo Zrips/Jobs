@@ -72,7 +72,7 @@ public class BossBarManager {
 
 	String message = Jobs.getLanguage().getMessage("command.stats.bossBarOutput",
 	    "%joblevel%", Integer.valueOf(jobProg.getLevel()).toString(),
-	    "%jobname%", jobProg.getJob().getChatColor() + jobProg.getJob().getName(),
+	    "%jobname%", jobProg.getJob().getNameWithColor(),
 	    "%jobxp%", formatter.format(Math.round(jobProg.getExperience() * 100.0) / 100.0),
 	    "%jobmaxxp%", jobProg.getMaxExperience(),
 	    "%gain%", gain);

@@ -46,7 +46,7 @@ public class leave implements Cmd {
 		    20 * Jobs.getGCManager().ConfirmExpiryTime);
 
 		pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.confirmationNeed", "[jobname]",
-		    job.getChatColor() + job.getName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime));
+		    job.getNameWithColor(), "[time]", Jobs.getGCManager().ConfirmExpiryTime));
 		return true;
 	    }
 
@@ -56,7 +56,7 @@ public class leave implements Cmd {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
 
 	if (Jobs.getPlayerManager().leaveJob(jPlayer, job))
-	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.success", "%jobname%", job.getChatColor() + job.getName()));
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.success", "%jobname%", job.getNameWithColor()));
 	else
 	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 
