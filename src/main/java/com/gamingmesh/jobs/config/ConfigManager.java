@@ -727,7 +727,12 @@ public class ConfigManager {
 
 	    ChatColor color = ChatColor.WHITE;
 	    if (jobSection.contains("ChatColour")) {
-		color = ChatColor.matchColor(jobSection.getString("ChatColour", ""));
+		String c = jobSection.getString("ChatColour", "");
+
+		color = ChatColor.matchColor(c);
+		if (color == null && !c.isEmpty())
+		    color = ChatColor.matchColor(c.charAt(0));
+
 		if (color == null) {
 		    color = ChatColor.WHITE;
 		    log.warning("Job " + jobKey + " has an invalid ChatColour property. Defaulting to WHITE!");

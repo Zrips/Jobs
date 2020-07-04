@@ -37,7 +37,12 @@ public enum ChatColor {
 	RED('c', 12),
 	LIGHT_PURPLE('d', 13),
 	YELLOW('e', 14),
-	WHITE('f', 15);
+	WHITE('f', 15),
+	BOLD('l', 16),
+	ITALIC('o', 17),
+	UNDERLINE('n', 18),
+	RESET('r', 19),
+	STRIKETHROUGH('m', 20);
 
 	private static final char COLOR_CHAR = '\u00A7';
 	private final char code;

@@ -33,7 +33,7 @@ public enum Potion {
     NIGHT_VISION("night_vision"),
     LONG_NIGHT_VISION("long_night_vision"),
     POISON("poison"),
-    REGEN("regen"),
+    REGENERATION("regeneration"),
     SLOW_FALLING("slow_falling"),
     SLOWNESS("slowness"),
     SPEED("speed"),
