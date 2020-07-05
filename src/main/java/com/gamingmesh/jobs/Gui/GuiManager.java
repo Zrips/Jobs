@@ -190,14 +190,14 @@ public class GuiManager {
 
 	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	Boost boost = Jobs.getPlayerManager().getFinalBonus(JPlayer, job);
-
-	int level = 1;
 	JobProgression prog = JPlayer.getJobProgression(job);
-	if (prog != null)
-	    level = prog.getLevel();
 
 	ItemStack GuiItem = job.getGuiItem();
-	int numjobs = JPlayer.getJobProgression().size();
+
+	int level = prog != null ? prog.getLevel() : 1,
+	    numjobs = JPlayer.getJobProgression().size(),
+	    nextButton = Jobs.getGCManager().getJobsGUINextButton(),
+	    backButton = Jobs.getGCManager().getJobsGUIBackButton();
 
 	int i = 0;
 	for (ActionType actionType : ActionType.values()) {
@@ -275,7 +275,6 @@ public class GuiManager {
 		y++;
 	    }
 
-	    // TODO: Make new page when the gui size is bigger than 54
 	    if (i >= 54) {
 		break;
 	    }
@@ -288,22 +287,24 @@ public class GuiManager {
 	    i++;
 	}
 
-	List<ItemStack> items = new ArrayList<>();
-	for (ItemStack one : tempInv.getContents()) {
-	    if (one != null)
-		items.add(one);
-	}
-
 	int GuiSize = GUIManager.isOpenedGui(player) && GUIManager.getGui(player) != null ?
 	    GUIManager.getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
-	int backButton = Jobs.getGCManager().getJobsGUIBackButton();
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
 	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
 	gui.setInvSize(GuiSize);
 
+	List<ItemStack> items = new ArrayList<>();
+	for (ItemStack one : tempInv.getContents()) {
+	    if (one != null)
+		items.add(one);
+	}
+
 	for (int i1 = 0; i1 < items.size(); i1++) {
+	    if (GuiSize == i1 + 1 || i1 == backButton)
+		continue;
+
 	    gui.addButton(new CMIGuiButton(i1, items.get(i1)));
 	}
 
@@ -321,6 +322,165 @@ public class GuiManager {
 		}
 	    });
 	}
+
+    if (i >= 53) {
+	ItemStack next = Jobs.getGCManager().guiNextButton;
+	ItemMeta meta = next.getItemMeta();
+
+	meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.next"));
+	next.setItemMeta(meta);
+
+	List<ActionType> jobsRemained = new ArrayList<>();
+	for (ActionType actionType : ActionType.values()) {
+	    List<JobInfo> info = job.getJobInfo(actionType);
+	    if (info != null && !info.isEmpty() && info.size() <= GuiSize)
+		jobsRemained.add(actionType);
+	}
+
+	gui.addButton(new CMIGuiButton(nextButton, next) {
+	    @Override
+	    public void click(GUIClickType type) {
+		openJobsBrowseGUI(player, job, jobsRemained);
+	    }
+	});
+    }
+
+	gui.fillEmptyButtons();
+	gui.open();
+    }
+
+    private void openJobsBrowseGUI(Player player, Job job, List<ActionType> jobsRemained) {
+	Inventory tempInv = Bukkit.createInventory(player, 54, "");
+
+	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	Boost boost = Jobs.getPlayerManager().getFinalBonus(JPlayer, job);
+
+	int numjobs = JPlayer.getJobProgression().size();
+	int level = JPlayer.getJobProgression(job) != null ? JPlayer.getJobProgression(job).getLevel() : 1;
+
+	ItemStack GuiItem = job.getGuiItem();
+	int i = 0;
+	for (ActionType actionType : jobsRemained) {
+	    List<JobInfo> info = job.getJobInfo(actionType);
+	    if (info == null || info.isEmpty())
+		continue;
+
+	    ArrayList<String> Lore = new ArrayList<>();
+	    Lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
+
+	    int y = 1;
+	    for (int z = 0; z < info.size(); z++) {
+		JobInfo jInfo = info.get(z);
+		if (jInfo == null) {
+		    continue;
+		}
+
+		double income = jInfo.getIncome(level, numjobs);
+		income = boost.getFinalAmount(CurrencyType.MONEY, income) + ((Jobs.getPlayerManager().getInventoryBoost(player, job)
+		    .get(CurrencyType.MONEY)) + 1);
+		String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
+
+		double xp = jInfo.getExperience(level, numjobs);
+		xp = boost.getFinalAmount(CurrencyType.EXP, xp) + ((Jobs.getPlayerManager().getInventoryBoost(player, job)
+		    .get(CurrencyType.EXP)) + 1);
+		String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
+
+		double points = jInfo.getPoints(level, numjobs);
+		points = boost.getFinalAmount(CurrencyType.POINTS, points) + ((Jobs.getPlayerManager().getInventoryBoost(player, job)
+		    .get(CurrencyType.POINTS)) + 1);
+		String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
+
+		if (income == 0D && points == 0D && xp == 0D)
+		    continue;
+
+		String itemName = jInfo.getRealisticName();
+		String val = "";
+
+		if (income != 0.0)
+		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor
+		    + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
+
+		if (points != 0.0)
+		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
+		    + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+
+		if (xp != 0.0)
+		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
+		    + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
+
+		Lore.add(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", itemName) + val);
+
+		if (y >= 10) {
+		    y = 1;
+
+		    if (z == info.size() - 1)
+			continue;
+
+		    if (i >= 54) {
+			break;
+		    }
+
+		    ItemMeta meta = GuiItem.getItemMeta();
+		    meta.setDisplayName(job.getNameWithColor());
+		    meta.setLore(Lore);
+		    GuiItem.setItemMeta(meta);
+		    tempInv.setItem(i, GuiItem.clone());
+
+		    GuiItem = job.getGuiItem();
+		    Lore = new ArrayList<>();
+		    Lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
+		    i++;
+		}
+
+		y++;
+	    }
+
+	    if (i >= 54) {
+		break;
+	    }
+
+	    ItemMeta meta = GuiItem.getItemMeta();
+	    meta.setDisplayName(job.getNameWithColor());
+	    meta.setLore(Lore);
+	    GuiItem.setItemMeta(meta);
+	    tempInv.setItem(i, GuiItem.clone());
+	    i++;
+	}
+
+	int GuiSize = GUIManager.isOpenedGui(player) && GUIManager.getGui(player) != null ?
+	    GUIManager.getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
+	int backButton = Jobs.getGCManager().getJobsGUIBackButton();
+
+	CMIGui gui = new CMIGui(player);
+	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
+	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
+	gui.setInvSize(GuiSize);
+
+	List<ItemStack> items = new ArrayList<>();
+	for (ItemStack one : tempInv.getContents()) {
+	    if (one != null)
+		items.add(one);
+	}
+
+	for (int i1 = 0; i1 < items.size(); i1++) {
+	    if (GuiSize == i1 + 1 || i1 == backButton)
+		continue;
+
+	    gui.addButton(new CMIGuiButton(i1, items.get(i1)));
+	}
+
+	ItemStack skull = Jobs.getGCManager().guiBackButton;
+	ItemMeta skullMeta = skull.getItemMeta();
+
+	skullMeta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.back"));
+	skull.setItemMeta(skullMeta);
+
+	gui.addButton(new CMIGuiButton(backButton, skull) {
+	    @Override
+	    public void click(GUIClickType type) {
+		openJobsBrowseGUI(player, job);
+	    }
+	});
 
 	gui.fillEmptyButtons();
 	gui.open();

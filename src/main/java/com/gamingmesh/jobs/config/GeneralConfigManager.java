@@ -72,7 +72,7 @@ public class GeneralConfigManager {
     SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays;
     protected int savePeriod, maxJobs, economyBatchDelay;
     private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips, FurnacesMaxDefault, BrewingStandsMaxDefault,
-    BrowseAmountToShow, JobsGUIRows, JobsGUIBackButton, JobsGUIStartPosition, JobsGUIGroupAmount, JobsGUISkipAmount;
+    BrowseAmountToShow, JobsGUIRows, JobsGUIBackButton, JobsGUINextButton, JobsGUIStartPosition, JobsGUIGroupAmount, JobsGUISkipAmount;
 
     public double skipQuestCost, MinimumOveralPaymentLimit, MinimumOveralPointsLimit, MonsterDamagePercentage,
     DynamicPaymentMaxPenalty, DynamicPaymentMaxBonus, TaxesAmount;
@@ -103,7 +103,7 @@ public class GeneralConfigManager {
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
 	LoggingUse;
 
-    public ItemStack guiBackButton, guiFiller;
+    public ItemStack guiBackButton, guiNextButton, guiFiller;
 
     public Parser DynamicPaymentEquation;
 
@@ -956,6 +956,8 @@ public class GeneralConfigManager {
 	JobsGUIRows = c.get("JobsGUI.Rows", 5);
 	c.addComment("JobsGUI.BackButtonSlot", "Defines back button slot in GUI");
 	JobsGUIBackButton = c.get("JobsGUI.BackButtonSlot", 37);
+	c.addComment("JobsGUI.NextButtonSlot", "Defines next button slot in GUI");
+	JobsGUINextButton = c.get("JobsGUI.NextButtonSlot", 45);
 	c.addComment("JobsGUI.StartPosition", "Defines start position in gui from which job icons will be shown");
 	JobsGUIStartPosition = c.get("JobsGUI.StartPosition", 11);
 	c.addComment("JobsGUI.GroupAmount", "Defines by how many jobs we need to group up");
@@ -981,10 +983,13 @@ public class GeneralConfigManager {
 
 	CMIMaterial tmat = null;
 	tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN").toUpperCase());
-	guiBackButton = tmat == null ? CMIMaterial.JACK_O_LANTERN.newItemStack() : tmat.newItemStack();
+	guiBackButton = (tmat == null ? CMIMaterial.JACK_O_LANTERN : tmat).newItemStack();
+
+	tmat = CMIMaterial.get(c.get("JobsGUI.NextButton.Material", "ARROW").toUpperCase());
+	guiNextButton = (tmat == null ? CMIMaterial.ARROW : tmat).newItemStack();
 
 	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "GREEN_STAINED_GLASS_PANE").toUpperCase());
-	guiFiller = tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : tmat.newItemStack();
+	guiFiller = (tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE : tmat).newItemStack();
 
 //	c.addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost?");
 //	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);
@@ -1057,14 +1062,27 @@ public class GeneralConfigManager {
     public int getJobsGUIBackButton() {
 	if (JobsGUIBackButton < 1)
 	    JobsGUIBackButton = 1;
+
 	if (JobsGUIBackButton > JobsGUIRows * 9)
 	    JobsGUIBackButton = JobsGUIRows * 9;
+
 	return JobsGUIBackButton - 1;
+    }
+
+    public int getJobsGUINextButton() {
+	if (JobsGUINextButton < 1)
+	    JobsGUINextButton = 1;
+
+	if (JobsGUINextButton > JobsGUIRows * 9)
+	    JobsGUINextButton = JobsGUIRows * 9;
+
+	return JobsGUINextButton - 1;
     }
 
     public int getJobsGUIStartPosition() {
 	if (JobsGUIBackButton < 1)
 	    JobsGUIBackButton = 1;
+
 	return JobsGUIStartPosition - 1;
     }
 

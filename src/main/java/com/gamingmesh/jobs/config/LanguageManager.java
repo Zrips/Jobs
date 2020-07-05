@@ -349,6 +349,7 @@ public class LanguageManager {
 	    c.get("command.info.gui.cantJoin", "&cYou can't join to the selected job.");
 	    c.get("command.info.gui.max", "&eMax level:&f ");
 	    c.get("command.info.gui.back", "&e<<< Back");
+	    c.get("command.info.gui.next", "&eNext >>>");
 
 	    c.get("command.info.output.break.info", "&eBreak");
 	    c.get("command.info.output.break.none", "%jobname% does not get money for breaking blocks.");
