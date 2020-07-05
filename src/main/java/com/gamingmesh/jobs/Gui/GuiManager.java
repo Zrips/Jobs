@@ -236,15 +236,15 @@ public class GuiManager {
 		String itemName = jInfo.getRealisticName();
 		String val = "";
 
-		if (income != 0.0)
+		if (income != 0.0 && Jobs.getGCManager().PaymentMethodsMoney)
 		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor
 		    + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
 
-		if (points != 0.0)
+		if (points != 0.0 && Jobs.getGCManager().PaymentMethodsPoints)
 		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
 		    + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
 
-		if (xp != 0.0)
+		if (xp != 0.0 && Jobs.getGCManager().PaymentMethodsExp)
 		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
 		    + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
 
@@ -396,15 +396,15 @@ public class GuiManager {
 		String itemName = jInfo.getRealisticName();
 		String val = "";
 
-		if (income != 0.0)
+		if (income != 0.0 && Jobs.getGCManager().PaymentMethodsMoney)
 		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor
 		    + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
 
-		if (points != 0.0)
+		if (points != 0.0 && Jobs.getGCManager().PaymentMethodsPoints)
 		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
 		    + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
 
-		if (xp != 0.0)
+		if (xp != 0.0 && Jobs.getGCManager().PaymentMethodsExp)
 		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
 		    + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
 
