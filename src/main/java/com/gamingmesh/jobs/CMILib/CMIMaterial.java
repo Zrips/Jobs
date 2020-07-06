@@ -1145,7 +1145,7 @@ public enum CMIMaterial {
 //	LEGACY_PURPUR_DOUBLE_SLAB(204, null, null, "LEGACY_PURPUR_DOUBLE_SLAB", ""),
 //	LEGACY_COMMAND_REPEATING(210, null, null, "LEGACY_COMMAND_REPEATING", ""),
 //	LEGACY_COMMAND_CHAIN(211, null, null, "LEGACY_COMMAND_CHAIN", ""),
-    LEGACY_WHEAT(59, 0, null, "Wheat");
+    LEGACY_WHEAT(59, 0, null, "Wheat block");
 
     private Integer legacyId;
     private Integer legacyData;

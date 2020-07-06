@@ -14,7 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class RawMessage {
-
+    
+    final static String colorReplacerPlaceholder = "\uFF06";
+    
     List<String> parts = new ArrayList<>();
     List<String> cleanParts = new ArrayList<>();
 
