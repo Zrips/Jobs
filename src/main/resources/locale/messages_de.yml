@@ -312,6 +312,7 @@ command:
       cantJoin: '&cDu kannst dem ausgewählten Beruf nicht beitreten.'
       max: '&eMaximales Level:&f '
       back: '&e<<< Zurück'
+      next: '&eNext >>>'
     output:
       break:
         info: 'Zerstören'

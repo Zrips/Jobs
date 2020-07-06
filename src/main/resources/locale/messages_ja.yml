@@ -312,6 +312,7 @@ command:
       cantJoin: '&cYou can''t join to the selected job.'
       max: '&e最大レベル:&f '
       back: '&e<<< 戻る'
+      next: '&eNext >>>'
     output:
       break:
         info: '破壊'

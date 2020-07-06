@@ -312,6 +312,7 @@ command:
       cantJoin: '&cNemuzes se pripojit do vybrane prace.'
       max: '&eMax úroveň:&f '
       back: '&e<<< Zpět'
+      next: '&eNext >>>'
     output:
       break:
         info: '&eNičení'

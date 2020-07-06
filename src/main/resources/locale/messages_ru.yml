@@ -53,7 +53,7 @@ command:
       nextPage: '&6 Следующая страница &2>>----'
       nextPageOff: '&7 Следующая страница >>----'
       pageCount: '&2[current]/[total]'
-      pageCountHover: '&e[totalEntries] entries'
+      pageCountHover: '&e[totalEntries] позиций'
       prevPageGui: '&6Предыдущая страница '
       nextPageGui: '&6Следующая страница'
   moneyboost:
@@ -88,7 +88,7 @@ command:
       nothingtoreset: Нечего сбросить
       boostalladded: Ускорение получения опыта %boost% было добавлено для всех работ!
       boostadded: Ускорение получения опыта &e%boost% &aдобавлено к &e%jobname%!
-      infostats: '&c-----> &aУскорение получения опыта x%boost% включено&c <-------'
+      infostats: '&c-----> &aПреумножение опыта x%boost% включено&c <-------'
   itembonus:
     help:
       info: Проверить бонусы.
@@ -97,7 +97,7 @@ command:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
+      hoverLevelLimits: "&7С уровня: %from% \n&7До уровня: %until%"
   edititembonus:
     help:
       info: Редактировать бонусы работ.
@@ -108,15 +108,15 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
-      item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
-      global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
-      dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
-      nearspawner: ' &eSpawner bonus: &2%money% &6%points% &e%exp%'
-      petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
-      area: ' &eArea bonus: &2%money% &6%points% &e%exp%'
-      mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
-      final: ' &eFinal bonus: &2%money% &6%points% &e%exp%'
+      permission: ' &eБонус привилегии: &2%money% &6%points% &e%exp%'
+      item: ' &eБонус предмета: &2%money% &6%points% &e%exp%'
+      global: ' &eГлобальный бонус: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eДинмаичный бонус: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eБонус спавнера: &2%money% &6%points% &e%exp%'
+      petpay: ' &eБонус питомца: &2%money% &6%points% &e%exp%'
+      area: ' &eБонус зоны: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eБонус McMMO: &2%money% &6%points% &e%exp%'
+      final: ' &eИтоговый бонус: &2%money% &6%points% &e%exp%'
       finalExplanation: ' &eНе включает бонусы/пенальти Petpay и Спавнеров'
   convert:
     help:
@@ -149,11 +149,11 @@ command:
       reseted: '&eУспешно сброшен лимит игрока: &2%playername%'
   resetquest:
     help:
-      info: Resets a player's quest
+      info: Сбрасывает квест игрока
       args: '[playername] [jobname]'
     output:
-      reseted: '&eQuest has been reset for: &2%playername%'
-      noQuests: '&eCan''t find any quests'
+      reseted: '&eКвест был сброшен для игрока: &2%playername%'
+      noQuests: '&eНе получается найти квесты'
   points:
     help:
       info: Выводит кол-во очков у игрока.
@@ -187,15 +187,15 @@ command:
         enter: '&eУкажите новое название или нажмите '
         hand: '&6РУКА '
         handHover: '&6Нажмите, чтобы получить информацию о предмете в вашей руке'
-        or: '&eor '
+        or: '&eили '
         look: '&6СМОТРЕТЬ НА'
         lookHover: '&6Нажмите, чтобы получить информацию о блоке, на который вы смотрите'
   editquests:
     help:
-      info: Edit current quests.
+      info: Редактировать текущие квесты.
       args: ''
       list:
-        quest: '&eQuests:'
+        quest: '&eКвесты:'
         jobs: '  -> [&e%jobname%&r]'
         quests: '  -> [&e%questname%&r]'
         actions: '    -> [&e%actionname%&r]'
@@ -205,11 +205,11 @@ command:
       modify:
         newValue: '&eВведите новое значение'
         enter: '&eВведите новое название или нажмите '
-        hand: '&6HAND '
-        handHover: '&6Press to grab info from item in your hand'
-        or: '&eor '
-        look: '&6LOOKING AT'
-        lookHover: '&6Press to grab info from block you are looking'
+        hand: '&6РУКА '
+        handHover: '&6Нажмите, чтобы получить информацию о предмете в вашей руке'
+        or: '&eили '
+        look: '&6СМОТРЕТЬ НА'
+        lookHover: '&6Нажмите, чтобы получить информацию о блоке, на который вы смотрите'
   blockinfo:
     help:
       info: Показывает информацию о блоке, на который вы смотрите.
@@ -230,12 +230,12 @@ command:
       usage: ' &eИспользование: &6%first% &eor &6%second%'
   placeholders:
     help:
-      info: List out all placeholders
+      info: Список всех плейсхолдеров
       args: (parse) (placeholder)
     output:
       list: '&e[place]. &7[placeholder]'
-      outputResult: ' &eresult: &7[result]'
-      parse: '&6[placeholder] &7by [source] &6result &8|&f[result]&8|'
+      outputResult: ' &eрезультат: &7[result]'
+      parse: '&6[placeholder] &7от [source] &6результирует &8|&f[result]&8|'
   entitylist:
     help:
       info: Показывает все возможные сущности, которые могут быть задействованы плагином.
@@ -247,7 +247,7 @@ command:
     error:
       nojob: Сперва устройтесь на работу.
     output: 'Уровень%joblevel% %jobname% : %jobxp%/%jobmaxxp% опыта'
-    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarOutput: 'Ур. %joblevel% %jobname%: %jobxp%/%jobmaxxp% оп.%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -258,7 +258,7 @@ command:
       currentPoints: '&eКол-во очков, которые у вас: &6%currentpoints%'
       price: '&eЦена: &6%price%'
       reqJobs: '&eТребуемые работы:'
-      reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
+      reqJobsList: '  &6%jobsname%&e: &e%level% ур.'
       reqTotalLevel: '&6Требуется совокупный уровень: &e%totalLevel%'
       reqJobsColor: '&c'
       reqJobsLevelColor: '&4'
@@ -298,8 +298,8 @@ command:
       levelFrom: ' &a(от &e%levelFrom% &aуровня)'
       levelUntil: ' &a(вплоть до &e%levelUntil% &aуровня)'
       money: ' &2%money%$'
-      points: ' &6%points%pts'
-      exp: ' &e%exp%xp'
+      points: ' &6%points%очк.'
+      exp: ' &e%exp%оп.'
     gui:
       pickjob: '&eВыберите Вашу работу!'
       jobinfo: '&eИнформация о[jobname]!'
@@ -312,6 +312,7 @@ command:
       cantJoin: '&cВы не можете устроиться в указанной профессии.'
       max: '&eМаксимальный уровень:&f '
       back: '&e<--Вернуться'
+      next: '&eNext >>>'
     output:
       break:
         info: 'Разрушение блоков'
@@ -433,11 +434,11 @@ command:
       description: '[description]'
       list: '    &8[place]. &7[jobname]'
       console:
-        newHeader: '&2========== [amount] Available Jobs ========='
+        newHeader: '&2========== [amount] Доступные Работы ========='
         description: '[description]'
-        totalWorkers: ' &7Workers: &e[amount]'
+        totalWorkers: ' &7Рабочих: &e[amount]'
         penalty: ' &4Penalty: &c[amount]%'
-        bonus: ' &2Bonus: &a[amount]%'
+        bonus: ' &2Бонус: &a[amount]%'
         list: ' &6[jobname]'
         newMax: ' &eМаксимальный уровень: &f[max]'
       click: '&bКликните по работе, чтобы узнать больше про неё!'

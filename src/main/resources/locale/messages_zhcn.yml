@@ -312,6 +312,7 @@ command:
       cantJoin: '&cYou can''t join to the selected job.'
       max: '&e最高等级:&f '
       back: '&e<<< 返回'
+      next: '&eNext >>>'
     output:
       break:
         info: '破坏'

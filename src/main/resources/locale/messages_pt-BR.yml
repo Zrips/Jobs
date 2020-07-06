@@ -312,6 +312,7 @@ command:
       cantJoin: '&cYou can''t join to the selected job.'
       max: '&eLevel Maxl:&f '
       back: '&e<< Voltar'
+      next: '&eNext >>>'
     output:
       break:
         info: '&ePausa'
@@ -568,7 +569,7 @@ command:
       money: '&6dinheiro: %amount% '
       exp: '&eExperiência: %amount% '
       points: '&6pontos: %amount%'
-      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
+      totalIncomes: '    &6Total de dinheiro:&2 %money%&6, Total de exp:&2 %exp%&6, Total de pontos:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cDados não encontrados'
   transfer:

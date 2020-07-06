@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&cIl n''y a pas de page d''aide portant ce numéro !'
     notNumber: '&eVeuillez utiliser des chiffres !'
-    job: '&cThe job you selected does not exist or you not joined to this'
+    job: 'Le métier que vous avez choisi n’existe pas ou vous n’avez pas rejoins celui-ci'
     noCommand: '&cIl n''y pas de commande portant ce nom!'
     permission: '&cVous n''avez pas la permission de faire ça!'
     noinfo: '&cAucune information trouvée !'
@@ -129,9 +129,9 @@ command:
     output:
       moneytime: '&eTemps restant avant le reset de la limite d''argent: &2%hour%&eh &2%min%&em &2%sec%&es'
       moneyLimit: '&eLimite d''argent journalié: &2%money%&e/&2%totalmoney%'
-      exptime: '&eTime left until Exp limit resets: &2%time%'
+      exptime: '&eTemps restant avant la réinitialisation de la limite d''argent: &2%time%'
       expLimit: '&eLimite d''expérience : &2%current%&e/&2%total%'
-      pointstime: '&eTime left until Point limit resets: &2%time%'
+      pointstime: '&eTemps restant avant la réinitialisation de la limite de point: &2%time%'
       pointsLimit: '&eLimite de points: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4Vous avez atteint le maximum d''argent gagné pendant le temps imparti!'
       reachedmoneylimit2: '&eVous pouvez vérifier la limite en faisant &2/jobs limit'
@@ -192,7 +192,7 @@ command:
         lookHover: '&6Cliquez pour prendre les infos du bloc que vous regardez'
   editquests:
     help:
-      info: Edit current quests.
+      info: Modifier la quêtes en cours.
       args: ''
       list:
         quest: '&eQuêtes :'
@@ -281,7 +281,7 @@ command:
       info: Donne un objet par nom de métier et nom de catégorie d'objet. Le pseudo est facultatif.
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Player with that name is not online!'
+      notonline: '&4Le joueur avec ce nom n''est pas connecté!'
       noitem: '&4Ce nom ne correspond à aucun objet !'
   info:
     help:
@@ -312,6 +312,7 @@ command:
       cantJoin: '&cYou can''t join to the selected job.'
       max: '&eNiveau maximum :&f '
       back: '&e<<< Retour'
+      next: '&eNext >>>'
     output:
       break:
         info: '&eCasser'
@@ -380,7 +381,7 @@ command:
         info: '&eCollecter'
         none: '%jobname% ne gagne pas d''argent en collectant les blocs.'
       bake:
-        info: '&eBake'
+        info: '&eCuire'
         none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:

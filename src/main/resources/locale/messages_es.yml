@@ -24,7 +24,7 @@ general:
   error:
     noHelpPage: '&c¡No existe este número de página de ayuda!'
     notNumber: '&ePor favor, utiliza números.'
-    job: '&cThe job you selected does not exist or you not joined to this'
+    job: '&cEl trabajo que has seleccionado no existe o no formas parte de él'
     noCommand: '&c¡No hay ningún conjuro con este nombre!'
     permission: '&cNo tienes permiso para hacer esto.'
     noinfo: '&cNo se ha encontrado información.'
@@ -53,9 +53,9 @@ command:
       nextPage: '&6 Siguiente &2>>----'
       nextPageOff: '&7 Siguiente >>----'
       pageCount: '&2[current]/[total]'
-      pageCountHover: '&e[totalEntries] entries'
-      prevPageGui: '&6Previous page '
-      nextPageGui: '&6Next Page'
+      pageCountHover: '&e[totalEntries] entradas'
+      prevPageGui: '&6Página anterior '
+      nextPageGui: '&6Siguiente Página'
   moneyboost:
     help:
       info: Aumentar el salario de todos los jugadores
@@ -108,7 +108,7 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
+      permission: ' &eBonus permanente: &2%money% &6%points% &e%exp%'
       item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
       global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
       dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
@@ -195,7 +195,7 @@ command:
       info: Edit current quests.
       args: ''
       list:
-        quest: '&eQuests:'
+        quest: '&eMisiones:'
         jobs: '  -> [&e%jobname%&r]'
         quests: '  -> [&e%questname%&r]'
         actions: '    -> [&e%actionname%&r]'
@@ -203,7 +203,7 @@ command:
         objectiveRemove: '&c[X]'
         objectiveAdd: '      -> &e[&2+&e]'
       modify:
-        newValue: '&eEnter new value'
+        newValue: '&eIngresa nuevo valor'
         enter: '&eEnter new name or press '
         hand: '&6HAND '
         handHover: '&6Press to grab info from item in your hand'
@@ -312,6 +312,7 @@ command:
       cantJoin: '&cYou can''t join to the selected job.'
       max: '&eNivel máximo:&f '
       back: '&e<<< Volver'
+      next: '&eNext >>>'
     output:
       break:
         info: '&eBreak'

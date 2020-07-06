@@ -72,7 +72,7 @@ command:
       info: Boosts point gain for all players
       args: '[jobname]/all/reset [rate]/all'
     output:
-      allreset: All point boosts turned off
+      allreset: Alle pengegevinster er skrudd av
       jobsboostreset: Point boost has been turned off for %jobname%
       nothingtoreset: Ikke noe å resette
       boostalladded: Points boost of %boost% added for all jobs!
@@ -312,6 +312,7 @@ command:
       cantJoin: '&cYou can''t join to the selected job.'
       max: '&eMax level:&f '
       back: '&e<<< Back'
+      next: '&eNext >>>'
     output:
       break:
         info: '&eBreak'

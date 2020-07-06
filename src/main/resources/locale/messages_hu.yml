@@ -31,7 +31,7 @@ general:
     noinfoByPlayer: '&cNincs információ [%playername%] játékosról!'
     ingame: '&cEz a parancs csak a játékban használható!'
     fromconsole: '&cEz a parancs csak a konzolon használható!'
-    worldisdisabled: '&cNem tudsz használni parancsot ebben a világban!'
+    worldisdisabled: '&cNem használhatsz parancsot ebben a világban!'
     newFurnaceRegistration: '&eA kemence új tulajdonosa regisztrálva &7[current]&e/&f[max]'
     newBrewingRegistration: '&eA Potions Support új tulajdonosa regisztrálva &7[current]&e/&f[max]'
     noFurnaceRegistration: '&cElérted a kemencék maximális számát!'
@@ -312,6 +312,7 @@ command:
       cantJoin: '&cNem csatlakozhatsz a kiválasztott munkához.'
       max: '&eMax. szint:&f '
       back: '&e<<< Vissza'
+      next: '&eKövetkező >>>'
     output:
       break:
         info: '&eEltör'

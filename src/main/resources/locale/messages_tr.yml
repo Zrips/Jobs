@@ -312,6 +312,7 @@ command:
       cantJoin: '&cYou can''t join to the selected job.'
       max: '&eMaximum level:&f '
       back: '&e<<< Geri'
+      next: '&eNext >>>'
     output:
       break:
         info: 'Kırmak'
