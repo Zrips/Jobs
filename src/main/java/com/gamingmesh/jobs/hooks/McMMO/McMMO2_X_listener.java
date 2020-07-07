@@ -63,14 +63,14 @@ public class McMMO2_X_listener implements Listener {
 	    HookManager.getMcMMOManager().getMap().put(event.getPlayer().getUniqueId(), InfoMap);
 	}
 
-	InfoMap.put(event.getAbility().toString(), System.currentTimeMillis() + (30 * 1000));
+	InfoMap.put(event.getAbility().toString().toLowerCase(), System.currentTimeMillis() + (30 * 1000));
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void OnAbilityOff(McMMOPlayerAbilityDeactivateEvent event) {
 	HashMap<String, Long> InfoMap = HookManager.getMcMMOManager().getMap().get(event.getPlayer().getUniqueId());
 	if (InfoMap != null) {
-	    InfoMap.remove(event.getAbility().toString());
+	    InfoMap.remove(event.getAbility().toString().toLowerCase());
 	    if (InfoMap.isEmpty())
 		HookManager.getMcMMOManager().getMap().remove(event.getPlayer().getUniqueId());
 	}

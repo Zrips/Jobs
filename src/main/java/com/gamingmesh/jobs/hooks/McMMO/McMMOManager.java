@@ -34,46 +34,48 @@ public class McMMOManager {
 	    return 0D;
 
 	if (mcMMOOverHaul) {
-	    Long t = InfoMap.get(SuperAbilityType.TREE_FELLER.toString());
+	    // Skill names should be in lower case
+	    Long t = InfoMap.get(SuperAbilityType.TREE_FELLER.toString().toLowerCase());
 	    if (t != null) {
 		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
-		InfoMap.remove(SuperAbilityType.TREE_FELLER.toString());
+		InfoMap.remove(SuperAbilityType.TREE_FELLER.toString().toLowerCase());
 	    }
 
-	    t = InfoMap.get(SuperAbilityType.GIGA_DRILL_BREAKER.toString());
+	    t = InfoMap.get(SuperAbilityType.GIGA_DRILL_BREAKER.toString().toLowerCase());
 	    if (t != null) {
 		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
-		InfoMap.remove(SuperAbilityType.GIGA_DRILL_BREAKER.toString());
+		InfoMap.remove(SuperAbilityType.GIGA_DRILL_BREAKER.toString().toLowerCase());
 	    }
 
-	    t = InfoMap.get(SuperAbilityType.SUPER_BREAKER.toString());
+	    t = InfoMap.get(SuperAbilityType.SUPER_BREAKER.toString().toLowerCase());
 	    if (t != null) {
 		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().superBreakerMultiplier);
-		InfoMap.remove(SuperAbilityType.SUPER_BREAKER.toString());
+		InfoMap.remove(SuperAbilityType.SUPER_BREAKER.toString().toLowerCase());
 	    }
 	} else if (mcMMOPresent) {
-	    Long t = InfoMap.get("TREE_FELLER");
+	    // Skill names should be in lower case
+	    Long t = InfoMap.get("tree_feller");
 	    if (t != null) {
 		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().TreeFellerMultiplier);
-		InfoMap.remove("TREE_FELLER");
+		InfoMap.remove("tree_feller");
 	    }
 
-	    t = InfoMap.get("GIGA_DRILL_BREAKER");
+	    t = InfoMap.get("giga_drill_breaker");
 	    if (t != null) {
 		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().gigaDrillMultiplier);
-		InfoMap.remove("GIGA_DRILL_BREAKER");
+		InfoMap.remove("giga_drill_breaker");
 	    }
 
-	    t = InfoMap.get("SUPER_BREAKER");
+	    t = InfoMap.get("super_breaker");
 	    if (t != null) {
 		if (t > System.currentTimeMillis())
 		    return -(1 - Jobs.getGCManager().superBreakerMultiplier);
-		InfoMap.remove("SUPER_BREAKER");
+		InfoMap.remove("super_breaker");
 	    }
 	}
 
@@ -89,7 +91,6 @@ public class McMMOManager {
 	    } catch (ClassNotFoundException c) {
 		// Disabling skill API check;
 		mcMMOOverHaul = false;
-		Jobs.consoleMsg("&e[Jobs] &6mcMMO was found - &cBut your McMMO version is outdated, please update for full support.");
 
 		try {
 		    Class.forName("com.gmail.nossr50.api.AbilityAPI");
@@ -97,10 +98,9 @@ public class McMMOManager {
 		} catch (ClassNotFoundException e) {
 		    // Disabling skill API check;
 		    mcMMOPresent = false;
-		    Jobs.consoleMsg("&e[Jobs] &6mcMMO was found - &cBut your McMMO version is outdated, please update for full support.");
-		    // Still enabling event listener for repair
-		    return true;
 		}
+		if (!mcMMOPresent)
+		    Jobs.consoleMsg("&e[Jobs] &6mcMMO was found - &cBut your McMMO version is outdated, please update for full support.");
 
 		// Still enabling event listener for repair
 		return true;
