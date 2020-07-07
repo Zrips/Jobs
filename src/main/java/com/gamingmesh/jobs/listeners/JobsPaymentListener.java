@@ -1833,7 +1833,7 @@ public class JobsPaymentListener implements Listener {
 	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE));
     }
 
-    static boolean payIfCreative(Player player) {
+    public static boolean payIfCreative(Player player) {
 	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative() && !player.hasPermission("jobs.paycreative"))
 	    return false;
 
@@ -1841,7 +1841,7 @@ public class JobsPaymentListener implements Listener {
     }
 
     // Prevent item durability loss
-    private static boolean payForItemDurabilityLoss(Player p) {
+    public static boolean payForItemDurabilityLoss(Player p) {
 	if (Jobs.getGCManager().payItemDurabilityLoss)
 	    return true;
 

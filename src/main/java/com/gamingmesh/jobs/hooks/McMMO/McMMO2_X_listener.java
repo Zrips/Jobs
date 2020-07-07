@@ -14,8 +14,10 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
+import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
 public class McMMO2_X_listener implements Listener {
@@ -24,6 +26,42 @@ public class McMMO2_X_listener implements Listener {
 
     public McMMO2_X_listener(Jobs plugin) {
 	this.plugin = plugin;
+    }
+
+    @EventHandler
+    public void onFishingTreasure(McMMOPlayerFishingTreasureEvent event) {
+
+	// make sure plugin is enabled
+	if (!plugin.isEnabled())
+	    return;
+
+	Player player = event.getPlayer();
+	//disabling plugin in world
+	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+	    return;
+
+	// check if in creative
+	if (!JobsPaymentListener.payIfCreative(player))
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
+
+	if (!JobsPaymentListener.payForItemDurabilityLoss(player))
+	    return;
+
+	if (event.getTreasure() == null)
+	    return;
+
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
+	    return;
+
+	Jobs.action(jPlayer, new ItemActionInfo(event.getTreasure(), ActionType.FISH));
     }
 
     @EventHandler
