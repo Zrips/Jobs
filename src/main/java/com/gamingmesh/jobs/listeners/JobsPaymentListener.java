@@ -20,6 +20,7 @@ package com.gamingmesh.jobs.listeners;
 
 import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
+import com.gamingmesh.jobs.CMILib.CMIEntityType;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.ItemManager;
 import com.gamingmesh.jobs.CMILib.Version;
@@ -1149,11 +1150,20 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
+	Entity ent = event.getEntity();
 	Entity damager = event.getDamager();
+	if (ent instanceof org.bukkit.entity.EnderCrystal && damager instanceof Player) {
+	    String meta = "enderCrystalDamage";
+	    if (ent.hasMetadata(meta))
+		ent.removeMetadata(meta, plugin);
+
+	    ent.setMetadata(meta, new FixedMetadataValue(plugin, ent));
+	    return;
+	}
+
 	if (!(damager instanceof Projectile))
 	    return;
 
-	Entity ent = event.getEntity();
 	if (!(ent instanceof Damageable))
 	    return;
 
@@ -1541,13 +1551,8 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
-	if (!(event.getEntity() instanceof Player))
-	    return;
-
-	if (event.getEntity().hasMetadata("NPC"))
-	    return;
-
-	if (event.getFoodLevel() <= ((Player) event.getEntity()).getFoodLevel())
+	if (!(event.getEntity() instanceof Player) || event.getEntity().hasMetadata("NPC")
+		|| event.getFoodLevel() <= ((Player) event.getEntity()).getFoodLevel())
 	    return;
 
 	Player player = (Player) event.getEntity();
@@ -1576,23 +1581,23 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTntExplode(EntityExplodeEvent event) {
-	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
 
-	//disabling plugin in world
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity()))
+	Entity e = event.getEntity();
+	if (!Jobs.getGCManager().canPerformActionInWorld(e))
 	    return;
 
-	if (!Jobs.getGCManager().isUseTntFinder())
+	EntityType type = event.getEntityType();
+	if (type != EntityType.PRIMED_TNT && type != EntityType.MINECART_TNT && type != CMIEntityType.ENDER_CRYSTAL.getType())
 	    return;
 
-	if (event.getEntityType() != EntityType.PRIMED_TNT && event.getEntityType() != EntityType.MINECART_TNT)
+	if (!Jobs.getGCManager().isUseTntFinder() || type != CMIEntityType.ENDER_CRYSTAL.getType())
 	    return;
 
 	double closest = 60.0;
 	Player player = null;
-	Location loc = event.getEntity().getLocation();
+	Location loc = e.getLocation();
 	for (Player i : Bukkit.getOnlinePlayers()) {
 	    if (loc.getWorld() != i.getWorld())
 		continue;
@@ -1604,17 +1609,11 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
-	if (player == null || closest == 60.0)
-	    return;
-
-	if (!player.isOnline())
+	if (player == null || closest == 60.0 || !player.isOnline())
 	    return;
 
 	// check if in creative
-	if (!payIfCreative(player))
-	    return;
-
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	if (!payIfCreative(player) || !Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
 
 	// check if player is riding
@@ -1624,6 +1623,16 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;
+
+	String meta = "enderCrystalDamage";
+	if (type == CMIEntityType.ENDER_CRYSTAL.getType() && e.hasMetadata(meta) && !e.getMetadata(meta).isEmpty()) {
+	    Entity killed = (Entity) e.getMetadata(meta).get(0).value();
+	    if (killed != null) {
+		Jobs.action(jPlayer, new EntityActionInfo(killed, ActionType.KILL));
+		killed.removeMetadata(meta, plugin);
+		return;
+	    }
+	}
 
 	for (Block block : event.blockList()) {
 	    if (block == null)

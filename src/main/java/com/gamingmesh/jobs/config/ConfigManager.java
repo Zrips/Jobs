@@ -32,7 +32,6 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Util;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -1328,13 +1327,18 @@ public class ConfigManager {
 			    // check entities
 			    CMIEntityType entity = CMIEntityType.getByName(key);
 
-			    if (entity != null && entity.isAlive()) {
+			    if (entity != null) {
+				if (entity.isAlive()) {
+				    type = entity.toString();
+				    id = entity.getId();
+
+				    // using breeder finder
+				    if (actionType == ActionType.BREED)
+					Jobs.getGCManager().useBreederFinder = true;
+			    } else if (entity == CMIEntityType.ENDER_CRYSTAL) {
 				type = entity.toString();
 				id = entity.getId();
-
-				// using breeder finder
-				if (actionType == ActionType.BREED)
-				    Jobs.getGCManager().useBreederFinder = true;
+			    }
 			    }
 
 			    // Pre 1.13 checks for custom names

@@ -32,7 +32,7 @@ public class EntityActionInfo extends BaseActionInfo {
     }
 
     @Override
-    public String getName() {	
+    public String getName() {
 	return Jobs.getNms().getRealType(entity);
     }
 

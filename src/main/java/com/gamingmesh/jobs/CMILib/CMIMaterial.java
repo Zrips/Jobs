@@ -1365,7 +1365,7 @@ public enum CMIMaterial {
 
 	Integer data = null;
 	Integer ids = null;
-	
+
 	id = id.replaceAll("_| |minecraft:", "").toLowerCase();
 
 	if (id.contains(":")) {
