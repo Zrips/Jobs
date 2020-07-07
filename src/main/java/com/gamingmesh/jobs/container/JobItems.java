@@ -114,6 +114,7 @@ public class JobItems {
 	    item.setItemMeta(meta);
 	    return item;
 	} catch (Exception e) {
+	    e.printStackTrace();
 	}
 	return null;
     }

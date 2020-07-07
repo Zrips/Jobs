@@ -17,18 +17,14 @@ public class CMIReflections {
     //private Object CraftServer;
 
     private static Class<?> NBTTagCompound;
-    private Class<?> NBTBase;
+    private static Class<?> NBTBase;
 //    private Class<?> NBTTagList;
 
     private static Class<?> CraftItemStack;
     private static Class<?> Item;
     private static Class<?> IStack;
 
-    public CMIReflections() {
-	initialize();
-    }
-
-    private void initialize() {
+    static {
 	try {
 	    //CraftServerClass = getBukkitClass("CraftServer");
 	    //CraftServer = CraftServerClass.cast(Bukkit.getServer());
@@ -194,37 +190,6 @@ public class CMIReflections {
 	}
     }
 
-//
-//    public ItemStack setNbt(ItemStack item, String base, String path, String value) {
-//	if (item == null)
-//	    return null;
-//	try {
-//	    Object nmsStack = asNMSCopy(item);
-//	    Method methTag = nmsStack.getClass().getMethod("getTag");
-//	    Object tag = methTag.invoke(nmsStack);
-//	    if (tag == null)
-//		tag = NBTTagCompound.newInstance();
-//
-//	    Method compountMeth = tag.getClass().getMethod("getCompound", String.class);
-//	    Object compountTag = compountMeth.invoke(tag, base);
-//
-//	    if (compountTag == null)
-//		compountTag = NBTTagCompound.newInstance();
-//
-//	    Method meth = compountTag.getClass().getMethod("setString", String.class, String.class);
-//	    meth.invoke(compountTag, path, value);
-//
-//	    Method mm = tag.getClass().getMethod("set", String.class, NBTBase);
-//	    mm.invoke(tag, base, compountTag);
-//
-//	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
-//	    meth2.invoke(nmsStack, tag);
-//	    return (ItemStack) asBukkitCopy(nmsStack);
-//	} catch (Throwable e) {
-//	    e.printStackTrace();
-//	    return null;
-//	}
-//    }
     public static ItemStack setNbt(ItemStack item, String path, String value) {
 	if (item == null)
 	    return null;
@@ -268,6 +233,7 @@ public class CMIReflections {
 	    Method meth = CraftItemStack.getMethod("asNMSCopy", ItemStack.class);
 	    return meth.invoke(CraftItemStack, item);
 	} catch (Throwable e) {
+	    e.printStackTrace();
 	    return null;
 	}
     }
@@ -285,7 +251,8 @@ public class CMIReflections {
 	try {
 
 	    Object nmsStack = asNMSCopy(item);
-
+	    if (nmsStack == null)
+		return null;
 	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 		Object pre = nmsStack.getClass().getMethod("getItem").invoke(nmsStack);
 		Object n = pre.getClass().getMethod("getName").invoke(pre);
