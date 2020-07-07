@@ -180,7 +180,6 @@ public class editquests implements Cmd {
 		    }
 
 		    HashMap<String, QuestObjective> obj = quest.getObjectives().get(actionT);
-
 		    if (obj == null || obj.isEmpty())
 			return false;
 
