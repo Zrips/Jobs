@@ -2572,12 +2572,12 @@ public enum CMIMaterial {
 	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 	    if (block.getBlockData() instanceof org.bukkit.block.data.type.Slab) {
 		org.bukkit.block.data.type.Slab slab = (org.bukkit.block.data.type.Slab) block.getBlockData();
-		switch (slab.getType()) {
-		case TOP:
+		switch (slab.getType().toString()) {
+		case "TOP":
 		    return CMISlabType.TOP;
-		case BOTTOM:
+		case "BOTTOM":
 		    return CMISlabType.BOTTOM;
-		case DOUBLE:
+		case "DOUBLE":
 		    return CMISlabType.DOUBLE;
 		default:
 		    break;

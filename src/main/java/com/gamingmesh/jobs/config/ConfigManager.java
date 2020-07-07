@@ -1258,7 +1258,7 @@ public class ConfigManager {
 			if (actionType == ActionType.STRIPLOGS && Version.isCurrentLower(Version.v1_13_R1))
 			    continue;
 
-			if (material != null && material.getMaterial() != null && material.getMaterial() == Material.AIR) {
+			if (material != null && material.getMaterial() != null && material.isAir()) {
 			    log.warning("Job " + jobKey + " " + actionType.getName() + " can't recognize material! (" + key + ")");
 			    continue;
 			}
