@@ -460,7 +460,7 @@ public class ConfigManager {
 		    return null;
 
 		if (material != null && material.getMaterial() != null && material.isAir()) {
-		    Jobs.getPluginLogger().warning("Job " + myKey + " " + actionType.getName() + " can't recognize material! (" + myKey + ")");
+		    Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " can't recognize material! (" + myKey + ")");
 		    return null;
 		}
 
@@ -492,7 +492,7 @@ public class ConfigManager {
 	    // Break and Place actions MUST be blocks
 	    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
 		if (!material.isBlock()) {
-	    Jobs.getPluginLogger().warning("Job " + myKey + " has an invalid " + actionType.getName() + " type property: " + material
+	    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
 		+ " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
 	    return null;
 		}
@@ -510,7 +510,7 @@ public class ConfigManager {
 	     * configurations broken.
 	     */
 	    if (material == CMIMaterial.REDSTONE_ORE && actionType == ActionType.BREAK && Version.isCurrentLower(Version.v1_13_R1)) {
-		Jobs.getPluginLogger().warning("Job " + myKey + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
+		Jobs.getPluginLogger().warning("Job " + jobName + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
 		Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE. Please update your configuration.");
 		Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
 		Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
@@ -588,7 +588,7 @@ public class ConfigManager {
 	} else if (actionType == ActionType.ENCHANT) {
 	    CMIEnchantment enchant = CMIEnchantment.get(myKey);
 	    if (enchant == null && material == CMIMaterial.NONE) {
-		Jobs.getPluginLogger().warning("Job " + myKey + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
+		Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
 		return null;
 	    }
 
@@ -603,7 +603,7 @@ public class ConfigManager {
 	    try {
 			amount = Integer.valueOf(myKey);
 	    } catch (NumberFormatException e) {
-		Jobs.getPluginLogger().warning("Job " + myKey + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
+		Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
 		return null;
 	    }
 
@@ -620,7 +620,7 @@ public class ConfigManager {
 	}
 
 	if (type == null) {
-	    Jobs.getPluginLogger().warning("Job " + myKey + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
+	    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
 	    return null;
 	}
 
