@@ -910,7 +910,7 @@ public class PlayerManager {
 	    JobItems armorboost = getJobsItemByNbt(OneArmor);
 
 	    if (armorboost == null || !armorboost.getJobs().contains(prog))
-		return data;
+		continue;
 
 	    data.add(armorboost.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
 	}
