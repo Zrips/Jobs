@@ -449,14 +449,19 @@ public class editquests implements Cmd {
 			    entity = EntityType.valueOf(myKey.toUpperCase());
 			}
 
-			if (entity != null && entity.isAlive()) {
+		    if (entity != null) {
+			if (entity.isAlive()) {
 			    type = entity.toString();
 			    id = entity.getTypeId();
 
 			    // using breeder finder
 			    if (actionT == ActionType.BREED)
 				Jobs.getGCManager().useBreederFinder = true;
+			} else if (entity == EntityType.ENDER_CRYSTAL) {
+			    type = entity.toString();
+			    id = entity.getTypeId();
 			}
+		    }
 
 			if (entity == null) {
 			    switch (key.toLowerCase()) {

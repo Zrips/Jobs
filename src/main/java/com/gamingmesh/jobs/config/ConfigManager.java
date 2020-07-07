@@ -521,13 +521,18 @@ public class ConfigManager {
 		entity = EntityType.valueOf(myKey);
 	    }
 
-	    if (entity != null && entity.isAlive()) {
-		type = entity.toString();
-		id = entity.getTypeId();
+	    if (entity != null) {
+		if (entity.isAlive()) {
+		    type = entity.toString();
+		    id = entity.getTypeId();
 
-		// using breeder finder
-		if (actionType == ActionType.BREED)
-		    Jobs.getGCManager().useBreederFinder = true;
+		    // using breeder finder
+		    if (actionType == ActionType.BREED)
+			Jobs.getGCManager().useBreederFinder = true;
+		} else if (entity == EntityType.ENDER_CRYSTAL) {
+		    type = entity.toString();
+		    id = entity.getTypeId();
+		}
 	    }
 
 	    if (entity == null) {
@@ -1335,10 +1340,10 @@ public class ConfigManager {
 				    // using breeder finder
 				    if (actionType == ActionType.BREED)
 					Jobs.getGCManager().useBreederFinder = true;
-			    } else if (entity == CMIEntityType.ENDER_CRYSTAL) {
-				type = entity.toString();
-				id = entity.getId();
-			    }
+				} else if (entity == CMIEntityType.ENDER_CRYSTAL) {
+				    type = entity.toString();
+				    id = entity.getId();
+				}
 			    }
 
 			    // Pre 1.13 checks for custom names

@@ -240,7 +240,7 @@ public class editjobs implements Cmd {
 
 		try {
 		    value = Double.parseDouble(args[5]);
-		} catch (Throwable e) {
+		} catch (Exception e) {
 		    return false;
 		}
 
@@ -495,13 +495,18 @@ public class editjobs implements Cmd {
 			entity = EntityType.valueOf(myKey.toUpperCase());
 		    }
 
-		    if (entity != null && entity.isAlive()) {
-			type = entity.toString();
-			id = entity.getTypeId();
+		    if (entity != null) {
+			if (entity.isAlive()) {
+			    type = entity.toString();
+			    id = entity.getTypeId();
 
-			// using breeder finder
-			if (actionT == ActionType.BREED)
-			    Jobs.getGCManager().useBreederFinder = true;
+			    // using breeder finder
+			    if (actionT == ActionType.BREED)
+				Jobs.getGCManager().useBreederFinder = true;
+			} else if (entity == EntityType.ENDER_CRYSTAL) {
+			    type = entity.toString();
+			    id = entity.getTypeId();
+			}
 		    }
 
 		    if (entity == null) {
