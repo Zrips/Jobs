@@ -35,7 +35,9 @@ public class editquests implements Cmd {
     @Override
     @JobCommand(721)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
-	if (sender instanceof Player) {
+	if (!(sender instanceof Player))
+	    return false;
+
 	    Player player = (Player) sender;
 
 	    if (args.length == 0) {
@@ -580,7 +582,6 @@ public class editquests implements Cmd {
 		    }
 
 		    Util.getQuestsEditorMap().remove(player.getUniqueId());
-
 		    return true;
 		}
 
@@ -588,7 +589,7 @@ public class editquests implements Cmd {
 	    default:
 		break;
 	    }
-	}
+
 	return false;
     }
 

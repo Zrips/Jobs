@@ -30,7 +30,6 @@ public class McMMO2_X_listener implements Listener {
 
     @EventHandler
     public void onFishingTreasure(McMMOPlayerFishingTreasureEvent event) {
-
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;

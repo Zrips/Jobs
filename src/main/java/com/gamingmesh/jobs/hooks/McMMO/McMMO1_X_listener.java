@@ -30,7 +30,6 @@ public class McMMO1_X_listener implements Listener {
 
     @EventHandler
     public void onFishingTreasure(McMMOPlayerFishingTreasureEvent event) {
-
 	// make sure plugin is enabled
 	if (!plugin.isEnabled())
 	    return;
@@ -56,7 +55,7 @@ public class McMMO1_X_listener implements Listener {
 
 	if (event.getTreasure() == null)
 	    return;
-	
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null)
 	    return;

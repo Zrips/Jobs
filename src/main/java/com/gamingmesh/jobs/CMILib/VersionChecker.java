@@ -53,8 +53,9 @@ public class VersionChecker {
 	    if (newVersion == null)
 		return;
 
-	    String currentVersion = plugin.getDescription().getVersion();
-	    if (Integer.parseInt(newVersion.replace(".", "")) <= Integer.parseInt(currentVersion.replace(".", "")))
+	    int currentVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
+	    if (Integer.parseInt(newVersion.replace(".", "")) <= currentVersion || currentVersion >=
+			Integer.parseInt(newVersion.replace(".", "")))
 		return;
 
 	    List<String> msg = Arrays.asList(
