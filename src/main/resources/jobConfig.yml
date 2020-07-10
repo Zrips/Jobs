@@ -2242,7 +2242,7 @@ Jobs:
         income: 5.0
         points: 5
         experience: 5.0
-      PIG_ZOMBIE:
+      Zombified_Piglin:
         income: 5.0
         points: 5
         experience: 5.0
