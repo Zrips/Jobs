@@ -17,6 +17,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class Placeholder {
@@ -62,6 +63,7 @@ public class Placeholder {
 	user_jmaxexpunf_$1("jname/number"),
 	user_jmaxlvl_$1("jname/number"),
 	user_job_$1("jname/number"),
+	user_title_$1("jname/number"),
 
 	maxjobs,
 
@@ -481,6 +483,11 @@ public class Placeholder {
 		    return jobs == null ? "no" : convert(user.isInJob(jobs));
 		case user_job_$1:
 		    return j == null ? "" : j.getJob().getName();
+		case user_title_$1:
+		    if (j == null)
+		        return "";
+		    Title title = Jobs.gettitleManager().getTitle(j.getLevel(), j.getJob().getName());
+		    return title == null ? "" : title.getChatColor() + title.getName();
 
 		case maxjobs:
 		    Double max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max");
