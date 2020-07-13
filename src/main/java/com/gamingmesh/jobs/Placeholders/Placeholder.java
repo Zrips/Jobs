@@ -484,10 +484,10 @@ public class Placeholder {
 		case user_job_$1:
 		    return j == null ? "" : j.getJob().getName();
 		case user_title_$1:
-			if (j == null)
-				return "";
-			Title title = Jobs.gettitleManager().getTitle(j.getLevel(), j.getJob().getName());
-			return title == null ? "" :  title.getChatColor() + title.getName();
+		    if (j == null)
+		        return "";
+		    Title title = Jobs.gettitleManager().getTitle(j.getLevel(), j.getJob().getName());
+		    return title == null ? "" :  title.getChatColor() + title.getName();
 
 		case maxjobs:
 		    Double max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max");
