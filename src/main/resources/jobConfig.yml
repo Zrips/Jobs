@@ -81,19 +81,21 @@ Jobs:
     rejoinCooldown: 10
     # GUI icon information when using GUI function
     Gui:
-    # name of the block
+      # name of the material
+      # You can use the custom player head:
+      # Item: player_head
+      #   CustomSkull: Notch
       Item: LOG:2
-    # If you want to use this instead of Item name.
-    # id of block
-    #  Id: 17
-    # data of block, usually its 0, but in example Diorite will have id of 1 and data of 3
-    #  Data: 2
-    # enchants in the item
+
+      # If you want to use ID instead of material names.
+      # id of block
+      #  Id: 17
+      # data of block, usually its 0, but in example Diorite will have id of 1 and data of 3
+      #  Data: 2
+
+      # enchants in the item
       Enchantments:
       - 'DURABILITY:1'
-    # You can use the custom player head:
-    # Item: player_head
-    #   CustomSkull: Notch
     # Defines maximum amount of daily quests player can have from THIS job
     # This will not have effect on overall quest amount player will have
     maxDailyQuests: 3
@@ -2242,9 +2244,6 @@ Jobs:
         income: 5.0
         points: 5
         experience: 5.0
-      PIG_ZOMBIE:
-        income: 5.0
-        points: 5
         experience: 5.0
       SILVERFISH:
         income: 3.0

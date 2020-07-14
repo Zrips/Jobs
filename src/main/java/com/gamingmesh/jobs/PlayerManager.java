@@ -781,7 +781,8 @@ public class PlayerManager {
 	    return;
 
 	for (JobCommands command : job.getCommands()) {
-	    if (newLevel >= command.getLevelFrom() && newLevel <= command.getLevelUntil()) {
+	    if ((command.getLevelFrom() == 0 && command.getLevelUntil() == 0) || newLevel >= command.getLevelFrom()
+			&& newLevel <= command.getLevelUntil()) {
 		for (String commandString : new ArrayList<String>(command.getCommands())) {
 		    commandString = commandString.replace("[player]", player.getName());
 		    commandString = commandString.replace("[oldlevel]", String.valueOf(oldLevel));

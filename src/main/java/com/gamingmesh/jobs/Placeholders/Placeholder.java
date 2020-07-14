@@ -485,7 +485,7 @@ public class Placeholder {
 		    return j == null ? "" : j.getJob().getName();
 		case user_title_$1:
 		    if (j == null)
-		        return "";
+			return "";
 		    Title title = Jobs.gettitleManager().getTitle(j.getLevel(), j.getJob().getName());
 		    return title == null ? "" : title.getChatColor() + title.getName();
 

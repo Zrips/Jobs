@@ -160,17 +160,18 @@ public class ConfigManager {
 	cfg.get(pt + ".rejoinCooldown", 10);
 
 	cfg.addComment(pt + ".Gui", "GUI icon information when using GUI function");
-	cfg.addComment(pt + ".Gui.Item", "Name of the material");
+	cfg.addComment(pt + ".Gui.Item", "You can use the custom player head:",
+	    "Item: player_head",
+	    "  CustomSkull: Notch",
+	    "",
+	    "Name of the material");
 	cfg.get(pt + ".Gui.Item", "LOG:2");
 	cfg.addComment(pt + ".Gui.slot", "Slot number to show the item in the specified row");
 	cfg.get(pt + ".Gui.slot", 5);
 	cfg.addComment(pt + ".Gui.Enchantments", "Enchants of the item");
 	cfg.get(pt + ".Gui.Enchantments", Arrays.asList("DURABILITY:1"));
 
-	cfg.addComment(pt + ".maxDailyQuests", "You can use the custom player head:",
-	    "Item: player_head",
-	    "  CustomSkull: Notch",
-	    "",
+	cfg.addComment(pt + ".maxDailyQuests",
 	    "Defines maximum amount of daily quests player can have from THIS job",
 	    "This will not have effect on overall quest amount player will have");
 	cfg.get(pt + ".maxDailyQuests", 3);
@@ -963,8 +964,8 @@ public class ConfigManager {
 		    else if (commandSection.isList("command"))
 			commands.addAll(commandSection.getStringList("command"));
 
-		    int levelFrom = commandSection.getInt("levelFrom");
-		    int levelUntil = commandSection.getInt("levelUntil");
+		    int levelFrom = commandSection.getInt("levelFrom", 0);
+		    int levelUntil = commandSection.getInt("levelUntil", maxLevel);
 		    jobCommand.add(new JobCommands(commandKey.toLowerCase(), commands, levelFrom, levelUntil));
 		}
 	    }
