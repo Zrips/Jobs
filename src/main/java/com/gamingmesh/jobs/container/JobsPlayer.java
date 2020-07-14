@@ -747,7 +747,7 @@ public class JobsPlayer {
      */
     public void save() {
 //	synchronized (saveLock) {
-	if (!isSaved()) {
+	if (!isSaved) {
 	    JobsDAO dao = Jobs.getJobsDAO();
 	    dao.save(this);
 	    dao.saveLog(this);
@@ -787,6 +787,7 @@ public class JobsPlayer {
 	    one.getBar().removeAll();
 	    one.cancel();
 	}
+
 	barMap.clear();
     }
 

@@ -188,12 +188,8 @@ public class JobsListener implements Listener {
 	if (!Jobs.getGCManager().MultiServerCompatability())
 	    Jobs.getPlayerManager().playerJoin(event.getPlayer());
 	else {
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    Jobs.getPlayerManager().playerJoin(event.getPlayer());
-		}
-	    }, 10L);
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
+		    Jobs.getPlayerManager().playerJoin(event.getPlayer()), 10L);
 	}
     }
 

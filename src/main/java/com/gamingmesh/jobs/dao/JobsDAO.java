@@ -1794,68 +1794,14 @@ public abstract class JobsDAO {
 	jPlayer.reloadMaxExperience();
 	jPlayer.reloadLimits();
 	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(jPlayer.getUniqueId()));
-	loadPoints(jPlayer);
 	return jPlayer;
     }
 
     public JobsPlayer loadFromDao(OfflinePlayer player) {
 	JobsPlayer jPlayer = new JobsPlayer(player.getName());
 	jPlayer.setPlayerUUID(player.getUniqueId());
-
-	List<JobsDAOData> list = getAllJobs(player);
-	jPlayer.progression.clear();
-	for (JobsDAOData jobdata : list) {
-	    if (!plugin.isEnabled())
-		return null;
-
-	    // add the job
-	    Job job = Jobs.getJob(jobdata.getJobName());
-	    if (job == null)
-		continue;
-
-	    // create the progression object
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
-	    // calculate the max level
-	    // add the progression level.
-	    jPlayer.progression.add(jobProgression);
-	}
-	jPlayer.reloadMaxExperience();
-	jPlayer.reloadLimits();
-	jPlayer.setUserId(Jobs.getPlayerManager().getPlayerId(player.getUniqueId()));
-	loadPoints(jPlayer);
-	return jPlayer;
+	return loadFromDao(jPlayer);
     }
-
-//    public void loadAllData() {
-//	Jobs.getPlayerManager().clearMaps();
-//	JobsConnection conn = getConnection();
-//	if (conn == null)
-//	    return;
-//	PreparedStatement prest = null;
-//	ResultSet res = null;
-//	try {
-//	    prest = conn.prepareStatement("SELECT *  FROM `" + prefix + "users`;");
-//	    res = prest.executeQuery();
-//	    while (res.next()) {
-//		try {
-//		    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
-//			res.getString("username"),
-//			res.getInt("id"),
-//			UUID.fromString(res.getString("player_uuid")),
-//			res.getLong("seen"),
-//			res.getInt("donequests"),
-//			res.getString("quests")));
-//		} catch (Exception e) {
-//		}
-//	    }
-//	} catch (SQLException e) {
-//	    e.printStackTrace();
-//	} finally {
-//	    close(res);
-//	    close(prest);
-//	}
-//	return;
-//    }
 
     /**
      * Delete job from archive
