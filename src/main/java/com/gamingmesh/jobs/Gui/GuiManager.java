@@ -100,7 +100,7 @@ public class GuiManager {
 		else
 		    Lore.add(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (job.getBonus() * 100)));
 
-	    Lore.addAll(Arrays.asList(job.getDescription().split("/n")));
+	    Lore.addAll(Arrays.asList(job.getDescription().contains("/n") ? job.getDescription().split("/n") : job.getDescription().split("\n")));
 
 	    if (job.getMaxSlots() != null)
 		Lore.add(Jobs.getLanguage().getMessage("command.info.gui.leftSlots") + ((job.getMaxSlots() - Jobs.getUsedSlots(job)) > 0 ? (job.getMaxSlots() - Jobs

@@ -1134,7 +1134,6 @@ public class Jobs extends JavaPlugin {
 	    }
 
 	    expiredJobs.forEach(j -> getPlayerManager().leaveJob(jPlayer, j));
-	    expiredJobs.clear();
 	}
     }
 

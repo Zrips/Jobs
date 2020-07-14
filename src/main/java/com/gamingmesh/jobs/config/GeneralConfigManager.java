@@ -95,7 +95,7 @@ public class GeneralConfigManager {
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, UseInversedClickToLeave, ShowActionNames,
+	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames,
 	DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UseFlicker, UseTrail, UsePerPermissionForLeaving,
 	EnableConfirmation, FilterHiddenPlayerFromTabComplete, jobsInfoOpensBrowse, MonsterDamageUse = false, useMaxPaymentCurve,
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
@@ -944,10 +944,6 @@ public class GeneralConfigManager {
 	c.addComment("JobsGUI.SwitcheButtons", "With true left mouse button will join job and right will show more info.",
 	    "With false left mouse button will show more info, right will join job or inversely.", "Don't forget to adjust locale file!");
 	JobsGUISwitcheButtons = c.get("JobsGUI.SwitcheButtons", false);
-	c.addComment("JobsGUI.UseInversedClickToLeave", "Do you want to use the left/right click button to leave from job?",
-	    "This option click type depend from SwitcheButtons option, if true using the left button and inversely.",
-	    "Don't forget to adjust locale file");
-	UseInversedClickToLeave = c.get("JobsGUI.UseInversedClickToLeave", false);
 	c.addComment("JobsGUI.DisableJoiningJobThroughGui", "Allows players to join a specified job via GUI.");
 	DisableJoiningJobThroughGui = c.get("JobsGUI.DisableJoiningJobThroughGui", false);
 	c.addComment("JobsGUI.ShowActionNames", "Do you want to show the action names in GUI?");

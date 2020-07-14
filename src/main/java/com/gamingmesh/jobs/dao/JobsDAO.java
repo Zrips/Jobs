@@ -1707,7 +1707,7 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.UsersTable.getTableName() + "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
 	    prest.setString(1, uuid.toString());
 	    res = prest.executeQuery();
-	    if (res.next()) {
+	    while (res.next()) {
 		pInfo = new PlayerInfo(
 		    res.getString(UserTableFields.username.getCollumn()),
 		    res.getInt("id"), uuid,
@@ -1763,8 +1763,6 @@ public abstract class JobsDAO {
 		ps.execute();
 		close(ps);
 	    }
-
-	    uuids.clear();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
