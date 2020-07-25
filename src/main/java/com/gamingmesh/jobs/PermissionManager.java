@@ -137,7 +137,7 @@ public class PermissionManager {
 	    return 0D;
 	}
 
-	Double amount = null;
+	Double amount = 0D;
 	for (Entry<String, Boolean> uno : permissions.entrySet()) {
 	    if (uno.getKey().startsWith(perm)) {
 		double t = 0d;
@@ -147,12 +147,11 @@ public class PermissionManager {
 		    continue;
 		}
 
-		amount = t;
-		break;
+		amount += t;
 	    }
 	}
 
-	return amount == null ? 0D : amount;
+	return amount;
     }
 
     public boolean hasPermission(JobsPlayer jPlayer, String perm) {
