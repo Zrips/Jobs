@@ -250,9 +250,8 @@ public class JobsPlayer {
 
     public double getBoost(String JobName, CurrencyType type, boolean force) {
 	double Boost = 0D;
-	if (!isOnline())
-	    return Boost;
-	if (type == null)
+
+	if (!isOnline() || type == null)
 	    return Boost;
 
 	long time = System.currentTimeMillis();
@@ -262,14 +261,17 @@ public class JobsPlayer {
 	    for (BoostCounter counter : counterList) {
 		if (counter.getType() != type)
 		    continue;
+
 		if (force || time - counter.getTime() > 1000 * 60) {
 		    Boost = getPlayerBoostNew(JobName, type);
 		    counter.setBoost(Boost);
 		    counter.setTime(time);
 		    return Boost;
 		}
+
 		return counter.getBoost();
 	    }
+
 	    Boost = getPlayerBoostNew(JobName, type);
 	    counterList.add(new BoostCounter(type, Boost, time));
 	    return Boost;
@@ -285,19 +287,22 @@ public class JobsPlayer {
     }
 
     private Double getPlayerBoostNew(String JobName, CurrencyType type) {
-	Double Boost = null;
 	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + "." + type.getName().toLowerCase(), true);
-	Boost = v1;
+	Double Boost = v1;
+
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + ".all");
-	if (Boost == null || v1 != null && v1 > Boost)
-	    Boost = v1;
+	//if (v1 > Boost)
+	//    Boost = v1;
+
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all");
-	if (Boost == null || v1 != null && v1 > Boost)
-	    Boost = v1;
+	//if (v1 > Boost)
+	//    Boost = v1;
+
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName().toLowerCase());
-	if (Boost == null || v1 != null && v1 > Boost)
-	    Boost = v1;
-	return Boost == null ? 0D : Boost;
+	//if (v1 > Boost)
+	//    Boost = v1;
+
+	return Boost;
     }
 
     // New method is in use
@@ -824,7 +829,7 @@ public class JobsPlayer {
     }
 
     public void setPermissionsCache(String permission, Boolean state) {
-	this.permissionsCache.put(permission, state);
+	permissionsCache.put(permission, state);
     }
 
     public Long getLastPermissionUpdate() {
@@ -926,9 +931,7 @@ public class JobsPlayer {
     }
 
     public void resetQuests() {
-	for (JobProgression one : getJobProgression()) {
-	    resetQuests(one.getJob());
-	}
+	getJobProgression().forEach(one -> resetQuests(one.getJob()));
     }
 
     public void getNewQuests() {
@@ -961,7 +964,7 @@ public class JobsPlayer {
 
 	HashMap<String, QuestProgression> prog = qProgression.get(q.getJob().getName());
 	if (prog == null) {
-	    prog = new HashMap<String, QuestProgression>();
+	    prog = new HashMap<>();
 	    qProgression.put(q.getJob().getName(), prog);
 	}
 
@@ -995,7 +998,8 @@ public class JobsPlayer {
 
     public List<QuestProgression> getQuestProgressions(Job job, ActionType type) {
 	if (!isInJob(job))
-	    return new ArrayList<QuestProgression>();
+	    return new ArrayList<>();
+
 	HashMap<String, QuestProgression> g = new HashMap<>();
 
 	if (qProgression.get(job.getName()) != null)
@@ -1127,7 +1131,7 @@ public class JobsPlayer {
 		HashMap<String, QuestProgression> currentProgression = qProgression.get(job.getName());
 
 		if (currentProgression == null) {
-		    currentProgression = new HashMap<String, QuestProgression>();
+		    currentProgression = new HashMap<>();
 		    qProgression.put(job.getName(), currentProgression);
 		}
 

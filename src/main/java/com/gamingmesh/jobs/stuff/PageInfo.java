@@ -2,20 +2,19 @@ package com.gamingmesh.jobs.stuff;
 
 public class PageInfo {
 
-    private int totalEntries = 0;
-    private int totalPages = 0;
-    private int start = 0;
-    private int end = 0;
-    private int currentPage = 0;
-
-    private int currentEntry = 0;
-
-    private int perPage = 6;
+    private int totalEntries = 0,
+		totalPages = 0,
+		start = 0,
+		end = 0,
+		currentPage = 0,
+		currentEntry = 0,
+		perPage = 6;
 
     public PageInfo(int perPage, int totalEntries, int currentPage) {
 	this.perPage = perPage;
 	this.totalEntries = totalEntries;
 	this.currentPage = currentPage < 1 ? 1 : currentPage;
+
 	calculate();
     }
 
@@ -24,21 +23,21 @@ public class PageInfo {
     }
 
     public int getPositionForOutput(int place) {
-	return this.start + place + 1;
+	return start + place + 1;
     }
 
     private void calculate() {
-	this.start = (this.currentPage - 1) * this.perPage;
-	this.end = this.start + this.perPage - 1;
-	if (this.end + 1 > this.totalEntries)
-	    this.end = this.totalEntries - 1;
-	this.totalPages = (int) Math.ceil((double) this.totalEntries / (double) this.perPage);
+	start = (currentPage - 1) * perPage;
+	end = start + perPage - 1;
+
+	if (end + 1 > totalEntries)
+	    end = totalEntries - 1;
+
+	totalPages = (int) Math.ceil((double) totalEntries / (double) perPage);
     }
 
     public boolean isInRange(int place) {
-	if (place >= start && place <= end)
-	    return true;
-	return false;
+	return place >= start && place <= end ? true : false;
     }
 
     public boolean isEntryOk() {
@@ -59,15 +58,11 @@ public class PageInfo {
     }
 
     public boolean isPageOk() {
-	return isPageOk(this.currentPage);
+	return isPageOk(currentPage);
     }
 
     public boolean isPageOk(int page) {
-	if (this.totalPages < page)
-	    return false;
-	if (page < 1)
-	    return false;
-	return true;
+	return totalPages < page || page < 1 ? false : true;
     }
 
     public int getStart() {
@@ -91,10 +86,10 @@ public class PageInfo {
     }
 
     public int getNextPageNumber() {
-	return this.getCurrentPage() + 1 > this.getTotalPages() ? this.getTotalPages() : this.getCurrentPage() + 1;
+	return currentPage + 1 > totalPages ? totalPages : currentPage + 1;
     }
 
     public int getPrevPageNumber() {
-	return this.getCurrentPage() - 1 < 1 ? 1 : this.getCurrentPage() - 1;
+	return currentPage - 1 < 1 ? 1 : currentPage - 1;
     }
 }

@@ -25,10 +25,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.config.YmlMaker;
 
 public class Language {
@@ -65,9 +65,9 @@ public class Language {
 	String msg = "";
 	try {
 	    if (customlocale == null || !customlocale.contains(key))
-		msg = enlocale.isString(key) ? Colors(enlocale.getString(key)) : missing;
+		msg = enlocale.isString(key) ? CMIChatColor.translate(enlocale.getString(key)) : missing;
 	    else
-		msg = customlocale.isString(key) ? Colors(customlocale.getString(key)) : missing;
+		msg = customlocale.isString(key) ? CMIChatColor.translate(customlocale.getString(key)) : missing;
 	} catch (Throwable e) {
 	    Jobs.consoleMsg("&e[Jobs] &2Can't read language file for: " + key);
 	    Bukkit.getServer().getPluginManager().disablePlugin(plugin);
@@ -129,7 +129,7 @@ public class Language {
 		    msg = msg.replace(String.valueOf(variables[y]), String.valueOf(variables[y + 1]));
 		}
 		msg = filterNewLine(msg);
-		ls.set(i, Colors(msg));
+		ls.set(i, CMIChatColor.translate(msg));
 	    }
 
 	return ls;
@@ -144,19 +144,15 @@ public class Language {
 	return msg;
     }
 
-    public List<String> ColorsArray(List<String> text, Boolean colorize) {
+    public List<String> ColorsArray(List<String> text, boolean colorize) {
 	List<String> temp = new ArrayList<>();
 	for (String part : text) {
 	    if (colorize)
-		part = Colors(part);
-	    temp.add(Colors(part));
+		part = CMIChatColor.translate(part);
+	    temp.add(CMIChatColor.translate(part));
 	}
 
 	return temp;
-    }
-
-    private String Colors(String text) {
-	return ChatColor.translateAlternateColorCodes('&', text);
     }
 
     /**
@@ -165,7 +161,7 @@ public class Language {
      * @return the message
      */
     public String getDefaultMessage(String key) {
-	return enlocale.contains(key) ? Colors(enlocale.getString(key)) : "Can't find locale";
+	return enlocale.contains(key) ? CMIChatColor.translate(enlocale.getString(key)) : "Can't find locale";
     }
 
     /**

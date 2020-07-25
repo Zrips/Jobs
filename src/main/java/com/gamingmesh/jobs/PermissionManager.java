@@ -32,7 +32,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class PermissionManager {
 
-    private HashMap<String, Integer> permDelay = new HashMap<>();
+    private final HashMap<String, Integer> permDelay = new HashMap<>();
 
     private enum prm {
 //	jobs_join_JOBNAME(remade("jobs.join.%JOBNAME%"), 60 * 1000),
@@ -54,8 +54,7 @@ public class PermissionManager {
 	jobs_petpay_AMOUNT(remade("jobs.petpay.%AMOUNT%"), 60 * 1000),
 	jobs_maxfurnaces_AMOUNT(remade("jobs.maxfurnaces.%AMOUNT%"), 2 * 1000),
 	jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 2 * 1000),
-	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2 * 1000)
-	;
+	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2 * 1000);
 
 	private int reload;
 	private List<String> perms;
@@ -111,6 +110,7 @@ public class PermissionManager {
 	    if (permission.getPermission().startsWith("jobs."))
 		mine.put(permission.getPermission(), permission.getValue());
 	}
+
 	return mine;
     }
 
@@ -119,10 +119,7 @@ public class PermissionManager {
     }
 
     public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
-	if (jPlayer == null)
-	    return 0D;
-
-	if (jPlayer.getPlayer() == null)
+	if (jPlayer == null || jPlayer.getPlayer() == null)
 	    return 0D;
 
 	perm = perm.toLowerCase();
@@ -143,12 +140,15 @@ public class PermissionManager {
 	Double amount = null;
 	for (Entry<String, Boolean> uno : permissions.entrySet()) {
 	    if (uno.getKey().startsWith(perm)) {
+		double t = 0d;
 		try {
-		    double t = Double.parseDouble(uno.getKey().replace(perm, ""));
-		    if (amount == null || t > amount)
-			amount = t;
-		} catch (Exception e) {
+		    t = Double.parseDouble(uno.getKey().replace(perm, ""));
+		} catch (NumberFormatException e) {
+		    continue;
 		}
+
+		amount = t;
+		break;
 	    }
 	}
 
@@ -156,10 +156,9 @@ public class PermissionManager {
     }
 
     public boolean hasPermission(JobsPlayer jPlayer, String perm) {
-	if (jPlayer == null)
+	if (jPlayer == null || jPlayer.getPlayer() == null)
 	    return false;
-	if (jPlayer.getPlayer() == null)
-	    return false;
+
 	HashMap<String, Boolean> permissions = jPlayer.getPermissionsCache();
 	if (permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
 	    permissions = getAll(jPlayer.getPlayer());

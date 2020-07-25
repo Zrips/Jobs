@@ -25,7 +25,7 @@ public class limit implements Cmd {
 	if (args.length >= 1)
 	    JPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	else if (sender instanceof Player)
-		JPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+	    JPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
 	boolean disabled = true;
 	for (CurrencyType type : CurrencyType.values()) {

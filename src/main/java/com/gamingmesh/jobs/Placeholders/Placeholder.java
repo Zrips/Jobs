@@ -471,9 +471,8 @@ public class Placeholder {
 		case user_jmaxlvl_$1:
 		    return j == null ? "0" : Integer.toString(j.getJob().getMaxLevel(user));
 		case user_boost_$1_$2:
-		    if (vals.size() < 2)
-			return "";
-		    return j == null ? "" : simplifyDouble(user.getBoost(j.getJob().getName(), CurrencyType.getByName(vals.get(1))));
+		    return vals.size() < 2 || j == null ? "" : simplifyDouble(user.getBoost(j.getJob().getName(),
+				CurrencyType.getByName(vals.get(1))));
 		case user_isin_$1:
 		    vals = placeHolder.getComplexValues(value);
 		    if (vals.isEmpty())

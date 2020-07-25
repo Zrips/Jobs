@@ -98,7 +98,7 @@ public class Schedule {
 	this.Name = Name;
     }
 
-    public String GetName() {
+    public String getName() {
 	return Name;
     }
 
@@ -106,15 +106,15 @@ public class Schedule {
 	this.From = From;
     }
 
-    public int GetFrom() {
+    public int getFrom() {
 	return From;
     }
 
-    public int GetNextFrom() {
+    public int getNextFrom() {
 	return nextFrom;
     }
 
-    public int GetNextUntil() {
+    public int getNextUntil() {
 	return nextUntil;
     }
 
@@ -133,7 +133,7 @@ public class Schedule {
 	}
     }
 
-    public int GetUntil() {
+    public int getUntil() {
 	return Until;
     }
 
@@ -150,7 +150,6 @@ public class Schedule {
 	    }
 
 	    Job jb = Jobs.getJob(JobsNameList.get(z));
-
 	    if (jb == null)
 		continue;
 
@@ -158,7 +157,7 @@ public class Schedule {
 	}
     }
 
-    public List<Job> GetJobs() {
+    public List<Job> getJobs() {
 	return JobsList;
     }
 
@@ -166,10 +165,11 @@ public class Schedule {
 	for (int z = 0; z < Days.size(); z++) {
 	    Days.set(z, Days.get(z).toLowerCase());
 	}
+
 	this.Days = Days;
     }
 
-    public List<String> GetDays() {
+    public List<String> getDays() {
 	return Days;
     }
 
@@ -181,7 +181,7 @@ public class Schedule {
 	MessageOnStart.addAll(temp);
     }
 
-    public List<String> GetMessageOnStart() {
+    public List<String> getMessageOnStart() {
 	return MessageOnStart;
     }
 
@@ -193,7 +193,7 @@ public class Schedule {
 	MessageOnStop.addAll(temp);
     }
 
-    public List<String> GetMessageOnStop() {
+    public List<String> getMessageOnStop() {
 	return MessageOnStop;
     }
 
@@ -205,7 +205,7 @@ public class Schedule {
 	MessageToBroadcast.addAll(temp);
     }
 
-    public List<String> GetMessageToBroadcast() {
+    public List<String> getMessageToBroadcast() {
 	return MessageToBroadcast;
     }
 
@@ -213,7 +213,7 @@ public class Schedule {
 	this.broadcastInterval = broadcastInterval;
     }
 
-    public int GetBroadcastInterval() {
+    public int getBroadcastInterval() {
 	return broadcastInterval;
     }
 

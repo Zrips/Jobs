@@ -58,12 +58,12 @@ public class top implements Cmd {
 	PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, workingIn, page);
 
 	List<TopList> FullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart() - 1);
-	if (FullList.size() <= 0) {
+	if (FullList.isEmpty()) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    return true;
 	}
 
-	player.sendMessage(Jobs.getLanguage().getMessage("command.top.help.info", "%amount%", Jobs.getGCManager().JobsTopAmount));
+	player.sendMessage(Jobs.getLanguage().getMessage("command.top.help.info"));
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", job.getName(), "%amount%", Jobs.getGCManager().JobsTopAmount));

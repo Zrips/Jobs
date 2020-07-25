@@ -36,15 +36,13 @@ public class ScheduleManager {
 	    return;
 
 	cancel();
-	autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoTimer, 20, 30 * 20L);
+	autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::scheduler, 20, 30 * 20L);
     }
 
     public void cancel() {
 	if (autoTimerBukkitId != -1)
 	    Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
     }
-
-    private Runnable autoTimer = this::scheduler;
 
     public int getDateByInt() {
 	return TimeManage.timeInInt();
@@ -59,25 +57,23 @@ public class ScheduleManager {
 
 	String currenttime = dateFormat.format(date);
 
-	int Current = Integer.valueOf(currenttime.replace(":", "")).intValue();
+	int Current = Integer.valueOf(currenttime.replace(":", ""));
 
-	String CurrentDayName = GetWeekDay();
+	String CurrentDayName = getWeekDay();
 
 	for (Schedule one : BOOSTSCHEDULE) {
 
-	    int From = one.GetFrom();
-	    int Until = one.GetUntil();
+	    int From = one.getFrom();
+	    int Until = one.getUntil();
 
-	    List<String> days = one.GetDays();
+	    List<String> days = one.getDays();
 
-	    if (one.isStarted() && one.getBroadcastInfoOn() < System.currentTimeMillis() && one.GetBroadcastInterval() > 0) {
-		one.setBroadcastInfoOn(System.currentTimeMillis() + one.GetBroadcastInterval() * 60 * 1000);
-		for (String oneMsg : one.GetMessageToBroadcast()) {
-		    Bukkit.broadcastMessage(oneMsg);
-		}
+	    if (one.isStarted() && one.getBroadcastInfoOn() < System.currentTimeMillis() && one.getBroadcastInterval() > 0) {
+		one.setBroadcastInfoOn(System.currentTimeMillis() + one.getBroadcastInterval() * 60 * 1000);
+		one.getMessageToBroadcast().forEach(Bukkit::broadcastMessage);
 	    }
 
-	    if (((one.isNextDay() && (Current >= From && Current < Until || Current >= one.GetNextFrom() && Current < one.GetNextUntil()) && !one
+	    if (((one.isNextDay() && (Current >= From && Current < Until || Current >= one.getNextFrom() && Current < one.getNextUntil()) && !one
 		.isStarted()) || !one.isNextDay() && (Current >= From && Current < Until)) && (days.contains(CurrentDayName) || days.contains("all")) && !one
 		    .isStarted()) {
 
@@ -86,40 +82,40 @@ public class ScheduleManager {
 		if (event.isCancelled()) {
 		    continue;
 		}
+
 		if (one.isBroadcastOnStart())
-		    if (one.GetMessageOnStart().size() == 0)
+		    if (one.getMessageOnStart().isEmpty())
 			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStarted"));
 		    else
-			for (String oneMsg : one.GetMessageOnStart()) {
-			    Bukkit.broadcastMessage(oneMsg);
-			}
+			one.getMessageOnStart().forEach(Bukkit::broadcastMessage);
 
-		for (Job onejob : one.GetJobs()) {
+		for (Job onejob : one.getJobs()) {
 		    onejob.setBoost(one.getBoost());
 		}
 
-		one.setBroadcastInfoOn(System.currentTimeMillis() + one.GetBroadcastInterval() * 60 * 1000);
+		one.setBroadcastInfoOn(System.currentTimeMillis() + one.getBroadcastInterval() * 60 * 1000);
 
 		one.setStarted(true);
 		one.setStoped(false);
 		break;
-	    } else if (((one.isNextDay() && Current > one.GetNextUntil() && Current < one.GetFrom() && !one.isStoped()) || !one.isNextDay() && Current > Until
+	    } else if (((one.isNextDay() && Current > one.getNextUntil() && Current < one.getFrom() && !one.isStoped()) || !one.isNextDay() && Current > Until
 		&& ((days.contains(CurrentDayName)) || days.contains("all"))) && !one.isStoped()) {
 		JobsScheduleStopEvent event = new JobsScheduleStopEvent(one);
 		Bukkit.getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
 		    continue;
 		}
+
 		if (one.isBroadcastOnStop())
-		    if (one.GetMessageOnStop().size() == 0)
+		    if (one.getMessageOnStop().isEmpty())
 			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStoped"));
 		    else
-			for (String oneMsg : one.GetMessageOnStop()) {
-			    Bukkit.broadcastMessage(oneMsg);
-			}
-		for (Job onejob : one.GetJobs()) {
+			one.getMessageOnStop().forEach(Bukkit::broadcastMessage);
+
+		for (Job onejob : one.getJobs()) {
 		    onejob.setBoost(new BoostMultiplier());
 		}
+
 		one.setStoped(true);
 		one.setStarted(false);
 	    }
@@ -128,7 +124,7 @@ public class ScheduleManager {
 	return true;
     }
 
-    public static String GetWeekDay() {
+    public static String getWeekDay() {
 	Calendar c = Calendar.getInstance();
 	int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 	switch (dayOfWeek) {
@@ -175,22 +171,14 @@ public class ScheduleManager {
 	for (String OneSection : sections) {
 	    ConfigurationSection path = conf.getConfigurationSection("Boost." + OneSection);
 
-	    if (!path.contains("Enabled") || !conf.getConfigurationSection("Boost." + OneSection).getBoolean("Enabled"))
+	    if (!path.getBoolean("Enabled", false))
 		continue;
 
 	    Schedule sched = new Schedule();
 	    sched.setName(OneSection);
 
-	    if (!path.contains("From") || !path.getString("From").contains(":"))
-		continue;
-
-	    if (!path.contains("Until") || !path.getString("Until").contains(":"))
-		continue;
-
-	    if (!path.contains("Days") || !path.isList("Days"))
-		continue;
-
-	    if (!path.contains("Jobs") || !path.isList("Jobs"))
+	    if (!path.getString("From", "").contains(":") || !path.getString("Until", "").contains(":")
+		|| !path.isList("Days") || !path.isList("Jobs"))
 		continue;
 
 	    sched.setDays(path.getStringList("Days"));
@@ -198,13 +186,13 @@ public class ScheduleManager {
 	    sched.setFrom(Integer.valueOf(path.getString("From").replace(":", "")));
 	    sched.setUntil(Integer.valueOf(path.getString("Until").replace(":", "")));
 
-	    if (path.contains("MessageOnStart") && path.isList("MessageOnStart"))
+	    if (path.isList("MessageOnStart"))
 		sched.setMessageOnStart(path.getStringList("MessageOnStart"), path.getString("From"), path.getString("Until"));
 
 	    if (path.contains("BroadcastOnStart"))
 		sched.setBroadcastOnStart(path.getBoolean("BroadcastOnStart"));
 
-	    if (path.contains("MessageOnStop") && path.isList("MessageOnStop"))
+	    if (path.isList("MessageOnStop"))
 		sched.setMessageOnStop(path.getStringList("MessageOnStop"), path.getString("From"), path.getString("Until"));
 
 	    if (path.contains("BroadcastOnStop"))
@@ -213,14 +201,14 @@ public class ScheduleManager {
 	    if (path.contains("BroadcastInterval"))
 		sched.setBroadcastInterval(path.getInt("BroadcastInterval"));
 
-	    if (path.contains("BroadcastMessage") && path.isList("BroadcastMessage"))
+	    if (path.isList("BroadcastMessage"))
 		sched.setMessageToBroadcast(path.getStringList("BroadcastMessage"), path.getString("From"), path.getString("Until"));
 
-	    if (path.contains("Exp") && path.isDouble("Exp"))
+	    if (path.isDouble("Exp"))
 		sched.setBoost(CurrencyType.EXP, path.getDouble("Exp", 0D));
-	    if (path.contains("Money") && path.isDouble("Money"))
+	    if (path.isDouble("Money"))
 		sched.setBoost(CurrencyType.MONEY, path.getDouble("Money", 0D));
-	    if (path.contains("Points") && path.isDouble("Points"))
+	    if (path.isDouble("Points"))
 		sched.setBoost(CurrencyType.POINTS, path.getDouble("Points", 0D));
 
 	    BOOSTSCHEDULE.add(sched);
