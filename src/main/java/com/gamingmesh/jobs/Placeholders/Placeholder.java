@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +19,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
+import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class Placeholder {
@@ -54,6 +56,7 @@ public class Placeholder {
 	user_jobs,
 
 	user_boost_$1_$2("jname/number", "money/exp/points"),
+	user_jtoplvl_$1_$2("jname/number", "number"),
 	user_isin_$1("jname/number"),
 	user_canjoin_$1("jname/number"),
 	user_jlevel_$1("jname/number"),
@@ -473,6 +476,33 @@ public class Placeholder {
 		case user_boost_$1_$2:
 		    return vals.size() < 2 || j == null ? "" : simplifyDouble(user.getBoost(j.getJob().getName(),
 				CurrencyType.getByName(vals.get(1))));
+		case user_jtoplvl_$1_$2:
+		    vals = placeHolder.getComplexValues(value);
+		    if (vals.isEmpty())
+			return "";
+
+		    Job job = getJobFromValue(vals.get(0));
+		    if (job == null)
+			return "";
+
+			int amount = 0;
+			try {
+			    amount = Integer.parseInt(vals.get(1));
+			} catch (NumberFormatException e) {
+			    return "";
+			}
+
+			final int top = amount;
+			return CompletableFuture.supplyAsync(() -> {
+			    for (TopList l : Jobs.getJobsDAO().getGlobalTopList(top)) {
+				if (l.getPlayerInfo().getName().equals(user.getName())) {
+				    JobProgression prog = l.getPlayerInfo().getJobsPlayer().getJobProgression(job);
+				    return prog == null ? "" : Integer.toString(prog.getLevel());
+				}
+			    }
+
+			    return "";
+			}).join();
 		case user_isin_$1:
 		    vals = placeHolder.getComplexValues(value);
 		    if (vals.isEmpty())

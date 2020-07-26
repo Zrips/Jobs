@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.container;
 
 public final class TopList {
+
     private int level;
     private int exp;
     private PlayerInfo info;
@@ -11,8 +12,13 @@ public final class TopList {
 	this.exp = exp;
     }
 
+    @Deprecated
     public String getPlayerName() {
 	return info.getName();
+    }
+
+    public PlayerInfo getPlayerInfo() {
+	return info;
     }
 
     public int getLevel() {

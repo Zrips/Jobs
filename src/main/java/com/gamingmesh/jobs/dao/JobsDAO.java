@@ -950,16 +950,13 @@ public abstract class JobsDAO {
 	// Lets convert old fields
 	if (convertSchedId > 0)
 	    Bukkit.getServer().getScheduler().cancelTask(convertSchedId);
+
 	if (!converted) {
-	    convertSchedId = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    Jobs.consoleMsg("&6[Jobs] Converting to new database format");
-		    convertID();
-		    Jobs.consoleMsg("&6[Jobs] Converted to new database format");
-		    converted = true;
-		    return;
-		}
+	    convertSchedId = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+		Jobs.consoleMsg("&6[Jobs] Converting to new database format");
+		convertID();
+		Jobs.consoleMsg("&6[Jobs] Converted to new database format");
+		converted = true;
 	    }, 60L);
 	}
     }
