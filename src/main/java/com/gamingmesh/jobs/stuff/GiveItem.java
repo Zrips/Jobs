@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 
 public class GiveItem {
@@ -24,7 +24,7 @@ public class GiveItem {
 	if (lore != null && !lore.isEmpty()) {
 	    List<String> TranslatedLore = new ArrayList<>();
 	    for (String oneLore : lore) {
-		TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player.getName())));
+		TranslatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
 	    }
 
 	    ItemMeta.setLore(TranslatedLore);
@@ -44,7 +44,7 @@ public class GiveItem {
 	}
 
 	if (name != null)
-	    ItemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+	    ItemMeta.setDisplayName(CMIChatColor.translate(name));
 
 	itemStack.setItemMeta(ItemMeta);
 	GiveItemForPlayer(player, itemStack);

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -97,7 +96,7 @@ public class CMIItemStack {
 	    if (name == null) {
 		meta.setDisplayName(null);
 	    } else
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+		meta.setDisplayName(CMIChatColor.translate(name));
 	}
 	getItemStack().setItemMeta(meta);
 	return this;
@@ -114,8 +113,8 @@ public class CMIItemStack {
 	ItemMeta meta = getItemStack().getItemMeta();
 	List<String> lore = meta.getLore();
 	if (lore == null)
-	    lore = new ArrayList<String>();
-	lore.add(ChatColor.translateAlternateColorCodes('&', string));
+	    lore = new ArrayList<>();
+	lore.add(CMIChatColor.translate(string));
 	meta.setLore(lore);
 	getItemStack().setItemMeta(meta);
 	return this;
@@ -135,7 +134,7 @@ public class CMIItemStack {
 	ItemMeta meta = getItemStack().getItemMeta();
 	List<String> t = new ArrayList<>();
 	for (String one : lore) {
-	    t.add(ChatColor.translateAlternateColorCodes('&', one));
+	    t.add(CMIChatColor.translate(one));
 	}
 	meta.setLore(t);
 	getItemStack().setItemMeta(meta);
@@ -181,14 +180,14 @@ public class CMIItemStack {
 	if (meta != null) {
 	    List<String> lore = meta.getLore();
 	    if (lore == null) {
-		lore = new ArrayList<String>();
+		lore = new ArrayList<>();
 		meta.setLore(lore);
 //    	this.getItemStack().setItemMeta(meta);
 	    }
 
-	    return meta.getLore() == null ? new ArrayList<String>() : meta.getLore();
+	    return meta.getLore() == null ? new ArrayList<>() : meta.getLore();
 	}
-	return new ArrayList<String>();
+	return new ArrayList<>();
     }
 
     public String getRealName() {
@@ -349,9 +348,9 @@ public class CMIItemStack {
 	    return false;
 
 	try {
-	    if ((item.getCMIType().isPotion() || item.getCMIType().equals(CMIMaterial.TIPPED_ARROW)) &&
-		(getCMIType().isPotion() || getCMIType().equals(CMIMaterial.TIPPED_ARROW)) &&
-		getType().equals(item.getType())) {
+	    if ((item.getCMIType().isPotion() || item.getCMIType() == CMIMaterial.TIPPED_ARROW) &&
+		(getCMIType().isPotion() || getCMIType() == CMIMaterial.TIPPED_ARROW) &&
+		getType() == item.getType()) {
 		PotionMeta potion = (PotionMeta) item.getItemStack().getItemMeta();
 		PotionMeta potion2 = (PotionMeta) getItemStack().getItemMeta();
 		try {

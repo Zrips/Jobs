@@ -10,13 +10,13 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIReflections;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.ScoreboardInfo;
@@ -116,7 +116,7 @@ public class CMIScoreboardManager {
 		Object pp1 = p00.newInstance();
 		setField(pp1, "a", player.getName());
 		setField(pp1, "d", 0);
-		Object chatComponentText = getNMSClass("ChatComponentText").getConstructor(String.class).newInstance(ChatColor.translateAlternateColorCodes('&', displayName));
+		Object chatComponentText = getNMSClass("ChatComponentText").getConstructor(String.class).newInstance(CMIChatColor.translate(displayName));
 		setField(pp1, "b", chatComponentText);
 		setField(pp1, "c", enums.getEnumConstants()[1]);
 		sendPacket(player, pp1);
@@ -129,7 +129,7 @@ public class CMIScoreboardManager {
 		for (int i = 0; i < 15; i++) {
 		    if (i >= lines.size())
 			break;
-		    String ln = ChatColor.translateAlternateColorCodes('&', lines.get(i));
+		    String ln = CMIChatColor.translate(lines.get(i));
 		    Class<?> PacketPlayOutScoreboardScoreClass = getNMSClass("PacketPlayOutScoreboardScore");
 		    Constructor<?> PacketPlayOutScoreboardScoreConstructor = PacketPlayOutScoreboardScoreClass.getConstructor();
 		    Object PacketPlayOutScoreboardScore = PacketPlayOutScoreboardScoreConstructor.newInstance();
@@ -152,7 +152,7 @@ public class CMIScoreboardManager {
 		Object obj = m.invoke(boards, objName, IScoreboardCriteria);
 
 		Method mm = obj.getClass().getMethod("setDisplayName", String.class);
-		mm.invoke(obj, ChatColor.translateAlternateColorCodes('&', displayName));
+		mm.invoke(obj, CMIChatColor.translate(displayName));
 
 		Class<?> p1 = getNMSClass("PacketPlayOutScoreboardObjective");
 		Constructor<?> p11 = p1.getConstructor(obj.getClass(), int.class);
@@ -173,7 +173,7 @@ public class CMIScoreboardManager {
 		    if (i >= lines.size())
 			break;
 
-		    String ln = ChatColor.translateAlternateColorCodes('&', lines.get(i));
+		    String ln = CMIChatColor.translate(lines.get(i));
 		    Class<?> ScoreboardScoreClass = getNMSClass("ScoreboardScore");
 		    Constructor<?> packetConstructor2 = ScoreboardScoreClass.getConstructor(getNMSClass("Scoreboard"), getNMSClass("ScoreboardObjective"), String.class);
 		    Object packet2 = packetConstructor2.newInstance(boards, obj, ln);

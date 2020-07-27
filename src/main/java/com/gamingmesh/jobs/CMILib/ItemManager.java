@@ -1,23 +1,18 @@
 package com.gamingmesh.jobs.CMILib;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.Potion;
 import com.gamingmesh.jobs.stuff.Util;
 
+@SuppressWarnings("deprecation")
 public class ItemManager {
 
     static HashMap<Material, CMIMaterial> byRealMaterial = new HashMap<>();
@@ -36,7 +31,9 @@ public class ItemManager {
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one == null)
 		continue;
+
 	    one.updateMaterial();
+
 	    Material mat = one.getMaterial();
 	    if (mat == null) {
 		continue;
@@ -105,105 +102,16 @@ public class ItemManager {
 	    byRealMaterial.put(mat, one);
 
 	}
-//	plugin.consoleMessage("Loaded " + byName2.size() + " " + byId2.size() + " " + byRealMaterial2.size()); 
-
-//	for (CMIMaterial one : CMIMaterial.values()) {
-//	    if (one == null)
-//		continue;
-//	    one.updateMaterial();
-//	    Material mat = one.getMaterial();
-//
-//	    if (mat == null) {
-//		continue;
-//	    }
-//
-//	    Integer id = one.getId();
-//	    short data = one.getLegacyData();
-//	    Integer legacyId = one.getLegacyId();
-//
-//	    String bukkitName = one.name();
-//	    String mojangName = one.name();
-////	    String realName = plugin.getRef().getItemRealName(new ItemStack(mat));
-//	    try {
-//		mojangName = plugin.getRef().getItemMinecraftName(new ItemStack(mat));
-//	    } catch (Exception e) {
-//		e.printStackTrace();
-//	    }
-//
-//	    mojangName = mojangName == null ? mat.toString() : mojangName;
-//	    CMIItemStack cm = new CMIItemStack(one);
-//
-//	    cm.setId(id);
-//	    cm.setData(data > 0 ? data : 0);
-//
-//	    cm.setBukkitName(bukkitName);
-//	    cm.setMojangName(mojangName);
-//
-//	    byBukkitName.put(bukkitName + ":" + cm.getData(), cm);
-//	    byBukkitName.put(id + ":" + cm.getData(), cm);
-//	    byBukkitName.put(legacyId + ":" + cm.getData(), cm);
-//	    if (!one.getLegacyNames().isEmpty()) {
-//		byBukkitName.put(one.getLegacyName().toLowerCase().replace("_", "").replace(" ", ""), cm);
-//	    }
-//	    byBukkitName.put(one.name().toLowerCase().replace("_", "").replace(" ", ""), cm);
-//
-//	    String n = mojangName.toLowerCase().replace("_", "").replace(" ", "").replace("minecraft:", "");
-//
-//	    if (!byMojangName.containsKey(n))
-//		byMojangName.put(n, cm);
-//	    byMaterial.put(one, cm);
-//	    if (!byId.containsKey(id))
-//		byId.put(id, cm);
-//	    if (!byId.containsKey(one.getLegacyId()))
-//		byId.put(one.getLegacyId(), cm);
-//	    if (one.getLegacyData() == 0)
-//		byId.put(one.getLegacyId(), cm);
-//	    byRealMaterial.put(mat, one);
-//	}
-//
-//	for (Material one : Material.class.getEnumConstants()) {
-//	    CMIMaterial mat = CMIMaterial.get(one);
-//	    if (mat == CMIMaterial.NONE && !one.toString().startsWith("LEGACY_")) {
-//		CMIItemStack cm = new CMIItemStack(new ItemStack(one));
-//		if (Version.isCurrentEqualOrLower(Version.v1_13_R2))
-//		    cm.setId(one.getId());
-//		cm.setBukkitName(one.name());
-////		String realName = plugin.getRef().getItemRealName(new ItemStack(one));
-//
-//		if (Version.isCurrentEqualOrLower(Version.v1_13_R2))
-//		    byBukkitName.put(one.getId() + ":" + cm.getData(), cm);
-//		byBukkitName.put(one.name().toLowerCase().replace("_", "").replace(" ", ""), cm);
-//		String mojangName = one.name();
-//		try {
-//		    mojangName = plugin.getRef().getItemMinecraftName(new ItemStack(one));
-//		} catch (Exception e) {
-//		}
-//		mojangName = mojangName == null ? mat.toString() : mojangName;
-//		cm.setMojangName(mojangName);
-//		String n = mojangName.toLowerCase().replace("_", "").replace(" ", "").replace("minecraft:", "");
-//		if (!byMojangName.containsKey(n))
-//		    byMojangName.put(n, cm);
-//		if (Version.isCurrentEqualOrLower(Version.v1_13_R2))
-//		    if (!byId.containsKey(one.getId()))
-//			byId.put(one.getId(), cm);
-//		byRealMaterial.put(one, mat);
-//	    }
-//	}
-
     }
 
     @Deprecated
     public CMIItemStack getItem(Material mat) {
 	CMIMaterial cmat = CMIMaterial.get(mat);
-	if (cmat == null || cmat.equals(CMIMaterial.NONE))
-	    return null;
-	return new CMIItemStack(cmat);
+	return (cmat == null || cmat == CMIMaterial.NONE) ? null : new CMIItemStack(cmat);
     }
 
     public static CMIItemStack getItem(CMIMaterial mat) {
-	if (mat == null || mat.equals(CMIMaterial.NONE))
-	    return null;
-	return new CMIItemStack(mat);
+	return (mat == null || mat == CMIMaterial.NONE) ? null : new CMIItemStack(mat);
     }
 
     public static CMIItemStack getItem(ItemStack item) {
@@ -302,16 +210,16 @@ public class ItemManager {
 	}
 
 	CMIMaterial cmat = CMIMaterial.get(subdata == null ? name : name + ":" + subdata);
-	if (cmat == null || cmat.equals(CMIMaterial.NONE)) {
+	if (cmat == null || cmat == CMIMaterial.NONE) {
 	    cmat = CMIMaterial.get(name);
 	}
 
-	if (cmat != null && !cmat.equals(CMIMaterial.NONE)) {
+	if (cmat != null && cmat != CMIMaterial.NONE) {
 	    cm = cmat.newCMIItemStack();
 	} else
 	    cmat = CMIMaterial.get(subdata == null ? original : original + ":" + subdata);
 
-	if (cmat != null && !cmat.equals(CMIMaterial.NONE))
+	if (cmat != null && cmat != CMIMaterial.NONE)
 	    cm = cmat.newCMIItemStack();
 
 //	main: if (cm == null) {
@@ -423,8 +331,8 @@ public class ItemManager {
 	    ncm.setAmount(amount);
 
 	if (ncm != null && subdata != null) {
-	    if (ncm.getCMIType().isPotion() || ncm.getCMIType().equals(CMIMaterial.SPLASH_POTION)
-		|| ncm.getCMIType().equals(CMIMaterial.TIPPED_ARROW)) {
+	    if (ncm.getCMIType().isPotion() || ncm.getCMIType() == CMIMaterial.SPLASH_POTION
+		|| ncm.getCMIType() == CMIMaterial.TIPPED_ARROW) {
 		Integer d = null;
 		PotionEffectType type = null;
 		Boolean upgraded = false;
@@ -468,38 +376,9 @@ public class ItemManager {
 	return ncm;
     }
 
-    public List<Recipe> getAllRecipes() {
-	List<Recipe> results = new ArrayList<>();
-	Iterator<Recipe> iter = Bukkit.recipeIterator();
-	while (iter.hasNext()) {
-	    Recipe recipe = iter.next();
-	    results.add(recipe);
-	}
-	return results;
-    }
-
-    public List<Recipe> getRecipesFor(ItemStack result) {
-	List<Recipe> results = new ArrayList<>();
-	Iterator<Recipe> iter = Bukkit.recipeIterator();
-	while (iter.hasNext()) {
-	    Recipe recipe = iter.next();
-	    ItemStack stack = recipe.getResult();
-	    if (stack.getType() != result.getType()) {
-		continue;
-	    }
-	    if (Jobs.getNms().getDurability(result) == -1 ||
-		Jobs.getNms().getDurability(result) == Jobs.getNms().getDurability(stack)) {
-		results.add(recipe);
-	    }
-	}
-	return results;
-    }
-
     public Material getMaterial(String name) {
 	CMIItemStack cm = getItem(name);
-	if (cm == null)
-	    return Material.AIR;
-	return cm.getType();
+	return cm == null ? Material.AIR : cm.getType();
     }
 
 //    public CMIMaterial getRealName(CMIItemStack item) {
@@ -528,10 +407,4 @@ public class ItemManager {
 //	    one.setName(one.getName().replace("[entityNames]", CMIEntityType.getById(one.getData()).getName()));
 //	return one;
 //    }
-    public enum SlabType {
-	TOP,
-	BOTTOM,
-	DOUBLE,
-	NOTSLAB;
-    }
 }

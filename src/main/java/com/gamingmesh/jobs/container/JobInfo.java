@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs.container;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 
 public class JobInfo {
@@ -81,7 +82,7 @@ public class JobInfo {
 	String materialName = getName().toLowerCase().replace('_', ' ');
 	materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
 	materialName = Jobs.getNameTranslatorManager().Translate(getActionType().equals(ActionType.MMKILL) ? getName() : materialName, this);
-	materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
+	materialName = CMIChatColor.translate(materialName);
 	return materialName;
     }
 

@@ -27,7 +27,6 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -249,18 +248,18 @@ public class JobsListener implements Listener {
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
 
-	if (!ChatColor.stripColor(FirstLine).equalsIgnoreCase(ChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))))
+	if (!CMIChatColor.stripColor(FirstLine).equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))))
 	    return;
 
-	String command = ChatColor.stripColor(sign.getLine(1));
+	String command = CMIChatColor.stripColor(sign.getLine(1));
 	for (String key : Jobs.getGCManager().keys) {
-	    if (command.equalsIgnoreCase(ChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
+	    if (command.equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
 		command = key;
 		break;
 	    }
 	}
 
-	player.performCommand("jobs " + command + " " + ChatColor.stripColor(sign.getLine(2)) + " " + ChatColor.stripColor(sign.getLine(3)));
+	player.performCommand("jobs " + command + " " + CMIChatColor.stripColor(sign.getLine(2)) + " " + CMIChatColor.stripColor(sign.getLine(3)));
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -314,10 +313,10 @@ public class JobsListener implements Listener {
 
 	Sign sign = (Sign) block.getState();
 
-	if (!ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[Jobs]"))
+	if (!CMIChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[Jobs]"))
 	    return;
 
-	final String signtype = ChatColor.stripColor(event.getLine(1));
+	final String signtype = CMIChatColor.stripColor(event.getLine(1));
 	final SignTopType type = SignTopType.getType(signtype);
 	if (type == null)
 	    return;
@@ -329,7 +328,7 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	String jobname = ChatColor.stripColor(event.getLine(2)).toLowerCase();
+	String jobname = CMIChatColor.stripColor(event.getLine(2)).toLowerCase();
 	final Job job = Jobs.getJob(jobname);
 	if (type == SignTopType.toplist && job == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
@@ -337,7 +336,7 @@ public class JobsListener implements Listener {
 	}
 
 	boolean special = false;
-	String numberString = ChatColor.stripColor(event.getLine(3)).toLowerCase();
+	String numberString = CMIChatColor.stripColor(event.getLine(3)).toLowerCase();
 	if (numberString.contains("s")) {
 	    numberString = numberString.replace("s", "");
 	    special = true;
@@ -378,7 +377,7 @@ public class JobsListener implements Listener {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
-	if (ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase(ChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !ChatColor.stripColor(event
+	if (CMIChatColor.stripColor(event.getLine(0)).equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !CMIChatColor.stripColor(event
 	    .getLine(1))
 	    .equalsIgnoreCase("toplist"))
 	    event.setLine(0, Convert(Jobs.getLanguage().getMessage("signs.topline")));
@@ -391,16 +390,16 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	String command = ChatColor.stripColor(event.getLine(1)).toLowerCase();
+	String command = CMIChatColor.stripColor(event.getLine(1)).toLowerCase();
 
 	for (String key : Jobs.getGCManager().keys) {
-	    if (command.equalsIgnoreCase(ChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
+	    if (command.equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
 		event.setLine(1, Convert(Jobs.getLanguage().getMessage("signs.secondline." + key)));
 		break;
 	    }
 	}
 
-	Job job = Jobs.getJob(ChatColor.stripColor(event.getLine(2)));
+	Job job = Jobs.getJob(CMIChatColor.stripColor(event.getLine(2)));
 	if (job == null)
 	    return;
 

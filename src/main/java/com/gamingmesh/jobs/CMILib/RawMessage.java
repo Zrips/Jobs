@@ -1,14 +1,10 @@
 package com.gamingmesh.jobs.CMILib;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,33 +12,199 @@ import org.bukkit.inventory.ItemStack;
 public class RawMessage {
 
     List<String> parts = new ArrayList<>();
-    List<String> cleanParts = new ArrayList<>();
+    List<String> onlyText = new ArrayList<>();
 
-    private String unfinished = "";
-    private String unfinishedClean = "";
+    LinkedHashMap<RawMessagePartType, String> temp = new LinkedHashMap<>();
+
+    RawMessageFragment fragment = new RawMessageFragment();
+    RawMessageFragment hoverFragment = new RawMessageFragment();
+
+    private RawMessageFragment frozenFragment = new RawMessageFragment();
+    private boolean freezeFormat = false;
 
     private String combined = "";
     String combinedClean = "";
-    private boolean dontBreakLine = false;
-    private boolean combineHoverOver = false;
 
-//    private boolean colorizeEntireWithLast = true;
+    private boolean dontBreakLine = false;
 
     public void clear() {
 	parts = new ArrayList<>();
-	cleanParts = new ArrayList<>();
+	onlyText = new ArrayList<>();
 	combined = "";
 	combinedClean = "";
     }
 
+    private String textIntoJson(String text, boolean hover) {
+	if (text.isEmpty()) {
+	    return "";
+	}
+	if (text.equalsIgnoreCase(" ")) {
+	    return " ";
+	}
+	text = CMIChatColor.deColorize(text);
+
+	Matcher match = CMIChatColor.fullPattern.matcher(text);
+	String matcher = null;
+
+	List<RawMessageFragment> fragments = new ArrayList<>();
+
+	RawMessageFragment f = hover ? hoverFragment : fragment;
+
+	String lastText = "";
+	while (match.find()) {
+	    matcher = match.group();
+	    String[] split = text.split(matcher.replace("#", "\\#").replace("{", "\\{").replace("}", "\\}"), 2);
+	    text = "";
+	    for (int i = 1; i < split.length; i++) {
+		text += split[i];
+	    }
+	    if (split[0] != null && !split[0].isEmpty()) {
+		String t = split[0];
+
+		String t2 = lastText;
+		lastText = t;
+
+		if (t2.endsWith(" ") && t.startsWith(" ")) {
+		    t = t.substring(1);
+		}
+
+		f.setText(t);
+		fragments.add(f);
+		f = new RawMessageFragment(f);
+	    }
+	    CMIChatColor color = CMIChatColor.getColor(matcher);
+	    if (color == null)
+		continue;
+
+	    if (color.isColor()) {
+		f.setLastColor(color);
+	    } else {
+		f.addFormat(color);
+	    }
+	}
+
+	if (!text.isEmpty()) {
+
+	    if (lastText.endsWith(" ") && text.startsWith(" "))
+		text = text.substring(1);
+
+	    RawMessageFragment t = new RawMessageFragment(f);
+
+	    t.setText(text);
+	    fragments.add(t);
+	}
+
+	if (hover)
+	    hoverFragment = f;
+	else
+	    fragment = f;
+
+	StringBuilder finalText = new StringBuilder();
+
+	for (RawMessageFragment one : fragments) {
+	    if (!finalText.toString().isEmpty())
+		finalText.append("},{");
+	    StringBuilder options = new StringBuilder();
+	    for (CMIChatColor format : one.getFormats()) {
+		if (!options.toString().isEmpty())
+		    options.append(",");
+		if (format.equals(CMIChatColor.UNDERLINE))
+		    options.append("\"underlined\":true");
+		else if (format.equals(CMIChatColor.BOLD))
+		    options.append("\"bold\":true");
+		else if (format.equals(CMIChatColor.ITALIC))
+		    options.append("\"italic\":true");
+		else if (format.equals(CMIChatColor.STRIKETHROUGH))
+		    options.append("\"strikethrough\":true");
+		else if (format.equals(CMIChatColor.MAGIC))
+		    options.append("\"obfuscated\":true");
+	    }
+	    if (!options.toString().isEmpty()) {
+		finalText.append(options.toString());
+		finalText.append(",");
+	    }
+
+	    if (one.getLastColor() != null) {
+		if (one.getLastColor().getHex() != null)
+		    finalText.append("\"color\":\"#" + one.getLastColor().getHex() + "\",");
+		else if (one.getLastColor().getName() != null) {
+		    finalText.append("\"color\":\"" + one.getLastColor().getName().toLowerCase() + "\",");
+		}
+	    }
+
+	    String t = one.getText();
+
+	    // Old server support, we need to add colors and formats to the text directly
+	    if (Version.isCurrentLower(Version.v1_16_R1)) {
+		StringBuilder oldColors = new StringBuilder();
+		if (one.getLastColor() != null && one.getLastColor().getName() != null) {
+		    oldColors.append(one.getLastColor().getColorCode());
+		}
+		for (CMIChatColor format : one.getFormats()) {
+		    if (format.equals(CMIChatColor.UNDERLINE))
+			oldColors.append("&n");
+		    else if (format.equals(CMIChatColor.BOLD))
+			oldColors.append("&l");
+		    else if (format.equals(CMIChatColor.ITALIC))
+			oldColors.append("&o");
+		    else if (format.equals(CMIChatColor.STRIKETHROUGH))
+			oldColors.append("&m");
+		    else if (format.equals(CMIChatColor.MAGIC))
+			oldColors.append("&k");
+		}
+		t = oldColors.toString() + t;
+	    }
+
+	    finalText.append("\"text\":\"" + t + "\"");
+	}
+
+	if (finalText.toString().isEmpty())
+	    return "";
+	return "{" + finalText.toString() + "}";
+    }
+
+    @Deprecated
+    public RawMessage add(String text, String hoverText, String command, String suggestion, String url) {
+	add(text, hoverText, command, suggestion, url, null);
+	return this;
+    }
+
+    @Deprecated
+    public RawMessage add(String text, String hoverText, String command, String suggestion, String url, String insertion) {
+	this.addText(text);
+	this.addHover(hoverText);
+	this.addCommand(command);
+	this.addSuggestion(suggestion);
+	this.addUrl(url);
+	this.addInsertion(insertion);
+	return this;
+    }
+
+    @Deprecated
+    public RawMessage addUrl(String text, String url) {
+	addUrl(text, url, null);
+	return this;
+    }
+
+    @Deprecated
+    public RawMessage addUrl(String text, String url, String hoverText) {
+	this.addText(text);
+	this.addHover(hoverText);
+	this.addUrl(url);
+	return this;
+    }
+
+    @Deprecated
     public RawMessage add(String text) {
 	return add(text, null, null, null, null);
     }
 
+    @Deprecated
     public RawMessage add(String text, String hoverText) {
 	return add(text, hoverText, null, null, null);
     }
 
+    @Deprecated
     public RawMessage add(String text, List<String> hoverText) {
 
 	String hover = "";
@@ -55,515 +217,234 @@ public class RawMessage {
 	return add(text, hover.isEmpty() ? null : hover, null, null, null);
     }
 
+    @Deprecated
     public RawMessage add(String text, String hoverText, String command) {
 	return add(text, hoverText, command, null, null);
     }
 
+    @Deprecated
     public RawMessage add(String text, String hoverText, String command, String suggestion) {
 	return add(text, hoverText, command, suggestion, null);
     }
 
-    Set<CMIChatColor> formats = new HashSet<>();
-    CMIChatColor lastColor = null;
-
-    Set<CMIChatColor> savedFormats = new HashSet<>();
-    CMIChatColor savedLastColor = null;
-
-    CMIChatColor firstBlockColor = null;
-
-    private String intoJsonColored(String text) {
-	if (text.equalsIgnoreCase(" ")) {
-	    text = "{\"text\":\" \"}";
-	    return text;
-	}
-
-	text = CMIChatColor.deColorize(text);
-
-	Pattern decolpattern = Pattern.compile(CMIChatColor.hexColorDecolRegex);
-
-	Matcher decolmatch = decolpattern.matcher(text);
-	while (decolmatch.find()) {
-
-	    String string = decolmatch.group();
-
-	    string = "{#" + string.substring(2).replace("&", "") + "}";
-
-	    text = text.replaceAll(decolmatch.group(), string);
-	}
-
-	List<String> splited = new ArrayList<>();
-	if (text.contains(" ")) {
-	    for (String one : text.split(" ")) {
-//		if (this.isBreakLine() && one.contains("\\n")) {
-//		    String[] split = one.split("\\\\n");
-//		    for (int i = 0; i < split.length; i++) {
-//			if (i < split.length - 1) {
-//			    splited.add(split[i] + "\n");
-//			} else {
-//			    splited.add(split[i]); 
-//			}
-//		    }
-//		} else {
-		splited.add(one);
-//		}
-		splited.add(" ");
-	    }
-	    if (text.length() > 1 && text.endsWith(" "))
-		splited.add(" ");
-	    if (text.startsWith(" "))
-		splited.add(" ");
-
-	    if (!splited.isEmpty())
-		splited.remove(splited.size() - 1);
-	} else
-	    splited.add(text);
-
-	Pattern prepattern = Pattern.compile(CMIChatColor.hexColorRegex);
-
-	List<String> plt = new ArrayList<>(splited);
-	splited.clear();
-	for (String one : plt) {
-	    Matcher match = prepattern.matcher(one);
-
-	    boolean found = false;
-
-	    String prev = null;
-	    String end = null;
-	    while (match.find()) {
-		if (match.group(2) == null)
-		    continue;
-		found = true;
-
-		CMIChatColor c = new CMIChatColor(match.group(2));
-
-		String[] spl = one.split("\\{\\#" + c.getHex() + "\\}");
-		if (spl.length == 0 || spl[0].isEmpty()) {
-		    prev = match.group();
-		    if (spl.length > 0)
-			end = spl[1];
-		    continue;
-		}
-
-//		if (prev != null) {
-//		    splited.add(spl[0]);
-//		} else {
-		splited.add(spl[0]);
-//		}
-
-		if (spl.length > 0)
-		    end = spl[1];
-
-		one = one.substring(spl[0].length());
-		prev = match.group();
-		match = prepattern.matcher(one);
-	    }
-
-	    if (!found) {
-		if (prev != null) {
-		    if (end != null)
-			splited.add(prev + end);
-		    else
-			splited.add(prev);
-		} else {
-		    if (end != null)
-			splited.add(end);
-		}
-
-		splited.add(one);
-	    } else {
-
-		if (prev != null) {
-		    if (end != null)
-			splited.add(prev + end);
-		} else {
-		    if (end != null)
-			splited.add(end);
-		}
-	    }
-	}
-
-	String newText = "";
-
-	Pattern pattern = Pattern.compile("(&[0123456789abcdefklmnorABCDEFKLMNOR])|" + CMIChatColor.hexColorRegex);
-
-	newText += "{\"text\":\"";
-
-	for (String one : splited) {
-
-	    String colorString = "";
-//	    if (lastColor != null)
-//		colorString += lastColor.getColorCode();
-//	    else
-//		colorString += CMIChatColor.WHITE.getColorCode();
-//	    for (CMIChatColor oneC : formats) {
-//		colorString = colorString + oneC.getColorCode();
-//	    }
-
-	    if (one.contains("&") || one.contains("{") && one.contains("}")) {
-		Matcher match = pattern.matcher(one);
-		while (match.find()) {
-		    String color = CMIChatColor.getLastColors(match.group(0));
-		    CMIChatColor c = CMIChatColor.getColor(color);
-		    if (c == null && match.group(3) != null) {
-			c = new CMIChatColor(match.group(3));
-		    }
-		    if (c != null) {
-			if (c.isFormat()) {
-			    formats.add(c);
-			} else if (c.isReset()) {
-			    formats.clear();
-			    lastColor = null;
-//			    firstBlockColor = null;
-			} else if (c.isColor()) {
-			    if (c.getHex() == null)
-				lastColor = c;
-			    formats.clear();
-			    firstBlockColor = c;
-
-			    if (c.getHex() != null) {
-				one = "\"},{\"color\":\"#" + c.getHex() + "\",\"text\":\"" + one;
-			    }
-			}
-
-			if (c.isFormat()) {
-			} else if (c.isReset()) {
-			} else if (c.isColor() && c.getHex() == null) {
-			    String form = "";
-			    for (CMIChatColor oneC : formats) {
-				form += oneC.getColorCode();
-			    }
-			    one = one.replace(c.getColorCode(), c.getColorCode() + form);
-			} else if (c.getHex() != null) {
-			    //String form = "";
-			    //for (CMIChatColor oneC : formats) {
-				//form += oneC.getColorCode();
-			    //}
-
-//			    CMIDebug.d("*"+net.md_5.bungee.api.ChatColor.of("#" + c.getHex())+ "_"+net.md_5.bungee.api.ChatColor.of("#FF00FF")+ "+");
-
-//			    one = one.replace("{#" + c.getHex() + "}", "\u00A7x\u00A76\u00A76\u00A70\u00A70\u00A7c\u00A7c" + form);
-			}
-			if (c.getHex() != null) {
-			    one = one.replace("{#" + c.getHex() + "}", "");
-			}
-		    }
-		}
-	    }
-
-	    newText += colorString + one;
-
-	}
-
-	newText += "\"}";
-	return newText;
+    @Deprecated
+    public RawMessage addHoverText(List<String> hoverText) {
+	return addHover(hoverText);
     }
 
-    private String processText(String text) {
-	Random rand = new Random();
-
-	String breakLine0 = String.valueOf(rand.nextInt(Integer.MAX_VALUE));
-	text = text.replace("\\n", breakLine0);
-
-	String breakLine3 = String.valueOf(rand.nextInt(Integer.MAX_VALUE));
-	text = text.replace("\\", breakLine3);
-
-	String breakLine2 = String.valueOf(rand.nextInt(Integer.MAX_VALUE));
-	text = text.replace("\\\"", breakLine2);
-
-	String breakLine1 = String.valueOf(rand.nextInt(Integer.MAX_VALUE));
-	text = text.replace("\"", breakLine1);
-
-	text = text.replace(breakLine3, "\\\\");
-	text = text.replace(breakLine0, "\\n");
-	text = text.replace(breakLine1, "\\\"");
-	text = text.replace(breakLine2, "\\\"");
-
-	return text;
+    @Deprecated
+    public RawMessage addHoverText(String hover) {
+	return addHover(hover);
     }
 
-    public RawMessage addText(String text) {
-	if (text == null)
-	    return this;
-	text = processText(text);
-
-	if (dontBreakLine) {
-	    text = text.replace("\n", "\\\\n");
-	    text = text.replace("\\n", "\\\\n");
-	    text = text.replace("\\\\\\n", "\\\\n");
-	}
-
-	text = text.replace("\n", "\\n");
-
-	unfinishedClean = text;
-
-	unfinished = "{\"text\":\"\",\"extra\":[" + CMIChatColor.translate(intoJsonColored(text)).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "]";
-	if (firstBlockColor != null) {
-	    if (firstBlockColor.getHex() == null)
-		unfinished += ",\"color\":\"" + firstBlockColor.getName().toLowerCase() + "\"";
-	    else {
-		unfinished += ",\"color\":\"#" + firstBlockColor.getHex() + "\"";
-	    }
-	}
-
+    public RawMessage addItem(String text, ItemStack item, String command, String suggestion, String insertion) {
+	this.addText(text);
+	this.addCommand(command);
+	this.addSuggestion(suggestion);
+	this.addInsertion(insertion);
+	this.addItem(item);
 	return this;
     }
 
-//    public RawMessage addHoverText(List<Object> hoverText) {
-//	String hover = "";
-//	if (hoverText != null)
-//	    for (Object one : hoverText) {
-//		if (!hover.isEmpty())
-//		    hover += "\n";
-//		hover += one.toString();
-//	    }
-//	return addHoverText(hover);
-//    }
+    public RawMessage addText(String text) {
+//	CMIDebug.c(text);
+	if (text == null || text.isEmpty())
+	    return this;
+	if (temp.containsKey(RawMessagePartType.Text))
+	    build();
 
-    public RawMessage addHoverText(List<String> hoverText) {
-	String hover = "";
-	if (hoverText != null) {
-	    for (String one : hoverText) {
-		if (!hover.isEmpty())
-		    hover += "\n";
-		hover += one;
-	    }
-	}
-	return addHoverText(hover);
+//	if (this.isDontBreakLine()) {
+	onlyText.add(CMIChatColor.translate(text));
+
+	text = escape(text, this.isDontBreakLine());
+//	}
+	text = textIntoJson(text, false);
+	String f = "";
+	if (text.isEmpty())
+	    f = "\"text\":\"\"";
+	else if (text.equalsIgnoreCase(" "))
+	    f = "\"text\":\" \"";
+	else
+	    f = "\"text\":\"\",\"extra\":[" + CMIChatColor.translate(text).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "]";
+	temp.put(RawMessagePartType.Text, f);
+	return this;
     }
 
-    public RawMessage addHoverText(String hoverText) {
-	if (hoverText != null && !hoverText.isEmpty()) {
-	    hoverText = processText(hoverText);
-	    hoverText = hoverText.replace(" \n", " \\n");
-	    hoverText = hoverText.replace("\n", "\\n");
-	    unfinished += ",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[" + CMIChatColor.translate(intoJsonColored(hoverText)) + "]}}";
+    public RawMessage addHover(List<String> hoverText) {
+	StringBuilder hover = new StringBuilder();
+	if (hoverText != null) {
+	    for (String one : hoverText) {
+		if (!hover.toString().isEmpty())
+		    hover.append("\n");
+		hover.append(one);
+	    }
 	}
+	return addHover(hover.toString());
+    }
+
+    public RawMessage addHover(String hover) {
+	hoverFragment = new RawMessageFragment();
+	if (hover == null || hover.isEmpty())
+	    return this;
+
+	hover = escape(hover, false);
+
+	hover = textIntoJson(hover, true);
+	String f = "";
+	if (hover.isEmpty())
+	    f = "\"text\":\"\"";
+	else if (hover.equalsIgnoreCase(" "))
+	    f = "\"text\":\" \"";
+	else
+	    f = "\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[" + CMIChatColor.translate(hover).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "]}}";
+	temp.put(RawMessagePartType.HoverText, f);
 	return this;
     }
 
     public RawMessage addCommand(String command) {
-	if (command != null) {
-	    if (!command.startsWith("/"))
-		command = "/" + command;
-	    unfinished += ",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + command + "\"}";
-	}
-	return this;
-    }
-
-    public RawMessage addInsertion(String suggestion) {
-	if (suggestion != null) {
-
-	    suggestion = processText(suggestion);
-
-	    suggestion = suggestion.replace("\\n", "\\\\n");
-	    suggestion = suggestion.replace(" \\n", " \\\\n");
-	    suggestion = suggestion.replace(" \n", " \\\\n");
-
-	    unfinished += ",\"insertion\":\"" + suggestion + "\"";
-	}
-
+	if (command == null || command.isEmpty())
+	    return this;
+	if (!command.startsWith("/"))
+	    command = "/" + command;
+	String f = "\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + CMIChatColor.deColorize(command) + "\"}";
+	temp.put(RawMessagePartType.ClickCommand, f);
 	return this;
     }
 
     public RawMessage addSuggestion(String suggestion) {
-	if (suggestion != null) {
+	if (suggestion == null || suggestion.isEmpty())
+	    return this;
+	suggestion = escape(suggestion, true);
+	String f = "\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + CMIChatColor.deColorize(suggestion) + "\"}";
+	temp.put(RawMessagePartType.ClickSuggestion, f);
+	return this;
+    }
 
-	    suggestion = processText(suggestion);
+    public RawMessage addInsertion(String insertion) {
+	if (insertion == null || insertion.isEmpty())
+	    return this;
+	insertion = escape(insertion, true);
+	String f = "\"insertion\":\"" + CMIChatColor.deColorize(insertion) + "\"";
+	temp.put(RawMessagePartType.ClickInsertion, f);
+	return this;
+    }
 
-	    suggestion = suggestion.replace("\\n", "\\\\n");
-	    suggestion = suggestion.replace(" \\n", " \\\\n");
-	    suggestion = suggestion.replace(" \n", " \\\\n");
-
-	    unfinished += ",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + CMIChatColor.deColorize(suggestion) + "\"}";
-	}
-
+    public RawMessage addItem(ItemStack item) {
+	if (item == null)
+	    return this;
+	String res = CMIReflections.toJson(item.clone());
+	String f = "\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"" + escape(res, true) + "\"}";
+	temp.put(RawMessagePartType.HoverItem, f);
 	return this;
     }
 
     public RawMessage addUrl(String url) {
-	if (url != null) {
-	    url = processText(url);
-	    if (!url.toLowerCase().startsWith("http://") || !url.toLowerCase().startsWith("https://"))
-		url = "http://" + url;
-	    unfinished += ",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + url + "\"}";
-	}
+	if (url == null || url.isEmpty())
+	    return this;
+
+	if (!url.toLowerCase().startsWith("http://") && !url.toLowerCase().startsWith("https://"))
+	    url = "http://" + url;
+	String f = "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + url + "\"}";
+
+	temp.put(RawMessagePartType.ClickLink, f);
 	return this;
     }
 
     public RawMessage build() {
-	if (unfinished.isEmpty())
+	if (temp.isEmpty())
 	    return this;
 
-	unfinished += "}";
-	unfinished = unfinished.startsWith("{") ? unfinished : "{" + unfinished + "}";
-	parts.add(unfinished);
-	cleanParts.add(CMIChatColor.translate(unfinishedClean));
-
-	unfinished = "";
-	unfinishedClean = "";
-
+	if (!temp.containsKey(RawMessagePartType.Text))
+	    return this;
+	String part = "";
+	for (RawMessagePartType one : RawMessagePartType.values()) {
+	    String t = temp.get(one);
+	    if (t == null)
+		continue;
+	    if (!part.isEmpty())
+		part += ",";
+	    part += t;
+	}
+	part = "{" + part + "}";
+	temp.clear();
+	parts.add(part);
 	return this;
     }
 
-    public RawMessage add(String text, String hoverText, String command, String suggestion, String url) {
-	return add(text, hoverText, command, suggestion, url, null);
+    private static String escape(String s, boolean escapeNewLn) {
+
+	if (s == null)
+	    return null;
+	StringBuffer sb = new StringBuffer();
+	escape(s, sb);
+	if (escapeNewLn)
+	    return sb.toString().replace(nl, "\\\\n");
+	return sb.toString().replace(nl, "\n");
     }
 
-    public RawMessage add(String text, String hoverText, String command, String suggestion, String url, String insertion) {
-	if (text == null)
-	    return this;
+    private static final String nl = "\u00A5n";
 
-	text = processText(text);
-	if (dontBreakLine) {
-	    text = text.replace("\n", "\\\\n");
-	    text = text.replace("\\n", "\\\\n");
-	    text = text.replace("\\\\\\n", "\\\\n");
-	}
+    private static void escape(String s, StringBuffer sb) {
+	s = s.replace("\n", nl);
+	s = s.replace("\\n", nl);
+	for (int i = 0; i < s.length(); i++) {
+	    char ch = s.charAt(i);
 
-	text = text.replace("\n", "\\n");
-
-	String f = "{\"text\":\"\",\"extra\":[" + CMIChatColor.translate(intoJsonColored(text)).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "]";
-	if (firstBlockColor != null) {
-	    if (firstBlockColor.getHex() == null)
-		f += ",\"color\":\"" + firstBlockColor.getName().toLowerCase() + "\"";
-	    else {
-		f += ",\"color\":\"#" + firstBlockColor.getHex() + "\"";
+	    switch (ch) {
+	    case '"':
+		sb.append("\\\"");
+		break;
+	    case '\n':
+		sb.append("\\n");
+		break;
+	    case '\\':
+//		if (escapeNewLn) {
+		sb.append("\\\\");
+//		} else {
+//		    sb.append("\\");
+//		}
+		break;
+	    case '\b':
+		sb.append("\\b");
+		break;
+	    case '\f':
+		sb.append("\\f");
+		break;
+	    case '\r':
+		sb.append("\\r");
+		break;
+	    case '\t':
+		sb.append("\\t");
+		break;
+	    case '/':
+		sb.append("\\/");
+		break;
+	    default:
+		if ((ch >= '\u0000' && ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000' && ch <= '\u20FF')) {
+		    String ss = Integer.toHexString(ch);
+		    sb.append("\\u");
+		    for (int k = 0; k < 4 - ss.length(); k++) {
+			sb.append('0');
+		    }
+		    sb.append(ss.toUpperCase());
+		} else {
+		    sb.append(ch);
+		}
 	    }
 	}
 
-//	f+=",\"extra\":[{\"text\":\"Extra\"},{\"text\":\"Extra1\"}]";
-
-	if (insertion != null) {
-	    insertion = processText(insertion);
-	    f += ",\"insertion\":\"" + insertion + "\"";
-	}
-
-	if (hoverText != null && !hoverText.isEmpty()) {
-	    hoverText = processText(hoverText);
-	    hoverText = hoverText.replace(" \n", " \\n");
-	    hoverText = hoverText.replace("\n", "\\n");
-	    f += ",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[" + CMIChatColor.translate(intoJsonColored(hoverText)) + "]}}";
-	}
-
-	if (suggestion != null) {
-
-	    suggestion = processText(suggestion);
-
-	    suggestion = suggestion.replace("\\n", "\\\\n");
-	    suggestion = suggestion.replace(" \\n", " \\\\n");
-	    suggestion = suggestion.replace(" \n", " \\\\n");
-
-	    f += ",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + CMIChatColor.deColorize(suggestion) + "\"}";
-	}
-	if (url != null) {
-	    url = processText(url);
-	    if (!url.toLowerCase().startsWith("http://") && !url.toLowerCase().startsWith("https://"))
-		url = "http://" + url;
-	    f += ",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + url + "\"}";
-	}
-
-	if (command != null) {
-	    if (!command.startsWith("/"))
-		command = "/" + command;
-	    command = processText(command);
-	    f += ",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + command + "\"}";
-	}
+//	for (int i = 0; i < s.length(); i++) {
+//	    char ch = s.charAt(i);
+//	    if (String.valueOf(ch).equals(nl)) {
+//		if (escapeNewLn) {
+//		    sb.append("\\n");
+//		} else {
+//		    sb.append("\n");
+//		}
+//	    } else
+//		sb.append(ch);
+//
 //	}
-
-	f += "}";
-
-	parts.add(f);
-	cleanParts.add(CMIChatColor.translate(text));
-//	if (this.isCombineHoverOver() && hoverText != null) {
-//	    for (String one : hoverText.split("\\\\n")) {
-//		cleanParts.add("\n"+CMIChatColor.translate(one));
-//	    }
-//	}
-//	firstBlockColor = null;
-	return this;
-    }
-
-    public RawMessage addUrl(String text, String url) {
-	return addUrl(text, url, null);
-    }
-
-    public RawMessage addUrl(String text, String url, String hoverText) {
-	if (text == null)
-	    return this;
-
-	text = processText(text);
-	String f = "{\"text\":\"\",\"extra\":[" + CMIChatColor.translate(intoJsonColored(text)).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "]";
-	if (firstBlockColor != null) {
-	    if (firstBlockColor.getHex() == null)
-		f += ",\"color\":\"" + firstBlockColor.getName().toLowerCase() + "\"";
-	    else {
-		f += ",\"color\":\"#" + firstBlockColor.getHex() + "\"";
-	    }
-	}
-	if (hoverText != null && !hoverText.isEmpty()) {
-
-	    hoverText = processText(hoverText);
-	    hoverText = hoverText.startsWith(" ") ? hoverText.substring(1) : hoverText;
-	    f += ",\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"\",\"extra\":[" + CMIChatColor.translate(intoJsonColored(hoverText)).replace(
-		CMIChatColor.colorReplacerPlaceholder, "&") + "]}}";
-	}
-
-	url = url.endsWith(" ") ? url.substring(0, url.length() - 1) : url;
-	url = url.startsWith(" ") ? url.substring(1) : url;
-
-	if (url != null && !url.isEmpty()) {
-	    if (!url.toLowerCase().startsWith("http://") && !url.toLowerCase().startsWith("https://"))
-		url = "http://" + url;
-	    url = processText(url);
-	    f += ",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + url + "\"}";
-	}
-	f += "}";
-	parts.add(f);
-	cleanParts.add(CMIChatColor.translate(text));
-//	if (this.isCombineHoverOver() && hoverText != null) {
-//	    for (String one : hoverText.split("\\n")) {
-//		cleanParts.add(CMIChatColor.translate(one));
-//	    }
-//	}
-//	firstBlockColor = null;
-
-	return this;
-    }
-
-    public RawMessage addItem(String text, ItemStack item, String command, String suggestion, String insertion) {
-
-	if (text == null)
-	    return this;
-	if (item == null)
-	    return this;
-
-	item = item.clone();
-
-	String f = "{\"text\":\"\",\"extra\":[" + CMIChatColor.translate(intoJsonColored(text)).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "]";
-
-	if (insertion != null) {
-	    insertion = processText(insertion);
-	    f += ",\"insertion\":\"" + insertion + "\"";
-	}
-
-	String res = CMIReflections.toJson(item);
-
-	f += ",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"" + res + "\"}";
-
-	if (suggestion != null) {
-	    suggestion = processText(suggestion);
-	    f += ",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + suggestion + "\"}";
-	}
-	if (command != null) {
-	    command = processText(command);
-	    if (!command.startsWith("/"))
-		command = "/" + command;
-	    f += ",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + command + "\"}";
-	}
-	f += "}";
-
-	parts.add(f);
-	return this;
     }
 
     public List<String> softCombine() {
@@ -588,7 +469,7 @@ public class RawMessage {
 	return ls;
     }
 
-    public RawMessage combine() {
+    private RawMessage combine() {
 	String f = "";
 	for (String part : parts) {
 	    if (f.isEmpty())
@@ -599,13 +480,17 @@ public class RawMessage {
 	}
 	if (!f.isEmpty())
 	    f += "]";
+
+	if (f.isEmpty())
+	    f = "{\"text\":\" \"}";
+
 	combined = f;
 	return this;
     }
 
     public RawMessage combineClean() {
 	String f = "";
-	for (String part : cleanParts) {
+	for (String part : onlyText) {
 	    f += part.replace("\\\"", "\"");
 	}
 	combinedClean = f;
@@ -619,8 +504,10 @@ public class RawMessage {
     public RawMessage show(Player player, boolean softCombined) {
 	if (player == null)
 	    return this;
-	if (combined.isEmpty())
+	if (combined.isEmpty()) {
+	    this.build();
 	    combine();
+	}
 
 	if (!player.isOnline())
 	    return this;
@@ -630,11 +517,9 @@ public class RawMessage {
 		if (one.isEmpty())
 		    continue;
 		RawMessageManager.send(player, one);
-//		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:tellraw " + player.getName() + " " + one);
 	    }
 	} else {
 	    RawMessageManager.send(player, combined);
-//	    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "minecraft:tellraw " + player.getName() + " " + combined);
 	}
 
 	return this;
@@ -655,24 +540,32 @@ public class RawMessage {
     }
 
     public RawMessage show(CommandSender sender) {
-	if (combined.isEmpty())
+	if (combined.isEmpty()) {
+	    this.build();
 	    combine();
-	this.build();
+	}
 	if (sender instanceof Player) {
 	    show((Player) sender);
 	} else {
-	    Bukkit.getConsoleSender().sendMessage(CMIChatColor.translate(this.combineClean().combinedClean));
+	    sender.sendMessage(CMIChatColor.translate(this.combineClean().combinedClean));
 	}
 	return this;
     }
 
     public String getRaw() {
-	if (combined.isEmpty())
+	if (combined.isEmpty()) {
+	    build();
 	    combine();
+	}
 	return combined;
     }
 
+    public void setCombined(String combined) {
+	this.combined = combined;
+    }
+
     public String getShortRaw() {
+	build();
 	String f = "";
 	for (String part : parts) {
 	    if (!f.isEmpty())
@@ -690,32 +583,17 @@ public class RawMessage {
 	this.dontBreakLine = dontBreakLine;
     }
 
-    public void setCombined(String combined) {
-	this.combined = combined;
+    public boolean isFormatFrozen() {
+	return freezeFormat;
     }
 
-    public void resetColorFormats() {
-	formats.clear();
-	lastColor = null;
+    public void freezeFormat() {
+	frozenFragment = new RawMessageFragment(fragment);
+	this.freezeFormat = true;
     }
 
-    public void saveColorFormats() {
-	savedFormats.clear();
-	savedFormats.addAll(formats);
-	savedLastColor = lastColor;
-    }
-
-    public void loadColorFormats() {
-	formats.clear();
-	formats.addAll(savedFormats);
-	lastColor = savedLastColor;
-    }
-
-    public boolean isCombineHoverOver() {
-	return combineHoverOver;
-    }
-
-    public void setCombineHoverOver(boolean combineHoverOver) {
-	this.combineHoverOver = combineHoverOver;
+    public void unFreezeFormat() {
+	fragment = new RawMessageFragment(frozenFragment);
+	this.freezeFormat = false;
     }
 }

@@ -2688,10 +2688,7 @@ public enum CMIMaterial {
     }
 
     public boolean equals(Material mat) {
-	if (getMaterial() == null) {
-	    return false;
-	}
-	return this.getMaterial().equals(mat);
+	return getMaterial() == null ? false : getMaterial() == mat;
     }
 
     public List<String> getLegacyNames() {
@@ -2699,8 +2696,12 @@ public enum CMIMaterial {
     }
 
     public void addLegacyName(String legacyName) {
-	if (legacyName == null)
+	if (legacyName == null || legacyName.isEmpty())
+	    return;
+
+	if (this.legacyName == null)
 	    this.legacyName = new ArrayList<>();
+
 	this.legacyName.add(legacyName);
     }
 
@@ -2729,8 +2730,6 @@ public enum CMIMaterial {
     }
 
     public boolean containsCriteria(CMIMaterialCriteria criteria) {
-	if (this.criteria == null || criteria == null)
-	    return false;
-	return this.criteria.contains(criteria);
+	return (this.criteria == null || criteria == null) ? false : this.criteria.contains(criteria);
     }
 }

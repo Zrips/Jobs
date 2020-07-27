@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.ChatColor;
-
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 
 public class Schedule {
 
@@ -25,10 +24,9 @@ public class Schedule {
     private List<String> Days = new ArrayList<>(Arrays.asList("all"));
     private List<Job> JobsList = new ArrayList<>();
 
-    private List<String> MessageOnStart = new ArrayList<>();
-    private List<String> MessageOnStop = new ArrayList<>();
-
-    private List<String> MessageToBroadcast = new ArrayList<>();
+    private List<String> MessageOnStart = new ArrayList<>(),
+		MessageOnStop = new ArrayList<>(),
+		MessageToBroadcast = new ArrayList<>();
 
     private boolean started = false;
     private boolean stoped = true;
@@ -150,10 +148,8 @@ public class Schedule {
 	    }
 
 	    Job jb = Jobs.getJob(JobsNameList.get(z));
-	    if (jb == null)
-		continue;
-
-	    JobsList.add(jb);
+	    if (jb != null)
+		JobsList.add(jb);
 	}
     }
 
@@ -176,8 +172,9 @@ public class Schedule {
     public void setMessageOnStart(List<String> msg, String From, String Until) {
 	List<String> temp = new ArrayList<>();
 	for (String one : msg) {
-	    temp.add(ChatColor.translateAlternateColorCodes('&', one.replace("[until]", Until).replace("[from]", From)));
+	    temp.add(CMIChatColor.translate(one.replace("[until]", Until).replace("[from]", From)));
 	}
+
 	MessageOnStart.addAll(temp);
     }
 
@@ -188,8 +185,9 @@ public class Schedule {
     public void setMessageOnStop(List<String> msg, String From, String Until) {
 	List<String> temp = new ArrayList<>();
 	for (String one : msg) {
-	    temp.add(ChatColor.translateAlternateColorCodes('&', one.replace("[until]", Until).replace("[from]", From)));
+	    temp.add(CMIChatColor.translate(one.replace("[until]", Until).replace("[from]", From)));
 	}
+
 	MessageOnStop.addAll(temp);
     }
 
@@ -200,8 +198,9 @@ public class Schedule {
     public void setMessageToBroadcast(List<String> msg, String From, String Until) {
 	List<String> temp = new ArrayList<>();
 	for (String one : msg) {
-	    temp.add(ChatColor.translateAlternateColorCodes('&', one.replace("[until]", Until).replace("[from]", From)));
+	    temp.add(CMIChatColor.translate(one.replace("[until]", Until).replace("[from]", From)));
 	}
+
 	MessageToBroadcast.addAll(temp);
     }
 

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -19,6 +18,7 @@ import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIFieldType;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIRows;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.InvType;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.stuff.PageInfo;
@@ -150,7 +150,7 @@ public class CMIGui {
     public String getTitle() {
 	if (title == null)
 	    title = "";
-	return ChatColor.translateAlternateColorCodes('&', title);
+	return CMIChatColor.translate(title);
     }
 
     public void updateTitle(String title) {
