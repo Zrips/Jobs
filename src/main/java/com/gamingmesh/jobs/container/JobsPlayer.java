@@ -1039,6 +1039,7 @@ public class JobsPlayer {
 	    int i = g.size();
 	    while (i > 0) {
 		--i;
+
 		g.remove(g.entrySet().iterator().next().getKey());
 
 		if (g.size() <= job.getMaxDailyQuests())
@@ -1082,20 +1083,20 @@ public class JobsPlayer {
 
 	for (QuestProgression one : getQuestProgressions()) {
 	    Quest q = one.getQuest();
-	    if (q == null) {
+	    if (q == null || q.getObjectives().isEmpty())
 		continue;
-	    }
 
-	    if (q.getObjectives().isEmpty())
-		continue;
 	    if (!prog.isEmpty())
 		prog += ";:;";
+
 	    prog += q.getJob().getName() + ":" + q.getConfigName() + ":" + one.getValidUntil() + ":";
+
 	    for (Entry<ActionType, HashMap<String, QuestObjective>> oneA : q.getObjectives().entrySet()) {
 		for (Entry<String, QuestObjective> oneO : oneA.getValue().entrySet()) {
 		    prog += oneO.getValue().getAction().toString() + ";" + oneO.getKey() + ";" + one.getAmountDone(oneO.getValue()) + ":;:";
 		}
 	    }
+
 	    prog = prog.endsWith(":;:") ? prog.substring(0, prog.length() - 3) : prog;
 	}
 
@@ -1105,21 +1106,18 @@ public class JobsPlayer {
     public void setQuestProgressionFromString(String qprog) {
 	if (qprog == null || qprog.isEmpty())
 	    return;
+
 	String[] byJob = qprog.split(";:;");
-
 	for (String one : byJob) {
-
 	    try {
 		String jname = one.split(":")[0];
 		Job job = Jobs.getJob(jname);
-
 		if (job == null)
 		    continue;
 
 		one = one.substring(jname.length() + 1);
 		String qname = one.split(":")[0];
 		Quest quest = job.getQuest(qname);
-
 		if (quest == null)
 		    continue;
 
@@ -1143,13 +1141,11 @@ public class JobsPlayer {
 		}
 
 		for (String oneA : one.split(":;:")) {
-
 		    String prog = oneA.split(";")[0];
 		    ActionType action = ActionType.getByName(prog);
-		    if (action == null)
+		    if (action == null || oneA.length() < prog.length() + 1)
 			continue;
-		    if (oneA.length() < prog.length() + 1)
-			continue;
+
 		    oneA = oneA.substring(prog.length() + 1);
 
 		    String target = oneA.split(";")[0];
@@ -1158,7 +1154,6 @@ public class JobsPlayer {
 			continue;
 
 		    QuestObjective obj = old.get(target);
-
 		    if (obj == null)
 			continue;
 

@@ -478,7 +478,7 @@ public class Placeholder {
 				CurrencyType.getByName(vals.get(1))));
 		case user_jtoplvl_$1_$2:
 		    vals = placeHolder.getComplexValues(value);
-		    if (vals.isEmpty())
+		    if (vals.isEmpty() || vals.size() < 2)
 			return "";
 
 		    Job job = getJobFromValue(vals.get(0));

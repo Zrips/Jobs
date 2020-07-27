@@ -144,7 +144,6 @@ public class PermissionManager {
 		try {
 		    t = Double.parseDouble(uno.getKey().replace(perm, ""));
 		} catch (NumberFormatException e) {
-		    continue;
 		}
 
 		amount += t;
