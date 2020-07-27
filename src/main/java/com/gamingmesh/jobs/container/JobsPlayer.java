@@ -287,20 +287,20 @@ public class JobsPlayer {
     }
 
     private Double getPlayerBoostNew(String JobName, CurrencyType type) {
-	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + "." + type.getName().toLowerCase(), true);
+	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + "." + type.getName(), true);
 	Double Boost = v1;
 
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + ".all");
-	//if (v1 > Boost)
-	//    Boost = v1;
+	if (v1 != 0d && (v1 > Boost || v1 < Boost))
+	    Boost = v1;
 
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all");
-	//if (v1 > Boost)
-	//    Boost = v1;
+	if (v1 != 0d && (v1 > Boost || v1 < Boost))
+	    Boost = v1;
 
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName().toLowerCase());
-	//if (v1 > Boost)
-	//    Boost = v1;
+	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName());
+	if (v1 != 0d && (v1 > Boost || v1 < Boost))
+	    Boost = v1;
 
 	return Boost;
     }
