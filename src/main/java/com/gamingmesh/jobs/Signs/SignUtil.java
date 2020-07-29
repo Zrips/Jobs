@@ -250,7 +250,7 @@ public class SignUtil {
 		    }
 
 		    TopList pl = PlayerList.get(i + number);
-		    String PlayerName = pl.getPlayerName();
+		    String PlayerName = pl.getPlayerInfo().getName();
 		    if (PlayerName.length() > 15) {
 			// We need to split 10 char of name, because of sign rows
 			PlayerName = PlayerName.split("(?<=\\G.{10})")[0] + "~";
@@ -273,7 +273,7 @@ public class SignUtil {
 			sign.setLine(i, line);
 		}
 		sign.update();
-		if (!UpdateHead(sign, PlayerList.get(0).getPlayerName(), timelapse)) {
+		if (!UpdateHead(sign, PlayerList.get(0).getPlayerInfo().getName(), timelapse)) {
 		    timelapse--;
 		}
 	    } else {
@@ -281,7 +281,7 @@ public class SignUtil {
 		    continue;
 
 		TopList pl = PlayerList.get(jSign.getNumber() - 1);
-		String PlayerName = pl.getPlayerName();
+		String PlayerName = pl.getPlayerInfo().getName();
 		if (PlayerName.length() > 15) {
 		    PlayerName = PlayerName.split("(?<=\\G.{10})")[0] + "~";
 		}
@@ -304,7 +304,7 @@ public class SignUtil {
 
 		sign.setLine(3, translateSignLine("signs.SpecialList.bottom", no, PlayerName, pl.getLevel(), SignJobName));
 		sign.update();
-		if (!UpdateHead(sign, pl.getPlayerName(), timelapse)) {
+		if (!UpdateHead(sign, pl.getPlayerInfo().getName(), timelapse)) {
 		    timelapse--;
 		}
 	    }

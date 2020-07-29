@@ -132,9 +132,9 @@ public class quests implements Cmd {
 			hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skip");
 			hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skips", "[skips]", (Jobs.getGCManager().getDailyQuestsSkips() - jPlayer.getSkippedQuests()));
 		    }
-		    rm.add(msg, hover, "jobs skipquest " + jobProg.getJob().getName() + " " + q.getQuest().getConfigName() + " " + jPlayer.getName());
+		    rm.addText(msg).addHover(hover).addCommand("jobs skipquest " + jobProg.getJob().getName() + " " + q.getQuest().getConfigName() + " " + jPlayer.getName());
 		} else
-		    rm.add(msg, hover);
+		    rm.addText(msg).addHover(hover);
 		rm.show(sender);
 	    }
 	}

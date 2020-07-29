@@ -67,7 +67,7 @@ public class bonus implements Cmd {
 	    "%exp%", formatText(boost.getFinal(CurrencyType.EXP, true, true)));
 
 	rm.addText(msg);
-	rm.addHoverText(Jobs.getLanguage().getMessage("command.bonus.output.finalExplanation"));
+	rm.addHover(Jobs.getLanguage().getMessage("command.bonus.output.finalExplanation"));
 	rm.build();
 	rm.show(player);
 

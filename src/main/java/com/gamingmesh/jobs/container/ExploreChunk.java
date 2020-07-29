@@ -70,7 +70,7 @@ public class ExploreChunk {
     }
 
     public Set<Integer> getPlayers() {
-	return playerIds == null ? new HashSet<Integer>() : playerIds;
+	return playerIds == null ? new HashSet<>() : playerIds;
     }
 
     public String serializeNames() {
@@ -94,7 +94,7 @@ public class ExploreChunk {
 	}
 
 	if (playerIds == null) {
-	    playerIds = new HashSet<Integer>();
+	    playerIds = new HashSet<>();
 	}
 
 	List<String> split = Arrays.asList(names.split(";"));

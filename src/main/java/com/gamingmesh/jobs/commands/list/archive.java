@@ -45,12 +45,15 @@ public class archive implements Cmd {
 	for (JobProgression jobInfo : AllJobs) {
 	    RawMessage rm = new RawMessage();
 	    if (jobInfo.canRejoin())
-		rm.add(ChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), Jobs.getLanguage().getMessage("command.join.rejoin"), "jobs join " + jobInfo.getJob().getName());
+		rm.addText(ChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo))
+		    .addHover(Jobs.getLanguage().getMessage("command.join.rejoin")).addCommand("jobs join " + jobInfo.getJob().getName());
 	    else
-		rm.add(ChatColor.RED + "-" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo), Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", jobInfo
+		rm.addText(ChatColor.RED + "-" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo))
+		    .addHover(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", jobInfo
 		    .getRejoinTimeMessage()));
 	    rm.show(sender);
 	}
+
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	return true;
     }

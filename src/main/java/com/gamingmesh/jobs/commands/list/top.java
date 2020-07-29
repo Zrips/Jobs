@@ -75,7 +75,7 @@ public class top implements Cmd {
 
 		player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.list",
 		    "%number%", pi.getPositionForOutput(),
-		    "%playername%", One.getPlayerName(),
+		    "%playername%", One.getPlayerInfo().getName(),
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
 	    }
@@ -90,7 +90,7 @@ public class top implements Cmd {
 		    break;
 
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", pi.getPositionForOutput(),
-		    "%playername%", one.getPlayerName(), "%level%", one.getLevel()));
+		    "%playername%", one.getPlayerInfo().getName(), "%level%", one.getLevel()));
 	    }
 
 	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", job.getName()), ls);

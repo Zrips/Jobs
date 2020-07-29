@@ -1243,8 +1243,7 @@ public class JobsPaymentListener implements Listener {
 	    Projectile pr = (Projectile) e.getDamager();
 	    if (pr.getShooter() instanceof Player)
 		pDamager = (Player) pr.getShooter();
-	} else
-	    return;
+	}
 
 	if (pDamager == null)
 	    return;
@@ -1290,8 +1289,7 @@ public class JobsPaymentListener implements Listener {
 	    if (jPlayer == null)
 		return;
 
-	    List<JobProgression> jobs = jPlayer.getJobProgression();
-	    for (JobProgression job : jobs) {
+	    for (JobProgression job : jPlayer.getJobProgression()) {
 		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), pDamager, lVictim);
 	    }
 	}

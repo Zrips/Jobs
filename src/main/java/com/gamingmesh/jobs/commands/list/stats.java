@@ -40,9 +40,8 @@ public class stats implements Cmd {
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getName()));
 	for (JobProgression jobProg : jPlayer.getJobProgression()) {
 	    for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg).split("\n")) {
-		RawMessage rm = new RawMessage();
-		rm.add(msg, Jobs.getLanguage().getMessage("command.info.gui.leftClick"), "jobs info " + jobProg.getJob().getName());
-		rm.show(sender);
+		new RawMessage().addText(msg).addHover(Jobs.getLanguage().getMessage("command.info.gui.leftClick"))
+		.addCommand("jobs info " + jobProg.getJob().getName()).show(sender);
 	    }
 	}
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));

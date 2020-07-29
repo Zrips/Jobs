@@ -63,10 +63,9 @@ public class gtop implements Cmd {
 		if (i > amount)
 		    break;
 
-		String PlayerName = One.getPlayerName();
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list",
 		    "%number%", pi.getPositionForOutput(i-1),
-		    "%playername%", PlayerName,
+		    "%playername%", One.getPlayerInfo().getName(),
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
 		++i;
@@ -80,7 +79,7 @@ public class gtop implements Cmd {
 
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line",
 		    "%number%", pi.getPositionForOutput(i),
-		    "%playername%", one.getPlayerName(),
+		    "%playername%", one.getPlayerInfo().getName(),
 		    "%level%", one.getLevel()));
 		++i;
 	    }

@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -283,7 +284,7 @@ public class Placeholder {
 	}
 	if (plugin.isPlaceholderAPIEnabled()) {
 	    if (placeholder.contains("%")) {
-		if (!placeholder.equals(me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, placeholder)))
+		if (!placeholder.equals(me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((OfflinePlayer) player, placeholder)))
 		    return JobsPlaceholderType.PAPI;
 	    }
 	}
@@ -303,7 +304,7 @@ public class Placeholder {
 	    message = translateOwnPlaceHolder(player, message);
 	if (plugin.isPlaceholderAPIEnabled()) {
 	    if (message.contains("%"))
-		message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message);
+		message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((OfflinePlayer) player, message);
 	}
 //	For MVdWPlaceholderAPI
 //	if (plugin.isMVdWPlaceholderAPIEnabled()) {

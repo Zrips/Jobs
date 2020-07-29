@@ -33,7 +33,6 @@ public class itembonus implements Cmd {
 	Player player = (Player) sender;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 	if (jPlayer == null)
 	    return false;
 
@@ -41,7 +40,7 @@ public class itembonus implements Cmd {
 
 	List<ItemStack> items = new ArrayList<>();
 
-	if (iih != null && !iih.getType().equals(Material.AIR))
+	if (iih != null && iih.getType() != Material.AIR)
 	    items.add(iih);
 
 	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
@@ -56,13 +55,9 @@ public class itembonus implements Cmd {
 	    JobItems jitem = Jobs.getPlayerManager().getJobsItemByNbt(oneI);
 	    if (jitem == null)
 		continue;
-	    for (Job one : jitem.getJobs()) {
 
-		BoostMultiplier boost = null;
-		if (!jPlayer.isInJob(one))
-		    boost = jitem.getBoost();
-		else
-		    boost = jitem.getBoost(jPlayer.getJobProgression(one));
+	    for (Job one : jitem.getJobs()) {
+		BoostMultiplier boost = !jPlayer.isInJob(one) ? jitem.getBoost() : jitem.getBoost(jPlayer.getJobProgression(one));
 
 		boolean any = false;
 		for (CurrencyType oneC : CurrencyType.values()) {
@@ -91,7 +86,6 @@ public class itembonus implements Cmd {
 			"%points%", pc + formatText((int) (boost.get(CurrencyType.POINTS) * 100)),
 			"%exp%", ec + formatText((int) (boost.get(CurrencyType.EXP) * 100)));
 
-		RawMessage rm = new RawMessage();
 		String name = CMIMaterial.get(oneI.getType()).getName();
 
 		if (jitem.getFromLevel() != 0 || jitem.getUntilLevel() != Integer.MAX_VALUE)
@@ -99,8 +93,7 @@ public class itembonus implements Cmd {
 			"%from%", jitem.getFromLevel(),
 			"%until%", jitem.getUntilLevel());
 
-		rm.add(msg, name);
-		rm.show(sender);
+		new RawMessage().addText(msg).addHover(name).show(sender);
 	    }
 	}
 	return true;

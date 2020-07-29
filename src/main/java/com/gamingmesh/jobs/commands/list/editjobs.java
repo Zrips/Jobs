@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.ItemReflection;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.Jobs;
@@ -403,21 +404,22 @@ public class editjobs implements Cmd {
 
     private static void showPath(Player player, Job job, ActionType action, JobInfo jInfo) {
 	RawMessage rm = new RawMessage();
-	rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.job"), "&eJob list", "jobs editjobs");
-	rm.show(player);
+	rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.job")).addHover("&eJob list")
+	.addCommand("jobs editjobs").show(player);
 
 	if (job != null) {
 	    rm = new RawMessage();
-	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", job.getChatColor() + job.getName()), job.getName(), "jobs editjobs list " + job.getName());
+	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", job.getNameWithColor()))
+	    .addHover(job.getName()).addCommand("jobs editjobs list " + job.getName());
 	    rm.show(player);
 	}
 
 	if (action != null && job != null) {
 	    rm = new RawMessage();
 
-	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.actions", "%actionname%", action.getName()), action.getName(), "jobs editjobs list " + job.getName() + " " + action.getName()
-		+ " 1");
-	    rm.show(player);
+	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.actions", "%actionname%", action.getName()))
+	    .addHover(action.getName()).addCommand("jobs editjobs list " + job.getName() + " " + action.getName()+ " 1")
+	    .show(player);
 	}
 
 	if (action != null && job != null && jInfo != null) {
@@ -426,11 +428,11 @@ public class editjobs implements Cmd {
 	    String materialName = jInfo.getName().toLowerCase().replace('_', ' ');
 	    materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
 	    materialName = Jobs.getNameTranslatorManager().Translate(materialName, jInfo);
-	    materialName = org.bukkit.ChatColor.translateAlternateColorCodes('&', materialName);
+	    materialName = CMIChatColor.translate(materialName);
 
-	    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.material", "%materialname%", jInfo.getName()), jInfo.getName(), "jobs editjobs list " + job.getName() + " " + action.getName()
-		+ " " + materialName);
-	    rm.show(player);
+	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.material", "%materialname%", jInfo.getName()))
+	    .addHover(jInfo.getName()).addCommand("jobs editjobs list " + job.getName() + " " + action.getName()
+		+ " " + materialName).show(player);
 	}
     }
 }

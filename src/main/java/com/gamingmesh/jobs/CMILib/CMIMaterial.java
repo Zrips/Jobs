@@ -1196,7 +1196,7 @@ public enum CMIMaterial {
 
     @Deprecated
     public Integer getLegacyId() {
-	return this.legacyId == null ? 0 : this.legacyId;
+	return legacyId == null ? 0 : legacyId;
     }
 
     @Deprecated
@@ -1317,8 +1317,6 @@ public enum CMIMaterial {
 	List<CMIMaterial> ls = new ArrayList<>();
 
 	for (CMIMaterial one : CMIMaterial.values()) {
-	    if (one.getLegacyId() == null)
-		continue;
 	    if (one.getLegacyId() != mat.getLegacyId())
 		continue;
 	    ls.add(one);
@@ -1348,8 +1346,6 @@ public enum CMIMaterial {
 	if (mat == null)
 	    return CMIMaterial.NONE;
 	for (CMIMaterial one : CMIMaterial.values()) {
-	    if (one.getLegacyId() == null)
-		continue;
 	    if (one.getLegacyId() != mat.getLegacyId())
 		continue;
 	    if (one.getLegacyData() == id)
@@ -1417,9 +1413,7 @@ public enum CMIMaterial {
 	if (mat == null)
 	    return CMIMaterial.NONE;
 	CMIMaterial m = ItemManager.byRealMaterial.get(mat);
-	if (m != null)
-	    return m;
-	return get(mat.toString());
+	return m != null ? m : get(mat.toString());
     }
 
     public static CMIMaterial get(int id) {
@@ -1455,10 +1449,7 @@ public enum CMIMaterial {
     }
 
     public static CMIMaterial get(Block block) {
-	if (block == null)
-	    return CMIMaterial.NONE;
-
-	if (Bukkit.getWorld(block.getWorld().getUID()) == null)
+	if (block == null || Bukkit.getWorld(block.getWorld().getUID()) == null)
 	    return CMIMaterial.NONE;
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
@@ -1498,17 +1489,15 @@ public enum CMIMaterial {
 
     public static CMIMaterial getLegacy(int id) {
 	CMIMaterial mat = ItemManager.byId.get(id);
-	if (mat != null)
-	    return mat;
-	return CMIMaterial.NONE;
+	return mat != null ? mat : CMIMaterial.NONE;
     }
 
     public short getMaxDurability() {
-	return this.getMaterial() == null ? 0 : this.getMaterial().getMaxDurability();
+	return getMaterial() == null ? 0 : getMaterial().getMaxDurability();
     }
 
     public boolean isBlock() {
-	return this.getMaterial() == null ? false : this.getMaterial().isBlock();
+	return getMaterial() == null ? false : getMaterial().isBlock();
     }
 
     public boolean isEquipment() {
@@ -1516,14 +1505,12 @@ public enum CMIMaterial {
     }
 
     public boolean isSolid() {
-	return this.getMaterial() == null ? false : this.getMaterial().isSolid();
+	return getMaterial() == null ? false : getMaterial().isSolid();
     }
 
     public static boolean isMonsterEgg(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isMonsterEgg();
+	return m == null ? false : m.isMonsterEgg();
     }
 
     public boolean isMonsterEgg() {
@@ -1608,9 +1595,7 @@ public enum CMIMaterial {
 
     public static boolean isBed(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isBed();
+	return m == null ? false : m.isBed();
     }
 
     public boolean isBed() {
@@ -1641,9 +1626,7 @@ public enum CMIMaterial {
 
     public static boolean isStairs(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isStairs();
+	return m == null ? false : m.isStairs();
     }
 
     public boolean isStairs() {
@@ -1695,9 +1678,7 @@ public enum CMIMaterial {
 
     public static boolean isPotion(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isPotion();
+	return m == null ? false : m.isPotion();
     }
 
     public boolean isPotion() {
@@ -1714,9 +1695,7 @@ public enum CMIMaterial {
 
     public static boolean isBoat(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isBoat();
+	return m == null ? false : m.isBoat();
     }
 
     public boolean isBoat() {
@@ -1736,9 +1715,7 @@ public enum CMIMaterial {
 
     public static boolean isSapling(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isSapling();
+	return m == null ? false : m.isSapling();
     }
 
     public boolean isSapling() {
@@ -1758,9 +1735,7 @@ public enum CMIMaterial {
 
     public static boolean isButton(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isButton();
+	return m == null ? false : m.isButton();
     }
 
     public boolean isButton() {
@@ -1783,9 +1758,7 @@ public enum CMIMaterial {
 
     public static boolean isWater(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isWater();
+	return m == null ? false : m.isWater();
     }
 
     public boolean isWater() {
@@ -1801,9 +1774,7 @@ public enum CMIMaterial {
 
     public static boolean isLava(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isLava();
+	return m == null ? false : m.isLava();
     }
 
     public boolean isLava() {
@@ -1819,9 +1790,7 @@ public enum CMIMaterial {
 
     public static boolean isPlate(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isPlate();
+	return m == null ? false : m.isPlate();
     }
 
     public boolean isPlate() {
@@ -1847,9 +1816,7 @@ public enum CMIMaterial {
 
     public static boolean isWool(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isWool();
+	return m == null ? false : m.isWool();
     }
 
     public boolean isWool() {
@@ -1879,9 +1846,7 @@ public enum CMIMaterial {
 
     public static boolean isCarpet(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isCarpet();
+	return m == null ? false : m.isCarpet();
     }
 
     public boolean isCarpet() {
@@ -1911,9 +1876,7 @@ public enum CMIMaterial {
 
     public static boolean isShulkerBox(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isShulkerBox();
+	return m == null ? false : m.isShulkerBox();
     }
 
     public boolean isShulkerBox() {
@@ -1944,9 +1907,7 @@ public enum CMIMaterial {
 
     public static boolean isLeatherArmor(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isLeatherArmor();
+	return m == null ? false : m.isLeatherArmor();
     }
 
     public boolean isLeatherArmor() {
@@ -1964,9 +1925,7 @@ public enum CMIMaterial {
 
     public static boolean isArmor(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isArmor();
+	return m == null ? false : m.isArmor();
     }
 
     public boolean isArmor() {
@@ -2010,9 +1969,7 @@ public enum CMIMaterial {
 
     public static boolean isWeapon(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isWeapon();
+	return m == null ? false : m.isWeapon();
     }
 
     public boolean isWeapon() {
@@ -2035,9 +1992,7 @@ public enum CMIMaterial {
 
     public static boolean isTool(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isTool();
+	return m == null ? false : m.isTool();
     }
 
     public boolean isTool() {
@@ -2079,15 +2034,22 @@ public enum CMIMaterial {
 	return false;
     }
 
+    public static boolean isValidItem(Material mat) {
+	CMIMaterial m = CMIMaterial.get(mat);
+	return m == null ? false : m.isValidItem();
+    }
+
+    public boolean isValidItem() {
+	return !equals(CMIMaterial.NONE) && !isAir() && getMaterial() != null;
+    }
+
     public boolean isNone() {
-	return this.equals(CMIMaterial.NONE);
+	return equals(CMIMaterial.NONE);
     }
 
     public static boolean isAir(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isAir();
+	return m == null ? false : m.isAir();
     }
 
     public boolean isAir() {
@@ -2104,9 +2066,7 @@ public enum CMIMaterial {
 
     public static boolean isPotted(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isPotted();
+	return m == null ? false : m.isPotted();
     }
 
     public boolean isPotted() {
@@ -2145,9 +2105,7 @@ public enum CMIMaterial {
 
     public static boolean isAnvil(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isAnvil();
+	return m == null ? false : m.isAnvil();
     }
 
     public boolean isAnvil() {
@@ -2164,9 +2122,7 @@ public enum CMIMaterial {
 
     public static boolean isDoor(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isDoor();
+	return m == null ? false : m.isDoor();
     }
 
     public boolean isDoor() {
@@ -2205,9 +2161,7 @@ public enum CMIMaterial {
 
     public static boolean isGate(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isGate();
+	return m == null ? false : m.isGate();
     }
 
     public boolean isGate() {
@@ -2230,9 +2184,7 @@ public enum CMIMaterial {
 
     public static boolean isFence(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isFence();
+	return m == null ? false : m.isFence();
     }
 
     public boolean isFence() {
@@ -2256,9 +2208,7 @@ public enum CMIMaterial {
 
     public static boolean isRail(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isRail();
+	return m == null ? false : m.isRail();
     }
 
     public boolean isRail() {
@@ -2276,9 +2226,7 @@ public enum CMIMaterial {
 
     public static boolean isGlassPane(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isGlassPane();
+	return m == null ? false : m.isGlassPane();
     }
 
     public boolean isGlassPane() {
@@ -2309,9 +2257,7 @@ public enum CMIMaterial {
 
     public static boolean isWallSign(Material mat) {
 	CMIMaterial m = get(mat);
-	if (m == null)
-	    return false;
-	return m.isWallSign();
+	return m == null ? false : m.isWallSign();
     }
 
     public boolean isWallSign() {
@@ -2334,9 +2280,7 @@ public enum CMIMaterial {
 
     public static boolean isSign(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isSign();
+	return m == null ? false : m.isSign();
     }
 
     public boolean isSign() {
@@ -2378,9 +2322,7 @@ public enum CMIMaterial {
 
     public static boolean isWall(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isWall();
+	return m == null ? false : m.isWall();
     }
 
     public boolean isWall() {
@@ -2409,9 +2351,7 @@ public enum CMIMaterial {
 
     public static boolean isTrapDoor(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isTrapDoor();
+	return m == null ? false : m.isTrapDoor();
     }
 
     public boolean isTrapDoor() {
@@ -2434,9 +2374,7 @@ public enum CMIMaterial {
 
     public static boolean isSkull(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isSkull();
+	return m == null ? false : m.isSkull();
     }
 
     public boolean isSkull() {
@@ -2458,9 +2396,7 @@ public enum CMIMaterial {
 
     public static boolean isDye(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isDye();
+	return m == null ? false : m.isDye();
     }
 
     public boolean isDye() {
@@ -2498,9 +2434,7 @@ public enum CMIMaterial {
 
     public static boolean isSlab(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
-	if (m == null)
-	    return false;
-	return m.isSlab();
+	return m == null ? false : m.isSlab();
     }
 
     public boolean isSlab() {

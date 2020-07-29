@@ -62,8 +62,7 @@ public class ActionBarManager {
 		return;
 	    }
 
-	    RawMessage rm = new RawMessage();
-	    rm.add(msg);
+	    RawMessage rm = new RawMessage().addText(msg);
 	    Object serialized = nmsChatSerializer.getMethod("a", String.class).invoke(null, CMIChatColor.translate(rm.getRaw()));
 	    if (Version.isCurrentHigher(Version.v1_15_R1))
 		packet = packetType.getConstructor(nmsIChatBaseComponent, sub, UUID.class).newInstance(serialized, consts[2], receivingPacket.getUniqueId());

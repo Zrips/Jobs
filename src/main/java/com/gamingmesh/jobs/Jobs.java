@@ -25,9 +25,8 @@ import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIReflections;
 import com.gamingmesh.jobs.CMILib.VersionChecker;
 import com.gamingmesh.jobs.Gui.GuiManager;
-import com.gamingmesh.jobs.Placeholders.NewPlaceholderAPIHook;
-import com.gamingmesh.jobs.Placeholders.Placeholder;
 import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
+import com.gamingmesh.jobs.Placeholders.Placeholder;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
@@ -133,24 +132,26 @@ public class Jobs extends JavaPlugin {
 	return Placeholder;
     }
 
-    @SuppressWarnings("deprecation")
     private boolean setupPlaceHolderAPI() {
 	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
 	    return false;
 
 	try {
 	    if (Integer.parseInt(getServer().getPluginManager().getPlugin("PlaceholderAPI")
-		.getDescription().getVersion().replace(".", "")) >= Integer.parseInt("2100")) {
-		if (new NewPlaceholderAPIHook(this).register())
-		    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
-	    } else {
-		if (new PlaceholderAPIHook(this).hook())
-		    consoleMsg("&e[Jobs] PlaceholderAPI hooked. This is a deprecated version of PlaceholderAPI. Please update "
-			+ "to the latest version.");
+		.getDescription().getVersion().replace(".", "")) >= Integer.parseInt("2107")) {
+		PlaceholderAPIHook hook = new PlaceholderAPIHook(this);
+		if (hook.canRegister()) {
+		    hook.getPlaceholderAPI().getLocalExpansionManager().register(hook);
+		    if (hook.isRegistered())
+			consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
+		}
 	    }
 	} catch (NumberFormatException e) { // when using a dev build
-	    if (new NewPlaceholderAPIHook(this).register()) {
-		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
+	    PlaceholderAPIHook hook = new PlaceholderAPIHook(this);
+	    if (hook.canRegister()) {
+		hook.getPlaceholderAPI().getLocalExpansionManager().register(hook);
+		if (hook.isRegistered())
+		    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
 	    }
 	}
 
@@ -1295,7 +1296,8 @@ public class Jobs extends JavaPlugin {
 	    return false;
 	}
 	RawMessage rm = new RawMessage();
-	rm.add(lManager.getMessage("general.error.permission"), "&2" + perm);
+	rm.addText(lManager.getMessage("general.error.permission"));
+	rm.addHover("&2" + perm);
 	rm.show((Player) sender);
 	return false;
 
@@ -1323,15 +1325,17 @@ public class Jobs extends JavaPlugin {
 	Prevpage = CurrentPage > 1 ? Prevpage : CurrentPage;
 
 	RawMessage rm = new RawMessage();
+	rm.addText((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")));
+	rm.addHover(CurrentPage > 1 ? "<<<" : ">|");
+	rm.addCommand(CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : cmd + " " + pagePrefix + pageCount);
 
-	rm.add((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")),
-	    CurrentPage > 1 ? "<<<" : ">|",
-	    CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : cmd + " " + pagePrefix + pageCount);
-	rm.add(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount), lManager.getMessage("command.help.output.pageCountHover", "[totalEntries]",
-	    totalEntries));
-	rm.add(pageCount > CurrentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"),
-	    pageCount > CurrentPage ? ">>>" : "|<",
-	    pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : cmd + " " + pagePrefix + 1);
+	rm.addText(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount));
+	rm.addHover(lManager.getMessage("command.help.output.pageCountHover", "[totalEntries]", totalEntries));
+
+	rm.addText(pageCount > CurrentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"));
+	rm.addHover(pageCount > CurrentPage ? ">>>" : "|<");
+	rm.addCommand(pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : cmd + " " + pagePrefix + 1);
+
 	if (pageCount != 0)
 	    rm.show(sender);
     }

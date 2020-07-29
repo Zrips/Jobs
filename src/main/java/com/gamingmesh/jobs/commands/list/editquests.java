@@ -595,22 +595,22 @@ public class editquests implements Cmd {
 
     private static void showPath(Player player, Job job, ActionType action, JobInfo jInfo, Quest q) {
 	RawMessage rm = new RawMessage();
-	rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.quest"), "&eQuest list", "jobs editquests");
+	rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.list.quest")).addHover("&eQuest list")
+	.addCommand("jobs editquests");
 	rm.show(player);
 
 	if (job != null) {
 	    rm = new RawMessage();
-	    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.jobs", "%jobname%", job.getNameWithColor()),
-		job.getName(), "jobs editquests list " + job.getName());
+	    rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.list.jobs", "%jobname%", job.getNameWithColor()))
+		.addHover(job.getName()).addCommand("jobs editquests list " + job.getName());
 	    rm.show(player);
 	}
 
 	if (action != null && job != null) {
 	    rm = new RawMessage();
 
-	    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.actions", "%actionname%", action.getName()),
-		action.getName(), "jobs editquests list " + job.getName() + " " + action.getName()
-		    + " 1");
+	    rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.list.actions", "%actionname%", action.getName()))
+	    .addHover(action.getName()).addCommand("jobs editquests list " + job.getName() + " " + action.getName() + " 1");
 	    rm.show(player);
 	}
 
@@ -619,8 +619,8 @@ public class editquests implements Cmd {
 
 	    String materialName = jInfo.getRealisticName();
 
-	    rm.add(Jobs.getLanguage().getMessage("command.editquests.help.list.quests", "%questname%", q.getConfigName()),
-		jInfo.getName(), "jobs editquests list " + job.getName() + " " + action.getName() + " " + q.getConfigName()
+	    rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.list.quests", "%questname%", q.getConfigName()))
+	    .addHover(jInfo.getName()).addCommand("jobs editquests list " + job.getName() + " " + action.getName() + " " + q.getConfigName()
 		    + " " + materialName);
 	    rm.show(player);
 	}

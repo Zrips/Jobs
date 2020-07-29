@@ -81,7 +81,8 @@ public class JobsCommands implements CommandExecutor {
 	if (!hasCommandPermission(sender, cmd)) {
 	    if (sender instanceof Player) {
 		RawMessage rm = new RawMessage();
-		rm.add(Jobs.getLanguage().getMessage("general.error.permission"), "&2" + label + ".command." + cmd);
+		rm.addText(Jobs.getLanguage().getMessage("general.error.permission"));
+		rm.addHover("&2" + label + ".command." + cmd);
 		rm.show(sender);
 	    } else
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));

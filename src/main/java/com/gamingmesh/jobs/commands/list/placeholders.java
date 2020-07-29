@@ -85,8 +85,8 @@ public class placeholders implements Cmd {
 //		else
 //		    hover += "\n" + "{" + one.getFull().substring(1, one.getFull().length() - 2) + "}";
 //	    }
-	    rm.add(Jobs.getLanguage().getMessage("command.placeholders.output.list", "[place]", pi.getPositionForOutput(), "[placeholder]", place) + extra, hover, null, one.getFull());
-	    rm.show(sender);
+	    rm.addText(Jobs.getLanguage().getMessage("command.placeholders.output.list", "[place]", pi.getPositionForOutput(), "[placeholder]", place) + extra)
+	    .addHover(hover).addSuggestion(one.getFull()).show(sender);
 	}
 
 	if (player != null)

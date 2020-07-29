@@ -110,8 +110,8 @@ public class browse implements Cmd {
 			    hoverMsg += " \n";
 			hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.click");
 
-			rm.add(Jobs.getLanguage().getMessage("command.browse.output.list", "[place]", pi.getPositionForOutput(), "[jobname]", one.getName()),
-			    hoverMsg, "jobs browse -j:" + one.getName());
+			rm.addText(Jobs.getLanguage().getMessage("command.browse.output.list", "[place]", pi.getPositionForOutput(),
+					"[jobname]", one.getName())).addHover(hoverMsg).addCommand("jobs browse -j:" + one.getName());
 
 			rm.show(sender);
 		    }
@@ -140,15 +140,13 @@ public class browse implements Cmd {
 		    }
 
 		    RawMessage rm = new RawMessage();
-		    rm.add(Jobs.getLanguage().getMessage("command.browse.output.detailed"),
-			Jobs.getLanguage().getMessage("command.browse.output.detailed"),
-			"jobs info " + j.getName());
+		    rm.addText(Jobs.getLanguage().getMessage("command.browse.output.detailed"))
+		    .addHover(Jobs.getLanguage().getMessage("command.browse.output.detailed")).addCommand("jobs info " + j.getName());
 		    rm.show(sender);
 		    rm.clear();
-		    rm.add(Jobs.getLanguage().getMessage("command.browse.output.chooseJob"),
-			Jobs.getLanguage().getMessage("command.browse.output.chooseJobHover"),
-			"jobs join " + j.getName() + " -needConfirmation");
-		    rm.show(sender);
+		    rm.addText(Jobs.getLanguage().getMessage("command.browse.output.chooseJob"))
+		    .addHover(Jobs.getLanguage().getMessage("command.browse.output.chooseJobHover"))
+		    .addCommand("jobs join " + j.getName() + " -needConfirmation").show(sender);
 		}
 	    } else {
 		if (j == null) {
