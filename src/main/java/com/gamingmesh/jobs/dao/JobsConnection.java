@@ -13,6 +13,10 @@ public class JobsConnection {
 	this.conn = conn;
     }
 
+    public synchronized Connection getConnection() {
+	return conn;
+    }
+
     public synchronized boolean isClosed() {
 	try {
 	    return conn.isClosed();

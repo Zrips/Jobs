@@ -136,22 +136,10 @@ public class Jobs extends JavaPlugin {
 	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
 	    return false;
 
-	try {
-	    if (Integer.parseInt(getServer().getPluginManager().getPlugin("PlaceholderAPI")
-		.getDescription().getVersion().replace(".", "")) >= Integer.parseInt("2107")) {
-		PlaceholderAPIHook hook = new PlaceholderAPIHook(this);
-		if (hook.canRegister()) {
-		    hook.getPlaceholderAPI().getLocalExpansionManager().register(hook);
-		    if (hook.isRegistered())
-			consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
-		}
-	    }
-	} catch (NumberFormatException e) { // when using a dev build
-	    PlaceholderAPIHook hook = new PlaceholderAPIHook(this);
-	    if (hook.canRegister()) {
-		hook.getPlaceholderAPI().getLocalExpansionManager().register(hook);
-		if (hook.isRegistered())
-		    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
+	if (Integer.parseInt(getServer().getPluginManager().getPlugin("PlaceholderAPI")
+	.getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100) {
+	    if (new PlaceholderAPIHook(this).register()) {
+		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
 	    }
 	}
 
@@ -1098,6 +1086,7 @@ public class Jobs extends JavaPlugin {
 			else
 			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Throwable e) {
+		    e.printStackTrace();
 		    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
 
@@ -1295,10 +1284,7 @@ public class Jobs extends JavaPlugin {
 	    ((Player) sender).sendMessage(lManager.getMessage("general.error.permission"));
 	    return false;
 	}
-	RawMessage rm = new RawMessage();
-	rm.addText(lManager.getMessage("general.error.permission"));
-	rm.addHover("&2" + perm);
-	rm.show((Player) sender);
+	new RawMessage().addText(lManager.getMessage("general.error.permission")).addHover("&2" + perm).show((Player) sender);
 	return false;
 
     }
@@ -1314,27 +1300,32 @@ public class Jobs extends JavaPlugin {
     public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, int totalEntries, String cmd, String pagePref) {
 	if (!(sender instanceof Player))
 	    return;
+
 	if (!cmd.startsWith("/"))
 	    cmd = "/" + cmd;
+
 	if (pageCount == 1)
 	    return;
+
 	String pagePrefix = pagePref == null ? "" : pagePref;
+
 	int NextPage = CurrentPage + 1;
 	NextPage = CurrentPage < pageCount ? NextPage : CurrentPage;
+
 	int Prevpage = CurrentPage - 1;
 	Prevpage = CurrentPage > 1 ? Prevpage : CurrentPage;
 
-	RawMessage rm = new RawMessage();
-	rm.addText((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")));
-	rm.addHover(CurrentPage > 1 ? "<<<" : ">|");
-	rm.addCommand(CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : cmd + " " + pagePrefix + pageCount);
+	RawMessage rm = new RawMessage()
+		.addText((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")))
+		.addHover(CurrentPage > 1 ? "<<<" : ">|")
+		.addCommand(CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : cmd + " " + pagePrefix + pageCount);
 
-	rm.addText(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount));
-	rm.addHover(lManager.getMessage("command.help.output.pageCountHover", "[totalEntries]", totalEntries));
+	rm.addText(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount))
+	.addHover(lManager.getMessage("command.help.output.pageCountHover", "[totalEntries]", totalEntries));
 
-	rm.addText(pageCount > CurrentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"));
-	rm.addHover(pageCount > CurrentPage ? ">>>" : "|<");
-	rm.addCommand(pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : cmd + " " + pagePrefix + 1);
+	rm.addText(pageCount > CurrentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"))
+	.addHover(pageCount > CurrentPage ? ">>>" : "|<")
+	.addCommand(pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : cmd + " " + pagePrefix + 1);
 
 	if (pageCount != 0)
 	    rm.show(sender);

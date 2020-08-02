@@ -1120,16 +1120,24 @@ public abstract class JobsDAO {
 	PreparedStatement prestt = null;
 	ResultSet res2 = null;
 	try {
+	    conn.setAutoCommit(false);
+
 	    prestt = conn.prepareStatement("INSERT INTO `" + DBTables.JobNameTable.getTableName() + "` (`" + jobsNameTableFields.name.getCollumn() + "`) VALUES (?);",
 		Statement.RETURN_GENERATED_KEYS);
 	    prestt.setString(1, job.getName());
-	    prestt.executeUpdate();
+	    int rowAffected = prestt.executeUpdate();
 
 	    res2 = prestt.getGeneratedKeys();
 	    int id = 0;
 	    if (res2.next())
 		id = res2.getInt(1);
 	    job.setId(id);
+
+	    if (rowAffected != 1) {
+		conn.getConnection().rollback();
+	    }
+
+	    conn.commit();
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
