@@ -1088,7 +1088,7 @@ public class ConfigManager {
 	    job.setXpEquation(expEquation);
 	    job.setPointsEquation(pointsEquation);
 
-	    if (jobSection.contains("Quests")) {
+	    if (jobSection.isConfigurationSection("Quests")) {
 		List<Quest> quests = new ArrayList<>();
 		ConfigurationSection qsection = jobSection.getConfigurationSection("Quests");
 

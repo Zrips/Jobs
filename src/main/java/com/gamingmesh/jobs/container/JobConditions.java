@@ -23,10 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class JobConditions {
+
     private String node;
-    private List<String> requiresPerm = new ArrayList<>();
-    private HashMap<String, Integer> requiresJobs = new HashMap<>();
-    private HashMap<String, Boolean> performPerm = new HashMap<>();
+
+    private final List<String> requiresPerm = new ArrayList<>();
+    private final HashMap<String, Integer> requiresJobs = new HashMap<>();
+    private final HashMap<String, Boolean> performPerm = new HashMap<>();
 
     public JobConditions(String node, List<String> requires, List<String> perform) {
 	this.node = node;
@@ -34,14 +36,17 @@ public class JobConditions {
 	for (String one : requires) {
 	    if (one.toLowerCase().contains("j:")) {
 		String jobName = one.toLowerCase().replace("j:", "").split("-")[0];
+
 		int jobLevel = 0;
 		try {
 		    jobLevel = Integer.valueOf(one.toLowerCase().replace("j:", "").split("-")[1]);
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 		    continue;
 		}
+
 		requiresJobs.put(jobName, jobLevel);
 	    }
+
 	    if (one.toLowerCase().contains("p:")) {
 		requiresPerm.add(one.replace("p:", ""));
 	    }
@@ -49,6 +54,7 @@ public class JobConditions {
 	for (String one : perform) {
 	    if (!one.toLowerCase().contains("p:"))
 		continue;
+
 	    String clean = one.toLowerCase().substring("p:".length());
 	    if (clean.contains("-")) {
 		String perm = clean.split("-")[0];

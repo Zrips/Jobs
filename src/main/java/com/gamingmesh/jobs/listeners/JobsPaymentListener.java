@@ -106,10 +106,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void villagerTradeInventoryClick(InventoryClickEvent event) {
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
-	    return;
-
-	if (event.isCancelled())
+	if (!plugin.isEnabled() || event.isCancelled())
 	    return;
 
 	//disabling plugin in world
@@ -127,13 +124,7 @@ public class JobsPaymentListener implements Listener {
 	    break;
 	}
 
-	if (event.getInventory().getType() != InventoryType.MERCHANT)
-	    return;
-
-	if (event.getSlot() != 2)
-	    return;
-
-	if (!event.getSlotType().equals(SlotType.RESULT))
+	if (event.getInventory().getType() != InventoryType.MERCHANT || event.getSlot() != 2 || event.getSlotType() != SlotType.RESULT)
 	    return;
 
 	ItemStack resultStack = event.getClickedInventory().getItem(2);
@@ -370,10 +361,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	CMIMaterial cmat = CMIMaterial.get(block);
-	if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.SMOKER)
-	    || cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	if (cmat == CMIMaterial.FURNACE || cmat == CMIMaterial.SMOKER
+	    || cmat == CMIMaterial.BLAST_FURNACE && block.hasMetadata(furnaceOwnerMetadata))
 	    FurnaceBrewingHandling.removeFurnace(block);
-	else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)
+	else if (cmat == CMIMaterial.BREWING_STAND || cmat == CMIMaterial.LEGACY_BREWING_STAND
 	    && block.hasMetadata(brewingOwnerMetadata))
 	    FurnaceBrewingHandling.removeBrewing(block);
 
@@ -1638,10 +1629,10 @@ public class JobsPaymentListener implements Listener {
 
 	    CMIMaterial cmat = CMIMaterial.get(block);
 
-	    if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.SMOKER)
-		|| cmat.equals(CMIMaterial.BLAST_FURNACE) && block.hasMetadata(furnaceOwnerMetadata))
+	    if (cmat == CMIMaterial.FURNACE || cmat == CMIMaterial.SMOKER
+		|| cmat == CMIMaterial.BLAST_FURNACE && block.hasMetadata(furnaceOwnerMetadata))
 		FurnaceBrewingHandling.removeFurnace(block);
-	    else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)
+	    else if (cmat == CMIMaterial.BREWING_STAND || cmat == CMIMaterial.LEGACY_BREWING_STAND
 		&& block.hasMetadata(brewingOwnerMetadata))
 		FurnaceBrewingHandling.removeBrewing(block);
 
@@ -1672,36 +1663,34 @@ public class JobsPaymentListener implements Listener {
 
 	Material hand = Jobs.getNms().getItemInMainHand(p).getType();
 
-	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !event.useInteractedBlock().equals(org.bukkit.event.Event.Result.DENY)
-	    && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-	    if (jPlayer != null) {
-		if (cmat.equals(CMIMaterial.COMPOSTER)) {
-		    org.bukkit.block.data.Levelled level = (org.bukkit.block.data.Levelled) block.getBlockData();
-		    if (level.getLevel() == level.getMaximumLevel()) {
-			Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.COLLECT), block);
-		    }
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY
+	    && event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && !p.isSneaking()) {
+	    if (cmat == CMIMaterial.COMPOSTER) {
+		org.bukkit.block.data.Levelled level = (org.bukkit.block.data.Levelled) block.getBlockData();
+		if (level.getLevel() == level.getMaximumLevel()) {
+		    Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.COLLECT), block);
 		}
+	    }
 
-		if (cmat.equals(CMIMaterial.SWEET_BERRY_BUSH) && !hand.equals(CMIMaterial.BONE_MEAL.getMaterial())) {
-		    Ageable age = (Ageable) block.getBlockData();
-		    Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, age.getAge()), block);
-		}
+	    if (cmat == CMIMaterial.SWEET_BERRY_BUSH && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
+		Ageable age = (Ageable) block.getBlockData();
+		Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, age.getAge()), block);
 	    }
 	}
 
-	if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && !event.useInteractedBlock().equals(org.bukkit.event.Event.Result.DENY)
+	if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY
 	    && event.getAction() == Action.RIGHT_CLICK_BLOCK && !p.isSneaking()) {
-	    if (jPlayer != null && cmat.equals(CMIMaterial.BEEHIVE) || cmat.equals(CMIMaterial.BEE_NEST)) {
+	    if (jPlayer != null && (cmat == CMIMaterial.BEEHIVE || cmat == CMIMaterial.BEE_NEST)) {
 		org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
-		if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand.equals(CMIMaterial.SHEARS.getMaterial())
-		    || hand.equals(CMIMaterial.GLASS_BOTTLE.getMaterial()))) {
+		if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand == CMIMaterial.SHEARS.getMaterial()
+		    || hand == CMIMaterial.GLASS_BOTTLE.getMaterial())) {
 		    Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
 		}
 	    }
 	}
 
-	if (cmat.equals(CMIMaterial.FURNACE) || cmat.equals(CMIMaterial.LEGACY_BURNING_FURNACE)
-	    || cmat.equals(CMIMaterial.SMOKER) || cmat.equals(CMIMaterial.BLAST_FURNACE)) {
+	if (cmat == CMIMaterial.FURNACE || cmat == CMIMaterial.LEGACY_BURNING_FURNACE
+	    || cmat == CMIMaterial.SMOKER || cmat == CMIMaterial.BLAST_FURNACE) {
 	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(p, block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
@@ -1727,7 +1716,7 @@ public class JobsPaymentListener implements Listener {
 		    "[current]", jPlayer.getFurnaceCount(),
 		    "[max]", jPlayer.getMaxFurnacesAllowed() == 0 ? "-" : jPlayer.getMaxFurnacesAllowed()));
 	    }
-	} else if (cmat.equals(CMIMaterial.BREWING_STAND) || cmat.equals(CMIMaterial.LEGACY_BREWING_STAND)) {
+	} else if (cmat == CMIMaterial.BREWING_STAND || cmat == CMIMaterial.LEGACY_BREWING_STAND) {
 	    ownershipFeedback done = FurnaceBrewingHandling.registerBrewingStand(p, block);
 	    if (done.equals(ownershipFeedback.tooMany)) {
 		boolean report = false;
@@ -1784,10 +1773,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler
     public void onExplore(JobsChunkChangeEvent event) {
 	// make sure plugin is enabled
-	if (!plugin.isEnabled())
-	    return;
-
-	if (event.isCancelled())
+	if (!plugin.isEnabled() || event.isCancelled())
 	    return;
 
 	Player player = event.getPlayer();
@@ -1832,7 +1818,7 @@ public class JobsPaymentListener implements Listener {
     }
 
     public static boolean payIfCreative(Player player) {
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !Jobs.getGCManager().payInCreative() && !player.hasPermission("jobs.paycreative"))
+	if (player.getGameMode() == GameMode.CREATIVE && !Jobs.getGCManager().payInCreative() && !player.hasPermission("jobs.paycreative"))
 	    return false;
 
 	return true;

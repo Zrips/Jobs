@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -36,7 +36,8 @@ import com.gamingmesh.jobs.container.ShopItem;
 import com.gamingmesh.jobs.stuff.GiveItem;
 
 public class ShopManager {
-    private List<ShopItem> list = new ArrayList<>();
+
+    private final List<ShopItem> list = new ArrayList<>();
 
     public List<ShopItem> getShopItemList() {
 	return list;
@@ -214,7 +215,6 @@ public class ShopManager {
 		    }
 
 		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 		    if (jPlayer == null)
 			return;
 
@@ -301,6 +301,7 @@ public class ShopManager {
 
     public void load() {
 	list.clear();
+
 	File file = new File(Jobs.getFolder(), "shopItems.yml");
 	YamlConfiguration f = YamlConfiguration.loadConfiguration(file);
 
@@ -343,11 +344,8 @@ public class ShopManager {
 		Sitem.setIconName(CMIChatColor.translate(NameSection.getString("Icon.Name")));
 
 	    if (NameSection.isList("Icon.Lore")) {
-		List<String> lore = new ArrayList<>();
-		for (String eachLine : NameSection.getStringList("Icon.Lore")) {
-		    lore.add(CMIChatColor.translate(eachLine));
-		}
-		Sitem.setIconLore(lore);
+		Sitem.setIconLore(NameSection.getStringList("Icon.Lore").stream().map(CMIChatColor::translate)
+			    .collect(Collectors.toList()));
 	    }
 
 	    if (NameSection.isString("Icon.CustomHead.PlayerName"))
@@ -393,20 +391,19 @@ public class ShopManager {
 	    }
 
 	    if (NameSection.isList("PerformCommands")) {
-		List<String> cmd = new ArrayList<>();
-		for (String eachLine : NameSection.getStringList("PerformCommands")) {
-		    cmd.add(CMIChatColor.translate(eachLine));
-		}
-		Sitem.setCommands(cmd);
+		Sitem.setCommands(NameSection.getStringList("PerformCommands").stream().map(CMIChatColor::translate)
+		    .collect(Collectors.toList()));
 	    }
 
 	    if (NameSection.isConfigurationSection("GiveItems")) {
 		ConfigurationSection itemsSection = NameSection.getConfigurationSection("GiveItems");
-		Set<String> itemKeys = itemsSection.getKeys(false);
 		List<JobItems> items = new ArrayList<>();
 
-		for (String oneItemName : itemKeys) {
+		for (String oneItemName : itemsSection.getKeys(false)) {
 		    ConfigurationSection itemSection = itemsSection.getConfigurationSection(oneItemName);
+		    if (itemSection == null)
+			continue;
+
 		    String node = oneItemName.toLowerCase();
 
 		    String id = null;
