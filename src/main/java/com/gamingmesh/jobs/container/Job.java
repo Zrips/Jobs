@@ -137,7 +137,7 @@ public class Job {
     }
 
     public boolean isSame(Job job) {
-	return job == null ? false : getName().equalsIgnoreCase(job.getName());
+	return job != null && getName().equalsIgnoreCase(job.getName());
     }
 
     public int getTotalPlayers() {
@@ -149,7 +149,7 @@ public class Job {
     }
 
     public void updateTotalPlayers() {
-	this.totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(this.jobName);
+	totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(jobName);
 	updateBonus();
     }
 

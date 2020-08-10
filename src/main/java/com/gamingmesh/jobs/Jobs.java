@@ -481,8 +481,6 @@ public class Jobs extends JavaPlugin {
 	if (dao != null) {
 	    dao.closeConnections();
 	}
-
-	HandlerList.unregisterAll(instance);
     }
 
     /**
@@ -782,6 +780,8 @@ public class Jobs extends JavaPlugin {
     public void onDisable() {
 	if (instance == null)
 	    return;
+
+	HandlerList.unregisterAll(instance);
 
 //	GUIManager.CloseInventories();
 //	shopManager.CloseInventories();

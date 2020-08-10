@@ -146,7 +146,7 @@ public class JobsListener implements Listener {
 	if (iih == null || iih.getType() == Material.AIR)
 	    return;
 
-	if (!iih.getType().equals(CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial()))
+	if (iih.getType() != CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial())
 	    return;
 
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
@@ -155,7 +155,7 @@ public class JobsListener implements Listener {
 	if (!player.hasPermission("jobs.area.select"))
 	    return;
 
-	if (player.getGameMode().equals(GameMode.CREATIVE))
+	if (player.getGameMode() == GameMode.CREATIVE)
 	    event.setCancelled(true);
 
 	Block block = event.getClickedBlock();
@@ -180,10 +180,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-	// make sure plugin is enabled
-	if (!plugin.isEnabled())
-	    return;
-
 	if (!Jobs.getGCManager().MultiServerCompatability())
 	    Jobs.getPlayerManager().playerJoin(event.getPlayer());
 	else {
@@ -210,10 +206,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-	// make sure plugin is enabled
-	if (!plugin.isEnabled())
-	    return;
-
 	Jobs.getPlayerManager().playerQuit(event.getPlayer());
     }
 
@@ -228,9 +220,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSignInteract(PlayerInteractEvent event) {
-	if (!plugin.isEnabled())
-	    return;
-
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
@@ -264,9 +253,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onSignDestroy(BlockBreakEvent event) {
-	if (!plugin.isEnabled())
-	    return;
-
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
@@ -301,9 +287,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onSignTopListCreate(SignChangeEvent event) {
-	if (!plugin.isEnabled())
-	    return;
-
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
@@ -371,9 +354,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event) {
-	if (!plugin.isEnabled())
-	    return;
-
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
@@ -415,9 +395,6 @@ public class JobsListener implements Listener {
     // Adding to chat prefix job name
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-	if (!plugin.isEnabled())
-	    return;
-
 	if (!Jobs.getGCManager().getModifyChat())
 	    return;
 
@@ -434,9 +411,6 @@ public class JobsListener implements Listener {
     // Changing chat prefix variable to job name
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerChatLow(AsyncPlayerChatEvent event) {
-	if (!plugin.isEnabled())
-	    return;
-
 	if (Jobs.getGCManager().getModifyChat())
 	    return;
 
@@ -456,9 +430,6 @@ public class JobsListener implements Listener {
     // Changing chat prefix variable to job name
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChatHigh(AsyncPlayerChatEvent event) {
-	if (!plugin.isEnabled())
-	    return;
-
 	if (Jobs.getGCManager().getModifyChat())
 	    return;
 
@@ -601,15 +572,15 @@ public class JobsListener implements Listener {
 
 	boolean shift = false, numberkey = false;
 	ClickType click = event.getClick();
-	if (click.equals(ClickType.SHIFT_LEFT) || click.equals(ClickType.SHIFT_RIGHT))
+	if (click == ClickType.SHIFT_LEFT || click == ClickType.SHIFT_RIGHT)
 	    shift = true;
 
-	if (click.equals(ClickType.NUMBER_KEY))
+	if (click == ClickType.NUMBER_KEY)
 	    numberkey = true;
 
 	SlotType slotType = event.getSlotType();
 
-	if ((slotType != SlotType.ARMOR || slotType != SlotType.QUICKBAR) && !event.getInventory().getType().equals(InventoryType.CRAFTING))
+	if ((slotType != SlotType.ARMOR || slotType != SlotType.QUICKBAR) && event.getInventory().getType() != InventoryType.CRAFTING)
 	    return;
 
 	if (!(event.getWhoClicked() instanceof Player))
@@ -635,13 +606,13 @@ public class JobsListener implements Listener {
 
 	    PlayerInventory inv = player.getInventory();
 
-	    if (newArmorType.equals(ArmorTypes.HELMET) &&
+	    if (newArmorType == ArmorTypes.HELMET &&
 		(equipping ? inv.getHelmet() == null : inv.getHelmet() != null) ||
-		(newArmorType.equals(ArmorTypes.CHESTPLATE) || newArmorType.equals(ArmorTypes.ELYTRA)) &&
+		(newArmorType == ArmorTypes.CHESTPLATE || newArmorType == ArmorTypes.ELYTRA) &&
 		    (equipping ? inv.getChestplate() == null : inv.getChestplate() != null) ||
-		newArmorType.equals(ArmorTypes.LEGGINGS) &&
+		newArmorType == ArmorTypes.LEGGINGS &&
 		    (equipping ? inv.getLeggings() == null : inv.getLeggings() != null) ||
-		newArmorType.equals(ArmorTypes.BOOTS) &&
+		newArmorType == ArmorTypes.BOOTS &&
 		    (equipping ? inv.getBoots() == null : inv.getBoots() != null)) {
 		JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(player, EquipMethod.SHIFT_CLICK, newArmorType, equipping ? null : event
 		    .getCurrentItem(), equipping ? event.getCurrentItem() : null);
@@ -655,7 +626,7 @@ public class JobsListener implements Listener {
 	    ItemStack newArmorPiece = event.getCursor();
 	    ItemStack oldArmorPiece = event.getCurrentItem();
 	    if (numberkey) {
-		if (event.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+		if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
 		    ItemStack hotbarItem = event.getClickedInventory().getItem(event.getHotbarButton());
 		    if (hotbarItem != null) {
 			newArmorType = ArmorTypes.matchType(hotbarItem);
@@ -669,7 +640,7 @@ public class JobsListener implements Listener {
 
 	    if (newArmorType != null && event.getRawSlot() == newArmorType.getSlot()) {
 		EquipMethod method = EquipMethod.DRAG;
-		if (event.getAction().equals(InventoryAction.HOTBAR_SWAP) || numberkey)
+		if (event.getAction() == InventoryAction.HOTBAR_SWAP || numberkey)
 		    method = EquipMethod.HOTBAR_SWAP;
 		JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent((Player) event.getWhoClicked(), method, newArmorType, oldArmorPiece, newArmorPiece);
 		Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
@@ -694,13 +665,13 @@ public class JobsListener implements Listener {
 
 	Player player = event.getPlayer();
 	PlayerInventory inv = player.getInventory();
-	if (newArmorType.equals(ArmorTypes.HELMET) &&
+	if (newArmorType == ArmorTypes.HELMET &&
 	    inv.getHelmet() == null ||
-	    (newArmorType.equals(ArmorTypes.CHESTPLATE) || newArmorType.equals(ArmorTypes.ELYTRA)) &&
+	    (newArmorType == ArmorTypes.CHESTPLATE || newArmorType == ArmorTypes.ELYTRA) &&
 		inv.getChestplate() == null ||
-	    newArmorType.equals(ArmorTypes.LEGGINGS) &&
+	    newArmorType == ArmorTypes.LEGGINGS &&
 		inv.getLeggings() == null ||
-	    newArmorType.equals(ArmorTypes.BOOTS) &&
+	    newArmorType == ArmorTypes.BOOTS &&
 		inv.getBoots() == null) {
 	    JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(player, EquipMethod.HOTBAR, ArmorTypes.matchType(event.getItem()), null, event
 		.getItem());
@@ -728,10 +699,10 @@ public class JobsListener implements Listener {
 	    Location ploc = p.getLocation();
 	    if (loc.getBlockY() - ploc.getBlockY() >= -1 && loc.getBlockY() - ploc.getBlockY() <= 1) {
 
-		if (p.getInventory().getHelmet() == null && type.equals(ArmorTypes.HELMET) ||
-		    p.getInventory().getChestplate() == null && (type.equals(ArmorTypes.CHESTPLATE) || type.equals(ArmorTypes.ELYTRA)) ||
-		    p.getInventory().getLeggings() == null && type.equals(ArmorTypes.LEGGINGS) ||
-		    p.getInventory().getBoots() == null && type.equals(ArmorTypes.BOOTS)) {
+		if (p.getInventory().getHelmet() == null && type == ArmorTypes.HELMET ||
+		    p.getInventory().getChestplate() == null && (type == ArmorTypes.CHESTPLATE || type == ArmorTypes.ELYTRA) ||
+		    p.getInventory().getLeggings() == null && type == ArmorTypes.LEGGINGS ||
+		    p.getInventory().getBoots() == null && type == ArmorTypes.BOOTS) {
 
 		    if (!(event.getBlock().getState() instanceof Dispenser))
 			continue;

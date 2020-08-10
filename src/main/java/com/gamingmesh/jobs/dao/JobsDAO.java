@@ -1192,7 +1192,7 @@ public abstract class JobsDAO {
 	ResultSet res = null;
 	try {
 	    Job job = Jobs.getJob(JobName);
-	    if (job != null && job.getId() != 0) {
+	    if (job != null) {
 		prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid + "` = ?;");
 		prest.setInt(1, job.getId());
 		res = prest.executeQuery();

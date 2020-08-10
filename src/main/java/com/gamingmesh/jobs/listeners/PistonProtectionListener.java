@@ -27,9 +27,9 @@ public class PistonProtectionListener implements Listener {
 
 	BlockFace dir = event.getDirection();
 
-	int x = dir.getModX();
-	int y = dir.getModY();
-	int z = dir.getModZ();
+	int x = dir.getModX(),
+	    y = dir.getModY(),
+	    z = dir.getModZ();
 	for (Block one : event.getBlocks()) {
 	    Location oldLoc = one.getLocation();
 	    Location newLoc = oldLoc.clone().add(x, y, z);
@@ -56,9 +56,9 @@ public class PistonProtectionListener implements Listener {
 
 	BlockFace dir = event.getDirection();
 
-	int x = dir.getModX();
-	int y = dir.getModY();
-	int z = dir.getModZ();
+	int x = dir.getModX(),
+	    y = dir.getModY(),
+	    z = dir.getModZ();
 
 	for (Block one : Jobs.getNms().getPistonRetractBlocks(event)) {
 	    Location oldLoc = one.getLocation();

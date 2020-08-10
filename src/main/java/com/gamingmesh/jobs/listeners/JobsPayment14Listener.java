@@ -25,16 +25,10 @@ public class JobsPayment14Listener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onCook(BlockCookEvent event) {
-	if (!Jobs.getInstance().isEnabled())
-	    return;
-
 	if (event.isCancelled())
 	    return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
-	    return;
-
-	if (!(event.getBlock().getState() instanceof Campfire))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()) || !(event.getBlock().getState() instanceof Campfire))
 	    return;
 
 	for (Iterator<Entry<PlayerCamp, Player>> it = campPlayers.entrySet().iterator(); it.hasNext();) {
@@ -61,17 +55,11 @@ public class JobsPayment14Listener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCampPlace(PlayerInteractEvent ev) {
-	if (!Jobs.getInstance().isEnabled())
-	    return;
-
 	org.bukkit.block.Block click = ev.getClickedBlock();
-	if (click == null || !click.getType().isBlock() || !click.getType().equals(org.bukkit.Material.CAMPFIRE))
+	if (click == null || !click.getType().isBlock() || click.getType() != org.bukkit.Material.CAMPFIRE)
 	    return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(click.getWorld()))
-	    return;
-
-	if (!(click.getState() instanceof Campfire))
+	if (!Jobs.getGCManager().canPerformActionInWorld(click.getWorld()) || !(click.getState() instanceof Campfire))
 	    return;
 
 	if (!ev.hasItem())

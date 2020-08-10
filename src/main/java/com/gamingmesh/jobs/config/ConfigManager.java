@@ -60,10 +60,8 @@ public class ConfigManager {
 	    cfg = new ConfigReader(jobFile);
 	} catch (Exception e) {
 	    e.printStackTrace();
-	}
-
-	if (cfg == null)
 	    return;
+	}
 
 	cfg.header(Arrays.asList("Jobs configuration.", "", "Edited by roracle to include 1.13 items and item names, prepping for 1.14 as well.",
 	    "",
@@ -294,17 +292,16 @@ public class ConfigManager {
     }
 
     public void changeJobsSettings(String path, Object value) {
-	File f = jobFile;
 	InputStreamReader s = null;
 	try {
-	    s = new InputStreamReader(new FileInputStream(f), StandardCharsets.UTF_8);
+	    s = new InputStreamReader(new FileInputStream(jobFile), StandardCharsets.UTF_8);
 	} catch (FileNotFoundException e1) {
 	    e1.printStackTrace();
 	}
 
-	if (!f.exists()) {
+	if (!jobFile.exists()) {
 	    try {
-		f.createNewFile();
+		jobFile.createNewFile();
 	    } catch (IOException e) {
 		Jobs.getPluginLogger().severe("Unable to create jobConfig.yml! No jobs were loaded!");
 		try {
@@ -340,7 +337,7 @@ public class ConfigManager {
 	conf.set(path, value);
 
 	try {
-	    conf.save(f);
+	    conf.save(jobFile);
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
@@ -645,18 +642,17 @@ public class ConfigManager {
      * @throws IOException 
      */
     private void loadJobSettings() throws IOException {
-	File f = jobFile;
-	if (!f.exists()) {
+	if (!jobFile.exists()) {
 	    YmlMaker jobConfig = new YmlMaker(Jobs.getInstance(), "jobConfig.yml");
 	    jobConfig.saveDefaultConfig();
 	}
 
-	InputStreamReader s = new InputStreamReader(new FileInputStream(f), StandardCharsets.UTF_8);
+	InputStreamReader s = new InputStreamReader(new FileInputStream(jobFile), StandardCharsets.UTF_8);
 	java.util.logging.Logger log = Jobs.getPluginLogger();
 
-	if (!f.exists()) {
+	if (!jobFile.exists()) {
 	    try {
-		f.createNewFile();
+		jobFile.createNewFile();
 	    } catch (IOException e) {
 		log.severe("Unable to create jobConfig.yml! No jobs were loaded!");
 		s.close();
@@ -1051,10 +1047,8 @@ public class ConfigManager {
 			name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<>();
-		    if (itemSection.contains("lore"))
-			for (String eachLine : itemSection.getStringList("lore")) {
-			    lore.add(CMIChatColor.translate(eachLine));
-			}
+		    if (itemSection.isList("lore"))
+			itemSection.getStringList("lore").stream().map(CMIChatColor::translate).forEach(lore::add);
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
 		    if (itemSection.contains("enchants"))
@@ -1276,7 +1270,7 @@ public class ConfigManager {
 
     private double updateValue(CurrencyType type, double amount) {
 	Double mult = Jobs.getGCManager().getGeneralMulti(type);
-	amount = amount + (amount * mult);
+	amount += (amount * mult);
 	return amount;
     }
 }
