@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.container;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.gamingmesh.jobs.resources.jfep.Parser;
@@ -14,10 +15,12 @@ public class CurrencyLimit {
 
     public CurrencyLimit(boolean enabled, List<CurrencyType> stopWith, int timeLimit, int announcementDelay, Parser maxEquation) {
 	this.enabled = enabled;
-	this.stopWith = stopWith;
+	this.stopWith = stopWith == null ? new ArrayList<>() : stopWith;
 	this.timeLimit = timeLimit;
 	this.announcementDelay = announcementDelay;
-	this.maxEquation = maxEquation;
+
+	if (maxEquation != null)
+	    this.maxEquation = maxEquation;
     }
 
     public CurrencyLimit() {
@@ -36,7 +39,7 @@ public class CurrencyLimit {
     }
 
     public void setStopWith(List<CurrencyType> stopWith) {
-	this.stopWith = stopWith;
+	this.stopWith = stopWith == null ? new ArrayList<>() : stopWith;
     }
 
     public int getTimeLimit() {
@@ -60,7 +63,8 @@ public class CurrencyLimit {
     }
 
     public void setMaxEquation(Parser maxEquation) {
-	this.maxEquation = maxEquation;
+	if (maxEquation != null)
+	    this.maxEquation = maxEquation;
     }
 
 }

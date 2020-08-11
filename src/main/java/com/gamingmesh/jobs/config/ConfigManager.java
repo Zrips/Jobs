@@ -599,7 +599,7 @@ public class ConfigManager {
 
 	    int amount = 10;
 	    try {
-			amount = Integer.valueOf(myKey);
+		amount = Integer.valueOf(myKey);
 	    } catch (NumberFormatException e) {
 		Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
 		return null;

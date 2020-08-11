@@ -49,7 +49,7 @@ public class JobsPlayer {
     public ArrayList<JobProgression> progression = new ArrayList<>();
     private ArchivedJobs archivedJobs = new ArchivedJobs();
 
-    private PaymentData paymentLimits = null;
+    private PaymentData paymentLimits;
 
     private HashMap<String, ArrayList<BoostCounter>> boostCounter = new HashMap<>();
 
@@ -74,7 +74,7 @@ public class JobsPlayer {
 
     private Long seen = System.currentTimeMillis();
 
-    private HashMap<String, Boolean> permissionsCache = null;
+    private HashMap<String, Boolean> permissionsCache;
     private Long lastPermissionUpdate = -1L;
 
     private HashMap<String, HashMap<String, QuestProgression>> qProgression = new HashMap<>();
@@ -83,7 +83,7 @@ public class JobsPlayer {
 
     private final HashMap<UUID, HashMap<Job, Long>> leftTimes = new HashMap<>();
 
-    private PlayerPoints pointsData = null;
+    private PlayerPoints pointsData;
 
     public JobsPlayer(String userName) {
 	this.userName = userName == null ? "Unknown" : userName;
@@ -234,10 +234,7 @@ public class JobsPlayer {
      * @return the player
      */
     public Player getPlayer() {
-	if (playerUUID != null)
-	    return Bukkit.getPlayer(playerUUID);
-
-	return null;
+	return playerUUID != null ? Bukkit.getPlayer(playerUUID) : null;
     }
 
     /**
@@ -890,16 +887,12 @@ public class JobsPlayer {
 	    return ls;
 
 	HashMap<String, QuestProgression> qpl = qProgression.get(job.getName());
-
 	if (qpl == null)
 	    return ls;
 
 	for (Entry<String, QuestProgression> one : qpl.entrySet()) {
 	    QuestProgression prog = one.getValue();
-	    if (prog.isEnded())
-		continue;
-
-	    if (prog.getQuest() == null)
+	    if (prog.isEnded() || prog.getQuest() == null)
 		continue;
 
 	    for (Entry<ActionType, HashMap<String, QuestObjective>> oneAction : prog.getQuest().getObjectives().entrySet()) {
@@ -948,7 +941,6 @@ public class JobsPlayer {
 	HashMap<String, QuestProgression> orprog = qProgression.get(quest.getJob().getName());
 
 	Quest q = quest.getJob().getNextQuest(getQuestNameList(quest.getJob(), null), getJobProgression(quest.getJob()).getLevel());
-
 	if (q == null) {
 	    for (JobProgression one : this.getJobProgression()) {
 		if (one.getJob().isSame(quest.getJob()))
@@ -1211,8 +1203,7 @@ public class JobsPlayer {
 	if (maxV == null || maxV == 0)
 	    maxV = (double) Jobs.getGCManager().getBrewingStandsMaxDefault();
 
-	int max = maxV.intValue();
-	return max;
+	return maxV.intValue();
     }
 
     public int getMaxFurnacesAllowed() {
@@ -1221,9 +1212,7 @@ public class JobsPlayer {
 	if (maxV == null || maxV == 0)
 	    maxV = (double) Jobs.getGCManager().getFurnacesMaxDefault();
 
-	int max = maxV.intValue();
-
-	return max;
+	return maxV.intValue();
     }
 
     public int getSkippedQuests() {
@@ -1244,10 +1233,7 @@ public class JobsPlayer {
 	    return false;
 
 	HashMap<Job, Long> map = leftTimes.get(uuid);
-	if (!map.containsKey(job))
-	    return false;
-
-	return map.get(job).longValue() < System.currentTimeMillis();
+	return map.containsKey(job) && map.get(job).longValue() < System.currentTimeMillis();
     }
 
     public void setLeftTime(Job job) {
