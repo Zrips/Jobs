@@ -1132,6 +1132,11 @@ public class Jobs extends JavaPlugin {
 	    return true;
 
 	if (info.getType() == ActionType.BREAK) {
+	    if (GconfigManager.allowBreakPaymentForOreGenerators) {
+		getBpManager().remove(block);
+		return true;
+	    }
+
 	    if (block.hasMetadata("JobsExploit")) {
 		//player.sendMessage("This block is protected using Rukes' system!");
 		return false;

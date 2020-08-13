@@ -1000,109 +1000,112 @@ public enum CMIMaterial {
     HONEY_BLOCK("Honey Block"),
     HONEY_BOTTLE("Honey Bottle"),
 
-    //1.16
-    ANCIENT_DEBRIS("ancient debris"),
-    BASALT("basalt"),
-    BLACKSTONE("blackstone"),
-    BLACKSTONE_SLAB("blackstone slab"),
-    BLACKSTONE_STAIRS("blackstone stairs"),
-    BLACKSTONE_WALL("blackstone wall"),
-    CHAIN("chain"),
-    CHISELED_NETHER_BRICKS("chiseled nether bricks"),
-    CHISELED_POLISHED_BLACKSTONE("chiseled polished blackstone"),
-    CRACKED_NETHER_BRICKS("cracked nether bricks"),
-    CRACKED_POLISHED_BLACKSTONE_BRICKS("cracked polished blackstone bricks"),
-    CRIMSON_BUTTON("crimson button"),
-    CRIMSON_DOOR("crimson door"),
-    CRIMSON_FENCE("crimson fence"),
-    CRIMSON_FENCE_GATE("crimson fence gate"),
-    CRIMSON_FUNGUS("crimson fungus"),
-    CRIMSON_HYPHAE("crimson hyphae"),
-    CRIMSON_NYLIUM("crimson nylium"),
-    CRIMSON_PLANKS("crimson planks"),
-    CRIMSON_PRESSURE_PLATE("crimson pressure plate"),
-    CRIMSON_ROOTS("crimson roots"),
-    CRIMSON_SIGN("crimson sign"),
-    CRIMSON_SLAB("crimson slab"),
-    CRIMSON_STAIRS("crimson stairs"),
-    CRIMSON_STEM("crimson stem"),
-    CRIMSON_TRAPDOOR("crimson trapdoor"),
-    CRIMSON_WALL_SIGN("crimson wall sign"),
-    CRYING_OBSIDIAN("crying obsidian"),
-    GILDED_BLACKSTONE("gilded blackstone"),
-    HOGLIN_SPAWN_EGG("hoglin spawn egg"),
-    LODESTONE("lodestone"),
-    MUSIC_DISC_PIGSTEP("music disc pigstep"),
-    NETHERITE_AXE("netherite axe"),
-    NETHERITE_BLOCK("netherite block"),
-    NETHERITE_BOOTS("netherite boots"),
-    NETHERITE_CHESTPLATE("netherite chestplate"),
-    NETHERITE_HELMET("netherite helmet"),
-    NETHERITE_HOE("netherite hoe"),
-    NETHERITE_INGOT("netherite ingot"),
-    NETHERITE_LEGGINGS("netherite leggings"),
-    NETHERITE_PICKAXE("netherite pickaxe"),
-    NETHERITE_SCRAP("netherite scrap"),
-    NETHERITE_SHOVEL("netherite shovel"),
-    NETHERITE_SWORD("netherite sword"),
-    NETHER_GOLD_ORE("nether gold ore"),
-    NETHER_SPROUTS("nether sprouts"),
-    PIGLIN_BANNER_PATTERN("piglin banner pattern"),
-    PIGLIN_SPAWN_EGG("piglin spawn egg"),
-    POLISHED_BASALT("polished basalt"),
-    POLISHED_BLACKSTONE("polished blackstone"),
-    POLISHED_BLACKSTONE_BRICKS("polished blackstone bricks"),
-    POLISHED_BLACKSTONE_BRICK_SLAB("polished blackstone brick slab"),
-    POLISHED_BLACKSTONE_BRICK_STAIRS("polished blackstone brick stairs"),
-    POLISHED_BLACKSTONE_BRICK_WALL("polished blackstone brick wall"),
-    POLISHED_BLACKSTONE_BUTTON("polished blackstone button"),
-    POLISHED_BLACKSTONE_PRESSURE_PLATE("polished blackstone pressure plate"),
-    POLISHED_BLACKSTONE_SLAB("polished blackstone slab"),
-    POLISHED_BLACKSTONE_STAIRS("polished blackstone stairs"),
-    POLISHED_BLACKSTONE_WALL("polished blackstone wall"),
-    POTTED_CRIMSON_FUNGUS("potted crimson fungus"),
-    POTTED_CRIMSON_ROOTS("potted crimson roots"),
-    POTTED_WARPED_FUNGUS("potted warped fungus"),
-    POTTED_WARPED_ROOTS("potted warped roots"),
-    QUARTZ_BRICKS("quartz bricks"),
-    RESPAWN_ANCHOR("respawn anchor"),
-    SHROOMLIGHT("shroomlight"),
-    SOUL_CAMPFIRE("soul campfire"),
-    SOUL_FIRE("soul fire"),
-    SOUL_LANTERN("soul lantern"),
-    SOUL_SOIL("soul soil"),
-    SOUL_TORCH("soul torch"),
-    SOUL_WALL_TORCH("soul wall torch"),
-    STRIDER_SPAWN_EGG("strider spawn egg"),
-    STRIPPED_CRIMSON_HYPHAE("stripped crimson hyphae"),
-    STRIPPED_CRIMSON_STEM("stripped crimson stem"),
-    STRIPPED_WARPED_HYPHAE("stripped warped hyphae"),
-    STRIPPED_WARPED_STEM("stripped warped stem"),
-    TARGET("target"),
-    TWISTING_VINES("twisting vines"),
-    TWISTING_VINES_PLANT("twisting vines plant"),
-    WARPED_BUTTON("warped button"),
-    WARPED_DOOR("warped door"),
-    WARPED_FENCE("warped fence"),
-    WARPED_FENCE_GATE("warped fence gate"),
-    WARPED_FUNGUS("warped fungus"),
-    WARPED_FUNGUS_ON_A_STICK("warped fungus on a stick"),
-    WARPED_HYPHAE("warped hyphae"),
-    WARPED_NYLIUM("warped nylium"),
-    WARPED_PLANKS("warped planks"),
-    WARPED_PRESSURE_PLATE("warped pressure plate"),
-    WARPED_ROOTS("warped roots"),
-    WARPED_SIGN("warped sign"),
-    WARPED_SLAB("warped slab"),
-    WARPED_STAIRS("warped stairs"),
-    WARPED_STEM("warped stem"),
-    WARPED_TRAPDOOR("warped trapdoor"),
-    WARPED_WALL_SIGN("warped wall sign"),
-    WARPED_WART_BLOCK("warped wart block"),
-    WEEPING_VINES("weeping vines"),
-    WEEPING_VINES_PLANT("weeping vines plant"),
-    ZOGLIN_SPAWN_EGG("zoglin spawn egg"),
-    ZOMBIFIED_PIGLIN_SPAWN_EGG("zombified piglin spawn egg"),
+    //1.16.1
+    ANCIENT_DEBRIS("Ancient Debris"),
+    BASALT("Basalt"),
+    BLACKSTONE("Blackstone"),
+    BLACKSTONE_SLAB("Blackstone Slab"),
+    BLACKSTONE_STAIRS("Blackstone Stairs"),
+    BLACKSTONE_WALL("Blackstone Wall"),
+    CHAIN("Chain"),
+    CHISELED_NETHER_BRICKS("Chiseled Nether Bricks"),
+    CHISELED_POLISHED_BLACKSTONE("Chiseled Polished Blackstone"),
+    CRACKED_NETHER_BRICKS("Cracked Nether Bricks"),
+    CRACKED_POLISHED_BLACKSTONE_BRICKS("Cracked Polished Blackstone Bricks"),
+    CRIMSON_BUTTON("Crimson Button"),
+    CRIMSON_DOOR("Crimson Door"),
+    CRIMSON_FENCE("Crimson Fence"),
+    CRIMSON_FENCE_GATE("Crimson Fence Gate"),
+    CRIMSON_FUNGUS("Crimson Fungus"),
+    CRIMSON_HYPHAE("Crimson Hyphae"),
+    CRIMSON_NYLIUM("Crimson Nylium"),
+    CRIMSON_PLANKS("Crimson Planks"),
+    CRIMSON_PRESSURE_PLATE("Crimson Pressure Plate"),
+    CRIMSON_ROOTS("Crimson Roots"),
+    CRIMSON_SIGN("Crimson Sign"),
+    CRIMSON_SLAB("Crimson Slab"),
+    CRIMSON_STAIRS("Crimson Stairs"),
+    CRIMSON_STEM("Crimson Stem"),
+    CRIMSON_TRAPDOOR("Crimson Trapdoor"),
+    CRIMSON_WALL_SIGN("Crimson Wall Sign"),
+    CRYING_OBSIDIAN("Crying Obsidian"),
+    GILDED_BLACKSTONE("Gilded Blackstone"),
+    HOGLIN_SPAWN_EGG("Hoglin Spawn Egg"),
+    LODESTONE("Lodestone"),
+    MUSIC_DISC_PIGSTEP("Music Disc Pigstep"),
+    NETHERITE_AXE("Netherite Axe"),
+    NETHERITE_BLOCK("Netherite Block", "netherite"),
+    NETHERITE_BOOTS("Netherite Boots"),
+    NETHERITE_CHESTPLATE("Netherite Chestplate"),
+    NETHERITE_HELMET("Netherite Helmet"),
+    NETHERITE_HOE("Netherite Hoe"),
+    NETHERITE_INGOT("Netherite Ingot"),
+    NETHERITE_LEGGINGS("Netherite Leggings"),
+    NETHERITE_PICKAXE("Netherite Pickaxe"),
+    NETHERITE_SCRAP("Netherite Scrap"),
+    NETHERITE_SHOVEL("Netherite Shovel"),
+    NETHERITE_SWORD("Netherite Sword"),
+    NETHER_GOLD_ORE("Nether Gold Ore"),
+    NETHER_SPROUTS("Nether Sprouts"),
+    PIGLIN_BANNER_PATTERN("Piglin Banner Pattern"),
+    PIGLIN_SPAWN_EGG("Piglin Spawn Egg"),
+    POLISHED_BASALT("Polished Basalt"),
+    POLISHED_BLACKSTONE("Polished Blackstone"),
+    POLISHED_BLACKSTONE_BRICKS("Polished Blackstone Bricks"),
+    POLISHED_BLACKSTONE_BRICK_SLAB("Polished Blackstone Brick Slab"),
+    POLISHED_BLACKSTONE_BRICK_STAIRS("Polished Blackstone Brick Stairs"),
+    POLISHED_BLACKSTONE_BRICK_WALL("Polished Blackstone Brick Wall"),
+    POLISHED_BLACKSTONE_BUTTON("Polished Blackstone Button"),
+    POLISHED_BLACKSTONE_PRESSURE_PLATE("Polished Blackstone Pressure Plate"),
+    POLISHED_BLACKSTONE_SLAB("Polished Blackstone Slab"),
+    POLISHED_BLACKSTONE_STAIRS("Polished Blackstone Stairs"),
+    POLISHED_BLACKSTONE_WALL("Polished Blackstone Wall"),
+    POTTED_CRIMSON_FUNGUS("Potted Crimson Fungus"),
+    POTTED_CRIMSON_ROOTS("Potted Crimson Roots"),
+    POTTED_WARPED_FUNGUS("Potted Warped Fungus"),
+    POTTED_WARPED_ROOTS("Potted Warped Roots"),
+    QUARTZ_BRICKS("Quartz Bricks"),
+    RESPAWN_ANCHOR("Respawn Anchor"),
+    SHROOMLIGHT("Shroomlight"),
+    SOUL_CAMPFIRE("Soul Campfire"),
+    SOUL_FIRE("Soul Fire"),
+    SOUL_LANTERN("Soul Lantern"),
+    SOUL_SOIL("Soul Soil"),
+    SOUL_TORCH("Soul Torch"),
+    SOUL_WALL_TORCH("Soul Wall Torch"),
+    STRIDER_SPAWN_EGG("Strider Spawn Egg"),
+    STRIPPED_CRIMSON_HYPHAE("Stripped Crimson Hyphae"),
+    STRIPPED_CRIMSON_STEM("Stripped Crimson Stem"),
+    STRIPPED_WARPED_HYPHAE("Stripped Warped Hyphae"),
+    STRIPPED_WARPED_STEM("Stripped Warped Stem"),
+    TARGET("Target"),
+    TWISTING_VINES("Twisting Vines"),
+    TWISTING_VINES_PLANT("Twisting Vines Plant"),
+    WARPED_BUTTON("Warped Button"),
+    WARPED_DOOR("Warped Door"),
+    WARPED_FENCE("Warped Fence"),
+    WARPED_FENCE_GATE("Warped Fence Gate"),
+    WARPED_FUNGUS("Warped Fungus"),
+    WARPED_FUNGUS_ON_A_STICK("Warped Fungus On A Stick"),
+    WARPED_HYPHAE("Warped Hyphae"),
+    WARPED_NYLIUM("Warped Nylium"),
+    WARPED_PLANKS("Warped Planks"),
+    WARPED_PRESSURE_PLATE("Warped Pressure Plate"),
+    WARPED_ROOTS("Warped Roots"),
+    WARPED_SIGN("Warped Sign"),
+    WARPED_SLAB("Warped Slab"),
+    WARPED_STAIRS("Warped Stairs"),
+    WARPED_STEM("Warped Stem"),
+    WARPED_TRAPDOOR("Warped Trapdoor"),
+    WARPED_WALL_SIGN("Warped Wall Sign", "Warped Wall"),
+    WARPED_WART_BLOCK("Warped Wart Block", "Warped Wart"),
+    WEEPING_VINES("Weeping Vines"),
+    WEEPING_VINES_PLANT("Weeping Vines Plant"),
+    ZOGLIN_SPAWN_EGG("Zoglin Spawn Egg"),
+    ZOMBIFIED_PIGLIN_SPAWN_EGG("Zombified Piglin Spawn Egg"),
+
+    // 1.16.2
+    PIGLIN_BRUTE_SPAWN_EGG("Piglin Brute Spawn Egg"),
 
     // Legacy
     LEGACY_STATIONARY_WATER(9, 0, null, "Stationary Water"),
@@ -2034,6 +2037,26 @@ public enum CMIMaterial {
 	return false;
     }
 
+    public static boolean isPickaxe(Material mat) {
+	CMIMaterial m = CMIMaterial.get(mat);
+	return m != null && m.isPickaxe();
+    }
+
+    public boolean isPickaxe() {
+	switch (this) {
+	case NETHERITE_PICKAXE:
+	case DIAMOND_PICKAXE:
+	case GOLDEN_PICKAXE:
+	case IRON_PICKAXE:
+	case STONE_PICKAXE:
+	case WOODEN_PICKAXE:
+	    return true;
+	default:
+	    break;
+	}
+	return false;
+    }
+
     public static boolean isValidItem(Material mat) {
 	CMIMaterial m = CMIMaterial.get(mat);
 	return m != null && m.isValidItem();
@@ -2387,6 +2410,24 @@ public enum CMIMaterial {
 	case CREEPER_HEAD:
 	case DRAGON_HEAD:
 	case ZOMBIE_HEAD:
+	case LEGACY_SKULL:
+	    return true;
+	default:
+	    break;
+	}
+	return false;
+    }
+
+    public static boolean isPlayerHead(Material mat) {
+	CMIMaterial m = CMIMaterial.get(mat);
+	return m != null && m.isPlayerHead();
+    }
+
+    public boolean isPlayerHead() {
+	switch (this) {
+	case PLAYER_HEAD:
+	case LEGACY_SKULL:
+	case PLAYER_WALL_HEAD:
 	    return true;
 	default:
 	    break;
@@ -2616,7 +2657,7 @@ public enum CMIMaterial {
     }
 
     public boolean equals(Material mat) {
-	return getMaterial() == null ? false : getMaterial() == mat;
+	return getMaterial() != null && getMaterial() == mat;
     }
 
     public List<String> getLegacyNames() {
@@ -2658,6 +2699,6 @@ public enum CMIMaterial {
     }
 
     public boolean containsCriteria(CMIMaterialCriteria criteria) {
-	return (this.criteria == null || criteria == null) ? false : this.criteria.contains(criteria);
+	return this.criteria != null && criteria != null && this.criteria.contains(criteria);
     }
 }

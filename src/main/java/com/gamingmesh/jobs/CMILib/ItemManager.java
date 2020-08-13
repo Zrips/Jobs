@@ -1,18 +1,20 @@
 package com.gamingmesh.jobs.CMILib;
 
 import java.util.HashMap;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import com.gamingmesh.jobs.container.Potion;
 import com.gamingmesh.jobs.stuff.Util;
 
-@SuppressWarnings("deprecation")
 public class ItemManager {
 
     static HashMap<Material, CMIMaterial> byRealMaterial = new HashMap<>();
@@ -31,9 +33,7 @@ public class ItemManager {
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    if (one == null)
 		continue;
-
 	    one.updateMaterial();
-
 	    Material mat = one.getMaterial();
 	    if (mat == null) {
 		continue;
@@ -47,34 +47,30 @@ public class ItemManager {
 
 	    String mojangName = null;
 	    try {
-		if (Version.isCurrentEqualOrLower(Version.v1_14_R1) || mat.isItem())
-		    mojangName = CMIReflections.getItemMinecraftName(new ItemStack(mat));
+		mojangName = CMIReflections.getItemMinecraftName(new ItemStack(mat));
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
 	    mojangName = mojangName == null ? mat.toString().replace("_", "").replace(" ", "").toLowerCase()
 		: mojangName.replace("_", "").replace(" ", "").toLowerCase();
 
-	    if (one.isCanHavePotionType()) {
-		for (Potion p : Potion.values()) {
-		    byName.put(cmiName + ":" + p.getName().toLowerCase(), one);
-		}
-	    } else if (byName.containsKey(cmiName)) {
+	    if (byName.containsKey(cmiName)) {
 		byName.put(cmiName + ":" + data, one);
 	    } else
 		byName.put(cmiName, one);
 
-	    byName.put(materialName, one);
-	    if (!byName.containsKey(cmiName + ":" + data))
-		byName.put(cmiName + ":" + data, one);
+	    if (byName.containsKey(materialName))
+		byName.put(materialName + ":" + data, one);
+	    else
+		byName.put(materialName, one);
 
 	    if (!one.getLegacyNames().isEmpty()) {
 		for (String oneL : one.getLegacyNames()) {
 		    String legacyName = oneL.replace("_", "").replace(" ", "").toLowerCase();
-		    if (byName.containsKey(legacyName) || data > 0) {
+		    if (byName.containsKey(legacyName) || data > 0)
 			byName.put(legacyName + ":" + data, one);
-		    }
-		    byName.put(legacyName, one);
+		    else
+			byName.put(legacyName, one);
 		}
 	    }
 
@@ -107,11 +103,11 @@ public class ItemManager {
     @Deprecated
     public CMIItemStack getItem(Material mat) {
 	CMIMaterial cmat = CMIMaterial.get(mat);
-	return (cmat == null || cmat == CMIMaterial.NONE) ? null : new CMIItemStack(cmat);
+	return cmat == null || cmat == CMIMaterial.NONE ? null : new CMIItemStack(cmat);
     }
 
     public static CMIItemStack getItem(CMIMaterial mat) {
-	return (mat == null || mat == CMIMaterial.NONE) ? null : new CMIItemStack(mat);
+	return mat == null || mat == CMIMaterial.NONE ? null : new CMIItemStack(mat);
     }
 
     public static CMIItemStack getItem(ItemStack item) {
@@ -214,107 +210,13 @@ public class ItemManager {
 	    cmat = CMIMaterial.get(name);
 	}
 
-	if (cmat != null && cmat != CMIMaterial.NONE) {
+	if (cmat != null && !cmat.equals(CMIMaterial.NONE)) {
 	    cm = cmat.newCMIItemStack();
 	} else
 	    cmat = CMIMaterial.get(subdata == null ? original : original + ":" + subdata);
 
 	if (cmat != null && cmat != CMIMaterial.NONE)
 	    cm = cmat.newCMIItemStack();
-
-//	main: if (cm == null) {
-//	    cm = byBukkitName.get(name);
-//	    if (subdata != null && cm != null) {
-//		cm = byBukkitName.get(cm.getCMIType() + ":" + subdata);
-//		if (cm != null)
-//		    break main;
-//	    }
-//	    cm = byBukkitName.get(name);
-//
-//	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
-//		if (cm != null && data != -999) {
-//		    CMIMaterial t = CMIMaterial.get(cm.getCMIType().getLegacyId(), data);
-//		    if (t != null) {
-//			cm = byMaterial.get(t);
-//		    }
-//		}
-//	    }
-//
-//	    if (data != -999) {
-//		try {
-//		    cm = byId.get(Integer.parseInt(name));
-//		    CMIMaterial t = CMIMaterial.get(original);
-//		    if (t != null) {
-//			cm = this.byMaterial.get(t);
-//		    }
-//		} catch (Exception e) {
-//		}
-//	    }
-//
-//	    if (cm == null) {
-//		try {
-//		    cm = byId.get(Integer.parseInt(name));
-//		} catch (Exception e) {
-//		}
-//
-//		if (cm == null) {
-//		    cm = byMojangName.get(name);
-//		    if (cm == null) {
-//			for (Material one : Material.class.getEnumConstants()) {
-//			    if (one.name().replace("_", "").equalsIgnoreCase(name)) {
-//				cm = byMaterial.get(CMIMaterial.get(one));
-//				break;
-//			    }
-//			}
-//			if (cm == null) {
-//			    for (CMIMaterial one : CMIMaterial.values()) {
-//				if (one.getName().replace(" ", "").equalsIgnoreCase(name)) {
-//				    cm = byMaterial.get(one);
-//				    if (cm != null && data == -999) {
-//					data = one.getData();
-//				    }
-//				    break;
-//				}
-//			    }
-//			    if (cm == null) {
-//				for (CMIMaterial one : CMIMaterial.values()) {
-//				    if (one.getName().replace(" ", "").toLowerCase().startsWith(name)) {
-//					cm = byMaterial.get(one);
-//					if (cm != null && data == -999) {
-//					    data = one.getData();
-//					}
-//					break;
-//				    }
-//				}
-//			    }
-//			    if (cm == null) {
-//				for (CMIMaterial one : CMIMaterial.values()) {
-//				    if (one.getName().replace(" ", "").toLowerCase().contains(name)) {
-//					cm = byMaterial.get(one);
-//					if (cm != null && data == -999) {
-//					    data = one.getData();
-//					}
-//					break;
-//				    }
-//				}
-//			    }
-//			    if (cm == null) {
-//				for (Entry<String, CMIItemStack> one : byMojangName.entrySet()) {
-//				    if (one.getKey().contains(name)) {
-//					cm = one.getValue();
-//					if (cm != null && data == -999) {
-//					    data = one.getValue().getData();
-//					}
-//					break;
-//				    }
-//				}
-//			    }
-//			}
-//		    }
-////		    }
-//		}
-//	    }
-//	}
 
 	CMIItemStack ncm = null;
 	if (cm != null)
@@ -380,31 +282,4 @@ public class ItemManager {
 	CMIItemStack cm = getItem(name);
 	return cm == null ? Material.AIR : cm.getType();
     }
-
-//    public CMIMaterial getRealName(CMIItemStack item) {
-//	return getRealName(item, false);
-//    }
-//
-//    public CMIMaterial getRealName(CMIItemStack item, boolean safe) {
-//
-////	for (CMIMaterial one : CMIMaterial.values()) {
-////	    if (one.getId() == item.getId() && one.getDataList().contains(item.getData()))
-////		return one;
-////	}
-////	if (safe)
-////	    for (CMIMaterial one : CMIMaterial.values()) {
-////		if (one.getId() == item.getId())
-////		    return one;
-////	    }
-////	return safe ? CMIMaterial.AIR : null;
-//	return item.getRealName();
-//    }
-
-//    private static CMIMaterialLegacy proccessItemName(CMIMaterialLegacy one) {
-//	if (one.getName().contains("[colorNames]"))
-//	    one.setName(one.getName().replace("[colorNames]", colorNames.getById(one.getData()).getName()));
-//	else if (one.getName().contains("[entityNames]"))
-//	    one.setName(one.getName().replace("[entityNames]", CMIEntityType.getById(one.getData()).getName()));
-//	return one;
-//    }
 }

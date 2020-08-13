@@ -101,7 +101,7 @@ public class GeneralConfigManager {
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
 	BossBarEnabled, BossBarShowOnEachAction, BossBarsMessageByDefault, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
-	LoggingUse;
+	LoggingUse, allowBreakPaymentForOreGenerators;
 
     public ItemStack guiBackButton, guiNextButton, guiFiller;
 
@@ -802,6 +802,10 @@ public class GeneralConfigManager {
 	    "Data base cleanup will be performed on each server startup", "This cant be more then 14 days");
 	BlockProtectionDays = c.get("ExploitProtections.General.KeepDataFor", 14);
 	BlockProtectionDays = BlockProtectionDays > 14 ? 14 : BlockProtectionDays;
+
+	c.addComment("ExploitProtections.General.AllowBreakPaymentForOreGenerators", "It allows you to pay for ore generator plugins continuously"
+			+ " once you have broken the block in one place.");
+	allowBreakPaymentForOreGenerators = c.get("ExploitProtections.General.AllowBreakPaymentForOreGenerators", false);
 
 	c.addComment("ExploitProtections.General.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");
 	useGlobalTimer = c.get("ExploitProtections.General.GlobalBlockTimer.use", true);

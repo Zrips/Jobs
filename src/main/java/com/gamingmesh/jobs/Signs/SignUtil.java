@@ -132,9 +132,6 @@ public class SignUtil {
 	    reader = new ConfigReader(f);
 	} catch (Exception e1) {
 	    e1.printStackTrace();
-	}
-
-	if (reader == null) {
 	    return;
 	}
 

@@ -33,8 +33,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.function.BiPredicate;
 
-import javax.swing.Box.Filler;
-
 public class Job {
 
     private EnumMap<ActionType, List<JobInfo>> jobInfo = new EnumMap<>(ActionType.class);

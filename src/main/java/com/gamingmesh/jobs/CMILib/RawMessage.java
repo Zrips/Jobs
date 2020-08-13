@@ -116,7 +116,7 @@ public class RawMessage {
 		    options.append("\"italic\":true");
 		else if (format.equals(CMIChatColor.STRIKETHROUGH))
 		    options.append("\"strikethrough\":true");
-		else if (format.equals(CMIChatColor.MAGIC))
+		else if (format.equals(CMIChatColor.OBFUSCATED))
 		    options.append("\"obfuscated\":true");
 	    }
 	    if (!options.toString().isEmpty()) {
@@ -149,13 +149,13 @@ public class RawMessage {
 			oldColors.append("&o");
 		    else if (format.equals(CMIChatColor.STRIKETHROUGH))
 			oldColors.append("&m");
-		    else if (format.equals(CMIChatColor.MAGIC))
+		    else if (format.equals(CMIChatColor.OBFUSCATED))
 			oldColors.append("&k");
 		}
 		t = oldColors.toString() + t;
 	    }
 
-	    finalText.append("\"text\":\"" + t + "\"");
+	    finalText.append("\"text\":\"" + escape(t, hover ? false : this.isDontBreakLine()) + "\"");
 	}
 
 	if (finalText.toString().isEmpty())
@@ -247,7 +247,6 @@ public class RawMessage {
     }
 
     public RawMessage addText(String text) {
-//	CMIDebug.c(text);
 	if (text == null || text.isEmpty())
 	    return this;
 	if (temp.containsKey(RawMessagePartType.Text))
@@ -256,7 +255,7 @@ public class RawMessage {
 //	if (this.isDontBreakLine()) {
 	onlyText.add(CMIChatColor.translate(text));
 
-	text = escape(text, this.isDontBreakLine());
+//	text = escape(text, this.isDontBreakLine());
 //	}
 	text = textIntoJson(text, false);
 	String f = "";
@@ -287,9 +286,8 @@ public class RawMessage {
 	if (hover == null || hover.isEmpty())
 	    return this;
 
-	hover = escape(hover, false);
-
 	hover = textIntoJson(hover, true);
+//	hover = escape(hover, false);
 	String f = "";
 	if (hover.isEmpty())
 	    f = "\"text\":\"\"";
@@ -306,7 +304,8 @@ public class RawMessage {
 	    return this;
 	if (!command.startsWith("/"))
 	    command = "/" + command;
-	String f = "\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + CMIChatColor.deColorize(command) + "\"}";
+	command = escape(command, true);
+	String f = "\"clickEvent\":{\"action\":\"run_command\",\"value\":\"" + CMIChatColor.deColorize(command).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "\"}";
 	temp.put(RawMessagePartType.ClickCommand, f);
 	return this;
     }
@@ -315,7 +314,7 @@ public class RawMessage {
 	if (suggestion == null || suggestion.isEmpty())
 	    return this;
 	suggestion = escape(suggestion, true);
-	String f = "\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + CMIChatColor.deColorize(suggestion) + "\"}";
+	String f = "\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + CMIChatColor.deColorize(suggestion).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "\"}";
 	temp.put(RawMessagePartType.ClickSuggestion, f);
 	return this;
     }
@@ -324,7 +323,7 @@ public class RawMessage {
 	if (insertion == null || insertion.isEmpty())
 	    return this;
 	insertion = escape(insertion, true);
-	String f = "\"insertion\":\"" + CMIChatColor.deColorize(insertion) + "\"";
+	String f = "\"insertion\":\"" + CMIChatColor.deColorize(insertion).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "\"";
 	temp.put(RawMessagePartType.ClickInsertion, f);
 	return this;
     }
@@ -344,7 +343,8 @@ public class RawMessage {
 
 	if (!url.toLowerCase().startsWith("http://") && !url.toLowerCase().startsWith("https://"))
 	    url = "http://" + url;
-	String f = "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + url + "\"}";
+
+	String f = "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + CMIChatColor.deColorize(url).replace(CMIChatColor.colorReplacerPlaceholder, "&") + "\"}";
 
 	temp.put(RawMessagePartType.ClickLink, f);
 	return this;
@@ -379,7 +379,7 @@ public class RawMessage {
 	escape(s, sb);
 	if (escapeNewLn)
 	    return sb.toString().replace(nl, "\\\\n");
-	return sb.toString().replace(nl, "\n");
+	return sb.toString().replace(nl, "\\n");
     }
 
     private static final String nl = "\u00A5n";
@@ -398,11 +398,7 @@ public class RawMessage {
 		sb.append("\\n");
 		break;
 	    case '\\':
-//		if (escapeNewLn) {
 		sb.append("\\\\");
-//		} else {
-//		    sb.append("\\");
-//		}
 		break;
 	    case '\b':
 		sb.append("\\b");
@@ -547,7 +543,7 @@ public class RawMessage {
 	if (sender instanceof Player) {
 	    show((Player) sender);
 	} else {
-	    sender.sendMessage(CMIChatColor.translate(this.combineClean().combinedClean));
+	    sender.sendMessage(this.combineClean().combinedClean);
 	}
 	return this;
     }

@@ -79,9 +79,7 @@ public class TitleMessageManager {
 		    case v1_13_R1:
 		    case v1_13_R2:
 		    case v1_14_R1:
-		    case v1_14_R2:
 		    case v1_15_R1:
-		    case v1_15_R2:
 		    case v1_16_R1:
 		    default:
 			receivingPacket.sendTitle(t, s, fadeIn, keep, fadeOut);

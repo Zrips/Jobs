@@ -17,15 +17,22 @@ public enum Version {
     v1_12_R1,
     v1_13_R1,
     v1_13_R2,
-    v1_13_R3,
     v1_14_R1,
-    v1_14_R2,
     v1_15_R1,
-    v1_15_R2,
     v1_16_R1,
     v1_16_R2,
     v1_17_R1,
-    v1_17_R2;
+    v1_17_R2,
+    v1_18_R1,
+    v1_18_R2,
+    v1_19_R1,
+    v1_19_R2,
+    v1_20_R1,
+    v1_20_R2,
+    v1_21_R1,
+    v1_21_R2,
+    v1_22_R1,
+    v1_22_R2;
 
     private Integer value;
     private String shortVersion;
