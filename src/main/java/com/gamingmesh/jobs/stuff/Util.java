@@ -43,7 +43,7 @@ public class Util {
 	ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
 	SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
 	if (skullOwner.length() == 36) {
-	    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(skullOwner);
+	    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
 	    Jobs.getNms().setSkullOwner(skullMeta, offPlayer);
 	} else
 	    skullMeta.setOwner(skullOwner);

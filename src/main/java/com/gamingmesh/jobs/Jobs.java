@@ -1132,15 +1132,11 @@ public class Jobs extends JavaPlugin {
 	    return true;
 
 	if (info.getType() == ActionType.BREAK) {
-	    if (GconfigManager.allowBreakPaymentForOreGenerators) {
-		getBpManager().remove(block);
-		return true;
-	    }
-
 	    if (block.hasMetadata("JobsExploit")) {
 		//player.sendMessage("This block is protected using Rukes' system!");
 		return false;
 	    }
+
 	    BlockProtection bp = getBpManager().getBp(block.getLocation());
 	    if (bp != null) {
 		Long time = bp.getTime();
@@ -1150,22 +1146,27 @@ public class Jobs extends JavaPlugin {
 		    getBpManager().remove(block);
 		    return false;
 		}
+
 		if ((time < System.currentTimeMillis()) && (bp.getAction() != DBAction.DELETE)) {
 		    getBpManager().remove(block);
 		    return true;
 		}
+
 		if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
 		    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
-		    if (inform) {
-			if (player.canGetPaid(info))
-			    ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+		    if (inform && player.canGetPaid(info)) {
+			ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 		    }
+
 		    return false;
 		}
+
 		getBpManager().add(block, cd);
+
 		if ((cd == null || cd == 0) && GconfigManager.useGlobalTimer) {
 		    getBpManager().add(block, GconfigManager.globalblocktimer);
 		}
+
 	    } else if (GconfigManager.useGlobalTimer) {
 		getBpManager().add(block, GconfigManager.globalblocktimer);
 	    }
