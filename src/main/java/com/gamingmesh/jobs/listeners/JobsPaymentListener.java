@@ -579,9 +579,17 @@ public class JobsPaymentListener implements Listener {
 	boolean leather = false;
 	boolean shulker = false;
 
+	ItemStack last = null;
+
 	for (ItemStack s : sourceItems) {
 	    if (s == null)
 		continue;
+
+	    if (!Jobs.getGCManager().payForCombiningItems && s.equals(last) &&
+			(CMIMaterial.isTool(s.getType()) || CMIMaterial.isArmor(s.getType())))
+		return;
+
+	    last = s;
 
 	    if (CMIMaterial.isDye(s.getType()))
 		DyeStack.add(s);

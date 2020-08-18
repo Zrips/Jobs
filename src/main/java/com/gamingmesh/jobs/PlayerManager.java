@@ -138,8 +138,7 @@ public class PlayerManager {
 	if (players.containsKey(player.getName()))
 	    players.remove(player.getName().toLowerCase());
 
-	JobsPlayer jPlayer = playersUUID.containsKey(player.getUniqueId()) ? playersUUID.remove(player.getUniqueId()) : null;
-	return jPlayer;
+	return playersUUID.remove(player.getUniqueId());
     }
 
     public ConcurrentHashMap<UUID, JobsPlayer> getPlayersCache() {
@@ -316,9 +315,7 @@ public class PlayerManager {
      */
     public JobsPlayer getJobsPlayer(String playerName) {
 	JobsPlayer jPlayer = players.get(playerName.toLowerCase());
-	if (jPlayer != null)
-	    return jPlayer;
-	return playersCache.get(playerName.toLowerCase());
+	return jPlayer != null ? jPlayer : playersCache.get(playerName.toLowerCase());
     }
 
     /**
@@ -595,7 +592,7 @@ public class PlayerManager {
 	    if (Jobs.getGCManager().SoundLevelupUse) {
 		Sound sound = levelUpEvent.getSound();
 		if (sound != null) {
-		    if (player != null && player.getLocation() != null)
+		    if (player != null)
 			player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
 		} else
 		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
@@ -729,7 +726,7 @@ public class PlayerManager {
 		if (Jobs.getGCManager().SoundTitleChangeUse) {
 		    Sound sound = levelUpEvent.getTitleChangeSound();
 		    if (sound != null) {
-			if (player != null && player.getLocation() != null)
+			if (player != null)
 			    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
 				levelUpEvent.getTitleChangePitch());
 		    } else
@@ -920,7 +917,7 @@ public class PlayerManager {
     }
 
     public boolean containsItemBoostByNBT(ItemStack item) {
-	return item == null ? false : Jobs.getReflections().hasNbtString(item, JobsItemBoost);
+	return item != null && Jobs.getReflections().hasNbtString(item, JobsItemBoost);
     }
 
     private final String JobsItemBoost = "JobsItemBoost";
@@ -986,10 +983,7 @@ public class PlayerManager {
     public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim, boolean force, boolean getall) {
 	Boost boost = new Boost();
 
-	if (player == null || !player.isOnline())
-	    return boost;
-
-	if (prog == null)
+	if (player == null || !player.isOnline() || prog == null)
 	    return boost;
 
 	if (HookManager.getMcMMOManager().mcMMOPresent || HookManager.getMcMMOManager().mcMMOOverHaul)

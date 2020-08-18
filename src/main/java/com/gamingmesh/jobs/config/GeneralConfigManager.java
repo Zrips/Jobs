@@ -101,7 +101,7 @@ public class GeneralConfigManager {
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
 	BossBarEnabled, BossBarShowOnEachAction, BossBarsMessageByDefault, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
-	LoggingUse;
+	LoggingUse, payForCombiningItems;
 
     public ItemStack guiBackButton, guiNextButton, guiFiller;
 
@@ -764,6 +764,9 @@ public class GeneralConfigManager {
 	    "With this true, player will get money for all crafted items instead of each crafting action (like with old payment mechanic)",
 	    "By default its false, as you can make ALOT of money if prices kept from old payment mechanics");
 	PayForEachCraft = c.get("Economy.Crafting.PayForEachCraft", false);
+	c.addComment("Economy.Crafting.PayForCombiningItems", "true - if players tries to combine (repair) 2 same items, like armor or weapon "
+	    + "do they get income for it?");
+	payForCombiningItems = c.get("Economy.Crafting.PayForCombiningItems", true);
 
 	c.addComment("Economy.MilkingCow.CancelMilking", "With this true, when timer is still going, cow milking event will be canceled",
 	    "With this false, player will get bucket of milk, but still no payment");
