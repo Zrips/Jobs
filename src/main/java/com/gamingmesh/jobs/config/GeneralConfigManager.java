@@ -69,7 +69,7 @@ public class GeneralConfigManager {
 
     public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime,
     globalblocktimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
-    SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays;
+    SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, BlastFurnacesMaxDefault, SmokersMaxDefault;
     protected int savePeriod, maxJobs, economyBatchDelay;
     private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips, FurnacesMaxDefault, BrewingStandsMaxDefault,
     BrowseAmountToShow, JobsGUIRows, JobsGUIBackButton, JobsGUINextButton, JobsGUIStartPosition, JobsGUIGroupAmount, JobsGUISkipAmount;
@@ -101,7 +101,7 @@ public class GeneralConfigManager {
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
 	BossBarEnabled, BossBarShowOnEachAction, BossBarsMessageByDefault, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
-	LoggingUse, payForCombiningItems;
+	LoggingUse, payForCombiningItems, BlastFurnacesReassign, SmokerReassign;
 
     public ItemStack guiBackButton, guiNextButton, guiFiller;
 
@@ -784,6 +784,14 @@ public class GeneralConfigManager {
 	    "Defines max available furnaces each player can have to get paid from",
 	    "This can be overridden with jobs.maxfurnaces.[amount] permission node");
 	FurnacesMaxDefault = c.get("ExploitProtections.Furnaces.MaxDefaultAvailable", 20);
+
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+	    BlastFurnacesReassign = c.get("ExploitProtections.BlastFurnaces.Reassign", false);
+	    BlastFurnacesMaxDefault = c.get("ExploitProtections.BlastFurnaces.MaxDefaultAvailable", 15);
+
+	    SmokerReassign = c.get("ExploitProtections.Smokers.Reassign", false);
+	    SmokersMaxDefault = c.get("ExploitProtections.Smokers.MaxDefaultAvailable", 15);
+	}
 
 	c.addComment("ExploitProtections.BrewingStands.Reassign",
 	    "When enabled, players interacted brewing stands will be saved into file and will be reassigned after restart to keep giving out money",

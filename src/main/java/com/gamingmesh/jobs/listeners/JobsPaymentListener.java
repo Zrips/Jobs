@@ -1619,7 +1619,7 @@ public class JobsPaymentListener implements Listener {
 	if (cmat == CMIMaterial.FURNACE || cmat == CMIMaterial.LEGACY_BURNING_FURNACE
 	    || cmat == CMIMaterial.SMOKER || cmat == CMIMaterial.BLAST_FURNACE) {
 	    ownershipFeedback done = FurnaceBrewingHandling.registerFurnaces(p, block);
-	    if (done.equals(ownershipFeedback.tooMany)) {
+	    if (done == ownershipFeedback.tooMany) {
 		boolean report = false;
 
 		if (block.hasMetadata(furnaceOwnerMetadata)) {
@@ -1638,14 +1638,14 @@ public class JobsPaymentListener implements Listener {
 
 		if (report)
 		    ActionBarManager.send(p, Jobs.getLanguage().getMessage("general.error.noFurnaceRegistration"));
-	    } else if (done.equals(ownershipFeedback.newReg) && jPlayer != null) {
+	    } else if (done == ownershipFeedback.newReg && jPlayer != null) {
 		ActionBarManager.send(p, Jobs.getLanguage().getMessage("general.error.newFurnaceRegistration",
 		    "[current]", jPlayer.getFurnaceCount(),
-		    "[max]", jPlayer.getMaxFurnacesAllowed() == 0 ? "-" : jPlayer.getMaxFurnacesAllowed()));
+		    "[max]", jPlayer.getMaxFurnacesAllowed(cmat) == 0 ? "-" : jPlayer.getMaxFurnacesAllowed(cmat)));
 	    }
 	} else if (cmat == CMIMaterial.BREWING_STAND || cmat == CMIMaterial.LEGACY_BREWING_STAND) {
 	    ownershipFeedback done = FurnaceBrewingHandling.registerBrewingStand(p, block);
-	    if (done.equals(ownershipFeedback.tooMany)) {
+	    if (done == ownershipFeedback.tooMany) {
 		boolean report = false;
 
 		if (block.hasMetadata(brewingOwnerMetadata)) {
@@ -1664,7 +1664,7 @@ public class JobsPaymentListener implements Listener {
 
 		if (report)
 		    ActionBarManager.send(p, Jobs.getLanguage().getMessage("general.error.noBrewingRegistration"));
-	    } else if (done.equals(ownershipFeedback.newReg) && jPlayer != null) {
+	    } else if (done == ownershipFeedback.newReg && jPlayer != null) {
 		ActionBarManager.send(p, Jobs.getLanguage().getMessage("general.error.newBrewingRegistration",
 		    "[current]", jPlayer.getBrewingStandCount(),
 		    "[max]", jPlayer.getMaxBrewingStandsAllowed() == 0 ? "-" : jPlayer.getMaxBrewingStandsAllowed()));

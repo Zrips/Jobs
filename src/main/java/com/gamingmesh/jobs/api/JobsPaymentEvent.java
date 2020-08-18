@@ -14,7 +14,7 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
     private OfflinePlayer offlinePlayer;
     private boolean cancelled = false;
 
-    private HashMap<CurrencyType, Double> payments = new HashMap<CurrencyType, Double>();
+    private HashMap<CurrencyType, Double> payments = new HashMap<>();
 
     @Deprecated
     public JobsPaymentEvent(OfflinePlayer offlinePlayer, double money, double points) {
@@ -34,35 +34,47 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
 	return offlinePlayer;
     }
 
+    /**
+     * @deprecated use {@link #get(CurrencyType)}
+     */
     @Deprecated
     public Double getAmount() {
 	Double amount = this.payments.get(CurrencyType.MONEY);
 	return amount == null ? 0 : amount;
     }
 
+    /**
+     * @deprecated use {@link #get(CurrencyType)}
+     */
     @Deprecated
     public double getPoints() {
 	Double amount = this.payments.get(CurrencyType.POINTS);
 	return amount == null ? 0 : amount;
     }
 
+    /**
+     * @deprecated use {@link #set(CurrencyType, double)
+     */
     @Deprecated
     public void setAmount(double amount) {
-	this.payments.put(CurrencyType.MONEY, amount);
+	payments.put(CurrencyType.MONEY, amount);
     }
 
+    /**
+     * @deprecated use {@link #set(CurrencyType, double)
+     */
     @Deprecated
     public void setPoints(double points) {
 	this.payments.put(CurrencyType.POINTS, points);
     }
 
     public Double get(CurrencyType type) {
-	Double amount = this.payments.get(type);
+	Double amount = payments.get(type);
 	return amount == null ? 0 : amount;
     }
 
     public Double set(CurrencyType type, double amount) {
-	return this.payments.put(type, amount);
+	return payments.put(type, amount);
     }
 
     public HashMap<CurrencyType, Double> getPayment() {

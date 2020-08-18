@@ -53,6 +53,8 @@ public class PermissionManager {
 	jobs_spawner_AMOUNT(remade("jobs.nearspawner.%AMOUNT%"), 60 * 1000),
 	jobs_petpay_AMOUNT(remade("jobs.petpay.%AMOUNT%"), 60 * 1000),
 	jobs_maxfurnaces_AMOUNT(remade("jobs.maxfurnaces.%AMOUNT%"), 2 * 1000),
+	jobs_maxblastfurnaces_AMOUNT(remade("jobs.maxblastfurnaces.%AMOUNT%"), 2 * 1000),
+	jobs_maxsmokers_AMOUNT(remade("jobs.maxsmokers.%AMOUNT%"), 2 * 1000),
 	jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 2 * 1000),
 	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2 * 1000);
 

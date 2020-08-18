@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
@@ -318,9 +319,7 @@ public class JobsPlayer {
      * Reloads max experience for this job.
      */
     public void reloadMaxExperience() {
-	for (JobProgression prog : progression) {
-	    prog.reloadMaxExperience();
-	}
+	progression.forEach(JobProgression::reloadMaxExperience);
     }
 
     /**
@@ -668,16 +667,18 @@ public class JobsPlayer {
 	if (numJobs > 0) {
 	    for (JobProgression prog : progression) {
 		DisplayMethod method = prog.getJob().getDisplayMethod();
-		if (method.equals(DisplayMethod.NONE))
+		if (method == DisplayMethod.NONE)
 		    continue;
+
 		if (gotTitle) {
 		    builder.append(Jobs.getGCManager().modifyChatSeparator);
 		    gotTitle = false;
 		}
+
 		Title title = Jobs.gettitleManager().getTitle(prog.getLevel(), prog.getJob().getName());
 
 		if (numJobs == 1) {
-		    if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) {
+		    if (method == DisplayMethod.FULL || method == DisplayMethod.TITLE) {
 			if (title != null) {
 			    String honorificpart = title.getChatColor() + title.getName() + ChatColor.WHITE;
 			    if (honorificpart.contains("{level}"))
@@ -686,34 +687,39 @@ public class JobsPlayer {
 			    gotTitle = true;
 			}
 		    }
-		    if (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.JOB)) {
+
+		    if (method == DisplayMethod.FULL || method == DisplayMethod.JOB) {
 			if (gotTitle) {
 			    builder.append(" ");
 			}
+
 			String honorificpart = prog.getJob().getNameWithColor() + ChatColor.WHITE;
 			if (honorificpart.contains("{level}"))
 			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+
 			builder.append(honorificpart);
 			gotTitle = true;
 		    }
 		}
 
-		if (numJobs > 1 && (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.TITLE)) || method.equals(DisplayMethod.SHORT_FULL) || method.equals(DisplayMethod.SHORT_TITLE)) {
+		if (numJobs > 1 && (method == DisplayMethod.FULL) || method == DisplayMethod.TITLE || method == DisplayMethod.SHORT_FULL || method == DisplayMethod.SHORT_TITLE) {
 		    // add title to honorific
 		    if (title != null) {
 			String honorificpart = title.getChatColor() + title.getShortName() + ChatColor.WHITE;
 			if (honorificpart.contains("{level}"))
 			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+
 			builder.append(honorificpart);
 			gotTitle = true;
 		    }
 		}
 
-		if (numJobs > 1 && (method.equals(DisplayMethod.FULL) || method.equals(DisplayMethod.JOB)) || method.equals(DisplayMethod.SHORT_FULL) || method.equals(
-		    DisplayMethod.SHORT_JOB)) {
+		if (numJobs > 1 && (method == DisplayMethod.FULL) || method == DisplayMethod.JOB || method == DisplayMethod.SHORT_FULL || method ==
+		    DisplayMethod.SHORT_JOB) {
 		    String honorificpart = prog.getJob().getChatColor() + prog.getJob().getShortName() + ChatColor.WHITE;
 		    if (honorificpart.contains("{level}"))
 			honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
+
 		    builder.append(honorificpart);
 		    gotTitle = true;
 		}
@@ -722,17 +728,19 @@ public class JobsPlayer {
 	    Job nonejob = Jobs.getNoneJob();
 	    if (nonejob != null) {
 		DisplayMethod metod = nonejob.getDisplayMethod();
-		if (metod.equals(DisplayMethod.FULL) || metod.equals(DisplayMethod.TITLE)) {
+		if (metod == DisplayMethod.FULL || metod == DisplayMethod.TITLE) {
 		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getName() + ChatColor.WHITE;
 		    if (honorificpart.contains("{level}"))
 			honorificpart = honorificpart.replace("{level}", "");
+
 		    builder.append(honorificpart);
 		}
 
-		if (metod.equals(DisplayMethod.SHORT_FULL) || metod.equals(DisplayMethod.SHORT_TITLE) || metod.equals(DisplayMethod.SHORT_JOB)) {
+		if (metod == DisplayMethod.SHORT_FULL || metod == DisplayMethod.SHORT_TITLE || metod == DisplayMethod.SHORT_JOB) {
 		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getShortName() + ChatColor.WHITE;
 		    if (honorificpart.contains("{level}"))
 			honorificpart = honorificpart.replace("{level}", "");
+
 		    builder.append(honorificpart);
 		}
 	    }
@@ -1206,11 +1214,31 @@ public class JobsPlayer {
 	return maxV.intValue();
     }
 
+    /**
+     * @deprecated use {@link #getMaxFurnacesAllowed(CMIMaterial)}
+     * @return
+     */
+    @Deprecated
     public int getMaxFurnacesAllowed() {
-	Double maxV = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxfurnaces");
+	return getMaxFurnacesAllowed(CMIMaterial.FURNACE);
+    }
 
-	if (maxV == null || maxV == 0)
+    public int getMaxFurnacesAllowed(CMIMaterial type) {
+	String perm = "jobs.max" + (type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE
+		    ? "furnaces" : type == CMIMaterial.BLAST_FURNACE ? "blastfurnaces" : type == CMIMaterial.SMOKER ? "smokers" : "");
+	if (perm.isEmpty())
+	    return 0;
+
+	Double maxV = Jobs.getPermissionManager().getMaxPermission(this, perm);
+
+	if (maxV == 0 && (type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE))
 	    maxV = (double) Jobs.getGCManager().getFurnacesMaxDefault();
+
+	if (maxV == 0 && type == CMIMaterial.BLAST_FURNACE)
+	    maxV = (double) Jobs.getGCManager().BlastFurnacesMaxDefault;
+
+	if (maxV == 0 && type == CMIMaterial.SMOKER)
+	    maxV = (double) Jobs.getGCManager().SmokersMaxDefault;
 
 	return maxV.intValue();
     }

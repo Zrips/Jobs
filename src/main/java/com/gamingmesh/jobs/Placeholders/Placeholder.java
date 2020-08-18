@@ -15,6 +15,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -409,7 +410,7 @@ public class Placeholder {
 	    case user_furncount:
 		return Integer.toString(user.getFurnaceCount());
 	    case user_maxfurncount:
-		return Integer.toString(user.getMaxFurnacesAllowed());
+		return Integer.toString(user.getMaxFurnacesAllowed(CMIMaterial.FURNACE));
 	    case user_doneq:
 		return Integer.toString(user.getDoneQuests());
 	    case user_seen:
