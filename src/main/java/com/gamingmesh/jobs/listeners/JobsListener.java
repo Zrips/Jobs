@@ -626,12 +626,13 @@ public class JobsListener implements Listener {
 	    ItemStack newArmorPiece = event.getCursor();
 	    ItemStack oldArmorPiece = event.getCurrentItem();
 	    if (numberkey) {
-		if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
-		    ItemStack hotbarItem = event.getClickedInventory().getItem(event.getHotbarButton());
+		org.bukkit.inventory.Inventory clicked = Version.isCurrentHigher(Version.v1_8_R1) ? event.getInventory() : event.getClickedInventory();
+		if (clicked != null && clicked.getType() == InventoryType.PLAYER) {
+		    ItemStack hotbarItem = clicked.getItem(event.getHotbarButton());
 		    if (hotbarItem != null) {
 			newArmorType = ArmorTypes.matchType(hotbarItem);
 			newArmorPiece = hotbarItem;
-			oldArmorPiece = event.getClickedInventory().getItem(event.getSlot());
+			oldArmorPiece = clicked.getItem(event.getSlot());
 		    } else
 			newArmorType = ArmorTypes.matchType(oldArmorPiece != null && oldArmorPiece.getType() != Material.AIR ? oldArmorPiece : event.getCursor());
 		}
