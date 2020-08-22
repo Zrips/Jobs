@@ -23,12 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 
 public class JobLimitedItems {
@@ -66,11 +66,11 @@ public class JobLimitedItems {
 	    item.setAmount(amount);
 	    ItemMeta meta = item.getItemMeta();
 	    if (this.name != null)
-		meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+		meta.setDisplayName(CMIChatColor.translate(name));
 	    if (lore != null && !lore.isEmpty()) {
 		List<String> TranslatedLore = new ArrayList<>();
 		for (String oneLore : lore) {
-		    TranslatedLore.add(ChatColor.translateAlternateColorCodes('&', oneLore.replace("[player]", player.getName())));
+		    TranslatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
 		}
 		meta.setLore(TranslatedLore);
 	    }

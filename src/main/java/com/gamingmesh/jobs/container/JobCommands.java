@@ -23,7 +23,7 @@ import java.util.List;
 
 public class JobCommands {
     private String node;
-    private List<String> commands = new ArrayList<>();
+    private final List<String> commands = new ArrayList<>();
     private int levelFrom;
     private int levelUntil;
 

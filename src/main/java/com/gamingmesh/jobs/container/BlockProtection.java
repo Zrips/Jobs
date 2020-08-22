@@ -38,9 +38,7 @@ public class BlockProtection {
     }
 
     private static int convert(long time) {
-	if (time == -1L)
-	    return -1;
-	return (int) ((time - pre) / 1000L);
+	return time == -1L ? -1 : (int) ((time - pre) / 1000L);
     }
 
     private static Long deconvert(Integer time) {
@@ -48,10 +46,7 @@ public class BlockProtection {
     }
 
     public void setTime(Long time) {
-	if (time == -1)
-	    this.time = null;
-	else
-	    this.time = convert(time);
+	this.time = time == -1 ? null : convert(time);
 	this.recorded = convert(System.currentTimeMillis());
     }
 
@@ -74,10 +69,7 @@ public class BlockProtection {
     }
 
     public void setPaid(Boolean paid) {
-	if (!paid)
-	    this.paid = paid;
-	else
-	    this.paid = null;
+	this.paid = !paid ? paid : null;
     }
 
     public void setRecorded(Long recorded) {

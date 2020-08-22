@@ -969,9 +969,9 @@ public abstract class JobsDAO {
 	try {
 	    exploreStatement = conn.prepareStatement("UPDATE `" + DBTables.ExploreDataTable.getTableName() + "` SET `" + ExploreDataTableFields.worldid.getCollumn() + "` = ? WHERE `"
 		+ ExploreDataTableFields.worldname.getCollumn() + "` = ?;");
-	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
-		exploreStatement.setInt(1, jobsWorld.getValue().getId());
-		exploreStatement.setString(2, jobsWorld.getValue().getName());
+	    for (JobsWorld jobsWorld : Util.getJobsWorlds().values()) {
+		exploreStatement.setInt(1, jobsWorld.getId());
+		exploreStatement.setString(2, jobsWorld.getName());
 		exploreStatement.execute();
 	    }
 	} catch (SQLException e) {
@@ -984,9 +984,9 @@ public abstract class JobsDAO {
 	try {
 	    exploreStatementBack = conn.prepareStatement("UPDATE `" + DBTables.ExploreDataTable.getTableName() + "` SET `" + ExploreDataTableFields.worldname.getCollumn() + "` = ? WHERE `"
 		+ ExploreDataTableFields.worldid.getCollumn() + "` = ?;");
-	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
-		exploreStatementBack.setString(1, jobsWorld.getValue().getName());
-		exploreStatementBack.setInt(2, jobsWorld.getValue().getId());
+	    for (JobsWorld jobsWorld : Util.getJobsWorlds().values()) {
+		exploreStatementBack.setString(1, jobsWorld.getName());
+		exploreStatementBack.setInt(2, jobsWorld.getId());
 		exploreStatementBack.execute();
 	    }
 	} catch (SQLException e) {
@@ -999,9 +999,9 @@ public abstract class JobsDAO {
 	try {
 	    bpStatement = conn.prepareStatement("UPDATE `" + DBTables.BlocksTable.getTableName() + "` SET `" + BlockTableFields.worldid.getCollumn() + "` = ?  WHERE `" + BlockTableFields.world
 		.getCollumn() + "` = ?;");
-	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
-		bpStatement.setInt(1, jobsWorld.getValue().getId());
-		bpStatement.setString(2, jobsWorld.getValue().getName());
+	    for (JobsWorld jobsWorld : Util.getJobsWorlds().values()) {
+		bpStatement.setInt(1, jobsWorld.getId());
+		bpStatement.setString(2, jobsWorld.getName());
 		bpStatement.execute();
 	    }
 	} catch (SQLException e) {
@@ -1014,9 +1014,9 @@ public abstract class JobsDAO {
 	try {
 	    bpStatementback = conn.prepareStatement("UPDATE `" + DBTables.BlocksTable.getTableName() + "` SET `" + BlockTableFields.world.getCollumn() + "` = ?  WHERE `" + BlockTableFields.worldid
 		.getCollumn() + "` = ?;");
-	    for (Entry<String, JobsWorld> jobsWorld : Util.getJobsWorlds().entrySet()) {
-		bpStatementback.setString(1, jobsWorld.getValue().getName());
-		bpStatementback.setInt(2, jobsWorld.getValue().getId());
+	    for (JobsWorld jobsWorld : Util.getJobsWorlds().values()) {
+		bpStatementback.setString(1, jobsWorld.getName());
+		bpStatementback.setInt(2, jobsWorld.getId());
 		bpStatementback.execute();
 	    }
 	} catch (SQLException e) {
@@ -1997,8 +1997,7 @@ public abstract class JobsDAO {
 		+ "` = ? AND `" + LogTableFields.action.getCollumn() + "` = ? AND `" + LogTableFields.itemname.getCollumn() + "` = ?;");
 
 	    boolean added = false;
-	    for (Entry<String, Log> l : player.getLog().entrySet()) {
-		Log log = l.getValue();
+	    for (Log log : player.getLog().values()) {
 		for (Entry<String, LogAmounts> one : log.getAmountList().entrySet()) {
 		    if (one.getValue().isNewEntry())
 			continue;
@@ -2025,8 +2024,7 @@ public abstract class JobsDAO {
 		+ "` (`" + LogTableFields.userid.getCollumn() + "`, `" + LogTableFields.time.getCollumn() + "`, `" + LogTableFields.action.getCollumn()
 		+ "`, `" + LogTableFields.itemname.getCollumn() + "`, `" + LogTableFields.count.getCollumn() + "`, `" + LogTableFields.money.getCollumn()
 		+ "`, `" + LogTableFields.exp.getCollumn() + "`, `" + LogTableFields.points.getCollumn() + "`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-	    for (Entry<String, Log> l : player.getLog().entrySet()) {
-		Log log = l.getValue();
+	    for (Log log : player.getLog().values()) {
 		for (Entry<String, LogAmounts> one : log.getAmountList().entrySet()) {
 		    if (!one.getValue().isNewEntry())
 			continue;
@@ -2317,13 +2315,13 @@ public abstract class JobsDAO {
 
 		int id = jobsWorld == null ? 0 : jobsWorld.getId();
 		if (id != 0)
-		    for (Entry<String, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
-			if (oneChunk.getValue().getDbId() != null)
+		    for (ExploreChunk oneChunk : worlds.getValue().getChunks().values()) {
+			if (oneChunk.getDbId() != null)
 			    continue;
 			prest2.setInt(1, id);
-			prest2.setInt(2, oneChunk.getValue().getX());
-			prest2.setInt(3, oneChunk.getValue().getZ());
-			prest2.setString(4, oneChunk.getValue().serializeNames());
+			prest2.setInt(2, oneChunk.getX());
+			prest2.setInt(3, oneChunk.getZ());
+			prest2.setString(4, oneChunk.serializeNames());
 			prest2.setString(5, jobsWorld != null ? jobsWorld.getName() : "");
 			prest2.addBatch();
 			i++;
@@ -2364,14 +2362,14 @@ public abstract class JobsDAO {
 
 	    HashMap<String, ExploreRegion> temp = new HashMap<>(Jobs.getExplore().getWorlds());
 
-	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
-		for (Entry<String, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
-		    if (oneChunk.getValue().getDbId() == null)
+	    for (ExploreRegion worlds : temp.values()) {
+		for (ExploreChunk oneChunk : worlds.getChunks().values()) {
+		    if (oneChunk.getDbId() == null)
 			continue;
-		    if (!oneChunk.getValue().isUpdated())
+		    if (!oneChunk.isUpdated())
 			continue;
-		    prest.setString(1, oneChunk.getValue().serializeNames());
-		    prest.setInt(2, oneChunk.getValue().getDbId());
+		    prest.setString(1, oneChunk.serializeNames());
+		    prest.setInt(2, oneChunk.getDbId());
 		    prest.addBatch();
 		    i++;
 		}

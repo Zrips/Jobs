@@ -8,7 +8,8 @@ public class ExploreRegion {
 
     int x;
     int z;
-    private HashMap<String, ExploreChunk> chunks = new HashMap<>();
+
+    private final HashMap<String, ExploreChunk> chunks = new HashMap<>();
 
     public ExploreRegion(int x, int z) {
 	this.x = x;

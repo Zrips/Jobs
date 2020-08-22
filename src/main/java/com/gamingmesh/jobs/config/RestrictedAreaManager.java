@@ -21,13 +21,13 @@ import com.gamingmesh.jobs.hooks.HookManager;
 
 public class RestrictedAreaManager {
 
-    protected HashMap<String, RestrictedArea> restrictedAreas = new HashMap<>();
+    protected final HashMap<String, RestrictedArea> restrictedAreas = new HashMap<>();
 
     private boolean worldGuardArea = false;
 
     public boolean isExist(String name) {
-	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
-	    if (area.getKey().equalsIgnoreCase(name))
+	for (String area : restrictedAreas.keySet()) {
+	    if (area.equalsIgnoreCase(name))
 		return true;
 	}
 	return false;
@@ -44,9 +44,9 @@ public class RestrictedAreaManager {
     }
 
     public void remove(String name) {
-	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
-	    if (area.getKey().equalsIgnoreCase(name)) {
-		restrictedAreas.remove(area.getKey());
+	for (String area : restrictedAreas.keySet()) {
+	    if (area.equalsIgnoreCase(name)) {
+		restrictedAreas.remove(area);
 		break;
 	    }
 	}
@@ -120,9 +120,9 @@ public class RestrictedAreaManager {
 
     public synchronized List<RestrictedArea> getRestrictedAreasByLoc(Location loc) {
 	List<RestrictedArea> areas = new ArrayList<>();
-	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
-	    if (area.getValue().inRestrictedArea(loc))
-		areas.add(area.getValue());
+	for (RestrictedArea area : restrictedAreas.values()) {
+	    if (area.inRestrictedArea(loc))
+		areas.add(area);
 	}
 
 	if (worldGuardArea && HookManager.getWorldGuardManager() != null)

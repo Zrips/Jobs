@@ -9,7 +9,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.UUID;
@@ -179,9 +178,9 @@ public class Util {
     }
 
     public static JobsWorld getJobsWorld(int id) {
-	for (Entry<String, JobsWorld> one : jobsWorlds.entrySet()) {
-	    if (one.getValue().getId() == id)
-		return one.getValue();
+	for (JobsWorld one : jobsWorlds.values()) {
+	    if (one.getId() == id)
+		return one;
 	}
 	return null;
     }

@@ -140,7 +140,7 @@ public class ItemBoostManager {
 	    List<String> lore = new ArrayList<>();
 	    if (cfg.getC().contains(one + ".lore") && !cfg.getC().getStringList(one + ".lore").isEmpty()) {
 		for (String eachLine : cfg.get(one + ".lore", Arrays.asList(""))) {
-		    lore.add(org.bukkit.ChatColor.translateAlternateColorCodes('&', eachLine));
+		    lore.add(CMIChatColor.translate(eachLine));
 		}
 	    }
 
@@ -213,9 +213,9 @@ public class ItemBoostManager {
 
     public static List<JobItems> getItemsByJob(Job job) {
 	List<JobItems> ls = new ArrayList<>();
-	for (Entry<String, JobItems> one : items.entrySet()) {
-	    if (one.getValue().getJobs().contains(job))
-		ls.add(one.getValue());
+	for (JobItems one : items.values()) {
+	    if (one.getJobs().contains(job))
+		ls.add(one);
 	}
 	return ls;
     }

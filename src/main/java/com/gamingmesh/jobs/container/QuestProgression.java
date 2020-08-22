@@ -15,7 +15,7 @@ public class QuestProgression {
     private long validUntil;
     private boolean givenReward = false;
 
-    private HashMap<QuestObjective, Integer> done = new HashMap<>();
+    private final HashMap<QuestObjective, Integer> done = new HashMap<>();
 
     public QuestProgression(Quest quest) {
 	this.quest = quest;
@@ -34,9 +34,9 @@ public class QuestProgression {
 
     public int getTotalAmountNeeded() {
 	int amountNeeded = 0;
-	for (Entry<ActionType, HashMap<String, QuestObjective>> oneA : quest.getObjectives().entrySet()) {
-	    for (Entry<String, QuestObjective> one : oneA.getValue().entrySet()) {
-		amountNeeded += one.getValue().getAmount();
+	for (HashMap<String, QuestObjective> oneA : quest.getObjectives().values()) {
+	    for (QuestObjective one : oneA.values()) {
+		amountNeeded += one.getAmount();
 	    }
 	}
 	return amountNeeded;
@@ -44,9 +44,10 @@ public class QuestProgression {
 
     public int getTotalAmountDone() {
 	int amountDone = 0;
-	for (Entry<QuestObjective, Integer> one : done.entrySet()) {
-	    amountDone += one.getValue();
+	for (Integer one : done.values()) {
+	    amountDone += one;
 	}
+
 	return amountDone;
     }
 
@@ -77,10 +78,10 @@ public class QuestProgression {
     }
 
     public boolean isCompleted() {
-	for (Entry<ActionType, HashMap<String, QuestObjective>> oneA : quest.getObjectives().entrySet()) {
-	    for (Entry<String, QuestObjective> one : oneA.getValue().entrySet()) {
-		Integer amountDone = done.get(one.getValue());
-		if (amountDone == null || amountDone < one.getValue().getAmount())
+	for (HashMap<String, QuestObjective> oneA : quest.getObjectives().values()) {
+	    for (QuestObjective one : oneA.values()) {
+		Integer amountDone = done.get(one);
+		if (amountDone == null || amountDone < one.getAmount())
 		    return false;
 	    }
 	}
@@ -99,7 +100,7 @@ public class QuestProgression {
 	    .containsKey(action.getName()))
 	    return;
 
-	if (quest.getRestrictedAreas() != null && !quest.getRestrictedAreas().isEmpty()) {
+	if (!quest.getRestrictedAreas().isEmpty()) {
 	    for (String area : quest.getRestrictedAreas()) {
 		for (Entry<String, RestrictedArea> a : Jobs.getRestrictedAreaManager().getRestrictedAres().entrySet()) {
 		    if (quest.getRestrictedAreas().contains(a.getKey()) && a.getKey().equalsIgnoreCase(area)

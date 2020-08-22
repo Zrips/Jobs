@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -142,8 +141,7 @@ public class SignUtil {
 	    conf.createSection("Signs");
 
 	int i = 0;
-	for (Entry<String, jobsSign> one : SignsByLocation.entrySet()) {
-	    jobsSign sign = one.getValue();
+	for (jobsSign sign : SignsByLocation.values()) {
 	    ++i;
 	    String path = "Signs." + i;
 	    reader.set(path + ".Loc", sign.locToBlockString());
@@ -204,8 +202,7 @@ public class SignUtil {
 	HashMap<String, List<TopList>> temp = new HashMap<>();
 
 	boolean save = false;
-	for (Entry<String, jobsSign> one : (new HashMap<String, jobsSign>(signs)).entrySet()) {
-	    jobsSign jSign = one.getValue();
+	for (jobsSign jSign : (new HashMap<String, jobsSign>(signs)).values()) {
 	    String SignJobName = jSign.getJobName();
 	    Location loc = jSign.getLocation();
 	    if (loc == null)

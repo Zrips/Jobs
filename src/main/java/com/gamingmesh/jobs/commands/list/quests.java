@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
-import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestObjective;
@@ -109,8 +108,8 @@ public class quests implements Cmd {
 		    }
 		}
 
-		for (Entry<ActionType, HashMap<String, QuestObjective>> oneAction : q.getQuest().getObjectives().entrySet()) {
-		    for (Entry<String, QuestObjective> oneObjective : oneAction.getValue().entrySet()) {
+		for (HashMap<String, QuestObjective> oneAction : q.getQuest().getObjectives().values()) {
+		    for (Entry<String, QuestObjective> oneObjective : oneAction.entrySet()) {
 			hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +
 			    Jobs.getNameTranslatorManager().Translate(oneObjective.getKey(), oneObjective.getValue().getAction(), oneObjective.getValue().getTargetId(), oneObjective.getValue()
 				.getTargetMeta(), oneObjective.getValue().getTargetName())

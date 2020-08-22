@@ -47,12 +47,12 @@ public class JobsPlayer {
     private String userName = "Unknown";
     // progression of the player in each job
     public UUID playerUUID;
-    public ArrayList<JobProgression> progression = new ArrayList<>();
+    public final ArrayList<JobProgression> progression = new ArrayList<>();
     private ArchivedJobs archivedJobs = new ArchivedJobs();
 
     private PaymentData paymentLimits;
 
-    private HashMap<String, ArrayList<BoostCounter>> boostCounter = new HashMap<>();
+    private final HashMap<String, ArrayList<BoostCounter>> boostCounter = new HashMap<>();
 
     // display honorific
     private String honorific;
@@ -61,12 +61,12 @@ public class JobsPlayer {
     // player online status
     private volatile boolean isOnline = false;
 
-    private HashMap<CurrencyType, Integer> limits = new HashMap<>();
+    private final HashMap<CurrencyType, Integer> limits = new HashMap<>();
 
     private int userid = -1;
 
-    private List<BossBarInfo> barMap = new ArrayList<>();
-    private List<String> updateBossBarFor = new ArrayList<>();
+    private final List<BossBarInfo> barMap = new ArrayList<>();
+    private final List<String> updateBossBarFor = new ArrayList<>();
     // save lock
 //    public final Object saveLock = new Object();
 
@@ -78,7 +78,7 @@ public class JobsPlayer {
     private HashMap<String, Boolean> permissionsCache;
     private Long lastPermissionUpdate = -1L;
 
-    private HashMap<String, HashMap<String, QuestProgression>> qProgression = new HashMap<>();
+    private final HashMap<String, HashMap<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
     private int skippedQuests = 0;
 
@@ -340,10 +340,8 @@ public class JobsPlayer {
     }
 
     public int getLimit(CurrencyType type) {
-	if (type == null)
-	    return 0;
-	Integer value = limits.get(type);
-	return value == null ? 0 : value;
+	Integer value = type == null ? 0 : limits.get(type);
+	return value;
     }
 
     public void resetPaymentLimit() {

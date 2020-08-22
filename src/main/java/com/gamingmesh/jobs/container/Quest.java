@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
@@ -21,14 +20,14 @@ public class Quest {
     private Integer minLvl = null;
     private Integer maxLvl = null;
 
-    private List<String> rewardCmds = new ArrayList<>();
-    private List<String> rewards = new ArrayList<>();
-    private List<String> area = new ArrayList<>();
+    private final List<String> rewardCmds = new ArrayList<>();
+    private final List<String> rewards = new ArrayList<>();
+    private final List<String> area = new ArrayList<>();
 
     private boolean stopped = false;
 
     private HashMap<ActionType, HashMap<String, QuestObjective>> objectives = new HashMap<>();
-    private Set<ActionType> actions = new HashSet<>();
+    private final Set<ActionType> actions = new HashSet<>();
 
     public Quest(String questName, Job job) {
 	this.questName = questName;
@@ -167,11 +166,10 @@ public class Quest {
 	if (old == null)
 	    return false;
 
-	for (Entry<String, QuestObjective> one : old.entrySet()) {
-	    if (one.getValue().getTargetId() == objective.getTargetId() &&
-		one.getValue().getAction() == objective.getAction() &&
-		objective.getAmount() == one.getValue().getAmount() &&
-		objective.getTargetName() == one.getValue().getTargetName())
+	for (QuestObjective one : old.values()) {
+	    if (one.getTargetId() == objective.getTargetId() &&
+		one.getAction() == objective.getAction() && objective.getAmount() == one.getAmount()
+		&& objective.getTargetName() == one.getTargetName())
 		return true;
 	}
 	return false;
@@ -179,9 +177,7 @@ public class Quest {
 
     public void setObjectives(HashMap<ActionType, HashMap<String, QuestObjective>> objectives) {
 	this.objectives = objectives;
-	for (Entry<ActionType, HashMap<String, QuestObjective>> one : objectives.entrySet()) {
-	    actions.add(one.getKey());
-	}
+	objectives.keySet().forEach(actions::add);
     }
 
     public void addObjective(QuestObjective objective) {

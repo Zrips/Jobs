@@ -17,14 +17,14 @@ public class Schedule {
 
     private boolean nextDay = false;
 
-    private BoostMultiplier BM = new BoostMultiplier();
+    private final BoostMultiplier BM = new BoostMultiplier();
 
     private String Name = null;
 
     private List<String> Days = new ArrayList<>(Arrays.asList("all"));
-    private List<Job> JobsList = new ArrayList<>();
+    private final List<Job> JobsList = new ArrayList<>();
 
-    private List<String> MessageOnStart = new ArrayList<>(),
+    private final List<String> MessageOnStart = new ArrayList<>(),
 		MessageOnStop = new ArrayList<>(),
 		MessageToBroadcast = new ArrayList<>();
 

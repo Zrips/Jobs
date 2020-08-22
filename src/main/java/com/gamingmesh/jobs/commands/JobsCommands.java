@@ -147,13 +147,13 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.title"));
-	for (Entry<String, Integer> one : commands.entrySet()) {
+	for (String one : commands.keySet()) {
 	    if (!pi.isEntryOk())
 		continue;
 	    if (pi.isBreak())
 		break;
 
-	    String msg = Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one.getKey()), "[description]", Jobs.getLanguage().getMessage("command." + one.getKey()
+	    String msg = Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
 		+ ".help.info"));
 	    sender.sendMessage(msg);
 	}
@@ -259,10 +259,7 @@ public class JobsCommands implements CommandExecutor {
 	    return;
 	}
 
-	if (type == null) {
-	    type = "";
-	} else
-	    type = type.toLowerCase();
+	type = type == null ? "" : type.toLowerCase();
 
 	List<String> message = new ArrayList<>();
 

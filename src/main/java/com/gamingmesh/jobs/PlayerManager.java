@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -63,30 +62,29 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class PlayerManager {
 
-    private ConcurrentHashMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<>();
 
     private final String mobSpawnerMetadata = "jobsMobSpawner";
 
-    private HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<>();
-    private HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<>();
-    private HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<>();
+    private final HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<>();
+    private final HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<>();
+    private final HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<>();
 
     /**
      * @deprecated Use {@link Jobs#getPointsData} instead
-     * @return {@link PointsData}
+     * @return {@link com.gamingmesh.jobs.economy.PointsData}
      */
     @Deprecated
-    public PointsData getPointsData() {
+    public com.gamingmesh.jobs.economy.PointsData getPointsData() {
 	return Jobs.getPointsData();
     }
 
@@ -264,9 +262,7 @@ public class PlayerManager {
 	int i = 0;
 	int total = playersUUIDCache.size();
 
-	for (Entry<UUID, JobsPlayer> one : playersUUIDCache.entrySet()) {
-	    JobsPlayer jPlayer = one.getValue();
-
+	for (JobsPlayer jPlayer : playersUUIDCache.values()) {
 	    if (resetID)
 		jPlayer.setUserId(-1);
 

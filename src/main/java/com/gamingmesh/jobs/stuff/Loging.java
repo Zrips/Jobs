@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.stuff;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.ActionInfo;
@@ -18,8 +17,8 @@ public class Loging {
     public void recordToLog(JobsPlayer jPlayer, String ActionName, String item, HashMap<CurrencyType, Double> amounts) {
 	HashMap<String, Log> logList = jPlayer.getLog();
 	Log l = null;
-	for (Entry<String, Log> one : logList.entrySet()) {
-	    l = one.getValue();
+	for (Log one : logList.values()) {
+	    l = one;
 	    break;
 	}
 	if (l != null && Jobs.getScheduleManager().getDateByInt() != l.getDate()) {

@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,7 +9,6 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
-import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestObjective;
@@ -58,9 +56,9 @@ public class resetquest implements Cmd {
 
 	for (QuestProgression one : quests) {
 	    one.setValidUntil(System.currentTimeMillis());
-	    for (Entry<ActionType, HashMap<String, QuestObjective>> actions : one.getQuest().getObjectives().entrySet()) {
-		for (java.util.Map.Entry<String, QuestObjective> obj : actions.getValue().entrySet()) {
-		    one.setAmountDone(obj.getValue(), 0);
+	    for (HashMap<String, QuestObjective> actions : one.getQuest().getObjectives().values()) {
+		for (QuestObjective obj : actions.values()) {
+		    one.setAmountDone(obj, 0);
 		}
 	    }
 	}

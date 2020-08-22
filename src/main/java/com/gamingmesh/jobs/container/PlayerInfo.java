@@ -31,9 +31,7 @@ public class PlayerInfo {
     public String getName() {
 	if (player == null)
 	    player = Jobs.getPlayerManager().getJobsPlayer(uuid);
-	if (player != null)
-	    return player.getName();
-	return name;
+	return player != null ? player.getName() : name;
     }
 
     public int getID() {

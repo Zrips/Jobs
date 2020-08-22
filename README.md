@@ -16,3 +16,25 @@ A fully configurable plugin that allows you to get paid for breaking, placing, k
 Main pages:
 - Bukkit: https://dev.bukkit.org/projects/jobs-reborn
 - Spigot: https://www.spigotmc.org/resources/4216/
+
+# Jobs API
+You can manually add the jar file to your build path or you can use jitpack if you use maven (don't know gradle):
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.github.Zrips</groupId>
+        <artifactId>Jobs</artifactId>
+        <version>LATEST</version> <!-- Change the LATEST to the current version of jobs -->
+        <scope>provided</scope>
+    </dependency>
+</dependencies>
+```
+
+For API events: https://github.com/Zrips/Jobs/wiki/API

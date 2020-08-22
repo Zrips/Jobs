@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class TitleManager {
 
-    protected List<Title> titles = new ArrayList<>();
+    protected final List<Title> titles = new ArrayList<>();
 
     /**
      * Function to return the title for a given level

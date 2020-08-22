@@ -376,8 +376,8 @@ public class JobsPaymentListener implements Listener {
 	if (item != null && item.getType() != Material.AIR) {
 	    // Protection for block break with silktouch
 	    if (Jobs.getGCManager().useSilkTouchProtection) {
-		for (Entry<Enchantment, Integer> one : item.getEnchantments().entrySet()) {
-		    if (CMIEnchantment.get(one.getKey()) == CMIEnchantment.SILK_TOUCH) {
+		for (Enchantment one : item.getEnchantments().keySet()) {
+		    if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH) {
 			if (Jobs.getBpManager().isInBp(block))
 			    return;
 		    }

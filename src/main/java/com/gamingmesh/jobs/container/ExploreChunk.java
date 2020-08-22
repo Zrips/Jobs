@@ -50,15 +50,11 @@ public class ExploreChunk {
     }
 
     public boolean isAlreadyVisited(int playerId) {
-	if (isFullyExplored())
-	    return true;
-	return playerIds.contains(playerId);
+	return isFullyExplored() ? true : playerIds.contains(playerId);
     }
 
     public int getCount() {
-	if (isFullyExplored())
-	    return Jobs.getExplore().getPlayerAmount();
-	return playerIds.size();
+	return isFullyExplored() ? Jobs.getExplore().getPlayerAmount() : playerIds.size();
     }
 
     public int getX() {
@@ -135,13 +131,10 @@ public class ExploreChunk {
     }
 
     public void setUpdated(boolean updated) {
-	if (!updated)
-	    this.updated = null;
-	else
-	    this.updated = true;
+	this.updated = !updated ? null : true;
     }
 
     public boolean isFullyExplored() {
-	return full == null ? false : full;
+	return full != null && full;
     }
 }

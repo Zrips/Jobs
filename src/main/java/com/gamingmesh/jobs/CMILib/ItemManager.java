@@ -1,14 +1,10 @@
 package com.gamingmesh.jobs.CMILib;
 
 import java.util.HashMap;
-import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;

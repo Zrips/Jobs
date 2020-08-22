@@ -60,7 +60,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 public class Jobs extends JavaPlugin {
@@ -444,11 +443,11 @@ public class Jobs extends JavaPlugin {
 	HashMap<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
 	HashMap<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
 	HashMap<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
-	for (Iterator<Entry<UUID, PlayerInfo>> it = temp.entrySet().iterator(); it.hasNext();) {
-	    Entry<UUID, PlayerInfo> one = it.next();
-	    int id = one.getValue().getID();
+	for (Iterator<PlayerInfo> it = temp.values().iterator(); it.hasNext();) {
+	    PlayerInfo one = it.next();
+	    int id = one.getID();
 	    JobsPlayer jPlayer = getPlayerManager().getJobsPlayerOffline(
-		one.getValue(),
+		one,
 		playersJobs.get(id),
 		playersPoints.get(id),
 		playersLogs.get(id),
@@ -1181,12 +1180,13 @@ public class Jobs extends JavaPlugin {
 			getBpManager().add(block, cd);
 			return true;
 		    }
+
 		    if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
-			if (inform) {
-			    if (player.canGetPaid(info))
-				ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+			if (inform && player.canGetPaid(info)) {
+			    ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 			}
+
 			getBpManager().add(block, cd);
 			return false;
 		    }

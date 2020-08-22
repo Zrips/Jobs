@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.stuff;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -32,8 +31,8 @@ public class TabComplete implements TabCompleter {
 	    String PartOfCommand = args[0];
 	    List<String> temp = new ArrayList<>();
 
-	    for (Entry<String, Integer> BCmd : Jobs.getCommandManager().GetCommands(sender).entrySet()) {
-		temp.add(BCmd.getKey());
+	    for (String BCmd : Jobs.getCommandManager().GetCommands(sender).keySet()) {
+		temp.add(BCmd);
 	    }
 	    StringUtil.copyPartialMatches(PartOfCommand, temp, completionList);
 	}
@@ -91,20 +90,20 @@ public class TabComplete implements TabCompleter {
 			    }
 			    break;
 			case "[jobitemname]":
-			    for (Entry<String, JobItems> one : ItemBoostManager.getItems().entrySet()) {
-				temp.add(one.getValue().getNode());
+			    for (JobItems one : ItemBoostManager.getItems().values()) {
+				temp.add(one.getNode());
 			    }
 			    if (args.length > 3 && args[3].equalsIgnoreCase("limiteditems")) {
 				Job oneJob = Jobs.getJob(args[i - 1]);
 				if (oneJob != null)
-				    for (Entry<String, JobLimitedItems> limitedItem : oneJob.getLimitedItems().entrySet()) {
-					temp.add(limitedItem.getValue().getNode());
+				    for (JobLimitedItems limitedItem : oneJob.getLimitedItems().values()) {
+					temp.add(limitedItem.getNode());
 				    }
 			    }
 			    break;
 			case "[boosteditems]":
-			    for (Entry<String, JobItems> one : ItemBoostManager.getItems().entrySet()) {
-				temp.add(one.getValue().getNode());
+			    for (JobItems one : ItemBoostManager.getItems().values()) {
+				temp.add(one.getNode());
 			    }
 			    break;
 			case "[oldjob]":

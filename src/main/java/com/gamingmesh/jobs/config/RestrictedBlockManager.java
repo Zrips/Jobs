@@ -11,7 +11,7 @@ import com.gamingmesh.jobs.CMILib.ItemManager;
 
 public class RestrictedBlockManager {
 
-    public HashMap<CMIMaterial, Integer> restrictedBlocksTimer = new HashMap<>();
+    public final HashMap<CMIMaterial, Integer> restrictedBlocksTimer = new HashMap<>();
 
     /**
      * Method to load the restricted blocks configuration

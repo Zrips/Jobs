@@ -18,7 +18,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class ExploreManager {
 
-    private HashMap<String, ExploreRegion> worlds = new HashMap<>();
+    private final HashMap<String, ExploreRegion> worlds = new HashMap<>();
     private boolean exploreEnabled = false;
     private int playerAmount = 1;
 
