@@ -20,6 +20,7 @@ import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.QuestProgression;
 
 public class TabComplete implements TabCompleter {
 
@@ -63,6 +64,16 @@ public class TabComplete implements TabCompleter {
 		    List<String> temp = new ArrayList<>();
 		    for (String ar : t2) {
 			switch (ar) {
+			case "[questname]":
+			case "[quest]":
+			    JobsPlayer playerJob = Jobs.getPlayerManager().getJobsPlayer(args[i - 1]);
+			    if (playerJob != null) {
+				for (QuestProgression prog : playerJob.getQuestProgressions()) {
+				    if (prog.getQuest() != null)
+					temp.add(prog.getQuest().getQuestName());
+				}
+			    }
+			    break;
 			case "[jobname]":
 			case "[newjob]":
 			    for (Job one : Jobs.getJobs()) {

@@ -522,7 +522,7 @@ public class Placeholder {
 
 		case maxjobs:
 		    Double max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max");
-		    max = max == null ? Jobs.getGCManager().getMaxJobs() : max;
+		    max = max == 0D ? Jobs.getGCManager().getMaxJobs() : max;
 		    return Double.toString(max);
 		default:
 		    break;

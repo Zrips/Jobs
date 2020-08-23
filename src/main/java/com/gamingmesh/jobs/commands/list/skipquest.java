@@ -75,6 +75,13 @@ public class skipquest implements Cmd {
 	    return false;
 	}
 
+	// Do not skip the completed quests
+	for (QuestProgression q : quests) {
+	    if (q.getQuest().getQuestName().equals(old.getQuestName()) && q.isCompleted()) {
+		return false;
+	    }
+	}
+
 	if (Jobs.getGCManager().getDailyQuestsSkips() <= jPlayer.getSkippedQuests())
 	    return false;
 

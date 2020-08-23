@@ -39,7 +39,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class BufferedEconomy {
     private Jobs plugin;
     private Economy economy;
-    private LinkedBlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<>();
+    private final LinkedBlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<>();
     private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<UUID, BufferedPayment>());
 
     private OfflinePlayer ServerTaxesAccount = null;

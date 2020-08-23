@@ -19,7 +19,6 @@
 package com.gamingmesh.jobs.economy;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.bukkit.OfflinePlayer;
 
@@ -27,7 +26,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 
 public class BufferedPayment {
     private OfflinePlayer offlinePlayer;
-    private HashMap<CurrencyType, Double> payments = new HashMap<CurrencyType, Double>();
+    private final HashMap<CurrencyType, Double> payments = new HashMap<>();
 
     @Deprecated
     public BufferedPayment(OfflinePlayer offlinePlayer, double amount, double points, double exp) {
@@ -89,8 +88,8 @@ public class BufferedPayment {
     }
 
     public boolean containsPayment() {
-	for (Entry<CurrencyType, Double> one : payments.entrySet()) {
-	    if (one.getValue() != 0D)
+	for (Double one : payments.values()) {
+	    if (one != 0D)
 		return true;
 	}
 	return false;
