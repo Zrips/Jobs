@@ -519,11 +519,6 @@ public class Placeholder {
 			return "";
 		    Title title = Jobs.gettitleManager().getTitle(j.getLevel(), j.getJob().getName());
 		    return title == null ? "" : title.getChatColor() + title.getName();
-
-		case maxjobs:
-		    Double max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max");
-		    max = max == 0D ? Jobs.getGCManager().getMaxJobs() : max;
-		    return Double.toString(max);
 		default:
 		    break;
 		}
@@ -533,10 +528,9 @@ public class Placeholder {
 	    if (user.isOnline()) {
 		Player player = user.getPlayer();
 		if (player != null) {
-		    List<String> values;
 		    switch (placeHolder) {
 		    case user_canjoin_$1:
-			values = placeHolder.getComplexValues(value);
+			List<String> values = placeHolder.getComplexValues(value);
 			if (values.isEmpty())
 			    return "";
 
@@ -559,6 +553,11 @@ public class Placeholder {
 			    return convert(false);
 
 			return convert(true);
+
+			case maxjobs:
+			    int max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max").intValue();
+			    max = max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
+			    return Integer.toString(max);
 
 		    default:
 			break;

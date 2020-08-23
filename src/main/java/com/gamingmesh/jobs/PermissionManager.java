@@ -20,7 +20,6 @@ package com.gamingmesh.jobs;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -140,11 +139,11 @@ public class PermissionManager {
 	}
 
 	Double amount = 0D;
-	for (Entry<String, Boolean> uno : permissions.entrySet()) {
-	    if (uno.getKey().startsWith(perm)) {
+	for (String uno : permissions.keySet()) {
+	    if (uno.startsWith(perm)) {
 		double t = 0d;
 		try {
-		    t = Double.parseDouble(uno.getKey().replace(perm, ""));
+		    t = Double.parseDouble(uno.replace(perm, ""));
 		} catch (NumberFormatException e) {
 		}
 
