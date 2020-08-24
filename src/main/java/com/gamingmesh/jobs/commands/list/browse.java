@@ -22,25 +22,19 @@ public class browse implements Cmd {
 
 	if (Jobs.getGCManager().BrowseUseNewLook) {
 	    List<Job> jobList = new ArrayList<>(Jobs.getJobs());
-
 	    if (jobList.isEmpty()) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
 		return true;
 	    }
 
 	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
-//		Inventory inv = null;
 		try {
 		    Jobs.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
-//		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getUniqueId());
 		    return true;
 		}
-//		if (inv == null)
-//		    return true;
-//		if (Jobs.getGUIManager().isInGui((Player) sender))
-//		    ((Player) sender).openInventory(inv);
+
 		return true;
 	    }
 
@@ -52,18 +46,15 @@ public class browse implements Cmd {
 			try {
 			    page = Integer.parseInt(one.substring("-p:".length()));
 			    continue;
-			} catch (Throwable e) {
+			} catch (Exception e) {
 			}
 		    }
 		}
 	    }
 	    for (String one : args) {
 		if (one.startsWith("-j:")) {
-		    try {
-			j = Jobs.getJob(one.substring("-j:".length()));
-			continue;
-		    } catch (Throwable e) {
-		    }
+		    j = Jobs.getJob(one.substring("-j:".length()));
+		    continue;
 		}
 	    }
 
@@ -82,7 +73,7 @@ public class browse implements Cmd {
 			String hoverMsg = "";
 
 			if (!one.getDescription().isEmpty())
-			    hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", one.getDescription().replace("/n", ""));
+			    hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", one.getDescription().replaceAll("/n|\n", ""));
 
 			if (one.getMaxLevel(sender) > 0) {
 			    if (!hoverMsg.isEmpty())
@@ -152,11 +143,10 @@ public class browse implements Cmd {
 		if (j == null) {
 		    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.console.newHeader", "[amount]", jobList.size(), "\\n", "\n"));
 		    for (Job one : jobList) {
-
 			String msg = "";
 
 			if (!one.getDescription().isEmpty())
-			    msg += Jobs.getLanguage().getMessage("command.browse.output.console.description", "[description]", one.getDescription().replace("/n", ""));
+			    msg += Jobs.getLanguage().getMessage("command.browse.output.console.description", "[description]", one.getDescription().replaceAll("/n|\n", ""));
 
 			if (one.getMaxLevel(sender) > 0)
 			    msg += Jobs.getLanguage().getMessage("command.browse.output.console.newMax", "[max]", one.getMaxLevel(sender));
@@ -176,7 +166,6 @@ public class browse implements Cmd {
 			sender.sendMessage(msg);
 		    }
 		} else {
-
 		    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));
 
 		    if (j.getMaxLevel(sender) > 0)
@@ -199,15 +188,14 @@ public class browse implements Cmd {
 		    }
 		}
 	    }
-
 	} else {
-
 	    ArrayList<String> lines = new ArrayList<>();
 	    for (Job job : Jobs.getJobs()) {
 		if (Jobs.getGCManager().getHideJobsWithoutPermission()) {
 		    if (!Jobs.getCommandManager().hasJobPermission(sender, job))
 			continue;
 		}
+
 		StringBuilder builder = new StringBuilder();
 		builder.append("  ");
 		builder.append(job.getChatColor().toString());
@@ -229,7 +217,7 @@ public class browse implements Cmd {
 
 		lines.add(builder.toString());
 		if (!job.getDescription().isEmpty())
-		    lines.add("  - " + job.getDescription().replace("/n", ""));
+		    lines.add("  - " + job.getDescription().replaceAll("/n|\n", ""));
 	    }
 
 	    if (lines.isEmpty()) {
@@ -238,27 +226,19 @@ public class browse implements Cmd {
 	    }
 
 	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
-
 		try {
 		     Jobs.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
-//		    Jobs.getGUIManager().GuiList.remove(((Player) sender).getUniqueId());
 		    return true;
 		}
-//		if (inv == null)
-//		    return true;
 
-//		if (Jobs.getGUIManager().isInGui((Player) sender))
-//		    ((Player) sender).openInventory(inv);
 		return true;
 	    }
 
 	    if (Jobs.getGCManager().JobsGUIShowChatBrowse) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.header"));
-		for (String line : lines) {
-		    sender.sendMessage(line);
-		}
+		lines.forEach(sender::sendMessage);
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.footer"));
 	    }
 	}

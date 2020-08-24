@@ -914,17 +914,22 @@ public class JobsPlayer {
     }
 
     public void resetQuests(Job job) {
-	for (QuestProgression oneQ : getQuestProgressions(job)) {
+	resetQuests(getQuestProgressions(job));
+    }
+
+    public void resetQuests(List<QuestProgression> quests) {
+	for (QuestProgression oneQ : quests) {
 	    if (oneQ.getQuest() == null) {
 		continue;
 	    }
 
-	    oneQ.setValidUntil(System.currentTimeMillis());
-	    for (HashMap<String, QuestObjective> base : oneQ.getQuest().getObjectives().values()) {
-		for (QuestObjective obj : base.values()) {
-		    oneQ.setAmountDone(obj, 0);
-		}
+	    Job job = oneQ.getQuest().getJob();
+	    getNewQuests(job);
+	    if (qProgression.containsKey(job.getName())) {
+		qProgression.remove(job.getName());
 	    }
+
+	    oneQ.getQuest().setObjectives(null);
 	}
     }
 

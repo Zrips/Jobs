@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -11,7 +10,6 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
 
 public class resetquest implements Cmd {
@@ -49,21 +47,12 @@ public class resetquest implements Cmd {
 	if (job != null)
 	    quests = jPlayer.getQuestProgressions(job);
 
-	if (quests == null || quests.isEmpty()) {
+	if (quests.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.noQuests"));
 	    return true;
 	}
 
-	for (QuestProgression one : quests) {
-	    one.setValidUntil(System.currentTimeMillis());
-	    for (HashMap<String, QuestObjective> actions : one.getQuest().getObjectives().values()) {
-		for (QuestObjective obj : actions.values()) {
-		    one.setAmountDone(obj, 0);
-		}
-	    }
-	}
-
-	jPlayer.resetQuests();
+	jPlayer.resetQuests(quests);
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.reseted", "%playername%", jPlayer.getName()));
 	return true;
     }

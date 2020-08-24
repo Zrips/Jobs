@@ -176,6 +176,10 @@ public class Quest {
     }
 
     public void setObjectives(HashMap<ActionType, HashMap<String, QuestObjective>> objectives) {
+	if (objectives == null) {
+	    objectives = new HashMap<>();
+	}
+
 	this.objectives = objectives;
 	objectives.keySet().forEach(actions::add);
     }
@@ -192,6 +196,6 @@ public class Quest {
     }
 
     public boolean hasAction(ActionType action) {
-	return this.actions.contains(action);
+	return actions.contains(action);
     }
 }

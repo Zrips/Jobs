@@ -20,7 +20,7 @@ import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.QuestProgression;
+import com.gamingmesh.jobs.container.Quest;
 
 public class TabComplete implements TabCompleter {
 
@@ -66,11 +66,10 @@ public class TabComplete implements TabCompleter {
 			switch (ar) {
 			case "[questname]":
 			case "[quest]":
-			    JobsPlayer playerJob = Jobs.getPlayerManager().getJobsPlayer(args[i - 1]);
-			    if (playerJob != null) {
-				for (QuestProgression prog : playerJob.getQuestProgressions()) {
-				    if (prog.getQuest() != null)
-					temp.add(prog.getQuest().getQuestName());
+			    Job job = Jobs.getJob(args[i - 1]);
+			    if (job != null) {
+				for (Quest q : job.getQuests()) {
+				    temp.add(q.getQuestName());
 				}
 			    }
 			    break;
