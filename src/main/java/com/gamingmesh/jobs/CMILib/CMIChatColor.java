@@ -54,52 +54,6 @@ public class CMIChatColor {
     public static final String colorCodePrefix = "{#";
     public static final String colorCodeSuffix = "}";
 
-    private static String charEscape(String s) {
-	StringBuffer sb = new StringBuffer();
-	for (int i = 0; i < s.length(); i++) {
-	    char ch = s.charAt(i);
-
-	    switch (ch) {
-	    case '"':
-		sb.append("\\\"");
-		break;
-	    case '\n':
-		sb.append("\\n");
-		break;
-	    case '\\':
-		sb.append("\\\\");
-		break;
-	    case '\b':
-		sb.append("\\b");
-		break;
-	    case '\f':
-		sb.append("\\f");
-		break;
-	    case '\r':
-		sb.append("\\r");
-		break;
-	    case '\t':
-		sb.append("\\t");
-		break;
-	    case '/':
-		sb.append("/");
-		break;
-	    default:
-		if ((ch >= '\u0000' && ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000' && ch <= '\u20FF')) {
-		    String ss = Integer.toHexString(ch);
-		    sb.append("\\u");
-		    for (int k = 0; k < 4 - ss.length(); k++) {
-			sb.append('0');
-		    }
-		    sb.append(ss.toUpperCase());
-		} else {
-		    sb.append(ch);
-		}
-	    }
-	}
-	return sb.toString();
-    }
-
     private static String escape(String text) {
 	return text.replace("#", "\\#").replace("{", "\\{").replace("}", "\\}");
     }
@@ -557,11 +511,11 @@ public class CMIChatColor {
     }
 
     public static CMIChatColor getRandomColor() {
-	List<CMIChatColor> ls = new ArrayList<CMIChatColor>();
-	for (Entry<String, CMIChatColor> one : BY_NAME.entrySet()) {
-	    if (!one.getValue().isColor())
+	List<CMIChatColor> ls = new ArrayList<>();
+	for (CMIChatColor one : BY_NAME.values()) {
+	    if (!one.isColor())
 		continue;
-	    ls.add(one.getValue());
+	    ls.add(one);
 	}
 	Collections.shuffle(ls);
 	return ls.get(0);
@@ -599,7 +553,7 @@ public class CMIChatColor {
 
     public static CMIChatColor getByCustomName(String name) {
 	if (name.equalsIgnoreCase("random")) {
-	    List<CMIChatColor> valuesList = new ArrayList<CMIChatColor>(CUSTOM_BY_NAME.values());
+	    List<CMIChatColor> valuesList = new ArrayList<>(CUSTOM_BY_NAME.values());
 	    int randomIndex = new Random().nextInt(valuesList.size());
 	    return valuesList.get(randomIndex);
 	}
@@ -678,12 +632,12 @@ public class CMIChatColor {
 	    return null;
 	}
 	double distance = Double.MAX_VALUE;
-	for (Entry<String, CMIChatColor> one : CUSTOM_BY_HEX.entrySet()) {
+	for (CMIChatColor one : CUSTOM_BY_HEX.values()) {
 
 	    java.awt.Color c1 = new java.awt.Color(
-		Integer.valueOf(one.getValue().hex.substring(0, 2), 16),
-		Integer.valueOf(one.getValue().hex.substring(2, 4), 16),
-		Integer.valueOf(one.getValue().hex.substring(4, 6), 16));
+		Integer.valueOf(one.hex.substring(0, 2), 16),
+		Integer.valueOf(one.hex.substring(2, 4), 16),
+		Integer.valueOf(one.hex.substring(4, 6), 16));
 
 	    int red1 = c1.getRed();
 	    int red2 = c2.getRed();
@@ -693,7 +647,7 @@ public class CMIChatColor {
 	    int b = c1.getBlue() - c2.getBlue();
 	    double dist = Math.sqrt((((512 + rmean) * r * r) >> 8) + 4 * g * g + (((767 - rmean) * b * b) >> 8));
 	    if (dist < distance) {
-		closest = one.getValue();
+		closest = one;
 		distance = dist;
 	    }
 	}

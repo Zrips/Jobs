@@ -18,7 +18,9 @@
 
 package com.gamingmesh.jobs.container;
 
-import com.gamingmesh.jobs.stuff.ChatColor;
+import org.bukkit.ChatColor;
+
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 
 /**
  * Container class for titles
@@ -28,7 +30,7 @@ import com.gamingmesh.jobs.stuff.ChatColor;
 public class Title {
     private String name = null;
     private String shortName = null;
-    private ChatColor color = ChatColor.WHITE;
+    private CMIChatColor color = CMIChatColor.WHITE;
     private int levelReq = 0;
     private String jobName = null;
 
@@ -40,12 +42,24 @@ public class Title {
      * @param levelReq -  the level requirement of the title
      * @param jobName -  Job this title is made for
      */
+    @Deprecated
     public Title(String name, String shortName, ChatColor color, int levelReq, String jobName){
-        this.name = name;
-        this.color = color;
-        this.levelReq = levelReq;
-        this.shortName = shortName;
-        this.jobName = jobName;
+        this(jobName, jobName, CMIChatColor.WHITE, levelReq, jobName);
+    }
+
+    /**
+     * @param name The long name of the title
+     * @param shortName the short name of the title
+     * @param color {@link CMIChatColor}
+     * @param levelReq the level requirement of the title
+     * @param jobName Job this title is made for
+     */
+    public Title(String name, String shortName, CMIChatColor color, int levelReq, String jobName) {
+	this.name = name;
+	this.color = color;
+	this.levelReq = levelReq;
+	this.shortName = shortName;
+	this.jobName = jobName;
     }
 
     /**
@@ -65,11 +79,11 @@ public class Title {
     }
 
     /**
-     * Function to get the ChatColor of the title
-     * @return the chat colour o the title
+     * Returns the color of the title
+     * @return {@link CMIChatColor}
      */
-    public ChatColor getChatColor() {
-        return color;
+    public CMIChatColor getChatColor() {
+	return color;
     }
 
     /**

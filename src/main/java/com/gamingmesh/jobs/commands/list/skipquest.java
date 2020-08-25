@@ -14,7 +14,6 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class skipquest implements Cmd {
 
