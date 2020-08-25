@@ -138,7 +138,7 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
-	commands = Sorting.sortDESC(commands);
+	commands = Sorting.sortASC(commands);
 
 	PageInfo pi = new PageInfo(7, commands.size(), page);
 	if (page > pi.getTotalPages() || page < 1) {
@@ -198,6 +198,8 @@ public class JobsCommands implements CommandExecutor {
 		break;
 	    }
 	}
+	
+	
     }
 
     private static Class<?> getClass(String cmd) {

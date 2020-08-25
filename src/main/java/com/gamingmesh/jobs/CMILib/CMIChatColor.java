@@ -33,6 +33,7 @@ public class CMIChatColor {
 		}
 	    }
 	}
+
 	for (float x = 0.0F; x <= 1; x += 0.1) {
 	    for (float z = 0.1F; z <= 1; z += 0.1) {
 		for (float y = 0; y <= 1; y += 0.03) {
@@ -49,8 +50,55 @@ public class CMIChatColor {
 
     public final static String colorReplacerPlaceholder = "\uFF06";
 
+    public static final String colorFontPrefix = "{@";
     public static final String colorCodePrefix = "{#";
     public static final String colorCodeSuffix = "}";
+
+    private static String charEscape(String s) {
+	StringBuffer sb = new StringBuffer();
+	for (int i = 0; i < s.length(); i++) {
+	    char ch = s.charAt(i);
+
+	    switch (ch) {
+	    case '"':
+		sb.append("\\\"");
+		break;
+	    case '\n':
+		sb.append("\\n");
+		break;
+	    case '\\':
+		sb.append("\\\\");
+		break;
+	    case '\b':
+		sb.append("\\b");
+		break;
+	    case '\f':
+		sb.append("\\f");
+		break;
+	    case '\r':
+		sb.append("\\r");
+		break;
+	    case '\t':
+		sb.append("\\t");
+		break;
+	    case '/':
+		sb.append("/");
+		break;
+	    default:
+		if ((ch >= '\u0000' && ch <= '\u001F') || (ch >= '\u007F' && ch <= '\u009F') || (ch >= '\u2000' && ch <= '\u20FF')) {
+		    String ss = Integer.toHexString(ch);
+		    sb.append("\\u");
+		    for (int k = 0; k < 4 - ss.length(); k++) {
+			sb.append('0');
+		    }
+		    sb.append(ss.toUpperCase());
+		} else {
+		    sb.append(ch);
+		}
+	    }
+	}
+	return sb.toString();
+    }
 
     private static String escape(String text) {
 	return text.replace("#", "\\#").replace("{", "\\{").replace("}", "\\}");
@@ -64,13 +112,16 @@ public class CMIChatColor {
     public static final Pattern hexColorNamePattern = Pattern.compile(CMIChatColor.ColorNameRegex);
     public static final Pattern hexColorNamePatternLast = Pattern.compile(ColorNameRegex + "(?!.*\\{#)");
 
+    public static final String ColorFontRegex = "(\\" + colorFontPrefix + ")([a-zA-Z_]{3,})(\\" + colorCodeSuffix + ")";
+
     public static final Pattern gradientPattern = Pattern.compile("(\\{(#[^\\{]*?)>\\})(.*?)(\\{(#.*?)<(>?)\\})");
 
     public static final String hexColorDecolRegex = "(&x)(&[0-9A-Fa-f]){6}";
 
     public static final Pattern postGradientPattern = Pattern.compile("(" + CMIChatColor.hexColorRegex + "|" + CMIChatColor.ColorNameRegex + ")" + "(.)" + "(" + CMIChatColor.hexColorRegex + "|"
 	+ CMIChatColor.ColorNameRegex + ")");
-    public static final Pattern fullPattern = Pattern.compile("(&[0123456789abcdefklmnorABCDEFKLMNOR])|" + CMIChatColor.hexColorRegex + "|" + CMIChatColor.ColorNameRegex);
+    public static final Pattern fullPattern = Pattern.compile("(&[0123456789abcdefklmnorABCDEFKLMNOR])|" + CMIChatColor.hexColorRegex + "|" + CMIChatColor.ColorNameRegex + "|"
+	+ CMIChatColor.ColorFontRegex);
 
     public static final CMIChatColor BLACK = new CMIChatColor("Black", '0', 0, 0, 0);
     public static final CMIChatColor DARK_BLUE = new CMIChatColor("Dark_Blue", '1', 0, 0, 170);
@@ -181,10 +232,15 @@ public class CMIChatColor {
 
 		double percent = (i * 100D) / (length - 1);
 
+//		if (gtext.length() == 1) {
+//		    percent = 50D; 	    
+//		}
+
 		CMIChatColor mix = CMIChatColor.mixColors(c1, c2, percent);
 		updated += CMIChatColor.colorCodePrefix + mix.getHex() + CMIChatColor.colorCodeSuffix;
 
 		updated += String.valueOf(ch);
+//		updated += charEscape(String.valueOf(ch));
 	    }
 
 	    if (continuous) {
@@ -502,7 +558,7 @@ public class CMIChatColor {
     }
 
     public static CMIChatColor getRandomColor() {
-	List<CMIChatColor> ls = new ArrayList<>();
+	List<CMIChatColor> ls = new ArrayList<CMIChatColor>();
 	for (Entry<String, CMIChatColor> one : BY_NAME.entrySet()) {
 	    if (!one.getValue().isColor())
 		continue;
@@ -544,7 +600,7 @@ public class CMIChatColor {
 
     public static CMIChatColor getByCustomName(String name) {
 	if (name.equalsIgnoreCase("random")) {
-	    List<CMIChatColor> valuesList = new ArrayList<>(CUSTOM_BY_NAME.values());
+	    List<CMIChatColor> valuesList = new ArrayList<CMIChatColor>(CUSTOM_BY_NAME.values());
 	    int randomIndex = new Random().nextInt(valuesList.size());
 	    return valuesList.get(randomIndex);
 	}

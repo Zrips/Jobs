@@ -11,10 +11,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class RawMessage {
 
-    List<String> parts = new ArrayList<>();
-    List<String> onlyText = new ArrayList<>();
+    List<String> parts = new ArrayList<String>();
+    List<String> onlyText = new ArrayList<String>();
 
-    LinkedHashMap<RawMessagePartType, String> temp = new LinkedHashMap<>();
+    LinkedHashMap<RawMessagePartType, String> temp = new LinkedHashMap<RawMessagePartType, String>();
 
     RawMessageFragment fragment = new RawMessageFragment();
     RawMessageFragment hoverFragment = new RawMessageFragment();
@@ -28,8 +28,8 @@ public class RawMessage {
     private boolean dontBreakLine = false;
 
     public void clear() {
-	parts = new ArrayList<>();
-	onlyText = new ArrayList<>();
+	parts = new ArrayList<String>();
+	onlyText = new ArrayList<String>();
 	combined = "";
 	combinedClean = "";
     }
@@ -46,7 +46,7 @@ public class RawMessage {
 	Matcher match = CMIChatColor.fullPattern.matcher(text);
 	String matcher = null;
 
-	List<RawMessageFragment> fragments = new ArrayList<>();
+	List<RawMessageFragment> fragments = new ArrayList<RawMessageFragment>();
 
 	RawMessageFragment f = hover ? hoverFragment : fragment;
 
@@ -72,6 +72,12 @@ public class RawMessage {
 		fragments.add(f);
 		f = new RawMessageFragment(f);
 	    }
+
+	    if (matcher.startsWith(CMIChatColor.colorFontPrefix)) {
+		f.setFont(matcher);
+		continue;
+	    }
+
 	    CMIChatColor color = CMIChatColor.getColor(matcher);
 	    if (color == null)
 		continue;
@@ -124,6 +130,11 @@ public class RawMessage {
 		finalText.append(",");
 	    }
 
+	    if (one.getFont() != null) {
+		finalText.append("\"font\":\"" + one.getFont() + "\",");
+
+	    }
+
 	    if (one.getLastColor() != null) {
 		if (one.getLastColor().getHex() != null)
 		    finalText.append("\"color\":\"#" + one.getLastColor().getHex() + "\",");
@@ -160,6 +171,7 @@ public class RawMessage {
 
 	if (finalText.toString().isEmpty())
 	    return "";
+//	CMIDebug.d(finalText);  
 	return "{" + finalText.toString() + "}";
     }
 
@@ -444,7 +456,7 @@ public class RawMessage {
     }
 
     public List<String> softCombine() {
-	List<String> ls = new ArrayList<>();
+	List<String> ls = new ArrayList<String>();
 	String f = "";
 	for (String part : parts) {
 	    if (f.isEmpty())
