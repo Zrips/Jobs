@@ -185,6 +185,7 @@ public class JobProgression {
 	    experience -= maxExperience;
 	    ret = true;
 	    reloadMaxExperience();
+	    this.jPlayer.reloadLimits();
 	}
 
 	// At max level
@@ -208,7 +209,8 @@ public class JobProgression {
 	    int exp = getMaxExperience(level);
 	    experience = experience + exp;
 	    ret = true;
-	    reloadMaxExperience();
+	    reloadMaxExperience(); 	    
+	    this.jPlayer.reloadLimits();
 	}
 	return ret;
     }
