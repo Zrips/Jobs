@@ -14,6 +14,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class skipquest implements Cmd {
 
@@ -27,7 +28,7 @@ public class skipquest implements Cmd {
 
 	JobsPlayer jPlayer = null;
 	Job job = null;
-	String questName = null;
+	String questName = "";
 
 	for (String one : args) {
 	    if (job == null) {
@@ -41,7 +42,9 @@ public class skipquest implements Cmd {
 		    continue;
 	    }
 
-	    questName = one;
+	    if (!questName.isEmpty())
+		questName += " ";
+	    questName += one;
 	}
 
 	if (jPlayer == null && sender instanceof Player)
@@ -65,7 +68,7 @@ public class skipquest implements Cmd {
 	Quest old = null;
 
 	for (QuestProgression one : quests) {
-	    if (one.getQuest().getConfigName().equalsIgnoreCase(questName)) {
+	    if (one.getQuest().getQuestName().equalsIgnoreCase(questName) || one.getQuest().getConfigName().equalsIgnoreCase(questName)) {
 		old = one.getQuest();
 		break;
 	    }
@@ -82,8 +85,9 @@ public class skipquest implements Cmd {
 	    }
 	}
 
-	if (Jobs.getGCManager().getDailyQuestsSkips() <= jPlayer.getSkippedQuests())
+	if (Jobs.getGCManager().getDailyQuestsSkips() <= jPlayer.getSkippedQuests()) {
 	    return false;
+	}
 
 	double amount = Jobs.getGCManager().skipQuestCost;
 	BufferedEconomy econ = Jobs.getEconomy();

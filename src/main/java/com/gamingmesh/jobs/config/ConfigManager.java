@@ -95,7 +95,8 @@ public class ConfigManager {
 	cfg.addComment(pt + ".FullDescription", "Full description of job to be shown in job browse command");
 	cfg.get(pt + ".FullDescription", Arrays.asList("&2Get money for:", "  &7Planting trees", "  &7Cutting down trees", "  &7Killing players"));
 
-	cfg.addComment(pt + ".ChatColour", "The colour of the name, for a full list of supported colours, go to the message config.");
+	cfg.addComment(pt + ".ChatColour",
+	    "The colour of the name, for a full list of supported colours, go to the message config. Hex color codes are supported as of 1.16 minecraft version. Example: {#6600cc} or {#Brown}");
 	cfg.get(pt + ".ChatColour", "GREEN");
 
 	cfg.addComment(pt + ".BossBarColour", "[OPTIONAL] The colour of the boss bar: GREEN, BLUE, RED, WHITE, YELLOW, PINK, PURPLE.");
