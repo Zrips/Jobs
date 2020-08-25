@@ -110,13 +110,13 @@ command:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
       permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
       item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
-      global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
-      dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
-      nearspawner: ' &eSpawner bonus: &2%money% &6%points% &e%exp%'
+      global: ' &eBonus global: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eBonus dynamique: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eBonus de Spawner: &2%money% &6%points% &e%exp%'
       petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
-      area: ' &eArea bonus: &2%money% &6%points% &e%exp%'
+      area: ' &eBonus de zone: &2%money% &6%points% &e%exp%'
       mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
-      final: ' &eFinal bonus: &2%money% &6%points% &e%exp%'
+      final: ' &eBonus final: &2%money% &6%points% &e%exp%'
       finalExplanation: ' &eN''inclut pas les bonus/pénalités des spawners à proximité et de PetPay'
   convert:
     help:
@@ -136,11 +136,11 @@ command:
       reachedmoneylimit: '&4Vous avez atteint le maximum d''argent gagné pendant le temps imparti!'
       reachedmoneylimit2: '&eVous pouvez vérifier la limite en faisant &2/jobs limit'
       reachedmoneylimit3: '&e L''argent récolté est maintenant réduite exponentiellement... Mais tu gagne toujours un petit peu!'
-      reachedexplimit: '&4You have reached exp limit in given time!'
+      reachedexplimit: '&4Vous avez atteint le maximum d’expérience gagné pendant le temps imparti!'
       reachedexplimit2: '&eVous pouvez vérifier la limite en faisant &2/jobs limit'
       reachedpointslimit: '&4Vous avez atteint le maximum de points gagné pendant le temps imparti!'
       reachedpointslimit2: '&eVous pouvez vérifier la limite en faisant &2/jobs limit'
-      notenabled: '&eMoney limit is not enabled'
+      notenabled: '&eLa limite d''argent n''est pas activée'
   resetlimit:
     help:
       info: Remet à zéro les limites de paiements des joueurs
@@ -206,10 +206,10 @@ command:
         newValue: '&eEntrez une nouvelle valeur'
         enter: '&eEntrez un nouveau nom ou cliquez '
         hand: '&6MAIN '
-        handHover: '&6Press to grab info from item in your hand'
+        handHover: '&6Cliquez pour afficher les infos de l''objet dans votre main'
         or: '&eou '
-        look: '&6LOOKING AT'
-        lookHover: '&6Press to grab info from block you are looking'
+        look: '&6Regarde à'
+        lookHover: '&6Cliquez pour afficher les infos du bloc que vous regardez'
   blockinfo:
     help:
       info: Affiche les informations du bloc que vous regardez.
@@ -312,7 +312,7 @@ command:
       cantJoin: '&cYou can''t join to the selected job.'
       max: '&eNiveau maximum :&f '
       back: '&e<<< Retour'
-      next: '&eNext >>>'
+      next: '&eSuivant >>>'
     output:
       break:
         info: '&eCasser'
@@ -382,7 +382,7 @@ command:
         none: '%jobname% ne gagne pas d''argent en collectant les blocs.'
       bake:
         info: '&eCuire'
-        none: '%jobname% does not get money for cooking foods.'
+        none: '%jobname% ne reçoit pas d''argent pour la cuisson des aliments.'
   playerinfo:
     help:
       info: Donne le montant payé de chaque action pour un certain métier sur un autre joueur.
@@ -398,26 +398,26 @@ command:
       rejoin: '&cVous ne pouvez pas retourner dans ce métier maintenant. Attendez [time]'
     rejoin: '&aClique pour rejoindre ce métier: '
     success: Vous exercez maintenant le métier de %jobname%.
-    confirm: '&2Click to confirm joining action for the &7[jobname] &2job.'
+    confirm: '&2Clique pour confirmer l''action de rejoindre le &2métier &7[jobname].'
   leave:
     help:
       info: Quitter le métier sélectionné.
       args: '[oldplayerjob]'
     success: Vous n'exercez plus le métier de %jobname%.
-    confirmationNeed: '&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!'
+    confirmationNeed: '&cEs-tu sûr que tu veux quitter le métier [jobname]&c ? Tape la commande une seconde fois dans les [time] secondes qui suivent pour confirmer !'
   leaveall:
     help:
       info: Quitter tous vos métiers.
     error:
       nojobs: Vous n'exercez aucun métier !
     success: Vous avez quitté tous vos métiers.
-    confirmationNeed: '&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!'
+    confirmationNeed: '&cEs-tu sûr que tu veux quitter tous tes métiers ? Tape la commande une seconde fois dans les [time] secondes qui suivent pour confirmer !'
   explored:
     help:
       info: Vérifie qui a visité ce tronçon
     error:
       noexplore: Personne n'a visité ce tronçon
-    fullExplore: '&aThis chunk is fully explored'
+    fullExplore: '&aCe chunk est complètement exploré'
     list: '&e%place%. %playername%'
   browse:
     help:
@@ -497,12 +497,12 @@ command:
       args: '[playername] [jobname]'
     error:
       alreadyin: Ce joueur exerce déjà le métier de %jobname%.
-      fullslots: You cannot join the job %jobname%, there are no slots available.
+      fullslots: Vous ne pouvez pas devenir %jobname%, il n'y a plus de places disponibles.
     output:
       target: Vous avez été embauché pour être %jobname%.
   top:
     help:
-      info: Shows top players by jobs name.
+      info: Affiche le top des joueurs par nom de métiers.
       args: '[jobname]'
     error:
       nojob: Aucun métier ne porte ce nom.
@@ -514,7 +514,7 @@ command:
       show: '&2Montre la Top List de &e[from] &2jusqu''à &e[until]'
   gtop:
     help:
-      info: Shows top players by global jobs level.
+      info: Affiche le top des joueurs par niveau global de métiers.
       args: ''
     error:
       nojob: Impossible de trouver des informations.
@@ -554,7 +554,7 @@ command:
       money: '&6argent : %amount% '
       exp: '&eXP : %amount% '
       points: '&6points : %amount%'
-      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
+      totalIncomes: '    &6Total gains:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Page précédente &2|'
       next: '&2|&e Page suivante >>>>'
@@ -569,7 +569,7 @@ command:
       money: '&6argent : %amount% '
       exp: '&eXP : %amount% '
       points: '&6points : %amount%'
-      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
+      totalIncomes: '    &6Total gains:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cDonnées introuvables'
   transfer:
@@ -599,7 +599,7 @@ command:
     error:
       nojob: '&cCe joueur doit d''abord choisir un métier.'
     output:
-      target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eVotre niveau a été changé pour %jobname%&e et maintenant vous êtes niveau &6%level%lvl &eet avec &6%exp%exp.'
   demote:
     help:
       info: Rétrograde le joueur de X niveaux dans un métier.
@@ -653,7 +653,7 @@ message:
     broadcast: '%playername% est maintenant %jobname% niveau %joblevel%.'
     nobroadcast: Vous êtes maintenant %jobname% niveau %joblevel%.
   leveldown:
-    message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
+    message: '&cVous avez perdu &e%lostLevel%&c niveau dans le métier de %jobname%! &6Niveau: %joblevel%&c.'
   cowtimer: '&eVous devez attendre &6%time% &esec avant d''être payé à nouveau.'
   blocktimer: '&eVous devez attendre &3[time] &esec avant d''être payé à nouveau.'
   placeblocktimer: '&eVous ne pouvez placer des blocs que toutes les &6[time] &esec au même endroit!'

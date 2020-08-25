@@ -312,7 +312,7 @@ command:
       cantJoin: '&cDu kannst dem ausgewählten Beruf nicht beitreten.'
       max: '&eMaximales Level:&f '
       back: '&e<<< Zurück'
-      next: '&eNext >>>'
+      next: '&eNächste >>>'
     output:
       break:
         info: 'Zerstören'
@@ -511,10 +511,10 @@ command:
       list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
       prev: '&e<<<<< Vorherige Seite &2|'
       next: '&2|&e Nächste Seite >>>>'
-      show: '&2Show from &e[from] &2until &e[until] &2top list'
+      show: '&2Zeigt von &e[from] &2bis &e[until] &2die Top Liste'
   gtop:
     help:
-      info: Shows top players by global jobs level.
+      info: Zeigt die Top Spieler nach dem globalen Job Level.
       args: ''
     error:
       nojob: Keine Informationen gefunden.
@@ -523,13 +523,13 @@ command:
       list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
       prev: '&e<<<<< Vorherige Seite &2|'
       next: '&2|&e Nächste Seite >>>>'
-      show: '&2Show from &e[from] &2until &e[until] &2global top list'
+      show: '&2Zeigt von &e[from] &2bis &e[until] &2die Top Liste'
   area:
     help:
       info: Modifiziere eingeschränkte Bereiche.
       args: add/remove/info/list
-      addUsage: '&eUsage: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]'
-      removeUsage: '&eUsage: &6/Jobs area remove [areaName]'
+      addUsage: '&eBenutzung: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]'
+      removeUsage: '&eBenutzung: &6/Jobs area remove [areaName]'
     output:
       addedNew: '&eAdded a new restricted area with &6%bonus% &ebonus'
       removed: '&eRemoved the restricted area &6%name%'
@@ -538,9 +538,9 @@ command:
       noAreas: '&eThere are no saved restricted areas'
       noAreasByLoc: '&eThere are no restricted areas in this location'
       areaList: '&eRestricted areas by your location: &6%list%'
-      selected1: '&eSelected the first point: &6%x%:%y%:%z%'
-      selected2: '&eSelected the second point: &6%x%:%y%:%z%'
-      select: '&eSelect 2 points with the selection tool (%tool%)'
+      selected1: '&eErster Punkt ausgewählt: &6%x%:%y%:%z%'
+      selected2: '&eZweiter Punkt ausgewählt: &6%x%:%y%:%z%'
+      select: '&e2 Punkte mit dem Auswähl-Tool (%tool%) ausgewählt'
       exist: '&eRestriction area by this name already exists'
       dontExist: '&eRestriction area by this name does not exist'
       wgDontExist: '&eEine WorldGuard Region mit diesem Namen existiert nicht'
@@ -551,10 +551,10 @@ command:
     output:
       topline: '&7************************* &6%playername% &7*************************'
       ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
-      money: '&6money: %amount% '
+      money: '&6Geld: %amount% '
       exp: '&eErfahrung: &%amount% '
       points: '&6Punkte: %amount%'
-      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
+      totalIncomes: '    &6Gesamtes Geld:&2 %money%&6, Gesamte Exp:&2 %exp%&6, Gesamte Punkte:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Vorherige Seite &2|'
       next: '&2|&e Nächste Seite >>>>'
@@ -569,15 +569,15 @@ command:
       money: '&6Geld: %amount% '
       exp: '&eErfahrung: %amount% '
       points: '&6Punkte: %amount%'
-      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
+      totalIncomes: '    &6Gesamtes Geld:&2 %money%&6, Gesamte Exp:&2 %exp%&6, Gesamte Punkte:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cDaten nicht gefunden'
   transfer:
     help:
-      info: Transfer a player's job from an old job to a new job.
+      info: Wechselt den Job eines Spielers von einem alten Job zu einem neuen.
       args: '[playername] [oldjob] [newjob]'
     output:
-      target: You have been transferred from %oldjobname% to %newjobname%.
+      target: Du wurdest von %oldjobname% zu %newjobname% gewechselt.
   promote:
     help:
       info: Beförder den Spieler um X Level in einem Beruf.
@@ -591,7 +591,7 @@ command:
     error:
       nojob: '&cDer Spieler muss zuerst einen Beruf wählen.'
     output:
-      target: '&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eDeine Exp wurde für %jobname% &egeändert und bist nun &6%level% Level &e und bei &6%exp% exp.'
   level:
     help:
       info: Ändert das Level eines Spielers in einem Beruf.
@@ -599,61 +599,61 @@ command:
     error:
       nojob: '&cDieser Spieler muss zuerst einen Beruf wählen.'
     output:
-      target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eDein Level für %jobname% &ewurde geändert und bist nun &6%level% Level &eund bei &6%exp% exp.'
   demote:
     help:
-      info: Demote the player X levels in a job.
+      info: Stuft den Spieler X Level in einem Job zurück.
       args: '[playername] [jobname] [levels]'
     output:
-      target: You have been demoted %levelslost% levels in %jobname%.
+      target: Du wurdest %levelslost% Level in %jobname% zurück gestuft.
   grantxp:
     help:
-      info: Grants the player X experience in a job.
+      info: Gibt dem Spieler X Erfahrung in einem Job.
       args: '[playername] [jobname] [xp]'
     output:
-      target: You have been granted %xpgained% experience in %jobname%.
+      target: Dir wurde %xpgained% Erfahrung in %jobname% gegeben.
   removexp:
     help:
-      info: Remove X experience from the player in a job.
+      info: Entfernt X Erfahrung von einem Spieler in einem Job.
       args: '[playername] [jobname] [xp]'
     output:
-      target: You have lost %xplost% experience in %jobname%.
+      target: Du hast %xplost% Erfahrung in %jobname% verloren.
   signupdate:
     help:
       info: Manually updates a sign by its name
       args: '[jobname]'
   bp:
     help:
-      info: Shows block protections around you in 10 block radius
+      info: Zeigt geschützte Blöcke um dich herum in einem Radius von 10 Blöcken
       args: ''
     output:
-      found: '&eFound &6%amount% &eprotected blocks around you'
-      notFound: '&eNo protected blocks found around you'
+      found: '&eEs wurden &6%amount% &egeschützte Blöcke um dich herum gefunden'
+      notFound: '&eEs wurden keine geschützten Blöcke um dich herum gefunden'
   reload:
     help:
-      info: Reload configurations.
+      info: Konfigurationen neu laden.
   toggle:
     help:
       info: Toggles payment output on action bar or bossbar.
       args: actionbar/bossbar
     output:
-      turnedoff: '&4This feature is turned off!'
+      turnedoff: '&4Diese Funktion ist deaktiviert!'
       paid:
-        main: '&aYou got:'
-        money: '&e[amount] money'
+        main: '&aDu erhältst:'
+        money: '&e[amount] Geld'
         exp: '&7[exp] exp'
-        points: '&6[points] points'
-      'on': '&aToggled: &aON'
-      'off': '&aToggled: &4OFF'
+        points: '&6[points] Punkte'
+      'on': '&aGeschaltet: &aEin'
+      'off': '&aGeschaltet: &4Aus'
 message:
   skillup:
-    broadcast: '%playername% has been promoted to a %titlename% %jobname%.'
-    nobroadcast: Congratulations, you have been promoted to a %titlename% %jobname%.
+    broadcast: '%playername% wurde zu einem %titlename% %jobname%befördert.'
+    nobroadcast: Herzlichen Glückwunsch, du wurdest zum %titlename%%jobname% befördert.
   levelup:
-    broadcast: '%playername% is now a level %joblevel% %jobname%.'
-    nobroadcast: You are now level %joblevel% %jobname%.
+    broadcast: '%playername% ist nun ein Level %joblevel%%jobname%.'
+    nobroadcast: Du bist nun Level %joblevel% in %jobname%.
   leveldown:
-    message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
+    message: '&cDu hast Level&e %lostLevel%&c in&e %jobname%&c job verloren! Level:&6 %joblevel%&c.'
   cowtimer: '&eDu musst immernoch &6%time% &eSekunden warten bevor du für diesen Beruf bezahlt wirst.'
   blocktimer: '&eDu musst noch weitere &e[time] &eSekunden warten bevor du dafür bezahlt wirst!'
   placeblocktimer: '&eDu kannst Blöcke nicht schneller als &6[time] Sekunden am selben Ort platzieren!'
