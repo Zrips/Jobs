@@ -25,6 +25,7 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.Sorting;
 import com.gamingmesh.jobs.stuff.Util;
@@ -81,7 +82,7 @@ public class JobsCommands implements CommandExecutor {
 	if (!hasCommandPermission(sender, cmd)) {
 	    if (sender instanceof Player) {
 		new RawMessage().addText(Jobs.getLanguage().getMessage("general.error.permission"))
-		.addHover("&2" + label + ".command." + cmd).show(sender);
+		    .addHover("&2" + label + ".command." + cmd).show(sender);
 	    } else
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
@@ -198,8 +199,7 @@ public class JobsCommands implements CommandExecutor {
 		break;
 	    }
 	}
-	
-	
+
     }
 
     private static Class<?> getClass(String cmd) {

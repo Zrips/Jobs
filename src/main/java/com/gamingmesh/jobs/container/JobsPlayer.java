@@ -38,7 +38,6 @@ import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -678,7 +677,7 @@ public class JobsPlayer {
 		if (numJobs == 1) {
 		    if (method == DisplayMethod.FULL || method == DisplayMethod.TITLE) {
 			if (title != null) {
-			    String honorificpart = title.getChatColor() + title.getName() + ChatColor.WHITE;
+			    String honorificpart = title.getChatColor() + title.getName() + CMIChatColor.WHITE;
 			    if (honorificpart.contains("{level}"))
 				honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
 			    builder.append(honorificpart);
@@ -691,7 +690,7 @@ public class JobsPlayer {
 			    builder.append(" ");
 			}
 
-			String honorificpart = prog.getJob().getNameWithColor() + ChatColor.WHITE;
+			String honorificpart = prog.getJob().getNameWithColor() + CMIChatColor.WHITE;
 			if (honorificpart.contains("{level}"))
 			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
 
@@ -703,7 +702,7 @@ public class JobsPlayer {
 		if (numJobs > 1 && (method == DisplayMethod.FULL) || method == DisplayMethod.TITLE || method == DisplayMethod.SHORT_FULL || method == DisplayMethod.SHORT_TITLE) {
 		    // add title to honorific
 		    if (title != null) {
-			String honorificpart = title.getChatColor() + title.getShortName() + ChatColor.WHITE;
+			String honorificpart = title.getChatColor() + title.getShortName() + CMIChatColor.WHITE;
 			if (honorificpart.contains("{level}"))
 			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
 
@@ -712,9 +711,8 @@ public class JobsPlayer {
 		    }
 		}
 
-		if (numJobs > 1 && (method == DisplayMethod.FULL) || method == DisplayMethod.JOB || method == DisplayMethod.SHORT_FULL || method ==
-		    DisplayMethod.SHORT_JOB) {
-		    String honorificpart = prog.getJob().getChatColor() + prog.getJob().getShortName() + ChatColor.WHITE;
+		if (numJobs > 1 && (method == DisplayMethod.FULL) || method == DisplayMethod.JOB || method == DisplayMethod.SHORT_FULL || method == DisplayMethod.SHORT_JOB) {
+		    String honorificpart = prog.getJob().getChatColor() + prog.getJob().getShortName() + CMIChatColor.WHITE;
 		    if (honorificpart.contains("{level}"))
 			honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
 
@@ -727,7 +725,7 @@ public class JobsPlayer {
 	    if (nonejob != null) {
 		DisplayMethod metod = nonejob.getDisplayMethod();
 		if (metod == DisplayMethod.FULL || metod == DisplayMethod.TITLE) {
-		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getName() + ChatColor.WHITE;
+		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getName() + CMIChatColor.WHITE;
 		    if (honorificpart.contains("{level}"))
 			honorificpart = honorificpart.replace("{level}", "");
 
@@ -735,7 +733,7 @@ public class JobsPlayer {
 		}
 
 		if (metod == DisplayMethod.SHORT_FULL || metod == DisplayMethod.SHORT_TITLE || metod == DisplayMethod.SHORT_JOB) {
-		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getShortName() + ChatColor.WHITE;
+		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getShortName() + CMIChatColor.WHITE;
 		    if (honorificpart.contains("{level}"))
 			honorificpart = honorificpart.replace("{level}", "");
 
@@ -1225,7 +1223,7 @@ public class JobsPlayer {
 
     public int getMaxFurnacesAllowed(CMIMaterial type) {
 	String perm = "jobs.max" + (type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE
-		    ? "furnaces" : type == CMIMaterial.BLAST_FURNACE ? "blastfurnaces" : type == CMIMaterial.SMOKER ? "smokers" : "");
+	    ? "furnaces" : type == CMIMaterial.BLAST_FURNACE ? "blastfurnaces" : type == CMIMaterial.SMOKER ? "smokers" : "");
 	if (perm.isEmpty())
 	    return 0;
 

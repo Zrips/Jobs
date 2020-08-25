@@ -7,9 +7,9 @@ import java.util.List;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.container.Title;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class TitleManager {
 
@@ -55,12 +55,13 @@ public class TitleManager {
 	c.header(Arrays.asList(
 	    "Title configuration",
 	    "Stores the titles people gain at certain levels.",
-	    "Each title requres to have a name, short name (used when the player has more than",
-	    "1 job) the colour of the title and the level requrirement to attain the title.",
+	    "Each title requires to have a name, short name (used when the player has more than 1 job)",
+	    "the colour of the title and the level requirement to attain the title.",
+	    "Colour can ether be a word like Brown, can be color character like &5 or hex color code like {#6600cc}",
 	    "It is recommended but not required to have a title at level 0.",
 	    "Titles are completely optional.",
-	    "Posible variable are {level} to add current jobs level.",
-	    "Optionaly you can set different titles based by job.",
+	    "Possible variable are {level} to add current jobs level.",
+	    "Optionally you can set different titles based by job.",
 	    "  JobName: Miner"));
 
 	ConfigurationSection titleSection = c.getC().getConfigurationSection("Titles");
@@ -70,56 +71,56 @@ public class TitleManager {
 	    titles.add(new Title(
 		c.get("Titles.Novice.Name", "N"),
 		c.get("Titles.Novice.ShortName", "N"),
-		ChatColor.matchColor(c.get("Titles.Novice.ChatColour", "YELLOW")),
+		CMIChatColor.getColor(c.get("Titles.Novice.ChatColour", "YELLOW")),
 		c.get("Titles.Novice.levelReq", 0),
 		null));
 
 	    titles.add(new Title(
 		c.get("Titles.Apprentice.Name", "A"),
 		c.get("Titles.Apprentice.ShortName", "A"),
-		ChatColor.matchColor(c.get("Titles.Apprentice.ChatColour", "WHITE")),
+		CMIChatColor.getColor(c.get("Titles.Apprentice.ChatColour", "WHITE")),
 		c.get("Titles.Apprentice.levelReq", 25),
 		null));
 
 	    titles.add(new Title(
 		c.get("Titles.Initiate.Name", "I"),
 		c.get("Titles.Initiate.ShortName", "I"),
-		ChatColor.matchColor(c.get("Titles.Initiate.ChatColour", "GOLD")),
+		CMIChatColor.getColor(c.get("Titles.Initiate.ChatColour", "GOLD")),
 		c.get("Titles.Initiate.levelReq", 50),
 		null));
 
 	    titles.add(new Title(
 		c.get("Titles.Journeyman.Name", "J"),
 		c.get("Titles.Journeyman.ShortName", "J"),
-		ChatColor.matchColor(c.get("Titles.Journeyman.ChatColour", "DARK_GREEN")),
+		CMIChatColor.getColor(c.get("Titles.Journeyman.ChatColour", "DARK_GREEN")),
 		c.get("Titles.Journeyman.levelReq", 75),
 		null));
 
 	    titles.add(new Title(
 		c.get("Titles.Adept.Name", "Ad"),
 		c.get("Titles.Adept.ShortName", "Ad"),
-		ChatColor.matchColor(c.get("Titles.Adept.ChatColour", "DARK_PURPLE")),
+		CMIChatColor.getColor(c.get("Titles.Adept.ChatColour", "DARK_PURPLE")),
 		c.get("Titles.Adept.levelReq", 100),
 		null));
 
 	    titles.add(new Title(
 		c.get("Titles.Master.Name", "M"),
 		c.get("Titles.Master.ShortName", "M"),
-		ChatColor.matchColor(c.get("Titles.Master.ChatColour", "GRAY")),
+		CMIChatColor.getColor(c.get("Titles.Master.ChatColour", "GRAY")),
 		c.get("Titles.Master.levelReq", 125),
 		null));
 
 	    titles.add(new Title(
 		c.get("Titles.Grandmaster.Name", "GM"),
 		c.get("Titles.Grandmaster.ShortName", "GM"),
-		ChatColor.matchColor(c.get("Titles.Grandmaster.ChatColour", "DARK_GRAY")),
+		CMIChatColor.getColor(c.get("Titles.Grandmaster.ChatColour", "DARK_GRAY")),
 		c.get("Titles.Grandmaster.levelReq", 150),
 		null));
 
 	    titles.add(new Title(
 		c.get("Titles.Legendary.Name", "L"),
 		c.get("Titles.Legendary.ShortName", "L"),
-		ChatColor.matchColor(c.get("Titles.Legendary.ChatColour", "BLACK")),
+		CMIChatColor.getColor(c.get("Titles.Legendary.ChatColour", "BLACK")),
 		c.get("Titles.Legendary.levelReq", 200),
 		null));
 	    c.save();
@@ -128,7 +129,7 @@ public class TitleManager {
 		String jobName = null;
 		String titleName = titleSection.getString(titleKey + ".Name");
 		String titleShortName = titleSection.getString(titleKey + ".ShortName");
-		ChatColor titleColor = ChatColor.matchColor(titleSection.getString(titleKey + ".ChatColour", ""));
+		CMIChatColor titleColor = CMIChatColor.getColor(titleSection.getString(titleKey + ".ChatColour", ""));
 		int levelReq = titleSection.getInt(titleKey + ".levelReq", -1);
 
 		if (titleSection.isString(titleKey + ".JobName"))

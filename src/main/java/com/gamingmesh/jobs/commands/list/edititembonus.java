@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIReflections;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
@@ -15,7 +16,6 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class edititembonus implements Cmd {
 
@@ -103,9 +103,9 @@ public class edititembonus implements Cmd {
 
 	BoostMultiplier boost = item.getBoost();
 
-	String mc = ChatColor.DARK_GREEN.toString(),
-	    pc = ChatColor.GOLD.toString(),
-	    ec = ChatColor.YELLOW.toString();
+	String mc = CMIChatColor.DARK_GREEN.toString(),
+	    pc = CMIChatColor.GOLD.toString(),
+	    ec = CMIChatColor.YELLOW.toString();
 
 	for (Job one : item.getJobs()) {
 	    String msg = Jobs.getLanguage().getMessage("command.itembonus.output.list",

@@ -16,7 +16,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 
@@ -68,9 +68,9 @@ public class itembonus implements Cmd {
 		if (!any)
 		    continue;
 
-	    String mc = ChatColor.DARK_GREEN.toString(),
-		    pc = ChatColor.GOLD.toString(),
-		    ec = ChatColor.YELLOW.toString(),
+		String mc = CMIChatColor.DARK_GREEN.toString(),
+		    pc = CMIChatColor.GOLD.toString(),
+		    ec = CMIChatColor.YELLOW.toString(),
 		    msg = null;
 
 		if (jPlayer.isInJob(one))

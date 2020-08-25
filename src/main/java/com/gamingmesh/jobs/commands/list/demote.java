@@ -5,11 +5,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class demote implements Cmd {
 
@@ -42,7 +42,7 @@ public class demote implements Cmd {
 		Player player = Bukkit.getServer().getPlayer(jPlayer.getUniqueId());
 		if (player != null) {
 		    String message = Jobs.getLanguage().getMessage("command.demote.output.target",
-			"%jobname%", job.getNameWithColor() + ChatColor.WHITE,
+			"%jobname%", job.getNameWithColor() + CMIChatColor.WHITE,
 			"%levelslost%", levelsLost);
 		    player.sendMessage(message);
 		}

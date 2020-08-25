@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.PlayerManager.BoostOf;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
@@ -12,7 +13,6 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.hooks.HookManager;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 public class bonus implements Cmd {
 
@@ -75,7 +75,7 @@ public class bonus implements Cmd {
     }
 
     private static void printBoost(CommandSender sender, Boost boost, BoostOf type) {
-	String prefix = ChatColor.GOLD + "*";
+	String prefix = CMIChatColor.GOLD + "*";
 	if (type != BoostOf.NearSpawner && type != BoostOf.PetPay)
 	    prefix = "";
 

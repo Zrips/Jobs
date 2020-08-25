@@ -522,7 +522,6 @@ public class CMIChatColor {
 	if (or.contains(colorCodePrefix)) {
 	    Matcher match = hexColorRegexPatternLast.matcher(or);
 	    if (match.find()) {
-
 		return new CMIChatColor(match.group(2));
 	    }
 	    match = hexColorNamePatternLast.matcher(or);

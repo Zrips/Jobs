@@ -61,8 +61,8 @@ public class limit implements Cmd {
 		continue;
 	    }
 	    if (limit.GetLeftTime(type) > 0) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(limit.GetLeftTime(type))));
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "Limit",
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(limit.GetLeftTime(type))));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "Limit",
 		    "%current%", (int) (limit.GetAmount(type) * 100) / 100D,
 		    "%total%", JPlayer.getLimit(type)));
 	    }

@@ -7,11 +7,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.PageInfo;
 
 public class browse implements Cmd {
@@ -201,7 +201,7 @@ public class browse implements Cmd {
 		builder.append(job.getChatColor().toString());
 		builder.append(job.getName());
 		if (job.getMaxLevel(sender) > 0) {
-		    builder.append(ChatColor.WHITE.toString());
+		    builder.append(CMIChatColor.WHITE.toString());
 		    builder.append(Jobs.getLanguage().getMessage("command.info.help.max"));
 		    builder.append(job.getMaxLevel(sender));
 		}

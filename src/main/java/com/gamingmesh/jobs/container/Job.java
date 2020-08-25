@@ -19,10 +19,10 @@
 package com.gamingmesh.jobs.container;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.ChatColor;
 
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -51,7 +51,7 @@ public class Job {
     private String jobShortName;
     private String description;
 
-    private ChatColor jobColour;
+    private CMIChatColor jobColour;
     private Parser maxExpEquation;
     private DisplayMethod displayMethod;
 
@@ -85,7 +85,7 @@ public class Job {
 
     private int id = 0;
 
-    public Job(String jobName, String fullName, String jobShortName, String description, ChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
+    public Job(String jobName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, HashMap<String, JobItems> jobItems,
 	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
 	this.jobName = jobName == null ? "" : jobName;
@@ -294,7 +294,7 @@ public class Job {
      * Get the Color of the job for chat
      * @return the Color of the job for chat
      */
-    public ChatColor getChatColor() {
+    public CMIChatColor getChatColor() {
 	return jobColour;
     }
 

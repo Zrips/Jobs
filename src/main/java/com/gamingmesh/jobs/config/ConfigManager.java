@@ -28,7 +28,6 @@ import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.ChatColor;
 import com.gamingmesh.jobs.stuff.Util;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -450,22 +449,22 @@ public class ConfigManager {
 	    }
 
 	    break;
-		default:
+	default:
 	    break;
-		}
+	}
 
-		if (actionType == ActionType.STRIPLOGS && Version.isCurrentLower(Version.v1_13_R1))
-		    return null;
+	if (actionType == ActionType.STRIPLOGS && Version.isCurrentLower(Version.v1_13_R1))
+	    return null;
 
-		if (material != null && material.getMaterial() != null && material.isAir()) {
-		    Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " can't recognize material! (" + myKey + ")");
-		    return null;
-		}
+	if (material != null && material.getMaterial() != null && material.isAir()) {
+	    Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " can't recognize material! (" + myKey + ")");
+	    return null;
+	}
 
-		if (material != null && Version.isCurrentLower(Version.v1_13_R1) && meta.isEmpty())
-		    meta = String.valueOf(material.getData());
+	if (material != null && Version.isCurrentLower(Version.v1_13_R1) && meta.isEmpty())
+	    meta = String.valueOf(material.getData());
 
-		c: if (material != null && material != CMIMaterial.NONE && material.getMaterial() != null) {
+	c: if (material != null && material != CMIMaterial.NONE && material.getMaterial() != null) {
 	    // Need to include those ones and count as regular blocks
 	    switch (myKey.replace("_", "").toLowerCase()) {
 	    case "itemframe":
@@ -490,9 +489,9 @@ public class ConfigManager {
 	    // Break and Place actions MUST be blocks
 	    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
 		if (!material.isBlock()) {
-	    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
-		+ " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
-	    return null;
+		    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
+			+ " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
+		    return null;
 		}
 	    }
 
@@ -522,7 +521,7 @@ public class ConfigManager {
 
 	    type = material.getMaterial().toString();
 	    id = material.getId();
-		} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
+	} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
 	    // check entities
 	    CMIEntityType entity = CMIEntityType.getByName(myKey);
 
@@ -540,8 +539,8 @@ public class ConfigManager {
 		}
 	    }
 
-		    // Pre 1.13 checks for custom names
-		    if (entity == null) {
+	    // Pre 1.13 checks for custom names
+	    if (entity == null) {
 		switch (myKey.toLowerCase()) {
 		case "skeletonwither":
 		    type = CMIEntityType.WITHER_SKELETON.name();
@@ -741,16 +740,16 @@ public class ConfigManager {
 		}
 	    }
 
-	    ChatColor color = ChatColor.WHITE;
+	    CMIChatColor color = CMIChatColor.WHITE;
 	    if (jobSection.contains("ChatColour")) {
 		String c = jobSection.getString("ChatColour", "");
 
-		color = ChatColor.matchColor(c);
+		color = CMIChatColor.getColor(c);
 		if (color == null && !c.isEmpty())
-		    color = ChatColor.matchColor(c.charAt(0));
+		    color = CMIChatColor.getColor(String.valueOf("&" + c.charAt(0)));
 
 		if (color == null) {
-		    color = ChatColor.WHITE;
+		    color = CMIChatColor.WHITE;
 		    log.warning("Job " + jobKey + " has an invalid ChatColour property. Defaulting to WHITE!");
 		}
 	    }
@@ -872,24 +871,24 @@ public class ConfigManager {
 		} else
 		    log.warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
 
-	    if (guiSection.isList("Enchantments")) {
-		for (String str4 : guiSection.getStringList("Enchantments")) {
-		    String[] id = str4.split(":");
-		    if (GUIitem.getItemMeta() instanceof EnchantmentStorageMeta) {
-			EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-			enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
-			GUIitem.setItemMeta(enchantMeta);
-		    } else
-			GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
+		if (guiSection.isList("Enchantments")) {
+		    for (String str4 : guiSection.getStringList("Enchantments")) {
+			String[] id = str4.split(":");
+			if (GUIitem.getItemMeta() instanceof EnchantmentStorageMeta) {
+			    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+			    enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
+			    GUIitem.setItemMeta(enchantMeta);
+			} else
+			    GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
+		    }
 		}
-	    }
 
-	    if (guiSection.isString("CustomSkull")) {
-		GUIitem = Util.getSkull(guiSection.getString("CustomSkull"));
-	    }
+		if (guiSection.isString("CustomSkull")) {
+		    GUIitem = Util.getSkull(guiSection.getString("CustomSkull"));
+		}
 
-	    if (guiSection.getInt("slot", -1) >= 0)
-		guiSlot = guiSection.getInt("slot");
+		if (guiSection.getInt("slot", -1) >= 0)
+		    guiSlot = guiSection.getInt("slot");
 	    }
 
 	    // Permissions
@@ -1205,8 +1204,8 @@ public class ConfigManager {
 
 			int id = keyValue.getId();
 			String type = keyValue.getType(),
-				subType = keyValue.getSubType(),
-				meta = keyValue.getMeta();
+			    subType = keyValue.getSubType(),
+			    meta = keyValue.getMeta();
 
 			if (actionType == ActionType.TNTBREAK)
 			    Jobs.getGCManager().setTntFinder(true);
