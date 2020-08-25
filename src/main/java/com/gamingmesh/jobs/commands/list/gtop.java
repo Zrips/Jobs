@@ -64,7 +64,7 @@ public class gtop implements Cmd {
 		    break;
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list",
-		    "%number%", pi.getPositionForOutput(i-1),
+		    "%number%", pi.getPositionForOutput(i),
 		    "%playername%", One.getPlayerInfo().getName(),
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
