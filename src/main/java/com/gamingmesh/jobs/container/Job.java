@@ -116,13 +116,18 @@ public class Job {
 	boost.add(type, Point);
     }
 
-    public void addBoost(CurrencyType type, double point, int hour, int minute, int second) {
+    public void addBoost(CurrencyType type, double point, int[] times) {
+	if (times.length < 3) {
+	    addBoost(type, point);
+	    return;
+	}
+
 	final Calendar cal = Calendar.getInstance();
 	cal.setTime(new Date());
 
-	cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + hour);
-	cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + minute);
-	cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + second);
+	cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + times[2]);
+	cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + times[1]);
+	cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + times[0]);
 
 	long time = cal.getTimeInMillis();
 	boost.add(type, point, time);

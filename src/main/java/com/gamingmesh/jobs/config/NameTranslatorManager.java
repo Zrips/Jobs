@@ -83,7 +83,7 @@ public class NameTranslatorManager {
 			    return nameLs + ":" + nameMeta;
 			}
 
-			if (mat.equals(CMIMaterial.NONE)) {
+			if (mat == CMIMaterial.NONE) {
 			    return fallbackMaterialName;
 			}
 
@@ -106,11 +106,11 @@ public class NameTranslatorManager {
 	    case TAME:
 		for (NameList one : ListOfEntities) {
 		    String ids = one.getId() + ":" + one.getMeta();
-		    if (!one.getMeta().equalsIgnoreCase("") && ids.equalsIgnoreCase(id + ":" + meta) && !one.getId().equalsIgnoreCase("0")) {
+		    if (!one.getMeta().equalsIgnoreCase("") && ids.equalsIgnoreCase(id + ":" + meta) && !one.getId().equals("0")) {
 			return one.getName();
 		    }
 		    ids = one.getId();
-		    if (ids.equalsIgnoreCase(String.valueOf(id)) && !one.getId().equalsIgnoreCase("0")) {
+		    if (ids.equalsIgnoreCase(String.valueOf(id)) && !one.getId().equals("0")) {
 			return one.getName();
 		    }
 		    ids = one.getMinecraftName();
@@ -391,9 +391,7 @@ public class NameTranslatorManager {
 	    }
 
 	    for (Enchantment one : Enchantment.values()) {
-		if (one == null)
-		    continue;
-		if (CMIEnchantment.getName(one) == null)
+		if (one == null || CMIEnchantment.getName(one) == null)
 		    continue;
 
 		String name = Util.firstToUpperCase(CMIEnchantment.getName(one).toString()).replace("_", " ");

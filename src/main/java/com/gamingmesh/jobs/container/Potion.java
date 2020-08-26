@@ -22,40 +22,30 @@ package com.gamingmesh.jobs.container;
  * <a href="https://papermc.io/javadocs/paper/1.13/org/bukkit/potion/PotionType.html">API reference for names</a>
  */
 public enum Potion {
-    AWKWARD("awkward"),
-    FIRE_RESISTANCE("fire_resistance"),
-    INSTANT_DAMAGE("instant_damage"),
-    INSTANT_HEAL("instant_heal"),
-    INVISIBILITY("invisibility"),
-    JUMP("jump"),
-    LUCK("luck"),
-    MUNDANE("mundane"),
-    NIGHT_VISION("night_vision"),
-    LONG_NIGHT_VISION("long_night_vision"),
-    POISON("poison"),
-    REGENERATION("regeneration"),
-    SLOW_FALLING("slow_falling"),
-    SLOWNESS("slowness"),
-    SPEED("speed"),
-    STRENGTH("strength"),
-    THICK("thick"),
-    TURTLE_MASTER("turtle_master"),
-    WATER_BREATHING("water_breathing"),
-    WEAKNESS("weakness");
-
-    private final String name;
-
-    Potion(String name) {
-        this.name = name.toUpperCase();
-    }
-
-    public String getName() {
-        return name;
-    }
+    AWKWARD,
+    FIRE_RESISTANCE,
+    INSTANT_DAMAGE,
+    INSTANT_HEAL,
+    INVISIBILITY,
+    JUMP,
+    LUCK,
+    MUNDANE,
+    NIGHT_VISION,
+    LONG_NIGHT_VISION,
+    POISON,
+    REGENERATION,
+    SLOW_FALLING,
+    SLOWNESS,
+    SPEED,
+    STRENGTH,
+    THICK,
+    TURTLE_MASTER,
+    WATER_BREATHING,
+    WEAKNESS;
 
     public static Potion getByName(String name) {
         for (Potion one : Potion.values()) {
-            if (one.name.equalsIgnoreCase(name)) {
+            if (one.toString().equalsIgnoreCase(name)) {
                 return one;
             }
         }

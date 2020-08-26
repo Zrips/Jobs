@@ -838,11 +838,13 @@ public class ConfigManager {
 		    String item = guiSection.getString("Item");
 		    String subType = "";
 
-		    if (item.contains("-")) {
-			// uses subType
-			subType = ":" + item.split("-")[1];
-			item = item.split("-")[0];
-		    }
+			if (item.contains("-")) {
+			    // uses subType
+			    subType = ":" + item.split("-")[1];
+			    item = item.split("-")[0];
+			} else if (item.contains(":")) { // when we uses tipped arrow effect types
+			    item = item.split(":")[0];
+			}
 
 		    CMIMaterial material = CMIMaterial.get(item + (subType));
 
@@ -1051,7 +1053,7 @@ public class ConfigManager {
 			itemSection.getStringList("lore").stream().map(CMIChatColor::translate).forEach(lore::add);
 
 		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.contains("enchants"))
+		    if (itemSection.isList("enchants"))
 			for (String eachLine : itemSection.getStringList("enchants")) {
 			    if (!eachLine.contains("="))
 				continue;

@@ -64,6 +64,9 @@ public class TabComplete implements TabCompleter {
 		    List<String> temp = new ArrayList<>();
 		    for (String ar : t2) {
 			switch (ar) {
+			case "[time]":
+			    temp.add("1hour10minute20s");
+			    break;
 			case "[questname]":
 			case "[quest]":
 			    Job job = Jobs.getJob(args[i - 1]);

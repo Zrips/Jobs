@@ -9,6 +9,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import com.gamingmesh.jobs.container.Potion;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class ItemManager {
@@ -50,7 +51,11 @@ public class ItemManager {
 	    mojangName = mojangName == null ? mat.toString().replace("_", "").replace(" ", "").toLowerCase()
 		: mojangName.replace("_", "").replace(" ", "").toLowerCase();
 
-	    if (byName.containsKey(cmiName)) {
+	    if (one.isCanHavePotionType()) {
+		for (Potion p : Potion.values()) {
+		    byName.put(cmiName + ":" + p.toString().toLowerCase(), one);
+		}
+	    } else if (byName.containsKey(cmiName)) {
 		byName.put(cmiName + ":" + data, one);
 	    } else
 		byName.put(cmiName, one);
@@ -92,7 +97,6 @@ public class ItemManager {
 	    if (one.getLegacyData() == 0)
 		byId.put(one.getLegacyId(), one);
 	    byRealMaterial.put(mat, one);
-
 	}
     }
 
@@ -206,7 +210,7 @@ public class ItemManager {
 	    cmat = CMIMaterial.get(name);
 	}
 
-	if (cmat != null && !cmat.equals(CMIMaterial.NONE)) {
+	if (cmat != null && cmat != CMIMaterial.NONE) {
 	    cm = cmat.newCMIItemStack();
 	} else
 	    cmat = CMIMaterial.get(subdata == null ? original : original + ":" + subdata);
