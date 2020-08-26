@@ -870,7 +870,7 @@ public abstract class JobsDAO {
 	    prestt.setString(2, playerName);
 	    prestt.setLong(3, System.currentTimeMillis());
 	    prestt.setInt(4, 0);
-	    prestt.executeUpdate();
+	    prestt.execute();
 
 	    res2 = prestt.getGeneratedKeys();
 	    int id = 0;
@@ -1916,15 +1916,16 @@ public abstract class JobsDAO {
 		+ "` FROM `" + DBTables.UsersTable.getTableName() + "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
 	    prest.setString(1, player.getUniqueId().toString());
 	    res = prest.executeQuery();
-	    res.next();
-	    int id = res.getInt("id");
-	    player.setUserId(id);
-	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
-		player.getName(),
-		id,
-		player.getUniqueId(),
-		player.getSeen(),
-		res.getInt(UserTableFields.donequests.getCollumn())));
+	    if (res.next()) {
+		int id = res.getInt("id");
+		player.setUserId(id);
+		Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(
+		    player.getName(),
+		    id,
+		    player.getUniqueId(),
+		    player.getSeen(),
+		    res.getInt(UserTableFields.donequests.getCollumn())));
+	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -2410,7 +2411,7 @@ public abstract class JobsDAO {
 	try {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.ExploreDataTable.getTableName() + "`;");
 	    res = prest.executeQuery();
-	    Set<Integer> missingWorlds = new HashSet<Integer>();
+	    Set<Integer> missingWorlds = new HashSet<>();
 	    while (res.next()) {
 		int worldId = res.getInt(ExploreDataTableFields.worldid.getCollumn());
 		JobsWorld jworld = Util.getJobsWorld(worldId);
