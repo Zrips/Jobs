@@ -1581,7 +1581,7 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
 	    return;
 
-	Block block = event.getClickedBlock();
+	final Block block = event.getClickedBlock();
 	if (block == null)
 	    return;
 
@@ -1670,7 +1670,6 @@ public class JobsPaymentListener implements Listener {
 		    "[max]", jPlayer.getMaxBrewingStandsAllowed() == 0 ? "-" : jPlayer.getMaxBrewingStandsAllowed()));
 	    }
 	} else if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) &&
-	    block.getType().toString().endsWith("_LOG") &&
 	    !block.getType().toString().startsWith("STRIPPED_") &&
 	    event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	    ItemStack iih = Jobs.getNms().getItemInMainHand(p);
@@ -1684,14 +1683,9 @@ public class JobsPaymentListener implements Listener {
 		    - Jobs.getNms().getDurability(iih) != iih.getType().getMaxDurability())
 		    return;
 
-		final Location loc = block.getLocation();
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-		    @Override
-		    public void run() {
-			Block b = loc.getBlock();
-			if (b.getType().toString().startsWith("STRIPPED_") && jPlayer != null)
-			    Jobs.action(jPlayer, new BlockActionInfo(b, ActionType.STRIPLOGS), b);
-		    }
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+		    if (block.getType().toString().startsWith("STRIPPED_") && jPlayer != null)
+			Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block);
 		}, 1);
 	    }
 	}
