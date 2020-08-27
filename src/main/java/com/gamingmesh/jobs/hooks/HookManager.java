@@ -102,7 +102,7 @@ public class HookManager {
 	}
 
 	if (MythicManager == null) {
-	    Jobs.consoleMsg("&cYour MythicMobs version is not supported by Jobs! Supported versions: 2.4.5+, 4.6.5");
+	    Jobs.consoleMsg("&cYour MythicMobs version is not supported by Jobs! Supported versions: 2.4.5+, 4.6.5+");
 	    return;
 	}
 

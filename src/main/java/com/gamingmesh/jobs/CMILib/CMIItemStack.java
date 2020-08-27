@@ -295,7 +295,7 @@ public class CMIItemStack {
 
     @SuppressWarnings("deprecation")
     public CMIItemStack setItemStack(ItemStack item) {
-	this.item = item == null ? null : item;
+	this.item = item;
 	if (item != null) {
 	    this.amount = item.getAmount();
 	    this.material = item.getType();

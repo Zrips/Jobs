@@ -12,7 +12,7 @@ import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 
 public class MythicMobs4 implements MythicMobInterface {
 
-    public BukkitAPIHelper MMAPI = null;
+    public BukkitAPIHelper MMAPI;
     private Jobs plugin;
 
     public MythicMobs4(Jobs plugin) {
@@ -21,7 +21,7 @@ public class MythicMobs4 implements MythicMobInterface {
 
     @Override
     public void registerListener() {
-	Bukkit.getServer().getPluginManager().registerEvents(new MythicMobs4Listener(plugin), plugin);
+	Bukkit.getServer().getPluginManager().registerEvents(new MythicMobs4Listener(), plugin);
     }
 
     @Override
@@ -29,10 +29,7 @@ public class MythicMobs4 implements MythicMobInterface {
 	if (MMAPI == null || lVictim == null)
 	    return false;
 
-	if (MMAPI.isMythicMob(lVictim))
-	    return true;
-
-	return false;
+	return MMAPI.isMythicMob(lVictim);
     }
 
     @Override
@@ -61,17 +58,14 @@ public class MythicMobs4 implements MythicMobInterface {
 
     @Override
     public String getDisplayName(String id) {
-	if (failed)
-	    return "";
-
-	if (MMAPI == null)
+	if (failed || MMAPI == null)
 	    return "";
 
 	MythicMob mm = MMAPI.getMythicMob(id);
 	try {
 	    if (mm != null)
 		return mm.getDisplayName().toString();
-	} catch (Exception | Error e) {
+	} catch (Throwable e) {
 	    if (!failed) {
 		failed = true;
 		Jobs.consoleMsg("&cEncountered error when checking MythicMob entity name. Support for mythicMobs will be suspended for time beying. Please report this issue.");

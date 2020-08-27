@@ -106,7 +106,7 @@ public class NameTranslatorManager {
 	    case TAME:
 		for (NameList one : ListOfEntities) {
 		    String ids = one.getId() + ":" + one.getMeta();
-		    if (!one.getMeta().equalsIgnoreCase("") && ids.equalsIgnoreCase(id + ":" + meta) && !one.getId().equals("0")) {
+		    if (!one.getMeta().isEmpty() && ids.equalsIgnoreCase(id + ":" + meta) && !one.getId().equals("0")) {
 			return one.getName();
 		    }
 		    ids = one.getId();

@@ -69,13 +69,12 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/MythicMobs-2.4.5.jar</systemPath>
 		</dependency>
-		<!-- MythicMobs 4 -->
+		<!-- MythicMobs new -->
 		<dependency>
-			<groupId>io.lumine.xikage.mythicmobs</groupId>
+			<groupId>io.lumine.xikage</groupId>
 			<artifactId>MythicMobs</artifactId>
-			<version>4.9.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/MythicMobs-4.9.0.jar</systemPath>
+			<version>4.9.1</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- WorldGuard old version -->
 		<dependency>
@@ -205,6 +204,13 @@
 				<updatePolicy>always</updatePolicy>
 			</snapshots>
 		</repository>
+		<!-- MythicMobs -->
+		<repository>
+			<id>nexus</id>
+			<name>Lumine Releases</name>
+			<url>https://mvn.lumine.io/repository/maven-public/</url>
+		</repository>
+
 	</repositories>
 	<!-- Builds Plugin -->
 	<build>

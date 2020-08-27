@@ -13,7 +13,7 @@ import net.elseland.xikage.MythicMobs.Mobs.MythicMob;
 
 public class MythicMobs2 implements MythicMobInterface {
 
-    public MythicMobsAPI MMAPI = null;
+    public MythicMobsAPI MMAPI;
     private Jobs plugin;
 
     public MythicMobs2(Jobs plugin) {
@@ -22,7 +22,7 @@ public class MythicMobs2 implements MythicMobInterface {
 
     @Override
     public void registerListener() {
-	Bukkit.getServer().getPluginManager().registerEvents(new MythicMobs2Listener(plugin), plugin);
+	Bukkit.getServer().getPluginManager().registerEvents(new MythicMobs2Listener(), plugin);
     }
 
     @Override
@@ -30,10 +30,7 @@ public class MythicMobs2 implements MythicMobInterface {
 	if (MMAPI == null || lVictim == null)
 	    return false;
 
-	if (MMAPI.getMobAPI().isMythicMob(lVictim))
-	    return true;
-
-	return false;
+	return MMAPI.getMobAPI().isMythicMob(lVictim);
     }
 
     @Override
@@ -59,14 +56,15 @@ public class MythicMobs2 implements MythicMobInterface {
 
     @Override
     public String getDisplayName(String id) {
-	try {
-	    MythicMob mm = MMAPI.getMobAPI().getMythicMob(id);
-	    if (mm != null)
-		return mm.getDisplayName();
-	} catch (InvalidMobTypeException e) {
+	if (MMAPI == null || id == null) {
 	    return "";
 	}
 
-	return "";
+	try {
+	    MythicMob mm = MMAPI.getMobAPI().getMythicMob(id);
+	    return mm != null ? mm.getDisplayName() : "";
+	} catch (InvalidMobTypeException e) {
+	    return "";
+	}
     }
 }

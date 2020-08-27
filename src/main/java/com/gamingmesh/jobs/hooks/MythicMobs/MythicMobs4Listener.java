@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.hooks.MythicMobs;
 
-import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -11,24 +10,15 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.MMKillInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 
 public class MythicMobs4Listener implements Listener {
 
-    private Jobs plugin;
-
-    public MythicMobs4Listener(Jobs plugin) {
-	this.plugin = plugin;
-    }
-
     @EventHandler
     public void OnMythicMobDeath(MythicMobDeathEvent event) {
-	// make sure plugin is enabled
-	if (!plugin.isEnabled())
-	    return;
-
 	//disabling plugin in world
 	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
@@ -53,7 +43,7 @@ public class MythicMobs4Listener implements Listener {
 	    return;
 
 	// check if in creative
-	if (pDamager.getGameMode().equals(GameMode.CREATIVE) && !pDamager.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!JobsPaymentListener.payIfCreative(pDamager))
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))

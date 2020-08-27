@@ -196,8 +196,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	ItemStack itemInHand = Jobs.getNms().getItemInMainHand(player);
-	if (itemInHand == null)
-	    return;
 
 	if ((cow.getType() == EntityType.COW && itemInHand.getType() != Material.BUCKET)
 	    || (cow.getType() == EntityType.MUSHROOM_COW && itemInHand.getType() != Material.BOWL)) {
@@ -277,7 +275,7 @@ public class JobsPaymentListener implements Listener {
 
 	// pay
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jDamager == null)
+	if (jDamager == null || sheep.getColor() == null)
 	    return;
 
 	Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
@@ -373,7 +371,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
-	if (item != null && item.getType() != Material.AIR) {
+	if (item.getType() != Material.AIR) {
 	    // Protection for block break with silktouch
 	    if (Jobs.getGCManager().useSilkTouchProtection) {
 		for (Enchantment one : item.getEnchantments().keySet()) {
@@ -667,7 +665,7 @@ public class JobsPaymentListener implements Listener {
 	    ItemStack currentItem = event.getCurrentItem();
 
 	    // when we trying to craft tipped arrow effects
-	    if (currentItem != null && currentItem.hasItemMeta() && currentItem.getItemMeta() instanceof PotionMeta) {
+	    if (currentItem != null && currentItem.getItemMeta() instanceof PotionMeta) {
 		PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
 		Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
 	    } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {

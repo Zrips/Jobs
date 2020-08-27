@@ -81,7 +81,7 @@ public class JobInfo {
     public String getRealisticName() {
 	String materialName = getName().toLowerCase().replace('_', ' ');
 	materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
-	materialName = Jobs.getNameTranslatorManager().Translate(getActionType().equals(ActionType.MMKILL) ? getName() : materialName, this);
+	materialName = Jobs.getNameTranslatorManager().Translate(actionType == ActionType.MMKILL ? getName() : materialName, this);
 	materialName = CMIChatColor.translate(materialName);
 	return materialName;
     }
