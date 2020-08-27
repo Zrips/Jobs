@@ -1,6 +1,8 @@
 /bin/
 /target/
 /.idea/
-/pom.xml
 /jobs.iml
+.settings
 src/main/resources/locale/messages_en.yml
+.classpath
+.project
