@@ -1070,7 +1070,8 @@ public class Jobs extends JavaPlugin {
 		    continue;
 
 		// JobsPayment event
-		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount);
+		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount,
+			block, ent, victim, info);
 		Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
 		// If event is canceled, don't do anything
 		if (JobsExpGainEvent.isCancelled())
