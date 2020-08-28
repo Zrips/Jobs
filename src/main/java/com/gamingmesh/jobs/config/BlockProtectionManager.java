@@ -19,15 +19,15 @@ public class BlockProtectionManager {
     private ConcurrentHashMap<World, ConcurrentHashMap<String, BlockProtection>> tempCache = new ConcurrentHashMap<>();
 
     public HashMap<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> getMap() {
-	return this.map;
+	return map;
     }
 
     public int getSize() {
 	int i = 0;
-	for (Entry<World, HashMap<String, HashMap<String, HashMap<String, BlockProtection>>>> worlds : map.entrySet()) {
-	    for (Entry<String, HashMap<String, HashMap<String, BlockProtection>>> regions : worlds.getValue().entrySet()) {
-		for (Entry<String, HashMap<String, BlockProtection>> chunks : regions.getValue().entrySet()) {
-		    i += chunks.getValue().size();
+	for (HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> worlds : map.values()) {
+	    for (HashMap<String, HashMap<String, BlockProtection>> regions : worlds.values()) {
+		for (HashMap<String, BlockProtection> chunks : regions.values()) {
+		    i += chunks.size();
 		}
 	    }
 	}
@@ -89,7 +89,7 @@ public class BlockProtectionManager {
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 	ConcurrentHashMap<String, BlockProtection> locations = tempCache.get(loc.getWorld());
 	if (locations == null) {
-	    locations = new ConcurrentHashMap<String, BlockProtection>();
+	    locations = new ConcurrentHashMap<>();
 	    tempCache.put(loc.getWorld(), locations);
 	}
 
@@ -137,9 +137,7 @@ public class BlockProtectionManager {
 
     public Long getTime(Location loc) {
 	BlockProtection Bp = getBp(loc);
-	if (Bp == null)
-	    return null;
-	return Bp.getTime();
+	return Bp == null ? null : Bp.getTime();
     }
 
     public BlockProtection getBp(Location loc) {
@@ -179,6 +177,6 @@ public class BlockProtectionManager {
     }
 
     public boolean isInBp(Block block) {
-	return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.get(CMIMaterial.get(block)) != null;
+	return Jobs.getRestrictedBlockManager().restrictedBlocksTimer.containsKey(CMIMaterial.get(block));
     }
 }
