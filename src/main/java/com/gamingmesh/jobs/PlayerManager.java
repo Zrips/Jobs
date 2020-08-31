@@ -495,8 +495,9 @@ public class PlayerManager {
      */
     public void addExperience(JobsPlayer jPlayer, Job job, double experience) {
 	JobProgression prog = jPlayer.getJobProgression(job);
-	if (prog == null)
+	if (prog == null || experience > Double.MAX_VALUE)
 	    return;
+
 	int oldLevel = prog.getLevel();
 	if (prog.addExperience(experience)) {
 	    performLevelUp(jPlayer, job, oldLevel);
@@ -514,8 +515,9 @@ public class PlayerManager {
      */
     public void removeExperience(JobsPlayer jPlayer, Job job, double experience) {
 	JobProgression prog = jPlayer.getJobProgression(job);
-	if (prog == null)
+	if (prog == null || experience > Double.MAX_VALUE)
 	    return;
+
 	prog.addExperience(-experience);
 
 	jPlayer.save();

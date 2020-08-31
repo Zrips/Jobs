@@ -32,14 +32,14 @@ public class removexp implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
-	double xpLost;
+	double xpLost = 0D;
 	try {
 	    xpLost = Double.parseDouble(args[2]);
 	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    return true;
 	}
-	if (xpLost <= 0) {
+	if (xpLost <= 0 || xpLost > Double.MAX_VALUE) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    return true;
 	}
