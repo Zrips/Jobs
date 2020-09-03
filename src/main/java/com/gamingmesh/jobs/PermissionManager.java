@@ -29,7 +29,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
-public class PermissionManager {
+public class  PermissionManager {
 
     private final HashMap<String, Integer> permDelay = new HashMap<>();
 
@@ -119,40 +119,40 @@ public class PermissionManager {
 	return getMaxPermission(jPlayer, perm, false);
     }
 
-    public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
-	if (jPlayer == null || jPlayer.getPlayer() == null)
-	    return 0D;
+	public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
+		if (jPlayer == null || jPlayer.getPlayer() == null)
+			return 0D;
 
-	perm = perm.toLowerCase();
-	if (!perm.endsWith("."))
-	    perm += ".";
+		perm = perm.toLowerCase();
+		if (!perm.endsWith("."))
+			perm += ".";
 
-	HashMap<String, Boolean> permissions = jPlayer.getPermissionsCache();
-	if (force || permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
-	    permissions = getAll(jPlayer.getPlayer());
-	    jPlayer.setPermissionsCache(permissions);
-	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
-	}
-
-	if (permissions == null) {
-	    return 0D;
-	}
-
-	Double amount = 0D;
-	for (String uno : permissions.keySet()) {
-	    if (uno.startsWith(perm)) {
-		double t = 0d;
-		try {
-		    t = Double.parseDouble(uno.replace(perm, ""));
-		} catch (NumberFormatException e) {
+		HashMap<String, Boolean> permissions = jPlayer.getPermissionsCache();
+		if (force || permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
+			permissions = getAll(jPlayer.getPlayer());
+			jPlayer.setPermissionsCache(permissions);
+			jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
 		}
 
-		amount += t;
-	    }
-	}
+		if (permissions == null) {
+			return 0D;
+		}
 
-	return amount;
-    }
+		Double amount = 0D;
+		for (String uno : permissions.keySet()) {
+			if (uno.startsWith(perm)) {
+				double t = 0d;
+				try {
+					t = Double.parseDouble(uno.replace(perm, ""));
+				} catch (NumberFormatException e) {
+				}
+				if (amount < t)
+					amount = t;
+			}
+		}
+
+		return amount;
+	}
 
     public boolean hasPermission(JobsPlayer jPlayer, String perm) {
 	if (jPlayer == null || jPlayer.getPlayer() == null)
