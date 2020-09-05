@@ -132,7 +132,7 @@ public class ShopManager {
 	    }
 
 	    if (item.isHideIfNoEnoughPoints() && item.getRequiredTotalLevels() != -1 &&
-		Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()) {
+			jPlayer.getTotalLevels() < item.getRequiredTotalLevels()) {
 		mat = CMIMaterial.STONE_BUTTON;
 		Lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
 	    }
@@ -164,7 +164,7 @@ public class ShopManager {
 		    String jobColor = "";
 		    String levelColor = "";
 
-		    JobProgression prog = Jobs.getPlayerManager().getJobsPlayer(player).getJobProgression(job);
+		    JobProgression prog = jPlayer.getJobProgression(job);
 		    if (prog == null) {
 			jobColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsColor");
 			levelColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsLevelColor");
@@ -180,7 +180,7 @@ public class ShopManager {
 
 	    if (item.getRequiredTotalLevels() != -1) {
 		Lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevel",
-		    "%totalLevel%", (Jobs.getPlayerManager().getJobsPlayer(player).getTotalLevels() < item.getRequiredTotalLevels()
+		    "%totalLevel%", (jPlayer.getTotalLevels() < item.getRequiredTotalLevels()
 			? Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevelColor") : "") + item.getRequiredTotalLevels()));
 	    }
 
@@ -195,7 +195,7 @@ public class ShopManager {
 		skullMeta.setLore(Lore);
 
 		if (item.isHeadOwner()) {
-		    Jobs.getNms().setSkullOwner(skullMeta, Jobs.getPlayerManager().getJobsPlayer(player).getPlayer());
+		    Jobs.getNms().setSkullOwner(skullMeta, jPlayer.getPlayer());
 		} else {
 		    @SuppressWarnings("deprecation")
 		    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(item.getCustomHead());
@@ -213,10 +213,6 @@ public class ShopManager {
 			    return;
 			}
 		    }
-
-		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-		    if (jPlayer == null)
-			return;
 
 		    for (Entry<String, Integer> oneJob : item.getRequiredJobs().entrySet()) {
 			Job tempJob = Jobs.getJob(oneJob.getKey());
@@ -254,8 +250,7 @@ public class ShopManager {
 		    }
 
 		    for (JobItems one : item.getitems()) {
-			ItemStack itemStack = one.getItemStack(player);
-			GiveItem.GiveItemForPlayer(player, itemStack);
+			GiveItem.GiveItemForPlayer(player, one.getItemStack(player));
 		    }
 
 		    pointsInfo.takePoints(item.getPrice());

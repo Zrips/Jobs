@@ -147,8 +147,10 @@ public class PermissionManager {
 		} catch (NumberFormatException e) {
 		}
 
-		if (uno.contains("max") && amount < t) {
-		    amount = t;
+		if (uno.startsWith("jobs.max")) {
+		    if (amount == 0D || t > amount) {
+			amount = t;
+		    }
 		} else {
 		    amount += t;
 		}
