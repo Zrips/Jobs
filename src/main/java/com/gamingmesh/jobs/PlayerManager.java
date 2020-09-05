@@ -793,27 +793,10 @@ public class PlayerManager {
      * @param player
      * @return True if he have permission
      */
-    public boolean getJobsLimit(JobsPlayer jPlayer, Short currentCount) {
-	Double max = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max");
-	max = max == null ? Jobs.getGCManager().getMaxJobs() : max;
-	if (max > currentCount)
-	    return true;
-
-	// Using new system to get max value from permission
-
-//	if (Perm.hasPermission(player, "jobs.max.*"))
-//	    return true;
-//
-//	int totalJobs = Jobs.getJobs().size() + 1;
-//
-//	short count = (short) Jobs.getGCManager().getMaxJobs();
-//	for (short ctr = 0; ctr < totalJobs; ctr++) {
-//	    if (Perm.hasPermission(player, "jobs.max." + ctr))
-//		count = ctr;
-//	    if (count > currentCount)
-//		return true;
-//	}
-	return false;
+    public boolean getJobsLimit(JobsPlayer jPlayer, short currentCount) {
+	int max = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max").intValue();
+	max = max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
+	return max > currentCount;
     }
 
     public BoostMultiplier getBoost(JobsPlayer player, Job job) {

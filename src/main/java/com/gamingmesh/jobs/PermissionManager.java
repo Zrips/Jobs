@@ -147,7 +147,11 @@ public class PermissionManager {
 		} catch (NumberFormatException e) {
 		}
 
-		amount += t;
+		if (uno.contains("max") && amount < t) {
+		    amount = t;
+		} else {
+		    amount += t;
+		}
 	    }
 	}
 
