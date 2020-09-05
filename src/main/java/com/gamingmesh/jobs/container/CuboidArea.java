@@ -43,7 +43,7 @@ public class CuboidArea {
 	int xsize = (highPoints.getBlockX() - lowPoints.getBlockX()) + 1;
 	int zsize = (highPoints.getBlockZ() - lowPoints.getBlockZ()) + 1;
 	int ysize = (highPoints.getBlockY() - lowPoints.getBlockY()) + 1;
-	return xsize * ysize * zsize;
+	return (long) xsize * ysize * zsize;
     }
 
     public int getXSize() {

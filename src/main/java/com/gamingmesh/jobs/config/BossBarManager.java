@@ -71,7 +71,7 @@ public class BossBarManager {
 	}
 
 	String message = Jobs.getLanguage().getMessage("command.stats.bossBarOutput",
-	    "%joblevel%", Integer.valueOf(jobProg.getLevel()).toString(),
+	    "%joblevel%", Integer.toString(jobProg.getLevel()),
 	    "%jobname%", jobProg.getJob().getNameWithColor(),
 	    "%jobxp%", formatter.format(Math.round(jobProg.getExperience() * 100.0) / 100.0),
 	    "%jobmaxxp%", jobProg.getMaxExperience(),
@@ -104,7 +104,7 @@ public class BossBarManager {
 		    break;
 		}
 	    }
-	    BarStyle style = BarStyle.SOLID;
+	    BarStyle style;
 	    switch (Jobs.getGCManager().SegmentCount) {
 	    case 6:
 		style = BarStyle.SEGMENTED_6;
@@ -152,7 +152,6 @@ public class BossBarManager {
 		    tempBar.setVisible(false);
 		    break;
 		}
-		return;
 	    }
 	}, Jobs.getGCManager().BossBarTimer * 20L));
 

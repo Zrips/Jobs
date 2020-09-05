@@ -467,7 +467,7 @@ public class JobsPlayer {
 		level = jp.getLevel();
 	    else {
 		level = jp.getLevel();
-		level = (int) ((level - (level * (Jobs.getGCManager().levelLossPercentageFromMax / 100.0))));
+		level = (int) (level - (level * (Jobs.getGCManager().levelLossPercentageFromMax / 100.0)));
 		if (level < 1)
 		    level = 1;
 	    }
@@ -1003,7 +1003,7 @@ public class JobsPlayer {
 	HashMap<String, QuestProgression> g = new HashMap<>();
 
 	if (qProgression.get(job.getName()) != null)
-	    g = new HashMap<String, QuestProgression>(qProgression.get(job.getName()));
+	    g = new HashMap<>(qProgression.get(job.getName()));
 
 	HashMap<String, QuestProgression> tmp = new HashMap<>();
 	for (Entry<String, QuestProgression> one : (new HashMap<String, QuestProgression>(g)).entrySet()) {
@@ -1012,7 +1012,6 @@ public class JobsPlayer {
 	    if (qp.isEnded()) {
 		g.remove(one.getKey().toLowerCase());
 		skippedQuests = 0;
-		continue;
 	    }
 	}
 
@@ -1164,7 +1163,7 @@ public class JobsPlayer {
 		if (qp.isCompleted())
 		    qp.setGivenReward(true);
 
-	    } catch (Exception | Error e) {
+	    } catch (Throwable e) {
 		e.printStackTrace();
 	    }
 	}

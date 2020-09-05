@@ -240,9 +240,7 @@ public class JobProgression {
 	    return true;
 	if (this.leftOn + this.getJob().getRejoinCd() < System.currentTimeMillis())
 	    return true;
-	if (this.jPlayer != null && jPlayer.getPlayer() != null && jPlayer.getPlayer().hasPermission("jobs.rejoinbypass"))
-	    return true;
-	return false;
+	return jPlayer != null && jPlayer.getPlayer() != null && jPlayer.getPlayer().hasPermission("jobs.rejoinbypass");
     }
 
     public String getRejoinTimeMessage() {

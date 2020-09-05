@@ -122,9 +122,7 @@ public class JobsListener implements Listener {
 	}
 	long time = System.currentTimeMillis() - interactDelay.get(player.getUniqueId());
 	interactDelay.put(player.getUniqueId(), System.currentTimeMillis());
-	if (time > 100)
-	    return true;
-	return false;
+	return time > 100;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -263,12 +261,10 @@ public class JobsListener implements Listener {
 	Player player = event.getPlayer();
 	Sign sign = (Sign) block.getState();
 	String FirstLine = sign.getLine(0);
-	if (FirstLine.contains(Jobs.getLanguage().getMessage("signs.topline"))) {
-	    if (!player.hasPermission("jobs.command.signs")) {
-		event.setCancelled(true);
-		player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
-		return;
-	    }
+	if (FirstLine.contains(Jobs.getLanguage().getMessage("signs.topline")) && !player.hasPermission("jobs.command.signs")) {
+	    event.setCancelled(true);
+	    player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
+	    return;
 	}
 
 	jobsSign jSign = Jobs.getSignUtil().getSign(block.getLocation());
@@ -516,10 +512,8 @@ public class JobsListener implements Listener {
 	if (oneItem.getType() != mat)
 	    return false;
 
-	if (oneItem.getName() != null && name != null) {
-	    if (!CMIChatColor.translate(oneItem.getName()).equalsIgnoreCase(name)) {
-		return false;
-	    }
+	if (oneItem.getName() != null && name != null && !CMIChatColor.translate(oneItem.getName()).equalsIgnoreCase(name)) {
+	    return false;
 	}
 
 	for (String onelore : oneItem.getLore()) {
@@ -530,18 +524,13 @@ public class JobsListener implements Listener {
 
 	boolean foundEnc = false;
 	for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
-	    if (oneItem.getenchants().containsKey(oneE.getKey())) {
-		if (oneItem.getenchants().get(oneE.getKey()) <= oneE.getValue()) {
-		    foundEnc = true;
-		    break;
-		}
+	    if (oneItem.getenchants().containsKey(oneE.getKey()) && oneItem.getenchants().get(oneE.getKey()) <= oneE.getValue()) {
+		foundEnc = true;
+		break;
 	    }
 	}
 
-	if (!foundEnc)
-	    return false;
-
-	return true;
+	return foundEnc;
     }
 
     @EventHandler

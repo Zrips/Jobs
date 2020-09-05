@@ -24,8 +24,7 @@ public class QuestProgression {
     }
 
     public Quest getQuest() {
-	Quest q = quest == null ? null : (quest.getJob() == null ? null : quest.getJob().getQuest(quest.getConfigName()));
-	return q;
+	return (quest == null || quest.getJob() == null) ? null : quest.getJob().getQuest(quest.getConfigName());
     }
 
     public void setQuest(Quest quest) {

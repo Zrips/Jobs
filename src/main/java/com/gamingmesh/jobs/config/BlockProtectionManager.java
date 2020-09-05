@@ -151,8 +151,7 @@ public class BlockProtectionManager {
 	if (chunk == null)
 	    return null;
 	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
-	BlockProtection Bp = chunk.get(v);
-	return Bp;
+	return chunk.get(v);
     }
 
     private static String locToChunk(Location loc) {
@@ -164,8 +163,7 @@ public class BlockProtectionManager {
     private static String locToRegion(Location loc) {
 	int x = (int) Math.floor(loc.getBlockX() / 16);
 	int z = (int) Math.floor(loc.getBlockZ() / 16);
-	String reg = (int) Math.floor(x / 32) + ":" + (int) Math.floor(z / 32);
-	return reg;
+	return (int) Math.floor(x / 32) + ":" + (int) Math.floor(z / 32);
     }
 
     public Integer getBlockDelayTime(Block block) {

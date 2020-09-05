@@ -80,7 +80,7 @@ public class Language {
 	    try {
 
 		List<String> ls = null;
-		if (customlocale.isList(key))
+		if (customlocale != null && customlocale.isList(key))
 		    ls = ColorsArray(customlocale.getStringList(key), true);
 		else if (enlocale.isList(key))
 		    ls = !enlocale.getStringList(key).isEmpty() ? ColorsArray(enlocale.getStringList(key), true) : Arrays.asList(missing);

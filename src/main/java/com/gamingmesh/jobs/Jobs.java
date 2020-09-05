@@ -64,71 +64,71 @@ import java.util.logging.Logger;
 
 public class Jobs extends JavaPlugin {
 
-    private static PlayerManager pManager = null;
-    private static JobsCommands cManager = null;
-    private static Language lManager = null;
-    private static LanguageManager lmManager = null;
-    private static SignUtil signManager = null;
-    private CMIScoreboardManager CMIScoreboardManager = null;
-    private static ScheduleManager scheduleManager = null;
-    private static NameTranslatorManager NameTranslatorManager = null;
-    private static GuiManager GUIManager = null;
-    private static ExploreManager exploreManager = null;
-    private static TitleManager titleManager = null;
-    private static RestrictedBlockManager RBManager = null;
-    private static RestrictedAreaManager RAManager = null;
-    private static BossBarManager BBManager = null;
-    private static ShopManager shopManager = null;
-    private static Loging loging = null;
-    private static BlockProtectionManager BpManager = null;
-    private static JobsManager DBManager = null;
+    private static PlayerManager pManager;
+    private static JobsCommands cManager;
+    private static Language lManager;
+    private static LanguageManager lmManager;
+    private static SignUtil signManager;
+    private CMIScoreboardManager cmiScoreboardManager;
+    private static ScheduleManager scheduleManager;
+    private static NameTranslatorManager nameTranslatorManager;
+    private static GuiManager guiManager;
+    private static ExploreManager exploreManager;
+    private static TitleManager titleManager;
+    private static RestrictedBlockManager rbManager;
+    private static RestrictedAreaManager raManager;
+    private static BossBarManager bbManager;
+    private static ShopManager shopManager;
+    private static Loging loging;
+    private static BlockProtectionManager bpManager;
+    private static JobsManager dbManager;
 
-    private static PistonProtectionListener PistonProtectionListener = null;
+    private static PistonProtectionListener pistonProtectionListener;
 
-    private static ConfigManager configManager = null;
-    private static GeneralConfigManager GconfigManager = null;
+    private static ConfigManager configManager;
+    private static GeneralConfigManager gConfigManager;
 
-    private static CMIReflections reflections = null;
+    private static CMIReflections reflections;
 
-    private static JobsDAO dao = null;
-    private static List<Job> jobs = null;
-    private static Job noneJob = null;
+    private static JobsDAO dao;
+    private static List<Job> jobs;
+    private static Job noneJob;
     private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<>();
     private static HashMap<Integer, Job> jobsIds = new HashMap<>();
 //	public static WeakHashMap<String, Double> GlobalBoost = new WeakHashMap<String, Double>();
 
-    private static BufferedEconomy economy = null;
-    private static PermissionHandler permissionHandler = null;
-    private static PermissionManager permissionManager = null;
+    private static BufferedEconomy economy;
+    private static PermissionHandler permissionHandler;
+    private static PermissionManager permissionManager;
 
 //    private static ItemManager itemManager;
 
-    public static BufferedPaymentThread paymentThread = null;
-    private static DatabaseSaveThread saveTask = null;
+    public static BufferedPaymentThread paymentThread;
+    private static DatabaseSaveThread saveTask;
 
-    public static HashMap<UUID, FastPayment> FastPayment = new HashMap<>();
+    public static final HashMap<UUID, FastPayment> FASTPAYMENT = new HashMap<>();
 
-    private static NMS nms = null;
+    private static NMS nms;
 
-    protected static VersionChecker versionCheckManager = null;
+    protected static VersionChecker versionCheckManager;
 
-    protected static SelectionManager smanager = null;
+    protected static SelectionManager smanager;
 
-    private static PointsData pointsDatabase = null;
+    private static PointsData pointsDatabase;
 
     public static PistonProtectionListener getPistonProtectionListener() {
-	if (PistonProtectionListener == null)
-	    PistonProtectionListener = new PistonProtectionListener();
-	return PistonProtectionListener;
+	if (pistonProtectionListener == null)
+	    pistonProtectionListener = new PistonProtectionListener();
+	return pistonProtectionListener;
     }
 
-    private Placeholder Placeholder;
-    private boolean PlaceholderAPIEnabled = false;
+    private Placeholder placeholder;
+    private boolean placeholderAPIEnabled = false;
 
     public Placeholder getPlaceholderAPIManager() {
-	if (Placeholder == null)
-	    Placeholder = new Placeholder(this);
-	return Placeholder;
+	if (placeholder == null)
+	    placeholder = new Placeholder(this);
+	return placeholder;
     }
 
     private boolean setupPlaceHolderAPI() {
@@ -152,9 +152,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public static BlockProtectionManager getBpManager() {
-	if (BpManager == null)
-	    BpManager = new BlockProtectionManager();
-	return BpManager;
+	if (bpManager == null)
+	    bpManager = new BlockProtectionManager();
+	return bpManager;
     }
 
     public static CMIReflections getReflections() {
@@ -164,9 +164,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public static JobsManager getDBManager() {
-	if (DBManager == null)
-	    DBManager = new JobsManager(instance);
-	return DBManager;
+	if (dbManager == null)
+	    dbManager = new JobsManager(instance);
+	return dbManager;
     }
 
     /**
@@ -196,9 +196,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public static GeneralConfigManager getGCManager() {
-	if (GconfigManager == null)
-	    GconfigManager = new GeneralConfigManager();
-	return GconfigManager;
+	if (gConfigManager == null)
+	    gConfigManager = new GeneralConfigManager();
+	return gConfigManager;
     }
 
     public static NMS getNms() {
@@ -216,19 +216,19 @@ public class Jobs extends JavaPlugin {
     }
 
     public static RestrictedBlockManager getRestrictedBlockManager() {
-	if (RBManager == null) {
-	    RBManager = new RestrictedBlockManager();
+	if (rbManager == null) {
+	    rbManager = new RestrictedBlockManager();
 	}
 
-	return RBManager;
+	return rbManager;
     }
 
     public static RestrictedAreaManager getRestrictedAreaManager() {
-	if (RAManager == null) {
-	    RAManager = new RestrictedAreaManager();
+	if (raManager == null) {
+	    raManager = new RestrictedAreaManager();
 	}
 
-	return RAManager;
+	return raManager;
     }
 
     public static TitleManager gettitleManager() {
@@ -240,11 +240,11 @@ public class Jobs extends JavaPlugin {
     }
 
     private void setBBManager() {
-	BBManager = new BossBarManager(this);
+	bbManager = new BossBarManager(this);
     }
 
     public static BossBarManager getBBManager() {
-	return BBManager;
+	return bbManager;
     }
 
     /**
@@ -260,17 +260,17 @@ public class Jobs extends JavaPlugin {
     }
 
     public static NameTranslatorManager getNameTranslatorManager() {
-	if (NameTranslatorManager == null) {
-	    NameTranslatorManager = new NameTranslatorManager();
+	if (nameTranslatorManager == null) {
+	    nameTranslatorManager = new NameTranslatorManager();
 	}
 
-	return NameTranslatorManager;
+	return nameTranslatorManager;
     }
 
     public static GuiManager getGUIManager() {
-	if (GUIManager == null)
-	    GUIManager = new GuiManager();
-	return GUIManager;
+	if (guiManager == null)
+	    guiManager = new GuiManager();
+	return guiManager;
     }
 
     public static JobsCommands getCommandManager() {
@@ -291,10 +291,10 @@ public class Jobs extends JavaPlugin {
      * @return the scoreboard manager
      */
     public CMIScoreboardManager getCMIScoreboardManager() {
-	if (CMIScoreboardManager == null)
-	    CMIScoreboardManager = new CMIScoreboardManager();
+	if (cmiScoreboardManager == null)
+		cmiScoreboardManager = new CMIScoreboardManager();
 
-	return CMIScoreboardManager;
+	return cmiScoreboardManager;
     }
 
     protected static Jobs instance;
@@ -414,7 +414,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public boolean isPlaceholderAPIEnabled() {
-	return PlaceholderAPIEnabled;
+	return placeholderAPIEnabled;
     }
 
     public static HashMap<Integer, Job> getJobsIds() {
@@ -453,10 +453,8 @@ public class Jobs extends JavaPlugin {
 		playersLogs.get(id),
 		playersArchives.get(id),
 		playersLimits.get(id));
-	    if (jPlayer == null)
-		continue;
-
-	    getPlayerManager().addPlayerToCache(jPlayer);
+	    if (jPlayer != null)
+		getPlayerManager().addPlayerToCache(jPlayer);
 	}
 
 	if (!getPlayerManager().getPlayersCache().isEmpty())
@@ -639,7 +637,7 @@ public class Jobs extends JavaPlugin {
 	    return;
 	}
 
-	PlaceholderAPIEnabled = setupPlaceHolderAPI();
+	placeholderAPIEnabled = setupPlaceHolderAPI();
 
 	try {
 	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
@@ -864,24 +862,24 @@ public class Jobs extends JavaPlugin {
 
 	    Boost boost = getPlayerManager().getFinalBonus(jPlayer, noneJob);
 
-	    JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income,
+	    JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, income,
 		pointAmount, block, ent, victim, info);
-	    Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
+	    Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
 	    // If event is canceled, don't do anything
-	    if (JobsPrePaymentEvent.isCancelled()) {
+	    if (jobsPrePaymentEvent.isCancelled()) {
 		income = 0D;
 		pointAmount = 0D;
 	    } else {
-		income = JobsPrePaymentEvent.getAmount();
-		pointAmount = JobsPrePaymentEvent.getPoints();
+		income = jobsPrePaymentEvent.getAmount();
+		pointAmount = jobsPrePaymentEvent.getPoints();
 	    }
 
 	    // Calculate income
 
 	    if (income != 0D) {
 		income = boost.getFinalAmount(CurrencyType.MONEY, income);
-		if (GconfigManager.useMinimumOveralPayment && income > 0) {
-		    double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
+		if (gConfigManager.useMinimumOveralPayment && income > 0) {
+		    double maxLimit = income * gConfigManager.MinimumOveralPaymentLimit;
 		    if (income < maxLimit)
 			income = maxLimit;
 		}
@@ -891,27 +889,27 @@ public class Jobs extends JavaPlugin {
 
 	    if (pointAmount != 0D) {
 		pointAmount = boost.getFinalAmount(CurrencyType.POINTS, pointAmount);
-		if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
-		    double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
+		if (gConfigManager.useMinimumOveralPoints && pointAmount > 0) {
+		    double maxLimit = pointAmount * gConfigManager.MinimumOveralPaymentLimit;
 		    if (pointAmount < maxLimit)
 			pointAmount = maxLimit;
 		}
 	    }
 	    if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
-		if (GconfigManager.useMaxPaymentCurve) {
+		if (gConfigManager.useMaxPaymentCurve) {
 		    double percentOver = jPlayer.percentOverLimit(CurrencyType.MONEY);
-		    float factor = GconfigManager.maxPaymentCurveFactor;
+		    float factor = gConfigManager.maxPaymentCurveFactor;
 		    double percentLoss = 100 / ((1 / factor * percentOver * percentOver) + 1);
 		    income = income - (income * percentLoss / 100);
 		} else
 		    income = 0D;
-		if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
+		if (gConfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
 		    pointAmount = 0D;
 	    }
 
 	    if (!jPlayer.isUnderLimit(CurrencyType.POINTS, pointAmount)) {
 		pointAmount = 0D;
-		if (GconfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.MONEY))
+		if (gConfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.MONEY))
 		    income = 0D;
 	    }
 
@@ -932,14 +930,14 @@ public class Jobs extends JavaPlugin {
 
 	    economy.pay(jPlayer, payments);
 
-	    if (GconfigManager.LoggingUse) {
+	    if (gConfigManager.LoggingUse) {
 		HashMap<CurrencyType, Double> amounts = new HashMap<>();
 		amounts.put(CurrencyType.MONEY, income);
 		getLoging().recordToLog(jPlayer, info, amounts);
 	    }
 
 	} else {
-	    FastPayment.clear();
+	    FASTPAYMENT.clear();
 
 	    List<Job> expiredJobs = new ArrayList<>();
 	    for (JobProgression prog : progression) {
@@ -957,10 +955,7 @@ public class Jobs extends JavaPlugin {
 
 		checkDailyQuests(jPlayer, prog.getJob(), info);
 
-		if (jobinfo == null)
-		    continue;
-
-		if (GconfigManager.disablePaymentIfMaxLevelReached && prog.getLevel() >= prog.getJob().getMaxLevel()) {
+		if (jobinfo == null || gConfigManager.disablePaymentIfMaxLevelReached && prog.getLevel() >= prog.getJob().getMaxLevel()) {
 		    continue;
 		}
 
@@ -971,7 +966,7 @@ public class Jobs extends JavaPlugin {
 		if (income == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
 
-		if (GconfigManager.addXpPlayer()) {
+		if (gConfigManager.addXpPlayer()) {
 		    Player player = jPlayer.getPlayer();
 		    if (player != null) {
 			/*
@@ -1000,24 +995,24 @@ public class Jobs extends JavaPlugin {
 
 		Boost boost = getPlayerManager().getFinalBonus(jPlayer, prog.getJob(), ent, victim);
 
-		JobsPrePaymentEvent JobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), income,
+		JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), prog.getJob(), income,
 		    pointAmount, block, ent, victim, info);
 
-		Bukkit.getServer().getPluginManager().callEvent(JobsPrePaymentEvent);
+		Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
 		// If event is canceled, don't do anything
-		if (JobsPrePaymentEvent.isCancelled()) {
+		if (jobsPrePaymentEvent.isCancelled()) {
 		    income = 0D;
 		    pointAmount = 0D;
 		} else {
-		    income = JobsPrePaymentEvent.getAmount();
-		    pointAmount = JobsPrePaymentEvent.getPoints();
+		    income = jobsPrePaymentEvent.getAmount();
+		    pointAmount = jobsPrePaymentEvent.getPoints();
 		}
 
 		// Calculate income
 		if (income != 0D) {
 		    income = boost.getFinalAmount(CurrencyType.MONEY, income);
-		    if (GconfigManager.useMinimumOveralPayment && income > 0) {
-			double maxLimit = income * GconfigManager.MinimumOveralPaymentLimit;
+		    if (gConfigManager.useMinimumOveralPayment && income > 0) {
+			double maxLimit = income * gConfigManager.MinimumOveralPaymentLimit;
 			if (income < maxLimit)
 			    income = maxLimit;
 		    }
@@ -1026,8 +1021,8 @@ public class Jobs extends JavaPlugin {
 		// Calculate points
 		if (pointAmount != 0D) {
 		    pointAmount = boost.getFinalAmount(CurrencyType.POINTS, pointAmount);
-		    if (GconfigManager.useMinimumOveralPoints && pointAmount > 0) {
-			double maxLimit = pointAmount * GconfigManager.MinimumOveralPaymentLimit;
+		    if (gConfigManager.useMinimumOveralPoints && pointAmount > 0) {
+			double maxLimit = pointAmount * gConfigManager.MinimumOveralPaymentLimit;
 			if (pointAmount < maxLimit)
 			    pointAmount = maxLimit;
 		    }
@@ -1036,33 +1031,33 @@ public class Jobs extends JavaPlugin {
 		// Calculate exp
 		expAmount = boost.getFinalAmount(CurrencyType.EXP, expAmount);
 
-		if (GconfigManager.useMinimumOveralPayment && expAmount > 0) {
-		    double maxLimit = expAmount * GconfigManager.MinimumOveralPaymentLimit;
+		if (gConfigManager.useMinimumOveralPayment && expAmount > 0) {
+		    double maxLimit = expAmount * gConfigManager.MinimumOveralPaymentLimit;
 		    if (expAmount < maxLimit)
 			expAmount = maxLimit;
 		}
 
 		if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
 		    income = 0D;
-		    if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.EXP))
+		    if (gConfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.EXP))
 			expAmount = 0D;
-		    if (GconfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
+		    if (gConfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
 			pointAmount = 0D;
 		}
 
 		if (!jPlayer.isUnderLimit(CurrencyType.EXP, expAmount)) {
 		    expAmount = 0D;
-		    if (GconfigManager.getLimit(CurrencyType.EXP).getStopWith().contains(CurrencyType.MONEY))
+		    if (gConfigManager.getLimit(CurrencyType.EXP).getStopWith().contains(CurrencyType.MONEY))
 			income = 0D;
-		    if (GconfigManager.getLimit(CurrencyType.EXP).getStopWith().contains(CurrencyType.POINTS))
+		    if (gConfigManager.getLimit(CurrencyType.EXP).getStopWith().contains(CurrencyType.POINTS))
 			pointAmount = 0D;
 		}
 
 		if (!jPlayer.isUnderLimit(CurrencyType.POINTS, pointAmount)) {
 		    pointAmount = 0D;
-		    if (GconfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.MONEY))
+		    if (gConfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.MONEY))
 			income = 0D;
-		    if (GconfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.EXP))
+		    if (gConfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.EXP))
 			expAmount = 0D;
 		}
 
@@ -1070,19 +1065,16 @@ public class Jobs extends JavaPlugin {
 		    continue;
 
 		// JobsPayment event
-		JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount,
+		JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount,
 			block, ent, victim, info);
-		Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
+		Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
 		// If event is canceled, don't do anything
-		if (JobsExpGainEvent.isCancelled())
-		    expAmount = 0D;
-		else
-		    expAmount = JobsExpGainEvent.getExp();
+		expAmount = jobsExpGainEvent.isCancelled() ? 0D : jobsExpGainEvent.getExp();
 
 		try {
-		    if (expAmount != 0D && GconfigManager.BossBarEnabled)
-			if (GconfigManager.BossBarShowOnEachAction)
-			    BBManager.ShowJobProgression(jPlayer, prog, expAmount);
+		    if (expAmount != 0D && gConfigManager.BossBarEnabled)
+			if (gConfigManager.BossBarShowOnEachAction)
+			    bbManager.ShowJobProgression(jPlayer, prog, expAmount);
 			else
 			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Throwable e) {
@@ -1098,13 +1090,13 @@ public class Jobs extends JavaPlugin {
 		if (expAmount != 0D)
 		    payments.put(CurrencyType.EXP, expAmount);
 
-		FastPayment.put(jPlayer.getUniqueId(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), payments), prog
+		FASTPAYMENT.put(jPlayer.getUniqueId(), new FastPayment(jPlayer, info, new BufferedPayment(jPlayer.getPlayer(), payments), prog
 		    .getJob()));
 
 		economy.pay(jPlayer, payments);
 		int oldLevel = prog.getLevel();
 
-		if (GconfigManager.LoggingUse) {
+		if (gConfigManager.LoggingUse) {
 		    HashMap<CurrencyType, Double> amounts = new HashMap<>();
 		    amounts.put(CurrencyType.MONEY, income);
 		    amounts.put(CurrencyType.EXP, expAmount);
@@ -1128,7 +1120,7 @@ public class Jobs extends JavaPlugin {
     }
 
     private static boolean isBpOk(JobsPlayer player, ActionInfo info, Block block, boolean inform) {
-	if (block == null || !GconfigManager.useBlockProtection)
+	if (block == null || !gConfigManager.useBlockProtection)
 	    return true;
 
 	if (info.getType() == ActionType.BREAK) {
@@ -1163,12 +1155,12 @@ public class Jobs extends JavaPlugin {
 
 		getBpManager().add(block, cd);
 
-		if ((cd == null || cd == 0) && GconfigManager.useGlobalTimer) {
-		    getBpManager().add(block, GconfigManager.globalblocktimer);
+		if ((cd == null || cd == 0) && gConfigManager.useGlobalTimer) {
+		    getBpManager().add(block, gConfigManager.globalblocktimer);
 		}
 
-	    } else if (GconfigManager.useGlobalTimer) {
-		getBpManager().add(block, GconfigManager.globalblocktimer);
+	    } else if (gConfigManager.useGlobalTimer) {
+		getBpManager().add(block, gConfigManager.globalblocktimer);
 	    }
 	} else if (info.getType() == ActionType.PLACE) {
 	    BlockProtection bp = getBpManager().getBp(block.getLocation());
@@ -1246,10 +1238,10 @@ public class Jobs extends JavaPlugin {
 
     public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
 	// JobsPayment event
-	JobsExpGainEvent JobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, payment.get(CurrencyType.EXP));
-	Bukkit.getServer().getPluginManager().callEvent(JobsExpGainEvent);
+	JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, payment.get(CurrencyType.EXP));
+	Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
 	// If event is canceled, don't do anything
-	if (JobsExpGainEvent.isCancelled())
+	if (jobsExpGainEvent.isCancelled())
 	    return;
 
 	for (CurrencyType one : CurrencyType.values()) {
@@ -1263,7 +1255,7 @@ public class Jobs extends JavaPlugin {
 
 	int oldLevel = prog.getLevel();
 
-	if (GconfigManager.LoggingUse) {
+	if (gConfigManager.LoggingUse) {
 	    getLoging().recordToLog(jPlayer, info, payment.getPayment());
 	}
 

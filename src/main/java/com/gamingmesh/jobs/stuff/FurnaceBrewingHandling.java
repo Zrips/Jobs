@@ -333,9 +333,6 @@ public class FurnaceBrewingHandling {
 
 	for (blockLoc one : ls) {
 	    Block block = one.getBlock();
-	    if (block == null)
-		continue;
-
 	    CMIMaterial cmat = CMIMaterial.get(block);
 	    if (cmat != CMIMaterial.FURNACE && cmat != CMIMaterial.LEGACY_BURNING_FURNACE && cmat != CMIMaterial.SMOKER && cmat != CMIMaterial.BLAST_FURNACE)
 		continue;
@@ -353,9 +350,6 @@ public class FurnaceBrewingHandling {
 
 	for (blockLoc one : ls) {
 	    Block block = one.getBlock();
-	    if (block == null)
-		continue;
-
 	    if (CMIMaterial.get(block) == CMIMaterial.BREWING_STAND)
 		block.removeMetadata(JobsPaymentListener.brewingOwnerMetadata, Jobs.getInstance());
 	}

@@ -50,7 +50,7 @@ public class ExploreChunk {
     }
 
     public boolean isAlreadyVisited(int playerId) {
-	return isFullyExplored() ? true : playerIds.contains(playerId);
+	return isFullyExplored() || playerIds.contains(playerId);
     }
 
     public int getCount() {
@@ -100,7 +100,7 @@ public class ExploreChunk {
 		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(id);
 		if (info != null)
 		    playerIds.add(id);
-	    } catch (Exception | Error e) {
+	    } catch (Throwable e) {
 		updated = true;
 		JobsPlayer jp = Jobs.getPlayerManager().getJobsPlayer(one);
 		if (jp != null)

@@ -256,17 +256,11 @@ public class GeneralConfigManager {
     }
 
     public boolean canPerformActionInWorld(Entity ent) {
-	if (ent == null || ent.getWorld() == null)
-	    return true;
-
-	return canPerformActionInWorld(ent.getWorld());
+	return ent == null || canPerformActionInWorld(ent.getWorld());
     }
 
     public boolean canPerformActionInWorld(Player player) {
-	if (player == null)
-	    return true;
-
-	return canPerformActionInWorld(player.getWorld());
+	return player == null || canPerformActionInWorld(player.getWorld());
     }
 
     public boolean canPerformActionInWorld(World world) {
@@ -278,15 +272,7 @@ public class GeneralConfigManager {
 	    return true;
 
 	if (UseAsWhiteListWorldList) {
-	    if (DisabledWorldsList.isEmpty()) {
-		return false;
-	    }
-
-	    if (DisabledWorldsList.contains(world)) {
-		return true;
-	    }
-
-	    return false;
+	    return DisabledWorldsList.isEmpty() && DisabledWorldsList.contains(world);
 	}
 
 	if (DisabledWorldsList.isEmpty())

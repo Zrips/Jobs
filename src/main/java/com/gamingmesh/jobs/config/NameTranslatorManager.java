@@ -309,10 +309,8 @@ public class NameTranslatorManager {
 		    name = c.getC().getString("ItemList." + one.toString());
 		}
 
-		if (name == null) {
-		    if (c.getC().isConfigurationSection("ItemList." + n)) {
-			name = c.getC().getString("ItemList." + n + ".Name");
-		    }
+		if (name == null && c.getC().isConfigurationSection("ItemList." + n)) {
+		    name = c.getC().getString("ItemList." + n + ".Name");
 		}
 
 		if (name == null) {
@@ -394,7 +392,7 @@ public class NameTranslatorManager {
 		if (one == null || CMIEnchantment.getName(one) == null)
 		    continue;
 
-		String name = Util.firstToUpperCase(CMIEnchantment.getName(one).toString()).replace("_", " ");
+		String name = Util.firstToUpperCase(CMIEnchantment.getName(one)).replace("_", " ");
 		if (c.getC().isConfigurationSection("EnchantList"))
 		    for (String onek : c.getC().getConfigurationSection("EnchantList").getKeys(false)) {
 			String old = c.getC().getString("EnchantList." + onek + ".MCName");

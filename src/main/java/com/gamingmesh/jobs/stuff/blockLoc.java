@@ -92,7 +92,6 @@ public class blockLoc {
 
 	this.w = w;
 
-	Location loc = new Location(w, x, y, z);
-	return loc;
+	return new Location(w, x, y, z);
     }
 }

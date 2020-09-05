@@ -28,19 +28,22 @@ public class JobsManager {
     public void switchDataBase() {
 	if (dao != null)
 	    dao.closeConnections();
+
 	// Picking opposite database then it is currently
 	switch (DbType) {
 	case MySQL:
 	    // If it MySQL lets change to SqLite
 	    DbType = DataBaseType.SqLite;
 	    dao = startSqlite();
-	    dao.setDbType(DbType);
+	    if (dao != null)
+		dao.setDbType(DbType);
 	    break;
 	case SqLite:
 	    // If it SqLite lets change to MySQL
 	    DbType = DataBaseType.MySQL;
 	    dao = startMysql();
-	    dao.setDbType(DbType);
+	    if (dao != null)
+		dao.setDbType(DbType);
 	    break;
 	default:
 	    break;

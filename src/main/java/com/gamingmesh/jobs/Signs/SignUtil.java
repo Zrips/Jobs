@@ -58,7 +58,7 @@ public class SignUtil {
 
 	HashMap<String, jobsSign> old = SignsByType.get(jSign.getIdentifier().toLowerCase());
 	if (old == null) {
-	    old = new HashMap<String, jobsSign>();
+	    old = new HashMap<>();
 	    SignsByType.put(jSign.getIdentifier().toLowerCase(), old);
 	}
 
@@ -109,7 +109,7 @@ public class SignUtil {
 
 	    HashMap<String, jobsSign> old = SignsByType.get(newTemp.getIdentifier().toLowerCase());
 	    if (old == null) {
-		old = new HashMap<String, jobsSign>();
+		old = new HashMap<>();
 		SignsByType.put(newTemp.getIdentifier().toLowerCase(), old);
 	    }
 	    String loc = newTemp.locToBlockString();
@@ -344,20 +344,17 @@ public class SignUtil {
 	loc.add(0, 1, 0);
 
 	Block block = loc.getBlock();
-	if (directionFacing != null && (block == null || !(block.getState() instanceof Skull)))
+	if (directionFacing != null && !(block.getState() instanceof Skull))
 	    loc.add(directionFacing.getOppositeFace().getModX(), 0, directionFacing.getOppositeFace().getModZ());
 
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
 	    @Override
 	    public void run() {
 		Block b = loc.getBlock();
-		if (b == null || !(b.getState() instanceof Skull))
+		if (!(b.getState() instanceof Skull))
 		    return;
 
 		Skull skull = (Skull) b.getState();
-		if (skull == null)
-		    return;
-
 		if (skull.getOwner() != null && skull.getOwner().equalsIgnoreCase(Playername))
 		    return;
 

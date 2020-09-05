@@ -37,7 +37,7 @@ public class PageInfo {
     }
 
     public boolean isInRange(int place) {
-	return place >= start && place <= end ? true : false;
+	return place >= start && place <= end;
     }
 
     public boolean isEntryOk() {

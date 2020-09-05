@@ -39,10 +39,10 @@ public class leave implements Cmd {
 	if (Jobs.getGCManager().EnableConfirmation) {
 	    java.util.UUID uuid = pSender.getUniqueId();
 
-	    if (!Util.leaveConfirm.contains(uuid)) {
-		Util.leaveConfirm.add(uuid);
+	    if (!Util.LEAVECONFIRM.contains(uuid)) {
+		Util.LEAVECONFIRM.add(uuid);
 
-		plugin.getServer().getScheduler().runTaskLater(plugin, () -> Util.leaveConfirm.remove(uuid),
+		plugin.getServer().getScheduler().runTaskLater(plugin, () -> Util.LEAVECONFIRM.remove(uuid),
 		    20 * Jobs.getGCManager().ConfirmExpiryTime);
 
 		pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.confirmationNeed", "[jobname]",
@@ -50,7 +50,7 @@ public class leave implements Cmd {
 		return true;
 	    }
 
-	    Util.leaveConfirm.remove(uuid);
+	    Util.LEAVECONFIRM.remove(uuid);
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);

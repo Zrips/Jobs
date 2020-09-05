@@ -35,7 +35,7 @@ public class Util {
 
     private static HashMap<String, JobsWorld> jobsWorlds = new HashMap<>();
 
-    public static List<UUID> leaveConfirm = new ArrayList<>();
+    public static final List<UUID> LEAVECONFIRM = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
     public static ItemStack getSkull(String skullOwner) {

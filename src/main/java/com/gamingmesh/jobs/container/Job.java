@@ -562,9 +562,6 @@ public class Job {
 	if (block != null && worldBlacklist.contains(block.getWorld().getName()))
 	    return true;
 
-	if (ent != null && worldBlacklist.contains(ent.getWorld().getName()))
-	    return true;
-
-	return false;
+	return ent != null && worldBlacklist.contains(ent.getWorld().getName());
     }
 }

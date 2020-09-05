@@ -942,8 +942,6 @@ public abstract class JobsDAO {
 	    if (Util.getJobsWorld(one.getName()) == null)
 		recordNewWorld(one.getName());
 	}
-
-	return;
     }
 
     public void triggerTableIdUpdate() {
@@ -2592,11 +2590,10 @@ public abstract class JobsDAO {
 	try {
 	    prest = conn.prepareStatement("VACUUM;");
 	    prest.execute();
-	} catch (Exception | Error e) {
+	} catch (Throwable e) {
 	} finally {
 	    close(prest);
 	}
-	return;
     }
 
     /**

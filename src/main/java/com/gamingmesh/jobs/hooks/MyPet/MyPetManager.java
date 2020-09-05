@@ -20,25 +20,20 @@ public class MyPetManager {
     }
 
     public boolean isMyPet(Object ent) {
-	if (!enabled || ent == null)
-	    return false;
-	if (!(ent instanceof MyPetBukkitEntity))
+	if (!enabled || !(ent instanceof MyPetBukkitEntity))
 	    return false;
 
 	return true;
     }
 
     public UUID getOwnerOfPet(Object ent) {
-	if (!enabled || ent == null)
-	    return null;
-	if (!(ent instanceof MyPetBukkitEntity))
+	if (!enabled || !(ent instanceof MyPetBukkitEntity))
 	    return null;
 
 	MyPet myPet = ((MyPetBukkitEntity) ent).getMyPet();
 
 	try {
-	    UUID uuid = myPet.getOwner().getPlayer().getUniqueId();
-	    return uuid;
+	    return myPet.getOwner().getPlayer().getUniqueId();
 	} catch (Exception e) {
 	    return null;
 	}

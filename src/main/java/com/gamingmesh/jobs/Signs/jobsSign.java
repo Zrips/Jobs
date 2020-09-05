@@ -28,8 +28,8 @@ public class jobsSign {
 	return special;
     }
 
-    public void setJobName(String JobName) {
-	this.jobName = JobName;
+    public void setJobName(String jobName) {
+	this.jobName = jobName;
     }
 
     public String getJobName() {
@@ -48,8 +48,8 @@ public class jobsSign {
 	this.z = z;
     }
 
-    public void setWorldName(String World) {
-	this.worldName = World;
+    public void setWorldName(String worldName) {
+	this.worldName = worldName;
     }
 
     public String getWorldName() {
@@ -68,8 +68,8 @@ public class jobsSign {
 	return loc;
     }
 
-    public void setNumber(int Number) {
-	this.number = Number;
+    public void setNumber(int number) {
+	this.number = number;
     }
 
     public int getNumber() {

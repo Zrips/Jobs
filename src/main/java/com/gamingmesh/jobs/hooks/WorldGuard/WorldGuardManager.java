@@ -27,11 +27,9 @@ public class WorldGuardManager {
 
     public WorldGuardManager() {
 	Plugin pl = Bukkit.getPluginManager().getPlugin("WorldGuard");
-	if (pl != null && (pl instanceof WorldGuardPlugin)) {
-	    if (pl.getDescription().getVersion().equals("6.1")) {
-		wg = (WorldGuardPlugin) pl;
-		useOld = true;
-	    }
+	if (pl instanceof WorldGuardPlugin && pl.getDescription().getVersion().equals("6.1")) {
+	    wg = (WorldGuardPlugin) pl;
+	    useOld = true;
 	}
     }
 
@@ -56,16 +54,14 @@ public class WorldGuardManager {
 	} catch (Throwable e) {
 	}
 
-	return new ArrayList<RestrictedArea>();
+	return new ArrayList<>();
     }
 
     public boolean inArea(Location loc, String name) {
 	if (useOld) {
 	    ApplicableRegionSet regions = wg.getRegionContainer().get(loc.getWorld()).getApplicableRegions(loc);
 	    for (ProtectedRegion one : regions.getRegions()) {
-		if (!one.getId().equalsIgnoreCase(name))
-		    continue;
-		if (!one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
+		if (!one.getId().equalsIgnoreCase(name) || !one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
 		    continue;
 		return true;
 	    }
@@ -73,9 +69,7 @@ public class WorldGuardManager {
 	    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 	    RegionManager regions = container.get(BukkitAdapter.adapt(loc.getWorld()));
 	    for (ProtectedRegion one : regions.getRegions().values()) {
-		if (!one.getId().equalsIgnoreCase(name))
-		    continue;
-		if (!one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
+		if (!one.getId().equalsIgnoreCase(name) || !one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
 		    continue;
 		return true;
 	    }

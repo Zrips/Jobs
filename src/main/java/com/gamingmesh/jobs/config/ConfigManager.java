@@ -1149,7 +1149,7 @@ public class ConfigManager {
 					    quest.addObjective(objective);
 					}
 				    }
-				} catch (Exception | Error e) {
+				} catch (Throwable e) {
 				    log.warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");
 				}
 			    }

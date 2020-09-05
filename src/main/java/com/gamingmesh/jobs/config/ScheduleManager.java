@@ -57,7 +57,7 @@ public class ScheduleManager {
 
 	String currenttime = dateFormat.format(date);
 
-	int Current = Integer.valueOf(currenttime.replace(":", ""));
+	int Current = Integer.parseInt(currenttime.replace(":", ""));
 
 	String CurrentDayName = getWeekDay();
 

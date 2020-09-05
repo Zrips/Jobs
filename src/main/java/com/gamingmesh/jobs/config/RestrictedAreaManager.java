@@ -55,8 +55,7 @@ public class RestrictedAreaManager {
 	    YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 	    conf.options().indent(2);
 	    conf.options().copyDefaults(true);
-	    StringBuilder header = new StringBuilder();
-	    header = addHeader(header);
+	    addHeader(new StringBuilder());
 	    conf.set("restrictedareas." + name, null);
 	    try {
 		conf.save(f);
@@ -75,8 +74,7 @@ public class RestrictedAreaManager {
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 	conf.options().indent(2);
 	conf.options().copyDefaults(true);
-	StringBuilder header = new StringBuilder();
-	header = addHeader(header);
+	addHeader(new StringBuilder());
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
 	    String areaKey = area.getKey();
 	    CuboidArea cuboid = area.getValue().getCuboidArea();
@@ -185,13 +183,13 @@ public class RestrictedAreaManager {
 	restrictedAreas.clear();
 	File f = new File(Jobs.getFolder(), "restrictedAreas.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
+
 	conf.options().indent(2);
 	conf.options().copyDefaults(true);
-	StringBuilder header = new StringBuilder();
 
-	header = addHeader(header);
-
+	StringBuilder header = addHeader(new StringBuilder());
 	conf.options().header(header.toString());
+
 	ConfigurationSection areaSection = conf.getConfigurationSection("restrictedareas");
 	if (areaSection != null) {
 	    for (String areaKey : areaSection.getKeys(false)) {

@@ -55,22 +55,19 @@ public class TimeManage {
     }
 
     public static long toDays(Long ticks) {
-	long days = ticks / 1000 / 60 / 60 / 24;
-	return days;
+	return ticks / 1000 / 60 / 60 / 24;
     }
 
     public static long toMinutes(Long ticks) {
 	long d = toDays(ticks);
 	ticks = ticks - (d * 1000 * 60 * 60 * 24);
 	long h = toHours(ticks);
-	long minutes = (ticks - (h * 60 * 60 * 1000)) / 1000 / 60;
-	return minutes;
+	return (ticks - (h * 60 * 60 * 1000)) / 1000 / 60;
     }
 
     public static long toHours(Long ticks) {
 	long d = toDays(ticks);
-	long hours = (ticks - (d * 1000 * 60 * 60 * 24)) / 1000 / 60 / 60;
-	return hours;
+	return (ticks - (d * 1000 * 60 * 60 * 24)) / 1000 / 60 / 60;
     }
     
     public static long toSec(Long ticks) {

@@ -66,7 +66,7 @@ public class TitleManager {
 
 	ConfigurationSection titleSection = c.getC().getConfigurationSection("Titles");
 	if (titleSection == null) {
-	    titleSection = c.getC().createSection("Titles");
+	    c.getC().createSection("Titles");
 
 	    titles.add(new Title(
 		c.get("Titles.Novice.Name", "N"),

@@ -138,14 +138,14 @@ public class ItemBoostManager {
 	    }
 
 	    List<String> lore = new ArrayList<>();
-	    if (cfg.getC().contains(one + ".lore") && !cfg.getC().getStringList(one + ".lore").isEmpty()) {
+	    if (cfg.getC().isList(one + ".lore")) {
 		for (String eachLine : cfg.get(one + ".lore", Arrays.asList(""))) {
 		    lore.add(CMIChatColor.translate(eachLine));
 		}
 	    }
 
 	    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-	    if (cfg.getC().contains(one + ".enchants") && !cfg.getC().getStringList(one + ".enchants").isEmpty())
+	    if (cfg.getC().isList(one + ".enchants"))
 		for (String eachLine : cfg.get(one + ".enchants", Arrays.asList(""))) {
 		    if (!eachLine.contains("="))
 			continue;

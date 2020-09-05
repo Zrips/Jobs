@@ -89,17 +89,12 @@ public class BufferedEconomy {
      */
     @SuppressWarnings("deprecation")
     public void payAll() {
-	if (payments.isEmpty())
-	    return;
-	if (!plugin.isEnabled())
+	if (payments.isEmpty() || !plugin.isEnabled())
 	    return;
 
 	synchronized (paymentCache) {
 
-	    Double TotalAmount = 0.0;
-	    Double TotalPoints = 0.0;
-	    Double TaxesAmount = 0.0;
-	    Double TaxesPoints = 0.0;
+	    Double TotalAmount = 0.0, TotalPoints = 0.0, TaxesAmount = 0.0, TaxesPoints = 0.0;
 
 	    // combine all payments using paymentCache
 	    while (!payments.isEmpty()) {
@@ -158,11 +153,9 @@ public class BufferedEconomy {
 		    economy.depositPlayer(ServerTaxesAccount, TaxesAmount);
 		}
 
-		if (ServerTaxesAccount.isOnline()) {
-		    if (Jobs.getGCManager().ActionBarsMessageByDefault) {
-			    ActionBarManager.send(Bukkit.getPlayer(ServerAccountname),
-			    Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100) / 100.0));
-		    }
+		if (ServerTaxesAccount.isOnline() && Jobs.getGCManager().ActionBarsMessageByDefault) {
+		    ActionBarManager.send(Bukkit.getPlayer(ServerAccountname),
+		    Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100) / 100.0));
 		}
 	    }
 
@@ -190,11 +183,9 @@ public class BufferedEconomy {
 		// Do we need this?
 		payment.getPayment().putAll(JobsPaymentEvent.getPayment());
 
-		if (Jobs.getGCManager().UseServerAccount) {
-		    if (!hasMoney) {
-			ActionBarManager.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
-			continue;
-		    }
+		if (Jobs.getGCManager().UseServerAccount && !hasMoney) {
+		    ActionBarManager.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
+		    continue;
 		}
 
 		if (Jobs.getGCManager().isEconomyAsync())
@@ -232,16 +223,16 @@ public class BufferedEconomy {
 	if ((abp != null) && (show.booleanValue())) {
 	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
 	    if (payment.get(CurrencyType.MONEY) != 0D) {
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", new Object[] { "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(),
-		    new Object[] { Double.valueOf(payment.get(CurrencyType.MONEY)) }) });
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(),
+		    Double.valueOf(payment.get(CurrencyType.MONEY))));
 	    }
 	    if (payment.get(CurrencyType.POINTS) != 0D) {
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", new Object[] { "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(),
-		    new Object[] { Double.valueOf(payment.get(CurrencyType.POINTS)) }) });
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(),
+		    Double.valueOf(payment.get(CurrencyType.POINTS))));
 	    }
 	    if (payment.get(CurrencyType.EXP) != 0D) {
-		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", new Object[] { "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), new Object[] {
-		    Double.valueOf(payment.get(CurrencyType.EXP)) }) });
+		Message = Message + " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(),
+		    Double.valueOf(payment.get(CurrencyType.EXP))));
 	    }
 	    ActionBarManager.send(abp, Message);
 	}

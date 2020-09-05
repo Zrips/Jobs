@@ -303,9 +303,8 @@ public class Placeholder {
 	    return null;
 	if (message.contains("%"))
 	    message = translateOwnPlaceHolder(player, message);
-	if (plugin.isPlaceholderAPIEnabled()) {
-	    if (message.contains("%"))
-		message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((OfflinePlayer) player, message);
+	if (plugin.isPlaceholderAPIEnabled() && message.contains("%")) {
+	    message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((OfflinePlayer) player, message);
 	}
 //	For MVdWPlaceholderAPI
 //	if (plugin.isMVdWPlaceholderAPIEnabled()) {
@@ -390,7 +389,7 @@ public class Placeholder {
 	JobsPlayer user = uuid == null ? null : Jobs.getPlayerManager().getJobsPlayer(uuid);
 	// Placeholders by JobsPlayer object
 	if (user != null) {
-	    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+	    NumberFormat format;
 	    switch (placeHolder) {
 	    case user_dailyquests_pending:
 		Integer pendingQuests = (int) user.getQuestProgressions().stream().filter(q -> !q.isCompleted()).count();

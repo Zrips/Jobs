@@ -355,16 +355,14 @@ public class JobsPaymentListener implements Listener {
 
 	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 
-	FastPayment fp = Jobs.FastPayment.get(player.getUniqueId());
+	FastPayment fp = Jobs.FASTPAYMENT.get(player.getUniqueId());
 	if (fp != null) {
-	    if (fp.getTime() > System.currentTimeMillis()) {
-		if (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
-		    fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub())) {
-		    Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
-		    return;
-		}
+	    if (fp.getTime() > System.currentTimeMillis() && fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
+		fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub())) {
+		Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
+		return;
 	    }
-	    Jobs.FastPayment.remove(player.getUniqueId());
+	    Jobs.FASTPAYMENT.remove(player.getUniqueId());
 	}
 
 	if (!payForItemDurabilityLoss(player))
@@ -375,9 +373,8 @@ public class JobsPaymentListener implements Listener {
 	    // Protection for block break with silktouch
 	    if (Jobs.getGCManager().useSilkTouchProtection) {
 		for (Enchantment one : item.getEnchantments().keySet()) {
-		    if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH) {
-			if (Jobs.getBpManager().isInBp(block))
-			    return;
+		    if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH && Jobs.getBpManager().isInBp(block)) {
+			return;
 		    }
 		}
 	    }
@@ -640,24 +637,20 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	if (y == 2) {
-	    if (first == second && third == second) {
-		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
-		return;
-	    }
+	if (y == 2 && first == second && third == second) {
+	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
+	    return;
 	}
 
 	// Check Dyes
-	if (y >= 2) {
-	    if ((third != null && third.isDye() || second != null && second.isDye() || first != null && first.isDye())
+	if (y >= 2 && (third != null && third.isDye() || second != null && second.isDye() || first != null && first.isDye())
 		&& (leather || shulker)) {
-		Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
-		for (ItemStack OneDye : DyeStack) {
-		    Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
-		}
-
-		return;
+	    Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
+	    for (ItemStack OneDye : DyeStack) {
+		Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
 	    }
+
+	    return;
 	}
 
 	// If we need to pay only by each craft action we will skip calculation how much was crafted
@@ -732,8 +725,6 @@ public class JobsPaymentListener implements Listener {
 			Jobs.action(jPlayer, new ItemActionInfo(resultStack, type));
 		    }
 		}
-
-		return;
 	    }
 	}, 1);
     }
@@ -824,9 +815,8 @@ public class JobsPaymentListener implements Listener {
 	if (resultStack.hasItemMeta())
 	    NewName = resultStack.getItemMeta().getDisplayName();
 
-	if (OriginalName != NewName && inv.getItem(1) == null)
-	    if (!Jobs.getGCManager().PayForRenaming)
-		return;
+	if (OriginalName != null && !OriginalName.equals(NewName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
+	    return;
 
 	// Check for world permissions
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
@@ -1118,7 +1108,7 @@ public class JobsPaymentListener implements Listener {
 	if (damage > s)
 	    damage = s;
 
-	if (shooter != null && shooter instanceof Player) {
+	if (shooter instanceof Player) {
 	    if (ent.hasMetadata(entityDamageByPlayer) && !ent.getMetadata(entityDamageByPlayer).isEmpty())
 		damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
 
@@ -1132,7 +1122,7 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
-	if (event.getEntity().getLastDamageCause() == null || !(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
+	if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
 	    return;
 
 	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
@@ -1144,9 +1134,8 @@ public class JobsPaymentListener implements Listener {
 	LivingEntity lVictim = (LivingEntity) e.getEntity();
 
 	//extra check for Citizens 2 sentry kills
-	if (e.getDamager() instanceof Player)
-	    if (e.getDamager().hasMetadata("NPC"))
-		return;
+	if (e.getDamager() instanceof Player && e.getDamager().hasMetadata("NPC"))
+	    return;
 
 	if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
 	    && HookManager.getMythicManager().isMythicMob(lVictim)) {
@@ -1413,7 +1402,6 @@ public class JobsPaymentListener implements Listener {
 
 	if (type == EntityType.MAGMA_CUBE && Jobs.getGCManager().PreventMagmaCubeSplit) {
 	    event.setCancelled(true);
-	    return;
 	}
     }
 
@@ -1566,9 +1554,8 @@ public class JobsPaymentListener implements Listener {
 		&& block.hasMetadata(brewingOwnerMetadata))
 		FurnaceBrewingHandling.removeBrewing(block);
 
-	    if (Jobs.getGCManager().useBlockProtection)
-		if (block.getState().hasMetadata(BlockMetadata))
-		    return;
+	    if (Jobs.getGCManager().useBlockProtection && block.getState().hasMetadata(BlockMetadata))
+		return;
 
 	    BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.TNTBREAK);
 	    Jobs.action(jPlayer, bInfo, block);
@@ -1606,14 +1593,13 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY
-	    && event.getAction() == Action.RIGHT_CLICK_BLOCK && !p.isSneaking()) {
-	    if (jPlayer != null && (cmat == CMIMaterial.BEEHIVE || cmat == CMIMaterial.BEE_NEST)) {
+	    && event.getAction() == Action.RIGHT_CLICK_BLOCK && !p.isSneaking() && jPlayer != null
+	    && (cmat == CMIMaterial.BEEHIVE || cmat == CMIMaterial.BEE_NEST)) {
 		org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
 		if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand == CMIMaterial.SHEARS.getMaterial()
 		    || hand == CMIMaterial.GLASS_BOTTLE.getMaterial())) {
 		    Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
 		}
-	    }
 	}
 
 	if (cmat == CMIMaterial.FURNACE || cmat == CMIMaterial.LEGACY_BURNING_FURNACE
@@ -1760,9 +1746,7 @@ public class JobsPaymentListener implements Listener {
 	    return true;
 
 	for (Entry<Enchantment, Integer> oneG : got.entrySet()) {
-	    if (!hand.getEnchantments().containsKey(oneG.getKey()))
-		return false;
-	    if (oneG.getValue() != null && hand.getEnchantments().get(oneG.getKey()) != oneG.getValue())
+	    if (!hand.getEnchantments().containsKey(oneG.getKey()) || hand.getEnchantments().get(oneG.getKey()) != oneG.getValue())
 		return false;
 	}
 

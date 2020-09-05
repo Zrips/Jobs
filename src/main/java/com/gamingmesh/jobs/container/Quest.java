@@ -169,7 +169,7 @@ public class Quest {
 	for (QuestObjective one : old.values()) {
 	    if (one.getTargetId() == objective.getTargetId() &&
 		one.getAction() == objective.getAction() && objective.getAmount() == one.getAmount()
-		&& objective.getTargetName() == one.getTargetName())
+		&& objective.getTargetName().equals(one.getTargetName()))
 		return true;
 	}
 	return false;

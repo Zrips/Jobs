@@ -49,11 +49,9 @@ public class JobsCommands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-	if (sender instanceof Player) {
-	    if (!Jobs.getGCManager().canPerformActionInWorld(((Player) sender).getWorld()) && !sender.hasPermission("jobs.disabledworld.commands")) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.worldisdisabled"));
-		return true;
-	    }
+	if (sender instanceof Player && !Jobs.getGCManager().canPerformActionInWorld(((Player) sender).getWorld()) && !sender.hasPermission("jobs.disabledworld.commands")) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.worldisdisabled"));
+	    return true;
 	}
 
 	if (args.length == 0)
@@ -88,11 +86,9 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	String[] myArgs = reduceArgs(args);
-	if (myArgs.length > 0) {
-	    if (myArgs[myArgs.length - 1].equals("?")) {
-		sendUsage(sender, cmd);
-		return true;
-	    }
+	if (myArgs.length > 0 && myArgs[myArgs.length - 1].equals("?")) {
+	    sendUsage(sender, cmd);
+	    return true;
 	}
 
 	boolean back = cmdClass.perform(plugin, sender, myArgs);
@@ -423,13 +419,18 @@ public class JobsCommands implements CommandExecutor {
     }
 
     public String jobProgressMessage(double max, double current) {
+	if (current < 0)
+	    current = 0;
+
+	if (max < current)
+	    max = current;
+
+	if (max < 1)
+	    max = 2;
+
 	String message = "";
 	String pos = ChatColor.DARK_GREEN + "\u258F";
 	String pros = ChatColor.YELLOW + "\u258F";
-	if (current < 0)
-	    current = 0;
-	if (max < current)
-	    max = current;
 	int percentage = (int) ((current * 50.0) / max);
 	for (int i = 0; i < percentage; i++) {
 	    message += pos;

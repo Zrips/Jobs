@@ -202,7 +202,6 @@ public class PlayerManager {
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	return;
     }
 
     /**
@@ -659,7 +658,7 @@ public class PlayerManager {
 			    for (int i = 0; i < 3; i++) {
 				String colorInt = sSplit[i];
 				try {
-				    colorRGB[i] = Integer.valueOf(colorInt).intValue();
+				    colorRGB[i] = Integer.parseInt(colorInt);
 				} catch (NumberFormatException e) {
 				    Jobs.consoleMsg("[Jobs] &cInvalid color component " + colorInt + ", it must be an integer.");
 				}
@@ -987,7 +986,7 @@ public class PlayerManager {
 	if (HookManager.getMcMMOManager().mcMMOPresent || HookManager.getMcMMOManager().mcMMOOverHaul)
 	    boost.add(BoostOf.McMMO, new BoostMultiplier().add(HookManager.getMcMMOManager().getMultiplier(player.getPlayer())));
 
-	if (ent != null && (ent instanceof Tameable)) {
+	if (ent instanceof Tameable) {
 	    Tameable t = (Tameable) ent;
 	    if (t.isTamed() && t.getOwner() instanceof Player) {
 		Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
@@ -1060,8 +1059,6 @@ public class PlayerManager {
 		    if (player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
 			joinJob(jPlayer, one);
 		}
-
-		return;
 	    }
 	}, Jobs.getGCManager().AutoJobJoinDelay * 20L);
     }

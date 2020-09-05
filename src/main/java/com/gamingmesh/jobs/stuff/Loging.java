@@ -16,11 +16,7 @@ public class Loging {
 
     public void recordToLog(JobsPlayer jPlayer, String ActionName, String item, HashMap<CurrencyType, Double> amounts) {
 	HashMap<String, Log> logList = jPlayer.getLog();
-	Log l = null;
-	for (Log one : logList.values()) {
-	    l = one;
-	    break;
-	}
+	Log l = logList.values().stream().findFirst().orElse(null);
 	if (l != null && Jobs.getScheduleManager().getDateByInt() != l.getDate()) {
 	    Jobs.getJobsDAO().saveLog(jPlayer);
 	    jPlayer.getLog().clear();

@@ -67,7 +67,7 @@ public class PermissionHandler {
 	    // calculate new permissions
 	    HashMap<String, Boolean> permissions = new HashMap<>();
 
-	    if (progression.size() == 0) {
+	    if (progression.isEmpty()) {
 		Job job = Jobs.getNoneJob();
 		if (job != null) {
 		    for (JobPermission perm : job.getPermissions()) {

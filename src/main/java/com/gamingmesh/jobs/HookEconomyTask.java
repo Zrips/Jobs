@@ -59,9 +59,6 @@ public class HookEconomyTask implements Runnable {
 	    return false;
 
 	Economy economy = provider.getProvider();
-	if (economy == null)
-	    return false;
-
 	Jobs.setEconomy(new VaultEconomy(economy));
 	Jobs.consoleMsg("&e[" + plugin.getDescription().getName() + "] Successfully linked with Vault.");
 	return true;

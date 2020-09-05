@@ -71,7 +71,7 @@ public class YmlMaker {
     }
 
     public boolean exists() {
-    return ConfigFile != null && ConfigFile.exists() ? true : ConfigFile.exists();
+    return ConfigFile != null && ConfigFile.exists();
     }
 
     public void createNewFile() {
