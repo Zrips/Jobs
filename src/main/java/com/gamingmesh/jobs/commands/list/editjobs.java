@@ -363,9 +363,6 @@ public class editjobs implements Cmd {
 			meta = keyValue.getMeta();
 		int id = keyValue.getId();
 
-		if (actionT == ActionType.TNTBREAK)
-		    Jobs.getGCManager().setTntFinder(true);
-
 		double income = 0D,
 			points = 0D,
 			experience = 0D;

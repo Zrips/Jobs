@@ -627,6 +627,9 @@ public class ConfigManager {
 	    type = CMIMaterial.getGeneralMaterialName(type);
 	}
 
+	if (actionType == ActionType.TNTBREAK)
+	    Jobs.getGCManager().setTntFinder(true);
+
 	KeyValues kv = new KeyValues();
 	kv.setId(id);
 	kv.setMeta(meta);
@@ -1209,9 +1212,6 @@ public class ConfigManager {
 			String type = keyValue.getType(),
 			    subType = keyValue.getSubType(),
 			    meta = keyValue.getMeta();
-
-			if (actionType == ActionType.TNTBREAK)
-			    Jobs.getGCManager().setTntFinder(true);
 
 			double income = section.getDouble("income", 0.0);
 			income = updateValue(CurrencyType.MONEY, income);

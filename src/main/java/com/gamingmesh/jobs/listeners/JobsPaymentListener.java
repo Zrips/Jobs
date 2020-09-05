@@ -1509,7 +1509,7 @@ public class JobsPaymentListener implements Listener {
 	if (type != EntityType.PRIMED_TNT && type != EntityType.MINECART_TNT && type != CMIEntityType.ENDER_CRYSTAL.getType())
 	    return;
 
-	if (!Jobs.getGCManager().isUseTntFinder() || type != CMIEntityType.ENDER_CRYSTAL.getType())
+	if (!Jobs.getGCManager().isUseTntFinder() && type != CMIEntityType.ENDER_CRYSTAL.getType())
 	    return;
 
 	double closest = 60.0;
@@ -1541,13 +1541,15 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	String meta = "enderCrystalDamage";
-	if (type == CMIEntityType.ENDER_CRYSTAL.getType() && e.hasMetadata(meta) && !e.getMetadata(meta).isEmpty()) {
-	    Entity killed = (Entity) e.getMetadata(meta).get(0).value();
-	    if (killed != null) {
-		Jobs.action(jPlayer, new EntityActionInfo(killed, ActionType.KILL));
-		killed.removeMetadata(meta, plugin);
-		return;
+	if (!Jobs.getGCManager().isUseTntFinder() && type == CMIEntityType.ENDER_CRYSTAL.getType()) {
+	    String meta = "enderCrystalDamage";
+	    if (type == CMIEntityType.ENDER_CRYSTAL.getType() && e.hasMetadata(meta) && !e.getMetadata(meta).isEmpty()) {
+		Entity killed = (Entity) e.getMetadata(meta).get(0).value();
+		if (killed != null) {
+		    Jobs.action(jPlayer, new EntityActionInfo(killed, ActionType.KILL));
+		    killed.removeMetadata(meta, plugin);
+		    return;
+		}
 	    }
 	}
 
