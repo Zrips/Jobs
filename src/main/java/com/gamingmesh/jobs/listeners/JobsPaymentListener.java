@@ -574,23 +574,15 @@ public class JobsPaymentListener implements Listener {
 	boolean leather = false;
 	boolean shulker = false;
 
-	ItemStack last = null;
-
 	for (ItemStack s : sourceItems) {
 	    if (s == null)
 		continue;
-
-	    if (!Jobs.getGCManager().payForCombiningItems && s.equals(last) &&
-			(CMIMaterial.isTool(s.getType()) || CMIMaterial.isArmor(s.getType())))
-		return;
-
-	    last = s;
 
 	    if (CMIMaterial.isDye(s.getType()))
 		DyeStack.add(s);
 
 	    CMIMaterial mat = CMIMaterial.get(s);
-	    if (mat != CMIMaterial.NONE) {
+	    if (mat != CMIMaterial.NONE && mat != CMIMaterial.AIR) {
 		y++;
 
 		if (y == 0)
@@ -601,7 +593,7 @@ public class JobsPaymentListener implements Listener {
 		    third = mat;
 	    }
 
-	    switch (CMIMaterial.get(s)) {
+	    switch (mat) {
 	    case LEATHER_BOOTS:
 	    case LEATHER_CHESTPLATE:
 	    case LEATHER_HELMET:
@@ -638,7 +630,11 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (y == 2 && first == second && third == second) {
-	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
+	    if (Jobs.getGCManager().payForCombiningItems && third == first) {
+		Jobs.action(jPlayer, new ItemActionInfo(event.getCurrentItem(), ActionType.REPAIR));
+	    } else {
+		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
+	    }
 	    return;
 	}
 
