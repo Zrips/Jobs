@@ -267,7 +267,7 @@ public class FurnaceBrewingHandling {
 
 	block.setMetadata(JobsPaymentListener.furnaceOwnerMetadata, new FixedMetadataValue(Jobs.getInstance(), player.getUniqueId().toString()));
 
-	if (!Jobs.getGCManager().isFurnacesReassign() || !Jobs.getGCManager().BlastFurnacesReassign || !Jobs.getGCManager().SmokerReassign) {
+	if (!Jobs.getGCManager().isFurnacesReassign() && !Jobs.getGCManager().BlastFurnacesReassign && !Jobs.getGCManager().SmokerReassign) {
 	    return ownershipFeedback.newReg;
 	}
 

@@ -1228,13 +1228,13 @@ public class JobsPlayer {
 
 	Double maxV = Jobs.getPermissionManager().getMaxPermission(this, perm);
 
-	if (maxV == 0 && (type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE))
+	if (maxV == 0D && (type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE))
 	    maxV = (double) Jobs.getGCManager().getFurnacesMaxDefault();
 
-	if (maxV == 0 && type == CMIMaterial.BLAST_FURNACE)
+	if (maxV == 0D && type == CMIMaterial.BLAST_FURNACE)
 	    maxV = (double) Jobs.getGCManager().BlastFurnacesMaxDefault;
 
-	if (maxV == 0 && type == CMIMaterial.SMOKER)
+	if (maxV == 0D && type == CMIMaterial.SMOKER)
 	    maxV = (double) Jobs.getGCManager().SmokersMaxDefault;
 
 	return maxV.intValue();
