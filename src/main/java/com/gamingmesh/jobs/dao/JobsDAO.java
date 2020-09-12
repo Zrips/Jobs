@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -472,24 +473,25 @@ public abstract class JobsDAO {
 	pool = new JobsConnectionPool(url, username, password);
     }
 
-    public final synchronized void setUp() throws SQLException {
-	if (getConnection() == null)
-	    return;
+    public final synchronized void setUp() {
+	CompletableFuture.supplyAsync(() -> {
+	    if (getConnection() == null)
+		return null;
 
-	vacuum();
-	setupConfig();
+	    vacuum();
 
-	try {
-	    for (DBTables one : DBTables.values()) {
-		createDefaultTable(one);
+	    try {
+		for (DBTables one : DBTables.values()) {
+		    createDefaultTable(one);
+		}
+
+		checkDefaultCollumns();
+	    } finally {
 	    }
-	    checkDefaultCollumns();
-	} finally {
-	}
-    }
 
-    @Deprecated
-    protected abstract void setupConfig() throws SQLException;
+	    return null;
+	});
+    }
 
     protected abstract void checkUpdate() throws SQLException;
 
@@ -886,9 +888,6 @@ public abstract class JobsDAO {
 	}
     }
 
-    int convertSchedId = -1;
-    boolean converted = true;
-
     public void recordNewWorld(String worldName) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
@@ -944,13 +943,12 @@ public abstract class JobsDAO {
 	}
     }
 
+    private boolean converted = true;
+
     public void triggerTableIdUpdate() {
 	// Lets convert old fields
-	if (convertSchedId > 0)
-	    Bukkit.getServer().getScheduler().cancelTask(convertSchedId);
-
 	if (!converted) {
-	    convertSchedId = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+	    Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
 		Jobs.consoleMsg("&6[Jobs] Converting to new database format");
 		convertID();
 		Jobs.consoleMsg("&6[Jobs] Converted to new database format");
@@ -2556,6 +2554,10 @@ public abstract class JobsDAO {
      */
     public void executeSQL(String sql) throws SQLException {
 	JobsConnection conn = getConnection();
+	if (conn == null) {
+	    return;
+	}
+
 	Statement stmt = null;
 	try {
 	    stmt = conn.createStatement();
@@ -2565,11 +2567,6 @@ public abstract class JobsDAO {
 	}
     }
 
-    /**
-     * Get a database connection
-     * @return  DBConnection object
-     * @throws SQLException 
-     */
     protected JobsConnection getConnection() {
 	try {
 	    return isConnected() ? pool.getConnection() : null;

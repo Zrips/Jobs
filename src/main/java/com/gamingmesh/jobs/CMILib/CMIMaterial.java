@@ -1217,7 +1217,7 @@ public enum CMIMaterial {
     public void updateMaterial() {
 	if (mat == null) {
 	    for (Material one : Material.class.getEnumConstants()) {
-		if (!one.name().replace("LEGACY_", "").replace("_", "").equalsIgnoreCase(this.name().replace("_", "")))
+		if (!one.name().replaceAll("LEGACY_|_", "").equalsIgnoreCase(this.name().replace("_", "")))
 		    continue;
 		mat = one;
 		break;
@@ -1225,7 +1225,7 @@ public enum CMIMaterial {
 	}
 	if (mat == null) {
 	    for (Material one : Material.class.getEnumConstants()) {
-		if (!one.name().replace("LEGACY_", "").replace("_", "").equalsIgnoreCase(this.getName().replace(" ", "")))
+		if (!one.name().replaceAll("LEGACY_|_", "").equalsIgnoreCase(this.getName().replace(" ", "")))
 		    continue;
 		mat = one;
 		break;
@@ -1234,7 +1234,7 @@ public enum CMIMaterial {
 	if (mat == null && !this.getLegacyNames().isEmpty()) {
 	    main: for (Material one : Material.class.getEnumConstants()) {
 		for (String oneL : this.getLegacyNames()) {
-		    if (!one.name().replace("LEGACY_", "").replace("_", "").equalsIgnoreCase(oneL.replace(" ", "").replace("_", "")))
+		    if (!one.name().replaceAll("LEGACY_|_", "").equalsIgnoreCase(oneL.replace(" ", "").replace("_", "")))
 			continue main;
 		}
 		mat = one;

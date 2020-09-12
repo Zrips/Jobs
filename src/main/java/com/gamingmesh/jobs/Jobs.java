@@ -428,10 +428,9 @@ public class Jobs extends JavaPlugin {
     public void startup() {
 	reload(true);
 	loadAllPlayersData();
+
 	// add all online players
-	for (Player online : Bukkit.getServer().getOnlinePlayers()) {
-	    getPlayerManager().playerJoin(online);
-	}
+	Bukkit.getServer().getOnlinePlayers().forEach(getPlayerManager()::playerJoin);
     }
 
     public static void loadAllPlayersData() {

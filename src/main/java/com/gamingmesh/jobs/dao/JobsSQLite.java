@@ -13,21 +13,14 @@ import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 public class JobsSQLite extends JobsDAO {
 
     public void initialize() {
-	try {
-	    this.setUp();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+	setUp();
     }
 
     public JobsSQLite initialize(File dir) {
 	if (!dir.exists())
 	    dir.mkdirs();
-	try {
-	    this.setUp();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+
+	setUp();
 	return this;
     }
 
@@ -36,20 +29,6 @@ public class JobsSQLite extends JobsDAO {
 	if (!file.exists())
 	    file.mkdirs();
 	this.setDbType(DataBaseType.SqLite);
-    }
-
-    @Override
-    protected synchronized void setupConfig() throws SQLException {
-	JobsConnection conn = getConnection();
-	if (conn == null) {
-	    Jobs.consoleMsg("&cCould not run database updates!  Could not connect to MySQL!");
-	    return;
-	}
-
-	String name = getPrefix() + "config";
-	if (isTable(name)) {
-	    drop(name);
-	}
     }
 
     @Override

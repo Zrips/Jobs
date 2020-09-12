@@ -18,35 +18,13 @@ public class JobsMySQL extends JobsDAO {
     }
 
     public void initialize() {
-	try {
-	    setUp();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+	setUp();
     }
 
     public JobsMySQL initialize(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
 	JobsMySQL dao = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect);
-	try {
-	    dao.setUp();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+	dao.setUp();
 	return dao;
-    }
-
-    @Override
-    protected synchronized void setupConfig() throws SQLException {
-	JobsConnection conn = getConnection();
-	if (conn == null) {
-	    Jobs.consoleMsg("&cCould not run database updates! Could not connect to MySQL!");
-	    return;
-	}
-
-	String name = getPrefix() + "config";
-	if (isTable(name)) {
-	    drop(name);
-	}
     }
 
     @Override
@@ -162,7 +140,7 @@ public class JobsMySQL extends JobsDAO {
 	    statement.executeQuery("SELECT `" + collumn + "` FROM `" + table + "`;");
 	    return true;
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("Not a culumn |" + "SELECT " + collumn + " FROM " + table + "|");
+	    Jobs.consoleMsg("Not a collumn |" + "SELECT " + collumn + " FROM " + table + "|");
 	    return false;
 	} finally {
 	    close(statement);
@@ -179,7 +157,7 @@ public class JobsMySQL extends JobsDAO {
 	    return false;
 	}
 	try {
-	    Jobs.consoleMsg("Creating culumn |" + "ALTER TABLE `" + table + "` ADD COLUMN `" + collumn + "` " + type + ";" + "|");
+	    Jobs.consoleMsg("Creating collumn |" + "ALTER TABLE `" + table + "` ADD COLUMN `" + collumn + "` " + type + ";" + "|");
 	    statement.executeUpdate("ALTER TABLE `" + table + "` ADD COLUMN `" + collumn + "` " + type + ";");
 	    return true;
 	} catch (SQLException e) {
