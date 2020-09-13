@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -474,23 +473,19 @@ public abstract class JobsDAO {
     }
 
     public final synchronized void setUp() {
-	CompletableFuture.supplyAsync(() -> {
-	    if (getConnection() == null)
-		return null;
+	if (getConnection() == null)
+	    return;
 
-	    vacuum();
+	vacuum();
 
-	    try {
-		for (DBTables one : DBTables.values()) {
-		    createDefaultTable(one);
-		}
-
-		checkDefaultCollumns();
-	    } finally {
+	try {
+	    for (DBTables one : DBTables.values()) {
+		createDefaultTable(one);
 	    }
 
-	    return null;
-	});
+	    checkDefaultCollumns();
+	} finally {
+	}
     }
 
     protected abstract void checkUpdate() throws SQLException;

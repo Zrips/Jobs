@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.dao;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.concurrent.CompletableFuture;
 
 public class JobsConnectionPool {
 
@@ -25,31 +24,23 @@ public class JobsConnectionPool {
 	    connection = null;
 	}
 
-	CompletableFuture.supplyAsync(() -> {
-	    if (connection == null) {
-		try {
-		    connection = new JobsConnection(DriverManager.getConnection(url, username, password));
-		} catch (SQLException e) {
-		}
+	if (connection == null) {
+	    try {
+		connection = new JobsConnection(DriverManager.getConnection(url, username, password));
+	    } catch (SQLException e) {
 	    }
-
-	    return true;
-	});
+	}
 
 	return connection;
     }
 
-    public void closeConnection() {
-	CompletableFuture.supplyAsync(() -> {
-	    if (connection != null) {
-		try {
-		    connection.closeConnection();
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		}
+    public synchronized void closeConnection() {
+	if (connection != null) {
+	    try {
+		connection.closeConnection();
+	    } catch (SQLException e) {
+		e.printStackTrace();
 	    }
-
-	    return true;
-	});
+	}
     }
 }
