@@ -16,6 +16,18 @@ public class resetlimit implements Cmd {
 	    return true;
 	}
 
+	if (args[0].equalsIgnoreCase("all")) {
+	    for (org.bukkit.entity.Player pl : org.bukkit.Bukkit.getOnlinePlayers()) {
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pl);
+		if (jPlayer != null) {
+		    jPlayer.resetPaymentLimit();
+		}
+	    }
+
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.resetlimit.output.reseted", "%playername%", ""));
+	    return true;
+	}
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	if (jPlayer == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));

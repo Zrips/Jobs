@@ -136,10 +136,8 @@ public class Jobs extends JavaPlugin {
 	    return false;
 
 	if (Integer.parseInt(getServer().getPluginManager().getPlugin("PlaceholderAPI")
-	.getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100) {
-	    if (new PlaceholderAPIHook(this).register()) {
-		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
-	    }
+		.getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100 && new PlaceholderAPIHook(this).register()) {
+	    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
 	}
 
 	return true;
@@ -237,10 +235,6 @@ public class Jobs extends JavaPlugin {
 	}
 
 	return titleManager;
-    }
-
-    private void setBBManager() {
-	bbManager = new BossBarManager(this);
     }
 
     public static BossBarManager getBBManager() {
@@ -648,7 +642,7 @@ public class Jobs extends JavaPlugin {
 	    YmlMaker restrictedBlocks = new YmlMaker(this, "restrictedBlocks.yml");
 	    restrictedBlocks.saveDefaultConfig();
 
-	    setBBManager();
+	    bbManager = new BossBarManager(this);
 
 	    getCommand("jobs").setExecutor(getCommandManager());
 	    getCommand("jobs").setTabCompleter(new TabComplete());
