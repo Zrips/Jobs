@@ -254,7 +254,7 @@ public class JobsPaymentListener implements Listener {
 
 	Sheep sheep = (Sheep) event.getEntity();
 	// mob spawner, no payment or experience
-	if (sheep.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+	if (sheep.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()) && !Jobs.getGCManager().payNearSpawner()) {
 	    sheep.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
 	    return;
 	}
@@ -486,7 +486,7 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	// mob spawner, no payment or experience
-	if (animal.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+	if (animal.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()) && !Jobs.getGCManager().payNearSpawner()) {
 	    animal.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
 	    return;
 	}
