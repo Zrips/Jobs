@@ -52,10 +52,10 @@ public class GeneralConfigManager {
      */
     @Deprecated public List<Schedule> BoostSchedule = new ArrayList<>();
 
-    public HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
-    private HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
-    private HashMap<CurrencyType, Double> generalMulti = new HashMap<>();
-    private HashMap<String, List<String>> commandArgs = new HashMap<>();
+    public final HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
+    private final HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
+    private final HashMap<CurrencyType, Double> generalMulti = new HashMap<>();
+    private final HashMap<String, List<String>> commandArgs = new HashMap<>();
 
     protected Locale locale;
     private ConfigReader c = null;
@@ -101,7 +101,7 @@ public class GeneralConfigManager {
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
 	BossBarEnabled, BossBarShowOnEachAction, BossBarsMessageByDefault, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
-	LoggingUse, payForCombiningItems, BlastFurnacesReassign, SmokerReassign;
+	LoggingUse, payForCombiningItems, BlastFurnacesReassign, SmokerReassign, payForStackedEntities;
 
     public ItemStack guiBackButton, guiNextButton, guiFiller;
 
@@ -496,6 +496,9 @@ public class GeneralConfigManager {
 	c.addComment("prevent-crop-resize-payment", "Do you want to prevent crop resizing payment when placing more cactus?",
 	    "This option is only related to: sugar_cane, cactus, kelp, bamboo");
 	preventCropResizePayment = c.get("prevent-crop-resize-payment", false);
+
+	c.addComment("pay-for-stacked-entities", "Allows to pay for stacked entities for each one. Requires StackMob or WildStacker.");
+	payForStackedEntities = c.get("pay-for-stacked-entities", false);
 
 	c.addComment("allow-pay-for-durability-loss", "Allows, when losing maximum durability of item then it does not pay the player until it is repaired.",
 	    "E.g. the player wants to enchant a item with enchanting table and the item has durability loss then not paying.");

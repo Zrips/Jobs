@@ -12,16 +12,20 @@ import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobInterface;
 import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs2;
 import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs4;
 import com.gamingmesh.jobs.hooks.WorldGuard.WorldGuardManager;
+import com.gamingmesh.jobs.hooks.stackMob.StackMobHandler;
+import com.gamingmesh.jobs.hooks.wildStacker.WildStackerHandler;
 
 public class HookManager {
 
-    private static McMMOManager McMMOManager = null;
-    private static MythicMobInterface MythicManager = null;
-    private static MyPetManager myPetManager = null;
-    private static WorldGuardManager worldGuardManager = null;
-    private static BossManager bossManager = null;
+    private static McMMOManager McMMOManager;
+    private static MythicMobInterface MythicManager;
+    private static MyPetManager myPetManager;
+    private static WorldGuardManager worldGuardManager;
+    private static BossManager bossManager;
+    private static StackMobHandler stackMobHandler;
+    private static WildStackerHandler wildStackerHandler;
 
-    private static PluginManager pm = null;
+    private static PluginManager pm;
 
     public static void loadHooks() {
 	pm = Jobs.getInstance().getServer().getPluginManager();
@@ -33,9 +37,27 @@ public class HookManager {
 	setWorldGuard();
 	setMythicManager();
 	setBossManager();
+	setStackMobHandler();
+	setWildStackerHandler();
 
 	if (checkMythicMobs())
 	    MythicManager.registerListener();
+    }
+
+    public static StackMobHandler getStackMobHandler() {
+	if (stackMobHandler == null) {
+	    setStackMobHandler();
+	}
+
+	return stackMobHandler;
+    }
+
+    public static WildStackerHandler getWildStackerHandler() {
+	if (wildStackerHandler == null) {
+	    setWildStackerHandler();
+	}
+
+	return wildStackerHandler;
     }
 
 	public static MyPetManager getMyPetManager() {
@@ -77,7 +99,7 @@ public class HookManager {
     }
 
     private static boolean setWorldGuard() {
-	if (pm.getPlugin("WorldGuard") != null && pm.isPluginEnabled("WorldGuard")) {
+	if (isPluginEnabled("WorldGuard")) {
 	    worldGuardManager = new WorldGuardManager();
 	    Jobs.consoleMsg("&e[Jobs] WorldGuard detected.");
 	    return true;
@@ -87,7 +109,7 @@ public class HookManager {
     }
 
     private static void setMythicManager() {
-	if (pm.getPlugin("MythicMobs") == null)
+	if (!isPluginEnabled("MythicMobs"))
 	    return;
 
 	try {
@@ -122,16 +144,32 @@ public class HookManager {
     }
 
     private static void setMyPetManager() {
-	if (pm.getPlugin("MyPet") != null && pm.isPluginEnabled("MyPet")) {
+	if (isPluginEnabled("MyPet")) {
 	    myPetManager = new MyPetManager();
 	    Jobs.consoleMsg("&e[Jobs] MyPet detected.");
 	}
     }
 
     private static void setBossManager() {
-	if (pm.getPlugin("Boss") != null && pm.isPluginEnabled("Boss")) {
+	if (isPluginEnabled("Boss")) {
 	    bossManager = new BossManager();
 	    Jobs.consoleMsg("&e[Jobs] Boss detected.");
 	}
+    }
+
+    private static void setStackMobHandler() {
+	if (isPluginEnabled("StackMob")) {
+	    stackMobHandler = new StackMobHandler();
+	}
+    }
+
+    private static void setWildStackerHandler() {
+	if (isPluginEnabled("WildStacker")) {
+	    wildStackerHandler = new WildStackerHandler();
+	}
+    }
+
+    public static boolean isPluginEnabled(String name) {
+	return pm.getPlugin(name) != null && pm.isPluginEnabled(name);
     }
 }

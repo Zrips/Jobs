@@ -87,8 +87,12 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 public class JobsPaymentListener implements Listener {
 
@@ -278,6 +282,17 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null || sheep.getColor() == null)
 	    return;
 
+	if (Jobs.getGCManager().payForStackedEntities && HookManager.isPluginEnabled("WildStacker")
+		    && HookManager.getWildStackerHandler().isStackedEntity(sheep)) {
+	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
+		if (stacked.getType() == sheep.getType()) {
+		    Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getLivingEntity()).getColor().name(), ActionType.SHEAR));
+		}
+	    }
+
+	    return;
+	}
+
 	Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
     }
 
@@ -462,7 +477,7 @@ public class JobsPaymentListener implements Listener {
 	if (!payForItemDurabilityLoss(player))
 	    return;
 
-	if (event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH) && event.getCaught() instanceof Item) {
+	if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
 	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	    if (jPlayer == null)
 		return;
@@ -510,6 +525,17 @@ public class JobsPaymentListener implements Listener {
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jDamager == null)
 	    return;
+
+	if (Jobs.getGCManager().payForStackedEntities && HookManager.isPluginEnabled("WildStacker")
+		    && HookManager.getWildStackerHandler().isStackedEntity(animal)) {
+	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
+		if (stacked.getType() == animal.getType()) {
+		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.TAME));
+		}
+	    }
+
+	    return;
+	}
 
 	Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
     }
@@ -851,7 +877,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	}
 
-	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1) != null && inv.getItem(1).getType().equals(Material.ENCHANTED_BOOK)) {
+	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1) != null && inv.getItem(1).getType() == Material.ENCHANTED_BOOK) {
 	    Map<Enchantment, Integer> enchants = resultStack.getEnchantments();
 	    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
 		Enchantment enchant = oneEnchant.getKey();
@@ -1090,10 +1116,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	}
 
-	if (!(damager instanceof Projectile))
-	    return;
-
-	if (!(ent instanceof Damageable))
+	if (!(damager instanceof Projectile) || !(ent instanceof Damageable))
 	    return;
 
 	Projectile projectile = (Projectile) damager;
@@ -1205,6 +1228,17 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
+	if (Jobs.getGCManager().payForStackedEntities && HookManager.isPluginEnabled("WildStacker")
+		    && HookManager.getWildStackerHandler().isStackedEntity(lVictim)) {
+	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
+		if (stacked.getType() == lVictim.getType()) {
+		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.KILL), pDamager, stacked.getLivingEntity());
+		}
+	    }
+
+	    return;
+	}
+
 	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), pDamager, lVictim);
 
 	// Payment for killing player with particular job, except NPC's
@@ -1298,7 +1332,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Location loc = event.getLocation();
-	Collection<Entity> ents = Version.isCurrentEqualOrLower(Version.v1_8_R1) || loc.getWorld() == null
+	java.util.Collection<Entity> ents = Version.isCurrentEqualOrLower(Version.v1_8_R1) || loc.getWorld() == null
 	    ? null : loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
 	if (ents == null) {
 	    return;

@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.16.2-R0.1-SNAPSHOT</version>
+			<version>1.16.3-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Boss -->
@@ -163,6 +163,16 @@
 					<artifactId>jsonmessage</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.github.OmerBenGera</groupId>
+			<artifactId>WildStackerAPI</artifactId>
+			<version>master-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.Nathat23</groupId>
+			<artifactId>StackMob-5</artifactId>
+			<version>master-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<repositories>
