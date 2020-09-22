@@ -61,15 +61,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- MythicMobs 2 -->
-		<dependency>
-			<groupId>net.elseland.xikage</groupId>
-			<artifactId>MythicMobs</artifactId>
-			<version>2.4.5</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/MythicMobs-2.4.5.jar</systemPath>
-		</dependency>
-		<!-- MythicMobs new -->
+		<!-- MythicMobs -->
 		<dependency>
 			<groupId>io.lumine.xikage</groupId>
 			<artifactId>MythicMobs</artifactId>

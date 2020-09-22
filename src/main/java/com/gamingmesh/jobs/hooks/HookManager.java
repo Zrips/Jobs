@@ -9,7 +9,6 @@ import com.gamingmesh.jobs.hooks.McMMO.McMMO2_X_listener;
 import com.gamingmesh.jobs.hooks.McMMO.McMMOManager;
 import com.gamingmesh.jobs.hooks.MyPet.MyPetManager;
 import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobInterface;
-import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs2;
 import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs4;
 import com.gamingmesh.jobs.hooks.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.hooks.stackMob.StackMobHandler;
@@ -113,18 +112,13 @@ public class HookManager {
 	    return;
 
 	try {
-	    Class.forName("net.elseland.xikage.MythicMobs.API.MythicMobsAPI");
-	    MythicManager = new MythicMobs2(Jobs.getInstance());
-	} catch (ClassNotFoundException e) {
-	    try {
-		Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
-		MythicManager = new MythicMobs4(Jobs.getInstance());
-	    } catch (ClassNotFoundException ex) {
-	    }
+	    Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
+	    MythicManager = new MythicMobs4(Jobs.getInstance());
+	} catch (ClassNotFoundException ex) {
 	}
 
 	if (MythicManager == null) {
-	    Jobs.consoleMsg("&cYour MythicMobs version is not supported by Jobs! Supported versions: 2.4.5+, 4.6.5+");
+	    Jobs.consoleMsg("&cYour MythicMobs version is not supported by Jobs! Supported versions: 4.9.1+");
 	    return;
 	}
 
