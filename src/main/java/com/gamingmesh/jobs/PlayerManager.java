@@ -783,7 +783,7 @@ public class PlayerManager {
      * @return True if he have permission
      */
     public boolean getJobsLimit(JobsPlayer jPlayer, short currentCount) {
-	int max = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max").intValue();
+	int max = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max", false, false).intValue();
 	max = max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
 	return max > currentCount;
     }
