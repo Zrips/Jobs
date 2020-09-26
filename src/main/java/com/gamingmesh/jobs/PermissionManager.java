@@ -20,6 +20,7 @@ package com.gamingmesh.jobs;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -119,7 +120,11 @@ public class PermissionManager {
 	return getMaxPermission(jPlayer, perm, false);
     }
 
-    public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
+	public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
+		return getMaxPermission(jPlayer, perm, force, true);
+	}
+
+    public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative) {
 	if (jPlayer == null || jPlayer.getPlayer() == null)
 	    return 0D;
 
@@ -138,23 +143,22 @@ public class PermissionManager {
 	    return 0D;
 	}
 
-	Double amount = 0D;
-	for (String uno : permissions.keySet()) {
-	    if (uno.startsWith(perm)) {
-		double t = 0d;
-		try {
-		    t = Double.parseDouble(uno.replace(perm, ""));
-		} catch (NumberFormatException e) {
-		}
+	double amount = 0D;
 
-		if (uno.startsWith("jobs.max")) {
-		    if (amount == 0D || t > amount) {
-			amount = t;
-		    }
-		} else {
-		    amount += t;
+	for (Map.Entry<String, Boolean> permission : permissions.entrySet()) {
+		if (!permission.getKey().startsWith(perm) || !permission.getValue())
+			continue;
+
+		try {
+			double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
+
+			if (cumulative)
+				amount += temp;
+			else if (temp > amount)
+				amount = temp;
+
+		} catch (NumberFormatException ignored) {
 		}
-	    }
 	}
 
 	return amount;
