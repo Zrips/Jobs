@@ -117,7 +117,7 @@ public class PermissionManager {
     }
 
     public Double getMaxPermission(JobsPlayer jPlayer, String perm) {
-	return getMaxPermission(jPlayer, perm, false);
+	return getMaxPermission(jPlayer, perm, false, false);
     }
 
     public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {

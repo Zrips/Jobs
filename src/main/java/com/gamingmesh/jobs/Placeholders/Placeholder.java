@@ -554,7 +554,7 @@ public class Placeholder {
 			return convert(true);
 
 			case maxjobs:
-			    int max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max", false, false).intValue();
+			    int max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max", false).intValue();
 			    max = max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
 			    return Integer.toString(max);
 

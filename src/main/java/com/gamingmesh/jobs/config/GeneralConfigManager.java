@@ -50,7 +50,8 @@ public class GeneralConfigManager {
     /**
      * @deprecated use {@link ScheduleManager}
      */
-    @Deprecated public List<Schedule> BoostSchedule = new ArrayList<>();
+    @Deprecated
+    public List<Schedule> BoostSchedule = new ArrayList<>();
 
     public final HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
     private final HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
@@ -61,21 +62,21 @@ public class GeneralConfigManager {
     private ConfigReader c = null;
 
     protected boolean economyAsync, isBroadcastingSkillups, isBroadcastingLevelups, payInCreative, payExploringWhenFlying,
-    addXpPlayer, hideJobsWithoutPermission, payNearSpawner, modifyChat, saveOnDisconnect, MultiServerCompatability;
+	addXpPlayer, hideJobsWithoutPermission, payNearSpawner, modifyChat, saveOnDisconnect, MultiServerCompatability;
 
     public String modifyChatPrefix, modifyChatSuffix, modifyChatSeparator, FireworkType, SoundLevelupSound,
-    SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName, localeString = "";
+	SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName, localeString = "";
     private String getSelectionTool, DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
 
     public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime,
-    globalblocktimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
-    SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, BlastFurnacesMaxDefault, SmokersMaxDefault;
+	globalblocktimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
+	SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, BlastFurnacesMaxDefault, SmokersMaxDefault;
     protected int savePeriod, maxJobs, economyBatchDelay;
     private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips, FurnacesMaxDefault, BrewingStandsMaxDefault,
-    BrowseAmountToShow, JobsGUIRows, JobsGUIBackButton, JobsGUINextButton, JobsGUIStartPosition, JobsGUIGroupAmount, JobsGUISkipAmount;
+	BrowseAmountToShow, JobsGUIRows, JobsGUIBackButton, JobsGUINextButton, JobsGUIStartPosition, JobsGUIGroupAmount, JobsGUISkipAmount;
 
     public double skipQuestCost, MinimumOveralPaymentLimit, MinimumOveralPointsLimit, MonsterDamagePercentage,
-    DynamicPaymentMaxPenalty, DynamicPaymentMaxBonus, TaxesAmount;
+	DynamicPaymentMaxPenalty, DynamicPaymentMaxBonus, TaxesAmount;
 
     public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
 
@@ -90,8 +91,8 @@ public class GeneralConfigManager {
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
 	BrowseUseNewLook, payExploringWhenGliding, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
-    boostedItemsInOffHand, preventCropResizePayment, payItemDurabilityLoss,
-    applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useBreederFinder = false,
+	boostedItemsInOffHand, preventCropResizePayment, payItemDurabilityLoss,
+	applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useBreederFinder = false,
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,

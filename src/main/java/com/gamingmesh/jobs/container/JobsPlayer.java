@@ -926,8 +926,6 @@ public class JobsPlayer {
 	    if (qProgression.containsKey(job.getName())) {
 		qProgression.remove(job.getName());
 	    }
-
-	    oneQ.getQuest().setObjectives(null);
 	}
     }
 

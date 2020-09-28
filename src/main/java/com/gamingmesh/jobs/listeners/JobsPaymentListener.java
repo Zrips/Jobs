@@ -1776,7 +1776,7 @@ public class JobsPaymentListener implements Listener {
 	    return true;
 
 	for (Entry<Enchantment, Integer> oneG : got.entrySet()) {
-	    if (!hand.getEnchantments().containsKey(oneG.getKey()) || hand.getEnchantments().get(oneG.getKey()) != oneG.getValue())
+	    if (!hand.getEnchantments().containsKey(oneG.getKey()) || hand.getEnchantments().get(oneG.getKey()).equals(oneG.getValue()))
 		return false;
 	}
 

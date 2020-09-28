@@ -150,20 +150,17 @@ public class BlockProtectionManager {
 	HashMap<String, BlockProtection> chunk = region.get(locToChunk(loc));
 	if (chunk == null)
 	    return null;
-	String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
-	return chunk.get(v);
+	return chunk.get(loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ());
     }
 
     private static String locToChunk(Location loc) {
-	int x = (int) Math.floor(loc.getBlockX() / 16);
-	int z = (int) Math.floor(loc.getBlockZ() / 16);
-	return x + ":" + z;
+	return (int) Math.floor(loc.getBlockX() / 16D) + ":" + (int) Math.floor(loc.getBlockZ() / 16D);
     }
 
     private static String locToRegion(Location loc) {
-	int x = (int) Math.floor(loc.getBlockX() / 16);
-	int z = (int) Math.floor(loc.getBlockZ() / 16);
-	return (int) Math.floor(x / 32) + ":" + (int) Math.floor(z / 32);
+	int x = (int) Math.floor(loc.getBlockX() / 16D);
+	int z = (int) Math.floor(loc.getBlockZ() / 16D);
+	return (int) Math.floor(x / 32D) + ":" + (int) Math.floor(z / 32D);
     }
 
     public Integer getBlockDelayTime(Block block) {
