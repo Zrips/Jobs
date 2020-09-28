@@ -392,7 +392,7 @@ public class NameTranslatorManager {
 		if (one == null || CMIEnchantment.getName(one) == null)
 		    continue;
 
-		String name = Util.firstToUpperCase(CMIEnchantment.getName(one)).replace("_", " ");
+		String name = Util.firstToUpperCase(CMIEnchantment.getName(one)).replace('_', ' ');
 		if (c.getC().isConfigurationSection("EnchantList"))
 		    for (String onek : c.getC().getConfigurationSection("EnchantList").getKeys(false)) {
 			String old = c.getC().getString("EnchantList." + onek + ".MCName");

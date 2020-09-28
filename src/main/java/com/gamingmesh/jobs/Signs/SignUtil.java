@@ -24,8 +24,8 @@ import com.gamingmesh.jobs.container.TopList;
 
 public class SignUtil {
 
-    private HashMap<String, HashMap<String, jobsSign>> SignsByType = new HashMap<>();
-    private HashMap<String, jobsSign> SignsByLocation = new HashMap<>();
+    private final HashMap<String, HashMap<String, jobsSign>> SignsByType = new HashMap<>();
+    private final HashMap<String, jobsSign> SignsByLocation = new HashMap<>();
 
     public HashMap<String, HashMap<String, jobsSign>> getSigns() {
 	return SignsByType;
@@ -44,10 +44,7 @@ public class SignUtil {
     }
 
     public jobsSign getSign(Location loc) {
-	if (loc == null)
-	    return null;
-
-	return SignsByLocation.get(jobsSign.locToBlockString(loc));
+	return loc == null ? null : SignsByLocation.get(jobsSign.locToBlockString(loc));
     }
 
     public void addSign(jobsSign jSign) {
@@ -171,7 +168,6 @@ public class SignUtil {
     }
 
     public boolean SignUpdate(Job job, SignTopType type) {
-
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return true;
 

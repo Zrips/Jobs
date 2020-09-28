@@ -431,7 +431,7 @@ public class ConfigManager {
 	    material = CMIMaterial.get(myKey + (subType));
 
 	    if (material == CMIMaterial.NONE)
-		material = CMIMaterial.get(myKey.replace(" ", "_").toUpperCase());
+		material = CMIMaterial.get(myKey.replace(' ', '_').toUpperCase());
 
 	    if (material == CMIMaterial.NONE) {
 		// try integer method
@@ -852,7 +852,7 @@ public class ConfigManager {
 		    CMIMaterial material = CMIMaterial.get(item + (subType));
 
 		    if (material == null)
-			material = CMIMaterial.get(item.replace(" ", "_").toUpperCase());
+			material = CMIMaterial.get(item.replace(' ', '_').toUpperCase());
 
 		    if (material == null) {
 			// try integer method
@@ -1123,7 +1123,7 @@ public class ConfigManager {
 				try {
 				    ActionType actionType = ActionType.getByName(split[0]);
 				    String mats = split[1];
-				    String[] co = mats.contains(",") ? mats.split(",") : new String[0];
+				    String[] co = mats.split(",");
 
 				    int amount = 1;
 				    if (split.length == 3) {
