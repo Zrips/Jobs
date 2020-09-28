@@ -120,9 +120,9 @@ public class PermissionManager {
 	return getMaxPermission(jPlayer, perm, false);
     }
 
-	public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
-		return getMaxPermission(jPlayer, perm, force, true);
-	}
+    public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
+	return getMaxPermission(jPlayer, perm, force, false);
+    }
 
     public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative) {
 	if (jPlayer == null || jPlayer.getPlayer() == null)
@@ -146,19 +146,19 @@ public class PermissionManager {
 	double amount = 0D;
 
 	for (Map.Entry<String, Boolean> permission : permissions.entrySet()) {
-		if (!permission.getKey().startsWith(perm) || !permission.getValue())
-			continue;
+	    if (!permission.getKey().startsWith(perm) || !permission.getValue())
+		continue;
 
-		try {
-			double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
+	    try {
+		double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
 
-			if (cumulative)
-				amount += temp;
-			else if (temp > amount)
-				amount = temp;
+		if (cumulative)
+		    amount += temp;
+		else if (temp > amount)
+		    amount = temp;
 
-		} catch (NumberFormatException ignored) {
-		}
+	    } catch (NumberFormatException ignored) {
+	    }
 	}
 
 	return amount;

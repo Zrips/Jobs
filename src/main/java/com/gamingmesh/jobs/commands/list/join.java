@@ -58,16 +58,15 @@ public class join implements Cmd {
 	    return true;
 	}
 
-	short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
-	if (!Jobs.getPlayerManager().getJobsLimit(jPlayer, PlayerMaxJobs)) {
+	if (!Jobs.getPlayerManager().getJobsLimit(jPlayer, (short) jPlayer.getJobProgression().size())) {
 	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
 	    return true;
 	}
 
 	if (args.length == 2 && args[1].equalsIgnoreCase("-needConfirmation")) {
 	    new RawMessage().addText(Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()))
-	    .addHover(Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()))
-	    .addCommand("jobs join " + job.getName()).show(pSender);
+		.addHover(Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()))
+		.addCommand("jobs join " + job.getName()).show(pSender);
 	    return true;
 	}
 
