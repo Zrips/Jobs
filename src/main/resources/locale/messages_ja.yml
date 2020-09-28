@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: '[職業名]の収入(お金)を[倍率]倍にします'
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: 上げた収入(お金)をリセットしました
       jobsboostreset: '&a%jobname% の収入(お金)をリセットしました'
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: '[職業名]の獲得ポイントを[倍率]倍にします'
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: 上げた獲得ポイントをリセットしました
       jobsboostreset: '&a%jobname% のポイント獲得をリセットしました'
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: '[職業名]の獲得経験値を[倍率]倍にします'
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: 上げた獲得経験値をリセットしました
       jobsboostreset: '&a%jobname% の獲得経験値をリセットしました'

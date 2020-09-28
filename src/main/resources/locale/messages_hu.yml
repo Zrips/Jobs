@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Növeli a pénzszerzést minden játékos számára
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Minden pénznövekedés kikapcsolva
       jobsboostreset: '&cPénznövekedés a(z) %jobname% munkánál kikapcsolva'
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Növeli a játékosok pontszerzését minden játékos számára
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: '&aMinden pont lendülete kikapcsolva.'
       jobsboostreset: '&cPont lendület a(z) %jobname% munkánál visszaállítva.'
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Növeli az összes játékos exp nyereségét.
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: '&aMinden tapasztalat növelés kikapcsolva.'
       jobsboostreset: '&cTapasztalat lendület a(z) %jobname% munkánál kikapcsolva.'

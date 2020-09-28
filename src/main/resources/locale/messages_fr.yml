@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Booster le gain d'argent pour tous les joueurs
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Tous les boost d'argent ont été désactivés
       jobsboostreset: Le boost d'argent pour le métier %jobname% a été désactivé
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Booster les points pour tous les joueurs
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Tous les boosts de points ont été désactivés
       jobsboostreset: Le boost de points pour le métier %jobname% a été désactivé
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Booster l'XP pour tous les joueurs
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Tous les boost d'XP ont été désactivés
       jobsboostreset: Le boost d'EXP pour le métier %jobname% a été désactivé

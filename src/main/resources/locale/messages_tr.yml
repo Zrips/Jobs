@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Tüm oyunculara para avansı verir.
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Tüm oyuncuların para avansı kapatıldı.
       jobsboostreset: Para avansı %jobname% mesleği için kapatıldı.
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Tüm oyunculara puan avansı verir.
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Tüm puan avansları kapatıldı
       jobsboostreset: Puan avansı %jobname% mesleği için kapatıldı.
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Tüm oyunculara exp avansı verir.
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Tüm exp avansları kapatıldı.
       jobsboostreset: Exp avansı %jobname% mesleği için kapatıldı.

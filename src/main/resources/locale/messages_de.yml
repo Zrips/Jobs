@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Der Geldbonus für alle Spieler wird erhöht.
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Alle Geld-Bonis sind ausgeschaltet.
       jobsboostreset: Der Geld-Bonus für %jobname% wurde ausgeschaltet.
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Punktebonus für alle Spieler wird erhöht
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Alle Punkte-Bonis sind abgeschaltet.
       jobsboostreset: Der Punkte-Bonus für %jobname% wurde abgeschaltet.
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Erfahrungsgewinn wird erhöht.
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Alle XP-Bonis zurückgesetzt.
       jobsboostreset: Der XP-Bonus für %jobname% wurde ausgeschaltet.

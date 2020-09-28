@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Ускоряет получение денег для всех игроков
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Ускорение получения денег отключено
       jobsboostreset: Ускорение получения денег %jobname% было отключено
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Ускоряет получение очков для всех игроков
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Ускорение получения очков отключено
       jobsboostreset: Ускорение получения очков %jobname% было отключено
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Ускоряет получение опыта для всех игроков
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Ускорение получения опыта отключено
       jobsboostreset: Ускорение получения опыта %jobname% было отключено

@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Aumenta o ganho de dinheiro para todos os jogadores
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Todo o impulso de aumento de dinheiro desativado
       jobsboostreset: O impulso de dinheiro foi desativado para %jobname%
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Aumenta o impulso de ganho de pontos para todos os jogadores
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Todos os pontos impulsos foram desativados
       jobsboostreset: O impulso de pontos foi desativado para %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Aumenta o bônus ganho de experiência para todos os jogadores
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Todos os impulsos de experiência foram desativados
       jobsboostreset: O impulso de experiência foi desativado para %jobname%

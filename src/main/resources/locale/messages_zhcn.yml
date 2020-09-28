@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: 加成玩家得到的游戏币
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: 游戏币加成重置
       jobsboostreset: '%jobname% 职业的游戏币加成重置'
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: 加成玩家得到的点数
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: 点数加成重置
       jobsboostreset: '%jobname% 职业的点数加成重置'
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: 加成玩家得到的经验
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: 经验加成重置
       jobsboostreset: '%jobname% 职业的经验加成重置'

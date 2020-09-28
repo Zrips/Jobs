@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Aumentar el salario de todos los jugadores
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Se han anulado el aumento de salario
       jobsboostreset: Se ha anulado el aumento de salario de la profesión %jobname%
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Aumentar los puntos de todos los jugadores
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Se ha anulado el aumento de puntos
       jobsboostreset: Se ha anulado el aumento de puntos de la profesión %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Aumentar la Experiencia de todos los jugadores
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Se ha anulado el aumento de experiencia
       jobsboostreset: Se ha anulado el aumento de Experiencia para la profesión de %jobname%

@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Ökar inkomsten av pengar för alla spelare
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Alla ökningar av inkomst stängdes av
       jobsboostreset: Pengarökningen har stängts av för %jobname%
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Boosts point gain for all players
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: All point boosts turned off
       jobsboostreset: Point boost has been turned off for %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Boosts exp gain for all players
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: All exp boosts turned off
       jobsboostreset: Exp boost has been turned off for %jobname%

@@ -1,21 +1,21 @@
 ---
 economy:
   error:
-    nomoney: '&cSorry, no money left in national bank!'
+    nomoney: '국가 은행에 남아있는 잔액이 없습니다!'
 limitedItem:
   error:
-    levelup: '&cYou need to level up in [jobname] to use this item!'
+    levelup: '[jobname] 직업의 레벨을 더 올려야 이 아이템을 사용하실 수 있습니다.'
 general:
-  Spawner: '&r[type] Spawner'
+  Spawner: '&r[type] 스포너'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
     time:
-      days: '&e%days% &6days '
-      hours: '&e%hours% &6hours '
-      mins: '&e%mins% &6min '
-      secs: '&e%secs% &6sec '
-    invalidPage: '&cInvalid page'
+      days: '&e%days% &6일 '
+      hours: '&e%hours% &6시간 '
+      mins: '&e%mins% &6분 '
+      secs: '&e%secs% &6초 '
+    invalidPage: '&c유효하지 않는 페이지입니다.'
     'true': '&2True'
     'false': '&cFalse'
   admin:
@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Boosts money gain for all players
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: All money boosts turned off
       jobsboostreset: Money boost has been turned off for %jobname%
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Boosts point gain for all players
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: All point boosts turned off
       jobsboostreset: Point boost has been turned off for %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Boosts exp gain for all players
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: All exp boosts turned off
       jobsboostreset: Exp boost has been turned off for %jobname%

@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Verhoogt de geldwinst voor alle spelers
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Alle geldboosts zijn uitgeschakeld
       jobsboostreset: Geldboost voor %jobname% is uitgeschakeld
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Verhoogt de punten voor alle spelers
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Punten verhoging uitgeschakeld
       jobsboostreset: Punten verhoging voor %jobname% is uitgeschakeld
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Verhoogt de exp voor alle spelers
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Alle xp verhoging uitgeschakeld
       jobsboostreset: Exp verhoging voor %jobname% is uitgeschakeld

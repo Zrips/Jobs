@@ -59,7 +59,7 @@ command:
   moneyboost:
     help:
       info: Zvyšuje získávání peněz všem hráčům
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Vsechny boosty penez vypnuty
       jobsboostreset: Boosty penez byly vypnuty pro %jobname%
@@ -70,7 +70,7 @@ command:
   pointboost:
     help:
       info: Zvyšuje získávání bodů všem hráčům
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Vsechny bodove boosty jsou vypnute
       jobsboostreset: Bodove boosty byly vypnuty pro %jobname%
@@ -81,7 +81,7 @@ command:
   expboost:
     help:
       info: Zvyšuje získávání XP všem hráčům
-      args: '[jobname]/all/reset [rate]/all'
+      args: '[jobname]/all/reset [time]/[rate]'
     output:
       allreset: Vsechny boosty expu byly vypnuty
       jobsboostreset: Boost expu byl vypnut pro %jobname%
