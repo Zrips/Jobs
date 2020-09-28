@@ -162,6 +162,19 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
+	if (!Jobs.getGCManager().payForEachVTradeItem) {
+	    ItemStack currentItem = event.getCurrentItem();
+
+	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
+		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta()
+		    .getDisplayName()), ActionType.VTRADE));
+	    } else if (currentItem != null) {
+		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.VTRADE));
+	    }
+
+	    return;
+	}
+
 	// Checking how much player traded
 	ItemStack toCraft = event.getCurrentItem();
 	ItemStack toStore = event.getCursor();
@@ -718,14 +731,14 @@ public class JobsPaymentListener implements Listener {
 
     // HACK! The API doesn't allow us to easily determine the resulting number of
     // crafted items, so we're forced to compare the inventory before and after.
-    private Integer schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack, final ActionType type) {
+    private void schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack, final ActionType type) {
 	final ItemStack[] preInv = player.getInventory().getContents();
 	// Clone the array. The content may (was for me) be mutable.
 	for (int i = 0; i < preInv.length; i++) {
 	    preInv[i] = preInv[i] != null ? preInv[i].clone() : null;
 	}
 
-	return Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		final ItemStack[] postInv = player.getInventory().getContents();

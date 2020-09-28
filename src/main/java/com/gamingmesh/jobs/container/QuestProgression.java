@@ -88,24 +88,18 @@ public class QuestProgression {
     }
 
     public void processQuest(JobsPlayer jPlayer, ActionInfo action) {
-	if (quest.isStopped()) {
-	    return;
-	}
-
-	if (!quest.hasAction(action.getType()))
+	if (quest.isStopped() || !quest.hasAction(action.getType()))
 	    return;
 
 	if (!quest.getObjectives().containsKey(action.getType()) || !quest.getObjectives().get(action.getType()).containsKey(action.getNameWithSub()) && !quest.getObjectives().get(action.getType())
 	    .containsKey(action.getName()))
 	    return;
 
-	if (!quest.getRestrictedAreas().isEmpty()) {
-	    for (String area : quest.getRestrictedAreas()) {
-		for (Entry<String, RestrictedArea> a : Jobs.getRestrictedAreaManager().getRestrictedAres().entrySet()) {
-		    if (quest.getRestrictedAreas().contains(a.getKey()) && a.getKey().equalsIgnoreCase(area)
-			&& a.getValue().inRestrictedArea(jPlayer.getPlayer().getLocation())) {
-			return;
-		    }
+	for (String area : quest.getRestrictedAreas()) {
+	    for (Entry<String, RestrictedArea> a : Jobs.getRestrictedAreaManager().getRestrictedAres().entrySet()) {
+		if (quest.getRestrictedAreas().contains(a.getKey()) && a.getKey().equalsIgnoreCase(area)
+		    && a.getValue().inRestrictedArea(jPlayer.getPlayer().getLocation())) {
+		    return;
 		}
 	    }
 	}
@@ -121,14 +115,8 @@ public class QuestProgression {
 	    }
 
 	    if (objective != null) {
-		Integer old = done.get(objective);
-		if (old == null)
-		    old = 0;
-		if (old < objective.getAmount())
-		    done.put(objective, old + 1);
-		else {
-		    done.put(objective, objective.getAmount());
-		}
+		Integer old = done.getOrDefault(objective, 0);
+		done.put(objective, old < objective.getAmount() ? old + 1 : objective.getAmount());
 	    }
 	}
 

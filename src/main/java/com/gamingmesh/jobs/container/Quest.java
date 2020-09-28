@@ -20,9 +20,7 @@ public class Quest {
     private Integer minLvl = null;
     private Integer maxLvl = null;
 
-    private final List<String> rewardCmds = new ArrayList<>();
-    private final List<String> rewards = new ArrayList<>();
-    private final List<String> area = new ArrayList<>();
+    private final List<String> rewardCmds = new ArrayList<>(), rewards = new ArrayList<>(), area = new ArrayList<>();
 
     private boolean stopped = false;
 
