@@ -18,11 +18,16 @@
 
 package com.gamingmesh.jobs.container;
 
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.actions.PotionItemActionInfo;
-import com.gamingmesh.jobs.resources.jfep.Parser;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.function.BiPredicate;
 
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -30,8 +35,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
-import java.util.function.BiPredicate;
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
+import com.gamingmesh.jobs.actions.PotionItemActionInfo;
+import com.gamingmesh.jobs.resources.jfep.Parser;
 
 public class Job {
 
@@ -231,14 +239,14 @@ public class Job {
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
 	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
-	if (actionInfo instanceof PotionItemActionInfo) {
-	    return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithSub()) ||
-	    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithSub());
-	}
+	    if (actionInfo instanceof PotionItemActionInfo) {
+		return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithSub()) ||
+		    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithSub());
+	    }
 
-	return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
-	    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
-	    jobInfo.getName().equalsIgnoreCase(action.getName());
+	    return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
+		(jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+		jobInfo.getName().equalsIgnoreCase(action.getName());
 	};
 
 	String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
@@ -502,6 +510,8 @@ public class Job {
 //	return getNextQuest(null, null);
 //    }
 
+    Random rand = new Random(System.nanoTime());
+
     public Quest getNextQuest(List<String> excludeQuests, Integer level) {
 	List<Quest> ls = new ArrayList<>(this.quests);
 	Collections.shuffle(ls);
@@ -509,16 +519,13 @@ public class Job {
 	int i = 0;
 	while (true) {
 	    i++;
-	    Random rand = new Random(System.nanoTime());
 	    int target = rand.nextInt(100);
 	    for (Quest one : ls) {
-		if (one.getChance() >= target)
-		    if (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase())) {
-			if (!one.isInLevelRange(level))
-			    continue;
-
-			return one;
-		    }
+		if (one.getChance() <= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))) {
+		    if (!one.isInLevelRange(level))
+			continue;
+		    return one;
+		}
 	    }
 	    if (i > 20)
 		return null;
