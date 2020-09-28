@@ -984,7 +984,7 @@ public class PlayerManager {
 
 	if (getall) {
 	    if (petPay == null)
-	    petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force);
+		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force);
 	    if (petPay != null)
 		boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
 	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);

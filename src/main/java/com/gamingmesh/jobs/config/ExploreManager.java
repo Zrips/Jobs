@@ -79,9 +79,9 @@ public class ExploreManager {
 	}
 	ExploreChunk chunk = eRegions.getChunk(x, z);
 	if (chunk == null)
-	    chunk = new ExploreChunk(x, z);
+	    chunk = new ExploreChunk();
 
-	eRegions.addChunk(chunk);
+	eRegions.addChunk(x, z, chunk);
 	worlds.put(world, eRegions);
 
 	return chunk.addPlayer(playerId);
@@ -111,11 +111,11 @@ public class ExploreManager {
 	    }
 	    ExploreChunk chunk = eRegions.getChunk(x, z);
 	    if (chunk == null)
-		chunk = new ExploreChunk(x, z);
+		chunk = new ExploreChunk();
 	    chunk.deserializeNames(names);
 	    chunk.setDbId(id);
 
-	    eRegions.addChunk(chunk);
+	    eRegions.addChunk(x, z, chunk);
 	    worlds.put(jobsWorld.getName(), eRegions);
 
 	} catch (SQLException e) {

@@ -20,10 +20,7 @@ public class MyPetManager {
     }
 
     public boolean isMyPet(Object ent) {
-	if (!enabled || !(ent instanceof MyPetBukkitEntity))
-	    return false;
-
-	return true;
+	return enabled && ent instanceof MyPetBukkitEntity;
     }
 
     public UUID getOwnerOfPet(Object ent) {

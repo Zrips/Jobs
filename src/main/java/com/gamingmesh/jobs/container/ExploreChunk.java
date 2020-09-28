@@ -9,23 +9,19 @@ import com.gamingmesh.jobs.Jobs;
 
 public class ExploreChunk {
 
-    private int x;
-    private int z;
+//    private int x;
+//    private int z;
     private Set<Integer> playerIds = new HashSet<>();
-    private Boolean full;
-    private Integer dbId;
-    private Boolean updated;
+    private int dbId = -1;
+    private boolean updated = false;
 
-    public ExploreChunk(int playerId, int x, int z) {
-	this(x, z);
-
-	this.playerIds.add(playerId);
+    public ExploreChunk() {
     }
 
-    public ExploreChunk(int x, int z) {
-	this.x = x;
-	this.z = z;
-    }
+//    public ExploreChunk(int x, int z) {
+//	this.x = x;
+//	this.z = z;
+//    }
 
     public ExploreRespond addPlayer(int playerId) {
 	if (isFullyExplored()) {
@@ -41,7 +37,6 @@ public class ExploreChunk {
 	}
 
 	if (playerIds.size() >= Jobs.getExplore().getPlayerAmount()) {
-	    this.full = true;
 	    if (Jobs.getGCManager().ExploreCompact)
 		playerIds = null;
 	}
@@ -57,13 +52,13 @@ public class ExploreChunk {
 	return isFullyExplored() ? Jobs.getExplore().getPlayerAmount() : playerIds.size();
     }
 
-    public int getX() {
-	return x;
-    }
-
-    public int getZ() {
-	return z;
-    }
+//    public int getX() {
+//	return x;
+//    }
+//
+//    public int getZ() {
+//	return z;
+//    }
 
     public Set<Integer> getPlayers() {
 	return playerIds == null ? new HashSet<>() : playerIds;
@@ -84,7 +79,6 @@ public class ExploreChunk {
 
     public void deserializeNames(String names) {
 	if (names == null || names.isEmpty()) {
-	    this.full = true;
 	    playerIds = null;
 	    return;
 	}
@@ -109,7 +103,6 @@ public class ExploreChunk {
 	}
 
 	if (playerIds.size() >= Jobs.getExplore().getPlayerAmount()) {
-	    this.full = true;
 	    if (Jobs.getGCManager().ExploreCompact) {
 		playerIds = null;
 		if (!names.isEmpty())
@@ -118,23 +111,23 @@ public class ExploreChunk {
 	}
     }
 
-    public Integer getDbId() {
+    public int getDbId() {
 	return dbId;
     }
 
-    public void setDbId(Integer dbId) {
+    public void setDbId(int dbId) {
 	this.dbId = dbId;
     }
 
     public boolean isUpdated() {
-	return updated == null ? false : updated;
+	return updated;
     }
 
     public void setUpdated(boolean updated) {
-	this.updated = !updated ? null : true;
+	this.updated = updated;
     }
 
     public boolean isFullyExplored() {
-	return full != null && full;
+	return playerIds == null || playerIds.size() >= Jobs.getExplore().getPlayerAmount();
     }
 }

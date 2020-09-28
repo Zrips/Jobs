@@ -2307,13 +2307,14 @@ public abstract class JobsDAO {
 
 		int id = jobsWorld == null ? 0 : jobsWorld.getId();
 		if (id != 0)
-		    for (ExploreChunk oneChunk : worlds.getValue().getChunks().values()) {
-			if (oneChunk.getDbId() != null)
+		    for (Entry<Short, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
+			ExploreChunk chunk = oneChunk.getValue();
+			if (chunk.getDbId() != -1)
 			    continue;
 			prest2.setInt(1, id);
-			prest2.setInt(2, oneChunk.getX());
-			prest2.setInt(3, oneChunk.getZ());
-			prest2.setString(4, oneChunk.serializeNames());
+			prest2.setInt(2, worlds.getValue().getChunkX(oneChunk.getKey()));
+			prest2.setInt(3, worlds.getValue().getChunkZ(oneChunk.getKey()));
+			prest2.setString(4, chunk.serializeNames());
 			prest2.setString(5, jobsWorld != null ? jobsWorld.getName() : "");
 			prest2.addBatch();
 			i++;
@@ -2356,7 +2357,7 @@ public abstract class JobsDAO {
 
 	    for (ExploreRegion worlds : temp.values()) {
 		for (ExploreChunk oneChunk : worlds.getChunks().values()) {
-		    if (oneChunk.getDbId() == null)
+		    if (oneChunk.getDbId() == -1)
 			continue;
 		    if (!oneChunk.isUpdated())
 			continue;
