@@ -1,27 +1,16 @@
 package com.gamingmesh.jobs.container;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
 
 public class ExploreChunk {
 
-//    private int x;
-//    private int z;
-    private Set<Integer> playerIds = new HashSet<>();
+    private ArrayList<Integer> playerIds = new ArrayList<>();
     private int dbId = -1;
     private boolean updated = false;
-
-    public ExploreChunk() {
-    }
-
-//    public ExploreChunk(int x, int z) {
-//	this.x = x;
-//	this.z = z;
-//    }
 
     public ExploreRespond addPlayer(int playerId) {
 	if (isFullyExplored()) {
@@ -36,9 +25,8 @@ public class ExploreChunk {
 	    newChunkForPlayer = true;
 	}
 
-	if (playerIds.size() >= Jobs.getExplore().getPlayerAmount()) {
-	    if (Jobs.getGCManager().ExploreCompact)
-		playerIds = null;
+	if (playerIds.size() >= Jobs.getExplore().getPlayerAmount() && Jobs.getGCManager().ExploreCompact) {
+	    playerIds = null;
 	}
 
 	return new ExploreRespond(newChunkForPlayer ? getPlayers().size() : getPlayers().size() + 1, newChunkForPlayer);
@@ -52,29 +40,21 @@ public class ExploreChunk {
 	return isFullyExplored() ? Jobs.getExplore().getPlayerAmount() : playerIds.size();
     }
 
-//    public int getX() {
-//	return x;
-//    }
-//
-//    public int getZ() {
-//	return z;
-//    }
-
-    public Set<Integer> getPlayers() {
-	return playerIds == null ? new HashSet<>() : playerIds;
+    public ArrayList<Integer> getPlayers() {
+	return playerIds == null ? new ArrayList<>() : playerIds;
     }
 
     public String serializeNames() {
 	if (playerIds == null)
 	    return null;
 
-	String s = "";
+	StringBuilder s = new StringBuilder();
 	for (Integer one : playerIds) {
-	    if (!s.isEmpty())
-		s += ";";
-	    s += one;
+	    if (!s.toString().isEmpty())
+		s.append(";");
+	    s.append(one);
 	}
-	return s;
+	return s.toString();
     }
 
     public void deserializeNames(String names) {
@@ -84,7 +64,7 @@ public class ExploreChunk {
 	}
 
 	if (playerIds == null) {
-	    playerIds = new HashSet<>();
+	    playerIds = new ArrayList<>();
 	}
 
 	List<String> split = Arrays.asList(names.split(";"));
