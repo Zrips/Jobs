@@ -34,6 +34,7 @@ public class Util {
     private static HashMap<UUID, String> questsEditorMap = new HashMap<>();
 
     private static HashMap<String, JobsWorld> jobsWorlds = new HashMap<>();
+    private static HashMap<Integer, JobsWorld> jobsWorldsId = new HashMap<>();
 
     public static final List<UUID> LEAVECONFIRM = new ArrayList<>();
 
@@ -178,11 +179,7 @@ public class Util {
     }
 
     public static JobsWorld getJobsWorld(int id) {
-	for (JobsWorld one : jobsWorlds.values()) {
-	    if (one.getId() == id)
-		return one;
-	}
-	return null;
+	return jobsWorldsId.get(id);
     }
 
     public static HashMap<String, JobsWorld> getJobsWorlds() {
@@ -192,7 +189,8 @@ public class Util {
     public static void addJobsWorld(JobsWorld jobsWorld) {
 	if (jobsWorld == null || jobsWorld.getId() == 0)
 	    return;
-	Util.jobsWorlds.put(jobsWorld.getName().toLowerCase(), jobsWorld);
+	jobsWorlds.put(jobsWorld.getName().toLowerCase(), jobsWorld);
+	jobsWorldsId.put(jobsWorld.getId(), jobsWorld);
     }
 
     public static List<String> getFilesFromPackage(String pckgname) throws ClassNotFoundException {

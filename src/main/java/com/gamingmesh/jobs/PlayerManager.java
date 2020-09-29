@@ -958,37 +958,37 @@ public class PlayerManager {
 	if (HookManager.getMcMMOManager().mcMMOPresent || HookManager.getMcMMOManager().mcMMOOverHaul)
 	    boost.add(BoostOf.McMMO, new BoostMultiplier().add(HookManager.getMcMMOManager().getMultiplier(player.getPlayer())));
 
-	double petPay = 0D;
+	Double petPay = null;
 
 	if (ent instanceof Tameable) {
 	    Tameable t = (Tameable) ent;
 	    if (t.isTamed() && t.getOwner() instanceof Player) {
 		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
-		if (petPay != 0D)
+		if (petPay != null)
 		    boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
 	    }
 	}
 
 	if (ent != null && HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(ent)) {
-	    if (petPay == 0D)
+	    if (petPay == null)
 		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
-	    if (petPay != 0D)
+	    if (petPay != null)
 		boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
 	}
 
 	if (victim != null && victim.hasMetadata(getMobSpawnerMetadata())) {
-	    double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner");
-	    if (amount != 0D)
+	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner");
+	    if (amount != null)
 		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
 	}
 
 	if (getall) {
-	    if (petPay == 0D)
+	    if (petPay == null)
 		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force);
-	    if (petPay != 0D)
+	    if (petPay != null)
 		boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
-	    double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
-	    if (amount != 0D)
+	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
+	    if (amount != null)
 		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
 	}
 

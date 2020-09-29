@@ -1754,7 +1754,7 @@ public abstract class JobsDAO {
 
 	    for (String u : uuids) {
 		PreparedStatement ps = conn.prepareStatement("DELETE FROM `" + DBTables.UsersTable.getTableName()
-		+ "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
+		    + "` WHERE `" + UserTableFields.player_uuid.getCollumn() + "` = ?;");
 		ps.setString(1, u);
 		ps.execute();
 		close(ps);
@@ -2416,10 +2416,16 @@ public abstract class JobsDAO {
 
 	    for (Integer one : missingWorlds) {
 		PreparedStatement prest2 = null;
-		prest2 = conn.prepareStatement("DELETE FROM `" + DBTables.ExploreDataTable.getTableName() + "` WHERE `" + ExploreDataTableFields.worldid.getCollumn() + "` = ?;");
-		prest2.setInt(1, one);
-		prest2.execute();
-		close(prest2);
+		try {
+		    prest2 = conn.prepareStatement("DELETE FROM `" + DBTables.ExploreDataTable.getTableName() + "` WHERE `" + ExploreDataTableFields.worldid.getCollumn() + "` = ?;");
+		    prest2.setInt(1, one);
+		    prest2.execute();
+		} catch (Throwable e) {
+		    e.printStackTrace();
+		} finally {
+		    close(prest2);
+		}
+
 	    }
 
 	} catch (SQLException e) {
