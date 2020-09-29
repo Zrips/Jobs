@@ -106,25 +106,27 @@ public class JobsMySQL extends JobsDAO {
 	    return false;
 	} catch (SQLException e) {
 	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
-	}
-	try {
-
-	    PreparedStatement insert = conn.prepareStatement("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';");
-	    ResultSet res = insert.executeQuery();
-	    if (res.next()) {
-		res.close();
-		insert.close();
-		return true;
-	    }
-	    res.close();
-	    insert.close();
-	    return false;
-	} catch (SQLException e) {
-	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
-	    return false;
-	} finally {
 	    close(statement);
 	}
+	PreparedStatement insert = null;
+	ResultSet res = null;
+	try {
+	    insert = conn.prepareStatement("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';");
+	    res = insert.executeQuery();
+	    if (res.next()) {
+		close(res);
+		close(insert);
+		close(statement);
+		return true;
+	    }
+	} catch (SQLException e) {
+	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
+	} finally {
+	}
+	close(res);
+	close(insert);
+	close(statement);
+	return false;
     }
 
     @Override

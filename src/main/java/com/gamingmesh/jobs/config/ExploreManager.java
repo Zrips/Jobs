@@ -91,10 +91,6 @@ public class ExploreManager {
 	try {
 	    int worldId = res.getInt(ExploreDataTableFields.worldid.getCollumn());
 	    String worldName = res.getString(ExploreDataTableFields.worldname.getCollumn());
-	    int x = res.getInt(ExploreDataTableFields.chunkX.getCollumn());
-	    int z = res.getInt(ExploreDataTableFields.chunkZ.getCollumn());
-	    String names = res.getString(ExploreDataTableFields.playerNames.getCollumn());
-	    int id = res.getInt("id");
 
 	    JobsWorld jobsWorld = Util.getJobsWorld(worldName);
 	    if (jobsWorld == null)
@@ -102,6 +98,11 @@ public class ExploreManager {
 
 	    if (jobsWorld == null)
 		return;
+
+	    int x = res.getInt(ExploreDataTableFields.chunkX.getCollumn());
+	    int z = res.getInt(ExploreDataTableFields.chunkZ.getCollumn());
+	    String names = res.getString(ExploreDataTableFields.playerNames.getCollumn());
+	    int id = res.getInt("id");
 
 	    ExploreRegion eRegions = worlds.get(jobsWorld.getName());
 	    if (eRegions == null) {

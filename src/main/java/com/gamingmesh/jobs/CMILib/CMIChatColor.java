@@ -179,23 +179,16 @@ public class CMIChatColor {
 
 	    gtext = stripColor(gtext);
 
-	    for (int i = 0; i < gtext.length(); i++) {
-		char ch = gtext.charAt(i);
-		int length = gtext.length();
-		length = length < 2 ? 2 : length;
-
-		double percent = (i * 100D) / (length - 1);
-
-//		if (gtext.length() == 1) {
-//		    percent = 50D; 	    
-//		}
-
-		CMIChatColor mix = CMIChatColor.mixColors(c1, c2, percent);
-		updated += CMIChatColor.colorCodePrefix + mix.getHex() + CMIChatColor.colorCodeSuffix;
-
-		updated += String.valueOf(ch);
-//		updated += charEscape(String.valueOf(ch));
-	    }
+	    if (gtext != null)
+		for (int i = 0; i < gtext.length(); i++) {
+		    char ch = gtext.charAt(i);
+		    int length = gtext.length();
+		    length = length < 2 ? 2 : length;
+		    double percent = (i * 100D) / (length - 1);
+		    CMIChatColor mix = CMIChatColor.mixColors(c1, c2, percent);
+		    updated += CMIChatColor.colorCodePrefix + mix.getHex() + CMIChatColor.colorCodeSuffix;
+		    updated += String.valueOf(ch);
+		}
 
 	    if (continuous) {
 		updated += CMIChatColor.colorCodePrefix + gradientMatch.group(5).replace("#", "") + ">" + CMIChatColor.colorCodeSuffix;

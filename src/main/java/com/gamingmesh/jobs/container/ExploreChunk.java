@@ -102,12 +102,10 @@ public class ExploreChunk {
 	    }
 	}
 
-	if (playerIds.size() >= Jobs.getExplore().getPlayerAmount()) {
-	    if (Jobs.getGCManager().ExploreCompact) {
-		playerIds = null;
-		if (!names.isEmpty())
-		    updated = true;
-	    }
+	if (playerIds.size() >= Jobs.getExplore().getPlayerAmount() && Jobs.getGCManager().ExploreCompact) {
+	    playerIds = null;
+	    if (!names.isEmpty())
+		updated = true;
 	}
     }
 
