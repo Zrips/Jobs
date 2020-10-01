@@ -18,7 +18,8 @@ Main pages:
 - Spigot: https://www.spigotmc.org/resources/4216/
 
 # Jobs API
-You can manually add the jar file to your build path or you can use jitpack if you use maven (don't know gradle):
+You can manually add the jar file to your build path or you can use jitpack if you use maven or gradle:
+## Maven:
 ```xml
 <repositories>
     <repository>
@@ -35,6 +36,17 @@ You can manually add the jar file to your build path or you can use jitpack if y
         <scope>provided</scope>
     </dependency>
 </dependencies>
+```
+## Gradle:
+```gradle
+repositories {
+    maven { 
+        url 'https://jitpack.io' 
+    }
+}
+dependencies {
+    implementation 'com.github.Zrips:Jobs:LATEST' //Change the LATEST to the current version of jobs
+}
 ```
 
 For API events: https://github.com/Zrips/Jobs/wiki/API
