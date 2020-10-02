@@ -302,8 +302,6 @@ public class JobsPaymentListener implements Listener {
 		    Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getLivingEntity()).getColor().name(), ActionType.SHEAR));
 		}
 	    }
-
-	    return;
 	}
 
 	Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
@@ -546,8 +544,6 @@ public class JobsPaymentListener implements Listener {
 		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.TAME));
 		}
 	    }
-
-	    return;
 	}
 
 	Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
@@ -1190,7 +1186,7 @@ public class JobsPaymentListener implements Listener {
 	if (e.getDamager() instanceof Player) {
 	    pDamager = (Player) e.getDamager();
 	    // Checking if killer is MyPet animal
-	} else if (HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager())) {
+	} else if (HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null)) {
 	    UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(e.getDamager());
 	    if (uuid != null)
 		pDamager = Bukkit.getPlayer(uuid);
@@ -1248,8 +1244,6 @@ public class JobsPaymentListener implements Listener {
 		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.KILL), pDamager, stacked.getLivingEntity());
 		}
 	    }
-
-	    return;
 	}
 
 	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), pDamager, lVictim);

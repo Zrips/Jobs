@@ -969,7 +969,7 @@ public class PlayerManager {
 	    }
 	}
 
-	if (ent != null && HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(ent)) {
+	if (ent != null && HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(ent, player.getPlayer())) {
 	    if (petPay == null)
 		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
 	    if (petPay != null)

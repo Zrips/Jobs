@@ -144,6 +144,8 @@ public class ShopManager {
 	    GUIitem.setAmount(item.getIconAmount());
 
 	    ItemMeta meta = GUIitem.getItemMeta();
+	    if (meta == null)
+		continue;
 
 	    if (item.getIconName() != null)
 		meta.setDisplayName(item.getIconName());
@@ -190,6 +192,9 @@ public class ShopManager {
 		GUIitem = CMIMaterial.PLAYER_HEAD.newItemStack();
 
 		SkullMeta skullMeta = (SkullMeta) GUIitem.getItemMeta();
+		if (skullMeta == null)
+		    continue;
+
 		// Fix skull meta
 		skullMeta.setDisplayName(item.getIconName());
 		skullMeta.setLore(Lore);
@@ -262,8 +267,10 @@ public class ShopManager {
 	}
 
 	ItemStack Item = new ItemStack(Material.ARROW);
-
 	ItemMeta meta = Item.getItemMeta();
+	if (meta == null)
+	    return false;
+
 	int prevSlot = getPrevButtonSlot(GuiSize.getFields(), page);
 	if (prevSlot != -1 && page > 1) {
 	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.prevPage"));

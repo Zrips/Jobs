@@ -2,29 +2,35 @@ package com.gamingmesh.jobs.hooks.MyPet;
 
 import java.util.UUID;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+
 import de.Keyle.MyPet.MyPetApi;
 import de.Keyle.MyPet.api.entity.MyPet;
 import de.Keyle.MyPet.api.entity.MyPetBukkitEntity;
+import de.Keyle.MyPet.api.player.MyPetPlayer;
 import de.Keyle.MyPet.api.repository.PlayerManager;
 
 public class MyPetManager {
 
-    PlayerManager mp;
-    de.Keyle.MyPet.api.repository.MyPetManager mppm;
-    private boolean enabled = false;
+    private final PlayerManager mp = MyPetApi.getPlayerManager();
 
-    public MyPetManager() {
-	mp = MyPetApi.getPlayerManager();
-	mppm = MyPetApi.getMyPetManager();
-	enabled = true;
+    public boolean isMyPet(Entity entity, Player owner) {
+	if (owner == null) {
+	    return entity instanceof MyPetBukkitEntity;
+	}
+
+	if (!mp.isMyPetPlayer(owner)) {
+	    return false;
+	}
+
+	MyPetPlayer myPetPlayer = mp.getMyPetPlayer(owner);
+	return myPetPlayer.hasMyPet() && myPetPlayer.getMyPet().getEntity().isPresent() &&
+		myPetPlayer.getMyPet().getEntity().get().getType() == entity.getType();
     }
 
-    public boolean isMyPet(Object ent) {
-	return enabled && ent instanceof MyPetBukkitEntity;
-    }
-
-    public UUID getOwnerOfPet(Object ent) {
-	if (!enabled || !(ent instanceof MyPetBukkitEntity))
+    public UUID getOwnerOfPet(Entity ent) {
+	if (!(ent instanceof MyPetBukkitEntity))
 	    return null;
 
 	MyPet myPet = ((MyPetBukkitEntity) ent).getMyPet();
