@@ -963,7 +963,7 @@ public class PlayerManager {
 	if (ent instanceof Tameable) {
 	    Tameable t = (Tameable) ent;
 	    if (t.isTamed() && t.getOwner() instanceof Player) {
-		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
+		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", false, false, true);
 		if (petPay != null)
 		    boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
 	    }
