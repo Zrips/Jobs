@@ -210,36 +210,6 @@ public class GeneralConfigManager {
 	return modifyChat;
     }
 
-    /**
-     * Get the chat prefix string from file
-     * @deprecated Use {@link #modifyChatPrefix}
-     * @return
-     */
-    @Deprecated
-    public String getModifyChatPrefix() {
-	return modifyChatPrefix;
-    }
-
-    /**
-     * Get the chat suffix string from file
-     * @deprecated Use {@link #modifyChatSuffix}
-     * @return
-     */
-    @Deprecated
-    public String getModifyChatSuffix() {
-	return modifyChatSuffix;
-    }
-
-    /**
-     * Get the chat separator string from file
-     * @deprecated Use {@link #modifyChatSeparator}
-     * @return
-     */
-    @Deprecated
-    public String getModifyChatSeparator() {
-	return modifyChatSeparator;
-    }
-
     public synchronized int getEconomyBatchDelay() {
 	return economyBatchDelay;
     }
@@ -273,7 +243,7 @@ public class GeneralConfigManager {
 	    return true;
 
 	if (UseAsWhiteListWorldList) {
-	    return DisabledWorldsList.isEmpty() && DisabledWorldsList.contains(world);
+	    return DisabledWorldsList.contains(world);
 	}
 
 	if (DisabledWorldsList.isEmpty())
