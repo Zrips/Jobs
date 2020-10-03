@@ -971,7 +971,7 @@ public class PlayerManager {
 
 	if (ent != null && HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(ent, player.getPlayer())) {
 	    if (petPay == null)
-		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay");
+		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", false, false, true);
 	    if (petPay != null)
 		boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
 	}
@@ -984,7 +984,7 @@ public class PlayerManager {
 
 	if (getall) {
 	    if (petPay == null)
-		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force);
+		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force, false, true);
 	    if (petPay != null)
 		boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
 	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
