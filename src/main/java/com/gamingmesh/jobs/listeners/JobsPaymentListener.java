@@ -1693,7 +1693,7 @@ public class JobsPaymentListener implements Listener {
 		    "[max]", jPlayer.getMaxBrewingStandsAllowed() == 0 ? "-" : jPlayer.getMaxBrewingStandsAllowed()));
 	    }
 	} else if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) &&
-	    !block.getType().toString().startsWith("STRIPPED_") &&
+	    block.getType().toString().startsWith("STRIPPED_") &&
 	    event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 	    ItemStack iih = Jobs.getNms().getItemInMainHand(p);
 	    if (iih.getType().toString().endsWith("_AXE")) {
@@ -1707,7 +1707,7 @@ public class JobsPaymentListener implements Listener {
 		    return;
 
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-		    if (block.getType().toString().startsWith("STRIPPED_") && jPlayer != null)
+		    if (jPlayer != null)
 			Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block);
 		}, 1);
 	    }
