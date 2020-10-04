@@ -57,10 +57,10 @@ public class Util {
 	if (w != null)
 	    return w;
 
-	name = name.replace("_", "").replace(".", "").replace("-", "");
+	name = name.replaceAll("[_|.|-]", "");
 
 	for (World one : Bukkit.getWorlds()) {
-	    String n = one.getName().replace("_", "").replace(".", "").replace("-", "");
+	    String n = one.getName().replaceAll("[_|.|-]", "");
 	    if (n.equalsIgnoreCase(name))
 		return one;
 	}
@@ -69,7 +69,7 @@ public class Util {
     }
 
     public static String firstToUpperCase(String name) {
-	return name.toLowerCase().replace("_", " ").substring(0, 1).toUpperCase() + name.toLowerCase().replace("_", " ").substring(1);
+	return name.toLowerCase().replace('_', ' ').substring(0, 1).toUpperCase() + name.toLowerCase().replace('_', ' ').substring(1);
     }
 
     public static HashMap<UUID, String> getJobsEditorMap() {
@@ -125,7 +125,7 @@ public class Util {
 		    break;
 		}
 	    } else {
-		if (lookingFor.equals(material)) {
+		if (lookingFor == material) {
 		    return block;
 		}
 	    }

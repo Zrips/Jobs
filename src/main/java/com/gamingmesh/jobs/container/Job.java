@@ -84,11 +84,10 @@ public class Job {
 
     private Parser moneyEquation, xpEquation, pointsEquation;
 
-    private List<String> fDescription = new ArrayList<>();
-
+    private final List<String> fDescription = new ArrayList<>();
     private List<String> worldBlacklist = new ArrayList<>();
 
-    private List<Quest> quests = new ArrayList<>();
+    private final List<Quest> quests = new ArrayList<>();
     private int maxDailyQuests = 1;
 
     private int id = 0;
@@ -510,23 +509,23 @@ public class Job {
 //	return getNextQuest(null, null);
 //    }
 
-    Random rand = new Random(System.nanoTime());
-
     public Quest getNextQuest(List<String> excludeQuests, Integer level) {
-	List<Quest> ls = new ArrayList<>(this.quests);
+	List<Quest> ls = new ArrayList<>(quests);
 	Collections.shuffle(ls);
 
 	int i = 0;
 	while (true) {
 	    i++;
+
+	    final Random rand = new Random(System.nanoTime());
 	    int target = rand.nextInt(100);
 	    for (Quest one : ls) {
-		if (one.getChance() <= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))) {
-		    if (!one.isInLevelRange(level))
-			continue;
+		if (one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
+			    && one.isInLevelRange(level)) {
 		    return one;
 		}
 	    }
+
 	    if (i > 20)
 		return null;
 	}
