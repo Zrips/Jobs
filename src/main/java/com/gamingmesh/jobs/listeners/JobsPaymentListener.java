@@ -423,6 +423,10 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
+	// A tool should not trigger a BlockPlaceEvent (fixes stripping logs bug #940)
+	if (CMIMaterial.get(event.getItemInHand().getType()).isTool())
+		return;
+
 	Block block = event.getBlock();
 
 	//disabling plugin in world
