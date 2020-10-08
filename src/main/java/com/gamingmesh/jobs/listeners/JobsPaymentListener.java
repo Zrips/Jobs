@@ -232,9 +232,6 @@ public class JobsPaymentListener implements Listener {
 
 	// pay
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
-
 	if (!Jobs.isPlayerHaveAction(jPlayer, ActionType.MILK)) {
 	    return;
 	}
@@ -414,18 +411,14 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	}
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
-
-	Jobs.action(jPlayer, bInfo, block);
+	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), bInfo, block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
 	// A tool should not trigger a BlockPlaceEvent (fixes stripping logs bug #940)
 	if (CMIMaterial.get(event.getItemInHand().getType()).isTool())
-		return;
+	    return;
 
 	Block block = event.getBlock();
 
@@ -464,11 +457,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	}
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
-
-	Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.PLACE), block);
+	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new BlockActionInfo(block, ActionType.PLACE), block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1070,11 +1059,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
-
-	Jobs.action(jPlayer, new ItemActionInfo(event.getResult(), ActionType.SMELT));
+	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(event.getResult(), ActionType.SMELT));
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -1297,11 +1282,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
-
-	Jobs.action(jPlayer, new EntityActionInfo(event.getEntity(), ActionType.PLACE));
+	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(event.getEntity(), ActionType.PLACE));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1328,11 +1309,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
-
-	Jobs.action(jPlayer, new EntityActionInfo(event.getEntity(), ActionType.BREAK));
+	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(event.getEntity(), ActionType.BREAK));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1380,11 +1357,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
-
-	Jobs.action(jPlayer, new EntityActionInfo(ent, ActionType.PLACE));
+	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(ent, ActionType.PLACE));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1419,11 +1392,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// pay
-	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(pDamager);
-	if (jDamager == null)
-	    return;
-
-	Jobs.action(jDamager, new EntityActionInfo(ent, ActionType.BREAK), e.getDamager());
+	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(pDamager), new EntityActionInfo(ent, ActionType.BREAK), e.getDamager());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1487,10 +1456,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 
 	    // pay
-	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	    if (jPlayer == null)
-		return;
-	    Jobs.action(jPlayer, new EntityActionInfo(animal, ActionType.BREED));
+	    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(animal, ActionType.BREED));
 	}
     }
 
@@ -1698,7 +1664,7 @@ public class JobsPaymentListener implements Listener {
 	    }
 	} else if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) &&
 	    block.getType().toString().startsWith("STRIPPED_") &&
-	    event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+	    event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null) {
 	    ItemStack iih = Jobs.getNms().getItemInMainHand(p);
 	    if (iih.getType().toString().endsWith("_AXE")) {
 		// check if player is riding
@@ -1710,10 +1676,8 @@ public class JobsPaymentListener implements Listener {
 		    - Jobs.getNms().getDurability(iih) != iih.getType().getMaxDurability())
 		    return;
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-		    if (jPlayer != null)
-			Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block);
-		}, 1);
+		Bukkit.getScheduler().runTaskLater(plugin, () ->
+		    Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 3);
 	    }
 	}
     }

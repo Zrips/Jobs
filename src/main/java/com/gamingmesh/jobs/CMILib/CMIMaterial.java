@@ -2657,7 +2657,7 @@ public enum CMIMaterial {
     }
 
     public boolean equals(Material mat) {
-	return getMaterial() != null && getMaterial() == mat;
+	return getMaterial() == mat;
     }
 
     public List<String> getLegacyNames() {

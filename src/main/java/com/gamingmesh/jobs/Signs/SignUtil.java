@@ -351,7 +351,7 @@ public class SignUtil {
 		    return;
 
 		Skull skull = (Skull) b.getState();
-		if (skull.getOwner() != null && skull.getOwner().equalsIgnoreCase(Playername))
+		if (Playername.equalsIgnoreCase(skull.getOwner()))
 		    return;
 
 		skull.setOwner(Playername);

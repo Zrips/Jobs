@@ -226,7 +226,7 @@ public class Util {
 		JarEntry entry = en.nextElement();
 		String entryName = entry.getName();
 
-		packageName = packageName.replace(".", "/");
+		packageName = packageName.replace('.', '/');
 
 		if (entryName != null && entryName.endsWith("." + fileType) && entryName.startsWith(packageName)) {
 		    String name = entryName.replace(packageName, "").replace("." + fileType, "").replace("/", "");

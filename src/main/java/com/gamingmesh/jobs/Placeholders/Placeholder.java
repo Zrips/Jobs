@@ -456,10 +456,10 @@ public class Placeholder {
 		    return Integer.toString(user.getLimit(t));
 		case plimit_$1:
 		    t = CurrencyType.getByName(vals.get(0));
-		    return Double.toString(user.getPaymentLimit().GetAmount(t));
+		    return Double.toString(user.getPaymentLimit().getAmount(t));
 		case plimit_tleft_$1:
 		    t = CurrencyType.getByName(vals.get(0));
-		    return TimeManage.to24hourShort(user.getPaymentLimit().GetLeftTime(t));
+		    return TimeManage.to24hourShort(user.getPaymentLimit().getLeftTime(t));
 		case user_jlevel_$1:
 		    return j == null ? "0" : Integer.toString(j.getLevel());
 		case user_jexp_$1:

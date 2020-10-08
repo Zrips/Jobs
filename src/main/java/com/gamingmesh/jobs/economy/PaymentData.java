@@ -8,10 +8,12 @@ import com.gamingmesh.jobs.container.CurrencyType;
 public class PaymentData {
 
     private Long lastAnnouced = 0L;
-    private HashMap<CurrencyType, Double> payments = new HashMap<>();
-    private HashMap<CurrencyType, Long> paymentsTimes = new HashMap<>();
-    private boolean Informed = false;
-    private boolean Reseted = false;
+
+    private final HashMap<CurrencyType, Double> payments = new HashMap<>();
+    private final HashMap<CurrencyType, Long> paymentsTimes = new HashMap<>();
+
+    private boolean informed = false;
+    private boolean reseted = false;
 
     public PaymentData(Long time, Double Payment, Double Points, Double Exp, Long lastAnnouced, boolean Informed) {
 	paymentsTimes.put(CurrencyType.EXP, time);
@@ -20,127 +22,114 @@ public class PaymentData {
 	payments.put(CurrencyType.EXP, Exp);
 	payments.put(CurrencyType.MONEY, Payment);
 	payments.put(CurrencyType.POINTS, Points);
+
 	this.lastAnnouced = lastAnnouced;
-	this.Informed = Informed;
+	this.informed = Informed;
     }
 
     public PaymentData(CurrencyType type, Double amount) {
 	paymentsTimes.put(type, System.currentTimeMillis());
 	payments.put(type, amount);
+
 	this.lastAnnouced = 0L;
-	this.Informed = false;
+	this.informed = false;
     }
 
     public PaymentData() {
 	resetLimits();
     }
 
-    public Long GetTime(CurrencyType type) {
+    public Long getTime(CurrencyType type) {
 	return paymentsTimes.get(type);
     }
 
-    public void setReseted(boolean Reseted) {
-	this.Reseted = Reseted;
+    public void setReseted(boolean reseted) {
+	this.reseted = reseted;
     }
 
     public boolean isReseted() {
-	return Reseted;
+	return reseted;
     }
 
-    public Double GetAmount(CurrencyType type) {
-	if (!payments.containsKey(type))
-	    return 0D;
-	return (int) (payments.get(type) * 100) / 100D;
+    public Double getAmount(CurrencyType type) {
+	return !payments.containsKey(type) ? 0D : (int) (payments.get(type) * 100) / 100D;
     }
 
-    public Double GetAmountBylimit(CurrencyType type, int limit) {
-	if (GetAmount(type) > limit)
-	    return (double) limit;
-	return (int) (GetAmount(type) * 100) / 100D;
+    public Double getAmountBylimit(CurrencyType type, int limit) {
+	return getAmount(type) > limit ? (double) limit : (int) (getAmount(type) * 100) / 100D;
     }
 
-    public Long GetLastAnnounced() {
+    public Long getLastAnnounced() {
 	return lastAnnouced;
     }
 
-    public boolean IsAnnounceTime(int t) {
-	if (this.lastAnnouced + (t * 1000) > System.currentTimeMillis())
+    public boolean isAnnounceTime(int t) {
+	if (lastAnnouced + (t * 1000) > System.currentTimeMillis())
 	    return false;
-	SetAnnouncmentTime();
+
+	setAnnouncementTime();
 	return true;
     }
 
-    public void SetAnnouncmentTime() {
+    public void setAnnouncementTime() {
 	this.lastAnnouced = System.currentTimeMillis();
     }
 
-    public void AddNewAmount(CurrencyType type, Double Payment) {
-	AddNewAmount(type, Payment, null);
+    public void addNewAmount(CurrencyType type, Double Payment) {
+	addNewAmount(type, Payment, null);
     }
 
-    public void AddNewAmount(CurrencyType type, Double Payment, Long time) {
+    public void addNewAmount(CurrencyType type, Double Payment, Long time) {
 	paymentsTimes.put(type, time == null ? System.currentTimeMillis() : time);
 	payments.put(type, Payment);
     }
 
-    public void setInformed() {
-	this.Informed = true;
-    }
-
-    public void setNotInformed() {
-	this.Informed = false;
-    }
-
-    public void AddAmount(CurrencyType type, Double Payment) {
+    public void addAmount(CurrencyType type, Double Payment) {
 	payments.put(type, payments.get(type) + Payment);
     }
 
-    public long GetLeftTime(CurrencyType type) {
+    public long getLeftTime(CurrencyType type) {
 	long left = 0;
-	if (this.GetTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) > System.currentTimeMillis())
-	    left = (this.GetTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) - System.currentTimeMillis());
+	if (getTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) > System.currentTimeMillis())
+	    left = (getTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) - System.currentTimeMillis());
 	return left;
     }
 
-    public boolean IsOverLimit(CurrencyType type, int limit) {
-	if (this.payments.get(type) < limit)
+    public boolean isOverLimit(CurrencyType type, int limit) {
+	if (payments.get(type) < limit)
 	    return false;
 	return true;
     }
 
     public double percentOverLimit(CurrencyType type, int limit) {
-	return ((this.payments.get(type) / limit) - 1) * 100;
+	return ((payments.get(type) / limit) - 1) * 100;
     }
 
-    public boolean IsOverTimeLimit(CurrencyType type) {
-	if (this.GetTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) > System.currentTimeMillis())
+    public boolean isOverTimeLimit(CurrencyType type) {
+	if (getTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) > System.currentTimeMillis())
 	    return false;
-	if (this.Informed)
-	    this.Informed = false;
+	if (informed)
+	    informed = false;
 	resetLimits();
 	return true;
     }
 
     public void resetLimits() {
 	for (CurrencyType type : CurrencyType.values()) {
-	    AddNewAmount(type, 0D);
+	    addNewAmount(type, 0D);
 	}
-	this.Reseted = true;
+	reseted = true;
     }
 
-    public boolean IsReachedLimit(CurrencyType type, int money) {
-	if (IsOverTimeLimit(type))
-	    return true;
-	if (IsOverLimit(type, money))
-	    return true;
-	return false;
+    public boolean isReachedLimit(CurrencyType type, int money) {
+	return isOverTimeLimit(type) || isOverLimit(type, money);
     }
 
     public boolean isInformed() {
-	return Informed;
+	return informed;
     }
 
-    public void setInformed(boolean Informed) {
-	this.Informed = Informed;
+    public void setInformed(boolean informed) {
+	this.informed = informed;
     }
 }

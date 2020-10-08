@@ -81,9 +81,7 @@ public class jobsSign {
     }
 
     public static String locToBlockString(Location loc) {
-	if (loc == null)
-	    return "";
-	return loc.getWorld().getName() + ";" + loc.getBlockX() + ";" + loc.getBlockY() + ";" + loc.getBlockZ();
+	return loc == null ? "" : loc.getWorld().getName() + ";" + loc.getBlockX() + ";" + loc.getBlockY() + ";" + loc.getBlockZ();
     }
 
     public void setLoc(Location loc) {
@@ -101,7 +99,7 @@ public class jobsSign {
 	if (!string.contains(";"))
 	    return;
 
-	String[] split = string.replace(",", ".").split(";");
+	String[] split = string.replace(',', '.').split(";");
 
 	int x = 0, y = 0, z = 0;
 

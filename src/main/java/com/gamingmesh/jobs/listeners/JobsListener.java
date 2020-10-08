@@ -97,10 +97,7 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void AsyncPlayerChatEvent(final AsyncPlayerChatEvent event) {
-	if (event.isCancelled())
-	    return;
-
-	if (Util.getJobsEditorMap().isEmpty())
+	if (event.isCancelled() || Util.getJobsEditorMap().isEmpty())
 	    return;
 
 	final Player player = event.getPlayer();
@@ -133,10 +130,7 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onSelection(PlayerInteractEvent event) {
-	if (event.getClickedBlock() == null)
-	    return;
-
-	if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+	if (event.getClickedBlock() == null || event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK)
 	    return;
 
 	Player player = event.getPlayer();
@@ -147,10 +141,7 @@ public class JobsListener implements Listener {
 	if (iih.getType() != CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial())
 	    return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()))
-	    return;
-
-	if (!player.hasPermission("jobs.area.select"))
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()) || !player.hasPermission("jobs.area.select"))
 	    return;
 
 	if (player.getGameMode() == GameMode.CREATIVE)
@@ -218,10 +209,7 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSignInteract(PlayerInteractEvent event) {
-	if (!Jobs.getGCManager().SignsEnabled)
-	    return;
-
-	if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
+	if (!Jobs.getGCManager().SignsEnabled || event.getAction() != Action.RIGHT_CLICK_BLOCK)
 	    return;
 
 	Block block = event.getClickedBlock();
@@ -396,7 +384,7 @@ public class JobsListener implements Listener {
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
-	if (honorific.equalsIgnoreCase(" "))
+	if (honorific.equals(" "))
 	    honorific = "";
 
 	String format = event.getFormat();
@@ -412,7 +400,7 @@ public class JobsListener implements Listener {
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
-	if (honorific.equalsIgnoreCase(" "))
+	if (honorific.equals(" "))
 	    honorific = "";
 
 	String format = event.getFormat();
@@ -431,7 +419,7 @@ public class JobsListener implements Listener {
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
 	String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
-	if (honorific.equalsIgnoreCase(" "))
+	if (honorific.equals(" "))
 	    honorific = "";
 
 	String format = event.getFormat();
@@ -489,9 +477,8 @@ public class JobsListener implements Listener {
 	}
 
 	String meinOk = null;
-	List<JobProgression> prog = JPlayer.getJobProgression();
 
-	mein: for (JobProgression one : prog) {
+	mein: for (JobProgression one : JPlayer.getJobProgression()) {
 	    for (JobLimitedItems oneItem : one.getJob().getLimitedItems().values()) {
 		if (one.getLevel() >= oneItem.getLevel())
 		    continue;
@@ -535,10 +522,7 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void onChunkChangeMove(PlayerMoveEvent event) {
-	if (event.isCancelled())
-	    return;
-
-	if (!event.getPlayer().isOnline())
+	if (event.isCancelled() || !event.getPlayer().isOnline())
 	    return;
 
 	//disabling plugin in world

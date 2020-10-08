@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -161,7 +162,7 @@ public class JobsPlayer {
 	    return true;
 	PaymentData data = getPaymentLimit();
 	Integer value = limits.get(type);
-	if (data.IsReachedLimit(type, value == null ? 0 : value)) {
+	if (data.isReachedLimit(type, value == null ? 0 : value)) {
 	    String name = type.getName().toLowerCase();
 
 	    if (player.isOnline() && !data.isInformed() && !data.isReseted()) {
@@ -173,15 +174,15 @@ public class JobsPlayer {
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit"));
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit2"));
 		}
-		data.setInformed();
+		data.setInformed(true);
 	    }
-	    if (data.IsAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline())
-		ActionBarManager.send(player, Jobs.getLanguage().getMessage("command.limit.output." + name + "time", "%time%", TimeManage.to24hourShort(data.GetLeftTime(type))));
+	    if (data.isAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline())
+		ActionBarManager.send(player, Jobs.getLanguage().getMessage("command.limit.output." + name + "time", "%time%", TimeManage.to24hourShort(data.getLeftTime(type))));
 	    if (data.isReseted())
 		data.setReseted(false);
 	    return false;
 	}
-	data.AddAmount(type, amount);
+	data.addAmount(type, amount);
 	return true;
     }
 
@@ -1067,10 +1068,7 @@ public class JobsPlayer {
 		}
 	}
 
-	List<QuestProgression> pr = new ArrayList<>();
-	tmp.values().forEach(pr::add);
-
-	return pr;
+	return tmp.values().stream().collect(Collectors.toList());
     }
 
     public String getQuestProgressionString() {
@@ -1203,7 +1201,7 @@ public class JobsPlayer {
     public int getMaxBrewingStandsAllowed() {
 	Double maxV = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxbrewingstands");
 
-	if (maxV == null || maxV == 0)
+	if (maxV == 0)
 	    maxV = (double) Jobs.getGCManager().getBrewingStandsMaxDefault();
 
 	return maxV.intValue();

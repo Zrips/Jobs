@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.hooks.McMMO;
 
 import java.util.HashMap;
 
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -50,10 +49,7 @@ public class McMMO1_X_listener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	if (!JobsPaymentListener.payForItemDurabilityLoss(player))
-	    return;
-
-	if (event.getTreasure() == null)
+	if (!JobsPaymentListener.payForItemDurabilityLoss(player) || event.getTreasure() == null)
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -71,7 +67,7 @@ public class McMMO1_X_listener implements Listener {
 
 	Player player = event.getPlayer();
 	//disabling plugin in world
-	if (player == null || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
 	    return;
 
 	ItemStack resultStack = event.getRepairedObject();
@@ -82,7 +78,7 @@ public class McMMO1_X_listener implements Listener {
 	    return;
 
 	// check if in creative
-	if (player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("jobs.paycreative") && !Jobs.getGCManager().payInCreative())
+	if (!JobsPaymentListener.payIfCreative(player))
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);

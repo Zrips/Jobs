@@ -1281,15 +1281,15 @@ public abstract class JobsDAO {
 	    for (CurrencyType type : CurrencyType.values()) {
 		if (limit == null)
 		    continue;
-		if (limit.GetAmount(type) == 0D)
+		if (limit.getAmount(type) == 0D)
 		    continue;
-		if (limit.GetLeftTime(type) < 0)
+		if (limit.getLeftTime(type) < 0)
 		    continue;
 
 		prest.setInt(1, jPlayer.getUserId());
 		prest.setInt(2, type.getId());
-		prest.setDouble(3, limit.GetAmount(type));
-		prest.setLong(4, limit.GetTime(type));
+		prest.setDouble(3, limit.getAmount(type));
+		prest.setLong(4, limit.getTime(type));
 		prest.setString(5, type.toString());
 		prest.addBatch();
 	    }
@@ -1333,7 +1333,7 @@ public abstract class JobsDAO {
 		if (type == null)
 		    continue;
 
-		data.AddNewAmount(type, res.getDouble(LimitTableFields.collected.getCollumn()), res.getLong(LimitTableFields.started.getCollumn()));
+		data.addNewAmount(type, res.getDouble(LimitTableFields.collected.getCollumn()), res.getLong(LimitTableFields.started.getCollumn()));
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1372,7 +1372,7 @@ public abstract class JobsDAO {
 		if (type == null)
 		    continue;
 
-		data.AddNewAmount(type, res.getDouble(LimitTableFields.collected.getCollumn()), res.getLong(LimitTableFields.started.getCollumn()));
+		data.addNewAmount(type, res.getDouble(LimitTableFields.collected.getCollumn()), res.getLong(LimitTableFields.started.getCollumn()));
 		map.put(id, data);
 	    }
 	} catch (SQLException e) {
