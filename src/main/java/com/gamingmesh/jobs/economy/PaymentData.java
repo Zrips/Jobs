@@ -50,13 +50,13 @@ public class PaymentData {
     public Double GetAmount(CurrencyType type) {
 	if (!payments.containsKey(type))
 	    return 0D;
-	return (payments.get(type) * 100) / 100.0;
+	return (int) (payments.get(type) * 100) / 100D;
     }
 
     public Double GetAmountBylimit(CurrencyType type, int limit) {
 	if (GetAmount(type) > limit)
 	    return (double) limit;
-	return (GetAmount(type) * 100) / 100.0;
+	return (int) (GetAmount(type) * 100) / 100D;
     }
 
     public Long GetLastAnnounced() {
