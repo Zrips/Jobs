@@ -124,7 +124,10 @@ public class Job {
     }
 
     public void addBoost(CurrencyType type, double point, int[] times) {
-	if (times.length < 3) {
+	final int h = times[2],
+	    m = times[1],
+	    s = times[0];
+	if (times.length < 3 || (h == 0 && m == 0 && s == 0)) {
 	    addBoost(type, point);
 	    return;
 	}
@@ -132,12 +135,11 @@ public class Job {
 	final Calendar cal = Calendar.getInstance();
 	cal.setTime(new Date());
 
-	cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + times[2]);
-	cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + times[1]);
-	cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + times[0]);
+	cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + h);
+	cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + m);
+	cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + s);
 
-	long time = cal.getTimeInMillis();
-	boost.add(type, point, time);
+	boost.add(type, point, cal.getTimeInMillis());
     }
 
     public void setBoost(BoostMultiplier BM) {
