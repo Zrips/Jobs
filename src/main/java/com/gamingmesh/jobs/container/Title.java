@@ -28,11 +28,10 @@ import com.gamingmesh.jobs.CMILib.CMIChatColor;
  *
  */
 public class Title {
-    private String name = null;
-    private String shortName = null;
+
+    private String name = "", shortName = "", jobName = "";
     private CMIChatColor color = CMIChatColor.WHITE;
     private int levelReq = 0;
-    private String jobName = null;
 
     /**
      * Constructor
@@ -55,11 +54,11 @@ public class Title {
      * @param jobName Job this title is made for
      */
     public Title(String name, String shortName, CMIChatColor color, int levelReq, String jobName) {
-	this.name = name;
-	this.color = color;
+	this.name = name == null ? "" : name;
+	this.color = color == null ? CMIChatColor.BLACK : color;
 	this.levelReq = levelReq;
-	this.shortName = shortName;
-	this.jobName = jobName;
+	this.shortName = shortName == null ? "" : shortName;
+	this.jobName = jobName == null ? "" : jobName;
     }
 
     /**

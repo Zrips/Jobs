@@ -18,13 +18,7 @@
 
 package com.gamingmesh.jobs.listeners;
 
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ItemManager;
-import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.CMILib.*;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
@@ -61,8 +55,15 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.BrewEvent;
@@ -85,6 +86,7 @@ import org.bukkit.inventory.StonecutterInventory;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.ArrayList;
@@ -1192,6 +1194,15 @@ public class JobsPaymentListener implements Listener {
 
 	if (pDamager == null)
 	    return;
+
+	// Prevent payment for killing mobs with mypet by denying permission
+	if (HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null)) {
+	    for (PermissionAttachmentInfo perm : pDamager.getEffectivePermissions()) {
+		if (perm.getPermission().equals("jobs.petpay") && !perm.getValue()) {
+		    return;
+		}
+	    }
+	}
 
 	// check if in creative
 	if (!payIfCreative(pDamager))

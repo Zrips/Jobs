@@ -688,7 +688,7 @@ public class JobsPlayer {
 
 		    if (method == DisplayMethod.FULL || method == DisplayMethod.JOB) {
 			if (gotTitle) {
-			    builder.append(" ");
+			    builder.append(' ');
 			}
 
 			String honorificpart = prog.getJob().getNameWithColor() + CMIChatColor.WHITE;
