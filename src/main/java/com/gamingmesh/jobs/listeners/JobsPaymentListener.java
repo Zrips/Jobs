@@ -1687,8 +1687,8 @@ public class JobsPaymentListener implements Listener {
 		    - Jobs.getNms().getDurability(iih) != iih.getType().getMaxDurability())
 		    return;
 
-		Bukkit.getScheduler().runTaskLater(plugin, () ->
-		    Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 3);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () ->
+		    Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
 	    }
 	}
     }

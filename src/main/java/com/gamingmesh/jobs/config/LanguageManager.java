@@ -72,7 +72,6 @@ public class LanguageManager {
 
 	    c.get("economy.error.nomoney", "&cSorry, no money left in national bank!");
 	    c.get("limitedItem.error.levelup", "&cYou need to level up in [jobname] to use this item!");
-	    c.get("general.Spawner", "&r[type] Spawner");
 	    c.get("general.info.toplineseparator", "&7*********************** &6%playername% &7***********************");
 	    c.get("general.info.separator", "&7*******************************************************");
 	    c.get("general.info.time.days", "&e%days% &6days ");
@@ -630,7 +629,6 @@ public class LanguageManager {
 
 	    c.get("message.cowtimer", "&eYou still need to wait &6%time% &esec to get paid for this job.");
 	    c.get("message.blocktimer", "&eYou need to wait &3[time] &esec more to get paid for this!");
-	    c.get("message.placeblocktimer", "&eYou can't place blocks faster than &6[time] &esec in the same place!");
 	    c.get("message.taxes", "&3[amount] &eserver taxes were transferred to this account");
 
 	    c.get("message.boostStarted", "&eJobs boost time have been started!");

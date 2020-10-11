@@ -89,7 +89,8 @@ import com.gamingmesh.jobs.stuff.Util;
 public class JobsListener implements Listener {
 
     private Jobs plugin;
-    private HashMap<UUID, Long> interactDelay = new HashMap<>();
+
+    private final HashMap<UUID, Long> interactDelay = new HashMap<>();
 
     public JobsListener(Jobs plugin) {
 	this.plugin = plugin;
