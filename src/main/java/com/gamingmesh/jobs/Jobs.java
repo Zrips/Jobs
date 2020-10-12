@@ -785,11 +785,12 @@ public class Jobs extends JavaPlugin {
 	getDBManager().getDB().loadAllJobsWorlds();
 	getDBManager().getDB().loadAllJobsNames();
 
-	instance.getBlockOwnerShip(CMIMaterial.FURNACE).ifPresent(BlockOwnerShip::load);
-	instance.getBlockOwnerShip(CMIMaterial.BREWING_STAND).ifPresent(BlockOwnerShip::load);
 	if (Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
 	    instance.getBlockOwnerShip(CMIMaterial.LEGACY_BREWING_STAND).ifPresent(BlockOwnerShip::load);
 	    instance.getBlockOwnerShip(CMIMaterial.LEGACY_BURNING_FURNACE).ifPresent(BlockOwnerShip::load);
+	} else {
+	    instance.getBlockOwnerShip(CMIMaterial.FURNACE).ifPresent(BlockOwnerShip::load);
+	    instance.getBlockOwnerShip(CMIMaterial.BREWING_STAND).ifPresent(BlockOwnerShip::load);
 	}
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
 	    instance.getBlockOwnerShip(CMIMaterial.BLAST_FURNACE).ifPresent(BlockOwnerShip::load);
