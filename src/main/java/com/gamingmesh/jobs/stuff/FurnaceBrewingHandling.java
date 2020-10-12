@@ -20,6 +20,12 @@ import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 
+/**
+ * @deprecated As of new blocks (smoker, blast furnace) this has been deprecated and
+ * marked as "removeable". In the future this class will get removed
+ * and not used anymore by anyone. Instead use {@link Jobs#getBlockOwnerShips()}
+ */
+@Deprecated
 public class FurnaceBrewingHandling {
 
     static HashMap<UUID, List<blockLoc>> furnaceMap = new HashMap<>();
@@ -239,7 +245,7 @@ public class FurnaceBrewingHandling {
 	    return ownershipFeedback.invalid;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	int max = jPlayer.getMaxFurnacesAllowed(cmat);
+	int max = jPlayer.getMaxFurnacesAllowed();
 	int have = jPlayer.getFurnaceCount();
 
 	boolean owner = false;

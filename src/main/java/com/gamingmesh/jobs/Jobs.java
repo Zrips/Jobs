@@ -22,6 +22,7 @@ import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.CMIReflections;
 import com.gamingmesh.jobs.CMILib.VersionChecker;
 import com.gamingmesh.jobs.Gui.GuiManager;
@@ -34,6 +35,8 @@ import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.config.*;
 import com.gamingmesh.jobs.container.*;
+import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
+import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.dao.JobsManager;
@@ -83,6 +86,8 @@ public class Jobs extends JavaPlugin {
     private static BlockProtectionManager bpManager;
     private static JobsManager dbManager;
 
+    private final Set<BlockOwnerShip> blockOwnerShips = new HashSet<>();
+
     private static PistonProtectionListener pistonProtectionListener;
 
     private static ConfigManager configManager;
@@ -115,6 +120,50 @@ public class Jobs extends JavaPlugin {
     protected static SelectionManager smanager;
 
     private static PointsData pointsDatabase;
+
+    public Optional<BlockOwnerShip> getBlockOwnerShip(CMIMaterial type) {
+	return getBlockOwnerShip(type, true);
+    }
+
+    public Optional<BlockOwnerShip> getBlockOwnerShip(CMIMaterial type, boolean addNew) {
+	if (((type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE) && !gConfigManager.isFurnacesReassign())
+			|| (type == CMIMaterial.BLAST_FURNACE && !gConfigManager.BlastFurnacesReassign)
+			|| ((type == CMIMaterial.BREWING_STAND || type == CMIMaterial.LEGACY_BREWING_STAND) && !gConfigManager.isBrewingStandsReassign())
+			|| (type == CMIMaterial.SMOKER && !gConfigManager.SmokerReassign)) {
+	    return Optional.empty();
+	}
+
+	BlockOwnerShip b = null;
+	for (BlockOwnerShip ship : blockOwnerShips) {
+	    if (ship.getMaterial() == type) {
+		b = ship;
+		break;
+	    }
+	}
+
+	if (addNew && b == null) {
+	    b = new BlockOwnerShip(type);
+	    blockOwnerShips.add(b);
+	}
+
+	return Optional.ofNullable(b);
+    }
+
+    public Optional<BlockOwnerShip> getBlockOwnerShip(BlockTypes type) {
+	BlockOwnerShip b = null;
+	for (BlockOwnerShip ship : blockOwnerShips) {
+	    if (ship.getType() == type) {
+		b = ship;
+		break;
+	    }
+	}
+
+	return Optional.ofNullable(b);
+    }
+
+    public Set<BlockOwnerShip> getBlockOwnerShips() {
+	return blockOwnerShips;
+    }
 
     public static PistonProtectionListener getPistonProtectionListener() {
 	if (pistonProtectionListener == null)
@@ -736,7 +785,17 @@ public class Jobs extends JavaPlugin {
 	getDBManager().getDB().loadAllJobsWorlds();
 	getDBManager().getDB().loadAllJobsNames();
 
-	FurnaceBrewingHandling.load();
+	instance.getBlockOwnerShip(CMIMaterial.FURNACE).ifPresent(BlockOwnerShip::load);
+	instance.getBlockOwnerShip(CMIMaterial.BREWING_STAND).ifPresent(BlockOwnerShip::load);
+	if (Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
+	    instance.getBlockOwnerShip(CMIMaterial.LEGACY_BREWING_STAND).ifPresent(BlockOwnerShip::load);
+	    instance.getBlockOwnerShip(CMIMaterial.LEGACY_BURNING_FURNACE).ifPresent(BlockOwnerShip::load);
+	}
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+	    instance.getBlockOwnerShip(CMIMaterial.BLAST_FURNACE).ifPresent(BlockOwnerShip::load);
+	    instance.getBlockOwnerShip(CMIMaterial.SMOKER).ifPresent(BlockOwnerShip::load);
+	}
+
 	ToggleBarHandling.load();
 	usedSlots.clear();
 	for (Job job : jobs) {
@@ -773,12 +832,10 @@ public class Jobs extends JavaPlugin {
 
 	HandlerList.unregisterAll(instance);
 
-//	GUIManager.CloseInventories();
-//	shopManager.CloseInventories();
 	dao.saveExplore();
-
 	getBpManager().saveCache();
-	FurnaceBrewingHandling.save();
+
+	blockOwnerShips.forEach(BlockOwnerShip::save);
 	ToggleBarHandling.save();
 
 	shutdown();

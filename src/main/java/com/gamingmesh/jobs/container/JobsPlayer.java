@@ -36,10 +36,10 @@ import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.Signs.SignTopType;
+import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.FurnaceBrewingHandling;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
@@ -1190,14 +1190,31 @@ public class JobsPlayer {
 	}
     }
 
+    /**
+     * @deprecated {@link Jobs#getBlockOwnerShip(BlockTypes)}
+     * @return the furnace count
+     */
+    @Deprecated
     public int getFurnaceCount() {
-	return FurnaceBrewingHandling.getTotalFurnaces(getUniqueId());
+	return !Jobs.getInstance().getBlockOwnerShip(BlockTypes.FURNACE).isPresent() ? 0 :
+		Jobs.getInstance().getBlockOwnerShip(BlockTypes.FURNACE).get().getTotal(getUniqueId());
     }
 
+    /**
+     * @deprecated {@link Jobs#getBlockOwnerShip(BlockTypes)}
+     * @return the brewing stand count
+     */
+    @Deprecated
     public int getBrewingStandCount() {
-	return FurnaceBrewingHandling.getTotalBrewingStands(getUniqueId());
+	return !Jobs.getInstance().getBlockOwnerShip(BlockTypes.BREWING_STAND).isPresent() ? 0 :
+		Jobs.getInstance().getBlockOwnerShip(BlockTypes.BREWING_STAND).get().getTotal(getUniqueId());
     }
 
+    /**
+     * @deprecated use {@link #getMaxOwnerShipAllowed(CMIMaterial)}
+     * @return max allowed brewing stands
+     */
+    @Deprecated
     public int getMaxBrewingStandsAllowed() {
 	Double maxV = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxbrewingstands");
 
@@ -1208,30 +1225,39 @@ public class JobsPlayer {
     }
 
     /**
-     * @deprecated use {@link #getMaxFurnacesAllowed(CMIMaterial)}
-     * @return
+     * @deprecated use {@link #getMaxOwnerShipAllowed(CMIMaterial)}
+     * @return the max allowed furnaces
      */
     @Deprecated
     public int getMaxFurnacesAllowed() {
-	return getMaxFurnacesAllowed(CMIMaterial.FURNACE);
+	return getMaxOwnerShipAllowed(BlockTypes.FURNACE);
     }
 
-    public int getMaxFurnacesAllowed(CMIMaterial type) {
-	String perm = "jobs.max" + (type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE
-	    ? "furnaces" : type == CMIMaterial.BLAST_FURNACE ? "blastfurnaces" : type == CMIMaterial.SMOKER ? "smokers" : "");
+    /**
+     * Returns the max allowed owner ship for the given block type.
+     * @param type {@link BlockTypes}
+     * @return max allowed owner ship
+     */
+    public int getMaxOwnerShipAllowed(BlockTypes type) {
+	String perm = "jobs.max" + (type == BlockTypes.FURNACE
+	    ? "furnaces" : type == BlockTypes.BLAST_FURNACE ? "blastfurnaces" : type == BlockTypes.SMOKER ? "smokers" : 
+	    type == BlockTypes.BREWING_STAND ? "brewingstands" : "");
 	if (perm.isEmpty())
 	    return 0;
 
 	Double maxV = Jobs.getPermissionManager().getMaxPermission(this, perm);
 
-	if (maxV == 0D && (type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE))
+	if (maxV == 0D && type == BlockTypes.FURNACE)
 	    maxV = (double) Jobs.getGCManager().getFurnacesMaxDefault();
 
-	if (maxV == 0D && type == CMIMaterial.BLAST_FURNACE)
+	if (maxV == 0D && type == BlockTypes.BLAST_FURNACE)
 	    maxV = (double) Jobs.getGCManager().BlastFurnacesMaxDefault;
 
-	if (maxV == 0D && type == CMIMaterial.SMOKER)
+	if (maxV == 0D && type == BlockTypes.SMOKER)
 	    maxV = (double) Jobs.getGCManager().SmokersMaxDefault;
+
+	if (maxV == 0 && type == BlockTypes.BREWING_STAND)
+	    maxV = (double) Jobs.getGCManager().getBrewingStandsMaxDefault();
 
 	return maxV.intValue();
     }

@@ -102,7 +102,8 @@ public class GeneralConfigManager {
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
 	BossBarEnabled, BossBarShowOnEachAction, BossBarsMessageByDefault, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
-	LoggingUse, payForCombiningItems, BlastFurnacesReassign, SmokerReassign, payForStackedEntities, payForEachVTradeItem;
+	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities,
+	payForEachVTradeItem;
 
     public ItemStack guiBackButton, guiNextButton, guiFiller;
 

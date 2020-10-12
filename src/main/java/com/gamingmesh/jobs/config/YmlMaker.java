@@ -12,6 +12,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.gamingmesh.jobs.Jobs;
+
 public class YmlMaker {
     public String fileName;
     private JavaPlugin plugin;
@@ -25,10 +27,7 @@ public class YmlMaker {
 	this.plugin = plugin;
 	this.fileName = fileName;
 
-	File dataFolder = plugin.getDataFolder();
-	if (!dataFolder.exists())
-		dataFolder.mkdirs();
-	ConfigFile = new File(dataFolder, fileName);
+	ConfigFile = new File(Jobs.getFolder(), fileName);
     }
 
     public void reloadConfig() {
@@ -56,7 +55,7 @@ public class YmlMaker {
 
     public File getConfigFile() {
 	if (ConfigFile == null)
-    	ConfigFile = new File(plugin.getDataFolder(), fileName);
+	    ConfigFile = new File(Jobs.getFolder(), fileName);
 	return ConfigFile;
     }
 
