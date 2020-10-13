@@ -100,13 +100,10 @@ public class Jobs extends JavaPlugin {
     private static Job noneJob;
     private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<>();
     private static HashMap<Integer, Job> jobsIds = new HashMap<>();
-//	public static WeakHashMap<String, Double> GlobalBoost = new WeakHashMap<String, Double>();
 
     private static BufferedEconomy economy;
     private static PermissionHandler permissionHandler;
     private static PermissionManager permissionManager;
-
-//    private static ItemManager itemManager;
 
     public static BufferedPaymentThread paymentThread;
     private static DatabaseSaveThread saveTask;
@@ -335,7 +332,7 @@ public class Jobs extends JavaPlugin {
      */
     public CMIScoreboardManager getCMIScoreboardManager() {
 	if (cmiScoreboardManager == null)
-		cmiScoreboardManager = new CMIScoreboardManager();
+	    cmiScoreboardManager = new CMIScoreboardManager();
 
 	return cmiScoreboardManager;
     }
@@ -626,10 +623,6 @@ public class Jobs extends JavaPlugin {
 	return permissionManager;
     }
 
-//    public static ItemManager getItemManager() {
-//	return itemManager;
-//    }
-
     /**
      * Sets the economy handler
      * @param eco - the economy handler
@@ -661,8 +654,6 @@ public class Jobs extends JavaPlugin {
     public void onEnable() {
 	instance = this;
 
-//	itemManager = new ItemManager(this);
-
 	try {
 	    Class<?> nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + Version.getCurrent().getShortVersion());
 	    if (NMS.class.isAssignableFrom(nmsClass)) {
@@ -693,8 +684,10 @@ public class Jobs extends JavaPlugin {
 
 	    bbManager = new BossBarManager(this);
 
-	    getCommand("jobs").setExecutor(getCommandManager());
-	    getCommand("jobs").setTabCompleter(new TabComplete());
+	    Optional.ofNullable(getCommand("jobs")).ifPresent(j -> {
+		j.setExecutor(getCommandManager());
+		j.setTabCompleter(new TabComplete());
+	    });
 
 	    startup();
 
@@ -1247,8 +1240,7 @@ public class Jobs extends JavaPlugin {
     }
 
     private static int getPlayerExperience(Player player) {
-	int bukkitExp = (ExpToLevel(player.getLevel()) + Math.round(deltaLevelToExp(player.getLevel()) * player.getExp()));
-	return bukkitExp;
+	return (ExpToLevel(player.getLevel()) + Math.round(deltaLevelToExp(player.getLevel()) * player.getExp()));
     }
 
     // total xp calculation based by lvl
@@ -1325,11 +1317,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public static boolean hasPermission(Object sender, String perm, boolean rawEnable) {
-	if (!(sender instanceof Player))
+	if (!(sender instanceof Player) || ((Player) sender).hasPermission(perm))
 	    return true;
 
-	if (((Player) sender).hasPermission(perm))
-	    return true;
 	if (!rawEnable) {
 	    ((Player) sender).sendMessage(lManager.getMessage("general.error.permission"));
 	    return false;

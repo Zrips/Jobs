@@ -994,10 +994,12 @@ public class PlayerManager {
 
 	boost.add(BoostOf.Permission, getBoost(player, prog, force));
 	boost.add(BoostOf.Global, prog.getBoost());
+
 	if (Jobs.getGCManager().useDynamicPayment)
 	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
-//	boost.add(BoostOf.Item, Jobs.getPlayerManager().getItemBoost(player.getPlayer(), prog));
+
 	boost.add(BoostOf.Item, getItemBoostNBT(player.getPlayer(), prog));
+
 	if (!Jobs.getRestrictedAreaManager().getRestrictedAres().isEmpty())
 	    boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(player.getPlayer())));
 	return boost;
@@ -1014,10 +1016,7 @@ public class PlayerManager {
 		    return;
 
 		JobsPlayer jPlayer = getJobsPlayer(player);
-		if (jPlayer == null)
-		    return;
-
-		if (player.hasPermission("jobs.*"))
+		if (jPlayer == null || player.hasPermission("jobs.*"))
 		    return;
 
 		int confMaxJobs = Jobs.getGCManager().getMaxJobs();

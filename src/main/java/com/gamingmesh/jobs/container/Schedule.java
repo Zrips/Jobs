@@ -9,13 +9,7 @@ import com.gamingmesh.jobs.CMILib.CMIChatColor;
 
 public class Schedule {
 
-    private int From = 0;
-    private int Until = 235959;
-
-    private int nextFrom = 0;
-    private int nextUntil = 235959;
-
-    private boolean nextDay = false;
+    private int broadcastInterval = 0, From = 0, Until = 235959, nextFrom = 0, nextUntil = 235959;
 
     private final BoostMultiplier BM = new BoostMultiplier();
 
@@ -28,14 +22,9 @@ public class Schedule {
 		MessageOnStop = new ArrayList<>(),
 		MessageToBroadcast = new ArrayList<>();
 
-    private boolean started = false;
-    private boolean stoped = true;
-
-    private boolean onStop = true;
-    private boolean OnStart = true;
+    private boolean nextDay = false, started = false, stoped = true, onStop = true, onStart = true;
 
     private long broadcastInfoOn = 0L;
-    private int broadcastInterval = 0;
 
     public Schedule() {
     }
@@ -56,12 +45,12 @@ public class Schedule {
 	return onStop;
     }
 
-    public void setBroadcastOnStart(boolean OnStart) {
-	this.OnStart = OnStart;
+    public void setBroadcastOnStart(boolean onStart) {
+	this.onStart = onStart;
     }
 
     public boolean isBroadcastOnStart() {
-	return OnStart;
+	return onStart;
     }
 
     public void setStarted(boolean started) {

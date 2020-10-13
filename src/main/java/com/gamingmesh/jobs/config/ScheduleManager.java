@@ -12,18 +12,19 @@ import com.gamingmesh.jobs.api.JobsScheduleStopEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
-import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class ScheduleManager {
 
     private Jobs plugin;
-    private int autoTimerBukkitId = -1;
+
+    private BukkitTask timer;
 
     public static final List<Schedule> BOOSTSCHEDULE = new ArrayList<>();
 
@@ -36,16 +37,12 @@ public class ScheduleManager {
 	    return;
 
 	cancel();
-	autoTimerBukkitId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::scheduler, 20, 30 * 20L);
+	timer = Bukkit.getScheduler().runTaskTimer(plugin, this::scheduler, 20, 30 * 20L);
     }
 
     public void cancel() {
-	if (autoTimerBukkitId != -1)
-	    Bukkit.getScheduler().cancelTask(autoTimerBukkitId);
-    }
-
-    public int getDateByInt() {
-	return TimeManage.timeInInt();
+	if (timer != null)
+	    timer.cancel();
     }
 
     private boolean scheduler() {
@@ -53,13 +50,10 @@ public class ScheduleManager {
 	    return false;
 
 	DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-	Date date = new Date();
-
-	String currenttime = dateFormat.format(date);
+	String currenttime = dateFormat.format(new Date());
+	String CurrentDayName = getWeekDay();
 
 	int Current = Integer.parseInt(currenttime.replace(":", ""));
-
-	String CurrentDayName = getWeekDay();
 
 	for (Schedule one : BOOSTSCHEDULE) {
 
@@ -143,9 +137,8 @@ public class ScheduleManager {
 	case 1:
 	    return "sunday";
 	default:
-	    break;
+	    return "all";
 	}
-	return "all";
     }
 
     /**
@@ -163,7 +156,7 @@ public class ScheduleManager {
 
 	conf.options().copyDefaults(true);
 
-	if (!conf.contains("Boost"))
+	if (!conf.isConfigurationSection("Boost"))
 	    return;
 
 	ArrayList<String> sections = new ArrayList<>(conf.getConfigurationSection("Boost").getKeys(false));
@@ -171,16 +164,13 @@ public class ScheduleManager {
 	for (String OneSection : sections) {
 	    ConfigurationSection path = conf.getConfigurationSection("Boost." + OneSection);
 
-	    if (!path.getBoolean("Enabled", false))
+	    if (path == null || !path.getBoolean("Enabled") || !path.getString("From", "").contains(":")
+			|| !path.getString("Until", "").contains(":") || !path.isList("Days") || !path.isList("Jobs"))
 		continue;
 
 	    Schedule sched = new Schedule();
+
 	    sched.setName(OneSection);
-
-	    if (!path.getString("From", "").contains(":") || !path.getString("Until", "").contains(":")
-		|| !path.isList("Days") || !path.isList("Jobs"))
-		continue;
-
 	    sched.setDays(path.getStringList("Days"));
 	    sched.setJobs(path.getStringList("Jobs"));
 	    sched.setFrom(Integer.valueOf(path.getString("From").replace(":", "")));

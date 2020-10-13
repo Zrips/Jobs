@@ -17,24 +17,18 @@ public class Loging {
     public void recordToLog(JobsPlayer jPlayer, String ActionName, String item, HashMap<CurrencyType, Double> amounts) {
 	HashMap<String, Log> logList = jPlayer.getLog();
 	Log l = logList.values().stream().findFirst().orElse(null);
-	if (l != null && Jobs.getScheduleManager().getDateByInt() != l.getDate()) {
+	if (l != null && TimeManage.timeInInt() != l.getDate()) {
 	    Jobs.getJobsDAO().saveLog(jPlayer);
 	    jPlayer.getLog().clear();
 	}
-	Log log = logList.get(ActionName);
-	if (log == null){
-	    log = new Log(ActionName);
-	}
+
+	Log log = logList.getOrDefault(ActionName, new Log(ActionName));
 	log.add(item, amounts);
 	logList.put(ActionName, log);
     }
 
     public void loadToLog(JobsPlayer jPlayer, String ActionName, String item, int count, HashMap<CurrencyType, Double> amounts) {
-	HashMap<String, Log> logList = jPlayer.getLog();
-
-	Log log = logList.get(ActionName);
-	if (log == null)
-	    log = new Log(ActionName);
+	Log log = jPlayer.getLog().getOrDefault(ActionName, new Log(ActionName));
 	log.add(item, count, amounts);
     }
 

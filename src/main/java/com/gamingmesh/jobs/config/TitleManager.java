@@ -134,7 +134,7 @@ public class TitleManager {
 		int levelReq = titleSection.getInt(titleKey + ".levelReq", -1);
 
 		if (titleSection.isString(titleKey + ".JobName"))
-		    jobName = titleSection.getString(titleKey + ".JobName");
+		    jobName = titleSection.getString(titleKey + ".JobName", "");
 
 		if (titleName.isEmpty()) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid Name property. Skipping!");

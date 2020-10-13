@@ -1616,10 +1616,8 @@ public class JobsPaymentListener implements Listener {
 		return;
 	    }
 
-	    String name = isBrewingStand ? Jobs.getLanguage().getMessage("general.info.blocks.brewingstand")
-			: isFurnace ? Jobs.getLanguage().getMessage("general.info.blocks.furnace")
-			: cmat == CMIMaterial.SMOKER ? Jobs.getLanguage().getMessage("general.info.blocks.smoker")
-			: cmat == CMIMaterial.BLAST_FURNACE ? Jobs.getLanguage().getMessage("general.info.blocks.blastfurnace") : "";
+	    String name = Jobs.getLanguage().getMessage("general.info.blocks." + (isBrewingStand ? "brewingstand" : isFurnace
+			? "furnace" : cmat == CMIMaterial.SMOKER ? "smoker" : cmat == CMIMaterial.BLAST_FURNACE ? "blastfurnace" : ""));
 	    ownershipFeedback done = blockOwner.register(p, block);
 	    if (done == ownershipFeedback.tooMany) {
 		boolean report = false;

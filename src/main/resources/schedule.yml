@@ -2,7 +2,7 @@
 # From and Until is in 24 hours format with : signs to separate minutes and seconds
 # Exp and Money determines how big is boost, to reset it. keep it at 1.0. so if you use 2.0 that means all money/exp is doubled
 # Days variables: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, All
-# Jobs can be any of your settup job or use All to give for all jobs at once
+# Jobs can be any of your setup job or use All to give for all jobs at once
 # BroadcastOnStart or BroadcastOnStop - set it false to disable message when boost starts/stops
 # MessageOnStart or MessageOnStop - optional messages, if not given, then message from locale file will be shown
 # BroadcastInterval - how often in minutes to broadcast message about money/exp boost for jobs
@@ -23,12 +23,12 @@ Boost:
     MessageOnStart:
     - '&e***********************************************'
     - '&e* All jobs got 2x rate for exp and money!'
-    - '&e* For limited time only!'    
+    - '&e* For limited time only!'
     - '&e***********************************************'
     BroadcastOnStop: true
     MessageOnStop:
     - '&e***********************************************'
-    - '&e* Boost time for jobs have beed stoped'
+    - '&e* Boost time for jobs have been stopped'
     - '&e* All rates reseted to original ones'
     - '&e***********************************************'
     BroadcastInterval: 15
@@ -57,7 +57,7 @@ Boost:
     BroadcastOnStop: true
     MessageOnStop:
     - '&e***********************************************'
-    - '&e* Boost time for Miner and Woodcutter have beed stoped'
+    - '&e* Boost time for Miner and Woodcutter have been stopped'
     - '&e* Money rates reseted to original ones'
     - '&e***********************************************'
     BroadcastInterval: 15
