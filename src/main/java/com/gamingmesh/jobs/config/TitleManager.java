@@ -24,10 +24,11 @@ public class TitleManager {
 	Title title = null;
 	for (Title t : titles) {
 	    if (title == null) {
-		if (t.getLevelReq() <= level && t.getJobName().equalsIgnoreCase(jobName))
+		if (t.getLevelReq() <= level && (t.getJobName().isEmpty() || t.getJobName().equalsIgnoreCase(jobName)))
 		    title = t;
 	    } else {
-		if (t.getLevelReq() <= level && t.getLevelReq() > title.getLevelReq() && t.getJobName().equalsIgnoreCase(jobName))
+		if (t.getLevelReq() <= level && t.getLevelReq() > title.getLevelReq() && (t.getJobName().isEmpty()
+			|| t.getJobName().equalsIgnoreCase(jobName)))
 		    title = t;
 	    }
 	}
@@ -130,17 +131,17 @@ public class TitleManager {
 		String jobName = "",
 		    titleName = titleSection.getString(titleKey + ".Name", ""),
 		    titleShortName = titleSection.getString(titleKey + ".ShortName", "");
-		CMIChatColor titleColor = CMIChatColor.getColor(titleSection.getString(titleKey + ".ChatColour", ""));
+		CMIChatColor titleColor = CMIChatColor.getColor(titleSection.getString(titleKey + ".ChatColour"));
 		int levelReq = titleSection.getInt(titleKey + ".levelReq", -1);
 
 		if (titleSection.isString(titleKey + ".JobName"))
 		    jobName = titleSection.getString(titleKey + ".JobName", "");
 
-		if (titleName.isEmpty()) {
+		if (titleName == null) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid Name property. Skipping!");
 		    continue;
 		}
-		if (titleShortName.isEmpty()) {
+		if (titleShortName == null) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid ShortName property. Skipping!");
 		    continue;
 		}
