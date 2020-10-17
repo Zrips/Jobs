@@ -25,7 +25,7 @@ public class BossBarManager {
     }
 
     public synchronized void ShowJobProgression(final JobsPlayer player) {
-	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
+	if (Version.getCurrent().isLower(Version.v1_9_R1))
 	    return;
 
 	if (player == null)
@@ -39,7 +39,7 @@ public class BossBarManager {
     }
 
     public synchronized void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
-	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
+	if (Version.getCurrent().isLower(Version.v1_9_R1))
 	    return;
 
 	String playerUUID = player.getPlayer().getUniqueId().toString();

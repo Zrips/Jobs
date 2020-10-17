@@ -46,7 +46,7 @@ import java.util.List;
 
 public class ConfigManager {
 
-    private File jobFile = null;
+    private File jobFile;
 
     public ConfigManager() {
 	this.jobFile = new File(Jobs.getFolder(), "jobConfig.yml");

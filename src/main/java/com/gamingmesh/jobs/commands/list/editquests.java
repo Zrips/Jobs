@@ -509,12 +509,10 @@ public class editquests implements Cmd {
 
 		} else if (actionT == ActionType.ENCHANT) {
 		    Enchantment enchant = Enchantment.getByName(myKey);
-		    if (enchant != null) {
-			if (Jobs.getVersionCheckManager().getVersion().isEqualOrLower(Version.v1_12_R1)) {
-			    try {
-				id = (int) enchant.getClass().getMethod("getId").invoke(enchant);
-			    } catch (Exception e) {
-			    }
+		    if (enchant != null && Version.getCurrent().isEqualOrLower(Version.v1_12_R1)) {
+			try {
+			    id = (int) enchant.getClass().getMethod("getId").invoke(enchant);
+			} catch (Exception e) {
 			}
 		    }
 		    type = myKey;

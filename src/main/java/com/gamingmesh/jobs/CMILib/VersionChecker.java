@@ -21,6 +21,7 @@ public class VersionChecker {
 	this.plugin = plugin;
     }
 
+    @Deprecated
     public Version getVersion() {
 	return Version.getCurrent();
     }

@@ -9,8 +9,6 @@ import java.lang.reflect.Method;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.Jobs;
-
 public class CMIReflections {
 
     //private Class<?> CraftServerClass;
@@ -65,11 +63,11 @@ public class CMIReflections {
     }
 
     private static Class<?> getBukkitClass(String nmsClassString) throws ClassNotFoundException {
-	return Class.forName("org.bukkit.craftbukkit." + Jobs.getVersionCheckManager().getVersion() + "." + nmsClassString);
+	return Class.forName("org.bukkit.craftbukkit." + Version.getCurrent() + "." + nmsClassString);
     }
 
     public static Class<?> getMinecraftClass(String nmsClassString) throws ClassNotFoundException {
-	return Class.forName("net.minecraft.server." + Jobs.getVersionCheckManager().getVersion() + "." + nmsClassString);
+	return Class.forName("net.minecraft.server." + Version.getCurrent() + "." + nmsClassString);
     }
 
     public ItemStack removeNbt(ItemStack item, String base, String path) {
@@ -289,8 +287,6 @@ public class CMIReflections {
     }
 
     public static ItemStack getItemInOffHand(org.bukkit.entity.Player player) {
-	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
-	    return null;
-	return player.getInventory().getItemInOffHand();
+	return Version.getCurrent().isLower(Version.v1_9_R1) ? null : player.getInventory().getItemInOffHand();
     }
 }

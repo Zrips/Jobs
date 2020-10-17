@@ -441,7 +441,7 @@ public class GeneralConfigManager {
 	c.addComment("enable-pay-near-spawner",
 	    "Option to allow payment to be made when killing mobs from a spawner.",
 	    "Use jobs.nearspawner.[amount] to define multiplayer. Example jobs.nearspawner.-0.5 will pay half of payment, jobs.nearspawner.-1 will not pay at all");
-	payNearSpawner = c.get("enable-pay-near-spawner", false);
+	payNearSpawner = c.get("enable-pay-near-spawner", true);
 
 	c.addComment("enable-pay-creative", "Option to allow payment to be made in creative mode. This ignoring when a group has 'jobs.paycreative' permission.");
 	payInCreative = c.get("enable-pay-creative", false);
@@ -449,7 +449,7 @@ public class GeneralConfigManager {
 	c.addComment("enable-pay-for-exploring-when-flying", "Option to allow payment to be made for exploring when player flies");
 	payExploringWhenFlying = c.get("enable-pay-for-exploring-when-flying", false);
 
-	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R1)) {
+	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
 	    c.addComment("enable-pay-for-exploring-when-gliding", "Option to allow payment to be made for exploring when player gliding.");
 	    payExploringWhenGliding = c.get("enable-pay-for-exploring-when-gliding", false);
 	}
@@ -837,7 +837,7 @@ public class GeneralConfigManager {
 	c.addComment("ActionBars.Messages.EnabledByDefault", "When this set to true player will see action bar messages by default");
 	ActionBarsMessageByDefault = c.get("ActionBars.Messages.EnabledByDefault", true);
 
-	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R1)) {
+	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
 	    c.addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
 	    BossBarEnabled = c.get("BossBar.Enabled", true);
 
@@ -867,11 +867,11 @@ public class GeneralConfigManager {
 	c.addComment("Sounds", "Sounds", "Extra sounds on some events",
 	    "All sounds can be found in https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
 	SoundLevelupUse = c.get("Sounds.LevelUp.use", true);
-	SoundLevelupSound = c.get("Sounds.LevelUp.sound", Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP");
+	SoundLevelupSound = c.get("Sounds.LevelUp.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP");
 	SoundLevelupVolume = c.get("Sounds.LevelUp.volume", 1);
 	SoundLevelupPitch = c.get("Sounds.LevelUp.pitch", 3);
 	SoundTitleChangeUse = c.get("Sounds.TitleChange.use", true);
-	SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP");
+	SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP");
 	SoundTitleChangeVolume = c.get("Sounds.TitleChange.volume", 1);
 	SoundTitleChangePitch = c.get("Sounds.TitleChange.pitch", 3);
 

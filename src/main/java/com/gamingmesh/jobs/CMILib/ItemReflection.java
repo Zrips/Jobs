@@ -11,8 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.Jobs;
-
 public class ItemReflection {
 
     private static Class<?> CraftServerClass;
@@ -38,11 +36,11 @@ public class ItemReflection {
     }
 
     private static Class<?> getBukkitClass(String nmsClassString) throws ClassNotFoundException {
-	return Class.forName("org.bukkit.craftbukkit." + Jobs.getVersionCheckManager().getVersion() + "." + nmsClassString);
+	return Class.forName("org.bukkit.craftbukkit." + Version.getCurrent() + "." + nmsClassString);
     }
 
     public static Class<?> getMinecraftClass(String nmsClassString) throws ClassNotFoundException {
-	return Class.forName("net.minecraft.server." + Jobs.getVersionCheckManager().getVersion() + "." + nmsClassString);
+	return Class.forName("net.minecraft.server." + Version.getCurrent() + "." + nmsClassString);
     }
 
     public static String getItemMinecraftName(ItemStack item) {
@@ -98,9 +96,7 @@ public class ItemReflection {
     }
 
     public static ItemStack getItemInOffHand(org.bukkit.entity.Player player) {
-	if (Jobs.getVersionCheckManager().getVersion().isLower(Version.v1_9_R1))
-	    return null;
-	return player.getInventory().getItemInOffHand();
+	return Version.getCurrent().isLower(Version.v1_9_R1) ? null : player.getInventory().getItemInOffHand();
     }
 
     public void setEndermiteActive(Entity ent, boolean state) {

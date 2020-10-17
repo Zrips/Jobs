@@ -1686,7 +1686,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	if (Jobs.getVersionCheckManager().getVersion().isEqualOrHigher(Version.v1_9_R2)
+	if (Version.getCurrent().isEqualOrHigher(Version.v1_9_R2)
 	    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
 	    return;
 
