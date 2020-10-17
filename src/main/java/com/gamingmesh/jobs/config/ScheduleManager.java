@@ -25,11 +25,16 @@ public class ScheduleManager {
     private Jobs plugin;
 
     private BukkitTask timer;
+    private YmlMaker jobSchedule;
 
     public static final List<Schedule> BOOSTSCHEDULE = new ArrayList<>();
 
     public ScheduleManager(Jobs plugin) {
 	this.plugin = plugin;
+    }
+
+    public YmlMaker getConf() {
+	return jobSchedule;
     }
 
     public void start() {
@@ -149,20 +154,21 @@ public class ScheduleManager {
     public void load() {
 	BOOSTSCHEDULE.clear();
 
-	YmlMaker jobSchedule = new YmlMaker(plugin, "schedule.yml");
+	jobSchedule = new YmlMaker(plugin, "schedule.yml");
 	jobSchedule.saveDefaultConfig();
 
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(jobSchedule.getConfigFile());
 
 	conf.options().copyDefaults(true);
+	conf.options().copyHeader(true);
 
 	if (!conf.isConfigurationSection("Boost"))
 	    return;
 
 	ArrayList<String> sections = new ArrayList<>(conf.getConfigurationSection("Boost").getKeys(false));
 
-	for (String OneSection : sections) {
-	    ConfigurationSection path = conf.getConfigurationSection("Boost." + OneSection);
+	for (String oneSection : sections) {
+	    ConfigurationSection path = conf.getConfigurationSection("Boost." + oneSection);
 
 	    if (path == null || !path.getBoolean("Enabled") || !path.getString("From", "").contains(":")
 			|| !path.getString("Until", "").contains(":") || !path.isList("Days") || !path.isList("Jobs"))
@@ -170,7 +176,7 @@ public class ScheduleManager {
 
 	    Schedule sched = new Schedule();
 
-	    sched.setName(OneSection);
+	    sched.setName(oneSection);
 	    sched.setDays(path.getStringList("Days"));
 	    sched.setJobs(path.getStringList("Jobs"));
 	    sched.setFrom(Integer.valueOf(path.getString("From").replace(":", "")));

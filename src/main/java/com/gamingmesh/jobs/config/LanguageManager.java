@@ -152,6 +152,13 @@ public class LanguageManager {
 	    c.get("command.expboost.output.boostadded", "Exp boost of &e%boost% &aadded for &e%jobname%!");
 	    c.get("command.expboost.output.infostats", "&c-----> &aExp rate x%boost% enabled&c <-------");
 
+	    c.get("command.schedule.help.info", "Enables the given scheduler");
+	    c.get("command.schedule.help.args", "enable [scheduleName] [untilTime]");
+	    Jobs.getGCManager().getCommandArgs().put("schedule", Arrays.asList("enable", "[scheduleName]", "[untilTime]"));
+	    c.get("command.schedule.output.noScheduleFound", "&cSchedule with this name not found.");
+	    c.get("command.schedule.output.alreadyEnabled", "&cThis schedule already enabled.");
+	    c.get("command.schedule.output.enabled", "&eSchedule have been enabled from&a %from%&e until&a %until%");
+
 	    c.get("command.itembonus.help.info", "Check item bonus");
 	    c.get("command.itembonus.help.args", "");
 	    c.get("command.itembonus.output.list", "&e[jobname]: %money% %points% %exp%");

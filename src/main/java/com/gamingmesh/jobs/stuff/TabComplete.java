@@ -64,6 +64,9 @@ public class TabComplete implements TabCompleter {
 		    List<String> temp = new ArrayList<>();
 		    for (String ar : t2) {
 			switch (ar) {
+			case "[scheduleName]":
+			    Jobs.getScheduleManager().getConf().getConfig().getConfigurationSection("Boost").getKeys(false).forEach(temp::add);
+			    break;
 			case "[time]":
 			    temp.add("1hour10minute20s");
 			    break;

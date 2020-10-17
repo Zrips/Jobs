@@ -181,10 +181,8 @@ public class browse implements Cmd {
 			    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (j.getBonus() * 100)));
 		    }
 
-		    if (!j.getFullDescription().isEmpty()) {
-			for (String one : j.getFullDescription()) {
-			    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", one));
-			}
+		    for (String one : j.getFullDescription()) {
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", one));
 		    }
 		}
 	    }

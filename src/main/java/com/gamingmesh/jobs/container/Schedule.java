@@ -9,18 +9,18 @@ import com.gamingmesh.jobs.CMILib.CMIChatColor;
 
 public class Schedule {
 
-    private int broadcastInterval = 0, From = 0, Until = 235959, nextFrom = 0, nextUntil = 235959;
+    private int broadcastInterval = 0, from = 0, until = 235959, nextFrom = 0, nextUntil = 235959;
 
     private final BoostMultiplier BM = new BoostMultiplier();
 
-    private String Name = null;
+    private String name = "";
 
-    private List<String> Days = new ArrayList<>(Arrays.asList("all"));
-    private final List<Job> JobsList = new ArrayList<>();
+    private List<String> days = new ArrayList<>(Arrays.asList("all"));
+    private final List<Job> jobsList = new ArrayList<>();
 
-    private final List<String> MessageOnStart = new ArrayList<>(),
-		MessageOnStop = new ArrayList<>(),
-		MessageToBroadcast = new ArrayList<>();
+    private final List<String> messageOnStart = new ArrayList<>(),
+		messageOnStop = new ArrayList<>(),
+		messageToBroadcast = new ArrayList<>();
 
     private boolean nextDay = false, started = false, stoped = true, onStop = true, onStart = true;
 
@@ -81,20 +81,20 @@ public class Schedule {
 	return BM;
     }
 
-    public void setName(String Name) {
-	this.Name = Name;
+    public void setName(String name) {
+	this.name = name == null ? "" : name;
     }
 
     public String getName() {
-	return Name;
+	return name;
     }
 
-    public void setFrom(int From) {
-	this.From = From;
+    public void setFrom(int from) {
+	this.from = from;
     }
 
     public int getFrom() {
-	return From;
+	return from;
     }
 
     public int getNextFrom() {
@@ -109,92 +109,92 @@ public class Schedule {
 	return nextDay;
     }
 
-    public void setUntil(int Until) {
-	this.Until = Until;
+    public void setUntil(int until) {
+	this.until = until;
 
-	if (this.From > this.Until) {
-	    this.nextFrom = 0;
-	    this.nextUntil = this.Until;
-	    this.Until = 236000;
-	    this.nextDay = true;
+	if (from > this.until) {
+	    nextFrom = 0;
+	    nextUntil = this.until;
+	    this.until = 236000;
+	    nextDay = true;
 	}
     }
 
     public int getUntil() {
-	return Until;
+	return until;
     }
 
-    public void setJobs(List<String> JobsNameList) {
-	JobsList.clear();
+    public void setJobs(List<String> jobsNameList) {
+	jobsList.clear();
 
 	List<Job> jobl = Jobs.getJobs();
-	for (int z = 0; z < JobsNameList.size(); z++) {
-	    if (JobsNameList.get(z).equalsIgnoreCase("all")) {
+	for (int z = 0; z < jobsNameList.size(); z++) {
+	    if (jobsNameList.get(z).equalsIgnoreCase("all")) {
 		if (jobl != null)
-		    JobsList.addAll(jobl);
+		    jobsList.addAll(jobl);
 
 		return;
 	    }
 
-	    Job jb = Jobs.getJob(JobsNameList.get(z));
+	    Job jb = Jobs.getJob(jobsNameList.get(z));
 	    if (jb != null)
-		JobsList.add(jb);
+		jobsList.add(jb);
 	}
     }
 
     public List<Job> getJobs() {
-	return JobsList;
+	return jobsList;
     }
 
-    public void setDays(List<String> Days) {
-	for (int z = 0; z < Days.size(); z++) {
-	    Days.set(z, Days.get(z).toLowerCase());
+    public void setDays(List<String> days) {
+	for (int z = 0; z < days.size(); z++) {
+	    days.set(z, days.get(z).toLowerCase());
 	}
 
-	this.Days = Days;
+	this.days = days;
     }
 
     public List<String> getDays() {
-	return Days;
+	return days;
     }
 
-    public void setMessageOnStart(List<String> msg, String From, String Until) {
+    public void setMessageOnStart(List<String> msg, String from, String until) {
 	List<String> temp = new ArrayList<>();
 	for (String one : msg) {
-	    temp.add(CMIChatColor.translate(one.replace("[until]", Until).replace("[from]", From)));
+	    temp.add(CMIChatColor.translate(one.replace("[until]", until).replace("[from]", from)));
 	}
 
-	MessageOnStart.addAll(temp);
+	messageOnStart.addAll(temp);
     }
 
     public List<String> getMessageOnStart() {
-	return MessageOnStart;
+	return messageOnStart;
     }
 
-    public void setMessageOnStop(List<String> msg, String From, String Until) {
+    public void setMessageOnStop(List<String> msg, String from, String until) {
 	List<String> temp = new ArrayList<>();
 	for (String one : msg) {
-	    temp.add(CMIChatColor.translate(one.replace("[until]", Until).replace("[from]", From)));
+	    temp.add(CMIChatColor.translate(one.replace("[until]", until).replace("[from]", from)));
 	}
 
-	MessageOnStop.addAll(temp);
+	messageOnStop.addAll(temp);
     }
 
     public List<String> getMessageOnStop() {
-	return MessageOnStop;
+	return messageOnStop;
     }
 
-    public void setMessageToBroadcast(List<String> msg, String From, String Until) {
+    public void setMessageToBroadcast(List<String> msg, String from, String until) {
 	List<String> temp = new ArrayList<>();
 	for (String one : msg) {
-	    temp.add(CMIChatColor.translate(one.replace("[until]", Until).replace("[from]", From)));
+	    temp.add(CMIChatColor.translate(one.replace("[until]", until).replace("[from]", from)));
 	}
 
-	MessageToBroadcast.addAll(temp);
+	messageToBroadcast.addAll(temp);
     }
 
     public List<String> getMessageToBroadcast() {
-	return MessageToBroadcast;
+	return messageToBroadcast;
     }
 
     public void setBroadcastInterval(int broadcastInterval) {

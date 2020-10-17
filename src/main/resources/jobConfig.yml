@@ -183,14 +183,12 @@ Jobs:
     #
     # If no sub-type is give, the payout will be for all sub-types.
     #
-    # To get a list of all available block types, check the
-    # bukkit JavaDocs for a complete list of block types
+    # To get a list of all available block types, check
     # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
     # 
     # For kill tags (Kill and custom-kill), the name is the name of the
     # mob.
-    # To get a list of all available entity types, check the
-    # bukkit JavaDocs for a complete list of entity types
+    # To get a list of all available entity types, check
     # https://minecraft.gamepedia.com/Mob#List_of_mobs
     #
     # NOTE: mob names are case sensitive.
@@ -928,7 +926,6 @@ Jobs:
     ChatColour: WHITE
     chat-display: full
     max-level: 200
-    #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(baseincome*(joblevel-1)*0.01)) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(basepoints*(joblevel-1)*0.01)) * ((numjobs-1)*0.05))
@@ -1680,7 +1677,6 @@ Jobs:
     ChatColour: GOLD
     chat-display: full
     max-level: 200
-    #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(baseincome*(joblevel-1)*0.01)) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(basepoints*(joblevel-1)*0.01)) * ((numjobs-1)*0.05))
@@ -1749,7 +1745,6 @@ Jobs:
     ChatColour: BLUE
     chat-display: full
     max-level: 200
-    #slots: 10
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(baseincome*(joblevel-1)*0.01)) * ((numjobs-1)*0.05))
     points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(basepoints*(joblevel-1)*0.01)) * ((numjobs-1)*0.05))

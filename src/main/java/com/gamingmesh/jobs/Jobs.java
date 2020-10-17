@@ -147,15 +147,13 @@ public class Jobs extends JavaPlugin {
     }
 
     public Optional<BlockOwnerShip> getBlockOwnerShip(BlockTypes type) {
-	BlockOwnerShip b = null;
 	for (BlockOwnerShip ship : blockOwnerShips) {
 	    if (ship.getType() == type) {
-		b = ship;
-		break;
+		return Optional.ofNullable(ship);
 	    }
 	}
 
-	return Optional.ofNullable(b);
+	return Optional.empty();
     }
 
     public Set<BlockOwnerShip> getBlockOwnerShips() {

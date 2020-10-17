@@ -137,11 +137,11 @@ public class TitleManager {
 		if (titleSection.isString(titleKey + ".JobName"))
 		    jobName = titleSection.getString(titleKey + ".JobName", "");
 
-		if (titleName == null) {
+		if (titleName.isEmpty()) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid Name property. Skipping!");
 		    continue;
 		}
-		if (titleShortName == null) {
+		if (titleShortName.isEmpty()) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid ShortName property. Skipping!");
 		    continue;
 		}
