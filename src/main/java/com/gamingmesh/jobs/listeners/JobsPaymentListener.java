@@ -878,7 +878,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && inv instanceof StonecutterInventory) {
-		if(event.getAction() != InventoryAction.DROP_ONE_SLOT) {
+		if (event.getAction() != InventoryAction.DROP_ONE_SLOT) {
 			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 		}
 	    return;
