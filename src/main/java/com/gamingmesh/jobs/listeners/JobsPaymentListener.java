@@ -67,6 +67,7 @@ import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.BrewEvent;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -877,7 +878,9 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && inv instanceof StonecutterInventory) {
-	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+		if(event.getAction() != InventoryAction.DROP_ONE_SLOT) {
+			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+		}
 	    return;
 	}
 
