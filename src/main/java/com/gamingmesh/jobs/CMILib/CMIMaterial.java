@@ -2624,6 +2624,10 @@ public enum CMIMaterial {
 	    return newName.replaceFirst(".+?_", "");
 	}
 
+	if (newName.matches("(?i)^(WHITE|ORANGE|MAGENTA|YELLOW|LIME|PINK|GRAY|CYAN|PURPLE|BLUE|BROWN|GREEN|RED|BLACK)$")) {
+	    return "color";
+    }
+
 	return fullName;
     }
 

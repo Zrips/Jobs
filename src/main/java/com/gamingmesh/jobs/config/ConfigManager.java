@@ -627,6 +627,12 @@ public class ConfigManager {
 	    type = CMIMaterial.getGeneralMaterialName(type);
 	}
 
+	// case for color-all
+	if (actionType == ActionType.SHEAR && myKey.startsWith("color") && ":ALL".equalsIgnoreCase(subType)) {
+		meta = "ALL";
+		type = "color";
+	}
+
 	if (actionType == ActionType.TNTBREAK)
 	    Jobs.getGCManager().setTntFinder(true);
 
