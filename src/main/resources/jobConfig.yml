@@ -350,6 +350,7 @@ Jobs:
         income: 5.0
         experience: 10.0
     # Shear sheeps by its color
+    # You can use "color-all" to specify all known colors.
     Shear:
       Black:
         income: 2.0
