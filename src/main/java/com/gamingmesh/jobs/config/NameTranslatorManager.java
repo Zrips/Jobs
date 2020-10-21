@@ -29,7 +29,7 @@ public class NameTranslatorManager {
 	return Translate(materialName, info.getActionType(), info.getId(), info.getMeta(), info.getName());
     }
 
-    public String Translate(String materialName, ActionType action, Integer id, String meta, String mame) {
+    public String Translate(String materialName, ActionType action, Integer id, String meta, String name) {
 	// Translating name to user friendly
 	if (Jobs.getGCManager().UseCustomNames)
 	    switch (action) {
@@ -63,7 +63,7 @@ public class NameTranslatorManager {
 		return nameLs.getName();
 	    }
 
-		if (mame != null && !mame.isEmpty()) {
+		if (name != null && !name.isEmpty()) {
 		    mat = CMIMaterial.get(materialName.replace(" ", ""));
 		    nameLs = ListOfNames.get(mat);
 
@@ -114,41 +114,40 @@ public class NameTranslatorManager {
 			return one.getName();
 		    }
 		    ids = one.getMinecraftName();
-		    if (ids.equalsIgnoreCase(mame)) {
+		    if (ids.equalsIgnoreCase(name)) {
 			return one.getName();
 		    }
 		}
 		break;
 	    case ENCHANT:
-		String name = materialName;
+		String mName = materialName;
 		String level = "";
-		if (name.contains(":")) {
-		    name = materialName.split(":")[0];
+		if (mName.contains(":")) {
+		    mName = materialName.split(":")[0];
 		    level = ":" + materialName.split(":")[1];
 		}
-		NameList nameInfo = ListOfEnchants.get(name.toLowerCase().replace("_", ""));
+		NameList nameInfo = ListOfEnchants.get(mName.toLowerCase().replace("_", ""));
 		if (nameInfo != null) {
 		    return nameInfo.getMinecraftName() + level;
 		}
-		return materialName;
-	    case CUSTOMKILL:
-	    case EXPLORE:
 		break;
 	    case SHEAR:
 		for (NameList one : ListOfColors) {
 		    String ids = one.getMinecraftName();
-		    if (ids.equalsIgnoreCase(mame)) {
+		    if (ids.equalsIgnoreCase(name)) {
 			return one.getName();
 		    }
 		}
-		break;
+
+		String fallbackColorName = Arrays.stream(name.split("\\s|:|-"))
+		.map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
+		.collect(Collectors.joining(" ")); // returns capitalized word (from this -> To This)
+		return fallbackColorName;
 	    case MMKILL:
 		NameList got = ListOfMMEntities.get(materialName.toLowerCase());
 		if (got != null && got.getName() != null)
 		    return got.getName();
 		return HookManager.getMythicManager() == null ? materialName : HookManager.getMythicManager().getDisplayName(materialName);
-	    case BOSS:
-		return HookManager.getBossManager() == null ? materialName : HookManager.getBossManager().getName(materialName);
 	    default:
 		break;
 	    }

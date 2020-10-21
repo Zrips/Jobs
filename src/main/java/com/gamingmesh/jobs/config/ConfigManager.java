@@ -389,12 +389,12 @@ public class ConfigManager {
 	    meta = "";
 	int id = 0;
 
-	if (myKey.contains("-")) {
+	if (myKey.contains("-") && !myKey.endsWith("-all")) {
 	    // uses subType
 	    subType = ":" + myKey.split("-")[1];
 	    meta = myKey.split("-")[1];
 	    myKey = myKey.split("-")[0];
-	} else if (myKey.contains(":")) { // when we uses tipped arrow effect types
+	} else if (myKey.contains(":") && !myKey.endsWith(":all")) { // when we uses tipped arrow effect types
 	    String[] split = myKey.split(":");
 	    meta = split.length > 1 ? split[1] : myKey;
 	    myKey = split[0];
@@ -592,7 +592,7 @@ public class ConfigManager {
 
 	    type = enchant == null ? myKey : enchant.toString();
 	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
-	    || actionType == ActionType.SHEAR || actionType == ActionType.BAKE || actionType == ActionType.BOSS) {
+	    || actionType == ActionType.BAKE || actionType == ActionType.BOSS) {
 	    type = myKey;
 	} else if (actionType == ActionType.EXPLORE) {
 	    type = myKey;
@@ -615,6 +615,13 @@ public class ConfigManager {
 	    if (myKey.contains(":")) {
 		subType = myKey.split(":")[1];
 	    }
+	} else if (actionType == ActionType.SHEAR) {
+		if (myKey.startsWith("color") && (myKey.endsWith("-all") || myKey.endsWith(":all"))) {
+		    subType = ":all";
+		    type = myKey.split(":|-")[0];
+		} else {
+		    type = myKey;
+		}
 	}
 
 	if (type == null) {
@@ -624,13 +631,8 @@ public class ConfigManager {
 
 	if (":ALL".equalsIgnoreCase(subType)) {
 	    meta = "ALL";
-	    type = CMIMaterial.getGeneralMaterialName(type);
-	}
-
-	// case for color-all
-	if (actionType == ActionType.SHEAR && myKey.startsWith("color") && ":ALL".equalsIgnoreCase(subType)) {
-		meta = "ALL";
-		type = "color";
+	    // case for ":all" identifier
+	    type = (actionType == ActionType.SHEAR && myKey.startsWith("color")) ? "color" : CMIMaterial.getGeneralMaterialName(type);
 	}
 
 	if (actionType == ActionType.TNTBREAK)
