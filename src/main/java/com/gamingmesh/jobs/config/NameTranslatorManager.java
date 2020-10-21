@@ -148,6 +148,8 @@ public class NameTranslatorManager {
 		if (got != null && got.getName() != null)
 		    return got.getName();
 		return HookManager.getMythicManager() == null ? materialName : HookManager.getMythicManager().getDisplayName(materialName);
+	    case BOSS:
+		return HookManager.getBossManager() == null ? materialName : HookManager.getBossManager().getName(materialName);
 	    default:
 		break;
 	    }
