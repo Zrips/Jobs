@@ -222,8 +222,8 @@ public class JobsPaymentListener implements Listener {
 
 	ItemStack itemInHand = Jobs.getNms().getItemInMainHand(player);
 
-	if ((cow.getType() == EntityType.COW && itemInHand.getType() != Material.BUCKET)
-	    || (cow.getType() == EntityType.MUSHROOM_COW && itemInHand.getType() != Material.BOWL)) {
+	if (itemInHand.getType() != Material.BUCKET
+	    && (cow.getType() == EntityType.MUSHROOM_COW && itemInHand.getType() != Material.BOWL)) {
 	    return;
 	}
 
@@ -878,9 +878,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && inv instanceof StonecutterInventory) {
-		if (event.getAction() != InventoryAction.DROP_ONE_SLOT) {
-			Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
-		}
+	    if (event.getAction() != InventoryAction.DROP_ONE_SLOT) {
+		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+	    }
+
 	    return;
 	}
 

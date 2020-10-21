@@ -406,7 +406,6 @@ public class ConfigManager {
 	case KILL:
 	case MILK:
 	case MMKILL:
-	case BOSS:
 	case BREED:
 	case TAME:
 	case SHEAR:
@@ -526,18 +525,14 @@ public class ConfigManager {
 	    // check entities
 	    CMIEntityType entity = CMIEntityType.getByName(myKey);
 
-	    if (entity != null) {
-		if (entity.isAlive()) {
-		    type = entity.toString();
-		    id = entity.getId();
+	    // Change pig zombie -> piglin in 1.16+
+	    if (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && entity == CMIEntityType.PIG_ZOMBIE) {
+		entity = CMIEntityType.PIGLIN;
+	    }
 
-		    // using breeder finder
-		    if (actionType == ActionType.BREED)
-			Jobs.getGCManager().useBreederFinder = true;
-		} else if (entity == CMIEntityType.ENDER_CRYSTAL) {
-		    type = entity.toString();
-		    id = entity.getId();
-		}
+	    if (entity != null && (entity.isAlive() || entity == CMIEntityType.ENDER_CRYSTAL)) {
+		type = entity.toString();
+		id = entity.getId();
 	    }
 
 	    // Pre 1.13 checks for custom names
@@ -582,7 +577,6 @@ public class ConfigManager {
 		    break;
 		}
 	    }
-
 	} else if (actionType == ActionType.ENCHANT) {
 	    CMIEnchantment enchant = CMIEnchantment.get(myKey);
 	    if (enchant == null && material == CMIMaterial.NONE) {
@@ -592,7 +586,7 @@ public class ConfigManager {
 
 	    type = enchant == null ? myKey : enchant.toString();
 	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
-	    || actionType == ActionType.BAKE || actionType == ActionType.BOSS) {
+	    || actionType == ActionType.BAKE) {
 	    type = myKey;
 	} else if (actionType == ActionType.EXPLORE) {
 	    type = myKey;
@@ -637,6 +631,10 @@ public class ConfigManager {
 
 	if (actionType == ActionType.TNTBREAK)
 	    Jobs.getGCManager().setTntFinder(true);
+
+	// using breeder finder
+	if (actionType == ActionType.BREED)
+	    Jobs.getGCManager().useBreederFinder = true;
 
 	KeyValues kv = new KeyValues();
 	kv.setId(id);
