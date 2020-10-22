@@ -123,12 +123,6 @@ public class Jobs extends JavaPlugin {
     }
 
     public Optional<BlockOwnerShip> getBlockOwnerShip(CMIMaterial type, boolean addNew) {
-	if (type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE
-	    || type == CMIMaterial.BLAST_FURNACE || type == CMIMaterial.BREWING_STAND
-	    || type == CMIMaterial.LEGACY_BREWING_STAND || type == CMIMaterial.SMOKER) {
-	    return Optional.empty();
-	}
-
 	BlockOwnerShip b = null;
 	for (BlockOwnerShip ship : blockOwnerShips) {
 	    if (ship.getMaterial() == type) {
