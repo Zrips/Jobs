@@ -408,14 +408,18 @@ public class JobsCommands implements CommandExecutor {
      * @return the message
      */
     public String jobStatsMessage(JobProgression jobProg) {
+	boolean isMaxLevelReached = jobProg.getLevel() == jobProg.getJob().getMaxLevel();
+	String path = "command.stats.output." + (isMaxLevelReached ? "max-level"
+			: "message");
+
 	Title title = Jobs.gettitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
-	String message = Jobs.getLanguage().getMessage("command.stats.output",
+	String message = Jobs.getLanguage().getMessage(path,
 	    "%joblevel%", jobProg.getLevel(),
 	    "%jobname%", jobProg.getJob().getNameWithColor(),
 	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(),
 	    "%titlename%", title == null ? "Unknown" : title.getName());
-	return " " + jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) + " " + message;
+	return " " + (isMaxLevelReached ? "" : jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience())) + " " + message;
     }
 
     public String jobProgressMessage(double max, double current) {

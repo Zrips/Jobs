@@ -293,7 +293,8 @@ public class LanguageManager {
 	    c.get("command.stats.help.args", "[playername]");
 	    Jobs.getGCManager().getCommandArgs().put("stats", Arrays.asList("[playername]"));
 	    c.get("command.stats.error.nojob", "Please join a job first.");
-	    c.get("command.stats.output", "Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp");
+	    c.get("command.stats.output.message", "Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp");
+	    c.get("command.stats.output.max-level", "     &cMax level   -   %jobname%");
 	    c.get("command.stats.bossBarOutput", "Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%");
 	    c.get("command.stats.bossBarGain", " &7(&f%gain%&7)");
 
@@ -631,6 +632,9 @@ public class LanguageManager {
 
 	    c.get("message.skillup.broadcast", "%playername% has been promoted to a %titlename% %jobname%.");
 	    c.get("message.skillup.nobroadcast", "Congratulations, you have been promoted to a %titlename% %jobname%.");
+	    c.get("message.max-level-reached.title", "&2Max level reached");
+	    c.get("message.max-level-reached.subtitle", "&2in %jobname%!");
+	    c.get("message.max-level-reached.chat", "&cYou have reached the maximum level in %jobname%!");
 
 	    c.get("message.levelup.broadcast", "%playername% is now a level %joblevel% %jobname%.");
 	    c.get("message.levelup.nobroadcast", "You are now level %joblevel% %jobname%.");

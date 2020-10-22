@@ -43,6 +43,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.CMIReflections;
+import com.gamingmesh.jobs.CMILib.TitleMessageManager;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
@@ -583,11 +584,8 @@ public class PlayerManager {
 	try {
 	    if (Jobs.getGCManager().SoundLevelupUse) {
 		Sound sound = levelUpEvent.getSound();
-		if (sound != null) {
-		    if (player != null)
-			player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
-		} else
-		    Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+		if (player != null)
+		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
 	    }
 	} catch (Exception e) {
 	}
@@ -714,12 +712,9 @@ public class PlayerManager {
 	    try {
 		if (Jobs.getGCManager().SoundTitleChangeUse) {
 		    Sound sound = levelUpEvent.getTitleChangeSound();
-		    if (sound != null) {
-			if (player != null)
-			    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
-				levelUpEvent.getTitleChangePitch());
-		    } else
-			Jobs.consoleMsg("[Jobs] Can't find sound by name: " + levelUpEvent.getTitleChangeSound().name() + ". Please update it");
+		    if (player != null)
+			player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
+			levelUpEvent.getTitleChangePitch());
 		}
 	    } catch (Exception e) {
 	    }
@@ -744,10 +739,18 @@ public class PlayerManager {
 		}
 	    }
 	}
+
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 	performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
 	Jobs.getSignUtil().updateAllSign(job);
+
+	if (Jobs.getGCManager().titleMessageMaxLevelReached && prog.getLevel() == jPlayer.getMaxJobLevelAllowed(prog.getJob())) {
+	    TitleMessageManager.send(jPlayer.getPlayer(), Jobs.getLanguage().getMessage("message.max-level-reached.title",
+		"%jobname%", prog.getJob().getNameWithColor()),
+		Jobs.getLanguage().getMessage("message.max-level-reached.subtitle", "%jobname%", prog.getJob().getNameWithColor()), 20, 40, 20);
+	    jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.max-level-reached.chat", "%jobname%", prog.getJob().getNameWithColor()));
+	}
     }
 
     /**

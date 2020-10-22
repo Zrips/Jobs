@@ -350,12 +350,12 @@ public class Job {
     }
 
     public int getMaxLevel(JobsPlayer player) {
-	return player == null ? getMaxLevel() : player.getMaxJobLevelAllowed(this);
+	return player == null ? maxLevel : player.getMaxJobLevelAllowed(this);
     }
 
     public int getMaxLevel(CommandSender sender) {
 	if (sender == null)
-	    return getMaxLevel();
+	    return maxLevel;
 
 	if (sender instanceof Player) {
 	    JobsPlayer player = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
@@ -363,7 +363,7 @@ public class Job {
 		return player.getMaxJobLevelAllowed(this);
 	}
 
-	return getMaxLevel() > getVipMaxLevel() ? getMaxLevel() : getVipMaxLevel();
+	return maxLevel > vipmaxLevel ? maxLevel : vipmaxLevel;
     }
 
     /**

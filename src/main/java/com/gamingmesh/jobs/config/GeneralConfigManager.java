@@ -103,7 +103,7 @@ public class GeneralConfigManager {
 	BossBarEnabled, BossBarShowOnEachAction, BossBarsMessageByDefault, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
 	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities,
-	payForEachVTradeItem;
+	payForEachVTradeItem, titleMessageMaxLevelReached;
 
     public ItemStack guiBackButton, guiNextButton, guiFiller;
 
@@ -863,6 +863,9 @@ public class GeneralConfigManager {
 	TitleChangeChat = c.get("ShowChatMessage.OnTitleChange", true);
 	LevelChangeChat = c.get("ShowChatMessage.OnLevelChange", true);
 	EmptyServerAccountChat = c.get("ShowChatMessage.OnEmptyServerAccount", true);
+
+	c.addComment("SendTitleMessageWhenMaxLevelReached", "Send title and chat message when a player reached the maximum level in a job.");
+	titleMessageMaxLevelReached = c.get("SendTitleMessageWhenMaxLevelReached", false);
 
 	c.addComment("Sounds", "Sounds", "Extra sounds on some events",
 	    "All sounds can be found in https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");

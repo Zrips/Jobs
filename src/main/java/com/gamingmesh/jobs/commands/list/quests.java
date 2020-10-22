@@ -100,9 +100,7 @@ public class quests implements Cmd {
 			.replace("[time]", TimeManage.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
 
 		    if (current.contains("[desc]")) {
-			for (String one : q.getQuest().getDescription()) {
-			    hoverList.add(one);
-			}
+			q.getQuest().getDescription().forEach(hoverList::add);
 		    } else {
 			hoverList.add(current);
 		    }
