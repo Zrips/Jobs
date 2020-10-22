@@ -387,6 +387,7 @@ public class ConfigManager {
 	String type = null,
 	    subType = "",
 	    meta = "";
+	final String finalMyKey = myKey;
 	int id = 0;
 
 	if (myKey.contains("-")) {
@@ -397,6 +398,7 @@ public class ConfigManager {
 	} else if (myKey.contains(":")) { // when we uses tipped arrow effect types
 	    String[] split = myKey.split(":");
 	    meta = split.length > 1 ? split[1] : myKey;
+	    subType = ":all";
 	    myKey = split[0];
 	}
 
@@ -609,12 +611,12 @@ public class ConfigManager {
 	    if (myKey.contains(":")) {
 		subType = myKey.split(":")[1];
 	    }
-	} else if (actionType == ActionType.SHEAR) {
-		if (myKey.startsWith("color") && (myKey.endsWith("-all") || myKey.endsWith(":all"))) {
-		    type = myKey.split(":|-")[0];
-		} else {
-		    type = myKey;
-		}
+	} else if (actionType == ActionType.SHEAR && !myKey.startsWith("color")) {
+	    type = myKey;
+	}
+
+	if (finalMyKey.endsWith("-all") || finalMyKey.endsWith(":all")) {
+	    type = finalMyKey.split(":|-")[0];
 	}
 
 	if (type == null) {
