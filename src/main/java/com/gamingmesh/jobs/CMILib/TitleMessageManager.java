@@ -34,7 +34,7 @@ public class TitleMessageManager {
 		getHandle = typeCraftPlayer.getMethod("getHandle");
 		playerConnection = typeNMSPlayer.getField("playerConnection");
 		sendPacket = typePlayerConnection.getMethod("sendPacket", Class.forName("net.minecraft.server." + version + ".Packet"));
-	    } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | NoSuchFieldException ex) {
+	    } catch (ReflectiveOperationException | SecurityException ex) {
 		Bukkit.getLogger().log(Level.SEVERE, "Error {0}", ex);
 	    }
 
@@ -45,7 +45,7 @@ public class TitleMessageManager {
 		nmsPacketPlayOutTitle = typePacketPlayOutTitle.getConstructor(enumTitleAction, nmsIChatBaseComponent);
 		nmsPacketPlayOutTimes = typePacketPlayOutTitle.getConstructor(int.class, int.class, int.class);
 		fromString = Class.forName("org.bukkit.craftbukkit." + version + ".util.CraftChatMessage").getMethod("fromString", String.class);
-	    } catch (ClassNotFoundException | NoSuchMethodException | SecurityException ex) {
+	    } catch (ReflectiveOperationException | SecurityException ex) {
 		simpleTitleMessages = true;
 	    }
 	}
@@ -60,11 +60,11 @@ public class TitleMessageManager {
 	    @Override
 	    public void run() {
 
-		String t = title == null ? null : CMIChatColor.translate((String) title);
-		String s = subtitle == null ? null : CMIChatColor.translate((String) subtitle);
+		String t = title == null ? "" : CMIChatColor.translate((String) title);
+		String s = subtitle == null ? "" : CMIChatColor.translate((String) subtitle);
 
 		if (Version.isCurrentEqualOrLower(Version.v1_7_R4)) {
-		    ActionBarManager.send(receivingPacket, (t == null ? "" : t) + (s == null ? "" : s));
+		    ActionBarManager.send(receivingPacket, t + s);
 		    return;
 		}
 
@@ -108,7 +108,7 @@ public class TitleMessageManager {
 			break;
 		    }
 
-		} catch (SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException ex) {
+		} catch (ReflectiveOperationException | SecurityException | IllegalArgumentException ex) {
 		    simpleTitleMessages = true;
 		    Bukkit.getLogger().log(Level.SEVERE, "Your server can't fully support title messages. They will be shown in chat instead.");
 		}

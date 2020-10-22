@@ -319,10 +319,11 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
 	    return;
 
-	if (!block.hasMetadata(brewingOwnerMetadata))
+	BlockOwnerShip ownerShip = Jobs.getInstance().getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
+	if (ownerShip == null || !block.hasMetadata(ownerShip.getMetadataName()))
 	    return;
 
-	List<MetadataValue> data = block.getMetadata(brewingOwnerMetadata);
+	List<MetadataValue> data = block.getMetadata(ownerShip.getMetadataName());
 	if (data.isEmpty())
 	    return;
 

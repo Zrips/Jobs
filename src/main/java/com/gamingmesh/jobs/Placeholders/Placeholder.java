@@ -479,7 +479,7 @@ public class Placeholder {
 				CurrencyType.getByName(vals.get(1))));
 		case user_jtoplvl_$1_$2:
 		    vals = placeHolder.getComplexValues(value);
-		    if (vals.isEmpty() || vals.size() < 2)
+		    if (vals.size() < 2)
 			return "";
 
 		    Job job = getJobFromValue(vals.get(0));
@@ -614,6 +614,6 @@ public class Placeholder {
     }
 
     private String convert(boolean state) {
-	return state ? Jobs.getLanguage().getMessage("general.info.true") : Jobs.getLanguage().getMessage("general.info.false");
+	return Jobs.getLanguage().getMessage("general.info." + (state ? "true" : "false"));
     }
 }

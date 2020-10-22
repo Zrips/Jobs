@@ -939,9 +939,7 @@ public class JobsPlayer {
     }
 
     public void getNewQuests(Job job) {
-	HashMap<String, QuestProgression> prog = qProgression.get(job.getName());
-	if (prog != null)
-	    prog.clear();
+	java.util.Optional.ofNullable(qProgression.get(job.getName())).ifPresent(HashMap::clear);
     }
 
     public void replaceQuest(Quest quest) {

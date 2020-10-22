@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>4.16.2</version>
+	<version>4.16.3</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -20,14 +20,6 @@
 			<artifactId>spigot-api</artifactId>
 			<version>1.16.3-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
-		</dependency>
-		<!-- Boss -->
-		<dependency>
-			<groupId>org.mineacademy.boss.api</groupId>
-			<artifactId>boss-api</artifactId>
-			<version>3.1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/BossAPI_3.1.0.jar</systemPath>
 		</dependency>
 		<!-- MyPet -->
 		<dependency>

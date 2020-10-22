@@ -176,16 +176,16 @@ public class JobProgression {
 
 	boolean ret = false;
 	while (canLevelUp()) {
-
-	    int maxLevel = this.jPlayer.getMaxJobLevelAllowed(this.getJob());
+	    int maxLevel = jPlayer.getMaxJobLevelAllowed(job);
 	    // Don't level up at max level
 	    if (job.getMaxLevel() > 0 && level >= maxLevel)
 		break;
+
 	    level++;
 	    experience -= maxExperience;
 	    ret = true;
 	    reloadMaxExperience();
-	    this.jPlayer.reloadLimits();
+	    jPlayer.reloadLimits();
 	}
 
 	// At max level
@@ -196,8 +196,8 @@ public class JobProgression {
     }
 
     /**
-     * Performs a level up
-     * @returns if level up was performed
+     * Performs a level down
+     * @returns if level down was performed
      */
     private boolean checkLevelDown() {
 	boolean ret = false;
@@ -207,9 +207,9 @@ public class JobProgression {
 		break;
 	    level--;
 	    int exp = getMaxExperience(level);
-	    experience = experience + exp;
+	    experience += exp;
 	    ret = true;
-	    reloadMaxExperience(); 	    
+	    reloadMaxExperience();
 	    this.jPlayer.reloadLimits();
 	}
 	return ret;
@@ -236,18 +236,13 @@ public class JobProgression {
     }
 
     public boolean canRejoin() {
-	if (this.leftOn == null)
-	    return true;
-	if (this.leftOn + this.getJob().getRejoinCd() < System.currentTimeMillis())
+	if (leftOn == null || leftOn + job.getRejoinCd() < System.currentTimeMillis())
 	    return true;
 	return jPlayer != null && jPlayer.getPlayer() != null && jPlayer.getPlayer().hasPermission("jobs.rejoinbypass");
     }
 
     public String getRejoinTimeMessage() {
-	if (leftOn == null)
-	    return "";
-	String msg = (TimeManage.to24hourShort(leftOn + getJob().getRejoinCd() - System.currentTimeMillis()));
-	return msg;
+	return leftOn == null ? "" : TimeManage.to24hourShort(leftOn + getJob().getRejoinCd() - System.currentTimeMillis());
     }
 
     public Double getLastExperience() {

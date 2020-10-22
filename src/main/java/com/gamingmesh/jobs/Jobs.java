@@ -123,10 +123,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public Optional<BlockOwnerShip> getBlockOwnerShip(CMIMaterial type, boolean addNew) {
-	if (((type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE) && !gConfigManager.isFurnacesReassign())
-			|| (type == CMIMaterial.BLAST_FURNACE && !gConfigManager.BlastFurnacesReassign)
-			|| ((type == CMIMaterial.BREWING_STAND || type == CMIMaterial.LEGACY_BREWING_STAND) && !gConfigManager.isBrewingStandsReassign())
-			|| (type == CMIMaterial.SMOKER && !gConfigManager.SmokerReassign)) {
+	if (type == CMIMaterial.FURNACE || type == CMIMaterial.LEGACY_BURNING_FURNACE
+	    || type == CMIMaterial.BLAST_FURNACE || type == CMIMaterial.BREWING_STAND
+	    || type == CMIMaterial.LEGACY_BREWING_STAND || type == CMIMaterial.SMOKER) {
 	    return Optional.empty();
 	}
 
@@ -997,7 +996,7 @@ public class Jobs extends JavaPlugin {
 
 		checkDailyQuests(jPlayer, prog.getJob(), info);
 
-		if (jobinfo == null || gConfigManager.disablePaymentIfMaxLevelReached && prog.getLevel() >= prog.getJob().getMaxLevel()) {
+		if (jobinfo == null || (gConfigManager.disablePaymentIfMaxLevelReached && prog.getLevel() >= prog.getJob().getMaxLevel())) {
 		    continue;
 		}
 

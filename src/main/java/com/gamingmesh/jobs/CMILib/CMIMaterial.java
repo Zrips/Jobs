@@ -2625,7 +2625,7 @@ public enum CMIMaterial {
 	}
 
 	if (newName.matches("(?i)^(WHITE|ORANGE|MAGENTA|YELLOW|LIME|PINK|GRAY|CYAN|PURPLE|BLUE|BROWN|GREEN|RED|BLACK|" +
-	    "LIGHT_GRAY|LIGHT_BLUE|)$")) {
+	    "LIGHT_GRAY|LIGHT_BLUE)$")) {
 	    return "color";
 	}
 
