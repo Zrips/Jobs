@@ -845,8 +845,7 @@ public class PlayerManager {
 
 	ItemBonusCache c = cj.get(prog);
 	if (c == null) {
-	    c = new ItemBonusCache();
-	    c.setBoostMultiplier(getInventoryBoost(player, prog));
+	    c = new ItemBonusCache(getInventoryBoost(player, prog));
 	    cj.put(prog, c);
 	    return c.getBoostMultiplier();
 	}

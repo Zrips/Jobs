@@ -384,8 +384,8 @@ public class JobsPaymentListener implements Listener {
 
 	FastPayment fp = Jobs.FASTPAYMENT.get(player.getUniqueId());
 	if (fp != null) {
-	    if (fp.getTime() > System.currentTimeMillis() && fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
-		fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub())) {
+	    if (fp.getTime() > System.currentTimeMillis() && (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
+		fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub()))) {
 		Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
 		return;
 	    }

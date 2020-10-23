@@ -4,11 +4,11 @@ public class ItemBonusCache {
 
     private BoostMultiplier bm = new BoostMultiplier();
 
-    public BoostMultiplier getBoostMultiplier() {
-	return bm;
+    public ItemBonusCache(BoostMultiplier bm) {
+	this.bm = bm;
     }
 
-    public void setBoostMultiplier(BoostMultiplier bm) {
-	this.bm = bm;
+    public BoostMultiplier getBoostMultiplier() {
+	return bm;
     }
 }

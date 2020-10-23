@@ -122,13 +122,7 @@ public class QuestProgression {
 
 	jPlayer.setSaved(false);
 
-	if (!isCompleted())
-	    return;
-
-	if (!jPlayer.isOnline())
-	    return;
-
-	if (givenReward)
+	if (!isCompleted() || !jPlayer.isOnline() || givenReward)
 	    return;
 
 	givenReward = true;
