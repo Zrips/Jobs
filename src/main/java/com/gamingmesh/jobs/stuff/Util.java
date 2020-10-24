@@ -117,7 +117,7 @@ public class Util {
 	    }
 	    Material material = block.getType();
 
-	    if (ignoreNoneSolids && !block.getType().isSolid())
+	    if (ignoreNoneSolids && !material.isSolid())
 		continue;
 
 	    if (lookingFor == null) {
@@ -228,7 +228,7 @@ public class Util {
 
 		packageName = packageName.replace('.', '/');
 
-		if (entryName != null && entryName.endsWith("." + fileType) && entryName.startsWith(packageName)) {
+		if (entryName.endsWith("." + fileType) && entryName.startsWith(packageName)) {
 		    String name = entryName.replace(packageName, "").replace("." + fileType, "").replace("/", "");
 		    if (name.contains("$"))
 			name = name.split("\\$")[0];

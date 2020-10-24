@@ -10,7 +10,7 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 public class editpoints implements Cmd {
 
     @Override
-    @JobCommand(475)
+    @JobCommand(477)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length != 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "editpoints");

@@ -509,7 +509,7 @@ public class LanguageManager {
 	    c.get("command.employ.output.target", "You have been employed as a %jobname%.");
 
 	    c.get("command.top.help.info", "Shows top players by jobs name.");
-	    c.get("command.top.help.args", "[jobname]");
+	    c.get("command.top.help.args", "[jobname]/clear pageNumber");
 	    Jobs.getGCManager().getCommandArgs().put("top", Arrays.asList("[jobname]"));
 	    c.get("command.top.error.nojob", "Can't find any job with this name.");
 	    c.get("command.top.output.topline", "&aTop&e %amount% &aplayers by &e%jobname% &ajob");
@@ -519,7 +519,7 @@ public class LanguageManager {
 	    c.get("command.top.output.show", "&2Show from &e[from] &2until &e[until] &2top list");
 
 	    c.get("command.gtop.help.info", "Shows top players by global jobs level.");
-	    c.get("command.gtop.help.args", "");
+	    c.get("command.gtop.help.args", "clear/pageNumber");
 	    c.get("command.gtop.error.nojob", "Can't find any information.");
 	    c.get("command.gtop.output.topline", "&aTop&e %amount% &aplayers by global job level");
 	    c.get("command.gtop.output.list", "&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp");

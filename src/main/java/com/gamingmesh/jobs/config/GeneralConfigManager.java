@@ -59,7 +59,7 @@ public class GeneralConfigManager {
     private final HashMap<String, List<String>> commandArgs = new HashMap<>();
 
     protected Locale locale;
-    private ConfigReader c = null;
+    private ConfigReader c;
 
     protected boolean economyAsync, isBroadcastingSkillups, isBroadcastingLevelups, payInCreative, payExploringWhenFlying,
 	addXpPlayer, hideJobsWithoutPermission, payNearSpawner, modifyChat, saveOnDisconnect, MultiServerCompatability;

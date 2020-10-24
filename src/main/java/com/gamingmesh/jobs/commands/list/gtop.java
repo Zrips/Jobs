@@ -16,17 +16,17 @@ import com.gamingmesh.jobs.stuff.PageInfo;
 public class gtop implements Cmd {
 
     @Override
-    @JobCommand(600)
+    @JobCommand(601)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	int amount = Jobs.getGCManager().JobsTopAmount;
-
-	if (args.length != 1 && args.length != 0) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.help.info"));
-	    return true;
+	if (!(sender instanceof Player)) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
+	    return false;
 	}
 
-	if (!(sender instanceof Player))
-	    return false;
+	if (args.length > 1) {
+	    Jobs.getCommandManager().sendUsage(sender, "gtop");
+	    return true;
+	}
 
 	Player player = (Player) sender;
 	int page = 1;
@@ -47,6 +47,7 @@ public class gtop implements Cmd {
 	if (page < 1)
 	    page = 1;
 
+	int amount = Jobs.getGCManager().JobsTopAmount;
 	PageInfo pi = new PageInfo(amount, Jobs.getPlayerManager().getPlayersCache().size(), page);
 
 	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(pi.getStart() - 1);
@@ -60,7 +61,7 @@ public class gtop implements Cmd {
 
 	    int i = 0;
 	    for (TopList One : FullList) {
-		if (i > amount)
+		if (i >= amount)
 		    break;
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list",
@@ -74,7 +75,7 @@ public class gtop implements Cmd {
 	    List<String> ls = new ArrayList<>();
 	    int i = 0;
 	    for (TopList one : FullList) {
-		if (i > amount)
+		if (i >= amount)
 		    break;
 
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line",

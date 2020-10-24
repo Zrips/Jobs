@@ -35,7 +35,7 @@ public class JobsCommands implements CommandExecutor {
 
     private static final String packagePath = "com.gamingmesh.jobs.commands.list";
 
-    private Map<String, Integer> CommandList = new HashMap<>();
+    private final Map<String, Integer> CommandList = new HashMap<>();
 
     protected Jobs plugin;
 
@@ -57,7 +57,7 @@ public class JobsCommands implements CommandExecutor {
 	if (args.length == 0)
 	    return help(sender, 1);
 
-	if ((args.length == 1 || args.length == 2) && (args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help"))) {
+	if ((args.length == 1 || args.length == 2) && (args[0].equals("?") || args[0].equalsIgnoreCase("help"))) {
 	    int page = 1;
 	    if (args.length == 2)
 		try {
@@ -184,13 +184,12 @@ public class JobsCommands implements CommandExecutor {
 		classes.put(one, newclass);
 	}
 
-	for (Entry<String, Class<?>> OneClass : classes.entrySet()) {
-	    for (Method met : OneClass.getValue().getMethods()) {
+	for (Entry<String, Class<?>> oneClass : classes.entrySet()) {
+	    for (Method met : oneClass.getValue().getMethods()) {
 		if (!met.isAnnotationPresent(JobCommand.class))
 		    continue;
 
-		String cmd = OneClass.getKey();
-		CommandList.put(cmd, met.getAnnotation(JobCommand.class).value());
+		CommandList.put(oneClass.getKey(), met.getAnnotation(JobCommand.class).value());
 		break;
 	    }
 	}
@@ -198,35 +197,29 @@ public class JobsCommands implements CommandExecutor {
     }
 
     private static Class<?> getClass(String cmd) {
-	Class<?> nmsClass = null;
 	try {
-	    nmsClass = Class.forName(packagePath + "." + cmd.toLowerCase());
+	    return Class.forName(packagePath + "." + cmd.toLowerCase());
 	} catch (ClassNotFoundException e) {
 	}
-	return nmsClass;
+	return null;
     }
 
     private static Cmd getCmdClass(String cmd) {
-	Cmd cmdClass = null;
 	try {
-	    Class<?> nmsClass;
-	    nmsClass = Class.forName(packagePath + "." + cmd.toLowerCase());
+	    Class<?> nmsClass = Class.forName(packagePath + "." + cmd.toLowerCase());
 	    if (Cmd.class.isAssignableFrom(nmsClass)) {
-		cmdClass = (Cmd) nmsClass.getConstructor().newInstance();
+		return (Cmd) nmsClass.getConstructor().newInstance();
 	    }
 	} catch (Exception e) {
 	}
-	return cmdClass;
+	return null;
     }
 
     /**
      * Check Job joining permission
      */
     public boolean hasJobPermission(CommandSender sender, Job job) {
-	if (!sender.hasPermission("jobs.use"))
-	    return false;
-
-	return sender.hasPermission("jobs.join." + job.getName().toLowerCase());
+	return sender.hasPermission("jobs.use") && sender.hasPermission("jobs.join." + job.getName().toLowerCase());
     }
 
     public void sendValidActions(CommandSender sender) {

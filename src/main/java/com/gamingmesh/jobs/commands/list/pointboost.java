@@ -11,7 +11,7 @@ import com.gamingmesh.jobs.container.Job;
 public class pointboost implements Cmd {
 
 	@Override
-	@JobCommand(2300)
+	@JobCommand(2303)
 	public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 		if (args.length > 3 || args.length <= 1) {
 			Jobs.getCommandManager().sendUsage(sender, "pointboost");

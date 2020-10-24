@@ -42,7 +42,7 @@ public class PageInfo {
 
     public boolean isEntryOk() {
 	currentEntry++;
-	return currentEntry - 1 >= start && currentEntry - 1 <= end;
+	return isContinueNoAdd();
     }
 
     public boolean isContinue() {
@@ -62,7 +62,7 @@ public class PageInfo {
     }
 
     public boolean isPageOk(int page) {
-	return totalPages < page || page < 1 ? false : true;
+	return (totalPages < page || page < 1) ? false : true;
     }
 
     public int getStart() {

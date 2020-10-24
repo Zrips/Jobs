@@ -20,6 +20,7 @@ package com.gamingmesh.jobs.economy;
 
 import org.bukkit.OfflinePlayer;
 
+@SuppressWarnings("deprecation")
 public class VaultEconomy implements Economy {
     private net.milkbowl.vault.economy.Economy vault;
 
@@ -32,7 +33,6 @@ public class VaultEconomy implements Economy {
 	return vault.depositPlayer(offlinePlayer, money).transactionSuccess();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean depositPlayer(String PlayerName, double money) {
 	return vault.depositPlayer(PlayerName, money).transactionSuccess();
@@ -43,7 +43,6 @@ public class VaultEconomy implements Economy {
 	return vault.withdrawPlayer(offlinePlayer, money).transactionSuccess();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean withdrawPlayer(String PlayerName, double money) {
 	return vault.withdrawPlayer(PlayerName, money).transactionSuccess();
@@ -51,12 +50,9 @@ public class VaultEconomy implements Economy {
 
     @Override
     public boolean hasMoney(OfflinePlayer offlinePlayer, double money) {
-	if (offlinePlayer.getName() == null)
-	    return false;
-	return vault.has(offlinePlayer, money);
+	return offlinePlayer.getName() != null && vault.has(offlinePlayer, money);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean hasMoney(String PlayerName, double money) {
 	return vault.has(PlayerName, money);

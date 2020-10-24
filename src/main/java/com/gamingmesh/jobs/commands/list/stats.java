@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 public class stats implements Cmd {
 
     @Override
-    @JobCommand(400)
+    @JobCommand(401)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {

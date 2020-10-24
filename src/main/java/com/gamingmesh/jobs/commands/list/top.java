@@ -17,20 +17,19 @@ import com.gamingmesh.jobs.stuff.PageInfo;
 public class top implements Cmd {
 
     @Override
-    @JobCommand(500)
+    @JobCommand(526)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
 	    return false;
 	}
 
-	Player player = (Player) sender;
-
 	if (args.length != 1 && args.length != 2) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
+	    Jobs.getCommandManager().sendUsage(sender, "top");
 	    return false;
 	}
 
+	Player player = (Player) sender;
 	if (args[0].equalsIgnoreCase("clear")) {
 	    player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
 	    plugin.getCMIScoreboardManager().removeScoreBoard(player);
