@@ -37,12 +37,14 @@ import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class BufferedEconomy {
+
     private Jobs plugin;
     private Economy economy;
+
     private final LinkedBlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<>();
     private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<UUID, BufferedPayment>());
 
-    private OfflinePlayer ServerTaxesAccount = null;
+    private OfflinePlayer serverTaxesAccount;
 
     public BufferedEconomy(Jobs plugin, Economy economy) {
 	this.plugin = plugin;
@@ -94,17 +96,17 @@ public class BufferedEconomy {
 
 	synchronized (paymentCache) {
 
-	    Double TotalAmount = 0.0, TotalPoints = 0.0, TaxesAmount = 0.0, TaxesPoints = 0.0;
+	    Double totalAmount = 0.0, totalPoints = 0.0, taxesAmount = 0.0, taxesPoints = 0.0;
 
 	    // combine all payments using paymentCache
 	    while (!payments.isEmpty()) {
 		BufferedPayment payment = payments.remove();
-		TotalAmount += payment.get(CurrencyType.MONEY);
-		TotalPoints += payment.get(CurrencyType.POINTS);
+		totalAmount += payment.get(CurrencyType.MONEY);
+		totalPoints += payment.get(CurrencyType.POINTS);
 
 		if (Jobs.getGCManager().UseTaxes) {
-		    TaxesAmount += payment.get(CurrencyType.MONEY) * (Jobs.getGCManager().TaxesAmount / 100.0);
-		    TaxesPoints += payment.get(CurrencyType.POINTS) * (Jobs.getGCManager().TaxesAmount / 100.0);
+		    taxesAmount += payment.get(CurrencyType.MONEY) * (Jobs.getGCManager().TaxesAmount / 100.0);
+		    taxesPoints += payment.get(CurrencyType.POINTS) * (Jobs.getGCManager().TaxesAmount / 100.0);
 		}
 
 		OfflinePlayer offPlayer = payment.getOfflinePlayer();
@@ -121,8 +123,19 @@ public class BufferedEconomy {
 
 		    if (Jobs.getGCManager().TakeFromPlayersPayment && Jobs.getGCManager().UseTaxes &&
 			((offPlayer.isOnline() && !offPlayer.getPlayer().hasPermission("jobs.tax.bypass")) || !offPlayer.isOnline())) {
-			money = money - (money * (Jobs.getGCManager().TaxesAmount / 100.0));
-			points = points - (points * (Jobs.getGCManager().TaxesAmount / 100.0));
+			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(offPlayer.getUniqueId());
+			double moneyTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.money", false, false, true);
+			if (moneyTaxAmount == 0D) {
+			    moneyTaxAmount = Jobs.getGCManager().TaxesAmount;
+			}
+
+			double pointsTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.points", false, false, true);
+			if (pointsTaxAmount == 0D) {
+			    pointsTaxAmount = Jobs.getGCManager().TaxesAmount;
+			}
+
+			money = money - (money * (moneyTaxAmount / 100.0));
+			points = points - (points * (pointsTaxAmount / 100.0));
 		    }
 
 		    existing.set(CurrencyType.MONEY, existing.get(CurrencyType.MONEY) + money);
@@ -134,35 +147,49 @@ public class BufferedEconomy {
 
 		    if (Jobs.getGCManager().TakeFromPlayersPayment && Jobs.getGCManager().UseTaxes &&
 			((offPlayer.isOnline() && !offPlayer.getPlayer().hasPermission("jobs.tax.bypass")) || !offPlayer.isOnline())) {
-			payment.set(CurrencyType.MONEY, money - (money * (Jobs.getGCManager().TaxesAmount / 100.0)));
-			payment.set(CurrencyType.POINTS, points - (points * (Jobs.getGCManager().TaxesAmount / 100.0)));
+			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(offPlayer.getUniqueId());
+			double moneyTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.money", false, false, true);
+			if (moneyTaxAmount == 0D) {
+			    moneyTaxAmount = Jobs.getGCManager().TaxesAmount;
+			}
+
+			double pointsTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.points", false, false, true);
+			if (pointsTaxAmount == 0D) {
+			    pointsTaxAmount = Jobs.getGCManager().TaxesAmount;
+			}
+
+			money = money - (money * (moneyTaxAmount / 100.0));
+			points = points - (points * (pointsTaxAmount / 100.0));
+
+			payment.set(CurrencyType.MONEY, money);
+			payment.set(CurrencyType.POINTS, points);
 		    }
 
 		    paymentCache.put(uuid, payment);
 		}
 	    }
 
-	    String ServerAccountname = Jobs.getGCManager().ServerAccountName;
-	    String ServerTaxesAccountname = Jobs.getGCManager().ServertaxesAccountName;
+	    String serverAccountName = Jobs.getGCManager().ServerAccountName;
+	    String serverTaxesAccountName = Jobs.getGCManager().ServertaxesAccountName;
 
-	    if (ServerTaxesAccount == null)
-		ServerTaxesAccount = Bukkit.getOfflinePlayer(ServerTaxesAccountname);
+	    if (serverTaxesAccount == null)
+		serverTaxesAccount = Bukkit.getOfflinePlayer(serverTaxesAccountName);
 
-	    if (Jobs.getGCManager().UseTaxes && Jobs.getGCManager().TransferToServerAccount && ServerTaxesAccount != null) {
-		if (TaxesAmount > 0) {
-		    economy.depositPlayer(ServerTaxesAccount, TaxesAmount);
+	    if (Jobs.getGCManager().UseTaxes && Jobs.getGCManager().TransferToServerAccount && serverTaxesAccount != null) {
+		if (taxesAmount > 0) {
+		    economy.depositPlayer(serverTaxesAccount, taxesAmount);
 		}
 
-		if (ServerTaxesAccount.isOnline() && Jobs.getGCManager().ActionBarsMessageByDefault) {
-		    ActionBarManager.send(Bukkit.getPlayer(ServerAccountname),
-			Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (TotalAmount * 100) / 100.0));
+		if (serverTaxesAccount.isOnline() && Jobs.getGCManager().ActionBarsMessageByDefault) {
+		    ActionBarManager.send(Bukkit.getPlayer(serverAccountName),
+			Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (totalAmount * 100) / 100.0));
 		}
 	    }
 
 	    boolean hasMoney = false;
-	    if (Jobs.getGCManager().UseServerAccount && economy.hasMoney(ServerAccountname, TotalAmount)) {
+	    if (Jobs.getGCManager().UseServerAccount && economy.hasMoney(serverAccountName, totalAmount)) {
 		hasMoney = true;
-		economy.withdrawPlayer(ServerAccountname, TotalAmount);
+		economy.withdrawPlayer(serverAccountName, totalAmount);
 	    }
 
 	    // Schedule all payments
@@ -174,14 +201,14 @@ public class BufferedEconomy {
 		    continue;
 
 		// JobsPayment event
-		JobsPaymentEvent JobsPaymentEvent = new JobsPaymentEvent(payment.getOfflinePlayer(), payment.getPayment());
-		Bukkit.getServer().getPluginManager().callEvent(JobsPaymentEvent);
+		JobsPaymentEvent jobsPaymentEvent = new JobsPaymentEvent(payment.getOfflinePlayer(), payment.getPayment());
+		Bukkit.getServer().getPluginManager().callEvent(jobsPaymentEvent);
 		// If event is canceled, dont do anything
-		if (JobsPaymentEvent.isCancelled())
+		if (jobsPaymentEvent.isCancelled())
 		    continue;
 
 		// Do we need this?
-		payment.getPayment().putAll(JobsPaymentEvent.getPayment());
+		payment.getPayment().putAll(jobsPaymentEvent.getPayment());
 
 		if (Jobs.getGCManager().UseServerAccount && !hasMoney) {
 		    ActionBarManager.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
@@ -194,7 +221,8 @@ public class BufferedEconomy {
 		    Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 
 		// Action bar stuff
-		ShowActionBar(payment);
+		showActionBar(payment);
+
 		if (payment.getOfflinePlayer().isOnline() && Version.getCurrent().isHigher(Version.v1_8_R3)) {
 		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId());
 		    Jobs.getBBManager().ShowJobProgression(jPlayer);
@@ -206,7 +234,7 @@ public class BufferedEconomy {
 	}
     }
 
-    public void ShowActionBar(BufferedPayment payment) {
+    public void showActionBar(BufferedPayment payment) {
 	if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline()
 		|| !Jobs.getGCManager().ActionBarsMessageByDefault || !payment.containsPayment())
 	    return;

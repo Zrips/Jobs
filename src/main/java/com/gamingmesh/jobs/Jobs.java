@@ -790,10 +790,8 @@ public class Jobs extends JavaPlugin {
 	getPermissionHandler().registerPermissions();
 
 	// set the system to auto save
-	if (getGCManager().getSavePeriod() > 0) {
-	    saveTask = new DatabaseSaveThread(getGCManager().getSavePeriod());
-	    saveTask.start();
-	}
+	saveTask = new DatabaseSaveThread(getGCManager().getSavePeriod());
+	saveTask.start();
 
 	// schedule payouts to buffered payments
 	paymentThread = new BufferedPaymentThread(getGCManager().getEconomyBatchDelay());

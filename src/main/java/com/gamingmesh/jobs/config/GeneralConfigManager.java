@@ -601,7 +601,7 @@ public class GeneralConfigManager {
 	UseTaxes = c.get("Economy.Taxes.use", false);
 	c.addComment("Economy.Taxes.AccountName", "Username should be with Correct capitalization, it can be same as setup in server account before");
 	ServertaxesAccountName = c.get("Economy.Taxes.AccountName", "Server");
-	c.addComment("Economy.Taxes.Amount", "Amount in percentage");
+	c.addComment("Economy.Taxes.Amount", "Amount in percentage. You can grant money and points permissions (jobs.tax.money.amount, jobs.tax.points.amount) for taxes.");
 	TaxesAmount = c.get("Economy.Taxes.Amount", 15.0);
 	c.addComment("Economy.Taxes.TransferToServerAccount", "Do you want to transfer taxes to server account?");
 	TransferToServerAccount = c.get("Economy.Taxes.TransferToServerAccount", true);
