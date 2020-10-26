@@ -392,9 +392,12 @@ public class ConfigManager {
 
 	if (myKey.contains("-")) {
 	    // uses subType
-	    subType = ":" + myKey.split("-")[1];
-	    meta = myKey.split("-")[1];
-	    myKey = myKey.split("-")[0];
+	    String[] split = myKey.split("-");
+	    if (split.length == 2) {
+		subType = ":" + split[1];
+		meta = split[1];
+		myKey = split[0];
+	    }
 	} else if (myKey.contains(":")) { // when we uses tipped arrow effect types
 	    String[] split = myKey.split(":");
 	    meta = split.length > 1 ? split[1] : myKey;

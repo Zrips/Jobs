@@ -21,13 +21,6 @@
 			<version>1.16.3-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- MyPet -->
-		<dependency>
-			<groupId>de.keyle</groupId>
-			<artifactId>mypet</artifactId>
-			<version>3.10</version>
-			<scope>provided</scope>
-		</dependency>
 		<!-- McMMO -->
 		<dependency>
 			<groupId>com.gmail.nossr50.mcMMO</groupId>
@@ -39,8 +32,8 @@
 		<!-- Vault -->
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
-			<artifactId>Vault</artifactId>
-			<version>1.7.3</version>
+			<artifactId>VaultAPI</artifactId>
+			<version>1.7</version>
 			<scope>provided</scope>
 			<exclusions>
 				<exclusion>
@@ -136,6 +129,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- PlaceholderAPI -->
 		<dependency>
 			<groupId>me.clip</groupId>
 			<artifactId>placeholderapi</artifactId>
@@ -148,23 +142,27 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- WildStacker -->
 		<dependency>
 			<groupId>com.github.OmerBenGera</groupId>
 			<artifactId>WildStackerAPI</artifactId>
 			<version>master-SNAPSHOT</version>
 		</dependency>
+		<!-- StackMob -->
 		<dependency>
 			<groupId>com.github.Nathat23</groupId>
 			<artifactId>StackMob-5</artifactId>
 			<version>master-SNAPSHOT</version>
 		</dependency>
+		<!-- MyPet -->
+		<dependency>
+			<groupId>de.keyle</groupId>
+			<artifactId>mypet</artifactId>
+			<version>3.10</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
-		<!-- WorldGuard & WorldEdit -->
-		<repository>
-			<id>sk89q-repo</id>
-			<url>http://maven.sk89q.com/repo/</url>
-		</repository>
 		<!-- Spigot -->
 		<repository>
 			<id>spigot-repo</id>
@@ -175,7 +173,17 @@
 			<id>vault-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
 		</repository>
-		<!-- bStats -->
+		<!-- MythicMobs -->
+		<repository>
+			<id>nexus</id>
+			<name>Lumine Releases</name>
+			<url>https://mvn.lumine.io/repository/maven-public/</url>
+		</repository>
+		<!-- WorldGuard & WorldEdit -->
+		<repository>
+			<id>sk89q-repo</id>
+			<url>http://maven.sk89q.com/repo/</url>
+		</repository>
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
@@ -194,17 +202,7 @@
 		<repository>
 			<id>mypet-repo</id>
 			<url>http://repo.keyle.de/</url>
-			<snapshots>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
 		</repository>
-		<!-- MythicMobs -->
-		<repository>
-			<id>nexus</id>
-			<name>Lumine Releases</name>
-			<url>https://mvn.lumine.io/repository/maven-public/</url>
-		</repository>
-
 	</repositories>
 	<!-- Builds Plugin -->
 	<build>

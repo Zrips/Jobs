@@ -226,9 +226,8 @@ public class ConfigReader extends YamlConfiguration {
 	    str.close();
 	} catch (FileNotFoundException e) {
 	} catch (InvalidConfigurationException | IOException e) {
-	    e.printStackTrace();
 	    saveToBackup();
-	    throw e;
+	    System.out.println(e.getLocalizedMessage());
 	} finally {
 	    if (fileinputstream != null)
 		try {
