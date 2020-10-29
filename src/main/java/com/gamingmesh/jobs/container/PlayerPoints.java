@@ -4,15 +4,12 @@ public class PlayerPoints {
 
     private double current = 0D;
     private double total = 0D;
-    private boolean newEntry = false;
+    private int dbId = 0;
 
     public PlayerPoints() {
-	newEntry = true;
     }
 
     public PlayerPoints(double points, double total) {
-	if (points == 0D && total == 0D)
-	    newEntry = true;
 	this.current = points;
 	this.total = total;
     }
@@ -43,15 +40,15 @@ public class PlayerPoints {
 	return total;
     }
 
-    public boolean isNewEntry() {
-	return newEntry;
-    }
-
-    public void setNewEntry(boolean newEntry) {
-	this.newEntry = newEntry;
-    }
-
     public void setTotalPoints(double total) {
 	this.total = total;
+    }
+
+    public int getDbId() {
+	return dbId;
+    }
+
+    public void setDbId(int dbId) {
+	this.dbId = dbId;
     }
 }

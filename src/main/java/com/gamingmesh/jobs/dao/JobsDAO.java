@@ -1929,19 +1929,52 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
-	PreparedStatement prest = null;
-	try {
-	    PlayerPoints pointInfo = jPlayer.getPointsData();
-	    prest = conn.prepareStatement("INSERT INTO `" + DBTables.PointsTable.getTableName() + "` (`" + PointsTableFields.totalpoints.getCollumn() + "`, `" + PointsTableFields.currentpoints.getCollumn()
-		+ "`, `" + PointsTableFields.userid.getCollumn() + "`) VALUES (?, ?, ?);");
-	    prest.setDouble(1, pointInfo.getTotalPoints());
-	    prest.setDouble(2, pointInfo.getCurrentPoints());
-	    prest.setInt(3, jPlayer.getUserId());
-	    prest.execute();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(prest);
+
+	PlayerPoints pointInfo = jPlayer.getPointsData();
+
+	if (pointInfo.getDbId() == 0) {
+	    // This needs to exist, removing existing entry by user id unless we have actual line id
+	    PreparedStatement prest2 = null;
+	    try {
+		prest2 = conn.prepareStatement("DELETE FROM `" + DBTables.PointsTable.getTableName() + "` WHERE `" + PointsTableFields.userid.getCollumn() + "` = ?;");
+		prest2.setInt(1, jPlayer.getUserId());
+		prest2.execute();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    } finally {
+		close(prest2);
+	    }
+	    PreparedStatement prest = null;
+	    try {
+		prest = conn.prepareStatement("INSERT INTO `" + DBTables.PointsTable.getTableName() + "` (`" + PointsTableFields.totalpoints.getCollumn() + "`, `" + PointsTableFields.currentpoints
+		    .getCollumn()
+		    + "`, `" + PointsTableFields.userid.getCollumn() + "`) VALUES (?, ?, ?);");
+		prest.setDouble(1, pointInfo.getTotalPoints());
+		prest.setDouble(2, pointInfo.getCurrentPoints());
+		prest.setInt(3, jPlayer.getUserId());
+		prest.execute();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    } finally {
+		close(prest);
+	    }
+	} else {
+
+	    PreparedStatement prest = null;
+	    try {
+		prest = conn.prepareStatement("UPDATE `" + DBTables.PointsTable.getTableName() + "` SET `" + PointsTableFields.totalpoints.getCollumn()
+		    + "` = ?, `" + PointsTableFields.currentpoints.getCollumn()
+		    + "` = ? WHERE `id` = ?;");
+		prest.setDouble(1, pointInfo.getTotalPoints());
+		prest.setDouble(2, pointInfo.getCurrentPoints());
+		prest.setInt(3, pointInfo.getDbId());
+		prest.execute();
+	    } catch (SQLException e) {
+		e.printStackTrace();
+	    } finally {
+		close(prest);
+	    }
+
 	}
     }
 
@@ -1958,6 +1991,7 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 
 	    if (res.next()) {
+		player.getPointsData().setDbId(res.getInt("id"));
 		player.getPointsData().setPoints(res.getDouble(PointsTableFields.currentpoints.getCollumn()));
 		player.getPointsData().setTotalPoints(res.getDouble(PointsTableFields.totalpoints.getCollumn()));
 	    }

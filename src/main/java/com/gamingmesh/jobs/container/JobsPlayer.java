@@ -112,7 +112,7 @@ public class JobsPlayer {
     public void setPoints(PlayerPoints points) {
 	getPointsData().setPoints(points.getCurrentPoints());
 	getPointsData().setTotalPoints(points.getTotalPoints());
-	getPointsData().setNewEntry(points.isNewEntry());
+	getPointsData().setDbId(points.getDbId());
     }
 
     public boolean havePoints(double points) {

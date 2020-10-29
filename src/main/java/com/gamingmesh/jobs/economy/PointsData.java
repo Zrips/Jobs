@@ -27,7 +27,7 @@ public class PointsData {
 	PlayerPoints pi = Jobs.getPlayerManager().getJobsPlayer(uuid).getPointsData();
 	pi.setPoints(points.getCurrentPoints());
 	pi.setTotalPoints(points.getTotalPoints());
-	pi.setNewEntry(points.isNewEntry());
+	pi.setDbId(points.getDbId());
     }
 
     public void addPoints(UUID uuid, Double points) {
