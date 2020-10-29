@@ -29,6 +29,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class PermissionManager {
 
@@ -156,6 +157,7 @@ public class PermissionManager {
 		else if (allowMinus || temp > amount)
 		    amount = temp;
 	    } catch (NumberFormatException ignored) {
+		ignored.printStackTrace();
 	    }
 	}
 

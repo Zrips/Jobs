@@ -40,6 +40,7 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
@@ -279,41 +280,30 @@ public class JobsPlayer {
 
 	ArrayList<BoostCounter> counterList = new ArrayList<>();
 	counterList.add(new BoostCounter(type, Boost, time));
-
+ 
 	boostCounter.put(JobName, counterList);
 	return Boost;
     }
 
     private Double getPlayerBoostNew(String JobName, CurrencyType type) {
-	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + "." + type.getName(), true);
+	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + "." + type.getName(), true, false, true);
 	Double Boost = v1;
-
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + ".all");
+	
+	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + ".all", false, false, true);
 	if (v1 != 0d && (v1 > Boost || v1 < Boost))
 	    Boost = v1;
 
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all");
+	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", false, false, true);
 	if (v1 != 0d && (v1 > Boost || v1 < Boost))
 	    Boost = v1;
 
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName());
+	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), false, false, true);
 	if (v1 != 0d && (v1 > Boost || v1 < Boost))
 	    Boost = v1;
 
 	return Boost;
     }
 
-    // New method is in use
-//    private Double getPlayerBoost(String JobName, CurrencyType type) {
-//	double Boost = 0D;
-//	if (Perm.hasPermission(player, "jobs.boost." + JobName + "." + type.getName().toLowerCase()) ||
-//	    Perm.hasPermission(player, "jobs.boost." + JobName + ".all") ||
-//	    Perm.hasPermission(player, "jobs.boost.all.all") ||
-//	    Perm.hasPermission(player, "jobs.boost.all." + type.getName().toLowerCase())) {
-//	    Boost = Jobs.getGCManager().Boost.get(type);
-//	}
-//	return Boost;
-//    }
 
     /**
      * Reloads max experience for this job.
