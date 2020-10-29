@@ -50,7 +50,7 @@ public class gtop implements Cmd {
 	int amount = Jobs.getGCManager().JobsTopAmount;
 	PageInfo pi = new PageInfo(amount, Jobs.getPlayerManager().getPlayersCache().size(), page);
 
-	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(pi.getStart() - 1);
+	List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(pi.getStart());
 	if (FullList.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.error.nojob"));
 	    return true;

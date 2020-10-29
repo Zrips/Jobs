@@ -1362,15 +1362,12 @@ public enum CMIMaterial {
 	if (id == null)
 	    return CMIMaterial.NONE;
 
-	Integer data = null;
-	Integer ids = null;
-
 	id = id.replaceAll("_| |minecraft:", "").toLowerCase();
 
 	if (id.contains(":")) {
 	    try {
-		ids = Integer.parseInt(id.split(":")[0]);
-		data = Integer.parseInt(id.split(":")[1]);
+		Integer ids = Integer.parseInt(id.split(":")[0]);
+		Integer data = Integer.parseInt(id.split(":")[1]);
 		if (ids <= 0)
 		    return CMIMaterial.NONE;
 		return get(ids, data);
@@ -1378,7 +1375,7 @@ public enum CMIMaterial {
 	    }
 
 	    try {
-		data = Integer.parseInt(id.split(":")[1]);
+		Integer data = Integer.parseInt(id.split(":")[1]);
 		id = id.split(":")[0];
 		CMIMaterial mat = ItemManager.byName.get(id + ":" + data);
 		if (mat != null) {
@@ -2539,8 +2536,8 @@ public enum CMIMaterial {
 	return false;
     }
 
-	@SuppressWarnings("deprecation")
-	public static CMISlabType getSlabType(Block block) {
+    @SuppressWarnings("deprecation")
+    public static CMISlabType getSlabType(Block block) {
 	if (!isSlab(block.getType()))
 	    return CMISlabType.NOTSLAB;
 
@@ -2597,8 +2594,8 @@ public enum CMIMaterial {
 		default:
 		    return CMISlabType.DOUBLE;
 		}
-		default:
-		    break;
+	    default:
+		break;
 	    }
 	}
 
