@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cVous devez augmenter votre niveau dans le métier [jobname] pour utiliser cet objet!'
 general:
-  Spawner: '&rSpawner de [type]'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cPage invalide'
     'true': '&2Vrai'
     'false': '&cFaux'
+    blocks:
+      furnace: Furnace
+      smoker: Smoker
+      blastfurnace: Blast furnace
+      brewingstand: Brewing stand
   admin:
     error: '&cUne erreur est survenue pendant l''exécution de la commande.'
     success: '&eLa commande a été exécutée avec succès.'
@@ -32,10 +36,8 @@ general:
     ingame: '&cVous ne pouvez utiliser cette commande qu''en jeu!'
     fromconsole: '&cCette commande doit être lancée depuis la console!'
     worldisdisabled: '&cVous ne pouvez pas utiliser cette commande dans ce monde!'
-    newFurnaceRegistration: '&eNouveau propriétaire enregistré pour le fourneau &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eNouveau propriétaire enregistré pour l''alambic &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cVous avez atteins la limite de fourneau maximal !'
-    noBrewingRegistration: '&cVous avez atteint la limite du nombre maximum d''alambics !'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: Un boost d'XP de %boost% a été activé pour tous les métiers !
       boostadded: Un boost d'XP de &e%boost% &aa été activé pour le métier &e%jobname% !
       infostats: '&c-----> &aBoost &2XP x%boost% &aactivé&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Vérifier l'objet bonus
@@ -109,7 +119,7 @@ command:
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
       permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
-      item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
+      item: ' &eBonus d''objet: &2%money% &6%points% &e%exp%'
       global: ' &eBonus global: &2%money% &6%points% &e%exp%'
       dynamic: ' &eBonus dynamique: &2%money% &6%points% &e%exp%'
       nearspawner: ' &eBonus de Spawner: &2%money% &6%points% &e%exp%'
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: Vous n'avez pas de métier.
-    output: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -309,7 +321,7 @@ command:
       rightClick: '&eClic droit pour rejoindre ce métier'
       leftSlots: '&ePlaces restantes :&f '
       working: '&2&nVous exercez déjà ce métier'
-      cantJoin: '&cYou can''t join to the selected job.'
+      cantJoin: '&cVous ne pouvez pas rejoindre le métier sélectionné.'
       max: '&eNiveau maximum :&f '
       back: '&e<<< Retour'
       next: '&eSuivant >>>'
@@ -451,13 +463,13 @@ command:
       info: Clear block ownership
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
-      info: Skip defined quest and get new one
+      info: Passer la quête pour en obtenir une nouvelle
       args: '[jobname] [questname] (playerName)'
     output:
-      questSkipForCost: '&2You skipped the quest and paid:&e %amount%$'
+      questSkipForCost: '&2Vous avez passé la quête et payé:&e %amount%$'
   quests:
     help:
       info: Affiche les quêtes disponibles
@@ -466,13 +478,13 @@ command:
       noquests: '&cIl n''y a pas de quête'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
     status:
-      changed: '&2The quests status has been changed to&r %status%'
-      started: '&aStarted'
-      stopped: '&cStopped'
+      changed: '&2Le statut des quêtes a été changé en&r %status%'
+      started: '&aCommencé'
+      stopped: '&cTerminé'
     output:
       completed: '&2      ! Terminé !&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
-      skip: '&7Click to skip this quest'
+      skip: '&7Cliquez pour passer cette quête'
       skips: '&7Left skips: &f[skips]'
       hover: "&f[jobName] \n[desc] \n&7Nouvelle quête dans : [time]"
   fire:
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% a été promu %titlename% %jobname%.'
     nobroadcast: Félicitations, vous avez été promu %titlename% %jobname%.
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% est maintenant %jobname% niveau %joblevel%.'
     nobroadcast: Vous êtes maintenant %jobname% niveau %joblevel%.
@@ -656,7 +672,6 @@ message:
     message: '&cVous avez perdu &e%lostLevel%&c niveau dans le métier de %jobname%! &6Niveau: %joblevel%&c.'
   cowtimer: '&eVous devez attendre &6%time% &esec avant d''être payé à nouveau.'
   blocktimer: '&eVous devez attendre &3[time] &esec avant d''être payé à nouveau.'
-  placeblocktimer: '&eVous ne pouvez placer des blocs que toutes les &6[time] &esec au même endroit!'
   taxes: '&3[amount] &ede taxes du serveur ont été transférées sur ce compte'
   boostStarted: '&eLe boost métier a commencé!'
   boostStoped: '&eLe boost métier est terminé!'

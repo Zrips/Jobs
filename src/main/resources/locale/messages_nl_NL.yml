@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cJe moet levelen in [jobname] om deze item te gebruiken!'
 general:
-  Spawner: '&r[type] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cOngeldige pagina'
     'true': '&2True'
     'false': '&cFalse'
+    blocks:
+      furnace: Furnace
+      smoker: Smoker
+      blastfurnace: Blast furnace
+      brewingstand: Brewing stand
   admin:
     error: '&cEr is een fout opgetreden in de command.'
     success: '&eJe command is uitgevoerd.'
@@ -32,10 +36,8 @@ general:
     ingame: '&cJe kan deze command alleen uitvoeren in game!'
     fromconsole: '&cJe kan deze command alleen uitvoeren in console!'
     worldisdisabled: '&cJe kan deze command niet uitvoeren in deze wereld'
-    newFurnaceRegistration: '&eGeregistreerd nieuw eigendom voor oven &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eGeregistreerd nieuw eigendom voor brouwer &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cJe hebt de maximale oven registraties bereikt!'
-    noBrewingRegistration: '&cJe hebt de maximale brouwer registraties bereikt!'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: Exp verhoging van %boost% toegevoegd voor alle banen!
       boostadded: Exp verhoging van &e%boost% &atoegevoegd voor &e%jobname%!
       infostats: '&c-----> &aExptarief x%boost% ingeschakeld&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Controleer de itembonus
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: Sluit eerst aan bij een baan.
-    output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: Blok van eigenaar wissen
       args: '[playername]'
     output:
-      cleared: '&2Verwijderd &7[furnaces] &2Ovens end &7[brewing] &2brouwerij'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
       info: Skip defined quest and get new one
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% has been promoted to a %titlename% %jobname%.'
     nobroadcast: Congratulations, you have been promoted to a %titlename% %jobname%.
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% is now a level %joblevel% %jobname%.'
     nobroadcast: You are now level %joblevel% %jobname%.
@@ -656,7 +672,6 @@ message:
     message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
   cowtimer: '&eYou still need to wait &6%time% &esec to get paid for this job.'
   blocktimer: '&eYou need to wait &3[time] &esec more to get paid for this!'
-  placeblocktimer: '&eYou can''t place blocks faster than &6[time] &esec in the same place!'
   taxes: '&3[amount] &eserver taxes were transferred to this account'
   boostStarted: '&eJobs boost time have been started!'
   boostStoped: '&eJobs boost time have been ended!'

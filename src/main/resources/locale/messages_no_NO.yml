@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cDu må levle opp i [jobname] for å bruke dette itemet!'
 general:
-  Spawner: '&r[type] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cUgyldig side'
     'true': '&2Aktivert'
     'false': '&cDeaktivert'
+    blocks:
+      furnace: Smelteovn
+      smoker: Røykovn
+      blastfurnace: Masovn
+      brewingstand: Bryggeapparat
   admin:
     error: '&cDet var en feil i kommandoen. Prøv igjen.'
     success: '&eKommandoen din er utført.'
@@ -32,10 +36,8 @@ general:
     ingame: '&cDu kan bare bruke denne kommandoen i spillet!'
     fromconsole: '&cDu kan bare bruke denne kommandoen fra konsoll!'
     worldisdisabled: '&cDu kan ikke bruke denne kommandoen i denne verdenen!'
-    newFurnaceRegistration: '&eRegistrerte nytt eierskap for ovn &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eRegistrerte nytt eierskap for brewing stand &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cDu har maks antall ovner!'
-    noBrewingRegistration: '&cDu har nådd maks antall brewing stander!'
+    newRegistration: '&eRegistrert nytt eierskap for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cDu har nådd maks antall [block]!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: XP-boost på %boost% er lagt til for alle jobber!
       boostadded: XP-boost på &e%boost% &alagt til for &e%jobname%!
       infostats: '&c-----> &aXP-rate x%boost% aktivert&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Sjekk gjenstandsbonus
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: Vennligst start i en jobb først.
-    output: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% XP'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Level %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: Fjern blokk-eierskap
       args: '[playername]'
     output:
-      cleared: '&2Fjernet &7[furnaces] &2ovner og &7[brewing] &2brewing stands'
+      cleared: '&2Fjernet &7[furnaces] &2smelteovner, &7[brewing], &2bryggeapparat, &7[smoker]&2 røykovner og &7[blast]&2 masovner.'
   skipquest:
     help:
       info: Hopp over definert oppdrag og få en ny
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% har blitt promotert til %titlename% %jobname%.'
     nobroadcast: Gratulerer, du har blitt promotert til %titlename% i %jobname%.
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% er nå nivå %joblevel% i %jobname%.'
     nobroadcast: Du er nå %joblevel% i %jobname%.
@@ -656,7 +672,6 @@ message:
     message: '&eDu mistet&e %lostLevel%&c in&e %jobname%&c-jobben! Nivå: &6 %joblevel%&c.'
   cowtimer: '&eDu må vente &6%time% &esek for å få betalt for denne jobben.'
   blocktimer: '&eDu må vente &3[time] &esek til for å få betalt for dette!'
-  placeblocktimer: '&eDu kan ikke plassere blokker fortere enn &6[time] &esek på samme tid!'
   taxes: '&3[amount] &eserverskatt ble overført til denne kontoen'
   boostStarted: '&eJobb boost-tid er startet!'
   boostStoped: '&eJobb boost-tid er avsluttet!'

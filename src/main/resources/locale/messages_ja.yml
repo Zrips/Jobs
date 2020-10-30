@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cこのアイテムを使うには [jobname] のレベルが足りません'
 general:
-  Spawner: '&r[type] スポナー'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cInvalid page'
     'true': '&2True'
     'false': '&cFalse'
+    blocks:
+      furnace: Furnace
+      smoker: Smoker
+      blastfurnace: Blast furnace
+      brewingstand: Brewing stand
   admin:
     error: '&cコマンドでエラーが発生しました'
     success: '&eコマンドを実行しました'
@@ -32,10 +36,8 @@ general:
     ingame: '&cこのコマンドはゲーム中のみ利用できます'
     fromconsole: '&cコンソールで実行する必要があります'
     worldisdisabled: '&cこのワールドではこのコマンドを実行できません'
-    newFurnaceRegistration: '&eRegistered new ownership for furnace &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eRegistered new ownership for brewing stand &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cYou''ve reached max furnace count!'
-    noBrewingRegistration: '&cYou''ve reached max brewing stand count!'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: 全ての職業に対する獲得経験値を &e%boost% 倍に設定しました
       boostadded: '&e%jobname% の獲得経験値が &e%boost% 倍に設定しました  '
       infostats: '&c-----> &a獲得経験値が %boost% 倍に設定されました&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Check item bonus
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: 少なくとも１つは職業についている必要があります
-    output: '%jobname% レベル%joblevel% : 経験値 %jobxp%/%jobmaxxp%'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: Clear block ownership
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
       info: Skip defined quest and get new one
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% の %jobname% ランクが %titlename% に昇格しました'
     nobroadcast: '%jobname% が%titlename% に昇格しました'
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% の %jobname% のレベルが %joblevel% に上がりました'
     nobroadcast: '%jobname% のレベルが %joblevel% に上がりました'
@@ -656,7 +672,6 @@ message:
     message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
   cowtimer: '&eYou still need to wait &6%time% &esec to get paid for this job.'
   blocktimer: '&eこのジョブの報酬を受け取るには: &3[time] &esec 待つ必要があります'
-  placeblocktimer: '&eあなたがこの場所で報酬を得るには&6[time] &e秒待つ必要があります'
   taxes: '&e税金を&3[amount]&eに納めました'
   boostStarted: '&eJobsのスペシャル報酬時間が始まりました'
   boostStoped: '&eJobsのスペシャル報酬時間が終わりました'

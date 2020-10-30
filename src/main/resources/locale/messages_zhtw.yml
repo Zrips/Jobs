@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '你的 [jobname] 職業等級不足以使用這個道具'
 general:
-  Spawner: '&r[type] 生怪磚'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&c無效的頁面'
     'true': '&2True'
     'false': '&cFalse'
+    blocks:
+      furnace: Furnace
+      smoker: Smoker
+      blastfurnace: Blast furnace
+      brewingstand: Brewing stand
   admin:
     error: '&c執行指令出錯.'
     success: '&a你的指令執行成功.'
@@ -32,10 +36,8 @@ general:
     ingame: '&c你只能在遊戲中使用!'
     fromconsole: '&c你只能在控制台使用這條指令!'
     worldisdisabled: '&c你不能在這個世界使用這個指令!'
-    newFurnaceRegistration: '&e成功登記了熔爐的新擁有人 &7[current]&e/&f[max]'
-    newBrewingRegistration: '&e成功登記了釀造台的新擁有人 &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&c你已到達了最大熔爐數量'
-    noBrewingRegistration: '&c你已到達了最大釀造台數量'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: 所有職業的經驗獲得加成了 %boost% 倍
       boostadded: '%jobname% 職業的經驗獲得加成了 %boost% 倍'
       infostats: '&c-----> &a經驗獲得 x%boost% 倍正在進行&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: 查看物品加成
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: 請先加入一個職業.
-    output: '職業%jobname%的等級%joblevel%: %jobxp%/%jobmaxxp% 經驗值'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: '等級 %joblevel% %jobname%: %jobxp%/%jobmaxxp% 經驗值%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: 清除方塊所有擁有人
       args: '[playername]'
     output:
-      cleared: '&2刪除了 &7[furnaces] &2個熔爐及 &7[brewing] &2個釀造台'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
       info: 跳過任務及獲得新任務
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% 獲得了升級 %titlename% %jobname%.'
     nobroadcast: 恭喜, 你升級為了 %titlename% %jobname%.
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% 現在是 %joblevel%等級 %jobname%.'
     nobroadcast: 你現在是 %joblevel%等級 %jobname%.
@@ -656,7 +672,6 @@ message:
     message: '&c你失去了 &e%jobname% &c的 &e%lostLevel%等級, 你現在是 &6%joblevel%&c.'
   cowtimer: '&e你還需要等待 &6%time% &e秒來獲得職業報酬.'
   blocktimer: '&e你需要等待: &3[time] &e秒來獲得職業報酬!'
-  placeblocktimer: '&e你放置方塊的速度不能超過 &6[time] &e秒一個!'
   taxes: '&3[amount] &e伺服器税收轉移到了此帳號'
   boostStarted: '&e職業加成時間已經開始!'
   boostStoped: '&e職業加成時間结束了!'

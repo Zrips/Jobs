@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cVocê precisa subir de nível em [jobname] para usar este item!'
 general:
-  Spawner: '&r[type] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cPágina inválida'
     'true': '&2Verdadeiro'
     'false': '&cFalso'
+    blocks:
+      furnace: Furnace
+      smoker: Smoker
+      blastfurnace: Blast furnace
+      brewingstand: Brewing stand
   admin:
     error: '&cHouve um erro no comando.'
     success: '&eSeu comando foi executado.'
@@ -32,10 +36,8 @@ general:
     ingame: '&cVocê pode usar este comando apenas no jogo!'
     fromconsole: '&cVocê pode usar este comando apenas no console!'
     worldisdisabled: '&cVocê não pode usar o comando neste mundo!'
-    newFurnaceRegistration: '&eNova propriedade registrada para fornalha &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eNovo proprietário registrado para suporte de poções &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cVocê atingiu a quantidade máxima de fornalhas!'
-    noBrewingRegistration: '&cVocê atingiu a quantidade máxima de suporte de poção!'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: Impulso de experiência de %boost% adicionado a todas as profissões!
       boostadded: Impulso de experiência de &e%boost% &aadicionado para &e%jobname%!
       infostats: '&c-----> &aImpulso de experiência de x%boost% ativado&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Verificar item bônus
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: Entre primeiro em uma Profissão.
-    output: 'Nível %joblevel% para %jobname%: %jobxp%/%jobmaxxp% exp'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: Remover posse do bloco
       args: '[playername]'
     output:
-      cleared: '&2Removidas &7[furnaces] &2fornalhas e &7[brewing] &2suportes de poções'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
       info: Pular missão escolhida e obter outra
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% foi promovido a %titlename% %jobname%.'
     nobroadcast: Parabéns, você foi promovido a %titlename% %jobname%.
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% agora é nível %joblevel% %jobname%.'
     nobroadcast: Agora você é nível %joblevel% %jobname%.
@@ -656,7 +672,6 @@ message:
     message: '&cVocê perdeu &e%lostLevel% níveis &c como&e %jobname%&c! Nível:&6 %joblevel%&c.'
   cowtimer: '&eVocê ainda precisa aguardar &6%time% &esegundos para ser pago nesta profissão.'
   blocktimer: '&eVocê precisa aguardar &3[time] &esegundos para ser pago por isso!'
-  placeblocktimer: '&eVocê não pode colocar blocos mais rápido do que &6[time] &esegundos no mesmo lugar!'
   taxes: '&3[amount] &eimpostos do servidor foram transferidos para esta conta'
   boostStarted: '&eO tempo de impulso das profissões foi iniciado!'
   boostStoped: '&eO tempo de impulso das profissões acabou!'

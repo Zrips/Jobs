@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cSzintet kell lépned a(z) [jobname] munkában, hogy használd ezt az elemet!'
 general:
-  Spawner: '&r[type] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cÉrvénytelen oldal'
     'true': '&2Igaz'
     'false': '&cHamis'
+    blocks:
+      furnace: Kemence
+      smoker: Füstölő
+      blastfurnace: Kohó
+      brewingstand: Főzőállvány
   admin:
     error: '&cHiba történt a parancsban.'
     success: '&eA parancs végrehajtásra került.'
@@ -32,10 +36,8 @@ general:
     ingame: '&cEz a parancs csak a játékban használható!'
     fromconsole: '&cEz a parancs csak a konzolon használható!'
     worldisdisabled: '&cNem használhatsz parancsot ebben a világban!'
-    newFurnaceRegistration: '&eA kemence új tulajdonosa regisztrálva &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eA Potions Support új tulajdonosa regisztrálva &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cElérted a kemencék maximális számát!'
-    noBrewingRegistration: '&cElérted a bájital főzés maximális számát!'
+    newRegistration: '&eA(z) [block] új tulajdonosa regisztrálva &7[current]&e/&f[max]'
+    noRegistration: '&cElérted a(z) [block] maximális számát!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: '&aTapasztalat növelése %boost% minden munkához hozzáadva!'
       boostadded: '&aTapasztalat növelése &e%boost% &ahozzáadva a(z) &e%jobname% &amunkához!'
       infostats: '&c-----> &aTapasztalat arány x%boost% engedélyezve&c <-------'
+  schedule:
+    help:
+      info: Engedélyezi a megadott feladatot
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cFeladat ezzel a névvel nem található.'
+      alreadyEnabled: '&cEz a feladat már engedélyezve van.'
+      enabled: '&eA feladat engedélyezve &a%from%&e-tól &a%until%&e-ig'
   itembonus:
     help:
       info: Ellenőrzi az elem bónuszt.
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: '&cElőször csatlakozz egy munkához.'
-    output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+    output:
+      message: ' lvl%joblevel% %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax szint   -   %jobname%'
     bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: Tulajdonjog törlése.
       args: '[playername]'
     output:
-      cleared: '&2Eltávolítva &7[furnaces] &2kemence &7[brewing] &2főzet.'
+      cleared: '&2Eltávolítva &7[furnaces] &2kemence, &7[brewing] &2főzőállvány, &7[smoker]&2 füstölő és &7[blast]&2 kohó.'
   skipquest:
     help:
       info: Hagyja ki a meghatározott küldetést, és szerezzen újat
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% játékost előléptették a %titlename% %jobname% munkában.'
     nobroadcast: '&aGratulálok, képességet léptél a(z)&r %titlename% %jobname%&a munkában.'
+  max-level-reached:
+    title: '&2Elérted a max szintet'
+    subtitle: '&2a(z) %jobname% munkában!'
+    chat: '&cElérted a maximális szintet a(z) %jobname% munkában!'
   levelup:
     broadcast: '%playername% %joblevel% szintet lépett a(z) %jobname% munkában.'
     nobroadcast: '&aSzintet léptél a(z) %jobname% &amunkában! Szint:&6 %joblevel%&a.'
@@ -656,7 +672,6 @@ message:
     message: '&e%lostLevel%&c szintet estél a(z)&e %jobname%&c munkában! Szint:&6 %joblevel%&c.'
   cowtimer: '&eMég várnod kell &6%time% &emásodpercet, hogy fizesse ezt a munkát.'
   blocktimer: '&eKérlek, várj &3[time] &emásodpercet, hogy újra küldjön pénzt!'
-  placeblocktimer: '&eNem lehet gyorsabban lerakni blokkokat &6[time] &esec intervallumot ugyanazon a helyen!'
   taxes: '&3[amount] &eszerver adókat, amennyiben átutalták erre a fiókra.'
   boostStarted: '&eMegkezdődött a munka pénz gyorsítása!'
   boostStoped: '&eA munka növelési ideje befejeződött!'

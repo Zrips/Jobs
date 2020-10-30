@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cBunun için [meslek] mesleğinde level atlaman lazım!'
 general:
-  Spawner: '&r[type] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cInvalid page'
     'true': '&2True'
     'false': '&cFalse'
+    blocks:
+      furnace: Furnace
+      smoker: Smoker
+      blastfurnace: Blast furnace
+      brewingstand: Brewing stand
   admin:
     error: '&cKomut uygulanırken bir hata oluştu.'
     success: '&eKomut başarıyla uygulandı.'
@@ -32,10 +36,8 @@ general:
     ingame: '&cBu komutu sadece oyundakiler kullanabilir!'
     fromconsole: '&cBu komutu sadece konsoldan kullanabilirsiniz!'
     worldisdisabled: '&cBu dünyada bu komut kullanılamaz!'
-    newFurnaceRegistration: '&eRegistered new ownership for furnace &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eRegistered new ownership for brewing stand &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cYou''ve reached max furnace count!'
-    noBrewingRegistration: '&cYou''ve reached max brewing stand count!'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: Exp avansı %boost% tüm mesleklere eklendi!
       boostadded: Exp avansı &e%boost% &aşuan &e%jobname% &amesleğine eklendi!
       infostats: '&c-----> &aExp avansı x%boost% aktif&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Check item bonus
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: Lütfen önce bir mesleğe giriniz.
-    output: ' lvl%joblevel% %jobname% : %jobxp%/%jobmaxxp% xp'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: Clear block ownership
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
       info: Skip defined quest and get new one
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% adlı oyuncu %titlename% skilini %jobname% mesleğinde kazandı.'
     nobroadcast: Tebrikler, kazandığınız yetenek %titlename% %jobname%.
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% adlı oyuncu %jobname% mesleğinde %joblevel% leveline ulaştı.'
     nobroadcast: Tebrikler, şuan %jobname% mesleğinde %joblevel% levelsin.
@@ -656,7 +672,6 @@ message:
     message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
   cowtimer: '&eŞuan ödeme alabilmen için &6%time% &esaniye beklemen gerek.'
   blocktimer: '&eÖdeme yapabilmen için gereken süre: &3[time] !'
-  placeblocktimer: '&eYou cant place block faster than &6[time] &esec interval in same place!'
   taxes: '&3[amount] &ekadar vergi hesabınıza eklendi'
   boostStarted: '&eMeslek avansı şuan başladı!'
   boostStoped: '&eMeslek avansı şuan sona erdi!'

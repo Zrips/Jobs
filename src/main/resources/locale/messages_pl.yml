@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cMusisz zwiększyć swój poziom w pracy [jobname] aby użyć tego przedmiotu!'
 general:
-  Spawner: 'Spawner &r[type]'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cNieprawidłowa strona'
     'true': '&2Prawda'
     'false': '&cFałsz'
+    blocks:
+      furnace: Piec
+      smoker: Wędzarka
+      blastfurnace: Piec hutniczy
+      brewingstand: Statyw alchemiczny
   admin:
     error: '&cWystąpił błąd w tej komendzie.'
     success: '&eKomenda została wykonana.'
@@ -32,10 +36,8 @@ general:
     ingame: '&cMożesz użyć tej komendy tylko w grze!'
     fromconsole: '&cMożesz użyć tej komendy tylko w konsoli!'
     worldisdisabled: '&cNie możesz użyć tej komendy w tym świecie!'
-    newFurnaceRegistration: '&eZarejestrowano nową własność dla pieca &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eZarejestrowano nową własność dla statywu alchemicznego &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cOsiągnąłeś maksymalną ilość piecy!'
-    noBrewingRegistration: '&cOsiągnąłeś maksymalną ilość statywów alchemicznych!'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: Boost exp'a %boost% dodany do wszystkich prac!
       boostadded: Boost exp'a &e%boost% &adodany do pracy &e%jobname%!
       infostats: '&c-----> &aStawka exp''a x%boost% włączona&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Sprawdź bonus przedmiotu
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: Najpierw dołącz do pracy.
-    output: 'Poziom %joblevel% dla pracy %jobname%: %jobxp%/%jobmaxxp% xp'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -298,7 +310,7 @@ command:
       levelFrom: ' &a(z &e%levelFrom% &apoziomu)'
       levelUntil: ' &a (do &e%levelUntil% &apoziomu)'
       money: ' &2%money%$'
-      points: ' &6%points%ppkt'
+      points: ' &6%points%pkt'
       exp: ' &e%exp%xp'
     gui:
       pickjob: '&eWybierz swoją pracę!'
@@ -451,7 +463,7 @@ command:
       info: Wyczyść własność bloku
       args: '[playername]'
     output:
-      cleared: '&2Usunięto &7[furnaces] &2pieców i &7[brewing] &2statywów alchemicznych'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
       info: Pomiń dane zadanie i otrzymaj nowe
@@ -639,7 +651,7 @@ command:
     output:
       turnedoff: '&4Ta funkcja jest wyłączona!'
       paid:
-        main: '&aMasz:'
+        main: '&aOtrzymujesz:'
         money: '&e[amount] pieniędzy'
         exp: '&7[exp] exp''a'
         points: '&6[points] punktów'
@@ -649,14 +661,17 @@ message:
   skillup:
     broadcast: '%playername% został awansowany do %titlename% %jobname%.'
     nobroadcast: Gratulacje, zostałeś awansowany do %titlename% %jobname%.
+  max-level-reached:
+    title: '&2Osiągnięto maksymalny poziom'
+    subtitle: '&2w pracy %jobname%!'
+    chat: '&cOsiągnąłeś maksymalny poziom w pracy %jobname%!'
   levelup:
     broadcast: '%playername% jest teraz na poziomie %joblevel% %jobname%.'
     nobroadcast: Jesteś teraz na poziomie %joblevel% %jobname%.
   leveldown:
     message: '&cUtraciłeś poziom&e %lostLevel%&c w pracy&e %jobname%&c! Poziom:&6 %joblevel%&c.'
   cowtimer: '&eMusisz nadal poczekać &6%time% &esek aby otrzymać zapłatę za pracę.'
-  blocktimer: '&eMusisz poczekać &3[time] &esek więcej aby otrzymać zapłatę za to!'
-  placeblocktimer: '&eNie możesz stawiać bloków szybciej niż &6[time] &esek w tym samym miejscu!'
+  blocktimer: '&eMusisz poczekać &3[time] &esek aby otrzymać zapłatę za to!'
   taxes: '&3[amount] &eserwerowych podatków zostało przelane na te konto'
   boostStarted: '&eCzas boostów prac został rozpoczęty!'
   boostStoped: '&eCzas boostów prac został zakończony!'

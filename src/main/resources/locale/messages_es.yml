@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cPara usar esto necesitas aumentar el nivel de profesión de [jobname].'
 general:
-  Spawner: '&rEngendrador de [type]'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cPágina no válida'
     'true': '&2Veritat'
     'false': '&cFals'
+    blocks:
+      furnace: Furnace
+      smoker: Smoker
+      blastfurnace: Blast furnace
+      brewingstand: Brewing stand
   admin:
     error: '&cSe ha producido un error al aplicar el conjuro.'
     success: '&eEl conjuro ha sido aplicado.'
@@ -32,10 +36,8 @@ general:
     ingame: '&cEsto es un conjuro y solo puede ser usado por un jugador.'
     fromconsole: '&cEsto es un comando y solo puede ser usado desde la consola.'
     worldisdisabled: '&cNo puedes usar este conjuro en este mundo.'
-    newFurnaceRegistration: '&eSe ha registrado un nuevo propietario del Horno &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eSe ha registrado un nuevo propietario del Soporte para Pociones &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&c¡Has alcanzado el número máximo de Hornos!'
-    noBrewingRegistration: '&c¡Has alcanzado el número máximo de Soportes de Pociones!'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: '¡Se ha aumentado la Experiencia de todos las profesiones al %boost%!'
       boostadded: '¡Se ha aumentado la Experiencia de &e%boost% &ade la profesión &e%jobname%!'
       infostats: '&c-----> &aExperiencia actual x%boost%&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Comprobar bonificación de artículo
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: Debes trabajar primero en una profesión.
-    output: '&bNivel &3%joblevel% &bde &r%jobname%. &aExperiencia &2%jobxp% &ade &2%jobmaxxp%'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Nvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% Exp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: Eliminar propietarios.
       args: '[playername]'
     output:
-      cleared: '&2Se han eliminado &7[furnaces] &2hornos y &7[brewing] &2Soportes para Pociones'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
       info: Omite la misión en progreso y obten una nueva
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% ha sido ascendido a %titlename% %jobname%.'
     nobroadcast: Felicidades, has sido ascendido a %titlename% %jobname%.
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% ahora es nivel %joblevel% %jobname%.'
     nobroadcast: Ahora eres nivel %joblevel% %jobname%.
@@ -656,7 +672,6 @@ message:
     message: '&c¡Has perdido&e %lostLevel%&c en tu trabajo de&e %jobname%&c! Nivel:&6 %joblevel%&c.'
   cowtimer: '&eAún tienes que esperar &6%time% &esegundos para ser pagado por este trabajo.'
   blocktimer: '&e¡Tienes que esperar &3[time] &epara ser pagado por esto!'
-  placeblocktimer: '&e¡No puedes poner bloques más rápido que en &6[time] &esegundos en el mismo sitio!'
   taxes: '&3[amount] &eimpuestos del servidor se transfirieron a esta cuenta'
   boostStarted: '&e¡Acaba de empezar el boost de trabajos!'
   boostStoped: '&e¡Acaba de terminar el boost de trabajos!'

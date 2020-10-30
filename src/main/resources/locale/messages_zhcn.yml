@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cYou need to level up in [jobname] to use this item!'
 general:
-  Spawner: '&r[type] 刷怪笼'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cInvalid page'
     'true': '&2True'
     'false': '&cFalse'
+    blocks:
+      furnace: Furnace
+      smoker: Smoker
+      blastfurnace: Blast furnace
+      brewingstand: Brewing stand
   admin:
     error: '&c执行命令出错.'
     success: '&a你的命令执行成功.'
@@ -32,10 +36,8 @@ general:
     ingame: '&c你只能在游戏中使用!'
     fromconsole: '&c你只能在控制台使用这条指令!'
     worldisdisabled: '&c你不能在这个世界使用这个指令!'
-    newFurnaceRegistration: '&eRegistered new ownership for furnace &7[current]&e/&f[max]'
-    newBrewingRegistration: '&eRegistered new ownership for brewing stand &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cYou''ve reached max furnace count!'
-    noBrewingRegistration: '&cYou''ve reached max brewing stand count!'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: 所有职业的经验获得加成了 %boost% 倍
       boostadded: '%jobname% 职业的经验获得加成了 %boost% 倍'
       infostats: '&c-----> &a经验获得 x%boost% 倍正在进行&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Check item bonus
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: 请先加入一个职业.
-    output: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: Clear block ownership
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces and &7[brewing] &2brewing stands'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
       info: Skip defined quest and get new one
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% 获得了升级 %titlename% %jobname%.'
     nobroadcast: 恭喜, 你升级为了 %titlename% %jobname%.
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% is now a level %joblevel% %jobname%.'
     nobroadcast: You are now level %joblevel% %jobname%.
@@ -656,7 +672,6 @@ message:
     message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
   cowtimer: '&e你还需要等待 &6%time% &e秒来获得职业报酬.'
   blocktimer: '&e你需要等待: &3[time] &e秒来获得职业报酬!'
-  placeblocktimer: '&e你放置方块的速度不能超过 &6[time] &e秒一个!'
   taxes: '&3[amount] &e服务器税收转移到了此账户'
   boostStarted: '&e职业加成时间已经开始!'
   boostStoped: '&e职业加成时间结束了!'

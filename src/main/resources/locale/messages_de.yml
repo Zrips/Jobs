@@ -6,7 +6,6 @@ limitedItem:
   error:
     levelup: '&cDu musst den Job [jobname] leveln, um das Item zu benutzen!'
 general:
-  Spawner: '&r[type] Spawner'
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
@@ -18,6 +17,11 @@ general:
     invalidPage: '&cUngültige Seite'
     'true': 'Wahr'
     'false': 'Falsch'
+    blocks:
+      furnace: Furnace
+      smoker: Smoker
+      blastfurnace: Blast furnace
+      brewingstand: Brewing stand
   admin:
     error: '&cEs ist ein Fehler aufgetreten.'
     success: '&eDer Befehl ist erfolgreich ausgeführt worden.'
@@ -32,10 +36,8 @@ general:
     ingame: '&cDer Befehl kann nur ingame benutzt werden!'
     fromconsole: '&cDer Befehl kann nur in der Konsole benutzt werden!'
     worldisdisabled: '&cDer Befehl kann nicht in dieser Welt ausgeführt werden!'
-    newFurnaceRegistration: '&eNeuer Besitzer für den Zaun &7[current]&e/&f[max] registriert'
-    newBrewingRegistration: '&eNeuer Besitzer für den Braustand &7[current]&e/&f[max]'
-    noFurnaceRegistration: '&cDu hast die maximale Anzahl an Zäune erreicht!'
-    noBrewingRegistration: '&cDu hast die maximale Anzahl an Brauständen erreicht!'
+    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
+    noRegistration: '&cYou''ve reached max [block] count!'
 command:
   help:
     output:
@@ -89,6 +91,14 @@ command:
       boostalladded: Ein XP-Bonus um %boost% wurde für alle Jobs hinzugefügt!
       boostadded: Es wurde ein XP-Bonus um &e%boost% &afür &e%jobname% hinzugefügt!
       infostats: '&c-----> &aXP x%boost% eingeschaltet&c <-------'
+  schedule:
+    help:
+      info: Enables the given scheduler
+      args: enable [scheduleName] [untilTime]
+    output:
+      noScheduleFound: '&cSchedule with this name not found.'
+      alreadyEnabled: '&cThis schedule already enabled.'
+      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Item-Bonus überprüfen
@@ -246,7 +256,9 @@ command:
       args: '[playername]'
     error:
       nojob: Du bist aktuell arbeitslos.
-    output: 'Level %joblevel% %jobname% : %jobxp%/%jobmaxxp% XP'
+    output:
+      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMax level   -   %jobname%'
     bossBarOutput: 'Level %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -451,7 +463,7 @@ command:
       info: Blockbesitzer entfernen
       args: '[playername]'
     output:
-      cleared: '&2Es wurden &7[furnaces] &2Zäune und &7[brewing] &2Braustände entfernt.'
+      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
   skipquest:
     help:
       info: Überspringe die definierte Quest und hol dir eine neue
@@ -531,18 +543,18 @@ command:
       addUsage: '&eBenutzung: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]'
       removeUsage: '&eBenutzung: &6/Jobs area remove [areaName]'
     output:
-      addedNew: '&eAdded a new restricted area with &6%bonus% &ebonus'
-      removed: '&eRemoved the restricted area &6%name%'
+      addedNew: '&eEin neuer Sperrbereich mit einem Bonus von &6%bonus% &ewurde hinzugefügt'
+      removed: '&eDer eingeschränkte Bereich wurde entfernt &6%name%'
       list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%'
       wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
-      noAreas: '&eThere are no saved restricted areas'
-      noAreasByLoc: '&eThere are no restricted areas in this location'
-      areaList: '&eRestricted areas by your location: &6%list%'
+      noAreas: '&eEs gibt keine gespeicherten Sperrbereiche'
+      noAreasByLoc: '&eEs gibt keine Sperrbereiche an diesem Ort'
+      areaList: '&eEingeschränkte Breiche in deine Nähe: &6%list%'
       selected1: '&eErster Punkt ausgewählt: &6%x%:%y%:%z%'
       selected2: '&eZweiter Punkt ausgewählt: &6%x%:%y%:%z%'
       select: '&e2 Punkte mit dem Auswähl-Tool (%tool%) ausgewählt'
-      exist: '&eRestriction area by this name already exists'
-      dontExist: '&eRestriction area by this name does not exist'
+      exist: '&eEin Beschränkungsbereich mit diesem Namen existiert nicht'
+      dontExist: '&eEin Beschränkungsbereich mit diesem Namen existiert nicht'
       wgDontExist: '&eEine WorldGuard Region mit diesem Namen existiert nicht'
   log:
     help:
@@ -620,7 +632,7 @@ command:
       target: Du hast %xplost% Erfahrung in %jobname% verloren.
   signupdate:
     help:
-      info: Manually updates a sign by its name
+      info: Aktualisiert ein Schild manuell anhand seines Namens
       args: '[jobname]'
   bp:
     help:
@@ -634,7 +646,7 @@ command:
       info: Konfigurationen neu laden.
   toggle:
     help:
-      info: Toggles payment output on action bar or bossbar.
+      info: Schaltet die Zahlungsausgabe in der Aktionsleiste oder der Bossleiste um.
       args: actionbar/bossbar
     output:
       turnedoff: '&4Diese Funktion ist deaktiviert!'
@@ -649,6 +661,10 @@ message:
   skillup:
     broadcast: '%playername% wurde zu einem %titlename% %jobname%befördert.'
     nobroadcast: Herzlichen Glückwunsch, du wurdest zum %titlename%%jobname% befördert.
+  max-level-reached:
+    title: '&2Max level reached'
+    subtitle: '&2in %jobname%!'
+    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% ist nun ein Level %joblevel%%jobname%.'
     nobroadcast: Du bist nun Level %joblevel% in %jobname%.
@@ -656,7 +672,6 @@ message:
     message: '&cDu hast Level&e %lostLevel%&c in&e %jobname%&c job verloren! Level:&6 %joblevel%&c.'
   cowtimer: '&eDu musst immernoch &6%time% &eSekunden warten bevor du für diesen Beruf bezahlt wirst.'
   blocktimer: '&eDu musst noch weitere &e[time] &eSekunden warten bevor du dafür bezahlt wirst!'
-  placeblocktimer: '&eDu kannst Blöcke nicht schneller als &6[time] Sekunden am selben Ort platzieren!'
   taxes: '&3[amount] &eServer Steuern wurden zu diesem Account gesendet'
   boostStarted: '&eJobs Boos Zeit wurde gestarted!'
   boostStoped: '&eJobs Boost Zeit wurde beendet!'
