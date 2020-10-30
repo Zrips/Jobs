@@ -166,7 +166,7 @@ public class JobsPlayer {
 	if (data.isReachedLimit(type, value == null ? 0 : value)) {
 	    String name = type.getName().toLowerCase();
 
-	    if (player.isOnline() && !data.isInformed() && !data.isReseted()) {
+	    if (player.isOnline() && !data.isInformed() && !data.isReseted(type)) {
 		if (Jobs.getGCManager().useMaxPaymentCurve) {
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit"));
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit2"));
@@ -179,8 +179,8 @@ public class JobsPlayer {
 	    }
 	    if (data.isAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline())
 		ActionBarManager.send(player, Jobs.getLanguage().getMessage("command.limit.output." + name + "time", "%time%", TimeManage.to24hourShort(data.getLeftTime(type))));
-	    if (data.isReseted())
-		data.setReseted(false);
+	    if (data.isReseted(type))
+		data.setReseted(type, false);
 	    return false;
 	}
 	data.addAmount(type, amount);

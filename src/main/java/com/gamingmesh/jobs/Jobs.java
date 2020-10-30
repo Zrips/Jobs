@@ -1276,11 +1276,17 @@ public class Jobs extends JavaPlugin {
 	if (jobsExpGainEvent.isCancelled())
 	    return;
 
+	boolean limited = true;
 	for (CurrencyType one : CurrencyType.values()) {
-	    if (!jPlayer.isUnderLimit(one, payment.get(one)))
-		return;
+	    if (jPlayer.isUnderLimit(one, payment.get(one))) {
+		limited = false;
+		break;
+	    }
 	}
 
+	if (limited)
+	    return;
+	
 	economy.pay(jPlayer, payment.getPayment());
 
 	JobProgression prog = jPlayer.getJobProgression(job);

@@ -9,30 +9,24 @@ public class PaymentData {
 
     private Long lastAnnouced = 0L;
 
-    private final HashMap<CurrencyType, Double> payments = new HashMap<>();
-    private final HashMap<CurrencyType, Long> paymentsTimes = new HashMap<>();
+    private final HashMap<CurrencyType, LimitsData> payments = new HashMap<>();
 
     private boolean informed = false;
-    private boolean reseted = false;
 
     public PaymentData(Long time, Double Payment, Double Points, Double Exp, Long lastAnnouced, boolean Informed) {
-	paymentsTimes.put(CurrencyType.EXP, time);
-	paymentsTimes.put(CurrencyType.MONEY, time);
-	paymentsTimes.put(CurrencyType.POINTS, time);
-	payments.put(CurrencyType.EXP, Exp);
-	payments.put(CurrencyType.MONEY, Payment);
-	payments.put(CurrencyType.POINTS, Points);
-
+	payments.put(CurrencyType.EXP, new LimitsData(CurrencyType.EXP, time, Exp));
+	payments.put(CurrencyType.MONEY, new LimitsData(CurrencyType.MONEY, time, Payment));
+	payments.put(CurrencyType.POINTS, new LimitsData(CurrencyType.POINTS, time, Points));
 	this.lastAnnouced = lastAnnouced;
 	this.informed = Informed;
     }
 
     public PaymentData(CurrencyType type, Double amount) {
-	paymentsTimes.put(type, System.currentTimeMillis());
-	payments.put(type, amount);
-
-	this.lastAnnouced = 0L;
-	this.informed = false;
+	for (CurrencyType one : CurrencyType.values()) {
+	    if (one != type)
+		payments.put(one, new LimitsData(one, System.currentTimeMillis(), 0D));
+	}
+	payments.put(type, new LimitsData(type, System.currentTimeMillis(), amount));
     }
 
     public PaymentData() {
@@ -40,19 +34,19 @@ public class PaymentData {
     }
 
     public Long getTime(CurrencyType type) {
-	return paymentsTimes.get(type);
+	return payments.get(type).getPaymentsTime();
     }
 
-    public void setReseted(boolean reseted) {
-	this.reseted = reseted;
+    public void setReseted(CurrencyType type, boolean reseted) {
+	payments.get(type).setReseted(reseted);
     }
 
-    public boolean isReseted() {
-	return reseted;
+    public boolean isReseted(CurrencyType type) {
+	return payments.get(type).isReseted();
     }
 
     public Double getAmount(CurrencyType type) {
-	return !payments.containsKey(type) ? 0D : (int) (payments.get(type) * 100) / 100D;
+	return !payments.containsKey(type) ? 0D : (int) (payments.get(type).getAmount() * 100) / 100D;
     }
 
     public Double getAmountBylimit(CurrencyType type, int limit) {
@@ -80,12 +74,11 @@ public class PaymentData {
     }
 
     public void addNewAmount(CurrencyType type, Double Payment, Long time) {
-	paymentsTimes.put(type, time == null ? System.currentTimeMillis() : time);
-	payments.put(type, Payment);
+	payments.put(type, new LimitsData(type, time == null ? System.currentTimeMillis() : time, Payment));
     }
 
     public void addAmount(CurrencyType type, Double Payment) {
-	payments.put(type, payments.get(type) + Payment);
+	payments.get(type).addAmount(Payment);
     }
 
     public long getLeftTime(CurrencyType type) {
@@ -96,13 +89,13 @@ public class PaymentData {
     }
 
     public boolean isOverLimit(CurrencyType type, int limit) {
-	if (payments.get(type) < limit)
+	if (payments.get(type).getAmount() < limit)
 	    return false;
 	return true;
     }
 
     public double percentOverLimit(CurrencyType type, int limit) {
-	return ((payments.get(type) / limit) - 1) * 100;
+	return ((payments.get(type).getAmount() / limit) - 1) * 100;
     }
 
     public boolean isOverTimeLimit(CurrencyType type) {
@@ -117,8 +110,13 @@ public class PaymentData {
     public void resetLimits() {
 	for (CurrencyType type : CurrencyType.values()) {
 	    addNewAmount(type, 0D);
+	    setReseted(type, true);
 	}
-	reseted = true;
+    }
+
+    public void resetLimits(CurrencyType type) {
+	addNewAmount(type, 0D);
+	setReseted(type, true);
     }
 
     public boolean isReachedLimit(CurrencyType type, int money) {
