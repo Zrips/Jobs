@@ -82,16 +82,12 @@ public class PaymentData {
     }
 
     public long getLeftTime(CurrencyType type) {
-	long left = 0;
-	if (getTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) > System.currentTimeMillis())
-	    left = (getTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) - System.currentTimeMillis());
-	return left;
+	long left = getTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000);
+	return left > System.currentTimeMillis() ? left - System.currentTimeMillis() : 0L;
     }
 
     public boolean isOverLimit(CurrencyType type, int limit) {
-	if (payments.get(type).getAmount() < limit)
-	    return false;
-	return true;
+	return payments.get(type).getAmount() >= limit;
     }
 
     public double percentOverLimit(CurrencyType type, int limit) {
@@ -99,8 +95,9 @@ public class PaymentData {
     }
 
     public boolean isOverTimeLimit(CurrencyType type) {
-	if (getTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) > System.currentTimeMillis())
+	if (getTime(type) + (Jobs.getGCManager().getLimit(type).getTimeLimit() * 1000) > System.currentTimeMillis()) {
 	    return false;
+	}
 	if (informed)
 	    informed = false;
 	resetLimits();
@@ -120,7 +117,8 @@ public class PaymentData {
     }
 
     public boolean isReachedLimit(CurrencyType type, int money) {
-	return isOverTimeLimit(type) || isOverLimit(type, money);
+	isOverTimeLimit(type);
+	return isOverLimit(type, money);
     }
 
     public boolean isInformed() {
