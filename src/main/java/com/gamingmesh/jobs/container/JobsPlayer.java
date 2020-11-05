@@ -40,7 +40,6 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
@@ -280,7 +279,7 @@ public class JobsPlayer {
 
 	ArrayList<BoostCounter> counterList = new ArrayList<>();
 	counterList.add(new BoostCounter(type, Boost, time));
- 
+
 	boostCounter.put(JobName, counterList);
 	return Boost;
     }
@@ -288,7 +287,7 @@ public class JobsPlayer {
     private Double getPlayerBoostNew(String JobName, CurrencyType type) {
 	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + "." + type.getName(), true, false, true);
 	Double Boost = v1;
-	
+
 	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + ".all", false, false, true);
 	if (v1 != 0d && (v1 > Boost || v1 < Boost))
 	    Boost = v1;

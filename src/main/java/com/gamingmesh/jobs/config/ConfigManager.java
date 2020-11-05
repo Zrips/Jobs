@@ -591,7 +591,7 @@ public class ConfigManager {
 
 	    type = enchant == null ? myKey : enchant.toString();
 	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
-	    || actionType == ActionType.BAKE) {
+	    || actionType == ActionType.BAKE || actionType == ActionType.SMELT) {
 	    type = myKey;
 	} else if (actionType == ActionType.EXPLORE) {
 	    type = myKey;
