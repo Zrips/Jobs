@@ -19,6 +19,8 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.Quest;
+import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
@@ -46,6 +48,7 @@ public class Placeholder {
 	user_dailyquests_pending,
 	user_dailyquests_completed,
 	user_dailyquests_total,
+	user_quests,
 	user_seen,
 	user_totallevels,
 	user_issaved,
@@ -440,6 +443,22 @@ public class Placeholder {
 
 		JobProgression prog = l.get(ThreadLocalRandom.current().nextInt(l.size()));
 		return prog.getJob().getName();
+	    case user_quests:
+		String q = "";
+		for (QuestProgression questProg : user.getQuestProgressions()) {
+		    Quest quest = questProg.getQuest();
+		    if (quest == null || quest.isStopped()) {
+			continue;
+		    }
+
+		    if (!q.isEmpty()) {
+			q += ", ";
+		    }
+
+		    q += quest.getQuestName();
+		}
+
+		return q;
 	    default:
 		break;
 	    }

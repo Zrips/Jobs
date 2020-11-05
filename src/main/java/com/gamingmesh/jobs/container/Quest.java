@@ -28,7 +28,7 @@ public class Quest {
     private final Set<ActionType> actions = new HashSet<>();
 
     public Quest(String questName, Job job) {
-	this.questName = questName;
+	setQuestName(questName);
 	this.job = job;
     }
 
