@@ -63,6 +63,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 public class Jobs extends JavaPlugin {
@@ -465,31 +466,35 @@ public class Jobs extends JavaPlugin {
     }
 
     public static void loadAllPlayersData() {
-	long time = System.currentTimeMillis();
-	// Cloning to avoid issues
-	HashMap<UUID, PlayerInfo> temp = new HashMap<>(getPlayerManager().getPlayersInfoUUIDMap());
-	HashMap<Integer, List<JobsDAOData>> playersJobs = dao.getAllJobs();
-	HashMap<Integer, PlayerPoints> playersPoints = dao.getAllPoints();
-	HashMap<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
-	HashMap<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
-	HashMap<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
-	for (Iterator<PlayerInfo> it = temp.values().iterator(); it.hasNext();) {
-	    PlayerInfo one = it.next();
-	    int id = one.getID();
-	    JobsPlayer jPlayer = getPlayerManager().getJobsPlayerOffline(
-		one,
-		playersJobs.get(id),
-		playersPoints.get(id),
-		playersLogs.get(id),
-		playersArchives.get(id),
-		playersLimits.get(id));
-	    if (jPlayer != null)
-		getPlayerManager().addPlayerToCache(jPlayer);
-	}
+	CompletableFuture.supplyAsync(() -> {
+	    long time = System.currentTimeMillis();
+	    // Cloning to avoid issues
+	    HashMap<UUID, PlayerInfo> temp = new HashMap<>(getPlayerManager().getPlayersInfoUUIDMap());
+	    HashMap<Integer, List<JobsDAOData>> playersJobs = dao.getAllJobs();
+	    HashMap<Integer, PlayerPoints> playersPoints = dao.getAllPoints();
+	    HashMap<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
+	    HashMap<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
+	    HashMap<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
+	    for (Iterator<PlayerInfo> it = temp.values().iterator(); it.hasNext();) {
+		PlayerInfo one = it.next();
+		int id = one.getID();
+		JobsPlayer jPlayer = getPlayerManager().getJobsPlayerOffline(
+			one,
+			playersJobs.get(id),
+			playersPoints.get(id),
+			playersLogs.get(id),
+			playersArchives.get(id),
+			playersLimits.get(id));
+		if (jPlayer != null)
+		    getPlayerManager().addPlayerToCache(jPlayer);
+	    }
 
-	if (!getPlayerManager().getPlayersCache().isEmpty())
-	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " +
-		((int) (((System.currentTimeMillis() - time) / 1000d) * 100) / 100D));
+	    return time;
+	}).thenAccept(t -> {
+	    if (!getPlayerManager().getPlayersCache().isEmpty())
+		consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " +
+		    ((int) (((System.currentTimeMillis() - t) / 1000d) * 100) / 100D));
+	});
     }
 
     /**

@@ -73,7 +73,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -193,7 +193,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -224,7 +224,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -253,7 +253,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -285,7 +285,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -312,7 +312,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -342,7 +342,7 @@ public abstract class JobsDAO {
 
 	@Override
 	public String getCollumn() {
-	    return this.name();
+	    return name();
 	}
 
 	@Override
@@ -403,9 +403,9 @@ public abstract class JobsDAO {
 	private String getQR() {
 	    switch (dbType) {
 	    case MySQL:
-		return this.mySQL.replace("[tableName]", prefix + this.tableName);
+		return mySQL.replace("[tableName]", prefix + tableName);
 	    case SqLite:
-		return this.sQlite.replace("[tableName]", this.tableName);
+		return sQlite.replace("[tableName]", tableName);
 	    default:
 		break;
 	    }
@@ -415,7 +415,7 @@ public abstract class JobsDAO {
 	public String getQuery() {
 	    String rp = "";
 	    List<JobsTableInterface> uniques = new ArrayList<>();
-	    for (JobsTableInterface one : this.getInterface()) {
+	    for (JobsTableInterface one : getInterface()) {
 		if (one.isUnique()) {
 		    uniques.add(one);
 		}
@@ -449,7 +449,7 @@ public abstract class JobsDAO {
 	}
 
 	public JobsTableInterface[] getInterface() {
-	    return this.c;
+	    return c;
 	}
 
 	public String getTableName() {
@@ -536,10 +536,10 @@ public abstract class JobsDAO {
     }
 
     private boolean createDefaultTable(DBTables table) {
-	if (this.isTable(table.getTableName()))
+	if (isTable(table.getTableName()))
 	    return true;
 	try {
-	    this.createTable(table.getQuery());
+	    createTable(table.getQuery());
 	    return true;
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -550,9 +550,9 @@ public abstract class JobsDAO {
     private boolean checkDefaultCollumns() {
 	for (DBTables one : DBTables.values()) {
 	    for (JobsTableInterface oneT : one.getInterface()) {
-		if (this.isCollumn(one.getTableName(), oneT.getCollumn()))
+		if (isCollumn(one.getTableName(), oneT.getCollumn()))
 		    continue;
-		this.addCollumn(one.getTableName(), oneT.getCollumn(), oneT.getType());
+		addCollumn(one.getTableName(), oneT.getCollumn(), oneT.getType());
 	    }
 	}
 
@@ -561,7 +561,7 @@ public abstract class JobsDAO {
 
     public void truncateAllTables() {
 	for (DBTables one : DBTables.values()) {
-	    this.truncate(one.getTableName());
+	    truncate(one.getTableName());
 	}
     }
 
@@ -1487,7 +1487,7 @@ public abstract class JobsDAO {
     }
 
     public void continueConvertions(List<Convert> list) throws SQLException {
-	JobsConnection conns = this.getConnection();
+	JobsConnection conns = getConnection();
 	if (conns == null)
 	    return;
 	PreparedStatement insert = null;

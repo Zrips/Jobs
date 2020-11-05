@@ -28,7 +28,7 @@ public class JobsSQLite extends JobsDAO {
 	super(plugin, "org.sqlite.JDBC", "jdbc:sqlite:" + new File(file, "jobs.sqlite.db").getPath(), null, null, "");
 	if (!file.exists())
 	    file.mkdirs();
-	this.setDbType(DataBaseType.SqLite);
+	setDbType(DataBaseType.SqLite);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class JobsSQLite extends JobsDAO {
     public boolean isTable(String table) {
 	DatabaseMetaData md = null;
 	try {
-	    md = this.getConnection().getMetaData();
+	    md = getConnection().getMetaData();
 	    ResultSet tables = md.getTables(null, null, table, null);
 	    if (tables.next()) {
 		tables.close();
@@ -107,7 +107,7 @@ public class JobsSQLite extends JobsDAO {
     public boolean isCollumn(String table, String collumn) {
 	DatabaseMetaData md = null;
 	try {
-	    md = this.getConnection().getMetaData();
+	    md = getConnection().getMetaData();
 	    ResultSet tables = md.getColumns(null, null, table, collumn);
 	    if (tables.next()) {
 		tables.close();
@@ -145,7 +145,7 @@ public class JobsSQLite extends JobsDAO {
 	Statement statement = null;
 	String query = null;
 	try {
-	    if (!this.isTable(table)) {
+	    if (!isTable(table)) {
 		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
@@ -168,7 +168,7 @@ public class JobsSQLite extends JobsDAO {
 	Statement statement = null;
 	String query = null;
 	try {
-	    if (!this.isTable(table)) {
+	    if (!isTable(table)) {
 		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
