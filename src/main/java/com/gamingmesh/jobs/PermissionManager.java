@@ -153,7 +153,7 @@ public class PermissionManager {
 		double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
 		if (cumulative)
 		    amount += temp;
-		else if (allowMinus || temp > amount)
+		else if (amount == 0D || allowMinus || temp > amount)
 		    amount = temp;
 	    } catch (NumberFormatException ignored) {
 		ignored.printStackTrace();

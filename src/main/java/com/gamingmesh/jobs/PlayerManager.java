@@ -859,7 +859,7 @@ public class PlayerManager {
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
 	JobItems jitem = getJobsItemByNbt(iih);
 	if (jitem != null && jitem.getJobs().contains(prog))
-	    data.add(jitem.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
+	    data.add(jitem.getBoost(getJobsPlayer(player).getJobProgression(prog)));
 
 	// Lets check offhand
 	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
@@ -867,19 +867,19 @@ public class PlayerManager {
 	    if (iih != null) {
 		jitem = getJobsItemByNbt(iih);
 		if (jitem != null && jitem.getJobs().contains(prog))
-		    data.add(jitem.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
+		    data.add(jitem.getBoost(getJobsPlayer(player).getJobProgression(prog)));
 	    }
 	}
 
-	for (ItemStack OneArmor : player.getInventory().getArmorContents()) {
-	    if (OneArmor == null || OneArmor.getType() == org.bukkit.Material.AIR)
+	for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
+	    if (oneArmor == null || oneArmor.getType() == org.bukkit.Material.AIR)
 		continue;
-	    JobItems armorboost = getJobsItemByNbt(OneArmor);
 
+	    JobItems armorboost = getJobsItemByNbt(oneArmor);
 	    if (armorboost == null || !armorboost.getJobs().contains(prog))
 		continue;
 
-	    data.add(armorboost.getBoost(this.getJobsPlayer(player).getJobProgression(prog)));
+	    data.add(armorboost.getBoost(getJobsPlayer(player).getJobProgression(prog)));
 	}
 
 	return data;
