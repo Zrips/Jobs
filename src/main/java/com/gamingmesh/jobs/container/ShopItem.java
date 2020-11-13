@@ -6,34 +6,27 @@ import java.util.List;
 
 public class ShopItem {
 
-    private String NodeName = null;
-
     private double price = 0D;
 
-    private int slot = -1;
-    private int page = -1;
+    private int slot = -1, page = -1, iconAmount = 1;
 
-    private String IconMaterial = null;
-    private int IconAmount = 1;
-    private String IconName = null;
-    private final List<String> IconLore = new ArrayList<>();
+    private String nodeName = null, iconMaterial = null, iconName = null;
 
-    private boolean HideWithoutPerm = false;
+    private boolean hideWithoutPerm = false;
     private boolean hideNoEnoughPoint = false;
 
-    private int RequiredTotalLevels = -1;
+    private int requiredTotalLevels = -1;
 
-    private HashMap<String, Integer> RequiredJobs = new HashMap<>();
+    private HashMap<String, Integer> requiredJobs = new HashMap<>();
 
-    private final List<String> RequiredPerm = new ArrayList<>();
-    private final List<String> Commands = new ArrayList<>();
+    private final List<String> iconLore = new ArrayList<>(), requiredPerm = new ArrayList<>(), commands = new ArrayList<>();
     private final List<JobItems> items = new ArrayList<>();
 
-    private String PlayerName;
+    private String playerName;
     private boolean useCurrentPlayer = false;
 
-    public ShopItem(String NodeName, double price) {
-	this.NodeName = NodeName;
+    public ShopItem(String nodeName, double price) {
+	this.nodeName = nodeName;
 	this.price = price;
     }
 
@@ -62,30 +55,30 @@ public class ShopItem {
 	return items;
     }
 
-    public void setCommands(List<String> Commands) {
-	this.Commands.clear();
-	this.Commands.addAll(Commands == null ? new ArrayList<>() : Commands);
+    public void setCommands(List<String> commands) {
+	this.commands.clear();
+	this.commands.addAll(commands == null ? new ArrayList<>() : commands);
     }
 
     public List<String> getCommands() {
-	return Commands;
+	return commands;
     }
 
-    public void setRequiredJobs(HashMap<String, Integer> RequiredJobs) {
-	this.RequiredJobs = RequiredJobs;
+    public void setRequiredJobs(HashMap<String, Integer> requiredJobs) {
+	this.requiredJobs = requiredJobs;
     }
 
     public HashMap<String, Integer> getRequiredJobs() {
-	return RequiredJobs;
+	return requiredJobs;
     }
 
-    public void setRequiredPerm(List<String> RequiredPerm) {
-	this.RequiredPerm.clear();
-	this.RequiredPerm.addAll(RequiredPerm == null ? new ArrayList<>() : RequiredPerm);
+    public void setRequiredPerm(List<String> requiredPerm) {
+	this.requiredPerm.clear();
+	this.requiredPerm.addAll(requiredPerm == null ? new ArrayList<>() : requiredPerm);
     }
 
     public List<String> getRequiredPerm() {
-	return RequiredPerm;
+	return requiredPerm;
     }
 
     public void setHideIfThereIsNoEnoughPoints(boolean hideNoEnoughPoint) {
@@ -96,69 +89,69 @@ public class ShopItem {
 	return hideNoEnoughPoint;
     }
 
-    public void setHideWithoutPerm(boolean HideWithoutPerm) {
-	this.HideWithoutPerm = HideWithoutPerm;
+    public void setHideWithoutPerm(boolean hideWithoutPerm) {
+	this.hideWithoutPerm = hideWithoutPerm;
     }
 
     public boolean isHideWithoutPerm() {
-	return HideWithoutPerm;
+	return hideWithoutPerm;
     }
 
-    public void setIconLore(List<String> IconLore) {
-	this.IconLore.clear();
-	this.IconLore.addAll(IconLore == null ? new ArrayList<>() : IconLore);
+    public void setIconLore(List<String> iconLore) {
+	this.iconLore.clear();
+	this.iconLore.addAll(iconLore == null ? new ArrayList<>() : iconLore);
     }
 
     public List<String> getIconLore() {
-	return IconLore;
+	return iconLore;
     }
 
     public String getNodeName() {
-	return NodeName;
+	return nodeName;
     }
 
     public String getIconMaterial() {
-	return IconMaterial;
+	return iconMaterial;
     }
 
-    public void setIconMaterial(String IconMaterial) {
-	this.IconMaterial = IconMaterial;
+    public void setIconMaterial(String iconMaterial) {
+	this.iconMaterial = iconMaterial;
     }
 
     public double getPrice() {
 	return price;
     }
 
-    public void setIconAmount(int IconAmount) {
-	this.IconAmount = IconAmount;
+    public void setIconAmount(int iconAmount) {
+	this.iconAmount = iconAmount;
     }
 
     public int getIconAmount() {
-	return IconAmount;
+	return iconAmount;
     }
 
-    public void setIconName(String IconName) {
-	this.IconName = IconName;
+    public void setIconName(String iconName) {
+	this.iconName = iconName;
     }
 
     public String getIconName() {
-	return IconName;
+	return iconName;
     }
 
     public int getRequiredTotalLevels() {
-	return RequiredTotalLevels;
+	return requiredTotalLevels;
     }
 
-    public void setRequiredTotalLevels(int RequiredTotalLevels) {
-	this.RequiredTotalLevels = RequiredTotalLevels;
+    public void setRequiredTotalLevels(int requiredTotalLevels) {
+	this.requiredTotalLevels = requiredTotalLevels;
     }
 
     public String getCustomHead() {
-	return PlayerName;
+	return playerName;
     }
 
-    public void setCustomHead(String PlayerName) {
-	this.PlayerName = PlayerName;
+    public void setCustomHead(String playerName) {
+	this.playerName = playerName;
     }
 
     public boolean isHeadOwner() {

@@ -51,7 +51,7 @@ public class ExploreChunk {
 	StringBuilder s = new StringBuilder();
 	for (Integer one : playerIds) {
 	    if (!s.toString().isEmpty())
-		s.append(";");
+		s.append(';');
 	    s.append(one);
 	}
 	return s.toString();

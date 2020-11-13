@@ -153,16 +153,14 @@ public class JobsPlayer {
 
     public boolean isUnderLimit(CurrencyType type, Double amount) {
 	Player player = getPlayer();
-	if (player == null)
-	    return true;
-	if (amount == 0)
+	if (player == null || amount == 0)
 	    return true;
 	CurrencyLimit limit = Jobs.getGCManager().getLimit(type);
 	if (!limit.isEnabled())
 	    return true;
 	PaymentData data = getPaymentLimit();
-	Integer value = limits.get(type);
-	if (data.isReachedLimit(type, value == null ? 0 : value)) {
+	Integer value = limits.getOrDefault(type, 0);
+	if (data.isReachedLimit(type, value)) {
 	    String name = type.getName().toLowerCase();
 
 	    if (player.isOnline() && !data.isInformed() && !data.isReseted(type)) {
