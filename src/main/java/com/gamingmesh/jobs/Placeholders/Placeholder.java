@@ -622,7 +622,9 @@ public class Placeholder {
 	// Global placeholders
 	switch (placeHolder) {
 	case maxjobs:
-	    return Integer.toString(Jobs.getGCManager().getMaxJobs());
+	    int max = Jobs.getPermissionManager().getMaxPermission(user, "jobs.max", false).intValue();
+	    max = max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
+	    return Integer.toString(max);
 	case total_workers:
 	    return Integer.toString(Jobs.getJobsDAO().getTotalPlayers());
 	default:
