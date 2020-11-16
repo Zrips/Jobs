@@ -215,15 +215,15 @@ public class GuiManager {
 		    continue;
 		}
 
-		double income = jInfo.getIncome(level, numjobs);
+		double income = jInfo.getIncome(level, numjobs, JPlayer.maxJobsEquation);
 		income = boost.getFinalAmount(CurrencyType.MONEY, income);
 		String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
-		double xp = jInfo.getExperience(level, numjobs);
+		double xp = jInfo.getExperience(level, numjobs, JPlayer.maxJobsEquation);
 		xp = boost.getFinalAmount(CurrencyType.EXP, xp);
 		String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
-		double points = jInfo.getPoints(level, numjobs);
+		double points = jInfo.getPoints(level, numjobs, JPlayer.maxJobsEquation);
 		points = boost.getFinalAmount(CurrencyType.POINTS, points);
 		String pointsColor = points >= 0 ? "" : ChatColor.RED.toString();
 
@@ -372,15 +372,15 @@ public class GuiManager {
 		    continue;
 		}
 
-		double income = jInfo.getIncome(level, numjobs);
+		double income = jInfo.getIncome(level, numjobs, JPlayer.maxJobsEquation);
 		income = boost.getFinalAmount(CurrencyType.MONEY, income);
 		String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
-		double xp = jInfo.getExperience(level, numjobs);
+		double xp = jInfo.getExperience(level, numjobs, JPlayer.maxJobsEquation);
 		xp = boost.getFinalAmount(CurrencyType.EXP, xp);
 		String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
-		double points = jInfo.getPoints(level, numjobs);
+		double points = jInfo.getPoints(level, numjobs, JPlayer.maxJobsEquation);
 		points = boost.getFinalAmount(CurrencyType.POINTS, points);
 		String pointsColor = points >= 0 ? "" : ChatColor.RED.toString();
 

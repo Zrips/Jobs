@@ -120,6 +120,7 @@ public class ConfigManager {
 	cfg.addComment(pt + ".leveling-progression-equation", "Equation used for calculating how much experience is needed to go to the next level.",
 	    "Available parameters:",
 	    "  numjobs - the number of jobs the player has",
+	    "  maxjobs - the number of jobs the player have max",
 	    "  joblevel - the level the player has attained in the job.",
 	    " NOTE: Please take care of the brackets when modifying this equation.");
 	cfg.get(pt + ".leveling-progression-equation", "10*(joblevel)+(joblevel*joblevel*4)");
@@ -127,6 +128,7 @@ public class ConfigManager {
 	cfg.addComment(pt + ".income-progression-equation", "Equation used for calculating how much income is given per action for the job level.",
 	    "Available parameters:",
 	    "  numjobs - the number of jobs the player has",
+	    "  maxjobs - the number of jobs the player have max",
 	    "  baseincome - the income for the action at level 1 (as set in the configuration).",
 	    "  joblevel - the level the player has attained in the job.",
 	    "NOTE: Please take care of the brackets when modifying this equation.");
@@ -135,6 +137,7 @@ public class ConfigManager {
 	cfg.addComment(pt + ".points-progression-equation", "Equation used for calculating how much points is given per action for the job level.",
 	    "Available parameters:",
 	    "  numjobs - the number of jobs the player has",
+	    "  maxjobs - the number of jobs the player have max",
 	    "  basepoints - the points for the action at level 1 (as set in the configuration).",
 	    "  joblevel - the level the player has attained in the job.",
 	    "NOTE: Please take care of the brackets when modifying this equation.");
@@ -143,6 +146,7 @@ public class ConfigManager {
 	cfg.addComment(pt + ".experience-progression-equation", "Equation used for calculating how much experience is given per action for the job level.",
 	    "Available parameters:",
 	    "  numjobs - the number of jobs the player has",
+	    "  maxjobs - the number of jobs the player have max",
 	    "  baseexperience - the experience for the action at level 1 (as set in the configuration).",
 	    "  joblevel - the level the player has attained in the job.",
 	    "NOTE: Please take care of the brackets when modifying this equation.");
@@ -785,7 +789,6 @@ public class ConfigManager {
 		maxExpEquation.setVariable("numjobs", 1);
 		maxExpEquation.setVariable("maxjobs", 2);
 		maxExpEquation.setVariable("joblevel", 1);
-		maxExpEquation.getValue();
 	    } catch (Throwable e) {
 		log.warning("Job " + jobKey + " has an invalid leveling-progression-equation property. Skipping job!");
 		continue;
@@ -801,7 +804,6 @@ public class ConfigManager {
 		    incomeEquation.setVariable("maxjobs", 2);
 		    incomeEquation.setVariable("joblevel", 1);
 		    incomeEquation.setVariable("baseincome", 1);
-		    incomeEquation.getValue();
 		} catch (Throwable e) {
 		    log.warning("Job " + jobKey + " has an invalid income-progression-equation property. Skipping job!");
 		    continue;
@@ -817,7 +819,6 @@ public class ConfigManager {
 		expEquation.setVariable("maxjobs", 2);
 		expEquation.setVariable("joblevel", 1);
 		expEquation.setVariable("baseexperience", 1);
-		expEquation.getValue();
 	    } catch (Throwable e) {
 		log.warning("Job " + jobKey + " has an invalid experience-progression-equation property. Skipping job!");
 		continue;
@@ -833,7 +834,6 @@ public class ConfigManager {
 		    pointsEquation.setVariable("maxjobs", 2);
 		    pointsEquation.setVariable("joblevel", 1);
 		    pointsEquation.setVariable("basepoints", 1);
-		    pointsEquation.getValue();
 		} catch (Throwable e) {
 		    log.warning("Job " + jobKey + " has an invalid points-progression-equation property. Skipping job!");
 		    continue;

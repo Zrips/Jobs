@@ -393,6 +393,7 @@ public class PlayerManager {
 	Jobs.getSignUtil().updateAllSign(job);
 
 	job.updateTotalPlayers();
+	jPlayer.maxJobsEquation = getMaxJobs(jPlayer);
     }
 
     /**
@@ -779,14 +780,27 @@ public class PlayerManager {
     }
 
     /**
-     * Get max jobs
-     * @param player
-     * @return True if he have permission
+     * Checks whenever the given jobs player is under the max allowed jobs.
+     * @param player {@link JobsPlayer}
+     * @param currentCount the current jobs size
+     * @return true if the player is under the given jobs size
      */
     public boolean getJobsLimit(JobsPlayer jPlayer, short currentCount) {
+	return getMaxJobs(jPlayer) > currentCount;
+    }
+
+    /**
+     * Gets the maximum jobs from player.
+     * @param jPlayer {@link JobsPlayer}
+     * @return the maximum allowed jobs
+     */
+    public int getMaxJobs(JobsPlayer jPlayer) {
+	if (jPlayer == null) {
+	    return 0;
+	}
+
 	int max = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max", false).intValue();
-	max = max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
-	return max > currentCount;
+	return max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
     }
 
     public BoostMultiplier getBoost(JobsPlayer player, Job job) {

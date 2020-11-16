@@ -110,35 +110,38 @@ public class JobInfo {
 	return basePoints;
     }
 
-    public double getIncome(double level, double numjobs) {
+    public double getIncome(double level, int numjobs, int maxJobs) {
 	if (softIncomeLevelLimit != null && level > softIncomeLevelLimit)
 	    level = softIncomeLevelLimit;
 	if (baseIncome == 0 || !Jobs.getGCManager().PaymentMethodsMoney)
 	    return 0;
 	moneyEquation.setVariable("joblevel", level);
 	moneyEquation.setVariable("numjobs", numjobs);
+	moneyEquation.setVariable("maxjobs", maxJobs);
 	moneyEquation.setVariable("baseincome", baseIncome);
 	return moneyEquation.getValue();
     }
 
-    public double getExperience(double level, double numjobs) {
+    public double getExperience(double level, int numjobs, int maxJobs) {
 	if (softExpLevelLimit != null && level > softExpLevelLimit)
 	    level = softExpLevelLimit;
 	if (baseXp == 0 || !Jobs.getGCManager().PaymentMethodsExp)
 	    return 0;
 	xpEquation.setVariable("joblevel", level);
 	xpEquation.setVariable("numjobs", numjobs);
+	xpEquation.setVariable("maxjobs", maxJobs);
 	xpEquation.setVariable("baseexperience", baseXp);
 	return xpEquation.getValue();
     }
 
-    public double getPoints(double level, double numjobs) {
+    public double getPoints(double level, int numjobs, int maxJobs) {
 	if (softPointsLevelLimit != null && level > softPointsLevelLimit)
 	    level = softPointsLevelLimit;
 	if (basePoints == 0 || !Jobs.getGCManager().PaymentMethodsPoints)
 	    return 0;
 	pointsEquation.setVariable("joblevel", level);
 	pointsEquation.setVariable("numjobs", numjobs);
+	pointsEquation.setVariable("maxjobs", maxJobs);
 	pointsEquation.setVariable("basepoints", basePoints);
 	return pointsEquation.getValue();
     }

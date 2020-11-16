@@ -348,16 +348,16 @@ public class JobsCommands implements CommandExecutor {
 
 	    String materialName = info.getRealisticName();
 
-	    double income = info.getIncome(level, numjobs);
+	    double income = info.getIncome(level, numjobs, player.maxJobsEquation);
 
 	    income = boost.getFinalAmount(CurrencyType.MONEY, income);
 	    String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
-	    double xp = info.getExperience(level, numjobs);
+	    double xp = info.getExperience(level, numjobs, player.maxJobsEquation);
 	    xp = boost.getFinalAmount(CurrencyType.EXP, xp);
 	    String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
 
-	    double points = info.getPoints(level, numjobs);
+	    double points = info.getPoints(level, numjobs, player.maxJobsEquation);
 	    points = boost.getFinalAmount(CurrencyType.POINTS, points);
 	    String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
 

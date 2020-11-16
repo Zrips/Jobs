@@ -892,8 +892,8 @@ public class Jobs extends JavaPlugin {
 	    if (jobinfo == null)
 		return;
 
-	    Double income = jobinfo.getIncome(1, numjobs);
-	    Double pointAmount = jobinfo.getPoints(1, numjobs);
+	    Double income = jobinfo.getIncome(1, numjobs, jPlayer.maxJobsEquation);
+	    Double pointAmount = jobinfo.getPoints(1, numjobs, jPlayer.maxJobsEquation);
 
 	    if (income == 0D && pointAmount == 0D)
 		return;
@@ -997,9 +997,9 @@ public class Jobs extends JavaPlugin {
 		    continue;
 		}
 
-		Double income = jobinfo.getIncome(level, numjobs);
-		Double pointAmount = jobinfo.getPoints(level, numjobs);
-		Double expAmount = jobinfo.getExperience(level, numjobs);
+		Double income = jobinfo.getIncome(level, numjobs, jPlayer.maxJobsEquation);
+		Double pointAmount = jobinfo.getPoints(level, numjobs, jPlayer.maxJobsEquation);
+		Double expAmount = jobinfo.getExperience(level, numjobs, jPlayer.maxJobsEquation);
 
 		if (income == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;

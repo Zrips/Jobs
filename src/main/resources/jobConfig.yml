@@ -53,12 +53,14 @@ Jobs:
     # Equation used for calculating how much experience is needed to go to the next level.
     # Available parameters:
     #   numjobs - the number of jobs the player has
+    #   maxjobs - the number of jobs the player have max
     #   joblevel - the level the player has attained in the job.
     # NOTE: Please take care of the brackets when modifying this equation.
     leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
     # Equation used for calculating how much income is given per action for the job level.
     # Available parameters:
     #   numjobs - the number of jobs the player has
+    #   maxjobs - the number of jobs the player have max
     #   baseincome - the income for the action at level 1 (as set in the configuration).
     #   joblevel - the level the player has attained in the job.
     # NOTE: Please take care of the brackets when modifying this equation.
@@ -66,6 +68,7 @@ Jobs:
     # Equation used for calculating how much points is given per action for the job level.
     # Available parameters:
     #   numjobs - the number of jobs the player has
+    #   maxjobs - the number of jobs the player have max
     #   basepoints - the points for the action at level 1 (as set in the configuration).
     #   joblevel - the level the player has attained in the job.
     # NOTE: Please take care of the brackets when modifying this equation.
@@ -73,6 +76,7 @@ Jobs:
      # Equation used for calculating how much experience is given per action for the job level.
     # Available parameters:
     #   numjobs - the number of jobs the player has
+    #   maxjobs - the number of jobs the player have max
     #   baseexperience - the experience for the action at level 1 (as set in the configuration).
     #   joblevel - the level the player has attained in the job.
     # NOTE: Please take care of the brackets when modifying this equation.
@@ -350,7 +354,7 @@ Jobs:
         income: 5.0
         experience: 10.0
     # Shear sheeps by its color
-    # You can use "color-all" to specify all known colors.
+    # You can use "color-all" identifier to specify all known colors.
     Shear:
       Black:
         income: 2.0

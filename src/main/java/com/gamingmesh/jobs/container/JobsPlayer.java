@@ -43,13 +43,17 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
-    // the player the object belongs to
-    private String userName = "Unknown";
-    // progression of the player in each job
-    public UUID playerUUID;
-    public final ArrayList<JobProgression> progression = new ArrayList<>();
-    private ArchivedJobs archivedJobs = new ArchivedJobs();
 
+    private String userName = "Unknown";
+
+    public UUID playerUUID;
+
+    // progression of the player in each job
+    public final ArrayList<JobProgression> progression = new ArrayList<>();
+
+    public int maxJobsEquation = 0;
+
+    private ArchivedJobs archivedJobs = new ArchivedJobs();
     private PaymentData paymentLimits;
 
     private final HashMap<String, ArrayList<BoostCounter>> boostCounter = new HashMap<>();
@@ -70,7 +74,6 @@ public class JobsPlayer {
     // save lock
 //    public final Object saveLock = new Object();
 
-    // log
     private HashMap<String, Log> logList = new HashMap<>();
 
     private Long seen = System.currentTimeMillis();
@@ -839,8 +842,8 @@ public class JobsPlayer {
 	    JobInfo jobinfo = Jobs.getNoneJob().getJobInfo(info, 1);
 	    if (jobinfo == null)
 		return false;
-	    Double income = jobinfo.getIncome(1, numjobs);
-	    Double points = jobinfo.getPoints(1, numjobs);
+	    Double income = jobinfo.getIncome(1, numjobs, maxJobsEquation);
+	    Double points = jobinfo.getPoints(1, numjobs, maxJobsEquation);
 	    if (income == 0D && points == 0D)
 		return false;
 	}
@@ -850,9 +853,9 @@ public class JobsPlayer {
 	    JobInfo jobinfo = prog.getJob().getJobInfo(info, level);
 	    if (jobinfo == null)
 		continue;
-	    Double income = jobinfo.getIncome(level, numjobs);
-	    Double pointAmount = jobinfo.getPoints(level, numjobs);
-	    Double expAmount = jobinfo.getExperience(level, numjobs);
+	    Double income = jobinfo.getIncome(level, numjobs, maxJobsEquation);
+	    Double pointAmount = jobinfo.getPoints(level, numjobs, maxJobsEquation);
+	    Double expAmount = jobinfo.getExperience(level, numjobs, maxJobsEquation);
 	    if (income != 0D || pointAmount != 0D || expAmount != 0D)
 		return true;
 	}
