@@ -58,14 +58,7 @@ public class LanguageManager {
 		f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    }
 
-	    ConfigReader c = null;
-	    try {
-		c = new ConfigReader(f);
-	    } catch (Throwable e) {
-		e.printStackTrace();
-	    }
-	    if (c == null)
-		continue;
+	    ConfigReader c = new ConfigReader(f);
 	    c.copyDefaults(true);
 
 	    Jobs.getGCManager().getCommandArgs().clear();

@@ -21,14 +21,7 @@ public class RestrictedBlockManager {
 	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
 
-	ConfigReader cfg = null;
-	try {
-	    cfg = new ConfigReader("restrictedBlocks.yml");
-	} catch (Throwable t) {
-	    t.printStackTrace();
-	}
-	if (cfg == null)
-	    return;
+	ConfigReader cfg = new ConfigReader("restrictedBlocks.yml");
 
 	cfg.addComment("blocksTimer", "Block protected by timer in sec",
 	    "Category name can be any you like to be easily recognized",

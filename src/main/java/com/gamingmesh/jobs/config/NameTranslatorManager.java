@@ -285,15 +285,8 @@ public class NameTranslatorManager {
 		f.delete();
 		f = new File(tWordsFolder, "Words_" + lang + ".yml");
 	    }
-	    ConfigReader c = null;
-	    try {
-		c = new ConfigReader(f);
-	    } catch (Throwable e) {
-		e.printStackTrace();
-	    }
-	    if (c == null)
-		continue;
 
+	    ConfigReader c = new ConfigReader(f);
 	    c.copyDefaults(true);
 
 	    for (CMIMaterial one : CMIMaterial.values()) {

@@ -54,13 +54,7 @@ public class ConfigManager {
     }
 
     private void updateFile() {
-	ConfigReader cfg = null;
-	try {
-	    cfg = new ConfigReader(jobFile);
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    return;
-	}
+	ConfigReader cfg = new ConfigReader(jobFile);
 
 	cfg.header(Arrays.asList("Jobs configuration.", "", "Edited by roracle to include 1.13 items and item names, prepping for 1.14 as well.",
 	    "",
@@ -789,6 +783,7 @@ public class ConfigManager {
 		maxExpEquation = new Parser(maxExpEquationInput);
 		// test equation
 		maxExpEquation.setVariable("numjobs", 1);
+		maxExpEquation.setVariable("maxjobs", 2);
 		maxExpEquation.setVariable("joblevel", 1);
 		maxExpEquation.getValue();
 	    } catch (Throwable e) {
@@ -803,6 +798,7 @@ public class ConfigManager {
 		    incomeEquation = new Parser(incomeEquationInput);
 		    // test equation
 		    incomeEquation.setVariable("numjobs", 1);
+		    incomeEquation.setVariable("maxjobs", 2);
 		    incomeEquation.setVariable("joblevel", 1);
 		    incomeEquation.setVariable("baseincome", 1);
 		    incomeEquation.getValue();
@@ -818,6 +814,7 @@ public class ConfigManager {
 		expEquation = new Parser(expEquationInput);
 		// test equation
 		expEquation.setVariable("numjobs", 1);
+		expEquation.setVariable("maxjobs", 2);
 		expEquation.setVariable("joblevel", 1);
 		expEquation.setVariable("baseexperience", 1);
 		expEquation.getValue();
@@ -833,6 +830,7 @@ public class ConfigManager {
 		    pointsEquation = new Parser(pointsEquationInput);
 		    // test equation
 		    pointsEquation.setVariable("numjobs", 1);
+		    pointsEquation.setVariable("maxjobs", 2);
 		    pointsEquation.setVariable("joblevel", 1);
 		    pointsEquation.setVariable("basepoints", 1);
 		    pointsEquation.getValue();

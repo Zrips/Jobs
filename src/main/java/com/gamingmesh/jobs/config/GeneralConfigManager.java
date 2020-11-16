@@ -283,13 +283,7 @@ public class GeneralConfigManager {
      * loads from Jobs/generalConfig.yml
      */
     private synchronized void loadGeneralSettings() {
-	try {
-	    c = new ConfigReader("generalConfig.yml");
-	} catch (Exception t) {
-	    t.printStackTrace();
-	}
-	if (c == null)
-	    return;
+	c = new ConfigReader("generalConfig.yml");
 
 	c.header(Arrays.asList("General configuration.",
 	    "  The general configuration for the jobs plugin mostly includes how often the plugin",

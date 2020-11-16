@@ -31,11 +31,11 @@ public class ConfigReader extends YamlConfiguration {
     private File file = null;
     private boolean recordContents = false;
 
-    public ConfigReader(String fileName) throws Exception {
+    public ConfigReader(String fileName) {
 	this(new File(Jobs.getFolder(), fileName));
     }
 
-    public ConfigReader(File file) throws Exception {
+    public ConfigReader(File file) {
 	super();
 	comments = new HashMap<>();
 	contents = new HashMap<>();
@@ -214,7 +214,7 @@ public class ConfigReader extends YamlConfiguration {
 	comments.put(path, commentstring.toString());
     }
 
-    public YamlConfiguration getyml(File file) throws Exception {
+    public YamlConfiguration getyml(File file) {
 	YamlConfiguration config = new YamlConfiguration();
 	FileInputStream fileinputstream = null;
 

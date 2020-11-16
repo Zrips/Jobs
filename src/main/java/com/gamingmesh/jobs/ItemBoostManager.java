@@ -27,15 +27,7 @@ public class ItemBoostManager {
 
 	@SuppressWarnings("deprecation")
 	public static void load() {
-	ConfigReader cfg = null;
-	try {
-	    cfg = new ConfigReader("boostedItems.yml");
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-
-	if (cfg == null)
-	    return;
+	ConfigReader cfg = new ConfigReader("boostedItems.yml");
 
 	items.clear();
 	legacy.clear();
@@ -75,14 +67,7 @@ public class ItemBoostManager {
 	    } catch (IOException e1) {
 		e1.printStackTrace();
 	    }
-	    cfg = null;
-	    try {
-		cfg = new ConfigReader("boostedItems.yml");
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
-	    if (cfg == null)
-		return;
+	    cfg = new ConfigReader("boostedItems.yml");
 	}
 
 	Set<String> keys = cfg.getC().getKeys(false);
