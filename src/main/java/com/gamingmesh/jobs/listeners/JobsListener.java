@@ -310,9 +310,9 @@ public class JobsListener implements Listener {
 	    special = true;
 	}
 
-	int Number = 0;
+	int number = 0;
 	try {
-	    Number = Integer.parseInt(numberString);
+	    number = Integer.parseInt(numberString);
 	} catch (NumberFormatException e) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.notNumber"));
 	    return;
@@ -322,7 +322,7 @@ public class JobsListener implements Listener {
 
 	Location loc = sign.getLocation();
 	signInfo.setLoc(loc);
-	signInfo.setNumber(Number);
+	signInfo.setNumber(number);
 	if (job != null)
 	    signInfo.setJobName(job.getName());
 	signInfo.setType(type);
@@ -356,7 +356,6 @@ public class JobsListener implements Listener {
 	}
 
 	String command = CMIChatColor.stripColor(event.getLine(1)).toLowerCase();
-
 	for (String key : Jobs.getGCManager().keys) {
 	    if (command.equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
 		event.setLine(1, Convert(Jobs.getLanguage().getMessage("signs.secondline." + key)));
@@ -481,9 +480,7 @@ public class JobsListener implements Listener {
 
 	mein: for (JobProgression one : JPlayer.getJobProgression()) {
 	    for (JobLimitedItems oneItem : one.getJob().getLimitedItems().values()) {
-		if (one.getLevel() >= oneItem.getLevel())
-		    continue;
-		if (!isThisItem(oneItem, CMIMaterial.get(iih), name, lore, enchants))
+		if (one.getLevel() >= oneItem.getLevel() || !isThisItem(oneItem, CMIMaterial.get(iih), name, lore, enchants))
 		    continue;
 		meinOk = one.getJob().getName();
 		break mein;
@@ -500,7 +497,7 @@ public class JobsListener implements Listener {
 	if (oneItem.getType() != mat)
 	    return false;
 
-	if (oneItem.getName() != null && name != null && !CMIChatColor.translate(oneItem.getName()).equalsIgnoreCase(name)) {
+	if (oneItem.getName() != null && !CMIChatColor.translate(oneItem.getName()).equalsIgnoreCase(name)) {
 	    return false;
 	}
 
@@ -595,7 +592,6 @@ public class JobsListener implements Listener {
 		    event.setCancelled(true);
 		}
 	    }
-
 	} else {
 	    ItemStack newArmorPiece = event.getCursor();
 	    ItemStack oldArmorPiece = event.getCurrentItem();

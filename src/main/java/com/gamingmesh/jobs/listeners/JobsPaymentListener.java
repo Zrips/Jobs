@@ -83,6 +83,7 @@ import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.GrindstoneInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.SmithingInventory;
 import org.bukkit.inventory.StonecutterInventory;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -803,14 +804,16 @@ public class JobsPaymentListener implements Listener {
 	Inventory inv = event.getInventory();
 	// must be anvil inventory
 	if (!(inv instanceof AnvilInventory) && (Version.isCurrentEqualOrHigher(Version.v1_14_R1)
-	    && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory)))
+	    && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory)
+	    && !(inv instanceof SmithingInventory)))
 	    return;
 
 	int slot = event.getSlot();
 	if (event.getSlotType() != SlotType.RESULT || (slot != 2 && slot != 1))
 	    return;
 
-	if ((Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !(inv instanceof StonecutterInventory)) && slot == 1)
+	if ((Version.isCurrentEqualOrHigher(Version.v1_14_R1)
+	    && !(inv instanceof StonecutterInventory) && !(inv instanceof SmithingInventory)) && slot == 1)
 	    return;
 
 	if (!(event.getWhoClicked() instanceof Player))
@@ -880,7 +883,8 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && inv instanceof StonecutterInventory) {
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && (inv instanceof StonecutterInventory
+	    || inv instanceof SmithingInventory)) {
 	    if (event.getAction() != InventoryAction.DROP_ONE_SLOT) {
 		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 	    }
