@@ -104,6 +104,13 @@ public class QuestProgression {
 	    }
 	}
 
+	if (quest.getJob() != null) {
+	    int maxQuest = jPlayer.getPlayerMaxQuest(quest.getJob().getName());
+	    if (maxQuest > 0 && jPlayer.getDoneQuests() >= maxQuest) {
+		return;
+	    }
+	}
+
 	if (!isCompleted()) {
 	    HashMap<String, QuestObjective> byAction = quest.getObjectives().get(action.getType());
 

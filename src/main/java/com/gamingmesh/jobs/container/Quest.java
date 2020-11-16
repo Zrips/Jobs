@@ -16,8 +16,7 @@ public class Quest {
     private Job job;
     private Long validUntil = 0L;
 
-    private int chance = 100;
-    private Integer minLvl = null;
+    private int chance = 100, minLvl = 0;
     private Integer maxLvl = null;
 
     private final List<String> rewardCmds = new ArrayList<>(), rewards = new ArrayList<>(), area = new ArrayList<>();
@@ -126,7 +125,7 @@ public class Quest {
 	this.configName = configName;
     }
 
-    public Integer getMinLvl() {
+    public int getMinLvl() {
 	return minLvl;
     }
 
@@ -146,10 +145,10 @@ public class Quest {
 	if (level == null)
 	    return true;
 
-	if (getMinLvl() != null && level < getMinLvl())
+	if (level < minLvl)
 	    return false;
 
-	if (getMaxLvl() != null && level > getMaxLvl())
+	if (maxLvl != null && level > maxLvl)
 	    return false;
 
 	return true;

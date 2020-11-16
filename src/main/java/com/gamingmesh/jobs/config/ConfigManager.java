@@ -1169,8 +1169,7 @@ public class ConfigManager {
 			    desc = sqsection.getStringList("RewardDesc"),
 			    areas = sqsection.getStringList("RestrictedAreas");
 
-			if (sqsection.isInt("fromLevel"))
-			    quest.setMinLvl(sqsection.getInt("fromLevel"));
+			quest.setMinLvl(sqsection.getInt("fromLevel"));
 
 			if (sqsection.isInt("toLevel"))
 			    quest.setMaxLvl(sqsection.getInt("toLevel"));

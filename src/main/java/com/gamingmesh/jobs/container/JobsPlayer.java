@@ -304,6 +304,22 @@ public class JobsPlayer {
 	return Boost;
     }
 
+    public int getPlayerMaxQuest(String jobName) {
+	int m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest." + jobName, false, true, false).intValue();
+	int max = m1;
+
+	m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest.all", false, true, false).intValue();
+	if (m1 != 0 && (m1 > max || m1 < max)) {
+	    max = m1;
+	}
+
+	m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest", false, true, false).intValue();
+	if (m1 != 0 && (m1 > max || m1 < max)) {
+	    max = m1;
+	}
+
+	return max;
+    }
 
     /**
      * Reloads max experience for this job.
