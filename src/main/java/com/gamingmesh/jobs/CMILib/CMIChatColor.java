@@ -29,7 +29,7 @@ public class CMIChatColor {
 	    CUSTOM_BY_HEX.put(one.getHex().toLowerCase(), new CMIChatColor(one.toString(), one.getHex()));
 	    if (one.getExtra() != null) {
 		for (String extra : one.getExtra()) {
-		    CUSTOM_BY_NAME.put(extra.toLowerCase().replace("_", ""), new CMIChatColor(extra.replace(" ", "_"), one.getHex()));
+		    CUSTOM_BY_NAME.put(extra.toLowerCase().replace("_", ""), new CMIChatColor(extra.replace(' ', '_'), one.getHex()));
 		}
 	    }
 	}

@@ -113,7 +113,7 @@ public class RawMessage {
 	    StringBuilder options = new StringBuilder();
 	    for (CMIChatColor format : one.getFormats()) {
 		if (!options.toString().isEmpty())
-		    options.append(",");
+		    options.append(',');
 		if (format.equals(CMIChatColor.UNDERLINE))
 		    options.append("\"underlined\":true");
 		else if (format.equals(CMIChatColor.BOLD))
@@ -127,7 +127,7 @@ public class RawMessage {
 	    }
 	    if (!options.toString().isEmpty()) {
 		finalText.append(options.toString());
-		finalText.append(",");
+		finalText.append(',');
 	    }
 
 	    if (one.getFont() != null) {

@@ -249,24 +249,16 @@ public class PermissionHandler {
     }
 
     public boolean hasWorldPermission(Player player, String world) {
-	if (!player.hasPermission("jobs.use"))
-	    return false;
-
-	return player.hasPermission("jobs.world." + world.toLowerCase());
+	return player.hasPermission("jobs.use") && player.hasPermission("jobs.world." + world.toLowerCase());
     }
 
     public boolean hasWorldPermission(JobsPlayer player) {
-	if (player.getPlayer() == null)
-	    return false;
-
-	return hasWorldPermission(player, player.getPlayer().getWorld().getName());
+	return player.getPlayer() != null && hasWorldPermission(player, player.getPlayer().getWorld().getName());
     }
 
     public boolean hasWorldPermission(JobsPlayer player, String world) {
-	if (!Jobs.getPermissionManager().hasPermission(player, "jobs.use"))
-	    return false;
-
-	return Jobs.getPermissionManager().hasPermission(player, "jobs.world." + world.toLowerCase());
+	return Jobs.getPermissionManager().hasPermission(player, "jobs.use")
+	    && Jobs.getPermissionManager().hasPermission(player, "jobs.world." + world.toLowerCase());
     }
 
 }

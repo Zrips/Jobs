@@ -313,11 +313,6 @@ public class JobsPlayer {
 	    max = m1;
 	}
 
-	m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest", false, true, false).intValue();
-	if (m1 != 0 && (m1 > max || m1 < max)) {
-	    max = m1;
-	}
-
 	return max;
     }
 

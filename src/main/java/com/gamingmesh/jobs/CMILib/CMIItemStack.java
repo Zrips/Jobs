@@ -318,8 +318,7 @@ public class CMIItemStack {
 			|| item.getType().name().contains("TIPPED_ARROW")) {
 		PotionMeta potion = (PotionMeta) item.getItemMeta();
 		try {
-		    if (potion != null && potion.getBasePotionData() != null && potion.getBasePotionData().getType() != null
-				&& potion.getBasePotionData().getType().getEffectType() != null) {
+		    if (potion != null && potion.getBasePotionData().getType().getEffectType() != null) {
 			data = (short) potion.getBasePotionData().getType().getEffectType().getId();
 		    }
 		} catch (NoSuchMethodError e) {
@@ -360,7 +359,7 @@ public class CMIItemStack {
 			    if (potion2 != null && potion2.getBasePotionData() != null) {
 				PotionData base2 = potion2.getBasePotionData();
 				if (base2.getType() != null) {
-				    if (base1.getType().equals(base2.getType()) && base1.isExtended() == base2.isExtended() && base1.isUpgraded() == base2.isUpgraded())
+				    if (base1.getType() == base2.getType() && base1.isExtended() == base2.isExtended() && base1.isUpgraded() == base2.isUpgraded())
 					return true;
 				}
 			    }
@@ -413,7 +412,7 @@ public class CMIItemStack {
 	if (getCMIType().isPotion() || getType().name().contains("TIPPED_ARROW")) {
 	    PotionMeta potion = (PotionMeta) item.getItemMeta();
 	    try {
-		if (potion != null && potion.getBasePotionData() != null && potion.getBasePotionData().getType() != null && potion.getBasePotionData().getType().getEffectType() != null) {
+		if (potion != null && potion.getBasePotionData().getType().getEffectType() != null) {
 		    liner += ":" + potion.getBasePotionData().getType().getEffectType().getName() + "-" + potion.getBasePotionData().isUpgraded() + "-" + potion.getBasePotionData().isExtended();
 		}
 	    } catch (NoSuchMethodError e) {

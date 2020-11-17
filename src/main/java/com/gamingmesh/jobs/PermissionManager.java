@@ -139,10 +139,6 @@ public class PermissionManager {
 	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
 	}
 
-	if (permissions == null) {
-	    return 0D;
-	}
-
 	double amount = 0D;
 
 	for (Map.Entry<String, Boolean> permission : permissions.entrySet()) {

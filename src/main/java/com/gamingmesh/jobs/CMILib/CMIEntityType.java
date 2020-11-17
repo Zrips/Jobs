@@ -365,7 +365,7 @@ public enum CMIEntityType {
 	    return ctype.getName();
 	String name = type.name();
 
-	name = name.toLowerCase().replace("_", " ");
+	name = name.toLowerCase().replace('_', ' ');
 	name = name.substring(0, 1).toUpperCase() + name.substring(1);
 	return name;
     }

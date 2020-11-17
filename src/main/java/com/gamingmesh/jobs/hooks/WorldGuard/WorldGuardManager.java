@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.hooks.WorldGuard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.RestrictedArea;
+import com.gamingmesh.jobs.hooks.HookPlugin;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -19,17 +21,25 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 
-public class WorldGuardManager {
+public class WorldGuardManager extends HookPlugin {
 
     private WorldGuardPlugin wg;
     private boolean useOld = false;
 
     public WorldGuardManager() {
 	Plugin pl = Bukkit.getPluginManager().getPlugin("WorldGuard");
-	if (pl instanceof WorldGuardPlugin && pl.getDescription().getVersion().equals("6.1")) {
+	if (pl instanceof WorldGuardPlugin) {
 	    wg = (WorldGuardPlugin) pl;
-	    useOld = true;
+
+	    if (pl.getDescription().getVersion().equals("6.1")) {
+		useOld = true;
+	    }
 	}
+    }
+
+    @Override
+    public WorldGuardPlugin getPlugin() {
+	return wg;
     }
 
     public List<RestrictedArea> getArea(Location loc) {
@@ -72,7 +82,7 @@ public class WorldGuardManager {
 	return false;
     }
 
-    public String getNameByName(String name) {
+    public ProtectedRegion getProtectedRegionByName(String name) {
 	for (World one : Bukkit.getWorlds()) {
 	    Map<String, ProtectedRegion> regions;
 	    if (useOld) {
@@ -81,12 +91,11 @@ public class WorldGuardManager {
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		regions = container.get(BukkitAdapter.adapt(one)).getRegions();
 	    }
-	    for (String oneR : regions.keySet()) {
-		if (oneR.equalsIgnoreCase(name))
-		    return oneR;
+	    for (Entry<String, ProtectedRegion> map : regions.entrySet()) {
+		if (map.getKey().equalsIgnoreCase(name))
+		    return map.getValue();
 	    }
 	}
 	return null;
     }
-
 }

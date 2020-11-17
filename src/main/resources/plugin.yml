@@ -2,7 +2,7 @@ name: Jobs
 description: Jobs Plugin for the BukkitAPI
 main: com.gamingmesh.jobs.Jobs
 version: ${project.version}
-api-version: 1.13
+api-version: "1.13"
 website: https://www.spigotmc.org/resources/4216/
 authors: [phrstbrn, Zrips, montlikadani]
 softdepend: [Vault, Essentials, MythicMobs, McMMO, mcMMO, WorldGuard, MyPet, PlaceholderAPI]
@@ -83,6 +83,7 @@ permissions:
       jobs.command.itembonus: true
       jobs.command.blockinfo: true
       jobs.command.skipquest: true
+      jobs.command.schedule: true
   jobs.command.browse:
     description: Grants access to the browse command
     default: true
@@ -211,6 +212,9 @@ permissions:
     default: true
   jobs.command.edititembonus:
     description: Grants access to the edititembonus command
+    default: op
+  jobs.command.schedule:
+    description: Grants access to the schedule command
     default: op
   jobs.area.add:
     description: Grants access to the area add command
