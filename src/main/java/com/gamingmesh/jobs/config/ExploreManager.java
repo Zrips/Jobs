@@ -3,7 +3,6 @@ package com.gamingmesh.jobs.config;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -55,8 +54,8 @@ public class ExploreManager {
 
     public int getSize() {
 	int i = 0;
-	for (Entry<String, ExploreRegion> one : this.getWorlds().entrySet()) {
-	    i += one.getValue().getChunks().size();
+	for (ExploreRegion one : worlds.values()) {
+	    i += one.getChunks().size();
 	}
 	return i;
     }

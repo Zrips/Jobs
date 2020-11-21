@@ -76,18 +76,11 @@ public class ShopManager {
     }
 
     private static int getPrevButtonSlot(int GuiSize, int page) {
-	int prev = -1;
-	if (page > 1)
-	    prev = GuiSize - 9;
-	return prev;
+	return page > 1 ? GuiSize - 9 : -1;
     }
 
-    private int getnextButtonSlot(int GuiSize, int page) {
-	int next = -1;
-	List<ShopItem> lsnext = getItemsByPage(page + 1);
-	if (!lsnext.isEmpty())
-	    next = GuiSize - 1;
-	return next;
+    private int getNextButtonSlot(int GuiSize, int page) {
+	return !getItemsByPage(page + 1).isEmpty() ? GuiSize - 1 : -1;
     }
 
     public boolean openShopGui(Player player, Integer page) {
@@ -284,7 +277,7 @@ public class ShopManager {
 	    });
 	}
 
-	int nextSlot = getnextButtonSlot(GuiSize.getFields(), page);
+	int nextSlot = getNextButtonSlot(GuiSize.getFields(), page);
 	if (nextSlot != -1 && !getItemsByPage(page + 1).isEmpty()) {
 	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.nextPage"));
 	    Item.setItemMeta(meta);

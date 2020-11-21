@@ -52,10 +52,10 @@ public class limit implements Cmd {
 	    if (!Jobs.getGCManager().getLimit(type).isEnabled())
 		continue;
 	    PaymentData limit = JPlayer.getPaymentLimit();
-	    
-	     if (limit.getLeftTime(type) <= 0) 
-		 limit.resetLimits(type);
-	     
+
+	    if (limit.getLeftTime(type) <= 0)
+		limit.resetLimits(type);
+
 	    if (limit.getLeftTime(type) > 0) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "time", "%time%", TimeManage.to24hourShort(limit.getLeftTime(type))));
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.limit.output." + type.getName().toLowerCase() + "Limit",

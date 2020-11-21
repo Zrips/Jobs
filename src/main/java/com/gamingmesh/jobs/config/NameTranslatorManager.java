@@ -367,7 +367,7 @@ public class NameTranslatorManager {
 		}
 
 		if (name == null) {
-		    n = n + "-" + one.toString();
+		    n += "-" + one.toString();
 		    if (c.getC().isConfigurationSection("EntityList." + n)) {
 			name = c.getC().getString("EntityList." + n);
 		    }
@@ -381,7 +381,7 @@ public class NameTranslatorManager {
 	    }
 
 	    for (Enchantment one : Enchantment.values()) {
-		if (one == null || CMIEnchantment.getName(one) == null)
+		if (CMIEnchantment.getName(one) == null)
 		    continue;
 
 		String name = Util.firstToUpperCase(CMIEnchantment.getName(one)).replace('_', ' ');

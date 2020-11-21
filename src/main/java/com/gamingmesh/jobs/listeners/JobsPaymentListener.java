@@ -1201,10 +1201,12 @@ public class JobsPaymentListener implements Listener {
 	if (pDamager == null)
 	    return;
 
-	// Prevent payment for killing mobs with mypet by denying permission
-	if (HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null)) {
+	// Prevent payment for killing mobs with pet by denying permission
+	if ((HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null))
+	    || (e.getDamager() instanceof Tameable && ((Tameable) e.getDamager()).isTamed() &&
+	    ((Tameable) e.getDamager()).getOwner() instanceof Player)) {
 	    for (PermissionAttachmentInfo perm : pDamager.getEffectivePermissions()) {
-		if (perm.getPermission().equals("jobs.petpay") && !perm.getValue()) {
+		if ("jobs.petpay".equals(perm.getPermission()) && !perm.getValue()) {
 		    return;
 		}
 	    }

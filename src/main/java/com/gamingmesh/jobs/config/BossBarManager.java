@@ -25,11 +25,9 @@ public class BossBarManager {
     }
 
     public synchronized void ShowJobProgression(final JobsPlayer player) {
-	if (Version.getCurrent().isLower(Version.v1_9_R1))
+	if (Version.getCurrent().isLower(Version.v1_9_R1) || player == null)
 	    return;
 
-	if (player == null)
-	    return;
 	for (JobProgression oneJob : player.getJobProgression()) {
 	    if (oneJob.getLastExperience() != 0) {
 		ShowJobProgression(player, oneJob, oneJob.getLastExperience());
@@ -39,28 +37,24 @@ public class BossBarManager {
     }
 
     public synchronized void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
-	if (Version.getCurrent().isLower(Version.v1_9_R1))
+	if (Version.getCurrent().isLower(Version.v1_9_R1) || !Jobs.getGCManager().BossBarsMessageByDefault)
 	    return;
 
-	String playerUUID = player.getPlayer().getUniqueId().toString();
-	if (!Jobs.getGCManager().BossBarsMessageByDefault)
-	    return;
-
-	Boolean show = ToggleBarHandling.getBossBarToggle().getOrDefault(playerUUID, true);
+	Boolean show = ToggleBarHandling.getBossBarToggle().getOrDefault(player.getPlayer().getUniqueId().toString(), true);
 	if (!show)
 	    return;
 
 	BossBar bar = null;
-	BossBarInfo OldOne = null;
+	BossBarInfo oldOne = null;
 	for (BossBarInfo one : player.getBossBarInfo()) {
-	    if (!one.getJobName().equalsIgnoreCase(jobProg.getJob().getName()))
-		continue;
-
-	    one.cancel();
-	    bar = one.getBar();
-	    OldOne = one;
-	    break;
+	    if (one.getJobName().equalsIgnoreCase(jobProg.getJob().getName())) {
+		one.cancel();
+		bar = one.getBar();
+		oldOne = one;
+		break;
+	    }
 	}
+
 	NumberFormat formatter = new DecimalFormat("#0.00");
 
 	String gain = "";
@@ -130,15 +124,15 @@ public class BossBarManager {
 	percentage = percentage > 1D ? 1D : percentage < 0 ? 0 : percentage;
 	bar.setProgress(percentage);
 
-	if (OldOne == null) {
+	if (oldOne == null) {
 	    bar.addPlayer(player.getPlayer());
-	    OldOne = new BossBarInfo(player.getName(), jobProg.getJob().getName(), bar);
-	    player.getBossBarInfo().add(OldOne);
+	    oldOne = new BossBarInfo(player.getName(), jobProg.getJob().getName(), bar);
+	    player.getBossBarInfo().add(oldOne);
 	}
 
 	bar.setVisible(true);
 
-	OldOne.setId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+	oldOne.setId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		for (BossBarInfo one : player.getBossBarInfo()) {

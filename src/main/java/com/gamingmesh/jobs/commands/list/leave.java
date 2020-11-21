@@ -43,7 +43,7 @@ public class leave implements Cmd {
 		Util.LEAVECONFIRM.add(uuid);
 
 		plugin.getServer().getScheduler().runTaskLater(plugin, () -> Util.LEAVECONFIRM.remove(uuid),
-		    20 * Jobs.getGCManager().ConfirmExpiryTime);
+		    (long) (20 * Jobs.getGCManager().ConfirmExpiryTime));
 
 		pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.confirmationNeed", "[jobname]",
 		    job.getNameWithColor(), "[time]", Jobs.getGCManager().ConfirmExpiryTime));

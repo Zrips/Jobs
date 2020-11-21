@@ -731,7 +731,7 @@ public class ConfigManager {
 	    Long rejoinCd = jobSection.getLong("rejoinCooldown", 0L);
 	    if (rejoinCd < 0L)
 		rejoinCd = 0L;
-	    rejoinCd = rejoinCd * 1000L;
+	    rejoinCd *= 1000L;
 
 	    String jobShortName = jobSection.getString("shortname", null);
 	    if (jobShortName == null) {

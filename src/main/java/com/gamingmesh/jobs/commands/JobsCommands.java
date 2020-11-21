@@ -35,7 +35,7 @@ public class JobsCommands implements CommandExecutor {
 
     private static final String packagePath = "com.gamingmesh.jobs.commands.list";
 
-    private final Map<String, Integer> CommandList = new HashMap<>();
+    private final Map<String, Integer> commandList = new HashMap<>();
 
     protected Jobs plugin;
 
@@ -44,7 +44,7 @@ public class JobsCommands implements CommandExecutor {
     }
 
     public Map<String, Integer> getCommands() {
-	return CommandList;
+	return commandList;
     }
 
     @Override
@@ -160,7 +160,7 @@ public class JobsCommands implements CommandExecutor {
 
     public Map<String, Integer> GetCommands(CommandSender sender) {
 	Map<String, Integer> temp = new HashMap<>();
-	for (Entry<String, Integer> cmd : CommandList.entrySet()) {
+	for (Entry<String, Integer> cmd : commandList.entrySet()) {
 	    if (sender instanceof Player && !hasCommandPermission(sender, cmd.getKey()))
 		continue;
 
@@ -189,7 +189,7 @@ public class JobsCommands implements CommandExecutor {
 		if (!met.isAnnotationPresent(JobCommand.class))
 		    continue;
 
-		CommandList.put(oneClass.getKey(), met.getAnnotation(JobCommand.class).value());
+		commandList.put(oneClass.getKey(), met.getAnnotation(JobCommand.class).value());
 		break;
 	    }
 	}
@@ -312,7 +312,7 @@ public class JobsCommands implements CommandExecutor {
 	    sender.sendMessage(one);
 	}
 
-	String t = type == "" ? "" : " " + type;
+	String t = type.isEmpty() ? "" : " " + type;
 
 	if (sender instanceof Player)
 	    if (sender.getName().equalsIgnoreCase(player.getName()))
@@ -337,12 +337,10 @@ public class JobsCommands implements CommandExecutor {
 	message.append(Jobs.getLanguage().getMessage("command.info.output." + type.getName().toLowerCase() + ".info"));
 	message.append(":\n");
 
-	int level = 1;
-
 	JobProgression prog = player.getJobProgression(job);
-	if (prog != null)
-	    level = prog.getLevel();
+	int level = prog != null ? prog.getLevel() : 1;
 	int numjobs = player.getJobProgression().size();
+
 	List<JobInfo> jobInfo = job.getJobInfo(type);
 	for (JobInfo info : jobInfo) {
 

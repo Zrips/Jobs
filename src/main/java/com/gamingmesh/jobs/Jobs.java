@@ -1291,11 +1291,10 @@ public class Jobs extends JavaPlugin {
 
 	if (limited)
 	    return;
-	
+
 	economy.pay(jPlayer, payment.getPayment());
 
 	JobProgression prog = jPlayer.getJobProgression(job);
-
 	int oldLevel = prog.getLevel();
 
 	if (gConfigManager.LoggingUse) {

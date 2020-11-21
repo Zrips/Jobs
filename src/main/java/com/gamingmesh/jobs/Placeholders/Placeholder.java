@@ -370,15 +370,14 @@ public class Placeholder {
     }
 
     private static Job getJobFromValue(String value) {
-	Job j = null;
 	try {
 	    int id = Integer.parseInt(value);
 	    if (id > 0)
-		j = Jobs.getJobs().get(id - 1);
+		return Jobs.getJobs().get(id - 1);
 	} catch (Exception e) {
-	    j = Jobs.getJob(value);
+	    return Jobs.getJob(value);
 	}
-	return j;
+	return null;
     }
 
     private static String simplifyDouble(double value) {

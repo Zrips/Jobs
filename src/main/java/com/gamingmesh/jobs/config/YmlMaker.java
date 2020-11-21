@@ -42,7 +42,7 @@ public class YmlMaker {
 	if (f != null)
 	    try {
 		f.close();
-	    } catch (Throwable e) {
+	    } catch (IOException e) {
 		e.printStackTrace();
 	    }
     }

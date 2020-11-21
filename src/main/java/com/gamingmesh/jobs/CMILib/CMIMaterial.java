@@ -1272,11 +1272,12 @@ public enum CMIMaterial {
 	}
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat);
+	    ItemStack stack = new ItemStack(mat);
 	    stack.setAmount(amount);
 	    return stack;
 	}
-	ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
+
+	ItemStack stack = new ItemStack(mat, 1, (short) this.getLegacyData());
 	stack.setAmount(amount);
 	return stack;
     }
@@ -1293,12 +1294,12 @@ public enum CMIMaterial {
 	    return new CMIItemStack(CMIMaterial.STONE);
 	}
 	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    CMIItemStack stack = new CMIItemStack(mat == null ? Material.STONE : mat);
+	    CMIItemStack stack = new CMIItemStack(mat);
 	    stack.setAmount(amount);
 	    return stack;
 	}
-	ItemStack stack = new ItemStack(mat == null ? Material.STONE : mat, 1, (short) this.getLegacyData());
 
+	ItemStack stack = new ItemStack(mat, 1, (short) this.getLegacyData());
 	stack.setAmount(amount);
 	return new CMIItemStack(stack);
     }
