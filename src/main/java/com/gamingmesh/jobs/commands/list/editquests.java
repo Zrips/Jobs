@@ -156,7 +156,7 @@ public class editquests implements Cmd {
 
 		    Util.getQuestsEditorMap().remove(player.getUniqueId());
 
-		    Jobs.getInstance().ShowPagination(sender, pi, "jobs editquests list " + job.getName() + " " + quest.getConfigName() + " " + 0);
+		    Jobs.getInstance().showPagination(sender, pi, "jobs editquests list " + job.getName() + " " + quest.getConfigName() + " " + 0);
 		    return true;
 		}
 	    }

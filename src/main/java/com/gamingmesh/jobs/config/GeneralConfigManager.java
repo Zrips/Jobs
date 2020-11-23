@@ -480,23 +480,27 @@ public class GeneralConfigManager {
 	    String mname = one.contains("=") ? one.split("=")[0] : one;
 	    String ench = one.contains("=") ? one.split("=")[1] : null;
 	    String value = ench != null && ench.contains("-") ? ench.split("-")[1] : null;
-	    ench = value != null && ench != null ? ench.substring(0, ench.length() - (value.length() + 1)) : ench;
+	    if (value != null && ench != null) {
+		ench = ench.substring(0, ench.length() - (value.length() + 1));
+	    }
+
 	    CMIMaterial mat = CMIMaterial.get(mname);
 	    if (mat == CMIMaterial.NONE) {
 		Jobs.consoleMsg("Failed to recognize " + one + " entry from config file");
 		continue;
 	    }
+
 	    Enchantment enchant = null;
 	    if (ench != null) {
 		enchant = CMIEnchantment.getEnchantment(ench);
 	    }
+
 	    Integer level = null;
-	    if (value != null) {
-		try {
-		    level = Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-		}
+	    try {
+		level = Integer.parseInt(value);
+	    } catch (NumberFormatException e) {
 	    }
+
 	    HashMap<Enchantment, Integer> submap = new HashMap<>();
 	    if (enchant != null)
 		submap.put(enchant, level);

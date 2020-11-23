@@ -276,27 +276,27 @@ public class Placeholder {
     }
 
     public enum JobsPlaceholderType {
-	Jobs, PAPI, MVdW;
+	JOBS, PAPI, MVDW;
     }
 
     public JobsPlaceholderType getPlaceHolderType(Player player, String placeholder) {
 	if (placeholder == null)
 	    return null;
-	if (placeholder.contains("%")) {
-	    if (!placeholder.equals(translateOwnPlaceHolder(player, placeholder)))
-		return JobsPlaceholderType.Jobs;
+
+	if (placeholder.contains("%") && !placeholder.equals(translateOwnPlaceHolder(player, placeholder))) {
+	    return JobsPlaceholderType.JOBS;
 	}
-	if (plugin.isPlaceholderAPIEnabled()) {
-	    if (placeholder.contains("%")) {
-		if (!placeholder.equals(me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((OfflinePlayer) player, placeholder)))
-		    return JobsPlaceholderType.PAPI;
-	    }
+
+	if (plugin.isPlaceholderAPIEnabled() && placeholder.contains("%")
+	    && !placeholder.equals(me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((OfflinePlayer) player, placeholder))) {
+	    return JobsPlaceholderType.PAPI;
 	}
+
 //	For MVdWPlaceholderAPI
 //	if (plugin.isMVdWPlaceholderAPIEnabled()) {
 //	    if (placeholder.contains("{"))
 //		if (!placeholder.equals(be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, placeholder)))
-//		    return CMIPlaceholderType.MVdW;
+//		    return CMIPlaceholderType.MVDW;
 //	}
 	return null;
     }
@@ -400,8 +400,7 @@ public class Placeholder {
 		Integer completedQuests = (int) user.getQuestProgressions().stream().filter(q -> q.isCompleted()).count();
 		return Integer.toString(completedQuests);
 	    case user_dailyquests_total:
-		Integer dailyquests = user.getQuestProgressions().size();
-		return Integer.toString(dailyquests);
+		return Integer.toString(user.getQuestProgressions().size());
 	    case user_id:
 		return Integer.toString(user.getUserId());
 	    case user_bstandcount:

@@ -1234,11 +1234,11 @@ public class Jobs extends JavaPlugin {
     }
 
     private static int getPlayerExperience(Player player) {
-	return (ExpToLevel(player.getLevel()) + Math.round(deltaLevelToExp(player.getLevel()) * player.getExp()));
+	return (expToLevel(player.getLevel()) + Math.round(deltaLevelToExp(player.getLevel()) * player.getExp()));
     }
 
     // total xp calculation based by lvl
-    private static int ExpToLevel(int level) {
+    private static int expToLevel(int level) {
 	if (Version.isCurrentEqualOrLower(Version.v1_7_R4)) {
 	    if (level <= 16)
 		return 17 * level;
@@ -1328,15 +1328,15 @@ public class Jobs extends JavaPlugin {
 
     }
 
-    public void ShowPagination(CommandSender sender, PageInfo pi, String cmd) {
-	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, null);
+    public void showPagination(CommandSender sender, PageInfo pi, String cmd) {
+	showPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, null);
     }
 
-    public void ShowPagination(CommandSender sender, PageInfo pi, String cmd, String pagePref) {
-	ShowPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, pagePref);
+    public void showPagination(CommandSender sender, PageInfo pi, String cmd, String pagePref) {
+	showPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, pagePref);
     }
 
-    public void ShowPagination(CommandSender sender, int pageCount, int CurrentPage, int totalEntries, String cmd, String pagePref) {
+    public void showPagination(CommandSender sender, int pageCount, int currentPage, int totalEntries, String cmd, String pagePref) {
 	if (!(sender instanceof Player))
 	    return;
 
@@ -1348,23 +1348,23 @@ public class Jobs extends JavaPlugin {
 
 	String pagePrefix = pagePref == null ? "" : pagePref;
 
-	int NextPage = CurrentPage + 1;
-	NextPage = CurrentPage < pageCount ? NextPage : CurrentPage;
+	int nextPage = currentPage + 1;
+	nextPage = currentPage < pageCount ? nextPage : currentPage;
 
-	int Prevpage = CurrentPage - 1;
-	Prevpage = CurrentPage > 1 ? Prevpage : CurrentPage;
+	int prevpage = currentPage - 1;
+	prevpage = currentPage > 1 ? prevpage : currentPage;
 
 	RawMessage rm = new RawMessage()
-		.addText((CurrentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")))
-		.addHover(CurrentPage > 1 ? "<<<" : ">|")
-		.addCommand(CurrentPage > 1 ? cmd + " " + pagePrefix + Prevpage : cmd + " " + pagePrefix + pageCount);
+		.addText((currentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")))
+		.addHover(currentPage > 1 ? "<<<" : ">|")
+		.addCommand(currentPage > 1 ? cmd + " " + pagePrefix + prevpage : cmd + " " + pagePrefix + pageCount);
 
-	rm.addText(lManager.getMessage("command.help.output.pageCount", "[current]", CurrentPage, "[total]", pageCount))
+	rm.addText(lManager.getMessage("command.help.output.pageCount", "[current]", currentPage, "[total]", pageCount))
 	.addHover(lManager.getMessage("command.help.output.pageCountHover", "[totalEntries]", totalEntries));
 
-	rm.addText(pageCount > CurrentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"))
-	.addHover(pageCount > CurrentPage ? ">>>" : "|<")
-	.addCommand(pageCount > CurrentPage ? cmd + " " + pagePrefix + NextPage : cmd + " " + pagePrefix + 1);
+	rm.addText(pageCount > currentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"))
+	.addHover(pageCount > currentPage ? ">>>" : "|<")
+	.addCommand(pageCount > currentPage ? cmd + " " + pagePrefix + nextPage : cmd + " " + pagePrefix + 1);
 
 	if (pageCount != 0)
 	    rm.show(sender);

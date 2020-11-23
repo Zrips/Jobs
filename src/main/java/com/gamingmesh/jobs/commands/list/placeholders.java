@@ -90,7 +90,7 @@ public class placeholders implements Cmd {
 	}
 
 	if (player != null)
-	    plugin.ShowPagination(sender, pi, "jobs placeholders", "-p:");
+	    plugin.showPagination(sender, pi, "jobs placeholders", "-p:");
 	return true;
     }
 }

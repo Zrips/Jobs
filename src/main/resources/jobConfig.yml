@@ -90,13 +90,6 @@ Jobs:
       # Item: player_head
       #   CustomSkull: Notch
       Item: LOG:2
-
-      # If you want to use ID instead of material names.
-      # id of block
-      #  Id: 17
-      # data of block, usually its 0, but in example Diorite will have id of 1 and data of 3
-      #  Data: 2
-
       # enchants in the item
       Enchantments:
       - 'DURABILITY:1'
@@ -120,8 +113,8 @@ Jobs:
         #   - This is defined in same way as any generic payable job action.
         #   - You can use multiple names separated by commas "," to avoid creating many rows.
         # [amount] is how many times player should perform this action to complete quest
-        - Break;17-0;300
-        #- Place;stone,cobblestone;5
+        - Break;oak_log;300
+        - Place;stone,cobblestone;5
         # Command list to be performed after quest is finished.
         # Use [playerName] to insert players name who finished that quest
         RewardCommands:
@@ -158,16 +151,6 @@ Jobs:
         - "Kill 50 zombies"
         - "Get 2000 for this!"
       third:
-        Name: "Chicken cooker"
-        Objectives:
-        - "Smelt;COOKED_CHICKEN;20"
-        RewardCommands:
-        - "eco give [playerName] 300"
-        - "msg [playerName] Completed quest!"
-        RewardDesc:
-        - "Cook some chicken breasts"
-        - "Get 300 for this!"
-      fourth:
         Name: "Strip logs"
         Objectives:
         - "StripLogs;stripped_birch_log;25"
@@ -191,13 +174,11 @@ Jobs:
     # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
     # 
     # For kill tags (Kill and custom-kill), the name is the name of the
-    # mob.
+    # entity.
     # To get a list of all available entity types, check
-    # https://minecraft.gamepedia.com/Mob#List_of_mobs
+    # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html
     #
-    # NOTE: mob names are case sensitive.
-    #
-    # For custom-kill, it is the name of the job (also case sensitive).
+    # For custom-kill, it is the name of the job (case sensitive).
     #
     # NOTE: If a job has both the pay for killing a player and for killing a
     # specific class, they will get both payments.
@@ -230,7 +211,7 @@ Jobs:
         # you can use minuses to take away money if the player break this block
         income: -1.0
         experience: -1.0
-      # you can use here "-all" sub name to specify if we detect all wool colours
+      # you can use "-all" sub name to specify if we detect all wool colours
       wool-all:
         income: 2.0
         points: 1.0
@@ -239,7 +220,6 @@ Jobs:
         income: 1.0
         points: 1.0
         experience: 1.0
-      # you should start material name like this, to detect if that material is exists
       white_banner-all:
         income: 1.0
         points: 1.0
@@ -288,15 +268,13 @@ Jobs:
         experience: 5.0
     # payment for placing a block
     Place:
-      sapling:
-        income: 1.0
-        points: 1.0
-        experience: 1.0
-      wood:
-        income: 2.0
-        points: 2.0
-        experience: 2.0
-    # Payment for trading a villager. Checks results only
+      # You can use list of materials to simplify adding each materials one by one
+      # Remember that you should separate the income, points and exp with ";"
+      materials:
+      - sapling;1.0;1.0;1.0
+      - wood;2.0;1.0
+      - stone;0.1
+    # Payment for trading with a villager. Checks results only
     VTrade:
       emerald:
         income: 1.0
@@ -306,21 +284,15 @@ Jobs:
       enchanted_book-12:
         income: 1.0
         experience: 2.0
-    # killing a mob
+    # Payment for killing any type of living entity
     Kill:
-      # mob name
       Player:
-        # base income
         income: 7.5
-        # base experience
         experience: 7.5
-    # killing a MythicMob
+    # Payment for killing a MythicMob
     MMKill:
-      # mob name
       CustomNameHere:
-        # base income
         income: 7.5
-        # base experience
         experience: 7.5
     # Killing player with certain job
     custom-kill:
@@ -345,7 +317,7 @@ Jobs:
       baked_potato:
         income: 5
         experience: 5
-    # Milking cows, only one option is available
+    # Milking cows
     Milk:
       Cow:
         income: 2.0
@@ -464,7 +436,6 @@ Jobs:
         experience: 12
     # Enchanting items
     Enchant:
-      # You can set item for which player will get money
       wood_sword:
         income: 1.5
         experience: 3.0
@@ -517,7 +488,6 @@ Jobs:
         level: 0
       secNode:
         value: true
-        # The permission node
         permission: "aaaaaatest.node2"
         # Permission granted when reaching level 10
         level: 10
@@ -556,37 +526,6 @@ Jobs:
     world-blacklist:
     - plotworld
     - teamworld
-    # Getting more money when equipped with specific weapon/tool are wearing armor
-    items:
-      # Just name, don't have any impact
-      firstOne:
-        # Tool/Weapon id. Works for block Break, Fish, Animal tame, Breed, Monster/Player kill.
-        id: 278
-        # Items name, should be with color codes
-        name: '&8Miner Pickaxe'
-        # Item lore, again should come with color codes
-        lore:
-        - '&eBobs pick'
-        - '&710% bonus XP'
-        # Item enchantments, all enchantment names can be found https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html
-        enchants:
-        - DAMAGE_ALL=1
-        - FIRE_ASPECT=1
-        # Money boost: 1.1 is equals 10% more income when 0.9 is equals 10% less from base income
-        moneyBoost: 1.1
-        # Exp boost
-        expBoost: 1.2
-        # Point boost
-        pointBoost: 1.3
-      helmet:
-        # Armor id. This one works with all jobs
-        id: 310
-        name: '&8Armor'
-        lore:
-        - '&eBobs armor'
-        - '&710% bonus XP'
-        moneyBoost: 1.1
-        expBoost: 1.1
     # Limit item use to jobs level
     limitedItems:
       # Just name, don't have any impact
@@ -643,82 +582,19 @@ Jobs:
       Id: 17
       Data: 2
     Break:
-      #logs - natural; gain income, points, and exp
-      oak_log:
-        income: 1.0
-        points: 1.0
-        experience: 1.0
-      spruce_log:
-        income: 1.0
-        points: 1.0
-        experience: 1.0
-      birch_log:
-        income: 1.0
-        points: 1.0
-        experience: 1.0
-      jungle_log:
-        income: 1.0
-        points: 1.0
-        experience: 1.0
-      acacia_log:
-        income: 1.0
-        points: 1.0
-        experience: 1.0
-      dark_oak_log:
-        income: 1.0
-        points: 1.0
-        experience: 1.0
-      #planks - natural in mineshafts; gain some income/points and exp, but less as compromise as it's mainly a building block and used in placement
-      #oak_planks:
-        #income: 0.25
-        #points: 0.25
-        #experience: .25
-      #spruce_planks:
-        #income: 0.25
-        #points: 0.25
-        #experience: .25
-      #birch_planks:
-        #income: 0.25
-        #points: 0.25
-        #experience: .25
-      #jungle_planks:
-        #income: 0.25
-        #points: 0.25
-        #experience: .25
-      #acacia_planks:
-        #income: 0.25
-        #points: 0.25
-        #experience: .25
-      #dark_oak_planks:
-        #income: 0.25
-        #points: 0.25
-        #experience: .25
-      #stripped logs - crafted/natural; gain income, points, and exp. Compromise for stripping natural logs.
-      #use axe durability to create, just 0.75 income/points to make up for loss, plus 0.25 exp (compromise)
-      stripped_oak_log:
-        income: 0.75
-        points: 0.75
-        experience: 0.25
-      stripped_spruce_log:
-        income: 0.75
-        points: 0.75
-        experience: 0.25
-      stripped_birch_log:
-        income: 0.75
-        points: 0.75
-        experience: 0.25
-      stripped_jungle_log:
-        income: 0.75
-        points: 0.75
-        experience: 0.25
-      stripped_acacia_log:
-        income: 0.75
-        points: 0.75
-        experience: 0.25
-      stripped_dark_oak_log:
-        income: 0.75
-        points: 0.75
-        experience: 0.25
+      materials:
+      - oak_log;1.0;1.0;1.0
+      - spruce_log;1.0;1.0;1.0
+      - birch_log;1.0;1.0;1.0
+      - jungle_log;1.0;1.0;1.0
+      - acacia_log;1.0;1.0;1.0
+      - dark_oak_log;1.0;1.0;1.0
+      - stripped_oak_log;0.75;0.75;0.25
+      - stripped_spruce_log;0.75;0.75;0.25
+      - stripped_birch_log;0.75;0.75;0.25
+      - stripped_jungle_log;0.75;0.75;0.25
+      - stripped_acacia_log;0.75;0.75;0.25
+      - stripped_dark_oak_log;0.75;0.75;0.25
     Kill:
       Player:
         income: 7.5
@@ -776,28 +652,6 @@ Jobs:
         points: 0.25
         experience: 0.5
     Break:
-      #new 1.13 blocks (some changed blocks are below)
-      tube_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      brain_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      bubble_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      fire_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      horn_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      #origial blocks
       andesite:
         income: 1
         points: 1
@@ -953,55 +807,6 @@ Jobs:
     Gui:
       Item: brick_stairs
     Place:
-      #new 1.13 blocks
-      stripped_oak_wood:
-        income: 2
-        points: 2
-        experience: 2
-      stripped_spruce_wood:
-        income: 2
-        points: 2
-        experience: 2
-      stripped_birch_wood:
-        income: 2
-        points: 2
-        experience: 2
-      stripped_jungle_wood:
-        income: 2
-        points: 2
-        experience: 2
-      stripped_acacia_wood:
-        income: 2
-        points: 2
-        experience: 2
-      stripped_dark_oak_wood:
-        income: 2
-        points: 2
-        experience: 2
-      dead_tube_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      dead_brain_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      dead_bubble_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      dead_fire_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      dead_horn_coral_block:
-        income: 2
-        points: 2
-        experience: 3
-      dried_kelp_block:
-        income: 2
-        points: 2
-        experience: 3
       stone:
         income: 1.3
         points: 1.3
@@ -1908,49 +1713,6 @@ Jobs:
         points: 5.0
         experience: 5.0
     Break:
-      #new 1.13 blocks
-      tube_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-      brain_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-      bubble_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-      fire_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-      horn_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-      kelp_plant:
-        income: 1
-        points: 1
-        experience: 1
-      kelp:
-        income: 1
-        points: 1
-        experience: 1
-      seagrass:
-        income: 1
-        points: 1
-        experience: 1
-      tall_seagrass:
-        income: 1
-        points: 1
-        experience: 1
-      sea_pickle:
-        income: 1
-        points: 1
-        experience: 1
-
-      #old blocks
       chorus_plant:
         income: 1.5
         points: 1.5
@@ -2076,28 +1838,6 @@ Jobs:
         points: 1
         experience: 1.0
     Place:
-      #new 1.13 blocks
-      dead_tube_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-      dead_brain_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-      dead_bubble_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-      dead_fire_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-      dead_horn_coral_fan:
-        income: 2
-        points: 2
-        experience: 3
-
       wheat:
         income: 1
         points: 1
@@ -3253,73 +2993,18 @@ Jobs:
         income: 6.0
         points: 6.0
         experience: 30.0
-      # 1.13+: power
-      # 1.12 and under: arrow_damage
-      #power-1:
-      #  income: 10.0
-      #  points: 10.0
-      #  experience: 10.0
-      #arrow_damage-2:
-      #  income: 20.0
-      # 1.13+: flame
-      # 1.12 and under: arrow_fire
-      #arrow_fire:
-      #  income: 10.0
-      #  points: 10.0
-      #  experience: 30.0
-      # 1.13+: infinity
-      # 1.12 and under: arrow_infinite
-      #arrow_infinite:
-      #  income: 20.0
-      #  points: 20.0
-      #  experience: 50.0
-      # 1.13+: punch
-      # 1.12 and under: arrow_knockback
-      #punch-2:
-      #  income: 20.0
-      #  points: 20.0
-      #  experience: 20.0
-      # 1.13+: sharpness
-      # 1.12 and under: damage_all
-      #damage_all-5:
-      #  income: 50.0
-      #  points: 50.0
-      #  experience: 50.0
-      # 1.13+: bane_of_arthropods
-      # 1.12 and under: damage_arthropods
-      #damage_arthropods-4:
-      #  income: 40.0
-      #  points: 40.0
-      #  experience: 40.0
-      # 1.13+: smite
-      # 1.12 under: damage_undead
-      #damage_undead-1:
-      #  income: 10.0
-      #  points: 10.0
-      #depth_strider-3:
-      #  income: 30.0
-      #  points: 30.0
-      #  experience: 30.0
-      # 1.13+: efficiency
-      # 1.12 under: dig_speed
-      #efficiency-5:
-      #  income: 50.0
-      #  points: 50.0
-      #  experience: 50.0
-      # 1.13+: unbreaking
-      # 1.12 under: durability
-      #durability-1:
-      #  income: 10.0
-      #  points: 10.0
-      #  experience: 10.0
-      #fire_aspect-2:
-      #  income: 20.0
-      #  points: 20.0
-      #  experience: 20.0
-  # This is default job players will have if they dint joined any
-  # When players join any job, they will loose access to this one
+      durability-1:
+        income: 10.0
+        points: 10.0
+        experience: 10.0
+      fire_aspect-2:
+        income: 20.0
+        points: 20.0
+        experience: 20.0
+  # This is default job players will have if they didn't joined any
+  # When players join any job, they will lose access to this one
   # You can set this to give out some money for basic actions, like killing players or breaking some blocks but job will not be visible and you can't level it up
-  # leveling-progression-equation and experience-progression-equation doesnt have any impact for this job
+  # leveling-progression-equation and experience-progression-equation doesn't have any impact for this job
   None:
     fullname: None
     shortname: N

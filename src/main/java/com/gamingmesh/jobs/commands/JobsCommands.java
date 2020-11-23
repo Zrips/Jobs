@@ -154,7 +154,7 @@ public class JobsCommands implements CommandExecutor {
 	    sender.sendMessage(msg);
 	}
 
-	plugin.ShowPagination(sender, pi, label + " ?");
+	plugin.showPagination(sender, pi, label + " ?");
 	return true;
     }
 
@@ -316,9 +316,9 @@ public class JobsCommands implements CommandExecutor {
 
 	if (sender instanceof Player)
 	    if (sender.getName().equalsIgnoreCase(player.getName()))
-		plugin.ShowPagination(sender, pi, "jobs info " + job.getName() + t);
+		plugin.showPagination(sender, pi, "jobs info " + job.getName() + t);
 	    else
-		plugin.ShowPagination(sender, pi, "jobs playerinfo " + player.getName() + " " + job.getName() + t);
+		plugin.showPagination(sender, pi, "jobs playerinfo " + player.getName() + " " + job.getName() + t);
     }
 
     /**

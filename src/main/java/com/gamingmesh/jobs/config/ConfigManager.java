@@ -184,7 +184,7 @@ public class ConfigManager {
 	    "[actionType] can be any valid job action. Look lower for all possible action types",
 	    "[actionTarget] can be material name, block type, entity name and so on. This is defined in same way as any generic payable job action",
 	    "[amount] is how many times player should perform this action to complete quest");
-	cfg.get(questPt + ".Objectives", "Break;17-0;300");
+	cfg.get(questPt + ".Objectives", "Break;oak_log;300");
 
 	cfg.addComment(questPt + ".RewardCommands", "Command list to be performed after quest is finished.",
 	    "Use [playerName] to insert players name who finished that quest");
@@ -226,11 +226,9 @@ public class ConfigManager {
 	    "For kill tags (Kill and custom-kill), the name is the name of the mob.",
 	    "To get a list of all available entity types, check the",
 	    "bukkit JavaDocs for a complete list of entity types",
-	    "https://minecraft.gamepedia.com/Mob#List_of_mobs",
+	    "https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html",
 	    "",
-	    "NOTE: mob names are case sensitive.",
-	    "",
-	    "For custom-kill, it is the name of the job (also case sensitive).",
+	    "For custom-kill, it is the name of the job (case sensitive).",
 	    "",
 	    "NOTE: If a job has both the pay for killing a player and for killing a specific class, they will get both payments.",
 	    "#######################################################################",
@@ -342,9 +340,8 @@ public class ConfigManager {
     }
 
     public class KeyValues {
-	private String type = null;
-	private String subType = "";
-	private String meta = "";
+
+	private String type, subType = "", meta = "";
 	private int id = 0;
 
 	public String getType() {
@@ -1205,6 +1202,53 @@ public class ConfigManager {
 		ConfigurationSection typeSection = jobSection.getConfigurationSection(actionType.getName());
 		ArrayList<JobInfo> jobInfo = new ArrayList<>();
 		if (typeSection != null) {
+		    if (typeSection.isList("materials")) {
+			for (String mat : typeSection.getStringList("materials")) {
+			    if (!mat.contains(";")) {
+				continue;
+			    }
+
+			    KeyValues keyValue = null;
+			    String[] sep = mat.split(";");
+			    if (sep.length >= 1) {
+				keyValue = getKeyValue(sep[0], actionType, jobKey);
+			    }
+
+			    if (keyValue == null) {
+				continue;
+			    }
+
+			    int id = keyValue.getId();
+			    String type = keyValue.getType(),
+					subType = keyValue.getSubType(),
+					meta = keyValue.getMeta();
+
+			    double income = 0D;
+			    if (sep.length >= 2) {
+				income = Double.parseDouble(sep[1]);
+				income = updateValue(CurrencyType.MONEY, income);
+			    }
+
+			    double points = 0D;
+			    if (sep.length >= 3) {
+				points = Double.parseDouble(sep[2]);
+				points = updateValue(CurrencyType.POINTS, points);
+			    }
+
+			    double experience = 0D;
+			    if (sep.length >= 4) {
+				experience = Double.parseDouble(sep[3]);
+				experience = updateValue(CurrencyType.EXP, experience);
+			    }
+
+			    jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, 1,
+					-1, typeSection.getCurrentPath(), null, null, null));
+			}
+
+			job.setJobInfo(actionType, jobInfo);
+			continue;
+		    }
+
 		    for (String key : typeSection.getKeys(false)) {
 			ConfigurationSection section = typeSection.getConfigurationSection(key);
 			if (section == null) {
@@ -1228,7 +1272,6 @@ public class ConfigManager {
 			experience = updateValue(CurrencyType.EXP, experience);
 
 			int fromlevel = 1;
-
 			if (section.isInt("from-level"))
 			    fromlevel = section.getInt("from-level");
 

@@ -79,7 +79,7 @@ public class top implements Cmd {
 		    "%exp%", One.getExp()));
 		place++;
 	    }
-	    Jobs.getInstance().ShowPagination(sender, pi, "jobs top " + job.getName());
+	    Jobs.getInstance().showPagination(sender, pi, "jobs top " + job.getName());
 	} else {
 	    List<String> ls = new ArrayList<>();
 
@@ -94,7 +94,7 @@ public class top implements Cmd {
 	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", job.getName()), ls);
 	    plugin.getCMIScoreboardManager().addNew(player);
 
-	    Jobs.getInstance().ShowPagination(sender, pi, "jobs top " + job.getName());
+	    Jobs.getInstance().showPagination(sender, pi, "jobs top " + job.getName());
 	}
 	return true;
     }

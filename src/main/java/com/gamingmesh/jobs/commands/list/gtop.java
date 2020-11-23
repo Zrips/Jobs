@@ -89,7 +89,7 @@ public class gtop implements Cmd {
 	    plugin.getCMIScoreboardManager().addNew(player);
 	}
 
-	Jobs.getInstance().ShowPagination(sender, pi, "jobs gtop");
+	Jobs.getInstance().showPagination(sender, pi, "jobs gtop");
 	return true;
     }
 }

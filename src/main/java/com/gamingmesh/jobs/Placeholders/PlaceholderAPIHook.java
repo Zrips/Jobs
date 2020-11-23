@@ -18,9 +18,6 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
 	JobsPlaceHolders placeHolder = JobsPlaceHolders.getByName(identifier);
-	if (placeHolder == null)
-	    return null;
-
 	return plugin.getPlaceholderAPIManager().getValue(player, placeHolder, "%" + Placeholder.pref + "_" + identifier + "%");
     }
 
