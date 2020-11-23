@@ -49,7 +49,8 @@ public class JobsCommands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-	if (sender instanceof Player && !Jobs.getGCManager().canPerformActionInWorld(((Player) sender).getWorld())) {
+	if (sender instanceof Player && !Jobs.getGCManager().canPerformActionInWorld(((Player) sender).getWorld())
+		    && !sender.hasPermission("jobs.disabledworld.commands")) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.worldisdisabled"));
 	    return true;
 	}
