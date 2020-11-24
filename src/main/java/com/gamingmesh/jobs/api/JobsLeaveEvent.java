@@ -15,10 +15,20 @@ public final class JobsLeaveEvent extends BaseEvent implements Cancellable {
 		this.job = job;
 	}
 
+	/**
+	 * Returns the player who left a job.
+	 * 
+	 * @return {@link JobsPlayer}
+	 */
 	public JobsPlayer getPlayer() {
 		return player;
 	}
 
+	/**
+	 * Returns the job where the player left.
+	 * 
+	 * @return {@link Job}
+	 */
 	public Job getJob() {
 		return job;
 	}

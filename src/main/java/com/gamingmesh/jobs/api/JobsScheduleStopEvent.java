@@ -3,6 +3,9 @@ package com.gamingmesh.jobs.api;
 import com.gamingmesh.jobs.container.Schedule;
 import org.bukkit.event.Cancellable;
 
+/**
+ * Called when a schedule has been stopped.
+ */
 public class JobsScheduleStopEvent extends BaseEvent implements Cancellable {
     private boolean cancelled = false;
     private Schedule schedule;
@@ -11,6 +14,11 @@ public class JobsScheduleStopEvent extends BaseEvent implements Cancellable {
         this.schedule = schedule;
     }
 
+    /**
+     * Returns the schedule which stopped.
+     * 
+     * @return {@link Schedule}
+     */
     public Schedule getSchedule() {
         return schedule;
     }

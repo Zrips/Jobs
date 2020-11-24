@@ -9,6 +9,9 @@ import org.bukkit.event.Cancellable;
 import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.Job;
 
+/**
+ * Called when a player gains exp from jobs.
+ */
 public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
 
     private OfflinePlayer offlinePlayer;
@@ -37,34 +40,76 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
 	this.info = info;
     }
 
+    /**
+     * Returns the player who got exp.
+     * 
+     * @return {@link OfflinePlayer}
+     */
     public OfflinePlayer getPlayer() {
 	return offlinePlayer;
     }
 
+    /**
+     * Returns the job where the player is got the exp from.
+     * 
+     * @return {@link Job}
+     */
     public Job getJob() {
 	return job;
     }
 
+    /**
+     * Returns the amount of gained exp for player.
+     * 
+     * @return got exp amount
+     */
     public double getExp() {
 	return exp;
     }
 
+    /**
+     * Sets the exp to a new value.
+     * 
+     * @param exp the new value
+     */
     public void setExp(double exp) {
 	this.exp = exp;
     }
 
+    /**
+     * Returns the block which the player broken and got income.
+     * 
+     * @return {@link Block}
+     */
     public Block getBlock() {
 	return block;
     }
 
+    /**
+     * Returns the entity that the player killed or did something before.
+     * <p>
+     * This method is used for Citizens NPCs and armor stand breaking.
+     * 
+     * @return {@link Entity}
+     */
     public Entity getEntity() {
 	return entity;
     }
 
+    /**
+     * Returns the living entity that the player killed.
+     * 
+     * @return {@link LivingEntity}
+     */
     public LivingEntity getLivingEntity() {
 	return living;
     }
 
+    /**
+     * Returns the action info, containing the action which the player performed.
+     * 
+     * @return {@link ActionInfo}
+     */
     public ActionInfo getActionInfo() {
 	return info;
     }

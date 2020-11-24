@@ -7,25 +7,25 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
 
 public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
+
     private JobsPlayer player;
-    private String JobName;
-    private Title OldTitle;
-    private Title NewTitle;
-    private int level;
-    private Sound soundLevelupSound = Sound.values()[0];
-    private int soundLevelupVolume = 1;
-    private int soundLevelupPitch = 3;
-    private Sound soundTitleChangeSound = Sound.values()[0];
-    private int soundTitleChangeVolume = 1;
-    private int soundTitleChangePitch = 3;
+    private String jobName;
+    private Title oldTitle;
+    private Title newTitle;
+
+    private Sound soundLevelupSound;
+    private Sound soundTitleChangeSound;
+
+    private int level, soundLevelupVolume = 1, soundLevelupPitch = 3,
+	    soundTitleChangeVolume = 1, soundTitleChangePitch = 3;
     private boolean cancelled = false;
 
     public JobsLevelUpEvent(JobsPlayer jPlayer, String JobName, int level, Title OldTitle, Title NewTitle, String soundLevelupSound, Integer soundLevelupVolume,
 	Integer soundLevelupPitch, String soundTitleChangeSound, Integer soundTitleChangeVolume, Integer soundTitleChangePitch) {
 	this.player = jPlayer;
-	this.JobName = JobName;
-	this.OldTitle = OldTitle;
-	this.NewTitle = NewTitle;
+	this.jobName = JobName;
+	this.oldTitle = OldTitle;
+	this.newTitle = NewTitle;
 	this.level = level;
 	this.soundLevelupSound = getSound(soundLevelupSound);
 	this.soundLevelupVolume = soundLevelupVolume;
@@ -35,52 +35,99 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
 	this.soundTitleChangePitch = soundTitleChangePitch;
     }
 
-    private static Sound getSound(String soundName) {
-	for (Sound one : Sound.values()) {
-	    if (one.name().equalsIgnoreCase(soundName))
-		return one;
+    private Sound getSound(String soundName) {
+	if (soundName != null) {
+	    for (Sound one : Sound.values()) {
+		if (one.name().equalsIgnoreCase(soundName))
+		    return one;
+	    }
 	}
-	return null;
+
+	return Sound.values()[0];
     }
 
+    /**
+     * Returns the player who got level up in a job.
+     * 
+     * @return {@link JobsPlayer}
+     */
     public JobsPlayer getPlayer() {
 	return player;
     }
 
+    /**
+     * Gets the job name where the player level up.
+     * 
+     * @return the job name
+     */
     public String getJobName() {
-	return JobName;
+	return jobName;
     }
 
+    /**
+     * Gets the old title of the player.
+     * 
+     * @return {@link Title}
+     */
     public Title getOldTitle() {
-	return OldTitle;
+	return oldTitle;
     }
 
+    /**
+     * @deprecated use {@link #getOldTitle()}
+     */
+    @Deprecated(forRemoval = true)
     public String getOldTitleName() {
-	return OldTitle.getName();
+	return oldTitle.getName();
     }
 
+    /**
+     * @deprecated use {@link #getOldTitle()}
+     */
+    @Deprecated(forRemoval = true)
     public String getOldTitleShort() {
-	return OldTitle.getShortName();
+	return oldTitle.getShortName();
     }
 
+    /**
+     * @deprecated use {@link #getOldTitle()}
+     */
+    @Deprecated(forRemoval = true)
     public String getOldTitleColor() {
-	return OldTitle.getChatColor().toString();
+	return oldTitle.getChatColor().toString();
     }
 
+    /**
+     * Gets the new title of the player.
+     * 
+     * @return {@link Title}
+     */
     public Title getNewTitle() {
-	return NewTitle;
+	return newTitle;
     }
 
+    /**
+     * @deprecated use {@link #getNewTitle()}
+     */
+    @Deprecated(forRemoval = true)
     public String getNewTitleName() {
-	return NewTitle.getName();
+	return newTitle.getName();
     }
 
+    /**
+     * @deprecated use {@link #getNewTitle()}
+     */
+    @Deprecated(forRemoval = true)
     public String getNewTitleShort() {
-	return NewTitle.getShortName();
+	return newTitle.getShortName();
     }
 
+    /**
+     * @deprecated use {@link #getNewTitle()}
+     */
+    @Deprecated(forRemoval = true)
     public String getNewTitleColor() {
-	return NewTitle.getChatColor().toString();
+	return newTitle.getChatColor().toString();
     }
 
     @Deprecated
@@ -89,11 +136,11 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     }
 
     public Sound getSound() {
-	return this.soundLevelupSound == null ? Sound.values()[0] : this.soundLevelupSound;
+	return soundLevelupSound;
     }
 
     public void setSound(Sound soundLevelupSound) {
-	this.soundLevelupSound = soundLevelupSound;
+	this.soundLevelupSound = soundLevelupSound == null ? Sound.values()[0] : soundLevelupSound;
     }
 
     public int getSoundVolume() {
@@ -118,11 +165,11 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     }
 
     public Sound getTitleChangeSound() {
-	return this.soundTitleChangeSound == null ? Sound.values()[0] : this.soundTitleChangeSound;
+	return soundTitleChangeSound;
     }
 
     public void setTitleChangeSound(Sound soundTitleChangeSound) {
-	this.soundTitleChangeSound = soundTitleChangeSound;
+	this.soundTitleChangeSound = soundTitleChangeSound == null ? Sound.values()[0] : soundTitleChangeSound;
     }
 
     public int getTitleChangeVolume() {
@@ -141,6 +188,11 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
 	this.soundTitleChangePitch = soundTitleChangePitch;
     }
 
+    /**
+     * Returns the player job progression level.
+     * 
+     * @return player job progression level
+     */
     public int getLevel() {
 	return level;
     }

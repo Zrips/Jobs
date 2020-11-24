@@ -30,6 +30,11 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
 	this.payments = payments;
     }
 
+    /**
+     * Returns the player who got payment.
+     * 
+     * @return {@link OfflinePlayer}
+     */
     public OfflinePlayer getPlayer() {
 	return offlinePlayer;
     }
@@ -68,15 +73,32 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
 	this.payments.put(CurrencyType.POINTS, points);
     }
 
+    /**
+     * Returns the payment amount of currency type.
+     * 
+     * @param type {@link CurrencyType}
+     * @return the amount of payment in specific type
+     */
     public Double get(CurrencyType type) {
-	Double amount = payments.get(type);
-	return amount == null ? 0 : amount;
+	return payments.getOrDefault(type, 0D);
     }
 
+    /**
+     * Sets the payment amount to a new one for the given currency type.
+     * 
+     * @param type {@link CurrencyType}
+     * @param amount the new amount
+     * @return the given amount
+     */
     public Double set(CurrencyType type, double amount) {
 	return payments.put(type, amount);
     }
 
+    /**
+     * Returns all payment types map.
+     * 
+     * @return {@link HashMap}
+     */
     public HashMap<CurrencyType, Double> getPayment() {
 	return payments;
     }

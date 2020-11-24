@@ -688,7 +688,8 @@ public class PlayerManager {
 	message = message.replace("%jobname%", job.getNameWithColor());
 
 	if (levelUpEvent.getOldTitle() != null)
-	    message = message.replace("%titlename%", levelUpEvent.getOldTitleColor() + levelUpEvent.getOldTitleName());
+	    message = message.replace("%titlename%", levelUpEvent.getOldTitle()
+		    .getChatColor().toString() + levelUpEvent.getOldTitle().getName());
 
 	message = message.replace("%playername%", player != null ? player.getDisplayName() : jPlayer.getName());
 	message = message.replace("%joblevel%", "" + prog.getLevel());
@@ -724,7 +725,8 @@ public class PlayerManager {
 		message = Jobs.getLanguage().getMessage("message.skillup.nobroadcast");
 
 	    message = message.replace("%playername%", player != null ? player.getDisplayName() : jPlayer.getName());
-	    message = message.replace("%titlename%", levelUpEvent.getNewTitleColor() + levelUpEvent.getNewTitleName());
+	    message = message.replace("%titlename%", levelUpEvent.getNewTitle()
+		    .getChatColor().toString() + levelUpEvent.getNewTitle().getName());
 	    message = message.replace("%jobname%", job.getNameWithColor());
 
 	    for (String line : message.split("\n")) {

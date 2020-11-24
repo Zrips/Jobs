@@ -15,10 +15,20 @@ public final class JobsJoinEvent extends BaseEvent implements Cancellable {
 		this.job = job;
 	}
 
+	/**
+	 * Returns the player who joined to a job.
+	 * 
+	 * @return {@link JobsPlayer}
+	 */
 	public JobsPlayer getPlayer() {
 		return player;
 	}
 
+	/**
+	 * Returns the job where the player joined.
+	 * 
+	 * @return {@link Job}
+	 */
 	public Job getJob() {
 		return job;
 	}
