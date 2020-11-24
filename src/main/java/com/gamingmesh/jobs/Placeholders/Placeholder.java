@@ -238,14 +238,13 @@ public class Placeholder {
 	    Matcher matcher = this.getRule().getMatcher(text);
 	    if (matcher == null)
 		return lsInLs;
-	    while (matcher.find()) {
+	    if (matcher.find()) {
 		try {
 		    for (Integer oneG : groups) {
 			lsInLs.add(matcher.group(oneG + 1));
 		    }
 		} catch (Exception e) {
 		}
-		break;
 	    }
 	    return lsInLs;
 	}
