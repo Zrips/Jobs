@@ -28,9 +28,8 @@ public class ItemManager {
 
     static {
 	for (CMIMaterial one : CMIMaterial.values()) {
-	    if (one == null)
-		continue;
 	    one.updateMaterial();
+
 	    Material mat = one.getMaterial();
 	    if (mat == null) {
 		continue;
@@ -48,8 +47,11 @@ public class ItemManager {
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
-	    mojangName = mojangName == null ? mat.toString().replace("_", "").replace(" ", "").toLowerCase()
-		: mojangName.replace("_", "").replace(" ", "").toLowerCase();
+	    if (mojangName == null) {
+		mojangName = mat.toString();
+	    }
+
+	    mojangName = mojangName.replace("_", "").replace(" ", "").toLowerCase();
 
 	    if (one.isCanHavePotionType()) {
 		for (Potion p : Potion.values()) {

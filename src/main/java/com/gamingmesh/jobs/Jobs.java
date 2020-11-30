@@ -557,19 +557,25 @@ public class Jobs extends JavaPlugin {
 
 	boolean found = false;
 
-	t: for (JobProgression prog : jPlayer.getJobProgression()) {
+	for (JobProgression prog : jPlayer.getJobProgression()) {
 	    for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(type)) {
 		if (info.getActionType() == type) {
 		    found = true;
-		    break t;
+		    break;
 		}
 	    }
 
-	    for (Quest q : prog.getJob().getQuests()) {
-		if (q != null && q.hasAction(type)) {
-		    found = true;
-		    break t;
+	    if (!found) {
+		for (Quest q : prog.getJob().getQuests()) {
+		    if (q != null && q.hasAction(type)) {
+			found = true;
+			break;
+		    }
 		}
+	    }
+
+	    if (found) {
+		break;
 	    }
 	}
 

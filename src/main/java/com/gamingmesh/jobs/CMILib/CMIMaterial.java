@@ -1419,9 +1419,7 @@ public enum CMIMaterial {
 
     public static CMIMaterial get(int id) {
 	for (CMIMaterial one : CMIMaterial.values()) {
-	    if (one.getMaterial() == null)
-		continue;
-	    if (one.getId() == id) {
+	    if (one.getMaterial() != null && one.getId() == id) {
 		return one;
 	    }
 	}
