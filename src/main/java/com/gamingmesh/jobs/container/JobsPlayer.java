@@ -330,6 +330,7 @@ public class JobsPlayer {
 	int TotalLevel = getTotalLevels();
 	Parser eq = Jobs.getGCManager().getLimit(type).getMaxEquation();
 	eq.setVariable("totallevel", TotalLevel);
+	maxJobsEquation = Jobs.getPlayerManager().getMaxJobs(this);
 	limits.put(type, (int) eq.getValue());
 	setSaved(false);
     }

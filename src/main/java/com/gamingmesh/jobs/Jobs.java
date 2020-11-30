@@ -453,20 +453,17 @@ public class Jobs extends JavaPlugin {
 	return jobsIds;
     }
 
-    /**
-     * Executes startup
-     * @throws IOException 
-     */
-    public void startup() {
+    private void startup() {
 	reload(true);
-	loadAllPlayersData();
 
-	// add all online players
-	Bukkit.getServer().getOnlinePlayers().forEach(getPlayerManager()::playerJoin);
+	CompletableFuture<Void> pd = loadAllPlayersData();
+
+	// attempt to add all online players to cache
+	pd.thenAccept(e -> Bukkit.getServer().getOnlinePlayers().forEach(getPlayerManager()::playerJoin));
     }
 
-    public static void loadAllPlayersData() {
-	CompletableFuture.supplyAsync(() -> {
+    public static CompletableFuture<Void> loadAllPlayersData() {
+	return CompletableFuture.supplyAsync(() -> {
 	    long time = System.currentTimeMillis();
 	    // Cloning to avoid issues
 	    HashMap<UUID, PlayerInfo> temp = new HashMap<>(getPlayerManager().getPlayersInfoUUIDMap());
@@ -768,10 +765,8 @@ public class Jobs extends JavaPlugin {
 	    paymentThread.shutdown();
 	    paymentThread = null;
 	}
+
 	smanager = new SelectionManager();
-	if (dao != null) {
-	    dao.closeConnections();
-	}
 
 	getGCManager().reload();
 	getLanguage().reload();
