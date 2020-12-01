@@ -76,7 +76,7 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     /**
      * @deprecated use {@link #getOldTitle()}
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated
     public String getOldTitleName() {
 	return oldTitle.getName();
     }
@@ -84,7 +84,7 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     /**
      * @deprecated use {@link #getOldTitle()}
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated
     public String getOldTitleShort() {
 	return oldTitle.getShortName();
     }
@@ -92,7 +92,7 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     /**
      * @deprecated use {@link #getOldTitle()}
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated
     public String getOldTitleColor() {
 	return oldTitle.getChatColor().toString();
     }
@@ -109,7 +109,7 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     /**
      * @deprecated use {@link #getNewTitle()}
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated
     public String getNewTitleName() {
 	return newTitle.getName();
     }
@@ -117,7 +117,7 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     /**
      * @deprecated use {@link #getNewTitle()}
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated
     public String getNewTitleShort() {
 	return newTitle.getShortName();
     }
@@ -125,7 +125,7 @@ public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
     /**
      * @deprecated use {@link #getNewTitle()}
      */
-    @Deprecated(forRemoval = true)
+    @Deprecated
     public String getNewTitleColor() {
 	return newTitle.getChatColor().toString();
     }

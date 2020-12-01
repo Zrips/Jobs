@@ -9,6 +9,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.UUID;
@@ -50,6 +51,13 @@ public class Util {
 
 	item.setItemMeta(skullMeta);
 	return item;
+    }
+
+    public static void toLowerCase(List<String> strings) {
+	ListIterator<String> iterator = strings.listIterator();
+	while (iterator.hasNext()) {
+	    iterator.set(iterator.next().toLowerCase());
+	}
     }
 
     public static World getWorld(String name) {

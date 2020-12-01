@@ -25,7 +25,7 @@ import com.gamingmesh.jobs.listeners.JobsPaymentListener;
  * marked as "removeable". In the future this class will get removed
  * and not used anymore by anyone. Instead use {@link Jobs#getBlockOwnerShips()}
  */
-@Deprecated(forRemoval = true)
+@Deprecated
 public class FurnaceBrewingHandling {
 
     static HashMap<UUID, List<blockLoc>> furnaceMap = new HashMap<>();
