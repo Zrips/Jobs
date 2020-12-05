@@ -60,8 +60,8 @@ public class MythicMobs4 implements MythicMobInterface {
 
 	MythicMob mm = MMAPI.getMythicMob(id);
 	try {
-	    if (mm != null)
-		return mm.getDisplayName().toString();
+	    if (mm != null && mm.getDisplayName() != null)
+		return mm.getDisplayName().get();
 	} catch (Throwable e) {
 	    if (!failed) {
 		failed = true;

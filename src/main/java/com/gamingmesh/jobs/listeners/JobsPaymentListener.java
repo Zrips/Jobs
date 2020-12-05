@@ -1576,8 +1576,7 @@ public class JobsPaymentListener implements Listener {
 	    if (Jobs.getGCManager().useBlockProtection && block.getState().hasMetadata(BlockMetadata))
 		return;
 
-	    BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.TNTBREAK);
-	    Jobs.action(jPlayer, bInfo, block);
+	    Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.TNTBREAK), block);
 	}
     }
 
@@ -1592,8 +1591,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	CMIMaterial cmat = CMIMaterial.get(block);
-	final JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
-
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
 	Material hand = Jobs.getNms().getItemInMainHand(p).getType();
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY
@@ -1657,21 +1655,18 @@ public class JobsPaymentListener implements Listener {
 	    }
 	} else if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) &&
 	    block.getType().toString().startsWith("STRIPPED_") &&
-	    event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null) {
-	    ItemStack iih = Jobs.getNms().getItemInMainHand(p);
-	    if (iih.getType().toString().endsWith("_AXE")) {
+	    event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && hand.toString().endsWith("_AXE")) {
 		// check if player is riding
 		if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
 		    return;
 
 		// Prevent item durability loss
-		if (!Jobs.getGCManager().payItemDurabilityLoss && iih.getType().getMaxDurability()
-		    - Jobs.getNms().getDurability(iih) != iih.getType().getMaxDurability())
+		if (!Jobs.getGCManager().payItemDurabilityLoss && hand.getMaxDurability()
+		    - Jobs.getNms().getDurability(Jobs.getNms().getItemInMainHand(p)) != hand.getMaxDurability())
 		    return;
 
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () ->
 		    Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
-	    }
 	}
     }
 
@@ -1734,9 +1729,8 @@ public class JobsPaymentListener implements Listener {
 	    return true;
 
 	ItemStack hand = Jobs.getNms().getItemInMainHand(p);
-	CMIMaterial cmat = CMIMaterial.get(hand);
 
-	HashMap<Enchantment, Integer> got = Jobs.getGCManager().whiteListedItems.get(cmat);
+	HashMap<Enchantment, Integer> got = Jobs.getGCManager().whiteListedItems.get(CMIMaterial.get(hand));
 	if (got == null)
 	    return false;
 
