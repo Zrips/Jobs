@@ -1,0 +1,70 @@
+Digger:
+  fullname: Digger
+  shortname: D
+  description: Earns money for terraforming the world.
+  ChatColour: GOLD
+  chat-display: full
+  max-level: 200
+  leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
+  income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(baseincome*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(basepoints*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+  rejoinCooldown: 10
+  maxDailyQuests: 1
+  Quests:
+    '1':
+      Name: Ground Mole
+      Objectives:
+      - Break;dirt;50
+      - Break;grass_block;50
+      - Break;gravel;50
+      RewardCommands:
+      - eco give [playerName] 100
+      - msg [playerName] Completed quest!
+      RewardDesc:
+      - Dig blocks and get money
+      - Get 100 for this!
+  Gui:
+    Id: 269
+    Data: 0
+  Break:
+    red_sand:
+      income: 1
+      points: 1
+      experience: 1
+    coarse_dirt:
+      income: 1
+      points: 1
+      experience: 1
+    dirt:
+      income: 0.25
+      points: 0.25
+      experience: 0.25
+    grass_block:
+      income: 0.3
+      points: 0.3
+      experience: 0.3
+    gravel:
+      income: 1
+      points: 1
+      experience: 1.0
+    sand:
+      income: 0.4
+      points: 0.4
+      experience: 0.5
+    clay:
+      income: 1
+      points: 1
+      experience: 1.0
+  Kill:
+    Player:
+      income: 7.5
+      points: 7.5
+      experience: 7.5
+  custom-kill:
+    Digger:
+      income: 10.0
+      points: 10.0
+      experience: 10.0

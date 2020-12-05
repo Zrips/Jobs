@@ -397,6 +397,19 @@ public class ConfigManager {
     private boolean migrateJobs() {
 	YamlConfiguration oldConf = getJobConfig();
 	if (oldConf == null) {
+	    if (jobsPathFolder.exists()) {
+		return false;
+	    }
+
+	    jobsPathFolder.mkdirs();
+
+	    try {
+		for (String f : Util.getFilesFromPackage("jobs", "", "yml")) {
+		    Jobs.getInstance().saveResource("jobs/" + f + ".yml", false);
+		}
+	    } catch (Exception c) {
+	    }
+
 	    return false;
 	}
 
@@ -1110,7 +1123,7 @@ public class ConfigManager {
 
 	    if (jobKey.equalsIgnoreCase("none"))
 		Jobs.setNoneJob(job);
-	    else if (getJobConfig().getBoolean("migratedToNewFile")) {
+	    else if (getJobConfig() == null || getJobConfig().getBoolean("migratedToNewFile")) {
 		return job;
 	    }
 	}

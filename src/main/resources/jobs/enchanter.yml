@@ -1,0 +1,132 @@
+Enchanter:
+  fullname: Enchanter
+  shortname: E
+  description: Earns money enchanting weapons.
+  ChatColour: DARK_BLUE
+  chat-display: full
+  max-level: 200
+  leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
+  income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(baseincome*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(basepoints*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+  rejoinCooldown: 10
+  maxDailyQuests: 1
+  Quests:
+    '1':
+      Name: Harry the wizard
+      Objectives:
+      - Enchant;wood_sword;1
+      - Enchant;diamond_sword;1
+      - Enchant;ARROW_DAMAGE;1
+      RewardCommands:
+      - eco give [playerName] 100
+      - msg [playerName] Completed quest!
+      RewardDesc:
+      - Be a wizard and get money
+      - Get 100 for this!
+  Gui:
+    Id: 116
+    Data: 0
+  Enchant:
+    wood_sword:
+      income: 1.5
+      points: 1.5
+      experience: 3.0
+    leather_boots:
+      income: 1.0
+      points: 1.0
+      experience: 6.0
+    leather_chestplate:
+      income: 2.0
+      points: 2.0
+      experience: 6.0
+    leather_helmet:
+      income: 1.0
+      points: 1.0
+      experience: 6.0
+    leather_leggings:
+      income: 2.0
+      points: 2.0
+      experience: 6.0
+    iron_sword:
+      income: 3.0
+      points: 3.0
+      experience: 6.0
+    iron_boots:
+      income: 2.5
+      points: 2.5
+      experience: 9.0
+    iron_chestplate:
+      income: 4.5
+      points: 4.5
+      experience: 9.0
+    iron_helmet:
+      income: 2.5
+      points: 2.5
+      experience: 9.0
+    iron_leggings:
+      income: 4.5
+      points: 4.5
+      experience: 9.0
+    gold_sword:
+      income: 4.5
+      points: 4.5
+      experience: 15.0
+    gold_boots:
+      income: 2.5
+      points: 2.5
+      experience: 15.0
+    gold_chestplate:
+      income: 5.5
+      points: 5.5
+      experience: 15.0
+    gold_helmet:
+      income: 2.5
+      points: 2.5
+      experience: 15.0
+    gold_leggings:
+      income: 5.5
+      points: 5.5
+      experience: 15.0
+    diamond_sword:
+      income: 9.0
+      points: 9.0
+      experience: 30.0
+    diamond_spade:
+      income: 5.0
+      points: 5.0
+      experience: 30.0
+    diamond_pickaxe:
+      income: 10.0
+      points: 10.0
+      experience: 30.0
+    diamond_axe:
+      income: 10.0
+      points: 10.0
+      experience: 30.0
+    diamond_helmet:
+      income: 6.0
+      points: 6.0
+      experience: 30.0
+    diamond_chestplate:
+      income: 12.0
+      points: 12.0
+      experience: 50.0
+    diamond_leggings:
+      income: 12.0
+      points: 12.0
+      experience: 50.0
+    diamond_boots:
+      income: 6.0
+      points: 6.0
+      experience: 30.0
+    durability-1:
+      income: 10.0
+      points: 10.0
+      experience: 10.0
+    fire_aspect-2:
+      income: 20.0
+      points: 20.0
+      experience: 20.0

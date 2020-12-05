@@ -1,0 +1,154 @@
+Weaponsmith:
+  fullname: Weaponsmith
+  shortname: W
+  description: Earns money from crafting and repairing weapons.
+  ChatColour: DARK_PURPLE
+  chat-display: full
+  max-level: 200
+  leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
+  income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(baseincome*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(basepoints*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+  rejoinCooldown: 10
+  maxDailyQuests: 1
+  Quests:
+    '1':
+      Name: War never ends
+      Objectives:
+      - Craft;wooden_sword;2
+      - Craft;iron_chestplate;2
+      - Craft;gold_leggings;2
+      RewardCommands:
+      - eco give [playerName] 100
+      - msg [playerName] Completed quest!
+      RewardDesc:
+      - Craft weapons and get money
+      - Get 100 for this!
+  Gui:
+    Id: 58
+    Data: 0
+  Craft:
+    wooden_sword:
+      income: 1.0
+      points: 1.0
+      experience: 2.0
+    leather_boots:
+      income: 3.0
+      points: 3.0
+      experience: 4.0
+    leather_chestplate:
+      income: 4.0
+      points: 4.0
+      experience: 8.0
+    leather_helmet:
+      income: 2.5
+      points: 2.5
+      experience: 5.0
+    leather_leggings:
+      income: 3.5
+      points: 3.5
+      experience: 7.0
+    iron_sword:
+      income: 4.0
+      points: 4.0
+      experience: 8.0
+    iron_boots:
+      income: 8.0
+      points: 8.0
+      experience: 16.0
+    iron_chestplate:
+      income: 16.0
+      points: 16.0
+      experience: 32.0
+    iron_helmet:
+      income: 10.0
+      points: 10.0
+      experience: 20.0
+    iron_leggings:
+      income: 14.0
+      points: 14.0
+      experience: 28.0
+    gold_sword:
+      income: 6.0
+      points: 6.0
+      experience: 12.0
+    gold_boots:
+      income: 12.0
+      points: 12.0
+      experience: 24.0
+    gold_chestplate:
+      income: 24.0
+      points: 24.0
+      experience: 48.0
+    gold_helmet:
+      income: 15.0
+      points: 15.0
+      experience: 30.0
+    gold_leggings:
+      income: 21.0
+      points: 21.0
+      experience: 42.0
+    diamond_sword:
+      income: 8.0
+      points: 8.0
+      experience: 16.0
+    diamond_pickaxe:
+      income: 12.0
+      points: 12.0
+      experience: 24.0
+    diamond_axe:
+      income: 12.0
+      points: 12.0
+      experience: 24.0
+    diamond_helmet:
+      income: 20.0
+      points: 20.0
+      experience: 40.0
+    diamond_chestplate:
+      income: 32.0
+      points: 32.0
+      experience: 64.0
+    diamond_leggings:
+      income: 28.0
+      points: 28.0
+      experience: 40.0
+    diamond_boots:
+      income: 16.0
+      points: 16.0
+      experience: 32.0
+    turtle_helmet:
+      income: 20.0
+      points: 20.0
+      experience: 40.0
+  Repair:
+    wood_sword:
+      income: 1.0
+      points: 1.0
+      experience: 1.0
+    iron_sword:
+      income: 2.0
+      points: 2.0
+      experience: 2.0
+    gold_sword:
+      income: 3.0
+      points: 3.0
+      experience: 3.0
+    diamond_sword:
+      income: 4.0
+      points: 4.0
+      experience: 4.0
+  Smelt:
+    iron_ingot:
+      income: 1.3
+      points: 1.3
+      experience: 2.0
+    gold_ingot:
+      income: 5.0
+      points: 5.0
+      experience: 10
+    diamond:
+      income: 7.0
+      points: 7.0
+      experience: 20

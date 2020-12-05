@@ -233,7 +233,7 @@ public class Util {
 		    if (name.contains("$"))
 			name = name.split("\\$")[0];
 
-		    if (cleaner != null)
+		    if (cleaner != null && !cleaner.isEmpty())
 			name = name.replace(cleaner, "");
 
 		    listOfCommands.add(name);

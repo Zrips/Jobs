@@ -1,0 +1,100 @@
+Brewer:
+  fullname: Brewer
+  shortname: Br
+  description: Earns money brewing potions.
+  ChatColour: LIGHT_PURPLE
+  chat-display: full
+  max-level: 200
+  leveling-progression-equation: 10*(joblevel)+(joblevel*joblevel*4)
+  income-progression-equation: baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(baseincome*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  points-progression-equation: basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(basepoints*(joblevel-1)*0.01))
+    * ((numjobs-1)*0.05))
+  experience-progression-equation: baseexperience-(baseexperience*((numjobs-1) *0.01))
+  rejoinCooldown: 10
+  maxDailyQuests: 1
+  Quests:
+    '1':
+      Name: Heavy drinker
+      Objectives:
+      - Brew;glowstone_dust;2
+      - Brew;redstone;2
+      - Brew;sugar;2
+      RewardCommands:
+      - eco give [playerName] 100
+      - msg [playerName] Completed quest!
+      RewardDesc:
+      - Brew some stuff and get money
+      - Get 100 for this!
+  Gui:
+    Id: 379
+    Data: 0
+  Brew:
+    nether_wart:
+      income: 6.0
+      points: 6.0
+      experience: 6.0
+    redstone:
+      income: 6.0
+      points: 6.0
+      experience: 6.0
+    glowstone_dust:
+      income: 8.0
+      points: 8.0
+      experience: 8.0
+    fermented_spider_eye:
+      income: 12.0
+      points: 12.0
+      experience: 12.0
+    gunpowder:
+      income: 6.0
+      points: 6.0
+      experience: 6.0
+    dragon_breath:
+      income: 25.0
+      points: 25.0
+      experience: 25.0
+    sugar:
+      income: 7.0
+      points: 7.0
+      experience: 7.0
+    rabbit_foot:
+      income: 18.0
+      points: 18.0
+      experience: 18.0
+    glistering_melon_slice:
+      income: 10.0
+      points: 10.0
+      experience: 10.0
+    spider_eye:
+      income: 9.0
+      points: 9.0
+      experience: 9.0
+    pufferfish:
+      income: 14.0
+      points: 14.0
+      experience: 14.0
+    magma_cream:
+      income: 12.0
+      points: 12.0
+      experience: 12.0
+    golden_carrot:
+      income: 14.0
+      points: 14.0
+      experience: 14.0
+    blaze_powder:
+      income: 12.0
+      points: 12.0
+      experience: 12.0
+    ghast_tear:
+      income: 22.0
+      points: 22.0
+      experience: 22.0
+    turtle_helmet:
+      income: 12.0
+      points: 12.0
+      experience: 12.0
+    phantom_membrane:
+      income: 12.0
+      points: 12.0
+      experience: 12.0
