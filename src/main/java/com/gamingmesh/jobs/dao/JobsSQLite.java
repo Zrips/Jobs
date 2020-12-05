@@ -32,23 +32,15 @@ public class JobsSQLite extends JobsDAO {
     }
 
     @Override
-    protected synchronized void checkUpdate() throws SQLException {
+    protected void checkUpdate() throws SQLException {
 	JobsConnection conn = getConnection();
 	if (conn == null) {
-	    Jobs.consoleMsg("&cCould not run database updates!  Could not connect to MySQL!");
+	    Jobs.consoleMsg("&cCould not run database updates! Could not connect to MySQL!");
 	    return;
 	}
-	createDefaultUsersBase();
-    }
 
-    private boolean createDefaultUsersBase() {
-	try {
-	    executeSQL("CREATE TABLE `" + getPrefix()
+	executeSQL("CREATE TABLE `" + getPrefix()
 		+ "users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `data` text);");
-	} catch (SQLException e) {
-	    return false;
-	}
-	return true;
     }
 
     @Override

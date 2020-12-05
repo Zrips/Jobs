@@ -13,7 +13,7 @@ public class JobsConnection {
 	this.conn = conn;
     }
 
-    public synchronized Connection getConnection() {
+    public Connection getConnection() {
 	return conn;
     }
 

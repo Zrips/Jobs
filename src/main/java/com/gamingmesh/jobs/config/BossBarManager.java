@@ -24,7 +24,7 @@ public class BossBarManager {
 	this.plugin = plugin;
     }
 
-    public synchronized void ShowJobProgression(final JobsPlayer player) {
+    public void ShowJobProgression(final JobsPlayer player) {
 	if (Version.getCurrent().isLower(Version.v1_9_R1) || player == null)
 	    return;
 
@@ -36,7 +36,7 @@ public class BossBarManager {
 	player.clearUpdateBossBarFor();
     }
 
-    public synchronized void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
+    public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
 	if (Version.getCurrent().isLower(Version.v1_9_R1) || !Jobs.getGCManager().BossBarsMessageByDefault)
 	    return;
 

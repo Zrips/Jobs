@@ -28,24 +28,15 @@ public class JobsMySQL extends JobsDAO {
     }
 
     @Override
-    protected synchronized void checkUpdate() throws SQLException {
+    protected void checkUpdate() throws SQLException {
 	JobsConnection conn = getConnection();
 	if (conn == null) {
 	    Jobs.consoleMsg("&cCould not run database updates! Could not connect to MySQL!");
 	    return;
 	}
-	createDefaultUsersBase();
-    }
 
-    private boolean createDefaultUsersBase() {
-	try {
-	    executeSQL("CREATE TABLE `" + getPrefix()
-		+ "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `seen` bigint);");
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	    return false;
-	}
-	return true;
+	executeSQL("CREATE TABLE `" + getPrefix()
+	+ "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `seen` bigint);");
     }
 
     @Override
