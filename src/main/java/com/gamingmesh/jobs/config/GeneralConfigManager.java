@@ -129,7 +129,7 @@ public class GeneralConfigManager {
      * Get how often in minutes to save job information
      * @return how often in minutes to save job information
      */
-    public synchronized int getSavePeriod() {
+    public int getSavePeriod() {
 	return savePeriod;
     }
 
@@ -138,7 +138,7 @@ public class GeneralConfigManager {
      * @return true - use async
      * @return false - use sync
      */
-    public synchronized boolean isEconomyAsync() {
+    public boolean isEconomyAsync() {
 	return economyAsync;
     }
 
@@ -147,7 +147,7 @@ public class GeneralConfigManager {
      * @return true - broadcast on skill up
      * @return false - do not broadcast on skill up
      */
-    public synchronized boolean isBroadcastingSkillups() {
+    public boolean isBroadcastingSkillups() {
 	return isBroadcastingSkillups;
     }
 
@@ -156,7 +156,7 @@ public class GeneralConfigManager {
      * @return true - broadcast on level up
      * @return false - do not broadcast on level up
      */
-    public synchronized boolean isBroadcastingLevelups() {
+    public boolean isBroadcastingLevelups() {
 	return isBroadcastingLevelups;
     }
 
@@ -165,7 +165,7 @@ public class GeneralConfigManager {
      * @return true - pay in creative
      * @return false - do not pay in creative
      */
-    public synchronized boolean payInCreative() {
+    public boolean payInCreative() {
 	return payInCreative;
     }
 
@@ -174,11 +174,11 @@ public class GeneralConfigManager {
      * @return true - pay
      * @return false - do not
      */
-    public synchronized boolean payExploringWhenFlying() {
+    public boolean payExploringWhenFlying() {
 	return payExploringWhenFlying;
     }
 
-    public synchronized boolean addXpPlayer() {
+    public boolean addXpPlayer() {
 	return addXpPlayer;
     }
 
@@ -186,7 +186,7 @@ public class GeneralConfigManager {
      * Function to check if jobs should be hidden to players that lack permission to join the job
      * @return
      */
-    public synchronized boolean getHideJobsWithoutPermission() {
+    public boolean getHideJobsWithoutPermission() {
 	return hideJobsWithoutPermission;
     }
 
@@ -194,7 +194,7 @@ public class GeneralConfigManager {
      * Function to return the maximum number of jobs a player can join
      * @return
      */
-    public synchronized int getMaxJobs() {
+    public int getMaxJobs() {
 	return maxJobs;
     }
 
@@ -203,27 +203,27 @@ public class GeneralConfigManager {
      * @return true - you get paid
      * @return false - you don't get paid
      */
-    public synchronized boolean payNearSpawner() {
+    public boolean payNearSpawner() {
 	return payNearSpawner;
     }
 
-    public synchronized boolean getModifyChat() {
+    public boolean getModifyChat() {
 	return modifyChat;
     }
 
-    public synchronized int getEconomyBatchDelay() {
+    public int getEconomyBatchDelay() {
 	return economyBatchDelay;
     }
 
-    public synchronized boolean saveOnDisconnect() {
+    public boolean saveOnDisconnect() {
 	return saveOnDisconnect;
     }
 
-    public synchronized boolean MultiServerCompatability() {
+    public boolean MultiServerCompatability() {
 	return MultiServerCompatability;
     }
 
-    public synchronized Locale getLocale() {
+    public Locale getLocale() {
 	return locale;
     }
 
