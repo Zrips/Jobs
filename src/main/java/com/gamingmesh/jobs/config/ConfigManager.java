@@ -39,7 +39,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,9 +58,7 @@ public class ConfigManager {
 	this.jobFile = new File(Jobs.getFolder(), "jobConfig.yml");
 	this.jobsPathFolder = new File(Jobs.getFolder(), "jobs");
 
-	if (jobFile.exists()) {
-	    migrateJobs();
-	}
+	migrateJobs();
     }
 
     /**
@@ -83,56 +80,13 @@ public class ConfigManager {
 	return jobFile;
     }
 
-    @Deprecated
-    public void changeJobsSettings(String path, Object value) {
-	InputStreamReader s = null;
-	try {
-	    s = new InputStreamReader(new FileInputStream(jobFile), StandardCharsets.UTF_8);
-	} catch (FileNotFoundException e1) {
-	    e1.printStackTrace();
-	}
-
-	if (!jobFile.exists()) {
-	    try {
-		jobFile.createNewFile();
-	    } catch (IOException e) {
-		Jobs.getPluginLogger().severe("Unable to create jobConfig.yml! No jobs were loaded!");
-		try {
-		    if (s != null)
-			s.close();
-		} catch (IOException e1) {
-		    e1.printStackTrace();
-		}
-		return;
+    public void changeJobsSettings(String jobName, String path, Object value) {
+	for (YmlMaker yml : jobFiles) {
+	    if (yml.getConfigFile().getName().contains(jobName.toLowerCase())) {
+		yml.getConfig().set(path, value);
+		yml.saveConfig();
+		break;
 	    }
-	}
-	YamlConfiguration conf = new YamlConfiguration();
-	conf.options().pathSeparator('/');
-	try {
-	    conf.load(s);
-	} catch (Exception e) {
-	    Jobs.getPluginLogger().severe("==================== Jobs ====================");
-	    Jobs.getPluginLogger().severe("Unable to load jobConfig.yml!");
-	    Jobs.getPluginLogger().severe("Check your config for formatting issues!");
-	    Jobs.getPluginLogger().severe("No jobs were loaded!");
-	    Jobs.getPluginLogger().severe("Error: " + e.getMessage());
-	    Jobs.getPluginLogger().severe("==============================================");
-	    return;
-	} finally {
-	    if (s != null)
-		try {
-		    s.close();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-	}
-
-	conf.set(path, value);
-
-	try {
-	    conf.save(jobFile);
-	} catch (IOException e) {
-	    e.printStackTrace();
 	}
     }
 
@@ -442,6 +396,10 @@ public class ConfigManager {
 
     private boolean migrateJobs() {
 	YamlConfiguration oldConf = getJobConfig();
+	if (oldConf == null) {
+	    return false;
+	}
+
 	if (!jobsPathFolder.exists()) {
 	    oldConf.set("migratedToNewFile", false);
 	    try {
