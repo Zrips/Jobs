@@ -671,10 +671,10 @@ public class Jobs extends JavaPlugin {
 	placeholderAPIEnabled = setupPlaceHolderAPI();
 
 	try {
-	    YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
+	    YmlMaker jobShopItems = new YmlMaker(getFolder(), "shopItems.yml");
 	    jobShopItems.saveDefaultConfig();
 
-	    YmlMaker restrictedBlocks = new YmlMaker(this, "restrictedBlocks.yml");
+	    YmlMaker restrictedBlocks = new YmlMaker(getFolder(), "restrictedBlocks.yml");
 	    restrictedBlocks.saveDefaultConfig();
 
 	    bbManager = new BossBarManager(this);
@@ -687,7 +687,7 @@ public class Jobs extends JavaPlugin {
 	    startup();
 
 	    if (getGCManager().SignsEnabled) {
-		YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
+		YmlMaker jobSigns = new YmlMaker(getFolder(), "Signs.yml");
 		jobSigns.saveDefaultConfig();
 	    }
 

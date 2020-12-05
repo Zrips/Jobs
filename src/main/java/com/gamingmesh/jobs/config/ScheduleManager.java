@@ -153,7 +153,7 @@ public class ScheduleManager {
     public void load() {
 	BOOSTSCHEDULE.clear();
 
-	jobSchedule = new YmlMaker(plugin, "schedule.yml");
+	jobSchedule = new YmlMaker(Jobs.getFolder(), "schedule.yml");
 	jobSchedule.saveDefaultConfig();
 
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(jobSchedule.getConfigFile());

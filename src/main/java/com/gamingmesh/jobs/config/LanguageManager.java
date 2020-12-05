@@ -33,7 +33,7 @@ public class LanguageManager {
 	}
 	for (Iterator<String> e1 = this.languages.iterator(); e1.hasNext();) {
 	    String lang = e1.next();
-	    YmlMaker langFile = new YmlMaker(Jobs.getInstance(), "locale" + File.separator + "messages_" + lang + ".yml");
+	    YmlMaker langFile = new YmlMaker(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    langFile.saveDefaultConfig();
 	}
 	//Up to here.

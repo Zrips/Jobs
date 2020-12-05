@@ -32,7 +32,7 @@ public class FurnaceBrewingHandling {
     static HashMap<UUID, List<blockLoc>> brewingMap = new HashMap<>();
 
     public static void load() {
-	YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
+	YmlMaker f = new YmlMaker(Jobs.getFolder(), "furnaceBrewingStands.yml");
 	if (!f.exists())
 	    return;
 
@@ -120,7 +120,7 @@ public class FurnaceBrewingHandling {
     }
 
     public static void save() {
-	YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
+	YmlMaker f = new YmlMaker(Jobs.getFolder(), "furnaceBrewingStands.yml");
 	if (!f.exists())
 	    f.createNewFile();
 

@@ -32,6 +32,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -41,18 +42,23 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ConfigManager {
 
     @Deprecated
     private File jobFile;
+    private File jobsPathFolder;
 
-    private final Map<File, YamlConfiguration> jobFiles = new HashMap<>();
+    private final Set<YmlMaker> jobFiles = new HashSet<>();
 
     public ConfigManager() {
 	this.jobFile = new File(Jobs.getFolder(), "jobConfig.yml");
+	this.jobsPathFolder = new File(Jobs.getFolder(), "jobs");
+
 	if (jobFile.exists()) {
 	    migrateJobs();
 	}
@@ -61,18 +67,10 @@ public class ConfigManager {
     /**
      * Returns all of existing jobs files in Jobs/jobs folder
      * 
-     * @return {@link HashMap}
+     * @return {@link HashSet}
      */
-    public Map<File, YamlConfiguration> getJobFiles() {
+    public Set<YmlMaker> getJobFiles() {
 	return jobFiles;
-    }
-
-    public void reload() {
-	try {
-	    loadJobSettings();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
     }
 
     @Deprecated
@@ -444,8 +442,7 @@ public class ConfigManager {
 
     private boolean migrateJobs() {
 	YamlConfiguration oldConf = getJobConfig();
-	File path = new File(Jobs.getFolder(), "jobs");
-	if (!path.exists()) {
+	if (!jobsPathFolder.exists()) {
 	    oldConf.set("migratedToNewFile", false);
 	    try {
 		oldConf.save(jobFile);
@@ -453,7 +450,7 @@ public class ConfigManager {
 		e.printStackTrace();
 	    }
 
-	    path.mkdirs();
+	    jobsPathFolder.mkdirs();
 	}
 
 	if (oldConf.getBoolean("migratedToNewFile")) {
@@ -465,29 +462,25 @@ public class ConfigManager {
 	    return false;
 	}
 
+	jobFiles.clear();
+
 	Jobs.getPluginLogger().warning("Your jobConfig.yml file is not works anymore and can cause issues!");
 	Jobs.getPluginLogger().warning("We've starting migrating your jobConfig file data into separate files to avoid any loss.");
 	Jobs.getPluginLogger().warning("The jobConfig file will get removed in future releases!");
 
 	Jobs.getPluginLogger().info("Started migrating jobConfig to /jobs folder...");
 
-	int a = 0;
 	for (String jobKey : jobsSection.getKeys(false)) {
 	    // Ignore example job
 	    if (jobKey.equalsIgnoreCase("exampleJob"))
 		continue;
 
-	    File newJobFile = new File(path, jobKey.toLowerCase() + ".yml");
+	    YmlMaker newJobFile = new YmlMaker(jobsPathFolder, jobKey.toLowerCase() + ".yml");
 	    if (!newJobFile.exists()) {
-		try {
-		    newJobFile.createNewFile();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		    continue;
-		}
+		newJobFile.createNewFile();
 	    }
 
-	    YamlConfiguration conf = YamlConfiguration.loadConfiguration(newJobFile);
+	    FileConfiguration conf = newJobFile.getConfig();
 	    conf.options().pathSeparator('/');
 
 	    for (Map.Entry<String, Object> m : jobsSection.getValues(true).entrySet()) {
@@ -496,18 +489,12 @@ public class ConfigManager {
 		}
 	    }
 
-	    try {
-		conf.save(newJobFile);
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-
-	    jobFiles.put(newJobFile, conf);
-	    a++;
+	    newJobFile.saveConfig();
+	    jobFiles.add(newJobFile);
 	}
 
-	if (a > 0) {
-	    Jobs.getPluginLogger().info("Done. Migrated jobs amount: " + a);
+	if (!jobFiles.isEmpty()) {
+	    Jobs.getPluginLogger().info("Done. Migrated jobs amount: " + jobFiles.size());
 
 	    oldConf.set("migratedToNewFile", true);
 	    try {
@@ -520,13 +507,13 @@ public class ConfigManager {
 	return true;
     }
 
-    private void loadJobSettings() throws IOException {
+    public void reload() {
 	migrateJobs();
 
 	if (jobFiles.isEmpty()) {
-	for (File file : new File(Jobs.getFolder(), "jobs").listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"))) {
-	    jobFiles.put(file, YamlConfiguration.loadConfiguration(file));
-	}
+	    for (File file : jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"))) {
+		jobFiles.add(new YmlMaker(jobsPathFolder, file));
+	    }
 	}
 
 	if (jobFiles.isEmpty()) {
@@ -534,8 +521,8 @@ public class ConfigManager {
 	}
 
 	List<Job> jobs = new ArrayList<>();
-	for (YamlConfiguration conf : jobFiles.values()) {
-	    Job job = loadJobs(conf.getConfigurationSection(""));
+	for (YmlMaker conf : jobFiles) {
+	    Job job = loadJobs(conf.getConfig().getConfigurationSection(""));
 	    if (job != null) {
 		jobs.add(job);
 	    }
@@ -555,8 +542,9 @@ public class ConfigManager {
 
 	for (String jobKey : jobsSection.getKeys(false)) {
 	    // Ignore example job
-	    if (jobKey.equalsIgnoreCase("exampleJob"))
+	    if (jobKey.equalsIgnoreCase("exampleJob")) {
 		continue;
+	    }
 
 	    // Translating unicode
 	    jobKey = StringEscapeUtils.unescapeJava(jobKey);

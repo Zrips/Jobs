@@ -171,8 +171,8 @@ public class BlockOwnerShip {
 	}
 
 	public void load() {
-		YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
-		YmlMaker f2 = new YmlMaker(Jobs.getInstance(), "blockOwnerShips.yml");
+		YmlMaker f = new YmlMaker(Jobs.getFolder(), "furnaceBrewingStands.yml");
+		YmlMaker f2 = new YmlMaker(Jobs.getFolder(), "blockOwnerShips.yml");
 		if (!f.exists() && !f2.exists())
 			return;
 
@@ -231,12 +231,12 @@ public class BlockOwnerShip {
 	}
 
 	public void save() {
-		YmlMaker f = new YmlMaker(Jobs.getInstance(), "furnaceBrewingStands.yml");
+		YmlMaker f = new YmlMaker(Jobs.getFolder(), "furnaceBrewingStands.yml");
 		if (f.exists()) {
 			f.getConfigFile().renameTo(new File(Jobs.getFolder(), "blockOwnerShips.yml"));
 		}
 
-		f = new YmlMaker(Jobs.getInstance(), "blockOwnerShips.yml");
+		f = new YmlMaker(Jobs.getFolder(), "blockOwnerShips.yml");
 		if (!f.exists())
 			f.createNewFile();
 
