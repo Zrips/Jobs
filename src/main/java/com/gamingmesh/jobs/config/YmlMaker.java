@@ -73,7 +73,7 @@ public class YmlMaker {
 	try {
 	    getConfig().save(configFile);
 	} catch (IOException ex) {
-	    Jobs.getInstance().getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
+	    Jobs.getInstance().getLogger().log(Level.SEVERE, "Could not save config to " + configFile.getName(), ex);
 	}
     }
 
