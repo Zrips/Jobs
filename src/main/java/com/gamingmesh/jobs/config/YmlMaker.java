@@ -10,73 +10,81 @@ import java.util.logging.Level;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamingmesh.jobs.Jobs;
 
 public class YmlMaker {
-    public String fileName;
-    private JavaPlugin plugin;
-    private File ConfigFile;
-    private FileConfiguration Configuration;
 
-    public YmlMaker(JavaPlugin plugin, String fileName) {
-	if (plugin == null) {
-	    throw new IllegalArgumentException("plugin cannot be null");
-	}
-	this.plugin = plugin;
+    public String fileName;
+
+    private File path;
+    private File configFile;
+    private FileConfiguration configuration;
+
+    public YmlMaker(File path, File parent) {
+	this(path, parent.getName());
+
+	configFile = parent;
+    }
+
+    public YmlMaker(File path, String fileName) {
+	this.path = path;
 	this.fileName = fileName;
 
-	ConfigFile = new File(Jobs.getFolder(), fileName);
+	configFile = new File(path, fileName);
     }
 
     public void reloadConfig() {
 	InputStreamReader f = null;
 	try {
-	    f = new InputStreamReader(new FileInputStream(ConfigFile), StandardCharsets.UTF_8);
+	    f = new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8);
 	} catch (FileNotFoundException e1) {
 	    e1.printStackTrace();
 	}
 
-	Configuration = YamlConfiguration.loadConfiguration(f);
-	if (f != null)
-	    try {
-		f.close();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	if (f == null) {
+	    return;
+	}
+
+	configuration = YamlConfiguration.loadConfiguration(f);
+
+	try {
+	    f.close();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
     }
 
     public FileConfiguration getConfig() {
-	if (Configuration == null)
+	if (configuration == null)
 	    reloadConfig();
-	return Configuration;
+	return configuration;
     }
 
     public File getConfigFile() {
-	if (ConfigFile == null)
-	    ConfigFile = new File(Jobs.getFolder(), fileName);
-	return ConfigFile;
+	if (configFile == null)
+	    configFile = new File(path, fileName);
+	return configFile;
     }
 
     public void saveConfig() {
-	if ((Configuration == null) || (ConfigFile == null))
+	if (configuration == null || configFile == null)
 	    return;
 	try {
-	    getConfig().save(ConfigFile);
+	    getConfig().save(configFile);
 	} catch (IOException ex) {
-	    plugin.getLogger().log(Level.SEVERE, "Could not save config to " + ConfigFile, ex);
+	    Jobs.getInstance().getLogger().log(Level.SEVERE, "Could not save config to " + configFile.getName(), ex);
 	}
     }
 
     public boolean exists() {
-    return ConfigFile != null && ConfigFile.exists();
+    return configFile != null && configFile.exists();
     }
 
     public void createNewFile() {
-	if (ConfigFile != null && !ConfigFile.exists()) {
+	if (configFile != null && !configFile.exists()) {
 	    try {
-		ConfigFile.createNewFile();
+		configFile.createNewFile();
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }
@@ -84,7 +92,7 @@ public class YmlMaker {
     }
 
     public void saveDefaultConfig() {
-	if (ConfigFile != null && !ConfigFile.exists())
-	    plugin.saveResource(fileName, false);
+	if (configFile != null && !configFile.exists())
+	    Jobs.getInstance().saveResource(fileName, false);
     }
 }

@@ -251,7 +251,7 @@ public class editjobs implements Cmd {
 		    break;
 		}
 
-		Jobs.getConfigManager().changeJobsSettings(jInfo.getConfigPath() + "/" + sType, value);
+		Jobs.getConfigManager().changeJobsSettings(args[1], jInfo.getConfigPath() + "/" + sType, value);
 		player.performCommand("jobs editjobs list " + job.getName() + " " + actionT.getName() + " " + jInfo.getName());
 		Util.getJobsEditorMap().remove(player.getUniqueId());
 		return true;
@@ -287,7 +287,7 @@ public class editjobs implements Cmd {
 		}
 
 		action.remove(jInfo);
-		Jobs.getConfigManager().changeJobsSettings(jInfo.getConfigPath(), null);
+		Jobs.getConfigManager().changeJobsSettings(args[1], jInfo.getConfigPath(), null);
 		player.performCommand("jobs editjobs list " + job.getName() + " " + actionT.getName() + " 1");
 		Util.getJobsEditorMap().remove(player.getUniqueId());
 		return true;
@@ -383,9 +383,9 @@ public class editjobs implements Cmd {
 		action.add(jInfo);
 		player.performCommand("jobs editjobs list " + job.getName() + " " + actionT.getName() + " " + jInfo.getName());
 
-		Jobs.getConfigManager().changeJobsSettings(jInfo.getConfigPath() + "/income", 0);
-		Jobs.getConfigManager().changeJobsSettings(jInfo.getConfigPath() + "/points", 0);
-		Jobs.getConfigManager().changeJobsSettings(jInfo.getConfigPath() + "/experience", 0);
+		Jobs.getConfigManager().changeJobsSettings(args[1], jInfo.getConfigPath() + "/income", 0);
+		Jobs.getConfigManager().changeJobsSettings(args[1], jInfo.getConfigPath() + "/points", 0);
+		Jobs.getConfigManager().changeJobsSettings(args[1], jInfo.getConfigPath() + "/experience", 0);
 
 		Util.getJobsEditorMap().remove(player.getUniqueId());
 		return true;

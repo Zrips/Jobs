@@ -60,7 +60,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -672,13 +671,10 @@ public class Jobs extends JavaPlugin {
 	placeholderAPIEnabled = setupPlaceHolderAPI();
 
 	try {
-	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
-	    jobConfig.saveDefaultConfig();
-
-	    YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
+	    YmlMaker jobShopItems = new YmlMaker(getFolder(), "shopItems.yml");
 	    jobShopItems.saveDefaultConfig();
 
-	    YmlMaker restrictedBlocks = new YmlMaker(this, "restrictedBlocks.yml");
+	    YmlMaker restrictedBlocks = new YmlMaker(getFolder(), "restrictedBlocks.yml");
 	    restrictedBlocks.saveDefaultConfig();
 
 	    bbManager = new BossBarManager(this);
@@ -691,7 +687,7 @@ public class Jobs extends JavaPlugin {
 	    startup();
 
 	    if (getGCManager().SignsEnabled) {
-		YmlMaker jobSigns = new YmlMaker(this, "Signs.yml");
+		YmlMaker jobSigns = new YmlMaker(getFolder(), "Signs.yml");
 		jobSigns.saveDefaultConfig();
 	    }
 

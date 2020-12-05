@@ -16,7 +16,7 @@ public class ToggleBarHandling {
     static Map<String, Boolean> bossBarToggle = new HashMap<>();
 
     public static void load() {
-	YmlMaker f = new YmlMaker(Jobs.getInstance(), "actionBarBossbar.yml");
+	YmlMaker f = new YmlMaker(Jobs.getFolder(), "actionBarBossbar.yml");
 	if (!f.exists())
 	    return;
 
@@ -48,7 +48,7 @@ public class ToggleBarHandling {
     }
 
     public static void save() {
-	YmlMaker f = new YmlMaker(Jobs.getInstance(), "actionBarBossbar.yml");
+	YmlMaker f = new YmlMaker(Jobs.getFolder(), "actionBarBossbar.yml");
 	if (!f.exists())
 	    f.createNewFile();
 

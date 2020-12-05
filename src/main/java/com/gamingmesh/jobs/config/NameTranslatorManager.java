@@ -158,7 +158,7 @@ public class NameTranslatorManager {
     }
 
     public void readFile() {
-	YmlMaker ItemFile = new YmlMaker(Jobs.getInstance(), "TranslatableWords" + File.separator + "Words_"
+	YmlMaker ItemFile = new YmlMaker(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_"
 	    + Jobs.getGCManager().localeString + ".yml");
 	if (!ItemFile.getConfigFile().getName().equalsIgnoreCase("en")) {
 	    ItemFile.saveDefaultConfig();
@@ -268,7 +268,7 @@ public class NameTranslatorManager {
 	}
 	for (Iterator<String> e1 = languages.iterator(); e1.hasNext();) {
 	    String lang = e1.next();
-	    YmlMaker langFile = new YmlMaker(Jobs.getInstance(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
+	    YmlMaker langFile = new YmlMaker(Jobs.getFolder(), "TranslatableWords" + File.separator + "Words_" + lang + ".yml");
 	    langFile.saveDefaultConfig();
 	}
 	//Up to here.
