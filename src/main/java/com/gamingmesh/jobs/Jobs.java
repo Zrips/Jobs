@@ -60,7 +60,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -672,9 +671,6 @@ public class Jobs extends JavaPlugin {
 	placeholderAPIEnabled = setupPlaceHolderAPI();
 
 	try {
-	    YmlMaker jobConfig = new YmlMaker(this, "jobConfig.yml");
-	    jobConfig.saveDefaultConfig();
-
 	    YmlMaker jobShopItems = new YmlMaker(this, "shopItems.yml");
 	    jobShopItems.saveDefaultConfig();
 
