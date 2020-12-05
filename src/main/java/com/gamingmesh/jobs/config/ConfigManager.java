@@ -482,7 +482,8 @@ public class ConfigManager {
 	migrateJobs();
 
 	if (jobFiles.isEmpty()) {
-	    for (File file : jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"))) {
+	    for (File file : jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml")
+		&& !name.toLowerCase().contains("example"))) {
 		jobFiles.add(new YmlMaker(jobsPathFolder, file));
 	    }
 	}
@@ -661,7 +662,7 @@ public class ConfigManager {
 	    ItemStack GUIitem = CMIMaterial.GREEN_WOOL.newItemStack();
 	    if (jobSection.contains("Gui")) {
 		ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
-		if (guiSection.contains("Item") && guiSection.isString("Item")) {
+		if (guiSection.isString("Item")) {
 		    String item = guiSection.getString("Item");
 		    String subType = "";
 
@@ -701,16 +702,14 @@ public class ConfigManager {
 		} else
 		    log.warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
 
-		if (guiSection.isList("Enchantments")) {
-		    for (String str4 : guiSection.getStringList("Enchantments")) {
-			String[] id = str4.split(":");
-			if (GUIitem.getItemMeta() instanceof EnchantmentStorageMeta) {
-			    EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
-			    enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
-			    GUIitem.setItemMeta(enchantMeta);
-			} else
-			    GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
-		    }
+		for (String str4 : guiSection.getStringList("Enchantments")) {
+		    String[] id = str4.split(":");
+		    if (GUIitem.getItemMeta() instanceof EnchantmentStorageMeta) {
+			EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+			enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
+			GUIitem.setItemMeta(enchantMeta);
+		    } else
+			GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
 		}
 
 		if (guiSection.isString("CustomSkull")) {

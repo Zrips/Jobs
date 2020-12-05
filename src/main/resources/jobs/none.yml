@@ -1,3 +1,7 @@
+# This is default job players will have if they didn't joined any
+# When players join any job, they will lose access to this one
+# You can set this to give out some money for basic actions, like killing players or breaking some blocks but job will not be visible and you can't level it up
+# leveling-progression-equation and experience-progression-equation doesn't have any impact for this job
 None:
   fullname: None
   shortname: N
