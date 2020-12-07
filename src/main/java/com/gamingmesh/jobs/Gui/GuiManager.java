@@ -197,6 +197,8 @@ public class GuiManager {
 	    nextButton = Jobs.getGCManager().getJobsGUINextButton(),
 	    backButton = Jobs.getGCManager().getJobsGUIBackButton();
 
+	final List<ActionType> jobsRemained = new ArrayList<>();
+
 	int i = 0;
 	for (ActionType actionType : ActionType.values()) {
 	    List<JobInfo> info = job.getJobInfo(actionType);
@@ -208,6 +210,10 @@ public class GuiManager {
 
 	    int y = 1;
 	    for (int z = 0; z < info.size(); z++) {
+		if (i > 53) {
+		    break;
+		}
+
 		JobInfo jInfo = info.get(z);
 		if (jInfo == null) {
 		    continue;
@@ -251,10 +257,6 @@ public class GuiManager {
 		    if (z == info.size() - 1)
 			continue;
 
-		    if (i >= 54) {
-			break;
-		    }
-
 		    ItemMeta meta = guiItem.getItemMeta();
 		    meta.setDisplayName(job.getNameWithColor());
 		    meta.setLore(lore);
@@ -270,8 +272,9 @@ public class GuiManager {
 		y++;
 	    }
 
-	    if (i >= 54) {
-		break;
+	    if (i > 53) {
+		jobsRemained.add(actionType);
+		continue;
 	    }
 
 	    ItemMeta meta = guiItem.getItemMeta();
@@ -318,19 +321,12 @@ public class GuiManager {
 	    });
 	}
 
-    if (i >= 53) {
+    if (i >= 53 && !jobsRemained.isEmpty()) {
 	ItemStack next = Jobs.getGCManager().guiNextButton;
 	ItemMeta meta = next.getItemMeta();
 
 	meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.next"));
 	next.setItemMeta(meta);
-
-	List<ActionType> jobsRemained = new ArrayList<>();
-	for (ActionType actionType : ActionType.values()) {
-	    List<JobInfo> info = job.getJobInfo(actionType);
-	    if (info != null && !info.isEmpty() && info.size() <= guiSize)
-		jobsRemained.add(actionType);
-	}
 
 	gui.addButton(new CMIGuiButton(nextButton, next) {
 	    @Override
