@@ -96,9 +96,6 @@ public class JobsCommands implements CommandExecutor {
 	if (back)
 	    return true;
 
-	if (!(sender instanceof Player))
-	    return help(sender, 1);
-
 	return help(sender, 1);
     }
 
@@ -129,7 +126,7 @@ public class JobsCommands implements CommandExecutor {
     }
 
     protected boolean help(CommandSender sender, int page) {
-	Map<String, Integer> commands = GetCommands(sender);
+	Map<String, Integer> commands = getCommands(sender);
 	if (commands.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
@@ -159,7 +156,7 @@ public class JobsCommands implements CommandExecutor {
 	return true;
     }
 
-    public Map<String, Integer> GetCommands(CommandSender sender) {
+    public Map<String, Integer> getCommands(CommandSender sender) {
 	Map<String, Integer> temp = new HashMap<>();
 	for (Entry<String, Integer> cmd : commandList.entrySet()) {
 	    if (sender instanceof Player && !hasCommandPermission(sender, cmd.getKey()))

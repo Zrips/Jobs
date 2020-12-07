@@ -870,11 +870,9 @@ public abstract class JobsDAO {
 	    prestt.execute();
 
 	    res2 = prestt.getGeneratedKeys();
-	    int id = 0;
-	    if (res2.next())
-		id = res2.getInt(1);
 
-	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, id, uuid, System.currentTimeMillis(), 0));
+	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, res2.next() ? res2.getInt(1) : 0,
+	    uuid, System.currentTimeMillis(), 0));
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -896,12 +894,7 @@ public abstract class JobsDAO {
 	    prestt.executeUpdate();
 
 	    res2 = prestt.getGeneratedKeys();
-	    int id = 0;
-	    if (res2.next())
-		id = res2.getInt(1);
-
-	    Util.addJobsWorld(new JobsWorld(worldName, id));
-
+	    Util.addJobsWorld(new JobsWorld(worldName, res2.next() ? res2.getInt(1) : 0));
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {

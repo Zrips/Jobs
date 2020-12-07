@@ -479,6 +479,7 @@ public class ConfigManager {
     }
 
     public void reload() {
+	jobFiles.clear();
 	migrateJobs();
 
 	if (jobFiles.isEmpty()) {

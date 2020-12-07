@@ -46,10 +46,16 @@ public class ExploreRegion {
 
     public int getChunkX(short place) {
 	int endX = place % 32;
+
 	if (x < 0)
 	    endX = -endX;
+
 	endX = x * 32 + endX;
-	endX = endX < 0 ? endX + 32 : endX;
+
+	if (endX < 0) {
+	    endX += 32;
+	}
+
 	return endX;
     }
 
@@ -58,7 +64,11 @@ public class ExploreRegion {
 	if (z < 0)
 	    endZ = -endZ;
 	endZ = z * 32 + endZ;
-	endZ = endZ < 0 ? endZ + 32 : endZ;
+
+	if (endZ < 0) {
+	    endZ += 32;
+	}
+
 	return endZ;
     }
 }

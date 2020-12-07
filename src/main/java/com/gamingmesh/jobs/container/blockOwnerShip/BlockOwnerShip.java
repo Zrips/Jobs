@@ -182,8 +182,6 @@ public class BlockOwnerShip {
 
 		f = f2;
 
-		int total = 0;
-
 		FileConfiguration config = f.getConfig();
 
 		String path = (type == BlockTypes.FURNACE ? "Furnace"
@@ -193,6 +191,7 @@ public class BlockOwnerShip {
 		if (isReassignDisabled() || !config.isConfigurationSection(path))
 			return;
 
+		int total = 0;
 		ConfigurationSection section = config.getConfigurationSection(path);
 		for (String one : section.getKeys(false)) {
 			String value = section.getString(one);
@@ -242,11 +241,11 @@ public class BlockOwnerShip {
 
 		f.saveDefaultConfig();
 
-		FileConfiguration config = f.getConfig();
-
 		if (isReassignDisabled()) {
 			return;
 		}
+
+		FileConfiguration config = f.getConfig();
 
 		String path = (type == BlockTypes.FURNACE ? "Furnace"
 				: type == BlockTypes.BLAST_FURNACE ? "BlastFurnace"
@@ -255,7 +254,6 @@ public class BlockOwnerShip {
 
 		for (Entry<UUID, List<blockLoc>> one : blockOwnerShips.entrySet()) {
 			String full = "";
-
 			for (blockLoc oneL : one.getValue()) {
 				if (!full.isEmpty())
 					full += ";";

@@ -242,7 +242,7 @@ public class NameTranslatorManager {
     }
 
     @SuppressWarnings("deprecation")
-    synchronized void load() {
+    void load() {
 	String ls = Jobs.getGCManager().localeString;
 	if (ls.isEmpty())
 	    return;

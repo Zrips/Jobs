@@ -100,6 +100,9 @@ exampleJob:
     Enchantments:
     - 'DURABILITY:1'
 
+    # The number of slot where to put this material in gui.
+    slot: 2
+
   # Defines maximum amount of daily quests player can have from THIS job
   # This will not have effect on overall quest amount player will have
   maxDailyQuests: 3

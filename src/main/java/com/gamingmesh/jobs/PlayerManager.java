@@ -387,7 +387,7 @@ public class PlayerManager {
 	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
 	jPlayer.setLeftTime(job);
 
-	PerformCommands.PerformCommandsOnJoin(jPlayer, job);
+	PerformCommands.performCommandsOnJoin(jPlayer, job);
 
 	Jobs.takeSlot(job);
 	Jobs.getSignUtil().updateAllSign(job);
@@ -418,7 +418,7 @@ public class PlayerManager {
 
 	if (!Jobs.getJobsDAO().quitJob(jPlayer, job))
 	    return false;
-	PerformCommands.PerformCommandsOnLeave(jPlayer, job);
+	PerformCommands.performCommandsOnLeave(jPlayer, job);
 	Jobs.leaveSlot(job);
 
 	jPlayer.getLeftTimes().remove(jPlayer.getUniqueId());

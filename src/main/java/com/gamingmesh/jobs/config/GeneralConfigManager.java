@@ -282,7 +282,7 @@ public class GeneralConfigManager {
      * 
      * loads from Jobs/generalConfig.yml
      */
-    private synchronized void loadGeneralSettings() {
+    private void loadGeneralSettings() {
 	c = new ConfigReader("generalConfig.yml");
 
 	c.header(Arrays.asList("General configuration.",

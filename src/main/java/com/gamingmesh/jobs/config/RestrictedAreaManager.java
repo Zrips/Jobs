@@ -179,7 +179,7 @@ public class RestrictedAreaManager {
      * 
      * loads from Jobs/restrictedAreas.yml
      */
-    public synchronized void load() {
+    public void load() {
 	restrictedAreas.clear();
 	File f = new File(Jobs.getFolder(), "restrictedAreas.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);

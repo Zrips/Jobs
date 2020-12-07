@@ -23,7 +23,7 @@ public class LanguageManager {
      * 
      * loads from Jobs/locale/messages_en.yml
      */
-    synchronized void load() {
+    void load() {
 	// This should be present to copy over default locale files into locale folder if file doesn't exist. Grabs all files from plugin file.
 	languages = new ArrayList<>();
 	try {

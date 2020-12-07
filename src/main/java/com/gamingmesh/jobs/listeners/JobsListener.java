@@ -135,11 +135,7 @@ public class JobsListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
-	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-	if (iih == null || iih.getType() == Material.AIR)
-	    return;
-
-	if (iih.getType() != CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial())
+	if (Jobs.getNms().getItemInMainHand(player).getType() != CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial())
 	    return;
 
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()) || !player.hasPermission("jobs.area.select"))
@@ -164,8 +160,6 @@ public class JobsListener implements Listener {
 	    JobsAreaSelectionEvent jobsAreaSelectionEvent = new JobsAreaSelectionEvent(player, Jobs.getSelectionManager().getSelectionCuboid(player));
 	    Bukkit.getServer().getPluginManager().callEvent(jobsAreaSelectionEvent);
 	}
-
-	return;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -201,11 +195,9 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
-	if (!plugin.isEnabled())
-	    return;
-
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
-	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+	if (plugin.isEnabled()) {
+	    Jobs.getPermissionHandler().recalculatePermissions(Jobs.getPlayerManager().getJobsPlayer(event.getPlayer()));
+	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

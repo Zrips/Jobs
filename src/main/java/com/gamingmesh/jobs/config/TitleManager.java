@@ -40,7 +40,7 @@ public class TitleManager {
      * 
      * loads from Jobs/titleConfig.yml
      */
-    synchronized void load() {
+    void load() {
 	titles.clear();
 
 	ConfigReader c = new ConfigReader("titleConfig.yml");

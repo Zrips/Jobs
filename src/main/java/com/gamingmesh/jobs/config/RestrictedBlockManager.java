@@ -17,7 +17,7 @@ public class RestrictedBlockManager {
      * Method to load the restricted blocks configuration
      * loads from Jobs/restrictedBlocks.yml
      */
-    public synchronized void load() {
+    public void load() {
 	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
 
