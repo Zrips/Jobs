@@ -44,6 +44,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.ClickType;
@@ -726,5 +727,16 @@ public class JobsListener implements Listener {
     public void PlayerItemBreakEvent(InventoryClickEvent event) {
 	Player player = (Player) event.getWhoClicked();
 	Jobs.getPlayerManager().resetiItemBonusCache(player.getUniqueId());
+    }
+    
+
+    /**
+     * Removes BlockProtection on natural generated blocks (Cobblestone generators etc.)
+     * @param event
+     */
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onBlockFromToEvent(BlockFromToEvent event) {
+    	if(Jobs.getGCManager().allowBreakPaymentForOreGenerators)
+    		Jobs.getBpManager().remove(event.getToBlock().getLocation(), true);
     }
 }
