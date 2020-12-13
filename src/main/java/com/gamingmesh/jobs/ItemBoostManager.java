@@ -106,7 +106,7 @@ public class ItemBoostManager {
 	    if (!cfg.getC().isConfigurationSection(one))
 		continue;
 
-	    // Ignoring example job
+	    // Ignoring example boost
 	    if (one.equalsIgnoreCase("exampleBoost"))
 		continue;
 

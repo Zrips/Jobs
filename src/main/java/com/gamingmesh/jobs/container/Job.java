@@ -151,7 +151,7 @@ public class Job {
     }
 
     public boolean isSame(Job job) {
-	return job != null && getName().equalsIgnoreCase(job.getName());
+	return job != null && (getName().equalsIgnoreCase(job.getName()) || id == job.getId());
     }
 
     public int getTotalPlayers() {

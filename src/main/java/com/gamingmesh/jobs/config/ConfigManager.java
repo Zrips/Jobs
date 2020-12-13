@@ -139,7 +139,7 @@ public class ConfigManager {
 	if (myKey.contains("-")) {
 	    // uses subType
 	    String[] split = myKey.split("-");
-	    if (split.length == 2) {
+	    if (split.length >= 2) {
 		subType = ":" + split[1];
 		meta = split[1];
 		myKey = split[0];
@@ -483,9 +483,12 @@ public class ConfigManager {
 	migrateJobs();
 
 	if (jobFiles.isEmpty()) {
-	    for (File file : jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml")
-		&& !name.toLowerCase().contains("example"))) {
-		jobFiles.add(new YmlMaker(jobsPathFolder, file));
+	    File[] files = jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml")
+	    && !name.toLowerCase().contains("example"));
+	    if (files != null) {
+		for (File file : files) {
+		    jobFiles.add(new YmlMaker(jobsPathFolder, file));
+		}
 	    }
 	}
 
@@ -950,7 +953,7 @@ public class ConfigManager {
 				    String[] co = mats.split(",");
 
 				    int amount = 1;
-				    if (split.length == 3) {
+				    if (split.length <= 3) {
 					amount = Integer.parseInt(split[2]);
 				    }
 

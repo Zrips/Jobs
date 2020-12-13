@@ -14,9 +14,6 @@ public enum ArmorTypes {
     }
 
     public final static ArmorTypes matchType(final ItemStack itemStack) {
-	if (itemStack == null)
-	    return null;
-
 	switch (CMIMaterial.get(itemStack)) {
 	case DIAMOND_HELMET:
 	case GOLDEN_HELMET:

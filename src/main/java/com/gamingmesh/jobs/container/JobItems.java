@@ -53,7 +53,7 @@ public class JobItems {
 
 	    if (name != null)
 		meta.setDisplayName(CMIChatColor.translate(name));
-	    if (lore != null && !lore.isEmpty())
+	    if (lore != null)
 		meta.setLore(lore);
 
 	    if (enchants != null) {
@@ -63,8 +63,8 @@ public class JobItems {
 			bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
 		    }
 		} else {
-		    for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
-			meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
+		    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
+			meta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
 		    }
 		}
 	    }
@@ -87,36 +87,35 @@ public class JobItems {
     public ItemStack getItemStack(Player player) {
 	if (player == null)
 	    return item;
-	try {
-	    ItemStack item = this.item.clone();
-	    ItemMeta meta = item.getItemMeta();
-	    if (meta.hasDisplayName())
-		meta.setDisplayName(CMIChatColor.translate(meta.getDisplayName().replace("[player]", player.getName())));
-	    if (meta.hasLore()) {
-		List<String> TranslatedLore = new ArrayList<>();
-		for (String oneLore : meta.getLore()) {
-		    TranslatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
-		}
-		meta.setLore(TranslatedLore);
+
+	ItemStack item = this.item.clone();
+	ItemMeta meta = item.getItemMeta();
+	if (meta.hasDisplayName())
+	    meta.setDisplayName(CMIChatColor.translate(meta.getDisplayName().replace("[player]", player.getName())));
+
+	if (meta.hasLore()) {
+	    List<String> translatedLore = new ArrayList<>();
+	    for (String oneLore : meta.getLore()) {
+		translatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
 	    }
-	    if (enchants != null) {
-		if (item.getType() == CMIMaterial.ENCHANTED_BOOK.getMaterial()) {
-		    EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
-		    for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
-			bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
-		    }
-		} else {
-		    for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
-			meta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
-		    }
-		}
-	    }
-	    item.setItemMeta(meta);
-	    return item;
-	} catch (Exception e) {
-	    e.printStackTrace();
+	    meta.setLore(translatedLore);
 	}
-	return null;
+
+	if (enchants != null) {
+	    if (item.getType() == CMIMaterial.ENCHANTED_BOOK.getMaterial()) {
+		EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
+		for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
+		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
+		}
+	    } else {
+		for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
+		    meta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
+		}
+	    }
+	}
+
+	item.setItemMeta(meta);
+	return item;
     }
 
     public BoostMultiplier getBoost() {
@@ -136,8 +135,7 @@ public class JobItems {
     }
 
     public void setJobs(List<Job> jobs) {
-	this.jobs.clear();
-	this.jobs.addAll(jobs == null ? new ArrayList<>() : jobs);
+	this.jobs = jobs == null ? new ArrayList<>() : jobs;
     }
 
     public HashMap<Enchantment, Integer> getEnchants() {

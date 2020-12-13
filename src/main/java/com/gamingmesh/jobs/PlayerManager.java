@@ -384,7 +384,8 @@ public class PlayerManager {
 	if (jobsjoinevent.isCancelled())
 	    return;
 
-	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
+	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () ->
+	    Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job)));
 	jPlayer.setLeftTime(job);
 
 	PerformCommands.performCommandsOnJoin(jPlayer, job);
@@ -590,7 +591,7 @@ public class PlayerManager {
 	}
 
 	if (Jobs.getGCManager().FireworkLevelupUse) {
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
+	    Bukkit.getServer().getScheduler().runTaskLater(Jobs.getInstance(), new Runnable() {
 		@Override
 		public void run() {
 		    if (player == null || !player.isOnline())
@@ -1022,7 +1023,7 @@ public class PlayerManager {
 	if (player == null || player.isOp() || !Jobs.getGCManager().AutoJobJoinUse)
 	    return;
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
+	Bukkit.getServer().getScheduler().runTaskLater(Jobs.getInstance(), new Runnable() {
 	    @Override
 	    public void run() {
 		if (!player.isOnline())

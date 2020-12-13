@@ -235,6 +235,10 @@ public class BlockOwnerShip {
 			f.getConfigFile().renameTo(new File(Jobs.getFolder(), "blockOwnerShips.yml"));
 		}
 
+		if (blockOwnerShips.isEmpty()) {
+			return;
+		}
+
 		f = new YmlMaker(Jobs.getFolder(), "blockOwnerShips.yml");
 		if (!f.exists())
 			f.createNewFile();

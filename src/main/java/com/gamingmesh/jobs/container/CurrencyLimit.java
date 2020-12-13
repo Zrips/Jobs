@@ -19,8 +19,7 @@ public class CurrencyLimit {
 	this.timeLimit = timeLimit;
 	this.announcementDelay = announcementDelay;
 
-	if (maxEquation != null)
-	    this.maxEquation = maxEquation;
+	setMaxEquation(maxEquation);
     }
 
     public CurrencyLimit() {

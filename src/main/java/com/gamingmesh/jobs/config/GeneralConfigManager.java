@@ -630,7 +630,6 @@ public class GeneralConfigManager {
 	try {
 	    Parser Equation = new Parser(MoneyLimit);
 	    Equation.setVariable("totallevel", 1);
-	    Equation.getValue();
 	    limit.setMaxEquation(Equation);
 	} catch (Throwable e) {
 	    Jobs.getPluginLogger().warning("MoneyLimit has an invalid value. Disabling money limit!");
@@ -664,7 +663,6 @@ public class GeneralConfigManager {
 	try {
 	    Parser Equation = new Parser(PointLimit);
 	    Equation.setVariable("totallevel", 1);
-	    Equation.getValue();
 	    limit.setMaxEquation(Equation);
 	} catch (Throwable e) {
 	    Jobs.getPluginLogger().warning("PointLimit has an invalid value. Disabling money limit!");
@@ -698,7 +696,6 @@ public class GeneralConfigManager {
 	try {
 	    Parser Equation = new Parser(expLimit);
 	    Equation.setVariable("totallevel", 1);
-	    Equation.getValue();
 	    limit.setMaxEquation(Equation);
 	} catch (Throwable e) {
 	    Jobs.getPluginLogger().warning("ExpLimit has an invalid value. Disabling money limit!");

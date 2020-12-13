@@ -443,14 +443,14 @@ public class JobsListener implements Listener {
     public void onLimitedItemInteract(PlayerInteractEvent event) {
 	Player player = event.getPlayer();
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-	if (iih == null || iih.getType() == Material.AIR)
+	if (iih.getType() == Material.AIR)
 	    return;
 
 	if (event.getClickedBlock() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getClickedBlock().getWorld()))
 	    return;
 
-	JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (JPlayer == null)
+	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+	if (jPlayer == null)
 	    return;
 
 	Map<Enchantment, Integer> enchants = new HashMap<>(iih.getEnchantments());
@@ -470,7 +470,7 @@ public class JobsListener implements Listener {
 
 	String meinOk = null;
 
-	mein: for (JobProgression one : JPlayer.getJobProgression()) {
+	mein: for (JobProgression one : jPlayer.getJobProgression()) {
 	    for (JobLimitedItems oneItem : one.getJob().getLimitedItems().values()) {
 		if (one.getLevel() >= oneItem.getLevel() || !isThisItem(oneItem, CMIMaterial.get(iih), name, lore, enchants))
 		    continue;

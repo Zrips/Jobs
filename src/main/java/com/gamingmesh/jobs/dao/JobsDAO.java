@@ -1313,16 +1313,10 @@ public abstract class JobsDAO {
 	    prest.setInt(1, jPlayer.getUserId());
 	    res = prest.executeQuery();
 	    while (res.next()) {
-
 		String typeName = res.getString(LimitTableFields.type.getCollumn());
 		int typeId = res.getInt(LimitTableFields.typeid.getCollumn());
 
-		CurrencyType type = null;
-		if (typeId != 0)
-		    type = CurrencyType.get(typeId);
-		else
-		    type = CurrencyType.getByName(typeName);
-
+		CurrencyType type = typeId != 0 ? CurrencyType.get(typeId) : CurrencyType.getByName(typeName);
 		if (type == null)
 		    continue;
 

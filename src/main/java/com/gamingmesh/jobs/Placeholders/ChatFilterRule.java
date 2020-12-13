@@ -88,14 +88,12 @@ public class ChatFilterRule {
     }
 
     public Matcher getMatcher(String msg) {
-	Matcher matcher = null;
 	for (Pattern one : pattern) {
 	    if (one.matcher(msg).find()) {
-		matcher = one.matcher(msg);
-		break;
+		return one.matcher(msg);
 	    }
 	}
-	return matcher;
+	return null;
     }
 
     public String getMessageToStaff() {

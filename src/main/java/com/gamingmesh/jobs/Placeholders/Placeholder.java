@@ -98,55 +98,53 @@ public class Placeholder {
 	private boolean hidden = false;
 
 	JobsPlaceHolders(String... vars) {
-	    Matcher matcher = numericalRule.getMatcher(this.toString());
+	    Matcher matcher = numericalRule.getMatcher(toString());
 	    if (matcher != null) {
 		rule = new ChatFilterRule();
+
 		List<String> ls = new ArrayList<>();
-		ls.add("(%" + pref + "_)" + this.toString().replaceAll("\\$\\d", "([^\"^%]*)") + "(%)");
+		ls.add("(%" + pref + "_)" + toString().replaceAll("\\$\\d", "([^\"^%]*)") + "(%)");
+
 //		For MVdWPlaceholderAPI
-//		ls.add("(\\{" + pref + this.toString().replaceAll("\\$\\d", "([^\"^%]*)" + "(\\})"));
+//		ls.add("(\\{" + pref + toString().replaceAll("\\$\\d", "([^\"^%]*)" + "(\\})"));
+
 		rule.setPattern(ls);
+
 		while (matcher.find()) {
-		    try {
-			int id = Integer.parseInt(matcher.group(1).substring(1));
-			groups.add(id);
-		    } catch (Exception e) {
-			e.printStackTrace();
-		    }
+		    groups.add(Integer.parseInt(matcher.group(1).substring(1)));
 		}
 	    }
+
 	    this.vars = vars;
 	    this.hidden = false;
 	}
 
 	public static JobsPlaceHolders getByName(String name) {
 	    String original = name;
+
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
-		if (one.isComplex())
-		    continue;
-		if (one.toString().equalsIgnoreCase(name))
+		if (!one.isComplex() && one.toString().equalsIgnoreCase(name))
 		    return one;
 	    }
+
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
-		if (one.isComplex())
-		    continue;
-		if (one.getName().equalsIgnoreCase(name))
+		if (!one.isComplex() && one.getName().equalsIgnoreCase(name))
 		    return one;
 	    }
+
 	    name = pref + name;
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
-		if (one.isComplex())
-		    continue;
-		if (one.getName().equalsIgnoreCase(name))
+		if (!one.isComplex() && one.getName().equalsIgnoreCase(name))
 		    return one;
 	    }
+
+	    JobsPlaceHolders bestMatch = null;
 	    name = "%" + pref + "_" + original + "%";
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
-		if (!one.isComplex())
-		    continue;
-		if (!one.getComplexRegexMatchers(name).isEmpty())
-		    return one;
+		if (one.isComplex() && !one.getComplexRegexMatchers(name).isEmpty())
+		    bestMatch = one;
 	    }
+
 //	    For MVdWPlaceholderAPI
 //	    if (Jobs.getInstance().isMVdWPlaceholderAPIEnabled() && original.startsWith(pref+"_")) {
 //		String t = "{" + original + "}";
@@ -158,23 +156,27 @@ public class Placeholder {
 //		    }
 //		}
 //	    }
-	    return null;
+
+	    return bestMatch;
 	}
 
 	public static JobsPlaceHolders getByNameExact(String name) {
 	    name = name.toLowerCase();
+
+	    // Should iterate over all placeholders to match the correct one
+	    // for example with %jobsr_plimit_tleft_money%
+	    JobsPlaceHolders bestMatch = null;
 	    for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
 		if (one.isComplex()) {
 		    if (!one.getComplexRegexMatchers("%" + name + "%").isEmpty()) {
-			return one;
+			bestMatch = one;
 		    }
-		} else {
-		    String n = one.getName();
-		    if (n.equals(name))
-			return one;
+		} else if (one.getName().equals(name)) {
+		    bestMatch = one;
 		}
 	    }
-	    return null;
+
+	    return bestMatch;
 	}
 
 	public String getName() {
@@ -217,28 +219,27 @@ public class Placeholder {
 
 	public List<String> getComplexRegexMatchers(String text) {
 	    List<String> lsInLs = new ArrayList<>();
-	    if (!this.isComplex())
+	    if (!isComplex())
 		return lsInLs;
 
-	    Matcher matcher = this.getRule().getMatcher(text);
+	    Matcher matcher = getRule().getMatcher(text);
 	    if (matcher == null)
 		return lsInLs;
+
 	    while (matcher.find()) {
 		lsInLs.add(matcher.group());
 	    }
+
 	    return lsInLs;
 	}
 
 	public List<String> getComplexValues(String text) {
-
 	    List<String> lsInLs = new ArrayList<>();
-	    if (!this.isComplex() || text == null)
+	    if (!isComplex() || text == null)
 		return lsInLs;
 
-	    Matcher matcher = this.getRule().getMatcher(text);
-	    if (matcher == null)
-		return lsInLs;
-	    if (matcher.find()) {
+	    Matcher matcher = getRule().getMatcher(text);
+	    if (matcher != null && matcher.find()) {
 		try {
 		    for (Integer oneG : groups) {
 			lsInLs.add(matcher.group(oneG + 1));
@@ -246,6 +247,7 @@ public class Placeholder {
 		} catch (Exception e) {
 		}
 	    }
+
 	    return lsInLs;
 	}
 
@@ -303,11 +305,15 @@ public class Placeholder {
     public String updatePlaceHolders(Player player, String message) {
 	if (message == null)
 	    return null;
-	if (message.contains("%"))
+
+	if (message.contains("%")) {
 	    message = translateOwnPlaceHolder(player, message);
-	if (plugin.isPlaceholderAPIEnabled() && message.contains("%")) {
-	    message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((OfflinePlayer) player, message);
+
+	    if (plugin.isPlaceholderAPIEnabled()) {
+		message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((OfflinePlayer) player, message);
+	    }
 	}
+
 //	For MVdWPlaceholderAPI
 //	if (plugin.isMVdWPlaceholderAPIEnabled()) {
 //	    if (message.contains("{"))
@@ -324,25 +330,26 @@ public class Placeholder {
 	if (message.contains("%")) {
 	    Matcher match = placeholderPatern.matcher(message);
 	    while (match.find()) {
-		try {
-		    String cmd = match.group(2);
-		    if (!message.contains("%"))
-			break;
-		    JobsPlaceHolders place = JobsPlaceHolders.getByNameExact(cmd);
-		    if (place == null)
-			continue;
-		    String group = match.group();
-		    String with = this.getValue(player, place, group);
-		    if (with == null)
-			with = "";
-		    if (with.startsWith("$"))
-			with = "\\" + with;
-		    message = message.replaceFirst(group, with);
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
+		if (!message.contains("%"))
+		    break;
+
+		String cmd = match.group(2);
+		JobsPlaceHolders place = JobsPlaceHolders.getByNameExact(cmd);
+		if (place == null)
+		    continue;
+
+		String group = match.group();
+		String with = getValue(player, place, group);
+		if (with == null)
+		    with = "";
+
+		if (with.startsWith("$"))
+		    with = "\\" + with;
+
+		message = message.replaceFirst(group, with);
 	    }
 	}
+
 	return message;
     }
 

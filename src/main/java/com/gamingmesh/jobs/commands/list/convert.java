@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.Bukkit;
+import java.util.concurrent.CompletableFuture;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,17 +25,21 @@ public class convert implements Cmd {
 	    return true;
 	}
 
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, Jobs::convertDatabase);
+	CompletableFuture.supplyAsync(() -> {
+	    Jobs.convertDatabase();
+	    return true;
+	}).thenAccept(e -> {
+	    String from = "MySQL";
+	    String to = "SQLite";
 
-	String from = "MySQL";
-	String to = "SQLite";
+	    if (Jobs.getDBManager().getDbType() != DataBaseType.SqLite) {
+		from = "SQLite";
+		to = "MySQL";
+	    }
 
-	if (!Jobs.getDBManager().getDbType().equals(DataBaseType.SqLite)) {
-	    from = "SQLite";
-	    to = "MySQL";
-	}
+	    Jobs.consoleMsg("&eData base was converted from &2" + from + " &eto &2" + to + "&e!");
+	});
 
-	Jobs.consoleMsg("&eData base was converted from &2" + from + " &eto &2" + to + "&e!");
 	return true;
     }
 }
