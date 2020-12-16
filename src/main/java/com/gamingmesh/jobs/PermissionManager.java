@@ -29,6 +29,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Debug;
 
 public class PermissionManager {
 
@@ -117,17 +118,17 @@ public class PermissionManager {
     }
 
     public Double getMaxPermission(JobsPlayer jPlayer, String perm) {
-	return getMaxPermission(jPlayer, perm, false, false, false);
+	return getMaxPermission(jPlayer, perm, false, false);
     }
 
     public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
-	return getMaxPermission(jPlayer, perm, force, false, false);
+	return getMaxPermission(jPlayer, perm, force, false);
     }
 
-    public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative, boolean allowMinus) {
+    public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative) {
 	if (jPlayer == null || jPlayer.getPlayer() == null)
 	    return 0D;
-
+	
 	perm = perm.toLowerCase();
 	if (!perm.endsWith("."))
 	    perm += ".";
@@ -139,24 +140,24 @@ public class PermissionManager {
 	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
 	}
 
-	double amount = 0D;
+	double amount = Double.NEGATIVE_INFINITY;
 
 	for (Map.Entry<String, Boolean> permission : permissions.entrySet()) {
 	    if (!permission.getKey().startsWith(perm) || !permission.getValue())
 		continue;
-
 	    try {
 		double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
 		if (cumulative)
 		    amount += temp;
-		else if (allowMinus || temp > amount)
+		else if (temp > amount)
 		    amount = temp;
 	    } catch (NumberFormatException ignored) {
+		ignored.printStackTrace();
 		// Should be ignored
 	    }
 	}
 
-	return amount;
+	return amount ==  Double.NEGATIVE_INFINITY ? 0D : amount;
     }
 
     public boolean hasPermission(JobsPlayer jPlayer, String perm) {

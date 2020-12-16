@@ -124,12 +124,12 @@ public class BufferedEconomy {
 		    if (Jobs.getGCManager().TakeFromPlayersPayment && Jobs.getGCManager().UseTaxes &&
 			((offPlayer.isOnline() && !offPlayer.getPlayer().hasPermission("jobs.tax.bypass")) || !offPlayer.isOnline())) {
 			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(offPlayer.getUniqueId());
-			double moneyTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.money", false, false, true);
+			double moneyTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.money", false, false);
 			if (moneyTaxAmount == 0D) {
 			    moneyTaxAmount = Jobs.getGCManager().TaxesAmount;
 			}
 
-			double pointsTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.points", false, false, true);
+			double pointsTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.points", false, false);
 			if (pointsTaxAmount == 0D) {
 			    pointsTaxAmount = Jobs.getGCManager().TaxesAmount;
 			}
@@ -148,12 +148,12 @@ public class BufferedEconomy {
 		    if (Jobs.getGCManager().TakeFromPlayersPayment && Jobs.getGCManager().UseTaxes &&
 			((offPlayer.isOnline() && !offPlayer.getPlayer().hasPermission("jobs.tax.bypass")) || !offPlayer.isOnline())) {
 			JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(offPlayer.getUniqueId());
-			double moneyTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.money", false, false, true);
+			double moneyTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.money", false, false);
 			if (moneyTaxAmount == 0D) {
 			    moneyTaxAmount = Jobs.getGCManager().TaxesAmount;
 			}
 
-			double pointsTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.points", false, false, true);
+			double pointsTaxAmount = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.tax.points", false, false);
 			if (pointsTaxAmount == 0D) {
 			    pointsTaxAmount = Jobs.getGCManager().TaxesAmount;
 			}

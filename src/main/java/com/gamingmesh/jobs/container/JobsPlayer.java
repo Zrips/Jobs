@@ -286,18 +286,18 @@ public class JobsPlayer {
     }
 
     private Double getPlayerBoostNew(String JobName, CurrencyType type) {
-	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + "." + type.getName(), true, false, true);
+	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + "." + type.getName(), true, false);
 	Double Boost = v1;
 
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + ".all", false, false, true);
+	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + JobName + ".all", false, false);
 	if (v1 != 0d && (v1 > Boost || v1 < Boost))
 	    Boost = v1;
 
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", false, false, true);
+	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", false, false);
 	if (v1 != 0d && (v1 > Boost || v1 < Boost))
 	    Boost = v1;
 
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), false, false, true);
+	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), false, false);
 	if (v1 != 0d && (v1 > Boost || v1 < Boost))
 	    Boost = v1;
 
@@ -305,10 +305,10 @@ public class JobsPlayer {
     }
 
     public int getPlayerMaxQuest(String jobName) {
-	int m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest." + jobName, false, true, false).intValue();
+	int m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest." + jobName, false, true).intValue();
 	int max = m1;
 
-	m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest.all", false, true, false).intValue();
+	m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest.all", false, true).intValue();
 	if (m1 != 0 && (m1 > max || m1 < max)) {
 	    max = m1;
 	}
