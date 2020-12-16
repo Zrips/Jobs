@@ -446,7 +446,7 @@ public class JobsCommands implements CommandExecutor {
     public String jobStatsMessageArchive(JobsPlayer jPlayer, JobProgression jobProg) {
 	int level = jPlayer.getLevelAfterRejoin(jobProg);
 	double exp = jPlayer.getExpAfterRejoin(jobProg, jPlayer.getLevelAfterRejoin(jobProg));
-	String message = Jobs.getLanguage().getMessage("command.stats.output",
+	String message = Jobs.getLanguage().getMessage("command.stats.output.message",
 	    "%joblevel%", level,
 	    "%jobname%", jobProg.getJob().getNameWithColor(),
 	    "%jobxp%", Math.round(exp * 100.0) / 100.0,
