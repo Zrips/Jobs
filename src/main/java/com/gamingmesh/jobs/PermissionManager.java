@@ -36,34 +36,34 @@ public class PermissionManager {
 
     private enum prm {
 //	jobs_join_JOBNAME(remade("jobs.join.%JOBNAME%"), 60 * 1000),
-	jobs_use(remade("jobs.use"), 2 * 1000),
+	jobs_use(remade("jobs.use"), 2),
 //	jobs_boost_JOBNAME_money(remade("jobs.boost.%JOBNAME%.money"), 60 * 1000),
 //	jobs_boost_JOBNAME_exp(remade("jobs.boost.%JOBNAME%.exp"), 60 * 1000),
 //	jobs_boost_JOBNAME_points(remade("jobs.boost.%JOBNAME%.points"), 60 * 1000),
 //	jobs_boost_JOBNAME_all(remade("jobs.boost.%JOBNAME%.all"), 60 * 1000),
 //	jobs_leave_JOBNAME(remade("jobs.leave.%JOBNAME%"), 60 * 1000),
-	jobs_boost_JOBNAME_money_AMOUNT(remade("jobs.boost.%JOBNAME%.money.%AMOUNT%"), 60 * 1000),
-	jobs_boost_JOBNAME_exp_AMOUNT(remade("jobs.boost.%JOBNAME%.exp.%AMOUNT%"), 60 * 1000),
-	jobs_boost_JOBNAME_points_AMOUNT(remade("jobs.boost.%JOBNAME%.points.%AMOUNT%"), 60 * 1000),
-	jobs_boost_JOBNAME_all_AMOUNT(remade("jobs.boost.%JOBNAME%.all.%AMOUNT%"), 60 * 1000),
-	jobs_boost_all_money_AMOUNT(remade("jobs.boost.all.money.%AMOUNT%"), 60 * 1000),
-	jobs_boost_all_exp_AMOUNT(remade("jobs.boost.all.exp.%AMOUNT%"), 60 * 1000),
-	jobs_boost_all_points_AMOUNT(remade("jobs.boost.all.points.%AMOUNT%"), 60 * 1000),
-	jobs_boost_all_all_AMOUNT(remade("jobs.boost.all.all.%AMOUNT%"), 60 * 1000),
-	jobs_spawner_AMOUNT(remade("jobs.nearspawner.%AMOUNT%"), 60 * 1000),
-	jobs_petpay_AMOUNT(remade("jobs.petpay.%AMOUNT%"), 60 * 1000),
-	jobs_maxfurnaces_AMOUNT(remade("jobs.maxfurnaces.%AMOUNT%"), 2 * 1000),
-	jobs_maxblastfurnaces_AMOUNT(remade("jobs.maxblastfurnaces.%AMOUNT%"), 2 * 1000),
-	jobs_maxsmokers_AMOUNT(remade("jobs.maxsmokers.%AMOUNT%"), 2 * 1000),
-	jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 2 * 1000),
-	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2 * 1000);
+	jobs_boost_JOBNAME_money_AMOUNT(remade("jobs.boost.%JOBNAME%.money.%AMOUNT%"), 60),
+	jobs_boost_JOBNAME_exp_AMOUNT(remade("jobs.boost.%JOBNAME%.exp.%AMOUNT%"), 60),
+	jobs_boost_JOBNAME_points_AMOUNT(remade("jobs.boost.%JOBNAME%.points.%AMOUNT%"), 60),
+	jobs_boost_JOBNAME_all_AMOUNT(remade("jobs.boost.%JOBNAME%.all.%AMOUNT%"), 60),
+	jobs_boost_all_money_AMOUNT(remade("jobs.boost.all.money.%AMOUNT%"), 60),
+	jobs_boost_all_exp_AMOUNT(remade("jobs.boost.all.exp.%AMOUNT%"), 60),
+	jobs_boost_all_points_AMOUNT(remade("jobs.boost.all.points.%AMOUNT%"), 60),
+	jobs_boost_all_all_AMOUNT(remade("jobs.boost.all.all.%AMOUNT%"), 60),
+	jobs_spawner_AMOUNT(remade("jobs.nearspawner.%AMOUNT%"), 60),
+	jobs_petpay_AMOUNT(remade("jobs.petpay.%AMOUNT%"), 60),
+	jobs_maxfurnaces_AMOUNT(remade("jobs.maxfurnaces.%AMOUNT%"), 2),
+	jobs_maxblastfurnaces_AMOUNT(remade("jobs.maxblastfurnaces.%AMOUNT%"), 2),
+	jobs_maxsmokers_AMOUNT(remade("jobs.maxsmokers.%AMOUNT%"), 2),
+	jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 2),
+	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2);
 
 	private int reload;
 	private List<String> perms;
 
 	private prm(List<String> perms, int reload) {
 	    this.perms = perms;
-	    this.reload = reload;
+	    this.reload = reload * 1000;
 	}
 
 	public int getDelay() {
