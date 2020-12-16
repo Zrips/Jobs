@@ -241,6 +241,10 @@ public class ConfigReader extends YamlConfiguration {
     }
 
     public void saveToBackup() {
+	saveToBackup(true);
+    }
+
+    public void saveToBackup(boolean inform) {
 	File cc = new File(Jobs.getFolder(), "FileBackups");
 	if (!cc.isDirectory())
 	    cc.mkdir();
@@ -248,9 +252,9 @@ public class ConfigReader extends YamlConfiguration {
 	Date date = new Date();
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss ");
 	String newFileName = dateFormat.format(date) + file.getName();
-
-	Jobs.consoleMsg("&cFailed to load " + file.getName() + "! Backup have been saved into " + Jobs.getFolder().getPath() + File.separator + "FileBackups"
-	    + File.separator + newFileName);
+	if (inform)
+	    Jobs.consoleMsg("&cFailed to load " + file.getName() + "! Backup have been saved into " + Jobs.getFolder().getPath() + File.separator + "FileBackups"
+		+ File.separator + newFileName);
 
 	File f = new File(Jobs.getFolder(), "FileBackups" + File.separator + newFileName);
 //	file.renameTo(f);
@@ -441,5 +445,9 @@ public class ConfigReader extends YamlConfiguration {
 
     public HashMap<String, Object> getContents() {
 	return contents;
+    }
+
+    public File getFile() {
+	return file;
     }
 }

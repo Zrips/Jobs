@@ -18,19 +18,18 @@
 
 package com.gamingmesh.jobs.config;
 
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.Version;
-import com.gamingmesh.jobs.ItemBoostManager;
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.container.*;
-import com.gamingmesh.jobs.resources.jfep.ParseError;
-import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.Util;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -38,13 +37,30 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.gamingmesh.jobs.ItemBoostManager;
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.CMILib.CMIChatColor;
+import com.gamingmesh.jobs.CMILib.CMIEnchantment;
+import com.gamingmesh.jobs.CMILib.CMIEntityType;
+import com.gamingmesh.jobs.CMILib.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.ConfigReader;
+import com.gamingmesh.jobs.CMILib.Version;
+import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.BoostMultiplier;
+import com.gamingmesh.jobs.container.CurrencyType;
+import com.gamingmesh.jobs.container.DisplayMethod;
+import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobCommands;
+import com.gamingmesh.jobs.container.JobConditions;
+import com.gamingmesh.jobs.container.JobInfo;
+import com.gamingmesh.jobs.container.JobItems;
+import com.gamingmesh.jobs.container.JobLimitedItems;
+import com.gamingmesh.jobs.container.JobPermission;
+import com.gamingmesh.jobs.container.Quest;
+import com.gamingmesh.jobs.container.QuestObjective;
+import com.gamingmesh.jobs.resources.jfep.ParseError;
+import com.gamingmesh.jobs.resources.jfep.Parser;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class ConfigManager {
 
@@ -54,11 +70,224 @@ public class ConfigManager {
 
     private final Set<YmlMaker> jobFiles = new HashSet<>();
 
+    public static final String exampleJobName = "exampleJob";
+
     public ConfigManager() {
 	this.jobFile = new File(Jobs.getFolder(), "jobConfig.yml");
 	this.jobsPathFolder = new File(Jobs.getFolder(), "jobs");
 
 	migrateJobs();
+    }
+
+    private void updateExampleFile() {
+	ConfigReader cfg = new ConfigReader(new File(Jobs.getFolder(), "jobs" + File.separator + exampleJobName.toUpperCase() + ".yml"));
+	if (!cfg.getFile().isFile())
+	    return;
+	cfg.load();
+
+	cfg.header(Arrays.asList("Jobs configuration.", "", "Edited by roracle to include 1.13 items and item names, prepping for 1.14 as well.",
+	    "",
+	    "Stores information about each job.",
+	    "",
+	    "NOTE: When having multiple jobs, both jobs will give the income payout to the player",
+	    "even if they give the pay for one action (make the configurations with this in mind)",
+	    "and each job will get the respective experience.",
+	    "",
+	    "e.g If player has 2 jobs where job1 gives 10 income and experience for killing a player ",
+	    "and job2 gives 5 income and experience for killing a player. When the user kills a player",
+	    "they will get 15 income and job1 will gain 10 experience and job2 will gain 5 experience."));
+
+	String pt = "exampleJob";
+	cfg.addComment(pt, "Must be one word",
+	    "This job will be ignored as this is just example of all possible actions.");
+	cfg.addComment(pt + ".fullname", "full name of the job (displayed when browsing a job, used when joining and leaving",
+	    "also can be used as a prefix for the user's name if the option is enabled.",
+	    "Shown as a prefix only when the user has 1 job.",
+	    "",
+	    "NOTE: Must be 1 word");
+	cfg.get(pt + ".fullname", "Woodcutter");
+
+	cfg.addComment(pt + ".shortname", "Shortened version of the name of the job. Used as a prefix when the user has more than 1 job.");
+	cfg.get(pt + ".shortname", "W");
+	cfg.get(pt + ".description", "Earns money felling and planting trees");
+
+	cfg.addComment(pt + ".FullDescription", "Full description of job to be shown in job browse command");
+	cfg.get(pt + ".FullDescription", Arrays.asList("&2Get money for:", "  &7Planting trees", "  &7Cutting down trees", "  &7Killing players"));
+
+	cfg.addComment(pt + ".ChatColour",
+	    "The colour of the name, for a full list of supported colours, go to the message config. Hex color codes are supported as of 1.16 minecraft version. Example: {#6600cc} or {#Brown}");
+	cfg.get(pt + ".ChatColour", "GREEN");
+
+	cfg.addComment(pt + ".BossBarColour", "[OPTIONAL] The colour of the boss bar: GREEN, BLUE, RED, WHITE, YELLOW, PINK, PURPLE.");
+	cfg.get(pt + ".BossBarColour", "WHITE");
+
+	cfg.addComment(pt + ".chat-display", "Option to let you choose what kind of prefix this job adds to your name.", "options are: full, title, job, shortfull, shorttitle, shortjob and none");
+	cfg.get(pt + ".chat-display", "full");
+
+	cfg.addComment(pt + ".max-level", "[OPTIONAL] - the maximum level of this class");
+	cfg.get(pt + ".max-level", 10);
+
+	cfg.addComment(pt + ".vip-max-level", "[OPTIONAL] - the maximum level of this class with specific permission",
+	    "use jobs.[jobsname].vipmaxlevel, in this case it will be jobs.exampleJob.vipmaxlevel");
+	cfg.get(pt + ".vip-max-level", 20);
+
+	cfg.addComment(pt + ".slots", "[OPTIONAL] - the maximum number of users on the server that can have this job at any one time (includes offline players).");
+	cfg.get(pt + ".slots", 1);
+
+	cfg.addComment(pt + ".softIncomeLimit", "[OPTIONAL] Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.",
+	    "In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60",
+	    "This only applies after players level is higher than provided particular limit.");
+
+	cfg.get(pt + ".softIncomeLimit", 50);
+	cfg.get(pt + ".softExpLimit", 40);
+	cfg.get(pt + ".softPointsLimit", 60);
+
+	cfg.addComment(pt + ".leveling-progression-equation", "Equation used for calculating how much experience is needed to go to the next level.",
+	    "Available parameters:",
+	    "  numjobs - the number of jobs the player has",
+	    "  maxjobs - the number of jobs the player have max",
+	    "  joblevel - the level the player has attained in the job.",
+	    " NOTE: Please take care of the brackets when modifying this equation.");
+	cfg.get(pt + ".leveling-progression-equation", "10*(joblevel)+(joblevel*joblevel*4)");
+
+	cfg.addComment(pt + ".income-progression-equation", "Equation used for calculating how much income is given per action for the job level.",
+	    "Available parameters:",
+	    "  numjobs - the number of jobs the player has",
+	    "  maxjobs - the number of jobs the player have max",
+	    "  baseincome - the income for the action at level 1 (as set in the configuration).",
+	    "  joblevel - the level the player has attained in the job.",
+	    "NOTE: Please take care of the brackets when modifying this equation.");
+	cfg.get(pt + ".income-progression-equation", "baseincome+(baseincome*(joblevel-1)*0.01)-((baseincome+(joblevel-1)*0.01) * ((numjobs-1)*0.05))");
+
+	cfg.addComment(pt + ".points-progression-equation", "Equation used for calculating how much points is given per action for the job level.",
+	    "Available parameters:",
+	    "  numjobs - the number of jobs the player has",
+	    "  maxjobs - the number of jobs the player have max",
+	    "  basepoints - the points for the action at level 1 (as set in the configuration).",
+	    "  joblevel - the level the player has attained in the job.",
+	    "NOTE: Please take care of the brackets when modifying this equation.");
+	cfg.get(pt + ".points-progression-equation", "basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))");
+
+	cfg.addComment(pt + ".experience-progression-equation", "Equation used for calculating how much experience is given per action for the job level.",
+	    "Available parameters:",
+	    "  numjobs - the number of jobs the player has",
+	    "  maxjobs - the number of jobs the player have max",
+	    "  baseexperience - the experience for the action at level 1 (as set in the configuration).",
+	    "  joblevel - the level the player has attained in the job.",
+	    "NOTE: Please take care of the brackets when modifying this equation.");
+	cfg.get(pt + ".experience-progression-equation", "basepoints+(basepoints*(joblevel-1)*0.01)-((basepoints+(joblevel-1)*0.01) * ((numjobs-1)*0.05))");
+
+	cfg.addComment(pt + ".rejoinCooldown", "Defines how often in seconds player can rejoin this job. Can be bypassed with jobs.rejoinbypass");
+	cfg.get(pt + ".rejoinCooldown", 10);
+
+	cfg.addComment(pt + ".Gui", "GUI icon information when using GUI function");
+	cfg.addComment(pt + ".Gui.Item", "You can use the custom player head:",
+	    "Item: player_head",
+	    "  CustomSkull: Notch",
+	    "",
+	    "Name of the material");
+	cfg.get(pt + ".Gui.Item", "LOG:2");
+	cfg.addComment(pt + ".Gui.slot", "Slot number to show the item in the specified row");
+	cfg.get(pt + ".Gui.slot", 5);
+	cfg.addComment(pt + ".Gui.Enchantments", "Enchants of the item");
+	cfg.get(pt + ".Gui.Enchantments", Arrays.asList("DURABILITY:1"));
+
+	cfg.addComment(pt + ".maxDailyQuests",
+	    "Defines maximum amount of daily quests player can have from THIS job",
+	    "This will not have effect on overall quest amount player will have");
+	cfg.get(pt + ".maxDailyQuests", 3);
+
+	cfg.addComment(pt + ".Quests", "Daily quests",
+	    "Each job can have as many daily quests as you want",
+	    "Players will have access to quests from jobs he is currently working at");
+
+	String questPt = pt + ".Quests.first";
+	cfg.addComment(questPt, "Quest identification. Can be any ONE word or number or both of them. This doesn't have any real meaning but it can't repeat.");
+	cfg.addComment(questPt + ".Name", "Quest name used for quests list, don't forget to enclose it with \" \"");
+	cfg.get(questPt + ".Name", "Break Oak wood");
+	cfg.addComment(questPt + ".Objectives", "This should be in a format as [actionType];[actionTarget];[amount]",
+	    "[actionType] can be any valid job action. Look lower for all possible action types",
+	    "[actionTarget] can be material name, block type, entity name and so on. This is defined in same way as any generic payable job action",
+	    "[amount] is how many times player should perform this action to complete quest");
+	cfg.get(questPt + ".Objectives", "Break;oak_log;300");
+
+	cfg.addComment(questPt + ".RewardCommands", "Command list to be performed after quest is finished.",
+	    "Use [playerName] to insert players name who finished that quest");
+	cfg.get(questPt + ".RewardCommands", Arrays.asList("money give [playerName] 500", "msg [playerName] Completed quest!"));
+
+	cfg.addComment(questPt + ".RewardDesc", "Quest description to be used to explain quest requirements or rewards for player");
+	cfg.get(questPt + ".RewardDesc", Arrays.asList("Break 300 Oak wood", "Get 500 bucks for this"));
+
+	cfg.addComment(questPt + ".RestrictedAreas", "Restricted areas where player cant progress his quest");
+	cfg.get(questPt + ".RestrictedAreas", Arrays.asList("Arenas", "myarena"));
+
+	cfg.addComment(questPt + ".Chance", "Defines chance in getting this quest.",
+	    "If you have set 10 quests and player can have only 2, then quests with biggest chance will be picked most likely",
+	    "This will allow to have some rare quests with legendary rewards");
+	cfg.get(questPt + ".Chance", 40);
+
+	cfg.addComment(questPt + ".fromLevel", "Defines from which level you want to give option to get this quest",
+	    "You can use both limitations to have limited quests for particular job level ranges");
+	cfg.get(questPt + ".fromLevel", 3);
+
+	cfg.addComment(questPt + ".toLevel", "Defines to which job level you want to give out this quest.",
+	    "Keep in mind that player will keep quest even if he is over level limit if he got new one while being under",
+	    "In example: player with level 2 takes quests and levels up to level 5, he still can finish this quest and after next quest reset (check general config file)",
+	    "he will no longer have option to get this quest");
+	cfg.get(questPt + ".toLevel", 5);
+
+	cfg.addComment(pt + ".Break",
+	    "########################################################################",
+	    "Section used to configure what items the job gets paid for, how much",
+	    "they get paid and how much experience they gain.",
+	    "",
+	    "For break and place, the block material name is used.",
+	    "e.g ACACIA_LOG, DARK_OAK_FENCE, BIRCH_DOOR",
+	    "",
+	    "To get a list of all available block types, check the",
+	    "bukkit JavaDocs for a complete list of block types",
+	    "https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html",
+	    "",
+	    "For kill tags (Kill and custom-kill), the name is the name of the mob.",
+	    "To get a list of all available entity types, check the",
+	    "bukkit JavaDocs for a complete list of entity types",
+	    "https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html",
+	    "",
+	    "For custom-kill, it is the name of the job (case sensitive).",
+	    "",
+	    "NOTE: If a job has both the pay for killing a player and for killing a specific class, they will get both payments.",
+	    "#######################################################################",
+	    "payment for breaking a block");
+
+	cfg.addComment(pt + ".Break.oak_log", "block name/id (with optional sub-type)");
+	cfg.addComment(pt + ".Break.oak_log.income", "base income, can be not used if using point system");
+	cfg.get(pt + ".Break.oak_log.income", 5D);
+	cfg.addComment(pt + ".Break.oak_log.points", "base points, can be not used if using income system");
+	cfg.get(pt + ".Break.oak_log.points", 5D);
+	cfg.addComment(pt + ".Break.oak_log.experience", "base experience");
+	cfg.get(pt + ".Break.oak_log.experience", 5D);
+	cfg.addComment(pt + ".Break.oak_log.from-level", "(OPTIONAL) from which level of this job player can get money for this action",
+	    "if not given, then player will always get money for this action",
+	    "this can be used for any action");
+	cfg.get(pt + ".Break.oak_log.from-level", 1);
+	cfg.addComment(pt + ".Break.oak_log.until-level", "(OPTIONAL) until which level player can get money for this action.",
+	    "if not given, then there is no limit",
+	    "this can be used for any action");
+	cfg.get(pt + ".Break.oak_log.until-level", 30);
+	cfg.addComment(pt + ".Break.oak_log.softIncomeLimit", "(OPTIONAL) Soft limits will allow to stop income/exp/point payment increase at some particular level but allow further general leveling.",
+	    "In example if player is level 70, he will get paid as he would be at level 50, exp gain will be as he would be at lvl 40 and point gain will be as at level 60",
+	    "This only applies after players level is higher than provided particular limit.");
+	cfg.get(pt + ".Break.oak_log.softIncomeLimit", 50);
+	cfg.get(pt + ".Break.oak_log.softExpLimit", 40);
+	cfg.get(pt + ".Break.oak_log.softPointsLimit", 60);
+
+	cfg.addComment(pt + ".Break.gravel.income", "you can use minuses to take away money if the player break this block");
+	cfg.get(pt + ".Break.gravel.income", -1D);
+
+	cfg.addComment(pt + ".permissions.firstNode.permission", "The permission node");
+	cfg.get(pt + ".permissions.firstNode.permission", "aaaaaatest.node");
+
+	cfg.save();
     }
 
     /**
@@ -81,6 +310,7 @@ public class ConfigManager {
     }
 
     public void changeJobsSettings(String jobName, String path, Object value) {
+	path = path.replace("/", ".");
 	for (YmlMaker yml : jobFiles) {
 	    if (yml.getConfigFile().getName().contains(jobName.toLowerCase())) {
 		yml.getConfig().set(path, value);
@@ -92,7 +322,9 @@ public class ConfigManager {
 
     public class KeyValues {
 
-	private String type, subType = "", meta = "";
+	private String type;
+	private String subType = "";
+	private String meta = "";
 	private int id = 0;
 
 	public String getType() {
@@ -403,29 +635,19 @@ public class ConfigManager {
 
 	    jobsPathFolder.mkdirs();
 
-	    try {
-		for (String f : Util.getFilesFromPackage("jobs", "", "yml")) {
-		    Jobs.getInstance().saveResource("jobs/" + f + ".yml", false);
+	    if (jobsPathFolder.isDirectory() && jobsPathFolder.listFiles().length == 0)
+		try {
+		    for (String f : Util.getFilesFromPackage("Jobs", "", "yml")) {
+			Jobs.getInstance().saveResource("Jobs" + File.separator + f + ".yml", false);
+		    }
+		} catch (Exception c) {
 		}
-	    } catch (Exception c) {
-	    }
 
 	    return false;
 	}
 
-	if (!jobsPathFolder.exists()) {
-	    oldConf.set("migratedToNewFile", false);
-	    try {
-		oldConf.save(jobFile);
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
-
+	if (!jobsPathFolder.isDirectory()) {
 	    jobsPathFolder.mkdirs();
-	}
-
-	if (oldConf.getBoolean("migratedToNewFile")) {
-	    return true;
 	}
 
 	ConfigurationSection jobsSection = oldConf.getConfigurationSection("Jobs");
@@ -435,24 +657,19 @@ public class ConfigManager {
 
 	jobFiles.clear();
 
-	Jobs.getPluginLogger().warning("Your jobConfig.yml file is not works anymore and can cause issues!");
-	Jobs.getPluginLogger().warning("We've starting migrating your jobConfig file data into separate files to avoid any loss.");
-	Jobs.getPluginLogger().warning("The jobConfig file will get removed in future releases!");
-
 	Jobs.getPluginLogger().info("Started migrating jobConfig to /jobs folder...");
 
 	for (String jobKey : jobsSection.getKeys(false)) {
-	    // Ignore example job
-	    if (jobKey.equalsIgnoreCase("exampleJob"))
-		continue;
 
-	    YmlMaker newJobFile = new YmlMaker(jobsPathFolder, jobKey.toLowerCase() + ".yml");
+	    String fileName = jobKey.equalsIgnoreCase(exampleJobName) ? jobKey.toUpperCase() : jobKey.toLowerCase();
+
+	    YmlMaker newJobFile = new YmlMaker(jobsPathFolder, fileName + ".yml");
 	    if (!newJobFile.exists()) {
 		newJobFile.createNewFile();
 	    }
 
 	    FileConfiguration conf = newJobFile.getConfig();
-	    conf.options().pathSeparator('/');
+	    conf.options().pathSeparator(File.separatorChar);
 
 	    for (Map.Entry<String, Object> m : jobsSection.getValues(true).entrySet()) {
 		if (m.getKey().equalsIgnoreCase(jobKey)) {
@@ -461,19 +678,23 @@ public class ConfigManager {
 	    }
 
 	    newJobFile.saveConfig();
-	    jobFiles.add(newJobFile);
+
+	    if (!fileName.equalsIgnoreCase(exampleJobName)) {
+		jobFiles.add(newJobFile);
+	    }
 	}
 
 	if (!jobFiles.isEmpty()) {
 	    Jobs.getPluginLogger().info("Done. Migrated jobs amount: " + jobFiles.size());
-
-	    oldConf.set("migratedToNewFile", true);
-	    try {
-		oldConf.save(jobFile);
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
 	}
+
+	ConfigReader cfg = new ConfigReader("jobConfig.yml");
+	cfg.saveToBackup(false);
+	cfg.header(Arrays.asList("-----------------------------------------------------",
+	    "Jobs have been moved into jobs subfolder",
+	    "Old jobs content was saved into backup folder",
+	    "-----------------------------------------------------"));
+	cfg.save();
 
 	return true;
     }
@@ -482,9 +703,11 @@ public class ConfigManager {
 	jobFiles.clear();
 	migrateJobs();
 
+	updateExampleFile();
+
 	if (jobFiles.isEmpty()) {
 	    File[] files = jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml")
-	    && !name.toLowerCase().contains("example"));
+		&& !name.toLowerCase().equalsIgnoreCase(exampleJobName));
 	    if (files != null) {
 		for (File file : files) {
 		    jobFiles.add(new YmlMaker(jobsPathFolder, file));
@@ -518,7 +741,7 @@ public class ConfigManager {
 
 	for (String jobKey : jobsSection.getKeys(false)) {
 	    // Ignore example job
-	    if (jobKey.equalsIgnoreCase("exampleJob")) {
+	    if (jobKey.equalsIgnoreCase(exampleJobName)) {
 		continue;
 	    }
 
@@ -670,13 +893,13 @@ public class ConfigManager {
 		    String item = guiSection.getString("Item");
 		    String subType = "";
 
-			if (item.contains("-")) {
-			    // uses subType
-			    subType = ":" + item.split("-")[1];
-			    item = item.split("-")[0];
-			} else if (item.contains(":")) { // when we uses tipped arrow effect types
-			    item = item.split(":")[0];
-			}
+		    if (item.contains("-")) {
+			// uses subType
+			subType = ":" + item.split("-")[1];
+			item = item.split("-")[0];
+		    } else if (item.contains(":")) { // when we uses tipped arrow effect types
+			item = item.split(":")[0];
+		    }
 
 		    CMIMaterial material = CMIMaterial.get(item + (subType));
 
@@ -1042,8 +1265,8 @@ public class ConfigManager {
 
 			    int id = keyValue.getId();
 			    String type = keyValue.getType(),
-					subType = keyValue.getSubType(),
-					meta = keyValue.getMeta();
+				subType = keyValue.getSubType(),
+				meta = keyValue.getMeta();
 
 			    double income = 0D;
 			    if (sep.length >= 2) {
@@ -1064,7 +1287,7 @@ public class ConfigManager {
 			    }
 
 			    jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, 1,
-					-1, typeSection.getCurrentPath(), null, null, null));
+				-1, typeSection.getCurrentPath(), null, null, null));
 			}
 
 			job.setJobInfo(actionType, jobInfo);
@@ -1126,7 +1349,7 @@ public class ConfigManager {
 
 	    if (jobKey.equalsIgnoreCase("none"))
 		Jobs.setNoneJob(job);
-	    else if (getJobConfig() == null || getJobConfig().getBoolean("migratedToNewFile")) {
+	    else {
 		return job;
 	    }
 	}

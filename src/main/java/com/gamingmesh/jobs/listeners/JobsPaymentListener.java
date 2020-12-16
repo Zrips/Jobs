@@ -26,6 +26,8 @@ import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip.ownershipFeedback;
 import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.hooks.JobsHook;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.google.common.base.Objects;
 
 import org.bukkit.Bukkit;
@@ -303,8 +305,7 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null || sheep.getColor() == null)
 	    return;
 
-	if (Jobs.getGCManager().payForStackedEntities && HookManager.isPluginEnabled("WildStacker")
-		    && HookManager.getWildStackerHandler().isStackedEntity(sheep)) {
+	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.enabled() && HookManager.getWildStackerHandler().isStackedEntity(sheep)) {
 	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
 		if (stacked.getType() == sheep.getType()) {
 		    Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getLivingEntity()).getColor().name(), ActionType.SHEAR));
@@ -537,8 +538,7 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null)
 	    return;
 
-	if (Jobs.getGCManager().payForStackedEntities && HookManager.isPluginEnabled("WildStacker")
-		    && HookManager.getWildStackerHandler().isStackedEntity(animal)) {
+	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.enabled() && HookManager.getWildStackerHandler().isStackedEntity(animal)) {
 	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
 		if (stacked.getType() == animal.getType()) {
 		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.TAME));
@@ -675,7 +675,7 @@ public class JobsPaymentListener implements Listener {
 
 	// Check Dyes
 	if (y >= 2 && (third != null && third.isDye() || second != null && second.isDye() || first != null && first.isDye())
-		&& (leather || shulker)) {
+	    && (leather || shulker)) {
 	    Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
 	    for (ItemStack OneDye : DyeStack) {
 		Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
@@ -1204,7 +1204,7 @@ public class JobsPaymentListener implements Listener {
 	// Prevent payment for killing mobs with pet by denying permission
 	if ((HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null))
 	    || (e.getDamager() instanceof Tameable && ((Tameable) e.getDamager()).isTamed() &&
-	    ((Tameable) e.getDamager()).getOwner() instanceof Player)) {
+		((Tameable) e.getDamager()).getOwner() instanceof Player)) {
 	    for (PermissionAttachmentInfo perm : pDamager.getEffectivePermissions()) {
 		if ("jobs.petpay".equals(perm.getPermission()) && !perm.getValue()) {
 		    return;
@@ -1245,8 +1245,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
-	if (Jobs.getGCManager().payForStackedEntities && HookManager.isPluginEnabled("WildStacker")
-		    && HookManager.getWildStackerHandler().isStackedEntity(lVictim)) {
+	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.enabled() && HookManager.getWildStackerHandler().isStackedEntity(lVictim)) {
 	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
 		if (stacked.getType() == lVictim.getType()) {
 		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.KILL), e.getDamager(), stacked.getLivingEntity());
@@ -1486,7 +1485,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!(event.getEntity() instanceof Player) || event.getEntity().hasMetadata("NPC")
-		|| event.getFoodLevel() <= ((Player) event.getEntity()).getFoodLevel())
+	    || event.getFoodLevel() <= ((Player) event.getEntity()).getFoodLevel())
 	    return;
 
 	Player player = (Player) event.getEntity();
@@ -1612,11 +1611,11 @@ public class JobsPaymentListener implements Listener {
 	if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY
 	    && event.getAction() == Action.RIGHT_CLICK_BLOCK && !p.isSneaking() && jPlayer != null
 	    && (cmat == CMIMaterial.BEEHIVE || cmat == CMIMaterial.BEE_NEST)) {
-		org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
-		if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand == CMIMaterial.SHEARS.getMaterial()
-		    || hand == CMIMaterial.GLASS_BOTTLE.getMaterial())) {
-		    Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
-		}
+	    org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
+	    if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand == CMIMaterial.SHEARS.getMaterial()
+		|| hand == CMIMaterial.GLASS_BOTTLE.getMaterial())) {
+		Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
+	    }
 	}
 
 	boolean isBrewingStand = cmat == CMIMaterial.BREWING_STAND || cmat == CMIMaterial.LEGACY_BREWING_STAND;
@@ -1628,7 +1627,7 @@ public class JobsPaymentListener implements Listener {
 	    }
 
 	    String name = Jobs.getLanguage().getMessage("general.info.blocks." + (isBrewingStand ? "brewingstand" : isFurnace
-			? "furnace" : cmat == CMIMaterial.SMOKER ? "smoker" : cmat == CMIMaterial.BLAST_FURNACE ? "blastfurnace" : ""));
+		? "furnace" : cmat == CMIMaterial.SMOKER ? "smoker" : cmat == CMIMaterial.BLAST_FURNACE ? "blastfurnace" : ""));
 	    ownershipFeedback done = blockOwner.register(p, block);
 	    if (done == ownershipFeedback.tooMany) {
 		boolean report = false;
@@ -1656,17 +1655,16 @@ public class JobsPaymentListener implements Listener {
 	} else if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) &&
 	    block.getType().toString().startsWith("STRIPPED_") &&
 	    event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && hand.toString().endsWith("_AXE")) {
-		// check if player is riding
-		if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
-		    return;
+	    // check if player is riding
+	    if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
+		return;
 
-		// Prevent item durability loss
-		if (!Jobs.getGCManager().payItemDurabilityLoss && hand.getMaxDurability()
-		    - Jobs.getNms().getDurability(Jobs.getNms().getItemInMainHand(p)) != hand.getMaxDurability())
-		    return;
+	    // Prevent item durability loss
+	    if (!Jobs.getGCManager().payItemDurabilityLoss && hand.getMaxDurability()
+		- Jobs.getNms().getDurability(Jobs.getNms().getItemInMainHand(p)) != hand.getMaxDurability())
+		return;
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () ->
-		    Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
+	    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
 	}
     }
 
