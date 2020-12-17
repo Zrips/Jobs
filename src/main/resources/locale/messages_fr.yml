@@ -18,10 +18,10 @@ general:
     'true': '&2Vrai'
     'false': '&cFaux'
     blocks:
-      furnace: Furnace
-      smoker: Smoker
-      blastfurnace: Blast furnace
-      brewingstand: Brewing stand
+      furnace: Four
+      smoker: Fumoir
+      blastfurnace: Haut fourneau
+      brewingstand: Alambic
   admin:
     error: '&cUne erreur est survenue pendant l''exécution de la commande.'
     success: '&eLa commande a été exécutée avec succès.'
@@ -36,8 +36,8 @@ general:
     ingame: '&cVous ne pouvez utiliser cette commande qu''en jeu!'
     fromconsole: '&cCette commande doit être lancée depuis la console!'
     worldisdisabled: '&cVous ne pouvez pas utiliser cette commande dans ce monde!'
-    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
-    noRegistration: '&cYou''ve reached max [block] count!'
+    newRegistration: '&eNouveau propriétaire enregistré pour [block] (&7[current]&e/&f[max]&e)'
+    noRegistration: '&cVous avez atteins la limite de [block] maximal !'
 command:
   help:
     output:
@@ -118,12 +118,12 @@ command:
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
+      permission: ' &eBonus de premissions: &2%money% &6%points% &e%exp%'
       item: ' &eBonus d''objet: &2%money% &6%points% &e%exp%'
       global: ' &eBonus global: &2%money% &6%points% &e%exp%'
       dynamic: ' &eBonus dynamique: &2%money% &6%points% &e%exp%'
       nearspawner: ' &eBonus de Spawner: &2%money% &6%points% &e%exp%'
-      petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
+      petpay: ' &eBonus paie animaux: &2%money% &6%points% &e%exp%'
       area: ' &eBonus de zone: &2%money% &6%points% &e%exp%'
       mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
       final: ' &eBonus final: &2%money% &6%points% &e%exp%'
@@ -258,8 +258,8 @@ command:
       nojob: Vous n'avez pas de métier.
     output:
       message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
-      max-level: '     &cMax level   -   %jobname%'
-    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+      max-level: '     &cNiveau max   -   %jobname%'
+    bossBarOutput: 'Niveau %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -317,7 +317,7 @@ command:
       jobinfo: '&e[jobname] info!'
       actions: '&eActions rémunérées:'
       leftClick: '&eClic gauche pour plus d''infos'
-      middleClick: '&eMiddle Click to leave this job'
+      middleClick: '&eClique molette pour quitter ce métier'
       rightClick: '&eClic droit pour rejoindre ce métier'
       leftSlots: '&ePlaces restantes :&f '
       working: '&2&nVous exercez déjà ce métier'
@@ -662,9 +662,9 @@ message:
     broadcast: '%playername% a été promu %titlename% %jobname%.'
     nobroadcast: Félicitations, vous avez été promu %titlename% %jobname%.
   max-level-reached:
-    title: '&2Max level reached'
-    subtitle: '&2in %jobname%!'
-    chat: '&cYou have reached the maximum level in %jobname%!'
+    title: 'Niveau maximum atteint'
+    subtitle: '&2dans %jobname% !'
+    chat: '&cVous avez atteint le niveau miximal au métier %jobname% !'
   levelup:
     broadcast: '%playername% est maintenant %jobname% niveau %joblevel%.'
     nobroadcast: Vous êtes maintenant %jobname% niveau %joblevel%.

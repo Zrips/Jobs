@@ -14,22 +14,22 @@ general:
       hours: '&e%hours% &6saat '
       mins: '&e%mins% &6dakika '
       secs: '&e%secs% &6saniye '
-    invalidPage: '&cInvalid page'
-    'true': '&2True'
-    'false': '&cFalse'
+    invalidPage: '&cGeçersiz Sayfa'
+    'true': '&2Doğru'
+    'false': '&cYanlış'
     blocks:
-      furnace: Furnace
-      smoker: Smoker
-      blastfurnace: Blast furnace
-      brewingstand: Brewing stand
+      furnace: Fırın
+      smoker: Dumancı
+      blastfurnace: Yüksek fırın
+      brewingstand: Simya Standı
   admin:
     error: '&cKomut uygulanırken bir hata oluştu.'
     success: '&eKomut başarıyla uygulandı.'
   error:
     noHelpPage: '&cBu sayıda bir yardım sayfası yok!'
     notNumber: '&eLütfen sayıları kullanın!'
-    job: '&cThe job you selected does not exist or you not joined to this'
-    noCommand: '&cThere is no command by this name!'
+    job: '&cSeçtiğiniz iş mevcut değil veya buna katılmadınız'
+    noCommand: '&cBu isimde bir komut yok!'
     permission: '&cBunun için yetkiniz bulunmamaktadır!'
     noinfo: '&cBilgi bulunamadı!'
     noinfoByPlayer: '&cŞuan [%playername%] adlı oyuncunun bilgisi yok!'
@@ -42,7 +42,7 @@ command:
   help:
     output:
       info: /jobs [komut] ? yazarak komut hakkında bilgi alabilirsin.
-      cmdUsage: '&2Usage: &7[command]'
+      cmdUsage: '&2Kullanımı: &7[command]'
       label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
       cmdFormat: '&7/[command] &f[arguments]'
@@ -50,14 +50,14 @@ command:
       title: '&e-------&e ======= &6Meslekler &e======= &e-------'
       page: '&e-----&e ====== Sayfa &6[1] &eSonraki &6[2] &e====== &e-----'
       fliperSimbols: '&e----------'
-      prevPage: '&2----<< &6Prev '
-      prevPageOff: '&7----<< Prev '
-      nextPage: '&6 Next &2>>----'
-      nextPageOff: '&7 Next >>----'
+      prevPage: '&2----<< &6Önceki '
+      prevPageOff: '&7----<< Önceki '
+      nextPage: '&6 Sonraki &2>>----'
+      nextPageOff: '&7 Sonraki >>----'
       pageCount: '&2[current]/[total]'
       pageCountHover: '&e[totalEntries] entries'
-      prevPageGui: '&6Previous page '
-      nextPageGui: '&6Next Page'
+      prevPageGui: '&6Önceki sayfa'
+      nextPageGui: '&6Sonraki Sayfa'
   moneyboost:
     help:
       info: Tüm oyunculara para avansı verir.
@@ -183,7 +183,7 @@ command:
       info: Edit current jobs.
       args: ''
       list:
-        job: '&eJobs:'
+        job: '&eMeslek:'
         jobs: '  -> [&e%jobname%&r]'
         actions: '    -> [&e%actionname%&r]'
         material: '      -> [&e%materialname%&r]      '
@@ -195,14 +195,14 @@ command:
       modify:
         newValue: '&eEnter new value'
         enter: '&eEnter new name or press '
-        hand: '&6HAND '
+        hand: '&6El '
         handHover: '&6Press to grab info from item in your hand'
         or: '&eor '
-        look: '&6LOOKING AT'
+        look: '&6Bakmak'
         lookHover: '&6Press to grab info from block you are looking'
   editquests:
     help:
-      info: Edit current quests.
+      info: Mevcut görevleri düzenleyin.
       args: ''
       list:
         quest: '&eQuests:'
@@ -235,8 +235,8 @@ command:
       args: ''
     output:
       name: ' &eItem ismi: &6%itemname%'
-      id: ' &eItem id: &6%itemid%'
-      data: ' &eItem data: &6%itemdata%'
+      id: ' &eEşya id: &6%itemid%'
+      data: ' &eEşya ismi: &6%itemdata%'
       usage: ' &eKullanımı: &6%first% &eveya &6%second%'
   placeholders:
     help:
@@ -244,7 +244,7 @@ command:
       args: (parse) (placeholder)
     output:
       list: '&e[place]. &7[placeholder]'
-      outputResult: ' &eresult: &7[result]'
+      outputResult: ' &eSonuç: &7[result]'
       parse: '&6[placeholder] &7by [source] &6result &8|&f[result]&8|'
   entitylist:
     help:
@@ -258,8 +258,8 @@ command:
       nojob: Lütfen önce bir mesleğe giriniz.
     output:
       message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
-      max-level: '     &cMax level   -   %jobname%'
-    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+      max-level: '     &cMaks Level   -   %jobname%'
+    bossBarOutput: 'Level %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -336,7 +336,7 @@ command:
         info: 'Yerleştirmek'
         none: '%jobname% bu iş için para vermez.'
       striplogs:
-        info: '&eStrip logs'
+        info: '&eŞerit Geçmişi'
         none: '%jobname% does not get money for stripping logs.'
       kill:
         info: 'Öldürmek'
@@ -393,7 +393,7 @@ command:
         info: '&eCollect'
         none: '%jobname% does not get money for collecting blocks.'
       bake:
-        info: '&eBake'
+        info: '&ePişir'
         none: '%jobname% does not get money for cooking foods.'
   playerinfo:
     help:
@@ -472,15 +472,15 @@ command:
       questSkipForCost: '&2You skipped the quest and paid:&e %amount%$'
   quests:
     help:
-      info: List available quests
+      info: Mevcut görevleri listele
       args: '[playername]'
     error:
-      noquests: '&cThere are no quests'
+      noquests: '&cGörev yok'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
     status:
       changed: '&2The quests status has been changed to&r %status%'
-      started: '&aStarted'
-      stopped: '&cStopped'
+      started: '&aBaşlatıldı'
+      stopped: '&cDurduruldu'
     output:
       completed: '&2      !Completed!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
@@ -563,9 +563,9 @@ command:
     output:
       topline: '&7************************* &6%playername% &7*************************'
       ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
-      money: '&6money: %amount% '
-      exp: '&eexp: %amount% '
-      points: '&6points: %amount%'
+      money: '&6Para: %amount% '
+      exp: '&eXP: %amount% '
+      points: '&6Puan: %amount%'
       totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Önceki Sayfa &2|'

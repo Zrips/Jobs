@@ -19,7 +19,6 @@ public class browse implements Cmd {
     @Override
     @JobCommand(200)
     public boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
-
 	if (Jobs.getGCManager().BrowseUseNewLook) {
 	    List<Job> jobList = new ArrayList<>(Jobs.getJobs());
 	    if (jobList.isEmpty()) {
@@ -32,25 +31,24 @@ public class browse implements Cmd {
 		    Jobs.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
-		    return true;
 		}
 
 		return true;
 	    }
 
-	    Job j = null;
 	    int page = 1;
 	    if (sender instanceof Player) {
 		for (String one : args) {
 		    if (one.startsWith("-p:")) {
 			try {
 			    page = Integer.parseInt(one.substring("-p:".length()));
-			    continue;
 			} catch (Exception e) {
 			}
 		    }
 		}
 	    }
+
+	    Job j = null;
 	    for (String one : args) {
 		if (one.startsWith("-j:")) {
 		    j = Jobs.getJob(one.substring("-j:".length()));
@@ -228,7 +226,6 @@ public class browse implements Cmd {
 		     Jobs.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
-		    return true;
 		}
 
 		return true;

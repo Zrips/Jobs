@@ -1,211 +1,211 @@
 ---
 economy:
   error:
-    nomoney: '&cSorry, no money left in national bank!'
+    nomoney: '&cScuze, nu mai sunt bani in banca națională!'
 limitedItem:
   error:
-    levelup: '&cYou need to level up in [jobname] to use this item!'
+    levelup: '&cTrebuie să ai un nivel mai mare în [jobname] pentru a folosi acest item!'
 general:
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
     time:
-      days: '&e%days% &6days '
-      hours: '&e%hours% &6hours '
+      days: '&e%days% &6zile '
+      hours: '&e%hours% &6ore '
       mins: '&e%mins% &6min '
-      secs: '&e%secs% &6sec '
-    invalidPage: '&cInvalid page'
-    'true': '&2True'
-    'false': '&cFalse'
+      secs: '&e%secs% &6secunde '
+    invalidPage: '&cPagină invalidă'
+    'true': '&2Adevărat'
+    'false': '&cFals'
     blocks:
-      furnace: Furnace
-      smoker: Smoker
-      blastfurnace: Blast furnace
-      brewingstand: Brewing stand
+      furnace: Cuptor
+      smoker: Afumător
+      blastfurnace: Furnal
+      brewingstand: Stand de poțiuni
   admin:
-    error: '&cThere was an error in the command.'
-    success: '&eYour command has been performed.'
+    error: '&cA fost o eroare în comandă.'
+    success: '&eComanda ta a fost executată.'
   error:
-    noHelpPage: '&cThere is no help page by this number!'
-    notNumber: '&ePlease use numbers!'
-    job: '&cThe job you selected does not exist or you not joined to this'
-    noCommand: '&cThere is no command by this name!'
-    permission: '&cYou do not have permission to do that!'
-    noinfo: '&cNo information found!'
-    noinfoByPlayer: '&cNo information found by [%playername%] player name!'
-    ingame: '&cYou can use this command only in game!'
-    fromconsole: '&cYou can use this command only from console!'
-    worldisdisabled: '&cYou can''t use command in this world!'
-    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
-    noRegistration: '&cYou''ve reached max [block] count!'
+    noHelpPage: '&cNu este nici o pagină de ajutor cu acest număr!'
+    notNumber: '&eTe rog folosește numere!'
+    job: '&cJobul pe care l-ai selectat nu există sau nu ești înrolat'
+    noCommand: '&cNu este nici o comandă cu acest număr!'
+    permission: '&cNu ai permisiunea să faci asta!'
+    noinfo: '&cNici o informație găsită!'
+    noinfoByPlayer: '&cNici o informație găsită de [%playername%]!'
+    ingame: '&cPoți folosi această comandă doar in joc!'
+    fromconsole: '&cPoți folosi această comandă doar din consolă!'
+    worldisdisabled: '&cNu poți folosi comanda in lumea aceasta!'
+    newRegistration: '&ePropreietate nouă înregistrată pentru [block] &7[current]&e/&f[max]'
+    noRegistration: '&cAi ajuns la numărul maxim de [block]!'
 command:
   help:
     output:
-      info: Type /jobs [cmd] ? for more information about a command.
-      cmdUsage: '&2Usage: &7[command]'
+      info: Scrie /jobs [cmd] ? pentru mai multe informații despre i comandă.
+      cmdUsage: '&2Mod de utilizare: &7[command]'
       label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
       cmdFormat: '&7/[command] &f[arguments]'
       helpPageDescription: '&2* [description]'
-      title: '&e-------&e ======= &6Jobs &e======= &e-------'
-      page: '&e-----&e ====== Page &6[1] &eof &6[2] &e====== &e-----'
+      title: '&e-------&e ======= &6Joburi &e======= &e-------'
+      page: '&e-----&e ====== Pagină &6[1] &eof &6[2] &e====== &e-----'
       fliperSimbols: '&e----------'
-      prevPage: '&2----<< &6Prev '
-      prevPageOff: '&7----<< Prev '
-      nextPage: '&6 Next &2>>----'
-      nextPageOff: '&7 Next >>----'
+      prevPage: '&2----<< &6Anterior '
+      prevPageOff: '&7----<< Anterior '
+      nextPage: '&6 Urmatorul &2>>----'
+      nextPageOff: '&7 Urmatorul >>----'
       pageCount: '&2[current]/[total]'
-      pageCountHover: '&e[totalEntries] entries'
-      prevPageGui: '&6Previous page '
-      nextPageGui: '&6Next Page'
+      pageCountHover: '&e[totalEntries] intrări'
+      prevPageGui: '&6Pagina anterioară '
+      nextPageGui: '&6Pagina următoare'
   moneyboost:
     help:
-      info: Boosts money gain for all players
+      info: Crește banii pentru toți jucătorii
       args: '[jobname]/all/reset [time]/[rate]'
     output:
-      allreset: All money boosts turned off
-      jobsboostreset: Money boost has been turned off for %jobname%
-      nothingtoreset: Nothing to reset
-      boostalladded: Money boost of %boost% added for all jobs!
-      boostadded: Money boost of &e%boost% &aadded for &e%jobname%!
-      infostats: '&c-----> &aMoney rate x%boost% enabled&c <-------'
+      allreset: Toate majorările de bani au fost dezactivate
+      jobsboostreset: Majorarea de bani a fost oprită pentru %jobname%
+      nothingtoreset: Nimic de resetat
+      boostalladded: Creșterea banilor de %boost% adăugată la toate joburile!
+      boostadded: Creșterea banilor de %boost% adăugată pentru &e%jobname%!
+      infostats: '&c-----> &aRata banilor x%boost% activată&c <-------'
   pointboost:
     help:
-      info: Boosts point gain for all players
+      info: Crește câștigul punctelor pentru toți jucătorii
       args: '[jobname]/all/reset [time]/[rate]'
     output:
-      allreset: All point boosts turned off
-      jobsboostreset: Point boost has been turned off for %jobname%
-      nothingtoreset: Nothing to reset
-      boostalladded: Points boost of %boost% added for all jobs!
-      boostadded: Points boost of &e%boost% &aadded for &e%jobname%!
-      infostats: '&c-----> &aPoints rate x%boost% enabled&c <-------'
+      allreset: Toate majorările de bani au fost dezactivate
+      jobsboostreset: Majorarea de puncte a fost oprită pentru %jobname%
+      nothingtoreset: Nimic de resetat
+      boostalladded: Majorarea banilor de %boost% adăugată la toate joburile!
+      boostadded: Majorarea punctelor de %boost% adăugată pentru &e%jobname%!
+      infostats: '&c-----> &aRata punctey x%boost% activată&c <-------'
   expboost:
     help:
-      info: Boosts exp gain for all players
+      info: Crește câștigarea experienței pentru toți jucătorii
       args: '[jobname]/all/reset [time]/[rate]'
     output:
-      allreset: All exp boosts turned off
-      jobsboostreset: Exp boost has been turned off for %jobname%
-      nothingtoreset: Nothing to reset
-      boostalladded: Exp boost of %boost% added for all jobs!
-      boostadded: Exp boost of &e%boost% &aadded for &e%jobname%!
-      infostats: '&c-----> &aExp rate x%boost% enabled&c <-------'
+      allreset: Toate majorările de experiență au fost dezactivate
+      jobsboostreset: Majorarea experienței a fost oprită pentru %jobname%
+      nothingtoreset: Nimic de resetat
+      boostalladded: Majorarea experienței de %boost% adăugată la toate joburile!
+      boostadded: Majorarea experienței de &e%boost% &aadăugată pentru &e%jobname%!
+      infostats: '&c-----> &aRata experienței x%boost% activată&c <-------'
   schedule:
     help:
-      info: Enables the given scheduler
+      info: Activează programatorul dat
       args: enable [scheduleName] [untilTime]
     output:
-      noScheduleFound: '&cSchedule with this name not found.'
-      alreadyEnabled: '&cThis schedule already enabled.'
-      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
+      noScheduleFound: '&cNu a fost găsit niciun program cu acest nume.'
+      alreadyEnabled: '&cAcest program este deja activat.'
+      enabled: '&Programul a fost activat de la&a %from%&e până la&a %until%'
   itembonus:
     help:
-      info: Check item bonus
+      info: Verifica itemul bonus
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7From level: %from% \n&7Until level: %until%"
+      hoverLevelLimits: "&7De la nivelul: %from% \n&7Până la nivelul: %until%"
   edititembonus:
     help:
-      info: Edit item boost bonus
+      info: Editează majorarea itemului bonus
       args: list/add/remove [jobname] [itemBoostName]
   bonus:
     help:
-      info: Show job bonuses
+      info: Arată bonusurile joburilor
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &ePerm bonus: &2%money% &6%points% &e%exp%'
+      permission: ' &eBonus permanent: &2%money% &6%points% &e%exp%'
       item: ' &eItem bonus: &2%money% &6%points% &e%exp%'
-      global: ' &eGlobal bonus: &2%money% &6%points% &e%exp%'
-      dynamic: ' &eDynamic bonus: &2%money% &6%points% &e%exp%'
-      nearspawner: ' &eSpawner bonus: &2%money% &6%points% &e%exp%'
-      petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
-      area: ' &eArea bonus: &2%money% &6%points% &e%exp%'
-      mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
-      final: ' &eFinal bonus: &2%money% &6%points% &e%exp%'
-      finalExplanation: ' &eDoes not include Petpay and Near spawner bonus/penalty'
+      global: ' &eBonus global: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eBonus dinamic: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eBonus spawner: &2%money% &6%points% &e%exp%'
+      petpay: ' &eBonus PetPay: &2%money% &6%points% &e%exp%'
+      area: ' &eBonus zonă: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eBonus McMMO: &2%money% &6%points% &e%exp%'
+      final: ' &eBonus final: &2%money% &6%points% &e%exp%'
+      finalExplanation: ' &eNu include Petpay și Near spawner bonus/penalizare'
   convert:
     help:
-      info: Converts the database system from one system to another. If you are currently running SQLite, this will convert it to MySQL and vice versa.
+      info: Convertește sistemul de baze de date dintr-un sistem în altul. Dacă rulezi SQLite îl va converti in MySQL și invers.
       args: ''
   limit:
     help:
-      info: Shows payment limits for jobs
+      info: Arată limita de plata pentru joburi
       args: '[playername]'
     output:
-      moneytime: '&eTime left until money limit resets: &2%time%'
-      moneyLimit: '&eMoney limit: &2%current%&e/&2%total%'
-      exptime: '&eTime left until Exp limit resets: &2%time%'
-      expLimit: '&eExp limit: &2%current%&e/&2%total%'
-      pointstime: '&eTime left until Point limit resets: &2%time%'
-      pointsLimit: '&ePoint limit: &2%current%&e/&2%total%'
-      reachedmoneylimit: '&4You have reached money limit in given time!'
-      reachedmoneylimit2: '&eYou can check your limit with &2/jobs limit &ecommand'
-      reachedmoneylimit3: '&eMoney earned is now reduced exponentially... But you still earn a little!'
-      reachedexplimit: '&4You have reached exp limit in given time!'
-      reachedexplimit2: '&eYou can check your limit with &2/jobs limit &ecommand'
-      reachedpointslimit: '&4You have reached exp limit in given time!'
-      reachedpointslimit2: '&eYou can check your limit with &2/jobs limit &ecommand'
-      notenabled: '&eMoney limit is not enabled'
+      moneytime: '&eTimp rămas până se resetează limita banilor: &2%time%'
+      moneyLimit: '&eLimită de bani: &2%current%&e/&2%total%'
+      exptime: '&eTimp rămas până se resetează limita experienței: &2%time%'
+      expLimit: '&eLimită de experiență: &2%current%&e/&2%total%'
+      pointstime: '&eTimp rămas până se resetează limita punctelor: &2%time%'
+      pointsLimit: '&eLimită de puncte: &2%current%&e/&2%total%'
+      reachedmoneylimit: '&4Ai atins limita de bani în timpul dat!'
+      reachedmoneylimit2: '&ePoți să îți verifici limita cu &2/jobs limit &ecommand'
+      reachedmoneylimit3: '&eBanii câștigați sunt reduși exponențial... Totuși poți câștiga puțin!'
+      reachedexplimit: '&4Ai atins limita de experiență în timpul dat!'
+      reachedexplimit2: '&ePoți să îți verifici limita cu &2/jobs limit &ecommand'
+      reachedpointslimit: '&4Ai atins limita de experiență în timpul dat!'
+      reachedpointslimit2: '&ePoți să îți verifici limita cu &2/jobs limit &ecommand'
+      notenabled: '&e Limita banilor nu e activată'
   resetlimit:
     help:
-      info: Resets a player's payment limits
+      info: Resetează limita plății a unui jucător
       args: '[playername]'
     output:
-      reseted: '&ePayment limits have been reset for: &2%playername%'
+      reseted: '&eLimita plății a fost resetată pentru: &2%playername%'
   resetquest:
     help:
-      info: Resets a player's quest
+      info: Resetează misiunea unui jucător
       args: '[playername] [jobname]'
     output:
-      reseted: '&eQuest has been reset for: &2%playername%'
-      noQuests: '&eCan''t find any quests'
+      reseted: '&eMisiunea a fost resetată pentru: &2%playername%'
+      noQuests: '&eNu s-au găsit misiuni'
   points:
     help:
-      info: Shows how much points does a player have.
+      info: Arata cate puncte are un jucător.
       args: '[playername]'
-    currentpoints: ' &eCurrent point amount: &6%currentpoints%'
-    totalpoints: ' &eTotal amount of collected points until now: &6%totalpoints%'
+    currentpoints: ' &eNumărul curent de puncte: &6%currentpoints%'
+    totalpoints: ' &eNumăr total de puncte colectate până acum: &6%totalpoints%'
   editpoints:
     help:
-      info: Edit player's points.
+      info: Editează punctele jucătorului.
       args: set/add/take [playername] [amount]
     output:
-      set: '&ePlayers (&6%playername%&e) points was set to &6%amount%'
-      add: '&ePlayer (&6%playername%&e) got additional &6%amount% &epoints. Now they have &6%total%'
-      take: '&ePlayer (&6%playername%&e) lost &6%amount% &epoints. Now they have &6%total%'
+      set: '&ePunctele jucătorului (&6%playername%&e) au fost setate la &6%amount%'
+      add: '&eJucătorul (&6%playername%&e) a primit &6%amount% &epuncte adiționale. Acum el are &6%total%'
+      take: '& eJucătorul (&6%playername%&e) a pierdut &6%amount% &epuncte. Acum el are &6%total%'
   editjobs:
     help:
-      info: Edit current jobs.
+      info: Editare jobul curent.
       args: ''
       list:
-        job: '&eJobs:'
+        job: '&eJoburi:'
         jobs: '  -> [&e%jobname%&r]'
         actions: '    -> [&e%actionname%&r]'
         material: '      -> [&e%materialname%&r]      '
         materialRemove: '&c[X]'
         materialAdd: '      -> &e[&2+&e]'
-        money: '        -> &eMoney: &6%amount%'
-        exp: '        -> &eExp: &6%amount%'
-        points: '        -> &ePoints: &6%amount%'
+        money: '        -> &eBani: &6%amount%'
+        exp: '        -> & Experiență: &6%amount%'
+        points: '        -> &ePuncte: &6%amount%'
       modify:
-        newValue: '&eEnter new value'
-        enter: '&eEnter new name or press '
-        hand: '&6HAND '
-        handHover: '&6Press to grab info from item in your hand'
-        or: '&eor '
-        look: '&6LOOKING AT'
-        lookHover: '&6Press to grab info from block you are looking'
+        newValue: '&eIntrodu o valoare nouă'
+        enter: '&eIntrodu un nume nou sau apasă '
+        hand: '&6MÂNĂ '
+        handHover: '&6Apasa pentru a obține informații de la itemul din mână'
+        or: '&esau '
+        look: '&6MA UIT LA'
+        lookHover: '&6Apasă pentru a obține informații de la blocul la care te uiți'
   editquests:
     help:
-      info: Edit current quests.
+      info: Editează misiunile curente.
       args: ''
       list:
-        quest: '&eQuests:'
+        quest: '&eMisiuni:'
         jobs: '  -> [&e%jobname%&r]'
         quests: '  -> [&e%questname%&r]'
         actions: '    -> [&e%actionname%&r]'
@@ -213,502 +213,502 @@ command:
         objectiveRemove: '&c[X]'
         objectiveAdd: '      -> &e[&2+&e]'
       modify:
-        newValue: '&eEnter new value'
-        enter: '&eEnter new name or press '
-        hand: '&6HAND '
-        handHover: '&6Press to grab info from item in your hand'
-        or: '&eor '
-        look: '&6LOOKING AT'
-        lookHover: '&6Press to grab info from block you are looking'
+        newValue: '&eIntrodu o valoare nouă'
+        enter: '&eIntrodu un nume nou sau apasă '
+        hand: '&6MÂNĂ '
+        handHover: '&6Apasa pentru a obține informații de la itemul din mână'
+        or: '&esau '
+        look: '&6MA UIT LA'
+        lookHover: '&6Apasă pentru a obține informații de la blocul la care te uiți'
   blockinfo:
     help:
-      info: Shows information for the block you are looking at.
+      info: Arată informații pentru blocul la care te uiți.
       args: ''
     output:
-      name: ' &eBlock name: &6%blockname%'
-      id: ' &eBlock id: &6%blockid%'
-      data: ' &eBlock data: &6%blockdata%'
-      usage: ' &eUsage: &6%first% &eor &6%second%'
+      name: ' &eNume bloc: &6%blockname%'
+      id: ' &eId bloc: &6%blockid%'
+      data: ' &eDate bloc: &6%blockdata%'
+      usage: ' &eMod de folosire: &6%first% &esau &6%second%'
   iteminfo:
     help:
-      info: Shows information for the item you are holding.
+      info: Arată informații pentru itemul pe care îl ți.
       args: ''
     output:
-      name: ' &eItem name: &6%itemname%'
-      id: ' &eItem id: &6%itemid%'
-      data: ' &eItem data: &6%itemdata%'
-      usage: ' &eUsage: &6%first% &eor &6%second%'
+      name: ' &eNume item: &6%itemname%'
+      id: ' &eId item: &6%itemid%'
+      data: ' &eDate item: &6%itemdata%'
+      usage: ' &eMod de folosire: &6%first% &esau &6%second%'
   placeholders:
     help:
-      info: List out all placeholders
-      args: (parse) (placeholder)
+      info: Listă a toate substituibilelor
+      args: (parse) (substituent)
     output:
       list: '&e[place]. &7[placeholder]'
-      outputResult: ' &eresult: &7[result]'
-      parse: '&6[placeholder] &7by [source] &6result &8|&f[result]&8|'
+      outputResult: ' &erezultat: &7[result]'
+      parse: '&6[placeholder] &7după [source] &6rezultat &8|&f[result]&8|'
   entitylist:
     help:
-      info: Shows all possible entities that can be used with the plugin.
+      info: Arată toate entitățile posibile care pot fi folosite cu pluginul.
       args: ''
   stats:
     help:
-      info: Show the level you are in each job you are part of.
+      info: Arată nivelul tau la fiecare job în care participi.
       args: '[playername]'
     error:
-      nojob: Please join a job first.
+      nojob: Te rog sa te angajezi mai întâi.
     output:
-      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
-      max-level: '     &cMax level   -   %jobname%'
-    bossBarOutput: 'Lvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+      message: 'Nivel %joblevel% pentru %jobname%: %jobxp%/%jobmaxxp% experiență'
+      max-level: '     &cNivel maxim   -   %jobname%'
+    bossBarOutput: 'Nivel %joblevel% %jobname%: %jobxp%/%jobmaxxp% experiență%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
-      info: Opens special jobs shop.
+      info: Deschide meniul cu joburi speciale.
       args: ''
     info:
-      title: '&e------- &8Jobs shop &e-------'
-      currentPoints: '&eYou have: &6%currentpoints%'
-      price: '&ePrice: &6%price%'
-      reqJobs: '&eRequired jobs:'
-      reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
-      reqTotalLevel: '&6Required total level: &e%totalLevel%'
+      title: '&e------- &8Meniu cu joburi &e-------'
+      currentPoints: '&eAi: &6%currentpoints%'
+      price: '&ePreț: &6%price%'
+      reqJobs: '&eJoburi necesare:'
+      reqJobsList: '  &6%jobsname%&e: &e%level% nivel'
+      reqTotalLevel: '&6Nivel total necesar: &e%totalLevel%'
       reqJobsColor: '&c'
       reqJobsLevelColor: '&4'
       reqTotalLevelColor: '&4'
-      cantOpen: '&cCan''t open this page'
-      NoPermForItem: '&cYou don''t have required permissions for this item!'
-      NoPermToBuy: '&cNo permissions to buy this item'
-      NoJobReqForitem: '&cYou don''t have the required job (&6%jobname%&e) with required (&6%joblevel%&e) level'
-      NoPoints: '&cYou don''t have enough points'
-      NoTotalLevel: '&cTotal jobs level is too low (%totalLevel%)'
-      Paid: '&eYou have paid &6%amount% &efor this item'
+      cantOpen: '&cAceastă pagina nu poate fi deschisă'
+      NoPermForItem: '&cNu au permisiunile necesare pentru acest item!'
+      NoPermToBuy: '&cNu ai permisiunea să cumperi acest item'
+      NoJobReqForitem: '&cNu ai jobul necesar(&6%jobname%&e) cu nivelul necesar(&6%joblevel%&e)'
+      NoPoints: '&cNu ai destule puncte'
+      NoTotalLevel: '&cNivelul total al joburilor e prea mic (%totalLevel%)'
+      Paid: '&eAi plătit &6%amount% &epentru acest item'
   archive:
     help:
-      info: Shows all jobs saved in archive by user.
+      info: Arată toate joburile salvate în arhivă de utilizator.
       args: '[playername]'
     error:
-      nojob: There is no jobs saved.
+      nojob: Nu sunt joburi salvate.
   give:
     help:
-      info: Gives item by jobs name and item category name. Player name is optional
+      info: Dă iteme după numele jobului și numele categoriei. Numele jucătorului este opțional
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Player with that name is not online!'
-      noitem: '&4Can''t find any item by given name!'
+      notonline: '&4Juctorul cu acel nume nu este activ!'
+      noitem: '&4Nu se poate găsi niciun item după numele dat!'
   info:
     help:
-      title: '&2*** &eJobs&2 ***'
-      info: Show how much each job is getting paid and for what.
-      penalty: '&eThis job has a penalty of &c[penalty]% &ebecause there are too many players working in it.'
-      bonus: '&eThis job has a bonus of &2[bonus]% &ebecause there are not enough players working in it.'
+      title: '&2*** &eJoburi&2 ***'
+      info: Arată cât de mult este plătit fiecare job și pentru ce.
+      penalty: '&eAcest job are o penalitate de &c[penalty]% &epentru că sunt prea multi jucători care lucrează în el.'
+      bonus: '&eAcest job are un bonus de &c[bonus]% &epentru că nu sunt destui jucători care lucrează în el.'
       args: '[jobname] [action]'
-      actions: '&eValid actions are: &f%actions%'
-      max: ' - &emax level:&f '
-      newMax: ' &eMax level: &f[max]'
+      actions: '&eAcțiuni valide sunt: &f%actions%'
+      max: ' - &snivel maxim:&f '
+      newMax: ' &eNivel maxim: &f[max]'
       material: '&7%material%'
-      levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &alevels)'
-      levelFrom: ' &a(from &e%levelFrom% &alevel)'
-      levelUntil: ' &a(until &e%levelUntil% &alevel)'
+      levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &anivele)'
+      levelFrom: ' &a(de la &e%levelFrom% &anivel)'
+      levelUntil: ' &a(până la &e%levelUntil% &anivel)'
       money: ' &2%money%$'
-      points: ' &6%points%pts'
-      exp: ' &e%exp%xp'
+      points: ' &6%points%puncte'
+      exp: ' &e%exp%experiență'
     gui:
-      pickjob: '&ePick your job!'
-      jobinfo: '&e[jobname] info!'
-      actions: '&eValid actions are:'
-      leftClick: '&eLeft Click for more info'
-      middleClick: '&eMiddle Click to leave this job'
-      rightClick: '&eRight click to join job'
-      leftSlots: '&eLeft slots:&f '
-      working: '&2&nAlready working'
-      cantJoin: '&cYou can''t join to the selected job.'
-      max: '&eMax level:&f '
-      back: '&e<<< Back'
-      next: '&eNext >>>'
+      pickjob: '&eAlege-ți jobul!'
+      jobinfo: '&e[jobname] informații!'
+      actions: '&eAcțiuni valide sunt:'
+      leftClick: '&eClick stânga pentru mai multe informații'
+      middleClick: '&eClick mijloc pentru a părăsi acest job'
+      rightClick: '&eClick dreapta pentru a te alătura acestui job'
+      leftSlots: '&eSloturile din stânga:&f '
+      working: '&2&nDeja funcționează'
+      cantJoin: '&cNu te poți alătura jobului selectat.'
+      max: '&eNivel maxim:&f '
+      back: '&e<<< Înapoi'
+      next: '&eUrmătorul >>>'
     output:
       break:
-        info: '&eBreak'
-        none: '%jobname% does not get money for breaking blocks.'
+        info: '&ePauză'
+        none: '%jobname% nu primește bani pentru spargerea blocurilor.'
       tntbreak:
-        info: '&eTNTBreak'
-        none: '%jobname% does not get money for breaking blocks with TNT.'
+        info: '&eSpargereTNT'
+        none: '%jobname% nu primește bani pentru spargerea blocurilor cu TNT.'
       place:
-        info: '&ePlace'
-        none: '%jobname% does not get money for placing blocks.'
+        info: '&ePlasează'
+        none: '%jobname% nu primește bani pentru plasarea blocurilor.'
       striplogs:
-        info: '&eStrip logs'
-        none: '%jobname% does not get money for stripping logs.'
+        info: '&eCioplire lemn'
+        none: '%jobname% nu primește bani pentru cioplirea lemnului.'
       kill:
-        info: '&eKill'
-        none: '%jobname% does not get money for killing monsters.'
+        info: '&eOmoară'
+        none: '%jobname% nu primește bani pentru omorârea monștrilor.'
       mmkill:
         info: '&eMMKill'
-        none: '%jobname% does not get money for killing Mythic monsters.'
+        none: '%jobname% nu primește bani pentru omorârea monștrilor mitici.'
       fish:
-        info: '&eFish'
-        none: '%jobname% does not get money from fishing.'
+        info: '&ePește'
+        none: '%jobname% nu primește bani pentru pescuit.'
       craft:
-        info: '&eCraft'
-        none: '%jobname% does not get money from crafting.'
+        info: '&eFabrică'
+        none: '%jobname% nu primește bani pentru fabricat.'
       smelt:
-        info: '&eSmelt'
-        none: '%jobname% does not get money from smelting.'
+        info: '&eTopit'
+        none: '%jobname% nu primește bani pentru topit.'
       brew:
-        info: '&eBrew'
-        none: '%jobname% does not get money from brewing.'
+        info: '&eCrează poțiuni'
+        none: '%jobname% nu primește bani pentru crearea de poțiuni.'
       eat:
-        info: '&eEat'
-        none: '%jobname% does not get money from eating food.'
+        info: '&eMănâncă'
+        none: '%jobname% nu primește bani pentru mâncat.'
       dye:
-        info: '&eDye'
-        none: '%jobname% does not get money from dyeing.'
+        info: '&eColorează'
+        none: '%jobname% nu primește bani pentru colorat.'
       enchant:
         info: '&eEnchant'
-        none: '%jobname% does not get money from enchanting.'
+        none: '%jobname% does not get money from enchantat.'
       vtrade:
-        info: '&eVillager trade'
-        none: '%jobname% does not get money for trading a villager.'
+        info: '&eSchimb cu villager'
+        none: '%jobname% nu primește bani pentru schimbul cu un villager.'
       repair:
-        info: '&eRepair'
-        none: '%jobname% does not get money from repairing.'
+        info: '&eRepară'
+        none: '%jobname% nu primește bani pentru reparat.'
       breed:
-        info: '&eBreed'
-        none: '%jobname% does not get money from breeding.'
+        info: '&eInmulțire'
+        none: '%jobname% nu primește bani pentru înmulțirea animalelor.'
       tame:
-        info: '&eTame'
-        none: '%jobname% does not get money from taming.'
+        info: '&eÎmblânzește'
+        none: '%jobname% nu primește bani pentru îmblânzire.'
       milk:
-        info: '&eMilk'
-        none: '%jobname% does not get money from milking cows.'
+        info: '&eMuls'
+        none: '%jobname% nu primește bani pentru muls vaci.'
       shear:
-        info: '&eShear'
-        none: '%jobname% does not get money from shearing sheep.'
+        info: '&eTuns'
+        none: '%jobname% nu primește bani pentru tuns oi.'
       explore:
-        info: '&eExplore'
-        none: '%jobname% does not get money from exploring.'
+        info: '&eExplorat'
+        none: '%jobname% nu primește bani pentru explorat.'
       custom-kill:
-        info: '&eCustom kill'
-        none: '%jobname% does not get money from custom player kills.'
+        info: '&eOmor personalizat'
+        none: '%jobname% nu primește bani pentru omorârea personalizata a jucătorilor.'
       collect:
-        info: '&eCollect'
-        none: '%jobname% does not get money for collecting blocks.'
+        info: '&eColectează'
+        none: '%jobname% nu primește bani pentru colectarea blocurilor.'
       bake:
-        info: '&eBake'
-        none: '%jobname% does not get money for cooking foods.'
+        info: '&eCoace'
+        none: '%jobname% nu primește bani pentru gătit.'
   playerinfo:
     help:
-      info: Show how much each job is getting paid and for what on another player.
+      info: Arată cât de mult este plătit fiecare job și pentru ce pe alt jucător.
       args: '[playername] [jobname] [action]'
   join:
     help:
-      info: Join the selected job.
+      info: Alătură te jobului selectat.
       args: '[jobname]'
     error:
-      alreadyin: You are already in the job %jobname%.
-      fullslots: You cannot join the job %jobname%, there are no slots available.
-      maxjobs: You have already joined too many jobs.
-      rejoin: '&cCan''t rejoin this job. Wait [time]'
-    rejoin: '&aClick to rejoin this job: '
-    success: You have joined the job %jobname%.
-    confirm: '&2Click to confirm joining action for the &7[jobname] &2job.'
+      alreadyin: Ești deja în jobul %jobname%.
+      fullslots: Nu poți să te alături jobului %jobname%, nu mai sunt locuri libere.
+      maxjobs: Te-ai alăturat prea multor alte joburi.
+      rejoin: '&cNu poți să te reînscri la acest job. Așteaptă [time]'
+    rejoin: '&aApasa ca să te realături acestui job: '
+    success: Te-ai alăturat jobului %jobname%.
+    confirm: '&2Apasă ca sa confirmi alăturarea la jobul &7[jobname] &2job.'
   leave:
     help:
-      info: Leave the selected job.
+      info: Demisionează de la jobul selectat.
       args: '[oldplayerjob]'
-    success: You have left the job %jobname%.
-    confirmationNeed: '&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!'
+    success: Ai părăsit jobul %jobname%.
+    confirmationNeed: '&2Ești sigur că vrei sa demisionezi de la &e [jobname]&c job? Scrie comandă iar în&6 [time] secunde &cpentru a confirma!'
   leaveall:
     help:
-      info: Leave all your jobs.
+      info: Demisionează de la toate joburile.
     error:
-      nojobs: You do not have any jobs to leave!
-    success: You have left all your jobs.
-    confirmationNeed: '&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!'
+      nojobs: Nu ai ce joburi să părăsești!
+    success: Ai demisionat de la toate joburile.
+    confirmationNeed: '&2Ești sigur că vrei sa demisionezi de la toate joburile? Scrie comandă iar în&6 [time] secunde &cpentru a confirma!'
   explored:
     help:
-      info: Check who visited this chunk
+      info: Verifică cine a vizitat acest chunk
     error:
-      noexplore: No one visited this chunk
-    fullExplore: '&aThis chunk is fully explored'
+      noexplore: Nimeni nu a vizitat acest chunk
+    fullExplore: '&aAcest chunk este explorat total'
     list: '&e%place%. %playername%'
   browse:
     help:
-      info: List the jobs available to you.
+      info: Listează joburile disponibile.
     error:
-      nojobs: There are no jobs you can join.
+      nojobs: Nu poți să te alături niciunui job.
     output:
-      header: 'You are allowed to join the following jobs:'
-      footer: For more information type in /jobs info [JobName]
-      totalWorkers: ' &7Workers: &e[amount]'
-      penalty: ' &4Penalty: &c[amount]%'
+      header: 'Ai voie sa te alături următoarelor joburi:'
+      footer: Pentru mai multe informații scrie /jobs info [JobName]
+      totalWorkers: ' &7Muncitori: &e[amount]'
+      penalty: ' &4Penalizare: &c[amount]%'
       bonus: ' &2Bonus: &a[amount]%'
-      newHeader: '&2========== [amount] Available Jobs ========='
+      newHeader: '&2========== [amount] Joburi Disponibile ========='
       description: '[description]'
       list: '    &8[place]. &7[jobname]'
       console:
-        newHeader: '&2========== [amount] Available Jobs ========='
+        newHeader: '&2========== [amount] Joburi Disponibile ========='
         description: '[description]'
-        totalWorkers: ' &7Workers: &e[amount]'
-        penalty: ' &4Penalty: &c[amount]%'
+        totalWorkers: ' &7Muncitori: &e[amount]'
+        penalty: ' &4Penalizare: &c[amount]%'
         bonus: ' &2Bonus: &a[amount]%'
         list: ' &6[jobname]'
-        newMax: ' &eMax level: &f[max]'
-      click: '&bClick on the job to see more info about it!'
-      detailed: '&bClick to see more detailed list on job actions'
+        newMax: ' &eNivel maxim: &f[max]'
+      click: '&bApasă pe job pentru a afla mai multe informații despre el!'
+      detailed: '&bApasă că să vezi o lista detaliată cu acțiuni din job'
       jobHeader: '&2========== [jobname] ========='
-      chooseJob: '&7&n&oChoose this job'
-      chooseJobHover: '&7Click here to get this job'
+      chooseJob: '&7&n&oAlege acest job'
+      chooseJobHover: '&7Apasă aici pentru a primi acest job'
   clearownership:
     help:
-      info: Clear block ownership
+      info: Șterge proprietatea asupra unui bloc
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
+      cleared: '&2Șterse &7[furnaces] &2cuptoare, &7[brewing] &2standuri de poțiuni, &7[smoker]&2 afumătoare și &7[blast]&2 furnale.'
   skipquest:
     help:
-      info: Skip defined quest and get new one
-      args: '[jobname] [questname] (playerName)'
+      info: Treci peste misiune și primește una nouă
+      args: '[jobname] [questname] (numeJucător)'
     output:
-      questSkipForCost: '&2You skipped the quest and paid:&e %amount%$'
+      questSkipForCost: '&2Ai trecut peste misiune și ai plătit:&e %amount%$'
   quests:
     help:
-      info: List available quests
+      info: Listează misiunile disponibile
       args: '[playername]'
     error:
-      noquests: '&cThere are no quests'
+      noquests: '&2Nu există misiuni noi'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
     status:
-      changed: '&2The quests status has been changed to&r %status%'
-      started: '&aStarted'
-      stopped: '&cStopped'
+      changed: '&2Statusul misiunii a fost schimbat în&r %status%'
+      started: '&aÎncepută'
+      stopped: '&cOprită'
     output:
-      completed: '&2      !Completed!&r      '
+      completed: '&2      !Completată!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
-      skip: '&7Click to skip this quest'
-      skips: '&7Left skips: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7New quest in: [time]"
+      skip: '&7Apasă pentru a trece peste această misiune'
+      skips: '&2Numar rămas de "treceri peste": &f[skips]'
+      hover: "&f[jobName] \n[desc] \n&7Misiune nouă în: [time]"
   fire:
     help:
-      info: Fire the player from the job.
+      info: Concediază jucătorul de la acest job.
       args: '[playername] [jobname]'
     error:
-      nojob: Player does not have the job %jobname%.
+      nojob: Jucătorul nu are jobul %jobname%.
     output:
-      target: You have been fired from %jobname%.
+      target: Ai fost concediat de la %jobname%.
   fireall:
     help:
-      info: Fire player from all their jobs.
+      info: Concediază jucătorul de la toate joburile lui.
       args: '[playername]/all'
     error:
-      nojobs: Player does not have any jobs to be fired from!
+      nojobs: Jucătorul nu are de la ce joburi sa fie concediat!
     output:
-      target: You have been fired from all your jobs.
+      target: Ai fost concediat de la toate joburile.
   employ:
     help:
-      info: Employ the player to the job.
+      info: Angajează jucătorul la job.
       args: '[playername] [jobname]'
     error:
-      alreadyin: Player is already in the job %jobname%.
-      fullslots: You cannot join the job %jobname%, there are no slots available.
+      alreadyin: Jucătorul este deja în jobul %jobname%.
+      fullslots: Nu poți să te alături jobului %jobname%, nu mai sunt locuri libere.
     output:
-      target: You have been employed as a %jobname%.
+      target: Ai fost angajat ca %jobname%.
   top:
     help:
-      info: Shows top players by jobs name.
+      info: Arată topul jucătorilor după numele jobului.
       args: '[jobname]'
     error:
-      nojob: Can't find any job with this name.
+      nojob: Nu s-a putut găsi niciun job cu acest nume.
     output:
-      topline: '&aTop&e %amount% &aplayers by &e%jobname% &ajob'
-      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
-      prev: '&e<<<<< Prev page &2|'
-      next: '&2|&e Next Page >>>>'
-      show: '&2Show from &e[from] &2until &e[until] &2top list'
+      topline: '&aTop&e %amount% &ajutători după &e%jobname% &ajob'
+      list: '&e%number%&a. &e%playername% &anivel &e%level% &awith&e %exp% &aexperiență'
+      prev: '&e<<<<< Pagina anterioară &2|'
+      next: '&2|&e Pagina Următoare >>>>'
+      show: '&2Arată de la &e[from] &2până la &e[until] &2lista top'
   gtop:
     help:
-      info: Shows top players by global jobs level.
+      info: Arată topul jucătorilor după nivelul global al joburilor.
       args: ''
     error:
-      nojob: Can't find any information.
+      nojob: Nu se pot găsi informații.
     output:
-      topline: '&aTop&e %amount% &aplayers by global job level'
-      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
-      prev: '&e<<<<< Prev page &2|'
-      next: '&2|&e Next Page >>>>'
-      show: '&2Show from &e[from] &2until &e[until] &2global top list'
+      topline: '&aTop&e %amount% & jucători după nivelul global al joburilor'
+      list: '&e%number%&a. &e%playername% &anivel &e%level% &awith&e %exp% &aexperiență'
+      prev: '&e<<<<< Pagina anterioară &2|'
+      next: '&2|&e Pagina Următoare >>>>'
+      show: '&2Arată de la &e[from] &2până la &e[until] &2listă top global'
   area:
     help:
-      info: Modify restricted areas.
+      info: Modifică zonele restricționate.
       args: add/remove/info/list
-      addUsage: '&eUsage: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]'
-      removeUsage: '&eUsage: &6/Jobs area remove [areaName]'
+      addUsage: '&eMod de folosire: &6/Jobs area add [areaName/wg:worldGuardAreaName] [bonus]'
+      removeUsage: '&eMod de folosire: &6/Jobs area remove [areaName]'
     output:
-      addedNew: '&eAdded a new restricted area with &6%bonus% &ebonus'
-      removed: '&eRemoved the restricted area &6%name%'
+      addedNew: '&eA fost adăugată o noua zonă restricționată cu &6%bonus% &ebonus'
+      removed: '&eA fost ștearsă zona restricționată &6%name%'
       list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%'
       wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
-      noAreas: '&eThere are no saved restricted areas'
-      noAreasByLoc: '&eThere are no restricted areas in this location'
-      areaList: '&eRestricted areas by your location: &6%list%'
-      selected1: '&eSelected the first point: &6%x%:%y%:%z%'
-      selected2: '&eSelected the second point: &6%x%:%y%:%z%'
-      select: '&eSelect 2 points with the selection tool (%tool%)'
-      exist: '&eRestriction area by this name already exists'
-      dontExist: '&eRestriction area by this name does not exist'
-      wgDontExist: '&eWorldGuard area by this name does not exist'
+      noAreas: '&eNu există nici o zona restricționată salvată'
+      noAreasByLoc: '&eNu sunt zone restricționate in această locație'
+      areaList: '&eZone restricționate după locația ta: &6%list%'
+      selected1: '&ePrimul punct a fost selectat: &6%x%:%y%:%z%'
+      selected2: '&eAl doilea punct a fost selectat: &6%x%:%y%:%z%'
+      select: '&eAu fost selectate 2 puncte cu unealta de selecție (%tool%)'
+      exist: '&eO zonă restricționată cu acest nume există deja'
+      dontExist: '&eNu există o zonă restricționată cu acest nume'
+      wgDontExist: '&eNu există o zonă WorldGuard cu acest nume'
   log:
     help:
-      info: Shows statistics.
+      info: Afișează statistici.
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
-      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
-      money: '&6money: %amount% '
-      exp: '&eexp: %amount% '
-      points: '&6points: %amount%'
-      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &ecantitate: %qty% %money%%exp%%points%'
+      money: '&6bani: %amount% '
+      exp: '&eexperiență: %amount% '
+      points: '&6puncte: %amount%'
+      totalIncomes: '    &6Totalul banilor:&2 %money%&6, Total experiență:&2 %exp%&6, Total puncte:&2 %points%'
       bottomline: '&7***********************************************************'
-      prev: '&e<<<<< Prev page &2|'
-      next: '&2|&e Next Page >>>>'
-      nodata: '&cData not found'
+      prev: '&e<<<<< Pagina anterioară &2|'
+      next: '&2|&e Pagina Următoare >>>>'
+      nodata: '&cNu au fost găsite date'
   glog:
     help:
-      info: Shows global statistics.
+      info: Afișează statistici globale.
       args: ''
     output:
-      topline: '&7*********************** &6Global statistics &7***********************'
-      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
-      money: '&6money: %amount% '
-      exp: '&eexp: %amount% '
-      points: '&6points: %amount%'
-      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
+      topline: '&7*********************** &6Statistici globale &7***********************'
+      ls: '&7* &6%number%. &3%action%: &6%item% &ecantitate: %qty% %money%%exp%%points%'
+      money: '&6bani: %amount% '
+      exp: '&eexperiență: %amount% '
+      points: '&6puncte: %amount%'
+      totalIncomes: '    &6Totalul banilor:&2 %money%&6, Total experiență:&2 %exp%&6, Total puncte:&2 %points%'
       bottomline: '&7**************************************************************'
-      nodata: '&cData not found'
+      nodata: '&cNu au fost găsite date'
   transfer:
     help:
-      info: Transfer a player's job from an old job to a new job.
+      info: Transfera jobul unui jucător dintr-un job vechi in unul nou.
       args: '[playername] [oldjob] [newjob]'
     output:
-      target: You have been transferred from %oldjobname% to %newjobname%.
+      target: Ai fost transferat de la %oldjobname% la %newjobname%.
   promote:
     help:
-      info: Promote the player X levels in a job.
+      info: Promovează jucătorul cu X nivele într-un job.
       args: '[playername] [jobname] [levels]'
     output:
-      target: You have been promoted %levelsgained% levels in %jobname%.
+      target: Ai fost promovat %levelsgained% nivele în %jobname%.
   exp:
     help:
-      info: Change the player exp for job.
+      info: Schimbă experiența jucătorului pentru job.
       args: '[playername] [jobname] set/add/take [amount]'
     error:
-      nojob: '&cThis player must first join a job.'
+      nojob: '&cAcest jucător trebuie sa se alăture unui job mai întâi.'
     output:
-      target: '&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eExperiența ta a fost schimbată pentru %jobname% &eși acum ai &6%level%nivele&eși &6%exp%experiență.'
   level:
     help:
-      info: Change the player's level in a job.
+      info: Schimbă nivelul jucătorului într-un job.
       args: '[playername] [jobname] set/add/take [amount]'
     error:
-      nojob: '&cThis player must first join a job.'
+      nojob: '&cAcest jucător trebuie sa se alăture unui job mai întâi.'
     output:
-      target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eNivelul tău a fost schimbat pentru %jobname% &eși acum ai &6%level%nivele&eși &6%exp%experiență.'
   demote:
     help:
-      info: Demote the player X levels in a job.
+      info: Scade Z nivele jucătorului într-un job.
       args: '[playername] [jobname] [levels]'
     output:
-      target: You have been demoted %levelslost% levels in %jobname%.
+      target: Ți-au fost scăzute %levelslost% nivele în %jobname%.
   grantxp:
     help:
-      info: Grants the player X experience in a job.
+      info: Adaugă jucătorului X experiență într-un job.
       args: '[playername] [jobname] [xp]'
     output:
-      target: You have been granted %xpgained% experience in %jobname%.
+      target: Ți-a fost dată %xpgained% experiență în %jobname%.
   removexp:
     help:
-      info: Remove X experience from the player in a job.
+      info: Scade X experiență de la jucător într-un job.
       args: '[playername] [jobname] [xp]'
     output:
-      target: You have lost %xplost% experience in %jobname%.
+      target: Ai pierdut %xplost% experiență în %jobname%.
   signupdate:
     help:
-      info: Manually updates a sign by its name
+      info: Actualizează manual un semn după numele lui
       args: '[jobname]'
   bp:
     help:
-      info: Shows block protections around you in 10 block radius
+      info: Arată protecțiile bloc din jurul tau pe o rază de 10 blocuri
       args: ''
     output:
-      found: '&eFound &6%amount% &eprotected blocks around you'
-      notFound: '&eNo protected blocks found around you'
+      found: '&eAu fost găsite &6%amount% &eblocuri protejate în jurul tău'
+      notFound: '&eNu au fost găsite blocuri protejate în jurul tău'
   reload:
     help:
-      info: Reload configurations.
+      info: Reîncarcă configurațiile.
   toggle:
     help:
-      info: Toggles payment output on action bar or bossbar.
+      info: Comuta rezultatul plății in bara de acțiune sau bara boss.
       args: actionbar/bossbar
     output:
-      turnedoff: '&4This feature is turned off!'
+      turnedoff: '&4Această funcție este dezactivată!'
       paid:
-        main: '&aYou got:'
-        money: '&e[amount] money'
-        exp: '&7[exp] exp'
-        points: '&6[points] points'
-      'on': '&aToggled: &aON'
-      'off': '&aToggled: &4OFF'
+        main: '&aAi:'
+        money: '&e[amount] bani'
+        exp: '&7[exp] experiență'
+        points: '&6[points] puncte'
+      'on': '&aComutat: &aON'
+      'off': '&aComutat: &aOFF'
 message:
   skillup:
-    broadcast: '%playername% has been promoted to a %titlename% %jobname%.'
-    nobroadcast: Congratulations, you have been promoted to a %titlename% %jobname%.
+    broadcast: '%playername% a fost promovat la %titlename% %jobname%.'
+    nobroadcast: Felicitări, ai fost promovat la %titlename% %jobname%.
   max-level-reached:
-    title: '&2Max level reached'
-    subtitle: '&2in %jobname%!'
-    chat: '&cYou have reached the maximum level in %jobname%!'
+    title: '&cNivel maxim atins'
+    subtitle: '&2în %jobname%!'
+    chat: '&cAi atins nivelul maxim în %jobname%!'
   levelup:
-    broadcast: '%playername% is now a level %joblevel% %jobname%.'
-    nobroadcast: You are now level %joblevel% %jobname%.
+    broadcast: '%playername% este acum la nivelul %joblevel% %jobname%.'
+    nobroadcast: Acum ai nivelul %joblevel% %jobname%.
   leveldown:
-    message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
-  cowtimer: '&eYou still need to wait &6%time% &esec to get paid for this job.'
-  blocktimer: '&eYou need to wait &3[time] &esec more to get paid for this!'
-  taxes: '&3[amount] &eserver taxes were transferred to this account'
-  boostStarted: '&eJobs boost time have been started!'
-  boostStoped: '&eJobs boost time have been ended!'
+    message: '&cAi pierdut nivel&e %lostLevel%&c în&e %jobname%&c job! Nivel:&6 %joblevel%&c.'
+  cowtimer: '&eTrebuie să aștepți &6%time% &esecunde pentru a fi platit pentru acest job.'
+  blocktimer: '&eTrebuie să aștepți încă &3[time] &esecunde pentru a fi platit pentru acesta!'
+  taxes: '&3[amount] &etaxe de server au fost transferate în acest cont'
+  boostStarted: '&e Timpul de majorare a joburilor a început!'
+  boostStoped: '&e Timpul de majorare a joburilor s-au terminat!'
   crafting:
-    fullinventory: '&cYour inventory is full!'
+    fullinventory: '&cInventarul tău e plin!'
 signs:
   List: '&0[number].&8[player]&7:&4[level]'
   questList: '&0[number].&8[player]&7:&4[quests]'
   SpecialList:
-    p1: '&b** &8First &b**'
-    p2: '&b** &8Second &b**'
-    p3: '&b** &8Third &b**'
-    p4: '&b** &8Fourth &b**'
-    p5: '&b** &8Fifth &b**'
-    p6: '&b** &8Sixth &b**'
-    p7: '&b** &8Seventh &b**'
-    p8: '&b** &8Eight &b**'
-    p9: '&b** &8Ninth &b**'
-    p10: '&b** &8Tenth &b**'
+    p1: '&b** &8Primul &b**'
+    p2: '&b** &8Al doilea &b**'
+    p3: '&b** &8Al treilea &b**'
+    p4: '&b** &8Al patrulea &b**'
+    p5: '&b** &8Al cincilea &b**'
+    p6: '&b** &8Al șaselea &b**'
+    p7: '&b** &8Al șaptelea &b**'
+    p8: '&b** &8Al optulea &b**'
+    p9: '&b** &8Al nouălea &b**'
+    p10: '&b** &8Al zecelea &b**'
     name: '&9[player]'
-    level: '&8[level] level'
-    quests: '&8[quests] quests'
+    level: '&8[level] nivel'
+    quests: '&8[quests] misiuni'
     bottom: '&b************'
-  cantcreate: '&4You can''t create this sign!'
-  cantdestroy: '&4You can''t destroy this sign!'
+  cantcreate: '&4Nu poți crea acest semn!'
+  cantdestroy: '&4Nu poți distruge acest semn!'
   topline: '&0[Jobs]'
   secondline:
-    join: '&0Join'
-    leave: '&0Leave'
-    toggle: '&0Toggle'
+    join: '&0Alătură-te'
+    leave: '&0Pleacă'
+    toggle: '&0Comută'
     top: '&0Top'
-    browse: '&0Browse'
-    stats: '&0Stats'
-    limit: '&0Limit'
-    info: '&0Info'
-    archive: '&0Archive'
+    browse: '&0Vârf'
+    stats: '&0Statistici'
+    limit: '&0Limită'
+    info: '&0Informații'
+    archive: '&0Arhivă'
 scoreboard:
   topline: '&2Top &e%jobname%'
-  gtopline: '&2Global top list'
+  gtopline: '&2Lista topului global'
   line: '&2%number%. &e%playername% (&6%level%&e)'

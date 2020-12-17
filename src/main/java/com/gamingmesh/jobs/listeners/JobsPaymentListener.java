@@ -27,7 +27,6 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip.ownershipFeedback;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.hooks.JobsHook;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.google.common.base.Objects;
 
 import org.bukkit.Bukkit;
@@ -418,7 +417,7 @@ public class JobsPaymentListener implements Listener {
 	    || brokenBlock == CMIMaterial.CACTUS.getMaterial() || brokenBlock == CMIMaterial.BAMBOO.getMaterial())) {
 	    return;
 	}
-	
+
 	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), bInfo, block);
     }
 

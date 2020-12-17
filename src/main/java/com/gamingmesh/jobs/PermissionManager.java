@@ -29,7 +29,6 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.Debug;
 
 public class PermissionManager {
 
@@ -128,7 +127,7 @@ public class PermissionManager {
     public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative) {
 	if (jPlayer == null || jPlayer.getPlayer() == null)
 	    return 0D;
-	
+
 	perm = perm.toLowerCase();
 	if (!perm.endsWith("."))
 	    perm += ".";
@@ -157,7 +156,7 @@ public class PermissionManager {
 	    }
 	}
 
-	return amount ==  Double.NEGATIVE_INFINITY ? 0D : amount;
+	return amount == Double.NEGATIVE_INFINITY ? 0D : amount;
     }
 
     public boolean hasPermission(JobsPlayer jPlayer, String perm) {
