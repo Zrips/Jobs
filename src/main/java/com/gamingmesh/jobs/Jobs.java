@@ -173,7 +173,7 @@ public class Jobs extends JavaPlugin {
 	    return false;
 
 	if (Integer.parseInt(getServer().getPluginManager().getPlugin("PlaceholderAPI")
-		.getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100 && new PlaceholderAPIHook(this).register()) {
+	    .getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100 && new PlaceholderAPIHook(this).register()) {
 	    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
 	}
 
@@ -475,12 +475,12 @@ public class Jobs extends JavaPlugin {
 		PlayerInfo one = it.next();
 		int id = one.getID();
 		JobsPlayer jPlayer = getPlayerManager().getJobsPlayerOffline(
-			one,
-			playersJobs.get(id),
-			playersPoints.get(id),
-			playersLogs.get(id),
-			playersArchives.get(id),
-			playersLimits.get(id));
+		    one,
+		    playersJobs.get(id),
+		    playersPoints.get(id),
+		    playersLogs.get(id),
+		    playersArchives.get(id),
+		    playersLimits.get(id));
 		if (jPlayer != null)
 		    getPlayerManager().addPlayerToCache(jPlayer);
 	    }
@@ -1101,7 +1101,7 @@ public class Jobs extends JavaPlugin {
 
 		// JobsPayment event
 		JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(jPlayer.getPlayer(), prog.getJob(), expAmount,
-			block, ent, victim, info);
+		    block, ent, victim, info);
 		Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
 		// If event is canceled, don't do anything
 		expAmount = jobsExpGainEvent.isCancelled() ? 0D : jobsExpGainEvent.getExp();
@@ -1202,7 +1202,6 @@ public class Jobs extends JavaPlugin {
 	    if (bp != null) {
 		Long time = bp.getTime();
 		Integer cd = getBpManager().getBlockDelayTime(block);
-
 		if (time != -1L) {
 		    if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
 			getBpManager().add(block, cd);
@@ -1218,6 +1217,10 @@ public class Jobs extends JavaPlugin {
 			getBpManager().add(block, cd);
 			return false;
 		    }
+
+		    // Lets add protection in any case
+		    getBpManager().add(block, cd);
+
 		} else if (bp.isPaid().booleanValue() && bp.getTime() == -1L && cd != null && cd == -1) {
 		    getBpManager().add(block, cd);
 		    return false;
@@ -1352,16 +1355,16 @@ public class Jobs extends JavaPlugin {
 	prevpage = currentPage > 1 ? prevpage : currentPage;
 
 	RawMessage rm = new RawMessage()
-		.addText((currentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")))
-		.addHover(currentPage > 1 ? "<<<" : ">|")
-		.addCommand(currentPage > 1 ? cmd + " " + pagePrefix + prevpage : cmd + " " + pagePrefix + pageCount);
+	    .addText((currentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")))
+	    .addHover(currentPage > 1 ? "<<<" : ">|")
+	    .addCommand(currentPage > 1 ? cmd + " " + pagePrefix + prevpage : cmd + " " + pagePrefix + pageCount);
 
 	rm.addText(lManager.getMessage("command.help.output.pageCount", "[current]", currentPage, "[total]", pageCount))
-	.addHover(lManager.getMessage("command.help.output.pageCountHover", "[totalEntries]", totalEntries));
+	    .addHover(lManager.getMessage("command.help.output.pageCountHover", "[totalEntries]", totalEntries));
 
 	rm.addText(pageCount > currentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"))
-	.addHover(pageCount > currentPage ? ">>>" : "|<")
-	.addCommand(pageCount > currentPage ? cmd + " " + pagePrefix + nextPage : cmd + " " + pagePrefix + 1);
+	    .addHover(pageCount > currentPage ? ">>>" : "|<")
+	    .addCommand(pageCount > currentPage ? cmd + " " + pagePrefix + nextPage : cmd + " " + pagePrefix + 1);
 
 	if (pageCount != 0)
 	    rm.show(sender);

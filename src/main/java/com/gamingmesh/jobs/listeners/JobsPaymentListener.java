@@ -418,7 +418,7 @@ public class JobsPaymentListener implements Listener {
 	    || brokenBlock == CMIMaterial.CACTUS.getMaterial() || brokenBlock == CMIMaterial.BAMBOO.getMaterial())) {
 	    return;
 	}
-
+	
 	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), bInfo, block);
     }
 
