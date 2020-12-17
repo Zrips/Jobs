@@ -193,6 +193,9 @@ public class PlayerManager {
 		if (archivedJobs != null) {
 		    jPlayer.setArchivedJobs(archivedJobs);
 		}
+
+		jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
+		
 	    }
 	    // Lets load quest progression
 	    PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(player.getUniqueId());
