@@ -872,7 +872,7 @@ public abstract class JobsDAO {
 	    res2 = prestt.getGeneratedKeys();
 
 	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, res2.next() ? res2.getInt(1) : 0,
-	    uuid, System.currentTimeMillis(), 0));
+		uuid, System.currentTimeMillis(), 0));
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -2233,8 +2233,10 @@ public abstract class JobsDAO {
 
 	try {
 	    Long mark = System.currentTimeMillis() - (Jobs.getGCManager().BlockProtectionDays * 24L * 60L * 60L * 1000L);
-	    prestDel = conn.prepareStatement("DELETE FROM `" + DBTables.BlocksTable.getTableName() + "` WHERE `" + BlockTableFields.recorded.getCollumn() + "` < ?;");
+	    prestDel = conn.prepareStatement("DELETE FROM `" + DBTables.BlocksTable.getTableName() + "` WHERE `" + BlockTableFields.recorded.getCollumn() + "` < ? OR `" +
+		BlockTableFields.resets.getCollumn() + "` < ? AND `" + BlockTableFields.resets.getCollumn() + "` > 0;");
 	    prestDel.setLong(1, mark);
+	    prestDel.setLong(2, System.currentTimeMillis());
 	    prestDel.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
