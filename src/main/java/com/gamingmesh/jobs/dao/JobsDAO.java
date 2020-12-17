@@ -1123,7 +1123,7 @@ public abstract class JobsDAO {
 
 	    conn.commit();
 	} catch (SQLException e) {
-	    e.printStackTrace();
+//	    e.printStackTrace();
 	} finally {
 	    close(prestt);
 	    close(res2);

@@ -70,7 +70,7 @@ public class ConfigManager {
 
     private final Set<YmlMaker> jobFiles = new HashSet<>();
 
-    public static final String exampleJobName = "exampleJob";
+    public static final String exampleJobName = "_EXAMPLE";
 
     public ConfigManager() {
 	this.jobFile = new File(Jobs.getFolder(), "jobConfig.yml");
@@ -627,22 +627,19 @@ public class ConfigManager {
     }
 
     private boolean migrateJobs() {
+
 	YamlConfiguration oldConf = getJobConfig();
 	if (oldConf == null) {
-	    if (jobsPathFolder.exists()) {
-		return false;
+	    if (!jobsPathFolder.exists()) {
+		jobsPathFolder.mkdirs();
 	    }
-
-	    jobsPathFolder.mkdirs();
-
 	    if (jobsPathFolder.isDirectory() && jobsPathFolder.listFiles().length == 0)
 		try {
-		    for (String f : Util.getFilesFromPackage("Jobs", "", "yml")) {
-			Jobs.getInstance().saveResource("Jobs" + File.separator + f + ".yml", false);
+		    for (String f : Util.getFilesFromPackage("jobs", "", "yml")) {
+			Jobs.getInstance().saveResource("jobs" + File.separator + f + ".yml", false);
 		    }
 		} catch (Exception c) {
 		}
-
 	    return false;
 	}
 
