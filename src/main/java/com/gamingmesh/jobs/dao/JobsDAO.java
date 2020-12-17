@@ -752,6 +752,51 @@ public abstract class JobsDAO {
 	return map;
     }
 
+    public ArchivedJobs getArchivedJobs(JobsPlayer player) {
+	ArchivedJobs jobs = new ArchivedJobs();
+	JobsConnection conn = getConnection();
+	if (conn == null || player == null)
+	    return jobs;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.ArchiveTable.getTableName() + "` WHERE `" + ArchiveTableFields.userid.getCollumn() + "` = ?;");
+	    prest.setInt(1, player.getUserId());
+	    res = prest.executeQuery();
+	    while (res.next()) {
+
+		String jobName = res.getString(ArchiveTableFields.job.getCollumn());
+		Double exp = res.getDouble(ArchiveTableFields.experience.getCollumn());
+		int lvl = res.getInt(ArchiveTableFields.level.getCollumn());
+		Long left = res.getLong(ArchiveTableFields.left.getCollumn());
+		int jobid = res.getInt(ArchiveTableFields.jobid.getCollumn());
+
+		Job job = null;
+		if (jobid != 0) {
+		    job = Jobs.getJob(jobid);
+		} else {
+		    job = Jobs.getJob(jobName);
+		    converted = false;
+		}
+
+		if (job == null)
+		    continue;
+
+		JobProgression jp = new JobProgression(job, player, lvl, exp);
+		if (left != 0L)
+		    jp.setLeftOn(left);
+		jobs.addArchivedJob(jp);
+	    }
+	} catch (Exception e) {
+	    close(res);
+	    close(prest);
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+	return jobs;
+    }
+
     public HashMap<Integer, HashMap<String, Log>> getAllLogs() {
 	HashMap<Integer, HashMap<String, Log>> map = new HashMap<>();
 	JobsConnection conn = getConnection();

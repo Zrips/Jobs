@@ -188,6 +188,12 @@ public class PlayerManager {
 	    else
 		jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 
+	    if (Jobs.getGCManager().MultiServerCompatability()) {
+		ArchivedJobs archivedJobs = Jobs.getJobsDAO().getArchivedJobs(jPlayer);
+		if (archivedJobs != null) {
+		    jPlayer.setArchivedJobs(archivedJobs);
+		}
+	    }
 	    // Lets load quest progression
 	    PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(player.getUniqueId());
 	    if (info != null) {
@@ -384,8 +390,7 @@ public class PlayerManager {
 	if (jobsjoinevent.isCancelled())
 	    return;
 
-	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () ->
-	    Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job)));
+	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () -> Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job)));
 	jPlayer.setLeftTime(job);
 
 	PerformCommands.performCommandsOnJoin(jPlayer, job);
@@ -690,7 +695,7 @@ public class PlayerManager {
 
 	if (levelUpEvent.getOldTitle() != null)
 	    message = message.replace("%titlename%", levelUpEvent.getOldTitle()
-		    .getChatColor().toString() + levelUpEvent.getOldTitle().getName());
+		.getChatColor().toString() + levelUpEvent.getOldTitle().getName());
 
 	message = message.replace("%playername%", player != null ? player.getDisplayName() : jPlayer.getName());
 	message = message.replace("%joblevel%", "" + prog.getLevel());
@@ -715,7 +720,7 @@ public class PlayerManager {
 		    Sound sound = levelUpEvent.getTitleChangeSound();
 		    if (player != null)
 			player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
-			levelUpEvent.getTitleChangePitch());
+			    levelUpEvent.getTitleChangePitch());
 		}
 	    } catch (Exception e) {
 	    }
@@ -727,7 +732,7 @@ public class PlayerManager {
 
 	    message = message.replace("%playername%", player != null ? player.getDisplayName() : jPlayer.getName());
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitle()
-		    .getChatColor().toString() + levelUpEvent.getNewTitle().getName());
+		.getChatColor().toString() + levelUpEvent.getNewTitle().getName());
 	    message = message.replace("%jobname%", job.getNameWithColor());
 
 	    for (String line : message.split("\n")) {

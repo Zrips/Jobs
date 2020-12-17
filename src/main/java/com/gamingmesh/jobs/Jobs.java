@@ -1174,7 +1174,7 @@ public class Jobs extends JavaPlugin {
 		    return false;
 		}
 
-		if ((time < System.currentTimeMillis()) && (bp.getAction() != DBAction.DELETE)) {
+		if (time < System.currentTimeMillis() && bp.getAction() != DBAction.DELETE) {
 		    getBpManager().remove(block);
 		    return true;
 		}
