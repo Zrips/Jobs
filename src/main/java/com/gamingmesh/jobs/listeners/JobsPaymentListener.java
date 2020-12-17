@@ -1581,6 +1581,9 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent event) {
+	if (event.isCancelled())
+	    return;
+	
 	Player p = event.getPlayer();
 	if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
 	    return;
@@ -1653,7 +1656,7 @@ public class JobsPaymentListener implements Listener {
 		    "[max]", jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) == 0 ? "-" : jPlayer.getMaxOwnerShipAllowed(blockOwner.getType())));
 	    }
 	} else if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) &&
-	    block.getType().toString().startsWith("STRIPPED_") &&
+	    !block.getType().toString().startsWith("STRIPPED_") && block.getType().toString().endsWith("_LOG") &&
 	    event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && hand.toString().endsWith("_AXE")) {
 	    // check if player is riding
 	    if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
