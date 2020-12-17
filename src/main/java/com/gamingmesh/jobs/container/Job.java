@@ -69,15 +69,15 @@ public class Job {
     // max number of people allowed with this job on the server.
     private Integer maxSlots;
 
-    private List<String> CmdOnJoin = new ArrayList<>(), CmdOnLeave = new ArrayList<>();
+    private List<String> cmdOnJoin = new ArrayList<>(), cmdOnLeave = new ArrayList<>();
 
-    private ItemStack GUIitem;
+    private ItemStack guiItem;
     private int guiSlot = 0;
 
     private Long rejoinCd = 0L;
 
     private int totalPlayers = -1;
-    private Double bonus = null;
+    private Double bonus;
 
     private BoostMultiplier boost = new BoostMultiplier();
     private String bossbar;
@@ -89,12 +89,11 @@ public class Job {
 
     private final List<Quest> quests = new ArrayList<>();
     private int maxDailyQuests = 1;
-
     private int id = 0;
 
     public Job(String jobName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, HashMap<String, JobItems> jobItems,
-	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> CmdOnJoin, List<String> CmdOnLeave, ItemStack GUIitem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
+	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
 	this.jobName = jobName == null ? "" : jobName;
 	this.fullName = fullName == null ? "" : fullName;
 	this.jobShortName = jobShortName;
@@ -110,13 +109,16 @@ public class Job {
 	this.jobConditions = jobConditions;
 	this.jobItems = jobItems;
 	this.jobLimitedItems = jobLimitedItems;
-	this.CmdOnJoin = CmdOnJoin;
-	this.CmdOnLeave = CmdOnLeave;
-	this.GUIitem = GUIitem;
+	this.cmdOnJoin = cmdOnJoin;
+	this.cmdOnLeave = cmdOnLeave;
+	this.guiItem = guiItem;
 	this.guiSlot = guiSlot;
 	this.bossbar = bossbar;
 	this.rejoinCd = rejoinCD;
-	this.worldBlacklist = worldBlacklist;
+
+	if (worldBlacklist != null) {
+	    this.worldBlacklist = worldBlacklist;
+	}
     }
 
     public void addBoost(CurrencyType type, double Point) {
@@ -197,15 +199,15 @@ public class Job {
     }
 
     public List<String> getCmdOnJoin() {
-	return CmdOnJoin;
+	return cmdOnJoin;
     }
 
     public List<String> getCmdOnLeave() {
-	return CmdOnLeave;
+	return cmdOnLeave;
     }
 
     public ItemStack getGuiItem() {
-	return GUIitem;
+	return guiItem;
     }
 
     public int getGuiSlot() {
@@ -519,8 +521,7 @@ public class Job {
 	while (true) {
 	    i++;
 
-	    final Random rand = new Random(System.nanoTime());
-	    int target = rand.nextInt(100);
+	    int target = new Random(System.nanoTime()).nextInt(100);
 	    for (Quest one : ls) {
 		if (one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
 			    && one.isInLevelRange(level)) {

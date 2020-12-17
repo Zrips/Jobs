@@ -544,9 +544,19 @@ public class Placeholder {
 		    Title title = Jobs.gettitleManager().getTitle(j.getLevel(), j.getJob().getName());
 		    return title == null ? "" : title.getChatColor() + title.getName();
 		case user_archived_jobs_level:
-		    return j == null ? "" : Integer.toString(user.getArchivedJobProgression(j.getJob()).getLevel());
+		    if (j == null) {
+			return "";
+		    }
+
+		    JobProgression archivedJobProg = user.getArchivedJobProgression(j.getJob());
+		    return archivedJobProg == null ? "" : Integer.toString(archivedJobProg.getLevel());
 		case user_archived_jobs_exp:
-		    return j == null ? "" : Double.toString(user.getArchivedJobProgression(j.getJob()).getExperience());
+		    if (j == null) {
+			return "";
+		    }
+
+		    JobProgression archivedJobProgression = user.getArchivedJobProgression(j.getJob());
+		    return archivedJobProgression == null ? "" : Double.toString(archivedJobProgression.getExperience());
 		default:
 		    break;
 		}

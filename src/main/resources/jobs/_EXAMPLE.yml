@@ -2,11 +2,11 @@
 #
 # Edited by roracle to include 1.13 items and item names, preparing for 1.14 as well.
 
+# ATTENTION!
+# This is just an example job and will not be included into job list. Recomended to keep
+# it around just for reference. Can be removed if needed.
+
 # Must be one word. This job will be ignored as this is just example of all possible actions.
-
-# ATTENTION! 
-# This is just an example job and will not be included into job list. Recomended to keep it around just for reference. Can be removed if needed. 
-
 exampleJob:
   # full name of the job (displayed when browsing a job, used when joining and leaving)
   # also can be used as a prefix for the user's name if the option is enabled.

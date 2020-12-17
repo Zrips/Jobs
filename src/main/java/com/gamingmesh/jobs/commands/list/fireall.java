@@ -1,8 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,10 +30,10 @@ public class fireall implements Cmd {
 
 	    Jobs.getDBManager().getDB().truncate(DBTables.JobsTable.getTableName());
 
-	    for (Entry<UUID, JobsPlayer> one : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
-		one.getValue().leaveAllJobs();
+	    for (JobsPlayer one : Jobs.getPlayerManager().getPlayersCache().values()) {
+		one.leaveAllJobs();
 		// No need to save as we are clearing database with more efficient method
-		one.getValue().setSaved(true);
+		one.setSaved(true);
 	    }
 
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));

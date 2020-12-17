@@ -19,7 +19,6 @@
 package com.gamingmesh.jobs.config;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -70,8 +68,8 @@ public class ConfigManager {
 
     private final Set<YmlMaker> jobFiles = new HashSet<>();
 
-    public static final String exampleJobName = "_EXAMPLE";
-    public static final String exampleJobInternalName = "exampleJob";
+    public static final String EXAMPLEJOBNAME = "_EXAMPLE";
+    public static final String EXAMPLEJOBINTERNALNAME = "exampleJob";
 
     public ConfigManager() {
 	this.jobFile = new File(Jobs.getFolder(), "jobConfig.yml");
@@ -81,7 +79,7 @@ public class ConfigManager {
     }
 
     private void updateExampleFile() {
-	ConfigReader cfg = new ConfigReader(new File(Jobs.getFolder(), "jobs" + File.separator + exampleJobName.toUpperCase() + ".yml"));
+	ConfigReader cfg = new ConfigReader(new File(Jobs.getFolder(), "jobs" + File.separator + EXAMPLEJOBNAME.toUpperCase() + ".yml"));
 	if (!cfg.getFile().isFile())
 	    return;
 	cfg.load();
@@ -311,7 +309,7 @@ public class ConfigManager {
     }
 
     public void changeJobsSettings(String jobName, String path, Object value) {
-	path = path.replace("/", ".");
+	path = path.replace('/', '.');
 	for (YmlMaker yml : jobFiles) {
 	    if (yml.getConfigFile().getName().contains(jobName.toLowerCase())) {
 		yml.getConfig().set(path, value);
@@ -323,9 +321,7 @@ public class ConfigManager {
 
     public class KeyValues {
 
-	private String type;
-	private String subType = "";
-	private String meta = "";
+	private String type, subType = "", meta = "";
 	private int id = 0;
 
 	public String getType() {
@@ -628,12 +624,12 @@ public class ConfigManager {
     }
 
     private boolean migrateJobs() {
-
 	YamlConfiguration oldConf = getJobConfig();
 	if (oldConf == null) {
 	    if (!jobsPathFolder.exists()) {
 		jobsPathFolder.mkdirs();
 	    }
+
 	    if (jobsPathFolder.isDirectory() && jobsPathFolder.listFiles().length == 0)
 		try {
 		    for (String f : Util.getFilesFromPackage("jobs", "", "yml")) {
@@ -641,6 +637,7 @@ public class ConfigManager {
 		    }
 		} catch (Exception c) {
 		}
+
 	    return false;
 	}
 
@@ -659,7 +656,7 @@ public class ConfigManager {
 
 	for (String jobKey : jobsSection.getKeys(false)) {
 
-	    String fileName = jobKey.equalsIgnoreCase(exampleJobName) ? jobKey.toUpperCase() : jobKey.toLowerCase();
+	    String fileName = jobKey.equalsIgnoreCase(EXAMPLEJOBNAME) ? jobKey.toUpperCase() : jobKey.toLowerCase();
 
 	    YmlMaker newJobFile = new YmlMaker(jobsPathFolder, fileName + ".yml");
 	    if (!newJobFile.exists()) {
@@ -677,7 +674,7 @@ public class ConfigManager {
 
 	    newJobFile.saveConfig();
 
-	    if (!fileName.equalsIgnoreCase(exampleJobName)) {
+	    if (!fileName.equalsIgnoreCase(EXAMPLEJOBNAME)) {
 		jobFiles.add(newJobFile);
 	    }
 	}
@@ -705,7 +702,7 @@ public class ConfigManager {
 
 	if (jobFiles.isEmpty()) {
 	    File[] files = jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml")
-		&& !name.toLowerCase().equalsIgnoreCase(exampleJobName + ".yml"));
+		&& !name.toLowerCase().equalsIgnoreCase(EXAMPLEJOBNAME + ".yml"));
 	    if (files != null) {
 		for (File file : files) {
 		    jobFiles.add(new YmlMaker(jobsPathFolder, file));
@@ -739,7 +736,7 @@ public class ConfigManager {
 
 	for (String jobKey : jobsSection.getKeys(false)) {
 	    // Ignore example job
-	    if (jobKey.equalsIgnoreCase(exampleJobInternalName)) {
+	    if (jobKey.equalsIgnoreCase(EXAMPLEJOBINTERNALNAME)) {
 		continue;
 	    }
 
@@ -747,7 +744,7 @@ public class ConfigManager {
 	    jobKey = StringEscapeUtils.unescapeJava(jobKey);
 
 	    ConfigurationSection jobSection = jobsSection.getConfigurationSection(jobKey);
-	    String jobFullName = jobSection.getString("fullname", null);
+	    String jobFullName = jobSection.getString("fullname");
 	    if (jobFullName == null) {
 		log.warning("Job " + jobKey + " has an invalid fullname property. Skipping job!");
 		continue;
@@ -775,7 +772,7 @@ public class ConfigManager {
 		rejoinCd *= 1000L;
 	    }
 
-	    String jobShortName = jobSection.getString("shortname", null);
+	    String jobShortName = jobSection.getString("shortname");
 	    if (jobShortName == null) {
 		log.warning("Job " + jobKey + " is missing the shortname property. Skipping job!");
 		continue;
@@ -884,7 +881,7 @@ public class ConfigManager {
 
 	    // Gui item
 	    int guiSlot = -1;
-	    ItemStack GUIitem = CMIMaterial.GREEN_WOOL.newItemStack();
+	    ItemStack guiItem = CMIMaterial.GREEN_WOOL.newItemStack();
 	    if (jobSection.contains("Gui")) {
 		ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
 		if (guiSection.isString("Item")) {
@@ -921,24 +918,24 @@ public class ConfigManager {
 		    }
 
 		    if (material != null)
-			GUIitem = material.newItemStack();
+			guiItem = material.newItemStack();
 		} else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
-		    GUIitem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
+		    guiItem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
 		} else
 		    log.warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
 
 		for (String str4 : guiSection.getStringList("Enchantments")) {
 		    String[] id = str4.split(":");
-		    if (GUIitem.getItemMeta() instanceof EnchantmentStorageMeta) {
-			EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) GUIitem.getItemMeta();
+		    if (guiItem.getItemMeta() instanceof EnchantmentStorageMeta) {
+			EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) guiItem.getItemMeta();
 			enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
-			GUIitem.setItemMeta(enchantMeta);
+			guiItem.setItemMeta(enchantMeta);
 		    } else
-			GUIitem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
+			guiItem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
 		}
 
 		if (guiSection.isString("CustomSkull")) {
-		    GUIitem = Util.getSkull(guiSection.getString("CustomSkull"));
+		    guiItem = Util.getSkull(guiSection.getString("CustomSkull"));
 		}
 
 		if (guiSection.getInt("slot", -1) >= 0)
@@ -985,16 +982,6 @@ public class ConfigManager {
 		}
 	    }
 
-	    // Command on leave
-	    List<String> JobsCommandOnLeave = new ArrayList<>();
-	    if (jobSection.isList("cmd-on-leave"))
-		JobsCommandOnLeave = jobSection.getStringList("cmd-on-leave");
-
-	    // Command on join
-	    List<String> JobsCommandOnJoin = new ArrayList<>();
-	    if (jobSection.isList("cmd-on-join"))
-		JobsCommandOnJoin = jobSection.getStringList("cmd-on-join");
-
 	    // Commands
 	    ArrayList<JobCommands> jobCommand = new ArrayList<>();
 	    ConfigurationSection commandsSection = jobSection.getConfigurationSection("commands");
@@ -1003,7 +990,7 @@ public class ConfigManager {
 		    ConfigurationSection commandSection = commandsSection.getConfigurationSection(commandKey);
 
 		    if (commandSection == null) {
-			log.warning("Job " + jobKey + " has an invalid command key" + commandKey + "!");
+			log.warning("Job " + jobKey + " has an invalid command key " + commandKey + "!");
 			continue;
 		    }
 
@@ -1017,12 +1004,6 @@ public class ConfigManager {
 		    int levelUntil = commandSection.getInt("levelUntil", maxLevel);
 		    jobCommand.add(new JobCommands(commandKey.toLowerCase(), commands, levelFrom, levelUntil));
 		}
-	    }
-
-	    // Commands
-	    List<String> worldBlacklist = new ArrayList<>();
-	    if (jobSection.isList("world-blacklist")) {
-		worldBlacklist = jobSection.getStringList("world-blacklist");
 	    }
 
 	    // Items **OUTDATED** Moved to ItemBoostManager!!
@@ -1084,10 +1065,10 @@ public class ConfigManager {
 
 	    // Limited Items
 	    HashMap<String, JobLimitedItems> jobLimitedItems = new HashMap<>();
-	    ConfigurationSection LimitedItemsSection = jobSection.getConfigurationSection("limitedItems");
-	    if (LimitedItemsSection != null) {
-		for (String itemKey : LimitedItemsSection.getKeys(false)) {
-		    ConfigurationSection itemSection = LimitedItemsSection.getConfigurationSection(itemKey);
+	    ConfigurationSection limitedItemsSection = jobSection.getConfigurationSection("limitedItems");
+	    if (limitedItemsSection != null) {
+		for (String itemKey : limitedItemsSection.getKeys(false)) {
+		    ConfigurationSection itemSection = limitedItemsSection.getConfigurationSection(itemKey);
 		    if (itemSection == null) {
 			log.warning("Job " + jobKey + " has an invalid item key " + itemKey + "!");
 			continue;
@@ -1095,9 +1076,7 @@ public class ConfigManager {
 
 		    int id = itemSection.getInt("id");
 
-		    String name = null;
-		    if (itemSection.isString("name"))
-			name = itemSection.getString("name");
+		    String name = itemSection.getString("name");
 
 		    List<String> lore = new ArrayList<>();
 		    if (itemSection.isList("lore"))
@@ -1128,7 +1107,9 @@ public class ConfigManager {
 	    }
 
 	    Job job = new Job(jobKey, jobFullName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
-		jobConditions, jobItems, jobLimitedItems, JobsCommandOnJoin, JobsCommandOnLeave, GUIitem, guiSlot, bossbar, rejoinCd, worldBlacklist);
+		jobConditions, jobItems, jobLimitedItems, jobSection.getStringList("cmd-on-join"),
+		jobSection.getStringList("cmd-on-leave"), guiItem, guiSlot, bossbar, rejoinCd,
+		jobSection.getStringList("world-blacklist"));
 
 	    job.setFullDescription(fDescription);
 	    job.setMoneyEquation(incomeEquation);

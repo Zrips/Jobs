@@ -4,7 +4,6 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -36,8 +35,8 @@ public class glog implements Cmd {
 		Map<LogAmounts, Double> unsortMap = new HashMap<>();
 		int time = TimeManage.timeInInt();
 
-		for (Integer OneP : Jobs.getJobsDAO().getLognameList(time, time)) {
-		    PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(OneP);
+		for (Integer oneP : Jobs.getJobsDAO().getLognameList(time, time)) {
+		    PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(oneP);
 		    if (info == null)
 			continue;
 
@@ -45,21 +44,19 @@ public class glog implements Cmd {
 		    if (name == null)
 			continue;
 
-		    JobsPlayer JPlayer = Jobs.getPlayerManager().getJobsPlayer(info.getUuid());
-		    if (JPlayer == null)
+		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(info.getUuid());
+		    if (jPlayer == null)
 			continue;
 
-		    HashMap<String, Log> logList = JPlayer.getLog();
+		    HashMap<String, Log> logList = jPlayer.getLog();
 		    if (logList == null || logList.isEmpty())
 			continue;
 
-		    for (Entry<String, Log> l : logList.entrySet()) {
-			Log one = l.getValue();
-			HashMap<String, LogAmounts> AmountList = one.getAmountList();
-			for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
-			    oneMap.getValue().setUsername(name);
-			    oneMap.getValue().setAction(one.getActionType());
-			    unsortMap.put(oneMap.getValue(), oneMap.getValue().get(CurrencyType.MONEY));
+		    for (Log l : logList.values()) {
+			for (LogAmounts amounts : l.getAmountList().values()) {
+			    amounts.setUsername(name);
+			    amounts.setAction(l.getActionType());
+			    unsortMap.put(amounts, amounts.get(CurrencyType.MONEY));
 			}
 		    }
 		}
@@ -77,25 +74,23 @@ public class glog implements Cmd {
 		    totalPoints = 0;
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.topline"));
-		for (Entry<LogAmounts, Double> one : unsortMap.entrySet()) {
-		    LogAmounts info = one.getKey();
-
+		for (LogAmounts info : unsortMap.keySet()) {
 			double money = info.get(CurrencyType.MONEY);
-			totalMoney = totalMoney + money;
+			totalMoney += money;
 
 			String moneyS = "";
 			if (money != 0D)
 			    moneyS = Jobs.getLanguage().getMessage("command.glog.output.money", "%amount%", money);
 
 			double exp = info.get(CurrencyType.EXP);
-			totalExp = totalExp + exp;
+			totalExp += exp;
 
 			String expS = "";
 			if (exp != 0D)
 			    expS = Jobs.getLanguage().getMessage("command.glog.output.exp", "%amount%", exp);
 
 			double points = info.get(CurrencyType.POINTS);
-			totalPoints = totalPoints + points;
+			totalPoints += points;
 
 			String pointsS = "";
 			if (points != 0D)
@@ -104,7 +99,7 @@ public class glog implements Cmd {
 			sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.ls",
 			    "%number%", count,
 			    "%action%", info.getAction(),
-			    "%item%", info.getItemName().replace(":0", "").replace("_", " ").toLowerCase(),
+			    "%item%", info.getItemName().replace(":0", "").replace('_', ' ').toLowerCase(),
 			    "%qty%", info.getCount(),
 			    "%money%", moneyS,
 			    "%exp%", expS,

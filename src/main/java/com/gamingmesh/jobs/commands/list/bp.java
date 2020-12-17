@@ -56,12 +56,9 @@ public class bp implements Cmd {
 			changedBlocks.add(l.getBlock());
 
 			if (Version.isCurrentEqualOrHigher(Version.v1_15_R1)) {
-			    if (bp.getAction() == DBAction.DELETE)
-				player.sendBlockChange(l, CMIMaterial.RED_STAINED_GLASS.getMaterial().createBlockData());
-			    else if (time == -1)
-				player.sendBlockChange(l, CMIMaterial.BLACK_STAINED_GLASS.getMaterial().createBlockData());
-			    else
-				player.sendBlockChange(l, CMIMaterial.WHITE_STAINED_GLASS.getMaterial().createBlockData());
+			    player.sendBlockChange(l, (bp.getAction() == DBAction.DELETE ?
+				CMIMaterial.RED_STAINED_GLASS :
+				time == -1 ? CMIMaterial.BLACK_STAINED_GLASS : CMIMaterial.WHITE_STAINED_GLASS).getMaterial().createBlockData());
 			} else {
 			    if (bp.getAction() == DBAction.DELETE)
 				player.sendBlockChange(l, CMIMaterial.RED_STAINED_GLASS.getMaterial(), (byte) 14);
