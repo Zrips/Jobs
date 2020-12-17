@@ -71,6 +71,7 @@ public class ConfigManager {
     private final Set<YmlMaker> jobFiles = new HashSet<>();
 
     public static final String exampleJobName = "_EXAMPLE";
+    public static final String exampleJobInternalName = "exampleJob";
 
     public ConfigManager() {
 	this.jobFile = new File(Jobs.getFolder(), "jobConfig.yml");
@@ -704,7 +705,7 @@ public class ConfigManager {
 
 	if (jobFiles.isEmpty()) {
 	    File[] files = jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml")
-		&& !name.toLowerCase().equalsIgnoreCase(exampleJobName));
+		&& !name.toLowerCase().equalsIgnoreCase(exampleJobName + ".yml"));
 	    if (files != null) {
 		for (File file : files) {
 		    jobFiles.add(new YmlMaker(jobsPathFolder, file));
@@ -738,7 +739,7 @@ public class ConfigManager {
 
 	for (String jobKey : jobsSection.getKeys(false)) {
 	    // Ignore example job
-	    if (jobKey.equalsIgnoreCase(exampleJobName)) {
+	    if (jobKey.equalsIgnoreCase(exampleJobInternalName)) {
 		continue;
 	    }
 
