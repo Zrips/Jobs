@@ -16,6 +16,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- Boss -->
+		<dependency>
+			<groupId>org.mineacademy.plugin</groupId>
+			<artifactId>Boss-API</artifactId>
+			<version>3.8.0</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- Spigot -->
 		<dependency>
 			<groupId>org.spigotmc</groupId>
@@ -178,6 +185,11 @@
 		</dependency>
 	</dependencies>
 	<repositories>
+		<!-- Boss -->
+		<repository>
+			<id>mineacademy-repo</id>
+			<url>https://bitbucket.org/kangarko/libraries/raw/master</url>
+		</repository>
 		<!-- Spigot -->
 		<repository>
 			<id>spigot-repo</id>
