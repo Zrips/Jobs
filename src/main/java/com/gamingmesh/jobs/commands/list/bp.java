@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.BlockProtection;
@@ -67,12 +68,18 @@ public class bp implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.bp.output.notFound"));
 	else
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.bp.output.found", "%amount%", changedBlocks.size()));
+
 	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
-		for (Block one : changedBlocks) {
-		    player.sendBlockChange(one.getLocation(), one.getType(), one.getData());
-		}
+		if (Version.isCurrentEqualOrHigher(Version.v1_15_R1))
+		    for (Block one : changedBlocks) {
+			player.sendBlockChange(one.getLocation(), one.getBlockData());
+		    }
+		else
+		    for (Block one : changedBlocks) {
+			player.sendBlockChange(one.getLocation(), one.getType(), one.getData());
+		    }
 	    }
 	}, 120L);
 
