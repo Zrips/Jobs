@@ -36,8 +36,8 @@ general:
     ingame: '&cMożesz użyć tej komendy tylko w grze!'
     fromconsole: '&cMożesz użyć tej komendy tylko w konsoli!'
     worldisdisabled: '&cNie możesz użyć tej komendy w tym świecie!'
-    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
-    noRegistration: '&cYou''ve reached max [block] count!'
+    newRegistration: '&eZarejestrowano nową własność dla [block] &7[current]&e/&f[max]'
+    noRegistration: '&cOsiągnąłeś maksymalną ilość [block]!'
 command:
   help:
     output:
@@ -93,12 +93,12 @@ command:
       infostats: '&c-----> &aStawka exp''a x%boost% włączona&c <-------'
   schedule:
     help:
-      info: Enables the given scheduler
+      info: Włącza dany harmonogram
       args: enable [scheduleName] [untilTime]
     output:
-      noScheduleFound: '&cSchedule with this name not found.'
-      alreadyEnabled: '&cThis schedule already enabled.'
-      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
+      noScheduleFound: '&cNie znaleziono harmonogramu o tej nazwie.'
+      alreadyEnabled: '&cTen harmonogram jest już włączony.'
+      enabled: 'Harmonogram został włączony od&a %from%&e do &a %until%'
   itembonus:
     help:
       info: Sprawdź bonus przedmiotu
@@ -257,8 +257,8 @@ command:
     error:
       nojob: Najpierw dołącz do pracy.
     output:
-      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
-      max-level: '     &cMax level   -   %jobname%'
+      message: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp'
+      max-level: '     &cMaks. poziom   -   %jobname%'
     bossBarOutput: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -463,7 +463,7 @@ command:
       info: Wyczyść własność bloku
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
+      cleared: '&2Usunięto &7[furnaces] &2piec(y), &7[brewing] &2statyw(ów) alchemiczny(ch), &7[smoker]&2 wędzarkę(ek) i &7[blast]&2 piec(y) hutniczy(ch).'
   skipquest:
     help:
       info: Pomiń dane zadanie i otrzymaj nowe

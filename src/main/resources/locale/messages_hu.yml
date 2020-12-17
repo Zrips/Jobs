@@ -41,7 +41,7 @@ general:
 command:
   help:
     output:
-      info: Típus /jobs [cmd] ? további információ a parancsról.
+      info: Írd be /jobs [cmd] ? a további információ a parancsról.
       cmdUsage: '&2Használat: &7[command]'
       label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
