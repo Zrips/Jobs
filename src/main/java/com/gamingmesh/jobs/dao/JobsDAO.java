@@ -703,6 +703,29 @@ public abstract class JobsDAO {
 	return map;
     }
 
+    public PlayerPoints getPlayerPoints(JobsPlayer player) {
+	PlayerPoints points = new PlayerPoints();
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return points;
+	PreparedStatement prest = null;
+	ResultSet res = null;
+	try {
+	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.PointsTable.getTableName() + "` WHERE `" + PointsTableFields.userid.getCollumn() + "` = ?;");
+	    prest.setInt(1, player.getUserId());
+	    res = prest.executeQuery();
+	    while (res.next()) {
+		points = new PlayerPoints(res.getDouble(PointsTableFields.currentpoints.getCollumn()), res.getDouble(PointsTableFields.totalpoints.getCollumn()));
+	    }
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(res);
+	    close(prest);
+	}
+	return points;
+    }
+
     public HashMap<Integer, ArchivedJobs> getAllArchivedJobs() {
 	HashMap<Integer, ArchivedJobs> map = new HashMap<>();
 	JobsConnection conn = getConnection();
