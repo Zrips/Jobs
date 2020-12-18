@@ -88,7 +88,7 @@ public class HookManager {
     }
 
     private static boolean setWorldGuard() {
-	if (JobsHook.WorldGuard.enabled()) {
+	if (JobsHook.WorldGuard.isEnabled()) {
 	    worldGuardManager = new WorldGuardManager();
 	    Jobs.consoleMsg("&e[Jobs] WorldGuard detected.");
 	    return true;
@@ -98,7 +98,7 @@ public class HookManager {
     }
 
     private static void setMythicManager() {
-	if (!JobsHook.MythicMobs.enabled())
+	if (!JobsHook.MythicMobs.isEnabled())
 	    return;
 
 	try {
@@ -128,21 +128,21 @@ public class HookManager {
     }
 
     private static void setMyPetManager() {
-	if (JobsHook.MyPet.enabled()) {
+	if (JobsHook.MyPet.isEnabled()) {
 	    myPetManager = new MyPetManager();
 	    Jobs.consoleMsg("&e[Jobs] MyPet detected.");
 	}
     }
 
     private static void setStackMobHandler() {
-	if (JobsHook.StackMob.enabled()) {
+	if (JobsHook.StackMob.isEnabled()) {
 	    stackMobHandler = new StackMobHandler();
 	}
     }
 
     private static void setWildStackerHandler() {
-	if (JobsHook.WildStacker.enabled()) {
+	if (JobsHook.WildStacker.isEnabled()) {
 	    wildStackerHandler = new WildStackerHandler();
 	}
-    }    
+    }
 }

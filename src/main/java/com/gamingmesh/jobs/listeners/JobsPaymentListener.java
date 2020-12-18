@@ -304,7 +304,7 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null || sheep.getColor() == null)
 	    return;
 
-	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.enabled() && HookManager.getWildStackerHandler().isStackedEntity(sheep)) {
+	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(sheep)) {
 	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
 		if (stacked.getType() == sheep.getType()) {
 		    Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getLivingEntity()).getColor().name(), ActionType.SHEAR));
@@ -537,7 +537,7 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null)
 	    return;
 
-	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.enabled() && HookManager.getWildStackerHandler().isStackedEntity(animal)) {
+	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(animal)) {
 	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
 		if (stacked.getType() == animal.getType()) {
 		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.TAME));
@@ -1244,7 +1244,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
-	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.enabled() && HookManager.getWildStackerHandler().isStackedEntity(lVictim)) {
+	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(lVictim)) {
 	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
 		if (stacked.getType() == lVictim.getType()) {
 		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.KILL), e.getDamager(), stacked.getLivingEntity());
@@ -1582,7 +1582,7 @@ public class JobsPaymentListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
 	if (event.isCancelled())
 	    return;
-	
+
 	Player p = event.getPlayer();
 	if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
 	    return;

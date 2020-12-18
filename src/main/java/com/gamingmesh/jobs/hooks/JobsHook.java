@@ -10,12 +10,12 @@ public enum JobsHook {
     MythicMobs,
     mcMMO;
 
-    Boolean enabled = null;
+    private Boolean enabled;
 
-    public boolean enabled() {
+    public boolean isEnabled() {
 	if (enabled == null) {
-	    enabled = Jobs.getInstance().getServer().getPluginManager().getPlugin(this.name()) != null &&
-		Jobs.getInstance().getServer().getPluginManager().isPluginEnabled(this.name());
+	    enabled = Jobs.getInstance().getServer().getPluginManager().getPlugin(name()) != null &&
+		Jobs.getInstance().getServer().getPluginManager().isPluginEnabled(name());
 	}
 	return enabled;
     }

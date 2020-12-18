@@ -17,9 +17,7 @@ public class StackMobHandler extends HookPlugin {
 	}
 
 	public HashSet<StackEntity> getStackEntities() {
-		return new HashSet<>();
-		// waiting for the author to fix build issue
-		//return getPlugin().getEntityManager().getStackEntities();
+		return getPlugin().getEntityManager().getStackEntities();
 	}
 
 	@Override

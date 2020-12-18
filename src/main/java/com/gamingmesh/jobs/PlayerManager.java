@@ -195,7 +195,6 @@ public class PlayerManager {
 		}
 
 		jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
-
 		jPlayer.setPoints(Jobs.getJobsDAO().getPlayerPoints(jPlayer));
 	    }
 	    // Lets load quest progression
