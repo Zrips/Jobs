@@ -21,11 +21,6 @@ public class VersionChecker {
 	this.plugin = plugin;
     }
 
-    @Deprecated
-    public Version getVersion() {
-	return Version.getCurrent();
-    }
-
     public Integer convertVersion(String v) {
 	v = v.replaceAll("[^\\d.]", "");
 	Integer version = 0;

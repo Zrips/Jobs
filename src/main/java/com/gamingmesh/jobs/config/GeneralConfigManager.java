@@ -829,7 +829,8 @@ public class GeneralConfigManager {
 	    "Only works when fix-at-max-level is set to false");
 	levelLossPercentageFromMax = c.get("old-job.level-loss-from-max-level", levelLossPercentage);
 
-	c.addComment("ActionBars.Messages.EnabledByDefault", "When this set to true player will see action bar messages by default");
+	c.addComment("ActionBars.Messages.EnabledByDefault", "When this set to true player will see action bar messages by default",
+	    "When false, players will see chat messages instead.");
 	ActionBarsMessageByDefault = c.get("ActionBars.Messages.EnabledByDefault", true);
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
