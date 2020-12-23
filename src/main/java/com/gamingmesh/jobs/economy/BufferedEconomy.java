@@ -254,19 +254,19 @@ public class BufferedEconomy {
 
 	  if (abp != null) {
 	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
-	  if (payment.get(CurrencyType.MONEY) != 0D) {
+	    if (payment.get(CurrencyType.MONEY) != 0D) {
 	    Message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), payment.get(CurrencyType.MONEY)));
-	  }
-	  if (payment.get(CurrencyType.POINTS) != 0D) {
+	    }
+	    if (payment.get(CurrencyType.POINTS) != 0D) {
 	    Message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), payment.get(CurrencyType.POINTS)));
-		  
-	  if (payment.get(CurrencyType.EXP) != 0D) {
+	    }
+	    if (payment.get(CurrencyType.EXP) != 0D) {
 	    Message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), payment.get(CurrencyType.EXP)));
-	  }
-	  if (show.booleanValue())  {
-	   ActionBarManager.send(abp, Message);
-	  }
-	  else abp.sendMessage(Message);
-        }
-      }
+	    }
+	    if (show.booleanValue())  {
+	    ActionBarManager.send(abp, Message);
+	    }
+	    else abp.sendMessage(Message);
+           }
+          }
 }
