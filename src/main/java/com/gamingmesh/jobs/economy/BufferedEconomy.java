@@ -245,7 +245,7 @@ public class BufferedEconomy {
 		if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline() || !payment.containsPayment())
 			return;
 		UUID playerUUID = payment.getOfflinePlayer().getUniqueId();
-		Boolean ActionBarsDefaultOn = Jobs.getGCManager().ActionBarsMessageByDefault;
+		boolean actionBarsDefaultOn = Jobs.getGCManager().ActionBarsMessageByDefault;
 
 		/*
 		Whether or not to show this player actionbars.  Gets player setting and defaults to server config setting.
