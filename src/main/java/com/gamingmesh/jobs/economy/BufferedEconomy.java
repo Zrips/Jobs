@@ -221,7 +221,7 @@ public class BufferedEconomy {
 		    Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
 
 		// Show players payment stuff
-			showPayment(payment);
+		showPayment(payment);
 
 		if (payment.getOfflinePlayer().isOnline() && Version.getCurrent().isHigher(Version.v1_8_R3)) {
 		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId());
@@ -242,32 +242,31 @@ public class BufferedEconomy {
 	}
 
 	public void showPayment(BufferedPayment payment) {
-		if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline() || !payment.containsPayment())
+	  if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline() || !payment.containsPayment())
 			return;
-		UUID playerUUID = payment.getOfflinePlayer().getUniqueId();
-		Boolean actionBarsDefaultOn = Jobs.getGCManager().ActionBarsMessageByDefault;
+	  UUID playerUUID = payment.getOfflinePlayer().getUniqueId();
+	  Boolean actionBarsDefaultOn = Jobs.getGCManager().ActionBarsMessageByDefault;
 
-		/*
-		Whether or not to show this player actionbars.  Gets player setting and defaults to server config setting.
-		 */
-		Boolean show = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID.toString(), ActionBarsDefaultOn);
-		Player abp = Bukkit.getPlayer(playerUUID);
+	//Whether or not to show this player actionbars.  Gets player setting and defaults to server config setting.
+		
+	  Boolean show = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID.toString(), ActionBarsDefaultOn);
+	  Player abp = Bukkit.getPlayer(playerUUID);
 
-		if (abp != null) {
-			String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
-			if (payment.get(CurrencyType.MONEY) != 0D) {
-				Message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), payment.get(CurrencyType.MONEY)));
-			}
-			if (payment.get(CurrencyType.POINTS) != 0D) {
-				Message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), payment.get(CurrencyType.POINTS)));
-			}
-			if (payment.get(CurrencyType.EXP) != 0D) {
-				Message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), payment.get(CurrencyType.EXP)));
-			}
-			if (show.booleanValue())  {
-				ActionBarManager.send(abp, Message);
-			}
-			else abp.sendMessage(Message);
-		}
-	}
+	  if (abp != null) {
+	    String Message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
+	  if (payment.get(CurrencyType.MONEY) != 0D) {
+	    Message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), payment.get(CurrencyType.MONEY)));
+	  }
+	  if (payment.get(CurrencyType.POINTS) != 0D) {
+	    Message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(), payment.get(CurrencyType.POINTS)));
+		  
+	  if (payment.get(CurrencyType.EXP) != 0D) {
+	    Message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(), payment.get(CurrencyType.EXP)));
+	  }
+	  if (show.booleanValue())  {
+	   ActionBarManager.send(abp, Message);
+	  }
+	  else abp.sendMessage(Message);
+        }
+      }
 }
