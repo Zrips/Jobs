@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs.listeners;
 
 import com.gamingmesh.jobs.CMILib.*;
+import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.*;
 import com.gamingmesh.jobs.api.JobsChunkChangeEvent;
@@ -950,6 +951,17 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
+	if (!Jobs.getGCManager().allowEnchantingBoostedItems) {
+	    for (JobProgression prog : jPlayer.getJobProgression()) {
+		for (JobItems jobItem : ItemBoostManager.getItemsByJob(prog.getJob())) {
+		    if (event.getItem().isSimilar(jobItem.getItemStack(jPlayer.getPlayer()))) {
+			event.setCancelled(true);
+			return;
+		    }
+		}
+	    }
+	}
+
 	Map<Enchantment, Integer> enchants = event.getEnchantsToAdd();
 	for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
 	    Enchantment enchant = oneEnchant.getKey();
@@ -967,8 +979,8 @@ public class JobsPaymentListener implements Listener {
 
 	    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
 	}
-	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
 
+	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

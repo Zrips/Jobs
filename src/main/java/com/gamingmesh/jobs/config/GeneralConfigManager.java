@@ -103,7 +103,7 @@ public class GeneralConfigManager {
 	BossBarEnabled, BossBarShowOnEachAction, BossBarsMessageByDefault, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
 	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities,
-	payForEachVTradeItem, titleMessageMaxLevelReached;
+	payForEachVTradeItem, titleMessageMaxLevelReached, allowEnchantingBoostedItems;
 
     public ItemStack guiBackButton, guiNextButton, guiFiller;
 
@@ -715,6 +715,9 @@ public class GeneralConfigManager {
 
 	c.addComment("Economy.Enchant.PayForEnchantingOnAnvil", "Do you want to give money for enchanting items in anvil?");
 	PayForEnchantingOnAnvil = c.get("Economy.Enchant.PayForEnchantingOnAnvil", false);
+
+	c.addComment("Economy.Enchant.AllowEnchantingBoostedItems", "Do you want to allow players to enchant their boosted items?");
+	allowEnchantingBoostedItems = c.get("Economy.Enchant.AllowEnchantingBoostedItems", true);
 
 	c.addComment("Economy.Crafting.PayForEachCraft",
 	    "With this true, player will get money for all crafted items instead of each crafting action (like with old payment mechanic)",

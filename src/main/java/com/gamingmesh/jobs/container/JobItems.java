@@ -45,35 +45,33 @@ public class JobItems {
 
     public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs) {
 	mat = mat == null ? CMIMaterial.STONE : mat;
-	try {
-	    this.enchants = enchants;
-	    item = mat.newItemStack();
 
-	    ItemMeta meta = item.getItemMeta();
+	this.enchants = enchants;
+	item = mat.newItemStack();
 
-	    if (name != null)
-		meta.setDisplayName(CMIChatColor.translate(name));
-	    if (lore != null)
-		meta.setLore(lore);
+	ItemMeta meta = item.getItemMeta();
 
-	    if (enchants != null) {
-		if (mat == CMIMaterial.ENCHANTED_BOOK) {
-		    EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
-		    for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
-			bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
-		    }
-		} else {
-		    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
-			meta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
-		    }
+	if (name != null)
+	    meta.setDisplayName(CMIChatColor.translate(name));
+	if (lore != null)
+	    meta.setLore(lore);
+
+	if (enchants != null) {
+	    if (mat == CMIMaterial.ENCHANTED_BOOK) {
+		EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
+		for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
+		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
+		}
+	    } else {
+		for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
+		    meta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
 		}
 	    }
-	    item.setItemMeta(meta);
-	    item.setAmount(amount);
-	    item = CMIReflections.setNbt(item, "JobsItemBoost", node);
-	} catch (Throwable e) {
-	    e.printStackTrace();
 	}
+
+	item.setItemMeta(meta);
+	item.setAmount(amount);
+	item = CMIReflections.setNbt(item, "JobsItemBoost", node);
 
 	this.node = node;
 	this.boostMultiplier = boostMultiplier;
