@@ -90,8 +90,8 @@ public class GeneralConfigManager {
     public boolean useBlockProtection, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
-	BrowseUseNewLook, payExploringWhenGliding, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
-	boostedItemsInOffHand, preventCropResizePayment, payItemDurabilityLoss,
+	BrowseUseNewLook, payExploringWhenGliding = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
+	boostedItemsInOffHand = false, preventCropResizePayment, payItemDurabilityLoss,
 	applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useBreederFinder,
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
@@ -100,7 +100,7 @@ public class GeneralConfigManager {
 	DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UseFlicker, UseTrail, UsePerPermissionForLeaving,
 	EnableConfirmation, FilterHiddenPlayerFromTabComplete, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve,
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
-	BossBarEnabled, BossBarShowOnEachAction, BossBarsMessageByDefault, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
+	BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
 	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities,
 	payForEachVTradeItem, titleMessageMaxLevelReached, allowEnchantingBoostedItems;
@@ -577,7 +577,6 @@ public class GeneralConfigManager {
 	    DynamicPaymentEquation.setVariable("totalworkers", 100);
 	    DynamicPaymentEquation.setVariable("totaljobs", 10);
 	    DynamicPaymentEquation.setVariable("jobstotalplayers", 10);
-	    DynamicPaymentEquation.getValue();
 	} catch (Throwable e) {
 	    Jobs.consoleMsg("&cDynamic payment equation has an invalid property. Disabling feature!");
 	    useDynamicPayment = false;
@@ -957,8 +956,7 @@ public class GeneralConfigManager {
 	c.addComment("Commands.JobsInfo.open-browse", "Open up the jobs browse action list, when your performed /jobs info command?");
 	jobsInfoOpensBrowse = c.get("Commands.JobsInfo.open-browse", false);
 
-	CMIMaterial tmat = null;
-	tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN").toUpperCase());
+	CMIMaterial tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN").toUpperCase());
 	guiBackButton = (tmat == null ? CMIMaterial.JACK_O_LANTERN : tmat).newItemStack();
 
 	tmat = CMIMaterial.get(c.get("JobsGUI.NextButton.Material", "ARROW").toUpperCase());

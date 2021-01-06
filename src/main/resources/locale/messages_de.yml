@@ -18,10 +18,10 @@ general:
     'true': 'Wahr'
     'false': 'Falsch'
     blocks:
-      furnace: Furnace
-      smoker: Smoker
-      blastfurnace: Blast furnace
-      brewingstand: Brewing stand
+      furnace: Ofen
+      smoker: Räucherofen
+      blastfurnace: Hochofen
+      brewingstand: Braustand
   admin:
     error: '&cEs ist ein Fehler aufgetreten.'
     success: '&eDer Befehl ist erfolgreich ausgeführt worden.'
@@ -36,8 +36,8 @@ general:
     ingame: '&cDer Befehl kann nur ingame benutzt werden!'
     fromconsole: '&cDer Befehl kann nur in der Konsole benutzt werden!'
     worldisdisabled: '&cDer Befehl kann nicht in dieser Welt ausgeführt werden!'
-    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
-    noRegistration: '&cYou''ve reached max [block] count!'
+    newRegistration: '#&eneuer Besitzer für [block] &7[current]&e/&f[max] registriert'
+    noRegistration: '&c Du hast di maximale [block]-Zahl erreicht!'
 command:
   help:
     output:
@@ -93,12 +93,12 @@ command:
       infostats: '&c-----> &aXP x%boost% eingeschaltet&c <-------'
   schedule:
     help:
-      info: Enables the given scheduler
+      info: Aktiviert den angegebenen Zeitplaner
       args: enable [scheduleName] [untilTime]
     output:
-      noScheduleFound: '&cSchedule with this name not found.'
-      alreadyEnabled: '&cThis schedule already enabled.'
-      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
+      noScheduleFound: '&c Zeitplan mit diesem Namen nicht gefunden.'
+      alreadyEnabled: '&c Dieser Zeitplan ist bereits aktiviert.'
+      enabled: '& eSchedule wurde von &a %from% &e bis &a%until% aktiviert'
   itembonus:
     help:
       info: Item-Bonus überprüfen
@@ -257,8 +257,8 @@ command:
     error:
       nojob: Du bist aktuell arbeitslos.
     output:
-      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
-      max-level: '     &cMax level   -   %jobname%'
+      message: 'Level %joblevel% für %jobname%:%jobxp%/%jobmaxxp% EP'
+      max-level: '     &c Macimales Level   -   %jobname%'
     bossBarOutput: 'Level %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -463,7 +463,7 @@ command:
       info: Blockbesitzer entfernen
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
+      cleared: '&2Entfernt&7[furnaces] &2Öfen, &7[brewing] &2Braustände, &7[smoker]&2 Räucheröfen and &7[blast]&2 Hochöfen.'
   skipquest:
     help:
       info: Überspringe die definierte Quest und hol dir eine neue
@@ -662,9 +662,9 @@ message:
     broadcast: '%playername% wurde zu einem %titlename% %jobname%befördert.'
     nobroadcast: Herzlichen Glückwunsch, du wurdest zum %titlename%%jobname% befördert.
   max-level-reached:
-    title: '&2Max level reached'
+    title: '&2 Maximales Level erreicht'
     subtitle: '&2in %jobname%!'
-    chat: '&cYou have reached the maximum level in %jobname%!'
+    chat: '&c Du hast in %jobname% das maximale Joblevel erreicht!'
   levelup:
     broadcast: '%playername% ist nun ein Level %joblevel%%jobname%.'
     nobroadcast: Du bist nun Level %joblevel% in %jobname%.
