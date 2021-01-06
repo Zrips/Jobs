@@ -100,7 +100,7 @@ public class McMMO2_X_listener implements Listener {
 	    HookManager.getMcMMOManager().getMap().put(event.getPlayer().getUniqueId(), InfoMap);
 	}
 
-	InfoMap.put(event.getAbility().toString().toLowerCase(), System.currentTimeMillis() + (30 * 1000));
+	InfoMap.put(event.getAbility().toString().toLowerCase(), System.currentTimeMillis() + (60 * 1000));
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
