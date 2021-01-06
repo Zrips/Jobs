@@ -19,23 +19,37 @@
 package com.gamingmesh.jobs.container;
 
 public enum DisplayMethod {
-	FULL("full"), JOB("job"), TITLE("title"), NONE("none"), SHORT_FULL("shortfull"), SHORT_JOB("shortjob"), SHORT_TITLE("shorttitle");
+    FULL("full", "Full title and job name"),
+    JOB("job", "Full job name"),
+    TITLE("title", "Full title"),
+    NONE("none", "Nothing"),
+    SHORT_FULL("shortfull", "Short title and job name"),
+    SHORT_JOB("shortjob", "Short job name"),
+    SHORT_TITLE("shorttitle", "Short title"),
+    SHORT_TITLE_JOB("shorttitlejob", "Short title and full job name"),
+    TITLE_SHORT_JOB("titleshortjob", "Full title and short job name");
 
-	private String name;
+    private String name;
+    private String desc = "";
 
-	private DisplayMethod(String name) {
-		this.name = name;
+    private DisplayMethod(String name, String desc) {
+	this.name = name;
+	this.desc = desc;
+    }
+
+    public String getName() {
+	return name;
+    }
+
+    public static DisplayMethod matchMethod(String name) {
+	for (DisplayMethod method : DisplayMethod.values()) {
+	    if (method.getName().equalsIgnoreCase(name))
+		return method;
 	}
+	return null;
+    }
 
-	public String getName() {
-		return name;
-	}
-
-	public static DisplayMethod matchMethod(String name) {
-		for (DisplayMethod method : DisplayMethod.values()) {
-			if (method.getName().equalsIgnoreCase(name))
-				return method;
-		}
-		return null;
-	}
+    public String getDesc() {
+	return desc;
+    }
 }

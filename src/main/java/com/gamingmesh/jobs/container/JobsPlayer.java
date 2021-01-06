@@ -40,6 +40,7 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
+import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
@@ -662,93 +663,98 @@ public class JobsPlayer {
     public void reloadHonorific() {
 	StringBuilder builder = new StringBuilder();
 	int numJobs = progression.size();
-	boolean gotTitle = false;
 
 	if (numJobs > 0) {
 	    for (JobProgression prog : progression) {
 		DisplayMethod method = prog.getJob().getDisplayMethod();
 		if (method == DisplayMethod.NONE)
 		    continue;
-
-		if (gotTitle) {
+		if (!builder.toString().isEmpty()) {
 		    builder.append(Jobs.getGCManager().modifyChatSeparator);
-		    gotTitle = false;
 		}
-
 		Title title = Jobs.gettitleManager().getTitle(prog.getLevel(), prog.getJob().getName());
-
-		if (numJobs == 1) {
-		    if (method == DisplayMethod.FULL || method == DisplayMethod.TITLE) {
-			if (title != null) {
-			    String honorificpart = title.getChatColor() + title.getName() + CMIChatColor.WHITE;
-			    if (honorificpart.contains("{level}"))
-				honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
-			    builder.append(honorificpart);
-			    gotTitle = true;
-			}
-		    }
-
-		    if (method == DisplayMethod.FULL || method == DisplayMethod.JOB) {
-			if (gotTitle) {
-			    builder.append(' ');
-			}
-
-			String honorificpart = prog.getJob().getNameWithColor() + CMIChatColor.WHITE;
-			if (honorificpart.contains("{level}"))
-			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
-
-			builder.append(honorificpart);
-			gotTitle = true;
-		    }
-		}
-
-		if (numJobs > 1 && (method == DisplayMethod.FULL) || method == DisplayMethod.TITLE || method == DisplayMethod.SHORT_FULL || method == DisplayMethod.SHORT_TITLE) {
-		    // add title to honorific
-		    if (title != null) {
-			String honorificpart = title.getChatColor() + title.getShortName() + CMIChatColor.WHITE;
-			if (honorificpart.contains("{level}"))
-			    honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
-
-			builder.append(honorificpart);
-			gotTitle = true;
-		    }
-		}
-
-		if (numJobs > 1 && (method == DisplayMethod.FULL) || method == DisplayMethod.JOB || method == DisplayMethod.SHORT_FULL || method == DisplayMethod.SHORT_JOB) {
-		    String honorificpart = prog.getJob().getChatColor() + prog.getJob().getShortName() + CMIChatColor.WHITE;
-		    if (honorificpart.contains("{level}"))
-			honorificpart = honorificpart.replace("{level}", String.valueOf(prog.getLevel()));
-
-		    builder.append(honorificpart);
-		    gotTitle = true;
-		}
+		processesChat(method, builder, prog.getLevel(), title, prog.getJob());
 	    }
 	} else {
 	    Job nonejob = Jobs.getNoneJob();
 	    if (nonejob != null) {
-		DisplayMethod metod = nonejob.getDisplayMethod();
-		if (metod == DisplayMethod.FULL || metod == DisplayMethod.TITLE) {
-		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getName() + CMIChatColor.WHITE;
-		    if (honorificpart.contains("{level}"))
-			honorificpart = honorificpart.replace("{level}", "");
-
-		    builder.append(honorificpart);
-		}
-
-		if (metod == DisplayMethod.SHORT_FULL || metod == DisplayMethod.SHORT_TITLE || metod == DisplayMethod.SHORT_JOB) {
-		    String honorificpart = Jobs.getNoneJob().getChatColor() + Jobs.getNoneJob().getShortName() + CMIChatColor.WHITE;
-		    if (honorificpart.contains("{level}"))
-			honorificpart = honorificpart.replace("{level}", "");
-
-		    builder.append(honorificpart);
-		}
+		DisplayMethod method = nonejob.getDisplayMethod();
+		processesChat(method, builder, -1, null, nonejob);
 	    }
 	}
 
 	honorific = builder.toString().trim();
-	if (honorific.length() > 0)
+	if (!honorific.isEmpty())
 	    honorific = CMIChatColor.translate(Jobs.getGCManager().modifyChatPrefix + honorific + Jobs.getGCManager().modifyChatSuffix);
+    }
 
+    private static void processesChat(DisplayMethod method, StringBuilder builder, int level, Title title, Job job) {
+
+	String levelS = level < 0 ? "" : String.valueOf(level);
+	switch (method) {
+	case FULL:
+	    processesTitle(builder, title, levelS);
+	    processesJob(builder, job, levelS);
+	    break;
+	case TITLE:
+	    processesTitle(builder, title, levelS);
+	    break;
+	case JOB:
+	    processesJob(builder, job, levelS);
+	    break;
+	case SHORT_FULL:
+	    processesShortTitle(builder, title, levelS);
+	    processesShortJob(builder, job, levelS);
+	    break;
+	case SHORT_TITLE:
+	    processesShortTitle(builder, title, levelS);
+	    break;
+	case SHORT_JOB:
+	    processesShortJob(builder, job, levelS);
+	    break;
+	case SHORT_TITLE_JOB:
+	    processesShortTitle(builder, title, levelS);
+	    processesJob(builder, job, levelS);
+	    break;
+	case TITLE_SHORT_JOB:
+	    processesTitle(builder, title, levelS);
+	    processesShortJob(builder, job, levelS);
+	    break;
+	default:
+	    break;
+	}
+    }
+
+    private static void processesShortTitle(StringBuilder builder, Title title, String levelS) {
+	if (title == null)
+	    return;
+	builder.append(title.getChatColor());
+	builder.append(title.getShortName().replace("{level}", levelS));
+	builder.append(CMIChatColor.WHITE);
+    }
+
+    private static void processesTitle(StringBuilder builder, Title title, String levelS) {
+	if (title == null)
+	    return;
+	builder.append(title.getChatColor());
+	builder.append(title.getName().replace("{level}", levelS));
+	builder.append(CMIChatColor.WHITE);
+    }
+
+    private static void processesShortJob(StringBuilder builder, Job job, String levelS) {
+	if (job == null)
+	    return;
+	builder.append(job.getChatColor());
+	builder.append(job.getShortName().replace("{level}", levelS));
+	builder.append(CMIChatColor.WHITE);
+    }
+
+    private static void processesJob(StringBuilder builder, Job job, String levelS) {
+	if (job == null)
+	    return;
+	builder.append(job.getChatColor());
+	builder.append(job.getName().replace("{level}", levelS));
+	builder.append(CMIChatColor.WHITE);
     }
 
     /**
@@ -1196,8 +1202,7 @@ public class JobsPlayer {
      */
     @Deprecated
     public int getFurnaceCount() {
-	return !Jobs.getInstance().getBlockOwnerShip(BlockTypes.FURNACE).isPresent() ? 0 :
-		Jobs.getInstance().getBlockOwnerShip(BlockTypes.FURNACE).get().getTotal(getUniqueId());
+	return !Jobs.getInstance().getBlockOwnerShip(BlockTypes.FURNACE).isPresent() ? 0 : Jobs.getInstance().getBlockOwnerShip(BlockTypes.FURNACE).get().getTotal(getUniqueId());
     }
 
     /**
@@ -1206,8 +1211,7 @@ public class JobsPlayer {
      */
     @Deprecated
     public int getBrewingStandCount() {
-	return !Jobs.getInstance().getBlockOwnerShip(BlockTypes.BREWING_STAND).isPresent() ? 0 :
-		Jobs.getInstance().getBlockOwnerShip(BlockTypes.BREWING_STAND).get().getTotal(getUniqueId());
+	return !Jobs.getInstance().getBlockOwnerShip(BlockTypes.BREWING_STAND).isPresent() ? 0 : Jobs.getInstance().getBlockOwnerShip(BlockTypes.BREWING_STAND).get().getTotal(getUniqueId());
     }
 
     /**
@@ -1240,8 +1244,7 @@ public class JobsPlayer {
      */
     public int getMaxOwnerShipAllowed(BlockTypes type) {
 	String perm = "jobs.max" + (type == BlockTypes.FURNACE
-	    ? "furnaces" : type == BlockTypes.BLAST_FURNACE ? "blastfurnaces" : type == BlockTypes.SMOKER ? "smokers" : 
-	    type == BlockTypes.BREWING_STAND ? "brewingstands" : "");
+	    ? "furnaces" : type == BlockTypes.BLAST_FURNACE ? "blastfurnaces" : type == BlockTypes.SMOKER ? "smokers" : type == BlockTypes.BREWING_STAND ? "brewingstands" : "");
 	if (perm.isEmpty())
 	    return 0;
 
