@@ -120,7 +120,10 @@ public class ConfigManager {
 	cfg.addComment(pt + ".BossBarColour", "[OPTIONAL] The colour of the boss bar: GREEN, BLUE, RED, WHITE, YELLOW, PINK, PURPLE.");
 	cfg.get(pt + ".BossBarColour", "WHITE");
 
-	cfg.addComment(pt + ".chat-display", "Option to let you choose what kind of prefix this job adds to your name.", "options are: full, title, job, shortfull, shorttitle, shortjob and none");
+	cfg.addComment(pt + ".chat-display", "Option to let you choose what kind of prefix this job adds to your name.", "Options are: ");
+	for (DisplayMethod one : DisplayMethod.values()) {
+	    cfg.appendComment(pt + ".chat-display", one.getName() + " - " + one.getDesc());
+	}
 	cfg.get(pt + ".chat-display", "full");
 
 	cfg.addComment(pt + ".max-level", "[OPTIONAL] - the maximum level of this class");

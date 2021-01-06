@@ -19,10 +19,10 @@
 package com.gamingmesh.jobs.container;
 
 public enum DisplayMethod {
+    NONE("none", "Nothing"),
     FULL("full", "Full title and job name"),
     JOB("job", "Full job name"),
     TITLE("title", "Full title"),
-    NONE("none", "Nothing"),
     SHORT_FULL("shortfull", "Short title and job name"),
     SHORT_JOB("shortjob", "Short job name"),
     SHORT_TITLE("shorttitle", "Short title"),

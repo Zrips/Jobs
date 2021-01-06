@@ -191,11 +191,23 @@ public class ConfigReader extends YamlConfiguration {
 	return yaml;
     }
 
+    public void appendComment(String path, String... commentLines) {
+	addComment(path, true, commentLines);
+    }
+
     public void addComment(String path, String... commentLines) {
+	addComment(path, false, commentLines);
+    }
+
+    public void addComment(String path, boolean append, String... commentLines) {
 	if (this.p != null)
 	    path = this.p + path;
 
 	StringBuilder commentstring = new StringBuilder();
+	if (append && comments.containsKey(path)) {
+	    commentstring.append(comments.get(path));
+	}
+
 	String leadingSpaces = "";
 	for (int n = 0; n < path.length(); n++) {
 	    if (path.charAt(n) == '.') {
