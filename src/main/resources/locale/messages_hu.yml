@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Top játékosok megjelenítése munka alapján.
-      args: '[jobname]'
+      args: '[jobname]/clear oldalszám'
     error:
       nojob: '&cNem találok semmilyen munkát ezzel a névvel.'
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Megmutatja a legjobb játékosokat a globális munkákon.
-      args: ''
+      args: clear/oldalszám
     error:
       nojob: '&cNem találok semmilyen információt.'
     output:

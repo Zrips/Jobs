@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: 依職業列出最具經驗玩家
-      args: '[jobname]'
+      args: '[jobname]/clear pageNumber'
     error:
       nojob: 沒有這個職業.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: 顯示全部職業中最具經驗的玩家.
-      args: ''
+      args: clear/pageNumber
     error:
       nojob: 沒有找到任何資訊, 你這是新服吧23333.
     output:

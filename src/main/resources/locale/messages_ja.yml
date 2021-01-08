@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Shows top players by jobs name.
-      args: '[jobname]'
+      args: '[jobname]/clear pageNumber'
     error:
       nojob: 存在しない職業名です
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Shows top players by global jobs level.
-      args: ''
+      args: clear/pageNumber
     error:
       nojob: 情報がありません
     output:

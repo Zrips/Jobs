@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Affiche le top des joueurs par nom de métiers.
-      args: '[jobname]'
+      args: '[jobname]/clear pageNumber'
     error:
       nojob: Aucun métier ne porte ce nom.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Affiche le top des joueurs par niveau global de métiers.
-      args: ''
+      args: clear/pageNumber
     error:
       nojob: Impossible de trouver des informations.
     output:

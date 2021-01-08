@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Shows top players by jobs name.
-      args: '[jobname]'
+      args: '[jobname]/clear pageNumber'
     error:
       nojob: 没有这个职业.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Shows top players by global jobs level.
-      args: ''
+      args: clear/pageNumber
     error:
       nojob: 没有找到任何信息, 你这是新服吧23333.
     output:

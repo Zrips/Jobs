@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Viser toppspillere i jobben.
-      args: '[jobname]'
+      args: '[jobname]/clear pageNumber'
     error:
       nojob: Kunne ikke finne noen jobb med det jobbnavnet.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Viser toppspillere fra globalt jobbnivå.
-      args: ''
+      args: clear/pageNumber
     error:
       nojob: Kunne ikke finne noen informasjon.
     output:

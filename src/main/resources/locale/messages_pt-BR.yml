@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Mostra os melhores jogadores pelo nome da profissão.
-      args: '[jobname]'
+      args: '[jobname]/clear pageNumber'
     error:
       nojob: Não foi possível encontrar nenhuma profissão com este nome.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Mostra os melhores jogadores por nível de emprego global.
-      args: ''
+      args: clear/pageNumber
     error:
       nojob: Não foi possível encontrar qualquer informação.
     output:

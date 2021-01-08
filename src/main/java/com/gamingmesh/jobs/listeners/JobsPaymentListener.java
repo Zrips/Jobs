@@ -802,18 +802,20 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	Inventory inv = event.getInventory();
-	// must be anvil inventory
+
+	// must be an inventory
 	if (!(inv instanceof AnvilInventory) && (Version.isCurrentEqualOrHigher(Version.v1_14_R1)
-	    && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory)
-	    && !(inv instanceof SmithingInventory)))
+	    && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory))
+	    // Smithing inventory class is added in 1.16
+	    && (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && !(inv instanceof SmithingInventory)))
 	    return;
 
 	int slot = event.getSlot();
 	if (event.getSlotType() != SlotType.RESULT || (slot != 2 && slot != 1))
 	    return;
 
-	if ((Version.isCurrentEqualOrHigher(Version.v1_14_R1)
-	    && !(inv instanceof StonecutterInventory) && !(inv instanceof SmithingInventory)) && slot == 1)
+	if (((Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !(inv instanceof StonecutterInventory))
+	    || (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && !(inv instanceof SmithingInventory))) && slot == 1)
 	    return;
 
 	if (!(event.getWhoClicked() instanceof Player))
@@ -831,24 +833,24 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Checking if this is only item rename
-	ItemStack FirstSlot = null;
+	ItemStack firstSlot = null;
 	try {
-	    FirstSlot = inv.getItem(0);
+	    firstSlot = inv.getItem(0);
 	} catch (NullPointerException e) {
 	    return;
 	}
-	if (FirstSlot == null)
+	if (firstSlot == null)
 	    return;
 
-	String OriginalName = null;
-	String NewName = null;
-	if (FirstSlot.hasItemMeta())
-	    OriginalName = FirstSlot.getItemMeta().getDisplayName();
+	String originalName = null;
+	String newName = null;
+	if (firstSlot.hasItemMeta())
+	    originalName = firstSlot.getItemMeta().getDisplayName();
 
 	if (resultStack.hasItemMeta())
-	    NewName = resultStack.getItemMeta().getDisplayName();
+	    newName = resultStack.getItemMeta().getDisplayName();
 
-	if (OriginalName != null && !OriginalName.equals(NewName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
+	if (originalName != null && !originalName.equals(newName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
 	    return;
 
 	// Check for world permissions
@@ -883,8 +885,8 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && (inv instanceof StonecutterInventory
-	    || inv instanceof SmithingInventory)) {
+	if ((Version.isCurrentEqualOrHigher(Version.v1_14_R1) && inv instanceof StonecutterInventory)
+	    || (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && inv instanceof SmithingInventory)) {
 	    if (event.getAction() != InventoryAction.DROP_ONE_SLOT) {
 		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 	    }
@@ -893,8 +895,7 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1) != null && inv.getItem(1).getType() == Material.ENCHANTED_BOOK) {
-	    Map<Enchantment, Integer> enchants = resultStack.getEnchantments();
-	    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
+	    for (Entry<Enchantment, Integer> oneEnchant : resultStack.getEnchantments().entrySet()) {
 		Enchantment enchant = oneEnchant.getKey();
 		if (enchant == null)
 		    continue;

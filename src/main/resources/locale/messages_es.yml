@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Muestra el top de jugadores acorde al nombre del trabajo.
-      args: '[jobname]'
+      args: '[jobname]/clear pageNumber'
     error:
       nojob: No se pudo encontrar ningún trabajo con ese nombre.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Muestra jugadores según el nivel global de trabajos.
-      args: ''
+      args: clear/pageNumber
     error:
       nojob: No se pudo encontrar ninguna información.
     output:

@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Zobrazí top hráče podle jména práce.
-      args: '[jobname]'
+      args: '[jobname]/clear pageNumber'
     error:
       nojob: Nenalezli jsme zadnou praci tohoto nazvu.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Shows top players by global jobs level.
-      args: ''
+      args: clear/pageNumber
     error:
       nojob: Nenasli jsme zadne informace.
     output:
