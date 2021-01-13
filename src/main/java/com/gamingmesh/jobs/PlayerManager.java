@@ -393,7 +393,7 @@ public class PlayerManager {
 	if (jobsjoinevent.isCancelled())
 	    return;
 
-	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () -> Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job)));
+	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
 	jPlayer.setLeftTime(job);
 
 	PerformCommands.performCommandsOnJoin(jPlayer, job);

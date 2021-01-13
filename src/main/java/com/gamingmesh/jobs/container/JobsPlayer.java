@@ -40,7 +40,6 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.resources.jfep.Parser;
-import com.gamingmesh.jobs.stuff.Debug;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
@@ -343,8 +342,7 @@ public class JobsPlayer {
     }
 
     public int getLimit(CurrencyType type) {
-	Integer value = type == null ? 0 : limits.get(type);
-	return value;
+	return type == null ? 0 : limits.get(type);
     }
 
     public void resetPaymentLimit() {

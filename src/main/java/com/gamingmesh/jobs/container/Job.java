@@ -166,6 +166,7 @@ public class Job {
 
     public void updateTotalPlayers() {
 	totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(jobName);
+
 	if (totalPlayers <= 0) {
 	    totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(fullName);
 	}
