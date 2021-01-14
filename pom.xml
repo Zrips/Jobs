@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>4.16.3</version>
+	<version>4.17.0</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -156,9 +156,11 @@
 		</dependency>
 		<!-- WildStacker -->
 		<dependency>
-			<groupId>com.github.OmerBenGera</groupId>
+			<groupId>com.bgsoftware</groupId>
 			<artifactId>WildStackerAPI</artifactId>
-			<version>master-SNAPSHOT</version>
+			<version>latest</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/WildStackerAPI-latest.jar</systemPath>
 		</dependency>
 		<!-- StackMob -->
 		<dependency>
