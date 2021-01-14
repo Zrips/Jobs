@@ -306,7 +306,7 @@ public class CMIGui {
     }
 
     public void addPagination(PageInfo pi, Object cmd, String pagePref) {
-	addPagination(pi, JobsCommands.label + " " + cmd.getClass().getSimpleName(), pagePref);
+	addPagination(pi, JobsCommands.LABEL + " " + cmd.getClass().getSimpleName(), pagePref);
     }
 
     public void addPagination(PageInfo pi, String cmd, String pagePref) {

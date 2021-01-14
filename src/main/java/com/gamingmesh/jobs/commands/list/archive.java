@@ -9,14 +9,12 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class archive implements Cmd {
 
     @Override
-    @JobCommand(1401)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {

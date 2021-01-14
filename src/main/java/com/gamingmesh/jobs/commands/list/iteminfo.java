@@ -8,13 +8,11 @@ import org.bukkit.inventory.ItemStack;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 
 public class iteminfo implements Cmd {
 
     @Override
     @SuppressWarnings("deprecation")
-    @JobCommand(1450)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));

@@ -2,13 +2,11 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.HashMap;
 
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.ExploreChunk;
 import com.gamingmesh.jobs.container.ExploreRegion;
 import com.gamingmesh.jobs.container.PlayerInfo;
@@ -16,7 +14,6 @@ import com.gamingmesh.jobs.container.PlayerInfo;
 public class explored implements Cmd {
 
     @Override
-    @JobCommand(1600)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 
 	if (!(sender instanceof Player))
@@ -24,16 +21,14 @@ public class explored implements Cmd {
 
 	Player player = (Player) sender;
 
-	World world = player.getWorld();
-
 	HashMap<String, ExploreRegion> worlds = Jobs.getExplore().getWorlds();
 
-	if (!worlds.containsKey(world.getName())) {
+	if (!worlds.containsKey(player.getWorld().getName())) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
 	    return true;
 	}
 
-	ExploreRegion regions = worlds.get(world.getName());
+	ExploreRegion regions = worlds.get(player.getWorld().getName());
 
 	ExploreChunk chunk = regions.getChunk(player.getLocation().getChunk());
 

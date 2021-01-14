@@ -5,12 +5,10 @@ import org.bukkit.entity.EntityType;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 
 public class entitylist implements Cmd {
 
     @Override
-    @JobCommand(1452)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length != 0) {
 	    Jobs.getCommandManager().sendUsage(sender, "entitylist");

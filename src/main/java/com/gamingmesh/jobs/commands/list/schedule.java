@@ -9,12 +9,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 
 public class schedule implements Cmd {
 
     @Override
-    @JobCommand(1411)
     public boolean perform(final Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 2) {
 	    Jobs.getCommandManager().sendUsage(sender, "schedule");

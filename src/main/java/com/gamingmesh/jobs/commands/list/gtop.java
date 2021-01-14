@@ -9,14 +9,12 @@ import org.bukkit.scoreboard.DisplaySlot;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.stuff.PageInfo;
 
 public class gtop implements Cmd {
 
     @Override
-    @JobCommand(601)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));

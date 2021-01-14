@@ -5,14 +5,12 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class employ implements Cmd {
 
     @Override
-    @JobCommand(1800)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length < 2) {
 	    Jobs.getCommandManager().sendUsage(sender, "employ");

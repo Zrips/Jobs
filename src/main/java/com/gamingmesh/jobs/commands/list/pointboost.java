@@ -4,14 +4,12 @@ import org.bukkit.command.CommandSender;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 
 public class pointboost implements Cmd {
 
 	@Override
-	@JobCommand(2303)
 	public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 		if (args.length > 3 || args.length <= 1) {
 			Jobs.getCommandManager().sendUsage(sender, "pointboost");

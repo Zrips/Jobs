@@ -6,14 +6,12 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class grantxp implements Cmd {
 
     @Override
-    @JobCommand(2100)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "grantxp");
@@ -34,7 +32,7 @@ public class grantxp implements Cmd {
 	double xpGained;
 	try {
 	    xpGained = Double.parseDouble(args[2]);
-	} catch (Throwable e) {
+	} catch (NumberFormatException e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	    return true;
 	}

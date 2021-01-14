@@ -9,13 +9,11 @@ import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceHolders;
 import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceholderType;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.stuff.PageInfo;
 
 public class placeholders implements Cmd {
 
     @Override
-    @JobCommand(1400)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	Player player = null;
 	if (sender instanceof Player)

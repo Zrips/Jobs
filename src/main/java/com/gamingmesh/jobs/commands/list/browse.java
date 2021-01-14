@@ -10,14 +10,12 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.stuff.PageInfo;
 
 public class browse implements Cmd {
 
     @Override
-    @JobCommand(200)
     public boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
 	if (Jobs.getGCManager().BrowseUseNewLook) {
 	    List<Job> jobList = new ArrayList<>(Jobs.getJobs());

@@ -1,12 +1,10 @@
 package com.gamingmesh.jobs.commands;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.TreeSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -26,16 +24,15 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.stuff.PageInfo;
-import com.gamingmesh.jobs.stuff.Sorting;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class JobsCommands implements CommandExecutor {
 
-    public static final String label = "jobs";
+    public static final String LABEL = "jobs";
 
-    private static final String packagePath = "com.gamingmesh.jobs.commands.list";
+    private static final String PACKAGEPATH = "com.gamingmesh.jobs.commands.list";
 
-    private final Map<String, Integer> commandList = new HashMap<>();
+    private final Set<String> commandList = new TreeSet<>();
 
     protected Jobs plugin;
 
@@ -43,7 +40,7 @@ public class JobsCommands implements CommandExecutor {
 	this.plugin = plugin;
     }
 
-    public Map<String, Integer> getCommands() {
+    public Set<String> getCommands() {
 	return commandList;
     }
 
@@ -92,22 +89,18 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
-	boolean back = cmdClass.perform(plugin, sender, myArgs);
-	if (back)
-	    return true;
-
-	return help(sender, 1);
+	return cmdClass.perform(plugin, sender, myArgs) || help(sender, 1);
     }
 
-    private static String[] reduceArgs(String[] args) {
+    private String[] reduceArgs(String[] args) {
 	return args.length <= 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length);
     }
 
-    private static boolean hasCommandPermission(CommandSender sender, String cmd) {
+    private boolean hasCommandPermission(CommandSender sender, String cmd) {
 	return sender.hasPermission("jobs.command." + cmd);
     }
 
-    private static String getUsage(String cmd) {
+    private String getUsage(String cmd) {
 	String cmdString = Jobs.getLanguage().getMessage("command.help.output.cmdFormat", "[command]", Jobs.getLanguage().getMessage("command.help.output.label") + " " + cmd);
 	String key = "command." + cmd + ".help.args";
 	if (Jobs.getLanguage().containsKey(key) && !Jobs.getLanguage().getMessage(key).isEmpty()) {
@@ -126,13 +119,11 @@ public class JobsCommands implements CommandExecutor {
     }
 
     protected boolean help(CommandSender sender, int page) {
-	Map<String, Integer> commands = getCommands(sender);
+	Set<String> commands = getCommands(sender);
 	if (commands.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
-
-	commands = Sorting.sortASC(commands);
 
 	PageInfo pi = new PageInfo(7, commands.size(), page);
 	if (page > pi.getTotalPages() || page < 1) {
@@ -141,70 +132,58 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.title"));
-	for (String one : commands.keySet()) {
+	for (String one : commands) {
 	    if (!pi.isEntryOk())
 		continue;
 	    if (pi.isBreak())
 		break;
 
-	    String msg = Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
-		+ ".help.info"));
-	    sender.sendMessage(msg);
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
+		+ ".help.info")));
 	}
 
-	plugin.showPagination(sender, pi, label + " ?");
+	plugin.showPagination(sender, pi, LABEL + " ?");
 	return true;
     }
 
-    public Map<String, Integer> getCommands(CommandSender sender) {
-	Map<String, Integer> temp = new HashMap<>();
-	for (Entry<String, Integer> cmd : commandList.entrySet()) {
-	    if (sender instanceof Player && !hasCommandPermission(sender, cmd.getKey()))
+    public Set<String> getCommands(CommandSender sender) {
+	Set<String> temp = new TreeSet<>();
+	for (String cmd : commandList) {
+	    if (sender instanceof Player && !hasCommandPermission(sender, cmd))
 		continue;
 
-	    temp.put(cmd.getKey(), cmd.getValue());
+	    temp.add(cmd);
 	}
+
 	return temp;
     }
 
     public void fillCommands() {
 	List<String> lm = new ArrayList<>();
-	HashMap<String, Class<?>> classes = new HashMap<>();
 	try {
-	    lm = Util.getFilesFromPackage(packagePath);
+	    lm = Util.getFilesFromPackage(PACKAGEPATH);
 	} catch (ClassNotFoundException e) {
 	    e.printStackTrace();
 	}
 
 	for (String one : lm) {
-	    Class<?> newclass = getClass(one);
-	    if (newclass != null)
-		classes.put(one, newclass);
+	    Class<?> newClass = getClass(one);
+	    if (newClass != null)
+		commandList.add(newClass.getSimpleName());
 	}
-
-	for (Entry<String, Class<?>> oneClass : classes.entrySet()) {
-	    for (Method met : oneClass.getValue().getMethods()) {
-		if (!met.isAnnotationPresent(JobCommand.class))
-		    continue;
-
-		commandList.put(oneClass.getKey(), met.getAnnotation(JobCommand.class).value());
-		break;
-	    }
-	}
-
     }
 
-    private static Class<?> getClass(String cmd) {
+    private Class<?> getClass(String cmd) {
 	try {
-	    return Class.forName(packagePath + "." + cmd.toLowerCase());
+	    return Class.forName(PACKAGEPATH + "." + cmd.toLowerCase());
 	} catch (ClassNotFoundException e) {
 	}
 	return null;
     }
 
-    private static Cmd getCmdClass(String cmd) {
+    private Cmd getCmdClass(String cmd) {
 	try {
-	    Class<?> nmsClass = Class.forName(packagePath + "." + cmd.toLowerCase());
+	    Class<?> nmsClass = Class.forName(PACKAGEPATH + "." + cmd.toLowerCase());
 	    if (Cmd.class.isAssignableFrom(nmsClass)) {
 		return (Cmd) nmsClass.getConstructor().newInstance();
 	    }

@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.config.RestrictedAreaManager;
 import com.gamingmesh.jobs.container.CuboidArea;
 import com.gamingmesh.jobs.container.RestrictedArea;
@@ -19,7 +18,6 @@ import com.gamingmesh.jobs.hooks.HookManager;
 public class area implements Cmd {
 
     @Override
-    @JobCommand(308)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));

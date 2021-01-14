@@ -389,9 +389,6 @@ public class GeneralConfigManager {
 	    "By setting this to true when there is max amount of players explored a chunk then it will be marked as fully explored and exact players who explored it will not be saved to save some memory");
 	ExploreCompact = c.get("Optimizations.Explore.Compact", true);
 
-//	c.addComment("Optimizations.Purge.Use", "By setting this to true, Jobs plugin will clean data base on startup from all jobs with level 1 and at 0 exp");
-//	PurgeUse = c.get("Optimizations.Purge.Use", false);
-
 	c.addComment("Logging.Use", "With this set to true all players jobs actions will be logged to database for easy to see statistics",
 	    "This is still in development and in future it will expand");
 	LoggingUse = c.get("Logging.Use", false);
@@ -573,7 +570,6 @@ public class GeneralConfigManager {
 	String maxExpEquationInput = c.get("Economy.DynamicPayment.equation", "totalworkers / totaljobs / jobstotalplayers - 1");
 	try {
 	    DynamicPaymentEquation = new Parser(maxExpEquationInput);
-	    // test equation
 	    DynamicPaymentEquation.setVariable("totalworkers", 100);
 	    DynamicPaymentEquation.setVariable("totaljobs", 10);
 	    DynamicPaymentEquation.setVariable("jobstotalplayers", 10);

@@ -15,7 +15,7 @@ public class CurrencyLimit {
 
     public CurrencyLimit(boolean enabled, List<CurrencyType> stopWith, int timeLimit, int announcementDelay, Parser maxEquation) {
 	this.enabled = enabled;
-	this.stopWith = stopWith == null ? new ArrayList<>() : stopWith;
+	setStopWith(stopWith);
 	this.timeLimit = timeLimit;
 	this.announcementDelay = announcementDelay;
 

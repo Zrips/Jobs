@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
@@ -14,7 +13,6 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 public class clearownership implements Cmd {
 
     @Override
-    @JobCommand(400)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {

@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -17,7 +16,6 @@ public class level implements Cmd {
     }
 
     @Override
-    @JobCommand(1290)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length < 4) {
 	    Jobs.getCommandManager().sendUsage(sender, "level");

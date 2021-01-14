@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.dao.JobsDAO.DBTables;
@@ -15,7 +14,6 @@ import com.gamingmesh.jobs.dao.JobsDAO.DBTables;
 public class fireall implements Cmd {
 
     @Override
-    @JobCommand(2000)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "fireall");

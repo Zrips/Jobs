@@ -7,13 +7,11 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
 public class convert implements Cmd {
 
     @Override
-    @JobCommand(2600)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (sender instanceof Player) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.fromconsole"));

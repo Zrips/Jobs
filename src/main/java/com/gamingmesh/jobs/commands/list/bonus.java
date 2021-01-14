@@ -7,7 +7,6 @@ import com.gamingmesh.jobs.PlayerManager.BoostOf;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
@@ -17,7 +16,6 @@ import com.gamingmesh.jobs.hooks.HookManager;
 public class bonus implements Cmd {
 
     @Override
-    @JobCommand(300)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));

@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobLimitedItems;
@@ -27,7 +26,6 @@ public class give implements Cmd {
     }
 
     @Override
-    @JobCommand(2500)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	Player player = null;
 	Job job = null;

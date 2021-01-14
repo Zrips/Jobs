@@ -5,13 +5,11 @@ import org.bukkit.command.CommandSender;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.Job;
 
 public class signupdate implements Cmd {
 
     @Override
-    @JobCommand(2700)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return true;

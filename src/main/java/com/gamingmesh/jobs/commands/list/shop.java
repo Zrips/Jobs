@@ -4,12 +4,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 
 public class shop implements Cmd {
 
     @Override
-    @JobCommand(750)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (!(sender instanceof Player)) {

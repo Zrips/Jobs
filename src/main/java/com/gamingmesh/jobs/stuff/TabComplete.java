@@ -32,7 +32,7 @@ public class TabComplete implements TabCompleter {
 	    String PartOfCommand = args[0];
 	    List<String> temp = new ArrayList<>();
 
-	    Jobs.getCommandManager().getCommands(sender).keySet().forEach(temp::add);
+	    Jobs.getCommandManager().getCommands(sender).forEach(temp::add);
 	    StringUtil.copyPartialMatches(PartOfCommand, temp, completionList);
 	}
 	if (args.length > 1)

@@ -5,14 +5,12 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.PlayerPoints;
 
 public class points implements Cmd {
 
     @Override
-    @JobCommand(450)
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (args.length != 0 && args.length != 1) {

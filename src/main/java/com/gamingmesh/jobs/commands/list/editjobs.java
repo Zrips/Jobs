@@ -5,7 +5,6 @@ import com.gamingmesh.jobs.CMILib.ItemReflection;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.config.ConfigManager.KeyValues;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -24,7 +23,6 @@ public class editjobs implements Cmd {
 
     @SuppressWarnings("deprecation")
     @Override
-    @JobCommand(475)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 
 	if (!(sender instanceof Player))

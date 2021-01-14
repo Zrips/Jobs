@@ -7,14 +7,12 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class blockinfo implements Cmd {
 
     @Override
     @SuppressWarnings("deprecation")
-    @JobCommand(1472)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));

@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestObjective;
@@ -21,7 +20,6 @@ import com.gamingmesh.jobs.CMILib.RawMessage;
 public class quests implements Cmd {
 
     @Override
-    @JobCommand(400)
     public boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
 	JobsPlayer jPlayer = null;
 

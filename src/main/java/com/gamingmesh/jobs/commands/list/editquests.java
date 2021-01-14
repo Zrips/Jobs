@@ -20,7 +20,6 @@ import com.gamingmesh.jobs.CMILib.ItemReflection;
 import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.commands.JobCommand;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
@@ -33,7 +32,6 @@ public class editquests implements Cmd {
 
     @SuppressWarnings("deprecation")
     @Override
-    @JobCommand(721)
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (!(sender instanceof Player))
 	    return false;
