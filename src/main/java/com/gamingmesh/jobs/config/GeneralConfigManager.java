@@ -95,7 +95,7 @@ public class GeneralConfigManager {
 	applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useBreederFinder,
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
-	EmptyServerAccountActionBar, ActionBarsMessageByDefault, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
+	EmptyServerAccountActionBar, ActionBarsMessageByDefault, aBarSilentMode, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames,
 	DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UseFlicker, UseTrail, UsePerPermissionForLeaving,
 	EnableConfirmation, FilterHiddenPlayerFromTabComplete, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve,
@@ -834,6 +834,8 @@ public class GeneralConfigManager {
 	c.addComment("ActionBars.Messages.EnabledByDefault", "When this set to true player will see action bar messages by default",
 	    "When false, players will see chat messages instead.");
 	ActionBarsMessageByDefault = c.get("ActionBars.Messages.EnabledByDefault", true);
+	c.addComment("ActionBars.Messages.SilentMode", "If true, should we mute the payment messages from appearing in chat if actionbar is disabled?");
+	aBarSilentMode = c.get("ActionBars.Messages.SilentMode", false);
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
 	    c.addComment("BossBar.Enabled", "Enables BossBar feature", "Works only from 1.9 mc version");
@@ -964,9 +966,6 @@ public class GeneralConfigManager {
 
 	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "GREEN_STAINED_GLASS_PANE").toUpperCase());
 	guiFiller = (tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE : tmat).newItemStack();
-
-//	c.addComment("Schedule.Boost.Enable", "Do you want to enable scheduler for global boost?");
-//	useGlobalBoostScheduler = c.get("Schedule.Boost.Enable", false);
 
 	c.save();
     }

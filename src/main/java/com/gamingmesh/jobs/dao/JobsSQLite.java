@@ -135,15 +135,13 @@ public class JobsSQLite extends JobsDAO {
     @Override
     public boolean truncate(String table) {
 	Statement statement = null;
-	String query = null;
 	try {
 	    if (!isTable(table)) {
 		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
 	    statement = getConnection().createStatement();
-	    query = "DELETE FROM `" + table + "`;";
-	    statement.executeQuery(query);
+	    statement.executeQuery("DELETE FROM `" + table + "`;");
 	    return true;
 	} catch (SQLException e) {
 	    if (!(e.getMessage().toLowerCase().contains("locking") || e.getMessage().toLowerCase().contains("locked")) &&
@@ -158,15 +156,13 @@ public class JobsSQLite extends JobsDAO {
     @Override
     public boolean drop(String table) {
 	Statement statement = null;
-	String query = null;
 	try {
 	    if (!isTable(table)) {
 		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
 	    statement = getConnection().createStatement();
-	    query = "DROP TABLE IF EXISTS `" + table + "`;";
-	    statement.executeQuery(query);
+	    statement.executeQuery("DROP TABLE IF EXISTS `" + table + "`;");
 	    return true;
 	} catch (SQLException e) {
 	    if (!(e.getMessage().toLowerCase().contains("locking") || e.getMessage().toLowerCase().contains("locked")) &&

@@ -64,16 +64,6 @@ public class BufferedEconomy {
 	pay(new BufferedPayment(player.getPlayer(), payments));
     }
 
-//    /**
-//     * Add payment to player's payment buffer
-//     * @param player - player to be paid
-//     * @param amount - amount to be paid
-//     */
-//    @Deprecated
-//    public void pay(JobsPlayer player, double amount, double points, double exp) {
-//	pay(new BufferedPayment(player.getPlayer(), amount, points, exp));
-//    }
-
     /**
      * Add payment to player's payment buffer
      * @param payment - payment to be paid
@@ -249,7 +239,8 @@ public class BufferedEconomy {
      * @param payment {@link BufferedPayment}
      */
     public void showPayment(BufferedPayment payment) {
-	if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline() || !payment.containsPayment())
+	if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline() || !payment.containsPayment()
+	    || Jobs.getGCManager().aBarSilentMode)
 	    return;
 
 	UUID playerUUID = payment.getOfflinePlayer().getUniqueId();
