@@ -475,6 +475,8 @@ public class Placeholder {
 		    return "";
 
 		JobProgression j = getProgFromValue(user, vals.get(0));
+		Job job = getJobFromValue(vals.get(0));
+
 		switch (placeHolder) {
 		case limit_$1:
 		    CurrencyType t = CurrencyType.getByName(vals.get(0));
@@ -504,11 +506,7 @@ public class Placeholder {
 				CurrencyType.getByName(vals.get(1))));
 		case user_jtoplvl_$1_$2:
 		    vals = placeHolder.getComplexValues(value);
-		    if (vals.size() < 2)
-			return "";
-
-		    Job job = getJobFromValue(vals.get(0));
-		    if (job == null)
+		    if (vals.size() < 2 || job == null)
 			return "";
 
 			int amount = 0;
@@ -534,8 +532,7 @@ public class Placeholder {
 		    if (vals.isEmpty())
 			return "";
 
-		    Job jobs = getJobFromValue(vals.get(0));
-		    return jobs == null ? "no" : convert(user.isInJob(jobs));
+		    return job == null ? "no" : convert(user.isInJob(job));
 		case user_job_$1:
 		    return j == null ? "" : j.getJob().getName();
 		case user_title_$1:
@@ -544,19 +541,18 @@ public class Placeholder {
 		    Title title = Jobs.gettitleManager().getTitle(j.getLevel(), j.getJob().getName());
 		    return title == null ? "" : title.getChatColor() + title.getName();
 		case user_archived_jobs_level_$1:
-		    if (j == null) {
+		    if (job == null) {
 			return "";
 		    }
 
-		    JobProgression archivedJobProg = user.getArchivedJobProgression(j.getJob());
+		    JobProgression archivedJobProg = user.getArchivedJobProgression(job);
 		    return archivedJobProg == null ? "" : Integer.toString(archivedJobProg.getLevel());
 		case user_archived_jobs_exp_$1:
-		    if (j == null) {
+		    if (job == null)
 			return "";
-		    }
 
-		    JobProgression archivedJobProgression = user.getArchivedJobProgression(j.getJob());
-		    return archivedJobProgression == null ? "" : Double.toString(archivedJobProgression.getExperience());
+		    JobProgression archivedJobProgression = user.getArchivedJobProgression(job);
+		    return archivedJobProgression == null ? "0" : Double.toString(archivedJobProgression.getExperience());
 		default:
 		    break;
 		}
