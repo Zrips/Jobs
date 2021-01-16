@@ -72,8 +72,8 @@ public class Placeholder {
 	user_jmaxlvl_$1("jname/number"),
 	user_job_$1("jname/number"),
 	user_title_$1("jname/number"),
-	user_archived_jobs_level("jname/number"),
-	user_archived_jobs_exp("jname/number"),
+	user_archived_jobs_level_$1("jname/number"),
+	user_archived_jobs_exp_$1("jname/number"),
 
 	maxjobs,
 
@@ -543,14 +543,14 @@ public class Placeholder {
 			return "";
 		    Title title = Jobs.gettitleManager().getTitle(j.getLevel(), j.getJob().getName());
 		    return title == null ? "" : title.getChatColor() + title.getName();
-		case user_archived_jobs_level:
+		case user_archived_jobs_level_$1:
 		    if (j == null) {
 			return "";
 		    }
 
 		    JobProgression archivedJobProg = user.getArchivedJobProgression(j.getJob());
 		    return archivedJobProg == null ? "" : Integer.toString(archivedJobProg.getLevel());
-		case user_archived_jobs_exp:
+		case user_archived_jobs_exp_$1:
 		    if (j == null) {
 			return "";
 		    }
