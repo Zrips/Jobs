@@ -881,8 +881,8 @@ public class PlayerManager {
 	if (player == null || prog == null)
 	    return data;
 
-	ItemStack iih;
-	List<JobItems> jitems = new ArrayList<>();
+    ItemStack iih;
+    List<JobItems> jitems = new ArrayList<>();
 
     // Check mainhand slot
     if (Jobs.getGCManager().boostedItemsInMainHand) {
@@ -903,22 +903,22 @@ public class PlayerManager {
     }
 
     // Check armor slots
-	if (Jobs.getGCManager().boostedArmorItems) {
-		for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
-			if (oneArmor != null && oneArmor.getType() != org.bukkit.Material.AIR) {
-			    jitems.add(getJobsItemByNbt(oneArmor));
-			}
-		}
-	}
+    if (Jobs.getGCManager().boostedArmorItems) {
+        for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
+            if (oneArmor != null && oneArmor.getType() != org.bukkit.Material.AIR) {
+                jitems.add(getJobsItemByNbt(oneArmor));
+            }
+        }
+    }
 
-	for (JobItems jitem : jitems) {
+    for (JobItems jitem : jitems) {
         if (jitem != null && jitem.getJobs().contains(prog)) {
             data.add(jitem.getBoost(getJobsPlayer(player).getJobProgression(prog)));
         }
     }
 
-	return data;
-    }
+    return data;
+}
 
     public boolean containsItemBoostByNBT(ItemStack item) {
 	return item != null && Jobs.getReflections().hasNbtString(item, JobsItemBoost);
