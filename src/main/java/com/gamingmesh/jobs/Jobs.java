@@ -494,24 +494,6 @@ public class Jobs extends JavaPlugin {
     }
 
     /**
-     * Executes clean shutdown
-     */
-    public static void shutdown() {
-	if (saveTask != null)
-	    saveTask.shutdown();
-
-	if (paymentThread != null)
-	    paymentThread.shutdown();
-
-	getPlayerManager().removePlayerAdditions();
-	getPlayerManager().saveAll();
-
-	if (dao != null) {
-	    dao.closeConnections();
-	}
-    }
-
-    /**
      * Executes close connections
      */
     public static void convertDatabase() {
@@ -733,8 +715,11 @@ public class Jobs extends JavaPlugin {
 	// unregister all registered listeners by this plugin and register again
 	if (!startup) {
 	    org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
+
 	    HandlerList.unregisterAll(instance);
+
 	    com.gamingmesh.jobs.CMIGUI.GUIManager.registerListener();
+
 	    pm.registerEvents(new JobsListener(instance), instance);
 	    pm.registerEvents(new JobsPaymentListener(instance), instance);
 	    if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
@@ -754,12 +739,10 @@ public class Jobs extends JavaPlugin {
 
 	if (saveTask != null) {
 	    saveTask.shutdown();
-	    saveTask = null;
 	}
 
 	if (paymentThread != null) {
 	    paymentThread.shutdown();
-	    paymentThread = null;
 	}
 
 	smanager = new SelectionManager();
@@ -817,25 +800,40 @@ public class Jobs extends JavaPlugin {
 
 	HandlerList.unregisterAll(instance);
 
-	dao.saveExplore();
-	getBpManager().saveCache();
+	if (dao != null) {
+	    dao.saveExplore();
+	}
+
+	if (bpManager != null) {
+	    bpManager.saveCache();
+	}
 
 	blockOwnerShips.forEach(BlockOwnerShip::save);
 	ToggleBarHandling.save();
 
-	shutdown();
+	if (saveTask != null)
+	    saveTask.shutdown();
+
+	if (paymentThread != null)
+	    paymentThread.shutdown();
+
+	if (pManager != null) {
+	    pManager.removePlayerAdditions();
+	    pManager.saveAll();
+	}
+
+	if (dao != null) {
+	    dao.closeConnections();
+	}
+
 	instance = null;
 	consoleMsg("&e[Jobs] &2Plugin has been disabled successfully.");
-	setEnabled(false);
     }
 
     private static void checkDailyQuests(JobsPlayer jPlayer, Job job, ActionInfo info) {
 	if (!job.getQuests().isEmpty()) {
-	    List<QuestProgression> q = jPlayer.getQuestProgressions(job, info.getType());
-	    for (QuestProgression one : q) {
-		if (one != null) {
-		    one.processQuest(jPlayer, info);
-		}
+	    for (QuestProgression one : jPlayer.getQuestProgressions(job, info.getType())) {
+		one.processQuest(jPlayer, info);
 	    }
 	}
     }
@@ -1274,7 +1272,6 @@ public class Jobs extends JavaPlugin {
     }
 
     public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
-	// JobsPayment event
 	JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, payment.get(CurrencyType.EXP));
 	Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
 	// If event is canceled, don't do anything

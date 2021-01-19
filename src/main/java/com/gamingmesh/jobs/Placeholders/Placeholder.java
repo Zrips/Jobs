@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -325,6 +326,8 @@ public class Placeholder {
 	return message;
     }
 
+    private final AtomicInteger jobLevel = new AtomicInteger();
+
     private String translateOwnPlaceHolder(Player player, String message) {
 	if (message == null)
 	    return null;
@@ -509,16 +512,14 @@ public class Placeholder {
 		    if (vals.size() < 2 || job == null)
 			return "";
 
-			int amount = 0;
 			try {
-			    amount = Integer.parseInt(vals.get(1));
+			    jobLevel.set(Integer.parseInt(vals.get(1)));
 			} catch (NumberFormatException e) {
 			    return "";
 			}
 
-			final int top = amount;
 			return CompletableFuture.supplyAsync(() -> {
-			    for (TopList l : Jobs.getJobsDAO().getGlobalTopList(top)) {
+			    for (TopList l : Jobs.getJobsDAO().getGlobalTopList(jobLevel.get())) {
 				if (l.getPlayerInfo().getName().equals(user.getName())) {
 				    JobProgression prog = l.getPlayerInfo().getJobsPlayer().getJobProgression(job);
 				    return prog == null ? "" : Integer.toString(prog.getLevel());

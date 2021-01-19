@@ -152,7 +152,6 @@ public class PermissionManager {
 		    amount = temp;
 	    } catch (NumberFormatException ignored) {
 		ignored.printStackTrace();
-		// Should be ignored
 	    }
 	}
 

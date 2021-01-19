@@ -26,7 +26,6 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -109,7 +108,7 @@ public class JobsListener implements Listener {
 	if (msg == null)
 	    return;
 
-	Bukkit.getServer().getScheduler().runTask(plugin, () -> player.performCommand(msg + event.getMessage()));
+	plugin.getServer().getScheduler().runTask(plugin, () -> player.performCommand(msg + event.getMessage()));
 	event.setCancelled(true);
     }
 
@@ -158,7 +157,7 @@ public class JobsListener implements Listener {
 
 	if (Jobs.getSelectionManager().hasPlacedBoth(player)) {
 	    JobsAreaSelectionEvent jobsAreaSelectionEvent = new JobsAreaSelectionEvent(player, Jobs.getSelectionManager().getSelectionCuboid(player));
-	    Bukkit.getServer().getPluginManager().callEvent(jobsAreaSelectionEvent);
+	    plugin.getServer().getPluginManager().callEvent(jobsAreaSelectionEvent);
 	}
     }
 
@@ -167,7 +166,7 @@ public class JobsListener implements Listener {
 	if (!Jobs.getGCManager().MultiServerCompatability())
 	    Jobs.getPlayerManager().playerJoin(event.getPlayer());
 	else {
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
+	    plugin.getServer().getScheduler().runTaskLater(plugin, () ->
 		    Jobs.getPlayerManager().playerJoin(event.getPlayer()), 10L);
 	}
     }
@@ -190,14 +189,15 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-	Jobs.getPlayerManager().playerQuit(event.getPlayer());
+	java.util.concurrent.CompletableFuture.supplyAsync(() -> {
+	    Jobs.getPlayerManager().playerQuit(event.getPlayer());
+	    return true;
+	});
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
-	if (plugin.isEnabled()) {
-	    Jobs.getPermissionHandler().recalculatePermissions(Jobs.getPlayerManager().getJobsPlayer(event.getPlayer()));
-	}
+	Jobs.getPermissionHandler().recalculatePermissions(Jobs.getPlayerManager().getJobsPlayer(event.getPlayer()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -326,7 +326,7 @@ public class JobsListener implements Listener {
 
 	event.setCancelled(true);
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> signUtil.SignUpdate(job, type), 1L);
+	plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> signUtil.SignUpdate(job, type), 1L);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -436,7 +436,7 @@ public class JobsListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
+	plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -525,7 +525,7 @@ public class JobsListener implements Listener {
 	    return;
 
 	JobsChunkChangeEvent jobsChunkChangeEvent = new JobsChunkChangeEvent(event.getPlayer(), from, to);
-	Bukkit.getServer().getPluginManager().callEvent(jobsChunkChangeEvent);
+	plugin.getServer().getPluginManager().callEvent(jobsChunkChangeEvent);
     }
 
     @EventHandler
@@ -579,7 +579,7 @@ public class JobsListener implements Listener {
 		    (equipping ? inv.getBoots() == null : inv.getBoots() != null)) {
 		JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(player, EquipMethod.SHIFT_CLICK, newArmorType, equipping ? null : event
 		    .getCurrentItem(), equipping ? event.getCurrentItem() : null);
-		Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+		plugin.getServer().getPluginManager().callEvent(armorEquipEvent);
 		if (armorEquipEvent.isCancelled()) {
 		    event.setCancelled(true);
 		}
@@ -606,7 +606,7 @@ public class JobsListener implements Listener {
 		if (event.getAction() == InventoryAction.HOTBAR_SWAP || numberkey)
 		    method = EquipMethod.HOTBAR_SWAP;
 		JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent((Player) event.getWhoClicked(), method, newArmorType, oldArmorPiece, newArmorPiece);
-		Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+		plugin.getServer().getPluginManager().callEvent(armorEquipEvent);
 		if (armorEquipEvent.isCancelled())
 		    event.setCancelled(true);
 	    }
@@ -638,7 +638,7 @@ public class JobsListener implements Listener {
 		inv.getBoots() == null) {
 	    JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(player, EquipMethod.HOTBAR, ArmorTypes.matchType(event.getItem()), null, event
 		.getItem());
-	    Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+	    plugin.getServer().getPluginManager().callEvent(armorEquipEvent);
 	    if (armorEquipEvent.isCancelled()) {
 		event.setCancelled(true);
 		player.updateInventory();
@@ -696,7 +696,7 @@ public class JobsListener implements Listener {
 			    ploc.getZ() <= loc.getZ()) {
 
 			JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(p, EquipMethod.DISPENSER, type, null, item);
-			Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+			plugin.getServer().getPluginManager().callEvent(armorEquipEvent);
 			if (armorEquipEvent.isCancelled()) {
 			    event.setCancelled(true);
 			    return;
