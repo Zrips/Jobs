@@ -881,34 +881,44 @@ public class PlayerManager {
 	if (player == null || prog == null)
 	    return data;
 
-	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-	JobItems jitem = getJobsItemByNbt(iih);
-	if (jitem != null && jitem.getJobs().contains(prog))
-	    data.add(jitem.getBoost(getJobsPlayer(player).getJobProgression(prog)));
+    ItemStack iih;
+    List<JobItems> jitems = new ArrayList<>();
 
-	// Lets check offhand
-	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
-	    iih = CMIReflections.getItemInOffHand(player);
-	    if (iih != null) {
-		jitem = getJobsItemByNbt(iih);
-		if (jitem != null && jitem.getJobs().contains(prog))
-		    data.add(jitem.getBoost(getJobsPlayer(player).getJobProgression(prog)));
-	    }
-	}
+    // Check mainhand slot
+    if (Jobs.getGCManager().boostedItemsInMainHand) {
+        iih = Jobs.getNms().getItemInMainHand(player);
 
-	for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
-	    if (oneArmor == null || oneArmor.getType() == org.bukkit.Material.AIR)
-		continue;
-
-	    JobItems armorboost = getJobsItemByNbt(oneArmor);
-	    if (armorboost == null || !armorboost.getJobs().contains(prog))
-		continue;
-
-	    data.add(armorboost.getBoost(getJobsPlayer(player).getJobProgression(prog)));
-	}
-
-	return data;
+        if (iih != null) {
+            jitems.add(getJobsItemByNbt(iih));
+        }
     }
+
+    // Check offhand slot
+    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
+        iih = CMIReflections.getItemInOffHand(player);
+
+        if (iih != null) {
+            jitems.add(getJobsItemByNbt(iih));
+        }
+    }
+
+    // Check armor slots
+    if (Jobs.getGCManager().boostedArmorItems) {
+        for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
+            if (oneArmor != null && oneArmor.getType() != org.bukkit.Material.AIR) {
+                jitems.add(getJobsItemByNbt(oneArmor));
+            }
+        }
+    }
+
+    for (JobItems jitem : jitems) {
+        if (jitem != null && jitem.getJobs().contains(prog)) {
+            data.add(jitem.getBoost(getJobsPlayer(player).getJobProgression(prog)));
+        }
+    }
+
+    return data;
+}
 
     public boolean containsItemBoostByNBT(ItemStack item) {
 	return item != null && Jobs.getReflections().hasNbtString(item, JobsItemBoost);
