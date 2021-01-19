@@ -91,7 +91,7 @@ public class GeneralConfigManager {
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
 	BrowseUseNewLook, payExploringWhenGliding = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
-	boostedItemsInOffHand = false, preventCropResizePayment, payItemDurabilityLoss,
+	boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, preventCropResizePayment, payItemDurabilityLoss,
 	applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useBreederFinder,
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
@@ -455,6 +455,12 @@ public class GeneralConfigManager {
 	    c.addComment("enable-boosted-items-in-offhand", "Do the jobs boost ignore the boosted items usage in off hand?");
 	    boostedItemsInOffHand = c.get("enable-boosted-items-in-offhand", true);
 	}
+
+	c.addComment("enable-boosted-items-in-mainhand", "Do the jobs boost ignore the boosted items usage in main hand?");
+	boostedItemsInMainHand = c.get("enable-boosted-items-in-mainhand", true);
+
+	c.addComment("enable-boosted-armor-items", "Do the jobs boost ignore the boosted items usage in armor slots?");
+	boostedArmorItems = c.get("enable-boosted-armor-items", true);
 
 	c.addComment("prevent-crop-resize-payment", "Do you want to prevent crop resizing payment when placing more cactus?",
 	    "This option is only related to: sugar_cane, cactus, kelp, bamboo");
