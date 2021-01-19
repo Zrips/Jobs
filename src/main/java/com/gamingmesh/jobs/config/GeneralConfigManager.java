@@ -451,16 +451,16 @@ public class GeneralConfigManager {
 	c.addComment("add-xp-player", "Adds the Jobs xp received to the player's Minecraft XP bar");
 	addXpPlayer = c.get("add-xp-player", false);
 
-    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
-        c.addComment("enable-boosted-items-in-offhand", "Do the jobs boost ignore the boosted items usage in off hand?");
-        boostedItemsInOffHand = c.get("enable-boosted-items-in-offhand", true);
-    }
+	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
+		c.addComment("enable-boosted-items-in-offhand", "Do the jobs boost ignore the boosted items usage in off hand?");
+		boostedItemsInOffHand = c.get("enable-boosted-items-in-offhand", true);
+	}
 
-    c.addComment("enable-boosted-items-in-mainhand", "Do the jobs boost ignore the boosted items usage in main hand?");
-    boostedItemsInMainHand = c.get("enable-boosted-items-in-mainhand", true);
+	c.addComment("enable-boosted-items-in-mainhand", "Do the jobs boost ignore the boosted items usage in main hand?");
+	boostedItemsInMainHand = c.get("enable-boosted-items-in-mainhand", true);
 
-    c.addComment("enable-boosted-armor-items", "Do the jobs boost ignore the boosted items usage in armor slots?");
-    boostedArmorItems = c.get("enable-boosted-armor-items", true);
+	c.addComment("enable-boosted-armor-items", "Do the jobs boost ignore the boosted items usage in armor slots?");
+	boostedArmorItems = c.get("enable-boosted-armor-items", true);
 
 	c.addComment("prevent-crop-resize-payment", "Do you want to prevent crop resizing payment when placing more cactus?",
 	    "This option is only related to: sugar_cane, cactus, kelp, bamboo");
