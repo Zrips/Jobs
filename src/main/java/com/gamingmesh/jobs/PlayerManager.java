@@ -905,10 +905,9 @@ public class PlayerManager {
     // Check armor slots
 	if (Jobs.getGCManager().boostedArmorItems) {
 		for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
-			if (oneArmor == null || oneArmor.getType() == org.bukkit.Material.AIR)
-				continue;
-
-			jitems.add(getJobsItemByNbt(oneArmor));
+			if (oneArmor != null && oneArmor.getType() != org.bukkit.Material.AIR) {
+			    jitems.add(getJobsItemByNbt(oneArmor));
+			}
 		}
 	}
 
