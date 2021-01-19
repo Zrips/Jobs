@@ -18,33 +18,54 @@
 
 package com.gamingmesh.jobs;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Pattern;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Sound;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
+
+import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.CMIReflections;
 import com.gamingmesh.jobs.CMILib.TitleMessageManager;
-import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
-import com.gamingmesh.jobs.container.*;
+import com.gamingmesh.jobs.container.ArchivedJobs;
+import com.gamingmesh.jobs.container.Boost;
+import com.gamingmesh.jobs.container.BoostMultiplier;
+import com.gamingmesh.jobs.container.CurrencyType;
+import com.gamingmesh.jobs.container.ItemBonusCache;
+import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobCommands;
+import com.gamingmesh.jobs.container.JobItems;
+import com.gamingmesh.jobs.container.JobProgression;
+import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.Log;
+import com.gamingmesh.jobs.container.PlayerInfo;
+import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Util;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.FireworkEffect.Type;
-import org.bukkit.Sound;
-import org.bukkit.entity.*;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Pattern;
 
 public class PlayerManager {
 
