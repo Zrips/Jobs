@@ -50,6 +50,9 @@ public class JobItems {
 	item = mat.newItemStack();
 
 	ItemMeta meta = item.getItemMeta();
+	if (meta == null) {
+	    return;
+	}
 
 	if (name != null)
 	    meta.setDisplayName(CMIChatColor.translate(name));
@@ -88,6 +91,10 @@ public class JobItems {
 
 	ItemStack item = this.item.clone();
 	ItemMeta meta = item.getItemMeta();
+	if (meta == null) {
+	    return item;
+	}
+
 	if (meta.hasDisplayName())
 	    meta.setDisplayName(CMIChatColor.translate(meta.getDisplayName().replace("[player]", player.getName())));
 

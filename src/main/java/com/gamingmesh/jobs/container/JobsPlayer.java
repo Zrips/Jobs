@@ -189,8 +189,7 @@ public class JobsPlayer {
 
     public double percentOverLimit(CurrencyType type) {
 	Integer value = limits.get(type);
-	PaymentData data = getPaymentLimit();
-	return data.percentOverLimit(type, value == null ? 0 : value);
+	return getPaymentLimit().percentOverLimit(type, value == null ? 0 : value);
     }
 
     public void loadLogFromDao() {

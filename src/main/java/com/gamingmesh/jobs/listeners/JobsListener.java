@@ -241,8 +241,8 @@ public class JobsListener implements Listener {
 
 	Player player = event.getPlayer();
 	Sign sign = (Sign) block.getState();
-	String FirstLine = sign.getLine(0);
-	if (FirstLine.contains(Jobs.getLanguage().getMessage("signs.topline")) && !player.hasPermission("jobs.command.signs")) {
+	String firstLine = sign.getLine(0);
+	if (firstLine.contains(Jobs.getLanguage().getMessage("signs.topline")) && !player.hasPermission("jobs.command.signs")) {
 	    event.setCancelled(true);
 	    player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
 	    return;
@@ -276,8 +276,7 @@ public class JobsListener implements Listener {
 	if (!CMIChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[Jobs]"))
 	    return;
 
-	final String signtype = CMIChatColor.stripColor(event.getLine(1));
-	final SignTopType type = SignTopType.getType(signtype);
+	final SignTopType type = SignTopType.getType(CMIChatColor.stripColor(event.getLine(1)));
 	if (type == null)
 	    return;
 
@@ -337,7 +336,7 @@ public class JobsListener implements Listener {
 	if (CMIChatColor.stripColor(event.getLine(0)).equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !CMIChatColor.stripColor(event
 	    .getLine(1))
 	    .equalsIgnoreCase("toplist"))
-	    event.setLine(0, Convert(Jobs.getLanguage().getMessage("signs.topline")));
+	    event.setLine(0, convert(Jobs.getLanguage().getMessage("signs.topline")));
 	else
 	    return;
 
@@ -350,7 +349,7 @@ public class JobsListener implements Listener {
 	String command = CMIChatColor.stripColor(event.getLine(1)).toLowerCase();
 	for (String key : Jobs.getGCManager().keys) {
 	    if (command.equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
-		event.setLine(1, Convert(Jobs.getLanguage().getMessage("signs.secondline." + key)));
+		event.setLine(1, convert(Jobs.getLanguage().getMessage("signs.secondline." + key)));
 		break;
 	    }
 	}
@@ -360,12 +359,11 @@ public class JobsListener implements Listener {
 	    return;
 
 	String color = Jobs.getGCManager().SignsColorizeJobName ? job.getChatColor().toString() : "";
-	event.setLine(2, Convert(color + job.getName()));
+	event.setLine(2, convert(color + job.getName()));
     }
 
-    private static String Convert(String line) {
-	Pattern ReplacePatern = Pattern.compile("&([0-9a-fk-or])");
-	return ReplacePatern.matcher(CMIChatColor.translate(line)).replaceAll("\u00a7$1");
+    private String convert(String line) {
+	return Pattern.compile("&([0-9a-fk-or])").matcher(CMIChatColor.translate(line)).replaceAll("\u00a7$1");
     }
 
     // Adding to chat prefix job name
@@ -379,9 +377,7 @@ public class JobsListener implements Listener {
 	if (honorific.equals(" "))
 	    honorific = "";
 
-	String format = event.getFormat();
-	format = format.replace("%1$s", honorific + "%1$s");
-	event.setFormat(format);
+	event.setFormat(event.getFormat().replace("%1$s", honorific + "%1$s"));
     }
 
     // Changing chat prefix variable to job name
@@ -396,11 +392,9 @@ public class JobsListener implements Listener {
 	    honorific = "";
 
 	String format = event.getFormat();
-	if (!format.contains("{jobs}"))
-	    return;
-
-	format = format.replace("{jobs}", honorific);
-	event.setFormat(format);
+	if (format.contains("{jobs}")) {
+	    event.setFormat(format.replace("{jobs}", honorific));
+	}
     }
 
     // Changing chat prefix variable to job name
@@ -415,11 +409,9 @@ public class JobsListener implements Listener {
 	    honorific = "";
 
 	String format = event.getFormat();
-	if (!format.contains("{jobs}"))
-	    return;
-
-	format = format.replace("{jobs}", honorific);
-	event.setFormat(format);
+	if (format.contains("{jobs}")) {
+	    event.setFormat(format.replace("{jobs}", honorific));
+	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -432,11 +424,9 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCropGrown(final BlockGrowEvent event) {
-	//disabling plugin in world
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
-	    return;
-
-	plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
+	if (Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld())) {
+	    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
+	}
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -524,8 +514,7 @@ public class JobsListener implements Listener {
 	if (from == to)
 	    return;
 
-	JobsChunkChangeEvent jobsChunkChangeEvent = new JobsChunkChangeEvent(event.getPlayer(), from, to);
-	plugin.getServer().getPluginManager().callEvent(jobsChunkChangeEvent);
+	plugin.getServer().getPluginManager().callEvent(new JobsChunkChangeEvent(event.getPlayer(), from, to));
     }
 
     @EventHandler
@@ -724,7 +713,6 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void PlayerItemBreakEvent(InventoryClickEvent event) {
-	Player player = (Player) event.getWhoClicked();
-	Jobs.getPlayerManager().resetiItemBonusCache(player.getUniqueId());
+	Jobs.getPlayerManager().resetiItemBonusCache(((Player) event.getWhoClicked()).getUniqueId());
     }
 }

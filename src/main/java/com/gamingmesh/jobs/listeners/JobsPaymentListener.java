@@ -876,8 +876,7 @@ public class JobsPaymentListener implements Listener {
 	    break;
 	}
 
-	// Fix money dupping issue when clicking continuously in the result item, but if in the
-	// cursor have item, then dupping the money, #438
+	// Possible payment exploit when clicking continuously in the result item #438
 	if (event.isLeftClick() && event.getCursor().getType() != Material.AIR)
 	    return;
 
@@ -1519,9 +1518,7 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	// Item in hand
-	ItemStack item = Jobs.getNms().getItemInMainHand(player);
-	Jobs.action(jPlayer, new ItemActionInfo(item, ActionType.EAT));
+	Jobs.action(jPlayer, new ItemActionInfo(Jobs.getNms().getItemInMainHand(player), ActionType.EAT));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

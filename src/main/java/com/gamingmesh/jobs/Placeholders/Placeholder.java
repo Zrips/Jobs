@@ -45,6 +45,10 @@ public class Placeholder {
 	user_maxbstandcount,
 	user_furncount,
 	user_maxfurncount,
+	user_smokercount,
+	user_maxsmokercount,
+	user_blastcount,
+	user_maxblastcount,
 	user_doneq,
 	user_dailyquests_pending,
 	user_dailyquests_completed,
@@ -422,6 +426,16 @@ public class Placeholder {
 		return Integer.toString(user.getFurnaceCount());
 	    case user_maxfurncount:
 		return Integer.toString(user.getMaxOwnerShipAllowed(BlockTypes.FURNACE));
+	    case user_smokercount:
+		return !plugin.getBlockOwnerShip(BlockTypes.SMOKER).isPresent() ? "0"
+		    : Integer.toString(plugin.getBlockOwnerShip(BlockTypes.SMOKER).get().getTotal(uuid));
+	    case user_maxsmokercount:
+		return Integer.toString(user.getMaxOwnerShipAllowed(BlockTypes.SMOKER));
+	    case user_blastcount:
+		return !plugin.getBlockOwnerShip(BlockTypes.BLAST_FURNACE).isPresent() ? "0"
+			    : Integer.toString(plugin.getBlockOwnerShip(BlockTypes.BLAST_FURNACE).get().getTotal(uuid));
+	    case user_maxblastcount:
+		return Integer.toString(user.getMaxOwnerShipAllowed(BlockTypes.BLAST_FURNACE));
 	    case user_doneq:
 		return Integer.toString(user.getDoneQuests());
 	    case user_seen:
