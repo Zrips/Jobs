@@ -53,11 +53,18 @@ public class blockLoc {
 	if (!loc.contains(":"))
 	    return false;
 	String[] split = loc.split(":");
+	if (split.length == 0) {
+	    return false;
+	}
 
 	World w = Bukkit.getWorld(split[0]);
 	if (w == null)
 	    return false;
 	this.w = w;
+
+	if (split.length < 4) {
+	    return false;
+	}
 
 	try {
 	    x = Integer.parseInt(split[1]);

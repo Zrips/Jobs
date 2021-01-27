@@ -64,7 +64,7 @@ public class Boost {
 	    if (excludeExtra && (one == BoostOf.NearSpawner || one == BoostOf.PetPay))
 		continue;
 
-	    if (!map.get(one).isValid())
+	    if (!map.get(one).isValid(BT))
 		continue;
 
 	    r += map.get(one).get(BT);

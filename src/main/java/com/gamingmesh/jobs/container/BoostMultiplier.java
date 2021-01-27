@@ -42,6 +42,7 @@ public class BoostMultiplier {
     }
 
     public double get(CurrencyType type) {
+	isValid(type); // Call without check to make sure map cache is removed
 	return map.getOrDefault(type, 0D);
     }
 
@@ -49,22 +50,19 @@ public class BoostMultiplier {
 	return time;
     }
 
-    public void setTime(Long time) {
-	this.time = time;
-    }
-
-    public boolean isValid() {
-	if (time == 0L) {
-	    return true;
+    public boolean isValid(CurrencyType type) {
+	boolean valid = time > System.currentTimeMillis();
+	if (!valid) {
+	    map.remove(type);
+	    time = 0L;
 	}
 
-	return time > System.currentTimeMillis();
+	return time == 0L || valid;
     }
 
     public void add(BoostMultiplier armorboost) {
 	for (CurrencyType one : CurrencyType.values()) {
-	    double r = armorboost.get(one);
-	    map.put(one, get(one) + r);
+	    map.put(one, get(one) + armorboost.get(one));
 	}
     }
 }

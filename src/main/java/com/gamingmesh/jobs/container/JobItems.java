@@ -34,51 +34,59 @@ import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.CMIReflections;
 
 public class JobItems {
+
     private String node;
-    private String legacyKey = null;
+    private String legacyKey;
     private ItemStack item;
+
     private HashMap<Enchantment, Integer> enchants;
     private BoostMultiplier boostMultiplier = new BoostMultiplier();
+
     private List<Job> jobs = new ArrayList<>();
+
     private int fromLevel = 0;
     private int untilLevel = Integer.MAX_VALUE;
 
     public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs) {
-	mat = mat == null ? CMIMaterial.STONE : mat;
+	if (mat == null) {
+	    mat = CMIMaterial.STONE;
+	}
 
 	this.enchants = enchants;
-	item = mat.newItemStack();
+	this.node = node;
 
-	ItemMeta meta = item.getItemMeta();
-	if (meta == null) {
-	    return;
+	if (boostMultiplier != null) {
+	    this.boostMultiplier = boostMultiplier;
 	}
 
-	if (name != null)
-	    meta.setDisplayName(CMIChatColor.translate(name));
-	if (lore != null)
-	    meta.setLore(lore);
+	setJobs(jobs);
 
-	if (enchants != null) {
-	    if (mat == CMIMaterial.ENCHANTED_BOOK) {
-		EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
-		for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
-		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
-		}
-	    } else {
-		for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
-		    meta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
+	ItemMeta meta = (item = mat.newItemStack()).getItemMeta();
+	if (meta != null) {
+	    if (name != null)
+		meta.setDisplayName(CMIChatColor.translate(name));
+
+	    if (lore != null)
+		meta.setLore(lore);
+
+	    if (enchants != null) {
+		if (mat == CMIMaterial.ENCHANTED_BOOK) {
+		    EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
+		    for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
+			bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
+		    }
+		} else {
+		    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
+			meta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
+		    }
 		}
 	    }
+
+	    item.setItemMeta(meta);
 	}
 
-	item.setItemMeta(meta);
 	item.setAmount(amount);
 	item = CMIReflections.setNbt(item, "JobsItemBoost", node);
-
-	this.node = node;
-	this.boostMultiplier = boostMultiplier;
-	setJobs(jobs);
     }
 
     public String getNode() {

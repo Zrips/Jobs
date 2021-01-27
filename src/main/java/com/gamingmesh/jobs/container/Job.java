@@ -121,15 +121,13 @@ public class Job {
 	}
     }
 
-    public void addBoost(CurrencyType type, double Point) {
-	boost.add(type, Point);
+    public void addBoost(CurrencyType type, double point) {
+	boost.add(type, point);
     }
 
     public void addBoost(CurrencyType type, double point, int[] times) {
-	final int h = times[2],
-	    m = times[1],
-	    s = times[0];
-	if (times.length < 3 || (h == 0 && m == 0 && s == 0)) {
+	final int h = times[2], m = times[1], s = times[0];
+	if (h == 0 && m == 0 && s == 0) {
 	    addBoost(type, point);
 	    return;
 	}
@@ -144,8 +142,8 @@ public class Job {
 	boost.add(type, point, cal.getTimeInMillis());
     }
 
-    public void setBoost(BoostMultiplier BM) {
-	this.boost = BM;
+    public void setBoost(BoostMultiplier boost) {
+	this.boost = boost;
     }
 
     public BoostMultiplier getBoost() {
