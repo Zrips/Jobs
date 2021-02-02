@@ -241,9 +241,6 @@ public class PermissionHandler {
 	}
     }
 
-    /**
-     * Check World permissions
-     */
     public boolean hasWorldPermission(Player player) {
 	return hasWorldPermission(player, player.getWorld().getName());
     }

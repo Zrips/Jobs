@@ -116,14 +116,42 @@ public class PermissionManager {
 	return mine;
     }
 
+    /**
+     * Returns a maximum permission value for example "jobs.max.5".
+     * 
+     * @param jPlayer {@link JobsPlayer}
+     * @param perm the permission to search
+     * @see #getMaxPermission(JobsPlayer, String, boolean, boolean)
+     * @return the max value
+     */
     public Double getMaxPermission(JobsPlayer jPlayer, String perm) {
 	return getMaxPermission(jPlayer, perm, false, false);
     }
 
+    /**
+     * Returns a maximum permission value for example "jobs.max.5" with force condition.
+     * 
+     * @param jPlayer {@link JobsPlayer}
+     * @param perm the permission to search
+     * @param force to force cache player permissions which includes jobs
+     * @see #getMaxPermission(JobsPlayer, String, boolean, boolean)
+     * @return the max value
+     */
     public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
 	return getMaxPermission(jPlayer, perm, force, false);
     }
 
+    /**
+     * Returns a maximum permission value for example "jobs.max.5".
+     * If the force condition is true it will caches all the jobs
+     * permissions into memory and tries to find a max permission value.
+     * 
+     * @param jPlayer {@link JobsPlayer}
+     * @param perm the permission to search
+     * @param force whenever to force permission cache for specific player
+     * @param cumulative if true it sums the maximum values of fount permissions
+     * @return the max value
+     */
     public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative) {
 	if (jPlayer == null || jPlayer.getPlayer() == null)
 	    return 0D;
@@ -150,8 +178,8 @@ public class PermissionManager {
 		    amount += temp;
 		else if (temp > amount)
 		    amount = temp;
-	    } catch (NumberFormatException ignored) {
-		ignored.printStackTrace();
+	    } catch (NumberFormatException ex) {
+		Jobs.getPluginLogger().log(java.util.logging.Level.WARNING, ex.getLocalizedMessage());
 	    }
 	}
 

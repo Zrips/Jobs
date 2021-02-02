@@ -553,7 +553,7 @@ public class Placeholder {
 		case user_title_$1:
 		    if (j == null)
 			return "";
-		    Title title = Jobs.gettitleManager().getTitle(j.getLevel(), j.getJob().getName());
+		    Title title = Jobs.getTitleManager().getTitle(j.getLevel(), j.getJob().getName());
 		    return title == null ? "" : title.getChatColor() + title.getName();
 		case user_archived_jobs_level_$1:
 		    if (job == null) {

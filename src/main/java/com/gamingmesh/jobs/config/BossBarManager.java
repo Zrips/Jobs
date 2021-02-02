@@ -33,7 +33,7 @@ public class BossBarManager {
 		ShowJobProgression(player, oneJob, oneJob.getLastExperience());
 	    }
 	}
-	player.clearUpdateBossBarFor();
+	player.getUpdateBossBarFor().clear();
     }
 
     public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {

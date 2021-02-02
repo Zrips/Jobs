@@ -22,18 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JobCommands {
+
     private String node;
-    private final List<String> commands = new ArrayList<>();
     private int levelFrom;
     private int levelUntil;
 
-    @Deprecated
-    public JobCommands(String node, String command, int levelFrom, int levelUntil) {
-	this.node = node;
-	this.commands.add(command);
-	this.levelFrom = levelFrom;
-	this.levelUntil = levelUntil;
-    }
+    private final List<String> commands = new ArrayList<>();
 
     public JobCommands(String node, List<String> commands, int levelFrom, int levelUntil) {
 	this.node = node;
@@ -44,11 +38,6 @@ public class JobCommands {
 
     public String getNode() {
 	return node;
-    }
-
-    @Deprecated
-    public String getCommand() {
-	return commands.isEmpty() ? "" : commands.get(0);
     }
 
     public List<String> getCommands() {

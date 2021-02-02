@@ -380,7 +380,7 @@ public class JobsCommands implements CommandExecutor {
 	String path = "command.stats.output." + (isMaxLevelReached ? "max-level"
 			: "message");
 
-	Title title = Jobs.gettitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
+	Title title = Jobs.getTitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
 	String message = Jobs.getLanguage().getMessage(path,
 	    "%joblevel%", jobProg.getLevel(),
 	    "%jobname%", jobProg.getJob().getNameWithColor(),

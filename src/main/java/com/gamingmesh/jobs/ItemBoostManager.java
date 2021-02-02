@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -22,15 +23,15 @@ import com.gamingmesh.jobs.container.JobItems;
 
 public class ItemBoostManager {
 
-    private static HashMap<String, JobItems> items = new HashMap<>();
-    private static HashMap<String, JobItems> legacy = new HashMap<>();
+    private static final Map<String, JobItems> ITEMS = new HashMap<>();
+    private static final Map<String, JobItems> LEGACY = new HashMap<>();
 
 	@SuppressWarnings("deprecation")
 	public static void load() {
 	ConfigReader cfg = new ConfigReader("boostedItems.yml");
 
-	items.clear();
-	legacy.clear();
+	ITEMS.clear();
+	LEGACY.clear();
 
 	// Converting from existing records in Jobs from old format which was located in jobConfig.yml file 
 	boolean save = false;
@@ -151,10 +152,8 @@ public class ItemBoostManager {
 		    b.add(oneC, cfg.get(one + "." + oneC.toString().toLowerCase() + "Boost", 1D) - 1);
 	    }
 
-	    List<String> jobsS = cfg.get(one + ".jobs", Arrays.asList(""));
-
 	    List<Job> jobs = new ArrayList<>();
-	    for (String oneJ : jobsS) {
+	    for (String oneJ : cfg.get(one + ".jobs", Arrays.asList(""))) {
 		Job job = Jobs.getJob(oneJ);
 		if (job == null && !oneJ.equalsIgnoreCase("all")) {
 		    Jobs.getPluginLogger().warning("Cant determine job by " + oneJ + " name for " + one + " boosted item!");
@@ -179,58 +178,76 @@ public class ItemBoostManager {
 		item.setUntilLevel(cfg.get(one + ".levelUntil", 1000));
 
 	    for (Job oneJ : jobs) {
-		if (oneJ == null)
-		    continue;
 		oneJ.getItemBonus().put(one.toLowerCase(), item);
 	    }
 
 	    // Lets add into legacy map
 	    if (one.contains("_")) {
 		item.setLegacyKey((one.split("_")[1]).toLowerCase());
-		legacy.put(item.getLegacyKey(), item);
+		LEGACY.put(item.getLegacyKey(), item);
 	    }
-	    items.put(one.toLowerCase(), item);
+	    ITEMS.put(one.toLowerCase(), item);
 
 	}
 
 	cfg.save();
     }
 
+    /**
+     * Returns a copy list of {@link JobItems} from the specific job.
+     * 
+     * @param job {@link Job}
+     * @return List of {@link JobItems}
+     */
     public static List<JobItems> getItemsByJob(Job job) {
 	List<JobItems> ls = new ArrayList<>();
-	for (JobItems one : items.values()) {
+	for (JobItems one : ITEMS.values()) {
 	    if (one.getJobs().contains(job))
 		ls.add(one);
 	}
+
 	return ls;
     }
 
-    public static HashMap<String, JobItems> getItemsMapByJob(Job job) {
-	HashMap<String, JobItems> i = new HashMap<>();
-	for (Entry<String, JobItems> one : items.entrySet()) {
+    /** Returns a map of items from the specific job.
+     * 
+     * @param job {@link Job}
+     * @return map of items
+     */
+    public static Map<String, JobItems> getItemsMapByJob(Job job) {
+	Map<String, JobItems> i = new HashMap<>();
+	for (Entry<String, JobItems> one : ITEMS.entrySet()) {
 	    if (one.getValue().getJobs().contains(job))
 		i.put(one.getKey(), one.getValue());
 	}
+
 	return i;
     }
 
+    /**
+     * Returns {@link JobItems} from specific key.
+     * 
+     * @param key items or legacy key name
+     * @return {@link JobItems}
+     */
     public static JobItems getItemByKey(String key) {
-	JobItems item = items.get(key.toLowerCase());
-	if (item != null) {
-	    return item;
-	}
-	return legacy.get(key.toLowerCase());
+	key = key.toLowerCase();
+
+	JobItems item = ITEMS.get(key);
+	return item != null ? item : LEGACY.get(key);
     }
 
-    public static HashMap<String, JobItems> getItems() {
-	return items;
+    /**
+     * @return the current cached map of items.
+     */
+    public static Map<String, JobItems> getItems() {
+	return ITEMS;
     }
 
-    public static HashMap<String, JobItems> getLegacyItems() {
-	return legacy;
-    }
-
-    public static void setItems(HashMap<String, JobItems> items) {
-	ItemBoostManager.items = items;
+    /**
+     * @return the current cached map of legacy items.
+     */
+    public static Map<String, JobItems> getLegacyItems() {
+	return LEGACY;
     }
 }

@@ -264,7 +264,7 @@ public class GeneralConfigManager {
 	// Load locale
 	Jobs.getLanguageManager().load();
 	// title settings
-	Jobs.gettitleManager().load();
+	Jobs.getTitleManager().load();
 	// restricted areas
 	Jobs.getRestrictedAreaManager().load();
 	// restricted blocks

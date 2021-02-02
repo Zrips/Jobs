@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 
 public class VersionChecker {
+
     private Jobs plugin;
-    private static int resource = 4216;
 
     public VersionChecker(Jobs plugin) {
 	this.plugin = plugin;
@@ -69,7 +69,7 @@ public class VersionChecker {
 
     public String getNewVersion() {
 	try {
-	    URLConnection con = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resource).openConnection();
+	    URLConnection con = new URL("https://api.spigotmc.org/legacy/update.php?resource=4216").openConnection();
 	    String version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
 	    if (version.length() <= 8)
 		return version;
