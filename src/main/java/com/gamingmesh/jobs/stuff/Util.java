@@ -22,6 +22,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
 import com.gamingmesh.jobs.Jobs;
@@ -63,6 +64,16 @@ public class Util {
 	    String n = one.getName().replaceAll("[_|.|-]", "");
 	    if (n.equalsIgnoreCase(name))
 		return one;
+	}
+
+	return null;
+    }
+
+    public static PotionType getPotionByName(String name) {
+	for (PotionType one : PotionType.values()) {
+	    if (one.toString().equalsIgnoreCase(name)) {
+		return one;
+	    }
 	}
 
 	return null;

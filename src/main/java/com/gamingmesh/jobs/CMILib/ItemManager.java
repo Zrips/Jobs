@@ -9,7 +9,6 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import com.gamingmesh.jobs.container.Potion;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class ItemManager {
@@ -54,8 +53,8 @@ public class ItemManager {
 	    mojangName = mojangName.replace("_", "").replace(" ", "").toLowerCase();
 
 	    if (one.isCanHavePotionType()) {
-		for (Potion p : Potion.values()) {
-		    byName.put(cmiName + ":" + p.toString().toLowerCase(), one);
+		for (PotionType potType : PotionType.values()) {
+		    byName.put(cmiName + ":" + potType.toString().toLowerCase(), one);
 		}
 	    } else if (byName.containsKey(cmiName)) {
 		byName.put(cmiName + ":" + data, one);
