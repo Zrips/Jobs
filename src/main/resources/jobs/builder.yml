@@ -1,7 +1,8 @@
 Builder:
   fullname: Builder
   shortname: B
-  description: Earns money for building structures.
+  FullDescription:
+  - "Earns money for building structures."
   ChatColour: WHITE
   chat-display: full
   max-level: 200

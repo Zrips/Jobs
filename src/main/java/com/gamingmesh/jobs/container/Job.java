@@ -91,13 +91,23 @@ public class Job {
     private int maxDailyQuests = 1;
     private int id = 0;
 
+    @Deprecated
     public Job(String jobName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
+	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, HashMap<String, JobItems> jobItems,
+	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
+	this(jobName, fullName, jobShortName, jobColour, maxExpEquation, displayMethod, maxLevel,
+	    vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions, jobItems,
+	    jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, bossbar, rejoinCD, worldBlacklist);
+
+	this.description = description;
+    }
+
+    public Job(String jobName, String fullName, String jobShortName, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, HashMap<String, JobItems> jobItems,
 	HashMap<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
 	this.jobName = jobName == null ? "" : jobName;
 	this.fullName = fullName == null ? "" : fullName;
 	this.jobShortName = jobShortName;
-	this.description = description;
 	this.jobColour = jobColour;
 	this.maxExpEquation = maxExpEquation;
 	this.displayMethod = displayMethod;
@@ -291,6 +301,7 @@ public class Job {
 
     /**
      * Get the shortened version of the jobName
+     * 
      * @return the shortened version of the jobName
      */
     public String getShortName() {
@@ -299,8 +310,11 @@ public class Job {
 
     /**
      * Gets the description
+     * 
      * @return description
+     * @deprecated Not used anymore, use {@link #getFullDescription()} instead
      */
+    @Deprecated
     public String getDescription() {
 	return description;
     }
@@ -483,7 +497,10 @@ public class Job {
 
     public void setFullDescription(List<String> fDescription) {
 	this.fDescription.clear();
-	this.fDescription.addAll(fDescription == null ? new ArrayList<>() : fDescription);
+
+	if (fDescription != null) {
+	    this.fDescription.addAll(fDescription);
+	}
     }
 
     public List<Quest> getQuests() {

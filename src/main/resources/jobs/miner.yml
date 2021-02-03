@@ -1,7 +1,8 @@
 Miner:
   fullname: Miner
   shortname: M
-  description: Earns money mining minerals and ores.
+  FullDescription:
+  - "Earns money mining minerals and ores."
   ChatColour: DARK_GRAY
   chat-display: full
   max-level: 200

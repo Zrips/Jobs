@@ -1,7 +1,8 @@
 Enchanter:
   fullname: Enchanter
   shortname: E
-  description: Earns money enchanting weapons.
+  FullDescription:
+  - "Earns money enchanting weapons."
   ChatColour: DARK_BLUE
   chat-display: full
   max-level: 200

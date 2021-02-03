@@ -1,7 +1,8 @@
 Farmer:
   fullname: Farmer
   shortname: Fa
-  description: Earns money farming crops.
+  FullDescription:
+  - "Earns money farming crops."
   ChatColour: BLUE
   chat-display: full
   max-level: 200

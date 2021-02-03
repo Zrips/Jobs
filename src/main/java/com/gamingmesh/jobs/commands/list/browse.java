@@ -70,6 +70,11 @@ public class browse implements Cmd {
 
 			if (!one.getDescription().isEmpty())
 			    hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", one.getDescription().replaceAll("/n|\n", ""));
+			else {
+			    for (String desc : one.getFullDescription()) {
+				hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", desc);
+			    }
+			}
 
 			if (one.getMaxLevel(sender) > 0) {
 			    if (!hoverMsg.isEmpty())
@@ -143,6 +148,11 @@ public class browse implements Cmd {
 
 			if (!one.getDescription().isEmpty())
 			    msg += Jobs.getLanguage().getMessage("command.browse.output.console.description", "[description]", one.getDescription().replaceAll("/n|\n", ""));
+			else {
+			    for (String desc : one.getFullDescription()) {
+				msg += Jobs.getLanguage().getMessage("command.browse.output.console.description", "[description]", desc);
+			    }
+			}
 
 			if (one.getMaxLevel(sender) > 0)
 			    msg += Jobs.getLanguage().getMessage("command.browse.output.console.newMax", "[max]", one.getMaxLevel(sender));
@@ -212,6 +222,11 @@ public class browse implements Cmd {
 		lines.add(builder.toString());
 		if (!job.getDescription().isEmpty())
 		    lines.add("  - " + job.getDescription().replaceAll("/n|\n", ""));
+		else {
+		    for (String desc : job.getFullDescription()) {
+			lines.add("  - " + desc);
+		    }
+		}
 	    }
 
 	    if (lines.isEmpty()) {

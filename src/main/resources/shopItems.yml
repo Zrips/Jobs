@@ -55,6 +55,11 @@ Items:
         Enchants:
         - DIG_SPEED=5
         - DURABILITY=3
+      Giving-Potion:
+        Id: potion
+        Amount: 1
+        Name: "&6Jump boost"
+        potion-type: jump
       # Can be any word
       Apple:
         # (Required) Item name

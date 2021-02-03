@@ -1,7 +1,8 @@
 Brewer:
   fullname: Brewer
   shortname: Br
-  description: Earns money brewing potions.
+  FullDescription:
+  - "Earns money brewing potions."
   ChatColour: LIGHT_PURPLE
   chat-display: full
   max-level: 200

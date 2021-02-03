@@ -1,7 +1,8 @@
 Fisherman:
   fullname: Fisherman
   shortname: Fi
-  description: Earns money from fishing.
+  FullDescription:
+  - "Earns money from fishing."
   ChatColour: AQUA
   chat-display: full
   max-level: 200

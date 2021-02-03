@@ -1,7 +1,8 @@
 Hunter:
   fullname: Hunter
   shortname: H
-  description: Earns money killing animals and monsters.
+  FullDescription:
+  - "Earns money killing animals and monsters."
   ChatColour: RED
   chat-display: full
   max-level: 200

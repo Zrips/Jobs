@@ -18,10 +18,13 @@ exampleJob:
   shortname: W
 
   # The short description of job
-  description: Earns money felling and planting trees
+  # Please try to not use this, use FullDescription below
+  #description: Earns money felling and planting trees
 
   # Full description of job to be shown in job browse command
   FullDescription:
+  - "&7Earns money felling and planting trees"
+  - ""
   - "&2Get money for:"
   - "  &7Planting trees"
   - "  &7Cutting down trees"

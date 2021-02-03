@@ -728,9 +728,8 @@ public class JobsPlayer {
      */
     public void reloadHonorific() {
 	StringBuilder builder = new StringBuilder();
-	int numJobs = progression.size();
 
-	if (numJobs > 0) {
+	if (progression.size() > 0) {
 	    for (JobProgression prog : progression) {
 		DisplayMethod method = prog.getJob().getDisplayMethod();
 		if (method == DisplayMethod.NONE)
@@ -744,8 +743,7 @@ public class JobsPlayer {
 	} else {
 	    Job nonejob = Jobs.getNoneJob();
 	    if (nonejob != null) {
-		DisplayMethod method = nonejob.getDisplayMethod();
-		processesChat(method, builder, -1, null, nonejob);
+		processesChat(nonejob.getDisplayMethod(), builder, -1, null, nonejob);
 	    }
 	}
 

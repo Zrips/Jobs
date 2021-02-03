@@ -573,9 +573,8 @@ public class GeneralConfigManager {
 	    "jobstotalplayers: The number of people in that particular job",
 	    "Exponential equation: totalworkers / totaljobs / jobstotalplayers - 1",
 	    "Linear equation: ((totalworkers / totaljobs) - jobstotalplayers)/10.0");
-	String maxExpEquationInput = c.get("Economy.DynamicPayment.equation", "totalworkers / totaljobs / jobstotalplayers - 1");
 	try {
-	    DynamicPaymentEquation = new Parser(maxExpEquationInput);
+	    DynamicPaymentEquation = new Parser(c.get("Economy.DynamicPayment.equation", "totalworkers / totaljobs / jobstotalplayers - 1"));
 	    DynamicPaymentEquation.setVariable("totalworkers", 100);
 	    DynamicPaymentEquation.setVariable("totaljobs", 10);
 	    DynamicPaymentEquation.setVariable("jobstotalplayers", 10);
@@ -627,11 +626,10 @@ public class GeneralConfigManager {
 	    "You can always use simple number to set money limit",
 	    "Default equation is: 500+500*(totallevel/100), this will add 1% from 500 for each level player have",
 	    "So player with 2 jobs with level 15 and 22 will have 685 limit");
-	String MoneyLimit = c.get("Economy.Limit.Money.MoneyLimit", "500+500*(totallevel/100)");
 	try {
-	    Parser Equation = new Parser(MoneyLimit);
-	    Equation.setVariable("totallevel", 1);
-	    limit.setMaxEquation(Equation);
+	    Parser equation = new Parser(c.get("Economy.Limit.Money.MoneyLimit", "500+500*(totallevel/100)"));
+	    equation.setVariable("totallevel", 1);
+	    limit.setMaxEquation(equation);
 	} catch (Throwable e) {
 	    Jobs.getPluginLogger().warning("MoneyLimit has an invalid value. Disabling money limit!");
 	    limit.setEnabled(false);
@@ -660,11 +658,10 @@ public class GeneralConfigManager {
 	    "You can always use simple number to set limit",
 	    "Default equation is: 500+500*(totallevel/100), this will add 1% from 500 for each level player have",
 	    "So player with 2 jobs with level 15 and 22 will have 685 limit");
-	String PointLimit = c.get("Economy.Limit.Point.Limit", "500+500*(totallevel/100)");
 	try {
-	    Parser Equation = new Parser(PointLimit);
-	    Equation.setVariable("totallevel", 1);
-	    limit.setMaxEquation(Equation);
+	    Parser equation = new Parser(c.get("Economy.Limit.Point.Limit", "500+500*(totallevel/100)"));
+	    equation.setVariable("totallevel", 1);
+	    limit.setMaxEquation(equation);
 	} catch (Throwable e) {
 	    Jobs.getPluginLogger().warning("PointLimit has an invalid value. Disabling money limit!");
 	    limit.setEnabled(false);
@@ -693,11 +690,10 @@ public class GeneralConfigManager {
 	    "You can always use simple number to set exp limit",
 	    "Default equation is: 5000+5000*(totallevel/100), this will add 1% from 5000 for each level player have",
 	    "So player with 2 jobs with level 15 and 22 will have 6850 limit");
-	String expLimit = c.get("Economy.Limit.Exp.Limit", "5000+5000*(totallevel/100)");
 	try {
-	    Parser Equation = new Parser(expLimit);
-	    Equation.setVariable("totallevel", 1);
-	    limit.setMaxEquation(Equation);
+	    Parser equation = new Parser(c.get("Economy.Limit.Exp.Limit", "5000+5000*(totallevel/100)"));
+	    equation.setVariable("totallevel", 1);
+	    limit.setMaxEquation(equation);
 	} catch (Throwable e) {
 	    Jobs.getPluginLogger().warning("ExpLimit has an invalid value. Disabling money limit!");
 	    limit.setEnabled(false);

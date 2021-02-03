@@ -1,7 +1,8 @@
 Woodcutter:
   fullname: Woodcutter
   shortname: W
-  description: Earns money felling and planting trees
+  FullDescription:
+  - "Earns money felling and planting trees"
   ChatColour: GREEN
   chat-display: full
   max-level: 200
