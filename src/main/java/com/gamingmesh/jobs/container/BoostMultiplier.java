@@ -52,7 +52,7 @@ public class BoostMultiplier {
 
     public boolean isValid(CurrencyType type) {
 	boolean valid = time > System.currentTimeMillis();
-	if (!valid) {
+	if (time != 0L && !valid) {
 	    map.remove(type);
 	    time = 0L;
 	}
