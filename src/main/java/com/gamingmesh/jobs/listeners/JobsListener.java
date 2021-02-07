@@ -718,7 +718,7 @@ public class JobsListener implements Listener {
     }
 
 	@EventHandler
-	public void PlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent event) {
-		Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
+	public void onPlayerHandSwap(PlayerSwapHandItemsEvent event) {
+	Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
 	}
 }
