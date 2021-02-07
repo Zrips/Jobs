@@ -58,6 +58,7 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -715,4 +716,9 @@ public class JobsListener implements Listener {
     public void PlayerItemBreakEvent(InventoryClickEvent event) {
 	Jobs.getPlayerManager().resetiItemBonusCache(((Player) event.getWhoClicked()).getUniqueId());
     }
+
+	@EventHandler
+	public void onPlayerHandSwap(PlayerSwapHandItemsEvent event) {
+	Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
+	}
 }
