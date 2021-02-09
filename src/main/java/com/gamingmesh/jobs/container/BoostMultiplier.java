@@ -2,7 +2,7 @@ package com.gamingmesh.jobs.container;
 
 import java.util.HashMap;
 
-public class BoostMultiplier {
+public class BoostMultiplier implements Cloneable {
 
     private final HashMap<CurrencyType, Double> map = new HashMap<>();
 

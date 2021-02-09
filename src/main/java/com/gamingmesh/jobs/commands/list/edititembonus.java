@@ -69,7 +69,7 @@ public class edititembonus implements Cmd {
 	    return false;
 
 	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
-	if (iih == null || iih.getType().equals(Material.AIR))
+	if (iih == null || iih.getType() == Material.AIR)
 	    return false;
 
 	switch (action) {
