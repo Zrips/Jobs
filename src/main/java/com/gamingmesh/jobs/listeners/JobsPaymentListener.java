@@ -490,12 +490,8 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
-	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	    if (jPlayer == null)
-		return;
-
-	    ItemStack items = ((Item) event.getCaught()).getItemStack();
-	    Jobs.action(jPlayer, new ItemActionInfo(items, ActionType.FISH));
+	    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player),
+	        new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH));
 	}
     }
 

@@ -159,10 +159,6 @@ public class CMIGui {
     }
 
     public void setTitle(String title) {
-	if (title.length() > 32) {
-	    title = title.substring(0, 31) + "~";
-	}
-
 	this.title = title;
     }
 

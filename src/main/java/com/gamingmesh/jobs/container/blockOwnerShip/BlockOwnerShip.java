@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -182,17 +181,15 @@ public class BlockOwnerShip {
 
 		f = f2;
 
-		FileConfiguration config = f.getConfig();
-
 		String path = (type == BlockTypes.FURNACE ? "Furnace"
 				: type == BlockTypes.BLAST_FURNACE ? "BlastFurnace"
 						: type == BlockTypes.BREWING_STAND ? "Brewing" : type == BlockTypes.SMOKER ? "Smoker" : "");
 
-		if (isReassignDisabled() || !config.isConfigurationSection(path))
+		if (isReassignDisabled() || !f.getConfig().isConfigurationSection(path))
 			return;
 
 		int total = 0;
-		ConfigurationSection section = config.getConfigurationSection(path);
+		ConfigurationSection section = f.getConfig().getConfigurationSection(path);
 		for (String one : section.getKeys(false)) {
 			String value = section.getString(one);
 			List<String> ls = new ArrayList<>();
@@ -249,12 +246,10 @@ public class BlockOwnerShip {
 			return;
 		}
 
-		FileConfiguration config = f.getConfig();
-
 		String path = (type == BlockTypes.FURNACE ? "Furnace"
 				: type == BlockTypes.BLAST_FURNACE ? "BlastFurnace"
 						: type == BlockTypes.BREWING_STAND ? "Brewing" : type == BlockTypes.SMOKER ? "Smoker" : "");
-		config.set(path, null);
+		f.getConfig().set(path, null);
 
 		for (Entry<UUID, List<blockLoc>> one : blockOwnerShips.entrySet()) {
 			String full = "";
@@ -266,7 +261,7 @@ public class BlockOwnerShip {
 			}
 
 			if (!full.isEmpty())
-				config.set(path + "." + one.getKey().toString(), full);
+				f.getConfig().set(path + "." + one.getKey().toString(), full);
 		}
 
 		f.saveConfig();
