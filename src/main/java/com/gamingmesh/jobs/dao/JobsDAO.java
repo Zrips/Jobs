@@ -2127,7 +2127,6 @@ public abstract class JobsDAO {
 		prest2.execute();
 		conn.commit();
 	    }
-	    conn.setAutoCommit(true);
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	    close(prest1);
