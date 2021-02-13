@@ -28,6 +28,9 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip.ownershipFeedback;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.hooks.JobsHook;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.base.Objects;
 
 import org.bukkit.Bukkit;
@@ -490,6 +493,13 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
+		if(ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
+			if (UserManager.getPlayer(player).getFishingManager().isExploitingFishing(event.getHook().getLocation().toVector())) {
+				player.sendMessage("You need to move to get paid again :P");
+				return;
+			}
+		}
+
 	    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player),
 	        new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH));
 	}
