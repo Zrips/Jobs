@@ -495,7 +495,6 @@ public class JobsPaymentListener implements Listener {
 	if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
 		if(ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
 			if (UserManager.getPlayer(player).getFishingManager().isExploitingFishing(event.getHook().getLocation().toVector())) {
-				player.sendMessage("You need to move to get paid again :P");
 				return;
 			}
 		}
