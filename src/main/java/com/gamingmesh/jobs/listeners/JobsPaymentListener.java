@@ -30,7 +30,6 @@ import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.hooks.JobsHook;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.base.Objects;
 
@@ -494,16 +493,16 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
-		// check is mcMMO enabled
-		if (JobsHook.mcMMO.isEnabled()) {
-			McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+	    // check is mcMMO enabled
+	    if (JobsHook.mcMMO.isEnabled()) {
+		McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-			// check is the fishing being exploited. If yes, prevent payment.
-			if (mcMMOPlayer != null && ExperienceConfig.getInstance().isFishingExploitingPrevented()
-					&& mcMMOPlayer.getFishingManager().isExploitingFishing(event.getHook().getLocation().toVector())) {
-				return;
-			}
+		// check is the fishing being exploited. If yes, prevent payment.
+		if (mcMMOPlayer != null && ExperienceConfig.getInstance().isFishingExploitingPrevented()
+		    && mcMMOPlayer.getFishingManager().isExploitingFishing(event.getHook().getLocation().toVector())) {
+		    return;
 		}
+	    }
 
 	    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player),
 	        new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH));

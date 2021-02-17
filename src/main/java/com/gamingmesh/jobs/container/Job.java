@@ -145,9 +145,17 @@ public class Job {
 	final Calendar cal = Calendar.getInstance();
 	cal.setTime(new Date());
 
-	cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + h);
-	cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + m);
-	cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + s);
+	if (h > 0) {
+	    cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + h);
+	}
+
+	if (m > 0) {
+	    cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + m);
+	}
+
+	if (s > 0) {
+	    cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + s);
+	}
 
 	boost.add(type, point, cal.getTimeInMillis());
     }

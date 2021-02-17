@@ -845,10 +845,6 @@ public class Jobs extends JavaPlugin {
 	    dao.saveExplore();
 	}
 
-	if (bpManager != null) {
-	    bpManager.saveCache();
-	}
-
 	blockOwnerShips.forEach(BlockOwnerShip::save);
 	ToggleBarHandling.save();
 

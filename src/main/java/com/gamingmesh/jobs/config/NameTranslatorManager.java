@@ -292,8 +292,13 @@ public class NameTranslatorManager {
 
 	    for (Material one : Material.values()) {
 		CMIMaterial mat = CMIMaterial.get(one);
-		if (mat == null || mat.getMaterial() == null)
+		if (mat == CMIMaterial.NONE || mat == null || mat.getMaterial() == null) {
+		    mat = CMIMaterial.get(one.getId());
+		}
+
+		if (mat == CMIMaterial.NONE) {
 		    continue;
+		}
 
 		String n = mat.getLegacyId() + (mat.getLegacyData() == -1 ? "" : ":" + mat.getLegacyData());
 		String name = null;
