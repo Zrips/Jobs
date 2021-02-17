@@ -45,13 +45,11 @@ public class RestrictedBlockManager {
 		    cfg.set("blocksTimer." + cm.getCMIType().name(), cfg.getC().getInt("blocksTimer." + one + ".cd"));
 
 		} else {
-
-		    int timer = cfg.get("blocksTimer." + one, -99);
 		    CMIMaterial mat = CMIMaterial.get(one);
-
-		    if (mat == null)
+		    if (mat == CMIMaterial.NONE)
 			continue;
 
+		    int timer = cfg.get("blocksTimer." + one, -99);
 		    if (timer == -99) {
 			cfg.set("blocksTimer." + one, null);
 			continue;

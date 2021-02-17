@@ -232,11 +232,13 @@ public class BlockOwnerShip {
 			f.getConfigFile().renameTo(new File(Jobs.getFolder(), "blockOwnerShips.yml"));
 		}
 
-		if (blockOwnerShips.isEmpty()) {
+		f = new YmlMaker(Jobs.getFolder(), "blockOwnerShips.yml");
+
+		if (blockOwnerShips.isEmpty() && f.getConfigFile().length() == 0L) {
+			f.getConfigFile().delete();
 			return;
 		}
 
-		f = new YmlMaker(Jobs.getFolder(), "blockOwnerShips.yml");
 		if (!f.exists())
 			f.createNewFile();
 

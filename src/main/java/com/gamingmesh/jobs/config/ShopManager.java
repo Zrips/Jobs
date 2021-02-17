@@ -136,7 +136,7 @@ public class ShopManager {
 		lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
 	    }
 
-	    if (mat == null)
+	    if (mat == CMIMaterial.NONE)
 		mat = CMIMaterial.STONE_BUTTON;
 
 	    ItemStack guiItem = mat.newItemStack();

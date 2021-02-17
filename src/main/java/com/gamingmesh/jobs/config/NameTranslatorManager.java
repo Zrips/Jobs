@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -290,12 +289,7 @@ public class NameTranslatorManager {
 	    ConfigReader c = new ConfigReader(f);
 	    c.copyDefaults(true);
 
-	    for (Material one : Material.values()) {
-		CMIMaterial mat = CMIMaterial.get(one);
-		if (mat == CMIMaterial.NONE || mat == null || mat.getMaterial() == null) {
-		    mat = CMIMaterial.get(one.getId());
-		}
-
+	    for (CMIMaterial mat : CMIMaterial.values()) {
 		if (mat == CMIMaterial.NONE) {
 		    continue;
 		}
@@ -420,31 +414,6 @@ public class NameTranslatorManager {
 	    c.get("ColorList.13-green", "&2Green");
 	    c.get("ColorList.14-red", "&cRed");
 	    c.get("ColorList.15-black", "&0Black");
-	    /**	    for (colorNames cn : colorNames.values()) {
-	    		if (cn.getName() == null)
-	    		    continue;
-
-	    		String n = cn.getId() + (cn.getId() == -1 ? "" : ":" + cn.getName());
-
-	    		String name = null;
-
-	    		if (c.getC().isConfigurationSection("ColorList." + n)) {
-	    		    name = c.getC().getString("ColorList." + n + ".Name");
-	    		}
-
-	    		if (name == null) {
-	    		    n = cn.getId() + "-" + cn.toString();
-	    		    if (c.getC().isConfigurationSection("ColorList." + n)) {
-	    			name = c.getC().getString("ColorList." + n);
-	    		    }
-	    		}
-
-	    		if (name == null) {
-	    		    name = cn.getName();
-	    		}
-
-	    		c.get("ColorList." + cn.getId() + "-" + cn.toString(), name);
-	    }*/
 
 	    if (!c.getC().isConfigurationSection("MythicEntityList")) {
 		c.get("MythicEntityList.AngrySludge", "Angry Sludge");

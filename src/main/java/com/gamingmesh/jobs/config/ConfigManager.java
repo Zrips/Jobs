@@ -424,7 +424,7 @@ public class ConfigManager {
 		}
 		if (matId != null) {
 		    material = CMIMaterial.get(matId);
-		    if (material != null) {
+		    if (material != CMIMaterial.NONE) {
 			Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " is using ID: " + myKey + "!");
 			Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
 		    }
@@ -439,15 +439,15 @@ public class ConfigManager {
 	if (actionType == ActionType.STRIPLOGS && Version.isCurrentLower(Version.v1_13_R1))
 	    return null;
 
-	if (material != null && material.getMaterial() != null && material.isAir()) {
+	if (material.getMaterial() != null && material.isAir()) {
 	    Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " can't recognize material! (" + myKey + ")");
 	    return null;
 	}
 
-	if (material != null && Version.isCurrentLower(Version.v1_13_R1) && meta.isEmpty())
+	if (Version.isCurrentLower(Version.v1_13_R1) && meta.isEmpty())
 	    meta = String.valueOf(material.getData());
 
-	c: if (material != null && material != CMIMaterial.NONE && material.getMaterial() != null) {
+	c: if (material != CMIMaterial.NONE && material.getMaterial() != null) {
 	    // Need to include those ones and count as regular blocks
 	    switch (myKey.replace("_", "").toLowerCase()) {
 	    case "itemframe":
@@ -901,10 +901,10 @@ public class ConfigManager {
 
 		    CMIMaterial material = CMIMaterial.get(item + (subType));
 
-		    if (material == null)
+		    if (material == CMIMaterial.NONE)
 			material = CMIMaterial.get(item.replace(' ', '_').toUpperCase());
 
-		    if (material == null) {
+		    if (material == CMIMaterial.NONE) {
 			// try integer method
 			Integer matId = null;
 			try {

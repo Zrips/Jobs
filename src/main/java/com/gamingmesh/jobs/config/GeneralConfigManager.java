@@ -957,13 +957,13 @@ public class GeneralConfigManager {
 	jobsInfoOpensBrowse = c.get("Commands.JobsInfo.open-browse", false);
 
 	CMIMaterial tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN").toUpperCase());
-	guiBackButton = (tmat == null ? CMIMaterial.JACK_O_LANTERN : tmat).newItemStack();
+	guiBackButton = (tmat == CMIMaterial.NONE ? CMIMaterial.JACK_O_LANTERN : tmat).newItemStack();
 
 	tmat = CMIMaterial.get(c.get("JobsGUI.NextButton.Material", "ARROW").toUpperCase());
-	guiNextButton = (tmat == null ? CMIMaterial.ARROW : tmat).newItemStack();
+	guiNextButton = (tmat == CMIMaterial.NONE ? CMIMaterial.ARROW : tmat).newItemStack();
 
 	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "GREEN_STAINED_GLASS_PANE").toUpperCase());
-	guiFiller = (tmat == null ? CMIMaterial.GREEN_STAINED_GLASS_PANE : tmat).newItemStack();
+	guiFiller = (tmat == CMIMaterial.NONE ? CMIMaterial.GREEN_STAINED_GLASS_PANE : tmat).newItemStack();
 
 	c.save();
     }
