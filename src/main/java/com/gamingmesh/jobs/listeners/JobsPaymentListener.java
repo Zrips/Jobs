@@ -505,7 +505,7 @@ public class JobsPaymentListener implements Listener {
 	    }
 
 	    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player),
-	        new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH));
+		new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH));
 	}
     }
 
@@ -816,7 +816,7 @@ public class JobsPaymentListener implements Listener {
 	// must be an inventory
 	if (!(inv instanceof AnvilInventory) && (Version.isCurrentEqualOrHigher(Version.v1_14_R1)
 	    && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory))
-	    // Smithing inventory class is added in 1.16
+	// Smithing inventory class is added in 1.16
 	    && (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && !(inv instanceof SmithingInventory)))
 	    return;
 
@@ -977,9 +977,15 @@ public class JobsPaymentListener implements Listener {
 	    Enchantment enchant = oneEnchant.getKey();
 	    if (enchant == null)
 		continue;
+	    String enchantName = null;
 
-	    CMIEnchantment e = CMIEnchantment.get(enchant);
-	    String enchantName = e == null ? null : e.toString();
+	    try {
+		enchantName = enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
+	    } catch (Throwable e) {
+		CMIEnchantment ench = CMIEnchantment.get(enchant);
+		enchantName = ench == null ? null : ench.toString();
+	    }
+	    
 	    if (enchantName == null)
 		continue;
 

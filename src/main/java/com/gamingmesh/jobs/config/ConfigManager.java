@@ -561,13 +561,17 @@ public class ConfigManager {
 		}
 	    }
 	} else if (actionType == ActionType.ENCHANT) {
-	    CMIEnchantment enchant = CMIEnchantment.get(myKey);
+	    Enchantment enchant = CMIEnchantment.getEnchantment(myKey);
+
 	    if (enchant == null && material == CMIMaterial.NONE) {
 		Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
 		return null;
 	    }
 
-	    type = enchant == null ? myKey : enchant.toString();
+	    CMIEnchantment cmiEnchant = CMIEnchantment.get(enchant);
+
+	    type = cmiEnchant != null ? cmiEnchant.toString() : enchant == null ? myKey : enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
+	    
 	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
 	    || actionType == ActionType.BAKE || actionType == ActionType.SMELT) {
 	    type = myKey;

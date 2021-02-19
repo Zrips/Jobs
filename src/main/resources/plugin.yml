@@ -5,7 +5,7 @@ version: ${project.version}
 api-version: "1.13"
 website: https://www.spigotmc.org/resources/4216/
 authors: [phrstbrn, Zrips, montlikadani]
-softdepend: [Vault, Essentials, MythicMobs, McMMO, mcMMO, WorldGuard, MyPet, PlaceholderAPI]
+softdepend: [Vault, Essentials, MythicMobs, McMMO, mcMMO, WorldGuard, MyPet, PlaceholderAPI, EcoEnchants]
 commands:
   jobs:
     description: Jobs
