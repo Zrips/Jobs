@@ -29,6 +29,9 @@ public class fireall implements Cmd {
 	    Jobs.getDBManager().getDB().truncate(DBTables.JobsTable.getTableName());
 
 	    for (JobsPlayer one : Jobs.getPlayerManager().getPlayersCache().values()) {
+		for (JobProgression job : one.getJobProgression()) {
+		    Jobs.getJobsDAO().recordToArchive(one, job.getJob());
+		}
 		one.leaveAllJobs();
 		// No need to save as we are clearing database with more efficient method
 		one.setSaved(true);

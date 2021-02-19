@@ -150,7 +150,6 @@ public enum CMIEnchantment {
 		String name = one.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
 		if (!map.containsKey(name)) {
 		    gmap.put(name, one);
-		    Bukkit.getConsoleSender().sendMessage(name);
 		}
 	    }
 	} catch (Throwable e) {
