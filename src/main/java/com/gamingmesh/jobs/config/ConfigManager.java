@@ -503,6 +503,8 @@ public class ConfigManager {
 	    // END HACK
 
 	    type = material.getMaterial().toString();
+	    if (Version.isCurrentEqualOrLower(Version.v1_12_R1) && material.getLegacyData() > 0)
+		subType = ":" + material.getLegacyData();
 	    id = material.getId();
 	} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
 	    // check entities
@@ -571,7 +573,7 @@ public class ConfigManager {
 	    CMIEnchantment cmiEnchant = CMIEnchantment.get(enchant);
 
 	    type = cmiEnchant != null ? cmiEnchant.toString() : enchant == null ? myKey : enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
-	    
+
 	} else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
 	    || actionType == ActionType.BAKE || actionType == ActionType.SMELT) {
 	    type = myKey;

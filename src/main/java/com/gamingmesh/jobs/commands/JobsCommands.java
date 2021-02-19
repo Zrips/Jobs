@@ -2,9 +2,9 @@ package com.gamingmesh.jobs.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.TreeSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -47,7 +47,7 @@ public class JobsCommands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player && !Jobs.getGCManager().canPerformActionInWorld(((Player) sender).getWorld())
-		    && !sender.hasPermission("jobs.disabledworld.commands")) {
+	    && !sender.hasPermission("jobs.disabledworld.commands")) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.worldisdisabled"));
 	    return true;
 	}
@@ -378,7 +378,7 @@ public class JobsCommands implements CommandExecutor {
     public String jobStatsMessage(JobProgression jobProg) {
 	boolean isMaxLevelReached = jobProg.getLevel() == jobProg.getJob().getMaxLevel();
 	String path = "command.stats.output." + (isMaxLevelReached ? "max-level"
-			: "message");
+	    : "message");
 
 	Title title = Jobs.getTitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
 	String message = Jobs.getLanguage().getMessage(path,
