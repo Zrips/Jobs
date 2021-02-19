@@ -447,7 +447,7 @@ public class ConfigManager {
 	if (Version.isCurrentLower(Version.v1_13_R1) && meta.isEmpty())
 	    meta = String.valueOf(material.getData());
 
-	c: if (material != CMIMaterial.NONE && material.getMaterial() != null) {
+	c: if (material != CMIMaterial.NONE && material.getMaterial() != null && !material.isAir()) {
 	    // Need to include those ones and count as regular blocks
 	    switch (myKey.replace("_", "").toLowerCase()) {
 	    case "itemframe":
@@ -471,7 +471,7 @@ public class ConfigManager {
 
 	    // Break and Place actions MUST be blocks
 	    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
-		if (!material.isBlock()) {
+		if (!material.isBlock() || material.getMaterial().toString().equalsIgnoreCase("AIR")) {
 		    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
 			+ " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
 		    return null;
@@ -1327,7 +1327,7 @@ public class ConfigManager {
 			Integer itemSoftPointsLimit = softPointsLimit;
 			if (section.isInt("softPointsLimit"))
 			    itemSoftPointsLimit = section.getInt("softPointsLimit");
-
+			
 			jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, fromlevel,
 			    untilLevel, section.getCurrentPath(), itemSoftIncomeLimit, itemSoftExpLimit, itemSoftPointsLimit));
 		    }
