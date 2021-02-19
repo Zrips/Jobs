@@ -18,10 +18,10 @@ general:
     'true': '&2Sant'
     'false': '&cFalskt'
     blocks:
-      furnace: Furnace
-      smoker: Smoker
-      blastfurnace: Blast furnace
-      brewingstand: Brewing stand
+      furnace: Ugn
+      smoker: Rök
+      blastfurnace: Masugn
+      brewingstand: Brygdställ
   admin:
     error: '&cDet blev ett fel i kommandot. Försök igen.'
     success: '&eDitt kommando har körts.'
@@ -36,8 +36,8 @@ general:
     ingame: '&cDu kan bara använda detta kommando i spelet!'
     fromconsole: '&cDu kan bara använda detta kommando i konsolen!'
     worldisdisabled: '&cDu kan inte använda kommanot i denna värld!'
-    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
-    noRegistration: '&cYou''ve reached max [block] count!'
+    newRegistration: '&eRegistrerade nytt ägarskap för [block] &7[current]&e/&f[max]'
+    noRegistration: '&cDu har nått max antal [block]!'
 command:
   help:
     output:
@@ -71,11 +71,11 @@ command:
       infostats: '&c-----> &aMoney rate x%boost% enabled&c <-------'
   pointboost:
     help:
-      info: Boosts point gain for all players
+      info: Ökar inkomsten av poäng för alla spelare
       args: '[jobname]/all/reset [time]/[rate]'
     output:
-      allreset: All point boosts turned off
-      jobsboostreset: Point boost has been turned off for %jobname%
+      allreset: Alla ökningar av poäng stängdes av
+      jobsboostreset: Pengarökningen har stängts av för %jobname%
       nothingtoreset: Inget att återställa
       boostalladded: Points boost of %boost% added for all jobs!
       boostadded: Points boost of &e%boost% &aadded for &e%jobname%!

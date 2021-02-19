@@ -18,10 +18,10 @@ general:
     'true': '&2Veritat'
     'false': '&cFals'
     blocks:
-      furnace: Furnace
-      smoker: Smoker
-      blastfurnace: Blast furnace
-      brewingstand: Brewing stand
+      furnace: Horno
+      smoker: Ahumador
+      blastfurnace: Alto Hordo
+      brewingstand: Soporte para pociones
   admin:
     error: '&cSe ha producido un error al aplicar el conjuro.'
     success: '&eEl conjuro ha sido aplicado.'
@@ -36,8 +36,8 @@ general:
     ingame: '&cEsto es un conjuro y solo puede ser usado por un jugador.'
     fromconsole: '&cEsto es un comando y solo puede ser usado desde la consola.'
     worldisdisabled: '&cNo puedes usar este conjuro en este mundo.'
-    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
-    noRegistration: '&cYou''ve reached max [block] count!'
+    newRegistration: '&eSe ha registrado un nuevo propietario para [block] &7[current]&e/&f[max]'
+    noRegistration: '&c¡Has alcanzado el número máximo de [block]!'
 command:
   help:
     output:
@@ -123,9 +123,9 @@ command:
       global: ' &eBonificacion global: &2%money% &6%points% &e%exp%'
       dynamic: ' &eBonificacion dinamica: &2%money% &6%points% &e%exp%'
       nearspawner: ' &eBonificacion de spawner: &2%money% &6%points% &e%exp%'
-      petpay: ' &ePetPay bonus: &2%money% &6%points% &e%exp%'
+      petpay: ' &eBonificacion del pago por mascota: &2%money% &6%points% &e%exp%'
       area: ' &eBonificacion de area: &2%money% &6%points% &e%exp%'
-      mcmmo: ' &eMcMMO bonus: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eBonificacion McMMO: &2%money% &6%points% &e%exp%'
       final: ' &eBonificacion final: &2%money% &6%points% &e%exp%'
       finalExplanation: ' &eNo se incluye la prima de Mascota o la penalización de proximidad de spawner.'
   convert:
@@ -257,8 +257,8 @@ command:
     error:
       nojob: Debes trabajar primero en una profesión.
     output:
-      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
-      max-level: '     &cMax level   -   %jobname%'
+      message: 'Nivel %joblevel% para %jobname%: %jobxp%/%jobmaxxp% experiencia'
+      max-level: '&cNivel maximo   -   %jobname%'
     bossBarOutput: 'Nvl %joblevel% %jobname%: %jobxp%/%jobmaxxp% Exp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -270,7 +270,7 @@ command:
       currentPoints: '&eTienes: &6%currentpoints%'
       price: '&ePrecio: &6%price%'
       reqJobs: '&eProfesiones que necesitas:'
-      reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
+      reqJobsList: '  &6%jobsname%&e: &e%level% Nivel'
       reqTotalLevel: '&6Nivel total que necesitas: &e%totalLevel%'
       reqJobsColor: '&c'
       reqJobsLevelColor: '&4'
@@ -463,7 +463,7 @@ command:
       info: Eliminar propietarios.
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
+      cleared: "&2Se removieron &7[furnaces] &2hornos, &7[brewing] &2Soporte para Pociones, &7[smoker]&2 Ahumadores and &7[blast]&2 Altos Hornos.\n"
   skipquest:
     help:
       info: Omite la misión en progreso y obten una nueva
@@ -614,42 +614,42 @@ command:
       target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
   demote:
     help:
-      info: Demote the player X levels in a job.
+      info: Desciende a un jugador X niveles en un trabajo.
       args: '[playername] [jobname] [levels]'
     output:
-      target: You have been demoted %levelslost% levels in %jobname%.
+      target: Has sido descendido %levelslost% niveles en tu trabajo de %jobname%.
   grantxp:
     help:
-      info: Grants the player X experience in a job.
+      info: Otorga a un jugador X experiencia en un trabajo.
       args: '[playername] [jobname] [xp]'
     output:
-      target: You have been granted %xpgained% experience in %jobname%.
+      target: Has sido otorgado %xpgained% de experiencia en tu trabajo de %jobname%.
   removexp:
     help:
-      info: Remove X experience from the player in a job.
+      info: Elimina X experiencia de un jugador en un trabajo.
       args: '[playername] [jobname] [xp]'
     output:
-      target: You have lost %xplost% experience in %jobname%.
+      target: 'Haz perdido %xplost% experiencia en este trabajo: %jobname%.'
   signupdate:
     help:
-      info: Manually updates a sign by its name
+      info: Actualiza manualmente un cartel por su nombre
       args: '[jobname]'
   bp:
     help:
-      info: Shows block protections around you in 10 block radius
+      info: Muestra bloques de protección alrededor tuya en un radio de 10 bloques
       args: ''
     output:
-      found: '&eFound &6%amount% &eprotected blocks around you'
+      found: '&eSe encontraron &6%amount% &ebloques de protección alrededor tuya'
       notFound: '&eNo se encontraron bloques de protección alrededor tuyo'
   reload:
     help:
       info: Recarga las configuraciones.
   toggle:
     help:
-      info: Toggles payment output on action bar or bossbar.
+      info: Alterna la salida de pago en la actiobar o bossbar.
       args: actionbar/bossbar
     output:
-      turnedoff: '&4This feature is turned off!'
+      turnedoff: '&4Esta caracteristica ha sido deshabilitada!'
       paid:
         main: '&aTienes:'
         money: '&e[amount] dinero'
@@ -662,9 +662,9 @@ message:
     broadcast: '%playername% ha sido ascendido a %titlename% %jobname%.'
     nobroadcast: Felicidades, has sido ascendido a %titlename% %jobname%.
   max-level-reached:
-    title: '&2Max level reached'
-    subtitle: '&2in %jobname%!'
-    chat: '&cYou have reached the maximum level in %jobname%!'
+    title: '&2Alcanzaste el nivel máximo'
+    subtitle: '&2en %jobname%!'
+    chat: '&cAlcanzaste el maximo nivel para este trabajo: %jobname%!'
   levelup:
     broadcast: '%playername% ahora es nivel %joblevel% %jobname%.'
     nobroadcast: Ahora eres nivel %joblevel% %jobname%.

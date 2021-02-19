@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Wyświetla najlepszych graczy według nazw prac.
-      args: '[jobname]/clear pageNumber'
+      args: '[jobname]/clear NumerStrony'
     error:
       nojob: Nie można znaleźć żadnej pracy z tą nazwą.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Wyświetla najlepszych graczy według globalnego poziomu prac.
-      args: clear/pageNumber
+      args: clear/numerStrony
     error:
       nojob: Nie można znaleźć żadnych informacji.
     output:

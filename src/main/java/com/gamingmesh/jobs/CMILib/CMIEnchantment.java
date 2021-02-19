@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 
 import com.gamingmesh.jobs.stuff.Util;
@@ -51,9 +51,9 @@ public enum CMIEnchantment {
     UNBREAKING("DURABILITY"),
     VANISHING_CURSE;
 
-    private static HashMap<String, CMIEnchantment> map = new HashMap<>();
-    private static HashMap<Enchantment, CMIEnchantment> emap = new HashMap<>();
-    private static HashMap<String, Enchantment> gmap = new HashMap<>();
+    private static Map<String, CMIEnchantment> map = new HashMap<>();
+    private static Map<Enchantment, CMIEnchantment> emap = new HashMap<>();
+    private static Map<String, Enchantment> gmap = new HashMap<>();
 
     private List<String> subName = new ArrayList<>();
     private List<String> customNames = new ArrayList<>();
@@ -64,7 +64,7 @@ public enum CMIEnchantment {
 	if (subName != null)
 	    this.subName.addAll(Arrays.asList(subName));
 
-	String temp = this.toString().toLowerCase().replace("_", "");
+	String temp = toString().toLowerCase().replace("_", "");
 
 	for (Enchantment one : Enchantment.values()) {
 	    try {
@@ -153,7 +153,6 @@ public enum CMIEnchantment {
 		}
 	    }
 	} catch (Throwable e) {
-
 	}
     }
 
@@ -209,7 +208,7 @@ public enum CMIEnchantment {
     }
 
     public String getName() {
-	return Util.firstToUpperCase(this.toString().replace("_", " "));
+	return Util.firstToUpperCase(toString().replace('_', ' '));
     }
 
     public static String getName(Enchantment enchant) {
