@@ -258,7 +258,7 @@ command:
       nojob: Сперва устройтесь на работу.
     output:
       message: 'Уровень %joblevel% для %jobname%: %jobxp%/%jobmaxxp% оп.'
-      max-level: '     &cМаксимальный уровень   -   %jobname%'
+      max-level: '     &cМакс. уровень   -   %jobname%'
     bossBarOutput: 'Ур. %joblevel% %jobname%: %jobxp%/%jobmaxxp% оп.%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
@@ -303,8 +303,8 @@ command:
       bonus: '&eНа эту работу предусмотрен бонус &2[bonus]%&e, так как на неё устроено недостаточно игроков.'
       args: '[jobname] [action]'
       actions: '&eДопустимые действия: &f%actions%'
-      max: ' - &eмаксимальный уровень:&f '
-      newMax: ' &eМаксимальный уровень: &f[max]'
+      max: ' - &eмакс. уровень:&f '
+      newMax: ' &eМакс. уровень: &f[max]'
       material: '&7%material%'
       levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &aуровней)'
       levelFrom: ' &a(от &e%levelFrom% &aуровня)'
@@ -322,7 +322,7 @@ command:
       leftSlots: '&eОсталось вакансий:&f '
       working: '&2&nТекущая работа'
       cantJoin: '&cВы не можете устроиться на выбранную работу.'
-      max: '&eМаксимальный уровень:&f '
+      max: '&eМакс. уровень:&f '
       back: '&e<<< Назад'
       next: '&eДалее >>>'
     output:
@@ -442,11 +442,11 @@ command:
       totalWorkers: ' &7Рабочих: &e[amount]'
       penalty: ' &4Штраф: &c[amount]%'
       bonus: ' &2Бонус: &a[amount]%'
-      newHeader: '&2========== [amount] Доступные Работы ========='
+      newHeader: '&2========== [amount] доступных работ ========='
       description: '[description]'
       list: '    &8[place]. &7[jobname]'
       console:
-        newHeader: '&2========== [amount] Доступные Работы ========='
+        newHeader: '&2========== [amount] доступных работ ========='
         description: '[description]'
         totalWorkers: ' &7Рабочих: &e[amount]'
         penalty: ' &4Штраф: &c[amount]%'
@@ -672,7 +672,7 @@ message:
     message: '&cВы потеряли уровень&e %lostLevel%&c в работе&e %jobname%&c! Уровень:&6 %joblevel%&c.'
   cowtimer: '&eВы должны подождать &6%time% &eсек. для получения выплаты за эту работу.'
   blocktimer: '&eВы должны подождать &3[time] &eсек. для получения выплаты за это!'
-  taxes: '&3[amount] &eсерверных налогов перенесены на этот аккаунт'
+  taxes: '&3[amount] &eсерверных налогов наложены на этот аккаунт'
   boostStarted: '&eУскоритель работ начался!'
   boostStoped: '&eУскоритель работ закончился!'
   crafting:

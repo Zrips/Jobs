@@ -15,33 +15,33 @@ general:
       mins: '&e%mins% &6Minuten '
       secs: '&e%secs% &6Sekunden '
     invalidPage: '&cUngültige Seite'
-    'true': 'Wahr'
-    'false': 'Falsch'
+    'true': '&2True'
+    'false': '&cFalse'
     blocks:
       furnace: Ofen
       smoker: Räucherofen
       blastfurnace: Hochofen
       brewingstand: Braustand
   admin:
-    error: '&cEs ist ein Fehler aufgetreten.'
-    success: '&eDer Befehl ist erfolgreich ausgeführt worden.'
+    error: '&cIn dem Befehl ist ein Fehler aufgetreten.'
+    success: '&eDer Befehl wurde erfolgreich ausgeführt.'
   error:
-    noHelpPage: '&cEs gibt keine Hilfeseite mit dieser Nummer.'
+    noHelpPage: '&cEs gibt keine Hilfsseite mit dieser Nummer!'
     notNumber: '&eBitte benutze Nummern!'
-    job: '%cDer Job des du ausgesucht hast existiert nicht oder du bist nicht disem angestellt'
+    job: '%cDer Job, den du ausgesucht hast existiert nicht oder du bist nicht diesem beigetreten'
     noCommand: '&cEs gibt keinen Befehl mit diesem Namen!'
-    permission: '&cDu hast keine Berechtigung für diesen Befehl!'
-    noinfo: '&cKeine Informationen vorhanden.'
+    permission: '&c Dafür hast du keine Rechte!'
+    noinfo: '&cKeine Informationen gefunden!'
     noinfoByPlayer: '&cKeine Informationen für [%playername%] gefunden!'
-    ingame: '&cDer Befehl kann nur ingame benutzt werden!'
+    ingame: '&cDer Befehl kann nur im Spiel benutzt werden!'
     fromconsole: '&cDer Befehl kann nur in der Konsole benutzt werden!'
     worldisdisabled: '&cDer Befehl kann nicht in dieser Welt ausgeführt werden!'
     newRegistration: '#&eneuer Besitzer für [block] &7[current]&e/&f[max] registriert'
-    noRegistration: '&c Du hast di maximale [block]-Zahl erreicht!'
+    noRegistration: '&c Du hast die maximale [block]-Zahl erreicht!'
 command:
   help:
     output:
-      info: Type /jobs [cmd] ? um Infos über einen Befehl anzusehen.
+      info: Schreibe /jobs [cmd] ? um mehr infos über einen Befehl zu bekommen.
       cmdUsage: '&2Verwende: &7[command]'
       label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
@@ -55,17 +55,17 @@ command:
       nextPage: '&6 Nächste Seite &2>>----'
       nextPageOff: '&7 Nächste Seite >>----'
       pageCount: '&2[current]/[total]'
-      pageCountHover: '&e[totalEntries] einträge'
+      pageCountHover: '&e[totalEntries] Einträge'
       prevPageGui: '&6Vorherige Seite '
       nextPageGui: '&6Nächste Seite'
   moneyboost:
     help:
-      info: Der Geldbonus für alle Spieler wird erhöht.
+      info: Der Geldbonus für alle Spieler wird erhöht
       args: '[jobname]/all/reset [time]/[rate]'
     output:
-      allreset: Alle Geld-Bonis sind ausgeschaltet.
-      jobsboostreset: Der Geld-Bonus für %jobname% wurde ausgeschaltet.
-      nothingtoreset: Es ist nichts zum resetten da.
+      allreset: Alle Geld Bonis sind ausgeschaltet
+      jobsboostreset: Der Geld-Bonus für %jobname% wurde ausgeschaltet
+      nothingtoreset: Es ist nichts zum zurücksetzen da
       boostalladded: Ein Geld-Bonus um %boost% wurde für alle Jobs hinzugefügt!
       boostadded: Es wurde ein Geld-Bonus um &e%boost% &afür &e%jobname% hinzugefügt!
       infostats: '&c-----> &aGeldboost x%boost% eingeschaltet!&c <-------'
@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Zeigt die Top Spieler nach Berufen.
-      args: '[jobname]/clear pageNumber'
+      args: '[jobname]/leere Seitennummer'
     error:
       nojob: Konnte keinen Beruf mit diesem Namen finden.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Zeigt die Top Spieler nach dem globalen Job Level.
-      args: clear/pageNumber
+      args: leer/Seitennummer
     error:
       nojob: Keine Informationen gefunden.
     output:

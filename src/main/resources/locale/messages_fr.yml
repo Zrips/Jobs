@@ -93,12 +93,12 @@ command:
       infostats: '&c-----> &aBoost &2XP x%boost% &aactivé&c <-------'
   schedule:
     help:
-      info: Enables the given scheduler
+      info: Active les planificateurs donnés
       args: enable [scheduleName] [untilTime]
     output:
-      noScheduleFound: '&cSchedule with this name not found.'
-      alreadyEnabled: '&cThis schedule already enabled.'
-      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
+      noScheduleFound: '&cPlanificateur avec ce nom introuvable.'
+      alreadyEnabled: '&cCe planificateur est déjà activé.'
+      enabled: '&ePlanificateur activé du &a%from% &ejusqu''au &a%until%'
   itembonus:
     help:
       info: Vérifier l'objet bonus
@@ -245,7 +245,7 @@ command:
     output:
       list: '&e[place]. &7[placeholder]'
       outputResult: ' &erésultat: &7[result]'
-      parse: '&6[placeholder] &7by [source] &6result &8|&f[result]&8|'
+      parse: '&6[placeholder] &7par [source] &6résultat &8|&f[result]&8|'
   entitylist:
     help:
       info: Affiche toutes les entités possibles qui peuvent être utilisées par ce plugin.
@@ -257,7 +257,7 @@ command:
     error:
       nojob: Vous n'avez pas de métier.
     output:
-      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
+      message: 'Niveau %joblevel% pour %jobname%: %jobxp%/%jobmaxxp% xp'
       max-level: '     &cNiveau max   -   %jobname%'
     bossBarOutput: 'Niveau %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
@@ -463,7 +463,7 @@ command:
       info: Clear block ownership
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
+      cleared: '&7[furnaces] &2fours, &7[brewing] &2alambic, &7[smoker]&2 fumoirs et &7[blast]&2 haut fourneaux supprimés.'
   skipquest:
     help:
       info: Passer la quête pour en obtenir une nouvelle
@@ -515,7 +515,7 @@ command:
   top:
     help:
       info: Affiche le top des joueurs par nom de métiers.
-      args: '[jobname]/clear pageNumber'
+      args: '[jobname]/clear numéroDePage'
     error:
       nojob: Aucun métier ne porte ce nom.
     output:
@@ -527,7 +527,7 @@ command:
   gtop:
     help:
       info: Affiche le top des joueurs par niveau global de métiers.
-      args: clear/pageNumber
+      args: clear/numéroDePage
     error:
       nojob: Impossible de trouver des informations.
     output:
