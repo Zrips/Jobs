@@ -33,9 +33,7 @@ public class JobInfo {
     private int untilLevel = Integer.MAX_VALUE;
 
     private String configPath = "";
-    private Integer softIncomeLevelLimit;
-    private Integer softExpLevelLimit;
-    private Integer softPointsLevelLimit;
+    private Integer softIncomeLevelLimit, softExpLevelLimit, softPointsLevelLimit;
 
     public JobInfo(ActionType actionType, int id, String meta, String name, double baseIncome, Parser moneyEquation, double baseXp, Parser xpEquation,
 	Parser pointsEquation, double basePoints, int fromLevel, int untilLevel, String configPath) {
@@ -148,10 +146,6 @@ public class JobInfo {
 
     public String getConfigPath() {
 	return configPath;
-    }
-
-    public void setConfigPath(String configPath) {
-	this.configPath = configPath;
     }
 
     public void setBaseIncome(double baseIncome) {

@@ -23,6 +23,6 @@ public class BlockCollectInfo extends BaseActionInfo {
 
     @Override
     public String getNameWithSub() {
-	return getName() + ":" + ageOrLevel;
+	return getName() + "-" + ageOrLevel;
     }
 }

@@ -1222,6 +1222,7 @@ public abstract class JobsDAO {
 	    prestt.setInt(2, job.getId());
 	    prestt.execute();
 	} catch (SQLException e) {
+	    e.printStackTrace();
 	} finally {
 	    close(prestt);
 	    close(res);

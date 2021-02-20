@@ -39,7 +39,7 @@ public abstract class MaterialActionInfo extends BaseActionInfo {
 
     @Override
     public String getNameWithSub() {
-	return getName() + ":" + data;
+	return getName() + "-" + data;
     }
 
 }

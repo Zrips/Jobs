@@ -1083,10 +1083,6 @@ public class ConfigManager {
 			continue;
 		    }
 
-		    int id = itemSection.getInt("id");
-
-		    String name = itemSection.getString("name");
-
 		    List<String> lore = new ArrayList<>();
 		    if (itemSection.isList("lore"))
 			itemSection.getStringList("lore").stream().map(CMIChatColor::translate).forEach(lore::add);
@@ -1109,9 +1105,9 @@ public class ConfigManager {
 				enchants.put(ench, level);
 			}
 
-		    int level = itemSection.getInt("level");
 		    String node = itemKey.toLowerCase();
-		    jobLimitedItems.put(node, new JobLimitedItems(node, id, 0, 1, name, lore, enchants, level));
+		    jobLimitedItems.put(node, new JobLimitedItems(node, itemSection.getInt("id"), 0, 1, itemSection.getString("name"),
+		        lore, enchants, itemSection.getInt("level")));
 		}
 	    }
 
@@ -1233,9 +1229,9 @@ public class ConfigManager {
 
 	    for (ActionType actionType : ActionType.values()) {
 		ConfigurationSection typeSection = jobSection.getConfigurationSection(actionType.getName());
-		ArrayList<JobInfo> jobInfo = new ArrayList<>();
+		List<JobInfo> jobInfo = new ArrayList<>();
 		if (typeSection != null) {
-		    if (typeSection.isList("materials")) {
+		    if (!typeSection.getStringList("materials").isEmpty()) {
 			for (String mat : typeSection.getStringList("materials")) {
 			    if (!mat.contains(";")) {
 				continue;
@@ -1327,7 +1323,7 @@ public class ConfigManager {
 			Integer itemSoftPointsLimit = softPointsLimit;
 			if (section.isInt("softPointsLimit"))
 			    itemSoftPointsLimit = section.getInt("softPointsLimit");
-			
+
 			jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, fromlevel,
 			    untilLevel, section.getCurrentPath(), itemSoftIncomeLimit, itemSoftExpLimit, itemSoftPointsLimit));
 		    }
