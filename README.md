@@ -7,19 +7,19 @@ Jobs Plugin for the BukkitAPI
 ***
 
 # Jobs
-![Image of Jobs](https://proxy.spigotmc.org/da30c0fefd44c6de51f2a8af16b15071184a4b3b?url=http%3A%2F%2Fltcraft.lt%2Fwp-content%2Fuploads%2F2016%2F06%2Fnewlogo5.jpg)
+![Image of Jobs](https://www.spigotmc.org/data/resource_icons/4/4216.jpg?1424463769)
 
 _Original author and manager of this was phrstbrn until [v2.12.0](https://dev.bukkit.org/projects/jobs/files/808311) version._
 
 A fully configurable plugin that allows you to get paid for breaking, placing, killing, fishing, and crafting, and more. Class based professions, gain experience as you perform your job.
 
-Main pages:
+Links
 - Bukkit: https://dev.bukkit.org/projects/jobs-reborn
 - Spigot: https://www.spigotmc.org/resources/4216/
 
 # Jobs API
 You can manually add the jar file to your build path or you can use jitpack if you use maven or gradle:
-## Maven:
+## Maven
 ```xml
 <repositories>
     <repository>
@@ -37,7 +37,7 @@ You can manually add the jar file to your build path or you can use jitpack if y
     </dependency>
 </dependencies>
 ```
-## Gradle:
+## Gradle
 ```gradle
 repositories {
     maven { 

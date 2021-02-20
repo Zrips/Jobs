@@ -571,6 +571,8 @@ public class Job {
     }
 
     public void setId(int id) {
+	Jobs.getJobsIds().remove(this.id);
+
 	this.id = id;
 	if (id != 0)
 	    Jobs.getJobsIds().put(id, this);
