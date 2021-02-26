@@ -180,8 +180,8 @@ public class JobsPaymentListener implements Listener {
 	    ItemStack currentItem = event.getCurrentItem();
 
 	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
-		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta()
-		    .getDisplayName()), ActionType.VTRADE));
+		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(Jobs.getInstance()
+			.getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.VTRADE));
 	    } else if (currentItem != null) {
 		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.VTRADE));
 	    }
@@ -203,7 +203,8 @@ public class JobsPaymentListener implements Listener {
 		    while (newItemsCount >= 1) {
 			newItemsCount--;
 			if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
-			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.VTRADE));
+			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(Jobs.getInstance()
+			    .getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.VTRADE));
 			else
 			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.VTRADE));
 		    }
@@ -703,8 +704,8 @@ public class JobsPaymentListener implements Listener {
 		PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
 		Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
 	    } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
-		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta()
-		    .getDisplayName()), ActionType.CRAFT));
+		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(Jobs.getInstance()
+			.getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.CRAFT));
 	    } else if (currentItem != null) {
 		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.CRAFT));
 	    }
@@ -726,7 +727,8 @@ public class JobsPaymentListener implements Listener {
 		    while (newItemsCount >= 1) {
 			newItemsCount--;
 			if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
-			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
+			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(Jobs.getInstance()
+			    .getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.CRAFT));
 			else
 			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 		    }
@@ -855,10 +857,10 @@ public class JobsPaymentListener implements Listener {
 	String originalName = null;
 	String newName = null;
 	if (firstSlot.hasItemMeta())
-	    originalName = firstSlot.getItemMeta().getDisplayName();
+	    originalName = Jobs.getInstance().getComplement().getDisplayName(firstSlot.getItemMeta());
 
 	if (resultStack.hasItemMeta())
-	    newName = resultStack.getItemMeta().getDisplayName();
+	    newName = Jobs.getInstance().getComplement().getDisplayName(resultStack.getItemMeta());
 
 	if (originalName != null && !originalName.equals(newName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
 	    return;

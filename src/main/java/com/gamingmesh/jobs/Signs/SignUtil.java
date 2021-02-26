@@ -225,7 +225,7 @@ public class SignUtil {
 	    if (!jSign.isSpecial()) {
 		for (int i = 0; i < 4; i++) {
 		    if (i + number >= playerList.size()) {
-			sign.setLine(i, "");
+			Jobs.getInstance().getComplement().setLine(sign, i, "");
 			continue;
 		    }
 
@@ -250,7 +250,7 @@ public class SignUtil {
 		    }
 
 		    if (!line.isEmpty())
-			sign.setLine(i, line);
+			Jobs.getInstance().getComplement().setLine(sign, i, line);
 		}
 		sign.update();
 		if (!UpdateHead(sign, playerList.get(0).getPlayerInfo().getName(), timelapse)) {
@@ -267,22 +267,22 @@ public class SignUtil {
 		}
 
 		int no = jSign.getNumber() + number + 1;
-		sign.setLine(0, translateSignLine("signs.SpecialList.p" + jSign.getNumber(), no, playerName, pl.getLevel(), signJobName));
-		sign.setLine(1, translateSignLine("signs.SpecialList.name", no, playerName, pl.getLevel(), signJobName));
+		Jobs.getInstance().getComplement().setLine(sign, 0, translateSignLine("signs.SpecialList.p" + jSign.getNumber(), no, playerName, pl.getLevel(), signJobName));
+		Jobs.getInstance().getComplement().setLine(sign, 1, translateSignLine("signs.SpecialList.name", no, playerName, pl.getLevel(), signJobName));
 
 		switch (type) {
 		case toplist:
 		case gtoplist:
-		    sign.setLine(2, Jobs.getLanguage().getMessage("signs.SpecialList.level", "[number]", no, "[player]", playerName, "[level]", pl.getLevel(), "[job]", signJobName));
+		    Jobs.getInstance().getComplement().setLine(sign, 2, Jobs.getLanguage().getMessage("signs.SpecialList.level", "[number]", no, "[player]", playerName, "[level]", pl.getLevel(), "[job]", signJobName));
 		    break;
 		case questtoplist:
-		    sign.setLine(2, Jobs.getLanguage().getMessage("signs.SpecialList.quests", "[number]", no, "[player]", playerName, "[quests]", pl.getLevel(), "[job]", signJobName));
+		    Jobs.getInstance().getComplement().setLine(sign, 2, Jobs.getLanguage().getMessage("signs.SpecialList.quests", "[number]", no, "[player]", playerName, "[quests]", pl.getLevel(), "[job]", signJobName));
 		    break;
 		default:
 		    break;
 		}
 
-		sign.setLine(3, translateSignLine("signs.SpecialList.bottom", no, playerName, pl.getLevel(), signJobName));
+		Jobs.getInstance().getComplement().setLine(sign, 3, translateSignLine("signs.SpecialList.bottom", no, playerName, pl.getLevel(), signJobName));
 		sign.update();
 		if (!UpdateHead(sign, pl.getPlayerInfo().getName(), timelapse)) {
 		    timelapse--;

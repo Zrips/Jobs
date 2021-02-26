@@ -633,7 +633,7 @@ public class PlayerManager {
 	    String message = Jobs.getLanguage().getMessage("message.leveldown.message");
 
 	    message = message.replace("%jobname%", job.getNameWithColor());
-	    message = message.replace("%playername%", player != null ? player.getDisplayName() : jPlayer.getName());
+	    message = message.replace("%playername%", player != null ? Jobs.getInstance().getComplement().getDisplayName(player) : jPlayer.getName());
 	    message = message.replace("%joblevel%", "" + prog.getLevel());
 	    message = message.replace("%lostLevel%", "" + oldLevel);
 
@@ -786,13 +786,13 @@ public class PlayerManager {
 	    message = message.replace("%titlename%", levelUpEvent.getOldTitle()
 		.getChatColor().toString() + levelUpEvent.getOldTitle().getName());
 
-	message = message.replace("%playername%", player != null ? player.getDisplayName() : jPlayer.getName());
+	message = message.replace("%playername%", player != null ? Jobs.getInstance().getComplement().getDisplayName(player) : jPlayer.getName());
 	message = message.replace("%joblevel%", "" + prog.getLevel());
 
 	for (String line : message.split("\n")) {
 	    if (Jobs.getGCManager().isBroadcastingLevelups()) {
 		if (Jobs.getGCManager().BroadcastingLevelUpLevels.contains(oldLevel + 1) || Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
-		    Bukkit.getServer().broadcastMessage(line);
+		    Jobs.getInstance().getComplement().broadcastMessage(line);
 	    } else if (player != null) {
 		if (Jobs.getGCManager().LevelChangeActionBar)
 		    ActionBarManager.send(player, line);
@@ -817,14 +817,14 @@ public class PlayerManager {
 	    message = Jobs.getLanguage().getMessage("message.skillup." + (Jobs.getGCManager().isBroadcastingSkillups()
 		? "broadcast" : "nobroadcast"));
 
-	    message = message.replace("%playername%", player != null ? player.getDisplayName() : jPlayer.getName());
+	    message = message.replace("%playername%", player != null ? Jobs.getInstance().getComplement().getDisplayName(player) : jPlayer.getName());
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitle()
 		.getChatColor().toString() + levelUpEvent.getNewTitle().getName());
 	    message = message.replace("%jobname%", job.getNameWithColor());
 
 	    for (String line : message.split("\n")) {
 		if (Jobs.getGCManager().isBroadcastingSkillups()) {
-		    Bukkit.getServer().broadcastMessage(line);
+		    Jobs.getInstance().getComplement().broadcastMessage(line);
 		} else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
 			ActionBarManager.send(player, line);

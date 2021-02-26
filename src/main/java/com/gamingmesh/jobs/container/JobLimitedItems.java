@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 
@@ -70,8 +71,8 @@ public class JobLimitedItems {
 	    return item;
 	}
 
-	if (this.name != null)
-	    meta.setDisplayName(CMIChatColor.translate(name));
+	if (name != null)
+	    Jobs.getInstance().getComplement().setDisplayName(meta, CMIChatColor.translate(name));
 
 	if (lore != null && !lore.isEmpty()) {
 	    List<String> translatedLore = new ArrayList<>();
@@ -79,7 +80,7 @@ public class JobLimitedItems {
 		translatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
 	    }
 
-	    meta.setLore(translatedLore);
+	    Jobs.getInstance().getComplement().setLore(meta, translatedLore);
 	}
 
 	if (enchants != null)

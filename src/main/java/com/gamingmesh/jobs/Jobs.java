@@ -48,8 +48,12 @@ import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.*;
+import com.gamingmesh.jobs.stuff.complement.Complement;
+import com.gamingmesh.jobs.stuff.complement.Complement1;
+import com.gamingmesh.jobs.stuff.complement.Complement2;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
+
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -72,7 +76,6 @@ public class Jobs extends JavaPlugin {
     private static Language lManager;
     private static LanguageManager lmManager;
     private static SignUtil signManager;
-    private CMIScoreboardManager cmiScoreboardManager;
     private static ScheduleManager scheduleManager;
     private static NameTranslatorManager nameTranslatorManager;
     private static GuiManager guiManager;
@@ -85,25 +88,24 @@ public class Jobs extends JavaPlugin {
     private static Loging loging;
     private static BlockProtectionManager bpManager;
     private static JobsManager dbManager;
+    private static ConfigManager configManager;
+    private static GeneralConfigManager gConfigManager;
+    private static PistonProtectionListener pistonProtectionListener;
+    private static CMIReflections reflections;
+    private static BufferedEconomy economy;
+    private static PermissionHandler permissionHandler;
+    private static PermissionManager permissionManager;
 
     private final Set<BlockOwnerShip> blockOwnerShips = new HashSet<>();
 
-    private static PistonProtectionListener pistonProtectionListener;
-
-    private static ConfigManager configManager;
-    private static GeneralConfigManager gConfigManager;
-
-    private static CMIReflections reflections;
+    private CMIScoreboardManager cmiScoreboardManager;
+    private Complement complement;
 
     private static JobsDAO dao;
     private static List<Job> jobs;
     private static Job noneJob;
     private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<>();
     private static Map<Integer, Job> jobsIds = new HashMap<>();
-
-    private static BufferedEconomy economy;
-    private static PermissionHandler permissionHandler;
-    private static PermissionManager permissionManager;
 
     public static BufferedPaymentThread paymentThread;
     private static DatabaseSaveThread saveTask;
@@ -113,12 +115,15 @@ public class Jobs extends JavaPlugin {
     private static NMS nms;
 
     protected static VersionChecker versionCheckManager;
-
     protected static SelectionManager smanager;
 
     private static PointsData pointsDatabase;
 
-    /**
+    public Complement getComplement() {
+	return complement;
+    }
+
+	/**
      * Returns the block owner ship for specific {@link CMIMaterial} type.
      * 
      * @param type {@link CMIMaterial}
@@ -730,17 +735,25 @@ public class Jobs extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(getPistonProtectionListener(), this);
 	    }
 
+	    boolean kyoriSupported = false;
+	    try {
+		Class.forName("net.kyori.adventure.text.Component");
+		kyoriSupported = true;
+	    } catch (ClassNotFoundException e) {
+	    }
+
+	    complement = (Version.isCurrentEqualOrHigher(Version.v1_16_R3) && kyoriSupported) ? new Complement2()
+		    : new Complement1();
+
 	    // register economy
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
 
 	    dao.loadBlockProtection();
 	    getExplore().load();
+	    getCommandManager().fillCommands();
+	    getDBManager().getDB().triggerTableIdUpdate();
 
 	    consoleMsg("&e[Jobs] Plugin has been enabled successfully.");
-
-	    getCommandManager().fillCommands();
-
-	    getDBManager().getDB().triggerTableIdUpdate();
 	} catch (Throwable e) {
 	    e.printStackTrace();
 	    System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");

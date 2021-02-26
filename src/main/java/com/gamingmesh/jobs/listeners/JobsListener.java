@@ -215,12 +215,12 @@ public class JobsListener implements Listener {
 	    return;
 
 	Sign sign = (Sign) block.getState();
-	String FirstLine = sign.getLine(0);
+	String FirstLine = Jobs.getInstance().getComplement().getLine(sign, 0);
 
 	if (!CMIChatColor.stripColor(FirstLine).equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))))
 	    return;
 
-	String command = CMIChatColor.stripColor(sign.getLine(1));
+	String command = CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(sign, 1));
 	for (String key : Jobs.getGCManager().keys) {
 	    if (command.equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
 		command = key;
@@ -228,7 +228,8 @@ public class JobsListener implements Listener {
 	    }
 	}
 
-	player.performCommand("jobs " + command + " " + CMIChatColor.stripColor(sign.getLine(2)) + " " + CMIChatColor.stripColor(sign.getLine(3)));
+	player.performCommand("jobs " + command + " " + CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(sign, 2))
+		+ " " + CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(sign, 3)));
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -242,7 +243,7 @@ public class JobsListener implements Listener {
 
 	Player player = event.getPlayer();
 	Sign sign = (Sign) block.getState();
-	String firstLine = sign.getLine(0);
+	String firstLine = Jobs.getInstance().getComplement().getLine(sign, 0);
 	if (firstLine.contains(Jobs.getLanguage().getMessage("signs.topline")) && !player.hasPermission("jobs.command.signs")) {
 	    event.setCancelled(true);
 	    player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
@@ -274,10 +275,10 @@ public class JobsListener implements Listener {
 
 	Sign sign = (Sign) block.getState();
 
-	if (!CMIChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[Jobs]"))
+	if (!CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(event, 0)).equalsIgnoreCase("[Jobs]"))
 	    return;
 
-	final SignTopType type = SignTopType.getType(CMIChatColor.stripColor(event.getLine(1)));
+	final SignTopType type = SignTopType.getType(CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(event, 1)));
 	if (type == null)
 	    return;
 
@@ -288,7 +289,7 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	String jobname = CMIChatColor.stripColor(event.getLine(2)).toLowerCase();
+	String jobname = CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(sign, 2)).toLowerCase();
 	final Job job = Jobs.getJob(jobname);
 	if (type == SignTopType.toplist && job == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
@@ -296,7 +297,7 @@ public class JobsListener implements Listener {
 	}
 
 	boolean special = false;
-	String numberString = CMIChatColor.stripColor(event.getLine(3)).toLowerCase();
+	String numberString = CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(sign, 3)).toLowerCase();
 	if (numberString.contains("s")) {
 	    numberString = numberString.replace("s", "");
 	    special = true;
@@ -334,10 +335,11 @@ public class JobsListener implements Listener {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
-	if (CMIChatColor.stripColor(event.getLine(0)).equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !CMIChatColor.stripColor(event
-	    .getLine(1))
+	if (CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(event, 0))
+	    .equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !CMIChatColor.stripColor(
+	    Jobs.getInstance().getComplement().getLine(event, 1))
 	    .equalsIgnoreCase("toplist"))
-	    event.setLine(0, convert(Jobs.getLanguage().getMessage("signs.topline")));
+	    Jobs.getInstance().getComplement().setLine(event, 0, convert(Jobs.getLanguage().getMessage("signs.topline")));
 	else
 	    return;
 
@@ -347,20 +349,20 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	String command = CMIChatColor.stripColor(event.getLine(1)).toLowerCase();
+	String command = CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(event, 1)).toLowerCase();
 	for (String key : Jobs.getGCManager().keys) {
 	    if (command.equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
-		event.setLine(1, convert(Jobs.getLanguage().getMessage("signs.secondline." + key)));
+		Jobs.getInstance().getComplement().setLine(event, 1, convert(Jobs.getLanguage().getMessage("signs.secondline." + key)));
 		break;
 	    }
 	}
 
-	Job job = Jobs.getJob(CMIChatColor.stripColor(event.getLine(2)));
+	Job job = Jobs.getJob(CMIChatColor.stripColor(Jobs.getInstance().getComplement().getLine(event, 2)));
 	if (job == null)
 	    return;
 
 	String color = Jobs.getGCManager().SignsColorizeJobName ? job.getChatColor().toString() : "";
-	event.setLine(2, convert(color + job.getName()));
+	Jobs.getInstance().getComplement().setLine(event, 2, convert(color + job.getName()));
     }
 
     private String convert(String line) {
@@ -454,9 +456,9 @@ public class JobsListener implements Listener {
 	if (iih.hasItemMeta()) {
 	    ItemMeta meta = iih.getItemMeta();
 	    if (meta.hasDisplayName())
-		name = meta.getDisplayName();
+		name = Jobs.getInstance().getComplement().getDisplayName(meta);
 	    if (meta.hasLore())
-		lore = meta.getLore();
+		lore = Jobs.getInstance().getComplement().getLore(meta);
 	}
 
 	String meinOk = null;

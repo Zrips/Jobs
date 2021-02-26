@@ -69,7 +69,7 @@ public class ScheduleManager {
 
 	    if (one.isStarted() && one.getBroadcastInfoOn() < System.currentTimeMillis() && one.getBroadcastInterval() > 0) {
 		one.setBroadcastInfoOn(System.currentTimeMillis() + one.getBroadcastInterval() * 60 * 1000);
-		one.getMessageToBroadcast().forEach(Bukkit::broadcastMessage);
+		Jobs.getInstance().getComplement().broadcastMessage(one.getMessageToBroadcast());
 	    }
 
 	    if (((one.isNextDay() && (Current >= From && Current < Until || Current >= one.getNextFrom() && Current < one.getNextUntil()) && !one
@@ -84,9 +84,9 @@ public class ScheduleManager {
 
 		if (one.isBroadcastOnStart())
 		    if (one.getMessageOnStart().isEmpty())
-			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStarted"));
+			Jobs.getInstance().getComplement().broadcastMessage(Jobs.getLanguage().getMessage("message.boostStarted"));
 		    else
-			one.getMessageOnStart().forEach(Bukkit::broadcastMessage);
+			Jobs.getInstance().getComplement().broadcastMessage(one.getMessageOnStart());
 
 		for (Job onejob : one.getJobs()) {
 		    onejob.setBoost(one.getBoost());
@@ -107,9 +107,9 @@ public class ScheduleManager {
 
 		if (one.isBroadcastOnStop())
 		    if (one.getMessageOnStop().isEmpty())
-			Bukkit.broadcastMessage(Jobs.getLanguage().getMessage("message.boostStoped"));
+			Jobs.getInstance().getComplement().broadcastMessage(Jobs.getLanguage().getMessage("message.boostStoped"));
 		    else
-			one.getMessageOnStop().forEach(Bukkit::broadcastMessage);
+			Jobs.getInstance().getComplement().broadcastMessage(one.getMessageOnStop());
 
 		for (Job onejob : one.getJobs()) {
 		    onejob.setBoost(new BoostMultiplier());
