@@ -549,7 +549,7 @@ exampleJob:
     fly:
       # Command its self, this will be executed from console, so all commands should work
       # Possible variables are: [player] [jobname] [oldlevel] [newlevel]
-      command: manuaddp [player] essentials.fly
+      command: lp user [player] permission set essentials.fly
 
       # When to execute this command first time
       levelFrom: 100
@@ -560,7 +560,7 @@ exampleJob:
 
     kit:
       command:
-      - manuaddp [player] essentials.kits.woodcutter
+      - lp user [player] permission set essentials.kits.woodcutter
       - msg [player] Now you can use woodcutter kit!
 
       levelFrom: 150

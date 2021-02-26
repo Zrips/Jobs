@@ -1024,7 +1024,7 @@ public abstract class JobsDAO {
 	    for (JobsWorld jobsWorld : Util.getJobsWorlds().values()) {
 		exploreStatement.setInt(1, jobsWorld.getId());
 		exploreStatement.setString(2, jobsWorld.getName());
-		exploreStatement.execute();
+		exploreStatement.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1039,7 +1039,7 @@ public abstract class JobsDAO {
 	    for (JobsWorld jobsWorld : Util.getJobsWorlds().values()) {
 		exploreStatementBack.setString(1, jobsWorld.getName());
 		exploreStatementBack.setInt(2, jobsWorld.getId());
-		exploreStatementBack.execute();
+		exploreStatementBack.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1054,7 +1054,7 @@ public abstract class JobsDAO {
 	    for (JobsWorld jobsWorld : Util.getJobsWorlds().values()) {
 		bpStatement.setInt(1, jobsWorld.getId());
 		bpStatement.setString(2, jobsWorld.getName());
-		bpStatement.execute();
+		bpStatement.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1069,7 +1069,7 @@ public abstract class JobsDAO {
 	    for (JobsWorld jobsWorld : Util.getJobsWorlds().values()) {
 		bpStatementback.setString(1, jobsWorld.getName());
 		bpStatementback.setInt(2, jobsWorld.getId());
-		bpStatementback.execute();
+		bpStatementback.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1084,7 +1084,7 @@ public abstract class JobsDAO {
 	    for (Job job : Jobs.getJobs()) {
 		archiveStatement.setInt(1, job.getId());
 		archiveStatement.setString(2, job.getName());
-		archiveStatement.execute();
+		archiveStatement.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1098,7 +1098,7 @@ public abstract class JobsDAO {
 	    for (Job job : Jobs.getJobs()) {
 		archiveStatementBack.setString(1, job.getName());
 		archiveStatementBack.setInt(2, job.getId());
-		archiveStatementBack.execute();
+		archiveStatementBack.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1112,7 +1112,7 @@ public abstract class JobsDAO {
 	    for (Job job : Jobs.getJobs()) {
 		usersStatement.setInt(1, job.getId());
 		usersStatement.setString(2, job.getName());
-		usersStatement.execute();
+		usersStatement.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1125,7 +1125,7 @@ public abstract class JobsDAO {
 	    for (Job job : Jobs.getJobs()) {
 		usersStatementBack.setString(1, job.getName());
 		usersStatementBack.setInt(2, job.getId());
-		usersStatementBack.execute();
+		usersStatementBack.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1140,7 +1140,7 @@ public abstract class JobsDAO {
 	    for (CurrencyType type : CurrencyType.values()) {
 		limitsStatement.setInt(1, type.getId());
 		limitsStatement.setString(2, type.getName());
-		limitsStatement.execute();
+		limitsStatement.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1155,7 +1155,7 @@ public abstract class JobsDAO {
 	    for (CurrencyType type : CurrencyType.values()) {
 		limitsStatementBack.setString(1, type.getName());
 		limitsStatementBack.setInt(2, type.getId());
-		limitsStatementBack.execute();
+		limitsStatementBack.executeUpdate();
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
