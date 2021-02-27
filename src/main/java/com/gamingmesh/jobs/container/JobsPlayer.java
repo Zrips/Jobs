@@ -944,7 +944,8 @@ public class JobsPlayer {
 	    Double income = jobinfo.getIncome(level, numjobs, maxJobsEquation);
 	    Double pointAmount = jobinfo.getPoints(level, numjobs, maxJobsEquation);
 	    Double expAmount = jobinfo.getExperience(level, numjobs, maxJobsEquation);
-		return income != 0D || pointAmount != 0D || expAmount != 0D;
+	    if (income != 0D || pointAmount != 0D || expAmount != 0D)
+		return true;
 	}
 
 	return false;
