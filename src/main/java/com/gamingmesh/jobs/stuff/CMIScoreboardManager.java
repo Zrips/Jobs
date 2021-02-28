@@ -32,10 +32,7 @@ public class CMIScoreboardManager {
     private ConcurrentHashMap<UUID, ScoreboardInfo> timerMap = new ConcurrentHashMap<>();
 
     private void RunScheduler() {
-	Iterator<Entry<UUID, ScoreboardInfo>> MeinMapIter = timerMap.entrySet().iterator();
-	while (MeinMapIter.hasNext()) {
-	    Entry<UUID, ScoreboardInfo> Map = MeinMapIter.next();
-
+	for (Entry<UUID, ScoreboardInfo> Map : timerMap.entrySet()) {
 	    if (System.currentTimeMillis() > Map.getValue().getTime() + (Jobs.getGCManager().ToplistInScoreboardInterval * 1000)) {
 		Player player = Bukkit.getPlayer(Map.getKey());
 		if (player != null) {
@@ -52,20 +49,16 @@ public class CMIScoreboardManager {
 		    }
 
 		    if (Jobs.getGCManager().RestoreAnimatedScoreboardAfter) {
-		    	try {
-					AnimatedScoreboardAPI api = AnimatedScoreboard.loadAPI(Jobs.getInstance());
-					if (api != null) {
-						if (timerMap.get(player.getUniqueId()).isAsbPresent()) {
-							Optional<PlayerScoreboard> ps = api.getPlayerScoreboard(player.getUniqueId());
-							PlayerScoreboard playerScoreboard = api.getPlayerScoreboard(player.getUniqueId()).get();
-							playerScoreboard.getScoreboardPlayer().enableScoreboard();
-						}
-					} else {
-						Jobs.getPluginLogger().warning("AnimatedScoreboard isn't correctly installed!");
-					}
-				} catch (Exception ignored) {
-				}
+			try {
+			    AnimatedScoreboardAPI api = AnimatedScoreboard.loadAPI(Jobs.getInstance());
+			    if (timerMap.get(player.getUniqueId()).isAsbPresent()) {
+				PlayerScoreboard playerScoreboard = api.getPlayerScoreboard(player.getUniqueId()).get();
+				playerScoreboard.getScoreboardPlayer().enableScoreboard();
+			    }
+			} catch (Exception e) {
+			    e.printStackTrace();
 			}
+		    }
 		}
 
 		timerMap.remove(Map.getKey());
@@ -233,7 +226,6 @@ public class CMIScoreboardManager {
 	Method getHandle = player.getClass().getMethod("getHandle");
 	Object nmsPlayer = getHandle.invoke(player);
 	Field conField = nmsPlayer.getClass().getField("playerConnection");
-	Object con = conField.get(nmsPlayer);
-	return con;
+	return conField.get(nmsPlayer);
     }
 }

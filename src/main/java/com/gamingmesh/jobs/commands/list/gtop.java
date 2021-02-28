@@ -87,18 +87,17 @@ public class gtop implements Cmd {
 		++i;
 	    }
 
-		boolean isAsbPresent = false;
-		if (Jobs.getGCManager().RestoreAnimatedScoreboardAfter) {
-			try {
-				AnimatedScoreboardAPI api = AnimatedScoreboard.loadAPI(Jobs.getInstance());
-				Optional<PlayerScoreboard> ps = api.getPlayerScoreboard(player.getUniqueId());
-				if (ps.isPresent()) {
-					isAsbPresent = true;
-				}
-			} catch (Exception ignored) {
-			}
+	    boolean isAsbPresent = false;
+	    if (Jobs.getGCManager().RestoreAnimatedScoreboardAfter) {
+		try {
+		    AnimatedScoreboardAPI api = AnimatedScoreboard.loadAPI(Jobs.getInstance());
+		    Optional<PlayerScoreboard> ps = api.getPlayerScoreboard(player.getUniqueId());
+		    if (ps.isPresent())
+			isAsbPresent = true;
+		} catch (Exception e) {
+		    e.printStackTrace();
 		}
-
+	    }
 
 	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.gtopline"), ls);
 	    plugin.getCMIScoreboardManager().addNew(player, isAsbPresent);

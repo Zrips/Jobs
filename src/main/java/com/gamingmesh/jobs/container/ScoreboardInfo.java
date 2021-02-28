@@ -40,7 +40,7 @@ public class ScoreboardInfo {
     }
 
     public boolean isAsbPresent() {
-        return isAsbPresent;
+    return isAsbPresent;
     }
 
     public Objective getObj() {
