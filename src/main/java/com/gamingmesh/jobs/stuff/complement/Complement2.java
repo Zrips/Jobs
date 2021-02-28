@@ -26,12 +26,12 @@ public final class Complement2 implements Complement {
 
 	@Override
 	public String getDisplayName(ItemMeta meta) {
-		return serialize(meta.displayName());
+		return meta.displayName() == null ? null : serialize(meta.displayName());
 	}
 
 	@Override
 	public String getLine(SignChangeEvent event, int line) {
-		return serialize(event.line(line));
+		return event.line(line) == null ? "" : serialize(event.line(line));
 	}
 
 	@Override
@@ -79,8 +79,10 @@ public final class Complement2 implements Complement {
 	public List<String> getLore(ItemMeta meta) {
 		List<String> lore = new ArrayList<>();
 
-		for (Component comp : meta.lore()) {
-			lore.add(serialize(comp));
+		if (meta.hasLore()) {
+			for (Component comp : meta.lore()) {
+				lore.add(serialize(comp));
+			}
 		}
 
 		return lore;
