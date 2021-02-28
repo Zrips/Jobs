@@ -3,6 +3,10 @@ package com.gamingmesh.jobs.commands.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Optional;
+import me.jasperjh.animatedscoreboard.AnimatedScoreboard;
+import me.jasperjh.animatedscoreboard.AnimatedScoreboardAPI;
+import me.jasperjh.animatedscoreboard.objects.PlayerScoreboard;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -89,8 +93,20 @@ public class top implements Cmd {
 		place++;
 	    }
 
+		boolean isAsbPresent = false;
+		if (Jobs.getGCManager().RestoreAnimatedScoreboardAfter) {
+			try {
+				AnimatedScoreboardAPI api = AnimatedScoreboard.loadAPI(Jobs.getInstance());
+				Optional<PlayerScoreboard> ps = api.getPlayerScoreboard(player.getUniqueId());
+				if (ps.isPresent()) {
+					isAsbPresent = true;
+				}
+			} catch (Exception ignored) {
+			}
+		}
+
 	    plugin.getCMIScoreboardManager().setScoreBoard(player, Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", job.getName()), ls);
-	    plugin.getCMIScoreboardManager().addNew(player);
+	    plugin.getCMIScoreboardManager().addNew(player, isAsbPresent);
 
 	    Jobs.getInstance().showPagination(sender, pi, "jobs top " + job.getName());
 	}

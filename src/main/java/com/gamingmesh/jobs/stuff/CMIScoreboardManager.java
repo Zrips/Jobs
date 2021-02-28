@@ -9,6 +9,12 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.gamingmesh.jobs.config.GeneralConfigManager;
+import com.google.common.base.Optional;
+import me.jasperjh.animatedscoreboard.AnimatedScoreboard;
+import me.jasperjh.animatedscoreboard.AnimatedScoreboardAPI;
+import me.jasperjh.animatedscoreboard.enums.ScoreboardState;
+import me.jasperjh.animatedscoreboard.objects.PlayerScoreboard;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -44,6 +50,22 @@ public class CMIScoreboardManager {
 			} catch (IllegalStateException e) {
 			}
 		    }
+
+		    if (Jobs.getGCManager().RestoreAnimatedScoreboardAfter) {
+		    	try {
+					AnimatedScoreboardAPI api = AnimatedScoreboard.loadAPI(Jobs.getInstance());
+					if (api != null) {
+						if (timerMap.get(player.getUniqueId()).isAsbPresent()) {
+							Optional<PlayerScoreboard> ps = api.getPlayerScoreboard(player.getUniqueId());
+							PlayerScoreboard playerScoreboard = api.getPlayerScoreboard(player.getUniqueId()).get();
+							playerScoreboard.getScoreboardPlayer().enableScoreboard();
+						}
+					} else {
+						Jobs.getPluginLogger().warning("AnimatedScoreboard isn't correctly installed!");
+					}
+				} catch (Exception ignored) {
+				}
+			}
 		}
 
 		timerMap.remove(Map.getKey());
@@ -54,9 +76,9 @@ public class CMIScoreboardManager {
 	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), this::RunScheduler, 20L);
     }
 
-    public void addNew(Player player) {
+    public void addNew(Player player, boolean boo) {
 	Scoreboard scoreBoard = player.getScoreboard();
-	timerMap.put(player.getUniqueId(), new ScoreboardInfo(scoreBoard, DisplaySlot.SIDEBAR));
+	timerMap.put(player.getUniqueId(), new ScoreboardInfo(scoreBoard, DisplaySlot.SIDEBAR, boo));
 	RunScheduler();
     }
 

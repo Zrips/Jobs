@@ -5,7 +5,7 @@ version: ${project.version}
 api-version: "1.13"
 website: https://www.spigotmc.org/resources/4216/
 authors: [phrstbrn, Zrips, montlikadani]
-softdepend: [Vault, Essentials, MythicMobs, McMMO, mcMMO, WorldGuard, MyPet, PlaceholderAPI, EcoEnchants]
+softdepend: [AnimatedScoreboard, Vault, Essentials, MythicMobs, McMMO, mcMMO, WorldGuard, MyPet, PlaceholderAPI, EcoEnchants]
 commands:
   jobs:
     description: Jobs
@@ -44,7 +44,6 @@ permissions:
       jobs.command.archive: true
       jobs.command.browse: true
       jobs.command.stats: true
-      jobs.command.archive: true
       jobs.command.join: true
       jobs.command.leave: true
       jobs.command.leaveall: true
@@ -71,7 +70,6 @@ permissions:
       jobs.command.give: true
       jobs.command.signs: true
       jobs.command.shop: true
-      jobs.command.stats: true
       jobs.command.fixnames: true
       jobs.command.signupdate: true
       jobs.command.moneyboost: true

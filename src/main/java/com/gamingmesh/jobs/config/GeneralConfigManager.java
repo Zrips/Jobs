@@ -88,7 +88,7 @@ public class GeneralConfigManager {
     private boolean FurnacesReassign, BrewingStandsReassign, useTnTFinder = false, ShowNewVersion;
 
     public boolean useBlockProtection, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
-	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
+	SignsColorizeJobName, ShowToplistInScoreboard, RestoreAnimatedScoreboardAfter = false, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
 	BrowseUseNewLook, payExploringWhenGliding = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
 	boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems/*, preventCropResizePayment*/, payItemDurabilityLoss,
@@ -906,6 +906,9 @@ public class GeneralConfigManager {
 
 	c.addComment("Scoreboard.interval", "For how long to show scoreboard");
 	ToplistInScoreboardInterval = c.get("Scoreboard.interval", 10);
+
+	c.addComment("Scoreboard.RestoreAnimatedScoreboardAfter", "Do you want to restore AnimatedScoreboard scoreboard?");
+	RestoreAnimatedScoreboardAfter = c.get("Scoreboard.RestoreAnimatedScoreboardAfter", false);
 
 	c.addComment("JobsBrowse.ShowTotalWorkers", "Do you want to show total amount of workers for job in jobs browse window?");
 	ShowTotalWorkers = c.get("JobsBrowse.ShowTotalWorkers", true);

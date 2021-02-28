@@ -183,12 +183,21 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/WildStackerAPI-latest.jar</systemPath>
 		</dependency>
+		<!-- AnimatedScoreboard -->
+		<dependency>
+			<groupId>me.jasperjh</groupId>
+			<artifactId>AnimatedScoreboard</artifactId>
+			<version>0.2.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/AnimatedScoreboard-0.2.3.jar</systemPath>
+		</dependency>
 		<!-- StackMob -->
 		<dependency>
 			<groupId>com.github.Nathat23</groupId>
-			<artifactId>StackMob-5</artifactId>
-			<version>master-SNAPSHOT</version>
-			<scope>provided</scope>
+			<artifactId>StackMob</artifactId>
+			<version>5.4.2</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/StackMob-5.4.2.jar</systemPath>
 		</dependency>
 		<!-- MyPet -->
 		<dependency>

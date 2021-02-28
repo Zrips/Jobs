@@ -9,8 +9,9 @@ public class ScoreboardInfo {
     private Scoreboard scoreBoard;
     private Objective obj;
     private Long time;
+    private final boolean isAsbPresent;
 
-    public ScoreboardInfo(Scoreboard scoreBoard, DisplaySlot slot) {
+    public ScoreboardInfo(Scoreboard scoreBoard, DisplaySlot slot, boolean boo) {
 	this.scoreBoard = scoreBoard;
 
 	for (Objective one : this.scoreBoard.getObjectives()) {
@@ -19,6 +20,7 @@ public class ScoreboardInfo {
 	}
 
 	time = System.currentTimeMillis();
+	isAsbPresent = boo;
     }
 
     public Scoreboard getScoreBoard() {
@@ -35,6 +37,10 @@ public class ScoreboardInfo {
 
     public void setTime(Long time) {
 	this.time = time;
+    }
+
+    public boolean isAsbPresent() {
+        return isAsbPresent;
     }
 
     public Objective getObj() {
