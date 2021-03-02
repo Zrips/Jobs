@@ -144,8 +144,7 @@ public class PlayerManager {
 	if (player == null)
 	    return null;
 
-	if (players.containsKey(player.getName()))
-	    players.remove(player.getName().toLowerCase());
+	players.remove(player.getName().toLowerCase());
 
 	return playersUUID.remove(player.getUniqueId());
     }
@@ -957,7 +956,6 @@ public class PlayerManager {
 	if (c == null) {
 	    c = new ItemBonusCache(getInventoryBoost(player, prog));
 	    cj.put(prog, c);
-	    return c.getBoostMultiplier();
 	}
 
 	return c.getBoostMultiplier();

@@ -62,20 +62,15 @@ public class JobsManager {
 	Jobs.setDAO(dao);
     }
 
-    String username = "root";
-    String password = "";
-    String hostname = "localhost:3306";
-    String database = "minecraft";
-    String prefix = "jobs_";
-    boolean certificate = false;
-    boolean ssl = false;
-    boolean autoReconnect = false;
+    private String username = "root", password = "", hostname = "localhost:3306", database = "minecraft", prefix = "jobs_",
+        characterEncoding = "utf8", encoding = "UTF-8";
+    private boolean certificate = false, ssl = false, autoReconnect = false;
 
     public void start() {
 	ConfigReader c = Jobs.getGCManager().getConfig();
 	c.addComment("storage.method", "storage method, can be MySQL or sqlite");
 	String storageMethod = c.get("storage.method", "sqlite");
-	c.addComment("mysql", "Requires Mysql.");
+	c.addComment("mysql", "Requires Mysql");
 
 	username = c.get("mysql.username", c.getC().getString("mysql-username", "root"));
 	password = c.get("mysql.password", c.getC().getString("mysql-password", ""));
@@ -85,6 +80,8 @@ public class JobsManager {
 	certificate = c.get("mysql.verify-server-certificate", c.getC().getBoolean("verify-server-certificate", false));
 	ssl = c.get("mysql.use-ssl", c.getC().getBoolean("use-ssl", false));
 	autoReconnect = c.get("mysql.auto-reconnect", c.getC().getBoolean("auto-reconnect", true));
+	characterEncoding = c.get("mysql.characterEncoding", "utf8");
+	encoding = c.get("mysql.encoding", "UTF-8");
 
 	if (storageMethod.equalsIgnoreCase("mysql")) {
 	    DbType = DataBaseType.MySQL;
@@ -121,7 +118,8 @@ public class JobsManager {
 	}
 
 	if (plugin.isEnabled()) {
-	    JobsMySQL data = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect);
+	    JobsMySQL data = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect,
+	        characterEncoding, encoding);
 	    data.initialize();
 	    return data;
 	}

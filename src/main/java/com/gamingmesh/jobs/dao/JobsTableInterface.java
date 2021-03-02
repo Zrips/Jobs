@@ -6,8 +6,6 @@ public interface JobsTableInterface {
 
     String getType();
 
-//    TablesFieldsType getFieldType();
-    
     boolean isUnique();
 
 }

@@ -10,9 +10,11 @@ import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
 public class JobsMySQL extends JobsDAO {
 
-    JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
+    JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect,
+        String characterEncoding, String encoding) {
 	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database
-	    + "?maxReconnects=1&useUnicode=true&characterEncoding=utf8&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
+	    + "?maxReconnects=1&characterEncoding=" + characterEncoding + "&encoding="
+	    + encoding + "&useUnicode=true&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
 	    + "&verifyServerCertificate=" + certificate, username, password, prefix);
 	setDbType(DataBaseType.MySQL);
     }
@@ -21,8 +23,10 @@ public class JobsMySQL extends JobsDAO {
 	setUp();
     }
 
-    public JobsMySQL initialize(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect) {
-	JobsMySQL dao = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect);
+    public JobsMySQL initialize(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect,
+        String characterEncoding, String encoding) {
+	JobsMySQL dao = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect,
+		characterEncoding, encoding);
 	dao.setUp();
 	return dao;
     }
@@ -44,18 +48,17 @@ public class JobsMySQL extends JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return null;
-	PreparedStatement prest = null;
+
 	try {
-	    prest = conn.prepareStatement(query);
+	    return conn.prepareStatement(query);
 	} catch (SQLException | NumberFormatException e) {
 	    e.printStackTrace();
 	}
-	return prest;
+	return null;
     }
 
     @Override
     public boolean createTable(String query) {
-	Statement statement = null;
 	if (query == null || query.isEmpty()) {
 	    Jobs.consoleMsg("&cCould not create table: query is empty or null.");
 	    return false;
@@ -63,6 +66,7 @@ public class JobsMySQL extends JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return false;
+	Statement statement = null;
 	try {
 	    statement = conn.createStatement();
 	    statement.execute(query);
