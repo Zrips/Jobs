@@ -48,9 +48,11 @@ import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.*;
+import com.gamingmesh.jobs.stuff.complement.JobsChatEvent;
 import com.gamingmesh.jobs.stuff.complement.Complement;
 import com.gamingmesh.jobs.stuff.complement.Complement1;
 import com.gamingmesh.jobs.stuff.complement.Complement2;
+import com.gamingmesh.jobs.stuff.complement.KyoriChatEvent;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -742,8 +744,13 @@ public class Jobs extends JavaPlugin {
 	    } catch (ClassNotFoundException e) {
 	    }
 
-	    complement = (Version.isCurrentEqualOrHigher(Version.v1_16_R3) && kyoriSupported) ? new Complement2()
-		    : new Complement1();
+	    if (Version.isCurrentEqualOrHigher(Version.v1_16_R3) && kyoriSupported) {
+		complement = new Complement2();
+		getServer().getPluginManager().registerEvents(new KyoriChatEvent(this), this);
+	    } else {
+		complement = new Complement1();
+		getServer().getPluginManager().registerEvents(new JobsChatEvent(this), this);
+	    }
 
 	    // register economy
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
