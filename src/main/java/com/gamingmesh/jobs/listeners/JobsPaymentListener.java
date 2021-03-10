@@ -897,24 +897,19 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	}
 
-	if (Jobs.getGCManager().PayForEnchantingOnAnvil && inv.getItem(1) != null && inv.getItem(1).getType() == Material.ENCHANTED_BOOK) {
+	ItemStack secondSlotItem = inv.getItem(1);
+
+	if (Jobs.getGCManager().PayForEnchantingOnAnvil && secondSlotItem != null && secondSlotItem.getType() == Material.ENCHANTED_BOOK) {
 	    for (Entry<Enchantment, Integer> oneEnchant : resultStack.getEnchantments().entrySet()) {
 		Enchantment enchant = oneEnchant.getKey();
 		if (enchant == null)
 		    continue;
 
 		CMIEnchantment e = CMIEnchantment.get(enchant);
-		String enchantName = e == null ? null : e.toString();
-		if (enchantName == null)
-		    continue;
-
-		Integer level = oneEnchant.getValue();
-		if (level == null)
-		    continue;
-
-		Jobs.action(jPlayer, new EnchantActionInfo(enchantName, level, ActionType.ENCHANT));
+		if (e != null)
+		    Jobs.action(jPlayer, new EnchantActionInfo(e.toString(), oneEnchant.getValue(), ActionType.ENCHANT));
 	    }
-	} else
+	} else if (secondSlotItem == null || secondSlotItem.getType() != Material.ENCHANTED_BOOK) // Enchanted books does not have durability
 	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
     }
 

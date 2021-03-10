@@ -37,14 +37,14 @@ public enum Version {
 
     private Integer value;
     private String shortVersion;
-    private static Version current = null;
+    private static Version current;
 
     Version() {
 	try {
-	    this.value = Integer.valueOf(this.name().replaceAll("[^\\d.]", ""));
+	    value = Integer.parseInt(name().replaceAll("[^\\d.]", ""));
 	} catch (Exception e) {
 	}
-	shortVersion = this.name().substring(0, this.name().length() - 3);
+	shortVersion = name().substring(0, name().length() - 3);
     }
 
     public Integer getValue() {
@@ -58,6 +58,7 @@ public enum Version {
     public static Version getCurrent() {
 	if (current != null)
 	    return current;
+
 	String[] v = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
 	String vv = v[v.length - 1];
 	for (Version one : values()) {
