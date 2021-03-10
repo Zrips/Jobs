@@ -1779,10 +1779,10 @@ public abstract class JobsDAO {
     }
 
     public PlayerInfo loadPlayerData(UUID uuid) {
-	PlayerInfo pInfo = null;
 	JobsConnection conn = getConnection();
 	if (conn == null)
-	    return pInfo;
+	    return null;
+	PlayerInfo pInfo = null;
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {

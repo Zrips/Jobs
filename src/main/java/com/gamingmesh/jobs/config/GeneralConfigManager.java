@@ -43,8 +43,6 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 
 public class GeneralConfigManager {
 
-    public ArrayList<String> keys;
-
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
     public List<String> FwColors = new ArrayList<>(), DisabledWorldsList = new ArrayList<>();
     /**

@@ -30,7 +30,9 @@ import com.gamingmesh.jobs.stuff.TimeManage;
 public class Placeholder {
 
     private Jobs plugin;
-    Pattern placeholderPatern = Pattern.compile("(%)([^\"^%]*)(%)");
+
+    private final AtomicInteger jobLevel = new AtomicInteger();
+    private final Pattern placeholderPatern = Pattern.compile("(%)([^\"^%]*)(%)");
 
     public Placeholder(Jobs plugin) {
 	this.plugin = plugin;
@@ -330,8 +332,6 @@ public class Placeholder {
 	return message;
     }
 
-    private final AtomicInteger jobLevel = new AtomicInteger();
-
     private String translateOwnPlaceHolder(Player player, String message) {
 	if (message == null)
 	    return null;
@@ -342,8 +342,7 @@ public class Placeholder {
 		if (!message.contains("%"))
 		    break;
 
-		String cmd = match.group(2);
-		JobsPlaceHolders place = JobsPlaceHolders.getByNameExact(cmd);
+		JobsPlaceHolders place = JobsPlaceHolders.getByNameExact(match.group(2));
 		if (place == null)
 		    continue;
 

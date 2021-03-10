@@ -1,4 +1,3 @@
-
 package com.gamingmesh.jobs.stuff;
 
 import java.text.SimpleDateFormat;

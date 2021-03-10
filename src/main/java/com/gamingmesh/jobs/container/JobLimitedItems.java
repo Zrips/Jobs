@@ -19,8 +19,8 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.enchantments.Enchantment;
@@ -42,10 +42,10 @@ public class JobLimitedItems {
     private int amount;
     private String name;
     private List<String> lore;
-    private HashMap<Enchantment, Integer> enchants;
+    private Map<Enchantment, Integer> enchants;
     private int level;
 
-    public JobLimitedItems(String node, int id, int data, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, int level) {
+    public JobLimitedItems(String node, int id, int data, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, int level) {
 	this.node = node;
 	this.id = id;
 	this.data = data;
@@ -96,7 +96,7 @@ public class JobLimitedItems {
     public int getId() {
 	return id;
     }
-    
+
     public CMIMaterial getType(){
 	return mat;
     }
@@ -109,7 +109,7 @@ public class JobLimitedItems {
 	return lore;
     }
 
-    public HashMap<Enchantment, Integer> getenchants() {
+    public Map<Enchantment, Integer> getEnchants() {
 	return enchants;
     }
 

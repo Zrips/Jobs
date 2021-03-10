@@ -56,14 +56,14 @@ public class ScheduleManager {
 
 	DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	String currenttime = dateFormat.format(new Date());
-	String CurrentDayName = getWeekDay();
+	String currentDayName = getWeekDay();
 
-	int Current = Integer.parseInt(currenttime.replace(":", ""));
+	int current = Integer.parseInt(currenttime.replace(":", ""));
 
 	for (Schedule one : BOOSTSCHEDULE) {
 
-	    int From = one.getFrom();
-	    int Until = one.getUntil();
+	    int from = one.getFrom();
+	    int until = one.getUntil();
 
 	    List<String> days = one.getDays();
 
@@ -72,8 +72,8 @@ public class ScheduleManager {
 		Jobs.getInstance().getComplement().broadcastMessage(one.getMessageToBroadcast());
 	    }
 
-	    if (((one.isNextDay() && (Current >= From && Current < Until || Current >= one.getNextFrom() && Current < one.getNextUntil()) && !one
-		.isStarted()) || !one.isNextDay() && (Current >= From && Current < Until)) && (days.contains(CurrentDayName) || days.contains("all")) && !one
+	    if (((one.isNextDay() && (current >= from && current < until || current >= one.getNextFrom() && current < one.getNextUntil()) && !one
+		.isStarted()) || !one.isNextDay() && (current >= from && current < until)) && (days.contains(currentDayName) || days.contains("all")) && !one
 		    .isStarted()) {
 
 		JobsScheduleStartEvent event = new JobsScheduleStartEvent(one);
@@ -97,8 +97,8 @@ public class ScheduleManager {
 		one.setStarted(true);
 		one.setStoped(false);
 		break;
-	    } else if (((one.isNextDay() && Current > one.getNextUntil() && Current < one.getFrom() && !one.isStoped()) || !one.isNextDay() && Current > Until
-		&& ((days.contains(CurrentDayName)) || days.contains("all"))) && !one.isStoped()) {
+	    } else if (((one.isNextDay() && current > one.getNextUntil() && current < one.getFrom() && !one.isStoped()) || !one.isNextDay() && current > until
+		&& ((days.contains(currentDayName)) || days.contains("all"))) && !one.isStoped()) {
 		JobsScheduleStopEvent event = new JobsScheduleStopEvent(one);
 		Bukkit.getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
@@ -124,8 +124,7 @@ public class ScheduleManager {
     }
 
     public static String getWeekDay() {
-	int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-	switch (dayOfWeek) {
+	switch (Calendar.getInstance().get(Calendar.DAY_OF_WEEK)) {
 	case 2:
 	    return "monday";
 	case 3:
@@ -164,7 +163,7 @@ public class ScheduleManager {
 	if (!conf.isConfigurationSection("Boost"))
 	    return;
 
-	ArrayList<String> sections = new ArrayList<>(conf.getConfigurationSection("Boost").getKeys(false));
+	List<String> sections = new ArrayList<>(conf.getConfigurationSection("Boost").getKeys(false));
 
 	for (String oneSection : sections) {
 	    ConfigurationSection path = conf.getConfigurationSection("Boost." + oneSection);
@@ -178,8 +177,8 @@ public class ScheduleManager {
 	    sched.setName(oneSection);
 	    sched.setDays(path.getStringList("Days"));
 	    sched.setJobs(path.getStringList("Jobs"));
-	    sched.setFrom(Integer.valueOf(path.getString("From").replace(":", "")));
-	    sched.setUntil(Integer.valueOf(path.getString("Until").replace(":", "")));
+	    sched.setFrom(Integer.parseInt(path.getString("From").replace(":", "")));
+	    sched.setUntil(Integer.parseInt(path.getString("Until").replace(":", "")));
 
 	    if (path.isList("MessageOnStart"))
 		sched.setMessageOnStart(path.getStringList("MessageOnStart"), path.getString("From"), path.getString("Until"));

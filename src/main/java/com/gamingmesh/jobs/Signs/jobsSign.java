@@ -61,8 +61,7 @@ public class jobsSign {
 	    return loc;
 	if (worldName == null)
 	    return null;
-	world = Bukkit.getWorld(worldName);
-	if (world == null)
+	if ((world = Bukkit.getWorld(worldName)) == null)
 	    return null;
 	return loc = new Location(world, x, y, z);
     }
@@ -139,13 +138,13 @@ public class jobsSign {
     }
 
     public String getIdentifier() {
-	if (getType() !=  SignTopType.toplist)
+	if (getType() != SignTopType.toplist)
 	    return getType().toString();
 	return jobName != null ? jobName + ":" + getType().toString() : getType().toString();
     }
 
     public static String getIdentifier(Job job, SignTopType type) {
-	if (type !=  SignTopType.toplist)
+	if (type != SignTopType.toplist)
 	    return type.toString();
 	return job != null ? job.getName() + ":" + type.toString() : type.toString();
     }

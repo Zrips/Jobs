@@ -12,6 +12,8 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class LanguageManager {
 
+    public final List<String> signKeys = new ArrayList<>();
+
     private List<String> languages = new ArrayList<>();
 
     public List<String> getLanguages() {
@@ -676,7 +678,8 @@ public class LanguageManager {
 	    c.get("scoreboard.gtopline", "&2Global top list");
 	    c.get("scoreboard.line", "&2%number%. &e%playername% (&6%level%&e)");
 
-	    Jobs.getGCManager().keys = new ArrayList<String>(c.getC().getConfigurationSection("signs.secondline").getKeys(false));
+	    signKeys.clear();
+	    signKeys.addAll(c.getC().getConfigurationSection("signs.secondline").getKeys(false));
 
 	    // Write back config
 	    c.save();

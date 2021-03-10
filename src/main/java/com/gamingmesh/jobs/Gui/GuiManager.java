@@ -27,7 +27,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 public class GuiManager {
 
     public void openJobsBrowseGUI(final Player player) {
-	ArrayList<Job> jobsList = new ArrayList<>();
+	List<Job> jobsList = new ArrayList<>();
 	for (Job job : Jobs.getJobs()) {
 	    if (Jobs.getGCManager().getHideJobsWithoutPermission())
 		if (!Jobs.getCommandManager().hasJobPermission(player, job))
@@ -102,9 +102,7 @@ public class GuiManager {
 		    lore.add(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (job.getBonus() * 100)));
 
 	    if (job.getDescription().isEmpty()) {
-		for (String desc : job.getFullDescription()) {
-		    lore.add(desc);
-		}
+		lore.addAll(job.getFullDescription());
 	    } else
 		lore.addAll(Arrays.asList(job.getDescription().split("/n|\\n")));
 
@@ -209,7 +207,7 @@ public class GuiManager {
 	    if (info == null || info.isEmpty())
 		continue;
 
-	    ArrayList<String> lore = new ArrayList<>();
+	    List<String> lore = new ArrayList<>();
 	    lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
 
 	    int y = 1;

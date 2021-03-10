@@ -310,7 +310,9 @@ public class SignUtil {
 	if (playerName == null)
 	    return false;
 
-	timelapse = timelapse < 1 ? 1 : timelapse;
+	if (timelapse < 1) {
+	    timelapse = 1;
+	}
 
 	BlockFace directionFacing = null;
 	if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {

@@ -9,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.StringUtil;
 
 import com.gamingmesh.jobs.ItemBoostManager;
@@ -29,25 +28,24 @@ public class TabComplete implements TabCompleter {
 	List<String> completionList = new ArrayList<>();
 
 	if (args.length == 1) {
-	    String PartOfCommand = args[0];
 	    List<String> temp = new ArrayList<>();
 
-	    Jobs.getCommandManager().getCommands(sender).forEach(temp::add);
-	    StringUtil.copyPartialMatches(PartOfCommand, temp, completionList);
+	    temp.addAll(Jobs.getCommandManager().getCommands(sender));
+	    StringUtil.copyPartialMatches(args[0], temp, completionList);
 	}
 	if (args.length > 1)
 	    for (int i = 1; i <= args.length; i++)
 		if (args.length == i + 1) {
-		    String PartOfCommand = args[i];
+		    String partOfCommand = args[i];
 
 		    if (!Jobs.getGCManager().getCommandArgs().containsKey(args[0].toLowerCase()))
 			break;
 
-		    List<String> ArgsList = Jobs.getGCManager().getCommandArgs().get(args[0].toLowerCase());
-		    if (ArgsList.size() < i)
+		    List<String> argsList = Jobs.getGCManager().getCommandArgs().get(args[0].toLowerCase());
+		    if (argsList.size() < i)
 			continue;
 
-		    String arg = ArgsList.get(i - 1);
+		    String arg = argsList.get(i - 1);
 		    List<String> t2 = new ArrayList<>();
 
 		    if (arg.contains("%%"))
@@ -61,7 +59,7 @@ public class TabComplete implements TabCompleter {
 		    for (String ar : t2) {
 			switch (ar) {
 			case "[scheduleName]":
-			    Jobs.getScheduleManager().getConf().getConfig().getConfigurationSection("Boost").getKeys(false).forEach(temp::add);
+			    temp.addAll(Jobs.getScheduleManager().getConf().getConfig().getConfigurationSection("Boost").getKeys(false));
 			    break;
 			case "[time]":
 			    temp.add("1hour10minute20s");
@@ -82,15 +80,11 @@ public class TabComplete implements TabCompleter {
 			    }
 			    break;
 			case "[playername]":
-			    pl: for (Player player : Bukkit.getOnlinePlayers()) {
+			    for (Player player : Bukkit.getOnlinePlayers()) {
 				// ignore hidden players
-				if (Jobs.getGCManager().FilterHiddenPlayerFromTabComplete && player.hasMetadata("vanished")) {
-				    // TODO add essentials & cmi support
-				    for (MetadataValue meta : player.getMetadata("vanished")) {
-					if (meta.asBoolean()) {
-					    continue pl;
-					}
-				    }
+				if (Jobs.getGCManager().FilterHiddenPlayerFromTabComplete && (player.hasMetadata("vanished")
+				    || (sender instanceof Player && ((Player) sender).canSee(player)))) {
+				    continue;
 				}
 
 				temp.add(player.getName());
@@ -127,8 +121,7 @@ public class TabComplete implements TabCompleter {
 			    break;
 			case "[oldplayerjob]":
 			    if (sender instanceof Player) {
-				onePlayerJob = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
-				if (onePlayerJob != null)
+				if ((onePlayerJob = Jobs.getPlayerManager().getJobsPlayer((Player) sender)) != null)
 				    for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
 					temp.add(oneOldJob.getJob().getName());
 				    }
@@ -140,7 +133,7 @@ public class TabComplete implements TabCompleter {
 			}
 		    }
 
-		    StringUtil.copyPartialMatches(PartOfCommand, temp, completionList);
+		    StringUtil.copyPartialMatches(partOfCommand, temp, completionList);
 		}
 
 	Collections.sort(completionList);

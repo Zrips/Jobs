@@ -46,7 +46,7 @@ public class glog implements Cmd {
 		    if (jPlayer == null)
 			continue;
 
-		    HashMap<String, Log> logList = jPlayer.getLog();
+		    Map<String, Log> logList = jPlayer.getLog();
 		    if (logList == null || logList.isEmpty())
 			continue;
 

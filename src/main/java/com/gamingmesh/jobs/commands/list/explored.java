@@ -1,7 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.util.HashMap;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,7 +18,7 @@ public class explored implements Cmd {
 
 	Player player = (Player) sender;
 
-	HashMap<String, ExploreRegion> worlds = Jobs.getExplore().getWorlds();
+	java.util.Map<String, ExploreRegion> worlds = Jobs.getExplore().getWorlds();
 
 	if (!worlds.containsKey(player.getWorld().getName())) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));

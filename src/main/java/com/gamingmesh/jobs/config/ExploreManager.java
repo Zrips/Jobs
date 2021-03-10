@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.config;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -17,7 +18,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class ExploreManager {
 
-    private final HashMap<String, ExploreRegion> worlds = new HashMap<>();
+    private final Map<String, ExploreRegion> worlds = new HashMap<>();
     private boolean exploreEnabled = false;
     private int playerAmount = 1;
 
@@ -48,7 +49,7 @@ public class ExploreManager {
 	Jobs.consoleMsg("&e[Jobs] Loaded explorer data" + (getSize() != 0 ? " (" + getSize() + ")" : "."));
     }
 
-    public HashMap<String, ExploreRegion> getWorlds() {
+    public Map<String, ExploreRegion> getWorlds() {
 	return worlds;
     }
 
@@ -69,7 +70,6 @@ public class ExploreManager {
     }
 
     public ExploreRespond ChunkRespond(int playerId, String world, int x, int z) {
-
 	ExploreRegion eRegions = worlds.get(world);
 	if (eRegions == null) {
 	    int RegionX = (int) Math.floor(x / 32D);

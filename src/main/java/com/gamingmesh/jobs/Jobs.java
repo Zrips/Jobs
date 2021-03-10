@@ -251,7 +251,7 @@ public class Jobs extends JavaPlugin {
 
     public static ShopManager getShopManager() {
 	if (shopManager == null) {
-	    shopManager = new ShopManager();
+	    shopManager = new ShopManager(instance);
 	}
 	return shopManager;
     }
@@ -396,7 +396,7 @@ public class Jobs extends JavaPlugin {
      */
     public static Language getLanguage() {
 	if (lManager == null)
-	    lManager = new Language(instance);
+	    lManager = new Language();
 	return lManager;
     }
 

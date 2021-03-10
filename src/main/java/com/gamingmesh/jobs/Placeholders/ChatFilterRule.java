@@ -20,13 +20,11 @@ public class ChatFilterRule {
 	    return id;
 	}
     }
-    private String replaceWith;
+
+    private String replaceWith, ruleName, messageToStaff, group;
     private ChatFilterBlockType blockType;
-    private String ruleName;
-    private List<Pattern> pattern = new ArrayList<>();
-    private String messageToStaff;
-    private List<String> commands = new ArrayList<>();
-    private String group;
+    private final List<Pattern> pattern = new ArrayList<>();
+    private List<String> commands;
 
     public ChatFilterRule(String ruleName, String group, List<String> list, String replaceWith, ChatFilterBlockType blockType, String messageToStaff, List<String> commands) {
 	this.group = group;

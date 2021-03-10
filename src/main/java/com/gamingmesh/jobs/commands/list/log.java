@@ -46,7 +46,7 @@ public class log implements Cmd {
 	    return true;
 	}
 
-	HashMap<String, Log> logList = JPlayer.getLog();
+	Map<String, Log> logList = JPlayer.getLog();
 	if (logList == null || logList.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.bottomline"));
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.nodata"));
@@ -73,7 +73,7 @@ public class log implements Cmd {
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.topline", "%playername%", JPlayer.getName()));
 	for (Log one : logList.values()) {
-	    HashMap<String, LogAmounts> AmountList = one.getAmountList();
+	    Map<String, LogAmounts> AmountList = one.getAmountList();
 	    double totalMoney = 0, totalExp = 0, totalPoints = 0;
 
 	    for (String oneSorted : unsortMap.keySet()) {

@@ -43,7 +43,13 @@ import com.gamingmesh.jobs.stuff.GiveItem;
 @SuppressWarnings("deprecation")
 public class ShopManager {
 
+    private Jobs plugin;
+
     private final List<ShopItem> list = new ArrayList<>();
+
+    public ShopManager(Jobs plugin) {
+	this.plugin = plugin;
+    }
 
     public List<ShopItem> getShopItemList() {
 	return list;
@@ -117,7 +123,7 @@ public class ShopManager {
 
 	for (int i = 0; i < ls.size(); i++) {
 	    ShopItem item = ls.get(i);
-	    ArrayList<String> lore = new ArrayList<>();
+	    List<String> lore = new ArrayList<>();
 	    CMIMaterial mat = CMIMaterial.get(item.getIconMaterial());
 
 	    if (item.isHideWithoutPerm()) {
@@ -147,7 +153,7 @@ public class ShopManager {
 		continue;
 
 	    if (item.getIconName() != null)
-		meta.setDisplayName(item.getIconName());
+		plugin.getComplement().setDisplayName(meta, item.getIconName());
 
 	    lore.addAll(item.getIconLore());
 
@@ -185,7 +191,7 @@ public class ShopManager {
 			? Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevelColor") : "") + item.getRequiredTotalLevels()));
 	    }
 
-	    meta.setLore(lore);
+	    plugin.getComplement().setLore(meta, lore);
 
 	    if (item.getCustomHead() != null) {
 		guiItem = CMIMaterial.PLAYER_HEAD.newItemStack();
@@ -194,9 +200,8 @@ public class ShopManager {
 		if (skullMeta == null)
 		    continue;
 
-		// Fix skull meta
-		skullMeta.setDisplayName(item.getIconName());
-		skullMeta.setLore(lore);
+		plugin.getComplement().setDisplayName(skullMeta, item.getIconName());
+		plugin.getComplement().setLore(skullMeta, lore);
 
 		if (item.isHeadOwner()) {
 		    Jobs.getNms().setSkullOwner(skullMeta, jPlayer.getPlayer());
@@ -253,7 +258,7 @@ public class ShopManager {
 		    }
 
 		    for (JobItems one : item.getitems()) {
-			GiveItem.GiveItemForPlayer(player, one.getItemStack(player));
+			GiveItem.giveItemForPlayer(player, one.getItemStack(player));
 		    }
 
 		    pointsInfo.takePoints(item.getPrice());
@@ -271,7 +276,7 @@ public class ShopManager {
 
 	int prevSlot = getPrevButtonSlot(guiSize.getFields(), page);
 	if (prevSlot != -1 && page > 1) {
-	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.prevPage"));
+	    plugin.getComplement().setDisplayName(meta, Jobs.getLanguage().getMessage("command.help.output.prevPage"));
 	    item.setItemMeta(meta);
 
 	    gui.addButton(new CMIGuiButton(prevSlot, item) {
@@ -284,7 +289,7 @@ public class ShopManager {
 
 	int nextSlot = getNextButtonSlot(guiSize.getFields(), page);
 	if (nextSlot != -1 && !getItemsByPage(page + 1).isEmpty()) {
-	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.nextPage"));
+	    plugin.getComplement().setDisplayName(meta, Jobs.getLanguage().getMessage("command.help.output.nextPage"));
 	    item.setItemMeta(meta);
 	    gui.addButton(new CMIGuiButton(nextSlot, item) {
 		@Override
@@ -309,13 +314,14 @@ public class ShopManager {
 	    return;
 
 	ConfigurationSection confCategory = f.getConfigurationSection("Items");
-	if (confCategory.getKeys(false).isEmpty()) {
+	java.util.Set<String> categories = confCategory.getKeys(false);
+	if (categories.isEmpty()) {
 	    return;
 	}
 
 	int i = 0;
 	int y = 1;
-	for (String category : new ArrayList<>(confCategory.getKeys(false))) {
+	for (String category : new java.util.HashSet<>(categories)) {
 	    ConfigurationSection nameSection = confCategory.getConfigurationSection(category);
 	    if (nameSection == null) {
 		continue;

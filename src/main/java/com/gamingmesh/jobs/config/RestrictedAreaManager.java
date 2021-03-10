@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -21,7 +22,7 @@ import com.gamingmesh.jobs.hooks.HookManager;
 
 public class RestrictedAreaManager {
 
-    protected final HashMap<String, RestrictedArea> restrictedAreas = new HashMap<>();
+    protected final Map<String, RestrictedArea> restrictedAreas = new HashMap<>();
 
     private boolean worldGuardArea = false;
 
@@ -65,7 +66,7 @@ public class RestrictedAreaManager {
 	}
     }
 
-    public HashMap<String, RestrictedArea> getRestrictedAres() {
+    public Map<String, RestrictedArea> getRestrictedAres() {
 	return restrictedAreas;
     }
 
@@ -108,9 +109,8 @@ public class RestrictedAreaManager {
 	if (player == null)
 	    return 0D;
 	for (RestrictedArea area : getRestrictedAreasByLoc(player.getLocation())) {
-	    if (area.inRestrictedArea(player.getLocation()))
-		return area.getMultiplier();
-	    if (area.getWgName() != null && HookManager.getWorldGuardManager() != null && HookManager.getWorldGuardManager().inArea(player.getLocation(), area.getWgName()))
+	    if (area.inRestrictedArea(player.getLocation()) || (area.getWgName() != null && HookManager.getWorldGuardManager() != null
+		&& HookManager.getWorldGuardManager().inArea(player.getLocation(), area.getWgName())))
 		return area.getMultiplier();
 	}
 	return 0D;
@@ -138,38 +138,40 @@ public class RestrictedAreaManager {
 	return areas;
     }
 
-    private static StringBuilder addHeader(StringBuilder header) {
+    private StringBuilder addHeader(StringBuilder header) {
+	String sep = System.getProperty("line.separator");
+
 	header.append("Restricted area configuration");
-	header.append(System.getProperty("line.separator"))
-	    .append(System.getProperty("line.separator"))
-	    .append("Configures restricted areas where you cannot get experience or money").append(System.getProperty("line.separator"))
-	    .append("when performing a job.").append(System.getProperty("line.separator")).append(System.getProperty("line.separator"))
-	    .append("The multiplier changes the experience/money gains in an area.").append(System.getProperty("line.separator"))
-	    .append("A multiplier of 0.0 means no bonus, while 0.5 means you will get 50% more the normal income").append(System.getProperty("line.separator"))
-	    .append("While -0.5 means that you will get 50% less the normal income").append(System.getProperty("line.separator"))
-	    .append(System.getProperty("line.separator"))
-	    .append("restrictedareas:").append(System.getProperty("line.separator"))
-	    .append("  area1:").append(System.getProperty("line.separator"))
-	    .append("    world: 'world'").append(System.getProperty("line.separator"))
-	    .append("    multiplier: 0.0").append(System.getProperty("line.separator"))
-	    .append("    point1:").append(System.getProperty("line.separator"))
-	    .append("      x: 125").append(System.getProperty("line.separator"))
-	    .append("      y: 0").append(System.getProperty("line.separator"))
-	    .append("      z: 125").append(System.getProperty("line.separator"))
-	    .append("    point2:").append(System.getProperty("line.separator"))
-	    .append("      x: 150").append(System.getProperty("line.separator"))
-	    .append("      y: 100").append(System.getProperty("line.separator"))
-	    .append("      z: 150").append(System.getProperty("line.separator"))
-	    .append("  area2:").append(System.getProperty("line.separator"))
-	    .append("    world: 'world_nether'").append(System.getProperty("line.separator"))
-	    .append("    multiplier: 0.0").append(System.getProperty("line.separator"))
-	    .append("    point1:").append(System.getProperty("line.separator"))
-	    .append("      x: -100").append(System.getProperty("line.separator"))
-	    .append("      y: 0").append(System.getProperty("line.separator"))
-	    .append("      z: -100").append(System.getProperty("line.separator"))
-	    .append("    point2:").append(System.getProperty("line.separator"))
-	    .append("      x: -150").append(System.getProperty("line.separator"))
-	    .append("      y: 100").append(System.getProperty("line.separator"))
+	header.append(sep)
+	    .append(sep)
+	    .append("Configures restricted areas where you cannot get experience or money").append(sep)
+	    .append("when performing a job.").append(sep).append(sep)
+	    .append("The multiplier changes the experience/money gains in an area.").append(sep)
+	    .append("A multiplier of 0.0 means no bonus, while 0.5 means you will get 50% more the normal income").append(sep)
+	    .append("While -0.5 means that you will get 50% less the normal income").append(sep)
+	    .append(sep)
+	    .append("restrictedareas:").append(sep)
+	    .append("  area1:").append(sep)
+	    .append("    world: 'world'").append(sep)
+	    .append("    multiplier: 0.0").append(sep)
+	    .append("    point1:").append(sep)
+	    .append("      x: 125").append(sep)
+	    .append("      y: 0").append(sep)
+	    .append("      z: 125").append(sep)
+	    .append("    point2:").append(sep)
+	    .append("      x: 150").append(sep)
+	    .append("      y: 100").append(sep)
+	    .append("      z: 150").append(sep)
+	    .append("  area2:").append(sep)
+	    .append("    world: 'world_nether'").append(sep)
+	    .append("    multiplier: 0.0").append(sep)
+	    .append("    point1:").append(sep)
+	    .append("      x: -100").append(sep)
+	    .append("      y: 0").append(sep)
+	    .append("      z: -100").append(sep)
+	    .append("    point2:").append(sep)
+	    .append("      x: -150").append(sep)
+	    .append("      y: 100").append(sep)
 	    .append("      z: -150");
 	return header;
     }
@@ -199,9 +201,7 @@ public class RestrictedAreaManager {
 		    addNew(new RestrictedArea(areaKey, areaKey, multiplier));
 		    worldGuardArea = true;
 		} else {
-
-		    String worldName = conf.getString("restrictedareas." + areaKey + ".world");
-		    World world = Bukkit.getServer().getWorld(worldName);
+		    World world = Bukkit.getServer().getWorld(conf.getString("restrictedareas." + areaKey + ".world", ""));
 		    if (world == null)
 			continue;
 		    Location point1 = new Location(world, conf.getDouble("restrictedareas." + areaKey + ".point1.x", 0d), conf.getDouble("restrictedareas." + areaKey

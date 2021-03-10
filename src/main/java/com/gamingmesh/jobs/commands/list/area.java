@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -114,7 +113,7 @@ public class area implements Cmd {
 
 	if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
 
-	    HashMap<String, RestrictedArea> areas = Jobs.getRestrictedAreaManager().getRestrictedAres();
+	    java.util.Map<String, RestrictedArea> areas = Jobs.getRestrictedAreaManager().getRestrictedAres();
 	    if (areas.isEmpty()) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.noAreas"));
 		return true;

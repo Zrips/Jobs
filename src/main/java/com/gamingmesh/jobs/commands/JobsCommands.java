@@ -183,7 +183,7 @@ public class JobsCommands implements CommandExecutor {
 
     private Cmd getCmdClass(String cmd) {
 	try {
-	    Class<?> nmsClass = Class.forName(PACKAGEPATH + "." + cmd.toLowerCase());
+	    Class<?> nmsClass = getClass(cmd);
 	    if (Cmd.class.isAssignableFrom(nmsClass)) {
 		return (Cmd) nmsClass.getConstructor().newInstance();
 	    }

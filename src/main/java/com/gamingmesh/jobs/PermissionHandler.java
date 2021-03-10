@@ -65,7 +65,7 @@ public class PermissionHandler {
 	if (hasWorldPermission(player)) {
 	    List<JobProgression> progression = jPlayer.getJobProgression();
 	    // calculate new permissions
-	    HashMap<String, Boolean> permissions = new HashMap<>();
+	    java.util.Map<String, Boolean> permissions = new HashMap<>();
 
 	    if (progression.isEmpty()) {
 		Job job = Jobs.getNoneJob();
@@ -85,17 +85,17 @@ public class PermissionHandler {
 			}
 		    }
 
-		    for (JobConditions Condition : job.getConditions()) {
+		    for (JobConditions condition : job.getConditions()) {
 			boolean ok = true;
 
-			for (String oneReq : Condition.getRequiredPerm()) {
+			for (String oneReq : condition.getRequiredPerm()) {
 			    if (!player.hasPermission(oneReq)) {
 				ok = false;
 				break;
 			    }
 			}
 
-			for (Entry<String, Integer> oneReq : Condition.getRequiredJobs().entrySet()) {
+			for (Entry<String, Integer> oneReq : condition.getRequiredJobs().entrySet()) {
 			    String jobName = oneReq.getKey();
 			    int jobLevel = oneReq.getValue();
 			    boolean found = false;
@@ -116,7 +116,7 @@ public class PermissionHandler {
 			if (!ok)
 			    continue;
 
-			for (Entry<String, Boolean> one : Condition.getPerformPerm().entrySet()) {
+			for (Entry<String, Boolean> one : condition.getPerformPerm().entrySet()) {
 			    String perm = one.getKey();
 			    boolean node = one.getValue();
 			    if (node)
@@ -151,17 +151,17 @@ public class PermissionHandler {
 			}
 		    }
 
-		    for (JobConditions Condition : prog.getJob().getConditions()) {
+		    for (JobConditions condition : prog.getJob().getConditions()) {
 			boolean ok = true;
 
-			for (String oneReq : Condition.getRequiredPerm()) {
+			for (String oneReq : condition.getRequiredPerm()) {
 			    if (!player.hasPermission(oneReq)) {
 				ok = false;
 				break;
 			    }
 			}
 
-			for (Entry<String, Integer> oneReq : Condition.getRequiredJobs().entrySet()) {
+			for (Entry<String, Integer> oneReq : condition.getRequiredJobs().entrySet()) {
 			    String jobName = oneReq.getKey();
 			    int jobLevel = oneReq.getValue();
 			    boolean found = false;
@@ -183,7 +183,7 @@ public class PermissionHandler {
 			if (!ok)
 			    continue;
 
-			for (Entry<String, Boolean> one : Condition.getPerformPerm().entrySet()) {
+			for (Entry<String, Boolean> one : condition.getPerformPerm().entrySet()) {
 			    String perm = one.getKey();
 			    boolean node = one.getValue();
 			    if (node)

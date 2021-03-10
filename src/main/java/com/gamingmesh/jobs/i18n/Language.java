@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
@@ -32,13 +31,10 @@ import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.config.YmlMaker;
 
 public class Language {
-    public FileConfiguration enlocale;
-    public FileConfiguration customlocale;
-    private Jobs plugin;
 
-    public Language(Jobs plugin) {
-	this.plugin = plugin;
-    }
+    public FileConfiguration enlocale, customlocale;
+
+    private final Pattern patern = Pattern.compile("([ ]?[\\/][n][$|\\s])");
 
     /**
      * Reloads the config
@@ -68,11 +64,10 @@ public class Language {
 		msg = enlocale.isString(key) ? CMIChatColor.translate(enlocale.getString(key)) : missing;
 	    else
 		msg = customlocale.isString(key) ? CMIChatColor.translate(customlocale.getString(key)) : missing;
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    Jobs.consoleMsg("&e[Jobs] &2Can't read language file for: " + key);
-	    Bukkit.getServer().getPluginManager().disablePlugin(plugin);
-	    e.printStackTrace();
-	    throw e;
+	    Jobs.consoleMsg(e.getLocalizedMessage());
+	    return "";
 	}
 
 	if (msg.isEmpty() || msg.equals(missing)) {
@@ -81,20 +76,19 @@ public class Language {
 
 		List<String> ls = null;
 		if (customlocale != null && customlocale.isList(key))
-		    ls = ColorsArray(customlocale.getStringList(key), true);
+		    ls = colorsArray(customlocale.getStringList(key), true);
 		else if (enlocale.isList(key))
-		    ls = !enlocale.getStringList(key).isEmpty() ? ColorsArray(enlocale.getStringList(key), true) : Arrays.asList(missing);
+		    ls = !enlocale.getStringList(key).isEmpty() ? colorsArray(enlocale.getStringList(key), true) : Arrays.asList(missing);
 		if (ls != null)
 		    for (String one : ls) {
 			if (!msg.isEmpty())
 			    msg += "\n";
 			msg += one;
 		    }
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 		Jobs.consoleMsg("&e[Jobs] &2Can't read language file for: " + key);
-		Bukkit.getServer().getPluginManager().disablePlugin(plugin);
-		e.printStackTrace();
-		throw e;
+		Jobs.consoleMsg(e.getLocalizedMessage());
+		return "";
 	    }
 	}
 
@@ -118,9 +112,9 @@ public class Language {
 
 	List<String> ls;
 	if (customlocale.isList(key))
-	    ls = ColorsArray(customlocale.getStringList(key), true);
+	    ls = colorsArray(customlocale.getStringList(key), true);
 	else
-	    ls = !enlocale.getStringList(key).isEmpty() ? ColorsArray(enlocale.getStringList(key), true) : Arrays.asList(missing);
+	    ls = !enlocale.getStringList(key).isEmpty() ? colorsArray(enlocale.getStringList(key), true) : Arrays.asList(missing);
 
 	if (variables != null && variables.length > 0)
 	    for (int i = 0; i < ls.size(); i++) {
@@ -128,15 +122,14 @@ public class Language {
 		for (int y = 0; y < variables.length; y += 2) {
 		    msg = msg.replace(String.valueOf(variables[y]), String.valueOf(variables[y + 1]));
 		}
-		msg = filterNewLine(msg);
-		ls.set(i, CMIChatColor.translate(msg));
+
+		ls.set(i, CMIChatColor.translate(filterNewLine(msg)));
 	    }
 
 	return ls;
     }
 
     public String filterNewLine(String msg) {
-	Pattern patern = Pattern.compile("([ ]?[\\/][n][$|\\s])");
 	Matcher match = patern.matcher(msg);
 	while (match.find()) {
 	    msg = msg.replace(match.group(0), "\n");
@@ -144,7 +137,7 @@ public class Language {
 	return msg;
     }
 
-    public List<String> ColorsArray(List<String> text, boolean colorize) {
+    public List<String> colorsArray(List<String> text, boolean colorize) {
 	List<String> temp = new ArrayList<>();
 	for (String part : text) {
 	    if (colorize)

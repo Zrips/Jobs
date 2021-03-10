@@ -80,7 +80,8 @@ public class Util {
     }
 
     public static String firstToUpperCase(String name) {
-	return name.toLowerCase().replace('_', ' ').substring(0, 1).toUpperCase() + name.toLowerCase().replace('_', ' ').substring(1);
+	name = name.toLowerCase().replace('_', ' ');
+	return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     public static HashMap<UUID, String> getJobsEditorMap() {
@@ -109,7 +110,7 @@ public class Util {
 	if (distance < 1)
 	    distance = 1;
 
-	ArrayList<Block> blocks = new ArrayList<>();
+	List<Block> blocks = new ArrayList<>();
 
 	try {
 	    Block bl = player.getTargetBlock(null, distance);
@@ -208,10 +209,6 @@ public class Util {
 	return getFilesFromPackage(pckgname, null, "class");
     }
 
-    public static List<String> getFilesFromPackage(String pckgname, String cleaner) throws ClassNotFoundException {
-	return getFilesFromPackage(pckgname, cleaner, "class");
-    }
-
     public static List<String> getFilesFromPackage(String pckgname, String cleaner, String fileType) throws ClassNotFoundException {
 	List<String> result = new ArrayList<>();
 	try {
@@ -234,8 +231,7 @@ public class Util {
 	    jarFile = new JarFile(jarPath);
 	    Enumeration<JarEntry> en = jarFile.entries();
 	    while (en.hasMoreElements()) {
-		JarEntry entry = en.nextElement();
-		String entryName = entry.getName();
+		String entryName = en.nextElement().getName();
 
 		packageName = packageName.replace('.', '/');
 

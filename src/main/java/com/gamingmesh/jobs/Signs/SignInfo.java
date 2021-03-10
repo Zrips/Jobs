@@ -5,22 +5,22 @@ import java.util.List;
 
 public class SignInfo {
 
-    private final List<jobsSign> AllSigns = new ArrayList<>();
+    private final List<jobsSign> allSigns = new ArrayList<>();
 
     public void setAllSigns(List<jobsSign> AllSigns) {
-	this.AllSigns.clear();
-	this.AllSigns.addAll(AllSigns == null ? new ArrayList<>() : AllSigns);
+	this.allSigns.clear();
+	this.allSigns.addAll(AllSigns == null ? new ArrayList<>() : AllSigns);
     }
 
-    public List<jobsSign> GetAllSigns() {
-	return AllSigns;
+    public List<jobsSign> getAllSigns() {
+	return allSigns;
     }
 
     public void removeSign(jobsSign sign) {
-	this.AllSigns.remove(sign);
+	this.allSigns.remove(sign);
     }
 
     public void addSign(jobsSign sign) {
-	this.AllSigns.add(sign);
+	this.allSigns.add(sign);
     }
 }

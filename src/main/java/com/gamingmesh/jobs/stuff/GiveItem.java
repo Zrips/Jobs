@@ -16,11 +16,15 @@ import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 
 public class GiveItem {
-    public static void GiveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore,
+
+    public static void giveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore,
 	    HashMap<Enchantment, Integer> enchants) {
 	ItemStack itemStack = CMIMaterial.get(id, meta).newItemStack();
 	itemStack.setAmount(qty);
 	ItemMeta itemMeta = itemStack.getItemMeta();
+	if (itemMeta == null) {
+	    return;
+	}
 
 	if (lore != null && !lore.isEmpty()) {
 	    List<String> translatedLore = new ArrayList<>();
@@ -48,10 +52,10 @@ public class GiveItem {
 	    Jobs.getInstance().getComplement().setDisplayName(itemMeta, CMIChatColor.translate(name));
 
 	itemStack.setItemMeta(itemMeta);
-	GiveItemForPlayer(player, itemStack);
+	giveItemForPlayer(player, itemStack);
     }
 
-    public static void GiveItemForPlayer(Player player, ItemStack item) {
+    public static void giveItemForPlayer(Player player, ItemStack item) {
 	player.getInventory().addItem(item);
 	player.updateInventory();
     }

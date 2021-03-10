@@ -77,7 +77,7 @@ public class give implements Cmd {
 		return true;
 	    }
 
-	    GiveItem.GiveItemForPlayer(player, jItem.getItemStack(player));
+	    GiveItem.giveItemForPlayer(player, jItem.getItemStack(player));
 	    break;
 	case limiteditems:
 	    if (job == null) {
@@ -91,7 +91,7 @@ public class give implements Cmd {
 		return true;
 	    }
 
-	    GiveItem.GiveItemForPlayer(player, jLItem.getItemStack(player));
+	    GiveItem.giveItemForPlayer(player, jLItem.getItemStack(player));
 	    break;
 	default:
 	    break;

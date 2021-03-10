@@ -20,9 +20,7 @@ public class v1_13 implements NMS {
 
     @Override
     public List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
-	List<Block> blocks = new ArrayList<>();
-	blocks.addAll(event.getBlocks());
-	return blocks;
+	return new ArrayList<>(event.getBlocks());
     }
 
     @Override

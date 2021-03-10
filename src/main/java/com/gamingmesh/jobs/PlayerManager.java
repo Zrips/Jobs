@@ -22,8 +22,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
@@ -69,16 +71,16 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class PlayerManager {
 
-    private final ConcurrentHashMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, JobsPlayer> players = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, JobsPlayer> playersCache = new ConcurrentHashMap<>();
+    private final ConcurrentMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, JobsPlayer> players = new ConcurrentHashMap<>();
+    private final ConcurrentMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<>();
 
     private final String mobSpawnerMetadata = "jobsMobSpawner";
 
-    private final HashMap<UUID, PlayerInfo> PlayerUUIDMap = new HashMap<>();
-    private final HashMap<Integer, PlayerInfo> PlayerIDMap = new HashMap<>();
-    private final HashMap<String, PlayerInfo> PlayerNameMap = new HashMap<>();
+    private final Map<UUID, PlayerInfo> playerUUIDMap = new HashMap<>();
+    private final Map<Integer, PlayerInfo> playerIdMap = new HashMap<>();
+    private final Map<String, PlayerInfo> playerNameMap = new HashMap<>();
 
     /**
      * @deprecated Use {@link JobsPlayer#getPointsData} instead
@@ -98,13 +100,13 @@ public class PlayerManager {
 
     @Deprecated
     public int getMapSize() {
-	return PlayerUUIDMap.size();
+	return playerUUIDMap.size();
     }
 
     public void clearMaps() {
-	PlayerUUIDMap.clear();
-	PlayerIDMap.clear();
-	PlayerNameMap.clear();
+	playerUUIDMap.clear();
+	playerIdMap.clear();
+	playerNameMap.clear();
     }
 
     public void clearCache() {
@@ -115,9 +117,9 @@ public class PlayerManager {
     }
 
     public void addPlayerToMap(PlayerInfo info) {
-	PlayerUUIDMap.put(info.getUuid(), info);
-	PlayerIDMap.put(info.getID(), info);
-	PlayerNameMap.put(info.getName().toLowerCase(), info);
+	playerUUIDMap.put(info.getUuid(), info);
+	playerIdMap.put(info.getID(), info);
+	playerNameMap.put(info.getName().toLowerCase(), info);
     }
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
@@ -149,16 +151,12 @@ public class PlayerManager {
 	return playersUUID.remove(player.getUniqueId());
     }
 
-    public ConcurrentHashMap<UUID, JobsPlayer> getPlayersCache() {
+    public ConcurrentMap<UUID, JobsPlayer> getPlayersCache() {
 	return playersUUIDCache;
     }
 
-//    public ConcurrentHashMap<String, JobsPlayer> getPlayers() {
-//	return this.players;
-//    }
-
-    public HashMap<UUID, PlayerInfo> getPlayersInfoUUIDMap() {
-	return PlayerUUIDMap;
+    public Map<UUID, PlayerInfo> getPlayersInfoUUIDMap() {
+	return playerUUIDMap;
     }
 
     /**
@@ -181,7 +179,7 @@ public class PlayerManager {
      * @return the identifier
      */
     public int getPlayerId(UUID uuid) {
-	PlayerInfo info = PlayerUUIDMap.get(uuid);
+	PlayerInfo info = playerUUIDMap.get(uuid);
 	return info == null ? -1 : info.getID();
     }
 
@@ -193,7 +191,7 @@ public class PlayerManager {
      * @return {@link PlayerInfo}
      */
     public PlayerInfo getPlayerInfo(String name) {
-	return PlayerNameMap.get(name.toLowerCase());
+	return playerNameMap.get(name.toLowerCase());
     }
 
     /**
@@ -204,7 +202,7 @@ public class PlayerManager {
      * @return {@link PlayerInfo}
      */
     public PlayerInfo getPlayerInfo(int id) {
-	return PlayerIDMap.get(id);
+	return playerIdMap.get(id);
     }
 
     /**
@@ -215,7 +213,7 @@ public class PlayerManager {
      * @return {@link PlayerInfo}
      */
     public PlayerInfo getPlayerInfo(UUID uuid) {
-	return PlayerUUIDMap.get(uuid);
+	return playerUUIDMap.get(uuid);
     }
 
     /**
@@ -299,9 +297,7 @@ public class PlayerManager {
 	 * 2) Perform save on all players on copied list.
 	 * 3) Garbage collect the real list to remove any offline players with saved data
 	 */
-	ArrayList<JobsPlayer> list = new ArrayList<>(players.values());
-
-	for (JobsPlayer jPlayer : list)
+	for (JobsPlayer jPlayer : new ArrayList<>(players.values()))
 	    jPlayer.save();
 
 	Iterator<JobsPlayer> iter = players.values().iterator();

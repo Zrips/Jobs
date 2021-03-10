@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.config;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
@@ -11,7 +12,7 @@ import com.gamingmesh.jobs.CMILib.ItemManager;
 
 public class RestrictedBlockManager {
 
-    public final HashMap<CMIMaterial, Integer> restrictedBlocksTimer = new HashMap<>();
+    public final Map<CMIMaterial, Integer> restrictedBlocksTimer = new HashMap<>();
 
     /**
      * Method to load the restricted blocks configuration
