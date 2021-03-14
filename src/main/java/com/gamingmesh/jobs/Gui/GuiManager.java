@@ -81,11 +81,13 @@ public class GuiManager {
 		break main;
 
 	    Job job = jobsList.get(i);
-	    ArrayList<String> lore = new ArrayList<>();
+	    List<String> lore = new ArrayList<>();
 
 	    for (JobProgression onePJob : jPlayer.getJobProgression()) {
-		if (onePJob.getJob().getName().equalsIgnoreCase(job.getName()))
+		if (onePJob.getJob().getName().equalsIgnoreCase(job.getName())) {
 		    lore.add(Jobs.getLanguage().getMessage("command.info.gui.working"));
+		    break;
+		}
 	    }
 
 	    int maxlevel = job.getMaxLevel(jPlayer);
@@ -134,8 +136,7 @@ public class GuiManager {
 	    Jobs.getInstance().getComplement().setLore(meta, lore);
 	    guiItem.setItemMeta(meta);
 
-	    int lastPos = job.getGuiSlot() >= 0 ? job.getGuiSlot() : pos;
-	    gui.addButton(new CMIGuiButton(lastPos, guiItem) {
+	    gui.addButton(new CMIGuiButton(job.getGuiSlot() >= 0 ? job.getGuiSlot() : pos, guiItem) {
 
 		@Override
 		public void click(GUIClickType type) {
@@ -358,7 +359,7 @@ public class GuiManager {
 	    if (info == null || info.isEmpty())
 		continue;
 
-	    ArrayList<String> lore = new ArrayList<>();
+	    List<String> lore = new ArrayList<>();
 	    lore.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".info"));
 
 	    int y = 1;

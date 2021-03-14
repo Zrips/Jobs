@@ -30,7 +30,6 @@ import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dispenser;
@@ -223,8 +222,7 @@ public class JobsListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
-	Sign sign = (Sign) block.getState();
-	if (plugin.getComplement().getLine(sign, 0).contains(Jobs.getLanguage().getMessage("signs.topline"))
+	if (plugin.getComplement().getLine((Sign) block.getState(), 0).contains(Jobs.getLanguage().getMessage("signs.topline"))
 	    && !player.hasPermission("jobs.command.signs")) {
 	    event.setCancelled(true);
 	    player.sendMessage(Jobs.getLanguage().getMessage("signs.cantdestroy"));
@@ -254,8 +252,6 @@ public class JobsListener implements Listener {
 	if (!(block.getState() instanceof Sign))
 	    return;
 
-	Sign sign = (Sign) block.getState();
-
 	if (!CMIChatColor.stripColor(plugin.getComplement().getLine(event, 0)).equalsIgnoreCase("[Jobs]"))
 	    return;
 
@@ -270,6 +266,7 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
+	Sign sign = (Sign) block.getState();
 	final Job job = Jobs.getJob(CMIChatColor.stripColor(plugin.getComplement().getLine(sign, 2)).toLowerCase());
 	if (type == SignTopType.toplist && job == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
@@ -352,10 +349,9 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldLoad(WorldLoadEvent event) {
-	World world = event.getWorld();
 	PluginManager pm = plugin.getServer().getPluginManager();
-	if (pm.getPermission("jobs.world." + world.getName().toLowerCase()) == null)
-	    pm.addPermission(new Permission("jobs.world." + world.getName().toLowerCase(), PermissionDefault.TRUE));
+	if (pm.getPermission("jobs.world." + event.getWorld().getName().toLowerCase()) == null)
+	    pm.addPermission(new Permission("jobs.world." + event.getWorld().getName().toLowerCase(), PermissionDefault.TRUE));
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -439,7 +435,6 @@ public class JobsListener implements Listener {
 	if (event.isCancelled() || !event.getPlayer().isOnline())
 	    return;
 
-	//disabling plugin in world
 	if (event.getTo() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
 	    return;
 
@@ -469,12 +464,7 @@ public class JobsListener implements Listener {
 	if ((slotType != SlotType.ARMOR || slotType != SlotType.QUICKBAR) && event.getInventory().getType() != InventoryType.CRAFTING)
 	    return;
 
-	if (!(event.getWhoClicked() instanceof Player))
-	    return;
-
-	Player player = (Player) event.getWhoClicked();
-
-	if (event.getCurrentItem() == null)
+	if (!(event.getWhoClicked() instanceof Player) || event.getCurrentItem() == null)
 	    return;
 
 	ArmorTypes newArmorType = ArmorTypes.matchType(shift ? event.getCurrentItem() : event.getCursor());
@@ -490,6 +480,7 @@ public class JobsListener implements Listener {
 	    if (event.getRawSlot() == newArmorType.getSlot())
 		equipping = false;
 
+	    Player player = (Player) event.getWhoClicked();
 	    PlayerInventory inv = player.getInventory();
 
 	    if (newArmorType == ArmorTypes.HELMET &&
@@ -632,26 +623,26 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void JobsArmorChangeEvent(JobsArmorChangeEvent event) {
-	Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
+	Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
     public void PlayerItemHeldEvent(PlayerItemHeldEvent event) {
-	Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
+	Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
     public void PlayerItemBreakEvent(PlayerItemBreakEvent event) {
-	Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
+	Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
     public void PlayerItemBreakEvent(InventoryClickEvent event) {
-	Jobs.getPlayerManager().resetiItemBonusCache(((Player) event.getWhoClicked()).getUniqueId());
+	Jobs.getPlayerManager().resetItemBonusCache(((Player) event.getWhoClicked()).getUniqueId());
     }
 
-	@EventHandler
-	public void onPlayerHandSwap(PlayerSwapHandItemsEvent event) {
-	Jobs.getPlayerManager().resetiItemBonusCache(event.getPlayer().getUniqueId());
-	}
+    @EventHandler
+    public void onPlayerHandSwap(PlayerSwapHandItemsEvent event) {
+	Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
+    }
 }

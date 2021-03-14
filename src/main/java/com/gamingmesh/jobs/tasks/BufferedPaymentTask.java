@@ -25,6 +25,7 @@ import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
 
 public class BufferedPaymentTask implements Runnable {
+
     private BufferedEconomy bufferedEconomy;
     private Economy economy;
     private BufferedPayment payment;
@@ -37,14 +38,16 @@ public class BufferedPaymentTask implements Runnable {
 
     @Override
     public void run() {
-	if (payment.get(CurrencyType.MONEY) > 0) {
-	    economy.depositPlayer(payment.getOfflinePlayer(), payment.get(CurrencyType.MONEY));
-	} else {
-	    if (!economy.withdrawPlayer(payment.getOfflinePlayer(), -payment.get(CurrencyType.MONEY)))
-		bufferedEconomy.pay(payment);
+	double money = payment.get(CurrencyType.MONEY);
+	if (money > 0) {
+	    org.bukkit.Bukkit.getScheduler().runTaskLater(bufferedEconomy.getPlugin(), () ->
+		economy.depositPlayer(payment.getOfflinePlayer(), money), 1L);
+	} else if (!economy.withdrawPlayer(payment.getOfflinePlayer(), -money)) {
+	    bufferedEconomy.pay(payment);
 	}
 
-	if (payment.get(CurrencyType.POINTS) != 0D)
-	    Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId()).getPointsData().addPoints(payment.get(CurrencyType.POINTS));
+	double points = payment.get(CurrencyType.POINTS);
+	if (points != 0D)
+	    Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId()).getPointsData().addPoints(points);
     }
 }

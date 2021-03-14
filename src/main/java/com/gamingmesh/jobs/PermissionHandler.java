@@ -118,8 +118,7 @@ public class PermissionHandler {
 
 			for (Entry<String, Boolean> one : condition.getPerformPerm().entrySet()) {
 			    String perm = one.getKey();
-			    boolean node = one.getValue();
-			    if (node)
+			    if (one.getValue())
 				permissions.put(perm, true);
 			    else {
 				/*
@@ -185,8 +184,7 @@ public class PermissionHandler {
 
 			for (Entry<String, Boolean> one : condition.getPerformPerm().entrySet()) {
 			    String perm = one.getKey();
-			    boolean node = one.getValue();
-			    if (node)
+			    if (one.getValue())
 				permissions.put(perm, true);
 			    else {
 				/*

@@ -456,7 +456,7 @@ public class JobsPlayer {
      * @return the name of this player
      */
     public String getName() {
-	Player player = Bukkit.getPlayer(getUniqueId());
+	Player player = getPlayer();
 	if (player != null)
 	    userName = player.getName();
 	return userName;
@@ -548,10 +548,10 @@ public class JobsPlayer {
 	if (jp == null)
 	    return 1;
 
-	Integer max = jp.getMaxExperience(level);
-	Double exp = jp.getExperience();
+	int max = jp.getMaxExperience(level);
+	double exp = jp.getExperience();
 	if (exp > max)
-	    exp = max.doubleValue();
+	    exp = max;
 
 	if (exp > 0) {
 	    if (jp.getLevel() == getMaxJobLevelAllowed(jp.getJob())) {
@@ -561,7 +561,7 @@ public class JobsPlayer {
 		exp = (exp - (exp * (Jobs.getGCManager().levelLossPercentage / 100.0)));
 	}
 
-	return exp.doubleValue();
+	return exp;
     }
 
     /**
@@ -689,8 +689,10 @@ public class JobsPlayer {
     }
 
     public int getMaxJobLevelAllowed(Job job) {
+	Player player = getPlayer();
+
 	int maxLevel = 0;
-	if (getPlayer() != null && (getPlayer().hasPermission("jobs." + job.getName() + ".vipmaxlevel") || getPlayer().hasPermission("jobs.all.vipmaxlevel")))
+	if (player != null && (player.hasPermission("jobs." + job.getName() + ".vipmaxlevel") || player.hasPermission("jobs.all.vipmaxlevel")))
 	    maxLevel = job.getVipMaxLevel() > job.getMaxLevel() ? job.getVipMaxLevel() : job.getMaxLevel();
 	else
 	    maxLevel = job.getMaxLevel();
@@ -830,9 +832,10 @@ public class JobsPlayer {
 	    dao.updateSeen(this);
 	    setSaved(true);
 
-	    if (getPlayer() == null || !getPlayer().isOnline()) {
+	    Player player = getPlayer();
+	    if (player == null || !player.isOnline()) {
 		Jobs.getPlayerManager().addPlayerToCache(this);
-		Jobs.getPlayerManager().removePlayer(getPlayer());
+		Jobs.getPlayerManager().removePlayer(player);
 	    }
 	}
 //	}
@@ -869,7 +872,8 @@ public class JobsPlayer {
      * @return true if online, otherwise false
      */
     public boolean isOnline() {
-	return getPlayer() != null ? getPlayer().isOnline() : isOnline;
+	Player player = getPlayer();
+	return player != null ? player.isOnline() : isOnline;
     }
 
     public boolean isSaved() {
@@ -924,8 +928,8 @@ public class JobsPlayer {
 	    JobInfo jobinfo = Jobs.getNoneJob().getJobInfo(info, 1);
 	    if (jobinfo == null)
 		return false;
-	    Double income = jobinfo.getIncome(1, numjobs, maxJobsEquation);
-	    Double points = jobinfo.getPoints(1, numjobs, maxJobsEquation);
+	    double income = jobinfo.getIncome(1, numjobs, maxJobsEquation);
+	    double points = jobinfo.getPoints(1, numjobs, maxJobsEquation);
 	    if (income == 0D && points == 0D)
 		return false;
 	}
@@ -936,9 +940,9 @@ public class JobsPlayer {
 	    if (jobinfo == null)
 		continue;
 
-	    Double income = jobinfo.getIncome(level, numjobs, maxJobsEquation);
-	    Double pointAmount = jobinfo.getPoints(level, numjobs, maxJobsEquation);
-	    Double expAmount = jobinfo.getExperience(level, numjobs, maxJobsEquation);
+	    double income = jobinfo.getIncome(level, numjobs, maxJobsEquation);
+	    double pointAmount = jobinfo.getPoints(level, numjobs, maxJobsEquation);
+	    double expAmount = jobinfo.getExperience(level, numjobs, maxJobsEquation);
 	    if (income != 0D || pointAmount != 0D || expAmount != 0D)
 		return true;
 	}

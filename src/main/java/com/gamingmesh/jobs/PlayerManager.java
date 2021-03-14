@@ -224,7 +224,6 @@ public class PlayerManager {
      * @param player {@link Player}
      */
     public void playerJoin(Player player) {
-
 	JobsPlayer jPlayer = playersUUIDCache.get(player.getUniqueId());
 
 	if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
@@ -253,7 +252,7 @@ public class PlayerManager {
 	}
 
 	addPlayer(jPlayer);
-	AutoJoinJobs(player);
+	autoJoinJobs(player);
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
@@ -514,10 +513,9 @@ public class PlayerManager {
      * @param jPlayer {@link JobsPlayer}
      */
     public void leaveAllJobs(JobsPlayer jPlayer) {
-	List<JobProgression> jobs = new ArrayList<>();
-	jobs.addAll(jPlayer.getJobProgression());
-	for (JobProgression job : jobs)
+	for (JobProgression job : new ArrayList<>(jPlayer.getJobProgression()))
 	    leaveJob(jPlayer, job.getJob());
+
 	jPlayer.leaveAllJobs();
     }
 
@@ -535,6 +533,7 @@ public class PlayerManager {
 	JobsDAO dao = Jobs.getJobsDAO();
 	if (!dao.quitJob(jPlayer, oldjob))
 	    return false;
+
 	oldjob.updateTotalPlayers();
 	dao.joinJob(jPlayer, jPlayer.getJobProgression(newjob));
 	newjob.updateTotalPlayers();
@@ -850,16 +849,17 @@ public class PlayerManager {
      * @param oldLevel
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
-	int newLevel = oldLevel + 1;
-	Player player = Bukkit.getPlayer(jPlayer.getUniqueId());
 	JobProgression prog = jPlayer.getJobProgression(job);
 	if (prog == null)
 	    return;
 
+	int newLevel = oldLevel + 1;
+	Player player = Bukkit.getPlayer(jPlayer.getUniqueId());
+
 	for (JobCommands command : job.getCommands()) {
 	    if ((command.getLevelFrom() == 0 && command.getLevelUntil() == 0) || newLevel >= command.getLevelFrom()
 		&& newLevel <= command.getLevelUntil()) {
-		for (String commandString : new ArrayList<String>(command.getCommands())) {
+		for (String commandString : new ArrayList<>(command.getCommands())) {
 		    commandString = commandString.replace("[player]", player.getName());
 		    commandString = commandString.replace("[oldlevel]", String.valueOf(oldLevel));
 		    commandString = commandString.replace("[newlevel]", String.valueOf(newLevel));
@@ -922,8 +922,7 @@ public class PlayerManager {
     public void reload() {
 	for (JobsPlayer jPlayer : players.values()) {
 	    for (JobProgression progression : jPlayer.getJobProgression()) {
-		String jobName = progression.getJob().getName();
-		Job job = Jobs.getJob(jobName);
+		Job job = Jobs.getJob(progression.getJob().getName());
 		if (job != null)
 		    progression.setJob(job);
 	    }
@@ -935,14 +934,14 @@ public class PlayerManager {
 	}
     }
 
-    private final HashMap<UUID, HashMap<Job, ItemBonusCache>> cache = new HashMap<>();
+    private final Map<UUID, Map<Job, ItemBonusCache>> cache = new HashMap<>();
 
-    public void resetiItemBonusCache(UUID uuid) {
+    public void resetItemBonusCache(UUID uuid) {
 	cache.remove(uuid);
     }
 
     public BoostMultiplier getItemBoostNBT(Player player, Job prog) {
-	HashMap<Job, ItemBonusCache> cj = cache.get(player.getUniqueId());
+	Map<Job, ItemBonusCache> cj = cache.get(player.getUniqueId());
 	if (cj == null) {
 	    cj = new HashMap<>();
 	    cache.put(player.getUniqueId(), cj);
@@ -994,27 +993,27 @@ public class PlayerManager {
 	return data;
 }
 
-    private final String JobsItemBoost = "JobsItemBoost";
+    private final String jobsItemBoost = "JobsItemBoost";
 
     public boolean containsItemBoostByNBT(ItemStack item) {
-	return item != null && Jobs.getReflections().hasNbtString(item, JobsItemBoost);
+	return item != null && Jobs.getReflections().hasNbtString(item, jobsItemBoost);
     }
 
     public JobItems getJobsItemByNbt(ItemStack item) {
 	if (item == null)
 	    return null;
 
-	Object itemName = CMIReflections.getNbt(item, JobsItemBoost);
+	Object itemName = CMIReflections.getNbt(item, jobsItemBoost);
 
 	if (itemName == null || itemName.toString().isEmpty()) {
 	    // Checking old boost items and converting to new format if needed
-	    if (Jobs.getReflections().hasNbt(item, JobsItemBoost)) {
+	    if (Jobs.getReflections().hasNbt(item, jobsItemBoost)) {
 		for (Job one : Jobs.getJobs()) {
-		    itemName = Jobs.getReflections().getNbt(item, JobsItemBoost, one.getName());
+		    itemName = Jobs.getReflections().getNbt(item, jobsItemBoost, one.getName());
 		    if (itemName != null) {
 			JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
 			if (b != null) {
-			    ItemStack ic = CMIReflections.setNbt(item, JobsItemBoost, b.getNode());
+			    ItemStack ic = CMIReflections.setNbt(item, jobsItemBoost, b.getNode());
 			    item.setItemMeta(ic.getItemMeta());
 			}
 			break;
@@ -1111,7 +1110,7 @@ public class PlayerManager {
 	return boost;
     }
 
-    public void AutoJoinJobs(final Player player) {
+    public void autoJoinJobs(final Player player) {
 	if (player == null || player.isOp() || !Jobs.getGCManager().AutoJobJoinUse)
 	    return;
 
@@ -1130,14 +1129,11 @@ public class PlayerManager {
 		    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
 			continue;
 
-		    short PlayerMaxJobs = (short) jPlayer.getJobProgression().size();
-		    if (confMaxJobs > 0 && PlayerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, PlayerMaxJobs))
+		    short playerMaxJobs = (short) jPlayer.getJobProgression().size();
+		    if (confMaxJobs > 0 && playerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, playerMaxJobs))
 			break;
 
-		    if (jPlayer.isInJob(one))
-			continue;
-
-		    if (player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
+		    if (!jPlayer.isInJob(one) && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
 			joinJob(jPlayer, one);
 		}
 	    }

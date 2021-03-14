@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.api;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;
@@ -10,11 +11,12 @@ import org.bukkit.event.HandlerList;
 import com.gamingmesh.jobs.container.CurrencyType;
 
 public final class JobsPaymentEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
     private OfflinePlayer offlinePlayer;
     private boolean cancelled = false;
 
-    private HashMap<CurrencyType, Double> payments = new HashMap<>();
+    private Map<CurrencyType, Double> payments = new HashMap<>();
 
     @Deprecated
     public JobsPaymentEvent(OfflinePlayer offlinePlayer, double money, double points) {
@@ -24,7 +26,7 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
 	payments.put(CurrencyType.POINTS, points);
     }
 
-    public JobsPaymentEvent(OfflinePlayer offlinePlayer, HashMap<CurrencyType, Double> payments) {
+    public JobsPaymentEvent(OfflinePlayer offlinePlayer, Map<CurrencyType, Double> payments) {
 	super(true);
 	this.offlinePlayer = offlinePlayer;
 	this.payments = payments;
@@ -97,9 +99,9 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
     /**
      * Returns all payment types map.
      * 
-     * @return {@link HashMap}
+     * @return {@link Map}
      */
-    public HashMap<CurrencyType, Double> getPayment() {
+    public Map<CurrencyType, Double> getPayment() {
 	return payments;
     }
 

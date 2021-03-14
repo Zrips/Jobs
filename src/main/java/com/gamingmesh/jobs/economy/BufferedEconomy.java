@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class BufferedEconomy {
@@ -41,7 +42,7 @@ public class BufferedEconomy {
     private Jobs plugin;
     private Economy economy;
 
-    private final LinkedBlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<>();
+    private final BlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<>();
     private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<UUID, BufferedPayment>());
 
     private OfflinePlayer serverTaxesAccount;
@@ -51,6 +52,10 @@ public class BufferedEconomy {
 	this.economy = economy;
     }
 
+    public Jobs getPlugin() {
+	return plugin;
+    }
+
     public Economy getEconomy() {
 	return economy;
     }
@@ -58,9 +63,9 @@ public class BufferedEconomy {
     /**
      * Add payment to player's payment buffer
      * @param player - player to be paid
-     * @param amount - amount to be paid
+     * @param payments the payments map that contains currency type and amount
      */
-    public void pay(JobsPlayer player, HashMap<CurrencyType, Double> payments) {
+    public void pay(JobsPlayer player, Map<CurrencyType, Double> payments) {
 	pay(new BufferedPayment(player.getPlayer(), payments));
     }
 
@@ -86,17 +91,15 @@ public class BufferedEconomy {
 
 	synchronized (paymentCache) {
 
-	    Double totalAmount = 0.0, totalPoints = 0.0, taxesAmount = 0.0, taxesPoints = 0.0;
+	    double totalAmount = 0.0, taxesAmount = 0.0;
 
 	    // combine all payments using paymentCache
 	    while (!payments.isEmpty()) {
 		BufferedPayment payment = payments.remove();
 		totalAmount += payment.get(CurrencyType.MONEY);
-		totalPoints += payment.get(CurrencyType.POINTS);
 
 		if (Jobs.getGCManager().UseTaxes) {
 		    taxesAmount += payment.get(CurrencyType.MONEY) * (Jobs.getGCManager().TaxesAmount / 100.0);
-		    taxesPoints += payment.get(CurrencyType.POINTS) * (Jobs.getGCManager().TaxesAmount / 100.0);
 		}
 
 		OfflinePlayer offPlayer = payment.getOfflinePlayer();
@@ -250,19 +253,22 @@ public class BufferedEconomy {
 	}
 
 	String message = Jobs.getLanguage().getMessage("command.toggle.output.paid.main");
-	if (payment.get(CurrencyType.MONEY) != 0D) {
+	double money = payment.get(CurrencyType.MONEY);
+	if (money != 0D) {
 	    message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.money", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(),
-		payment.get(CurrencyType.MONEY)));
+	    money));
 	}
 
-	if (payment.get(CurrencyType.POINTS) != 0D) {
+	double points = payment.get(CurrencyType.POINTS);
+	if (points != 0D) {
 	    message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.points", "[points]", String.format(Jobs.getGCManager().getDecimalPlacesPoints(),
-		payment.get(CurrencyType.POINTS)));
+	    points));
 	}
 
-	if (payment.get(CurrencyType.EXP) != 0D) {
+	double exp = payment.get(CurrencyType.EXP);
+	if (exp != 0D) {
 	    message += " " + Jobs.getLanguage().getMessage("command.toggle.output.paid.exp", "[exp]", String.format(Jobs.getGCManager().getDecimalPlacesExp(),
-		payment.get(CurrencyType.EXP)));
+	    exp));
 	}
 
 	// Whether or not to show this on player actionbar or on chat

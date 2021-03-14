@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -51,10 +52,10 @@ public class GeneralConfigManager {
     @Deprecated
     public List<Schedule> BoostSchedule = new ArrayList<>();
 
-    public final HashMap<CMIMaterial, HashMap<Enchantment, Integer>> whiteListedItems = new HashMap<>();
-    private final HashMap<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
-    private final HashMap<CurrencyType, Double> generalMulti = new HashMap<>();
-    private final HashMap<String, List<String>> commandArgs = new HashMap<>();
+    public final Map<CMIMaterial, Map<Enchantment, Integer>> whiteListedItems = new HashMap<>();
+    private final Map<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
+    private final Map<CurrencyType, Double> generalMulti = new HashMap<>();
+    private final Map<String, List<String>> commandArgs = new HashMap<>();
 
     protected Locale locale;
     private ConfigReader c;
@@ -107,7 +108,7 @@ public class GeneralConfigManager {
 
     public Parser DynamicPaymentEquation;
 
-    public HashMap<String, List<String>> getCommandArgs() {
+    public Map<String, List<String>> getCommandArgs() {
 	return commandArgs;
     }
 
@@ -450,8 +451,8 @@ public class GeneralConfigManager {
 	addXpPlayer = c.get("add-xp-player", false);
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
-		c.addComment("enable-boosted-items-in-offhand", "Do the jobs boost ignore the boosted items usage in off hand?");
-		boostedItemsInOffHand = c.get("enable-boosted-items-in-offhand", true);
+	    c.addComment("enable-boosted-items-in-offhand", "Do the jobs boost ignore the boosted items usage in off hand?");
+	    boostedItemsInOffHand = c.get("enable-boosted-items-in-offhand", true);
 	}
 
 	c.addComment("enable-boosted-items-in-mainhand", "Do the jobs boost ignore the boosted items usage in main hand?");
@@ -479,14 +480,21 @@ public class GeneralConfigManager {
 	whiteListedItems.clear();
 
 	for (String one : tempList) {
-	    String mname = one.contains("=") ? one.split("=")[0] : one;
-	    String ench = one.contains("=") ? one.split("=")[1] : null;
+	    String mName = one;
+	    String ench = null;
+
+	    if (one.contains("=")) {
+		String[] split = one.split("=");
+		mName = split[0];
+		ench = split[1];
+	    }
+
 	    String value = ench != null && ench.contains("-") ? ench.split("-")[1] : null;
 	    if (value != null && ench != null) {
 		ench = ench.substring(0, ench.length() - (value.length() + 1));
 	    }
 
-	    CMIMaterial mat = CMIMaterial.get(mname);
+	    CMIMaterial mat = CMIMaterial.get(mName);
 	    if (mat == CMIMaterial.NONE) {
 		Jobs.consoleMsg("Failed to recognize " + one + " entry from config file");
 		continue;
@@ -503,11 +511,11 @@ public class GeneralConfigManager {
 	    } catch (NumberFormatException e) {
 	    }
 
-	    HashMap<Enchantment, Integer> submap = new HashMap<>();
+	    Map<Enchantment, Integer> subMap = new HashMap<>();
 	    if (enchant != null)
-		submap.put(enchant, level);
+		subMap.put(enchant, level);
 
-	    whiteListedItems.put(mat, submap);
+	    whiteListedItems.put(mat, subMap);
 	}
 
 	c.addComment("modify-chat", "Modifys chat to add chat titles. If you're using a chat manager, you may add the tag {jobs} to your chat format and disable this.");

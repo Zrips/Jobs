@@ -19,14 +19,16 @@
 package com.gamingmesh.jobs.economy;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.OfflinePlayer;
 
 import com.gamingmesh.jobs.container.CurrencyType;
 
 public class BufferedPayment {
+
     private OfflinePlayer offlinePlayer;
-    private final HashMap<CurrencyType, Double> payments = new HashMap<>();
+    private final Map<CurrencyType, Double> payments = new HashMap<>();
 
     @Deprecated
     public BufferedPayment(OfflinePlayer offlinePlayer, double amount, double points, double exp) {
@@ -36,7 +38,7 @@ public class BufferedPayment {
 	this.payments.put(CurrencyType.POINTS, points);
     }
 
-    public BufferedPayment(OfflinePlayer offlinePlayer, HashMap<CurrencyType, Double> payments) {
+    public BufferedPayment(OfflinePlayer offlinePlayer, Map<CurrencyType, Double> payments) {
 	this.offlinePlayer = offlinePlayer;
 	// This can contain only one value instead of all posible ones
 	this.payments.putAll(payments);
@@ -95,7 +97,7 @@ public class BufferedPayment {
 	return false;
     }
 
-    public HashMap<CurrencyType, Double> getPayment() {
+    public Map<CurrencyType, Double> getPayment() {
 	return payments;
     }
 }

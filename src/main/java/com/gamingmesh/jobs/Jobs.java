@@ -106,13 +106,13 @@ public class Jobs extends JavaPlugin {
     private static JobsDAO dao;
     private static List<Job> jobs;
     private static Job noneJob;
-    private static WeakHashMap<Job, Integer> usedSlots = new WeakHashMap<>();
+    private static Map<Job, Integer> usedSlots = new WeakHashMap<>();
     private static Map<Integer, Job> jobsIds = new HashMap<>();
 
     public static BufferedPaymentThread paymentThread;
     private static DatabaseSaveThread saveTask;
 
-    public static final HashMap<UUID, FastPayment> FASTPAYMENT = new HashMap<>();
+    public static final Map<UUID, FastPayment> FASTPAYMENT = new HashMap<>();
 
     private static NMS nms;
 
@@ -518,12 +518,12 @@ public class Jobs extends JavaPlugin {
 	return CompletableFuture.supplyAsync(() -> {
 	    long time = System.currentTimeMillis();
 	    // Cloning to avoid issues
-	    HashMap<UUID, PlayerInfo> temp = new HashMap<>(getPlayerManager().getPlayersInfoUUIDMap());
-	    HashMap<Integer, List<JobsDAOData>> playersJobs = dao.getAllJobs();
-	    HashMap<Integer, PlayerPoints> playersPoints = dao.getAllPoints();
-	    HashMap<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
-	    HashMap<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
-	    HashMap<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
+	    Map<UUID, PlayerInfo> temp = new HashMap<>(getPlayerManager().getPlayersInfoUUIDMap());
+	    Map<Integer, List<JobsDAOData>> playersJobs = dao.getAllJobs();
+	    Map<Integer, PlayerPoints> playersPoints = dao.getAllPoints();
+	    Map<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
+	    Map<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
+	    Map<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
 	    for (Iterator<PlayerInfo> it = temp.values().iterator(); it.hasNext();) {
 		PlayerInfo one = it.next();
 		int id = one.getID();
@@ -704,11 +704,8 @@ public class Jobs extends JavaPlugin {
 	placeholderAPIEnabled = setupPlaceHolderAPI();
 
 	try {
-	    YmlMaker jobShopItems = new YmlMaker(getFolder(), "shopItems.yml");
-	    jobShopItems.saveDefaultConfig();
-
-	    YmlMaker restrictedBlocks = new YmlMaker(getFolder(), "restrictedBlocks.yml");
-	    restrictedBlocks.saveDefaultConfig();
+	    new YmlMaker(getFolder(), "shopItems.yml").saveDefaultConfig();
+	    new YmlMaker(getFolder(), "restrictedBlocks.yml").saveDefaultConfig();
 
 	    bbManager = new BossBarManager(this);
 
@@ -720,8 +717,7 @@ public class Jobs extends JavaPlugin {
 	    startup();
 
 	    if (getGCManager().SignsEnabled) {
-		YmlMaker jobSigns = new YmlMaker(getFolder(), "Signs.yml");
-		jobSigns.saveDefaultConfig();
+		new YmlMaker(getFolder(), "Signs.yml").saveDefaultConfig();
 	    }
 
 	    // register the listeners
@@ -1059,7 +1055,7 @@ public class Jobs extends JavaPlugin {
 	    if (pointAmount != 0D)
 		jPlayer.setSaved(false);
 
-	    HashMap<CurrencyType, Double> payments = new HashMap<>();
+	    Map<CurrencyType, Double> payments = new HashMap<>();
 	    if (income != 0D)
 		payments.put(CurrencyType.MONEY, income);
 	    if (pointAmount != 0D)
@@ -1068,7 +1064,7 @@ public class Jobs extends JavaPlugin {
 	    economy.pay(jPlayer, payments);
 
 	    if (gConfigManager.LoggingUse) {
-		HashMap<CurrencyType, Double> amounts = new HashMap<>();
+		Map<CurrencyType, Double> amounts = new HashMap<>();
 		amounts.put(CurrencyType.MONEY, income);
 		getLoging().recordToLog(jPlayer, info, amounts);
 	    }
@@ -1096,9 +1092,9 @@ public class Jobs extends JavaPlugin {
 		    continue;
 		}
 
-		Double income = jobinfo.getIncome(level, numjobs, jPlayer.maxJobsEquation);
-		Double pointAmount = jobinfo.getPoints(level, numjobs, jPlayer.maxJobsEquation);
-		Double expAmount = jobinfo.getExperience(level, numjobs, jPlayer.maxJobsEquation);
+		double income = jobinfo.getIncome(level, numjobs, jPlayer.maxJobsEquation);
+		double pointAmount = jobinfo.getPoints(level, numjobs, jPlayer.maxJobsEquation);
+		double expAmount = jobinfo.getExperience(level, numjobs, jPlayer.maxJobsEquation);
 
 		if (income == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
@@ -1112,10 +1108,10 @@ public class Jobs extends JavaPlugin {
 			 * That way jobs that give fractions of experience points will slowly give
 			 * experience in the aggregate
 			 */
-			int expInt = expAmount.intValue();
-			double remainder = expAmount.doubleValue() - expInt;
+			int expInt = (int) expAmount;
+			double remainder = expAmount - expInt;
 			if (Math.abs(remainder) > Math.random()) {
-			    if (expAmount.doubleValue() < 0)
+			    if (expAmount < 0)
 				expInt--;
 			    else
 				expInt++;
@@ -1219,7 +1215,7 @@ public class Jobs extends JavaPlugin {
 		    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
 		}
 
-		HashMap<CurrencyType, Double> payments = new HashMap<>();
+		Map<CurrencyType, Double> payments = new HashMap<>();
 		if (income != 0D)
 		    payments.put(CurrencyType.MONEY, income);
 		if (pointAmount != 0D)
@@ -1234,7 +1230,7 @@ public class Jobs extends JavaPlugin {
 		int oldLevel = prog.getLevel();
 
 		if (gConfigManager.LoggingUse) {
-		    HashMap<CurrencyType, Double> amounts = new HashMap<>();
+		    Map<CurrencyType, Double> amounts = new HashMap<>();
 		    amounts.put(CurrencyType.MONEY, income);
 		    amounts.put(CurrencyType.EXP, expAmount);
 		    amounts.put(CurrencyType.POINTS, pointAmount);

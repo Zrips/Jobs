@@ -82,9 +82,7 @@ public class PermissionManager {
 	    }
 	    if (perm.contains("%WORLDNAME%"))
 		for (World oneJ : Bukkit.getWorlds()) {
-		    String t = perm;
-		    t = t.replace("%WORLDNAME%", oneJ.getName().toLowerCase());
-		    perms.add(t);
+		    perms.add(perm.replace("%WORLDNAME%", oneJ.getName().toLowerCase()));
 		}
 	    return perms;
 	}
