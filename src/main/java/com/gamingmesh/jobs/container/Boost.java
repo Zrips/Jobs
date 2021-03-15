@@ -46,7 +46,7 @@ public class Boost {
 	double f = income;
 
 	if (income > 0 || income < 0 && Jobs.getGCManager().applyToNegativeIncome)
-	    f = income + ((income > 0D ? income : -income) * getFinal(BT, false, false));
+	    f = income + income * getFinal(BT, false, false);
 
 	if (income > 0 && f < 0 || income < 0 && f > 0)
 	    f = 0;
