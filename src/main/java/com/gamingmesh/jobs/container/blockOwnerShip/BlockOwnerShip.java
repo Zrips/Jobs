@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-import java.util.Map.Entry;
 
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -26,7 +26,7 @@ public class BlockOwnerShip {
 	private BlockTypes type;
 	private String metadataName = "";
 
-	private final HashMap<UUID, List<blockLoc>> blockOwnerShips = new HashMap<>();
+	private final Map<UUID, List<blockLoc>> blockOwnerShips = new HashMap<>();
 
 	public BlockOwnerShip(CMIMaterial type) {
 		// Type should be any type of furnace, smoker or brewing stand
@@ -69,7 +69,7 @@ public class BlockOwnerShip {
 		return metadataName;
 	}
 
-	public HashMap<UUID, List<blockLoc>> getBlockOwnerShips() {
+	public Map<UUID, List<blockLoc>> getBlockOwnerShips() {
 		return blockOwnerShips;
 	}
 
@@ -253,7 +253,7 @@ public class BlockOwnerShip {
 						: type == BlockTypes.BREWING_STAND ? "Brewing" : type == BlockTypes.SMOKER ? "Smoker" : "");
 		f.getConfig().set(path, null);
 
-		for (Entry<UUID, List<blockLoc>> one : blockOwnerShips.entrySet()) {
+		for (Map.Entry<UUID, List<blockLoc>> one : blockOwnerShips.entrySet()) {
 			String full = "";
 			for (blockLoc oneL : one.getValue()) {
 				if (!full.isEmpty())

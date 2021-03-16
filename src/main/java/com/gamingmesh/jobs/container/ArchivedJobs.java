@@ -28,11 +28,6 @@ public class ArchivedJobs {
     }
 
     public void removeArchivedJob(Job job) {
-	for (JobProgression one : jobs) {
-	    if (one.getJob().isSame(job)) {
-		jobs.remove(one);
-		break;
-	    }
-	}
+	jobs.remove(getArchivedJobProgression(job));
     }
 }

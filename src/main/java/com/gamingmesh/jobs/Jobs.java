@@ -155,8 +155,7 @@ public class Jobs extends JavaPlugin {
 	}
 
 	if (addNew && b == null) {
-	    b = new BlockOwnerShip(type);
-	    blockOwnerShips.add(b);
+	    blockOwnerShips.add(b = new BlockOwnerShip(type));
 	}
 
 	return Optional.ofNullable(b);

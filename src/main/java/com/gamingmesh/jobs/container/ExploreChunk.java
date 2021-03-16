@@ -1,14 +1,13 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
 
 public class ExploreChunk {
 
-    private ArrayList<Integer> playerIds = new ArrayList<>();
+    private List<Integer> playerIds = new ArrayList<>();
     private int dbId = -1;
     private boolean updated = false;
 
@@ -16,12 +15,14 @@ public class ExploreChunk {
 	if (isFullyExplored()) {
 	    return new ExploreRespond(Jobs.getExplore().getPlayerAmount() + 1, false);
 	}
+
 	boolean newChunkForPlayer = false;
 	if (!playerIds.contains(playerId)) {
 	    if (playerIds.size() < Jobs.getExplore().getPlayerAmount()) {
 		playerIds.add(playerId);
 		updated = true;
 	    }
+
 	    newChunkForPlayer = true;
 	}
 
@@ -29,7 +30,8 @@ public class ExploreChunk {
 	    playerIds = null;
 	}
 
-	return new ExploreRespond(newChunkForPlayer ? getPlayers().size() : getPlayers().size() + 1, newChunkForPlayer);
+	List<Integer> players = getPlayers();
+	return new ExploreRespond(newChunkForPlayer ? players.size() : players.size() + 1, newChunkForPlayer);
     }
 
     public boolean isAlreadyVisited(int playerId) {
@@ -40,7 +42,7 @@ public class ExploreChunk {
 	return isFullyExplored() ? Jobs.getExplore().getPlayerAmount() : playerIds.size();
     }
 
-    public ArrayList<Integer> getPlayers() {
+    public List<Integer> getPlayers() {
 	return playerIds == null ? new ArrayList<>() : playerIds;
     }
 
@@ -67,14 +69,13 @@ public class ExploreChunk {
 	    playerIds = new ArrayList<>();
 	}
 
-	List<String> split = Arrays.asList(names.split(";"));
-	for (String one : split) {
+	for (String one : names.split(";")) {
 	    try {
 		int id = Integer.parseInt(one);
 		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(id);
 		if (info != null)
 		    playerIds.add(id);
-	    } catch (Throwable e) {
+	    } catch (Exception e) {
 		updated = true;
 		JobsPlayer jp = Jobs.getPlayerManager().getJobsPlayer(one);
 		if (jp != null)

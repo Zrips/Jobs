@@ -210,12 +210,14 @@ public class JobsPlayer {
 	Player player = getPlayer();
 	if (player == null || amount == 0)
 	    return true;
+
 	CurrencyLimit limit = Jobs.getGCManager().getLimit(type);
 	if (!limit.isEnabled())
 	    return true;
+
 	PaymentData data = getPaymentLimit();
-	Integer value = limits.getOrDefault(type, 0);
-	if (data.isReachedLimit(type, value)) {
+
+	if (data.isReachedLimit(type, limits.getOrDefault(type, 0))) {
 	    String name = type.getName().toLowerCase();
 
 	    if (player.isOnline() && !data.isInformed() && !data.isReseted(type)) {
@@ -311,12 +313,12 @@ public class JobsPlayer {
     /**
      * Attempts to get the boost from specific job and {@link CurrencyType}
      * 
-     * @param JobName
+     * @param jobName
      * @param type {@link CurrencyType}
      * @param force whenever to retrieve as soon as possible without time
      * @return amount of boost
      */
-    public double getBoost(String JobName, CurrencyType type, boolean force) {
+    public double getBoost(String jobName, CurrencyType type, boolean force) {
 	double boost = 0D;
 
 	if (!isOnline() || type == null)
@@ -324,14 +326,14 @@ public class JobsPlayer {
 
 	long time = System.currentTimeMillis();
 
-	if (boostCounter.containsKey(JobName)) {
-	    List<BoostCounter> counterList = boostCounter.get(JobName);
+	if (boostCounter.containsKey(jobName)) {
+	    List<BoostCounter> counterList = boostCounter.get(jobName);
 	    for (BoostCounter counter : counterList) {
 		if (counter.getType() != type)
 		    continue;
 
 		if (force || time - counter.getTime() > 1000 * 60) {
-		    boost = getPlayerBoostNew(JobName, type);
+		    boost = getPlayerBoostNew(jobName, type);
 		    counter.setBoost(boost);
 		    counter.setTime(time);
 		    return boost;
@@ -340,17 +342,17 @@ public class JobsPlayer {
 		return counter.getBoost();
 	    }
 
-	    boost = getPlayerBoostNew(JobName, type);
+	    boost = getPlayerBoostNew(jobName, type);
 	    counterList.add(new BoostCounter(type, boost, time));
 	    return boost;
 	}
 
-	boost = getPlayerBoostNew(JobName, type);
+	boost = getPlayerBoostNew(jobName, type);
 
 	List<BoostCounter> counterList = new ArrayList<>();
 	counterList.add(new BoostCounter(type, boost, time));
 
-	boostCounter.put(JobName, counterList);
+	boostCounter.put(jobName, counterList);
 	return boost;
     }
 

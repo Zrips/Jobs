@@ -24,7 +24,7 @@ public final class Log {
 	LogAmounts logAmount = amountMap.getOrDefault(item, new LogAmounts(item));
 	logAmount.addCount();
 	logAmount.add(amounts);
-	this.amountMap.put(item, logAmount);
+	amountMap.put(item, logAmount);
     }
 
     public void add(String item, int count, Map<CurrencyType, Double> amounts) {
@@ -32,7 +32,7 @@ public final class Log {
 	logAmount.setCount(count);
 	logAmount.add(amounts);
 	logAmount.setNewEntry(false);
-	this.amountMap.put(item, logAmount);
+	amountMap.put(item, logAmount);
     }
 
     public void setDate() {

@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -15,7 +16,7 @@ public class QuestProgression {
     private long validUntil;
     private boolean givenReward = false;
 
-    private final HashMap<QuestObjective, Integer> done = new HashMap<>();
+    private final Map<QuestObjective, Integer> done = new HashMap<>();
 
     public QuestProgression(Quest quest) {
 	this.quest = quest;
@@ -33,7 +34,7 @@ public class QuestProgression {
 
     public int getTotalAmountNeeded() {
 	int amountNeeded = 0;
-	for (HashMap<String, QuestObjective> oneA : quest.getObjectives().values()) {
+	for (Map<String, QuestObjective> oneA : quest.getObjectives().values()) {
 	    for (QuestObjective one : oneA.values()) {
 		amountNeeded += one.getAmount();
 	    }
@@ -77,7 +78,7 @@ public class QuestProgression {
     }
 
     public boolean isCompleted() {
-	for (HashMap<String, QuestObjective> oneA : quest.getObjectives().values()) {
+	for (Map<String, QuestObjective> oneA : quest.getObjectives().values()) {
 	    for (QuestObjective one : oneA.values()) {
 		Integer amountDone = done.get(one);
 		if (amountDone == null || amountDone < one.getAmount())
@@ -112,7 +113,7 @@ public class QuestProgression {
 	}
 
 	if (!isCompleted()) {
-	    HashMap<String, QuestObjective> byAction = quest.getObjectives().get(action.getType());
+	    Map<String, QuestObjective> byAction = quest.getObjectives().get(action.getType());
 
 	    QuestObjective objective = null;
 	    if (byAction != null) {

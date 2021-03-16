@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class BoostMultiplier implements Cloneable {
 
-    private final HashMap<CurrencyType, Double> map = new HashMap<>();
+    private final java.util.Map<CurrencyType, Double> map = new HashMap<>();
 
     private Long time = 0L;
 

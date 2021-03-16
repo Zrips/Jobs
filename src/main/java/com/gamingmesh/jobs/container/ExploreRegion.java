@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Chunk;
 
@@ -9,7 +10,7 @@ public class ExploreRegion {
     int x;
     int z;
 
-    private final HashMap<Short, ExploreChunk> chunks = new HashMap<>();
+    private final Map<Short, ExploreChunk> chunks = new HashMap<>();
 
     public ExploreRegion(int x, int z) {
 	this.x = x;
@@ -20,7 +21,7 @@ public class ExploreRegion {
 	chunks.put(getPlace(x, z), chunk);
     }
 
-    public HashMap<Short, ExploreChunk> getChunks() {
+    public Map<Short, ExploreChunk> getChunks() {
 	return chunks;
     }
 

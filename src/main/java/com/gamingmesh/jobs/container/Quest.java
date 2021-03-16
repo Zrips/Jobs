@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
@@ -23,7 +24,7 @@ public class Quest {
 
     private boolean stopped = false;
 
-    private HashMap<ActionType, HashMap<String, QuestObjective>> objectives = new HashMap<>();
+    private Map<ActionType, Map<String, QuestObjective>> objectives = new HashMap<>();
     private final Set<ActionType> actions = new HashSet<>();
 
     public Quest(String questName, Job job) {
@@ -154,12 +155,12 @@ public class Quest {
 	return true;
     }
 
-    public HashMap<ActionType, HashMap<String, QuestObjective>> getObjectives() {
+    public Map<ActionType, Map<String, QuestObjective>> getObjectives() {
 	return objectives;
     }
 
     public boolean hasObjective(QuestObjective objective) {
-	HashMap<String, QuestObjective> old = objectives.get(objective.getAction());
+	Map<String, QuestObjective> old = objectives.get(objective.getAction());
 	if (old == null)
 	    return false;
 
@@ -172,7 +173,7 @@ public class Quest {
 	return false;
     }
 
-    public void setObjectives(HashMap<ActionType, HashMap<String, QuestObjective>> objectives) {
+    public void setObjectives(Map<ActionType, Map<String, QuestObjective>> objectives) {
 	if (objectives == null) {
 	    objectives = new HashMap<>();
 	}
@@ -182,7 +183,7 @@ public class Quest {
     }
 
     public void addObjective(QuestObjective objective) {
-	HashMap<String, QuestObjective> old = objectives.get(objective.getAction());
+	Map<String, QuestObjective> old = objectives.get(objective.getAction());
 	if (old == null) {
 	    old = new HashMap<>();
 	    old.put(objective.getTargetName(), objective);

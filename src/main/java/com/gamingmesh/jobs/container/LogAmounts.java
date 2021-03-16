@@ -42,13 +42,11 @@ public final class LogAmounts {
 	if (amount == null)
 	    return;
 
-	Double a = amounts.getOrDefault(type, 0D);
-	amounts.put(type, a + amount);
+	amounts.put(type, amounts.getOrDefault(type, 0D) + amount);
     }
 
-    public Double get(CurrencyType type) {
-	Double a = amounts.getOrDefault(type, 0D);
-	return ((int) (a * 100D)) / 100D;
+    public double get(CurrencyType type) {
+	return ((int) (amounts.getOrDefault(type, 0D) * 100D)) / 100D;
     }
 
     public void addCount() {

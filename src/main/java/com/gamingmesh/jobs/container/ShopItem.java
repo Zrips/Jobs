@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.container;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ShopItem {
 
@@ -17,7 +18,7 @@ public class ShopItem {
 
     private int requiredTotalLevels = -1;
 
-    private HashMap<String, Integer> requiredJobs = new HashMap<>();
+    private Map<String, Integer> requiredJobs = new HashMap<>();
 
     private final List<String> iconLore = new ArrayList<>(), requiredPerm = new ArrayList<>(), commands = new ArrayList<>();
     private final List<JobItems> items = new ArrayList<>();
@@ -64,11 +65,11 @@ public class ShopItem {
 	return commands;
     }
 
-    public void setRequiredJobs(HashMap<String, Integer> requiredJobs) {
+    public void setRequiredJobs(Map<String, Integer> requiredJobs) {
 	this.requiredJobs = requiredJobs;
     }
 
-    public HashMap<String, Integer> getRequiredJobs() {
+    public Map<String, Integer> getRequiredJobs() {
 	return requiredJobs;
     }
 

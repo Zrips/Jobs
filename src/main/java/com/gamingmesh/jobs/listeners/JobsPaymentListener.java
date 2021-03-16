@@ -103,15 +103,7 @@ public class JobsPaymentListener implements Listener {
 
     private Jobs plugin;
 
-    /**
-     * @deprecated Use {@link Jobs#getBlockOwnerShip(CMIMaterial)}
-     */
-    @Deprecated
-    public static final String furnaceOwnerMetadata = "jobsFurnaceOwner", blastFurnaceOwnerMetadata = "jobsBlastFurnaceOwner",
-	brewingOwnerMetadata = "jobsBrewingOwner", smokerOwnerMetadata = "jobsSmokerOwner";
-    public static final String VegyMetadata = "VegyTimer";
-
-    private final String BlockMetadata = "BlockOwner", CowMetadata = "CowTimer", entityDamageByPlayer = "JobsEntityDamagePlayer";
+    private final String blockMetadata = "BlockOwner", cowMetadata = "CowTimer", entityDamageByPlayer = "JobsEntityDamagePlayer";
 
     public JobsPaymentListener(Jobs plugin) {
 	this.plugin = plugin;
@@ -175,7 +167,7 @@ public class JobsPaymentListener implements Listener {
 	    ItemStack currentItem = event.getCurrentItem();
 
 	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
-		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(Jobs.getInstance()
+		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(plugin
 			.getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.VTRADE));
 	    } else if (currentItem != null) {
 		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.VTRADE));
@@ -198,7 +190,7 @@ public class JobsPaymentListener implements Listener {
 		    while (newItemsCount >= 1) {
 			newItemsCount--;
 			if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
-			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(Jobs.getInstance()
+			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(plugin
 			    .getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.VTRADE));
 			else
 			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.VTRADE));
@@ -247,8 +239,8 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
-	    if (cow.hasMetadata(CowMetadata)) {
-		long time = cow.getMetadata(CowMetadata).get(0).asLong();
+	    if (cow.hasMetadata(cowMetadata)) {
+		long time = cow.getMetadata(cowMetadata).get(0).asLong();
 		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
 		    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
 		    jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
@@ -263,7 +255,7 @@ public class JobsPaymentListener implements Listener {
 	Jobs.action(jPlayer, new EntityActionInfo(cow, ActionType.MILK));
 
 	Long timer = System.currentTimeMillis();
-	cow.setMetadata(CowMetadata, new FixedMetadataValue(plugin, timer));
+	cow.setMetadata(cowMetadata, new FixedMetadataValue(plugin, timer));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -320,7 +312,7 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
 	    return;
 
-	BlockOwnerShip ownerShip = Jobs.getInstance().getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
+	BlockOwnerShip ownerShip = plugin.getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
 	if (ownerShip == null || !block.hasMetadata(ownerShip.getMetadataName()))
 	    return;
 
@@ -690,7 +682,7 @@ public class JobsPaymentListener implements Listener {
 		PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
 		Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
 	    } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
-		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(Jobs.getInstance()
+		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(plugin
 			.getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.CRAFT));
 	    } else if (currentItem != null) {
 		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.CRAFT));
@@ -713,7 +705,7 @@ public class JobsPaymentListener implements Listener {
 		    while (newItemsCount >= 1) {
 			newItemsCount--;
 			if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
-			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(Jobs.getInstance()
+			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(plugin
 			    .getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.CRAFT));
 			else
 			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
@@ -841,10 +833,10 @@ public class JobsPaymentListener implements Listener {
 	String originalName = null;
 	String newName = null;
 	if (firstSlot.hasItemMeta())
-	    originalName = Jobs.getInstance().getComplement().getDisplayName(firstSlot.getItemMeta());
+	    originalName = plugin.getComplement().getDisplayName(firstSlot.getItemMeta());
 
 	if (resultStack.hasItemMeta())
-	    newName = Jobs.getInstance().getComplement().getDisplayName(resultStack.getItemMeta());
+	    newName = plugin.getComplement().getDisplayName(resultStack.getItemMeta());
 
 	if (originalName != null && !originalName.equals(newName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
 	    return;
@@ -1533,7 +1525,7 @@ public class JobsPaymentListener implements Listener {
 
 	    plugin.getBlockOwnerShips().forEach(b -> b.remove(block));
 
-	    if (Jobs.getGCManager().useBlockProtection && block.getState().hasMetadata(BlockMetadata))
+	    if (Jobs.getGCManager().useBlockProtection && block.getState().hasMetadata(blockMetadata))
 		return;
 
 	    Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.TNTBREAK), block);

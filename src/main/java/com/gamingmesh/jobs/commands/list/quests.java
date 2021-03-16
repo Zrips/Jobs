@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -104,7 +103,7 @@ public class quests implements Cmd {
 		    }
 		}
 
-		for (HashMap<String, QuestObjective> oneAction : q.getQuest().getObjectives().values()) {
+		for (java.util.Map<String, QuestObjective> oneAction : q.getQuest().getObjectives().values()) {
 		    for (Entry<String, QuestObjective> oneObjective : oneAction.entrySet()) {
 			hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +
 			    Jobs.getNameTranslatorManager().Translate(oneObjective.getKey(), oneObjective.getValue().getAction(), oneObjective.getValue().getTargetId(), oneObjective.getValue()

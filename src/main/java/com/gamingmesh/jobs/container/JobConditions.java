@@ -21,14 +21,15 @@ package com.gamingmesh.jobs.container;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JobConditions {
 
     private String node;
 
     private final List<String> requiresPerm = new ArrayList<>();
-    private final HashMap<String, Integer> requiresJobs = new HashMap<>();
-    private final HashMap<String, Boolean> performPerm = new HashMap<>();
+    private final Map<String, Integer> requiresJobs = new HashMap<>();
+    private final Map<String, Boolean> performPerm = new HashMap<>();
 
     public JobConditions(String node, List<String> requires, List<String> perform) {
 	this.node = node;
@@ -73,11 +74,11 @@ public class JobConditions {
 	return requiresPerm;
     }
 
-    public HashMap<String, Integer> getRequiredJobs() {
+    public Map<String, Integer> getRequiredJobs() {
 	return requiresJobs;
     }
 
-    public HashMap<String, Boolean> getPerformPerm() {
+    public Map<String, Boolean> getPerformPerm() {
 	return performPerm;
     }
 }

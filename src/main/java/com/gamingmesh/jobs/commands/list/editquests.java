@@ -1,8 +1,8 @@
 package com.gamingmesh.jobs.commands.list;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.block.Block;
@@ -111,7 +111,7 @@ public class editquests implements Cmd {
 			return false;
 		    }
 
-		    HashMap<String, QuestObjective> obj = quest.getObjectives().get(actionT);
+		    Map<String, QuestObjective> obj = quest.getObjectives().get(actionT);
 
 		    if (obj == null || obj.isEmpty())
 			return false;
@@ -179,7 +179,7 @@ public class editquests implements Cmd {
 		    return false;
 		}
 
-		HashMap<String, QuestObjective> obj = quest.getObjectives().get(actionT);
+		Map<String, QuestObjective> obj = quest.getObjectives().get(actionT);
 		if (obj == null || obj.isEmpty())
 		    return false;
 
@@ -207,7 +207,7 @@ public class editquests implements Cmd {
 		    return false;
 		}
 
-		HashMap<String, QuestObjective> obj = q.getObjectives().get(actionT);
+		Map<String, QuestObjective> obj = q.getObjectives().get(actionT);
 		if (obj == null || obj.isEmpty())
 		    return false;
 
@@ -610,11 +610,9 @@ public class editquests implements Cmd {
 	if (action != null && job != null && jInfo != null && q != null) {
 	    rm = new RawMessage();
 
-	    String materialName = jInfo.getRealisticName();
-
 	    rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.list.quests", "%questname%", q.getConfigName()))
 		.addHover(jInfo.getName()).addCommand("jobs editquests list " + job.getName() + " " + action.getName() + " " + q.getConfigName()
-		    + " " + materialName);
+		    + " " + jInfo.getRealisticName());
 	    rm.show(player);
 	}
     }

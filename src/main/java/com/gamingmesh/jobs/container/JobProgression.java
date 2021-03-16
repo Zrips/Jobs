@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.gamingmesh.jobs.stuff.TimeManage;
 
@@ -92,7 +93,7 @@ public class JobProgression {
     public boolean addExperience(double experience) {
 	jPlayer.setSaved(false);
 	this.experience += experience;
-	this.lastExperience = getLastExperience() + experience;
+	lastExperience = getLastExperience() + experience;
 	return checkLevelUp();
     }
 
@@ -115,7 +116,7 @@ public class JobProgression {
     public boolean takeExperience(double experience) {
 	jPlayer.setSaved(false);
 	this.experience -= experience;
-	this.lastExperience = getLastExperience() + experience;
+	lastExperience = getLastExperience() + experience;
 	return checkLevelUp();
     }
 
@@ -151,14 +152,14 @@ public class JobProgression {
      * Reloads max experience
      */
     public void reloadMaxExperience() {
-	HashMap<String, Double> param = new HashMap<>();
+	Map<String, Double> param = new HashMap<>();
 	param.put("joblevel", (double) level);
 	param.put("numjobs", (double) jPlayer.getJobProgression().size());
-	this.maxExperience = (int) job.getMaxExp(param);
+	maxExperience = (int) job.getMaxExp(param);
     }
 
     public int getMaxExperience(int level) {
-	HashMap<String, Double> param = new HashMap<>();
+	Map<String, Double> param = new HashMap<>();
 	param.put("joblevel", (double) level);
 	param.put("numjobs", (double) jPlayer.getJobProgression().size());
 	return (int) job.getMaxExp(param);
@@ -171,18 +172,19 @@ public class JobProgression {
     private boolean checkLevelUp() {
 	if (level == 1 && experience < 0)
 	    experience = 0;
+
 	if (experience < 0)
 	    return checkLevelDown();
 
 	boolean ret = false;
 	while (canLevelUp()) {
-	    int maxLevel = jPlayer.getMaxJobLevelAllowed(job);
 	    // Don't level up at max level
-	    if (job.getMaxLevel() > 0 && level >= maxLevel)
+	    if (job.getMaxLevel() > 0 && level >= jPlayer.getMaxJobLevelAllowed(job))
 		break;
 
 	    level++;
 	    experience -= maxExperience;
+
 	    ret = true;
 	    reloadMaxExperience();
 	    jPlayer.reloadLimits();
@@ -205,12 +207,13 @@ public class JobProgression {
 	    // Don't level down at 1
 	    if (level <= 1)
 		break;
+
 	    level--;
-	    int exp = getMaxExperience(level);
-	    experience += exp;
+	    experience += getMaxExperience(level);
+
 	    ret = true;
 	    reloadMaxExperience();
-	    this.jPlayer.reloadLimits();
+	    jPlayer.reloadLimits();
 	}
 	return ret;
     }
@@ -220,7 +223,6 @@ public class JobProgression {
      * Do this whenever job or level changes
      * @return if leveled up
      */
-
     private boolean reloadMaxExperienceAndCheckLevelUp() {
 	reloadMaxExperience();
 	return checkLevelUp();
@@ -238,7 +240,9 @@ public class JobProgression {
     public boolean canRejoin() {
 	if (leftOn == null || leftOn + job.getRejoinCd() < System.currentTimeMillis())
 	    return true;
-	return jPlayer != null && jPlayer.getPlayer() != null && jPlayer.getPlayer().hasPermission("jobs.rejoinbypass");
+
+	org.bukkit.entity.Player player = jPlayer != null ? jPlayer.getPlayer() : null;
+	return player != null && player.hasPermission("jobs.rejoinbypass");
     }
 
     public String getRejoinTimeMessage() {

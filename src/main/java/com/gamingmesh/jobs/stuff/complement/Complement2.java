@@ -21,7 +21,7 @@ public class Complement2 implements Complement {
 	}
 
 	protected Component deserialize(String t) {
-		return PlainComponentSerializer.plain().deserialize(t);
+		return Component.text(t);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import com.gamingmesh.jobs.PlayerManager.BoostOf;
 
 public class Boost {
 
-    private HashMap<BoostOf, BoostMultiplier> map = new HashMap<>();
+    private java.util.Map<BoostOf, BoostMultiplier> map = new HashMap<>();
 
     public Boost() {
 	for (BoostOf one : BoostOf.values()) {
@@ -15,38 +15,38 @@ public class Boost {
 	}
     }
 
-    public void add(BoostOf boostoff, BoostMultiplier BM) {
-	map.put(boostoff, BM);
+    public void add(BoostOf boostoff, BoostMultiplier multiplier) {
+	map.put(boostoff, multiplier);
     }
 
-    public BoostMultiplier get(BoostOf boostoff) {
-	return map.getOrDefault(boostoff, new BoostMultiplier());
+    public BoostMultiplier get(BoostOf boostOf) {
+	return map.getOrDefault(boostOf, new BoostMultiplier());
     }
 
-    public double get(BoostOf boostoff, CurrencyType BT) {
-	return get(boostoff, BT, false);
+    public double get(BoostOf boostOf, CurrencyType type) {
+	return get(boostOf, type, false);
     }
 
-    public double get(BoostOf boostoff, CurrencyType BT, boolean percent) {
-	if (!map.containsKey(boostoff))
+    public double get(BoostOf boostOf, CurrencyType type, boolean percent) {
+	if (!map.containsKey(boostOf))
 	    return 0D;
-	double r = map.get(boostoff).get(BT);
+
+	double r = map.get(boostOf).get(type);
 	if (r < -1)
 	    r = -1;
-	if (percent)
-	    return (int) (r * 100);
-	return r;
+
+	return percent ? (int) (r * 100) : r;
     }
 
-    public double getFinal(CurrencyType BT) {
-	return getFinal(BT, false, false);
+    public double getFinal(CurrencyType type) {
+	return getFinal(type, false, false);
     }
 
-    public double getFinalAmount(CurrencyType BT, double income) {
+    public double getFinalAmount(CurrencyType type, double income) {
 	double f = income;
 
 	if (income > 0 || income < 0 && Jobs.getGCManager().applyToNegativeIncome)
-	    f = income + income * getFinal(BT, false, false);
+	    f = income + income * getFinal(type, false, false);
 
 	if (income > 0 && f < 0 || income < 0 && f > 0)
 	    f = 0;
@@ -54,7 +54,7 @@ public class Boost {
 	return f;
     }
 
-    public double getFinal(CurrencyType BT, boolean percent, boolean excludeExtra) {
+    public double getFinal(CurrencyType type, boolean percent, boolean excludeExtra) {
 	double r = 0D;
 
 	for (BoostOf one : BoostOf.values()) {
@@ -64,10 +64,9 @@ public class Boost {
 	    if (excludeExtra && (one == BoostOf.NearSpawner || one == BoostOf.PetPay))
 		continue;
 
-	    if (!map.get(one).isValid(BT))
-		continue;
-
-	    r += map.get(one).get(BT);
+	    BoostMultiplier bm = map.get(one);
+	    if (bm.isValid(type))
+		r += bm.get(type);
 	}
 
 	if (r < -1)
