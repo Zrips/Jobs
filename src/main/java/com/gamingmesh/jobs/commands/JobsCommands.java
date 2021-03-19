@@ -184,7 +184,7 @@ public class JobsCommands implements CommandExecutor {
     private Cmd getCmdClass(String cmd) {
 	try {
 	    Class<?> nmsClass = getClass(cmd);
-	    if (Cmd.class.isAssignableFrom(nmsClass)) {
+	    if (nmsClass != null && Cmd.class.isAssignableFrom(nmsClass)) {
 		return (Cmd) nmsClass.getConstructor().newInstance();
 	    }
 	} catch (Exception e) {

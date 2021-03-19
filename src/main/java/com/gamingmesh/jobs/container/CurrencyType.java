@@ -26,7 +26,7 @@ public enum CurrencyType {
     private String name;
     private int id = 0;
 
-    private CurrencyType(String name, int id) {
+    CurrencyType(String name, int id) {
 	this.name = name;
 	this.id = id;
     }

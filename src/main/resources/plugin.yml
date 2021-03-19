@@ -1,10 +1,10 @@
 name: Jobs
-description: Jobs Plugin for the BukkitAPI
+description: Jobs plugin for the BukkitAPI
 main: com.gamingmesh.jobs.Jobs
 version: ${project.version}
 api-version: "1.13"
 website: https://www.spigotmc.org/resources/4216/
-authors: [phrstbrn, Zrips, montlikadani]
+authors: [Zrips, montlikadani]
 softdepend: [Vault, Essentials, MythicMobs, McMMO, mcMMO, WorldGuard, MyPet, PlaceholderAPI, EcoEnchants]
 commands:
   jobs:

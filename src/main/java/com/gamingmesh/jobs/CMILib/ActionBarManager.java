@@ -77,7 +77,6 @@ public class ActionBarManager {
 	    Object connection = playerConnection.get(player);
 
 	    sendPacket.invoke(connection, packet);
-	    return;
 
 	} catch (Exception ex) {
 	    ex.printStackTrace();

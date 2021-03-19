@@ -279,7 +279,7 @@ public class JobsPlayer {
 	return logList;
     }
 
-    public void setLog(HashMap<String, Log> logList) {
+    public void setLog(Map<String, Log> logList) {
 	this.logList = logList;
     }
 
@@ -1082,7 +1082,7 @@ public class JobsPlayer {
 	    g = new HashMap<>(qProg);
 
 	Map<String, QuestProgression> tmp = new HashMap<>();
-	for (Entry<String, QuestProgression> one : (new HashMap<String, QuestProgression>(g)).entrySet()) {
+	for (Entry<String, QuestProgression> one : (new HashMap<>(g)).entrySet()) {
 	    QuestProgression qp = one.getValue();
 
 	    if (qp.isEnded()) {
@@ -1348,19 +1348,13 @@ public class JobsPlayer {
     }
 
     public boolean isLeftTimeEnded(Job job) {
-	UUID uuid = getUniqueId();
-	if (!leftTimes.containsKey(uuid))
-	    return false;
-
-	Map<Job, Long> map = leftTimes.get(uuid);
-	return map.containsKey(job) && map.get(job).longValue() < System.currentTimeMillis();
+	Map<Job, Long> map = leftTimes.get(getUniqueId());
+	return map != null && map.containsKey(job) && map.get(job).longValue() < System.currentTimeMillis();
     }
 
     public void setLeftTime(Job job) {
 	UUID uuid = getUniqueId();
-
-	if (leftTimes.containsKey(uuid))
-	    leftTimes.remove(uuid);
+	leftTimes.remove(uuid);
 
 	int hour = Jobs.getGCManager().jobExpiryTime;
 	if (hour == 0)

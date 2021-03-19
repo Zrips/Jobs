@@ -21,11 +21,11 @@ package com.gamingmesh.jobs.economy;
 import org.bukkit.OfflinePlayer;
 
 public interface Economy {
-    public boolean depositPlayer(OfflinePlayer offlinePlayer, double money);
+    boolean depositPlayer(OfflinePlayer offlinePlayer, double money);
 
-    public boolean withdrawPlayer(OfflinePlayer offlinePlayer, double money);
+    boolean withdrawPlayer(OfflinePlayer offlinePlayer, double money);
 
-    public String format(double money);
+    String format(double money);
 
     boolean hasMoney(OfflinePlayer offlinePlayer, double money);
 

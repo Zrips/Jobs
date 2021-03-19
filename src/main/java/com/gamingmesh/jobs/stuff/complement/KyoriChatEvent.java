@@ -9,7 +9,6 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Util;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-import net.kyori.adventure.text.Component;
 
 public final class KyoriChatEvent extends Complement2 implements Listener {
 
@@ -43,21 +42,21 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 		if (honorific.equals(" "))
 			honorific = "";
 
-		event.message(Component.text(honorific + "%1$s"));
+		final String h = honorific;
+
+		// TODO displayName returns the player display name not the chat component from
+		// chat plugins, like Essentials
+		event.formatter((displayName, msg) -> {
+			String newMessage = serialize(msg);
+			newMessage = newMessage.replace("{jobs}", h);
+			return deserialize(newMessage);
+		});
 	}
 
 	// Changing chat prefix variable to job name
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlayerChatLow(AsyncChatEvent event) {
-		if (Jobs.getGCManager().getModifyChat())
-			return;
-
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
-		String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
-		if (honorific.equals(" "))
-			honorific = "";
-
-		event.formatter().chat(Component.translatable("{jobs}"), Component.text(honorific));
+		onPlayerChatHigh(event);
 	}
 
 	// Changing chat prefix variable to job name
@@ -71,6 +70,11 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 		if (honorific.equals(" "))
 			honorific = "";
 
-		event.formatter().chat(Component.translatable("{jobs}"), Component.text(honorific));
+		final String h = honorific;
+		event.formatter((displayName, msg) -> {
+			String newMessage = serialize(msg);
+			newMessage = newMessage.replace("{jobs}", h);
+			return deserialize(newMessage);
+		});
 	}
 }

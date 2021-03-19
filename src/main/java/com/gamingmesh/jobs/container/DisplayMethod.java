@@ -32,7 +32,7 @@ public enum DisplayMethod {
     private String name;
     private String desc = "";
 
-    private DisplayMethod(String name, String desc) {
+    DisplayMethod(String name, String desc) {
 	this.name = name;
 	this.desc = desc;
     }

@@ -396,7 +396,7 @@ public class PlayerManager {
      * @return {@link JobsPlayer}
      */
     public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points,
-	HashMap<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
+	Map<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
 	if (info == null)
 	    return null;
 
@@ -406,17 +406,16 @@ public class PlayerManager {
 	jPlayer.setDoneQuests(info.getQuestsDone());
 	jPlayer.setQuestProgressionFromString(info.getQuestProgression());
 
-	if (jobs != null)
+	if (jobs != null) {
 	    for (JobsDAOData jobdata : jobs) {
 		Job job = Jobs.getJob(jobdata.getJobName());
-		if (job == null)
-		    continue;
-
-		JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
-		jPlayer.progression.add(jobProgression);
-		jPlayer.reloadMaxExperience();
-		jPlayer.reloadLimits();
+		if (job != null) {
+		    jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
+		    jPlayer.reloadMaxExperience();
+		    jPlayer.reloadLimits();
+		}
 	    }
+	}
 
 	if (points != null)
 	    jPlayer.setPoints(points);
@@ -429,13 +428,17 @@ public class PlayerManager {
 
 	if (archivedJobs != null) {
 	    ArchivedJobs aj = new ArchivedJobs();
+
 	    for (JobProgression one : archivedJobs.getArchivedJobs()) {
 		JobProgression jp = new JobProgression(one.getJob(), jPlayer, one.getLevel(), one.getExperience());
 		jp.reloadMaxExperience();
+
 		if (one.getLeftOn() != null && one.getLeftOn() != 0L)
 		    jp.setLeftOn(one.getLeftOn());
+
 		aj.addArchivedJob(jp);
 	    }
+
 	    jPlayer.setArchivedJobs(aj);
 	}
 

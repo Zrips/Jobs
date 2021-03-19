@@ -52,7 +52,6 @@ import com.gamingmesh.jobs.stuff.complement.JobsChatEvent;
 import com.gamingmesh.jobs.stuff.complement.Complement;
 import com.gamingmesh.jobs.stuff.complement.Complement1;
 import com.gamingmesh.jobs.stuff.complement.Complement2;
-import com.gamingmesh.jobs.stuff.complement.KyoriChatEvent;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
@@ -92,7 +91,6 @@ public class Jobs extends JavaPlugin {
     private static JobsManager dbManager;
     private static ConfigManager configManager;
     private static GeneralConfigManager gConfigManager;
-    private static PistonProtectionListener pistonProtectionListener;
     private static CMIReflections reflections;
     private static BufferedEconomy economy;
     private static PermissionHandler permissionHandler;
@@ -182,12 +180,6 @@ public class Jobs extends JavaPlugin {
      */
     public Set<BlockOwnerShip> getBlockOwnerShips() {
 	return blockOwnerShips;
-    }
-
-    public static PistonProtectionListener getPistonProtectionListener() {
-	if (pistonProtectionListener == null)
-	    pistonProtectionListener = new PistonProtectionListener();
-	return pistonProtectionListener;
     }
 
     private Placeholder placeholder;
@@ -297,16 +289,6 @@ public class Jobs extends JavaPlugin {
     }
 
     /**
-     * @deprecated miss named
-     * @see #getTitleManager()
-     * @return
-     */
-    @Deprecated
-    public static TitleManager gettitleManager() {
-	return getTitleManager();
-    }
-
-    /**
      * @return {@link TitleManager}
      */
     public static TitleManager getTitleManager() {
@@ -327,7 +309,7 @@ public class Jobs extends JavaPlugin {
      */
     public static ScheduleManager getScheduleManager() {
 	if (scheduleManager == null) {
-	    scheduleManager = new ScheduleManager(getInstance());
+	    scheduleManager = new ScheduleManager(instance);
 	}
 
 	return scheduleManager;
@@ -349,7 +331,7 @@ public class Jobs extends JavaPlugin {
 
     public static JobsCommands getCommandManager() {
 	if (cManager == null) {
-	    cManager = new JobsCommands(getInstance());
+	    cManager = new JobsCommands(instance);
 	}
 	return cManager;
     }
@@ -416,7 +398,7 @@ public class Jobs extends JavaPlugin {
     }
 
     public static File getFolder() {
-	File folder = getInstance().getDataFolder();
+	File folder = instance.getDataFolder();
 	if (!folder.exists())
 	    folder.mkdirs();
 	return folder;
@@ -520,7 +502,7 @@ public class Jobs extends JavaPlugin {
 	    Map<UUID, PlayerInfo> temp = new HashMap<>(getPlayerManager().getPlayersInfoUUIDMap());
 	    Map<Integer, List<JobsDAOData>> playersJobs = dao.getAllJobs();
 	    Map<Integer, PlayerPoints> playersPoints = dao.getAllPoints();
-	    Map<Integer, HashMap<String, Log>> playersLogs = dao.getAllLogs();
+	    Map<Integer, Map<String, Log>> playersLogs = dao.getAllLogs();
 	    Map<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
 	    Map<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
 	    for (Iterator<PlayerInfo> it = temp.values().iterator(); it.hasNext();) {
@@ -658,7 +640,7 @@ public class Jobs extends JavaPlugin {
      * @param eco - the economy handler
      */
     public static void setEconomy(Economy eco) {
-	economy = new BufferedEconomy(getInstance(), eco);
+	economy = new BufferedEconomy(instance, eco);
     }
 
     /**
@@ -729,7 +711,8 @@ public class Jobs extends JavaPlugin {
 	    HookManager.loadHooks();
 
 	    if (getGCManager().useBlockProtection) {
-		getServer().getPluginManager().registerEvents(getPistonProtectionListener(), this);
+		PistonProtectionListener pistonProtection = new PistonProtectionListener();
+		getServer().getPluginManager().registerEvents(pistonProtection, this);
 	    }
 
 	    boolean kyoriSupported = false;
@@ -741,11 +724,11 @@ public class Jobs extends JavaPlugin {
 
 	    if (Version.isCurrentEqualOrHigher(Version.v1_16_R3) && kyoriSupported) {
 		complement = new Complement2();
-		getServer().getPluginManager().registerEvents(new KyoriChatEvent(this), this);
+		//getServer().getPluginManager().registerEvents(new KyoriChatEvent(this), this);
 	    } else {
 		complement = new Complement1();
-		getServer().getPluginManager().registerEvents(new JobsChatEvent(this), this);
 	    }
+	    getServer().getPluginManager().registerEvents(new JobsChatEvent(this), this);
 
 	    // register economy
 	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
@@ -770,7 +753,7 @@ public class Jobs extends JavaPlugin {
     public static void reload(boolean startup) {
 	// unregister all registered listeners by this plugin and register again
 	if (!startup) {
-	    org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
+	    org.bukkit.plugin.PluginManager pm = instance.getServer().getPluginManager();
 
 	    HandlerList.unregisterAll(instance);
 
@@ -782,8 +765,10 @@ public class Jobs extends JavaPlugin {
 		pm.registerEvents(new JobsPayment14Listener(), instance);
 	    }
 
-	    if (getGCManager().useBlockProtection)
-		pm.registerEvents(getPistonProtectionListener(), instance);
+	    if (getGCManager().useBlockProtection) {
+		PistonProtectionListener pistonProtection = new PistonProtectionListener();
+		pm.registerEvents(pistonProtection, instance);
+	    }
 
 	    if (HookManager.getMcMMOManager().CheckmcMMO()) {
 		HookManager.setMcMMOlistener();

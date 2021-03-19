@@ -45,7 +45,7 @@ public enum ActionType {
 
     private String name;
 
-    private ActionType(String name) {
+    ActionType(String name) {
 	this.name = name;
     }
 

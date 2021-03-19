@@ -9,6 +9,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.UUID;
@@ -31,11 +32,10 @@ import com.gamingmesh.jobs.container.JobsWorld;
 
 public class Util {
 
-    private static HashMap<UUID, String> jobsEditorMap = new HashMap<>();
-    private static HashMap<UUID, String> questsEditorMap = new HashMap<>();
+    private static Map<UUID, String> jobsEditorMap = new HashMap<>(), questsEditorMap = new HashMap<>();
 
-    private static HashMap<String, JobsWorld> jobsWorlds = new HashMap<>();
-    private static HashMap<Integer, JobsWorld> jobsWorldsId = new HashMap<>();
+    private static Map<String, JobsWorld> jobsWorlds = new HashMap<>();
+    private static Map<Integer, JobsWorld> jobsWorldsId = new HashMap<>();
 
     public static final List<UUID> LEAVECONFIRM = new ArrayList<>();
 
@@ -84,11 +84,11 @@ public class Util {
 	return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
-    public static HashMap<UUID, String> getJobsEditorMap() {
+    public static Map<UUID, String> getJobsEditorMap() {
 	return jobsEditorMap;
     }
 
-    public static HashMap<UUID, String> getQuestsEditorMap() {
+    public static Map<UUID, String> getQuestsEditorMap() {
 	return questsEditorMap;
     }
 
@@ -194,7 +194,7 @@ public class Util {
 	return jobsWorldsId.get(id);
     }
 
-    public static HashMap<String, JobsWorld> getJobsWorlds() {
+    public static Map<String, JobsWorld> getJobsWorlds() {
 	return jobsWorlds;
     }
 

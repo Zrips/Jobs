@@ -19,7 +19,7 @@
 package com.gamingmesh.jobs.container;
 
 public interface ActionInfo {
-    public String getName();
-    public String getNameWithSub();
-    public ActionType getType();
+    String getName();
+    String getNameWithSub();
+    ActionType getType();
 }

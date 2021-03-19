@@ -48,18 +48,7 @@ public class JobsChatEvent implements Listener {
 	// Changing chat prefix variable to job name
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlayerChatLow(AsyncPlayerChatEvent event) {
-		if (Jobs.getGCManager().getModifyChat())
-			return;
-
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(event.getPlayer());
-		String honorific = jPlayer != null ? jPlayer.getDisplayHonorific() : "";
-		if (honorific.equals(" "))
-			honorific = "";
-
-		String format = event.getFormat();
-		if (format.contains("{jobs}")) {
-			event.setFormat(format.replace("{jobs}", honorific));
-		}
+		onPlayerChatHigh(event);
 	}
 
 	// Changing chat prefix variable to job name
@@ -73,9 +62,6 @@ public class JobsChatEvent implements Listener {
 		if (honorific.equals(" "))
 			honorific = "";
 
-		String format = event.getFormat();
-		if (format.contains("{jobs}")) {
-			event.setFormat(format.replace("{jobs}", honorific));
-		}
+		event.setFormat(event.getFormat().replace("{jobs}", honorific));
 	}
 }

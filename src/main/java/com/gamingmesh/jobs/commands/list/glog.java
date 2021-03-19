@@ -114,7 +114,6 @@ public class glog implements Cmd {
 		    "%exp%", format.format(totalExp), "%points%", format.format(totalPoints)));
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.glog.output.bottomline"));
-		return;
 	    }
 	});
 	return true;

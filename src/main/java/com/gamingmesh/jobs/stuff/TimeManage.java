@@ -6,15 +6,15 @@ import java.util.Calendar;
 import com.gamingmesh.jobs.Jobs;
 
 public class TimeManage {
+
     public static int timeInInt() {
 	return timeInInt(System.currentTimeMillis());
     }
 
     public static int timeInInt(Long time) {
-	SimpleDateFormat formatter = new SimpleDateFormat("YYMMdd");
 	Calendar calendar = Calendar.getInstance();
 	calendar.setTimeInMillis(time);
-	return Integer.valueOf(formatter.format(calendar.getTime()));
+	return Integer.valueOf(new SimpleDateFormat("YYMMdd").format(calendar.getTime()));
     }
 
     public static String to24hourShort(Long ticks) {
@@ -52,33 +52,4 @@ public class TimeManage {
 
 	return time;
     }
-
-    public static long toDays(Long ticks) {
-	return ticks / 1000 / 60 / 60 / 24;
-    }
-
-    public static long toMinutes(Long ticks) {
-	long d = toDays(ticks);
-	ticks = ticks - (d * 1000 * 60 * 60 * 24);
-	long h = toHours(ticks);
-	return (ticks - (h * 60 * 60 * 1000)) / 1000 / 60;
-    }
-
-    public static long toHours(Long ticks) {
-	long d = toDays(ticks);
-	return (ticks - (d * 1000 * 60 * 60 * 24)) / 1000 / 60 / 60;
-    }
-    
-    public static long toSec(Long ticks) {
-	return (ticks - ((int) (ticks / (60 * 1000)) * 60 * 1000)) / 1000;
-    }
-
-    public static long toMin(Long ticks) {
-	return (ticks - ((int) (ticks / (60 * 60 * 1000)) * 60 * 60 * 1000)) / (1000 * 60);
-    }
-
-    public static long toHour(Long ticks) {
-	return (ticks - ((int) (ticks / (24 * 60 * 60 * 1000)) * 24 * 60 * 60 * 1000)) / (1000 * 60 * 60);
-    }
-
 }

@@ -25,7 +25,7 @@ public enum DBAction {
     DELETE("Delete");
     
     private String name;
-    private DBAction(String name) {
+    DBAction(String name) {
         this.name = name;
     }
     

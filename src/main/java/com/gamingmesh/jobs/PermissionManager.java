@@ -61,7 +61,7 @@ public class PermissionManager {
 	private int reload;
 	private List<String> perms;
 
-	private prm(List<String> perms, int reload) {
+	prm(List<String> perms, int reload) {
 	    this.perms = perms;
 	    this.reload = reload * 1000;
 	}
