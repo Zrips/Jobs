@@ -34,7 +34,7 @@ Boost:
     BroadcastInterval: 15
     BroadcastMessage:
     - '&e******************************************************'
-    - '&e* 2x boost time for all jobs is activated until [until]  *'
+    - '&e* 2x boost time for all jobs is activated until [until] *'
     - '&e******************************************************'
   ShortMoneyBoost:
     Enabled: false
@@ -52,7 +52,7 @@ Boost:
     MessageOnStart:
     - '&e***********************************************'
     - '&e* Miner and Woodcutter got 2x rate for money!'
-    - '&e* Until 8AM!'    
+    - '&e* Until 8AM!'
     - '&e***********************************************'
     BroadcastOnStop: true
     MessageOnStop:
