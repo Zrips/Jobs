@@ -19,12 +19,11 @@ public class MythicMobs4Listener implements Listener {
 
     @EventHandler
     public void OnMythicMobDeath(MythicMobDeathEvent event) {
-	//disabling plugin in world
-	if (event.getEntity() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
-
 	// Entity that died must be living
 	if (!(event.getEntity() instanceof LivingEntity))
+	    return;
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
 	Player pDamager = null;
@@ -49,16 +48,14 @@ public class MythicMobs4Listener implements Listener {
 	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
 	    return;
 
-	// pay
 	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(pDamager);
 	if (jDamager == null)
 	    return;
 
+	// pay
 	MythicMob lVictim = event.getMobType();
-	if (lVictim == null) {
-	    return;
+	if (lVictim != null) {
+	    Jobs.action(jDamager, new MMKillInfo(lVictim.getInternalName(), ActionType.MMKILL), ent);
 	}
-
-	Jobs.action(jDamager, new MMKillInfo(lVictim.getInternalName(), ActionType.MMKILL), ent);
     }
 }

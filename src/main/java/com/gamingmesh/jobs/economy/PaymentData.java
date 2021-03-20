@@ -9,7 +9,7 @@ public class PaymentData {
 
     private Long lastAnnouced = 0L;
 
-    private final HashMap<CurrencyType, LimitsData> payments = new HashMap<>();
+    private final java.util.Map<CurrencyType, LimitsData> payments = new HashMap<>();
 
     private boolean informed = false;
 

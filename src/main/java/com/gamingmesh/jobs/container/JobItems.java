@@ -54,7 +54,7 @@ public class JobItems {
     private int fromLevel = 0;
     private int untilLevel = Integer.MAX_VALUE;
 
-    public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, HashMap<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs) {
+    public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs) {
 	this(node, mat, amount, name, lore, enchants, boostMultiplier, jobs, null);
     }
 

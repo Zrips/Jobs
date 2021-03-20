@@ -29,8 +29,12 @@ public class MyPetManager extends HookPlugin {
 	}
 
 	MyPetPlayer myPetPlayer = mp.getMyPetPlayer(owner);
-	return myPetPlayer.hasMyPet() && myPetPlayer.getMyPet().getEntity().isPresent() &&
-		myPetPlayer.getMyPet().getEntity().get().getType() == entity.getType();
+	if (!myPetPlayer.hasMyPet()) {
+	    return false;
+	}
+
+	java.util.Optional<MyPetBukkitEntity> opt = myPetPlayer.getMyPet().getEntity();
+	return opt.isPresent() && opt.get().getType() == entity.getType();
     }
 
     public UUID getOwnerOfPet(Entity ent) {

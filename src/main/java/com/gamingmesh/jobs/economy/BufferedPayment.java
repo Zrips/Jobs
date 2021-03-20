@@ -28,19 +28,13 @@ import com.gamingmesh.jobs.container.CurrencyType;
 public class BufferedPayment {
 
     private OfflinePlayer offlinePlayer;
-    private final Map<CurrencyType, Double> payments = new HashMap<>();
 
-    @Deprecated
-    public BufferedPayment(OfflinePlayer offlinePlayer, double amount, double points, double exp) {
-	this.offlinePlayer = offlinePlayer;
-	this.payments.put(CurrencyType.MONEY, amount);
-	this.payments.put(CurrencyType.EXP, exp);
-	this.payments.put(CurrencyType.POINTS, points);
-    }
+    private final Map<CurrencyType, Double> payments = new HashMap<>();
 
     public BufferedPayment(OfflinePlayer offlinePlayer, Map<CurrencyType, Double> payments) {
 	this.offlinePlayer = offlinePlayer;
-	// This can contain only one value instead of all posible ones
+
+	// This can contain only one value instead of all possible ones
 	this.payments.putAll(payments);
     }
 
@@ -48,45 +42,12 @@ public class BufferedPayment {
 	return offlinePlayer;
     }
 
-    @Deprecated
-    public Double getAmount() {	
-	Double amount = this.payments.get(CurrencyType.MONEY);
-	return amount == null ? 0 : amount;
-    }
-
-    @Deprecated
-    public double getPoints() {
-	Double amount = this.payments.get(CurrencyType.POINTS);
-	return amount == null ? 0 : amount;
-    }
-
-    @Deprecated
-    public double getExp() {
-	Double amount = this.payments.get(CurrencyType.EXP);
-	return amount == null ? 0 : amount;
-    }
-
-    @Deprecated
-    public void setAmount(double amount) {
-	this.payments.put(CurrencyType.MONEY, amount);
-    }
-
-    @Deprecated
-    public void setPoints(double points) {
-	this.payments.put(CurrencyType.POINTS, points);
-    }
-
-    @Deprecated
-    public void setExp(double exp) {
-	this.payments.put(CurrencyType.EXP, exp);
-    }
-
     public Double get(CurrencyType type) {
 	return payments.getOrDefault(type, 0d);
     }
 
     public Double set(CurrencyType type, double amount) {
-	return this.payments.put(type, amount);
+	return payments.put(type, amount);
     }
 
     public boolean containsPayment() {

@@ -69,11 +69,9 @@ public class join implements Cmd {
 	}
 
 	JobProgression ajp = jPlayer.getArchivedJobProgression(job);
-	if (ajp != null) {
-	    if (!ajp.canRejoin()) {
-		pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", ajp.getRejoinTimeMessage()));
-		return true;
-	    }
+	if (ajp != null && !ajp.canRejoin()) {
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", ajp.getRejoinTimeMessage()));
+	    return true;
 	}
 
 	Jobs.getPlayerManager().joinJob(jPlayer, job);

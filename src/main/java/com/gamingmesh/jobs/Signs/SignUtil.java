@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,10 +25,10 @@ import com.gamingmesh.jobs.container.TopList;
 
 public class SignUtil {
 
-    private final HashMap<String, HashMap<String, jobsSign>> signsByType = new HashMap<>();
-    private final HashMap<String, jobsSign> signsByLocation = new HashMap<>();
+    private final Map<String, Map<String, jobsSign>> signsByType = new HashMap<>();
+    private final Map<String, jobsSign> signsByLocation = new HashMap<>();
 
-    public HashMap<String, HashMap<String, jobsSign>> getSigns() {
+    public Map<String, Map<String, jobsSign>> getSigns() {
 	return signsByType;
     }
 
@@ -36,10 +37,11 @@ public class SignUtil {
 	if (jSign == null)
 	    return false;
 
-	HashMap<String, jobsSign> sub = signsByType.get(jSign.getIdentifier().toLowerCase());
+	Map<String, jobsSign> sub = signsByType.get(jSign.getIdentifier().toLowerCase());
 	if (sub != null) {
 	    sub.remove(jSign.locToBlockString());
 	}
+
 	return true;
     }
 
@@ -53,15 +55,16 @@ public class SignUtil {
 
 	signsByLocation.put(jSign.locToBlockString(), jSign);
 
-	HashMap<String, jobsSign> old = signsByType.get(jSign.getIdentifier().toLowerCase());
+	String identifier = jSign.getIdentifier().toLowerCase();
+	Map<String, jobsSign> old = signsByType.get(identifier);
 	if (old == null) {
 	    old = new HashMap<>();
-	    signsByType.put(jSign.getIdentifier().toLowerCase(), old);
+	    signsByType.put(identifier, old);
 	}
 
 	old.put(jSign.locToBlockString(), jSign);
 
-	signsByType.put(jSign.getIdentifier().toLowerCase(), old);
+	signsByType.put(identifier, old);
     }
 
     public void LoadSigns() {
@@ -78,7 +81,7 @@ public class SignUtil {
 	    return;
 
 	ConfigurationSection confCategory = f.getConfigurationSection("Signs");
-	ArrayList<String> categoriesList = new ArrayList<>(confCategory.getKeys(false));
+	List<String> categoriesList = new ArrayList<>(confCategory.getKeys(false));
 	if (categoriesList.isEmpty())
 	    return;
 
@@ -104,11 +107,13 @@ public class SignUtil {
 	    }
 	    newTemp.setSpecial(nameSection.getBoolean("Special"));
 
-	    HashMap<String, jobsSign> old = signsByType.get(newTemp.getIdentifier().toLowerCase());
+	    String identifier = newTemp.getIdentifier().toLowerCase();
+	    Map<String, jobsSign> old = signsByType.get(identifier);
 	    if (old == null) {
 		old = new HashMap<>();
-		signsByType.put(newTemp.getIdentifier().toLowerCase(), old);
+		signsByType.put(identifier, old);
 	    }
+
 	    String loc = newTemp.locToBlockString();
 	    old.put(loc, newTemp);
 	    signsByLocation.put(loc, newTemp);
@@ -133,8 +138,7 @@ public class SignUtil {
 
 	int i = 0;
 	for (jobsSign sign : signsByLocation.values()) {
-	    ++i;
-	    String path = "Signs." + i;
+	    String path = "Signs." + ++i;
 	    reader.set(path + ".Loc", sign.locToBlockString());
 	    reader.set(path + ".Number", sign.getNumber());
 	    reader.set(path + ".Type", sign.getType().toString());
@@ -169,7 +173,7 @@ public class SignUtil {
 
 	String jobNameOrType = jobsSign.getIdentifier(job, type);
 
-	HashMap<String, jobsSign> signs = this.signsByType.get(jobNameOrType.toLowerCase());
+	Map<String, jobsSign> signs = signsByType.get(jobNameOrType.toLowerCase());
 	if (signs == null || signs.isEmpty())
 	    return false;
 
@@ -188,7 +192,7 @@ public class SignUtil {
 
 	int timelapse = 1;
 
-	HashMap<String, List<TopList>> temp = new HashMap<>();
+	Map<String, List<TopList>> temp = new HashMap<>();
 
 	boolean save = false;
 	for (jobsSign jSign : (new HashMap<>(signs)).values()) {
@@ -199,13 +203,13 @@ public class SignUtil {
 	    Block block = loc.getBlock();
 	    if (!(block.getState() instanceof Sign)) {
 		if (!jobNameOrType.isEmpty()) {
-		    HashMap<String, jobsSign> tt = this.signsByType.get(jobNameOrType.toLowerCase());
+		    Map<String, jobsSign> tt = signsByType.get(jobNameOrType.toLowerCase());
 		    if (tt != null) {
 			tt.remove(jSign.locToBlockString());
 		    }
 		}
 
-		this.signsByLocation.remove(jSign.locToBlockString());
+		signsByLocation.remove(jSign.locToBlockString());
 		save = true;
 		continue;
 	    }
@@ -253,7 +257,7 @@ public class SignUtil {
 			Jobs.getInstance().getComplement().setLine(sign, i, line);
 		}
 		sign.update();
-		if (!UpdateHead(sign, playerList.get(0).getPlayerInfo().getName(), timelapse)) {
+		if (!updateHead(sign, playerList.get(0).getPlayerInfo().getName(), timelapse)) {
 		    timelapse--;
 		}
 	    } else {
@@ -284,7 +288,7 @@ public class SignUtil {
 
 		Jobs.getInstance().getComplement().setLine(sign, 3, translateSignLine("signs.SpecialList.bottom", no, playerName, pl.getLevel(), signJobName));
 		sign.update();
-		if (!UpdateHead(sign, pl.getPlayerInfo().getName(), timelapse)) {
+		if (!updateHead(sign, pl.getPlayerInfo().getName(), timelapse)) {
 		    timelapse--;
 		}
 	    }
@@ -306,7 +310,7 @@ public class SignUtil {
     }
 
     @SuppressWarnings("deprecation")
-    public boolean UpdateHead(final Sign sign, final String playerName, int timelapse) {
+    public boolean updateHead(final Sign sign, final String playerName, int timelapse) {
 	if (playerName == null)
 	    return false;
 

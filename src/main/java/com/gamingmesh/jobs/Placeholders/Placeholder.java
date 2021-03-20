@@ -189,27 +189,30 @@ public class Placeholder {
 	}
 
 	public String getName() {
-	    return pref + "_" + this.name();
+	    return pref + "_" + name();
 	}
 
 	public String getFull() {
-	    if (this.isComplex()) {
-		String name = this.getName();
+	    if (isComplex()) {
+		String name = getName();
 		int i = 0;
-		for (String one : this.getName().split("_")) {
+		for (String one : getName().split("_")) {
 		    if (!one.startsWith("$"))
 			continue;
+
 		    if (vars.length >= i - 1)
 			name = name.replace(one, "[" + vars[i] + "]");
+
 		    i++;
 		}
 
 		return "%" + name + "%";
 	    }
-	    return "%" + this.getName() + "%";
+
+	    return "%" + getName() + "%";
 	}
 
-	public String getMVdW() {
+	/*public String getMVdW() {
 	    if (this.isComplex()) {
 		String name = this.getName();
 		int i = 0;
@@ -224,7 +227,7 @@ public class Placeholder {
 		return name;
 	    }
 	    return this.getName();
-	}
+	}*/
 
 	public List<String> getComplexRegexMatchers(String text) {
 	    List<String> lsInLs = new ArrayList<>();
