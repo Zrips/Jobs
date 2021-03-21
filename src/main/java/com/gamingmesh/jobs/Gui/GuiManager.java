@@ -108,9 +108,10 @@ public class GuiManager {
 	    } else
 		lore.addAll(Arrays.asList(job.getDescription().split("/n|\\n")));
 
-	    if (job.getMaxSlots() != null)
-		lore.add(Jobs.getLanguage().getMessage("command.info.gui.leftSlots") + ((job.getMaxSlots() - Jobs.getUsedSlots(job)) > 0 ? (job.getMaxSlots() - Jobs
-		    .getUsedSlots(job)) : 0));
+	    if (job.getMaxSlots() != null) {
+		int usedSlots = Jobs.getUsedSlots(job);
+		lore.add(Jobs.getLanguage().getMessage("command.info.gui.leftSlots") + ((job.getMaxSlots() - usedSlots) > 0 ? (job.getMaxSlots() - usedSlots) : 0));
+	    }
 
 	    if (Jobs.getGCManager().ShowActionNames) {
 		lore.add("");

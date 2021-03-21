@@ -39,18 +39,12 @@ import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
-import com.gamingmesh.jobs.container.Schedule;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 
 public class GeneralConfigManager {
 
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
     public List<String> FwColors = new ArrayList<>(), DisabledWorldsList = new ArrayList<>();
-    /**
-     * @deprecated use {@link ScheduleManager}
-     */
-    @Deprecated
-    public List<Schedule> BoostSchedule = new ArrayList<>();
 
     public final Map<CMIMaterial, Map<Enchantment, Integer>> whiteListedItems = new HashMap<>();
     private final Map<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
@@ -484,12 +478,12 @@ public class GeneralConfigManager {
 	    String ench = null;
 
 	    if (one.contains("=")) {
-		String[] split = one.split("=");
+		String[] split = one.split("=", 2);
 		mName = split[0];
 		ench = split[1];
 	    }
 
-	    String value = ench != null && ench.contains("-") ? ench.split("-")[1] : null;
+	    String value = ench != null && ench.contains("-") ? ench.split("-", 2)[1] : null;
 	    if (value != null && ench != null) {
 		ench = ench.substring(0, ench.length() - (value.length() + 1));
 	    }

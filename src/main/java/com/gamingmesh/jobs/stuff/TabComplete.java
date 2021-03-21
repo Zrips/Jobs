@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.stuff;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -9,7 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
@@ -25,23 +23,19 @@ public class TabComplete implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-	List<String> completionList = new ArrayList<>();
-
 	if (args.length == 1) {
-	    List<String> temp = new ArrayList<>();
-
-	    temp.addAll(Jobs.getCommandManager().getCommands(sender));
-	    StringUtil.copyPartialMatches(args[0], temp, completionList);
+	    return new ArrayList<>(Jobs.getCommandManager().getCommands(sender));
 	}
-	if (args.length > 1)
-	    for (int i = 1; i <= args.length; i++)
-		if (args.length == i + 1) {
-		    String partOfCommand = args[i];
 
-		    if (!Jobs.getGCManager().getCommandArgs().containsKey(args[0].toLowerCase()))
+	if (args.length > 1) {
+	    String first = args[0].toLowerCase();
+
+	    for (int i = 1; i <= args.length; i++) {
+		if (args.length == i + 1) {
+		    if (!Jobs.getGCManager().getCommandArgs().containsKey(first))
 			break;
 
-		    List<String> argsList = Jobs.getGCManager().getCommandArgs().get(args[0].toLowerCase());
+		    List<String> argsList = Jobs.getGCManager().getCommandArgs().get(first);
 		    if (argsList.size() < i)
 			continue;
 
@@ -133,10 +127,11 @@ public class TabComplete implements TabCompleter {
 			}
 		    }
 
-		    StringUtil.copyPartialMatches(partOfCommand, temp, completionList);
+		    return temp;
 		}
+	    }
+	}
 
-	Collections.sort(completionList);
-	return completionList;
+	return null;
     }
 }

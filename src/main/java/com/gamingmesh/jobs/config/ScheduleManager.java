@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.config;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,11 +53,10 @@ public class ScheduleManager {
 	if (BOOSTSCHEDULE.isEmpty())
 	    return false;
 
-	DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-	String currenttime = dateFormat.format(new Date());
+	String currentTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
 	String currentDayName = getWeekDay();
 
-	int current = Integer.parseInt(currenttime.replace(":", ""));
+	int current = Integer.parseInt(currentTime.replace(":", ""));
 
 	for (Schedule one : BOOSTSCHEDULE) {
 

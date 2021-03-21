@@ -399,8 +399,7 @@ public class Jobs extends JavaPlugin {
 
     public static File getFolder() {
 	File folder = instance.getDataFolder();
-	if (!folder.exists())
-	    folder.mkdirs();
+	folder.mkdirs();
 	return folder;
     }
 

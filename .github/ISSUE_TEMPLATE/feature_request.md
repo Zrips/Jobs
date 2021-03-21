@@ -9,6 +9,6 @@ assignees: ''
 
 **Description of new idea or improvement on existing one**
 
+**Detailed information what should do**
 
-
-**Detailed information what should do what and when**
+<-- Maybe a config example if related -->
