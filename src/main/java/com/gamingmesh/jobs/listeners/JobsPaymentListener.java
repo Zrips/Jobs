@@ -259,7 +259,7 @@ public class JobsPaymentListener implements Listener {
 		    return;
 		}
 	    } else {
-	    	cowMilkingTimer.put(cowUUID, System.currentTimeMillis());
+		cowMilkingTimer.put(cowUUID, System.currentTimeMillis());
 	    }
 	}
 
