@@ -248,8 +248,8 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
-	    if (cowMilkingTimer.getIfPresent(cowUUID) != null) {
-		long time = cowMilkingTimer.getIfPresent(cowUUID);
+	    Long time = cowMilkingTimer.getIfPresent(cowUUID);
+	    if (time != null) {
 		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
 		    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
 		    jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
