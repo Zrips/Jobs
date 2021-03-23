@@ -250,8 +250,6 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
 	    if (cowMilkingTimer.getIfPresent(cowUUID) != null) {
 		long time = cowMilkingTimer.getIfPresent(cowUUID);
-		// If the current time is less than the time when the cow was last milked plus the amount of time
-	        // the player has to wait to milk the cow again, cancel the timer.
 		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
 		    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
 		    jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
@@ -1083,13 +1081,13 @@ public class JobsPaymentListener implements Listener {
 	double s = ((Damageable) ent).getHealth();
 	if (damage > s)
 	    damage = s;
-        if (Jobs.getGCManager().MonsterDamageUse) {
+	if (Jobs.getGCManager().MonsterDamageUse) {
 	    if (damageDealtByPlayers.getIfPresent(entUUID) != null) {
-	    	damageDealtByPlayers.put(entUUID, damageDealtByPlayers.getIfPresent(entUUID) + damage);
+		damageDealtByPlayers.put(entUUID, damageDealtByPlayers.getIfPresent(entUUID) + damage);
 	    } else {
-	    	damageDealtByPlayers.put(entUUID, 0.0);
+		damageDealtByPlayers.put(entUUID, 0.0);
 	    }
-        }
+	}
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -1138,13 +1136,13 @@ public class JobsPaymentListener implements Listener {
 	LivingEntity lVictim = (LivingEntity) e.getEntity();
 	UUID lVictimUUID = lVictim.getUniqueId();
 
-        if (Jobs.getGCManager().MonsterDamageUse && damageDealtByPlayers.getIfPresent(lVictimUUID) != null) {
+	if (Jobs.getGCManager().MonsterDamageUse && damageDealtByPlayers.getIfPresent(lVictimUUID) != null) {
 	    double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
 	    double perc = (damage * 100D) / Jobs.getNms().getMaxHealth(lVictim);
 	    damageDealtByPlayers.invalidate(lVictimUUID);
 	    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
-	    	return;
-        }
+		return;
+	}
 
 	//extra check for Citizens 2 sentry kills
 	if (e.getDamager() instanceof Player && e.getDamager().hasMetadata("NPC"))
