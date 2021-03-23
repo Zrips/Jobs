@@ -95,7 +95,7 @@ public class JobsPaymentListener implements Listener {
 
     private Jobs plugin;
     private final Cache<UUID, Double> damageDealtByPlayers = CacheBuilder.newBuilder()
-		    .expireAfterWrite(10, TimeUnit.MINUTES)
+		    .expireAfterWrite(5, TimeUnit.MINUTES)
 		    .weakKeys()
 		    .build();
     private final Cache<UUID, Entity> punchedEndCrystals = CacheBuilder.newBuilder()
@@ -218,7 +218,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Entity cow = event.getRightClicked();
-	UUID cowUUID = cow.getUniqueId();
 	if (cow.getType() != EntityType.COW && cow.getType() != EntityType.MUSHROOM_COW)
 	    return;
 
@@ -248,6 +247,7 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
+	    UUID cowUUID = cow.getUniqueId();
 	    Long time = cowMilkingTimer.getIfPresent(cowUUID);
 	    if (time != null) {
 		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
@@ -1070,7 +1070,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Entity ent = event.getEntity();
-	UUID entUUID = ent.getUniqueId();
 	if (ent instanceof Player || !(event instanceof EntityDamageByEntityEvent))
 	    return;
 
@@ -1082,6 +1081,7 @@ public class JobsPaymentListener implements Listener {
 	if (damage > s)
 	    damage = s;
 	if (Jobs.getGCManager().MonsterDamageUse) {
+	    UUID entUUID = ent.getUniqueId();
 	    if (damageDealtByPlayers.getIfPresent(entUUID) != null) {
 		damageDealtByPlayers.put(entUUID, damageDealtByPlayers.getIfPresent(entUUID) + damage);
 	    } else {
