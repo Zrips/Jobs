@@ -1135,6 +1135,15 @@ public class JobsPaymentListener implements Listener {
 
 	LivingEntity lVictim = (LivingEntity) e.getEntity();
 	UUID lVictimUUID = lVictim.getUniqueId();
+	boolean hadSpawnerMobMetadata = lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata());
+
+        // mob spawner, no payment or experience
+        if (hadSpawnerMobMetadata) {
+	    try {
+	        // So lets remove meta in case some plugin removes entity in wrong way.
+	        lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+	    } catch (Exception ignored) { }
+        }
 
 	if (Jobs.getGCManager().MonsterDamageUse && damageDealtByPlayers.getIfPresent(lVictimUUID) != null) {
 	    double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
@@ -1144,22 +1153,15 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
+	if (!Jobs.getGCManager().payNearSpawner() && hadSpawnerMobMetadata)
+	    return;
+
 	//extra check for Citizens 2 sentry kills
 	if (e.getDamager() instanceof Player && e.getDamager().hasMetadata("NPC"))
 	    return;
 
 	if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
 	    && HookManager.getMythicManager().isMythicMob(lVictim)) {
-	    return;
-	}
-
-	// mob spawner, no payment or experience
-	if (lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()) && !Jobs.getGCManager().payNearSpawner()) {
-	    try {
-		// So lets remove meta in case some plugin removes entity in wrong way.
-		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-	    } catch (Exception t) {
-	    }
 	    return;
 	}
 
