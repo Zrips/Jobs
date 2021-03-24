@@ -75,6 +75,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.GrindstoneInventory;
@@ -1137,7 +1138,6 @@ public class JobsPaymentListener implements Listener {
 	UUID lVictimUUID = lVictim.getUniqueId();
 	boolean hadSpawnerMobMetadata = lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata());
 
-        // mob spawner, no payment or experience
         if (hadSpawnerMobMetadata) {
 	    try {
 	        // So lets remove meta in case some plugin removes entity in wrong way.
@@ -1153,6 +1153,7 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
+	// mob spawner, no payment or experience
 	if (!Jobs.getGCManager().payNearSpawner() && hadSpawnerMobMetadata)
 	    return;
 
@@ -1677,6 +1678,17 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE));
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onChunkUnload(ChunkUnloadEvent event) {
+    	for (Entity entity : event.getChunk().getEntities()) {
+	    if (entity.isPersistent())
+	    	return;
+
+	    if (entity.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
+	    	entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+	}
     }
 
     public static boolean payIfCreative(Player player) {
