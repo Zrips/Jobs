@@ -73,7 +73,7 @@ public class YmlMaker {
 	try {
 	    getConfig().save(configFile);
 	} catch (IOException ex) {
-	    Jobs.getInstance().getLogger().log(Level.SEVERE, "Could not save config to " + configFile.getName(), ex);
+	    org.bukkit.Bukkit.getLogger().log(Level.SEVERE, "Could not save config to " + configFile.getName(), ex);
 	}
     }
 
@@ -93,6 +93,6 @@ public class YmlMaker {
 
     public void saveDefaultConfig() {
 	if (configFile != null && !configFile.exists())
-	    Jobs.getInstance().saveResource(fileName, false);
+	    org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class).saveResource(fileName, false);
     }
 }

@@ -59,8 +59,7 @@ public class quests implements Cmd {
 
 	    if (stopped != null) {
 		for (JobProgression jobProg : jPlayer.getJobProgression()) {
-		    List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
-		    for (QuestProgression q : list) {
+		    for (QuestProgression q : jPlayer.getQuestProgressions(jobProg.getJob())) {
 			q.getQuest().setStopped(stopped);
 		    }
 		}

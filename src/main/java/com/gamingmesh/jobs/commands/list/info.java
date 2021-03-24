@@ -42,7 +42,7 @@ public class info implements Cmd {
 	}
 
 	if (Jobs.getGCManager().jobsInfoOpensBrowse) {
-	    Jobs.getGUIManager().openJobsBrowseGUI(pSender, job, true);
+	    plugin.getGUIManager().openJobsBrowseGUI(pSender, job, true);
 	    return true;
 	}
 

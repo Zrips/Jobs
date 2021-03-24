@@ -67,7 +67,7 @@ public class ScheduleManager {
 
 	    if (one.isStarted() && one.getBroadcastInfoOn() < System.currentTimeMillis() && one.getBroadcastInterval() > 0) {
 		one.setBroadcastInfoOn(System.currentTimeMillis() + one.getBroadcastInterval() * 60 * 1000);
-		Jobs.getInstance().getComplement().broadcastMessage(one.getMessageToBroadcast());
+		plugin.getComplement().broadcastMessage(one.getMessageToBroadcast());
 	    }
 
 	    if (((one.isNextDay() && (current >= from && current < until || current >= one.getNextFrom() && current < one.getNextUntil()) && !one
@@ -82,9 +82,9 @@ public class ScheduleManager {
 
 		if (one.isBroadcastOnStart())
 		    if (one.getMessageOnStart().isEmpty())
-			Jobs.getInstance().getComplement().broadcastMessage(Jobs.getLanguage().getMessage("message.boostStarted"));
+			plugin.getComplement().broadcastMessage(Jobs.getLanguage().getMessage("message.boostStarted"));
 		    else
-			Jobs.getInstance().getComplement().broadcastMessage(one.getMessageOnStart());
+			plugin.getComplement().broadcastMessage(one.getMessageOnStart());
 
 		for (Job onejob : one.getJobs()) {
 		    onejob.setBoost(one.getBoost());
@@ -105,9 +105,9 @@ public class ScheduleManager {
 
 		if (one.isBroadcastOnStop())
 		    if (one.getMessageOnStop().isEmpty())
-			Jobs.getInstance().getComplement().broadcastMessage(Jobs.getLanguage().getMessage("message.boostStoped"));
+			plugin.getComplement().broadcastMessage(Jobs.getLanguage().getMessage("message.boostStoped"));
 		    else
-			Jobs.getInstance().getComplement().broadcastMessage(one.getMessageOnStop());
+			plugin.getComplement().broadcastMessage(one.getMessageOnStop());
 
 		for (Job onejob : one.getJobs()) {
 		    onejob.setBoost(new BoostMultiplier());

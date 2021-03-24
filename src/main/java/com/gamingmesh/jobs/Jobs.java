@@ -79,7 +79,6 @@ public class Jobs extends JavaPlugin {
     private static SignUtil signManager;
     private static ScheduleManager scheduleManager;
     private static NameTranslatorManager nameTranslatorManager;
-    private static GuiManager guiManager;
     private static ExploreManager exploreManager;
     private static TitleManager titleManager;
     private static RestrictedBlockManager rbManager;
@@ -100,6 +99,7 @@ public class Jobs extends JavaPlugin {
 
     private CMIScoreboardManager cmiScoreboardManager;
     private Complement complement;
+    private GuiManager guiManager;
 
     private static JobsDAO dao;
     private static List<Job> jobs;
@@ -268,7 +268,7 @@ public class Jobs extends JavaPlugin {
      */
     public static PlayerManager getPlayerManager() {
 	if (pManager == null)
-	    pManager = new PlayerManager();
+	    pManager = new PlayerManager(instance);
 	return pManager;
     }
 
@@ -323,9 +323,9 @@ public class Jobs extends JavaPlugin {
 	return nameTranslatorManager;
     }
 
-    public static GuiManager getGUIManager() {
+    public GuiManager getGUIManager() {
 	if (guiManager == null)
-	    guiManager = new GuiManager();
+	    guiManager = new GuiManager(this);
 	return guiManager;
     }
 
@@ -353,8 +353,15 @@ public class Jobs extends JavaPlugin {
 	return cmiScoreboardManager;
     }
 
+    // TODO Get rid of this entirely from project
+    // There are better implementations than this
     protected static Jobs instance;
 
+    /**
+     * This shouldn't be used.
+     * @return returns this class object instance
+     */
+    @Deprecated
     public static Jobs getInstance() {
 	return instance;
     }
@@ -365,7 +372,7 @@ public class Jobs extends JavaPlugin {
      */
     public static SignUtil getSignUtil() {
 	if (signManager == null) {
-	    signManager = new SignUtil();
+	    signManager = new SignUtil(instance);
 	}
 
 	return signManager;
@@ -567,7 +574,7 @@ public class Jobs extends JavaPlugin {
 	boolean found = false;
 
 	for (JobProgression prog : jPlayer.getJobProgression()) {
-	    for (JobInfo info : jPlayer.getJobProgression(prog.getJob()).getJob().getJobInfo(type)) {
+	    for (JobInfo info : prog.getJob().getJobInfo(type)) {
 		if (info.getActionType() == type) {
 		    found = true;
 		    break;
@@ -710,8 +717,7 @@ public class Jobs extends JavaPlugin {
 	    HookManager.loadHooks();
 
 	    if (getGCManager().useBlockProtection) {
-		PistonProtectionListener pistonProtection = new PistonProtectionListener();
-		getServer().getPluginManager().registerEvents(pistonProtection, this);
+		getServer().getPluginManager().registerEvents(new PistonProtectionListener(), this);
 	    }
 
 	    boolean kyoriSupported = false;

@@ -26,7 +26,7 @@ public class browse implements Cmd {
 
 	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
 		try {
-		    Jobs.getGUIManager().openJobsBrowseGUI((Player) sender);
+		    plugin.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
 		}
@@ -193,7 +193,7 @@ public class browse implements Cmd {
 		}
 	    }
 	} else {
-	    ArrayList<String> lines = new ArrayList<>();
+	    List<String> lines = new ArrayList<>();
 	    for (Job job : Jobs.getJobs()) {
 		if (Jobs.getGCManager().getHideJobsWithoutPermission()) {
 		    if (!Jobs.getCommandManager().hasJobPermission(sender, job))
@@ -236,7 +236,7 @@ public class browse implements Cmd {
 
 	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
 		try {
-		     Jobs.getGUIManager().openJobsBrowseGUI((Player) sender);
+		    plugin.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {
 		    ((Player) sender).closeInventory();
 		}

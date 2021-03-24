@@ -21,18 +21,8 @@ import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
 public class McMMO1_X_listener implements Listener {
 
-    private Jobs plugin;
-
-    public McMMO1_X_listener(Jobs plugin) {
-	this.plugin = plugin;
-    }
-
     @EventHandler
     public void onFishingTreasure(McMMOPlayerFishingTreasureEvent event) {
-	// make sure plugin is enabled
-	if (!plugin.isEnabled())
-	    return;
-
 	Player player = event.getPlayer();
 	//disabling plugin in world
 	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
@@ -61,10 +51,6 @@ public class McMMO1_X_listener implements Listener {
 
     @EventHandler
     public void OnItemrepair(McMMOPlayerRepairCheckEvent event) {
-	// make sure plugin is enabled
-	if (!plugin.isEnabled())
-	    return;
-
 	Player player = event.getPlayer();
 	//disabling plugin in world
 	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))

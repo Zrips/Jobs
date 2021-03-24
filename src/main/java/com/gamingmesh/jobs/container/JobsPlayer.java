@@ -45,6 +45,8 @@ import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class JobsPlayer {
 
+    private final Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
+
     private String userName = "Unknown";
 
     public UUID playerUUID;
@@ -1256,7 +1258,7 @@ public class JobsPlayer {
 	this.setSaved(false);
 
 	if (questSignUpdateShed == null) {
-	    questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
+	    questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 		@Override
 		public void run() {
 		    Jobs.getSignUtil().SignUpdate(job, SignTopType.questtoplist);
@@ -1272,7 +1274,7 @@ public class JobsPlayer {
      */
     @Deprecated
     public int getFurnaceCount() {
-	return !Jobs.getInstance().getBlockOwnerShip(BlockTypes.FURNACE).isPresent() ? 0 : Jobs.getInstance().getBlockOwnerShip(BlockTypes.FURNACE).get().getTotal(getUniqueId());
+	return !plugin.getBlockOwnerShip(BlockTypes.FURNACE).isPresent() ? 0 : plugin.getBlockOwnerShip(BlockTypes.FURNACE).get().getTotal(getUniqueId());
     }
 
     /**
@@ -1281,7 +1283,7 @@ public class JobsPlayer {
      */
     @Deprecated
     public int getBrewingStandCount() {
-	return !Jobs.getInstance().getBlockOwnerShip(BlockTypes.BREWING_STAND).isPresent() ? 0 : Jobs.getInstance().getBlockOwnerShip(BlockTypes.BREWING_STAND).get().getTotal(getUniqueId());
+	return !plugin.getBlockOwnerShip(BlockTypes.BREWING_STAND).isPresent() ? 0 : plugin.getBlockOwnerShip(BlockTypes.BREWING_STAND).get().getTotal(getUniqueId());
     }
 
     /**

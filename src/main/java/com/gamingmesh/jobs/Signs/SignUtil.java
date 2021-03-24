@@ -28,6 +28,12 @@ public class SignUtil {
     private final Map<String, Map<String, jobsSign>> signsByType = new HashMap<>();
     private final Map<String, jobsSign> signsByLocation = new HashMap<>();
 
+    private Jobs plugin;
+
+    public SignUtil(Jobs plugin) {
+	this.plugin = plugin;
+    }
+
     public Map<String, Map<String, jobsSign>> getSigns() {
 	return signsByType;
     }
@@ -229,7 +235,7 @@ public class SignUtil {
 	    if (!jSign.isSpecial()) {
 		for (int i = 0; i < 4; i++) {
 		    if (i + number >= playerList.size()) {
-			Jobs.getInstance().getComplement().setLine(sign, i, "");
+			plugin.getComplement().setLine(sign, i, "");
 			continue;
 		    }
 
@@ -254,7 +260,7 @@ public class SignUtil {
 		    }
 
 		    if (!line.isEmpty())
-			Jobs.getInstance().getComplement().setLine(sign, i, line);
+			plugin.getComplement().setLine(sign, i, line);
 		}
 		sign.update();
 		if (!updateHead(sign, playerList.get(0).getPlayerInfo().getName(), timelapse)) {
@@ -271,22 +277,22 @@ public class SignUtil {
 		}
 
 		int no = jSign.getNumber() + number + 1;
-		Jobs.getInstance().getComplement().setLine(sign, 0, translateSignLine("signs.SpecialList.p" + jSign.getNumber(), no, playerName, pl.getLevel(), signJobName));
-		Jobs.getInstance().getComplement().setLine(sign, 1, translateSignLine("signs.SpecialList.name", no, playerName, pl.getLevel(), signJobName));
+		plugin.getComplement().setLine(sign, 0, translateSignLine("signs.SpecialList.p" + jSign.getNumber(), no, playerName, pl.getLevel(), signJobName));
+		plugin.getComplement().setLine(sign, 1, translateSignLine("signs.SpecialList.name", no, playerName, pl.getLevel(), signJobName));
 
 		switch (type) {
 		case toplist:
 		case gtoplist:
-		    Jobs.getInstance().getComplement().setLine(sign, 2, Jobs.getLanguage().getMessage("signs.SpecialList.level", "[number]", no, "[player]", playerName, "[level]", pl.getLevel(), "[job]", signJobName));
+		    plugin.getComplement().setLine(sign, 2, Jobs.getLanguage().getMessage("signs.SpecialList.level", "[number]", no, "[player]", playerName, "[level]", pl.getLevel(), "[job]", signJobName));
 		    break;
 		case questtoplist:
-		    Jobs.getInstance().getComplement().setLine(sign, 2, Jobs.getLanguage().getMessage("signs.SpecialList.quests", "[number]", no, "[player]", playerName, "[quests]", pl.getLevel(), "[job]", signJobName));
+		    plugin.getComplement().setLine(sign, 2, Jobs.getLanguage().getMessage("signs.SpecialList.quests", "[number]", no, "[player]", playerName, "[quests]", pl.getLevel(), "[job]", signJobName));
 		    break;
 		default:
 		    break;
 		}
 
-		Jobs.getInstance().getComplement().setLine(sign, 3, translateSignLine("signs.SpecialList.bottom", no, playerName, pl.getLevel(), signJobName));
+		plugin.getComplement().setLine(sign, 3, translateSignLine("signs.SpecialList.bottom", no, playerName, pl.getLevel(), signJobName));
 		sign.update();
 		if (!updateHead(sign, pl.getPlayerInfo().getName(), timelapse)) {
 		    timelapse--;
@@ -338,7 +344,7 @@ public class SignUtil {
 	if (directionFacing != null && !(loc.getBlock().getState() instanceof Skull))
 	    loc.add(directionFacing.getOppositeFace().getModX(), 0, directionFacing.getOppositeFace().getModZ());
 
-	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		if (!(loc.getBlock().getState() instanceof Skull))

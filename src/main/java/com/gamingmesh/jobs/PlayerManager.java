@@ -82,6 +82,12 @@ public class PlayerManager {
     private final Map<Integer, PlayerInfo> playerIdMap = new HashMap<>();
     private final Map<String, PlayerInfo> playerNameMap = new HashMap<>();
 
+    private final Jobs plugin;
+
+    public PlayerManager(Jobs plugin) {
+	this.plugin = plugin;
+    }
+
     /**
      * @deprecated Use {@link JobsPlayer#getPointsData} instead
      * @return {@link com.gamingmesh.jobs.economy.PointsData}
@@ -633,7 +639,7 @@ public class PlayerManager {
 	    String message = Jobs.getLanguage().getMessage("message.leveldown.message");
 
 	    message = message.replace("%jobname%", job.getNameWithColor());
-	    message = message.replace("%playername%", player != null ? Jobs.getInstance().getComplement().getDisplayName(player) : jPlayer.getName());
+	    message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
 	    message = message.replace("%joblevel%", "" + prog.getLevel());
 	    message = message.replace("%lostLevel%", "" + oldLevel);
 
@@ -660,10 +666,10 @@ public class PlayerManager {
 	    prog.getLevel(),
 	    Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
 	    Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
-	    Jobs.getGCManager().SoundLevelupSound.toUpperCase(),
+	    Jobs.getGCManager().SoundLevelupSound,
 	    Jobs.getGCManager().SoundLevelupVolume,
 	    Jobs.getGCManager().SoundLevelupPitch,
-	    Jobs.getGCManager().SoundTitleChangeSound.toUpperCase(),
+	    Jobs.getGCManager().SoundTitleChangeSound,
 	    Jobs.getGCManager().SoundTitleChangeVolume,
 	    Jobs.getGCManager().SoundTitleChangePitch);
 	Bukkit.getServer().getPluginManager().callEvent(levelUpEvent);
@@ -682,7 +688,7 @@ public class PlayerManager {
 	}
 
 	if (Jobs.getGCManager().FireworkLevelupUse) {
-	    Bukkit.getServer().getScheduler().runTaskLater(Jobs.getInstance(), new Runnable() {
+	    Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 		@Override
 		public void run() {
 		    if (player == null || !player.isOnline())
@@ -786,13 +792,13 @@ public class PlayerManager {
 	    message = message.replace("%titlename%", levelUpEvent.getOldTitle()
 		.getChatColor().toString() + levelUpEvent.getOldTitle().getName());
 
-	message = message.replace("%playername%", player != null ? Jobs.getInstance().getComplement().getDisplayName(player) : jPlayer.getName());
+	message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
 	message = message.replace("%joblevel%", "" + prog.getLevel());
 
 	for (String line : message.split("\n")) {
 	    if (Jobs.getGCManager().isBroadcastingLevelups()) {
 		if (Jobs.getGCManager().BroadcastingLevelUpLevels.contains(oldLevel + 1) || Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
-		    Jobs.getInstance().getComplement().broadcastMessage(line);
+		    plugin.getComplement().broadcastMessage(line);
 	    } else if (player != null) {
 		if (Jobs.getGCManager().LevelChangeActionBar)
 		    ActionBarManager.send(player, line);
@@ -817,14 +823,14 @@ public class PlayerManager {
 	    message = Jobs.getLanguage().getMessage("message.skillup." + (Jobs.getGCManager().isBroadcastingSkillups()
 		? "broadcast" : "nobroadcast"));
 
-	    message = message.replace("%playername%", player != null ? Jobs.getInstance().getComplement().getDisplayName(player) : jPlayer.getName());
+	    message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitle()
 		.getChatColor().toString() + levelUpEvent.getNewTitle().getName());
 	    message = message.replace("%jobname%", job.getNameWithColor());
 
 	    for (String line : message.split("\n")) {
 		if (Jobs.getGCManager().isBroadcastingSkillups()) {
-		    Jobs.getInstance().getComplement().broadcastMessage(line);
+		    plugin.getComplement().broadcastMessage(line);
 		} else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
 			ActionBarManager.send(player, line);
@@ -1126,7 +1132,7 @@ public class PlayerManager {
 	if (player == null || player.isOp() || !Jobs.getGCManager().AutoJobJoinUse)
 	    return;
 
-	Bukkit.getServer().getScheduler().runTaskLater(Jobs.getInstance(), new Runnable() {
+	Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		if (!player.isOnline())

@@ -41,10 +41,9 @@ public class transfer implements Cmd {
 
 		Player player = jPlayer.getPlayer();
 		if (player != null) {
-		    String message = Jobs.getLanguage().getMessage("command.transfer.output.target",
-			"%oldjobname%", oldjob.getNameWithColor(),
-			"%newjobname%", newjob.getNameWithColor());
-		    player.sendMessage(message);
+		    player.sendMessage(Jobs.getLanguage().getMessage("command.transfer.output.target",
+					"%oldjobname%", oldjob.getNameWithColor(),
+					"%newjobname%", newjob.getNameWithColor()));
 		}
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));

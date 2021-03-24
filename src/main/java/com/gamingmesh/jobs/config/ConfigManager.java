@@ -639,13 +639,15 @@ public class ConfigManager {
 	if (oldConf == null) {
 	    jobsPathFolder.mkdirs();
 
-	    if (jobsPathFolder.isDirectory() && jobsPathFolder.listFiles().length == 0)
+	    if (jobsPathFolder.isDirectory() && jobsPathFolder.listFiles().length == 0) {
 		try {
+		    Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
 		    for (String f : Util.getFilesFromPackage("jobs", "", "yml")) {
-			Jobs.getInstance().saveResource("jobs" + File.separator + f + ".yml", false);
+			plugin.saveResource("jobs" + File.separator + f + ".yml", false);
 		    }
 		} catch (Exception c) {
 		}
+	    }
 
 	    return false;
 	}
@@ -1087,7 +1089,7 @@ public class ConfigManager {
 		    if (itemSection.isList("lore"))
 			itemSection.getStringList("lore").stream().map(CMIChatColor::translate).forEach(lore::add);
 
-		    HashMap<Enchantment, Integer> enchants = new HashMap<>();
+		    Map<Enchantment, Integer> enchants = new HashMap<>();
 		    if (itemSection.isList("enchants"))
 			for (String eachLine : itemSection.getStringList("enchants")) {
 			    if (!eachLine.contains("="))
@@ -1135,8 +1137,7 @@ public class ConfigManager {
 			    continue;
 			}
 
-			String name = sqsection.getString("Name", one);
-			Quest quest = new Quest(name, job);
+			Quest quest = new Quest(sqsection.getString("Name", one), job);
 
 			if (sqsection.isString("Target")) {
 			    ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
@@ -1149,8 +1150,7 @@ public class ConfigManager {
 			}
 
 			if (sqsection.isList("Objectives")) {
-			    List<String> list = sqsection.getStringList("Objectives");
-			    for (String oneObjective : list) {
+			    for (String oneObjective : sqsection.getStringList("Objectives")) {
 				String[] split = oneObjective.split(";", 3);
 				if (split.length < 2) {
 				    log.warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");

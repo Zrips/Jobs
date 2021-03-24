@@ -64,7 +64,7 @@ public class placeholders implements Cmd {
 
 	    if (player != null && !one.isComplex())
 		extra = plugin.getPlaceholderAPIManager().updatePlaceHolders(player, Jobs.getLanguage().getMessage("command.placeholders.output.outputResult",
-		    "[result]", Jobs.getInstance().getPlaceholderAPIManager().updatePlaceHolders(player, one.getFull())));
+		    "[result]", plugin.getPlaceholderAPIManager().updatePlaceHolders(player, one.getFull())));
 
 	    String place = one.getFull();
 	    String hover = "";

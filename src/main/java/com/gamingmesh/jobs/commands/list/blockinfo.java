@@ -24,8 +24,7 @@ public class blockinfo implements Cmd {
 	    return true;
 	}
 
-	Player player = (Player) sender;
-	Block block = Util.getTargetBlock(player, 15);
+	Block block = Util.getTargetBlock((Player) sender, 15);
 	if (block == null || CMIMaterial.isAir(block.getType()))
 	    return true;
 

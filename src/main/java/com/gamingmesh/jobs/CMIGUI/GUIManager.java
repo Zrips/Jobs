@@ -30,7 +30,8 @@ public class GUIManager {
     }
 
     public static void registerListener() {
-	Jobs.getInstance().getServer().getPluginManager().registerEvents(new GUIListener(Jobs.getInstance()), Jobs.getInstance());
+	Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
+	plugin.getServer().getPluginManager().registerEvents(new GUIListener(plugin), plugin);
     }
 
     public enum GUIButtonLocation {
@@ -202,7 +203,7 @@ public class GUIManager {
 	    }
 
 	    if (canClick) {
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), new Runnable() {
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class), new Runnable() {
 		    @Override
 		    public void run() {
 

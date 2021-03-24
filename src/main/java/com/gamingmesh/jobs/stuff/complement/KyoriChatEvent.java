@@ -46,7 +46,9 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 
 		// TODO displayName returns the player display name not the chat component from
 		// chat plugins, like Essentials
-		event.formatter((displayName, msg) -> {
+		// Now there is a parameter "player", so literally we need to add 800+ chat plugins
+		// to this plugin as dependency?
+		event.composer((player, displayName, msg) -> {
 			String newMessage = serialize(msg);
 			newMessage = newMessage.replace("{jobs}", h);
 			return deserialize(newMessage);
@@ -71,7 +73,7 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 			honorific = "";
 
 		final String h = honorific;
-		event.formatter((displayName, msg) -> {
+		event.composer((player, displayName, msg) -> {
 			String newMessage = serialize(msg);
 			newMessage = newMessage.replace("{jobs}", h);
 			return deserialize(newMessage);

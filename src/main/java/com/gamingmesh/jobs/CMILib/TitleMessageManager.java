@@ -56,7 +56,7 @@ public class TitleMessageManager {
     }
 
     public static void send(final Player receivingPacket, final Object title, final Object subtitle, final int fadeIn, final int keep, final int fadeOut) {
-	Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), new Runnable() {
+	Bukkit.getScheduler().runTaskAsynchronously(org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class), new Runnable() {
 	    @Override
 	    public void run() {
 

@@ -1194,38 +1194,6 @@ public abstract class JobsDAO {
 	}
     }
 
-    private void updateJobId(Job job) {
-	JobsConnection conn = getConnection();
-	if (conn == null)
-	    return;
-
-	PreparedStatement prestt = null;
-	ResultSet res = null;
-	try {
-	    // Retrieve last id from table instead of generating new one
-	    int jobId = 0;
-	    prestt = conn.prepareStatement("SELECT * FROM `" + DBTables.JobNameTable.getTableName() + "`;");
-	    res = prestt.executeQuery();
-	    while (res.next()) {
-		jobId = res.getInt("id");
-	    }
-	    close(prestt);
-	    close(res);
-
-	    job.setId(jobId + 1);
-
-	    prestt = conn.prepareStatement("UPDATE `" + getJobsTableName() + "` SET `" + JobsTableFields.job.getCollumn() + "` = ? WHERE `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
-	    prestt.setString(1, job.getName());
-	    prestt.setInt(2, job.getId());
-	    prestt.execute();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    close(prestt);
-	    close(res);
-	}
-    }
-
     public synchronized void loadAllJobsNames() {
 	JobsConnection conn = getConnection();
 	if (conn == null)
@@ -1253,7 +1221,7 @@ public abstract class JobsDAO {
 
 	for (Job one : Jobs.getJobs()) {
 	    if (one.getId() == 0)
-		updateJobId(one);
+		recordNewJobName(one);
 	}
     }
 

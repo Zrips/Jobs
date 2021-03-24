@@ -1,7 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.util.List;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -47,8 +45,7 @@ public class fireall implements Cmd {
 	    return true;
 	}
 
-	List<JobProgression> jobs = jPlayer.getJobProgression();
-	if (jobs.isEmpty()) {
+	if (jPlayer.getJobProgression().isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.fireall.error.nojobs"));
 	    return true;
 	}

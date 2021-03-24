@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -463,13 +462,16 @@ public class Placeholder {
 	    case user_archived_jobs:
 		return Integer.toString(user.getArchivedJobs().getArchivedJobs().size());
 	    case user_jobs:
-		List<JobProgression> l = user.getJobProgression();
-		if (l.isEmpty()) {
-		    return "";
+		String jobNames = "";
+		for (JobProgression prog : user.getJobProgression()) {
+		    if (!jobNames.isEmpty()) {
+			jobNames += ", ";
+		    }
+
+		    jobNames += prog.getJob().getName();
 		}
 
-		JobProgression prog = l.get(ThreadLocalRandom.current().nextInt(l.size()));
-		return prog.getJob().getName();
+		return jobNames;
 	    case user_quests:
 		String q = "";
 		for (QuestProgression questProg : user.getQuestProgressions()) {
@@ -495,16 +497,17 @@ public class Placeholder {
 		if (vals.isEmpty())
 		    return "";
 
-		JobProgression j = getProgFromValue(user, vals.get(0));
-		Job job = getJobFromValue(vals.get(0));
+		String keyValue = vals.get(0);
+		JobProgression j = getProgFromValue(user, keyValue);
+		Job job = getJobFromValue(keyValue);
 
 		switch (placeHolder) {
 		case limit_$1:
-		    return Integer.toString(user.getLimit(CurrencyType.getByName(vals.get(0))));
+		    return Integer.toString(user.getLimit(CurrencyType.getByName(keyValue)));
 		case plimit_$1:
-		    return Double.toString(user.getPaymentLimit().getAmount(CurrencyType.getByName(vals.get(0))));
+		    return Double.toString(user.getPaymentLimit().getAmount(CurrencyType.getByName(keyValue)));
 		case plimit_tleft_$1:
-		    return TimeManage.to24hourShort(user.getPaymentLimit().getLeftTime(CurrencyType.getByName(vals.get(0))));
+		    return TimeManage.to24hourShort(user.getPaymentLimit().getLeftTime(CurrencyType.getByName(keyValue)));
 		case user_jlevel_$1:
 		    return j == null ? "0" : Integer.toString(j.getLevel());
 		case user_jexp_$1:

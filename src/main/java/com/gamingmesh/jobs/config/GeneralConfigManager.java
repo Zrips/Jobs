@@ -866,14 +866,14 @@ public class GeneralConfigManager {
 	c.addComment("SendTitleMessageWhenMaxLevelReached", "Send title and chat message when a player reached the maximum level in a job.");
 	titleMessageMaxLevelReached = c.get("SendTitleMessageWhenMaxLevelReached", false);
 
-	c.addComment("Sounds", "Sounds", "Extra sounds on some events",
+	c.addComment("Sounds", "Extra sounds on some events",
 	    "All sounds can be found in https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
 	SoundLevelupUse = c.get("Sounds.LevelUp.use", true);
-	SoundLevelupSound = c.get("Sounds.LevelUp.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP");
+	SoundLevelupSound = c.get("Sounds.LevelUp.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP").toUpperCase();
 	SoundLevelupVolume = c.get("Sounds.LevelUp.volume", 1);
 	SoundLevelupPitch = c.get("Sounds.LevelUp.pitch", 3);
 	SoundTitleChangeUse = c.get("Sounds.TitleChange.use", true);
-	SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP");
+	SoundTitleChangeSound = c.get("Sounds.TitleChange.sound", Version.isCurrentLower(Version.v1_9_R1) ? "LEVEL_UP " : "ENTITY_PLAYER_LEVELUP").toUpperCase();
 	SoundTitleChangeVolume = c.get("Sounds.TitleChange.volume", 1);
 	SoundTitleChangePitch = c.get("Sounds.TitleChange.pitch", 3);
 
@@ -884,12 +884,12 @@ public class GeneralConfigManager {
 	UseRandom = c.get("Fireworks.LevelUp.Random", true);
 	UseFlicker = c.get("Fireworks.LevelUp.flicker", true);
 	UseTrail = c.get("Fireworks.LevelUp.trail", true);
-	c.addComment("Fireworks.LevelUp.type", "Firework types",
+	c.addComment("Fireworks.LevelUp.type", "Firework type",
 	    "All types can be found in https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/FireworkEffect.Type.html");
-	FireworkType = c.get("Fireworks.LevelUp.type", "STAR");
+	FireworkType = c.get("Fireworks.LevelUp.type", "STAR").toUpperCase();
 	FwColors = c.get("Fireworks.LevelUp.colors", Arrays.asList("230,0,0", "0,90,0", "0,0,104"));
 	FireworkPower = c.get("Fireworks.LevelUp.power", 1);
-	c.addComment("Fireworks.LevelUp.ShootTime", "Fire shooting time in ticks.", "Example: 20 tick = 1 second");
+	c.addComment("Fireworks.LevelUp.ShootTime", "Fire shooting time in ticks.", "20 tick = 1 second");
 	ShootTime = c.get("Fireworks.LevelUp.ShootTime", 20);
 
 	c.addComment("Signs", "You can disable this to save SMALL amount of server resources");

@@ -98,7 +98,7 @@ public class level implements Cmd {
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    } else
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.level.error.nojob"));
-	} catch (Throwable e) {
+	} catch (Exception e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}
 	return true;

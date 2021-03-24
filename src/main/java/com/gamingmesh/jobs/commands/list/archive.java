@@ -33,14 +33,14 @@ public class archive implements Cmd {
 	    return true;
 	}
 
-	Set<JobProgression> AllJobs = jPlayer.getArchivedJobs().getArchivedJobs();
-	if (AllJobs.isEmpty()) {
+	Set<JobProgression> allJobs = jPlayer.getArchivedJobs().getArchivedJobs();
+	if (allJobs.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.archive.error.nojob"));
 	    return true;
 	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getName()));
-	for (JobProgression jobInfo : AllJobs) {
+	for (JobProgression jobInfo : allJobs) {
 	    RawMessage rm = new RawMessage();
 	    if (jobInfo.canRejoin())
 		rm.addText(ChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo))

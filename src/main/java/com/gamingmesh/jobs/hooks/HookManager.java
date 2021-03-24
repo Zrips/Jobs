@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.hooks;
 
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.hooks.McMMO.McMMO1_X_listener;
@@ -22,10 +23,12 @@ public class HookManager {
     private static StackMobHandler stackMobHandler;
     private static WildStackerHandler wildStackerHandler;
 
+    private static final Jobs PLUGIN = JavaPlugin.getPlugin(Jobs.class);
+
     private static PluginManager pm;
 
     public static void loadHooks() {
-	pm = Jobs.getInstance().getServer().getPluginManager();
+	pm = PLUGIN.getServer().getPluginManager();
 
 	if (getMcMMOManager().CheckmcMMO())
 	    setMcMMOlistener();
@@ -103,7 +106,7 @@ public class HookManager {
 
 	try {
 	    Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
-	    MythicManager = new MythicMobs4(Jobs.getInstance());
+	    MythicManager = new MythicMobs4(PLUGIN);
 	} catch (ClassNotFoundException ex) {
 	}
 
@@ -116,13 +119,12 @@ public class HookManager {
     }
 
     public static void setMcMMOlistener() {
-	Jobs ins = Jobs.getInstance();
 	try {
 	    Class.forName("com.gmail.nossr50.datatypes.skills.SuperAbilityType");
-	    pm.registerEvents(new McMMO2_X_listener(ins), ins);
+	    pm.registerEvents(new McMMO2_X_listener(), PLUGIN);
 	    Jobs.consoleMsg("&e[Jobs] Registered McMMO 2.x listener");
 	} catch (ClassNotFoundException e) {
-	    pm.registerEvents(new McMMO1_X_listener(ins), ins);
+	    pm.registerEvents(new McMMO1_X_listener(), PLUGIN);
 	    Jobs.consoleMsg("&e[Jobs] Registered McMMO 1.x listener");
 	}
     }

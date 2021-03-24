@@ -20,7 +20,7 @@ import com.gamingmesh.jobs.container.ScoreboardInfo;
 
 public class CMIScoreboardManager {
 
-    private ConcurrentHashMap<UUID, ScoreboardInfo> timerMap = new ConcurrentHashMap<>();
+    private java.util.concurrent.ConcurrentMap<UUID, ScoreboardInfo> timerMap = new ConcurrentHashMap<>();
 
     private void runScheduler() {
 	Iterator<Entry<UUID, ScoreboardInfo>> meinMapIter = timerMap.entrySet().iterator();
@@ -48,7 +48,8 @@ public class CMIScoreboardManager {
 	}
 
 	if (timerMap.size() > 0)
-	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), this::runScheduler, 20L);
+	    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class),
+	    this::runScheduler, 20L);
     }
 
     public void addNew(Player player) {

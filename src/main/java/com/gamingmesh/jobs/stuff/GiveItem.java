@@ -1,7 +1,6 @@
 package com.gamingmesh.jobs.stuff;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -10,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
@@ -18,7 +18,7 @@ import com.gamingmesh.jobs.CMILib.CMIMaterial;
 public class GiveItem {
 
     public static void giveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore,
-	    HashMap<Enchantment, Integer> enchants) {
+	    java.util.Map<Enchantment, Integer> enchants) {
 	ItemStack itemStack = CMIMaterial.get(id, meta).newItemStack();
 	itemStack.setAmount(qty);
 	ItemMeta itemMeta = itemStack.getItemMeta();
@@ -26,13 +26,15 @@ public class GiveItem {
 	    return;
 	}
 
+	Jobs plugin = JavaPlugin.getPlugin(Jobs.class);
+
 	if (lore != null && !lore.isEmpty()) {
 	    List<String> translatedLore = new ArrayList<>();
 	    for (String oneLore : lore) {
 		translatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
 	    }
 
-	    Jobs.getInstance().getComplement().setLore(itemMeta, translatedLore);
+	    plugin.getComplement().setLore(itemMeta, translatedLore);
 	}
 
 	if (enchants != null) {
@@ -49,7 +51,7 @@ public class GiveItem {
 	}
 
 	if (name != null)
-	    Jobs.getInstance().getComplement().setDisplayName(itemMeta, CMIChatColor.translate(name));
+	    plugin.getComplement().setDisplayName(itemMeta, CMIChatColor.translate(name));
 
 	itemStack.setItemMeta(itemMeta);
 	giveItemForPlayer(player, itemStack);
