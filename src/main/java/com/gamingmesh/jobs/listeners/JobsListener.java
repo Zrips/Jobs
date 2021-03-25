@@ -365,8 +365,8 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onTreeGrown(final StructureGrowEvent event) {
-	if (Jobs.getGCManager().canPerformActionInWorld(event.getBlocks().get(0).getWorld())) {
-	    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> event.getBlocks().forEach( blockState -> Jobs.getBpManager().remove(blockState.getBlock())), 1L);
+	if (!event.getBlocks().isEmpty() && Jobs.getGCManager().canPerformActionInWorld(event.getBlocks().get(0).getWorld())) {
+	    plugin.getServer().getScheduler().runTaskLater(plugin, () -> event.getBlocks().forEach(blockState -> Jobs.getBpManager().remove(blockState.getBlock())), 1L);
 	}
     }
 
