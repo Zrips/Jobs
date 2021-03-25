@@ -960,7 +960,7 @@ public class Jobs extends JavaPlugin {
 
 	if (!isBpOk(jPlayer, info, block, true))
 	    return;
-
+		
 	// no job
 	if (numjobs == 0) {
 	    if (noneJob == null)
@@ -1266,7 +1266,7 @@ public class Jobs extends JavaPlugin {
 		    return true;
 		}
 
-		if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
+		if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
 		    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 		    if (inform && player.canGetPaid(info)) {
 			ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
@@ -1295,7 +1295,7 @@ public class Jobs extends JavaPlugin {
 			return true;
 		    }
 
-		    if (time > System.currentTimeMillis() || bp.isPaid() && bp.getAction() != DBAction.DELETE) {
+		    if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 			if (inform && player.canGetPaid(info)) {
 			    ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
