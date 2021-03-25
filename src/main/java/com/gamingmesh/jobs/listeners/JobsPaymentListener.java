@@ -96,13 +96,13 @@ public class JobsPaymentListener implements Listener {
 
     private Jobs plugin;
     private final Cache<UUID, Double> damageDealtByPlayers = CacheBuilder.newBuilder()
-		    .expireAfterWrite(5, TimeUnit.MINUTES)
-		    .weakKeys()
-		    .build();
+	    .expireAfterWrite(5, TimeUnit.MINUTES)
+	    .weakKeys()
+	    .build();
     private final Cache<UUID, Entity> punchedEndCrystals = CacheBuilder.newBuilder()
-		    .expireAfterWrite(10, TimeUnit.SECONDS)
-		    .weakKeys()
-		    .build();
+	    .expireAfterWrite(10, TimeUnit.SECONDS)
+	    .weakKeys()
+	    .build();
     private Cache<UUID, Long> cowMilkingTimer;
 
     private final String blockMetadata = "BlockOwner";
@@ -111,10 +111,10 @@ public class JobsPaymentListener implements Listener {
 	this.plugin = plugin;
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
-		cowMilkingTimer = CacheBuilder.newBuilder()
-				.expireAfterWrite(Jobs.getGCManager().CowMilkingTimer, TimeUnit.MILLISECONDS)
-				.weakKeys()
-				.build();
+	    cowMilkingTimer = CacheBuilder.newBuilder()
+	    .expireAfterWrite(Jobs.getGCManager().CowMilkingTimer, TimeUnit.MILLISECONDS)
+	    .weakKeys()
+	    .build();
 	}
     }
 
@@ -1081,10 +1081,12 @@ public class JobsPaymentListener implements Listener {
 	double s = ((Damageable) ent).getHealth();
 	if (damage > s)
 	    damage = s;
+
 	if (Jobs.getGCManager().MonsterDamageUse) {
 	    UUID entUUID = ent.getUniqueId();
-	    if (damageDealtByPlayers.getIfPresent(entUUID) != null) {
-		damageDealtByPlayers.put(entUUID, damageDealtByPlayers.getIfPresent(entUUID) + damage);
+	    Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
+	    if (damageDealt != null) {
+		damageDealtByPlayers.put(entUUID, damageDealt + damage);
 	    } else {
 		damageDealtByPlayers.put(entUUID, 0.0);
 	    }
@@ -1113,9 +1115,10 @@ public class JobsPaymentListener implements Listener {
 	if (damage > s)
 	    damage = s;
 
-	if (((Projectile) damager).getShooter() instanceof Player && Jobs.getGCManager().MonsterDamageUse) {
-	    if (damageDealtByPlayers.getIfPresent(entUUID) != null) {
-		damageDealtByPlayers.put(entUUID, damageDealtByPlayers.getIfPresent(entUUID) + damage);
+	if (Jobs.getGCManager().MonsterDamageUse && ((Projectile) damager).getShooter() instanceof Player) {
+	    Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
+	    if (damageDealt != null) {
+		damageDealtByPlayers.put(entUUID, damageDealt + damage);
 	    } else {
 		damageDealtByPlayers.put(entUUID, 0.0);
 	    }
@@ -1138,19 +1141,21 @@ public class JobsPaymentListener implements Listener {
 	UUID lVictimUUID = lVictim.getUniqueId();
 	boolean hadSpawnerMobMetadata = lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata());
 
-        if (hadSpawnerMobMetadata) {
+	if (hadSpawnerMobMetadata) {
 	    try {
-	        // So lets remove meta in case some plugin removes entity in wrong way.
-	        lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+		// So lets remove meta in case some plugin removes entity in wrong way.
+		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
 	    } catch (Exception ignored) { }
-        }
+	}
 
-	if (Jobs.getGCManager().MonsterDamageUse && damageDealtByPlayers.getIfPresent(lVictimUUID) != null) {
-	    double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
-	    double perc = (damage * 100D) / Jobs.getNms().getMaxHealth(lVictim);
-	    damageDealtByPlayers.invalidate(lVictimUUID);
-	    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
-		return;
+	if (Jobs.getGCManager().MonsterDamageUse) {
+	    Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
+	    if (damage != null) {
+		double perc = (damage * 100D) / Jobs.getNms().getMaxHealth(lVictim);
+		damageDealtByPlayers.invalidate(lVictimUUID);
+		if (perc < Jobs.getGCManager().MonsterDamagePercentage)
+	    return;
+	    }
 	}
 
 	// mob spawner, no payment or experience
@@ -1481,7 +1486,6 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTntExplode(EntityExplodeEvent event) {
 	Entity e = event.getEntity();
-	UUID eUUID = e.getUniqueId();
 	if (!Jobs.getGCManager().canPerformActionInWorld(e))
 	    return;
 
@@ -1522,11 +1526,13 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getGCManager().isUseTntFinder() && type == CMIEntityType.ENDER_CRYSTAL.getType()) {
-	    if (punchedEndCrystals.getIfPresent(eUUID) != null) {
-		Entity killed = punchedEndCrystals.getIfPresent(eUUID);
-	        Jobs.action(jPlayer, new EntityActionInfo(killed, ActionType.KILL));
-	        punchedEndCrystals.invalidate(eUUID);
-	        return;
+	    UUID eUUID = e.getUniqueId();
+	    Entity killed = punchedEndCrystals.getIfPresent(eUUID);
+
+	    if (killed != null) {
+		Jobs.action(jPlayer, new EntityActionInfo(killed, ActionType.KILL));
+		punchedEndCrystals.invalidate(eUUID);
+		return;
 	    }
 	}
 
@@ -1682,12 +1688,12 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChunkUnload(ChunkUnloadEvent event) {
-    	for (Entity entity : event.getChunk().getEntities()) {
+	for (Entity entity : event.getChunk().getEntities()) {
 	    if (entity.isPersistent())
-	    	return;
+		break;
 
 	    if (entity.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
-	    	entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+		entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
 	}
     }
 
