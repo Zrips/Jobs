@@ -33,6 +33,8 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.base.Objects;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -42,16 +44,7 @@ import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Tameable;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -82,6 +75,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.GrindstoneInventory;
@@ -94,19 +88,34 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class JobsPaymentListener implements Listener {
 
     private Jobs plugin;
+    private final Cache<UUID, Double> damageDealtByPlayers = CacheBuilder.newBuilder()
+	    .expireAfterWrite(5, TimeUnit.MINUTES)
+	    .weakKeys()
+	    .build();
+    private final Cache<UUID, Entity> punchedEndCrystals = CacheBuilder.newBuilder()
+	    .expireAfterWrite(10, TimeUnit.SECONDS)
+	    .weakKeys()
+	    .build();
+    private Cache<UUID, Long> cowMilkingTimer;
 
-    private final String blockMetadata = "BlockOwner", cowMetadata = "CowTimer", entityDamageByPlayer = "JobsEntityDamagePlayer";
+    private final String blockMetadata = "BlockOwner";
 
     public JobsPaymentListener(Jobs plugin) {
 	this.plugin = plugin;
+
+	if (Jobs.getGCManager().CowMilkingTimer > 0) {
+	    cowMilkingTimer = CacheBuilder.newBuilder()
+	    .expireAfterWrite(Jobs.getGCManager().CowMilkingTimer, TimeUnit.MILLISECONDS)
+	    .weakKeys()
+	    .build();
+	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -239,8 +248,9 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
-	    if (cow.hasMetadata(cowMetadata)) {
-		long time = cow.getMetadata(cowMetadata).get(0).asLong();
+	    UUID cowUUID = cow.getUniqueId();
+	    Long time = cowMilkingTimer.getIfPresent(cowUUID);
+	    if (time != null) {
 		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
 		    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
 		    jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
@@ -249,13 +259,12 @@ public class JobsPaymentListener implements Listener {
 			event.setCancelled(true);
 		    return;
 		}
+	    } else {
+		cowMilkingTimer.put(cowUUID, System.currentTimeMillis());
 	    }
 	}
 
 	Jobs.action(jPlayer, new EntityActionInfo(cow, ActionType.MILK));
-
-	Long timer = System.currentTimeMillis();
-	cow.setMetadata(cowMetadata, new FixedMetadataValue(plugin, timer));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1073,10 +1082,15 @@ public class JobsPaymentListener implements Listener {
 	if (damage > s)
 	    damage = s;
 
-	if (ent.hasMetadata(entityDamageByPlayer) && !ent.getMetadata(entityDamageByPlayer).isEmpty())
-	    damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
-
-	ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(plugin, damage));
+	if (Jobs.getGCManager().MonsterDamageUse) {
+	    UUID entUUID = ent.getUniqueId();
+	    Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
+	    if (damageDealt != null) {
+		damageDealtByPlayers.put(entUUID, damageDealt + damage);
+	    } else {
+		damageDealtByPlayers.put(entUUID, 0.0);
+	    }
+	}
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -1085,13 +1099,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Entity ent = event.getEntity();
+	UUID entUUID = ent.getUniqueId();
 	Entity damager = event.getDamager();
 	if (ent instanceof org.bukkit.entity.EnderCrystal && damager instanceof Player) {
-	    String meta = "enderCrystalDamage";
-	    if (ent.hasMetadata(meta))
-		ent.removeMetadata(meta, plugin);
-
-	    ent.setMetadata(meta, new FixedMetadataValue(plugin, ent));
+	    punchedEndCrystals.put(entUUID, ent);
 	    return;
 	}
 
@@ -1104,11 +1115,13 @@ public class JobsPaymentListener implements Listener {
 	if (damage > s)
 	    damage = s;
 
-	if (((Projectile) damager).getShooter() instanceof Player) {
-	    if (ent.hasMetadata(entityDamageByPlayer) && !ent.getMetadata(entityDamageByPlayer).isEmpty())
-		damage += ent.getMetadata(entityDamageByPlayer).get(0).asDouble();
-
-	    ent.setMetadata(entityDamageByPlayer, new FixedMetadataValue(plugin, damage));
+	if (Jobs.getGCManager().MonsterDamageUse && ((Projectile) damager).getShooter() instanceof Player) {
+	    Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
+	    if (damageDealt != null) {
+		damageDealtByPlayers.put(entUUID, damageDealt + damage);
+	    } else {
+		damageDealtByPlayers.put(entUUID, 0.0);
+	    }
 	}
     }
 
@@ -1125,6 +1138,29 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	LivingEntity lVictim = (LivingEntity) e.getEntity();
+	UUID lVictimUUID = lVictim.getUniqueId();
+	boolean hadSpawnerMobMetadata = lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata());
+
+	if (hadSpawnerMobMetadata) {
+	    try {
+		// So lets remove meta in case some plugin removes entity in wrong way.
+		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+	    } catch (Exception ignored) { }
+	}
+
+	if (Jobs.getGCManager().MonsterDamageUse) {
+	    Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
+	    if (damage != null) {
+		double perc = (damage * 100D) / Jobs.getNms().getMaxHealth(lVictim);
+		damageDealtByPlayers.invalidate(lVictimUUID);
+		if (perc < Jobs.getGCManager().MonsterDamagePercentage)
+	    return;
+	    }
+	}
+
+	// mob spawner, no payment or experience
+	if (!Jobs.getGCManager().payNearSpawner() && hadSpawnerMobMetadata)
+	    return;
 
 	//extra check for Citizens 2 sentry kills
 	if (e.getDamager() instanceof Player && e.getDamager().hasMetadata("NPC"))
@@ -1132,16 +1168,6 @@ public class JobsPaymentListener implements Listener {
 
 	if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
 	    && HookManager.getMythicManager().isMythicMob(lVictim)) {
-	    return;
-	}
-
-	// mob spawner, no payment or experience
-	if (lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()) && !Jobs.getGCManager().payNearSpawner()) {
-	    try {
-		// So lets remove meta in case some plugin removes entity in wrong way.
-		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-	    } catch (Exception t) {
-	    }
 	    return;
 	}
 
@@ -1201,14 +1227,6 @@ public class JobsPaymentListener implements Listener {
 	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
 	    Player VPlayer = (Player) lVictim;
 	    if (jDamager.getName().equalsIgnoreCase(VPlayer.getName()))
-		return;
-	}
-
-	if (Jobs.getGCManager().MonsterDamageUse && lVictim.hasMetadata(entityDamageByPlayer)
-	    && !lVictim.getMetadata(entityDamageByPlayer).isEmpty()) {
-	    double damage = lVictim.getMetadata(entityDamageByPlayer).get(0).asDouble();
-	    double perc = (damage * 100D) / Jobs.getNms().getMaxHealth(lVictim);
-	    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
 		return;
 	}
 
@@ -1508,14 +1526,13 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getGCManager().isUseTntFinder() && type == CMIEntityType.ENDER_CRYSTAL.getType()) {
-	    String meta = "enderCrystalDamage";
-	    if (type == CMIEntityType.ENDER_CRYSTAL.getType() && e.hasMetadata(meta) && !e.getMetadata(meta).isEmpty()) {
-		Entity killed = (Entity) e.getMetadata(meta).get(0).value();
-		if (killed != null) {
-		    Jobs.action(jPlayer, new EntityActionInfo(killed, ActionType.KILL));
-		    killed.removeMetadata(meta, plugin);
-		    return;
-		}
+	    UUID eUUID = e.getUniqueId();
+	    Entity killed = punchedEndCrystals.getIfPresent(eUUID);
+
+	    if (killed != null) {
+		Jobs.action(jPlayer, new EntityActionInfo(killed, ActionType.KILL));
+		punchedEndCrystals.invalidate(eUUID);
+		return;
 	    }
 	}
 
@@ -1667,6 +1684,17 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE));
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onChunkUnload(ChunkUnloadEvent event) {
+	for (Entity entity : event.getChunk().getEntities()) {
+	    if (entity.isPersistent())
+		break;
+
+	    if (entity.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
+		entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+	}
     }
 
     public static boolean payIfCreative(Player player) {
