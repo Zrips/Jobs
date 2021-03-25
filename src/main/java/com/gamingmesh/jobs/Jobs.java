@@ -960,7 +960,7 @@ public class Jobs extends JavaPlugin {
 
 	if (!isBpOk(jPlayer, info, block, true))
 	    return;
-		
+
 	// no job
 	if (numjobs == 0) {
 	    if (noneJob == null)
