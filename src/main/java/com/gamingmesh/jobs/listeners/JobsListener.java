@@ -57,6 +57,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -359,6 +360,13 @@ public class JobsListener implements Listener {
     public void onCropGrown(final BlockGrowEvent event) {
 	if (Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld())) {
 	    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
+	}
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onTreeGrown(final StructureGrowEvent event) {
+	if (Jobs.getGCManager().canPerformActionInWorld(event.getBlocks().get(0).getWorld())) {
+	    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> event.getBlocks().forEach( blockState -> Jobs.getBpManager().remove(blockState.getBlock())), 1L);
 	}
     }
 
