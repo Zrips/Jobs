@@ -194,8 +194,10 @@
 		<dependency>
 			<groupId>de.keyle</groupId>
 			<artifactId>mypet</artifactId>
-			<version>3.10</version>
-			<scope>provided</scope>
+			<version>3.11-SNAPSHOT</version>
+			<scope>system</scope>
+			<!-- Temporary solution for replacing repository -->
+			<systemPath>${basedir}/libs/mypet-3.11-20210318.180552-1.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<repositories>
@@ -230,10 +232,10 @@
 			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
 		<!-- MyPet -->
-		<repository>
+		<!--<repository>
 			<id>mypet-repo</id>
-			<url>http://repo.keyle.de/</url>
-		</repository>
+			<url>https://repo.mypet-plugin.de/</url>
+		</repositor>-->
 	</repositories>
 	<!-- Builds Plugin -->
 	<build>
