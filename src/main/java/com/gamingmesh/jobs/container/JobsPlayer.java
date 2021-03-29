@@ -1083,8 +1083,7 @@ public class JobsPlayer {
 	if (qProg != null)
 	    g = new HashMap<>(qProg);
 
-	Map<String, QuestProgression> tmp = new HashMap<>();
-	for (Entry<String, QuestProgression> one : (new HashMap<>(g)).entrySet()) {
+	for (Entry<String, QuestProgression> one : new HashMap<>(g).entrySet()) {
 	    QuestProgression qp = one.getValue();
 
 	    if (qp.isEnded()) {
@@ -1098,8 +1097,7 @@ public class JobsPlayer {
 	    while (i <= job.getQuests().size()) {
 		++i;
 
-		List<String> currentQuests = new ArrayList<>(g.keySet());
-		Quest q = job.getNextQuest(currentQuests, getJobProgression(job).getLevel());
+		Quest q = job.getNextQuest(new ArrayList<>(g.keySet()), getJobProgression(job).getLevel());
 		if (q == null)
 		    continue;
 
@@ -1126,6 +1124,7 @@ public class JobsPlayer {
 
 	qProgression.put(job.getName(), g);
 
+	Map<String, QuestProgression> tmp = new HashMap<>();
 	for (QuestProgression oneJ : g.values()) {
 	    Quest q = oneJ.getQuest();
 	    if (q == null) {
@@ -1219,13 +1218,13 @@ public class JobsPlayer {
 		    if (action == null || oneA.length() < prog.length() + 1)
 			continue;
 
-		    oneA = oneA.substring(prog.length() + 1);
-
-		    String target = oneA.split(";")[0];
 		    Map<String, QuestObjective> old = quest.getObjectives().get(action);
 		    if (old == null)
 			continue;
 
+		    oneA = oneA.substring(prog.length() + 1);
+
+		    String target = oneA.split(";")[0];
 		    QuestObjective obj = old.get(target);
 		    if (obj == null)
 			continue;

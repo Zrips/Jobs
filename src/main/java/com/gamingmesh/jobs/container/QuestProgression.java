@@ -92,21 +92,21 @@ public class QuestProgression {
 	if (quest.isStopped() || !quest.hasAction(action.getType()))
 	    return;
 
-	if (!quest.getObjectives().containsKey(action.getType()) || !quest.getObjectives().get(action.getType()).containsKey(action.getNameWithSub()) && !quest.getObjectives().get(action.getType())
-	    .containsKey(action.getName()))
+	Map<String, QuestObjective> map = quest.getObjectives().get(action.getType());
+	if (map == null || (!map.containsKey(action.getNameWithSub()) && !map.containsKey(action.getName())))
 	    return;
 
 	for (String area : quest.getRestrictedAreas()) {
 	    for (Entry<String, RestrictedArea> a : Jobs.getRestrictedAreaManager().getRestrictedAres().entrySet()) {
-		if (quest.getRestrictedAreas().contains(a.getKey()) && a.getKey().equalsIgnoreCase(area)
-		    && a.getValue().inRestrictedArea(jPlayer.getPlayer().getLocation())) {
+		if (a.getKey().equalsIgnoreCase(area) && a.getValue().inRestrictedArea(jPlayer.getPlayer().getLocation())) {
 		    return;
 		}
 	    }
 	}
 
-	if (quest.getJob() != null) {
-	    int maxQuest = jPlayer.getPlayerMaxQuest(quest.getJob().getName());
+	Job questJob = quest.getJob();
+	if (questJob != null) {
+	    int maxQuest = jPlayer.getPlayerMaxQuest(questJob.getName());
 	    if (maxQuest > 0 && jPlayer.getDoneQuests() >= maxQuest) {
 		return;
 	    }
@@ -135,7 +135,7 @@ public class QuestProgression {
 
 	givenReward = true;
 
-	jPlayer.addDoneQuest(quest.getJob());
+	jPlayer.addDoneQuest(questJob);
 
 	for (String one : quest.getRewardCmds()) {
 	    ServerCommandEvent ev = new ServerCommandEvent(Bukkit.getConsoleSender(), one.replace("[playerName]", jPlayer.getPlayer().getName()));

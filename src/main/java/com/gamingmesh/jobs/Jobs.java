@@ -963,10 +963,7 @@ public class Jobs extends JavaPlugin {
 
 	// no job
 	if (numjobs == 0) {
-	    if (noneJob == null)
-		return;
-
-	    if (noneJob.isWorldBlackListed(block) || noneJob.isWorldBlackListed(block, ent) || noneJob.isWorldBlackListed(victim))
+	    if (noneJob == null || noneJob.isWorldBlackListed(block) || noneJob.isWorldBlackListed(block, ent) || noneJob.isWorldBlackListed(victim))
 		return;
 
 	    JobInfo jobinfo = noneJob.getJobInfo(info, 1);
