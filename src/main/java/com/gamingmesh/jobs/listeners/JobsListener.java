@@ -267,15 +267,14 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	Sign sign = (Sign) block.getState();
-	final Job job = Jobs.getJob(CMIChatColor.stripColor(plugin.getComplement().getLine(sign, 2)).toLowerCase());
+	final Job job = Jobs.getJob(CMIChatColor.stripColor(plugin.getComplement().getLine(event, 2)).toLowerCase());
 	if (type == SignTopType.toplist && job == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
 	    return;
 	}
 
 	boolean special = false;
-	String numberString = CMIChatColor.stripColor(plugin.getComplement().getLine(sign, 3)).toLowerCase();
+	String numberString = CMIChatColor.stripColor(plugin.getComplement().getLine(event, 3)).toLowerCase();
 	if (numberString.contains("s")) {
 	    numberString = numberString.replace("s", "");
 	    special = true;
@@ -291,7 +290,7 @@ public class JobsListener implements Listener {
 
 	jobsSign signInfo = new jobsSign();
 
-	signInfo.setLoc(sign.getLocation());
+	signInfo.setLoc(block.getLocation());
 	signInfo.setNumber(number);
 	if (job != null)
 	    signInfo.setJobName(job.getName());

@@ -39,9 +39,8 @@ public class BlockOwnerShip {
 		}
 
 		material = type;
-		this.type = BlockTypes.getFromCMIMaterial(type);
 
-		switch (this.type) {
+		switch (this.type = BlockTypes.getFromCMIMaterial(type)) {
 		case BLAST_FURNACE:
 			metadataName = "jobsBlastFurnaceOwner";
 			break;

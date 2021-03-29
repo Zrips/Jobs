@@ -201,7 +201,7 @@ public class SignUtil {
 	Map<String, List<TopList>> temp = new HashMap<>();
 
 	boolean save = false;
-	for (jobsSign jSign : (new HashMap<>(signs)).values()) {
+	for (jobsSign jSign : new HashMap<>(signs).values()) {
 	    Location loc = jSign.getLocation();
 	    if (loc == null)
 		continue;

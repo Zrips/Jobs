@@ -551,9 +551,8 @@ public abstract class JobsDAO {
     private boolean checkDefaultCollumns() {
 	for (DBTables one : DBTables.values()) {
 	    for (JobsTableInterface oneT : one.getInterface()) {
-		if (isCollumn(one.getTableName(), oneT.getCollumn()))
-		    continue;
-		addCollumn(one.getTableName(), oneT.getCollumn(), oneT.getType());
+		if (!isCollumn(one.getTableName(), oneT.getCollumn()))
+		    addCollumn(one.getTableName(), oneT.getCollumn(), oneT.getType());
 	    }
 	}
 

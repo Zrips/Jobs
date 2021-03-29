@@ -51,7 +51,7 @@ public class JobsMySQL extends JobsDAO {
 
 	try {
 	    return conn.prepareStatement(query);
-	} catch (SQLException | NumberFormatException e) {
+	} catch (SQLException e) {
 	    e.printStackTrace();
 	}
 	return null;

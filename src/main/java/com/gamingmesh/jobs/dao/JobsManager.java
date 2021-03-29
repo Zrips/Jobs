@@ -1,9 +1,6 @@
 package com.gamingmesh.jobs.dao;
 
-import java.io.File;
 import java.io.IOException;
-
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.ConfigReader;
@@ -11,7 +8,7 @@ import com.gamingmesh.jobs.CMILib.ConfigReader;
 public class JobsManager {
     private JobsDAO dao;
     private Jobs plugin;
-    private DataBaseType DbType = DataBaseType.SqLite;
+    private DataBaseType dbType = DataBaseType.SqLite;
 
     public enum DataBaseType {
 	MySQL, SqLite
@@ -30,31 +27,30 @@ public class JobsManager {
 	    dao.closeConnections();
 
 	// Picking opposite database then it is currently
-	switch (DbType) {
+	switch (dbType) {
 	case MySQL:
 	    // If it MySQL lets change to SqLite
-	    DbType = DataBaseType.SqLite;
+	    dbType = DataBaseType.SqLite;
 	    dao = startSqlite();
 	    if (dao != null)
-		dao.setDbType(DbType);
+		dao.setDbType(dbType);
 	    break;
 	case SqLite:
 	    // If it SqLite lets change to MySQL
-	    DbType = DataBaseType.MySQL;
+	    dbType = DataBaseType.MySQL;
 	    dao = startMysql();
 	    if (dao != null)
-		dao.setDbType(DbType);
+		dao.setDbType(dbType);
 	    break;
 	default:
 	    break;
 	}
 
-	File f = new File(Jobs.getFolder(), "generalConfig.yml");
-	YamlConfiguration config = YamlConfiguration.loadConfiguration(f);
+	ConfigReader config = Jobs.getGCManager().getConfig();
 
-	config.set("storage.method", DbType.toString().toLowerCase());
+	config.set("storage.method", dbType.toString().toLowerCase());
 	try {
-	    config.save(f);
+	    config.save(config.getFile());
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
@@ -84,15 +80,15 @@ public class JobsManager {
 	encoding = c.get("mysql.encoding", "UTF-8");
 
 	if (storageMethod.equalsIgnoreCase("mysql")) {
-	    DbType = DataBaseType.MySQL;
+	    dbType = DataBaseType.MySQL;
 	    dao = startMysql();
 	} else if (storageMethod.equalsIgnoreCase("sqlite")) {
-	    DbType = DataBaseType.SqLite;
+	    dbType = DataBaseType.SqLite;
 	    dao = startSqlite();
 	} else {
 	    Jobs.consoleMsg("&cInvalid storage method! Changing method to sqlite!");
 	    c.set("storage.method", "sqlite");
-	    DbType = DataBaseType.SqLite;
+	    dbType = DataBaseType.SqLite;
 	    dao = startSqlite();
 	}
 	Jobs.setDAO(dao);
@@ -134,7 +130,7 @@ public class JobsManager {
     }
 
     public DataBaseType getDbType() {
-	return DbType;
+	return dbType;
     }
 
 }

@@ -42,7 +42,7 @@ public class BufferedPayment {
 	return offlinePlayer;
     }
 
-    public Double get(CurrencyType type) {
+    public double get(CurrencyType type) {
 	return payments.getOrDefault(type, 0d);
     }
 

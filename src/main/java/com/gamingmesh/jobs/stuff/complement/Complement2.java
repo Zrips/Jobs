@@ -12,12 +12,12 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class Complement2 implements Complement {
 
 	protected String serialize(Component component) {
-		return PlainComponentSerializer.plain().serialize(component);
+		return LegacyComponentSerializer.legacyAmpersand().serialize(component);
 	}
 
 	protected Component deserialize(String t) {
@@ -31,7 +31,8 @@ public class Complement2 implements Complement {
 
 	@Override
 	public String getLine(SignChangeEvent event, int line) {
-		return event.line(line) == null ? "" : serialize(event.line(line));
+		Component l = event.line(line);
+		return l == null ? "" : serialize(l);
 	}
 
 	@Override
