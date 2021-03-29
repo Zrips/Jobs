@@ -26,7 +26,13 @@ public class Complement2 implements Complement {
 
 	@Override
 	public String getDisplayName(ItemMeta meta) {
-		return meta.displayName() == null ? null : serialize(meta.displayName());
+		Component dName = null;
+		try {
+			dName = meta.displayName();
+		} catch (NoSuchMethodError e) {
+		}
+
+		return dName == null ? null : serialize(dName);
 	}
 
 	@Override
