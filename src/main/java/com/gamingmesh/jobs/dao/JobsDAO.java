@@ -416,7 +416,7 @@ public abstract class JobsDAO {
 	public String getQuery() {
 	    String rp = "";
 	    List<JobsTableInterface> uniques = new ArrayList<>();
-	    for (JobsTableInterface one : getInterface()) {
+	    for (JobsTableInterface one : c) {
 		if (one.isUnique()) {
 		    uniques.add(one);
 		}
@@ -550,9 +550,11 @@ public abstract class JobsDAO {
 
     private boolean checkDefaultCollumns() {
 	for (DBTables one : DBTables.values()) {
+	    String tableName = one.getTableName();
+
 	    for (JobsTableInterface oneT : one.getInterface()) {
-		if (!isCollumn(one.getTableName(), oneT.getCollumn()))
-		    addCollumn(one.getTableName(), oneT.getCollumn(), oneT.getType());
+		if (!isCollumn(tableName, oneT.getCollumn()))
+		    addCollumn(tableName, oneT.getCollumn(), oneT.getType());
 	    }
 	}
 

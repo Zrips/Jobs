@@ -21,9 +21,9 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class NameTranslatorManager {
 
-	private final HashMap<CMIMaterial, NameList> ListOfNames = new HashMap<>();
-    private final ArrayList<NameList> ListOfEntities = new ArrayList<>(), ListOfColors = new ArrayList<>();
-    private final HashMap<String, NameList> ListOfEnchants = new HashMap<>(), ListOfMMEntities = new HashMap<>();
+	private final Map<CMIMaterial, NameList> ListOfNames = new HashMap<>();
+    private final List<NameList> ListOfEntities = new ArrayList<>(), ListOfColors = new ArrayList<>();
+    private final Map<String, NameList> ListOfEnchants = new HashMap<>(), ListOfMMEntities = new HashMap<>();
 
     public String Translate(String materialName, JobInfo info) {
 	return Translate(materialName, info.getActionType(), info.getId(), info.getMeta(), info.getName());
@@ -123,8 +123,9 @@ public class NameTranslatorManager {
 		String mName = materialName;
 		String level = "";
 		if (mName.contains(":")) {
-		    mName = materialName.split(":")[0];
-		    level = ":" + materialName.split(":")[1];
+		    String[] split = materialName.split(":", 2);
+		    mName = split[0];
+		    level = ":" + split[1];
 		}
 		NameList nameInfo = ListOfEnchants.get(mName.toLowerCase().replace("_", ""));
 		if (nameInfo != null) {
@@ -247,9 +248,7 @@ public class NameTranslatorManager {
 	    return;
 
 	File tWordsFolder = new File(Jobs.getFolder(), "TranslatableWords");
-	if (!tWordsFolder.exists()) {
-	    tWordsFolder.mkdirs();
-	}
+	tWordsFolder.mkdirs();
 
 	File file = new File(Jobs.getFolder(), "TranslatableWords.yml");
 	File file2 = new File(tWordsFolder, "Words_" + ls + ".yml");

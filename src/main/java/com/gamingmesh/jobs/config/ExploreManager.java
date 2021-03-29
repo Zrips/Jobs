@@ -27,8 +27,8 @@ public class ExploreManager {
     }
 
     public void setPlayerAmount(int amount) {
-	if (this.playerAmount < amount)
-	    this.playerAmount = amount;
+	if (playerAmount < amount)
+	    playerAmount = amount;
     }
 
     public boolean isExploreEnabled() {
@@ -44,9 +44,12 @@ public class ExploreManager {
     public void load() {
 	if (!exploreEnabled)
 	    return;
+
 	Jobs.consoleMsg("&e[Jobs] Loading explorer data");
 	Jobs.getJobsDAO().loadExplore();
-	Jobs.consoleMsg("&e[Jobs] Loaded explorer data" + (getSize() != 0 ? " (" + getSize() + ")" : "."));
+
+	int size = getSize();
+	Jobs.consoleMsg("&e[Jobs] Loaded explorer data" + (size != 0 ? " (" + size + ")" : "."));
     }
 
     public Map<String, ExploreRegion> getWorlds() {

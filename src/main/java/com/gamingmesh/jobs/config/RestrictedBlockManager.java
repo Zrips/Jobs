@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.config;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIItemStack;
@@ -31,20 +30,18 @@ public class RestrictedBlockManager {
 	    "If you want to have default value for all blocks, enable GlobalBlockTimer in generalConfig file");
 
 	if (cfg.getC().isConfigurationSection("blocksTimer")) {
-	    Set<String> lss = cfg.getC().getConfigurationSection("blocksTimer").getKeys(false);
-	    for (String one : lss) {
-		if (((cfg.getC().isString("blocksTimer." + one + ".id")) || (cfg.getC().isInt("blocksTimer." + one + ".id"))) && (cfg.getC().isInt("blocksTimer." + one
-		    + ".cd"))) {
-		    CMIItemStack cm = ItemManager.getItem(CMIMaterial.get(cfg.getC().getString("blocksTimer." + one + ".id")));
-		    if ((cm == null) || (!cm.getCMIType().isBlock())) {
+	    org.bukkit.configuration.ConfigurationSection section = cfg.getC().getConfigurationSection("blocksTimer");
+	    for (String one : section.getKeys(false)) {
+		if (((section.isString(one + ".id")) || (section.isInt(one + ".id"))) && (section.isInt(one + ".cd"))) {
+		    CMIItemStack cm = ItemManager.getItem(CMIMaterial.get(section.getString(one + ".id")));
+		    if (cm == null || !cm.getCMIType().isBlock()) {
 			Jobs.consoleMsg("&e[Jobs] Your defined (" + one + ") protected block id/name is not correct!");
 			continue;
 		    }
 
-		    restrictedBlocksTimer.put(cm.getCMIType(), cfg.getC().getInt("blocksTimer." + one + ".cd"));
-
-		    cfg.set("blocksTimer." + cm.getCMIType().name(), cfg.getC().getInt("blocksTimer." + one + ".cd"));
-
+		    int cd = section.getInt(one + ".cd");
+		    restrictedBlocksTimer.put(cm.getCMIType(), cd);
+		    cfg.set("blocksTimer." + cm.getCMIType().name(), cd);
 		} else {
 		    CMIMaterial mat = CMIMaterial.get(one);
 		    if (mat == CMIMaterial.NONE)

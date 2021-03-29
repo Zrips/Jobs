@@ -670,9 +670,7 @@ public class ConfigManager {
 	    String fileName = jobKey.equalsIgnoreCase(EXAMPLEJOBNAME) ? jobKey.toUpperCase() : jobKey.toLowerCase();
 
 	    YmlMaker newJobFile = new YmlMaker(jobsPathFolder, fileName + ".yml");
-	    if (!newJobFile.exists()) {
-		newJobFile.createNewFile();
-	    }
+	    newJobFile.createNewFile();
 
 	    FileConfiguration conf = newJobFile.getConfig();
 	    conf.options().pathSeparator(File.separatorChar);

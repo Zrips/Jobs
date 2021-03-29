@@ -1689,7 +1689,7 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChunkUnload(ChunkUnloadEvent event) {
 	for (Entity entity : event.getChunk().getEntities()) {
-	    if (entity.isPersistent())
+	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) && entity.isPersistent())
 		break;
 
 	    if (entity.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
