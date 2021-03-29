@@ -30,21 +30,30 @@ public class join implements Cmd {
 	    return true;
 	}
 
-	Player pSender = (Player) sender;
 	Job job = Jobs.getJob(args[0]);
 	if (job == null) {
 	    // job does not exist
-	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
-	if (!Jobs.getCommandManager().hasJobPermission(pSender, job)) {
-	    // you do not have permission to join the job
-	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+	if (!Jobs.getCommandManager().hasJobPermission(sender, job)) {
+	    // The player do not have permission to join the job
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}
 
+	Player pSender = (Player) sender;
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
+	if (jPlayer == null) { // Load player into cache
+	    Jobs.getPlayerManager().playerJoin(pSender);
+	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
+	}
+
+	if (jPlayer == null) {
+	    return true;
+	}
+
 	if (jPlayer.isInJob(job)) {
 	    // already in job message
 	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.alreadyin", "%jobname%", job.getNameWithColor()));

@@ -56,7 +56,6 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.ItemStack;
@@ -627,27 +626,22 @@ public class JobsListener implements Listener {
     }
 
     @EventHandler
-    public void JobsArmorChangeEvent(JobsArmorChangeEvent event) {
+    public void jobsArmorChangeEvent(JobsArmorChangeEvent event) {
 	Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
-    public void PlayerItemHeldEvent(PlayerItemHeldEvent event) {
+    public void playerItemHeldEvent(PlayerItemHeldEvent event) {
 	Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
-    public void PlayerItemBreakEvent(PlayerItemBreakEvent event) {
+    public void playerItemBreakEvent(PlayerItemBreakEvent event) {
 	Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
-    public void PlayerItemBreakEvent(InventoryClickEvent event) {
+    public void playerItemBreakEvent(InventoryClickEvent event) {
 	Jobs.getPlayerManager().resetItemBonusCache(((Player) event.getWhoClicked()).getUniqueId());
-    }
-
-    @EventHandler
-    public void onPlayerHandSwap(PlayerSwapHandItemsEvent event) {
-	Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
     }
 }

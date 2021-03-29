@@ -785,7 +785,7 @@ public abstract class JobsDAO {
 	    while (res.next()) {
 
 		String jobName = res.getString(ArchiveTableFields.job.getCollumn());
-		Double exp = res.getDouble(ArchiveTableFields.experience.getCollumn());
+		double exp = res.getDouble(ArchiveTableFields.experience.getCollumn());
 		int lvl = res.getInt(ArchiveTableFields.level.getCollumn());
 		Long left = res.getLong(ArchiveTableFields.left.getCollumn());
 		int jobid = res.getInt(ArchiveTableFields.jobid.getCollumn());
@@ -1820,14 +1820,8 @@ public abstract class JobsDAO {
 
 	    // add the job
 	    Job job = Jobs.getJob(jobdata.getJobName());
-	    if (job == null)
-		continue;
-
-	    // create the progression object
-	    JobProgression jobProgression = new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience());
-	    // calculate the max level
-	    // add the progression level.
-	    jPlayer.progression.add(jobProgression);
+	    if (job != null)
+		jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
 	}
 	jPlayer.reloadMaxExperience();
 	jPlayer.reloadLimits();

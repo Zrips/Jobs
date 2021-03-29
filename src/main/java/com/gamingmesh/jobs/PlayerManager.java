@@ -245,14 +245,11 @@ public class PlayerManager {
 		jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 
 	    if (Jobs.getGCManager().MultiServerCompatability()) {
-		ArchivedJobs archivedJobs = Jobs.getJobsDAO().getArchivedJobs(jPlayer);
-		if (archivedJobs != null) {
-		    jPlayer.setArchivedJobs(archivedJobs);
-		}
-
+		jPlayer.setArchivedJobs(Jobs.getJobsDAO().getArchivedJobs(jPlayer));
 		jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
 		jPlayer.setPoints(Jobs.getJobsDAO().getPlayerPoints(jPlayer));
 	    }
+
 	    // Lets load quest progression
 	    PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(player.getUniqueId());
 	    if (info != null) {

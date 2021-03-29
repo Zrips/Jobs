@@ -708,6 +708,10 @@ public class Jobs extends JavaPlugin {
 	    }
 
 	    // register the listeners
+	    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
+		getServer().getPluginManager().registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), instance);
+	    }
+
 	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
 	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
 	    if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
@@ -763,6 +767,10 @@ public class Jobs extends JavaPlugin {
 	    HandlerList.unregisterAll(instance);
 
 	    com.gamingmesh.jobs.CMIGUI.GUIManager.registerListener();
+
+	    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
+		pm.registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), instance);
+	    }
 
 	    pm.registerEvents(new JobsListener(instance), instance);
 	    pm.registerEvents(new JobsPaymentListener(instance), instance);
