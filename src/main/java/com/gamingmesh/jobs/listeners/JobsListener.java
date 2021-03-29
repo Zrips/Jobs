@@ -303,7 +303,7 @@ public class JobsListener implements Listener {
 
 	event.setCancelled(true);
 
-	plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> signUtil.SignUpdate(job, type), 1L);
+	plugin.getServer().getScheduler().runTaskLater(plugin, () -> signUtil.signUpdate(job, type), 1L);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -358,7 +358,7 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCropGrown(final BlockGrowEvent event) {
 	if (Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld())) {
-	    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
+	    plugin.getServer().getScheduler().runTaskLater(plugin, () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
 	}
     }
 
@@ -448,10 +448,8 @@ public class JobsListener implements Listener {
 
 	Chunk from = event.getFrom().getChunk();
 	Chunk to = event.getTo().getChunk();
-	if (from == to)
-	    return;
-
-	plugin.getServer().getPluginManager().callEvent(new JobsChunkChangeEvent(event.getPlayer(), from, to));
+	if (from != to)
+	    plugin.getServer().getPluginManager().callEvent(new JobsChunkChangeEvent(event.getPlayer(), from, to));
     }
 
     @EventHandler

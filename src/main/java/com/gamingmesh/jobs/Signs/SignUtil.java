@@ -162,15 +162,15 @@ public class SignUtil {
     public void updateAllSign(Job job) {
 	for (SignTopType types : SignTopType.values()) {
 	    if (types != SignTopType.questtoplist)
-		SignUpdate(job, types);
+		signUpdate(job, types);
 	}
     }
 
-    public boolean SignUpdate(Job job) {
-	return SignUpdate(job, SignTopType.toplist);
+    public boolean signUpdate(Job job) {
+	return signUpdate(job, SignTopType.toplist);
     }
 
-    public boolean SignUpdate(Job job, SignTopType type) {
+    public boolean signUpdate(Job job, SignTopType type) {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return true;
 

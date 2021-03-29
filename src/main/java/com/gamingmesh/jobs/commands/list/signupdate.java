@@ -20,7 +20,7 @@ public class signupdate implements Cmd {
 	}
 
 	if (args[0].equalsIgnoreCase("all")) {
-	    Jobs.getJobs().forEach(Jobs.getSignUtil()::SignUpdate);
+	    Jobs.getJobs().forEach(Jobs.getSignUtil()::signUpdate);
 	    return true;
 	}
 
@@ -33,14 +33,13 @@ public class signupdate implements Cmd {
 	if (args.length == 2) {
 	    SignTopType type = SignTopType.getType(args[1]);
 	    if (type != null) {
-		Jobs.getSignUtil().SignUpdate(oldjob, type);
+		Jobs.getSignUtil().signUpdate(oldjob, type);
 	    }
 
 	    return true;
 	}
 
-	Jobs.getSignUtil().SignUpdate(oldjob);
-
+	Jobs.getSignUtil().signUpdate(oldjob);
 	return true;
     }
 }

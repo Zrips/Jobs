@@ -1257,12 +1257,9 @@ public class JobsPlayer {
 	this.setSaved(false);
 
 	if (questSignUpdateShed == null) {
-	    questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    Jobs.getSignUtil().SignUpdate(job, SignTopType.questtoplist);
-		    questSignUpdateShed = null;
-		}
+	    questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+		Jobs.getSignUtil().signUpdate(job, SignTopType.questtoplist);
+		questSignUpdateShed = null;
 	    }, Jobs.getGCManager().getSavePeriod() * 60 * 20L);
 	}
     }
