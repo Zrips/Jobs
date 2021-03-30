@@ -84,7 +84,7 @@ public class Job {
 
     private Parser moneyEquation, xpEquation, pointsEquation;
 
-    private final List<String> fDescription = new ArrayList<>();
+    private final List<String> fDescription = new ArrayList<>(), maxLevelCommands = new ArrayList<>();
     private List<String> worldBlacklist = new ArrayList<>();
 
     private final List<Quest> quests = new ArrayList<>();
@@ -507,6 +507,18 @@ public class Job {
 	if (fDescription != null) {
 	    this.fDescription.addAll(fDescription);
 	}
+    }
+
+    public void setMaxLevelCommands(List<String> commands) {
+	maxLevelCommands.clear();
+
+	if (commands != null) {
+	    maxLevelCommands.addAll(commands);
+	}
+    }
+
+    public List<String> getMaxLevelCommands() {
+	return maxLevelCommands;
     }
 
     public List<Quest> getQuests() {

@@ -45,7 +45,6 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.CMIReflections;
-import com.gamingmesh.jobs.CMILib.TitleMessageManager;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
@@ -842,11 +841,28 @@ public class PlayerManager {
 	performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
 	Jobs.getSignUtil().updateAllSign(job);
 
-	if (Jobs.getGCManager().titleMessageMaxLevelReached && player != null && prog.getLevel() == jPlayer.getMaxJobLevelAllowed(prog.getJob())) {
-	    TitleMessageManager.send(player, Jobs.getLanguage().getMessage("message.max-level-reached.title",
-		"%jobname%", prog.getJob().getNameWithColor()),
-		Jobs.getLanguage().getMessage("message.max-level-reached.subtitle", "%jobname%", prog.getJob().getNameWithColor()), 20, 40, 20);
-	    player.sendMessage(Jobs.getLanguage().getMessage("message.max-level-reached.chat", "%jobname%", prog.getJob().getNameWithColor()));
+	if (player != null && prog.getLevel() == jPlayer.getMaxJobLevelAllowed(prog.getJob())) {
+	    for (String cmd : job.getMaxLevelCommands()) {
+		if (cmd.isEmpty()) {
+		    continue;
+		}
+
+		if (cmd.contains(":")) {
+		    String[] split = cmd.split(":", 2);
+
+		    String command = split[1];
+		    command = command.replace("[playerName]", player.getName());
+		    command = command.replace("[job]", job.getName());
+
+		    if (split[0].equalsIgnoreCase("player:")) {
+			player.performCommand(command);
+		    } else if (split[0].equalsIgnoreCase("console:")) {
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+		    }
+		} else {
+		    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+		}
+	    }
 	}
     }
 

@@ -700,12 +700,15 @@ public class JobsPlayer {
 	    maxLevel = job.getVipMaxLevel() > job.getMaxLevel() ? job.getVipMaxLevel() : job.getMaxLevel();
 	else
 	    maxLevel = job.getMaxLevel();
+
 	int tMax = Jobs.getPermissionManager().getMaxPermission(this, "jobs." + job.getName() + ".vipmaxlevel").intValue();
 	if (tMax > maxLevel)
 	    maxLevel = tMax;
+
 	tMax = Jobs.getPermissionManager().getMaxPermission(this, "jobs.all.vipmaxlevel").intValue();
 	if (tMax > maxLevel)
 	    maxLevel = tMax;
+
 	return maxLevel;
     }
 

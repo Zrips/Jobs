@@ -566,6 +566,13 @@ exampleJob:
       levelFrom: 150
       levelUntil: 150
 
+  # Perform specific commands when a player reaches the max level of this job.
+  # Players can have vip max level and this will be performed when they reach the max vip level.
+  # You can use "player:" or "console:" prefix tag to perform for specific senders.
+  commands-on-max-level:
+  - 'msg [playerName] Max level of [job] reached!'
+  - 'player:jobs stats'
+
   # World list in which this job will not work. World name should be exact
   world-blacklist:
   - plotworld

@@ -75,8 +75,7 @@ public class BlockOwnerShip {
 	}
 
 	public ownershipFeedback register(Player player, Block block) {
-		CMIMaterial mat = CMIMaterial.get(block);
-		if (type != BlockTypes.getFromCMIMaterial(mat)) {
+		if (type != BlockTypes.getFromCMIMaterial(CMIMaterial.get(block))) {
 			return ownershipFeedback.invalid;
 		}
 
@@ -93,9 +92,8 @@ public class BlockOwnerShip {
 		if (!data.isEmpty()) {
 			// only care about first
 			MetadataValue value = data.get(0);
-			String uuid = value.asString();
 
-			if (!uuid.equals(player.getUniqueId().toString())) {
+			if (!value.asString().equals(player.getUniqueId().toString())) {
 				return ownershipFeedback.notOwn;
 			}
 
@@ -199,9 +197,12 @@ public class BlockOwnerShip {
 			else
 				ls.add(value);
 
-			UUID uuid = UUID.fromString(one);
-			if (uuid == null)
+			UUID uuid = null;
+			try {
+				uuid = UUID.fromString(one);
+			} catch (IllegalArgumentException e) {
 				continue;
+			}
 
 			List<blockLoc> blist = new ArrayList<>();
 			for (String oneL : ls) {
@@ -240,9 +241,7 @@ public class BlockOwnerShip {
 			return;
 		}
 
-		if (!f.exists())
-			f.createNewFile();
-
+		f.createNewFile();
 		f.saveDefaultConfig();
 
 		if (isReassignDisabled()) {

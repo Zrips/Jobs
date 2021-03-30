@@ -1123,6 +1123,7 @@ public class ConfigManager {
 	    job.setPointsEquation(pointsEquation);
 	    job.setBossbar(bossbar);
 	    job.setRejoinCd(rejoinCd);
+	    job.setMaxLevelCommands(jobSection.getStringList("commands-on-max-level"));
 
 	    if (jobSection.isConfigurationSection("Quests")) {
 		List<Quest> quests = new ArrayList<>();
