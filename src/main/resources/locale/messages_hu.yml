@@ -660,7 +660,7 @@ command:
 message:
   skillup:
     broadcast: '%playername% játékost előléptették a %titlename% %jobname% munkában.'
-    nobroadcast: '&aGratulálok, képességet léptél a(z)&r %titlename% %jobname%&a munkában.'
+    nobroadcast: '&aGratulálok, előléptettek a(z)&r %titlename% %jobname%&a munkában.'
   max-level-reached:
     title: '&2Elérted a max szintet'
     subtitle: '&2a(z) %jobname% munkában!'

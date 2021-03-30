@@ -18,10 +18,10 @@ general:
     'true': '&2Verdadeiro'
     'false': '&cFalso'
     blocks:
-      furnace: Furnace
-      smoker: Smoker
-      blastfurnace: Blast furnace
-      brewingstand: Brewing stand
+      furnace: Fornalha
+      smoker: Defumador
+      blastfurnace: Alto-forno
+      brewingstand: Suporte de Poções
   admin:
     error: '&cHouve um erro no comando.'
     success: '&eSeu comando foi executado.'

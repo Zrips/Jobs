@@ -779,8 +779,7 @@ public class Jobs extends JavaPlugin {
 	    }
 
 	    if (getGCManager().useBlockProtection) {
-		PistonProtectionListener pistonProtection = new PistonProtectionListener();
-		pm.registerEvents(pistonProtection, instance);
+		pm.registerEvents(new PistonProtectionListener(), instance);
 	    }
 
 	    if (HookManager.getMcMMOManager().CheckmcMMO()) {

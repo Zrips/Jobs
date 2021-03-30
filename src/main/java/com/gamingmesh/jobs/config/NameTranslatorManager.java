@@ -21,7 +21,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class NameTranslatorManager {
 
-	private final Map<CMIMaterial, NameList> ListOfNames = new HashMap<>();
+    private final Map<CMIMaterial, NameList> ListOfNames = new HashMap<>();
     private final List<NameList> ListOfEntities = new ArrayList<>(), ListOfColors = new ArrayList<>();
     private final Map<String, NameList> ListOfEnchants = new HashMap<>(), ListOfMMEntities = new HashMap<>();
 
