@@ -62,6 +62,9 @@ public class JobsChatEvent implements Listener {
 		if (honorific.equals(" "))
 			honorific = "";
 
-		event.setFormat(event.getFormat().replace("{jobs}", honorific));
+		String format = event.getFormat();
+		if (format.contains("{jobs}")) {
+			event.setFormat(format.replace("{jobs}", honorific));
+		}
 	}
 }
