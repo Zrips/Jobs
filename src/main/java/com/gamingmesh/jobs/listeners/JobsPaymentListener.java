@@ -303,10 +303,18 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null || sheep.getColor() == null)
 	    return;
 
-	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(sheep)) {
-	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
-		if (stacked.getType() == sheep.getType()) {
-		    Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getLivingEntity()).getColor().name(), ActionType.SHEAR));
+	if (Jobs.getGCManager().payForStackedEntities) {
+	    if (JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(sheep)) {
+		for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
+		    if (stacked.getType() == sheep.getType()) {
+			Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getLivingEntity()).getColor().name(), ActionType.SHEAR));
+		    }
+		}
+	    } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(sheep)) {
+		for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
+		    if (stacked.getEntity().getType() == sheep.getType()) {
+			Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getEntity()).getColor().name(), ActionType.SHEAR));
+		    }
 		}
 	    }
 	}
@@ -537,10 +545,18 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null)
 	    return;
 
-	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(animal)) {
-	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
-		if (stacked.getType() == animal.getType()) {
-		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.TAME));
+	if (Jobs.getGCManager().payForStackedEntities) {
+	    if (JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(animal)) {
+		for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
+		    if (stacked.getType() == animal.getType()) {
+			Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.TAME));
+		    }
+		}
+	    } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(animal)) {
+		for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
+		    if (stacked.getEntity().getType() == animal.getType()) {
+			Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.TAME));
+		    }
 		}
 	    }
 	}
@@ -1230,10 +1246,18 @@ public class JobsPaymentListener implements Listener {
 		return;
 	}
 
-	if (Jobs.getGCManager().payForStackedEntities && JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(lVictim)) {
-	    for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
-		if (stacked.getType() == lVictim.getType()) {
-		    Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.KILL), e.getDamager(), stacked.getLivingEntity());
+	if (Jobs.getGCManager().payForStackedEntities) {
+	    if (JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(lVictim)) {
+		for (com.bgsoftware.wildstacker.api.objects.StackedEntity stacked : HookManager.getWildStackerHandler().getStackedEntities()) {
+		    if (stacked.getType() == lVictim.getType()) {
+			Jobs.action(jDamager, new EntityActionInfo(stacked.getLivingEntity(), ActionType.KILL), e.getDamager(), stacked.getLivingEntity());
+		    }
+		}
+	    } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(lVictim)) {
+		for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
+		    if (stacked.getEntity().getType() == lVictim.getType()) {
+			Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.KILL), e.getDamager(), stacked.getEntity());
+		    }
 		}
 	    }
 	}

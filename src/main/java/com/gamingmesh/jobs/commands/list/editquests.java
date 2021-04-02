@@ -133,7 +133,7 @@ public class editquests implements Cmd {
 			String objName = target.toLowerCase().replace('_', ' ');
 			objName = Character.toUpperCase(objName.charAt(0)) + objName.substring(1);
 			if (o != null)
-			    objName = Jobs.getNameTranslatorManager().Translate(objName, o.getAction(), o.getTargetId(),
+			    objName = Jobs.getNameTranslatorManager().translate(objName, o.getAction(), o.getTargetId(),
 				o.getTargetMeta(), target);
 			objName = org.bukkit.ChatColor.translateAlternateColorCodes('&', objName);
 

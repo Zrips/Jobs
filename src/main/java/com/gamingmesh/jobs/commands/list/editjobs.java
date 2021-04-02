@@ -421,7 +421,7 @@ public class editjobs implements Cmd {
 
 	    String materialName = jInfo.getName().toLowerCase().replace('_', ' ');
 	    materialName = Character.toUpperCase(materialName.charAt(0)) + materialName.substring(1);
-	    materialName = Jobs.getNameTranslatorManager().Translate(materialName, jInfo);
+	    materialName = Jobs.getNameTranslatorManager().translate(materialName, jInfo);
 	    materialName = CMIChatColor.translate(materialName);
 
 	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.material", "%materialname%", jInfo.getName()))

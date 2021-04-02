@@ -543,10 +543,6 @@ public class Job {
 	this.quests.addAll(quests == null ? new ArrayList<>() : quests);
     }
 
-//    public Quest getNextQuest() {
-//	return getNextQuest(null, null);
-//    }
-
     public Quest getNextQuest(List<String> excludeQuests, Integer level) {
 	List<Quest> ls = new ArrayList<>(quests);
 	Collections.shuffle(ls);

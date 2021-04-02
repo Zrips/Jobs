@@ -35,30 +35,34 @@ public class JobConditions {
 	this.node = node;
 
 	for (String one : requires) {
-	    if (one.toLowerCase().contains("j:")) {
-		String jobName = one.toLowerCase().replace("j:", "").split("-")[0];
+	    String cond = one.toLowerCase();
+
+	    if (cond.contains("j:")) {
+		String[] split = cond.replace("j:", "").split("-", 2);
 
 		int jobLevel = 0;
 		try {
-		    jobLevel = Integer.valueOf(one.toLowerCase().replace("j:", "").split("-")[1]);
+		    jobLevel = Integer.valueOf(split[1]);
 		} catch (NumberFormatException e) {
 		    continue;
 		}
 
-		requiresJobs.put(jobName, jobLevel);
+		requiresJobs.put(split[0], jobLevel);
 	    }
 
-	    if (one.toLowerCase().contains("p:")) {
+	    if (cond.contains("p:")) {
 		requiresPerm.add(one.replace("p:", ""));
 	    }
 	}
 	for (String one : perform) {
-	    if (!one.toLowerCase().contains("p:"))
+	    one = one.toLowerCase();
+
+	    if (!one.contains("p:"))
 		continue;
 
-	    String clean = one.toLowerCase().substring("p:".length());
+	    String clean = one.substring("p:".length());
 	    if (clean.contains("-")) {
-		String[] split = clean.split("-");
+		String[] split = clean.split("-", 2);
 		performPerm.put(split[0], split[1].equalsIgnoreCase("true"));
 	    } else {
 		performPerm.put(clean, true);

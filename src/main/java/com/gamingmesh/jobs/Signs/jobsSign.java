@@ -138,9 +138,12 @@ public class jobsSign {
     }
 
     public String getIdentifier() {
-	if (getType() != SignTopType.toplist)
-	    return getType().toString();
-	return jobName != null ? jobName + ":" + getType().toString() : getType().toString();
+	SignTopType type = getType();
+
+	if (type != SignTopType.toplist)
+	    return type.toString();
+
+	return jobName != null ? jobName + ":" + type.toString() : type.toString();
     }
 
     public static String getIdentifier(Job job, SignTopType type) {

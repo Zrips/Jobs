@@ -25,11 +25,11 @@ public class NameTranslatorManager {
     private final List<NameList> ListOfEntities = new ArrayList<>(), ListOfColors = new ArrayList<>();
     private final Map<String, NameList> ListOfEnchants = new HashMap<>(), ListOfMMEntities = new HashMap<>();
 
-    public String Translate(String materialName, JobInfo info) {
-	return Translate(materialName, info.getActionType(), info.getId(), info.getMeta(), info.getName());
+    public String translate(String materialName, JobInfo info) {
+	return translate(materialName, info.getActionType(), info.getId(), info.getMeta(), info.getName());
     }
 
-    public String Translate(String materialName, ActionType action, Integer id, String meta, String name) {
+    public String translate(String materialName, ActionType action, Integer id, String meta, String name) {
 	// Translating name to user friendly
 	if (Jobs.getGCManager().UseCustomNames)
 	    switch (action) {

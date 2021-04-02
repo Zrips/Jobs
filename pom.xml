@@ -156,6 +156,10 @@
 					<groupId>org.apache.logging.log4j</groupId>
 					<artifactId>log4j-slf4j-impl</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.bukkit</groupId>
+					<artifactId>bukkit</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- PlaceholderAPI -->
@@ -187,8 +191,9 @@
 		<dependency>
 			<groupId>com.github.Nathat23</groupId>
 			<artifactId>StackMob-5</artifactId>
-			<version>master-SNAPSHOT</version>
-			<scope>provided</scope>
+			<version>5.5.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/StackMob-5.5.3.jar</systemPath>
 		</dependency>
 		<!-- MyPet -->
 		<dependency>

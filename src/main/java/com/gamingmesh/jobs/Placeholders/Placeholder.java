@@ -374,17 +374,17 @@ public class Placeholder {
     }
 
     private static JobProgression getProgFromValue(JobsPlayer user, String value) {
-	JobProgression j = null;
 	try {
 	    int id = Integer.parseInt(value);
 	    if (id > 0)
-		j = user.getJobProgression().get(id - 1);
-	} catch (Exception e) {
+		return user.getJobProgression().get(id - 1);
+	} catch (IndexOutOfBoundsException | NumberFormatException e) {
 	    Job job = Jobs.getJob(value);
 	    if (job != null)
-		j = user.getJobProgression(job);
+		return user.getJobProgression(job);
 	}
-	return j;
+
+	return null;
     }
 
     private static Job getJobFromValue(String value) {

@@ -321,7 +321,7 @@ public class ShopManager {
 
 	int i = 0;
 	int y = 1;
-	for (String category : new java.util.HashSet<>(categories)) {
+	for (String category : new ArrayList<>(categories)) {
 	    ConfigurationSection nameSection = confCategory.getConfigurationSection(category);
 	    if (nameSection == null) {
 		continue;
@@ -372,12 +372,12 @@ public class ShopManager {
 		sItem.setRequiredTotalLevels(nameSection.getInt("RequiredTotalLevels"));
 
 	    if (nameSection.isList("RequiredJobLevels")) {
-		HashMap<String, Integer> requiredJobs = new HashMap<>();
+		Map<String, Integer> requiredJobs = new HashMap<>();
 		for (String one : nameSection.getStringList("RequiredJobLevels")) {
 		    if (!one.contains("-"))
 			continue;
 
-		    String[] split = one.split("-");
+		    String[] split = one.split("-", 2);
 		    String job = split[0];
 		    int lvl = 1;
 		    if (split.length > 1) {
@@ -430,7 +430,7 @@ public class ShopManager {
 			if (!eachLine.contains("="))
 			    continue;
 
-			String[] split = eachLine.split("=");
+			String[] split = eachLine.split("=", 2);
 			Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
 			Integer level = 1;
 			if (split.length > 1) {

@@ -165,7 +165,8 @@ public class BlockOwnerShip {
 	}
 
 	public int getTotal(UUID uuid) {
-		return blockOwnerShips.getOrDefault(uuid, new ArrayList<>()).size();
+		List<blockLoc> list = blockOwnerShips.get(uuid);
+		return list == null ? 0 : list.size();
 	}
 
 	public void load() {
@@ -192,12 +193,13 @@ public class BlockOwnerShip {
 		for (String one : section.getKeys(false)) {
 			String value = section.getString(one);
 			List<String> ls = new ArrayList<>();
+
 			if (value.contains(";"))
 				ls.addAll(Arrays.asList(value.split(";")));
 			else
 				ls.add(value);
 
-			UUID uuid = null;
+			UUID uuid;
 			try {
 				uuid = UUID.fromString(one);
 			} catch (IllegalArgumentException e) {
@@ -255,6 +257,7 @@ public class BlockOwnerShip {
 
 		for (Map.Entry<UUID, List<blockLoc>> one : blockOwnerShips.entrySet()) {
 			String full = "";
+
 			for (blockLoc oneL : one.getValue()) {
 				if (!full.isEmpty())
 					full += ";";

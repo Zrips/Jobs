@@ -1,6 +1,6 @@
 package com.gamingmesh.jobs.hooks.stackMob;
 
-import java.util.HashSet;
+import java.util.Collection;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,7 +16,7 @@ public class StackMobHandler extends HookPlugin {
 		return getPlugin().getEntityManager().isStackedEntity(entity);
 	}
 
-	public HashSet<StackEntity> getStackEntities() {
+	public Collection<StackEntity> getStackEntities() {
 		return getPlugin().getEntityManager().getStackEntities();
 	}
 

@@ -111,6 +111,25 @@ public class ItemBoostManager {
 	    if (one.equalsIgnoreCase("exampleBoost"))
 		continue;
 
+	    List<Job> jobs = new ArrayList<>();
+	    for (String oneJ : cfg.get(one + ".jobs", Arrays.asList(""))) {
+		if (oneJ.equalsIgnoreCase("all")) {
+		    jobs.addAll(Jobs.getJobs());
+		} else {
+		    Job job = Jobs.getJob(oneJ);
+		    if (job != null) {
+			jobs.add(job);
+		    } else {
+			Jobs.getPluginLogger().warning("Cant determine job by " + oneJ + " name for " + one + " boosted item!");
+		    }
+		}
+	    }
+
+	    if (jobs.isEmpty()) {
+		Jobs.getPluginLogger().warning("Jobs list is empty for " + one + " boosted item!");
+		continue;
+	    }
+
 	    List<String> lore = new ArrayList<>();
 	    if (cfg.getC().isList(one + ".lore")) {
 		for (String eachLine : cfg.get(one + ".lore", Arrays.asList(""))) {
@@ -143,25 +162,6 @@ public class ItemBoostManager {
 		    b.add(oneC, cfg.get(one + "." + typeName + "Boost", 1D) - 1);
 	    }
 
-	    List<Job> jobs = new ArrayList<>();
-	    for (String oneJ : cfg.get(one + ".jobs", Arrays.asList(""))) {
-		if (oneJ.equalsIgnoreCase("all")) {
-		    jobs.addAll(Jobs.getJobs());
-		} else {
-		    Job job = Jobs.getJob(oneJ);
-		    if (job != null) {
-			jobs.add(job);
-		    } else {
-			Jobs.getPluginLogger().warning("Cant determine job by " + oneJ + " name for " + one + " boosted item!");
-		    }
-		}
-	    }
-
-	    if (jobs.isEmpty()) {
-		Jobs.getPluginLogger().warning("Jobs list is empty for " + one + " boosted item!");
-		continue;
-	    }
-
 	    CMIMaterial mat = cfg.getC().isString(one + ".id") ? CMIMaterial.get(cfg.get(one + ".id", "Stone")) : null;
 
 	    String name = cfg.getC().isString(one + ".name") ? cfg.get(one + ".name", "") : null;
@@ -181,7 +181,7 @@ public class ItemBoostManager {
 
 	    // Lets add into legacy map
 	    if (one.contains("_")) {
-		item.setLegacyKey(one.split("_")[1].toLowerCase());
+		item.setLegacyKey(one.split("_", 2)[1].toLowerCase());
 		LEGACY.put(item.getLegacyKey(), item);
 	    }
 

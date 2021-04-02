@@ -337,6 +337,7 @@ public class PlayerManager {
 
 	    for (JobProgression oneJ : jPlayer.getJobProgression())
 		dao.insertJob(jPlayer, oneJ);
+
 	    dao.saveLog(jPlayer);
 	    dao.savePoints(jPlayer);
 	    dao.recordPlayersLimits(jPlayer);
@@ -850,13 +851,16 @@ public class PlayerManager {
 		if (cmd.contains(":")) {
 		    String[] split = cmd.split(":", 2);
 
-		    String command = split[1];
-		    command = command.replace("[playerName]", player.getName());
-		    command = command.replace("[job]", job.getName());
+		    String command = "";
+		    if (split.length > 1) {
+			command = split[1];
+			command = command.replace("[playerName]", player.getName());
+			command = command.replace("[job]", job.getName());
+		    }
 
 		    if (split[0].equalsIgnoreCase("player:")) {
 			player.performCommand(command);
-		    } else if (split[0].equalsIgnoreCase("console:")) {
+		    } else {
 			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 		    }
 		} else {
@@ -1108,7 +1112,7 @@ public class PlayerManager {
 		boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
 	}
 
-	if (victim != null && victim.hasMetadata(getMobSpawnerMetadata())) {
+	if (victim != null && victim.hasMetadata(mobSpawnerMetadata)) {
 	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", false, false);
 	    if (amount != 0D)
 		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
