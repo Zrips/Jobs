@@ -265,7 +265,7 @@ public class GeneralConfigManager {
 	// Item/Block/mobs name list
 	Jobs.getNameTranslatorManager().load();
 	// signs information
-	Jobs.getSignUtil().LoadSigns();
+	Jobs.getSignUtil().loadSigns();
 	// Shop
 	Jobs.getShopManager().load();
     }

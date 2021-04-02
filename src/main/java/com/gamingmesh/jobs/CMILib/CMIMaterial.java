@@ -2059,11 +2059,11 @@ public enum CMIMaterial {
     }
 
     public boolean isValidItem() {
-	return !equals(CMIMaterial.NONE) && !isAir() && getMaterial() != null;
+	return this != CMIMaterial.NONE && !isAir() && getMaterial() != null;
     }
 
     public boolean isNone() {
-	return equals(CMIMaterial.NONE);
+	return this == CMIMaterial.NONE;
     }
 
     public static boolean isAir(Material mat) {

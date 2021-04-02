@@ -185,11 +185,15 @@ public class BlockOwnerShip {
 				: type == BlockTypes.BLAST_FURNACE ? "BlastFurnace"
 						: type == BlockTypes.BREWING_STAND ? "Brewing" : type == BlockTypes.SMOKER ? "Smoker" : "");
 
-		if (isReassignDisabled() || !f.getConfig().isConfigurationSection(path))
+		if (isReassignDisabled())
 			return;
 
-		int total = 0;
 		ConfigurationSection section = f.getConfig().getConfigurationSection(path);
+		if (section == null) {
+			return;
+		}
+
+		int total = 0;
 		for (String one : section.getKeys(false)) {
 			String value = section.getString(one);
 			List<String> ls = new ArrayList<>();

@@ -73,7 +73,7 @@ public class SignUtil {
 	signsByType.put(identifier, old);
     }
 
-    public void LoadSigns() {
+    public void loadSigns() {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 

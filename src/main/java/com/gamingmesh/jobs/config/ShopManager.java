@@ -460,7 +460,7 @@ public class ShopManager {
 		    }
 
 		    items.add(new JobItems(node, id == null ? CMIMaterial.STONE : CMIMaterial.get(id), amount, name, lore,
-			    enchants, new BoostMultiplier(), new ArrayList<Job>(), potionData));
+			    enchants, new BoostMultiplier(), new ArrayList<Job>(), potionData, null));
 		}
 		sItem.setitems(items);
 	    }

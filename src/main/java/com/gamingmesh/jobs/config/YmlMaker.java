@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.config;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -35,21 +34,11 @@ public class YmlMaker {
     }
 
     public void reloadConfig() {
-	InputStreamReader f = null;
-	try {
-	    f = new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8);
-	} catch (FileNotFoundException e1) {
-	    e1.printStackTrace();
-	}
-
-	if (f == null) {
+	if (!exists())
 	    return;
-	}
 
-	configuration = YamlConfiguration.loadConfiguration(f);
-
-	try {
-	    f.close();
+	try (InputStreamReader reader = new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8)) {
+	    configuration = YamlConfiguration.loadConfiguration(reader);
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}

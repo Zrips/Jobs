@@ -24,11 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Color;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffectType;
 
@@ -45,6 +47,7 @@ public class JobItems {
     private ItemStack item;
 
     private Object potion;
+    private Color leatherColor;
 
     private final Map<Enchantment, Integer> enchants = new HashMap<>();
     private BoostMultiplier boostMultiplier = new BoostMultiplier();
@@ -55,11 +58,11 @@ public class JobItems {
     private int untilLevel = Integer.MAX_VALUE;
 
     public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs) {
-	this(node, mat, amount, name, lore, enchants, boostMultiplier, jobs, null);
+	this(node, mat, amount, name, lore, enchants, boostMultiplier, jobs, null, null);
     }
 
     public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs,
-    Object potion) {
+    Object potion, Color leatherColor) {
 	if (mat == null) {
 	    mat = CMIMaterial.STONE;
 	}
@@ -77,7 +80,7 @@ public class JobItems {
 	setJobs(jobs);
 
 	ItemMeta meta = (item = mat.newItemStack()).getItemMeta();
-	if (CMIMaterial.isPotion(mat.getMaterial()) && potion != null && meta instanceof PotionMeta) {
+	if (potion != null && CMIMaterial.isPotion(mat.getMaterial()) && meta instanceof PotionMeta) {
 	    PotionMeta potionMeta = (PotionMeta) meta;
 
 	    if (Version.isCurrentEqualOrHigher(Version.v1_10_R1) && potion instanceof org.bukkit.potion.PotionData) {
@@ -90,6 +93,10 @@ public class JobItems {
 	    }
 
 	    meta = potionMeta;
+	} else if (leatherColor != null && CMIMaterial.isLeatherArmor(mat.getMaterial()) && meta instanceof LeatherArmorMeta) {
+	    LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+	    armorMeta.setColor(this.leatherColor = leatherColor);
+	    meta = armorMeta;
 	}
 
 	if (meta != null) {
@@ -146,6 +153,10 @@ public class JobItems {
 	    }
 
 	    meta = potionMeta;
+	} else if (leatherColor != null && CMIMaterial.isLeatherArmor(item.getType()) && meta instanceof LeatherArmorMeta) {
+	    LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+	    armorMeta.setColor(leatherColor);
+	    meta = armorMeta;
 	}
 
 	if (meta.hasDisplayName())
