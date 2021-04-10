@@ -533,19 +533,18 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void playerInteractEvent(PlayerInteractEvent event) {
-	Action action = event.getAction();
-	if (action == Action.PHYSICAL)
+	if (event.getAction() == Action.PHYSICAL)
 	    return;
 
-	if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
+	if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
 	    return;
 
 	ArmorTypes newArmorType = ArmorTypes.matchType(event.getItem());
 	if (newArmorType == null)
 	    return;
 
-	Player player = event.getPlayer();
-	PlayerInventory inv = player.getInventory();
+	PlayerInventory inv = event.getPlayer().getInventory();
+
 	if (newArmorType == ArmorTypes.HELMET &&
 	    inv.getHelmet() == null ||
 	    (newArmorType == ArmorTypes.CHESTPLATE || newArmorType == ArmorTypes.ELYTRA) &&
@@ -554,15 +553,14 @@ public class JobsListener implements Listener {
 		inv.getLeggings() == null ||
 	    newArmorType == ArmorTypes.BOOTS &&
 		inv.getBoots() == null) {
-	    JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(player, EquipMethod.HOTBAR, ArmorTypes.matchType(event.getItem()), null, event
+	    JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(event.getPlayer(), EquipMethod.HOTBAR, ArmorTypes.matchType(event.getItem()), null, event
 		.getItem());
 	    plugin.getServer().getPluginManager().callEvent(armorEquipEvent);
 	    if (armorEquipEvent.isCancelled()) {
 		event.setCancelled(true);
-		player.updateInventory();
+		event.getPlayer().updateInventory();
 	    }
 	}
-
     }
 
     @EventHandler

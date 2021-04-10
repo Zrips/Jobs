@@ -230,12 +230,15 @@ public class PermissionHandler {
     public void registerPermissions() {
 	PluginManager pm = plugin.getServer().getPluginManager();
 	for (World world : plugin.getServer().getWorlds()) {
-	    if (pm.getPermission("jobs.world." + world.getName().toLowerCase()) == null)
-		pm.addPermission(new Permission("jobs.world." + world.getName().toLowerCase(), PermissionDefault.TRUE));
+	    String worldName = world.getName().toLowerCase();
+	    if (pm.getPermission("jobs.world." + worldName) == null)
+		pm.addPermission(new Permission("jobs.world." + worldName, PermissionDefault.TRUE));
 	}
+
 	for (Job job : Jobs.getJobs()) {
-	    if (pm.getPermission("jobs.join." + job.getName().toLowerCase()) == null)
-		pm.addPermission(new Permission("jobs.join." + job.getName().toLowerCase(), PermissionDefault.TRUE));
+	    String jobName = job.getName().toLowerCase();
+	    if (pm.getPermission("jobs.join." + jobName) == null)
+		pm.addPermission(new Permission("jobs.join." + jobName, PermissionDefault.TRUE));
 	}
     }
 

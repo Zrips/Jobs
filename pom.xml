@@ -52,7 +52,7 @@
 		</dependency>
 		<!-- Vault -->
 		<dependency>
-			<groupId>net.milkbowl.vault</groupId>
+			<groupId>com.github.MilkBowl</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.7</version>
 			<scope>provided</scope>
@@ -206,11 +206,6 @@
 		</dependency>
 	</dependencies>
 	<repositories>
-		<!-- Vault -->
-		<repository>
-			<id>vault-repo</id>
-			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
-		</repository>
 		<!-- MythicMobs -->
 		<repository>
 			<id>nexus</id>
@@ -220,7 +215,7 @@
 		<!-- WorldGuard & WorldEdit -->
 		<repository>
 			<id>sk89q-repo</id>
-			<url>http://maven.sk89q.com/repo/</url>
+			<url>https://maven.enginehub.org/repo/</url>
 		</repository>
 		<repository>
 			<id>jitpack.io</id>
@@ -234,7 +229,7 @@
 		<!-- PlaceholderAPI -->
 		<repository>
 			<id>placeholderapi</id>
-			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
 		<!-- MyPet -->
 		<!--<repository>

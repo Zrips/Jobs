@@ -27,8 +27,9 @@ public class ToggleBarHandling {
 
 	    if (section != null) {
 		for (String one : section.getKeys(false)) {
-		    if (!section.getBoolean(one)) {
-			bossBarToggle.put(one, section.getBoolean(one));
+		    boolean boo = section.getBoolean(one);
+		    if (!boo) {
+			bossBarToggle.put(one, boo);
 		    }
 		}
 	    }
@@ -39,8 +40,9 @@ public class ToggleBarHandling {
 
 	    if (section != null) {
 		for (String one : section.getKeys(false)) {
-		    if (!section.getBoolean(one)) {
-			actionBarToggle.put(one, section.getBoolean(one));
+		    boolean boo = section.getBoolean(one);
+		    if (!boo) {
+			actionBarToggle.put(one, boo);
 		    }
 		}
 	    }

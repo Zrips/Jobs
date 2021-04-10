@@ -74,7 +74,7 @@ public enum CMIEnchantment {
 		}
 	    } catch (Exception | Error e) {
 		try {
-		    if (one.getKey().toString().split(":")[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
+		    if (one.getKey().toString().split(":", 2)[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
 			enchantment = one;
 			break;
 		    }
@@ -104,7 +104,7 @@ public enum CMIEnchantment {
 			}
 		    } catch (Exception | Error e) {
 			try {
-			    if (one.getKey().toString().split(":")[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
+			    if (one.getKey().toString().split(":", 2)[1].toLowerCase().replace("_", "").equalsIgnoreCase(temp)) {
 				enchantment = one;
 				break en;
 			    }
@@ -160,7 +160,7 @@ public enum CMIEnchantment {
 	if (map.isEmpty())
 	    fillUpMap();
 
-	name = name.contains(":") ? name.split(":")[0] : name.contains("-") ? name.split("-")[0] : name;
+	name = name.contains(":") ? name.split(":", 2)[0] : name.contains("-") ? name.split("-", 2)[0] : name;
 	name = name.toLowerCase().replace("_", "");
 	return map.get(name);
     }
@@ -168,7 +168,7 @@ public enum CMIEnchantment {
     public static Enchantment getEnchantment(String name) {
 	if (map.isEmpty())
 	    fillUpMap();
-	name = name.contains(":") ? name.split(":")[0] : name.contains("-") ? name.split("-")[0] : name;
+	name = name.contains(":") ? name.split(":", 2)[0] : name.contains("-") ? name.split("-", 2)[0] : name;
 	name = name.toLowerCase().replace("_", "");
 
 	CMIEnchantment ec = map.get(name);

@@ -167,7 +167,7 @@ public class Job {
     }
 
     public boolean isSame(Job job) {
-	return job != null && (fullName.equalsIgnoreCase(job.getName()) || id == job.getId());
+	return job != null && (id == job.getId() || fullName.equalsIgnoreCase(job.getName()));
     }
 
     public int getTotalPlayers() {
@@ -200,8 +200,10 @@ public class Job {
 	double now = eq.getValue();
 	if (now > Jobs.getGCManager().DynamicPaymentMaxBonus)
 	    now = Jobs.getGCManager().DynamicPaymentMaxBonus;
-	if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty * -1)
-	    now = Jobs.getGCManager().DynamicPaymentMaxPenalty * -1;
+
+	double maxPenalty = Jobs.getGCManager().DynamicPaymentMaxPenalty * -1;
+	if (now < maxPenalty)
+	    now = maxPenalty;
 
 	this.bonus = (now / 100D);
     }
@@ -258,8 +260,8 @@ public class Job {
     public JobInfo getJobInfo(ActionInfo action, int level) {
 	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
 	    if (actionInfo instanceof PotionItemActionInfo) {
-		return jobInfo.getName().equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithSub()) ||
-		    (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(((PotionItemActionInfo) action).getNameWithSub());
+		String subName = ((PotionItemActionInfo) action).getNameWithSub();
+		return jobInfo.getName().equalsIgnoreCase(subName) || (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(subName);
 	    }
 
 	    return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||

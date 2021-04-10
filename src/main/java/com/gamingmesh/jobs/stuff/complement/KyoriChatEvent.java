@@ -9,6 +9,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Util;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.TextReplacementConfig;
 
 public final class KyoriChatEvent extends Complement2 implements Listener {
 
@@ -48,11 +49,10 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 		// chat plugins, like Essentials
 		// Now there is a parameter "player", so literally we need to add 800+ chat plugins
 		// to this plugin as dependency?
-		event.composer((player, displayName, msg) -> {
-			String newMessage = serialize(msg);
-			newMessage = newMessage.replace("{jobs}", h);
-			return deserialize(newMessage);
-		});
+		// 3rd attempt: now we tried to use text replacement config builder to match the variable
+		// result: instead of replacing the variable, now the chat message never been sent
+		event.composer((player, displayName, msg) -> msg
+				.replaceText(TextReplacementConfig.builder().match("{jobs}").once().replacement(h).build()));
 	}
 
 	// Changing chat prefix variable to job name
@@ -73,10 +73,7 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 			honorific = "";
 
 		final String h = honorific;
-		event.composer((player, displayName, msg) -> {
-			String newMessage = serialize(msg);
-			newMessage = newMessage.replace("{jobs}", h);
-			return deserialize(newMessage);
-		});
+		event.composer((player, displayName, msg) -> msg
+				.replaceText(TextReplacementConfig.builder().match("{jobs}").once().replacement(h).build()));
 	}
 }

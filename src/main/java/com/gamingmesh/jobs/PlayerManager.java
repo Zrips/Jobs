@@ -1146,7 +1146,7 @@ public class PlayerManager {
     }
 
     public void autoJoinJobs(final Player player) {
-	if (player == null || player.isOp() || !Jobs.getGCManager().AutoJobJoinUse)
+	if (!Jobs.getGCManager().AutoJobJoinUse || player == null || player.isOp())
 	    return;
 
 	Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -1160,13 +1160,14 @@ public class PlayerManager {
 		    return;
 
 		int confMaxJobs = Jobs.getGCManager().getMaxJobs();
+		short playerMaxJobs = (short) jPlayer.getJobProgression().size();
+
+		if (confMaxJobs > 0 && playerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, playerMaxJobs))
+		    return;
+
 		for (Job one : Jobs.getJobs()) {
 		    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
 			continue;
-
-		    short playerMaxJobs = (short) jPlayer.getJobProgression().size();
-		    if (confMaxJobs > 0 && playerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, playerMaxJobs))
-			break;
 
 		    if (!jPlayer.isInJob(one) && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
 			joinJob(jPlayer, one);

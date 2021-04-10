@@ -17,8 +17,8 @@ public class PistonProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockMove(BlockPistonExtendEvent event) {
-	if (event.isCancelled() || !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld())
-	    || !Jobs.getGCManager().useBlockProtection)
+	if (!Jobs.getGCManager().useBlockProtection || event.isCancelled()
+	    || !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 
 	BlockFace dir = event.getDirection();
@@ -39,8 +39,8 @@ public class PistonProtectionListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockRetractMove(BlockPistonRetractEvent event) {
-	if (event.isCancelled() || !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld())
-	    || !Jobs.getGCManager().useBlockProtection)
+	if (!Jobs.getGCManager().useBlockProtection || event.isCancelled()
+	    || !Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 
 	BlockFace dir = event.getDirection();

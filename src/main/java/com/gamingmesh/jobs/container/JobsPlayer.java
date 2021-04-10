@@ -1183,21 +1183,21 @@ public class JobsPlayer {
 
 	for (String one : qprog.split(";:;")) {
 	    try {
-		String jname = one.split(":")[0];
+		String jname = one.split(":", 2)[0];
 		Job job = Jobs.getJob(jname);
 		if (job == null)
 		    continue;
 
 		one = one.substring(jname.length() + 1);
 
-		String qname = one.split(":")[0];
+		String qname = one.split(":", 2)[0];
 		Quest quest = job.getQuest(qname);
 		if (quest == null)
 		    continue;
 
 		one = one.substring(qname.length() + 1);
 
-		String longS = one.split(":")[0];
+		String longS = one.split(":", 2)[0];
 		long validUntil = Long.parseLong(longS);
 		one = one.substring(longS.length() + 1);
 
@@ -1216,7 +1216,7 @@ public class JobsPlayer {
 		}
 
 		for (String oneA : one.split(":;:")) {
-		    String prog = oneA.split(";")[0];
+		    String prog = oneA.split(";", 2)[0];
 		    ActionType action = ActionType.getByName(prog);
 		    if (action == null || oneA.length() < prog.length() + 1)
 			continue;
@@ -1227,14 +1227,14 @@ public class JobsPlayer {
 
 		    oneA = oneA.substring(prog.length() + 1);
 
-		    String target = oneA.split(";")[0];
+		    String target = oneA.split(";", 2)[0];
 		    QuestObjective obj = old.get(target);
 		    if (obj == null)
 			continue;
 
 		    oneA = oneA.substring(target.length() + 1);
 
-		    qp.setAmountDone(obj, Integer.parseInt(oneA.split(";")[0]));
+		    qp.setAmountDone(obj, Integer.parseInt(oneA.split(";", 2)[0]));
 		}
 
 		if (qp.isCompleted())

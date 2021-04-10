@@ -1366,9 +1366,10 @@ public enum CMIMaterial {
 	id = id.replaceAll("_| |minecraft:", "").toLowerCase();
 
 	if (id.contains(":")) {
+	    String[] split = id.split(":", 2);
 	    try {
-		Integer ids = Integer.parseInt(id.split(":")[0]);
-		Integer data = Integer.parseInt(id.split(":")[1]);
+		Integer ids = Integer.parseInt(split[0]);
+		Integer data = Integer.parseInt(split[1]);
 		if (ids <= 0)
 		    return CMIMaterial.NONE;
 		return get(ids, data);
@@ -1376,8 +1377,8 @@ public enum CMIMaterial {
 	    }
 
 	    try {
-		Integer data = Integer.parseInt(id.split(":")[1]);
-		id = id.split(":")[0];
+		Integer data = Integer.parseInt(split[1]);
+		id = split[0];
 		CMIMaterial mat = ItemManager.byName.get(id + ":" + data);
 		if (mat != null) {
 		    return mat;

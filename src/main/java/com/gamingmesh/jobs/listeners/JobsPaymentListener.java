@@ -379,12 +379,12 @@ public class JobsPaymentListener implements Listener {
 	if (!player.isOnline())
 	    return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
-
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	    return;
+
+	// check if in creative
+	if (!payIfCreative(player))
 	    return;
 
 	// Remove block owner ships
@@ -408,14 +408,12 @@ public class JobsPaymentListener implements Listener {
 	if (!payForItemDurabilityLoss(player))
 	    return;
 
+	// Protection for block break with silktouch
 	ItemStack item = Jobs.getNms().getItemInMainHand(player);
-	if (item.getType() != Material.AIR) {
-	    // Protection for block break with silktouch
-	    if (Jobs.getGCManager().useSilkTouchProtection) {
-		for (Enchantment one : item.getEnchantments().keySet()) {
-		    if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH && Jobs.getBpManager().isInBp(block)) {
-			return;
-		    }
+	if (Jobs.getGCManager().useSilkTouchProtection && item.getType() != Material.AIR) {
+	    for (Enchantment one : item.getEnchantments().keySet()) {
+		if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH && Jobs.getBpManager().isInBp(block)) {
+		    return;
 		}
 	    }
 	}
@@ -434,12 +432,16 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
+	// check to make sure you can build
+	if (!event.canBuild())
+	    return;
+
 	// A tool should not trigger a BlockPlaceEvent (fixes stripping logs bug #940)
 	if (CMIMaterial.get(event.getItemInHand().getType()).isTool())
 	    return;
 
-	// check to make sure you can build
-	if (!event.canBuild())
+	Player player = event.getPlayer();
+	if (!player.isOnline())
 	    return;
 
 	Block block = event.getBlock();
@@ -447,12 +449,12 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
 	    return;
 
-	Player player = event.getPlayer();
-	if (!player.isOnline())
-	    return;
-
 	if (Version.isCurrentEqualOrLower(Version.v1_12_R1)
 	    && ItemManager.getItem(event.getItemInHand()).isSimilar(CMIMaterial.BONE_MEAL.newCMIItemStack()))
+	    return;
+
+	// check if player is riding
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	// check if in creative
@@ -460,10 +462,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
-
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
 	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new BlockActionInfo(block, ActionType.PLACE), block);
@@ -566,9 +564,6 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryCraft(CraftItemEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
-	    return;
-
 	// If event is nothing or place, do nothing
 	switch (event.getAction()) {
 	case NOTHING:
@@ -581,6 +576,12 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (event.getSlotType() != SlotType.RESULT)
+	    return;
+
+	if (!event.isLeftClick() && !event.isRightClick())
+	    return;
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
 	    return;
 
 	ItemStack resultStack = event.getRecipe().getResult();
@@ -601,9 +602,6 @@ public class JobsPaymentListener implements Listener {
 
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
-
-	if (!event.isLeftClick() && !event.isRightClick())
 	    return;
 
 	// check if in creative
@@ -1083,7 +1081,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityDamageByPlayer(EntityDamageEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()) || !Jobs.getGCManager().MonsterDamageUse)
+	if (!Jobs.getGCManager().MonsterDamageUse || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
 	Entity ent = event.getEntity();
@@ -1098,14 +1096,12 @@ public class JobsPaymentListener implements Listener {
 	if (damage > s)
 	    damage = s;
 
-	if (Jobs.getGCManager().MonsterDamageUse) {
-	    UUID entUUID = ent.getUniqueId();
-	    Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
-	    if (damageDealt != null) {
-		damageDealtByPlayers.put(entUUID, damageDealt + damage);
-	    } else {
-		damageDealtByPlayers.put(entUUID, 0.0);
-	    }
+	UUID entUUID = ent.getUniqueId();
+	Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
+	if (damageDealt != null) {
+	    damageDealtByPlayers.put(entUUID, damageDealt + damage);
+	} else {
+	    damageDealtByPlayers.put(entUUID, damage);
 	}
     }
 
@@ -1116,13 +1112,12 @@ public class JobsPaymentListener implements Listener {
 
 	Entity ent = event.getEntity();
 	UUID entUUID = ent.getUniqueId();
-	Entity damager = event.getDamager();
-	if (ent instanceof org.bukkit.entity.EnderCrystal && damager instanceof Player) {
+	if (ent instanceof org.bukkit.entity.EnderCrystal && event.getDamager() instanceof Player) {
 	    punchedEndCrystals.put(entUUID, ent);
 	    return;
 	}
 
-	if (!(damager instanceof Projectile) || !(ent instanceof Damageable))
+	if (!Jobs.getGCManager().MonsterDamageUse || !(event.getDamager() instanceof Projectile) || !(ent instanceof Damageable))
 	    return;
 
 	double damage = event.getFinalDamage();
@@ -1131,12 +1126,12 @@ public class JobsPaymentListener implements Listener {
 	if (damage > s)
 	    damage = s;
 
-	if (Jobs.getGCManager().MonsterDamageUse && ((Projectile) damager).getShooter() instanceof Player) {
+	if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
 	    Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
 	    if (damageDealt != null) {
 		damageDealtByPlayers.put(entUUID, damageDealt + damage);
 	    } else {
-		damageDealtByPlayers.put(entUUID, 0.0);
+		damageDealtByPlayers.put(entUUID, damage);
 	    }
 	}
     }
@@ -1278,12 +1273,9 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
-
-	if (event.getSpawnReason() == SpawnReason.SPAWNER || event.getSpawnReason() == SpawnReason.SPAWNER_EGG) {
-	    LivingEntity creature = event.getEntity();
-	    creature.setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(plugin, true));
+	if ((event.getSpawnReason() == SpawnReason.SPAWNER || event.getSpawnReason() == SpawnReason.SPAWNER_EGG)
+	    && Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld())) {
+	    event.getEntity().setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(plugin, true));
 	}
     }
 
@@ -1437,11 +1429,10 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureBreed(CreatureSpawnEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()) || !Jobs.getGCManager().useBreederFinder)
+	if (!Jobs.getGCManager().useBreederFinder || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
-	SpawnReason reason = event.getSpawnReason();
-	if (!reason.toString().equalsIgnoreCase("BREEDING") && !reason.toString().equalsIgnoreCase("EGG"))
+	if (!event.getSpawnReason().toString().equalsIgnoreCase("BREEDING") && !event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
 	    return;
 
 	LivingEntity animal = event.getEntity();
@@ -1478,15 +1469,12 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerEat(FoodLevelChangeEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
-
-	if (!(event.getEntity() instanceof Player) || event.getEntity().hasMetadata("NPC")
-	    || event.getFoodLevel() <= ((Player) event.getEntity()).getFoodLevel())
+	if (!(event.getEntity() instanceof Player) || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld())
+			|| event.getEntity().hasMetadata("NPC"))
 	    return;
 
 	Player player = (Player) event.getEntity();
-	if (!player.isOnline())
+	if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel())
 	    return;
 
 	// check if in creative
@@ -1703,11 +1691,11 @@ public class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	ExploreRespond respond = Jobs.getExplore().ChunkRespond(jPlayer.getUserId(), event.getNewChunk());
+	ExploreRespond respond = Jobs.getExplore().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
 	if (!respond.isNewChunk())
 	    return;
 
-	Jobs.action(jPlayer, new ExploreActionInfo(String.valueOf(respond.getCount()), ActionType.EXPLORE));
+	Jobs.action(jPlayer, new ExploreActionInfo(Integer.toString(respond.getCount()), ActionType.EXPLORE));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -1743,7 +1731,8 @@ public class JobsPaymentListener implements Listener {
 	    return true;
 
 	for (Entry<Enchantment, Integer> oneG : got.entrySet()) {
-	    if (!hand.getEnchantments().containsKey(oneG.getKey()) || hand.getEnchantments().get(oneG.getKey()).equals(oneG.getValue()))
+	    Map<Enchantment, Integer> map = hand.getEnchantments();
+	    if (!map.containsKey(oneG.getKey()) || map.get(oneG.getKey()).equals(oneG.getValue()))
 		return false;
 	}
 

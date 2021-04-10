@@ -726,7 +726,7 @@ public class Jobs extends JavaPlugin {
 
 	    boolean kyoriSupported = false;
 	    try {
-		Class.forName("net.kyori.adventure.text.Component");
+		Class.forName("net.kyori.adventure.text.serializer.plain.PlainComponentSerializer");
 		kyoriSupported = true;
 	    } catch (ClassNotFoundException e) {
 	    }
@@ -980,8 +980,8 @@ public class Jobs extends JavaPlugin {
 	    if (jobinfo == null)
 		return;
 
-	    Double income = jobinfo.getIncome(1, numjobs, jPlayer.maxJobsEquation);
-	    Double pointAmount = jobinfo.getPoints(1, numjobs, jPlayer.maxJobsEquation);
+	    double income = jobinfo.getIncome(1, numjobs, jPlayer.maxJobsEquation);
+	    double pointAmount = jobinfo.getPoints(1, numjobs, jPlayer.maxJobsEquation);
 
 	    if (income == 0D && pointAmount == 0D)
 		return;
