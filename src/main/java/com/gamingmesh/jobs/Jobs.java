@@ -105,7 +105,6 @@ public class Jobs extends JavaPlugin {
     private static List<Job> jobs;
     private static Job noneJob;
     private static Map<Job, Integer> usedSlots = new WeakHashMap<>();
-    private static Map<Integer, Job> jobsIds = new HashMap<>();
 
     public static BufferedPaymentThread paymentThread;
     private static DatabaseSaveThread saveTask;
@@ -478,18 +477,17 @@ public class Jobs extends JavaPlugin {
      * @return {@link Job}
      */
     public static Job getJob(int id) {
-	return jobsIds.get(id);
+	for (Job job : jobs) {
+	    if (job.getId() == id) {
+		return job;
+	    }
+	}
+
+	return null;
     }
 
     public boolean isPlaceholderAPIEnabled() {
 	return placeholderAPIEnabled;
-    }
-
-    /**
-     * @return the cached job id map.
-     */
-    public static Map<Integer, Job> getJobsIds() {
-	return jobsIds;
     }
 
     private void startup() {
