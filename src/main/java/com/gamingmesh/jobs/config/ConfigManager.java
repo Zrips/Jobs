@@ -753,6 +753,9 @@ public class ConfigManager {
 	    jobKey = StringEscapeUtils.unescapeJava(jobKey);
 
 	    ConfigurationSection jobSection = jobsSection.getConfigurationSection(jobKey);
+	    if (jobSection == null)
+		continue;
+
 	    String jobFullName = jobSection.getString("fullname");
 	    if (jobFullName == null) {
 		log.warning("Job " + jobKey + " has an invalid fullname property. Skipping job!");

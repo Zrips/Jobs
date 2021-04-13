@@ -163,10 +163,9 @@ public class BufferedEconomy {
 	    }
 
 	    String serverAccountName = Jobs.getGCManager().ServerAccountName;
-	    String serverTaxesAccountName = Jobs.getGCManager().ServertaxesAccountName;
 
 	    if (serverTaxesAccount == null)
-		serverTaxesAccount = Bukkit.getOfflinePlayer(serverTaxesAccountName);
+		serverTaxesAccount = Bukkit.getOfflinePlayer(Jobs.getGCManager().ServertaxesAccountName);
 
 	    if (Jobs.getGCManager().UseTaxes && Jobs.getGCManager().TransferToServerAccount && serverTaxesAccount != null) {
 		if (taxesAmount > 0) {
@@ -217,8 +216,7 @@ public class BufferedEconomy {
 		showPayment(payment);
 
 		if (payment.getOfflinePlayer().isOnline() && Version.getCurrent().isHigher(Version.v1_8_R3)) {
-		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId());
-		    Jobs.getBBManager().ShowJobProgression(jPlayer);
+		    Jobs.getBBManager().ShowJobProgression(Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId()));
 		}
 	    }
 

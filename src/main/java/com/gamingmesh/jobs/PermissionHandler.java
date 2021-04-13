@@ -103,7 +103,8 @@ public class PermissionHandler {
 			    for (JobProgression oneJob : jPlayer.getJobProgression()) {
 				if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
 				    found = true;
-				if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
+
+				if (found && oneJob.getLevel() < jobLevel) {
 				    ok = false;
 				    break;
 				}
@@ -143,9 +144,8 @@ public class PermissionHandler {
 			     */
 			    if (perm.isValue())
 				permissions.put(perm.getNode(), true);
-			    else {
-				if (!permissions.containsKey(perm.getNode()))
-				    permissions.put(perm.getNode(), false);
+			    else if (!permissions.containsKey(perm.getNode())) {
+				permissions.put(perm.getNode(), false);
 			    }
 			}
 		    }
@@ -169,7 +169,7 @@ public class PermissionHandler {
 				if (oneJob.getJob().getName().equalsIgnoreCase(jobName))
 				    found = true;
 
-				if (oneJob.getJob().getName().equalsIgnoreCase(jobName) && oneJob.getLevel() < jobLevel) {
+				if (found && oneJob.getLevel() < jobLevel) {
 				    ok = false;
 				    break;
 				}

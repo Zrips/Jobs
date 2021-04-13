@@ -153,10 +153,6 @@ public class JobsListener implements Listener {
 
 //    @EventHandler(priority = EventPriority.MONITOR)
 //    public void onPlayerJoinMonitor(PlayerJoinEvent event) {
-//	// make sure plugin is enabled
-//	if (!plugin.isEnabled())
-//	    return;
-//
 //	/*
 //	 * We need to recalculate again to check for world permission and revoke permissions
 //	 * if we don't have world permission (from some other permission manager).  It's 
@@ -229,8 +225,7 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	jobsSign jSign = Jobs.getSignUtil().getSign(block.getLocation());
-	if (jSign == null)
+	if (Jobs.getSignUtil().getSign(block.getLocation()) == null)
 	    return;
 
 	if (!player.hasPermission("jobs.command.signs")) {

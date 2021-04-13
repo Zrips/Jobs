@@ -742,8 +742,8 @@ public class JobsPlayer {
 		if (!builder.toString().isEmpty()) {
 		    builder.append(Jobs.getGCManager().modifyChatSeparator);
 		}
-		Title title = Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName());
-		processesChat(method, builder, prog.getLevel(), title, prog.getJob());
+		processesChat(method, builder, prog.getLevel(), Jobs.getTitleManager().getTitle(prog.getLevel(),
+		    prog.getJob().getName()), prog.getJob());
 	    }
 	} else {
 	    Job nonejob = Jobs.getNoneJob();
@@ -1182,66 +1182,62 @@ public class JobsPlayer {
 	    return;
 
 	for (String one : qprog.split(";:;")) {
-	    try {
-		String jname = one.split(":", 2)[0];
-		Job job = Jobs.getJob(jname);
-		if (job == null)
-		    continue;
+	    String jname = one.split(":", 2)[0];
+	    Job job = Jobs.getJob(jname);
+	    if (job == null)
+		continue;
 
-		one = one.substring(jname.length() + 1);
+	    one = one.substring(jname.length() + 1);
 
-		String qname = one.split(":", 2)[0];
-		Quest quest = job.getQuest(qname);
-		if (quest == null)
-		    continue;
+	    String qname = one.split(":", 2)[0];
+	    Quest quest = job.getQuest(qname);
+	    if (quest == null)
+		continue;
 
-		one = one.substring(qname.length() + 1);
+	    one = one.substring(qname.length() + 1);
 
-		String longS = one.split(":", 2)[0];
-		long validUntil = Long.parseLong(longS);
-		one = one.substring(longS.length() + 1);
+	    String longS = one.split(":", 2)[0];
+	    long validUntil = Long.parseLong(longS);
+	    one = one.substring(longS.length() + 1);
 
-		Map<String, QuestProgression> currentProgression = qProgression.get(job.getName());
+	    Map<String, QuestProgression> currentProgression = qProgression.get(job.getName());
 
-		if (currentProgression == null) {
-		    currentProgression = new HashMap<>();
-		    qProgression.put(job.getName(), currentProgression);
-		}
-
-		QuestProgression qp = currentProgression.get(qname.toLowerCase());
-		if (qp == null) {
-		    qp = new QuestProgression(quest);
-		    qp.setValidUntil(validUntil);
-		    currentProgression.put(qname.toLowerCase(), qp);
-		}
-
-		for (String oneA : one.split(":;:")) {
-		    String prog = oneA.split(";", 2)[0];
-		    ActionType action = ActionType.getByName(prog);
-		    if (action == null || oneA.length() < prog.length() + 1)
-			continue;
-
-		    Map<String, QuestObjective> old = quest.getObjectives().get(action);
-		    if (old == null)
-			continue;
-
-		    oneA = oneA.substring(prog.length() + 1);
-
-		    String target = oneA.split(";", 2)[0];
-		    QuestObjective obj = old.get(target);
-		    if (obj == null)
-			continue;
-
-		    oneA = oneA.substring(target.length() + 1);
-
-		    qp.setAmountDone(obj, Integer.parseInt(oneA.split(";", 2)[0]));
-		}
-
-		if (qp.isCompleted())
-		    qp.setGivenReward(true);
-	    } catch (Exception e) {
-		e.printStackTrace();
+	    if (currentProgression == null) {
+		currentProgression = new HashMap<>();
+		qProgression.put(job.getName(), currentProgression);
 	    }
+
+	    QuestProgression qp = currentProgression.get(qname.toLowerCase());
+	    if (qp == null) {
+		qp = new QuestProgression(quest);
+		qp.setValidUntil(validUntil);
+		currentProgression.put(qname.toLowerCase(), qp);
+	    }
+
+	    for (String oneA : one.split(":;:")) {
+		String prog = oneA.split(";", 2)[0];
+		ActionType action = ActionType.getByName(prog);
+		if (action == null || oneA.length() < prog.length() + 1)
+		    continue;
+
+		Map<String, QuestObjective> old = quest.getObjectives().get(action);
+		if (old == null)
+		    continue;
+
+		oneA = oneA.substring(prog.length() + 1);
+
+		String target = oneA.split(";", 2)[0];
+		QuestObjective obj = old.get(target);
+		if (obj == null)
+		    continue;
+
+		oneA = oneA.substring(target.length() + 1);
+
+		qp.setAmountDone(obj, Integer.parseInt(oneA.split(";", 2)[0]));
+	    }
+
+	    if (qp.isCompleted())
+		qp.setGivenReward(true);
 	}
     }
 

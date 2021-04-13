@@ -339,14 +339,12 @@ public class JobsPaymentListener implements Listener {
 
 	// only care about first
 	MetadataValue value = data.get(0);
-	UUID uuid = null;
+	UUID uuid;
 	try {
 	    uuid = UUID.fromString(value.asString());
 	} catch (IllegalArgumentException e) {
-	}
-
-	if (uuid == null)
 	    return;
+	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(uuid);
 	if (jPlayer == null || !jPlayer.isOnline())
@@ -1056,14 +1054,12 @@ public class JobsPaymentListener implements Listener {
 
 	// only care about first
 	MetadataValue value = data.get(0);
-	UUID uuid = null;
+	UUID uuid;
 	try {
 	    uuid = UUID.fromString(value.asString());
 	} catch (IllegalArgumentException e) {
-	}
-
-	if (uuid == null)
 	    return;
+	}
 
 	Player player = Bukkit.getPlayer(uuid);
 	if (player == null || !player.isOnline())

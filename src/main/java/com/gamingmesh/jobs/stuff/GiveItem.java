@@ -44,8 +44,8 @@ public class GiveItem {
 		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
 		}
 	    } else {
-		for (Entry<Enchantment, Integer> OneEnchant : enchants.entrySet()) {
-		    itemMeta.addEnchant(OneEnchant.getKey(), OneEnchant.getValue(), true);
+		for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
+		    itemMeta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
 		}
 	    }
 	}

@@ -33,21 +33,15 @@ public class JobsPayment14Listener implements Listener {
 
 	for (Iterator<Entry<PlayerCamp, Player>> it = campPlayers.entrySet().iterator(); it.hasNext();) {
 	    Entry<PlayerCamp, Player> camps = it.next();
-	    if (camps == null) {
+	    if (!camps.getKey().getBlock().getLocation().equals(event.getBlock().getLocation()))
 		continue;
-	    }
-
-	    PlayerCamp camp = camps.getKey();
-	    if (!camp.getBlock().getLocation().equals(event.getBlock().getLocation())) {
-		continue;
-	    }
 
 	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(camps.getValue());
 	    if (jPlayer == null)
 		return;
 
 	    Jobs.action(jPlayer, new ItemActionInfo(event.getSource(), ActionType.BAKE));
-	    if (camp.getItem().equals(event.getSource())) {
+	    if (camps.getKey().getItem().equals(event.getSource())) {
 		it.remove();
 	    }
 	}
@@ -56,19 +50,15 @@ public class JobsPayment14Listener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCampPlace(PlayerInteractEvent ev) {
 	org.bukkit.block.Block click = ev.getClickedBlock();
-	if (click == null || !click.getType().isBlock() || click.getType() != org.bukkit.Material.CAMPFIRE)
+	if (click == null || click.getType() != org.bukkit.Material.CAMPFIRE)
 	    return;
 
 	if (!Jobs.getGCManager().canPerformActionInWorld(click.getWorld()) || !(click.getState() instanceof Campfire))
 	    return;
 
-	if (!ev.hasItem())
+	if (!ev.hasItem() || !JobsPaymentListener.payIfCreative(ev.getPlayer()))
 	    return;
 
-	Player p = ev.getPlayer();
-	if (!JobsPaymentListener.payIfCreative(p))
-	    return;
-
-	campPlayers.put(new PlayerCamp(ev.getItem(), click), p);
+	campPlayers.put(new PlayerCamp(ev.getItem(), click), ev.getPlayer());
     }
 }
