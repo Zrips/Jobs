@@ -661,10 +661,6 @@ message:
   skillup:
     broadcast: '%playername% játékost előléptették a %titlename% %jobname% munkában.'
     nobroadcast: '&aGratulálok, előléptettek a(z)&r %titlename% %jobname%&a munkában.'
-  max-level-reached:
-    title: '&2Elérted a max szintet'
-    subtitle: '&2a(z) %jobname% munkában!'
-    chat: '&cElérted a maximális szintet a(z) %jobname% munkában!'
   levelup:
     broadcast: '%playername% %joblevel% szintet lépett a(z) %jobname% munkában.'
     nobroadcast: '&aSzintet léptél a(z) %jobname% &amunkában! Szint:&6 %joblevel%&a.'

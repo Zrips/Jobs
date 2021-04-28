@@ -661,10 +661,6 @@ message:
   skillup:
     broadcast: '%playername% har blitt promotert til %titlename% %jobname%.'
     nobroadcast: Gratulerer, du har blitt promotert til %titlename% i %jobname%.
-  max-level-reached:
-    title: '&2Max level reached'
-    subtitle: '&2in %jobname%!'
-    chat: '&cYou have reached the maximum level in %jobname%!'
   levelup:
     broadcast: '%playername% er nå nivå %joblevel% i %jobname%.'
     nobroadcast: Du er nå %joblevel% i %jobname%.

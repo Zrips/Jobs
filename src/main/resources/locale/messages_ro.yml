@@ -661,10 +661,6 @@ message:
   skillup:
     broadcast: '%playername% a fost promovat la %titlename% %jobname%.'
     nobroadcast: Felicitări, ai fost promovat la %titlename% %jobname%.
-  max-level-reached:
-    title: '&cNivel maxim atins'
-    subtitle: '&2în %jobname%!'
-    chat: '&cAi atins nivelul maxim în %jobname%!'
   levelup:
     broadcast: '%playername% este acum la nivelul %joblevel% %jobname%.'
     nobroadcast: Acum ai nivelul %joblevel% %jobname%.

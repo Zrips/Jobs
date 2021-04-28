@@ -85,12 +85,12 @@ command:
       info: Zwiększa zysk exp'a dla wszystkich graczy
       args: '[jobname]/all/reset [time]/[rate]'
     output:
-      allreset: Wszystkie boostery exp'a zostały wyłączone
+      allreset: Wszystkie boostery Exp'a zostały wyłączone
       jobsboostreset: Exp boost został wyłączony dla pracy %jobname%
       nothingtoreset: Nie ma nic do zresetowania
-      boostalladded: Boost exp'a %boost% dodany do wszystkich prac!
-      boostadded: Boost exp'a &e%boost% &adodany do pracy &e%jobname%!
-      infostats: '&c-----> &aStawka exp''a x%boost% włączona&c <-------'
+      boostalladded: Boost Exp'a %boost% dodany do wszystkich prac!
+      boostadded: Boost Exp'a &e%boost% &adodany do pracy &e%jobname%!
+      infostats: '&c-----> &aStawka Exp''a x%boost% włączona&c <-------'
   schedule:
     help:
       info: Włącza dany harmonogram
@@ -139,16 +139,16 @@ command:
     output:
       moneytime: '&eCzas pozostały do zresetowania limitu pieniędzy: &2%time%'
       moneyLimit: '&eLimit pieniędzy: &2%current%&e/&2%total%'
-      exptime: '&eCzas pozostały do zresetowania limitu exp''a: &2%time%'
-      expLimit: '&eLimit exp''a: &2%current%&e/&2%total%'
+      exptime: '&eCzas pozostały do zresetowania limitu Exp''a: &2%time%'
+      expLimit: '&eLimit Exp''a: &2%current%&e/&2%total%'
       pointstime: '&eCzas pozostały do zresetowania limitu punktów: &2%time%'
       pointsLimit: '&eLimit punktów: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4Osiągnąłeś limit pieniędzy w określonym czasie!'
       reachedmoneylimit2: '&eMożesz sprawdzić swój limit używając komendy &2/jobs limit'
       reachedmoneylimit3: '&eZarobione pieniądze są teraz stopniowo zmniejszane... Ale nadal możesz trochę zarobić!'
-      reachedexplimit: '&4Osiągnąłeś limit exp''a w określonym czasie!'
+      reachedexplimit: '&4Osiągnąłeś limit Exp''a w określonym czasie!'
       reachedexplimit2: '&eMożesz sprawdzić swój limit używając komendy &2/jobs limit'
-      reachedpointslimit: '&4Osiągnąłeś limit punktów w określonym czasie!'
+      reachedpointslimit: '&4Osiągnąłeś limit Exp''a w określonym czasie!'
       reachedpointslimit2: '&eMożesz sprawdzić swój limit używając komendy &2/jobs limit'
       notenabled: '&eLimit pieniędzy nie jest włączony'
   resetlimit:
@@ -257,9 +257,9 @@ command:
     error:
       nojob: Najpierw dołącz do pracy.
     output:
-      message: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp'
+      message: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP'
       max-level: '     &cMaks. poziom   -   %jobname%'
-    bossBarOutput: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+    bossBarOutput: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -311,7 +311,7 @@ command:
       levelUntil: ' &a (do &e%levelUntil% &apoziomu)'
       money: ' &2%money%$'
       points: ' &6%points%pkt'
-      exp: ' &e%exp%xp'
+      exp: ' &e%exp%XP'
     gui:
       pickjob: '&eWybierz swoją pracę!'
       jobinfo: '&eInformacje o [jobname]!'
@@ -520,7 +520,7 @@ command:
       nojob: Nie można znaleźć żadnej pracy z tą nazwą.
     output:
       topline: '&aTopka&e %amount% &agraczy poprzez pracę &e%jobname%'
-      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
+      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aExp''a'
       prev: '&e<<<<< Poprz strona &2|'
       next: '&2|&e Nast strona >>>>'
       show: '&2Wyświetla od &e[from] &2do &e[until] &2topową listę'
@@ -532,7 +532,7 @@ command:
       nojob: Nie można znaleźć żadnych informacji.
     output:
       topline: '&aTopka&e %amount% graczy poprzez globalny poziom prac'
-      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
+      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aExp''a'
       prev: '&e<<<<< Poprz strona &2|'
       next: '&2|&e Nast strona >>>>'
       show: '&2Wyświetla od &e[from] &2do &e[until] &2globalną topową listę'
@@ -564,9 +564,9 @@ command:
       topline: '&7************************* &6%playername% &7*************************'
       ls: '&7* &6%number%. &3%action%: &6%item% &esztuk: %qty% %money%%exp%%points%'
       money: '&6pieniądze: &6%amount% '
-      exp: '&eexp: &%amount% '
+      exp: '&eExp: &%amount% '
       points: '&epunkty: &6%amount%'
-      totalIncomes: '    &6Całkowite pieniądze:&2 %money%&6, Całkowity exp:&2 %exp%&6, Całkowite punkty:&2 %points%'
+      totalIncomes: '    &6Całkowite pieniądze:&2 %money%&6, Całkowity Exp:&2 %exp%&6, Całkowite punkty:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<<<< Poprz strona &2|'
       next: '&2|&e Nast strona >>>>'
@@ -579,9 +579,9 @@ command:
       topline: '&7*********************** &6Globalne statystyki &7***********************'
       ls: '&7* &6%number%. &3%action%: &6%item% &esztuk: %qty% %money%%exp%%points%'
       money: '&6pieniądze: %amount% '
-      exp: '&eexp: %amount% '
+      exp: '&eExp: %amount% '
       points: '&6punkty: %amount%'
-      totalIncomes: '    &6Całkowite pieniądze:&2 %money%&6, Całkowity exp:&2 %exp%&6, Całkowite punkty:&2 %points%'
+      totalIncomes: '    &6Całkowite pieniądze:&2 %money%&6, Całkowity Exp:&2 %exp%&6, Całkowite punkty:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cDane nieodnalezione'
   transfer:
@@ -598,12 +598,12 @@ command:
       target: Zostałeś awansowany do %levelsgained% poziomów w pracy %jobname%.
   exp:
     help:
-      info: Zmień exp gracza dla pracy.
+      info: Zmień Exp gracza dla pracy.
       args: '[playername] [jobname] set/add/take [amount]'
     error:
       nojob: '&cTen gracz musi najpierw dołączyć do pracy.'
     output:
-      target: '&eTwój exp zostało zmieniony dla pracy %jobname% &ei teraz jesteś na &6%level%lvl &ez &6%exp%exp.'
+      target: '&eTwój Exp zostało zmieniony dla pracy %jobname% &ei teraz jesteś na &6%level%lvl &ez &6%exp%eXP.'
   level:
     help:
       info: Zmień poziom gracza w pracy.
@@ -653,7 +653,7 @@ command:
       paid:
         main: '&aOtrzymujesz:'
         money: '&e[amount] pieniędzy'
-        exp: '&7[exp] exp''a'
+        exp: '&7[exp] Exp''a'
         points: '&6[points] punktów'
       'on': '&aPrzełączono: &aWłączone'
       'off': '&aPrzełączono: &4Wyłączone'
@@ -661,10 +661,6 @@ message:
   skillup:
     broadcast: '%playername% został awansowany do %titlename% %jobname%.'
     nobroadcast: Gratulacje, zostałeś awansowany do %titlename% %jobname%.
-  max-level-reached:
-    title: '&2Osiągnięto maksymalny poziom'
-    subtitle: '&2w pracy %jobname%!'
-    chat: '&cOsiągnąłeś maksymalny poziom w pracy %jobname%!'
   levelup:
     broadcast: '%playername% jest teraz na poziomie %joblevel% %jobname%.'
     nobroadcast: Jesteś teraz na poziomie %joblevel% %jobname%.

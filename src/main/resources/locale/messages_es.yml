@@ -661,10 +661,6 @@ message:
   skillup:
     broadcast: '%playername% ha sido ascendido a %titlename% %jobname%.'
     nobroadcast: Felicidades, has sido ascendido a %titlename% %jobname%.
-  max-level-reached:
-    title: '&2Alcanzaste el nivel máximo'
-    subtitle: '&2en %jobname%!'
-    chat: '&cAlcanzaste el maximo nivel para este trabajo: %jobname%!'
   levelup:
     broadcast: '%playername% ahora es nivel %joblevel% %jobname%.'
     nobroadcast: Ahora eres nivel %joblevel% %jobname%.

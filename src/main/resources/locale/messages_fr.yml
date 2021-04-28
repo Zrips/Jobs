@@ -661,10 +661,6 @@ message:
   skillup:
     broadcast: '%playername% a été promu %titlename% %jobname%.'
     nobroadcast: Félicitations, vous avez été promu %titlename% %jobname%.
-  max-level-reached:
-    title: 'Niveau maximum atteint'
-    subtitle: '&2dans %jobname% !'
-    chat: '&cVous avez atteint le niveau miximal au métier %jobname% !'
   levelup:
     broadcast: '%playername% est maintenant %jobname% niveau %joblevel%.'
     nobroadcast: Vous êtes maintenant %jobname% niveau %joblevel%.
