@@ -462,17 +462,18 @@ public class PlayerManager {
      * @param job {@link Job}
      */
     public void joinJob(JobsPlayer jPlayer, Job job) {
-	if (jPlayer.isInJob(job))
+	if (jPlayer == null || job == null || jPlayer.isInJob(job))
 	    return;
+
 	// let the user join the job
 	if (!jPlayer.joinJob(job))
 	    return;
 
 	// JobsJoin event
-	JobsJoinEvent jobsjoinevent = new JobsJoinEvent(jPlayer, job);
-	Bukkit.getServer().getPluginManager().callEvent(jobsjoinevent);
+	JobsJoinEvent jobsJoinEvent = new JobsJoinEvent(jPlayer, job);
+	Bukkit.getServer().getPluginManager().callEvent(jobsJoinEvent);
 	// If event is canceled, dont do anything
-	if (jobsjoinevent.isCancelled())
+	if (jobsJoinEvent.isCancelled())
 	    return;
 
 	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
@@ -494,13 +495,13 @@ public class PlayerManager {
      * @param job {@link Job}
      */
     public boolean leaveJob(JobsPlayer jPlayer, Job job) {
-	if (!jPlayer.isInJob(job))
+	if (jPlayer == null || job == null || !jPlayer.isInJob(job))
 	    return false;
 
-	JobsLeaveEvent jobsleaveevent = new JobsLeaveEvent(jPlayer, job);
-	Bukkit.getServer().getPluginManager().callEvent(jobsleaveevent);
+	JobsLeaveEvent jobsLeaveEvent = new JobsLeaveEvent(jPlayer, job);
+	Bukkit.getServer().getPluginManager().callEvent(jobsLeaveEvent);
 	// If event is canceled, don't do anything
-	if (jobsleaveevent.isCancelled())
+	if (jobsLeaveEvent.isCancelled())
 	    return false;
 
 	Jobs.getJobsDAO().recordToArchive(jPlayer, job);
@@ -510,6 +511,7 @@ public class PlayerManager {
 
 	if (!Jobs.getJobsDAO().quitJob(jPlayer, job))
 	    return false;
+
 	PerformCommands.performCommandsOnLeave(jPlayer, job);
 	Jobs.leaveSlot(job);
 
@@ -644,6 +646,7 @@ public class PlayerManager {
 		for (String line : message.split("\n")) {
 		    if (Jobs.getGCManager().LevelChangeActionBar)
 			ActionBarManager.send(player, line);
+
 		    if (Jobs.getGCManager().LevelChangeChat)
 			player.sendMessage(line);
 		}
@@ -716,18 +719,14 @@ public class PlayerManager {
 			    break;
 			}
 
-			int r1i = r.nextInt(17) + 1;
-			int r2i = r.nextInt(17) + 1;
-
-			Color c1 = Util.getColor(r1i);
-			Color c2 = Util.getColor(r2i);
+			Color c1 = Util.getColor(r.nextInt(17) + 1);
+			Color c2 = Util.getColor(r.nextInt(17) + 1);
 
 			FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1)
 			    .withFade(c2).with(type).trail(r.nextBoolean()).build();
 			fm.addEffect(effect);
 
-			int rp = r.nextInt(2) + 1;
-			fm.setPower(rp);
+			fm.setPower(r.nextInt(2) + 1);
 		    } else {
 			Pattern comma = Pattern.compile(",", 16);
 			List<String> colorStrings = Jobs.getGCManager().FwColors;
@@ -1113,7 +1112,7 @@ public class PlayerManager {
 	}
 
 	if (victim != null && victim.hasMetadata(mobSpawnerMetadata)) {
-	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", false, false);
+	    double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", false, false);
 	    if (amount != 0D)
 		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
 	}
@@ -1121,10 +1120,11 @@ public class PlayerManager {
 	if (getall) {
 	    if (petPay == 0D)
 		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force, false);
-	    else
+
+	    if (petPay != 0D)
 		boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
 
-	    Double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
+	    double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
 	    if (amount != 0D)
 		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
 	}

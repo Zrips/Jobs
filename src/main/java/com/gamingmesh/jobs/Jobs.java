@@ -191,10 +191,11 @@ public class Jobs extends JavaPlugin {
     }
 
     private boolean setupPlaceHolderAPI() {
-	if (!getServer().getPluginManager().isPluginEnabled("PlaceholderAPI"))
+	org.bukkit.plugin.Plugin papi = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+	if (papi == null || !papi.isEnabled())
 	    return false;
 
-	if (Integer.parseInt(getServer().getPluginManager().getPlugin("PlaceholderAPI")
+	if (Integer.parseInt(papi
 	    .getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100 && new PlaceholderAPIHook(this).register()) {
 	    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
 	}
@@ -496,7 +497,7 @@ public class Jobs extends JavaPlugin {
 	CompletableFuture<Void> pd = loadAllPlayersData();
 
 	// attempt to add all online players to cache
-	pd.thenAccept(e -> Bukkit.getServer().getOnlinePlayers().forEach(getPlayerManager()::playerJoin));
+	pd.thenAccept(e -> getServer().getOnlinePlayers().forEach(getPlayerManager()::playerJoin));
     }
 
     public static CompletableFuture<Void> loadAllPlayersData() {
@@ -738,7 +739,7 @@ public class Jobs extends JavaPlugin {
 	    getServer().getPluginManager().registerEvents(new JobsChatEvent(this), this);
 
 	    // register economy
-	    Bukkit.getScheduler().runTask(this, new HookEconomyTask(this));
+	    getServer().getScheduler().runTask(this, new HookEconomyTask(this));
 
 	    dao.loadBlockProtection();
 	    getExplore().load();

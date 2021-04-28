@@ -465,7 +465,7 @@ public abstract class JobsDAO {
 	try {
 	    Class.forName(driverName);
 	} catch (ClassNotFoundException c) {
-	    c.printStackTrace();
+	    plugin.getLogger().log(java.util.logging.Level.WARNING, c.getLocalizedMessage());
 	    return;
 	}
 

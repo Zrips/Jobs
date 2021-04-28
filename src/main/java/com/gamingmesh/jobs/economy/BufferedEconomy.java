@@ -106,10 +106,8 @@ public class BufferedEconomy {
 		if (offPlayer == null)
 		    continue;
 
-		UUID uuid = offPlayer.getUniqueId();
-		if (paymentCache.containsKey(uuid)) {
-		    BufferedPayment existing = paymentCache.get(uuid);
-
+		BufferedPayment existing = paymentCache.get(offPlayer.getUniqueId());
+		if (existing != null) {
 		    double money = payment.get(CurrencyType.MONEY);
 		    double points = payment.get(CurrencyType.POINTS);
 		    double exp = payment.get(CurrencyType.EXP);
@@ -158,7 +156,7 @@ public class BufferedEconomy {
 			payment.set(CurrencyType.POINTS, points);
 		    }
 
-		    paymentCache.put(uuid, payment);
+		    paymentCache.put(offPlayer.getUniqueId(), payment);
 		}
 	    }
 

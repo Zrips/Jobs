@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.stuff;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -43,9 +42,13 @@ public class Util {
     public static ItemStack getSkull(String skullOwner) {
 	ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
 	SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+
 	if (skullOwner.length() == 36) {
-	    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
-	    Jobs.getNms().setSkullOwner(skullMeta, offPlayer);
+	    try {
+		OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
+		Jobs.getNms().setSkullOwner(skullMeta, offPlayer);
+	    } catch (IllegalArgumentException e) {
+	    }
 	} else
 	    skullMeta.setOwner(skullOwner);
 
@@ -201,6 +204,7 @@ public class Util {
     public static void addJobsWorld(JobsWorld jobsWorld) {
 	if (jobsWorld == null || jobsWorld.getId() == 0)
 	    return;
+
 	jobsWorlds.put(jobsWorld.getName().toLowerCase(), jobsWorld);
 	jobsWorldsId.put(jobsWorld.getId(), jobsWorld);
     }
@@ -225,20 +229,20 @@ public class Util {
     }
 
     public static List<String> getFilesInSamePackageFromJar(String packageName, String jarPath, String cleaner, String fileType) {
-	JarFile jarFile = null;
+	packageName = packageName.replace('.', '/');
+
 	List<String> listOfCommands = new ArrayList<>();
-	try {
-	    jarFile = new JarFile(jarPath);
+
+	try (JarFile jarFile = new JarFile(jarPath)) {
 	    Enumeration<JarEntry> en = jarFile.entries();
 	    while (en.hasMoreElements()) {
 		String entryName = en.nextElement().getName();
 
-		packageName = packageName.replace('.', '/');
-
 		if (entryName.endsWith("." + fileType) && entryName.startsWith(packageName)) {
 		    String name = entryName.replace(packageName, "").replace("." + fileType, "").replace("/", "");
+
 		    if (name.contains("$"))
-			name = name.split("\\$")[0];
+			name = name.split("\\$", 2)[0];
 
 		    if (cleaner != null && !cleaner.isEmpty())
 			name = name.replace(cleaner, "");
@@ -246,14 +250,9 @@ public class Util {
 		    listOfCommands.add(name);
 		}
 	    }
-	} catch (Throwable e) {
-	} finally {
-	    if (jarFile != null)
-		try {
-		    jarFile.close();
-		} catch (IOException e) {
-		}
+	} catch (java.io.IOException e) {
 	}
+
 	return listOfCommands;
     }
 }

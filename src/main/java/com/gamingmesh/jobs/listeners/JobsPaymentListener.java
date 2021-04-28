@@ -374,8 +374,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
-	if (!player.isOnline())
-	    return;
 
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
@@ -438,10 +436,6 @@ public class JobsPaymentListener implements Listener {
 	if (CMIMaterial.get(event.getItemInHand().getType()).isTool())
 	    return;
 
-	Player player = event.getPlayer();
-	if (!player.isOnline())
-	    return;
-
 	Block block = event.getBlock();
 
 	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
@@ -450,6 +444,8 @@ public class JobsPaymentListener implements Listener {
 	if (Version.isCurrentEqualOrLower(Version.v1_12_R1)
 	    && ItemManager.getItem(event.getItemInHand()).isSimilar(CMIMaterial.BONE_MEAL.newCMIItemStack()))
 	    return;
+
+	Player player = event.getPlayer();
 
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
@@ -796,9 +792,6 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryRepair(InventoryClickEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
-	    return;
-
 	// If event is nothing or place, do nothing
 	switch (event.getAction()) {
 	case NOTHING:
@@ -809,6 +802,13 @@ public class JobsPaymentListener implements Listener {
 	default:
 	    break;
 	}
+
+	if (!(event.getWhoClicked() instanceof Player))
+	    return;
+
+	Player player = (Player) event.getWhoClicked();
+	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+	    return;
 
 	Inventory inv = event.getInventory();
 
@@ -827,10 +827,6 @@ public class JobsPaymentListener implements Listener {
 	    || (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && !(inv instanceof SmithingInventory))) && slot == 1)
 	    return;
 
-	if (!(event.getWhoClicked() instanceof Player))
-	    return;
-
-	Player player = (Player) event.getWhoClicked();
 	//Check if inventory is full and using shift click, possible money dupping fix
 	if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
@@ -839,27 +835,6 @@ public class JobsPaymentListener implements Listener {
 
 	ItemStack resultStack = event.getCurrentItem();
 	if (resultStack == null)
-	    return;
-
-	// Checking if this is only item rename
-	ItemStack firstSlot = null;
-	try {
-	    firstSlot = inv.getItem(0);
-	} catch (NullPointerException e) {
-	    return;
-	}
-	if (firstSlot == null)
-	    return;
-
-	String originalName = null;
-	String newName = null;
-	if (firstSlot.hasItemMeta())
-	    originalName = plugin.getComplement().getDisplayName(firstSlot.getItemMeta());
-
-	if (resultStack.hasItemMeta())
-	    newName = plugin.getComplement().getDisplayName(resultStack.getItemMeta());
-
-	if (originalName != null && !originalName.equals(newName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
 	    return;
 
 	// Check for world permissions
@@ -884,6 +859,27 @@ public class JobsPaymentListener implements Listener {
 	default:
 	    break;
 	}
+
+	// Checking if this is only item rename
+	ItemStack firstSlot = null;
+	try {
+	    firstSlot = inv.getItem(0);
+	} catch (NullPointerException e) {
+	    return;
+	}
+	if (firstSlot == null)
+	    return;
+
+	String originalName = null;
+	String newName = null;
+	if (firstSlot.hasItemMeta())
+	    originalName = plugin.getComplement().getDisplayName(firstSlot.getItemMeta());
+
+	if (resultStack.hasItemMeta())
+	    newName = plugin.getComplement().getDisplayName(resultStack.getItemMeta());
+
+	if (originalName != null && !originalName.equals(newName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
+	    return;
 
 	// Possible payment exploit when clicking continuously in the result item #438
 	if (event.isLeftClick() && event.getCursor().getType() != Material.AIR)
@@ -1179,12 +1175,13 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	Player pDamager = null;
+	boolean isMyPet = HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null);
 
 	// Checking if killer is player
 	if (e.getDamager() instanceof Player) {
 	    pDamager = (Player) e.getDamager();
 	    // Checking if killer is MyPet animal
-	} else if (HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null)) {
+	} else if (isMyPet) {
 	    UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(e.getDamager());
 	    if (uuid != null)
 		pDamager = Bukkit.getPlayer(uuid);
@@ -1203,11 +1200,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Prevent payment for killing mobs with pet by denying permission
-	if ((HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null))
-	    || (e.getDamager() instanceof Tameable && ((Tameable) e.getDamager()).isTamed() &&
+	if (isMyPet || (e.getDamager() instanceof Tameable && ((Tameable) e.getDamager()).isTamed() &&
 		((Tameable) e.getDamager()).getOwner() instanceof Player)) {
 	    for (PermissionAttachmentInfo perm : pDamager.getEffectivePermissions()) {
-		if ("jobs.petpay".equals(perm.getPermission()) && !perm.getValue()) {
+		if (!perm.getValue() && "jobs.petpay".equals(perm.getPermission())) {
 		    return;
 		}
 	    }

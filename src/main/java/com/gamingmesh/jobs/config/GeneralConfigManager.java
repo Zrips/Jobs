@@ -98,7 +98,8 @@ public class GeneralConfigManager {
 	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities,
 	payForEachVTradeItem, allowEnchantingBoostedItems;
 
-    public ItemStack guiBackButton, guiNextButton, guiFiller;
+    public ItemStack guiBackButton, guiNextButton;
+    public CMIMaterial guiFiller;
 
     public Parser DynamicPaymentEquation;
 
@@ -954,14 +955,14 @@ public class GeneralConfigManager {
 	c.addComment("Commands.JobsInfo.open-browse", "Open up the jobs browse action list, when your performed /jobs info command?");
 	jobsInfoOpensBrowse = c.get("Commands.JobsInfo.open-browse", false);
 
-	CMIMaterial tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN").toUpperCase());
+	CMIMaterial tmat = CMIMaterial.get(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
 	guiBackButton = (tmat == CMIMaterial.NONE ? CMIMaterial.JACK_O_LANTERN : tmat).newItemStack();
 
-	tmat = CMIMaterial.get(c.get("JobsGUI.NextButton.Material", "ARROW").toUpperCase());
+	tmat = CMIMaterial.get(c.get("JobsGUI.NextButton.Material", "ARROW"));
 	guiNextButton = (tmat == CMIMaterial.NONE ? CMIMaterial.ARROW : tmat).newItemStack();
 
-	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "GREEN_STAINED_GLASS_PANE").toUpperCase());
-	guiFiller = (tmat == CMIMaterial.NONE ? CMIMaterial.GREEN_STAINED_GLASS_PANE : tmat).newItemStack();
+	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "GREEN_STAINED_GLASS_PANE"));
+	guiFiller = (tmat == CMIMaterial.NONE ? CMIMaterial.GREEN_STAINED_GLASS_PANE : tmat);
 
 	c.save();
     }

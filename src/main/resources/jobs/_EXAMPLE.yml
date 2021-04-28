@@ -276,7 +276,7 @@ exampleJob:
       income: 2.5
       points: 2.5
       experience: 2.5
-  # Payment for cooking raw foods
+  # Payment for cooking raw foods in camp fire
   Bake:
     beef:
       income: 1.0
@@ -460,7 +460,7 @@ exampleJob:
     tipped_arrow:slowness:
       income: 3.0
       points: 3.0
-  # Smelting ores
+  # Smelting ores in any type of furnaces
   Smelt:
     iron_ingot:
       income: 2.0

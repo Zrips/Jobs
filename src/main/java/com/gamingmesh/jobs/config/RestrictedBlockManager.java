@@ -29,11 +29,12 @@ public class RestrictedBlockManager {
 	    "By setting time to -1 will keep block protected until global cleanup, mainly used for structure blocks like diamond",
 	    "If you want to have default value for all blocks, enable GlobalBlockTimer in generalConfig file");
 
-	if (cfg.getC().isConfigurationSection("blocksTimer")) {
-	    org.bukkit.configuration.ConfigurationSection section = cfg.getC().getConfigurationSection("blocksTimer");
+	org.bukkit.configuration.ConfigurationSection section = cfg.getC().getConfigurationSection("blocksTimer");
+	if (section != null) {
 	    for (String one : section.getKeys(false)) {
-		if (((section.isString(one + ".id")) || (section.isInt(one + ".id"))) && (section.isInt(one + ".cd"))) {
+		if ((section.isString(one + ".id") || section.isInt(one + ".id")) && section.isInt(one + ".cd")) {
 		    CMIItemStack cm = ItemManager.getItem(CMIMaterial.get(section.getString(one + ".id")));
+
 		    if (cm == null || !cm.getCMIType().isBlock()) {
 			Jobs.consoleMsg("&e[Jobs] Your defined (" + one + ") protected block id/name is not correct!");
 			continue;
@@ -68,6 +69,7 @@ public class RestrictedBlockManager {
 
 	if (restrictedBlocksTimer.size() > 0)
 	    Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedBlocksTimer.size() + " protected blocks timers!");
+
 	cfg.save();
     }
 }

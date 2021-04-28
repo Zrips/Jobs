@@ -92,12 +92,11 @@ public class ExploreManager {
 
     public void load(ResultSet res) {
 	try {
-	    int worldId = res.getInt(ExploreDataTableFields.worldid.getCollumn());
 	    String worldName = res.getString(ExploreDataTableFields.worldname.getCollumn());
 
 	    JobsWorld jobsWorld = Util.getJobsWorld(worldName);
 	    if (jobsWorld == null)
-		jobsWorld = Util.getJobsWorld(worldId);
+		jobsWorld = Util.getJobsWorld(res.getInt(ExploreDataTableFields.worldid.getCollumn()));
 
 	    if (jobsWorld == null)
 		return;

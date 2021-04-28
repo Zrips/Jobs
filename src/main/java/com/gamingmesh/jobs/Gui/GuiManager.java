@@ -15,7 +15,6 @@ import com.gamingmesh.jobs.CMIGUI.CMIGui;
 import com.gamingmesh.jobs.CMIGUI.CMIGuiButton;
 import com.gamingmesh.jobs.CMIGUI.GUIManager;
 import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -34,19 +33,22 @@ public class GuiManager {
 
     public void openJobsBrowseGUI(final Player player) {
 	List<Job> jobsList = new ArrayList<>();
+
 	for (Job job : Jobs.getJobs()) {
-	    if (Jobs.getGCManager().getHideJobsWithoutPermission())
-		if (!Jobs.getCommandManager().hasJobPermission(player, job))
+	    if (Jobs.getGCManager().getHideJobsWithoutPermission() && !Jobs.getCommandManager().hasJobPermission(player, job))
 		    continue;
+
 	    jobsList.add(job);
 	}
 
+	int jobsListSize = jobsList.size();
+
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.pickjob"));
-	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
+	gui.setFiller(Jobs.getGCManager().guiFiller);
 
 	int guiSize = Jobs.getGCManager().getJobsGUIRows() * 9,
-		neededSlots = jobsList.size() + ((jobsList.size() / Jobs.getGCManager().getJobsGUIGroupAmount())
+		neededSlots = jobsListSize + ((jobsListSize / Jobs.getGCManager().getJobsGUIGroupAmount())
 			* Jobs.getGCManager().getJobsGUISkipAmount()) + Jobs.getGCManager().getJobsGUIStartPosition(),
 		neededRows = (int) Math.ceil(neededSlots / 9D);
 
@@ -66,24 +68,24 @@ public class GuiManager {
 	int pos = Jobs.getGCManager().getJobsGUIStartPosition() - 1;
 
 	// Changing start position to 0 in case we have more jobs then we can fit in current setup
-	pos = jobsList.size() > 28 ? jobsList.size() <= 42 ? 0 : -1 : pos;
+	pos = jobsListSize > 28 ? jobsListSize <= 42 ? 0 : -1 : pos;
 
 	int group = 0;
-	main: for (int z = 0; z < jobsList.size(); z++) {
+	main: for (int z = 0; z < jobsListSize; z++) {
 	    group++;
 
 	    if (group > Jobs.getGCManager().getJobsGUIGroupAmount()) {
 		group = 1;
 
 		// Only add skip if we can fit all of them in max sized Gui
-		if (jobsList.size() <= 42) {
+		if (jobsListSize <= 42) {
 		    pos += Jobs.getGCManager().getJobsGUISkipAmount();
 		}
 	    }
 
 	    pos++;
 
-	    if (i >= jobsList.size())
+	    if (i >= jobsListSize)
 		break main;
 
 	    Job job = jobsList.get(i);
@@ -300,7 +302,7 @@ public class GuiManager {
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
-	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
+	gui.setFiller(Jobs.getGCManager().guiFiller);
 	gui.setInvSize(guiSize);
 
 	List<ItemStack> items = new ArrayList<>();
@@ -451,7 +453,7 @@ public class GuiManager {
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
-	gui.setFiller(CMIMaterial.get(Jobs.getGCManager().guiFiller));
+	gui.setFiller(Jobs.getGCManager().guiFiller);
 	gui.setInvSize(guiSize);
 
 	List<ItemStack> items = new ArrayList<>();

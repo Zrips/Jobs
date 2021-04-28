@@ -8,6 +8,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Util;
 
+import io.papermc.paper.chat.ChatComposer;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.TextReplacementConfig;
 
@@ -43,16 +44,19 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 		if (honorific.equals(" "))
 			honorific = "";
 
-		final String h = honorific;
-
 		// TODO displayName returns the player display name not the chat component from
 		// chat plugins, like Essentials
 		// Now there is a parameter "player", so literally we need to add 800+ chat plugins
 		// to this plugin as dependency?
 		// 3rd attempt: now we tried to use text replacement config builder to match the variable
 		// result: instead of replacing the variable, now the chat message never been sent
-		event.composer((player, displayName, msg) -> msg
-				.replaceText(TextReplacementConfig.builder().match("{jobs}").once().replacement(h).build()));
+		//event.composer((player, displayName, msg) -> msg
+			//.replaceText(TextReplacementConfig.builder().match("{jobs}").once().replacement(h).build()));
+
+		// 4th attempt: composeChat -> doing nothing
+		event.message(ChatComposer.DEFAULT
+				.composeChat(event.getPlayer(), event.getPlayer().displayName(), event.message())
+				.replaceText(TextReplacementConfig.builder().match("\\{jobs\\}").replacement(honorific).build()));
 	}
 
 	// Changing chat prefix variable to job name
@@ -72,8 +76,8 @@ public final class KyoriChatEvent extends Complement2 implements Listener {
 		if (honorific.equals(" "))
 			honorific = "";
 
-		final String h = honorific;
-		event.composer((player, displayName, msg) -> msg
-				.replaceText(TextReplacementConfig.builder().match("{jobs}").once().replacement(h).build()));
+		event.message(ChatComposer.DEFAULT
+				.composeChat(event.getPlayer(), event.getPlayer().displayName(), event.message())
+				.replaceText(TextReplacementConfig.builder().match("\\{jobs\\}").replacement(honorific).build()));
 	}
 }

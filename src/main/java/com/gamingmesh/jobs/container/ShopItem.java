@@ -49,7 +49,9 @@ public class ShopItem {
 
     public void setitems(List<JobItems> items) {
 	this.items.clear();
-	this.items.addAll(items == null ? new ArrayList<>() : items);
+
+	if (items != null)
+	    this.items.addAll(items);
     }
 
     public List<JobItems> getitems() {
@@ -58,7 +60,9 @@ public class ShopItem {
 
     public void setCommands(List<String> commands) {
 	this.commands.clear();
-	this.commands.addAll(commands == null ? new ArrayList<>() : commands);
+
+	if (commands != null)
+	    this.commands.addAll(commands);
     }
 
     public List<String> getCommands() {
@@ -75,7 +79,9 @@ public class ShopItem {
 
     public void setRequiredPerm(List<String> requiredPerm) {
 	this.requiredPerm.clear();
-	this.requiredPerm.addAll(requiredPerm == null ? new ArrayList<>() : requiredPerm);
+
+	if (requiredPerm != null)
+	    this.requiredPerm.addAll(requiredPerm);
     }
 
     public List<String> getRequiredPerm() {
@@ -100,7 +106,9 @@ public class ShopItem {
 
     public void setIconLore(List<String> iconLore) {
 	this.iconLore.clear();
-	this.iconLore.addAll(iconLore == null ? new ArrayList<>() : iconLore);
+
+	if (iconLore != null)
+	    this.iconLore.addAll(iconLore);
     }
 
     public List<String> getIconLore() {

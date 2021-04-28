@@ -73,9 +73,12 @@ public class RestrictedAreaManager {
     private void save() {
 	File f = new File(Jobs.getFolder(), "restrictedAreas.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
+
 	conf.options().indent(2);
 	conf.options().copyDefaults(true);
+
 	addHeader(new StringBuilder());
+
 	for (Entry<String, RestrictedArea> area : restrictedAreas.entrySet()) {
 	    String areaKey = area.getKey();
 	    CuboidArea cuboid = area.getValue().getCuboidArea();
@@ -139,7 +142,7 @@ public class RestrictedAreaManager {
     }
 
     private StringBuilder addHeader(StringBuilder header) {
-	String sep = System.getProperty("line.separator");
+	String sep = System.lineSeparator();
 
 	header.append("Restricted area configuration");
 	header.append(sep)

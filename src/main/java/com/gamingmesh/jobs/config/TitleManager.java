@@ -120,34 +120,34 @@ public class TitleManager {
 	    c.save();
 	} else
 	    for (String titleKey : titleSection.getKeys(false)) {
-		String jobName = "",
-		    titleName = titleSection.getString(titleKey + ".Name", ""),
-		    titleShortName = titleSection.getString(titleKey + ".ShortName", "");
-		CMIChatColor titleColor = CMIChatColor.getColor(titleSection.getString(titleKey + ".ChatColour"));
-		int levelReq = titleSection.getInt(titleKey + ".levelReq", -1);
-
-		if (titleSection.isString(titleKey + ".JobName"))
-		    jobName = titleSection.getString(titleKey + ".JobName", "");
+		String titleName = titleSection.getString(titleKey + ".Name", "");
 
 		if (titleName.isEmpty()) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid Name property. Skipping!");
 		    continue;
 		}
+
+		String titleShortName = titleSection.getString(titleKey + ".ShortName", "");
 		if (titleShortName.isEmpty()) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid ShortName property. Skipping!");
 		    continue;
 		}
+
+		CMIChatColor titleColor = CMIChatColor.getColor(titleSection.getString(titleKey + ".ChatColour"));
 		if (titleColor == null) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid ChatColour property. Skipping!");
 		    continue;
 		}
+
+		int levelReq = titleSection.getInt(titleKey + ".levelReq", -1);
 		if (levelReq <= -1) {
 		    Jobs.getPluginLogger().severe("Title " + titleKey + " has an invalid levelReq property. Skipping!");
 		    continue;
 		}
 
-		titles.add(new Title(titleName, titleShortName, titleColor, levelReq, jobName));
+		titles.add(new Title(titleName, titleShortName, titleColor, levelReq, titleSection.getString(titleKey + ".JobName")));
 	    }
+
 	if (titles.size() > 0)
 	    Jobs.consoleMsg("&e[Jobs] Loaded " + titles.size() + " titles!");
     }

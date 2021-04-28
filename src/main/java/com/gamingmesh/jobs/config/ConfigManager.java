@@ -711,7 +711,7 @@ public class ConfigManager {
 
 	if (jobFiles.isEmpty()) {
 	    File[] files = jobsPathFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml")
-		&& !name.toLowerCase().equalsIgnoreCase(EXAMPLEJOBNAME + ".yml"));
+		&& !name.equalsIgnoreCase(EXAMPLEJOBNAME + ".yml"));
 	    if (files != null) {
 		for (File file : files) {
 		    jobFiles.add(new YmlMaker(jobsPathFolder, file));
@@ -798,18 +798,19 @@ public class ConfigManager {
 		    fDescription.add(jobSection.getString("FullDescription"));
 		else if (jobSection.isList("FullDescription"))
 		    fDescription.addAll(jobSection.getStringList("FullDescription"));
+
 		for (int i = 0; i < fDescription.size(); i++) {
 		    fDescription.set(i, CMIChatColor.translate(fDescription.get(i)));
 		}
 	    }
 
 	    CMIChatColor color = CMIChatColor.WHITE;
-	    if (jobSection.contains("ChatColour")) {
-		String c = jobSection.getString("ChatColour", "");
-
+	    String c = jobSection.getString("ChatColour");
+	    if (c != null) {
 		color = CMIChatColor.getColor(c);
+
 		if (color == null && !c.isEmpty())
-		    color = CMIChatColor.getColor(String.valueOf("&" + c.charAt(0)));
+		    color = CMIChatColor.getColor("&" + c.charAt(0));
 
 		if (color == null) {
 		    color = CMIChatColor.WHITE;
@@ -817,13 +818,10 @@ public class ConfigManager {
 		}
 	    }
 
-	    String bossbar = "";
-	    if (jobSection.contains("BossBarColour")) {
-		bossbar = jobSection.getString("BossBarColour", "");
-		if (bossbar.isEmpty()) {
-		    bossbar = "GREEN";
-		    log.warning("Job " + jobKey + " has an invalid BossBarColour property.");
-		}
+	    String bossbar = jobSection.getString("BossBarColour");
+	    if (bossbar != null && bossbar.isEmpty()) {
+		bossbar = "GREEN";
+		log.warning("Job " + jobKey + " has an invalid BossBarColour property.");
 	    }
 
 	    DisplayMethod displayMethod = DisplayMethod.matchMethod(jobSection.getString("chat-display", ""));
@@ -846,8 +844,8 @@ public class ConfigManager {
 	    }
 
 	    Parser incomeEquation = new Parser("0");
-	    if (jobSection.isString("income-progression-equation")) {
 		String incomeEquationInput = jobSection.getString("income-progression-equation");
+		if (incomeEquationInput != null) {
 		try {
 		    incomeEquation = new Parser(incomeEquationInput);
 		    // test equation
@@ -876,8 +874,8 @@ public class ConfigManager {
 	    }
 
 	    Parser pointsEquation = new Parser("0");
-	    if (jobSection.isString("points-progression-equation")) {
-		String pointsEquationInput = jobSection.getString("points-progression-equation");
+	    String pointsEquationInput = jobSection.getString("points-progression-equation");
+	    if (pointsEquationInput != null) {
 		try {
 		    pointsEquation = new Parser(pointsEquationInput);
 		    // test equation
@@ -894,16 +892,17 @@ public class ConfigManager {
 	    // Gui item
 	    int guiSlot = -1;
 	    ItemStack guiItem = CMIMaterial.GREEN_WOOL.newItemStack();
-	    if (jobSection.contains("Gui")) {
-		ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
+	    ConfigurationSection guiSection = jobSection.getConfigurationSection("Gui");
+
+	    if (guiSection != null) {
 		if (guiSection.isString("Item")) {
 		    String item = guiSection.getString("Item");
 		    String subType = "";
 
 		    if (item.contains("-")) {
-			// uses subType
-			subType = ":" + item.split("-", 2)[1];
-			item = item.split("-")[0];
+			String[] split = item.split("-", 2);
+			subType = ":" + split[1];
+			item = split[0];
 		    } else if (item.contains(":")) { // when we uses tipped arrow effect types
 			item = item.split(":", 2)[0];
 		    }
@@ -937,21 +936,34 @@ public class ConfigManager {
 		    log.warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
 
 		for (String str4 : guiSection.getStringList("Enchantments")) {
-		    String[] id = str4.split(":");
+		    String[] id = str4.split(":", 2);
+
+		    Enchantment enchant = CMIEnchantment.getEnchantment(id[0]);
+		    if (enchant == null)
+			continue;
+
+		    int level = 1;
+		    try {
+			level = Integer.parseInt(id[1]);
+		    } catch (NumberFormatException ex) {
+		    }
+
 		    if (guiItem.getItemMeta() instanceof EnchantmentStorageMeta) {
 			EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) guiItem.getItemMeta();
-			enchantMeta.addStoredEnchant(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]), true);
+			enchantMeta.addStoredEnchant(enchant, level, true);
 			guiItem.setItemMeta(enchantMeta);
 		    } else
-			guiItem.addUnsafeEnchantment(CMIEnchantment.getEnchantment(id[0]), Integer.parseInt(id[1]));
+			guiItem.addUnsafeEnchantment(enchant, level);
 		}
 
-		if (guiSection.isString("CustomSkull")) {
-		    guiItem = Util.getSkull(guiSection.getString("CustomSkull"));
+		String customSkull = guiSection.getString("CustomSkull", "");
+		if (!customSkull.isEmpty()) {
+		    guiItem = Util.getSkull(customSkull);
 		}
 
-		if (guiSection.getInt("slot", -1) >= 0)
-		    guiSlot = guiSection.getInt("slot");
+		int slot = guiSection.getInt("slot", -1);
+		if (slot >= 0)
+		    guiSlot = slot;
 	    }
 
 	    // Permissions
@@ -1081,14 +1093,17 @@ public class ConfigManager {
 	    if (limitedItemsSection != null) {
 		for (String itemKey : limitedItemsSection.getKeys(false)) {
 		    ConfigurationSection itemSection = limitedItemsSection.getConfigurationSection(itemKey);
+
 		    if (itemSection == null) {
 			log.warning("Job " + jobKey + " has an invalid item key " + itemKey + "!");
 			continue;
 		    }
 
-		    List<String> lore = new ArrayList<>();
-		    if (itemSection.isList("lore"))
-			itemSection.getStringList("lore").stream().map(CMIChatColor::translate).forEach(lore::add);
+		    List<String> lore = itemSection.getStringList("lore");
+
+		    for (int a = 0; a < lore.size(); a++) {
+			lore.set(a, CMIChatColor.translate(lore.get(a)));
+		    }
 
 		    Map<Enchantment, Integer> enchants = new HashMap<>();
 		    if (itemSection.isList("enchants"))
@@ -1098,18 +1113,21 @@ public class ConfigManager {
 
 			    String[] split = eachLine.split("=", 2);
 			    Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
-			    Integer level = -1;
+			    if (ench == null)
+				continue;
+
+			    int level = -1;
 			    try {
 				level = Integer.parseInt(split[1]);
 			    } catch (NumberFormatException e) {
-				continue;
 			    }
 
-			    if (ench != null && level != -1)
+			    if (level != -1)
 				enchants.put(ench, level);
 			}
 
 		    String node = itemKey.toLowerCase();
+
 		    jobLimitedItems.put(node, new JobLimitedItems(node, itemSection.getInt("id"), 0, 1, itemSection.getString("name"),
 		        lore, enchants, itemSection.getInt("level")));
 		}
@@ -1169,8 +1187,8 @@ public class ConfigManager {
 				    }
 
 				    if (co.length > 0) {
-					for (String c : co) {
-					    KeyValues kv = getKeyValue(c, actionType, jobFullName);
+					for (String materials : co) {
+					    KeyValues kv = getKeyValue(materials, actionType, jobFullName);
 					    if (kv == null) {
 						continue;
 					    }
