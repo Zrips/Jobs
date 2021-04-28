@@ -81,19 +81,21 @@ public class SignUtil {
 	signsByLocation.clear();
 
 	File file = new File(Jobs.getFolder(), "Signs.yml");
-	YamlConfiguration f = YamlConfiguration.loadConfiguration(file);
-
-	if (!f.isConfigurationSection("Signs"))
+	ConfigurationSection confCategory = YamlConfiguration.loadConfiguration(file).getConfigurationSection("Signs");
+	if (confCategory == null)
 	    return;
 
-	ConfigurationSection confCategory = f.getConfigurationSection("Signs");
 	List<String> categoriesList = new ArrayList<>(confCategory.getKeys(false));
 	if (categoriesList.isEmpty())
 	    return;
 
 	for (String category : categoriesList) {
 	    ConfigurationSection nameSection = confCategory.getConfigurationSection(category);
+	    if (nameSection == null)
+		continue;
+
 	    jobsSign newTemp = new jobsSign();
+
 	    if (nameSection.isString("World")) {
 		newTemp.setWorldName(nameSection.getString("World"));
 		newTemp.setX((int) nameSection.getDouble("X"));
@@ -177,9 +179,9 @@ public class SignUtil {
 	if (type == null)
 	    type = SignTopType.toplist;
 
-	String jobNameOrType = jobsSign.getIdentifier(job, type);
+	String jobNameOrType = jobsSign.getIdentifier(job, type).toLowerCase();
 
-	Map<String, jobsSign> signs = signsByType.get(jobNameOrType.toLowerCase());
+	Map<String, jobsSign> signs = signsByType.get(jobNameOrType);
 	if (signs == null || signs.isEmpty())
 	    return false;
 
@@ -209,7 +211,7 @@ public class SignUtil {
 	    Block block = loc.getBlock();
 	    if (!(block.getState() instanceof Sign)) {
 		if (!jobNameOrType.isEmpty()) {
-		    Map<String, jobsSign> tt = signsByType.get(jobNameOrType.toLowerCase());
+		    Map<String, jobsSign> tt = signsByType.get(jobNameOrType);
 		    if (tt != null) {
 			tt.remove(jSign.locToBlockString());
 		    }
@@ -243,7 +245,7 @@ public class SignUtil {
 		    String playerName = pl.getPlayerInfo().getName();
 		    if (playerName.length() > 15) {
 			// We need to split 10 char of name, because of sign rows
-			playerName = playerName.split("(?<=\\G.{10})")[0] + "~";
+			playerName = playerName.split("(?<=\\G.{10})", 2)[0] + "~";
 		    }
 
 		    String line = "";
@@ -273,7 +275,7 @@ public class SignUtil {
 		TopList pl = playerList.get(jSign.getNumber() - 1);
 		String playerName = pl.getPlayerInfo().getName();
 		if (playerName.length() > 15) {
-		    playerName = playerName.split("(?<=\\G.{10})")[0] + "~";
+		    playerName = playerName.split("(?<=\\G.{10})", 2)[0] + "~";
 		}
 
 		int no = jSign.getNumber() + number + 1;
@@ -283,7 +285,7 @@ public class SignUtil {
 		switch (type) {
 		case toplist:
 		case gtoplist:
-		    plugin.getComplement().setLine(sign, 2, Jobs.getLanguage().getMessage("signs.SpecialList.level", "[number]", no, "[player]", playerName, "[level]", pl.getLevel(), "[job]", signJobName));
+		    plugin.getComplement().setLine(sign, 2, translateSignLine("signs.SpecialList.level", no, playerName, pl.getLevel(), signJobName));
 		    break;
 		case questtoplist:
 		    plugin.getComplement().setLine(sign, 2, Jobs.getLanguage().getMessage("signs.SpecialList.quests", "[number]", no, "[player]", playerName, "[quests]", pl.getLevel(), "[job]", signJobName));

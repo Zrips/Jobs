@@ -197,7 +197,8 @@ public class Placeholder {
 	    if (isComplex()) {
 		String name = getName();
 		int i = 0;
-		for (String one : getName().split("_")) {
+
+		for (String one : name.split("_")) {
 		    if (!one.startsWith("$"))
 			continue;
 
@@ -409,7 +410,8 @@ public class Placeholder {
 	JobsPlayer user = uuid == null ? null : Jobs.getPlayerManager().getJobsPlayer(uuid);
 	// Placeholders by JobsPlayer object
 	if (user != null) {
-	    NumberFormat format;
+	    NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+
 	    switch (placeHolder) {
 	    case user_dailyquests_pending:
 		Integer pendingQuests = (int) user.getQuestProgressions().stream().filter(q -> !q.isCompleted()).count();
@@ -451,7 +453,6 @@ public class Placeholder {
 	    case user_points_fixed:
 		return Integer.toString((int) user.getPointsData().getCurrentPoints());
 	    case user_total_points:
-		format = NumberFormat.getInstance(Locale.ENGLISH);
 		return format.format(user.getPointsData().getTotalPoints());
 	    case user_issaved:
 		return convert(user.isSaved());
@@ -511,10 +512,8 @@ public class Placeholder {
 		case user_jlevel_$1:
 		    return j == null ? "0" : Integer.toString(j.getLevel());
 		case user_jexp_$1:
-		    format = NumberFormat.getInstance(Locale.ENGLISH);
 		    return j == null ? "0" : format.format(j.getExperience());
 		case user_jmaxexp_$1:
-		    format = NumberFormat.getInstance(Locale.ENGLISH);
 		    return j == null ? "0" : format.format(j.getMaxExperience());
 		case user_jexpunf_$1:
 		    return j == null ? "0" : Double.toString(j.getExperience());

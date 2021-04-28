@@ -926,7 +926,6 @@ public class JobsPlayer {
      * @return true if yes
      */
     public boolean canGetPaid(ActionInfo info) {
-	List<JobProgression> progression = getJobProgression();
 	int numjobs = progression.size();
 
 	if (numjobs == 0) {
@@ -1013,7 +1012,9 @@ public class JobsPlayer {
     }
 
     public void resetQuests() {
-	getJobProgression().forEach(one -> resetQuests(one.getJob()));
+	for (JobProgression prog : progression) {
+	    resetQuests(prog.getJob());
+	}
     }
 
     public void getNewQuests() {
@@ -1029,7 +1030,7 @@ public class JobsPlayer {
 
 	Quest q = quest.getJob().getNextQuest(getQuestNameList(quest.getJob(), null), getJobProgression(quest.getJob()).getLevel());
 	if (q == null) {
-	    for (JobProgression one : this.getJobProgression()) {
+	    for (JobProgression one : progression) {
 		if (one.getJob().isSame(quest.getJob()))
 		    continue;
 		q = one.getJob().getNextQuest(getQuestNameList(one.getJob(), null), getJobProgression(one.getJob()).getLevel());
@@ -1066,7 +1067,7 @@ public class JobsPlayer {
 
     public List<QuestProgression> getQuestProgressions() {
 	List<QuestProgression> g = new ArrayList<>();
-	for (JobProgression one : getJobProgression()) {
+	for (JobProgression one : progression) {
 	    g.addAll(getQuestProgressions(one.getJob()));
 	}
 	return g;

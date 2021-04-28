@@ -7,9 +7,11 @@ public class SignInfo {
 
     private final List<jobsSign> allSigns = new ArrayList<>();
 
-    public void setAllSigns(List<jobsSign> AllSigns) {
+    public void setAllSigns(List<jobsSign> allSigns) {
 	this.allSigns.clear();
-	this.allSigns.addAll(AllSigns == null ? new ArrayList<>() : AllSigns);
+
+	if (allSigns != null)
+	    this.allSigns.addAll(allSigns);
     }
 
     public List<jobsSign> getAllSigns() {

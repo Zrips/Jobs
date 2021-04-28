@@ -64,8 +64,7 @@ public class Util {
 	name = name.replaceAll("[_|.|-]", "");
 
 	for (World one : Bukkit.getWorlds()) {
-	    String n = one.getName().replaceAll("[_|.|-]", "");
-	    if (n.equalsIgnoreCase(name))
+	    if (one.getName().replaceAll("[_|.|-]", "").equalsIgnoreCase(name))
 		return one;
 	}
 

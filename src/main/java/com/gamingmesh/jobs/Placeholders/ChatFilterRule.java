@@ -87,8 +87,10 @@ public class ChatFilterRule {
 
     public Matcher getMatcher(String msg) {
 	for (Pattern one : pattern) {
-	    if (one.matcher(msg).find()) {
-		return one.matcher(msg);
+	    Matcher matcher = one.matcher(msg);
+
+	    if (matcher.find()) {
+		return matcher;
 	    }
 	}
 	return null;

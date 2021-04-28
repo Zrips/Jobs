@@ -52,7 +52,8 @@ public class blockLoc {
     public boolean fromString(String loc) {
 	if (!loc.contains(":"))
 	    return false;
-	String[] split = loc.split(":");
+
+	String[] split = loc.split(":", 4);
 	if (split.length == 0) {
 	    return false;
 	}

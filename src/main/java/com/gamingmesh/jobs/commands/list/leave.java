@@ -22,14 +22,13 @@ public class leave implements Cmd {
 	}
 
 	Player pSender = (Player) sender;
-	String jobName = args[0];
-	Job job = Jobs.getJob(jobName);
+	Job job = Jobs.getJob(args[0]);
 	if (job == null) {
 	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
 
-	if (Jobs.getGCManager().UsePerPermissionForLeaving && !pSender.hasPermission("jobs.command.leave." + jobName.toLowerCase())) {
+	if (Jobs.getGCManager().UsePerPermissionForLeaving && !pSender.hasPermission("jobs.command.leave." + args[0].toLowerCase())) {
 	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
 	    return true;
 	}

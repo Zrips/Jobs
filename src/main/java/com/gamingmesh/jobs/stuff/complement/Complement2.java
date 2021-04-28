@@ -32,7 +32,7 @@ public class Complement2 implements Complement {
 		} catch (NoSuchMethodError e) {
 		}
 
-		return dName == null ? null : serialize(dName);
+		return dName == null ? "" : serialize(dName);
 	}
 
 	@Override

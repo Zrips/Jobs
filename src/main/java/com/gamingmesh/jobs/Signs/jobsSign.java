@@ -97,7 +97,7 @@ public class jobsSign {
 	if (!string.contains(";"))
 	    return;
 
-	String[] split = string.replace(',', '.').split(";");
+	String[] split = string.replace(',', '.').split(";", 4);
 
 	int x = 0, y = 0, z = 0;
 

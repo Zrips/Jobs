@@ -94,11 +94,13 @@ public class JobsListener implements Listener {
     }
 
     private boolean isInteractOk(Player player) {
-	if (!interactDelay.containsKey(player.getUniqueId())) {
+	Long delay = interactDelay.get(player.getUniqueId());
+	if (delay == null) {
 	    interactDelay.put(player.getUniqueId(), System.currentTimeMillis());
 	    return true;
 	}
-	long time = System.currentTimeMillis() - interactDelay.get(player.getUniqueId());
+
+	long time = System.currentTimeMillis() - delay;
 	interactDelay.put(player.getUniqueId(), System.currentTimeMillis());
 	return time > 100;
     }
@@ -124,8 +126,8 @@ public class JobsListener implements Listener {
 	if (player.getGameMode() == GameMode.CREATIVE)
 	    event.setCancelled(true);
 
-	Block block = event.getClickedBlock();
-	Location loc = block.getLocation();
+	Location loc = event.getClickedBlock().getLocation();
+
 	if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 	    Jobs.getSelectionManager().placeLoc1(player, loc);
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.area.output.selected1", "%x%", loc.getBlockX(), "%y%", loc.getBlockY(), "%z%", loc.getBlockZ()));
@@ -424,7 +426,9 @@ public class JobsListener implements Listener {
 	}
 
 	for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
-	    if (oneItem.getEnchants().containsKey(oneE.getKey()) && oneItem.getEnchants().get(oneE.getKey()) <= oneE.getValue()) {
+	    Integer value = oneItem.getEnchants().get(oneE.getKey());
+
+	    if (value != null && value <= oneE.getValue()) {
 		return true;
 	    }
 	}
@@ -565,7 +569,7 @@ public class JobsListener implements Listener {
 
 	ItemStack item = event.getItem();
 	ArmorTypes type = ArmorTypes.matchType(item);
-	if (ArmorTypes.matchType(item) == null)
+	if (type == null)
 	    return;
 
 	Location loc = event.getBlock().getLocation();

@@ -360,10 +360,8 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	ItemStack contents = event.getContents().getIngredient();
-	if (contents == null)
-	    return;
-
-	Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
+	if (contents != null)
+	    Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -619,10 +617,10 @@ public class JobsPaymentListener implements Listener {
 	    if (s == null)
 		continue;
 
-	    if (CMIMaterial.isDye(s.getType()))
+	    CMIMaterial mat = CMIMaterial.get(s);
+	    if (mat.isDye())
 		dyeStack.add(s);
 
-	    CMIMaterial mat = CMIMaterial.get(s);
 	    if (mat != CMIMaterial.NONE && mat != CMIMaterial.AIR) {
 		y++;
 
@@ -965,13 +963,15 @@ public class JobsPaymentListener implements Listener {
 	    Enchantment enchant = oneEnchant.getKey();
 	    if (enchant == null)
 		continue;
+
 	    String enchantName = null;
 
 	    try {
 		enchantName = enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
 	    } catch (Throwable e) {
 		CMIEnchantment ench = CMIEnchantment.get(enchant);
-		enchantName = ench == null ? null : ench.toString();
+		if (ench != null)
+		    enchantName = ench.toString();
 	    }
 
 	    if (enchantName != null)
@@ -986,13 +986,10 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().PreventHopperFillUps)
 	    return;
 
-	String type = event.getDestination().getType().toString();
-	if (!type.equalsIgnoreCase("FURNACE") && !type.equalsIgnoreCase("SMOKER") && !type.equalsIgnoreCase("BLAST_FURNACE"))
-	    return;
-
 	if (event.getItem().getType() == Material.AIR)
 	    return;
 
+	String type = event.getDestination().getType().toString();
 	Block block = null;
 
 	switch (type.toLowerCase()) {
@@ -1008,7 +1005,7 @@ public class JobsPaymentListener implements Listener {
 	    block = ((org.bukkit.block.BlastFurnace) event.getDestination().getHolder()).getBlock();
 	    break;
 	default:
-	    break;
+	    return;
 	}
 
 	if (block == null || !Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
@@ -1020,10 +1017,10 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToBrewingStand(InventoryMoveItemEvent event) {
-	if (event.getDestination().getType() != InventoryType.BREWING)
+	if (!Jobs.getGCManager().PreventBrewingStandFillUps || event.getDestination().getType() != InventoryType.BREWING)
 	    return;
 
-	if (!Jobs.getGCManager().PreventBrewingStandFillUps || event.getItem().getType() == Material.AIR)
+	if (event.getItem().getType() == Material.AIR)
 	    return;
 
 	final BrewingStand stand = (BrewingStand) event.getDestination().getHolder();
@@ -1227,11 +1224,10 @@ public class JobsPaymentListener implements Listener {
 	if (jDamager == null)
 	    return;
 
-	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
-	    Player VPlayer = (Player) lVictim;
-	    if (jDamager.getName().equalsIgnoreCase(VPlayer.getName()))
-		return;
-	}
+	boolean notNpc = lVictim instanceof Player && !lVictim.hasMetadata("NPC");
+
+	if (notNpc && jDamager.getName().equalsIgnoreCase(((Player) lVictim).getName()))
+	    return;
 
 	if (Jobs.getGCManager().payForStackedEntities) {
 	    if (JobsHook.WildStacker.isEnabled() && HookManager.getWildStackerHandler().isStackedEntity(lVictim)) {
@@ -1252,7 +1248,7 @@ public class JobsPaymentListener implements Listener {
 	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
 
 	// Payment for killing player with particular job, except NPC's
-	if (lVictim instanceof Player && !lVictim.hasMetadata("NPC")) {
+	if (notNpc) {
 	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) lVictim);
 	    if (jPlayer == null)
 		return;
@@ -1368,13 +1364,14 @@ public class JobsPaymentListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onArmorstandBreak(EntityDeathEvent event) {
 	Entity ent = event.getEntity();
+
 	if (!ent.getType().toString().equalsIgnoreCase("ARMOR_STAND"))
 	    return;
 
-	if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
+	if (!(ent.getLastDamageCause() instanceof EntityDamageByEntityEvent))
 	    return;
 
-	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
+	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) ent.getLastDamageCause();
 
 	//extra check for Citizens 2 sentry kills
 	if (!(e.getDamager() instanceof Player))
@@ -1480,11 +1477,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
-
-	Jobs.action(jPlayer, new ItemActionInfo(Jobs.getNms().getItemInMainHand(player), ActionType.EAT));
+	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(Jobs.getNms().getItemInMainHand(player), ActionType.EAT));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

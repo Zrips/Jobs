@@ -32,10 +32,10 @@ public class TabComplete implements TabCompleter {
 
 	    for (int i = 1; i <= args.length; i++) {
 		if (args.length == i + 1) {
-		    if (!Jobs.getGCManager().getCommandArgs().containsKey(first))
+		    List<String> argsList = Jobs.getGCManager().getCommandArgs().get(first);
+		    if (argsList == null)
 			break;
 
-		    List<String> argsList = Jobs.getGCManager().getCommandArgs().get(first);
 		    if (argsList.size() < i)
 			continue;
 

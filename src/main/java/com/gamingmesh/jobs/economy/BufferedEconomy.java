@@ -238,8 +238,8 @@ public class BufferedEconomy {
      * @param payment {@link BufferedPayment}
      */
     public void showPayment(BufferedPayment payment) {
-	if (payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline() || !payment.containsPayment()
-	    || Jobs.getGCManager().aBarSilentMode)
+	if (Jobs.getGCManager().aBarSilentMode || payment.getOfflinePlayer() == null || !payment.getOfflinePlayer().isOnline()
+	    || !payment.containsPayment())
 	    return;
 
 	UUID playerUUID = payment.getOfflinePlayer().getUniqueId();

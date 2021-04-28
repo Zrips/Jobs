@@ -21,17 +21,18 @@ public class quests implements Cmd {
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
 	JobsPlayer jPlayer = null;
+	boolean isPlayer = sender instanceof Player;
 
-	if (args.length >= 1 && args[0].equals("next") && (!(args[0].equalsIgnoreCase("stop") || args[0].equalsIgnoreCase("start")))) {
+	if (args.length >= 1 && isPlayer && args[0].equalsIgnoreCase("next")) {
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	    jPlayer.resetQuests();
 	} else {
-	    if (args.length >= 1 && (!(args[0].equalsIgnoreCase("stop") || args[0].equalsIgnoreCase("start")))) {
+	    if (args.length >= 1 && !args[0].equalsIgnoreCase("stop") && !args[0].equalsIgnoreCase("start")) {
 		if (!Jobs.hasPermission(sender, "jobs.command.admin.quests", true))
 		    return true;
 
 		jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-	    } else if (sender instanceof Player)
+	    } else if (isPlayer)
 		jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 	}
 
@@ -51,6 +52,7 @@ public class quests implements Cmd {
 	if (args.length >= 1) {
 	    Boolean stopped = null;
 	    String cmd = args[args.length == 1 ? 0 : 1];
+
 	    if (cmd.equalsIgnoreCase("stop") && Jobs.hasPermission(sender, "jobs.command.admin.quests.stop", false)) {
 		stopped = true;
 	    } else if (cmd.equalsIgnoreCase("start") && Jobs.hasPermission(sender, "jobs.command.admin.quests.start", false)) {
@@ -58,10 +60,8 @@ public class quests implements Cmd {
 	    }
 
 	    if (stopped != null) {
-		for (JobProgression jobProg : jPlayer.getJobProgression()) {
-		    for (QuestProgression q : jPlayer.getQuestProgressions(jobProg.getJob())) {
-			q.getQuest().setStopped(stopped);
-		    }
+		for (QuestProgression q : jPlayer.getQuestProgressions()) {
+		    q.getQuest().setStopped(stopped);
 		}
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.status.changed", "%status%",
@@ -72,7 +72,8 @@ public class quests implements Cmd {
 	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.toplineseparator", "[playerName]", jPlayer.getName(), "[questsDone]", jPlayer.getDoneQuests()));
-	if (!(sender instanceof Player)) {
+
+	if (!isPlayer) {
 	    return true;
 	}
 
@@ -128,6 +129,7 @@ public class quests implements Cmd {
 		    rm.addText(msg).addHover(hover).addCommand("jobs skipquest " + jobProg.getJob().getName() + " " + q.getQuest().getConfigName() + " " + jPlayer.getName());
 		} else
 		    rm.addText(msg).addHover(hover);
+
 		rm.show(sender);
 	    }
 	}
