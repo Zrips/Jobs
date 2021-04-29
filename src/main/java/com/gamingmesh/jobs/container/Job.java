@@ -43,7 +43,7 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 
 public class Job {
 
-    private EnumMap<ActionType, List<JobInfo>> jobInfo = new EnumMap<>(ActionType.class);
+    private Map<ActionType, List<JobInfo>> jobInfo = new EnumMap<>(ActionType.class);
 
     private List<JobPermission> jobPermissions;
     private List<JobCommands> jobCommands;
@@ -253,7 +253,7 @@ public class Job {
      * Gets the job info list
      * @return Job info list
      */
-    public EnumMap<ActionType, List<JobInfo>> getJobInfoList() {
+    public Map<ActionType, List<JobInfo>> getJobInfoList() {
 	return jobInfo;
     }
 

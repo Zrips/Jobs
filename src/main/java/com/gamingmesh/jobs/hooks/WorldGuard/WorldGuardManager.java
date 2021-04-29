@@ -12,7 +12,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.RestrictedArea;
-import com.gamingmesh.jobs.hooks.HookPlugin;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -21,7 +20,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 
-public class WorldGuardManager extends HookPlugin {
+public class WorldGuardManager {
 
     private WorldGuardPlugin wg;
     private boolean useOld = false;
@@ -37,7 +36,6 @@ public class WorldGuardManager extends HookPlugin {
 	}
     }
 
-    @Override
     public WorldGuardPlugin getPlugin() {
 	return wg;
     }

@@ -480,10 +480,10 @@ exampleJob:
     DIG_SPEED-1:
       income: 3.0
       experience: 10.0
-    DIG_SPEED-2:
+    dig_speed-2:
       income: 6.0
       experience: 20.0
-  # Brewing potions
+  # Brewing miscellaneous items
   Brew:
     nether_stalk:
       income: 5.0
@@ -492,7 +492,8 @@ exampleJob:
       income: 5.0
       experience: 3.0
   # Explore options. Each number represents players number in exploring that chunk
-  # 1 means that player is first in this chunk, 2 is second and so on, so you can give money not only for first player who discovers that chunk
+  # 1 means that player is first in this chunk, 2 is second and so on,
+  # so you can give money not only for first player who discovers that chunk
   Explore:
     1:
       income: 5.0
@@ -509,7 +510,7 @@ exampleJob:
     5:
       income: 0.1
       experience: 0.1
-  # permissions granted for joining class
+  # permissions granted for joining to a job
   permissions:
     # example node
     # Any name can be accepted
@@ -528,7 +529,7 @@ exampleJob:
       # Permission granted when reaching level 10
       level: 10
 
-  # Permissions granted when particular conditions are meet
+  # Permissions granted when particular conditions are met
   conditions:
     # Condition name, irrelevant, you can write anything in here
     first:

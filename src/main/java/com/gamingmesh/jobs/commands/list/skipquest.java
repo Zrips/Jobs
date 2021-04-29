@@ -88,19 +88,21 @@ public class skipquest implements Cmd {
 
 	double amount = Jobs.getGCManager().skipQuestCost;
 	BufferedEconomy econ = Jobs.getEconomy();
+	Player player = jPlayer.getPlayer();
+
 	if (amount > 0) {
-	    if (!econ.getEconomy().hasMoney(jPlayer.getPlayer(), amount)) {
+	    if (!econ.getEconomy().hasMoney(player, amount)) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("economy.error.nomoney"));
 		return false;
 	    }
 
-	    econ.getEconomy().withdrawPlayer(jPlayer.getPlayer(), amount);
+	    econ.getEconomy().withdrawPlayer(player, amount);
 	}
 
 	jPlayer.replaceQuest(old);
 
-	if (jPlayer.isOnline())
-	    Bukkit.dispatchCommand(jPlayer.getPlayer(), "jobs quests");
+	if (player.isOnline())
+	    Bukkit.dispatchCommand(player, "jobs quests");
 
 	if (amount > 0) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.skipquest.output.questSkipForCost", "%amount%", amount));

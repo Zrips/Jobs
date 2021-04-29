@@ -1178,25 +1178,37 @@ public class Jobs extends JavaPlugin {
 
 		if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
 		    income = 0D;
-		    if (gConfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.EXP))
+
+		    CurrencyLimit cLimit = gConfigManager.getLimit(CurrencyType.MONEY);
+
+		    if (cLimit.getStopWith().contains(CurrencyType.EXP))
 			expAmount = 0D;
-		    if (gConfigManager.getLimit(CurrencyType.MONEY).getStopWith().contains(CurrencyType.POINTS))
+
+		    if (cLimit.getStopWith().contains(CurrencyType.POINTS))
 			pointAmount = 0D;
 		}
 
 		if (!jPlayer.isUnderLimit(CurrencyType.EXP, expAmount)) {
 		    expAmount = 0D;
-		    if (gConfigManager.getLimit(CurrencyType.EXP).getStopWith().contains(CurrencyType.MONEY))
+
+		    CurrencyLimit cLimit = gConfigManager.getLimit(CurrencyType.EXP);
+
+		    if (cLimit.getStopWith().contains(CurrencyType.MONEY))
 			income = 0D;
-		    if (gConfigManager.getLimit(CurrencyType.EXP).getStopWith().contains(CurrencyType.POINTS))
+
+		    if (cLimit.getStopWith().contains(CurrencyType.POINTS))
 			pointAmount = 0D;
 		}
 
 		if (!jPlayer.isUnderLimit(CurrencyType.POINTS, pointAmount)) {
 		    pointAmount = 0D;
-		    if (gConfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.MONEY))
+
+		    CurrencyLimit cLimit = gConfigManager.getLimit(CurrencyType.POINTS);
+
+		    if (cLimit.getStopWith().contains(CurrencyType.MONEY))
 			income = 0D;
-		    if (gConfigManager.getLimit(CurrencyType.POINTS).getStopWith().contains(CurrencyType.EXP))
+
+		    if (cLimit.getStopWith().contains(CurrencyType.EXP))
 			expAmount = 0D;
 		}
 

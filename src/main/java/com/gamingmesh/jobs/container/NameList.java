@@ -22,18 +22,18 @@ public class NameList {
 
     private String id;
     private String meta;
-    private String Name;
-    private String MinecraftName;
+    private String name;
+    private String minecraftName;
 
-    public NameList(String id, String meta, String Name, String MinecraftName) {
+    public NameList(String id, String meta, String name, String minecraftName) {
 	this.id = id;
 	this.meta = meta;
-	this.Name = Name;
-	this.MinecraftName = MinecraftName;
+	this.name = name;
+	this.minecraftName = minecraftName;
     }
 
     public String getName() {
-	return Name;
+	return name;
     }
 
     public String getId() {
@@ -45,6 +45,6 @@ public class NameList {
     }
 
     public String getMinecraftName() {
-	return MinecraftName;
+	return minecraftName;
     }
 }

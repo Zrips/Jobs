@@ -395,7 +395,7 @@ public class NameTranslatorManager {
 		if (enchName == null)
 		    continue;
 
-		String name = Util.firstToUpperCase(enchName).replace('_', ' ');
+		String name = Util.firstToUpperCase(enchName);
 
 		ConfigurationSection section = c.getC().getConfigurationSection("EnchantList");
 		if (section != null) {

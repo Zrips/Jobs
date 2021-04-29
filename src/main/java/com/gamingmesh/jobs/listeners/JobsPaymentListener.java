@@ -735,7 +735,8 @@ public class JobsPaymentListener implements Listener {
 	final ItemStack[] preInv = player.getInventory().getContents();
 	// Clone the array. The content may (was for me) be mutable.
 	for (int i = 0; i < preInv.length; i++) {
-	    preInv[i] = preInv[i] != null ? preInv[i].clone() : null;
+	    if (preInv[i] != null)
+		preInv[i] = preInv[i].clone();
 	}
 
 	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {

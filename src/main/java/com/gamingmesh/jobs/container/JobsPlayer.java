@@ -208,9 +208,12 @@ public class JobsPlayer {
      * @param amount amount of points
      * @return true if it is under
      */
-    public boolean isUnderLimit(CurrencyType type, Double amount) {
+    public boolean isUnderLimit(CurrencyType type, double amount) {
+	if (amount == 0)
+	    return true;
+
 	Player player = getPlayer();
-	if (player == null || amount == 0)
+	if (player == null)
 	    return true;
 
 	CurrencyLimit limit = Jobs.getGCManager().getLimit(type);
@@ -231,14 +234,19 @@ public class JobsPlayer {
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit"));
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.limit.output.reached" + name + "limit2"));
 		}
+
 		data.setInformed(true);
 	    }
+
 	    if (data.isAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline())
 		ActionBarManager.send(player, Jobs.getLanguage().getMessage("command.limit.output." + name + "time", "%time%", TimeManage.to24hourShort(data.getLeftTime(type))));
+
 	    if (data.isReseted(type))
 		data.setReseted(type, false);
+
 	    return false;
 	}
+
 	data.addAmount(type, amount);
 	return true;
     }

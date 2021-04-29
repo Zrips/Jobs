@@ -81,8 +81,8 @@ public class PaymentData {
 	payments.put(type, new LimitsData(type, time == null ? System.currentTimeMillis() : time, Payment));
     }
 
-    public void addAmount(CurrencyType type, Double Payment) {
-	payments.get(type).addAmount(Payment);
+    public void addAmount(CurrencyType type, double payment) {
+	payments.get(type).addAmount(payment);
     }
 
     public long getLeftTime(CurrencyType type) {

@@ -30,18 +30,23 @@ public class stats implements Cmd {
 	    return true;
 	}
 
-	if (jPlayer.getJobProgression().isEmpty()) {
+	java.util.List<JobProgression> progressions = jPlayer.getJobProgression();
+
+	if (progressions.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.stats.error.nojob"));
 	    return true;
 	}
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getName()));
-	for (JobProgression jobProg : jPlayer.getJobProgression()) {
+
+	String leftClick = Jobs.getLanguage().getMessage("command.info.gui.leftClick");
+
+	for (JobProgression jobProg : progressions) {
 	    for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg).split("\n")) {
-		new RawMessage().addText(msg).addHover(Jobs.getLanguage().getMessage("command.info.gui.leftClick"))
-		.addCommand("jobs info " + jobProg.getJob().getName()).show(sender);
+		new RawMessage().addText(msg).addHover(leftClick).addCommand("jobs info " + jobProg.getJob().getName()).show(sender);
 	    }
 	}
+
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	return true;
     }

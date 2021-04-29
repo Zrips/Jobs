@@ -59,7 +59,9 @@ public class SignUtil {
 	if (jSign == null)
 	    return;
 
-	signsByLocation.put(jSign.locToBlockString(), jSign);
+	String locToBlockString = jSign.locToBlockString();
+
+	signsByLocation.put(locToBlockString, jSign);
 
 	String identifier = jSign.getIdentifier().toLowerCase();
 	Map<String, jobsSign> old = signsByType.get(identifier);
@@ -68,8 +70,7 @@ public class SignUtil {
 	    signsByType.put(identifier, old);
 	}
 
-	old.put(jSign.locToBlockString(), jSign);
-
+	old.put(locToBlockString, jSign);
 	signsByType.put(identifier, old);
     }
 
