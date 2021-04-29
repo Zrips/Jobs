@@ -68,7 +68,7 @@ public class GeneralConfigManager {
     private int ResetTimeHour, ResetTimeMinute, DailyQuestsSkips, FurnacesMaxDefault, BrewingStandsMaxDefault,
 	BrowseAmountToShow, JobsGUIRows, JobsGUIBackButton, JobsGUINextButton, JobsGUIStartPosition, JobsGUIGroupAmount, JobsGUISkipAmount;
 
-    public double skipQuestCost, MinimumOveralPaymentLimit, MinimumOveralPointsLimit, MonsterDamagePercentage,
+    public double skipQuestCost, MinimumOveralPaymentLimit, minimumOveralExpLimit, MinimumOveralPointsLimit, MonsterDamagePercentage,
 	DynamicPaymentMaxPenalty, DynamicPaymentMaxBonus, TaxesAmount;
 
     public Double TreeFellerMultiplier, gigaDrillMultiplier, superBreakerMultiplier;
@@ -85,7 +85,7 @@ public class GeneralConfigManager {
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
 	BrowseUseNewLook, payExploringWhenGliding = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
 	boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems/*, preventCropResizePayment*/, payItemDurabilityLoss,
-	applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useBreederFinder,
+	applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, aBarSilentMode, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
@@ -556,15 +556,26 @@ public class GeneralConfigManager {
 	applyToNegativeIncome = c.get("Economy.ApplyToNegativeIncome", false);
 
 	c.addComment("Economy.MinimumOveralPayment.use",
-	    "Determines minimum payment. In example if player uses McMMO treefeller and earns only 20%, but at same time he gets 25% penalty from dynamic payment. He can 'get' negative amount of money",
+	    "Determines minimum payment.",
+	    "In example if player uses McMMO treefeller and earns only 20%, but at same time player gets 25% penalty from dynamic payment.",
+	    "The player can 'get' negative amount of money",
 	    "This will limit it to particular percentage", "Works only when original payment is above 0");
 	useMinimumOveralPayment = c.get("Economy.MinimumOveralPayment.use", true);
 	MinimumOveralPaymentLimit = c.get("Economy.MinimumOveralPayment.limit", 0.1);
 	c.addComment("Economy.MinimumOveralPoints.use",
-	    "Determines minimum payment. In example if player uses McMMO treefeller and earns only 20%, but at same time he gets 25% penalty from dynamic payment. He can 'get' negative amount of money",
+	    "Determines minimum payment for points.",
+	    "In example if player uses McMMO treefeller and earns only 20%, but at same time player gets 25% penalty from dynamic payment.",
+	    "The player can 'get' negative amount of points",
 	    "This will limit it to particular percentage", "Works only when original payment is above 0");
 	useMinimumOveralPoints = c.get("Economy.MinimumOveralPoints.use", true);
 	MinimumOveralPointsLimit = c.get("Economy.MinimumOveralPoints.limit", 0.1);
+	c.addComment("Economy.MinimumOveralExp.use",
+	    "Determines minimum payment for experience.",
+	    "In example if player uses McMMO treefeller and earns only 20%, but at same time player gets 25% penalty from dynamic payment.",
+	    "The player can 'get' negative amount of experience",
+	    "This will limit it to particular percentage", "Works only when original payment is above 0");
+	useMinimumOveralExp = c.get("Economy.MinimumOveralExp.use", true);
+	minimumOveralExpLimit = c.get("Economy.MinimumOveralExp.limit", 0.1);
 
 	c.addComment("Economy.DynamicPayment.use", "Do you want to use dynamic payment dependent on how many players already working for jobs?",
 	    "This can help automatically lift up payments for not so popular jobs and lower for most popular ones");

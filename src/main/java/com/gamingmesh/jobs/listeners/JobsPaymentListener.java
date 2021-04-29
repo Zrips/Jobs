@@ -1138,7 +1138,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	LivingEntity lVictim = (LivingEntity) e.getEntity();
-	UUID lVictimUUID = lVictim.getUniqueId();
 	boolean hadSpawnerMobMetadata = lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata());
 
 	if (hadSpawnerMobMetadata) {
@@ -1149,10 +1148,14 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	if (Jobs.getGCManager().MonsterDamageUse) {
+	    UUID lVictimUUID = lVictim.getUniqueId();
 	    Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
+
 	    if (damage != null) {
 		double perc = (damage * 100D) / Jobs.getNms().getMaxHealth(lVictim);
+
 		damageDealtByPlayers.invalidate(lVictimUUID);
+
 		if (perc < Jobs.getGCManager().MonsterDamagePercentage)
 	    return;
 	    }
@@ -1172,23 +1175,25 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	Player pDamager = null;
+
+	boolean isTameable = e.getDamager() instanceof Tameable;
 	boolean isMyPet = HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null);
 
-	// Checking if killer is player
-	if (e.getDamager() instanceof Player) {
+	if (e.getDamager() instanceof Player) { // Checking if killer is player
 	    pDamager = (Player) e.getDamager();
-	    // Checking if killer is MyPet animal
-	} else if (isMyPet) {
+	} else if (isMyPet) { // Checking if killer is MyPet animal
 	    UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(e.getDamager());
+
 	    if (uuid != null)
 		pDamager = Bukkit.getPlayer(uuid);
-	    // Checking if killer is tamed animal
-	} else if (e.getDamager() instanceof Tameable) {
+	} else if (isTameable) { // Checking if killer is tamed animal
 	    Tameable t = (Tameable) e.getDamager();
+
 	    if (t.isTamed() && t.getOwner() instanceof Player)
 		pDamager = (Player) t.getOwner();
 	} else if (e.getDamager() instanceof Projectile) {
 	    Projectile pr = (Projectile) e.getDamager();
+
 	    if (pr.getShooter() instanceof Player)
 		pDamager = (Player) pr.getShooter();
 	}
@@ -1197,10 +1202,9 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Prevent payment for killing mobs with pet by denying permission
-	if (isMyPet || (e.getDamager() instanceof Tameable && ((Tameable) e.getDamager()).isTamed() &&
-		((Tameable) e.getDamager()).getOwner() instanceof Player)) {
+	if (isMyPet || isTameable) {
 	    for (PermissionAttachmentInfo perm : pDamager.getEffectivePermissions()) {
-		if (!perm.getValue() && "jobs.petpay".equals(perm.getPermission())) {
+		if (!perm.getValue() && perm.getPermission().contains("jobs.petpay")) {
 		    return;
 		}
 	    }
@@ -1695,7 +1699,7 @@ public class JobsPaymentListener implements Listener {
     }
 
     public static boolean payIfCreative(Player player) {
-	if (player.getGameMode() == GameMode.CREATIVE && !Jobs.getGCManager().payInCreative() && !player.hasPermission("jobs.paycreative"))
+	if (!Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE && !player.hasPermission("jobs.paycreative"))
 	    return false;
 
 	return true;

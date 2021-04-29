@@ -195,9 +195,13 @@ public class Jobs extends JavaPlugin {
 	if (papi == null || !papi.isEnabled())
 	    return false;
 
-	if (Integer.parseInt(papi
-	    .getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100 && new PlaceholderAPIHook(this).register()) {
-	    consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
+	try {
+	    if (Integer.parseInt(papi
+		.getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100 && new PlaceholderAPIHook(this).register()) {
+		consoleMsg("&e[Jobs] PlaceholderAPI hooked.");
+	    }
+	} catch (NumberFormatException ex) {
+	    return false;
 	}
 
 	return true;
@@ -1000,26 +1004,29 @@ public class Jobs extends JavaPlugin {
 	    }
 
 	    // Calculate income
-
 	    if (income != 0D) {
 		income = boost.getFinalAmount(CurrencyType.MONEY, income);
+
 		if (gConfigManager.useMinimumOveralPayment && income > 0) {
 		    double maxLimit = income * gConfigManager.MinimumOveralPaymentLimit;
+
 		    if (income < maxLimit)
 			income = maxLimit;
 		}
 	    }
 
 	    // Calculate points
-
 	    if (pointAmount != 0D) {
 		pointAmount = boost.getFinalAmount(CurrencyType.POINTS, pointAmount);
+
 		if (gConfigManager.useMinimumOveralPoints && pointAmount > 0) {
-		    double maxLimit = pointAmount * gConfigManager.MinimumOveralPaymentLimit;
+		    double maxLimit = pointAmount * gConfigManager.MinimumOveralPointsLimit;
+
 		    if (pointAmount < maxLimit)
 			pointAmount = maxLimit;
 		}
 	    }
+
 	    if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
 		if (gConfigManager.useMaxPaymentCurve) {
 		    double percentOver = jPlayer.percentOverLimit(CurrencyType.MONEY);
@@ -1136,8 +1143,10 @@ public class Jobs extends JavaPlugin {
 		// Calculate income
 		if (income != 0D) {
 		    income = boost.getFinalAmount(CurrencyType.MONEY, income);
+
 		    if (gConfigManager.useMinimumOveralPayment && income > 0) {
 			double maxLimit = income * gConfigManager.MinimumOveralPaymentLimit;
+
 			if (income < maxLimit)
 			    income = maxLimit;
 		    }
@@ -1146,20 +1155,25 @@ public class Jobs extends JavaPlugin {
 		// Calculate points
 		if (pointAmount != 0D) {
 		    pointAmount = boost.getFinalAmount(CurrencyType.POINTS, pointAmount);
+
 		    if (gConfigManager.useMinimumOveralPoints && pointAmount > 0) {
-			double maxLimit = pointAmount * gConfigManager.MinimumOveralPaymentLimit;
+			double maxLimit = pointAmount * gConfigManager.MinimumOveralPointsLimit;
+
 			if (pointAmount < maxLimit)
 			    pointAmount = maxLimit;
 		    }
 		}
 
 		// Calculate exp
-		expAmount = boost.getFinalAmount(CurrencyType.EXP, expAmount);
+		if (expAmount != 0D) {
+		    expAmount = boost.getFinalAmount(CurrencyType.EXP, expAmount);
 
-		if (gConfigManager.useMinimumOveralPayment && expAmount > 0) {
-		    double maxLimit = expAmount * gConfigManager.MinimumOveralPaymentLimit;
-		    if (expAmount < maxLimit)
-			expAmount = maxLimit;
+		    if (gConfigManager.useMinimumOveralExp && expAmount > 0) {
+			double maxLimit = expAmount * gConfigManager.minimumOveralExpLimit;
+
+			if (expAmount < maxLimit)
+			    expAmount = maxLimit;
+		    }
 		}
 
 		if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {

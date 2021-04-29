@@ -102,12 +102,9 @@ public class JobsCommands implements CommandExecutor {
 
     private String getUsage(String cmd) {
 	String cmdString = Jobs.getLanguage().getMessage("command.help.output.cmdFormat", "[command]", Jobs.getLanguage().getMessage("command.help.output.label") + " " + cmd);
-	String key = "command." + cmd + ".help.args";
-	if (Jobs.getLanguage().containsKey(key) && !Jobs.getLanguage().getMessage(key).isEmpty()) {
-	    cmdString = cmdString.replace("[arguments]", Jobs.getLanguage().getMessage(key));
-	} else
-	    cmdString = cmdString.replace("[arguments]", "");
+	String msg = Jobs.getLanguage().getMessage("command." + cmd + ".help.args");
 
+	cmdString = cmdString.replace("[arguments]", !msg.isEmpty() ? msg : "");
 	return cmdString;
     }
 

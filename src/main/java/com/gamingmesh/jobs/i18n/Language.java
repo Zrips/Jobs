@@ -60,7 +60,7 @@ public class Language {
 	String missing = "MLF " + key;
 	String msg = "";
 	try {
-	    if (customlocale == null || !customlocale.contains(key))
+	    if (!customlocale.contains(key))
 		msg = enlocale.isString(key) ? CMIChatColor.translate(enlocale.getString(key)) : missing;
 	    else
 		msg = customlocale.isString(key) ? CMIChatColor.translate(customlocale.getString(key)) : missing;
@@ -75,10 +75,14 @@ public class Language {
 	    try {
 
 		List<String> ls = null;
-		if (customlocale != null && customlocale.isList(key))
+
+		if (customlocale.isList(key))
 		    ls = colorsArray(customlocale.getStringList(key), true);
-		else if (enlocale.isList(key))
-		    ls = !enlocale.getStringList(key).isEmpty() ? colorsArray(enlocale.getStringList(key), true) : Arrays.asList(missing);
+		else if (enlocale.isList(key)) {
+		    ls = enlocale.getStringList(key);
+		    ls = !ls.isEmpty() ? colorsArray(ls, true) : Arrays.asList(missing);
+		}
+
 		if (ls != null)
 		    for (String one : ls) {
 			if (!msg.isEmpty())
@@ -113,8 +117,10 @@ public class Language {
 	List<String> ls;
 	if (customlocale.isList(key))
 	    ls = colorsArray(customlocale.getStringList(key), true);
-	else
-	    ls = !enlocale.getStringList(key).isEmpty() ? colorsArray(enlocale.getStringList(key), true) : Arrays.asList(missing);
+	else {
+	    ls = enlocale.getStringList(key);
+	    ls = !ls.isEmpty() ? colorsArray(ls, true) : Arrays.asList(missing);
+	}
 
 	if (variables != null && variables.length > 0)
 	    for (int i = 0; i < ls.size(); i++) {
@@ -139,32 +145,14 @@ public class Language {
 
     public List<String> colorsArray(List<String> text, boolean colorize) {
 	List<String> temp = new ArrayList<>();
+
 	for (String part : text) {
 	    if (colorize)
 		part = CMIChatColor.translate(part);
-	    temp.add(CMIChatColor.translate(part));
+
+	    temp.add(part);
 	}
 
 	return temp;
-    }
-
-    /**
-     * Get the message with the correct key
-     * @param key - the key of the message
-     * @return the message
-     */
-    public String getDefaultMessage(String key) {
-	return enlocale.contains(key) ? CMIChatColor.translate(enlocale.getString(key)) : "Can't find locale";
-    }
-
-    /**
-     * Check if key exists
-     * @param key - the key of the message
-     * @return true/false
-     */
-    public boolean containsKey(String key) {
-	if (customlocale == null || !customlocale.contains(key))
-	    return enlocale.contains(key);
-	return customlocale.contains(key);
     }
 }
