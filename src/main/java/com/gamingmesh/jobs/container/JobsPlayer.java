@@ -1355,7 +1355,8 @@ public class JobsPlayer {
 
     public boolean isLeftTimeEnded(Job job) {
 	Map<Job, Long> map = leftTimes.get(getUniqueId());
-	return map != null && map.containsKey(job) && map.get(job).longValue() < System.currentTimeMillis();
+	Long time = map != null ? map.get(job) : null;
+	return time != null && time.longValue() < System.currentTimeMillis();
     }
 
     public void setLeftTime(Job job) {

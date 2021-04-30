@@ -15,18 +15,19 @@ public class placeholders implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	Player player = null;
-	if (sender instanceof Player)
-	    player = (Player) sender;
+	boolean isPlayer = sender instanceof Player;
+	Player player = isPlayer ? (Player) sender : null;
 
 	int page = 1;
 	if (args.length > 0) {
-	    if (sender instanceof Player && args[0].startsWith("-p:")) {
-		try {
-		    page = Integer.parseInt(args[0].substring("-p:".length()));
-		} catch (Exception e) {
+	    if (isPlayer) {
+		if (args[0].startsWith("-p:")) {
+		    try {
+			page = Integer.parseInt(args[0].substring("-p:".length()));
+		    } catch (NumberFormatException e) {
+		    }
 		}
-	    } else if (!(sender instanceof Player)) {
+	    } else {
 		player = Bukkit.getPlayer(args[0]);
 		if (player == null) {
 		    Jobs.consoleMsg("&cPlayer cannot be null!");
@@ -47,10 +48,10 @@ public class placeholders implements Cmd {
 	    return true;
 	}
 
-	PageInfo pi = new PageInfo(sender instanceof Player ? Jobs.getGCManager().PlaceholdersPage
-		    : JobsPlaceHolders.values().length, JobsPlaceHolders.values().length, page);
+	JobsPlaceHolders[] values = JobsPlaceHolders.values();
+	PageInfo pi = new PageInfo(isPlayer ? Jobs.getGCManager().PlaceholdersPage : values.length, values.length, page);
 
-	for (JobsPlaceHolders one : JobsPlaceHolders.values()) {
+	for (JobsPlaceHolders one : values) {
 	    if (one.isHidden())
 		continue;
 	    if (pi.isBreak())
