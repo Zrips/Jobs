@@ -21,9 +21,9 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class NameTranslatorManager {
 
-    private final Map<CMIMaterial, NameList> ListOfNames = new HashMap<>();
-    private final List<NameList> ListOfEntities = new ArrayList<>(), ListOfColors = new ArrayList<>();
-    private final Map<String, NameList> ListOfEnchants = new HashMap<>(), ListOfMMEntities = new HashMap<>();
+    private final Map<CMIMaterial, NameList> listOfNames = new HashMap<>();
+    private final List<NameList> listOfEntities = new ArrayList<>(), listOfColors = new ArrayList<>();
+    private final Map<String, NameList> listOfEnchants = new HashMap<>(), listOfMMEntities = new HashMap<>();
 
     public String translate(String materialName, JobInfo info) {
 	return translate(materialName, info.getActionType(), info.getId(), info.getMeta(), info.getName());
@@ -53,7 +53,7 @@ public class NameTranslatorManager {
 		materialName = materialName.replace(" ", "");
 
 		CMIMaterial mat = CMIMaterial.get(materialName);
-		NameList nameLs = ListOfNames.get(mat);
+		NameList nameLs = listOfNames.get(mat);
 
 	    if (nameLs != null) {
 		if (meta != null && !meta.isEmpty() && mat.isCanHavePotionType() && Util.getPotionByName(meta) != null) {
@@ -65,7 +65,7 @@ public class NameTranslatorManager {
 
 		if (name != null && !name.isEmpty()) {
 		    mat = CMIMaterial.get(materialName);
-		    nameLs = ListOfNames.get(mat);
+		    nameLs = listOfNames.get(mat);
 
 		    if (nameLs != null) {
 			return nameLs.getName();
@@ -74,11 +74,11 @@ public class NameTranslatorManager {
 
 		if (meta != null && !meta.isEmpty()) {
 		    mat = CMIMaterial.get(materialName + ":" + meta);
-		    nameLs = ListOfNames.get(mat);
+		    nameLs = listOfNames.get(mat);
 		    if (nameLs == null) {
 			mat = CMIMaterial.get(materialName.replace(" ", ""));
-			nameLs = ListOfNames.get(mat);
-			NameList nameMeta = ListOfNames.get(CMIMaterial.get(meta.replace(" ", "")));
+			nameLs = listOfNames.get(mat);
+			NameList nameMeta = listOfNames.get(CMIMaterial.get(meta.replace(" ", "")));
 			if (nameLs != null && nameMeta != null) {
 			    return nameLs + ":" + nameMeta;
 			}
@@ -93,7 +93,7 @@ public class NameTranslatorManager {
 
 		if (id > 0 && meta != null && !meta.isEmpty()) {
 		    mat = CMIMaterial.get(id + ":" + meta);
-		    nameLs = ListOfNames.get(mat);
+		    nameLs = listOfNames.get(mat);
 		    if (nameLs == null) {
 			return mat.getName();
 		    }
@@ -104,7 +104,7 @@ public class NameTranslatorManager {
 	    case KILL:
 	    case MILK:
 	    case TAME:
-		for (NameList one : ListOfEntities) {
+		for (NameList one : listOfEntities) {
 		    String ids = one.getId() + ":" + one.getMeta();
 		    if (!one.getMeta().isEmpty() && ids.equalsIgnoreCase(id + ":" + meta) && !one.getId().equals("0")) {
 			return one.getName();
@@ -127,15 +127,14 @@ public class NameTranslatorManager {
 		    mName = split[0];
 		    level = ":" + split[1];
 		}
-		NameList nameInfo = ListOfEnchants.get(mName.toLowerCase().replace("_", ""));
+		NameList nameInfo = listOfEnchants.get(mName.toLowerCase().replace("_", ""));
 		if (nameInfo != null) {
 		    return nameInfo.getMinecraftName() + level;
 		}
 		break;
 	    case SHEAR:
-		for (NameList one : ListOfColors) {
-		    String ids = one.getMinecraftName();
-		    if (ids.equalsIgnoreCase(name)) {
+		for (NameList one : listOfColors) {
+		    if (one.getMinecraftName().equalsIgnoreCase(name)) {
 			return one.getName();
 		    }
 		}
@@ -145,7 +144,7 @@ public class NameTranslatorManager {
 		.collect(Collectors.joining(" ")); // returns capitalized word (from this -> To This)
 		return fallbackColorName;
 	    case MMKILL:
-		NameList got = ListOfMMEntities.get(materialName.toLowerCase());
+		NameList got = listOfMMEntities.get(materialName.toLowerCase());
 		if (got != null && got.getName() != null)
 		    return got.getName();
 		return HookManager.getMythicManager() == null ? materialName : HookManager.getMythicManager().getDisplayName(materialName);
@@ -167,7 +166,7 @@ public class NameTranslatorManager {
 	ConfigurationSection section = itemFile.getConfig().getConfigurationSection("ItemList");
 
 	if (section != null) {
-	    ListOfNames.clear();
+	    listOfNames.clear();
 
 	    for (String one : section.getKeys(false)) {
 		String[] firstSplit = one.split("-", 2);
@@ -180,16 +179,16 @@ public class NameTranslatorManager {
 
 		String mcName = firstSplit.length > 1 ? firstSplit[1] : one;
 
-		ListOfNames.put(CMIMaterial.get(one), new NameList(id, meta, section.getString(one), mcName));
+		listOfNames.put(CMIMaterial.get(one), new NameList(id, meta, section.getString(one), mcName));
 	    }
 
-	    if (ListOfNames.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfNames.size() + " custom item names!");
+	    if (listOfNames.size() > 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfNames.size() + " custom item names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The ItemList section not found in " + itemFile.fileName + " file.");
 
 	if ((section = itemFile.getConfig().getConfigurationSection("EntityList")) != null) {
-	    ListOfEntities.clear();
+	    listOfEntities.clear();
 
 	    for (String one : section.getKeys(false)) {
 		String[] firstSplit = one.split("-", 2);
@@ -201,51 +200,51 @@ public class NameTranslatorManager {
 		String meta = splitted.length > 1 ? splitted[1] : "";
 		String mcName = firstSplit.length > 1 ? firstSplit[1] : one;
 
-		ListOfEntities.add(new NameList(id, meta, section.getString(one), mcName));
+		listOfEntities.add(new NameList(id, meta, section.getString(one), mcName));
 	    }
 
-	    if (ListOfEntities.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfEntities.size() + " custom entity names!");
+	    if (listOfEntities.size() > 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfEntities.size() + " custom entity names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The EntityList section not found in " + itemFile.fileName + " file.");
 
 	if ((section = itemFile.getConfig().getConfigurationSection("MythicEntityList")) != null) {
-	    ListOfMMEntities.clear();
+	    listOfMMEntities.clear();
 
 	    for (String one : section.getKeys(false)) {
 		String name = section.getString(one);
-		ListOfMMEntities.put(one.toLowerCase(), new NameList(null, null, name, name));
+		listOfMMEntities.put(one.toLowerCase(), new NameList(null, null, name, name));
 	    }
 
-	    if (ListOfMMEntities.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfMMEntities.size() + " custom MythicMobs names!");
+	    if (listOfMMEntities.size() > 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfMMEntities.size() + " custom MythicMobs names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The MythicEntityList section not found in " + itemFile.fileName + " file.");
 
 	if ((section = itemFile.getConfig().getConfigurationSection("EnchantList")) != null) {
-	    ListOfEnchants.clear();
+	    listOfEnchants.clear();
 
 	    for (String one : section.getKeys(false)) {
-		ListOfEnchants.put(one.replace("_", "").toLowerCase(), new NameList(one, one, one, section.getString(one)));
+		listOfEnchants.put(one.replace("_", "").toLowerCase(), new NameList(one, one, one, section.getString(one)));
 	    }
 
-	    if (ListOfEnchants.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfEnchants.size() + " custom enchant names!");
+	    if (listOfEnchants.size() > 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfEnchants.size() + " custom enchant names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The EnchantList section not found in " + itemFile.fileName + " file.");
 
 	if ((section = itemFile.getConfig().getConfigurationSection("ColorList")) != null) {
-	    ListOfColors.clear();
+	    listOfColors.clear();
 
 	    for (String one : section.getKeys(false)) {
 		String[] split = one.split("-", 2);
 		String id = split.length > 0 ? split[0] : one;
 		String mcName = split.length > 1 ? split[1] : "";
-		ListOfColors.add(new NameList(id, "", section.getString(one), mcName));
+		listOfColors.add(new NameList(id, "", section.getString(one), mcName));
 	    }
 
-	    if (ListOfColors.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + ListOfColors.size() + " custom color names!");
+	    if (listOfColors.size() > 0)
+		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfColors.size() + " custom color names!");
 	} else
 	    Jobs.consoleMsg("&c[Jobs] The ColorList section not found in " + itemFile.fileName + " file.");
     }
@@ -390,20 +389,20 @@ public class NameTranslatorManager {
 		c.get("EntityList." + ent.getId() + "-" + ent.toString(), name);
 	    }
 
+	    ConfigurationSection enchSection = c.getC().getConfigurationSection("EnchantList");
 	    for (Enchantment one : Enchantment.values()) {
 		String enchName = CMIEnchantment.getName(one);
-		if (enchName == null)
+		if (enchName.equals("Unknown"))
 		    continue;
 
-		String name = Util.firstToUpperCase(enchName);
+		String name = enchName;
 
-		ConfigurationSection section = c.getC().getConfigurationSection("EnchantList");
-		if (section != null) {
-		    for (String onek : section.getKeys(false)) {
-			String old = section.getString(onek + ".MCName");
+		if (enchSection != null) {
+		    for (String onek : enchSection.getKeys(false)) {
+			String old = enchSection.getString(onek + ".MCName");
 
 			if (old != null && old.equalsIgnoreCase(enchName)) {
-			    name = section.getString(onek + ".Name");
+			    name = enchSection.getString(onek + ".Name");
 			    break;
 			}
 		    }

@@ -61,12 +61,12 @@ public class MythicMobs4 implements MythicMobInterface {
 	MythicMob mm = MMAPI.getMythicMob(id);
 	try {
 	    if (mm != null && mm.getDisplayName() != null)
-		return mm.getDisplayName().get();
+		return mm.getDisplayName().toString();
 	} catch (Throwable e) {
 	    if (!failed) {
 		failed = true;
-		Jobs.consoleMsg("&cEncountered error when checking MythicMob entity name. Support for mythicMobs will be suspended for time beying. Please report this issue.");
 		e.printStackTrace();
+		Jobs.consoleMsg("&cEncountered error when checking MythicMob entity name. Support for mythicMobs will be suspended for time beying. Please report this issue.");
 	    }
 	}
 

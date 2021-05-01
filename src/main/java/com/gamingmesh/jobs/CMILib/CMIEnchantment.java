@@ -206,7 +206,7 @@ public enum CMIEnchantment {
     }
 
     public String getName() {
-	return Util.firstToUpperCase(toString().replace('_', ' '));
+	return Util.firstToUpperCase(toString());
     }
 
     public static String getName(Enchantment enchant) {
