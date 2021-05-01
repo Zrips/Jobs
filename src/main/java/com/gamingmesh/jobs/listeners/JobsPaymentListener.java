@@ -1139,13 +1139,15 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	LivingEntity lVictim = (LivingEntity) e.getEntity();
-	boolean hadSpawnerMobMetadata = lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata());
 
-	if (hadSpawnerMobMetadata) {
+	// mob spawner, no payment or experience
+	if (!Jobs.getGCManager().payNearSpawner() && lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
 	    try {
 		// So lets remove meta in case some plugin removes entity in wrong way.
 		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
 	    } catch (Exception ignored) { }
+
+	    return;
 	}
 
 	if (Jobs.getGCManager().MonsterDamageUse) {
@@ -1161,10 +1163,6 @@ public class JobsPaymentListener implements Listener {
 	    return;
 	    }
 	}
-
-	// mob spawner, no payment or experience
-	if (!Jobs.getGCManager().payNearSpawner() && hadSpawnerMobMetadata)
-	    return;
 
 	//extra check for Citizens 2 sentry kills
 	if (e.getDamager() instanceof Player && e.getDamager().hasMetadata("NPC"))
