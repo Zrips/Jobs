@@ -24,8 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -44,9 +47,10 @@ import com.gamingmesh.jobs.resources.jfep.Parser;
 public class GeneralConfigManager {
 
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
-    public List<String> FwColors = new ArrayList<>(), DisabledWorldsList = new ArrayList<>();
+    public List<String> DisabledWorldsList = new ArrayList<>();
 
     public final Map<CMIMaterial, Map<Enchantment, Integer>> whiteListedItems = new HashMap<>();
+
     private final Map<CurrencyType, CurrencyLimit> currencyLimitUse = new HashMap<>();
     private final Map<CurrencyType, Double> generalMulti = new HashMap<>();
     private final Map<String, List<String>> commandArgs = new HashMap<>();
@@ -57,7 +61,7 @@ public class GeneralConfigManager {
     protected boolean economyAsync, isBroadcastingSkillups, isBroadcastingLevelups, payInCreative, payExploringWhenFlying,
 	addXpPlayer, hideJobsWithoutPermission, payNearSpawner, modifyChat, saveOnDisconnect, MultiServerCompatability;
 
-    public String modifyChatPrefix, modifyChatSuffix, modifyChatSeparator, FireworkType, SoundLevelupSound,
+    public String modifyChatPrefix, modifyChatSuffix, modifyChatSeparator, SoundLevelupSound,
 	SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName, localeString = "";
     private String getSelectionTool, DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
 
@@ -80,6 +84,8 @@ public class GeneralConfigManager {
 
     private boolean FurnacesReassign, BrewingStandsReassign, useTnTFinder = false, ShowNewVersion;
 
+    private FireworkEffect fireworkEffect;
+
     public boolean useBlockProtection, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
@@ -90,7 +96,7 @@ public class GeneralConfigManager {
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, aBarSilentMode, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames,
-	DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UseFlicker, UseTrail, UsePerPermissionForLeaving,
+	DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
 	EnableConfirmation, FilterHiddenPlayerFromTabComplete, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve,
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
 	BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
@@ -891,12 +897,49 @@ public class GeneralConfigManager {
 	c.addComment("Fireworks.LevelUp.Random", "Makes the firework to randomize, such as random colors, type, power and so on.",
 	    "These are under settings will not be work, when this enabled.");
 	UseRandom = c.get("Fireworks.LevelUp.Random", true);
-	UseFlicker = c.get("Fireworks.LevelUp.flicker", true);
-	UseTrail = c.get("Fireworks.LevelUp.trail", true);
+
+	boolean useFlicker = c.get("Fireworks.LevelUp.flicker", true);
+	boolean useTrail = c.get("Fireworks.LevelUp.trail", true);
+
 	c.addComment("Fireworks.LevelUp.type", "Firework type",
 	    "All types can be found in https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/FireworkEffect.Type.html");
-	FireworkType = c.get("Fireworks.LevelUp.type", "STAR").toUpperCase();
-	FwColors = c.get("Fireworks.LevelUp.colors", Arrays.asList("230,0,0", "0,90,0", "0,0,104"));
+
+	FireworkEffect.Type fwType = FireworkEffect.Type.STAR;
+	try {
+	    fwType = FireworkEffect.Type.valueOf(c.get("Fireworks.LevelUp.type", "STAR").toUpperCase());
+	} catch (IllegalArgumentException ex) {
+	}
+
+	List<String> fwColors = c.get("Fireworks.LevelUp.colors", Arrays.asList("230,0,0", "0,90,0", "0,0,104"));
+
+	Color[] colors = new Color[fwColors.size()];
+	Pattern comma = Pattern.compile(",", 16);
+
+	for (int s = 0; s < colors.length; s++) {
+	    String[] sSplit = comma.split(fwColors.get(s));
+	    if (sSplit.length < 3)
+		continue;
+
+	    int[] colorRGB = new int[3];
+	    for (int i = 0; i < 3; i++) {
+		try {
+		    int parsed = Integer.parseInt(sSplit[i]);
+		    colorRGB[i] = (parsed > 255 || parsed < 0) ? 1 : parsed;
+		} catch (NumberFormatException e) {
+		}
+	    }
+
+	    colors[s] = Color.fromRGB(colorRGB[0], colorRGB[1], colorRGB[2]);
+	}
+
+	fireworkEffect = FireworkEffect.builder()
+	    .flicker(useFlicker)
+	    .trail(useTrail)
+	    .with(fwType)
+	    .withColor(colors)
+	    .withFade(colors)
+	    .build();
+
 	FireworkPower = c.get("Fireworks.LevelUp.power", 1);
 	c.addComment("Fireworks.LevelUp.ShootTime", "Fire shooting time in ticks.", "20 tick = 1 second");
 	ShootTime = c.get("Fireworks.LevelUp.ShootTime", 20);
@@ -990,16 +1033,8 @@ public class GeneralConfigManager {
 	return ResetTimeHour;
     }
 
-    public void setResetTimeHour(int resetTimeHour) {
-	ResetTimeHour = resetTimeHour;
-    }
-
     public int getResetTimeMinute() {
 	return ResetTimeMinute;
-    }
-
-    public void setResetTimeMinute(int resetTimeMinute) {
-	ResetTimeMinute = resetTimeMinute;
     }
 
     public boolean isFurnacesReassign() {
@@ -1044,8 +1079,9 @@ public class GeneralConfigManager {
 	if (JobsGUIBackButton < 1)
 	    JobsGUIBackButton = 1;
 
-	if (JobsGUIBackButton > JobsGUIRows * 9)
-	    JobsGUIBackButton = JobsGUIRows * 9;
+	int mult = JobsGUIRows * 9;
+	if (JobsGUIBackButton > mult)
+	    JobsGUIBackButton = mult;
 
 	return JobsGUIBackButton - 1;
     }
@@ -1054,8 +1090,9 @@ public class GeneralConfigManager {
 	if (JobsGUINextButton < 1)
 	    JobsGUINextButton = 1;
 
-	if (JobsGUINextButton > JobsGUIRows * 9)
-	    JobsGUINextButton = JobsGUIRows * 9;
+	int mult = JobsGUIRows * 9;
+	if (JobsGUINextButton > mult)
+	    JobsGUINextButton = mult;
 
 	return JobsGUINextButton - 1;
     }
@@ -1087,4 +1124,7 @@ public class GeneralConfigManager {
 	return DailyQuestsSkips;
     }
 
+    public FireworkEffect getFireworkEffect() {
+	return fireworkEffect;
+    }
 }

@@ -27,7 +27,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -335,7 +334,7 @@ public class PlayerManager {
 	    if (!resetID && jPlayer.getUserId() == -1)
 		continue;
 
-	    for (JobProgression oneJ : jPlayer.getJobProgression())
+	    for (JobProgression oneJ : jPlayer.progression)
 		dao.insertJob(jPlayer, oneJ);
 
 	    dao.saveLog(jPlayer);
@@ -528,7 +527,7 @@ public class PlayerManager {
      * @param jPlayer {@link JobsPlayer}
      */
     public void leaveAllJobs(JobsPlayer jPlayer) {
-	for (JobProgression job : new ArrayList<>(jPlayer.getJobProgression()))
+	for (JobProgression job : new ArrayList<>(jPlayer.progression))
 	    leaveJob(jPlayer, job.getJob());
 
 	jPlayer.leaveAllJobs();
@@ -687,11 +686,11 @@ public class PlayerManager {
 	} catch (Exception e) {
 	}
 
-	if (Jobs.getGCManager().FireworkLevelupUse) {
+	if (Jobs.getGCManager().FireworkLevelupUse && player != null) {
 	    Bukkit.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 		@Override
 		public void run() {
-		    if (player == null || !player.isOnline())
+		    if (!player.isOnline())
 			return;
 
 		    Firework f = player.getWorld().spawn(player.getLocation(), Firework.class);
@@ -728,49 +727,7 @@ public class PlayerManager {
 
 			fm.setPower(r.nextInt(2) + 1);
 		    } else {
-			Pattern comma = Pattern.compile(",", 16);
-			List<String> colorStrings = Jobs.getGCManager().FwColors;
-			Color[] colors = new Color[colorStrings.size()];
-
-			for (int s = 0; s < colorStrings.size(); s++) {
-			    String colorString = colorStrings.get(s);
-			    String[] sSplit = comma.split(colorString);
-			    if (sSplit.length < 3) {
-				continue;
-			    }
-
-			    int[] colorRGB = new int[3];
-			    for (int i = 0; i < 3; i++) {
-				try {
-				    colorRGB[i] = Integer.parseInt(sSplit[i]);
-				} catch (NumberFormatException e) {
-				}
-			    }
-
-			    int r = colorRGB[0], g = colorRGB[1], b = colorRGB[2];
-			    if (r > 255 || r < 0) {
-				r = 1;
-			    }
-
-			    if (g > 255 || g < 0) {
-				g = 5;
-			    }
-
-			    if (b > 255 || b < 0) {
-				b = 3;
-			    }
-
-			    colors[s] = Color.fromRGB(r, g, b);
-			}
-
-			fm.addEffect(FireworkEffect.builder()
-			    .flicker(Jobs.getGCManager().UseFlicker)
-			    .trail(Jobs.getGCManager().UseTrail)
-			    .with(Type.valueOf(Jobs.getGCManager().FireworkType))
-			    .withColor(colors)
-			    .withFade(colors)
-			    .build());
-
+			fm.addEffect(Jobs.getGCManager().getFireworkEffect());
 			fm.setPower(Jobs.getGCManager().FireworkPower);
 		    }
 
@@ -841,29 +798,29 @@ public class PlayerManager {
 	performCommandOnLevelUp(jPlayer, prog.getJob(), oldLevel);
 	Jobs.getSignUtil().updateAllSign(job);
 
-	if (player != null && prog.getLevel() == jPlayer.getMaxJobLevelAllowed(prog.getJob())) {
+	if (player != null && !job.getMaxLevelCommands().isEmpty() && prog.getLevel() == jPlayer.getMaxJobLevelAllowed(prog.getJob())) {
 	    for (String cmd : job.getMaxLevelCommands()) {
 		if (cmd.isEmpty()) {
 		    continue;
 		}
 
-		if (cmd.contains(":")) {
-		    String[] split = cmd.split(":", 2);
-
-		    String command = "";
-		    if (split.length > 1) {
-			command = split[1];
-			command = command.replace("[playerName]", player.getName());
-			command = command.replace("[job]", job.getName());
-		    }
-
-		    if (split[0].equalsIgnoreCase("player:")) {
-			player.performCommand(command);
-		    } else {
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-		    }
-		} else {
+		String[] split = cmd.split(":", 2);
+		if (split.length == 0) {
 		    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+		    continue;
+		}
+
+		String command = "";
+		if (split.length > 1) {
+		    command = split[1];
+		    command = command.replace("[playerName]", player.getName());
+		    command = command.replace("[job]", job.getName());
+		}
+
+		if (split[0].equalsIgnoreCase("player:")) {
+		    player.performCommand(command);
+		} else {
+		    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 		}
 	    }
 	}
@@ -949,7 +906,7 @@ public class PlayerManager {
      */
     public void reload() {
 	for (JobsPlayer jPlayer : players.values()) {
-	    for (JobProgression progression : jPlayer.getJobProgression()) {
+	    for (JobProgression progression : jPlayer.progression) {
 		Job job = Jobs.getJob(progression.getJob().getName());
 		if (job != null)
 		    progression.setJob(job);
@@ -1055,13 +1012,6 @@ public class PlayerManager {
 	return ItemBoostManager.getItemByKey(itemName.toString());
     }
 
-//    public BoostMultiplier getJobsBoostByNbt(ItemStack item) {
-//	JobItems b = getJobsItemByNbt(item);
-//	if (b == null)
-//	    return null;
-//	return b.getBoost();
-//    }
-
     public enum BoostOf {
 	McMMO, PetPay, NearSpawner, Permission, Global, Dynamic, Item, Area
     }
@@ -1160,7 +1110,7 @@ public class PlayerManager {
 		    return;
 
 		int confMaxJobs = Jobs.getGCManager().getMaxJobs();
-		short playerMaxJobs = (short) jPlayer.getJobProgression().size();
+		short playerMaxJobs = (short) jPlayer.progression.size();
 
 		if (confMaxJobs > 0 && playerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, playerMaxJobs))
 		    return;

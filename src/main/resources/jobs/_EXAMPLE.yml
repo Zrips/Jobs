@@ -553,10 +553,12 @@ exampleJob:
       command: lp user [player] permission set essentials.fly
 
       # When to execute this command first time
+      # Set to 0 if you want to detect all the levels
       levelFrom: 100
 
       # Until when to do this command
       # This can be set to same level as levelFrom, so this command will be executed only once
+      # Set to 0 if you want to detect all the levels
       levelUntil: 100
 
     kit:
