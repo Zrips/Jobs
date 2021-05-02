@@ -222,7 +222,7 @@ public class JobsPlayer {
 
 	PaymentData data = getPaymentLimit();
 
-	if (data.isReachedLimit(type, limits.getOrDefault(type, 0))) {
+	if (data.isReachedLimit(type, getLimit(type))) {
 	    String name = type.getName().toLowerCase();
 
 	    if (player.isOnline() && !data.isInformed() && !data.isReseted(type)) {
@@ -252,8 +252,7 @@ public class JobsPlayer {
     }
 
     public double percentOverLimit(CurrencyType type) {
-	Integer value = limits.get(type);
-	return getPaymentLimit().percentOverLimit(type, value == null ? 0 : value);
+	return getPaymentLimit().percentOverLimit(type, getLimit(type));
     }
 
     /**
@@ -311,13 +310,13 @@ public class JobsPlayer {
     /**
      * Attempts to get the boost from specific job and {@link CurrencyType}
      * 
-     * @param JobName
+     * @param jobName
      * @param type {@link CurrencyType}
      * @see #getBoost(String, CurrencyType, boolean)
      * @return amount of boost
      */
-    public double getBoost(String JobName, CurrencyType type) {
-	return getBoost(JobName, type, false);
+    public double getBoost(String jobName, CurrencyType type) {
+	return getBoost(jobName, type, false);
     }
 
     /**
@@ -336,8 +335,8 @@ public class JobsPlayer {
 
 	long time = System.currentTimeMillis();
 
-	if (boostCounter.containsKey(jobName)) {
-	    List<BoostCounter> counterList = boostCounter.get(jobName);
+	List<BoostCounter> counterList = boostCounter.get(jobName);
+	if (counterList != null) {
 	    for (BoostCounter counter : counterList) {
 		if (counter.getType() != type)
 		    continue;
@@ -359,7 +358,7 @@ public class JobsPlayer {
 
 	boost = getPlayerBoostNew(jobName, type);
 
-	List<BoostCounter> counterList = new ArrayList<>();
+	counterList = new ArrayList<>();
 	counterList.add(new BoostCounter(type, boost, time));
 
 	boostCounter.put(jobName, counterList);
@@ -423,7 +422,7 @@ public class JobsPlayer {
     }
 
     public int getLimit(CurrencyType type) {
-	return type == null ? 0 : limits.get(type);
+	return limits.getOrDefault(type, 0);
     }
 
     public void resetPaymentLimit() {
@@ -747,7 +746,7 @@ public class JobsPlayer {
 		DisplayMethod method = prog.getJob().getDisplayMethod();
 		if (method == DisplayMethod.NONE)
 		    continue;
-		if (!builder.toString().isEmpty()) {
+		if (builder.length() > 0) {
 		    builder.append(Jobs.getGCManager().modifyChatSeparator);
 		}
 		processesChat(method, builder, prog.getLevel(), Jobs.getTitleManager().getTitle(prog.getLevel(),

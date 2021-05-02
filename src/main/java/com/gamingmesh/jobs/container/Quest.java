@@ -46,7 +46,10 @@ public class Quest {
 
     public void setRewardCmds(List<String> rewardCmds) {
 	this.rewardCmds.clear();
-	this.rewardCmds.addAll(rewardCmds == null ? new ArrayList<>() : rewardCmds);
+
+	if (rewardCmds != null) {
+	    this.rewardCmds.addAll(rewardCmds);
+	}
     }
 
     public List<String> getDescription() {
@@ -55,7 +58,10 @@ public class Quest {
 
     public void setDescription(List<String> rewards) {
 	this.rewards.clear();
-	this.rewards.addAll(rewards == null ? new ArrayList<>() : rewards);
+
+	if (rewards != null) {
+	    this.rewards.addAll(rewards);
+	}
     }
 
     public List<String> getRestrictedAreas() {
@@ -64,7 +70,10 @@ public class Quest {
 
     public void setRestrictedArea(List<String> area) {
 	this.area.clear();
-	this.area.addAll(area == null ? new ArrayList<>() : area);
+
+	if (area != null) {
+	    this.area.addAll(area);
+	}
     }
 
     public Long getValidUntil() {

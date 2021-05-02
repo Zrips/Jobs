@@ -288,11 +288,14 @@ public class JobsCommands implements CommandExecutor {
 
 	String t = type.isEmpty() ? "" : " " + type;
 
-	if (sender instanceof Player)
-	    if (sender.getName().equalsIgnoreCase(player.getName()))
+	if (sender instanceof Player) {
+	    String pName = player.getName();
+
+	    if (sender.getName().equalsIgnoreCase(pName))
 		plugin.showPagination(sender, pi, "jobs info " + job.getName() + t);
 	    else
-		plugin.showPagination(sender, pi, "jobs playerinfo " + player.getName() + " " + job.getName() + t);
+		plugin.showPagination(sender, pi, "jobs playerinfo " + pName + " " + job.getName() + t);
+	}
     }
 
     /**
@@ -313,10 +316,9 @@ public class JobsCommands implements CommandExecutor {
 
 	JobProgression prog = player.getJobProgression(job);
 	int level = prog != null ? prog.getLevel() : 1;
-	int numjobs = player.getJobProgression().size();
+	int numjobs = player.progression.size();
 
-	List<JobInfo> jobInfo = job.getJobInfo(type);
-	for (JobInfo info : jobInfo) {
+	for (JobInfo info : job.getJobInfo(type)) {
 
 	    String materialName = info.getRealisticName();
 

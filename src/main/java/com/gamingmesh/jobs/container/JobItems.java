@@ -163,10 +163,12 @@ public class JobItems {
 	    meta.setDisplayName(CMIChatColor.translate(meta.getDisplayName().replace("[player]", player.getName())));
 
 	if (meta.hasLore()) {
-	    List<String> translatedLore = new ArrayList<>();
-	    for (String oneLore : meta.getLore()) {
-		translatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
+	    List<String> translatedLore = meta.getLore();
+
+	    for (int a = 0; a < translatedLore.size(); a++) {
+		translatedLore.set(a, CMIChatColor.translate(translatedLore.get(a).replace("[player]", player.getName())));
 	    }
+
 	    meta.setLore(translatedLore);
 	}
 
@@ -192,10 +194,9 @@ public class JobItems {
     }
 
     public BoostMultiplier getBoost(JobProgression job) {
-	if (job == null || !jobs.contains(job.getJob()))
+	if (job == null || !jobs.contains(job.getJob()) || job.getLevel() < getFromLevel() || job.getLevel() > getUntilLevel())
 	    return new BoostMultiplier();
-	if (job.getLevel() < getFromLevel() || job.getLevel() > getUntilLevel())
-	    return new BoostMultiplier();
+
 	return boostMultiplier.clone();
     }
 

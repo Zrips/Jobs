@@ -48,10 +48,12 @@ public final class Log {
     }
 
     public int getCount(String item) {
-	return amountMap.containsKey(item) ? amountMap.get(item).getCount() : 0;
+	LogAmounts logAmounts = amountMap.get(item);
+	return logAmounts != null ? logAmounts.getCount() : 0;
     }
 
     public double get(String item, CurrencyType type) {
-	return amountMap.containsKey(item) ? amountMap.get(item).get(type) : 0;
+	LogAmounts logAmounts = amountMap.get(item);
+	return logAmounts != null ? logAmounts.get(type) : 0;
     }
 }

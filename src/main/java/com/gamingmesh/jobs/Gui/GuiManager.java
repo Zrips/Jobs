@@ -143,6 +143,11 @@ public class GuiManager {
 	    ItemMeta meta = guiItem.getItemMeta();
 	    plugin.getComplement().setDisplayName(meta, job.getNameWithColor());
 	    plugin.getComplement().setLore(meta, lore);
+
+	    if (Jobs.getGCManager().hideItemAttributes) {
+		meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ATTRIBUTES, org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
+	    }
+
 	    guiItem.setItemMeta(meta);
 
 	    gui.addButton(new CMIGuiButton(job.getGuiSlot() >= 0 ? job.getGuiSlot() : pos, guiItem) {

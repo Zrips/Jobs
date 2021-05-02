@@ -615,8 +615,9 @@ public class Jobs extends JavaPlugin {
      * @param job - the job someone is taking
      */
     public static void takeSlot(Job job) {
-	if (usedSlots.containsKey(job))
-	    usedSlots.put(job, usedSlots.get(job) + 1);
+	Integer used = usedSlots.get(job);
+	if (used != null)
+	    usedSlots.put(job, used + 1);
     }
 
     /**
@@ -624,8 +625,9 @@ public class Jobs extends JavaPlugin {
      * @param job - the job someone is leaving
      */
     public static void leaveSlot(Job job) {
-	if (usedSlots.containsKey(job))
-	    usedSlots.put(job, usedSlots.get(job) - 1);
+	Integer used = usedSlots.get(job);
+	if (used != null)
+	    usedSlots.put(job, used - 1);
     }
 
     /**

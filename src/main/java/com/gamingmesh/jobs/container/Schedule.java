@@ -127,16 +127,15 @@ public class Schedule {
     public void setJobs(List<String> jobsNameList) {
 	jobsList.clear();
 
-	List<Job> jobl = Jobs.getJobs();
 	for (int z = 0; z < jobsNameList.size(); z++) {
-	    if (jobsNameList.get(z).equalsIgnoreCase("all")) {
-		if (jobl != null)
-		    jobsList.addAll(jobl);
+	    String n = jobsNameList.get(z);
 
+	    if (n.equalsIgnoreCase("all")) {
+		jobsList.addAll(Jobs.getJobs());
 		return;
 	    }
 
-	    Job jb = Jobs.getJob(jobsNameList.get(z));
+	    Job jb = Jobs.getJob(n);
 	    if (jb != null)
 		jobsList.add(jb);
 	}

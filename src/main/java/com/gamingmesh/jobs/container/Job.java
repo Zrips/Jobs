@@ -542,7 +542,10 @@ public class Job {
 
     public void setQuests(List<Quest> quests) {
 	this.quests.clear();
-	this.quests.addAll(quests == null ? new ArrayList<>() : quests);
+
+	if (quests != null) {
+	    this.quests.addAll(quests);
+	}
     }
 
     public Quest getNextQuest(List<String> excludeQuests, Integer level) {

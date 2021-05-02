@@ -95,7 +95,7 @@ public class GeneralConfigManager {
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, aBarSilentMode, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
-	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames,
+	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames, hideItemAttributes,
 	DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
 	EnableConfirmation, FilterHiddenPlayerFromTabComplete, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve,
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
@@ -980,6 +980,8 @@ public class GeneralConfigManager {
 	DisableJoiningJobThroughGui = c.get("JobsGUI.DisableJoiningJobThroughGui", false);
 	c.addComment("JobsGUI.ShowActionNames", "Do you want to show the action names in GUI?");
 	ShowActionNames = c.get("JobsGUI.ShowActionNames", true);
+	c.addComment("JobsGUI.HideItemAttributes", "Do we hide all item attributes in GUI?");
+	hideItemAttributes = c.get("JobsGUI.HideItemAttributes", true);
 	c.addComment("JobsGUI.Rows", "Defines size in rows of GUI");
 	JobsGUIRows = c.get("JobsGUI.Rows", 5);
 	c.addComment("JobsGUI.BackButtonSlot", "Defines back button slot in GUI");

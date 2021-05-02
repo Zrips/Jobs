@@ -154,14 +154,14 @@ public class JobProgression {
     public void reloadMaxExperience() {
 	Map<String, Double> param = new HashMap<>();
 	param.put("joblevel", (double) level);
-	param.put("numjobs", (double) jPlayer.getJobProgression().size());
+	param.put("numjobs", (double) jPlayer.progression.size());
 	maxExperience = (int) job.getMaxExp(param);
     }
 
     public int getMaxExperience(int level) {
 	Map<String, Double> param = new HashMap<>();
 	param.put("joblevel", (double) level);
-	param.put("numjobs", (double) jPlayer.getJobProgression().size());
+	param.put("numjobs", (double) jPlayer.progression.size());
 	return (int) job.getMaxExp(param);
     }
 
@@ -246,7 +246,7 @@ public class JobProgression {
     }
 
     public String getRejoinTimeMessage() {
-	return leftOn == null ? "" : TimeManage.to24hourShort(leftOn + getJob().getRejoinCd() - System.currentTimeMillis());
+	return leftOn == null ? "" : TimeManage.to24hourShort(leftOn + job.getRejoinCd() - System.currentTimeMillis());
     }
 
     public Double getLastExperience() {

@@ -42,7 +42,7 @@ public enum Version {
     Version() {
 	try {
 	    value = Integer.parseInt(name().replaceAll("[^\\d.]", ""));
-	} catch (Exception e) {
+	} catch (NumberFormatException e) {
 	}
 	shortVersion = name().substring(0, name().length() - 3);
     }

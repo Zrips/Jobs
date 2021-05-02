@@ -20,14 +20,13 @@ package com.gamingmesh.jobs;
 
 import net.milkbowl.vault.economy.Economy;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.gamingmesh.jobs.economy.BlackholeEconomy;
 import com.gamingmesh.jobs.economy.VaultEconomy;
 
 public class HookEconomyTask implements Runnable {
+
     private Jobs plugin;
 
     public HookEconomyTask(Jobs plugin) {
@@ -50,11 +49,10 @@ public class HookEconomyTask implements Runnable {
     }
 
     private boolean setVault() {
-	Plugin eco = Bukkit.getServer().getPluginManager().getPlugin("Vault");
-	if (eco == null)
+	if (!plugin.getServer().getPluginManager().isPluginEnabled("Vault"))
 	    return false;
 
-	RegisteredServiceProvider<Economy> provider = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
+	RegisteredServiceProvider<Economy> provider = plugin.getServer().getServicesManager().getRegistration(Economy.class);
 	if (provider == null)
 	    return false;
 
