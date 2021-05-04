@@ -90,6 +90,7 @@ public class Job {
     private final List<Quest> quests = new ArrayList<>();
     private int maxDailyQuests = 1;
     private int id = 0;
+    private boolean ignoreMaxJobs = false;
 
     @Deprecated
     public Job(String jobName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
@@ -650,6 +651,14 @@ public class Job {
 	    return true;
 
 	return ent != null && worldBlacklist.contains(ent.getWorld().getName());
+    }
+
+    public boolean isIgnoreMaxJobs() {
+        return ignoreMaxJobs;
+    }
+
+    public void setIgnoreMaxJobs(boolean ignoreMaxJobs) {
+        this.ignoreMaxJobs = ignoreMaxJobs;
     }
 
     @Override
