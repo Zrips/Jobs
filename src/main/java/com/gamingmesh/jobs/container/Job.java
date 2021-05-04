@@ -86,7 +86,7 @@ public class Job {
 
     private final List<String> fDescription = new ArrayList<>(), maxLevelCommands = new ArrayList<>();
     private List<String> worldBlacklist = new ArrayList<>();
-    private boolean reversedBlacklistFunctionality = false;
+    private boolean reversedWorldBlacklist = false;
 
     private final List<Quest> quests = new ArrayList<>();
     private int maxDailyQuests = 1;
@@ -645,20 +645,20 @@ public class Job {
 
     public boolean isWorldBlackListed(Block block, Entity ent) {
         if (worldBlacklist.isEmpty())
-            return isReversedBlacklistFunctionality();
+            return isReversedWorldBlacklist();
 
         if (block != null)
-            return worldBlacklist.contains(block.getWorld().getName()) != isReversedBlacklistFunctionality();
+            return worldBlacklist.contains(block.getWorld().getName()) != isReversedWorldBlacklist();
 
-        return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != isReversedBlacklistFunctionality();
+        return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != isReversedWorldBlacklist();
     }
 
-    public boolean isReversedBlacklistFunctionality() {
-        return reversedBlacklistFunctionality;
+    public boolean isReversedWorldBlacklist() {
+        return reversedWorldBlacklist;
     }
 
-    public void setReversedBlacklistFunctionality(boolean reversedBlacklistFunctionality) {
-        this.reversedBlacklistFunctionality = reversedBlacklistFunctionality;
+    public void setReversedWorldBlacklist(boolean reversedWorldBlacklist) {
+        this.reversedWorldBlacklist = reversedWorldBlacklist;
     }
 
     @Override
