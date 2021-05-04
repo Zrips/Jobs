@@ -1148,7 +1148,7 @@ public class ConfigManager {
 	    job.setBossbar(bossbar);
 	    job.setRejoinCd(rejoinCd);
 	    job.setMaxLevelCommands(jobSection.getStringList("commands-on-max-level"));
-	    job.setReversedBlacklistFunctionality(jobSection.getBoolean("reverse-world-blacklist-functionality"));
+	    job.setReversedWorldBlacklist(jobSection.getBoolean("reverse-world-blacklist-functionality"));
 
 	    if (jobSection.isConfigurationSection("Quests")) {
 		List<Quest> quests = new ArrayList<>();
