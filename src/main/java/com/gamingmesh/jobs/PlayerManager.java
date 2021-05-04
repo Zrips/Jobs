@@ -645,8 +645,8 @@ public class PlayerManager {
 
 	    message = message.replace("%jobname%", job.getNameWithColor());
 	    message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
-	    message = message.replace("%joblevel%", "" + prog.getLevel());
-	    message = message.replace("%lostLevel%", "" + oldLevel);
+	    message = message.replace("%joblevel%", Integer.toString(prog.getLevel()));
+	    message = message.replace("%lostLevel%", Integer.toString(oldLevel));
 
 	    if (player != null) {
 		for (String line : message.split("\n")) {
@@ -668,7 +668,7 @@ public class PlayerManager {
 	// LevelUp event
 	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(
 	    jPlayer,
-	    job.getName(),
+	    job,
 	    prog.getLevel(),
 	    Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
 	    Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
@@ -753,7 +753,7 @@ public class PlayerManager {
 		.getChatColor().toString() + levelUpEvent.getOldTitle().getName());
 
 	message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
-	message = message.replace("%joblevel%", "" + prog.getLevel());
+	message = message.replace("%joblevel%", Integer.toString(prog.getLevel()));
 
 	for (String line : message.split("\n")) {
 	    if (Jobs.getGCManager().isBroadcastingLevelups()) {

@@ -129,11 +129,33 @@ public class Job {
 	}
     }
 
+    /**
+     * Adds specific amount of boost to the given currency type. If there was a boost
+     * added before with the same currency type, it will be overridden to the new one.
+     * 
+     * @param type the type of {@link CurrencyType}}
+     * @param point the amount of boost to add
+     */
     public void addBoost(CurrencyType type, double point) {
 	boost.add(type, point);
     }
 
+    /**
+     * Adds specific amount of boost to the given currency type with the
+     * specified array of times. If there was a boost added before with
+     * the same currency type, it will be overridden to the new one.
+     * <p>
+     * The array of integer need at least to contain 3 elements
+     * to calculate the time in milliseconds using {@link Calendar}.
+     * 
+     * @param type the type of {@link CurrencyType}}
+     * @param point the amount of boost to add
+     * @param times the array of integer of when to remove the boost
+     */
     public void addBoost(CurrencyType type, double point, int[] times) {
+	if (times.length < 3)
+	    return;
+
 	final int h = times[2], m = times[1], s = times[0];
 	if (h == 0 && m == 0 && s == 0) {
 	    addBoost(type, point);
@@ -166,10 +188,21 @@ public class Job {
 	return boost;
     }
 
+    /**
+     * Checks if the given {@link Job} is the same with this instance.
+     * 
+     * @param job the {@link Job} to compare with it
+     * @return true if same
+     */
     public boolean isSame(Job job) {
 	return job != null && (id == job.getId() || fullName.equalsIgnoreCase(job.getName()));
     }
 
+    /**
+     * Returns the total players retrieved synchronously from current database.
+     * 
+     * @return the amount of total players in this job
+     */
     public int getTotalPlayers() {
 	if (totalPlayers == -1) {
 	    updateTotalPlayers();
@@ -178,6 +211,9 @@ public class Job {
 	return totalPlayers;
     }
 
+    /**
+     * Updates the total players property from database synchronously.
+     */
     public void updateTotalPlayers() {
 	totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(jobName);
 
@@ -288,8 +324,9 @@ public class Job {
     }
 
     /**
-     * Get the job name
-     * @return the job name
+     * Returns the full job name
+     * 
+     * @return the full job name
      */
     public String getName() {
 	return fullName;
@@ -300,8 +337,9 @@ public class Job {
     }
 
     /**
-     * Get the job name from the config
-     * @return the job name from the config
+     * Returns the job name retrieved from the config
+     * 
+     * @return the job key name from config section
      */
     public String getJobKeyName() {
 	return jobName;
@@ -320,7 +358,8 @@ public class Job {
      * Gets the description
      * 
      * @return description
-     * @deprecated Not used anymore, use {@link #getFullDescription()} instead
+     * @deprecated Description can be list instead
+     * of plain string, use {@link #getFullDescription()}
      */
     @Deprecated
     public String getDescription() {
@@ -364,14 +403,20 @@ public class Job {
     }
 
     /**
-     * Function to return the maximum level
+     * Function to return the maximum level of this job.
+     * 
      * @return the max level
-     * @return null - no max level
      */
     public int getMaxLevel() {
 	return maxLevel;
     }
 
+    /**
+     * Returns the maximum level of the specific {@link JobsPlayer}.
+     * 
+     * @param player the {@link JobsPlayer} or null
+     * @return the max level of player
+     */
     public int getMaxLevel(JobsPlayer player) {
 	return player == null ? maxLevel : player.getMaxJobLevelAllowed(this);
     }
@@ -605,5 +650,10 @@ public class Job {
 	    return true;
 
 	return ent != null && worldBlacklist.contains(ent.getWorld().getName());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	return obj instanceof Job ? isSame((Job) obj) : false;
     }
 }

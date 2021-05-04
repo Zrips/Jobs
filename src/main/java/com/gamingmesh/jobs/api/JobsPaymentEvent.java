@@ -81,7 +81,7 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
      * @param type {@link CurrencyType}
      * @return the amount of payment in specific type
      */
-    public Double get(CurrencyType type) {
+    public double get(CurrencyType type) {
 	return payments.getOrDefault(type, 0D);
     }
 
