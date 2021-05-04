@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -34,10 +33,16 @@ public class demote implements Cmd {
 	try {
 	    // check if player already has the job
 	    if (jPlayer.isInJob(job)) {
-		Integer levelsLost = Integer.parseInt(args[2]);
+		int levelsLost = 0;
+		try {
+		    levelsLost = Integer.parseInt(args[2]);
+		} catch (NumberFormatException ex) {
+		    return true;
+		}
+
 		Jobs.getPlayerManager().demoteJob(jPlayer, job, levelsLost);
 
-		Player player = Bukkit.getServer().getPlayer(jPlayer.getUniqueId());
+		Player player = jPlayer.getPlayer();
 		if (player != null) {
 		    String message = Jobs.getLanguage().getMessage("command.demote.output.target",
 			"%jobname%", job.getNameWithColor() + CMIChatColor.WHITE,

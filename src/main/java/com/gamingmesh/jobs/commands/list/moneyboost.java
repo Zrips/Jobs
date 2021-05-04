@@ -25,8 +25,10 @@ public class moneyboost implements Cmd {
 				return true;
 			}
 
+			int[] times = parseTime(args);
+
 			for (Job job : Jobs.getJobs()) {
-				job.addBoost(CurrencyType.MONEY, rate, parseTime(args));
+				job.addBoost(CurrencyType.MONEY, rate, times);
 			}
 
 			sender.sendMessage(
@@ -78,6 +80,7 @@ public class moneyboost implements Cmd {
 
 	private int[] parseTime(String[] args) {
 		int[] arr = new int[3];
+
 		if (args.length < 2) {
 			return arr;
 		}
@@ -89,7 +92,7 @@ public class moneyboost implements Cmd {
 
 		if (time.contains("h") || time.contains("hour")) {
 			try {
-				arr[2] = Integer.parseInt(time.split("h|hour")[0]);
+				arr[2] = Integer.parseInt(time.split("h|hour", 2)[0]);
 			} catch (NumberFormatException e) {
 				arr[2] = 0;
 			}
@@ -99,7 +102,7 @@ public class moneyboost implements Cmd {
 
 		if (time.contains("m") || time.contains("minute")) {
 			try {
-				arr[1] = Integer.parseInt(time.split("m|minute")[0]);
+				arr[1] = Integer.parseInt(time.split("m|minute", 2)[0]);
 			} catch (NumberFormatException e) {
 				arr[1] = 0;
 			}
@@ -109,7 +112,7 @@ public class moneyboost implements Cmd {
 
 		if (time.contains("s") || time.contains("second")) {
 			try {
-				arr[0] = Integer.parseInt(time.split("s|second")[0]);
+				arr[0] = Integer.parseInt(time.split("s|second", 2)[0]);
 			} catch (NumberFormatException e) {
 				arr[0] = 0;
 			}

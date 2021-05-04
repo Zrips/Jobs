@@ -52,8 +52,11 @@ public class ToggleBarHandling {
     public static void save() {
 	YmlMaker f = new YmlMaker(Jobs.getFolder(), "actionBarBossbar.yml");
 
-	if (f.exists() && f.getConfigFile().length() == 0L && bossBarToggle.isEmpty() && actionBarToggle.isEmpty()) {
-	    f.getConfigFile().delete();
+	if (bossBarToggle.isEmpty() && actionBarToggle.isEmpty()) {
+	    if (f.exists() && f.getConfigFile().length() == 0L) {
+		f.getConfigFile().delete();
+	    }
+
 	    return;
 	}
 

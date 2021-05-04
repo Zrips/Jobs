@@ -33,7 +33,7 @@ public class BlockProtection {
 	this.z = z;
     }
 
-    public Long getTime() {
+    public long getTime() {
 	return deconvert(time);
     }
 
@@ -41,11 +41,11 @@ public class BlockProtection {
 	return time == -1L ? -1 : (int) ((time - pre) / 1000L);
     }
 
-    private static Long deconvert(Integer time) {
+    private static long deconvert(Integer time) {
 	return time == null ? -1L : ((time.longValue() * 1000L) + pre);
     }
 
-    public void setTime(Long time) {
+    public void setTime(long time) {
 	this.time = time == -1 ? null : convert(time);
 	this.recorded = convert(System.currentTimeMillis());
     }
@@ -60,19 +60,19 @@ public class BlockProtection {
 	this.action = action;
     }
 
-    public Long getRecorded() {
+    public long getRecorded() {
 	return deconvert(recorded);
     }
 
-    public Boolean isPaid() {
-	return paid == null ? true : paid;
+    public boolean isPaid() {
+	return paid == null ? true : paid.booleanValue();
     }
 
-    public void setPaid(Boolean paid) {
+    public void setPaid(boolean paid) {
 	this.paid = !paid ? paid : null;
     }
 
-    public void setRecorded(Long recorded) {
+    public void setRecorded(long recorded) {
 	this.recorded = convert(recorded);
     }
 

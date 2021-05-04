@@ -1284,7 +1284,7 @@ public class Jobs extends JavaPlugin {
 
 	    BlockProtection bp = getBpManager().getBp(block.getLocation());
 	    if (bp != null) {
-		Long time = bp.getTime();
+		long time = bp.getTime();
 		Integer cd = getBpManager().getBlockDelayTime(block);
 
 		if (time == -1L) {
@@ -1338,8 +1338,7 @@ public class Jobs extends JavaPlugin {
 
 		    // Lets add protection in any case
 		    getBpManager().add(block, cd);
-
-		} else if (bp.isPaid().booleanValue() && bp.getTime() == -1L && cd != null && cd == -1) {
+		} else if (bp.isPaid() && bp.getTime() == -1L && cd != null && cd == -1) {
 		    getBpManager().add(block, cd);
 		    return false;
 		} else

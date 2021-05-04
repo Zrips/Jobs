@@ -17,14 +17,16 @@ public class browse implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
+	boolean senderIsPlayer = sender instanceof Player;
+
 	if (Jobs.getGCManager().BrowseUseNewLook) {
-	    List<Job> jobList = new ArrayList<>(Jobs.getJobs());
-	    if (jobList.isEmpty()) {
+	    if (Jobs.getJobs().isEmpty()) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
 		return true;
 	    }
 
-	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
+	    List<Job> jobList = new ArrayList<>(Jobs.getJobs());
+	    if (senderIsPlayer && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
 		try {
 		    plugin.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {
@@ -35,7 +37,7 @@ public class browse implements Cmd {
 	    }
 
 	    int page = 1;
-	    if (sender instanceof Player) {
+	    if (senderIsPlayer) {
 		for (String one : args) {
 		    if (one.startsWith("-p:")) {
 			try {
@@ -54,7 +56,7 @@ public class browse implements Cmd {
 		}
 	    }
 
-	    if (sender instanceof Player) {
+	    if (senderIsPlayer) {
 		if (j == null) {
 		    PageInfo pi = new PageInfo(Jobs.getGCManager().getBrowseAmountToShow(), jobList.size(), page);
 		    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.newHeader", "[amount]", jobList.size()));
@@ -112,8 +114,9 @@ public class browse implements Cmd {
 
 		    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));
 
-		    if (j.getMaxLevel(sender) > 0)
-			sender.sendMessage(Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", j.getMaxLevel(sender)));
+		    int maxLevel = j.getMaxLevel(sender);
+		    if (maxLevel > 0)
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", maxLevel));
 
 		    if (Jobs.getGCManager().ShowTotalWorkers)
 			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.totalWorkers", "[amount]", j.getTotalPlayers()));
@@ -125,10 +128,8 @@ public class browse implements Cmd {
 			    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (j.getBonus() * 100)));
 		    }
 
-		    if (!j.getFullDescription().isEmpty()) {
-			for (String one : j.getFullDescription()) {
-			    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", one));
-			}
+		    for (String one : j.getFullDescription()) {
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", one));
 		    }
 
 		    RawMessage rm = new RawMessage();
@@ -154,8 +155,9 @@ public class browse implements Cmd {
 			    }
 			}
 
-			if (one.getMaxLevel(sender) > 0)
-			    msg += Jobs.getLanguage().getMessage("command.browse.output.console.newMax", "[max]", one.getMaxLevel(sender));
+			int maxLevel = one.getMaxLevel(sender);
+			if (maxLevel > 0)
+			    msg += Jobs.getLanguage().getMessage("command.browse.output.console.newMax", "[max]", maxLevel);
 
 			if (Jobs.getGCManager().ShowTotalWorkers)
 			    msg += Jobs.getLanguage().getMessage("command.browse.output.console.totalWorkers", "[amount]", one.getTotalPlayers());
@@ -174,8 +176,9 @@ public class browse implements Cmd {
 		} else {
 		    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));
 
-		    if (j.getMaxLevel(sender) > 0)
-			sender.sendMessage(Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", j.getMaxLevel(sender)));
+		    int maxLevel = j.getMaxLevel(sender);
+		    if (maxLevel > 0)
+			sender.sendMessage(Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", maxLevel));
 
 		    if (Jobs.getGCManager().ShowTotalWorkers)
 			sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.totalWorkers", "[amount]", j.getTotalPlayers()));
@@ -204,10 +207,12 @@ public class browse implements Cmd {
 		builder.append("  ");
 		builder.append(job.getChatColor().toString());
 		builder.append(job.getName());
-		if (job.getMaxLevel(sender) > 0) {
+
+		int maxLevel = job.getMaxLevel(sender);
+		if (maxLevel > 0) {
 		    builder.append(CMIChatColor.WHITE.toString());
 		    builder.append(Jobs.getLanguage().getMessage("command.info.help.max"));
-		    builder.append(job.getMaxLevel(sender));
+		    builder.append(maxLevel);
 		}
 
 		if (Jobs.getGCManager().ShowTotalWorkers)
@@ -220,6 +225,7 @@ public class browse implements Cmd {
 			builder.append(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", (int) (job.getBonus() * 100)));
 
 		lines.add(builder.toString());
+
 		if (!job.getDescription().isEmpty())
 		    lines.add("  - " + job.getDescription().replaceAll("/n|\n", ""));
 		else {
@@ -234,7 +240,7 @@ public class browse implements Cmd {
 		return true;
 	    }
 
-	    if (sender instanceof Player && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
+	    if (senderIsPlayer && Jobs.getGCManager().JobsGUIOpenOnBrowse) {
 		try {
 		    plugin.getGUIManager().openJobsBrowseGUI((Player) sender);
 		} catch (Throwable e) {

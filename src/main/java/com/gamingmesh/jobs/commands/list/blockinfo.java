@@ -28,13 +28,14 @@ public class blockinfo implements Cmd {
 	if (block == null || CMIMaterial.isAir(block.getType()))
 	    return true;
 
-	String dataString = CMIMaterial.getBlockData(block) == 0 ? "" : "-" + CMIMaterial.getBlockData(block);
+	byte blockData = CMIMaterial.getBlockData(block);
+	String dataString = blockData == 0 ? "" : "-" + blockData;
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.name", "%blockname%", block.getType().name()));
 	if (Version.isCurrentEqualOrLower(Version.v1_13_R2))
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.id", "%blockid%", block.getType().getId()));
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.data", "%blockdata%", CMIMaterial.getBlockData(block)));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.data", "%blockdata%", blockData));
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.usage", "%first%", "",
 		"%second%", block.getType().name() + dataString));

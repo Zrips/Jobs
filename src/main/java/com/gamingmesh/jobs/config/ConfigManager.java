@@ -938,6 +938,9 @@ public class ConfigManager {
 		for (String str4 : guiSection.getStringList("Enchantments")) {
 		    String[] id = str4.split(":", 2);
 
+		    if (id.length < 2)
+			continue;
+
 		    Enchantment enchant = CMIEnchantment.getEnchantment(id[0]);
 		    if (enchant == null)
 			continue;

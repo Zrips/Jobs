@@ -17,15 +17,14 @@ public class explored implements Cmd {
 	    return false;
 
 	Player player = (Player) sender;
+	ExploreRegion exploreRegion = Jobs.getExplore().getWorlds().get(player.getWorld().getName());
 
-	java.util.Map<String, ExploreRegion> worlds = Jobs.getExplore().getWorlds();
-
-	if (!worlds.containsKey(player.getWorld().getName())) {
+	if (exploreRegion == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
 	    return true;
 	}
 
-	ExploreChunk chunk = worlds.get(player.getWorld().getName()).getChunk(player.getLocation().getChunk());
+	ExploreChunk chunk = exploreRegion.getChunk(player.getLocation().getChunk());
 	if (chunk == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
 	    return false;

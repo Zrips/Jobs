@@ -912,33 +912,35 @@ public class GeneralConfigManager {
 
 	List<String> fwColors = c.get("Fireworks.LevelUp.colors", Arrays.asList("230,0,0", "0,90,0", "0,0,104"));
 
-	Color[] colors = new Color[fwColors.size()];
-	Pattern comma = Pattern.compile(",", 16);
+	if (!UseRandom) {
+	    Color[] colors = new Color[fwColors.size()];
+	    Pattern comma = Pattern.compile(",", 16);
 
-	for (int s = 0; s < colors.length; s++) {
-	    String[] sSplit = comma.split(fwColors.get(s));
-	    if (sSplit.length < 3)
-		continue;
+	    for (int s = 0; s < colors.length; s++) {
+		String[] sSplit = comma.split(fwColors.get(s));
+		if (sSplit.length < 3)
+		    continue;
 
-	    int[] colorRGB = new int[3];
-	    for (int i = 0; i < 3; i++) {
-		try {
-		    int parsed = Integer.parseInt(sSplit[i]);
-		    colorRGB[i] = (parsed > 255 || parsed < 0) ? 1 : parsed;
-		} catch (NumberFormatException e) {
+		int[] colorRGB = new int[3];
+		for (int i = 0; i < 3; i++) {
+		    try {
+			int parsed = Integer.parseInt(sSplit[i]);
+			colorRGB[i] = (parsed > 255 || parsed < 0) ? 1 : parsed;
+		    } catch (NumberFormatException e) {
+		    }
 		}
+
+		colors[s] = Color.fromRGB(colorRGB[0], colorRGB[1], colorRGB[2]);
 	    }
 
-	    colors[s] = Color.fromRGB(colorRGB[0], colorRGB[1], colorRGB[2]);
+	    fireworkEffect = FireworkEffect.builder()
+		.flicker(useFlicker)
+		.trail(useTrail)
+		.with(fwType)
+		.withColor(colors)
+		.withFade(colors)
+		.build();
 	}
-
-	fireworkEffect = FireworkEffect.builder()
-	    .flicker(useFlicker)
-	    .trail(useTrail)
-	    .with(fwType)
-	    .withColor(colors)
-	    .withFade(colors)
-	    .build();
 
 	FireworkPower = c.get("Fireworks.LevelUp.power", 1);
 	c.addComment("Fireworks.LevelUp.ShootTime", "Fire shooting time in ticks.", "20 tick = 1 second");

@@ -96,10 +96,12 @@ public class BufferedEconomy {
 	    // combine all payments using paymentCache
 	    while (!payments.isEmpty()) {
 		BufferedPayment payment = payments.remove();
-		totalAmount += payment.get(CurrencyType.MONEY);
+		double money = payment.get(CurrencyType.MONEY);
+
+		totalAmount += money;
 
 		if (Jobs.getGCManager().UseTaxes) {
-		    taxesAmount += payment.get(CurrencyType.MONEY) * (Jobs.getGCManager().TaxesAmount / 100.0);
+		    taxesAmount += money * (Jobs.getGCManager().TaxesAmount / 100.0);
 		}
 
 		OfflinePlayer offPlayer = payment.getOfflinePlayer();
@@ -108,7 +110,6 @@ public class BufferedEconomy {
 
 		BufferedPayment existing = paymentCache.get(offPlayer.getUniqueId());
 		if (existing != null) {
-		    double money = payment.get(CurrencyType.MONEY);
 		    double points = payment.get(CurrencyType.POINTS);
 		    double exp = payment.get(CurrencyType.EXP);
 
@@ -133,7 +134,6 @@ public class BufferedEconomy {
 		    existing.set(CurrencyType.POINTS, existing.get(CurrencyType.POINTS) + points);
 		    existing.set(CurrencyType.EXP, existing.get(CurrencyType.EXP) + exp);
 		} else {
-		    double money = payment.get(CurrencyType.MONEY);
 		    double points = payment.get(CurrencyType.POINTS);
 
 		    if (Jobs.getGCManager().TakeFromPlayersPayment && Jobs.getGCManager().UseTaxes &&
@@ -213,7 +213,7 @@ public class BufferedEconomy {
 		// Show players payment stuff
 		showPayment(payment);
 
-		if (payment.getOfflinePlayer().isOnline() && Version.getCurrent().isHigher(Version.v1_8_R3)) {
+		if (Version.getCurrent().isHigher(Version.v1_8_R3) && payment.getOfflinePlayer().isOnline()) {
 		    Jobs.getBBManager().ShowJobProgression(Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId()));
 		}
 	    }

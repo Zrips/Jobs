@@ -461,7 +461,7 @@ public class PlayerManager {
      * @param job {@link Job}
      */
     public void joinJob(JobsPlayer jPlayer, Job job) {
-	if (jPlayer == null || job == null || jPlayer.isInJob(job))
+	if (jPlayer == null || jPlayer.isInJob(job))
 	    return;
 
 	// let the user join the job
@@ -494,7 +494,7 @@ public class PlayerManager {
      * @param job {@link Job}
      */
     public boolean leaveJob(JobsPlayer jPlayer, Job job) {
-	if (jPlayer == null || job == null || !jPlayer.isInJob(job))
+	if (jPlayer == null || !jPlayer.isInJob(job))
 	    return false;
 
 	JobsLeaveEvent jobsLeaveEvent = new JobsLeaveEvent(jPlayer, job);
@@ -587,11 +587,15 @@ public class PlayerManager {
      * @param experience - experience gained
      */
     public void addExperience(JobsPlayer jPlayer, Job job, double experience) {
+	if (experience > Double.MAX_VALUE)
+	    return;
+
 	JobProgression prog = jPlayer.getJobProgression(job);
-	if (prog == null || experience > Double.MAX_VALUE)
+	if (prog == null)
 	    return;
 
 	int oldLevel = prog.getLevel();
+
 	if (prog.addExperience(experience)) {
 	    performLevelUp(jPlayer, job, oldLevel);
 	    Jobs.getSignUtil().updateAllSign(job);
@@ -608,8 +612,11 @@ public class PlayerManager {
      * @param experience - experience gained
      */
     public void removeExperience(JobsPlayer jPlayer, Job job, double experience) {
+	if (experience > Double.MAX_VALUE)
+	    return;
+
 	JobProgression prog = jPlayer.getJobProgression(job);
-	if (prog == null || experience > Double.MAX_VALUE)
+	if (prog == null)
 	    return;
 
 	prog.addExperience(-experience);

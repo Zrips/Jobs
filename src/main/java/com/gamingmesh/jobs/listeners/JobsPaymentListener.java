@@ -984,10 +984,7 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToFurnace(InventoryMoveItemEvent event) {
-	if (!Jobs.getGCManager().PreventHopperFillUps)
-	    return;
-
-	if (event.getItem().getType() == Material.AIR)
+	if (!Jobs.getGCManager().PreventHopperFillUps || event.getItem().getType() == Material.AIR)
 	    return;
 
 	String type = event.getDestination().getType().toString();
@@ -1075,10 +1072,10 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	Entity ent = event.getEntity();
-	if (ent instanceof Player || !(event instanceof EntityDamageByEntityEvent))
+	if (ent instanceof Player || !(ent instanceof Damageable) || !(event instanceof EntityDamageByEntityEvent))
 	    return;
 
-	if (!(((EntityDamageByEntityEvent) event).getDamager() instanceof Player) || !(ent instanceof Damageable))
+	if (!(((EntityDamageByEntityEvent) event).getDamager() instanceof Player))
 	    return;
 
 	double damage = event.getFinalDamage();
@@ -1272,11 +1269,11 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHangingPlaceEvent(HangingPlaceEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
-
 	Player player = event.getPlayer();
 	if (player == null || !player.isOnline())
+	    return;
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
 	// check if in creative

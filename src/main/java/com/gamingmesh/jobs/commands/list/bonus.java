@@ -80,7 +80,7 @@ public class bonus implements Cmd {
 	    "%points%", formatText(boost.get(type, CurrencyType.POINTS, true)),
 	    "%exp%", formatText(boost.get(type, CurrencyType.EXP, true)));
 
-	if (msg.startsWith(" ") && (type == BoostOf.NearSpawner || type == BoostOf.PetPay))
+	if ((type == BoostOf.NearSpawner || type == BoostOf.PetPay) && msg.startsWith(" "))
 	    msg = msg.substring(1, msg.length());
 
 	sender.sendMessage(prefix + msg);

@@ -145,8 +145,10 @@ public class JobsCommands implements CommandExecutor {
 
     public Set<String> getCommands(CommandSender sender) {
 	Set<String> temp = new TreeSet<>();
+	boolean senderIsPlayer = sender instanceof Player;
+
 	for (String cmd : commandList) {
-	    if (sender instanceof Player && !hasCommandPermission(sender, cmd))
+	    if (senderIsPlayer && !hasCommandPermission(sender, cmd))
 		continue;
 
 	    temp.add(cmd);
@@ -288,7 +290,7 @@ public class JobsCommands implements CommandExecutor {
 
 	String t = type.isEmpty() ? "" : " " + type;
 
-	if (sender instanceof Player) {
+	if (isPlayer) {
 	    String pName = player.getName();
 
 	    if (sender.getName().equalsIgnoreCase(pName))

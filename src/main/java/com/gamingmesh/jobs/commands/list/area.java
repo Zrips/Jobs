@@ -58,11 +58,13 @@ public class area implements Cmd {
 		    return true;
 		}
 		if (wg && HookManager.getWorldGuardManager() != null) {
-		    if (HookManager.getWorldGuardManager().getProtectedRegionByName(name) == null) {
+		    com.sk89q.worldguard.protection.regions.ProtectedRegion protectedRegion = HookManager.getWorldGuardManager().getProtectedRegionByName(name);
+
+		    if (protectedRegion == null) {
 			sender.sendMessage(Jobs.getLanguage().getMessage("command.area.output.wgDontExist"));
 			return true;
 		    }
-		    name = HookManager.getWorldGuardManager().getProtectedRegionByName(name).getId();
+		    name = protectedRegion.getId();
 		}
 
 		if (!wg)

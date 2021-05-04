@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.commands.list;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
@@ -72,12 +73,14 @@ public class give implements Cmd {
 	switch (name) {
 	case items:
 	    JobItems jItem = ItemBoostManager.getItemByKey(itemName);
-	    if (jItem == null || jItem.getItemStack(player) == null) {
+	    ItemStack item = jItem == null ? null : jItem.getItemStack(player);
+
+	    if (item == null) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.noitem"));
 		return true;
 	    }
 
-	    GiveItem.giveItemForPlayer(player, jItem.getItemStack(player));
+	    GiveItem.giveItemForPlayer(player, item);
 	    break;
 	case limiteditems:
 	    if (job == null) {
@@ -86,12 +89,14 @@ public class give implements Cmd {
 	    }
 
 	    JobLimitedItems jLItem = job.getLimitedItems().get(itemName.toLowerCase());
-	    if (jLItem == null || jLItem.getItemStack(player) == null) {
+	    ItemStack limItem = jLItem == null ? null : jLItem.getItemStack(player);
+
+	    if (limItem == null) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.give.output.noitem"));
 		return true;
 	    }
 
-	    GiveItem.giveItemForPlayer(player, jLItem.getItemStack(player));
+	    GiveItem.giveItemForPlayer(player, limItem);
 	    break;
 	default:
 	    break;

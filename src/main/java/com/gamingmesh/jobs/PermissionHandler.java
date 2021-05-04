@@ -251,7 +251,8 @@ public class PermissionHandler {
     }
 
     public boolean hasWorldPermission(JobsPlayer player) {
-	return player.getPlayer() != null && hasWorldPermission(player, player.getPlayer().getWorld().getName());
+	Player pl = player.getPlayer();
+	return pl != null && hasWorldPermission(player, pl.getWorld().getName());
     }
 
     public boolean hasWorldPermission(JobsPlayer player, String world) {

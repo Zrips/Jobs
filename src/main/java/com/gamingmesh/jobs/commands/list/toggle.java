@@ -18,51 +18,40 @@ public class toggle implements Cmd {
 	    return false;
 	}
 
-	if (args.length != 1) {
+	boolean isBossbar = false, isActionbar = false;
+	if (args.length != 1 || (!(isBossbar = args[0].equalsIgnoreCase("bossbar")) && !(isActionbar = args[0].equalsIgnoreCase("actionbar")))) {
 	    Jobs.getCommandManager().sendUsage(sender, "toggle");
 	    return true;
 	}
 
 	Player player = (Player) sender;
-	if (!args[0].equalsIgnoreCase("bossbar") && !args[0].equalsIgnoreCase("actionbar")) {
-	    Jobs.getCommandManager().sendUsage(sender, "toggle");
-	    return true;
-	}
-
 	String playerUUID = player.getUniqueId().toString();
 
-	if (args[0].equalsIgnoreCase("actionbar")) {
-	    if (ToggleBarHandling.getActionBarToggle().containsKey(playerUUID)) {
-		if (ToggleBarHandling.getActionBarToggle().get(playerUUID)) {
-		    ToggleBarHandling.getActionBarToggle().put(playerUUID, false);
-		    sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.off"));
-		} else {
-		    ToggleBarHandling.getActionBarToggle().put(playerUUID, true);
-		    sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.on"));
-		}
-	    } else {
+	if (isActionbar) {
+	    Boolean ex = ToggleBarHandling.getActionBarToggle().get(playerUUID);
+
+	    if (ex == null || ex.booleanValue()) {
 		ToggleBarHandling.getActionBarToggle().put(playerUUID, false);
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.off"));
+	    } else {
+		ToggleBarHandling.getActionBarToggle().put(playerUUID, true);
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.on"));
 	    }
 	}
 
-	if (args[0].equalsIgnoreCase("bossbar")) {
-	    if (ToggleBarHandling.getBossBarToggle().containsKey(playerUUID)) {
-		if (ToggleBarHandling.getBossBarToggle().get(playerUUID)) {
-		    ToggleBarHandling.getBossBarToggle().put(playerUUID, false);
-		    sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.off"));
+	if (isBossbar) {
+	    Boolean ex = ToggleBarHandling.getBossBarToggle().get(playerUUID);
 
-		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player.getUniqueId());
-		    if (jPlayer != null)
-			jPlayer.hideBossBars();
-
-		} else {
-		    ToggleBarHandling.getBossBarToggle().put(playerUUID, true);
-		    sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.on"));
-		}
-	    } else {
+	    if (ex == null || ex.booleanValue()) {
 		ToggleBarHandling.getBossBarToggle().put(playerUUID, false);
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.off"));
+
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player.getUniqueId());
+		if (jPlayer != null)
+		    jPlayer.hideBossBars();
+	    } else {
+		ToggleBarHandling.getBossBarToggle().put(playerUUID, true);
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.toggle.output.on"));
 	    }
 	}
 

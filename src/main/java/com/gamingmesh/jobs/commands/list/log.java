@@ -73,11 +73,10 @@ public class log implements Cmd {
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.topline", "%playername%", JPlayer.getName()));
 	for (Log one : logList.values()) {
-	    Map<String, LogAmounts> AmountList = one.getAmountList();
 	    double totalMoney = 0, totalExp = 0, totalPoints = 0;
 
 	    for (String oneSorted : unsortMap.keySet()) {
-		for (Entry<String, LogAmounts> oneMap : AmountList.entrySet()) {
+		for (Entry<String, LogAmounts> oneMap : one.getAmountList().entrySet()) {
 		    if (oneMap.getKey().equalsIgnoreCase(oneSorted)) {
 			count++;
 

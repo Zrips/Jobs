@@ -44,7 +44,9 @@ public class quests implements Cmd {
 	    return true;
 	}
 
-	if (jPlayer.getQuestProgressions().isEmpty()) {
+	List<QuestProgression> questProgs = jPlayer.getQuestProgressions();
+
+	if (questProgs.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.error.noquests"));
 	    return true;
 	}
@@ -60,7 +62,7 @@ public class quests implements Cmd {
 	    }
 
 	    if (stopped != null) {
-		for (QuestProgression q : jPlayer.getQuestProgressions()) {
+		for (QuestProgression q : questProgs) {
 		    q.getQuest().setStopped(stopped);
 		}
 
@@ -77,7 +79,7 @@ public class quests implements Cmd {
 	    return true;
 	}
 
-	for (JobProgression jobProg : jPlayer.getJobProgression()) {
+	for (JobProgression jobProg : jPlayer.progression) {
 	    List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
 
 	    for (QuestProgression q : list) {
@@ -97,7 +99,7 @@ public class quests implements Cmd {
 			.replace("[time]", TimeManage.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
 
 		    if (current.contains("[desc]")) {
-			q.getQuest().getDescription().forEach(hoverList::add);
+			hoverList.addAll(q.getQuest().getDescription());
 		    } else {
 			hoverList.add(current);
 		    }

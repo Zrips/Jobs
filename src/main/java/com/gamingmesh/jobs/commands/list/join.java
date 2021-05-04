@@ -65,7 +65,7 @@ public class join implements Cmd {
 	    return true;
 	}
 
-	if (!Jobs.getPlayerManager().getJobsLimit(jPlayer, (short) jPlayer.getJobProgression().size())) {
+	if (!Jobs.getPlayerManager().getJobsLimit(jPlayer, (short) jPlayer.progression.size())) {
 	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.maxjobs"));
 	    return true;
 	}

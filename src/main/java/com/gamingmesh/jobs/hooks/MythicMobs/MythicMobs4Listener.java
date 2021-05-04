@@ -15,10 +15,10 @@ import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 
-public class MythicMobs4Listener implements Listener {
+public final class MythicMobs4Listener implements Listener {
 
     @EventHandler
-    public void OnMythicMobDeath(MythicMobDeathEvent event) {
+    public void onMythicMobDeath(MythicMobDeathEvent event) {
 	// Entity that died must be living
 	if (!(event.getEntity() instanceof LivingEntity))
 	    return;

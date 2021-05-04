@@ -30,9 +30,7 @@ public class stats implements Cmd {
 	    return true;
 	}
 
-	java.util.List<JobProgression> progressions = jPlayer.getJobProgression();
-
-	if (progressions.isEmpty()) {
+	if (jPlayer.progression.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.stats.error.nojob"));
 	    return true;
 	}
@@ -41,7 +39,7 @@ public class stats implements Cmd {
 
 	String leftClick = Jobs.getLanguage().getMessage("command.info.gui.leftClick");
 
-	for (JobProgression jobProg : progressions) {
+	for (JobProgression jobProg : jPlayer.progression) {
 	    for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg).split("\n")) {
 		new RawMessage().addText(msg).addHover(leftClick).addCommand("jobs info " + jobProg.getJob().getName()).show(sender);
 	    }
