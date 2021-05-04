@@ -648,7 +648,7 @@ public class Job {
             return isReversedWorldBlacklist();
 
         if (block != null)
-            return worldBlacklist.contains(block.getWorld().getName()) != isReversedWorldBlacklist();
+            return worldBlacklist.contains(block.getWorld().getName()) != reversedWorldBlacklist;
 
         return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != reversedWorldBlacklist;
     }
