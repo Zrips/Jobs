@@ -575,7 +575,10 @@ exampleJob:
   commands-on-max-level:
   - 'msg [playerName] Max level of [job] reached!'
   - 'player:jobs stats'
-
+  
+  # Turns the "world-blacklist" list into a whitelist. This essentially means the job only works in the specified worlds.
+  reverse-world-blacklist-functionality: false
+  
   # World list in which this job will not work. World name should be exact
   world-blacklist:
   - plotworld
