@@ -581,6 +581,8 @@ exampleJob:
   - plotworld
   - teamworld
 
+  #Allow a player to "/jobs join" this job even if they have the max jobs permission reached.
+  ignore-jobs-max: false
   # Limit item use to jobs level
   limitedItems:
     # Just name, don't have any impact
