@@ -206,7 +206,10 @@ public class JobItems {
 
     public void setJobs(List<Job> jobs) {
 	this.jobs.clear();
-	this.jobs.addAll(jobs);
+
+	if (jobs != null) {
+	    this.jobs.addAll(jobs);
+	}
     }
 
     public Map<Enchantment, Integer> getEnchants() {

@@ -10,7 +10,7 @@ import com.gamingmesh.jobs.container.ActionInfo;
 import com.gamingmesh.jobs.container.Job;
 
 /**
- * Called when a player gains exp from jobs.
+ * Called when a player gains experience from specific jobs.
  */
 public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
 
@@ -41,7 +41,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
     }
 
     /**
-     * Returns the player who got exp.
+     * Returns the player who got experience.
      * 
      * @return {@link OfflinePlayer}
      */
@@ -50,7 +50,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
     }
 
     /**
-     * Returns the job where the player is got the exp from.
+     * Returns the job where the player got the experience from.
      * 
      * @return {@link Job}
      */
@@ -59,16 +59,16 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
     }
 
     /**
-     * Returns the amount of gained exp for player.
+     * Returns the amount of gained experience for player.
      * 
-     * @return got exp amount
+     * @return the amount of experience the player got
      */
     public double getExp() {
 	return exp;
     }
 
     /**
-     * Sets the exp to a new value.
+     * Sets the experience to a new value.
      * 
      * @param exp the new value
      */
@@ -88,7 +88,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
     /**
      * Returns the entity that the player killed or did something before.
      * <p>
-     * This method is used for Citizens NPCs and armor stand breaking.
+     * This method is used for Citizens NPCs and armour stand breaking.
      * 
      * @return {@link Entity}
      */

@@ -8,6 +8,7 @@ import com.gamingmesh.jobs.container.CuboidArea;
  * Called when a player attempted to select an area.
  */
 public final class JobsAreaSelectionEvent extends BaseEvent {
+
     private CuboidArea area;
     private Player player;
 

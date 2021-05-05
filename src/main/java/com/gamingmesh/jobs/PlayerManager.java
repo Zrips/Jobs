@@ -461,7 +461,7 @@ public class PlayerManager {
      * @param job {@link Job}
      */
     public void joinJob(JobsPlayer jPlayer, Job job) {
-	if (jPlayer == null || jPlayer.isInJob(job))
+	if (jPlayer == null)
 	    return;
 
 	// let the user join the job
@@ -884,7 +884,7 @@ public class PlayerManager {
 	    return Jobs.getGCManager().getMaxJobs();
 	}
 
-	int max = Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max", false).intValue();
+	int max = (int) Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max", false);
 	return max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
     }
 
@@ -948,9 +948,10 @@ public class PlayerManager {
 	return c.getBoostMultiplier();
     }
 
-    public BoostMultiplier getInventoryBoost(Player player, Job prog) {
+    public BoostMultiplier getInventoryBoost(Player player, Job job) {
 	BoostMultiplier data = new BoostMultiplier();
-	if (player == null || prog == null)
+
+	if (player == null || job == null)
 	    return data;
 
 	ItemStack iih;
@@ -976,9 +977,11 @@ public class PlayerManager {
 	    }
 	}
 
+	JobProgression progress = getJobsPlayer(player).getJobProgression(job);
+
 	for (JobItems jitem : jitems) {
-	    if (jitem != null && jitem.getJobs().contains(prog)) {
-		data.add(jitem.getBoost(getJobsPlayer(player).getJobProgression(prog)));
+	    if (jitem != null && jitem.getJobs().contains(job)) {
+		data.add(jitem.getBoost(progress));
 	    }
 	}
 

@@ -31,7 +31,7 @@ public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable 
     }
 
     public JobsPrePaymentEvent(OfflinePlayer offlinePlayer, Job job, double money, double points, Block block,
-    	Entity entity, LivingEntity living, ActionInfo info) {
+	Entity entity, LivingEntity living, ActionInfo info) {
 	this.job = job;
 	this.offlinePlayer = offlinePlayer;
 	this.money = money;

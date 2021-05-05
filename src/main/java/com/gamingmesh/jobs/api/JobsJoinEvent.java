@@ -6,6 +6,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public final class JobsJoinEvent extends BaseEvent implements Cancellable {
+
 	private JobsPlayer player;
 	private Job job;
 	private boolean cancelled = false;

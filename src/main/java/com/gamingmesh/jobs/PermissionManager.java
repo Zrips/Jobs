@@ -122,7 +122,7 @@ public class PermissionManager {
      * @see #getMaxPermission(JobsPlayer, String, boolean, boolean)
      * @return the max value
      */
-    public Double getMaxPermission(JobsPlayer jPlayer, String perm) {
+    public double getMaxPermission(JobsPlayer jPlayer, String perm) {
 	return getMaxPermission(jPlayer, perm, false, false);
     }
 
@@ -135,7 +135,7 @@ public class PermissionManager {
      * @see #getMaxPermission(JobsPlayer, String, boolean, boolean)
      * @return the max value
      */
-    public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
+    public double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
 	return getMaxPermission(jPlayer, perm, force, false);
     }
 
@@ -150,7 +150,7 @@ public class PermissionManager {
      * @param cumulative if true it sums the maximum values of fount permissions
      * @return the max value
      */
-    public Double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative) {
+    public double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative) {
 	if (jPlayer == null || jPlayer.getPlayer() == null)
 	    return 0D;
 

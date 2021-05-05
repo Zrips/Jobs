@@ -3,12 +3,14 @@ package com.gamingmesh.jobs.api;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+
 /**
  * Fired when there is a new chunk explored by player moving.
  * <p>
  * <b>This is same behaviour when using {@link org.bukkit.event.player.PlayerMoveEvent}
  */
 public final class JobsChunkChangeEvent extends BaseEvent implements Cancellable {
+
     private Player player;
     private Chunk oldChunk;
     private Chunk newChunk;
@@ -21,7 +23,7 @@ public final class JobsChunkChangeEvent extends BaseEvent implements Cancellable
     }
 
     /**
-     * Gets the player who explored a chunk.
+     * Gets the player who explored a new chunk.
      * 
      * @return {@link Player}
      */

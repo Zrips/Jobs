@@ -90,7 +90,7 @@ public class JobsPlayer {
 
     private final Map<UUID, Map<Job, Long>> leftTimes = new HashMap<>();
 
-    private PlayerPoints pointsData;
+    private PlayerPoints pointsData = new PlayerPoints();
 
     public JobsPlayer(String userName) {
 	this.userName = userName == null ? "Unknown" : userName;
@@ -100,8 +100,6 @@ public class JobsPlayer {
      * @return the cached or new instance of {@link PlayerPoints}
      */
     public PlayerPoints getPointsData() {
-	if (pointsData == null)
-	    pointsData = new PlayerPoints();
 	return pointsData;
     }
 
@@ -111,7 +109,7 @@ public class JobsPlayer {
      * @param points the amount of points
      */
     public void addPoints(double points) {
-	getPointsData().addPoints(points);
+	pointsData.addPoints(points);
     }
 
     /**
@@ -120,7 +118,7 @@ public class JobsPlayer {
      * @param points the amount of points
      */
     public void takePoints(double points) {
-	getPointsData().takePoints(points);
+	pointsData.takePoints(points);
     }
 
     /**
@@ -129,7 +127,7 @@ public class JobsPlayer {
      * @param points the amount of points
      */
     public void setPoints(double points) {
-	getPointsData().setPoints(points);
+	pointsData.setPoints(points);
     }
 
     /**
@@ -138,9 +136,9 @@ public class JobsPlayer {
      * @param points {@link PlayerPoints}
      */
     public void setPoints(PlayerPoints points) {
-	getPointsData().setPoints(points.getCurrentPoints());
-	getPointsData().setTotalPoints(points.getTotalPoints());
-	getPointsData().setDbId(points.getDbId());
+	pointsData.setPoints(points.getCurrentPoints());
+	pointsData.setTotalPoints(points.getTotalPoints());
+	pointsData.setDbId(points.getDbId());
     }
 
     /**
@@ -150,7 +148,7 @@ public class JobsPlayer {
      * @return true if yes
      */
     public boolean havePoints(double points) {
-	return getPointsData().getCurrentPoints() >= points;
+	return pointsData.getCurrentPoints() >= points;
     }
 
     /**
@@ -385,10 +383,10 @@ public class JobsPlayer {
     }
 
     public int getPlayerMaxQuest(String jobName) {
-	int m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest." + jobName, false, true).intValue();
+	int m1 = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest." + jobName, false, true);
 	int max = m1;
 
-	m1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest.all", false, true).intValue();
+	m1 = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest.all", false, true);
 	if (m1 != 0 && (m1 > max || m1 < max)) {
 	    max = m1;
 	}
@@ -447,10 +445,13 @@ public class JobsPlayer {
      * @return the job progression or null if job not exists
      */
     public JobProgression getJobProgression(Job job) {
-	for (JobProgression prog : progression) {
-	    if (prog.getJob().isSame(job))
-		return prog;
+	if (job != null) {
+	    for (JobProgression prog : progression) {
+		if (prog.getJob().isSame(job))
+		    return prog;
+	    }
 	}
+
 	return null;
     }
 
@@ -581,9 +582,7 @@ public class JobsPlayer {
      */
     public boolean leaveJob(Job job) {
 //	synchronized (saveLock) {
-	JobProgression prog = getJobProgression(job);
-	if (prog != null) {
-	    progression.remove(prog);
+	if (progression.remove(getJobProgression(job))) {
 	    reloadMaxExperience();
 	    reloadLimits();
 	    reloadHonorific();
@@ -614,9 +613,12 @@ public class JobsPlayer {
      * @param levels - number of levels to promote
      */
     public void promoteJob(Job job, int levels) {
+	if (levels <= 0)
+	    return;
+
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
-	if (prog == null || levels <= 0)
+	if (prog == null)
 	    return;
 
 	int oldLevel = prog.getLevel(),
@@ -636,9 +638,12 @@ public class JobsPlayer {
      * @param levels - number of levels to demote
      */
     public void demoteJob(Job job, int levels) {
+	if (levels <= 0)
+	    return;
+
 //	synchronized (saveLock) {
 	JobProgression prog = getJobProgression(job);
-	if (prog == null || levels <= 0)
+	if (prog == null)
 	    return;
 
 	int newLevel = prog.getLevel() - levels;
@@ -708,11 +713,11 @@ public class JobsPlayer {
 	else
 	    maxLevel = job.getMaxLevel();
 
-	int tMax = Jobs.getPermissionManager().getMaxPermission(this, "jobs." + job.getName() + ".vipmaxlevel").intValue();
+	int tMax = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs." + job.getName() + ".vipmaxlevel");
 	if (tMax > maxLevel)
 	    maxLevel = tMax;
 
-	tMax = Jobs.getPermissionManager().getMaxPermission(this, "jobs.all.vipmaxlevel").intValue();
+	tMax = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.all.vipmaxlevel");
 	if (tMax > maxLevel)
 	    maxLevel = tMax;
 
@@ -726,13 +731,7 @@ public class JobsPlayer {
      * @return true if this player is in the given job, otherwise false
      */
     public boolean isInJob(Job job) {
-	if (job == null)
-	    return false;
-	for (JobProgression prog : progression) {
-	    if (prog.getJob().isSame(job))
-		return true;
-	}
-	return false;
+	return getJobProgression(job) != null;
     }
 
     /**
@@ -1008,13 +1007,13 @@ public class JobsPlayer {
 
     public void resetQuests(List<QuestProgression> quests) {
 	for (QuestProgression oneQ : quests) {
-	    if (oneQ.getQuest() == null) {
-		continue;
-	    }
+	    if (oneQ.getQuest() != null) {
+		Map<String, QuestProgression> map = qProgression.remove(oneQ.getQuest().getJob().getName());
 
-	    Job job = oneQ.getQuest().getJob();
-	    getNewQuests(job);
-	    qProgression.remove(job.getName());
+		if (map != null) {
+		    map.clear();
+		}
+	    }
 	}
     }
 
@@ -1058,7 +1057,9 @@ public class JobsPlayer {
 	if (q.getConfigName().equals(quest.getConfigName()))
 	    return;
 
-	if (prog.containsKey(q.getConfigName().toLowerCase()))
+	String confName = q.getConfigName().toLowerCase();
+
+	if (prog.containsKey(confName))
 	    return;
 
 	if (q.getJob() != quest.getJob() && prog.size() >= q.getJob().getMaxDailyQuests())
@@ -1068,7 +1069,7 @@ public class JobsPlayer {
 	    orProg.remove(quest.getConfigName().toLowerCase());
 	}
 
-	prog.put(q.getConfigName().toLowerCase(), new QuestProgression(q));
+	prog.put(confName, new QuestProgression(q));
 	skippedQuests++;
     }
 

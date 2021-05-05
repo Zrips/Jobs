@@ -15,7 +15,7 @@ public class JobsScheduleStopEvent extends BaseEvent implements Cancellable {
     }
 
     /**
-     * Returns the schedule which stopped.
+     * Returns the schedule which have been stopped.
      * 
      * @return {@link Schedule}
      */

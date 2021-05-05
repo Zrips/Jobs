@@ -76,10 +76,11 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
     }
 
     /**
-     * Returns the payment amount of currency type.
+     * Returns the primitive type of payment of the given
+     * currency type if exist, otherwise returns 0.
      * 
      * @param type {@link CurrencyType}
-     * @return the amount of payment in specific type
+     * @return the amount of payment from specific {@link CurrencyType}
      */
     public double get(CurrencyType type) {
 	return payments.getOrDefault(type, 0D);
@@ -90,14 +91,15 @@ public final class JobsPaymentEvent extends Event implements Cancellable {
      * 
      * @param type {@link CurrencyType}
      * @param amount the new amount
-     * @return the given amount
+     * @return the given amount if the previous value associated with key,
+     * more precisely {@link Map#put(Object, Object)}
      */
     public Double set(CurrencyType type, double amount) {
 	return payments.put(type, amount);
     }
 
     /**
-     * Returns all payment types map.
+     * Returns all cached payment returned as {@link Map}.
      * 
      * @return {@link Map}
      */
