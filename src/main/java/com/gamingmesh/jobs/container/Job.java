@@ -53,6 +53,7 @@ public class Job {
     private Map<String, JobLimitedItems> jobLimitedItems;
 
     private String jobName = "N/A";
+    private String jobDisplayName = null;
     private String fullName = "N/A";
 
     // job short name (for use in multiple jobs)
@@ -94,10 +95,10 @@ public class Job {
     private boolean ignoreMaxJobs = false;
 
     @Deprecated
-    public Job(String jobName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
+    public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobItems> jobItems,
 	Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
-	this(jobName, fullName, jobShortName, jobColour, maxExpEquation, displayMethod, maxLevel,
+	this(jobName, jobDisplayName, fullName, jobShortName, jobColour, maxExpEquation, displayMethod, maxLevel,
 	    vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
 	    jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
 
@@ -105,7 +106,7 @@ public class Job {
 	this.description = description;
     }
 
-    public Job(String jobName, String fullName, String jobShortName, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
+    public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
 	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions,
 	Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, List<String> worldBlacklist) {
 	this.jobName = jobName == null ? "" : jobName;
@@ -125,6 +126,7 @@ public class Job {
 	this.cmdOnLeave = cmdOnLeave;
 	this.guiItem = guiItem;
 	this.guiSlot = guiSlot;
+	this.jobDisplayName = CMIChatColor.translate(jobDisplayName);
 
 	if (worldBlacklist != null) {
 	    this.worldBlacklist = worldBlacklist;
@@ -332,10 +334,6 @@ public class Job {
      */
     public String getName() {
 	return fullName;
-    }
-
-    public String getNameWithColor() {
-	return jobColour + fullName;
     }
 
     /**
@@ -606,7 +604,7 @@ public class Job {
 	    int target = new Random(System.nanoTime()).nextInt(100);
 	    for (Quest one : ls) {
 		if (one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
-			    && one.isInLevelRange(level)) {
+		    && one.isInLevelRange(level)) {
 		    return one;
 		}
 	    }
@@ -645,33 +643,41 @@ public class Job {
     }
 
     public boolean isWorldBlackListed(Block block, Entity ent) {
-        if (worldBlacklist.isEmpty())
-            return isReversedWorldBlacklist();
+	if (worldBlacklist.isEmpty())
+	    return isReversedWorldBlacklist();
 
-        if (block != null)
-            return worldBlacklist.contains(block.getWorld().getName()) != reversedWorldBlacklist;
+	if (block != null)
+	    return worldBlacklist.contains(block.getWorld().getName()) != reversedWorldBlacklist;
 
-        return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != reversedWorldBlacklist;
+	return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != reversedWorldBlacklist;
     }
 
     public boolean isReversedWorldBlacklist() {
-        return reversedWorldBlacklist;
+	return reversedWorldBlacklist;
     }
 
     public void setReversedWorldBlacklist(boolean reversedWorldBlacklist) {
-        this.reversedWorldBlacklist = reversedWorldBlacklist;
+	this.reversedWorldBlacklist = reversedWorldBlacklist;
     }
 
     public boolean isIgnoreMaxJobs() {
-        return ignoreMaxJobs;
+	return ignoreMaxJobs;
     }
 
     public void setIgnoreMaxJobs(boolean ignoreMaxJobs) {
-        this.ignoreMaxJobs = ignoreMaxJobs;
+	this.ignoreMaxJobs = ignoreMaxJobs;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Job && isSame((Job) obj);
+	return obj instanceof Job && isSame((Job) obj);
+    }
+
+    public String getJobDisplayName() {
+	return jobDisplayName == null ? jobColour + fullName : jobDisplayName;
+    }
+
+    public void setJobDisplayName(String jobDisplayName) {
+	this.jobDisplayName = jobDisplayName;
     }
 }

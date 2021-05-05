@@ -31,13 +31,13 @@ public class employ implements Cmd {
 
 	if (jPlayer.isInJob(job)) {
 	    // already in job message
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.employ.error.alreadyin", "%jobname%", job.getNameWithColor()));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.employ.error.alreadyin", "%jobname%", job.getJobDisplayName()));
 	    return true;
 	}
 
 	if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
 	    String message = Jobs.getLanguage().getMessage("command.employ.error.fullslots");
-	    message = message.replace("%jobname%", job.getNameWithColor());
+	    message = message.replace("%jobname%", job.getJobDisplayName());
 	    sender.sendMessage(message);
 	    return true;
 	}
@@ -47,7 +47,7 @@ public class employ implements Cmd {
 	    Jobs.getPlayerManager().joinJob(jPlayer, job);
 	    Player player = jPlayer.getPlayer();
 	    if (player != null)
-		player.sendMessage(Jobs.getLanguage().getMessage("command.employ.output.target", "%jobname%", job.getNameWithColor()));
+		player.sendMessage(Jobs.getLanguage().getMessage("command.employ.output.target", "%jobname%", job.getJobDisplayName()));
 
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	} catch (Throwable e) {

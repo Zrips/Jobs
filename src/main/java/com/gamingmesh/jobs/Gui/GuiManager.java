@@ -141,7 +141,7 @@ public class GuiManager {
 
 	    ItemStack guiItem = job.getGuiItem();
 	    ItemMeta meta = guiItem.getItemMeta();
-	    plugin.getComplement().setDisplayName(meta, job.getNameWithColor());
+	    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
 	    plugin.getComplement().setLore(meta, lore);
 
 	    if (Jobs.getGCManager().hideItemAttributes) {
@@ -275,7 +275,7 @@ public class GuiManager {
 			continue;
 
 		    ItemMeta meta = guiItem.getItemMeta();
-		    plugin.getComplement().setDisplayName(meta, job.getNameWithColor());
+		    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
 		    plugin.getComplement().setLore(meta, lore);
 		    guiItem.setItemMeta(meta);
 		    tempInv.setItem(i, guiItem.clone());
@@ -295,7 +295,7 @@ public class GuiManager {
 	    }
 
 	    ItemMeta meta = guiItem.getItemMeta();
-	    plugin.getComplement().setDisplayName(meta, job.getNameWithColor());
+	    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
 	    plugin.getComplement().setLore(meta, lore);
 	    guiItem.setItemMeta(meta);
 	    tempInv.setItem(i, guiItem.clone());
@@ -426,7 +426,7 @@ public class GuiManager {
 		    }
 
 		    ItemMeta meta = guiItem.getItemMeta();
-		    plugin.getComplement().setDisplayName(meta, job.getNameWithColor());
+		    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
 		    plugin.getComplement().setLore(meta, lore);
 		    guiItem.setItemMeta(meta);
 		    tempInv.setItem(i, guiItem.clone());
@@ -445,7 +445,7 @@ public class GuiManager {
 	    }
 
 	    ItemMeta meta = guiItem.getItemMeta();
-	    plugin.getComplement().setDisplayName(meta, job.getNameWithColor());
+	    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
 	    plugin.getComplement().setLore(meta, lore);
 	    guiItem.setItemMeta(meta);
 	    tempInv.setItem(i, guiItem.clone());

@@ -267,14 +267,14 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-jar-plugin</artifactId> -->
-<!-- 				<version>2.3.1</version> -->
-<!-- 				<configuration> -->
-<!-- 					<outputDirectory>D:\MC\Server 1.16\plugins\</outputDirectory> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<outputDirectory>D:\MC\Server 1.16\plugins\</outputDirectory>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>

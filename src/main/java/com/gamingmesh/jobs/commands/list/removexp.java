@@ -47,7 +47,7 @@ public class removexp implements Cmd {
 	    Player player = jPlayer.getPlayer();
 	    if (player != null) {
 		player.sendMessage(Jobs.getLanguage().getMessage("command.removexp.output.target",
-		    "%jobname%", job.getNameWithColor(),
+		    "%jobname%", job.getJobDisplayName(),
 		    "%xplost%", xpLost));
 	    }
 

@@ -45,7 +45,7 @@ public class demote implements Cmd {
 		Player player = jPlayer.getPlayer();
 		if (player != null) {
 		    String message = Jobs.getLanguage().getMessage("command.demote.output.target",
-			"%jobname%", job.getNameWithColor() + CMIChatColor.WHITE,
+			"%jobname%", job.getJobDisplayName() + CMIChatColor.WHITE,
 			"%levelslost%", levelsLost);
 		    player.sendMessage(message);
 		}

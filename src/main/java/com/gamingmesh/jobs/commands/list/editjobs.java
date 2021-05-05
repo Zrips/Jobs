@@ -40,7 +40,7 @@ public class editjobs implements Cmd {
 
 		for (Job one : Jobs.getJobs()) {
 		    RawMessage rm = new RawMessage();
-		    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", one.getNameWithColor()), one.getName(), "jobs editjobs list " + one.getName());
+		    rm.add(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", one.getJobDisplayName()), one.getName(), "jobs editjobs list " + one.getName());
 		    rm.show(sender);
 		}
 
@@ -403,7 +403,7 @@ public class editjobs implements Cmd {
 
 	if (job != null) {
 	    rm = new RawMessage();
-	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", job.getNameWithColor()))
+	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", job.getJobDisplayName()))
 	    .addHover(job.getName()).addCommand("jobs editjobs list " + job.getName());
 	    rm.show(player);
 	}

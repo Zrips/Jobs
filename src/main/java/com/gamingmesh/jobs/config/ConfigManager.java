@@ -106,6 +106,10 @@ public class ConfigManager {
 	    "NOTE: Must be 1 word");
 	cfg.get(pt + ".fullname", "Woodcutter");
 
+	cfg.addComment(pt + ".displayName", "Jobs display name used only for visualization in specific parts. Can contain spaces and color codes");
+	cfg.get(pt + ".displayName", "&2--{#cancan}Woodcutter&2--");
+
+	
 	cfg.addComment(pt + ".shortname", "Shortened version of the name of the job. Used as a prefix when the user has more than 1 job.");
 	cfg.get(pt + ".shortname", "W");
 	cfg.get(pt + ".description", "Earns money felling and planting trees");
@@ -761,9 +765,14 @@ public class ConfigManager {
 		log.warning("Job " + jobKey + " has an invalid fullname property. Skipping job!");
 		continue;
 	    }
+	    
 
 	    // Translating unicode
 	    jobFullName = StringEscapeUtils.unescapeJava(jobFullName);
+	    
+	    String jobDisplayName = null;
+	    if (jobSection.isString("displayName"))
+		jobDisplayName =jobSection.getString("displayName");
 
 	    int maxLevel = jobSection.getInt("max-level");
 	    if (maxLevel < 0)
@@ -1136,7 +1145,7 @@ public class ConfigManager {
 		}
 	    }
 
-	    Job job = new Job(jobKey, jobFullName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
+	    Job job = new Job(jobKey, jobDisplayName, jobFullName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
 		jobConditions, jobItems, jobLimitedItems, jobSection.getStringList("cmd-on-join"),
 		jobSection.getStringList("cmd-on-leave"), guiItem, guiSlot, bossbar, rejoinCd,
 		jobSection.getStringList("world-blacklist"));

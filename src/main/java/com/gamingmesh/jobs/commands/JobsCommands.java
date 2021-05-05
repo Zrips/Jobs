@@ -266,7 +266,7 @@ public class JobsCommands implements CommandExecutor {
 			message.add(m);
 		} else if (showAllTypes == 0) {
 		    String myMessage = Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none");
-		    myMessage = myMessage.replace("%jobname%", job.getNameWithColor());
+		    myMessage = myMessage.replace("%jobname%", job.getJobDisplayName());
 		    message.add(myMessage);
 		}
 	    }
@@ -384,7 +384,7 @@ public class JobsCommands implements CommandExecutor {
 	Title title = Jobs.getTitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
 	String message = Jobs.getLanguage().getMessage(path,
 	    "%joblevel%", jobProg.getLevel(),
-	    "%jobname%", jobProg.getJob().getNameWithColor(),
+	    "%jobname%", jobProg.getJob().getJobDisplayName(),
 	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(),
 	    "%titlename%", title == null ? "Unknown" : title.getName());
@@ -428,7 +428,7 @@ public class JobsCommands implements CommandExecutor {
 	double exp = jPlayer.getExpAfterRejoin(jobProg, jPlayer.getLevelAfterRejoin(jobProg));
 	String message = Jobs.getLanguage().getMessage("command.stats.output.message",
 	    "%joblevel%", level,
-	    "%jobname%", jobProg.getJob().getNameWithColor(),
+	    "%jobname%", jobProg.getJob().getJobDisplayName(),
 	    "%jobxp%", Math.round(exp * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(level));
 	return " " + jobProgressMessage(jobProg.getMaxExperience(level), exp) + " " + message;

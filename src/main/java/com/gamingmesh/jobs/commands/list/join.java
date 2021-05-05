@@ -56,12 +56,12 @@ public class join implements Cmd {
 
 	if (jPlayer.isInJob(job)) {
 	    // already in job message
-	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.alreadyin", "%jobname%", job.getNameWithColor()));
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.alreadyin", "%jobname%", job.getJobDisplayName()));
 	    return true;
 	}
 
 	if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
-	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.fullslots", "%jobname%", job.getNameWithColor()));
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.error.fullslots", "%jobname%", job.getJobDisplayName()));
 	    return true;
 	}
 
@@ -84,7 +84,7 @@ public class join implements Cmd {
 	}
 
 	Jobs.getPlayerManager().joinJob(jPlayer, job);
-	pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.success", "%jobname%", job.getNameWithColor()));
+	pSender.sendMessage(Jobs.getLanguage().getMessage("command.join.success", "%jobname%", job.getJobDisplayName()));
 	return true;
     }
 }
