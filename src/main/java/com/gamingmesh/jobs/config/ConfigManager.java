@@ -933,7 +933,7 @@ public class ConfigManager {
 		} else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
 		    guiItem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
 		} else
-		    log.warning("Job " + jobKey + " has an invalid Gui property. Please fix this if you want to use it!");
+		    log.warning("Job " + jobKey + " has an invalid ("+guiSection.getString("Item")+") Gui property. Please fix this if you want to use it!");
 
 		for (String str4 : guiSection.getStringList("Enchantments")) {
 		    String[] id = str4.split(":", 2);
