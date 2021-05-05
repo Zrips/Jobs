@@ -1148,6 +1148,7 @@ public class ConfigManager {
 	    job.setBossbar(bossbar);
 	    job.setRejoinCd(rejoinCd);
 	    job.setMaxLevelCommands(jobSection.getStringList("commands-on-max-level"));
+	    job.setIgnoreMaxJobs(jobSection.getBoolean("ignore-jobs-max"));
 
 	    if (jobSection.isConfigurationSection("Quests")) {
 		List<Quest> quests = new ArrayList<>();
