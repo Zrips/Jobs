@@ -289,10 +289,197 @@ public class ConfigManager {
 	cfg.addComment(pt + ".Break.gravel.income", "you can use minuses to take away money if the player break this block");
 	cfg.get(pt + ".Break.gravel.income", -1D);
 
+	cfg.addComment(pt + ".Collect", "Payment for collecting things like sweet berry bush, composter or honey");
+
+	generate(cfg, pt + ".Collect.sweet_berry_bush-3");
+	generate(cfg, pt + ".Collect.composter");
+	generate(cfg, pt + ".Collect.beehive-5");
+	generate(cfg, pt + ".Collect.bee_nest-5");
+
+	cfg.addComment(pt + ".Bake", "Payment for cooking raw foods in camp fire");
+	generate(cfg, pt + ".Bake.beef");
+	generate(cfg, pt + ".Bake.porkchop");
+
+	cfg.addComment(pt + ".StripLogs", "Payment for stripping wood logs, only for 1.13+ servers");
+	generate(cfg, pt + ".StripLogs.stripped_acacia_log");
+	generate(cfg, pt + ".StripLogs.stripped_oak_log");
+
+	cfg.addComment(pt + ".TNTBreak", "Payment for breaking a block with tnt");
+	generate(cfg, pt + ".TNTBreak.oaklog");
+
+	cfg.addComment(pt + ".Place", "Payment for placing a block");
+	cfg.addComment(pt + ".Place.materials", "You can use list of materials to simplify adding each materials one by one", "Remember that you should separate the income, points and exp with ';'");
+	cfg.get(pt + ".Place.materials", Arrays.asList("sapling;1.0;1.0;1.0", "wood;2.0;1.0", "stone;0.1"));
+
+	cfg.addComment(pt + ".VTrade", "Payment for breaking a block with tnt");
+	generate(cfg, pt + ".VTrade.emerald");
+	cfg.addComment(pt + ".VTrade.enchanted_book-12", "you can add enchanted book with sub-id");
+	generate(cfg, pt + ".VTrade.enchanted_book-12");
+
+	cfg.addComment(pt + ".Kill", "Payment for killing any type of living entity");
+	generate(cfg, pt + ".Kill.Player");
+
+	cfg.addComment(pt + ".MMKill", "Payment for killing a MythicMob");
+	generate(cfg, pt + ".MMKill.CustomNameHere");
+
+	cfg.addComment(pt + ".custom-kill", "Killing player with certain job");
+	generate(cfg, pt + ".custom-kill.Woodcutter");
+
+	cfg.addComment(pt + ".Tame", "Taming animals");
+	generate(cfg, pt + ".Tame.Wolf");
+
+	cfg.addComment(pt + ".Breed", "Breeding animals");
+	generate(cfg, pt + ".Breed.Wolf");
+
+	cfg.addComment(pt + ".Eat", "Eating food");
+	generate(cfg, pt + ".Eat.cooked_rabbit");
+	generate(cfg, pt + ".Eat.baked_potato");
+
+	cfg.addComment(pt + ".Milk", "Milking cows");
+	generate(cfg, pt + ".Milk.Cow");
+	generate(cfg, pt + ".Milk.MushroomCow");
+
+	cfg.addComment(pt + ".Shear", "Shear sheeps by its color", "You can use 'color-all' identifier to specify all known colors.");
+	generate(cfg, pt + ".Shear.Black");
+	generate(cfg, pt + ".Shear.Blue");
+	generate(cfg, pt + ".Shear.Brown");
+	generate(cfg, pt + ".Shear.Cyan");
+	generate(cfg, pt + ".Shear.Gray");
+	generate(cfg, pt + ".Shear.Green");
+	generate(cfg, pt + ".Shear.Light_Blue");
+	generate(cfg, pt + ".Shear.Lime");
+	generate(cfg, pt + ".Shear.Magenta");
+	generate(cfg, pt + ".Shear.Orange");
+	generate(cfg, pt + ".Shear.Pink");
+	generate(cfg, pt + ".Shear.Purple");
+	generate(cfg, pt + ".Shear.Red");
+	generate(cfg, pt + ".Shear.Light_Gray");
+	generate(cfg, pt + ".Shear.White");
+	generate(cfg, pt + ".Shear.Yellow");
+
+	cfg.addComment(pt + ".Dye", "dyeing armor");
+	generate(cfg, pt + ".Dye.leather_boots");
+	generate(cfg, pt + ".Dye.leather_chestplate");
+	generate(cfg, pt + ".Dye.leather_helmet");
+	generate(cfg, pt + ".Dye.leather_leggings");
+
+	cfg.addComment(pt + ".Fish", "Catching fish");
+	generate(cfg, pt + ".Fish.raw_fish");
+	cfg.addComment(pt + ".Fish.legacy_raw_fish", "If you are using below version 1.13");
+	generate(cfg, pt + ".Fish.legacy_raw_fish");
+
+	cfg.addComment(pt + ".Repair", "Repairing items");
+	generate(cfg, pt + ".Repair.wood_sword");
+	generate(cfg, pt + ".Repair.iron_sword");
+
+	cfg.addComment(pt + ".Craft", "Crafting items");
+	generate(cfg, pt + ".Craft.wood_sword");
+	generate(cfg, pt + ".Craft.leather_boots");
+	cfg.addComment(pt + ".Craft.!Healing Bandage", "Add ! at front when you want to pay for crafted items with special names. Always use double quotation marks, same as example");
+	generate(cfg, pt + ".Craft.!Healing Bandage");
+	cfg.addComment(pt + ".Craft.tipped_arrow:slowness", "If you add ':' after the tipped_arrow then you can use effect names like in example");
+	generate(cfg, pt + ".Craft.tipped_arrow:slowness");
+
+	cfg.addComment(pt + ".Smelt", "Smelting ores in any type of furnaces");
+	generate(cfg, pt + ".Smelt.iron_ingot");
+	generate(cfg, pt + ".Smelt.gold_ingot");
+
+	cfg.addComment(pt + ".Enchant", "Smelting ores in any type of furnaces");
+	generate(cfg, pt + ".Enchant.wood_sword");
+	generate(cfg, pt + ".Enchant.leather_boots");
+	cfg.addComment(pt + ".Enchant.DIG_SPEED-1", "Or/and you can give money for each enchantment they got");
+	generate(cfg, pt + ".Enchant.DIG_SPEED-1");
+	generate(cfg, pt + ".Enchant.dig_speed-2");
+
+	cfg.addComment(pt + ".Brew", "Brewing miscellaneous items");
+	generate(cfg, pt + ".Brew.nether_stalk");
+	generate(cfg, pt + ".Brew.redstone");
+
+	cfg.addComment(pt + ".Explore", "Explore options. Each number represents players number in exploring that chunk",
+	    "1 means that player is first in this chunk, 2 is second and so on",
+	    "so you can give money not only for first player who discovers that chunk");
+	generate(cfg, pt + ".Explore.1");
+	generate(cfg, pt + ".Explore.2");
+	generate(cfg, pt + ".Explore.3");
+	generate(cfg, pt + ".Explore.4");
+	generate(cfg, pt + ".Explore.5");
+
+	cfg.addComment(pt + ".permissions", "permissions granted for joining to a job");
+	cfg.addComment(pt + ".permissions.firstNode", "example node", "Any name can be accepted");
+	cfg.addComment(pt + ".permissions.firstNode.value", "true to give, false to revoke");
+	cfg.get(pt + ".permissions.firstNode.value", true);
 	cfg.addComment(pt + ".permissions.firstNode.permission", "The permission node");
-	cfg.get(pt + ".permissions.firstNode.permission", "aaaaaatest.node");
+	cfg.get(pt + ".permissions.firstNode.permission", "atest.node");
+	cfg.addComment(pt + ".permissions.firstNode.level", "minimum level needed to grant permission. Use 0 for all levels");
+	cfg.get(pt + ".permissions.firstNode.level", 0);
+	cfg.get(pt + ".permissions.secNode.value", true);
+	cfg.get(pt + ".permissions.secNode.permission", "atest.node2");
+	cfg.addComment(pt + ".permissions.secNode.level", "Permission granted when reaching level 10");
+	cfg.get(pt + ".permissions.secNode.level", 10);
+
+	cfg.addComment(pt + ".conditions", "Permissions granted when particular conditions are met");
+	cfg.addComment(pt + ".conditions.first", "Condition name, irrelevant, you can write anything in here");
+
+	cfg.addComment(pt + ".conditions.first.requires", "j marks that player should have particular jobs level and higher", "p marks permission requirement");
+	cfg.get(pt + ".permissions.first.requires", Arrays.asList("j:Miner-50", "j:Digger-50"));
+	cfg.addComment(pt + ".conditions.first.requires", "j marks that player should have particular jobs level and higher");
+	cfg.get(pt + ".permissions.first.requires", Arrays.asList("j:Miner-50", "j:Digger-50", "p:essentials.notnoob"));
+	cfg.addComment(pt + ".conditions.first.perform", "p marks permission, player will get if given true value, if used false, permission will be taken");
+	cfg.get(pt + ".permissions.first.perform", Arrays.asList("p:essentials.fly-true"));
+
+	cfg.addComment(pt + ".commands", "Commands executed when player reached level");
+	cfg.addComment(pt + ".commands.fly", "command name, just to have better idea what this do");
+	cfg.addComment(pt + ".commands.fly.command", "Command its self, this will be executed from console, so all commands should work",
+	    "Possible variables are: [player] [jobname] [oldlevel] [newlevel]");
+	cfg.get(pt + ".commands.fly.command", "lp user [player] permission set essentials.fly");
+	cfg.addComment(pt + ".commands.fly.levelFrom", "When to execute this command first time", "Set to 0 if you want to detect all the levels");
+	cfg.get(pt + ".commands.fly.levelFrom", 100);
+	cfg.addComment(pt + ".commands.fly.levelUntil", "Until when to do this command", "This can be set to same level as levelFrom, so this command will be executed only once",
+	    "Set to 0 if you want to detect all the levels");
+	cfg.get(pt + ".commands.fly.levelUntil", 100);
+	cfg.get(pt + ".commands.kit.command", Arrays.asList("lp user [player] permission set essentials.kits.woodcutter", "msg [player] Now you can use woodcutter kit!"));
+	cfg.get(pt + ".commands.kit.levelFrom", 150);
+	cfg.get(pt + ".commands.kit.levelUntil", 150);
+
+	cfg.addComment(pt + ".commands-on-max-level", "Perform specific commands when a player reaches the max level of this job.",
+	    "Players can have vip max level and this will be performed when they reach the max vip level.",
+	    "You can use 'player:' or 'console:' prefix tag to perform for specific senders.");
+	cfg.get(pt + ".commands-on-max-level", Arrays.asList("msg [playerName] Max level of [job] reached!", "player:jobs stats"));
+
+	cfg.addComment(pt + ".reverse-world-blacklist-functionality", "Turns the 'world-blacklist' list into a whitelist. This essentially means the job only works in the specified worlds.");
+	cfg.get(pt + ".reverse-world-blacklist-functionality", false);
+
+	cfg.addComment(pt + ".world-blacklist", "World list in which this job will not work. World name should be exact");
+	cfg.get(pt + ".world-blacklist", Arrays.asList("plotworld", "teamworld"));
+
+	cfg.addComment(pt + ".ignore-jobs-max", "Allow a player to '/jobs join' this job even if they have the max jobs permission reached.");
+	cfg.get(pt + ".ignore-jobs-max", false);
+
+	cfg.get(pt + ".cmd-on-join", Arrays.asList("msg [name] Thx for joining this job!", "msg [name] Now start working and get money from [jobname] job!"));
+	cfg.get(pt + ".cmd-on-leave", Arrays.asList("msg [name] You have left this awesome [jobname] job", "msg [name] See you soon!"));
+
+	cfg.addComment(pt + ".limitedItems", "Limit item use to jobs level");
+	cfg.addComment(pt + ".limitedItems.firstOne", "Just name, don't have any impact");
+	cfg.addComment(pt + ".limitedItems.firstOne.id", "Tool/Weapon id. Works for any interact action.");
+	cfg.get(pt + ".limitedItems.firstOne.id", "DIAMOND_PICKAXE");
+	cfg.addComment(pt + ".limitedItems.firstOne.level", "Level of this job player can start using this item");
+	cfg.get(pt + ".limitedItems.firstOne.level", 5);
+	cfg.addComment(pt + ".limitedItems.firstOne.name", "(optional) Items name, option to use color codes");
+	cfg.get(pt + ".limitedItems.firstOne.name", "&8Miner Pickaxe");
+	cfg.addComment(pt + ".limitedItems.firstOne.lore", "(optional) Item lore, again can come with color codes");
+	cfg.get(pt + ".limitedItems.firstOne.lore", Arrays.asList("&eBobs pick", "&710% bonus XP"));
+	cfg.addComment(pt + ".limitedItems.firstOne.enchants",
+	    "(optional) Item enchantments, all enchantment names can be found https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html",
+	    "enchant level can increase with jobs level to give best RPG experience");
+	cfg.get(pt + ".limitedItems.firstOne.enchants", Arrays.asList("DAMAGE_ALL=1", "FIRE_ASPECT=1"));
 
 	cfg.save();
+    }
+
+    private static void generate(ConfigReader cfg, String pt) {
+	cfg.get(pt + ".income", 1D);
+	cfg.get(pt + ".points", 1D);
+	cfg.get(pt + ".experience", 1D);
     }
 
     /**
@@ -849,8 +1036,8 @@ public class ConfigManager {
 	    }
 
 	    Parser incomeEquation = new Parser("0");
-		String incomeEquationInput = jobSection.getString("income-progression-equation");
-		if (incomeEquationInput != null) {
+	    String incomeEquationInput = jobSection.getString("income-progression-equation");
+	    if (incomeEquationInput != null) {
 		try {
 		    incomeEquation = new Parser(incomeEquationInput);
 		    // test equation
@@ -938,7 +1125,7 @@ public class ConfigManager {
 		} else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
 		    guiItem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
 		} else
-		    log.warning("Job " + jobKey + " has an invalid ("+guiSection.getString("Item")+") Gui property. Please fix this if you want to use it!");
+		    log.warning("Job " + jobKey + " has an invalid (" + guiSection.getString("Item") + ") Gui property. Please fix this if you want to use it!");
 
 		for (String str4 : guiSection.getStringList("Enchantments")) {
 		    String[] id = str4.split(":", 2);
@@ -1136,8 +1323,20 @@ public class ConfigManager {
 
 		    String node = itemKey.toLowerCase();
 
-		    jobLimitedItems.put(node, new JobLimitedItems(node, itemSection.getInt("id"), 0, 1, itemSection.getString("name"),
-		        lore, enchants, itemSection.getInt("level")));
+		    CMIMaterial mat = null;
+
+		    if (itemSection.isInt("id")) {
+			mat = CMIMaterial.get(itemSection.getInt("id"));
+		    } else {
+			mat = CMIMaterial.get(itemSection.getString("id"));
+		    }
+
+		    if (mat == null) {
+			log.warning("Job " + jobKey + " has incorrect limitedItems material id!");
+			continue;
+		    }
+
+		    jobLimitedItems.put(node, new JobLimitedItems(node, mat, 1, itemSection.getString("name"), lore, enchants, itemSection.getInt("level")));
 		}
 	    }
 
