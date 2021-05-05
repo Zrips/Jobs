@@ -86,6 +86,7 @@ public class Job {
 
     private final List<String> fDescription = new ArrayList<>(), maxLevelCommands = new ArrayList<>();
     private List<String> worldBlacklist = new ArrayList<>();
+    private boolean reversedWorldBlacklist = false;
 
     private final List<Quest> quests = new ArrayList<>();
     private int maxDailyQuests = 1;
@@ -644,13 +645,21 @@ public class Job {
     }
 
     public boolean isWorldBlackListed(Block block, Entity ent) {
-	if (worldBlacklist.isEmpty())
-	    return false;
+        if (worldBlacklist.isEmpty())
+            return isReversedWorldBlacklist();
 
-	if (block != null && worldBlacklist.contains(block.getWorld().getName()))
-	    return true;
+        if (block != null)
+            return worldBlacklist.contains(block.getWorld().getName()) != reversedWorldBlacklist;
 
-	return ent != null && worldBlacklist.contains(ent.getWorld().getName());
+        return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != reversedWorldBlacklist;
+    }
+
+    public boolean isReversedWorldBlacklist() {
+        return reversedWorldBlacklist;
+    }
+
+    public void setReversedWorldBlacklist(boolean reversedWorldBlacklist) {
+        this.reversedWorldBlacklist = reversedWorldBlacklist;
     }
 
     public boolean isIgnoreMaxJobs() {
@@ -663,6 +672,6 @@ public class Job {
 
     @Override
     public boolean equals(Object obj) {
-	return obj instanceof Job ? isSame((Job) obj) : false;
+        return obj instanceof Job && isSame((Job) obj);
     }
 }
