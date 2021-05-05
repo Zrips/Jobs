@@ -53,7 +53,7 @@ public class Job {
     private Map<String, JobLimitedItems> jobLimitedItems;
 
     private String jobName = "N/A";
-    private String jobDisplayName = null;
+    private String jobDisplayName;
     private String fullName = "N/A";
 
     // job short name (for use in multiple jobs)
@@ -334,6 +334,17 @@ public class Job {
      */
     public String getName() {
 	return fullName;
+    }
+
+    /**
+     * Return the job full name with the set of color.
+     * 
+     * @return the full name with color
+     * @deprecated use {@link #getJobDisplayName()} instead
+     */
+    @Deprecated
+    public String getNameWithColor() {
+	return jobColour + fullName;
     }
 
     /**
