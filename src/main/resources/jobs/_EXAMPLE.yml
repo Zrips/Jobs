@@ -17,6 +17,9 @@ exampleJob:
   # Shortened version of the name of the job. Used as a prefix when the user has more than 1 job.
   shortname: W
 
+  # Jobs display name used only for visualization in specific parts. Can contain spaces and color codes
+  displayName: "&2--{#cancan}Woodcutter&2--"
+
   # The short description of job
   # Please try to not use this, use FullDescription below
   #description: Earns money felling and planting trees

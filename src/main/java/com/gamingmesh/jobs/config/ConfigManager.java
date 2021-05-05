@@ -109,7 +109,6 @@ public class ConfigManager {
 	cfg.addComment(pt + ".displayName", "Jobs display name used only for visualization in specific parts. Can contain spaces and color codes");
 	cfg.get(pt + ".displayName", "&2--{#cancan}Woodcutter&2--");
 
-	
 	cfg.addComment(pt + ".shortname", "Shortened version of the name of the job. Used as a prefix when the user has more than 1 job.");
 	cfg.get(pt + ".shortname", "W");
 	cfg.get(pt + ".description", "Earns money felling and planting trees");
@@ -765,14 +764,11 @@ public class ConfigManager {
 		log.warning("Job " + jobKey + " has an invalid fullname property. Skipping job!");
 		continue;
 	    }
-	    
 
 	    // Translating unicode
 	    jobFullName = StringEscapeUtils.unescapeJava(jobFullName);
-	    
-	    String jobDisplayName = null;
-	    if (jobSection.isString("displayName"))
-		jobDisplayName =jobSection.getString("displayName");
+
+	    String jobDisplayName = jobSection.getString("displayName");
 
 	    int maxLevel = jobSection.getInt("max-level");
 	    if (maxLevel < 0)
