@@ -101,4 +101,8 @@ public enum Version {
     public static boolean isCurrentEqualOrLower(Version v) {
 	return getCurrent().getValue() <= v.getValue();
     }
+
+    public static boolean isCurrentEqual(Version v) {
+	return getCurrent().getValue() == v.getValue();
+    }
 }

@@ -6,8 +6,14 @@ package com.gamingmesh.jobs.CMILib;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.UUID;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 
 public class CMIReflections {
 
@@ -288,5 +294,113 @@ public class CMIReflections {
 
     public static ItemStack getItemInOffHand(org.bukkit.entity.Player player) {
 	return Version.getCurrent().isLower(Version.v1_9_R1) ? null : player.getInventory().getItemInOffHand();
+    }
+
+    public static int getEggId(ItemStack item) {
+	EntityType type = getEggType(item);
+	return type == null ? 0 : type.getTypeId();
+    }
+
+    public static EntityType getEggType(ItemStack item) {
+	if (!CMIMaterial.isMonsterEgg(item.getType()))
+	    return null;
+
+	if (Version.isCurrentEqual(Version.v1_12_R1)) {
+	    try {
+		if (Version.isCurrentEqualOrLower(Version.v1_11_R1)) {
+		    CMIEntityType cmiType = CMIEntityType.getById(item.getData().getData());
+		    if (cmiType != null)
+			return cmiType.getType();
+		}
+		Object tag = getNbt(item);
+		Object base = tag.getClass().getMethod("getCompound", String.class).invoke(tag, "EntityTag");
+		String type = (String) base.getClass().getMethod("getString", String.class).invoke(base, "id");
+		return EntityType.fromName(type.replace("minecraft:", "").toUpperCase());
+	    } catch (Exception e) {
+		return null;
+	    }
+	}
+
+	CMIEntityType type = CMIEntityType.getByName(item.getType().toString().replace("_SPAWN_EGG", ""));
+	return type == null ? null : type.getType();
+    }
+
+    public static ItemStack setEggType(ItemStack item, EntityType etype) {
+	if (!item.getType().toString().contains("_EGG"))
+	    return null;
+	try {
+	    Object tag = getNbt(item);
+
+	    Object ttag = tag.getClass().getMethod("getCompound", String.class).invoke(tag, "EntityTag");
+
+	    if (ttag == null)
+		ttag = NBTTagCompound.newInstance();
+
+	    CMIEntityType ce = CMIEntityType.getByType(etype);
+	    if (ce == null)
+		return item;
+
+	    ttag.getClass().getMethod("setString", String.class, String.class).invoke(ttag, "id", ce.getName());
+
+	    tag.getClass().getMethod("set", String.class, NBTTagCompound).invoke(tag, "EntityTag", ttag);
+	    setTag(item, tag);
+
+	    return (ItemStack) asBukkitCopy(item);
+	} catch (Exception e) {
+	    return null;
+	}
+    }
+
+    public static ItemStack setTag(ItemStack item, Object tag) {
+	try {
+	    Object nmsStack = asNMSCopy(item);
+	    if (nmsStack == null) {
+		return null;
+	    }
+	    Method meth2 = nmsStack.getClass().getMethod("setTag", NBTTagCompound);
+	    meth2.invoke(nmsStack, tag);
+	    return (ItemStack) asBukkitCopy(nmsStack);
+	} catch (Throwable e) {
+	    if (Version.isCurrentEqualOrHigher(Version.v1_7_R4))
+		e.printStackTrace();
+	    return item;
+	}
+    }
+
+    public static ItemStack setSkullTexture(ItemStack item, String customProfileName, String texture) {
+	if (item == null)
+	    return null;
+	try {
+
+	    GameProfile prof = new GameProfile(UUID.nameUUIDFromBytes(texture.getBytes()), null);
+	    prof.getProperties().removeAll("textures");
+	    prof.getProperties().put("textures", new Property("textures", texture));
+
+//	    ItemMeta headMeta = item.getItemMeta();
+	    SkullMeta headMeta = (SkullMeta) item.getItemMeta();
+
+	    Field profileField = null;
+	    try {
+		profileField = headMeta.getClass().getDeclaredField("profile");
+	    } catch (NoSuchFieldException | SecurityException e) {
+		e.printStackTrace();
+	    }
+	    if (profileField != null) {
+		profileField.setAccessible(true);
+		try {
+		    profileField.set(headMeta, prof);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+		    e.printStackTrace();
+		}
+		item.setItemMeta(headMeta);
+	    }
+
+	    Object i = new CMINBT(item).setString("Id", UUID.nameUUIDFromBytes(texture.getBytes()).toString());
+
+	    return i == null ? null : (ItemStack) i;
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return null;
+	}
     }
 }

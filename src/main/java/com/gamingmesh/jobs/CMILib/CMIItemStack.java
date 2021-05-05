@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.Material;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.material.SpawnEgg;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -19,7 +23,9 @@ import com.gamingmesh.jobs.Jobs;
 
 public class CMIItemStack {
 
+    @Deprecated
     private int id = 0;
+    @Deprecated
     private short data = 0;
     private short durability = 0;
     private int amount = 0;
@@ -28,6 +34,7 @@ public class CMIItemStack {
     private String mojangName = null;
     private CMIMaterial cmiMaterial = null;
     private Material material = null;
+    private CMIEntityType entityType = null;
     private ItemStack item;
 
     public CMIItemStack(Material material) {
@@ -48,6 +55,7 @@ public class CMIItemStack {
     @Override
     public CMIItemStack clone() {
 	CMIItemStack cm = new CMIItemStack(material);
+	cm.entityType = this.entityType;
 	cm.setId(id);
 	cm.setData(data);
 	cm.setAmount(amount);
@@ -60,20 +68,29 @@ public class CMIItemStack {
 	return cm;
     }
 
+    @Deprecated
     public int getId() {
 	return id;
     }
 
+    @Deprecated
     public void setId(Integer id) {
 	this.id = id;
     }
 
+    @Deprecated
     public short getData() {
 	return data;
     }
 
     public boolean isTool() {
 	return getMaxDurability() > 0;
+    }
+
+    public boolean isArmor() {
+	if (this.getCMIType() != null && this.getCMIType().isArmor())
+	    return true;
+	return CMIMaterial.isArmor(this.getType());
     }
 
     public short getDurability() {
@@ -85,9 +102,17 @@ public class CMIItemStack {
     }
 
     public void setData(short data) {
-//    	CMIMaterial got = CMIMaterial.get(id, data);
-//    	if (got != null && got.getLegacyData() == data)
 	this.data = data;
+	if (this.getCMIType() != null) {
+	    ItemMeta meta = null;
+	    if (item != null && item.hasItemMeta()) {
+		meta = item.getItemMeta();
+	    }
+	    this.item = null;
+	    if (meta != null && this.getItemStack() != null) {
+		this.getItemStack().setItemMeta(meta);
+	    }
+	}
     }
 
     public CMIItemStack setDisplayName(String name) {
@@ -122,9 +147,11 @@ public class CMIItemStack {
 
     public CMIItemStack clearLore() {
 	ItemMeta meta = getItemStack().getItemMeta();
-	List<String> t = new ArrayList<>();
-	meta.setLore(t);
-	getItemStack().setItemMeta(meta);
+	if (meta != null) {
+	    List<String> t = new ArrayList<String>();
+	    meta.setLore(t);
+	    this.getItemStack().setItemMeta(meta);
+	}
 	return this;
     }
 
@@ -176,13 +203,11 @@ public class CMIItemStack {
 
     public List<String> getLore() {
 	ItemMeta meta = this.getItemStack().getItemMeta();
-//    List<String> lore = null;
 	if (meta != null) {
 	    List<String> lore = meta.getLore();
 	    if (lore == null) {
 		lore = new ArrayList<>();
 		meta.setLore(lore);
-//    	this.getItemStack().setItemMeta(meta);
 	    }
 
 	    return meta.getLore() == null ? new ArrayList<>() : meta.getLore();
@@ -193,7 +218,7 @@ public class CMIItemStack {
     public String getRealName() {
 	return getCMIType() == null || getCMIType() == CMIMaterial.NONE ? getType().name() : getCMIType().getName();
 //    if (this.getItemStack() != null) {
-    //
+	//
 ////        String translated = CMI.getInstance().getItemManager().getTranslatedName(this.getItemStack());
 ////        if (translated != null)
 ////    	return translated;
@@ -219,7 +244,7 @@ public class CMIItemStack {
 //    try {
 //        mojangName = CMI.getInstance().getRef().getItemMinecraftName(getItemStack()).replace("minecraft:", "");
 //    } catch (Exception e) {
-    //
+	//
 //    }
 	return mojangName == null || mojangName.isEmpty() ? getCMIType().getMaterial().name() : mojangName;
     }
@@ -263,6 +288,13 @@ public class CMIItemStack {
     @SuppressWarnings("deprecation")
     public ItemStack getItemStack() {
 	if (item == null) {
+	    try {
+		if (!this.getType().isItem()) {
+		    return null;
+		}
+	    } catch (Throwable e) {
+	    }
+
 	    if (cmiMaterial.isMonsterEgg()) {
 		if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
 		    item = new ItemStack(getType());
@@ -299,23 +331,24 @@ public class CMIItemStack {
 	if (item != null) {
 	    this.amount = item.getAmount();
 	    this.material = item.getType();
-	    this.cmiMaterial = CMIMaterial.get(this.material);
-	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2))
+	    this.cmiMaterial = CMIMaterial.get(item);
+	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
 		this.id = item.getType().getId();
-	    else if (cmiMaterial != null) {
+		if ((this.getType().isBlock() || this.getType().isSolid())) {
+		    data = item.getData().getData();
+		}
+		if (item.getType().getMaxDurability() - item.getDurability() < 0) {
+		    data = item.getData().getData();
+		}
+	    } else if (cmiMaterial != null) {
 		this.id = cmiMaterial.getId();
 	    }
-	    if ((getType().isBlock() || getType().isSolid()))
-		data = item.getData().getData();
-
-	    if (item.getType().getMaxDurability() - item.getDurability() < 0)
-		data = item.getData().getData();
 
 	    if (item.getType().getMaxDurability() > 15)
 		data = (short) 0;
 
 	    if (item.getType() == Material.POTION || item.getType().name().contains("SPLASH_POTION")
-			|| item.getType().name().contains("TIPPED_ARROW")) {
+		|| item.getType().name().contains("TIPPED_ARROW")) {
 		PotionMeta potion = (PotionMeta) item.getItemMeta();
 		try {
 		    if (potion != null && potion.getBasePotionData().getType().getEffectType() != null) {
@@ -394,13 +427,59 @@ public class CMIItemStack {
 	if ((item.getCMIType() == CMIMaterial.SPAWNER || item.getCMIType().isMonsterEgg()) && (getCMIType() == CMIMaterial.SPAWNER || getCMIType().isMonsterEgg())) {
 	    if (this.cmiMaterial != item.cmiMaterial)
 		return false;
+	    if (getEntityType() != item.getEntityType())
+		return false;
 
 	    return true;
+	}
+
+	if (item.getCMIType() == CMIMaterial.PLAYER_HEAD && this.getCMIType() == CMIMaterial.PLAYER_HEAD) {
+	    try {
+		SkullMeta skullMeta = (SkullMeta) item.getItemStack().getItemMeta();
+		SkullMeta skullMeta2 = (SkullMeta) getItemStack().getItemMeta();
+
+		if (skullMeta.getOwner() != null && skullMeta2.getOwner() == null || skullMeta.getOwner() == null && skullMeta2.getOwner() != null)
+		    return false;
+		if (skullMeta.getOwner() != null && skullMeta2.getOwner() != null && !skullMeta.getOwner().equals(skullMeta2.getOwner()))
+		    return false;
+	    } catch (Throwable e) {
+		e.printStackTrace();
+	    }
 	}
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1))
 	    return this.cmiMaterial == item.cmiMaterial;
 	return this.cmiMaterial == item.cmiMaterial && this.getData() == item.getData();
+    }
+
+    public EntityType getEntityType() {
+	if (this.getItemStack() == null)
+	    return null;
+
+	if (this.entityType != null)
+	    return this.entityType.getType();
+
+	ItemStack is = this.getItemStack().clone();
+
+	if (Version.isCurrentEqualOrHigher(Version.v1_8_R1) && is.getItemMeta() instanceof org.bukkit.inventory.meta.BlockStateMeta) {
+	    org.bukkit.inventory.meta.BlockStateMeta bsm = (org.bukkit.inventory.meta.BlockStateMeta) is.getItemMeta();
+	    if (bsm.getBlockState() instanceof CreatureSpawner) {
+		CreatureSpawner bs = (CreatureSpawner) bsm.getBlockState();
+		return bs.getSpawnedType();
+	    }
+	}
+
+	if (is.getData() instanceof SpawnEgg) {
+	    return CMIReflections.getEggType(is);
+	}
+
+	if (CMIMaterial.get(is) != null && CMIMaterial.get(is).isMonsterEgg()) {
+	    return CMIReflections.getEggType(is);
+	}
+
+	if (Version.isCurrentEqualOrLower(Version.v1_12_R1))
+	    return EntityType.fromId(is.getData().getData());
+	return null;
     }
 
     public void setDurability(short durability) {
@@ -442,4 +521,26 @@ public class CMIItemStack {
 	return liner;
     }
 
+    public static ItemStack getHead(String texture) {
+	if (texture == null || texture.isEmpty())
+	    return null;
+	if (texture.length() < 120)
+	    texture = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUv" + texture;
+	ItemStack cached = CMIEntityType.cache.get(texture);
+	if (cached != null) {
+	    return cached.clone();
+	}
+	ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
+	item = CMIReflections.setSkullTexture(item, null, texture);
+	CMIEntityType.cache.put(texture, item);
+	return item.clone();
+    }
+
+    public void setEntityType(CMIEntityType entityType) {
+	this.entityType = entityType;
+    }
+
+    public void setEntityType(EntityType entityType) {
+	setEntityType(CMIEntityType.getByType(entityType));
+    }
 }

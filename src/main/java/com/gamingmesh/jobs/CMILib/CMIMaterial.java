@@ -1152,6 +1152,7 @@ public enum CMIMaterial {
 
     private Integer legacyId;
     private Integer legacyData;
+    private boolean legacy = false;
     private Integer id;
     private String name;
     private List<String> legacyName;
@@ -1191,6 +1192,10 @@ public enum CMIMaterial {
 
 	if (criteria != null)
 	    this.criteria = new HashSet<>(criteria);
+
+	if (this.toString().startsWith("LEGACY_")) {
+	    legacy = true;
+	}
     }
 
     public String getName() {
@@ -1215,37 +1220,53 @@ public enum CMIMaterial {
     }
 
     public void updateMaterial() {
-	if (mat == null) {
-	    for (Material one : Material.class.getEnumConstants()) {
-		if (!one.name().replaceAll("LEGACY_|_", "").equalsIgnoreCase(this.name().replace("_", "")))
-		    continue;
-		mat = one;
-		break;
-	    }
-	}
-	if (mat == null) {
-	    for (Material one : Material.class.getEnumConstants()) {
-		if (!one.name().replaceAll("LEGACY_|_", "").equalsIgnoreCase(this.getName().replace(" ", "")))
-		    continue;
-		mat = one;
-		break;
-	    }
-	}
-	if (mat == null && !this.getLegacyNames().isEmpty()) {
-	    main: for (Material one : Material.class.getEnumConstants()) {
-		for (String oneL : this.getLegacyNames()) {
-		    if (!one.name().replaceAll("LEGACY_|_", "").equalsIgnoreCase(oneL.replace(" ", "").replace("_", "")))
-			continue main;
-		}
-		mat = one;
-		break;
-	    }
-	}
-	if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
-	    if (mat == null && this.getId() != null) {
-		for (Material one : Material.class.getEnumConstants()) {
-		    if (one.getId() != this.getId())
+	mat = null;
+	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+	    if (mat == null) {
+		for (Material one : Material.values()) {
+		    if (!one.name().replace("_", "").equalsIgnoreCase(this.name().replace("_", "")))
 			continue;
+		    mat = one;
+		    break;
+		}
+	    }
+	} else {
+	    if (Version.isCurrentEqualOrLower(Version.v1_12_R1) && this.equals(CMIMaterial.PODZOL)) {
+		mat = null;
+		return;
+	    }
+	    if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
+		if (mat == null && this.getId() != null) {
+		    for (Material one : Material.class.getEnumConstants()) {
+			if (one.getId() != this.getId())
+			    continue;
+			mat = one;
+			break;
+		    }
+		}
+	    }
+	    if (mat == null) {
+		for (Material one : Material.class.getEnumConstants()) {
+		    if (!one.name().replace("LEGACY_", "").replace("_", "").equalsIgnoreCase(this.name().replace("_", "")))
+			continue;
+		    mat = one;
+		    break;
+		}
+	    }
+	    if (mat == null) {
+		for (Material one : Material.class.getEnumConstants()) {
+		    if (!one.name().replace("LEGACY_", "").replace("_", "").equalsIgnoreCase(this.getName().replace(" ", "")))
+			continue;
+		    mat = one;
+		    break;
+		}
+	    }
+	    if (mat == null && !this.getLegacyNames().isEmpty()) {
+		main: for (Material one : Material.class.getEnumConstants()) {
+		    for (String oneL : this.getLegacyNames()) {
+			if (!one.name().replace("LEGACY_", "").replace("_", "").equalsIgnoreCase(oneL.replace(" ", "").replace("_", "")))
+			    continue main;
+		    }
 		    mat = one;
 		    break;
 		}
@@ -1321,6 +1342,8 @@ public enum CMIMaterial {
 	List<CMIMaterial> ls = new ArrayList<>();
 
 	for (CMIMaterial one : CMIMaterial.values()) {
+	    if (one.getLegacyId() == null)
+		continue;
 	    if (one.getLegacyId() != mat.getLegacyId())
 		continue;
 	    ls.add(one);
@@ -1350,6 +1373,8 @@ public enum CMIMaterial {
 	if (mat == null)
 	    return CMIMaterial.NONE;
 	for (CMIMaterial one : CMIMaterial.values()) {
+	    if (one.getLegacyId() == null)
+		continue;
 	    if (one.getLegacyId() != mat.getLegacyId())
 		continue;
 	    if (one.getLegacyData() == id)
@@ -1437,7 +1462,7 @@ public enum CMIMaterial {
 	    return CMIMaterial.NONE;
 	CMIMaterial mat = null;
 	if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
-	    mat = Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? get(item.getType().getId()) : get(item.getType().getId(), item.getData().getData());
+	    mat = Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? get(item.getType()) : get(item.getType().getId(), item.getData().getData());
 	    if (mat == null) {
 		mat = ItemManager.byName.get(item.getType().toString().toLowerCase().replace("_", ""));
 	    }
@@ -1449,11 +1474,19 @@ public enum CMIMaterial {
     }
 
     public static CMIMaterial get(Block block) {
-	if (block == null || Bukkit.getWorld(block.getWorld().getUID()) == null)
+	if (block == null)
 	    return CMIMaterial.NONE;
 
+	try {
+	    if (Bukkit.getWorld(block.getWorld().getUID()) == null)
+		return CMIMaterial.NONE;
+	} catch (Throwable e) {
+	    e.printStackTrace();
+	}
+
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
-	    return ItemManager.byRealMaterial.get(block.getType());
+	    CMIMaterial res = ItemManager.byRealMaterial.get(block.getType());
+	    return res == null ? CMIMaterial.NONE : res;
 	}
 
 	byte data = Version.isCurrentEqualOrLower(Version.v1_13_R1) ? block.getData() : 0;
@@ -1478,6 +1511,7 @@ public enum CMIMaterial {
 	return mat == null ? CMIMaterial.NONE : mat;
     }
 
+    @Deprecated
     public static CMIMaterial get(int id, int data) {
 	CMIMaterial mat = ItemManager.byName.get(id + ":" + data);
 	if (mat != null) {
@@ -1566,7 +1600,6 @@ public enum CMIMaterial {
 	case PUFFERFISH_SPAWN_EGG:
 	case SALMON_SPAWN_EGG:
 	case TROPICAL_FISH_SPAWN_EGG:
-	case TURTLE_EGG:
 	case TURTLE_SPAWN_EGG:
 
 	    // 1.14
@@ -2061,6 +2094,28 @@ public enum CMIMaterial {
 
     public boolean isValidItem() {
 	return this != CMIMaterial.NONE && !isAir() && getMaterial() != null;
+    }
+
+    public static boolean isValidAsItemStack(Material mat) {
+	CMIMaterial m = CMIMaterial.get(mat);
+	if (m == null)
+	    return false;
+	return m.isValidItem();
+    }
+
+    public boolean isValidAsItemStack() {
+
+	ItemStack item = newItemStack();
+	if (item == null || getMaterial() == null)
+	    return false;
+
+	try {
+	    if (!getMaterial().isItem())
+		return false;
+	} catch (Throwable e) {
+	}
+
+	return isValidItem();
     }
 
     public boolean isNone() {
@@ -2659,7 +2714,10 @@ public enum CMIMaterial {
     }
 
     public boolean equals(Material mat) {
-	return getMaterial() == mat;
+	if (getMaterial() == null) {
+	    return false;
+	}
+	return this.getMaterial().equals(mat);
     }
 
     public List<String> getLegacyNames() {
@@ -2702,5 +2760,9 @@ public enum CMIMaterial {
 
     public boolean containsCriteria(CMIMaterialCriteria criteria) {
 	return this.criteria != null && criteria != null && this.criteria.contains(criteria);
+    }
+
+    public boolean isLegacy() {
+	return legacy;
     }
 }

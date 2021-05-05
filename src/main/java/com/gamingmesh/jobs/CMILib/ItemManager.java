@@ -1,15 +1,24 @@
 package com.gamingmesh.jobs.CMILib;
 
 import java.util.HashMap;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import com.gamingmesh.jobs.stuff.Util;
+import com.gamingmesh.jobs.Jobs;
 
 public class ItemManager {
 
@@ -26,15 +35,24 @@ public class ItemManager {
     }
 
     static {
+	byRealMaterial.clear();
 	for (CMIMaterial one : CMIMaterial.values()) {
-	    one.updateMaterial();
+	    if (one == null)
+		continue;
 
+	    // Ignoring legacy materials on new servers
+	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) && one.isLegacy()) {
+		continue;
+	    }
+
+	    one.updateMaterial();
 	    Material mat = one.getMaterial();
+
 	    if (mat == null) {
 		continue;
 	    }
 
-	    Integer id = one.getId();
+//	    Integer id = one.getId();
 	    short data = one.getLegacyData();
 	    Integer legacyId = one.getLegacyId();
 	    String cmiName = one.getName().replace("_", "").replace(" ", "").toLowerCase();
@@ -42,7 +60,8 @@ public class ItemManager {
 
 	    String mojangName = null;
 	    try {
-		mojangName = CMIReflections.getItemMinecraftName(new ItemStack(mat));
+		if (Version.isCurrentEqualOrLower(Version.v1_14_R1) || mat.isItem())
+		    mojangName = CMIReflections.getItemMinecraftName(new ItemStack(mat));
 	    } catch (Exception e) {
 		e.printStackTrace();
 	    }
@@ -50,53 +69,55 @@ public class ItemManager {
 		mojangName = mat.toString();
 	    }
 
-	    mojangName = mojangName.replace("_", "").replace(" ", "").toLowerCase();
+	    mojangName = mojangName == null ? mat.toString().replace("_", "").replace(" ", "").toLowerCase() : mojangName.replace("_", "").replace(" ", "").toLowerCase();
 
 	    if (one.isCanHavePotionType()) {
 		for (PotionType potType : PotionType.values()) {
 		    byName.put(cmiName + ":" + potType.toString().toLowerCase(), one);
 		}
-	    } else if (byName.containsKey(cmiName)) {
+	    }
+	    if (byName.containsKey(cmiName) && Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
 		byName.put(cmiName + ":" + data, one);
 	    } else
 		byName.put(cmiName, one);
 
-	    if (byName.containsKey(materialName))
-		byName.put(materialName + ":" + data, one);
-	    else
-		byName.put(materialName, one);
+	    byName.put(materialName, one);
+	    if (Version.isCurrentEqualOrLower(Version.v1_13_R1) && !byName.containsKey(cmiName + ":" + data))
+		byName.put(cmiName + ":" + data, one);
 
 	    if (!one.getLegacyNames().isEmpty()) {
 		for (String oneL : one.getLegacyNames()) {
 		    String legacyName = oneL.replace("_", "").replace(" ", "").toLowerCase();
-		    if (byName.containsKey(legacyName) || data > 0)
+		    if (Version.isCurrentEqualOrLower(Version.v1_13_R1) && (byName.containsKey(legacyName) || data > 0)) {
 			byName.put(legacyName + ":" + data, one);
-		    else
-			byName.put(legacyName, one);
+		    }
+		    byName.put(legacyName, one);
 		}
 	    }
 
-	    if (byName.containsKey(mojangName))
+	    if (byName.containsKey(mojangName) && Version.isCurrentEqualOrLower(Version.v1_13_R1))
 		byName.put(mojangName + ":" + data, one);
 	    else
 		byName.put(mojangName, one);
 
-	    if (byName.containsKey(String.valueOf(id)) || data > 0)
-		byName.put(id + ":" + data, one);
-	    else
-		byName.put(String.valueOf(id), one);
+	    if (Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
+		Integer id = one.getId();
+		if (byName.containsKey(String.valueOf(id)) || data > 0)
+		    byName.put(id + ":" + data, one);
+		else
+		    byName.put(String.valueOf(id), one);
+		if (!byId.containsKey(id))
+		    byId.put(id, one);
+		if (!byId.containsKey(one.getLegacyId()))
+		    byId.put(one.getLegacyId(), one);
+		if (one.getLegacyData() == 0)
+		    byId.put(one.getLegacyId(), one);
+		if (byName.containsKey(String.valueOf(legacyId)) || data > 0)
+		    byName.put(legacyId + ":" + data, one);
+		else
+		    byName.put(String.valueOf(legacyId), one);
+	    }
 
-	    if (byName.containsKey(String.valueOf(legacyId)) || data > 0)
-		byName.put(legacyId + ":" + data, one);
-	    else
-		byName.put(String.valueOf(legacyId), one);
-
-	    if (!byId.containsKey(id))
-		byId.put(id, one);
-	    if (!byId.containsKey(one.getLegacyId()))
-		byId.put(one.getLegacyId(), one);
-	    if (one.getLegacyData() == 0)
-		byId.put(one.getLegacyId(), one);
 	    byRealMaterial.put(mat, one);
 	}
     }
@@ -124,36 +145,65 @@ public class ItemManager {
     HashMap<String, ItemStack> headCache = new HashMap<>();
 
     public CMIItemStack getItem(String name) {
+	return getItem(name, null);
+    }
+
+    public CMIItemStack getItem(String name, CMIAsyncHead ahead) {
+	if (name == null)
+	    return null;
 //	if (byBukkitName.isEmpty())
-//	    load();
+//	    load(); 
 	CMIItemStack cm = null;
+	String original = name.replace("minecraft:", "");
 	name = name.toLowerCase().replace("minecraft:", "");
-	String original = name;
 	name = name.replace("_", "");
 	Integer amount = null;
+	CMIEntityType entityType = null;
+
+	String tag = null;
+
+	if (name.contains("{") && name.contains("}")) {
+	    Pattern ptr = Pattern.compile("(\\{).+(\\})");
+	    Matcher match = ptr.matcher(name);
+	    if (match.find()) {
+		tag = match.group();
+		name = name.replace(match.group(), "");
+	    }
+	    name = name.replace("  ", " ");
+	}
 
 	String subdata = null;
 	if (name.contains(":")) {
 	    CMIMaterial mat = byName.get(name);
 	    if (mat != null)
 		return new CMIItemStack(mat);
-	    subdata = name.split(":")[1];
+	    try {
+		subdata = name.split(":")[1];
+	    } catch (Throwable e) {
+
+	    }
 	}
 
 	if (name.contains("-")) {
-	    String a = name.split("-")[1];
-	    try {
-		amount = Integer.parseInt(a);
-	    } catch (NumberFormatException e) {
+	    String[] split = name.split("-");
+	    if (split.length > 1) {
+		String a = name.split("-")[1];
+		try {
+		    amount = Integer.parseInt(a);
+		} catch (Exception e) {
+		}
 	    }
 	    name = name.split("-")[0];
 	}
 
 	if (name.contains(">")) {
-	    String a = name.split(">")[1];
-	    try {
-		amount = Integer.parseInt(a);
-	    } catch (NumberFormatException e) {
+	    String[] split = name.split(">");
+	    if (split.length > 1) {
+		String a = name.split(">")[1];
+		try {
+		    amount = Integer.parseInt(a);
+		} catch (Exception e) {
+		}
 	    }
 	    name = name.split(">")[0];
 	}
@@ -166,9 +216,9 @@ public class ItemManager {
 	    } catch (Exception e) {
 	    }
 	    try {
-		CMIEntityType e = CMIEntityType.getByName(name.split(":")[1]);
-		if (e != null)
-		    data = (short) e.getId();
+		entityType = CMIEntityType.getByName(name.split(":")[1]);
+		if (entityType != null)
+		    data = (short) entityType.getId();
 	    } catch (Exception e) {
 	    }
 	    name = name.split(":")[0];
@@ -185,51 +235,137 @@ public class ItemManager {
 	    cm = CMIMaterial.PLAYER_HEAD.newCMIItemStack();
 	    data = 3;
 
-	    main: if (original.contains(":")) {
+	    if (original.contains(":")) {
 		ItemStack old = headCache.get(original);
 		if (old != null) {
 		    cm.setItemStack(old);
 		} else {
-		    String d = original.split(":")[1];
-		    ItemStack skull = Util.getSkull(d);
-		    if (skull == null) {
-			break main;
-		    }
+		    String[] split = original.split(":");
+		    if (split.length > 1) {
+			String d = split[1];
 
-		    headCache.put(original, skull);
-		    cm.setItemStack(skull);
+			if (d.length() > 36 || d.startsWith("eyJ0ZXh0dXJlcy")) {
+			    ItemStack skull = CMIItemStack.getHead(d);
+			    headCache.put(original, skull);
+			    cm.setItemStack(skull);
+			} else {
+			    ItemStack skull = CMIMaterial.PLAYER_HEAD.newItemStack();
+			    SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+			    if (d.length() == 36) {
+				try {
+				    OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(d));
+				    skullMeta.setOwningPlayer(offPlayer);
+				    skull.setItemMeta(skullMeta);
+				} catch (Exception e) {
+				}
+			    } else {
+				if (Version.isCurrentEqualOrHigher(Version.v1_16_R3)) {
+
+				    if ((ahead != null && !ahead.isForce() || ahead == null) && Bukkit.getPlayer(d) != null) {
+					Player player = Bukkit.getPlayer(d);
+					skullMeta.setOwningPlayer(player);
+					skull.setItemMeta(skullMeta);
+					headCache.put(original, skull);
+				    } else {
+
+					if (ahead != null) {
+					    ahead.setAsyncHead(true);
+					}
+					Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () -> {
+					    OfflinePlayer offlineP = Bukkit.getOfflinePlayer(d);
+					    if (offlineP != null) {
+						skullMeta.setOwningPlayer(offlineP);
+						skull.setItemMeta(skullMeta);
+						headCache.put(original, skull);
+
+						// Forcing server to load skin information
+						Bukkit.createInventory(null, InventoryType.CHEST, "").addItem(skull);
+
+						skull.setItemMeta(skullMeta);
+						headCache.put(original, skull);
+
+						if (ahead != null)
+						    ahead.afterAsyncUpdate(skull);
+					    }
+					});
+				    }
+
+				} else {
+				    skullMeta.setOwner(d);
+				    skull.setItemMeta(skullMeta);
+				}
+
+				if (ahead == null || !ahead.isAsyncHead()) {
+				    skull.setItemMeta(skullMeta);
+				    headCache.put(original, skull);
+				}
+			    }
+			}
+		    }
 		}
 	    }
+	    break;
+	case "map":
+	    cm = CMIMaterial.FILLED_MAP.newCMIItemStack();
 
+	    if (original.contains(":") && data > 0) {
+		ItemStack stack = cm.getItemStack();
+		MapMeta map = (MapMeta) stack.getItemMeta();
+		map.setMapId(data);
+		stack.setItemMeta(map);
+		cm.setItemStack(stack);
+		return cm;
+	    }
 	    break;
 	default:
 	    break;
 	}
 
 	CMIMaterial cmat = CMIMaterial.get(subdata == null ? name : name + ":" + subdata);
-	if (cmat == null || cmat == CMIMaterial.NONE) {
+	if (cmat == null || cmat.equals(CMIMaterial.NONE)) {
 	    cmat = CMIMaterial.get(name);
 	}
 
-	if (cmat != null && cmat != CMIMaterial.NONE) {
+	if (cmat != null && !cmat.equals(CMIMaterial.NONE)) {
 	    cm = cmat.newCMIItemStack();
 	} else
 	    cmat = CMIMaterial.get(subdata == null ? original : original + ":" + subdata);
 
-	if (cmat != null && cmat != CMIMaterial.NONE)
+	if (cmat != null && !cmat.equals(CMIMaterial.NONE))
 	    cm = cmat.newCMIItemStack();
+
+	if (cm == null) {
+	    try {
+		Material match = Material.matchMaterial(original);
+		if (match != null) {
+		    if (Version.isCurrentLower(Version.v1_13_R1) || !CMIMaterial.get(match).isLegacy() && CMIMaterial.get(match) != CMIMaterial.NONE) {
+			cm = new CMIItemStack(match);
+		    }
+		}
+	    } catch (Throwable e) {
+		e.printStackTrace();
+	    }
+	}
+
+	if (cm != null && entityType != null)
+	    cm.setEntityType(entityType);
 
 	CMIItemStack ncm = null;
 	if (cm != null)
 	    ncm = cm.clone();
 
 	if (ncm != null && data != -999) {
-	    if (ncm.getMaxDurability() > 15)
+	    if (ncm.getMaxDurability() > 15) {
 		ncm.setData((short) 0);
-	    else {
+	    } else {
 		ncm.setData(data);
 	    }
 	}
+
+//	if (ncm != null && tag != null) {
+//	    ncm.setTag(CMIChatColor.translate(tag));
+//	}
+
 	if (ncm != null && amount != null)
 	    ncm.setAmount(amount);
 
