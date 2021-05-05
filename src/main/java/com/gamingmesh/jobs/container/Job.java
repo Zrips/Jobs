@@ -86,10 +86,12 @@ public class Job {
 
     private final List<String> fDescription = new ArrayList<>(), maxLevelCommands = new ArrayList<>();
     private List<String> worldBlacklist = new ArrayList<>();
+    private boolean reversedWorldBlacklist = false;
 
     private final List<Quest> quests = new ArrayList<>();
     private int maxDailyQuests = 1;
     private int id = 0;
+    private boolean ignoreMaxJobs = false;
 
     @Deprecated
     public Job(String jobName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
@@ -643,17 +645,33 @@ public class Job {
     }
 
     public boolean isWorldBlackListed(Block block, Entity ent) {
-	if (worldBlacklist.isEmpty())
-	    return false;
+        if (worldBlacklist.isEmpty())
+            return isReversedWorldBlacklist();
 
-	if (block != null && worldBlacklist.contains(block.getWorld().getName()))
-	    return true;
+        if (block != null)
+            return worldBlacklist.contains(block.getWorld().getName()) != reversedWorldBlacklist;
 
-	return ent != null && worldBlacklist.contains(ent.getWorld().getName());
+        return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != reversedWorldBlacklist;
+    }
+
+    public boolean isReversedWorldBlacklist() {
+        return reversedWorldBlacklist;
+    }
+
+    public void setReversedWorldBlacklist(boolean reversedWorldBlacklist) {
+        this.reversedWorldBlacklist = reversedWorldBlacklist;
+    }
+
+    public boolean isIgnoreMaxJobs() {
+        return ignoreMaxJobs;
+    }
+
+    public void setIgnoreMaxJobs(boolean ignoreMaxJobs) {
+        this.ignoreMaxJobs = ignoreMaxJobs;
     }
 
     @Override
     public boolean equals(Object obj) {
-	return obj instanceof Job ? isSame((Job) obj) : false;
+        return obj instanceof Job && isSame((Job) obj);
     }
 }

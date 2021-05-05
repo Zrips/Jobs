@@ -3,7 +3,7 @@
 # Edited by roracle to include 1.13 items and item names, preparing for 1.14 as well.
 
 # ATTENTION!
-# This is just an example job and will not be included into job list. Recomended to keep
+# This is just an example job and will not be included into job list. Recommended to keep
 # it around just for reference. Can be removed if needed.
 
 # Must be one word. This job will be ignored as this is just example of all possible actions.
@@ -575,12 +575,18 @@ exampleJob:
   commands-on-max-level:
   - 'msg [playerName] Max level of [job] reached!'
   - 'player:jobs stats'
-
+  
+  # Turns the "world-blacklist" list into a whitelist. This essentially means the job only works in the specified worlds.
+  reverse-world-blacklist-functionality: false
+  
   # World list in which this job will not work. World name should be exact
   world-blacklist:
   - plotworld
   - teamworld
 
+  # Allow a player to "/jobs join" this job even if they have the max jobs permission reached.
+  ignore-jobs-max: false
+  
   # Limit item use to jobs level
   limitedItems:
     # Just name, don't have any impact
