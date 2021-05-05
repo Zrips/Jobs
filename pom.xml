@@ -42,6 +42,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>com.mojang</groupId>
+			<artifactId>authlib</artifactId>
+			<version>1.5.21</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- McMMO -->
 		<dependency>
 			<groupId>com.gmail.nossr50.mcMMO</groupId>
@@ -226,16 +232,18 @@
 			<id>papermc</id>
 			<url>https://papermc.io/repo/repository/maven-public/</url>
 		</repository>
+		<repository>
+			<id>minecraft-repo</id>
+			<url>https://libraries.minecraft.net/</url>
+		</repository>
 		<!-- PlaceholderAPI -->
 		<repository>
 			<id>placeholderapi</id>
 			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
 		<!-- MyPet -->
-		<!--<repository>
-			<id>mypet-repo</id>
-			<url>https://repo.mypet-plugin.de/</url>
-		</repositor>-->
+		<!--<repository> <id>mypet-repo</id> <url>https://repo.mypet-plugin.de/</url> 
+			</repositor> -->
 	</repositories>
 	<!-- Builds Plugin -->
 	<build>
