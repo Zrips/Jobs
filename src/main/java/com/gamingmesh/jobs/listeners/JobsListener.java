@@ -307,10 +307,11 @@ public class JobsListener implements Listener {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return;
 
+	String line1 = CMIChatColor.stripColor(plugin.getComplement().getLine(event, 1));
+
 	if (CMIChatColor.stripColor(plugin.getComplement().getLine(event, 0))
-	    .equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !CMIChatColor.stripColor(
-	    plugin.getComplement().getLine(event, 1)).equalsIgnoreCase("toplist"))
-	    plugin.getComplement().setLine(event, 0, convert(Jobs.getLanguage().getMessage("signs.topline")));
+	    .equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !line1.equalsIgnoreCase("toplist"))
+	    event.setLine(0, convert(Jobs.getLanguage().getMessage("signs.topline")));
 	else
 	    return;
 
@@ -320,11 +321,11 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
-	String command = CMIChatColor.stripColor(plugin.getComplement().getLine(event, 1)).toLowerCase();
 	for (String key : Jobs.getLanguageManager().signKeys) {
 	    String secondLine = Jobs.getLanguage().getMessage("signs.secondline." + key);
-	    if (command.equalsIgnoreCase(CMIChatColor.stripColor(secondLine))) {
-		plugin.getComplement().setLine(event, 1, convert(secondLine));
+
+	    if (line1.equalsIgnoreCase(CMIChatColor.stripColor(secondLine))) {
+		event.setLine(1, convert(secondLine));
 		break;
 	    }
 	}
@@ -334,7 +335,7 @@ public class JobsListener implements Listener {
 	    return;
 
 	String color = Jobs.getGCManager().SignsColorizeJobName ? job.getChatColor().toString() : "";
-	plugin.getComplement().setLine(event, 2, convert(color + job.getName()));
+	event.setLine(2, convert(color + job.getName()));
     }
 
     private final Pattern pattern = Pattern.compile("&([0-9a-fk-or])");

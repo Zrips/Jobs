@@ -41,13 +41,7 @@ import com.gamingmesh.jobs.stuff.GiveItem;
 @SuppressWarnings("deprecation")
 public class ShopManager {
 
-    private Jobs plugin;
-
     private final List<ShopItem> list = new ArrayList<>();
-
-    public ShopManager(Jobs plugin) {
-	this.plugin = plugin;
-    }
 
     public List<ShopItem> getShopItemList() {
 	return list;
@@ -144,7 +138,7 @@ public class ShopManager {
 	    guiItem.setAmount(item.getIconAmount());
 
 	    if (item.getIconName() != null)
-		plugin.getComplement().setDisplayName(meta, item.getIconName());
+		meta.setDisplayName(item.getIconName());
 
 	    lore.addAll(item.getIconLore());
 
@@ -183,17 +177,19 @@ public class ShopManager {
 			? Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevelColor") : "") + item.getRequiredTotalLevels()));
 	    }
 
-	    plugin.getComplement().setLore(meta, lore);
+	    meta.setLore(lore);
 
 	    if (item.getCustomHead() != null) {
-		guiItem = CMIMaterial.PLAYER_HEAD.newItemStack();
+		guiItem = CMIMaterial.PLAYER_HEAD.newItemStack(item.getIconAmount());
 
 		SkullMeta skullMeta = (SkullMeta) guiItem.getItemMeta();
 		if (skullMeta == null)
 		    continue;
 
-		plugin.getComplement().setDisplayName(skullMeta, item.getIconName());
-		plugin.getComplement().setLore(skullMeta, lore);
+		if (item.getIconName() != null)
+		    skullMeta.setDisplayName(item.getIconName());
+
+		skullMeta.setLore(lore);
 
 		if (item.isHeadOwner()) {
 		    Jobs.getNms().setSkullOwner(skullMeta, jPlayer.getPlayer());
@@ -277,7 +273,7 @@ public class ShopManager {
 
 	int prevSlot = getPrevButtonSlot(guiSize.getFields(), page);
 	if (prevSlot != -1 && page > 1) {
-	    plugin.getComplement().setDisplayName(meta, Jobs.getLanguage().getMessage("command.help.output.prevPage"));
+	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.prevPage"));
 	    item.setItemMeta(meta);
 
 	    gui.addButton(new CMIGuiButton(prevSlot, item) {
@@ -290,7 +286,7 @@ public class ShopManager {
 
 	int nextSlot = getNextButtonSlot(guiSize.getFields(), page);
 	if (nextSlot != -1 && !getItemsByPage(page + 1).isEmpty()) {
-	    plugin.getComplement().setDisplayName(meta, Jobs.getLanguage().getMessage("command.help.output.nextPage"));
+	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.nextPage"));
 	    item.setItemMeta(meta);
 	    gui.addButton(new CMIGuiButton(nextSlot, item) {
 		@Override
@@ -342,8 +338,6 @@ public class ShopManager {
 	    }
 
 	    sItem.setIconAmount(nameSection.getInt("Icon.Amount", 1));
-
-	    if (nameSection.isString("Icon.Name"))
 		sItem.setIconName(CMIChatColor.translate(nameSection.getString("Icon.Name")));
 
 	    List<String> lore = nameSection.getStringList("Icon.Lore");

@@ -141,8 +141,8 @@ public class GuiManager {
 
 	    ItemStack guiItem = job.getGuiItem();
 	    ItemMeta meta = guiItem.getItemMeta();
-	    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
-	    plugin.getComplement().setLore(meta, lore);
+	    meta.setDisplayName(job.getJobDisplayName());
+	    meta.setLore(lore);
 
 	    if (Jobs.getGCManager().hideItemAttributes) {
 		meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ATTRIBUTES, org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
@@ -275,8 +275,8 @@ public class GuiManager {
 			continue;
 
 		    ItemMeta meta = guiItem.getItemMeta();
-		    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
-		    plugin.getComplement().setLore(meta, lore);
+		    meta.setDisplayName(job.getJobDisplayName());
+		    meta.setLore(lore);
 		    guiItem.setItemMeta(meta);
 		    tempInv.setItem(i, guiItem.clone());
 
@@ -295,8 +295,8 @@ public class GuiManager {
 	    }
 
 	    ItemMeta meta = guiItem.getItemMeta();
-	    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
-	    plugin.getComplement().setLore(meta, lore);
+	    meta.setDisplayName(job.getJobDisplayName());
+	    meta.setLore(lore);
 	    guiItem.setItemMeta(meta);
 	    tempInv.setItem(i, guiItem.clone());
 	    i++;
@@ -327,7 +327,7 @@ public class GuiManager {
 	    ItemStack back = Jobs.getGCManager().guiBackButton;
 	    ItemMeta meta = back.getItemMeta();
 
-	    plugin.getComplement().setDisplayName(meta, Jobs.getLanguage().getMessage("command.info.gui.back"));
+	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.back"));
 	    back.setItemMeta(meta);
 
 	    gui.addButton(new CMIGuiButton(backButton, back) {
@@ -342,7 +342,7 @@ public class GuiManager {
 	ItemStack next = Jobs.getGCManager().guiNextButton;
 	ItemMeta meta = next.getItemMeta();
 
-	plugin.getComplement().setDisplayName(meta, Jobs.getLanguage().getMessage("command.info.gui.next"));
+	meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.next"));
 	next.setItemMeta(meta);
 
 	gui.addButton(new CMIGuiButton(nextButton, next) {
@@ -426,8 +426,8 @@ public class GuiManager {
 		    }
 
 		    ItemMeta meta = guiItem.getItemMeta();
-		    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
-		    plugin.getComplement().setLore(meta, lore);
+		    meta.setDisplayName(job.getJobDisplayName());
+		    meta.setLore(lore);
 		    guiItem.setItemMeta(meta);
 		    tempInv.setItem(i, guiItem.clone());
 
@@ -445,8 +445,8 @@ public class GuiManager {
 	    }
 
 	    ItemMeta meta = guiItem.getItemMeta();
-	    plugin.getComplement().setDisplayName(meta, job.getJobDisplayName());
-	    plugin.getComplement().setLore(meta, lore);
+	    meta.setDisplayName(job.getJobDisplayName());
+	    meta.setLore(lore);
 	    guiItem.setItemMeta(meta);
 	    tempInv.setItem(i, guiItem.clone());
 	    i++;
@@ -477,7 +477,7 @@ public class GuiManager {
 	ItemStack skull = Jobs.getGCManager().guiBackButton;
 	ItemMeta skullMeta = skull.getItemMeta();
 
-	plugin.getComplement().setDisplayName(skullMeta, Jobs.getLanguage().getMessage("command.info.gui.back"));
+	skullMeta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.back"));
 	skull.setItemMeta(skullMeta);
 
 	gui.addButton(new CMIGuiButton(backButton, skull) {

@@ -97,6 +97,8 @@ public class Jobs extends JavaPlugin {
 
     private final Set<BlockOwnerShip> blockOwnerShips = new HashSet<>();
 
+    private boolean kyoriSupported = false;
+
     private CMIScoreboardManager cmiScoreboardManager;
     private Complement complement;
     private GuiManager guiManager;
@@ -120,6 +122,10 @@ public class Jobs extends JavaPlugin {
 
     public Complement getComplement() {
 	return complement;
+    }
+
+    public boolean isKyoriSupported() {
+	return kyoriSupported;
     }
 
 	/**
@@ -246,7 +252,7 @@ public class Jobs extends JavaPlugin {
 
     public static ShopManager getShopManager() {
 	if (shopManager == null) {
-	    shopManager = new ShopManager(instance);
+	    shopManager = new ShopManager();
 	}
 	return shopManager;
     }
@@ -693,6 +699,12 @@ public class Jobs extends JavaPlugin {
 	    return;
 	}
 
+	try {
+	    Class.forName("net.kyori.adventure.text.Component");
+	    kyoriSupported = true;
+	} catch (ClassNotFoundException e) {
+	}
+
 	placeholderAPIEnabled = setupPlaceHolderAPI();
 
 	try {
@@ -727,13 +739,6 @@ public class Jobs extends JavaPlugin {
 
 	    if (getGCManager().useBlockProtection) {
 		getServer().getPluginManager().registerEvents(new PistonProtectionListener(), this);
-	    }
-
-	    boolean kyoriSupported = false;
-	    try {
-		Class.forName("net.kyori.adventure.text.serializer.plain.PlainComponentSerializer");
-		kyoriSupported = true;
-	    } catch (ClassNotFoundException e) {
 	    }
 
 	    if (Version.isCurrentEqualOrHigher(Version.v1_16_R3) && kyoriSupported) {

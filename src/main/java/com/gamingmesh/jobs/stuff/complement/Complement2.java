@@ -12,6 +12,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class Complement2 implements Complement {
@@ -20,13 +21,14 @@ public class Complement2 implements Complement {
 		return LegacyComponentSerializer.legacyAmpersand().serialize(component);
 	}
 
-	protected Component deserialize(String t) {
-		return Component.text(t);
+	protected TextComponent deserialize(String t) {
+		return LegacyComponentSerializer.legacyAmpersand().deserialize(t);
 	}
 
 	@Override
 	public String getDisplayName(ItemMeta meta) {
 		Component dName = null;
+
 		try {
 			dName = meta.displayName();
 		} catch (NoSuchMethodError e) {

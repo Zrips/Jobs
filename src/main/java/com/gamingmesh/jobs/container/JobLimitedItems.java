@@ -68,7 +68,7 @@ public class JobLimitedItems {
 	Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
 
 	if (name != null)
-	    plugin.getComplement().setDisplayName(meta, CMIChatColor.translate(name));
+	    meta.setDisplayName(CMIChatColor.translate(name));
 
 	if (lore != null && !lore.isEmpty()) {
 	    List<String> translatedLore = new ArrayList<>();
@@ -76,7 +76,7 @@ public class JobLimitedItems {
 		translatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
 	    }
 
-	    plugin.getComplement().setLore(meta, translatedLore);
+	    meta.setLore(translatedLore);
 	}
 
 	if (enchants != null)
