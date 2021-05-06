@@ -28,8 +28,7 @@ Weaponsmith:
       - Craft weapons and get money
       - Get 100 for this!
   Gui:
-    Id: 58
-    Data: 0
+    Item: crafting_table
   Craft:
     wooden_sword:
       income: 1.0

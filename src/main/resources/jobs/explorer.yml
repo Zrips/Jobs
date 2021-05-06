@@ -26,8 +26,7 @@ Explorer:
       - Go on a trip and get money
       - Get 100 for this!
   Gui:
-    Id: 301
-    Data: 0
+    Item: leather_boots
   Explore:
     '1':
       income: 5.0

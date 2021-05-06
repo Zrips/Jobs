@@ -28,8 +28,7 @@ Miner:
       - Break blocks and get money
       - Get 100 for this!
   Gui:
-    Id: 270
-    Data: 0
+    Item: wooden_pickaxe
   TNTBreak:
     stone:
       income: 0.25

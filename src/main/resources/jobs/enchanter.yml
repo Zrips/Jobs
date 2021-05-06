@@ -28,8 +28,7 @@ Enchanter:
       - Be a wizard and get money
       - Get 100 for this!
   Gui:
-    Id: 116
-    Data: 0
+    Item: enchanting_table
   Enchant:
     wood_sword:
       income: 1.5

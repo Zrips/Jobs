@@ -28,8 +28,7 @@ Brewer:
       - Brew some stuff and get money
       - Get 100 for this!
   Gui:
-    Id: 379
-    Data: 0
+    Item: brewing_stand
   Brew:
     nether_wart:
       income: 6.0

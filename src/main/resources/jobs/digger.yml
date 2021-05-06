@@ -28,8 +28,7 @@ Digger:
       - Dig blocks and get money
       - Get 100 for this!
   Gui:
-    Id: 269
-    Data: 0
+    Item: wooden_shovel
   Break:
     red_sand:
       income: 1

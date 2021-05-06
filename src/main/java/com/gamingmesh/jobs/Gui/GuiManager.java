@@ -91,7 +91,7 @@ public class GuiManager {
 	    Job job = jobsList.get(i);
 	    List<String> lore = new ArrayList<>();
 
-	    for (JobProgression onePJob : jPlayer.getJobProgression()) {
+	    for (JobProgression onePJob : jPlayer.progression) {
 		if (onePJob.getJob().getName().equalsIgnoreCase(job.getName())) {
 		    lore.add(Jobs.getLanguage().getMessage("command.info.gui.working"));
 		    break;

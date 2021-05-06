@@ -28,8 +28,7 @@ Hunter:
       - Kill everything what moves and get money
       - Get 100 for this!
   Gui:
-    Id: 261
-    Data: 0
+    Item: bow
   Tame:
     Wolf:
       income: 20.0

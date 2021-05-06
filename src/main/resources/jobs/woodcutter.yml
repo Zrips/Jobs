@@ -28,8 +28,7 @@ Woodcutter:
       - Break logs and get money
       - Get 100 for this!
   Gui:
-    Id: 17
-    Data: 2
+    Item: birch_log
   Break:
     materials:
     - oak_log;1.0;1.0;1.0
