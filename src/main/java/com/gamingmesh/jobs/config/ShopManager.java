@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -34,7 +35,6 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.ShopItem;
 import com.gamingmesh.jobs.stuff.GiveItem;
 
@@ -110,10 +110,7 @@ public class ShopManager {
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 
-	PlayerPoints pointsInfo = jPlayer.getPointsData();
-	double points = 0D;
-	if (pointsInfo != null)
-	    points = (int) (pointsInfo.getCurrentPoints() * 100.0) / 100.0;
+	double points = (int) (jPlayer.getPointsData().getCurrentPoints() * 100.0) / 100.0;
 
 	for (int i = 0; i < ls.size(); i++) {
 	    ShopItem item = ls.get(i);
@@ -201,8 +198,13 @@ public class ShopManager {
 		if (item.isHeadOwner()) {
 		    Jobs.getNms().setSkullOwner(skullMeta, jPlayer.getPlayer());
 		} else {
-		    Jobs.getNms().setSkullOwner(skullMeta, Bukkit.getOfflinePlayer(item.getCustomHead()));
+		    try {
+			Jobs.getNms().setSkullOwner(skullMeta, Bukkit.getOfflinePlayer(UUID.fromString(item.getCustomHead())));
+		    } catch (IllegalArgumentException ex) {
+			Jobs.getNms().setSkullOwner(skullMeta, Bukkit.getOfflinePlayer(item.getCustomHead()));
+		    }
 		}
+
 		guiItem.setItemMeta(skullMeta);
 	    } else
 		guiItem.setItemMeta(meta);
@@ -231,13 +233,14 @@ public class ShopManager {
 			}
 		    }
 
-		    if (pointsInfo == null || pointsInfo.getCurrentPoints() < item.getPrice()) {
+		    if (jPlayer.getPointsData().getCurrentPoints() < item.getPrice()) {
 			player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
 			return;
 		    }
 
-		    if (item.getRequiredTotalLevels() != -1 && jPlayer.getTotalLevels() < item.getRequiredTotalLevels()) {
-			player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoTotalLevel", "%totalLevel%", jPlayer.getTotalLevels()));
+		    int totalLevels = jPlayer.getTotalLevels();
+		    if (item.getRequiredTotalLevels() != -1 && totalLevels < item.getRequiredTotalLevels()) {
+			player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoTotalLevel", "%totalLevel%", totalLevels));
 			return;
 		    }
 
@@ -260,7 +263,7 @@ public class ShopManager {
 			GiveItem.giveItemForPlayer(player, one.getItemStack(player));
 		    }
 
-		    pointsInfo.takePoints(item.getPrice());
+		    jPlayer.getPointsData().takePoints(item.getPrice());
 		    Jobs.getJobsDAO().savePoints(jPlayer);
 		    player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.Paid", "%amount%", item.getPrice()));
 		}
@@ -437,8 +440,10 @@ public class ShopManager {
 
 		    Object potionData = null;
 		    if (itemSection.contains("potion-type")) {
-			PotionType type = PotionType.valueOf(itemSection.getString("potion-type", "speed").toUpperCase());
-			if (type == null) {
+			PotionType type;
+			try {
+			    type = PotionType.valueOf(itemSection.getString("potion-type", "speed").toUpperCase());
+			} catch (IllegalArgumentException ex) {
 			    type = PotionType.SPEED;
 			}
 

@@ -18,7 +18,7 @@ public class Quest {
     private Long validUntil = 0L;
 
     private int chance = 100, minLvl = 0;
-    private Integer maxLvl = null;
+    private Integer maxLvl;
 
     private final List<String> rewardCmds = new ArrayList<>(), rewards = new ArrayList<>(), area = new ArrayList<>();
 

@@ -955,8 +955,6 @@ public class ConfigManager {
 	    // Translating unicode
 	    jobFullName = StringEscapeUtils.unescapeJava(jobFullName);
 
-	    String jobDisplayName = jobSection.getString("displayName");
-
 	    int maxLevel = jobSection.getInt("max-level");
 	    if (maxLevel < 0)
 		maxLevel = 0;
@@ -1294,35 +1292,6 @@ public class ConfigManager {
 			continue;
 		    }
 
-		    List<String> lore = itemSection.getStringList("lore");
-
-		    for (int a = 0; a < lore.size(); a++) {
-			lore.set(a, CMIChatColor.translate(lore.get(a)));
-		    }
-
-		    Map<Enchantment, Integer> enchants = new HashMap<>();
-		    if (itemSection.isList("enchants"))
-			for (String eachLine : itemSection.getStringList("enchants")) {
-			    if (!eachLine.contains("="))
-				continue;
-
-			    String[] split = eachLine.split("=", 2);
-			    Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
-			    if (ench == null)
-				continue;
-
-			    int level = -1;
-			    try {
-				level = Integer.parseInt(split[1]);
-			    } catch (NumberFormatException e) {
-			    }
-
-			    if (level != -1)
-				enchants.put(ench, level);
-			}
-
-		    String node = itemKey.toLowerCase();
-
 		    CMIMaterial mat = null;
 
 		    if (itemSection.isInt("id")) {
@@ -1336,11 +1305,40 @@ public class ConfigManager {
 			continue;
 		    }
 
+		    List<String> lore = itemSection.getStringList("lore");
+
+		    for (int a = 0; a < lore.size(); a++) {
+			lore.set(a, CMIChatColor.translate(lore.get(a)));
+		    }
+
+		    Map<Enchantment, Integer> enchants = new HashMap<>();
+		    for (String eachLine : itemSection.getStringList("enchants")) {
+			if (!eachLine.contains("="))
+			    continue;
+
+			String[] split = eachLine.split("=", 2);
+			Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
+			if (ench == null)
+			    continue;
+
+			int level = -1;
+			try {
+			    level = Integer.parseInt(split[1]);
+			} catch (NumberFormatException e) {
+			}
+
+			if (level != -1)
+			    enchants.put(ench, level);
+		    }
+
+		    String node = itemKey.toLowerCase();
+
 		    jobLimitedItems.put(node, new JobLimitedItems(node, mat, 1, itemSection.getString("name"), lore, enchants, itemSection.getInt("level")));
 		}
 	    }
 
-	    Job job = new Job(jobKey, jobDisplayName, jobFullName, jobShortName, description, color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
+	    Job job = new Job(jobKey, jobSection.getString("displayName"), jobFullName, jobShortName, description,
+		color, maxExpEquation, displayMethod, maxLevel, vipmaxLevel, maxSlots, jobPermissions, jobCommand,
 		jobConditions, jobItems, jobLimitedItems, jobSection.getStringList("cmd-on-join"),
 		jobSection.getStringList("cmd-on-leave"), guiItem, guiSlot, bossbar, rejoinCd,
 		jobSection.getStringList("world-blacklist"));
@@ -1355,21 +1353,24 @@ public class ConfigManager {
 	    job.setIgnoreMaxJobs(jobSection.getBoolean("ignore-jobs-max"));
 	    job.setReversedWorldBlacklist(jobSection.getBoolean("reverse-world-blacklist-functionality"));
 
-	    if (jobSection.isConfigurationSection("Quests")) {
+	    ConfigurationSection qsection = jobSection.getConfigurationSection("Quests");
+	    if (qsection != null) {
 		List<Quest> quests = new ArrayList<>();
-		ConfigurationSection qsection = jobSection.getConfigurationSection("Quests");
 
 		for (String one : qsection.getKeys(false)) {
 		    try {
 			ConfigurationSection sqsection = qsection.getConfigurationSection(one);
-			if (sqsection == null) {
+			if (sqsection == null)
 			    continue;
-			}
 
 			Quest quest = new Quest(sqsection.getString("Name", one), job);
 
 			if (sqsection.isString("Target")) {
 			    ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
+
+			    if (actionType == null)
+				continue;
+
 			    KeyValues kv = getKeyValue(sqsection.getString("Target").toUpperCase(), actionType, jobFullName);
 			    if (kv != null) {
 				int amount = sqsection.getInt("Amount", 1);
@@ -1380,6 +1381,7 @@ public class ConfigManager {
 			if (sqsection.isList("Objectives")) {
 			    for (String oneObjective : sqsection.getStringList("Objectives")) {
 				String[] split = oneObjective.split(";", 3);
+
 				if (split.length < 2) {
 				    log.warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");
 				    continue;
@@ -1387,6 +1389,9 @@ public class ConfigManager {
 
 				try {
 				    ActionType actionType = ActionType.getByName(split[0]);
+				    if (actionType == null)
+					continue;
+
 				    String mats = split[1].toUpperCase();
 				    String[] co = mats.split(",");
 
@@ -1524,16 +1529,14 @@ public class ConfigManager {
 			    subType = keyValue.getSubType(),
 			    meta = keyValue.getMeta();
 
-			double income = section.getDouble("income", 0.0);
+			double income = section.getDouble("income");
 			income = updateValue(CurrencyType.MONEY, income);
-			double points = section.getDouble("points", 0.0);
+			double points = section.getDouble("points");
 			points = updateValue(CurrencyType.POINTS, points);
-			double experience = section.getDouble("experience", 0.0);
+			double experience = section.getDouble("experience");
 			experience = updateValue(CurrencyType.EXP, experience);
 
-			int fromlevel = 1;
-			if (section.isInt("from-level"))
-			    fromlevel = section.getInt("from-level");
+			int fromlevel = section.getInt("from-level", 1);
 
 			int untilLevel = -1;
 			if (section.isInt("until-level")) {
