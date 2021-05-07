@@ -170,7 +170,7 @@ public class BufferedEconomy {
 		    economy.depositPlayer(serverTaxesAccount, taxesAmount);
 		}
 
-		if (serverTaxesAccount.isOnline() && Jobs.getGCManager().ActionBarsMessageByDefault) {
+		if (Jobs.getGCManager().ActionBarsMessageByDefault && serverTaxesAccount.isOnline()) {
 		    ActionBarManager.send(Bukkit.getPlayer(serverAccountName),
 			Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (totalAmount * 100) / 100.0));
 		}
