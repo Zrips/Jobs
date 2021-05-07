@@ -217,7 +217,7 @@ public class editquests implements Cmd {
 		}
 
 		org.bukkit.configuration.file.YamlConfiguration file = Jobs.getConfigManager().getJobConfig();
-		String j = "Jobs." + job.getJobKeyName() + ".Quests." + q.getConfigName() + ".";
+		String j = "Jobs." + job.getName() + ".Quests." + q.getConfigName() + ".";
 
 		if (file.isString(j + "Target")) {
 		    Jobs.getConfigManager().changeJobsSettings(args[1], file.getString(j + "Target"), target);
@@ -556,7 +556,7 @@ public class editquests implements Cmd {
 		player.performCommand("jobs editquests list " + job.getName() + " " + actionT.getName() + " " + q.getConfigName() + " 1");
 
 		org.bukkit.configuration.file.YamlConfiguration file = Jobs.getConfigManager().getJobConfig();
-		String j = "Jobs." + job.getJobKeyName() + ".Quests." + q.getConfigName() + ".";
+		String j = "Jobs." + job.getName() + ".Quests." + q.getConfigName() + ".";
 
 		if (file.isString(j + "Target")) {
 		    Jobs.getConfigManager().changeJobsSettings(args[1], file.getString(j + "Target"), (type + subType).toLowerCase());

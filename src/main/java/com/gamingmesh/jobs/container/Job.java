@@ -333,7 +333,7 @@ public class Job {
      * @return the full job name
      */
     public String getName() {
-	return fullName;
+	return jobName;
     }
 
     /**
@@ -345,15 +345,6 @@ public class Job {
     @Deprecated
     public String getNameWithColor() {
 	return jobColour + fullName;
-    }
-
-    /**
-     * Returns the job name retrieved from the config
-     * 
-     * @return the job key name from config section
-     */
-    public String getJobKeyName() {
-	return jobName;
     }
 
     /**
@@ -682,6 +673,10 @@ public class Job {
     @Override
     public boolean equals(Object obj) {
 	return obj instanceof Job && isSame((Job) obj);
+    }
+
+    public String getJobFullName() {
+	return fullName;
     }
 
     public String getJobDisplayName() {

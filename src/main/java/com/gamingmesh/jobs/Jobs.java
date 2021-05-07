@@ -477,7 +477,7 @@ public class Jobs extends JavaPlugin {
 	for (Job job : jobs) {
 	    if (job.getName().equalsIgnoreCase(jobName))
 		return job;
-	    if (job.getJobKeyName().equalsIgnoreCase(jobName))
+	    if (job.getJobFullName().equalsIgnoreCase(jobName))
 		return job;
 	}
 	return null;
