@@ -1622,8 +1622,7 @@ public class JobsPaymentListener implements Listener {
 		    "[current]", blockOwner.getTotal(jPlayer.getUniqueId()),
 		    "[max]", jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) == 0 ? "-" : jPlayer.getMaxOwnerShipAllowed(blockOwner.getType())));
 	    }
-	} else if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) &&
-	    !block.getType().toString().startsWith("STRIPPED_") && block.getType().toString().endsWith("_LOG") &&
+	} else if (!block.getType().toString().startsWith("STRIPPED_") &&
 	    event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && hand.toString().endsWith("_AXE")) {
 	    // check if player is riding
 	    if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
@@ -1634,7 +1633,11 @@ public class JobsPaymentListener implements Listener {
 		- Jobs.getNms().getDurability(Jobs.getNms().getItemInMainHand(p)) != hand.getMaxDurability())
 		return;
 
-	    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
+		// either it's version 1.13+ and we're trying to strip a normal log like oak,
+		// or it's 1.16+ and we're trying to strip a fungi like warped stem
+		if ((Version.isCurrentEqualOrHigher(Version.v1_13_R1) && (block.getType().toString().endsWith("_LOG") || block.getType().toString().endsWith("_WOOD"))) ||
+		    (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && (block.getType().toString().endsWith("_STEM") || block.getType().toString().endsWith("_HYPHAE"))))
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
 	}
     }
 
