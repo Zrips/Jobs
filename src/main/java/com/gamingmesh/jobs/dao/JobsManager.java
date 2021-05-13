@@ -73,8 +73,8 @@ public class JobsManager {
 	hostname = c.get("mysql.hostname", c.getC().getString("mysql-hostname", "localhost:3306"));
 	database = c.get("mysql.database", c.getC().getString("mysql-database", "minecraft"));
 	prefix = c.get("mysql.table-prefix", c.getC().getString("mysql-table-prefix", "jobs_"));
-	certificate = c.get("mysql.verify-server-certificate", c.getC().getBoolean("verify-server-certificate", false));
-	ssl = c.get("mysql.use-ssl", c.getC().getBoolean("use-ssl", false));
+	certificate = c.get("mysql.verify-server-certificate", c.getC().getBoolean("verify-server-certificate"));
+	ssl = c.get("mysql.use-ssl", c.getC().getBoolean("use-ssl"));
 	autoReconnect = c.get("mysql.auto-reconnect", c.getC().getBoolean("auto-reconnect", true));
 	characterEncoding = c.get("mysql.characterEncoding", "utf8");
 	encoding = c.get("mysql.encoding", "UTF-8");

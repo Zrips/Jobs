@@ -158,13 +158,14 @@ public class ScheduleManager {
 	conf.options().copyDefaults(true);
 	conf.options().copyHeader(true);
 
-	if (!conf.isConfigurationSection("Boost"))
+	ConfigurationSection section = conf.getConfigurationSection("Boost");
+	if (section == null)
 	    return;
 
-	List<String> sections = new ArrayList<>(conf.getConfigurationSection("Boost").getKeys(false));
+	List<String> sections = new ArrayList<>(section.getKeys(false));
 
 	for (String oneSection : sections) {
-	    ConfigurationSection path = conf.getConfigurationSection("Boost." + oneSection);
+	    ConfigurationSection path = section.getConfigurationSection(oneSection);
 
 	    if (path == null || !path.getBoolean("Enabled") || !path.getString("From", "").contains(":")
 			|| !path.getString("Until", "").contains(":") || !path.isList("Days") || !path.isList("Jobs"))
@@ -181,17 +182,13 @@ public class ScheduleManager {
 	    if (path.isList("MessageOnStart"))
 		sched.setMessageOnStart(path.getStringList("MessageOnStart"), path.getString("From"), path.getString("Until"));
 
-	    if (path.contains("BroadcastOnStart"))
-		sched.setBroadcastOnStart(path.getBoolean("BroadcastOnStart"));
+	    sched.setBroadcastOnStart(path.getBoolean("BroadcastOnStart", true));
 
 	    if (path.isList("MessageOnStop"))
 		sched.setMessageOnStop(path.getStringList("MessageOnStop"), path.getString("From"), path.getString("Until"));
 
-	    if (path.contains("BroadcastOnStop"))
-		sched.setBroadcastOnStop(path.getBoolean("BroadcastOnStop"));
-
-	    if (path.contains("BroadcastInterval"))
-		sched.setBroadcastInterval(path.getInt("BroadcastInterval"));
+	    sched.setBroadcastOnStop(path.getBoolean("BroadcastOnStop", true));
+	    sched.setBroadcastInterval(path.getInt("BroadcastInterval"));
 
 	    if (path.isList("BroadcastMessage"))
 		sched.setMessageToBroadcast(path.getStringList("BroadcastMessage"), path.getString("From"), path.getString("Until"));

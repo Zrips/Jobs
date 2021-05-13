@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -48,10 +49,9 @@ public class level implements Cmd {
 	    } catch (NumberFormatException e) {
 	    }
 
-	    if (job == null && Jobs.getJob(one) != null) {
-		job = Jobs.getJob(one);
+	    if (job == null && (job = Jobs.getJob(one)) != null)
 		continue;
-	    }
+
 	    playerName = one;
 	}
 
@@ -80,12 +80,31 @@ public class level implements Cmd {
 		    prog.setLevel(amount);
 		    break;
 		case Add:
-		    total = (prog.getLevel() + amount);
-		    prog.setLevel(total);
+		    int oldLevel = prog.getLevel();
+		    total = (oldLevel + amount);
+
+		    if (prog.setLevel(total)) {
+			JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(jPlayer, job, prog.getLevel(),
+			    Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
+			    Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
+			    Jobs.getGCManager().SoundLevelupSound,
+			    Jobs.getGCManager().SoundLevelupVolume,
+			    Jobs.getGCManager().SoundLevelupPitch,
+			    Jobs.getGCManager().SoundTitleChangeSound,
+			    Jobs.getGCManager().SoundTitleChangeVolume,
+			    Jobs.getGCManager().SoundTitleChangePitch);
+
+			plugin.getServer().getPluginManager().callEvent(levelUpEvent);
+
+			// If event is cancelled, don't do anything
+			if (levelUpEvent.isCancelled())
+			    return true;
+		    }
+
 		    break;
 		case Take:
 		    total = (prog.getLevel() - amount);
-		    prog.setLevel(amount);
+		    prog.setLevel(total);
 		    break;
 		default:
 		    break;

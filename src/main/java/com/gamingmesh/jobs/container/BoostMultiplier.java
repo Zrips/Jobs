@@ -34,8 +34,10 @@ public class BoostMultiplier implements Cloneable {
     }
 
     public BoostMultiplier add(double amount) {
-	for (CurrencyType one : CurrencyType.values()) {
-	    map.put(one, amount);
+	if (amount > 0) {
+	    for (CurrencyType one : CurrencyType.values()) {
+		map.put(one, amount);
+	    }
 	}
 
 	return this;

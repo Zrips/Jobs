@@ -37,6 +37,7 @@ import com.gamingmesh.jobs.CMILib.ActionBarManager;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.Signs.SignTopType;
+import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
@@ -665,8 +666,23 @@ public class JobsPlayer {
 	if (prog == null)
 	    return;
 
-	if (level != prog.getLevel()) {
-	    prog.setLevel(level);
+	int oldLevel = prog.getLevel();
+
+	if (level != oldLevel) {
+	    if (prog.setLevel(level)) {
+		JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(this, job, prog.getLevel(),
+		    Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
+		    Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
+		    Jobs.getGCManager().SoundLevelupSound,
+		    Jobs.getGCManager().SoundLevelupVolume,
+		    Jobs.getGCManager().SoundLevelupPitch,
+		    Jobs.getGCManager().SoundTitleChangeSound,
+		    Jobs.getGCManager().SoundTitleChangeVolume,
+		    Jobs.getGCManager().SoundTitleChangePitch);
+
+		plugin.getServer().getPluginManager().callEvent(levelUpEvent);
+	    }
+
 	    reloadHonorific();
 	    reloadLimits();
 	    Jobs.getPermissionHandler().recalculatePermissions(this);

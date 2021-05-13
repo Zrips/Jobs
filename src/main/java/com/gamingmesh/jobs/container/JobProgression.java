@@ -137,15 +137,15 @@ public class JobProgression {
     }
 
     /**
-     * Set the level of this job
-     * @param level - the new level for this job
+     * Sets the level of this job progression
+     * 
+     * @param level the new level for this job
+     * @return true if this progression can level up
      */
-    public void setLevel(int level) {
-//		synchronized (jPlayer.saveLock) {
+    public boolean setLevel(int level) {
 	jPlayer.setSaved(false);
 	this.level = level;
-	reloadMaxExperienceAndCheckLevelUp();
-//		}
+	return reloadMaxExperienceAndCheckLevelUp();
     }
 
     /**

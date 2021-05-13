@@ -504,6 +504,7 @@ public class PlayerManager {
 	    return false;
 
 	Jobs.getJobsDAO().recordToArchive(jPlayer, job);
+
 	// let the user leave the job
 	if (!jPlayer.leaveJob(job))
 	    return false;
@@ -678,8 +679,10 @@ public class PlayerManager {
 	    Jobs.getGCManager().SoundTitleChangeSound,
 	    Jobs.getGCManager().SoundTitleChangeVolume,
 	    Jobs.getGCManager().SoundTitleChangePitch);
+
 	Bukkit.getServer().getPluginManager().callEvent(levelUpEvent);
-	// If event is canceled, dont do anything
+
+	// If event is cancelled, don't do anything
 	if (levelUpEvent.isCancelled())
 	    return;
 
@@ -822,12 +825,12 @@ public class PlayerManager {
 		    command = split[1];
 		    command = command.replace("[playerName]", player.getName());
 		    command = command.replace("[job]", job.getName());
-		}
 
-		if (split[0].equalsIgnoreCase("player:")) {
-		    player.performCommand(command);
-		} else {
-		    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+		    if (split[0].equalsIgnoreCase("player:")) {
+			player.performCommand(command);
+		    } else {
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+		    }
 		}
 	    }
 	}

@@ -11,4 +11,4 @@ assignees: ''
 
 **Detailed information what should do**
 
-<-- Maybe a config example if related -->
+<!-- Maybe a config example if related -->

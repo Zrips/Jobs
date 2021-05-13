@@ -378,7 +378,7 @@ public class Placeholder {
 	try {
 	    int id = Integer.parseInt(value);
 	    if (id > 0)
-		return user.getJobProgression().get(id - 1);
+		return user.progression.get(id - 1);
 	} catch (IndexOutOfBoundsException | NumberFormatException e) {
 	    Job job = Jobs.getJob(value);
 	    if (job != null)
@@ -459,12 +459,12 @@ public class Placeholder {
 	    case user_displayhonorific:
 		return user.getDisplayHonorific();
 	    case user_joinedjobcount:
-		return Integer.toString(user.getJobProgression().size());
+		return Integer.toString(user.progression.size());
 	    case user_archived_jobs:
 		return Integer.toString(user.getArchivedJobs().getArchivedJobs().size());
 	    case user_jobs:
 		String jobNames = "";
-		for (JobProgression prog : user.getJobProgression()) {
+		for (JobProgression prog : user.progression) {
 		    if (!jobNames.isEmpty()) {
 			jobNames += ", ";
 		    }
@@ -592,7 +592,7 @@ public class Placeholder {
 			    return convert(false);
 
 			int confMaxJobs = Jobs.getGCManager().getMaxJobs();
-			short playerMaxJobs = (short) user.getJobProgression().size();
+			short playerMaxJobs = (short) user.progression.size();
 			return convert(confMaxJobs > 0 && playerMaxJobs >= confMaxJobs
 			    && !Jobs.getPlayerManager().getJobsLimit(user, playerMaxJobs));
 

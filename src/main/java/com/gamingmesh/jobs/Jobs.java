@@ -522,6 +522,7 @@ public class Jobs extends JavaPlugin {
 	    Map<Integer, Map<String, Log>> playersLogs = dao.getAllLogs();
 	    Map<Integer, ArchivedJobs> playersArchives = dao.getAllArchivedJobs();
 	    Map<Integer, PaymentData> playersLimits = dao.loadPlayerLimits();
+
 	    for (Iterator<PlayerInfo> it = temp.values().iterator(); it.hasNext();) {
 		PlayerInfo one = it.next();
 		int id = one.getID();

@@ -307,8 +307,7 @@ public class GeneralConfigManager {
 	Jobs.getDBManager().start();
 
 	c.addComment("save-period", "How often in minutes you want it to save. This must be a non-zero number");
-	c.get("save-period", 10);
-	if (c.getInt("save-period") <= 0) {
+	if (c.get("save-period", 10) <= 0) {
 	    Jobs.getPluginLogger().severe("Save period must be greater than 0! Defaulting to 10 minutes!");
 	    c.set("save-period", 10);
 	}
