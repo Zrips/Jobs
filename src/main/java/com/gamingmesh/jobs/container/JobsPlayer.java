@@ -984,7 +984,9 @@ public class JobsPlayer {
 	    return false;
 
 	for (QuestProgression one : qpl.values()) {
-	    if (one.getQuest() != null && one.getQuest().getConfigName().equalsIgnoreCase(questName))
+	    Quest quest = one.getQuest();
+
+	    if (quest != null && quest.getConfigName().equalsIgnoreCase(questName))
 		return true;
 	}
 
@@ -1001,13 +1003,17 @@ public class JobsPlayer {
 	    return ls;
 
 	for (QuestProgression prog : qpl.values()) {
-	    if (prog.isEnded() || prog.getQuest() == null)
+	    if (prog.isEnded())
 		continue;
 
-	    for (Map<String, QuestObjective> oneAction : prog.getQuest().getObjectives().values()) {
+	    Quest quest = prog.getQuest();
+	    if (quest == null)
+		continue;
+
+	    for (Map<String, QuestObjective> oneAction : quest.getObjectives().values()) {
 		for (QuestObjective oneObjective : oneAction.values()) {
 		    if (type == null || type.name().equals(oneObjective.getAction().name())) {
-			ls.add(prog.getQuest().getConfigName().toLowerCase());
+			ls.add(quest.getConfigName().toLowerCase());
 			break;
 		    }
 		}
@@ -1023,8 +1029,10 @@ public class JobsPlayer {
 
     public void resetQuests(List<QuestProgression> quests) {
 	for (QuestProgression oneQ : quests) {
-	    if (oneQ.getQuest() != null) {
-		Map<String, QuestProgression> map = qProgression.remove(oneQ.getQuest().getJob().getName());
+	    Quest quest = oneQ.getQuest();
+
+	    if (quest != null) {
+		Map<String, QuestProgression> map = qProgression.remove(quest.getJob().getName());
 
 		if (map != null) {
 		    map.clear();
@@ -1044,17 +1052,23 @@ public class JobsPlayer {
     }
 
     public void getNewQuests(Job job) {
-	java.util.Optional.ofNullable(qProgression.get(job.getName())).ifPresent(Map::clear);
+	Map<String, QuestProgression> prog = qProgression.get(job.getName());
+	if (prog != null) {
+	    prog.clear();
+	    qProgression.put(job.getName(), prog);
+	}
     }
 
     public void replaceQuest(Quest quest) {
-	Map<String, QuestProgression> orProg = qProgression.get(quest.getJob().getName());
+	Job job = quest.getJob();
+	Map<String, QuestProgression> orProg = qProgression.get(job.getName());
 
-	Quest q = quest.getJob().getNextQuest(getQuestNameList(quest.getJob(), null), getJobProgression(quest.getJob()).getLevel());
+	Quest q = job.getNextQuest(getQuestNameList(job, null), getJobProgression(job).getLevel());
 	if (q == null) {
 	    for (JobProgression one : progression) {
-		if (one.getJob().isSame(quest.getJob()))
+		if (one.getJob().isSame(job))
 		    continue;
+
 		q = one.getJob().getNextQuest(getQuestNameList(one.getJob(), null), getJobProgression(one.getJob()).getLevel());
 		if (q != null)
 		    break;
@@ -1064,10 +1078,12 @@ public class JobsPlayer {
 	if (q == null)
 	    return;
 
-	Map<String, QuestProgression> prog = qProgression.get(q.getJob().getName());
+	Job qJob = q.getJob();
+
+	Map<String, QuestProgression> prog = qProgression.get(qJob.getName());
 	if (prog == null) {
 	    prog = new HashMap<>();
-	    qProgression.put(q.getJob().getName(), prog);
+	    qProgression.put(qJob.getName(), prog);
 	}
 
 	if (q.getConfigName().equals(quest.getConfigName()))
@@ -1078,7 +1094,7 @@ public class JobsPlayer {
 	if (prog.containsKey(confName))
 	    return;
 
-	if (q.getJob() != quest.getJob() && prog.size() >= q.getJob().getMaxDailyQuests())
+	if (!qJob.isSame(job) && prog.size() >= qJob.getMaxDailyQuests())
 	    return;
 
 	if (orProg != null) {
@@ -1130,8 +1146,9 @@ public class JobsPlayer {
 		    continue;
 
 		QuestProgression qp = new QuestProgression(q);
-		if (qp.getQuest() != null)
-		    g.put(qp.getQuest().getConfigName().toLowerCase(), qp);
+		Quest quest = qp.getQuest();
+		if (quest != null)
+		    g.put(quest.getConfigName().toLowerCase(), qp);
 
 		if (g.size() >= job.getMaxDailyQuests())
 		    break;
@@ -1277,8 +1294,8 @@ public class JobsPlayer {
     private Integer questSignUpdateShed;
 
     public void addDoneQuest(final Job job) {
-	this.doneQuests++;
-	this.setSaved(false);
+	doneQuests++;
+	setSaved(false);
 
 	if (questSignUpdateShed == null) {
 	    questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {

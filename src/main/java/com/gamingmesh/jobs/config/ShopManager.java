@@ -384,6 +384,7 @@ public class ShopManager {
 	    for (int k = 0; k < performCommands.size(); k++) {
 		performCommands.set(k, CMIChatColor.translate(performCommands.get(k)));
 	    }
+	    sItem.setCommands(performCommands);
 
 	    ConfigurationSection itemsSection = nameSection.getConfigurationSection("GiveItems");
 	    if (itemsSection != null) {
@@ -449,7 +450,7 @@ public class ShopManager {
 		    }
 
 		    items.add(new JobItems(oneItemName.toLowerCase(), id == null ? CMIMaterial.STONE : CMIMaterial.get(id), amount, name, giveLore,
-			    enchants, new BoostMultiplier(), new ArrayList<Job>(), potionData, null));
+			    enchants, new BoostMultiplier(), new ArrayList<>(), potionData, null));
 		}
 		sItem.setitems(items);
 	    }

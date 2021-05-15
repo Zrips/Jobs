@@ -935,9 +935,8 @@ public class ConfigManager {
 
 	for (String jobKey : jobsSection.getKeys(false)) {
 	    // Ignore example job
-	    if (jobKey.equalsIgnoreCase(EXAMPLEJOBINTERNALNAME)) {
+	    if (jobKey.equalsIgnoreCase(EXAMPLEJOBINTERNALNAME))
 		continue;
-	    }
 
 	    // Translating unicode
 	    jobKey = StringEscapeUtils.unescapeJava(jobKey);
@@ -1020,8 +1019,10 @@ public class ConfigManager {
 		displayMethod = DisplayMethod.NONE;
 	    }
 
+	    boolean isNoneJob = jobKey.equalsIgnoreCase("none");
+
 	    Parser maxExpEquation;
-	    String maxExpEquationInput = jobKey.equalsIgnoreCase("None") ? "0" : jobSection.getString("leveling-progression-equation", "0");
+	    String maxExpEquationInput = isNoneJob ? "0" : jobSection.getString("leveling-progression-equation", "0");
 	    try {
 		maxExpEquation = new Parser(maxExpEquationInput);
 		// test equation
@@ -1050,7 +1051,7 @@ public class ConfigManager {
 	    }
 
 	    Parser expEquation;
-	    String expEquationInput = jobKey.equalsIgnoreCase("None") ? "0" : jobSection.getString("experience-progression-equation", "0");
+	    String expEquationInput = isNoneJob ? "0" : jobSection.getString("experience-progression-equation", "0");
 	    try {
 		expEquation = new Parser(expEquationInput);
 		// test equation
@@ -1565,7 +1566,7 @@ public class ConfigManager {
 		job.setJobInfo(actionType, jobInfo);
 	    }
 
-	    if (jobKey.equalsIgnoreCase("none"))
+	    if (isNoneJob)
 		Jobs.setNoneJob(job);
 	    else {
 		return job;
@@ -1576,8 +1577,6 @@ public class ConfigManager {
     }
 
     private double updateValue(CurrencyType type, double amount) {
-	Double mult = Jobs.getGCManager().getGeneralMulti(type);
-	amount += (amount * mult);
-	return amount;
+	return amount += (amount * Jobs.getGCManager().getGeneralMulti(type));
     }
 }

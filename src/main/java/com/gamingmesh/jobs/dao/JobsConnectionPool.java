@@ -34,7 +34,7 @@ public class JobsConnectionPool {
 	return connection;
     }
 
-    public synchronized void closeConnection() {
+    public void closeConnection() {
 	if (connection != null) {
 	    try {
 		connection.closeConnection();

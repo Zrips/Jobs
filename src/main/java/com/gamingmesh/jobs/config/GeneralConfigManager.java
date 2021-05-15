@@ -1113,8 +1113,8 @@ public class GeneralConfigManager {
 	return JobsGUISkipAmount;
     }
 
-    public Double getGeneralMulti(CurrencyType type) {
-	return generalMulti.get(type);
+    public double getGeneralMulti(CurrencyType type) {
+	return generalMulti.getOrDefault(type, 0D);
     }
 
     public ConfigReader getConfig() {

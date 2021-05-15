@@ -505,8 +505,12 @@ public abstract class JobsDAO {
     public abstract boolean drop(String table);
 
     public boolean isConnected() {
+	if (pool == null)
+	    return false;
+
 	try {
-	    return pool != null && pool.getConnection() != null && !pool.getConnection().isClosed();
+	    JobsConnection conn = pool.getConnection();
+	    return conn != null && !conn.isClosed();
 	} catch (SQLException e) {
 	    return false;
 	}
@@ -2657,7 +2661,7 @@ public abstract class JobsDAO {
     /**
      * Close all active database handles
      */
-    public synchronized void closeConnections() {
+    public void closeConnections() {
 	pool.closeConnection();
     }
 

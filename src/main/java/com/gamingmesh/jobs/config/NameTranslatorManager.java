@@ -46,10 +46,6 @@ public class NameTranslatorManager {
 	    case BREW:
 	    case FISH:
 	    case STRIPLOGS:
-		String fallbackMaterialName = Arrays.stream(materialName.split("\\s|:"))
-		.map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
-		.collect(Collectors.joining(" ")); // returns capitalized word (from this -> To This)
-
 		materialName = materialName.replace(" ", "");
 
 		CMIMaterial mat = CMIMaterial.get(materialName);
@@ -75,15 +71,21 @@ public class NameTranslatorManager {
 		if (meta != null && !meta.isEmpty()) {
 		    mat = CMIMaterial.get(materialName + ":" + meta);
 		    nameLs = listOfNames.get(mat);
+
 		    if (nameLs == null) {
 			mat = CMIMaterial.get(materialName.replace(" ", ""));
 			nameLs = listOfNames.get(mat);
+
 			NameList nameMeta = listOfNames.get(CMIMaterial.get(meta.replace(" ", "")));
 			if (nameLs != null && nameMeta != null) {
 			    return nameLs + ":" + nameMeta;
 			}
 
 			if (mat == CMIMaterial.NONE) {
+			    String fallbackMaterialName = Arrays.stream(materialName.split("\\s|:"))
+				.map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
+				.collect(Collectors.joining(" ")); // returns capitalized word (from this -> To This)
+
 			    return fallbackMaterialName;
 			}
 
@@ -94,6 +96,7 @@ public class NameTranslatorManager {
 		if (id > 0 && meta != null && !meta.isEmpty()) {
 		    mat = CMIMaterial.get(id + ":" + meta);
 		    nameLs = listOfNames.get(mat);
+
 		    if (nameLs == null) {
 			return mat.getName();
 		    }
@@ -106,14 +109,19 @@ public class NameTranslatorManager {
 	    case TAME:
 		for (NameList one : listOfEntities) {
 		    String ids = one.getId() + ":" + one.getMeta();
-		    if (!one.getMeta().isEmpty() && ids.equalsIgnoreCase(id + ":" + meta) && !one.getId().equals("0")) {
+
+		    if (!one.getMeta().isEmpty() && !one.getId().equals("0") && ids.equalsIgnoreCase(id + ":" + meta)) {
 			return one.getName();
 		    }
+
 		    ids = one.getId();
-		    if (ids.equalsIgnoreCase(Integer.toString(id)) && !one.getId().equals("0")) {
+
+		    if (!one.getId().equals("0") && ids.equalsIgnoreCase(Integer.toString(id))) {
 			return one.getName();
 		    }
+
 		    ids = one.getMinecraftName();
+
 		    if (ids.equalsIgnoreCase(name)) {
 			return one.getName();
 		    }
@@ -122,15 +130,18 @@ public class NameTranslatorManager {
 	    case ENCHANT:
 		String mName = materialName;
 		String level = "";
+
 		if (mName.contains(":")) {
 		    String[] split = materialName.split(":", 2);
 		    mName = split[0];
 		    level = ":" + split[1];
 		}
+
 		NameList nameInfo = listOfEnchants.get(mName.toLowerCase().replace("_", ""));
 		if (nameInfo != null) {
 		    return nameInfo.getMinecraftName() + level;
 		}
+
 		break;
 	    case SHEAR:
 		for (NameList one : listOfColors) {
@@ -145,8 +156,10 @@ public class NameTranslatorManager {
 		return fallbackColorName;
 	    case MMKILL:
 		NameList got = listOfMMEntities.get(materialName.toLowerCase());
+
 		if (got != null && got.getName() != null)
 		    return got.getName();
+
 		return HookManager.getMythicManager() == null ? materialName : HookManager.getMythicManager().getDisplayName(materialName);
 	    default:
 		break;
