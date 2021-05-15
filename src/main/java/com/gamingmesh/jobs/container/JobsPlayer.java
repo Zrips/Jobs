@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -1191,7 +1190,7 @@ public class JobsPlayer {
 		}
 	}
 
-	return tmp.values().stream().collect(Collectors.toList());
+	return new ArrayList<>(tmp.values());
     }
 
     public String getQuestProgressionString() {
@@ -1213,7 +1212,8 @@ public class JobsPlayer {
 		}
 	    }
 
-	    prog = prog.endsWith(":;:") ? prog.substring(0, prog.length() - 3) : prog;
+	    if (prog.endsWith(":;:"))
+		prog = prog.substring(0, prog.length() - 3);
 	}
 
 	return prog.isEmpty() ? null : prog.endsWith(";:") ? prog.substring(0, prog.length() - 2) : prog;
@@ -1249,11 +1249,12 @@ public class JobsPlayer {
 		qProgression.put(job.getName(), currentProgression);
 	    }
 
-	    QuestProgression qp = currentProgression.get(qname.toLowerCase());
+	    String questName = qname.toLowerCase();
+	    QuestProgression qp = currentProgression.get(questName);
 	    if (qp == null) {
 		qp = new QuestProgression(quest);
 		qp.setValidUntil(validUntil);
-		currentProgression.put(qname.toLowerCase(), qp);
+		currentProgression.put(questName, qp);
 	    }
 
 	    for (String oneA : one.split(":;:")) {
