@@ -1476,7 +1476,9 @@ public class Jobs extends JavaPlugin {
 	nextPage = currentPage < pageCount ? nextPage : currentPage;
 
 	int prevpage = currentPage - 1;
-	prevpage = currentPage > 1 ? prevpage : currentPage;
+	if (currentPage <= 1) {
+	    prevpage = currentPage;
+	}
 
 	RawMessage rm = new RawMessage()
 	    .addText((currentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")))

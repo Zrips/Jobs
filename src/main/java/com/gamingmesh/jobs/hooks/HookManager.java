@@ -87,7 +87,7 @@ public class HookManager {
     }
 
     public static boolean checkMythicMobs() {
-	return Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.Check();
+	return Jobs.getGCManager().MythicMobsEnabled && MythicManager != null && MythicManager.check();
     }
 
     private static boolean setWorldGuard() {
@@ -108,9 +108,6 @@ public class HookManager {
 	    Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
 	    MythicManager = new MythicMobs4(PLUGIN);
 	} catch (ClassNotFoundException ex) {
-	}
-
-	if (MythicManager == null) {
 	    Jobs.consoleMsg("&cYour MythicMobs version is not supported by Jobs! Supported versions: 4.9.1+");
 	    return;
 	}

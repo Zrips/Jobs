@@ -4,7 +4,7 @@ import org.bukkit.entity.LivingEntity;
 
 public interface MythicMobInterface {
 
-    boolean Check();
+    boolean check();
 
     boolean isMythicMob(LivingEntity lVictim);
 

@@ -34,7 +34,6 @@ public class Util {
     private static Map<UUID, String> jobsEditorMap = new HashMap<>(), questsEditorMap = new HashMap<>();
 
     private static Map<String, JobsWorld> jobsWorlds = new HashMap<>();
-    private static Map<Integer, JobsWorld> jobsWorldsId = new HashMap<>();
 
     public static final List<UUID> LEAVECONFIRM = new ArrayList<>();
 
@@ -107,28 +106,33 @@ public class Util {
     }
 
     public static Block getTargetBlock(Player player, Material lookingFor, int distance, boolean ignoreNoneSolids) {
-	if (distance > 15 * 16)
-	    distance = 15 * 16;
+	int mult = 15 * 16;
+	if (distance > mult)
+	    distance = mult;
+
 	if (distance < 1)
 	    distance = 1;
 
-	List<Block> blocks = new ArrayList<>();
-
 	try {
 	    Block bl = player.getTargetBlock(null, distance);
+
 	    if (!CMIMaterial.isAir(bl.getType())) {
 		return bl;
 	    }
 	} catch (Throwable e) {
 	}
 
+	List<Block> blocks = new ArrayList<>();
 	Iterator<Block> itr = new BlockIterator(player, distance);
+
 	while (itr.hasNext()) {
 	    Block block = itr.next();
 	    blocks.add(block);
+
 	    if (distance != 0 && blocks.size() > distance) {
 		blocks.remove(0);
 	    }
+
 	    Material material = block.getType();
 
 	    if (ignoreNoneSolids && !material.isSolid())
@@ -138,12 +142,11 @@ public class Util {
 		if (!CMIMaterial.isAir(material)) {
 		    break;
 		}
-	    } else {
-		if (lookingFor == material) {
-		    return block;
-		}
+	    } else if (lookingFor == material) {
+		return block;
 	    }
 	}
+
 	return !blocks.isEmpty() ? blocks.get(blocks.size() - 1) : null;
     }
 
@@ -193,7 +196,13 @@ public class Util {
     }
 
     public static JobsWorld getJobsWorld(int id) {
-	return jobsWorldsId.get(id);
+	for (JobsWorld jobsWorld : jobsWorlds.values()) {
+	    if (jobsWorld.getId() == id) {
+		return jobsWorld;
+	    }
+	}
+
+	return null;
     }
 
     public static Map<String, JobsWorld> getJobsWorlds() {
@@ -205,7 +214,6 @@ public class Util {
 	    return;
 
 	jobsWorlds.put(jobsWorld.getName().toLowerCase(), jobsWorld);
-	jobsWorldsId.put(jobsWorld.getId(), jobsWorld);
     }
 
     public static List<String> getFilesFromPackage(String pckgname) throws ClassNotFoundException {

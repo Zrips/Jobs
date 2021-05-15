@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.hooks.MythicMobs;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 
@@ -12,7 +11,7 @@ import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 
 public class MythicMobs4 implements MythicMobInterface {
 
-    public BukkitAPIHelper MMAPI;
+    public BukkitAPIHelper apiHelper;
     private Jobs plugin;
 
     public MythicMobs4(Jobs plugin) {
@@ -21,24 +20,23 @@ public class MythicMobs4 implements MythicMobInterface {
 
     @Override
     public void registerListener() {
-	Bukkit.getServer().getPluginManager().registerEvents(new MythicMobs4Listener(), plugin);
+	plugin.getServer().getPluginManager().registerEvents(new MythicMobs4Listener(), plugin);
     }
 
     @Override
     public boolean isMythicMob(LivingEntity lVictim) {
-	return MMAPI != null && lVictim != null && MMAPI.isMythicMob(lVictim);
+	return apiHelper != null && lVictim != null && apiHelper.isMythicMob(lVictim);
     }
 
     @Override
-    public boolean Check() {
-	Plugin mm = Bukkit.getPluginManager().getPlugin("MythicMobs");
+    public boolean check() {
+	Plugin mm = plugin.getServer().getPluginManager().getPlugin("MythicMobs");
 	if (mm == null)
 	    return false;
 
 	try {
 	    Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent");
 	    Class.forName("io.lumine.xikage.mythicmobs.mobs.MythicMob");
-	    Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
 	    Class.forName("io.lumine.xikage.mythicmobs.MythicMobs");
 	} catch (ClassNotFoundException e) {
 	    // Disabling
@@ -46,8 +44,8 @@ public class MythicMobs4 implements MythicMobInterface {
 	    return false;
 	}
 
-	MMAPI = ((MythicMobs) mm).getAPIHelper();
-	Jobs.consoleMsg("&e[Jobs] &6MythicMobs4 was found - Enabling capabilities.");
+	apiHelper = ((MythicMobs) mm).getAPIHelper();
+	Jobs.consoleMsg("&e[Jobs] &6MythicMobs was found - Enabling capabilities.");
 	return true;
     }
 
@@ -55,10 +53,10 @@ public class MythicMobs4 implements MythicMobInterface {
 
     @Override
     public String getDisplayName(String id) {
-	if (failed || MMAPI == null)
+	if (failed || apiHelper == null)
 	    return "";
 
-	MythicMob mm = MMAPI.getMythicMob(id);
+	MythicMob mm = apiHelper.getMythicMob(id);
 	try {
 	    if (mm != null && mm.getDisplayName() != null)
 		return mm.getDisplayName().toString();

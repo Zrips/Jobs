@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 public class JobsWorld {
+
     private int id = 0;
     private String name = "Unknown";
     private World world;
