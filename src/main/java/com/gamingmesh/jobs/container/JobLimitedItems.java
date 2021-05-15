@@ -28,7 +28,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 
@@ -64,8 +63,6 @@ public class JobLimitedItems {
 	if (meta == null) {
 	    return item;
 	}
-
-	Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
 
 	if (name != null)
 	    meta.setDisplayName(CMIChatColor.translate(name));

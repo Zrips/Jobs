@@ -1102,7 +1102,7 @@ public class PlayerManager {
 	    boost.add(BoostOf.Item, getItemBoostNBT(pl, prog));
 	}
 
-	if (!Jobs.getRestrictedAreaManager().getRestrictedAres().isEmpty())
+	if (!Jobs.getRestrictedAreaManager().getRestrictedAreas().isEmpty())
 	    boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(pl)));
 
 	return boost;

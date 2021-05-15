@@ -65,16 +65,16 @@ public class QuestProgression {
 	}
     }
 
-    public Long getValidUntil() {
+    public long getValidUntil() {
 	return validUntil;
     }
 
-    public void setValidUntil(Long validUntil) {
+    public void setValidUntil(long validUntil) {
 	this.validUntil = validUntil;
     }
 
     public boolean isValid() {
-	return validUntil == getValidUntil();
+	return !isEnded();
     }
 
     public boolean isEnded() {
@@ -103,7 +103,7 @@ public class QuestProgression {
 	org.bukkit.entity.Player player = jPlayer.getPlayer();
 
 	for (String area : quest.getRestrictedAreas()) {
-	    for (Entry<String, RestrictedArea> a : Jobs.getRestrictedAreaManager().getRestrictedAres().entrySet()) {
+	    for (Entry<String, RestrictedArea> a : Jobs.getRestrictedAreaManager().getRestrictedAreas().entrySet()) {
 		if (a.getKey().equalsIgnoreCase(area) && a.getValue().inRestrictedArea(player.getLocation())) {
 		    return;
 		}
@@ -120,8 +120,10 @@ public class QuestProgression {
 
 	if (!isCompleted()) {
 	    QuestObjective objective = null;
+
 	    if (byAction != null) {
 		objective = byAction.get(action.getName());
+
 		if (objective == null)
 		    objective = byAction.get(action.getNameWithSub());
 	    }

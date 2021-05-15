@@ -15,7 +15,7 @@ public class Quest {
     private String configName = "";
     private String questName = "";
     private Job job;
-    private Long validUntil = 0L;
+    private long validUntil = 0L;
 
     private int chance = 100, minLvl = 0;
     private Integer maxLvl;
@@ -76,30 +76,35 @@ public class Quest {
 	}
     }
 
-    public Long getValidUntil() {
+    public long getValidUntil() {
 	if (validUntil < System.currentTimeMillis()) {
 	    int hour = Jobs.getGCManager().getResetTimeHour();
 	    int minute = Jobs.getGCManager().getResetTimeMinute();
 	    Calendar c = Calendar.getInstance();
+
 	    c.add(Calendar.DAY_OF_MONTH, 1);
+
 	    c.set(Calendar.HOUR_OF_DAY, hour);
 	    c.set(Calendar.MINUTE, minute);
 	    c.set(Calendar.SECOND, 0);
 	    c.set(Calendar.MILLISECOND, 0);
+
 	    if (c.getTimeInMillis() - System.currentTimeMillis() > 86400000) {
 		c = Calendar.getInstance();
+
 		c.set(Calendar.HOUR_OF_DAY, hour);
 		c.set(Calendar.MINUTE, minute);
 		c.set(Calendar.SECOND, 0);
 		c.set(Calendar.MILLISECOND, 0);
 	    }
+
 	    validUntil = c.getTimeInMillis();
 	}
 
 	return validUntil;
     }
 
-    public void setValidUntil(Long validUntil) {
+    public void setValidUntil(long validUntil) {
 	this.validUntil = validUntil;
     }
 
@@ -184,7 +189,7 @@ public class Quest {
 
     public void setObjectives(Map<ActionType, Map<String, QuestObjective>> objectives) {
 	if (objectives == null) {
-	    objectives = new HashMap<>();
+	    return;
 	}
 
 	this.objectives = objectives;

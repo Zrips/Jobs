@@ -445,8 +445,9 @@ public class Jobs extends JavaPlugin {
     }
 
     /**
-     * Retrieves the list of active jobs
-     * @return list of jobs
+     * Returns the list of available jobs.
+     * 
+     * @return an unmodifiable list of jobs
      */
     public static List<Job> getJobs() {
 	return Collections.unmodifiableList(jobs);

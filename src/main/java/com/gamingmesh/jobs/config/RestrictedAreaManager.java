@@ -66,7 +66,18 @@ public class RestrictedAreaManager {
 	}
     }
 
+    /**
+     * Retrieves the restricted areas map.
+     * 
+     * @deprecated badly named
+     * @return the cached map of restricted areas
+     */
+    @Deprecated
     public Map<String, RestrictedArea> getRestrictedAres() {
+	return restrictedAreas;
+    }
+
+    public Map<String, RestrictedArea> getRestrictedAreas() {
 	return restrictedAreas;
     }
 

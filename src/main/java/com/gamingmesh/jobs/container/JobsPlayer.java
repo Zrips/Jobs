@@ -406,9 +406,9 @@ public class JobsPlayer {
      * Reloads limit for this player.
      */
     public void reload(CurrencyType type) {
-	int totalLevel = getTotalLevels();
 	Parser eq = Jobs.getGCManager().getLimit(type).getMaxEquation();
-	eq.setVariable("totallevel", totalLevel);
+	eq.setVariable("totallevel", getTotalLevels());
+
 	maxJobsEquation = Jobs.getPlayerManager().getMaxJobs(this);
 	limits.put(type, (int) eq.getValue());
 	setSaved(false);
