@@ -307,7 +307,8 @@ public class PlayerManager {
 	Iterator<JobsPlayer> iter = players.values().iterator();
 	while (iter.hasNext()) {
 	    JobsPlayer jPlayer = iter.next();
-	    if (!jPlayer.isOnline() && jPlayer.isSaved())
+
+	    if (jPlayer.isSaved() && !jPlayer.isOnline())
 		iter.remove();
 	}
 

@@ -890,7 +890,6 @@ public class Jobs extends JavaPlugin {
 	}
 
 	instance = null;
-	consoleMsg("&e[Jobs] &2Plugin has been disabled successfully.");
     }
 
     private static void checkDailyQuests(JobsPlayer jPlayer, Job job, ActionInfo info) {
