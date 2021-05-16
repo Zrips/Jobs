@@ -129,20 +129,18 @@ public class PlayerManager {
     public void addPlayerToCache(JobsPlayer jPlayer) {
 	String jName = jPlayer.getName().toLowerCase();
 
-	if (!playersCache.containsKey(jName))
-	    playersCache.put(jName, jPlayer);
+	playersCache.put(jName, jPlayer);
 
-	if (jPlayer.getUniqueId() != null && !playersUUIDCache.containsKey(jPlayer.getUniqueId()))
+	if (jPlayer.getUniqueId() != null)
 	    playersUUIDCache.put(jPlayer.getUniqueId(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
 	String jName = jPlayer.getName().toLowerCase();
 
-	if (!players.containsKey(jName))
-	    players.put(jName, jPlayer);
+	players.put(jName, jPlayer);
 
-	if (jPlayer.getUniqueId() != null && !playersUUID.containsKey(jPlayer.getUniqueId()))
+	if (jPlayer.getUniqueId() != null)
 	    playersUUID.put(jPlayer.getUniqueId(), jPlayer);
     }
 

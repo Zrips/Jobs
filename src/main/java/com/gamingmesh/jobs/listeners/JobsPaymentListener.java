@@ -987,10 +987,9 @@ public class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().PreventHopperFillUps || event.getItem().getType() == Material.AIR)
 	    return;
 
-	String type = event.getDestination().getType().toString();
 	Block block = null;
 
-	switch (type.toLowerCase()) {
+	switch (event.getDestination().getType().toString().toLowerCase()) {
 	case "furnace":
 	    block = ((Furnace) event.getDestination().getHolder()).getBlock();
 	    break;
@@ -1068,11 +1067,12 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityDamageByPlayer(EntityDamageEvent event) {
-	if (!Jobs.getGCManager().MonsterDamageUse || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+	if (!Jobs.getGCManager().MonsterDamageUse || !(event instanceof EntityDamageByEntityEvent)
+	    || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
 	Entity ent = event.getEntity();
-	if (ent instanceof Player || !(ent instanceof Damageable) || !(event instanceof EntityDamageByEntityEvent))
+	if (ent instanceof Player || !(ent instanceof Damageable))
 	    return;
 
 	if (!(((EntityDamageByEntityEvent) event).getDamager() instanceof Player))
@@ -1125,8 +1125,8 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld())
-	    || !(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent))
+	if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) ||
+	    !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
 	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
@@ -1458,12 +1458,14 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerEat(FoodLevelChangeEvent event) {
-	if (!(event.getEntity() instanceof Player) || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld())
-			|| event.getEntity().hasMetadata("NPC"))
+	HumanEntity human = event.getEntity();
+
+	if (event.getFoodLevel() <= human.getFoodLevel() || !(human instanceof Player)
+	    || !Jobs.getGCManager().canPerformActionInWorld(human.getWorld()) || human.hasMetadata("NPC"))
 	    return;
 
-	Player player = (Player) event.getEntity();
-	if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel())
+	Player player = (Player) human;
+	if (!player.isOnline())
 	    return;
 
 	// check if in creative
@@ -1643,14 +1645,11 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler
     public void onExplore(JobsChunkChangeEvent event) {
-	if (event.isCancelled())
+	if (event.isCancelled() || !Jobs.getExplore().isExploreEnabled())
 	    return;
 
 	Player player = event.getPlayer();
-	if (player == null || !player.isOnline() || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
-	    return;
-
-	if (!Jobs.getExplore().isExploreEnabled())
+	if (player == null || !player.isOnline())
 	    return;
 
 	// check if in spectator, #330
@@ -1668,11 +1667,13 @@ public class JobsPaymentListener implements Listener {
 	    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
 	    return;
 
+	org.bukkit.World playerWorld = player.getWorld();
+
 	// check if in creative
-	if (!payIfCreative(player))
+	if (!Jobs.getGCManager().canPerformActionInWorld(playerWorld) || !payIfCreative(player))
 	    return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player, playerWorld.getName()))
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -1692,8 +1693,7 @@ public class JobsPaymentListener implements Listener {
 	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) && entity.isPersistent())
 		break;
 
-	    if (entity.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
-		entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+	    entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
 	}
     }
 
