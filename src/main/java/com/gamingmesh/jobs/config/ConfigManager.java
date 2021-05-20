@@ -476,7 +476,7 @@ public class ConfigManager {
 	cfg.save();
     }
 
-    private static void generate(ConfigReader cfg, String pt) {
+    private void generate(ConfigReader cfg, String pt) {
 	cfg.get(pt + ".income", 1D);
 	cfg.get(pt + ".points", 1D);
 	cfg.get(pt + ".experience", 1D);
@@ -554,26 +554,28 @@ public class ConfigManager {
 
     @SuppressWarnings("deprecation")
     public KeyValues getKeyValue(String myKey, ActionType actionType, String jobName) {
-	String type = null,
-	    subType = "",
-	    meta = "";
+	String subType = "", meta = "";
+
 	final String finalMyKey = myKey;
-	int id = 0;
 
 	if (myKey.contains("-")) {
-	    // uses subType
 	    String[] split = myKey.split("-", 2);
+
 	    if (split.length >= 2) {
 		subType = ":" + split[1];
 		meta = split[1];
-		myKey = split[0];
 	    }
+
+	    myKey = split[0];
 	} else if (myKey.contains(":")) { // when we uses tipped arrow effect types
 	    String[] split = myKey.split(":", 2);
 	    meta = split.length > 1 ? split[1] : myKey;
 	    subType = ":all";
 	    myKey = split[0];
 	}
+
+	String type = null;
+	int id = 0;
 
 	CMIMaterial material = CMIMaterial.NONE;
 

@@ -437,12 +437,9 @@ public class JobsListener implements Listener {
 	return false;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChunkChangeMove(PlayerMoveEvent event) {
-	if (event.isCancelled() || !event.getPlayer().isOnline())
-	    return;
-
-	if (event.getTo() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
+	if (!event.getPlayer().isOnline() || event.getTo() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
 	    return;
 
 	Chunk from = event.getFrom().getChunk();
@@ -451,12 +448,10 @@ public class JobsListener implements Listener {
 	    plugin.getServer().getPluginManager().callEvent(new JobsChunkChangeEvent(event.getPlayer(), from, to));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
-	if (event.isCancelled())
-	    return;
-
 	boolean shift = false, numberkey = false;
+
 	if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT)
 	    shift = true;
 
@@ -563,11 +558,8 @@ public class JobsListener implements Listener {
 	}
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void dispenserFireEvent(BlockDispenseEvent event) {
-	if (event.isCancelled())
-	    return;
-
 	ItemStack item = event.getItem();
 	ArmorTypes type = ArmorTypes.matchType(item);
 	if (type == null)

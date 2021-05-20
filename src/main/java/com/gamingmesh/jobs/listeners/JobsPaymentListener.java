@@ -120,12 +120,6 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void villagerTradeInventoryClick(InventoryClickEvent event) {
-	if (event.isCancelled())
-	    return;
-
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
-	    return;
-
 	// If event is nothing or place, do nothing
 	switch (event.getAction()) {
 	case NOTHING:
@@ -136,6 +130,9 @@ public class JobsPaymentListener implements Listener {
 	default:
 	    break;
 	}
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+	    return;
 
 	if (event.getInventory().getType() != InventoryType.MERCHANT || event.getSlot() != 2 || event.getSlotType() != SlotType.RESULT)
 	    return;
@@ -915,9 +912,6 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEnchantItem(EnchantItemEvent event) {
-	if (event.isCancelled())
-	    return;
-
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEnchanter().getWorld()))
 	    return;
 
@@ -1548,11 +1542,8 @@ public class JobsPaymentListener implements Listener {
 	}
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
-	if (event.isCancelled())
-	    return;
-
 	Player p = event.getPlayer();
 	if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
 	    return;
@@ -1643,9 +1634,9 @@ public class JobsPaymentListener implements Listener {
 	}
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onExplore(JobsChunkChangeEvent event) {
-	if (event.isCancelled() || !Jobs.getExplore().isExploreEnabled())
+	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 
 	Player player = event.getPlayer();

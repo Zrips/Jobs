@@ -24,9 +24,9 @@ public final class JobsPayment14Listener implements Listener {
     // BlockCookEvent does not have "cooking owner"
     private final Map<UUID, List<PlayerCamp>> campPlayers = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCook(BlockCookEvent event) {
-	if (event.isCancelled() || !(event.getBlock().getType() != Material.CAMPFIRE) || campPlayers.isEmpty())
+	if (!(event.getBlock().getType() != Material.CAMPFIRE) || campPlayers.isEmpty())
 	    return;
 
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
@@ -59,7 +59,7 @@ public final class JobsPayment14Listener implements Listener {
 	}
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 	if (event.getBlock().getType() != Material.CAMPFIRE || campPlayers.isEmpty())
 	    return;
@@ -95,7 +95,7 @@ public final class JobsPayment14Listener implements Listener {
 	if (click == null || click.getType() != Material.CAMPFIRE || !ev.hasItem())
 	    return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(click.getWorld()) || !JobsPaymentListener.payIfCreative(ev.getPlayer()))
+	if (!JobsPaymentListener.payIfCreative(ev.getPlayer()) || !Jobs.getGCManager().canPerformActionInWorld(click.getWorld()))
 	    return;
 
 	List<PlayerCamp> camps = campPlayers.getOrDefault(ev.getPlayer().getUniqueId(), new ArrayList<>());

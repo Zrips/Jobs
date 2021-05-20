@@ -516,29 +516,6 @@ public abstract class JobsDAO {
 	}
     }
 
-    public void setAutoCommit(boolean state) {
-	JobsConnection conn = getConnection();
-	if (conn == null)
-	    return;
-	try {
-	    conn.setAutoCommit(state);
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    public void commit() {
-	JobsConnection conn = getConnection();
-	if (conn == null)
-	    return;
-
-	try {
-	    conn.commit();
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
-    }
-
     private boolean createDefaultTable(DBTables table) {
 	if (isTable(table.getTableName()))
 	    return true;
@@ -2623,12 +2600,8 @@ public abstract class JobsDAO {
 	    return;
 	}
 
-	Statement stmt = null;
-	try {
-	    stmt = conn.createStatement();
+	try (Statement stmt = conn.createStatement()) {
 	    stmt.execute(sql);
-	} finally {
-	    close(stmt);
 	}
     }
 
