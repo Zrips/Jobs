@@ -407,8 +407,8 @@ public class LanguageManager {
 	    Jobs.getGCManager().getCommandArgs().put("playerinfo", Arrays.asList("[playername]", "[jobname]", "[action]"));
 
 	    c.get("command.join.help.info", "Join the selected job.");
-	    c.get("command.join.help.args", "[jobname]");
-	    Jobs.getGCManager().getCommandArgs().put("join", Arrays.asList("[jobname]"));
+	    c.get("command.join.help.args", "[jobfullname]");
+	    Jobs.getGCManager().getCommandArgs().put("join", Arrays.asList("[jobfullname]"));
 	    c.get("command.join.error.alreadyin", "You are already in the job %jobname%.");
 	    c.get("command.join.error.fullslots", "You cannot join the job %jobname%, there are no slots available.");
 	    c.get("command.join.error.maxjobs", "You have already joined too many jobs.");

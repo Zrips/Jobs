@@ -33,6 +33,7 @@ public class TabComplete implements TabCompleter {
 	    for (int i = 1; i <= args.length; i++) {
 		if (args.length == i + 1) {
 		    List<String> argsList = Jobs.getGCManager().getCommandArgs().get(first);
+
 		    if (argsList == null)
 			break;
 
@@ -50,6 +51,7 @@ public class TabComplete implements TabCompleter {
 			t2.add(arg);
 
 		    List<String> temp = new ArrayList<>();
+
 		    for (String ar : t2) {
 			switch (ar) {
 			case "[scheduleName]":
@@ -61,17 +63,26 @@ public class TabComplete implements TabCompleter {
 			case "[questname]":
 			case "[quest]":
 			    Job job = Jobs.getJob(args[i - 1]);
+
 			    if (job != null) {
 				for (Quest q : job.getQuests()) {
 				    temp.add(q.getQuestName());
 				}
 			    }
+
 			    break;
 			case "[jobname]":
 			case "[newjob]":
 			    for (Job one : Jobs.getJobs()) {
 				temp.add(one.getName());
 			    }
+
+			    break;
+			case "[jobfullname]":
+			    for (Job one : Jobs.getJobs()) {
+				temp.add(one.getJobFullName());
+			    }
+
 			    break;
 			case "[playername]":
 			    for (Player player : Bukkit.getOnlinePlayers()) {
@@ -93,33 +104,39 @@ public class TabComplete implements TabCompleter {
 			    for (JobItems one : ItemBoostManager.getItems().values()) {
 				temp.add(one.getNode());
 			    }
+
 			    if (args.length > 3 && args[3].equalsIgnoreCase("limiteditems")) {
 				Job oneJob = Jobs.getJob(args[i - 1]);
+
 				if (oneJob != null)
 				    for (JobLimitedItems limitedItem : oneJob.getLimitedItems().values()) {
 					temp.add(limitedItem.getNode());
 				    }
 			    }
+
 			    break;
 			case "[boosteditems]":
 			    for (JobItems one : ItemBoostManager.getItems().values()) {
 				temp.add(one.getNode());
 			    }
+
 			    break;
 			case "[oldjob]":
 			    JobsPlayer onePlayerJob = Jobs.getPlayerManager().getJobsPlayer(args[i - 1]);
+
 			    if (onePlayerJob != null)
 				for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
 				    temp.add(oneOldJob.getJob().getName());
 				}
+
 			    break;
 			case "[oldplayerjob]":
-			    if (sender instanceof Player) {
-				if ((onePlayerJob = Jobs.getPlayerManager().getJobsPlayer((Player) sender)) != null)
-				    for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
-					temp.add(oneOldJob.getJob().getName());
-				    }
+			    if (sender instanceof Player && (onePlayerJob = Jobs.getPlayerManager().getJobsPlayer((Player) sender)) != null) {
+				for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
+				    temp.add(oneOldJob.getJob().getName());
+				}
 			    }
+
 			    break;
 			default:
 			    temp.add(ar);
