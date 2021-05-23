@@ -1399,7 +1399,9 @@ public class Jobs extends JavaPlugin {
     }
 
     public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
-	JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, payment.get(CurrencyType.EXP));
+	double expPayment = payment.get(CurrencyType.EXP);
+
+	JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, expPayment);
 	Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
 	// If event is canceled, don't do anything
 	if (jobsExpGainEvent.isCancelled())
@@ -1425,7 +1427,7 @@ public class Jobs extends JavaPlugin {
 	    getLoging().recordToLog(jPlayer, info, payment.getPayment());
 	}
 
-	if (prog.addExperience(payment.get(CurrencyType.EXP)))
+	if (prog.addExperience(expPayment))
 	    getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
     }
 

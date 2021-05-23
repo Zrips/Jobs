@@ -199,7 +199,8 @@ public class Job {
      * @return true if same
      */
     public boolean isSame(Job job) {
-	return job != null && (id == job.getId() || fullName.equalsIgnoreCase(job.getName()));
+	return job != null && (id == job.getId() || jobName.equalsIgnoreCase(job.getName())
+	    || fullName.equalsIgnoreCase(job.getJobFullName()) || fullName.equalsIgnoreCase(job.getName()));
     }
 
     /**
