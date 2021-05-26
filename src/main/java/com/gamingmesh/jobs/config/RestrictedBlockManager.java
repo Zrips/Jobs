@@ -67,8 +67,9 @@ public class RestrictedBlockManager {
 	    }
 	}
 
-	if (restrictedBlocksTimer.size() > 0)
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedBlocksTimer.size() + " protected blocks timers!");
+	int size = restrictedBlocksTimer.size();
+	if (size > 0)
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + size + " protected blocks timers!");
 
 	cfg.save();
     }

@@ -362,7 +362,7 @@ public class JobsPaymentListener implements Listener {
 	    Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent event) {
 	final Block block = event.getBlock();
 

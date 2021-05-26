@@ -48,7 +48,7 @@ public final class JobsPayment14Listener implements Listener {
 			if (camps.isEmpty()) {
 			    campPlayers.remove(map.getKey());
 			} else {
-			    campPlayers.replace(map.getKey(), camps);
+			    campPlayers.put(map.getKey(), camps);
 			}
 		    }
 
@@ -65,25 +65,25 @@ public final class JobsPayment14Listener implements Listener {
 	    return;
 
 	List<PlayerCamp> camps = campPlayers.get(event.getPlayer().getUniqueId());
+	if (camps == null)
+	    return;
 
-	if (camps != null) {
-	    if (camps.isEmpty()) {
-		campPlayers.remove(event.getPlayer().getUniqueId());
-		return;
-	    }
+	if (camps.isEmpty()) {
+	    campPlayers.remove(event.getPlayer().getUniqueId());
+	    return;
+	}
 
-	    for (PlayerCamp camp : new ArrayList<>(camps)) {
-		if (camp.getBlock().getLocation().equals(event.getBlock().getLocation())) {
-		    camps.remove(camp);
+	for (PlayerCamp camp : new ArrayList<>(camps)) {
+	    if (camp.getBlock().getLocation().equals(event.getBlock().getLocation())) {
+		camps.remove(camp);
 
-		    if (camps.isEmpty()) {
-			campPlayers.remove(event.getPlayer().getUniqueId());
-		    } else {
-			campPlayers.replace(event.getPlayer().getUniqueId(), camps);
-		    }
-
-		    break;
+		if (camps.isEmpty()) {
+		    campPlayers.remove(event.getPlayer().getUniqueId());
+		} else {
+		    campPlayers.put(event.getPlayer().getUniqueId(), camps);
 		}
+
+		break;
 	    }
 	}
     }

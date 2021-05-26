@@ -65,7 +65,7 @@ public class BlockProtection {
     }
 
     public boolean isPaid() {
-	return paid == null ? true : paid.booleanValue();
+	return paid == null || paid.booleanValue();
     }
 
     public void setPaid(boolean paid) {

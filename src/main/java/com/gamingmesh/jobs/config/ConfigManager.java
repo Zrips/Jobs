@@ -1493,20 +1493,29 @@ public class ConfigManager {
 
 			    double income = 0D;
 			    if (sep.length >= 2) {
-				income = Double.parseDouble(sep[1]);
-				income = updateValue(CurrencyType.MONEY, income);
+				try {
+				    income = Double.parseDouble(sep[1]);
+				    income = updateValue(CurrencyType.MONEY, income);
+				} catch (NumberFormatException e) {
+				}
 			    }
 
 			    double points = 0D;
 			    if (sep.length >= 3) {
-				points = Double.parseDouble(sep[2]);
-				points = updateValue(CurrencyType.POINTS, points);
+				try {
+				    points = Double.parseDouble(sep[2]);
+				    points = updateValue(CurrencyType.POINTS, points);
+				} catch (NumberFormatException e) {
+				}
 			    }
 
 			    double experience = 0D;
 			    if (sep.length >= 4) {
-				experience = Double.parseDouble(sep[3]);
-				experience = updateValue(CurrencyType.EXP, experience);
+				try {
+				    experience = Double.parseDouble(sep[3]);
+				    experience = updateValue(CurrencyType.EXP, experience);
+				} catch (NumberFormatException e) {
+				}
 			    }
 
 			    jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, 1,

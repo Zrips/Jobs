@@ -1306,8 +1306,8 @@ public class Jobs extends JavaPlugin {
 		}
 
 		if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
-		    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 		    if (inform && player.canGetPaid(info)) {
+			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 			ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 		    }
 
@@ -1335,8 +1335,8 @@ public class Jobs extends JavaPlugin {
 		    }
 
 		    if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
-			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 			if (inform && player.canGetPaid(info)) {
+			    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
 			    ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 			}
 
