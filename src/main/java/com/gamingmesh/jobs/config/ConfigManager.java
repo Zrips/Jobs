@@ -558,20 +558,19 @@ public class ConfigManager {
 
 	final String finalMyKey = myKey;
 
-	if (myKey.contains("-")) {
-	    String[] split = myKey.split("-", 2);
+	String[] keySplit = myKey.split("-", 2);
 
-	    if (split.length > 1) {
-		subType = ":" + split[1];
-		meta = split[1];
+	if (keySplit.length > 0) {
+	    if (keySplit.length > 1) {
+		subType = ":" + keySplit[1];
+		meta = keySplit[1];
 	    }
 
-	    myKey = split[0];
-	} else if (myKey.contains(":")) { // when we uses tipped arrow effect types
-	    String[] split = myKey.split(":", 2);
-	    meta = split.length > 1 ? split[1] : myKey;
+	    myKey = keySplit[0];
+	} else if ((keySplit = myKey.split(":", 2)).length > 0) { // when we uses tipped arrow effect types
+	    meta = keySplit.length > 1 ? keySplit[1] : myKey;
 	    subType = ":all";
-	    myKey = split[0];
+	    myKey = keySplit[0];
 	}
 
 	String type = null;
@@ -616,12 +615,10 @@ public class ConfigManager {
 		    matId = Integer.valueOf(myKey);
 		} catch (NumberFormatException ignored) {
 		}
-		if (matId != null) {
-		    material = CMIMaterial.get(matId);
-		    if (material != CMIMaterial.NONE) {
-			Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " is using ID: " + myKey + "!");
-			Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
-		    }
+
+		if (matId != null && (material = CMIMaterial.get(matId)) != CMIMaterial.NONE) {
+		    Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " is using ID: " + myKey + "!");
+		    Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
 		}
 	    }
 
@@ -697,8 +694,14 @@ public class ConfigManager {
 	    // END HACK
 
 	    type = material.getMaterial().toString();
-	    if (Version.isCurrentEqualOrLower(Version.v1_12_R1) && material.getLegacyData() > 0)
-		subType = ":" + material.getLegacyData();
+
+	    if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
+		short legacyData = material.getLegacyData();
+
+	    if (legacyData > 0)
+		subType = ":" + legacyData;
+	    }
+
 	    id = material.getId();
 	} else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
 	    // check entities
@@ -789,8 +792,9 @@ public class ConfigManager {
 		type = myKey.substring(1, myKey.length());
 	    }
 
-	    if (myKey.contains(":")) {
-		subType = myKey.split(":", 2)[1];
+	    String[] split = myKey.split(":", 2);
+	    if (split.length > 1) {
+		subType = split[1];
 	    }
 	} else if (actionType == ActionType.SHEAR && !myKey.startsWith("color")) {
 	    type = myKey;
@@ -1112,16 +1116,14 @@ public class ConfigManager {
 			    matId = Integer.valueOf(item);
 			} catch (NumberFormatException e) {
 			}
-			if (matId != null) {
-			    material = CMIMaterial.get(matId);
-			    if (material != null) {
-				log.warning("Job " + jobFullName + " is using GUI item ID: " + item + "!");
-				log.warning("Please use the Material name instead: " + material.toString() + "!");
-			    }
+
+			if (matId != null && (material = CMIMaterial.get(matId)) != CMIMaterial.NONE) {
+			    log.warning("Job " + jobFullName + " is using GUI item ID: " + item + "!");
+			    log.warning("Please use the Material name instead: " + material.toString() + "!");
 			}
 		    }
 
-		    if (material != null)
+		    if (material != CMIMaterial.NONE)
 			guiItem = material.newItemStack();
 		} else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
 		    guiItem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
@@ -1186,18 +1188,20 @@ public class ConfigManager {
 	    if (conditionsSection != null) {
 		for (String conditionKey : conditionsSection.getKeys(false)) {
 		    ConfigurationSection permissionSection = conditionsSection.getConfigurationSection(conditionKey);
+
 		    if (permissionSection == null) {
 			log.warning("Job " + jobKey + " has an invalid condition key " + conditionKey + "!");
 			continue;
 		    }
 
-		    if (!permissionSection.contains("requires") || !permissionSection.contains("perform")) {
+		    List<String> requires = permissionSection.getStringList("requires");
+		    List<String> perform = permissionSection.getStringList("perform");
+
+		    if (requires.isEmpty() || perform.isEmpty()) {
 			log.warning("Job " + jobKey + " has an invalid condition requirement " + conditionKey + "!");
 			continue;
 		    }
 
-		    List<String> requires = permissionSection.getStringList("requires"),
-			perform = permissionSection.getStringList("perform");
 		    jobConditions.add(new JobConditions(conditionKey.toLowerCase(), requires, perform));
 		}
 	    }
@@ -1295,7 +1299,7 @@ public class ConfigManager {
 			continue;
 		    }
 
-		    CMIMaterial mat = null;
+		    CMIMaterial mat = CMIMaterial.NONE;
 
 		    if (itemSection.isInt("id")) {
 			mat = CMIMaterial.get(itemSection.getInt("id"));
@@ -1303,7 +1307,7 @@ public class ConfigManager {
 			mat = CMIMaterial.get(itemSection.getString("id"));
 		    }
 
-		    if (mat == null) {
+		    if (mat == CMIMaterial.NONE) {
 			log.warning("Job " + jobKey + " has incorrect limitedItems material id!");
 			continue;
 		    }
@@ -1454,8 +1458,8 @@ public class ConfigManager {
 		    }
 		}
 
-		Jobs.consoleMsg("&e[Jobs] Loaded " + quests.size() + " quests for " + jobFullName);
 		job.setQuests(quests);
+		Jobs.consoleMsg("&e[Jobs] Loaded " + quests.size() + " quests for " + jobFullName);
 	    }
 	    job.setMaxDailyQuests(jobSection.getInt("maxDailyQuests", 1));
 

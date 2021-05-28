@@ -34,15 +34,16 @@ public class RestrictedBlockManager {
 	    for (String one : section.getKeys(false)) {
 		if ((section.isString(one + ".id") || section.isInt(one + ".id")) && section.isInt(one + ".cd")) {
 		    CMIItemStack cm = ItemManager.getItem(CMIMaterial.get(section.getString(one + ".id")));
+		    CMIMaterial mat = cm == null ? null : cm.getCMIType();
 
-		    if (cm == null || !cm.getCMIType().isBlock()) {
+		    if (mat == null || !mat.isBlock()) {
 			Jobs.consoleMsg("&e[Jobs] Your defined (" + one + ") protected block id/name is not correct!");
 			continue;
 		    }
 
 		    int cd = section.getInt(one + ".cd");
-		    restrictedBlocksTimer.put(cm.getCMIType(), cd);
-		    cfg.set("blocksTimer." + cm.getCMIType().name(), cd);
+		    restrictedBlocksTimer.put(mat, cd);
+		    cfg.set("blocksTimer." + mat.name(), cd);
 		} else {
 		    CMIMaterial mat = CMIMaterial.get(one);
 		    if (mat == CMIMaterial.NONE)

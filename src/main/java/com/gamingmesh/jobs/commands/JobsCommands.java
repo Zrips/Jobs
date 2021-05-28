@@ -122,8 +122,13 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
+	if (page < 1) {
+	    ActionBarManager.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
+	    return true;
+	}
+
 	PageInfo pi = new PageInfo(7, commands.size(), page);
-	if (page > pi.getTotalPages() || page < 1) {
+	if (page > pi.getTotalPages()) {
 	    ActionBarManager.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
 	    return true;
 	}
