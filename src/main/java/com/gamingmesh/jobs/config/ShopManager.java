@@ -362,10 +362,10 @@ public class ShopManager {
 		Map<String, Integer> requiredJobs = new HashMap<>();
 
 		for (String one : nameSection.getStringList("RequiredJobLevels")) {
-		    if (!one.contains("-"))
+		    String[] split = one.split("-", 2);
+		    if (split.length == 0)
 			continue;
 
-		    String[] split = one.split("-", 2);
 		    int lvl = 1;
 		    if (split.length > 1) {
 			try {
@@ -413,10 +413,10 @@ public class ShopManager {
 
 		    Map<Enchantment, Integer> enchants = new HashMap<>();
 		    for (String eachLine : itemSection.getStringList("Enchants")) {
-			if (!eachLine.contains("="))
+			String[] split = eachLine.split("=", 2);
+			if (split.length == 0)
 			    continue;
 
-			String[] split = eachLine.split("=", 2);
 			Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
 			if (ench == null)
 			    continue;

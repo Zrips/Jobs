@@ -148,7 +148,8 @@ public class TitleManager {
 		titles.add(new Title(titleName, titleShortName, titleColor, levelReq, titleSection.getString(titleKey + ".JobName")));
 	    }
 
-	if (titles.size() > 0)
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + titles.size() + " titles!");
+	int size = titles.size();
+	if (size > 0)
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + size + " titles!");
     }
 }

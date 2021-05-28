@@ -380,7 +380,7 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Remove block owner ships
-	plugin.getBlockOwnerShips().forEach(os -> os.remove(block));
+	plugin.removeBlockOwnerShip(block);
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
@@ -401,11 +401,14 @@ public class JobsPaymentListener implements Listener {
 	    return;
 
 	// Protection for block break with silktouch
-	ItemStack item = Jobs.getNms().getItemInMainHand(player);
-	if (Jobs.getGCManager().useSilkTouchProtection && item.getType() != Material.AIR) {
-	    for (Enchantment one : item.getEnchantments().keySet()) {
-		if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH && Jobs.getBpManager().isInBp(block)) {
-		    return;
+	if (Jobs.getGCManager().useSilkTouchProtection) {
+	    ItemStack item = Jobs.getNms().getItemInMainHand(player);
+
+	    if (item.getType() != Material.AIR && Jobs.getBpManager().isInBp(block)) {
+		for (Enchantment one : item.getEnchantments().keySet()) {
+		    if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH) {
+			return;
+		    }
 		}
 	    }
 	}
@@ -834,6 +837,17 @@ public class JobsPaymentListener implements Listener {
 	if (resultStack == null)
 	    return;
 
+	// Fix for possible money duplication bugs.
+	switch (event.getClick()) {
+	case UNKNOWN:
+	case WINDOW_BORDER_LEFT:
+	case WINDOW_BORDER_RIGHT:
+	case NUMBER_KEY:
+	    return;
+	default:
+	    break;
+	}
+
 	// Check for world permissions
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
@@ -845,17 +859,6 @@ public class JobsPaymentListener implements Listener {
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
-
-	// Fix for possible money duplication bugs.
-	switch (event.getClick()) {
-	case UNKNOWN:
-	case WINDOW_BORDER_LEFT:
-	case WINDOW_BORDER_RIGHT:
-	case NUMBER_KEY:
-	    return;
-	default:
-	    break;
-	}
 
 	// Checking if this is only item rename
 	ItemStack firstSlot = null;
@@ -1534,7 +1537,7 @@ public class JobsPaymentListener implements Listener {
 	    if (block == null)
 		continue;
 
-	    plugin.getBlockOwnerShips().forEach(b -> b.remove(block));
+	    plugin.removeBlockOwnerShip(block);
 
 	    if (Jobs.getGCManager().useBlockProtection && block.getState().hasMetadata(blockMetadata))
 		return;

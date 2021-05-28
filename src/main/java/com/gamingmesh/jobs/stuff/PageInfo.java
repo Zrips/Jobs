@@ -50,7 +50,8 @@ public class PageInfo {
     }
 
     public boolean isContinueNoAdd() {
-	return currentEntry - 1 >= start && currentEntry - 1 <= end;
+	int entry = currentEntry - 1;
+	return entry >= start && entry <= end;
     }
 
     public boolean isBreak() {
@@ -86,10 +87,12 @@ public class PageInfo {
     }
 
     public int getNextPageNumber() {
-	return currentPage + 1 > totalPages ? totalPages : currentPage + 1;
+	int page = currentPage + 1;
+	return page > totalPages ? totalPages : page;
     }
 
     public int getPrevPageNumber() {
-	return currentPage - 1 < 1 ? 1 : currentPage - 1;
+	int prev = currentPage - 1;
+	return prev < 1 ? 1 : prev;
     }
 }

@@ -1358,7 +1358,7 @@ public class JobsPlayer {
 	if (perm.isEmpty())
 	    return 0;
 
-	Double maxV = Jobs.getPermissionManager().getMaxPermission(this, perm);
+	double maxV = Jobs.getPermissionManager().getMaxPermission(this, perm);
 
 	if (maxV == 0D && type == BlockTypes.FURNACE)
 	    maxV = (double) Jobs.getGCManager().getFurnacesMaxDefault();
@@ -1372,7 +1372,7 @@ public class JobsPlayer {
 	if (maxV == 0D && type == BlockTypes.BREWING_STAND)
 	    maxV = (double) Jobs.getGCManager().getBrewingStandsMaxDefault();
 
-	return maxV.intValue();
+	return (int) maxV;
     }
 
     public int getSkippedQuests() {

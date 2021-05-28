@@ -481,8 +481,8 @@ public class GeneralConfigManager {
 	    String mName = one;
 	    String ench = null;
 
-	    if (one.contains("=")) {
-		String[] split = one.split("=", 2);
+	    String[] split = one.split("=", 2);
+	    if (split.length > 1) {
 		mName = split[0];
 		ench = split[1];
 	    }

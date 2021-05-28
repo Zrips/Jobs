@@ -90,10 +90,7 @@ public class BlockOwnerShip {
 		boolean owner = false;
 		List<MetadataValue> data = getBlockMetadatas(block);
 		if (!data.isEmpty()) {
-			// only care about first
-			MetadataValue value = data.get(0);
-
-			if (!value.asString().equals(player.getUniqueId().toString())) {
+			if (!data.get(0).asString().equals(jPlayer.getUniqueId().toString())) {
 				return ownershipFeedback.notOwn;
 			}
 
@@ -110,26 +107,28 @@ public class BlockOwnerShip {
 		if (have >= max && max > 0)
 			return ownershipFeedback.tooMany;
 
-		block.setMetadata(metadataName, new FixedMetadataValue(plugin, player.getUniqueId().toString()));
+		block.setMetadata(metadataName, new FixedMetadataValue(plugin, jPlayer.getUniqueId().toString()));
 
 		if (!Jobs.getGCManager().isBrewingStandsReassign() && !Jobs.getGCManager().isFurnacesReassign()
 				&& !Jobs.getGCManager().BlastFurnacesReassign && !Jobs.getGCManager().SmokerReassign) {
 			return ownershipFeedback.newReg;
 		}
 
-		List<blockLoc> ls = blockOwnerShips.getOrDefault(player.getUniqueId(), new ArrayList<>());
+		List<blockLoc> ls = blockOwnerShips.getOrDefault(jPlayer.getUniqueId(), new ArrayList<>());
 		ls.add(new blockLoc(block.getLocation()));
-		blockOwnerShips.put(player.getUniqueId(), ls);
+		blockOwnerShips.put(jPlayer.getUniqueId(), ls);
 		return ownershipFeedback.newReg;
 	}
 
 	public boolean remove(Block block) {
 		UUID uuid = null;
 		List<MetadataValue> data = getBlockMetadatas(block);
+
 		if (!data.isEmpty()) {
-			// only care about first
-			MetadataValue value = data.get(0);
-			uuid = UUID.fromString(value.asString());
+			try {
+				uuid = UUID.fromString(data.get(0).asString());
+			} catch (IllegalArgumentException e) {
+			}
 		}
 
 		if (uuid == null) {
@@ -137,8 +136,10 @@ public class BlockOwnerShip {
 		}
 
 		List<blockLoc> ls = blockOwnerShips.getOrDefault(uuid, new ArrayList<>());
+		org.bukkit.Location blockLoc = block.getLocation();
+
 		for (blockLoc one : ls) {
-			if (one.getLocation().equals(block.getLocation())) {
+			if (one.getLocation().equals(blockLoc)) {
 				block.removeMetadata(metadataName, plugin);
 				ls.remove(one);
 				return true;

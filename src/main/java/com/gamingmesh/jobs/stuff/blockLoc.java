@@ -50,9 +50,6 @@ public class blockLoc {
     }
 
     public boolean fromString(String loc) {
-	if (!loc.contains(":"))
-	    return false;
-
 	String[] split = loc.split(":", 4);
 	if (split.length == 0) {
 	    return false;
@@ -86,14 +83,10 @@ public class blockLoc {
 	if (worldName == null && w == null)
 	    return null;
 
-	World w = this.w == null ? Bukkit.getWorld(worldName) : this.w;
+	// Make sure cached world is loaded
+	World w = this.w == null ? Bukkit.getWorld(worldName) : Bukkit.getWorld(this.w.getName());
 	if (w == null)
 	    return null;
-
-	w = Bukkit.getWorld(w.getName());
-	if (w == null) {
-	    return null;
-	}
 
 	this.w = w;
 

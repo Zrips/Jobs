@@ -180,6 +180,12 @@ public class Jobs extends JavaPlugin {
 	return Optional.empty();
     }
 
+    public void removeBlockOwnerShip(org.bukkit.block.Block block) {
+	for (BlockOwnerShip ship : blockOwnerShips) {
+	    ship.remove(block);
+	}
+    }
+
     /**
      * @return a set of block owner ships.
      */

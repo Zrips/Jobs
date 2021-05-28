@@ -561,7 +561,7 @@ public class ConfigManager {
 	if (myKey.contains("-")) {
 	    String[] split = myKey.split("-", 2);
 
-	    if (split.length >= 2) {
+	    if (split.length > 1) {
 		subType = ":" + split[1];
 		meta = split[1];
 	    }
@@ -1092,12 +1092,12 @@ public class ConfigManager {
 		    String item = guiSection.getString("Item");
 		    String subType = "";
 
-		    if (item.contains("-")) {
-			String[] split = item.split("-", 2);
-			subType = ":" + split[1];
-			item = split[0];
-		    } else if (item.contains(":")) { // when we uses tipped arrow effect types
-			item = item.split(":", 2)[0];
+		    String[] itemSplit = item.split("-", 2);
+		    if (itemSplit.length > 1) {
+			subType = ":" + itemSplit[1];
+			item = itemSplit[0];
+		    } else if ((itemSplit = item.split(":", 2)).length > 0) { // when we uses tipped arrow effect types
+			item = itemSplit[0];
 		    }
 
 		    CMIMaterial material = CMIMaterial.get(item + (subType));
@@ -1316,18 +1316,21 @@ public class ConfigManager {
 
 		    Map<Enchantment, Integer> enchants = new HashMap<>();
 		    for (String eachLine : itemSection.getStringList("enchants")) {
-			if (!eachLine.contains("="))
+			String[] split = eachLine.split("=", 2);
+			if (split.length == 0)
 			    continue;
 
-			String[] split = eachLine.split("=", 2);
 			Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
 			if (ench == null)
 			    continue;
 
 			int level = -1;
-			try {
-			    level = Integer.parseInt(split[1]);
-			} catch (NumberFormatException e) {
+
+			if (split.length > 1) {
+			    try {
+				level = Integer.parseInt(split[1]);
+			    } catch (NumberFormatException e) {
+			    }
 			}
 
 			if (level != -1)

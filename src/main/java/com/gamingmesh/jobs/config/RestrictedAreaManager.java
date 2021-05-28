@@ -197,6 +197,7 @@ public class RestrictedAreaManager {
      */
     public void load() {
 	restrictedAreas.clear();
+
 	File f = new File(Jobs.getFolder(), "restrictedAreas.yml");
 	YamlConfiguration conf = YamlConfiguration.loadConfiguration(f);
 
@@ -228,8 +229,9 @@ public class RestrictedAreaManager {
 	    }
 	}
 
-	if (restrictedAreas.size() > 0)
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + restrictedAreas.size() + " restricted areas!");
+	int size = restrictedAreas.size();
+	if (size > 0)
+	    Jobs.consoleMsg("&e[Jobs] Loaded " + size + " restricted areas!");
 
 	try {
 	    conf.save(f);

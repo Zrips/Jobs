@@ -956,18 +956,16 @@ public class PlayerManager {
 	if (player == null || job == null)
 	    return data;
 
-	ItemStack iih;
 	List<JobItems> jitems = new ArrayList<>();
 
 	// Check mainhand slot
-	if (Jobs.getGCManager().boostedItemsInMainHand && (iih = Jobs.getNms().getItemInMainHand(player)) != null) {
-	    jitems.add(getJobsItemByNbt(iih));
+	if (Jobs.getGCManager().boostedItemsInMainHand) {
+	    jitems.add(getJobsItemByNbt(Jobs.getNms().getItemInMainHand(player)));
 	}
 
 	// Check offhand slot
-	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand
-		&& (iih = CMIReflections.getItemInOffHand(player)) != null) {
-	    jitems.add(getJobsItemByNbt(iih));
+	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
+	    jitems.add(getJobsItemByNbt(player.getInventory().getItemInOffHand()));
 	}
 
 	// Check armor slots
@@ -988,7 +986,7 @@ public class PlayerManager {
 	}
 
 	return data;
-}
+    }
 
     private final String jobsItemBoost = "JobsItemBoost";
 

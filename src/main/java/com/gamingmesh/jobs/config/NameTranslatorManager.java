@@ -131,8 +131,8 @@ public class NameTranslatorManager {
 		String mName = materialName;
 		String level = "";
 
-		if (mName.contains(":")) {
-		    String[] split = materialName.split(":", 2);
+		String[] split = materialName.split(":", 2);
+		if (split.length > 1) {
 		    mName = split[0];
 		    level = ":" + split[1];
 		}
