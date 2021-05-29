@@ -1410,10 +1410,7 @@ public enum CMIMaterial {
 		}
 		CMIMaterial mat1 = ItemManager.byName.get(id);
 		if (mat1 != null && mat1.getLegacyId() > 0) {
-		    mat = get(mat1.getLegacyId(), data);
-		    if (mat != null) {
-			return mat;
-		    }
+		    return mat1;
 		}
 	    } catch (Exception ex) {
 	    }
