@@ -1405,11 +1405,11 @@ public enum CMIMaterial {
 		Integer data = Integer.parseInt(split[1]);
 		id = split[0];
 		CMIMaterial mat = ItemManager.byName.get(id + ":" + data);
-		if (mat != null) {
-		    return mat;
+		if (mat.getLegacyId() > 0 && (mat = get(mat.getLegacyId(), data)) != null) {
+			return mat;
 		}
 		CMIMaterial mat1 = ItemManager.byName.get(id);
-		if (mat1 != null && mat1.getLegacyId() > 0) {
+		if (mat1 != null) {
 		    return mat1;
 		}
 	    } catch (Exception ex) {
