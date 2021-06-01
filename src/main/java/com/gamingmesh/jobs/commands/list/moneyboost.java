@@ -90,9 +90,11 @@ public class moneyboost implements Cmd {
 			return arr;
 		}
 
-		if (time.contains("h") || time.contains("hour")) {
+		String[] split = time.split("h|hour", 2);
+
+		if (split.length > 0) {
 			try {
-				arr[2] = Integer.parseInt(time.split("h|hour", 2)[0]);
+				arr[2] = Integer.parseInt(split[0]);
 			} catch (NumberFormatException e) {
 				arr[2] = 0;
 			}
@@ -100,9 +102,9 @@ public class moneyboost implements Cmd {
 			time = time.replaceAll(arr[2] + "+[h|hour]+", "");
 		}
 
-		if (time.contains("m") || time.contains("minute")) {
+		if ((split = time.split("m|minute", 2)).length > 0) {
 			try {
-				arr[1] = Integer.parseInt(time.split("m|minute", 2)[0]);
+				arr[1] = Integer.parseInt(split[0]);
 			} catch (NumberFormatException e) {
 				arr[1] = 0;
 			}
@@ -110,9 +112,9 @@ public class moneyboost implements Cmd {
 			time = time.replaceAll(arr[1] + "+[m|minute]+", "");
 		}
 
-		if (time.contains("s") || time.contains("second")) {
+		if ((split = time.split("s|second", 2)).length > 0) {
 			try {
-				arr[0] = Integer.parseInt(time.split("s|second", 2)[0]);
+				arr[0] = Integer.parseInt(split[0]);
 			} catch (NumberFormatException e) {
 				arr[0] = 0;
 			}

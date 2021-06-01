@@ -1557,7 +1557,6 @@ public abstract class JobsDAO {
 	if (conn == null)
 	    return false;
 	PreparedStatement prest = null;
-	boolean ok = true;
 	try {
 	    prest = conn.prepareStatement("DELETE FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn()
 		+ "` = ?;");
@@ -1566,11 +1565,11 @@ public abstract class JobsDAO {
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();
-	    ok = false;
+	    return false;
 	} finally {
 	    close(prest);
 	}
-	return ok;
+	return true;
     }
 
     /**
@@ -1630,13 +1629,15 @@ public abstract class JobsDAO {
 	    start = 0;
 	}
 
+	int jobsTopAmount = Jobs.getGCManager().JobsTopAmount * 2;
+
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
 
 	    prest = conn.prepareStatement("SELECT " + JobsTableFields.userid.getCollumn()
 		+ ", COUNT(*) AS amount, sum(" + JobsTableFields.level.getCollumn() + ") AS totallvl FROM `" + getJobsTableName()
-		+ "` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + "," + (Jobs.getGCManager().JobsTopAmount * 2) + ";");
+		+ "` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + "," + jobsTopAmount + ";");
 	    res = prest.executeQuery();
 
 	    while (res.next()) {
@@ -1646,7 +1647,7 @@ public abstract class JobsDAO {
 
 		names.add(new TopList(info, res.getInt("totallvl"), 0));
 
-		if (names.size() >= Jobs.getGCManager().JobsTopAmount * 2)
+		if (names.size() >= jobsTopAmount)
 		    break;
 	    }
 	} catch (SQLException e) {

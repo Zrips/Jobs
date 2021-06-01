@@ -84,7 +84,6 @@ public final class JobsPayment14Listener implements Listener {
 		camps.remove(camp);
 
 		if (camps.isEmpty()) {
-		    campPlayers.remove(event.getPlayer().getUniqueId());
 		    campPlayers.remove(playerUId);
 		} else {
 		    campPlayers.put(playerUId, camps);

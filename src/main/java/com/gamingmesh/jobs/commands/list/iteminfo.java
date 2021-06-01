@@ -20,13 +20,11 @@ public class iteminfo implements Cmd {
 	}
 
 	if (args.length != 0) {
-	    Jobs.getCommandManager().sendUsage(sender, "blockinfo");
+	    Jobs.getCommandManager().sendUsage(sender, "iteminfo");
 	    return true;
 	}
 
-	Player player = (Player) sender;
-
-	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
+	ItemStack iih = Jobs.getNms().getItemInMainHand((Player) sender);
 
 	if (iih == null || iih.getType() == Material.AIR)
 	    return true;
@@ -39,14 +37,15 @@ public class iteminfo implements Cmd {
 	    EnchantmentTarget.FISHING_ROD.includes(iih))
 	    tool = true;
 
-	String dataString = iih.getData().getData() == 0 ? "" : "-" + iih.getData().getData();
+	byte data = iih.getData().getData();
+	String dataString = data == 0 ? "" : "-" + data;
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.name", "%itemname%", iih.getType().name()));
 	if (Version.isCurrentEqualOrLower(Version.v1_13_R2))
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.id", "%itemid%", iih.getType().getId()));
 	if (!tool)
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.data", "%itemdata%", iih.getData().getData()));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.data", "%itemdata%", data));
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.usage", "%first%", "",

@@ -46,18 +46,14 @@ public class info implements Cmd {
 	    return true;
 	}
 
+	int page = 1;
 	String type = "";
 	if (args.length >= 2) {
 	    try {
-		Integer.parseInt(args[1]);
+		page = Integer.parseInt(args[1]);
 	    } catch (NumberFormatException e) {
 		type = args[1];
 	    }
-	}
-	int page = 1;
-	try {
-	    page = Integer.parseInt(args[args.length - 1]);
-	} catch (NumberFormatException e) {
 	}
 
 	Jobs.getCommandManager().jobInfoMessage(pSender, jPlayer, job, type, page);

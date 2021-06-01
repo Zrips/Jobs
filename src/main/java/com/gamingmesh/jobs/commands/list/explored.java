@@ -29,13 +29,16 @@ public class explored implements Cmd {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
 	    return false;
 	}
-	if (chunk.isFullyExplored() && Jobs.getGCManager().ExploreCompact) {
+
+	if (Jobs.getGCManager().ExploreCompact && chunk.isFullyExplored()) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.fullExplore"));
 	    return true;
 	}
 
-	for (int i = 0; i < chunk.getPlayers().size(); i++) {
-	    PlayerInfo ji = Jobs.getPlayerManager().getPlayerInfo(chunk.getPlayers().get(i));
+	java.util.List<Integer> players = chunk.getPlayers();
+
+	for (int i = 0; i < players.size(); i++) {
+	    PlayerInfo ji = Jobs.getPlayerManager().getPlayerInfo(players.get(i));
 	    if (ji != null)
 		player.sendMessage(Jobs.getLanguage().getMessage("command.explored.list", "%place%", i, "%playername%", ji.getName()));
 	}

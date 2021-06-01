@@ -84,12 +84,11 @@ public class Placeholder {
 	user_archived_jobs_exp_$1("jname/number"),
 
 	maxjobs,
+	total_workers,
 
 	limit_$1("money/exp/points"),
 	plimit_$1("money/exp/points"),
 	plimit_tleft_$1("money/exp/points"),
-
-	total_workers,
 
 	name_$1("jname/number"),
 	shortname_$1("jname/number"),
@@ -105,7 +104,6 @@ public class Placeholder {
 	private String[] vars;
 	private List<Integer> groups = new ArrayList<>();
 	private ChatFilterRule rule;
-	private boolean hidden = false;
 
 	JobsPlaceHolders(String... vars) {
 	    Matcher matcher = numericalRule.getMatcher(toString());
@@ -126,7 +124,6 @@ public class Placeholder {
 	    }
 
 	    this.vars = vars;
-	    this.hidden = false;
 	}
 
 	public static JobsPlaceHolders getByName(String name) {
@@ -249,7 +246,8 @@ public class Placeholder {
 
 	public List<String> getComplexValues(String text) {
 	    List<String> lsInLs = new ArrayList<>();
-	    if (!isComplex() || text == null)
+
+	    if (text == null || !isComplex())
 		return lsInLs;
 
 	    Matcher matcher = rule.getMatcher(text);
@@ -275,10 +273,6 @@ public class Placeholder {
 
 	public void setRule(ChatFilterRule rule) {
 	    this.rule = rule;
-	}
-
-	public boolean isHidden() {
-	    return hidden;
 	}
     }
 
@@ -393,7 +387,7 @@ public class Placeholder {
 	    int id = Integer.parseInt(value);
 	    if (id > 0)
 		return Jobs.getJobs().get(id - 1);
-	} catch (Exception e) {
+	} catch (IndexOutOfBoundsException | NumberFormatException e) {
 	    return Jobs.getJob(value);
 	}
 	return null;

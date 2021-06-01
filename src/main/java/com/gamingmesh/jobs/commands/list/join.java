@@ -1,6 +1,5 @@
 package com.gamingmesh.jobs.commands.list;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,7 +25,7 @@ public class join implements Cmd {
 	}
 
 	if (args.length == 0) {
-	    Bukkit.dispatchCommand(sender, "jobs browse");
+	    plugin.getServer().dispatchCommand(sender, "jobs browse");
 	    return true;
 	}
 

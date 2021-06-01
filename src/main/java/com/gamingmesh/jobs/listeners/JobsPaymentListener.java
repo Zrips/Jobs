@@ -94,7 +94,9 @@ import java.util.concurrent.TimeUnit;
 
 public class JobsPaymentListener implements Listener {
 
-    private Jobs plugin;
+    private final Jobs plugin;
+    private final String blockMetadata = "BlockOwner";
+
     private final Cache<UUID, Double> damageDealtByPlayers = CacheBuilder.newBuilder()
 	    .expireAfterWrite(5, TimeUnit.MINUTES)
 	    .weakKeys()
@@ -104,8 +106,6 @@ public class JobsPaymentListener implements Listener {
 	    .weakKeys()
 	    .build();
     private Cache<UUID, Long> cowMilkingTimer;
-
-    private final String blockMetadata = "BlockOwner";
 
     public JobsPaymentListener(Jobs plugin) {
 	this.plugin = plugin;
@@ -131,10 +131,10 @@ public class JobsPaymentListener implements Listener {
 	    break;
 	}
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+	if (event.getInventory().getType() != InventoryType.MERCHANT || event.getSlot() != 2 || event.getSlotType() != SlotType.RESULT)
 	    return;
 
-	if (event.getInventory().getType() != InventoryType.MERCHANT || event.getSlot() != 2 || event.getSlotType() != SlotType.RESULT)
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
 	    return;
 
 	ItemStack resultStack = event.getClickedInventory().getItem(2);
@@ -207,17 +207,12 @@ public class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCowMilking(PlayerInteractEntityEvent event) {
-	Player player = event.getPlayer();
-
-	if (!player.isOnline() || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
-	    return;
-
-	if (!(event.getRightClicked() instanceof LivingEntity))
-	    return;
-
 	Entity cow = event.getRightClicked();
+
 	if (cow.getType() != EntityType.COW && cow.getType() != EntityType.MUSHROOM_COW)
 	    return;
+
+	Player player = event.getPlayer();
 
 	ItemStack itemInHand = Jobs.getNms().getItemInMainHand(player);
 	if (itemInHand.getType() != Material.BUCKET && itemInHand.getType() != Material.BOWL) {
@@ -227,6 +222,9 @@ public class JobsPaymentListener implements Listener {
 	if (itemInHand.getType() == Material.BOWL && cow.getType() != EntityType.MUSHROOM_COW) {
 	    return;
 	}
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+	    return;
 
 	// check if in creative
 	if (!payIfCreative(player))
@@ -250,7 +248,7 @@ public class JobsPaymentListener implements Listener {
 	    if (time != null) {
 		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
 		    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
-		    jPlayer.getPlayer().sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
+		    player.sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
 
 		    if (Jobs.getGCManager().CancelCowMilking)
 			event.setCancelled(true);
@@ -268,10 +266,7 @@ public class JobsPaymentListener implements Listener {
     public void onEntityShear(PlayerShearEntityEvent event) {
 	Player player = event.getPlayer();
 
-	if (!player.isOnline() || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
-	    return;
-
-	if (!(event.getEntity() instanceof Sheep))
+	if (!(event.getEntity() instanceof Sheep) || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
 	    return;
 
 	Sheep sheep = (Sheep) event.getEntity();
@@ -345,12 +340,12 @@ public class JobsPaymentListener implements Listener {
 	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(uuid);
-	if (jPlayer == null || !jPlayer.isOnline())
+	if (jPlayer == null)
 	    return;
 
 	Player player = jPlayer.getPlayer();
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	if (!player.isOnline() || !Jobs.getPermissionHandler().hasWorldPermission(player))
 	    return;
 
 	// check if player is riding

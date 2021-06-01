@@ -28,19 +28,15 @@ public class playerinfo implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+
+	int page = 1;
 	String type = "";
 	if (args.length >= 3) {
 	    try {
-		Integer.parseInt(args[2]);
+		page = Integer.parseInt(args[2]);
 	    } catch (NumberFormatException e) {
 		type = args[2];
 	    }
-	}
-
-	int page = 1;
-	try {
-	    page = Integer.parseInt(args[args.length - 1]);
-	} catch (NumberFormatException e) {
 	}
 
 	Jobs.getCommandManager().jobInfoMessage(sender, jPlayer, job, type, page);

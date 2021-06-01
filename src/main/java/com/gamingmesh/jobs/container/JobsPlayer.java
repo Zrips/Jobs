@@ -328,7 +328,7 @@ public class JobsPlayer {
     public double getBoost(String jobName, CurrencyType type, boolean force) {
 	double boost = 0D;
 
-	if (!isOnline() || type == null)
+	if (type == null || !isOnline())
 	    return boost;
 
 	long time = System.currentTimeMillis();

@@ -52,8 +52,6 @@ public class placeholders implements Cmd {
 	PageInfo pi = new PageInfo(isPlayer ? Jobs.getGCManager().PlaceholdersPage : values.length, values.length, page);
 
 	for (JobsPlaceHolders one : values) {
-	    if (one.isHidden())
-		continue;
 	    if (pi.isBreak())
 		break;
 

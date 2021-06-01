@@ -72,18 +72,23 @@ public class PermissionManager {
 
 	private static List<String> remade(String perm) {
 	    List<String> perms = new ArrayList<>();
+
 	    for (Job oneJ : Jobs.getJobs()) {
 		String t = perm;
+
 		if (t.contains("%JOBNAME%"))
 		    t = t.replace("%JOBNAME%", oneJ.getName().toLowerCase());
-		if (t.contains("%AMOUNT%"))
-		    t = t.replace("%AMOUNT%", "");
+
+		t = t.replace("%AMOUNT%", "");
+
 		perms.add(t);
 	    }
+
 	    if (perm.contains("%WORLDNAME%"))
 		for (World oneJ : Bukkit.getWorlds()) {
 		    perms.add(perm.replace("%WORLDNAME%", oneJ.getName().toLowerCase()));
 		}
+
 	    return perms;
 	}
 

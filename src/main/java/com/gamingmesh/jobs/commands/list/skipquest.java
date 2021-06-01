@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -65,8 +64,10 @@ public class skipquest implements Cmd {
 	Quest old = null;
 
 	for (QuestProgression one : quests) {
-	    if (one.getQuest().getQuestName().equalsIgnoreCase(questName) || one.getQuest().getConfigName().equalsIgnoreCase(questName)) {
-		old = one.getQuest();
+	    Quest q = one.getQuest();
+
+	    if (q.getQuestName().equalsIgnoreCase(questName) || q.getConfigName().equalsIgnoreCase(questName)) {
+		old = q;
 		break;
 	    }
 	}
@@ -90,7 +91,7 @@ public class skipquest implements Cmd {
 	BufferedEconomy econ = Jobs.getEconomy();
 	Player player = jPlayer.getPlayer();
 
-	if (amount > 0) {
+	if (amount > 0 && player != null) {
 	    if (!econ.getEconomy().hasMoney(player, amount)) {
 		sender.sendMessage(Jobs.getLanguage().getMessage("economy.error.nomoney"));
 		return false;
@@ -101,8 +102,8 @@ public class skipquest implements Cmd {
 
 	jPlayer.replaceQuest(old);
 
-	if (player.isOnline())
-	    Bukkit.dispatchCommand(player, "jobs quests");
+	if (player != null)
+	    plugin.getServer().dispatchCommand(player, "jobs quests");
 
 	if (amount > 0) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.skipquest.output.questSkipForCost", "%amount%", amount));
