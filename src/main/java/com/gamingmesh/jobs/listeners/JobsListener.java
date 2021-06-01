@@ -439,7 +439,7 @@ public class JobsListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onChunkChangeMove(PlayerMoveEvent event) {
-	if (!event.getPlayer().isOnline() || event.getTo() != null && !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
+	if (!event.getPlayer().isOnline() || !Jobs.getGCManager().canPerformActionInWorld(event.getTo().getWorld()))
 	    return;
 
 	Chunk from = event.getFrom().getChunk();

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,6 +33,8 @@ public final class JobsPayment14Listener implements Listener {
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
 	    return;
 
+	Location blockLoc = event.getBlock().getLocation();
+
 	for (Map.Entry<UUID, List<PlayerCamp>> map : campPlayers.entrySet()) {
 	    List<PlayerCamp> camps = map.getValue();
 
@@ -41,7 +44,7 @@ public final class JobsPayment14Listener implements Listener {
 	    }
 
 	    for (PlayerCamp camp : new ArrayList<>(camps)) {
-		if (camp.getBlock().getLocation().equals(event.getBlock().getLocation())) {
+		if (camp.getBlock().getLocation().equals(blockLoc)) {
 		    if (camp.getItem().equals(event.getSource())) {
 			camps.remove(camp);
 
@@ -64,23 +67,27 @@ public final class JobsPayment14Listener implements Listener {
 	if (event.getBlock().getType() != Material.CAMPFIRE || campPlayers.isEmpty())
 	    return;
 
-	List<PlayerCamp> camps = campPlayers.get(event.getPlayer().getUniqueId());
+	UUID playerUId = event.getPlayer().getUniqueId();
+	List<PlayerCamp> camps = campPlayers.get(playerUId);
 	if (camps == null)
 	    return;
 
 	if (camps.isEmpty()) {
-	    campPlayers.remove(event.getPlayer().getUniqueId());
+	    campPlayers.remove(playerUId);
 	    return;
 	}
 
+	Location blockLoc = event.getBlock().getLocation();
+
 	for (PlayerCamp camp : new ArrayList<>(camps)) {
-	    if (camp.getBlock().getLocation().equals(event.getBlock().getLocation())) {
+	    if (camp.getBlock().getLocation().equals(blockLoc)) {
 		camps.remove(camp);
 
 		if (camps.isEmpty()) {
 		    campPlayers.remove(event.getPlayer().getUniqueId());
+		    campPlayers.remove(playerUId);
 		} else {
-		    campPlayers.put(event.getPlayer().getUniqueId(), camps);
+		    campPlayers.put(playerUId, camps);
 		}
 
 		break;

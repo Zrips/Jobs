@@ -698,8 +698,8 @@ public class ConfigManager {
 	    if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
 		short legacyData = material.getLegacyData();
 
-	    if (legacyData > 0)
-		subType = ":" + legacyData;
+		if (legacyData > 0)
+		    subType = ":" + legacyData;
 	    }
 
 	    id = material.getId();

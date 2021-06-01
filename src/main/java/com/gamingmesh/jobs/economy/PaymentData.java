@@ -53,10 +53,6 @@ public class PaymentData {
 	return data == null ? 0D : (int) (data.getAmount() * 100) / 100D;
     }
 
-    public Double getAmountBylimit(CurrencyType type, int limit) {
-	return getAmount(type) > limit ? (double) limit : (int) (getAmount(type) * 100) / 100D;
-    }
-
     public Long getLastAnnounced() {
 	return lastAnnouced;
     }

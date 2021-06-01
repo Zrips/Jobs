@@ -1662,13 +1662,13 @@ public class JobsPaymentListener implements Listener {
 	    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
 	    return;
 
-	org.bukkit.World playerWorld = player.getWorld();
-
-	// check if in creative
-	if (!Jobs.getGCManager().canPerformActionInWorld(playerWorld) || !payIfCreative(player))
+	if (!payIfCreative(player))
 	    return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, playerWorld.getName()))
+	org.bukkit.World playerWorld = player.getWorld();
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(playerWorld)
+	    || !Jobs.getPermissionHandler().hasWorldPermission(player, playerWorld.getName()))
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -1715,7 +1715,9 @@ public class JobsPaymentListener implements Listener {
 
 	for (Entry<Enchantment, Integer> oneG : got.entrySet()) {
 	    Map<Enchantment, Integer> map = hand.getEnchantments();
-	    if (!map.containsKey(oneG.getKey()) || map.get(oneG.getKey()).equals(oneG.getValue()))
+	    Integer key = map.get(oneG.getKey());
+
+	    if (key == null || key.equals(oneG.getValue()))
 		return false;
 	}
 
