@@ -1390,44 +1390,39 @@ public enum CMIMaterial {
 
 	id = id.replaceAll("_| |minecraft:", "").toLowerCase();
 
-	if (id.contains(":")) {
-	    String[] split = id.split(":", 2);
+	String[] split = id.split(":", 2);
+	if (split.length > 1) {
 	    try {
-		Integer ids = Integer.parseInt(split[0]);
-		Integer data = Integer.parseInt(split[1]);
+		int ids = Integer.parseInt(split[0]);
 		if (ids <= 0)
 		    return CMIMaterial.NONE;
-		return get(ids, data);
-	    } catch (Exception ex) {
+
+		return get(ids, Integer.parseInt(split[1]));
+	    } catch (NumberFormatException ex) {
 	    }
 
 	    try {
-		Integer data = Integer.parseInt(split[1]);
+		int data = Integer.parseInt(split[1]);
 		id = split[0];
+
 		CMIMaterial mat = ItemManager.byName.get(id + ":" + data);
-		if (mat.getLegacyId() > 0 && (mat = get(mat.getLegacyId(), data)) != null) {
-			return mat;
+		if (mat != null && mat.getLegacyId() > 0 && (mat = get(mat.getLegacyId(), data)) != null) {
+		    return mat;
 		}
-		CMIMaterial mat1 = ItemManager.byName.get(id);
-		if (mat1 != null) {
-		    return mat1;
-		}
-	    } catch (Exception ex) {
+	    } catch (NumberFormatException ex) {
 	    }
 	}
 
 	CMIMaterial mat = ItemManager.byName.get(id);
-
 	if (mat != null) {
 	    return mat;
 	}
 
 	try {
-	    mat = ItemManager.byId.get(Integer.parseInt(id));
-	    if (mat != null) {
+	    if ((mat = ItemManager.byId.get(Integer.parseInt(id))) != null) {
 		return mat;
 	    }
-	} catch (Exception ex) {
+	} catch (NumberFormatException ex) {
 	}
 
 	return CMIMaterial.NONE;
