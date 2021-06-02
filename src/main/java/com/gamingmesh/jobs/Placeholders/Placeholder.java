@@ -74,6 +74,7 @@ public class Placeholder {
 	user_canjoin_$1("jname/number"),
 	user_jlevel_$1("jname/number"),
 	user_jexp_$1("jname/number"),
+	user_jexp_rounded_$1("jname/number"),
 	user_jmaxexp_$1("jname/number"),
 	user_jexpunf_$1("jname/number"),
 	user_jmaxexpunf_$1("jname/number"),
@@ -442,8 +443,7 @@ public class Placeholder {
 	    case user_totallevels:
 		return Integer.toString(user.getTotalLevels());
 	    case user_points:
-		DecimalFormat dec = new DecimalFormat("00.0");
-		return dec.format(user.getPointsData().getCurrentPoints());
+		return new DecimalFormat("00.0").format(user.getPointsData().getCurrentPoints());
 	    case user_points_fixed:
 		return Integer.toString((int) user.getPointsData().getCurrentPoints());
 	    case user_total_points:
@@ -507,6 +507,8 @@ public class Placeholder {
 		    return j == null ? "0" : Integer.toString(j.getLevel());
 		case user_jexp_$1:
 		    return j == null ? "0" : format.format(j.getExperience());
+		case user_jexp_rounded_$1:
+		    return j == null ? "0" : new DecimalFormat("##.###").format(j.getExperience());
 		case user_jmaxexp_$1:
 		    return j == null ? "0" : format.format(j.getMaxExperience());
 		case user_jexpunf_$1:
