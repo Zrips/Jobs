@@ -88,11 +88,12 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class JobsPaymentListener implements Listener {
+public final class JobsPaymentListener implements Listener {
 
     private final Jobs plugin;
     private final String blockMetadata = "BlockOwner";
@@ -600,7 +601,7 @@ public class JobsPaymentListener implements Listener {
 	ItemStack[] sourceItems = event.getInventory().getContents();
 
 	// For dye check
-	List<ItemStack> dyeStack = new ArrayList<>();
+	List<ItemStack> dyeStack = new java.util.ArrayList<>();
 
 	int y = -1;
 
@@ -896,7 +897,7 @@ public class JobsPaymentListener implements Listener {
 	ItemStack secondSlotItem = inv.getItem(1);
 
 	if (Jobs.getGCManager().PayForEnchantingOnAnvil && secondSlotItem != null && secondSlotItem.getType() == Material.ENCHANTED_BOOK) {
-	    for (Entry<Enchantment, Integer> oneEnchant : resultStack.getEnchantments().entrySet()) {
+	    for (Map.Entry<Enchantment, Integer> oneEnchant : resultStack.getEnchantments().entrySet()) {
 		Enchantment enchant = oneEnchant.getKey();
 		if (enchant == null)
 		    continue;
@@ -953,7 +954,7 @@ public class JobsPaymentListener implements Listener {
 	    }
 	}
 
-	for (Entry<Enchantment, Integer> oneEnchant : event.getEnchantsToAdd().entrySet()) {
+	for (Map.Entry<Enchantment, Integer> oneEnchant : event.getEnchantsToAdd().entrySet()) {
 	    Enchantment enchant = oneEnchant.getKey();
 	    if (enchant == null)
 		continue;
@@ -1708,7 +1709,7 @@ public class JobsPaymentListener implements Listener {
 	if (Jobs.getNms().getDurability(hand) == 0)
 	    return true;
 
-	for (Entry<Enchantment, Integer> oneG : got.entrySet()) {
+	for (Map.Entry<Enchantment, Integer> oneG : got.entrySet()) {
 	    Map<Enchantment, Integer> map = hand.getEnchantments();
 	    Integer key = map.get(oneG.getKey());
 

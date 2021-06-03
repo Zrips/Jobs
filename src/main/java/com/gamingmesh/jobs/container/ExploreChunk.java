@@ -26,7 +26,7 @@ public class ExploreChunk {
 	    newChunkForPlayer = true;
 	}
 
-	if (playerIds.size() >= Jobs.getExplore().getPlayerAmount() && Jobs.getGCManager().ExploreCompact) {
+	if (Jobs.getGCManager().ExploreCompact && playerIds.size() >= Jobs.getExplore().getPlayerAmount()) {
 	    playerIds = null;
 	}
 
@@ -73,9 +73,8 @@ public class ExploreChunk {
 	for (String one : names.split(";")) {
 	    try {
 		int id = Integer.parseInt(one);
-		PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(id);
 
-		if (info != null)
+		if (Jobs.getPlayerManager().getPlayerInfo(id) != null)
 		    playerIds.add(id);
 	    } catch (NumberFormatException e) {
 		updated = true;
@@ -86,7 +85,7 @@ public class ExploreChunk {
 	    }
 	}
 
-	if (playerIds.size() >= Jobs.getExplore().getPlayerAmount() && Jobs.getGCManager().ExploreCompact) {
+	if (Jobs.getGCManager().ExploreCompact && playerIds.size() >= Jobs.getExplore().getPlayerAmount()) {
 	    playerIds = null;
 
 	    if (!names.isEmpty())

@@ -1046,8 +1046,8 @@ public class Jobs extends JavaPlugin {
 	    if (!jPlayer.isUnderLimit(CurrencyType.MONEY, income)) {
 		if (gConfigManager.useMaxPaymentCurve) {
 		    double percentOver = jPlayer.percentOverLimit(CurrencyType.MONEY);
-		    float factor = gConfigManager.maxPaymentCurveFactor;
-		    double percentLoss = 100 / ((1 / factor * percentOver * percentOver) + 1);
+		    double percentLoss = 100 / ((1 / gConfigManager.maxPaymentCurveFactor * percentOver * percentOver) + 1);
+
 		    income = income - (income * percentLoss / 100);
 		} else
 		    income = 0D;
@@ -1097,9 +1097,7 @@ public class Jobs extends JavaPlugin {
 		    expiredJobs.add(prog.getJob());
 		}
 
-		int level = prog.getLevel();
-
-		JobInfo jobinfo = prog.getJob().getJobInfo(info, level);
+		JobInfo jobinfo = prog.getJob().getJobInfo(info, prog.getLevel());
 
 		checkDailyQuests(jPlayer, prog.getJob(), info);
 
@@ -1107,9 +1105,9 @@ public class Jobs extends JavaPlugin {
 		    continue;
 		}
 
-		double income = jobinfo.getIncome(level, numjobs, jPlayer.maxJobsEquation);
-		double pointAmount = jobinfo.getPoints(level, numjobs, jPlayer.maxJobsEquation);
-		double expAmount = jobinfo.getExperience(level, numjobs, jPlayer.maxJobsEquation);
+		double income = jobinfo.getIncome(prog.getLevel(), numjobs, jPlayer.maxJobsEquation);
+		double pointAmount = jobinfo.getPoints(prog.getLevel(), numjobs, jPlayer.maxJobsEquation);
+		double expAmount = jobinfo.getExperience(prog.getLevel(), numjobs, jPlayer.maxJobsEquation);
 
 		if (income == 0D && pointAmount == 0D && expAmount == 0D)
 		    continue;
