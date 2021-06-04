@@ -1358,6 +1358,11 @@ public class JobsPlayer {
 	    return (int) maxV;
 	}
 
+	if (type != BlockTypes.BREWING_STAND &&
+	    (maxV = Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxfurnaceownership")) > 0D) {
+	    return (int) maxV;
+	}
+
 	String perm = "jobs.max" + (type == BlockTypes.FURNACE
 	    ? "furnaces" : type == BlockTypes.BLAST_FURNACE ? "blastfurnaces" : type == BlockTypes.SMOKER ? "smokers"
 	    : type == BlockTypes.BREWING_STAND ? "brewingstands" : "");
