@@ -43,8 +43,6 @@ permissions:
     children:
       jobs.command.archive: true
       jobs.command.browse: true
-      jobs.command.stats: true
-      jobs.command.archive: true
       jobs.command.join: true
       jobs.command.leave: true
       jobs.command.leaveall: true
