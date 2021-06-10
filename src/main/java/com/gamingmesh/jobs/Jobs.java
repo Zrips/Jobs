@@ -711,8 +711,9 @@ public class Jobs extends JavaPlugin {
 
 	try {
 	    Class.forName("net.kyori.adventure.text.Component");
+	    org.bukkit.inventory.meta.ItemMeta.class.getDeclaredMethod("displayName");
 	    kyoriSupported = true;
-	} catch (ClassNotFoundException e) {
+	} catch (NoSuchMethodException | ClassNotFoundException e) {
 	}
 
 	placeholderAPIEnabled = setupPlaceHolderAPI();
