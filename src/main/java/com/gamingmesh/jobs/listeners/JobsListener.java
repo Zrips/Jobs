@@ -396,11 +396,13 @@ public class JobsListener implements Listener {
 	}
 
 	String meinOk = null;
+	CMIMaterial mat = CMIMaterial.get(iih);
 
 	mein: for (JobProgression one : jPlayer.getJobProgression()) {
 	    for (JobLimitedItems oneItem : one.getJob().getLimitedItems().values()) {
-		if (one.getLevel() >= oneItem.getLevel() || !isThisItem(oneItem, CMIMaterial.get(iih), name, lore, enchants))
+		if (one.getLevel() >= oneItem.getLevel() || !isThisItem(oneItem, mat, name, lore, enchants))
 		    continue;
+
 		meinOk = one.getJob().getName();
 		break mein;
 	    }

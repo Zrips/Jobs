@@ -394,7 +394,7 @@ public class Placeholder {
 	return null;
     }
 
-    private static String simplifyDouble(double value) {
+    private String simplifyDouble(double value) {
 	return String.valueOf((int) (value * 100) / 100D);
     }
 

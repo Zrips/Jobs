@@ -31,7 +31,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
-import org.bukkit.Sound;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
@@ -648,7 +647,7 @@ public class PlayerManager {
 	    message = message.replace("%joblevel%", Integer.toString(prog.getLevel()));
 	    message = message.replace("%lostLevel%", Integer.toString(oldLevel));
 
-	    if (player != null) {
+	    if (player != null && (Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat)) {
 		for (String line : message.split("\n")) {
 		    if (Jobs.getGCManager().LevelChangeActionBar)
 			ActionBarManager.send(player, line);
@@ -685,14 +684,12 @@ public class PlayerManager {
 	if (levelUpEvent.isCancelled())
 	    return;
 
-	// If it fails, we can ignore it
-	try {
-	    if (Jobs.getGCManager().SoundLevelupUse) {
-		Sound sound = levelUpEvent.getSound();
-		if (player != null)
-		    player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
+	if (player != null && Jobs.getGCManager().SoundLevelupUse) {
+	    try {
+		player.getWorld().playSound(player.getLocation(), levelUpEvent.getSound(),
+		    levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
+	    } catch (Exception e) { // If it fails, we can ignore it
 	    }
-	} catch (Exception e) {
 	}
 
 	if (Jobs.getGCManager().FireworkLevelupUse && player != null) {
@@ -764,23 +761,21 @@ public class PlayerManager {
 	    } else if (player != null) {
 		if (Jobs.getGCManager().LevelChangeActionBar)
 		    ActionBarManager.send(player, line);
+
 		if (Jobs.getGCManager().LevelChangeChat)
 		    player.sendMessage(line);
 	    }
 	}
 
 	if (levelUpEvent.getNewTitle() != null && !levelUpEvent.getNewTitle().equals(levelUpEvent.getOldTitle())) {
-
-	    // If it fails, we can ignore it
-	    try {
-		if (Jobs.getGCManager().SoundTitleChangeUse) {
-		    Sound sound = levelUpEvent.getTitleChangeSound();
-		    if (player != null)
-			player.getWorld().playSound(player.getLocation(), sound, levelUpEvent.getTitleChangeVolume(),
+	    if (player != null && Jobs.getGCManager().SoundTitleChangeUse) {
+		try {
+		    player.getWorld().playSound(player.getLocation(), levelUpEvent.getTitleChangeSound(), levelUpEvent.getTitleChangeVolume(),
 			    levelUpEvent.getTitleChangePitch());
+		} catch (Exception e) { // If it fails, we can ignore it
 		}
-	    } catch (Exception e) {
 	    }
+
 	    // user would skill up
 	    message = Jobs.getLanguage().getMessage("message.skillup." + (Jobs.getGCManager().isBroadcastingSkillups()
 		? "broadcast" : "nobroadcast"));
@@ -796,6 +791,7 @@ public class PlayerManager {
 		} else if (player != null) {
 		    if (Jobs.getGCManager().TitleChangeActionBar)
 			ActionBarManager.send(player, line);
+
 		    if (Jobs.getGCManager().TitleChangeChat)
 			player.sendMessage(line);
 		}

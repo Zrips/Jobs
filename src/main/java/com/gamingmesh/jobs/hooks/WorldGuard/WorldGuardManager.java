@@ -26,7 +26,7 @@ public class WorldGuardManager {
     private boolean useOld = false;
 
     public WorldGuardManager() {
-	Plugin pl = Bukkit.getPluginManager().getPlugin("WorldGuard");
+	Plugin pl = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 	if (pl instanceof WorldGuardPlugin) {
 	    wg = (WorldGuardPlugin) pl;
 
@@ -43,17 +43,29 @@ public class WorldGuardManager {
     public List<RestrictedArea> getArea(Location loc) {
 	try {
 	    if (useOld) {
-		ApplicableRegionSet regions = wg.getRegionContainer().get(loc.getWorld()).getApplicableRegions(loc);
-		for (ProtectedRegion one : regions.getRegions()) {
-		    if (Jobs.getRestrictedAreaManager().isExist(one.getId()))
-			return Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
+		RegionManager manager = wg.getRegionContainer().get(loc.getWorld());
+
+		if (manager != null) {
+		    ApplicableRegionSet regions = manager.getApplicableRegions(loc);
+
+		    for (ProtectedRegion one : regions.getRegions()) {
+			List<RestrictedArea> rest = Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
+
+			if (!rest.isEmpty())
+			    return rest;
+		    }
 		}
 	    } else {
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager regions = container.get(BukkitAdapter.adapt(loc.getWorld()));
-		for (ProtectedRegion one : regions.getRegions().values()) {
-		    if (Jobs.getRestrictedAreaManager().isExist(one.getId()))
-			return Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
+
+		if (regions != null) {
+		    for (ProtectedRegion one : regions.getRegions().values()) {
+			List<RestrictedArea> rest = Jobs.getRestrictedAreaManager().getRestrictedAreasByName(one.getId());
+
+			if (!rest.isEmpty())
+			    return rest;
+		    }
 		}
 	    }
 	} catch (Throwable e) {
@@ -64,36 +76,56 @@ public class WorldGuardManager {
 
     public boolean inArea(Location loc, String name) {
 	if (useOld) {
-	    ApplicableRegionSet regions = wg.getRegionContainer().get(loc.getWorld()).getApplicableRegions(loc);
-	    for (ProtectedRegion one : regions.getRegions()) {
-		if (one.getId().equalsIgnoreCase(name) && one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
-		    return true;
+	    RegionManager manager = wg.getRegionContainer().get(loc.getWorld());
+
+	    if (manager != null) {
+		ApplicableRegionSet regions = manager.getApplicableRegions(loc);
+
+		for (ProtectedRegion one : regions.getRegions()) {
+		    if (one.getId().equalsIgnoreCase(name) && one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
+			return true;
+		}
 	    }
 	} else {
 	    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 	    RegionManager regions = container.get(BukkitAdapter.adapt(loc.getWorld()));
-	    for (ProtectedRegion one : regions.getRegions().values()) {
-		if (one.getId().equalsIgnoreCase(name) && one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
-		    return true;
+
+	    if (regions != null) {
+		for (ProtectedRegion one : regions.getRegions().values()) {
+		    if (one.getId().equalsIgnoreCase(name) && one.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()))
+			return true;
+		}
 	    }
 	}
+
 	return false;
     }
 
     public ProtectedRegion getProtectedRegionByName(String name) {
-	for (World one : Bukkit.getWorlds()) {
-	    Map<String, ProtectedRegion> regions;
+	for (World one : Bukkit.getServer().getWorlds()) {
+	    Map<String, ProtectedRegion> regions = null;
+
 	    if (useOld) {
-		regions = wg.getRegionContainer().get(one).getRegions();
+		RegionManager manager = wg.getRegionContainer().get(one);
+
+		if (manager != null)
+		    regions = manager.getRegions();
 	    } else {
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-		regions = container.get(BukkitAdapter.adapt(one)).getRegions();
+		RegionManager manager = container.get(BukkitAdapter.adapt(one));
+
+		if (manager != null)
+		    regions = manager.getRegions();
 	    }
-	    for (Entry<String, ProtectedRegion> map : regions.entrySet()) {
-		if (map.getKey().equalsIgnoreCase(name))
-		    return map.getValue();
+
+	    if (regions != null) {
+		for (Entry<String, ProtectedRegion> map : regions.entrySet()) {
+		    if (map.getKey().equalsIgnoreCase(name))
+			return map.getValue();
+		}
 	    }
 	}
+
 	return null;
     }
 }

@@ -482,11 +482,10 @@ public class Jobs extends JavaPlugin {
      */
     public static Job getJob(String jobName) {
 	for (Job job : jobs) {
-	    if (job.getName().equalsIgnoreCase(jobName))
-		return job;
-	    if (job.getJobFullName().equalsIgnoreCase(jobName))
+	    if (job.getName().equalsIgnoreCase(jobName) || job.getJobFullName().equalsIgnoreCase(jobName))
 		return job;
 	}
+
 	return null;
     }
 
@@ -869,10 +868,7 @@ public class Jobs extends JavaPlugin {
 
     @Override
     public void onDisable() {
-	if (instance == null)
-	    return;
-
-	HandlerList.unregisterAll(instance);
+	HandlerList.unregisterAll(this);
 
 	if (dao != null) {
 	    dao.saveExplore();
@@ -895,8 +891,6 @@ public class Jobs extends JavaPlugin {
 	if (dao != null) {
 	    dao.closeConnections();
 	}
-
-	instance = null;
     }
 
     private static void checkDailyQuests(JobsPlayer jPlayer, Job job, ActionInfo info) {
@@ -976,7 +970,6 @@ public class Jobs extends JavaPlugin {
      * @param ent {@link Entity}
      * @param victim {@link LivingEntity}
      * @param block {@link Block}
-     * @see #action(JobsPlayer, ActionInfo, Block, Entity, LivingEntity)
      */
     public static void action(JobsPlayer jPlayer, ActionInfo info, Block block, Entity ent, LivingEntity victim) {
 	if (jPlayer == null)
