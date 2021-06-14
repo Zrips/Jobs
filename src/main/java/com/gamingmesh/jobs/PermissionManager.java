@@ -156,7 +156,11 @@ public class PermissionManager {
      * @return the max value
      */
     public double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative) {
-	if (jPlayer == null || jPlayer.getPlayer() == null)
+	if (jPlayer == null)
+	    return 0D;
+
+	Player player = jPlayer.getPlayer();
+	if (player == null)
 	    return 0D;
 
 	perm = perm.toLowerCase();
@@ -165,7 +169,7 @@ public class PermissionManager {
 
 	Map<String, Boolean> permissions = jPlayer.getPermissionsCache();
 	if (force || permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
-	    permissions = getAll(jPlayer.getPlayer());
+	    permissions = getAll(player);
 	    jPlayer.setPermissionsCache(permissions);
 	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
 	}
@@ -190,12 +194,16 @@ public class PermissionManager {
     }
 
     public boolean hasPermission(JobsPlayer jPlayer, String perm) {
-	if (jPlayer == null || jPlayer.getPlayer() == null)
+	if (jPlayer == null)
+	    return false;
+
+	Player player = jPlayer.getPlayer();
+	if (player == null)
 	    return false;
 
 	Map<String, Boolean> permissions = jPlayer.getPermissionsCache();
 	if (permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
-	    permissions = getAll(jPlayer.getPlayer());
+	    permissions = getAll(player);
 	    jPlayer.setPermissionsCache(permissions);
 	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
 	}

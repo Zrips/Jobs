@@ -54,11 +54,15 @@ public enum ActionType {
     }
 
     public static ActionType getByName(String name) {
-	name = name.replace("_", "");
-	for (ActionType one : ActionType.values()) {
-	    if (one.name.equalsIgnoreCase(name))
-		return one;
+	if (name != null) {
+	    name = name.replace("_", "");
+
+	    for (ActionType one : ActionType.values()) {
+		if (one.name.equalsIgnoreCase(name))
+		    return one;
+	    }
 	}
+
 	return null;
     }
 }

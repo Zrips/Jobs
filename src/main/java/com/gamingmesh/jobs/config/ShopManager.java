@@ -399,7 +399,7 @@ public class ShopManager {
 		    if (itemSection.isString("Id"))
 			id = itemSection.getString("Id");
 		    else {
-			Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid GiveItems name property. Skipping!");
+			Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid GiveItems item id property. Skipping!");
 			continue;
 		    }
 

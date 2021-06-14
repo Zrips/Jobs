@@ -660,7 +660,7 @@ public class ConfigManager {
 		break;
 	    }
 
-	    // Break and Place actions MUST be blocks
+	    // These actions MUST be blocks
 	    if (actionType == ActionType.BREAK || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
 		if (!material.isBlock() || material.getMaterial().toString().equalsIgnoreCase("AIR")) {
 		    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
@@ -987,16 +987,13 @@ public class ConfigManager {
 
 	    String description = CMIChatColor.translate(jobSection.getString("description", ""));
 
-	    List<String> fDescription = new ArrayList<>();
-	    if (jobSection.contains("FullDescription")) {
-		if (jobSection.isString("FullDescription"))
-		    fDescription.add(jobSection.getString("FullDescription"));
-		else if (jobSection.isList("FullDescription"))
-		    fDescription.addAll(jobSection.getStringList("FullDescription"));
+	    List<String> fDescription = jobSection.getStringList("FullDescription");
 
-		for (int i = 0; i < fDescription.size(); i++) {
-		    fDescription.set(i, CMIChatColor.translate(fDescription.get(i)));
-		}
+	    if (jobSection.isString("FullDescription"))
+		fDescription.add(jobSection.getString("FullDescription"));
+
+	    for (int i = 0; i < fDescription.size(); i++) {
+		fDescription.set(i, CMIChatColor.translate(fDescription.get(i)));
 	    }
 
 	    CMIChatColor color = CMIChatColor.WHITE;
@@ -1218,11 +1215,10 @@ public class ConfigManager {
 			continue;
 		    }
 
-		    List<String> commands = new ArrayList<>();
+		    List<String> commands = commandSection.getStringList("command");
+
 		    if (commandSection.isString("command"))
 			commands.add(commandSection.getString("command"));
-		    else if (commandSection.isList("command"))
-			commands.addAll(commandSection.getStringList("command"));
 
 		    int levelFrom = commandSection.getInt("levelFrom", 0);
 		    int levelUntil = commandSection.getInt("levelUntil", maxLevel);
@@ -1374,72 +1370,60 @@ public class ConfigManager {
 			    continue;
 
 			Quest quest = new Quest(sqsection.getString("Name", one), job);
+			ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
 
-			if (sqsection.isString("Target")) {
-			    ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
-
-			    if (actionType == null)
-				continue;
-
+			if (actionType != null) {
 			    KeyValues kv = getKeyValue(sqsection.getString("Target").toUpperCase(), actionType, jobFullName);
+
 			    if (kv != null) {
 				int amount = sqsection.getInt("Amount", 1);
 				quest.addObjective(new QuestObjective(actionType, kv.getId(), kv.getMeta(), (kv.getType() + kv.getSubType()).toUpperCase(), amount));
 			    }
 			}
 
-			if (sqsection.isList("Objectives")) {
-			    for (String oneObjective : sqsection.getStringList("Objectives")) {
-				String[] split = oneObjective.split(";", 3);
+			for (String oneObjective : sqsection.getStringList("Objectives")) {
+			    String[] split = oneObjective.split(";", 3);
 
-				if (split.length < 2) {
-				    log.warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");
+			    if (split.length < 2) {
+				log.warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");
+				continue;
+			    }
+
+			    try {
+				if ((actionType = ActionType.getByName(split[0])) == null)
 				    continue;
-				}
 
-				try {
-				    ActionType actionType = ActionType.getByName(split[0]);
-				    if (actionType == null)
-					continue;
+				String mats = split[1].toUpperCase();
+				String[] co = mats.split(",");
 
-				    String mats = split[1].toUpperCase();
-				    String[] co = mats.split(",");
+				int amount = 1;
+				if (split.length <= 3)
+				    amount = Integer.parseInt(split[2]);
 
-				    int amount = 1;
-				    if (split.length <= 3) {
-					amount = Integer.parseInt(split[2]);
+				if (co.length > 0) {
+				    for (String materials : co) {
+					KeyValues kv = getKeyValue(materials, actionType, jobFullName);
+
+					if (kv == null)
+					    continue;
+
+					QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
+					    (kv.getType() + kv.getSubType()).toUpperCase(), amount);
+					quest.addObjective(objective);
 				    }
+				} else {
+				    KeyValues kv = getKeyValue(mats, actionType, jobFullName);
 
-				    if (co.length > 0) {
-					for (String materials : co) {
-					    KeyValues kv = getKeyValue(materials, actionType, jobFullName);
-					    if (kv == null) {
-						continue;
-					    }
-
-					    QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
-						(kv.getType() + kv.getSubType()).toUpperCase(), amount);
-					    quest.addObjective(objective);
-					}
-				    } else {
-					KeyValues kv = getKeyValue(mats, actionType, jobFullName);
-					if (kv != null) {
-					    QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
-						(kv.getType() + kv.getSubType()).toUpperCase(), amount);
-					    quest.addObjective(objective);
-					}
+				    if (kv != null) {
+					QuestObjective objective = new QuestObjective(actionType, kv.getId(), kv.getMeta(),
+					    (kv.getType() + kv.getSubType()).toUpperCase(), amount);
+					quest.addObjective(objective);
 				    }
-				} catch (Exception e) {
-				    log.warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");
 				}
+			    } catch (Exception e) {
+				log.warning("Job " + jobKey + " has incorrect quest objective (" + oneObjective + ")!");
 			    }
 			}
-
-			int chance = sqsection.getInt("Chance", 100);
-
-			List<String> commands = sqsection.getStringList("RewardCommands"),
-			    desc = sqsection.getStringList("RewardDesc"),
-			    areas = sqsection.getStringList("RestrictedAreas");
 
 			quest.setMinLvl(sqsection.getInt("fromLevel"));
 
@@ -1447,10 +1431,11 @@ public class ConfigManager {
 			    quest.setMaxLvl(sqsection.getInt("toLevel"));
 
 			quest.setConfigName(one);
-			quest.setChance(chance);
-			quest.setRewardCmds(commands);
-			quest.setDescription(desc);
-			quest.setRestrictedArea(areas);
+			quest.setChance(sqsection.getInt("Chance", 100));
+			quest.setRewardCmds(sqsection.getStringList("RewardCommands"));
+			quest.setDescription(sqsection.getStringList("RewardDesc"));
+			quest.setRestrictedArea(sqsection.getStringList("RestrictedAreas"));
+
 			quests.add(quest);
 		    } catch (Exception e) {
 			Jobs.consoleMsg("&c[Jobs] Can't load " + one + " quest for " + jobFullName);

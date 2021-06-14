@@ -1406,7 +1406,18 @@ public enum CMIMaterial {
 		id = split[0];
 
 		CMIMaterial mat = ItemManager.byName.get(id + ":" + data);
-		if (mat != null && mat.getLegacyId() > 0 && (mat = get(mat.getLegacyId(), data)) != null) {
+
+		if (mat == null)
+		    mat = ItemManager.byName.get(id);
+
+		if (mat != null) {
+		    if (mat.getLegacyId() > 0) {
+			CMIMaterial m = get(mat.getLegacyId(), data);
+
+			if (m != null)
+			    mat = m;
+		    }
+
 		    return mat;
 		}
 	    } catch (NumberFormatException ex) {

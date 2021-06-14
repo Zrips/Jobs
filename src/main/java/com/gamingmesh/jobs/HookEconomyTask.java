@@ -44,7 +44,7 @@ public class HookEconomyTask implements Runnable {
 	Jobs.getPluginLogger().severe("Vault is required by this plugin for economy support!");
 	Jobs.getPluginLogger().severe("Please install them first!");
 	Jobs.getPluginLogger().severe("You can find the latest versions here:");
-	Jobs.getPluginLogger().severe("https://www.spigotmc.org/resources/vault.34315/");
+	Jobs.getPluginLogger().severe("https://www.spigotmc.org/resources/34315/");
 	Jobs.getPluginLogger().severe("==============================================");
     }
 
