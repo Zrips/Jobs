@@ -15,7 +15,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class V1_17 implements NMS {
+public class v1_17 implements NMS {
     @Override
     public List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
         return new ArrayList<>(event.getBlocks());
