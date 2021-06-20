@@ -81,6 +81,7 @@ import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent;
 import com.gamingmesh.jobs.container.JobsArmorChangeEvent.EquipMethod;
+import com.gamingmesh.jobs.stuff.Util;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class JobsListener implements Listener {
@@ -117,7 +118,7 @@ public class JobsListener implements Listener {
 	    return;
 
 	Player player = event.getPlayer();
-	if (Jobs.getNms().getItemInMainHand(player).getType() != CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial())
+	if (Util.getItemInMainHand(player).getType() != CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial())
 	    return;
 
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getPlayer().getWorld()) || !player.hasPermission("jobs.area.select"))
@@ -369,7 +370,7 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLimitedItemInteract(PlayerInteractEvent event) {
 	Player player = event.getPlayer();
-	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
+	ItemStack iih = Util.getItemInMainHand(player);
 	if (iih.getType() == Material.AIR)
 	    return;
 

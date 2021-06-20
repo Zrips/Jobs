@@ -956,7 +956,7 @@ public class PlayerManager {
 
 	// Check mainhand slot
 	if (Jobs.getGCManager().boostedItemsInMainHand) {
-	    jitems.add(getJobsItemByNbt(Jobs.getNms().getItemInMainHand(player)));
+	    jitems.add(getJobsItemByNbt(Util.getItemInMainHand(player)));
 	}
 
 	// Check offhand slot

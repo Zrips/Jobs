@@ -19,9 +19,10 @@
 package com.gamingmesh.jobs.actions;
 
 import org.bukkit.entity.Entity;
-import com.gamingmesh.jobs.Jobs;
+
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class EntityActionInfo extends BaseActionInfo {
     private Entity entity;
@@ -33,7 +34,7 @@ public class EntityActionInfo extends BaseActionInfo {
 
     @Override
     public String getName() {
-	return Jobs.getNms().getRealType(entity);
+	return Util.getRealType(entity);
     }
 
     @Override

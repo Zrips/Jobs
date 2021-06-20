@@ -16,6 +16,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Util;
 import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.CMILib.RawMessage;
@@ -35,7 +36,7 @@ public class itembonus implements Cmd {
 	if (jPlayer == null)
 	    return false;
 
-	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
+	ItemStack iih = Util.getItemInMainHand(player);
 
 	List<ItemStack> items = new ArrayList<>();
 

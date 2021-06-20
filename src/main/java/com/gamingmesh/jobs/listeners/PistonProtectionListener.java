@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class PistonProtectionListener implements Listener {
 
@@ -46,7 +47,7 @@ public class PistonProtectionListener implements Listener {
 	    y = dir.getModY(),
 	    z = dir.getModZ();
 
-	List<Block> blocks = Jobs.getNms().getPistonRetractBlocks(event);
+	List<Block> blocks = Util.getPistonRetractBlocks(event);
 	for (int i = blocks.size() - 1; i >= 0; i--) {
 	    Location oldLoc = blocks.get(i).getLocation();
 	    Location newLoc = oldLoc.clone().add(x, y, z);

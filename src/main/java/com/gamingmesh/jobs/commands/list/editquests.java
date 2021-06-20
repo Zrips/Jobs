@@ -318,7 +318,7 @@ public class editquests implements Cmd {
 		String key = args[4];
 		switch (args[4]) {
 		case "hand":
-		    ItemStack item = Jobs.getNms().getItemInMainHand(player);
+		    ItemStack item = Util.getItemInMainHand(player);
 		    key = item.getType().name() + "-" + item.getData().getData();
 		    break;
 		case "offhand":

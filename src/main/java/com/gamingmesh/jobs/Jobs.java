@@ -113,8 +113,6 @@ public class Jobs extends JavaPlugin {
 
     public static final Map<UUID, FastPayment> FASTPAYMENT = new HashMap<>();
 
-    private static NMS nms;
-
     protected static VersionChecker versionCheckManager;
     protected static SelectionManager smanager;
 
@@ -128,13 +126,13 @@ public class Jobs extends JavaPlugin {
 	return kyoriSupported;
     }
 
-	/**
-     * Returns the block owner ship for specific {@link CMIMaterial} type.
-     * 
-     * @param type {@link CMIMaterial}
-     * @see #getBlockOwnerShip(CMIMaterial, boolean)
-     * @return {@link BlockOwnerShip}, otherwise {@link Optional#empty()}
-     */
+    /**
+    * Returns the block owner ship for specific {@link CMIMaterial} type.
+    * 
+    * @param type {@link CMIMaterial}
+    * @see #getBlockOwnerShip(CMIMaterial, boolean)
+    * @return {@link BlockOwnerShip}, otherwise {@link Optional#empty()}
+    */
     public Optional<BlockOwnerShip> getBlockOwnerShip(CMIMaterial type) {
 	return getBlockOwnerShip(type, true);
     }
@@ -273,10 +271,6 @@ public class Jobs extends JavaPlugin {
 	if (gConfigManager == null)
 	    gConfigManager = new GeneralConfigManager();
 	return gConfigManager;
-    }
-
-    public static NMS getNms() {
-	return nms;
     }
 
     /**
@@ -691,22 +685,6 @@ public class Jobs extends JavaPlugin {
     @Override
     public void onEnable() {
 	instance = this;
-
-	try {
-	    Class<?> nmsClass = Class.forName("com.gamingmesh.jobs.nmsUtil." + Version.getCurrent().getShortVersion());
-	    if (NMS.class.isAssignableFrom(nmsClass)) {
-		nms = (NMS) nmsClass.getConstructor().newInstance();
-	    } else {
-		System.out.println("Something went wrong, please note down version and contact author, version: " + Version.getCurrent().toString());
-		setEnabled(false);
-		return;
-	    }
-	} catch (Exception e) {
-	    System.out.println("Your server version is not compatible with this plugins version! Plugin will be disabled: " + Version.getCurrent().toString());
-	    setEnabled(false);
-	    e.printStackTrace();
-	    return;
-	}
 
 	try {
 	    Class.forName("net.kyori.adventure.text.Component");

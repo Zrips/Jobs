@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class iteminfo implements Cmd {
 
@@ -24,7 +25,7 @@ public class iteminfo implements Cmd {
 	    return true;
 	}
 
-	ItemStack iih = Jobs.getNms().getItemInMainHand((Player) sender);
+	ItemStack iih = Util.getItemInMainHand((Player) sender);
 
 	if (iih == null || iih.getType() == Material.AIR)
 	    return true;

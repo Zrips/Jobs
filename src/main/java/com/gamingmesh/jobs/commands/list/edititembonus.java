@@ -15,11 +15,13 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class edititembonus implements Cmd {
 
     private enum actions {
 	list, add, remove;
+
 	public static actions getByname(String name) {
 	    for (actions one : actions.values()) {
 		if (one.name().equalsIgnoreCase(name))
@@ -68,7 +70,7 @@ public class edititembonus implements Cmd {
 	if (jPlayer == null)
 	    return false;
 
-	ItemStack iih = Jobs.getNms().getItemInMainHand(player);
+	ItemStack iih = Util.getItemInMainHand(player);
 	if (iih == null || iih.getType() == Material.AIR)
 	    return false;
 
@@ -77,13 +79,13 @@ public class edititembonus implements Cmd {
 	    if (jobitem == null)
 		return false;
 	    iih = CMIReflections.setNbt(iih, "JobsItemBoost", jobitem.getNode());
-	    Jobs.getNms().setItemInMainHand(player, iih);
+	    Util.setItemInMainHand(player, iih);
 	    break;
 	case list:
 	    break;
 	case remove:
 	    iih = Jobs.getReflections().removeNbt(iih, "JobsItemBoost");
-	    Jobs.getNms().setItemInMainHand(player, iih);
+	    Util.setItemInMainHand(player, iih);
 	    break;
 	default:
 	    break;

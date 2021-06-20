@@ -37,6 +37,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.ShopItem;
 import com.gamingmesh.jobs.stuff.GiveItem;
+import com.gamingmesh.jobs.stuff.Util;
 
 @SuppressWarnings("deprecation")
 public class ShopManager {
@@ -192,12 +193,12 @@ public class ShopManager {
 		skullMeta.setLore(lore);
 
 		if (item.isHeadOwner()) {
-		    Jobs.getNms().setSkullOwner(skullMeta, jPlayer.getPlayer());
+		    Util.setSkullOwner(skullMeta, jPlayer.getPlayer());
 		} else {
 		    try {
-			Jobs.getNms().setSkullOwner(skullMeta, Bukkit.getOfflinePlayer(UUID.fromString(item.getCustomHead())));
+			Util.setSkullOwner(skullMeta, Bukkit.getOfflinePlayer(UUID.fromString(item.getCustomHead())));
 		    } catch (IllegalArgumentException ex) {
-			Jobs.getNms().setSkullOwner(skullMeta, Bukkit.getOfflinePlayer(item.getCustomHead()));
+			Util.setSkullOwner(skullMeta, Bukkit.getOfflinePlayer(item.getCustomHead()));
 		    }
 		}
 

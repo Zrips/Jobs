@@ -20,6 +20,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class CMIItemStack {
 
@@ -94,7 +95,7 @@ public class CMIItemStack {
     }
 
     public short getDurability() {
-	return Jobs.getNms().getDurability(getItemStack());
+	return Util.getDurability(getItemStack());
     }
 
     public short getMaxDurability() {

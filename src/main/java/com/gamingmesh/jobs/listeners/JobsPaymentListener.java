@@ -28,6 +28,7 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip.ownershipFeedback;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.hooks.JobsHook;
+import com.gamingmesh.jobs.stuff.Util;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.player.UserManager;
@@ -215,7 +216,7 @@ public final class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
-	ItemStack itemInHand = Jobs.getNms().getItemInMainHand(player);
+	ItemStack itemInHand = Util.getItemInMainHand(player);
 	if (itemInHand.getType() != Material.BUCKET && itemInHand.getType() != Material.BOWL) {
 	    return;
 	}
@@ -398,7 +399,7 @@ public final class JobsPaymentListener implements Listener {
 
 	// Protection for block break with silktouch
 	if (Jobs.getGCManager().useSilkTouchProtection) {
-	    ItemStack item = Jobs.getNms().getItemInMainHand(player);
+	    ItemStack item = Util.getItemInMainHand(player);
 
 	    if (item.getType() != Material.AIR && Jobs.getBpManager().isInBp(block)) {
 		for (Enchantment one : item.getEnchantments().keySet()) {
@@ -777,7 +778,7 @@ public final class JobsPaymentListener implements Listener {
 
 	CMIMaterial mat1 = CMIMaterial.get(a),
 	    mat2 = CMIMaterial.get(b);
-	return mat1 == mat2 && Jobs.getNms().getDurability(a) == Jobs.getNms().getDurability(b) && Objects.equal(a.getData(), b.getData()) &&
+	return mat1 == mat2 && Util.getDurability(a) == Util.getDurability(b) && Objects.equal(a.getData(), b.getData()) &&
 	    Objects.equal(a.getEnchantments(), b.getEnchantments());
     }
 
@@ -1149,7 +1150,7 @@ public final class JobsPaymentListener implements Listener {
 	    Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
 
 	    if (damage != null) {
-		double perc = (damage * 100D) / Jobs.getNms().getMaxHealth(lVictim);
+		double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
 
 		damageDealtByPlayers.invalidate(lVictimUUID);
 
@@ -1331,7 +1332,7 @@ public final class JobsPaymentListener implements Listener {
 		continue;
 
 	    Player p = (Player) one;
-	    if (!Jobs.getNms().getItemInMainHand(p).getType().toString().equalsIgnoreCase("ARMOR_STAND"))
+	    if (!Util.getItemInMainHand(p).getType().toString().equalsIgnoreCase("ARMOR_STAND"))
 		continue;
 
 	    double d = p.getLocation().distance(loc);
@@ -1476,7 +1477,7 @@ public final class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
 
-	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(Jobs.getNms().getItemInMainHand(player), ActionType.EAT));
+	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(Util.getItemInMainHand(player), ActionType.EAT));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1557,7 +1558,7 @@ public final class JobsPaymentListener implements Listener {
 
 	CMIMaterial cmat = CMIMaterial.get(block);
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
-	Material hand = Jobs.getNms().getItemInMainHand(p).getType();
+	Material hand = Util.getItemInMainHand(p).getType();
 
 	if (event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY
 	    && event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && !p.isSneaking()) {
@@ -1629,7 +1630,7 @@ public final class JobsPaymentListener implements Listener {
 
 	    // Prevent item durability loss
 	    if (!Jobs.getGCManager().payItemDurabilityLoss && hand.getMaxDurability()
-		- Jobs.getNms().getDurability(Jobs.getNms().getItemInMainHand(p)) != hand.getMaxDurability())
+		- Util.getDurability(Util.getItemInMainHand(p)) != hand.getMaxDurability())
 		return;
 
 		// either it's version 1.13+ and we're trying to strip a normal log like oak,
@@ -1706,13 +1707,13 @@ public final class JobsPaymentListener implements Listener {
 	if (Jobs.getGCManager().payItemDurabilityLoss)
 	    return true;
 
-	ItemStack hand = Jobs.getNms().getItemInMainHand(p);
+	ItemStack hand = Util.getItemInMainHand(p);
 
 	java.util.Map<Enchantment, Integer> got = Jobs.getGCManager().whiteListedItems.get(CMIMaterial.get(hand));
 	if (got == null)
 	    return false;
 
-	if (Jobs.getNms().getDurability(hand) == 0)
+	if (Util.getDurability(hand) == 0)
 	    return true;
 
 	for (Map.Entry<Enchantment, Integer> oneG : got.entrySet()) {
