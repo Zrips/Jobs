@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>4.17.2</version>
+	<version>5.0.0.0</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -15,11 +15,11 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.destroystokyo.paper</groupId>
+			<groupId>io.papermc.paper</groupId>
 			<artifactId>paper-api</artifactId>
-			<version>1.16.5-R0.1-SNAPSHOT</version>
+			<version>1.17-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
-			<exclusions>
+			<exclusions> 
 				<exclusion>
 					<groupId>org.ow2.asm</groupId>
 					<artifactId>asm-commons</artifactId>
@@ -185,6 +185,14 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- CMILib -->
+		<dependency>
+			<groupId>net.Zrips</groupId>
+			<artifactId>CMILib</artifactId>
+			<version>latest</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/CMILib1.0.2.2.jar</systemPath>
+		</dependency>
 		<!-- WildStacker -->
 		<dependency>
 			<groupId>com.bgsoftware</groupId>
@@ -267,14 +275,14 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<!--<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-				<configuration>
-					<outputDirectory>D:\MC\Server 1.16\plugins\</outputDirectory>
-				</configuration>
-			</plugin>-->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-jar-plugin</artifactId> -->
+<!-- 				<version>2.3.1</version> -->
+<!-- 				<configuration> -->
+<!-- 					<outputDirectory>D:\MC\Server 1.17\plugins\</outputDirectory> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
 		</plugins>
 	</build>
 </project>
