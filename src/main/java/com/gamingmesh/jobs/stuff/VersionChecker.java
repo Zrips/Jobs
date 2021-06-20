@@ -7,13 +7,12 @@ import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 
-public class VersionChecker {
+public final class VersionChecker {
 
     private Jobs plugin;
 
@@ -21,37 +20,19 @@ public class VersionChecker {
 	this.plugin = plugin;
     }
 
-    public Integer convertVersion(String v) {
-	v = v.replaceAll("[^\\d.]", "");
-	Integer version = 0;
-	if (v.contains(".")) {
-	    String lVersion = "";
-	    for (String one : v.split("\\.")) {
-		String s = one;
-		if (s.length() == 1)
-		    s = "0" + s;
-		lVersion += s;
-	    }
-
-	    version = Integer.parseInt(lVersion);
-	} else {
-	    version = Integer.parseInt(v);
-	}
-	return version;
-    }
-
     public void VersionCheck(final Player player) {
 	if (!Jobs.getGCManager().isShowNewVersion())
 	    return;
 
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+	plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
 	    String newVersion = getNewVersion();
 	    if (newVersion == null)
 		return;
 
 	    int currentVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
-	    if (Integer.parseInt(newVersion.replace(".", "")) <= currentVersion || currentVersion >=
-			Integer.parseInt(newVersion.replace(".", "")))
+	    int newVer = Integer.parseInt(newVersion.replace(".", ""));
+
+	    if (newVer <= currentVersion || currentVersion >= newVer)
 		return;
 
 	    List<String> msg = Arrays.asList(

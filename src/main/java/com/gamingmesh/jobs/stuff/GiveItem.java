@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
-public class GiveItem {
+public final class GiveItem {
 
     public static void giveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore,
 	    java.util.Map<Enchantment, Integer> enchants) {

@@ -23,7 +23,7 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
-public class ItemBoostManager {
+public final class ItemBoostManager {
 
     private static final Map<String, JobItems> ITEMS = new HashMap<>();
     private static final Map<String, JobItems> LEGACY = new HashMap<>();

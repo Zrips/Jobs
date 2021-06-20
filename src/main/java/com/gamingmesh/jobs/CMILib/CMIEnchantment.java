@@ -51,12 +51,13 @@ public enum CMIEnchantment {
     UNBREAKING("DURABILITY"),
     VANISHING_CURSE;
 
-    private static Map<String, CMIEnchantment> map = new HashMap<>();
-    private static Map<Enchantment, CMIEnchantment> emap = new HashMap<>();
-    private static Map<String, Enchantment> gmap = new HashMap<>();
+    private static final Map<String, CMIEnchantment> map = new HashMap<>();
+    private static final Map<Enchantment, CMIEnchantment> emap = new HashMap<>();
+    private static final Map<String, Enchantment> gmap = new HashMap<>();
 
-    private List<String> subName = new ArrayList<>();
+    private final List<String> subName = new ArrayList<>();
     private List<String> customNames = new ArrayList<>();
+
     private Enchantment enchantment;
 
     @SuppressWarnings("deprecation")
@@ -160,15 +161,25 @@ public enum CMIEnchantment {
 	if (map.isEmpty())
 	    fillUpMap();
 
-	name = name.contains(":") ? name.split(":", 2)[0] : name.contains("-") ? name.split("-", 2)[0] : name;
-	name = name.toLowerCase().replace("_", "");
-	return map.get(name);
+	String[] split = name.split(":", 2);
+
+	if (split.length > 0 || (split = name.split("-", 2)).length > 0) {
+	    name = split[0];
+	}
+
+	return map.get(name.toLowerCase().replace("_", ""));
     }
 
     public static Enchantment getEnchantment(String name) {
 	if (map.isEmpty())
 	    fillUpMap();
-	name = name.contains(":") ? name.split(":", 2)[0] : name.contains("-") ? name.split("-", 2)[0] : name;
+
+	String[] split = name.split(":", 2);
+
+	if (split.length > 0 || (split = name.split("-", 2)).length > 0) {
+	    name = split[0];
+	}
+
 	name = name.toLowerCase().replace("_", "");
 
 	CMIEnchantment ec = map.get(name);

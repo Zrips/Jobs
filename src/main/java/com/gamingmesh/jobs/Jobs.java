@@ -117,7 +117,7 @@ import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
 
-public class Jobs extends JavaPlugin {
+public final class Jobs extends JavaPlugin {
 
     private static PlayerManager pManager;
     private static JobsCommands cManager;

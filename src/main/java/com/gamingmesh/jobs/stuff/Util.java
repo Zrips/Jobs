@@ -39,7 +39,8 @@ import com.gamingmesh.jobs.container.JobsWorld;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Version.Version;
 
-public class Util {
+@SuppressWarnings("deprecation")
+public final class Util {
 
     private static Map<UUID, String> jobsEditorMap = new HashMap<>(), questsEditorMap = new HashMap<>();
 
@@ -136,7 +137,6 @@ public class Util {
 	}
     }
 
-    @SuppressWarnings("deprecation")
     public static ItemStack getSkull(String skullOwner) {
 	ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
 	SkullMeta skullMeta = (SkullMeta) item.getItemMeta();

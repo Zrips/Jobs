@@ -54,6 +54,7 @@ public class JobConditions {
 		requiresPerm.add(one.replace("p:", ""));
 	    }
 	}
+
 	for (String one : perform) {
 	    one = one.toLowerCase();
 
@@ -61,8 +62,9 @@ public class JobConditions {
 		continue;
 
 	    String clean = one.substring("p:".length());
-	    if (clean.contains("-")) {
 		String[] split = clean.split("-", 2);
+
+		if (split.length > 1) {
 		performPerm.put(split[0], split[1].equalsIgnoreCase("true"));
 	    } else {
 		performPerm.put(clean, true);

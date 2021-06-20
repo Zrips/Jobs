@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -303,7 +302,7 @@ public class JobsPlayer {
      * @return {@link Player} or null if not exist
      */
     public Player getPlayer() {
-	return playerUUID != null ? Bukkit.getPlayer(playerUUID) : null;
+	return playerUUID != null ? plugin.getServer().getPlayer(playerUUID) : null;
     }
 
     /**
@@ -1300,7 +1299,7 @@ public class JobsPlayer {
 	setSaved(false);
 
 	if (questSignUpdateShed == null) {
-	    questSignUpdateShed = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+	    questSignUpdateShed = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 		Jobs.getSignUtil().signUpdate(job, SignTopType.questtoplist);
 		questSignUpdateShed = null;
 	    }, Jobs.getGCManager().getSavePeriod() * 60 * 20L);
