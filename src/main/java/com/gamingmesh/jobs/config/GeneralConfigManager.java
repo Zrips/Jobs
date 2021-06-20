@@ -287,7 +287,7 @@ public class GeneralConfigManager {
 	} catch (Exception e1) {
 	    e1.printStackTrace();
 	}
-	
+
 	if (c == null)
 	    return;
 

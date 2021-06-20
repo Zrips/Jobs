@@ -122,7 +122,6 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Items.ItemManager;
 import net.Zrips.CMILib.Version.Version;
 
 public final class JobsPaymentListener implements Listener {
@@ -1580,12 +1579,13 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
-	Player p = event.getPlayer();
-	if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
-	    return;
-
 	final Block block = event.getClickedBlock();
 	if (block == null)
+	    return;
+
+	Player p = event.getPlayer();
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
 	    return;
 
 	CMIMaterial cmat = CMIMaterial.get(block);

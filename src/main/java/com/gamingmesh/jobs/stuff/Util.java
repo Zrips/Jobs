@@ -51,49 +51,58 @@ public class Util {
 	if (Version.isCurrentEqualOrHigher(Version.v1_8_R1)) {
 	    return new ArrayList<>(event.getBlocks());
 	}
+
 	List<Block> blocks = new ArrayList<>();
 	blocks.add(event.getBlock());
 	return blocks;
     }
 
     public static String getRealType(Entity entity) {
-
 	if (Version.isCurrentEqualOrHigher(Version.v1_11_R1)) {
 	    return entity.getType().name();
 	}
 
 	String name = entity.getType().name();
+
 	switch (entity.getType().toString()) {
 	case "GUARDIAN":
-	    org.bukkit.entity.Guardian g = (org.bukkit.entity.Guardian) entity;
-	    if (g.isElder())
+	    if (((org.bukkit.entity.Guardian) entity).isElder())
 		name = "GuardianElder";
+
 	    break;
 	case "HORSE":
 	    Horse horse = (Horse) entity;
+
 	    if (horse.getVariant().toString().equals("UNDEAD_HORSE"))
 		name = "HorseZombie";
+
 	    if (horse.getVariant().toString().equals("SKELETON_HORSE"))
 		name = "HorseSkeleton";
+
 	    break;
 	case "SKELETON":
 	    Skeleton skeleton = (Skeleton) entity;
+
 	    if (skeleton.getSkeletonType().toString().equals("WITHER"))
 		name = "SkeletonWither";
+
 	    if (Version.isCurrentEqualOrHigher(Version.v1_10_R1) && skeleton.getSkeletonType().toString().equals("STRAY"))
 		name = "SkeletonStray";
+
 	    break;
 	case "ZOMBIE":
 	    Zombie zombie = (Zombie) entity;
+
 	    if (Version.isCurrentEqualOrHigher(Version.v1_10_R1)) {
 		if (zombie.isVillager() && zombie.getVillagerProfession().toString().equals("HUSK"))
 		    return "ZombieVillager";
+
 		if (zombie.getVillagerProfession().toString().equals("HUSK"))
 		    return "ZombieHusk";
-	    } else {
-		if (zombie.isVillager())
+	    } else if (zombie.isVillager()) {
 		    return "ZombieVillager";
 	    }
+
 	    break;
 	default:
 	    break;
@@ -104,7 +113,8 @@ public class Util {
 
     public static double getMaxHealth(LivingEntity entity) {
 	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    return entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+	    org.bukkit.attribute.AttributeInstance attr = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+	    return attr == null ? 0d : attr.getBaseValue();
 	}
 	return entity.getMaxHealth();
     }

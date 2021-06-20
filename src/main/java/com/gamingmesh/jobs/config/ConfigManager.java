@@ -63,6 +63,8 @@ import net.Zrips.CMILib.Version.Version;
 
 public class ConfigManager {
 
+    private final Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
+
     @Deprecated
     private File jobFile;
     private File jobsPathFolder;
@@ -847,7 +849,6 @@ public class ConfigManager {
 
 	    if (jobsPathFolder.isDirectory() && jobsPathFolder.listFiles().length == 0) {
 		try {
-		    Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
 		    for (String f : Util.getFilesFromPackage("jobs", "", "yml")) {
 			plugin.saveResource("jobs" + File.separator + f + ".yml", false);
 		    }
@@ -900,7 +901,7 @@ public class ConfigManager {
 
 	ConfigReader cfg = null;
 	try {
-	    cfg = new ConfigReader(Jobs.getInstance(), "jobConfig.yml");
+	    cfg = new ConfigReader(plugin, "jobConfig.yml");
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    return false;

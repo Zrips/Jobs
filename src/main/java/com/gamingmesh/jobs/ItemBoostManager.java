@@ -22,7 +22,6 @@ import com.gamingmesh.jobs.container.JobItems;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class ItemBoostManager {
 
@@ -228,8 +227,8 @@ public class ItemBoostManager {
 	    ITEMS.put(node, item);
 	}
 
-	Jobs.consoleMsg("&e[Jobs] Loaded " + ITEMS.size() + " boosted items!");
 	cfg.save();
+	Jobs.consoleMsg("&e[Jobs] Loaded " + ITEMS.size() + " boosted items!");
     }
 
     /**

@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Version.Version;
