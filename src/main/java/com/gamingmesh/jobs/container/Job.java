@@ -37,9 +37,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.PotionItemActionInfo;
-import com.gamingmesh.jobs.resources.jfep.Parser;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class Job {

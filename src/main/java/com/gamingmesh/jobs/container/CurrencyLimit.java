@@ -3,7 +3,7 @@ package com.gamingmesh.jobs.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gamingmesh.jobs.resources.jfep.Parser;
+import net.Zrips.CMILib.Equations.Parser;
 
 public class CurrencyLimit {
 

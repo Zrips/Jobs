@@ -51,12 +51,12 @@ import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestObjective;
-import com.gamingmesh.jobs.resources.jfep.ParseError;
-import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Entities.CMIEntityType;
+import net.Zrips.CMILib.Equations.ParseError;
+import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Version.Version;

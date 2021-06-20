@@ -5,11 +5,9 @@ import java.util.Map;
 
 import com.gamingmesh.jobs.Jobs;
 
-import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Items.ItemManager;
 
 public class RestrictedBlockManager {
 

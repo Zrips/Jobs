@@ -39,8 +39,8 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
-import com.gamingmesh.jobs.resources.jfep.Parser;
 
+import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Version.Version;
