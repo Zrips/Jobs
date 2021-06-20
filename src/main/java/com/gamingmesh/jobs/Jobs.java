@@ -99,7 +99,6 @@ import com.gamingmesh.jobs.listeners.JobsPayment14Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
-import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
@@ -147,7 +146,6 @@ public class Jobs extends JavaPlugin {
 
     private boolean kyoriSupported = false;
 
-    private CMIScoreboardManager cmiScoreboardManager;
     private Complement complement;
     private GuiManager guiManager;
 
@@ -392,17 +390,6 @@ public class Jobs extends JavaPlugin {
 	if (exploreManager == null)
 	    exploreManager = new ExploreManager();
 	return exploreManager;
-    }
-
-    /**
-     * Returns scoreboard manager
-     * @return the scoreboard manager
-     */
-    public CMIScoreboardManager getCMIScoreboardManager() {
-	if (cmiScoreboardManager == null)
-	    cmiScoreboardManager = new CMIScoreboardManager();
-
-	return cmiScoreboardManager;
     }
 
     // TODO Get rid of this entirely from project
