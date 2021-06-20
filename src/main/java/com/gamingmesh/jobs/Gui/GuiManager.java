@@ -22,7 +22,6 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.GUI.CMIGui;
 import net.Zrips.CMILib.GUI.CMIGuiButton;
-import net.Zrips.CMILib.GUI.GUIManager;
 import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 
 public class GuiManager {
