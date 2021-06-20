@@ -1,7 +1,12 @@
 package com.gamingmesh.jobs.config;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,14 +15,15 @@ import org.bukkit.entity.EntityType;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.Entities.CMIEntityType;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class NameTranslatorManager {
 
@@ -299,7 +305,13 @@ public class NameTranslatorManager {
 		f = new File(tWordsFolder, "Words_" + lang + ".yml");
 	    }
 
-	    ConfigReader c = new ConfigReader(f);
+	    ConfigReader c;
+	    try {
+		c = new ConfigReader(f);
+	    } catch (Exception e) {
+		e.printStackTrace();
+		continue;
+	    }
 	    c.copyDefaults(true);
 
 	    for (CMIMaterial mat : CMIMaterial.values()) {

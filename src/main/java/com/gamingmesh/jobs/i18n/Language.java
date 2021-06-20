@@ -27,8 +27,9 @@ import java.util.regex.Pattern;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.config.YmlMaker;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class Language {
 

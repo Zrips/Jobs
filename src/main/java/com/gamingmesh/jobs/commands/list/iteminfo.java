@@ -5,10 +5,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Version.Version;
 
 public class iteminfo implements Cmd {
 
@@ -25,7 +28,7 @@ public class iteminfo implements Cmd {
 	    return true;
 	}
 
-	ItemStack iih = Util.getItemInMainHand((Player) sender);
+	ItemStack iih = CMIItemStack.getItemInMainHand((Player) sender);
 
 	if (iih == null || iih.getType() == Material.AIR)
 	    return true;

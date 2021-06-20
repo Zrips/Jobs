@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.bukkit.enchantments.Enchantment;
 
-import com.gamingmesh.jobs.stuff.Util;
+import net.Zrips.CMILib.Container.CMIText;
 
 public enum CMIEnchantment {
 
@@ -206,7 +206,7 @@ public enum CMIEnchantment {
     }
 
     public String getName() {
-	return Util.firstToUpperCase(toString());
+	return CMIText.firstToUpperCase(toString());
     }
 
     public static String getName(Enchantment enchant) {

@@ -1,8 +1,12 @@
 package com.gamingmesh.jobs.commands.list;
 
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.ItemReflection;
-import com.gamingmesh.jobs.CMILib.RawMessage;
+import java.util.List;
+
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.config.ConfigManager.KeyValues;
@@ -10,14 +14,12 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
-import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.Util;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class editjobs implements Cmd {
 
@@ -335,11 +337,11 @@ public class editjobs implements Cmd {
 		String key = args[3];
 		switch (args[3]) {
 		case "hand":
-		    ItemStack item = Util.getItemInMainHand(player);
+		    ItemStack item = CMIItemStack.getItemInMainHand(player);
 		    key = item.getType().name() + "-" + item.getData().getData();
 		    break;
 		case "offhand":
-		    item = ItemReflection.getItemInOffHand(player);
+		    item = CMIItemStack.getItemInOffHand(player);
 		    key = item.getType().name() + "-" + item.getData().getData();
 		    break;
 		case "looking":

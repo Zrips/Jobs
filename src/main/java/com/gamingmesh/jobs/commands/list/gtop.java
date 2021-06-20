@@ -10,7 +10,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.TopList;
-import com.gamingmesh.jobs.stuff.PageInfo;
+
+import net.Zrips.CMILib.Container.PageInfo;
 
 public class gtop implements Cmd {
 

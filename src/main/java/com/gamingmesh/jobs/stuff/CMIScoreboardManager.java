@@ -13,10 +13,11 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIReflections;
-import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.ScoreboardInfo;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Version.Version;
 
 public class CMIScoreboardManager {
 
@@ -155,7 +156,7 @@ public class CMIScoreboardManager {
     }
 
     private static Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
-	return CMIReflections.getMinecraftClass(nmsClassString);
+	return CMILib.getInstance().getReflectionManager().getMinecraftClass(nmsClassString);
     }
 
     private static Object getConnection(Player player) throws Exception {

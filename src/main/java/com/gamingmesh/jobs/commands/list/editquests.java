@@ -13,20 +13,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ItemReflection;
-import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestObjective;
-import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Entities.CMIEntityType;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.RawMessages.RawMessage;
+import net.Zrips.CMILib.Version.Version;
 
 public class editquests implements Cmd {
 
@@ -318,11 +319,11 @@ public class editquests implements Cmd {
 		String key = args[4];
 		switch (args[4]) {
 		case "hand":
-		    ItemStack item = Util.getItemInMainHand(player);
+		    ItemStack item = CMIItemStack.getItemInMainHand(player);
 		    key = item.getType().name() + "-" + item.getData().getData();
 		    break;
 		case "offhand":
-		    item = ItemReflection.getItemInOffHand(player);
+		    item = CMIItemStack.getItemInOffHand(player);
 		    key = item.getType().name() + "-" + item.getData().getData();
 		    break;
 		case "looking":

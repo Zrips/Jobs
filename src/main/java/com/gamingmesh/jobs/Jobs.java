@@ -18,42 +18,21 @@
 
 package com.gamingmesh.jobs;
 
-import com.gamingmesh.jobs.CMILib.RawMessage;
-import com.gamingmesh.jobs.CMILib.Version;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.CMIReflections;
-import com.gamingmesh.jobs.CMILib.VersionChecker;
-import com.gamingmesh.jobs.Gui.GuiManager;
-import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
-import com.gamingmesh.jobs.Placeholders.Placeholder;
-import com.gamingmesh.jobs.hooks.HookManager;
-import com.gamingmesh.jobs.Signs.SignUtil;
-import com.gamingmesh.jobs.api.JobsExpGainEvent;
-import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
-import com.gamingmesh.jobs.commands.JobsCommands;
-import com.gamingmesh.jobs.config.*;
-import com.gamingmesh.jobs.container.*;
-import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
-import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
-import com.gamingmesh.jobs.dao.JobsDAO;
-import com.gamingmesh.jobs.dao.JobsDAOData;
-import com.gamingmesh.jobs.dao.JobsManager;
-import com.gamingmesh.jobs.economy.*;
-import com.gamingmesh.jobs.i18n.Language;
-import com.gamingmesh.jobs.listeners.JobsListener;
-import com.gamingmesh.jobs.listeners.JobsPayment14Listener;
-import com.gamingmesh.jobs.listeners.JobsPaymentListener;
-import com.gamingmesh.jobs.listeners.PistonProtectionListener;
-import com.gamingmesh.jobs.selection.SelectionManager;
-import com.gamingmesh.jobs.stuff.*;
-import com.gamingmesh.jobs.stuff.complement.JobsChatEvent;
-import com.gamingmesh.jobs.stuff.complement.Complement;
-import com.gamingmesh.jobs.stuff.complement.Complement1;
-import com.gamingmesh.jobs.stuff.complement.Complement2;
-import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
-import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
+import java.io.File;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.WeakHashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -64,11 +43,80 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
+import com.gamingmesh.jobs.Gui.GuiManager;
+import com.gamingmesh.jobs.Placeholders.Placeholder;
+import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
+import com.gamingmesh.jobs.Signs.SignUtil;
+import com.gamingmesh.jobs.api.JobsExpGainEvent;
+import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
+import com.gamingmesh.jobs.commands.JobsCommands;
+import com.gamingmesh.jobs.config.BlockProtectionManager;
+import com.gamingmesh.jobs.config.BossBarManager;
+import com.gamingmesh.jobs.config.ConfigManager;
+import com.gamingmesh.jobs.config.ExploreManager;
+import com.gamingmesh.jobs.config.GeneralConfigManager;
+import com.gamingmesh.jobs.config.LanguageManager;
+import com.gamingmesh.jobs.config.NameTranslatorManager;
+import com.gamingmesh.jobs.config.RestrictedAreaManager;
+import com.gamingmesh.jobs.config.RestrictedBlockManager;
+import com.gamingmesh.jobs.config.ScheduleManager;
+import com.gamingmesh.jobs.config.ShopManager;
+import com.gamingmesh.jobs.config.TitleManager;
+import com.gamingmesh.jobs.config.YmlMaker;
+import com.gamingmesh.jobs.container.ActionInfo;
+import com.gamingmesh.jobs.container.ActionType;
+import com.gamingmesh.jobs.container.ArchivedJobs;
+import com.gamingmesh.jobs.container.BlockProtection;
+import com.gamingmesh.jobs.container.Boost;
+import com.gamingmesh.jobs.container.Convert;
+import com.gamingmesh.jobs.container.CurrencyLimit;
+import com.gamingmesh.jobs.container.CurrencyType;
+import com.gamingmesh.jobs.container.DBAction;
+import com.gamingmesh.jobs.container.FastPayment;
+import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.container.JobInfo;
+import com.gamingmesh.jobs.container.JobProgression;
+import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.Log;
+import com.gamingmesh.jobs.container.PlayerInfo;
+import com.gamingmesh.jobs.container.PlayerPoints;
+import com.gamingmesh.jobs.container.Quest;
+import com.gamingmesh.jobs.container.QuestProgression;
+import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
+import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
+import com.gamingmesh.jobs.dao.JobsDAO;
+import com.gamingmesh.jobs.dao.JobsDAOData;
+import com.gamingmesh.jobs.dao.JobsManager;
+import com.gamingmesh.jobs.economy.BufferedEconomy;
+import com.gamingmesh.jobs.economy.BufferedPayment;
+import com.gamingmesh.jobs.economy.Economy;
+import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.economy.PointsData;
+import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.i18n.Language;
+import com.gamingmesh.jobs.listeners.JobsListener;
+import com.gamingmesh.jobs.listeners.JobsPayment14Listener;
+import com.gamingmesh.jobs.listeners.JobsPaymentListener;
+import com.gamingmesh.jobs.listeners.PistonProtectionListener;
+import com.gamingmesh.jobs.selection.SelectionManager;
+import com.gamingmesh.jobs.stuff.CMIScoreboardManager;
+import com.gamingmesh.jobs.stuff.Loging;
+import com.gamingmesh.jobs.stuff.TabComplete;
+import com.gamingmesh.jobs.stuff.ToggleBarHandling;
+import com.gamingmesh.jobs.stuff.VersionChecker;
+import com.gamingmesh.jobs.stuff.complement.Complement;
+import com.gamingmesh.jobs.stuff.complement.Complement1;
+import com.gamingmesh.jobs.stuff.complement.Complement2;
+import com.gamingmesh.jobs.stuff.complement.JobsChatEvent;
+import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
+import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
+
+import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.RawMessages.RawMessage;
+import net.Zrips.CMILib.Version.Version;
 
 public class Jobs extends JavaPlugin {
 
@@ -90,7 +138,7 @@ public class Jobs extends JavaPlugin {
     private static JobsManager dbManager;
     private static ConfigManager configManager;
     private static GeneralConfigManager gConfigManager;
-    private static CMIReflections reflections;
+
     private static BufferedEconomy economy;
     private static PermissionHandler permissionHandler;
     private static PermissionManager permissionManager;
@@ -227,12 +275,6 @@ public class Jobs extends JavaPlugin {
 	if (bpManager == null)
 	    bpManager = new BlockProtectionManager();
 	return bpManager;
-    }
-
-    public static CMIReflections getReflections() {
-	if (reflections == null)
-	    reflections = new CMIReflections();
-	return reflections;
     }
 
     public static JobsManager getDBManager() {
@@ -764,8 +806,6 @@ public class Jobs extends JavaPlugin {
 
 	    HandlerList.unregisterAll(instance);
 
-	    com.gamingmesh.jobs.CMIGUI.GUIManager.registerListener();
-
 	    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
 		pm.registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), instance);
 	    }
@@ -1284,7 +1324,7 @@ public class Jobs extends JavaPlugin {
 		if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
 		    if (inform && player.canGetPaid(info)) {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
-			ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+			CMIActionBar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 		    }
 
 		    return false;
@@ -1313,7 +1353,7 @@ public class Jobs extends JavaPlugin {
 		    if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
 			if (inform && player.canGetPaid(info)) {
 			    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
-			    ActionBarManager.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+			    CMIActionBar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
 			}
 
 			getBpManager().add(block, cd);

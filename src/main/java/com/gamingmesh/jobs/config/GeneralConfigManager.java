@@ -37,12 +37,13 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.resources.jfep.Parser;
+
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Version.Version;
 
 public class GeneralConfigManager {
 
@@ -281,7 +282,14 @@ public class GeneralConfigManager {
      * loads from Jobs/generalConfig.yml
      */
     private void loadGeneralSettings() {
-	c = new ConfigReader("generalConfig.yml");
+	try {
+	    c = new ConfigReader(Jobs.getInstance(), "generalConfig.yml");
+	} catch (Exception e1) {
+	    e1.printStackTrace();
+	}
+	
+	if (c == null)
+	    return;
 
 	c.header(Arrays.asList("General configuration.",
 	    "  The general configuration for the jobs plugin mostly includes how often the plugin",

@@ -9,12 +9,13 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.BossBarInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
+
+import net.Zrips.CMILib.Version.Version;
 
 public class BossBarManager {
 

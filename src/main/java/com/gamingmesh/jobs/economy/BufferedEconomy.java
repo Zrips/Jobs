@@ -18,24 +18,26 @@
 
 package com.gamingmesh.jobs.economy;
 
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.Version;
-import com.gamingmesh.jobs.api.JobsPaymentEvent;
-import com.gamingmesh.jobs.container.CurrencyType;
-import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.stuff.ToggleBarHandling;
-import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.api.JobsPaymentEvent;
+import com.gamingmesh.jobs.container.CurrencyType;
+import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.stuff.ToggleBarHandling;
+import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
+
+import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Version.Version;
 
 public class BufferedEconomy {
 
@@ -171,7 +173,7 @@ public class BufferedEconomy {
 		}
 
 		if (Jobs.getGCManager().ActionBarsMessageByDefault && serverTaxesAccount.isOnline()) {
-		    ActionBarManager.send(Bukkit.getPlayer(serverAccountName),
+		    CMIActionBar.send(Bukkit.getPlayer(serverAccountName),
 			Jobs.getLanguage().getMessage("message.taxes", "[amount]", (int) (totalAmount * 100) / 100.0));
 		}
 	    }
@@ -201,7 +203,7 @@ public class BufferedEconomy {
 		payment.getPayment().putAll(jobsPaymentEvent.getPayment());
 
 		if (Jobs.getGCManager().UseServerAccount && !hasMoney) {
-		    ActionBarManager.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
+		    CMIActionBar.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
 		    continue;
 		}
 
@@ -271,7 +273,7 @@ public class BufferedEconomy {
 	boolean showInActionbar = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID.toString(),
 		Jobs.getGCManager().ActionBarsMessageByDefault);
 	if (showInActionbar) {
-	    ActionBarManager.send(abp, message);
+	    CMIActionBar.send(abp, message);
 	} else {
 	    abp.sendMessage(message);
 	}

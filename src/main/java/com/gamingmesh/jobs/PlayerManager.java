@@ -39,9 +39,6 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.gamingmesh.jobs.CMILib.Version;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.CMIReflections;
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
@@ -63,6 +60,12 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.NBT.CMINBT;
+import net.Zrips.CMILib.Version.Version;
 
 public class PlayerManager {
 
@@ -648,7 +651,7 @@ public class PlayerManager {
 	    if (player != null && (Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat)) {
 		for (String line : message.split("\n")) {
 		    if (Jobs.getGCManager().LevelChangeActionBar)
-			ActionBarManager.send(player, line);
+			CMIActionBar.send(player, line);
 
 		    if (Jobs.getGCManager().LevelChangeChat)
 			player.sendMessage(line);
@@ -756,11 +759,11 @@ public class PlayerManager {
 	    for (String line : message.split("\n")) {
 		if (Jobs.getGCManager().isBroadcastingLevelups()) {
 		    if (Jobs.getGCManager().BroadcastingLevelUpLevels.contains(oldLevel + 1)
-		    || Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
+			|| Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
 			plugin.getComplement().broadcastMessage(line);
 		} else if (player != null) {
 		    if (Jobs.getGCManager().LevelChangeActionBar)
-			ActionBarManager.send(player, line);
+			CMIActionBar.send(player, line);
 
 		    if (Jobs.getGCManager().LevelChangeChat)
 			player.sendMessage(line);
@@ -772,7 +775,7 @@ public class PlayerManager {
 	    if (player != null && Jobs.getGCManager().SoundTitleChangeUse) {
 		try {
 		    player.getWorld().playSound(player.getLocation(), levelUpEvent.getTitleChangeSound(), levelUpEvent.getTitleChangeVolume(),
-			    levelUpEvent.getTitleChangePitch());
+			levelUpEvent.getTitleChangePitch());
 		} catch (Exception e) { // If it fails, we can ignore it
 		}
 	    }
@@ -792,7 +795,7 @@ public class PlayerManager {
 			plugin.getComplement().broadcastMessage(line);
 		    } else if (player != null) {
 			if (Jobs.getGCManager().TitleChangeActionBar)
-			    ActionBarManager.send(player, line);
+			    CMIActionBar.send(player, line);
 
 			if (Jobs.getGCManager().TitleChangeChat)
 			    player.sendMessage(line);
@@ -956,7 +959,7 @@ public class PlayerManager {
 
 	// Check mainhand slot
 	if (Jobs.getGCManager().boostedItemsInMainHand) {
-	    jitems.add(getJobsItemByNbt(Util.getItemInMainHand(player)));
+	    jitems.add(getJobsItemByNbt(CMIItemStack.getItemInMainHand(player)));
 	}
 
 	// Check offhand slot
@@ -987,24 +990,24 @@ public class PlayerManager {
     private final String jobsItemBoost = "JobsItemBoost";
 
     public boolean containsItemBoostByNBT(ItemStack item) {
-	return item != null && Jobs.getReflections().hasNbtString(item, jobsItemBoost);
+	return item != null && new CMINBT(item).hasNBT(jobsItemBoost);
     }
 
     public JobItems getJobsItemByNbt(ItemStack item) {
 	if (item == null)
 	    return null;
 
-	Object itemName = CMIReflections.getNbt(item, jobsItemBoost);
+	Object itemName = new CMINBT(item).getString(jobsItemBoost);
 
 	if (itemName == null || itemName.toString().isEmpty()) {
 	    // Checking old boost items and converting to new format if needed
-	    if (Jobs.getReflections().hasNbt(item, jobsItemBoost)) {
+	    if (new CMINBT(item).hasNBT(jobsItemBoost)) {
 		for (Job one : Jobs.getJobs()) {
-		    itemName = Jobs.getReflections().getNbt(item, jobsItemBoost, one.getName());
+		    itemName = new CMINBT(item).getString(jobsItemBoost + "." + one.getName());
 		    if (itemName != null) {
 			JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
 			if (b != null) {
-			    ItemStack ic = CMIReflections.setNbt(item, jobsItemBoost, b.getNode());
+			    ItemStack ic = (ItemStack) new CMINBT(item).setString(jobsItemBoost, b.getNode());
 			    item.setItemMeta(ic.getItemMeta());
 			}
 			break;

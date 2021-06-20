@@ -9,9 +9,10 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
+
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class BlockProtectionManager {
 

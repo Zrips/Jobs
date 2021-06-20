@@ -37,12 +37,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIEntityType;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -59,6 +54,12 @@ import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.resources.jfep.ParseError;
 import com.gamingmesh.jobs.resources.jfep.Parser;
 import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Entities.CMIEntityType;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Version.Version;
 
 public class ConfigManager {
 
@@ -79,7 +80,16 @@ public class ConfigManager {
     }
 
     private void updateExampleFile() {
-	ConfigReader cfg = new ConfigReader(new File(Jobs.getFolder(), "jobs" + File.separator + EXAMPLEJOBNAME.toUpperCase() + ".yml"));
+	ConfigReader cfg = null;
+	try {
+	    cfg = new ConfigReader(new File(Jobs.getFolder(), "jobs" + File.separator + EXAMPLEJOBNAME.toUpperCase() + ".yml"));
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
+	if (cfg == null)
+	    return;
+
 	if (!cfg.getFile().isFile())
 	    return;
 	cfg.load();
@@ -888,7 +898,14 @@ public class ConfigManager {
 	    Jobs.getPluginLogger().info("Done. Migrated jobs amount: " + jobFiles.size());
 	}
 
-	ConfigReader cfg = new ConfigReader("jobConfig.yml");
+	ConfigReader cfg = null;
+	try {
+	    cfg = new ConfigReader(Jobs.getInstance(), "jobConfig.yml");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    return false;
+	}
+
 	cfg.saveToBackup(false);
 	cfg.header(Arrays.asList("-----------------------------------------------------",
 	    "Jobs have been moved into jobs subfolder",

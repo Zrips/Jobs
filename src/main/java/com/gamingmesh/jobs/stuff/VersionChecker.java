@@ -1,4 +1,4 @@
-package com.gamingmesh.jobs.CMILib;
+package com.gamingmesh.jobs.stuff;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

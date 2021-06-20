@@ -17,9 +17,11 @@ import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Util;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.RawMessage;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class itembonus implements Cmd {
 
@@ -36,7 +38,7 @@ public class itembonus implements Cmd {
 	if (jPlayer == null)
 	    return false;
 
-	ItemStack iih = Util.getItemInMainHand(player);
+	ItemStack iih = CMIItemStack.getItemInMainHand(player);
 
 	List<ItemStack> items = new ArrayList<>();
 

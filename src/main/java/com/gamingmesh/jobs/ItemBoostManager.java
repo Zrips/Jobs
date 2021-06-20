@@ -13,23 +13,30 @@ import java.util.Set;
 import org.bukkit.Color;
 import org.bukkit.enchantments.Enchantment;
 
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class ItemBoostManager {
 
     private static final Map<String, JobItems> ITEMS = new HashMap<>();
     private static final Map<String, JobItems> LEGACY = new HashMap<>();
 
-	@SuppressWarnings("deprecation")
-	public static void load() {
-	ConfigReader cfg = new ConfigReader("boostedItems.yml");
+    @SuppressWarnings("deprecation")
+    public static void load() {
+	ConfigReader cfg;
+	try {
+	    cfg = new ConfigReader(Jobs.getInstance(), "boostedItems.yml");
+	} catch (Exception e2) {
+	    e2.printStackTrace();
+	    return;
+	}
 
 	ITEMS.clear();
 	LEGACY.clear();
@@ -69,7 +76,12 @@ public class ItemBoostManager {
 	    } catch (IOException e1) {
 		e1.printStackTrace();
 	    }
-	    cfg = new ConfigReader("boostedItems.yml");
+	    try {
+		cfg = new ConfigReader(Jobs.getInstance(), "boostedItems.yml");
+	    } catch (Exception e) {
+		e.printStackTrace();
+		return;
+	    }
 	}
 
 	Set<String> keys = cfg.getC().getKeys(false);

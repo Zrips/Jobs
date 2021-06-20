@@ -11,10 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMIGUI.CMIGui;
-import com.gamingmesh.jobs.CMIGUI.CMIGuiButton;
-import com.gamingmesh.jobs.CMIGUI.GUIManager;
-import com.gamingmesh.jobs.CMIGUI.GUIManager.GUIClickType;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -22,6 +18,12 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.GUI.CMIGui;
+import net.Zrips.CMILib.GUI.CMIGuiButton;
+import net.Zrips.CMILib.GUI.GUIManager;
+import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 
 public class GuiManager {
 
@@ -306,8 +308,8 @@ public class GuiManager {
 	    i++;
 	}
 
-	int guiSize = GUIManager.isOpenedGui(player) && GUIManager.getGui(player) != null ?
-	    GUIManager.getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
+	int guiSize = CMILib.getInstance().getGUIManager().isOpenedGui(player) && CMILib.getInstance().getGUIManager().getGui(player) != null ?
+	    CMILib.getInstance().getGUIManager().getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
@@ -456,8 +458,8 @@ public class GuiManager {
 	    i++;
 	}
 
-	int guiSize = GUIManager.isOpenedGui(player) && GUIManager.getGui(player) != null ?
-	    GUIManager.getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
+	int guiSize = CMILib.getInstance().getGUIManager().isOpenedGui(player) && CMILib.getInstance().getGUIManager().getGui(player) != null ?
+	    CMILib.getInstance().getGUIManager().getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
 	int backButton = Jobs.getGCManager().getJobsGUIBackButton();
 
 	CMIGui gui = new CMIGui(player);

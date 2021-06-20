@@ -34,9 +34,10 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.Version;
 import com.gamingmesh.jobs.container.JobsWorld;
+
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Version.Version;
 
 public class Util {
 
@@ -125,19 +126,6 @@ public class Util {
 	}
     }
 
-    public static ItemStack getItemInMainHand(Player player) {
-	if (Version.isCurrentHigher(Version.v1_8_R3))
-	    return player.getInventory().getItemInMainHand();
-	return player.getItemInHand();
-    }
-
-    public static void setItemInMainHand(Player player, ItemStack item) {
-	if (Version.isCurrentHigher(Version.v1_8_R3))
-	    player.getInventory().setItemInMainHand(item);
-	else
-	    player.setItemInHand(item);
-    }
-
     @SuppressWarnings("deprecation")
     public static ItemStack getSkull(String skullOwner) {
 	ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
@@ -179,11 +167,6 @@ public class Util {
 	}
 
 	return null;
-    }
-
-    public static String firstToUpperCase(String name) {
-	name = name.toLowerCase().replace('_', ' ');
-	return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     public static Map<UUID, String> getJobsEditorMap() {

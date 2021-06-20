@@ -9,7 +9,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public interface Complement {
 

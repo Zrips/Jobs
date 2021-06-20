@@ -34,10 +34,11 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffectType;
 
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.CMIReflections;
-import com.gamingmesh.jobs.CMILib.Version;
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.NBT.CMINBT;
+import net.Zrips.CMILib.Version.Version;
 
 @SuppressWarnings("deprecation")
 public class JobItems {
@@ -124,7 +125,8 @@ public class JobItems {
 	}
 
 	item.setAmount(amount);
-	item = CMIReflections.setNbt(item, "JobsItemBoost", node);
+	CMINBT nbt = new CMINBT(item);
+	item = (ItemStack) nbt.setString("JobsItemBoost", node);
     }
 
     public String getNode() {

@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class Schedule {
 

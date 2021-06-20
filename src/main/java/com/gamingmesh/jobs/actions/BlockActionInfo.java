@@ -20,8 +20,9 @@ package com.gamingmesh.jobs.actions;
 
 import org.bukkit.block.Block;
 
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
 import com.gamingmesh.jobs.container.ActionType;
+
+import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class BlockActionInfo extends MaterialActionInfo {
     public BlockActionInfo(Block block, ActionType type) {

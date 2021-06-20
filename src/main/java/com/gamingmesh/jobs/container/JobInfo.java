@@ -19,8 +19,9 @@
 package com.gamingmesh.jobs.container;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIChatColor;
 import com.gamingmesh.jobs.resources.jfep.Parser;
+
+import net.Zrips.CMILib.Colors.CMIChatColor;
 
 public class JobInfo {
     private ActionType actionType;

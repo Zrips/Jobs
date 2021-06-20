@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIItemStack;
-import com.gamingmesh.jobs.CMILib.CMIMaterial;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
-import com.gamingmesh.jobs.CMILib.ItemManager;
+
+import net.Zrips.CMILib.CMILib;
+import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Items.ItemManager;
 
 public class RestrictedBlockManager {
 
@@ -21,7 +23,15 @@ public class RestrictedBlockManager {
 	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
 
-	ConfigReader cfg = new ConfigReader("restrictedBlocks.yml");
+	ConfigReader cfg = null;
+	try {
+	    cfg = new ConfigReader(Jobs.getInstance(), "restrictedBlocks.yml");
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
+	if (cfg == null)
+	    return;
 
 	cfg.addComment("blocksTimer", "Block protected by timer in sec",
 	    "Category name can be any you like to be easily recognized",
@@ -33,7 +43,7 @@ public class RestrictedBlockManager {
 	if (section != null) {
 	    for (String one : section.getKeys(false)) {
 		if ((section.isString(one + ".id") || section.isInt(one + ".id")) && section.isInt(one + ".cd")) {
-		    CMIItemStack cm = ItemManager.getItem(CMIMaterial.get(section.getString(one + ".id")));
+		    CMIItemStack cm = CMIMaterial.get(section.getString(one + ".id")).newCMIItemStack();
 		    CMIMaterial mat = cm == null ? null : cm.getCMIType();
 
 		    if (mat == null || !mat.isBlock()) {

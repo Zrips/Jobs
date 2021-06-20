@@ -13,8 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ActionBarManager;
-import com.gamingmesh.jobs.CMILib.RawMessage;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -23,8 +21,11 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
-import com.gamingmesh.jobs.stuff.PageInfo;
 import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class JobsCommands implements CommandExecutor {
 
@@ -123,13 +124,13 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	if (page < 1) {
-	    ActionBarManager.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
+	    CMIActionBar.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
 	    return true;
 	}
 
 	PageInfo pi = new PageInfo(7, commands.size(), page);
 	if (page > pi.getTotalPages()) {
-	    ActionBarManager.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
+	    CMIActionBar.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
 	    return true;
 	}
 

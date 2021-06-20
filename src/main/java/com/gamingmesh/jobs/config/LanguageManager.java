@@ -7,8 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.ConfigReader;
 import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.FileHandler.ConfigReader;
 
 public class LanguageManager {
 
@@ -60,7 +61,13 @@ public class LanguageManager {
 		f = new File(Jobs.getFolder(), "locale" + File.separator + "messages_" + lang + ".yml");
 	    }
 
-	    ConfigReader c = new ConfigReader(f);
+	    ConfigReader c;
+	    try {
+		c = new ConfigReader(f);
+	    } catch (Exception e) {
+		e.printStackTrace();
+		continue;
+	    }
 	    c.copyDefaults(true);
 
 	    Jobs.getGCManager().getCommandArgs().clear();
