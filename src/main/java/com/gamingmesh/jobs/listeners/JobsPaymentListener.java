@@ -122,6 +122,7 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public final class JobsPaymentListener implements Listener {
@@ -423,7 +424,6 @@ public final class JobsPaymentListener implements Listener {
 	    }
 	    Jobs.FASTPAYMENT.remove(player.getUniqueId());
 	}
-
 	if (!payForItemDurabilityLoss(player))
 	    return;
 
@@ -1728,8 +1728,10 @@ public final class JobsPaymentListener implements Listener {
     }
 
     public static boolean payIfCreative(Player player) {
-	if (!Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE && !player.hasPermission("jobs.paycreative"))
+	if (!Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE && !Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player),
+	    "jobs.paycreative")) {
 	    return false;
+	}
 
 	return true;
     }
