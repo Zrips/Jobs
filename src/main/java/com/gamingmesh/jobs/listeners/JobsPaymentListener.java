@@ -1489,12 +1489,12 @@ public final class JobsPaymentListener implements Listener {
     public void onPlayerEat(FoodLevelChangeEvent event) {
 	HumanEntity human = event.getEntity();
 
-	if (event.getFoodLevel() <= human.getFoodLevel() || !(human instanceof Player)
-	    || !Jobs.getGCManager().canPerformActionInWorld(human.getWorld()) || human.hasMetadata("NPC"))
+	if (!(human instanceof Player) || !Jobs.getGCManager().canPerformActionInWorld(human.getWorld()) || human.hasMetadata("NPC"))
 	    return;
 
 	Player player = (Player) human;
-	if (!player.isOnline())
+
+	if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel() )
 	    return;
 
 	// check if in creative
