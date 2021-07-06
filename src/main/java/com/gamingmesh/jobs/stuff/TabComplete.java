@@ -89,8 +89,7 @@ public final class TabComplete implements TabCompleter {
 			case "[playername]":
 			    for (Player player : Bukkit.getOnlinePlayers()) {
 				// ignore hidden players
-				if (Jobs.getGCManager().FilterHiddenPlayerFromTabComplete && (player.hasMetadata("vanished")
-				    || (sender instanceof Player && ((Player) sender).canSee(player)))) {
+				if (player.hasMetadata("vanished") || (sender instanceof Player && !((Player) sender).canSee(player))) {
 				    continue;
 				}
 

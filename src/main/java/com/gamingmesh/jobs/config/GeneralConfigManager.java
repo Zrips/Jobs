@@ -96,7 +96,7 @@ public class GeneralConfigManager {
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, aBarSilentMode, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames, hideItemAttributes,
 	DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
-	EnableConfirmation, FilterHiddenPlayerFromTabComplete, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve,
+	EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve,
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
 	BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
@@ -1002,8 +1002,6 @@ public class GeneralConfigManager {
 	c.addComment("JobsGUI.SkipAmount", "Defines by how many slots we need to skip after group");
 	JobsGUISkipAmount = c.get("JobsGUI.SkipAmount", 2);
 
-	c.addComment("Commands.FilterHiddenPlayersInTabComplete", "Do you want to filter the hidden player names from tab-complete?");
-	FilterHiddenPlayerFromTabComplete = c.get("Commands.FilterHiddenPlayersInTabComplete", false);
 	c.addComment("Commands.PageRow.JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top & /jobs gtop");
 	JobsTopAmount = c.get("Commands.PageRow.JobsTop.AmountToShow", 15);
 	c.addComment("Commands.PageRow.Placeholders.AmountToShow", "Defines amount of placeholders to be shown in one page for /jobs placeholders");
