@@ -1494,7 +1494,7 @@ public final class JobsPaymentListener implements Listener {
 
 	Player player = (Player) human;
 
-	if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel() )
+	if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel())
 	    return;
 
 	// check if in creative
@@ -1728,12 +1728,13 @@ public final class JobsPaymentListener implements Listener {
     }
 
     public static boolean payIfCreative(Player player) {
-	if (!Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE && !Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player),
-	    "jobs.paycreative")) {
-	    return false;
-	}
+	if (Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE)
+	    return true;
 
-	return true;
+	if (player.getGameMode() == GameMode.CREATIVE && Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player), "jobs.paycreative"))
+	    return true;
+
+	return player.getGameMode() != GameMode.CREATIVE;
     }
 
     // Prevent item durability loss
