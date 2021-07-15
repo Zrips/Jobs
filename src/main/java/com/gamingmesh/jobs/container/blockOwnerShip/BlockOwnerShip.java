@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.block.Block;
@@ -19,6 +20,7 @@ import com.gamingmesh.jobs.config.YmlMaker;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.blockLoc;
 
+import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class BlockOwnerShip {
@@ -27,7 +29,7 @@ public class BlockOwnerShip {
     private BlockTypes type;
     private String metadataName = "";
 
-    private final Map<UUID, List<blockLoc>> blockOwnerShips = new HashMap<>();
+    private final Map<UUID, HashMap<String, blockLoc>> blockOwnerShips = new HashMap<>();
 
     private final Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
 
@@ -71,7 +73,7 @@ public class BlockOwnerShip {
 	return metadataName;
     }
 
-    public Map<UUID, List<blockLoc>> getBlockOwnerShips() {
+    public Map<UUID, HashMap<String, blockLoc>> getBlockOwnerShips() {
 	return blockOwnerShips;
     }
 
@@ -115,8 +117,14 @@ public class BlockOwnerShip {
 	    return ownershipFeedback.newReg;
 	}
 
-	List<blockLoc> ls = blockOwnerShips.getOrDefault(jPlayer.getUniqueId(), new ArrayList<>());
-	ls.add(new blockLoc(block.getLocation()));
+	HashMap<String, blockLoc> ls = blockOwnerShips.getOrDefault(jPlayer.getUniqueId(), new HashMap<String, blockLoc>());
+
+	String locString = CMILocation.toString(block.getLocation(), ":", true, true);
+
+	if (ls.containsKey(locString))
+	    return ownershipFeedback.old;
+
+	ls.put(locString, new blockLoc(block.getLocation()));
 	blockOwnerShips.put(jPlayer.getUniqueId(), ls);
 	return ownershipFeedback.newReg;
     }
@@ -136,26 +144,23 @@ public class BlockOwnerShip {
 	    return false;
 	}
 
-	List<blockLoc> ls = blockOwnerShips.getOrDefault(uuid, new ArrayList<>());
-	org.bukkit.Location blockLoc = block.getLocation();
+	HashMap<String, blockLoc> ls = blockOwnerShips.getOrDefault(uuid, new HashMap<String, blockLoc>());
+	String blockLoc = CMILocation.toString(block.getLocation(), ":", true, true);
 
-	for (blockLoc one : ls) {
-	    if (one.getLocation().equals(blockLoc)) {
-		block.removeMetadata(metadataName, plugin);
-		ls.remove(one);
-		return true;
-	    }
+	com.gamingmesh.jobs.stuff.blockLoc removed = ls.remove(blockLoc);
+	if (removed != null) {
+	    block.removeMetadata(metadataName, plugin);
 	}
 
-	return false;
+	return removed != null;
     }
 
     public int clear(UUID uuid) {
-	List<blockLoc> ls = blockOwnerShips.remove(uuid);
+	HashMap<String, blockLoc> ls = blockOwnerShips.remove(uuid);
 	if (ls == null)
 	    return 0;
 
-	for (blockLoc one : ls) {
+	for (blockLoc one : ls.values()) {
 	    one.getBlock().removeMetadata(metadataName, plugin);
 	}
 
@@ -167,7 +172,7 @@ public class BlockOwnerShip {
     }
 
     public int getTotal(UUID uuid) {
-	List<blockLoc> list = blockOwnerShips.get(uuid);
+	HashMap<String, blockLoc> list = blockOwnerShips.get(uuid);
 	return list == null ? 0 : list.size();
     }
 
@@ -212,17 +217,19 @@ public class BlockOwnerShip {
 		continue;
 	    }
 
-	    List<blockLoc> blist = new ArrayList<>();
+	    HashMap<String, blockLoc> blist = new HashMap<String, blockLoc>();
 	    for (String oneL : ls) {
 		blockLoc bl = new blockLoc(oneL);
-		Block block = bl.getBlock();
-		if (block == null)
-		    continue;
+		CMILocation cmil = CMILocation.fromString(oneL, ":");
+		// Do we seriously need to re apply this to all blocks?
+//		Block block = bl.getBlock();
+//		if (block == null)
+//		    continue;
+//
+//		block.removeMetadata(metadataName, plugin);
+//		block.setMetadata(metadataName, new FixedMetadataValue(plugin, one));
 
-		block.removeMetadata(metadataName, plugin);
-		block.setMetadata(metadataName, new FixedMetadataValue(plugin, one));
-
-		blist.add(bl);
+		blist.put(CMILocation.toString(cmil, ":", true, true), bl);
 		total++;
 	    }
 
@@ -261,18 +268,18 @@ public class BlockOwnerShip {
 		: type == BlockTypes.BREWING_STAND ? "Brewing" : type == BlockTypes.SMOKER ? "Smoker" : "");
 	f.getConfig().set(path, null);
 
-	for (Map.Entry<UUID, List<blockLoc>> one : blockOwnerShips.entrySet()) {
-	    String full = "";
+	for (Entry<UUID, HashMap<String, blockLoc>> one : blockOwnerShips.entrySet()) {
+	    StringBuilder full = new StringBuilder();
 
-	    for (blockLoc oneL : one.getValue()) {
-		if (!full.isEmpty())
-		    full += ";";
+	    for (String oneL : one.getValue().keySet()) {
+		if (!full.toString().isEmpty())
+		    full.append(";");
 
-		full += oneL.toString();
+		full.append(oneL);
 	    }
 
-	    if (!full.isEmpty())
-		f.getConfig().set(path + "." + one.getKey().toString(), full);
+	    if (!full.toString().isEmpty())
+		f.getConfig().set(path + "." + one.getKey().toString(), full.toString());
 	}
 
 	f.saveConfig();

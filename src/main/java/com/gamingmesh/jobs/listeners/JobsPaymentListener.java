@@ -1097,7 +1097,7 @@ public final class JobsPaymentListener implements Listener {
     public void onEntityDamageByPlayer(EntityDamageEvent event) {
 	if (!Jobs.getGCManager().MonsterDamageUse || !(event instanceof EntityDamageByEntityEvent)
 	    || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return; 
+	    return;
 
 	Entity ent = event.getEntity();
 	if (ent instanceof Player || !(ent instanceof Damageable))

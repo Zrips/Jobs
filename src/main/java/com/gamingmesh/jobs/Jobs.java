@@ -142,7 +142,8 @@ public final class Jobs extends JavaPlugin {
     private static PermissionHandler permissionHandler;
     private static PermissionManager permissionManager;
 
-    private final Set<BlockOwnerShip> blockOwnerShips = new HashSet<>();
+    private final HashMap<CMIMaterial, BlockOwnerShip> blockOwnerShipsMaterial = new HashMap<>();
+    private final HashMap<BlockTypes, BlockOwnerShip> blockOwnerShipsBlockType = new HashMap<>();
 
     private boolean kyoriSupported = false;
 
@@ -193,16 +194,12 @@ public final class Jobs extends JavaPlugin {
      * @return {@link BlockOwnerShip}, otherwise {@link Optional#empty()}
      */
     public Optional<BlockOwnerShip> getBlockOwnerShip(CMIMaterial type, boolean addNew) {
-	BlockOwnerShip b = null;
-	for (BlockOwnerShip ship : blockOwnerShips) {
-	    if (ship.getMaterial() == type) {
-		b = ship;
-		break;
-	    }
-	}
+	BlockOwnerShip b = blockOwnerShipsMaterial.get(type);
 
 	if (addNew && b == null) {
-	    blockOwnerShips.add(b = new BlockOwnerShip(type));
+	    b = new BlockOwnerShip(type);
+	    blockOwnerShipsMaterial.put(type, b);
+	    blockOwnerShipsBlockType.put(b.getType(), b);
 	}
 
 	return Optional.ofNullable(b);
@@ -215,17 +212,15 @@ public final class Jobs extends JavaPlugin {
      * @return {@link BlockOwnerShip}, otherwise {@link Optional#empty()}
      */
     public Optional<BlockOwnerShip> getBlockOwnerShip(BlockTypes type) {
-	for (BlockOwnerShip ship : blockOwnerShips) {
-	    if (ship.getType() == type) {
-		return Optional.ofNullable(ship);
-	    }
-	}
+	BlockOwnerShip b = blockOwnerShipsBlockType.get(type);
+	if (b != null)
+	    return Optional.ofNullable(b);
 
 	return Optional.empty();
     }
 
     public void removeBlockOwnerShip(org.bukkit.block.Block block) {
-	for (BlockOwnerShip ship : blockOwnerShips) {
+	for (BlockOwnerShip ship : blockOwnerShipsMaterial.values()) {
 	    ship.remove(block);
 	}
     }
@@ -233,8 +228,8 @@ public final class Jobs extends JavaPlugin {
     /**
      * @return a set of block owner ships.
      */
-    public Set<BlockOwnerShip> getBlockOwnerShips() {
-	return blockOwnerShips;
+    public HashMap<CMIMaterial, BlockOwnerShip> getBlockOwnerShips() {
+	return blockOwnerShipsMaterial;
     }
 
     private Placeholder placeholder;
@@ -879,7 +874,7 @@ public final class Jobs extends JavaPlugin {
 	    dao.saveExplore();
 	}
 
-	blockOwnerShips.forEach(BlockOwnerShip::save);
+	blockOwnerShipsMaterial.values().forEach(BlockOwnerShip::save);
 	ToggleBarHandling.save();
 
 	if (saveTask != null)
