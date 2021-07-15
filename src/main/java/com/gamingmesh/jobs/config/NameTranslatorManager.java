@@ -24,6 +24,7 @@ import com.gamingmesh.jobs.stuff.Util;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class NameTranslatorManager {
 
@@ -54,8 +55,12 @@ public class NameTranslatorManager {
 	    case STRIPLOGS:
 		String matName = materialName;
 		materialName = materialName.replace(" ", "");
+		
+		if (materialName.contains(":"))
+		    materialName = materialName.split(":")[0];
 
 		CMIMaterial mat = CMIMaterial.get(materialName);
+
 		NameList nameLs = listOfNames.get(mat);
 
 		if (nameLs != null) {
