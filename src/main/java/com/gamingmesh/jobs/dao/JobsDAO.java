@@ -465,11 +465,15 @@ public abstract class JobsDAO {
 	try {
 	    Class.forName(driverName);
 	} catch (ClassNotFoundException c) {
-	    plugin.getLogger().log(java.util.logging.Level.WARNING, c.getLocalizedMessage());
+	    c.printStackTrace();
 	    return;
 	}
 
-	pool = new JobsConnectionPool(url, username, password);
+	try {
+	    pool = new JobsConnectionPool(driverName, url, username, password);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 
     public final synchronized void setUp() {

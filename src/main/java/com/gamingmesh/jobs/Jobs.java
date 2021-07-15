@@ -82,6 +82,7 @@ import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
+import com.gamingmesh.jobs.dao.JobsClassLoader;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.dao.JobsManager;
@@ -140,6 +141,8 @@ public final class Jobs extends JavaPlugin {
     private static PermissionHandler permissionHandler;
     private static PermissionManager permissionManager;
 
+    private static JobsClassLoader classLoader;
+
     private final HashMap<CMIMaterial, BlockOwnerShip> blockOwnerShipsMaterial = new HashMap<>();
     private final HashMap<BlockTypes, BlockOwnerShip> blockOwnerShipsBlockType = new HashMap<>();
 
@@ -169,6 +172,12 @@ public final class Jobs extends JavaPlugin {
 
     public boolean isKyoriSupported() {
 	return kyoriSupported;
+    }
+
+    public static JobsClassLoader getJobsClassloader() {
+	if (classLoader == null)
+	    classLoader = new JobsClassLoader(Jobs.getInstance());
+	return classLoader;
     }
 
     /**

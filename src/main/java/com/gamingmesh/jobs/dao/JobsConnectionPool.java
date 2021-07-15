@@ -1,7 +1,11 @@
 package com.gamingmesh.jobs.dao;
 
+import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.gamingmesh.jobs.Jobs;
 
 public class JobsConnectionPool {
 
@@ -10,37 +14,36 @@ public class JobsConnectionPool {
     private String username;
     private String password;
 
-    public JobsConnectionPool(String url, String username, String password) {
+    public JobsConnectionPool(String driverName, String url, String username, String password) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	Driver driver = (Driver) Class.forName(driverName, true, Jobs.getJobsClassloader()).newInstance();
+	JobsDrivers jDriver = new JobsDrivers(driver);
+	DriverManager.registerDriver(jDriver);
 	this.url = url;
 	this.username = username;
 	this.password = password;
     }
 
     public synchronized JobsConnection getConnection() throws SQLException {
-	if (connection != null && (connection.isClosed() || !connection.isValid(1))) {
+	if (this.connection != null && (this.connection.isClosed() || !this.connection.isValid(1))) {
 	    try {
-		connection.closeConnection();
-	    } catch (SQLException e) {}
-	    connection = null;
-	}
-
-	if (connection == null) {
-	    try {
-		connection = new JobsConnection(DriverManager.getConnection(url, username, password));
+		this.connection.closeConnection();
 	    } catch (SQLException e) {
 	    }
+	    this.connection = null;
 	}
-
-	return connection;
+	if (this.connection == null) {
+	    Connection conn = DriverManager.getConnection(this.url, this.username, this.password);
+	    this.connection = new JobsConnection(conn);
+	}
+	return this.connection;
     }
 
-    public void closeConnection() {
-	if (connection != null) {
+    public synchronized void closeConnection() {
+	if (this.connection != null)
 	    try {
-		connection.closeConnection();
+		this.connection.closeConnection();
 	    } catch (SQLException e) {
 		e.printStackTrace();
 	    }
-	}
     }
 }

@@ -15,14 +15,16 @@ public class JobsSQLite extends JobsDAO {
     }
 
     public JobsSQLite initialize(File dir) {
-	dir.mkdirs();
+	if (!dir.exists())
+	    dir.mkdirs();
 	setUp();
 	return this;
     }
 
     JobsSQLite(Jobs plugin, File file) {
 	super(plugin, "org.sqlite.JDBC", "jdbc:sqlite:" + new File(file, "jobs.sqlite.db").getPath(), null, null, "");
-	file.mkdirs();
+	if (!file.exists())
+	    file.mkdirs();
 	setDbType(DataBaseType.SqLite);
     }
 
@@ -35,7 +37,7 @@ public class JobsSQLite extends JobsDAO {
 	}
 
 	executeSQL("CREATE TABLE `" + getPrefix()
-		+ "users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `data` text);");
+	    + "users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `data` text);");
     }
 
     @Override
