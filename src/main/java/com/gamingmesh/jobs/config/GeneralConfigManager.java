@@ -85,7 +85,7 @@ public class GeneralConfigManager {
 
     private FireworkEffect fireworkEffect;
 
-    public boolean useBlockProtection, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
+    public boolean ignoreOreGenerators, useBlockProtection, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
 	BrowseUseNewLook, payExploringWhenGliding = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
@@ -785,28 +785,32 @@ public class GeneralConfigManager {
 	    "This can be overridden with jobs.maxbrewingstands.[amount] permission node");
 	BrewingStandsMaxDefault = c.get("ExploitProtections.BrewingStands.MaxDefaultAvailable", 20);
 
-	c.addComment("ExploitProtections.General.PlaceAndBreakProtection",
+	c.addComment("ExploitProtections.General.PlaceAndBreak.Enabled",
 	    "Enable blocks protection, like ore, from exploiting by placing and destroying same block again and again.",
 	    "Modify restrictedBlocks.yml for blocks you want to protect");
-	useBlockProtection = c.get("ExploitProtections.General.PlaceAndBreakProtection", true);
+	useBlockProtection = c.get("ExploitProtections.General.PlaceAndBreak.Enabled", c.getC().getBoolean("ExploitProtections.General.PlaceAndBreakProtection", true));
 
-	c.addComment("ExploitProtections.General.KeepDataFor",
+	c.addComment("ExploitProtections.General.PlaceAndBreak.IgnoreOreGenerators",
+	    "Enabling this we will ignore blocks generated in ore generators, liko stone, coublestone and obsidian. You can still use timer on player placed obsidian block");
+	ignoreOreGenerators = c.get("ExploitProtections.General.PlaceAndBreak.IgnoreOreGenerators", true);
+
+	c.addComment("ExploitProtections.General.PlaceAndBreak.KeepDataFor",
 	    "For how long in days to keep block protection data in data base", "This will clean block data which ones have -1 as cooldown value",
 	    "Data base cleanup will be performed on each server startup", "This cant be more then 14 days");
-	BlockProtectionDays = c.get("ExploitProtections.General.KeepDataFor", 14);
+	BlockProtectionDays = c.get("ExploitProtections.General.PlaceAndBreak.KeepDataFor", c.getC().getInt("ExploitProtections.General.KeepDataFor", 14));
 	BlockProtectionDays = BlockProtectionDays > 14 ? 14 : BlockProtectionDays;
 
 	/*c.addComment("ExploitProtections.General.AllowBreakPaymentForOreGenerators", "It allows you to pay for ore generator plugins continuously"
 			+ " once you have broken the block in one place.");
 	allowBreakPaymentForOreGenerators = c.get("ExploitProtections.General.AllowBreakPaymentForOreGenerators", false);*/
 
-	c.addComment("ExploitProtections.General.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");
-	useGlobalTimer = c.get("ExploitProtections.General.GlobalBlockTimer.use", true);
-	globalblocktimer = c.get("ExploitProtections.General.GlobalBlockTimer.timer", 3);
+	c.addComment("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer", "All blocks will be protected X sec after player places it on ground.");
+	useGlobalTimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Use", c.getC().getBoolean("ExploitProtections.General.GlobalBlockTimer.use", true));
+	globalblocktimer = c.get("ExploitProtections.General.PlaceAndBreak.GlobalBlockTimer.Timer", c.getC().getInt("ExploitProtections.General.GlobalBlockTimer.timer", 3));
 
-	c.addComment("ExploitProtections.General.SilkTouchProtection", "Enable silk touch protection.",
+	c.addComment("ExploitProtections.General.PlaceAndBreak.SilkTouchProtection", "Enable silk touch protection.",
 	    "With this enabled players wont get paid for broken blocks from restrictedblocks list with silk touch tool.");
-	useSilkTouchProtection = c.get("ExploitProtections.General.SilkTouchProtection", false);
+	useSilkTouchProtection = c.get("ExploitProtections.General.PlaceAndBreak.SilkTouchProtection", c.getC().getBoolean("ExploitProtections.General.SilkTouchProtection", false));
 
 	c.addComment("ExploitProtections.General.MonsterDamage.Use", "This section controls how much damage player should do to monster for player to get paid",
 	    "This prevents from killing monsters in one hit when they suffer in example fall damage");

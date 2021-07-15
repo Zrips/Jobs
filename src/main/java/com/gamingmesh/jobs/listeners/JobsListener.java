@@ -42,6 +42,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.ClickType;
@@ -107,6 +108,18 @@ public class JobsListener implements Listener {
 	return time > 100;
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onBlockFromToEvent(BlockFromToEvent event) {
+	
+	if (!Jobs.getGCManager().useBlockProtection)
+	    return;
+	if (!Jobs.getGCManager().ignoreOreGenerators)
+	    return;
+	if (!Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld()))
+	    return;
+	Jobs.getBpManager().remove(event.getToBlock());
+    }
+    
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent event) {
 	if (Jobs.getGCManager().isShowNewVersion() && event.getPlayer().hasPermission("jobs.versioncheck"))
