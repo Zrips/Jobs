@@ -22,9 +22,11 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.container.ActionType;
 
+import net.Zrips.CMILib.Version.Version;
+
 public class ItemActionInfo extends MaterialActionInfo {
     @SuppressWarnings("deprecation")
     public ItemActionInfo(ItemStack items, ActionType type) {
-	super(items.getType(), items.getData().getData(), type);
+	super(items.getType(), Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : items.getData().getData(), type);
     }
 }

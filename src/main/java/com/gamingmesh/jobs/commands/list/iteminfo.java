@@ -40,7 +40,7 @@ public class iteminfo implements Cmd {
 	    EnchantmentTarget.FISHING_ROD.includes(iih))
 	    tool = true;
 
-	byte data = iih.getData().getData();
+	byte data = (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : iih.getData().getData());
 	String dataString = data == 0 ? "" : "-" + data;
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));

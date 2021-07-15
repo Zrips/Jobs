@@ -320,11 +320,11 @@ public class editquests implements Cmd {
 		switch (args[4]) {
 		case "hand":
 		    ItemStack item = CMIItemStack.getItemInMainHand(player);
-		    key = item.getType().name() + "-" + item.getData().getData();
+		    key = item.getType().name() + "-" + (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : item.getData().getData());
 		    break;
 		case "offhand":
 		    item = CMIItemStack.getItemInOffHand(player);
-		    key = item.getType().name() + "-" + item.getData().getData();
+		    key = item.getType().name() + "-" + (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : item.getData().getData());
 		    break;
 		case "looking":
 		case "lookingat":

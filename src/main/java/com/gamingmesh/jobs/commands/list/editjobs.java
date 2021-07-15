@@ -20,6 +20,7 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.RawMessages.RawMessage;
+import net.Zrips.CMILib.Version.Version;
 
 public class editjobs implements Cmd {
 
@@ -338,11 +339,11 @@ public class editjobs implements Cmd {
 		switch (args[3]) {
 		case "hand":
 		    ItemStack item = CMIItemStack.getItemInMainHand(player);
-		    key = item.getType().name() + "-" + item.getData().getData();
+		    key = item.getType().name() + "-" + (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : item.getData().getData());
 		    break;
 		case "offhand":
 		    item = CMIItemStack.getItemInOffHand(player);
-		    key = item.getType().name() + "-" + item.getData().getData();
+		    key = item.getType().name() + "-" + (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : item.getData().getData());
 		    break;
 		case "looking":
 		case "lookingat":
