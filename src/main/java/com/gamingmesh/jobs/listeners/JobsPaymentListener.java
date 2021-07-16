@@ -18,6 +18,8 @@
 
 package com.gamingmesh.jobs.listeners;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -28,6 +30,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.Ageable;
@@ -47,6 +50,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -119,6 +123,7 @@ import com.google.common.cache.CacheBuilder;
 import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
@@ -450,6 +455,7 @@ public final class JobsPaymentListener implements Listener {
 	}*/
 
 	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), bInfo, block);
+	breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), player.getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1760,5 +1766,54 @@ public final class JobsPaymentListener implements Listener {
 	}
 
 	return true;
+    }
+
+    private static final int MAX_ENTRIES = 50;
+    LinkedHashMap<String, UUID> breakCache = new LinkedHashMap<String, UUID>(MAX_ENTRIES + 1, .75F, false) {
+	protected boolean removeEldestEntry(Map.Entry<String, UUID> eldest) {
+	    return size() > MAX_ENTRIES;
+	}
+    };
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEvent(BlockPhysicsEvent event) {
+	if (!Jobs.getGCManager().payForAbove)
+	    return;
+	if (event.getBlock().getType().equals(Material.AIR))
+	    return;
+	final Block block = event.getBlock();
+
+	CMIMaterial mat = CMIMaterial.get(block);
+
+	if (!mat.equals(CMIMaterial.SUGAR_CANE) && !mat.equals(CMIMaterial.BAMBOO) && !mat.equals(CMIMaterial.KELP_PLANT))
+	    return;
+
+	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+	    return;
+
+	if (event.getSourceBlock().equals(event.getBlock()))
+	    return;
+
+	if (event.getBlock().getLocation().getBlockY() <= event.getSourceBlock().getLocation().getBlockY())
+	    return;
+
+	Location loc = event.getSourceBlock().getLocation().clone();
+	UUID uuid = breakCache.get(CMILocation.toString(loc, ":", true, true));
+	if (uuid == null)
+	    return;
+
+	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
+	FastPayment fp = Jobs.FASTPAYMENT.get(uuid);
+	if (fp == null)
+	    return;
+	if (!fp.getInfo().getType().equals(ActionType.BREAK) || !fp.getInfo().getNameWithSub().equals(bInfo.getNameWithSub()))
+	    return;
+
+	if (fp.getTime() > System.currentTimeMillis() - 50L && (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
+	    fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub()))) {
+	    Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
+	    breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), uuid);
+	    fp.setTime(System.currentTimeMillis() + 45);
+	}
     }
 }

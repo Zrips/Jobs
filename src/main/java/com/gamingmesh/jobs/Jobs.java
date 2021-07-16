@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -159,7 +160,12 @@ public final class Jobs extends JavaPlugin {
     public static BufferedPaymentThread paymentThread;
     private static DatabaseSaveThread saveTask;
 
-    public static final Map<UUID, FastPayment> FASTPAYMENT = new HashMap<>();
+    private static final int MAX_ENTRIES = 5;
+    public static final LinkedHashMap<UUID, FastPayment> FASTPAYMENT = new LinkedHashMap<UUID, FastPayment>(MAX_ENTRIES + 1, .75F, false) {
+	protected boolean removeEldestEntry(Map.Entry<UUID, FastPayment> eldest) {
+	    return size() > MAX_ENTRIES;
+	}
+    };
 
     protected static VersionChecker versionCheckManager;
     protected static SelectionManager smanager;
@@ -1086,8 +1092,6 @@ public final class Jobs extends JavaPlugin {
 	    }
 
 	} else {
-	    FASTPAYMENT.clear();
-
 	    List<Job> expiredJobs = new ArrayList<>();
 	    for (JobProgression prog : progression) {
 		if (prog.getJob().isWorldBlackListed(block) || prog.getJob().isWorldBlackListed(block, ent)

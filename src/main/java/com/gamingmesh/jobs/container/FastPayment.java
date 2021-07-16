@@ -36,4 +36,8 @@ public class FastPayment {
     public Long getTime() {
 	return time;
     }
+
+    public void setTime(Long time) {
+	this.time = time;
+    }
 }

@@ -100,7 +100,7 @@ public class GeneralConfigManager {
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel,
 	BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
-	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities,
+	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
 	payForEachVTradeItem, allowEnchantingBoostedItems;
 
     public ItemStack guiBackButton, guiNextButton;
@@ -472,6 +472,9 @@ public class GeneralConfigManager {
 	    "This option is only related to: sugar_cane, cactus, kelp, bamboo");
 	preventCropResizePayment = c.get("prevent-crop-resize-payment", false);*/
 
+	c.addComment("pay-for-above", "When enabled we will try to pay player for blocks above broken ones. This only applies to sugarcane, bamboo and kelp");
+	payForAbove = c.get("pay-for-above", false);
+
 	c.addComment("pay-for-stacked-entities", "Allows to pay for stacked entities for each one. Requires StackMob or WildStacker.");
 	payForStackedEntities = c.get("pay-for-stacked-entities", false);
 
@@ -832,7 +835,7 @@ public class GeneralConfigManager {
 	MythicMobsEnabled = c.get("ExploitProtections.MythicMobs.enabled", true);
 
 	c.addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime splitting when they are from spawner",
-	    "Protects agains exploiting as new splited slimes is treated as naturally spawned and not from spawner");
+	    "Protects against exploiting as new splitted slimes is treated as naturally spawned and not from spawner");
 	PreventSlimeSplit = c.get("ExploitProtections.Spawner.PreventSlimeSplit", true);
 	c.addComment("ExploitProtections.Spawner.PreventMagmaCubeSplit", "Prevent magmacube splitting when they are from spawner");
 	PreventMagmaCubeSplit = c.get("ExploitProtections.Spawner.PreventMagmaCubeSplit", true);
