@@ -42,6 +42,8 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 public abstract class JobsDAO {
 
     private JobsConnectionPool pool;
@@ -781,7 +783,6 @@ public abstract class JobsDAO {
 		    job = Jobs.getJob(jobid);
 		} else {
 		    job = Jobs.getJob(jobName);
-		    converted = false;
 		}
 
 		if (job == null)
@@ -1183,8 +1184,18 @@ public abstract class JobsDAO {
 		String name = res.getString(worldsTableFields.name.getCollumn());
 
 		Job job = Jobs.getJob(name);
-		if (job != null)
-		    job.setId(id);
+		if (job != null) {
+		    if (job.getId() == 0)
+			job.setId(id);
+		    else {
+			// Prioritizing id which matches actual job name and not full name which can be different
+			if (job.getName().equals(name)) {
+			    job.setLegacyId(job.getId());
+			    job.setId(id);
+			} else
+			    job.setLegacyId(id);
+		    }
+		}
 	    }
 	} catch (SQLException e) {
 	    e.printStackTrace();
@@ -1846,12 +1857,15 @@ public abstract class JobsDAO {
 	PreparedStatement prest = null;
 	try {
 	    prest = conn.prepareStatement("UPDATE `" + getJobsTableName() + "` SET `" + JobsTableFields.level.getCollumn() + "` = ?, `" + JobsTableFields.experience.getCollumn()
-		+ "` = ? WHERE `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
+		+ "` = ? WHERE `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn() + "` = ? "
+		    + "OR `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
 	    for (JobProgression progression : player.getJobProgression()) {
 		prest.setInt(1, progression.getLevel());
 		prest.setDouble(2, progression.getExperience());
 		prest.setInt(3, player.getUserId());
 		prest.setInt(4, progression.getJob().getId());
+		prest.setInt(5, player.getUserId());
+		prest.setInt(6, progression.getJob().getLegacyId());
 		prest.execute();
 	    }
 	} catch (SQLException e) {
@@ -2547,9 +2561,11 @@ public abstract class JobsDAO {
 
 	try {
 	    prest = conn.prepareStatement("SELECT `" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "` FROM `"
-		+ getJobsTableName() + "` WHERE `" + JobsTableFields.jobid.getCollumn() + "` LIKE ? ORDER BY `" + JobsTableFields.level.getCollumn() + "` DESC, LOWER("
+		+ getJobsTableName() + "` WHERE `" + JobsTableFields.jobid.getCollumn() + "` LIKE ? OR `" + JobsTableFields.jobid.getCollumn() + "` LIKE ? ORDER BY `" + JobsTableFields.level.getCollumn()
+		+ "` DESC, LOWER("
 		+ JobsTableFields.experience.getCollumn() + ") DESC LIMIT " + limit + ", 50;");
 	    prest.setInt(1, job.getId());
+	    prest.setInt(2, job.getLegacyId());
 	    res = prest.executeQuery();
 
 	    while (res.next()) {
@@ -2580,8 +2596,9 @@ public abstract class JobsDAO {
 	PreparedStatement prest = null;
 	ResultSet res = null;
 	try {
-	    prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
+	    prest = conn.prepareStatement("SELECT COUNT(*) FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid.getCollumn() + "` = ? OR `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
 	    prest.setInt(1, job.getId());
+	    prest.setInt(2, job.getLegacyId());
 	    res = prest.executeQuery();
 	    if (res.next()) {
 		slot = res.getInt(1);

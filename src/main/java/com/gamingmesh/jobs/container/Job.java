@@ -93,6 +93,7 @@ public class Job {
     private final List<Quest> quests = new ArrayList<>();
     private int maxDailyQuests = 1;
     private int id = 0;
+    private int legacyId = 0;
     private boolean ignoreMaxJobs = false;
 
     @Deprecated
@@ -687,5 +688,13 @@ public class Job {
 
     public void setJobDisplayName(String jobDisplayName) {
 	this.jobDisplayName = jobDisplayName;
+    }
+
+    public int getLegacyId() {
+	return legacyId;
+    }
+
+    public void setLegacyId(int legacyId) {
+	this.legacyId = legacyId;
     }
 }

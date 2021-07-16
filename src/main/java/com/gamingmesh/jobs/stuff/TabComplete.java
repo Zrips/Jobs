@@ -76,7 +76,8 @@ public final class TabComplete implements TabCompleter {
 			case "[jobname]":
 			case "[newjob]":
 			    for (Job one : Jobs.getJobs()) {
-				temp.add(one.getName());
+				temp.add(one.getJobFullName());
+//				temp.add(one.getName());
 			    }
 
 			    break;
@@ -127,14 +128,14 @@ public final class TabComplete implements TabCompleter {
 
 			    if (onePlayerJob != null)
 				for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
-				    temp.add(oneOldJob.getJob().getName());
+				    temp.add(oneOldJob.getJob().getJobFullName());
 				}
 
 			    break;
 			case "[oldplayerjob]":
 			    if (sender instanceof Player && (onePlayerJob = Jobs.getPlayerManager().getJobsPlayer((Player) sender)) != null) {
 				for (JobProgression oneOldJob : onePlayerJob.getJobProgression()) {
-				    temp.add(oneOldJob.getJob().getName());
+				    temp.add(oneOldJob.getJob().getJobFullName());
 				}
 			    }
 

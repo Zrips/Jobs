@@ -522,7 +522,7 @@ public final class Jobs extends JavaPlugin {
      */
     public static Job getJob(int id) {
 	for (Job job : jobs) {
-	    if (job.getId() == id) {
+	    if (job.getId() == id || job.getLegacyId() == id) {
 		return job;
 	    }
 	}
