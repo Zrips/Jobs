@@ -1779,7 +1779,6 @@ public abstract class JobsDAO {
 			res.getInt(UserTableFields.donequests.getCollumn()),
 			res.getString(UserTableFields.quests.getCollumn())));
 		} catch (IllegalArgumentException e) {
-		    uuids.add(uuid);
 		}
 	    }
 
