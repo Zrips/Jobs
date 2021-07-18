@@ -110,7 +110,7 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockFromToEvent(BlockFromToEvent event) {
-	
+
 	if (!Jobs.getGCManager().useBlockProtection)
 	    return;
 	if (!Jobs.getGCManager().ignoreOreGenerators)
@@ -119,7 +119,7 @@ public class JobsListener implements Listener {
 	    return;
 	Jobs.getBpManager().remove(event.getToBlock());
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent event) {
 	if (Jobs.getGCManager().isShowNewVersion() && event.getPlayer().hasPermission("jobs.versioncheck"))
@@ -163,8 +163,7 @@ public class JobsListener implements Listener {
 	if (!Jobs.getGCManager().MultiServerCompatability())
 	    Jobs.getPlayerManager().playerJoin(event.getPlayer());
 	else {
-	    plugin.getServer().getScheduler().runTaskLater(plugin, () ->
-		    Jobs.getPlayerManager().playerJoin(event.getPlayer()), 10L);
+	    plugin.getServer().getScheduler().runTaskLater(plugin, () -> Jobs.getPlayerManager().playerJoin(event.getPlayer()), 10L);
 	}
     }
 
@@ -182,10 +181,7 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-	java.util.concurrent.CompletableFuture.supplyAsync(() -> {
-	    Jobs.getPlayerManager().playerQuit(event.getPlayer());
-	    return true;
-	});
+	Jobs.getPlayerManager().playerQuit(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -221,7 +217,7 @@ public class JobsListener implements Listener {
 	}
 
 	player.performCommand("jobs " + command + " " + CMIChatColor.stripColor(plugin.getComplement().getLine(sign, 2))
-	+ " " + CMIChatColor.stripColor(plugin.getComplement()
+	    + " " + CMIChatColor.stripColor(plugin.getComplement()
 		.getLine(sign, 3)).replace(" ", "")); // Replace trailing spaces at 3rd line to parse command
     }
 

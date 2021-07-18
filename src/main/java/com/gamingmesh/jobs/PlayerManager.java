@@ -64,6 +64,7 @@ import com.gamingmesh.jobs.stuff.Util;
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
 
@@ -121,6 +122,27 @@ public class PlayerManager {
     }
 
     public void addPlayerToMap(PlayerInfo info) {
+
+	// Checking duplicated UUID's which usually is a cause of previous bugs
+	if (playerUUIDMap.containsKey(info.getUuid()) && playerUUIDMap.get(info.getUuid()).getID() != info.getID()) {
+	    int id = playerUUIDMap.get(info.getUuid()).getID();
+	    CMIMessages.consoleMessage("&7Duplicate! &5" + info.getName() + " &7same UUID for 2 entries in dabase. Please remove of one them from users table id1: &2" + id + " &7id2: &2" + info.getID());
+
+	    if (id < info.getID()) {
+		return;
+	    }
+	}
+
+	// Checking duplicated names which usually is a cause of previous bugs
+	if (playerNameMap.containsKey(info.getName().toLowerCase()) && playerNameMap.get(info.getName().toLowerCase()).getID() != info.getID()) {
+	    int id = playerNameMap.get(info.getName().toLowerCase()).getID();
+	    CMIMessages.consoleMessage("&7Name Duplicate! &5" + info.getName() + " &7same UUID for 2 entries in dabase. Please remove of one them from users table id1: &2" + id + " &7id2: &2" + info
+		.getID());
+	    if (id < info.getID()) {
+		return;
+	    }
+	}
+
 	playerUUIDMap.put(info.getUuid(), info);
 	playerIdMap.put(info.getID(), info);
 	playerNameMap.put(info.getName().toLowerCase(), info);
@@ -388,7 +410,6 @@ public class PlayerManager {
      */
     public JobsPlayer getJobsPlayer(String playerName) {
 	playerName = playerName.toLowerCase();
-
 	JobsPlayer jPlayer = players.get(playerName);
 	return jPlayer != null ? jPlayer : playersCache.get(playerName);
     }
@@ -419,13 +440,22 @@ public class PlayerManager {
 	    for (JobsDAOData jobdata : jobs) {
 		Job job = Jobs.getJob(jobdata.getJobName());
 		if (job != null) {
+
+		    // Fixing issue with doubled jobs. Picking bigger job by level or exp
+		    JobProgression oldProg = jPlayer.getJobProgression(job);
+		    if (oldProg != null && (oldProg.getLevel() > jobdata.getLevel() || oldProg.getLevel() == jobdata.getLevel() && oldProg.getExperience() > jobdata.getExperience())) {
+			Jobs.getDBManager().getDB().removeSpecificJob(jPlayer, jobdata.getJobName(), jobdata.getLevel());
+			CMIMessages.consoleMessage("Cleaned up duplicated jobs record for " + jPlayer.getName() + " Job:" + jobdata.getJobName() + " Level:" + jobdata.getLevel());
+			continue;
+		    }
+
 		    jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
 		    jPlayer.reloadMaxExperience();
 		    jPlayer.reloadLimits();
 		}
 	    }
 	}
-
+	
 	if (points != null)
 	    jPlayer.setPoints(points);
 

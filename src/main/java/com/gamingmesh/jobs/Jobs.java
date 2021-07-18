@@ -572,7 +572,7 @@ public final class Jobs extends JavaPlugin {
 		getPlayerManager().addPlayerToCache(jPlayer);
 	}
 	if (!getPlayerManager().getPlayersCache().isEmpty())
-	    consoleMsg("&e[Jobs] Preloaded " + getPlayerManager().getPlayersCache().size() + " players data in " + ((int) ((System.currentTimeMillis() - time) / 1000.0D * 100.0D) / 100.0D));
+	    consoleMsg("&e[Jobs] Preloaded &6" + getPlayerManager().getPlayersCache().size() + " &eplayers data in &6" + ((int) ((System.currentTimeMillis() - time) / 1000.0D * 100.0D) / 100.0D));
     }
 
     public static void convertDatabase() {

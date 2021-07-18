@@ -634,6 +634,7 @@ public abstract class JobsDAO {
 	    res = prest.executeQuery();
 	    while (res.next()) {
 		int id = res.getInt(JobsTableFields.userid.getCollumn());
+
 		List<JobsDAOData> ls = map.get(id);
 		if (ls == null)
 		    ls = new ArrayList<>();
@@ -644,13 +645,13 @@ public abstract class JobsDAO {
 		    converted = false;
 		} else {
 		    // This should be removed when we switch over to id only method
-		    if (converted)
-			if (res.getString(JobsTableFields.job.getCollumn()) == null || res.getString(JobsTableFields.job.getCollumn()).isEmpty())
-			    converted = false;
+		    if (converted && res.getString(JobsTableFields.job.getCollumn()) == null || res.getString(JobsTableFields.job.getCollumn()).isEmpty())
+			converted = false;
 
 		    Job job = Jobs.getJob(jobId);
-		    if (job != null)
+		    if (job != null) {
 			ls.add(new JobsDAOData(job.getName(), res.getInt(JobsTableFields.level.getCollumn()), res.getDouble(JobsTableFields.experience.getCollumn())));
+		    }
 		}
 
 		map.put(id, ls);
@@ -1589,6 +1590,33 @@ public abstract class JobsDAO {
     }
 
     /**
+     * Quit a job (delete player-job entry from storage)
+     * @param player - player that wishes to quit the job
+     * @param job - job that the player wishes to quit
+     */
+    public synchronized boolean removeSpecificJob(JobsPlayer jPlayer, String jobName, int level) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return false;
+	PreparedStatement prest = null;
+	boolean done = true;
+	try {
+	    prest = conn.prepareStatement("DELETE FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.job.getCollumn()
+		+ "` = ? AND `" + JobsTableFields.level.getCollumn() + "` = ?;");
+	    prest.setInt(1, jPlayer.getUserId());
+	    prest.setString(2, jobName);
+	    prest.setInt(3, level);
+	    prest.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    done = false;
+	} finally {
+	    close(prest);
+	}
+	return done;
+    }
+
+    /**
      * Record job to archive
      * @param player - player that wishes to quit the job
      * @param job - job that the player wishes to quit
@@ -1857,7 +1885,7 @@ public abstract class JobsDAO {
 	try {
 	    prest = conn.prepareStatement("UPDATE `" + getJobsTableName() + "` SET `" + JobsTableFields.level.getCollumn() + "` = ?, `" + JobsTableFields.experience.getCollumn()
 		+ "` = ? WHERE `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn() + "` = ? "
-		    + "OR `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
+		+ "OR `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.jobid.getCollumn() + "` = ?;");
 	    for (JobProgression progression : player.getJobProgression()) {
 		prest.setInt(1, progression.getLevel());
 		prest.setDouble(2, progression.getExperience());
