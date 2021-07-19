@@ -1590,22 +1590,23 @@ public abstract class JobsDAO {
     }
 
     /**
-     * Quit a job (delete player-job entry from storage)
-     * @param player - player that wishes to quit the job
-     * @param job - job that the player wishes to quit
+     * Remove duplicated job by specific criteria
      */
-    public synchronized boolean removeSpecificJob(JobsPlayer jPlayer, String jobName, int level) {
+    public synchronized boolean removeSpecificJob(int userId, String jobName, String legacyName, int level, double exp) {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return false;
 	PreparedStatement prest = null;
 	boolean done = true;
 	try {
-	    prest = conn.prepareStatement("DELETE FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.userid.getCollumn() + "` = ? AND `" + JobsTableFields.job.getCollumn()
-		+ "` = ? AND `" + JobsTableFields.level.getCollumn() + "` = ?;");
-	    prest.setInt(1, jPlayer.getUserId());
+	    prest = conn.prepareStatement("DELETE FROM `" + getJobsTableName() + "` WHERE `" + JobsTableFields.userid.getCollumn() + "` = ? AND (`" + JobsTableFields.job.getCollumn()
+		+ "` = ? OR `" + JobsTableFields.job.getCollumn()
+		+ "` = ?) AND `" + JobsTableFields.level.getCollumn() + "` = ? AND `" + JobsTableFields.experience.getCollumn() + "` = ?;");
+	    prest.setInt(1, userId);
 	    prest.setString(2, jobName);
-	    prest.setInt(3, level);
+	    prest.setString(3, legacyName);
+	    prest.setInt(4, level);
+	    prest.setDouble(5, exp);
 	    prest.execute();
 	} catch (SQLException e) {
 	    e.printStackTrace();

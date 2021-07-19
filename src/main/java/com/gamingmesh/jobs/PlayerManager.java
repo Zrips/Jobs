@@ -444,7 +444,7 @@ public class PlayerManager {
 		    // Fixing issue with doubled jobs. Picking bigger job by level or exp
 		    JobProgression oldProg = jPlayer.getJobProgression(job);
 		    if (oldProg != null && (oldProg.getLevel() > jobdata.getLevel() || oldProg.getLevel() == jobdata.getLevel() && oldProg.getExperience() > jobdata.getExperience())) {
-			Jobs.getDBManager().getDB().removeSpecificJob(jPlayer, jobdata.getJobName(), jobdata.getLevel());
+			Jobs.getDBManager().getDB().removeSpecificJob(jPlayer.getUserId(), job.getName(), job.getJobFullName(), jobdata.getLevel(), jobdata.getExperience());
 			CMIMessages.consoleMessage("Cleaned up duplicated jobs record for " + jPlayer.getName() + " Job:" + jobdata.getJobName() + " Level:" + jobdata.getLevel());
 			continue;
 		    }
@@ -455,7 +455,7 @@ public class PlayerManager {
 		}
 	    }
 	}
-	
+
 	if (points != null)
 	    jPlayer.setPoints(points);
 
