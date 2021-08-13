@@ -1,3 +1,4 @@
+# Traducido por agent_joojoo y BenjamonSRL#6153 #
 ---
 economy:
   error:
@@ -23,25 +24,25 @@ general:
       blastfurnace: Alto Hordo
       brewingstand: Soporte para pociones
   admin:
-    error: '&cSe ha producido un error al aplicar el conjuro.'
-    success: '&eEl conjuro ha sido aplicado.'
+    error: '&cSe ha producido un error al aplicar el comando.'
+    success: '&eEl comando ha sido aplicado.'
   error:
     noHelpPage: '&c¡No existe este número de página de ayuda!'
     notNumber: '&ePor favor, utiliza números.'
     job: '&cEl trabajo que has seleccionado no existe o no formas parte de él'
-    noCommand: '&c¡No hay ningún conjuro con este nombre!'
+    noCommand: '&c¡No hay ningún comando con este nombre!'
     permission: '&cNo tienes permiso para hacer esto.'
     noinfo: '&cNo se ha encontrado información.'
     noinfoByPlayer: '&cNo se a encontrado información sobre [%playername%].'
-    ingame: '&cEsto es un conjuro y solo puede ser usado por un jugador.'
+    ingame: '&cEsto es un comando y solo puede ser usado por un jugador.'
     fromconsole: '&cEsto es un comando y solo puede ser usado desde la consola.'
-    worldisdisabled: '&cNo puedes usar este conjuro en este mundo.'
+    worldisdisabled: '&cNo puedes usar este comando en este mundo.'
     newRegistration: '&eSe ha registrado un nuevo propietario para [block] &7[current]&e/&f[max]'
     noRegistration: '&c¡Has alcanzado el número máximo de [block]!'
 command:
   help:
     output:
-      info: Escribe /jobs [command] ? para obtener más información sobre el conjuro.
+      info: Escribe /jobs [command] ? para obtener más información sobre el comando.
       cmdUsage: '&2Usa: &7[command]'
       label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
@@ -96,9 +97,9 @@ command:
       info: Enables the given scheduler
       args: enable [scheduleName] [untilTime]
     output:
-      noScheduleFound: '&cSchedule with this name not found.'
-      alreadyEnabled: '&cThis schedule already enabled.'
-      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
+      noScheduleFound: '&cNo se ha encontrado ninguna programacion con este nombre.'
+      alreadyEnabled: '&cEsta programacion ya esta activada.'
+      enabled: '&eLa programacion ha sido activada desde&a %from%&e until&a %until%'
   itembonus:
     help:
       info: Comprobar bonificación de artículo
@@ -144,12 +145,12 @@ command:
       pointstime: '&eTiempo restante hasta que los Puntos vuelvan a la normalidad: &2%time%'
       pointsLimit: '&eLímite de Puntos: &2%current%&e/&2%total%'
       reachedmoneylimit: '&4¡Has alcanzado el salario máximo permitido por minuto!'
-      reachedmoneylimit2: '&ePuedes comprobar el límite con el conjuro &2/jobs limit'
+      reachedmoneylimit2: '&ePuedes comprobar el límite con el comando &2/jobs limit'
       reachedmoneylimit3: '&eEl dinero ganado ahora se reduce exponencialmente... ¡Pero aún ganas un poco!'
       reachedexplimit: '&4Has alcanzado el límite de Experiencia obtenida por minuto!'
-      reachedexplimit2: '&ePuedes comprobar el límite con el conjuro &2/jobs limit'
+      reachedexplimit2: '&ePuedes comprobar el límite con el comando &2/jobs limit'
       reachedpointslimit: '&4Haz alcanzado el límite de Puntos obtenidos por minuto!'
-      reachedpointslimit2: '&ePuedes comprobar el límite con el conjuro &2/jobs limit'
+      reachedpointslimit2: '&ePuedes comprobar el límite con el comando &2/jobs limit'
       notenabled: '&eLa función de limitación de pagos está desactivada.'
   resetlimit:
     help:
@@ -327,7 +328,7 @@ command:
       next: '&eSiguiente >>>'
     output:
       break:
-        info: '&ePausa'
+        info: '&einfo'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por romper bloques.'
       tntbreak:
         info: '&eExplotar con TNT'
@@ -586,32 +587,32 @@ command:
       nodata: '&cDatos no encontrados'
   transfer:
     help:
-      info: Transfer a player's job from an old job to a new job.
+      info: Transfiere de trabajo a un jugador.
       args: '[playername] [oldjob] [newjob]'
     output:
       target: Has sido transferido de %oldjobname% a %newjobname%.
   promote:
     help:
-      info: Promote the player X levels in a job.
+      info: Aumenta X niveles en el trabajo de un jugador.
       args: '[playername] [jobname] [levels]'
     output:
       target: Has sido ascendido %levelsgained% niveles en tu trabajo de %jobname%.
   exp:
     help:
-      info: Change the player exp for job.
+      info: Cambia el nivel de trabajo de un jugador.
       args: '[playername] [jobname] set/add/take [amount]'
     error:
-      nojob: '&cThis player must first join a job.'
+      nojob: '&cEste jugador primero debe unirse a un trabajo.'
     output:
-      target: '&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eTu nivel de trabajo fue cambiado en %jobname% &ey ahora eres nivel &6%level%lvl &econ &6%exp%exp.'
   level:
     help:
-      info: Change the player's level in a job.
+      info: Cambia el nivel de trabajo de un jugador.
       args: '[playername] [jobname] set/add/take [amount]'
     error:
-      nojob: '&cThis player must first join a job.'
+      nojob: '&cEste jugador primero debe unirse a un trabajo.'
     output:
-      target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eTu nivel de trabajo fue cambiado en %jobname% &ey ahora eres nivel &6%level%lvl &econ &6%exp%exp.'
   demote:
     help:
       info: Desciende a un jugador X niveles en un trabajo.
@@ -655,12 +656,16 @@ command:
         money: '&e[amount] dinero'
         exp: '&7[exp] exp'
         points: '&6[points] puntos'
-      'on': '&aEstado: &aON'
-      'off': '&aEstado: &aOFF'
+      'on': '&aEstado: &aEncendido'
+      'off': '&aEstado: &aApagado'
 message:
   skillup:
     broadcast: '%playername% ha sido ascendido a %titlename% %jobname%.'
     nobroadcast: Felicidades, has sido ascendido a %titlename% %jobname%.
+  max-level-reached:
+    title: '&2Alcanzaste el nivel máximo'
+    subtitle: '&2en %jobname%!'
+    chat: '&cAlcanzaste el maximo nivel para este trabajo: %jobname%!'
   levelup:
     broadcast: '%playername% ahora es nivel %joblevel% %jobname%.'
     nobroadcast: Ahora eres nivel %joblevel% %jobname%.
