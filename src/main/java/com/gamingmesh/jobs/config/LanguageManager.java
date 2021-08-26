@@ -632,6 +632,18 @@ public class LanguageManager {
 	    c.get("command.toggle.output.on", "&aToggled: &aON");
 	    c.get("command.toggle.output.off", "&aToggled: &4OFF");
 
+	    c.get("command.version.help.info", "Plugin version information");
+	    c.get("command.version.help.args", "");
+	    c.get("command.version.output.jobsVersion", "&eJobs: &6[version]");
+	    c.get("command.version.output.jobsVersionNew", "&e-> [newVersion]");
+	    c.get("command.version.output.dbType", " &7[db]");
+	    c.get("command.version.output.newServer", "&eServer: &6[version]");
+	    c.get("command.version.output.Economy", "&eEconomy: &6[provider] ");
+	    c.get("command.version.output.newVault", "&eVault: &6[version] ");
+	    c.get("command.version.output.CMILib", "&eCMILib: &6[version] ");
+	    c.get("command.version.output.cmilVersionNew", "&e-> [newVersion]");
+	    
+	
 	    c.get("message.skillup.broadcast", "%playername% has been promoted to a %titlename% %jobname%.");
 	    c.get("message.skillup.nobroadcast", "Congratulations, you have been promoted to a %titlename% %jobname%.");
 
