@@ -110,6 +110,7 @@ public class JobsPlayer {
      */
     public void addPoints(double points) {
 	pointsData.addPoints(points);
+	this.setSaved(false);
     }
 
     /**
@@ -119,6 +120,7 @@ public class JobsPlayer {
      */
     public void takePoints(double points) {
 	pointsData.takePoints(points);
+	this.setSaved(false);
     }
 
     /**
@@ -128,6 +130,7 @@ public class JobsPlayer {
      */
     public void setPoints(double points) {
 	pointsData.setPoints(points);
+	this.setSaved(false);
     }
 
     /**
