@@ -1002,7 +1002,7 @@ public final class JobsPaymentListener implements Listener {
 	    String enchantName = null;
 
 	    try {
-		enchantName = enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
+		enchantName = enchant.getKey().getKey().toLowerCase().replace("minecraft:", "");
 	    } catch (Throwable e) {
 		CMIEnchantment ench = CMIEnchantment.get(enchant);
 		if (ench != null)
