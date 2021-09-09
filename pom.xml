@@ -191,7 +191,7 @@
 			<artifactId>CMILib</artifactId>
 			<version>latest</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/CMILib1.0.2.2.jar</systemPath>
+			<systemPath>${basedir}/libs/CMILib1.0.2.12.jar</systemPath>
 		</dependency>
 		<!-- WildStacker -->
 		<dependency>
