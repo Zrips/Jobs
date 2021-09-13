@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
@@ -91,6 +92,16 @@ public class JobsPlayer {
     private final Map<UUID, Map<Job, Long>> leftTimes = new HashMap<>();
 
     private PlayerPoints pointsData = new PlayerPoints();
+
+    public JobsPlayer(OfflinePlayer player) {
+	this.userName = player.getName() == null ? "Unknown" : player.getName();
+	this.playerUUID = player.getUniqueId();
+    }
+    
+    public JobsPlayer(Player player) {
+	this.userName = player.getName() == null ? "Unknown" : player.getName();
+	this.playerUUID = player.getUniqueId();
+    }
 
     public JobsPlayer(String userName) {
 	this.userName = userName == null ? "Unknown" : userName;
@@ -1368,7 +1379,7 @@ public class JobsPlayer {
 
 	String perm = "jobs.max" + (type == BlockTypes.FURNACE
 	    ? "furnaces" : type == BlockTypes.BLAST_FURNACE ? "blastfurnaces" : type == BlockTypes.SMOKER ? "smokers"
-	    : type == BlockTypes.BREWING_STAND ? "brewingstands" : "");
+		: type == BlockTypes.BREWING_STAND ? "brewingstands" : "");
 
 	maxV = Jobs.getPermissionManager().getMaxPermission(this, perm);
 

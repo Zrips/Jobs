@@ -22,6 +22,8 @@ public class PlayerInfo {
 	this.questsDone = questsDone;
 	this.questProgression = questProgression;
 	player = Jobs.getPlayerManager().getJobsPlayer(uuid);
+	if (player != null)
+	    player.setUserId(id);
     }
 
     public PlayerInfo(String name, int id, UUID uuid, Long seen, Integer questsDone) {

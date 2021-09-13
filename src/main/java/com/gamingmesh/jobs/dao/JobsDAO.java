@@ -914,8 +914,7 @@ public abstract class JobsDAO {
 
 	    res2 = prestt.getGeneratedKeys();
 
-	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, res2.next() ? res2.getInt(1) : 0,
-		uuid, System.currentTimeMillis(), 0));
+	    Jobs.getPlayerManager().addPlayerToMap(new PlayerInfo(playerName, res2.next() ? res2.getInt(1) : 0, uuid, System.currentTimeMillis(), 0));
 	} catch (SQLException e) {
 	    e.printStackTrace();
 	} finally {
@@ -1845,8 +1844,7 @@ public abstract class JobsDAO {
     }
 
     public JobsPlayer loadFromDao(OfflinePlayer player) {
-	JobsPlayer jPlayer = new JobsPlayer(player.getName());
-	jPlayer.setPlayerUUID(player.getUniqueId());
+	JobsPlayer jPlayer = new JobsPlayer(player);
 	return loadFromDao(jPlayer);
     }
 
