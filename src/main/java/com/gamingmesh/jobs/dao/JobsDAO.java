@@ -897,6 +897,14 @@ public abstract class JobsDAO {
 	JobsConnection conn = getConnection();
 	if (conn == null)
 	    return;
+
+	// Checking possible record in database to avoid duplicates
+	PlayerInfo info = loadPlayerData(uuid);
+	if (info != null) {
+	    Jobs.getPlayerManager().addPlayerToMap(info);
+	    return;
+	}
+
 	PreparedStatement prestt = null;
 	ResultSet res2 = null;
 	try {
