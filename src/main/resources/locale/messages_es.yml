@@ -327,7 +327,7 @@ command:
       next: '&eSiguiente >>>'
     output:
       break:
-        info: '&ePausa'
+        info: '&Romper'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por romper bloques.'
       tntbreak:
         info: '&eExplotar con TNT'
@@ -336,7 +336,7 @@ command:
         info: '&eColocar'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por colocar bloques.'
       striplogs:
-        info: '&eTira de registros'
+        info: '&eTronco sin corteza'
         none: '%jobname% no recibe dinero por pelar troncos.'
       kill:
         info: '&eMatar'
