@@ -393,7 +393,7 @@ public class JobsCommands implements CommandExecutor {
 
 	Title title = Jobs.getTitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
 	String message = Jobs.getLanguage().getMessage(path,
-	    "%joblevel%", jobProg.getLevel(),
+	    "%joblevel%", jobProg.getLevelFormatted(),
 	    "%jobname%", jobProg.getJob().getJobDisplayName(),
 	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(),

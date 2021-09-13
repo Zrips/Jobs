@@ -534,7 +534,7 @@ public class Placeholder {
 			    for (TopList l : Jobs.getJobsDAO().getGlobalTopList(jobLevel.get())) {
 				if (l.getPlayerInfo().getName().equals(user.getName())) {
 				    JobProgression prog = l.getPlayerInfo().getJobsPlayer().getJobProgression(job);
-				    return prog == null ? "" : Integer.toString(prog.getLevel());
+				    return prog == null ? "" : prog.getLevelFormatted();
 				}
 			    }
 
@@ -555,7 +555,7 @@ public class Placeholder {
 		    }
 
 		    JobProgression archivedJobProg = user.getArchivedJobProgression(job);
-		    return archivedJobProg == null ? "" : Integer.toString(archivedJobProg.getLevel());
+		    return archivedJobProg == null ? "" : archivedJobProg.getLevelFormatted();
 		case user_archived_jobs_exp_$1:
 		    if (job == null)
 			return "";

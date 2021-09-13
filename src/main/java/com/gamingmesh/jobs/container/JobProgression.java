@@ -21,7 +21,9 @@ package com.gamingmesh.jobs.container;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.stuff.TimeManage;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class JobProgression {
     private Job job;
@@ -134,6 +136,16 @@ public class JobProgression {
      */
     public int getLevel() {
 	return level;
+    }
+
+    /**
+     * Get the current level of this job in formatted way
+     * @return the level of this job
+     */
+    public String getLevelFormatted() {
+	if (Jobs.getGCManager().RomanNumbers)
+	    return Util.toRoman(level);	
+	return String.valueOf(level);
     }
 
     /**

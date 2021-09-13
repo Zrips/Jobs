@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -47,6 +48,32 @@ public final class Util {
     private static Map<String, JobsWorld> jobsWorlds = new HashMap<>();
 
     public static final List<UUID> LEAVECONFIRM = new ArrayList<>();
+
+    private final static TreeMap<Integer, String> map = new TreeMap<Integer, String>();
+
+    static {
+	map.put(1000, "M");
+	map.put(900, "CM");
+	map.put(500, "D");
+	map.put(400, "CD");
+	map.put(100, "C");
+	map.put(90, "XC");
+	map.put(50, "L");
+	map.put(40, "XL");
+	map.put(10, "X");
+	map.put(9, "IX");
+	map.put(5, "V");
+	map.put(4, "IV");
+	map.put(1, "I");
+    }
+
+    public final static String toRoman(int number) {
+	int l = map.floorKey(number);
+	if (number == l) {
+	    return map.get(number);
+	}
+	return map.get(l) + toRoman(number - l);
+    }
 
     public static List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
 	if (Version.isCurrentEqualOrHigher(Version.v1_8_R1)) {
@@ -101,7 +128,7 @@ public final class Util {
 		if (zombie.getVillagerProfession().toString().equals("HUSK"))
 		    return "ZombieHusk";
 	    } else if (zombie.isVillager()) {
-		    return "ZombieVillager";
+		return "ZombieVillager";
 	    }
 
 	    break;
