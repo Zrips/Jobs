@@ -47,7 +47,11 @@ public class JobConditions {
 		    continue;
 		}
 
-		requiresJobs.put(split[0], jobLevel);
+		String perm = split[0];
+		if (perm == null || perm.isEmpty())
+		    continue;
+
+		requiresJobs.put(perm, jobLevel);
 	    }
 
 	    if (cond.contains("p:")) {
@@ -62,10 +66,20 @@ public class JobConditions {
 		continue;
 
 	    String clean = one.substring("p:".length());
-		String[] split = clean.split("-", 2);
 
-		if (split.length > 1) {
-		performPerm.put(split[0], split[1].equalsIgnoreCase("true"));
+	    if (clean == null || clean.isEmpty())
+		continue;
+
+	    String[] split = clean.split("-", 2);
+
+	    if (split.length > 1) {
+
+		String perm = split[0];
+		if (perm == null || perm.isEmpty())
+		    continue;
+		boolean value = split[1].equalsIgnoreCase("true");
+		
+		performPerm.put(perm, value);
 	    } else {
 		performPerm.put(clean, true);
 	    }

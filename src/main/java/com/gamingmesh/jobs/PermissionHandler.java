@@ -184,6 +184,8 @@ public class PermissionHandler {
 
 			for (Entry<String, Boolean> one : condition.getPerformPerm().entrySet()) {
 			    String perm = one.getKey();
+			    if (perm == null || perm.isEmpty())
+				continue;
 			    if (one.getValue())
 				permissions.put(perm, true);
 			    else {
