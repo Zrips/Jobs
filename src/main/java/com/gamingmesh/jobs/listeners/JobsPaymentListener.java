@@ -246,9 +246,11 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCowMilking(PlayerInteractEntityEvent event) {
-	Entity cow = event.getRightClicked();
+	Entity entity = event.getRightClicked();
 
-	if (cow.getType() != EntityType.COW && cow.getType() != EntityType.MUSHROOM_COW)
+	CMIEntityType type = CMIEntityType.getByType(entity.getType());
+
+	if (type != CMIEntityType.COW && type != CMIEntityType.MUSHROOM_COW && type != CMIEntityType.GOAT)
 	    return;
 
 	Player player = event.getPlayer();
@@ -258,7 +260,7 @@ public final class JobsPaymentListener implements Listener {
 	    return;
 	}
 
-	if (itemInHand.getType() == Material.BOWL && cow.getType() != EntityType.MUSHROOM_COW) {
+	if (itemInHand.getType() == Material.BOWL && entity.getType() != EntityType.MUSHROOM_COW) {
 	    return;
 	}
 
@@ -282,7 +284,7 @@ public final class JobsPaymentListener implements Listener {
 	}
 
 	if (Jobs.getGCManager().CowMilkingTimer > 0) {
-	    UUID cowUUID = cow.getUniqueId();
+	    UUID cowUUID = entity.getUniqueId();
 	    Long time = cowMilkingTimer.getIfPresent(cowUUID);
 	    if (time != null) {
 		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
@@ -298,7 +300,7 @@ public final class JobsPaymentListener implements Listener {
 	    }
 	}
 
-	Jobs.action(jPlayer, new EntityActionInfo(cow, ActionType.MILK));
+	Jobs.action(jPlayer, new EntityActionInfo(entity, ActionType.MILK));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1435,11 +1437,11 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(SlimeSplitEvent event) {
-	
+
 	// As of 1.14 we have appropriate event to mob changes
-	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) 
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
 	    return;
-	
+
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
