@@ -185,6 +185,7 @@ public class LanguageManager {
 	    c.get("command.bonus.output.area", " &eArea bonus: &2%money% &6%points% &e%exp%");
 	    c.get("command.bonus.output.mcmmo", " &eMcMMO bonus: &2%money% &6%points% &e%exp%");
 	    c.get("command.bonus.output.final", " &eFinal bonus: &2%money% &6%points% &e%exp%");
+	    c.get("command.bonus.output.specialPrefix", "&6*");
 	    c.get("command.bonus.output.finalExplanation", " &eDoes not include Petpay and Near spawner bonus/penalty");
 
 	    c.get("command.convert.help.info",

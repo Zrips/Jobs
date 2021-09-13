@@ -73,7 +73,7 @@ public class bonus implements Cmd {
     }
 
     private static void printBoost(CommandSender sender, Boost boost, BoostOf type) {
-	String prefix = CMIChatColor.GOLD + "*";
+	String prefix = Jobs.getLanguage().getMessage("command.bonus.output.specialPrefix");
 	if (type != BoostOf.NearSpawner && type != BoostOf.PetPay)
 	    prefix = "";
 
