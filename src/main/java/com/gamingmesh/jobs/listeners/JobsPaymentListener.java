@@ -1435,6 +1435,11 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(SlimeSplitEvent event) {
+	
+	// As of 1.14 we have appropriate event to mob changes
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) 
+	    return;
+	
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 

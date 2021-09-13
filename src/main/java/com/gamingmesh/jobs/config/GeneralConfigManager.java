@@ -834,11 +834,14 @@ public class GeneralConfigManager {
 	c.addComment("ExploitProtections.MythicMobs", "MythicMobs plugin support", "Disable if you having issues with it or using old version");
 	MythicMobsEnabled = c.get("ExploitProtections.MythicMobs.enabled", true);
 
-	c.addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime splitting when they are from spawner",
-	    "Protects against exploiting as new splitted slimes is treated as naturally spawned and not from spawner");
-	PreventSlimeSplit = c.get("ExploitProtections.Spawner.PreventSlimeSplit", true);
-	c.addComment("ExploitProtections.Spawner.PreventMagmaCubeSplit", "Prevent magmacube splitting when they are from spawner");
-	PreventMagmaCubeSplit = c.get("ExploitProtections.Spawner.PreventMagmaCubeSplit", true);
+	// Only applies for older versions.
+	if (Version.isCurrentLower(Version.v1_14_R1)) {
+	    c.addComment("ExploitProtections.Spawner.PreventSlimeSplit", "Prevent slime splitting when they are from spawner",
+		"Protects against exploiting as new splitted slimes is treated as naturally spawned and not from spawner");
+	    PreventSlimeSplit = c.get("ExploitProtections.Spawner.PreventSlimeSplit", true);
+	    c.addComment("ExploitProtections.Spawner.PreventMagmaCubeSplit", "Prevent magmacube splitting when they are from spawner");
+	    PreventMagmaCubeSplit = c.get("ExploitProtections.Spawner.PreventMagmaCubeSplit", true);
+	}
 
 	c.addComment("ExploitProtections.Smelt.PreventHopperFillUps", "Prevent payments when hoppers moving items into furnace", "Player will not get paid, but items will be smelted");
 	PreventHopperFillUps = c.get("ExploitProtections.Smelt.PreventHopperFillUps", true);
