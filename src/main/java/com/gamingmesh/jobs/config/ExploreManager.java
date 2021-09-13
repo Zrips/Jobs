@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class ExploreManager {
 
-    private final Map<String, ExploreRegion> worlds = new HashMap<>();
+    private final Map<String, Map<String, ExploreRegion>> worlds = new HashMap<>();
     private boolean exploreEnabled = false;
     private int playerAmount = 1;
 
@@ -52,14 +53,16 @@ public class ExploreManager {
 	Jobs.consoleMsg("&e[Jobs] Loaded explorer data" + (size != 0 ? " (" + size + ")" : "."));
     }
 
-    public Map<String, ExploreRegion> getWorlds() {
+    public Map<String, Map<String, ExploreRegion>> getWorlds() {
 	return worlds;
     }
 
     public int getSize() {
 	int i = 0;
-	for (ExploreRegion one : worlds.values()) {
-	    i += one.getChunks().size();
+	for (Map<String, ExploreRegion> one : worlds.values()) {
+	    for (Entry<String, ExploreRegion> chunks : one.entrySet()) {
+		i += chunks.getValue().getChunks().size();
+	    }
 	}
 	return i;
     }
@@ -73,18 +76,23 @@ public class ExploreManager {
     }
 
     public ExploreRespond chunkRespond(int playerId, String world, int x, int z) {
-	ExploreRegion eRegions = worlds.get(world);
-	if (eRegions == null) {
-	    int RegionX = (int) Math.floor(x / 32D);
-	    int RegionZ = (int) Math.floor(z / 32D);
-	    eRegions = new ExploreRegion(RegionX, RegionZ);
+	Map<String, ExploreRegion> eRegions = worlds.getOrDefault(world, new HashMap<String, ExploreRegion>());
+
+	int RegionX = (int) Math.floor(x / 32D);
+	int RegionZ = (int) Math.floor(z / 32D);
+
+	ExploreRegion region = eRegions.get(RegionX + ":" + RegionZ);
+	if (region == null) {
+	    region = new ExploreRegion(RegionX, RegionZ);
+	}
+	ExploreChunk chunk = region.getChunk(x, z);
+	if (chunk == null) {
+	    chunk = new ExploreChunk();
+	    region.addChunk(x, z, chunk);
 	}
 
-	ExploreChunk chunk = eRegions.getChunk(x, z);
-	if (chunk == null)
-	    chunk = new ExploreChunk();
+	eRegions.put(RegionX + ":" + RegionZ, region);
 
-	eRegions.addChunk(x, z, chunk);
 	worlds.put(world, eRegions);
 
 	return chunk.addPlayer(playerId);
@@ -106,19 +114,24 @@ public class ExploreManager {
 	    String names = res.getString(ExploreDataTableFields.playerNames.getCollumn());
 	    int id = res.getInt("id");
 
-	    ExploreRegion eRegions = worlds.get(jobsWorld.getName());
-	    if (eRegions == null) {
-		int RegionX = (int) Math.floor(x / 32D);
-		int RegionZ = (int) Math.floor(z / 32D);
-		eRegions = new ExploreRegion(RegionX, RegionZ);
+	    Map<String, ExploreRegion> eRegions = worlds.getOrDefault(jobsWorld.getName(), new HashMap<String, ExploreRegion>());
+
+	    int RegionX = (int) Math.floor(x / 32D);
+	    int RegionZ = (int) Math.floor(z / 32D);
+
+	    ExploreRegion region = eRegions.get(RegionX + ":" + RegionZ);
+	    if (region == null) {
+		region = new ExploreRegion(RegionX, RegionZ);
 	    }
-	    ExploreChunk chunk = eRegions.getChunk(x, z);
-	    if (chunk == null)
+	    ExploreChunk chunk = region.getChunk(x, z);
+	    if (chunk == null) {
 		chunk = new ExploreChunk();
+		region.addChunk(x, z, chunk);
+	    }
 	    chunk.deserializeNames(names);
 	    chunk.setDbId(id);
 
-	    eRegions.addChunk(x, z, chunk);
+	    eRegions.put(RegionX + ":" + RegionZ, region);
 	    worlds.put(jobsWorld.getName(), eRegions);
 
 	} catch (SQLException e) {

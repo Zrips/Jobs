@@ -1,5 +1,7 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.util.Map;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,14 +19,23 @@ public class explored implements Cmd {
 	    return false;
 
 	Player player = (Player) sender;
-	ExploreRegion exploreRegion = Jobs.getExplore().getWorlds().get(player.getWorld().getName());
+	Map<String, ExploreRegion> exploreRegion = Jobs.getExplore().getWorlds().get(player.getWorld().getName());
 
 	if (exploreRegion == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
 	    return true;
 	}
 
-	ExploreChunk chunk = exploreRegion.getChunk(player.getLocation().getChunk());
+	int RegionX = (int) Math.floor(player.getLocation().getChunk().getX() / 32D);
+	int RegionZ = (int) Math.floor(player.getLocation().getChunk().getZ() / 32D);
+	ExploreRegion region = exploreRegion.get(RegionX + ":" + RegionZ);
+	if (region == null) {
+	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
+	    return false;
+	}
+
+	ExploreChunk chunk = region.getChunk(player.getLocation().getChunk());
+
 	if (chunk == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
 	    return false;

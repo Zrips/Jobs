@@ -2397,25 +2397,27 @@ public abstract class JobsDAO {
 	    conn.setAutoCommit(false);
 	    int i = 0;
 
-	    Map<String, ExploreRegion> temp = new HashMap<>(Jobs.getExplore().getWorlds());
+	    Map<String, Map<String, ExploreRegion>> temp = new HashMap<>(Jobs.getExplore().getWorlds());
 
-	    for (Entry<String, ExploreRegion> worlds : temp.entrySet()) {
-		JobsWorld jobsWorld = Util.getJobsWorld(worlds.getKey());
+	    for (Entry<String, Map<String, ExploreRegion>> worlds : temp.entrySet()) {
+		for (Entry<String, ExploreRegion> region : worlds.getValue().entrySet()) {
+		    JobsWorld jobsWorld = Util.getJobsWorld(worlds.getKey());
 
-		int id = jobsWorld == null ? 0 : jobsWorld.getId();
-		if (id != 0)
-		    for (Entry<Short, ExploreChunk> oneChunk : worlds.getValue().getChunks().entrySet()) {
-			ExploreChunk chunk = oneChunk.getValue();
-			if (chunk.getDbId() != -1)
-			    continue;
-			prest2.setInt(1, id);
-			prest2.setInt(2, worlds.getValue().getChunkX(oneChunk.getKey()));
-			prest2.setInt(3, worlds.getValue().getChunkZ(oneChunk.getKey()));
-			prest2.setString(4, chunk.serializeNames());
-			prest2.setString(5, jobsWorld != null ? jobsWorld.getName() : "");
-			prest2.addBatch();
-			i++;
-		    }
+		    int id = jobsWorld == null ? 0 : jobsWorld.getId();
+		    if (id != 0)
+			for (Entry<Short, ExploreChunk> oneChunk : region.getValue().getChunks().entrySet()) {
+			    ExploreChunk chunk = oneChunk.getValue();
+			    if (chunk.getDbId() != -1)
+				continue;
+			    prest2.setInt(1, id);
+			    prest2.setInt(2, region.getValue().getChunkX(oneChunk.getKey()));
+			    prest2.setInt(3, region.getValue().getChunkZ(oneChunk.getKey()));
+			    prest2.setString(4, chunk.serializeNames());
+			    prest2.setString(5, jobsWorld != null ? jobsWorld.getName() : "");
+			    prest2.addBatch();
+			    i++;
+			}
+		}
 	    }
 	    prest2.executeBatch();
 	    conn.commit();
@@ -2449,17 +2451,19 @@ public abstract class JobsDAO {
 
 	    int i = 0;
 
-	    Map<String, ExploreRegion> temp = new HashMap<>(Jobs.getExplore().getWorlds());
+	    Map<String, Map<String, ExploreRegion>> temp = new HashMap<>(Jobs.getExplore().getWorlds());
 
-	    for (ExploreRegion worlds : temp.values()) {
-		for (ExploreChunk oneChunk : worlds.getChunks().values()) {
-		    if (oneChunk.getDbId() == -1 || !oneChunk.isUpdated())
-			continue;
+	    for (Entry<String, Map<String, ExploreRegion>> worlds : temp.entrySet()) {
+		for (Entry<String, ExploreRegion> region : worlds.getValue().entrySet()) {
+		    for (ExploreChunk oneChunk : region.getValue().getChunks().values()) {
+			if (oneChunk.getDbId() == -1 || !oneChunk.isUpdated())
+			    continue;
 
-		    prest.setString(1, oneChunk.serializeNames());
-		    prest.setInt(2, oneChunk.getDbId());
-		    prest.addBatch();
-		    i++;
+			prest.setString(1, oneChunk.serializeNames());
+			prest.setInt(2, oneChunk.getDbId());
+			prest.addBatch();
+			i++;
+		    }
 		}
 	    }
 	    prest.executeBatch();
