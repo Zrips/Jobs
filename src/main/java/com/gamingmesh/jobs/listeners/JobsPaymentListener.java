@@ -224,7 +224,7 @@ public final class JobsPaymentListener implements Listener {
 	ItemStack toCraft = event.getCurrentItem();
 	ItemStack toStore = event.getCursor();
 	// Make sure we are actually traded anything
-	if (hasItems(toCraft))
+	if (hasItems(toCraft)) {
 	    if (event.isShiftClick())
 		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.VTRADE);
 	    else {
@@ -241,6 +241,7 @@ public final class JobsPaymentListener implements Listener {
 		    }
 		}
 	    }
+	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

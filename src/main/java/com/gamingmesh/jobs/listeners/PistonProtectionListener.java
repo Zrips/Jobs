@@ -22,18 +22,15 @@ public class PistonProtectionListener implements Listener {
 	    return;
 
 	BlockFace dir = event.getDirection();
-	int x = dir.getModX(),
-	    y = dir.getModY(),
-	    z = dir.getModZ();
 
 	for (int i = event.getBlocks().size() - 1; i >= 0; i--) {
 	    Location oldLoc = event.getBlocks().get(i).getLocation();
-	    Location newLoc = oldLoc.clone().add(x, y, z);
+	    Location newLoc = oldLoc.clone().add(dir.getModX(), dir.getModY(), dir.getModZ());
 	    Long bp = Jobs.getBpManager().getTime(oldLoc);
-	    if (bp != null) {
-		Jobs.getBpManager().addP(newLoc, bp, false, true);
-		Jobs.getBpManager().remove(oldLoc);
-	    }
+
+	    if (bp == null)
+		continue;
+	    Jobs.getBpManager().addP(newLoc, bp, false, true);
 	}
     }
 
@@ -43,19 +40,15 @@ public class PistonProtectionListener implements Listener {
 	    return;
 
 	BlockFace dir = event.getDirection();
-	int x = dir.getModX(),
-	    y = dir.getModY(),
-	    z = dir.getModZ();
 
 	List<Block> blocks = Util.getPistonRetractBlocks(event);
 	for (int i = blocks.size() - 1; i >= 0; i--) {
 	    Location oldLoc = blocks.get(i).getLocation();
-	    Location newLoc = oldLoc.clone().add(x, y, z);
+	    Location newLoc = oldLoc.clone().add(dir.getModX(), dir.getModY(), dir.getModZ());
 	    Long bp = Jobs.getBpManager().getTime(oldLoc);
-	    if (bp != null) {
-		Jobs.getBpManager().addP(newLoc, bp, false, true);
-		Jobs.getBpManager().remove(oldLoc);
-	    }
+	    if (bp == null)
+		continue;
+	    Jobs.getBpManager().addP(newLoc, bp, false, true);
 	}
     }
 }
