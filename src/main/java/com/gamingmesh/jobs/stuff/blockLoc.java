@@ -49,6 +49,10 @@ public class blockLoc {
 	return (w == null ? worldName : w.getName()) + ":" + x + ":" + y + ":" + z;
     }
 
+    public String toVectorString() {
+	return  x + ":" + y + ":" + z;
+    }
+
     public boolean fromString(String loc) {
 	String[] split = loc.split(":", 4);
 	if (split.length == 0) {
@@ -59,6 +63,7 @@ public class blockLoc {
 	if (w == null)
 	    return false;
 	this.w = w;
+	this.worldName = w.getName();
 
 	if (split.length < 4) {
 	    return false;

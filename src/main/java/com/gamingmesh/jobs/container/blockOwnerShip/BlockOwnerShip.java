@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -22,6 +23,7 @@ import com.gamingmesh.jobs.stuff.blockLoc;
 
 import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class BlockOwnerShip {
 
@@ -30,6 +32,8 @@ public class BlockOwnerShip {
     private String metadataName = "";
 
     private final Map<UUID, HashMap<String, blockLoc>> blockOwnerShips = new HashMap<>();
+
+    private final Map<String, Map<String, UUID>> ownerMapByLocation = new HashMap<>();
 
     private final Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
 
@@ -87,6 +91,15 @@ public class BlockOwnerShip {
 	    return ownershipFeedback.invalid;
 	}
 
+	HashMap<String, blockLoc> oldRecords = getBlockOwnerShips().get(player.getUniqueId());
+
+	if (oldRecords != null) {
+	    blockLoc existing = oldRecords.get(CMILocation.toString(block.getLocation(), ":", true, true));
+	    if (existing != null) {
+		return ownershipFeedback.old;
+	    }
+	}
+
 	int max = jPlayer.getMaxOwnerShipAllowed(type);
 	int have = getTotal(jPlayer.getUniqueId());
 
@@ -124,8 +137,15 @@ public class BlockOwnerShip {
 	if (ls.containsKey(locString))
 	    return ownershipFeedback.old;
 
-	ls.put(locString, new blockLoc(block.getLocation()));
+	blockLoc bloc = new blockLoc(block.getLocation());
+
+	ls.put(locString, bloc);
 	blockOwnerShips.put(jPlayer.getUniqueId(), ls);
+
+	Map<String, UUID> oldRecord = ownerMapByLocation.getOrDefault(block.getLocation().getWorld().getName(), new HashMap<String, UUID>());
+	oldRecord.put(bloc.toVectorString(), jPlayer.getUniqueId());
+	ownerMapByLocation.put(block.getLocation().getWorld().getName(), oldRecord);
+
 	return ownershipFeedback.newReg;
     }
 
@@ -150,9 +170,24 @@ public class BlockOwnerShip {
 	com.gamingmesh.jobs.stuff.blockLoc removed = ls.remove(blockLoc);
 	if (removed != null) {
 	    block.removeMetadata(metadataName, plugin);
+
+	    Map<String, UUID> oldRecord = ownerMapByLocation.get(block.getLocation().getWorld().getName());
+	    if (oldRecord != null)
+		oldRecord.remove(block.getLocation().getBlockX() + ":" + block.getLocation().getBlockY() + ":" + block.getLocation().getBlockZ());
+
 	}
 
 	return removed != null;
+    }
+
+    public UUID getOwnerByLocation(Location loc) {
+	blockLoc bl = new blockLoc(loc);
+	Map<String, UUID> record = ownerMapByLocation.get(bl.getWorldName());
+	if (record == null) {
+	    CMIDebug.d("first null");
+	    return null;
+	}
+	return record.get(bl.toVectorString());
     }
 
     public int clear(UUID uuid) {
@@ -162,6 +197,11 @@ public class BlockOwnerShip {
 
 	for (blockLoc one : ls.values()) {
 	    one.getBlock().removeMetadata(metadataName, plugin);
+
+	    Map<String, UUID> oldRecord = ownerMapByLocation.get(one.getWorldName());
+	    if (oldRecord != null)
+		oldRecord.remove(one.toVectorString());
+
 	}
 
 	return ls.size();
@@ -188,9 +228,23 @@ public class BlockOwnerShip {
 
 	f = f2;
 
-	String path = (type == BlockTypes.FURNACE ? "Furnace"
-	    : type == BlockTypes.BLAST_FURNACE ? "BlastFurnace"
-		: type == BlockTypes.BREWING_STAND ? "Brewing" : type == BlockTypes.SMOKER ? "Smoker" : "");
+	String path = "";
+	switch (type) {
+	case BLAST_FURNACE:
+	    path = "BlastFurnace";
+	    break;
+	case BREWING_STAND:
+	    path = "Brewing";
+	    break;
+	case FURNACE:
+	    path = "Furnace";
+	    break;
+	case SMOKER:
+	    path = "Smoker";
+	    break;
+	default:
+	    break;
+	}
 
 	if (isReassignDisabled())
 	    return;
@@ -221,15 +275,13 @@ public class BlockOwnerShip {
 	    for (String oneL : ls) {
 		blockLoc bl = new blockLoc(oneL);
 		CMILocation cmil = CMILocation.fromString(oneL, ":");
-		// Do we seriously need to re apply this to all blocks?
-//		Block block = bl.getBlock();
-//		if (block == null)
-//		    continue;
-//
-//		block.removeMetadata(metadataName, plugin);
-//		block.setMetadata(metadataName, new FixedMetadataValue(plugin, one));
 
 		blist.put(CMILocation.toString(cmil, ":", true, true), bl);
+
+		Map<String, UUID> oldRecord = ownerMapByLocation.getOrDefault(bl.getWorldName(), new HashMap<String, UUID>());
+		oldRecord.put(bl.toVectorString(), uuid);
+		ownerMapByLocation.put(bl.getWorldName(), oldRecord);
+		
 		total++;
 	    }
 

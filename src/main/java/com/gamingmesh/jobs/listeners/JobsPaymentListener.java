@@ -367,18 +367,25 @@ public final class JobsPaymentListener implements Listener {
 	if (ownerShip == null)
 	    return;
 
-	List<MetadataValue> data = block.getMetadata(ownerShip.getMetadataName());
-	if (data.isEmpty())
-	    return;
+	UUID uuid = null;
+
+	List<MetadataValue> data = ownerShip.getBlockMetadatas(block);
+	if (data.isEmpty()) {
+	    uuid = ownerShip.getOwnerByLocation(block.getLocation());
+	    if (uuid == null)
+		return;
+	}
 
 	// only care about first
-	MetadataValue value = data.get(0);
-	UUID uuid;
-	try {
-	    uuid = UUID.fromString(value.asString());
-	} catch (IllegalArgumentException e) {
+	if (uuid == null && !data.isEmpty()) {
+	    MetadataValue value = data.get(0);
+	    try {
+		uuid = UUID.fromString(value.asString());
+	    } catch (IllegalArgumentException e) {
+		return;
+	    }
+	} else
 	    return;
-	}
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(uuid);
 	if (jPlayer == null)
@@ -1075,18 +1082,25 @@ public final class JobsPaymentListener implements Listener {
 	    return;
 	}
 
+	UUID uuid = null;
+
 	List<MetadataValue> data = bos.getBlockMetadatas(block);
-	if (data.isEmpty())
-	    return;
+	if (data.isEmpty()) {
+	    uuid = bos.getOwnerByLocation(block.getLocation());
+	    if (uuid == null)
+		return;
+	}
 
 	// only care about first
-	MetadataValue value = data.get(0);
-	UUID uuid;
-	try {
-	    uuid = UUID.fromString(value.asString());
-	} catch (IllegalArgumentException e) {
+	if (uuid == null && !data.isEmpty()) {
+	    MetadataValue value = data.get(0);
+	    try {
+		uuid = UUID.fromString(value.asString());
+	    } catch (IllegalArgumentException e) {
+		return;
+	    }
+	} else
 	    return;
-	}
 
 	Player player = Bukkit.getPlayer(uuid);
 	if (player == null || !player.isOnline())
