@@ -733,11 +733,13 @@ public class ConfigManager {
 	    if (entity == null) {
 		switch (myKey.toLowerCase()) {
 		case "skeletonwither":
+		case "witherskeleton":
 		    type = CMIEntityType.WITHER_SKELETON.name();
 		    id = 51;
 		    meta = "1";
 		    break;
 		case "skeletonstray":
+		case "strayskeleton":
 		    type = CMIEntityType.STRAY.name();
 		    id = 51;
 		    meta = "2";
@@ -753,16 +755,19 @@ public class ConfigManager {
 		    meta = "2";
 		    break;
 		case "horseskeleton":
+		case "skeletonhorse":
 		    type = CMIEntityType.SKELETON_HORSE.name();
 		    id = 100;
 		    meta = "1";
 		    break;
 		case "horsezombie":
+		case "zombiehorse":
 		    type = CMIEntityType.ZOMBIE_HORSE.name();
 		    id = 100;
 		    meta = "2";
 		    break;
 		case "guardianelder":
+		case "elderguardian":
 		    type = CMIEntityType.ELDER_GUARDIAN.name();
 		    id = 68;
 		    meta = "1";
