@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.boss.BossBar;
 
 public class BossBarInfo {
-	private String jobName;
+    private String jobName;
     private String PlayerName;
     private BossBar bar;
     private int id = -1;

@@ -100,6 +100,9 @@ public class BossBarManager {
 	    }
 	    BarStyle style;
 	    switch (Jobs.getGCManager().SegmentCount) {
+	    case 1:
+		style = BarStyle.SOLID;
+		break;
 	    case 6:
 		style = BarStyle.SEGMENTED_6;
 		break;
@@ -113,7 +116,7 @@ public class BossBarManager {
 		style = BarStyle.SEGMENTED_20;
 		break;
 	    default:
-		style = BarStyle.SEGMENTED_6;
+		style = BarStyle.SOLID;
 		break;
 	    }
 	    bar = Bukkit.createBossBar(message, color, style);
