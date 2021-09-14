@@ -19,6 +19,7 @@ import com.gamingmesh.jobs.stuff.Util;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
 
@@ -339,16 +340,16 @@ public class editjobs implements Cmd {
 		switch (args[3]) {
 		case "hand":
 		    ItemStack item = CMIItemStack.getItemInMainHand(player);
-		    key = item.getType().name() + "-" + (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : item.getData().getData());
+		    key = CMIMaterial.get(item).getName() + (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? "" : "-" + item.getData().getData());
 		    break;
 		case "offhand":
 		    item = CMIItemStack.getItemInOffHand(player);
-		    key = item.getType().name() + "-" + (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : item.getData().getData());
+		    key = CMIMaterial.get(item).getName() + (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? "" : "-" + item.getData().getData());
 		    break;
 		case "looking":
 		case "lookingat":
 		    Block block = Util.getTargetBlock(player, 30);
-		    key = block.getType().name() + "-" + block.getData();
+		    key = CMIMaterial.get(block).getName() + (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? "" : "-" + block.getData());
 		    break;
 		default:
 		    break;
@@ -359,13 +360,13 @@ public class editjobs implements Cmd {
 		    return false;
 
 		String type = keyValue.getType(),
-			subType = keyValue.getSubType(),
-			meta = keyValue.getMeta();
+		    subType = keyValue.getSubType(),
+		    meta = keyValue.getMeta();
 		int id = keyValue.getId();
 
 		double income = 0D,
-			points = 0D,
-			experience = 0D;
+		    points = 0D,
+		    experience = 0D;
 
 		int fromlevel = 1;
 		int untilLevel = -1;
@@ -402,12 +403,12 @@ public class editjobs implements Cmd {
     private static void showPath(Player player, Job job, ActionType action, JobInfo jInfo) {
 	RawMessage rm = new RawMessage();
 	rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.job")).addHover("&eJob list")
-	.addCommand("jobs editjobs").show(player);
+	    .addCommand("jobs editjobs").show(player);
 
 	if (job != null) {
 	    rm = new RawMessage();
 	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", job.getJobDisplayName()))
-	    .addHover(job.getName()).addCommand("jobs editjobs list " + job.getName());
+		.addHover(job.getName()).addCommand("jobs editjobs list " + job.getName());
 	    rm.show(player);
 	}
 
@@ -415,8 +416,8 @@ public class editjobs implements Cmd {
 	    rm = new RawMessage();
 
 	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.actions", "%actionname%", action.getName()))
-	    .addHover(action.getName()).addCommand("jobs editjobs list " + job.getName() + " " + action.getName()+ " 1")
-	    .show(player);
+		.addHover(action.getName()).addCommand("jobs editjobs list " + job.getName() + " " + action.getName() + " 1")
+		.show(player);
 	}
 
 	if (action != null && job != null && jInfo != null) {
@@ -428,8 +429,8 @@ public class editjobs implements Cmd {
 	    materialName = CMIChatColor.translate(materialName);
 
 	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.material", "%materialname%", jInfo.getName()))
-	    .addHover(jInfo.getName()).addCommand("jobs editjobs list " + job.getName() + " " + action.getName()
-		+ " " + materialName).show(player);
+		.addHover(jInfo.getName()).addCommand("jobs editjobs list " + job.getName() + " " + action.getName()
+		    + " " + materialName).show(player);
 	}
     }
 }
