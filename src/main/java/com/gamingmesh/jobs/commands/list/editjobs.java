@@ -20,6 +20,7 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
 
@@ -251,7 +252,7 @@ public class editjobs implements Cmd {
 		default:
 		    break;
 		}
-
+				
 		Jobs.getConfigManager().changeJobsSettings(args[1], jInfo.getConfigPath() + "/" + sType, value);
 		player.performCommand("jobs editjobs list " + job.getName() + " " + actionT.getName() + " " + jInfo.getName());
 		Util.getJobsEditorMap().remove(player.getUniqueId());
@@ -372,7 +373,7 @@ public class editjobs implements Cmd {
 		int untilLevel = -1;
 
 		JobInfo jInfo = new JobInfo(actionT, id, meta, type + subType, income, job.getMoneyEquation(), experience, job.getXpEquation(), job.getPointsEquation(), points, fromlevel,
-		    untilLevel, "Jobs/" + job.getName() + "/" + actionT.getName() + "/" + (type + subType).replace(":", "-"));
+		    untilLevel, job.getName() + "/" + actionT.getName() + "/" + (type + subType).replace(":", "-"));
 
 		for (JobInfo info : job.getJobInfo(actionT)) {
 		    if (info.getName().equalsIgnoreCase(jInfo.getName())) {
