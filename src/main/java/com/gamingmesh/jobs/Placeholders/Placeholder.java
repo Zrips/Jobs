@@ -504,7 +504,7 @@ public class Placeholder {
 		case plimit_tleft_$1:
 		    return TimeManage.to24hourShort(user.getPaymentLimit().getLeftTime(CurrencyType.getByName(keyValue)));
 		case user_jlevel_$1:
-		    return j == null ? "0" : Integer.toString(j.getLevel());
+		    return j == null ? "0" : j.getLevelFormatted();
 		case user_jexp_$1:
 		    return j == null ? "0" : format.format(j.getExperience());
 		case user_jexp_rounded_$1:

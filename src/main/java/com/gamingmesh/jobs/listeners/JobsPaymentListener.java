@@ -1629,7 +1629,7 @@ public final class JobsPaymentListener implements Listener {
 		    if (level.getLevel() == level.getMaximumLevel()) {
 			Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.COLLECT), block);
 		    }
-		} else if (cmat == CMIMaterial.SWEET_BERRY_BUSH && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
+		} else if ((cmat == CMIMaterial.SWEET_BERRY_BUSH || cmat == CMIMaterial.GLOW_BERRIES) && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
 		    Ageable age = (Ageable) block.getBlockData();
 		    Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, age.getAge()), block);
 		}
