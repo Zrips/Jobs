@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,7 +24,6 @@ import com.gamingmesh.jobs.stuff.blockLoc;
 
 import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class BlockOwnerShip {
 
@@ -91,13 +91,26 @@ public class BlockOwnerShip {
 	    return ownershipFeedback.invalid;
 	}
 
-	HashMap<String, blockLoc> oldRecords = getBlockOwnerShips().get(player.getUniqueId());
+	UUID ownerUUID = this.getOwnerByLocation(block.getLocation());
 
-	if (oldRecords != null) {
-	    blockLoc existing = oldRecords.get(CMILocation.toString(block.getLocation(), ":", true, true));
-	    if (existing != null) {
-		return ownershipFeedback.old;
-	    }
+	if (ownerUUID != null && ownerUUID.equals(player.getUniqueId()))
+	    return ownershipFeedback.old;
+
+	if (ownerUUID != null && !ownerUUID.equals(player.getUniqueId())) {
+	    if (Jobs.getGCManager().blockOwnershipTakeOver) {
+		// Removing ownership to record new player
+		this.remove(ownerUUID, CMILocation.toString(block.getLocation(), ":", true, true));
+		block.removeMetadata(metadataName, plugin);
+
+		Player owningPlayer = Bukkit.getPlayer(ownerUUID);
+
+		if (owningPlayer != null && owningPlayer.isOnline()) {
+		    owningPlayer.sendMessage(Jobs.getLanguage().getMessage("command.clearownership.output.lost", "[type]", CMIMaterial.get(type.toString()).getName(), "[location]", CMILocation.toString(block.getLocation(), ":",
+			true, true)));
+		}
+
+	    } else
+		return ownershipFeedback.notOwn;
 	}
 
 	int max = jPlayer.getMaxOwnerShipAllowed(type);
@@ -106,14 +119,9 @@ public class BlockOwnerShip {
 	boolean owner = false;
 	List<MetadataValue> data = getBlockMetadatas(block);
 	if (!data.isEmpty()) {
-	    if (!data.get(0).asString().equals(jPlayer.getUniqueId().toString())) {
-		return ownershipFeedback.notOwn;
-	    }
-
 	    if (have > max && max > 0) {
 		remove(block);
 	    }
-
 	    owner = true;
 	}
 
@@ -205,26 +213,26 @@ public class BlockOwnerShip {
 
 	return ls.size();
     }
-    
+
     public int remove(UUID uuid, String location) {
 	HashMap<String, blockLoc> ls = blockOwnerShips.get(uuid);
 	if (ls == null)
 	    return 0;
-	
+
 	for (Entry<String, blockLoc> one : new HashMap<String, blockLoc>(ls).entrySet()) {
-	    
+
 	    if (!one.getKey().equalsIgnoreCase(location))
 		continue;
-	    
+
 	    one.getValue().getBlock().removeMetadata(metadataName, plugin);
-	    
+
 	    ls.remove(one.getKey());
-	    
+
 	    Map<String, UUID> oldRecord = ownerMapByLocation.get(one.getValue().getWorldName());
 	    if (oldRecord != null)
-		oldRecord.remove(one.getValue().toVectorString());	    
+		oldRecord.remove(one.getValue().toVectorString());
 	}
-	
+
 	return 1;
     }
 
@@ -302,7 +310,7 @@ public class BlockOwnerShip {
 		Map<String, UUID> oldRecord = ownerMapByLocation.getOrDefault(bl.getWorldName(), new HashMap<String, UUID>());
 		oldRecord.put(bl.toVectorString(), uuid);
 		ownerMapByLocation.put(bl.getWorldName(), oldRecord);
-		
+
 		total++;
 	    }
 

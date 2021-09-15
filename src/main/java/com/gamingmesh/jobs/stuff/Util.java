@@ -16,6 +16,7 @@ import java.util.jar.JarFile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -83,6 +84,17 @@ public final class Util {
 	List<Block> blocks = new ArrayList<>();
 	blocks.add(event.getBlock());
 	return blocks;
+    }
+
+    public static double getDistance(Location loc1, Location loc2) {
+	if (loc1 == null || loc2 == null || loc1.getWorld() != loc2.getWorld())
+	    return Integer.MAX_VALUE;
+
+	try {
+	    return loc1.distance(loc2);
+	} catch (Throwable e) {
+	    return Integer.MAX_VALUE;
+	}
     }
 
     public static String getRealType(Entity entity) {

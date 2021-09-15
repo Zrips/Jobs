@@ -66,7 +66,7 @@ public class GeneralConfigManager {
 	SoundTitleChangeSound, ServerAccountName, ServertaxesAccountName, localeString = "";
     private String getSelectionTool, DecimalPlacesMoney, DecimalPlacesExp, DecimalPlacesPoints;
 
-    public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime,
+    public int jobExpiryTime, BlockProtectionDays, FireworkPower, ShootTime, blockOwnershipRange,
 	globalblocktimer, CowMilkingTimer, InfoUpdateInterval, JobsTopAmount, PlaceholdersPage, ConfirmExpiryTime,
 	SegmentCount, BossBarTimer, AutoJobJoinDelay, DBCleaningJobsLvl, DBCleaningUsersDays, BlastFurnacesMaxDefault, SmokersMaxDefault,
 	levelLossPercentageFromMax, levelLossPercentage, SoundLevelupVolume, SoundLevelupPitch, SoundTitleChangeVolume,
@@ -96,7 +96,7 @@ public class GeneralConfigManager {
 	EmptyServerAccountActionBar, ActionBarsMessageByDefault, aBarSilentMode, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
 	JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames, hideItemAttributes,
 	DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
-	EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve,
+	EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve, blockOwnershipTakeOver,
 	hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
 	BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
@@ -1037,6 +1037,13 @@ public class GeneralConfigManager {
 
 	tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "GREEN_STAINED_GLASS_PANE"));
 	guiFiller = (tmat == CMIMaterial.NONE ? CMIMaterial.GREEN_STAINED_GLASS_PANE : tmat);
+
+	c.addComment("BlockOwnership.Range", "Set to 0 or lower if you want to disable this. Setting to positive number will mean that player needs to be in this range from owner block to get paid");
+	blockOwnershipRange = c.get("BlockOwnership.Range", 0);
+
+	c.addComment("BlockOwnership.TakeOver", "When enabled by interacting with furncae ownership will get transfered to new player",
+	    "If set to false then furnace will belong to player who interacted with it first until its ownership is removed");
+	blockOwnershipTakeOver = c.get("BlockOwnership.TakeOver", false);
 
 	c.save();
     }

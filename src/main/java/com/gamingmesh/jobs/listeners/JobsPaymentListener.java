@@ -390,7 +390,13 @@ public final class JobsPaymentListener implements Listener {
 
 	Player player = jPlayer.getPlayer();
 
-	if (player == null || !Jobs.getPermissionHandler().hasWorldPermission(player))
+	if (player == null)
+	    return;
+
+	if (Jobs.getGCManager().blockOwnershipRange > 0 && Util.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
+	    return;
+
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player))
 	    return;
 
 	// check if player is riding
@@ -1105,9 +1111,12 @@ public final class JobsPaymentListener implements Listener {
 	if (player == null || !player.isOnline())
 	    return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+	if (Jobs.getGCManager().blockOwnershipRange > 0 && Util.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
 	    return;
-
+	
+	if (!Jobs.getPermissionHandler().hasWorldPermission(player))
+	    return;
+	
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
