@@ -55,8 +55,6 @@ public class BossBarManager {
 	    }
 	}
 
-	NumberFormat formatter = new DecimalFormat("#0.00");
-
 	String gain = "";
 	if (expGain != 0) {
 	    expGain = (int) (expGain * 100) / 100D;
@@ -67,7 +65,7 @@ public class BossBarManager {
 	String message = Jobs.getLanguage().getMessage("command.stats.bossBarOutput",
 	    "%joblevel%", jobProg.getLevelFormatted(),
 	    "%jobname%", jobProg.getJob().getJobDisplayName(),
-	    "%jobxp%", formatter.format(Math.round(jobProg.getExperience() * 100.0) / 100.0),
+	    "%jobxp%", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), jobProg.getExperience()),
 	    "%jobmaxxp%", jobProg.getMaxExperience(),
 	    "%gain%", gain);
 

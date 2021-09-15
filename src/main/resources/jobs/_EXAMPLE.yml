@@ -271,6 +271,10 @@ exampleJob:
       income: 0.5
       points: 0.5
       experience: 0.5
+    glow_berries:
+      income: 0.5
+      points: 0.5
+      experience: 0.5
     bonemeal:
       income: 1.5
       points: 1.5
