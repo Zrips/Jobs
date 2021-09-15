@@ -23,6 +23,7 @@ import com.gamingmesh.jobs.stuff.blockLoc;
 
 import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class BlockOwnerShip {
 
@@ -203,6 +204,28 @@ public class BlockOwnerShip {
 	}
 
 	return ls.size();
+    }
+    
+    public int remove(UUID uuid, String location) {
+	HashMap<String, blockLoc> ls = blockOwnerShips.get(uuid);
+	if (ls == null)
+	    return 0;
+	
+	for (Entry<String, blockLoc> one : new HashMap<String, blockLoc>(ls).entrySet()) {
+	    
+	    if (!one.getKey().equalsIgnoreCase(location))
+		continue;
+	    
+	    one.getValue().getBlock().removeMetadata(metadataName, plugin);
+	    
+	    ls.remove(one.getKey());
+	    
+	    Map<String, UUID> oldRecord = ownerMapByLocation.get(one.getValue().getWorldName());
+	    if (oldRecord != null)
+		oldRecord.remove(one.getValue().toVectorString());	    
+	}
+	
+	return 1;
     }
 
     public List<MetadataValue> getBlockMetadatas(Block block) {
