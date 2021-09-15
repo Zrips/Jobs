@@ -206,6 +206,15 @@ permissions:
   jobs.command.clearownership:
     description: Grants access to the clearownership command
     default: true
+  jobs.command.ownedblocks:
+    description: Grants access to the ownedblocks command
+    default: true
+  jobs.command.admin.ownedblocks:
+    description: Grants access to the ownedblocks command
+    default: op
+  jobs.command.admin.clearownership:
+    description: Grants access to the ownedblocks command
+    default: op    
   jobs.command.itembonus:
     description: Grants access to the itembonus command
     default: true
