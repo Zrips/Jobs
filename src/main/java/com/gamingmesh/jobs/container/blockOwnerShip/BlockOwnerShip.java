@@ -23,7 +23,6 @@ import com.gamingmesh.jobs.stuff.blockLoc;
 
 import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class BlockOwnerShip {
 
@@ -184,7 +183,6 @@ public class BlockOwnerShip {
 	blockLoc bl = new blockLoc(loc);
 	Map<String, UUID> record = ownerMapByLocation.get(bl.getWorldName());
 	if (record == null) {
-	    CMIDebug.d("first null");
 	    return null;
 	}
 	return record.get(bl.toVectorString());

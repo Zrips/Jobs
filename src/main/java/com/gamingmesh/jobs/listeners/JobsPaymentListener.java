@@ -18,7 +18,6 @@
 
 package com.gamingmesh.jobs.listeners;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.data.Ageable;
@@ -127,7 +125,6 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public final class JobsPaymentListener implements Listener {
@@ -1099,7 +1096,9 @@ public final class JobsPaymentListener implements Listener {
 	    } catch (IllegalArgumentException e) {
 		return;
 	    }
-	} else
+	}
+
+	if (uuid == null)
 	    return;
 
 	Player player = Bukkit.getPlayer(uuid);
