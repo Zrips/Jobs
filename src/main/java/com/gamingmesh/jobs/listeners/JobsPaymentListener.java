@@ -125,6 +125,7 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public final class JobsPaymentListener implements Listener {
@@ -1113,10 +1114,10 @@ public final class JobsPaymentListener implements Listener {
 
 	if (Jobs.getGCManager().blockOwnershipRange > 0 && Util.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
 	    return;
-	
+
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player))
 	    return;
-	
+
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
@@ -1625,6 +1626,7 @@ public final class JobsPaymentListener implements Listener {
 	    return;
 
 	CMIMaterial cmat = CMIMaterial.get(block);
+
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
 	Material hand = CMIItemStack.getItemInMainHand(p).getType();
 
@@ -1635,11 +1637,20 @@ public final class JobsPaymentListener implements Listener {
 		    org.bukkit.block.data.Levelled level = (org.bukkit.block.data.Levelled) block.getBlockData();
 
 		    if (level.getLevel() == level.getMaximumLevel()) {
-			Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.COLLECT), block);
+			Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.BONE_MEAL, ActionType.COLLECT), block);
 		    }
-		} else if ((cmat == CMIMaterial.SWEET_BERRY_BUSH || cmat == CMIMaterial.GLOW_BERRIES) && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
-		    Ageable age = (Ageable) block.getBlockData();
-		    Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, age.getAge()), block);
+		} else if ((cmat == CMIMaterial.SWEET_BERRY_BUSH || cmat == CMIMaterial.CAVE_VINES_PLANT) && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
+
+		    if (cmat == CMIMaterial.SWEET_BERRY_BUSH) {
+			Ageable age = (Ageable) block.getBlockData();
+			if (age.getAge() >= 2)
+			    Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.SWEET_BERRIES, ActionType.COLLECT, age.getAge()), block);
+		    } else if (cmat == CMIMaterial.CAVE_VINES_PLANT) {
+			org.bukkit.block.data.type.CaveVinesPlant caveVines = (org.bukkit.block.data.type.CaveVinesPlant) block.getBlockData();
+			if (caveVines.isBerries()) {
+			    Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.GLOW_BERRIES, ActionType.COLLECT), block);
+			}
+		    }
 		}
 	    }
 
@@ -1648,7 +1659,12 @@ public final class JobsPaymentListener implements Listener {
 
 		if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand == CMIMaterial.SHEARS.getMaterial()
 		    || hand == CMIMaterial.GLASS_BOTTLE.getMaterial())) {
-		    Jobs.action(jPlayer, new BlockCollectInfo(block, ActionType.COLLECT, beehive.getHoneyLevel()), block);
+
+		    if (hand == CMIMaterial.SHEARS.getMaterial()) {
+			Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.HONEYCOMB, ActionType.COLLECT), block);
+		    } else {
+			Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.HONEY_BOTTLE, ActionType.COLLECT), block);
+		    }
 		}
 	    }
 	}
