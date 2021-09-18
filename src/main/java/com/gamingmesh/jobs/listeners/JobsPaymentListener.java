@@ -840,6 +840,19 @@ public final class JobsPaymentListener implements Listener {
 	return a.getAmount() + b.getAmount() <= a.getType().getMaxStackSize();
     }
 
+    private static String getEnchantName(Enchantment enchant) {
+	try {
+	    return enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
+
+	} catch (Throwable e) {
+	    CMIEnchantment cmiEnchant = CMIEnchantment.get(enchant);
+	    if (cmiEnchant != null)
+		return cmiEnchant.toString();
+	}
+
+	return null;
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryRepair(InventoryClickEvent event) {
 	// If event is nothing or place, do nothing
@@ -956,9 +969,9 @@ public final class JobsPaymentListener implements Listener {
 		if (enchant == null)
 		    continue;
 
-		CMIEnchantment e = CMIEnchantment.get(enchant);
-		if (e != null)
-		    Jobs.action(jPlayer, new EnchantActionInfo(e.toString(), oneEnchant.getValue(), ActionType.ENCHANT));
+		String enchantName = getEnchantName(enchant);
+		if (enchantName != null)
+		    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, oneEnchant.getValue(), ActionType.ENCHANT));
 	    }
 	} else if (secondSlotItem == null || secondSlotItem.getType() != Material.ENCHANTED_BOOK) // Enchanted books does not have durability
 	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
@@ -1013,16 +1026,7 @@ public final class JobsPaymentListener implements Listener {
 	    if (enchant == null)
 		continue;
 
-	    String enchantName = null;
-
-	    try {
-		enchantName = enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
-	    } catch (Throwable e) {
-		CMIEnchantment ench = CMIEnchantment.get(enchant);
-		if (ench != null)
-		    enchantName = ench.toString();
-	    }
-
+	    String enchantName = getEnchantName(enchant);
 	    if (enchantName != null)
 		Jobs.action(jPlayer, new EnchantActionInfo(enchantName, oneEnchant.getValue(), ActionType.ENCHANT));
 	}
