@@ -37,7 +37,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
 public class PermissionHandler {
-    private Jobs plugin;
+    private final Jobs plugin;
 
     public PermissionHandler(Jobs plugin) {
 	this.plugin = plugin;

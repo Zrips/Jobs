@@ -9,10 +9,10 @@ public final class LogAmounts {
     private String username;
     private String action;
 
-    private String item;
+    private final String item;
     private int count = 0;
 
-    private Map<CurrencyType, Double> amounts = new HashMap<>();
+    private final Map<CurrencyType, Double> amounts = new HashMap<>();
 
     private boolean newEntry = true;
 

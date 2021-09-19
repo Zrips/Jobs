@@ -27,7 +27,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 
 public class BufferedPayment {
 
-    private OfflinePlayer offlinePlayer;
+    private final OfflinePlayer offlinePlayer;
 
     private final Map<CurrencyType, Double> payments = new HashMap<>();
 

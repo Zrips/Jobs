@@ -8,7 +8,7 @@ import net.Zrips.CMILib.FileHandler.ConfigReader;
 
 public class JobsManager {
     private JobsDAO dao;
-    private Jobs plugin;
+    private final Jobs plugin;
     private DataBaseType dbType = DataBaseType.SqLite;
 
     public enum DataBaseType {

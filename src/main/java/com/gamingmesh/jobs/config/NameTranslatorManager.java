@@ -325,7 +325,7 @@ public class NameTranslatorManager {
 		}
 
 		String n = mat.getLegacyId() + (mat.getLegacyData() == -1 ? "" : ":" + mat.getLegacyData());
-		String name = c.getC().getString("ItemList." + mat.toString());
+		String name = c.getC().getString("ItemList." + mat);
 
 		if (name == null) {
 		    name = c.getC().getString("ItemList." + n + ".Name");
@@ -365,7 +365,7 @@ public class NameTranslatorManager {
 		    name = mat.getName();
 		}
 
-		c.get("ItemList." + mat.toString(), name);
+		c.get("ItemList." + mat, name);
 	    }
 
 	    for (EntityType one : EntityType.values()) {
@@ -377,7 +377,7 @@ public class NameTranslatorManager {
 		String name = c.getC().getString("EntityList." + n + ".Name");
 
 		if (name == null) {
-		    n += "-" + ent.toString();
+		    n += "-" + ent;
 		    name = c.getC().getString("EntityList." + n);
 		}
 
@@ -385,7 +385,7 @@ public class NameTranslatorManager {
 		    name = ent.getName();
 		}
 
-		c.get("EntityList." + ent.getId() + "-" + ent.toString(), name);
+		c.get("EntityList." + ent.getId() + "-" + ent, name);
 	    }
 
 	    ConfigurationSection enchSection = c.getC().getConfigurationSection("EnchantList");

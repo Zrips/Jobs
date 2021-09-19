@@ -43,7 +43,7 @@ public enum ActionType {
     COLLECT("Collect"),
     BAKE("Bake");
 
-    private String name;
+    private final String name;
 
     ActionType(String name) {
 	this.name = name;

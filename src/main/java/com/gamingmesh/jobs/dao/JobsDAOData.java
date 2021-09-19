@@ -28,9 +28,9 @@ package com.gamingmesh.jobs.dao;
  *
  */
 public class JobsDAOData {
-    private String job;
-    private int level;
-    private double experience;
+    private final String job;
+    private final int level;
+    private final double experience;
 
     /**
      * Constructor class for the DAO side of things.

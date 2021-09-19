@@ -19,7 +19,7 @@
 package com.gamingmesh.jobs.container;
 
 public class JobItemBonus {
-    private String node;
+    private final String node;
     private BoostMultiplier boostMultiplier = new BoostMultiplier();
 
     public JobItemBonus(String node, BoostMultiplier boostMultiplier) {

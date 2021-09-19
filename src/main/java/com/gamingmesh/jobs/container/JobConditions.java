@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class JobConditions {
 
-    private String node;
+    private final String node;
 
     private final List<String> requiresPerm = new ArrayList<>();
     private final Map<String, Integer> requiresJobs = new HashMap<>();

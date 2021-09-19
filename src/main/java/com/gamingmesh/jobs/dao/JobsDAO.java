@@ -48,19 +48,19 @@ public abstract class JobsDAO {
 
     private JobsConnectionPool pool;
     private static String prefix;
-    private Jobs plugin;
+    private final Jobs plugin;
 
     private static DataBaseType dbType = DataBaseType.SqLite;
 
     // Not in use currently
     public enum TablesFieldsType {
-	decimal, number, text, varchar, stringList, stringLongMap, stringIntMap, locationMap, state, location, longNumber;
-    }
+	decimal, number, text, varchar, stringList, stringLongMap, stringIntMap, locationMap, state, location, longNumber
+	}
 
     public enum worldsTableFields implements JobsTableInterface {
 	name("varchar(36)", true);
 
-	private String type;
+	private final String type;
 
 	private boolean unique = false;
 
@@ -92,7 +92,7 @@ public abstract class JobsDAO {
     public enum jobsNameTableFields implements JobsTableInterface {
 	name("varchar(36)", true);
 
-	private String type;
+	private final String type;
 
 	private boolean unique = false;
 
@@ -128,7 +128,7 @@ public abstract class JobsDAO {
 	donequests("int"),
 	quests("text");
 
-	private String type;
+	private final String type;
 
 	UserTableFields(String type) {
 	    this.type = type;
@@ -157,7 +157,7 @@ public abstract class JobsDAO {
 	level("int"),
 	jobid("int");
 
-	private String type;
+	private final String type;
 
 	JobsTableFields(String type) {
 	    this.type = type;
@@ -187,7 +187,7 @@ public abstract class JobsDAO {
 	left("bigint"),
 	jobid("int");
 
-	private String type;
+	private final String type;
 
 	ArchiveTableFields(String type) {
 	    this.type = type;
@@ -218,7 +218,7 @@ public abstract class JobsDAO {
 	resets("bigint"),
 	worldid("int");
 
-	private String type;
+	private final String type;
 
 	BlockTableFields(String type) {
 	    this.type = type;
@@ -247,7 +247,7 @@ public abstract class JobsDAO {
 	started("bigint"),
 	typeid("int");
 
-	private String ttype;
+	private final String ttype;
 
 	LimitTableFields(String type) {
 	    this.ttype = type;
@@ -279,7 +279,7 @@ public abstract class JobsDAO {
 	exp("double"),
 	points("double");
 
-	private String type;
+	private final String type;
 
 	LogTableFields(String type) {
 	    this.type = type;
@@ -306,7 +306,7 @@ public abstract class JobsDAO {
 	totalpoints("double"),
 	currentpoints("double");
 
-	private String type;
+	private final String type;
 
 	PointsTableFields(String type) {
 	    this.type = type;
@@ -335,7 +335,7 @@ public abstract class JobsDAO {
 	playerNames("text"),
 	worldid("int");
 
-	private String type;
+	private final String type;
 
 	ExploreDataTableFields(String type) {
 	    this.type = type;
@@ -390,10 +390,10 @@ public abstract class JobsDAO {
 	    "CREATE TABLE IF NOT EXISTS `[tableName]` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY[fields]);",
 	    "CREATE TABLE IF NOT EXISTS `[tableName]` (`id` INTEGER PRIMARY KEY AUTOINCREMENT[fields]);", PointsTableFields.class);
 
-	private String mySQL;
-	private String sQlite;
-	private String tableName;
-	private JobsTableInterface[] c;
+	private final String mySQL;
+	private final String sQlite;
+	private final String tableName;
+	private final JobsTableInterface[] c;
 
 	DBTables(String tableName, String MySQL, String SQlite, Class<?> cc) {
 	    this.tableName = tableName;

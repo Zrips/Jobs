@@ -61,8 +61,8 @@ public class PermissionManager {
 	jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 2),
 	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2);
 
-	private int reload;
-	private List<String> perms;
+	private final int reload;
+	private final List<String> perms;
 
 	prm(List<String> perms, int reload) {
 	    this.perms = perms;

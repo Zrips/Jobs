@@ -8,7 +8,7 @@ import org.bukkit.event.Cancellable;
  */
 public class JobsScheduleStartEvent extends BaseEvent implements Cancellable {
     private boolean cancelled = false;
-    private Schedule schedule;
+    private final Schedule schedule;
 
     public JobsScheduleStartEvent(Schedule schedule){
         this.schedule = schedule;

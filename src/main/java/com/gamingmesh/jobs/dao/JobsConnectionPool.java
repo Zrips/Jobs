@@ -10,9 +10,9 @@ import com.gamingmesh.jobs.Jobs;
 public class JobsConnectionPool {
 
     private JobsConnection connection;
-    private String url;
-    private String username;
-    private String password;
+    private final String url;
+    private final String username;
+    private final String password;
 
     public JobsConnectionPool(String driverName, String url, String username, String password) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 	Driver driver = (Driver) Class.forName(driverName, true, Jobs.getJobsClassloader()).newInstance();

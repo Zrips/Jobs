@@ -27,8 +27,8 @@ import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class BlockOwnerShip {
 
-    private CMIMaterial material;
-    private BlockTypes type;
+    private final CMIMaterial material;
+    private final BlockTypes type;
     private String metadataName = "";
 
     private final Map<UUID, HashMap<String, blockLoc>> blockOwnerShips = new HashMap<>();

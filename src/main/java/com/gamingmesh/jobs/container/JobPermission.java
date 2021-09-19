@@ -19,9 +19,9 @@
 package com.gamingmesh.jobs.container;
 
 public class JobPermission {
-    private String node;
-    private boolean value;
-    private int levelRequirement;
+    private final String node;
+    private final boolean value;
+    private final int levelRequirement;
     public JobPermission(String node, boolean value, int levelRequirement) {
         this.node = node;
         this.value = value;

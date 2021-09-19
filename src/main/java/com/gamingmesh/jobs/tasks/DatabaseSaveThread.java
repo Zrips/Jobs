@@ -23,7 +23,7 @@ import com.gamingmesh.jobs.Jobs;
 public class DatabaseSaveThread extends Thread {
 
     private volatile boolean running = true;
-    private int sleep;
+    private final int sleep;
 
     public DatabaseSaveThread(int duration) {
 	super("Jobs-DatabaseSaveTask");

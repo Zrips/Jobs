@@ -41,8 +41,8 @@ import net.Zrips.CMILib.Version.Version;
 
 public class BufferedEconomy {
 
-    private Jobs plugin;
-    private Economy economy;
+    private final Jobs plugin;
+    private final Economy economy;
 
     private final BlockingQueue<BufferedPayment> payments = new LinkedBlockingQueue<>();
     private final Map<UUID, BufferedPayment> paymentCache = Collections.synchronizedMap(new HashMap<UUID, BufferedPayment>());

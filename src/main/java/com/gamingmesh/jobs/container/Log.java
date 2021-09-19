@@ -7,9 +7,9 @@ import com.gamingmesh.jobs.stuff.TimeManage;
 
 public final class Log {
 
-    private String action;
+    private final String action;
     private int day;
-    private Map<String, LogAmounts> amountMap = new HashMap<>();
+    private final Map<String, LogAmounts> amountMap = new HashMap<>();
 
     public Log(String action) {
 	this.action = action;

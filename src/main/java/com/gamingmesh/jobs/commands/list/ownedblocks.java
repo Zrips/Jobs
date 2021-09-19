@@ -72,9 +72,9 @@ public class ownedblocks implements Cmd {
 
 		CMILocation loc = CMILocation.fromString(record.getKey(), ":");
 
-		rm.addText(Jobs.getLanguage().getMessage("command.ownedblocks.output.list", "[place]", i, "[type]", material.getName(), "[location]", LC.Location_Full.getLocale((Location) loc)));
+		rm.addText(Jobs.getLanguage().getMessage("command.ownedblocks.output.list", "[place]", i, "[type]", material.getName(), "[location]", LC.Location_Full.getLocale(loc)));
 
-		rm.addHover(Jobs.getLanguage().getMessage("command.ownedblocks.output.listHover", "[location]", LC.Location_Full.getLocale((Location) loc)));
+		rm.addHover(Jobs.getLanguage().getMessage("command.ownedblocks.output.listHover", "[location]", LC.Location_Full.getLocale(loc)));
 		rm.addCommand(JobsCommands.LABEL + " " + clearownership.class.getSimpleName() + " " + jp.getName() + " " + record.getKey());
 	    }
 	}

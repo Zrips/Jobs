@@ -27,7 +27,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class JobProgression {
     private Job job;
-    private JobsPlayer jPlayer;
+    private final JobsPlayer jPlayer;
     private double experience;
     private Double lastExperience;
     private int level;

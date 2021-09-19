@@ -22,7 +22,7 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
 public class ItemNameActionInfo extends BaseActionInfo {
-    private String name;
+    private final String name;
 
     public ItemNameActionInfo(String name, ActionType type) {
 	super(type);

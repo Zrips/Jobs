@@ -23,8 +23,8 @@ import org.bukkit.Location;
 public class RestrictedArea {
 
     private CuboidArea area;
-    private double multiplier;
-    private String name;
+    private final double multiplier;
+    private final String name;
     private String wgName;
 
     public RestrictedArea(String name, CuboidArea area, double multiplier) {
@@ -73,9 +73,7 @@ public class RestrictedArea {
 	    return false;
 	if (area.getLowLoc().getBlockY() > loc.getBlockY())
 	    return false;
-	if (area.getHighLoc().getBlockY() < loc.getBlockY())
-	    return false;
-	return true;
+        return area.getHighLoc().getBlockY() >= loc.getBlockY();
     }
 
     public String getName() {

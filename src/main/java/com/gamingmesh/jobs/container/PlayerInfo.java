@@ -6,12 +6,12 @@ import com.gamingmesh.jobs.Jobs;
 
 public class PlayerInfo {
 
-    private int id;
+    private final int id;
     private String name = "Unknown";
-    private Long seen;
+    private final Long seen;
     private Integer questsDone;
     private String questProgression;
-    private UUID uuid;
+    private final UUID uuid;
     private JobsPlayer player;
 
     public PlayerInfo(String name, int id, UUID uuid, Long seen, Integer questsDone, String questProgression) {

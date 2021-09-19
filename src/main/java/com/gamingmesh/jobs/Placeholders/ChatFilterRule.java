@@ -10,7 +10,7 @@ public class ChatFilterRule {
     public enum ChatFilterBlockType {
 	All(0), Others(1), None(2);
 
-	private int id;
+	private final int id;
 
 	ChatFilterBlockType(int id) {
 	    this.id = id;

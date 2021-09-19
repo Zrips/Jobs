@@ -4,7 +4,7 @@ import org.bukkit.util.Vector;
 
 public class BlockProtection {
 
-    private static long pre = (int) (System.currentTimeMillis() / 10000000000L) * 10000000000L;
+    private static final long pre = (int) (System.currentTimeMillis() / 10000000000L) * 10000000000L;
 
     private int id;
     private Integer time;

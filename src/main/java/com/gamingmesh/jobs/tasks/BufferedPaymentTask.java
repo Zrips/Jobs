@@ -26,9 +26,9 @@ import com.gamingmesh.jobs.economy.Economy;
 
 public class BufferedPaymentTask implements Runnable {
 
-    private BufferedEconomy bufferedEconomy;
-    private Economy economy;
-    private BufferedPayment payment;
+    private final BufferedEconomy bufferedEconomy;
+    private final Economy economy;
+    private final BufferedPayment payment;
 
     public BufferedPaymentTask(BufferedEconomy bufferedEconomy, Economy economy, BufferedPayment payment) {
 	this.bufferedEconomy = bufferedEconomy;

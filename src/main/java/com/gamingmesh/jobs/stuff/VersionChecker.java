@@ -14,7 +14,7 @@ import com.gamingmesh.jobs.Jobs;
 
 public final class VersionChecker {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     public VersionChecker(Jobs plugin) {
 	this.plugin = plugin;

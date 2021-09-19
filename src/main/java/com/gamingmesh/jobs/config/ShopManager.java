@@ -252,7 +252,7 @@ public class ShopManager {
 			    continue;
 
 			if (one.toLowerCase().startsWith("msg "))
-			    player.sendMessage(one.substring(4, one.length()).replace("[player]", player.getName()));
+			    player.sendMessage(one.substring(4).replace("[player]", player.getName()));
 			else
 			    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("[player]", player.getName()));
 		    }

@@ -22,7 +22,7 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
 public class ExploreActionInfo extends BaseActionInfo {
-    private String place;
+    private final String place;
 
     public ExploreActionInfo(String place, ActionType type) {
 	super(type);

@@ -32,15 +32,13 @@ public class iteminfo implements Cmd {
 	if (iih == null || iih.getType() == Material.AIR)
 	    return true;
 
-	boolean tool = false;
-	if (EnchantmentTarget.TOOL.includes(iih) ||
-	    EnchantmentTarget.WEAPON.includes(iih) ||
-	    EnchantmentTarget.ARMOR.includes(iih) ||
-	    EnchantmentTarget.BOW.includes(iih) ||
-	    EnchantmentTarget.FISHING_ROD.includes(iih))
-	    tool = true;
+	boolean tool = EnchantmentTarget.TOOL.includes(iih) ||
+			EnchantmentTarget.WEAPON.includes(iih) ||
+			EnchantmentTarget.ARMOR.includes(iih) ||
+			EnchantmentTarget.BOW.includes(iih) ||
+			EnchantmentTarget.FISHING_ROD.includes(iih);
 
-	byte data = (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : iih.getData().getData());
+		byte data = (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : iih.getData().getData());
 	String dataString = data == 0 ? "" : "-" + data;
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));

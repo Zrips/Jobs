@@ -29,7 +29,7 @@ public enum DisplayMethod {
     SHORT_TITLE_JOB("shorttitlejob", "Short title and full job name"),
     TITLE_SHORT_JOB("titleshortjob", "Full title and short job name");
 
-    private String name;
+    private final String name;
     private String desc = "";
 
     DisplayMethod(String name, String desc) {

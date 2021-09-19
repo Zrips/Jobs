@@ -88,7 +88,7 @@ import net.Zrips.CMILib.Version.Version;
 
 public class JobsListener implements Listener {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     private final Map<UUID, Long> interactDelay = new HashMap<>();
 
@@ -381,6 +381,9 @@ public class JobsListener implements Listener {
     public void onLimitedItemInteract(PlayerInteractEvent event) {
 	Player player = event.getPlayer();
 	ItemStack iih = CMIItemStack.getItemInMainHand(player);
+
+	if(!Jobs.getGCManager().useLimitedItemInteract) return;
+
 	if (iih.getType() == Material.AIR)
 	    return;
 
@@ -488,21 +491,19 @@ public class JobsListener implements Listener {
 	    if (newArmorType == null)
 		return;
 
-	    boolean equipping = true;
-	    if (event.getRawSlot() == newArmorType.getSlot())
-		equipping = false;
+	    boolean equipping = event.getRawSlot() != newArmorType.getSlot();
 
-	    Player player = (Player) event.getWhoClicked();
+		Player player = (Player) event.getWhoClicked();
 	    PlayerInventory inv = player.getInventory();
 
 	    if (newArmorType == ArmorTypes.HELMET &&
-		(equipping ? inv.getHelmet() == null : inv.getHelmet() != null) ||
+		(equipping == (inv.getHelmet() == null)) ||
 		(newArmorType == ArmorTypes.CHESTPLATE || newArmorType == ArmorTypes.ELYTRA) &&
-		    (equipping ? inv.getChestplate() == null : inv.getChestplate() != null) ||
+		    (equipping == (inv.getChestplate() == null)) ||
 		newArmorType == ArmorTypes.LEGGINGS &&
-		    (equipping ? inv.getLeggings() == null : inv.getLeggings() != null) ||
+		    (equipping == (inv.getLeggings() == null)) ||
 		newArmorType == ArmorTypes.BOOTS &&
-		    (equipping ? inv.getBoots() == null : inv.getBoots() != null)) {
+		    (equipping == (inv.getBoots() == null))) {
 		JobsArmorChangeEvent armorEquipEvent = new JobsArmorChangeEvent(player, EquipMethod.SHIFT_CLICK, newArmorType, equipping ? null : event
 		    .getCurrentItem(), equipping ? event.getCurrentItem() : null);
 		plugin.getServer().getPluginManager().callEvent(armorEquipEvent);
@@ -645,6 +646,6 @@ public class JobsListener implements Listener {
 
     @EventHandler
     public void playerItemBreakEvent(InventoryClickEvent event) {
-	Jobs.getPlayerManager().resetItemBonusCache(((Player) event.getWhoClicked()).getUniqueId());
+	Jobs.getPlayerManager().resetItemBonusCache(event.getWhoClicked().getUniqueId());
     }
 }

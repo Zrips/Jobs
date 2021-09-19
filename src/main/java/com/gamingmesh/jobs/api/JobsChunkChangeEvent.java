@@ -11,9 +11,9 @@ import org.bukkit.event.Cancellable;
  */
 public final class JobsChunkChangeEvent extends BaseEvent implements Cancellable {
 
-    private Player player;
-    private Chunk oldChunk;
-    private Chunk newChunk;
+    private final Player player;
+    private final Chunk oldChunk;
+    private final Chunk newChunk;
     private boolean cancelled = false;
 
     public JobsChunkChangeEvent(Player player, Chunk oldChunk, Chunk newChunk) {

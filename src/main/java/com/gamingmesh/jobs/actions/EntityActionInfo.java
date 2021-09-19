@@ -25,7 +25,7 @@ import com.gamingmesh.jobs.container.BaseActionInfo;
 import com.gamingmesh.jobs.stuff.Util;
 
 public class EntityActionInfo extends BaseActionInfo {
-    private Entity entity;
+    private final Entity entity;
 
     public EntityActionInfo(Entity entity, ActionType type) {
 	super(type);

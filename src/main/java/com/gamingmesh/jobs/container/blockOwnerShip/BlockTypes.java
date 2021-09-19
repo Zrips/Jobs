@@ -11,9 +11,9 @@ public enum BlockTypes {
     SMOKER,
     BLAST_FURNACE;
 
-    private String[] names;
+    private final String[] names;
 
-    private static HashMap<CMIMaterial, BlockTypes> cache = new HashMap<>();
+    private static final HashMap<CMIMaterial, BlockTypes> cache = new HashMap<>();
     static {
 	for (CMIMaterial one : CMIMaterial.values()) {
 	    for (BlockTypes b : values()) {

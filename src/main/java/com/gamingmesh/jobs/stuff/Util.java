@@ -44,9 +44,10 @@ import net.Zrips.CMILib.Version.Version;
 @SuppressWarnings("deprecation")
 public final class Util {
 
-    private static Map<UUID, String> jobsEditorMap = new HashMap<>(), questsEditorMap = new HashMap<>();
+    private static final Map<UUID, String> jobsEditorMap = new HashMap<>();
+	private static final Map<UUID, String> questsEditorMap = new HashMap<>();
 
-    private static Map<String, JobsWorld> jobsWorlds = new HashMap<>();
+    private static final Map<String, JobsWorld> jobsWorlds = new HashMap<>();
 
     public static final List<UUID> LEAVECONFIRM = new ArrayList<>();
 

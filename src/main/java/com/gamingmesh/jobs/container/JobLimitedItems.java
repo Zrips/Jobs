@@ -32,13 +32,13 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class JobLimitedItems {
-    private String node;
+    private final String node;
     CMIMaterial mat;
-    private int amount;
-    private String name;
-    private List<String> lore;
-    private Map<Enchantment, Integer> enchants;
-    private int level;
+    private final int amount;
+    private final String name;
+    private final List<String> lore;
+    private final Map<Enchantment, Integer> enchants;
+    private final int level;
 
     public JobLimitedItems(String node, CMIMaterial material, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, int level) {
 	this.node = node;

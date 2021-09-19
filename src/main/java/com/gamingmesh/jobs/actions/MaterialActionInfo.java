@@ -24,8 +24,8 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
 public abstract class MaterialActionInfo extends BaseActionInfo {
-    private Material material;
-    private byte data;
+    private final Material material;
+    private final byte data;
     public MaterialActionInfo(Material material, byte data, ActionType type) {
         super(type);
         this.material = material;

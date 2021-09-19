@@ -12,7 +12,7 @@ import com.gamingmesh.jobs.stuff.Util;
 @SuppressWarnings("deprecation")
 public class JobsChatEvent implements Listener {
 
-	private Jobs plugin;
+	private final Jobs plugin;
 
 	public JobsChatEvent(Jobs plugin) {
 		this.plugin = plugin;

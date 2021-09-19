@@ -27,11 +27,9 @@ public class bp implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
 	    return false;
 	}
-	boolean all = false;
-	if (args.length > 0 && args[0].equalsIgnoreCase("-a"))
-	    all = true;
+	boolean all = args.length > 0 && args[0].equalsIgnoreCase("-a");
 
-	final Player player = (Player) sender;
+		final Player player = (Player) sender;
 
 	Location loc = player.getLocation();
 

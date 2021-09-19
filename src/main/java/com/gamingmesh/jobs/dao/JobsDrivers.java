@@ -27,7 +27,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 public class JobsDrivers implements Driver {
-    private Driver driver;
+    private final Driver driver;
 
     public JobsDrivers(Driver driver) {
 	this.driver = driver;

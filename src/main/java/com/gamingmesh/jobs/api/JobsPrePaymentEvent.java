@@ -12,10 +12,10 @@ import org.bukkit.event.Cancellable;
  * Event fired, before the payment calculation process should beginning.
  */
 public final class JobsPrePaymentEvent extends BaseEvent implements Cancellable {
-    private OfflinePlayer offlinePlayer;
+    private final OfflinePlayer offlinePlayer;
     private double money;
     private double points;
-    private Job job;
+    private final Job job;
     private Block block;
     private Entity entity;
     private LivingEntity living;

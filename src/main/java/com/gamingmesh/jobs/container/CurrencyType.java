@@ -23,7 +23,7 @@ public enum CurrencyType {
     EXP("Exp", 2),
     POINTS("Points", 3);
 
-    private String name;
+    private final String name;
     private int id = 0;
 
     CurrencyType(String name, int id) {

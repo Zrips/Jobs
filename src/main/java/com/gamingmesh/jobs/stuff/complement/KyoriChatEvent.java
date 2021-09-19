@@ -14,7 +14,7 @@ import net.kyori.adventure.text.TextReplacementConfig;
 
 public final class KyoriChatEvent extends Complement2 implements Listener {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     public KyoriChatEvent(Jobs plugin) {
 	this.plugin = plugin;

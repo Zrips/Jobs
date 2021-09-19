@@ -9,8 +9,8 @@ import com.gamingmesh.jobs.container.CuboidArea;
  */
 public final class JobsAreaSelectionEvent extends BaseEvent {
 
-    private CuboidArea area;
-    private Player player;
+    private final CuboidArea area;
+    private final Player player;
 
     public JobsAreaSelectionEvent(Player player, CuboidArea area) {
 	this.player = player;

@@ -23,7 +23,7 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 
 public class BufferedPaymentThread extends Thread {
     private volatile boolean running = true;
-    private int sleep;
+    private final int sleep;
 
     public BufferedPaymentThread(int duration) {
 	super("Jobs-BufferedPaymentThread");

@@ -7,8 +7,8 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 public final class JobsLeaveEvent extends BaseEvent implements Cancellable {
 
-	private JobsPlayer player;
-	private Job job;
+	private final JobsPlayer player;
+	private final Job job;
 	private boolean cancelled = false;
 
 	public JobsLeaveEvent(JobsPlayer jPlayer, Job job) {

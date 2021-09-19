@@ -163,10 +163,7 @@ public class Quest {
 	if (level < minLvl)
 	    return false;
 
-	if (maxLvl != null && level > maxLvl)
-	    return false;
-
-	return true;
+        return maxLvl == null || level <= maxLvl;
     }
 
     public Map<ActionType, Map<String, QuestObjective>> getObjectives() {

@@ -22,8 +22,8 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
 public class EnchantActionInfo extends BaseActionInfo {
-	private String name;
-	private int level;
+	private final String name;
+	private final int level;
 
 	public EnchantActionInfo(String name, int level, ActionType type) {
 		super(type);

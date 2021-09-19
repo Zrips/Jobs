@@ -7,7 +7,7 @@ public class JobsWorld {
 
     private int id = 0;
     private String name = "Unknown";
-    private World world;
+    private final World world;
 
     public JobsWorld(String name, int id) {
 	this.name = name;

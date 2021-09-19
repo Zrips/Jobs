@@ -156,7 +156,7 @@ public final class Jobs extends JavaPlugin {
     private static JobsDAO dao;
     private static List<Job> jobs;
     private static Job noneJob;
-    private static Map<Job, Integer> usedSlots = new WeakHashMap<>();
+    private static final Map<Job, Integer> usedSlots = new WeakHashMap<>();
 
     public static BufferedPaymentThread paymentThread;
     private static DatabaseSaveThread saveTask;

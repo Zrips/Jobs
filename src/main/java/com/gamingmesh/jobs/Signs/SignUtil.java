@@ -29,7 +29,7 @@ public class SignUtil {
     private final Map<String, Map<String, jobsSign>> signsByType = new HashMap<>();
     private final Map<String, jobsSign> signsByLocation = new HashMap<>();
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     public SignUtil(Jobs plugin) {
 	this.plugin = plugin;

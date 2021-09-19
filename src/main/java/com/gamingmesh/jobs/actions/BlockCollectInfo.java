@@ -9,7 +9,7 @@ import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class BlockCollectInfo extends BaseActionInfo {
 
-    private CMIMaterial material;
+    private final CMIMaterial material;
     private int ageOrLevel = 0;
 
     @Deprecated

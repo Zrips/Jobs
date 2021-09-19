@@ -43,7 +43,7 @@ public class area implements Cmd {
 		String name = args[1];
 		if (name.startsWith("wg:")) {
 		    wg = true;
-		    name = name.substring("wg:".length(), name.length());
+		    name = name.substring("wg:".length());
 		}
 
 		RestrictedAreaManager ra = Jobs.getRestrictedAreaManager();

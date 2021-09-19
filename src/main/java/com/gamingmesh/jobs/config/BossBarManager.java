@@ -19,7 +19,7 @@ import net.Zrips.CMILib.Version.Version;
 
 public class BossBarManager {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     public BossBarManager(Jobs plugin) {
 	this.plugin = plugin;

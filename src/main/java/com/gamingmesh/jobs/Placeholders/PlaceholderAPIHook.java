@@ -9,7 +9,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     public PlaceholderAPIHook(Jobs plugin) {
 	this.plugin = plugin;

@@ -16,7 +16,7 @@ public class YmlMaker {
 
     public String fileName;
 
-    private File path;
+    private final File path;
     private File configFile;
     private FileConfiguration configuration;
 

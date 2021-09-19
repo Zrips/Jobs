@@ -22,7 +22,7 @@ import org.bukkit.OfflinePlayer;
 
 @SuppressWarnings("deprecation")
 public class VaultEconomy implements Economy {
-    private net.milkbowl.vault.economy.Economy vault;
+    private final net.milkbowl.vault.economy.Economy vault;
 
     public VaultEconomy(net.milkbowl.vault.economy.Economy vault) {
 	this.vault = vault;

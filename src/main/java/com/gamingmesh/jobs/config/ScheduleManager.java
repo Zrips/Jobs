@@ -21,7 +21,7 @@ import com.gamingmesh.jobs.container.Schedule;
 
 public class ScheduleManager {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     private BukkitTask timer;
     private YmlMaker jobSchedule;

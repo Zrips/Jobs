@@ -42,7 +42,7 @@ import net.Zrips.CMILib.Version.Version;
 @SuppressWarnings("deprecation")
 public class JobItems {
 
-    private String node;
+    private final String node;
     private String legacyKey;
     private ItemStack item;
 

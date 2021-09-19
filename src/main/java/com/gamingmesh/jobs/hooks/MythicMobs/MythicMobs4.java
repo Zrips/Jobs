@@ -12,7 +12,7 @@ import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 public class MythicMobs4 implements MythicMobInterface {
 
     public BukkitAPIHelper apiHelper;
-    private Jobs plugin;
+    private final Jobs plugin;
 
     public MythicMobs4(Jobs plugin) {
 	this.plugin = plugin;

@@ -19,7 +19,7 @@
 package com.gamingmesh.jobs.container;
 
 public abstract class BaseActionInfo implements ActionInfo {
-    private ActionType type;
+    private final ActionType type;
     public BaseActionInfo(ActionType type) {
         this.type = type;
     }

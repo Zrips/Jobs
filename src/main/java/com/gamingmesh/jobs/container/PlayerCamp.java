@@ -5,8 +5,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class PlayerCamp {
 
-    private ItemStack item;
-    private Block block;
+    private final ItemStack item;
+    private final Block block;
 
     public PlayerCamp(ItemStack item, Block block) {
 	this.item = item;

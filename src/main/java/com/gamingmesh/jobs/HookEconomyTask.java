@@ -27,7 +27,7 @@ import com.gamingmesh.jobs.economy.VaultEconomy;
 
 public class HookEconomyTask implements Runnable {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     public HookEconomyTask(Jobs plugin) {
 	this.plugin = plugin;

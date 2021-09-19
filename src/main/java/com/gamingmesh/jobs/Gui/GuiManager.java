@@ -26,7 +26,7 @@ import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 
 public class GuiManager {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     public GuiManager(Jobs plugin) {
 	this.plugin = plugin;

@@ -20,10 +20,10 @@ package com.gamingmesh.jobs.container;
 
 public class NameList {
 
-    private String id;
-    private String meta;
-    private String name;
-    private String minecraftName;
+    private final String id;
+    private final String meta;
+    private final String name;
+    private final String minecraftName;
 
     public NameList(String id, String meta, String name, String minecraftName) {
 	this.id = id;

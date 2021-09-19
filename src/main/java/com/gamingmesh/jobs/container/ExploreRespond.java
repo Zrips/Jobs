@@ -2,7 +2,7 @@ package com.gamingmesh.jobs.container;
 
 public class ExploreRespond {
 
-    private int count;
+    private final int count;
     private boolean newChunk = false;
 
     public ExploreRespond(int count, boolean newChunk) {

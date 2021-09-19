@@ -44,36 +44,36 @@ import net.Zrips.CMILib.Items.CMIMaterial;
 
 public class Job {
 
-    private Map<ActionType, List<JobInfo>> jobInfo = new EnumMap<>(ActionType.class);
+    private final Map<ActionType, List<JobInfo>> jobInfo = new EnumMap<>(ActionType.class);
 
-    private List<JobPermission> jobPermissions;
-    private List<JobCommands> jobCommands;
-    private List<JobConditions> jobConditions;
+    private final List<JobPermission> jobPermissions;
+    private final List<JobCommands> jobCommands;
+    private final List<JobConditions> jobConditions;
 
     private Map<String, JobItems> jobItems;
-    private Map<String, JobLimitedItems> jobLimitedItems;
+    private final Map<String, JobLimitedItems> jobLimitedItems;
 
     private String jobName = "N/A";
     private String jobDisplayName;
     private String fullName = "N/A";
 
     // job short name (for use in multiple jobs)
-    private String jobShortName;
+    private final String jobShortName;
     private String description;
 
-    private CMIChatColor jobColour;
-    private Parser maxExpEquation;
-    private DisplayMethod displayMethod;
+    private final CMIChatColor jobColour;
+    private final Parser maxExpEquation;
+    private final DisplayMethod displayMethod;
 
-    private int maxLevel;
+    private final int maxLevel;
     private int vipmaxLevel = 0;
 
     // max number of people allowed with this job on the server.
-    private Integer maxSlots;
+    private final Integer maxSlots;
 
     private List<String> cmdOnJoin = new ArrayList<>(), cmdOnLeave = new ArrayList<>();
 
-    private ItemStack guiItem;
+    private final ItemStack guiItem;
     private int guiSlot = 0;
 
     private Long rejoinCd = 0L;
@@ -303,7 +303,7 @@ public class Job {
     public JobInfo getJobInfo(ActionInfo action, int level) {
 	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
 	    if (actionInfo instanceof PotionItemActionInfo) {
-		String subName = ((PotionItemActionInfo) action).getNameWithSub();
+		String subName = action.getNameWithSub();
 		return jobInfo.getName().equalsIgnoreCase(subName) || (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(subName);
 	    }
 

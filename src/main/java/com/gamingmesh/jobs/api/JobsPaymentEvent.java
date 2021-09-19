@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 public final class JobsPaymentEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
-    private OfflinePlayer offlinePlayer;
+    private final OfflinePlayer offlinePlayer;
     private boolean cancelled = false;
 
     private Map<CurrencyType, Double> payments = new HashMap<>();

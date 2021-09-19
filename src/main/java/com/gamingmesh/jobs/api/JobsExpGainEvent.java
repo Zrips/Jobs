@@ -14,9 +14,9 @@ import com.gamingmesh.jobs.container.Job;
  */
 public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
 
-    private OfflinePlayer offlinePlayer;
+    private final OfflinePlayer offlinePlayer;
     private double exp;
-    private Job job;
+    private final Job job;
     private Block block;
     private Entity entity;
     private LivingEntity living;

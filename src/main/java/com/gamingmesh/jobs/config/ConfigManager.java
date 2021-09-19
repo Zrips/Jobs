@@ -66,8 +66,8 @@ public class ConfigManager {
     private final Jobs plugin = org.bukkit.plugin.java.JavaPlugin.getPlugin(Jobs.class);
 
     @Deprecated
-    private File jobFile;
-    private File jobsPathFolder;
+    private final File jobFile;
+    private final File jobsPathFolder;
 
     private final Set<YmlMaker> jobFiles = new HashSet<>();
 
@@ -806,7 +806,7 @@ public class ConfigManager {
 	    Jobs.getExplore().setPlayerAmount(amount);
 	} else if (actionType == ActionType.CRAFT) {
 	    if (myKey.startsWith("!")) {
-		type = myKey.substring(1, myKey.length());
+		type = myKey.substring(1);
 	    }
 
 	    String[] split = myKey.split(":", 2);

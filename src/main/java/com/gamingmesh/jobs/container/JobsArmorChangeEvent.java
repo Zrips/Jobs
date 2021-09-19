@@ -12,8 +12,8 @@ public final class JobsArmorChangeEvent extends PlayerEvent implements Cancellab
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancel = false;
-    private EquipMethod equipType;
-    private ArmorTypes type;
+    private final EquipMethod equipType;
+    private final ArmorTypes type;
     private ItemStack oldArmorPiece, newArmorPiece;
 
     public JobsArmorChangeEvent(Player player, EquipMethod equipType, ArmorTypes type, ItemStack oldArmorPiece, ItemStack newArmorPiece) {
@@ -74,6 +74,6 @@ public final class JobsArmorChangeEvent extends PlayerEvent implements Cancellab
 	HOTBAR_SWAP,
 	DISPENSER,
 	BROKE,
-	DEATH;
+	DEATH
     }
 }

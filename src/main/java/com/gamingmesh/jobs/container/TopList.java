@@ -2,9 +2,9 @@ package com.gamingmesh.jobs.container;
 
 public final class TopList {
 
-    private int level;
-    private int exp;
-    private PlayerInfo info;
+    private final int level;
+    private final int exp;
+    private final PlayerInfo info;
 
     public TopList(PlayerInfo info, int level, int exp) {
 	this.info = info;

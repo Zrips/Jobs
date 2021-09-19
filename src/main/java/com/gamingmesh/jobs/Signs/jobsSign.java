@@ -143,12 +143,12 @@ public class jobsSign {
 	if (type != SignTopType.toplist)
 	    return type.toString();
 
-	return jobName != null ? jobName + ":" + type.toString() : type.toString();
+	return jobName != null ? jobName + ":" + type : type.toString();
     }
 
     public static String getIdentifier(Job job, SignTopType type) {
 	if (type != SignTopType.toplist)
 	    return type.toString();
-	return job != null ? job.getName() + ":" + type.toString() : type.toString();
+	return job != null ? job.getName() + ":" + type : type.toString();
     }
 }

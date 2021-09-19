@@ -30,7 +30,7 @@ import com.gamingmesh.jobs.stuff.TimeManage;
 
 public class Placeholder {
 
-    private Jobs plugin;
+    private final Jobs plugin;
 
     private final AtomicInteger jobLevel = new AtomicInteger();
     private final Pattern placeholderPatern = Pattern.compile("(%)([^\"^%]*)(%)");
@@ -40,7 +40,7 @@ public class Placeholder {
     }
 
     static String pref = "jobsr";
-    private static ChatFilterRule numericalRule = new ChatFilterRule().setPattern("(\\$\\d)");
+    private static final ChatFilterRule numericalRule = new ChatFilterRule().setPattern("(\\$\\d)");
 
     public enum JobsPlaceHolders {
 	user_id,
@@ -102,8 +102,8 @@ public class Placeholder {
 	maxslots_$1("jname/number"),
 	bonus_$1("jname/number");
 
-	private String[] vars;
-	private List<Integer> groups = new ArrayList<>();
+	private final String[] vars;
+	private final List<Integer> groups = new ArrayList<>();
 	private ChatFilterRule rule;
 
 	JobsPlaceHolders(String... vars) {
@@ -286,8 +286,8 @@ public class Placeholder {
     }
 
     public enum JobsPlaceholderType {
-	JOBS, PAPI, MVDW;
-    }
+	JOBS, PAPI, MVDW
+	}
 
     public JobsPlaceholderType getPlaceHolderType(Player player, String placeholder) {
 	if (placeholder == null)

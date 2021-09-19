@@ -25,17 +25,21 @@ import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class JobInfo {
-    private ActionType actionType;
-    private int id;
-    private String meta;
-    private String name;
+    private final ActionType actionType;
+    private final int id;
+    private final String meta;
+    private final String name;
     private double baseIncome, baseXp, basePoints;
-    private Parser moneyEquation, xpEquation, pointsEquation;
+    private final Parser moneyEquation;
+	private final Parser xpEquation;
+	private final Parser pointsEquation;
     private int fromLevel = 0;
     private int untilLevel = Integer.MAX_VALUE;
 
     private String configPath = "";
-    private Integer softIncomeLevelLimit, softExpLevelLimit, softPointsLevelLimit;
+    private final Integer softIncomeLevelLimit;
+	private final Integer softExpLevelLimit;
+	private final Integer softPointsLevelLimit;
 
     public JobInfo(ActionType actionType, int id, String meta, String name, double baseIncome, Parser moneyEquation, double baseXp, Parser xpEquation,
 	Parser pointsEquation, double basePoints, int fromLevel, int untilLevel, String configPath) {

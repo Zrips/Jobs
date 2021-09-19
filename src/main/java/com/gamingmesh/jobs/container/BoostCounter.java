@@ -1,7 +1,7 @@
 package com.gamingmesh.jobs.container;
 
 public class BoostCounter {
-    private CurrencyType type;
+    private final CurrencyType type;
     private double boost;
     private Long calculatedon;
 

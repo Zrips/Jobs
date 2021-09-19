@@ -23,9 +23,9 @@ import java.util.List;
 
 public class JobCommands {
 
-    private String node;
-    private int levelFrom;
-    private int levelUntil;
+    private final String node;
+    private final int levelFrom;
+    private final int levelUntil;
 
     private final List<String> commands = new ArrayList<>();
 

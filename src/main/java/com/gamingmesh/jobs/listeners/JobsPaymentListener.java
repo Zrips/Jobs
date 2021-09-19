@@ -1287,7 +1287,7 @@ public final class JobsPaymentListener implements Listener {
 
 	boolean notNpc = lVictim instanceof Player && !lVictim.hasMetadata("NPC");
 
-	if (notNpc && jDamager.getName().equalsIgnoreCase(((Player) lVictim).getName()))
+	if (notNpc && jDamager.getName().equalsIgnoreCase(lVictim.getName()))
 	    return;
 
 	if (Jobs.getGCManager().payForStackedEntities) {

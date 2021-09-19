@@ -10,16 +10,19 @@ import com.gamingmesh.jobs.container.Title;
 
 public final class JobsLevelUpEvent extends BaseEvent implements Cancellable {
 
-    private JobsPlayer player;
-    private Job job;
-    private Title oldTitle;
-    private Title newTitle;
+    private final JobsPlayer player;
+    private final Job job;
+    private final Title oldTitle;
+    private final Title newTitle;
 
     private Sound levelupSound;
     private Sound titleChangeSound;
 
-    private int level, soundLevelupVolume = 1, soundLevelupPitch = 3,
-	    titleChangeVolume = 1, titleChangePitch = 3;
+    private final int level;
+    private int soundLevelupVolume = 1;
+    private int soundLevelupPitch = 3;
+    private int titleChangeVolume = 1;
+    private int titleChangePitch = 3;
     private boolean cancelled = false;
 
     @Deprecated

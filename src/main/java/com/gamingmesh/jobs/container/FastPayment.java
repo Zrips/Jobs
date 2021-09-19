@@ -3,10 +3,10 @@ package com.gamingmesh.jobs.container;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 
 public class FastPayment {
-	private JobsPlayer jPlayer;
-	private ActionInfo info;
-	private BufferedPayment payment;
-	private Job job;
+	private final JobsPlayer jPlayer;
+	private final ActionInfo info;
+	private final BufferedPayment payment;
+	private final Job job;
 	private Long time;
 
     public FastPayment(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {

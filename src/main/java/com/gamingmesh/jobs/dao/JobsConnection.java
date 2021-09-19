@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class JobsConnection {
-    private Connection conn;
+    private final Connection conn;
 
     public JobsConnection(Connection conn) {
 	this.conn = conn;

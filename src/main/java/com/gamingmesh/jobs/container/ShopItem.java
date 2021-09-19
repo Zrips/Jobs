@@ -11,7 +11,9 @@ public class ShopItem {
 
     private int slot = -1, page = -1, iconAmount = 1;
 
-    private String nodeName, iconMaterial, iconName;
+    private final String nodeName;
+    private String iconMaterial;
+    private String iconName;
 
     private boolean hideWithoutPerm = false;
     private boolean hideNoEnoughPoint = false;

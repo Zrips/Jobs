@@ -24,7 +24,7 @@ public enum DBAction {
     INSERT("Insert"),
     DELETE("Delete");
     
-    private String name;
+    private final String name;
     DBAction(String name) {
         this.name = name;
     }
