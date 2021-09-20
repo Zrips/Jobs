@@ -395,4 +395,14 @@ public final class Util {
 
 	return listOfCommands;
     }
+
+    public static <K, V> Map<K, V> mapUnique(Map<K, V> left, Map<K, V> right) {
+	Map<K, V> difference = new HashMap<>();
+
+	difference.putAll(left);
+	difference.putAll(right);
+	difference.entrySet().removeAll(right.entrySet());
+
+	return difference;
+    }
 }

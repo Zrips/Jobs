@@ -964,7 +964,9 @@ public final class JobsPaymentListener implements Listener {
 	ItemStack secondSlotItem = inv.getItem(1);
 
 	if (Jobs.getGCManager().PayForEnchantingOnAnvil && secondSlotItem != null && secondSlotItem.getType() == Material.ENCHANTED_BOOK) {
-	    for (Map.Entry<Enchantment, Integer> oneEnchant : resultStack.getEnchantments().entrySet()) {
+	    Map<Enchantment, Integer> newEnchantments = Util.mapUnique(resultStack.getEnchantments(), firstSlot.getEnchantments());
+
+	    for (Map.Entry<Enchantment, Integer> oneEnchant : newEnchantments.entrySet()) {
 		Enchantment enchant = oneEnchant.getKey();
 		if (enchant == null)
 		    continue;
