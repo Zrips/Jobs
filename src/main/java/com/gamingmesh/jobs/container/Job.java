@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.BiPredicate;
 
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
+import com.gamingmesh.jobs.stuff.Util;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -310,16 +310,7 @@ public class Job {
 	    }
 
 	    if (actionInfo instanceof EnchantActionInfo) {
-		EnchantActionInfo enchantActionInfo = (EnchantActionInfo)actionInfo;
-
-		String enchantName = CMIEnchantment.get(actionInfo.getName()).toString();
-
-		return (
-		    // Enchantment without level e.g. silk_touch
-		    jobInfo.getName().equalsIgnoreCase(enchantName) ||
-		    // Enchantment with level e.g. fire_aspect:1
-		    jobInfo.getName().equalsIgnoreCase(enchantName + ":" + enchantActionInfo.getLevel())
-		);
+		return Util.enchantMatchesActionInfo(jobInfo.getName(), (EnchantActionInfo) actionInfo);
 	    }
 
 	    return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||

@@ -14,6 +14,8 @@ import java.util.UUID;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import com.gamingmesh.jobs.CMILib.CMIEnchantment;
+import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -404,5 +406,16 @@ public final class Util {
 	difference.entrySet().removeAll(right.entrySet());
 
 	return difference;
+    }
+
+    public static boolean enchantMatchesActionInfo(String enchant, EnchantActionInfo actionInfo) {
+	String enchantName = CMIEnchantment.get(actionInfo.getName()).toString();
+
+	return (
+	    // Enchantment without level e.g. silk_touch
+	    enchant.equalsIgnoreCase(enchantName) ||
+	    // Enchantment with level e.g. fire_aspect:1
+	    enchant.equalsIgnoreCase(enchantName + ":" + actionInfo.getLevel())
+	);
     }
 }
