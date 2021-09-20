@@ -402,7 +402,7 @@ public class JobsListener implements Listener {
 	    ItemMeta meta = iih.getItemMeta();
 	    if (meta.hasDisplayName())
 		name = plugin.getComplement().getDisplayName(meta);
-	    if (meta.hasLore())
+	    if (!Jobs.getGCManager().disableLoreCheck && meta.hasLore())
 		lore = plugin.getComplement().getLore(meta);
 	}
 

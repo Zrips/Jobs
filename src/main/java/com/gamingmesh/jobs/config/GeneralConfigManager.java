@@ -103,6 +103,8 @@ public class GeneralConfigManager {
 	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
 	payForEachVTradeItem, allowEnchantingBoostedItems;
 
+    public boolean disableLoreCheck = false;
+    
     public ItemStack guiBackButton, guiNextButton;
     public CMIMaterial guiFiller;
 
@@ -1044,7 +1046,9 @@ public class GeneralConfigManager {
 	c.addComment("BlockOwnership.TakeOver", "When enabled by interacting with furncae ownership will get transfered to new player",
 	    "If set to false then furnace will belong to player who interacted with it first until its ownership is removed");
 	blockOwnershipTakeOver = c.get("BlockOwnership.TakeOver", false);
-
+	
+	disableLoreCheck = c.get("disable_lore_check", false);
+	
 	c.save();
     }
 

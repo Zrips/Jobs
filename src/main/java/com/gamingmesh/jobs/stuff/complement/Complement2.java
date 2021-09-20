@@ -87,7 +87,7 @@ public class Complement2 implements Complement {
 	@Override
 	public List<String> getLore(ItemMeta meta) {
 		List<String> lore = new ArrayList<>();
-
+		
 		if (meta.hasLore()) {
 			for (Component comp : meta.lore()) {
 				lore.add(serialize(comp));
