@@ -216,9 +216,15 @@ public class JobProgression {
     private boolean checkLevelDown() {
 	boolean ret = false;
 	while (canLevelDown()) {
-	    // Don't level down at 1
-	    if (level <= 1)
+	    if (
+		// Don't level down at 1
+		level <= 1 ||
+		!Jobs.getGCManager().AllowDelevel
+	    ) {
+		experience = 0;
+
 		break;
+	    }
 
 	    level--;
 	    experience += getMaxExperience(level);
