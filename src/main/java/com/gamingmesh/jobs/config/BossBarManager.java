@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.config;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import com.gamingmesh.jobs.stuff.AsyncThreading;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -31,7 +32,7 @@ public class BossBarManager {
 
 	for (JobProgression oneJob : player.progression) {
 	    if (oneJob.getLastExperience() != 0) {
-		ShowJobProgression(player, oneJob, oneJob.getLastExperience());
+	    	AsyncThreading.run(() -> ShowJobProgression(player, oneJob, oneJob.getLastExperience()));
 	    }
 	}
 	player.getUpdateBossBarFor().clear();

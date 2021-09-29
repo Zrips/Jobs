@@ -18,6 +18,7 @@
 
 package com.gamingmesh.jobs.container;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -28,6 +29,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import com.gamingmesh.jobs.stuff.AsyncThreading;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -83,7 +86,7 @@ public class JobsPlayer {
     private Long seen = System.currentTimeMillis();
 
     private Map<String, Boolean> permissionsCache;
-    private Long lastPermissionUpdate = -1L;
+    private Instant nextPermissionUpdate = Instant.now();
 
     private final Map<String, Map<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
@@ -251,7 +254,7 @@ public class JobsPlayer {
 	    }
 
 	    if (data.isAnnounceTime(limit.getAnnouncementDelay()) && player.isOnline())
-		CMIActionBar.send(player, Jobs.getLanguage().getMessage("command.limit.output." + name + "time", "%time%", TimeManage.to24hourShort(data.getLeftTime(type))));
+		AsyncThreading.run(() -> CMIActionBar.send(player, Jobs.getLanguage().getMessage("command.limit.output." + name + "time", "%time%", TimeManage.to24hourShort(data.getLeftTime(type)))));
 
 	    if (data.isReseted(type))
 		data.setReseted(type, false);
@@ -342,29 +345,36 @@ public class JobsPlayer {
     public double getBoost(String jobName, CurrencyType type, boolean force) {
 	double boost = 0D;
 
+	OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
+
 	if (type == null || !isOnline())
 	    return boost;
 
-	long time = System.currentTimeMillis();
+	Instant time = Instant.now();
 
 	List<BoostCounter> counterList = boostCounter.get(jobName);
 	if (counterList != null) {
 	    for (BoostCounter counter : counterList) {
-		if (counter.getType() != type)
-		    continue;
+			if (counter.getType() == type) {
 
-		if (force || time - counter.getTime() > 1000 * 60) {
-		    boost = getPlayerBoostNew(jobName, type);
-		    counter.setBoost(boost);
-		    counter.setTime(time);
-		    return boost;
-		}
+				System.out.println("Check du boost " + type.getName() + " pour " + offlinePlayer.getName());
+				if (force || time.isAfter(counter.getTime())) {
+					boost = getPlayerBoostNew(jobName, type);
+					counter.setBoost(boost);
+					counter.setTime(time.plusSeconds(60));
+					System.out.println("Actualisation du boost : " + type + " @ " + boost + " pour " + offlinePlayer.getName());
+					return boost;
+				}
 
-		return counter.getBoost();
+				System.out.println("Boost venant du cache : " + type + " @ " + counter.getBoost() + " pour " + offlinePlayer.getName());
+				return counter.getBoost();
+			}
 	    }
 
+	    System.out.println("Recherche du boost " + type + " pour " + offlinePlayer.getName() + "...");
 	    boost = getPlayerBoostNew(jobName, type);
-	    counterList.add(new BoostCounter(type, boost, time));
+	    counterList.add(new BoostCounter(type, boost, time.plusSeconds(60)));
+	    System.out.println("Boost trouvé : " + type + " @ " + boost + " pour " + offlinePlayer.getName());
 	    return boost;
 	}
 
@@ -378,22 +388,32 @@ public class JobsPlayer {
     }
 
     private Double getPlayerBoostNew(String jobName, CurrencyType type) {
-	Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), true, false);
-	Double boost = v1;
+		Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), true, false);
+		Double boost = v1;
 
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + ".all", false, false);
-	if (v1 != 0d && (v1 > boost || v1 < boost))
-	    boost = v1;
+		System.out.println("Permission jobs.boost." + jobName + "." + type.getName() + " is giving boost " + v1);
 
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", false, false);
-	if (v1 != 0d && (v1 > boost || v1 < boost))
-	    boost = v1;
+		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + ".all", true, false);
+		if (v1 != 0d && !v1.equals(boost)) {
+			boost = v1;
+			System.out.println("Permission jobs.boost." + jobName + ".all is giving boost " + v1);
+		}
 
-	v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), false, false);
-	if (v1 != 0d && (v1 > boost || v1 < boost))
-	    boost = v1;
 
-	return boost;
+		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", true, false);
+		if (v1 != 0d && !v1.equals(boost)) {
+			boost = v1;
+			System.out.println("Permission jobs.boost.all.all is giving boost " + v1);
+		}
+
+		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), true, false);
+		if (v1 != 0d && !v1.equals(boost)) {
+			boost = v1;
+			System.out.println("Permission jobs.boost.all.all." + type.getName() + " is giving boost " + v1);
+		}
+
+		System.out.println("Final boost is " + v1);
+		return boost;
     }
 
     public int getPlayerMaxQuest(String jobName) {
@@ -914,8 +934,7 @@ public class JobsPlayer {
      * @return true if online, otherwise false
      */
     public boolean isOnline() {
-	Player player = getPlayer();
-	return player != null ? player.isOnline() : isOnline;
+		return Bukkit.getOfflinePlayer(playerUUID).isOnline();
     }
 
     public boolean isSaved() {
@@ -946,12 +965,12 @@ public class JobsPlayer {
 	permissionsCache.put(permission, state);
     }
 
-    public Long getLastPermissionUpdate() {
-	return lastPermissionUpdate;
+    public Instant getNextPermissionUpdate() {
+	return nextPermissionUpdate;
     }
 
-    public void setLastPermissionUpdate(Long lastPermissionUpdate) {
-	this.lastPermissionUpdate = lastPermissionUpdate;
+    public void setNextPermissionUpdate(Instant nextPermissionUpdate) {
+	this.nextPermissionUpdate = nextPermissionUpdate;
     }
 
     /**
@@ -1339,8 +1358,8 @@ public class JobsPlayer {
     }
 
     /**
-     * @deprecated use {@link #getMaxOwnerShipAllowed(CMIMaterial)}
-     * @return max allowed brewing stands
+     * @deprecated use
+	 * @return max allowed brewing stands
      */
     @Deprecated
     public int getMaxBrewingStandsAllowed() {
@@ -1353,8 +1372,8 @@ public class JobsPlayer {
     }
 
     /**
-     * @deprecated use {@link #getMaxOwnerShipAllowed(CMIMaterial)}
-     * @return the max allowed furnaces
+     * @deprecated use
+	 * @return the max allowed furnaces
      */
     @Deprecated
     public int getMaxFurnacesAllowed() {

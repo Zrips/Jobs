@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import com.gamingmesh.jobs.stuff.AsyncThreading;
 import org.bukkit.Chunk;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -424,7 +425,8 @@ public class JobsListener implements Listener {
 
 	if (meinOk != null) {
 	    event.setCancelled(true);
-	    CMIActionBar.send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", meinOk));
+		String finalMeinOk = meinOk;
+		AsyncThreading.run(() -> CMIActionBar.send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", finalMeinOk)));
 	}
     }
 

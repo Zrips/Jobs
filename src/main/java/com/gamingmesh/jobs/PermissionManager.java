@@ -17,6 +17,7 @@
 
 package com.gamingmesh.jobs;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -171,10 +172,10 @@ public class PermissionManager {
 	    perm += ".";
 
 	Map<String, Boolean> permissions = jPlayer.getPermissionsCache();
-	if (force || permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
+	if (force || permissions == null || Instant.now().isAfter(jPlayer.getNextPermissionUpdate())) {
 	    permissions = getAll(player);
 	    jPlayer.setPermissionsCache(permissions);
-	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
+	    jPlayer.setNextPermissionUpdate(Instant.now().plusSeconds(60));
 	}
 
 	double amount = Double.NEGATIVE_INFINITY;
@@ -205,12 +206,12 @@ public class PermissionManager {
 	    return false;
 
 	Map<String, Boolean> permissions = jPlayer.getPermissionsCache();
-	if (permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
+	if (permissions == null || Instant.now().isAfter(jPlayer.getNextPermissionUpdate())) {
 	    if (permissions == null)
 		permissions = new HashMap<>();
 	    permissions.put(perm, player.hasPermission(perm));
 	    jPlayer.setPermissionsCache(permissions);
-	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
+	    jPlayer.setNextPermissionUpdate(Instant.now().plusSeconds(60));
 	}
 
 	return permissions.getOrDefault(perm, false);

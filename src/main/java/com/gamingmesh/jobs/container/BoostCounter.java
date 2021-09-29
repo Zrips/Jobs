@@ -1,30 +1,32 @@
 package com.gamingmesh.jobs.container;
 
+import java.time.Instant;
+
 public class BoostCounter {
     private final CurrencyType type;
     private double boost;
-    private Long calculatedon;
+    private Instant instant;
 
-    public BoostCounter(CurrencyType type, double boost, Long calculatedon) {
+    public BoostCounter(CurrencyType type, double boost, Instant instant) {
 	this.type = type;
 	this.boost = boost;
-	this.calculatedon = calculatedon;
+	this.instant = instant;
     }
 
     public CurrencyType getType() {
 	return type;
     }
 
-    public long getTime() {
-	return calculatedon;
+    public Instant getTime() {
+	return instant;
     }
 
     public double getBoost() {
 	return boost;
     }
 
-    public void setTime(long calculatedon) {
-	this.calculatedon = calculatedon;
+    public void setTime(Instant instant) {
+	this.instant = instant;
     }
 
     public void setBoost(double boost) {

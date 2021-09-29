@@ -27,7 +27,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
+import com.gamingmesh.jobs.stuff.AsyncThreading;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
@@ -83,7 +85,7 @@ public class PlayerManager {
     private final Jobs plugin;
 
     public PlayerManager(Jobs plugin) {
-	this.plugin = plugin;
+		this.plugin = plugin;
     }
 
     /**
@@ -683,7 +685,7 @@ public class PlayerManager {
 	    if (player != null && (Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat)) {
 		for (String line : message.split("\n")) {
 		    if (Jobs.getGCManager().LevelChangeActionBar)
-			CMIActionBar.send(player, line);
+			AsyncThreading.run(() -> CMIActionBar.send(player, line));
 
 		    if (Jobs.getGCManager().LevelChangeChat)
 			player.sendMessage(line);
@@ -795,7 +797,7 @@ public class PlayerManager {
 			plugin.getComplement().broadcastMessage(line);
 		} else if (player != null) {
 		    if (Jobs.getGCManager().LevelChangeActionBar)
-			CMIActionBar.send(player, line);
+			AsyncThreading.run(() -> CMIActionBar.send(player, line));
 
 		    if (Jobs.getGCManager().LevelChangeChat)
 			player.sendMessage(line);
@@ -827,7 +829,7 @@ public class PlayerManager {
 			plugin.getComplement().broadcastMessage(line);
 		    } else if (player != null) {
 			if (Jobs.getGCManager().TitleChangeActionBar)
-			    CMIActionBar.send(player, line);
+			    AsyncThreading.run(() -> CMIActionBar.send(player, line));
 
 			if (Jobs.getGCManager().TitleChangeChat)
 			    player.sendMessage(line);

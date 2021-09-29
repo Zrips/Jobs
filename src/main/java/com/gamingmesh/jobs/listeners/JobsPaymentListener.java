@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.gamingmesh.jobs.stuff.AsyncThreading;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -1700,11 +1701,11 @@ public final class JobsPaymentListener implements Listener {
 		    report = true;
 
 		if (report)
-		    CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.noRegistration", "[block]", name));
+		    AsyncThreading.run(() -> CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.noRegistration", "[block]", name)));
 	    } else if (done == ownershipFeedback.newReg && jPlayer != null && jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) > 0) {
-		CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.newRegistration", "[block]", name,
+		AsyncThreading.run(() -> CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.newRegistration", "[block]", name,
 		    "[current]", blockOwner.getTotal(jPlayer.getUniqueId()),
-		    "[max]", jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) == 0 ? "-" : jPlayer.getMaxOwnerShipAllowed(blockOwner.getType())));
+		    "[max]", jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) == 0 ? "-" : jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()))));
 	    }
 	} else if (!block.getType().toString().startsWith("STRIPPED_") &&
 	    event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && hand.toString().endsWith("_AXE")) {

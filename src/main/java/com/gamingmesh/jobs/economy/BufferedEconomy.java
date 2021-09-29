@@ -25,6 +25,7 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.gamingmesh.jobs.stuff.AsyncThreading;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -173,8 +174,9 @@ public class BufferedEconomy {
 		}
 
 		if (Jobs.getGCManager().ActionBarsMessageByDefault && serverTaxesAccount.isOnline()) {
-		    CMIActionBar.send(Bukkit.getPlayer(serverAccountName),
-			Jobs.getLanguage().getMessage("message.taxes", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), totalAmount)));
+			double finalTotalAmount = totalAmount;
+			AsyncThreading.run(() -> CMIActionBar.send(Bukkit.getPlayer(serverAccountName),
+			Jobs.getLanguage().getMessage("message.taxes", "[amount]", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), finalTotalAmount))));
 		}
 	    }
 
@@ -203,7 +205,7 @@ public class BufferedEconomy {
 		payment.getPayment().putAll(jobsPaymentEvent.getPayment());
 
 		if (Jobs.getGCManager().UseServerAccount && !hasMoney) {
-		    CMIActionBar.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney"));
+		    AsyncThreading.run(() -> CMIActionBar.send(payment.getOfflinePlayer().getPlayer(), Jobs.getLanguage().getMessage("economy.error.nomoney")));
 		    continue;
 		}
 
@@ -216,7 +218,7 @@ public class BufferedEconomy {
 		showPayment(payment);
 
 		if (Version.getCurrent().isHigher(Version.v1_8_R3) && payment.getOfflinePlayer().isOnline()) {
-		    Jobs.getBBManager().ShowJobProgression(Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId()));
+		    AsyncThreading.run(() -> Jobs.getBBManager().ShowJobProgression(Jobs.getPlayerManager().getJobsPlayer(payment.getOfflinePlayer().getUniqueId())));
 		}
 	    }
 
@@ -273,7 +275,8 @@ public class BufferedEconomy {
 	boolean showInActionbar = ToggleBarHandling.getActionBarToggle().getOrDefault(playerUUID.toString(),
 		Jobs.getGCManager().ActionBarsMessageByDefault);
 	if (showInActionbar) {
-	    CMIActionBar.send(abp, message);
+		String finalMessage = message;
+		AsyncThreading.run(() -> CMIActionBar.send(abp, finalMessage));
 	} else {
 	    abp.sendMessage(message);
 	}

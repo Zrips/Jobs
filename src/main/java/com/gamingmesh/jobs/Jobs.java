@@ -33,6 +33,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
+import com.gamingmesh.jobs.stuff.*;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -99,10 +100,6 @@ import com.gamingmesh.jobs.listeners.JobsPayment14Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.selection.SelectionManager;
-import com.gamingmesh.jobs.stuff.Loging;
-import com.gamingmesh.jobs.stuff.TabComplete;
-import com.gamingmesh.jobs.stuff.ToggleBarHandling;
-import com.gamingmesh.jobs.stuff.VersionChecker;
 import com.gamingmesh.jobs.stuff.complement.Complement;
 import com.gamingmesh.jobs.stuff.complement.Complement1;
 import com.gamingmesh.jobs.stuff.complement.Complement2;
@@ -117,6 +114,7 @@ import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
+import org.jetbrains.annotations.Async;
 
 public final class Jobs extends JavaPlugin {
 
@@ -897,6 +895,8 @@ public final class Jobs extends JavaPlugin {
 	if (dao != null) {
 	    dao.closeConnections();
 	}
+
+		AsyncThreading.ASYNC_POOL.shutdown();
     }
 
     private static void checkDailyQuests(JobsPlayer jPlayer, Job job, ActionInfo info) {
@@ -1236,8 +1236,10 @@ public final class Jobs extends JavaPlugin {
 
 		try {
 		    if (expAmount != 0D && gConfigManager.BossBarEnabled)
-			if (gConfigManager.BossBarShowOnEachAction)
-			    bbManager.ShowJobProgression(jPlayer, prog, expAmount);
+			if (gConfigManager.BossBarShowOnEachAction) {
+				double finalExpAmount = expAmount;
+				AsyncThreading.run(() -> bbManager.ShowJobProgression(jPlayer, prog, finalExpAmount));
+			}
 			else
 			    jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
 		} catch (Throwable e) {
@@ -1310,7 +1312,7 @@ public final class Jobs extends JavaPlugin {
 		if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
 		    if (inform && player.canGetPaid(info)) {
 			int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
-			CMIActionBar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+				AsyncThreading.run(() -> CMIActionBar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec)));
 		    }
 
 		    return false;
@@ -1339,7 +1341,7 @@ public final class Jobs extends JavaPlugin {
 		    if ((time > System.currentTimeMillis() || bp.isPaid()) && bp.getAction() != DBAction.DELETE) {
 			if (inform && player.canGetPaid(info)) {
 			    int sec = Math.round((time - System.currentTimeMillis()) / 1000L);
-			    CMIActionBar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec));
+			    AsyncThreading.run(() -> CMIActionBar.send(player.getPlayer(), lManager.getMessage("message.blocktimer", "[time]", sec)));
 			}
 
 			getBpManager().add(block, cd);
