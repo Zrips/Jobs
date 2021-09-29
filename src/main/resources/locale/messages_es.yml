@@ -20,7 +20,7 @@ general:
     blocks:
       furnace: Horno
       smoker: Ahumador
-      blastfurnace: Alto Hordo
+      blastfurnace: Alto Horno
       brewingstand: Soporte para pociones
   admin:
     error: '&cSe ha producido un error al aplicar el conjuro.'
