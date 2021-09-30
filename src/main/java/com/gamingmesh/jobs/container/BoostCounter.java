@@ -8,9 +8,9 @@ public class BoostCounter {
     private Instant instant;
 
     public BoostCounter(CurrencyType type, double boost, Instant instant) {
-	this.type = type;
-	this.boost = boost;
-	this.instant = instant;
+        this.type = type;
+        this.boost = boost;
+        this.instant = instant;
     }
 
     public CurrencyType getType() {

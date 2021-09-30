@@ -357,7 +357,6 @@ public class JobsPlayer {
 	    for (BoostCounter counter : counterList) {
 			if (counter.getType() == type) {
 
-				System.out.println("Check du boost " + type.getName() + " pour " + offlinePlayer.getName());
 				if (force || time.isAfter(counter.getTime())) {
 					boost = getPlayerBoostNew(jobName, type);
 					counter.setBoost(boost);
@@ -366,15 +365,12 @@ public class JobsPlayer {
 					return boost;
 				}
 
-				System.out.println("Boost venant du cache : " + type + " @ " + counter.getBoost() + " pour " + offlinePlayer.getName());
 				return counter.getBoost();
 			}
 	    }
 
-	    System.out.println("Recherche du boost " + type + " pour " + offlinePlayer.getName() + "...");
 	    boost = getPlayerBoostNew(jobName, type);
 	    counterList.add(new BoostCounter(type, boost, time.plusSeconds(60)));
-	    System.out.println("Boost trouvé : " + type + " @ " + boost + " pour " + offlinePlayer.getName());
 	    return boost;
 	}
 
@@ -391,28 +387,16 @@ public class JobsPlayer {
 		Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), true, false);
 		Double boost = v1;
 
-		System.out.println("Permission jobs.boost." + jobName + "." + type.getName() + " is giving boost " + v1);
+		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + ".all", false, false);
+		boost = Double.max(v1, boost);
 
-		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + ".all", true, false);
-		if (v1 != 0d && !v1.equals(boost)) {
-			boost = v1;
-			System.out.println("Permission jobs.boost." + jobName + ".all is giving boost " + v1);
-		}
+		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", false, false);
+		boost = Double.max(v1, boost);
 
+		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), false, false);
+		boost = Double.max(v1, boost);
 
-		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", true, false);
-		if (v1 != 0d && !v1.equals(boost)) {
-			boost = v1;
-			System.out.println("Permission jobs.boost.all.all is giving boost " + v1);
-		}
-
-		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), true, false);
-		if (v1 != 0d && !v1.equals(boost)) {
-			boost = v1;
-			System.out.println("Permission jobs.boost.all.all." + type.getName() + " is giving boost " + v1);
-		}
-
-		System.out.println("Final boost is " + v1);
+		System.out.println("Boost for " + getName() + " is " + type.getName() + " @ " + boost);
 		return boost;
     }
 

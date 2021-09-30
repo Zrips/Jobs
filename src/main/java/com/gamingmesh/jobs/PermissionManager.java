@@ -181,40 +181,40 @@ public class PermissionManager {
 	double amount = Double.NEGATIVE_INFINITY;
 
 	for (Map.Entry<String, Boolean> permission : permissions.entrySet()) {
-	    if (!permission.getKey().startsWith(perm) || !permission.getValue())
-		continue;
+	    if (!permission.getKey().startsWith(perm) || !permission.getValue()) continue;
 	    try {
-		double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
-		if (cumulative)
-		    amount += temp;
-		else if (temp > amount)
-		    amount = temp;
+			double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
+			if (cumulative) {
+				amount += temp;
+			} else if (temp > amount) {
+				amount = temp;
+			}
 	    } catch (NumberFormatException ex) {
-		Jobs.getPluginLogger().log(java.util.logging.Level.WARNING, ex.getLocalizedMessage());
+			Jobs.getPluginLogger().log(java.util.logging.Level.WARNING, ex.getLocalizedMessage());
 	    }
 	}
 
-	return amount == Double.NEGATIVE_INFINITY ? 0D : amount;
+		return amount == Double.NEGATIVE_INFINITY ? 0D : amount;
     }
 
     public boolean hasPermission(JobsPlayer jPlayer, String perm) {
-	if (jPlayer == null)
-	    return false;
+		if (jPlayer == null)
+			return false;
 
-	Player player = jPlayer.getPlayer();
-	if (player == null)
-	    return false;
+		Player player = jPlayer.getPlayer();
+		if (player == null)
+			return false;
 
-	Map<String, Boolean> permissions = jPlayer.getPermissionsCache();
-	if (permissions == null || Instant.now().isAfter(jPlayer.getNextPermissionUpdate())) {
-	    if (permissions == null)
-		permissions = new HashMap<>();
-	    permissions.put(perm, player.hasPermission(perm));
-	    jPlayer.setPermissionsCache(permissions);
-	    jPlayer.setNextPermissionUpdate(Instant.now().plusSeconds(60));
-	}
+		Map<String, Boolean> permissions = jPlayer.getPermissionsCache();
+		if (permissions == null || Instant.now().isAfter(jPlayer.getNextPermissionUpdate())) {
+			if (permissions == null) permissions = new HashMap<>();
 
-	return permissions.getOrDefault(perm, false);
+			permissions.put(perm, player.hasPermission(perm));
+			jPlayer.setPermissionsCache(permissions);
+			jPlayer.setNextPermissionUpdate(Instant.now().plusSeconds(60));
+		}
+
+		return permissions.getOrDefault(perm, false);
     }
 
 }
