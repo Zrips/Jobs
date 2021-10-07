@@ -566,7 +566,8 @@ public class Job {
 
 	if (fDescription != null) {
 	    this.fDescription.addAll(fDescription);
-	}
+        this.description = String.join("\n",this.fDescription);
+    }
     }
 
     public void setMaxLevelCommands(List<String> commands) {
