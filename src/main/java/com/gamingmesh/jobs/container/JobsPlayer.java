@@ -361,7 +361,6 @@ public class JobsPlayer {
 					boost = getPlayerBoostNew(jobName, type);
 					counter.setBoost(boost);
 					counter.setTime(time.plusSeconds(60));
-					System.out.println("Actualisation du boost : " + type + " @ " + boost + " pour " + offlinePlayer.getName());
 					return boost;
 				}
 
@@ -396,7 +395,6 @@ public class JobsPlayer {
 		v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), false, false);
 		boost = Double.max(v1, boost);
 
-		System.out.println("Boost for " + getName() + " is " + type.getName() + " @ " + boost);
 		return boost;
     }
 
