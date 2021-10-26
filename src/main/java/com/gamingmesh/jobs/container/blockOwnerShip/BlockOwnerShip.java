@@ -105,7 +105,8 @@ public class BlockOwnerShip {
 		Player owningPlayer = Bukkit.getPlayer(ownerUUID);
 
 		if (owningPlayer != null && owningPlayer.isOnline()) {
-		    owningPlayer.sendMessage(Jobs.getLanguage().getMessage("command.clearownership.output.lost", "[type]", CMIMaterial.get(type.toString()).getName(), "[location]", CMILocation.toString(block.getLocation(), ":",
+		    owningPlayer.sendMessage(Jobs.getLanguage().getMessage("command.clearownership.output.lost", "[type]", CMIMaterial.get(type.toString()).getName(), "[location]", CMILocation.toString(
+			block.getLocation(), ":",
 			true, true)));
 		}
 
@@ -158,13 +159,15 @@ public class BlockOwnerShip {
     }
 
     public boolean remove(Block block) {
-	UUID uuid = null;
-	List<MetadataValue> data = getBlockMetadatas(block);
+	UUID uuid = getOwnerByLocation(block.getLocation());
 
-	if (!data.isEmpty()) {
-	    try {
-		uuid = UUID.fromString(data.get(0).asString());
-	    } catch (IllegalArgumentException e) {
+	if (uuid == null) {
+	    List<MetadataValue> data = getBlockMetadatas(block);
+	    if (!data.isEmpty()) {
+		try {
+		    uuid = UUID.fromString(data.get(0).asString());
+		} catch (IllegalArgumentException e) {
+		}
 	    }
 	}
 

@@ -422,6 +422,9 @@ public final class JobsPaymentListener implements Listener {
 
 	Player player = event.getPlayer();
 
+	// Remove block owner ships
+	plugin.removeBlockOwnerShip(block);
+
 	// check if player is riding
 	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
 	    return;
@@ -429,9 +432,6 @@ public final class JobsPaymentListener implements Listener {
 	// check if in creative
 	if (!payIfCreative(player))
 	    return;
-
-	// Remove block owner ships
-	plugin.removeBlockOwnerShip(block);
 
 	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
 	    return;
