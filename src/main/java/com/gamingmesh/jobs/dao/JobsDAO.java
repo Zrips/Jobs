@@ -485,7 +485,7 @@ public abstract class JobsDAO {
 	    return;
 	}
 
-	CMIMessages.consoleMessage("&2Connected to database (" + dbType + ")");
+	CMIMessages.consoleMessage("&eConnected to database (&6" + dbType + "&e)");
 
 	vacuum();
 

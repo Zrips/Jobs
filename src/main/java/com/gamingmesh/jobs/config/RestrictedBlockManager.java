@@ -45,7 +45,7 @@ public class RestrictedBlockManager {
 		    CMIMaterial mat = cm == null ? null : cm.getCMIType();
 
 		    if (mat == null || !mat.isBlock()) {
-			Jobs.consoleMsg("&e[Jobs] Your defined (" + one + ") protected block id/name is not correct!");
+			Jobs.consoleMsg("&eYour defined (&6" + one + "&e) protected block id/name is not correct!");
 			continue;
 		    }
 
@@ -78,7 +78,7 @@ public class RestrictedBlockManager {
 
 	int size = restrictedBlocksTimer.size();
 	if (size > 0)
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + size + " protected blocks timers!");
+	    Jobs.consoleMsg("&eLoaded &6" + size + " &eprotected blocks timers");
 
 	cfg.save();
     }

@@ -33,7 +33,7 @@ public class BufferedPaymentThread extends Thread {
     @Override
     public void run() {
 
-	Jobs.consoleMsg("&e[Jobs] Started buffered payment thread.");
+	Jobs.consoleMsg("&eStarted buffered payment thread.");
 
 	while (running) {
 	    try {
@@ -52,7 +52,7 @@ public class BufferedPaymentThread extends Thread {
 		running = false;
 	    }
 	}
-	Jobs.consoleMsg("&e[Jobs] Buffered payment thread shutdown.");
+	Jobs.consoleMsg("&eBuffered payment thread shutdown.");
     }
 
     public void shutdown() {

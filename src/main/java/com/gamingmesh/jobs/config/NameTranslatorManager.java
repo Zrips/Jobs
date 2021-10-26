@@ -199,9 +199,9 @@ public class NameTranslatorManager {
 	    }
 
 	    if (listOfNames.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfNames.size() + " custom item names!");
+		Jobs.consoleMsg("&eLoaded &6" + listOfNames.size() + " &ecustom item names");
 	} else
-	    Jobs.consoleMsg("&c[Jobs] The ItemList section not found in " + itemFile.fileName + " file.");
+	    Jobs.consoleMsg("&cThe ItemList section not found in &6" + itemFile.fileName + " &cfile.");
 
 	if ((section = itemFile.getConfig().getConfigurationSection("EntityList")) != null) {
 	    listOfEntities.clear();
@@ -220,9 +220,9 @@ public class NameTranslatorManager {
 	    }
 
 	    if (listOfEntities.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfEntities.size() + " custom entity names!");
+		Jobs.consoleMsg("&eLoaded &6" + listOfEntities.size() + " &ecustom entity names");
 	} else
-	    Jobs.consoleMsg("&c[Jobs] The EntityList section not found in " + itemFile.fileName + " file.");
+	    Jobs.consoleMsg("&cThe EntityList section not found in &6" + itemFile.fileName + " &cfile.");
 
 	if ((section = itemFile.getConfig().getConfigurationSection("MythicEntityList")) != null) {
 	    listOfMMEntities.clear();
@@ -233,9 +233,9 @@ public class NameTranslatorManager {
 	    }
 
 	    if (listOfMMEntities.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfMMEntities.size() + " custom MythicMobs names!");
+		Jobs.consoleMsg("&eLoaded &6" + listOfMMEntities.size() + " &ecustom MythicMobs names");
 	} else
-	    Jobs.consoleMsg("&c[Jobs] The MythicEntityList section not found in " + itemFile.fileName + " file.");
+	    Jobs.consoleMsg("&cThe MythicEntityList section not found in &6" + itemFile.fileName + " &cfile.");
 
 	if ((section = itemFile.getConfig().getConfigurationSection("EnchantList")) != null) {
 	    listOfEnchants.clear();
@@ -245,9 +245,9 @@ public class NameTranslatorManager {
 	    }
 
 	    if (listOfEnchants.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfEnchants.size() + " custom enchant names!");
+		Jobs.consoleMsg("&eLoaded &6" + listOfEnchants.size() + " &ecustom enchant names");
 	} else
-	    Jobs.consoleMsg("&c[Jobs] The EnchantList section not found in " + itemFile.fileName + " file.");
+	    Jobs.consoleMsg("&cThe EnchantList section not found in &6" + itemFile.fileName + " &cfile.");
 
 	if ((section = itemFile.getConfig().getConfigurationSection("ColorList")) != null) {
 	    listOfColors.clear();
@@ -260,9 +260,9 @@ public class NameTranslatorManager {
 	    }
 
 	    if (listOfColors.size() > 0)
-		Jobs.consoleMsg("&e[Jobs] Loaded " + listOfColors.size() + " custom color names!");
+		Jobs.consoleMsg("&eLoaded &6" + listOfColors.size() + " &ecustom color names");
 	} else
-	    Jobs.consoleMsg("&c[Jobs] The ColorList section not found in " + itemFile.fileName + " file.");
+	    Jobs.consoleMsg("&cThe ColorList section not found in &6" + itemFile.fileName + " &cfile.");
     }
 
     @SuppressWarnings("deprecation")

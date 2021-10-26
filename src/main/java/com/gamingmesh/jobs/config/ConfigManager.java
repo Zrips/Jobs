@@ -953,7 +953,7 @@ public class ConfigManager {
 	Jobs.setJobs(jobs);
 
 	if (!jobs.isEmpty()) {
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + jobs.size() + " jobs!");
+	    Jobs.consoleMsg("&eLoaded &6" + jobs.size() + " &ejobs");
 	}
 
 	ItemBoostManager.load();
@@ -1461,13 +1461,13 @@ public class ConfigManager {
 
 			quests.add(quest);
 		    } catch (Exception e) {
-			Jobs.consoleMsg("&c[Jobs] Can't load " + one + " quest for " + jobFullName);
+			Jobs.consoleMsg("&cCan't load &6" + one + " &cquest for &6" + jobFullName);
 			e.printStackTrace();
 		    }
 		}
 
 		job.setQuests(quests);
-		Jobs.consoleMsg("&e[Jobs] Loaded " + quests.size() + " quests for " + jobFullName);
+		Jobs.consoleMsg("&eLoaded &6" + quests.size() + " &equests for &6" + jobFullName);
 	    }
 	    job.setMaxDailyQuests(jobSection.getInt("maxDailyQuests", 1));
 

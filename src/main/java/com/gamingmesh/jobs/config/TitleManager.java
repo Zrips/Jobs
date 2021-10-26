@@ -157,6 +157,6 @@ public class TitleManager {
 
 	int size = titles.size();
 	if (size > 0)
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + size + " titles!");
+	    Jobs.consoleMsg("&eLoaded &6" + size + " &etitles");
     }
 }

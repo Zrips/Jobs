@@ -470,6 +470,6 @@ public class ShopManager {
 	}
 
 	if (!list.isEmpty())
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + list.size() + " shop items!");
+	    Jobs.consoleMsg("&eLoaded &6" + list.size() + " &eshop items");
     }
 }

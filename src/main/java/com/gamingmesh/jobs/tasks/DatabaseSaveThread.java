@@ -33,7 +33,7 @@ public class DatabaseSaveThread extends Thread {
     @Override
     public void run() {
 
-	Jobs.consoleMsg("&e[Jobs] Started database save task.");
+	Jobs.consoleMsg("&eStarted database save task.");
 
 	while (running) {
 	    try {
@@ -51,7 +51,7 @@ public class DatabaseSaveThread extends Thread {
 	    }
 	}
 
-	Jobs.consoleMsg("&e[Jobs] Database save task shutdown!");
+	Jobs.consoleMsg("&eDatabase save task shutdown!");
 
     }
 

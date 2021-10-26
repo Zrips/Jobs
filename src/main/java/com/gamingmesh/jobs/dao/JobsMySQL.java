@@ -8,32 +8,17 @@ import java.sql.Statement;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
-import net.Zrips.CMILib.Messages.CMIMessages;
-
 public class JobsMySQL extends JobsDAO {
-    
+
     private static String path = "";
 
     static {
-
 	try {
 	    Class.forName("com.mysql.cj.jdbc.Driver");
 	    path = "com.mysql.cj.jdbc.Driver";
 	} catch (Throwable e) {
 	    path = "com.mysql.jdbc.Driver";
 	}
-
-	String major = "";
-
-	String[] javaVersionElements = System.getProperty("java.runtime.version").split("\\.|_|-b");
-	try {
-	    major = javaVersionElements[0];
-	} catch (Throwable e) {
-	    String d = System.getProperty("java.version");
-	    String[] s = d.split("_")[0].split(".");
-	    major = s[1];
-	}
-	CMIMessages.consoleMessage("Detected Java" + major);
     }
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect,

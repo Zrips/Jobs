@@ -228,7 +228,7 @@ public final class ItemBoostManager {
 	}
 
 	cfg.save();
-	Jobs.consoleMsg("&e[Jobs] Loaded " + ITEMS.size() + " boosted items!");
+	Jobs.consoleMsg("&eLoaded &6" + ITEMS.size() + " &eboosted items");
     }
 
     /**
