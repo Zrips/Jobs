@@ -40,4 +40,8 @@ public class EnchantActionInfo extends BaseActionInfo {
 	public String getNameWithSub() {
 		return name + ":" + level;
 	}
+
+	public int getLevel() {
+		return level;
+	}
 }

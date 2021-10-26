@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.gamingmesh.jobs.actions.EnchantActionInfo;
+import com.gamingmesh.jobs.stuff.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
@@ -97,7 +99,9 @@ public class QuestProgression {
 	    return;
 
 	Map<String, QuestObjective> byAction = quest.getObjectives().get(action.getType());
-	if (byAction != null && !byAction.containsKey(action.getNameWithSub()) && !byAction.containsKey(action.getName()))
+	QuestObjective objective = objectiveForAction(action);
+
+	if (byAction != null && objective == null)
 	    return;
 
 	org.bukkit.entity.Player player = jPlayer.getPlayer();
@@ -118,20 +122,12 @@ public class QuestProgression {
 	    }
 	}
 
-	if (!isCompleted()) {
-	    QuestObjective objective = null;
-
-	    if (byAction != null) {
-		objective = byAction.get(action.getName());
-
-		if (objective == null)
-		    objective = byAction.get(action.getNameWithSub());
-	    }
-
-	    if (objective != null) {
-		Integer old = done.getOrDefault(objective, 0);
-		done.put(objective, old < objective.getAmount() ? old + 1 : objective.getAmount());
-	    }
+	if (
+	    !isCompleted() &&
+	    objective != null
+	) {
+	    Integer old = done.getOrDefault(objective, 0);
+	    done.put(objective, old < objective.getAmount() ? old + 1 : objective.getAmount());
 	}
 
 	jPlayer.setSaved(false);
@@ -158,5 +154,33 @@ public class QuestProgression {
 
     public void setGivenReward(boolean givenReward) {
 	this.givenReward = givenReward;
+    }
+
+    private boolean objectiveKeyMatches(String objectiveKey, ActionInfo actionInfo) {
+	if (actionInfo instanceof EnchantActionInfo) {
+	    return Util.enchantMatchesActionInfo(objectiveKey, (EnchantActionInfo) actionInfo);
+	}
+
+	return (
+	    objectiveKey.equalsIgnoreCase(actionInfo.getNameWithSub()) ||
+	    objectiveKey.equalsIgnoreCase(actionInfo.getName())
+	);
+    }
+
+    private QuestObjective objectiveForAction(ActionInfo actionInfo) {
+	Map<String, QuestObjective> byAction = quest.getObjectives().get(actionInfo.getType());
+	if (byAction == null) {
+	    return null;
+	}
+
+	for (Map.Entry<String, QuestObjective> objectiveEntry : byAction.entrySet()) {
+	    String objectiveKey = objectiveEntry.getKey();
+
+	    if (objectiveKeyMatches(objectiveKey, actionInfo)) {
+		return objectiveEntry.getValue();
+	    }
+	}
+
+	return null;
     }
 }

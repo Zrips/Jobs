@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.BiPredicate;
 
+import com.gamingmesh.jobs.actions.EnchantActionInfo;
+import com.gamingmesh.jobs.stuff.Util;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -305,6 +307,10 @@ public class Job {
 	    if (actionInfo instanceof PotionItemActionInfo) {
 		String subName = ((PotionItemActionInfo) action).getNameWithSub();
 		return jobInfo.getName().equalsIgnoreCase(subName) || (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(subName);
+	    }
+
+	    if (actionInfo instanceof EnchantActionInfo) {
+		return Util.enchantMatchesActionInfo(jobInfo.getName(), (EnchantActionInfo) actionInfo);
 	    }
 
 	    return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
