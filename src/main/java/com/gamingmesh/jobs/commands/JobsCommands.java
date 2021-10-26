@@ -25,6 +25,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class JobsCommands implements CommandExecutor {
@@ -235,14 +236,6 @@ public class JobsCommands implements CommandExecutor {
 
 	List<String> message = new ArrayList<>();
 
-	int showAllTypes = 1;
-	for (ActionType actionType : ActionType.values()) {
-	    if (type.startsWith(actionType.getName().toLowerCase())) {
-		showAllTypes = 0;
-		break;
-	    }
-	}
-
 	if (job.getBoost().get(CurrencyType.EXP) != 0D)
 	    message.add(Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.EXP)) + 1));
 
@@ -264,21 +257,19 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	for (ActionType actionType : ActionType.values()) {
-	    if (showAllTypes == 1 || type.startsWith(actionType.getName().toLowerCase())) {
+	    if (!type.isEmpty() && type.startsWith(actionType.getName().toLowerCase())) {
 		List<JobInfo> info = job.getJobInfo(actionType);
-
 		if (info != null && !info.isEmpty()) {
 		    String m = jobInfoMessage(player, job, actionType);
-
 		    if (m.contains("\n"))
 			message.addAll(Arrays.asList(m.split("\n")));
 		    else
 			message.add(m);
-		} else if (showAllTypes == 0) {
-		    String myMessage = Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none");
-		    myMessage = myMessage.replace("%jobname%", job.getJobDisplayName());
-		    message.add(myMessage);
 		}
+	    } else if (type.isEmpty()) {
+		String myMessage = Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none");
+		myMessage = myMessage.replace("%jobname%", job.getJobDisplayName());
+		message.add(myMessage);
 	    }
 	}
 
@@ -298,9 +289,8 @@ public class JobsCommands implements CommandExecutor {
 	    sender.sendMessage(one);
 	}
 
-	String t = type.isEmpty() ? "" : " " + type;
-
 	if (isPlayer) {
+	    String t = type.isEmpty() ? "" : " " + type;
 	    String pName = player.getName();
 
 	    if (sender.getName().equalsIgnoreCase(pName))

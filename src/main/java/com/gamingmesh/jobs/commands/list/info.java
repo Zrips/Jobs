@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
@@ -12,6 +13,7 @@ public class info implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+
 	if (!(sender instanceof Player)) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
 	    return false;
@@ -47,12 +49,20 @@ public class info implements Cmd {
 	}
 
 	int page = 1;
-	String type = "";
-	if (args.length >= 2) {
+	String type = null;
+
+	for (int i = 1; i < args.length; i++) {
+	    String one = args[i];
+	    if (type == null) {
+		ActionType t = ActionType.getByName(one);
+		if (t != null) {
+		    type = t.getName();
+		    continue;
+		}
+	    }
 	    try {
-		page = Integer.parseInt(args[1]);
+		page = Integer.parseInt(args[i]);
 	    } catch (NumberFormatException e) {
-		type = args[1];
 	    }
 	}
 
