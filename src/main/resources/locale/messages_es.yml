@@ -327,7 +327,7 @@ command:
       next: '&eSiguiente >>>'
     output:
       break:
-        info: '&Romper'
+        info: '&eRomper'
         none: 'Con la profesión de %jobname% no vas a recibir dinero por romper bloques.'
       tntbreak:
         info: '&eExplotar con TNT'
