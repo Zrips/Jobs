@@ -82,6 +82,7 @@ public class GeneralConfigManager {
     public float maxPaymentCurveFactor;
 
     private boolean FurnacesReassign, BrewingStandsReassign, useTnTFinder = false, ShowNewVersion;
+    private boolean InformDuplicates;
 
     private FireworkEffect fireworkEffect;
 
@@ -341,6 +342,10 @@ public class GeneralConfigManager {
 	c.addComment("Optimizations.NewVersion",
 	    "When set to true staff will be informed about new Jobs plugin version", "You need to have jobs.versioncheck permission node");
 	ShowNewVersion = c.get("Optimizations.NewVersion", true);
+	
+	c.addComment("Optimizations.InformDuplicates",
+	    "Can be used to check if your database contains any duplicated user entries.");
+	InformDuplicates = c.get("Optimizations.InformDuplicates", false);
 
 	c.addComment("Optimizations.DecimalPlaces.Money",
 	    "Decimal places to be shown");
@@ -1153,5 +1158,9 @@ public class GeneralConfigManager {
 
     public FireworkEffect getFireworkEffect() {
 	return fireworkEffect;
+    }
+
+    public boolean isInformDuplicates() {
+	return InformDuplicates;
     }
 }

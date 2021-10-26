@@ -125,8 +125,9 @@ public class PlayerManager {
 	// Checking duplicated UUID's which usually is a cause of previous bugs
 	if (playerUUIDMap.containsKey(info.getUuid()) && playerUUIDMap.get(info.getUuid()).getID() != info.getID()) {
 	    int id = playerUUIDMap.get(info.getUuid()).getID();
-	    CMIMessages.consoleMessage("&7Duplicate! &5" + info.getName() + " &7same UUID for 2 entries in database. Please remove of one them from users table id1: &2" + id + " &7id2: &2" + info.getID());
-
+	    if (Jobs.getGCManager().isInformDuplicates())
+		CMIMessages.consoleMessage("&7Duplicate! &5" + info.getName() + " &7same UUID for 2 entries in database. Please remove of one them from users table id1: &2" + id + " &7id2: &2" + info
+		    .getID());
 	    if (id < info.getID()) {
 		return;
 	    }
@@ -135,8 +136,9 @@ public class PlayerManager {
 	// Checking duplicated names which usually is a cause of previous bugs
 	if (playerNameMap.containsKey(info.getName().toLowerCase()) && playerNameMap.get(info.getName().toLowerCase()).getID() != info.getID()) {
 	    int id = playerNameMap.get(info.getName().toLowerCase()).getID();
-	    CMIMessages.consoleMessage("&7Name Duplicate! &5" + info.getName() + " &7same UUID for 2 entries in database. Please remove of one them from users table id1: &2" + id + " &7id2: &2" + info
-		.getID());
+	    if (Jobs.getGCManager().isInformDuplicates())
+		CMIMessages.consoleMessage("&7Name Duplicate! &5" + info.getName() + " &7same UUID for 2 entries in database. Please remove of one them from users table id1: &2" + id + " &7id2: &2" + info
+		    .getID());
 	    if (id < info.getID()) {
 		return;
 	    }
@@ -283,7 +285,7 @@ public class PlayerManager {
 	jPlayer.onConnect();
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	
+
 	addPlayerToCache(jPlayer);
     }
 
