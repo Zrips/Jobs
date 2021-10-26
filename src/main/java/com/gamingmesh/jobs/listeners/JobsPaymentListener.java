@@ -1643,13 +1643,13 @@ public final class JobsPaymentListener implements Listener {
 		    if (level.getLevel() == level.getMaximumLevel()) {
 			Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.BONE_MEAL, ActionType.COLLECT), block);
 		    }
-		} else if ((cmat == CMIMaterial.SWEET_BERRY_BUSH || cmat == CMIMaterial.CAVE_VINES_PLANT) && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
+		} else if ((cmat == CMIMaterial.SWEET_BERRY_BUSH || cmat == CMIMaterial.CAVE_VINES_PLANT || cmat == CMIMaterial.CAVE_VINES) && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
 
 		    if (cmat == CMIMaterial.SWEET_BERRY_BUSH) {
 			Ageable age = (Ageable) block.getBlockData();
 			if (age.getAge() >= 2)
 			    Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.SWEET_BERRIES, ActionType.COLLECT, age.getAge()), block);
-		    } else if (cmat == CMIMaterial.CAVE_VINES_PLANT) {
+		    } else {
 			org.bukkit.block.data.type.CaveVinesPlant caveVines = (org.bukkit.block.data.type.CaveVinesPlant) block.getBlockData();
 			if (caveVines.isBerries()) {
 			    Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.GLOW_BERRIES, ActionType.COLLECT), block);
