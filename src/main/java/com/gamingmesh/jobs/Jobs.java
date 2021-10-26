@@ -76,6 +76,7 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.container.JobsWorld;
 import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
@@ -102,6 +103,7 @@ import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
+import com.gamingmesh.jobs.stuff.Util;
 import com.gamingmesh.jobs.stuff.VersionChecker;
 import com.gamingmesh.jobs.stuff.complement.Complement;
 import com.gamingmesh.jobs.stuff.complement.Complement1;
@@ -583,6 +585,14 @@ public final class Jobs extends JavaPlugin {
 	    getPlayerManager().reload();
 
 	    dao.truncateAllTables();
+
+	    for (Job one : Jobs.getJobs()) {
+		dao.recordNewJobName(one, one.getId());
+	    }
+	    for (JobsWorld one : Util.getJobsWorlds().values()) {
+		dao.recordNewWorld(one.getName(), one.getId());
+	    }
+
 	    getPlayerManager().convertChacheOfPlayers(true);
 
 	    dao.continueConvertions(archivelist);

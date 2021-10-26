@@ -43,6 +43,7 @@ import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public abstract class JobsDAO {
 
@@ -479,8 +480,12 @@ public abstract class JobsDAO {
     }
 
     public final synchronized void setUp() {
-	if (getConnection() == null)
+	if (getConnection() == null) {
+	    CMIMessages.consoleMessage("&cFAILED to connect to database");
 	    return;
+	}
+
+	CMIMessages.consoleMessage("&2Connected to database (" + dbType + ")");
 
 	vacuum();
 
@@ -511,8 +516,9 @@ public abstract class JobsDAO {
     public abstract boolean drop(String table);
 
     public boolean isConnected() {
-	if (pool == null)
+	if (pool == null) {
 	    return false;
+	}
 
 	try {
 	    JobsConnection conn = pool.getConnection();
@@ -953,6 +959,29 @@ public abstract class JobsDAO {
 	}
     }
 
+    public void recordNewWorld(String worldName, int id) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+	PreparedStatement prestt = null;
+	ResultSet res2 = null;
+	try {
+	    prestt = conn.prepareStatement("INSERT INTO `" + DBTables.WorldTable.getTableName() + "` (`id`,`" + worldsTableFields.name.getCollumn() + "`) VALUES (?,?);",
+		Statement.RETURN_GENERATED_KEYS);
+	    prestt.setInt(1, id);
+	    prestt.setString(2, worldName);
+	    prestt.executeUpdate();
+
+	    res2 = prestt.getGeneratedKeys();
+	    Util.addJobsWorld(new JobsWorld(worldName, res2.next() ? res2.getInt(1) : 0));
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prestt);
+	    close(res2);
+	}
+    }
+
     public synchronized void loadAllJobsWorlds() {
 	JobsConnection conn = getConnection();
 	if (conn == null)
@@ -1159,6 +1188,38 @@ public abstract class JobsDAO {
 	    prestt = conn.prepareStatement("INSERT INTO `" + DBTables.JobNameTable.getTableName() + "` (`" + jobsNameTableFields.name.getCollumn() + "`) VALUES (?);",
 		Statement.RETURN_GENERATED_KEYS);
 	    prestt.setString(1, job.getName());
+	    int rowAffected = prestt.executeUpdate();
+
+	    res2 = prestt.getGeneratedKeys();
+
+	    job.setId(res2.next() ? res2.getInt(1) : 0);
+
+	    if (rowAffected != 1) {
+		conn.getConnection().rollback();
+	    }
+
+	    conn.commit();
+	} catch (SQLException e) {
+	} finally {
+	    close(prestt);
+	    close(res2);
+	}
+    }
+
+    public void recordNewJobName(Job job, int id) {
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+
+	PreparedStatement prestt = null;
+	ResultSet res2 = null;
+	try {
+	    conn.setAutoCommit(false);
+
+	    prestt = conn.prepareStatement("INSERT INTO `" + DBTables.JobNameTable.getTableName() + "` (`id`,`" + jobsNameTableFields.name.getCollumn() + "`) VALUES (?,?);",
+		Statement.RETURN_GENERATED_KEYS);
+	    prestt.setInt(1, id);
+	    prestt.setString(2, job.getName());
 	    int rowAffected = prestt.executeUpdate();
 
 	    res2 = prestt.getGeneratedKeys();

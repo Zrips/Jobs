@@ -8,11 +8,37 @@ import java.sql.Statement;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class JobsMySQL extends JobsDAO {
+    
+    private static String path = "";
+
+    static {
+
+	try {
+	    Class.forName("com.mysql.cj.jdbc.Driver");
+	    path = "com.mysql.cj.jdbc.Driver";
+	} catch (Throwable e) {
+	    path = "com.mysql.jdbc.Driver";
+	}
+
+	String major = "";
+
+	String[] javaVersionElements = System.getProperty("java.runtime.version").split("\\.|_|-b");
+	try {
+	    major = javaVersionElements[0];
+	} catch (Throwable e) {
+	    String d = System.getProperty("java.version");
+	    String[] s = d.split("_")[0].split(".");
+	    major = s[1];
+	}
+	CMIMessages.consoleMessage("Detected Java" + major);
+    }
 
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect,
-        String characterEncoding, String encoding) {
-	super(plugin, "com.mysql.jdbc.Driver", "jdbc:mysql://" + hostname + "/" + database
+	String characterEncoding, String encoding) {
+	super(plugin, path, "jdbc:mysql://" + hostname + "/" + database
 	    + "?maxReconnects=1&characterEncoding=" + characterEncoding + "&encoding="
 	    + encoding + "&useUnicode=true&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
 	    + "&verifyServerCertificate=" + certificate, username, password, prefix);
@@ -24,9 +50,9 @@ public class JobsMySQL extends JobsDAO {
     }
 
     public JobsMySQL initialize(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect,
-        String characterEncoding, String encoding) {
+	String characterEncoding, String encoding) {
 	JobsMySQL dao = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect,
-		characterEncoding, encoding);
+	    characterEncoding, encoding);
 	dao.setUp();
 	return dao;
     }
@@ -40,7 +66,7 @@ public class JobsMySQL extends JobsDAO {
 	}
 
 	executeSQL("CREATE TABLE `" + getPrefix()
-	+ "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `seen` bigint);");
+	    + "users` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `player_uuid` varchar(36) NOT NULL, `username` varchar(20), `seen` bigint);");
     }
 
     @Override
