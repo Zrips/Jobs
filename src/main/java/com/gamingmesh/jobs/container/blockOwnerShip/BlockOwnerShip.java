@@ -170,24 +170,25 @@ public class BlockOwnerShip {
 		}
 	    }
 	}
-
 	if (uuid == null) {
 	    return false;
 	}
+	return remove(uuid, block);
+    }
 
+    public boolean remove(UUID uuid, Block block) {
+	if (uuid == null) {
+	    return false;
+	}
 	HashMap<String, blockLoc> ls = blockOwnerShips.getOrDefault(uuid, new HashMap<String, blockLoc>());
 	String blockLoc = CMILocation.toString(block.getLocation(), ":", true, true);
-
 	com.gamingmesh.jobs.stuff.blockLoc removed = ls.remove(blockLoc);
 	if (removed != null) {
 	    block.removeMetadata(metadataName, plugin);
-
 	    Map<String, UUID> oldRecord = ownerMapByLocation.get(block.getLocation().getWorld().getName());
 	    if (oldRecord != null)
 		oldRecord.remove(block.getLocation().getBlockX() + ":" + block.getLocation().getBlockY() + ":" + block.getLocation().getBlockZ());
-
 	}
-
 	return removed != null;
     }
 

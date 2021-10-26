@@ -234,9 +234,9 @@ public final class Jobs extends JavaPlugin {
     }
 
     public void removeBlockOwnerShip(org.bukkit.block.Block block) {
-	for (BlockOwnerShip ship : blockOwnerShipsMaterial.values()) {
+	BlockOwnerShip ship = blockOwnerShipsMaterial.get(CMIMaterial.get(block));
+	if (ship != null)
 	    ship.remove(block);
-	}
     }
 
     /**
