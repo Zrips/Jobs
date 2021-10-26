@@ -362,6 +362,7 @@ public final class JobsPaymentListener implements Listener {
 	    return;
 
 	BlockOwnerShip ownerShip = plugin.getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
+
 	if (ownerShip == null)
 	    return;
 
@@ -382,7 +383,9 @@ public final class JobsPaymentListener implements Listener {
 	    } catch (IllegalArgumentException e) {
 		return;
 	    }
-	} else
+	}
+
+	if (uuid == null)
 	    return;
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(uuid);
@@ -405,8 +408,9 @@ public final class JobsPaymentListener implements Listener {
 	    return;
 
 	ItemStack contents = event.getContents().getIngredient();
-	if (contents != null)
+	if (contents != null) {
 	    Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
+	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
