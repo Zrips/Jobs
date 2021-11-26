@@ -271,10 +271,11 @@ public class LanguageManager {
 
 	    c.get("command.blockinfo.help.info", "Shows information for the block you are looking at.");
 	    c.get("command.blockinfo.help.args", "");
-	    c.get("command.blockinfo.output.name", " &eBlock name: &6%blockname%");
+	    c.get("command.blockinfo.output.material", " &eBlock material: &6%blockname%");
 	    c.get("command.blockinfo.output.id", " &eBlock id: &6%blockid%");
-	    c.get("command.blockinfo.output.data", " &eBlock data: &6%blockdata%");
-	    c.get("command.blockinfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
+	    c.get("command.blockinfo.output.state", " &eBlock sate: &6%blockdata%");
+	    c.get("command.blockinfo.output.deprecated", " &eUsage: &6%first% &eor &6%second%");
+	    c.get("command.blockinfo.output.use", " &eConfig file usage: &6%usage%");
 
 	    c.get("command.iteminfo.help.info", "Shows information for the item you are holding.");
 	    c.get("command.iteminfo.help.args", "");

@@ -9,6 +9,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
 
 public class blockinfo implements Cmd {
@@ -27,24 +28,36 @@ public class blockinfo implements Cmd {
 	}
 
 	Block block = Util.getTargetBlock((Player) sender, 15);
-	if (block == null || CMIMaterial.isAir(block.getType()))
+	CMIMaterial cmat = CMIMaterial.get(block);
+
+	if (block == null || cmat.isAir())
 	    return true;
 
-	byte blockData = CMIMaterial.getBlockData(block);
+	short blockData = CMIMaterial.getBlockData(block);
 	String dataString = blockData == 0 ? "" : "-" + blockData;
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.name", "%blockname%", block.getType().name()));
-	if (Version.isCurrentEqualOrLower(Version.v1_13_R2))
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.id", "%blockid%", block.getType().getId()));
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.data", "%blockdata%", blockData));
+	RawMessage rm = new RawMessage();
+
+	rm.addText(Jobs.getLanguage().getMessage("general.info.separator") + "\n");
+	rm.addText(Jobs.getLanguage().getMessage("command.blockinfo.output.material", "%blockname%", block.getType().name()) + "\n");
+	rm.addSuggestion(block.getType().name());
+
+	if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
+	    rm.addText(Jobs.getLanguage().getMessage("command.blockinfo.output.id", "%blockid%", block.getType().getId()) + "\n");
+	    rm.addSuggestion(String.valueOf(block.getType().getId()));
+	}
+	if (blockData != 0) {
+	    rm.addText(Jobs.getLanguage().getMessage("command.blockinfo.output.state", "%blockdata%", blockData) + "\n");
+	    rm.addSuggestion(String.valueOf(blockData));
+	}
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.usage", "%first%", "",
-		"%second%", block.getType().name() + dataString));
+	    rm.addText(Jobs.getLanguage().getMessage("command.blockinfo.output.use", "%usage%", block.getType().name() + dataString) + "\n");
 	else
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.blockinfo.output.usage", "%first%", block.getType().getId() + dataString,
-		"%second%", block.getType().name() + dataString));
-	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+	    rm.addText(Jobs.getLanguage().getMessage("command.blockinfo.output.deprecated", "%first%", block.getType().getId() + dataString, "%second%", block.getType().name() + dataString) + "\n");
+	rm.addSuggestion(block.getType().name() + dataString);
+
+	rm.addText(Jobs.getLanguage().getMessage("general.info.separator"));
+	rm.show(sender);
 
 	return true;
     }
