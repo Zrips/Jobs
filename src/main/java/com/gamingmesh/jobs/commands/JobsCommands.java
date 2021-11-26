@@ -257,7 +257,7 @@ public class JobsCommands implements CommandExecutor {
 	}
 
 	for (ActionType actionType : ActionType.values()) {
-	    if (!type.isEmpty() && type.startsWith(actionType.getName().toLowerCase())) {
+	    if (type.isEmpty() || type.startsWith(actionType.getName().toLowerCase())) {
 		List<JobInfo> info = job.getJobInfo(actionType);
 		if (info != null && !info.isEmpty()) {
 		    String m = jobInfoMessage(player, job, actionType);
@@ -265,11 +265,9 @@ public class JobsCommands implements CommandExecutor {
 			message.addAll(Arrays.asList(m.split("\n")));
 		    else
 			message.add(m);
+		} else if (!type.isEmpty()) {
+		    message.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none", "%jobname%", job.getJobDisplayName()));
 		}
-	    } else if (type.isEmpty()) {
-		String myMessage = Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none");
-		myMessage = myMessage.replace("%jobname%", job.getJobDisplayName());
-		message.add(myMessage);
 	    }
 	}
 
