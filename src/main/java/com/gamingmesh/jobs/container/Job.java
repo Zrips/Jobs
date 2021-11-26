@@ -349,7 +349,12 @@ public class Job {
 	return fullName;
     }
 
+    @Deprecated
     public String getJobDisplayName() {
+	return getDisplayName();
+    }
+
+    public String getDisplayName() {
 	return jobDisplayName == null ? jobColour + fullName : jobDisplayName;
     }
 
@@ -572,8 +577,8 @@ public class Job {
 
 	if (fDescription != null) {
 	    this.fDescription.addAll(fDescription);
-        this.description = String.join("\n",this.fDescription);
-    }
+	    this.description = String.join("\n", this.fDescription);
+	}
     }
 
     public void setMaxLevelCommands(List<String> commands) {

@@ -346,7 +346,7 @@ public class JobsListener implements Listener {
 	    return;
 
 	String color = Jobs.getGCManager().SignsColorizeJobName ? job.getChatColor().toString() : "";
-	event.setLine(2, convert(color + job.getName()));
+	event.setLine(2, convert(color + job.getDisplayName()));
     }
 
     private final Pattern pattern = Pattern.compile("&([0-9a-fk-or])");

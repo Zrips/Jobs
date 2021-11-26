@@ -37,7 +37,7 @@ public class GuiManager {
 
 	for (Job job : Jobs.getJobs()) {
 	    if (Jobs.getGCManager().getHideJobsWithoutPermission() && !Jobs.getCommandManager().hasJobPermission(player, job))
-		    continue;
+		continue;
 
 	    jobsList.add(job);
 	}
@@ -49,9 +49,9 @@ public class GuiManager {
 	gui.setFiller(Jobs.getGCManager().guiFiller);
 
 	int guiSize = Jobs.getGCManager().getJobsGUIRows() * 9,
-		neededSlots = jobsListSize + ((jobsListSize / Jobs.getGCManager().getJobsGUIGroupAmount())
-			* Jobs.getGCManager().getJobsGUISkipAmount()) + Jobs.getGCManager().getJobsGUIStartPosition(),
-		neededRows = (int) Math.ceil(neededSlots / 9D);
+	    neededSlots = jobsListSize + ((jobsListSize / Jobs.getGCManager().getJobsGUIGroupAmount())
+		* Jobs.getGCManager().getJobsGUISkipAmount()) + Jobs.getGCManager().getJobsGUIStartPosition(),
+	    neededRows = (int) Math.ceil(neededSlots / 9D);
 
 	// Resizing GUI in case we have more jobs then we could fit in current setup
 	guiSize = Jobs.getGCManager().getJobsGUIRows() > neededRows ? guiSize : neededRows * 9;
@@ -261,15 +261,15 @@ public class GuiManager {
 
 		if (income != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor
-		    + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
+			+ String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
 
 		if (points != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
-		    + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+			+ String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
 
 		if (xp != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
-		    + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
+			+ String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
 
 		lore.add(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", itemName) + val);
 
@@ -307,8 +307,8 @@ public class GuiManager {
 	    i++;
 	}
 
-	int guiSize = CMILib.getInstance().getGUIManager().isOpenedGui(player) && CMILib.getInstance().getGUIManager().getGui(player) != null ?
-	    CMILib.getInstance().getGUIManager().getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
+	int guiSize = CMILib.getInstance().getGUIManager().isOpenedGui(player) && CMILib.getInstance().getGUIManager().getGui(player) != null ? CMILib.getInstance().getGUIManager().getGui(player)
+	    .getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
@@ -343,20 +343,20 @@ public class GuiManager {
 	    });
 	}
 
-    if (i >= 53 && !jobsRemained.isEmpty()) {
-	ItemStack next = Jobs.getGCManager().guiNextButton;
-	ItemMeta meta = next.getItemMeta();
+	if (i >= 53 && !jobsRemained.isEmpty()) {
+	    ItemStack next = Jobs.getGCManager().guiNextButton;
+	    ItemMeta meta = next.getItemMeta();
 
-	meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.next"));
-	next.setItemMeta(meta);
+	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.next"));
+	    next.setItemMeta(meta);
 
-	gui.addButton(new CMIGuiButton(nextButton, next) {
-	    @Override
-	    public void click(GUIClickType type) {
-		openJobsBrowseGUI(player, job, jobsRemained);
-	    }
-	});
-    }
+	    gui.addButton(new CMIGuiButton(nextButton, next) {
+		@Override
+		public void click(GUIClickType type) {
+		    openJobsBrowseGUI(player, job, jobsRemained);
+		}
+	    });
+	}
 
 	gui.fillEmptyButtons();
 	gui.open();
@@ -408,15 +408,15 @@ public class GuiManager {
 
 		if (income != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.money", "%money%", incomeColor
-		    + String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
+			+ String.format(Jobs.getGCManager().getDecimalPlacesMoney(), income));
 
 		if (points != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.points", "%points%", pointsColor
-		    + String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
+			+ String.format(Jobs.getGCManager().getDecimalPlacesPoints(), points));
 
 		if (xp != 0.0)
 		    val += Jobs.getLanguage().getMessage("command.info.help.exp", "%exp%", xpColor
-		    + String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
+			+ String.format(Jobs.getGCManager().getDecimalPlacesExp(), xp));
 
 		lore.add(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", itemName) + val);
 
@@ -457,8 +457,8 @@ public class GuiManager {
 	    i++;
 	}
 
-	int guiSize = CMILib.getInstance().getGUIManager().isOpenedGui(player) && CMILib.getInstance().getGUIManager().getGui(player) != null ?
-	    CMILib.getInstance().getGUIManager().getGui(player).getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
+	int guiSize = CMILib.getInstance().getGUIManager().isOpenedGui(player) && CMILib.getInstance().getGUIManager().getGui(player) != null ? CMILib.getInstance().getGUIManager().getGui(player)
+	    .getInvSize().getFields() : Jobs.getGCManager().getJobsGUIRows() * 9;
 	int backButton = Jobs.getGCManager().getJobsGUIBackButton();
 
 	CMIGui gui = new CMIGui(player);
