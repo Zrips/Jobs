@@ -19,8 +19,10 @@
 package com.gamingmesh.jobs;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -228,13 +230,17 @@ public class PermissionHandler {
 	// recalculate!
 	player.recalculatePermissions();
     }
+    
+    public static Set<String> worldsRegistered = new HashSet<String>();
 
     public void registerPermissions() {
 	PluginManager pm = plugin.getServer().getPluginManager();
 	for (World world : plugin.getServer().getWorlds()) {
 	    String worldName = world.getName().toLowerCase();
-	    if (pm.getPermission("jobs.world." + worldName) == null)
+	    if (pm.getPermission("jobs.world." + worldName) == null) {
 		pm.addPermission(new Permission("jobs.world." + worldName, PermissionDefault.TRUE));
+		worldsRegistered.add(worldName);
+	    }
 	}
 
 	for (Job job : Jobs.getJobs()) {
