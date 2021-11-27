@@ -736,7 +736,6 @@ public final class JobsPaymentListener implements Listener {
 	    for (ItemStack OneDye : dyeStack) {
 		Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
 	    }
-
 	    return;
 	}
 
@@ -855,6 +854,33 @@ public final class JobsPaymentListener implements Listener {
 	}
 
 	return null;
+    }
+
+    private static boolean changed(ItemStack first, ItemStack second, ItemStack result) {
+
+	if (result == null)
+	    return true;
+
+	ItemStack itemToCheck = first;
+	if (first == null || first.getType() != result.getType())
+	    itemToCheck = second;
+
+	if (itemToCheck == null)
+	    return true;
+
+	if (itemToCheck.getType() != result.getType())
+	    return true;
+
+	try {
+	    if (new CMIItemStack(itemToCheck).getDurability() != new CMIItemStack(result).getDurability() || itemToCheck.getEnchantments().size() != result.getEnchantments().size())
+		return true;
+	} catch (Throwable e) {
+	}
+	
+	if (itemToCheck.getEnchantments().size() != result.getEnchantments().size())
+	    return true;
+
+	return false;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -979,8 +1005,13 @@ public final class JobsPaymentListener implements Listener {
 		if (enchantName != null)
 		    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, oneEnchant.getValue(), ActionType.ENCHANT));
 	    }
-	} else if (secondSlotItem == null || secondSlotItem.getType() != Material.ENCHANTED_BOOK) // Enchanted books does not have durability
+	} else if (secondSlotItem == null || secondSlotItem.getType() != Material.ENCHANTED_BOOK) { // Enchanted books does not have durability
+
+	    if (!changed(firstSlot, secondSlotItem, resultStack))
+		return;
+
 	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
+	}
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
