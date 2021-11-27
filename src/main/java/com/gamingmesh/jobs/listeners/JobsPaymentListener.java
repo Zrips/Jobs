@@ -526,7 +526,7 @@ public final class JobsPaymentListener implements Listener {
 	    return;
 
 	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle() && !player.getVehicle().getType().equals(EntityType.BOAT))
 	    return;
 
 	if (!payForItemDurabilityLoss(player))
