@@ -112,7 +112,8 @@ public class level implements Cmd {
 
 		Player player = jPlayer.getPlayer();
 		if (player != null)
-		    player.sendMessage(Jobs.getLanguage().getMessage("command.level.output.target", "%jobname%", job.getJobDisplayName(), "%level%", prog.getLevel(), "%exp%", prog.getExperience()));
+		    player.sendMessage(Jobs.getLanguage().getMessage("command.level.output.target", "%jobname%", job.getDisplayName(), "%level%", prog.getLevel(), 
+			"%exp%", String.format(Jobs.getGCManager().getDecimalPlacesExp(), prog.getExperience())));
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	    } else
