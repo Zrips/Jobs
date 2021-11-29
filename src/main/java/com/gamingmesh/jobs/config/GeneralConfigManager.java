@@ -40,6 +40,7 @@ import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 
+import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
@@ -244,16 +245,13 @@ public class GeneralConfigManager {
 	    return true;
 
 	if (UseAsWhiteListWorldList) {
-	    return DisabledWorldsList.contains(world);
+	    return DisabledWorldsList.contains(world.toLowerCase());
 	}
 
 	if (DisabledWorldsList.isEmpty())
 	    return true;
 
-	if (DisabledWorldsList.contains(world))
-	    return false;
-
-	return true;
+	return !DisabledWorldsList.contains(world.toLowerCase());
     }
 
     public synchronized void reload() {
@@ -342,7 +340,7 @@ public class GeneralConfigManager {
 	c.addComment("Optimizations.NewVersion",
 	    "When set to true staff will be informed about new Jobs plugin version", "You need to have jobs.versioncheck permission node");
 	ShowNewVersion = c.get("Optimizations.NewVersion", true);
-	
+
 	c.addComment("Optimizations.InformDuplicates",
 	    "Can be used to check if your database contains any duplicated user entries.");
 	InformDuplicates = c.get("Optimizations.InformDuplicates", false);
@@ -396,7 +394,8 @@ public class GeneralConfigManager {
 	c.addComment("Optimizations.DisabledWorlds.UseAsWhiteList", "If true, will changes the list behavior, so if a world is added to list",
 	    "the payments will only works in the given worlds.");
 	UseAsWhiteListWorldList = c.get("Optimizations.DisabledWorlds.UseAsWhiteList", false);
-	DisabledWorldsList = c.get("Optimizations.DisabledWorlds.List", Arrays.asList(Bukkit.getWorlds().get(0).getName()));
+	DisabledWorldsList = c.get("Optimizations.DisabledWorlds.List", Arrays.asList("Example", "Worlds"));
+	CMIList.toLowerCase(DisabledWorldsList);
 
 	c.addComment("Optimizations.Explore.Compact",
 	    "By setting this to true when there is max amount of players explored a chunk then it will be marked as fully explored and exact players who explored it will not be saved to save some memory");

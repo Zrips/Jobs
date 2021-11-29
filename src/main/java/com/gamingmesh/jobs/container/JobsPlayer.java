@@ -43,6 +43,7 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class JobsPlayer {
 
@@ -401,6 +402,7 @@ public class JobsPlayer {
 	int max = m1;
 
 	m1 = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest.all", false, true);
+		
 	if (m1 != 0 && (m1 > max || m1 < max)) {
 	    max = m1;
 	}
