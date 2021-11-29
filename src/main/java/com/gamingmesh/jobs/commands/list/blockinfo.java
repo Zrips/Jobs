@@ -39,8 +39,8 @@ public class blockinfo implements Cmd {
 	RawMessage rm = new RawMessage();
 
 	rm.addText(Jobs.getLanguage().getMessage("general.info.separator") + "\n");
-	rm.addText(Jobs.getLanguage().getMessage("command.blockinfo.output.material", "%blockname%", block.getType().name()) + "\n");
-	rm.addSuggestion(block.getType().name());
+	rm.addText(Jobs.getLanguage().getMessage("command.blockinfo.output.material", "%blockname%", CMIMaterial.get(block).getName()) + "\n");
+	rm.addSuggestion(CMIMaterial.get(block).getName());
 
 	if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
 	    rm.addText(Jobs.getLanguage().getMessage("command.blockinfo.output.id", "%blockid%", block.getType().getId()) + "\n");

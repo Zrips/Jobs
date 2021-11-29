@@ -271,7 +271,7 @@ public class LanguageManager {
 
 	    c.get("command.blockinfo.help.info", "Shows information for the block you are looking at.");
 	    c.get("command.blockinfo.help.args", "");
-	    c.get("command.blockinfo.output.material", " &eBlock material: &6%blockname%");
+	    c.get("command.blockinfo.output.material", " &eBlock name: &6%blockname%");
 	    c.get("command.blockinfo.output.id", " &eBlock id: &6%blockid%");
 	    c.get("command.blockinfo.output.state", " &eBlock sate: &6%blockdata%");
 	    c.get("command.blockinfo.output.deprecated", " &eUsage: &6%first% &eor &6%second%");
@@ -279,10 +279,11 @@ public class LanguageManager {
 
 	    c.get("command.iteminfo.help.info", "Shows information for the item you are holding.");
 	    c.get("command.iteminfo.help.args", "");
-	    c.get("command.iteminfo.output.name", " &eItem name: &6%itemname%");
+	    c.get("command.iteminfo.output.material", " &eItem name: &6%itemname%");
 	    c.get("command.iteminfo.output.id", " &eItem id: &6%itemid%");
 	    c.get("command.iteminfo.output.data", " &eItem data: &6%itemdata%");
-	    c.get("command.iteminfo.output.usage", " &eUsage: &6%first% &eor &6%second%");
+	    c.get("command.iteminfo.output.deprecated", " &eUsage: &6%first% &eor &6%second%");
+	    c.get("command.iteminfo.output.use", " &eConfig file usage: &6%usage%");
 
 	    c.get("command.placeholders.help.info", "List out all placeholders");
 	    c.get("command.placeholders.help.args", "(parse) (placeholder)");

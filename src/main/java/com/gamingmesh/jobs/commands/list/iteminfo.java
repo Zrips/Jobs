@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.commands.list;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -10,6 +9,8 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
 
 public class iteminfo implements Cmd {
@@ -32,32 +33,36 @@ public class iteminfo implements Cmd {
 	if (iih == null || iih.getType() == Material.AIR)
 	    return true;
 
-	boolean tool = false;
-	if (EnchantmentTarget.TOOL.includes(iih) ||
-	    EnchantmentTarget.WEAPON.includes(iih) ||
-	    EnchantmentTarget.ARMOR.includes(iih) ||
-	    EnchantmentTarget.BOW.includes(iih) ||
-	    EnchantmentTarget.FISHING_ROD.includes(iih))
-	    tool = true;
+	CMIItemStack ci = new CMIItemStack(iih);
 
 	byte data = (Version.isCurrentEqualOrHigher(Version.v1_13_R1) ? 0 : iih.getData().getData());
 	String dataString = data == 0 ? "" : "-" + data;
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.name", "%itemname%", iih.getType().name()));
-	if (Version.isCurrentEqualOrLower(Version.v1_13_R2))
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.id", "%itemid%", iih.getType().getId()));
-	if (!tool)
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.data", "%itemdata%", data));
+	RawMessage rm = new RawMessage();
+	rm.addText(Jobs.getLanguage().getMessage("general.info.separator") + "\n");
+
+	rm.addText(Jobs.getLanguage().getMessage("command.iteminfo.output.material", "%itemname%", CMIMaterial.get(iih).getName()) + "\n");
+	rm.addSuggestion(CMIMaterial.get(iih).getName());
+
+	if (Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
+	    rm.addText(Jobs.getLanguage().getMessage("command.iteminfo.output.id", "%blockid%", iih.getType().getId()) + "\n");
+	    rm.addSuggestion(String.valueOf(iih.getType().getId()));
+	}
+
+	if (ci.getMaxDurability() == 0 && Version.isCurrentEqualOrLower(Version.v1_13_R2)) {
+	    rm.addText(Jobs.getLanguage().getMessage("command.iteminfo.output.data", "%itemdata%", data) + "\n");
+	    rm.addSuggestion(String.valueOf(data));
+	}
 
 	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.usage", "%first%", "",
-		"%second%", iih.getType().name() + dataString));
+	    rm.addText(Jobs.getLanguage().getMessage("command.iteminfo.output.use", "%usage%", iih.getType().name() + dataString) + "\n");
 	else
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.iteminfo.output.usage", "%first%", iih.getType().getId() + dataString,
-		"%second%", iih.getType().name() + dataString));
+	    rm.addText(Jobs.getLanguage().getMessage("command.iteminfo.output.deprecated", "%first%", iih.getType().getId() + dataString, "%second%", iih.getType().name() + dataString) + "\n");
+	rm.addSuggestion(iih.getType().name() + dataString);
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+	rm.addText(Jobs.getLanguage().getMessage("general.info.separator"));
+	rm.show(sender);
+
 	return true;
     }
 }
