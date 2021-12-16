@@ -1,5 +1,6 @@
 package com.gamingmesh.jobs.commands.list;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,7 @@ public class convert implements Cmd {
 	    return true;
 	}
 
-	Jobs.convertDatabase();
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, Jobs::convertDatabase);
 
 	String from = "MySQL";
 	String to = "SQLite";
