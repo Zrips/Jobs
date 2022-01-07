@@ -1542,7 +1542,7 @@ public abstract class JobsDAO {
      * Join a job (create player-job entry from storage)
      * @param player - player that wishes to join the job
      * @param job - job that the player wishes to join
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<Convert> convertDatabase() throws SQLException {
 	List<Convert> list = new ArrayList<>();
@@ -2466,7 +2466,7 @@ public abstract class JobsDAO {
 
 		    int id = jobsWorld == null ? 0 : jobsWorld.getId();
 		    if (id != 0)
-			for (Entry<Short, ExploreChunk> oneChunk : region.getValue().getChunks().entrySet()) {
+			for (Entry<Long, ExploreChunk> oneChunk : region.getValue().getChunks().entrySet()) {
 			    ExploreChunk chunk = oneChunk.getValue();
 			    if (chunk.getDbId() != -1)
 				continue;
@@ -2599,7 +2599,7 @@ public abstract class JobsDAO {
     /**
      * Save player-job information
      * @param jobInfo - the information getting saved
-     * @return 
+     * @return
      */
     public List<Integer> getLognameList(int fromtime, int untiltime) {
 	JobsConnection conn = getConnection();
@@ -2631,7 +2631,7 @@ public abstract class JobsDAO {
     /**
      * Show top list
      * @param toplist - toplist by jobs name
-     * @return 
+     * @return
      */
     public List<TopList> toplist(String jobsname) {
 	return toplist(jobsname, 0);
@@ -2640,7 +2640,7 @@ public abstract class JobsDAO {
     /**
      * Show top list
      * @param toplist - toplist by jobs name
-     * @return 
+     * @return
      */
     public List<TopList> toplist(String jobsname, int limit) {
 	List<TopList> jobs = new ArrayList<>();
