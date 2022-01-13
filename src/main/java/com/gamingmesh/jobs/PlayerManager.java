@@ -87,6 +87,15 @@ public class PlayerManager {
     }
 
     /**
+     * @deprecated Use {@link JobsPlayer#getPointsData} instead
+     * @return {@link com.gamingmesh.jobs.economy.PointsData}
+     */
+    @Deprecated
+    public com.gamingmesh.jobs.economy.PointsData getPointsData() {
+	return null;
+    }
+    
+    /**
      * @return the cached mob spawner meta name
      */
     public String getMobSpawnerMetadata() {
