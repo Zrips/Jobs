@@ -91,6 +91,7 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
+import com.gamingmesh.jobs.economy.PointsData;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.listeners.JobsListener;
@@ -288,6 +289,16 @@ public final class Jobs extends JavaPlugin {
 	return dbManager;
     }
 
+    /**
+     * Gets the PointsData
+     * @deprecated Use {@link JobsPlayer#getPointsData()}
+     * @return {@link PointsData}
+     */
+    @Deprecated
+    public static PointsData getPointsData() {
+	return null;
+    }
+    
     public static ShopManager getShopManager() {
 	if (shopManager == null) {
 	    shopManager = new ShopManager();
