@@ -79,30 +79,66 @@ Miner:
       income: 3
       points: 2
       experience: 2
+    deepslate_coal_ore:
+      income: 4
+      points: 3
+      experience: 3
     redstone_ore:
       income: 2.5
       points: 2
       experience: 2
+    deepslate_redstone_ore:
+      income: 3.5
+      points: 3
+      experience: 3
+    copper_ore:
+      income: 3.5
+      points: 3
+      experience: 2
+    deepslate_copper_ore:
+      income: 4.5
+      points: 4
+      experience: 3
     iron_ore:
       income: 3.5
       points: 3
       experience: 2
+    deepslate_iron_ore:
+      income: 4.5
+      points: 4
+      experience: 3
     gold_ore:
       income: 5
       points: 4
       experience: 2
+    deepslate_gold_ore:
+      income: 6
+      points: 5
+      experience: 3
     lapis_ore:
       income: 7.5
       points: 6
       experience: 2
+    deepslate_lapis_ore:
+      income: 8.5
+      points: 7
+      experience: 3
     diamond_ore:
       income: 10
       points: 10
       experience: 10
+    deepslate_diamond_ore:
+      income: 12.5
+      points: 12.5
+      experience: 12.5
     emerald_ore:
       income: 15
       points: 15
       experience: 30
+    deepslate_emerald_ore:
+      income: 17.5
+      points: 17.5
+      experience: 35
     nether_quartz_ore:
       income: 2.5
       points: 2.5
@@ -156,7 +192,15 @@ Miner:
       income: -5.0
       points: -5
       experience: -5.0
+    deepslate_iron_ore:
+      income: -5.0
+      points: -5
+      experience: -5.0
     gold_ore:
+      income: -6.0
+      points: -6
+      experience: -6.0
+    deepslate_gold_ore:
       income: -6.0
       points: -6
       experience: -6.0
@@ -164,10 +208,18 @@ Miner:
       income: -10.0
       points: -10
       experience: -10.0
+    deepslate_diamond_ore:
+      income: -12.5
+      points: -12.5
+      experience: -12.5
     emerald_ore:
       income: -15
       points: -15
       experience: -30
+    deepslate_emerald_ore:
+      income: -17.5
+      points: -17.5
+      experience: -35
   Kill:
     Player:
       income: 7.5
