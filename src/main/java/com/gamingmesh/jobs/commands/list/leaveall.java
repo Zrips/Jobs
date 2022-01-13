@@ -36,7 +36,7 @@ public class leaveall implements Cmd {
 		Util.LEAVECONFIRM.add(uuid);
 
 		plugin.getServer().getScheduler().runTaskLater(plugin, () -> Util.LEAVECONFIRM.remove(uuid),
-		    (long) (20 * Jobs.getGCManager().ConfirmExpiryTime));
+		    20 * Jobs.getGCManager().ConfirmExpiryTime);
 
 		pSender.sendMessage(Jobs.getLanguage().getMessage("command.leaveall.confirmationNeed", "[time]",
 		    Jobs.getGCManager().ConfirmExpiryTime));

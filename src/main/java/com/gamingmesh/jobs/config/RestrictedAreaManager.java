@@ -152,7 +152,7 @@ public class RestrictedAreaManager {
 	return areas;
     }
 
-    private StringBuilder addHeader(StringBuilder header) {
+    private static StringBuilder addHeader(StringBuilder header) {
 	String sep = System.lineSeparator();
 
 	header.append("Restricted area configuration");

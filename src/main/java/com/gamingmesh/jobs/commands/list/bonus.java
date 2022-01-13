@@ -12,7 +12,6 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.hooks.HookManager;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class bonus implements Cmd {

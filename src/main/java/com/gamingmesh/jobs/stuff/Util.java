@@ -99,6 +99,57 @@ public final class Util {
 	}
     }
 
+    public static int[] parseTime(String[] args) {
+	int[] arr = new int[3];
+
+	if (args.length < 2) {
+	    return arr;
+	}
+
+	String time = args[1].toLowerCase();
+	if (time.isEmpty()) {
+	    return arr;
+	}
+
+	String[] split = time.split("h|hour", 2);
+
+	if (split.length > 0) {
+	    try {
+		arr[2] = Integer.parseInt(split[0]);
+	    } catch (NumberFormatException e) {
+		arr[2] = 0;
+	    }
+
+	    time = time.replaceAll(arr[2] + "+[h|hour]+", "");
+	}
+
+	if ((split = time.split("m|minute", 2)).length > 0) {
+	    try {
+		arr[1] = Integer.parseInt(split[0]);
+	    } catch (NumberFormatException e) {
+		arr[1] = 0;
+	    }
+
+	    time = time.replaceAll(arr[1] + "+[m|minute]+", "");
+	}
+
+	if ((split = time.split("s|second", 2)).length > 0) {
+	    try {
+		arr[0] = Integer.parseInt(split[0]);
+	    } catch (NumberFormatException e) {
+		arr[0] = 0;
+	    }
+
+	    time = time.replaceAll(arr[0] + "+[s|second]+", "");
+	}
+
+	if (arr[0] == 0 && arr[1] == 0 && arr[2] == 0) {
+	    return new int[3];
+	}
+
+	return arr;
+    }
+
     public static String getRealType(Entity entity) {
 	if (Version.isCurrentEqualOrHigher(Version.v1_11_R1)) {
 	    return entity.getType().name();
@@ -412,10 +463,9 @@ public final class Util {
 	String enchantName = CMIEnchantment.get(actionInfo.getName()).toString();
 
 	return (
-	    // Enchantment without level e.g. silk_touch
-	    enchant.equalsIgnoreCase(enchantName) ||
-	    // Enchantment with level e.g. fire_aspect:1
-	    enchant.equalsIgnoreCase(enchantName + ":" + actionInfo.getLevel())
-	);
+	// Enchantment without level e.g. silk_touch
+	enchant.equalsIgnoreCase(enchantName) ||
+	// Enchantment with level e.g. fire_aspect:1
+	    enchant.equalsIgnoreCase(enchantName + ":" + actionInfo.getLevel()));
     }
 }

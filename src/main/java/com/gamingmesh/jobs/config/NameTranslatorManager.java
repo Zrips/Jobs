@@ -24,7 +24,6 @@ import com.gamingmesh.jobs.stuff.Util;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class NameTranslatorManager {
 

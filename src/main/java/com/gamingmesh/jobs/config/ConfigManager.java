@@ -94,7 +94,6 @@ public class ConfigManager {
 
 	if (!cfg.getFile().isFile())
 	    return;
-	cfg.load();
 
 	cfg.header(Arrays.asList("Jobs configuration.", "", "Edited by roracle to include 1.13 items and item names, prepping for 1.14 as well.",
 	    "",
@@ -488,7 +487,7 @@ public class ConfigManager {
 	cfg.save();
     }
 
-    private void generate(ConfigReader cfg, String pt) {
+    private static void generate(ConfigReader cfg, String pt) {
 	cfg.get(pt + ".income", 1D);
 	cfg.get(pt + ".points", 1D);
 	cfg.get(pt + ".experience", 1D);

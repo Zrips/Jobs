@@ -22,7 +22,6 @@ import com.gamingmesh.jobs.container.TopList;
 
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public class SignUtil {
@@ -238,7 +237,7 @@ public class SignUtil {
 	    }
 
 	    if (Jobs.getJob(jSign.getJobName()) != null)
-		signJobName = Jobs.getJob(jSign.getJobName()).getJobDisplayName();
+		signJobName = Jobs.getJob(jSign.getJobName()).getDisplayName();
 
 	    if (playerList.isEmpty())
 		continue;

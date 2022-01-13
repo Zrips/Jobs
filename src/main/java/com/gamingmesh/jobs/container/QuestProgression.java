@@ -156,7 +156,7 @@ public class QuestProgression {
 	this.givenReward = givenReward;
     }
 
-    private boolean objectiveKeyMatches(String objectiveKey, ActionInfo actionInfo) {
+    private static boolean objectiveKeyMatches(String objectiveKey, ActionInfo actionInfo) {
 	if (actionInfo instanceof EnchantActionInfo) {
 	    return Util.enchantMatchesActionInfo(objectiveKey, (EnchantActionInfo) actionInfo);
 	}

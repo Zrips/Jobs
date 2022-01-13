@@ -87,15 +87,6 @@ public class PlayerManager {
     }
 
     /**
-     * @deprecated Use {@link JobsPlayer#getPointsData} instead
-     * @return {@link com.gamingmesh.jobs.economy.PointsData}
-     */
-    @Deprecated
-    public com.gamingmesh.jobs.economy.PointsData getPointsData() {
-	return Jobs.getPointsData();
-    }
-
-    /**
      * @return the cached mob spawner meta name
      */
     public String getMobSpawnerMetadata() {
@@ -677,7 +668,7 @@ public class PlayerManager {
 	if (prog.getLevel() < oldLevel) {
 	    String message = Jobs.getLanguage().getMessage("message.leveldown.message");
 
-	    message = message.replace("%jobname%", job.getJobDisplayName());
+	    message = message.replace("%jobname%", job.getDisplayName());
 	    message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
 	    message = message.replace("%joblevel%", prog.getLevelFormatted());
 	    message = message.replace("%lostLevel%", Integer.toString(oldLevel));
@@ -780,7 +771,7 @@ public class PlayerManager {
 	String message = Jobs.getLanguage().getMessage("message.levelup." + (Jobs.getGCManager().isBroadcastingLevelups()
 	    ? "broadcast" : "nobroadcast"));
 
-	message = message.replace("%jobname%", job.getJobDisplayName());
+	message = message.replace("%jobname%", job.getDisplayName());
 
 	if (levelUpEvent.getOldTitle() != null)
 	    message = message.replace("%titlename%", levelUpEvent.getOldTitle()
@@ -821,7 +812,7 @@ public class PlayerManager {
 	    message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitle()
 		.getChatColor().toString() + levelUpEvent.getNewTitle().getName());
-	    message = message.replace("%jobname%", job.getJobDisplayName());
+	    message = message.replace("%jobname%", job.getDisplayName());
 
 	    if (Jobs.getGCManager().isBroadcastingSkillups() || Jobs.getGCManager().TitleChangeActionBar || Jobs.getGCManager().TitleChangeChat) {
 		for (String line : message.split("\n")) {

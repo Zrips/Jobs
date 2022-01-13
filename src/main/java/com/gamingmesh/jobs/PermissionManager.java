@@ -30,8 +30,6 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 public class PermissionManager {
 
     private final Map<String, Integer> permDelay = new HashMap<>();

@@ -42,7 +42,6 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
 public abstract class JobsDAO {

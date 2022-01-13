@@ -20,7 +20,6 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
 
@@ -408,7 +407,7 @@ public class editjobs implements Cmd {
 
 	if (job != null) {
 	    rm = new RawMessage();
-	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", job.getJobDisplayName()))
+	    rm.addText(Jobs.getLanguage().getMessage("command.editjobs.help.list.jobs", "%jobname%", job.getDisplayName()))
 		.addHover(job.getName()).addCommand("jobs editjobs list " + job.getName());
 	    rm.show(player);
 	}

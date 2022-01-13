@@ -146,7 +146,7 @@ public class GuiManager {
 
 	    ItemStack guiItem = job.getGuiItem();
 	    ItemMeta meta = guiItem.getItemMeta();
-	    meta.setDisplayName(job.getJobDisplayName());
+	    meta.setDisplayName(job.getDisplayName());
 	    meta.setLore(lore);
 
 	    if (Jobs.getGCManager().hideItemAttributes) {
@@ -280,7 +280,7 @@ public class GuiManager {
 			continue;
 
 		    ItemMeta meta = guiItem.getItemMeta();
-		    meta.setDisplayName(job.getJobDisplayName());
+		    meta.setDisplayName(job.getDisplayName());
 		    meta.setLore(lore);
 		    guiItem.setItemMeta(meta);
 		    tempInv.setItem(i, guiItem.clone());
@@ -300,7 +300,7 @@ public class GuiManager {
 	    }
 
 	    ItemMeta meta = guiItem.getItemMeta();
-	    meta.setDisplayName(job.getJobDisplayName());
+	    meta.setDisplayName(job.getDisplayName());
 	    meta.setLore(lore);
 	    guiItem.setItemMeta(meta);
 	    tempInv.setItem(i, guiItem.clone());
@@ -431,7 +431,7 @@ public class GuiManager {
 		    }
 
 		    ItemMeta meta = guiItem.getItemMeta();
-		    meta.setDisplayName(job.getJobDisplayName());
+		    meta.setDisplayName(job.getDisplayName());
 		    meta.setLore(lore);
 		    guiItem.setItemMeta(meta);
 		    tempInv.setItem(i, guiItem.clone());
@@ -450,7 +450,7 @@ public class GuiManager {
 	    }
 
 	    ItemMeta meta = guiItem.getItemMeta();
-	    meta.setDisplayName(job.getJobDisplayName());
+	    meta.setDisplayName(job.getDisplayName());
 	    meta.setLore(lore);
 	    guiItem.setItemMeta(meta);
 	    tempInv.setItem(i, guiItem.clone());

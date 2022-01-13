@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 public class ExploreChunk {
 
     private List<Integer> playerIds = new ArrayList<>();

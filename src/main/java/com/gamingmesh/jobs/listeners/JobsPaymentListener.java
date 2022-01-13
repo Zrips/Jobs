@@ -125,7 +125,6 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public final class JobsPaymentListener implements Listener {
@@ -819,11 +818,11 @@ public final class JobsPaymentListener implements Listener {
 	}, 1);
     }
 
-    private boolean hasItems(ItemStack stack) {
+    private static boolean hasItems(ItemStack stack) {
 	return stack != null && stack.getAmount() > 0;
     }
 
-    private boolean hasSameItem(ItemStack a, ItemStack b) {
+    private static boolean hasSameItem(ItemStack a, ItemStack b) {
 	if (a == null)
 	    return b == null;
 	else if (b == null)

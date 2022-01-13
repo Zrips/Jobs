@@ -650,7 +650,7 @@ public class Placeholder {
 	return null;
     }
 
-    private String convert(boolean state) {
+    private static String convert(boolean state) {
 	return Jobs.getLanguage().getMessage("general.info." + (state ? "true" : "false"));
     }
 }

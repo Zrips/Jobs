@@ -25,7 +25,6 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.PageInfo;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class JobsCommands implements CommandExecutor {
@@ -94,15 +93,15 @@ public class JobsCommands implements CommandExecutor {
 	return cmdClass.perform(plugin, sender, myArgs) || help(sender, 1);
     }
 
-    private String[] reduceArgs(String[] args) {
+    private static String[] reduceArgs(String[] args) {
 	return args.length <= 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length);
     }
 
-    private boolean hasCommandPermission(CommandSender sender, String cmd) {
+    private static boolean hasCommandPermission(CommandSender sender, String cmd) {
 	return sender.hasPermission("jobs.command." + cmd);
     }
 
-    private String getUsage(String cmd) {
+    private static String getUsage(String cmd) {
 	String cmdString = Jobs.getLanguage().getMessage("command.help.output.cmdFormat", "[command]", Jobs.getLanguage().getMessage("command.help.output.label") + " " + cmd);
 	String msg = Jobs.getLanguage().getMessage("command." + cmd + ".help.args");
 
@@ -179,7 +178,7 @@ public class JobsCommands implements CommandExecutor {
 	}
     }
 
-    private Class<?> getClass(String cmd) {
+    private static Class<?> getClass(String cmd) {
 	try {
 	    return Class.forName(PACKAGEPATH + "." + cmd.toLowerCase());
 	} catch (ClassNotFoundException e) {
@@ -187,7 +186,7 @@ public class JobsCommands implements CommandExecutor {
 	return null;
     }
 
-    private Cmd getCmdClass(String cmd) {
+    private static Cmd getCmdClass(String cmd) {
 	try {
 	    Class<?> nmsClass = getClass(cmd);
 	    if (nmsClass != null && Cmd.class.isAssignableFrom(nmsClass)) {
@@ -266,7 +265,7 @@ public class JobsCommands implements CommandExecutor {
 		    else
 			message.add(m);
 		} else if (!type.isEmpty()) {
-		    message.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none", "%jobname%", job.getJobDisplayName()));
+		    message.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none", "%jobname%", job.getDisplayName()));
 		}
 	    }
 	}
@@ -382,7 +381,7 @@ public class JobsCommands implements CommandExecutor {
 	Title title = Jobs.getTitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
 	String message = Jobs.getLanguage().getMessage(path,
 	    "%joblevel%", jobProg.getLevelFormatted(),
-	    "%jobname%", jobProg.getJob().getJobDisplayName(),
+	    "%jobname%", jobProg.getJob().getDisplayName(),
 	    "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
 	    "%jobmaxxp%", jobProg.getMaxExperience(),
 	    "%titlename%", title == null ? "Unknown" : title.getName());
@@ -428,7 +427,7 @@ public class JobsCommands implements CommandExecutor {
 
 	String message = Jobs.getLanguage().getMessage("command.stats.output.message",
 	    "%joblevel%", level,
-	    "%jobname%", jobProg.getJob().getJobDisplayName(),
+	    "%jobname%", jobProg.getJob().getDisplayName(),
 	    "%jobxp%", Math.round(exp * 100.0) / 100.0,
 	    "%jobmaxxp%", maxExperience);
 	return " " + jobProgressMessage(maxExperience, exp) + " " + message;

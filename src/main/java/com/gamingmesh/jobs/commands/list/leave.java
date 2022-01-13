@@ -40,10 +40,10 @@ public class leave implements Cmd {
 		Util.LEAVECONFIRM.add(uuid);
 
 		plugin.getServer().getScheduler().runTaskLater(plugin, () -> Util.LEAVECONFIRM.remove(uuid),
-		    (long) (20 * Jobs.getGCManager().ConfirmExpiryTime));
+		    20 * Jobs.getGCManager().ConfirmExpiryTime);
 
 		pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.confirmationNeed", "[jobname]",
-		    job.getJobDisplayName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime));
+		    job.getDisplayName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime));
 		return true;
 	    }
 
@@ -53,7 +53,7 @@ public class leave implements Cmd {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
 
 	if (Jobs.getPlayerManager().leaveJob(jPlayer, job))
-	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.success", "%jobname%", job.getJobDisplayName()));
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.success", "%jobname%", job.getDisplayName()));
 	else
 	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 

@@ -1,8 +1,5 @@
 package com.gamingmesh.jobs.config;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -64,7 +61,7 @@ public class BossBarManager {
 
 	String message = Jobs.getLanguage().getMessage("command.stats.bossBarOutput",
 	    "%joblevel%", jobProg.getLevelFormatted(),
-	    "%jobname%", jobProg.getJob().getJobDisplayName(),
+	    "%jobname%", jobProg.getJob().getDisplayName(),
 	    "%jobxp%", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), jobProg.getExperience()),
 	    "%jobmaxxp%", jobProg.getMaxExperience(),
 	    "%gain%", gain);

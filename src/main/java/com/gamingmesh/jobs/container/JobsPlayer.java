@@ -43,7 +43,6 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class JobsPlayer {
 
@@ -1386,16 +1385,16 @@ public class JobsPlayer {
 	maxV = Jobs.getPermissionManager().getMaxPermission(this, perm);
 
 	if (maxV == 0D && type == BlockTypes.FURNACE)
-	    maxV = (double) Jobs.getGCManager().getFurnacesMaxDefault();
+	    maxV = Jobs.getGCManager().getFurnacesMaxDefault();
 
 	if (maxV == 0D && type == BlockTypes.BLAST_FURNACE)
-	    maxV = (double) Jobs.getGCManager().BlastFurnacesMaxDefault;
+	    maxV = Jobs.getGCManager().BlastFurnacesMaxDefault;
 
 	if (maxV == 0D && type == BlockTypes.SMOKER)
-	    maxV = (double) Jobs.getGCManager().SmokersMaxDefault;
+	    maxV = Jobs.getGCManager().SmokersMaxDefault;
 
 	if (maxV == 0D && type == BlockTypes.BREWING_STAND)
-	    maxV = (double) Jobs.getGCManager().getBrewingStandsMaxDefault();
+	    maxV = Jobs.getGCManager().getBrewingStandsMaxDefault();
 
 	return (int) maxV;
     }
