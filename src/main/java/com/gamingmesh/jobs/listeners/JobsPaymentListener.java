@@ -125,6 +125,7 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public final class JobsPaymentListener implements Listener {
@@ -875,7 +876,7 @@ public final class JobsPaymentListener implements Listener {
 		return true;
 	} catch (Throwable e) {
 	}
-	
+
 	if (itemToCheck.getEnchantments().size() != result.getEnchantments().size())
 	    return true;
 
@@ -1823,7 +1824,6 @@ public final class JobsPaymentListener implements Listener {
     public static boolean payIfCreative(Player player) {
 	if (Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE)
 	    return true;
-
 	if (player.getGameMode() == GameMode.CREATIVE && Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player), "jobs.paycreative"))
 	    return true;
 
