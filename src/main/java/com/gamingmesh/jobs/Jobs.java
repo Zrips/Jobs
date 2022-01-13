@@ -289,16 +289,6 @@ public final class Jobs extends JavaPlugin {
 	return dbManager;
     }
 
-    /**
-     * Gets the PointsData
-     * @deprecated Use {@link JobsPlayer#getPointsData()}
-     * @return {@link PointsData}
-     */
-    @Deprecated
-    public static PointsData getPointsData() {
-	return null;
-    }
-    
     public static ShopManager getShopManager() {
 	if (shopManager == null) {
 	    shopManager = new ShopManager();
