@@ -15,7 +15,7 @@ public class promote implements Cmd {
 	if (args.length < 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "promote");
 	    return true;
-	}
+	} 
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	if (jPlayer == null) {
@@ -28,26 +28,38 @@ public class promote implements Cmd {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
+
+	// check if player already has the job
+	if (!jPlayer.isInJob(job))
+	    return false;
+
 	try {
-	    // check if player already has the job
-	    if (jPlayer.isInJob(job)) {
-		int levelsGained = -1;
-		try {
-		    levelsGained = Integer.parseInt(args[2]);
-		} catch (NumberFormatException ex) {
-		    return true;
-		}
 
-		Jobs.getPlayerManager().promoteJob(jPlayer, job, levelsGained);
-
-		Player player = jPlayer.getPlayer();
-		if (player != null)
-		    player.sendMessage(Jobs.getLanguage().getMessage("command.promote.output.target",
-			"%jobname%", job.getDisplayName(),
-			"%levelsgained%", levelsGained));
-
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
+	    int levelsGained = -1;
+	    try {
+		levelsGained = Integer.parseInt(args[2]);
+	    } catch (NumberFormatException ex) {
+		return false;
 	    }
+
+	    boolean commands = false;
+	    for (String one : args) {
+		if (one.equalsIgnoreCase("-cmd")) {
+		    commands = true;
+		    continue;
+		}
+	    }
+
+	    Jobs.getPlayerManager().promoteJob(jPlayer, job, levelsGained, commands);
+
+	    Player player = jPlayer.getPlayer();
+	    if (player != null)
+		player.sendMessage(Jobs.getLanguage().getMessage("command.promote.output.target",
+		    "%jobname%", job.getDisplayName(),
+		    "%levelsgained%", levelsGained));
+
+	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
+
 	} catch (Throwable e) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
 	}

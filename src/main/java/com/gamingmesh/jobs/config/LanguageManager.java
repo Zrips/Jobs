@@ -589,8 +589,8 @@ public class LanguageManager {
 	    c.get("command.transfer.output.target", "You have been transferred from %oldjobname% to %newjobname%.");
 
 	    c.get("command.promote.help.info", "Promote the player X levels in a job.");
-	    c.get("command.promote.help.args", "[playername] [jobname] [levels]");
-	    Jobs.getGCManager().getCommandArgs().put("promote", Arrays.asList("[playername]", "[jobname]", "[levels]"));
+	    c.get("command.promote.help.args", "[playername] [jobname] [levels] (-cmd)");
+	    Jobs.getGCManager().getCommandArgs().put("promote", Arrays.asList("[playername]", "[jobname]", "[levels]", "%%-cmd"));
 	    c.get("command.promote.output.target", "You have been promoted %levelsgained% levels in %jobname%.");
 
 	    c.get("command.exp.help.info", "Change the player exp for job.");
