@@ -158,34 +158,16 @@ public class Job {
      * 
      * @param type the type of {@link CurrencyType}}
      * @param point the amount of boost to add
-     * @param times the array of integer of when to remove the boost
+     * @param duration boost duration in seconds
      */
-    public void addBoost(CurrencyType type, double point, int[] times) {
-	if (times.length < 3)
-	    return;
+    public void addBoost(CurrencyType type, double point, long duration) {
 
-	final int h = times[2], m = times[1], s = times[0];
-	if (h == 0 && m == 0 && s == 0) {
+	if (duration <= 0) {
 	    addBoost(type, point);
 	    return;
 	}
 
-	final Calendar cal = Calendar.getInstance();
-	cal.setTime(new Date());
-
-	if (h > 0) {
-	    cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + h);
-	}
-
-	if (m > 0) {
-	    cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + m);
-	}
-
-	if (s > 0) {
-	    cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + s);
-	}
-
-	boost.add(type, point, cal.getTimeInMillis());
+	boost.add(type, point, System.currentTimeMillis() + (duration * 1000L));
     }
 
     public void setBoost(BoostMultiplier boost) {

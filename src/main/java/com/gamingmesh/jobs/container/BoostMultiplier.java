@@ -5,8 +5,7 @@ import java.util.HashMap;
 public class BoostMultiplier implements Cloneable {
 
     private final java.util.Map<CurrencyType, Double> map = new HashMap<>();
-
-    private Long time = 0L;
+    private final java.util.Map<CurrencyType, Long> timers = new HashMap<>();
 
     @Override
     public BoostMultiplier clone() {
@@ -29,7 +28,7 @@ public class BoostMultiplier implements Cloneable {
     }
 
     public BoostMultiplier add(CurrencyType type, double amount, long time) {
-	this.time = time;
+	timers.put(type, time);
 	return add(type, amount);
     }
 
@@ -39,27 +38,31 @@ public class BoostMultiplier implements Cloneable {
 		map.put(one, amount);
 	    }
 	}
-
 	return this;
     }
 
     public double get(CurrencyType type) {
-	isValid(type); // Call without check to make sure map cache is removed
+	if (!isValid(type))
+	    return 0D;
 	return map.getOrDefault(type, 0D);
     }
 
-    public Long getTime() {
-	return time;
+    public Long getTime(CurrencyType type) {
+	return timers.get(type);
     }
 
     public boolean isValid(CurrencyType type) {
-	boolean valid = time > System.currentTimeMillis();
-	if (time != 0L && !valid) {
+	Long time = getTime(type);
+	if (time == null)
+	    return true;
+
+	if (time < System.currentTimeMillis()) {
 	    map.remove(type);
-	    time = 0L;
+	    timers.remove(type);
+	    return false;
 	}
 
-	return time == 0L || valid;
+	return true;
     }
 
     public void add(BoostMultiplier armorboost) {
