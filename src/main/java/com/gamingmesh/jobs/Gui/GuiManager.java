@@ -23,6 +23,7 @@ import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.GUI.CMIGui;
 import net.Zrips.CMILib.GUI.CMIGuiButton;
 import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
+import net.Zrips.CMILib.Version.Version;
 
 public class GuiManager {
 
@@ -140,8 +141,12 @@ public class GuiManager {
 
 	    lore.add("");
 	    lore.add(Jobs.getLanguage().getMessage("command.info.gui.leftClick"));
-	    if (jPlayer.isInJob(job))
-		lore.add(Jobs.getLanguage().getMessage("command.info.gui.middleClick"));
+	    if (jPlayer.isInJob(job)) {
+		if (Version.isCurrentEqualOrHigher(Version.v1_18_R1))
+		    lore.add(Jobs.getLanguage().getMessage("command.info.gui.qClick"));
+		else
+		    lore.add(Jobs.getLanguage().getMessage("command.info.gui.middleClick"));
+	    }
 	    lore.add(Jobs.getLanguage().getMessage("command.info.gui.rightClick"));
 
 	    ItemStack guiItem = job.getGuiItem();
@@ -174,6 +179,7 @@ public class GuiManager {
 			}
 			break;
 		    case MiddleMouse:
+		    case Q:
 			Jobs.getCommandManager().onCommand(player, null, "jobs", new String[] { "leave", job.getName() });
 			openJobsBrowseGUI(player);
 			break;

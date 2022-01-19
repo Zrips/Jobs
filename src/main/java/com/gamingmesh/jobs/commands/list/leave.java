@@ -53,7 +53,7 @@ public class leave implements Cmd {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pSender);
 
 	if (Jobs.getPlayerManager().leaveJob(jPlayer, job))
-	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.success", "%jobname%", job.getDisplayName()));
+	    pSender.sendMessage(Jobs.getLanguage().getMessage("command.leave.success", "%jobname%", job.getDisplayName(), "[jobname]", job.getDisplayName()));
 	else
 	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 

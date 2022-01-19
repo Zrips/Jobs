@@ -357,6 +357,7 @@ public class LanguageManager {
 	    c.get("command.info.gui.actions", "&eValid actions are:");
 	    c.get("command.info.gui.leftClick", "&eLeft Click for more info");
 	    c.get("command.info.gui.middleClick", "&eMiddle Click to leave this job");
+	    c.get("command.info.gui.qClick", "&eQ key to leave this job");
 	    c.get("command.info.gui.rightClick", "&eRight Click to join job");
 	    c.get("command.info.gui.leftSlots", "&eLeft slots:&f ");
 	    c.get("command.info.gui.working", "&2&nAlready working");
@@ -430,7 +431,7 @@ public class LanguageManager {
 	    c.get("command.leave.help.info", "Leave the selected job.");
 	    c.get("command.leave.help.args", "[oldplayerjob]");
 	    Jobs.getGCManager().getCommandArgs().put("leave", Arrays.asList("[oldplayerjob]"));
-	    c.get("command.leave.success", "You have left the job %jobname%.");
+	    c.get("command.leave.success", "&2You have left the job &7[jobname].");
 	    c.get("command.leave.confirmationNeed", "&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!");
 
 	    c.get("command.leaveall.help.info", "Leave all your jobs.");
