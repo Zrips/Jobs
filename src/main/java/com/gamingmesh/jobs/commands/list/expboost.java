@@ -6,7 +6,8 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.Time.timeModifier;
 
 public class expboost implements Cmd {
 
@@ -17,35 +18,67 @@ public class expboost implements Cmd {
 	    return true;
 	}
 
-	double rate = 1.0;
-	if (args[0].equalsIgnoreCase("all")) {
+	Double rate = null;
+	Long timeDuration = null;
+	String jobName = null;
+	boolean reset = false;
+
+	for (String one : args) {
+	    if (one.equalsIgnoreCase("reset")) {
+		reset = true;
+		continue;
+	    }
+
+	    if (jobName == null) {
+		jobName = one;
+		continue;
+	    }
+
+	    if (rate == null) {
+		try {
+		    rate = Double.parseDouble(one);
+		    continue;
+		} catch (NumberFormatException e) {
+		}
+	    }
+
 	    try {
-		rate = Double.parseDouble(args[args.length > 2 ? 2 : 1]);
-	    } catch (NumberFormatException e) {
-		Jobs.getCommandManager().sendUsage(sender, "expboost");
-		return true;
+		Long t = timeModifier.getTimeRangeFromString(one);
+		if (t != null)
+		    timeDuration = t;
+		continue;
+	    } catch (Exception e) {
 	    }
+	}
 
-	    int[] times = Util.parseTime(args);
+	if (!reset && rate == null || jobName == null) {
+	    Jobs.getCommandManager().sendUsage(sender, "expboost");
+	    return false;
+	}
+	
+	if (rate == null)
+	    rate = 1D;
 
+	if (timeDuration == null)
+	    timeDuration = 0L;
+
+	if (!reset && jobName.equalsIgnoreCase("all")) {
 	    for (Job job : Jobs.getJobs()) {
-		job.addBoost(CurrencyType.EXP, rate, times);
+		job.addBoost(CurrencyType.EXP, rate, timeDuration);
 	    }
-
-	    sender.sendMessage(
-		Jobs.getLanguage().getMessage("command.expboost.output.boostalladded", "%boost%", rate));
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.boostalladded", "%boost%", rate));
 	    return true;
 	}
 
-	if (args[0].equalsIgnoreCase("reset")) {
-	    if (args[1].equalsIgnoreCase("all")) {
+	if (reset) {
+	    if (jobName.equalsIgnoreCase("all")) {
 		for (Job one : Jobs.getJobs()) {
 		    one.addBoost(CurrencyType.EXP, 1.0);
 		}
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.allreset"));
 	    } else if (args.length > 1) {
-		Job job = Jobs.getJob(args[1]);
+		Job job = Jobs.getJob(jobName);
 		if (job == null) {
 		    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 		    return true;
@@ -53,27 +86,19 @@ public class expboost implements Cmd {
 
 		job.addBoost(CurrencyType.EXP, 1.0);
 
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.jobsboostreset",
-		    "%jobname%", job.getName()));
+		sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.jobsboostreset", "%jobname%", job.getName()));
 	    }
 
 	    return true;
 	}
 
-	Job job = Jobs.getJob(args[0]);
+	Job job = Jobs.getJob(jobName);
 	if (job == null) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
 	    return true;
 	}
-
-	try {
-	    rate = Double.parseDouble(args[args.length > 2 ? 2 : 1]);
-	} catch (NumberFormatException e) {
-	    Jobs.getCommandManager().sendUsage(sender, "expboost");
-	    return true;
-	}
-
-	job.addBoost(CurrencyType.EXP, rate, Util.parseTime(args));
+	
+	job.addBoost(CurrencyType.EXP, rate, timeDuration);
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.expboost.output.boostadded", "%boost%", rate,
 	    "%jobname%", job.getName()));
 	return true;
