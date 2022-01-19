@@ -66,6 +66,7 @@ import net.Zrips.CMILib.Version.Version;
 public class PlayerManager {
 
     private final ConcurrentMap<UUID, JobsPlayer> playersUUIDCache = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, JobsPlayer> playersNameCache = new ConcurrentHashMap<>();
     private final ConcurrentMap<UUID, JobsPlayer> playersUUID = new ConcurrentHashMap<>();
 
     private final String mobSpawnerMetadata = "jobsMobSpawner";
@@ -98,6 +99,7 @@ public class PlayerManager {
 
     public void clearCache() {
 	playersUUIDCache.clear();
+	playersNameCache.clear();
 	playersUUID.clear();
     }
 
@@ -121,6 +123,8 @@ public class PlayerManager {
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
 	playersUUIDCache.putIfAbsent(jPlayer.playerUUID, jPlayer);
+	if (jPlayer.getName() != null)
+	    playersNameCache.putIfAbsent(jPlayer.getName().toLowerCase(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
@@ -179,7 +183,16 @@ public class PlayerManager {
      * @return {@link PlayerInfo}
      */
     public PlayerInfo getPlayerInfo(String name) {
+	if (Version.isCurrentEqualOrLower(Version.v1_11_R1)) {
+	    JobsPlayer jPlayer = playersNameCache.get(name.toLowerCase());
+	    if (jPlayer == null)
+		return null;
+	    return playerUUIDMap.get(jPlayer.getUniqueId());
+	}
+
 	UUID playerUUID = Bukkit.getPlayerUniqueId(name);
+	if (playerUUID == null)
+	    return null;
 	return playerUUIDMap.get(playerUUID);
     }
 
@@ -363,7 +376,13 @@ public class PlayerManager {
      * @return {@link JobsPlayer} the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {
+	if (Version.isCurrentEqualOrLower(Version.v1_11_R1)) {
+	    return playersNameCache.get(playerName.toLowerCase());
+	}
+
 	UUID playerUUID = Bukkit.getPlayerUniqueId(playerName);
+	if (playerUUID == null)
+	    return null;
 	JobsPlayer jPlayer = playersUUID.get(playerUUID);
 	return jPlayer != null ? jPlayer : playersUUIDCache.get(playerUUID);
     }
