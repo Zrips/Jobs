@@ -102,7 +102,7 @@ public class GeneralConfigManager {
 	BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
 	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
-	payForEachVTradeItem, allowEnchantingBoostedItems;
+	payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false;
 
     public ItemStack guiBackButton, guiNextButton;
     public CMIMaterial guiFiller;
@@ -890,6 +890,8 @@ public class GeneralConfigManager {
 	    c.addComment("BossBar.Timer", "How long in sec to show BossBar for player",
 		"If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
 	    BossBarTimer = c.get("BossBar.Timer", economyBatchDelay + 1);
+		c.addComment("BossBar.Async", "If enabled, bossbar creation and management will be asynchronous.", "This avoids TPS drops when the ShowOnEachAction option is activated.");
+		bossBarAsync = c.get("BossBar.Async", false);
 	}
 
 	c.addComment("ShowActionBars", "You can enable/disable message shown for players in action bar");
@@ -1161,4 +1163,8 @@ public class GeneralConfigManager {
     public boolean isInformDuplicates() {
 	return InformDuplicates;
     }
+
+	public boolean isBossBarAsync() {
+		return bossBarAsync;
+	}
 }

@@ -34,7 +34,19 @@ public class BossBarManager {
 	player.getUpdateBossBarFor().clear();
     }
 
-    public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
+	public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain)
+	{
+		if(Jobs.getGCManager().isBossBarAsync())
+		{
+			Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () -> ShowJobProgressionInTask(player, jobProg, expGain));
+		}
+		else
+		{
+			ShowJobProgressionInTask(player, jobProg, expGain);
+		}
+	}
+
+	private synchronized void ShowJobProgressionInTask(final JobsPlayer player, final JobProgression jobProg, double expGain) {
 	if (Version.getCurrent().isLower(Version.v1_9_R1) || !Jobs.getGCManager().BossBarsMessageByDefault)
 	    return;
 
