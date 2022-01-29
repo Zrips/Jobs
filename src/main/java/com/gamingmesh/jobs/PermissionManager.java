@@ -175,6 +175,7 @@ public class PermissionManager {
 	    if (permissions == null) {
 		permissions = getAll(player);
 	    } else {
+		permissions.clear();
 		permissions.putAll(getAll(player));
 	    }
 	    jPlayer.setPermissionsCache(permissions);
