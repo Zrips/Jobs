@@ -49,7 +49,7 @@ public class expboost implements Cmd {
 		continue;
 	    } catch (Exception e) {
 	    }
-	}
+	} 
 
 	if (!reset && rate == null || jobName == null) {
 	    Jobs.getCommandManager().sendUsage(sender, "expboost");

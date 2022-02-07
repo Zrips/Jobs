@@ -126,7 +126,7 @@ public class LanguageManager {
 
 	    c.get("command.moneyboost.help.info", "Boosts money gain for all players");
 	    c.get("command.moneyboost.help.args", "[jobname]/all/reset [time]/[rate]");
-	    Jobs.getGCManager().getCommandArgs().put("moneyboost", Arrays.asList("[jobname]%%all%%reset", "[time]%%[rate]"));
+	    Jobs.getGCManager().getCommandArgs().put("moneyboost", Arrays.asList("[jobname]%%all%%reset", "[time]%%2", "%%2"));
 	    c.get("command.moneyboost.output.allreset", "All money boosts turned off");
 	    c.get("command.moneyboost.output.jobsboostreset", "Money boost has been turned off for %jobname%");
 	    c.get("command.moneyboost.output.nothingtoreset", "Nothing to reset");
@@ -136,7 +136,7 @@ public class LanguageManager {
 
 	    c.get("command.pointboost.help.info", "Boosts point gain for all players");
 	    c.get("command.pointboost.help.args", "[jobname]/all/reset [time]/[rate]");
-	    Jobs.getGCManager().getCommandArgs().put("pointboost", Arrays.asList("[jobname]%%all%%reset", "[time]%%[rate]"));
+	    Jobs.getGCManager().getCommandArgs().put("pointboost", Arrays.asList("[jobname]%%all%%reset", "[time]%%2", "%%2"));
 	    c.get("command.pointboost.output.allreset", "All point boosts turned off");
 	    c.get("command.pointboost.output.jobsboostreset", "Point boost has been turned off for %jobname%");
 	    c.get("command.pointboost.output.nothingtoreset", "Nothing to reset");
@@ -146,7 +146,7 @@ public class LanguageManager {
 
 	    c.get("command.expboost.help.info", "Boosts exp gain for all players");
 	    c.get("command.expboost.help.args", "[jobname]/all/reset [time]/[rate]");
-	    Jobs.getGCManager().getCommandArgs().put("expboost", Arrays.asList("[jobname]%%all%%reset", "[time]%%[rate]"));
+	    Jobs.getGCManager().getCommandArgs().put("expboost", Arrays.asList("[jobname]%%all%%reset", "[time]%%2", "%%2"));
 	    c.get("command.expboost.output.allreset", "All exp boosts turned off");
 	    c.get("command.expboost.output.jobsboostreset", "Exp boost has been turned off for %jobname%");
 	    c.get("command.expboost.output.nothingtoreset", "Nothing to reset");

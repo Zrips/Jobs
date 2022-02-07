@@ -183,7 +183,7 @@ public class PlayerManager {
      * @return {@link PlayerInfo}
      */
     public PlayerInfo getPlayerInfo(String name) {
-	if (Version.isCurrentEqualOrLower(Version.v1_11_R1)) {
+	if (Version.isCurrentEqualOrLower(Version.v1_11_R1) || !Version.isPaper()) {
 	    JobsPlayer jPlayer = playersNameCache.get(name.toLowerCase());
 	    if (jPlayer == null)
 		return null;
@@ -376,7 +376,7 @@ public class PlayerManager {
      * @return {@link JobsPlayer} the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {
-	if (Version.isCurrentEqualOrLower(Version.v1_11_R1)) {
+	if (Version.isCurrentEqualOrLower(Version.v1_11_R1) || !Version.isPaper()) {
 	    return playersNameCache.get(playerName.toLowerCase());
 	}
 

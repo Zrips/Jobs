@@ -64,11 +64,11 @@ public class pointboost implements Cmd {
 
 	if (!reset && jobName.equalsIgnoreCase("all")) {
 	    for (Job job : Jobs.getJobs()) {
-		job.addBoost(CurrencyType.POINTS, rate, 0L);
+		job.addBoost(CurrencyType.POINTS, rate, timeDuration);
 	    }
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.pointboost.output.boostalladded", "%boost%", rate));
 	    return true;
-	}
+	} 
 
 	if (reset) {
 	    if (jobName.equalsIgnoreCase("all")) {

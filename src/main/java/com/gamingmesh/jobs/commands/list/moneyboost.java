@@ -64,11 +64,11 @@ public class moneyboost implements Cmd {
 
 	if (!reset && jobName.equalsIgnoreCase("all")) {
 	    for (Job job : Jobs.getJobs()) {
-		job.addBoost(CurrencyType.MONEY, rate, 0L);
+		job.addBoost(CurrencyType.MONEY, rate, timeDuration);
 	    }
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.boostalladded", "%boost%", rate));
 	    return true;
-	}
+	} 
 
 	if (reset) {
 	    if (jobName.equalsIgnoreCase("all")) {
