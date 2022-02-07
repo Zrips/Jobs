@@ -478,10 +478,10 @@ public abstract class JobsDAO {
 	}
     }
 
-    public final synchronized void setUp() {
+    public final synchronized boolean setUp() {
 	if (getConnection() == null) {
 	    CMIMessages.consoleMessage("&cFAILED to connect to database");
-	    return;
+	    return false;
 	}
 
 	CMIMessages.consoleMessage("&eConnected to database (&6" + dbType + "&e)");
@@ -492,10 +492,10 @@ public abstract class JobsDAO {
 	    for (DBTables one : DBTables.values()) {
 		createDefaultTable(one);
 	    }
-
 	    checkDefaultCollumns();
 	} finally {
 	}
+	return true;
     }
 
     protected abstract void checkUpdate() throws SQLException;

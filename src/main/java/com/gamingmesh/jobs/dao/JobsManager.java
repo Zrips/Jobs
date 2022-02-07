@@ -3,8 +3,10 @@ package com.gamingmesh.jobs.dao;
 import java.io.IOException;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.LoadStatus;
 
 import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class JobsManager {
     private JobsDAO dao;
@@ -62,7 +64,7 @@ public class JobsManager {
     }
 
     private String username = "root", password = "", hostname = "localhost:3306", database = "minecraft", prefix = "jobs_",
-        characterEncoding = "utf8", encoding = "UTF-8";
+	characterEncoding = "utf8", encoding = "UTF-8";
     private boolean certificate = false, ssl = false, autoReconnect = false;
 
     public void start() {
@@ -86,6 +88,9 @@ public class JobsManager {
 	if (storageMethod.equalsIgnoreCase("mysql")) {
 	    dbType = DataBaseType.MySQL;
 	    dao = startMysql();
+	    if (dao == null || dao.getConnection() == null) {
+		Jobs.status = LoadStatus.MYSQLFailure;
+	    }
 	} else {
 	    if (!storageMethod.equalsIgnoreCase("sqlite")) {
 		Jobs.consoleMsg("&cInvalid storage method! Changing method to sqlite!");
@@ -94,6 +99,10 @@ public class JobsManager {
 
 	    dbType = DataBaseType.SqLite;
 	    dao = startSqlite();
+
+	    if (dao.getConnection() == null) {
+		Jobs.status = LoadStatus.SQLITEFailure;
+	    }
 	}
 
 	Jobs.setDAO(dao);
@@ -124,7 +133,7 @@ public class JobsManager {
 
 	if (plugin.isEnabled()) {
 	    JobsMySQL data = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect,
-	        characterEncoding, encoding);
+		characterEncoding, encoding);
 	    data.initialize();
 	    return data;
 	}

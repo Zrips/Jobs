@@ -76,6 +76,7 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.JobsWorld;
+import com.gamingmesh.jobs.container.LoadStatus;
 import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.container.PlayerPoints;
@@ -161,6 +162,8 @@ public final class Jobs extends JavaPlugin {
 
     public static BufferedPaymentThread paymentThread;
     private static DatabaseSaveThread saveTask;
+
+    public static LoadStatus status = LoadStatus.Good;
 
     private static final int MAX_ENTRIES = 5;
     public static final LinkedHashMap<UUID, FastPayment> FASTPAYMENT = new LinkedHashMap<UUID, FastPayment>(MAX_ENTRIES + 1, .75F, false) {
@@ -728,6 +731,14 @@ public final class Jobs extends JavaPlugin {
 	    });
 
 	    startup();
+
+	    if (status.equals(LoadStatus.MYSQLFailure) || status.equals(LoadStatus.SQLITEFailure)) {
+		CMIMessages.consoleMessage("&cCould not connect to " + (status.equals(LoadStatus.MYSQLFailure) ? "MySQL" : "SqLite") + "!");
+		CMIMessages.consoleMessage("&cPlugin will be disabled");
+		this.onDisable();
+		this.setEnabled(false);
+		return;
+	    }
 
 	    if (getGCManager().SignsEnabled) {
 		new YmlMaker(getFolder(), "Signs.yml").saveDefaultConfig();
