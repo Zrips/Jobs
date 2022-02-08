@@ -382,6 +382,12 @@ public class JobsListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLimitedItemInteract(PlayerInteractEvent event) {
+
+	if(!Jobs.hasLimitedItems())
+	{
+		return;
+	}
+
 	Player player = event.getPlayer();
 	ItemStack iih = CMIItemStack.getItemInMainHand(player);
 	if (iih.getType() == Material.AIR)

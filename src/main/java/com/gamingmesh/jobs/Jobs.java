@@ -165,6 +165,8 @@ public final class Jobs extends JavaPlugin {
 
     public static LoadStatus status = LoadStatus.Good;
 
+	private static boolean hasLimitedItems = false;
+
     private static final int MAX_ENTRIES = 5;
     public static final LinkedHashMap<UUID, FastPayment> FASTPAYMENT = new LinkedHashMap<UUID, FastPayment>(MAX_ENTRIES + 1, .75F, false) {
 	protected boolean removeEldestEntry(Map.Entry<UUID, FastPayment> eldest) {
@@ -833,6 +835,8 @@ public final class Jobs extends JavaPlugin {
 	getGCManager().reload();
 	getLanguage().reload();
 	getConfigManager().reload();
+
+	hasLimitedItems = Jobs.getJobs().stream().anyMatch(job -> !job.getLimitedItems().isEmpty());
 
 	getDBManager().getDB().loadAllJobsWorlds();
 	getDBManager().getDB().loadAllJobsNames();
@@ -1506,4 +1510,8 @@ public final class Jobs extends JavaPlugin {
 	if (pageCount != 0)
 	    rm.show(sender);
     }
+
+	public static boolean hasLimitedItems() {
+		return hasLimitedItems;
+	}
 }
