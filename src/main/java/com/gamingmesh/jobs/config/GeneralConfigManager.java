@@ -744,7 +744,7 @@ public class GeneralConfigManager {
 	PayForRenaming = c.get("Economy.Repair.PayForRenaming", true);
 
 	c.addComment("Economy.Enchant.PayForEnchantingOnAnvil", "Do you want to give money for enchanting items in anvil?");
-	PayForEnchantingOnAnvil = c.get("Economy.Enchant.PayForEnchantingOnAnvil", false);
+	PayForEnchantingOnAnvil = c.get("Economy.Enchant.PayForEnchantingOnAnvil", true);
 
 	c.addComment("Economy.Enchant.AllowEnchantingBoostedItems", "Do you want to allow players to enchant their boosted items?");
 	allowEnchantingBoostedItems = c.get("Economy.Enchant.AllowEnchantingBoostedItems", true);
