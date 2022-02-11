@@ -657,6 +657,11 @@ public class ConfigManager {
 		id = 18;
 		meta = "1";
 		break c;
+	    case "glowitemframe":
+		type = "GLOW_ITEM_FRAME";
+		id = 0;
+		meta = "0";
+		break c;
 	    case "painting":
 		type = "PAINTING";
 		id = 9;

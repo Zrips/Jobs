@@ -38,7 +38,6 @@ import net.Zrips.CMILib.GUI.CMIGuiButton;
 import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 import net.Zrips.CMILib.GUI.GUIManager.GUIRows;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 @SuppressWarnings("deprecation")
@@ -60,22 +59,18 @@ public class ShopManager {
     }
 
     private static GUIRows getGuiSize(List<ShopItem> ls, @Deprecated int page) {
-	GUIRows guiSize = GUIRows.r1;
+	GUIRows guiSize = GUIRows.r6;
 	int size = ls.size();
 
 	if (size <= 9)
 	    guiSize = GUIRows.r1;
-
-	if (size <= 18)
+	else if (size <= 18)
 	    guiSize = GUIRows.r2;
-
-	if (size <= 27)
+	else if (size <= 27)
 	    guiSize = GUIRows.r3;
-
-	if (size <= 36)
+	else if (size <= 36)
 	    guiSize = GUIRows.r4;
-
-	if (size <= 45)
+	else if (size <= 45)
 	    guiSize = GUIRows.r5;
 	
 	if (Jobs.getShopManager().getShopItemList().size() > 45)
