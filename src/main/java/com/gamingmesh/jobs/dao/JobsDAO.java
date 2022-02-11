@@ -1999,6 +1999,24 @@ public abstract class JobsDAO {
 	}
     }
 
+    public void resetDoneQuests() {
+
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return;
+
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("UPDATE `" + DBTables.UsersTable.getTableName() + "` SET `" + UserTableFields.donequests.getCollumn() + "` = ?;");
+	    prest.setInt(1, 0);
+	    prest.execute();
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	} finally {
+	    close(prest);
+	}
+    }
+
     private void insertPlayer(JobsPlayer player) {
 	JobsConnection conn = getConnection();
 	if (conn == null)

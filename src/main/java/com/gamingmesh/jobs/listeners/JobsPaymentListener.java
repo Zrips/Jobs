@@ -26,7 +26,6 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import com.bgsoftware.wildstacker.api.enums.StackSplit;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -90,6 +89,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
+import com.bgsoftware.wildstacker.api.enums.StackSplit;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
@@ -128,7 +128,6 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public final class JobsPaymentListener implements Listener {
@@ -1775,6 +1774,7 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onExplore(JobsChunkChangeEvent event) {
+
 	if (!Jobs.getExplore().isExploreEnabled())
 	    return;
 

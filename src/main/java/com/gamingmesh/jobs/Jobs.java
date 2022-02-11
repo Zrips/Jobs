@@ -116,6 +116,7 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
@@ -165,7 +166,7 @@ public final class Jobs extends JavaPlugin {
 
     public static LoadStatus status = LoadStatus.Good;
 
-	private static boolean hasLimitedItems = false;
+    private static boolean hasLimitedItems = false;
 
     private static final int MAX_ENTRIES = 5;
     public static final LinkedHashMap<UUID, FastPayment> FASTPAYMENT = new LinkedHashMap<UUID, FastPayment>(MAX_ENTRIES + 1, .75F, false) {
@@ -1511,7 +1512,7 @@ public final class Jobs extends JavaPlugin {
 	    rm.show(sender);
     }
 
-	public static boolean hasLimitedItems() {
-		return hasLimitedItems;
-	}
+    public static boolean hasLimitedItems() {
+	return hasLimitedItems;
+    }
 }

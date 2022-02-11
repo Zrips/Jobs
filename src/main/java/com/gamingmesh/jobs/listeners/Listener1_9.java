@@ -8,8 +8,8 @@ import com.gamingmesh.jobs.Jobs;
 
 public class Listener1_9 implements Listener {
 
-	@EventHandler
-	public void onPlayerHandSwap(PlayerSwapHandItemsEvent event) {
-		Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
-	}
+    @EventHandler
+    public void onPlayerHandSwap(PlayerSwapHandItemsEvent event) {
+	Jobs.getPlayerManager().resetItemBonusCache(event.getPlayer().getUniqueId());
+    }
 }

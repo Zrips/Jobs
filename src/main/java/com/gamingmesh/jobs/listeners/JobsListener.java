@@ -466,8 +466,9 @@ public class JobsListener implements Listener {
 
 	Chunk from = event.getFrom().getChunk();
 	Chunk to = event.getTo().getChunk();
-	if (from != to)
+	if (from != to) {
 	    plugin.getServer().getPluginManager().callEvent(new JobsChunkChangeEvent(event.getPlayer(), from, to));
+	}
     }
 
     @EventHandler(ignoreCancelled = true)
