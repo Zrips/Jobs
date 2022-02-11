@@ -22,26 +22,26 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BaseActionInfo;
 
 public class EnchantActionInfo extends BaseActionInfo {
-	private String name;
-	private int level;
+    private String name;
+    private int level;
 
-	public EnchantActionInfo(String name, int level, ActionType type) {
-		super(type);
-		this.name = name;
-		this.level = level;
-	}
+    public EnchantActionInfo(String name, int level, ActionType type) {
+	super(type);
+	this.name = name;
+	this.level = level;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    @Override
+    public String getName() {
+	return name;
+    }
 
-	@Override
-	public String getNameWithSub() {
-		return name + ":" + level;
-	}
+    @Override
+    public String getNameWithSub() {
+	return name + ":" + level;
+    }
 
-	public int getLevel() {
-		return level;
-	}
+    public int getLevel() {
+	return level;
+    }
 }
