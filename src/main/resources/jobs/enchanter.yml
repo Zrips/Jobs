@@ -122,11 +122,264 @@ Enchanter:
       income: 6.0
       points: 6.0
       experience: 30.0
-    durability-1:
-      income: 10.0
-      points: 10.0
-      experience: 10.0
-    fire_aspect-2:
-      income: 20.0
-      points: 20.0
-      experience: 20.0
+    Efficiency-1:
+      income: 1
+      experience: 1
+    Efficiency-2:
+      income: 2
+      experience: 2
+    Efficiency-3:
+      income: 3
+      experience: 3
+    Efficiency-4:
+      income: 4
+      experience: 4
+    Unbreaking-1:
+      income: 1
+      experience: 1
+    Unbreaking-2:
+      income: 2
+      experience: 2
+    Unbreaking-3:
+      income: 3
+      experience: 3
+    SILK_TOUCH:
+      income: 6
+      experience: 6
+    LOOT_BONUS_BLOCKS-1:
+      income: 4
+      experience: 4
+    LOOT_BONUS_BLOCKS-2:
+      income: 5
+      experience: 5
+    LOOT_BONUS_BLOCKS-3:
+      income: 6
+      experience: 6
+    PROTECTION_ENVIRONMENTAL-1:
+      income: 1
+      experience: 2
+    PROTECTION_ENVIRONMENTAL-2:
+      income: 2
+      experience: 4
+    PROTECTION_ENVIRONMENTAL-3:
+      income: 2
+      experience: 5
+    PROTECTION_ENVIRONMENTAL-4:
+      income: 3
+      experience: 10
+    DEPTH_STRIDER:
+      income: 2
+      experience: 5
+    OXYGEN-1:
+      income: 2
+      experience: 3
+    OXYGEN-2:
+      income: 2
+      experience: 4
+    OXYGEN-3:
+      income: 2
+      experience: 5
+    PROTECTION_PROJECTILE-1:
+      income: 1
+      experience: 2
+    PROTECTION_PROJECTILE-2:
+      income: 2
+      experience: 3
+    PROTECTION_PROJECTILE-3:
+      income: 3
+      experience: 5
+    PROTECTION_PROJECTILE-4:
+      income: 5
+      experience: 10
+    PROTECTION_FIRE-1:
+      income: 1
+      experience: 2
+    PROTECTION_FIRE-2:
+      income: 2
+      experience: 3
+    PROTECTION_FIRE-3:
+      income: 3
+      experience: 5
+    PROTECTION_FIRE-4:
+      income: 5
+      experience: 10
+    PROTECTION_FALL-1:
+      income: 1
+      experience: 2
+    PROTECTION_FALL-2:
+      income: 2
+      experience: 3
+    PROTECTION_FALL-3:
+      income: 3
+      experience: 5
+    PROTECTION_FALL-4:
+      income: 5
+      experience: 10
+    THORNS-1:
+      income: 2
+      experience: 2
+    THORNS-2:
+      income: 3
+      experience: 3
+    KNOCKBACK-1:
+      income: 3
+      experience: 3
+    KNOCKBACK-2:
+      income: 6
+      experience: 6
+    DAMAGE_ALL-1:
+      income: 2
+      experience: 2
+    DAMAGE_ALL-2:
+      income: 3
+      experience: 3
+    DAMAGE_ALL-3:
+      income: 4
+      experience: 4
+    DAMAGE_ALL-4:
+      income: 5
+      experience: 5
+    DAMAGE_UNDEAD-1:
+      income: 3
+      experience: 3
+    DAMAGE_UNDEAD-2:
+      income: 4
+      experience: 4
+    DAMAGE_UNDEAD-3:
+      income: 5
+      experience: 5
+    DAMAGE_UNDEAD-4:
+      income: 6
+      experience: 6
+    DAMAGE_ARTHROPODS-1:
+      income: 3
+      experience: 3
+    DAMAGE_ARTHROPODS-2:
+      income: 4
+      experience: 4
+    DAMAGE_ARTHROPODS-3:
+      income: 5
+      experience: 5
+    DAMAGE_ARTHROPODS-4:
+      income: 6
+      experience: 6
+    SWEEPING_EDGE-1:
+      income: 4
+      experience: 4
+    SWEEPING_EDGE-2:
+      income: 5
+      experience: 5
+    SWEEPING_EDGE-3:
+      income: 6
+      experience: 6
+    FIRE_ASPECT-1:
+      income: 5
+      experience: 5
+    FIRE_ASPECT-2:
+      income: 6
+      experience: 6
+    LOOT_BONUS_MOBS-1:
+      income: 4
+      experience: 4
+    LOOT_BONUS_MOBS-2:
+      income: 5
+      experience: 5
+    LOOT_BONUS_MOBS-3:
+      income: 6
+      experience: 6
+    ARROW_DAMAGE-1:
+      income: 1
+      experience: 1
+    ARROW_DAMAGE-2:
+      income: 2
+      experience: 2
+    ARROW_DAMAGE-3:
+      income: 3
+      experience: 3
+    ARROW_DAMAGE-4:
+      income: 4
+      experience: 4
+    ARROW_FIRE:
+      income: 4
+      experience: 4
+    ARROW_INFINITE:
+      income: 6
+      experience: 6
+    ARROW_KNOCKBACK-1:
+      income: 4
+      experience: 4
+    ARROW_KNOCKBACK-2:
+      income: 6
+      experience: 6
+    LURE-1:
+      income: 4
+      experience: 4
+    LURE-2:
+      income: 5
+      experience: 5
+    LURE-3:
+      income: 6
+      experience: 6
+    LUCK-1:
+      income: 4
+      experience: 4
+    LUCK-2:
+      income: 5
+      experience: 5
+    LUCK-3:
+      income: 6
+      experience: 6
+    LOYALTY-1:
+      income: 2
+      experience: 2
+    LOYALTY-2:
+      income: 3
+      experience: 3
+    LOYALTY-3:
+      income: 4
+      experience: 4
+    CHANNELING:
+      income: 6
+      experience: 6
+    RIPTIDE-1:
+      income: 4
+      experience: 4
+    RIPTIDE-2:
+      income: 5
+      experience: 5
+    RIPTIDE-3:
+      income: 6
+      experience: 6
+    IMPALING-1:
+      income: 2
+      experience: 2
+    IMPALING-2:
+      income: 3
+      experience: 3
+    IMPALING-3:
+      income: 4
+      experience: 4
+    IMPALING-4:
+      income: 5
+      experience: 5
+    IMPALING-5:
+      income: 6
+      experience: 6
+    PIERCING-1:
+      income: 3
+      experience: 3
+    PIERCING-2:
+      income: 4
+      experience: 4
+    PIERCING-3:
+      income: 5
+      experience: 5
+    QUICK_CHARGE-1:
+      income: 4
+      experience: 4
+    QUICK_CHARGE-2:
+      income: 5
+      experience: 5
+    MULTISHOT:
+      income: 6
+      experience: 6
