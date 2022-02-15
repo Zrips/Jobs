@@ -389,7 +389,7 @@ public final class Jobs extends JavaPlugin {
 
     public static ExploreManager getExplore() {
 	if (exploreManager == null)
-	    exploreManager = new ExploreManager();
+	    exploreManager = ExploreManager.getInstane();
 	return exploreManager;
     }
 
