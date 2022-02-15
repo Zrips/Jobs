@@ -156,6 +156,7 @@ command:
       info: '指定したワールドの探索情報をリセットします'
       args: 'world [worldname]'
     output:
+      notenabled: '機能が無効化されています'
       invalidname: 'ワールド名が不正です'
       reseted: '&2%worldname% &eの探索情報をリセットしました'
   resetlimit:

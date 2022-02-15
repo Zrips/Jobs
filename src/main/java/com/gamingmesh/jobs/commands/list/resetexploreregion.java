@@ -17,6 +17,11 @@ public class resetexploreregion implements Cmd {
             return true;
         }
 
+        if (!Jobs.getGCManager().resetExploringData) {
+            sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.notenabled"));
+            return true;
+        }
+
         final String worldName = args[1];
         if(!worldName.matches(REGEX)) {
             sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.invalidname"));

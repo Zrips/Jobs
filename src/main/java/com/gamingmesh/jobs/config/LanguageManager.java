@@ -209,11 +209,12 @@ public class LanguageManager {
 	    c.get("command.limit.output.reachedpointslimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
 	    c.get("command.limit.output.notenabled", "&eMoney limit is not enabled");
 
-		c.get("command.resetexploreregion.help.info", "Resets world data of Explorering");
+		c.get("command.resetexploreregion.help.info", "Resets region data of Explorering");
 		c.get("command.resetexploreregion.help.args", "world [worldname]");
 		Jobs.getGCManager().getCommandArgs().put("resetlimit", Arrays.asList("world", "[worldname]"));
+		c.get("command.resetexploreregion.output.notenabled", "&eNot enabled.");
 		c.get("command.resetexploreregion.output.invalidname", "&eInvalid world name");
-		c.get("command.resetexploreregion.output.reseted", "&eWorld data has been reset for: &2%worldname%");
+		c.get("command.resetexploreregion.output.reseted", "&eExploring region data has been reset for: &2%worldname%");
 
 		c.get("command.resetlimit.help.info", "Resets a player's payment limits");
 	    c.get("command.resetlimit.help.args", "[playername]");
