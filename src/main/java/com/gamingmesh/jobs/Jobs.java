@@ -387,10 +387,10 @@ public final class Jobs extends JavaPlugin {
 	return cManager;
     }
 
-//    @Deprecated
-//    public static ExploreManager getExplore() {
-//	return getExploreManager();
-//    }
+    @Deprecated
+    public static ExploreManager getExplore() {
+	return getExploreManager();
+    }
 
     public static ExploreManager getExploreManager() {
 	if (exploreManager == null)

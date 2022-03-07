@@ -25,6 +25,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class JobsCommands implements CommandExecutor {
@@ -406,6 +407,9 @@ public class JobsCommands implements CommandExecutor {
 	return " " + (isMaxLevelReached ? "" : jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience())) + " " + message;
     }
 
+    private String pos = ChatColor.DARK_GREEN + "\u258F";
+    private String pros = ChatColor.YELLOW + "\u258F";
+
     public String jobProgressMessage(double max, double current) {
 	if (current < 0)
 	    current = 0;
@@ -416,21 +420,19 @@ public class JobsCommands implements CommandExecutor {
 	if (max < 1)
 	    max = 2;
 
-	String message = "";
-	String pos = ChatColor.DARK_GREEN + "\u258F";
-	String pros = ChatColor.YELLOW + "\u258F";
+	StringBuilder message = new StringBuilder();
 	int percentage = (int) ((current * 50.0) / max);
 	for (int i = 0; i < percentage; i++) {
-	    message += pos;
+	    message.append(pos);
 	}
 
 	if (50 - percentage < 0)
 	    percentage = 50;
 
 	for (int i = 0; i < 50 - percentage; i++) {
-	    message += pros;
+	    message.append(pros);
 	}
-	return message;
+	return message.toString();
     }
 
     /**

@@ -5,9 +5,11 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class stats implements Cmd {
@@ -40,11 +42,15 @@ public class stats implements Cmd {
 
 	String leftClick = Jobs.getLanguage().getMessage("command.info.gui.leftClick");
 
+	String pref = JobsCommands.LABEL + " " + info.class.getSimpleName() + " ";
+
+	RawMessage rm = new RawMessage();
 	for (JobProgression jobProg : jPlayer.progression) {
 	    for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg).split("\n")) {
-		new RawMessage().addText(msg).addHover(leftClick).addCommand("jobs info " + jobProg.getJob().getName()).show(sender);
+		rm.addText(msg).addHover(leftClick).addCommand(pref + jobProg.getJob().getName());
 	    }
 	}
+	rm.show(sender);
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	return true;
