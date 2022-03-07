@@ -128,11 +128,16 @@ public class JobsCommands implements CommandExecutor {
 	    return true;
 	}
 
-	PageInfo pi = new PageInfo(7, commands.size(), page);
+	PageInfo pi = new PageInfo(10, commands.size(), page);
 	if (page > pi.getTotalPages()) {
 	    CMIActionBar.send(sender, Jobs.getLanguage().getMessage("general.error.noHelpPage"));
 	    return true;
 	}
+
+	RawMessage rm = new RawMessage();
+	rm.addText(Jobs.getLanguage().getMessage("command.help.output.title"));
+
+	boolean pl = sender instanceof Player;
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.title"));
 	for (String one : commands) {
@@ -141,9 +146,22 @@ public class JobsCommands implements CommandExecutor {
 	    if (pi.isBreak())
 		break;
 
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
-		+ ".help.info")));
+	    // Old format
+//	    sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
+//		+ ".help.info")));
+
+	    if (pl) {
+		rm.addText("\n" + getUsage(one));
+		rm.addHover(Jobs.getLanguage().getMessage("command." + one + ".help.info"));
+		rm.addSuggestion("/" + Jobs.getLanguage().getMessage("command.help.output.label").toLowerCase() + " " + one + " ");
+	    } else {
+		rm.addText("\n" + Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
+		    + ".help.info")));
+	    }
+
 	}
+
+	rm.show(sender);
 
 	plugin.showPagination(sender, pi, LABEL + " ?");
 	return true;
