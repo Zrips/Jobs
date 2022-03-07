@@ -24,14 +24,16 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.PlayerCamp;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 public final class JobsPayment14Listener implements Listener {
 
     // BlockCookEvent does not have "cooking owner"
     private final Map<UUID, List<PlayerCamp>> campPlayers = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityTransformEvent(EntityTransformEvent event) {
-
+	    
 	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
 	    return;
 
@@ -62,6 +64,7 @@ public final class JobsPayment14Listener implements Listener {
 	case "SHEARED":
 	    break;
 	case "SPLIT":
+
 	    if (!event.getEntityType().equals(EntityType.SLIME) && !event.getEntityType().equals(EntityType.MAGMA_CUBE))
 		return;
 	    for (Entity entity : event.getTransformedEntities()) {

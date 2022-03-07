@@ -128,6 +128,7 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public final class JobsPaymentListener implements Listener {
@@ -1250,10 +1251,13 @@ public final class JobsPaymentListener implements Listener {
 	if (!Jobs.getGCManager().payNearSpawner() && lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
 	    try {
 		// So lets remove meta in case some plugin removes entity in wrong way.
-		lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-	    } catch (Exception ignored) {
+		// Need to delay action for other function to properly check for existing meta data relating to this entity before clearing it out
+		// Longer delay is needed due to mob split event being fired few seconds after mob dies and not at same time
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+		    lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+		}, 200L);
+	    } catch (Throwable ignored) {
 	    }
-
 	    return;
 	}
 
