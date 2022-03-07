@@ -89,7 +89,7 @@ public class GeneralConfigManager {
     public boolean ignoreOreGenerators, useBlockProtection, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
-	BrowseUseNewLook, payExploringWhenGliding = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
+	BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
 	boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems/*, preventCropResizePayment*/, payItemDurabilityLoss,
 	applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
@@ -455,6 +455,9 @@ public class GeneralConfigManager {
 	    c.addComment("enable-pay-for-exploring-when-gliding", "Option to allow payment to be made for exploring when player gliding.");
 	    payExploringWhenGliding = c.get("enable-pay-for-exploring-when-gliding", false);
 	}
+
+	c.addComment("enable-reset-exploring-data", "Option to allow reset exploring data.");
+	resetExploringData = c.get("enable-reset-exploring-data", false);
 
 	c.addComment("disablePaymentIfRiding", "Disables the payment when the player riding on an entity.");
 	disablePaymentIfRiding = c.get("disablePaymentIfRiding", false);

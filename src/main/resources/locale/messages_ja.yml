@@ -151,6 +151,14 @@ command:
       reachedpointslimit: '&4ポイント獲得上限に達しました'
       reachedpointslimit2: '&2/jobs limit &eコマンドで上限を確認できます'
       notenabled: '&e上限は有効化されていません'
+  resetexploreregion:
+    help:
+      info: '指定したワールドの探索情報をリセットします'
+      args: 'world [worldname]'
+    output:
+      notenabled: '機能が無効化されています'
+      invalidname: 'ワールド名が不正です'
+      reseted: '&2%worldname% &eの探索情報をリセットしました'
   resetlimit:
     help:
       info: '[player]の上限をリセットします'
@@ -416,14 +424,14 @@ command:
       info: '[職業名]を離職します'
       args: '[oldplayerjob]'
     success: '%jobname% を離職しました'
-    confirmationNeed: '&cAre you sure you want to leave from&e [jobname]&c job? Type the command again within&6 [time] seconds &cto confirm!'
+    confirmationNeed: '&c本当に &e[jobname] &cから離職しますか？ 離職する場合は &6[time]&c 秒以内に再度コマンドを実行してください'
   leaveall:
     help:
       info: 就いている全ての職業を離職します
     error:
       nojobs: 離職できる職業はありません
     success: 就いている全ての職業を離職しました
-    confirmationNeed: '&cAre you sure you want to leave from all jobs? Type the command again within&6 [time] seconds &cto confirm!'
+    confirmationNeed: '&c本当に &e全てのジョブ&c から離職しますか？ 離職する場合は &6[time]&c 秒以内に再度コマンドを実行してください'
   explored:
     help:
       info: このチャンクに来たことのある人を確認できます
