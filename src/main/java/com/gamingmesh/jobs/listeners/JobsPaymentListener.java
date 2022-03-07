@@ -1775,7 +1775,7 @@ public final class JobsPaymentListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onExplore(JobsChunkChangeEvent event) {
 
-	if (!Jobs.getExplore().isExploreEnabled())
+	if (!Jobs.getExploreManager().isExploreEnabled())
 	    return;
 
 	Player player = event.getPlayer();
@@ -1810,7 +1810,7 @@ public final class JobsPaymentListener implements Listener {
 	if (jPlayer == null)
 	    return;
 
-	ExploreRespond respond = Jobs.getExplore().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
+	ExploreRespond respond = Jobs.getExploreManager().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
 
 	if (!respond.isNewChunk())
 	    return;

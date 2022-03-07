@@ -13,12 +13,12 @@ public class ExploreChunk {
 
     public ExploreRespond addPlayer(int playerId) {
 	if (isFullyExplored()) {
-	    return new ExploreRespond(Jobs.getExplore().getPlayerAmount() + 1, false);
+	    return new ExploreRespond(Jobs.getExploreManager().getPlayerAmount() + 1, false);
 	}
 
 	boolean newChunkForPlayer = false;
 	if (!playerIds.contains(playerId)) {
-	    if (playerIds.size() < Jobs.getExplore().getPlayerAmount()) {
+	    if (playerIds.size() < Jobs.getExploreManager().getPlayerAmount()) {
 		playerIds.add(playerId);
 		updated = true;
 	    }
@@ -26,7 +26,7 @@ public class ExploreChunk {
 	    newChunkForPlayer = true;
 	}
 
-	if (Jobs.getGCManager().ExploreCompact && playerIds.size() >= Jobs.getExplore().getPlayerAmount()) {
+	if (Jobs.getGCManager().ExploreCompact && playerIds.size() >= Jobs.getExploreManager().getPlayerAmount()) {
 	    playerIds = null;
 	}
 
@@ -40,7 +40,7 @@ public class ExploreChunk {
     }
 
     public int getCount() {
-	return isFullyExplored() ? Jobs.getExplore().getPlayerAmount() : playerIds.size();
+	return isFullyExplored() ? Jobs.getExploreManager().getPlayerAmount() : playerIds.size();
     }
 
     public List<Integer> getPlayers() {
@@ -86,7 +86,7 @@ public class ExploreChunk {
 	    }
 	}
 
-	if (Jobs.getGCManager().ExploreCompact && playerIds.size() >= Jobs.getExplore().getPlayerAmount()) {
+	if (Jobs.getGCManager().ExploreCompact && playerIds.size() >= Jobs.getExploreManager().getPlayerAmount()) {
 	    playerIds = null;
 
 	    if (!names.isEmpty())
@@ -111,6 +111,6 @@ public class ExploreChunk {
     }
 
     public boolean isFullyExplored() {
-	return playerIds == null || playerIds.size() >= Jobs.getExplore().getPlayerAmount();
+	return playerIds == null || playerIds.size() >= Jobs.getExploreManager().getPlayerAmount();
     }
 }

@@ -806,8 +806,8 @@ public class ConfigManager {
 		return null;
 	    }
 
-	    Jobs.getExplore().setExploreEnabled();
-	    Jobs.getExplore().setPlayerAmount(amount);
+	    Jobs.getExploreManager().setExploreEnabled();
+	    Jobs.getExploreManager().setPlayerAmount(amount);
 	} else if (actionType == ActionType.CRAFT) {
 	    if (myKey.startsWith("!")) {
 		type = myKey.substring(1, myKey.length());

@@ -19,17 +19,6 @@ import com.gamingmesh.jobs.stuff.Util;
 
 public class ExploreManager {
 
-	private static ExploreManager instance;
-	public static ExploreManager getInstane() {
-		if(null == instance) {
-			instance = new ExploreManager();
-		}
-		return instance;
-	}
-
-	private ExploreManager() {
-	}
-
     private final Map<String, Map<String, ExploreRegion>> worlds = new HashMap<>();
     private boolean exploreEnabled = false;
     private int playerAmount = 1;
@@ -150,18 +139,18 @@ public class ExploreManager {
 	}
     }
 
-	public void resetRegion(String worldname) {
-		Jobs.consoleMsg("&eReseting explorer data. World: " + worldname);
+    public void resetRegion(String worldname) {
+	Jobs.consoleMsg("&eReseting explorer data. World: " + worldname);
 
-		Map<String, Map<String, ExploreRegion>> worlds = getWorlds();
-		worlds.put(worldname, new HashMap<String, ExploreRegion>());
+	Map<String, Map<String, ExploreRegion>> worlds = getWorlds();
+	worlds.put(worldname, new HashMap<String, ExploreRegion>());
 
-		boolean r = Jobs.getJobsDAO().deleteExploredWorld(worldname);
-		if(!r) {
-			Jobs.consoleMsg("&eFailed in DAO.");
-			return;
-		}
-
-		Jobs.consoleMsg("&eCompleted to reset explorer data.");
+	boolean r = Jobs.getJobsDAO().deleteExploredWorld(worldname);
+	if (!r) {
+	    Jobs.consoleMsg("&eFailed in DAO.");
+	    return;
 	}
+
+	Jobs.consoleMsg("&eCompleted to reset explorer data.");
+    }
 }

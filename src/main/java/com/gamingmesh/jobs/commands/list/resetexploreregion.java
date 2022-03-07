@@ -12,25 +12,24 @@ public class resetexploreregion implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
-        if (args.length != 2 || !WORLD.equals(args[0])) {
-            Jobs.getCommandManager().sendUsage(sender, "resetexploreregion");
-            return true;
-        }
+	if (args.length != 2 || !WORLD.equals(args[0])) {
+	    Jobs.getCommandManager().sendUsage(sender, "resetexploreregion");
+	    return true;
+	}
 
-        if (!Jobs.getGCManager().resetExploringData) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.notenabled"));
-            return true;
-        }
+	if (!Jobs.getGCManager().resetExploringData) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.notenabled"));
+	    return true;
+	}
 
-        final String worldName = args[1];
-        if(!worldName.matches(REGEX)) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.invalidname"));
-            return true;
-        }
+	final String worldName = args[1];
+	if (!worldName.matches(REGEX)) {
+	    sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.invalidname"));
+	    return true;
+	}
 
-        ExploreManager manager = ExploreManager.getInstane();
-        manager.resetRegion(worldName);
-        sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.reseted", "%worldname%", worldName));
-        return true;
+	Jobs.getExploreManager().resetRegion(worldName);
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.reseted", "%worldname%", worldName));
+	return true;
     }
 }

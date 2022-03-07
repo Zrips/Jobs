@@ -2457,7 +2457,7 @@ public abstract class JobsDAO {
     }
 
     public void insertExplore() {
-	if (!Jobs.getExplore().isExploreEnabled())
+	if (!Jobs.getExploreManager().isExploreEnabled())
 	    return;
 
 	JobsConnection conn = getConnection();
@@ -2475,7 +2475,7 @@ public abstract class JobsDAO {
 	    conn.setAutoCommit(false);
 	    int i = 0;
 
-	    Map<String, Map<String, ExploreRegion>> temp = new HashMap<>(Jobs.getExplore().getWorlds());
+	    Map<String, Map<String, ExploreRegion>> temp = new HashMap<>(Jobs.getExploreManager().getWorlds());
 
 	    for (Entry<String, Map<String, ExploreRegion>> worlds : temp.entrySet()) {
 		for (Entry<String, ExploreRegion> region : worlds.getValue().entrySet()) {
@@ -2516,7 +2516,7 @@ public abstract class JobsDAO {
     }
 
     public void updateExplore() {
-	if (!Jobs.getExplore().isExploreEnabled())
+	if (!Jobs.getExploreManager().isExploreEnabled())
 	    return;
 
 	JobsConnection conn = getConnection();
@@ -2529,7 +2529,7 @@ public abstract class JobsDAO {
 
 	    int i = 0;
 
-	    Map<String, Map<String, ExploreRegion>> temp = new HashMap<>(Jobs.getExplore().getWorlds());
+	    Map<String, Map<String, ExploreRegion>> temp = new HashMap<>(Jobs.getExploreManager().getWorlds());
 
 	    for (Entry<String, Map<String, ExploreRegion>> worlds : temp.entrySet()) {
 		for (Entry<String, ExploreRegion> region : worlds.getValue().entrySet()) {
@@ -2568,7 +2568,7 @@ public abstract class JobsDAO {
      * @param jobexplore - the information getting saved
      */
     public void loadExplore() {
-	if (!Jobs.getExplore().isExploreEnabled())
+	if (!Jobs.getExploreManager().isExploreEnabled())
 	    return;
 
 	JobsConnection conn = getConnection();
@@ -2587,7 +2587,7 @@ public abstract class JobsDAO {
 		if (jworld == null || jworld.getWorld() == null) {
 		    missingWorlds.add(worldId);
 		} else {
-		    Jobs.getExplore().load(res);
+		    Jobs.getExploreManager().load(res);
 		}
 	    }
 
@@ -2613,42 +2613,43 @@ public abstract class JobsDAO {
 
     }
 
-	/**
-	 * Delete player-explore information
-	 * @param worldName - the world getting removed
-	 */
-	public boolean deleteExploredWorld(String worldName) {
-		if (!Jobs.getExplore().isExploreEnabled())
-			return false;
+    /**
+     * Delete player-explore information
+     * @param worldName - the world getting removed
+     */
+    public boolean deleteExploredWorld(String worldName) {
+	if (!Jobs.getExploreManager().isExploreEnabled())
+	    return false;
 
-		JobsConnection conn = getConnection();
-		if (conn == null)
-			return false;
+	JobsConnection conn = getConnection();
+	if (conn == null)
+	    return false;
 
-		JobsWorld target = Util.getJobsWorld(worldName);
-		if (null == target) {
-			return false;
-		}
-
-		PreparedStatement prest = null;
-		try {
-			prest = conn.prepareStatement("DELETE FROM `" + DBTables.ExploreDataTable.getTableName() + "` WHERE `" + ExploreDataTableFields.worldid.getCollumn() + "` = ?;");
-			prest.setInt(1, target.getId());
-			prest.execute();
-		} catch (Throwable e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-			close(prest);
-		}
-		return true;
+	JobsWorld target = Util.getJobsWorld(worldName);
+	if (null == target) {
+	    return false;
 	}
 
-	/**
-     * Save player-job information
-     * @param jobInfo - the information getting saved
-     * @return
-     */
+	boolean res = true;
+	PreparedStatement prest = null;
+	try {
+	    prest = conn.prepareStatement("DELETE FROM `" + DBTables.ExploreDataTable.getTableName() + "` WHERE `" + ExploreDataTableFields.worldid.getCollumn() + "` = ?;");
+	    prest.setInt(1, target.getId());
+	    prest.execute();
+	} catch (Throwable e) {
+	    e.printStackTrace();
+	    res = false;
+	} finally {
+	    close(prest);
+	}
+	return res;
+    }
+
+    /**
+    * Save player-job information
+    * @param jobInfo - the information getting saved
+    * @return
+    */
     public List<Integer> getLognameList(int fromtime, int untiltime) {
 	JobsConnection conn = getConnection();
 	List<Integer> nameList = new ArrayList<>();

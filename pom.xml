@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>5.0.1.0</version>
+	<version>5.0.1.4</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -191,7 +191,7 @@
 			<artifactId>CMILib</artifactId>
 			<version>latest</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/CMILib1.0.2.12.jar</systemPath>
+			<systemPath>${basedir}/libs/CMILib1.1.0.2.jar</systemPath>
 		</dependency>
 		<!-- WildStacker -->
 		<dependency>
@@ -275,14 +275,14 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-<!-- 			<plugin>  -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-jar-plugin</artifactId> -->
-<!-- 				<version>2.3.1</version> -->
-<!-- 				<configuration> -->
-<!-- 					<outputDirectory>D:\MC\Server 1.17\plugins\</outputDirectory> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
+			<plugin> 
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<outputDirectory>D:\MC\Server 1.18\plugins\</outputDirectory>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>

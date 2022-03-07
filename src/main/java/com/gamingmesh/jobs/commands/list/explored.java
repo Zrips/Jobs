@@ -19,7 +19,7 @@ public class explored implements Cmd {
 	    return false;
 
 	Player player = (Player) sender;
-	Map<String, ExploreRegion> exploreRegion = Jobs.getExplore().getWorlds().get(player.getWorld().getName());
+	Map<String, ExploreRegion> exploreRegion = Jobs.getExploreManager().getWorlds().get(player.getWorld().getName());
 
 	if (exploreRegion == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
