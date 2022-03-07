@@ -1883,7 +1883,8 @@ public final class JobsPaymentListener implements Listener {
 
 	CMIMaterial mat = CMIMaterial.get(block);
 
-	if (!mat.equals(CMIMaterial.SUGAR_CANE) && !mat.equals(CMIMaterial.BAMBOO) && !mat.equals(CMIMaterial.KELP_PLANT))
+	if (!mat.equals(CMIMaterial.SUGAR_CANE) && !mat.equals(CMIMaterial.BAMBOO) && !mat.equals(CMIMaterial.KELP_PLANT) && !mat.equals(CMIMaterial.WEEPING_VINES) && !mat.equals(
+	    CMIMaterial.WEEPING_VINES_PLANT))
 	    return;
 
 	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
@@ -1892,7 +1893,12 @@ public final class JobsPaymentListener implements Listener {
 	if (event.getSourceBlock().equals(event.getBlock()))
 	    return;
 
-	if (event.getBlock().getLocation().getBlockY() <= event.getSourceBlock().getLocation().getBlockY())
+	if ((mat.equals(CMIMaterial.SUGAR_CANE) || mat.equals(CMIMaterial.BAMBOO) || mat.equals(CMIMaterial.KELP_PLANT)) &&
+	    event.getBlock().getLocation().getBlockY() <= event.getSourceBlock().getLocation().getBlockY())
+	    return;
+
+	if ((mat.equals(CMIMaterial.WEEPING_VINES) || mat.equals(CMIMaterial.WEEPING_VINES_PLANT)) &&
+	    event.getBlock().getLocation().getBlockY() >= event.getSourceBlock().getLocation().getBlockY())
 	    return;
 
 	Location loc = event.getSourceBlock().getLocation().clone();

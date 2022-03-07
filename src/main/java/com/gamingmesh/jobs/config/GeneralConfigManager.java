@@ -481,7 +481,7 @@ public class GeneralConfigManager {
 	    "This option is only related to: sugar_cane, cactus, kelp, bamboo");
 	preventCropResizePayment = c.get("prevent-crop-resize-payment", false);*/
 
-	c.addComment("pay-for-above", "When enabled we will try to pay player for blocks above broken ones. This only applies to sugarcane, bamboo and kelp");
+	c.addComment("pay-for-above", "When enabled we will try to pay player for blocks above broken ones. This only applies to sugarcane, bamboo, kelp and weeping_vines");
 	payForAbove = c.get("pay-for-above", false);
 
 	c.addComment("pay-for-stacked-entities", "Allows to pay for stacked entities for each one. Requires StackMob or WildStacker.");
