@@ -16,6 +16,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -75,6 +76,7 @@ public class Placeholder {
 	user_jlevel_$1("jname/number"),
 	user_jexp_$1("jname/number"),
 	user_jmexp_$1("jname/number"),
+	user_jprogress_$1("jname/number"),
 	user_jexp_rounded_$1("jname/number"),
 	user_jmaxexp_$1("jname/number"),
 	user_jexpunf_$1("jname/number"),
@@ -510,6 +512,8 @@ public class Placeholder {
 		    return j == null ? "0" : format.format(j.getExperience());
 		case user_jmexp_$1:
 		    return j == null ? "0" : format.format(j.getMaxExperience() - j.getExperience());
+		case user_jprogress_$1:
+		    return j == null ? "" : Jobs.getCommandManager().jobProgressMessage(j.getMaxExperience(), j.getExperience());
 		case user_jexp_rounded_$1:
 		    return j == null ? "0" : new DecimalFormat("##.###").format(j.getExperience());
 		case user_jmaxexp_$1:
