@@ -2613,7 +2613,38 @@ public abstract class JobsDAO {
 
     }
 
-    /**
+	/**
+	 * Delete player-explore information
+	 * @param worldName - the world getting removed
+	 */
+	public boolean deleteExploredWorld(String worldName) {
+		if (!Jobs.getExplore().isExploreEnabled())
+			return false;
+
+		JobsConnection conn = getConnection();
+		if (conn == null)
+			return false;
+
+		JobsWorld target = Util.getJobsWorld(worldName);
+		if (null == target) {
+			return false;
+		}
+
+		PreparedStatement prest = null;
+		try {
+			prest = conn.prepareStatement("DELETE FROM `" + DBTables.ExploreDataTable.getTableName() + "` WHERE `" + ExploreDataTableFields.worldid.getCollumn() + "` = ?;");
+			prest.setInt(1, target.getId());
+			prest.execute();
+		} catch (Throwable e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			close(prest);
+		}
+		return true;
+	}
+
+	/**
      * Save player-job information
      * @param jobInfo - the information getting saved
      * @return
