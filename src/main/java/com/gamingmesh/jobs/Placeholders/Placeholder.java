@@ -29,6 +29,8 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 public class Placeholder {
 
     private Jobs plugin;
@@ -588,16 +590,13 @@ public class Placeholder {
 			if (job == null)
 			    return "";
 
-			if (!Jobs.getCommandManager().hasJobPermission(player, job) || user.isInJob(job))
+			if (!Jobs.getCommandManager().hasJobPermission(player, job) ||
+			    user.isInJob(job) ||
+			    job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots() ||
+			    !job.isIgnoreMaxJobs() && !Jobs.getPlayerManager().getJobsLimit(user, (short) user.progression.size()))
 			    return convert(false);
 
-			if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots())
-			    return convert(false);
-
-			int confMaxJobs = Jobs.getGCManager().getMaxJobs();
-			short playerMaxJobs = (short) user.progression.size();
-			return convert(confMaxJobs > 0 && playerMaxJobs >= confMaxJobs
-			    && !Jobs.getPlayerManager().getJobsLimit(user, playerMaxJobs));
+			return convert(true);
 
 		    case maxjobs:
 			return Integer.toString(Jobs.getPlayerManager().getMaxJobs(user));
