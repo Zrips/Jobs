@@ -47,10 +47,10 @@ public class ExploreManager {
 	    return;
 
 	Jobs.consoleMsg("&eLoading explorer data");
+	Long time = System.currentTimeMillis();
 	Jobs.getJobsDAO().loadExplore();
-
 	int size = getSize();
-	Jobs.consoleMsg("&eLoaded explorer data" + (size != 0 ? " (&6" + size + "&e)" : "."));
+	Jobs.consoleMsg("&eLoaded explorer data" + (size != 0 ? " (&6" + size + "&e)" : " ") + " in " + (System.currentTimeMillis() - time) + " ms");
     }
 
     public Map<String, Map<String, ExploreRegion>> getWorlds() {

@@ -42,6 +42,7 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
 public abstract class JobsDAO {
@@ -1328,7 +1329,7 @@ public abstract class JobsDAO {
      * @param userName - the player being searched for
      * @return list of all of the names of the jobs the players are part of.
      */
-    public synchronized List<JobsDAOData> getAllJobsOffline(String userName) {
+    public synchronized List<JobsDAOData> getAllJobsOffline2(String userName) {
 	List<JobsDAOData> jobs = new ArrayList<>();
 
 	PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(userName);
@@ -2581,6 +2582,7 @@ public abstract class JobsDAO {
 	    prest = conn.prepareStatement("SELECT * FROM `" + DBTables.ExploreDataTable.getTableName() + "`;");
 	    res = prest.executeQuery();
 	    Set<Integer> missingWorlds = new HashSet<>();
+
 	    while (res.next()) {
 		int worldId = res.getInt(ExploreDataTableFields.worldid.getCollumn());
 		JobsWorld jworld = Util.getJobsWorld(worldId);

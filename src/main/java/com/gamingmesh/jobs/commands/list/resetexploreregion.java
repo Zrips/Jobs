@@ -1,9 +1,9 @@
 package com.gamingmesh.jobs.commands.list;
 
+import org.bukkit.command.CommandSender;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
-import com.gamingmesh.jobs.config.ExploreManager;
-import org.bukkit.command.CommandSender;
 
 public class resetexploreregion implements Cmd {
 

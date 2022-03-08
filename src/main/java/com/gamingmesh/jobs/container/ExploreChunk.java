@@ -79,10 +79,6 @@ public class ExploreChunk {
 		    playerIds.add(id);
 	    } catch (NumberFormatException e) {
 		updated = true;
-		JobsPlayer jp = Jobs.getPlayerManager().getJobsPlayer(one);
-
-		if (jp != null)
-		    playerIds.add(jp.getUserId());
 	    }
 	}
 

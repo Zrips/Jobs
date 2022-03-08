@@ -59,6 +59,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
@@ -190,9 +191,16 @@ public class PlayerManager {
 	    return playerUUIDMap.get(jPlayer.getUniqueId());
 	}
 
+	JobsPlayer jPlayer = playersNameCache.get(name.toLowerCase());
+
+	if (jPlayer != null) {
+	    return playerUUIDMap.get(jPlayer.getUniqueId());
+	}
+
 	UUID playerUUID = Bukkit.getPlayerUniqueId(name);
 	if (playerUUID == null)
 	    return null;
+
 	return playerUUIDMap.get(playerUUID);
     }
 
@@ -380,10 +388,22 @@ public class PlayerManager {
 	    return playersNameCache.get(playerName.toLowerCase());
 	}
 
+	JobsPlayer jPlayer = playersNameCache.get(playerName.toLowerCase());
+
+	if (jPlayer != null) {
+	    return jPlayer;
+	}
+
 	UUID playerUUID = Bukkit.getPlayerUniqueId(playerName);
+
 	if (playerUUID == null)
 	    return null;
-	JobsPlayer jPlayer = playersUUID.get(playerUUID);
+	jPlayer = playersUUID.get(playerUUID);
+
+	if (jPlayer != null) {
+	    playersNameCache.put(playerName.toLowerCase(), jPlayer);
+	}
+
 	return jPlayer != null ? jPlayer : playersUUIDCache.get(playerUUID);
     }
 
