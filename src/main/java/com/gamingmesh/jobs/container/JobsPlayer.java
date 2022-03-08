@@ -98,7 +98,7 @@ public class JobsPlayer {
 	this.userName = player.getName() == null ? "Unknown" : player.getName();
 	this.playerUUID = player.getUniqueId();
     }
-    
+
     public JobsPlayer(Player player) {
 	this.userName = player.getName() == null ? "Unknown" : player.getName();
 	this.playerUUID = player.getUniqueId();
@@ -398,16 +398,10 @@ public class JobsPlayer {
     }
 
     public int getPlayerMaxQuest(String jobName) {
-	int m1 = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest." + jobName, false, true);
-	int max = m1;
-
-	m1 = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest.all", false, true);
-		
-	if (m1 != 0 && (m1 > max || m1 < max)) {
-	    max = m1;
-	}
-
-	return max;
+	int m1 = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest.all", false, true);
+	if (m1 != 0)
+	    return m1;
+	return (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest." + jobName, false, true);
     }
 
     /**
