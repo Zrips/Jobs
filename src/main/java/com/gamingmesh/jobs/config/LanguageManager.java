@@ -101,7 +101,9 @@ public class LanguageManager {
 	    c.get("general.error.worldisdisabled", "&cYou can't use command in this world!");
 
 	    c.get("general.error.newRegistration", "&eRegistered new ownership for [block] &7[current]&e/&f[max]");
+	    c.get("general.error.reenabledBlock", "&eReenabled ownership");
 	    c.get("general.error.noRegistration", "&cYou've reached max [block] count!");
+	    c.get("general.error.blockDisabled", "&6Payments from &e[type] &6got disabled. &2[location]");
 
 	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
 	    c.get("command.help.output.cmdUsage", "&2Usage: &7[command]");
@@ -488,6 +490,8 @@ public class LanguageManager {
 	    Jobs.getGCManager().getCommandArgs().put("ownedblocks", Arrays.asList("[playername]"));
 	    c.get("command.ownedblocks.output.list", "&6[place]. &e[type] -> [location]");
 	    c.get("command.ownedblocks.output.listHover", "&6Click to remove: [location]");
+	    c.get("command.ownedblocks.output.disabled", "&6(disabled)");
+	    c.get("command.ownedblocks.output.disabledHover", "&6This block got disabled due to hopper actions");
 
 	    c.get("command.clearownership.help.info", "Clear block ownership");
 	    c.get("command.clearownership.help.args", "[playername]");

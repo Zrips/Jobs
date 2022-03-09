@@ -81,6 +81,18 @@ public class BlockOwnerShip {
 	return blockOwnerShips;
     }
 
+    public boolean isDisabled(UUID uuid, Location loc) {
+	HashMap<String, blockLoc> records = getBlockOwnerShips().get(uuid);
+	if (records == null)
+	    return false;
+
+	blockLoc old = records.get(CMILocation.toString(loc, ":", true, true));
+	if (old == null)
+	    return false;
+	
+	return old.isDisabled();
+    }
+
     public ownershipFeedback register(Player player, Block block) {
 	if (type != BlockTypes.getFromCMIMaterial(CMIMaterial.get(block))) {
 	    return ownershipFeedback.invalid;
@@ -93,8 +105,17 @@ public class BlockOwnerShip {
 
 	UUID ownerUUID = this.getOwnerByLocation(block.getLocation());
 
-	if (ownerUUID != null && ownerUUID.equals(player.getUniqueId()))
+	if (ownerUUID != null && ownerUUID.equals(player.getUniqueId())) {
+	    HashMap<String, blockLoc> records = getBlockOwnerShips().get(ownerUUID);
+	    if (records != null) {
+		blockLoc old = records.get(CMILocation.toString(block.getLocation(), ":", true, true));
+		if (old != null && old.isDisabled()) {
+		    old.setDisabled(false);
+		    return ownershipFeedback.reenabled;
+		}
+	    }
 	    return ownershipFeedback.old;
+	}
 
 	if (ownerUUID != null && !ownerUUID.equals(player.getUniqueId())) {
 	    if (Jobs.getGCManager().blockOwnershipTakeOver) {
@@ -158,6 +179,37 @@ public class BlockOwnerShip {
 	return ownershipFeedback.newReg;
     }
 
+    public boolean disable(Block block) {
+	UUID uuid = getOwnerByLocation(block.getLocation());
+	if (uuid == null) {
+	    List<MetadataValue> data = getBlockMetadatas(block);
+	    if (!data.isEmpty()) {
+		try {
+		    uuid = UUID.fromString(data.get(0).asString());
+		} catch (IllegalArgumentException e) {
+		}
+	    }
+	}
+	if (uuid == null) {
+	    return false;
+	}
+	return disable(uuid, block);
+    }
+
+    public boolean disable(UUID uuid, Block block) {
+	if (uuid == null) {
+	    return false;
+	}
+	HashMap<String, blockLoc> ls = blockOwnerShips.getOrDefault(uuid, new HashMap<String, blockLoc>());
+	String blockLoc = CMILocation.toString(block.getLocation(), ":", true, true);
+	com.gamingmesh.jobs.stuff.blockLoc record = ls.get(blockLoc);
+	if (record != null) {
+	    record.setDisabled(true);
+	    return true;
+	}
+	return false;
+    }
+
     public boolean remove(Block block) {
 	UUID uuid = getOwnerByLocation(block.getLocation());
 
@@ -193,11 +245,11 @@ public class BlockOwnerShip {
     }
 
     public UUID getOwnerByLocation(Location loc) {
-	blockLoc bl = new blockLoc(loc);
-	Map<String, UUID> record = ownerMapByLocation.get(bl.getWorldName());
+	Map<String, UUID> record = ownerMapByLocation.get(loc.getWorld().getName());
 	if (record == null) {
 	    return null;
 	}
+	blockLoc bl = new blockLoc(loc);
 	return record.get(bl.toVectorString());
     }
 
@@ -378,6 +430,6 @@ public class BlockOwnerShip {
     }
 
     public enum ownershipFeedback {
-	invalid, tooMany, newReg, old, notOwn
+	invalid, tooMany, newReg, old, notOwn, reenabled
     }
 }

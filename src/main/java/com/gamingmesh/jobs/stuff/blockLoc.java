@@ -9,8 +9,8 @@ public class blockLoc {
     private int x;
     private int y;
     private int z;
-    private String worldName;
     private World w;
+    private boolean disabled = false;
 
     public blockLoc(String loc) {
 	fromString(loc);
@@ -21,15 +21,10 @@ public class blockLoc {
 	y = loc.getBlockY();
 	z = loc.getBlockZ();
 	w = loc.getWorld();
-	worldName = loc.getWorld().getName();
     }
 
     public String getWorldName() {
-	return worldName;
-    }
-
-    public void setWorldName(String worldName) {
-	this.worldName = worldName;
+	return w != null ? w.getName() : "__";
     }
 
     public void setX(int x) {
@@ -46,7 +41,7 @@ public class blockLoc {
 
     @Override
     public String toString() {
-	return (w == null ? worldName : w.getName()) + ":" + x + ":" + y + ":" + z;
+	return (w == null ? getWorldName() : w.getName()) + ":" + x + ":" + y + ":" + z;
     }
 
     public String toVectorString() {
@@ -63,7 +58,6 @@ public class blockLoc {
 	if (w == null)
 	    return false;
 	this.w = w;
-	this.worldName = w.getName();
 
 	if (split.length < 4) {
 	    return false;
@@ -85,16 +79,32 @@ public class blockLoc {
     }
 
     public Location getLocation() {
-	if (worldName == null && w == null)
+	if (getWorldName() == null && w == null)
 	    return null;
 
 	// Make sure cached world is loaded
-	World w = this.w == null ? Bukkit.getWorld(worldName) : Bukkit.getWorld(this.w.getName());
+	World w = this.w == null ? Bukkit.getWorld(getWorldName()) : Bukkit.getWorld(this.w.getName());
 	if (w == null)
 	    return null;
 
 	this.w = w;
 
 	return new Location(w, x, y, z);
+    }
+
+    public boolean isDisabled() {
+	return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+	this.disabled = disabled;
+    }
+
+    public World getWorld() {
+	return w;
+    }
+
+    public void setWorld(World world) {
+	this.w = world;
     }
 }

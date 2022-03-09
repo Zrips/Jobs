@@ -853,10 +853,10 @@ public class GeneralConfigManager {
 	}
 
 	c.addComment("ExploitProtections.Smelt.PreventHopperFillUps", "Prevent payments when hoppers moving items into furnace", "Player will not get paid, but items will be smelted");
-	PreventHopperFillUps = c.get("ExploitProtections.Smelt.PreventHopperFillUps", true);
+	PreventHopperFillUps = c.get("ExploitProtections.Smelt.PreventHopperFillUps", false);
 	c.addComment("ExploitProtections.Smelt.PreventMagmaCubeSplit", "Prevent payments when hoppers moving items into brewing stands",
 	    "Player will not get paid, but items will be brewd as they supose too");
-	PreventBrewingStandFillUps = c.get("ExploitProtections.Brew.PreventBrewingStandFillUps", true);
+	PreventBrewingStandFillUps = c.get("ExploitProtections.Brew.PreventBrewingStandFillUps", false);
 
 	c.addComment("use-breeder-finder", "Breeder finder.",
 	    "If you are not using breeding payment, you can disable this to save little resources. Really little.");
