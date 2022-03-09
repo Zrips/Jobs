@@ -1749,8 +1749,8 @@ public abstract class JobsDAO {
 	try {
 
 	    prest = conn.prepareStatement("SELECT " + JobsTableFields.userid.getCollumn()
-		+ ", COUNT(*) AS amount, sum(" + JobsTableFields.level.getCollumn() + ") AS totallvl FROM `" + getJobsTableName()
-		+ "` GROUP BY userid ORDER BY totallvl DESC LIMIT " + start + "," + jobsTopAmount + ";");
+		+ ", COUNT(*) AS amount, sum(" + JobsTableFields.level.getCollumn() + ") AS totallvl, sum(" + JobsTableFields.experience.getCollumn() + ") AS totalexp FROM `" + getJobsTableName()
+		+ "` GROUP BY userid ORDER BY totallvl DESC, totalexp DESC LIMIT " + start + "," + jobsTopAmount + ";");
 	    res = prest.executeQuery();
 
 	    while (res.next()) {
@@ -1758,7 +1758,7 @@ public abstract class JobsDAO {
 		if (info == null)
 		    continue;
 
-		names.add(new TopList(info, res.getInt("totallvl"), 0));
+		names.add(new TopList(info, res.getInt("totallvl"),  res.getInt("totalexp")));
 
 		if (names.size() >= jobsTopAmount)
 		    break;
