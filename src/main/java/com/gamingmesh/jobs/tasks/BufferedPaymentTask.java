@@ -41,8 +41,7 @@ public class BufferedPaymentTask implements Runnable {
 	double money = payment.get(CurrencyType.MONEY);
 	if (money > 0) {
 	    if (Jobs.getGCManager().isEconomyAsync()) {
-		org.bukkit.Bukkit.getScheduler().scheduleSyncDelayedTask(bufferedEconomy.getPlugin(), () ->
-		    economy.depositPlayer(payment.getOfflinePlayer(), money));
+		org.bukkit.Bukkit.getScheduler().runTaskAsynchronously(bufferedEconomy.getPlugin(), () -> economy.depositPlayer(payment.getOfflinePlayer(), money));
 	    } else {
 		economy.depositPlayer(payment.getOfflinePlayer(), money);
 	    }
