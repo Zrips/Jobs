@@ -702,7 +702,7 @@ public class PlayerManager {
 
 	    jPlayer.reloadHonorific();
 	    Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	    performCommandOnLevelUp(jPlayer, prog, oldLevel);
+	    performCommandOnLevelUp(jPlayer, prog, oldLevel, prog.getLevel());
 	    Jobs.getSignUtil().updateAllSign(job);
 	    return;
 	}
@@ -848,7 +848,7 @@ public class PlayerManager {
 
 	jPlayer.reloadHonorific();
 	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	performCommandOnLevelUp(jPlayer, prog, oldLevel);
+	performCommandOnLevelUp(jPlayer, prog, oldLevel, prog.getLevel());
 	Jobs.getSignUtil().updateAllSign(job);
 
 	if (player != null && !job.getMaxLevelCommands().isEmpty() && prog.getLevel() == jPlayer.getMaxJobLevelAllowed(prog.getJob())) {
@@ -898,6 +898,7 @@ public class PlayerManager {
 	    if ((command.getLevelFrom() == 0 && command.getLevelUntil() == 0) || (newLevel >= command.getLevelFrom() && newLevel <= command.getLevelUntil())) {
 		for (String commandString : new ArrayList<>(command.getCommands())) {
 		    commandString = commandString.replace("[player]", jPlayer.getName())
+			.replace("[playerName]", jPlayer.getName())
 			.replace("[oldlevel]", Integer.toString(newLevel - 1))
 			.replace("[newlevel]", Integer.toString(newLevel))
 			.replace("[jobname]", prog.getJob().getName());
