@@ -620,7 +620,10 @@ public class GeneralConfigManager {
 	}
 
 	DynamicPaymentMaxPenalty = c.get("Economy.DynamicPayment.MaxPenalty", 50.0);
+	DynamicPaymentMaxPenalty /= -100D;
 	DynamicPaymentMaxBonus = c.get("Economy.DynamicPayment.MaxBonus", 300.0);
+	DynamicPaymentMaxBonus /= 100D;
+	
 	c.addComment("Economy.MaxPayment.curve.use", "Enabling this feature will mean players will still earn once they reach cap but " +
 	    "will loose a percentage the higher over cap they go. Controlled by a factor. math is ```100/((1/factor*percentOver^2)+1)```");
 	useMaxPaymentCurve = c.get("Economy.MaxPayment.curve.use", false);
@@ -893,8 +896,8 @@ public class GeneralConfigManager {
 	    c.addComment("BossBar.Timer", "How long in sec to show BossBar for player",
 		"If you have disabled ShowOnEachAction, then keep this number higher than payment interval for better experience");
 	    BossBarTimer = c.get("BossBar.Timer", economyBatchDelay + 1);
-		c.addComment("BossBar.Async", "If enabled, bossbar creation and management will be asynchronous.", "This avoids TPS drops when the ShowOnEachAction option is activated.");
-		bossBarAsync = c.get("BossBar.Async", false);
+	    c.addComment("BossBar.Async", "If enabled, bossbar creation and management will be asynchronous.", "This avoids TPS drops when the ShowOnEachAction option is activated.");
+	    bossBarAsync = c.get("BossBar.Async", false);
 	}
 
 	c.addComment("ShowActionBars", "You can enable/disable message shown for players in action bar");
@@ -1167,7 +1170,7 @@ public class GeneralConfigManager {
 	return InformDuplicates;
     }
 
-	public boolean isBossBarAsync() {
-		return bossBarAsync;
-	}
+    public boolean isBossBarAsync() {
+	return bossBarAsync;
+    }
 }

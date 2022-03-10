@@ -200,7 +200,6 @@ public class Quest {
 	Map<String, QuestObjective> old = objectives.get(objective.getAction());
 	if (old == null) {
 	    old = new HashMap<>();
-	    old.put(objective.getTargetName(), objective);
 	    objectives.put(objective.getAction(), old);
 	}
 	old.put(objective.getTargetName(), objective);

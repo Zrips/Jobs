@@ -43,6 +43,7 @@ import com.gamingmesh.jobs.actions.PotionItemActionInfo;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class Job {
 
@@ -228,11 +229,10 @@ public class Job {
 	if (now > Jobs.getGCManager().DynamicPaymentMaxBonus)
 	    now = Jobs.getGCManager().DynamicPaymentMaxBonus;
 
-	double maxPenalty = Jobs.getGCManager().DynamicPaymentMaxPenalty * -1;
-	if (now < maxPenalty)
-	    now = maxPenalty;
+	if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty)
+	    now = Jobs.getGCManager().DynamicPaymentMaxPenalty;
 
-	this.bonus = (now / 100D);
+	this.bonus = now;
     }
 
     public double getBonus() {
