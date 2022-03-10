@@ -108,7 +108,7 @@ public final class TabComplete implements TabCompleter {
 			    }
 
 			    if (args.length > 3 && args[3].equalsIgnoreCase("limiteditems")) {
-				Job oneJob = Jobs.getJob(args[i - 1]);
+				Job oneJob = Jobs.getJob(args[i - 2]); 
 
 				if (oneJob != null)
 				    for (JobLimitedItems limitedItem : oneJob.getLimitedItems().values()) {

@@ -129,7 +129,6 @@ import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
@@ -214,8 +213,7 @@ public final class JobsPaymentListener implements Listener {
 	    ItemStack currentItem = event.getCurrentItem();
 
 	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
-		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(plugin
-		    .getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.VTRADE));
+		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.VTRADE));
 	    } else if (currentItem != null) {
 		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.VTRADE));
 	    }
@@ -237,8 +235,7 @@ public final class JobsPaymentListener implements Listener {
 		    while (newItemsCount >= 1) {
 			newItemsCount--;
 			if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
-			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(plugin
-				.getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.VTRADE));
+			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.VTRADE));
 			else
 			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.VTRADE));
 		    }
@@ -749,8 +746,7 @@ public final class JobsPaymentListener implements Listener {
 		PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
 		Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
 	    } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
-		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(plugin
-		    .getComplement().getDisplayName(resultStack.getItemMeta())), ActionType.CRAFT));
+		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
 	    } else if (currentItem != null) {
 		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.CRAFT));
 	    }
@@ -776,8 +772,7 @@ public final class JobsPaymentListener implements Listener {
 			org.bukkit.inventory.meta.ItemMeta resultItemMeta = resultStack.getItemMeta();
 
 			if (resultItemMeta != null && resultItemMeta.hasDisplayName())
-			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(plugin
-				.getComplement().getDisplayName(resultItemMeta)), ActionType.CRAFT));
+			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultItemMeta.getDisplayName()), ActionType.CRAFT));
 			else
 			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
 		    }
@@ -967,10 +962,10 @@ public final class JobsPaymentListener implements Listener {
 	String originalName = null;
 	String newName = null;
 	if (firstSlot.hasItemMeta())
-	    originalName = plugin.getComplement().getDisplayName(firstSlot.getItemMeta());
+	    originalName = firstSlot.getItemMeta().getDisplayName();
 
 	if (resultStack.hasItemMeta())
-	    newName = plugin.getComplement().getDisplayName(resultStack.getItemMeta());
+	    newName = resultStack.getItemMeta().getDisplayName();
 
 	if (originalName != null && !originalName.equals(newName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
 	    return;

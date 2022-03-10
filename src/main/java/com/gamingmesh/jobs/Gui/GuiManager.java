@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -213,7 +214,8 @@ public class GuiManager {
     }
 
     public void openJobsBrowseGUI(Player player, Job job, boolean fromCommand) {
-	Inventory tempInv = plugin.getComplement().createInventory(player, 54, "");
+
+	Inventory tempInv = Bukkit.createInventory(player, 54, "");
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job);
@@ -369,7 +371,7 @@ public class GuiManager {
     }
 
     private void openJobsBrowseGUI(Player player, Job job, List<ActionType> jobsRemained) {
-	Inventory tempInv = plugin.getComplement().createInventory(player, 54, "");
+	Inventory tempInv = Bukkit.createInventory(player, 54, "");
 
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job);

@@ -343,7 +343,7 @@ public class LanguageManager {
 
 	    c.get("command.give.help.info", "Gives item by jobs name and item category name. Player name is optional");
 	    c.get("command.give.help.args", "[playername] [jobname] [items/limiteditems] [jobitemname]");
-	    Jobs.getGCManager().getCommandArgs().put("give", Arrays.asList("[playername]", "[jobname]%%[jobitemname]", "[jobitemname]"));
+	    Jobs.getGCManager().getCommandArgs().put("give", Arrays.asList("[playername]", "[jobname]", "items%%limiteditems","[jobitemname]"));
 	    c.get("command.give.output.notonline", "&4Player with that name is not online!");
 	    c.get("command.give.output.noitem", "&4Can't find any item by given name!");
 
