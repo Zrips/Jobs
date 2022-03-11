@@ -54,7 +54,7 @@ public class NameTranslatorManager {
 	    case STRIPLOGS:
 		String matName = materialName;
 		materialName = materialName.replace(" ", "");
-		
+
 		if (materialName.contains(":"))
 		    materialName = materialName.split(":")[0];
 
@@ -62,7 +62,7 @@ public class NameTranslatorManager {
 
 		NameList nameLs = listOfNames.get(mat);
 
-		if (nameLs != null) {
+		if (nameLs != null && !mat.isNone()) {
 		    if (meta != null && !meta.isEmpty() && mat.isCanHavePotionType() && Util.getPotionByName(meta) != null) {
 			return nameLs.getName() + ":" + meta;
 		    }
@@ -103,6 +103,10 @@ public class NameTranslatorManager {
 		    if (nameLs == null) {
 			return mat.getName();
 		    }
+		}
+
+		if (mat.isNone()) {
+		    return matName;
 		}
 
 		return mat.getName();
@@ -218,7 +222,7 @@ public class NameTranslatorManager {
 		listOfEntities.add(new NameList(id, meta, section.getString(one), mcName));
 	    }
 
-	    if (listOfEntities.size() > 0)
+	    if (!listOfEntities.isEmpty())
 		Jobs.consoleMsg("&eLoaded &6" + listOfEntities.size() + " &ecustom entity names");
 	} else
 	    Jobs.consoleMsg("&cThe EntityList section not found in &6" + itemFile.fileName + " &cfile.");
@@ -258,7 +262,7 @@ public class NameTranslatorManager {
 		listOfColors.add(new NameList(id, "", section.getString(one), mcName));
 	    }
 
-	    if (listOfColors.size() > 0)
+	    if (!listOfColors.isEmpty())
 		Jobs.consoleMsg("&eLoaded &6" + listOfColors.size() + " &ecustom color names");
 	} else
 	    Jobs.consoleMsg("&cThe ColorList section not found in &6" + itemFile.fileName + " &cfile.");

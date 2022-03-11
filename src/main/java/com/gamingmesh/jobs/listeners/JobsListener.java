@@ -382,6 +382,36 @@ public class JobsListener implements Listener {
 	}
     }
 
+    private static boolean usingLimitedItem(ItemStack iih, JobsPlayer jPlayer) {
+	CMINBT nbt = new CMINBT(iih);
+	Integer i = nbt.getInt("JobsLimited");
+
+	if (i == null)
+	    return false;
+
+	Job job = Jobs.getJob(i);
+	if (job == null)
+	    return false;
+
+	JobProgression prog = jPlayer.getJobProgression(job);
+	if (prog == null)
+	    return false;
+
+	String node = nbt.getString("JobsLimitedNode");
+	if (node == null)
+	    return false;
+
+	for (JobLimitedItems oneItem : job.getLimitedItems().values()) {
+	    if (prog.getLevel() >= oneItem.getLevel() || !oneItem.getNode().equalsIgnoreCase(node))
+		continue;
+
+	    CMIActionBar.send(jPlayer.getPlayer(), Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", job.getDisplayName()));
+	    return true;
+	}
+
+	return false;
+    }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLimitedItemInteract(PlayerInteractEvent event) {
 
@@ -416,29 +446,12 @@ public class JobsListener implements Listener {
 	    return;
 	}
 
+	if (usingLimitedItem(iih, jPlayer)) {
+	    event.setCancelled(true);
+	}
+
 	String name = null;
 	List<String> lore = new ArrayList<>();
-
-	CMINBT nbt = new CMINBT(iih);
-	Integer i = nbt.getInt("JobsLimited");
-	if (i != null) {
-	    Job job = Jobs.getJob(i);
-	    if (job != null) {
-		JobProgression prog = jPlayer.getJobProgression(job);
-		if (prog != null) {
-		    String node = nbt.getString("JobsLimitedNode");
-		    if (node != null) {
-			for (JobLimitedItems oneItem : job.getLimitedItems().values()) {
-			    if (prog.getLevel() >= oneItem.getLevel() || !oneItem.getNode().equalsIgnoreCase(node))
-				continue;
-			    event.setCancelled(true);
-			    CMIActionBar.send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", job.getDisplayName()));
-			    return;
-			}
-		    }
-		}
-	    }
-	}
 
 	if (iih.hasItemMeta()) {
 	    ItemMeta meta = iih.getItemMeta();
@@ -468,7 +481,7 @@ public class JobsListener implements Listener {
 	    event.setCancelled(true);
 	    CMIActionBar.send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", meinOk));
 
-	    nbt = new CMINBT(iih);
+	    CMINBT nbt = new CMINBT(iih);
 	    nbt.setInt("JobsLimited", jobId);
 	    iih = (ItemStack) nbt.setString("JobsLimitedNode", itemNode);
 	    try {

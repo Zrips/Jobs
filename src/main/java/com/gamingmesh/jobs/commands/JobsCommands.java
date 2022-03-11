@@ -339,6 +339,7 @@ public class JobsCommands implements CommandExecutor {
 	for (JobInfo info : job.getJobInfo(type)) {
 
 	    String materialName = info.getRealisticName();
+	    
 
 	    double income = info.getIncome(level, numjobs, player.maxJobsEquation);
 
