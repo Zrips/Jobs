@@ -25,18 +25,13 @@ public class quests implements Cmd {
 	JobsPlayer jPlayer = null;
 	boolean isPlayer = sender instanceof Player;
 
-	if (args.length >= 1 && isPlayer && args[0].equalsIgnoreCase("next")) {
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
-	    jPlayer.resetQuests();
-	} else {
-	    if (args.length >= 1 && !args[0].equalsIgnoreCase("stop") && !args[0].equalsIgnoreCase("start")) {
-		if (!Jobs.hasPermission(sender, "jobs.command.admin.quests", true))
-		    return true;
+	if (args.length >= 1 && !args[0].equalsIgnoreCase("stop") && !args[0].equalsIgnoreCase("start")) {
+	    if (!Jobs.hasPermission(sender, "jobs.command.admin.quests", true))
+		return true;
 
-		jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-	    } else if (isPlayer)
-		jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
-	}
+	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+	} else if (isPlayer)
+	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
 	if (jPlayer == null) {
 	    if (args.length >= 1)
@@ -69,8 +64,7 @@ public class quests implements Cmd {
 		}
 
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.status.changed", "%status%",
-		stopped ? Jobs.getLanguage().getMessage("command.quests.status.stopped") :
-		    Jobs.getLanguage().getMessage("command.quests.status.started")));
+		    stopped ? Jobs.getLanguage().getMessage("command.quests.status.stopped") : Jobs.getLanguage().getMessage("command.quests.status.started")));
 		return true;
 	    }
 	}

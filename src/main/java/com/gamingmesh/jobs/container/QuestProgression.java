@@ -6,6 +6,9 @@ import java.util.Map.Entry;
 
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
@@ -46,6 +49,12 @@ public class QuestProgression {
 	    }
 	}
 	return amountNeeded;
+    }
+
+    public void reset() {
+	validUntil = quest.getValidUntil();
+	givenReward = false;
+	done.clear();
     }
 
     public int getTotalAmountDone() {
@@ -122,10 +131,8 @@ public class QuestProgression {
 	    }
 	}
 
-	if (
-	    !isCompleted() &&
-	    objective != null
-	) {
+	if (!isCompleted() &&
+	    objective != null) {
 	    Integer old = done.getOrDefault(objective, 0);
 	    done.put(objective, old < objective.getAmount() ? old + 1 : objective.getAmount());
 	}
@@ -161,10 +168,8 @@ public class QuestProgression {
 	    return Util.enchantMatchesActionInfo(objectiveKey, (EnchantActionInfo) actionInfo);
 	}
 
-	return (
-	    objectiveKey.equalsIgnoreCase(actionInfo.getNameWithSub()) ||
-	    objectiveKey.equalsIgnoreCase(actionInfo.getName())
-	);
+	return (objectiveKey.equalsIgnoreCase(actionInfo.getNameWithSub()) ||
+	    objectiveKey.equalsIgnoreCase(actionInfo.getName()));
     }
 
     private QuestObjective objectiveForAction(ActionInfo actionInfo) {

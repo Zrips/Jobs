@@ -1037,10 +1037,10 @@ public class JobsPlayer {
 
     public void resetQuests(List<QuestProgression> quests) {
 	for (QuestProgression oneQ : quests) {
+	    oneQ.reset();
 	    Quest quest = oneQ.getQuest();
-
 	    if (quest != null) {
-		Map<String, QuestProgression> map = qProgression.remove(quest.getJob().getName());
+		Map<String, QuestProgression> map = qProgression.get(quest.getJob().getName());
 
 		if (map != null) {
 		    map.clear();
