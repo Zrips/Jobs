@@ -890,7 +890,6 @@ public class JobsPlayer {
      * Perform disconnect for this player
      */
     public void onDisconnect() {
-//	Jobs.getJobsDAO().savePoints(this);
 	clearBossMaps();
 	isOnline = false;
 	Jobs.getPlayerManager().addPlayerToCache(this);

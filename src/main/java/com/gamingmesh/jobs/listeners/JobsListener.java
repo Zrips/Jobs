@@ -166,7 +166,7 @@ public class JobsListener implements Listener {
 	if (!Jobs.getGCManager().MultiServerCompatability())
 	    Jobs.getPlayerManager().playerJoin(event.getPlayer());
 	else {
-	    plugin.getServer().getScheduler().runTaskLater(plugin, () -> Jobs.getPlayerManager().playerJoin(event.getPlayer()), 10L);
+	    plugin.getServer().getScheduler().runTaskLater(plugin, () -> Jobs.getPlayerManager().playerJoin(event.getPlayer()), 40L);
 	}
     }
 

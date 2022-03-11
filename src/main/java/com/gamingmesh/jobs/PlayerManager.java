@@ -278,7 +278,7 @@ public class PlayerManager {
 	    return;
 
 	jPlayer.onDisconnect();
-	if (Jobs.getGCManager().saveOnDisconnect()) {
+	if (Jobs.getGCManager().saveOnDisconnect() || Jobs.getGCManager().MultiServerCompatability()) {
 	    jPlayer.setSaved(false);
 	    jPlayer.save();
 	}
