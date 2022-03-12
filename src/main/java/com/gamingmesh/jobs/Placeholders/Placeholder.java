@@ -29,6 +29,7 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
+import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class Placeholder {
@@ -465,12 +466,10 @@ public class Placeholder {
 		String jobNames = "";
 		for (JobProgression prog : user.progression) {
 		    if (!jobNames.isEmpty()) {
-			jobNames += ", ";
+			jobNames += LC.info_ListSpliter.getLocale();
 		    }
-
 		    jobNames += prog.getJob().getName();
 		}
-
 		return jobNames;
 	    case user_quests:
 		String q = "";
@@ -479,14 +478,11 @@ public class Placeholder {
 		    if (quest == null || quest.isStopped()) {
 			continue;
 		    }
-
 		    if (!q.isEmpty()) {
-			q += ", ";
+			q += LC.info_ListSpliter.getLocale();
 		    }
-
 		    q += quest.getQuestName();
 		}
-
 		return q;
 	    default:
 		break;

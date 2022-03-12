@@ -204,6 +204,10 @@ public class BlockOwnerShip {
 	String blockLoc = CMILocation.toString(block.getLocation(), ":", true, true);
 	com.gamingmesh.jobs.stuff.blockLoc record = ls.get(blockLoc);
 	if (record != null) {
+	    
+	    if (record.isDisabled())
+		return false;
+	    
 	    record.setDisabled(true);
 	    return true;
 	}

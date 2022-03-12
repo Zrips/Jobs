@@ -140,7 +140,8 @@ public class JobsCommands implements CommandExecutor {
 
 	boolean pl = sender instanceof Player;
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.title"));
+	// Old format
+//	sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.title"));
 	for (String one : commands) {
 	    if (!pi.isEntryOk())
 		continue;
@@ -339,7 +340,6 @@ public class JobsCommands implements CommandExecutor {
 	for (JobInfo info : job.getJobInfo(type)) {
 
 	    String materialName = info.getRealisticName();
-	    
 
 	    double income = info.getIncome(level, numjobs, player.maxJobsEquation);
 
