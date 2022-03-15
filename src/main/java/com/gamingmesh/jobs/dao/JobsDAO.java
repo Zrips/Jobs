@@ -2712,8 +2712,7 @@ public abstract class JobsDAO {
 	try {
 	    prest = conn.prepareStatement("SELECT `" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "` FROM `"
 		+ getJobsTableName() + "` WHERE `" + JobsTableFields.jobid.getCollumn() + "` LIKE ? OR `" + JobsTableFields.jobid.getCollumn() + "` LIKE ? ORDER BY `" + JobsTableFields.level.getCollumn()
-		+ "` DESC, LOWER("
-		+ JobsTableFields.experience.getCollumn() + ") DESC LIMIT " + limit + ", 50;");
+		+ "` DESC, `" + JobsTableFields.experience.getCollumn() + "` DESC LIMIT " + limit + ", 50;");
 	    prest.setInt(1, job.getId());
 	    prest.setInt(2, job.getLegacyId());
 	    res = prest.executeQuery();
