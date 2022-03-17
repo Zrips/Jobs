@@ -190,7 +190,11 @@ Farmer:
       income: 1.0
       points: 1.0
       experience: 1.0
-    pumpkin-7:
+    pumpkin:
+      income: 0.5
+      points: 0.5
+      experience: 1.0
+    melon:
       income: 0.5
       points: 0.5
       experience: 1.0
