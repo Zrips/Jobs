@@ -10,9 +10,12 @@ import com.gamingmesh.jobs.hooks.McMMO.McMMOManager;
 import com.gamingmesh.jobs.hooks.MyPet.MyPetManager;
 import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobInterface;
 import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs4;
+import com.gamingmesh.jobs.hooks.MythicMobs.MythicMobs5;
 import com.gamingmesh.jobs.hooks.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.hooks.stackMob.StackMobHandler;
 import com.gamingmesh.jobs.hooks.wildStacker.WildStackerHandler;
+
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class HookManager {
 
@@ -39,8 +42,9 @@ public class HookManager {
 	setStackMobHandler();
 	setWildStackerHandler();
 
-	if (checkMythicMobs())
+	if (checkMythicMobs()) {
 	    MythicManager.registerListener();
+	}
     }
 
     public static StackMobHandler getStackMobHandler() {
@@ -59,7 +63,7 @@ public class HookManager {
 	return wildStackerHandler;
     }
 
-	public static MyPetManager getMyPetManager() {
+    public static MyPetManager getMyPetManager() {
 	if (myPetManager == null) {
 	    setMyPetManager();
 	}
@@ -82,7 +86,7 @@ public class HookManager {
 	return McMMOManager;
     }
 
-	public static MythicMobInterface getMythicManager() {
+    public static MythicMobInterface getMythicManager() {
 	return MythicManager;
     }
 
@@ -101,18 +105,22 @@ public class HookManager {
     }
 
     private static void setMythicManager() {
-	if (!JobsHook.MythicMobs.isEnabled())
+	if (!JobsHook.MythicMobs.isPresent())
 	    return;
 
 	try {
 	    Class.forName("io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper");
 	    MythicManager = new MythicMobs4(PLUGIN);
+	    Jobs.consoleMsg("&e[Jobs] MythicMobs 4.x detected.");
 	} catch (ClassNotFoundException ex) {
-	    Jobs.consoleMsg("&cYour MythicMobs version is not supported by Jobs! Supported versions: 4.9.1+");
-	    return;
+	    try {
+		Class.forName("io.lumine.mythic.bukkit.BukkitAPIHelper");
+		MythicManager = new MythicMobs5(PLUGIN);
+		Jobs.consoleMsg("&e[Jobs] MythicMobs 5.x detected.");
+	    } catch (ClassNotFoundException e) {
+		Jobs.consoleMsg("&cYour MythicMobs version is not supported by Jobs! Supported versions: 4.9.1+");
+	    }
 	}
-
-	Jobs.consoleMsg("&e[Jobs] MythicMobs detected.");
     }
 
     public static void setMcMMOlistener() {

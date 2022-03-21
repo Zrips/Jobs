@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>5.0.1.4</version>
+	<version>5.0.2.1</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -77,9 +77,15 @@
 		<dependency>
 			<groupId>io.lumine.xikage</groupId>
 			<artifactId>MythicMobs</artifactId>
-			<version>4.9.1</version>
+			<version>4.11.0</version>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+	        <groupId>io.lumine</groupId>
+	        <artifactId>Mythic-Dist</artifactId>
+	        <version>5.0.1-SNAPSHOT</version>
+	        <scope>provided</scope>
+        </dependency>
 		<!-- WorldGuard old version -->
 		<dependency>
 			<groupId>com.sk89q</groupId>
@@ -191,7 +197,7 @@
 			<artifactId>CMILib</artifactId>
 			<version>latest</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/CMILib1.1.0.2.jar</systemPath>
+			<systemPath>${basedir}/libs/CMILib1.1.2.3.jar</systemPath>
 		</dependency>
 		<!-- WildStacker -->
 		<dependency>

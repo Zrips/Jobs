@@ -13,6 +13,7 @@ public enum JobsHook {
     mcMMO;
 
     private Boolean enabled;
+    private Boolean present;
 
     public boolean isEnabled() {
 	if (enabled == null) {
@@ -20,5 +21,13 @@ public enum JobsHook {
 	}
 
 	return enabled;
+    }
+
+    public boolean isPresent() {
+	if (present == null) {
+	    present = JavaPlugin.getPlugin(Jobs.class).getServer().getPluginManager().getPlugin(name()) != null;
+	}
+
+	return present;
     }
 }
