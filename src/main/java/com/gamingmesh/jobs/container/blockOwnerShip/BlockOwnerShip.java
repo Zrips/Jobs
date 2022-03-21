@@ -89,7 +89,7 @@ public class BlockOwnerShip {
 	blockLoc old = records.get(CMILocation.toString(loc, ":", true, true));
 	if (old == null)
 	    return false;
-	
+
 	return old.isDisabled();
     }
 
@@ -202,13 +202,13 @@ public class BlockOwnerShip {
 	}
 	HashMap<String, blockLoc> ls = blockOwnerShips.getOrDefault(uuid, new HashMap<String, blockLoc>());
 	String blockLoc = CMILocation.toString(block.getLocation(), ":", true, true);
-	com.gamingmesh.jobs.stuff.blockLoc record = ls.get(blockLoc);
-	if (record != null) {
-	    
-	    if (record.isDisabled())
+	blockLoc rec = ls.get(blockLoc);
+	if (rec != null) {
+
+	    if (rec.isDisabled())
 		return false;
-	    
-	    record.setDisabled(true);
+
+	    rec.setDisabled(true);
 	    return true;
 	}
 	return false;

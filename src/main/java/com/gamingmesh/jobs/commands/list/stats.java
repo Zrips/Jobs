@@ -9,13 +9,13 @@ import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class stats implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {
 	    if (!Jobs.hasPermission(sender, "jobs.command.admin.stats", true))
@@ -44,13 +44,11 @@ public class stats implements Cmd {
 
 	String pref = JobsCommands.LABEL + " " + info.class.getSimpleName() + " ";
 
-	RawMessage rm = new RawMessage();
 	for (JobProgression jobProg : jPlayer.progression) {
 	    for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg).split("\n")) {
-		rm.addText(msg).addHover(leftClick).addCommand(pref + jobProg.getJob().getName());
+		new RawMessage().addText(msg).addHover(leftClick).addCommand(pref + jobProg.getJob().getName()).show(sender);
 	    }
 	}
-	rm.show(sender);
 
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 	return true;
