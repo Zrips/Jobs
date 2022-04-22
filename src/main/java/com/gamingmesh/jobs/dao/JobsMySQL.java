@@ -21,6 +21,8 @@ public class JobsMySQL extends JobsDAO {
 	}
     }
 
+    private String database;
+
     JobsMySQL(Jobs plugin, String hostname, String database, String username, String password, String prefix, boolean certificate, boolean ssl, boolean autoReconnect,
 	String characterEncoding, String encoding) {
 	super(plugin, path, "jdbc:mysql://" + hostname + "/" + database
@@ -38,6 +40,7 @@ public class JobsMySQL extends JobsDAO {
 	String characterEncoding, String encoding) {
 	JobsMySQL dao = new JobsMySQL(plugin, hostname, database, username, password, prefix, certificate, ssl, autoReconnect,
 	    characterEncoding, encoding);
+	this.database = database;
 	dao.setUp();
 	return dao;
     }
@@ -97,7 +100,7 @@ public class JobsMySQL extends JobsDAO {
 	    return false;
 
 	try {
-	    ResultSet tables = conn.getMetaData().getTables(null, null, table, null);
+	    ResultSet tables = conn.getMetaData().getTables(database, null, table, new String[] {"TABLE"});
 	    if (tables.next()) {
 		tables.close();
 		return true;

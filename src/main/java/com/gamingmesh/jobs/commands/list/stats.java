@@ -1,5 +1,7 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.util.List;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -44,7 +46,7 @@ public class stats implements Cmd {
 
 	String pref = JobsCommands.LABEL + " " + info.class.getSimpleName() + " ";
 
-	for (JobProgression jobProg : jPlayer.progression) {
+	for (JobProgression jobProg : jPlayer.getJobProgression()) {
 	    for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg).split("\n")) {
 		new RawMessage().addText(msg).addHover(leftClick).addCommand(pref + jobProg.getJob().getName()).show(sender);
 	    }
