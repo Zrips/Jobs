@@ -5,6 +5,8 @@ import java.util.HashMap;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.PlayerManager.BoostOf;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 public class Boost {
 
     private java.util.Map<BoostOf, BoostMultiplier> map = new HashMap<>();
@@ -63,11 +65,36 @@ public class Boost {
 	    if (bm == null)
 		continue;
 
-	    if (excludeExtra && (one == BoostOf.NearSpawner || one == BoostOf.PetPay))
+	    if (one == BoostOf.NearSpawner || one == BoostOf.PetPay)
 		continue;
 
 	    if (bm.isValid(type))
 		r += bm.get(type);
+	}
+
+	if (!excludeExtra) {
+	    if (Jobs.getGCManager().multiplyBoostedExtraValues) {
+		BoostMultiplier bm = map.get(BoostOf.NearSpawner);
+		if (bm != null && bm.isValid(type) && bm.get(type) != 0) {
+		    r = (r + 1) * (bm.get(type) + 1);
+		    r -= 1;
+		}
+
+		bm = map.get(BoostOf.PetPay);
+		if (bm != null && bm.isValid(type) && bm.get(type) != 0) {
+		    r = (r + 1) * (bm.get(type) + 1);
+		    r -= 1;
+		}
+	    } else {
+		BoostMultiplier bm = map.get(BoostOf.NearSpawner);
+		if (bm != null && bm.isValid(type)) {
+		    r += bm.get(type);
+		}
+		bm = map.get(BoostOf.PetPay);
+		if (bm != null && bm.isValid(type)) {
+		    r += bm.get(type);
+		}
+	    }
 	}
 
 	if (r < -1)

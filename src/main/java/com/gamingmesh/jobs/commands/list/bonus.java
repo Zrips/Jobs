@@ -1,5 +1,7 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.util.Arrays;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -64,8 +66,17 @@ public class bonus implements Cmd {
 	    "%money%", formatText(boost.getFinal(CurrencyType.MONEY, true, true)),
 	    "%points%", formatText(boost.getFinal(CurrencyType.POINTS, true, true)),
 	    "%exp%", formatText(boost.getFinal(CurrencyType.EXP, true, true)));
+	
+	String msg2 = Jobs.getLanguage().getMessage("command.bonus.output.final",
+	    "%money%", formatText(boost.getFinal(CurrencyType.MONEY, true, false)),
+	    "%points%", formatText(boost.getFinal(CurrencyType.POINTS, true, false)),
+	    "%exp%", formatText(boost.getFinal(CurrencyType.EXP, true, false)));
 
-	rm.addText(msg).addHover(Jobs.getLanguage().getMessage("command.bonus.output.finalExplanation")).build();
+	rm.addText(msg).addHover(Arrays.asList(Jobs.getLanguage().getMessage("command.bonus.output.finalExplanation"), msg2));
+	
+	
+	
+	rm.build();
 	rm.show(player);
 
 	return true;

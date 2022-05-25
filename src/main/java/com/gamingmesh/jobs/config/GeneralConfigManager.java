@@ -90,7 +90,7 @@ public class GeneralConfigManager {
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
 	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
 	BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
-	boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems/*, preventCropResizePayment*/, payItemDurabilityLoss,
+	boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, multiplyBoostedExtraValues/*, preventCropResizePayment*/, payItemDurabilityLoss,
 	applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
 	CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
 	LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
@@ -476,6 +476,11 @@ public class GeneralConfigManager {
 	c.addComment("enable-boosted-armor-items", "Do the jobs boost ignore the boosted items usage in armor slots?");
 	boostedArmorItems = c.get("enable-boosted-armor-items", true);
 
+	c.addComment("multiply-boosted-extra-values", "Extra boost values for nearSpawner and petPay will be multiplied by sum of other boost values",
+	    "When set to true and for example nearSpawner set to -0.98 aka 2% of original payment with other bonuses which should double payment will result in you getting 4% instead of corrent 102% payment",
+	    "If set to false all bonus are sumed to one");
+	multiplyBoostedExtraValues = c.get("multiply-boosted-extra-values", false);
+
 	// Better implementation?
 	/*c.addComment("prevent-crop-resize-payment", "Do you want to prevent crop resizing payment when placing more cactus?",
 	    "This option is only related to: sugar_cane, cactus, kelp, bamboo");
@@ -623,7 +628,7 @@ public class GeneralConfigManager {
 	DynamicPaymentMaxPenalty /= -100D;
 	DynamicPaymentMaxBonus = c.get("Economy.DynamicPayment.MaxBonus", 300.0);
 	DynamicPaymentMaxBonus /= 100D;
-	
+
 	c.addComment("Economy.MaxPayment.curve.use", "Enabling this feature will mean players will still earn once they reach cap but " +
 	    "will loose a percentage the higher over cap they go. Controlled by a factor. math is ```100/((1/factor*percentOver^2)+1)```");
 	useMaxPaymentCurve = c.get("Economy.MaxPayment.curve.use", false);
