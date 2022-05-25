@@ -1114,9 +1114,16 @@ public final class JobsPaymentListener implements Listener {
 		if (player == null || !player.isOnline())
 		    return;
 
-		CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
-		    "[type]", CMIMaterial.get(finalBlock).getName(),
-		    "[location]", LC.Location_Full.getLocale(finalBlock.getLocation())));
+		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+
+		String lc = CMILocation.toString(finalBlock.getLocation());
+
+		if (!jPlayer.hasBlockOwnerShipInform(lc)) {
+		    CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
+			"[type]", CMIMaterial.get(finalBlock).getName(),
+			"[location]", LC.Location_Full.getLocale(finalBlock.getLocation())));
+		    jPlayer.addBlockOwnerShipInform(lc);
+		}
 	    }
 
 	});
@@ -1141,9 +1148,13 @@ public final class JobsPaymentListener implements Listener {
 		    if (player == null || !player.isOnline())
 			return;
 
-		    CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
-			"[type]", CMIMaterial.get(stand.getBlock()).getName(),
-			"[location]", LC.Location_Full.getLocale(stand.getLocation())));
+		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+		    String lc = CMILocation.toString(stand.getLocation());
+		    if (!jPlayer.hasBlockOwnerShipInform(lc)) {
+			CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
+			    "[type]", CMIMaterial.get(stand.getBlock()).getName(),
+			    "[location]", LC.Location_Full.getLocale(stand.getLocation())));
+		    }
 		}
 	    });
     }

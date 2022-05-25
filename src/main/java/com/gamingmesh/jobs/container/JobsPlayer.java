@@ -23,9 +23,11 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
@@ -93,6 +95,8 @@ public class JobsPlayer {
     private final Map<UUID, Map<Job, Long>> leftTimes = new HashMap<>();
 
     private PlayerPoints pointsData = new PlayerPoints();
+
+    private Set<String> blockOwnerShipInform = null;
 
     public JobsPlayer(OfflinePlayer player) {
 	this.userName = player.getName() == null ? "Unknown" : player.getName();
@@ -892,6 +896,7 @@ public class JobsPlayer {
     public void onDisconnect() {
 	clearBossMaps();
 	isOnline = false;
+	blockOwnerShipInform = null;
 	Jobs.getPlayerManager().addPlayerToCache(this);
     }
 
@@ -1427,5 +1432,17 @@ public class JobsPlayer {
 	Map<Job, Long> map = new HashMap<>();
 	map.put(job, cal.getTimeInMillis());
 	leftTimes.put(uuid, map);
+    }
+
+    public boolean hasBlockOwnerShipInform(String location) {
+	if (blockOwnerShipInform == null)
+	    return false;
+	return blockOwnerShipInform.contains(location);
+    }
+
+    public void addBlockOwnerShipInform(String location) {
+	if (blockOwnerShipInform == null)
+	    blockOwnerShipInform = new HashSet<String>();
+	this.blockOwnerShipInform.add(location);
     }
 }
