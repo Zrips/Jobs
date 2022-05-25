@@ -17,6 +17,8 @@ import com.gamingmesh.jobs.container.JobsWorld;
 import com.gamingmesh.jobs.dao.JobsDAO.ExploreDataTableFields;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 public class ExploreManager {
 
     private final Map<String, Map<String, ExploreRegion>> worlds = new HashMap<>();
@@ -85,10 +87,14 @@ public class ExploreManager {
 	if (region == null) {
 	    region = new ExploreRegion(RegionX, RegionZ);
 	}
-	ExploreChunk chunk = region.getChunk(x, z);
+
+	int chunkRelativeX = (RegionX * 32) - x;
+	int chunkRelativeZ = (RegionZ * 32) - z;
+
+	ExploreChunk chunk = region.getChunk(chunkRelativeX, chunkRelativeZ);
 	if (chunk == null) {
 	    chunk = new ExploreChunk();
-	    region.addChunk(x, z, chunk);
+	    region.addChunk(chunkRelativeX, chunkRelativeZ, chunk);
 	}
 
 	eRegions.put(RegionX + ":" + RegionZ, region);
@@ -119,14 +125,17 @@ public class ExploreManager {
 	    int RegionX = (int) Math.floor(x / 32D);
 	    int RegionZ = (int) Math.floor(z / 32D);
 
+	    int chunkRelativeX = RegionX * 32 - x;
+	    int chunkRelativeZ = RegionZ * 32 - z;
+
 	    ExploreRegion region = eRegions.get(RegionX + ":" + RegionZ);
 	    if (region == null) {
 		region = new ExploreRegion(RegionX, RegionZ);
 	    }
-	    ExploreChunk chunk = region.getChunk(x, z);
+	    ExploreChunk chunk = region.getChunk(chunkRelativeX, chunkRelativeZ);
 	    if (chunk == null) {
 		chunk = new ExploreChunk();
-		region.addChunk(x, z, chunk);
+		region.addChunk(chunkRelativeX, chunkRelativeZ, chunk);
 	    }
 	    chunk.deserializeNames(names);
 	    chunk.setDbId(id);

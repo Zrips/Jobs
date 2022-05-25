@@ -31,14 +31,14 @@ public class explored implements Cmd {
 	ExploreRegion region = exploreRegion.get(RegionX + ":" + RegionZ);
 	if (region == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
-	    return false;
+	    return true;
 	}
 
 	ExploreChunk chunk = region.getChunk(player.getLocation().getChunk());
 
 	if (chunk == null) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.explored.error.noexplore"));
-	    return false;
+	    return true;
 	}
 
 	if (Jobs.getGCManager().ExploreCompact && chunk.isFullyExplored()) {
@@ -51,7 +51,7 @@ public class explored implements Cmd {
 	for (int i = 0; i < players.size(); i++) {
 	    PlayerInfo ji = Jobs.getPlayerManager().getPlayerInfo(players.get(i));
 	    if (ji != null)
-		player.sendMessage(Jobs.getLanguage().getMessage("command.explored.list", "%place%", i, "%playername%", ji.getName()));
+		player.sendMessage(Jobs.getLanguage().getMessage("command.explored.list", "%place%", i + 1, "%playername%", ji.getName()));
 	}
 	player.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
 

@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 public class ExploreChunk {
 
     private List<Integer> playerIds = new ArrayList<>();
@@ -31,7 +33,7 @@ public class ExploreChunk {
 	}
 
 	List<Integer> players = getPlayers();
-
+	    
 	return new ExploreRespond(newChunkForPlayer ? players.size() : players.size() + 1, newChunkForPlayer);
     }
 

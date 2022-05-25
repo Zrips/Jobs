@@ -1127,7 +1127,6 @@ public class PlayerManager {
 	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
 
 	if (pl != null) {
-	    CMIDebug.d(getItemBoostNBT(pl, prog).get(CurrencyType.MONEY));
 	    boost.add(BoostOf.Item, getItemBoostNBT(pl, prog));
 	}
 
