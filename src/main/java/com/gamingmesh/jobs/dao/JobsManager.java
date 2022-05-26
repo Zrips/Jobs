@@ -68,6 +68,13 @@ public class JobsManager {
     private boolean certificate = false, ssl = false, autoReconnect = false;
 
     public void start() {
+
+	if (Jobs.getJobsDAO() != null) {
+	    Jobs.consoleMsg("&eClosing existing database connection...");
+	    Jobs.getJobsDAO().closeConnections();
+	    Jobs.consoleMsg("&eClosed");
+	}
+
 	ConfigReader c = Jobs.getGCManager().getConfig();
 
 	c.addComment("storage.method", "storage method, can be MySQL or sqlite");
