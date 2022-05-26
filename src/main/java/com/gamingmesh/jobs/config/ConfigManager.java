@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -947,14 +948,18 @@ public class ConfigManager {
 	    return;
 	}
 
-	List<Job> jobs = new ArrayList<>();
+	Map<String, Job> map = new TreeMap<>();
+	
+	
 	for (YmlMaker conf : jobFiles) {
 	    Job job = loadJobs(conf.getConfig().getConfigurationSection(""));
 	    if (job != null) {
-		jobs.add(job);
+		map.put(job.getName(), job);
 	    }
 	}
-
+	
+	List<Job> jobs = new ArrayList<>();	
+	jobs.addAll(map.values());
 	Jobs.setJobs(jobs);
 
 	if (!jobs.isEmpty()) {
