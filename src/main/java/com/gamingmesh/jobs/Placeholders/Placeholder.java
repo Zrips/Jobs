@@ -30,6 +30,8 @@ import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
+import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Logs.CMIDebug;
 
@@ -107,6 +109,8 @@ public class Placeholder {
 	maxviplvl_$1("jname/number"),
 	totalplayers_$1("jname/number"),
 	maxslots_$1("jname/number"),
+	questname_$1_$2("jname/number", "questIndicator"),
+	questdesc_$1_$2("jname/number", "questIndicator"),
 	bonus_$1("jname/number");
 
 	private String[] vars;
@@ -525,7 +529,7 @@ public class Placeholder {
 		    return j == null ? "0" : Integer.toString(j.getJob().getMaxLevel(user));
 		case user_boost_$1_$2:
 		    Boost boost = Jobs.getPlayerManager().getFinalBonus(user, job, true, true);
-		    return (vals.size() < 2 || j == null) ? "" : simplifyDouble(boost.getFinal(CurrencyType.getByName(vals.get(1)), false, true)); 
+		    return (vals.size() < 2 || j == null) ? "" : simplifyDouble(boost.getFinal(CurrencyType.getByName(vals.get(1)), false, true));
 		case user_jtoplvl_$1_$2:
 		    if (vals.size() < 2 || job == null)
 			return "";
@@ -635,6 +639,16 @@ public class Placeholder {
 		return Integer.toString(jo.getTotalPlayers());
 	    case maxslots_$1:
 		return Integer.toString(jo.getMaxSlots());
+	    case questname_$1_$2:
+		Quest quest = jo.getQuest(values.get(1));
+		if (quest == null)
+		    return null;
+		return CMIChatColor.translate(quest.getQuestName());
+	    case questdesc_$1_$2:
+		quest = jo.getQuest(values.get(1));
+		if (quest == null)
+		    return null;
+		return CMIChatColor.translate(CMIList.listToString(quest.getDescription(), "\n"));
 	    default:
 		break;
 	    }

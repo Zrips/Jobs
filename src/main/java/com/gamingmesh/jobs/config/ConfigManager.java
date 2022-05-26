@@ -304,10 +304,12 @@ public class ConfigManager {
 
 	cfg.addComment(pt + ".Collect", "Payment for collecting things like sweet berry bush, composter or honey");
 
-	generate(cfg, pt + ".Collect.sweet_berry_bush-3");
+	generate(cfg, pt + ".Collect.sweet_berries-2");
+	generate(cfg, pt + ".Collect.sweet_berries-3");
 	generate(cfg, pt + ".Collect.composter");
-	generate(cfg, pt + ".Collect.beehive-5");
-	generate(cfg, pt + ".Collect.bee_nest-5");
+	generate(cfg, pt + ".Collect.honeycomb");
+	generate(cfg, pt + ".Collect.honey_bottle");
+	generate(cfg, pt + ".Collect.glow_berries");
 
 	cfg.addComment(pt + ".Bake", "Payment for cooking raw foods in camp fire");
 	generate(cfg, pt + ".Bake.beef");
