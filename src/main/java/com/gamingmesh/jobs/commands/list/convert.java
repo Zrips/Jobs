@@ -22,17 +22,13 @@ public class convert implements Cmd {
 	    return true;
 	}
 
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, Jobs::convertDatabase);
+	String from = Jobs.getDBManager().getDbType() == DataBaseType.SqLite ? "SQLite" : "MySQL";
+	String to = Jobs.getDBManager().getDbType() == DataBaseType.SqLite ? "MySQL" : "SQLite";
 
-	String from = "MySQL";
-	String to = "SQLite";
-
-	if (Jobs.getDBManager().getDbType() != DataBaseType.SqLite) {
-	    from = "SQLite";
-	    to = "MySQL";
-	}
-
-	Jobs.consoleMsg("&eData base was converted from &2" + from + " &eto &2" + to + "&e!");
+	Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+	    Jobs.convertDatabase();
+	    Jobs.consoleMsg("&eDatabase was converted from &2" + from + " &eto &2" + to + "&e!");
+	});
 
 	return true;
     }
