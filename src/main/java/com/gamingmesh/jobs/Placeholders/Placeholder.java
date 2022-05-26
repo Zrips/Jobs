@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.JobsCommands;
+import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -523,8 +524,8 @@ public class Placeholder {
 		case user_jmaxlvl_$1:
 		    return j == null ? "0" : Integer.toString(j.getJob().getMaxLevel(user));
 		case user_boost_$1_$2:
-		    return (vals.size() < 2 || j == null) ? "" : simplifyDouble(user.getBoost(j.getJob().getName(),
-			CurrencyType.getByName(vals.get(1))));
+		    Boost boost = Jobs.getPlayerManager().getFinalBonus(user, job, true, true);
+		    return (vals.size() < 2 || j == null) ? "" : simplifyDouble(boost.getFinal(CurrencyType.getByName(vals.get(1)), false, true)); 
 		case user_jtoplvl_$1_$2:
 		    if (vals.size() < 2 || job == null)
 			return "";
