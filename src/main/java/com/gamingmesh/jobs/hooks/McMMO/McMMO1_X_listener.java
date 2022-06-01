@@ -22,34 +22,6 @@ import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 public class McMMO1_X_listener implements Listener {
 
     @EventHandler
-    public void onFishingTreasure(McMMOPlayerFishingTreasureEvent event) {
-	Player player = event.getPlayer();
-	//disabling plugin in world
-	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
-	    return;
-
-	// check if in creative
-	if (!JobsPaymentListener.payIfCreative(player))
-	    return;
-
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
-
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
-
-	if (!JobsPaymentListener.payForItemDurabilityLoss(player) || event.getTreasure() == null)
-	    return;
-
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
-
-	Jobs.action(jPlayer, new ItemActionInfo(event.getTreasure(), ActionType.FISH));
-    }
-
-    @EventHandler
     public void OnItemrepair(McMMOPlayerRepairCheckEvent event) {
 	Player player = event.getPlayer();
 	//disabling plugin in world
