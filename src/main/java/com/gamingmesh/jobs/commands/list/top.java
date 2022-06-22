@@ -13,6 +13,8 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
 
 import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
 
 public class top implements Cmd {
@@ -20,7 +22,7 @@ public class top implements Cmd {
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
+	    CMIMessages.sendMessage(sender, LC.info_Ingame);
 	    return false;
 	}
 
@@ -58,7 +60,7 @@ public class top implements Cmd {
 
 	List<TopList> fullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart());
 	if (fullList.isEmpty()) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
+	    CMIMessages.sendMessage(sender, LC.info_NoInformation);
 	    return true;
 	}
 

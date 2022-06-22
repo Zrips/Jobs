@@ -8,12 +8,15 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class convert implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (sender instanceof Player) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.fromconsole"));
+	    CMIMessages.sendMessage(sender, LC.info_FromConsole);
 	    return true;
 	}
 

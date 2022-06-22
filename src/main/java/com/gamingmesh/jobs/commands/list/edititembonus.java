@@ -16,6 +16,8 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 
 public class edititembonus implements Cmd {
@@ -35,7 +37,7 @@ public class edititembonus implements Cmd {
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
+	    CMIMessages.sendMessage(sender, LC.info_Ingame);
 	    return false;
 	}
 

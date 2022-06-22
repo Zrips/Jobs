@@ -10,6 +10,8 @@ import com.gamingmesh.jobs.commands.Cmd;
 
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
 
@@ -19,7 +21,7 @@ public class iteminfo implements Cmd {
     @SuppressWarnings("deprecation")
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
+	    CMIMessages.sendMessage(sender, LC.info_Ingame);
 	    return false;
 	}
 

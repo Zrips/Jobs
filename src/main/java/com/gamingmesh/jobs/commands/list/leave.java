@@ -9,6 +9,9 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class leave implements Cmd {
 
     @Override
@@ -29,7 +32,7 @@ public class leave implements Cmd {
 	}
 
 	if (Jobs.getGCManager().UsePerPermissionForLeaving && !pSender.hasPermission("jobs.command.leave." + args[0].toLowerCase())) {
-	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+	    CMIMessages.sendMessage(pSender, LC.info_NoPermission);
 	    return true;
 	}
 

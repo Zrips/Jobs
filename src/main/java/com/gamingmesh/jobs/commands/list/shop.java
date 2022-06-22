@@ -5,13 +5,16 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class shop implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (!(sender instanceof Player)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
+	    CMIMessages.sendMessage(sender, LC.info_Ingame);
 	    return true;
 	}
 

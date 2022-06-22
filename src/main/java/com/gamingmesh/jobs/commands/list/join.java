@@ -9,6 +9,8 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class join implements Cmd {
@@ -16,7 +18,7 @@ public class join implements Cmd {
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
+	    CMIMessages.sendMessage(sender, LC.info_Ingame);
 	    return false;
 	}
 
@@ -39,7 +41,7 @@ public class join implements Cmd {
 
 	if (!Jobs.getCommandManager().hasJobPermission(sender, job)) {
 	    // The player do not have permission to join the job
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+	    CMIMessages.sendMessage(sender, LC.info_NoPermission);
 	    return true;
 	}
 

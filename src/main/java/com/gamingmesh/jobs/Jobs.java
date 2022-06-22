@@ -115,6 +115,7 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
@@ -1455,10 +1456,10 @@ public final class Jobs extends JavaPlugin {
 	    return true;
 
 	if (!rawEnable) {
-	    ((Player) sender).sendMessage(lManager.getMessage("general.error.permission"));
+	    CMIMessages.sendMessage(sender, LC.info_NoPermission);
 	    return false;
 	}
-	new RawMessage().addText(lManager.getMessage("general.error.permission")).addHover("&2" + perm).show((Player) sender);
+	new RawMessage().addText(LC.info_NoPermission.getLocale()).addHover("&2" + perm).show((Player) sender);
 	return false;
 
     }
@@ -1492,15 +1493,15 @@ public final class Jobs extends JavaPlugin {
 	}
 
 	RawMessage rm = new RawMessage()
-	    .addText((currentPage > 1 ? lManager.getMessage("command.help.output.prevPage") : lManager.getMessage("command.help.output.prevPageOff")))
-	    .addHover(currentPage > 1 ? "<<<" : ">|")
+	    .addText((currentPage > 1 ? LC.info_prevPage.getLocale() : LC.info_prevPageOff.getLocale()))
+	    .addHover(currentPage > 1 ? LC.info_prevPageHover.getLocale() : LC.info_lastPageHover.getLocale())
 	    .addCommand(currentPage > 1 ? cmd + " " + pagePrefix + prevpage : cmd + " " + pagePrefix + pageCount);
 
-	rm.addText(lManager.getMessage("command.help.output.pageCount", "[current]", currentPage, "[total]", pageCount))
-	    .addHover(lManager.getMessage("command.help.output.pageCountHover", "[totalEntries]", totalEntries));
+	rm.addText(LC.info_pageCount.getLocale("[current]", currentPage, "[total]", pageCount))
+	    .addHover(LC.info_pageCountHover.getLocale("[totalEntries]", totalEntries));
 
-	rm.addText(pageCount > currentPage ? lManager.getMessage("command.help.output.nextPage") : lManager.getMessage("command.help.output.nextPageOff"))
-	    .addHover(pageCount > currentPage ? ">>>" : "|<")
+	rm.addText(pageCount > currentPage ? LC.info_nextPage.getLocale() : LC.info_nextPageOff.getLocale())
+	    .addHover(pageCount > currentPage ? LC.info_nextPageHover.getLocale(): LC.info_firstPageHover.getLocale())
 	    .addCommand(pageCount > currentPage ? cmd + " " + pagePrefix + nextPage : cmd + " " + pagePrefix + 1);
 
 	if (pageCount != 0)

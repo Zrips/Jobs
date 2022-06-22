@@ -20,6 +20,7 @@ import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Locale.Snd;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class ownedblocks implements Cmd {
@@ -36,7 +37,7 @@ public class ownedblocks implements Cmd {
 
 	if (jPlayer == null) {
 	    if (args.length >= 1)
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
+		CMIMessages.sendMessage(sender, LC.info_NoInformation);
 	    else
 		Jobs.getCommandManager().sendUsage(sender, "ownedblocks");
 	    return true;

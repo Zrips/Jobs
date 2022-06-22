@@ -9,6 +9,9 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.dao.JobsDAO.DBTables;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class fireall implements Cmd {
 
     @Override
@@ -20,7 +23,7 @@ public class fireall implements Cmd {
 
 	if (args[0].equalsIgnoreCase("all")) {
 	    if (sender instanceof Player) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.fromconsole"));
+		CMIMessages.sendMessage(sender, LC.info_FromConsole);
 		return true;
 	    }
 

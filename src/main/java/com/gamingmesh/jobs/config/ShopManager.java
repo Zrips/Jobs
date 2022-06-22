@@ -38,6 +38,7 @@ import net.Zrips.CMILib.GUI.CMIGuiButton;
 import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 import net.Zrips.CMILib.GUI.GUIManager.GUIRows;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Version.Version;
 
 @SuppressWarnings("deprecation")
@@ -271,7 +272,7 @@ public class ShopManager {
 
 	int prevSlot = getPrevButtonSlot(guiSize.getFields(), page);
 	if (prevSlot != -1 && page > 1) {
-	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.prevPage"));
+	    meta.setDisplayName(LC.info_prevPage.getLocale());
 	    item.setItemMeta(meta);
 
 	    gui.addButton(new CMIGuiButton(prevSlot, item) {
@@ -284,7 +285,7 @@ public class ShopManager {
 
 	int nextSlot = getNextButtonSlot(guiSize.getFields(), page);
 	if (nextSlot != -1 && !getItemsByPage(page + 1).isEmpty()) {
-	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.help.output.nextPage"));
+	    meta.setDisplayName(LC.info_nextPage.getLocale());
 	    item.setItemMeta(meta);
 	    gui.addButton(new CMIGuiButton(nextSlot, item) {
 		@Override

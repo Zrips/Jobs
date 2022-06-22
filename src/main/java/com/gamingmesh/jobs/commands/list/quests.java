@@ -16,7 +16,10 @@ import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.stuff.TimeManage;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
+import net.Zrips.CMILib.Time.CMITimeManager;
 
 public class quests implements Cmd {
 
@@ -35,7 +38,7 @@ public class quests implements Cmd {
 
 	if (jPlayer == null) {
 	    if (args.length >= 1)
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
+		CMIMessages.sendMessage(sender, LC.info_NoInformation);
 	    else
 		Jobs.getCommandManager().sendUsage(sender, "quests");
 	    return true;
@@ -102,7 +105,7 @@ public class quests implements Cmd {
 
 		for (String current : hoverMsg.split("\n")) {
 		    current = current.replace("[jobName]", jobProg.getJob().getName())
-			.replace("[time]", TimeManage.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
+			.replace("[time]", CMITimeManager.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
 
 		    if (current.contains("[desc]")) {
 			hoverList.addAll(quest.getDescription());

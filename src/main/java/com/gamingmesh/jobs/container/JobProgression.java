@@ -25,6 +25,8 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Time.CMITimeManager;
+
 public class JobProgression {
     private Job job;
     private JobsPlayer jPlayer;
@@ -264,7 +266,7 @@ public class JobProgression {
     }
 
     public String getRejoinTimeMessage() {
-	return leftOn == null ? "" : TimeManage.to24hourShort(leftOn + job.getRejoinCd() - System.currentTimeMillis());
+	return leftOn == null ? "" : CMITimeManager.to24hourShort(leftOn + job.getRejoinCd() - System.currentTimeMillis());
     }
 
     public Double getLastExperience() {

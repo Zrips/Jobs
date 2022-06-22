@@ -25,7 +25,9 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class JobsCommands implements CommandExecutor {
@@ -63,7 +65,7 @@ public class JobsCommands implements CommandExecutor {
 		try {
 		    page = Integer.parseInt(args[1]);
 		} catch (NumberFormatException e) {
-		    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.notNumber"));
+		    CMIMessages.sendMessage(sender, LC.info_UseInteger);
 		    return true;
 		}
 	    return help(sender, page);
@@ -72,16 +74,16 @@ public class JobsCommands implements CommandExecutor {
 	String cmd = args[0].toLowerCase();
 	Cmd cmdClass = getCmdClass(cmd);
 	if (cmdClass == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noCommand"));
+	    CMIMessages.sendMessage(sender, LC.info_NoCommand);
 	    return true;
 	}
 
 	if (!hasCommandPermission(sender, cmd)) {
 	    if (sender instanceof Player) {
-		new RawMessage().addText(Jobs.getLanguage().getMessage("general.error.permission"))
+		new RawMessage().addText(LC.info_NoPermission.getLocale())
 		    .addHover("&2" + label + ".command." + cmd).show(sender);
 	    } else
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+		CMIMessages.sendMessage(sender, LC.info_NoPermission);
 	    return true;
 	}
 
@@ -120,7 +122,7 @@ public class JobsCommands implements CommandExecutor {
     protected boolean help(CommandSender sender, int page) {
 	Set<String> commands = getCommands(sender);
 	if (commands.isEmpty()) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+	    CMIMessages.sendMessage(sender, LC.info_NoPermission);
 	    return true;
 	}
 

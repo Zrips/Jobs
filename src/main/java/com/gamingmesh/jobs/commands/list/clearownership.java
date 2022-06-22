@@ -8,6 +8,9 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class clearownership implements Cmd {
 
     @Override
@@ -33,7 +36,7 @@ public class clearownership implements Cmd {
 
 	if (jPlayer == null) {
 	    if (args.length >= 1)
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
+		CMIMessages.sendMessage(sender, LC.info_NoInformation);
 	    else
 		Jobs.getCommandManager().sendUsage(sender, "clearownership");
 	    return true;

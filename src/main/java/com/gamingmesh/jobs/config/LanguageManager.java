@@ -79,13 +79,7 @@ public class LanguageManager {
 	    c.get("limitedItem.error.levelup", "&cYou need to level up in [jobname] to use this item!");
 	    c.get("general.info.toplineseparator", "&7*********************** &6%playerdisplayname% &7***********************");
 	    c.get("general.info.separator", "&7*******************************************************");
-	    c.get("general.info.time.days", "&e%days% &6days ");
-	    c.get("general.info.time.hours", "&e%hours% &6hours ");
-	    c.get("general.info.time.mins", "&e%mins% &6min ");
-	    c.get("general.info.time.secs", "&e%secs% &6sec ");
 	    c.get("general.info.invalidPage", "&cInvalid page");
-	    c.get("general.info.true", "&2True");
-	    c.get("general.info.false", "&cFalse");
 	    c.get("general.info.blocks.furnace", "Furnace");
 	    c.get("general.info.blocks.smoker", "Smoker");
 	    c.get("general.info.blocks.blastfurnace", "Blast furnace");
@@ -93,15 +87,9 @@ public class LanguageManager {
 	    c.get("general.admin.error", "&cThere was an error in the command.");
 	    c.get("general.admin.success", "&eYour command has been performed.");
 	    c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
-	    c.get("general.error.notNumber", "&ePlease use numbers!");
 	    c.get("general.error.job", "&cThe job you selected does not exist or you not joined to this!");
-	    c.get("general.error.noCommand", "&cThere is no command by this name!");
-	    c.get("general.error.permission", "&cYou do not have permission to do that!");
-	    c.get("general.error.noinfo", "&cNo information found!");
 	    c.addComment("general.error.noinfoByPlayer", "Only %playername% can be used here");
 	    c.get("general.error.noinfoByPlayer", "&cNo information found by [%playername%] player name!");
-	    c.get("general.error.ingame", "&cYou can use this command only in game!");
-	    c.get("general.error.fromconsole", "&cYou can use this command only from console!");
 	    c.get("general.error.worldisdisabled", "&cYou can't use command in this world!");
 
 	    c.get("general.error.newRegistration", "&eRegistered new ownership for [block] &7[current]&e/&f[max]");
@@ -109,7 +97,6 @@ public class LanguageManager {
 	    c.get("general.error.noRegistration", "&cYou've reached max [block] count!");
 	    c.get("general.error.blockDisabled", "&6Payments from &e[type] &6got disabled. &2[location]");
 
-	    c.get("command.help.output.info", "Type /jobs [cmd] ? for more information about a command.");
 	    c.get("command.help.output.cmdUsage", "&2Usage: &7[command]");
 	    c.get("command.help.output.label", "Jobs");
 
@@ -118,17 +105,6 @@ public class LanguageManager {
 	    c.get("command.help.output.helpPageDescription", "&2* [description]");
 
 	    c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");
-	    c.get("command.help.output.page", "&e-----&e ====== Page &6[1] &eof &6[2] &e====== &e-----");
-	    c.get("command.help.output.fliperSimbols", "&e----------");
-
-	    c.get("command.help.output.prevPage", "&2----<< &6Prev ");
-	    c.get("command.help.output.prevPageOff", "&7----<< Prev ");
-	    c.get("command.help.output.nextPage", "&6 Next &2>>----");
-	    c.get("command.help.output.nextPageOff", "&7 Next >>----");
-	    c.get("command.help.output.pageCount", "&2[current]/[total]");
-	    c.get("command.help.output.pageCountHover", "&e[totalEntries] entries");
-	    c.get("command.help.output.prevPageGui", "&6Previous page ");
-	    c.get("command.help.output.nextPageGui", "&6Next Page");
 
 	    c.get("command.moneyboost.help.info", "Boosts money gain for all players");
 	    c.get("command.moneyboost.help.args", "[jobname]/all/reset [time]/[rate]");
@@ -381,8 +357,6 @@ public class LanguageManager {
 	    c.get("command.info.gui.working", "&2&nAlready working");
 	    c.get("command.info.gui.cantJoin", "&cYou can't join to the selected job.");
 	    c.get("command.info.gui.max", "&eMax level:&f ");
-	    c.get("command.info.gui.back", "&e<<< Back");
-	    c.get("command.info.gui.next", "&eNext >>>");
 
 	    c.get("command.info.output.break.info", "&eBreak");
 	    c.get("command.info.output.break.none", "%jobname% does not get money for breaking blocks.");

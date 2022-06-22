@@ -86,6 +86,8 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Items.ArmorTypes;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
 
@@ -294,7 +296,7 @@ public class JobsListener implements Listener {
 	try {
 	    number = Integer.parseInt(numberString);
 	} catch (NumberFormatException e) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.notNumber"));
+	    CMIMessages.sendMessage(player, LC.info_UseInteger);
 	    return;
 	}
 

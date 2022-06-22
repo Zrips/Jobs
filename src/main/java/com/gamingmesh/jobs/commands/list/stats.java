@@ -9,6 +9,8 @@ import com.gamingmesh.jobs.commands.JobsCommands;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class stats implements Cmd {
@@ -26,7 +28,7 @@ public class stats implements Cmd {
 
 	if (jPlayer == null) {
 	    if (args.length >= 1)
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
+		CMIMessages.sendMessage(sender, LC.info_NoInformation);
 	    else
 		Jobs.getCommandManager().sendUsage(sender, "stats");
 	    return true;

@@ -24,6 +24,7 @@ import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.GUI.CMIGui;
 import net.Zrips.CMILib.GUI.CMIGuiButton;
 import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
+import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Version.Version;
 
 public class GuiManager {
@@ -340,7 +341,7 @@ public class GuiManager {
 	    ItemStack back = Jobs.getGCManager().guiBackButton;
 	    ItemMeta meta = back.getItemMeta();
 
-	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.back"));
+	    meta.setDisplayName(LC.info_prevPageHover.getLocale());
 	    back.setItemMeta(meta);
 
 	    gui.addButton(new CMIGuiButton(backButton, back) {
@@ -355,7 +356,7 @@ public class GuiManager {
 	    ItemStack next = Jobs.getGCManager().guiNextButton;
 	    ItemMeta meta = next.getItemMeta();
 
-	    meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.next"));
+	    meta.setDisplayName(LC.info_nextPageHover.getLocale());
 	    next.setItemMeta(meta);
 
 	    gui.addButton(new CMIGuiButton(nextButton, next) {
@@ -490,7 +491,7 @@ public class GuiManager {
 	ItemStack skull = Jobs.getGCManager().guiBackButton;
 	ItemMeta skullMeta = skull.getItemMeta();
 
-	skullMeta.setDisplayName(Jobs.getLanguage().getMessage("command.info.gui.back"));
+	skullMeta.setDisplayName(LC.info_prevPageHover.getLocale());
 	skull.setItemMeta(skullMeta);
 
 	gui.addButton(new CMIGuiButton(backButton, skull) {

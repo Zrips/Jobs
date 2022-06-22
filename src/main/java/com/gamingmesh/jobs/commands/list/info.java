@@ -9,13 +9,16 @@ import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class info implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (!(sender instanceof Player)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.ingame"));
+	    CMIMessages.sendMessage(sender, LC.info_Ingame);
 	    return false;
 	}
 
@@ -39,7 +42,7 @@ public class info implements Cmd {
 	}
 
 	if (Jobs.getGCManager().hideJobsInfoWithoutPermission && !Jobs.getCommandManager().hasJobPermission(pSender, job)) {
-	    pSender.sendMessage(Jobs.getLanguage().getMessage("general.error.permission"));
+	    CMIMessages.sendMessage(pSender, LC.info_NoPermission);
 	    return true;
 	}
 

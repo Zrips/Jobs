@@ -8,6 +8,9 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.PlayerPoints;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class points implements Cmd {
 
     @Override
@@ -30,7 +33,7 @@ public class points implements Cmd {
 
 	if (jPlayer == null) {
 	    if (args.length >= 1)
-		sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
+		CMIMessages.sendMessage(sender, LC.info_NoInformation);
 	    else
 		Jobs.getCommandManager().sendUsage(sender, "points");
 	    return true;

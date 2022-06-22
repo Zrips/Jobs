@@ -6,6 +6,9 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.PlayerPoints;
 
+import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class editpoints implements Cmd {
 
     @Override
@@ -25,7 +28,7 @@ public class editpoints implements Cmd {
 	try {
 	    amount = Double.parseDouble(args[2]);
 	} catch (NumberFormatException e) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.notNumber"));
+	    CMIMessages.sendMessage(sender, LC.info_UseInteger);
 	    return true;
 	}
 
