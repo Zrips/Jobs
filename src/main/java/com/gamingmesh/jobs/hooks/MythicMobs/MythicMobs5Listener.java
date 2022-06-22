@@ -1,11 +1,18 @@
 package com.gamingmesh.jobs.hooks.MythicMobs;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.actions.MMKillInfo;
 import com.gamingmesh.jobs.container.ActionType;
@@ -35,6 +42,23 @@ public final class MythicMobs5Listener implements Listener {
 	// Checking if killer is tamed animal
 	else if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
 	    ent = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
+
+	    if (ent instanceof Tameable) {
+		Tameable tamed = (Tameable) ent;
+
+		if (tamed.getOwner() == null)
+		    return;
+
+		@NotNull
+		UUID uuid = tamed.getOwner().getUniqueId();
+
+		@Nullable
+		Player owner = Bukkit.getPlayer(uuid);
+
+		if (owner != null)
+		    pDamager = owner;
+
+	    }
 	} else
 	    return;
 
