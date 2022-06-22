@@ -88,7 +88,7 @@ public class GeneralConfigManager {
 
     public boolean ignoreOreGenerators, useBlockProtection, enableSchedule, PayForRenaming, PayForEnchantingOnAnvil, PayForEachCraft, SignsEnabled,
 	SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
-	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps,
+	PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps, informOnPaymentDisable,
 	BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
 	boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, multiplyBoostedExtraValues/*, preventCropResizePayment*/, payItemDurabilityLoss,
 	applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
@@ -865,6 +865,9 @@ public class GeneralConfigManager {
 	c.addComment("ExploitProtections.Smelt.PreventMagmaCubeSplit", "Prevent payments when hoppers moving items into brewing stands",
 	    "Player will not get paid, but items will be brewd as they supose too");
 	PreventBrewingStandFillUps = c.get("ExploitProtections.Brew.PreventBrewingStandFillUps", false);
+
+	c.addComment("ExploitProtections.informOnPaymentDisable", "Do you want to show informational message when payments from blocks gets disabled due to hopper transfers");
+	informOnPaymentDisable = c.get("ExploitProtections.informOnPaymentDisable", true);
 
 	c.addComment("use-breeder-finder", "Breeder finder.",
 	    "If you are not using breeding payment, you can disable this to save little resources. Really little.");

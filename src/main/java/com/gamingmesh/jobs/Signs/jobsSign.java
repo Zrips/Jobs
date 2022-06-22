@@ -5,7 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.stuff.Util;
+
+import net.Zrips.CMILib.Container.CMIWorld;
 
 public class jobsSign {
 
@@ -122,7 +123,7 @@ public class jobsSign {
 		return;
 	    }
 
-	World world = Util.getWorld(split[0]);
+	World world = CMIWorld.getWorld(split[0]);
 	if (world == null)
 	    return;
 

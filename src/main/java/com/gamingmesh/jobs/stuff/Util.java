@@ -158,6 +158,7 @@ public final class Util {
 	    org.bukkit.attribute.AttributeInstance attr = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
 	    return attr == null ? 0d : attr.getBaseValue();
 	}
+
 	return entity.getMaxHealth();
     }
 
@@ -193,21 +194,6 @@ public final class Util {
 
 	item.setItemMeta(skullMeta);
 	return item;
-    }
-
-    public static World getWorld(String name) {
-	World w = Bukkit.getWorld(name);
-	if (w != null)
-	    return w;
-
-	name = name.replaceAll("[_|.|-]", "");
-
-	for (World one : Bukkit.getWorlds()) {
-	    if (one.getName().replaceAll("[_|.|-]", "").equalsIgnoreCase(name))
-		return one;
-	}
-
-	return null;
     }
 
     public static PotionType getPotionByName(String name) {

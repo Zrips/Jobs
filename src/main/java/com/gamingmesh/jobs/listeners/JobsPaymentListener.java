@@ -1106,8 +1106,7 @@ public final class JobsPaymentListener implements Listener {
 
 	final Block finalBlock = block;
 	plugin.getBlockOwnerShip(CMIMaterial.get(finalBlock)).ifPresent(os -> {
-
-	    if (os.disable(finalBlock)) {
+	    if (os.disable(finalBlock) && Jobs.getGCManager().informOnPaymentDisable) {
 
 		UUID uuid = plugin.getBlockOwnerShip(CMIMaterial.get(finalBlock)).get().getOwnerByLocation(finalBlock.getLocation());
 		Player player = Bukkit.getPlayer(uuid);
@@ -1115,7 +1114,6 @@ public final class JobsPaymentListener implements Listener {
 		    return;
 
 		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-
 		String lc = CMILocation.toString(finalBlock.getLocation());
 
 		if (!jPlayer.hasBlockOwnerShipInform(lc)) {
@@ -1125,7 +1123,6 @@ public final class JobsPaymentListener implements Listener {
 		    jPlayer.addBlockOwnerShipInform(lc);
 		}
 	    }
-
 	});
     }
 
@@ -1141,7 +1138,7 @@ public final class JobsPaymentListener implements Listener {
 
 	if (Jobs.getGCManager().canPerformActionInWorld(stand.getWorld()))
 	    plugin.getBlockOwnerShip(CMIMaterial.get(stand.getBlock())).ifPresent(os -> {
-		if (os.disable(stand.getBlock())) {
+		if (os.disable(stand.getBlock()) && Jobs.getGCManager().informOnPaymentDisable) {
 
 		    UUID uuid = plugin.getBlockOwnerShip(CMIMaterial.get(stand.getBlock())).get().getOwnerByLocation(stand.getLocation());
 		    Player player = Bukkit.getPlayer(uuid);
@@ -1150,10 +1147,12 @@ public final class JobsPaymentListener implements Listener {
 
 		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 		    String lc = CMILocation.toString(stand.getLocation());
+
 		    if (!jPlayer.hasBlockOwnerShipInform(lc)) {
 			CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
 			    "[type]", CMIMaterial.get(stand.getBlock()).getName(),
 			    "[location]", LC.Location_Full.getLocale(stand.getLocation())));
+			jPlayer.addBlockOwnerShipInform(lc);
 		    }
 		}
 	    });
