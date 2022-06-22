@@ -15,8 +15,6 @@ import com.gamingmesh.jobs.hooks.WorldGuard.WorldGuardManager;
 import com.gamingmesh.jobs.hooks.stackMob.StackMobHandler;
 import com.gamingmesh.jobs.hooks.wildStacker.WildStackerHandler;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 public class HookManager {
 
     private static McMMOManager McMMOManager;
@@ -33,18 +31,11 @@ public class HookManager {
     public static void loadHooks() {
 	pm = PLUGIN.getServer().getPluginManager();
 
-	if (getMcMMOManager().CheckmcMMO())
-	    setMcMMOlistener();
-
 	setMyPetManager();
 	setWorldGuard();
 	setMythicManager();
 	setStackMobHandler();
 	setWildStackerHandler();
-
-	if (checkMythicMobs()) {
-	    MythicManager.registerListener();
-	}
     }
 
     public static StackMobHandler getStackMobHandler() {

@@ -751,22 +751,8 @@ public final class Jobs extends JavaPlugin {
 		new YmlMaker(getFolder(), "Signs.yml").saveDefaultConfig();
 	    }
 
-	    // register the listeners
-	    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
-		getServer().getPluginManager().registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), getInstance());
-	    }
-
-	    getServer().getPluginManager().registerEvents(new JobsListener(this), this);
-	    getServer().getPluginManager().registerEvents(new JobsPaymentListener(this), this);
-	    if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
-		getServer().getPluginManager().registerEvents(new JobsPayment14Listener(), this);
-	    }
-
 	    HookManager.loadHooks();
-
-	    if (getGCManager().useBlockProtection) {
-		getServer().getPluginManager().registerEvents(new PistonProtectionListener(), this);
-	    }
+	    registerListeners();	    
 
 	    if (Version.isCurrentEqualOrHigher(Version.v1_16_R3) && kyoriSupported) {
 		complement = new Complement2();
@@ -774,7 +760,6 @@ public final class Jobs extends JavaPlugin {
 	    } else {
 		complement = new Complement1();
 	    }
-	    getServer().getPluginManager().registerEvents(new JobsChatEvent(this), this);
 
 	    // register economy
 	    getServer().getScheduler().runTask(this, new HookEconomyTask(this));
@@ -794,6 +779,34 @@ public final class Jobs extends JavaPlugin {
 	CMIMessages.consoleMessage(suffix);
     }
 
+    private static void registerListeners() {
+
+	org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
+
+	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
+	    pm.registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), getInstance());
+	}
+
+	pm.registerEvents(new JobsListener(getInstance()), getInstance());
+	pm.registerEvents(new JobsPaymentListener(getInstance()), getInstance());
+	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+	    pm.registerEvents(new JobsPayment14Listener(), getInstance());
+	}
+
+	if (getGCManager().useBlockProtection) {
+	    pm.registerEvents(new PistonProtectionListener(), getInstance());
+	}
+
+	pm.registerEvents(new JobsChatEvent(getInstance()), getInstance());
+
+	if (HookManager.getMcMMOManager().CheckmcMMO()) {
+	    HookManager.setMcMMOlistener();
+	}
+	if (HookManager.checkMythicMobs()) {
+	    HookManager.getMythicManager().registerListener();
+	}
+    }
+
     public static void reload() {
 	reload(false);
     }
@@ -801,30 +814,8 @@ public final class Jobs extends JavaPlugin {
     public static void reload(boolean startup) {
 	// unregister all registered listeners by this plugin and register again
 	if (!startup) {
-	    org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
-
 	    HandlerList.unregisterAll(getInstance());
-
-	    if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
-		pm.registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), getInstance());
-	    }
-
-	    pm.registerEvents(new JobsListener(getInstance()), getInstance());
-	    pm.registerEvents(new JobsPaymentListener(getInstance()), getInstance());
-	    if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
-		pm.registerEvents(new JobsPayment14Listener(), getInstance());
-	    }
-
-	    if (getGCManager().useBlockProtection) {
-		pm.registerEvents(new PistonProtectionListener(), getInstance());
-	    }
-
-	    if (HookManager.getMcMMOManager().CheckmcMMO()) {
-		HookManager.setMcMMOlistener();
-	    }
-	    if (HookManager.checkMythicMobs()) {
-		HookManager.getMythicManager().registerListener();
-	    }
+	    registerListeners();	    
 	}
 
 	if (saveTask != null) {

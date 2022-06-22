@@ -16,7 +16,6 @@ import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
-import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 
 public class McMMO1_X_listener implements Listener {
