@@ -72,9 +72,12 @@ public class LanguageManager {
 
 	    Jobs.getGCManager().getCommandArgs().clear();
 
+	    c.addHeaderComments(new ArrayList<String>(Arrays.asList(
+		"%playername% or %playerdisplayname% can be used to include ether players original name or his display name which can be colored and use players nick name")));
+
 	    c.get("economy.error.nomoney", "&cSorry, no money left in national bank!");
 	    c.get("limitedItem.error.levelup", "&cYou need to level up in [jobname] to use this item!");
-	    c.get("general.info.toplineseparator", "&7*********************** &6%playername% &7***********************");
+	    c.get("general.info.toplineseparator", "&7*********************** &6%playerdisplayname% &7***********************");
 	    c.get("general.info.separator", "&7*******************************************************");
 	    c.get("general.info.time.days", "&e%days% &6days ");
 	    c.get("general.info.time.hours", "&e%hours% &6hours ");
@@ -95,6 +98,7 @@ public class LanguageManager {
 	    c.get("general.error.noCommand", "&cThere is no command by this name!");
 	    c.get("general.error.permission", "&cYou do not have permission to do that!");
 	    c.get("general.error.noinfo", "&cNo information found!");
+	    c.addComment("general.error.noinfoByPlayer", "Only %playername% can be used here");
 	    c.get("general.error.noinfoByPlayer", "&cNo information found by [%playername%] player name!");
 	    c.get("general.error.ingame", "&cYou can use this command only in game!");
 	    c.get("general.error.fromconsole", "&cYou can use this command only from console!");
@@ -211,27 +215,27 @@ public class LanguageManager {
 	    c.get("command.limit.output.reachedpointslimit2", "&eYou can check your limit with &2/jobs limit &ecommand");
 	    c.get("command.limit.output.notenabled", "&eMoney limit is not enabled");
 
-		c.get("command.resetexploreregion.help.info", "Resets region data of Explorering");
-		c.get("command.resetexploreregion.help.args", "world [worldname]");
-		Jobs.getGCManager().getCommandArgs().put("resetlimit", Arrays.asList("world", "[worldname]"));
-		c.get("command.resetexploreregion.output.notenabled", "&eNot enabled.");
-		c.get("command.resetexploreregion.output.invalidname", "&eInvalid world name");
-		c.get("command.resetexploreregion.output.reseted", "&eExploring region data has been reset for: &2%worldname%");
+	    c.get("command.resetexploreregion.help.info", "Resets region data of Explorering");
+	    c.get("command.resetexploreregion.help.args", "world [worldname]");
+	    Jobs.getGCManager().getCommandArgs().put("resetlimit", Arrays.asList("world", "[worldname]"));
+	    c.get("command.resetexploreregion.output.notenabled", "&eNot enabled.");
+	    c.get("command.resetexploreregion.output.invalidname", "&eInvalid world name");
+	    c.get("command.resetexploreregion.output.reseted", "&eExploring region data has been reset for: &2%worldname%");
 
-		c.get("command.resetlimit.help.info", "Resets a player's payment limits");
+	    c.get("command.resetlimit.help.info", "Resets a player's payment limits");
 	    c.get("command.resetlimit.help.args", "[playername]");
 	    Jobs.getGCManager().getCommandArgs().put("resetlimit", Arrays.asList("[playername]"));
-		c.get("command.resetlimit.output.reseted", "&ePayment limits have been reset for: &2%playername%");
+	    c.get("command.resetlimit.output.reseted", "&ePayment limits have been reset for: &2%playerdisplayname%");
 
 	    c.get("command.resetquesttotal.help.info", "Resets a player's done quest counter");
 	    c.get("command.resetquesttotal.help.args", "[playername]/all");
 	    Jobs.getGCManager().getCommandArgs().put("resetquesttotal", Arrays.asList("[playername]%%all"));
-	    c.get("command.resetquesttotal.output.reseted", "&eDone quests have been reset for: &2%playername%");
+	    c.get("command.resetquesttotal.output.reseted", "&eDone quests have been reset for: &2%playerdisplayname%");
 
 	    c.get("command.resetquest.help.info", "Resets a player's quest");
 	    c.get("command.resetquest.help.args", "[playername] [jobname]");
 	    Jobs.getGCManager().getCommandArgs().put("resetquest", Arrays.asList("[playername]", "[jobname]"));
-	    c.get("command.resetquest.output.reseted", "&eQuest has been reset for: &2%playername%");
+	    c.get("command.resetquest.output.reseted", "&eQuest has been reset for: &2%playerdisplayname%");
 	    c.get("command.resetquest.output.noQuests", "&eCan't find any quests");
 
 	    c.get("command.points.help.info", "Shows how much points does a player have.");
@@ -243,9 +247,9 @@ public class LanguageManager {
 	    c.get("command.editpoints.help.info", "Edit player's points.");
 	    c.get("command.editpoints.help.args", "set/add/take [playername] [amount]");
 	    Jobs.getGCManager().getCommandArgs().put("editpoints", Arrays.asList("set%%add%%take", "[playername]"));
-	    c.get("command.editpoints.output.set", "&ePlayers (&6%playername%&e) points was set to &6%amount%");
-	    c.get("command.editpoints.output.add", "&ePlayer (&6%playername%&e) got additional &6%amount% &epoints. Now they have &6%total%");
-	    c.get("command.editpoints.output.take", "&ePlayer (&6%playername%&e) lost &6%amount% &epoints. Now they have &6%total%");
+	    c.get("command.editpoints.output.set", "&ePlayers (&6%playerdisplayname%&e) points was set to &6%amount%");
+	    c.get("command.editpoints.output.add", "&ePlayer (&6%playerdisplayname%&e) got additional &6%amount% &epoints. Now they have &6%total%");
+	    c.get("command.editpoints.output.take", "&ePlayer (&6%playerdisplayname%&e) lost &6%amount% &epoints. Now they have &6%total%");
 
 	    c.get("command.editjobs.help.info", "Edit current jobs.");
 	    c.get("command.editjobs.help.args", "");
@@ -343,7 +347,7 @@ public class LanguageManager {
 
 	    c.get("command.give.help.info", "Gives item by jobs name and item category name. Player name is optional");
 	    c.get("command.give.help.args", "[playername] [jobname] [items/limiteditems] [jobitemname]");
-	    Jobs.getGCManager().getCommandArgs().put("give", Arrays.asList("[playername]", "[jobname]", "items%%limiteditems","[jobitemname]"));
+	    Jobs.getGCManager().getCommandArgs().put("give", Arrays.asList("[playername]", "[jobname]", "items%%limiteditems", "[jobitemname]"));
 	    c.get("command.give.output.notonline", "&4Player with that name is not online!");
 	    c.get("command.give.output.noitem", "&4Can't find any item by given name!");
 
@@ -484,7 +488,7 @@ public class LanguageManager {
 	    c.get("command.browse.output.jobHeader", "&2========== [jobname] =========");
 	    c.get("command.browse.output.chooseJob", "&7&n&oChoose this job");
 	    c.get("command.browse.output.chooseJobHover", "&7Click here to get this job");
-	    
+
 	    c.get("command.ownedblocks.help.info", "Check block ownership");
 	    c.get("command.ownedblocks.help.args", "[playername]");
 	    Jobs.getGCManager().getCommandArgs().put("ownedblocks", Arrays.asList("[playername]"));
@@ -542,18 +546,14 @@ public class LanguageManager {
 	    Jobs.getGCManager().getCommandArgs().put("top", Arrays.asList("[jobname]"));
 	    c.get("command.top.error.nojob", "Can't find any job with this name.");
 	    c.get("command.top.output.topline", "&aTop&e %amount% &aplayers by &e%jobname% &ajob");
-	    c.get("command.top.output.list", "&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp");
-	    c.get("command.top.output.prev", "&e<<<<< Prev page &2|");
-	    c.get("command.top.output.next", "&2|&e Next Page >>>>");
+	    c.get("command.top.output.list", "&e%number%&a. &e%playerdisplayname% &alvl &e%level% &awith&e %exp% &aexp");
 	    c.get("command.top.output.show", "&2Show from &e[from] &2until &e[until] &2top list");
 
 	    c.get("command.gtop.help.info", "Shows top players by global jobs level.");
 	    c.get("command.gtop.help.args", "clear/pageNumber");
 	    c.get("command.gtop.error.nojob", "Can't find any information.");
 	    c.get("command.gtop.output.topline", "&aTop&e %amount% &aplayers by global job level");
-	    c.get("command.gtop.output.list", "&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp");
-	    c.get("command.gtop.output.prev", "&e<<<<< Prev page &2|");
-	    c.get("command.gtop.output.next", "&2|&e Next Page >>>>");
+	    c.get("command.gtop.output.list", "&e%number%&a. &e%playerdisplayname% &alvl &e%level% &awith&e %exp% &aexp");
 	    c.get("command.gtop.output.show", "&2Show from &e[from] &2until &e[until] &2global top list");
 
 	    c.get("command.area.help.info", "Modify restricted areas.");
@@ -578,7 +578,7 @@ public class LanguageManager {
 	    c.get("command.log.help.info", "Shows statistics.");
 	    c.get("command.log.help.args", "[playername]");
 	    Jobs.getGCManager().getCommandArgs().put("log", Arrays.asList("[playername]"));
-	    c.get("command.log.output.topline", "&7************************* &6%playername% &7*************************");
+	    c.get("command.log.output.topline", "&7************************* &6%playerdisplayname% &7*************************");
 	    c.get("command.log.output.ls", "&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%");
 	    c.get("command.log.output.money", "&6money: %amount% ");
 	    c.get("command.log.output.exp", "&eexp: %amount% ");
@@ -669,12 +669,11 @@ public class LanguageManager {
 	    c.get("command.version.output.newVault", "&eVault: &6[version] ");
 	    c.get("command.version.output.CMILib", "&eCMILib: &6[version] ");
 	    c.get("command.version.output.cmilVersionNew", "&e-> [newVersion]");
-	    
-	
-	    c.get("message.skillup.broadcast", "%playername% has been promoted to a %titlename% %jobname%.");
+
+	    c.get("message.skillup.broadcast", "%playerdisplayname% has been promoted to a %titlename% %jobname%.");
 	    c.get("message.skillup.nobroadcast", "Congratulations, you have been promoted to a %titlename% %jobname%.");
 
-	    c.get("message.levelup.broadcast", "%playername% is now a level %joblevel% %jobname%.");
+	    c.get("message.levelup.broadcast", "%playerdisplayname% is now a level %joblevel% %jobname%.");
 	    c.get("message.levelup.nobroadcast", "You are now level %joblevel% %jobname%.");
 	    c.get("message.leveldown.message", "&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.");
 
@@ -719,7 +718,7 @@ public class LanguageManager {
 	    //c.get("scoreboard.clear", "&eIf you want to remove scoreboard, type &2/jobs top clear");
 	    c.get("scoreboard.topline", "&2Top &e%jobname%");
 	    c.get("scoreboard.gtopline", "&2Global top list");
-	    c.get("scoreboard.line", "&2%number%. &e%playername% (&6%level%&e)");
+	    c.get("scoreboard.line", "&2%number%. &e%playerdisplayname% &e(&6%level%&e)");
 
 	    signKeys.clear();
 	    signKeys.addAll(c.getC().getConfigurationSection("signs.secondline").getKeys(false));

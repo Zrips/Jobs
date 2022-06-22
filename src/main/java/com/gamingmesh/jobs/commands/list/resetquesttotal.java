@@ -52,7 +52,7 @@ public class resetquesttotal implements Cmd {
 	jPlayer.setDoneQuests(0);
 	jPlayer.setSaved(false);
 	jPlayer.save();
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquesttotal.output.reseted", "%playername%", jPlayer.getName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquesttotal.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName()));
 	return true;
     }
 }

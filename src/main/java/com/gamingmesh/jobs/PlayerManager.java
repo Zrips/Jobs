@@ -658,7 +658,8 @@ public class PlayerManager {
 	    String message = Jobs.getLanguage().getMessage("message.leveldown.message");
 
 	    message = message.replace("%jobname%", job.getDisplayName());
-	    message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
+	    message = message.replace("%playername%", jPlayer.getName());
+	    message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
 	    message = message.replace("%joblevel%", prog.getLevelFormatted());
 	    message = message.replace("%lostLevel%", Integer.toString(oldLevel));
 
@@ -766,7 +767,8 @@ public class PlayerManager {
 	    message = message.replace("%titlename%", levelUpEvent.getOldTitle()
 		.getChatColor().toString() + levelUpEvent.getOldTitle().getName());
 
-	message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
+	message = message.replace("%playername%", jPlayer.getName());
+	message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
 	message = message.replace("%joblevel%", prog.getLevelFormatted());
 
 	if (Jobs.getGCManager().isBroadcastingLevelups() || Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat) {
@@ -798,7 +800,8 @@ public class PlayerManager {
 	    message = Jobs.getLanguage().getMessage("message.skillup." + (Jobs.getGCManager().isBroadcastingSkillups()
 		? "broadcast" : "nobroadcast"));
 
-	    message = message.replace("%playername%", player != null ? plugin.getComplement().getDisplayName(player) : jPlayer.getName());
+	    message = message.replace("%playername%", jPlayer.getName());
+	    message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
 	    message = message.replace("%titlename%", levelUpEvent.getNewTitle()
 		.getChatColor().toString() + levelUpEvent.getNewTitle().getName());
 	    message = message.replace("%jobname%", job.getDisplayName());

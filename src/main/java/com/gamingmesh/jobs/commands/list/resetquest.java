@@ -51,7 +51,7 @@ public class resetquest implements Cmd {
 	}
 
 	jPlayer.resetQuests(quests);
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.reseted", "%playername%", jPlayer.getName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getName()));
 	return true;
     }
 }

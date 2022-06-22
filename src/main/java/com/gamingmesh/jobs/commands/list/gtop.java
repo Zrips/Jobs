@@ -67,6 +67,7 @@ public class gtop implements Cmd {
 		sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list",
 		    "%number%", pi.getPositionForOutput(i),
 		    "%playername%", One.getPlayerInfo().getName(),
+		    "%playerdisplayname%", One.getPlayerInfo().getDisplayName(),
 		    "%level%", One.getLevel(),
 		    "%exp%", One.getExp()));
 		++i;
@@ -81,6 +82,7 @@ public class gtop implements Cmd {
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line",
 		    "%number%", pi.getPositionForOutput(i),
 		    "%playername%", one.getPlayerInfo().getName(),
+		    "%playerdisplayname%", one.getPlayerInfo().getDisplayName(),
 		    "%level%", one.getLevel()));
 		++i;
 	    }

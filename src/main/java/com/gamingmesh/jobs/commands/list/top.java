@@ -56,8 +56,8 @@ public class top implements Cmd {
 	int workingIn = Jobs.getUsedSlots(job);
 	PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, workingIn, page);
 
-	List<TopList> FullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart());
-	if (FullList.isEmpty()) {
+	List<TopList> fullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart());
+	if (fullList.isEmpty()) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfo"));
 	    return true;
 	}
@@ -68,26 +68,27 @@ public class top implements Cmd {
 
 	if (!Jobs.getGCManager().ShowToplistInScoreboard) {
 	    player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", job.getName(), "%amount%", Jobs.getGCManager().JobsTopAmount));
-	    for (TopList One : FullList) {
+	    for (TopList one : fullList) {
 		if (place > Jobs.getGCManager().JobsTopAmount)
 		    break;
 
 		player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.list",
 		    "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
-		    "%playername%", One.getPlayerInfo().getName(),
-		    "%level%", One.getLevel(),
-		    "%exp%", One.getExp()));
+		    "%playername%", one.getPlayerInfo().getName(),
+		    "%playerdisplayname%", one.getPlayerInfo().getDisplayName(),
+		    "%level%", one.getLevel(),
+		    "%exp%", one.getExp()));
 		place++;
 	    }
 	    plugin.showPagination(sender, pi, "jobs top " + job.getName());
 	} else {
 	    List<String> ls = new ArrayList<>();
 
-	    for (TopList one : FullList) {
+	    for (TopList one : fullList) {
 		if (place > Jobs.getGCManager().JobsTopAmount)
 		    break;
 		ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
-		    "%playername%", one.getPlayerInfo().getName(), "%level%", one.getLevel()));
+		    "%playername%", one.getPlayerInfo().getName(), "%playerdisplayname%", one.getPlayerInfo().getDisplayName(), "%level%", one.getLevel()));
 		place++;
 	    }
 

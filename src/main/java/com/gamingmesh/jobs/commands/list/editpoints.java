@@ -35,6 +35,7 @@ public class editpoints implements Cmd {
 	    pointInfo.takePoints(amount);
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.editpoints.output.take",
 		"%playername%", jPlayer.getName(),
+		"%playerdisplayname%", jPlayer.getDisplayName(),
 		"%amount%", amount,
 		"%total%", (int) (pointInfo.getCurrentPoints() * 100) / 100D));
 	    break;
@@ -42,6 +43,7 @@ public class editpoints implements Cmd {
 	    pointInfo.addPoints(amount);
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.editpoints.output.add",
 		"%playername%", jPlayer.getName(),
+		"%playerdisplayname%", jPlayer.getDisplayName(),
 		"%amount%", amount,
 		"%total%", (int) (pointInfo.getCurrentPoints() * 100) / 100D));
 	    break;
@@ -49,6 +51,7 @@ public class editpoints implements Cmd {
 	    pointInfo.setPoints(amount);
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.editpoints.output.set",
 		"%playername%", jPlayer.getName(),
+		"%playerdisplayname%", jPlayer.getDisplayName(),
 		"%amount%", amount));
 	    break;
 	default:

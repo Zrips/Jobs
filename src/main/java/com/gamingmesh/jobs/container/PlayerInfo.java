@@ -54,6 +54,16 @@ public class PlayerInfo {
 	return player;
     }
 
+    public String getDisplayName() {
+	if (player == null)
+	    player = Jobs.getPlayerManager().getJobsPlayer(uuid);
+	
+	if (player == null)
+	    return getName();
+	
+	return player.getDisplayName();
+    }
+
     public Integer getQuestsDone() {
 	return questsDone;
     }

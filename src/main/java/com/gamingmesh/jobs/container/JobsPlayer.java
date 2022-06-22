@@ -488,6 +488,17 @@ public class JobsPlayer {
 	return userName;
     }
 
+    public String getDisplayName() {
+	if (!this.isOnline())
+	    return getName();
+	Player p = this.getPlayer();
+
+	if (p == null)
+	    return getName();
+
+	return p.getDisplayName() == null || p.getDisplayName().isEmpty() ? getName() : p.getDisplayName();
+    }
+
     /**
      * get the playerUUID
      * @return the playerUUID

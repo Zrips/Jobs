@@ -20,7 +20,6 @@ public class stats implements Cmd {
 	if (args.length >= 1) {
 	    if (!Jobs.hasPermission(sender, "jobs.command.admin.stats", true))
 		return true;
-
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
 	} else if (sender instanceof Player)
 	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
@@ -38,7 +37,7 @@ public class stats implements Cmd {
 	    return true;
 	}
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName()));
 
 	String leftClick = Jobs.getLanguage().getMessage("command.info.gui.leftClick");
 

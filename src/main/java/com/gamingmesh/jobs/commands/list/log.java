@@ -71,7 +71,7 @@ public class log implements Cmd {
 	int count = 0;
 	int max = 10;
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.topline", "%playername%", JPlayer.getName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.topline", "%playername%", JPlayer.getName(), "%playerdisplayname%", JPlayer.getDisplayName()));
 	for (Log one : logList.values()) {
 	    double totalMoney = 0, totalExp = 0, totalPoints = 0;
 

@@ -40,7 +40,7 @@ public class archive implements Cmd {
 	    return true;
 	}
 	
-	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.toplineseparator", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName()));
 	for (JobProgression jobInfo : allJobs) {
 	    RawMessage rm = new RawMessage();
 	    if (jobInfo.canRejoin())

@@ -33,7 +33,7 @@ public class resetlimit implements Cmd {
 	}
 
 	jPlayer.resetPaymentLimit();
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetlimit.output.reseted", "%playername%", jPlayer.getName()));
+	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetlimit.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName()));
 	return true;
     }
 }
