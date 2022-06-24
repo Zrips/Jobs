@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.config;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,8 @@ import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
+
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class ScheduleManager {
 
@@ -166,15 +169,37 @@ public class ScheduleManager {
 	for (String oneSection : sections) {
 	    ConfigurationSection path = section.getConfigurationSection(oneSection);
 
-	    if (path == null || !path.getBoolean("Enabled") || !path.getString("From", "").contains(":")
-			|| !path.getString("Until", "").contains(":") || !path.isList("Days") || !path.isList("Jobs"))
+	    if (path == null)
 		continue;
+
+	    if (!path.getBoolean("Enabled"))
+		continue;
+
+	    if (!path.getString("From", "").contains(":") ||
+		!path.getString("Until", "").contains(":") ||
+		!path.isList("Days") && !path.isString("Days") ||
+		!path.isList("Jobs") && !path.isString("Jobs")) {
+
+		Jobs.consoleMsg("&cIncorect scheduler format detected for " + oneSection + " scheduler!");
+		continue;
+	    }
 
 	    Schedule sched = new Schedule();
 
 	    sched.setName(oneSection);
-	    sched.setDays(path.getStringList("Days"));
-	    sched.setJobs(path.getStringList("Jobs"));
+
+	    if (path.isString("Days")) {
+		sched.setDays(Arrays.asList(path.getString("Days")));
+	    } else {
+		sched.setDays(path.getStringList("Days"));
+	    }
+	    
+	    if (path.isString("Jobs")) {
+		sched.setJobs(Arrays.asList(path.getString("Jobs")));
+	    } else {
+		sched.setJobs(path.getStringList("Jobs"));
+	    }
+	    
 	    sched.setFrom(Integer.parseInt(path.getString("From").replace(":", "")));
 	    sched.setUntil(Integer.parseInt(path.getString("Until").replace(":", "")));
 
@@ -203,6 +228,6 @@ public class ScheduleManager {
 	}
 
 	if (!BOOSTSCHEDULE.isEmpty())
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + BOOSTSCHEDULE.size() + " schedulers!");
+	    Jobs.consoleMsg("&eLoaded " + BOOSTSCHEDULE.size() + " schedulers!");
     }
 }

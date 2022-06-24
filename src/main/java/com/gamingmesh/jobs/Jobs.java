@@ -753,7 +753,7 @@ public final class Jobs extends JavaPlugin {
 	    }
 
 	    HookManager.loadHooks();
-	    registerListeners();	    
+	    registerListeners();
 
 	    if (Version.isCurrentEqualOrHigher(Version.v1_16_R3) && kyoriSupported) {
 		complement = new Complement2();
@@ -816,7 +816,7 @@ public final class Jobs extends JavaPlugin {
 	// unregister all registered listeners by this plugin and register again
 	if (!startup) {
 	    HandlerList.unregisterAll(getInstance());
-	    registerListeners();	    
+	    registerListeners();
 	}
 
 	if (saveTask != null) {
@@ -870,8 +870,12 @@ public final class Jobs extends JavaPlugin {
 
 	// Schedule
 	if (getGCManager().enableSchedule) {
-	    getScheduleManager().load();
-	    getScheduleManager().start();
+	    try {
+		getScheduleManager().load();
+		getScheduleManager().start();
+	    } catch (Throwable e) {
+		e.printStackTrace();
+	    }
 	} else
 	    getScheduleManager().cancel();
     }
@@ -1501,7 +1505,7 @@ public final class Jobs extends JavaPlugin {
 	    .addHover(LC.info_pageCountHover.getLocale("[totalEntries]", totalEntries));
 
 	rm.addText(pageCount > currentPage ? LC.info_nextPage.getLocale() : LC.info_nextPageOff.getLocale())
-	    .addHover(pageCount > currentPage ? LC.info_nextPageHover.getLocale(): LC.info_firstPageHover.getLocale())
+	    .addHover(pageCount > currentPage ? LC.info_nextPageHover.getLocale() : LC.info_firstPageHover.getLocale())
 	    .addCommand(pageCount > currentPage ? cmd + " " + pagePrefix + nextPage : cmd + " " + pagePrefix + 1);
 
 	if (pageCount != 0)

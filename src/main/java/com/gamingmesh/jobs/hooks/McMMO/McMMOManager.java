@@ -100,13 +100,13 @@ public class McMMOManager {
 		    mcMMOPresent = false;
 		}
 		if (!mcMMOPresent)
-		    Jobs.consoleMsg("&e[Jobs] &6mcMMO was found - &cBut your McMMO version is outdated, please update for full support.");
+		    Jobs.consoleMsg("&6mcMMO was found - &cBut your McMMO version is outdated, please update for full support.");
 
 		// Still enabling event listener for repair
 		return true;
 	    }
 
-	    Jobs.consoleMsg("&e[Jobs] &6mcMMO" + McMMO.getDescription().getVersion() + " was found - Enabling capabilities.");
+	    Jobs.consoleMsg("&6mcMMO" + McMMO.getDescription().getVersion() + " was found - Enabling capabilities.");
 	    return true;
 	}
 
