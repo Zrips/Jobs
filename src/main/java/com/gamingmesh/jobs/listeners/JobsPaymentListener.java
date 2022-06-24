@@ -71,6 +71,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -88,6 +89,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import com.bgsoftware.wildstacker.api.enums.StackSplit;
 import com.gamingmesh.jobs.ItemBoostManager;
@@ -1076,6 +1078,17 @@ public final class JobsPaymentListener implements Listener {
 	}
 
 	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void PrepareAnvilEvent(final PrepareAnvilEvent event) {
+	if (!Jobs.getPlayerManager().containsItemBoostByNBT(event.getInventory().getContents()[0]))
+	    return;
+
+	if (!CMIMaterial.get(event.getInventory().getContents()[1]).equals(CMIMaterial.ENCHANTED_BOOK))
+	    return;
+
+	event.setResult(null);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
