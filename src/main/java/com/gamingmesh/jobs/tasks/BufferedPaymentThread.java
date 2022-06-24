@@ -27,7 +27,9 @@ public class BufferedPaymentThread extends Thread {
 
     public BufferedPaymentThread(int duration) {
 	super("Jobs-BufferedPaymentThread");
-	this.sleep = duration * 1000;
+	// We need this to be atleast 1 or more seconds
+	duration = duration < 1 ? 1 : duration;
+	this.sleep = duration * 1000;	
     }
 
     @Override

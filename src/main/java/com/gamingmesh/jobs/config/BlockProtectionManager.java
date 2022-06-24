@@ -12,7 +12,10 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
 
+import net.Zrips.CMILib.Container.CMIBlock;
+import net.Zrips.CMILib.Container.CMIBlock.Bisect;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class BlockProtectionManager {
 
@@ -36,6 +39,21 @@ public class BlockProtectionManager {
     }
 
     public void add(Block block, Integer cd) {
+
+	// Assuming that block is bottom part of flower we will add top part to the record too
+	CMIMaterial cmat = CMIMaterial.get(block);
+	switch (cmat) {
+	case LILAC:
+	case SUNFLOWER:
+	case ROSE_BUSH:
+	case PEONY:
+	    CMIBlock cmb = new CMIBlock(block);
+	    // We are only interested in this being bottom block as this should never trigger for top part of placed block
+	    if (cmb.getBisect().equals(Bisect.BOTTOM))
+		add(block.getLocation().clone().add(0, 1, 0), cd, true);
+	    break;
+	}
+
 	add(block, cd, true);
     }
 
@@ -112,6 +130,21 @@ public class BlockProtectionManager {
     }
 
     public BlockProtection remove(Block block) {
+	// In case double plant was destroyed we should remove both blocks from records
+	CMIMaterial cmat = CMIMaterial.get(block);
+	switch (cmat) {
+	case LILAC:
+	case SUNFLOWER:
+	case ROSE_BUSH:
+	case PEONY:
+	    CMIBlock cmb = new CMIBlock(block);
+	    if (cmb.getBisect().equals(Bisect.BOTTOM))
+		remove(block.getLocation().clone().add(0, 1, 0));
+	    else
+		remove(block.getLocation().clone().add(0, -1, 0));
+	    break;
+	}
+
 	return remove(block.getLocation());
     }
 

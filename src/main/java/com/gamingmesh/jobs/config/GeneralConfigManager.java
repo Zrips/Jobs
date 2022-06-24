@@ -555,9 +555,6 @@ public class GeneralConfigManager {
 	    "Setting this too low may cause tick lag. Increase this to improve economy performance (at the cost of delays in payment)");
 	economyBatchDelay = c.get("economy-batch-delay", 5);
 
-	// We need this to be atleast 1 or more seconds
-	economyBatchDelay = economyBatchDelay < 1 ? 1 : economyBatchDelay;
-
 	c.addComment("economy-async", "Enable async economy calls.", "Disable this if you have issues with payments or your plugin is not thread safe.");
 	economyAsync = c.get("economy-async", true);
 
