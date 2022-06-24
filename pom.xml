@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>5.0.2.2</version>
+	<version>5.1.0.0</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -83,7 +83,7 @@
         <dependency>
 	        <groupId>io.lumine</groupId>
 	        <artifactId>Mythic-Dist</artifactId>
-	        <version>5.0.1-SNAPSHOT</version>
+	        <version>5.1.0-SNAPSHOT</version>
 	        <scope>provided</scope>
         </dependency>
 		<!-- WorldGuard old version -->
@@ -286,7 +286,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					<outputDirectory>D:\MC\Server 1.18\plugins\</outputDirectory>
+					<!-- <outputDirectory>D:\MC\Server 1.19\plugins\</outputDirectory> -->
 				</configuration>
 			</plugin>
 		</plugins>
