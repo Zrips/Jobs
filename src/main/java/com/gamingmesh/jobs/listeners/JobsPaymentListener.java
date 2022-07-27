@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.gamingmesh.jobs.config.GeneralConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -1082,6 +1083,9 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void PrepareAnvilEvent(final PrepareAnvilEvent event) {
+	if (!Jobs.getGCManager().preventShopItemEnchanting)
+		return;
+
 	if (!Jobs.getPlayerManager().containsItemBoostByNBT(event.getInventory().getContents()[0]))
 	    return;
 
