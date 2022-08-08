@@ -404,9 +404,8 @@ public class JobsPlayer {
 
     public int getPlayerMaxQuest(String jobName) {
 	int m1 = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest.all", false, true);
-	if (m1 != 0)
-	    return m1;
-	return (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest." + jobName, false, true);
+	int m2 = (int) Jobs.getPermissionManager().getMaxPermission(this, "jobs.maxquest." + jobName, false, true);	
+	return m1 > m2 ? m1 : m2;
     }
 
     /**
