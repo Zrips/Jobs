@@ -8,6 +8,8 @@ import java.sql.Statement;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 public class JobsMySQL extends JobsDAO {
 
     private static String path = "";
@@ -29,6 +31,7 @@ public class JobsMySQL extends JobsDAO {
 	    + "?maxReconnects=1&characterEncoding=" + characterEncoding + "&encoding="
 	    + encoding + "&useUnicode=true&autoReconnect=" + autoReconnect + "&useSSL=" + ssl
 	    + "&verifyServerCertificate=" + certificate, username, password, prefix);
+        this.database = database;
 	setDbType(DataBaseType.MySQL);
     }
 
