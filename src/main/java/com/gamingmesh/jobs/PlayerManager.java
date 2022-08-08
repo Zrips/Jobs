@@ -31,6 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.Material;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
@@ -39,6 +40,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.gamingmesh.jobs.api.JobsJoinEvent;
@@ -65,6 +67,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
@@ -994,20 +997,54 @@ public class PlayerManager {
 
         // Check mainhand slot
         if (Jobs.getGCManager().boostedItemsInMainHand) {
-            jitems.add(getJobsItemByNbt(CMIItemStack.getItemInMainHand(player)));
+            ItemStack iih = CMIItemStack.getItemInMainHand(player);
+            if (iih != null && Jobs.getGCManager().boostedItemsSlotSpecific && (!CMIMaterial.isArmor(iih.getType()) || CMIMaterial.isShield(iih.getType())) || !Jobs
+                .getGCManager().boostedItemsSlotSpecific) {
+                jitems.add(getJobsItemByNbt(CMIItemStack.getItemInMainHand(player)));
+            }
         }
 
         // Check offhand slot
         if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
-            jitems.add(getJobsItemByNbt(player.getInventory().getItemInOffHand()));
+            ItemStack iih = CMIItemStack.getItemInOffHand(player);
+            if (iih != null && Jobs.getGCManager().boostedItemsSlotSpecific && (!CMIMaterial.isArmor(iih.getType()) || CMIMaterial.isShield(iih.getType())) || !Jobs
+                .getGCManager().boostedItemsSlotSpecific) {
+                jitems.add(getJobsItemByNbt(player.getInventory().getItemInOffHand()));
+            }
         }
 
         // Check armor slots
         if (Jobs.getGCManager().boostedArmorItems) {
-            for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
-                if (oneArmor != null && oneArmor.getType() != org.bukkit.Material.AIR) {
-                    jitems.add(getJobsItemByNbt(oneArmor));
+
+            for (int i = 0; i < player.getInventory().getArmorContents().length; i++) {
+
+                ItemStack item = player.getInventory().getArmorContents()[i];
+                if (item == null || item.getType().equals(Material.AIR))
+                    continue;
+
+                if (Jobs.getGCManager().boostedItemsSlotSpecific) {
+                    //Boots
+                    if (i == 0 && (!CMIMaterial.isArmor(item.getType()) || CMIMaterial.isArmor(item.getType()) && !CMIMaterial.isBoots(item.getType()))) {
+                        continue;
+                    }
+
+                    //Leggings
+                    if (i == 1 && (!CMIMaterial.isArmor(item.getType()) || CMIMaterial.isArmor(item.getType()) && !CMIMaterial.isLeggings(item.getType()))) {
+                        continue;
+                    }
+
+                    //Chestplate
+                    if (i == 2 && (!CMIMaterial.isArmor(item.getType()) || CMIMaterial.isArmor(item.getType()) && !CMIMaterial.isChestplate(item.getType()))) {
+                        continue;
+                    }
+
+                    // Helmet slot
+                    if (i == 3 && !CMIMaterial.isArmor(item.getType()) && (CMIMaterial.isWeapon(item.getType()) || CMIMaterial.isTool(item.getType())) || i == 3 && CMIMaterial.isArmor(item.getType())
+                        && !CMIMaterial.isHelmet(item.getType())) {
+                        continue;
+                    }
                 }
+                jitems.add(getJobsItemByNbt(item));
             }
         }
 
