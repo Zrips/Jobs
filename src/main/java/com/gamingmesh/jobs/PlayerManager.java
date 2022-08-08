@@ -84,58 +84,58 @@ public class PlayerManager {
     private final Jobs plugin;
 
     public PlayerManager(Jobs plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     /**
      * @return the cached mob spawner meta name
      */
     public String getMobSpawnerMetadata() {
-	return mobSpawnerMetadata;
+        return mobSpawnerMetadata;
     }
 
     @Deprecated
     public int getMapSize() {
-	return playerUUIDMap.size();
+        return playerUUIDMap.size();
     }
 
     public void clearMaps() {
-	playerUUIDMap.clear();
-	playerIdMap.clear();
+        playerUUIDMap.clear();
+        playerIdMap.clear();
     }
 
     public void clearCache() {
-	playersUUIDCache.clear();
-	playersNameCache.clear();
-	playersUUID.clear();
+        playersUUIDCache.clear();
+        playersNameCache.clear();
+        playersUUID.clear();
     }
 
     public void addPlayerToMap(PlayerInfo info) {
 
-	// Checking duplicated UUID's which usually is a cause of previous bugs
-	if (playerUUIDMap.containsKey(info.getUuid()) && playerUUIDMap.get(info.getUuid()).getID() != info.getID()) {
-	    int id = playerUUIDMap.get(info.getUuid()).getID();
-	    if (Jobs.getGCManager().isInformDuplicates()) {
-		CMIMessages.consoleMessage("&7Duplicate! &5" + info.getName() + " &7same UUID for 2 entries in database. Please remove of one them from users table id1: &2" + id + " &7id2: &2" + info
-		    .getID());
-	    }
-	    if (id < info.getID()) {
-		return;
-	    }
-	}
+        // Checking duplicated UUID's which usually is a cause of previous bugs
+        if (playerUUIDMap.containsKey(info.getUuid()) && playerUUIDMap.get(info.getUuid()).getID() != info.getID()) {
+            int id = playerUUIDMap.get(info.getUuid()).getID();
+            if (Jobs.getGCManager().isInformDuplicates()) {
+                CMIMessages.consoleMessage("&7Duplicate! &5" + info.getName() + " &7same UUID for 2 entries in database. Please remove of one them from users table id1: &2" + id + " &7id2: &2" + info
+                    .getID());
+            }
+            if (id < info.getID()) {
+                return;
+            }
+        }
 
-	playerUUIDMap.put(info.getUuid(), info);
-	playerIdMap.put(info.getID(), info);
+        playerUUIDMap.put(info.getUuid(), info);
+        playerIdMap.put(info.getID(), info);
     }
 
     public void addPlayerToCache(JobsPlayer jPlayer) {
-	playersUUIDCache.putIfAbsent(jPlayer.playerUUID, jPlayer);
-	if (jPlayer.getName() != null)
-	    playersNameCache.putIfAbsent(jPlayer.getName().toLowerCase(), jPlayer);
+        playersUUIDCache.putIfAbsent(jPlayer.playerUUID, jPlayer);
+        if (jPlayer.getName() != null)
+            playersNameCache.putIfAbsent(jPlayer.getName().toLowerCase(), jPlayer);
     }
 
     public void addPlayer(JobsPlayer jPlayer) {
-	playersUUID.putIfAbsent(jPlayer.getUniqueId(), jPlayer);
+        playersUUID.putIfAbsent(jPlayer.getUniqueId(), jPlayer);
     }
 
     /**
@@ -144,18 +144,18 @@ public class PlayerManager {
      * @param player {@link Player}
      */
     public void removePlayer(Player player) {
-	if (player == null)
-	    return;
+        if (player == null)
+            return;
 
-	playersUUID.remove(player.getUniqueId());
+        playersUUID.remove(player.getUniqueId());
     }
 
     public ConcurrentMap<UUID, JobsPlayer> getPlayersCache() {
-	return playersUUIDCache;
+        return playersUUIDCache;
     }
 
     public Map<UUID, PlayerInfo> getPlayersInfoUUIDMap() {
-	return playerUUIDMap;
+        return playerUUIDMap;
     }
 
     /**
@@ -166,8 +166,8 @@ public class PlayerManager {
      * @return the identifier
      */
     public int getPlayerId(String name) {
-	PlayerInfo info = getPlayerInfo(name);
-	return info == null ? -1 : info.getID();
+        PlayerInfo info = getPlayerInfo(name);
+        return info == null ? -1 : info.getID();
     }
 
     /**
@@ -178,8 +178,8 @@ public class PlayerManager {
      * @return the identifier
      */
     public int getPlayerId(UUID uuid) {
-	PlayerInfo info = playerUUIDMap.get(uuid);
-	return info == null ? -1 : info.getID();
+        PlayerInfo info = playerUUIDMap.get(uuid);
+        return info == null ? -1 : info.getID();
     }
 
     /**
@@ -190,10 +190,10 @@ public class PlayerManager {
      * @return {@link PlayerInfo}
      */
     public PlayerInfo getPlayerInfo(String name) {
-	JobsPlayer jPlayer = playersNameCache.get(name.toLowerCase());
-	if (jPlayer == null)
-	    return null;
-	return playerUUIDMap.get(jPlayer.getUniqueId());
+        JobsPlayer jPlayer = playersNameCache.get(name.toLowerCase());
+        if (jPlayer == null)
+            return null;
+        return playerUUIDMap.get(jPlayer.getUniqueId());
     }
 
     /**
@@ -204,7 +204,7 @@ public class PlayerManager {
      * @return {@link PlayerInfo}
      */
     public PlayerInfo getPlayerInfo(int id) {
-	return playerIdMap.get(id);
+        return playerIdMap.get(id);
     }
 
     /**
@@ -215,7 +215,7 @@ public class PlayerManager {
      * @return {@link PlayerInfo}
      */
     public PlayerInfo getPlayerInfo(UUID uuid) {
-	return playerUUIDMap.get(uuid);
+        return playerUUIDMap.get(uuid);
     }
 
     /**
@@ -226,37 +226,37 @@ public class PlayerManager {
      * @param player {@link Player}
      */
     public void playerJoin(Player player) {
-	JobsPlayer jPlayer = playersUUIDCache.get(player.getUniqueId());
+        JobsPlayer jPlayer = playersUUIDCache.get(player.getUniqueId());
 
-	if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
-	    if (jPlayer != null)
-		jPlayer = Jobs.getJobsDAO().loadFromDao(jPlayer);
-	    else
-		jPlayer = Jobs.getJobsDAO().loadFromDao(player);
+        if (jPlayer == null || Jobs.getGCManager().MultiServerCompatability()) {
+            if (jPlayer != null)
+                jPlayer = Jobs.getJobsDAO().loadFromDao(jPlayer);
+            else
+                jPlayer = Jobs.getJobsDAO().loadFromDao(player);
 
-	    if (Jobs.getGCManager().MultiServerCompatability()) {
-		jPlayer.setArchivedJobs(Jobs.getJobsDAO().getArchivedJobs(jPlayer));
-		jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
-		jPlayer.setPoints(Jobs.getJobsDAO().getPlayerPoints(jPlayer));
-	    }
+            if (Jobs.getGCManager().MultiServerCompatability()) {
+                jPlayer.setArchivedJobs(Jobs.getJobsDAO().getArchivedJobs(jPlayer));
+                jPlayer.setPaymentLimit(Jobs.getJobsDAO().getPlayersLimits(jPlayer));
+                jPlayer.setPoints(Jobs.getJobsDAO().getPlayerPoints(jPlayer));
+            }
 
-	    // Lets load quest progression
-	    PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(player.getUniqueId());
-	    if (info != null) {
-		jPlayer.setDoneQuests(info.getQuestsDone());
-		jPlayer.setQuestProgressionFromString(info.getQuestProgression());
-	    }
+            // Lets load quest progression
+            PlayerInfo info = Jobs.getJobsDAO().loadPlayerData(player.getUniqueId());
+            if (info != null) {
+                jPlayer.setDoneQuests(info.getQuestsDone());
+                jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+            }
 
-	    Jobs.getJobsDAO().loadLog(jPlayer);
-	}
+            Jobs.getJobsDAO().loadLog(jPlayer);
+        }
 
-	addPlayer(jPlayer);
-	autoJoinJobs(player);
-	jPlayer.onConnect();
-	jPlayer.reloadHonorific();
-	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+        addPlayer(jPlayer);
+        autoJoinJobs(player);
+        jPlayer.onConnect();
+        jPlayer.reloadHonorific();
+        Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
 
-	addPlayerToCache(jPlayer);
+        addPlayerToCache(jPlayer);
     }
 
     /**
@@ -265,44 +265,44 @@ public class PlayerManager {
      * @param player {@link Player}
      */
     public void playerQuit(Player player) {
-	JobsPlayer jPlayer = getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
+        JobsPlayer jPlayer = getJobsPlayer(player);
+        if (jPlayer == null)
+            return;
 
-	jPlayer.onDisconnect();
-	if (Jobs.getGCManager().saveOnDisconnect() || Jobs.getGCManager().MultiServerCompatability()) {
-	    jPlayer.setSaved(false);
-	    jPlayer.save();
-	}
+        jPlayer.onDisconnect();
+        if (Jobs.getGCManager().saveOnDisconnect() || Jobs.getGCManager().MultiServerCompatability()) {
+            jPlayer.setSaved(false);
+            jPlayer.save();
+        }
     }
 
     /**
      * Removes all jobs player miscellaneous settings like boss bar.
      */
     public void removePlayerAdditions() {
-	for (JobsPlayer jPlayer : playersUUID.values()) {
-	    jPlayer.clearBossMaps();
-	    jPlayer.getUpdateBossBarFor().clear();
-	}
+        for (JobsPlayer jPlayer : playersUUID.values()) {
+            jPlayer.clearBossMaps();
+            jPlayer.getUpdateBossBarFor().clear();
+        }
     }
 
     /**
      * Save all the information of all of the players
      */
     public void saveAll() {
-	/*
-	 * Saving is a three step process to minimize synchronization locks when called asynchronously.
-	 *
-	 * 1) Safely copy list for saving.
-	 * 2) Perform save on all players on copied list.
-	 * 3) Garbage collect the real list to remove any offline players with saved data
-	 */
-	for (JobsPlayer jPlayer : new ArrayList<>(playersUUID.values()))
-	    jPlayer.save();
+        /*
+         * Saving is a three step process to minimize synchronization locks when called asynchronously.
+         *
+         * 1) Safely copy list for saving.
+         * 2) Perform save on all players on copied list.
+         * 3) Garbage collect the real list to remove any offline players with saved data
+         */
+        for (JobsPlayer jPlayer : new ArrayList<>(playersUUID.values()))
+            jPlayer.save();
 
-	playersUUID.values().removeIf(jPlayer -> jPlayer.isSaved() && !jPlayer.isOnline());
+        playersUUID.values().removeIf(jPlayer -> jPlayer.isSaved() && !jPlayer.isOnline());
 
-	Jobs.getBpManager().saveCache();
+        Jobs.getBpManager().saveCache();
     }
 
     /**
@@ -311,32 +311,32 @@ public class PlayerManager {
      * @param resetID true to not insert into database and reset the players id
      */
     public void convertChacheOfPlayers(boolean resetID) {
-	int y = 0, i = 0, total = playersUUIDCache.size();
+        int y = 0, i = 0, total = playersUUIDCache.size();
 
-	for (JobsPlayer jPlayer : playersUUIDCache.values()) {
-	    if (resetID)
-		jPlayer.setUserId(-1);
+        for (JobsPlayer jPlayer : playersUUIDCache.values()) {
+            if (resetID)
+                jPlayer.setUserId(-1);
 
-	    JobsDAO dao = Jobs.getJobsDAO();
-	    dao.updateSeen(jPlayer);
+            JobsDAO dao = Jobs.getJobsDAO();
+            dao.updateSeen(jPlayer);
 
-	    if (!resetID && jPlayer.getUserId() == -1)
-		continue;
+            if (!resetID && jPlayer.getUserId() == -1)
+                continue;
 
-	    for (JobProgression oneJ : jPlayer.progression)
-		dao.insertJob(jPlayer, oneJ);
+            for (JobProgression oneJ : jPlayer.progression)
+                dao.insertJob(jPlayer, oneJ);
 
-	    dao.saveLog(jPlayer);
-	    dao.savePoints(jPlayer);
-	    dao.recordPlayersLimits(jPlayer);
+            dao.saveLog(jPlayer);
+            dao.savePoints(jPlayer);
+            dao.recordPlayersLimits(jPlayer);
 
-	    i++;
+            i++;
 
-	    if (y++ >= 1000) {
-		Jobs.consoleMsg("&e[Jobs] Saved " + i + "/" + total + " players data");
-		y = 0;
-	    }
-	}
+            if (y++ >= 1000) {
+                Jobs.consoleMsg("&e[Jobs] Saved " + i + "/" + total + " players data");
+                y = 0;
+            }
+        }
     }
 
     /**
@@ -349,7 +349,7 @@ public class PlayerManager {
      * @return {@link JobsPlayer} the player job info of the player
      */
     public JobsPlayer getJobsPlayer(Player player) {
-	return getJobsPlayer(player.getUniqueId());
+        return getJobsPlayer(player.getUniqueId());
     }
 
     /**
@@ -362,8 +362,8 @@ public class PlayerManager {
      * @return {@link JobsPlayer} the player job info of the player
      */
     public JobsPlayer getJobsPlayer(UUID uuid) {
-	JobsPlayer jPlayer = playersUUID.get(uuid);
-	return jPlayer != null ? jPlayer : playersUUIDCache.get(uuid);
+        JobsPlayer jPlayer = playersUUID.get(uuid);
+        return jPlayer != null ? jPlayer : playersUUIDCache.get(uuid);
     }
 
     /**
@@ -376,7 +376,7 @@ public class PlayerManager {
      * @return {@link JobsPlayer} the player job info of the player
      */
     public JobsPlayer getJobsPlayer(String playerName) {
-	return playersNameCache.get(playerName.toLowerCase());
+        return playersNameCache.get(playerName.toLowerCase());
     }
 
     /**
@@ -391,62 +391,62 @@ public class PlayerManager {
      * @return {@link JobsPlayer}
      */
     public JobsPlayer getJobsPlayerOffline(PlayerInfo info, List<JobsDAOData> jobs, PlayerPoints points,
-	Map<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
-	if (info == null)
-	    return null;
+        Map<String, Log> logs, ArchivedJobs archivedJobs, PaymentData limits) {
+        if (info == null)
+            return null;
 
-	JobsPlayer jPlayer = new JobsPlayer(info.getName());
-	jPlayer.setPlayerUUID(info.getUuid());
-	jPlayer.setUserId(info.getID());
-	jPlayer.setDoneQuests(info.getQuestsDone());
-	jPlayer.setQuestProgressionFromString(info.getQuestProgression());
+        JobsPlayer jPlayer = new JobsPlayer(info.getName());
+        jPlayer.setPlayerUUID(info.getUuid());
+        jPlayer.setUserId(info.getID());
+        jPlayer.setDoneQuests(info.getQuestsDone());
+        jPlayer.setQuestProgressionFromString(info.getQuestProgression());
 
-	if (jobs != null) {
-	    for (JobsDAOData jobdata : jobs) {
-		Job job = Jobs.getJob(jobdata.getJobName());
-		if (job != null) {
+        if (jobs != null) {
+            for (JobsDAOData jobdata : jobs) {
+                Job job = Jobs.getJob(jobdata.getJobName());
+                if (job != null) {
 
-		    // Fixing issue with doubled jobs. Picking bigger job by level or exp
-		    JobProgression oldProg = jPlayer.getJobProgression(job);
-		    if (oldProg != null && (oldProg.getLevel() > jobdata.getLevel() || oldProg.getLevel() == jobdata.getLevel() && oldProg.getExperience() > jobdata.getExperience())) {
-			Jobs.getDBManager().getDB().removeSpecificJob(jPlayer.getUserId(), job.getName(), job.getJobFullName(), jobdata.getLevel(), jobdata.getExperience());
-			CMIMessages.consoleMessage("Cleaned up duplicated jobs record for " + jPlayer.getName() + " Job:" + jobdata.getJobName() + " Level:" + jobdata.getLevel());
-			continue;
-		    }
+                    // Fixing issue with doubled jobs. Picking bigger job by level or exp
+                    JobProgression oldProg = jPlayer.getJobProgression(job);
+                    if (oldProg != null && (oldProg.getLevel() > jobdata.getLevel() || oldProg.getLevel() == jobdata.getLevel() && oldProg.getExperience() > jobdata.getExperience())) {
+                        Jobs.getDBManager().getDB().removeSpecificJob(jPlayer.getUserId(), job.getName(), job.getJobFullName(), jobdata.getLevel(), jobdata.getExperience());
+                        CMIMessages.consoleMessage("Cleaned up duplicated jobs record for " + jPlayer.getName() + " Job:" + jobdata.getJobName() + " Level:" + jobdata.getLevel());
+                        continue;
+                    }
 
-		    jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
-		    jPlayer.reloadMaxExperience();
-		    jPlayer.reloadLimits();
-		}
-	    }
-	}
+                    jPlayer.progression.add(new JobProgression(job, jPlayer, jobdata.getLevel(), jobdata.getExperience()));
+                    jPlayer.reloadMaxExperience();
+                    jPlayer.reloadLimits();
+                }
+            }
+        }
 
-	if (points != null)
-	    jPlayer.setPoints(points);
+        if (points != null)
+            jPlayer.setPoints(points);
 
-	if (logs != null)
-	    jPlayer.setLog(logs);
+        if (logs != null)
+            jPlayer.setLog(logs);
 
-	if (limits != null)
-	    jPlayer.setPaymentLimit(limits);
+        if (limits != null)
+            jPlayer.setPaymentLimit(limits);
 
-	if (archivedJobs != null) {
-	    ArchivedJobs aj = new ArchivedJobs();
+        if (archivedJobs != null) {
+            ArchivedJobs aj = new ArchivedJobs();
 
-	    for (JobProgression one : archivedJobs.getArchivedJobs()) {
-		JobProgression jp = new JobProgression(one.getJob(), jPlayer, one.getLevel(), one.getExperience());
-		jp.reloadMaxExperience();
+            for (JobProgression one : archivedJobs.getArchivedJobs()) {
+                JobProgression jp = new JobProgression(one.getJob(), jPlayer, one.getLevel(), one.getExperience());
+                jp.reloadMaxExperience();
 
-		if (one.getLeftOn() != null && one.getLeftOn() != 0L)
-		    jp.setLeftOn(one.getLeftOn());
+                if (one.getLeftOn() != null && one.getLeftOn() != 0L)
+                    jp.setLeftOn(one.getLeftOn());
 
-		aj.addArchivedJob(jp);
-	    }
+                aj.addArchivedJob(jp);
+            }
 
-	    jPlayer.setArchivedJobs(aj);
-	}
+            jPlayer.setArchivedJobs(aj);
+        }
 
-	return jPlayer;
+        return jPlayer;
     }
 
     /**
@@ -456,30 +456,30 @@ public class PlayerManager {
      * @param job {@link Job}
      */
     public void joinJob(JobsPlayer jPlayer, Job job) {
-	if (jPlayer == null)
-	    return;
+        if (jPlayer == null)
+            return;
 
-	// let the user join the job
-	if (!jPlayer.joinJob(job))
-	    return;
+        // JobsJoin event
+        JobsJoinEvent jobsJoinEvent = new JobsJoinEvent(jPlayer, job);
+        plugin.getServer().getPluginManager().callEvent(jobsJoinEvent);
+        // If event is canceled, dont do anything
+        if (jobsJoinEvent.isCancelled())
+            return;
 
-	// JobsJoin event
-	JobsJoinEvent jobsJoinEvent = new JobsJoinEvent(jPlayer, job);
-	plugin.getServer().getPluginManager().callEvent(jobsJoinEvent);
-	// If event is canceled, dont do anything
-	if (jobsJoinEvent.isCancelled())
-	    return;
+        // let the user join the job
+        if (!jPlayer.joinJob(job))
+            return;
 
-	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
-	jPlayer.setLeftTime(job);
+        Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
+        jPlayer.setLeftTime(job);
 
-	PerformCommands.performCommandsOnJoin(jPlayer, job);
+        PerformCommands.performCommandsOnJoin(jPlayer, job);
 
-	Jobs.takeSlot(job);
-	Jobs.getSignUtil().updateAllSign(job);
+        Jobs.takeSlot(job);
+        Jobs.getSignUtil().updateAllSign(job);
 
-	job.updateTotalPlayers();
-	jPlayer.maxJobsEquation = getMaxJobs(jPlayer);
+        job.updateTotalPlayers();
+        jPlayer.maxJobsEquation = getMaxJobs(jPlayer);
     }
 
     /**
@@ -489,32 +489,32 @@ public class PlayerManager {
      * @param job {@link Job}
      */
     public boolean leaveJob(JobsPlayer jPlayer, Job job) {
-	if (jPlayer == null || !jPlayer.isInJob(job))
-	    return false;
+        if (jPlayer == null || !jPlayer.isInJob(job))
+            return false;
 
-	JobsLeaveEvent jobsLeaveEvent = new JobsLeaveEvent(jPlayer, job);
-	plugin.getServer().getPluginManager().callEvent(jobsLeaveEvent);
-	// If event is canceled, don't do anything
-	if (jobsLeaveEvent.isCancelled())
-	    return false;
+        JobsLeaveEvent jobsLeaveEvent = new JobsLeaveEvent(jPlayer, job);
+        plugin.getServer().getPluginManager().callEvent(jobsLeaveEvent);
+        // If event is canceled, don't do anything
+        if (jobsLeaveEvent.isCancelled())
+            return false;
 
-	Jobs.getJobsDAO().recordToArchive(jPlayer, job);
+        Jobs.getJobsDAO().recordToArchive(jPlayer, job);
 
-	// let the user leave the job
-	if (!jPlayer.leaveJob(job))
-	    return false;
+        // let the user leave the job
+        if (!jPlayer.leaveJob(job))
+            return false;
 
-	if (!Jobs.getJobsDAO().quitJob(jPlayer, job))
-	    return false;
+        if (!Jobs.getJobsDAO().quitJob(jPlayer, job))
+            return false;
 
-	PerformCommands.performCommandsOnLeave(jPlayer, job);
-	Jobs.leaveSlot(job);
+        PerformCommands.performCommandsOnLeave(jPlayer, job);
+        Jobs.leaveSlot(job);
 
-	jPlayer.getLeftTimes().remove(jPlayer.getUniqueId());
+        jPlayer.getLeftTimes().remove(jPlayer.getUniqueId());
 
-	Jobs.getSignUtil().updateAllSign(job);
-	job.updateTotalPlayers();
-	return true;
+        Jobs.getSignUtil().updateAllSign(job);
+        job.updateTotalPlayers();
+        return true;
     }
 
     /**
@@ -523,10 +523,10 @@ public class PlayerManager {
      * @param jPlayer {@link JobsPlayer}
      */
     public void leaveAllJobs(JobsPlayer jPlayer) {
-	for (JobProgression job : new ArrayList<>(jPlayer.progression))
-	    leaveJob(jPlayer, job.getJob());
+        for (JobProgression job : new ArrayList<>(jPlayer.progression))
+            leaveJob(jPlayer, job.getJob());
 
-	jPlayer.leaveAllJobs();
+        jPlayer.leaveAllJobs();
     }
 
     /**
@@ -537,14 +537,14 @@ public class PlayerManager {
      * @param newjob - the new job
      */
     public boolean transferJob(JobsPlayer jPlayer, Job oldjob, Job newjob) {
-	if (!jPlayer.transferJob(oldjob, newjob) || !Jobs.getJobsDAO().quitJob(jPlayer, oldjob))
-	    return false;
+        if (!jPlayer.transferJob(oldjob, newjob) || !Jobs.getJobsDAO().quitJob(jPlayer, oldjob))
+            return false;
 
-	oldjob.updateTotalPlayers();
-	Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(newjob));
-	newjob.updateTotalPlayers();
-	jPlayer.save();
-	return true;
+        oldjob.updateTotalPlayers();
+        Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(newjob));
+        newjob.updateTotalPlayers();
+        jPlayer.save();
+        return true;
     }
 
     /**
@@ -555,7 +555,7 @@ public class PlayerManager {
      * @param levels - number of levels to promote
      */
     public void promoteJob(JobsPlayer jPlayer, Job job, int levels) {
-	promoteJob(jPlayer, job, levels, false);
+        promoteJob(jPlayer, job, levels, false);
     }
 
     /**
@@ -567,16 +567,16 @@ public class PlayerManager {
      */
     public void promoteJob(JobsPlayer jPlayer, Job job, int levels, boolean performCommands) {
 
-	if (performCommands) {
-	    JobProgression prog = jPlayer.getJobProgression(job);
-	    performCommandOnLevelUp(jPlayer, prog, prog.getLevel(), prog.getLevel() + levels);
-	}
+        if (performCommands) {
+            JobProgression prog = jPlayer.getJobProgression(job);
+            performCommandOnLevelUp(jPlayer, prog, prog.getLevel(), prog.getLevel() + levels);
+        }
 
-	jPlayer.promoteJob(job, levels);
+        jPlayer.promoteJob(job, levels);
 
-	jPlayer.save();
+        jPlayer.save();
 
-	Jobs.getSignUtil().updateAllSign(job);
+        Jobs.getSignUtil().updateAllSign(job);
     }
 
     /**
@@ -587,10 +587,10 @@ public class PlayerManager {
      * @param levels - number of levels to demote
      */
     public void demoteJob(JobsPlayer jPlayer, Job job, int levels) {
-	jPlayer.demoteJob(job, levels);
-	jPlayer.save();
+        jPlayer.demoteJob(job, levels);
+        jPlayer.save();
 
-	Jobs.getSignUtil().updateAllSign(job);
+        Jobs.getSignUtil().updateAllSign(job);
     }
 
     /**
@@ -601,21 +601,21 @@ public class PlayerManager {
      * @param experience - experience gained
      */
     public void addExperience(JobsPlayer jPlayer, Job job, double experience) {
-	if (experience > Double.MAX_VALUE)
-	    return;
+        if (experience > Double.MAX_VALUE)
+            return;
 
-	JobProgression prog = jPlayer.getJobProgression(job);
-	if (prog == null)
-	    return;
+        JobProgression prog = jPlayer.getJobProgression(job);
+        if (prog == null)
+            return;
 
-	int oldLevel = prog.getLevel();
+        int oldLevel = prog.getLevel();
 
-	if (prog.addExperience(experience)) {
-	    performLevelUp(jPlayer, job, oldLevel);
-	    Jobs.getSignUtil().updateAllSign(job);
-	}
+        if (prog.addExperience(experience)) {
+            performLevelUp(jPlayer, job, oldLevel);
+            Jobs.getSignUtil().updateAllSign(job);
+        }
 
-	jPlayer.save();
+        jPlayer.save();
     }
 
     /**
@@ -626,17 +626,17 @@ public class PlayerManager {
      * @param experience - experience gained
      */
     public void removeExperience(JobsPlayer jPlayer, Job job, double experience) {
-	if (experience > Double.MAX_VALUE)
-	    return;
+        if (experience > Double.MAX_VALUE)
+            return;
 
-	JobProgression prog = jPlayer.getJobProgression(job);
-	if (prog == null)
-	    return;
+        JobProgression prog = jPlayer.getJobProgression(job);
+        if (prog == null)
+            return;
 
-	prog.addExperience(-experience);
+        prog.addExperience(-experience);
 
-	jPlayer.save();
-	Jobs.getSignUtil().updateAllSign(job);
+        jPlayer.save();
+        Jobs.getSignUtil().updateAllSign(job);
     }
 
     /**
@@ -647,211 +647,211 @@ public class PlayerManager {
      * @param oldLevel
      */
     public void performLevelUp(JobsPlayer jPlayer, Job job, int oldLevel) {
-	JobProgression prog = jPlayer.getJobProgression(job);
-	if (prog == null)
-	    return;
+        JobProgression prog = jPlayer.getJobProgression(job);
+        if (prog == null)
+            return;
 
-	Player player = jPlayer.getPlayer();
+        Player player = jPlayer.getPlayer();
 
-	// when the player loses income
-	if (prog.getLevel() < oldLevel) {
-	    String message = Jobs.getLanguage().getMessage("message.leveldown.message");
+        // when the player loses income
+        if (prog.getLevel() < oldLevel) {
+            String message = Jobs.getLanguage().getMessage("message.leveldown.message");
 
-	    message = message.replace("%jobname%", job.getDisplayName());
-	    message = message.replace("%playername%", jPlayer.getName());
-	    message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
-	    message = message.replace("%joblevel%", prog.getLevelFormatted());
-	    message = message.replace("%lostLevel%", Integer.toString(oldLevel));
+            message = message.replace("%jobname%", job.getDisplayName());
+            message = message.replace("%playername%", jPlayer.getName());
+            message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
+            message = message.replace("%joblevel%", prog.getLevelFormatted());
+            message = message.replace("%lostLevel%", Integer.toString(oldLevel));
 
-	    if (player != null && (Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat)) {
-		for (String line : message.split("\n")) {
-		    if (Jobs.getGCManager().LevelChangeActionBar)
-			CMIActionBar.send(player, line);
+            if (player != null && (Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat)) {
+                for (String line : message.split("\n")) {
+                    if (Jobs.getGCManager().LevelChangeActionBar)
+                        CMIActionBar.send(player, line);
 
-		    if (Jobs.getGCManager().LevelChangeChat)
-			player.sendMessage(line);
-		}
-	    }
+                    if (Jobs.getGCManager().LevelChangeChat)
+                        player.sendMessage(line);
+                }
+            }
 
-	    jPlayer.reloadHonorific();
-	    Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	    performCommandOnLevelUp(jPlayer, prog, oldLevel, prog.getLevel());
-	    Jobs.getSignUtil().updateAllSign(job);
-	    return;
-	}
+            jPlayer.reloadHonorific();
+            Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+            performCommandOnLevelUp(jPlayer, prog, oldLevel, prog.getLevel());
+            Jobs.getSignUtil().updateAllSign(job);
+            return;
+        }
 
-	// LevelUp event
-	JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(
-	    jPlayer,
-	    job,
-	    prog.getLevel(),
-	    Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
-	    Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
-	    Jobs.getGCManager().SoundLevelupSound,
-	    Jobs.getGCManager().SoundLevelupVolume,
-	    Jobs.getGCManager().SoundLevelupPitch,
-	    Jobs.getGCManager().SoundTitleChangeSound,
-	    Jobs.getGCManager().SoundTitleChangeVolume,
-	    Jobs.getGCManager().SoundTitleChangePitch);
+        // LevelUp event
+        JobsLevelUpEvent levelUpEvent = new JobsLevelUpEvent(
+            jPlayer,
+            job,
+            prog.getLevel(),
+            Jobs.getTitleManager().getTitle(oldLevel, prog.getJob().getName()),
+            Jobs.getTitleManager().getTitle(prog.getLevel(), prog.getJob().getName()),
+            Jobs.getGCManager().SoundLevelupSound,
+            Jobs.getGCManager().SoundLevelupVolume,
+            Jobs.getGCManager().SoundLevelupPitch,
+            Jobs.getGCManager().SoundTitleChangeSound,
+            Jobs.getGCManager().SoundTitleChangeVolume,
+            Jobs.getGCManager().SoundTitleChangePitch);
 
-	plugin.getServer().getPluginManager().callEvent(levelUpEvent);
+        plugin.getServer().getPluginManager().callEvent(levelUpEvent);
 
-	// If event is cancelled, don't do anything
-	if (levelUpEvent.isCancelled())
-	    return;
+        // If event is cancelled, don't do anything
+        if (levelUpEvent.isCancelled())
+            return;
 
-	if (player != null && Jobs.getGCManager().SoundLevelupUse) {
-	    try {
-		player.getWorld().playSound(player.getLocation(), levelUpEvent.getSound(),
-		    levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
-	    } catch (Exception e) { // If it fails, we can ignore it
-	    }
-	}
+        if (player != null && Jobs.getGCManager().SoundLevelupUse) {
+            try {
+                player.getWorld().playSound(player.getLocation(), levelUpEvent.getSound(),
+                    levelUpEvent.getSoundVolume(), levelUpEvent.getSoundPitch());
+            } catch (Exception e) { // If it fails, we can ignore it
+            }
+        }
 
-	if (Jobs.getGCManager().FireworkLevelupUse && player != null) {
-	    plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-		@Override
-		public void run() {
-		    if (!player.isOnline())
-			return;
+        if (Jobs.getGCManager().FireworkLevelupUse && player != null) {
+            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    if (!player.isOnline())
+                        return;
 
-		    Firework f = player.getWorld().spawn(player.getLocation(), Firework.class);
-		    FireworkMeta fm = f.getFireworkMeta();
+                    Firework f = player.getWorld().spawn(player.getLocation(), Firework.class);
+                    FireworkMeta fm = f.getFireworkMeta();
 
-		    if (Jobs.getGCManager().UseRandom) {
-			ThreadLocalRandom r = ThreadLocalRandom.current();
-			int rt = r.nextInt(4) + 1;
-			Type type = Type.BALL;
+                    if (Jobs.getGCManager().UseRandom) {
+                        ThreadLocalRandom r = ThreadLocalRandom.current();
+                        int rt = r.nextInt(4) + 1;
+                        Type type = Type.BALL;
 
-			switch (rt) {
-			case 2:
-			    type = Type.BALL_LARGE;
-			    break;
-			case 3:
-			    type = Type.BURST;
-			    break;
-			case 4:
-			    type = Type.CREEPER;
-			    break;
-			case 5:
-			    type = Type.STAR;
-			    break;
-			default:
-			    break;
-			}
+                        switch (rt) {
+                        case 2:
+                            type = Type.BALL_LARGE;
+                            break;
+                        case 3:
+                            type = Type.BURST;
+                            break;
+                        case 4:
+                            type = Type.CREEPER;
+                            break;
+                        case 5:
+                            type = Type.STAR;
+                            break;
+                        default:
+                            break;
+                        }
 
-			Color c1 = Util.getColor(r.nextInt(17) + 1);
-			Color c2 = Util.getColor(r.nextInt(17) + 1);
+                        Color c1 = Util.getColor(r.nextInt(17) + 1);
+                        Color c2 = Util.getColor(r.nextInt(17) + 1);
 
-			FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1)
-			    .withFade(c2).with(type).trail(r.nextBoolean()).build();
-			fm.addEffect(effect);
+                        FireworkEffect effect = FireworkEffect.builder().flicker(r.nextBoolean()).withColor(c1)
+                            .withFade(c2).with(type).trail(r.nextBoolean()).build();
+                        fm.addEffect(effect);
 
-			fm.setPower(r.nextInt(2) + 1);
-		    } else {
-			fm.addEffect(Jobs.getGCManager().getFireworkEffect());
-			fm.setPower(Jobs.getGCManager().FireworkPower);
-		    }
+                        fm.setPower(r.nextInt(2) + 1);
+                    } else {
+                        fm.addEffect(Jobs.getGCManager().getFireworkEffect());
+                        fm.setPower(Jobs.getGCManager().FireworkPower);
+                    }
 
-		    f.setFireworkMeta(fm);
-		}
-	    }, Jobs.getGCManager().ShootTime);
-	}
+                    f.setFireworkMeta(fm);
+                }
+            }, Jobs.getGCManager().ShootTime);
+        }
 
-	String message = Jobs.getLanguage().getMessage("message.levelup." + (Jobs.getGCManager().isBroadcastingLevelups()
-	    ? "broadcast" : "nobroadcast"));
+        String message = Jobs.getLanguage().getMessage("message.levelup." + (Jobs.getGCManager().isBroadcastingLevelups()
+            ? "broadcast" : "nobroadcast"));
 
-	message = message.replace("%jobname%", job.getDisplayName());
+        message = message.replace("%jobname%", job.getDisplayName());
 
-	if (levelUpEvent.getOldTitle() != null)
-	    message = message.replace("%titlename%", levelUpEvent.getOldTitle()
-		.getChatColor().toString() + levelUpEvent.getOldTitle().getName());
+        if (levelUpEvent.getOldTitle() != null)
+            message = message.replace("%titlename%", levelUpEvent.getOldTitle()
+                .getChatColor().toString() + levelUpEvent.getOldTitle().getName());
 
-	message = message.replace("%playername%", jPlayer.getName());
-	message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
-	message = message.replace("%joblevel%", prog.getLevelFormatted());
+        message = message.replace("%playername%", jPlayer.getName());
+        message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
+        message = message.replace("%joblevel%", prog.getLevelFormatted());
 
-	if (Jobs.getGCManager().isBroadcastingLevelups() || Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat) {
-	    for (String line : message.split("\n")) {
-		if (Jobs.getGCManager().isBroadcastingLevelups()) {
-		    if (Jobs.getGCManager().BroadcastingLevelUpLevels.contains(oldLevel + 1)
-			|| Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
-			plugin.getComplement().broadcastMessage(line);
-		} else if (player != null) {
-		    if (Jobs.getGCManager().LevelChangeActionBar)
-			CMIActionBar.send(player, line);
+        if (Jobs.getGCManager().isBroadcastingLevelups() || Jobs.getGCManager().LevelChangeActionBar || Jobs.getGCManager().LevelChangeChat) {
+            for (String line : message.split("\n")) {
+                if (Jobs.getGCManager().isBroadcastingLevelups()) {
+                    if (Jobs.getGCManager().BroadcastingLevelUpLevels.contains(oldLevel + 1)
+                        || Jobs.getGCManager().BroadcastingLevelUpLevels.contains(0))
+                        plugin.getComplement().broadcastMessage(line);
+                } else if (player != null) {
+                    if (Jobs.getGCManager().LevelChangeActionBar)
+                        CMIActionBar.send(player, line);
 
-		    if (Jobs.getGCManager().LevelChangeChat)
-			player.sendMessage(line);
-		}
-	    }
-	}
+                    if (Jobs.getGCManager().LevelChangeChat)
+                        player.sendMessage(line);
+                }
+            }
+        }
 
-	if (levelUpEvent.getNewTitle() != null && !levelUpEvent.getNewTitle().equals(levelUpEvent.getOldTitle())) {
-	    if (player != null && Jobs.getGCManager().SoundTitleChangeUse) {
-		try {
-		    player.getWorld().playSound(player.getLocation(), levelUpEvent.getTitleChangeSound(), levelUpEvent.getTitleChangeVolume(),
-			levelUpEvent.getTitleChangePitch());
-		} catch (Exception e) { // If it fails, we can ignore it
-		}
-	    }
+        if (levelUpEvent.getNewTitle() != null && !levelUpEvent.getNewTitle().equals(levelUpEvent.getOldTitle())) {
+            if (player != null && Jobs.getGCManager().SoundTitleChangeUse) {
+                try {
+                    player.getWorld().playSound(player.getLocation(), levelUpEvent.getTitleChangeSound(), levelUpEvent.getTitleChangeVolume(),
+                        levelUpEvent.getTitleChangePitch());
+                } catch (Exception e) { // If it fails, we can ignore it
+                }
+            }
 
-	    // user would skill up
-	    message = Jobs.getLanguage().getMessage("message.skillup." + (Jobs.getGCManager().isBroadcastingSkillups()
-		? "broadcast" : "nobroadcast"));
+            // user would skill up
+            message = Jobs.getLanguage().getMessage("message.skillup." + (Jobs.getGCManager().isBroadcastingSkillups()
+                ? "broadcast" : "nobroadcast"));
 
-	    message = message.replace("%playername%", jPlayer.getName());
-	    message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
-	    message = message.replace("%titlename%", levelUpEvent.getNewTitle()
-		.getChatColor().toString() + levelUpEvent.getNewTitle().getName());
-	    message = message.replace("%jobname%", job.getDisplayName());
+            message = message.replace("%playername%", jPlayer.getName());
+            message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
+            message = message.replace("%titlename%", levelUpEvent.getNewTitle()
+                .getChatColor().toString() + levelUpEvent.getNewTitle().getName());
+            message = message.replace("%jobname%", job.getDisplayName());
 
-	    if (Jobs.getGCManager().isBroadcastingSkillups() || Jobs.getGCManager().TitleChangeActionBar || Jobs.getGCManager().TitleChangeChat) {
-		for (String line : message.split("\n")) {
-		    if (Jobs.getGCManager().isBroadcastingSkillups()) {
-			plugin.getComplement().broadcastMessage(line);
-		    } else if (player != null) {
-			if (Jobs.getGCManager().TitleChangeActionBar)
-			    CMIActionBar.send(player, line);
+            if (Jobs.getGCManager().isBroadcastingSkillups() || Jobs.getGCManager().TitleChangeActionBar || Jobs.getGCManager().TitleChangeChat) {
+                for (String line : message.split("\n")) {
+                    if (Jobs.getGCManager().isBroadcastingSkillups()) {
+                        plugin.getComplement().broadcastMessage(line);
+                    } else if (player != null) {
+                        if (Jobs.getGCManager().TitleChangeActionBar)
+                            CMIActionBar.send(player, line);
 
-			if (Jobs.getGCManager().TitleChangeChat)
-			    player.sendMessage(line);
-		    }
-		}
-	    }
-	}
+                        if (Jobs.getGCManager().TitleChangeChat)
+                            player.sendMessage(line);
+                    }
+                }
+            }
+        }
 
-	jPlayer.reloadHonorific();
-	Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	performCommandOnLevelUp(jPlayer, prog, oldLevel, prog.getLevel());
-	Jobs.getSignUtil().updateAllSign(job);
+        jPlayer.reloadHonorific();
+        Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+        performCommandOnLevelUp(jPlayer, prog, oldLevel, prog.getLevel());
+        Jobs.getSignUtil().updateAllSign(job);
 
-	if (player != null && !job.getMaxLevelCommands().isEmpty() && prog.getLevel() == jPlayer.getMaxJobLevelAllowed(prog.getJob())) {
-	    for (String cmd : job.getMaxLevelCommands()) {
-		if (cmd.isEmpty()) {
-		    continue;
-		}
+        if (player != null && !job.getMaxLevelCommands().isEmpty() && prog.getLevel() == jPlayer.getMaxJobLevelAllowed(prog.getJob())) {
+            for (String cmd : job.getMaxLevelCommands()) {
+                if (cmd.isEmpty()) {
+                    continue;
+                }
 
-		String[] split = cmd.split(":", 2);
-		if (split.length == 0) {
-		    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd);
-		    continue;
-		}
+                String[] split = cmd.split(":", 2);
+                if (split.length == 0) {
+                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd);
+                    continue;
+                }
 
-		String command = "";
-		if (split.length > 1) {
-		    command = split[1];
-		    command = command.replace("[playerName]", player.getName());
-		    command = command.replace("[job]", job.getName());
+                String command = "";
+                if (split.length > 1) {
+                    command = split[1];
+                    command = command.replace("[playerName]", player.getName());
+                    command = command.replace("[job]", job.getName());
 
-		    if (split[0].equalsIgnoreCase("player:")) {
-			player.performCommand(command);
-		    } else {
-			plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
-		    }
-		}
-	    }
-	}
+                    if (split[0].equalsIgnoreCase("player:")) {
+                        player.performCommand(command);
+                    } else {
+                        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -862,26 +862,26 @@ public class PlayerManager {
      * @param oldLevel
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, JobProgression prog, int oldLevel) {
-	int newLevel = oldLevel + 1;
-	List<String> commands = getCommandsOnLevelUp(jPlayer, prog, newLevel);
-	commands.stream().forEach(cmd -> plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd));
+        int newLevel = oldLevel + 1;
+        List<String> commands = getCommandsOnLevelUp(jPlayer, prog, newLevel);
+        commands.stream().forEach(cmd -> plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd));
     }
 
     private static List<String> getCommandsOnLevelUp(JobsPlayer jPlayer, JobProgression prog, int newLevel) {
-	List<String> commands = new ArrayList<String>();
-	for (JobCommands command : prog.getJob().getCommands()) {
-	    if ((command.getLevelFrom() == 0 && command.getLevelUntil() == 0) || (newLevel >= command.getLevelFrom() && newLevel <= command.getLevelUntil())) {
-		for (String commandString : new ArrayList<>(command.getCommands())) {
-		    commandString = commandString.replace("[player]", jPlayer.getName())
-			.replace("[playerName]", jPlayer.getName())
-			.replace("[oldlevel]", Integer.toString(newLevel - 1))
-			.replace("[newlevel]", Integer.toString(newLevel))
-			.replace("[jobname]", prog.getJob().getName());
-		    commands.add(commandString);
-		}
-	    }
-	}
-	return commands;
+        List<String> commands = new ArrayList<String>();
+        for (JobCommands command : prog.getJob().getCommands()) {
+            if ((command.getLevelFrom() == 0 && command.getLevelUntil() == 0) || (newLevel >= command.getLevelFrom() && newLevel <= command.getLevelUntil())) {
+                for (String commandString : new ArrayList<>(command.getCommands())) {
+                    commandString = commandString.replace("[player]", jPlayer.getName())
+                        .replace("[playerName]", jPlayer.getName())
+                        .replace("[oldlevel]", Integer.toString(newLevel - 1))
+                        .replace("[newlevel]", Integer.toString(newLevel))
+                        .replace("[jobname]", prog.getJob().getName());
+                    commands.add(commandString);
+                }
+            }
+        }
+        return commands;
     }
 
     /**
@@ -892,12 +892,12 @@ public class PlayerManager {
      * @param oldLevel
      */
     public void performCommandOnLevelUp(JobsPlayer jPlayer, JobProgression prog, int oldLevel, int untilLevel) {
-	if (oldLevel > untilLevel)
-	    return;
-	for (int newLevel = oldLevel + 1; newLevel <= untilLevel; newLevel++) {
-	    List<String> commands = getCommandsOnLevelUp(jPlayer, prog, newLevel);
-	    commands.stream().forEach(cmd -> plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd));
-	}
+        if (oldLevel > untilLevel)
+            return;
+        for (int newLevel = oldLevel + 1; newLevel <= untilLevel; newLevel++) {
+            List<String> commands = getCommandsOnLevelUp(jPlayer, prog, newLevel);
+            commands.stream().forEach(cmd -> plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), cmd));
+        }
     }
 
     /**
@@ -908,7 +908,7 @@ public class PlayerManager {
      * @return true if the player is under the given jobs size
      */
     public boolean getJobsLimit(JobsPlayer jPlayer, short currentCount) {
-	return getMaxJobs(jPlayer) > currentCount;
+        return getMaxJobs(jPlayer) > currentCount;
     }
 
     /**
@@ -918,255 +918,255 @@ public class PlayerManager {
      * @return the maximum allowed jobs
      */
     public int getMaxJobs(JobsPlayer jPlayer) {
-	if (jPlayer == null) {
-	    return Jobs.getGCManager().getMaxJobs();
-	}
+        if (jPlayer == null) {
+            return Jobs.getGCManager().getMaxJobs();
+        }
 
-	int max = (int) Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max", false);
-	return max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
+        int max = (int) Jobs.getPermissionManager().getMaxPermission(jPlayer, "jobs.max", false);
+        return max == 0 ? Jobs.getGCManager().getMaxJobs() : max;
     }
 
     public BoostMultiplier getBoost(JobsPlayer player, Job job) {
-	return getBoost(player, job, false);
+        return getBoost(player, job, false);
     }
 
     public BoostMultiplier getBoost(JobsPlayer player, Job job, boolean force) {
-	BoostMultiplier b = new BoostMultiplier();
-	for (CurrencyType one : CurrencyType.values()) {
-	    b.add(one, getBoost(player, job, one, force));
-	}
-	return b;
+        BoostMultiplier b = new BoostMultiplier();
+        for (CurrencyType one : CurrencyType.values()) {
+            b.add(one, getBoost(player, job, one, force));
+        }
+        return b;
     }
 
     public double getBoost(JobsPlayer player, Job job, CurrencyType type) {
-	return getBoost(player, job, type, false);
+        return getBoost(player, job, type, false);
     }
 
     public double getBoost(JobsPlayer player, Job job, CurrencyType type, boolean force) {
-	return player.getBoost(job.getName(), type, force);
+        return player.getBoost(job.getName(), type, force);
     }
 
     /**
      * Perform reload for all jobs players.
      */
     public void reload() {
-	for (JobsPlayer jPlayer : playersUUID.values()) {
-	    for (JobProgression progression : jPlayer.progression) {
-		Job job = Jobs.getJob(progression.getJob().getName());
-		if (job != null)
-		    progression.setJob(job);
-	    }
-	    if (jPlayer.isOnline()) {
-		jPlayer.reloadHonorific();
-		jPlayer.reloadLimits();
-		Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
-	    }
-	}
+        for (JobsPlayer jPlayer : playersUUID.values()) {
+            for (JobProgression progression : jPlayer.progression) {
+                Job job = Jobs.getJob(progression.getJob().getName());
+                if (job != null)
+                    progression.setJob(job);
+            }
+            if (jPlayer.isOnline()) {
+                jPlayer.reloadHonorific();
+                jPlayer.reloadLimits();
+                Jobs.getPermissionHandler().recalculatePermissions(jPlayer);
+            }
+        }
     }
 
     private final Map<UUID, Map<Job, BoostMultiplier>> cache = new HashMap<>();
 
     public void resetItemBonusCache(UUID uuid) {
-	cache.remove(uuid);
+        cache.remove(uuid);
     }
 
     public BoostMultiplier getItemBoostNBT(Player player, Job prog) {
-	Map<Job, BoostMultiplier> cj = cache.get(player.getUniqueId());
-	if (cj == null) {
-	    cache.put(player.getUniqueId(), cj = new HashMap<>());
-	}
+        Map<Job, BoostMultiplier> cj = cache.get(player.getUniqueId());
+        if (cj == null) {
+            cache.put(player.getUniqueId(), cj = new HashMap<>());
+        }
 
-	BoostMultiplier boost = cj.get(prog);
-	if (boost == null) {
-	    cj.put(prog, boost = getInventoryBoost(player, prog));
-	}
+        BoostMultiplier boost = cj.get(prog);
+        if (boost == null) {
+            cj.put(prog, boost = getInventoryBoost(player, prog));
+        }
 
-	return boost;
+        return boost;
     }
 
     public BoostMultiplier getInventoryBoost(Player player, Job job) {
-	BoostMultiplier data = new BoostMultiplier();
+        BoostMultiplier data = new BoostMultiplier();
 
-	if (player == null || job == null)
-	    return data;
+        if (player == null || job == null)
+            return data;
 
-	List<JobItems> jitems = new ArrayList<>();
+        List<JobItems> jitems = new ArrayList<>();
 
-	// Check mainhand slot
-	if (Jobs.getGCManager().boostedItemsInMainHand) {
-	    jitems.add(getJobsItemByNbt(CMIItemStack.getItemInMainHand(player)));
-	}
+        // Check mainhand slot
+        if (Jobs.getGCManager().boostedItemsInMainHand) {
+            jitems.add(getJobsItemByNbt(CMIItemStack.getItemInMainHand(player)));
+        }
 
-	// Check offhand slot
-	if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
-	    jitems.add(getJobsItemByNbt(player.getInventory().getItemInOffHand()));
-	}
+        // Check offhand slot
+        if (Version.isCurrentEqualOrHigher(Version.v1_9_R1) && Jobs.getGCManager().boostedItemsInOffHand) {
+            jitems.add(getJobsItemByNbt(player.getInventory().getItemInOffHand()));
+        }
 
-	// Check armor slots
-	if (Jobs.getGCManager().boostedArmorItems) {
-	    for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
-		if (oneArmor != null && oneArmor.getType() != org.bukkit.Material.AIR) {
-		    jitems.add(getJobsItemByNbt(oneArmor));
-		}
-	    }
-	}
+        // Check armor slots
+        if (Jobs.getGCManager().boostedArmorItems) {
+            for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
+                if (oneArmor != null && oneArmor.getType() != org.bukkit.Material.AIR) {
+                    jitems.add(getJobsItemByNbt(oneArmor));
+                }
+            }
+        }
 
-	JobProgression progress = getJobsPlayer(player).getJobProgression(job);
+        JobProgression progress = getJobsPlayer(player).getJobProgression(job);
 
-	for (JobItems jitem : jitems) {
-	    if (jitem != null && jitem.getJobs().contains(job)) {
-		data.add(jitem.getBoost(progress));
-	    }
-	}
+        for (JobItems jitem : jitems) {
+            if (jitem != null && jitem.getJobs().contains(job)) {
+                data.add(jitem.getBoost(progress));
+            }
+        }
 
-	return data;
+        return data;
     }
 
     private final String jobsItemBoost = "JobsItemBoost";
 
     public boolean containsItemBoostByNBT(ItemStack item) {
-	return item != null && new CMINBT(item).hasNBT(jobsItemBoost);
+        return item != null && new CMINBT(item).hasNBT(jobsItemBoost);
     }
 
     public JobItems getJobsItemByNbt(ItemStack item) {
-	if (item == null)
-	    return null;
+        if (item == null)
+            return null;
 
-	Object itemName = new CMINBT(item).getString(jobsItemBoost);
+        Object itemName = new CMINBT(item).getString(jobsItemBoost);
 
-	if (itemName == null || itemName.toString().isEmpty()) {
-	    // Checking old boost items and converting to new format if needed
-	    if (new CMINBT(item).hasNBT(jobsItemBoost)) {
-		for (Job one : Jobs.getJobs()) {
-		    itemName = new CMINBT(item).getString(jobsItemBoost + "." + one.getName());
-		    if (itemName != null) {
-			JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
-			if (b != null) {
-			    ItemStack ic = (ItemStack) new CMINBT(item).setString(jobsItemBoost, b.getNode());
-			    item.setItemMeta(ic.getItemMeta());
-			}
-			break;
-		    }
-		}
-	    }
-	    if (itemName == null)
-		return null;
-	}
+        if (itemName == null || itemName.toString().isEmpty()) {
+            // Checking old boost items and converting to new format if needed
+            if (new CMINBT(item).hasNBT(jobsItemBoost)) {
+                for (Job one : Jobs.getJobs()) {
+                    itemName = new CMINBT(item).getString(jobsItemBoost + "." + one.getName());
+                    if (itemName != null) {
+                        JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
+                        if (b != null) {
+                            ItemStack ic = (ItemStack) new CMINBT(item).setString(jobsItemBoost, b.getNode());
+                            item.setItemMeta(ic.getItemMeta());
+                        }
+                        break;
+                    }
+                }
+            }
+            if (itemName == null)
+                return null;
+        }
 
-	return ItemBoostManager.getItemByKey(itemName.toString());
+        return ItemBoostManager.getItemByKey(itemName.toString());
     }
 
     public enum BoostOf {
-	McMMO, PetPay, NearSpawner, Permission, Global, Dynamic, Item, Area
+        McMMO, PetPay, NearSpawner, Permission, Global, Dynamic, Item, Area
     }
 
     public Boost getFinalBonus(JobsPlayer player, Job prog, boolean force, boolean getall) {
-	return getFinalBonus(player, prog, null, null, force, getall);
+        return getFinalBonus(player, prog, null, null, force, getall);
     }
 
     public Boost getFinalBonus(JobsPlayer player, Job prog, boolean force) {
-	return getFinalBonus(player, prog, null, null, force, false);
+        return getFinalBonus(player, prog, null, null, force, false);
     }
 
     public Boost getFinalBonus(JobsPlayer player, Job prog) {
-	return getFinalBonus(player, prog, null, null, false, false);
+        return getFinalBonus(player, prog, null, null, false, false);
     }
 
     public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim) {
-	return getFinalBonus(player, prog, ent, victim, false, false);
+        return getFinalBonus(player, prog, ent, victim, false, false);
     }
 
     public Boost getFinalBonus(JobsPlayer player, Job prog, Entity ent, LivingEntity victim, boolean force, boolean getall) {
-	Boost boost = new Boost();
+        Boost boost = new Boost();
 
-	if (player == null || !player.isOnline() || prog == null)
-	    return boost;
+        if (player == null || !player.isOnline() || prog == null)
+            return boost;
 
-	Player pl = player.getPlayer();
+        Player pl = player.getPlayer();
 
-	if (HookManager.getMcMMOManager().mcMMOPresent || HookManager.getMcMMOManager().mcMMOOverHaul)
-	    boost.add(BoostOf.McMMO, new BoostMultiplier().add(HookManager.getMcMMOManager().getMultiplier(pl)));
+        if (HookManager.getMcMMOManager().mcMMOPresent || HookManager.getMcMMOManager().mcMMOOverHaul)
+            boost.add(BoostOf.McMMO, new BoostMultiplier().add(HookManager.getMcMMOManager().getMultiplier(pl)));
 
-	double petPay = 0D;
+        double petPay = 0D;
 
-	if (ent instanceof Tameable) {
-	    Tameable t = (Tameable) ent;
-	    if (t.isTamed() && t.getOwner() instanceof Player) {
-		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", false, false);
-		if (petPay != 0D)
-		    boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
-	    }
-	}
+        if (ent instanceof Tameable) {
+            Tameable t = (Tameable) ent;
+            if (t.isTamed() && t.getOwner() instanceof Player) {
+                petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", false, false);
+                if (petPay != 0D)
+                    boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
+            }
+        }
 
-	if (ent != null && HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(ent, pl)) {
-	    if (petPay == 0D)
-		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", false, false);
-	    if (petPay != 0D)
-		boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
-	}
+        if (ent != null && HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(ent, pl)) {
+            if (petPay == 0D)
+                petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", false, false);
+            if (petPay != 0D)
+                boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
+        }
 
-	if (victim != null && victim.hasMetadata(mobSpawnerMetadata)) {
-	    double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", false, false);
-	    if (amount != 0D)
-		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
-	}
+        if (victim != null && victim.hasMetadata(mobSpawnerMetadata)) {
+            double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", false, false);
+            if (amount != 0D)
+                boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
+        }
 
-	if (getall) {
-	    if (petPay == 0D)
-		petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force, false);
+        if (getall) {
+            if (petPay == 0D)
+                petPay = Jobs.getPermissionManager().getMaxPermission(player, "jobs.petpay", force, false);
 
-	    if (petPay != 0D)
-		boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
+            if (petPay != 0D)
+                boost.add(BoostOf.PetPay, new BoostMultiplier().add(petPay));
 
-	    double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
-	    if (amount != 0D)
-		boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
-	}
+            double amount = Jobs.getPermissionManager().getMaxPermission(player, "jobs.nearspawner", force);
+            if (amount != 0D)
+                boost.add(BoostOf.NearSpawner, new BoostMultiplier().add(amount));
+        }
 
-	boost.add(BoostOf.Permission, getBoost(player, prog, force));
-	boost.add(BoostOf.Global, prog.getBoost());
+        boost.add(BoostOf.Permission, getBoost(player, prog, force));
+        boost.add(BoostOf.Global, prog.getBoost());
 
-	if (Jobs.getGCManager().useDynamicPayment)
-	    boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
+        if (Jobs.getGCManager().useDynamicPayment)
+            boost.add(BoostOf.Dynamic, new BoostMultiplier().add(prog.getBonus()));
 
-	if (pl != null) {
-	    boost.add(BoostOf.Item, getItemBoostNBT(pl, prog));
-	}
+        if (pl != null) {
+            boost.add(BoostOf.Item, getItemBoostNBT(pl, prog));
+        }
 
-	if (!Jobs.getRestrictedAreaManager().getRestrictedAreas().isEmpty())
-	    boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(pl)));
+        if (!Jobs.getRestrictedAreaManager().getRestrictedAreas().isEmpty())
+            boost.add(BoostOf.Area, new BoostMultiplier().add(Jobs.getRestrictedAreaManager().getRestrictedMultiplier(pl)));
 
-	return boost;
+        return boost;
     }
 
     public void autoJoinJobs(final Player player) {
-	if (!Jobs.getGCManager().AutoJobJoinUse || player == null || player.isOp())
-	    return;
+        if (!Jobs.getGCManager().AutoJobJoinUse || player == null || player.isOp())
+            return;
 
-	plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		if (!player.isOnline())
-		    return;
+        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                if (!player.isOnline())
+                    return;
 
-		JobsPlayer jPlayer = getJobsPlayer(player);
-		if (jPlayer == null || player.hasPermission("jobs.*"))
-		    return;
+                JobsPlayer jPlayer = getJobsPlayer(player);
+                if (jPlayer == null || player.hasPermission("jobs.*"))
+                    return;
 
-		int confMaxJobs = Jobs.getGCManager().getMaxJobs();
-		short playerMaxJobs = (short) jPlayer.progression.size();
+                int confMaxJobs = Jobs.getGCManager().getMaxJobs();
+                short playerMaxJobs = (short) jPlayer.progression.size();
 
-		if (confMaxJobs > 0 && playerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, playerMaxJobs))
-		    return;
+                if (confMaxJobs > 0 && playerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, playerMaxJobs))
+                    return;
 
-		for (Job one : Jobs.getJobs()) {
-		    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
-			continue;
+                for (Job one : Jobs.getJobs()) {
+                    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
+                        continue;
 
-		    if (!jPlayer.isInJob(one) && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
-			joinJob(jPlayer, one);
-		}
-	    }
-	}, Jobs.getGCManager().AutoJobJoinDelay * 20L);
+                    if (!jPlayer.isInJob(one) && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
+                        joinJob(jPlayer, one);
+                }
+            }
+        }, Jobs.getGCManager().AutoJobJoinDelay * 20L);
     }
 }
