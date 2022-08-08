@@ -142,1837 +142,1844 @@ public final class JobsPaymentListener implements Listener {
     private final String blockMetadata = "BlockOwner";
 
     private final Cache<UUID, Double> damageDealtByPlayers = CacheBuilder.newBuilder()
-	.expireAfterWrite(5, TimeUnit.MINUTES)
-	.weakKeys()
-	.build();
+        .expireAfterWrite(5, TimeUnit.MINUTES)
+        .weakKeys()
+        .build();
     private final Cache<UUID, Entity> punchedEndCrystals = CacheBuilder.newBuilder()
-	.expireAfterWrite(10, TimeUnit.SECONDS)
-	.weakKeys()
-	.build();
+        .expireAfterWrite(10, TimeUnit.SECONDS)
+        .weakKeys()
+        .build();
     private Cache<UUID, Long> cowMilkingTimer;
 
     public JobsPaymentListener(Jobs plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
 
-	if (Jobs.getGCManager().CowMilkingTimer > 0) {
-	    cowMilkingTimer = CacheBuilder.newBuilder()
-		.expireAfterWrite(Jobs.getGCManager().CowMilkingTimer, TimeUnit.MILLISECONDS)
-		.weakKeys()
-		.build();
-	}
+        if (Jobs.getGCManager().CowMilkingTimer > 0) {
+            cowMilkingTimer = CacheBuilder.newBuilder()
+                .expireAfterWrite(Jobs.getGCManager().CowMilkingTimer, TimeUnit.MILLISECONDS)
+                .weakKeys()
+                .build();
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void villagerTradeInventoryClick(InventoryClickEvent event) {
-	// If event is nothing or place, do nothing
-	switch (event.getAction()) {
-	case NOTHING:
-	case PLACE_ONE:
-	case PLACE_ALL:
-	case PLACE_SOME:
-	    return;
-	default:
-	    break;
-	}
+        // If event is nothing or place, do nothing
+        switch (event.getAction()) {
+        case NOTHING:
+        case PLACE_ONE:
+        case PLACE_ALL:
+        case PLACE_SOME:
+            return;
+        default:
+            break;
+        }
 
-	if (event.getInventory().getType() != InventoryType.MERCHANT || event.getSlot() != 2 || event.getSlotType() != SlotType.RESULT)
-	    return;
+        if (event.getInventory().getType() != InventoryType.MERCHANT || event.getSlot() != 2 || event.getSlotType() != SlotType.RESULT)
+            return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+            return;
 
-	ItemStack resultStack = event.getClickedInventory().getItem(2);
-	if (resultStack == null)
-	    return;
+        ItemStack resultStack = event.getClickedInventory().getItem(2);
+        if (resultStack == null)
+            return;
 
-	if (!(event.getWhoClicked() instanceof Player))
-	    return;
+        if (!(event.getWhoClicked() instanceof Player))
+            return;
 
-	Player player = (Player) event.getWhoClicked();
-	//Check if inventory is full and using shift click, possible money dupping fix
-	if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
-	    return;
-	}
+        Player player = (Player) event.getWhoClicked();
+        //Check if inventory is full and using shift click, possible money dupping fix
+        if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
+            player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
+            return;
+        }
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	if (!event.isLeftClick() && !event.isRightClick())
-	    return;
+        if (!event.isLeftClick() && !event.isRightClick())
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return;
 
-	if (!Jobs.getGCManager().payForEachVTradeItem) {
-	    ItemStack currentItem = event.getCurrentItem();
+        if (!Jobs.getGCManager().payForEachVTradeItem) {
+            ItemStack currentItem = event.getCurrentItem();
 
-	    if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
-		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.VTRADE));
-	    } else if (currentItem != null) {
-		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.VTRADE));
-	    }
+            if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
+                Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.VTRADE));
+            } else if (currentItem != null) {
+                Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.VTRADE));
+            }
 
-	    return;
-	}
+            return;
+        }
 
-	// Checking how much player traded
-	ItemStack toCraft = event.getCurrentItem();
-	ItemStack toStore = event.getCursor();
-	// Make sure we are actually traded anything
-	if (hasItems(toCraft)) {
-	    if (event.isShiftClick())
-		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.VTRADE);
-	    else {
-		// The items are stored in the cursor. Make sure there's enough space.
-		if (isStackSumLegal(toCraft, toStore)) {
-		    int newItemsCount = toCraft.getAmount();
-		    while (newItemsCount >= 1) {
-			newItemsCount--;
-			if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
-			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.VTRADE));
-			else
-			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.VTRADE));
-		    }
-		}
-	    }
-	}
+        // Checking how much player traded
+        ItemStack toCraft = event.getCurrentItem();
+        ItemStack toStore = event.getCursor();
+        // Make sure we are actually traded anything
+        if (hasItems(toCraft)) {
+            if (event.isShiftClick())
+                schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.VTRADE);
+            else {
+                // The items are stored in the cursor. Make sure there's enough space.
+                if (isStackSumLegal(toCraft, toStore)) {
+                    int newItemsCount = toCraft.getAmount();
+                    while (newItemsCount >= 1) {
+                        newItemsCount--;
+                        if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName())
+                            Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.VTRADE));
+                        else
+                            Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.VTRADE));
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCowMilking(PlayerInteractEntityEvent event) {
-	Entity entity = event.getRightClicked();
+        Entity entity = event.getRightClicked();
 
-	CMIEntityType type = CMIEntityType.getByType(entity.getType());
+        CMIEntityType type = CMIEntityType.getByType(entity.getType());
 
-	if (type != CMIEntityType.COW && type != CMIEntityType.MUSHROOM_COW && type != CMIEntityType.GOAT)
-	    return;
+        if (type != CMIEntityType.COW && type != CMIEntityType.MUSHROOM_COW && type != CMIEntityType.GOAT)
+            return;
 
-	Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
-	ItemStack itemInHand = CMIItemStack.getItemInMainHand(player);
-	if (itemInHand.getType() != Material.BUCKET && itemInHand.getType() != Material.BOWL) {
-	    return;
-	}
+        ItemStack itemInHand = CMIItemStack.getItemInMainHand(player);
+        if (itemInHand.getType() != Material.BUCKET && itemInHand.getType() != Material.BOWL) {
+            return;
+        }
 
-	if (itemInHand.getType() == Material.BOWL && entity.getType() != EntityType.MUSHROOM_COW) {
-	    return;
-	}
+        if (itemInHand.getType() == Material.BOWL && entity.getType() != EntityType.MUSHROOM_COW) {
+            return;
+        }
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (!Jobs.isPlayerHaveAction(jPlayer, ActionType.MILK)) {
-	    return;
-	}
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (!Jobs.isPlayerHaveAction(jPlayer, ActionType.MILK)) {
+            return;
+        }
 
-	if (Jobs.getGCManager().CowMilkingTimer > 0) {
-	    UUID cowUUID = entity.getUniqueId();
-	    Long time = cowMilkingTimer.getIfPresent(cowUUID);
-	    if (time != null) {
-		if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
-		    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
-		    player.sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
+        if (Jobs.getGCManager().CowMilkingTimer > 0) {
+            UUID cowUUID = entity.getUniqueId();
+            Long time = cowMilkingTimer.getIfPresent(cowUUID);
+            if (time != null) {
+                if (System.currentTimeMillis() < time + Jobs.getGCManager().CowMilkingTimer) {
+                    long timer = ((Jobs.getGCManager().CowMilkingTimer - (System.currentTimeMillis() - time)) / 1000);
+                    player.sendMessage(Jobs.getLanguage().getMessage("message.cowtimer", "%time%", timer));
 
-		    if (Jobs.getGCManager().CancelCowMilking)
-			event.setCancelled(true);
-		    return;
-		}
-	    } else {
-		cowMilkingTimer.put(cowUUID, System.currentTimeMillis());
-	    }
-	}
+                    if (Jobs.getGCManager().CancelCowMilking)
+                        event.setCancelled(true);
+                    return;
+                }
+            } else {
+                cowMilkingTimer.put(cowUUID, System.currentTimeMillis());
+            }
+        }
 
-	Jobs.action(jPlayer, new EntityActionInfo(entity, ActionType.MILK));
+        Jobs.action(jPlayer, new EntityActionInfo(entity, ActionType.MILK));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityShear(PlayerShearEntityEvent event) {
-	Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
-	if (!(event.getEntity() instanceof Sheep) || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
-	    return;
+        if (!(event.getEntity() instanceof Sheep) || !Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+            return;
 
-	Sheep sheep = (Sheep) event.getEntity();
+        Sheep sheep = (Sheep) event.getEntity();
 
-	// mob spawner, no payment or experience
-	if (!Jobs.getGCManager().payNearSpawner() && sheep.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
-	    sheep.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-	    return;
-	}
+        // mob spawner, no payment or experience
+        if (!Jobs.getGCManager().payNearSpawner() && sheep.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+            sheep.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+            return;
+        }
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	if (!payForItemDurabilityLoss(player))
-	    return;
+        if (!payForItemDurabilityLoss(player))
+            return;
 
-	// pay
-	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jDamager == null || sheep.getColor() == null)
-	    return;
+        // pay
+        JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jDamager == null || sheep.getColor() == null)
+            return;
 
-	if (Jobs.getGCManager().payForStackedEntities) {
-	    if (JobsHook.WildStacker.isEnabled() && !StackSplit.SHEEP_SHEAR.isEnabled()) {
-		for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(sheep) - 1; i++) {
-		    Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
-		}
-	    } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(sheep)) {
-		for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
-		    if (stacked.getEntity().getType() == sheep.getType()) {
-			Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getEntity()).getColor().name(), ActionType.SHEAR));
-		    }
-		}
-	    }
-	}
+        if (Jobs.getGCManager().payForStackedEntities) {
+            if (JobsHook.WildStacker.isEnabled() && !StackSplit.SHEEP_SHEAR.isEnabled()) {
+                for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(sheep) - 1; i++) {
+                    Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
+                }
+            } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(sheep)) {
+                for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
+                    if (stacked.getEntity().getType() == sheep.getType()) {
+                        Jobs.action(jDamager, new CustomKillInfo(((Sheep) stacked.getEntity()).getColor().name(), ActionType.SHEAR));
+                    }
+                }
+            }
+        }
 
-	Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
+        Jobs.action(jDamager, new CustomKillInfo(sheep.getColor().name(), ActionType.SHEAR));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBrewEvent(BrewEvent event) {
-	Block block = event.getBlock();
+        Block block = event.getBlock();
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+            return;
 
-	BlockOwnerShip ownerShip = plugin.getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
+        BlockOwnerShip ownerShip = plugin.getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
 
-	if (ownerShip == null)
-	    return;
+        if (ownerShip == null)
+            return;
 
-	UUID uuid = null;
+        UUID uuid = null;
 
-	List<MetadataValue> data = ownerShip.getBlockMetadatas(block);
-	if (data.isEmpty()) {
-	    uuid = ownerShip.getOwnerByLocation(block.getLocation());
-	    if (uuid == null)
-		return;
-	}
+        List<MetadataValue> data = ownerShip.getBlockMetadatas(block);
+        if (data.isEmpty()) {
+            uuid = ownerShip.getOwnerByLocation(block.getLocation());
+            if (uuid == null)
+                return;
+        }
 
-	// only care about first
-	if (uuid == null && !data.isEmpty()) {
-	    MetadataValue value = data.get(0);
-	    try {
-		uuid = UUID.fromString(value.asString());
-	    } catch (IllegalArgumentException e) {
-		return;
-	    }
-	}
+        // only care about first
+        if (uuid == null && !data.isEmpty()) {
+            MetadataValue value = data.get(0);
+            try {
+                uuid = UUID.fromString(value.asString());
+            } catch (IllegalArgumentException e) {
+                return;
+            }
+        }
 
-	if (uuid == null)
-	    return;
+        if (uuid == null)
+            return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(uuid);
-	if (jPlayer == null)
-	    return;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(uuid);
+        if (jPlayer == null)
+            return;
 
-	Player player = jPlayer.getPlayer();
+        Player player = jPlayer.getPlayer();
 
-	if (player == null)
-	    return;
+        if (player == null)
+            return;
 
-	if (Jobs.getGCManager().blockOwnershipRange > 0 && Util.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
-	    return;
+        if (Jobs.getGCManager().blockOwnershipRange > 0 && Util.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	ItemStack contents = event.getContents().getIngredient();
-	if (contents != null) {
-	    Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
-	}
+        ItemStack contents = event.getContents().getIngredient();
+        if (contents != null) {
+            Jobs.action(jPlayer, new ItemActionInfo(contents, ActionType.BREW));
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-	final Block block = event.getBlock();
+        final Block block = event.getBlock();
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+            return;
 
-	Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
-	// Remove block owner ships
-	plugin.removeBlockOwnerShip(block);
+        // Remove block owner ships
+        plugin.removeBlockOwnerShip(block);
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
+        BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 
-	FastPayment fp = Jobs.FASTPAYMENT.get(player.getUniqueId());
-	if (fp != null) {
-	    if (fp.getTime() > System.currentTimeMillis() && (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
-		fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub()))) {
-		Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
-		return;
-	    }
-	    Jobs.FASTPAYMENT.remove(player.getUniqueId());
-	}
-	if (!payForItemDurabilityLoss(player))
-	    return;
+        FastPayment fp = Jobs.FASTPAYMENT.get(player.getUniqueId());
+        if (fp != null) {
+            if (fp.getTime() > System.currentTimeMillis() && (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
+                fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub()))) {
+                Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
+                return;
+            }
+            Jobs.FASTPAYMENT.remove(player.getUniqueId());
+        }
+        if (!payForItemDurabilityLoss(player))
+            return;
 
-	// Protection for block break with silktouch
-	if (Jobs.getGCManager().useSilkTouchProtection) {
-	    ItemStack item = CMIItemStack.getItemInMainHand(player);
+        // Protection for block break with silktouch
+        if (Jobs.getGCManager().useSilkTouchProtection) {
+            ItemStack item = CMIItemStack.getItemInMainHand(player);
 
-	    if (item.getType() != Material.AIR && Jobs.getBpManager().isInBp(block)) {
-		for (Enchantment one : item.getEnchantments().keySet()) {
-		    if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH) {
-			return;
-		    }
-		}
-	    }
-	}
+            if (item.getType() != Material.AIR && Jobs.getBpManager().isInBp(block)) {
+                for (Enchantment one : item.getEnchantments().keySet()) {
+                    if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH) {
+                        return;
+                    }
+                }
+            }
+        }
 
-	// Better implementation?
-	// Prevent money duplication when breaking plant blocks
-	/*Material brokenBlock = block.getRelative(BlockFace.DOWN).getType();
-	if (Jobs.getGCManager().preventCropResizePayment && (brokenBlock == CMIMaterial.SUGAR_CANE.getMaterial()
-	    || brokenBlock == CMIMaterial.KELP.getMaterial()
-	    || brokenBlock == CMIMaterial.CACTUS.getMaterial() || brokenBlock == CMIMaterial.BAMBOO.getMaterial())) {
-	    return;
-	}*/
+        // Better implementation?
+        // Prevent money duplication when breaking plant blocks
+        /*Material brokenBlock = block.getRelative(BlockFace.DOWN).getType();
+        if (Jobs.getGCManager().preventCropResizePayment && (brokenBlock == CMIMaterial.SUGAR_CANE.getMaterial()
+            || brokenBlock == CMIMaterial.KELP.getMaterial()
+            || brokenBlock == CMIMaterial.CACTUS.getMaterial() || brokenBlock == CMIMaterial.BAMBOO.getMaterial())) {
+            return;
+        }*/
 
-	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), bInfo, block);
-	breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), player.getUniqueId());
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), bInfo, block);
+        breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), player.getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-	// check to make sure you can build
-	if (!event.canBuild())
-	    return;
+        // check to make sure you can build
+        if (!event.canBuild())
+            return;
 
-	// A tool should not trigger a BlockPlaceEvent (fixes stripping logs bug #940)
-	if (CMIMaterial.get(event.getItemInHand().getType()).isTool())
-	    return;
+        // A tool should not trigger a BlockPlaceEvent (fixes stripping logs bug #940)
+        if (CMIMaterial.get(event.getItemInHand().getType()).isTool())
+            return;
 
-	Block block = event.getBlock();
+        Block block = event.getBlock();
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+            return;
 
-	if (Version.isCurrentEqualOrLower(Version.v1_12_R1)
-	    && CMILib.getInstance().getItemManager().getItem(event.getItemInHand()).isSimilar(CMIMaterial.BONE_MEAL.newCMIItemStack()))
-	    return;
+        if (Version.isCurrentEqualOrLower(Version.v1_12_R1)
+            && CMILib.getInstance().getItemManager().getItem(event.getItemInHand()).isSimilar(CMIMaterial.BONE_MEAL.newCMIItemStack()))
+            return;
 
-	Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new BlockActionInfo(block, ActionType.PLACE), block);
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new BlockActionInfo(block, ActionType.PLACE), block);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
-	Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle() && !player.getVehicle().getType().equals(EntityType.BOAT))
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle() && !player.getVehicle().getType().equals(EntityType.BOAT))
+            return;
 
-	if (!payForItemDurabilityLoss(player))
-	    return;
+        if (!payForItemDurabilityLoss(player))
+            return;
 
-	if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
-	    // check is mcMMO enabled
-	    if (JobsHook.mcMMO.isEnabled()) {
-		McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH && event.getCaught() instanceof Item) {
+            // check is mcMMO enabled
+            if (JobsHook.mcMMO.isEnabled()) {
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-		// check is the fishing being exploited. If yes, prevent payment.
-		if (mcMMOPlayer != null && ExperienceConfig.getInstance().isFishingExploitingPrevented()
-		    && mcMMOPlayer.getFishingManager().isExploitingFishing(event.getHook().getLocation().toVector())) {
-		    return;
-		}
-	    }
+                // check is the fishing being exploited. If yes, prevent payment.
+                if (mcMMOPlayer != null && ExperienceConfig.getInstance().isFishingExploitingPrevented()
+                    && mcMMOPlayer.getFishingManager().isExploitingFishing(event.getHook().getLocation().toVector())) {
+                    return;
+                }
+            }
 
-	    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player),
-		new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH));
-	}
+            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player),
+                new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH));
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAnimalTame(EntityTameEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+            return;
 
-	LivingEntity animal = event.getEntity();
+        LivingEntity animal = event.getEntity();
 
-	// Entity being tamed must be alive
-	if (animal.isDead()) {
-	    return;
-	}
+        // Entity being tamed must be alive
+        if (animal.isDead()) {
+            return;
+        }
 
-	// mob spawner, no payment or experience
-	if (!Jobs.getGCManager().payNearSpawner() && animal.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
-	    animal.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-	    return;
-	}
+        // mob spawner, no payment or experience
+        if (!Jobs.getGCManager().payNearSpawner() && animal.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+            animal.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+            return;
+        }
 
-	Player player = (Player) event.getOwner();
-	if (!player.isOnline())
-	    return;
+        Player player = (Player) event.getOwner();
+        if (!player.isOnline())
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	// pay
-	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jDamager == null)
-	    return;
+        // pay
+        JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jDamager == null)
+            return;
 
-	if (Jobs.getGCManager().payForStackedEntities) {
-	    if (JobsHook.WildStacker.isEnabled()) {
-		for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(animal) - 1; i++) {
-		    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
-		}
-	    } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(animal)) {
-		for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
-		    if (stacked.getEntity().getType() == animal.getType()) {
-			Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.TAME));
-		    }
-		}
-	    }
-	}
+        if (Jobs.getGCManager().payForStackedEntities) {
+            if (JobsHook.WildStacker.isEnabled()) {
+                for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(animal) - 1; i++) {
+                    Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
+                }
+            } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(animal)) {
+                for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
+                    if (stacked.getEntity().getType() == animal.getType()) {
+                        Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.TAME));
+                    }
+                }
+            }
+        }
 
-	Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
+        Jobs.action(jDamager, new EntityActionInfo(animal, ActionType.TAME));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryCraft(CraftItemEvent event) {
-	// If event is nothing or place, do nothing
-	switch (event.getAction()) {
-	case NOTHING:
-	case PLACE_ONE:
-	case PLACE_ALL:
-	case PLACE_SOME:
-	    return;
-	default:
-	    break;
-	}
+        // If event is nothing or place, do nothing
+        switch (event.getAction()) {
+        case NOTHING:
+        case PLACE_ONE:
+        case PLACE_ALL:
+        case PLACE_SOME:
+            return;
+        default:
+            break;
+        }
 
-	if (event.getSlotType() != SlotType.RESULT)
-	    return;
+        if (event.getSlotType() != SlotType.RESULT)
+            return;
 
-	if (!event.isLeftClick() && !event.isRightClick())
-	    return;
+        if (!event.isLeftClick() && !event.isRightClick())
+            return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getWhoClicked().getWorld()))
+            return;
 
-	ItemStack resultStack = event.getRecipe().getResult();
+        ItemStack resultStack = event.getRecipe().getResult();
 
-	if (!(event.getWhoClicked() instanceof Player))
-	    return;
+        if (!(event.getWhoClicked() instanceof Player))
+            return;
 
-	Player player = (Player) event.getWhoClicked();
+        Player player = (Player) event.getWhoClicked();
 
-	//Check if inventory is full and using shift click, possible money dupping fix
-	if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
-	    return;
-	}
+        //Check if inventory is full and using shift click, possible money dupping fix
+        if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
+            player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
+            return;
+        }
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	// Checking if item is been repaired, not crafted. Combining 2 items
-	ItemStack[] sourceItems = event.getInventory().getContents();
+        // Checking if item is been repaired, not crafted. Combining 2 items
+        ItemStack[] sourceItems = event.getInventory().getContents();
 
-	// For dye check
-	List<ItemStack> dyeStack = new java.util.ArrayList<>();
+        // For dye check
+        List<ItemStack> dyeStack = new java.util.ArrayList<>();
 
-	int y = -1;
+        int y = -1;
 
-	CMIMaterial first = null, second = null, third = null;
+        CMIMaterial first = null, second = null, third = null;
 
-	boolean leather = false;
-	boolean shulker = false;
+        boolean leather = false;
+        boolean shulker = false;
 
-	for (ItemStack s : sourceItems) {
-	    if (s == null)
-		continue;
+        for (ItemStack s : sourceItems) {
+            if (s == null)
+                continue;
 
-	    CMIMaterial mat = CMIMaterial.get(s);
-	    if (mat.isDye())
-		dyeStack.add(s);
+            CMIMaterial mat = CMIMaterial.get(s);
+            if (mat.isDye())
+                dyeStack.add(s);
 
-	    if (mat != CMIMaterial.NONE && mat != CMIMaterial.AIR) {
-		y++;
+            if (mat != CMIMaterial.NONE && mat != CMIMaterial.AIR) {
+                y++;
 
-		if (y == 0)
-		    first = mat;
-		if (y == 1)
-		    second = mat;
-		if (y == 2)
-		    third = mat;
-	    }
+                if (y == 0)
+                    first = mat;
+                if (y == 1)
+                    second = mat;
+                if (y == 2)
+                    third = mat;
+            }
 
-	    switch (mat) {
-	    case LEATHER_BOOTS:
-	    case LEATHER_CHESTPLATE:
-	    case LEATHER_HELMET:
-	    case LEATHER_LEGGINGS:
-	    case LEATHER_HORSE_ARMOR:
-		leather = true;
-		break;
-	    case SHULKER_BOX:
-	    case BLACK_SHULKER_BOX:
-	    case BLUE_SHULKER_BOX:
-	    case BROWN_SHULKER_BOX:
-	    case CYAN_SHULKER_BOX:
-	    case GRAY_SHULKER_BOX:
-	    case GREEN_SHULKER_BOX:
-	    case LIGHT_BLUE_SHULKER_BOX:
-	    case LIGHT_GRAY_SHULKER_BOX:
-	    case LIME_SHULKER_BOX:
-	    case MAGENTA_SHULKER_BOX:
-	    case ORANGE_SHULKER_BOX:
-	    case PINK_SHULKER_BOX:
-	    case PURPLE_SHULKER_BOX:
-	    case RED_SHULKER_BOX:
-	    case WHITE_SHULKER_BOX:
-	    case YELLOW_SHULKER_BOX:
-		shulker = true;
-		break;
-	    default:
-		break;
-	    }
-	}
+            switch (mat) {
+            case LEATHER_BOOTS:
+            case LEATHER_CHESTPLATE:
+            case LEATHER_HELMET:
+            case LEATHER_LEGGINGS:
+            case LEATHER_HORSE_ARMOR:
+                leather = true;
+                break;
+            case SHULKER_BOX:
+            case BLACK_SHULKER_BOX:
+            case BLUE_SHULKER_BOX:
+            case BROWN_SHULKER_BOX:
+            case CYAN_SHULKER_BOX:
+            case GRAY_SHULKER_BOX:
+            case GREEN_SHULKER_BOX:
+            case LIGHT_BLUE_SHULKER_BOX:
+            case LIGHT_GRAY_SHULKER_BOX:
+            case LIME_SHULKER_BOX:
+            case MAGENTA_SHULKER_BOX:
+            case ORANGE_SHULKER_BOX:
+            case PINK_SHULKER_BOX:
+            case PURPLE_SHULKER_BOX:
+            case RED_SHULKER_BOX:
+            case WHITE_SHULKER_BOX:
+            case YELLOW_SHULKER_BOX:
+                shulker = true;
+                break;
+            default:
+                break;
+            }
+        }
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return;
+ 
+        if (y == 2 && first == second && third == second) {
+            if (Jobs.getGCManager().payForCombiningItems && third == first) {
+                Jobs.action(jPlayer, new ItemActionInfo(event.getCurrentItem(), ActionType.REPAIR));
+            } else {
+                Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
+            }
+            return; 
+        }
 
-	if (y == 2 && first == second && third == second) {
-	    if (Jobs.getGCManager().payForCombiningItems && third == first) {
-		Jobs.action(jPlayer, new ItemActionInfo(event.getCurrentItem(), ActionType.REPAIR));
-	    } else {
-		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
-	    }
-	    return;
-	}
+        // Check Dyes
+        if (y >= 2 && (third != null && third.isDye() || second != null && second.isDye() || first != null && first.isDye())
+            && (leather || shulker)) {
+            Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
+            for (ItemStack OneDye : dyeStack) {
+                Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
+            }
+            return;
+        }
 
-	// Check Dyes
-	if (y >= 2 && (third != null && third.isDye() || second != null && second.isDye() || first != null && first.isDye())
-	    && (leather || shulker)) {
-	    Jobs.action(jPlayer, new ItemActionInfo(sourceItems[0], ActionType.DYE));
-	    for (ItemStack OneDye : dyeStack) {
-		Jobs.action(jPlayer, new ItemActionInfo(OneDye, ActionType.DYE));
-	    }
-	    return;
-	}
+        // If we need to pay only by each craft action we will skip calculation how much was crafted
+        if (!Jobs.getGCManager().PayForEachCraft) {
+            ItemStack currentItem = event.getCurrentItem();
 
-	// If we need to pay only by each craft action we will skip calculation how much was crafted
-	if (!Jobs.getGCManager().PayForEachCraft) {
-	    ItemStack currentItem = event.getCurrentItem();
+            // when we trying to craft tipped arrow effects
+            if (currentItem != null && currentItem.getItemMeta() instanceof PotionMeta) {
+                PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
+                Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
+            } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
+                Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
+            } else if (currentItem != null) {
+                Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.CRAFT));
+            }
 
-	    // when we trying to craft tipped arrow effects
-	    if (currentItem != null && currentItem.getItemMeta() instanceof PotionMeta) {
-		PotionMeta potion = (PotionMeta) currentItem.getItemMeta();
-		Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.CRAFT, potion.getBasePotionData().getType()));
-	    } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
-		Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), ActionType.CRAFT));
-	    } else if (currentItem != null) {
-		Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.CRAFT));
-	    }
+            return;
+        }
 
-	    return;
-	}
+        // Checking how much player crafted
+        ItemStack toCraft = event.getCurrentItem();
 
-	// Checking how much player crafted
-	ItemStack toCraft = event.getCurrentItem();
+        // Make sure we are actually crafting anything
+        if (hasItems(toCraft))
+            if (event.isShiftClick())
+                schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.CRAFT);
+            else {
+                // The items are stored in the cursor. Make sure there's enough space.
+                if (isStackSumLegal(toCraft, event.getCursor())) {
+                    int newItemsCount = toCraft.getAmount();
 
-	// Make sure we are actually crafting anything
-	if (hasItems(toCraft))
-	    if (event.isShiftClick())
-		schedulePostDetection(player, toCraft.clone(), jPlayer, resultStack.clone(), ActionType.CRAFT);
-	    else {
-		// The items are stored in the cursor. Make sure there's enough space.
-		if (isStackSumLegal(toCraft, event.getCursor())) {
-		    int newItemsCount = toCraft.getAmount();
+                    while (newItemsCount >= 1) {
+                        newItemsCount--;
 
-		    while (newItemsCount >= 1) {
-			newItemsCount--;
+                        org.bukkit.inventory.meta.ItemMeta resultItemMeta = resultStack.getItemMeta();
 
-			org.bukkit.inventory.meta.ItemMeta resultItemMeta = resultStack.getItemMeta();
-
-			if (resultItemMeta != null && resultItemMeta.hasDisplayName())
-			    Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultItemMeta.getDisplayName()), ActionType.CRAFT));
-			else
-			    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
-		    }
-		}
-	    }
+                        if (resultItemMeta != null && resultItemMeta.hasDisplayName())
+                            Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultItemMeta.getDisplayName()), ActionType.CRAFT));
+                        else
+                            Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+                    }
+                }
+            }
     }
 
     // HACK! The API doesn't allow us to easily determine the resulting number of
     // crafted items, so we're forced to compare the inventory before and after.
     private void schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack, final ActionType type) {
-	final ItemStack[] preInv = player.getInventory().getContents();
-	// Clone the array. The content may (was for me) be mutable.
-	for (int i = 0; i < preInv.length; i++) {
-	    if (preInv[i] != null)
-		preInv[i] = preInv[i].clone();
-	}
+        final ItemStack[] preInv = player.getInventory().getContents();
+        // Clone the array. The content may (was for me) be mutable.
+        for (int i = 0; i < preInv.length; i++) {
+            if (preInv[i] != null)
+                preInv[i] = preInv[i].clone();
+        }
 
-	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		final ItemStack[] postInv = player.getInventory().getContents();
-		int newItemsCount = 0;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                final ItemStack[] postInv = player.getInventory().getContents();
+                int newItemsCount = 0;
 
-		for (int i = 0; i < preInv.length; i++) {
-		    ItemStack pre = preInv[i];
-		    ItemStack post = postInv[i];
+                for (int i = 0; i < preInv.length; i++) {
+                    ItemStack pre = preInv[i];
+                    ItemStack post = postInv[i];
 
-		    // We're only interested in filled slots that are different
-		    if (hasSameItem(compareItem, post) && (hasSameItem(compareItem, pre) || pre == null)) {
-			newItemsCount += post.getAmount() - (pre != null ? pre.getAmount() : 0);
-		    }
-		}
+                    // We're only interested in filled slots that are different
+                    if (hasSameItem(compareItem, post) && (hasSameItem(compareItem, pre) || pre == null)) {
+                        newItemsCount += post.getAmount() - (pre != null ? pre.getAmount() : 0);
+                    }
+                }
 
-		while (newItemsCount > 0) {
-		    newItemsCount--;
+                while (newItemsCount > 0) {
+                    newItemsCount--;
 
-		    Jobs.action(jPlayer, new ItemActionInfo(resultStack, type));
-		}
-	    }
-	}, 1);
+                    Jobs.action(jPlayer, new ItemActionInfo(resultStack, type));
+                }
+            }
+        }, 1);
     }
 
     private static boolean hasItems(ItemStack stack) {
-	return stack != null && stack.getAmount() > 0;
+        return stack != null && stack.getAmount() > 0;
     }
 
     private static boolean hasSameItem(ItemStack a, ItemStack b) {
-	if (a == null)
-	    return b == null;
-	else if (b == null)
-	    return false;
+        if (a == null)
+            return b == null;
+        else if (b == null)
+            return false;
 
-	CMIMaterial mat1 = CMIMaterial.get(a),
-	    mat2 = CMIMaterial.get(b);
-	return mat1 == mat2 && Util.getDurability(a) == Util.getDurability(b) && Objects.equal(a.getData(), b.getData()) &&
-	    Objects.equal(a.getEnchantments(), b.getEnchantments());
+        CMIMaterial mat1 = CMIMaterial.get(a),
+            mat2 = CMIMaterial.get(b);
+        return mat1 == mat2 && Util.getDurability(a) == Util.getDurability(b) && Objects.equal(a.getData(), b.getData()) &&
+            Objects.equal(a.getEnchantments(), b.getEnchantments());
     }
 
     private static boolean isStackSumLegal(ItemStack a, ItemStack b) {
-	// See if we can create a new item stack with the combined elements of a and b
-	if (a == null || b == null)
-	    return true;// Treat null as an empty stack
+        // See if we can create a new item stack with the combined elements of a and b
+        if (a == null || b == null)
+            return true;// Treat null as an empty stack
 
-	return a.getAmount() + b.getAmount() <= a.getType().getMaxStackSize();
+        return a.getAmount() + b.getAmount() <= a.getType().getMaxStackSize();
     }
 
     private static String getEnchantName(Enchantment enchant) {
-	try {
-	    return enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
+        try {
+            return enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
 
-	} catch (Throwable e) {
-	    CMIEnchantment cmiEnchant = CMIEnchantment.get(enchant);
-	    if (cmiEnchant != null)
-		return cmiEnchant.toString();
-	}
+        } catch (Throwable e) {
+            CMIEnchantment cmiEnchant = CMIEnchantment.get(enchant);
+            if (cmiEnchant != null)
+                return cmiEnchant.toString();
+        }
 
-	return null;
+        return null;
     }
 
     private static boolean changed(ItemStack first, ItemStack second, ItemStack result) {
 
-	if (result == null)
-	    return true;
+        if (result == null)
+            return true;
 
-	ItemStack itemToCheck = first;
-	if (first == null || first.getType() != result.getType())
-	    itemToCheck = second;
+        ItemStack itemToCheck = first;
+        if (first == null || first.getType() != result.getType())
+            itemToCheck = second;
 
-	if (itemToCheck == null)
-	    return true;
+        if (itemToCheck == null)
+            return true;
 
-	if (itemToCheck.getType() != result.getType())
-	    return true;
+        if (itemToCheck.getType() != result.getType())
+            return true;
 
-	try {
-	    if (new CMIItemStack(itemToCheck).getDurability() != new CMIItemStack(result).getDurability() || itemToCheck.getEnchantments().size() != result.getEnchantments().size())
-		return true;
-	} catch (Throwable e) {
-	}
+        try {
+            if (new CMIItemStack(itemToCheck).getDurability() != new CMIItemStack(result).getDurability() || itemToCheck.getEnchantments().size() != result.getEnchantments().size())
+                return true;
+        } catch (Throwable e) {
+        }
 
-	if (itemToCheck.getEnchantments().size() != result.getEnchantments().size())
-	    return true;
+        if (itemToCheck.getEnchantments().size() != result.getEnchantments().size())
+            return true;
 
-	return false;
+        return false;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryRepair(InventoryClickEvent event) {
-	// If event is nothing or place, do nothing
-	switch (event.getAction()) {
-	case NOTHING:
-	case PLACE_ONE:
-	case PLACE_ALL:
-	case PLACE_SOME:
-	    return;
-	default:
-	    break;
-	}
+        // If event is nothing or place, do nothing
+        switch (event.getAction()) {
+        case NOTHING:
+        case PLACE_ONE:
+        case PLACE_ALL:
+        case PLACE_SOME:
+        case DROP_ONE_SLOT:
+        case DROP_ALL_SLOT:
+            return;
+        default:
+            break;
+        }
+        
+        if (!event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) && 
+            !event.getAction().equals(InventoryAction.PICKUP_ALL) && 
+            !event.getAction().equals(InventoryAction.PICKUP_HALF))
+            return;
 
-	if (!(event.getWhoClicked() instanceof Player))
-	    return;
+        if (!(event.getWhoClicked() instanceof Player))
+            return;
 
-	Player player = (Player) event.getWhoClicked();
-	if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
-	    return;
+        Player player = (Player) event.getWhoClicked();
+        if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+            return;
 
-	Inventory inv = event.getInventory();
+        Inventory inv = event.getInventory();
 
-	// must be an inventory
-	if (!(inv instanceof AnvilInventory) && (Version.isCurrentEqualOrHigher(Version.v1_14_R1)
-	    && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory))
-	// Smithing inventory class is added in 1.16
-	    && (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && !(inv instanceof SmithingInventory)))
-	    return;
+        // must be an inventory
+        if (!(inv instanceof AnvilInventory) && (Version.isCurrentEqualOrHigher(Version.v1_14_R1)
+            && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory))
+        // Smithing inventory class is added in 1.16
+            && (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && !(inv instanceof SmithingInventory)))
+            return;
 
-	int slot = event.getSlot();
-	if (event.getSlotType() != SlotType.RESULT || (slot != 2 && slot != 1))
-	    return;
+        int slot = event.getSlot();
+        if (event.getSlotType() != SlotType.RESULT || (slot != 2 && slot != 1))
+            return;
 
-	if (((Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !(inv instanceof StonecutterInventory))
-	    || (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && !(inv instanceof SmithingInventory))) && slot == 1)
-	    return;
+        if (((Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !(inv instanceof StonecutterInventory))
+            || (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && !(inv instanceof SmithingInventory))) && slot == 1)
+            return;
 
-	//Check if inventory is full and using shift click, possible money dupping fix
-	if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
-	    return;
-	}
+        //Check if inventory is full and using shift click, possible money dupping fix
+        if (player.getInventory().firstEmpty() == -1 && event.isShiftClick()) {
+            player.sendMessage(Jobs.getLanguage().getMessage("message.crafting.fullinventory"));
+            return;
+        }
 
-	ItemStack resultStack = event.getCurrentItem();
-	if (resultStack == null)
-	    return;
+        ItemStack resultStack = event.getCurrentItem();
+        if (resultStack == null)
+            return;
 
-	// Fix for possible money duplication bugs.
-	switch (event.getClick()) {
-	case UNKNOWN:
-	case WINDOW_BORDER_LEFT:
-	case WINDOW_BORDER_RIGHT:
-	case NUMBER_KEY:
-	    return;
-	default:
-	    break;
-	}
+        // Fix for possible money duplication bugs.
+        switch (event.getClick()) {
+        case UNKNOWN:
+        case WINDOW_BORDER_LEFT:
+        case WINDOW_BORDER_RIGHT:
+        case NUMBER_KEY:
+            return;
+        default:
+            break;
+        }
 
-	// Check for world permissions
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        // Check for world permissions
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	// Checking if this is only item rename
-	ItemStack firstSlot = null;
-	try {
-	    firstSlot = inv.getItem(0);
-	} catch (NullPointerException e) {
-	    return;
-	}
-	if (firstSlot == null)
-	    return;
+        // Checking if this is only item rename
+        ItemStack firstSlot = null;
+        try {
+            firstSlot = inv.getItem(0);
+        } catch (NullPointerException e) {
+            return;
+        }
+        if (firstSlot == null)
+            return;
 
-	String originalName = null;
-	String newName = null;
-	if (firstSlot.hasItemMeta())
-	    originalName = firstSlot.getItemMeta().getDisplayName();
+        String originalName = null;
+        String newName = null;
+        if (firstSlot.hasItemMeta())
+            originalName = firstSlot.getItemMeta().getDisplayName();
 
-	if (resultStack.hasItemMeta())
-	    newName = resultStack.getItemMeta().getDisplayName();
+        if (resultStack.hasItemMeta())
+            newName = resultStack.getItemMeta().getDisplayName();
 
-	if (originalName != null && !originalName.equals(newName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
-	    return;
+        if (originalName != null && !originalName.equals(newName) && inv.getItem(1) == null && !Jobs.getGCManager().PayForRenaming)
+            return;
 
-	// Possible payment exploit when clicking continuously in the result item #438
-	if (event.isLeftClick() && event.getCursor().getType() != Material.AIR)
-	    return;
+        // Possible payment exploit when clicking continuously in the result item #438
+        if (event.isLeftClick() && event.getCursor().getType() != Material.AIR)
+            return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return;
 
-	if ((Version.isCurrentEqualOrHigher(Version.v1_14_R1) && inv instanceof StonecutterInventory)
-	    || (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && inv instanceof SmithingInventory)) {
-	    if (event.getAction() != InventoryAction.DROP_ONE_SLOT) {
-		Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
-	    }
+        if ((Version.isCurrentEqualOrHigher(Version.v1_14_R1) && inv instanceof StonecutterInventory)
+            || (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && inv instanceof SmithingInventory)) {
+            if (event.getAction() != InventoryAction.DROP_ONE_SLOT) {
+                Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.CRAFT));
+            }
 
-	    return;
-	}
+            return;
+        }
 
-	ItemStack secondSlotItem = inv.getItem(1);
+        ItemStack secondSlotItem = inv.getItem(1);
 
-	if (Jobs.getGCManager().PayForEnchantingOnAnvil && secondSlotItem != null && secondSlotItem.getType() == Material.ENCHANTED_BOOK) {
-	    Map<Enchantment, Integer> newEnchantments = mapUnique(resultStack.getEnchantments(), firstSlot.getEnchantments());
+        if (Jobs.getGCManager().PayForEnchantingOnAnvil && secondSlotItem != null && secondSlotItem.getType() == Material.ENCHANTED_BOOK) {
+            Map<Enchantment, Integer> newEnchantments = mapUnique(resultStack.getEnchantments(), firstSlot.getEnchantments());
 
-	    for (Map.Entry<Enchantment, Integer> oneEnchant : newEnchantments.entrySet()) {
-		Enchantment enchant = oneEnchant.getKey();
-		if (enchant == null)
-		    continue;
+            for (Map.Entry<Enchantment, Integer> oneEnchant : newEnchantments.entrySet()) {
+                Enchantment enchant = oneEnchant.getKey();
+                if (enchant == null)
+                    continue;
 
-		String enchantName = getEnchantName(enchant);
-		if (enchantName != null) {
-		    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, oneEnchant.getValue(), ActionType.ENCHANT));
-		}
-	    }
-	} else if (secondSlotItem == null || secondSlotItem.getType() != Material.ENCHANTED_BOOK) { // Enchanted books does not have durability
-	    if (!changed(firstSlot, secondSlotItem, resultStack))
-		return;
-	    Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
-	}
+                String enchantName = getEnchantName(enchant);
+                if (enchantName != null) {
+                    Jobs.action(jPlayer, new EnchantActionInfo(enchantName, oneEnchant.getValue(), ActionType.ENCHANT));
+                }
+            }
+        } else if (secondSlotItem == null || secondSlotItem.getType() != Material.ENCHANTED_BOOK) { // Enchanted books does not have durability
+            if (!changed(firstSlot, secondSlotItem, resultStack))
+                return;
+            Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
+        }
     }
 
     private static Map<Enchantment, Integer> mapUnique(Map<Enchantment, Integer> map1, Map<Enchantment, Integer> map2) {
-	Map<Enchantment, Integer> map = new HashMap<Enchantment, Integer>();
-	for (Entry<Enchantment, Integer> entry : map1.entrySet()) {
-	    if (map2.get(entry.getKey()) != null && map2.get(entry.getKey()) == entry.getValue())
-		continue;
-	    map.put(entry.getKey(), entry.getValue());
-	}
-	return map;
+        Map<Enchantment, Integer> map = new HashMap<Enchantment, Integer>();
+        for (Entry<Enchantment, Integer> entry : map1.entrySet()) {
+            if (map2.get(entry.getKey()) != null && map2.get(entry.getKey()) == entry.getValue())
+                continue;
+            map.put(entry.getKey(), entry.getValue());
+        }
+        return map;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEnchantItem(EnchantItemEvent event) {
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEnchanter().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getEnchanter().getWorld()))
+            return;
 
-	Inventory inv = event.getInventory();
-	if (!(inv instanceof EnchantingInventory))
-	    return;
+        Inventory inv = event.getInventory();
+        if (!(inv instanceof EnchantingInventory))
+            return;
 
-	ItemStack resultStack = ((EnchantingInventory) inv).getItem();
-	if (resultStack == null)
-	    return;
+        ItemStack resultStack = ((EnchantingInventory) inv).getItem();
+        if (resultStack == null)
+            return;
 
-	Player player = event.getEnchanter();
+        Player player = event.getEnchanter();
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	if (!payForItemDurabilityLoss(player))
-	    return;
+        if (!payForItemDurabilityLoss(player))
+            return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return;
 
-	if (!Jobs.getGCManager().allowEnchantingBoostedItems) {
-	    for (JobProgression prog : jPlayer.getJobProgression()) {
-		for (JobItems jobItem : ItemBoostManager.getItemsByJob(prog.getJob())) {
-		    if (event.getItem().isSimilar(jobItem.getItemStack(player))) {
-			event.setCancelled(true);
-			return;
-		    }
-		}
-	    }
-	}
+        if (!Jobs.getGCManager().allowEnchantingBoostedItems) {
+            for (JobProgression prog : jPlayer.getJobProgression()) {
+                for (JobItems jobItem : ItemBoostManager.getItemsByJob(prog.getJob())) {
+                    if (event.getItem().isSimilar(jobItem.getItemStack(player))) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+        }
 
-	for (Map.Entry<Enchantment, Integer> oneEnchant : event.getEnchantsToAdd().entrySet()) {
-	    Enchantment enchant = oneEnchant.getKey();
-	    if (enchant == null)
-		continue;
+        for (Map.Entry<Enchantment, Integer> oneEnchant : event.getEnchantsToAdd().entrySet()) {
+            Enchantment enchant = oneEnchant.getKey();
+            if (enchant == null)
+                continue;
 
-	    String enchantName = getEnchantName(enchant);
-	    if (enchantName != null)
-		Jobs.action(jPlayer, new EnchantActionInfo(enchantName, oneEnchant.getValue(), ActionType.ENCHANT));
-	}
+            String enchantName = getEnchantName(enchant);
+            if (enchantName != null)
+                Jobs.action(jPlayer, new EnchantActionInfo(enchantName, oneEnchant.getValue(), ActionType.ENCHANT));
+        }
 
-	Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
+        Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void PrepareAnvilEvent(final PrepareAnvilEvent event) {
-	if (!Jobs.getGCManager().preventShopItemEnchanting)
-		return;
+        if (!Jobs.getGCManager().preventShopItemEnchanting)
+            return;
 
-	if (!Jobs.getPlayerManager().containsItemBoostByNBT(event.getInventory().getContents()[0]))
-	    return;
+        if (!Jobs.getPlayerManager().containsItemBoostByNBT(event.getInventory().getContents()[0]))
+            return;
 
-	if (!CMIMaterial.get(event.getInventory().getContents()[1]).equals(CMIMaterial.ENCHANTED_BOOK))
-	    return;
+        if (!CMIMaterial.get(event.getInventory().getContents()[1]).equals(CMIMaterial.ENCHANTED_BOOK))
+            return;
 
-	event.setResult(null);
+        event.setResult(null);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToFurnace(InventoryMoveItemEvent event) {
-	if (!Jobs.getGCManager().PreventHopperFillUps || event.getItem().getType() == Material.AIR)
-	    return;
+        if (!Jobs.getGCManager().PreventHopperFillUps || event.getItem().getType() == Material.AIR)
+            return;
 
-	Block block = null;
+        Block block = null;
 
-	switch (event.getDestination().getType().toString().toLowerCase()) {
-	case "furnace":
-	    block = ((Furnace) event.getDestination().getHolder()).getBlock();
-	    break;
-	case "smoker":
-	    // This should be done in this way to have backwards compatibility
-	    block = ((org.bukkit.block.Smoker) event.getDestination().getHolder()).getBlock();
-	    break;
-	case "blast_furnace":
-	    // This should be done in this way to have backwards compatibility
-	    block = ((org.bukkit.block.BlastFurnace) event.getDestination().getHolder()).getBlock();
-	    break;
-	default:
-	    return;
-	}
+        switch (event.getDestination().getType().toString().toLowerCase()) {
+        case "furnace":
+            block = ((Furnace) event.getDestination().getHolder()).getBlock();
+            break;
+        case "smoker":
+            // This should be done in this way to have backwards compatibility
+            block = ((org.bukkit.block.Smoker) event.getDestination().getHolder()).getBlock();
+            break;
+        case "blast_furnace":
+            // This should be done in this way to have backwards compatibility
+            block = ((org.bukkit.block.BlastFurnace) event.getDestination().getHolder()).getBlock();
+            break;
+        default:
+            return;
+        }
 
-	if (block == null || !Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
-	    return;
+        if (block == null || !Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+            return;
 
-	final Block finalBlock = block;
-	plugin.getBlockOwnerShip(CMIMaterial.get(finalBlock)).ifPresent(os -> {
-	    if (os.disable(finalBlock) && Jobs.getGCManager().informOnPaymentDisable) {
+        final Block finalBlock = block;
+        plugin.getBlockOwnerShip(CMIMaterial.get(finalBlock)).ifPresent(os -> {
+            if (os.disable(finalBlock) && Jobs.getGCManager().informOnPaymentDisable) {
 
-		UUID uuid = plugin.getBlockOwnerShip(CMIMaterial.get(finalBlock)).get().getOwnerByLocation(finalBlock.getLocation());
-		Player player = Bukkit.getPlayer(uuid);
-		if (player == null || !player.isOnline())
-		    return;
+                UUID uuid = plugin.getBlockOwnerShip(CMIMaterial.get(finalBlock)).get().getOwnerByLocation(finalBlock.getLocation());
+                Player player = Bukkit.getPlayer(uuid);
+                if (player == null || !player.isOnline())
+                    return;
 
-		JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-		String lc = CMILocation.toString(finalBlock.getLocation());
+                JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+                String lc = CMILocation.toString(finalBlock.getLocation());
 
-		if (!jPlayer.hasBlockOwnerShipInform(lc)) {
-		    CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
-			"[type]", CMIMaterial.get(finalBlock).getName(),
-			"[location]", LC.Location_Full.getLocale(finalBlock.getLocation())));
-		    jPlayer.addBlockOwnerShipInform(lc);
-		}
-	    }
-	});
+                if (!jPlayer.hasBlockOwnerShipInform(lc)) {
+                    CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
+                        "[type]", CMIMaterial.get(finalBlock).getName(),
+                        "[location]", LC.Location_Full.getLocale(finalBlock.getLocation())));
+                    jPlayer.addBlockOwnerShipInform(lc);
+                }
+            }
+        });
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToBrewingStand(InventoryMoveItemEvent event) {
-	if (!Jobs.getGCManager().PreventBrewingStandFillUps || event.getDestination().getType() != InventoryType.BREWING)
-	    return;
+        if (!Jobs.getGCManager().PreventBrewingStandFillUps || event.getDestination().getType() != InventoryType.BREWING)
+            return;
 
-	if (event.getItem().getType() == Material.AIR)
-	    return;
+        if (event.getItem().getType() == Material.AIR)
+            return;
 
-	final BrewingStand stand = (BrewingStand) event.getDestination().getHolder();
+        final BrewingStand stand = (BrewingStand) event.getDestination().getHolder();
 
-	if (Jobs.getGCManager().canPerformActionInWorld(stand.getWorld()))
-	    plugin.getBlockOwnerShip(CMIMaterial.get(stand.getBlock())).ifPresent(os -> {
-		if (os.disable(stand.getBlock()) && Jobs.getGCManager().informOnPaymentDisable) {
+        if (Jobs.getGCManager().canPerformActionInWorld(stand.getWorld()))
+            plugin.getBlockOwnerShip(CMIMaterial.get(stand.getBlock())).ifPresent(os -> {
+                if (os.disable(stand.getBlock()) && Jobs.getGCManager().informOnPaymentDisable) {
 
-		    UUID uuid = plugin.getBlockOwnerShip(CMIMaterial.get(stand.getBlock())).get().getOwnerByLocation(stand.getLocation());
-		    Player player = Bukkit.getPlayer(uuid);
-		    if (player == null || !player.isOnline())
-			return;
+                    UUID uuid = plugin.getBlockOwnerShip(CMIMaterial.get(stand.getBlock())).get().getOwnerByLocation(stand.getLocation());
+                    Player player = Bukkit.getPlayer(uuid);
+                    if (player == null || !player.isOnline())
+                        return;
 
-		    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-		    String lc = CMILocation.toString(stand.getLocation());
+                    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+                    String lc = CMILocation.toString(stand.getLocation());
 
-		    if (!jPlayer.hasBlockOwnerShipInform(lc)) {
-			CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
-			    "[type]", CMIMaterial.get(stand.getBlock()).getName(),
-			    "[location]", LC.Location_Full.getLocale(stand.getLocation())));
-			jPlayer.addBlockOwnerShipInform(lc);
-		    }
-		}
-	    });
+                    if (!jPlayer.hasBlockOwnerShipInform(lc)) {
+                        CMIMessages.sendMessage(player, Jobs.getLanguage().getMessage("general.error.blockDisabled",
+                            "[type]", CMIMaterial.get(stand.getBlock()).getName(),
+                            "[location]", LC.Location_Full.getLocale(stand.getLocation())));
+                        jPlayer.addBlockOwnerShipInform(lc);
+                    }
+                }
+            });
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onFurnaceSmelt(FurnaceSmeltEvent event) {
-	Block block = event.getBlock();
+        Block block = event.getBlock();
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+            return;
 
-	BlockOwnerShip bos = plugin.getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
-	if (bos == null) {
-	    return;
-	}
+        BlockOwnerShip bos = plugin.getBlockOwnerShip(CMIMaterial.get(block), false).orElse(null);
+        if (bos == null) {
+            return;
+        }
 
-	UUID uuid = null;
+        UUID uuid = null;
 
-	List<MetadataValue> data = bos.getBlockMetadatas(block);
-	if (data.isEmpty()) {
-	    uuid = bos.getOwnerByLocation(block.getLocation());
-	    if (uuid == null)
-		return;
-	}
+        List<MetadataValue> data = bos.getBlockMetadatas(block);
+        if (data.isEmpty()) {
+            uuid = bos.getOwnerByLocation(block.getLocation());
+            if (uuid == null)
+                return;
+        }
 
-	// only care about first
-	if (uuid == null && !data.isEmpty()) {
-	    MetadataValue value = data.get(0);
-	    try {
-		uuid = UUID.fromString(value.asString());
-	    } catch (IllegalArgumentException e) {
-		return;
-	    }
-	}
+        // only care about first
+        if (uuid == null && !data.isEmpty()) {
+            MetadataValue value = data.get(0);
+            try {
+                uuid = UUID.fromString(value.asString());
+            } catch (IllegalArgumentException e) {
+                return;
+            }
+        }
 
-	if (uuid == null)
-	    return;
+        if (uuid == null)
+            return;
 
-	Player player = Bukkit.getPlayer(uuid);
-	if (player == null || !player.isOnline())
-	    return;
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null || !player.isOnline())
+            return;
 
-	if (bos.isDisabled(uuid, block.getLocation()))
-	    return;
+        if (bos.isDisabled(uuid, block.getLocation()))
+            return;
 
-	if (Jobs.getGCManager().blockOwnershipRange > 0 && Util.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
-	    return;
+        if (Jobs.getGCManager().blockOwnershipRange > 0 && Util.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(event.getResult(), ActionType.SMELT));
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(event.getResult(), ActionType.SMELT));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDamageByPlayer(EntityDamageEvent event) {
-	if (!Jobs.getGCManager().MonsterDamageUse || !(event instanceof EntityDamageByEntityEvent)
-	    || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().MonsterDamageUse || !(event instanceof EntityDamageByEntityEvent)
+            || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+            return;
 
-	Entity ent = event.getEntity();
-	if (ent instanceof Player || !(ent instanceof Damageable))
-	    return;
+        Entity ent = event.getEntity();
+        if (ent instanceof Player || !(ent instanceof Damageable))
+            return;
 
-	if (!(((EntityDamageByEntityEvent) event).getDamager() instanceof Player))
-	    return;
+        if (!(((EntityDamageByEntityEvent) event).getDamager() instanceof Player))
+            return;
 
-	double damage = event.getFinalDamage();
-	double s = ((Damageable) ent).getHealth();
-	if (damage > s)
-	    damage = s;
+        double damage = event.getFinalDamage();
+        double s = ((Damageable) ent).getHealth();
+        if (damage > s)
+            damage = s;
 
-	UUID entUUID = ent.getUniqueId();
-	Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
-	if (damageDealt != null) {
-	    damageDealtByPlayers.put(entUUID, damageDealt + damage);
-	} else {
-	    damageDealtByPlayers.put(entUUID, damage);
-	}
+        UUID entUUID = ent.getUniqueId();
+        Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
+        if (damageDealt != null) {
+            damageDealtByPlayers.put(entUUID, damageDealt + damage);
+        } else {
+            damageDealtByPlayers.put(entUUID, damage);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDamageByProjectile(EntityDamageByEntityEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+            return;
 
-	Entity ent = event.getEntity();
-	UUID entUUID = ent.getUniqueId();
-	if (ent instanceof org.bukkit.entity.EnderCrystal && event.getDamager() instanceof Player) {
-	    punchedEndCrystals.put(entUUID, ent);
-	    return;
-	}
+        Entity ent = event.getEntity();
+        UUID entUUID = ent.getUniqueId();
+        if (ent instanceof org.bukkit.entity.EnderCrystal && event.getDamager() instanceof Player) {
+            punchedEndCrystals.put(entUUID, ent);
+            return;
+        }
 
-	if (!Jobs.getGCManager().MonsterDamageUse || !(event.getDamager() instanceof Projectile) || !(ent instanceof Damageable))
-	    return;
+        if (!Jobs.getGCManager().MonsterDamageUse || !(event.getDamager() instanceof Projectile) || !(ent instanceof Damageable))
+            return;
 
-	double damage = event.getFinalDamage();
-	double s = ((Damageable) ent).getHealth();
+        double damage = event.getFinalDamage();
+        double s = ((Damageable) ent).getHealth();
 
-	if (damage > s)
-	    damage = s;
+        if (damage > s)
+            damage = s;
 
-	if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
-	    Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
-	    if (damageDealt != null) {
-		damageDealtByPlayers.put(entUUID, damageDealt + damage);
-	    } else {
-		damageDealtByPlayers.put(entUUID, damage);
-	    }
-	}
+        if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
+            Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
+            if (damageDealt != null) {
+                damageDealtByPlayers.put(entUUID, damageDealt + damage);
+            } else {
+                damageDealtByPlayers.put(entUUID, damage);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-	if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) ||
-	    !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
+        if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) ||
+            !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+            return;
 
-	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
+        EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
 
-	// Entity that died must be living
-	if (!(e.getEntity() instanceof LivingEntity))
-	    return;
+        // Entity that died must be living
+        if (!(e.getEntity() instanceof LivingEntity))
+            return;
 
-	LivingEntity lVictim = (LivingEntity) e.getEntity();
+        LivingEntity lVictim = (LivingEntity) e.getEntity();
 
-	// mob spawner, no payment or experience
-	if (!Jobs.getGCManager().payNearSpawner() && lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
-	    try {
-		// So lets remove meta in case some plugin removes entity in wrong way.
-		// Need to delay action for other function to properly check for existing meta data relating to this entity before clearing it out
-		// Longer delay is needed due to mob split event being fired few seconds after mob dies and not at same time
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-		    lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-		}, 200L);
-	    } catch (Throwable ignored) {
-	    }
-	    return;
-	}
+        // mob spawner, no payment or experience
+        if (!Jobs.getGCManager().payNearSpawner() && lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
+            try {
+                // So lets remove meta in case some plugin removes entity in wrong way.
+                // Need to delay action for other function to properly check for existing meta data relating to this entity before clearing it out
+                // Longer delay is needed due to mob split event being fired few seconds after mob dies and not at same time
+                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                    lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+                }, 200L);
+            } catch (Throwable ignored) {
+            }
+            return;
+        }
 
-	if (Jobs.getGCManager().MonsterDamageUse) {
-	    UUID lVictimUUID = lVictim.getUniqueId();
-	    Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
+        if (Jobs.getGCManager().MonsterDamageUse) {
+            UUID lVictimUUID = lVictim.getUniqueId();
+            Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
 
-	    if (damage != null) {
-		double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
+            if (damage != null) {
+                double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
 
-		damageDealtByPlayers.invalidate(lVictimUUID);
+                damageDealtByPlayers.invalidate(lVictimUUID);
 
-		if (perc < Jobs.getGCManager().MonsterDamagePercentage)
-		    return;
-	    }
-	}
+                if (perc < Jobs.getGCManager().MonsterDamagePercentage)
+                    return;
+            }
+        }
 
-	//extra check for Citizens 2 sentry kills
-	if (e.getDamager() instanceof Player && e.getDamager().hasMetadata("NPC"))
-	    return;
+        //extra check for Citizens 2 sentry kills
+        if (e.getDamager() instanceof Player && e.getDamager().hasMetadata("NPC"))
+            return;
 
-	if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
-	    && HookManager.getMythicManager().isMythicMob(lVictim)) {
-	    return;
-	}
+        if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
+            && HookManager.getMythicManager().isMythicMob(lVictim)) {
+            return;
+        }
 
-	Player pDamager = null;
+        Player pDamager = null;
 
-	boolean isTameable = e.getDamager() instanceof Tameable;
-	boolean isMyPet = HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null);
+        boolean isTameable = e.getDamager() instanceof Tameable;
+        boolean isMyPet = HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null);
 
-	if (e.getDamager() instanceof Player) { // Checking if killer is player
-	    pDamager = (Player) e.getDamager();
-	} else if (isMyPet) { // Checking if killer is MyPet animal
-	    UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(e.getDamager());
+        if (e.getDamager() instanceof Player) { // Checking if killer is player
+            pDamager = (Player) e.getDamager();
+        } else if (isMyPet) { // Checking if killer is MyPet animal
+            UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(e.getDamager());
 
-	    if (uuid != null)
-		pDamager = Bukkit.getPlayer(uuid);
-	} else if (isTameable) { // Checking if killer is tamed animal
-	    Tameable t = (Tameable) e.getDamager();
+            if (uuid != null)
+                pDamager = Bukkit.getPlayer(uuid);
+        } else if (isTameable) { // Checking if killer is tamed animal
+            Tameable t = (Tameable) e.getDamager();
 
-	    if (t.isTamed() && t.getOwner() instanceof Player)
-		pDamager = (Player) t.getOwner();
-	} else if (e.getDamager() instanceof Projectile) {
-	    Projectile pr = (Projectile) e.getDamager();
+            if (t.isTamed() && t.getOwner() instanceof Player)
+                pDamager = (Player) t.getOwner();
+        } else if (e.getDamager() instanceof Projectile) {
+            Projectile pr = (Projectile) e.getDamager();
 
-	    if (pr.getShooter() instanceof Player)
-		pDamager = (Player) pr.getShooter();
-	}
+            if (pr.getShooter() instanceof Player)
+                pDamager = (Player) pr.getShooter();
+        }
 
-	if (pDamager == null)
-	    return;
+        if (pDamager == null)
+            return;
 
-	// Prevent payment for killing mobs with pet by denying permission
-	if (isMyPet || isTameable) {
-	    for (PermissionAttachmentInfo perm : pDamager.getEffectivePermissions()) {
-		if (!perm.getValue() && perm.getPermission().contains("jobs.petpay")) {
-		    return;
-		}
-	    }
-	}
+        // Prevent payment for killing mobs with pet by denying permission
+        if (isMyPet || isTameable) {
+            for (PermissionAttachmentInfo perm : pDamager.getEffectivePermissions()) {
+                if (!perm.getValue() && perm.getPermission().contains("jobs.petpay")) {
+                    return;
+                }
+            }
+        }
 
-	// check if in creative
-	if (!payIfCreative(pDamager))
-	    return;
+        // check if in creative
+        if (!payIfCreative(pDamager))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && pDamager.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && pDamager.isInsideVehicle())
+            return;
 
-	if (!payForItemDurabilityLoss(pDamager))
-	    return;
+        if (!payForItemDurabilityLoss(pDamager))
+            return;
 
-	JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(pDamager);
-	if (jDamager == null)
-	    return;
+        JobsPlayer jDamager = Jobs.getPlayerManager().getJobsPlayer(pDamager);
+        if (jDamager == null)
+            return;
 
-	boolean notNpc = lVictim instanceof Player && !lVictim.hasMetadata("NPC");
+        boolean notNpc = lVictim instanceof Player && !lVictim.hasMetadata("NPC");
 
-	if (notNpc && jDamager.getName().equalsIgnoreCase(((Player) lVictim).getName()))
-	    return;
+        if (notNpc && jDamager.getName().equalsIgnoreCase(((Player) lVictim).getName()))
+            return;
 
-	if (Jobs.getGCManager().payForStackedEntities) {
-	    if (JobsHook.WildStacker.isEnabled()) {
-		for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(lVictim) - 1; i++) {
-		    Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
-		}
-	    } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(lVictim)) {
-		for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
-		    if (stacked.getEntity().getType() == lVictim.getType()) {
-			Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.KILL), e.getDamager(), stacked.getEntity());
-		    }
-		}
-	    }
-	}
+        if (Jobs.getGCManager().payForStackedEntities) {
+            if (JobsHook.WildStacker.isEnabled()) {
+                for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(lVictim) - 1; i++) {
+                    Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
+                }
+            } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(lVictim)) {
+                for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
+                    if (stacked.getEntity().getType() == lVictim.getType()) {
+                        Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.KILL), e.getDamager(), stacked.getEntity());
+                    }
+                }
+            }
+        }
 
-	Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
+        Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
 
-	// Payment for killing player with particular job, except NPC's
-	if (notNpc) {
-	    JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) lVictim);
-	    if (jPlayer == null)
-		return;
+        // Payment for killing player with particular job, except NPC's
+        if (notNpc) {
+            JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) lVictim);
+            if (jPlayer == null)
+                return;
 
-	    for (JobProgression job : jPlayer.getJobProgression()) {
-		Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), pDamager, lVictim);
-	    }
-	}
+            for (JobProgression job : jPlayer.getJobProgression()) {
+                Jobs.action(jDamager, new CustomKillInfo(job.getJob().getName(), ActionType.CUSTOMKILL), pDamager, lVictim);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-	if ((event.getSpawnReason() == SpawnReason.SPAWNER || event.getSpawnReason() == SpawnReason.SPAWNER_EGG)
-	    && Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld())) {
-	    event.getEntity().setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(plugin, true));
-	}
+        if ((event.getSpawnReason() == SpawnReason.SPAWNER || event.getSpawnReason() == SpawnReason.SPAWNER_EGG)
+            && Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld())) {
+            event.getEntity().setMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), new FixedMetadataValue(plugin, true));
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHangingPlaceEvent(HangingPlaceEvent event) {
-	Player player = event.getPlayer();
-	if (player == null || !player.isOnline())
-	    return;
+        Player player = event.getPlayer();
+        if (player == null || !player.isOnline())
+            return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(event.getEntity(), ActionType.PLACE));
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(event.getEntity(), ActionType.PLACE));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHangingBreakEvent(HangingBreakByEntityEvent event) {
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()) || !(event.getRemover() instanceof Player))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()) || !(event.getRemover() instanceof Player))
+            return;
 
-	Player player = (Player) event.getRemover();
-	if (!player.isOnline())
-	    return;
+        Player player = (Player) event.getRemover();
+        if (!player.isOnline())
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(event.getEntity(), ActionType.BREAK));
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(event.getEntity(), ActionType.BREAK));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onArmorstandPlace(CreatureSpawnEvent event) {
-	Entity ent = event.getEntity();
+        Entity ent = event.getEntity();
 
-	if (!ent.getType().toString().equalsIgnoreCase("ARMOR_STAND"))
-	    return;
+        if (!ent.getType().toString().equalsIgnoreCase("ARMOR_STAND"))
+            return;
 
-	Location loc = event.getLocation();
-	java.util.Collection<Entity> ents = Version.isCurrentEqualOrLower(Version.v1_8_R1) || loc.getWorld() == null
-	    ? null : loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
-	if (ents == null) {
-	    return;
-	}
+        Location loc = event.getLocation();
+        java.util.Collection<Entity> ents = Version.isCurrentEqualOrLower(Version.v1_8_R1) || loc.getWorld() == null
+            ? null : loc.getWorld().getNearbyEntities(loc, 4, 4, 4);
+        if (ents == null) {
+            return;
+        }
 
-	double dis = Double.MAX_VALUE;
-	Player player = null;
-	for (Entity one : ents) {
-	    if (!(one instanceof Player))
-		continue;
+        double dis = Double.MAX_VALUE;
+        Player player = null;
+        for (Entity one : ents) {
+            if (!(one instanceof Player))
+                continue;
 
-	    Player p = (Player) one;
-	    if (!CMIItemStack.getItemInMainHand(p).getType().toString().equalsIgnoreCase("ARMOR_STAND"))
-		continue;
+            Player p = (Player) one;
+            if (!CMIItemStack.getItemInMainHand(p).getType().toString().equalsIgnoreCase("ARMOR_STAND"))
+                continue;
 
-	    double d = p.getLocation().distance(loc);
-	    if (d < dis) {
-		dis = d;
-		player = p;
-	    }
-	}
+            double d = p.getLocation().distance(loc);
+            if (d < dis) {
+                dis = d;
+                player = p;
+            }
+        }
 
-	if (player == null || !player.isOnline())
-	    return;
+        if (player == null || !player.isOnline())
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(ent, ActionType.PLACE));
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(ent, ActionType.PLACE));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onArmorstandBreak(EntityDeathEvent event) {
-	Entity ent = event.getEntity();
+        Entity ent = event.getEntity();
 
-	if (!ent.getType().toString().equalsIgnoreCase("ARMOR_STAND"))
-	    return;
+        if (!ent.getType().toString().equalsIgnoreCase("ARMOR_STAND"))
+            return;
 
-	if (!(ent.getLastDamageCause() instanceof EntityDamageByEntityEvent))
-	    return;
+        if (!(ent.getLastDamageCause() instanceof EntityDamageByEntityEvent))
+            return;
 
-	EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) ent.getLastDamageCause();
+        EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) ent.getLastDamageCause();
 
-	//extra check for Citizens 2 sentry kills
-	if (!(e.getDamager() instanceof Player))
-	    return;
+        //extra check for Citizens 2 sentry kills
+        if (!(e.getDamager() instanceof Player))
+            return;
 
-	if (e.getDamager().hasMetadata("NPC"))
-	    return;
+        if (e.getDamager().hasMetadata("NPC"))
+            return;
 
-	Player pDamager = (Player) e.getDamager();
+        Player pDamager = (Player) e.getDamager();
 
-	// check if in creative
-	if (!payIfCreative(pDamager))
-	    return;
+        // check if in creative
+        if (!payIfCreative(pDamager))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(pDamager, pDamager.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && pDamager.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && pDamager.isInsideVehicle())
+            return;
 
-	// pay
-	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(pDamager), new EntityActionInfo(ent, ActionType.BREAK), e.getDamager());
+        // pay
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(pDamager), new EntityActionInfo(ent, ActionType.BREAK), e.getDamager());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(SlimeSplitEvent event) {
 
-	// As of 1.14 we have appropriate event to mob changes
-	if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
-	    return;
+        // As of 1.14 we have appropriate event to mob changes
+        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
+            return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+            return;
 
-	if (!event.getEntity().hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
-	    return;
+        if (!event.getEntity().hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata()))
+            return;
 
-	EntityType type = event.getEntityType();
-	if (type == EntityType.SLIME && Jobs.getGCManager().PreventSlimeSplit) {
-	    event.setCancelled(true);
-	    return;
-	}
+        EntityType type = event.getEntityType();
+        if (type == EntityType.SLIME && Jobs.getGCManager().PreventSlimeSplit) {
+            event.setCancelled(true);
+            return;
+        }
 
-	if (type == EntityType.MAGMA_CUBE && Jobs.getGCManager().PreventMagmaCubeSplit) {
-	    event.setCancelled(true);
-	}
+        if (type == EntityType.MAGMA_CUBE && Jobs.getGCManager().PreventMagmaCubeSplit) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureBreed(CreatureSpawnEvent event) {
-	if (!Jobs.getGCManager().useBreederFinder || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
-	    return;
+        if (!Jobs.getGCManager().useBreederFinder || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+            return;
 
-	if (!event.getSpawnReason().toString().equalsIgnoreCase("BREEDING") && !event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
-	    return;
+        if (!event.getSpawnReason().toString().equalsIgnoreCase("BREEDING") && !event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
+            return;
 
-	LivingEntity animal = event.getEntity();
+        LivingEntity animal = event.getEntity();
 
-	double closest = 30.0;
-	Player player = null;
-	for (Player i : Bukkit.getOnlinePlayers()) {
-	    if (!i.getWorld().getName().equals(animal.getWorld().getName()))
-		continue;
+        double closest = 30.0;
+        Player player = null;
+        for (Player i : Bukkit.getOnlinePlayers()) {
+            if (!i.getWorld().getName().equals(animal.getWorld().getName()))
+                continue;
 
-	    double dist = i.getLocation().distance(animal.getLocation());
-	    if (closest > dist) {
-		closest = dist;
-		player = i;
-	    }
-	}
+            double dist = i.getLocation().distance(animal.getLocation());
+            if (closest > dist) {
+                closest = dist;
+                player = i;
+            }
+        }
 
-	if (player != null && closest < 30.0) {
-	    // check if in creative
-	    if (!payIfCreative(player))
-		return;
+        if (player != null && closest < 30.0) {
+            // check if in creative
+            if (!payIfCreative(player))
+                return;
 
-	    if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-		return;
+            if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+                return;
 
-	    // check if player is riding
-	    if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-		return;
+            // check if player is riding
+            if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+                return;
 
-	    // pay
-	    Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(animal, ActionType.BREED));
-	}
+            // pay
+            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(animal, ActionType.BREED));
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerEat(FoodLevelChangeEvent event) {
-	HumanEntity human = event.getEntity();
+        HumanEntity human = event.getEntity();
 
-	if (!(human instanceof Player) || !Jobs.getGCManager().canPerformActionInWorld(human.getWorld()) || human.hasMetadata("NPC"))
-	    return;
+        if (!(human instanceof Player) || !Jobs.getGCManager().canPerformActionInWorld(human.getWorld()) || human.hasMetadata("NPC"))
+            return;
 
-	Player player = (Player) human;
+        Player player = (Player) human;
 
-	if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel())
-	    return;
+        if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel())
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-	if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(CMIItemStack.getItemInMainHand(player), ActionType.EAT));
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(CMIItemStack.getItemInMainHand(player), ActionType.EAT));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTntExplode(EntityExplodeEvent event) {
-	Entity e = event.getEntity();
-	if (!Jobs.getGCManager().canPerformActionInWorld(e))
-	    return;
+        Entity e = event.getEntity();
+        if (!Jobs.getGCManager().canPerformActionInWorld(e))
+            return;
 
-	EntityType type = event.getEntityType();
-	if (type != EntityType.PRIMED_TNT && type != EntityType.MINECART_TNT && type != CMIEntityType.ENDER_CRYSTAL.getType())
-	    return;
+        EntityType type = event.getEntityType();
+        if (type != EntityType.PRIMED_TNT && type != EntityType.MINECART_TNT && type != CMIEntityType.ENDER_CRYSTAL.getType())
+            return;
 
-	if (!Jobs.getGCManager().isUseTntFinder() && type != CMIEntityType.ENDER_CRYSTAL.getType())
-	    return;
+        if (!Jobs.getGCManager().isUseTntFinder() && type != CMIEntityType.ENDER_CRYSTAL.getType())
+            return;
 
-	double closest = 60.0;
-	Player player = null;
-	Location loc = e.getLocation();
-	for (Player i : Bukkit.getOnlinePlayers()) {
-	    if (loc.getWorld() != i.getWorld())
-		continue;
+        double closest = 60.0;
+        Player player = null;
+        Location loc = e.getLocation();
+        for (Player i : Bukkit.getOnlinePlayers()) {
+            if (loc.getWorld() != i.getWorld())
+                continue;
 
-	    double dist = i.getLocation().distance(loc);
-	    if (closest > dist) {
-		closest = dist;
-		player = i;
-	    }
-	}
+            double dist = i.getLocation().distance(loc);
+            if (closest > dist) {
+                closest = dist;
+                player = i;
+            }
+        }
 
-	if (player == null || closest == 60.0 || !player.isOnline())
-	    return;
+        if (player == null || closest == 60.0 || !player.isOnline())
+            return;
 
-	// check if in creative
-	if (!payIfCreative(player) || !Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-	    return;
+        // check if in creative
+        if (!payIfCreative(player) || !Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return;
 
-	if (!Jobs.getGCManager().isUseTntFinder() && type == CMIEntityType.ENDER_CRYSTAL.getType()) {
-	    UUID eUUID = e.getUniqueId();
-	    Entity killed = punchedEndCrystals.getIfPresent(eUUID);
+        if (!Jobs.getGCManager().isUseTntFinder() && type == CMIEntityType.ENDER_CRYSTAL.getType()) {
+            UUID eUUID = e.getUniqueId();
+            Entity killed = punchedEndCrystals.getIfPresent(eUUID);
 
-	    if (killed != null) {
-		Jobs.action(jPlayer, new EntityActionInfo(killed, ActionType.KILL));
-		punchedEndCrystals.invalidate(eUUID);
-		return;
-	    }
-	}
+            if (killed != null) {
+                Jobs.action(jPlayer, new EntityActionInfo(killed, ActionType.KILL));
+                punchedEndCrystals.invalidate(eUUID);
+                return;
+            }
+        }
 
-	for (final Block block : event.blockList()) {
-	    if (block == null)
-		continue;
+        for (final Block block : event.blockList()) {
+            if (block == null)
+                continue;
 
-	    plugin.removeBlockOwnerShip(block);
+            plugin.removeBlockOwnerShip(block);
 
-	    if (Jobs.getGCManager().useBlockProtection && block.getState().hasMetadata(blockMetadata))
-		return;
+            if (Jobs.getGCManager().useBlockProtection && block.getState().hasMetadata(blockMetadata))
+                return;
 
-	    Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.TNTBREAK), block);
-	}
+            Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.TNTBREAK), block);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
-	final Block block = event.getClickedBlock();
-	if (block == null)
-	    return;
+        final Block block = event.getClickedBlock();
+        if (block == null)
+            return;
 
-	Player p = event.getPlayer();
+        Player p = event.getPlayer();
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(p.getWorld()))
+            return;
 
-	CMIMaterial cmat = CMIMaterial.get(block);
+        CMIMaterial cmat = CMIMaterial.get(block);
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
-	Material hand = CMIItemStack.getItemInMainHand(p).getType();
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
+        Material hand = CMIItemStack.getItemInMainHand(p).getType();
 
-	if (event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY
-	    && event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && !p.isSneaking()) {
-	    if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
-		if (cmat == CMIMaterial.COMPOSTER) {
-		    org.bukkit.block.data.Levelled level = (org.bukkit.block.data.Levelled) block.getBlockData();
+        if (event.useInteractedBlock() != org.bukkit.event.Event.Result.DENY
+            && event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && !p.isSneaking()) {
+            if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+                if (cmat == CMIMaterial.COMPOSTER) {
+                    org.bukkit.block.data.Levelled level = (org.bukkit.block.data.Levelled) block.getBlockData();
 
-		    if (level.getLevel() == level.getMaximumLevel()) {
-			Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.BONE_MEAL, ActionType.COLLECT), block);
-		    }
-		} else if ((cmat == CMIMaterial.SWEET_BERRY_BUSH || cmat == CMIMaterial.CAVE_VINES_PLANT || cmat == CMIMaterial.CAVE_VINES) && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
+                    if (level.getLevel() == level.getMaximumLevel()) {
+                        Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.BONE_MEAL, ActionType.COLLECT), block);
+                    }
+                } else if ((cmat == CMIMaterial.SWEET_BERRY_BUSH || cmat == CMIMaterial.CAVE_VINES_PLANT || cmat == CMIMaterial.CAVE_VINES) && hand != CMIMaterial.BONE_MEAL.getMaterial()) {
 
-		    if (cmat == CMIMaterial.SWEET_BERRY_BUSH) {
-			Ageable age = (Ageable) block.getBlockData();
-			if (age.getAge() >= 2)
-			    Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.SWEET_BERRIES, ActionType.COLLECT, age.getAge()), block);
-		    } else {
-			org.bukkit.block.data.type.CaveVinesPlant caveVines = (org.bukkit.block.data.type.CaveVinesPlant) block.getBlockData();
-			if (caveVines.isBerries()) {
-			    Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.GLOW_BERRIES, ActionType.COLLECT), block);
-			}
-		    }
-		}
-	    }
+                    if (cmat == CMIMaterial.SWEET_BERRY_BUSH) {
+                        Ageable age = (Ageable) block.getBlockData();
+                        if (age.getAge() >= 2)
+                            Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.SWEET_BERRIES, ActionType.COLLECT, age.getAge()), block);
+                    } else {
+                        org.bukkit.block.data.type.CaveVinesPlant caveVines = (org.bukkit.block.data.type.CaveVinesPlant) block.getBlockData();
+                        if (caveVines.isBerries()) {
+                            Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.GLOW_BERRIES, ActionType.COLLECT), block);
+                        }
+                    }
+                }
+            }
 
-	    if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && (cmat == CMIMaterial.BEEHIVE || cmat == CMIMaterial.BEE_NEST)) {
-		org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
+            if (Version.isCurrentEqualOrHigher(Version.v1_15_R1) && (cmat == CMIMaterial.BEEHIVE || cmat == CMIMaterial.BEE_NEST)) {
+                org.bukkit.block.data.type.Beehive beehive = (org.bukkit.block.data.type.Beehive) block.getBlockData();
 
-		if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand == CMIMaterial.SHEARS.getMaterial()
-		    || hand == CMIMaterial.GLASS_BOTTLE.getMaterial())) {
+                if (beehive.getHoneyLevel() == beehive.getMaximumHoneyLevel() && (hand == CMIMaterial.SHEARS.getMaterial()
+                    || hand == CMIMaterial.GLASS_BOTTLE.getMaterial())) {
 
-		    if (hand == CMIMaterial.SHEARS.getMaterial()) {
-			Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.HONEYCOMB, ActionType.COLLECT), block);
-		    } else {
-			Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.HONEY_BOTTLE, ActionType.COLLECT), block);
-		    }
-		}
-	    }
-	}
+                    if (hand == CMIMaterial.SHEARS.getMaterial()) {
+                        Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.HONEYCOMB, ActionType.COLLECT), block);
+                    } else {
+                        Jobs.action(jPlayer, new BlockCollectInfo(CMIMaterial.HONEY_BOTTLE, ActionType.COLLECT), block);
+                    }
+                }
+            }
+        }
 
-	boolean isBrewingStand = cmat == CMIMaterial.BREWING_STAND || cmat == CMIMaterial.LEGACY_BREWING_STAND;
-	boolean isFurnace = cmat == CMIMaterial.FURNACE || cmat == CMIMaterial.LEGACY_BURNING_FURNACE;
+        boolean isBrewingStand = cmat == CMIMaterial.BREWING_STAND || cmat == CMIMaterial.LEGACY_BREWING_STAND;
+        boolean isFurnace = cmat == CMIMaterial.FURNACE || cmat == CMIMaterial.LEGACY_BURNING_FURNACE;
 
-	if (isFurnace || cmat == CMIMaterial.SMOKER || cmat == CMIMaterial.BLAST_FURNACE || isBrewingStand) {
-	    BlockOwnerShip blockOwner = plugin.getBlockOwnerShip(cmat).orElse(null);
-	    if (blockOwner == null) {
-		return;
-	    }
+        if (isFurnace || cmat == CMIMaterial.SMOKER || cmat == CMIMaterial.BLAST_FURNACE || isBrewingStand) {
+            BlockOwnerShip blockOwner = plugin.getBlockOwnerShip(cmat).orElse(null);
+            if (blockOwner == null) {
+                return;
+            }
 
-	    String name = Jobs.getLanguage().getMessage("general.info.blocks." + (isBrewingStand ? "brewingstand" : isFurnace
-		? "furnace" : cmat == CMIMaterial.SMOKER ? "smoker" : cmat == CMIMaterial.BLAST_FURNACE ? "blastfurnace" : ""));
-	    ownershipFeedback done = blockOwner.register(p, block);
+            String name = Jobs.getLanguage().getMessage("general.info.blocks." + (isBrewingStand ? "brewingstand" : isFurnace
+                ? "furnace" : cmat == CMIMaterial.SMOKER ? "smoker" : cmat == CMIMaterial.BLAST_FURNACE ? "blastfurnace" : ""));
+            ownershipFeedback done = blockOwner.register(p, block);
 
-	    if (done == ownershipFeedback.tooMany) {
-		boolean report = false;
+            if (done == ownershipFeedback.tooMany) {
+                boolean report = false;
 
-		if (block.hasMetadata(blockOwner.getMetadataName())) {
-		    List<MetadataValue> data = blockOwner.getBlockMetadatas(block);
-		    if (data.isEmpty())
-			return;
+                if (block.hasMetadata(blockOwner.getMetadataName())) {
+                    List<MetadataValue> data = blockOwner.getBlockMetadatas(block);
+                    if (data.isEmpty())
+                        return;
 
-		    // only care about first
-		    MetadataValue value = data.get(0);
-		    String uuid = value.asString();
+                    // only care about first
+                    MetadataValue value = data.get(0);
+                    String uuid = value.asString();
 
-		    if (!uuid.equals(p.getUniqueId().toString()))
-			report = true;
-		} else
-		    report = true;
+                    if (!uuid.equals(p.getUniqueId().toString()))
+                        report = true;
+                } else
+                    report = true;
 
-		if (report)
-		    CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.noRegistration", "[block]", name));
-	    } else if (done == ownershipFeedback.newReg && jPlayer != null && jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) > 0) {
-		CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.newRegistration", "[block]", name,
-		    "[current]", blockOwner.getTotal(jPlayer.getUniqueId()),
-		    "[max]", jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) == 0 ? "-" : jPlayer.getMaxOwnerShipAllowed(blockOwner.getType())));
-	    } else if (done == ownershipFeedback.reenabled && jPlayer != null) {
-		CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.reenabledBlock"));
-	    }
-	} else if (!block.getType().toString().startsWith("STRIPPED_") &&
-	    event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && hand.toString().endsWith("_AXE")) {
-	    // check if player is riding
-	    if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
-		return;
+                if (report)
+                    CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.noRegistration", "[block]", name));
+            } else if (done == ownershipFeedback.newReg && jPlayer != null && jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) > 0) {
+                CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.newRegistration", "[block]", name,
+                    "[current]", blockOwner.getTotal(jPlayer.getUniqueId()),
+                    "[max]", jPlayer.getMaxOwnerShipAllowed(blockOwner.getType()) == 0 ? "-" : jPlayer.getMaxOwnerShipAllowed(blockOwner.getType())));
+            } else if (done == ownershipFeedback.reenabled && jPlayer != null) {
+                CMIActionBar.send(p, Jobs.getLanguage().getMessage("general.error.reenabledBlock"));
+            }
+        } else if (!block.getType().toString().startsWith("STRIPPED_") &&
+            event.getAction() == Action.RIGHT_CLICK_BLOCK && jPlayer != null && hand.toString().endsWith("_AXE")) {
+            // check if player is riding
+            if (Jobs.getGCManager().disablePaymentIfRiding && p.isInsideVehicle())
+                return;
 
-	    // Prevent item durability loss
-	    if (!Jobs.getGCManager().payItemDurabilityLoss && hand.getMaxDurability()
-		- Util.getDurability(CMIItemStack.getItemInMainHand(p)) != hand.getMaxDurability())
-		return;
+            // Prevent item durability loss
+            if (!Jobs.getGCManager().payItemDurabilityLoss && hand.getMaxDurability()
+                - Util.getDurability(CMIItemStack.getItemInMainHand(p)) != hand.getMaxDurability())
+                return;
 
-	    // either it's version 1.13+ and we're trying to strip a normal log like oak,
-	    // or it's 1.16+ and we're trying to strip a fungi like warped stem
-	    if ((Version.isCurrentEqualOrHigher(Version.v1_13_R1) && (block.getType().toString().endsWith("_LOG") || block.getType().toString().endsWith("_WOOD"))) ||
-		(Version.isCurrentEqualOrHigher(Version.v1_16_R1) && (block.getType().toString().endsWith("_STEM") || block.getType().toString().endsWith("_HYPHAE"))))
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
-	}
+            // either it's version 1.13+ and we're trying to strip a normal log like oak,
+            // or it's 1.16+ and we're trying to strip a fungi like warped stem
+            if ((Version.isCurrentEqualOrHigher(Version.v1_13_R1) && (block.getType().toString().endsWith("_LOG") || block.getType().toString().endsWith("_WOOD"))) ||
+                (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && (block.getType().toString().endsWith("_STEM") || block.getType().toString().endsWith("_HYPHAE"))))
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onExplore(JobsChunkChangeEvent event) {
-	if (!Jobs.getExploreManager().isExploreEnabled())
-	    return;
+        if (!Jobs.getExploreManager().isExploreEnabled())
+            return;
 
-	Player player = event.getPlayer();
-	if (player == null || !player.isOnline())
-	    return;
+        Player player = event.getPlayer();
+        if (player == null || !player.isOnline())
+            return;
 
-	// check if in spectator, #330
-	if (player.getGameMode().toString().equals("SPECTATOR"))
-	    return;
+        // check if in spectator, #330
+        if (player.getGameMode().toString().equals("SPECTATOR"))
+            return;
 
-	if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())
-	    return;
+        if (!Jobs.getGCManager().payExploringWhenFlying() && player.isFlying())
+            return;
 
-	// check if player is riding
-	if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-	    return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-	if (Version.getCurrent().isEqualOrHigher(Version.v1_9_R2)
-	    && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
-	    return;
+        if (Version.getCurrent().isEqualOrHigher(Version.v1_9_R2)
+            && !Jobs.getGCManager().payExploringWhenGliding && player.isGliding())
+            return;
 
-	if (!payIfCreative(player))
-	    return;
+        if (!payIfCreative(player))
+            return;
 
-	org.bukkit.World playerWorld = player.getWorld();
+        org.bukkit.World playerWorld = player.getWorld();
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(playerWorld)
-	    || !Jobs.getPermissionHandler().hasWorldPermission(player, playerWorld.getName()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(playerWorld)
+            || !Jobs.getPermissionHandler().hasWorldPermission(player, playerWorld.getName()))
+            return;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return;
 
-	ExploreRespond respond = Jobs.getExploreManager().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
+        ExploreRespond respond = Jobs.getExploreManager().chunkRespond(jPlayer.getUserId(), event.getNewChunk());
 
-	if (!respond.isNewChunk())
-	    return;
+        if (!respond.isNewChunk())
+            return;
 
-	Jobs.action(jPlayer, new ExploreActionInfo(Integer.toString(respond.getCount()), ActionType.EXPLORE));
+        Jobs.action(jPlayer, new ExploreActionInfo(Integer.toString(respond.getCount()), ActionType.EXPLORE));
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChunkUnload(ChunkUnloadEvent event) {
-	for (Entity entity : event.getChunk().getEntities()) {
-	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) && entity.isPersistent())
-		break;
+        for (Entity entity : event.getChunk().getEntities()) {
+            if (Version.isCurrentEqualOrHigher(Version.v1_13_R1) && entity.isPersistent())
+                break;
 
-	    entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-	}
+            entity.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
+        }
     }
 
     public static boolean payIfCreative(Player player) {
-	if (Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE)
-	    return true;
-	if (player.getGameMode() == GameMode.CREATIVE && Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player), "jobs.paycreative"))
-	    return true;
+        if (Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE)
+            return true;
+        if (player.getGameMode() == GameMode.CREATIVE && Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player), "jobs.paycreative"))
+            return true;
 
-	return player.getGameMode() != GameMode.CREATIVE;
+        return player.getGameMode() != GameMode.CREATIVE;
     }
 
     // Prevent item durability loss
     public static boolean payForItemDurabilityLoss(Player p) {
-	if (Jobs.getGCManager().payItemDurabilityLoss)
-	    return true;
+        if (Jobs.getGCManager().payItemDurabilityLoss)
+            return true;
 
-	ItemStack hand = CMIItemStack.getItemInMainHand(p);
+        ItemStack hand = CMIItemStack.getItemInMainHand(p);
 
-	java.util.Map<Enchantment, Integer> got = Jobs.getGCManager().whiteListedItems.get(CMIMaterial.get(hand));
-	if (got == null)
-	    return false;
+        java.util.Map<Enchantment, Integer> got = Jobs.getGCManager().whiteListedItems.get(CMIMaterial.get(hand));
+        if (got == null)
+            return false;
 
-	if (Util.getDurability(hand) == 0)
-	    return true;
+        if (Util.getDurability(hand) == 0)
+            return true;
 
-	for (Map.Entry<Enchantment, Integer> oneG : got.entrySet()) {
-	    Map<Enchantment, Integer> map = hand.getEnchantments();
-	    Integer key = map.get(oneG.getKey());
+        for (Map.Entry<Enchantment, Integer> oneG : got.entrySet()) {
+            Map<Enchantment, Integer> map = hand.getEnchantments();
+            Integer key = map.get(oneG.getKey());
 
-	    if (key == null || key.equals(oneG.getValue()))
-		return false;
-	}
+            if (key == null || key.equals(oneG.getValue()))
+                return false;
+        }
 
-	return true;
+        return true;
     }
 
     private static final int MAX_ENTRIES = 50;
     LinkedHashMap<String, UUID> breakCache = new LinkedHashMap<String, UUID>(MAX_ENTRIES + 1, .75F, false) {
-	protected boolean removeEldestEntry(Map.Entry<String, UUID> eldest) {
-	    return size() > MAX_ENTRIES;
-	}
+        protected boolean removeEldestEntry(Map.Entry<String, UUID> eldest) {
+            return size() > MAX_ENTRIES;
+        }
     };
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEvent(BlockPhysicsEvent event) {
-	if (!Jobs.getGCManager().payForAbove)
-	    return;
-	if (event.getBlock().getType().equals(Material.AIR))
-	    return;
-	final Block block = event.getBlock();
+        if (!Jobs.getGCManager().payForAbove)
+            return;
+        if (event.getBlock().getType().equals(Material.AIR))
+            return;
+        final Block block = event.getBlock();
 
-	CMIMaterial mat = CMIMaterial.get(block);
+        CMIMaterial mat = CMIMaterial.get(block);
 
-	if (!mat.equals(CMIMaterial.SUGAR_CANE) && !mat.equals(CMIMaterial.BAMBOO) && !mat.equals(CMIMaterial.KELP_PLANT) && !mat.equals(CMIMaterial.WEEPING_VINES) && !mat.equals(
-	    CMIMaterial.WEEPING_VINES_PLANT))
-	    return;
+        if (!mat.equals(CMIMaterial.SUGAR_CANE) && !mat.equals(CMIMaterial.BAMBOO) && !mat.equals(CMIMaterial.KELP_PLANT) && !mat.equals(CMIMaterial.WEEPING_VINES) && !mat.equals(
+            CMIMaterial.WEEPING_VINES_PLANT))
+            return;
 
-	if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
-	    return;
+        if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
+            return;
 
-	if (event.getSourceBlock().equals(event.getBlock()))
-	    return;
+        if (event.getSourceBlock().equals(event.getBlock()))
+            return;
 
-	if ((mat.equals(CMIMaterial.SUGAR_CANE) || mat.equals(CMIMaterial.BAMBOO) || mat.equals(CMIMaterial.KELP_PLANT)) &&
-	    event.getBlock().getLocation().getBlockY() <= event.getSourceBlock().getLocation().getBlockY())
-	    return;
+        if ((mat.equals(CMIMaterial.SUGAR_CANE) || mat.equals(CMIMaterial.BAMBOO) || mat.equals(CMIMaterial.KELP_PLANT)) &&
+            event.getBlock().getLocation().getBlockY() <= event.getSourceBlock().getLocation().getBlockY())
+            return;
 
-	if ((mat.equals(CMIMaterial.WEEPING_VINES) || mat.equals(CMIMaterial.WEEPING_VINES_PLANT)) &&
-	    event.getBlock().getLocation().getBlockY() >= event.getSourceBlock().getLocation().getBlockY())
-	    return;
+        if ((mat.equals(CMIMaterial.WEEPING_VINES) || mat.equals(CMIMaterial.WEEPING_VINES_PLANT)) &&
+            event.getBlock().getLocation().getBlockY() >= event.getSourceBlock().getLocation().getBlockY())
+            return;
 
-	Location loc = event.getSourceBlock().getLocation().clone();
-	UUID uuid = breakCache.get(CMILocation.toString(loc, ":", true, true));
-	if (uuid == null)
-	    return;
+        Location loc = event.getSourceBlock().getLocation().clone();
+        UUID uuid = breakCache.get(CMILocation.toString(loc, ":", true, true));
+        if (uuid == null)
+            return;
 
-	BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
-	FastPayment fp = Jobs.FASTPAYMENT.get(uuid);
-	if (fp == null)
-	    return;
-	if (!fp.getInfo().getType().equals(ActionType.BREAK) || !fp.getInfo().getNameWithSub().equals(bInfo.getNameWithSub()))
-	    return;
+        BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
+        FastPayment fp = Jobs.FASTPAYMENT.get(uuid);
+        if (fp == null)
+            return;
+        if (!fp.getInfo().getType().equals(ActionType.BREAK) || !fp.getInfo().getNameWithSub().equals(bInfo.getNameWithSub()))
+            return;
 
-	if (fp.getTime() > System.currentTimeMillis() - 50L && (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
-	    fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub()))) {
-	    Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
-	    breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), uuid);
-	    fp.setTime(System.currentTimeMillis() + 45);
-	}
+        if (fp.getTime() > System.currentTimeMillis() - 50L && (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
+            fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub()))) {
+            Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
+            breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), uuid);
+            fp.setTime(System.currentTimeMillis() + 45);
+        }
     }
 }

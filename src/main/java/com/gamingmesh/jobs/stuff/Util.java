@@ -55,353 +55,353 @@ public final class Util {
     private final static TreeMap<Integer, String> map = new TreeMap<Integer, String>();
 
     static {
-	map.put(1000, "M");
-	map.put(900, "CM");
-	map.put(500, "D");
-	map.put(400, "CD");
-	map.put(100, "C");
-	map.put(90, "XC");
-	map.put(50, "L");
-	map.put(40, "XL");
-	map.put(10, "X");
-	map.put(9, "IX");
-	map.put(5, "V");
-	map.put(4, "IV");
-	map.put(1, "I");
+        map.put(1000, "M");
+        map.put(900, "CM");
+        map.put(500, "D");
+        map.put(400, "CD");
+        map.put(100, "C");
+        map.put(90, "XC");
+        map.put(50, "L");
+        map.put(40, "XL");
+        map.put(10, "X");
+        map.put(9, "IX");
+        map.put(5, "V");
+        map.put(4, "IV");
+        map.put(1, "I");
     }
 
     public final static String toRoman(int number) {
-	int l = map.floorKey(number);
-	if (number == l) {
-	    return map.get(number);
-	}
-	return map.get(l) + toRoman(number - l);
+        int l = map.floorKey(number);
+        if (number == l) {
+            return map.get(number);
+        }
+        return map.get(l) + toRoman(number - l);
     }
 
     public static List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_8_R1)) {
-	    return new ArrayList<>(event.getBlocks());
-	}
+        if (Version.isCurrentEqualOrHigher(Version.v1_8_R1)) {
+            return new ArrayList<>(event.getBlocks());
+        }
 
-	List<Block> blocks = new ArrayList<>();
-	blocks.add(event.getBlock());
-	return blocks;
+        List<Block> blocks = new ArrayList<>();
+        blocks.add(event.getBlock());
+        return blocks;
     }
 
     public static double getDistance(Location loc1, Location loc2) {
-	if (loc1 == null || loc2 == null || loc1.getWorld() != loc2.getWorld())
-	    return Integer.MAX_VALUE;
+        if (loc1 == null || loc2 == null || loc1.getWorld() != loc2.getWorld())
+            return Integer.MAX_VALUE;
 
-	try {
-	    return loc1.distance(loc2);
-	} catch (Throwable e) {
-	    return Integer.MAX_VALUE;
-	}
+        try {
+            return loc1.distance(loc2);
+        } catch (Throwable e) {
+            return Integer.MAX_VALUE;
+        }
     }
 
     public static String getRealType(Entity entity) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_11_R1)) {
-	    return entity.getType().name();
-	}
+        if (Version.isCurrentEqualOrHigher(Version.v1_11_R1)) {
+            return entity.getType().name();
+        }
 
-	String name = entity.getType().name();
+        String name = entity.getType().name();
 
-	switch (entity.getType().toString()) {
-	case "GUARDIAN":
-	    if (((org.bukkit.entity.Guardian) entity).isElder())
-		name = "GuardianElder";
+        switch (entity.getType().toString()) {
+        case "GUARDIAN":
+            if (((org.bukkit.entity.Guardian) entity).isElder())
+                name = "GuardianElder";
 
-	    break;
-	case "HORSE":
-	    Horse horse = (Horse) entity;
+            break;
+        case "HORSE":
+            Horse horse = (Horse) entity;
 
-	    if (horse.getVariant().toString().equals("UNDEAD_HORSE"))
-		name = "HorseZombie";
+            if (horse.getVariant().toString().equals("UNDEAD_HORSE"))
+                name = "HorseZombie";
 
-	    if (horse.getVariant().toString().equals("SKELETON_HORSE"))
-		name = "HorseSkeleton";
+            if (horse.getVariant().toString().equals("SKELETON_HORSE"))
+                name = "HorseSkeleton";
 
-	    break;
-	case "SKELETON":
-	    Skeleton skeleton = (Skeleton) entity;
+            break;
+        case "SKELETON":
+            Skeleton skeleton = (Skeleton) entity;
 
-	    if (skeleton.getSkeletonType().toString().equals("WITHER"))
-		name = "SkeletonWither";
+            if (skeleton.getSkeletonType().toString().equals("WITHER"))
+                name = "SkeletonWither";
 
-	    if (Version.isCurrentEqualOrHigher(Version.v1_10_R1) && skeleton.getSkeletonType().toString().equals("STRAY"))
-		name = "SkeletonStray";
+            if (Version.isCurrentEqualOrHigher(Version.v1_10_R1) && skeleton.getSkeletonType().toString().equals("STRAY"))
+                name = "SkeletonStray";
 
-	    break;
-	case "ZOMBIE":
-	    Zombie zombie = (Zombie) entity;
+            break;
+        case "ZOMBIE":
+            Zombie zombie = (Zombie) entity;
 
-	    if (Version.isCurrentEqualOrHigher(Version.v1_10_R1)) {
-		if (zombie.isVillager() && zombie.getVillagerProfession().toString().equals("HUSK"))
-		    return "ZombieVillager";
+            if (Version.isCurrentEqualOrHigher(Version.v1_10_R1)) {
+                if (zombie.isVillager() && zombie.getVillagerProfession().toString().equals("HUSK"))
+                    return "ZombieVillager";
 
-		if (zombie.getVillagerProfession().toString().equals("HUSK"))
-		    return "ZombieHusk";
-	    } else if (zombie.isVillager()) {
-		return "ZombieVillager";
-	    }
+                if (zombie.getVillagerProfession().toString().equals("HUSK"))
+                    return "ZombieHusk";
+            } else if (zombie.isVillager()) {
+                return "ZombieVillager";
+            }
 
-	    break;
-	default:
-	    break;
-	}
+            break;
+        default:
+            break;
+        }
 
-	return name;
+        return name;
     }
 
     public static double getMaxHealth(LivingEntity entity) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
-	    org.bukkit.attribute.AttributeInstance attr = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-	    return attr == null ? 0d : attr.getBaseValue();
-	}
+        if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
+            org.bukkit.attribute.AttributeInstance attr = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            return attr == null ? 0d : attr.getBaseValue();
+        }
 
-	return entity.getMaxHealth();
+        return entity.getMaxHealth();
     }
 
     public static short getDurability(ItemStack item) {
-	if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-	    return (short) ((Damageable) item.getItemMeta()).getDamage();
-	}
-	return item.getDurability();
+        if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+            return (short) ((Damageable) item.getItemMeta()).getDamage();
+        }
+        return item.getDurability();
     }
 
     public static void setSkullOwner(SkullMeta meta, OfflinePlayer player) {
-	if (meta != null && player != null) {
-	    if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-		meta.setOwningPlayer(player);
-	    } else {
-		meta.setOwner(player.getName());
-	    }
-	}
+        if (meta != null && player != null) {
+            if (Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
+                meta.setOwningPlayer(player);
+            } else {
+                meta.setOwner(player.getName());
+            }
+        }
     }
 
     public static ItemStack getSkull(String skullOwner) {
-	ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
-	SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+        ItemStack item = CMIMaterial.PLAYER_HEAD.newItemStack();
+        SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
 
-	if (skullOwner.length() == 36) {
-	    try {
-		OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
-		setSkullOwner(skullMeta, offPlayer);
-	    } catch (IllegalArgumentException e) {
-	    }
-	} else
-	    skullMeta.setOwner(skullOwner);
+        if (skullOwner.length() == 36) {
+            try {
+                OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(skullOwner));
+                setSkullOwner(skullMeta, offPlayer);
+            } catch (IllegalArgumentException e) {
+            }
+        } else
+            skullMeta.setOwner(skullOwner);
 
-	item.setItemMeta(skullMeta);
-	return item;
+        item.setItemMeta(skullMeta);
+        return item;
     }
 
     public static PotionType getPotionByName(String name) {
-	for (PotionType one : PotionType.values()) {
-	    if (one.toString().equalsIgnoreCase(name)) {
-		return one;
-	    }
-	}
+        for (PotionType one : PotionType.values()) {
+            if (one.toString().equalsIgnoreCase(name)) {
+                return one;
+            }
+        }
 
-	return null;
+        return null;
     }
 
     public static Map<UUID, String> getJobsEditorMap() {
-	return jobsEditorMap;
+        return jobsEditorMap;
     }
 
     public static Map<UUID, String> getQuestsEditorMap() {
-	return questsEditorMap;
+        return questsEditorMap;
     }
 
     public static Block getTargetBlock(Player player, int distance, boolean ignoreNoneSolids) {
-	return getTargetBlock(player, null, distance, ignoreNoneSolids);
+        return getTargetBlock(player, null, distance, ignoreNoneSolids);
     }
 
     public static Block getTargetBlock(Player player, int distance) {
-	return getTargetBlock(player, null, distance, false);
+        return getTargetBlock(player, null, distance, false);
     }
 
     public static Block getTargetBlock(Player player, Material lookingFor, int distance) {
-	return getTargetBlock(player, lookingFor, distance, false);
+        return getTargetBlock(player, lookingFor, distance, false);
     }
 
     public static Block getTargetBlock(Player player, Material lookingFor, int distance, boolean ignoreNoneSolids) {
-	int mult = 15 * 16;
-	if (distance > mult)
-	    distance = mult;
+        int mult = 15 * 16;
+        if (distance > mult)
+            distance = mult;
 
-	if (distance < 1)
-	    distance = 1;
+        if (distance < 1)
+            distance = 1;
 
-	try {
-	    Block bl = player.getTargetBlock(null, distance);
+        try {
+            Block bl = player.getTargetBlock(null, distance);
 
-	    if (!CMIMaterial.isAir(bl.getType())) {
-		return bl;
-	    }
-	} catch (Throwable e) {
-	}
+            if (!CMIMaterial.isAir(bl.getType())) {
+                return bl;
+            }
+        } catch (Throwable e) {
+        }
 
-	List<Block> blocks = new ArrayList<>();
-	Iterator<Block> itr = new BlockIterator(player, distance);
+        List<Block> blocks = new ArrayList<>();
+        Iterator<Block> itr = new BlockIterator(player, distance);
 
-	while (itr.hasNext()) {
-	    Block block = itr.next();
-	    blocks.add(block);
+        while (itr.hasNext()) {
+            Block block = itr.next();
+            blocks.add(block);
 
-	    if (distance != 0 && blocks.size() > distance) {
-		blocks.remove(0);
-	    }
+            if (distance != 0 && blocks.size() > distance) {
+                blocks.remove(0);
+            }
 
-	    Material material = block.getType();
+            Material material = block.getType();
 
-	    if (ignoreNoneSolids && !material.isSolid())
-		continue;
+            if (ignoreNoneSolids && !material.isSolid())
+                continue;
 
-	    if (lookingFor == null) {
-		if (!CMIMaterial.isAir(material)) {
-		    break;
-		}
-	    } else if (lookingFor == material) {
-		return block;
-	    }
-	}
+            if (lookingFor == null) {
+                if (!CMIMaterial.isAir(material)) {
+                    break;
+                }
+            } else if (lookingFor == material) {
+                return block;
+            }
+        }
 
-	return !blocks.isEmpty() ? blocks.get(blocks.size() - 1) : null;
+        return !blocks.isEmpty() ? blocks.get(blocks.size() - 1) : null;
     }
 
     public static Color getColor(int a) {
-	switch (a) {
-	case 1:
-	    return Color.AQUA;
-	case 2:
-	    return Color.BLACK;
-	case 3:
-	    return Color.BLUE;
-	case 4:
-	    return Color.FUCHSIA;
-	case 5:
-	    return Color.GRAY;
-	case 6:
-	    return Color.GREEN;
-	case 7:
-	    return Color.LIME;
-	case 8:
-	    return Color.MAROON;
-	case 9:
-	    return Color.NAVY;
-	case 10:
-	    return Color.OLIVE;
-	case 11:
-	    return Color.ORANGE;
-	case 12:
-	    return Color.PURPLE;
-	case 13:
-	    return Color.RED;
-	case 14:
-	    return Color.SILVER;
-	case 15:
-	    return Color.TEAL;
-	case 16:
-	    return Color.WHITE;
-	case 17:
-	    return Color.YELLOW;
-	default:
-	    return Color.BLACK;
-	}
+        switch (a) {
+        case 1:
+            return Color.AQUA;
+        case 2:
+            return Color.BLACK;
+        case 3:
+            return Color.BLUE;
+        case 4:
+            return Color.FUCHSIA;
+        case 5:
+            return Color.GRAY;
+        case 6:
+            return Color.GREEN;
+        case 7:
+            return Color.LIME;
+        case 8:
+            return Color.MAROON;
+        case 9:
+            return Color.NAVY;
+        case 10:
+            return Color.OLIVE;
+        case 11:
+            return Color.ORANGE;
+        case 12:
+            return Color.PURPLE;
+        case 13:
+            return Color.RED;
+        case 14:
+            return Color.SILVER;
+        case 15:
+            return Color.TEAL;
+        case 16:
+            return Color.WHITE;
+        case 17:
+            return Color.YELLOW;
+        default:
+            return Color.BLACK;
+        }
     }
 
     public static JobsWorld getJobsWorld(String name) {
-	return jobsWorlds.get(name.toLowerCase());
+        return jobsWorlds.get(name.toLowerCase());
     }
 
     public static JobsWorld getJobsWorld(int id) {
-	for (JobsWorld jobsWorld : jobsWorlds.values()) {
-	    if (jobsWorld.getId() == id) {
-		return jobsWorld;
-	    }
-	}
+        for (JobsWorld jobsWorld : jobsWorlds.values()) {
+            if (jobsWorld.getId() == id) {
+                return jobsWorld;
+            }
+        }
 
-	return null;
+        return null;
     }
 
     public static Map<String, JobsWorld> getJobsWorlds() {
-	return jobsWorlds;
+        return jobsWorlds;
     }
 
     public static void addJobsWorld(JobsWorld jobsWorld) {
-	if (jobsWorld == null || jobsWorld.getId() == 0)
-	    return;
+        if (jobsWorld == null || jobsWorld.getId() == 0)
+            return;
 
-	jobsWorlds.put(jobsWorld.getName().toLowerCase(), jobsWorld);
+        jobsWorlds.put(jobsWorld.getName().toLowerCase(), jobsWorld);
     }
 
     public static List<String> getFilesFromPackage(String pckgname) throws ClassNotFoundException {
-	return getFilesFromPackage(pckgname, null, "class");
+        return getFilesFromPackage(pckgname, null, "class");
     }
 
     public static List<String> getFilesFromPackage(String pckgname, String cleaner, String fileType) throws ClassNotFoundException {
-	List<String> result = new ArrayList<>();
-	try {
-	    for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
-		try {
-		    result.addAll(getFilesInSamePackageFromJar(pckgname, jarURL.toURI().getPath(), cleaner, fileType));
-		} catch (URISyntaxException e) {
-		}
-	    }
-	} catch (NullPointerException x) {
-	    throw new ClassNotFoundException(pckgname + " does not appear to be a valid package (Null pointer exception)");
-	}
-	return result;
+        List<String> result = new ArrayList<>();
+        try {
+            for (URL jarURL : ((URLClassLoader) Jobs.class.getClassLoader()).getURLs()) {
+                try {
+                    result.addAll(getFilesInSamePackageFromJar(pckgname, jarURL.toURI().getPath(), cleaner, fileType));
+                } catch (URISyntaxException e) {
+                }
+            }
+        } catch (NullPointerException x) {
+            throw new ClassNotFoundException(pckgname + " does not appear to be a valid package (Null pointer exception)");
+        }
+        return result;
     }
 
     public static List<String> getFilesInSamePackageFromJar(String packageName, String jarPath, String cleaner, String fileType) {
-	packageName = packageName.replace('.', '/');
+        packageName = packageName.replace('.', '/');
 
-	List<String> listOfCommands = new ArrayList<>();
+        List<String> listOfCommands = new ArrayList<>();
 
-	try (JarFile jarFile = new JarFile(jarPath)) {
-	    Enumeration<JarEntry> en = jarFile.entries();
-	    while (en.hasMoreElements()) {
-		String entryName = en.nextElement().getName();
+        try (JarFile jarFile = new JarFile(jarPath)) {
+            Enumeration<JarEntry> en = jarFile.entries();
+            while (en.hasMoreElements()) {
+                String entryName = en.nextElement().getName();
 
-		if (entryName.endsWith("." + fileType) && entryName.startsWith(packageName)) {
-		    String name = entryName.replace(packageName, "").replace("." + fileType, "").replace("/", "");
+                if (entryName.endsWith("." + fileType) && entryName.startsWith(packageName)) {
+                    String name = entryName.replace(packageName, "").replace("." + fileType, "").replace("/", "");
 
-		    if (name.contains("$"))
-			name = name.split("\\$", 2)[0];
+                    if (name.contains("$"))
+                        name = name.split("\\$", 2)[0];
 
-		    if (cleaner != null && !cleaner.isEmpty())
-			name = name.replace(cleaner, "");
+                    if (cleaner != null && !cleaner.isEmpty())
+                        name = name.replace(cleaner, "");
 
-		    listOfCommands.add(name);
-		}
-	    }
-	} catch (java.io.IOException e) {
-	}
+                    listOfCommands.add(name);
+                }
+            }
+        } catch (java.io.IOException e) {
+        }
 
-	return listOfCommands;
+        return listOfCommands;
     }
 
     public static <K, V> Map<K, V> mapUnique(Map<K, V> left, Map<K, V> right) {
-	Map<K, V> difference = new HashMap<>();
+        Map<K, V> difference = new HashMap<>();
 
-	difference.putAll(left);
-	difference.putAll(right);
-	difference.entrySet().removeAll(right.entrySet());
+        difference.putAll(left);
+        difference.putAll(right);
+        difference.entrySet().removeAll(right.entrySet());
 
-	return difference;
+        return difference;
     }
 
     public static boolean enchantMatchesActionInfo(String enchant, EnchantActionInfo actionInfo) {
-	 CMIEnchantment e = CMIEnchantment.get(actionInfo.getName());
-	String enchantName = e != null ? CMIEnchantment.get(actionInfo.getName()).toString() : actionInfo.getName();
+        CMIEnchantment e = CMIEnchantment.get(actionInfo.getName());
+        String enchantName = e != null ? CMIEnchantment.get(actionInfo.getName()).toString() : actionInfo.getName();
 
-	return (
-	// Enchantment without level e.g. silk_touch
-	enchant.equalsIgnoreCase(enchantName) ||
-	// Enchantment with level e.g. fire_aspect:1
-	    enchant.equalsIgnoreCase(enchantName + ":" + actionInfo.getLevel()));
+        return (
+        // Enchantment without level e.g. silk_touch
+        enchant.equalsIgnoreCase(enchantName) ||
+        // Enchantment with level e.g. fire_aspect:1
+            enchant.equalsIgnoreCase(enchantName + ":" + actionInfo.getLevel()));
     }
 }
