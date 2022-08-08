@@ -102,7 +102,7 @@ public class GeneralConfigManager {
 	BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
 	DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
 	LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
-	payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false;
+	payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
 
     public ItemStack guiBackButton, guiNextButton;
     public CMIMaterial guiFiller;
@@ -439,6 +439,9 @@ public class GeneralConfigManager {
 
 	c.addComment("hide-jobsinfo-without-permission", "Hide jobs info from player if they lack the permission to join the job");
 	hideJobsInfoWithoutPermission = c.get("hide-jobsinfo-without-permission", false);
+
+	c.addComment("prevent-shop-item-enchanting", "Prevent players to enchant items from the shop in the anvil with enchanted books");
+	preventShopItemEnchanting = c.get("prevent-shop-item-enchanting", true);
 
 	c.addComment("enable-pay-near-spawner",
 	    "Option to allow payment to be made when killing mobs from a spawner.",
