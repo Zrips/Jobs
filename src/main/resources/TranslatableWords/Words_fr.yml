@@ -13,7 +13,7 @@ ItemList:
   ACACIA_STAIRS: Escalier en Acacia
   ACACIA_TRAPDOOR: Trappe en Acacia
   ACACIA_WOOD: Bois d'Acacia
-  ACTIVATOR_RAIL: Rails déclancheurs
+  ACTIVATOR_RAIL: Rails déclencheurs
   AIR: Air
   ALLIUM: Allium
   ANDESITE: Andésite
@@ -98,7 +98,7 @@ ItemList:
   BROWN_BED: Lit marron
   BROWN_CARPET: Tapis marron
   BROWN_CONCRETE: Béton marron
-  BROWN_CONCRETE_POWDER: Béton marron en poudr
+  BROWN_CONCRETE_POWDER: Béton marron en poudre
   BROWN_GLAZED_TERRACOTTA: Terre cuite émaillée marron
   BROWN_MUSHROOM: Champignon marron
   BROWN_MUSHROOM_BLOCK: Champignon géant marron
@@ -123,7 +123,7 @@ ItemList:
   CARVED_PUMPKIN: Citrouille scupltée
   CAULDRON: Chaudron
   CAVE_AIR: Air de Caverne
-  CAVE_SPIDER_SPAWN_EGG: Oeuf d'Araignée venimeuse
+  CAVE_SPIDER_SPAWN_EGG: Oeuf d'apparition d'Araignée venimeuse
   CHAINMAIL_BOOTS: Bottes en mailles
   CHAINMAIL_CHESTPLATE: Plastron en mailles
   CHAINMAIL_HELMET: Casque en mailles
@@ -254,7 +254,7 @@ ItemList:
   DIRT: Terre
   DISPENSER: Distributeur
   DOLPHIN_SPAWN_EGG: Oeuf d'apparition de Dauphin
-  DONKEY_SPAWN_EGG: Oeuf d'Âne
+  DONKEY_SPAWN_EGG: Oeuf d'apparition d'Âne
   DRAGON_BREATH: Souffle du Dragon
   DRAGON_EGG: Oeuf d'apparition de Dragon
   DRAGON_HEAD: Tête de dragon
@@ -272,8 +272,8 @@ ItemList:
   ENCHANTED_BOOK: Livre enchanté
   ENCHANTED_GOLDEN_APPLE: Pomme de Notch
   ENCHANTING_TABLE: Table d'enchantement
-  ENDERMAN_SPAWN_EGG: Oeuf d'Enderman
-  ENDERMITE_SPAWN_EGG: Oeuf d'Endermite
+  ENDERMAN_SPAWN_EGG: Oeuf d'apparition d'Enderman
+  ENDERMITE_SPAWN_EGG: Oeuf d'apparition d'Endermite
   ENDER_CHEST: Coffre de l'Ender
   ENDER_EYE: Oeil de l'Ender
   ENDER_PEARL: Perle de l'Ender
@@ -284,7 +284,7 @@ ItemList:
   END_ROD: Barre de l'End
   END_STONE: Pierre du Néant
   END_STONE_BRICKS: Pierre taillée de l'End
-  EVOKER_SPAWN_EGG: Oeuf d'Evocateur
+  EVOKER_SPAWN_EGG: Oeuf d'apparition d'Evocateur
   EXPERIENCE_BOTTLE: Fiole d'expérience
   FARMLAND: Terre labourée
   FEATHER: Plume
@@ -550,7 +550,7 @@ ItemList:
   OAK_WOOD: Bois de chêne
   OBSERVER: Observer
   OBSIDIAN: Obsidienne
-  OCELOT_SPAWN_EGG: Oeuf d'Ocelot
+  OCELOT_SPAWN_EGG: Oeuf d'apparition d'Ocelot
   ORANGE_BANNER: Bannière orange
   ORANGE_BED: Lit orange
   ORANGE_CARPET: Tapis orange
@@ -672,7 +672,7 @@ ItemList:
   RAIL: Rail
   REDSTONE: Redstone
   REDSTONE_BLOCK: Bloc de redstone
-  REDSTONE_LAMP: Lampe Redstone 
+  REDSTONE_LAMP: Lampe Redstone
   REDSTONE_ORE: Minerai de redstone
   REDSTONE_TORCH: Torche de redstone
   REDSTONE_WALL_TORCH: Torche de redstone
@@ -972,7 +972,7 @@ ItemList:
   COMPOSTER: Composteur
   BEEHIVE: Ruche
   BEE_NEST: Nid d'abeilles
-  BEE_SPAWN_EGG: Oeuf d'Abeille
+  BEE_SPAWN_EGG: Oeuf d'apparition d'Abeille
   HONEYCOMB: Rayon de miel
   HONEYCOMB_BLOCK: Bloc de rayon de miel
   HONEY_BLOCK: Bloc de miel
@@ -1006,7 +1006,7 @@ ItemList:
   CRIMSON_WALL_SIGN: Panneau carmin mural
   CRYING_OBSIDIAN: Obsidienne pleureuse
   GILDED_BLACKSTONE: Roche noire dorée
-  HOGLIN_SPAWN_EGG: Oeuf d'Hoglin
+  HOGLIN_SPAWN_EGG: Oeuf d'apparition d'Hoglin
   LODESTONE: Magnétite
   MUSIC_DISC_PIGSTEP: Disque Pigstep
   NETHERITE_AXE: Hache en netherite
@@ -1146,7 +1146,7 @@ ItemList:
   GLOW_INK_SAC: Poche d'encre luisante
   GLOW_ITEM_FRAME: Cadre luisant
   GLOW_LICHEN: Lichen lumineux
-  GLOW_SQUID_SPAWN_EGG: Oeuf d'apparition de poulpe luisant 
+  GLOW_SQUID_SPAWN_EGG: Oeuf d'apparition de poulpe luisant
   GOAT_SPAWN_EGG: Oeuf d'apparition de chèvre
   GRAY_CANDLE: Bougie grise
   GRAY_CANDLE_CAKE: Bougie grise sur un gâteau
@@ -1297,23 +1297,23 @@ ItemList:
   LEGACY_SKULL: Crâne
   LEGACY_SIGN_POST: Panneau sur pied
   LEGACY_BED_BLOCK: Lit
-  LEGACY_REDSTONE_TORCH_OFF: Torche de redstone
-  LEGACY_REDSTONE_TORCH_ON: Torche de redstone
+  LEGACY_REDSTONE_TORCH_OFF: Torche de redstone éteinte
+  LEGACY_REDSTONE_TORCH_ON: Torche de redstone allumée
   LEGACY_CAKE_BLOCK: Gâteau
   LEGACY_DIODE_BLOCK_OFF: Répéteur Coupé
   LEGACY_DIODE_BLOCK_ON: Répéteur Activé
-  LEGACY_MELON_BLOCK: Melon Block
-  LEGACY_REDSTONE_COMPARATOR_OFF: Comparateur 
-  LEGACY_REDSTONE_COMPARATOR_ON: Comparateur
-  LEGACY_WOODEN_DOOR_BLOCK: Wooden Door Block
-  LEGACY_SPRUCE_DOOR: Spruce Door Block
-  LEGACY_BIRCH_DOOR: Birch Door Block
-  LEGACY_JUNGLE_DOOR: Jungle Door Block
-  LEGACY_ACACIA_DOOR: Acacia Door Block
-  LEGACY_DARK_OAK_DOOR: Dark Oak Door Block
+  LEGACY_MELON_BLOCK: Bloc de Pastèque
+  LEGACY_REDSTONE_COMPARATOR_OFF: Comparateur éteinte
+  LEGACY_REDSTONE_COMPARATOR_ON: Comparateur allumé
+  LEGACY_WOODEN_DOOR_BLOCK: Bloc de porte en bois
+  LEGACY_SPRUCE_DOOR: Bloc de porte en sapin
+  LEGACY_BIRCH_DOOR: Bloc de porte en bouleau
+  LEGACY_JUNGLE_DOOR: Bloc de porte en acajou
+  LEGACY_ACACIA_DOOR: Bloc de porte en acacia
+  LEGACY_DARK_OAK_DOOR: Bloc de porte en chêne noir
   LEGACY_GLOWING_REDSTONE_ORE: Minerai de Redstone Lumineux
-  LEGACY_BREWING_STAND: Brewing Stand Block
-  LEGACY_WHEAT: Wheat
+  LEGACY_BREWING_STAND: Bloc d'Alambic
+  LEGACY_WHEAT: Blé
 EntityList:
   4-ELDER_GUARDIAN: Grand gardien
   5-WITHER_SKELETON: Wither squelette
@@ -1338,7 +1338,7 @@ EntityList:
   56-GHAST: Ghast
   925-ZOMBIFIED_PIGLIN: Piglin zombifié
   58-ENDERMAN: Enderman
-  59-CAVE_SPIDER: Araignée bleu
+  59-CAVE_SPIDER: Araignée venimeuse
   60-SILVERFISH: Poisson d'argent
   61-BLAZE: Blaze
   62-MAGMA_CUBE: Cube de magma
@@ -1429,6 +1429,28 @@ EnchantList:
   Feather falling: Chute amortie
   Power: Puissance
   Infinity: Infinité
+PotionEffects:
+  Uncraftable: Non fabricable
+  Water: Eau
+  Mundane: Banale
+  Thick: Épaisse
+  Awkward: Étrange
+  Night vision: Nyctalopie
+  Invisibility: Invisibilité
+  Jump: Saut
+  Fire resistance: Résistance au feu
+  Speed: Rapidité
+  Slowness: Lenteur
+  Water breathing: Apnée
+  Instant heal: Soin instantané
+  Instant damage: Dégâts instantanés
+  Poison: Poison
+  Regen: Régénération
+  Strength: Force
+  Weakness: Faiblesse
+  Luck: Chance
+  Turtle master: Maître Tortue
+  Slow falling: Chute lente
 ColorList:
   0-white: '&fBlanc'
   1-orange: '&6Orange'
