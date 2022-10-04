@@ -667,6 +667,6 @@ public class Placeholder {
     }
 
     private static String convert(boolean state) {
-	return state ? LC.info_variables_True.getLocale() : LC.info_variables_False.getLocale();
+	return state ? "true" : "false";
     }
 }
