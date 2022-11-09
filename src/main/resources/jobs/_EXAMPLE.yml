@@ -261,7 +261,7 @@ exampleJob:
       income: 1.0
       points: 1.0
       experience: 1.0
-  # Payment for collecting things like sweet berry bush, composter or honey
+  # Payment for collecting things from sweet berry bush, composter or honey. Keep in mind that you need to define item you get it and not block you click on.
   Collect:
     sweet_berries-2:
       income: 0.2

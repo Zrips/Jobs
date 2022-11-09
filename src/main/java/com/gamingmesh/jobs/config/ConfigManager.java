@@ -302,11 +302,11 @@ public class ConfigManager {
 	cfg.addComment(pt + ".Break.gravel.income", "you can use minuses to take away money if the player break this block");
 	cfg.get(pt + ".Break.gravel.income", -1D);
 
-	cfg.addComment(pt + ".Collect", "Payment for collecting things like sweet berry bush, composter or honey");
+	cfg.addComment(pt + ".Collect", "Payment for collecting things from sweet berry bush, composter or honey. Keep in mind that you need to define item you get it and not block you click on.");
 
 	generate(cfg, pt + ".Collect.sweet_berries-2");
 	generate(cfg, pt + ".Collect.sweet_berries-3");
-	generate(cfg, pt + ".Collect.composter");
+	generate(cfg, pt + ".Collect.bonemeal");
 	generate(cfg, pt + ".Collect.honeycomb");
 	generate(cfg, pt + ".Collect.honey_bottle");
 	generate(cfg, pt + ".Collect.glow_berries");
