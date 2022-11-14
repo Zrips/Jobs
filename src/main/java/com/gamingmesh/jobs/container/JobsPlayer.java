@@ -867,7 +867,7 @@ public class JobsPlayer {
 	if (job == null)
 	    return;
 	builder.append(job.getChatColor());
-	builder.append(job.getName().replace("{level}", levelS));
+	builder.append(job.getJobFullName().replace("{level}", levelS));
 	builder.append(CMIChatColor.WHITE);
     }
 
