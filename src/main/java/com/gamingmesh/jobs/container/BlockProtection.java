@@ -6,7 +6,8 @@ public class BlockProtection {
 
     private static long pre = (int) (System.currentTimeMillis() / 10000000000L) * 10000000000L;
 
-    private int id;
+    private int id = -1;
+    private int schedId  = - 1;
     private int time  = -1;
     private int recorded = -1;
     private DBAction action;
@@ -112,5 +113,13 @@ public class BlockProtection {
 
     public int getZ() {
 	return z;
+    }
+
+    public int getSchedId() {
+        return schedId;
+    }
+
+    public void setSchedId(int schedId) {
+        this.schedId = schedId;
     }
 }
