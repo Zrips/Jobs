@@ -35,7 +35,7 @@ public class NameTranslatorManager {
     private final Map<String, NameList> listOfEnchants = new HashMap<>();
     private final Map<String, NameList> listOfMMEntities = new HashMap<>();
     private final Map<String, NameList> listOfPotionEffects = new HashMap<>();
-    
+
     public String translate(String materialName, JobInfo info) {
         return translate(materialName, info.getActionType(), info.getId(), info.getMeta(), info.getName());
     }
@@ -71,11 +71,11 @@ public class NameTranslatorManager {
 
                 if (nameLs != null && !mat.isNone()) {
                     if (meta != null && !meta.isEmpty() && mat.isCanHavePotionType() && Util.getPotionByName(meta) != null) {
-                        
+
                         NameList record = listOfPotionEffects.get(meta.toLowerCase().replace("_", ""));
                         if (record != null)
                             meta = record.getMinecraftName();
-                        
+
                         return nameLs.getName() + ":" + meta;
                     }
 
@@ -154,6 +154,24 @@ public class NameTranslatorManager {
                 if (split.length > 1) {
                     mName = split[0];
                     level = ":" + split[1];
+                }
+
+                mat = CMIMaterial.get(mName);
+                nameLs = listOfNames.get(mat);
+
+                if (nameLs != null && !mat.isNone()) {
+                    if (meta != null && !meta.isEmpty() && mat.isCanHavePotionType() && Util.getPotionByName(meta) != null) {
+
+                        NameList record = listOfPotionEffects.get(meta.toLowerCase().replace("_", ""));
+                        if (record != null)
+                            meta = record.getMinecraftName();
+
+                        return nameLs.getName() + ":" + meta;
+                    }
+
+                    if (name != null && !name.isEmpty()) {
+                        return nameLs.getName();
+                    }
                 }
 
                 NameList nameInfo = listOfEnchants.get(mName.toLowerCase().replace("_", ""));

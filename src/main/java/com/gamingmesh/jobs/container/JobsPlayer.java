@@ -39,13 +39,11 @@ import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.stuff.TimeManage;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Time.CMITimeManager;
 
 public class JobsPlayer {
@@ -84,10 +82,10 @@ public class JobsPlayer {
 
     private Map<String, Log> logList = new HashMap<>();
 
-    private Long seen = System.currentTimeMillis();
+    private long seen = System.currentTimeMillis();
 
     private Map<String, Boolean> permissionsCache;
-    private Long lastPermissionUpdate = -1L;
+    private long lastPermissionUpdate = -1L;
 
     private final Map<String, Map<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
@@ -937,11 +935,11 @@ public class JobsPlayer {
 	this.isSaved = isSaved;
     }
 
-    public Long getSeen() {
+    public long getSeen() {
 	return seen;
     }
 
-    public void setSeen(Long seen) {
+    public void setSeen(long seen) {
 	this.seen = seen;
     }
 
@@ -957,7 +955,7 @@ public class JobsPlayer {
 	permissionsCache.put(permission, state);
     }
 
-    public Long getLastPermissionUpdate() {
+    public long getLastPermissionUpdate() {
 	return lastPermissionUpdate;
     }
 

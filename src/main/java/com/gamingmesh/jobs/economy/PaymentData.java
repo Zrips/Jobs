@@ -7,7 +7,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 
 public class PaymentData {
 
-    private Long lastAnnouced = 0L;
+    private long lastAnnouced = 0L;
 
     private final java.util.Map<CurrencyType, LimitsData> payments = new HashMap<>();
 
@@ -53,7 +53,7 @@ public class PaymentData {
 	return data == null ? 0D : (int) (data.getAmount() * 100) / 100D;
     }
 
-    public Long getLastAnnounced() {
+    public long getLastAnnounced() {
 	return lastAnnouced;
     }
 

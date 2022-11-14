@@ -125,11 +125,6 @@ public class BlockProtectionManager {
         }
 
         locations.put(v, Bp);
-
-//	if (locations.size() > 10) {
-//	    Jobs.getJobsDAO().saveBlockProtection(loc.getWorld().getName(), new HashMap<String, BlockProtection>(locations));
-//	    locations.clear();
-//	}
     }
 
     public void saveCache() {

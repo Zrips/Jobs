@@ -31,10 +31,10 @@ public class JobProgression {
     private Job job;
     private JobsPlayer jPlayer;
     private double experience;
-    private Double lastExperience;
+    private double lastExperience = 0;
     private int level;
     private transient int maxExperience = -1;
-    private Long leftOn = null;
+    private long leftOn = 0;
 
     public JobProgression(Job job, JobsPlayer jPlayer, int level, double experience) {
 	this.job = job;
@@ -258,7 +258,7 @@ public class JobProgression {
     }
 
     public boolean canRejoin() {
-	if (leftOn == null || leftOn + job.getRejoinCd() < System.currentTimeMillis())
+	if (leftOn == 0 || leftOn + job.getRejoinCd() < System.currentTimeMillis())
 	    return true;
 
 	org.bukkit.entity.Player player = jPlayer != null ? jPlayer.getPlayer() : null;
@@ -266,14 +266,14 @@ public class JobProgression {
     }
 
     public String getRejoinTimeMessage() {
-	return leftOn == null ? "" : CMITimeManager.to24hourShort(leftOn + job.getRejoinCd() - System.currentTimeMillis());
+	return leftOn == 0 ? "" : CMITimeManager.to24hourShort(leftOn + job.getRejoinCd() - System.currentTimeMillis());
     }
 
-    public Double getLastExperience() {
-	return lastExperience == null ? 0D : lastExperience;
+    public double getLastExperience() {
+	return lastExperience;
     }
 
-    public void setLastExperience(Double lastExperience) {
+    public void setLastExperience(double lastExperience) {
 	this.lastExperience = lastExperience;
     }
 
