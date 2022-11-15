@@ -39,6 +39,7 @@ import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 
+import net.Zrips.CMILib.Container.CMIArray;
 import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
@@ -49,6 +50,8 @@ public class GeneralConfigManager {
 
     public List<Integer> BroadcastingLevelUpLevels = new ArrayList<>();
     public List<String> DisabledWorldsList = new ArrayList<>();
+
+    public List<String> helpPageBehavior = new ArrayList<>();
 
     public final Map<CMIMaterial, Map<Enchantment, Integer>> whiteListedItems = new HashMap<>();
 
@@ -1040,6 +1043,27 @@ public class GeneralConfigManager {
         JobsGUIGroupAmount = c.get("JobsGUI.GroupAmount", 7);
         c.addComment("JobsGUI.SkipAmount", "Defines by how many slots we need to skip after group");
         JobsGUISkipAmount = c.get("JobsGUI.SkipAmount", 2);
+
+        c.addComment("Commands.Jobs", "What should happen when performing clean /jobs command", "Options:",
+            "Default - behaves like before and will open jobs help page with list of commands player can access",
+            "Browse - will open jobs browse GUI where player can check existing jobs and their actions",
+            "Last option is to define command you want to perform, use [playerName] variable to replace it with players name who performed it. Multiple commands can be provided too. Commands will be performed from console.");
+
+
+        helpPageBehavior.clear();
+        if (c.getC().isList("Commands.Jobs")) {
+            helpPageBehavior.addAll(c.get("Commands.Jobs", Arrays.asList("Default")));
+        } else {
+            helpPageBehavior.add(c.get("Commands.Jobs", "Default"));
+        }
+        if (!helpPageBehavior.isEmpty()) {
+            if (helpPageBehavior.size() == 1 && helpPageBehavior.get(0).equalsIgnoreCase("Default"))
+                helpPageBehavior.clear();            
+            if (helpPageBehavior.size() == 1 && helpPageBehavior.get(0).equalsIgnoreCase("Browse")) {
+                helpPageBehavior.clear();
+                helpPageBehavior.add("browse");
+            }
+        }
 
         c.addComment("Commands.PageRow.JobsTop.AmountToShow", "Defines amount of players to be shown in one page for /jobs top & /jobs gtop");
         JobsTopAmount = c.get("Commands.PageRow.JobsTop.AmountToShow", 15);
