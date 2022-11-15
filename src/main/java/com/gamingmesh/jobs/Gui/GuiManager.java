@@ -206,25 +206,31 @@ public class GuiManager {
             i++;
         }
 
-        ItemStack next = Jobs.getGCManager().guiInfoButton;
-        ItemMeta meta = next.getItemMeta();
+        if (Jobs.getGCManager().InfoButtonSlot > 0) {
+            ItemStack next = Jobs.getGCManager().guiInfoButton;
+            ItemMeta meta = next.getItemMeta();
 
-        meta.setDisplayName(" ");
-        meta.setLore(Jobs.getLanguage().getMessageList("command.info.gui.infoLore"));
-        next.setItemMeta(meta);
+            List<String> l = Jobs.getLanguage().getMessageList("command.info.gui.infoLore");
 
-        gui.addButton(new CMIGuiButton(Jobs.getGCManager().InfoButtonSlot - 1, next) {
-            @Override
-            public void click(GUIClickType type) {
-                for (String one : Jobs.getGCManager().InfoButtonCommands) {
-                    if (one.equalsIgnoreCase("closeinv!")) {
-                        player.closeInventory();
-                        continue;
+            if (!l.isEmpty())
+                meta.setDisplayName(l.remove(0));
+            if (!l.isEmpty())
+                meta.setLore(l);
+            next.setItemMeta(meta);
+
+            gui.addButton(new CMIGuiButton(Jobs.getGCManager().InfoButtonSlot - 1, next) {
+                @Override
+                public void click(GUIClickType type) {
+                    for (String one : Jobs.getGCManager().InfoButtonCommands) {
+                        if (one.equalsIgnoreCase("closeinv!")) {
+                            player.closeInventory();
+                            continue;
+                        }
+                        CMICommands.performCommand(Bukkit.getConsoleSender(), one.replace("[playerName]", player.getName()));
                     }
-                    CMICommands.performCommand(Bukkit.getConsoleSender(), one.replace("[playerName]", player.getName()));
                 }
-            }
-        });
+            });
+        }
 
         gui.fillEmptyButtons();
         gui.open();

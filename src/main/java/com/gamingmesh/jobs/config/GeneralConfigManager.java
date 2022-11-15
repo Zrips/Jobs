@@ -1053,6 +1053,7 @@ public class GeneralConfigManager {
         item = CMILib.getInstance().getItemManager().getItem(c.get("JobsGUI.NextButton.Material", "ARROW"));
         guiNextButton = item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.ARROW.newItemStack() : item.getItemStack();
 
+        c.addComment("JobsGUI.InfoButton.Slot", "Slot for info button. Set it to 0 if you want to disable it","Locale can be customized in locale file under gui->infoLore section");
         InfoButtonSlot = c.get("JobsGUI.InfoButton.Slot", 9);
         guiInfoButton = item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.ARROW.newItemStack() : item.getItemStack();
         item = CMILib.getInstance().getItemManager().getItem(c.get("JobsGUI.InfoButton.Material",
