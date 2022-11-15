@@ -108,7 +108,6 @@ public class GeneralConfigManager {
         payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
 
     public ItemStack guiBackButton, guiNextButton;
-    public CMIMaterial guiFiller;
 
     public Parser DynamicPaymentEquation;
 
@@ -1084,9 +1083,6 @@ public class GeneralConfigManager {
 
         tmat = CMIMaterial.get(c.get("JobsGUI.NextButton.Material", "ARROW"));
         guiNextButton = (tmat == CMIMaterial.NONE ? CMIMaterial.ARROW : tmat).newItemStack();
-
-        tmat = CMIMaterial.get(c.get("JobsGUI.Filler.Material", "GREEN_STAINED_GLASS_PANE"));
-        guiFiller = (tmat == CMIMaterial.NONE ? CMIMaterial.GREEN_STAINED_GLASS_PANE : tmat);
 
         c.addComment("BlockOwnership.Range", "Set to 0 or lower if you want to disable this. Setting to positive number will mean that player needs to be in this range from owner block to get paid");
         blockOwnershipRange = c.get("BlockOwnership.Range", 0);

@@ -49,7 +49,6 @@ public class GuiManager {
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.pickjob"));
-	gui.setFiller(Jobs.getGCManager().guiFiller);
 
 	int guiSize = Jobs.getGCManager().getJobsGUIRows() * 9,
 	    neededSlots = jobsListSize + ((jobsListSize / Jobs.getGCManager().getJobsGUIGroupAmount())
@@ -321,7 +320,6 @@ public class GuiManager {
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
-	gui.setFiller(Jobs.getGCManager().guiFiller);
 	gui.setInvSize(guiSize);
 
 	List<ItemStack> items = new ArrayList<>();
@@ -472,7 +470,7 @@ public class GuiManager {
 
 	CMIGui gui = new CMIGui(player);
 	gui.setTitle(Jobs.getLanguage().getMessage("command.info.gui.jobinfo", "[jobname]", job.getName()));
-	gui.setFiller(Jobs.getGCManager().guiFiller);
+
 	gui.setInvSize(guiSize);
 
 	List<ItemStack> items = new ArrayList<>();

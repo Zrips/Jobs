@@ -294,7 +294,7 @@ public class ShopManager {
 		}
 	    });
 	}
-	gui.setFiller(Jobs.getGCManager().guiFiller);
+
 	gui.fillEmptyButtons();
 	gui.open();
 	return true;
