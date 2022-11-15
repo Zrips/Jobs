@@ -209,7 +209,8 @@ public class GuiManager {
         ItemStack next = Jobs.getGCManager().guiInfoButton;
         ItemMeta meta = next.getItemMeta();
 
-        meta.setDisplayName(LC.info_nextPageHover.getLocale());
+        meta.setDisplayName(" ");
+        meta.setLore(Jobs.getLanguage().getMessageList("command.info.gui.infoLore"));
         next.setItemMeta(meta);
 
         gui.addButton(new CMIGuiButton(Jobs.getGCManager().InfoButtonSlot - 1, next) {
