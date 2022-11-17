@@ -1190,13 +1190,16 @@ public class PlayerManager {
                 if (jPlayer == null || player.hasPermission("jobs.*"))
                     return;
 
-                int confMaxJobs = Jobs.getGCManager().getMaxJobs();
-                short playerMaxJobs = (short) jPlayer.progression.size();
+                int playerMaxJobs = getMaxJobs(jPlayer);
+                int playerCurrentJobs = jPlayer.progression.size();
 
-                if (confMaxJobs > 0 && playerMaxJobs >= confMaxJobs && !getJobsLimit(jPlayer, playerMaxJobs))
+                if (playerMaxJobs <= 0 || playerCurrentJobs >= playerMaxJobs)
                     return;
 
                 for (Job one : Jobs.getJobs()) {
+                    if (jPlayer.progression.size() >= playerMaxJobs)
+                        return;
+                    
                     if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
                         continue;
 

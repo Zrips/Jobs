@@ -39,7 +39,7 @@ public class JobsConnection {
 	conn.close();
     }
 
-    public synchronized Statement createStatement() throws SQLException {
+    public synchronized Statement createStatement() throws SQLException {        
 	return conn.createStatement();
     }
 
