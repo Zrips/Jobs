@@ -467,14 +467,17 @@ public class Placeholder {
 	    case user_archived_jobs:
 		return Integer.toString(user.getArchivedJobs().getArchivedJobs().size());
 	    case user_jobs:
-		String jobNames = "";
+		StringBuilder jobNames = new StringBuilder();
 		for (JobProgression prog : user.progression) {
-		    if (!jobNames.isEmpty()) {
-			jobNames += LC.info_ListSpliter.getLocale();
+		    if (!jobNames.toString().isEmpty()) {
+			jobNames.append(LC.info_ListSpliter.getLocale());
 		    }
-		    jobNames += prog.getJob().getName();
+		    jobNames.append(prog.getJob().getDisplayName());
 		}
-		return jobNames;
+		if (user.progression.isEmpty()) {		    
+		    jobNames.append(Jobs.getNoneJob().getDisplayName());
+		}
+		return jobNames.toString();
 	    case user_quests:
 		String q = "";
 		for (QuestProgression questProg : user.getQuestProgressions()) {
