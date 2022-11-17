@@ -16,6 +16,7 @@ import com.gamingmesh.jobs.container.DBAction;
 import net.Zrips.CMILib.Container.CMIBlock;
 import net.Zrips.CMILib.Container.CMIBlock.Bisect;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class BlockProtectionManager {
 
@@ -99,7 +100,7 @@ public class BlockProtectionManager {
         Bp.setTime(time);
 
         // If timer is under 2 hours, we can run scheduler to remove it when time comes
-        if ((time - System.currentTimeMillis()) / 1000 < 60 * 60 * 2)
+        if (time > -1 && (time - System.currentTimeMillis()) / 1000 < 60 * 60 * 2)
             Bp.setSchedId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), () -> {
                 remove(loc);
             }, (time - System.currentTimeMillis()) / 50));
@@ -108,8 +109,9 @@ public class BlockProtectionManager {
         chunks.put(chunk, Bpm);
         regions.put(region, chunks);
         map.put(loc.getWorld(), regions);
+
         // Only saving into save cache if timer is higher than 5 minutes
-        if (cache && (time - System.currentTimeMillis()) / 1000 > 60 * 5)
+        if (cache && ((time - System.currentTimeMillis()) / 1000 > 60 * 5 || time < 0) )
             addToCache(loc, Bp);
         return Bp;
     }
@@ -123,6 +125,7 @@ public class BlockProtectionManager {
             locations = new ConcurrentHashMap<>();
             tempCache.put(loc.getWorld(), locations);
         }
+                CMIDebug.d("Cached");
 
         locations.put(v, Bp);
     }
@@ -179,7 +182,7 @@ public class BlockProtectionManager {
             world.remove(locToRegion(loc));
 
         return bp;
-    }
+    } 
 
     public Long getTime(Block block) {
         return getTime(block.getLocation());

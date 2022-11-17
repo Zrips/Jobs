@@ -45,7 +45,7 @@ public class bp implements Cmd {
                     Location l = loc.clone().add(x, y, z);
                     BlockProtection bp = Jobs.getBpManager().getBp(l);
                     if (bp != null) {
-                        Long time = bp.getTime();
+                        long time = bp.getTime();
                         if (!all) {
                             if (bp.getAction() == DBAction.DELETE)
                                 continue;

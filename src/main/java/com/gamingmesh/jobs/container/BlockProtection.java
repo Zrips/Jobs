@@ -43,7 +43,7 @@ public class BlockProtection {
     }
 
     private static long deconvert(int time) {
-	return (time * 1000L) + pre;
+	return time == -1 ? -1 : (time * 1000L) + pre;
     }
 
     public void setTime(long time) {
