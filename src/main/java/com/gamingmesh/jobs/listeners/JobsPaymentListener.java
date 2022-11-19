@@ -543,7 +543,7 @@ public final class JobsPaymentListener implements Listener {
 
                 // check is the fishing being exploited. If yes, prevent payment.
                 if (mcMMOPlayer != null && ExperienceConfig.getInstance().isFishingExploitingPrevented()
-                    && mcMMOPlayer.getFishingManager().isFishingTooOften()) {
+                    && mcMMOPlayer.getFishingManager().isExploitingFishing(event.getHook().getLocation().toVector())) {
                     return;
                 }
             }
