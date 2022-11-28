@@ -9,6 +9,8 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
+import java.util.Random;
+
 public class exp implements Cmd {
 
     private enum Action {
@@ -51,11 +53,28 @@ public class exp implements Cmd {
         }
 
         double amount = 0.0;
-        try {
-            amount = Double.parseDouble(args[3]);
-        } catch (NumberFormatException e) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
-            return true;
+
+        /* Add random argument, ex: rand_5-10 */
+        if(args[3].startsWith("rand_")){
+            String data= args[3].split("(?i)rand_")[1];
+            String[] arr = data.split("-");
+
+            int amountMin = Integer.parseInt(arr[0]);
+            int amountMax = Integer.parseInt(arr[1]);
+
+            if(amountMin <= amountMax){
+                amount = amountMin + new Random().nextDouble() * (amountMax - amountMin);
+            } else {
+                amount = amountMax;
+            }
+
+        } else {
+            try {
+                amount = Double.parseDouble(args[3]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
+                return true;
+            }
         }
 
         try {
