@@ -55,14 +55,14 @@ public class exp implements Cmd {
         double amount = 0.0;
 
         /* Add random argument, ex: rand_5-10 */
-        if(args[3].startsWith("rand_")){
-            String data= args[3].split("(?i)rand_")[1];
+        if (args[3].startsWith("rand_")) {
+            String data = args[3].split("(?i)rand_")[1];
             String[] arr = data.split("-");
 
             int amountMin = Integer.parseInt(arr[0]);
             int amountMax = Integer.parseInt(arr[1]);
 
-            if(amountMin <= amountMax){
+            if (amountMin <= amountMax) {
                 amount = amountMin + new Random().nextDouble() * (amountMax - amountMin);
             } else {
                 amount = amountMax;
@@ -100,6 +100,7 @@ public class exp implements Cmd {
 
                 Player player = jPlayer.getPlayer();
                 boolean isSilent = false;
+                boolean isSilentAdmin = false;
                 if (player != null) {
                     for (String one : args) {
                         if (one.equalsIgnoreCase("-s")) {
@@ -111,7 +112,15 @@ public class exp implements Cmd {
                         player.sendMessage(Jobs.getLanguage().getMessage("command.exp.output.target", "%jobname%", job.getDisplayName(), "%level%", prog.getLevelFormatted(), "%exp%", prog
                                 .getExperience()));
                     }
-                    sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
+                    for (String one : args) {
+                        if (one.equalsIgnoreCase("-sa")) {
+                            isSilentAdmin = true;
+                            break;
+                        }
+                    }
+                    if (!isSilentAdmin) {
+                        sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
+                    }
                 } else {
                     sender.sendMessage(Jobs.getLanguage().getMessage("general.give.output.notonline"));
                 }
