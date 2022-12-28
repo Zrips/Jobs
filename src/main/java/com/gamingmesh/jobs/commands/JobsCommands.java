@@ -428,9 +428,6 @@ public class JobsCommands implements CommandExecutor {
         return " " + (isMaxLevelReached ? "" : jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience())) + " " + message;
     }
 
-    private String pos = ChatColor.DARK_GREEN + "\u258F";
-    private String pros = ChatColor.YELLOW + "\u258F";
-
     public String jobProgressMessage(double max, double current) {
         if (current < 0)
             current = 0;
@@ -444,14 +441,14 @@ public class JobsCommands implements CommandExecutor {
         StringBuilder message = new StringBuilder();
         int percentage = (int) ((current * 50.0) / max);
         for (int i = 0; i < percentage; i++) {
-            message.append(pos);
+            message.append(Jobs.getLanguage().getMessage("command.stats.bar2"));
         }
 
         if (50 - percentage < 0)
             percentage = 50;
 
         for (int i = 0; i < 50 - percentage; i++) {
-            message.append(pros);
+            message.append(Jobs.getLanguage().getMessage("command.stats.bar1"));
         }
         return message.toString();
     }
