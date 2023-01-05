@@ -87,7 +87,8 @@ public class LanguageManager {
             c.get("general.admin.error", "&cThere was an error in the command.");
             c.get("general.admin.success", "&eYour command has been performed.");
             c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
-            c.get("general.error.job", "&cThe job you selected does not exist or you not joined to this!");
+            c.get("general.error.job", "&cThe job you selected does not exist!");
+            c.get("general.error.jobname", "&cCan't find job by this name!");
             c.addComment("general.error.noinfoByPlayer", "Only %playername% can be used here");
             c.get("general.error.noinfoByPlayer", "&cNo information found by [%playername%] player name!");
             c.get("general.error.worldisdisabled", "&cYou can't use command in this world!");
@@ -246,22 +247,9 @@ public class LanguageManager {
             c.get("command.editjobs.help.modify.look", "&6LOOKING AT");
             c.get("command.editjobs.help.modify.lookHover", "&6Press to grab info from block you are looking");
 
-            c.get("command.editquests.help.info", "Edit current quests.");
-            c.get("command.editquests.help.args", "");
-            c.get("command.editquests.help.list.quest", "&eQuests:");
-            c.get("command.editquests.help.list.jobs", "  -> [&e%jobname%&r]");
-            c.get("command.editquests.help.list.quests", "  -> [&e%questname%&r]");
-            c.get("command.editquests.help.list.actions", "    -> [&e%actionname%&r]");
-            c.get("command.editquests.help.list.objectives", "      -> [&e%objectivename%&r]");
-            c.get("command.editquests.help.list.objectiveRemove", "&c[X]");
-            c.get("command.editquests.help.list.objectiveAdd", "      -> &e[&2+&e]");
-            c.get("command.editquests.help.modify.newValue", "&eEnter new value");
-            c.get("command.editquests.help.modify.enter", "&eEnter new name or press ");
-            c.get("command.editquests.help.modify.hand", "&6HAND ");
-            c.get("command.editquests.help.modify.handHover", "&6Press to grab info from item in your hand");
-            c.get("command.editquests.help.modify.or", "&eor ");
-            c.get("command.editquests.help.modify.look", "&6LOOKING AT");
-            c.get("command.editquests.help.modify.lookHover", "&6Press to grab info from block you are looking");
+            c.get("command.editquests.help.info", "Edit job quests.");
+            c.get("command.editquests.help.args", "(page)"); 
+            c.get("command.editquests.help.output.list", "&6[questName] &7- &f[jobName]");
 
             c.get("command.blockinfo.help.info", "Shows information for the block you are looking at.");
             c.get("command.blockinfo.help.args", "");
