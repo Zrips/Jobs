@@ -1165,7 +1165,7 @@ public class JobsPlayer {
         for (Entry<String, QuestProgression> one : new HashMap<>(g).entrySet()) {
             QuestProgression qp = one.getValue();
 
-            if (qp.isEnded()) {
+            if (qp.isEnded() || !qp.getQuest().isEnabled()) {
                 g.remove(one.getKey().toLowerCase());
                 skippedQuests = 0;
             }

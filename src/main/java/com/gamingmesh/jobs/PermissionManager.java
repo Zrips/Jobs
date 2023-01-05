@@ -37,14 +37,8 @@ public class PermissionManager {
     private final Map<String, Integer> permDelay = new HashMap<>();
 
     private enum prm {
-//	jobs_join_JOBNAME(remade("jobs.join.%JOBNAME%"), 60 * 1000),
         jobs_use(remade("jobs.use"), 2),
         jobs_paycreative(remade("jobs.paycreative"), 2),
-//	jobs_boost_JOBNAME_money(remade("jobs.boost.%JOBNAME%.money"), 60 * 1000),
-//	jobs_boost_JOBNAME_exp(remade("jobs.boost.%JOBNAME%.exp"), 60 * 1000),
-//	jobs_boost_JOBNAME_points(remade("jobs.boost.%JOBNAME%.points"), 60 * 1000),
-//	jobs_boost_JOBNAME_all(remade("jobs.boost.%JOBNAME%.all"), 60 * 1000),
-//	jobs_leave_JOBNAME(remade("jobs.leave.%JOBNAME%"), 60 * 1000),
         jobs_boost_JOBNAME_money_AMOUNT(remade("jobs.boost.%JOBNAME%.money.%AMOUNT%"), 60),
         jobs_boost_JOBNAME_exp_AMOUNT(remade("jobs.boost.%JOBNAME%.exp.%AMOUNT%"), 60),
         jobs_boost_JOBNAME_points_AMOUNT(remade("jobs.boost.%JOBNAME%.points.%AMOUNT%"), 60),
@@ -81,9 +75,7 @@ public class PermissionManager {
 
                 if (t.contains("%JOBNAME%"))
                     t = t.replace("%JOBNAME%", oneJ.getName().toLowerCase());
-
                 t = t.replace("%AMOUNT%", "");
-
                 perms.add(t);
             }
 
@@ -174,9 +166,7 @@ public class PermissionManager {
 
         permissionInfo permInfo = jPlayer.getPermissionsCache(perm);
         if (force || getDelay(perm) + permInfo.getTime() < System.currentTimeMillis()) {
-
             Map<String, Boolean> perms = getAll(player, perm);
-
             for (Map.Entry<String, Boolean> permission : perms.entrySet()) {
                 if (!permission.getKey().startsWith(perm) || !permission.getValue())
                     continue;
@@ -190,14 +180,10 @@ public class PermissionManager {
                     Jobs.getPluginLogger().log(java.util.logging.Level.WARNING, ex.getLocalizedMessage());
                 }
             }
-
             permInfo.setTime(System.currentTimeMillis());
             permInfo.setValue(amount == Double.NEGATIVE_INFINITY ? 0D : amount);
-
             jPlayer.addToPermissionsCache(perm, permInfo);
         }
-
-        CMIDebug.d("Max: ", permInfo.getValue());
         
         return permInfo.getValue();
     }

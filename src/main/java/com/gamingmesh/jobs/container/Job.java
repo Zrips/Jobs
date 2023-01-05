@@ -610,7 +610,7 @@ public class Job {
 
 	    int target = new Random(System.nanoTime()).nextInt(100);
 	    for (Quest one : ls) {
-		if (one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
+		if (one.isEnabled() && one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
 		    && one.isInLevelRange(level)) {
 		    return one;
 		}
