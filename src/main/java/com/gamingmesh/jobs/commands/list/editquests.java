@@ -22,22 +22,22 @@ import net.Zrips.CMILib.Chat.ChatMessageListEdit;
 import net.Zrips.CMILib.Chat.ChatMessageListEdit.ChatEditType;
 import net.Zrips.CMILib.Chat.ChatMessageObjectEdit;
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Container.CMIText;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.RawMessages.RawMessageCommand;
 
 public class editquests implements Cmd {
 
     private enum Action {
-        update, editline, moveup, movedown, createnew, addline, info, deleteLine, gui, list, delete, editCommands;
+        list;
 
         public static Action getByName(String name) {
-            if (name.equalsIgnoreCase("new"))
-                return Action.createnew;
             for (Action one : Action.values()) {
                 if (one.name().equalsIgnoreCase(name))
                     return one;
@@ -46,8 +46,8 @@ public class editquests implements Cmd {
         }
     }
 
-    HashMap<String, Quest> tempQuests = new HashMap<String, Quest>();
-    HashMap<String, List<String>> tempObjectives = new HashMap<String, List<String>>();
+    static HashMap<String, Quest> tempQuests = new HashMap<String, Quest>();
+    static HashMap<String, List<String>> tempObjectives = new HashMap<String, List<String>>();
 
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
@@ -81,47 +81,59 @@ public class editquests implements Cmd {
 
         switch (action) {
         case list:
-            Set<Quest> quests = new LinkedHashSet<Quest>();
-            for (Job job : Jobs.getJobs()) {
-                quests.addAll(job.getQuests());
-            }
-
-            PageInfo pi = new PageInfo(10, quests.size(), page);
-            ChatMessageObjectEdit CMOE = new ChatMessageObjectEdit(sender, pi) {
-                @Override
-                public void newAdd(String message) {
-                    Quest q = new Quest(message, null);
-                    tempQuests.put(sender.getName(), q);
-                    mainWindow(sender, q);
-                }
-            };
-            for (Quest quest : quests) {
-                if (!pi.isEntryOk())
-                    continue;
-                ChatEditorObject CEO = new ChatEditorObject(Jobs.getLanguage().getMessage("command.editquests.help.output.list", "[jobName]", quest.getJob()
-                    .getDisplayName(), "[questName]", quest.getQuestName())) {
-                    @Override
-                    public void onDelete() {
-
-                    }
-
-                    @Override
-                    public void onClick() {
-                        mainWindow(sender, quest);
-                    }
-                };
-                CEO.setHover(LC.modify_editSymbolHover.getLocale("[text]", quest.getQuestName()));
-                CMOE.addline(CEO);
-            }
-            CMOE.print();
-            pi.autoPagination(sender, JobsCommands.LABEL + " " + editquests.class.getSimpleName());
+            listQuests(sender, page);
             break;
         }
 
         return true;
     }
 
-    private List<String> getRecords(Quest quest, String section) {
+    private static void listQuests(CommandSender sender, int page) {
+
+        LC.info_Spliter.sendMessage(sender);
+        Set<Quest> quests = new LinkedHashSet<Quest>();
+        for (Job job : Jobs.getJobs()) {
+            quests.addAll(job.getQuests());
+        }
+
+        PageInfo pi = new PageInfo(10, quests.size(), page);
+        ChatMessageObjectEdit CMOE = new ChatMessageObjectEdit(sender, pi) {
+            @Override
+            public void newAdd(String message) {
+                Quest q = new Quest(message, null);
+                tempQuests.put(sender.getName(), q);
+                mainWindow(sender, q);
+            }
+        };
+        for (Quest quest : quests) {
+            if (!pi.isEntryOk())
+                continue;
+            ChatEditorObject CEO = new ChatEditorObject(Jobs.getLanguage().getMessage("command.editquests.help.output.list", "[jobName]", quest.getJob()
+                .getDisplayName(), "[questName]", quest.getQuestName())) {
+                @Override
+                public void onDelete() {
+                    if (quest.getJob() != null) {
+                        removeQuestInFile(quest.getConfigName(), quest.getJob().getName());
+                        quest.getJob().getQuests().remove(quest);
+                    }
+                    listQuests(sender, page);
+                }
+
+                @Override
+                public void onClick() {
+                    mainWindow(sender, quest);
+                }
+            };
+            CEO.setHover(LC.modify_editSymbolHover.getLocale("[text]", quest.getQuestName()));
+            CMOE.addline(CEO);
+        }
+        CMOE.print();
+        pi.autoPagination(sender, JobsCommands.LABEL + " " + editquests.class.getSimpleName());
+
+    }
+
+    private static List<String> getRecords(Quest quest, String section) {
+
         List<String> objectives = new ArrayList<String>();
 
         if (quest.getJob() == null)
@@ -155,7 +167,7 @@ public class editquests implements Cmd {
         return objectives;
     }
 
-    private ConfigReader getQuestConfig(String jobName) {
+    private static ConfigReader getQuestConfig(String jobName) {
 
         ConfigReader cfg = null;
 
@@ -185,7 +197,10 @@ public class editquests implements Cmd {
         return cfg;
     }
 
-    private boolean removeQuestInFile(CommandSender sender, String questName, String jobName) {
+    private static boolean removeQuestInFile(String questName, String jobName) {
+
+        if (questName == null)
+            return false;
 
         ConfigReader cfg = getQuestConfig(jobName);
 
@@ -199,7 +214,7 @@ public class editquests implements Cmd {
         return true;
     }
 
-    private boolean updateQuestInFile(CommandSender sender, Quest quest) {
+    private static boolean updateQuestInFile(CommandSender sender, Quest quest) {
 
         if (quest.getJob() == null)
             return false;
@@ -247,8 +262,9 @@ public class editquests implements Cmd {
         return true;
     }
 
-    private void objectivesWindow(CommandSender sender, Quest quest) {
+    private static void objectivesWindow(CommandSender sender, Quest quest) {
 
+        LC.info_Spliter.sendMessage(sender);
         RawMessage rm = new RawMessage();
         rm.addText(quest.getQuestName() + " objectives");
 
@@ -274,8 +290,9 @@ public class editquests implements Cmd {
         cmle.print();
     }
 
-    private void rewardCommandsWindow(CommandSender sender, Quest quest) {
+    private static void rewardCommandsWindow(CommandSender sender, Quest quest) {
 
+        LC.info_Spliter.sendMessage(sender);
         RawMessage rm = new RawMessage();
         rm.addText(quest.getQuestName() + " reward commmands");
 
@@ -297,8 +314,9 @@ public class editquests implements Cmd {
         cmle.print();
     }
 
-    private void rewardDescWindow(CommandSender sender, Quest quest) {
+    private static void rewardDescWindow(CommandSender sender, Quest quest) {
 
+        LC.info_Spliter.sendMessage(sender);
         RawMessage rm = new RawMessage();
         rm.addText(quest.getQuestName() + " reward description");
 
@@ -320,8 +338,9 @@ public class editquests implements Cmd {
         cmle.print();
     }
 
-    private void restrictedAreaWindow(CommandSender sender, Quest quest) {
+    private static void restrictedAreaWindow(CommandSender sender, Quest quest) {
 
+        LC.info_Spliter.sendMessage(sender);
         RawMessage rm = new RawMessage();
         rm.addText(quest.getQuestName() + " restricted areas");
 
@@ -343,13 +362,13 @@ public class editquests implements Cmd {
         cmle.print();
     }
 
-    private void mainWindow(CommandSender sender, Quest quest) {
+    private static void mainWindow(CommandSender sender, Quest quest) {
 
         LC.info_Spliter.sendMessage(sender);
 
         RawMessage rm = new RawMessage();
 
-        rm.addText("&eName: &f" + quest.getQuestName());
+        rm.addText("&7Name: &f" + quest.getQuestName());
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", quest.getQuestName()));
         RawMessageCommand rmc = new RawMessageCommand() {
             @Override
@@ -372,59 +391,8 @@ public class editquests implements Cmd {
         };
         rm.addCommand(rmc);
 
-        rm.addText("\n");
-        List<String> objectives = getRecords(quest, "Objectives");
-        if (!tempObjectives.containsKey(sender.getName()))
-            tempObjectives.put(sender.getName(), objectives);
-        else
-            objectives = tempObjectives.get(sender.getName());
-
-        rm.addText((objectives.isEmpty() ? "&c" : "&e") + "Objectives");
-        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Objectives"));
-        rmc = new RawMessageCommand() {
-            @Override
-            public void run(CommandSender sender) {
-                objectivesWindow(sender, quest);
-            }
-        };
-        rm.addCommand(rmc);
-
-        rm.addText("\n");
-        rm.addText((quest.getRewardCmds().isEmpty() ? "&c" : "&e") + "Reward commands");
-        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Reward commands"));
-        rmc = new RawMessageCommand() {
-            @Override
-            public void run(CommandSender sender) {
-                rewardCommandsWindow(sender, quest);
-            }
-        };
-        rm.addCommand(rmc);
-
-        rm.addText("\n");
-        rm.addText("&eDescription");
-        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Description"));
-        rmc = new RawMessageCommand() {
-            @Override
-            public void run(CommandSender sender) {
-                rewardDescWindow(sender, quest);
-            }
-        };
-        rm.addCommand(rmc);
-
-        rm.addText("\n");
-        rm.addText("&eRestricted areas");
-        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Restricted areas"));
-        rmc = new RawMessageCommand() {
-            @Override
-            public void run(CommandSender sender) {
-                restrictedAreaWindow(sender, quest);
-            }
-        };
-        rm.addCommand(rmc);
-
         String jobName = quest.getJob() == null ? "&c-" : quest.getJob().getName();
-        rm.addText("\n");
-        rm.addText("&eJob: &f" + jobName);
+        rm.addText(" &7Job: &f" + jobName);
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", jobName));
         rmc = new RawMessageCommand() {
             @Override
@@ -446,7 +414,7 @@ public class editquests implements Cmd {
 
                         if (quest.getJob() != j) {
                             if (quest.getJob() != null) {
-                                removeQuestInFile(sender, quest.getConfigName(), quest.getJob().getName());
+                                removeQuestInFile(quest.getConfigName(), quest.getJob().getName());
                                 quest.getJob().getQuests().remove(quest);
                             }
                             j.getQuests().add(quest);
@@ -469,8 +437,7 @@ public class editquests implements Cmd {
         };
         rm.addCommand(rmc);
 
-        rm.addText("\n");
-        rm.addText("&eChance: &f" + quest.getChance());
+        rm.addText(" &7Chance: &f" + quest.getChance());
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", quest.getChance()));
         rmc = new RawMessageCommand() {
             @Override
@@ -503,7 +470,7 @@ public class editquests implements Cmd {
 
         rm.addText("\n");
 
-        rm.addText("&eFrom level: &f" + quest.getMinLvl());
+        rm.addText("&7Level from: &f" + quest.getMinLvl());
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", quest.getMinLvl()));
         rmc = new RawMessageCommand() {
             @Override
@@ -538,8 +505,7 @@ public class editquests implements Cmd {
         };
         rm.addCommand(rmc);
 
-        rm.addText("\n");
-        rm.addText("&eTo level: &f" + (quest.getMaxLvl() == null ? "-" : quest.getMaxLvl()));
+        rm.addText(" &7to: &f" + (quest.getMaxLvl() == null ? "-" : quest.getMaxLvl()));
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", (quest.getMaxLvl() == null ? "-" : quest.getMaxLvl())));
         rmc = new RawMessageCommand() {
             @Override
@@ -570,6 +536,71 @@ public class editquests implements Cmd {
                 };
                 chatEdit.setCheckForCancel(true);
                 chatEdit.printMessage();
+            }
+        };
+        rm.addCommand(rmc);
+
+        rm.addText("\n");
+        List<String> objectives = getRecords(quest, "Objectives");
+        if (!tempObjectives.containsKey(sender.getName()))
+            tempObjectives.put(sender.getName(), objectives);
+        else
+            objectives = tempObjectives.get(sender.getName());
+
+        String objectiveString = CMIList.listToString(objectives, " ");
+        if (objectiveString.length() > 32)
+            objectiveString = objectiveString.substring(0, 32) + "..";
+
+        rm.addText((objectives.isEmpty() ? "&c" : "&7") + "Objectives" + (objectiveString.isBlank() ? "" : " - &f" + objectiveString));
+        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Objectives"));
+        rmc = new RawMessageCommand() {
+            @Override
+            public void run(CommandSender sender) {
+                objectivesWindow(sender, quest);
+            }
+        };
+        rm.addCommand(rmc);
+
+        rm.addText("\n");
+
+        String rewardsString = CMIList.listToString(quest.getRewardCmds(), " ");
+        if (rewardsString.length() > 32)
+            rewardsString = rewardsString.substring(0, 30) + "..";
+
+        rm.addText((quest.getRewardCmds().isEmpty() ? "&c" : "&7") + "Reward commands" + (rewardsString.isBlank() ? "" : " - &f" + rewardsString));
+        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Reward commands"));
+        rmc = new RawMessageCommand() {
+            @Override
+            public void run(CommandSender sender) {
+                rewardCommandsWindow(sender, quest);
+            }
+        };
+        rm.addCommand(rmc);
+
+        rm.addText("\n");
+        String descString = CMIList.listToString(quest.getDescription(), " ");
+        if (descString.length() > 32)
+            descString = descString.substring(0, 30) + "..";
+        rm.addText("&7Description" + (rewardsString.isBlank() ? "" : " - &f" + descString));
+        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Description"));
+        rmc = new RawMessageCommand() {
+            @Override
+            public void run(CommandSender sender) {
+                rewardDescWindow(sender, quest);
+            }
+        };
+        rm.addCommand(rmc);
+
+        rm.addText("\n");
+        String restrictedString = CMIList.listToString(quest.getRestrictedAreas(), " ");
+        if (restrictedString.length() > 32)
+            restrictedString = restrictedString.substring(0, 30) + "..";
+        rm.addText("&7Restricted areas" + (restrictedString.isBlank() ? "" : " - &f" + restrictedString));
+        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Restricted areas"));
+        rmc = new RawMessageCommand() {
+            @Override
+            public void run(CommandSender sender) {
+                restrictedAreaWindow(sender, quest);
             }
         };
         rm.addCommand(rmc);

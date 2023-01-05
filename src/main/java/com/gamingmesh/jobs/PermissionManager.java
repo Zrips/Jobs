@@ -38,88 +38,88 @@ public class PermissionManager {
 
     private enum prm {
 //	jobs_join_JOBNAME(remade("jobs.join.%JOBNAME%"), 60 * 1000),
-	jobs_use(remade("jobs.use"), 2),
-	jobs_paycreative(remade("jobs.paycreative"), 2),
+        jobs_use(remade("jobs.use"), 2),
+        jobs_paycreative(remade("jobs.paycreative"), 2),
 //	jobs_boost_JOBNAME_money(remade("jobs.boost.%JOBNAME%.money"), 60 * 1000),
 //	jobs_boost_JOBNAME_exp(remade("jobs.boost.%JOBNAME%.exp"), 60 * 1000),
 //	jobs_boost_JOBNAME_points(remade("jobs.boost.%JOBNAME%.points"), 60 * 1000),
 //	jobs_boost_JOBNAME_all(remade("jobs.boost.%JOBNAME%.all"), 60 * 1000),
 //	jobs_leave_JOBNAME(remade("jobs.leave.%JOBNAME%"), 60 * 1000),
-	jobs_boost_JOBNAME_money_AMOUNT(remade("jobs.boost.%JOBNAME%.money.%AMOUNT%"), 60),
-	jobs_boost_JOBNAME_exp_AMOUNT(remade("jobs.boost.%JOBNAME%.exp.%AMOUNT%"), 60),
-	jobs_boost_JOBNAME_points_AMOUNT(remade("jobs.boost.%JOBNAME%.points.%AMOUNT%"), 60),
-	jobs_boost_JOBNAME_all_AMOUNT(remade("jobs.boost.%JOBNAME%.all.%AMOUNT%"), 60),
-	jobs_boost_all_money_AMOUNT(remade("jobs.boost.all.money.%AMOUNT%"), 60),
-	jobs_boost_all_exp_AMOUNT(remade("jobs.boost.all.exp.%AMOUNT%"), 60),
-	jobs_boost_all_points_AMOUNT(remade("jobs.boost.all.points.%AMOUNT%"), 60),
-	jobs_boost_all_all_AMOUNT(remade("jobs.boost.all.all.%AMOUNT%"), 60),
-	jobs_spawner_AMOUNT(remade("jobs.nearspawner.%AMOUNT%"), 60),
-	jobs_petpay_AMOUNT(remade("jobs.petpay.%AMOUNT%"), 60),
-	jobs_maxfurnaces_AMOUNT(remade("jobs.maxfurnaces.%AMOUNT%"), 2),
-	jobs_maxblastfurnaces_AMOUNT(remade("jobs.maxblastfurnaces.%AMOUNT%"), 2),
-	jobs_maxsmokers_AMOUNT(remade("jobs.maxsmokers.%AMOUNT%"), 2),
-	jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 2),
-	jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2);
+        jobs_boost_JOBNAME_money_AMOUNT(remade("jobs.boost.%JOBNAME%.money.%AMOUNT%"), 60),
+        jobs_boost_JOBNAME_exp_AMOUNT(remade("jobs.boost.%JOBNAME%.exp.%AMOUNT%"), 60),
+        jobs_boost_JOBNAME_points_AMOUNT(remade("jobs.boost.%JOBNAME%.points.%AMOUNT%"), 60),
+        jobs_boost_JOBNAME_all_AMOUNT(remade("jobs.boost.%JOBNAME%.all.%AMOUNT%"), 60),
+        jobs_boost_all_money_AMOUNT(remade("jobs.boost.all.money.%AMOUNT%"), 60),
+        jobs_boost_all_exp_AMOUNT(remade("jobs.boost.all.exp.%AMOUNT%"), 60),
+        jobs_boost_all_points_AMOUNT(remade("jobs.boost.all.points.%AMOUNT%"), 60),
+        jobs_boost_all_all_AMOUNT(remade("jobs.boost.all.all.%AMOUNT%"), 60),
+        jobs_spawner_AMOUNT(remade("jobs.nearspawner.%AMOUNT%"), 60),
+        jobs_petpay_AMOUNT(remade("jobs.petpay.%AMOUNT%"), 60),
+        jobs_maxfurnaces_AMOUNT(remade("jobs.maxfurnaces.%AMOUNT%"), 2),
+        jobs_maxblastfurnaces_AMOUNT(remade("jobs.maxblastfurnaces.%AMOUNT%"), 2),
+        jobs_maxsmokers_AMOUNT(remade("jobs.maxsmokers.%AMOUNT%"), 2),
+        jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 2),
+        jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2);
 
-	private int reload;
-	private List<String> perms;
+        private int reload;
+        private List<String> perms;
 
-	prm(List<String> perms, int reload) {
-	    this.perms = perms;
-	    this.reload = reload * 1000;
-	}
+        prm(List<String> perms, int reload) {
+            this.perms = perms;
+            this.reload = reload * 1000;
+        }
 
-	public int getDelay() {
-	    return reload;
-	}
+        public int getDelay() {
+            return reload;
+        }
 
-	private static List<String> remade(String perm) {
-	    List<String> perms = new ArrayList<>();
+        private static List<String> remade(String perm) {
+            List<String> perms = new ArrayList<>();
 
-	    for (Job oneJ : Jobs.getJobs()) {
-		String t = perm;
+            for (Job oneJ : Jobs.getJobs()) {
+                String t = perm;
 
-		if (t.contains("%JOBNAME%"))
-		    t = t.replace("%JOBNAME%", oneJ.getName().toLowerCase());
+                if (t.contains("%JOBNAME%"))
+                    t = t.replace("%JOBNAME%", oneJ.getName().toLowerCase());
 
-		t = t.replace("%AMOUNT%", "");
+                t = t.replace("%AMOUNT%", "");
 
-		perms.add(t);
-	    }
+                perms.add(t);
+            }
 
-	    if (perm.contains("%WORLDNAME%"))
-		for (World oneJ : Bukkit.getWorlds()) {
-		    perms.add(perm.replace("%WORLDNAME%", oneJ.getName().toLowerCase()));
-		}
+            if (perm.contains("%WORLDNAME%"))
+                for (World oneJ : Bukkit.getWorlds()) {
+                    perms.add(perm.replace("%WORLDNAME%", oneJ.getName().toLowerCase()));
+                }
 
-	    return perms;
-	}
+            return perms;
+        }
 
-	public List<String> getPerms() {
-	    return perms;
-	}
+        public List<String> getPerms() {
+            return perms;
+        }
     }
 
     private int getDelay(String perm) {
-	return permDelay.getOrDefault(perm, 1);
+        return permDelay.getOrDefault(perm, 1);
     }
 
     public PermissionManager() {
-	for (prm one : prm.values()) {
-	    for (String oneP : one.getPerms()) {
-		permDelay.put(oneP, one.getDelay());
-	    }
-	}
+        for (prm one : prm.values()) {
+            for (String oneP : one.getPerms()) {
+                permDelay.put(oneP, one.getDelay());
+            }
+        }
     }
 
-    private static Map<String, Boolean> getAll(Player player) {
-	Map<String, Boolean> mine = new HashMap<>();
-	for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
-	    if (permission.getPermission().startsWith("jobs."))
-		mine.put(permission.getPermission(), permission.getValue());
-	}
+    private static Map<String, Boolean> getAll(Player player, String perm) {
+        Map<String, Boolean> mine = new HashMap<>();
+        for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
+            if (permission.getPermission().startsWith(perm))
+                mine.put(permission.getPermission(), permission.getValue());
+        }
 
-	return mine;
+        return mine;
     }
 
     /**
@@ -131,7 +131,7 @@ public class PermissionManager {
      * @return the max value
      */
     public double getMaxPermission(JobsPlayer jPlayer, String perm) {
-	return getMaxPermission(jPlayer, perm, false, false);
+        return getMaxPermission(jPlayer, perm, false, false);
     }
 
     /**
@@ -144,7 +144,7 @@ public class PermissionManager {
      * @return the max value
      */
     public double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force) {
-	return getMaxPermission(jPlayer, perm, force, false);
+        return getMaxPermission(jPlayer, perm, force, false);
     }
 
     /**
@@ -159,68 +159,68 @@ public class PermissionManager {
      * @return the max value
      */
     public double getMaxPermission(JobsPlayer jPlayer, String perm, boolean force, boolean cumulative) {
-	if (jPlayer == null)
-	    return 0D;
+        if (jPlayer == null)
+            return 0D;
 
-	Player player = jPlayer.getPlayer();
-	if (player == null)
-	    return 0D;
+        Player player = jPlayer.getPlayer();
+        if (player == null)
+            return 0D;
 
-	perm = perm.toLowerCase();
-	if (!perm.endsWith("."))
-	    perm += ".";
+        perm = perm.toLowerCase();
+        if (!perm.endsWith("."))
+            perm += ".";
 
-	Map<String, Boolean> permissions = jPlayer.getPermissionsCache();
-	if (force || permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
-	    if (permissions == null) {
-		permissions = getAll(player);
-	    } else {
-		permissions.clear();
-		permissions.putAll(getAll(player));
-	    }
-	    jPlayer.setPermissionsCache(permissions);
-	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
-	}
+        double amount = Double.NEGATIVE_INFINITY;
 
-	double amount = Double.NEGATIVE_INFINITY;
+        permissionInfo permInfo = jPlayer.getPermissionsCache(perm);
+        if (force || getDelay(perm) + permInfo.getTime() < System.currentTimeMillis()) {
 
-	for (Map.Entry<String, Boolean> permission : permissions.entrySet()) {
-	    if (!permission.getKey().startsWith(perm) || !permission.getValue())
-		continue;
-	    try {
-		double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
-		if (cumulative)
-		    amount += temp;
-		else if (temp > amount)
-		    amount = temp;
-	    } catch (NumberFormatException ex) {
-		Jobs.getPluginLogger().log(java.util.logging.Level.WARNING, ex.getLocalizedMessage());
-	    }
-	}
+            Map<String, Boolean> perms = getAll(player, perm);
 
-	return amount == Double.NEGATIVE_INFINITY ? 0D : amount;
+            for (Map.Entry<String, Boolean> permission : perms.entrySet()) {
+                if (!permission.getKey().startsWith(perm) || !permission.getValue())
+                    continue;
+                try {
+                    double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
+                    if (cumulative)
+                        amount += temp;
+                    else if (temp > amount)
+                        amount = temp;
+                } catch (NumberFormatException ex) {
+                    Jobs.getPluginLogger().log(java.util.logging.Level.WARNING, ex.getLocalizedMessage());
+                }
+            }
+
+            permInfo.setTime(System.currentTimeMillis());
+            permInfo.setValue(amount == Double.NEGATIVE_INFINITY ? 0D : amount);
+
+            jPlayer.addToPermissionsCache(perm, permInfo);
+        }
+
+        CMIDebug.d("Max: ", permInfo.getValue());
+        
+        return permInfo.getValue();
     }
 
     public boolean hasPermission(JobsPlayer jPlayer, String perm) {
-	if (jPlayer == null)
-	    return false;
+        if (jPlayer == null)
+            return false;
 
-	Player player = jPlayer.getPlayer();
-	if (player == null)
-	    return false;
+        Player player = jPlayer.getPlayer();
+        if (player == null)
+            return false;
 
-	Map<String, Boolean> permissions = jPlayer.getPermissionsCache();
+        permissionInfo permInfo = jPlayer.getPermissionsCache(perm);
 
-	if (permissions == null || getDelay(perm) + jPlayer.getLastPermissionUpdate() < System.currentTimeMillis()) {
-	    if (permissions == null) {
-		permissions = new HashMap<>();
-		jPlayer.setPermissionsCache(permissions);
-	    }
-	    permissions.put(perm, player.hasPermission(perm));
-	    jPlayer.setLastPermissionUpdate(System.currentTimeMillis());
-	}
+        if (getDelay(perm) + permInfo.getTime() < System.currentTimeMillis()) {
+            permInfo.setState(player.hasPermission(perm));
+            permInfo.setTime(System.currentTimeMillis());
+            jPlayer.addToPermissionsCache(perm, permInfo);
+        }
 
-	return permissions.getOrDefault(perm, false);
+        CMIDebug.d("this return");
+
+        return permInfo.getState();
     }
 
 }

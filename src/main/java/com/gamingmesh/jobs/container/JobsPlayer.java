@@ -34,6 +34,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.permissionInfo;
 import com.gamingmesh.jobs.Signs.SignTopType;
 import com.gamingmesh.jobs.api.JobsLevelUpEvent;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
@@ -85,8 +86,7 @@ public class JobsPlayer {
 
     private long seen = System.currentTimeMillis();
 
-    private Map<String, Boolean> permissionsCache;
-    private long lastPermissionUpdate = -1L;
+    private Map<String, permissionInfo> permissionsCache = new HashMap<>();
 
     private final Map<String, Map<String, QuestProgression>> qProgression = new HashMap<>();
     private int doneQuests = 0;
@@ -924,6 +924,9 @@ public class JobsPlayer {
         clearBossMaps();
         isOnline = false;
         blockOwnerShipInform = null;
+
+        permissionsCache.clear();
+
         Jobs.getPlayerManager().addPlayerToCache(this);
     }
 
@@ -961,24 +964,16 @@ public class JobsPlayer {
         this.seen = seen;
     }
 
-    public Map<String, Boolean> getPermissionsCache() {
+    public Map<String, permissionInfo> getPermissionsCache() {
         return permissionsCache;
     }
 
-    public void setPermissionsCache(Map<String, Boolean> permissionsCache) {
-        this.permissionsCache = permissionsCache;
+    public permissionInfo getPermissionsCache(String perm) {
+        return permissionsCache.getOrDefault(perm, new permissionInfo());
     }
 
-    public void setPermissionsCache(String permission, Boolean state) {
-        permissionsCache.put(permission, state);
-    }
-
-    public long getLastPermissionUpdate() {
-        return lastPermissionUpdate;
-    }
-
-    public void setLastPermissionUpdate(Long lastPermissionUpdate) {
-        this.lastPermissionUpdate = lastPermissionUpdate;
+    public void addToPermissionsCache(String permission, permissionInfo permInfo) {
+        permissionsCache.put(permission, permInfo);
     }
 
     /**

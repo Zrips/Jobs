@@ -419,6 +419,7 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+
         final Block block = event.getBlock();
 
         if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
@@ -433,9 +434,12 @@ public final class JobsPaymentListener implements Listener {
         if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
             return;
 
+        CMIDebug.d("BlockBreakEvent2");
+
         // check if in creative
         if (!payIfCreative(player))
             return;
+        CMIDebug.d("BlockBreakEvent3");
 
         if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
             return;
@@ -721,14 +725,14 @@ public final class JobsPaymentListener implements Listener {
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
         if (jPlayer == null)
             return;
- 
+
         if (y == 2 && first == second && third == second) {
             if (Jobs.getGCManager().payForCombiningItems && third == first) {
                 Jobs.action(jPlayer, new ItemActionInfo(event.getCurrentItem(), ActionType.REPAIR));
             } else {
                 Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.REPAIR));
             }
-            return; 
+            return;
         }
 
         // Check Dyes
@@ -897,9 +901,9 @@ public final class JobsPaymentListener implements Listener {
         default:
             break;
         }
-        
-        if (!event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) && 
-            !event.getAction().equals(InventoryAction.PICKUP_ALL) && 
+
+        if (!event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) &&
+            !event.getAction().equals(InventoryAction.PICKUP_ALL) &&
             !event.getAction().equals(InventoryAction.PICKUP_HALF))
             return;
 
@@ -1895,12 +1899,7 @@ public final class JobsPaymentListener implements Listener {
     }
 
     public static boolean payIfCreative(Player player) {
-        if (Jobs.getGCManager().payInCreative() && player.getGameMode() == GameMode.CREATIVE)
-            return true;
-        if (player.getGameMode() == GameMode.CREATIVE && Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player), "jobs.paycreative"))
-            return true;
-
-        return player.getGameMode() != GameMode.CREATIVE;
+        return player.getGameMode() != GameMode.CREATIVE || Jobs.getGCManager().payInCreative() || Jobs.getPermissionManager().hasPermission(Jobs.getPlayerManager().getJobsPlayer(player), "jobs.paycreative");
     }
 
     // Prevent item durability loss

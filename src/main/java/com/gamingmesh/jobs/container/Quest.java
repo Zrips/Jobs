@@ -20,6 +20,8 @@ public class Quest {
     private int chance = 100, minLvl = 0;
     private Integer maxLvl;
 
+    private boolean enabled = false;
+    
     private final List<String> rewardCmds = new ArrayList<>(), rewards = new ArrayList<>(), area = new ArrayList<>();
 
     private boolean stopped = false;
@@ -216,5 +218,13 @@ public class Quest {
 
     public boolean hasAction(ActionType action) {
         return actions.contains(action);
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

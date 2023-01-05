@@ -1430,6 +1430,7 @@ public class ConfigManager {
                         quest.setRewardCmds(sqsection.getStringList("RewardCommands"));
                         quest.setDescription(sqsection.getStringList("RewardDesc"));
                         quest.setRestrictedArea(sqsection.getStringList("RestrictedAreas"));
+                        quest.setEnabled(sqsection.getBoolean("Enabled", true));
 
                         quests.add(quest);
                     } catch (Exception e) {
