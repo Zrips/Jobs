@@ -20,7 +20,7 @@ public class resetquesttotal implements Cmd {
 	    return true;
 	}
 
-	if (args[0].equalsIgnoreCase("all")) {
+	if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
 	    for (Entry<UUID, JobsPlayer> pl : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
 		pl.getValue().setDoneQuests(0);
 	    }
