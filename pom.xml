@@ -197,7 +197,7 @@
 			<artifactId>CMILib</artifactId>
 			<version>latest</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/CMILib1.2.3.3.jar</systemPath>
+			<systemPath>${basedir}/libs/CMILib1.2.4.1.jar</systemPath>
 		</dependency>
 		<!-- WildStacker -->
 		<dependency>
@@ -286,7 +286,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					<!-- <outputDirectory>D:\MC\Server 1.19\plugins\</outputDirectory> -->
+					 <outputDirectory>D:\MC\Server 1.19\plugins\</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>

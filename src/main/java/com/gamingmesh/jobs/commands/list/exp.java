@@ -1,5 +1,7 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.util.Random;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -8,8 +10,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
-
-import java.util.Random;
+import com.gamingmesh.jobs.i18n.Language;
 
 public class exp implements Cmd {
 
@@ -17,43 +18,58 @@ public class exp implements Cmd {
         Set, Add, Take
     }
 
+    Random rand = new Random();
+
     @Override
     public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+
         if (args.length < 4) {
             Jobs.getCommandManager().sendUsage(sender, "exp");
             return true;
         }
 
+        boolean silent = false;
+        boolean silentAdmin = false;
+
+        for (String one : args) {
+            if (one.equalsIgnoreCase("-s")) {
+                silent = true;
+                continue;
+            }
+            if (one.equalsIgnoreCase("-sa")) {
+                silentAdmin = true;
+            }
+        }
+
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
         if (jPlayer == null) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args[0]));
+            Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args[0]);
             return true;
         }
 
         Job job = Jobs.getJob(args[1]);
         if (job == null) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+            Language.sendMessage(sender, "general.error.job");
             return true;
         }
 
         Action action = Action.Add;
 
         switch (args[2].toLowerCase()) {
-            case "add":
-                action = Action.Add;
-                break;
-            case "set":
-                action = Action.Set;
-                break;
-            case "take":
-                action = Action.Take;
-                break;
-            default:
-                break;
+        case "add":
+            action = Action.Add;
+            break;
+        case "set":
+            action = Action.Set;
+            break;
+        case "take":
+            action = Action.Take;
+            break;
+        default:
+            break;
         }
 
         double amount = 0.0;
-
         /* Add random argument, ex: rand_5-10 */
         if (args[3].startsWith("rand_")) {
             String data = args[3].split("(?i)rand_")[1];
@@ -62,8 +78,8 @@ public class exp implements Cmd {
             int amountMin = Integer.parseInt(arr[0]);
             int amountMax = Integer.parseInt(arr[1]);
 
-            if (amountMin <= amountMax) {
-                amount = amountMin + new Random().nextDouble() * (amountMax - amountMin);
+            if (amountMin < amountMax) {
+                amount = amountMin + rand.nextInt(amountMax - amountMin);
             } else {
                 amount = amountMax;
             }
@@ -77,58 +93,48 @@ public class exp implements Cmd {
             }
         }
 
+        if (!jPlayer.isInJob(job)) {
+            Language.sendMessage(sender, "command.exp.error.nojob");
+            return true;
+        }
+
         try {
             // check if player already has the job
-            if (jPlayer.isInJob(job)) {
-                JobProgression prog = jPlayer.getJobProgression(job);
+            JobProgression prog = jPlayer.getJobProgression(job);
 
-                switch (action) {
-                    case Add:
-                        int oldLevel = prog.getLevel();
-                        if (prog.addExperience(amount))
-                            Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
-                        break;
-                    case Set:
-                        prog.setExperience(amount);
-                        break;
-                    case Take:
-                        prog.takeExperience(amount);
-                        break;
-                    default:
-                        break;
-                }
-
-                Player player = jPlayer.getPlayer();
-                boolean isSilent = false;
-                boolean isSilentAdmin = false;
-                if (player != null) {
-                    for (String one : args) {
-                        if (one.equalsIgnoreCase("-s")) {
-                            isSilent = true;
-                            break;
-                        }
-                    }
-                    if (!isSilent) {
-                        player.sendMessage(Jobs.getLanguage().getMessage("command.exp.output.target", "%jobname%", job.getDisplayName(), "%level%", prog.getLevelFormatted(), "%exp%", prog
-                                .getExperience()));
-                    }
-                    for (String one : args) {
-                        if (one.equalsIgnoreCase("-sa")) {
-                            isSilentAdmin = true;
-                            break;
-                        }
-                    }
-                    if (!isSilentAdmin) {
-                        sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
-                    }
-                } else {
-                    sender.sendMessage(Jobs.getLanguage().getMessage("general.give.output.notonline"));
-                }
-            } else {
-                sender.sendMessage(Jobs.getLanguage().getMessage("command.exp.error.nojob"));
+            switch (action) {
+            case Add:
+                int oldLevel = prog.getLevel();
+                if (prog.addExperience(amount))
+                    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
+                break;
+            case Set:
+                prog.setExperience(amount);
+                break;
+            case Take:
+                prog.takeExperience(amount);
+                break;
+            default:
+                break;
             }
+
+            Player player = jPlayer.getPlayer();
+            if (player == null) {
+                sender.sendMessage(Jobs.getLanguage().getMessage("general.give.output.notonline"));
+                return true;
+            }
+
+            if (!silent)
+                player.sendMessage(Jobs.getLanguage().getMessage("command.exp.output.target", "%jobname%", job.getDisplayName(), "%level%", prog.getLevelFormatted(), "%exp%", prog
+                    .getExperience()));
+
+            if (!silentAdmin)
+                sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
+
         } catch (Exception e) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
+            if (!silentAdmin)
+                sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
+            e.printStackTrace();
         }
         return true;
     }
