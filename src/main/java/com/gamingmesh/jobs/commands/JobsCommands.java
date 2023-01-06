@@ -52,7 +52,7 @@ public class JobsCommands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        CMIDebug.d("jobs commands");
+
         if (sender instanceof Player && !Jobs.getGCManager().canPerformActionInWorld(((Player) sender).getWorld())
             && !sender.hasPermission("jobs.disabledworld.commands")) {
             sender.sendMessage(Jobs.getLanguage().getMessage("general.error.worldisdisabled"));
@@ -356,6 +356,11 @@ public class JobsCommands implements CommandExecutor {
         message.append(":\n");
 
         JobProgression prog = player.getJobProgression(job);
+        
+        if (prog == null) {
+           prog = player.getArchivedJobProgression(job);            
+        }        
+        
         int level = prog != null ? prog.getLevel() : 1;
         int numjobs = player.progression.size();
 

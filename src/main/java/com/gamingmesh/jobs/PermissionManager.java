@@ -37,8 +37,8 @@ public class PermissionManager {
     private final Map<String, Integer> permDelay = new HashMap<>();
 
     private enum prm {
-        jobs_use(remade("jobs.use"), 2),
-        jobs_paycreative(remade("jobs.paycreative"), 2),
+        jobs_use(remade("jobs.use"), 5),
+        jobs_paycreative(remade("jobs.paycreative"), 5),
         jobs_boost_JOBNAME_money_AMOUNT(remade("jobs.boost.%JOBNAME%.money.%AMOUNT%"), 60),
         jobs_boost_JOBNAME_exp_AMOUNT(remade("jobs.boost.%JOBNAME%.exp.%AMOUNT%"), 60),
         jobs_boost_JOBNAME_points_AMOUNT(remade("jobs.boost.%JOBNAME%.points.%AMOUNT%"), 60),
@@ -49,10 +49,10 @@ public class PermissionManager {
         jobs_boost_all_all_AMOUNT(remade("jobs.boost.all.all.%AMOUNT%"), 60),
         jobs_spawner_AMOUNT(remade("jobs.nearspawner.%AMOUNT%"), 60),
         jobs_petpay_AMOUNT(remade("jobs.petpay.%AMOUNT%"), 60),
-        jobs_maxfurnaces_AMOUNT(remade("jobs.maxfurnaces.%AMOUNT%"), 2),
-        jobs_maxblastfurnaces_AMOUNT(remade("jobs.maxblastfurnaces.%AMOUNT%"), 2),
-        jobs_maxsmokers_AMOUNT(remade("jobs.maxsmokers.%AMOUNT%"), 2),
-        jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 2),
+        jobs_maxfurnaces_AMOUNT(remade("jobs.maxfurnaces.%AMOUNT%"), 30),
+        jobs_maxblastfurnaces_AMOUNT(remade("jobs.maxblastfurnaces.%AMOUNT%"), 30),
+        jobs_maxsmokers_AMOUNT(remade("jobs.maxsmokers.%AMOUNT%"), 30),
+        jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 30),
         jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2);
 
         private int reload;
