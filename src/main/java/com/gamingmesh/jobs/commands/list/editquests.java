@@ -238,7 +238,7 @@ public class editquests implements Cmd {
         String path = quest.getJob().getName() + ".Quests." + quest.getConfigName() + ".";
 
         cfg.set(path + "Name", quest.getQuestName());
-        
+
         cfg.set(path + "Enabled", quest.isEnabled());
 
         cfg.set(path + "Chance", quest.getChance() != 100 ? quest.getChance() : null);
@@ -364,13 +364,20 @@ public class editquests implements Cmd {
         cmle.print();
     }
 
+    private static String toString(List<String> list) {
+        String objectiveString = CMIList.listToString(list, " ");
+        if (objectiveString.length() > 32)
+            objectiveString = objectiveString.substring(0, 32) + "..";
+        return objectiveString;
+    }
+
     private static void mainWindow(CommandSender sender, Quest quest) {
 
         LC.info_Spliter.sendMessage(sender);
 
         RawMessage rm = new RawMessage();
 
-        rm.addText("&eName: &f" + quest.getQuestName());
+        rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.output.name") + quest.getQuestName());
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", quest.getQuestName()));
         RawMessageCommand rmc = new RawMessageCommand() {
             @Override
@@ -394,7 +401,7 @@ public class editquests implements Cmd {
         rm.addCommand(rmc);
 
         String jobName = quest.getJob() == null ? "&c-" : quest.getJob().getName();
-        rm.addText(" &eJob: &f" + jobName);
+        rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.output.job") + jobName);
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", jobName));
         rmc = new RawMessageCommand() {
             @Override
@@ -439,7 +446,7 @@ public class editquests implements Cmd {
         };
         rm.addCommand(rmc);
 
-        rm.addText(" &eChance: &f" + quest.getChance());
+        rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.output.chance") + quest.getChance());
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", quest.getChance()));
         rmc = new RawMessageCommand() {
             @Override
@@ -470,7 +477,7 @@ public class editquests implements Cmd {
         };
         rm.addCommand(rmc);
 
-        rm.addText(" &eEnabled: &f" + (quest.isEnabled() ? LC.info_variables_True.getLocale() : LC.info_variables_False.getLocale()));
+        rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.output.enabled") + (quest.isEnabled() ? LC.info_variables_True.getLocale() : LC.info_variables_False.getLocale()));
         rm.addHover(LC.info_Click.getLocale());
         rmc = new RawMessageCommand() {
             @Override
@@ -484,7 +491,7 @@ public class editquests implements Cmd {
 
         rm.addText("\n");
 
-        rm.addText("&eLevel from: &f" + quest.getMinLvl());
+        rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.output.from") + quest.getMinLvl());
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", quest.getMinLvl()));
         rmc = new RawMessageCommand() {
             @Override
@@ -519,7 +526,7 @@ public class editquests implements Cmd {
         };
         rm.addCommand(rmc);
 
-        rm.addText(" &eto: &f" + (quest.getMaxLvl() == null ? "-" : quest.getMaxLvl()));
+        rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.output.to") + (quest.getMaxLvl() == null ? "-" : quest.getMaxLvl()));
         rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", (quest.getMaxLvl() == null ? "-" : quest.getMaxLvl())));
         rmc = new RawMessageCommand() {
             @Override
@@ -561,12 +568,10 @@ public class editquests implements Cmd {
         else
             objectives = tempObjectives.get(sender.getName());
 
-        String objectiveString = CMIList.listToString(objectives, " ");
-        if (objectiveString.length() > 32)
-            objectiveString = objectiveString.substring(0, 32) + "..";
+        String objectiveString = toString(objectives);
 
-        rm.addText((objectives.isEmpty() ? "&c" : "&e") + "Objectives" + (objectiveString.isBlank() ? "" : " - &f" + objectiveString));
-        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Objectives"));
+        rm.addText((objectives.isEmpty() ? "&c" : "&e") + Jobs.getLanguage().getMessage("command.editquests.help.output.objectives") + (objectiveString.isBlank() ? "" : " - &f" + objectiveString));
+        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", Jobs.getLanguage().getMessage("command.editquests.help.output.objectives")));
         rmc = new RawMessageCommand() {
             @Override
             public void run(CommandSender sender) {
@@ -577,12 +582,10 @@ public class editquests implements Cmd {
 
         rm.addText("\n");
 
-        String rewardsString = CMIList.listToString(quest.getRewardCmds(), " ");
-        if (rewardsString.length() > 32)
-            rewardsString = rewardsString.substring(0, 30) + "..";
+        String rewardsString = toString(quest.getRewardCmds());
 
-        rm.addText((quest.getRewardCmds().isEmpty() ? "&c" : "&e") + "Reward commands" + (rewardsString.isBlank() ? "" : " - &f" + rewardsString));
-        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Reward commands"));
+        rm.addText((quest.getRewardCmds().isEmpty() ? "&c" : "&e") + Jobs.getLanguage().getMessage("command.editquests.help.output.rewards") + (rewardsString.isBlank() ? "" : " - &f" + rewardsString));
+        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", Jobs.getLanguage().getMessage("command.editquests.help.output.rewards")));
         rmc = new RawMessageCommand() {
             @Override
             public void run(CommandSender sender) {
@@ -592,11 +595,10 @@ public class editquests implements Cmd {
         rm.addCommand(rmc);
 
         rm.addText("\n");
-        String descString = CMIList.listToString(quest.getDescription(), " ");
-        if (descString.length() > 32)
-            descString = descString.substring(0, 30) + "..";
-        rm.addText("&eDescription" + (rewardsString.isBlank() ? "" : " - &f" + descString));
-        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Description"));
+        String descString = toString(quest.getDescription());
+
+        rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.output.description") + (rewardsString.isBlank() ? "" : " - &f" + descString));
+        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", Jobs.getLanguage().getMessage("command.editquests.help.output.description")));
         rmc = new RawMessageCommand() {
             @Override
             public void run(CommandSender sender) {
@@ -606,11 +608,10 @@ public class editquests implements Cmd {
         rm.addCommand(rmc);
 
         rm.addText("\n");
-        String restrictedString = CMIList.listToString(quest.getRestrictedAreas(), " ");
-        if (restrictedString.length() > 32)
-            restrictedString = restrictedString.substring(0, 30) + "..";
-        rm.addText("&eRestricted areas" + (restrictedString.isBlank() ? "" : " - &f" + restrictedString));
-        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", "Restricted areas"));
+        String restrictedString = toString(quest.getRestrictedAreas());
+
+        rm.addText(Jobs.getLanguage().getMessage("command.editquests.help.output.areas") + (restrictedString.isBlank() ? "" : " - &f" + restrictedString));
+        rm.addHover(LC.modify_editSymbolHover.getLocale("[text]", Jobs.getLanguage().getMessage("command.editquests.help.output.areas")));
         rmc = new RawMessageCommand() {
             @Override
             public void run(CommandSender sender) {

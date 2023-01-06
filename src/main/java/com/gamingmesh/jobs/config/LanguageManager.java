@@ -250,6 +250,17 @@ public class LanguageManager {
             c.get("command.editquests.help.info", "Edit job quests.");
             c.get("command.editquests.help.args", "(page)"); 
             c.get("command.editquests.help.output.list", "&6[questName] &7- &f[jobName]");
+            
+            c.get("command.editquests.help.output.name", "&eName: &f");
+            c.get("command.editquests.help.output.job", " &eJob: &f");
+            c.get("command.editquests.help.output.chance", " &eChance: &f");
+            c.get("command.editquests.help.output.enabled", " &eEnabled: &f");
+            c.get("command.editquests.help.output.from", "&eLevel from: &f");
+            c.get("command.editquests.help.output.to", " &eto: &f");
+            c.get("command.editquests.help.output.objectives", "Objectives");
+            c.get("command.editquests.help.output.rewards", "Reward commands");
+            c.get("command.editquests.help.output.description", "&eDescription");
+            c.get("command.editquests.help.output.areas", "&eRestricted areas");
 
             c.get("command.blockinfo.help.info", "Shows information for the block you are looking at.");
             c.get("command.blockinfo.help.args", "");
