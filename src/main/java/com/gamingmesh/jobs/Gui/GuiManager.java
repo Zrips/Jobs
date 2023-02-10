@@ -162,7 +162,7 @@ public class GuiManager {
 
             guiItem.setItemMeta(meta);
 
-            gui.addButton(new CMIGuiButton(job.getGuiSlot() >= 0 ? job.getGuiSlot() : pos, guiItem) {
+            CMIGuiButton button = new CMIGuiButton(job.getGuiSlot() >= 0 ? job.getGuiSlot() : pos, guiItem) {
 
                 @Override
                 public void click(GUIClickType type) {
@@ -202,7 +202,13 @@ public class GuiManager {
                         break;
                     }
                 }
-            });
+            };
+
+            if (jPlayer.isInJob(job)) {
+                button.setGlowing();
+            }
+
+            gui.addButton(button);
             i++;
         }
 

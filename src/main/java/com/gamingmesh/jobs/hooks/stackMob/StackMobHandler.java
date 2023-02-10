@@ -10,15 +10,15 @@ import uk.antiperson.stackmob.entity.StackEntity;
 
 public class StackMobHandler {
 
-	public boolean isStacked(LivingEntity entity) {
-		return getPlugin().getEntityManager().isStackedEntity(entity);
-	}
+    public boolean isStacked(LivingEntity entity) {
+        return getPlugin().getEntityManager().isStackedEntity(entity);
+    }
 
-	public Collection<StackEntity> getStackEntities() {
-		return getPlugin().getEntityManager().getStackEntities();
-	}
+    public Collection<StackEntity> getStackEntities() {
+        return getPlugin().getEntityManager().getStackEntities();
+    }
 
-	public StackMob getPlugin() {
-		return JavaPlugin.getPlugin(StackMob.class);
-	}
+    public StackMob getPlugin() {
+        return JavaPlugin.getPlugin(StackMob.class);
+    }
 }

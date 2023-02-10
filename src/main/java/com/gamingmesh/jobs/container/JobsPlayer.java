@@ -381,7 +381,7 @@ public class JobsPlayer {
         boostCounter.put(jobName, counterList);
         return boost;
     }
-
+    
     private Double getPlayerBoostNew(String jobName, CurrencyType type) {
         Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), true, false);
         Double boost = v1;
