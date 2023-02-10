@@ -318,6 +318,7 @@ command:
       actions: '&eMożliwe akcje to:'
       leftClick: '&eKliknij lewym przyciskiem, aby uzyskać więcej informacji'
       middleClick: '&eKliknij środkowym przyciskiem, aby opuścić tę pracę'
+      qClick: '&eKliknij przycisk Q, żeby opuścić pracę' 
       rightClick: '&eKliknij prawym przyciskiem myszy, aby dołączyć do pracy'
       leftSlots: '&ePozostałe miejsca:&f '
       working: '&2&nJuż pracujesz'
