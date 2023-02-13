@@ -109,7 +109,7 @@ public class GeneralConfigManager {
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
         payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
 
-    public ItemStack guiBackButton, guiNextButton, guiInfoButton;
+    public ItemStack guiInfoButton;
     public int InfoButtonSlot = 9;
     public List<String> InfoButtonCommands = new ArrayList<String>();
 
@@ -1047,16 +1047,10 @@ public class GeneralConfigManager {
         c.addComment("JobsGUI.SkipAmount", "Defines by how many slots we need to skip after group");
         JobsGUISkipAmount = c.get("JobsGUI.SkipAmount", 2);
 
-        CMIItemStack item = CMILib.getInstance().getItemManager().getItem(c.get("JobsGUI.BackButton.Material", "JACK_O_LANTERN"));
-        guiBackButton = item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.JACK_O_LANTERN.newItemStack() : item.getItemStack();
-
-        item = CMILib.getInstance().getItemManager().getItem(c.get("JobsGUI.NextButton.Material", "ARROW"));
-        guiNextButton = item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.ARROW.newItemStack() : item.getItemStack();
-
         c.addComment("JobsGUI.InfoButton.Slot", "Slot for info button. Set it to 0 if you want to disable it","Locale can be customized in locale file under gui->infoLore section");
         InfoButtonSlot = c.get("JobsGUI.InfoButton.Slot", 9);
-        guiInfoButton = item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.ARROW.newItemStack() : item.getItemStack();
-        item = CMILib.getInstance().getItemManager().getItem(c.get("JobsGUI.InfoButton.Material",
+
+        CMIItemStack item = CMILib.getInstance().getItemManager().getItem(c.get("JobsGUI.InfoButton.Material",
             "head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwNWZkOTRhMGM0MzE5MjdmYjRlNjM5YjBmY2ZiNDk3MTdlNDEyMjg1YTAyYjQzOWUwMTEyZGEyMmIyZTJlYyJ9fX0="));
         guiInfoButton = item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.ARROW.newItemStack() : item.getItemStack();
 

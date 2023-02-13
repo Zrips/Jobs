@@ -25,6 +25,7 @@ import net.Zrips.CMILib.Container.CMICommands;
 import net.Zrips.CMILib.GUI.CMIGui;
 import net.Zrips.CMILib.GUI.CMIGuiButton;
 import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
+import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Version.Version;
 
@@ -213,6 +214,7 @@ public class GuiManager {
         }
 
         if (Jobs.getGCManager().InfoButtonSlot > 0) {
+
             ItemStack next = Jobs.getGCManager().guiInfoButton;
             ItemMeta meta = next.getItemMeta();
 
@@ -369,11 +371,8 @@ public class GuiManager {
         }
 
         if (!fromCommand) {
-            ItemStack back = Jobs.getGCManager().guiBackButton;
-            ItemMeta meta = back.getItemMeta();
-
-            meta.setDisplayName(LC.info_prevPageHover.getLocale());
-            back.setItemMeta(meta);
+            CMIItemStack back = CMILib.getInstance().getConfigManager().getGUIPreviousPage();
+            back.setDisplayName(LC.info_prevPageHover.getLocale());
 
             gui.addButton(new CMIGuiButton(backButton, back) {
                 @Override
@@ -384,11 +383,8 @@ public class GuiManager {
         }
 
         if (i >= 53 && !jobsRemained.isEmpty()) {
-            ItemStack next = Jobs.getGCManager().guiNextButton;
-            ItemMeta meta = next.getItemMeta();
-
-            meta.setDisplayName(LC.info_nextPageHover.getLocale());
-            next.setItemMeta(meta);
+            CMIItemStack next = CMILib.getInstance().getConfigManager().getGUINextPage();
+            next.setDisplayName(LC.info_nextPageHover.getLocale());
 
             gui.addButton(new CMIGuiButton(nextButton, next) {
                 @Override
@@ -519,11 +515,9 @@ public class GuiManager {
             gui.addButton(new CMIGuiButton(i1, items.get(i1)));
         }
 
-        ItemStack skull = Jobs.getGCManager().guiBackButton;
-        ItemMeta skullMeta = skull.getItemMeta();
+        CMIItemStack skull = CMILib.getInstance().getConfigManager().getGUIPreviousPage();
 
-        skullMeta.setDisplayName(LC.info_prevPageHover.getLocale());
-        skull.setItemMeta(skullMeta);
+        skull.setDisplayName(LC.info_prevPageHover.getLocale());
 
         gui.addButton(new CMIGuiButton(backButton, skull) {
             @Override
