@@ -30,35 +30,50 @@ public class HookEconomyTask implements Runnable {
     private Jobs plugin;
 
     public HookEconomyTask(Jobs plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
+    }
+
+    enum hookResult {
+        novault, noeconomy, pass;
+
     }
 
     @Override
     public void run() {
-	if (setVault())
-	    return;
 
-	// no Economy found
-	Jobs.setEconomy(new BlackholeEconomy());
-	Jobs.getPluginLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
-	Jobs.getPluginLogger().severe("Vault is required by this plugin for economy support!");
-	Jobs.getPluginLogger().severe("Please install them first!");
-	Jobs.getPluginLogger().severe("You can find the latest versions here:");
-	Jobs.getPluginLogger().severe("https://www.spigotmc.org/resources/34315/");
-	Jobs.getPluginLogger().severe("==============================================");
+        hookResult result = setVault();
+
+        if (result.equals(hookResult.pass)) {
+            return;
+        }
+
+        // no Economy found
+        Jobs.setEconomy(new BlackholeEconomy());
+        Jobs.getPluginLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
+        if (result.equals(hookResult.novault)) {
+            Jobs.getPluginLogger().severe("Vault is required by this plugin for economy support!");
+            Jobs.getPluginLogger().severe("Please install them first!");
+            Jobs.getPluginLogger().severe("You can find the latest versions here:");
+            Jobs.getPluginLogger().severe("https://www.spigotmc.org/resources/34315/");
+        } else {
+            Jobs.getPluginLogger().severe("Vault detected but economy plugin still missing!");
+            Jobs.getPluginLogger().severe("Please install Vault supporting economy plugin!");
+        }
+        Jobs.getPluginLogger().severe("==============================================");
     }
 
-    private boolean setVault() {
-	if (!plugin.getServer().getPluginManager().isPluginEnabled("Vault"))
-	    return false;
+    private hookResult setVault() {
+        if (!plugin.getServer().getPluginManager().isPluginEnabled("Vault"))
+            return hookResult.novault;
 
-	RegisteredServiceProvider<Economy> provider = plugin.getServer().getServicesManager().getRegistration(Economy.class);
-	if (provider == null)
-	    return false;
+        RegisteredServiceProvider<Economy> provider = plugin.getServer().getServicesManager().getRegistration(Economy.class);
+        if (provider == null) {
+            return hookResult.noeconomy;
+        }
 
-	Jobs.setEconomy(new VaultEconomy(provider.getProvider()));
-	Jobs.consoleMsg("&e[" + plugin.getDescription().getName() + "] Successfully linked with Vault.");
-	return true;
+        Jobs.setEconomy(new VaultEconomy(provider.getProvider()));
+        Jobs.consoleMsg("&e[" + plugin.getDescription().getName() + "] Successfully linked with Vault. (" + provider.getProvider().getName() + ")");
+        return hookResult.pass;
     }
 
 }
