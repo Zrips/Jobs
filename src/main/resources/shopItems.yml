@@ -1,7 +1,10 @@
 Items:
   SuperPickAxe:
-    # (REQUIRED) Item price in Jobs Points
-    Price: 10000.0
+    # (Optional) Item price in Jobs Points
+    pointPrice: 10000.0
+    # (Optional) Item price in Vault economy currency.
+    # Atleast one type of currency needs to be defined
+    vaultPrice: 10000.0
     Icon:
       # (REQUIRED) Icon item
       Id: diamond_pickaxe
@@ -66,7 +69,7 @@ Items:
         # (Required) Item name
         Id: apple
   WoodenShovel:
-    Price: 100.0
+    pointPrice: 100.0
     Icon:
       Id: wooden_shovel
       Name: "&eWooden shovel"
@@ -79,7 +82,7 @@ Items:
     - "msg &eThanks [player] for buying this shovel!"
     - "give [player] wooden_shovel 1"
   LureEnchantBook:
-    Price: 100.0
+    pointPrice: 100.0
     Icon:
       Id: enchanted_book
       Name: "&eEnchant book"
@@ -98,7 +101,7 @@ Items:
         Enchants:
         - LURE=3
   Elytra:
-    Price: 100000.0
+    pointPrice: 100000.0
     Icon:
       Id: elytra
       Name: "&eAngel wings"

@@ -381,7 +381,7 @@ public class JobsPlayer {
         boostCounter.put(jobName, counterList);
         return boost;
     }
-    
+
     private Double getPlayerBoostNew(String jobName, CurrencyType type) {
         Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), true, false);
         Double boost = v1;
@@ -1466,5 +1466,17 @@ public class JobsPlayer {
         if (blockOwnerShipInform == null)
             blockOwnerShipInform = new HashSet<String>();
         this.blockOwnerShipInform.add(location);
+    }
+
+    public double getBalance() {
+        if (this.isOnline())
+            return Jobs.getEconomy().getEconomy().getBalance(this.getPlayer());
+        return Jobs.getEconomy().getEconomy().getBalance(this.getName());
+    }
+
+    public boolean withdraw(double amount) {
+        if (this.isOnline())
+            return Jobs.getEconomy().getEconomy().withdrawPlayer(this.getPlayer(), amount);
+        return Jobs.getEconomy().getEconomy().withdrawPlayer(this.getName(), amount);
     }
 }

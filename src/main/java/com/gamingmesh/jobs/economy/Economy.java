@@ -34,4 +34,10 @@ public interface Economy {
     boolean withdrawPlayer(String PlayerName, double money);
 
     boolean depositPlayer(String PlayerName, double money);
+
+    double getBalance(OfflinePlayer offlinePlayer);
+
+    double getBalance(String PlayerName);
+    
+    String getFormatedBalance(OfflinePlayer offlinePlayer);
 }

@@ -23,36 +23,51 @@ import org.bukkit.OfflinePlayer;
 public class BlackholeEconomy implements Economy {
     @Override
     public boolean depositPlayer(OfflinePlayer offlinePlayer, double money) {
-	return true;
+        return true;
     }
 
     @Override
     public boolean withdrawPlayer(OfflinePlayer offlinePlayer, double money) {
-	return true;
+        return true;
     }
 
     @Override
     public String format(double money) {
-	return String.format("$%.2f", money);
+        return String.format("$%.2f", money);
     }
 
     @Override
     public boolean hasMoney(OfflinePlayer offlinePlayer, double money) {
-	return true;
+        return true;
     }
 
     @Override
     public boolean hasMoney(String PlayerName, double money) {
-	return true;
+        return true;
     }
 
     @Override
     public boolean withdrawPlayer(String PlayerName, double money) {
-	return true;
+        return true;
     }
 
     @Override
     public boolean depositPlayer(String PlayerName, double money) {
-	return true;
+        return true;
+    }
+
+    @Override
+    public double getBalance(OfflinePlayer offlinePlayer) {
+        return 0;
+    }
+
+    @Override
+    public double getBalance(String PlayerName) {
+        return 0;
+    }
+
+    @Override
+    public String getFormatedBalance(OfflinePlayer offlinePlayer) {
+        return "";
     }
 }

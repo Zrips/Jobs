@@ -301,8 +301,11 @@ public class LanguageManager {
             c.get("command.shop.help.info", "Opens special jobs shop.");
             c.get("command.shop.help.args", "");
             c.get("command.shop.info.title", "&e------- &8Jobs shop &e-------");
-            c.get("command.shop.info.currentPoints", "&eYou have: &6%currentpoints%");
-            c.get("command.shop.info.price", "&ePrice: &6%price%");
+            
+            c.get("command.shop.info.haveColor", "&2");
+            c.get("command.shop.info.pointsPrice", "&ePoint cost: &c%currentpoints%&e/&6%price%");
+            c.get("command.shop.info.moneyPrice", "&eMoney cost: &c%currentbalance%&e/&6%price%");
+                        
             c.get("command.shop.info.reqJobs", "&eRequired jobs:");
             c.get("command.shop.info.reqJobsList", "  &6%jobsname%&e: &e%level% lvl");
             c.get("command.shop.info.reqTotalLevel", "&6Required total level: &e%totalLevel%");
@@ -312,8 +315,9 @@ public class LanguageManager {
             c.get("command.shop.info.cantOpen", "&cCan't open this page");
             c.get("command.shop.info.NoPermForItem", "&cYou don't have required permissions for this item!");
             c.get("command.shop.info.NoPermToBuy", "&cNo permissions to buy this item");
-            c.get("command.shop.info.NoJobReqForitem", "&cYou don't have the required job (&6%jobname%&e) with required (&6%joblevel%&e) level");
+            c.get("command.shop.info.NoJobReqForitem", "&cYou don't have the required job (&6%jobname%&c) with required (&6%joblevel%&c) level");
             c.get("command.shop.info.NoPoints", "&cYou don't have enough points");
+            c.get("command.shop.info.NoMoney", "&cYou don't have enough money");
             c.get("command.shop.info.NoTotalLevel", "&cTotal jobs level is too low (%totalLevel%)");
             c.get("command.shop.info.Paid", "&eYou have paid &6%amount% &efor this item");
 

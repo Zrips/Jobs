@@ -25,42 +25,57 @@ public class VaultEconomy implements Economy {
     private net.milkbowl.vault.economy.Economy vault;
 
     public VaultEconomy(net.milkbowl.vault.economy.Economy vault) {
-	this.vault = vault;
+        this.vault = vault;
     }
 
     @Override
     public boolean depositPlayer(OfflinePlayer offlinePlayer, double money) {
-	return vault.depositPlayer(offlinePlayer, money).transactionSuccess();
+        return vault.depositPlayer(offlinePlayer, money).transactionSuccess();
     }
 
     @Override
     public boolean depositPlayer(String PlayerName, double money) {
-	return vault.depositPlayer(PlayerName, money).transactionSuccess();
+        return vault.depositPlayer(PlayerName, money).transactionSuccess();
     }
 
     @Override
     public boolean withdrawPlayer(OfflinePlayer offlinePlayer, double money) {
-	return vault.withdrawPlayer(offlinePlayer, money).transactionSuccess();
+        return vault.withdrawPlayer(offlinePlayer, money).transactionSuccess();
     }
 
     @Override
     public boolean withdrawPlayer(String PlayerName, double money) {
-	return vault.withdrawPlayer(PlayerName, money).transactionSuccess();
+        return vault.withdrawPlayer(PlayerName, money).transactionSuccess();
     }
 
     @Override
     public boolean hasMoney(OfflinePlayer offlinePlayer, double money) {
-	return offlinePlayer.getName() != null && vault.has(offlinePlayer, money);
+        return offlinePlayer.getName() != null && vault.has(offlinePlayer, money);
     }
 
     @Override
     public boolean hasMoney(String PlayerName, double money) {
-	return vault.has(PlayerName, money);
+        return vault.has(PlayerName, money);
     }
 
     @Override
     public String format(double money) {
-	return vault.format(money);
+        return vault.format(money);
+    }
+
+    @Override
+    public double getBalance(OfflinePlayer offlinePlayer) {
+        return vault.getBalance(offlinePlayer);
+    }
+
+    @Override
+    public double getBalance(String PlayerName) {
+        return vault.getBalance(PlayerName);
+    }
+
+    @Override
+    public String getFormatedBalance(OfflinePlayer offlinePlayer) {
+        return format(getBalance(offlinePlayer));
     }
 
 }
