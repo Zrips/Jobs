@@ -24,10 +24,15 @@ public class clearownership implements Cmd {
 
         for (String one : args) {
 
-            if (!one.contains(":") && jPlayer == null && !sender.getName().equalsIgnoreCase(one) && Jobs.hasPermission(sender, "jobs.command.admin.clearownership", true)) {
+            if (!one.contains(":") && jPlayer == null) {
+
                 jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-                if (jPlayer != null)
+
+                if (jPlayer != null) {
+                    if (!sender.getName().equalsIgnoreCase(one) && !Jobs.hasPermission(sender, "jobs.command.admin.clearownership", true))
+                        return true;
                     continue;
+                }
             }
 
             if (one.contains(":") && location == null) {
