@@ -29,13 +29,14 @@ general:
     noHelpPage: '&cNie ma strony pomocy z tym numerem!'
     notNumber: '&eProszę użyj liczb!'
     job: '&cPraca, którą wybrałeś nie istnieje lub do niej nie dołączyłeś'
-    noCommand: '&cNie ma komendy z tą nazwą!'
+    noCommand: '&cNie ma komendy o tej nazwie!'
     permission: '&cNie masz uprawnień, aby to zrobić!'
     noinfo: '&cNie znaleziono żadnych informacji!'
     noinfoByPlayer: '&cNie znaleziono żadnych informacji używając nazwy gracza [%playername%]!'
     ingame: '&cMożesz użyć tej komendy tylko w grze!'
     fromconsole: '&cMożesz użyć tej komendy tylko w konsoli!'
     worldisdisabled: '&cNie możesz użyć tej komendy w tym świecie!'
+    reenabledBlock: '&eReenabled ownership'
     newRegistration: '&eZarejestrowano nową własność dla [block] &7[current]&e/&f[max]'
     noRegistration: '&cOsiągnąłeś maksymalną ilość [block]!'
 command:
@@ -127,6 +128,7 @@ command:
       area: ' &eBonus miejscowy: &2%money% &6%points% &e%exp%'
       mcmmo: ' &eBonus McMMO: &2%money% &6%points% &e%exp%'
       final: ' &eBonus końcowy: &2%money% &6%points% &e%exp%'
+      specialPrefix: '&6*'
       finalExplanation: ' &eNie obejmuje bonusów Petpay i pobliskich spawnerów'
   convert:
     help:
@@ -156,7 +158,13 @@ command:
       info: Resetuje limity płatności gracza
       args: '[playername]'
     output:
-      reseted: '&eLimity płatności zostały zresetowane dla: &2%playername%'
+      reseted: '&eLimity płatności zostały zresetowane dla: &2%playerdisplayname%'
+  resetquesttotal:
+    help:
+      info: Resets a player's done quest counter
+      args: '[playername]/all'
+    output:
+      reseted: '&eDone quests have been reset for: &2%playerdisplayname%'
   resetquest:
     help:
       info: Resetuje zadanie gracza
@@ -225,19 +233,20 @@ command:
       info: Wyświetla informacje dla bloku, na który się patrzysz.
       args: ''
     output:
-      name: ' &eNazwa bloku: &6%blockname%'
+      material: ' &eNazwa bloku: &6%blockname%'
       id: ' &eId bloku: &6%blockid%'
       data: ' &eDane bloku: &6%blockdata%'
-      usage: ' &eUżycie: &6%first% &elub &6%second%'
+      use: ' &eUżycie: &6%first% &elub &6%second%'
   iteminfo:
     help:
       info: Wyświetla informacje przedmiotu, który trzymasz w ręce.
       args: ''
     output:
-      name: ' &eNazwa przedmiotu: &6%itemname%'
+      material: ' &eNazwa przedmiotu: &6%itemname%'
       id: ' &eId przedmiotu: &6%itemid%'
       data: ' &eDane przedmiotu: &6%itemdata%'
-      usage: ' &eUżycie: &6%first% &elub &6%second%'
+      deprecated: ' &eUsage: &6%first% &eor &6%second%'
+      use: ' &eConfig file usage: &6%usage%'
   placeholders:
     help:
       info: Wyświetla wszystkie placeholder'y
@@ -261,6 +270,8 @@ command:
       max-level: '     &cMaks. poziom   -   %jobname%'
     bossBarOutput: 'Poziom %joblevel% %jobname%: %jobxp%/%jobmaxxp% XP%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
+    bar1: '&e▏'
+    bar2: '&2▏'
   shop:
     help:
       info: Otwiera specjalny sklep prac.
@@ -318,7 +329,7 @@ command:
       actions: '&eMożliwe akcje to:'
       leftClick: '&eKliknij lewym przyciskiem, aby uzyskać więcej informacji'
       middleClick: '&eKliknij środkowym przyciskiem, aby opuścić tę pracę'
-      qClick: '&eKliknij przycisk Q, żeby opuścić pracę' 
+      qClick: '&eKliknij przycisk Q, żeby opuścić pracę'
       rightClick: '&eKliknij prawym przyciskiem myszy, aby dołączyć do pracy'
       leftSlots: '&ePozostałe miejsca:&f '
       working: '&2&nJuż pracujesz'
