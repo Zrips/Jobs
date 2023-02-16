@@ -1733,6 +1733,55 @@ public abstract class JobsDAO {
         return getGlobalTopList(0);
     }
 
+    HashMap<String, List<TopList>> TopListByJobCache = new HashMap<String, List<TopList>>();
+    HashMap<String, Long> TopListByJobUpdateCache = new HashMap<String, Long>();
+
+    /**
+     * Get player list by total job level
+     * @param start - starting entry
+     * @return info - information about jobs
+     */
+    public List<TopList> getTopListByJob(Job job, int amount) {
+
+        if (System.currentTimeMillis() - TopListByJobUpdateCache.getOrDefault(job.getName(), 0L) < 30 * 1000L) {
+            return TopListByJobCache.get(job.getName());
+        }
+
+        TopListByJobUpdateCache.put(job.getName(), System.currentTimeMillis());
+
+        List<TopList> jobs = new ArrayList<>();
+        JobsConnection conn = getConnection();
+        if (conn == null)
+            return jobs;
+
+        PreparedStatement prest = null;
+        ResultSet res = null;
+
+        try {
+            prest = conn.prepareStatement("SELECT `" + JobsTableFields.userid.getCollumn() + "`, `" + JobsTableFields.level.getCollumn() + "`, `" + JobsTableFields.experience.getCollumn() + "` FROM `"
+                + getJobsTableName() + "` WHERE `" + JobsTableFields.jobid.getCollumn() + "` LIKE ? OR `" + JobsTableFields.jobid.getCollumn() + "` LIKE ? ORDER BY `" + JobsTableFields.level.getCollumn()
+                + "` DESC, `" + JobsTableFields.experience.getCollumn() + "` DESC LIMIT " + 0 + ", " + amount + ";");
+            prest.setInt(1, job.getId());
+            prest.setInt(2, job.getLegacyId());
+            res = prest.executeQuery();
+
+            while (res.next()) {
+                PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(res.getInt(JobsTableFields.userid.getCollumn()));
+                if (info != null)
+                    jobs.add(new TopList(info, res.getInt(JobsTableFields.level.getCollumn()), res.getInt(JobsTableFields.experience.getCollumn())));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(res);
+            close(prest);
+        }
+
+        TopListByJobCache.put(job.getName(), jobs);
+
+        return jobs;
+    }
+
     /**
      * Get player list by total job level
      * @param start - starting entry
@@ -2452,9 +2501,11 @@ public abstract class JobsDAO {
                 Location loc = new Location(world, x, y, z);
 
                 BlockProtection bp = Jobs.getBpManager().addP(loc, resets, true, false);
-                bp.setId(id);
-                bp.setRecorded(res.getLong(BlockTableFields.recorded.getCollumn()));
-                bp.setAction(DBAction.NONE);
+                if (bp != null) {
+                    bp.setId(id);
+                    bp.setRecorded(res.getLong(BlockTableFields.recorded.getCollumn()));
+                    bp.setAction(DBAction.NONE);
+                }
                 i++;
 
                 if (ii++ >= 100000) {

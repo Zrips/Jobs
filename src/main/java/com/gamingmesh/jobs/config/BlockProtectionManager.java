@@ -40,6 +40,9 @@ public class BlockProtectionManager {
     }
 
     public void add(Block block, Integer cd) {
+        
+        if (cd == 0)
+            return;
 
         // Assuming that block is bottom part of flower we will add top part to the record too
         CMIMaterial cmat = CMIMaterial.get(block);
@@ -77,6 +80,9 @@ public class BlockProtectionManager {
 
     public BlockProtection addP(Location loc, Long time, boolean paid, boolean cache) {
 
+        if (time == 0)
+            return null;
+        
         String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 
         HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> regions = map.getOrDefault(loc.getWorld(), new HashMap<>());

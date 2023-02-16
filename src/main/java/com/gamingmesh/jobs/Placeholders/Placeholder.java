@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +25,6 @@ import com.gamingmesh.jobs.container.Title;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
-import com.gamingmesh.jobs.stuff.TimeManage;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMIList;
@@ -38,7 +35,6 @@ public class Placeholder {
 
     private Jobs plugin;
 
-    private final AtomicInteger jobLevel = new AtomicInteger();
     private final Pattern placeholderPatern = Pattern.compile("(%)([^\"^%]*)(%)");
 
     public Placeholder(Jobs plugin) {
@@ -75,7 +71,6 @@ public class Placeholder {
         user_jobs,
 
         user_boost_$1_$2("jname/number", "money/exp/points"),
-        user_jtoplvl_$1_$2("jname/number", "number"),
         user_isin_$1("jname/number"),
         user_canjoin_$1("jname/number"),
         user_jlevel_$1("jname/number"),
@@ -91,6 +86,8 @@ public class Placeholder {
         user_title_$1("jname/number"),
         user_archived_jobs_level_$1("jname/number"),
         user_archived_jobs_exp_$1("jname/number"),
+
+        jtop_$1_$2("jname/number", "[1-15]"),
 
         maxjobs,
         total_workers,
@@ -533,26 +530,6 @@ public class Placeholder {
                 case user_boost_$1_$2:
                     Boost boost = Jobs.getPlayerManager().getFinalBonus(user, job, true, true);
                     return (vals.size() < 2 || j == null) ? "" : simplifyDouble(boost.getFinal(CurrencyType.getByName(vals.get(1)), false, true));
-                case user_jtoplvl_$1_$2:
-                    if (vals.size() < 2 || job == null)
-                        return "";
-
-                    try {
-                        jobLevel.set(Integer.parseInt(vals.get(1)));
-                    } catch (NumberFormatException e) {
-                        return "";
-                    }
-
-                    return CompletableFuture.supplyAsync(() -> {
-                        for (TopList l : Jobs.getJobsDAO().getGlobalTopList(jobLevel.get())) {
-                            if (l.getPlayerInfo().getName().equals(user.getName())) {
-                                JobProgression prog = l.getPlayerInfo().getJobsPlayer().getJobProgression(job);
-                                return prog == null ? "" : prog.getLevelFormatted();
-                            }
-                        }
-
-                        return "";
-                    }).join();
                 case user_isin_$1:
                     return job == null ? "no" : convert(user.isInJob(job));
                 case user_job_$1:
@@ -622,6 +599,26 @@ public class Placeholder {
                 return "";
             // Global placeholders by jobname
             switch (placeHolder) {
+            case jtop_$1_$2:
+                if (values.size() < 2)
+                    return "";
+
+                int place = 0;
+                try {
+                    place = Integer.parseInt(values.get(1));
+                } catch (NumberFormatException e) {
+                    return "";
+                }
+                
+                if (place < 1)
+                    return "";
+
+                List<TopList> list = Jobs.getJobsDAO().getTopListByJob(jo, 15);
+
+                if (list.size() < place)
+                    return "";
+
+                return list.get(place - 1).getPlayerInfo().getDisplayName();
             case name_$1:
                 return jo.getName();
             case shortname_$1:

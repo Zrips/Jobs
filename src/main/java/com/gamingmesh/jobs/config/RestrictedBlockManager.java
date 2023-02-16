@@ -35,6 +35,7 @@ public class RestrictedBlockManager {
 	    "Category name can be any you like to be easily recognized",
 	    "id can be actual block id (use /jobs blockinfo to get correct id) or use block name",
 	    "By setting time to -1 will keep block protected until global cleanup, mainly used for structure blocks like diamond",
+	    "Set to 0 if you want to disable protection on specific blocks",
 	    "If you want to have default value for all blocks, enable GlobalBlockTimer in generalConfig file");
 
 	org.bukkit.configuration.ConfigurationSection section = cfg.getC().getConfigurationSection("blocksTimer");
