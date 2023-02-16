@@ -172,9 +172,11 @@ public class PermissionManager {
                     continue;
                 try {
                     double temp = Double.parseDouble(permission.getKey().replace(perm, ""));
-                    if (cumulative)
+                    if (cumulative) {
+                        if (amount == Double.NEGATIVE_INFINITY)
+                            amount = 0D;
                         amount += temp;
-                    else if (temp > amount)
+                    }else if (temp > amount)
                         amount = temp;
                 } catch (NumberFormatException ex) {
                     Jobs.getPluginLogger().log(java.util.logging.Level.WARNING, ex.getLocalizedMessage());
@@ -184,7 +186,7 @@ public class PermissionManager {
             permInfo.setValue(amount == Double.NEGATIVE_INFINITY ? 0D : amount);
             jPlayer.addToPermissionsCache(perm, permInfo);
         }
-        
+
         return permInfo.getValue();
     }
 
@@ -203,8 +205,6 @@ public class PermissionManager {
             permInfo.setTime(System.currentTimeMillis());
             jPlayer.addToPermissionsCache(perm, permInfo);
         }
-
-        CMIDebug.d("this return");
 
         return permInfo.getState();
     }
