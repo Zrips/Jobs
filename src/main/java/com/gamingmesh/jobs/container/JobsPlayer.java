@@ -406,15 +406,15 @@ public class JobsPlayer {
         Double boost = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), true, false);
 
         Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + ".all", false, false);
-        if (v1 != 0d && (v1 > boost || v1 < boost))
+        if (v1 != 0d && (v1 > boost || v1 < boost && !Jobs.getGCManager().highestPermissionBoost))
             boost = v1;
 
         v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", false, false);
-        if (v1 != 0d && (v1 > boost || v1 < boost))
+        if (v1 != 0d && (v1 > boost || v1 < boost && !Jobs.getGCManager().highestPermissionBoost))
             boost = v1;
 
         v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), false, false);
-        if (v1 != 0d && (v1 > boost || v1 < boost))
+        if (v1 != 0d && (v1 > boost || v1 < boost && !Jobs.getGCManager().highestPermissionBoost))
             boost = v1;
 
         return boost;
