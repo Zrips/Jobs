@@ -95,7 +95,7 @@ public class GeneralConfigManager {
         SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
         PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps, informOnPaymentDisable,
         BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
-        boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, boostedItemsSlotSpecific, multiplyBoostedExtraValues/*, preventCropResizePayment*/, payItemDurabilityLoss,
+        boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, boostedItemsSlotSpecific, multiplyBoostedExtraValues, addPermissionBoost /*, preventCropResizePayment*/, payItemDurabilityLoss,
         applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
         CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
         LevelChangeActionBar, SoundLevelupUse, SoundTitleChangeUse, UseServerAccount, EmptyServerAccountChat,
@@ -493,6 +493,10 @@ public class GeneralConfigManager {
             "When set to true and for example nearSpawner set to -0.98 aka 2% of original payment with other bonuses which should double payment will result in you getting 4% instead of corrent 102% payment",
             "If set to false all bonus are sumed to one");
         multiplyBoostedExtraValues = c.get("multiply-boosted-extra-values", false);
+        
+        c.addComment("add-permission-boost", "When enabled we will add all permission bonuses and penalties instead of picking highest one", 
+            "This will add access to all permissions from jobs.boost.[jobName].[type].[amount] jobs.boost.all.[type].[amount] jobs.boost.[jobName].all.[amount] and jobs.boost.all.all.[amount] category");
+        addPermissionBoost = c.get("add-permission-boost", false);
 
         // Better implementation?
         /*c.addComment("prevent-crop-resize-payment", "Do you want to prevent crop resizing payment when placing more cactus?",

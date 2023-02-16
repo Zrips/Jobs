@@ -125,7 +125,6 @@ public class BlockProtectionManager {
             locations = new ConcurrentHashMap<>();
             tempCache.put(loc.getWorld(), locations);
         }
-                CMIDebug.d("Cached");
 
         locations.put(v, Bp);
     }

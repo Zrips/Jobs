@@ -42,8 +42,7 @@ public class NameTranslatorManager {
 
     public String translate(String materialName, ActionType action, int id, String meta, String name) {
         // Translating name to user friendly
-        if (materialName.toLowerCase().contains("arrow"))
-            CMIDebug.d(materialName, meta, Util.getPotionByName(meta));
+
         if (Jobs.getGCManager().UseCustomNames)
             switch (action) {
             case BREAK:

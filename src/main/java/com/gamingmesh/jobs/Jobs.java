@@ -997,8 +997,6 @@ public final class Jobs extends JavaPlugin {
         if (jPlayer == null)
             return;
 
-        CMIDebug.d("action");
-
         List<JobProgression> progression = jPlayer.getJobProgression();
         int numjobs = progression.size();
 
