@@ -41,7 +41,7 @@ public class BlockProtectionManager {
 
     public void add(Block block, Integer cd) {
         
-        if (cd == 0)
+        if (cd == null || cd == 0)
             return;
 
         // Assuming that block is bottom part of flower we will add top part to the record too
