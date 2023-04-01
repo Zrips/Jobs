@@ -74,10 +74,7 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
@@ -1978,5 +1975,25 @@ public final class JobsPaymentListener implements Listener {
             breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), uuid);
             fp.setTime(System.currentTimeMillis() + 45);
         }
+    }
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEntityBucketed(PlayerBucketEntityEvent event) {
+        Player player = event.getPlayer();
+
+        if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
+            return;
+
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
+
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
+
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle() && !player.getVehicle().getType().equals(EntityType.BOAT))
+            return;
+
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(event.getEntity(), ActionType.BUCKET));
     }
 }
