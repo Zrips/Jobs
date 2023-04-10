@@ -1416,14 +1416,26 @@ public final class Jobs extends JavaPlugin {
             return 9 * level - 158;
     }
 
-    public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
+    public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job, Block block, Entity ent, LivingEntity victim) {
         double expPayment = payment.get(CurrencyType.EXP);
+
+        JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, payment.get(CurrencyType.MONEY),
+                payment.get(CurrencyType.POINTS), block, ent, victim, info);
+        Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
+        // If event is canceled, don't do anything
+        if (jobsPrePaymentEvent.isCancelled())
+            return;
+
+        payment.set(CurrencyType.MONEY, jobsPrePaymentEvent.getAmount());
+        payment.set(CurrencyType.POINTS, jobsPrePaymentEvent.getPoints());
 
         JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, expPayment);
         Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
         // If event is canceled, don't do anything
         if (jobsExpGainEvent.isCancelled())
             return;
+
+        payment.set(CurrencyType.EXP, jobsExpGainEvent.getExp());
 
         boolean limited = true;
         for (CurrencyType one : CurrencyType.values()) {
