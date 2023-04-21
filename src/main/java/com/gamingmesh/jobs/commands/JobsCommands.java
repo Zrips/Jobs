@@ -14,6 +14,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.commands.list.info;
+import com.gamingmesh.jobs.commands.list.playerinfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -28,7 +30,6 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.CMIArray;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
@@ -162,17 +163,11 @@ public class JobsCommands implements CommandExecutor {
 
         boolean pl = sender instanceof Player;
 
-        // Old format
-//	sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.title"));
         for (String one : commands) {
             if (!pi.isEntryOk())
                 continue;
             if (pi.isBreak())
                 break;
-
-            // Old format
-//	    sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
-//		+ ".help.info")));
 
             if (pl) {
                 rm.addText("\n" + getUsage(one));
@@ -182,12 +177,10 @@ public class JobsCommands implements CommandExecutor {
                 rm.addText("\n" + Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
                     + ".help.info")));
             }
-
         }
-
         rm.show(sender);
 
-        plugin.showPagination(sender, pi, LABEL + " ?");
+        pi.autoPagination(sender, LABEL + " ?");
         return true;
     }
 
@@ -333,9 +326,9 @@ public class JobsCommands implements CommandExecutor {
             String pName = player.getName();
 
             if (sender.getName().equalsIgnoreCase(pName))
-                plugin.showPagination(sender, pi, "jobs info " + job.getName() + t);
+                pi.autoPagination(sender, LABEL + " " + info.class.getSimpleName() + " " + job.getName() + t);
             else
-                plugin.showPagination(sender, pi, "jobs playerinfo " + pName + " " + job.getName() + t);
+                pi.autoPagination(sender, LABEL + " " + playerinfo.class.getSimpleName() + " " + job.getName() + t);
         }
     }
 
@@ -356,11 +349,11 @@ public class JobsCommands implements CommandExecutor {
         message.append(":\n");
 
         JobProgression prog = player.getJobProgression(job);
-        
+
         if (prog == null) {
-           prog = player.getArchivedJobProgression(job);            
-        }        
-        
+            prog = player.getArchivedJobProgression(job);
+        }
+
         int level = prog != null ? prog.getLevel() : 1;
         int numjobs = player.progression.size();
 

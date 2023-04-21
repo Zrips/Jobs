@@ -113,7 +113,7 @@ public class browse implements Cmd {
 
                         rm.show(sender);
                     }
-                    plugin.showPagination(sender, pi, "jobs browse", "-p:");
+                    pi.autoPagination(sender, "jobs browse", "-p:");
                 } else {
 
                     sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));

@@ -1471,50 +1471,6 @@ public final class Jobs extends JavaPlugin {
 
     }
 
-    public void showPagination(CommandSender sender, PageInfo pi, String cmd) {
-        showPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, null);
-    }
-
-    public void showPagination(CommandSender sender, PageInfo pi, String cmd, String pagePref) {
-        showPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, pagePref);
-    }
-
-    public void showPagination(CommandSender sender, int pageCount, int currentPage, int totalEntries, String cmd, String pagePref) {
-        if (!(sender instanceof Player))
-            return;
-
-        if (!cmd.startsWith("/"))
-            cmd = "/" + cmd;
-
-        if (pageCount == 1)
-            return;
-
-        String pagePrefix = pagePref == null ? "" : pagePref;
-
-        int nextPage = currentPage + 1;
-        nextPage = currentPage < pageCount ? nextPage : currentPage;
-
-        int prevpage = currentPage - 1;
-        if (currentPage <= 1) {
-            prevpage = currentPage;
-        }
-
-        RawMessage rm = new RawMessage()
-            .addText((currentPage > 1 ? LC.info_prevPage.getLocale() : LC.info_prevPageOff.getLocale()))
-            .addHover(currentPage > 1 ? LC.info_prevPageHover.getLocale() : LC.info_lastPageHover.getLocale())
-            .addCommand(currentPage > 1 ? cmd + " " + pagePrefix + prevpage : cmd + " " + pagePrefix + pageCount);
-
-        rm.addText(LC.info_pageCount.getLocale("[current]", currentPage, "[total]", pageCount))
-            .addHover(LC.info_pageCountHover.getLocale("[totalEntries]", totalEntries));
-
-        rm.addText(pageCount > currentPage ? LC.info_nextPage.getLocale() : LC.info_nextPageOff.getLocale())
-            .addHover(pageCount > currentPage ? LC.info_nextPageHover.getLocale() : LC.info_firstPageHover.getLocale())
-            .addCommand(pageCount > currentPage ? cmd + " " + pagePrefix + nextPage : cmd + " " + pagePrefix + 1);
-
-        if (pageCount != 0)
-            rm.show(sender);
-    }
-
     public static boolean hasLimitedItems() {
         return hasLimitedItems;
     }

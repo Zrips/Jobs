@@ -117,7 +117,7 @@ public class editjobs implements Cmd {
 		    rm.show(sender);
 		    Util.getJobsEditorMap().remove(player.getUniqueId());
 
-		    plugin.showPagination(sender, pi, "jobs editjobs list " + job.getName() + " " + actionT.getName());
+                    pi.autoPagination(sender, "jobs editjobs list " + job.getName() + " " + actionT.getName());
 		    return true;
 		}
 
