@@ -485,7 +485,8 @@ public final class JobsPaymentListener implements Listener {
             return;
 
         // A tool should not trigger a BlockPlaceEvent (fixes stripping logs bug #940)
-        if (CMIMaterial.get(event.getItemInHand().getType()).isTool())
+        // Allow this to trigger with a hoe so players can get paid for farmland.
+        if (CMIMaterial.get(event.getItemInHand().getType()).isTool() && !event.getItemInHand().getType().toString().endsWith("_HOE"))
             return;
 
         Block block = event.getBlock();
