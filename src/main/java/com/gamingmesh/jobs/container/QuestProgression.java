@@ -4,15 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.gamingmesh.jobs.actions.EnchantActionInfo;
-import com.gamingmesh.jobs.stuff.Util;
-
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.actions.EnchantActionInfo;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class QuestProgression {
 

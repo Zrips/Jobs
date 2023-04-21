@@ -398,7 +398,7 @@ public final class JobsPaymentListener implements Listener {
         if (player == null)
             return;
 
-        if (Jobs.getGCManager().blockOwnershipRange > 0 && Util.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
+        if (Jobs.getGCManager().blockOwnershipRange > 0 && CMILocation.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
             return;
 
         if (!Jobs.getPermissionHandler().hasWorldPermission(player))
@@ -1222,7 +1222,7 @@ public final class JobsPaymentListener implements Listener {
         if (bos.isDisabled(uuid, block.getLocation()))
             return;
 
-        if (Jobs.getGCManager().blockOwnershipRange > 0 && Util.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
+        if (Jobs.getGCManager().blockOwnershipRange > 0 && CMILocation.getDistance(player.getLocation(), block.getLocation()) > Jobs.getGCManager().blockOwnershipRange)
             return;
 
         if (!Jobs.getPermissionHandler().hasWorldPermission(player))

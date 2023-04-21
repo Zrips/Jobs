@@ -22,6 +22,7 @@ import com.gamingmesh.jobs.container.TopList;
 
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
 public class SignUtil {
@@ -130,7 +131,7 @@ public class SignUtil {
 	}
 
 	if (!signsByLocation.isEmpty()) {
-	    Jobs.consoleMsg("&e[Jobs] Loaded " + signsByLocation.size() + " top list signs");
+	    CMIMessages.consoleMessage("&e[Jobs] Loaded " + signsByLocation.size() + " top list signs");
 	}
     }
 

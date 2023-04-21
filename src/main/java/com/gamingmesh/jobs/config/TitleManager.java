@@ -11,6 +11,7 @@ import com.gamingmesh.jobs.container.Title;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class TitleManager {
 
@@ -157,6 +158,6 @@ public class TitleManager {
 
 	int size = titles.size();
 	if (size > 0)
-	    Jobs.consoleMsg("&eLoaded &6" + size + " &etitles");
+	    CMIMessages.consoleMessage("&eLoaded &6" + size + " &etitles");
     }
 }

@@ -10,6 +10,7 @@ import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceholderType;
 import com.gamingmesh.jobs.commands.Cmd;
 
 import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class placeholders implements Cmd {
@@ -31,7 +32,7 @@ public class placeholders implements Cmd {
             } else {
                 player = Bukkit.getPlayer(args[0]);
                 if (player == null) {
-                    Jobs.consoleMsg("&cPlayer cannot be null!");
+                    CMIMessages.consoleMessage("&cPlayer cannot be null!");
                     return false;
                 }
             }

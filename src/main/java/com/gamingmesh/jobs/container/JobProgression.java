@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Time.CMITimeManager;
 
 public class JobProgression {
@@ -146,7 +146,7 @@ public class JobProgression {
      */
     public String getLevelFormatted() {
 	if (Jobs.getGCManager().RomanNumbers)
-	    return Util.toRoman(level);	
+	    return CMINumber.toRoman(level);	
 	return String.valueOf(level);
     }
 

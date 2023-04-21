@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public final class VersionChecker {
 
     private Jobs plugin;
@@ -44,7 +46,7 @@ public final class VersionChecker {
 		    if (player != null)
 			player.sendMessage(one);
 		    else
-			Jobs.consoleMsg(one);
+			CMIMessages.consoleMessage(one);
 	});
     }
 
@@ -55,7 +57,7 @@ public final class VersionChecker {
 	    if (version.length() <= 8)
 		return version;
 	} catch (Throwable t) {
-	    Jobs.consoleMsg("&cFailed to check for " + plugin.getDescription().getName() + " update on spigot web page.");
+	    CMIMessages.consoleMessage("&cFailed to check for " + plugin.getDescription().getName() + " update on spigot web page.");
 	}
 	return null;
     }

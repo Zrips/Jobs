@@ -40,12 +40,12 @@ import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 
 import net.Zrips.CMILib.CMILib;
-import net.Zrips.CMILib.Container.CMIArray;
 import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
 public class GeneralConfigManager {
@@ -543,7 +543,7 @@ public class GeneralConfigManager {
 
             CMIMaterial mat = CMIMaterial.get(mName);
             if (mat == CMIMaterial.NONE) {
-                Jobs.consoleMsg("Failed to recognize " + one + " entry from config file");
+               CMIMessages.consoleMessage("Failed to recognize " + one + " entry from config file");
                 continue;
             }
 
@@ -644,7 +644,7 @@ public class GeneralConfigManager {
             DynamicPaymentEquation.setVariable("totaljobs", 10);
             DynamicPaymentEquation.setVariable("jobstotalplayers", 10);
         } catch (Throwable e) {
-            Jobs.consoleMsg("&cDynamic payment equation has an invalid property. Disabling feature!");
+            CMIMessages.consoleMessage("&cDynamic payment equation has an invalid property. Disabling feature!");
             useDynamicPayment = false;
         }
 

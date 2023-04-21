@@ -15,8 +15,8 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.LogAmounts;
-import com.gamingmesh.jobs.stuff.Sorting;
 
+import net.Zrips.CMILib.Container.CMISort;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
@@ -65,7 +65,7 @@ public class log implements Cmd {
 	    }
 	}
 
-	unsortMap = Sorting.sortDoubleDESC(unsortMap);
+	unsortMap = CMISort.sortDoubleDESC(unsortMap);
 	if (unsortMap.isEmpty()) {
 	    sender.sendMessage(Jobs.getLanguage().getMessage("command.log.output.nodata"));
 	    return true;

@@ -497,6 +497,6 @@ public class ShopManager {
         }
 
         if (!list.isEmpty())
-            Jobs.consoleMsg("&eLoaded &6" + list.size() + " &eshop items");
+            CMIMessages.consoleMessage("&eLoaded &6" + list.size() + " &eshop items");
     }
 }

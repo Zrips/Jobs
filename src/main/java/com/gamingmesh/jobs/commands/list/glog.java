@@ -16,7 +16,8 @@ import com.gamingmesh.jobs.container.Log;
 import com.gamingmesh.jobs.container.LogAmounts;
 import com.gamingmesh.jobs.container.PlayerInfo;
 import com.gamingmesh.jobs.stuff.Sorting;
-import com.gamingmesh.jobs.stuff.TimeManage;
+
+import net.Zrips.CMILib.Time.CMITimeManager;
 
 public class glog implements Cmd {
 
@@ -31,7 +32,7 @@ public class glog implements Cmd {
 	    @Override
 	    public void run() {
 		Map<LogAmounts, Double> unsortMap = new HashMap<>();
-		int time = TimeManage.timeInInt();
+		int time = CMITimeManager.timeInInt();
 
 		for (Integer oneP : Jobs.getJobsDAO().getLognameList(time, time)) {
 		    PlayerInfo info = Jobs.getPlayerManager().getPlayerInfo(oneP);

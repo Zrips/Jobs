@@ -26,7 +26,7 @@ import net.Zrips.CMILib.Container.CMIText;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class NameTranslatorManager {
 
@@ -231,9 +231,9 @@ public class NameTranslatorManager {
             }
 
             if (listOfNames.size() > 0)
-                Jobs.consoleMsg("&eLoaded &6" + listOfNames.size() + " &ecustom item names");
+                CMIMessages.consoleMessage("&eLoaded &6" + listOfNames.size() + " &ecustom item names");
         } else
-            Jobs.consoleMsg("&cThe ItemList section not found in &6" + itemFile.fileName + " &cfile.");
+           CMIMessages.consoleMessage("&cThe ItemList section not found in &6" + itemFile.fileName + " &cfile.");
 
         if ((section = itemFile.getConfig().getConfigurationSection("EntityList")) != null) {
             listOfEntities.clear();
@@ -252,9 +252,9 @@ public class NameTranslatorManager {
             }
 
             if (!listOfEntities.isEmpty())
-                Jobs.consoleMsg("&eLoaded &6" + listOfEntities.size() + " &ecustom entity names");
+                CMIMessages.consoleMessage("&eLoaded &6" + listOfEntities.size() + " &ecustom entity names");
         } else
-            Jobs.consoleMsg("&cThe EntityList section not found in &6" + itemFile.fileName + " &cfile.");
+            CMIMessages.consoleMessage("&cThe EntityList section not found in &6" + itemFile.fileName + " &cfile.");
 
         if ((section = itemFile.getConfig().getConfigurationSection("MythicEntityList")) != null) {
             listOfMMEntities.clear();
@@ -265,9 +265,9 @@ public class NameTranslatorManager {
             }
 
             if (listOfMMEntities.size() > 0)
-                Jobs.consoleMsg("&eLoaded &6" + listOfMMEntities.size() + " &ecustom MythicMobs names");
+                CMIMessages.consoleMessage("&eLoaded &6" + listOfMMEntities.size() + " &ecustom MythicMobs names");
         } else
-            Jobs.consoleMsg("&cThe MythicEntityList section not found in &6" + itemFile.fileName + " &cfile.");
+            CMIMessages.consoleMessage("&cThe MythicEntityList section not found in &6" + itemFile.fileName + " &cfile.");
 
         if ((section = itemFile.getConfig().getConfigurationSection("EnchantList")) != null) {
             listOfEnchants.clear();
@@ -277,9 +277,9 @@ public class NameTranslatorManager {
             }
 
             if (listOfEnchants.size() > 0)
-                Jobs.consoleMsg("&eLoaded &6" + listOfEnchants.size() + " &ecustom enchant names");
+                CMIMessages.consoleMessage("&eLoaded &6" + listOfEnchants.size() + " &ecustom enchant names");
         } else
-            Jobs.consoleMsg("&cThe EnchantList section not found in &6" + itemFile.fileName + " &cfile.");
+            CMIMessages.consoleMessage("&cThe EnchantList section not found in &6" + itemFile.fileName + " &cfile.");
 
         if ((section = itemFile.getConfig().getConfigurationSection("PotionEffects")) != null) {
             listOfPotionEffects.clear();
@@ -289,9 +289,9 @@ public class NameTranslatorManager {
             }
 
             if (listOfPotionEffects.size() > 0)
-                Jobs.consoleMsg("&eLoaded &6" + listOfPotionEffects.size() + " &ecustom enchant names");
+                CMIMessages.consoleMessage("&eLoaded &6" + listOfPotionEffects.size() + " &ecustom enchant names");
         } else
-            Jobs.consoleMsg("&cThe PotionEffects section not found in &6" + itemFile.fileName + " &cfile.");
+            CMIMessages.consoleMessage("&cThe PotionEffects section not found in &6" + itemFile.fileName + " &cfile.");
 
         if ((section = itemFile.getConfig().getConfigurationSection("ColorList")) != null) {
             listOfColors.clear();
@@ -304,9 +304,9 @@ public class NameTranslatorManager {
             }
 
             if (!listOfColors.isEmpty())
-                Jobs.consoleMsg("&eLoaded &6" + listOfColors.size() + " &ecustom color names");
+                CMIMessages.consoleMessage("&eLoaded &6" + listOfColors.size() + " &ecustom color names");
         } else
-            Jobs.consoleMsg("&cThe ColorList section not found in &6" + itemFile.fileName + " &cfile.");
+            CMIMessages.consoleMessage("&cThe ColorList section not found in &6" + itemFile.fileName + " &cfile.");
     }
 
     @SuppressWarnings("deprecation")

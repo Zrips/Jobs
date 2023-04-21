@@ -30,7 +30,7 @@ public class convert implements Cmd {
 
 	Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 	    Jobs.convertDatabase();
-	    Jobs.consoleMsg("&eDatabase was converted from &2" + from + " &eto &2" + to + "&e!");
+	    CMIMessages.consoleMessage("&eDatabase was converted from &2" + from + " &eto &2" + to + "&e!");
 	});
 
 	return true;

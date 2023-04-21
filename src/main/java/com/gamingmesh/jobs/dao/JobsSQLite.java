@@ -8,6 +8,8 @@ import java.sql.Statement;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class JobsSQLite extends JobsDAO {
 
     public void initialize() {
@@ -32,7 +34,7 @@ public class JobsSQLite extends JobsDAO {
     protected void checkUpdate() throws SQLException {
 	JobsConnection conn = getConnection();
 	if (conn == null) {
-	    Jobs.consoleMsg("&cCould not run database updates! Could not connect to MySQL!");
+	    CMIMessages.consoleMessage("&cCould not run database updates! Could not connect to MySQL!");
 	    return;
 	}
 
@@ -59,7 +61,7 @@ public class JobsSQLite extends JobsDAO {
 	Statement statement = null;
 	try {
 	    if (query == null || query.isEmpty()) {
-		Jobs.consoleMsg("&cCould not create table: query is empty or null.");
+		CMIMessages.consoleMessage("&cCould not create table: query is empty or null.");
 		return false;
 	    }
 
@@ -67,7 +69,7 @@ public class JobsSQLite extends JobsDAO {
 	    statement.execute(query);
 	    return true;
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("&cCould not create table, SQLException: " + e.getMessage());
+	    CMIMessages.consoleMessage("&cCould not create table, SQLException: " + e.getMessage());
 	    return false;
 	} finally {
 	    close(statement);
@@ -85,7 +87,7 @@ public class JobsSQLite extends JobsDAO {
 	    tables.close();
 	    return false;
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("&cCould not check if table \"" + table + "\" exists, SQLException: " + e.getMessage());
+	    CMIMessages.consoleMessage("&cCould not check if table \"" + table + "\" exists, SQLException: " + e.getMessage());
 	    return false;
 	}
     }
@@ -101,7 +103,7 @@ public class JobsSQLite extends JobsDAO {
 	    tables.close();
 	    return false;
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("&cCould not check if table \"" + table + "\" exists, SQLException: " + e.getMessage());
+	    CMIMessages.consoleMessage("&cCould not check if table \"" + table + "\" exists, SQLException: " + e.getMessage());
 	    return false;
 	}
     }
@@ -112,7 +114,7 @@ public class JobsSQLite extends JobsDAO {
 	try {
 	    statement = getConnection().createStatement();
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("&cCould not add new collumn, SQLException: " + e.getMessage());
+	    CMIMessages.consoleMessage("&cCould not add new collumn, SQLException: " + e.getMessage());
 	    return false;
 	}
 	try {
@@ -130,7 +132,7 @@ public class JobsSQLite extends JobsDAO {
 	Statement statement = null;
 	try {
 	    if (!isTable(table)) {
-		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
+		CMIMessages.consoleMessage("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
 	    statement = getConnection().createStatement();
@@ -139,7 +141,7 @@ public class JobsSQLite extends JobsDAO {
 	} catch (SQLException e) {
 	    if (!(e.getMessage().toLowerCase().contains("locking") || e.getMessage().toLowerCase().contains("locked")) &&
 		!e.toString().contains("not return ResultSet"))
-		Jobs.consoleMsg("&cError in wipeTable() query: " + e);
+		CMIMessages.consoleMessage("&cError in wipeTable() query: " + e);
 	    return false;
 	} finally {
 	    close(statement);
@@ -151,7 +153,7 @@ public class JobsSQLite extends JobsDAO {
 	Statement statement = null;
 	try {
 	    if (!isTable(table)) {
-		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
+		CMIMessages.consoleMessage("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
 	    statement = getConnection().createStatement();
@@ -160,7 +162,7 @@ public class JobsSQLite extends JobsDAO {
 	} catch (SQLException e) {
 	    if (!(e.getMessage().toLowerCase().contains("locking") || e.getMessage().toLowerCase().contains("locked")) &&
 		!e.toString().contains("not return ResultSet"))
-		Jobs.consoleMsg("&cError in dropTable() query: " + e);
+		CMIMessages.consoleMessage("&cError in dropTable() query: " + e);
 	    return false;
 	} finally {
 	    close(statement);

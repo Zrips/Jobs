@@ -31,6 +31,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.YmlMaker;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class Language {
 
@@ -71,8 +72,8 @@ public class Language {
             else
                 msg = customlocale.isString(key) ? CMIChatColor.translate(customlocale.getString(key)) : missing;
         } catch (Exception e) {
-            Jobs.consoleMsg("&e[Jobs] &2Can't read language file for: " + key);
-            Jobs.consoleMsg(e.getLocalizedMessage());
+            CMIMessages.consoleMessage("&e[Jobs] &2Can't read language file for: " + key);
+            CMIMessages.consoleMessage(e.getLocalizedMessage());
             return "";
         }
 
@@ -96,8 +97,8 @@ public class Language {
                         msg += one;
                     }
             } catch (Exception e) {
-                Jobs.consoleMsg("&e[Jobs] &2Can't read language file for: " + key);
-                Jobs.consoleMsg(e.getLocalizedMessage());
+                CMIMessages.consoleMessage("&e[Jobs] &2Can't read language file for: " + key);
+                CMIMessages.consoleMessage(e.getLocalizedMessage());
                 return "";
             }
         }

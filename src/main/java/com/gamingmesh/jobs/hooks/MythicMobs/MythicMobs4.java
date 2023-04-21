@@ -8,6 +8,7 @@ import com.gamingmesh.jobs.Jobs;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class MythicMobs4 implements MythicMobInterface {
 
@@ -40,12 +41,12 @@ public class MythicMobs4 implements MythicMobInterface {
 	    Class.forName("io.lumine.xikage.mythicmobs.MythicMobs");
 	} catch (ClassNotFoundException e) {
 	    // Disabling
-	    Jobs.consoleMsg("&e[Jobs] &6MythicMobs was found - &cBut your version is outdated, please update for full support.");
+	    CMIMessages.consoleMessage("&e[Jobs] &6MythicMobs was found - &cBut your version is outdated, please update for full support.");
 	    return false;
 	}
 
 	apiHelper = ((MythicMobs) mm).getAPIHelper();
-	Jobs.consoleMsg("&e[Jobs] &6MythicMobs was found - Enabling capabilities.");
+	CMIMessages.consoleMessage("&e[Jobs] &6MythicMobs was found - Enabling capabilities.");
 	return true;
     }
 
@@ -64,7 +65,7 @@ public class MythicMobs4 implements MythicMobInterface {
 	    if (!failed) {
 		failed = true;
 		e.printStackTrace();
-		Jobs.consoleMsg("&cEncountered error when checking MythicMob entity name. Support for mythicMobs will be suspended for time beying. Please report this issue.");
+		CMIMessages.consoleMessage("&cEncountered error when checking MythicMob entity name. Support for mythicMobs will be suspended for time beying. Please report this issue.");
 	    }
 	}
 

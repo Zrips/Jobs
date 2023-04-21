@@ -17,7 +17,7 @@ import com.gamingmesh.jobs.container.JobsWorld;
 import com.gamingmesh.jobs.dao.JobsDAO.ExploreDataTableFields;
 import com.gamingmesh.jobs.stuff.Util;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class ExploreManager {
 
@@ -48,11 +48,11 @@ public class ExploreManager {
 	if (!exploreEnabled)
 	    return;
 
-	Jobs.consoleMsg("&eLoading explorer data");
+	CMIMessages.consoleMessage("&eLoading explorer data");
 	Long time = System.currentTimeMillis();
 	Jobs.getJobsDAO().loadExplore();
 	int size = getSize();
-	Jobs.consoleMsg("&eLoaded explorer data" + (size != 0 ? " (&6" + size + "&e)" : " ") + " in " + (System.currentTimeMillis() - time) + " ms");
+	CMIMessages.consoleMessage("&eLoaded explorer data" + (size != 0 ? " (&6" + size + "&e)" : " ") + " in " + (System.currentTimeMillis() - time) + " ms");
     }
 
     public Map<String, Map<String, ExploreRegion>> getWorlds() {
@@ -149,17 +149,17 @@ public class ExploreManager {
     }
 
     public void resetRegion(String worldname) {
-	Jobs.consoleMsg("&eReseting explorer data. World: " + worldname);
+	CMIMessages.consoleMessage("&eReseting explorer data. World: " + worldname);
 
 	Map<String, Map<String, ExploreRegion>> worlds = getWorlds();
 	worlds.put(worldname, new HashMap<String, ExploreRegion>());
 
 	boolean r = Jobs.getJobsDAO().deleteExploredWorld(worldname);
 	if (!r) {
-	    Jobs.consoleMsg("&eFailed in DAO.");
+	    CMIMessages.consoleMessage("&eFailed in DAO.");
 	    return;
 	}
 
-	Jobs.consoleMsg("&eCompleted to reset explorer data.");
+	CMIMessages.consoleMessage("&eCompleted to reset explorer data.");
     }
 }

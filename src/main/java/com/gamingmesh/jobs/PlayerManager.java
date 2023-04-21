@@ -31,8 +31,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
 import org.bukkit.FireworkEffect.Type;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
@@ -40,8 +40,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.gamingmesh.jobs.api.JobsJoinEvent;
 import com.gamingmesh.jobs.api.JobsLeaveEvent;
@@ -62,13 +60,11 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.hooks.HookManager;
-import com.gamingmesh.jobs.stuff.PerformCommands;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
@@ -336,7 +332,7 @@ public class PlayerManager {
             i++;
 
             if (y++ >= 1000) {
-                Jobs.consoleMsg("&e[Jobs] Saved " + i + "/" + total + " players data");
+                CMIMessages.consoleMessage("&e[Jobs] Saved " + i + "/" + total + " players data");
                 y = 0;
             }
         }
@@ -452,6 +448,14 @@ public class PlayerManager {
         return jPlayer;
     }
 
+    private static void performCommandsOnJoin(JobsPlayer jPlayer, Job job) {
+        String pName = jPlayer.getName();
+
+        for (String one : job.getCmdOnJoin()) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("[name]", pName).replace("[jobname]", job.getName()));
+        }
+    }
+
     /**
      * Causes player to join to the given job.
      *
@@ -476,13 +480,20 @@ public class PlayerManager {
         Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(job));
         jPlayer.setLeftTime(job);
 
-        PerformCommands.performCommandsOnJoin(jPlayer, job);
+        performCommandsOnJoin(jPlayer, job);
 
         Jobs.takeSlot(job);
         Jobs.getSignUtil().updateAllSign(job);
 
         job.updateTotalPlayers();
         jPlayer.maxJobsEquation = getMaxJobs(jPlayer);
+    }
+
+    private static void performCommandsOnLeave(JobsPlayer jPlayer, Job job) {
+        String pName = jPlayer.getName();
+        for (String one : job.getCmdOnLeave()) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), one.replace("[name]", pName).replace("[jobname]", job.getName()));
+        }
     }
 
     /**
@@ -510,7 +521,7 @@ public class PlayerManager {
         if (!Jobs.getJobsDAO().quitJob(jPlayer, job))
             return false;
 
-        PerformCommands.performCommandsOnLeave(jPlayer, job);
+        performCommandsOnLeave(jPlayer, job);
         Jobs.leaveSlot(job);
 
         jPlayer.getLeftTimes().remove(jPlayer.getUniqueId());
@@ -1199,7 +1210,7 @@ public class PlayerManager {
                 for (Job one : Jobs.getJobs()) {
                     if (jPlayer.progression.size() >= playerMaxJobs)
                         return;
-                    
+
                     if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
                         continue;
 

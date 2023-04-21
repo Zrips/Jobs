@@ -34,7 +34,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -112,8 +111,6 @@ import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
-import net.Zrips.CMILib.Colors.CMIChatColor;
-import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
@@ -267,7 +264,7 @@ public final class Jobs extends JavaPlugin {
         try {
             if (Integer.parseInt(papi
                 .getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100 && new PlaceholderAPIHook(this).register()) {
-                consoleMsg("&6PlaceholderAPI &ehooked.");
+                CMIMessages.consoleMessage("&6PlaceholderAPI &ehooked.");
             }
         } catch (NumberFormatException ex) {
             return false;
@@ -566,7 +563,7 @@ public final class Jobs extends JavaPlugin {
                 getPlayerManager().addPlayerToCache(jPlayer);
         }
         if (!getPlayerManager().getPlayersCache().isEmpty())
-            consoleMsg("&ePreloaded &6" + getPlayerManager().getPlayersCache().size() + " &eplayers data in &6" + ((int) ((System.currentTimeMillis() - time) / 1000.0D * 100.0D) / 100.0D));
+            CMIMessages.consoleMessage("&ePreloaded &6" + getPlayerManager().getPlayersCache().size() + " &eplayers data in &6" + ((int) ((System.currentTimeMillis() - time) / 1000.0D * 100.0D) / 100.0D));
     }
 
     public static void convertDatabase() {
@@ -596,7 +593,7 @@ public final class Jobs extends JavaPlugin {
 //    Jobs.getJobsDAO().saveBlockProtection();
         } catch (SQLException e) {
             e.printStackTrace();
-            Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
+            CMIMessages.consoleMessage("&cCan't write data to data base, please send error log to dev's.");
             return;
         }
 
@@ -773,7 +770,7 @@ public final class Jobs extends JavaPlugin {
             getCommandManager().fillCommands();
             getDBManager().getDB().triggerTableIdUpdate();
 
-            consoleMsg("&ePlugin has been enabled successfully.");
+            CMIMessages.consoleMessage("&ePlugin has been enabled successfully.");
         } catch (Throwable e) {
             e.printStackTrace();
             System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
@@ -1257,7 +1254,7 @@ public final class Jobs extends JavaPlugin {
                             jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
+                    CMIMessages.consoleMessage("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
                 }
 
                 Map<CurrencyType, Double> payments = new HashMap<>();
@@ -1458,12 +1455,6 @@ public final class Jobs extends JavaPlugin {
 
         if (prog.addExperience(expPayment))
             getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
-    }
-
-    public static void consoleMsg(String msg) {
-        if (msg != null) {
-            Bukkit.getServer().getConsoleSender().sendMessage(CMIChatColor.translate(msg));
-        }
     }
 
     public static SelectionManager getSelectionManager() {
