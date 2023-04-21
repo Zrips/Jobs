@@ -444,7 +444,7 @@ public final class JobsPaymentListener implements Listener {
         if (fp != null) {
             if (fp.getTime() > System.currentTimeMillis() && (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
                 fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub()))) {
-                Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
+                Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob(), block, null, null);
                 return;
             }
             Jobs.FASTPAYMENT.remove(player.getUniqueId());
@@ -485,7 +485,8 @@ public final class JobsPaymentListener implements Listener {
             return;
 
         // A tool should not trigger a BlockPlaceEvent (fixes stripping logs bug #940)
-        if (CMIMaterial.get(event.getItemInHand().getType()).isTool())
+        // Allow this to trigger with a hoe so players can get paid for farmland.
+        if (CMIMaterial.get(event.getItemInHand().getType()).isTool() && !event.getItemInHand().getType().toString().endsWith("_HOE"))
             return;
 
         Block block = event.getBlock();
@@ -1971,7 +1972,7 @@ public final class JobsPaymentListener implements Listener {
 
         if (fp.getTime() > System.currentTimeMillis() - 50L && (fp.getInfo().getName().equalsIgnoreCase(bInfo.getName()) ||
             fp.getInfo().getNameWithSub().equalsIgnoreCase(bInfo.getNameWithSub()))) {
-            Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob());
+            Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob(), block, null, null);
             breakCache.put(CMILocation.toString(block.getLocation(), ":", true, true), uuid);
             fp.setTime(System.currentTimeMillis() + 45);
         }
