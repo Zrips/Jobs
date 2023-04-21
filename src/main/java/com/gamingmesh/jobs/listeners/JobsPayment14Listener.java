@@ -24,8 +24,6 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.PlayerCamp;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 public final class JobsPayment14Listener implements Listener {
 
     // BlockCookEvent does not have "cooking owner"

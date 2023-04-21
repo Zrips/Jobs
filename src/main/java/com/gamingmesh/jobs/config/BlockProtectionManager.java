@@ -16,7 +16,6 @@ import com.gamingmesh.jobs.container.DBAction;
 import net.Zrips.CMILib.Container.CMIBlock;
 import net.Zrips.CMILib.Container.CMIBlock.Bisect;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 
 public class BlockProtectionManager {
 
@@ -80,7 +79,7 @@ public class BlockProtectionManager {
 
     public BlockProtection addP(Location loc, Long time, boolean paid, boolean cache) {
 
-        if (time == 0)
+        if (time == null || time == 0)
             return null;
         
         String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
