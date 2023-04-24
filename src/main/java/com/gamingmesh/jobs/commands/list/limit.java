@@ -10,6 +10,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.economy.PaymentData;
 
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
 
@@ -54,8 +55,10 @@ public class limit implements Cmd {
 		continue;
 	    PaymentData limit = JPlayer.getPaymentLimit();
 
-	    if (limit.getLeftTime(type) <= 0)
-		limit.resetLimits(type);
+	    if (limit.getLeftTime(type) <= 0) {
+	        CMIDebug.d("reset", type);
+		limit.resetLimits(type); 
+	    }
 
 	    if (limit.getLeftTime(type) > 0) {
 		String typeName = type.getName().toLowerCase();

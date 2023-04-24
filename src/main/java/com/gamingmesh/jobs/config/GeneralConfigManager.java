@@ -95,7 +95,8 @@ public class GeneralConfigManager {
         SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
         PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps, informOnPaymentDisable,
         BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
-        boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, boostedItemsSlotSpecific, multiplyBoostedExtraValues, addPermissionBoost, highestPermissionBoost /*, preventCropResizePayment*/,
+        boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, boostedItemsSlotSpecific, multiplyBoostedExtraValues, addPermissionBoost,
+        highestPermissionBoost /*, preventCropResizePayment*/,
         payItemDurabilityLoss,
         applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
         CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
@@ -543,7 +544,7 @@ public class GeneralConfigManager {
 
             CMIMaterial mat = CMIMaterial.get(mName);
             if (mat == CMIMaterial.NONE) {
-               CMIMessages.consoleMessage("Failed to recognize " + one + " entry from config file");
+                CMIMessages.consoleMessage("Failed to recognize " + one + " entry from config file");
                 continue;
             }
 
@@ -702,8 +703,14 @@ public class GeneralConfigManager {
             Jobs.getPluginLogger().warning("MoneyLimit has an invalid value. Disabling money limit!");
             limit.setEnabled(false);
         }
+
         c.addComment("Economy.Limit.Money.TimeLimit", "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
         limit.setTimeLimit(c.get("Economy.Limit.Money.TimeLimit", 3600));
+
+        c.addComment("Economy.Limit.Money.ResetTime", "Time in 24 hour format when limit should reset. This will override TimeLimit if defined",
+            "Example: '00:00:00' will reset timer at midnight, '04:30:00' will reset at 4:30 in the morning", "Set to empty field if you want to use TimeLimit");
+        limit.setResetsAt(c.get("Economy.Limit.Money.ResetTime", ""));
+
         c.addComment("Economy.Limit.Money.AnnouncementDelay", "Delay between announcements about reached money limit",
             "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
         limit.setAnnouncementDelay(c.get("Economy.Limit.Money.AnnouncementDelay", 30));
@@ -736,6 +743,11 @@ public class GeneralConfigManager {
         }
         c.addComment("Economy.Limit.Point.TimeLimit", "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
         limit.setTimeLimit(c.get("Economy.Limit.Point.TimeLimit", 3600));
+
+        c.addComment("Economy.Limit.Point.ResetTime", "Time in 24 hour format when limit should reset. This will override TimeLimit if defined",
+            "Example: '00:00:00' will reset timer at midnight, '04:30:00' will reset at 4:30 in the morning", "Set to empty field if you want to use TimeLimit");
+        limit.setResetsAt(c.get("Economy.Limit.Point.ResetTime", ""));
+
         c.addComment("Economy.Limit.Point.AnnouncementDelay", "Delay between announcements about reached limit",
             "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
         limit.setAnnouncementDelay(c.get("Economy.Limit.Point.AnnouncementDelay", 30));
@@ -768,6 +780,11 @@ public class GeneralConfigManager {
         }
         c.addComment("Economy.Limit.Exp.TimeLimit", "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
         limit.setTimeLimit(c.get("Economy.Limit.Exp.TimeLimit", 3600));
+
+        c.addComment("Economy.Limit.Exp.ResetTime", "Time in 24 hour format when limit should reset. This will override TimeLimit if defined",
+            "Example: '00:00:00' will reset timer at midnight, '04:30:00' will reset at 4:30 in the morning", "Set to empty field if you want to use TimeLimit");
+        limit.setResetsAt(c.get("Economy.Limit.Exp.ResetTime", ""));
+
         c.addComment("Economy.Limit.Exp.AnnouncementDelay", "Delay between announcements about reached Exp limit",
             "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
         limit.setAnnouncementDelay(c.get("Economy.Limit.Exp.AnnouncementDelay", 30));
