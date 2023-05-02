@@ -13,102 +13,108 @@ import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 
+import net.Zrips.CMILib.Locale.LC;
+
 public class skipquest implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (args.length != 2 && args.length != 3) {
-	    Jobs.getCommandManager().sendUsage(sender, "skipquest");
-	    return true;
-	}
+        if (!Jobs.getGCManager().DailyQuestsEnabled) {
+            LC.info_FeatureNotEnabled.sendMessage(sender);
+            return true;
+        }
+        if (args.length != 2 && args.length != 3) {
+            Jobs.getCommandManager().sendUsage(sender, "skipquest");
+            return true;
+        }
 
-	JobsPlayer jPlayer = null;
-	Job job = null;
-	String questName = "";
+        JobsPlayer jPlayer = null;
+        Job job = null;
+        String questName = "";
 
-	for (String one : args) {
-	    if (job == null) {
-		job = Jobs.getJob(one);
-		if (job != null)
-		    continue;
-	    }
-	    if (jPlayer == null) {
-		jPlayer = Jobs.getPlayerManager().getJobsPlayer(one);
-		if (jPlayer != null)
-		    continue;
-	    }
+        for (String one : args) {
+            if (job == null) {
+                job = Jobs.getJob(one);
+                if (job != null)
+                    continue;
+            }
+            if (jPlayer == null) {
+                jPlayer = Jobs.getPlayerManager().getJobsPlayer(one);
+                if (jPlayer != null)
+                    continue;
+            }
 
-	    if (!questName.isEmpty())
-		questName += " ";
-	    questName += one;
-	}
+            if (!questName.isEmpty())
+                questName += " ";
+            questName += one;
+        }
 
-	if (jPlayer == null && sender instanceof Player)
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+        if (jPlayer == null && sender instanceof Player)
+            jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
-	if (jPlayer == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : ""));
-	    return true;
-	}
+        if (jPlayer == null) {
+            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : ""));
+            return true;
+        }
 
-	List<QuestProgression> quests = jPlayer.getQuestProgressions();
+        List<QuestProgression> quests = jPlayer.getQuestProgressions();
 
-	if (job != null)
-	    quests = jPlayer.getQuestProgressions(job);
+        if (job != null)
+            quests = jPlayer.getQuestProgressions(job);
 
-	if (quests == null || quests.isEmpty()) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.noQuests"));
-	    return true;
-	}
+        if (quests == null || quests.isEmpty()) {
+            sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.noQuests"));
+            return true;
+        }
 
-	Quest old = null;
+        Quest old = null;
 
-	for (QuestProgression one : quests) {
-	    Quest q = one.getQuest();
+        for (QuestProgression one : quests) {
+            Quest q = one.getQuest();
 
-	    if (q.getQuestName().equalsIgnoreCase(questName) || q.getConfigName().equalsIgnoreCase(questName)) {
-		old = q;
-		break;
-	    }
-	}
+            if (q.getQuestName().equalsIgnoreCase(questName) || q.getConfigName().equalsIgnoreCase(questName)) {
+                old = q;
+                break;
+            }
+        }
 
-	if (old == null) {
-	    return false;
-	}
+        if (old == null) {
+            return false;
+        }
 
-	// Do not skip the completed quests
-	for (QuestProgression q : quests) {
-	    if (q.getQuest().getQuestName().equals(old.getQuestName()) && q.isCompleted()) {
-		return false;
-	    }
-	}
+        // Do not skip the completed quests
+        for (QuestProgression q : quests) {
+            if (q.getQuest().getQuestName().equals(old.getQuestName()) && q.isCompleted()) {
+                return false;
+            }
+        }
 
-	if (Jobs.getGCManager().getDailyQuestsSkips() <= jPlayer.getSkippedQuests()) {
-	    return false;
-	}
+        if (Jobs.getGCManager().getDailyQuestsSkips() <= jPlayer.getSkippedQuests()) {
+            return false;
+        }
 
-	double amount = Jobs.getGCManager().skipQuestCost;
-	BufferedEconomy econ = Jobs.getEconomy();
-	Player player = jPlayer.getPlayer();
+        double amount = Jobs.getGCManager().skipQuestCost;
+        BufferedEconomy econ = Jobs.getEconomy();
+        Player player = jPlayer.getPlayer();
 
-	if (amount > 0 && player != null) {
-	    if (!econ.getEconomy().hasMoney(player, amount)) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("economy.error.nomoney"));
-		return false;
-	    }
+        if (amount > 0 && player != null) {
+            if (!econ.getEconomy().hasMoney(player, amount)) {
+                sender.sendMessage(Jobs.getLanguage().getMessage("economy.error.nomoney"));
+                return false;
+            }
 
-	    econ.getEconomy().withdrawPlayer(player, amount);
-	}
+            econ.getEconomy().withdrawPlayer(player, amount);
+        }
 
-	jPlayer.replaceQuest(old);
+        jPlayer.replaceQuest(old);
 
-	if (player != null)
-	    plugin.getServer().dispatchCommand(player, "jobs quests");
+        if (player != null)
+            plugin.getServer().dispatchCommand(player, "jobs quests");
 
-	if (amount > 0) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.skipquest.output.questSkipForCost", "%amount%", amount));
-	}
+        if (amount > 0) {
+            sender.sendMessage(Jobs.getLanguage().getMessage("command.skipquest.output.questSkipForCost", "%amount%", amount));
+        }
 
-	return true;
+        return true;
     }
 }

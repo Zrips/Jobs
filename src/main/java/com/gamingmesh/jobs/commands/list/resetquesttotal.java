@@ -11,48 +11,55 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 
+import net.Zrips.CMILib.Locale.LC;
+
 public class resetquesttotal implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (args.length != 0 && args.length != 1) {
-	    Jobs.getCommandManager().sendUsage(sender, "resetquesttotal");
-	    return true;
-	}
+        if (!Jobs.getGCManager().DailyQuestsEnabled) {
+            LC.info_FeatureNotEnabled.sendMessage(sender);
+            return true;
+        }
+        
+        if (args.length != 0 && args.length != 1) {
+            Jobs.getCommandManager().sendUsage(sender, "resetquesttotal");
+            return true;
+        }
 
-	if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
-	    for (Entry<UUID, JobsPlayer> pl : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
-		pl.getValue().setDoneQuests(0);
-	    }
-	    Jobs.getJobsDAO().resetDoneQuests();
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquesttotal.output.reseted", "%playername%", Jobs.getPlayerManager().getPlayersCache().size()));
-	    return true;
-	}
+        if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
+            for (Entry<UUID, JobsPlayer> pl : Jobs.getPlayerManager().getPlayersCache().entrySet()) {
+                pl.getValue().setDoneQuests(0);
+            }
+            Jobs.getJobsDAO().resetDoneQuests();
+            sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquesttotal.output.reseted", "%playername%", Jobs.getPlayerManager().getPlayersCache().size()));
+            return true;
+        }
 
-	JobsPlayer jPlayer = null;
-	Job job = null;
+        JobsPlayer jPlayer = null;
+        Job job = null;
 
-	for (String one : args) {
-	    if (job == null) {
-		job = Jobs.getJob(one);
-		if (job != null)
-		    continue;
-	    }
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(one);
-	}
+        for (String one : args) {
+            if (job == null) {
+                job = Jobs.getJob(one);
+                if (job != null)
+                    continue;
+            }
+            jPlayer = Jobs.getPlayerManager().getJobsPlayer(one);
+        }
 
-	if (jPlayer == null && sender instanceof Player)
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+        if (jPlayer == null && sender instanceof Player)
+            jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
-	if (jPlayer == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : ""));
-	    return true;
-	}
+        if (jPlayer == null) {
+            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : ""));
+            return true;
+        }
 
-	jPlayer.setDoneQuests(0);
-	jPlayer.setSaved(false);
-	jPlayer.save();
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquesttotal.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName()));
-	return true;
+        jPlayer.setDoneQuests(0);
+        jPlayer.setSaved(false);
+        jPlayer.save();
+        sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquesttotal.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName()));
+        return true;
     }
 }

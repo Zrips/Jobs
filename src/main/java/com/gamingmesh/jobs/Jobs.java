@@ -912,6 +912,9 @@ public final class Jobs extends JavaPlugin {
     }
 
     private static void checkDailyQuests(JobsPlayer jPlayer, Job job, ActionInfo info) {
+        if (!Jobs.getGCManager().DailyQuestsEnabled) {
+            return;
+        }
         if (!job.getQuests().isEmpty()) {
             for (QuestProgression one : jPlayer.getQuestProgressions(job, info.getType())) {
                 one.processQuest(jPlayer, info);
@@ -1416,7 +1419,7 @@ public final class Jobs extends JavaPlugin {
         double expPayment = payment.get(CurrencyType.EXP);
 
         JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, payment.get(CurrencyType.MONEY),
-                payment.get(CurrencyType.POINTS), block, ent, victim, info);
+            payment.get(CurrencyType.POINTS), block, ent, victim, info);
         Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
         // If event is canceled, don't do anything
         if (jobsPrePaymentEvent.isCancelled())

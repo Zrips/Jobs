@@ -55,7 +55,11 @@ public class editquests implements Cmd {
         int page = 0;
 
         Action action = null;
-
+        
+        if (!Jobs.getGCManager().DailyQuestsEnabled) {
+            LC.info_FeatureNotEnabled.sendMessage(sender);
+        }
+        
         for (String one : args) {
             if (page == 0) {
                 try {

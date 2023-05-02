@@ -112,6 +112,7 @@ public class GeneralConfigManager {
         payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
     
     public boolean jobsshopenabled;
+    public boolean DailyQuestsEnabled;
 
     public ItemStack guiInfoButton;
     public int InfoButtonSlot = 9;
@@ -422,6 +423,9 @@ public class GeneralConfigManager {
         c.addComment("broadcast.on-level-up.levels", "For what levels you want to broadcast message? Keep it at 0 if you want for all of them");
         BroadcastingLevelUpLevels = c.getIntList("broadcast.on-level-up.levels", Arrays.asList(0));
 
+        c.addComment("DailyQuests.Enabled", "Enables or disables daily quests");
+        DailyQuestsEnabled = c.get("DailyQuests.Enabled", true);
+        
         c.addComment("DailyQuests.ResetTime", "Defines time in 24hour format when we want to give out new daily quests",
             "Any daily quests given before reset will be invalid and new ones will be given out");
         ResetTimeHour = c.get("DailyQuests.ResetTime.Hour", 4);
