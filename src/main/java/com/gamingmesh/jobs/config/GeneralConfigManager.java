@@ -96,7 +96,7 @@ public class GeneralConfigManager {
         PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps, informOnPaymentDisable,
         BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
         boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, boostedItemsSlotSpecific, multiplyBoostedExtraValues, addPermissionBoost,
-        highestPermissionBoost /*, preventCropResizePayment*/,
+        highestPermissionBoost,
         payItemDurabilityLoss,
         applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
         CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
@@ -110,6 +110,8 @@ public class GeneralConfigManager {
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
         payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
+    
+    public boolean jobsshopenabled;
 
     public ItemStack guiInfoButton;
     public int InfoButtonSlot = 9;
@@ -450,6 +452,9 @@ public class GeneralConfigManager {
 
         c.addComment("prevent-shop-item-enchanting", "Prevent players to enchant items from the shop in the anvil with enchanted books");
         preventShopItemEnchanting = c.get("prevent-shop-item-enchanting", true);
+        
+        c.addComment("jobs-shop-enabled", "Enables or disables jobs shop");
+        jobsshopenabled = c.get("jobs-shop-enabled", true);
 
         c.addComment("enable-pay-near-spawner",
             "Option to allow payment to be made when killing mobs from a spawner.",
