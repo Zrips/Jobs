@@ -107,7 +107,7 @@ public class GeneralConfigManager {
         EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve, blockOwnershipTakeOver,
         hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
         BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
-        DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
+        DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
         payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
 
@@ -586,9 +586,10 @@ public class GeneralConfigManager {
         c.addComment("Economy.PaymentMethods",
             "By disabling one of these, players no longer will get particular payment.",
             "Useful for removing particular payment method without editing whole jobConfig file");
-        PaymentMethodsMoney = c.get("Economy.PaymentMethods.Money", true);
-        PaymentMethodsPoints = c.get("Economy.PaymentMethods.Points", true);
-        PaymentMethodsExp = c.get("Economy.PaymentMethods.Exp", true);
+
+        for (CurrencyType one : CurrencyType.values()) {
+            one.setEnabled(c.get("Economy.PaymentMethods." + one.getName(), true));
+        }
 
         c.addComment("Economy.GeneralMulti",
             "Can be used to change payment amounts for all jobs and all actions if you want to readjust them",

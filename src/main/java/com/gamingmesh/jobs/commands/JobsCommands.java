@@ -270,14 +270,17 @@ public class JobsCommands implements CommandExecutor {
 
         List<String> message = new ArrayList<>();
 
-        if (job.getBoost().get(CurrencyType.EXP) != 0D)
-            message.add(Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.EXP)) + 1));
+        for (CurrencyType one : CurrencyType.values()) {
+            double boost = job.getBoost().get(one);
+            if (boost != 0D) {
 
-        if (job.getBoost().get(CurrencyType.MONEY) != 0D)
-            message.add(Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.MONEY)) + 1));
+                String boostAmount = String.valueOf(boost + 1);
+                if (boost % 1 == 0)
+                    boostAmount = String.valueOf((int) boost + 1);
 
-        if (job.getBoost().get(CurrencyType.POINTS) != 0D)
-            message.add(Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.POINTS)) + 1));
+                message.add(Jobs.getLanguage().getMessage("command.boost.output.infostats", "%boost%", boostAmount, "%type%", one.getDisplayName()));
+            }
+        }
 
         if (Jobs.getGCManager().useDynamicPayment) {
             int bonus = (int) ((job.getBonus() * 100) / 100.0);
