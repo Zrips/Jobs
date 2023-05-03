@@ -17,7 +17,7 @@ import net.Zrips.CMILib.Time.CMITimeManager;
 public class limit implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length != 0 && args.length != 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "limit");
 	    return true;

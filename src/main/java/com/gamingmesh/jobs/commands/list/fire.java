@@ -11,7 +11,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 public class fire implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 2) {
 	    Jobs.getCommandManager().sendUsage(sender, "fire");
 	    return true;

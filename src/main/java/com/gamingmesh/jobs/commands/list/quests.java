@@ -23,7 +23,7 @@ import net.Zrips.CMILib.Time.CMITimeManager;
 public class quests implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
 
         if (!Jobs.getGCManager().DailyQuestsEnabled) {
             LC.info_FeatureNotEnabled.sendMessage(sender);

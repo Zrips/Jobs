@@ -26,7 +26,7 @@ import net.Zrips.CMILib.RawMessages.RawMessage;
 public class ownedblocks implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	JobsPlayer jPlayer = null;
 	if (args.length >= 1) {
 	    if (!Jobs.hasPermission(sender, "jobs.command.admin.ownedblocks", true))

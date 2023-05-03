@@ -22,7 +22,7 @@ import net.Zrips.CMILib.Time.CMITimeManager;
 public class glog implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length != 0) {
 	    Jobs.getCommandManager().sendUsage(sender, "glog");
 	    return true;

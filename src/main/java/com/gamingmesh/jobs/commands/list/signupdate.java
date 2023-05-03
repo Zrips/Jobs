@@ -10,7 +10,7 @@ import com.gamingmesh.jobs.container.Job;
 public class signupdate implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!Jobs.getGCManager().SignsEnabled)
 	    return true;
 

@@ -14,7 +14,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 public class convert implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (sender instanceof Player) {
 	    CMIMessages.sendMessage(sender, LC.info_FromConsole);
 	    return true;

@@ -18,7 +18,7 @@ public class blockinfo implements Cmd {
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (!(sender instanceof Player)) {
 	    CMIMessages.sendMessage(sender, LC.info_Ingame);
 	    return false;

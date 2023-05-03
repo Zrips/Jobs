@@ -13,7 +13,7 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 public class demote implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length < 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "demote");
 	    return true;

@@ -27,7 +27,7 @@ public class editjobs implements Cmd {
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 
 	if (!(sender instanceof Player))
 	    return false;

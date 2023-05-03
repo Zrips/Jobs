@@ -15,7 +15,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 public class fireall implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "fireall");
 	    return true;

@@ -11,7 +11,7 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 public class entitylist implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length != 0) {
 	    Jobs.getCommandManager().sendUsage(sender, "entitylist");
 	    return true;

@@ -11,7 +11,7 @@ public class resetexploreregion implements Cmd {
     private static String REGEX = "^[0-9a-zA-Z_-]+$";
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length != 2 || !WORLD.equals(args[0])) {
 	    Jobs.getCommandManager().sendUsage(sender, "resetexploreregion");
 	    return true;

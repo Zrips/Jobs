@@ -17,7 +17,7 @@ public class level implements Cmd {
     }
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length < 4) {
 	    Jobs.getCommandManager().sendUsage(sender, "level");
 	    return true;

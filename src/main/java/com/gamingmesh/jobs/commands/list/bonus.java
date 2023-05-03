@@ -21,7 +21,7 @@ import net.Zrips.CMILib.RawMessages.RawMessage;
 public class bonus implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    CMIMessages.sendMessage(sender, LC.info_Ingame);
 	    return false;

@@ -13,7 +13,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 public class schedule implements Cmd {
 
     @Override
-    public boolean perform(final Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(final Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 2) {
 	    Jobs.getCommandManager().sendUsage(sender, "schedule");
 	    return true;

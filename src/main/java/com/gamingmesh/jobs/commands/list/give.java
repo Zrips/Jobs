@@ -27,7 +27,7 @@ public class give implements Cmd {
     }
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	Player player = null;
 	Job job = null;
 	actions name = null;

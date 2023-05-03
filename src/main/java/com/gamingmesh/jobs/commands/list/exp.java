@@ -21,7 +21,7 @@ public class exp implements Cmd {
     Random rand = new Random();
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 
         if (args.length < 4) {
             Jobs.getCommandManager().sendUsage(sender, "exp");

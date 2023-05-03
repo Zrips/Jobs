@@ -114,7 +114,12 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
 
-        return cmdClass.perform(plugin, sender, myArgs) || help(sender, 1);
+        Boolean result = cmdClass.perform(plugin, sender, myArgs);
+
+        if (result != null && !result)
+            sendUsage(sender, cmd);
+
+        return result == null || !result ? false : true;
     }
 
     private static String[] reduceArgs(String[] args) {
@@ -417,6 +422,10 @@ public class JobsCommands implements CommandExecutor {
      * @return the message
      */
     public String jobStatsMessage(JobProgression jobProg) {
+        return jobStatsMessage(jobProg, true);
+    }
+
+    public String jobStatsMessage(JobProgression jobProg, boolean progressBar) {
         boolean isMaxLevelReached = jobProg.getLevel() == jobProg.getJob().getMaxLevel();
         String path = "command.stats.output." + (isMaxLevelReached ? "max-level"
             : "message");
@@ -428,7 +437,7 @@ public class JobsCommands implements CommandExecutor {
             "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
             "%jobmaxxp%", jobProg.getMaxExperience(),
             "%titlename%", title == null ? "Unknown" : title.getName());
-        return " " + (isMaxLevelReached ? "" : jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience())) + " " + message;
+        return " " + (isMaxLevelReached ? "" : progressBar ? jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) : "") + " " + message;
     }
 
     public String jobProgressMessage(double max, double current) {

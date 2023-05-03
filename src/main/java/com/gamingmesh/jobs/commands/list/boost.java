@@ -16,7 +16,7 @@ import net.Zrips.CMILib.Time.timeModifier;
 public class boost implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 
         Double rate = null;
         Long timeDuration = null;

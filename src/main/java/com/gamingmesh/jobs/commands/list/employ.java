@@ -11,7 +11,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 public class employ implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length < 2) {
 	    Jobs.getCommandManager().sendUsage(sender, "employ");
 	    return true;

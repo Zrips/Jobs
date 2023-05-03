@@ -50,7 +50,7 @@ public class editquests implements Cmd {
     static HashMap<String, List<String>> tempObjectives = new HashMap<String, List<String>>();
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
 
         int page = 0;
 

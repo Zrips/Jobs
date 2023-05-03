@@ -17,7 +17,7 @@ import net.Zrips.CMILib.RawMessages.RawMessage;
 public class browse implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
         boolean senderIsPlayer = sender instanceof Player;
 
         if (Jobs.getGCManager().BrowseUseNewLook) {

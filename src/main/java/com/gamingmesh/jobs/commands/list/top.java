@@ -21,7 +21,7 @@ import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
 public class top implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
         if (args.length != 1 && args.length != 2) {
             Jobs.getCommandManager().sendUsage(sender, "top");

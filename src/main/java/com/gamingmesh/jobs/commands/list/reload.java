@@ -8,7 +8,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 public class reload implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	Jobs.reload();
 	sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
 	return true;

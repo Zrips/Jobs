@@ -14,7 +14,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 public class points implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
 	if (args.length != 0 && args.length != 1) {
 	    Jobs.getCommandManager().sendUsage(sender, "points");

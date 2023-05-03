@@ -16,7 +16,7 @@ import net.Zrips.CMILib.RawMessages.RawMessage;
 public class placeholders implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
         boolean isPlayer = sender instanceof Player;
         Player player = isPlayer ? (Player) sender : null;
 

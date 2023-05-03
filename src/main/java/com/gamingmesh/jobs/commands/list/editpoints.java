@@ -12,7 +12,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 public class editpoints implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (args.length != 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "editpoints");
 	    return true;

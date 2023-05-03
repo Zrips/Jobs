@@ -12,7 +12,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 public class grantxp implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 3) {
 	    Jobs.getCommandManager().sendUsage(sender, "grantxp");
 	    return true;
