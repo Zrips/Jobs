@@ -8,6 +8,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceHolders;
 import com.gamingmesh.jobs.Placeholders.Placeholder.JobsPlaceholderType;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Messages.CMIMessages;
@@ -42,10 +43,10 @@ public class placeholders implements Cmd {
             String placeholder = args[1];
             JobsPlaceholderType type = plugin.getPlaceholderAPIManager().getPlaceHolderType(player, placeholder);
 
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.placeholders.output.parse",
+            Language.sendMessage(sender, "command.placeholders.output.parse",
                 "[placeholder]", placeholder,
                 "[source]", type == null ? "Unknown" : type.name(),
-                "[result]", plugin.getPlaceholderAPIManager().updatePlaceHolders(player, placeholder)));
+                "[result]", plugin.getPlaceholderAPIManager().updatePlaceHolders(player, placeholder));
 
             return true;
         }
@@ -72,17 +73,6 @@ public class placeholders implements Cmd {
             if (plugin.isPlaceholderAPIEnabled()) {
                 hover = place = one.getFull();
             }
-//	    For MVdWPlaceholderAPI
-//	    if (plugin.isMVdWPlaceholderAPIEnabled()) {
-//		if (!plugin.isPlaceholderAPIEnabled()) {
-//		    place = one.getFull().substring(1, one.getFull().length() - 2);
-//		    place = "{" + place + "}";
-//		}
-//		if (hover.isEmpty())
-//		    hover = one.getFull();
-//		else
-//		    hover += "\n" + "{" + one.getFull().substring(1, one.getFull().length() - 2) + "}";
-//	    }
             rm.addText(Jobs.getLanguage().getMessage("command.placeholders.output.list", "[place]", pi.getPositionForOutput(), "[placeholder]", place) + extra)
                 .addHover(hover).addSuggestion(one.getFull()).show(sender);
         }

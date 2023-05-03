@@ -10,6 +10,7 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestProgression;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 
@@ -17,15 +18,14 @@ public class resetquest implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-        
+
         if (!Jobs.getGCManager().DailyQuestsEnabled) {
             LC.info_FeatureNotEnabled.sendMessage(sender);
             return true;
         }
-        
+
         if (args.length != 0 && args.length != 1 && args.length != 2) {
-            Jobs.getCommandManager().sendUsage(sender, "resetquest");
-            return true;
+            return false;
         }
 
         JobsPlayer jPlayer = null;
@@ -44,7 +44,7 @@ public class resetquest implements Cmd {
             jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
         if (jPlayer == null) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : ""));
+            Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : "");
             return true;
         }
 
@@ -54,12 +54,12 @@ public class resetquest implements Cmd {
             quests = jPlayer.getQuestProgressions(job);
 
         if (quests.isEmpty()) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.noQuests"));
+            Language.sendMessage(sender, "command.resetquest.output.noQuests");
             return true;
         }
 
         jPlayer.resetQuests(quests);
-        sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getName()));
+        Language.sendMessage(sender, "command.resetquest.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getName());
         return true;
     }
 }

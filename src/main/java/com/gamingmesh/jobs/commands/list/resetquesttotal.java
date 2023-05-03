@@ -10,6 +10,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 
@@ -23,8 +24,7 @@ public class resetquesttotal implements Cmd {
         }
         
         if (args.length != 0 && args.length != 1) {
-            Jobs.getCommandManager().sendUsage(sender, "resetquesttotal");
-            return true;
+            return false;
         }
 
         if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
@@ -32,7 +32,7 @@ public class resetquesttotal implements Cmd {
                 pl.getValue().setDoneQuests(0);
             }
             Jobs.getJobsDAO().resetDoneQuests();
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquesttotal.output.reseted", "%playername%", Jobs.getPlayerManager().getPlayersCache().size()));
+            Language.sendMessage(sender,"command.resetquesttotal.output.reseted", "%playername%", Jobs.getPlayerManager().getPlayersCache().size());
             return true;
         }
 
@@ -52,14 +52,14 @@ public class resetquesttotal implements Cmd {
             jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
         if (jPlayer == null) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : ""));
+            Language.sendMessage(sender,"general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : "");
             return true;
         }
 
         jPlayer.setDoneQuests(0);
         jPlayer.setSaved(false);
         jPlayer.save();
-        sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquesttotal.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName()));
+        Language.sendMessage(sender,"command.resetquesttotal.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getDisplayName());
         return true;
     }
 }

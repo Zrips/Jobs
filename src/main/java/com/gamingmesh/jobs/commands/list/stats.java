@@ -24,8 +24,8 @@ public class stats implements Cmd {
             if (!Jobs.hasPermission(sender, "jobs.command.admin.stats", true))
                 return true;
             jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-        } else if (sender instanceof Player p)
-            jPlayer = Jobs.getPlayerManager().getJobsPlayer(p);
+        } else if (sender instanceof Player)
+            jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
         if (jPlayer == null) {
             if (args.length >= 1)

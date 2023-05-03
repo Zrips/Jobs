@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
@@ -73,9 +74,9 @@ public class bp implements Cmd {
         }
 
         if (changedBlocks.isEmpty())
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.bp.output.notFound"));
+            Language.sendMessage(sender, "command.bp.output.notFound");
         else
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.bp.output.found", "%amount%", changedBlocks.size()));
+            Language.sendMessage(sender, "command.bp.output.found", "%amount%", changedBlocks.size());
 
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             @Override

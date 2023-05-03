@@ -15,17 +15,16 @@ public class shop implements Cmd {
 
         if (!Jobs.getGCManager().jobsshopenabled) {
             LC.info_FeatureNotEnabled.sendMessage(sender);
-            return true;
+            return null;
         }
 
         if (!(sender instanceof Player)) {
             LC.info_Ingame.sendMessage(sender);
-            return true;
+            return null;
         }
 
         if (args.length != 0 && args.length != 1) {
-            Jobs.getCommandManager().sendUsage(sender, "shop");
-            return true;
+            return false;
         }
 
         int page = 1;

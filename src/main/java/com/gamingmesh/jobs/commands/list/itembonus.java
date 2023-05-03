@@ -30,7 +30,7 @@ public class itembonus implements Cmd {
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    CMIMessages.sendMessage(sender, LC.info_Ingame);
-	    return false;
+	    return null;
 	}
 
 	Player player = (Player) sender;

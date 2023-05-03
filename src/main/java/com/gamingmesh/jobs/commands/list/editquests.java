@@ -28,7 +28,6 @@ import net.Zrips.CMILib.Container.CMIText;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.RawMessages.RawMessageCommand;
 
@@ -56,6 +55,7 @@ public class editquests implements Cmd {
 
         Action action = null;
         
+        // Only informing here and not canceling command
         if (!Jobs.getGCManager().DailyQuestsEnabled) {
             LC.info_FeatureNotEnabled.sendMessage(sender);
         }

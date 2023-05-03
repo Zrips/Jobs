@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.i18n.Language;
 
 public class resetexploreregion implements Cmd {
 
@@ -12,24 +13,23 @@ public class resetexploreregion implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
-	if (args.length != 2 || !WORLD.equals(args[0])) {
-	    Jobs.getCommandManager().sendUsage(sender, "resetexploreregion");
-	    return true;
-	}
+        if (args.length != 2 || !WORLD.equals(args[0])) {
+            return false;
+        }
 
-	if (!Jobs.getGCManager().resetExploringData) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.notenabled"));
-	    return true;
-	}
+        if (!Jobs.getGCManager().resetExploringData) {
+            Language.sendMessage(sender, "command.resetexploreregion.output.notenabled");
+            return true;
+        }
 
-	final String worldName = args[1];
-	if (!worldName.matches(REGEX)) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.invalidname"));
-	    return true;
-	}
+        final String worldName = args[1];
+        if (!worldName.matches(REGEX)) {
+            Language.sendMessage(sender, "command.resetexploreregion.output.invalidname");
+            return true;
+        }
 
-	Jobs.getExploreManager().resetRegion(worldName);
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetexploreregion.output.reseted", "%worldname%", worldName));
-	return true;
+        Jobs.getExploreManager().resetRegion(worldName);
+        Language.sendMessage(sender, "command.resetexploreregion.output.reseted", "%worldname%", worldName);
+        return true;
     }
 }

@@ -12,6 +12,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 
@@ -21,11 +22,11 @@ public class skipquest implements Cmd {
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
         if (!Jobs.getGCManager().DailyQuestsEnabled) {
             LC.info_FeatureNotEnabled.sendMessage(sender);
-            return true;
+            return null;
         }
+
         if (args.length != 2 && args.length != 3) {
-            Jobs.getCommandManager().sendUsage(sender, "skipquest");
-            return true;
+            return false;
         }
 
         JobsPlayer jPlayer = null;
@@ -53,8 +54,8 @@ public class skipquest implements Cmd {
             jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
         if (jPlayer == null) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : ""));
-            return true;
+            Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : "");
+            return null;
         }
 
         List<QuestProgression> quests = jPlayer.getQuestProgressions();
@@ -63,8 +64,8 @@ public class skipquest implements Cmd {
             quests = jPlayer.getQuestProgressions(job);
 
         if (quests == null || quests.isEmpty()) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.noQuests"));
-            return true;
+            Language.sendMessage(sender, "command.resetquest.output.noQuests");
+            return null;
         }
 
         Quest old = null;
@@ -99,8 +100,8 @@ public class skipquest implements Cmd {
 
         if (amount > 0 && player != null) {
             if (!econ.getEconomy().hasMoney(player, amount)) {
-                sender.sendMessage(Jobs.getLanguage().getMessage("economy.error.nomoney"));
-                return false;
+                Language.sendMessage(sender, "economy.error.nomoney");
+                return null;
             }
 
             econ.getEconomy().withdrawPlayer(player, amount);
@@ -112,7 +113,7 @@ public class skipquest implements Cmd {
             plugin.getServer().dispatchCommand(player, "jobs quests");
 
         if (amount > 0) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.skipquest.output.questSkipForCost", "%amount%", amount));
+            Language.sendMessage(sender, "command.skipquest.output.questSkipForCost", "%amount%", amount);
         }
 
         return true;

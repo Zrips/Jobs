@@ -21,8 +21,7 @@ public class convert implements Cmd {
 	}
 
 	if (args.length > 0) {
-	    Jobs.getCommandManager().sendUsage(sender, "convert");
-	    return true;
+	    return false;
 	}
 
 	String from = Jobs.getDBManager().getDbType() == DataBaseType.SqLite ? "SQLite" : "MySQL";

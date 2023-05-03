@@ -10,6 +10,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
@@ -22,12 +23,11 @@ public class gtop implements Cmd {
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
         if (!(sender instanceof Player)) {
             CMIMessages.sendMessage(sender, LC.info_Ingame);
-            return false;
+            return null;
         }
 
         if (args.length > 1) {
-            Jobs.getCommandManager().sendUsage(sender, "gtop");
-            return true;
+            return false;
         }
 
         Player player = (Player) sender;
@@ -54,24 +54,24 @@ public class gtop implements Cmd {
 
         List<TopList> FullList = Jobs.getJobsDAO().getGlobalTopList(pi.getStart());
         if (FullList.isEmpty()) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.error.nojob"));
+            Language.sendMessage(sender, "command.gtop.error.nojob");
             return true;
         }
 
         if (!Jobs.getGCManager().ShowToplistInScoreboard) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.topline", "%amount%", amount));
+            Language.sendMessage(sender, "command.gtop.output.topline", "%amount%", amount);
 
             int i = 0;
             for (TopList One : FullList) {
                 if (i >= amount)
                     break;
 
-                sender.sendMessage(Jobs.getLanguage().getMessage("command.gtop.output.list",
+                Language.sendMessage(sender, "command.gtop.output.list",
                     "%number%", pi.getPositionForOutput(i),
                     "%playername%", One.getPlayerInfo().getName(),
                     "%playerdisplayname%", One.getPlayerInfo().getDisplayName(),
                     "%level%", One.getLevel(),
-                    "%exp%", One.getExp()));
+                    "%exp%", One.getExp());
                 ++i;
             }
         } else {

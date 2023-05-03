@@ -6,6 +6,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Logs.CMIDebug;
@@ -95,22 +96,22 @@ public class boost implements Cmd {
                             one.addBoost(curr, 1.0);
                         }
                     }
-                    sender.sendMessage(Jobs.getLanguage().getMessage("command.boost.output.allreset"));
+                    Language.sendMessage(sender, "command.boost.output.allreset");
                 } else {
                     for (Job one : Jobs.getJobs()) {
                         one.addBoost(type, 1.0);
                     }
-                    sender.sendMessage(Jobs.getLanguage().getMessage("command.boost.output.alltypereset", "%type%", type.getDisplayName()));
+                    Language.sendMessage(sender, "command.boost.output.alltypereset", "%type%", type.getDisplayName());
                 }
             } else if (job != null) {
                 if (type == null) {
                     for (CurrencyType curr : CurrencyType.values()) {
                         job.addBoost(curr, 1.0);
                     }
-                    sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.jobsboostreset", "%jobname%", job.getName()));
+                    Language.sendMessage(sender, "command.moneyboost.output.jobsboostreset", "%jobname%", job.getName());
                 } else {
                     job.addBoost(type, 1.0);
-                    sender.sendMessage(Jobs.getLanguage().getMessage("command.moneyboost.output.jobstypeboostreset", "%jobname%", job.getName(), "%type%", type.getDisplayName()));
+                    Language.sendMessage(sender, "command.moneyboost.output.jobstypeboostreset", "%jobname%", job.getName(), "%type%", type.getDisplayName());
                 }
             } else {
                 return false;
@@ -128,7 +129,7 @@ public class boost implements Cmd {
                     one.addBoost(type, rate, timeDuration);
                 }
 
-                sender.sendMessage(Jobs.getLanguage().getMessage("command.boost.output.boostadded", "%boost%", rate, "%jobname%", one.getName()));
+                Language.sendMessage(sender, "command.boost.output.boostadded", "%boost%", rate, "%jobname%", one.getName());
             }
         } else {
             if (type == null) {
@@ -138,14 +139,13 @@ public class boost implements Cmd {
             } else {
                 job.addBoost(type, rate, timeDuration);
             }
-            CMIDebug.d(timeDuration);
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.boost.output.boostadded", "%boost%", rate, "%jobname%", job.getName()));
+            Language.sendMessage(sender, "command.boost.output.boostadded", "%boost%", rate, "%jobname%", job.getName());
         }
 
         return true;
     }
 
-    private void showBoosts(CommandSender sender, Job job) {
+    private static void showBoosts(CommandSender sender, Job job) {
         RawMessage rm = new RawMessage();
         String msg = Jobs.getLanguage().getMessage("command.boost.output.boostStats", "%jobname%", job.getDisplayName());
         String[] split = msg.split("%payments%");

@@ -24,6 +24,7 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
+import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
@@ -267,7 +268,7 @@ public class JobsCommands implements CommandExecutor {
     public void jobInfoMessage(CommandSender sender, JobsPlayer player, Job job, String type, int page) {
         if (job == null) {
             // job doesn't exist
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+            Language.sendMessage(sender, "general.error.job");
             return;
         }
 
@@ -316,7 +317,7 @@ public class JobsCommands implements CommandExecutor {
         PageInfo pi = new PageInfo(15, message.size(), page);
 
         if (page > pi.getTotalPages()) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.info.invalidPage"));
+            Language.sendMessage(sender, "general.info.invalidPage");
             return;
         }
 

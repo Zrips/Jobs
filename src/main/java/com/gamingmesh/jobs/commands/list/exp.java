@@ -24,8 +24,7 @@ public class exp implements Cmd {
     public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 
         if (args.length < 4) {
-            Jobs.getCommandManager().sendUsage(sender, "exp");
-            return true;
+            return false;
         }
 
         boolean silent = false;
@@ -120,20 +119,20 @@ public class exp implements Cmd {
 
             Player player = jPlayer.getPlayer();
             if (player == null) {
-                sender.sendMessage(Jobs.getLanguage().getMessage("general.give.output.notonline"));
+                Language.sendMessage(sender, "general.give.output.notonline");
                 return true;
             }
 
             if (!silent)
-                player.sendMessage(Jobs.getLanguage().getMessage("command.exp.output.target", "%jobname%", job.getDisplayName(), "%level%", prog.getLevelFormatted(), "%exp%", prog
-                    .getExperience()));
+                Language.sendMessage(player, "command.exp.output.target", "%jobname%", job.getDisplayName(), "%level%", prog.getLevelFormatted(), "%exp%", prog
+                    .getExperience());
 
             if (!silentAdmin)
-                sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.success"));
+                Language.sendMessage(sender, "general.admin.success");
 
         } catch (Exception e) {
             if (!silentAdmin)
-                sender.sendMessage(Jobs.getLanguage().getMessage("general.admin.error"));
+                Language.sendMessage(sender, "general.admin.error");
             e.printStackTrace();
         }
         return true;

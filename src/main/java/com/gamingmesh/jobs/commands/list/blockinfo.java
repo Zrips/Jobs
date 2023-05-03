@@ -21,12 +21,7 @@ public class blockinfo implements Cmd {
     public Boolean perform(Jobs plugin, CommandSender sender, String[] args) {
 	if (!(sender instanceof Player)) {
 	    CMIMessages.sendMessage(sender, LC.info_Ingame);
-	    return false;
-	}
-
-	if (args.length != 0) {
-	    Jobs.getCommandManager().sendUsage(sender, "blockinfo");
-	    return true;
+	    return null;
 	}
 
 	Block block = Util.getTargetBlock((Player) sender, 15);

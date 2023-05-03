@@ -24,11 +24,10 @@ public class top implements Cmd {
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
         if (args.length != 1 && args.length != 2) {
-            Jobs.getCommandManager().sendUsage(sender, "top");
             return false;
         }
 
-        Player player = sender instanceof Player p ? p : null;
+        Player player = sender instanceof Player ? (Player) sender : null;
 
         if (args[0].equalsIgnoreCase("clear")) {
             if (player != null) {
@@ -43,7 +42,7 @@ public class top implements Cmd {
             try {
                 page = Integer.parseInt(args[1]);
             } catch (NumberFormatException e) {
-                return true;
+                return false;
             }
         }
         if (page < 1)
@@ -52,7 +51,7 @@ public class top implements Cmd {
         Job job = Jobs.getJob(args[0]);
         if (job == null) {
             Language.sendMessage(sender, "command.top.error.nojob");
-            return false;
+            return null;
         }
 
         int workingIn = Jobs.getUsedSlots(job);

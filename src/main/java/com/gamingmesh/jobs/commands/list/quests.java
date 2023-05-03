@@ -14,6 +14,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
@@ -27,7 +28,7 @@ public class quests implements Cmd {
 
         if (!Jobs.getGCManager().DailyQuestsEnabled) {
             LC.info_FeatureNotEnabled.sendMessage(sender);
-            return true;
+            return null;
         }
 
         JobsPlayer jPlayer = null;
@@ -35,7 +36,7 @@ public class quests implements Cmd {
 
         if (args.length >= 1 && !args[0].equalsIgnoreCase("stop") && !args[0].equalsIgnoreCase("start")) {
             if (!Jobs.hasPermission(sender, "jobs.command.admin.quests", true))
-                return true;
+                return null;
 
             jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
         } else if (isPlayer)
@@ -52,7 +53,7 @@ public class quests implements Cmd {
         List<QuestProgression> questProgs = jPlayer.getQuestProgressions();
 
         if (questProgs.isEmpty()) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.error.noquests"));
+            Language.sendMessage(sender, "command.quests.error.noquests");
             return true;
         }
 
@@ -71,13 +72,13 @@ public class quests implements Cmd {
                     q.getQuest().setStopped(stopped);
                 }
 
-                sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.status.changed", "%status%",
-                    stopped ? Jobs.getLanguage().getMessage("command.quests.status.stopped") : Jobs.getLanguage().getMessage("command.quests.status.started")));
+                Language.sendMessage(sender, "command.quests.status.changed", "%status%",
+                    stopped ? Jobs.getLanguage().getMessage("command.quests.status.stopped") : Jobs.getLanguage().getMessage("command.quests.status.started"));
                 return true;
             }
         }
 
-        sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.toplineseparator", "[playerName]", jPlayer.getName(), "[questsDone]", jPlayer.getDoneQuests()));
+        Language.sendMessage(sender, "command.quests.toplineseparator", "[playerName]", jPlayer.getName(), "[questsDone]", jPlayer.getDoneQuests());
 
         for (JobProgression jobProg : jPlayer.progression) {
             List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
