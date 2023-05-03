@@ -157,23 +157,24 @@ public class QuestProgression {
             }
         }
 
+        boolean completed = isCompleted();
+
         Job questJob = quest.getJob();
-        if (questJob != null) {
+        if (questJob != null && completed) {
             int maxQuest = jPlayer.getPlayerMaxQuest(questJob.getName());
             if (maxQuest > 0 && jPlayer.getDoneQuests() >= maxQuest) {
                 return;
             }
         }
 
-        if (!isCompleted() &&
-            objective != null) {
+        if (!completed && objective != null) {
             Integer old = done.getOrDefault(objective, 0);
             done.put(objective, old < objective.getAmount() ? old + 1 : objective.getAmount());
         }
 
         jPlayer.setSaved(false);
 
-        if (!isCompleted() || !player.isOnline() || givenReward)
+        if (!completed || !player.isOnline() || givenReward)
             return;
 
         givenReward = true;

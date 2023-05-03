@@ -167,7 +167,6 @@ public class boost implements Cmd {
 
             if (job.getBoost().getTime(curr) != null && job.getBoost().isValid(curr)) {
                 rm.addHover(CMITimeManager.to24hourShort(job.getBoost().getTime(curr) - System.currentTimeMillis()));
-                CMIDebug.c(job.getBoost().getTime(curr) - System.currentTimeMillis());
             }
         }
         if (split.length > 1)

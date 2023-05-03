@@ -36,7 +36,7 @@ public class entitylist implements Cmd {
                 msg.append(c2);
             }
 
-            msg.append(CMIText.firstToUpperCase(type.name()));
+            msg.append(CMIText.everyFirstToUpperCase(type.name())); 
         }
 
         CMIMessages.sendMessage(sender, msg.toString());

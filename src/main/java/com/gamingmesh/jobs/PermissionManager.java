@@ -53,7 +53,9 @@ public class PermissionManager {
         jobs_maxblastfurnaces_AMOUNT(remade("jobs.maxblastfurnaces.%AMOUNT%"), 30),
         jobs_maxsmokers_AMOUNT(remade("jobs.maxsmokers.%AMOUNT%"), 30),
         jobs_maxbrewingstands_AMOUNT(remade("jobs.maxbrewingstands.%AMOUNT%"), 30),
-        jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2);
+        jobs_world_WORLDNAME(remade("jobs.world.%WORLDNAME%"), 2),
+        jobs_maxquest_JOBNAME_AMOUNT(remade("jobs.maxquest.%JOBNAME%.%AMOUNT%"), 30),
+        jobs_maxquest_all_AMOUNT(remade("jobs.maxquest.all.%AMOUNT%"), 30);
 
         private int reload;
         private List<String> perms;
@@ -93,7 +95,7 @@ public class PermissionManager {
     }
 
     private int getDelay(String perm) {
-        return permDelay.getOrDefault(perm, 1);
+        return permDelay.getOrDefault(perm, 1000);
     }
 
     public PermissionManager() {
@@ -165,7 +167,11 @@ public class PermissionManager {
         double amount = Double.NEGATIVE_INFINITY;
 
         permissionInfo permInfo = jPlayer.getPermissionsCache(perm);
+
         if (force || getDelay(perm) + permInfo.getTime() < System.currentTimeMillis()) {
+
+            CMIDebug.c("get", force, getDelay(perm) + permInfo.getTime() < System.currentTimeMillis(), getDelay(perm), permInfo.getTime(), perm);
+
             Map<String, Boolean> perms = getAll(player, perm);
             for (Map.Entry<String, Boolean> permission : perms.entrySet()) {
                 if (!permission.getKey().startsWith(perm) || !permission.getValue())
@@ -176,7 +182,7 @@ public class PermissionManager {
                         if (amount == Double.NEGATIVE_INFINITY)
                             amount = 0D;
                         amount += temp;
-                    }else if (temp > amount)
+                    } else if (temp > amount)
                         amount = temp;
                 } catch (NumberFormatException ex) {
                     Jobs.getPluginLogger().log(java.util.logging.Level.WARNING, ex.getLocalizedMessage());
