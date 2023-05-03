@@ -11,6 +11,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
@@ -21,20 +22,19 @@ public class top implements Cmd {
 
     @Override
     public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-        if (!(sender instanceof Player)) {
-            CMIMessages.sendMessage(sender, LC.info_Ingame);
-            return false;
-        }
 
         if (args.length != 1 && args.length != 2) {
             Jobs.getCommandManager().sendUsage(sender, "top");
             return false;
         }
 
-        Player player = (Player) sender;
+        Player player = sender instanceof Player p ? p : null;
+
         if (args[0].equalsIgnoreCase("clear")) {
-            player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
-            CMIScoreboard.removeScoreBoard(player);
+            if (player != null) {
+                player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+                CMIScoreboard.removeScoreBoard(player);
+            }
             return true;
         }
 
@@ -51,7 +51,7 @@ public class top implements Cmd {
 
         Job job = Jobs.getJob(args[0]);
         if (job == null) {
-            player.sendMessage(Jobs.getLanguage().getMessage("command.top.error.nojob"));
+            Language.sendMessage(sender, "command.top.error.nojob");
             return false;
         }
 
@@ -64,22 +64,21 @@ public class top implements Cmd {
             return true;
         }
 
-        player.sendMessage(Jobs.getLanguage().getMessage("command.top.help.info"));
-
         int place = 1;
 
-        if (!Jobs.getGCManager().ShowToplistInScoreboard) {
-            player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.topline", "%jobname%", job.getName(), "%amount%", Jobs.getGCManager().JobsTopAmount));
+        if (!Jobs.getGCManager().ShowToplistInScoreboard || player == null) {
+            Language.sendMessage(sender, "command.top.output.topline", "%jobname%", job.getName(), "%amount%", Jobs.getGCManager().JobsTopAmount);
+
             for (TopList one : fullList) {
                 if (place > Jobs.getGCManager().JobsTopAmount)
                     break;
 
-                player.sendMessage(Jobs.getLanguage().getMessage("command.top.output.list",
+                Language.sendMessage(sender, "command.top.output.list",
                     "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
                     "%playername%", one.getPlayerInfo().getName(),
                     "%playerdisplayname%", one.getPlayerInfo().getDisplayName(),
                     "%level%", one.getLevel(),
-                    "%exp%", one.getExp()));
+                    "%exp%", one.getExp());
                 place++;
             }
             pi.autoPagination(sender, "jobs top " + job.getName());
