@@ -539,13 +539,6 @@ public class JobsListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
-        boolean shift = false, numberkey = false;
-
-        if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT)
-            shift = true;
-
-        if (event.getClick() == ClickType.NUMBER_KEY)
-            numberkey = true;
 
         SlotType slotType = event.getSlotType();
 
@@ -554,6 +547,8 @@ public class JobsListener implements Listener {
 
         if (!(event.getWhoClicked() instanceof Player) || event.getCurrentItem() == null)
             return;
+
+        boolean shift = event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT;
 
         ArmorTypes newArmorType = ArmorTypes.matchType(shift ? event.getCurrentItem() : event.getCursor());
         if (!shift && newArmorType != null && event.getRawSlot() != newArmorType.getSlot())
@@ -587,6 +582,9 @@ public class JobsListener implements Listener {
                 }
             }
         } else {
+
+            boolean numberkey = event.getClick() == ClickType.NUMBER_KEY;
+
             ItemStack newArmorPiece = event.getCursor();
             ItemStack oldArmorPiece = event.getCurrentItem();
             if (numberkey) {
