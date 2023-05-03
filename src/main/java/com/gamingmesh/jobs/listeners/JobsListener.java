@@ -87,6 +87,7 @@ import net.Zrips.CMILib.Items.ArmorTypes;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
@@ -137,7 +138,7 @@ public class JobsListener implements Listener {
             return;
 
         Player player = event.getPlayer();
-                
+
         if (CMIItemStack.getItemInMainHand(player).getType() != CMIMaterial.get(Jobs.getGCManager().getSelectionTool()).getMaterial())
             return;
 
@@ -531,9 +532,9 @@ public class JobsListener implements Listener {
 
         Chunk from = event.getFrom().getChunk();
         Chunk to = event.getTo().getChunk();
-//        if (from != to) {
-//            plugin.getServer().getPluginManager().callEvent(new JobsChunkChangeEvent(event.getPlayer(), from, to));
-//        }
+        if (!from.equals(to)) {
+            plugin.getServer().getPluginManager().callEvent(new JobsChunkChangeEvent(event.getPlayer(), from, to));
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
