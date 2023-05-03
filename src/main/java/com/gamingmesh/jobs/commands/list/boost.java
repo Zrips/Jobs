@@ -68,7 +68,7 @@ public class boost implements Cmd {
             }
         }
 
-        if (job == null && rate == null) {
+        if (job == null && rate == null && !reset) {
             LC.info_Spliter.sendMessage(sender);
             for (Job one : Jobs.getJobs()) {
                 showBoosts(sender, one);
@@ -89,32 +89,30 @@ public class boost implements Cmd {
             timeDuration = 0L;
 
         if (reset) {
-            if (allJobs) {
+            if (job == null) {
                 if (type == null) {
                     for (Job one : Jobs.getJobs()) {
                         for (CurrencyType curr : CurrencyType.values()) {
-                            one.addBoost(curr, 1.0);
+                            one.addBoost(curr, 0);
                         }
                     }
                     Language.sendMessage(sender, "command.boost.output.allreset");
                 } else {
                     for (Job one : Jobs.getJobs()) {
-                        one.addBoost(type, 1.0);
+                        one.addBoost(type, 0);
                     }
                     Language.sendMessage(sender, "command.boost.output.alltypereset", "%type%", type.getDisplayName());
                 }
-            } else if (job != null) {
+            } else {
                 if (type == null) {
                     for (CurrencyType curr : CurrencyType.values()) {
-                        job.addBoost(curr, 1.0);
+                        job.addBoost(curr, 0);
                     }
                     Language.sendMessage(sender, "command.moneyboost.output.jobsboostreset", "%jobname%", job.getName());
                 } else {
-                    job.addBoost(type, 1.0);
+                    job.addBoost(type, 0);
                     Language.sendMessage(sender, "command.moneyboost.output.jobstypeboostreset", "%jobname%", job.getName(), "%type%", type.getDisplayName());
                 }
-            } else {
-                return false;
             }
             return true;
         }
