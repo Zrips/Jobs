@@ -2,6 +2,7 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.List;
 
+import com.gamingmesh.jobs.stuff.Util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,8 +25,8 @@ public class skipquest implements Cmd {
             LC.info_FeatureNotEnabled.sendMessage(sender);
             return null;
         }
-
-        if (args.length != 2 && args.length != 3) {
+        // Needs to allow longer so multiword quest names work
+        if (args.length < 2) {
             return false;
         }
 
@@ -105,6 +106,23 @@ public class skipquest implements Cmd {
             }
 
             econ.getEconomy().withdrawPlayer(player, amount);
+        }
+        // Add confirmation if configured
+        if (Jobs.getGCManager().EnableConfirmation) {
+            java.util.UUID uuid = jPlayer.getUniqueId();
+
+            if (!Util.SKIPCONFIRM.contains(uuid)) {
+                Util.SKIPCONFIRM.add(uuid);
+
+                plugin.getServer().getScheduler().runTaskLater(plugin, () -> Util.SKIPCONFIRM.remove(uuid),
+                        20 * Jobs.getGCManager().ConfirmExpiryTime);
+
+                Language.sendMessage(sender, "command.skipquest.confirmationNeed", "[questName]",
+                        job.getDisplayName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime);
+                return true;
+            }
+
+            Util.SKIPCONFIRM.remove(uuid);
         }
 
         jPlayer.replaceQuest(old);
