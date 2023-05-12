@@ -50,6 +50,9 @@ public final class Util {
 
     public static final List<UUID> LEAVECONFIRM = new ArrayList<>();
 
+    // for confirmation of skipping quest
+    public static final List<UUID> SKIPCONFIRM = new ArrayList<>();
+
     public static List<Block> getPistonRetractBlocks(BlockPistonRetractEvent event) {
         if (Version.isCurrentEqualOrHigher(Version.v1_8_R1)) {
             return new ArrayList<>(event.getBlocks());
