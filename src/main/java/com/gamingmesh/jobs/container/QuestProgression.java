@@ -174,7 +174,8 @@ public class QuestProgression {
 
         jPlayer.setSaved(false);
 
-        if (!completed || !player.isOnline() || givenReward)
+        //needs to re-call isCompleted() because it might have changed above.
+        if (!isCompleted() || !player.isOnline() || givenReward)
             return;
 
         givenReward = true;
