@@ -1642,7 +1642,7 @@ public final class JobsPaymentListener implements Listener {
 
         Player player = (Player) human;
 
-        if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel())
+        if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel() || player.getFoodLevel() == 20)
             return;
 
         // check if in creative
