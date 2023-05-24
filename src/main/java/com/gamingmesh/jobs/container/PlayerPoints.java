@@ -26,6 +26,7 @@ public class PlayerPoints {
 
     public void takePoints(double points) {
 	current -= points;
+        total -= points;
     }
 
     public boolean havePoints(double points) {

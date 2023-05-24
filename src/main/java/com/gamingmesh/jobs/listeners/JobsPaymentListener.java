@@ -130,6 +130,7 @@ import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
@@ -447,6 +448,7 @@ public final class JobsPaymentListener implements Listener {
                 Jobs.perform(fp.getPlayer(), fp.getInfo(), fp.getPayment(), fp.getJob(), block, null, null);
                 return;
             }
+
             Jobs.FASTPAYMENT.remove(player.getUniqueId());
         }
         if (!payForItemDurabilityLoss(player))

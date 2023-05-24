@@ -118,7 +118,7 @@ public class skipquest implements Cmd {
                         20 * Jobs.getGCManager().ConfirmExpiryTime);
 
                 Language.sendMessage(sender, "command.skipquest.confirmationNeed", "[questName]",
-                        job.getDisplayName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime);
+                        old.getQuestName(), "[time]", Jobs.getGCManager().ConfirmExpiryTime);
                 return true;
             }
 

@@ -170,10 +170,8 @@ public class PermissionManager {
 
         if (force || getDelay(perm) + permInfo.getTime() < System.currentTimeMillis()) {
 
-            CMIDebug.c("get", force, getDelay(perm) + permInfo.getTime() < System.currentTimeMillis(), getDelay(perm), permInfo.getTime(), perm);
-
             Map<String, Boolean> perms = getAll(player, perm);
-            for (Map.Entry<String, Boolean> permission : perms.entrySet()) {
+            for (Map.Entry<String, Boolean> permission : perms.entrySet()) { 
                 if (!permission.getKey().startsWith(perm) || !permission.getValue())
                     continue;
                 try {
