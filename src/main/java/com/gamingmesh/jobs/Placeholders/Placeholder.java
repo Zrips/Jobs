@@ -88,6 +88,7 @@ public class Placeholder {
         user_archived_jobs_exp_$1("jname/number"),
 
         jtop_name_$1_$2("jname/number", "[1-15]"),
+        jtop_displayname_$1_$2("jname/number", "[1-15]"),
         jtop_level_$1_$2("jname/number", "[1-15]"),
 
         maxjobs,
@@ -615,6 +616,26 @@ public class Placeholder {
                     return "";
 
                 List<TopList> list = Jobs.getJobsDAO().getTopListByJob(jo, 15);
+
+                if (list.size() < place)
+                    return "";
+
+                return list.get(place - 1).getPlayerInfo().getName();
+            case jtop_displayname_$1_$2:
+                if (values.size() < 2)
+                    return "";
+
+                place = 0;
+                try {
+                    place = Integer.parseInt(values.get(1));
+                } catch (NumberFormatException e) {
+                    return "";
+                }
+
+                if (place < 1)
+                    return "";
+
+                list = Jobs.getJobsDAO().getTopListByJob(jo, 15);
 
                 if (list.size() < place)
                     return "";

@@ -286,7 +286,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					 <outputDirectory>D:\MC\Server 1.19\plugins\</outputDirectory>
+					 <outputDirectory>D:\MC\Server 1.20\plugins\</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
