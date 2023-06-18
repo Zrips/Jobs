@@ -382,6 +382,10 @@ Builder:
       income: 1.5
       points: 1.5
       experience: 2
+    tinted_glass:
+      income: 1.5
+      points: 1.5
+      experience: 2
     iron_trapdoor:
       income: 1.5
       points: 1.5
