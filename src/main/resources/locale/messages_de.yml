@@ -318,6 +318,7 @@ command:
       actions: '&eMögliche Optionen:'
       leftClick: '&eLinksklick für mehr Informationen.'
       middleClick: '&eMittelklick um den Job zu verlassen.'
+      qClick: '&eQ Taste um den Job zu verlassen.'
       rightClick: '&eRechtsklick um den Job anzunehmen.'
       leftSlots: '&eOffene Stellen:&f '
       working: '&2Ausgewählt'
