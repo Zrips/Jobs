@@ -23,7 +23,8 @@ public class BoostMultiplier implements Cloneable {
     }
 
     public BoostMultiplier add(CurrencyType type, double amount) {
-        map.put(type, amount);
+        if (!Double.isNaN(amount))
+            map.put(type, amount);
         timers.remove(type);
         return this;
     }
@@ -35,7 +36,7 @@ public class BoostMultiplier implements Cloneable {
     }
 
     public BoostMultiplier add(double amount) {
-        if (amount != 0) {
+        if (amount != 0 && !Double.isNaN(amount)) {
             for (CurrencyType one : CurrencyType.values()) {
                 map.put(one, amount);
             }

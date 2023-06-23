@@ -27,6 +27,7 @@ import net.Zrips.CMILib.GUI.CMIGuiButton;
 import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Version.Version;
 
 public class GuiManager {
@@ -285,6 +286,7 @@ public class GuiManager {
                 }
 
                 double income = jInfo.getIncome(level, numjobs, jPlayer.maxJobsEquation);
+
                 income = boost.getFinalAmount(CurrencyType.MONEY, income);
                 String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
 
