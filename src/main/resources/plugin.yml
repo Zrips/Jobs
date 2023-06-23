@@ -7,7 +7,7 @@ website: https://www.spigotmc.org/resources/4216/
 authors: [Zrips]
 contributors: [montlikadani]
 depend: [CMILib]
-softdepend: [Vault, Essentials, MythicMobs, McMMO, mcMMO, WorldGuard, MyPet, PlaceholderAPI, EcoEnchants, WildStacker, StackMob]
+softdepend: [Vault, Essentials, MythicMobs, WorldGuard, MyPet, PlaceholderAPI, EcoEnchants, WildStacker, StackMob]
 commands:
   jobs:
     description: Jobs
