@@ -226,6 +226,7 @@ public class Job {
 	eq.setVariable("jobstotalplayers", getTotalPlayers());
 
 	double now = eq.getValue();
+	CMIDebug.d("Now",now);
 	if (now > Jobs.getGCManager().DynamicPaymentMaxBonus)
 	    now = Jobs.getGCManager().DynamicPaymentMaxBonus;
 

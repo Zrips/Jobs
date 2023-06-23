@@ -289,11 +289,11 @@ public class JobsCommands implements CommandExecutor {
         }
 
         if (Jobs.getGCManager().useDynamicPayment) {
-            int bonus = (int) ((job.getBonus() * 100) / 100.0);
+            int bonus = (int) (job.getBonus() * 100);
 
             if (bonus != 0) {
                 if (bonus < 0)
-                    message.add(Jobs.getLanguage().getMessage("command.info.help.penalty", "[penalty]", (int) (job.getBonus() * 100) / 100.0 * -1));
+                    message.add(Jobs.getLanguage().getMessage("command.info.help.penalty", "[penalty]", bonus * -1));
                 else
                     message.add(Jobs.getLanguage().getMessage("command.info.help.bonus", "[bonus]", bonus));
             }
