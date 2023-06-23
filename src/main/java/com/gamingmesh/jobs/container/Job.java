@@ -101,41 +101,41 @@ public class Job {
 
     @Deprecated
     public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, String description, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
-	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobItems> jobItems,
-	Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
-	this(jobName, jobDisplayName, fullName, jobShortName, jobColour, maxExpEquation, displayMethod, maxLevel,
-	    vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
-	    jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
+        int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions, Map<String, JobItems> jobItems,
+        Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, String bossbar, Long rejoinCD, List<String> worldBlacklist) {
+        this(jobName, jobDisplayName, fullName, jobShortName, jobColour, maxExpEquation, displayMethod, maxLevel,
+            vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
+            jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
 
-	this.jobItems = jobItems;
-	this.description = description;
+        this.jobItems = jobItems;
+        this.description = description;
     }
 
     public Job(String jobName, String jobDisplayName, String fullName, String jobShortName, CMIChatColor jobColour, Parser maxExpEquation, DisplayMethod displayMethod, int maxLevel,
-	int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions,
-	Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, List<String> worldBlacklist) {
-	this.jobName = jobName == null ? "" : jobName;
-	this.fullName = fullName == null ? "" : fullName;
-	this.jobShortName = jobShortName;
-	this.jobColour = jobColour;
-	this.maxExpEquation = maxExpEquation;
-	this.displayMethod = displayMethod;
-	this.maxLevel = maxLevel;
-	this.vipmaxLevel = vipmaxLevel;
-	this.maxSlots = maxSlots;
-	this.jobPermissions = jobPermissions;
-	this.jobCommands = jobCommands;
-	this.jobConditions = jobConditions;
-	this.jobLimitedItems = jobLimitedItems;
-	this.cmdOnJoin = cmdOnJoin;
-	this.cmdOnLeave = cmdOnLeave;
-	this.guiItem = guiItem;
-	this.guiSlot = guiSlot;
-	this.jobDisplayName = CMIChatColor.translate(jobDisplayName);
+        int vipmaxLevel, Integer maxSlots, List<JobPermission> jobPermissions, List<JobCommands> jobCommands, List<JobConditions> jobConditions,
+        Map<String, JobLimitedItems> jobLimitedItems, List<String> cmdOnJoin, List<String> cmdOnLeave, ItemStack guiItem, int guiSlot, List<String> worldBlacklist) {
+        this.jobName = jobName == null ? "" : jobName;
+        this.fullName = fullName == null ? "" : fullName;
+        this.jobShortName = jobShortName;
+        this.jobColour = jobColour;
+        this.maxExpEquation = maxExpEquation;
+        this.displayMethod = displayMethod;
+        this.maxLevel = maxLevel;
+        this.vipmaxLevel = vipmaxLevel;
+        this.maxSlots = maxSlots;
+        this.jobPermissions = jobPermissions;
+        this.jobCommands = jobCommands;
+        this.jobConditions = jobConditions;
+        this.jobLimitedItems = jobLimitedItems;
+        this.cmdOnJoin = cmdOnJoin;
+        this.cmdOnLeave = cmdOnLeave;
+        this.guiItem = guiItem;
+        this.guiSlot = guiSlot;
+        this.jobDisplayName = CMIChatColor.translate(jobDisplayName);
 
-	if (worldBlacklist != null) {
-	    this.worldBlacklist = worldBlacklist;
-	}
+        if (worldBlacklist != null) {
+            this.worldBlacklist = worldBlacklist;
+        }
     }
 
     /**
@@ -146,7 +146,7 @@ public class Job {
      * @param point the amount of boost to add
      */
     public void addBoost(CurrencyType type, double point) {
-	boost.add(type, point);
+        boost.add(type, point);
     }
 
     /**
@@ -163,20 +163,20 @@ public class Job {
      */
     public void addBoost(CurrencyType type, double point, long duration) {
 
-	if (duration <= 0) {
-	    addBoost(type, point);
-	    return;
-	}
+        if (duration <= 0) {
+            addBoost(type, point);
+            return;
+        }
 
-	boost.add(type, point, System.currentTimeMillis() + (duration * 1000L));
+        boost.add(type, point, System.currentTimeMillis() + (duration * 1000L));
     }
 
     public void setBoost(BoostMultiplier boost) {
-	this.boost = boost;
+        this.boost = boost;
     }
 
     public BoostMultiplier getBoost() {
-	return boost;
+        return boost;
     }
 
     /**
@@ -186,8 +186,8 @@ public class Job {
      * @return true if same
      */
     public boolean isSame(Job job) {
-	return job != null && (id == job.getId() || jobName.equalsIgnoreCase(job.getName())
-	    || fullName.equalsIgnoreCase(job.getJobFullName()) || fullName.equalsIgnoreCase(job.getName()));
+        return job != null && (id == job.getId() || jobName.equalsIgnoreCase(job.getName())
+            || fullName.equalsIgnoreCase(job.getJobFullName()) || fullName.equalsIgnoreCase(job.getName()));
     }
 
     /**
@@ -196,67 +196,74 @@ public class Job {
      * @return the amount of total players in this job
      */
     public int getTotalPlayers() {
-	if (totalPlayers == -1) {
-	    updateTotalPlayers();
-	}
+        if (totalPlayers == -1) {
+            updateTotalPlayers();
+        }
 
-	return totalPlayers;
+        return totalPlayers;
     }
 
     /**
      * Updates the total players property from database synchronously.
      */
     public void updateTotalPlayers() {
-	totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(jobName);
+        totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(jobName);
 
-	if (totalPlayers <= 0) {
-	    totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(fullName);
-	}
+        if (totalPlayers <= 0) {
+            totalPlayers = Jobs.getJobsDAO().getTotalPlayerAmountByJobName(fullName);
+        }
 
-	updateBonus();
+        updateBonus();
     }
 
     public void updateBonus() {
-	if (!Jobs.getGCManager().useDynamicPayment)
-	    return;
+        if (!Jobs.getGCManager().useDynamicPayment)
+            return;
 
-	Parser eq = Jobs.getGCManager().DynamicPaymentEquation;
-	eq.setVariable("totalworkers", Jobs.getJobsDAO().getTotalPlayers());
-	eq.setVariable("totaljobs", Jobs.getJobs().size());
-	eq.setVariable("jobstotalplayers", getTotalPlayers());
+        Parser eq = Jobs.getGCManager().DynamicPaymentEquation;
+        eq.setVariable("totalworkers", Jobs.getJobsDAO().getTotalPlayers());
+        eq.setVariable("totaljobs", Jobs.getJobs().size());
+        eq.setVariable("jobstotalplayers", getTotalPlayers());
 
-	double now = eq.getValue();
-	CMIDebug.d("Now",now);
-	if (now > Jobs.getGCManager().DynamicPaymentMaxBonus)
-	    now = Jobs.getGCManager().DynamicPaymentMaxBonus;
+        double now = 0D;
+        try {
+            now = eq.getValue();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
-	if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty)
-	    now = Jobs.getGCManager().DynamicPaymentMaxPenalty;
+        CMIDebug.d("Now", now, this.getName(), getTotalPlayers(), now == Double.POSITIVE_INFINITY);
 
-	this.bonus = now;
+        if (now > Jobs.getGCManager().DynamicPaymentMaxBonus)
+            now = Jobs.getGCManager().DynamicPaymentMaxBonus;
+
+        if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty)
+            now = Jobs.getGCManager().DynamicPaymentMaxPenalty;
+
+        this.bonus = now;
     }
 
     public double getBonus() {
-	if (bonus == null)
-	    updateBonus();
+        if (bonus == null)
+            updateBonus();
 
-	return bonus == null ? 0D : bonus;
+        return bonus == null ? 0D : bonus;
     }
 
     public List<String> getCmdOnJoin() {
-	return cmdOnJoin;
+        return cmdOnJoin;
     }
 
     public List<String> getCmdOnLeave() {
-	return cmdOnLeave;
+        return cmdOnLeave;
     }
 
     public ItemStack getGuiItem() {
-	return guiItem;
+        return guiItem;
     }
 
     public int getGuiSlot() {
-	return guiSlot;
+        return guiSlot;
     }
 
     /**
@@ -265,7 +272,7 @@ public class Job {
      * @param info - the job info
      */
     public void setJobInfo(ActionType type, List<JobInfo> info) {
-	jobInfo.put(type, info);
+        jobInfo.put(type, info);
     }
 
     /**
@@ -274,7 +281,7 @@ public class Job {
      * @return Job info list
      */
     public List<JobInfo> getJobInfo(ActionType type) {
-	return jobInfo.get(type);
+        return jobInfo.get(type);
     }
 
     /**
@@ -282,41 +289,41 @@ public class Job {
      * @return Job info list
      */
     public Map<ActionType, List<JobInfo>> getJobInfoList() {
-	return jobInfo;
+        return jobInfo;
     }
 
     public JobInfo getJobInfo(ActionInfo action, int level) {
-	BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
-	    if (actionInfo instanceof PotionItemActionInfo) {
-		String subName = ((PotionItemActionInfo) action).getNameWithSub();
-		return jobInfo.getName().equalsIgnoreCase(subName) || (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(subName);
-	    }
+        BiPredicate<JobInfo, ActionInfo> condition = (jobInfo, actionInfo) -> {
+            if (actionInfo instanceof PotionItemActionInfo) {
+                String subName = ((PotionItemActionInfo) action).getNameWithSub();
+                return jobInfo.getName().equalsIgnoreCase(subName) || (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(subName);
+            }
 
-	    if (actionInfo instanceof EnchantActionInfo) {
-		return Util.enchantMatchesActionInfo(jobInfo.getName(), (EnchantActionInfo) actionInfo);
-	    }
+            if (actionInfo instanceof EnchantActionInfo) {
+                return Util.enchantMatchesActionInfo(jobInfo.getName(), (EnchantActionInfo) actionInfo);
+            }
 
-	    return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
-		(jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
-		jobInfo.getName().equalsIgnoreCase(action.getName());
-	};
+            return jobInfo.getName().equalsIgnoreCase(action.getNameWithSub()) ||
+                (jobInfo.getName() + ":" + jobInfo.getMeta()).equalsIgnoreCase(action.getNameWithSub()) ||
+                jobInfo.getName().equalsIgnoreCase(action.getName());
+        };
 
-	String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
-	for (JobInfo info : getJobInfo(action.getType())) {
-	    if (condition.test(info, action)) {
-		if (!info.isInLevelRange(level)) {
-		    break;
-		}
+        String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
+        for (JobInfo info : getJobInfo(action.getType())) {
+            if (condition.test(info, action)) {
+                if (!info.isInLevelRange(level)) {
+                    break;
+                }
 
-		return info;
-	    }
+                return info;
+            }
 
-	    if ((shortActionName + ":ALL").equalsIgnoreCase(info.getName())) {
-		return info;
-	    }
-	}
+            if ((shortActionName + ":ALL").equalsIgnoreCase(info.getName())) {
+                return info;
+            }
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -325,20 +332,20 @@ public class Job {
      * @return the name of this job
      */
     public String getName() {
-	return jobName;
+        return jobName;
     }
 
     public String getJobFullName() {
-	return fullName;
+        return fullName;
     }
 
     @Deprecated
     public String getJobDisplayName() {
-	return getDisplayName();
+        return getDisplayName();
     }
 
     public String getDisplayName() {
-	return jobDisplayName == null ? jobColour + fullName : jobDisplayName;
+        return jobDisplayName == null ? jobColour + fullName : jobDisplayName;
     }
 
     /**
@@ -349,7 +356,7 @@ public class Job {
      */
     @Deprecated
     public String getNameWithColor() {
-	return jobColour + fullName;
+        return jobColour + fullName;
     }
 
     /**
@@ -358,7 +365,7 @@ public class Job {
      * @return the shortened version of the jobName
      */
     public String getShortName() {
-	return jobShortName;
+        return jobShortName;
     }
 
     /**
@@ -370,7 +377,7 @@ public class Job {
      */
     @Deprecated
     public String getDescription() {
-	return description;
+        return description;
     }
 
     /**
@@ -378,7 +385,7 @@ public class Job {
      * @return the Color of the job for chat
      */
     public CMIChatColor getChatColor() {
-	return jobColour;
+        return jobColour;
     }
 
     /**
@@ -386,7 +393,7 @@ public class Job {
      * @return the MaxExpEquation of the job
      */
     public Parser getMaxExpEquation() {
-	return maxExpEquation;
+        return maxExpEquation;
     }
 
     /**
@@ -395,10 +402,10 @@ public class Job {
      * @return the correct max exp for this level
      */
     public double getMaxExp(Map<String, Double> level) {
-	for (Map.Entry<String, Double> temp : level.entrySet()) {
-	    maxExpEquation.setVariable(temp.getKey(), temp.getValue());
-	}
-	return maxExpEquation.getValue();
+        for (Map.Entry<String, Double> temp : level.entrySet()) {
+            maxExpEquation.setVariable(temp.getKey(), temp.getValue());
+        }
+        return maxExpEquation.getValue();
     }
 
     /**
@@ -406,7 +413,7 @@ public class Job {
      * @return the display method
      */
     public DisplayMethod getDisplayMethod() {
-	return displayMethod;
+        return displayMethod;
     }
 
     /**
@@ -415,7 +422,7 @@ public class Job {
      * @return the max level
      */
     public int getMaxLevel() {
-	return maxLevel;
+        return maxLevel;
     }
 
     /**
@@ -425,20 +432,20 @@ public class Job {
      * @return the max level of player
      */
     public int getMaxLevel(JobsPlayer player) {
-	return player == null ? maxLevel : player.getMaxJobLevelAllowed(this);
+        return player == null ? maxLevel : player.getMaxJobLevelAllowed(this);
     }
 
     public int getMaxLevel(CommandSender sender) {
-	if (sender == null)
-	    return maxLevel;
+        if (sender == null)
+            return maxLevel;
 
-	if (sender instanceof Player) {
-	    JobsPlayer player = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
-	    if (player != null)
-		return player.getMaxJobLevelAllowed(this);
-	}
+        if (sender instanceof Player) {
+            JobsPlayer player = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+            if (player != null)
+                return player.getMaxJobLevelAllowed(this);
+        }
 
-	return maxLevel > vipmaxLevel ? maxLevel : vipmaxLevel;
+        return maxLevel > vipmaxLevel ? maxLevel : vipmaxLevel;
     }
 
     /**
@@ -447,7 +454,7 @@ public class Job {
      * @return null - no max level
      */
     public int getVipMaxLevel() {
-	return vipmaxLevel;
+        return vipmaxLevel;
     }
 
     /**
@@ -456,7 +463,7 @@ public class Job {
      * @return null - no max slots
      */
     public Integer getMaxSlots() {
-	return maxSlots;
+        return maxSlots;
     }
 
     /**
@@ -464,7 +471,7 @@ public class Job {
      * @return Permissions for this job
      */
     public List<JobPermission> getPermissions() {
-	return Collections.unmodifiableList(jobPermissions);
+        return Collections.unmodifiableList(jobPermissions);
     }
 
     /**
@@ -472,7 +479,7 @@ public class Job {
      * @return Commands for this job
      */
     public List<JobCommands> getCommands() {
-	return Collections.unmodifiableList(jobCommands);
+        return Collections.unmodifiableList(jobCommands);
     }
 
     /**
@@ -480,7 +487,7 @@ public class Job {
      * @return Conditions for this job
      */
     public List<JobConditions> getConditions() {
-	return Collections.unmodifiableList(jobConditions);
+        return Collections.unmodifiableList(jobConditions);
     }
 
     /**
@@ -489,14 +496,14 @@ public class Job {
      */
     @Deprecated
     public Map<String, JobItems> getItemBonus() {
-	if (jobItems == null)
-	    jobItems = new HashMap<String, JobItems>();
-	return jobItems;
+        if (jobItems == null)
+            jobItems = new HashMap<String, JobItems>();
+        return jobItems;
     }
 
     @Deprecated
     public JobItems getItemBonus(String key) {
-	return jobItems.get(key.toLowerCase());
+        return jobItems.get(key.toLowerCase());
     }
 
     /**
@@ -504,192 +511,192 @@ public class Job {
      * @return Limited items for this job
      */
     public Map<String, JobLimitedItems> getLimitedItems() {
-	return jobLimitedItems;
+        return jobLimitedItems;
     }
 
     public JobLimitedItems getLimitedItems(String key) {
-	return jobLimitedItems.get(key.toLowerCase());
+        return jobLimitedItems.get(key.toLowerCase());
     }
 
     public String getBossbar() {
-	return bossbar;
+        return bossbar;
     }
 
     public void setBossbar(String bossbar) {
-	this.bossbar = bossbar;
+        this.bossbar = bossbar;
     }
 
     public Parser getMoneyEquation() {
-	return moneyEquation;
+        return moneyEquation;
     }
 
     public void setMoneyEquation(Parser moneyEquation) {
-	this.moneyEquation = moneyEquation;
+        this.moneyEquation = moneyEquation;
     }
 
     public Parser getXpEquation() {
-	return xpEquation;
+        return xpEquation;
     }
 
     public void setXpEquation(Parser xpEquation) {
-	this.xpEquation = xpEquation;
+        this.xpEquation = xpEquation;
     }
 
     public Parser getPointsEquation() {
-	return pointsEquation;
+        return pointsEquation;
     }
 
     public void setPointsEquation(Parser pointsEquation) {
-	this.pointsEquation = pointsEquation;
+        this.pointsEquation = pointsEquation;
     }
 
     public Long getRejoinCd() {
-	return rejoinCd;
+        return rejoinCd;
     }
 
     public void setRejoinCd(Long rejoinCd) {
-	this.rejoinCd = rejoinCd;
+        this.rejoinCd = rejoinCd;
     }
 
     public List<String> getFullDescription() {
-	return fDescription;
+        return fDescription;
     }
 
     public void setFullDescription(List<String> fDescription) {
-	this.fDescription.clear();
+        this.fDescription.clear();
 
-	if (fDescription != null) {
-	    this.fDescription.addAll(fDescription);
-	    this.description = String.join("\n", this.fDescription);
-	}
+        if (fDescription != null) {
+            this.fDescription.addAll(fDescription);
+            this.description = String.join("\n", this.fDescription);
+        }
     }
 
     public void setMaxLevelCommands(List<String> commands) {
-	maxLevelCommands.clear();
+        maxLevelCommands.clear();
 
-	if (commands != null) {
-	    maxLevelCommands.addAll(commands);
-	}
+        if (commands != null) {
+            maxLevelCommands.addAll(commands);
+        }
     }
 
     public List<String> getMaxLevelCommands() {
-	return maxLevelCommands;
+        return maxLevelCommands;
     }
 
     public List<Quest> getQuests() {
-	return quests;
+        return quests;
     }
 
     public Quest getQuest(String name) {
-	if (name == null || name.trim().isEmpty()) {
-	    return null;
-	}
+        if (name == null || name.trim().isEmpty()) {
+            return null;
+        }
 
-	for (Quest one : quests) {
-	    if (one.getConfigName().equalsIgnoreCase(name))
-		return one;
-	}
+        for (Quest one : quests) {
+            if (one.getConfigName().equalsIgnoreCase(name))
+                return one;
+        }
 
-	return null;
+        return null;
     }
 
     public void setQuests(List<Quest> quests) {
-	this.quests.clear();
+        this.quests.clear();
 
-	if (quests != null) {
-	    this.quests.addAll(quests);
-	}
+        if (quests != null) {
+            this.quests.addAll(quests);
+        }
     }
 
     public Quest getNextQuest(List<String> excludeQuests, Integer level) {
-	List<Quest> ls = new ArrayList<>(quests);
-	Collections.shuffle(ls);
+        List<Quest> ls = new ArrayList<>(quests);
+        Collections.shuffle(ls);
 
-	int i = 0;
-	while (true) {
-	    i++;
+        int i = 0;
+        while (true) {
+            i++;
 
-	    int target = new Random(System.nanoTime()).nextInt(100);
-	    for (Quest one : ls) {
-		if (one.isEnabled() && one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
-		    && one.isInLevelRange(level)) {
-		    return one;
-		}
-	    }
+            int target = new Random(System.nanoTime()).nextInt(100);
+            for (Quest one : ls) {
+                if (one.isEnabled() && one.getChance() >= target && (excludeQuests == null || !excludeQuests.contains(one.getConfigName().toLowerCase()))
+                    && one.isInLevelRange(level)) {
+                    return one;
+                }
+            }
 
-	    if (i > 20)
-		return null;
-	}
+            if (i > 20)
+                return null;
+        }
     }
 
     public int getMaxDailyQuests() {
-	return maxDailyQuests;
+        return maxDailyQuests;
     }
 
     public void setMaxDailyQuests(int maxDailyQuests) {
-	this.maxDailyQuests = maxDailyQuests;
+        this.maxDailyQuests = maxDailyQuests;
     }
 
     public int getId() {
-	return id;
+        return id;
     }
 
     public void setId(int id) {
-	this.id = id;
+        this.id = id;
     }
 
     public List<String> getWorldBlacklist() {
-	return worldBlacklist;
+        return worldBlacklist;
     }
 
     public boolean isWorldBlackListed(Entity ent) {
-	return isWorldBlackListed(null, ent);
+        return isWorldBlackListed(null, ent);
     }
 
     public boolean isWorldBlackListed(Block block) {
-	return isWorldBlackListed(block, null);
+        return isWorldBlackListed(block, null);
     }
 
     public boolean isWorldBlackListed(Block block, Entity ent) {
-	if (worldBlacklist.isEmpty())
-	    return reversedWorldBlacklist;
+        if (worldBlacklist.isEmpty())
+            return reversedWorldBlacklist;
 
-	if (block != null)
-	    return worldBlacklist.contains(block.getWorld().getName()) != reversedWorldBlacklist;
+        if (block != null)
+            return worldBlacklist.contains(block.getWorld().getName()) != reversedWorldBlacklist;
 
-	return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != reversedWorldBlacklist;
+        return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != reversedWorldBlacklist;
     }
 
     public boolean isReversedWorldBlacklist() {
-	return reversedWorldBlacklist;
+        return reversedWorldBlacklist;
     }
 
     public void setReversedWorldBlacklist(boolean reversedWorldBlacklist) {
-	this.reversedWorldBlacklist = reversedWorldBlacklist;
+        this.reversedWorldBlacklist = reversedWorldBlacklist;
     }
 
     public boolean isIgnoreMaxJobs() {
-	return ignoreMaxJobs;
+        return ignoreMaxJobs;
     }
 
     public void setIgnoreMaxJobs(boolean ignoreMaxJobs) {
-	this.ignoreMaxJobs = ignoreMaxJobs;
+        this.ignoreMaxJobs = ignoreMaxJobs;
     }
 
     @Override
     public boolean equals(Object obj) {
-	return obj instanceof Job && isSame((Job) obj);
+        return obj instanceof Job && isSame((Job) obj);
     }
 
     public void setJobDisplayName(String jobDisplayName) {
-	this.jobDisplayName = jobDisplayName;
+        this.jobDisplayName = jobDisplayName;
     }
 
     public int getLegacyId() {
-	return legacyId;
+        return legacyId;
     }
 
     public void setLegacyId(int legacyId) {
-	this.legacyId = legacyId;
+        this.legacyId = legacyId;
     }
 }

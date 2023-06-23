@@ -65,6 +65,7 @@ import com.gamingmesh.jobs.stuff.Util;
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
@@ -487,6 +488,9 @@ public class PlayerManager {
 
         job.updateTotalPlayers();
         jPlayer.maxJobsEquation = getMaxJobs(jPlayer);
+        
+        // Removing from cached item boost for recalculation
+        cache.remove(jPlayer.getUniqueId());        
     }
 
     private static void performCommandsOnLeave(JobsPlayer jPlayer, Job job) {
@@ -528,6 +532,10 @@ public class PlayerManager {
 
         Jobs.getSignUtil().updateAllSign(job);
         job.updateTotalPlayers();
+        
+        // Removing from cached item boost for recalculation
+        cache.remove(jPlayer.getUniqueId());        
+        
         return true;
     }
 
@@ -1055,6 +1063,8 @@ public class PlayerManager {
                         continue;
                     }
                 }
+                
+                CMIDebug.d("get bonus item");
                 jitems.add(getJobsItemByNbt(item));
             }
         }
