@@ -1212,13 +1212,9 @@ public class PlayerManager {
                     return;
 
                 int playerMaxJobs = getMaxJobs(jPlayer);
-                int playerCurrentJobs = jPlayer.progression.size();
-
-                if (playerMaxJobs <= 0 || playerCurrentJobs >= playerMaxJobs)
-                    return;
 
                 for (Job one : Jobs.getJobs()) {
-                    if (jPlayer.progression.size() >= playerMaxJobs)
+                    if (playerMaxJobs > 0 && jPlayer.progression.size() >= playerMaxJobs)
                         return;
 
                     if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
