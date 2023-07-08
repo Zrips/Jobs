@@ -65,7 +65,7 @@ public class limit implements Cmd {
 
                 Language.sendMessage(sender, "command.limit.output." + typeName + "time", "%time%", CMITimeManager.to24hourShort(limit.getLeftTime(type)));
                 Language.sendMessage(sender, "command.limit.output." + typeName + "Limit",
-                    "%current%", (int) (limit.getAmount(type) * 100) / 100D,
+                    "%current%", (int) ((limit.getAmount(type) * 100) / 100D),
                     "%total%", JPlayer.getLimit(type));
             }
         }
