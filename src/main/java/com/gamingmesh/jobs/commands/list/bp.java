@@ -19,6 +19,7 @@ import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class bp implements Cmd {
 
@@ -78,19 +79,20 @@ public class bp implements Cmd {
         else
             Language.sendMessage(sender, "command.bp.output.found", "%amount%", changedBlocks.size());
 
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                if (Version.isCurrentEqualOrHigher(Version.v1_15_R1))
+        if (!changedBlocks.isEmpty()) {
+            Location bloc = changedBlocks.get(0).getLocation();
+            CMIScheduler.get().runAtLocationLater(bloc, () -> {
+                if (Version.isCurrentEqualOrHigher(Version.v1_15_R1)) {
                     for (Block one : changedBlocks) {
                         player.sendBlockChange(one.getLocation(), one.getBlockData());
                     }
-                else
+                } else {
                     for (Block one : changedBlocks) {
                         player.sendBlockChange(one.getLocation(), one.getType(), one.getData());
                     }
-            }
-        }, 120L);
+                }
+            }, 120L);
+        }
 
         return true;
     }

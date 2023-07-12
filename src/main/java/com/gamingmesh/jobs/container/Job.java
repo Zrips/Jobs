@@ -232,13 +232,14 @@ public class Job {
             e.printStackTrace();
         }
 
-        CMIDebug.d("Now", now, this.getName(), getTotalPlayers(), now == Double.POSITIVE_INFINITY);
-
         if (now > Jobs.getGCManager().DynamicPaymentMaxBonus)
             now = Jobs.getGCManager().DynamicPaymentMaxBonus;
 
         if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty)
             now = Jobs.getGCManager().DynamicPaymentMaxPenalty;
+        
+        if (Double.isNaN(now))
+            now = 0;
 
         this.bonus = now;
     }
@@ -309,6 +310,7 @@ public class Job {
         };
 
         String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
+        
         for (JobInfo info : getJobInfo(action.getType())) {
             if (condition.test(info, action)) {
                 if (!info.isInLevelRange(level)) {

@@ -12,6 +12,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class leave implements Cmd {
 
@@ -44,7 +45,7 @@ public class leave implements Cmd {
             if (!Util.LEAVECONFIRM.contains(uuid)) {
                 Util.LEAVECONFIRM.add(uuid);
 
-                plugin.getServer().getScheduler().runTaskLater(plugin, () -> Util.LEAVECONFIRM.remove(uuid),
+                CMIScheduler.get().runTaskLater(() -> Util.LEAVECONFIRM.remove(uuid),
                     20 * Jobs.getGCManager().ConfirmExpiryTime);
 
                 Language.sendMessage(sender, "command.leave.confirmationNeed", "[jobname]",

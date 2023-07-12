@@ -69,6 +69,7 @@ import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class PlayerManager {
 
@@ -731,7 +732,7 @@ public class PlayerManager {
         }
 
         if (Jobs.getGCManager().FireworkLevelupUse && player != null) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+            CMIScheduler.get().runTaskLater(new Runnable() {
                 @Override
                 public void run() {
                     if (!player.isOnline())
@@ -1064,7 +1065,6 @@ public class PlayerManager {
                     }
                 }
                 
-                CMIDebug.d("get bonus item");
                 jitems.add(getJobsItemByNbt(item));
             }
         }
@@ -1201,7 +1201,7 @@ public class PlayerManager {
         if (!Jobs.getGCManager().AutoJobJoinUse || player == null || player.isOp())
             return;
 
-        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+        CMIScheduler.get().runTaskLater(new Runnable() {
             @Override
             public void run() {
                 if (!player.isOnline())

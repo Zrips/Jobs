@@ -16,6 +16,7 @@ import com.gamingmesh.jobs.container.DBAction;
 import net.Zrips.CMILib.Container.CMIBlock;
 import net.Zrips.CMILib.Container.CMIBlock.Bisect;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class BlockProtectionManager {
 
@@ -39,7 +40,7 @@ public class BlockProtectionManager {
     }
 
     public void add(Block block, Integer cd) {
-        
+
         if (cd == null || cd == 0)
             return;
 
@@ -81,7 +82,7 @@ public class BlockProtectionManager {
 
         if (time == null || time == 0)
             return null;
-        
+
         String v = loc.getBlockX() + ":" + loc.getBlockY() + ":" + loc.getBlockZ();
 
         HashMap<String, HashMap<String, HashMap<String, BlockProtection>>> regions = map.getOrDefault(loc.getWorld(), new HashMap<>());
@@ -97,8 +98,8 @@ public class BlockProtectionManager {
             Bp = new BlockProtection(DBAction.INSERT, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
         else {
             Bp.setAction(DBAction.UPDATE);
-            if (Bp.getSchedId() > -1)
-                Bukkit.getServer().getScheduler().cancelTask(Bp.getSchedId());
+            if (Bp.getScheduler() != null)
+                Bp.getScheduler().cancel();
         }
 
         Bp.setPaid(paid);
@@ -106,7 +107,7 @@ public class BlockProtectionManager {
 
         // If timer is under 2 hours, we can run scheduler to remove it when time comes
         if (time > -1 && (time - System.currentTimeMillis()) / 1000 < 60 * 60 * 2)
-            Bp.setSchedId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Jobs.getInstance(), () -> {
+            Bp.setScheduler(CMIScheduler.get().runTaskLater(() -> {
                 remove(loc);
             }, (time - System.currentTimeMillis()) / 50));
 
@@ -116,7 +117,7 @@ public class BlockProtectionManager {
         map.put(loc.getWorld(), regions);
 
         // Only saving into save cache if timer is higher than 5 minutes
-        if (cache && ((time - System.currentTimeMillis()) / 1000 > 60 * 5 || time < 0) )
+        if (cache && ((time - System.currentTimeMillis()) / 1000 > 60 * 5 || time < 0))
             addToCache(loc, Bp);
         return Bp;
     }
@@ -186,7 +187,7 @@ public class BlockProtectionManager {
             world.remove(locToRegion(loc));
 
         return bp;
-    } 
+    }
 
     public Long getTime(Block block) {
         return getTime(block.getLocation());

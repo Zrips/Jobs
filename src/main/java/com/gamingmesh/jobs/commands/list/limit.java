@@ -56,7 +56,6 @@ public class limit implements Cmd {
             PaymentData limit = JPlayer.getPaymentLimit();
 
             if (limit.getLeftTime(type) <= 0) {
-                CMIDebug.d("reset", type);
                 limit.resetLimits(type);
             }
 

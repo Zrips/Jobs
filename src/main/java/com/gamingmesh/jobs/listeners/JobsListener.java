@@ -91,6 +91,7 @@ import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class JobsListener implements Listener {
 
@@ -170,7 +171,7 @@ public class JobsListener implements Listener {
         if (!Jobs.getGCManager().MultiServerCompatability())
             Jobs.getPlayerManager().playerJoin(event.getPlayer());
         else {
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> Jobs.getPlayerManager().playerJoin(event.getPlayer()), 40L);
+            CMIScheduler.get().runTaskLater(() -> Jobs.getPlayerManager().playerJoin(event.getPlayer()), 40L);
         }
     }
 
@@ -317,7 +318,7 @@ public class JobsListener implements Listener {
 
         event.setCancelled(true);
 
-        plugin.getServer().getScheduler().runTaskLater(plugin, () -> signUtil.signUpdate(job, type), 1L);
+        CMIScheduler.get().runTaskLater(() -> signUtil.signUpdate(job, type), 1L);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -375,14 +376,14 @@ public class JobsListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onCropGrown(final BlockGrowEvent event) {
         if (Jobs.getGCManager().canPerformActionInWorld(event.getBlock().getWorld())) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
+            CMIScheduler.get().runAtLocationLater(event.getBlock().getLocation(), () -> Jobs.getBpManager().remove(event.getBlock()), 1L);
         }
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onTreeGrown(final StructureGrowEvent event) {
         if (!event.getBlocks().isEmpty() && Jobs.getGCManager().canPerformActionInWorld(event.getBlocks().get(0).getWorld())) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> event.getBlocks().forEach(blockState -> Jobs.getBpManager().remove(blockState.getBlock())), 1L);
+            CMIScheduler.get().runAtLocationLater(event.getBlocks().get(0).getLocation(), () -> event.getBlocks().forEach(blockState -> Jobs.getBpManager().remove(blockState.getBlock())), 1L);
         }
     }
 

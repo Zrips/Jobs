@@ -19,6 +19,7 @@ import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.Sorting;
 
 import net.Zrips.CMILib.Time.CMITimeManager;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class glog implements Cmd {
 
@@ -28,7 +29,7 @@ public class glog implements Cmd {
             return false;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+        CMIScheduler.get().runTaskAsynchronously(new Runnable() {
             @Override
             public void run() {
                 Map<LogAmounts, Double> unsortMap = new HashMap<>();

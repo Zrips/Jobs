@@ -133,6 +133,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public final class JobsPaymentListener implements Listener {
 
@@ -795,7 +796,7 @@ public final class JobsPaymentListener implements Listener {
                 preInv[i] = preInv[i].clone();
         }
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+        CMIScheduler.get().runTaskLater(new Runnable() {
             @Override
             public void run() {
                 final ItemStack[] postInv = player.getInventory().getContents();
@@ -1315,7 +1316,7 @@ public final class JobsPaymentListener implements Listener {
                 // So lets remove meta in case some plugin removes entity in wrong way.
                 // Need to delay action for other function to properly check for existing meta data relating to this entity before clearing it out
                 // Longer delay is needed due to mob split event being fired few seconds after mob dies and not at same time
-                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                CMIScheduler.get().runTaskLater(() -> {
                     lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
                 }, 200L);
             } catch (Throwable ignored) {
@@ -1839,7 +1840,7 @@ public final class JobsPaymentListener implements Listener {
             // or it's 1.16+ and we're trying to strip a fungi like warped stem
             if ((Version.isCurrentEqualOrHigher(Version.v1_13_R1) && (block.getType().toString().endsWith("_LOG") || block.getType().toString().endsWith("_WOOD"))) ||
                 (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && (block.getType().toString().endsWith("_STEM") || block.getType().toString().endsWith("_HYPHAE")))) {                
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
+                CMIScheduler.get().runTaskLater(() -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
             }
         }
     }

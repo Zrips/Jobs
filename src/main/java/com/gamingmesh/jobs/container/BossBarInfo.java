@@ -1,13 +1,14 @@
 package com.gamingmesh.jobs.container;
 
-import org.bukkit.Bukkit;
 import org.bukkit.boss.BossBar;
+
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class BossBarInfo {
     private String jobName;
     private String PlayerName;
     private BossBar bar;
-    private int id = -1;
+    private CMITask scheduler = null;
 
     public BossBarInfo(String PlayerName, String jobName, BossBar bar) {
 	this.PlayerName = PlayerName;
@@ -15,14 +16,14 @@ public class BossBarInfo {
 	this.bar = bar;
     }
 
-    public void setId(int id) {
+    public void setScheduler(CMITask cmiTask) {
 	cancel();
-	this.id = id;
+	this.scheduler = cmiTask;
     }
 
     public void cancel() {
-	if (id != -1)
-	    Bukkit.getScheduler().cancelTask(this.id);
+	if (scheduler != null)
+	    scheduler.cancel();
     }
 
     public String getPlayerName() {

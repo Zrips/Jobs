@@ -23,6 +23,7 @@ import com.gamingmesh.jobs.container.TopList;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class SignUtil {
 
@@ -354,7 +355,7 @@ public class SignUtil {
         if (directionFacing != null && !(loc.getBlock().getState() instanceof Skull))
             loc.add(directionFacing.getOppositeFace().getModX(), 0, directionFacing.getOppositeFace().getModZ());
 
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+        CMIScheduler.get().runTaskLater(new Runnable() {
             @Override
             public void run() {
                 if (!(loc.getBlock().getState() instanceof Skull))

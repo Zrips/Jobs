@@ -38,6 +38,7 @@ import com.gamingmesh.jobs.tasks.BufferedPaymentTask;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class BufferedEconomy {
 
@@ -208,9 +209,9 @@ public class BufferedEconomy {
 		}
 
 		if (Jobs.getGCManager().isEconomyAsync())
-		    Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new BufferedPaymentTask(this, economy, payment), i);
+		    CMIScheduler.get().runLaterAsync(new BufferedPaymentTask(this, economy, payment), i);
 		else
-		    Bukkit.getScheduler().runTaskLater(plugin, new BufferedPaymentTask(this, economy, payment), i);
+		    CMIScheduler.get().runTaskLater(new BufferedPaymentTask(this, economy, payment), i);
 
 		// Show players payment stuff
 		showPayment(payment);

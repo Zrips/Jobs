@@ -116,6 +116,7 @@ import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public final class Jobs extends JavaPlugin {
 
@@ -763,7 +764,7 @@ public final class Jobs extends JavaPlugin {
             }
 
             // register economy
-            getServer().getScheduler().runTask(this, new HookEconomyTask(this));
+            CMIScheduler.get().runTask(new HookEconomyTask(this));
 
             dao.loadBlockProtection();
             getExploreManager().load();

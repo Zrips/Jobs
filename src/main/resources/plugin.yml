@@ -3,6 +3,7 @@ description: Jobs plugin for the BukkitAPI
 main: com.gamingmesh.jobs.Jobs
 version: ${project.version}
 api-version: "1.13"
+folia-supported: true
 website: https://www.spigotmc.org/resources/4216/
 authors: [Zrips]
 contributors: [montlikadani]

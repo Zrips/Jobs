@@ -10,7 +10,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.api.JobsScheduleStartEvent;
@@ -21,12 +20,14 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.Schedule;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Schedulers.CMITask;
 
 public class ScheduleManager {
 
     private Jobs plugin;
 
-    private BukkitTask timer;
+    private CMITask timer;
     private YmlMaker jobSchedule;
 
     public static final List<Schedule> BOOSTSCHEDULE = new ArrayList<>();
@@ -44,7 +45,7 @@ public class ScheduleManager {
 	    return;
 
 	cancel();
-	timer = Bukkit.getScheduler().runTaskTimer(plugin, this::scheduler, 20, 30 * 20L);
+	timer = CMIScheduler.get().scheduleSyncRepeatingTask(this::scheduler, 20, 30 * 20L);
     }
 
     public void cancel() {

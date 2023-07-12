@@ -16,6 +16,7 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class skipquest implements Cmd {
 
@@ -114,7 +115,7 @@ public class skipquest implements Cmd {
             if (!Util.SKIPCONFIRM.contains(uuid)) {
                 Util.SKIPCONFIRM.add(uuid);
 
-                plugin.getServer().getScheduler().runTaskLater(plugin, () -> Util.SKIPCONFIRM.remove(uuid),
+                CMIScheduler.get().runTaskLater(() -> Util.SKIPCONFIRM.remove(uuid),
                         20 * Jobs.getGCManager().ConfirmExpiryTime);
 
                 Language.sendMessage(sender, "command.skipquest.confirmationNeed", "[questName]",

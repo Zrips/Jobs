@@ -13,6 +13,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Util.CMIVersionChecker;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 import net.milkbowl.vault.economy.Economy;
 
 public class version implements Cmd {
@@ -20,7 +21,7 @@ public class version implements Cmd {
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
-	Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+	CMIScheduler.get().runTaskAsynchronously(new Runnable() {
 	    @Override
 	    public void run() {
 
@@ -62,7 +63,7 @@ public class version implements Cmd {
 		final String vault = preVault;
 		final String vaultProvider = vProvider;
 
-		Bukkit.getScheduler().runTask(plugin, new Runnable() {
+		CMIScheduler.get().runTask(new Runnable() {
 		    @Override
 		    public void run() {
 

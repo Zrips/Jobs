@@ -9,6 +9,8 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+
 @SuppressWarnings("deprecation")
 public class JobsChatEvent implements Listener {
 
@@ -25,8 +27,7 @@ public class JobsChatEvent implements Listener {
 
 	final String msg = Util.getJobsEditorMap().remove(event.getPlayer().getUniqueId());
 	if (msg != null) {
-	    plugin.getServer().getScheduler().runTask(plugin,
-		() -> event.getPlayer().performCommand(msg + event.getMessage()));
+	    CMIScheduler.get().runTask(() -> event.getPlayer().performCommand(msg + event.getMessage()));
 	    event.setCancelled(true);
 	}
     }

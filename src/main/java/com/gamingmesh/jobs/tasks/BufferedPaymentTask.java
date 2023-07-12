@@ -24,6 +24,8 @@ import com.gamingmesh.jobs.economy.BufferedEconomy;
 import com.gamingmesh.jobs.economy.BufferedPayment;
 import com.gamingmesh.jobs.economy.Economy;
 
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+
 public class BufferedPaymentTask implements Runnable {
 
     private BufferedEconomy bufferedEconomy;
@@ -41,7 +43,7 @@ public class BufferedPaymentTask implements Runnable {
 	double money = payment.get(CurrencyType.MONEY);
 	if (money > 0) {
 	    if (Jobs.getGCManager().isEconomyAsync()) {
-		org.bukkit.Bukkit.getScheduler().runTaskAsynchronously(bufferedEconomy.getPlugin(), () -> economy.depositPlayer(payment.getOfflinePlayer(), money));
+		CMIScheduler.get().runTaskAsynchronously(() -> economy.depositPlayer(payment.getOfflinePlayer(), money));
 	    } else {
 		economy.depositPlayer(payment.getOfflinePlayer(), money);
 	    }

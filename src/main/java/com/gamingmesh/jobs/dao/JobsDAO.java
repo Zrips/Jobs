@@ -45,6 +45,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public abstract class JobsDAO {
  
@@ -1016,7 +1017,7 @@ public abstract class JobsDAO {
     public void triggerTableIdUpdate() {
         // Lets convert old fields
         if (!converted) {
-            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
+            CMIScheduler.get().runTaskLater(() -> {
                 CMIMessages.consoleMessage("&6[Jobs] Converting to new database format");
                 convertID();
                 CMIMessages.consoleMessage("&6[Jobs] Converted to new database format");
