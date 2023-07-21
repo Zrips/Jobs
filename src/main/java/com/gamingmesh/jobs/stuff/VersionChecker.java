@@ -12,52 +12,55 @@ import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
 
+import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+
 public final class VersionChecker {
 
     private Jobs plugin;
 
     public VersionChecker(Jobs plugin) {
-	this.plugin = plugin;
+        this.plugin = plugin;
     }
 
     public void VersionCheck(final Player player) {
-	if (!Jobs.getGCManager().isShowNewVersion())
-	    return;
+        if (!Jobs.getGCManager().isShowNewVersion())
+            return;
 
-	plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-	    String newVersion = getNewVersion();
-	    if (newVersion == null)
-		return;
+        CMIScheduler.get().runTaskAsynchronously(() -> {
+            String newVersion = getNewVersion();
+            if (newVersion == null)
+                return;
 
-	    int currentVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
-	    int newVer = Integer.parseInt(newVersion.replace(".", ""));
+            int currentVersion = Integer.parseInt(plugin.getDescription().getVersion().replace(".", ""));
+            int newVer = Integer.parseInt(newVersion.replace(".", ""));
 
-	    if (newVer <= currentVersion || currentVersion >= newVer)
-		return;
+            if (newVer <= currentVersion || currentVersion >= newVer)
+                return;
 
-	    List<String> msg = Arrays.asList(
-		ChatColor.GREEN + "*********************** " + plugin.getDescription().getName() + " **************************",
-		ChatColor.GREEN + "* " + newVersion + " is now available! Your version: " + currentVersion,
-		ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + plugin.getDescription().getWebsite(),
-		ChatColor.GREEN + "************************************************************");
-		for (String one : msg)
-		    if (player != null)
-			player.sendMessage(one);
-		    else
-			Jobs.consoleMsg(one);
-	});
+            List<String> msg = Arrays.asList(
+                ChatColor.GREEN + "*********************** " + plugin.getDescription().getName() + " **************************",
+                ChatColor.GREEN + "* " + newVersion + " is now available! Your version: " + currentVersion,
+                ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + plugin.getDescription().getWebsite(),
+                ChatColor.GREEN + "************************************************************");
+            for (String one : msg)
+                if (player != null)
+                    player.sendMessage(one);
+                else
+                    CMIMessages.consoleMessage(one);
+        });
     }
 
     public String getNewVersion() {
-	try {
-	    URLConnection con = new URL("https://api.spigotmc.org/legacy/update.php?resource=4216").openConnection();
-	    String version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
-	    if (version.length() <= 8)
-		return version;
-	} catch (Throwable t) {
-	    Jobs.consoleMsg("&cFailed to check for " + plugin.getDescription().getName() + " update on spigot web page.");
-	}
-	return null;
+        try {
+            URLConnection con = new URL("https://api.spigotmc.org/legacy/update.php?resource=4216").openConnection();
+            String version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
+            if (version.length() <= 8)
+                return version;
+        } catch (Throwable t) {
+            CMIMessages.consoleMessage("&cFailed to check for " + plugin.getDescription().getName() + " update on spigot web page.");
+        }
+        return null;
     }
 
 }

@@ -11,6 +11,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
@@ -18,7 +19,7 @@ import net.Zrips.CMILib.Messages.CMIMessages;
 public class clearownership implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
         JobsPlayer jPlayer = null;
         String location = null;
 
@@ -47,8 +48,8 @@ public class clearownership implements Cmd {
             if (args.length >= 1)
                 CMIMessages.sendMessage(sender, LC.info_NoInformation);
             else
-                Jobs.getCommandManager().sendUsage(sender, "clearownership");
-            return true;
+                return false;
+            return null;
         }
 
         final UUID uuid = jPlayer.getUniqueId();
@@ -64,8 +65,8 @@ public class clearownership implements Cmd {
             }
         }
 
-        sender.sendMessage(Jobs.getLanguage().getMessage("command.clearownership.output.cleared", "[furnaces]", amounts.getOrDefault(BlockTypes.FURNACE, 0), "[brewing]", amounts.getOrDefault(
-            BlockTypes.BREWING_STAND, 0), "[smoker]", amounts.getOrDefault(BlockTypes.SMOKER, 0), "[blast]", amounts.getOrDefault(BlockTypes.BLAST_FURNACE, 0)));
+        Language.sendMessage(sender,"command.clearownership.output.cleared", "[furnaces]", amounts.getOrDefault(BlockTypes.FURNACE, 0), "[brewing]", amounts.getOrDefault(
+            BlockTypes.BREWING_STAND, 0), "[smoker]", amounts.getOrDefault(BlockTypes.SMOKER, 0), "[blast]", amounts.getOrDefault(BlockTypes.BLAST_FURNACE, 0));
         return true;
     }
 }

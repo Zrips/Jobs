@@ -14,6 +14,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.commands.list.info;
+import com.gamingmesh.jobs.commands.list.playerinfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.Boost;
 import com.gamingmesh.jobs.container.CurrencyType;
@@ -22,13 +24,13 @@ import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Title;
+import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.CMIArray;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
@@ -113,7 +115,12 @@ public class JobsCommands implements CommandExecutor {
             return true;
         }
 
-        return cmdClass.perform(plugin, sender, myArgs) || help(sender, 1);
+        Boolean result = cmdClass.perform(plugin, sender, myArgs);
+
+        if (result != null && !result)
+            sendUsage(sender, cmd);
+
+        return result == null || !result ? false : true;
     }
 
     private static String[] reduceArgs(String[] args) {
@@ -162,17 +169,11 @@ public class JobsCommands implements CommandExecutor {
 
         boolean pl = sender instanceof Player;
 
-        // Old format
-//	sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.title"));
         for (String one : commands) {
             if (!pi.isEntryOk())
                 continue;
             if (pi.isBreak())
                 break;
-
-            // Old format
-//	    sender.sendMessage(Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
-//		+ ".help.info")));
 
             if (pl) {
                 rm.addText("\n" + getUsage(one));
@@ -182,12 +183,10 @@ public class JobsCommands implements CommandExecutor {
                 rm.addText("\n" + Jobs.getLanguage().getMessage("command.help.output.cmdInfoFormat", "[command]", getUsage(one), "[description]", Jobs.getLanguage().getMessage("command." + one
                     + ".help.info")));
             }
-
         }
-
         rm.show(sender);
 
-        plugin.showPagination(sender, pi, LABEL + " ?");
+        pi.autoPagination(sender, LABEL + " ?");
         return true;
     }
 
@@ -269,7 +268,7 @@ public class JobsCommands implements CommandExecutor {
     public void jobInfoMessage(CommandSender sender, JobsPlayer player, Job job, String type, int page) {
         if (job == null) {
             // job doesn't exist
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
+            Language.sendMessage(sender, "general.error.job");
             return;
         }
 
@@ -277,21 +276,24 @@ public class JobsCommands implements CommandExecutor {
 
         List<String> message = new ArrayList<>();
 
-        if (job.getBoost().get(CurrencyType.EXP) != 0D)
-            message.add(Jobs.getLanguage().getMessage("command.expboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.EXP)) + 1));
+        for (CurrencyType one : CurrencyType.values()) {
+            double boost = job.getBoost().get(one);
+            if (boost != 0D) {
 
-        if (job.getBoost().get(CurrencyType.MONEY) != 0D)
-            message.add(Jobs.getLanguage().getMessage("command.moneyboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.MONEY)) + 1));
+                String boostAmount = String.valueOf(boost + 1);
+                if (boost % 1 == 0)
+                    boostAmount = String.valueOf((int) boost + 1);
 
-        if (job.getBoost().get(CurrencyType.POINTS) != 0D)
-            message.add(Jobs.getLanguage().getMessage("command.pointboost.output.infostats", "%boost%", (job.getBoost().get(CurrencyType.POINTS)) + 1));
+                message.add(Jobs.getLanguage().getMessage("command.boost.output.infostats", "%boost%", boostAmount, "%type%", one.getDisplayName()));
+            }
+        }
 
         if (Jobs.getGCManager().useDynamicPayment) {
-            int bonus = (int) ((job.getBonus() * 100) / 100.0);
+            int bonus = (int) (job.getBonus() * 100);
 
             if (bonus != 0) {
                 if (bonus < 0)
-                    message.add(Jobs.getLanguage().getMessage("command.info.help.penalty", "[penalty]", (int) (job.getBonus() * 100) / 100.0 * -1));
+                    message.add(Jobs.getLanguage().getMessage("command.info.help.penalty", "[penalty]", bonus * -1));
                 else
                     message.add(Jobs.getLanguage().getMessage("command.info.help.bonus", "[bonus]", bonus));
             }
@@ -315,7 +317,7 @@ public class JobsCommands implements CommandExecutor {
         PageInfo pi = new PageInfo(15, message.size(), page);
 
         if (page > pi.getTotalPages()) {
-            sender.sendMessage(Jobs.getLanguage().getMessage("general.info.invalidPage"));
+            Language.sendMessage(sender, "general.info.invalidPage");
             return;
         }
 
@@ -333,9 +335,9 @@ public class JobsCommands implements CommandExecutor {
             String pName = player.getName();
 
             if (sender.getName().equalsIgnoreCase(pName))
-                plugin.showPagination(sender, pi, "jobs info " + job.getName() + t);
+                pi.autoPagination(sender, LABEL + " " + info.class.getSimpleName() + " " + job.getName() + t);
             else
-                plugin.showPagination(sender, pi, "jobs playerinfo " + pName + " " + job.getName() + t);
+                pi.autoPagination(sender, LABEL + " " + playerinfo.class.getSimpleName() + " " + job.getName() + t);
         }
     }
 
@@ -356,11 +358,11 @@ public class JobsCommands implements CommandExecutor {
         message.append(":\n");
 
         JobProgression prog = player.getJobProgression(job);
-        
+
         if (prog == null) {
-           prog = player.getArchivedJobProgression(job);            
-        }        
-        
+            prog = player.getArchivedJobProgression(job);
+        }
+
         int level = prog != null ? prog.getLevel() : 1;
         int numjobs = player.progression.size();
 
@@ -421,6 +423,10 @@ public class JobsCommands implements CommandExecutor {
      * @return the message
      */
     public String jobStatsMessage(JobProgression jobProg) {
+        return jobStatsMessage(jobProg, true);
+    }
+
+    public String jobStatsMessage(JobProgression jobProg, boolean progressBar) {
         boolean isMaxLevelReached = jobProg.getLevel() == jobProg.getJob().getMaxLevel();
         String path = "command.stats.output." + (isMaxLevelReached ? "max-level"
             : "message");
@@ -432,7 +438,7 @@ public class JobsCommands implements CommandExecutor {
             "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
             "%jobmaxxp%", jobProg.getMaxExperience(),
             "%titlename%", title == null ? "Unknown" : title.getName());
-        return " " + (isMaxLevelReached ? "" : jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience())) + " " + message;
+        return " " + (isMaxLevelReached ? "" : progressBar ? jobProgressMessage(jobProg.getMaxExperience(), jobProg.getExperience()) : "") + " " + message;
     }
 
     public String jobProgressMessage(double max, double current) {

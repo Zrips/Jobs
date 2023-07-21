@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
@@ -21,87 +22,85 @@ import net.Zrips.CMILib.RawMessages.RawMessage;
 public class bonus implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (!(sender instanceof Player)) {
-	    CMIMessages.sendMessage(sender, LC.info_Ingame);
-	    return false;
-	}
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+        if (!(sender instanceof Player)) {
+            CMIMessages.sendMessage(sender, LC.info_Ingame);
+            return null;
+        }
 
-	if (args.length != 1) {
-	    Jobs.getCommandManager().sendUsage(sender, "bonus");
-	    return true;
-	}
+        if (args.length != 1) {
+            Jobs.getCommandManager().sendUsage(sender, "bonus");
+            return true;
+        }
 
-	Player player = (Player) sender;
-	Job job = Jobs.getJob(args[0]);
-	if (job == null) {
-	    player.sendMessage(Jobs.getLanguage().getMessage("general.error.job"));
-	    return true;
-	}
+        Player player = (Player) sender;
+        Job job = Jobs.getJob(args[0]);
+        if (job == null) {
+            Language.sendMessage(sender, "general.error.job");
+            return true;
+        }
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return false;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return false;
 
-	Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job, true, true);
+        Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job, true, true);
 
-	player.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
+        Language.sendMessage(sender, "command.bonus.output.topline");
 
-	printBoost(sender, boost, BoostOf.Permission);
-	printBoost(sender, boost, BoostOf.Item);
-	printBoost(sender, boost, BoostOf.Global);
-	if (Jobs.getGCManager().useDynamicPayment)
-	    printBoost(sender, boost, BoostOf.Dynamic);
-	printBoost(sender, boost, BoostOf.Area);
-	if (Jobs.getGCManager().payNearSpawner())
-	    printBoost(sender, boost, BoostOf.NearSpawner);
-	printBoost(sender, boost, BoostOf.PetPay);
+        printBoost(sender, boost, BoostOf.Permission);
+        printBoost(sender, boost, BoostOf.Item);
+        printBoost(sender, boost, BoostOf.Global);
+        if (Jobs.getGCManager().useDynamicPayment)
+            printBoost(sender, boost, BoostOf.Dynamic);
+        printBoost(sender, boost, BoostOf.Area);
+        if (Jobs.getGCManager().payNearSpawner())
+            printBoost(sender, boost, BoostOf.NearSpawner);
+        printBoost(sender, boost, BoostOf.PetPay);
 
-	if (HookManager.getMcMMOManager().mcMMOPresent ||
-	    HookManager.getMcMMOManager().mcMMOOverHaul && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
-	    printBoost(sender, boost, BoostOf.McMMO);
+        if (HookManager.getMcMMOManager().mcMMOPresent ||
+            HookManager.getMcMMOManager().mcMMOOverHaul && boost.get(BoostOf.McMMO, CurrencyType.EXP) != 0D)
+            printBoost(sender, boost, BoostOf.McMMO);
 
-	player.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+        Language.sendMessage(sender, "general.info.separator");
 
-	RawMessage rm = new RawMessage();
-	String msg = Jobs.getLanguage().getMessage("command.bonus.output.final",
-	    "%money%", formatText(boost.getFinal(CurrencyType.MONEY, true, true)),
-	    "%points%", formatText(boost.getFinal(CurrencyType.POINTS, true, true)),
-	    "%exp%", formatText(boost.getFinal(CurrencyType.EXP, true, true)));
-	
-	String msg2 = Jobs.getLanguage().getMessage("command.bonus.output.final",
-	    "%money%", formatText(boost.getFinal(CurrencyType.MONEY, true, false)),
-	    "%points%", formatText(boost.getFinal(CurrencyType.POINTS, true, false)),
-	    "%exp%", formatText(boost.getFinal(CurrencyType.EXP, true, false)));
+        RawMessage rm = new RawMessage();
+        String msg = Jobs.getLanguage().getMessage("command.bonus.output.final",
+            "%money%", formatText(boost.getFinal(CurrencyType.MONEY, true, true)),
+            "%points%", formatText(boost.getFinal(CurrencyType.POINTS, true, true)),
+            "%exp%", formatText(boost.getFinal(CurrencyType.EXP, true, true)));
 
-	rm.addText(msg).addHover(Arrays.asList(Jobs.getLanguage().getMessage("command.bonus.output.finalExplanation"), msg2));
-	
-	
-	
-	rm.build();
-	rm.show(player);
+        String msg2 = Jobs.getLanguage().getMessage("command.bonus.output.final",
+            "%money%", formatText(boost.getFinal(CurrencyType.MONEY, true, false)),
+            "%points%", formatText(boost.getFinal(CurrencyType.POINTS, true, false)),
+            "%exp%", formatText(boost.getFinal(CurrencyType.EXP, true, false)));
 
-	return true;
+        rm.addText(msg).addHover(Arrays.asList(Jobs.getLanguage().getMessage("command.bonus.output.finalExplanation"), msg2));
+
+        rm.build();
+        rm.show(player);
+
+        return true;
     }
 
     private static void printBoost(CommandSender sender, Boost boost, BoostOf type) {
-	String prefix = Jobs.getLanguage().getMessage("command.bonus.output.specialPrefix");
-	if (type != BoostOf.NearSpawner && type != BoostOf.PetPay)
-	    prefix = "";
+        String prefix = Jobs.getLanguage().getMessage("command.bonus.output.specialPrefix");
+        if (type != BoostOf.NearSpawner && type != BoostOf.PetPay)
+            prefix = "";
 
-	String msg = Jobs.getLanguage().getMessage("command.bonus.output." + type.name().toLowerCase(),
-	    "%money%", formatText(boost.get(type, CurrencyType.MONEY, true)),
-	    "%points%", formatText(boost.get(type, CurrencyType.POINTS, true)),
-	    "%exp%", formatText(boost.get(type, CurrencyType.EXP, true)));
+        String msg = Jobs.getLanguage().getMessage("command.bonus.output." + type.name().toLowerCase(),
+            "%money%", formatText(boost.get(type, CurrencyType.MONEY, true)),
+            "%points%", formatText(boost.get(type, CurrencyType.POINTS, true)),
+            "%exp%", formatText(boost.get(type, CurrencyType.EXP, true)));
 
-	if ((type == BoostOf.NearSpawner || type == BoostOf.PetPay) && msg.startsWith(" "))
-	    msg = msg.substring(1, msg.length());
+        if ((type == BoostOf.NearSpawner || type == BoostOf.PetPay) && msg.startsWith(" "))
+            msg = msg.substring(1, msg.length());
 
-	sender.sendMessage(prefix + msg);
+        CMIMessages.sendMessage(sender, prefix + msg);
     }
 
     private static String formatText(double amount) {
-	return ((amount > 0 ? "+" : "") + amount + "%");
+        return ((amount > 0 ? "+" : "") + amount + "%");
     }
 
 }

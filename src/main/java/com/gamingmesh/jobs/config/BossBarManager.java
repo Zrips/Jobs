@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.stuff.ToggleBarHandling;
 
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class BossBarManager {
 
@@ -36,7 +37,7 @@ public class BossBarManager {
 
     public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
         if (Jobs.getGCManager().isBossBarAsync()) {
-            Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () -> ShowJobProgressionInTask(player, jobProg, expGain));
+            CMIScheduler.get().runTaskAsynchronously(() -> ShowJobProgressionInTask(player, jobProg, expGain));
         } else {
             ShowJobProgressionInTask(player, jobProg, expGain);
         }
@@ -139,7 +140,7 @@ public class BossBarManager {
         bar.setVisible(true);
 
         if (oldOne != null)
-            oldOne.setId(Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            oldOne.setScheduler(CMIScheduler.get().runTaskLater(new Runnable() {
                 @Override
                 public void run() {
                     for (BossBarInfo one : player.getBossBarInfo()) {

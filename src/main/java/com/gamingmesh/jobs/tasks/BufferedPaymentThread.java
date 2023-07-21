@@ -21,6 +21,8 @@ package com.gamingmesh.jobs.tasks;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class BufferedPaymentThread extends Thread {
     private volatile boolean running = true;
     private int sleep;
@@ -35,7 +37,7 @@ public class BufferedPaymentThread extends Thread {
     @Override
     public void run() {
 
-	Jobs.consoleMsg("&eStarted buffered payment thread.");
+	CMIMessages.consoleMessage("&eStarted buffered payment thread.");
 
 	while (running) {
 	    try {
@@ -50,11 +52,11 @@ public class BufferedPaymentThread extends Thread {
 		    economy.payAll();
 	    } catch (Throwable t) {
 		t.printStackTrace();
-		Jobs.consoleMsg("&c[Jobs] Exception in BufferedPaymentThread, stopping economy payments!");
+		CMIMessages.consoleMessage("&c[Jobs] Exception in BufferedPaymentThread, stopping economy payments!");
 		running = false;
 	    }
 	}
-	Jobs.consoleMsg("&eBuffered payment thread shutdown.");
+	CMIMessages.consoleMessage("&eBuffered payment thread shutdown.");
     }
 
     public void shutdown() {

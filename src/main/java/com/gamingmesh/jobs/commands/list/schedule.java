@@ -9,14 +9,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
+import com.gamingmesh.jobs.i18n.Language;
 
 public class schedule implements Cmd {
 
     @Override
-    public boolean perform(final Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(final Jobs plugin, final CommandSender sender, final String[] args) {
 	if (args.length < 2) {
 	    Jobs.getCommandManager().sendUsage(sender, "schedule");
-	    return true;
+	    return null;
 	}
 
 	if (args[0].equalsIgnoreCase("enable")) {
@@ -32,12 +33,12 @@ public class schedule implements Cmd {
 
 	    ConfigurationSection path = c.getConfigurationSection("Boost." + name);
 	    if (path == null) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.schedule.output.noScheduleFound"));
-		return false;
+		Language.sendMessage(sender,"command.schedule.output.noScheduleFound");
+		return null;
 	    }
 
 	    if (path.getBoolean("Enabled")) {
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.schedule.output.alreadyEnabled"));
+		Language.sendMessage(sender,"command.schedule.output.alreadyEnabled");
 		return true;
 	    }
 
@@ -63,7 +64,7 @@ public class schedule implements Cmd {
 
 	    Jobs.getScheduleManager().load();
 	    Jobs.getScheduleManager().start();
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.schedule.output.enabled", "%until%", until, "%from%", from));
+	    Language.sendMessage(sender,"command.schedule.output.enabled", "%until%", until, "%from%", from);
 	}
 
 	return true;

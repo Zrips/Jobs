@@ -18,12 +18,13 @@
 
 package com.gamingmesh.jobs;
 
-import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.gamingmesh.jobs.economy.BlackholeEconomy;
 import com.gamingmesh.jobs.economy.VaultEconomy;
+
+import net.Zrips.CMILib.Messages.CMIMessages;
+import net.milkbowl.vault.economy.Economy;
 
 public class HookEconomyTask implements Runnable {
 
@@ -72,7 +73,7 @@ public class HookEconomyTask implements Runnable {
         }
 
         Jobs.setEconomy(new VaultEconomy(provider.getProvider()));
-        Jobs.consoleMsg("&e[" + plugin.getDescription().getName() + "] Successfully linked with Vault. (" + provider.getProvider().getName() + ")");
+        CMIMessages.consoleMessage("&e[" + plugin.getDescription().getName() + "] Successfully linked with Vault. (" + provider.getProvider().getName() + ")");
         return hookResult.pass;
     }
 

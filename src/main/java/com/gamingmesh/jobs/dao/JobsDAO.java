@@ -41,10 +41,11 @@ import com.gamingmesh.jobs.container.PlayerPoints;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
-import com.gamingmesh.jobs.stuff.TimeManage;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.Time.CMITimeManager;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public abstract class JobsDAO {
  
@@ -819,7 +820,7 @@ public abstract class JobsDAO {
         PreparedStatement prest = null;
         ResultSet res = null;
         try {
-            int time = TimeManage.timeInInt();
+            int time = CMITimeManager.timeInInt();
             prest = conn.prepareStatement("SELECT * FROM `" + DBTables.LogTable.getTableName() + "` WHERE `" + LogTableFields.time.getCollumn() + "` = ? ;");
             prest.setInt(1, time);
             res = prest.executeQuery();
@@ -1016,10 +1017,10 @@ public abstract class JobsDAO {
     public void triggerTableIdUpdate() {
         // Lets convert old fields
         if (!converted) {
-            Bukkit.getServer().getScheduler().runTaskLater(plugin, () -> {
-                Jobs.consoleMsg("&6[Jobs] Converting to new database format");
+            CMIScheduler.get().runTaskLater(() -> {
+                CMIMessages.consoleMessage("&6[Jobs] Converting to new database format");
                 convertID();
-                Jobs.consoleMsg("&6[Jobs] Converted to new database format");
+                CMIMessages.consoleMessage("&6[Jobs] Converted to new database format");
                 converted = true;
             }, 60L);
         }
@@ -2311,7 +2312,7 @@ public abstract class JobsDAO {
         PreparedStatement prest = null;
         ResultSet res = null;
         try {
-            int time = TimeManage.timeInInt();
+            int time = CMITimeManager.timeInInt();
             prest = conn.prepareStatement("SELECT * FROM `" + DBTables.LogTable.getTableName()
                 + "` WHERE `" + LogTableFields.userid.getCollumn() + "` = ?  AND `" + LogTableFields.time.getCollumn() + "` = ? ;");
             prest.setInt(1, player.getUserId());
@@ -2508,12 +2509,12 @@ public abstract class JobsDAO {
                 i++;
 
                 if (ii++ >= 100000) {
-                    Jobs.consoleMsg("&6[Jobs] Loading (" + i + ") BP");
+                    CMIMessages.consoleMessage("&6[Jobs] Loading (" + i + ") BP");
                     ii = 0;
                 }
             }
             if (i > 0) {
-                Jobs.consoleMsg("&e[Jobs] Loaded " + i + " block protection entries. " + (System.currentTimeMillis() - timer) + "ms");
+                CMIMessages.consoleMessage("&e[Jobs] Loaded " + i + " block protection entries. " + (System.currentTimeMillis() - timer) + "ms");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -2577,7 +2578,7 @@ public abstract class JobsDAO {
             conn.setAutoCommit(true);
 
             if (i > 0)
-                Jobs.consoleMsg("&e[Jobs] Saved " + i + " new explorer entries.");
+                CMIMessages.consoleMessage("&e[Jobs] Saved " + i + " new explorer entries.");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -2624,7 +2625,7 @@ public abstract class JobsDAO {
             conn.setAutoCommit(true);
 
             if (i > 0)
-                Jobs.consoleMsg("&e[Jobs] Updated " + i + " explorer entries.");
+               CMIMessages.consoleMessage("&e[Jobs] Updated " + i + " explorer entries.");
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -8,7 +8,7 @@ import java.sql.Statement;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 
-import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class JobsMySQL extends JobsDAO {
 
@@ -52,7 +52,7 @@ public class JobsMySQL extends JobsDAO {
     protected void checkUpdate() throws SQLException {
 	JobsConnection conn = getConnection();
 	if (conn == null) {
-	    Jobs.consoleMsg("&cCould not run database updates! Could not connect to MySQL!");
+	    CMIMessages.consoleMessage("&cCould not run database updates! Could not connect to MySQL!");
 	    return;
 	}
 
@@ -77,7 +77,7 @@ public class JobsMySQL extends JobsDAO {
     @Override
     public boolean createTable(String query) {
 	if (query == null || query.isEmpty()) {
-	    Jobs.consoleMsg("&cCould not create table: query is empty or null.");
+	    CMIMessages.consoleMessage("&cCould not create table: query is empty or null.");
 	    return false;
 	}
 	JobsConnection conn = getConnection();
@@ -88,7 +88,7 @@ public class JobsMySQL extends JobsDAO {
 	    statement = conn.createStatement();
 	    statement.execute(query);
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("&cCould not create table, SQLException: " + e.getMessage());
+	    CMIMessages.consoleMessage("&cCould not create table, SQLException: " + e.getMessage());
 	    return false;
 	} finally {
 	    close(statement);
@@ -111,7 +111,7 @@ public class JobsMySQL extends JobsDAO {
 	    tables.close();
 	    return false;
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
+	    CMIMessages.consoleMessage("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
 	}
 
 	PreparedStatement insert = null;
@@ -125,7 +125,7 @@ public class JobsMySQL extends JobsDAO {
 		return true;
 	    }
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
+	    CMIMessages.consoleMessage("Not a table |" + "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='" + table + "';" + "|");
 	} finally {
 	    close(res);
 	    close(insert);
@@ -140,14 +140,14 @@ public class JobsMySQL extends JobsDAO {
 	try {
 	    statement = getConnection().createStatement();
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("&cCould not check if its collumn, SQLException: " + e.getMessage());
+	    CMIMessages.consoleMessage("&cCould not check if its collumn, SQLException: " + e.getMessage());
 	    return false;
 	}
 	try {
 	    statement.executeQuery("SELECT `" + collumn + "` FROM `" + table + "`;");
 	    return true;
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("Not a collumn |" + "SELECT " + collumn + " FROM " + table + "|");
+	    CMIMessages.consoleMessage("Not a collumn |" + "SELECT " + collumn + " FROM " + table + "|");
 	    return false;
 	} finally {
 	    close(statement);
@@ -160,11 +160,11 @@ public class JobsMySQL extends JobsDAO {
 	try {
 	    statement = getConnection().createStatement();
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("&cCould not add new collumn, SQLException: " + e.getMessage());
+	    CMIMessages.consoleMessage("&cCould not add new collumn, SQLException: " + e.getMessage());
 	    return false;
 	}
 	try {
-	    Jobs.consoleMsg("Creating collumn |" + "ALTER TABLE `" + table + "` ADD COLUMN `" + collumn + "` " + type + ";" + "|");
+	    CMIMessages.consoleMessage("Creating collumn |" + "ALTER TABLE `" + table + "` ADD COLUMN `" + collumn + "` " + type + ";" + "|");
 	    statement.executeUpdate("ALTER TABLE `" + table + "` ADD COLUMN `" + collumn + "` " + type + ";");
 	    return true;
 	} catch (SQLException e) {
@@ -179,14 +179,14 @@ public class JobsMySQL extends JobsDAO {
 	Statement statement = null;
 	try {
 	    if (!isTable(table)) {
-		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
+		CMIMessages.consoleMessage("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
 	    statement = getConnection().createStatement();
 	    statement.executeUpdate("DELETE FROM " + table + ";");
 	    return true;
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("&cCould not wipe table, SQLException: " + e.getMessage());
+	    CMIMessages.consoleMessage("&cCould not wipe table, SQLException: " + e.getMessage());
 	    e.printStackTrace();
 	    return false;
 	} finally {
@@ -199,14 +199,14 @@ public class JobsMySQL extends JobsDAO {
 	Statement statement = null;
 	try {
 	    if (!isTable(table)) {
-		Jobs.consoleMsg("&cTable \"" + table + "\" does not exist.");
+		CMIMessages.consoleMessage("&cTable \"" + table + "\" does not exist.");
 		return false;
 	    }
 	    statement = getConnection().createStatement();
 	    statement.executeUpdate("DROP TABLE IF EXISTS `" + table + "`;");
 	    return true;
 	} catch (SQLException e) {
-	    Jobs.consoleMsg("&cCould not wipe table, SQLException: " + e.getMessage());
+	    CMIMessages.consoleMessage("&cCould not wipe table, SQLException: " + e.getMessage());
 	    e.printStackTrace();
 	    return false;
 	} finally {

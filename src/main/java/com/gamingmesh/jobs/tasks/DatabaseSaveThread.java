@@ -20,6 +20,8 @@ package com.gamingmesh.jobs.tasks;
 
 import com.gamingmesh.jobs.Jobs;
 
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class DatabaseSaveThread extends Thread {
 
     private volatile boolean running = true;
@@ -33,7 +35,7 @@ public class DatabaseSaveThread extends Thread {
     @Override
     public void run() {
 
-	Jobs.consoleMsg("&eStarted database save task.");
+	CMIMessages.consoleMessage("&eStarted database save task.");
 
 	while (running) {
 	    try {
@@ -46,12 +48,12 @@ public class DatabaseSaveThread extends Thread {
 		Jobs.getPlayerManager().saveAll();
 	    } catch (Throwable t) {
 		t.printStackTrace();
-		Jobs.consoleMsg("&c[Jobs] Exception in DatabaseSaveTask, stopping auto save!");
+		CMIMessages.consoleMessage("&c[Jobs] Exception in DatabaseSaveTask, stopping auto save!");
 		running = false;
 	    }
 	}
 
-	Jobs.consoleMsg("&eDatabase save task shutdown!");
+	CMIMessages.consoleMessage("&eDatabase save task shutdown!");
 
     }
 

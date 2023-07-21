@@ -3,7 +3,7 @@ package com.gamingmesh.jobs.container;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gamingmesh.jobs.stuff.TimeManage;
+import net.Zrips.CMILib.Time.CMITimeManager;
 
 public final class Log {
 
@@ -36,7 +36,7 @@ public final class Log {
     }
 
     public void setDate() {
-	this.day = TimeManage.timeInInt();
+	this.day = CMITimeManager.timeInInt();
     }
 
     public int getDate() {

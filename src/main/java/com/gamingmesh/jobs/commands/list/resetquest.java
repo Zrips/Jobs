@@ -10,48 +10,56 @@ import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.QuestProgression;
+import com.gamingmesh.jobs.i18n.Language;
+
+import net.Zrips.CMILib.Locale.LC;
 
 public class resetquest implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (args.length != 0 && args.length != 1 && args.length != 2) {
-	    Jobs.getCommandManager().sendUsage(sender, "resetquest");
-	    return true;
-	}
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
-	JobsPlayer jPlayer = null;
-	Job job = null;
+        if (!Jobs.getGCManager().DailyQuestsEnabled) {
+            LC.info_FeatureNotEnabled.sendMessage(sender);
+            return true;
+        }
 
-	for (String one : args) {
-	    if (job == null) {
-		job = Jobs.getJob(one);
-		if (job != null)
-		    continue;
-	    }
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(one);
-	}
+        if (args.length != 0 && args.length != 1 && args.length != 2) {
+            return false;
+        }
 
-	if (jPlayer == null && sender instanceof Player)
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+        JobsPlayer jPlayer = null;
+        Job job = null;
 
-	if (jPlayer == null) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : ""));
-	    return true;
-	}
+        for (String one : args) {
+            if (job == null) {
+                job = Jobs.getJob(one);
+                if (job != null)
+                    continue;
+            }
+            jPlayer = Jobs.getPlayerManager().getJobsPlayer(one);
+        }
 
-	List<QuestProgression> quests = jPlayer.getQuestProgressions();
+        if (jPlayer == null && sender instanceof Player)
+            jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
-	if (job != null)
-	    quests = jPlayer.getQuestProgressions(job);
+        if (jPlayer == null) {
+            Language.sendMessage(sender, "general.error.noinfoByPlayer", "%playername%", args.length > 0 ? args[0] : "");
+            return true;
+        }
 
-	if (quests.isEmpty()) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.noQuests"));
-	    return true;
-	}
+        List<QuestProgression> quests = jPlayer.getQuestProgressions();
 
-	jPlayer.resetQuests(quests);
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.resetquest.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getName()));
-	return true;
+        if (job != null)
+            quests = jPlayer.getQuestProgressions(job);
+
+        if (quests.isEmpty()) {
+            Language.sendMessage(sender, "command.resetquest.output.noQuests");
+            return true;
+        }
+
+        jPlayer.resetQuests(quests);
+        Language.sendMessage(sender, "command.resetquest.output.reseted", "%playername%", jPlayer.getName(), "%playerdisplayname%", jPlayer.getName());
+        return true;
     }
 }

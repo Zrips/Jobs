@@ -60,7 +60,7 @@ public final class TabComplete implements TabCompleter {
 			    temp.addAll(Jobs.getScheduleManager().getConf().getConfig().getConfigurationSection("Boost").getKeys(false));
 			    break;
 			case "[time]":
-			    temp.add("1hour10minute20s");
+			    temp.add("1h10m20s");
 			    break;
 			case "[questname]":
 			case "[quest]":

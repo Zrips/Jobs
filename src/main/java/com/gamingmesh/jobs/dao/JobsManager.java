@@ -6,7 +6,7 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.LoadStatus;
 
 import net.Zrips.CMILib.FileHandler.ConfigReader;
-import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class JobsManager {
     private JobsDAO dao;
@@ -70,9 +70,9 @@ public class JobsManager {
     public void start() {
 
 	if (Jobs.getJobsDAO() != null) {
-	    Jobs.consoleMsg("&eClosing existing database connection...");
+	    CMIMessages.consoleMessage("&eClosing existing database connection...");
 	    Jobs.getJobsDAO().closeConnections();
-	    Jobs.consoleMsg("&eClosed");
+	    CMIMessages.consoleMessage("&eClosed");
 	}
 
 	ConfigReader c = Jobs.getGCManager().getConfig();
@@ -100,7 +100,7 @@ public class JobsManager {
 	    }
 	} else {
 	    if (!storageMethod.equalsIgnoreCase("sqlite")) {
-		Jobs.consoleMsg("&cInvalid storage method! Changing method to sqlite!");
+		CMIMessages.consoleMessage("&cInvalid storage method! Changing method to sqlite!");
 		c.set("storage.method", "sqlite");
 	    }
 

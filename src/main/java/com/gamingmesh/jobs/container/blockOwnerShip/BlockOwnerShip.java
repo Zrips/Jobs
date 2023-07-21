@@ -24,6 +24,7 @@ import com.gamingmesh.jobs.stuff.blockLoc;
 
 import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Messages.CMIMessages;
 
 public class BlockOwnerShip {
 
@@ -380,7 +381,7 @@ public class BlockOwnerShip {
 	}
 
 	if (total > 0) {
-	    Jobs.consoleMsg("&eLoaded &6" + total + " " + path.toLowerCase() + " &efor reassigning.");
+	    CMIMessages.consoleMessage("&eLoaded &6" + total + " " + path.toLowerCase() + " &efor reassigning.");
 	}
     }
 

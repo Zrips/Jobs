@@ -9,20 +9,22 @@ import org.bukkit.entity.Player;
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.PageInfo;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class browse implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, CommandSender sender, final String[] args) {
         boolean senderIsPlayer = sender instanceof Player;
 
         if (Jobs.getGCManager().BrowseUseNewLook) {
             if (Jobs.getJobs().isEmpty()) {
-                sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
+                Language.sendMessage(sender, "command.browse.error.nojobs");
                 return true;
             }
 
@@ -60,7 +62,7 @@ public class browse implements Cmd {
             if (senderIsPlayer) {
                 if (j == null) {
                     PageInfo pi = new PageInfo(Jobs.getGCManager().getBrowseAmountToShow(), jobList.size(), page);
-                    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.newHeader", "[amount]", jobList.size()));
+                    Language.sendMessage(sender, "command.browse.output.newHeader", "[amount]", jobList.size());
                     for (Job one : jobList) {
                         if (!pi.isEntryOk())
                             continue;
@@ -113,28 +115,28 @@ public class browse implements Cmd {
 
                         rm.show(sender);
                     }
-                    plugin.showPagination(sender, pi, "jobs browse", "-p:");
+                    pi.autoPagination(sender, "jobs browse", "-p:");
                 } else {
 
-                    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));
+                    Language.sendMessage(sender, "command.browse.output.jobHeader", "[jobname]", j.getName());
 
                     int maxLevel = j.getMaxLevel(sender);
                     if (maxLevel > 0)
-                        sender.sendMessage(Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", maxLevel));
+                        Language.sendMessage(sender, "command.info.help.newMax", "[max]", maxLevel);
 
                     if (Jobs.getGCManager().ShowTotalWorkers)
-                        sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.totalWorkers", "[amount]", j.getTotalPlayers()));
+                        Language.sendMessage(sender, "command.browse.output.totalWorkers", "[amount]", j.getTotalPlayers());
 
                     if (Jobs.getGCManager().useDynamicPayment && Jobs.getGCManager().ShowPenaltyBonus) {
                         int bonus = (int) (j.getBonus() * 100);
                         if (bonus < 0)
-                            sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", bonus * -1));
+                            Language.sendMessage(sender, "command.browse.output.penalty", "[amount]", bonus * -1);
                         else
-                            sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", bonus));
+                            Language.sendMessage(sender, "command.browse.output.bonus", "[amount]", bonus);
                     }
 
                     for (String one : j.getFullDescription()) {
-                        sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", one));
+                        Language.sendMessage(sender, "command.browse.output.description", "[description]", one);
                     }
 
                     RawMessage rm = new RawMessage();
@@ -148,7 +150,7 @@ public class browse implements Cmd {
                 }
             } else {
                 if (j == null) {
-                    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.console.newHeader", "[amount]", jobList.size(), "\\n", "\n"));
+                    Language.sendMessage(sender, "command.browse.output.console.newHeader", "[amount]", jobList.size(), "\\n", "\n");
                     for (Job one : jobList) {
                         String msg = "";
 
@@ -177,14 +179,14 @@ public class browse implements Cmd {
 
                         msg += Jobs.getLanguage().getMessage("command.browse.output.console.list", "[jobname]", one.getName());
 
-                        sender.sendMessage(msg);
+                        CMIMessages.sendMessage(sender, msg);
                     }
                 } else {
-                    sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.jobHeader", "[jobname]", j.getName()));
+                    Language.sendMessage(sender, "command.browse.output.jobHeader", "[jobname]", j.getName());
 
                     int maxLevel = j.getMaxLevel(sender);
                     if (maxLevel > 0)
-                        sender.sendMessage(Jobs.getLanguage().getMessage("command.info.help.newMax", "[max]", maxLevel));
+                        Language.sendMessage(sender, "command.info.help.newMax", "[max]", maxLevel);
 
                     if (Jobs.getGCManager().ShowTotalWorkers)
                         sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.totalWorkers", "[amount]", j.getTotalPlayers()));
@@ -192,13 +194,13 @@ public class browse implements Cmd {
                     if (Jobs.getGCManager().useDynamicPayment && Jobs.getGCManager().ShowPenaltyBonus) {
                         int bonus = (int) (j.getBonus() * 100);
                         if (bonus < 0)
-                            sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.penalty", "[amount]", bonus * -1));
+                            Language.sendMessage(sender, "command.browse.output.penalty", "[amount]", bonus * -1);
                         else
-                            sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.bonus", "[amount]", bonus));
+                            Language.sendMessage(sender, "command.browse.output.bonus", "[amount]", bonus);
                     }
 
                     for (String one : j.getFullDescription()) {
-                        sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.description", "[description]", one));
+                        Language.sendMessage(sender, "command.browse.output.description", "[description]", one);
                     }
                 }
             }
@@ -245,7 +247,7 @@ public class browse implements Cmd {
             }
 
             if (lines.isEmpty()) {
-                sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.error.nojobs"));
+                Language.sendMessage(sender, "command.browse.error.nojobs");
                 return true;
             }
 
@@ -260,9 +262,9 @@ public class browse implements Cmd {
             }
 
             if (Jobs.getGCManager().JobsGUIShowChatBrowse) {
-                sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.header"));
+                Language.sendMessage(sender, "command.browse.output.header");
                 lines.forEach(sender::sendMessage);
-                sender.sendMessage(Jobs.getLanguage().getMessage("command.browse.output.footer"));
+                Language.sendMessage(sender, "command.browse.output.footer");
             }
         }
         return true;

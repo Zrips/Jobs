@@ -470,6 +470,7 @@ command:
       args: '[jobname] [questname] (playerName)'
     output:
       questSkipForCost: '&2You skipped the quest and paid:&e %amount%$'
+    confirmationNeed: '&cAre you sure you want to skip&e [questName]&c quest? Type the command again within&6 [time] seconds &cto confirm!'
   quests:
     help:
       info: List available quests

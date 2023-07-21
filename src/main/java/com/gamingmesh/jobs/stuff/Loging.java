@@ -8,6 +8,8 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Log;
 
+import net.Zrips.CMILib.Time.CMITimeManager;
+
 public class Loging {
 
     public void recordToLog(JobsPlayer jPlayer, ActionInfo info, Map<CurrencyType, Double> amounts) {
@@ -17,7 +19,7 @@ public class Loging {
     public void recordToLog(JobsPlayer jPlayer, String actionName, String item, Map<CurrencyType, Double> amounts) {
 	Map<String, Log> logList = jPlayer.getLog();
 	Log l = logList.values().stream().findFirst().orElse(null);
-	if (l != null && TimeManage.timeInInt() != l.getDate()) {
+	if (l != null && CMITimeManager.timeInInt() != l.getDate()) {
 	    Jobs.getJobsDAO().saveLog(jPlayer);
 	    jPlayer.getLog().clear();
 	}

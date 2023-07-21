@@ -113,11 +113,14 @@ public class ShopManager {
             List<String> lore = new ArrayList<>();
             CMIMaterial mat = CMIMaterial.get(item.getIconMaterial());
 
+            boolean hiddenLore = false;
+
             if (item.isHideWithoutPerm()) {
                 for (String onePerm : item.getRequiredPerm()) {
                     if (!player.hasPermission(onePerm)) {
                         mat = CMIMaterial.STONE_BUTTON;
                         lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPermToBuy"));
+                        hiddenLore = true;
                         break;
                     }
                 }
@@ -127,6 +130,7 @@ public class ShopManager {
                 jPlayer.getTotalLevels() < item.getRequiredTotalLevels()) {
                 mat = CMIMaterial.STONE_BUTTON;
                 lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
+                hiddenLore = true;
             }
 
             if (mat == CMIMaterial.NONE)
@@ -142,48 +146,50 @@ public class ShopManager {
             if (item.getIconName() != null)
                 meta.setDisplayName(item.getIconName());
 
-            lore.addAll(item.getIconLore());
+            if (!hiddenLore) {
+                lore.addAll(item.getIconLore());
 
-            if (item.getPointPrice() > 0) {
-                String color = item.getPointPrice() >= points ? "" : Jobs.getLanguage().getMessage("command.shop.info.haveColor");
-                lore.add(Jobs.getLanguage().getMessage("command.shop.info.pointsPrice", "%currentpoints%", color + points, "%price%", item.getPointPrice()));
-            }
-
-            if (item.getVaultPrice() > 0) {
-                String color = item.getVaultPrice() >= balance ? "" : Jobs.getLanguage().getMessage("command.shop.info.haveColor");
-                lore.add(Jobs.getLanguage().getMessage("command.shop.info.moneyPrice", "%currentbalance%", color + Jobs.getEconomy().getEconomy().format(balance), "%price%", item.getVaultPrice()));
-            }
-
-            if (!item.getRequiredJobs().isEmpty()) {
-                lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobs"));
-
-                for (Entry<String, Integer> one : item.getRequiredJobs().entrySet()) {
-                    Job job = Jobs.getJob(one.getKey());
-                    if (job == null) {
-                        continue;
-                    }
-
-                    String jobColor = "";
-                    String levelColor = "";
-
-                    JobProgression prog = jPlayer.getJobProgression(job);
-                    if (prog == null) {
-                        jobColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsColor");
-                        levelColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsLevelColor");
-                    }
-
-                    if (prog != null && prog.getLevel() < one.getValue())
-                        levelColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsLevelColor");
-
-                    lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobsList", "%jobsname%",
-                        jobColor + one.getKey(), "%level%", levelColor + one.getValue()));
+                if (item.getPointPrice() > 0) {
+                    String color = item.getPointPrice() >= points ? "" : Jobs.getLanguage().getMessage("command.shop.info.haveColor");
+                    lore.add(Jobs.getLanguage().getMessage("command.shop.info.pointsPrice", "%currentpoints%", color + points, "%price%", item.getPointPrice()));
                 }
-            }
 
-            if (item.getRequiredTotalLevels() != -1) {
-                lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevel",
-                    "%totalLevel%", (jPlayer.getTotalLevels() < item.getRequiredTotalLevels()
-                        ? Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevelColor") : "") + item.getRequiredTotalLevels()));
+                if (item.getVaultPrice() > 0) {
+                    String color = item.getVaultPrice() >= balance ? "" : Jobs.getLanguage().getMessage("command.shop.info.haveColor");
+                    lore.add(Jobs.getLanguage().getMessage("command.shop.info.moneyPrice", "%currentbalance%", color + Jobs.getEconomy().getEconomy().format(balance), "%price%", item.getVaultPrice()));
+                }
+
+                if (!item.getRequiredJobs().isEmpty()) {
+                    lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobs"));
+
+                    for (Entry<String, Integer> one : item.getRequiredJobs().entrySet()) {
+                        Job job = Jobs.getJob(one.getKey());
+                        if (job == null) {
+                            continue;
+                        }
+
+                        String jobColor = "";
+                        String levelColor = "";
+
+                        JobProgression prog = jPlayer.getJobProgression(job);
+                        if (prog == null) {
+                            jobColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsColor");
+                            levelColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsLevelColor");
+                        }
+
+                        if (prog != null && prog.getLevel() < one.getValue())
+                            levelColor = Jobs.getLanguage().getMessage("command.shop.info.reqJobsLevelColor");
+
+                        lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqJobsList", "%jobsname%",
+                            jobColor + one.getKey(), "%level%", levelColor + one.getValue()));
+                    }
+                }
+
+                if (item.getRequiredTotalLevels() != -1) {
+                    lore.add(Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevel",
+                        "%totalLevel%", (jPlayer.getTotalLevels() < item.getRequiredTotalLevels()
+                            ? Jobs.getLanguage().getMessage("command.shop.info.reqTotalLevelColor") : "") + item.getRequiredTotalLevels()));
+                }
             }
 
             meta.setLore(lore);
@@ -497,6 +503,6 @@ public class ShopManager {
         }
 
         if (!list.isEmpty())
-            Jobs.consoleMsg("&eLoaded &6" + list.size() + " &eshop items");
+            CMIMessages.consoleMessage("&eLoaded &6" + list.size() + " &eshop items");
     }
 }

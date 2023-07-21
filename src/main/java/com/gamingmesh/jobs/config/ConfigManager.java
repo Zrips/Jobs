@@ -60,7 +60,7 @@ import net.Zrips.CMILib.Equations.ParseError;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
 public class ConfigManager {
@@ -965,7 +965,7 @@ public class ConfigManager {
         Jobs.setJobs(jobs);
 
         if (!jobs.isEmpty()) {
-            Jobs.consoleMsg("&eLoaded &6" + jobs.size() + " &ejobs");
+            CMIMessages.consoleMessage("&eLoaded &6" + jobs.size() + " &ejobs");
         }
 
         ItemBoostManager.load();
@@ -1315,7 +1315,7 @@ public class ConfigManager {
                     jobItems.put(node.toLowerCase(), new JobItems(node, CMIMaterial.get(id), 1, name, lore, enchants, b, new ArrayList<Job>()));
                 }
 
-                Jobs.consoleMsg("&cRemove Items section from " + jobKey + " job, as of Jobs 4.10.0 version this was moved to boostedItems.yml file!");
+                CMIMessages.consoleMessage("&cRemove Items section from " + jobKey + " job, as of Jobs 4.10.0 version this was moved to boostedItems.yml file!");
             }
 
             // Limited Items
@@ -1416,8 +1416,8 @@ public class ConfigManager {
                             }
                         }
 
-                        for (String oneObjective : sqsection.getStringList("Objectives")) {                                                                                   
-                            List<QuestObjective> objectives = QuestObjective.get(oneObjective, jobFullName);                            
+                        for (String oneObjective : sqsection.getStringList("Objectives")) {
+                            List<QuestObjective> objectives = QuestObjective.get(oneObjective, jobFullName);
                             quest.addObjectives(objectives);
                         }
 
@@ -1435,13 +1435,13 @@ public class ConfigManager {
 
                         quests.add(quest);
                     } catch (Exception e) {
-                        Jobs.consoleMsg("&cCan't load &6" + one + " &cquest for &6" + jobFullName);
+                        CMIMessages.consoleMessage("&cCan't load &6" + one + " &cquest for &6" + jobFullName);
                         e.printStackTrace();
                     }
                 }
 
                 job.setQuests(quests);
-                Jobs.consoleMsg("&eLoaded &6" + quests.size() + " &equests for &6" + jobFullName);
+                CMIMessages.consoleMessage("&eLoaded &6" + quests.size() + " &equests for &6" + jobFullName);
             }
             job.setMaxDailyQuests(jobSection.getInt("maxDailyQuests", 1));
 

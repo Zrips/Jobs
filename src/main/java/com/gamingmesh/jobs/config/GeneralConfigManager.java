@@ -40,12 +40,12 @@ import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 
 import net.Zrips.CMILib.CMILib;
-import net.Zrips.CMILib.Container.CMIArray;
 import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
 public class GeneralConfigManager {
@@ -95,7 +95,8 @@ public class GeneralConfigManager {
         SignsColorizeJobName, ShowToplistInScoreboard, useGlobalTimer, useSilkTouchProtection, UseCustomNames,
         PreventSlimeSplit, PreventMagmaCubeSplit, PreventHopperFillUps, PreventBrewingStandFillUps, informOnPaymentDisable,
         BrowseUseNewLook, payExploringWhenGliding = false, resetExploringData = false, disablePaymentIfMaxLevelReached, disablePaymentIfRiding,
-        boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, boostedItemsSlotSpecific, multiplyBoostedExtraValues, addPermissionBoost, highestPermissionBoost /*, preventCropResizePayment*/,
+        boostedItemsInOffHand = false, boostedItemsInMainHand, boostedArmorItems, boostedItemsSlotSpecific, multiplyBoostedExtraValues, addPermissionBoost,
+        highestPermissionBoost,
         payItemDurabilityLoss,
         applyToNegativeIncome, useMinimumOveralPayment, useMinimumOveralPoints, useMinimumOveralExp, useBreederFinder,
         CancelCowMilking, fixAtMaxLevel, TitleChangeChat, TitleChangeActionBar, LevelChangeChat,
@@ -106,9 +107,12 @@ public class GeneralConfigManager {
         EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve, blockOwnershipTakeOver,
         hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
         BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
-        DisabledWorldsUse, UseAsWhiteListWorldList, PaymentMethodsMoney, PaymentMethodsPoints, PaymentMethodsExp, MythicMobsEnabled,
+        DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
         payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
+    
+    public boolean jobsshopenabled;
+    public boolean DailyQuestsEnabled;
 
     public ItemStack guiInfoButton;
     public int InfoButtonSlot = 9;
@@ -419,6 +423,9 @@ public class GeneralConfigManager {
         c.addComment("broadcast.on-level-up.levels", "For what levels you want to broadcast message? Keep it at 0 if you want for all of them");
         BroadcastingLevelUpLevels = c.getIntList("broadcast.on-level-up.levels", Arrays.asList(0));
 
+        c.addComment("DailyQuests.Enabled", "Enables or disables daily quests");
+        DailyQuestsEnabled = c.get("DailyQuests.Enabled", true);
+        
         c.addComment("DailyQuests.ResetTime", "Defines time in 24hour format when we want to give out new daily quests",
             "Any daily quests given before reset will be invalid and new ones will be given out");
         ResetTimeHour = c.get("DailyQuests.ResetTime.Hour", 4);
@@ -449,6 +456,9 @@ public class GeneralConfigManager {
 
         c.addComment("prevent-shop-item-enchanting", "Prevent players to enchant items from the shop in the anvil with enchanted books");
         preventShopItemEnchanting = c.get("prevent-shop-item-enchanting", true);
+        
+        c.addComment("jobs-shop-enabled", "Enables or disables jobs shop");
+        jobsshopenabled = c.get("jobs-shop-enabled", true);
 
         c.addComment("enable-pay-near-spawner",
             "Option to allow payment to be made when killing mobs from a spawner.",
@@ -543,7 +553,7 @@ public class GeneralConfigManager {
 
             CMIMaterial mat = CMIMaterial.get(mName);
             if (mat == CMIMaterial.NONE) {
-                Jobs.consoleMsg("Failed to recognize " + one + " entry from config file");
+                CMIMessages.consoleMessage("Failed to recognize " + one + " entry from config file");
                 continue;
             }
 
@@ -585,9 +595,10 @@ public class GeneralConfigManager {
         c.addComment("Economy.PaymentMethods",
             "By disabling one of these, players no longer will get particular payment.",
             "Useful for removing particular payment method without editing whole jobConfig file");
-        PaymentMethodsMoney = c.get("Economy.PaymentMethods.Money", true);
-        PaymentMethodsPoints = c.get("Economy.PaymentMethods.Points", true);
-        PaymentMethodsExp = c.get("Economy.PaymentMethods.Exp", true);
+
+        for (CurrencyType one : CurrencyType.values()) {
+            one.setEnabled(c.get("Economy.PaymentMethods." + one.getName(), true));
+        }
 
         c.addComment("Economy.GeneralMulti",
             "Can be used to change payment amounts for all jobs and all actions if you want to readjust them",
@@ -644,7 +655,7 @@ public class GeneralConfigManager {
             DynamicPaymentEquation.setVariable("totaljobs", 10);
             DynamicPaymentEquation.setVariable("jobstotalplayers", 10);
         } catch (Throwable e) {
-            Jobs.consoleMsg("&cDynamic payment equation has an invalid property. Disabling feature!");
+            CMIMessages.consoleMessage("&cDynamic payment equation has an invalid property. Disabling feature!");
             useDynamicPayment = false;
         }
 
@@ -702,8 +713,14 @@ public class GeneralConfigManager {
             Jobs.getPluginLogger().warning("MoneyLimit has an invalid value. Disabling money limit!");
             limit.setEnabled(false);
         }
+
         c.addComment("Economy.Limit.Money.TimeLimit", "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
         limit.setTimeLimit(c.get("Economy.Limit.Money.TimeLimit", 3600));
+
+        c.addComment("Economy.Limit.Money.ResetTime", "Time in 24 hour format when limit should reset. This will override TimeLimit if defined",
+            "Example: '00:00:00' will reset timer at midnight, '04:30:00' will reset at 4:30 in the morning", "Set to empty field if you want to use TimeLimit");
+        limit.setResetsAt(c.get("Economy.Limit.Money.ResetTime", ""));
+
         c.addComment("Economy.Limit.Money.AnnouncementDelay", "Delay between announcements about reached money limit",
             "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
         limit.setAnnouncementDelay(c.get("Economy.Limit.Money.AnnouncementDelay", 30));
@@ -736,6 +753,11 @@ public class GeneralConfigManager {
         }
         c.addComment("Economy.Limit.Point.TimeLimit", "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
         limit.setTimeLimit(c.get("Economy.Limit.Point.TimeLimit", 3600));
+
+        c.addComment("Economy.Limit.Point.ResetTime", "Time in 24 hour format when limit should reset. This will override TimeLimit if defined",
+            "Example: '00:00:00' will reset timer at midnight, '04:30:00' will reset at 4:30 in the morning", "Set to empty field if you want to use TimeLimit");
+        limit.setResetsAt(c.get("Economy.Limit.Point.ResetTime", ""));
+
         c.addComment("Economy.Limit.Point.AnnouncementDelay", "Delay between announcements about reached limit",
             "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
         limit.setAnnouncementDelay(c.get("Economy.Limit.Point.AnnouncementDelay", 30));
@@ -768,6 +790,11 @@ public class GeneralConfigManager {
         }
         c.addComment("Economy.Limit.Exp.TimeLimit", "Time in seconds: 60 = 1 min, 3600 = 1 hour, 86400 = 24 hours");
         limit.setTimeLimit(c.get("Economy.Limit.Exp.TimeLimit", 3600));
+
+        c.addComment("Economy.Limit.Exp.ResetTime", "Time in 24 hour format when limit should reset. This will override TimeLimit if defined",
+            "Example: '00:00:00' will reset timer at midnight, '04:30:00' will reset at 4:30 in the morning", "Set to empty field if you want to use TimeLimit");
+        limit.setResetsAt(c.get("Economy.Limit.Exp.ResetTime", ""));
+
         c.addComment("Economy.Limit.Exp.AnnouncementDelay", "Delay between announcements about reached Exp limit",
             "Keep this from 30 to 5 min (300), as players can get annoyed of constant message displaying");
         limit.setAnnouncementDelay(c.get("Economy.Limit.Exp.AnnouncementDelay", 30));

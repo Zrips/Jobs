@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.FileHandler.ConfigReader;
@@ -79,6 +80,19 @@ public class LanguageManager {
             c.get("limitedItem.error.levelup", "&cYou need to level up in [jobname] to use this item!");
             c.get("general.info.toplineseparator", "&7*********************** &6%playerdisplayname% &7***********************");
             c.get("general.info.separator", "&7*******************************************************");
+
+            for (CurrencyType curr : CurrencyType.values()) {
+                c.get("general.info.paymentType." + curr.toString(), curr.getName());
+
+                String color = "&2";
+                if (curr.equals(CurrencyType.POINTS))
+                    color = "&6";
+                else if (curr.equals(CurrencyType.EXP))
+                    color = "&e";
+
+                c.get("general.info.paymentTypeValued." + curr.toString(), color + curr.getName() + ": %amount%");
+            }
+
             c.get("general.info.invalidPage", "&cInvalid page");
             c.get("general.info.blocks.furnace", "Furnace");
             c.get("general.info.blocks.smoker", "Smoker");
@@ -107,35 +121,17 @@ public class LanguageManager {
 
             c.get("command.help.output.title", "&e-------&e ======= &6Jobs &e======= &e-------");
 
-            c.get("command.moneyboost.help.info", "Boosts money gain for all players");
-            c.get("command.moneyboost.help.args", "[jobname]/all/reset [time]/[rate]");
-            Jobs.getGCManager().getCommandArgs().put("moneyboost", Arrays.asList("[jobname]%%all%%reset", "[time]%%2", "%%2"));
-            c.get("command.moneyboost.output.allreset", "All money boosts turned off");
-            c.get("command.moneyboost.output.jobsboostreset", "Money boost has been turned off for %jobname%");
-            c.get("command.moneyboost.output.nothingtoreset", "Nothing to reset");
-            c.get("command.moneyboost.output.boostalladded", "Money boost of %boost% added for all jobs!");
-            c.get("command.moneyboost.output.boostadded", "Money boost of &e%boost% &aadded for &e%jobname%!");
-            c.get("command.moneyboost.output.infostats", "&c-----> &aMoney rate x%boost% enabled&c <-------");
-
-            c.get("command.pointboost.help.info", "Boosts point gain for all players");
-            c.get("command.pointboost.help.args", "[jobname]/all/reset [time]/[rate]");
-            Jobs.getGCManager().getCommandArgs().put("pointboost", Arrays.asList("[jobname]%%all%%reset", "[time]%%2", "%%2"));
-            c.get("command.pointboost.output.allreset", "All point boosts turned off");
-            c.get("command.pointboost.output.jobsboostreset", "Point boost has been turned off for %jobname%");
-            c.get("command.pointboost.output.nothingtoreset", "Nothing to reset");
-            c.get("command.pointboost.output.boostalladded", "Points boost of %boost% added for all jobs!");
-            c.get("command.pointboost.output.boostadded", "Points boost of &e%boost% &aadded for &e%jobname%!");
-            c.get("command.pointboost.output.infostats", "&c-----> &aPoints rate x%boost% enabled&c <-------");
-
-            c.get("command.expboost.help.info", "Boosts exp gain for all players");
-            c.get("command.expboost.help.args", "[jobname]/all/reset [time]/[rate]");
-            Jobs.getGCManager().getCommandArgs().put("expboost", Arrays.asList("[jobname]%%all%%reset", "[time]%%2", "%%2"));
-            c.get("command.expboost.output.allreset", "All exp boosts turned off");
-            c.get("command.expboost.output.jobsboostreset", "Exp boost has been turned off for %jobname%");
-            c.get("command.expboost.output.nothingtoreset", "Nothing to reset");
-            c.get("command.expboost.output.boostalladded", "Exp boost of %boost% added for all jobs!");
-            c.get("command.expboost.output.boostadded", "Exp boost of &e%boost% &aadded for &e%jobname%!");
-            c.get("command.expboost.output.infostats", "&c-----> &aExp rate x%boost% enabled&c <-------");
+            c.get("command.boost.help.info", "Boosts jobs gains for all players");
+            c.get("command.boost.help.args", "exp/money/points [jobname]/all/reset [rate] [time]");
+            Jobs.getGCManager().getCommandArgs().put("boost", Arrays.asList("[jobname]", "reset%%exp%%money%%points", "[time]%%2", "%%2"));
+            c.get("command.boost.output.allreset", "&aAll boosts turned off");
+            c.get("command.boost.output.alltypereset", "&aAll &e%type% &aboosts turned off");
+            c.get("command.boost.output.jobsboostreset", "&aBoost has been turned off for &e%jobname%");
+            c.get("command.boost.output.jobstypeboostreset", "&e%type% &aboost has been turned off for &e%jobname%");
+            c.get("command.boost.output.nothingtoreset", "Nothing to reset");
+            c.get("command.boost.output.boostadded", "&aBoost of &e%boost% &aadded for &e%jobname%!");
+            c.get("command.boost.output.infostats", "&c-----> &a%type% rate x%boost% enabled&c <-------");
+            c.get("command.boost.output.boostStats", "&6%payments% &e%jobname%");
 
             c.get("command.schedule.help.info", "Enables the given scheduler");
             c.get("command.schedule.help.args", "enable [scheduleName] [untilTime]");
@@ -248,9 +244,9 @@ public class LanguageManager {
             c.get("command.editjobs.help.modify.lookHover", "&6Press to grab info from block you are looking");
 
             c.get("command.editquests.help.info", "Edit job quests.");
-            c.get("command.editquests.help.args", "(page)"); 
+            c.get("command.editquests.help.args", "(page)");
             c.get("command.editquests.help.output.list", "&6[questName] &7- &f[jobName]");
-            
+
             c.get("command.editquests.help.output.name", "&eName: &f");
             c.get("command.editquests.help.output.job", " &eJob: &f");
             c.get("command.editquests.help.output.chance", " &eChance: &f");
@@ -301,11 +297,11 @@ public class LanguageManager {
             c.get("command.shop.help.info", "Opens special jobs shop.");
             c.get("command.shop.help.args", "");
             c.get("command.shop.info.title", "&e------- &8Jobs shop &e-------");
-            
+
             c.get("command.shop.info.haveColor", "&2");
             c.get("command.shop.info.pointsPrice", "&ePoint cost: &c%currentpoints%&e/&6%price%");
             c.get("command.shop.info.moneyPrice", "&eMoney cost: &c%currentbalance%&e/&6%price%");
-                        
+
             c.get("command.shop.info.reqJobs", "&eRequired jobs:");
             c.get("command.shop.info.reqJobsList", "  &6%jobsname%&e: &e%level% lvl");
             c.get("command.shop.info.reqTotalLevel", "&6Required total level: &e%totalLevel%");
@@ -486,6 +482,7 @@ public class LanguageManager {
             c.get("command.skipquest.help.info", "Skip defined quest and get new one");
             c.get("command.skipquest.help.args", "[jobname] [questname] (playerName)");
             c.get("command.skipquest.output.questSkipForCost", "&2You skipped the quest and paid:&e %amount%$");
+            c.get("command.skipquest.confirmationNeed", "&cAre you sure you want to skip&e [questName]&c quest? Type the command again within&6 [time] seconds &cto confirm!");
             Jobs.getGCManager().getCommandArgs().put("skipquest", Arrays.asList("[jobname]", "[questname]", "[playername]"));
 
             c.get("command.quests.help.info", "List available quests");

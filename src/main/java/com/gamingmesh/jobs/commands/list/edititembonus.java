@@ -13,6 +13,7 @@ import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobsPlayer;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Items.CMIItemStack;
@@ -23,37 +24,37 @@ import net.Zrips.CMILib.NBT.CMINBT;
 public class edititembonus implements Cmd {
 
     private enum actions {
-	list, add, remove;
+        list, add, remove;
 
-	public static actions getByname(String name) {
-	    for (actions one : actions.values()) {
-		if (one.name().equalsIgnoreCase(name))
-		    return one;
-	    }
-	    return null;
-	}
+        public static actions getByname(String name) {
+            for (actions one : actions.values()) {
+                if (one.name().equalsIgnoreCase(name))
+                    return one;
+            }
+            return null;
+        }
     }
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (!(sender instanceof Player)) {
-	    CMIMessages.sendMessage(sender, LC.info_Ingame);
-	    return false;
-	}
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+        if (!(sender instanceof Player)) {
+            CMIMessages.sendMessage(sender, LC.info_Ingame);
+            return null;
+        }
 
-	if (args.length < 1)
-	    return false;
+        if (args.length < 1)
+            return false;
 
-	actions action = null;
+        actions action = null;
 //	Job job = null;
-	JobItems jobitem = null;
+        JobItems jobitem = null;
 
-	for (String one : args) {
-	    if (action == null) {
-		action = actions.getByname(one);
-		if (action != null)
-		    continue;
-	    }
+        for (String one : args) {
+            if (action == null) {
+                action = actions.getByname(one);
+                if (action != null)
+                    continue;
+            }
 //	    if (job == null) {
 //		job = Jobs.getJob(one);
 //		if (job != null)
@@ -61,68 +62,67 @@ public class edititembonus implements Cmd {
 //	    }
 
 //	    if (job != null) {
-	    jobitem = ItemBoostManager.getItemByKey(one);
+            jobitem = ItemBoostManager.getItemByKey(one);
 //	    }
-	}
+        }
 
-	if (action == null)
-	    return false;
+        if (action == null)
+            return false;
 
-	Player player = (Player) sender;
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return false;
+        Player player = (Player) sender;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return false;
 
-	ItemStack iih = CMIItemStack.getItemInMainHand(player);
-	if (iih == null || iih.getType() == Material.AIR)
-	    return false;
+        ItemStack iih = CMIItemStack.getItemInMainHand(player);
+        if (iih == null || iih.getType() == Material.AIR)
+            return false;
 
-	switch (action) {
-	case add:
-	    if (jobitem == null)
-		return false;
-	    iih = (ItemStack) new CMINBT(iih).setString("JobsItemBoost", jobitem.getNode());
-	    CMIItemStack.setItemInMainHand(player, iih);
-	    break;
-	case list:
-	    break;
-	case remove:
-	    iih = (ItemStack) new CMINBT(iih).remove("JobsItemBoost");
-	    CMIItemStack.setItemInMainHand(player, iih);
-	    break;
-	default:
-	    break;
-	}
+        switch (action) {
+        case add:
+            if (jobitem == null)
+                return false;
+            iih = (ItemStack) new CMINBT(iih).setString("JobsItemBoost", jobitem.getNode());
+            CMIItemStack.setItemInMainHand(player, iih);
+            break;
+        case list:
+            break;
+        case remove:
+            iih = (ItemStack) new CMINBT(iih).remove("JobsItemBoost");
+            CMIItemStack.setItemInMainHand(player, iih);
+            break;
+        default:
+            break;
+        }
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
+        Language.sendMessage(sender, "command.bonus.output.topline");
 
-	Object key = new CMINBT(iih).getString("JobsItemBoost");
-	if (key == null)
-	    return true;
+        Object key = new CMINBT(iih).getString("JobsItemBoost");
+        if (key == null)
+            return true;
 
-	JobItems item = ItemBoostManager.getItemByKey(key.toString());
-	if (item == null)
-	    return true;
+        JobItems item = ItemBoostManager.getItemByKey(key.toString());
+        if (item == null)
+            return true;
 
-	BoostMultiplier boost = item.getBoost();
+        BoostMultiplier boost = item.getBoost();
 
-	String mc = CMIChatColor.DARK_GREEN.toString(),
-	    pc = CMIChatColor.GOLD.toString(),
-	    ec = CMIChatColor.YELLOW.toString();
+        String mc = CMIChatColor.DARK_GREEN.toString();
+        String pc = CMIChatColor.GOLD.toString();
+        String ec = CMIChatColor.YELLOW.toString();
 
-	for (Job one : item.getJobs()) {
-	    String msg = Jobs.getLanguage().getMessage("command.itembonus.output.list",
-		"[jobname]", one.getName(),
-		"%money%", mc + formatText((int) (boost.get(CurrencyType.MONEY) * 100)),
-		"%points%", pc + formatText((int) (boost.get(CurrencyType.POINTS) * 100)),
-		"%exp%", ec + formatText((int) (boost.get(CurrencyType.EXP) * 100)));
-	    sender.sendMessage(msg);
-	}
-	return true;
+        for (Job one : item.getJobs()) {
+            Language.sendMessage(sender, "command.itembonus.output.list",
+                "[jobname]", one.getName(),
+                "%money%", mc + formatText((int) (boost.get(CurrencyType.MONEY) * 100)),
+                "%points%", pc + formatText((int) (boost.get(CurrencyType.POINTS) * 100)),
+                "%exp%", ec + formatText((int) (boost.get(CurrencyType.EXP) * 100)));
+        }
+        return true;
     }
 
     private static String formatText(double amount) {
-	return ((amount > 0 ? "+" : "") + amount + "%");
+        return ((amount > 0 ? "+" : "") + amount + "%");
     }
 
 }

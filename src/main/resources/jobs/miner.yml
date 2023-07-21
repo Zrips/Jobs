@@ -55,6 +55,10 @@ Miner:
       income: 1
       points: 1
       experience: 1
+    deepslate:
+      income: 1.25
+      points: 1.25
+      experience: 1.25
     granite:
       income: 1
       points: 1

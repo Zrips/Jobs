@@ -13,17 +13,19 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.BlockProtection;
 import com.gamingmesh.jobs.container.DBAction;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public class bp implements Cmd {
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 
         if (!(sender instanceof Player)) {
             CMIMessages.sendMessage(sender, LC.info_Ingame);
@@ -73,23 +75,24 @@ public class bp implements Cmd {
         }
 
         if (changedBlocks.isEmpty())
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.bp.output.notFound"));
+            Language.sendMessage(sender, "command.bp.output.notFound");
         else
-            sender.sendMessage(Jobs.getLanguage().getMessage("command.bp.output.found", "%amount%", changedBlocks.size()));
+            Language.sendMessage(sender, "command.bp.output.found", "%amount%", changedBlocks.size());
 
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                if (Version.isCurrentEqualOrHigher(Version.v1_15_R1))
+        if (!changedBlocks.isEmpty()) {
+            Location bloc = changedBlocks.get(0).getLocation();
+            CMIScheduler.get().runAtLocationLater(bloc, () -> {
+                if (Version.isCurrentEqualOrHigher(Version.v1_15_R1)) {
                     for (Block one : changedBlocks) {
                         player.sendBlockChange(one.getLocation(), one.getBlockData());
                     }
-                else
+                } else {
                     for (Block one : changedBlocks) {
                         player.sendBlockChange(one.getLocation(), one.getType(), one.getData());
                     }
-            }
-        }, 120L);
+                }
+            }, 120L);
+        }
 
         return true;
     }

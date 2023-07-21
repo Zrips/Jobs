@@ -34,7 +34,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -112,14 +111,12 @@ import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
-import net.Zrips.CMILib.Colors.CMIChatColor;
-import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public final class Jobs extends JavaPlugin {
 
@@ -168,7 +165,7 @@ public final class Jobs extends JavaPlugin {
 
     private static boolean hasLimitedItems = false;
 
-    private static final int MAX_ENTRIES = 5;
+    private static final int MAX_ENTRIES = 20;
     public static final LinkedHashMap<UUID, FastPayment> FASTPAYMENT = new LinkedHashMap<UUID, FastPayment>(MAX_ENTRIES + 1, .75F, false) {
         protected boolean removeEldestEntry(Map.Entry<UUID, FastPayment> eldest) {
             return size() > MAX_ENTRIES;
@@ -268,7 +265,7 @@ public final class Jobs extends JavaPlugin {
         try {
             if (Integer.parseInt(papi
                 .getDescription().getVersion().replaceAll("[^\\d]", "")) >= 2100 && new PlaceholderAPIHook(this).register()) {
-                consoleMsg("&6PlaceholderAPI &ehooked.");
+                CMIMessages.consoleMessage("&6PlaceholderAPI &ehooked.");
             }
         } catch (NumberFormatException ex) {
             return false;
@@ -567,7 +564,7 @@ public final class Jobs extends JavaPlugin {
                 getPlayerManager().addPlayerToCache(jPlayer);
         }
         if (!getPlayerManager().getPlayersCache().isEmpty())
-            consoleMsg("&ePreloaded &6" + getPlayerManager().getPlayersCache().size() + " &eplayers data in &6" + ((int) ((System.currentTimeMillis() - time) / 1000.0D * 100.0D) / 100.0D));
+            CMIMessages.consoleMessage("&ePreloaded &6" + getPlayerManager().getPlayersCache().size() + " &eplayers data in &6" + ((int) ((System.currentTimeMillis() - time) / 1000.0D * 100.0D) / 100.0D));
     }
 
     public static void convertDatabase() {
@@ -597,7 +594,7 @@ public final class Jobs extends JavaPlugin {
 //    Jobs.getJobsDAO().saveBlockProtection();
         } catch (SQLException e) {
             e.printStackTrace();
-            Jobs.consoleMsg("&cCan't write data to data base, please send error log to dev's.");
+            CMIMessages.consoleMessage("&cCan't write data to data base, please send error log to dev's.");
             return;
         }
 
@@ -767,14 +764,14 @@ public final class Jobs extends JavaPlugin {
             }
 
             // register economy
-            getServer().getScheduler().runTask(this, new HookEconomyTask(this));
+            CMIScheduler.get().runTask(new HookEconomyTask(this));
 
             dao.loadBlockProtection();
             getExploreManager().load();
             getCommandManager().fillCommands();
             getDBManager().getDB().triggerTableIdUpdate();
 
-            consoleMsg("&ePlugin has been enabled successfully.");
+            CMIMessages.consoleMessage("&ePlugin has been enabled successfully.");
         } catch (Throwable e) {
             e.printStackTrace();
             System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
@@ -916,6 +913,9 @@ public final class Jobs extends JavaPlugin {
     }
 
     private static void checkDailyQuests(JobsPlayer jPlayer, Job job, ActionInfo info) {
+        if (!Jobs.getGCManager().DailyQuestsEnabled) {
+            return;
+        }
         if (!job.getQuests().isEmpty()) {
             for (QuestProgression one : jPlayer.getQuestProgressions(job, info.getType())) {
                 one.processQuest(jPlayer, info);
@@ -1258,7 +1258,7 @@ public final class Jobs extends JavaPlugin {
                             jPlayer.getUpdateBossBarFor().add(prog.getJob().getName());
                 } catch (Throwable e) {
                     e.printStackTrace();
-                    consoleMsg("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
+                    CMIMessages.consoleMessage("&c[Jobs] Some issues with boss bar feature accured, try disabling it to avoid it.");
                 }
 
                 Map<CurrencyType, Double> payments = new HashMap<>();
@@ -1416,14 +1416,26 @@ public final class Jobs extends JavaPlugin {
             return 9 * level - 158;
     }
 
-    public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job) {
+    public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job, Block block, Entity ent, LivingEntity victim) {
         double expPayment = payment.get(CurrencyType.EXP);
+
+        JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, payment.get(CurrencyType.MONEY),
+            payment.get(CurrencyType.POINTS), block, ent, victim, info);
+        Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
+        // If event is canceled, don't do anything
+        if (jobsPrePaymentEvent.isCancelled())
+            return;
+
+        payment.set(CurrencyType.MONEY, jobsPrePaymentEvent.getAmount());
+        payment.set(CurrencyType.POINTS, jobsPrePaymentEvent.getPoints());
 
         JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, expPayment);
         Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
         // If event is canceled, don't do anything
         if (jobsExpGainEvent.isCancelled())
             return;
+
+        payment.set(CurrencyType.EXP, jobsExpGainEvent.getExp());
 
         boolean limited = true;
         for (CurrencyType one : CurrencyType.values()) {
@@ -1449,12 +1461,6 @@ public final class Jobs extends JavaPlugin {
             getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
     }
 
-    public static void consoleMsg(String msg) {
-        if (msg != null) {
-            Bukkit.getServer().getConsoleSender().sendMessage(CMIChatColor.translate(msg));
-        }
-    }
-
     public static SelectionManager getSelectionManager() {
         return smanager;
     }
@@ -1470,50 +1476,6 @@ public final class Jobs extends JavaPlugin {
         new RawMessage().addText(LC.info_NoPermission.getLocale()).addHover("&2" + perm).show((Player) sender);
         return false;
 
-    }
-
-    public void showPagination(CommandSender sender, PageInfo pi, String cmd) {
-        showPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, null);
-    }
-
-    public void showPagination(CommandSender sender, PageInfo pi, String cmd, String pagePref) {
-        showPagination(sender, pi.getTotalPages(), pi.getCurrentPage(), pi.getTotalEntries(), cmd, pagePref);
-    }
-
-    public void showPagination(CommandSender sender, int pageCount, int currentPage, int totalEntries, String cmd, String pagePref) {
-        if (!(sender instanceof Player))
-            return;
-
-        if (!cmd.startsWith("/"))
-            cmd = "/" + cmd;
-
-        if (pageCount == 1)
-            return;
-
-        String pagePrefix = pagePref == null ? "" : pagePref;
-
-        int nextPage = currentPage + 1;
-        nextPage = currentPage < pageCount ? nextPage : currentPage;
-
-        int prevpage = currentPage - 1;
-        if (currentPage <= 1) {
-            prevpage = currentPage;
-        }
-
-        RawMessage rm = new RawMessage()
-            .addText((currentPage > 1 ? LC.info_prevPage.getLocale() : LC.info_prevPageOff.getLocale()))
-            .addHover(currentPage > 1 ? LC.info_prevPageHover.getLocale() : LC.info_lastPageHover.getLocale())
-            .addCommand(currentPage > 1 ? cmd + " " + pagePrefix + prevpage : cmd + " " + pagePrefix + pageCount);
-
-        rm.addText(LC.info_pageCount.getLocale("[current]", currentPage, "[total]", pageCount))
-            .addHover(LC.info_pageCountHover.getLocale("[totalEntries]", totalEntries));
-
-        rm.addText(pageCount > currentPage ? LC.info_nextPage.getLocale() : LC.info_nextPageOff.getLocale())
-            .addHover(pageCount > currentPage ? LC.info_nextPageHover.getLocale() : LC.info_firstPageHover.getLocale())
-            .addCommand(pageCount > currentPage ? cmd + " " + pagePrefix + nextPage : cmd + " " + pagePrefix + 1);
-
-        if (pageCount != 0)
-            rm.show(sender);
     }
 
     public static boolean hasLimitedItems() {

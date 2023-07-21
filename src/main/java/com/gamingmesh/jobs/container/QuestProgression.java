@@ -4,15 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.gamingmesh.jobs.actions.EnchantActionInfo;
-import com.gamingmesh.jobs.stuff.Util;
-
-import net.Zrips.CMILib.Logs.CMIDebug;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.server.ServerCommandEvent;
 
 import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.actions.EnchantActionInfo;
+import com.gamingmesh.jobs.stuff.Util;
 
 public class QuestProgression {
 
@@ -160,22 +157,24 @@ public class QuestProgression {
             }
         }
 
+        boolean completed = isCompleted();
+
         Job questJob = quest.getJob();
-        if (questJob != null) {
+        if (questJob != null && completed) {
             int maxQuest = jPlayer.getPlayerMaxQuest(questJob.getName());
             if (maxQuest > 0 && jPlayer.getDoneQuests() >= maxQuest) {
                 return;
             }
         }
 
-        if (!isCompleted() &&
-            objective != null) {
+        if (!completed && objective != null) {
             Integer old = done.getOrDefault(objective, 0);
             done.put(objective, old < objective.getAmount() ? old + 1 : objective.getAmount());
         }
 
         jPlayer.setSaved(false);
 
+        //needs to re-call isCompleted() because it might have changed above.
         if (!isCompleted() || !player.isOnline() || givenReward)
             return;
 

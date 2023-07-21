@@ -14,7 +14,7 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
-import com.gamingmesh.jobs.stuff.TimeManage;
+import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
@@ -24,128 +24,134 @@ import net.Zrips.CMILib.Time.CMITimeManager;
 public class quests implements Cmd {
 
     @Override
-    public boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
-	JobsPlayer jPlayer = null;
-	boolean isPlayer = sender instanceof Player;
+    public Boolean perform(Jobs plugin, final CommandSender sender, String[] args) {
 
-	if (args.length >= 1 && !args[0].equalsIgnoreCase("stop") && !args[0].equalsIgnoreCase("start")) {
-	    if (!Jobs.hasPermission(sender, "jobs.command.admin.quests", true))
-		return true;
+        if (!Jobs.getGCManager().DailyQuestsEnabled) {
+            LC.info_FeatureNotEnabled.sendMessage(sender);
+            return null;
+        }
 
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
-	} else if (isPlayer)
-	    jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
+        JobsPlayer jPlayer = null;
+        boolean isPlayer = sender instanceof Player;
 
-	if (jPlayer == null) {
-	    if (args.length >= 1)
-		CMIMessages.sendMessage(sender, LC.info_NoInformation);
-	    else
-		Jobs.getCommandManager().sendUsage(sender, "quests");
-	    return true;
-	}
+        if (args.length >= 1 && !args[0].equalsIgnoreCase("stop") && !args[0].equalsIgnoreCase("start")) {
+            if (!Jobs.hasPermission(sender, "jobs.command.admin.quests", true))
+                return null;
 
-	List<QuestProgression> questProgs = jPlayer.getQuestProgressions();
+            jPlayer = Jobs.getPlayerManager().getJobsPlayer(args[0]);
+        } else if (isPlayer)
+            jPlayer = Jobs.getPlayerManager().getJobsPlayer((Player) sender);
 
-	if (questProgs.isEmpty()) {
-	    sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.error.noquests"));
-	    return true;
-	}
+        if (jPlayer == null) {
+            if (args.length >= 1)
+                CMIMessages.sendMessage(sender, LC.info_NoInformation);
+            else
+                Jobs.getCommandManager().sendUsage(sender, "quests");
+            return true;
+        }
 
-	if (args.length >= 1) {
-	    Boolean stopped = null;
-	    String cmd = args[args.length == 1 ? 0 : 1];
+        List<QuestProgression> questProgs = jPlayer.getQuestProgressions();
 
-	    if (cmd.equalsIgnoreCase("stop") && Jobs.hasPermission(sender, "jobs.command.admin.quests.stop", false)) {
-		stopped = true;
-	    } else if (cmd.equalsIgnoreCase("start") && Jobs.hasPermission(sender, "jobs.command.admin.quests.start", false)) {
-		stopped = false;
-	    }
+        if (questProgs.isEmpty()) {
+            Language.sendMessage(sender, "command.quests.error.noquests");
+            return true;
+        }
 
-	    if (stopped != null) {
-		for (QuestProgression q : questProgs) {
-		    q.getQuest().setStopped(stopped);
-		}
+        if (args.length >= 1) {
+            Boolean stopped = null;
+            String cmd = args[args.length == 1 ? 0 : 1];
 
-		sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.status.changed", "%status%",
-		    stopped ? Jobs.getLanguage().getMessage("command.quests.status.stopped") : Jobs.getLanguage().getMessage("command.quests.status.started")));
-		return true;
-	    }
-	}
+            if (cmd.equalsIgnoreCase("stop") && Jobs.hasPermission(sender, "jobs.command.admin.quests.stop", false)) {
+                stopped = true;
+            } else if (cmd.equalsIgnoreCase("start") && Jobs.hasPermission(sender, "jobs.command.admin.quests.start", false)) {
+                stopped = false;
+            }
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.quests.toplineseparator", "[playerName]", jPlayer.getName(), "[questsDone]", jPlayer.getDoneQuests()));
+            if (stopped != null) {
+                for (QuestProgression q : questProgs) {
+                    q.getQuest().setStopped(stopped);
+                }
 
-	for (JobProgression jobProg : jPlayer.progression) {
-	    List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
+                Language.sendMessage(sender, "command.quests.status.changed", "%status%",
+                    stopped ? Jobs.getLanguage().getMessage("command.quests.status.stopped") : Jobs.getLanguage().getMessage("command.quests.status.started"));
+                return true;
+            }
+        }
 
-	    for (QuestProgression q : list) {
-		int totalAmountNeeded = q.getTotalAmountNeeded();
-		int totalAmountDone = q.getTotalAmountDone();
+        Language.sendMessage(sender, "command.quests.toplineseparator", "[playerName]", jPlayer.getName(), "[questsDone]", jPlayer.getDoneQuests());
 
-		String progressLine = Jobs.getCommandManager().jobProgressMessage(totalAmountNeeded, totalAmountDone);
+        for (JobProgression jobProg : jPlayer.progression) {
+            List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
 
-		boolean completed = q.isCompleted();
+            for (QuestProgression q : list) {
+                int totalAmountNeeded = q.getTotalAmountNeeded();
+                int totalAmountDone = q.getTotalAmountDone();
 
-		if (completed)
-		    progressLine = Jobs.getLanguage().getMessage("command.quests.output.completed");
+                String progressLine = Jobs.getCommandManager().jobProgressMessage(totalAmountNeeded, totalAmountDone);
 
-		Quest quest = q.getQuest();
+                boolean completed = q.isCompleted();
 
-		String msg = Jobs.getLanguage().getMessage("command.quests.output.questLine", "[progress]",
-		    progressLine, "[questName]", quest.getQuestName(), "[done]", totalAmountDone, "[required]", totalAmountNeeded);
+                if (completed)
+                    progressLine = Jobs.getLanguage().getMessage("command.quests.output.completed");
 
-		if (!isPlayer) {
-		    sender.sendMessage(msg);
-		    continue;
-		}
+                Quest quest = q.getQuest();
 
-		RawMessage rm = new RawMessage();
+                String msg = Jobs.getLanguage().getMessage("command.quests.output.questLine", "[progress]",
+                    progressLine, "[questName]", quest.getQuestName(), "[done]", totalAmountDone, "[required]", totalAmountNeeded);
 
-		String hoverMsg = Jobs.getLanguage().getMessage("command.quests.output.hover");
-		List<String> hoverList = new ArrayList<>();
+                if (!isPlayer) {
+                    sender.sendMessage(msg);
+                    continue;
+                }
 
-		for (String current : hoverMsg.split("\n")) {
-		    current = current.replace("[jobName]", jobProg.getJob().getName())
-			.replace("[time]", CMITimeManager.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
+                RawMessage rm = new RawMessage();
 
-		    if (current.contains("[desc]")) {
-			hoverList.addAll(quest.getDescription());
-		    } else {
-			hoverList.add(current);
-		    }
-		}
+                String hoverMsg = Jobs.getLanguage().getMessage("command.quests.output.hover");
+                List<String> hoverList = new ArrayList<>();
 
-		for (java.util.Map<String, QuestObjective> oneAction : quest.getObjectives().values()) {
-		    for (Entry<String, QuestObjective> oneObjective : oneAction.entrySet()) {
-			hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +
-			    Jobs.getNameTranslatorManager().translate(oneObjective.getKey(), oneObjective.getValue().getAction(), oneObjective.getValue().getTargetId(), oneObjective.getValue()
-				.getTargetMeta(), oneObjective.getValue().getTargetName())
-			    + " " + q.getAmountDone(oneObjective.getValue()) + "/"
-			    + oneObjective.getValue().getAmount());
-		    }
-		}
+                for (String current : hoverMsg.split("\n")) {
+                    current = current.replace("[jobName]", jobProg.getJob().getName())
+                        .replace("[time]", CMITimeManager.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
 
-		String hover = "";
-		for (String one : hoverList) {
-		    if (!hover.isEmpty())
-			hover += "\n";
+                    if (current.contains("[desc]")) {
+                        hoverList.addAll(quest.getDescription());
+                    } else {
+                        hoverList.add(current);
+                    }
+                }
 
-		    hover += one;
-		}
+                for (java.util.Map<String, QuestObjective> oneAction : quest.getObjectives().values()) {
+                    for (Entry<String, QuestObjective> oneObjective : oneAction.entrySet()) {
+                        hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +
+                            Jobs.getNameTranslatorManager().translate(oneObjective.getKey(), oneObjective.getValue().getAction(), oneObjective.getValue().getTargetId(), oneObjective.getValue()
+                                .getTargetMeta(), oneObjective.getValue().getTargetName())
+                            + " " + q.getAmountDone(oneObjective.getValue()) + "/"
+                            + oneObjective.getValue().getAmount());
+                    }
+                }
 
-		if (list.size() < jobProg.getJob().getQuests().size() && Jobs.getGCManager().getDailyQuestsSkips() > jPlayer.getSkippedQuests() && !completed) {
-		    if (Jobs.getGCManager().getDailyQuestsSkips() > 0) {
-			hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skip");
-			hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skips", "[skips]", (Jobs.getGCManager().getDailyQuestsSkips() - jPlayer.getSkippedQuests()));
-		    }
-		    rm.addText(msg).addHover(hover).addCommand("jobs skipquest " + jobProg.getJob().getName() + " " + quest.getConfigName() + " " + jPlayer.getName());
-		} else
-		    rm.addText(msg).addHover(hover);
+                String hover = "";
+                for (String one : hoverList) {
+                    if (!hover.isEmpty())
+                        hover += "\n";
 
-		rm.show(sender);
-	    }
-	}
+                    hover += one;
+                }
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
-	return true;
+                if (list.size() < jobProg.getJob().getQuests().size() && Jobs.getGCManager().getDailyQuestsSkips() > jPlayer.getSkippedQuests() && !completed) {
+                    if (Jobs.getGCManager().getDailyQuestsSkips() > 0) {
+                        hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skip");
+                        hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skips", "[skips]", (Jobs.getGCManager().getDailyQuestsSkips() - jPlayer.getSkippedQuests()));
+                    }
+                    rm.addText(msg).addHover(hover).addCommand("jobs skipquest " + jobProg.getJob().getName() + " " + quest.getConfigName() + " " + jPlayer.getName());
+                } else
+                    rm.addText(msg).addHover(hover);
+
+                rm.show(sender);
+            }
+        }
+
+        sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
+        return true;
     }
 }

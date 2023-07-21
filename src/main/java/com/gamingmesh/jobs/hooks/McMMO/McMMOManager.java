@@ -10,6 +10,8 @@ import org.bukkit.plugin.Plugin;
 import com.gamingmesh.jobs.Jobs;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 
+import net.Zrips.CMILib.Messages.CMIMessages;
+
 public class McMMOManager {
 
     public boolean mcMMOPresent = false;
@@ -100,13 +102,13 @@ public class McMMOManager {
 		    mcMMOPresent = false;
 		}
 		if (!mcMMOPresent)
-		    Jobs.consoleMsg("&6mcMMO was found - &cBut your McMMO version is outdated, please update for full support.");
+		    CMIMessages.consoleMessage("&6mcMMO was found - &cBut your McMMO version is outdated, please update for full support.");
 
 		// Still enabling event listener for repair
 		return true;
 	    }
 
-	    Jobs.consoleMsg("&6mcMMO" + McMMO.getDescription().getVersion() + " was found - Enabling capabilities.");
+	    CMIMessages.consoleMessage("&6mcMMO" + McMMO.getDescription().getVersion() + " was found - Enabling capabilities.");
 	    return true;
 	}
 

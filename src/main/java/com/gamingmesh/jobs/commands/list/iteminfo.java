@@ -19,15 +19,14 @@ public class iteminfo implements Cmd {
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
+    public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
 	if (!(sender instanceof Player)) {
 	    CMIMessages.sendMessage(sender, LC.info_Ingame);
-	    return false;
+	    return null;
 	}
 
 	if (args.length != 0) {
-	    Jobs.getCommandManager().sendUsage(sender, "iteminfo");
-	    return true;
+	    return false;
 	}
 
 	ItemStack iih = CMIItemStack.getItemInMainHand((Player) sender);
