@@ -97,6 +97,7 @@ import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPayment14Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
+import com.gamingmesh.jobs.listeners.PlayerSignEdit1_20Listeners;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.Loging;
 import com.gamingmesh.jobs.stuff.TabComplete;
@@ -795,6 +796,9 @@ public final class Jobs extends JavaPlugin {
             pm.registerEvents(new JobsPayment14Listener(), getInstance());
         }
 
+        if (Version.isCurrentEqualOrHigher(Version.v1_20_R1)) {
+            pm.registerEvents(new PlayerSignEdit1_20Listeners(), getInstance());
+        }
         if (getGCManager().useBlockProtection) {
             pm.registerEvents(new PistonProtectionListener(), getInstance());
         }

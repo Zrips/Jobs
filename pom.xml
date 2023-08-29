@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
@@ -10,6 +8,8 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+	    <maven.compiler.target>17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -17,9 +17,9 @@
 		<dependency>
 			<groupId>io.papermc.paper</groupId>
 			<artifactId>paper-api</artifactId>
-			<version>1.17.1-R0.1-SNAPSHOT</version>
+			<version>1.20.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
-			<exclusions> 
+			<exclusions>
 				<exclusion>
 					<groupId>org.ow2.asm</groupId>
 					<artifactId>asm-commons</artifactId>
@@ -80,12 +80,12 @@
 			<version>4.11.0</version>
 			<scope>provided</scope>
 		</dependency>
-        <dependency>
-	        <groupId>io.lumine</groupId>
-	        <artifactId>Mythic-Dist</artifactId>
-	        <version>5.1.0-SNAPSHOT</version>
-	        <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>io.lumine</groupId>
+			<artifactId>Mythic-Dist</artifactId>
+			<version>5.1.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- WorldGuard old version -->
 		<dependency>
 			<groupId>com.sk89q</groupId>
@@ -200,12 +200,13 @@
 			<systemPath>${basedir}/libs/CMILib1.4.0.0.jar</systemPath>
 		</dependency>
 		<!-- WildStacker -->
+
 		<dependency>
 			<groupId>com.bgsoftware</groupId>
 			<artifactId>WildStackerAPI</artifactId>
 			<version>latest</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/libs/WildStackerAPI-latest.jar</systemPath>
+			<systemPath>${basedir}/libs/WildStackerAPI-2023.2.jar</systemPath>
 		</dependency>
 		<!-- StackMob -->
 		<dependency>
@@ -275,18 +276,17 @@
 			<!-- Make a Jar -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<plugin> 
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					 <outputDirectory>D:\MC\Server 1.20\plugins\</outputDirectory>
+					<outputDirectory>D:\MC\Server 1.20\plugins\</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
