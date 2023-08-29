@@ -46,7 +46,8 @@ public class transfer implements Cmd {
                         "%newjobname%", newjob.getDisplayName());
                 }
                 Language.sendMessage(sender, "general.admin.success");
-            }
+            } else
+                Language.sendMessage(sender, "general.admin.error");
         } catch (Exception e) {
             Language.sendMessage(sender, "general.admin.error");
         }
