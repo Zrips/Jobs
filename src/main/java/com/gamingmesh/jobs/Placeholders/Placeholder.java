@@ -582,7 +582,8 @@ public class Placeholder {
                         return convert(true);
 
                     case maxjobs:
-                        return Integer.toString(Jobs.getPlayerManager().getMaxJobs(user));
+                        int max = Jobs.getPlayerManager().getMaxJobs(user);
+                        return Integer.toString(max == -1 ? 99 : max);
 
                     default:
                         break;

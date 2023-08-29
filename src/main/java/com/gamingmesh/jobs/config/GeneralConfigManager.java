@@ -45,6 +45,7 @@ import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
@@ -442,9 +443,9 @@ public class GeneralConfigManager {
             "For this to work, the player needs to get a new job for the timer to start.", "Counting in hours");
         jobExpiryTime = c.get("JobExpirationTime", 0);
 
-        c.addComment("max-jobs", "Maximum number of jobs a player can join.", "Use 0 for no maximum", "Keep in mind that jobs.max.[amount] will bypass this setting");
+        c.addComment("max-jobs", "Maximum number of jobs a player can join.", "Use -1 to disable limitations", "Keep in mind that jobs.max.[amount] will bypass this setting");
         maxJobs = c.get("max-jobs", 3);
-
+        
         c.addComment("disable-payment-if-max-level-reached", "Disabling the payment if the user reached the maximum level of a job.");
         disablePaymentIfMaxLevelReached = c.get("disable-payment-if-max-level-reached", false);
 

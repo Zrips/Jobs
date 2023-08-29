@@ -154,7 +154,7 @@ public final class Jobs extends JavaPlugin {
     private GuiManager guiManager;
 
     private static JobsDAO dao;
-    private static List<Job> jobs;
+    private static List<Job> jobs = new ArrayList<Job>();
     private static Job noneJob;
     private static Map<Job, Integer> usedSlots = new WeakHashMap<>();
 
