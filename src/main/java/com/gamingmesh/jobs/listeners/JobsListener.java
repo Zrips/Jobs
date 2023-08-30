@@ -328,10 +328,10 @@ public class JobsListener implements Listener {
 
         String line1 = CMIChatColor.stripColor(plugin.getComplement().getLine(event, 1));
 
-        if (CMIChatColor.stripColor(plugin.getComplement().getLine(event, 0))
-            .equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !line1.equalsIgnoreCase("toplist"))
+        if (CMIChatColor.stripColor(plugin.getComplement().getLine(event, 0)).equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))) && !line1.equalsIgnoreCase(
+            "toplist")) {
             event.setLine(0, convert(Jobs.getLanguage().getMessage("signs.topline")));
-        else
+        } else
             return;
 
         if (!event.getPlayer().hasPermission("jobs.command.signs")) {

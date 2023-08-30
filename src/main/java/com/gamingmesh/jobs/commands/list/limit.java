@@ -1,5 +1,7 @@
 package com.gamingmesh.jobs.commands.list;
 
+import java.text.DecimalFormat;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -11,7 +13,6 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.i18n.Language;
 
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
 
@@ -38,7 +39,7 @@ public class limit implements Cmd {
         }
 
         if (disabled) {
-            Language.sendMessage(sender,"command.limit.output.notenabled");
+            Language.sendMessage(sender, "command.limit.output.notenabled");
             return true;
         }
 
@@ -64,7 +65,7 @@ public class limit implements Cmd {
 
                 Language.sendMessage(sender, "command.limit.output." + typeName + "time", "%time%", CMITimeManager.to24hourShort(limit.getLeftTime(type)));
                 Language.sendMessage(sender, "command.limit.output." + typeName + "Limit",
-                    "%current%", (int) (limit.getAmount(type) * 100) / 100D,
+                    "%current%", new DecimalFormat("##.##").format(limit.getAmount(type)),
                     "%total%", JPlayer.getLimit(type));
             }
         }

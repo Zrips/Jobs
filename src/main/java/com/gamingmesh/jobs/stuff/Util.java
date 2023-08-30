@@ -3,6 +3,7 @@ package com.gamingmesh.jobs.stuff;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -61,6 +62,12 @@ public final class Util {
         List<Block> blocks = new ArrayList<>();
         blocks.add(event.getBlock());
         return blocks;
+    }
+
+    private final static DecimalFormat dcf = new DecimalFormat("##.##");
+
+    public static String format2Decimals(double number) {
+        return dcf.format(number);
     }
 
     public static String getRealType(Entity entity) {

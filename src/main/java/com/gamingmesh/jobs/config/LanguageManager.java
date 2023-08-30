@@ -580,7 +580,7 @@ public class LanguageManager {
             c.get("command.transfer.help.info", "Transfer a player's job from an old job to a new job.");
             c.get("command.transfer.help.args", "[playername] [oldjob] [newjob]");
             Jobs.getGCManager().getCommandArgs().put("transfer", Arrays.asList("[playername]", "[oldjob]", "[newjob]"));
-            c.get("command.transfer.output.target", "You have been transferred from %oldjobname% to %newjobname%.");
+            c.get("command.transfer.output.target", "&fYou have been transferred from %oldjobname% &fto %newjobname%.");
 
             c.get("command.promote.help.info", "Promote the player X levels in a job.");
             c.get("command.promote.help.args", "[playername] [jobname] [levels] (-cmd)");

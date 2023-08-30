@@ -45,6 +45,7 @@ import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
@@ -110,7 +111,7 @@ public class GeneralConfigManager {
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
         payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
-    
+
     public boolean jobsshopenabled;
     public boolean DailyQuestsEnabled;
 
@@ -272,11 +273,24 @@ public class GeneralConfigManager {
         // Load locale
         Jobs.getLanguageManager().load();
         // title settings
-        Jobs.getTitleManager().load();
+        try {
+            Jobs.getTitleManager().load();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         // restricted areas
-        Jobs.getRestrictedAreaManager().load();
+        try {
+            Jobs.getRestrictedAreaManager().load();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
         // restricted blocks
-        Jobs.getRestrictedBlockManager().load();
+        try {
+            Jobs.getRestrictedBlockManager().load();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
         // Item/Block/mobs name list
         Jobs.getNameTranslatorManager().load();
         // signs information
@@ -425,7 +439,7 @@ public class GeneralConfigManager {
 
         c.addComment("DailyQuests.Enabled", "Enables or disables daily quests");
         DailyQuestsEnabled = c.get("DailyQuests.Enabled", true);
-        
+
         c.addComment("DailyQuests.ResetTime", "Defines time in 24hour format when we want to give out new daily quests",
             "Any daily quests given before reset will be invalid and new ones will be given out");
         ResetTimeHour = c.get("DailyQuests.ResetTime.Hour", 4);
@@ -442,7 +456,7 @@ public class GeneralConfigManager {
             "For this to work, the player needs to get a new job for the timer to start.", "Counting in hours");
         jobExpiryTime = c.get("JobExpirationTime", 0);
 
-        c.addComment("max-jobs", "Maximum number of jobs a player can join.", "Use 0 for no maximum", "Keep in mind that jobs.max.[amount] will bypass this setting");
+        c.addComment("max-jobs", "Maximum number of jobs a player can join.", "Use -1 to disable limitations", "Keep in mind that jobs.max.[amount] will bypass this setting");
         maxJobs = c.get("max-jobs", 3);
 
         c.addComment("disable-payment-if-max-level-reached", "Disabling the payment if the user reached the maximum level of a job.");
@@ -456,7 +470,7 @@ public class GeneralConfigManager {
 
         c.addComment("prevent-shop-item-enchanting", "Prevent players to enchant items from the shop in the anvil with enchanted books");
         preventShopItemEnchanting = c.get("prevent-shop-item-enchanting", true);
-        
+
         c.addComment("jobs-shop-enabled", "Enables or disables jobs shop");
         jobsshopenabled = c.get("jobs-shop-enabled", true);
 

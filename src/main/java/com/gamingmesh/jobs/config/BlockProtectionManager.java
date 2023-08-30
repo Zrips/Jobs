@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -107,7 +106,7 @@ public class BlockProtectionManager {
 
         // If timer is under 2 hours, we can run scheduler to remove it when time comes
         if (time > -1 && (time - System.currentTimeMillis()) / 1000 < 60 * 60 * 2)
-            Bp.setScheduler(CMIScheduler.get().runTaskLater(() -> {
+            Bp.setScheduler(CMIScheduler.get().runAtLocationLater(loc, () -> {
                 remove(loc);
             }, (time - System.currentTimeMillis()) / 50));
 

@@ -237,7 +237,7 @@ public class Job {
 
         if (now < Jobs.getGCManager().DynamicPaymentMaxPenalty)
             now = Jobs.getGCManager().DynamicPaymentMaxPenalty;
-        
+
         if (Double.isNaN(now))
             now = 0;
 
@@ -310,7 +310,7 @@ public class Job {
         };
 
         String shortActionName = CMIMaterial.getGeneralMaterialName(action.getName());
-        
+
         for (JobInfo info : getJobInfo(action.getType())) {
             if (condition.test(info, action)) {
                 if (!info.isInLevelRange(level)) {

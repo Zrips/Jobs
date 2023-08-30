@@ -43,6 +43,7 @@ import com.gamingmesh.jobs.economy.PaymentData;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Logs.CMIDebug;
@@ -442,7 +443,7 @@ public class JobsPlayer {
         Parser eq = Jobs.getGCManager().getLimit(type).getMaxEquation();
         eq.setVariable("totallevel", getTotalLevels());
 
-        maxJobsEquation = Jobs.getPlayerManager().getMaxJobs(this);
+        maxJobsEquation = CMINumber.clamp(Jobs.getPlayerManager().getMaxJobs(this), 0, 9999);
         limits.put(type, (int) eq.getValue());
         setSaved(false);
     }

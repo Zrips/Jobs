@@ -789,7 +789,7 @@ public final class JobsPaymentListener implements Listener {
 
     // HACK! The API doesn't allow us to easily determine the resulting number of
     // crafted items, so we're forced to compare the inventory before and after.
-    private void schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack, final ActionType type) {
+    public static void schedulePostDetection(final HumanEntity player, final ItemStack compareItem, final JobsPlayer jPlayer, final ItemStack resultStack, final ActionType type) {
         final ItemStack[] preInv = player.getInventory().getContents();
         // Clone the array. The content may (was for me) be mutable.
         for (int i = 0; i < preInv.length; i++) {
@@ -822,7 +822,7 @@ public final class JobsPaymentListener implements Listener {
         }, 1);
     }
 
-    private static boolean hasItems(ItemStack stack) {
+    public static boolean hasItems(ItemStack stack) {
         return stack != null && stack.getAmount() > 0;
     }
 
@@ -838,7 +838,7 @@ public final class JobsPaymentListener implements Listener {
             Objects.equal(a.getEnchantments(), b.getEnchantments());
     }
 
-    private static boolean isStackSumLegal(ItemStack a, ItemStack b) {
+    public static boolean isStackSumLegal(ItemStack a, ItemStack b) {
         // See if we can create a new item stack with the combined elements of a and b
         if (a == null || b == null)
             return true;// Treat null as an empty stack
@@ -1602,6 +1602,9 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().useBreederFinder || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
             return;
 
+        if (event.getEntity().getType().equals(EntityType.TURTLE))
+            CMIDebug.d(event.getSpawnReason());
+        
         if (!event.getSpawnReason().toString().equalsIgnoreCase("BREEDING") && !event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
             return;
 
@@ -1840,7 +1843,7 @@ public final class JobsPaymentListener implements Listener {
             // either it's version 1.13+ and we're trying to strip a normal log like oak,
             // or it's 1.16+ and we're trying to strip a fungi like warped stem
             if ((Version.isCurrentEqualOrHigher(Version.v1_13_R1) && (block.getType().toString().endsWith("_LOG") || block.getType().toString().endsWith("_WOOD"))) ||
-                (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && (block.getType().toString().endsWith("_STEM") || block.getType().toString().endsWith("_HYPHAE")))) {                
+                (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && (block.getType().toString().endsWith("_STEM") || block.getType().toString().endsWith("_HYPHAE")))) {
                 CMIScheduler.get().runTaskLater(() -> Jobs.action(jPlayer, new BlockActionInfo(block, ActionType.STRIPLOGS), block), 1);
             }
         }

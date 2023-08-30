@@ -63,9 +63,9 @@ import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
@@ -488,10 +488,10 @@ public class PlayerManager {
         Jobs.getSignUtil().updateAllSign(job);
 
         job.updateTotalPlayers();
-        jPlayer.maxJobsEquation = getMaxJobs(jPlayer);
-        
+        jPlayer.maxJobsEquation = CMINumber.clamp(getMaxJobs(jPlayer), 0, 9999);
+
         // Removing from cached item boost for recalculation
-        cache.remove(jPlayer.getUniqueId());        
+        cache.remove(jPlayer.getUniqueId());
     }
 
     private static void performCommandsOnLeave(JobsPlayer jPlayer, Job job) {
@@ -533,10 +533,10 @@ public class PlayerManager {
 
         Jobs.getSignUtil().updateAllSign(job);
         job.updateTotalPlayers();
-        
+
         // Removing from cached item boost for recalculation
-        cache.remove(jPlayer.getUniqueId());        
-        
+        cache.remove(jPlayer.getUniqueId());
+
         return true;
     }
 
@@ -931,7 +931,8 @@ public class PlayerManager {
      * @return true if the player is under the given jobs size
      */
     public boolean getJobsLimit(JobsPlayer jPlayer, short currentCount) {
-        return getMaxJobs(jPlayer) > currentCount;
+        int max = getMaxJobs(jPlayer);
+        return max == -1 ? true : max > currentCount;
     }
 
     /**
@@ -1064,7 +1065,7 @@ public class PlayerManager {
                         continue;
                     }
                 }
-                
+
                 jitems.add(getJobsItemByNbt(item));
             }
         }
@@ -1214,11 +1215,11 @@ public class PlayerManager {
                 int playerMaxJobs = getMaxJobs(jPlayer);
                 int playerCurrentJobs = jPlayer.progression.size();
 
-                if (playerMaxJobs <= 0 || playerCurrentJobs >= playerMaxJobs)
+                if (playerMaxJobs == 0 || playerMaxJobs != -1 && playerCurrentJobs >= playerMaxJobs)
                     return;
 
                 for (Job one : Jobs.getJobs()) {
-                    if (jPlayer.progression.size() >= playerMaxJobs)
+                    if (playerMaxJobs != -1 && jPlayer.progression.size() >= playerMaxJobs)
                         return;
 
                     if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
