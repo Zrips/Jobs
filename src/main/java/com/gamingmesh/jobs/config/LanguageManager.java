@@ -98,6 +98,10 @@ public class LanguageManager {
             c.get("general.info.blocks.smoker", "Smoker");
             c.get("general.info.blocks.blastfurnace", "Blast furnace");
             c.get("general.info.blocks.brewingstand", "Brewing stand");
+            
+            c.get("general.info.join", "&eClick to join job");
+            c.get("general.info.leave", "&cClick to leave job");
+            
             c.get("general.admin.error", "&cThere was an error in the command.");
             c.get("general.admin.success", "&eYour command has been performed.");
             c.get("general.error.noHelpPage", "&cThere is no help page by this number!");
@@ -111,6 +115,7 @@ public class LanguageManager {
             c.get("general.error.reenabledBlock", "&eReenabled ownership");
             c.get("general.error.noRegistration", "&cYou've reached max [block] count!");
             c.get("general.error.blockDisabled", "&6Payments from &e[type] &6got disabled. &2[location]");
+            
 
             c.get("command.help.output.cmdUsage", "&2Usage: &7[command]");
             c.get("command.help.output.label", "Jobs");

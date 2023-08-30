@@ -116,6 +116,8 @@ public class GeneralConfigManager {
     public boolean DailyQuestsEnabled;
 
     public ItemStack guiInfoButton;
+    public ItemStack guiJoinButton;
+    public ItemStack guiLeaveButton;
     public int InfoButtonSlot = 9;
     public List<String> InfoButtonCommands = new ArrayList<String>();
 
@@ -1105,7 +1107,15 @@ public class GeneralConfigManager {
         CMIItemStack item = CMILib.getInstance().getItemManager().getItem(c.get("JobsGUI.InfoButton.Material",
             "head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwNWZkOTRhMGM0MzE5MjdmYjRlNjM5YjBmY2ZiNDk3MTdlNDEyMjg1YTAyYjQzOWUwMTEyZGEyMmIyZTJlYyJ9fX0="));
         guiInfoButton = item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.ARROW.newItemStack() : item.getItemStack();
-
+        
+        item = CMIItemStack.deserialize(c.get("JobsGUI.JoinButton.Material",
+            "head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZlYzNkMjVhZTBkMTQ3YzM0MmM0NTM3MGUwZTQzMzAwYTRlNDhhNWI0M2Y5YmI4NThiYWJmZjc1NjE0NGRhYyJ9fX0="));        
+        guiJoinButton = item == null || item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : item.getItemStack();
+        
+        item = CMIItemStack.deserialize(c.get("JobsGUI.LeaveButton.Material",
+            "head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY1ZjNiYWUwZDIwM2JhMTZmZTFkYzNkMTMwN2E4NmE2MzhiZTkyNDQ3MWYyM2U4MmFiZDlkNzhmOGEzZmNhIn19fQ=="));        
+        guiLeaveButton = item == null || item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.RED_STAINED_GLASS_PANE.newItemStack() : item.getItemStack();
+        
         c.addComment("JobsGUI.InfoButton.Commands", "closeinv! can be used to close players inventory when you click this icon");
         InfoButtonCommands = c.get("JobsGUI.InfoButton.Commands", Arrays.asList("closeinv!"));
 
