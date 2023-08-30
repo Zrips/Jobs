@@ -1604,7 +1604,7 @@ public final class JobsPaymentListener implements Listener {
 
         if (event.getEntity().getType().equals(EntityType.TURTLE))
             CMIDebug.d(event.getSpawnReason());
-        
+
         if (!event.getSpawnReason().toString().equalsIgnoreCase("BREEDING") && !event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
             return;
 
