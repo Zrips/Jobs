@@ -1985,24 +1985,4 @@ public final class JobsPaymentListener implements Listener {
             fp.setTime(System.currentTimeMillis() + 45);
         }
     }
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onEntityBucketed(PlayerBucketEntityEvent event) {
-        Player player = event.getPlayer();
-
-        if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()))
-            return;
-
-        // check if in creative
-        if (!payIfCreative(player))
-            return;
-
-        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-            return;
-
-        // check if player is riding
-        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle() && !player.getVehicle().getType().equals(EntityType.BOAT))
-            return;
-
-        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(event.getEntity(), ActionType.BUCKET));
-    }
 }
