@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.container.CurrencyType;
+import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.FileHandler.ConfigReader;
@@ -137,7 +138,10 @@ public class LanguageManager {
             c.get("command.boost.output.boostadded", "&aBoost of &e%boost% &aadded for &e%jobname%!");
             c.get("command.boost.output.infostats", "&c-----> &a%type% rate x%boost% enabled&c <-------");
             c.get("command.boost.output.boostStats", "&6%payments% &e%jobname%");
-
+            
+            c.get("command.boost.output.jobsboostreset", "&aBoost of &e%boost% &aadded for &e%jobname%!");
+            c.get("command.boost.output.jobstypeboostreset", "&aBoost of &e%boost% &aadded for &e%jobname%!");
+            
             c.get("command.schedule.help.info", "Enables the given scheduler");
             c.get("command.schedule.help.args", "enable [scheduleName] [untilTime]");
             Jobs.getGCManager().getCommandArgs().put("schedule", Arrays.asList("enable", "[scheduleName]", "[untilTime]"));

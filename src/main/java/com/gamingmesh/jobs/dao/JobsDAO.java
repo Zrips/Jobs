@@ -43,12 +43,13 @@ import com.gamingmesh.jobs.dao.JobsManager.DataBaseType;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.stuff.Util;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Time.CMITimeManager;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public abstract class JobsDAO {
- 
+
     private JobsConnectionPool pool;
     private static String prefix;
     private Jobs plugin;
@@ -2563,12 +2564,14 @@ public abstract class JobsDAO {
                             ExploreChunk chunk = oneChunk.getValue();
                             if (chunk.getDbId() != -1)
                                 continue;
+
                             prest2.setInt(1, id);
                             prest2.setInt(2, region.getValue().getChunkGlobalX(oneChunk.getKey()));
                             prest2.setInt(3, region.getValue().getChunkGlobalZ(oneChunk.getKey()));
                             prest2.setString(4, chunk.serializeNames());
                             prest2.setString(5, jobsWorld != null ? jobsWorld.getName() : "");
                             prest2.addBatch();
+
                             i++;
                         }
                 }
@@ -2625,7 +2628,7 @@ public abstract class JobsDAO {
             conn.setAutoCommit(true);
 
             if (i > 0)
-               CMIMessages.consoleMessage("&e[Jobs] Updated " + i + " explorer entries.");
+                CMIMessages.consoleMessage("&e[Jobs] Updated " + i + " explorer entries.");
 
         } catch (SQLException e) {
             e.printStackTrace();

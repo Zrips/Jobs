@@ -76,7 +76,7 @@ public class boost implements Cmd {
             return true;
         }
 
-        if (job != null && rate == null) {
+        if (job != null && rate == null && !reset) {
             LC.info_Spliter.sendMessage(sender);
             showBoosts(sender, job);
             return true;
@@ -108,10 +108,10 @@ public class boost implements Cmd {
                     for (CurrencyType curr : CurrencyType.values()) {
                         job.addBoost(curr, 0);
                     }
-                    Language.sendMessage(sender, "command.moneyboost.output.jobsboostreset", "%jobname%", job.getName());
+                    Language.sendMessage(sender, "command.boost.output.jobsboostreset", "%jobname%", job.getName());
                 } else {
                     job.addBoost(type, 0);
-                    Language.sendMessage(sender, "command.moneyboost.output.jobstypeboostreset", "%jobname%", job.getName(), "%type%", type.getDisplayName());
+                    Language.sendMessage(sender, "command.boost.output.jobstypeboostreset", "%jobname%", job.getName(), "%type%", type.getDisplayName());
                 }
             }
             return true;
