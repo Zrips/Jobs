@@ -617,6 +617,7 @@ public class ConfigManager {
         case BREW:
         case BREAK:
         case STRIPLOGS:
+        case BUCKET:
         case COLLECT:
             material = CMIMaterial.get(myKey + (subType));
 
@@ -723,7 +724,7 @@ public class ConfigManager {
             }
 
             id = material.getId();
-        } else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK) {
+        } else if (actionType == ActionType.KILL || actionType == ActionType.TAME || actionType == ActionType.BREED || actionType == ActionType.MILK || actionType == ActionType.BUCKET) {
             // check entities
             CMIEntityType entity = CMIEntityType.getByName(myKey);
 

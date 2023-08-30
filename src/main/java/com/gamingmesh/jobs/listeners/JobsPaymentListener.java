@@ -77,6 +77,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.event.player.PlayerBucketEntityEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.EnchantingInventory;
