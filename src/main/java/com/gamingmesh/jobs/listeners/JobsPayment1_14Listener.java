@@ -24,7 +24,7 @@ import com.gamingmesh.jobs.actions.ItemActionInfo;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.PlayerCamp;
 
-public final class JobsPayment14Listener implements Listener {
+public final class JobsPayment1_14Listener implements Listener {
 
     // BlockCookEvent does not have "cooking owner"
     private final Map<UUID, List<PlayerCamp>> campPlayers = new HashMap<>();

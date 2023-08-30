@@ -18,52 +18,58 @@
 
 package com.gamingmesh.jobs.container;
 
+import net.Zrips.CMILib.Container.CMIText;
+
 public enum ActionType {
-    BREAK("Break"),
+    BREAK(),
     STRIPLOGS("StripLogs"),
     TNTBREAK("TNTBreak"),
-    PLACE("Place"),
-    KILL("Kill"),
+    PLACE(),
+    KILL(),
     MMKILL("MMKill"),
-    FISH("Fish"),
-    CRAFT("Craft"),
+    FISH(),
+    CRAFT(),
     VTRADE("VTrade"),
-    SMELT("Smelt"),
-    BREW("Brew"),
-    ENCHANT("Enchant"),
-    REPAIR("Repair"),
-    BREED("Breed"),
-    TAME("Tame"),
-    DYE("Dye"),
-    SHEAR("Shear"),
-    MILK("Milk"),
-    EXPLORE("Explore"),
-    EAT("Eat"),
+    SMELT(),
+    BREW(),
+    ENCHANT(),
+    REPAIR(),
+    BREED(),
+    TAME(),
+    DYE(),
+    SHEAR(),
+    MILK(),
+    EXPLORE(),
+    EAT(),
     CUSTOMKILL("custom-kill"),
-    COLLECT("Collect"),
-    BAKE("Bake"),
-    BUCKET("Bucket");
+    COLLECT(),
+    BAKE(),
+    BUCKET();
 
     private String name;
 
     ActionType(String name) {
-	this.name = name;
+        this.name = name;
+    }
+
+    ActionType() {
+        this.name = CMIText.firstToUpperCase(this.toString());
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public static ActionType getByName(String name) {
-	if (name != null) {
-	    name = name.replace("_", "");
+        if (name != null) {
+            name = name.replace("_", "");
 
-	    for (ActionType one : ActionType.values()) {
-		if (one.name.equalsIgnoreCase(name))
-		    return one;
-	    }
-	}
+            for (ActionType one : ActionType.values()) {
+                if (one.name.equalsIgnoreCase(name))
+                    return one;
+            }
+        }
 
-	return null;
+        return null;
     }
 }

@@ -94,10 +94,10 @@ import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.listeners.JobsListener;
-import com.gamingmesh.jobs.listeners.JobsPayment14Listener;
+import com.gamingmesh.jobs.listeners.JobsPayment1_14Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
-import com.gamingmesh.jobs.listeners.JobsPayment16Listener;
+import com.gamingmesh.jobs.listeners.JobsPayment1_16Listener;
 import com.gamingmesh.jobs.listeners.PlayerSignEdit1_20Listeners;
 import com.gamingmesh.jobs.selection.SelectionManager;
 import com.gamingmesh.jobs.stuff.Loging;
@@ -794,10 +794,10 @@ public final class Jobs extends JavaPlugin {
         pm.registerEvents(new JobsListener(getInstance()), getInstance());
         pm.registerEvents(new JobsPaymentListener(getInstance()), getInstance());
         if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
-            pm.registerEvents(new JobsPayment14Listener(), getInstance());
+            pm.registerEvents(new JobsPayment1_14Listener(), getInstance());
         }
         if (Version.isCurrentEqualOrHigher(Version.v1_16_R3)) {
-            pm.registerEvents(new JobsPayment16Listener(), getInstance());
+            pm.registerEvents(new JobsPayment1_16Listener(), getInstance());
         }
 
         if (Version.isCurrentEqualOrHigher(Version.v1_20_R1)) {

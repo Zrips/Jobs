@@ -10,7 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBucketEntityEvent;
 
-public class JobsPayment16Listener implements Listener {
+public class JobsPayment1_16Listener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityBucketed(PlayerBucketEntityEvent event) {
         Player player = event.getPlayer();
