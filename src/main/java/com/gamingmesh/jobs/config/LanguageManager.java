@@ -642,7 +642,12 @@ public class LanguageManager {
             c.get("command.toggle.output.paid.points", "&6[points] points");
             c.get("command.toggle.output.on", "&aToggled: &aON");
             c.get("command.toggle.output.off", "&aToggled: &4OFF");
-
+            
+            c.get("command.howmuch.help.info", "Check potential payment by target entity or block");
+            c.get("command.howmuch.help.args", "");
+            c.get("command.version.output.payment", "&e[job] &f[action] &7[target] [exp] [money] [points]");
+            c.get("command.version.output.nopayment", "&7Can't find any payments ([target])");
+            
             c.get("command.version.help.info", "Plugin version information");
             c.get("command.version.help.args", "");
             c.get("command.version.output.jobsVersion", "&eJobs: &6[version]");
