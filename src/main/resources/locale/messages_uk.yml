@@ -1,211 +1,211 @@
----
+# Translated into Ukrainian: stefanbanderovych (discord)
 economy:
   error:
-    nomoney: 'V národní bance již nezbyly žádné peníze, omlouváme se!'
+    nomoney: '&cВибачте, але у національному банку не залишилося коштів!'
 limitedItem:
   error:
-    levelup: 'Potřebujete mít větší level jako [jobname] pro použití tohoto předmětu!'
+    levelup: '&cВи повинні підвищити рівень [jobname], щоб використовувати цей предмет!'
 general:
   info:
     toplineseparator: '&7*********************** &6%playername% &7***********************'
     separator: '&7*******************************************************'
     time:
-      days: '&e%days% &6dny '
-      hours: '&e%hours% &6hodiny '
-      mins: '&e%mins% &6minuty '
-      secs: '&e%secs% &6sekundy '
-    invalidPage: '&cNeplatná stránka'
-    'true': '&2Povoleno'
-    'false': '&cZakázáno'
+      days: '&e%days% &6днів '
+      hours: '&e%hours% &6годин '
+      mins: '&e%mins% &6хв '
+      secs: '&e%secs% &6сек '
+    invalidPage: '&cНевірна сторінка'
+    'true': '&2Істина'
+    'false': '&cВимкнено'
     blocks:
-      furnace: Pec
-      smoker: Smoker
-      blastfurnace: Blast furnace
-      brewingstand: Brewing stand
+      furnace: Піч
+      smoker: Коптильня
+      blastfurnace: Плавильна піч
+      brewingstand: Зіллєварка
   admin:
-    error: '&cV příkazu se objevil problém.'
-    success: '&eVáš příkaz byl proveden.'
+    error: '&cУ команді введена помилка.'
+    success: '&eВашу команду було виконано.'
   error:
-    noHelpPage: '&cNeexistuje žádná stránka s nápovědou tohoto čísla!'
-    notNumber: '&eProsím, použijte čísla!'
-    job: '&cPráce kterou jste si vybral neexistuje, nebo do ní nejste připojen'
-    noCommand: '&cNeexistuje žádný příkaz tohoto jména!'
-    permission: '&cNa toto nemáš dostatečné oprávnění!'
-    noinfo: '&cNenalezeny žádné informace!'
-    noinfoByPlayer: '&cNenalezli jsme žádné informace od [%playername%] jména!'
-    ingame: '&cTento příkaz můžete používat pouze ve hře!'
-    fromconsole: '&cTento příkaz můžete používat pouze z konzole!'
-    worldisdisabled: '&cTento příkaz nemůžete používat v tomhle světě!'
-    newRegistration: '&eRegistered new ownership for [block] &7[current]&e/&f[max]'
-    noRegistration: '&cYou''ve reached max [block] count!'
+    noHelpPage: '&cНема сторінки довідника з цим номером!'
+    notNumber: '&eБудь ласка, використовуйте цілі цифри!'
+    job: '&cВказаної роботи не існує або Ви не влаштовані на ній'
+    noCommand: '&cТакої команди не існує.'
+    permission: '&cУ Вас немає прав на виконання цієї дії!'
+    noinfo: '&cІнформація не знайдена!'
+    noinfoByPlayer: '&cІнформація про нікнейм [%playername%] не знайдена!'
+    ingame: '&cВи можете використовувати цю команду лише у грі!'
+    fromconsole: '&cВи можете використовувати цю команду лише з консолі!'
+    worldisdisabled: '&cВи не можете використовувати цю команду у цьому світі!'
+    newRegistration: '&eЗареєстровано нового власника [block] &7[current]&e/&f[max]'
+    noRegistration: '&cВи досягли ліміту зареєстрованих [block]!'
 command:
   help:
     output:
-      info: Napiš /jobs [cmd] ? pro více info o příkazu.
-      cmdUsage: '&2Použití: &7[command]'
+      info: Введіть /jobs [cmd] ? для більш детальної інформації про команду.
+      cmdUsage: '&2Використання: &7[command]'
       label: Jobs
       cmdInfoFormat: '[command] &f- &2[description]'
       cmdFormat: '&7/[command] &f[arguments]'
       helpPageDescription: '&2* [description]'
-      title: '&e-------&e ======= &6Jobs &e======= &e-------'
-      page: '&e-----&e ====== Strana &6[1] &ez &6[2] &e====== &e-----'
+      title: '&e-------&e ======= &6Роботи &e======= &e-------'
+      page: '&e-----&e ==== Сторінка &6[1] &eиз &6[2] &e==== &e-----'
       fliperSimbols: '&e----------'
-      prevPage: '&2----<< &6Předchozí '
-      prevPageOff: '&7----<< Předchozí '
-      nextPage: '&6 Další &2>>----'
-      nextPageOff: '&7 Další >>----'
+      prevPage: '&2---<< &6Назад '
+      prevPageOff: '&7---<< Назад '
+      nextPage: '&6 Далі &2>>---'
+      nextPageOff: '&7 Далі >>---'
       pageCount: '&2[current]/[total]'
-      pageCountHover: '&e[totalEntries] záznamů'
-      prevPageGui: '&6Předchozí stránka '
-      nextPageGui: '&6Další stránka'
+      pageCountHover: '&e[totalEntries] позицій'
+      prevPageGui: '&6Попередня сторінка '
+      nextPageGui: '&6Наступна сторінка'
   moneyboost:
     help:
-      info: Zvyšuje získávání peněz všem hráčům
+      info: Прискорює одержання грошей для всіх гравців
       args: '[jobname]/all/reset [time]/[rate]'
     output:
-      allreset: Vsechny boosty penez vypnuty
-      jobsboostreset: Boosty penez byly vypnuty pro %jobname%
-      nothingtoreset: Nic k resetování
-      boostalladded: Boosty penez %boost% pridany pro vsechny prace!
-      boostadded: Boosty penez &e%boost% &pridany pro &e%jobname%!
-      infostats: '&c-----> &aSazby penez x%boost% povoleny&c <-------'
+      allreset: Усі множники грошей відключені
+      jobsboostreset: Множник грошей для %jobname% було відключено
+      nothingtoreset: Нема чого скидати
+      boostalladded: Множник грошей для x%boost% доданий для всіх робіт!
+      boostadded: Множник грошей для x&e%boost% &aдоданий для &e%jobname%!
+      infostats: '&c-----> &aБагато грошей x%boost% включений&c <-------'
   pointboost:
     help:
-      info: Zvyšuje získávání bodů všem hráčům
+      info: Прискорює отримання очок для всіх гравців
       args: '[jobname]/all/reset [time]/[rate]'
     output:
-      allreset: Vsechny bodove boosty jsou vypnute
-      jobsboostreset: Bodove boosty byly vypnuty pro %jobname%
-      nothingtoreset: Nic k resetování
-      boostalladded: Bodove boosty %boost% pridany pro vsechny prace!
-      boostadded: Body boostu &e%boost% &pridany pro &e%jobname%!
-      infostats: '&c-----> &aSazby bodu x%boost% povoleny&c <-------'
+      allreset: Усі множники очок відключені
+      jobsboostreset: Множник очок для %jobname% було вимкнено
+      nothingtoreset: Нема чого скидати
+      boostalladded: Множник очок x%boost% додано для всіх робіт!
+      boostadded: Множник очок x&e%boost% &aдоданий для &e%jobname%!
+      infostats: '&c-----> &aМножник очок x%boost% включений&c <-------'
   expboost:
     help:
-      info: Zvyšuje získávání XP všem hráčům
+      info: Прискорює здобуття досвіду для всіх гравців
       args: '[jobname]/all/reset [time]/[rate]'
     output:
-      allreset: Vsechny boosty expu byly vypnuty
-      jobsboostreset: Boost expu byl vypnut pro %jobname%
-      nothingtoreset: Nic k resetování
-      boostalladded: Boost expu %boost% pridan pro vsechny prace!
-      boostadded: Boost expu &e%boost% &pridan pro &e%jobname%!
-      infostats: '&c-----> &aSazby expu x%boost% povoleny&c <-------'
+      allreset: Усі множники досвіду відключені
+      jobsboostreset: Множник досвіду %jobname% було вимкнено
+      nothingtoreset: Нема чого скидати
+      boostalladded: Множник досвіду x%boost% доданий для всіх робіт!
+      boostadded: Множник досвіду x&e%boost% &aдоданий для &e%jobname%!
+      infostats: '&c-----> &aМножник досвіду x%boost% включений&c <-------'
   schedule:
     help:
-      info: Enables the given scheduler
+      info: Включає зазначений планувальник
       args: enable [scheduleName] [untilTime]
     output:
-      noScheduleFound: '&cSchedule with this name not found.'
-      alreadyEnabled: '&cThis schedule already enabled.'
-      enabled: '&eSchedule have been enabled from&a %from%&e until&a %until%'
+      noScheduleFound: '&cПланувальника з такою назвою не знайдено.'
+      alreadyEnabled: '&cЦей планувальник уже увімкнено.'
+      enabled: '&eПланувальник включений з с&a %from%&e до&a %until%'
   itembonus:
     help:
-      info: Zkontrolovat bonus předmětu
+      info: Переглянути бонусні предмети
       args: ''
     output:
       list: '&e[jobname]: %money% %points% %exp%'
       notAplyingList: '&7[jobname]: %money% %points% %exp%'
       hover: '&7%itemtype%'
-      hoverLevelLimits: "&7Od levelu: %from% \n&7Do levelu: %until%"
+      hoverLevelLimits: "&7С рівня: %from% \n&7До рівня: %until%"
   edititembonus:
     help:
-      info: Upravit bonus předmětu
+      info: Редагування бонусів робіт.
       args: list/add/remove [jobname] [itemBoostName]
   bonus:
     help:
-      info: Zobrazí bonusy prací
+      info: Показує бонуси робіт.
       args: '[jobname]'
     output:
       topline: '&7**************** &2[money] &6[points] &e[exp] &7****************'
-      permission: ' &ePerma bonus: &2%money% &6%points% &e%exp%'
-      item: ' &eBonus predmetu: &2%money% &6%points% &e%exp%'
-      global: ' &eGlobalni bonus: &2%money% &6%points% &e%exp%'
-      dynamic: ' &eDynamicky bonus: &2%money% &6%points% &e%exp%'
-      nearspawner: ' &eSpawnerovy bonus: &2%money% &6%points% &e%exp%'
-      petpay: ' &ePerma bonus: &2%money% &6%points% &e%exp%'
-      area: ' &eBonus oblasti: &2%money% &6%points% &e%exp%'
-      mcmmo: ' &eKonecny bonus: &2%money% &6%points% &e%exp%'
-      final: ' &eKonecny bonus: &2%money% &6%points% &e%exp%'
-      finalExplanation: ' &eNeobsahuje Petpay a blizky spawnerovy bonus/trest'
+      permission: ' &eБонус привілеї: &2%money% &6%points% &e%exp%'
+      item: ' &eБонус предмета: &2%money% &6%points% &e%exp%'
+      global: ' &eГлобальний бонус: &2%money% &6%points% &e%exp%'
+      dynamic: ' &eДинамічний бонус: &2%money% &6%points% &e%exp%'
+      nearspawner: ' &eБонус спавнера: &2%money% &6%points% &e%exp%'
+      petpay: ' &eБонус домашніх тварин: &2%money% &6%points% &e%exp%'
+      area: ' &eБонус зони: &2%money% &6%points% &e%exp%'
+      mcmmo: ' &eБонус McMMO: &2%money% &6%points% &e%exp%'
+      final: ' &eПідсумковий бонус: &2%money% &6%points% &e%exp%'
+      finalExplanation: ' &eНе включає бонуси/штрафи домашніх тварин та розсадників мобів'
   convert:
     help:
-      info: Converts the database system from one system to another. If you are currently running SQLite, this will convert it to MySQL and vice versa.
+      info: Конвертує дані з одного виду БД до іншого. Якщо зараз все працює під SQLite, команда конвертує всі дані в MySQL або навпаки.
       args: ''
   limit:
     help:
-      info: Zobrazí platzební limity prací
+      info: Показує ліміт оплати для роботи.
       args: '[playername]'
     output:
-      moneytime: '&eZbyvajici cas do vynulovani limitu penez: &2%time%'
-      moneyLimit: '&eLimit penez: &2%current%&e/&2%total%'
-      exptime: '&eZbyvajici cas do vynulovani limitu expu: &2%time%'
-      expLimit: '&eLimit expu: &2%current%&e/&2%total%'
-      pointstime: '&eZbyvajici cas do vynulovani limitu bodu: &2%time%'
-      pointsLimit: '&eLimit bodu: &2%current%&e/&2%total%'
-      reachedmoneylimit: '&4Dosahl jsi limitu penez v danem case!'
-      reachedmoneylimit2: '&eMuzes zkontrolovat tvuj limit s &2/jobs limit &ecommand'
-      reachedmoneylimit3: '&eVydelane penize jsou nyni redukovany exponencialne... Ale furt ziskavas trochu!'
-      reachedexplimit: '&4dosahl jsi limitu expu v danem case!'
-      reachedexplimit2: '&eMuzes zkontrolovat tvuj limit s &2/jobs limit &ecommand'
-      reachedpointslimit: '&4Dosahl jsi limitu expu v danem case!'
-      reachedpointslimit2: '&eMuzes zkontrolovat tvuj limit s &2/jobs limit &ecommand'
-      notenabled: '&eLimit penez neni zapnuty'
+      moneytime: '&eЧасу до скидання грошового ліміту: &2%time%'
+      moneyLimit: '&eЛіміт грошей: &2%current%&e/&2%total%'
+      exptime: '&eЧасу до скидання ліміту досвіду: &2%time%'
+      expLimit: '&eЛіміт досвіду: &2%current%&e/&2%total%'
+      pointstime: '&eЧасу до скидання ліміту очок: &2%time%'
+      pointsLimit: '&eЛіміт очок: &2%current%&e/&2%total%'
+      reachedmoneylimit: '&4Ви досягли ліміту грошей, які можна отримати!'
+      reachedmoneylimit2: '&eВи можете перевірити свій ліміт командою &2/jobs limit'
+      reachedmoneylimit3: '&eВаш заробіток поступово зменшується... Але ви ще можете трохи заробити!'
+      reachedexplimit: '&4Ви досягли ліміту досвіду, який можна отримати!'
+      reachedexplimit2: '&eВи можете перевірити свій ліміт командою &2/jobs limit'
+      reachedpointslimit: '&4Ви досягли ліміту очок, які можна отримати!'
+      reachedpointslimit2: '&eВи можете перевірити свій ліміт командою &2/jobs limit'
+      notenabled: '&eЛіміт грошей вимкнено'
   resetlimit:
     help:
-      info: Resetuje platební limity hráče
+      info: Скидає встановлені ліміти гравців
       args: '[playername]'
     output:
-      reseted: '&eLimity plateb byly vynulovany pro: &2%playername%'
+      reseted: '&eУспішно скинуто ліміт гравця: &2%playername%'
   resetquest:
     help:
-      info: Resetuje questy hráče
+      info: Скидає квест гравця
       args: '[playername] [jobname]'
     output:
-      reseted: '&eÚkol hráče &2%playername% &ebyl resetován'
-      noQuests: '&eNemohu najít žádné questy'
+      reseted: '&eКвест був скинутий для гравця: &2%playername%'
+      noQuests: '&eНе вдається знайти квести'
   points:
     help:
-      info: Zobrazí kolik má hráč bodů.
+      info: Виводить кількість очок гравця.
       args: '[playername]'
-    currentpoints: ' &eSoučasný počet bodů: &6%currentpoints%'
-    totalpoints: ' &eCelkový počet nasbíraných bodů: &6%totalpoints%'
+    currentpoints: ' &eПоточна кількість очок: &6%currentpoints%'
+    totalpoints: ' &eОчок за весь час: &6%totalpoints%'
   editpoints:
     help:
-      info: Upraví body hráče.
+      info: Редагувати очки гравця.
       args: set/add/take [playername] [amount]
     output:
-      set: '&eHracovy (&6%playername%&e) body byli nastaveny na &6%amount%'
-      add: '&eHrac (&6%playername%&e) dostal &6%amount% &ebodu. Ted ma &6%total%'
-      take: '&eHrac (&6%playername%&e) prisel o &6%amount% &ebodu. ted ma &6%total%'
+      set: '&eКількість очок гравця &6%playername%&e встановлено на &6%amount%'
+      add: '&eГравець &6%playername%&e отримав &6%amount% &eочок. Тепер у нього &6%total%'
+      take: '&eГравець &6%playername%&e втратив &6%amount% &eочок. Тепер у нього &6%total%'
   editjobs:
     help:
-      info: Upraví práce.
+      info: Редагувати наявні роботи.
       args: ''
       list:
-        job: '&ePráce:'
+        job: '&eРоботи:'
         jobs: '  -> [&e%jobname%&r]'
         actions: '    -> [&e%actionname%&r]'
         material: '      -> [&e%materialname%&r]      '
         materialRemove: '&c[X]'
         materialAdd: '      -> &e[&2+&e]'
-        money: '        -> &ePeníze: &6%amount%'
-        exp: '        -> &eXP: &6%amount%'
-        points: '        -> &eBody: &6%amount%'
+        money: '        -> &eГроші: &6%amount%'
+        exp: '        -> &eДосвід: &6%amount%'
+        points: '        -> &eОчки: &6%amount%'
       modify:
-        newValue: '&eNapiš novou hodnotu'
-        enter: '&eNapiš nové jméno, nebo zmáčkni '
-        hand: '&6RUKA '
-        handHover: '&6Stisknutím tlačítka získáte info o předmětu v ruce'
-        or: '&enebo '
-        look: '&6PODÍVEJ SE NA'
-        lookHover: '&6Stisknutím tlačítka získáte info o bloku na který se koukáš'
+        newValue: '&eВведіть нове значення'
+        enter: '&eВкажіть нову назву або натисніть '
+        hand: '&6РУКА '
+        handHover: '&6Натисніть, щоб отримати інформацію про предмет у вашій руці'
+        or: '&eабо '
+        look: '&6ДИВИТИСЯ НА'
+        lookHover: '&6Натисніть, щоб отримати інформацію про блок, на який Ви дивитеся'
   editquests:
     help:
-      info: Upravit questy.
+      info: Редагувати поточні квести.
       args: ''
       list:
-        quest: '&eQuesty:'
+        quest: '&eКвести:'
         jobs: '  -> [&e%jobname%&r]'
         quests: '  -> [&e%questname%&r]'
         actions: '    -> [&e%actionname%&r]'
@@ -213,498 +213,498 @@ command:
         objectiveRemove: '&c[X]'
         objectiveAdd: '      -> &e[&2+&e]'
       modify:
-        newValue: '&eZadej novou hodnotu'
-        enter: '&eNapiš nové jméno, nebo zmáčkni '
-        hand: '&6RUKA '
-        handHover: '&6Stisknutím tlačítka získáte info o předmětu v ruce'
-        or: '&enebo '
-        look: '&6PODÍVEJ SE NA'
-        lookHover: '&6Stisknutím tlačítka získáte info o bloku na který se koukáš'
+        newValue: '&eВведіть нове значення'
+        enter: '&eВведіть нову назву або натисніть '
+        hand: '&6РУКА '
+        handHover: '&6Натисніть, щоб отримати інформацію про предмет у вашій руці'
+        or: '&eабо '
+        look: '&6ДИВИТИСЯ НА'
+        lookHover: '&6Натисніть, щоб отримати інформацію про блок, на який Ви дивитеся'
   blockinfo:
     help:
-      info: Zobrazí info o bloku na který se koukáš.
+      info: Показує інформацію про блок, на який Ви дивитеся.
       args: ''
     output:
-      name: ' &eJmeno bloku: &6%blockname%'
-      id: ' &eId bloku: &6%blockid%'
-      data: ' &eData bloku: &6%blockdata%'
-      usage: ' &ePouziti: &6%first% &eor &6%second%'
+      name: ' &eНазва блоку: &6%blockname%'
+      id: ' &eID блоку: &6%blockid%'
+      data: ' &eДані блоку: &6%blockdata%'
+      usage: ' &eВикористання: &6%first% &eабо &6%second%'
   iteminfo:
     help:
-      info: Zobrazí info o předmětu který držíš v ruce.
+      info: Відображає інформацію про предмет, який Ви тримаєте.
       args: ''
     output:
-      name: ' &eNazev predmetu: &6%itemname%'
-      id: ' &eId predmetu: &6%itemid%'
-      data: ' &eData predmetu: &6%itemdata%'
-      usage: ' &ePouziti: &6%first% &eor &6%second%'
+      name: ' &eНазва предмету: &6%itemname%'
+      id: ' &eID предмета: &6%itemid%'
+      data: ' &eДані предмета: &6%itemdata%'
+      usage: ' &eВикористання: &6%first% &eабо &6%second%'
   placeholders:
     help:
-      info: Vypíše všechny zástupné symboly
-      args: (parse) (placeholder)
+      info: Список усіх плейсхолдерів
+      args: (parse) (плейсхолдери)
     output:
       list: '&e[place]. &7[placeholder]'
-      outputResult: ' &evysledek: &7[result]'
-      parse: '&6[placeholder] &7 [source] &6vysledek &8|&f[result]&8|'
+      outputResult: ' &eрезультат: &7[result]'
+      parse: '&6[placeholder] &7від [source] &6результує &8|&f[result]&8|'
   entitylist:
     help:
-      info: Zobrazuje všechny možné entity, které lze s pluginem použít.
+      info: Показує всі можливі сутності, які можуть бути задіяні плагіном.
       args: ''
   stats:
     help:
-      info: Ukažte úroveň, ve které se nacházíte v každé práci, kterou jste součástí.
+      info: Покаже Ваш рівень з окремих робіт.
       args: '[playername]'
     error:
-      nojob: Prosim nejdrive se pripoj k praci.
+      nojob: Спочатку влаштуйтеся на роботу.
     output:
-      message: 'Level %joblevel% for %jobname%: %jobxp%/%jobmaxxp% xp'
-      max-level: '     &cMax level   -   %jobname%'
-    bossBarOutput: 'Level %joblevel% %jobname%: %jobxp%/%jobmaxxp% xp%gain%'
+      message: 'Рівень %joblevel% для %jobname%: %jobxp%/%jobmaxxp% оп.'
+      max-level: '     &cМакс. рівень   -   %jobname%'
+    bossBarOutput: 'Ур. %joblevel% %jobname%: %jobxp%/%jobmaxxp% оп.%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
-      info: Otevře obchod se speciálními pracemi.
+      info: Відкриває спеціальний магазин за бонусні очки.
       args: ''
     info:
-      title: '&e------- &8Jobs obchod &e-------'
-      currentPoints: '&eMas: &6%currentpoints%'
-      price: '&eCena: &6%price%'
-      reqJobs: '&ePotřebné práce:'
-      reqJobsList: '  &6%jobsname%&e: &e%level% lvl'
-      reqTotalLevel: '&6Potrebny level: &e%totalLevel%'
+      title: '&e--- &8Магазин спецтоварів &e----'
+      currentPoints: '&eУ вас: &6%currentpoints%'
+      price: '&eЦіна: &6%price%'
+      reqJobs: '&eНеобхідні роботи:'
+      reqJobsList: '  &6%jobsname%&e: &e%level% ур.'
+      reqTotalLevel: '&6Потрібен сукупний рівень: &e%totalLevel%'
       reqJobsColor: '&c'
       reqJobsLevelColor: '&4'
       reqTotalLevelColor: '&4'
-      cantOpen: '&eTuto stránku nemůžeš otevřít'
-      NoPermForItem: '&cNemas pozadovane povoleni pro tento predmet!'
-      NoPermToBuy: '&cNemas povoleni na koupeni tohoto predmetu'
-      NoJobReqForitem: '&cNemas pozadovanou praci (&6%jobname%&e) s pozadovanou urovni (&6%joblevel%&e)'
-      NoPoints: '&cNemas dostatek bodu'
-      NoTotalLevel: '&cCelkovy level prace je prilis nizky (%totalLevel%)'
-      Paid: '&eZaplatil jsi &6%amount% &eza tento predmet'
+      cantOpen: '&cНе вдається відкрити цю сторінку'
+      NoPermForItem: '&cУ Вас немає прав на вчинення цієї дії!'
+      NoPermToBuy: '&cУ Вас немає прав на купівлю цього товару!'
+      NoJobReqForitem: '&cВи не працюєте &6(%jobname%), &eабо не досягли &6(%joblevel%) &eрівня'
+      NoPoints: '&cУ Вас недостатньо очок'
+      NoTotalLevel: '&cУ Вас недостатній сукупний рівень робіт. Потрібно (%totalLevel%)'
+      Paid: '&eВи заплатили &6%amount% &eза цей предмет'
   archive:
     help:
-      info: Zobrazí všechny práce uložené v archivu.
+      info: Показує всі роботи, збережені користувачем в архіві.
       args: '[playername]'
     error:
-      nojob: Nemas ulozenou zadnou praci.
+      nojob: Немає збережених робіт.
   give:
     help:
-      info: Dá předmět podle názvu práce a kategorie. Jméno hráče je volitelné
+      info: Видати предмет за назвою роботи або за категорією. Ім.я гравця необов.язкове
       args: '[playername] [jobname] [items/limiteditems] [jobitemname]'
     output:
-      notonline: '&4Hrac s timto jmenem neni online!'
-      noitem: '&4Nedokazu najit predmet s timto jmenem!'
+      notonline: '&4Цей гравець не в мережі!'
+      noitem: '&4Немає предмета з такою назвою!'
   info:
     help:
-      title: '&2*** &eJobs&2 ***'
-      info: Ukažte, kolik je za každou práci placeno a za co.
-      penalty: '&eTato práce má penalizaci &c[penalty]% &eprotože jí dělá už velké množství lidí.'
-      bonus: '&eTato práce má bonus &c[bonus]% &eprotože jí dělá málo lidí.'
+      title: '&2*** &eРоботи&2 ***'
+      info: Вивести заробіток та завдання кожної роботи.
+      penalty: '&eНа цю роботу накладено штраф &c[penalty]%&e, тому що на неї влаштовано дуже багато гравців.'
+      bonus: '&eНа цю роботу передбачено бонус &2[bonus]%&e, тому що на неї влаштовано недостатньо гравців.'
       args: '[jobname] [action]'
-      actions: '&eValidní akce jsou: &f%actions%'
-      max: ' - &emax úroveň:&f '
-      newMax: ' &eMax úroveň: &f[max]'
+      actions: '&eДопустимі дії: &f%actions%'
+      max: ' - &eмакс. рівень:&f '
+      newMax: ' &eМакс. рівень: &f[max]'
       material: '&7%material%'
-      levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &alevely)'
-      levelFrom: ' &a(od &e%levelFrom% &aúrovně)'
-      levelUntil: ' &a(do &e%levelUntil% &aúrovně)'
+      levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &aрівнів)'
+      levelFrom: ' &a(от &e%levelFrom% &aрівня)'
+      levelUntil: ' &a(до &e%levelUntil% &aрівня)'
       money: ' &2%money%$'
-      points: ' &6%points%pts'
-      exp: ' &e%exp%xp'
+      points: ' &6%points%оч.'
+      exp: ' &e%exp%дос.'
     gui:
-      pickjob: '&eVyber si praci!'
-      jobinfo: '&e[jobname] info!'
-      actions: '&ePlatne akce jsou:'
-      leftClick: '&eLeve tlacitko pro vice informaci'
-      middleClick: '&eProstredni tlacitko pro odchod z teto prace'
-      rightClick: '&ePrave tlacitko pro pripojeni do prace'
-      leftSlots: '&eLeve sloty:&f '
-      working: '&2&nUz pracujes'
-      cantJoin: '&cNemuzes se pripojit do vybrane prace.'
-      max: '&eMax úroveň:&f '
-      back: '&e<<< Zpět'
-      next: '&eNext >>>'
+      pickjob: '&eВиберіть Вашу роботу!'
+      jobinfo: '&eІнформація про [jobname]!'
+      actions: '&eДоступні дії:'
+      leftClick: '&eНатисніть ЛКМ, щоб дізнатися більше'
+      middleClick: '&eНатисніть СКМ, щоб залишити цю професію'
+      rightClick: '&eНатисніть ПКМ, щоб влаштуватись на роботу'
+      leftSlots: '&eЗалишилось вакансій:&f '
+      working: '&2&nПоточна робота'
+      cantJoin: '&cВи не можете влаштуватися на вибрану роботу.'
+      max: '&eМакс. рівень:&f '
+      back: '&e<<< Назад'
+      next: '&eДалі >>>'
     output:
       break:
-        info: '&eNičení'
-        none: '%jobname% nedostává peníze za ničení bloků.'
+        info: '&eРуйнування'
+        none: '%jobname% не отримує гроші за руйнування блоків'
       tntbreak:
-        info: '&eTNTNičení'
-        none: '%jobname% nedostává peníze za ničení bloku pomocí TNT.'
+        info: '&eДинаміт'
+        none: '%jobname% не отримує гроші за підрив блоків за допомогою TNT.'
       place:
-        info: '&ePokládání'
-        none: '%jobname% nedostává peníze za pokládání bloků.'
+        info: '&eРозміщення'
+        none: '%jobname% не отримує гроші за розміщення блоків'
       striplogs:
-        info: '&eOřezávání kmenů'
-        none: '%jobname% nedostává peníze za ořezávání kmenů.'
+        info: '&eРубання дерева'
+        none: '%jobname% не отримує гроші за рубання колод.'
       kill:
-        info: '&eZabíjení'
-        none: '%jobname% nedostává peníze za zabíjení monster.'
+        info: '&eВбивство'
+        none: '%jobname% не отримує гроші за вбивство мобів'
       mmkill:
-        info: '&eMMZabíjení'
-        none: '%jobname% nedostává peníze za zabíjení mýtických monster.'
+        info: '&eВбивство незвичайних'
+        none: '%jobname% не отримує гроші за вбивство незвичайних мобів'
       fish:
-        info: '&eRybaření'
-        none: '%jobname% nedostává peníze za rybaření.'
+        info: '&eРибалка'
+        none: '%jobname% не отримує гроші за лов риби.'
       craft:
-        info: '&eVyrábění'
-        none: '%jobname% nedostává peníze za vyrábění.'
+        info: '&eСтворення'
+        none: '%jobname% не отримує гроші за створення предметів.'
       smelt:
-        info: '&eVypalování'
-        none: '%jobname% nedostává peníze za vypalování.'
+        info: '&eПлавка'
+        none: '%jobname% не отримує гроші за обробку у печі.'
       brew:
-        info: '&eVaření'
-        none: '%jobname% nedostává peníze za vaření.'
+        info: '&eЗіллєваріння'
+        none: '%jobname% не отримує гроші за варіння зілля.'
       eat:
-        info: '&eJezení'
-        none: '%jobname% nedostává peníze za jezení jídla.'
+        info: '&eПоїдання'
+        none: '%jobname% не отримує гроші за поїдання їжі.'
       dye:
-        info: '&eBarvení'
-        none: '%jobname% nedostává peníze za barvení.'
+        info: '&eФарбування'
+        none: '%jobname% не отримує гроші за фарбування.'
       enchant:
-        info: '&eEnchantování'
-        none: '%jobname% nedostává peníze za enchantování.'
+        info: '&eЗачарування'
+        none: '%jobname% не отримує гроші за зачарування предметів.'
       vtrade:
-        info: '&eObchodování s vesničany'
-        none: '%jobname% nedostává peníze za obchodování s vesničany.'
+        info: '&eТоргівля з мешканцями'
+        none: '%jobname% не отримує гроші за торгівлю із мешканцями.'
       repair:
-        info: '&eOpravování'
-        none: '%jobname% nedostává peníze za opravování.'
+        info: '&eПолагодження'
+        none: '%jobname% не отримує гроші за ремонт предметів.'
       breed:
-        info: '&eMnožení'
-        none: '%jobname% nedostává peníze za množení.'
+        info: '&eРозведення'
+        none: '%jobname% не отримує гроші за розведення тварин.'
       tame:
-        info: '&eOchočování'
-        none: '%jobname% nedostává peníze za ochočování.'
+        info: '&eПриручення'
+        none: '%jobname% не отримує гроші за приручення тварин.'
       milk:
-        info: '&eDojení'
-        none: '%jobname% nedostává peníze za dojení krav.'
+        info: '&eДоїння'
+        none: '%jobname% не отримує гроші за доїння корів.'
       shear:
-        info: '&eStřihání'
-        none: '%jobname% nedostává peníze za střihání ovcí.'
+        info: '&eСтрижка'
+        none: '%jobname% не отримує гроші за стрижку овець.'
       explore:
-        info: '&eProzkoumávání'
-        none: '%jobname% nedostává peníze za prozkoumávání.'
+        info: '&eДослідження'
+        none: '%jobname% не отримує гроші за вивчення світу.'
       custom-kill:
-        info: '&eVlastní zabíjení'
-        none: '%jobname% nedostává peníze za vlastní zabíjení hráčů.'
+        info: '&eСпеціальне вбивство'
+        none: '%jobname% не отримує гроші за спеціальне вбивство гравців.'
       collect:
-        info: '&eSběr'
-        none: '%jobname% nedostává peníze za sbirání bloků.'
+        info: '&eЗбирання'
+        none: '%jobname% не отримує гроші за збирання блоків'
       bake:
-        info: '&ePečení'
-        none: '%jobname% nedostává peníze za vaření jídla.'
+        info: '&eВипікання'
+        none: '%jobname% не отримує гроші за випікання їжі.'
   playerinfo:
     help:
-      info: Ukažte, kolik je za každou práci placeno a za co na cizím hráči.
+      info: Вивести заробіток та завдання кожної роботи в іншого гравця.
       args: '[playername] [jobname] [action]'
   join:
     help:
-      info: Připojit se k vybrané práci.
+      info: Влаштуватися на роботу.
       args: '[jobname]'
     error:
-      alreadyin: Už jsi zaměstnaný jako %jobname%.
-      fullslots: Nemuzes se pripojit do prace %jobname%, nejsou volna mista.
-      maxjobs: Uz ses pripojil do prilis mnoho praci.
-      rejoin: '&cNemuzes se pripojit do teto prace. Pockej [time]'
-    rejoin: '&aklikni aby ses znovu pripojil do teto prace: '
-    success: Pripojil ses do prace %jobname%.
-    confirm: '&2klikni pro potvrzeni pripojeni akce pro &7[jobname] &2praci.'
+      alreadyin: Ви вже влаштувалися на роботу %jobname%.
+      fullslots: Неможливо влаштуватися на %jobname% - немає вільних місць.
+      maxjobs: У Вас вже надто багато робіт.
+      rejoin: '&cНе можна перевлаштуватись на цю роботу. Зачекайте [time]'
+    rejoin: '&aКлацніть, щоб перевлаштуватись на цю роботу: '
+    success: Ви влаштувалися на роботу %jobname%.
+    confirm: '&2Натисніть, щоб підтвердити пристрій на роботу &7[jobname]&2.'
   leave:
     help:
-      info: Opustit vybranou práci.
+      info: Звільнитися з роботи.
       args: '[oldplayerjob]'
-    success: Odesel jsi z prace %jobname%.
-    confirmationNeed: '&cjsi si jisty ze chces odejit z prace&e [jobname]? Napis command znovu behem&6 [time] sekund &cpro potvrzeni!'
+    success: Ви звільнилися з роботи %jobname%.
+    confirmationNeed: '&cВи дійсно хочете звільнитися з роботи&e [jobname]&c? Для підтвердження введіть команду повторно протягом&6 [time] секунд&c!'
   leaveall:
     help:
-      info: Opustit všechny tvoje práce.
+      info: Звільнитися з усіх робіт.
     error:
-      nojobs: Nemas zadnou praci ze které bys mohl odejit!
-    success: Opustil jsi všechny práce.
-    confirmationNeed: '&cOpravdu chces odejit ze vsech praci? Napis command znovu behem &6 [time] seconds &cpro potvrzeni!'
+      nojobs: Немає робіт, з яких можна звільнитися!
+    success: Ви звільнилися з усіх робіт.
+    confirmationNeed: '&cВи дійсно хочете звільнитися з усіх робіт? Для підтвердження введіть команду повторно протягом&6 [time] секунд&c!'
   explored:
     help:
-      info: Zkontroluje kdo navštívil tento chunk
+      info: Перевірити, хто відвідував цей чанк.
     error:
-      noexplore: Tento chunk nikdo nenavštívil
-    fullExplore: '&aTento chunk je plně objeven'
+      noexplore: Ніхто ще не був помічений на цьому чанці
+    fullExplore: '&aЦя область повністю досліджена'
     list: '&e%place%. %playername%'
   browse:
     help:
-      info: Seznam tobě dostupných prací.
+      info: Вивести список доступних Вам робіт.
     error:
-      nojobs: Žádné dostupné práce ke kterým by se dalo přidat.
+      nojobs: Немає доступних робіт.
     output:
-      header: 'Můžeš se přidat k těmto pracím:'
-      footer: Pro vice informaci napis /jobs info [JobName]
-      totalWorkers: ' &7Pracovníků: &e[amount]'
-      penalty: ' &4Trest: &c[amount]%'
-      bonus: ' &2Bonus: &a[amount]%'
-      newHeader: '&2========== [amount] Dostupne prace ========='
+      header: 'Ви можете влаштуватися на такі роботи:'
+      footer: Для подробиць введіть /jobs info [JobName]
+      totalWorkers: ' &7Робітників: &e[amount]'
+      penalty: ' &4Штраф: &c[amount]%'
+      bonus: ' &2Бонус: &a[amount]%'
+      newHeader: '&2========== [amount] доступних робіт ========='
       description: '[description]'
       list: '    &8[place]. &7[jobname]'
       console:
-        newHeader: '&2========== [amount] Dostupne prace ========='
+        newHeader: '&2========== [amount] доступних робіт ========='
         description: '[description]'
-        totalWorkers: ' &7Pracovnici: &e[amount]'
-        penalty: ' &4Trest: &c[amount]%'
-        bonus: ' &2Bonus: &a[amount]%'
+        totalWorkers: ' &7Робітників: &e[amount]'
+        penalty: ' &4Штраф: &c[amount]%'
+        bonus: ' &2Бонус: &a[amount]%'
         list: ' &6[jobname]'
-        newMax: ' &eMaximalni level: &f[max]'
-      click: '&bKlikni n apraci abys videl vice informaci!'
-      detailed: 'Klikni pro více detailnější seznam v prací'
+        newMax: ' &eМакс. рівень: &f[max]'
+      click: '&bНатисніть на роботу, щоб дізнатися про неї більше!'
+      detailed: '&bНатисніть, щоб побачити детальніший список завдань'
       jobHeader: '&2========== [jobname] ========='
-      chooseJob: '&7&n&oVybrat tuto práci'
-      chooseJobHover: '&7Klikni zde pro přihlášení k této práci'
+      chooseJob: '&7&n&oВибрати цю роботу'
+      chooseJobHover: '&7Натисніть тут, щоб отримати цю роботу'
   clearownership:
     help:
-      info: Vyčistí vlastnictví bloku
+      info: Очистити інформацію про власника.
       args: '[playername]'
     output:
-      cleared: '&2Removed &7[furnaces] &2furnaces, &7[brewing] &2brewing stands, &7[smoker]&2 smokers and &7[blast]&2 blast furnaces.'
+      cleared: '&2Видалено &7[furnaces] &2пічок, &7[brewing] &2зіллєварок, &7[smoker]&2 коптилен та &7[blast]&2 плавильних пічок.'
   skipquest:
     help:
-      info: Přeskočit quest a dostat nový
-      args: '[jobname] [questname] (jmenoHrace)'
+      info: Пропустити поточний квест та отримати новий
+      args: '[jobname] [questname] (нікГравеця)'
     output:
-      questSkipForCost: '&2Přeskočil si quest a zaplatil si:&e %amount%$'
+      questSkipForCost: '&2Ти пропустив завдання та заплатив:&e %amount%$'
   quests:
     help:
-      info: Seznam dostupných questů
+      info: Відобразити список доступних квестів.
       args: '[playername]'
     error:
-      noquests: '&cŽádné questy'
+      noquests: '&cКвести не знайдено'
     toplineseparator: '&7*********************** &6[playerName] &2(&f[questsDone]&2) &7***********************'
     status:
-      changed: '&2The quests status has been changed to&r %status%'
-      started: '&aStarted'
-      stopped: '&cZastaveno'
+      changed: '&2Статус квесту змінено на&r %status%'
+      started: '&aПочато'
+      stopped: '&cЗупинено'
     output:
-      completed: '&2      !Dokončeno!&r      '
+      completed: '&2      !Завершено!&r      '
       questLine: '[progress] &7[questName] &f[done]&7/&8[required]'
-      skip: '&7Klikni pro preskoceni questu'
-      skips: '&7Leva preskoci: &f[skips]'
-      hover: "&f[jobName] \n[desc] \n&7Novy quest za: [time]"
+      skip: '&7Натисніть, щоб пропустити цей квест'
+      skips: '&7Залишилось пропусків: &f[skips]'
+      hover: "&f[jobName] \n[desc] \n&7Новий квест через: [time]"
   fire:
     help:
-      info: Vyhodit hrace z prace.
+      info: Звільнити гравця із роботи.
       args: '[playername] [jobname]'
     error:
-      nojob: Hrac nema praci %jobname%.
+      nojob: Гравець не влаштований на роботу %jobname%.
     output:
-      target: Byl jste propusten z %jobname%.
+      target: Ви були звільнені з роботи %jobname%.
   fireall:
     help:
-      info: Vyhodit hráče ze všech prací.
+      info: Звільнити гравця з усіх його робіт.
       args: '[playername]/all'
     error:
-      nojobs: Hrac nema zadnou praci, z ktere by mohl byt propusten!
+      nojobs: Гравець не влаштований на жодну з робіт!
     output:
-      target: Byl jste propusten ze vsech vasich praci.
+      target: Ви були звільнені з усіх робіт.
   employ:
     help:
-      info: Zaměstnat hráče do práce.
+      info: Влаштувати гравця працювати.
       args: '[playername] [jobname]'
     error:
-      alreadyin: Hrac uz pracuje jako %jobname%.
-      fullslots: Nemuzes se pridat do prace %jobname%, zadna volna mista.
+      alreadyin: Гравець уже влаштований на роботу %jobname%.
+      fullslots: Ви не можете влаштуватися на %jobname% - немає вільних місць.
     output:
-      target: Byl jste zamestnan jako %jobname%.
+      target: Ви були влаштовані на роботу %jobname%.
   top:
     help:
-      info: Zobrazí top hráče podle jména práce.
-      args: '[jobname]/clear pageNumber'
+      info: Показує топ гравців на роботі.
+      args: '[jobname]/clear номерСторінки'
     error:
-      nojob: Nenalezli jsme zadnou praci tohoto nazvu.
+      nojob: Не вдається знайти роботу з такою назвою.
     output:
-      topline: '&aTop&e %amount% &ahraci podle &e%jobname% &aprace'
-      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
-      prev: '&e<<<<< Předchozí Stránka &2|'
-      next: '&2|&e Další Stránka >>>>'
-      show: '&2Ukazat top list od &e[from] &2do &e[until]'
+      topline: '&aТоп&e %amount% &aгравців на роботі &e%jobname%'
+      list: '&e%number%&a. &e%playername% &aрів. &e%level% &aс&e %exp% &aдос.'
+      prev: '&e<<< Попер. сторінка &2|'
+      next: '&2|&e Наст. сторінка >>>'
+      show: '&2Показується топ з &e[from] &2до &e[until]'
   gtop:
     help:
-      info: Shows top players by global jobs level.
-      args: clear/pageNumber
+      info: Показує топ-гравців на всіх роботах.
+      args: clear/номерСторінки
     error:
-      nojob: Nenasli jsme zadne informace.
+      nojob: Не вдалося знайти будь-які дані.
     output:
-      topline: '&aTop&e %amount% &ahracu podle globalniho levelu prace'
-      list: '&e%number%&a. &e%playername% &alvl &e%level% &awith&e %exp% &aexp'
-      prev: '&e<<<<< Předchozí Stránka &2|'
-      next: '&2|&e Další Stránka >>>>'
-      show: '&2Ukazat globalni top list od &e[from] &2do &e[until]'
+      topline: '&aТоп&e %amount% &aгравців на всіх роботах'
+      list: '&e%number%&a. &e%playername% &aрів. &e%level% &aс&e %exp% &aоч.'
+      prev: '&e<<< Попер. сторінка &2|'
+      next: '&2|&e Наст. сторінка >>>'
+      show: '&2Показується глобальний топ з &e[from] &2до &e[until]'
   area:
     help:
-      info: Upravit omezené zóny.
+      info: Змінити обмежену зону.
       args: add/remove/info/list
-      addUsage: '&ePoužití: &6/Jobs area add [jmenoZony/wg:jmenoWorldGuardZony] [bonus]'
-      removeUsage: '&ePoužití: &6/Jobs area remove [areaName]'
+      addUsage: '&eВикористання: &6/Jobs area add [назваЗони/wg:назваРегіону] [бонус]'
+      removeUsage: '&eВикористання: &6/Jobs area remove [назваЗони]'
     output:
-      addedNew: '&eAdded a new restricted area with &6%bonus% &ebonus'
-      removed: '&eRemoved the restricted area &6%name%'
+      addedNew: '&eДодана нова обмежена зона з бонусом &6%bonus%'
+      removed: '&eВидалено обмежену зону &6%name%'
       list: '&e%number%&a. &e%areaname% &e%worldname% (&a%x1%:%y1%:%z1%/&e%x2%:%y2%:%z2%) &6%bonus%'
       wgList: '&e%number%&a. WorldGuard: &e%areaname% &6%bonus%'
-      noAreas: '&eThere are no saved restricted areas'
-      noAreasByLoc: '&eThere are no restricted areas in this location'
-      areaList: '&eRestricted areas by your location: &6%list%'
-      selected1: '&eByl vybran prvni bod: &6%x%:%y%:%z%'
-      selected2: '&eByl vybran druhy bod: &6%x%:%y%:%z%'
-      select: '&eOznacte 2 body s pomoci nastroje pro vyber (%tool%)'
-      exist: '&eOznacena plocha tohoto jmena jiz existuje'
-      dontExist: '&eOznacena plocha tohoto jmena neexistuje'
-      wgDontExist: '&eWorldGuard area by this name does not exist'
+      noAreas: '&eНе знайдено збережених обмежених зон'
+      noAreasByLoc: '&eНе знайдено обмежених зон у цій локації'
+      areaList: '&eОбмежені зони на поточній локації: &6%list%'
+      selected1: '&eВибрано першу точку: &6%x%:%y%:%z%'
+      selected2: '&eВибрано другу точку: &6%x%:%y%:%z%'
+      select: '&eВиберіть 2 точки інструментом виділення (%tool%)'
+      exist: '&eОбмежена зона з такою назвою вже існує'
+      dontExist: '&eОбмеженої зони з такою назвою не існує'
+      wgDontExist: '&eЗони WorldGuard з такою назвою не існує'
   log:
     help:
-      info: Zobrazí statistiky.
+      info: Показати статистику.
       args: '[playername]'
     output:
       topline: '&7************************* &6%playername% &7*************************'
-      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
-      money: '&6penize: %amount% '
-      exp: '&eEXP: %amount% '
-      points: '&6body: %amount%'
-      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
+      ls: '&7* &6%number%. &3%action%: &6%item% &eкількість: %qty% %money%%exp%%points%'
+      money: '&6гроші: %amount% '
+      exp: '&eдосвід: %amount% '
+      points: '&6очки: %amount%'
+      totalIncomes: '    &6Усього грошей:&2 %money%&6, Усього досвіду:&2 %exp%&6, Усього очок:&2 %points%'
       bottomline: '&7***********************************************************'
-      prev: '&e<<<<< Předchozí Stránka &2|'
-      next: '&2|&e Další Stránka >>>>'
-      nodata: '&cData nenalezena'
+      prev: '&e<<< Попер. сторінка &2|'
+      next: '&2|&e Наст. сторінка >>>'
+      nodata: '&cДані не знайдені'
   glog:
     help:
-      info: Zobtazí globální statistiky.
+      info: Показати глобальну статистику.
       args: ''
     output:
-      topline: '&7*********************** &6Global statistics &7***********************'
-      ls: '&7* &6%number%. &3%action%: &6%item% &eqty: %qty% %money%%exp%%points%'
-      money: '&6penize: %amount% '
-      exp: '&eEXP: %amount% '
-      points: '&6body: %amount%'
-      totalIncomes: '    &6Total money:&2 %money%&6, Total exp:&2 %exp%&6, Total points:&2 %points%'
+      topline: '&7******************* &6Глобальна статистика &7*******************'
+      ls: '&7* &6%number%. &3%action%: &6%item% &eкількість: %qty% %money%%exp%%points%'
+      money: '&6гроші: %amount% '
+      exp: '&eдосвід: %amount% '
+      points: '&6очки: %amount%'
+      totalIncomes: '    &6Усього грошей:&2 %money%&6, Усього досвіду:&2 %exp%&6, Усього очок:&2 %points%'
       bottomline: '&7**************************************************************'
-      nodata: '&cData nenalezena'
+      nodata: '&cДані не знайдені'
   transfer:
     help:
-      info: Převede hráčovu práci ze staré práce na novou.
+      info: Перенести гравця з роботи на іншу.
       args: '[playername] [oldjob] [newjob]'
     output:
-      target: You have been transferred from %oldjobname% to %newjobname%.
+      target: Ви були перенесені з %oldjobname% на %newjobname%.
   promote:
     help:
-      info: Povýší hráče X úrovní v dané práci.
+      info: Підвищити рівень роботи гравця X.
       args: '[playername] [jobname] [levels]'
     output:
-      target: You have been promoted %levelsgained% levels in %jobname%.
+      target: Вас підвищили на %levelsgained% рівнів у роботі %jobname%.
   exp:
     help:
-      info: Změní XP hráče pro danou práci.
+      info: Змінити досвід роботи гравця.
       args: '[playername] [jobname] set/add/take [amount]'
     error:
-      nojob: '&cThis player must first join a job.'
+      nojob: '&cЦей гравець ще не влаштувався працювати.'
     output:
-      target: '&eYour exp was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eВаш досвід роботи %jobname% &eзмінився і тепер у Вас &6%level%рів. &eта &6%exp%дос.'
   level:
     help:
-      info: Změní úroveň hráče pro danou práci.
+      info: Змінити рівень роботи гравця.
       args: '[playername] [jobname] set/add/take [amount]'
     error:
-      nojob: '&cThis player must first join a job.'
+      nojob: '&cЦей гравець ще не влаштувався працювати.'
     output:
-      target: '&eYour level was changed for %jobname% &eand now you at &6%level%lvl &eand with &6%exp%exp.'
+      target: '&eВаш рівень роботи %jobname% &eзмінився і тепер у Вас &6%level%рів. &eта &6%exp%дос.'
   demote:
     help:
-      info: Degraduje hráče X úrovní v dané práci.
+      info: Зменшити рівень роботи гравця X.
       args: '[playername] [jobname] [levels]'
     output:
-      target: You have been demoted %levelslost% levels in %jobname%.
+      target: Вас знизили на %levelslost% рівнів у роботі %jobname%.
   grantxp:
     help:
-      info: Udělí hráči X XP v dané práci.
+      info: Підвищити рівень роботи у гравця X.
       args: '[playername] [jobname] [xp]'
     output:
-      target: You have been granted %xpgained% experience in %jobname%.
+      target: Вам видано %xpgained% досвіду в роботі %jobname%.
   removexp:
     help:
-      info: Odebere X XP hráči v dané práci.
+      info: Зняти X досвіда гравця у зазначеній роботі.
       args: '[playername] [jobname] [xp]'
     output:
-      target: You have lost %xplost% experience in %jobname%.
+      target: Ви втратили %xplost% досвіду у роботі %jobname%.
   signupdate:
     help:
-      info: Manuálně upraví značku podle jména
+      info: Вручну оновити табличку за її назвою
       args: '[jobname]'
   bp:
     help:
-      info: Zobrazuje ochranu bloku kolem vás v poloměru 10 bloků
+      info: Показати захист блоків у радіусі 10 блоків від Вас
       args: ''
     output:
-      found: '&eFound &6%amount% &eprotected blocks around you'
-      notFound: '&eNo protected blocks found around you'
+      found: '&eЗнайдено &6%amount% &eзахищених блоків біля Вас'
+      notFound: '&eЗахищених блоків не знайдено'
   reload:
     help:
-      info: Obnoví konfiguraci.
+      info: Перезавантажити конфігурацію.
   toggle:
     help:
-      info: Přepíná výstup plateb na panel akcí nebo na lištu.
+      info: Переключити висновок виплат до action bar або bossbar.
       args: actionbar/bossbar
     output:
-      turnedoff: '&4This feature is turned off!'
+      turnedoff: '&4Ця функція вимкнена!'
       paid:
-        main: '&aDostal jsi:'
-        money: '&e[amount] peněz'
-        exp: '&7[exp] exp'
-        points: '&6[points] bodů'
-      'on': '&aPřepnuto: &aZAP'
-      'off': '&aPřepnuto: &4VYP'
+        main: '&aВи отримали:'
+        money: '&e[amount] грошей'
+        exp: '&7[exp] досвіду'
+        points: '&6[points] очок'
+      'on': '&aПеремикання: &aВКЛ.'
+      'off': '&aПеремикання: &4ВИКЛ.'
 message:
   skillup:
-    broadcast: '%playername% has been promoted to a %titlename% %jobname%.'
-    nobroadcast: Congratulations, you have been promoted to a %titlename% %jobname%.
+    broadcast: '%playername% був підвищений до %titlename% %jobname%.'
+    nobroadcast: Вітаємо, Ви були підвищені до %titlename% %jobname%.
   levelup:
-    broadcast: '%playername% is now a level %joblevel% %jobname%.'
-    nobroadcast: You are now level %joblevel% %jobname%.
+    broadcast: '%playername% тепер на рівні %joblevel% %jobname%.'
+    nobroadcast: Тепер Ви на рівні %joblevel% %jobname%.
   leveldown:
-    message: '&cYou lost level&e %lostLevel%&c in&e %jobname%&c job! Level:&6 %joblevel%&c.'
-  cowtimer: '&eYou still need to wait &6%time% &esec to get paid for this job.'
-  blocktimer: '&eYou need to wait &3[time] &esec more to get paid for this!'
-  taxes: '&3[amount] &eserver taxes were transferred to this account'
-  boostStarted: '&eJobs boost time have been started!'
-  boostStoped: '&eJobs boost time have been ended!'
+    message: '&cВи втратили рівень&e %lostLevel%&c у роботі&e %jobname%&c! Рівень:&6 %joblevel%&c.'
+  cowtimer: '&eВи повинні почекати &6%time% &eсек. для отримання виплати за роботу.'
+  blocktimer: '&eВи повинні почекати &3[time] &eсек. для отримання виплати за це!'
+  taxes: '&3[amount] &eсерверних податків накладено на цей обліковий запис'
+  boostStarted: '&eПрискорювач робіт розпочався!'
+  boostStoped: '&eПрискорювач роботи закінчився!'
   crafting:
-    fullinventory: '&cMáš plný inventář!'
+    fullinventory: '&cВаш інвентар заповнено!'
 signs:
   List: '&0[number].&8[player]&7:&4[level]'
   questList: '&0[number].&8[player]&7:&4[quests]'
   SpecialList:
-    p1: '&b** &8Prvni &b**'
-    p2: '&b** &8Druhý &b**'
-    p3: '&b** &8Třetí &b**'
-    p4: '&b** &8Čtvrtý &b**'
-    p5: '&b** &8Pátý &b**'
-    p6: '&b** &8Šestý &b**'
-    p7: '&b** &8Sedmý &b**'
-    p8: '&b** &8Osmý &b**'
-    p9: '&b** &8Devátý &b**'
-    p10: '&b** &8Desátý &b**'
+    p1: '&b** &8Перший &b**'
+    p2: '&b** &8Другий &b**'
+    p3: '&b** &8Третій &b**'
+    p4: '&b** &8Четвертий &b**'
+    p5: '&b** &8П''ятий &b**'
+    p6: '&b** &8Шостий &b**'
+    p7: '&b** &8Сьомий &b**'
+    p8: '&b** &8Восьмий &b**'
+    p9: '&b** &8Дев''ятий &b**'
+    p10: '&b** &8Десятий &b**'
     name: '&9[player]'
-    level: '&8[level] úroveň'
-    quests: '&8[quests] questy'
+    level: '&8[level] рівень'
+    quests: '&8[quests] квестів'
     bottom: '&b************'
-  cantcreate: '&4Tuto značku nemůžeš vyrobit!'
-  cantdestroy: '&4Tuto značku nemůžeš zničit!'
+  cantcreate: '&4Ви не можете встановити цю табличку!'
+  cantdestroy: '&4Ви не можете зруйнувати цю табличку!'
   topline: '&0[Jobs]'
   secondline:
-    join: '&0Přidat se'
-    leave: '&0Opustit'
-    toggle: '&0Přepnout'
-    top: '&0Top'
-    browse: '&0Procházet'
-    stats: '&0Statistiky'
-    limit: '&0Limit'
-    info: '&0Info'
-    archive: '&0Archiv'
+    join: '&0Влаштуватися'
+    leave: '&0Звільнитися'
+    toggle: '&0Перемкнути'
+    top: '&0Топ'
+    browse: '&0Подивитися'
+    stats: '&0Стати'
+    limit: '&0Ліміт'
+    info: '&0Інфа'
+    archive: '&0Архів'
 scoreboard:
-  topline: '&2Top &e%jobname%'
-  gtopline: '&2Globální top seznam'
+  topline: '&2Топ &e%jobname%'
+  gtopline: 'Глобальний топ'
   line: '&2%number%. &e%playername% (&6%level%&e)'
