@@ -2,7 +2,6 @@ package com.gamingmesh.jobs.commands.list;
 
 import java.util.Set;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,6 +11,7 @@ import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.i18n.Language;
 
+import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.RawMessages.RawMessage;
 
 public class archive implements Cmd {
@@ -45,12 +45,12 @@ public class archive implements Cmd {
         for (JobProgression jobInfo : allJobs) {
             RawMessage rm = new RawMessage();
             if (jobInfo.canRejoin())
-                rm.addText(ChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo))
-                    .addHover(Jobs.getLanguage().getMessage("command.join.rejoin")).addCommand("jobs join " + jobInfo.getJob().getName());
+                rm.addText(CMIChatColor.GREEN + "+" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo))
+                    .addHover(Jobs.getLanguage().getMessage("command.join.rejoin"))
+                    .addCommand("jobs join " + jobInfo.getJob().getName());
             else
-                rm.addText(ChatColor.RED + "-" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo))
-                    .addHover(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", jobInfo
-                        .getRejoinTimeMessage()));
+                rm.addText(CMIChatColor.RED + "-" + Jobs.getCommandManager().jobStatsMessageArchive(jPlayer, jobInfo))
+                    .addHover(Jobs.getLanguage().getMessage("command.join.error.rejoin", "[time]", jobInfo.getRejoinTimeMessage()));
             rm.show(sender);
         }
 
