@@ -26,7 +26,7 @@ public class entitylist implements Cmd {
 
             i++;
 
-            if (!msg.isEmpty())
+            if (!msg.toString().isEmpty())
                 msg.append(LC.info_ListSpliter.getLocale());
 
             if (i > 1) {

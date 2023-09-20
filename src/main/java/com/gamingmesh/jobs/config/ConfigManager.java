@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -971,6 +970,53 @@ public class ConfigManager {
         ItemBoostManager.load();
     }
 
+    private static String escapeUnicode(String input) {
+        StringBuilder result = new StringBuilder(input.length());
+        boolean escaping = false;
+        for (int i = 0; i < input.length(); i++) {
+            char currentChar = input.charAt(i);
+            if (!escaping) {
+                if (currentChar == '\\') {
+                    escaping = true;
+                } else {
+                    result.append(currentChar);
+                }
+            } else {
+                switch (currentChar) {
+                case 'n':
+                    result.append('\n');
+                    break;
+                case 't':
+                    result.append('\t');
+                    break;
+                case 'r':
+                    result.append('\r');
+                    break;
+                case 'f':
+                    result.append('\f');
+                    break;
+                case 'b':
+                    result.append('\b');
+                    break;
+                case '\\':
+                    result.append('\\');
+                    break;
+                case '\'':
+                    result.append('\'');
+                    break;
+                case '\"':
+                    result.append('\"');
+                    break;
+                default:
+                    result.append(currentChar);
+                    break;
+                }
+                escaping = false;
+            }
+        }
+        return result.toString();
+    }
+
     private Job loadJobs(ConfigurationSection jobsSection) {
         java.util.logging.Logger log = Jobs.getPluginLogger();
 
@@ -980,7 +1026,7 @@ public class ConfigManager {
                 continue;
 
             // Translating unicode
-            jobKey = StringEscapeUtils.unescapeJava(jobKey);
+            jobKey = escapeUnicode(jobKey);
 
             ConfigurationSection jobSection = jobsSection.getConfigurationSection(jobKey);
             if (jobSection == null)
@@ -993,7 +1039,7 @@ public class ConfigManager {
             }
 
             // Translating unicode
-            jobFullName = StringEscapeUtils.unescapeJava(jobFullName);
+            jobFullName = escapeUnicode(jobFullName);
 
             int maxLevel = jobSection.getInt("max-level");
             if (maxLevel < 0)
@@ -1572,8 +1618,6 @@ public class ConfigManager {
                 return job;
             }
         }
-        
-        
 
         return null;
     }
