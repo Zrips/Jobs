@@ -88,7 +88,7 @@ public class GeneralConfigManager {
     public float maxPaymentCurveFactor;
 
     private boolean FurnacesReassign, BrewingStandsReassign, useTnTFinder = false, ShowNewVersion;
-    private boolean InformDuplicates;
+    private boolean InformDuplicates, DailyQuestsUseGUI;
 
     private FireworkEffect fireworkEffect;
 
@@ -446,6 +446,8 @@ public class GeneralConfigManager {
             "Any daily quests given before reset will be invalid and new ones will be given out");
         ResetTimeHour = c.get("DailyQuests.ResetTime.Hour", 4);
         ResetTimeMinute = c.get("DailyQuests.ResetTime.Minute", 0);
+        c.addComment("DailyQuests.useGUI", "Defines amount of skips player can do on a quest", "This allows player to abandon current quest and get new one");
+        DailyQuestsUseGUI = c.get("DailyQuests.useGUI", true);
         c.addComment("DailyQuests.Skips", "Defines amount of skips player can do on a quest", "This allows player to abandon current quest and get new one");
         DailyQuestsSkips = c.get("DailyQuests.Skips", 1);
         c.addComment("DailyQuests.SkipQuestCost", "The cost of the quest skip (money).", "Default 0, disabling cost of skipping quest.");
@@ -1107,15 +1109,15 @@ public class GeneralConfigManager {
         CMIItemStack item = CMILib.getInstance().getItemManager().getItem(c.get("JobsGUI.InfoButton.Material",
             "head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwNWZkOTRhMGM0MzE5MjdmYjRlNjM5YjBmY2ZiNDk3MTdlNDEyMjg1YTAyYjQzOWUwMTEyZGEyMmIyZTJlYyJ9fX0="));
         guiInfoButton = item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.ARROW.newItemStack() : item.getItemStack();
-        
+
         item = CMIItemStack.deserialize(c.get("JobsGUI.JoinButton.Material",
-            "head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZlYzNkMjVhZTBkMTQ3YzM0MmM0NTM3MGUwZTQzMzAwYTRlNDhhNWI0M2Y5YmI4NThiYWJmZjc1NjE0NGRhYyJ9fX0="));        
+            "head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmZlYzNkMjVhZTBkMTQ3YzM0MmM0NTM3MGUwZTQzMzAwYTRlNDhhNWI0M2Y5YmI4NThiYWJmZjc1NjE0NGRhYyJ9fX0="));
         guiJoinButton = item == null || item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.GREEN_STAINED_GLASS_PANE.newItemStack() : item.getItemStack();
-        
+
         item = CMIItemStack.deserialize(c.get("JobsGUI.LeaveButton.Material",
-            "head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY1ZjNiYWUwZDIwM2JhMTZmZTFkYzNkMTMwN2E4NmE2MzhiZTkyNDQ3MWYyM2U4MmFiZDlkNzhmOGEzZmNhIn19fQ=="));        
+            "head:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY1ZjNiYWUwZDIwM2JhMTZmZTFkYzNkMTMwN2E4NmE2MzhiZTkyNDQ3MWYyM2U4MmFiZDlkNzhmOGEzZmNhIn19fQ=="));
         guiLeaveButton = item == null || item.getCMIType() == CMIMaterial.NONE ? CMIMaterial.RED_STAINED_GLASS_PANE.newItemStack() : item.getItemStack();
-        
+
         c.addComment("JobsGUI.InfoButton.Commands", "closeinv! can be used to close players inventory when you click this icon");
         InfoButtonCommands = c.get("JobsGUI.InfoButton.Commands", Arrays.asList("closeinv!"));
 
@@ -1276,5 +1278,9 @@ public class GeneralConfigManager {
 
     public boolean isBossBarAsync() {
         return bossBarAsync;
+    }
+
+    public boolean isDailyQuestsUseGUI() {
+        return DailyQuestsUseGUI;
     }
 }

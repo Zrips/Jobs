@@ -16,6 +16,10 @@ import com.gamingmesh.jobs.container.QuestObjective;
 import com.gamingmesh.jobs.container.QuestProgression;
 import com.gamingmesh.jobs.i18n.Language;
 
+import net.Zrips.CMILib.GUI.CMIGui;
+import net.Zrips.CMILib.GUI.CMIGuiButton;
+import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
+import net.Zrips.CMILib.GUI.GUIManager.InvType;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
@@ -78,13 +82,18 @@ public class quests implements Cmd {
             }
         }
 
+        if (isPlayer && Jobs.getGeneralConfigManager().isDailyQuestsUseGUI()) {
+            openGui((Player) sender, jPlayer);
+            return true;
+        }
+
         Language.sendMessage(sender, "command.quests.toplineseparator", "[playerName]", jPlayer.getName(), "[questsDone]", jPlayer.getDoneQuests());
 
         for (JobProgression jobProg : jPlayer.progression) {
             List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
 
             for (QuestProgression q : list) {
-                
+
                 int totalAmountNeeded = q.getTotalAmountNeeded();
                 int totalAmountDone = q.getTotalAmountDone();
 
@@ -111,7 +120,7 @@ public class quests implements Cmd {
                 List<String> hoverList = new ArrayList<>();
 
                 for (String current : hoverMsg.split("\n")) {
-                    current = current.replace("[jobName]", jobProg.getJob().getName())
+                    current = current.replace("[jobName]", jobProg.getJob().getDisplayName())
                         .replace("[time]", CMITimeManager.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
 
                     if (current.contains("[desc]")) {
@@ -135,7 +144,6 @@ public class quests implements Cmd {
                 for (String one : hoverList) {
                     if (!hover.isEmpty())
                         hover += "\n";
-
                     hover += one;
                 }
 
@@ -154,5 +162,96 @@ public class quests implements Cmd {
 
         sender.sendMessage(Jobs.getLanguage().getMessage("general.info.separator"));
         return true;
+    }
+
+    private static void openGui(Player player, JobsPlayer jPlayer) {
+
+        CMIGui gui = new CMIGui(player);
+        gui.setTitle(jPlayer.getDisplayName());
+        gui.addLock(InvType.Gui);
+        gui.addLock(InvType.Main);
+
+        for (JobProgression jobProg : jPlayer.progression) {
+            List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
+
+            for (QuestProgression q : list) {
+
+                int totalAmountNeeded = q.getTotalAmountNeeded();
+                int totalAmountDone = q.getTotalAmountDone();
+
+                String progressLine = Jobs.getCommandManager().jobProgressMessage(totalAmountNeeded, totalAmountDone);
+
+                boolean completed = q.isCompleted();
+
+                if (completed)
+                    progressLine = Jobs.getLanguage().getMessage("command.quests.output.completed");
+
+                Quest quest = q.getQuest();
+
+                String hoverMsg = Jobs.getLanguage().getMessage("command.quests.output.hover");
+                List<String> hoverList = new ArrayList<>();
+
+                for (String current : hoverMsg.split("\n")) {
+                    current = current.replace("[jobName]", jobProg.getJob().getName())
+                        .replace("[time]", CMITimeManager.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
+
+                    if (current.contains("[desc]")) {
+                        hoverList.addAll(quest.getDescription());
+                    } else {
+                        hoverList.add(current);
+                    }
+                }
+
+                for (java.util.Map<String, QuestObjective> oneAction : quest.getObjectives().values()) {
+                    for (Entry<String, QuestObjective> oneObjective : oneAction.entrySet()) {
+                        hoverList.add(Jobs.getLanguage().getMessage("command.info.output." + oneObjective.getValue().getAction().toString().toLowerCase() + ".info") + " " +
+                            Jobs.getNameTranslatorManager().translate(oneObjective.getKey(), oneObjective.getValue().getAction(), oneObjective.getValue().getTargetId(), oneObjective.getValue()
+                                .getTargetMeta(), oneObjective.getValue().getTargetName())
+                            + " " + q.getAmountDone(oneObjective.getValue()) + "/"
+                            + oneObjective.getValue().getAmount());
+                    }
+                }
+
+                String title = Jobs.getLanguage().getMessage("command.quests.output.questLine", "[progress]", progressLine, "[questName]", quest.getQuestName(), "[done]", totalAmountDone, "[required]",
+                    totalAmountNeeded);
+
+                String hover = "";
+
+                for (String one : hoverList) {
+                    if (!hover.isEmpty())
+                        hover += "\n";
+                    hover += "&r&f" + one;
+                }
+
+                if (list.size() < jobProg.getJob().getQuests().size() && Jobs.getGCManager().getDailyQuestsSkips() > jPlayer.getSkippedQuests() && !completed) {
+                    if (Jobs.getGCManager().getDailyQuestsSkips() > 0) {
+                        hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skip");
+                        hover += "\n" + Jobs.getLanguage().getMessage("command.quests.output.skips", "[skips]", (Jobs.getGCManager().getDailyQuestsSkips() - jPlayer.getSkippedQuests()));
+                    }
+
+                    CMIGuiButton button = new CMIGuiButton(jobProg.getJob().getGuiItem()) {
+                        @Override
+                        public void click(GUIClickType type) {
+                            player.performCommand("jobs skipquest " + jobProg.getJob().getName() + " " + quest.getConfigName() + " " + jPlayer.getName());
+                        }
+                    };
+
+                    button.setName(title);
+                    button.addLore(hover);
+                    button.hideItemFlags();
+                    gui.addButton(button);
+                } else {
+                    CMIGuiButton button = new CMIGuiButton(jobProg.getJob().getGuiItem());
+                    button.setName(title);
+                    button.addLore(hover);
+                    button.hideItemFlags();
+                    gui.addButton(button);
+                }
+
+            }
+        }
+        gui.fillEmptyButtons();
+        gui.open();
+
     }
 }
