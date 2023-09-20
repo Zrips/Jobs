@@ -327,6 +327,31 @@ Farmer:
       income: 1
       points: 1
       experience: 1
+  Collect:
+    sweet_berries-2:
+      income: 0.2
+      points: 0.2
+      experience: 0.2
+    sweet_berries-3:
+      income: 0.5
+      points: 0.5
+      experience: 0.5
+    glow_berries:
+      income: 0.5
+      points: 0.5
+      experience: 0.5
+    bonemeal:
+      income: 1.5
+      points: 1.5
+      experience: 1.5
+    honeybottle:
+      income: 2.5
+      points: 2.5
+      experience: 2.5
+    honeycomb:
+      income: 2.5
+      points: 2.5
+      experience: 2.5
   Kill:
     Player:
       income: 7.5

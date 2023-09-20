@@ -117,10 +117,6 @@ public class ShopManager {
             if (item.isHideWithoutPerm()) {
                 for (String onePerm : item.getRequiredPerm()) {
                     if (!player.hasPermission(onePerm)) {
-//                        mat = CMIMaterial.STONE_BUTTON;
-//                        lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPermToBuy"));
-//                        hiddenLore = true;
-//                        break;
                         continue mainCycle;
                     }
                 }
