@@ -1423,6 +1423,21 @@ public abstract class JobsDAO {
         }
     }
 
+    public synchronized void clearLimitsTable() {
+        JobsConnection conn = getConnection();
+        if (conn == null)
+            return;
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("DELETE FROM `" + DBTables.LimitsTable.getTableName() + "`;");
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(ps);
+        }
+    }
+
     public synchronized PaymentData getPlayersLimits(JobsPlayer jPlayer) {
         PaymentData data = new PaymentData();
         JobsConnection conn = getConnection();

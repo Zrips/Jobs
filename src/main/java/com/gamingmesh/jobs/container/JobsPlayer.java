@@ -466,6 +466,10 @@ public class JobsPlayer {
         setSaved(false);
     }
 
+    public void nullPaymentLimits() {
+        paymentLimits = null;
+    }
+
     /**
      * @return an unmodifiable list of job progressions
      */

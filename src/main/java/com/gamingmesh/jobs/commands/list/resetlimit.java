@@ -1,6 +1,7 @@
 package com.gamingmesh.jobs.commands.list;
 
 import org.bukkit.command.CommandSender;
+
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.JobsPlayer;
@@ -15,14 +16,14 @@ public class resetlimit implements Cmd {
         }
 
         if (args[0].equalsIgnoreCase("all")) {
-            for (org.bukkit.entity.Player pl : org.bukkit.Bukkit.getOnlinePlayers()) {
-                JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(pl);
-                if (jPlayer != null) {
-                    jPlayer.resetPaymentLimit();
-                }
+
+            for (JobsPlayer jPlayer : Jobs.getPlayerManager().getPlayersCache().values()) {
+                jPlayer.nullPaymentLimits();
             }
 
-            Language.sendMessage(sender, "command.resetlimit.output.reseted", "%playername%", "");
+            Jobs.getDBManager().getDB().clearLimitsTable();
+
+            Language.sendMessage(sender, "command.resetlimit.output.reseted", "%playername%", "", "%playerdisplayname%", "");
             return true;
         }
 
