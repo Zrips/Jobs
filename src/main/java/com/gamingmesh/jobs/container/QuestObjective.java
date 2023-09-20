@@ -16,6 +16,8 @@ public class QuestObjective {
     private int amount = Integer.MAX_VALUE;
     private ActionType action = null;
 
+    private String serializedLine = "";
+
     public static List<QuestObjective> get(String objective, String jobName) {
 
         String[] split = objective.split(";", 3);
@@ -114,5 +116,13 @@ public class QuestObjective {
 
     public boolean same(QuestObjective obj) {
         return obj.id == this.id && obj.meta.equals(this.meta) && obj.name.equals(this.name) && obj.amount == this.amount && obj.action == this.action;
+    }
+
+    public String getIdentifier() {
+        if (serializedLine.isEmpty()) {
+            serializedLine = getAction().toString() + ";" + getTargetName() + ";" + getAmount();
+        }
+
+        return serializedLine;
     }
 }

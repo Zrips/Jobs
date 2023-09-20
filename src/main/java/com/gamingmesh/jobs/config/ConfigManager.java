@@ -1453,17 +1453,22 @@ public class ConfigManager {
                         Quest quest = new Quest(sqsection.getString("Name", one), job);
                         ActionType actionType = ActionType.getByName(sqsection.getString("Action"));
 
+                        quest.setConfigName(one);
+                        
                         if (actionType != null) {
                             KeyValues kv = getKeyValue(sqsection.getString("Target").toUpperCase(), actionType, jobFullName);
-
                             if (kv != null) {
                                 int amount = sqsection.getInt("Amount", 1);
-                                quest.addObjective(new QuestObjective(actionType, kv.getId(), kv.getMeta(), (kv.getType() + kv.getSubType()).toUpperCase(), amount));
+                                QuestObjective newObjective = new QuestObjective(actionType, kv.getId(), kv.getMeta(), (kv.getType() + kv.getSubType()).toUpperCase(), amount);
+                                quest.addObjective(newObjective);
                             }
                         }
 
                         for (String oneObjective : sqsection.getStringList("Objectives")) {
                             List<QuestObjective> objectives = QuestObjective.get(oneObjective, jobFullName);
+                            
+                            
+                            
                             quest.addObjectives(objectives);
                         }
 
@@ -1472,7 +1477,6 @@ public class ConfigManager {
                         if (sqsection.isInt("toLevel"))
                             quest.setMaxLvl(sqsection.getInt("toLevel"));
 
-                        quest.setConfigName(one);
                         quest.setChance(sqsection.getInt("Chance", 100));
                         quest.setRewardCmds(sqsection.getStringList("RewardCommands"));
                         quest.setDescription(sqsection.getStringList("RewardDesc"));

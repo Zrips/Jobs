@@ -167,6 +167,8 @@ public final class Jobs extends JavaPlugin {
 
     private static boolean hasLimitedItems = false;
 
+    public static boolean fullyLoaded = false;
+
     private static final int MAX_ENTRIES = 20;
     public static final LinkedHashMap<UUID, FastPayment> FASTPAYMENT = new LinkedHashMap<UUID, FastPayment>(MAX_ENTRIES + 1, .75F, false) {
         protected boolean removeEldestEntry(Map.Entry<UUID, FastPayment> eldest) {
@@ -779,7 +781,7 @@ public final class Jobs extends JavaPlugin {
             System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
             setEnabled(false);
         }
-
+        fullyLoaded = true;
         CMIMessages.consoleMessage(suffix);
     }
 

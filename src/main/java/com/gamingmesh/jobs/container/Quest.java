@@ -10,18 +10,21 @@ import java.util.Set;
 
 import com.gamingmesh.jobs.Jobs;
 
+import net.Zrips.CMILib.Logs.CMIDebug;
+
 public class Quest {
 
     private String configName = "";
     private String questName = "";
     private Job job;
     private long validUntil = 0L;
+    private int objectiveCount = 0;
 
     private int chance = 100, minLvl = 0;
     private Integer maxLvl;
 
     private boolean enabled = false;
-    
+
     private final List<String> rewardCmds = new ArrayList<>(), rewards = new ArrayList<>(), area = new ArrayList<>();
 
     private boolean stopped = false;
@@ -191,6 +194,7 @@ public class Quest {
         return false;
     }
 
+    @Deprecated
     public void setObjectives(Map<ActionType, Map<String, QuestObjective>> objectives) {
         if (objectives == null) {
             return;
@@ -206,7 +210,42 @@ public class Quest {
         }
     }
 
+    // Grabs existing job-quest-objective in case this is reload and we can reuse same objective object to avoid issue
+    private QuestObjective reuseOldObjectiveObject(QuestObjective objective) {
+        if (!Jobs.fullyLoaded)
+            return objective;
+
+        Job oldJob = Jobs.getJob(job.getName());
+
+        if (oldJob == null)
+            return objective;
+
+        Quest oldQuest = oldJob.getQuest(this.getConfigName());
+
+        if (oldQuest == null)
+            return objective;
+
+        Map<String, QuestObjective> oldObjectives = oldQuest.getObjectives().get(objective.getAction());
+
+        if (oldObjectives == null)
+            return objective;
+
+        QuestObjective oldObjective = oldObjectives.get(objective.getTargetName());
+
+        if (oldObjective == null)
+            return oldObjective;
+
+        if (oldObjective.getIdentifier().equals(objective.getIdentifier())) {
+            return oldObjective;
+        }
+
+        return objective;
+    }
+
     public void addObjective(QuestObjective objective) {
+
+        objective = reuseOldObjectiveObject(objective);
+
         Map<String, QuestObjective> old = objectives.get(objective.getAction());
         if (old == null) {
             old = new HashMap<>();
@@ -226,5 +265,19 @@ public class Quest {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    private void count() {
+        for (ActionType one : actions) {
+            Map<String, QuestObjective> old = objectives.get(one);
+            if (old != null)
+                objectiveCount += old.size();
+        }
+    }
+
+    public int getObjectiveCount() {
+        if (objectiveCount < 1)
+            count();
+        return objectiveCount;
     }
 }

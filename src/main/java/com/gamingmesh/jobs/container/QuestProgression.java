@@ -56,6 +56,7 @@ public class QuestProgression {
 
     public int getTotalAmountDone() {
         int amountDone = 0;
+
         for (Integer one : done.values()) {
             amountDone += one;
         }
