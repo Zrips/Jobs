@@ -108,8 +108,7 @@ public class ShopManager {
 
         double balance = Jobs.getEconomy().getEconomy().getBalance(player);
 
-        for (int i = 0; i < ls.size(); i++) {
-            ShopItem item = ls.get(i);
+        mainCycle: for (ShopItem item : ls) {
             List<String> lore = new ArrayList<>();
             CMIMaterial mat = CMIMaterial.get(item.getIconMaterial());
 
@@ -118,16 +117,17 @@ public class ShopManager {
             if (item.isHideWithoutPerm()) {
                 for (String onePerm : item.getRequiredPerm()) {
                     if (!player.hasPermission(onePerm)) {
-                        mat = CMIMaterial.STONE_BUTTON;
-                        lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPermToBuy"));
-                        hiddenLore = true;
-                        break;
+//                        mat = CMIMaterial.STONE_BUTTON;
+//                        lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPermToBuy"));
+//                        hiddenLore = true;
+//                        break;
+                        continue mainCycle;
                     }
                 }
             }
 
-            if (item.isHideIfNoEnoughPoints() && item.getRequiredTotalLevels() != -1 &&
-                jPlayer.getTotalLevels() < item.getRequiredTotalLevels()) {
+            if (item.isHideIfNoEnoughPoints() && item.getPointPrice() > 0 &&
+                jPlayer.getPointsData().getCurrentPoints() < item.getPointPrice()) {
                 mat = CMIMaterial.STONE_BUTTON;
                 lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
                 hiddenLore = true;
@@ -220,7 +220,7 @@ public class ShopManager {
             } else
                 guiItem.setItemMeta(meta);
 
-            CMIGuiButton button = new CMIGuiButton(i, guiItem) {
+            CMIGuiButton button = new CMIGuiButton(guiItem) {
                 @Override
                 public void click(GUIClickType type) {
                     for (String onePerm : item.getRequiredPerm()) {
