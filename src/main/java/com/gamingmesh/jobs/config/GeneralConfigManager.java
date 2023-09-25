@@ -489,7 +489,7 @@ public class GeneralConfigManager {
         payNearSpawner = c.get("enable-pay-near-spawner", true);
 
         c.addComment("enable-pay-creative", "Option to allow payment to be made in creative mode. This ignoring when a group has 'jobs.paycreative' permission.");
-        payInCreative = c.get("enable-pay-creative", false);
+        payInCreative = c.get("enable-pay-creative", true);
 
         c.addComment("enable-pay-for-exploring-when-flying", "Option to allow payment to be made for exploring when player flies");
         payExploringWhenFlying = c.get("enable-pay-for-exploring-when-flying", false);
