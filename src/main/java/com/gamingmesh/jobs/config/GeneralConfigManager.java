@@ -492,11 +492,11 @@ public class GeneralConfigManager {
         payInCreative = c.get("enable-pay-creative", true);
 
         c.addComment("enable-pay-for-exploring-when-flying", "Option to allow payment to be made for exploring when player flies");
-        payExploringWhenFlying = c.get("enable-pay-for-exploring-when-flying", false);
+        payExploringWhenFlying = c.get("enable-pay-for-exploring-when-flying", true);
 
         if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
             c.addComment("enable-pay-for-exploring-when-gliding", "Option to allow payment to be made for exploring when player gliding.");
-            payExploringWhenGliding = c.get("enable-pay-for-exploring-when-gliding", false);
+            payExploringWhenGliding = c.get("enable-pay-for-exploring-when-gliding", true);
         }
 
         c.addComment("enable-reset-exploring-data", "Option to allow reset exploring data.");
