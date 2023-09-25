@@ -26,140 +26,140 @@ public class ExploreManager {
     private int playerAmount = 1;
 
     public int getPlayerAmount() {
-	return playerAmount;
+        return playerAmount;
     }
 
     public void setPlayerAmount(int amount) {
-	if (playerAmount < amount)
-	    playerAmount = amount;
+        if (playerAmount < amount)
+            playerAmount = amount;
     }
 
     public boolean isExploreEnabled() {
-	return exploreEnabled;
+        return exploreEnabled;
     }
 
     public void setExploreEnabled() {
-	if (!exploreEnabled) {
-	    exploreEnabled = true;
-	}
+        exploreEnabled = true;
     }
 
     public void load() {
-	if (!exploreEnabled)
-	    return;
+        if (!exploreEnabled)
+            return;
 
-	CMIMessages.consoleMessage("&eLoading explorer data");
-	Long time = System.currentTimeMillis();
-	Jobs.getJobsDAO().loadExplore();
-	int size = getSize();
-	CMIMessages.consoleMessage("&eLoaded explorer data" + (size != 0 ? " (&6" + size + "&e)" : " ") + " in " + (System.currentTimeMillis() - time) + " ms");
+        if (Jobs.getGeneralConfigManager().ExploreSaveIntoDatabase) {
+            CMIMessages.consoleMessage("&eLoading explorer data");
+            Long time = System.currentTimeMillis();
+            Jobs.getJobsDAO().loadExplore();
+            int size = getSize();
+            CMIMessages.consoleMessage("&eLoaded explorer data" + (size != 0 ? " (&6" + size + "&e)" : " ") + " in " + (System.currentTimeMillis() - time) + " ms");
+        }
     }
 
     public Map<String, Map<String, ExploreRegion>> getWorlds() {
-	return worlds;
+        return worlds;
     }
 
     public int getSize() {
-	int i = 0;
-	for (Map<String, ExploreRegion> one : worlds.values()) {
-	    for (Entry<String, ExploreRegion> chunks : one.entrySet()) {
-		i += chunks.getValue().getChunks().size();
-	    }
-	}
-	return i;
+        int i = 0;
+        for (Map<String, ExploreRegion> one : worlds.values()) {
+            for (Entry<String, ExploreRegion> chunks : one.entrySet()) {
+                i += chunks.getValue().getChunks().size();
+            }
+        }
+        return i;
     }
 
     public ExploreRespond chunkRespond(Player player, Chunk chunk) {
-	return chunkRespond(Jobs.getPlayerManager().getJobsPlayer(player).getUserId(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+        return chunkRespond(Jobs.getPlayerManager().getJobsPlayer(player).getUserId(), chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
     }
 
     public ExploreRespond chunkRespond(int playerId, Chunk chunk) {
-	return chunkRespond(playerId, chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+        return chunkRespond(playerId, chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
     }
 
     public ExploreRespond chunkRespond(int playerId, String world, int x, int z) {
-	Map<String, ExploreRegion> eRegions = worlds.getOrDefault(world, new HashMap<String, ExploreRegion>());
+        Map<String, ExploreRegion> eRegions = worlds.getOrDefault(world, new HashMap<String, ExploreRegion>());
 
-	int RegionX = (int) Math.floor(x / 32D);
-	int RegionZ = (int) Math.floor(z / 32D);
+        int RegionX = (int) Math.floor(x / 32D);
+        int RegionZ = (int) Math.floor(z / 32D);
 
-	ExploreRegion region = eRegions.get(RegionX + ":" + RegionZ);
-	if (region == null) {
-	    region = new ExploreRegion(RegionX, RegionZ);
-	}
+        ExploreRegion region = eRegions.get(RegionX + ":" + RegionZ);
+        if (region == null) {
+            region = new ExploreRegion(RegionX, RegionZ);
+        }
 
-	int chunkRelativeX = (RegionX * 32) - x;
-	int chunkRelativeZ = (RegionZ * 32) - z;
+        int chunkRelativeX = (RegionX * 32) - x;
+        int chunkRelativeZ = (RegionZ * 32) - z;
 
-	ExploreChunk chunk = region.getChunk(chunkRelativeX, chunkRelativeZ);
-	if (chunk == null) {
-	    chunk = new ExploreChunk();
-	    region.addChunk(chunkRelativeX, chunkRelativeZ, chunk);
-	}
+        ExploreChunk chunk = region.getChunk(chunkRelativeX, chunkRelativeZ);
+        if (chunk == null) {
+            chunk = new ExploreChunk();
+            region.addChunk(chunkRelativeX, chunkRelativeZ, chunk);
+        }
 
-	eRegions.put(RegionX + ":" + RegionZ, region);
+        eRegions.put(RegionX + ":" + RegionZ, region);
 
-	worlds.put(world, eRegions);
+        worlds.put(world, eRegions);
 
-	return chunk.addPlayer(playerId);
+        return chunk.addPlayer(playerId);
     }
 
     public void load(ResultSet res) {
-	try {
-	    String worldName = res.getString(ExploreDataTableFields.worldname.getCollumn());
+        try {
+            String worldName = res.getString(ExploreDataTableFields.worldname.getCollumn());
 
-	    JobsWorld jobsWorld = Util.getJobsWorld(worldName);
-	    if (jobsWorld == null)
-		jobsWorld = Util.getJobsWorld(res.getInt(ExploreDataTableFields.worldid.getCollumn()));
+            JobsWorld jobsWorld = Util.getJobsWorld(worldName);
+            if (jobsWorld == null)
+                jobsWorld = Util.getJobsWorld(res.getInt(ExploreDataTableFields.worldid.getCollumn()));
 
-	    if (jobsWorld == null)
-		return;
+            if (jobsWorld == null)
+                return;
 
-	    int x = res.getInt(ExploreDataTableFields.chunkX.getCollumn());
-	    int z = res.getInt(ExploreDataTableFields.chunkZ.getCollumn());
-	    String names = res.getString(ExploreDataTableFields.playerNames.getCollumn());
-	    int id = res.getInt("id");
+            int x = res.getInt(ExploreDataTableFields.chunkX.getCollumn());
+            int z = res.getInt(ExploreDataTableFields.chunkZ.getCollumn());
+            String names = res.getString(ExploreDataTableFields.playerNames.getCollumn());
+            int id = res.getInt("id");
 
-	    Map<String, ExploreRegion> eRegions = worlds.getOrDefault(jobsWorld.getName(), new HashMap<String, ExploreRegion>());
+            Map<String, ExploreRegion> eRegions = worlds.getOrDefault(jobsWorld.getName(), new HashMap<String, ExploreRegion>());
 
-	    int RegionX = (int) Math.floor(x / 32D);
-	    int RegionZ = (int) Math.floor(z / 32D);
+            int RegionX = (int) Math.floor(x / 32D);
+            int RegionZ = (int) Math.floor(z / 32D);
 
-	    int chunkRelativeX = RegionX * 32 - x;
-	    int chunkRelativeZ = RegionZ * 32 - z;
+            int chunkRelativeX = RegionX * 32 - x;
+            int chunkRelativeZ = RegionZ * 32 - z;
 
-	    ExploreRegion region = eRegions.get(RegionX + ":" + RegionZ);
-	    if (region == null) {
-		region = new ExploreRegion(RegionX, RegionZ);
-	    }
-	    ExploreChunk chunk = region.getChunk(chunkRelativeX, chunkRelativeZ);
-	    if (chunk == null) {
-		chunk = new ExploreChunk();
-		region.addChunk(chunkRelativeX, chunkRelativeZ, chunk);
-	    }
-	    chunk.deserializeNames(names);
-	    chunk.setDbId(id);
+            ExploreRegion region = eRegions.get(RegionX + ":" + RegionZ);
+            if (region == null) {
+                region = new ExploreRegion(RegionX, RegionZ);
+            }
+            ExploreChunk chunk = region.getChunk(chunkRelativeX, chunkRelativeZ);
+            if (chunk == null) {
+                chunk = new ExploreChunk();
+                region.addChunk(chunkRelativeX, chunkRelativeZ, chunk);
+            }
+            chunk.deserializeNames(names);
+            chunk.setDbId(id);
 
-	    eRegions.put(RegionX + ":" + RegionZ, region);
-	    worlds.put(jobsWorld.getName(), eRegions);
+            eRegions.put(RegionX + ":" + RegionZ, region);
+            worlds.put(jobsWorld.getName(), eRegions);
 
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void resetRegion(String worldname) {
-	CMIMessages.consoleMessage("&eReseting explorer data. World: " + worldname);
+        CMIMessages.consoleMessage("&eReseting explorer data. World: " + worldname);
 
-	Map<String, Map<String, ExploreRegion>> worlds = getWorlds();
-	worlds.put(worldname, new HashMap<String, ExploreRegion>());
+        Map<String, Map<String, ExploreRegion>> worlds = getWorlds();
+        worlds.put(worldname, new HashMap<String, ExploreRegion>());
 
-	boolean r = Jobs.getJobsDAO().deleteExploredWorld(worldname);
-	if (!r) {
-	    CMIMessages.consoleMessage("&eFailed in DAO.");
-	    return;
-	}
+        boolean r = Jobs.getJobsDAO().deleteExploredWorld(worldname);
+        if (!r) {
+            CMIMessages.consoleMessage("&eFailed in DAO.");
+            return;
+        }
 
-	CMIMessages.consoleMessage("&eCompleted to reset explorer data.");
+        CMIMessages.consoleMessage("&eCompleted to reset explorer data.");
     }
 }

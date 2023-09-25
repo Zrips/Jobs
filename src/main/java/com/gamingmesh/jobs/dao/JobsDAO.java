@@ -2558,6 +2558,8 @@ public abstract class JobsDAO {
         PreparedStatement prest2 = null;
         try {
 
+            CMIMessages.consoleMessage("&e[Jobs] Preparing explorer data save.");
+
             prest2 = conn.prepareStatement("INSERT INTO `" + DBTables.ExploreDataTable.getTableName() + "` (`" + ExploreDataTableFields.worldid.getCollumn()
                 + "`, `" + ExploreDataTableFields.chunkX.getCollumn()
                 + "`, `" + ExploreDataTableFields.chunkZ.getCollumn()
@@ -2570,25 +2572,27 @@ public abstract class JobsDAO {
             Map<String, Map<String, ExploreRegion>> temp = new HashMap<>(Jobs.getExploreManager().getWorlds());
 
             for (Entry<String, Map<String, ExploreRegion>> worlds : temp.entrySet()) {
+                JobsWorld jobsWorld = Util.getJobsWorld(worlds.getKey());
+
+                int id = jobsWorld == null ? 0 : jobsWorld.getId();
+                if (id == 0)
+                    continue;
+                
                 for (Entry<String, ExploreRegion> region : worlds.getValue().entrySet()) {
-                    JobsWorld jobsWorld = Util.getJobsWorld(worlds.getKey());
+                    for (Entry<Short, ExploreChunk> oneChunk : region.getValue().getChunks().entrySet()) {
+                        ExploreChunk chunk = oneChunk.getValue();
+                        if (chunk.getDbId() != -1)
+                            continue;
 
-                    int id = jobsWorld == null ? 0 : jobsWorld.getId();
-                    if (id != 0)
-                        for (Entry<Short, ExploreChunk> oneChunk : region.getValue().getChunks().entrySet()) {
-                            ExploreChunk chunk = oneChunk.getValue();
-                            if (chunk.getDbId() != -1)
-                                continue;
+                        prest2.setInt(1, id);
+                        prest2.setInt(2, region.getValue().getChunkGlobalX(oneChunk.getKey()));
+                        prest2.setInt(3, region.getValue().getChunkGlobalZ(oneChunk.getKey()));
+                        prest2.setString(4, chunk.serializeNames());
+                        prest2.setString(5, jobsWorld != null ? jobsWorld.getName() : "");
+                        prest2.addBatch();
 
-                            prest2.setInt(1, id);
-                            prest2.setInt(2, region.getValue().getChunkGlobalX(oneChunk.getKey()));
-                            prest2.setInt(3, region.getValue().getChunkGlobalZ(oneChunk.getKey()));
-                            prest2.setString(4, chunk.serializeNames());
-                            prest2.setString(5, jobsWorld != null ? jobsWorld.getName() : "");
-                            prest2.addBatch();
-
-                            i++;
-                        }
+                        i++;
+                    }
                 }
             }
             prest2.executeBatch();

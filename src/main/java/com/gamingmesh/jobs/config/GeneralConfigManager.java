@@ -107,7 +107,7 @@ public class GeneralConfigManager {
         DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
         EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve, blockOwnershipTakeOver,
         hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
-        BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, DBCleaningJobsUse, DBCleaningUsersUse,
+        BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
         LoggingUse, payForCombiningItems, BlastFurnacesReassign = false, SmokerReassign = false, payForStackedEntities, payForAbove = false,
         payForEachVTradeItem, allowEnchantingBoostedItems, bossBarAsync = false, preventShopItemEnchanting;
@@ -426,6 +426,11 @@ public class GeneralConfigManager {
         c.addComment("Optimizations.Explore.Compact",
             "By setting this to true when there is max amount of players explored a chunk then it will be marked as fully explored and exact players who explored it will not be saved to save some memory");
         ExploreCompact = c.get("Optimizations.Explore.Compact", true);
+
+        c.addComment("Optimizations.Explore.SaveIntoDatabase",
+            "While enabled explored chunk data will be saved into database and will persist over server restarts",
+            "While disabled expored chunk data resets on every server startup which will freeup memory and speedup server startups and stop in some cases");
+        ExploreSaveIntoDatabase = c.get("Optimizations.Explore.SaveIntoDatabase", false);
 
         c.addComment("Logging.Use", "With this set to true all players jobs actions will be logged to database for easy to see statistics",
             "This is still in development and in future it will expand");
