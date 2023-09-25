@@ -29,7 +29,7 @@ public class join implements Cmd {
 
         if (args.length == 0) {
             plugin.getServer().dispatchCommand(sender, "jobs browse");
-            return null;
+            return true;
         }
 
         Job job = Jobs.getJob(args[0]);
