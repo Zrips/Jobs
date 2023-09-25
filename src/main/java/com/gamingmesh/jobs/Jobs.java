@@ -364,18 +364,14 @@ public final class Jobs extends JavaPlugin {
      * @return the schedule manager
      */
     public static ScheduleManager getScheduleManager() {
-        if (scheduleManager == null) {
-            scheduleManager = new ScheduleManager(getInstance());
-        }
-
+        if (scheduleManager == null)
+            scheduleManager = new ScheduleManager(getInstance());        
         return scheduleManager;
     }
 
     public static NameTranslatorManager getNameTranslatorManager() {
-        if (nameTranslatorManager == null) {
-            nameTranslatorManager = new NameTranslatorManager();
-        }
-
+        if (nameTranslatorManager == null) 
+            nameTranslatorManager = new NameTranslatorManager();        
         return nameTranslatorManager;
     }
 
@@ -386,9 +382,8 @@ public final class Jobs extends JavaPlugin {
     }
 
     public static JobsCommands getCommandManager() {
-        if (cManager == null) {
-            cManager = new JobsCommands(getInstance());
-        }
+        if (cManager == null)
+            cManager = new JobsCommands(getInstance());        
         return cManager;
     }
 
@@ -415,10 +410,8 @@ public final class Jobs extends JavaPlugin {
      * @return the sign manager
      */
     public static SignUtil getSignUtil() {
-        if (signManager == null) {
-            signManager = new SignUtil(getInstance());
-        }
-
+        if (signManager == null) 
+            signManager = new SignUtil(getInstance());        
         return signManager;
     }
 

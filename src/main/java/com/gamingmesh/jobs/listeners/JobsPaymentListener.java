@@ -1601,9 +1601,6 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().useBreederFinder || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
             return;
 
-        if (event.getEntity().getType().equals(EntityType.TURTLE))
-            CMIDebug.d(event.getSpawnReason());
-
         if (!event.getSpawnReason().toString().equalsIgnoreCase("BREEDING") && !event.getSpawnReason().toString().equalsIgnoreCase("EGG"))
             return;
 
