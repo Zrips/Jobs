@@ -18,63 +18,17 @@
 
 package com.gamingmesh.jobs;
 
-import org.bukkit.plugin.RegisteredServiceProvider;
-
-import com.gamingmesh.jobs.economy.BlackholeEconomy;
 import com.gamingmesh.jobs.economy.VaultEconomy;
-
-import net.Zrips.CMILib.Messages.CMIMessages;
 import net.milkbowl.vault.economy.Economy;
 
-public class HookEconomyTask implements Runnable {
+public class HookEconomyTask extends HookVault<Economy> {
 
-    private Jobs plugin;
-
-    public HookEconomyTask(Jobs plugin) {
-        this.plugin = plugin;
-    }
-
-    enum hookResult {
-        novault, noeconomy, pass;
-
+    public HookEconomyTask(Class<Economy> providerClass) {
+        super(providerClass);
     }
 
     @Override
-    public void run() {
-
-        hookResult result = setVault();
-
-        if (result.equals(hookResult.pass)) {
-            return;
-        }
-
-        // no Economy found
-        Jobs.setEconomy(new BlackholeEconomy());
-        Jobs.getPluginLogger().severe("==================== " + plugin.getDescription().getName() + " ====================");
-        if (result.equals(hookResult.novault)) {
-            Jobs.getPluginLogger().severe("Vault is required by this plugin for economy support!");
-            Jobs.getPluginLogger().severe("Please install them first!");
-            Jobs.getPluginLogger().severe("You can find the latest versions here:");
-            Jobs.getPluginLogger().severe("https://www.spigotmc.org/resources/34315/");
-        } else {
-            Jobs.getPluginLogger().severe("Vault detected but economy plugin still missing!");
-            Jobs.getPluginLogger().severe("Please install Vault supporting economy plugin!");
-        }
-        Jobs.getPluginLogger().severe("==============================================");
-    }
-
-    private hookResult setVault() {
-        if (!plugin.getServer().getPluginManager().isPluginEnabled("Vault"))
-            return hookResult.novault;
-
-        RegisteredServiceProvider<Economy> provider = plugin.getServer().getServicesManager().getRegistration(Economy.class);
-        if (provider == null) {
-            return hookResult.noeconomy;
-        }
-
+    void runIfProviderIsFound() {
         Jobs.setEconomy(new VaultEconomy(provider.getProvider()));
-        CMIMessages.consoleMessage("&e[" + plugin.getDescription().getName() + "] Successfully linked with Vault. (" + provider.getProvider().getName() + ")");
-        return hookResult.pass;
     }
-
 }

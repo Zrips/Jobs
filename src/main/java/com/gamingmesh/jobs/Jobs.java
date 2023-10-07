@@ -18,28 +18,6 @@
 
 package com.gamingmesh.jobs;
 
-import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.WeakHashMap;
-import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.gamingmesh.jobs.Gui.GuiManager;
 import com.gamingmesh.jobs.Placeholders.Placeholder;
 import com.gamingmesh.jobs.Placeholders.PlaceholderAPIHook;
@@ -47,40 +25,8 @@ import com.gamingmesh.jobs.Signs.SignUtil;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 import com.gamingmesh.jobs.api.JobsPrePaymentEvent;
 import com.gamingmesh.jobs.commands.JobsCommands;
-import com.gamingmesh.jobs.config.BlockProtectionManager;
-import com.gamingmesh.jobs.config.BossBarManager;
-import com.gamingmesh.jobs.config.ConfigManager;
-import com.gamingmesh.jobs.config.ExploreManager;
-import com.gamingmesh.jobs.config.GeneralConfigManager;
-import com.gamingmesh.jobs.config.LanguageManager;
-import com.gamingmesh.jobs.config.NameTranslatorManager;
-import com.gamingmesh.jobs.config.RestrictedAreaManager;
-import com.gamingmesh.jobs.config.RestrictedBlockManager;
-import com.gamingmesh.jobs.config.ScheduleManager;
-import com.gamingmesh.jobs.config.ShopManager;
-import com.gamingmesh.jobs.config.TitleManager;
-import com.gamingmesh.jobs.config.YmlMaker;
-import com.gamingmesh.jobs.container.ActionInfo;
-import com.gamingmesh.jobs.container.ActionType;
-import com.gamingmesh.jobs.container.ArchivedJobs;
-import com.gamingmesh.jobs.container.BlockProtection;
-import com.gamingmesh.jobs.container.Boost;
-import com.gamingmesh.jobs.container.Convert;
-import com.gamingmesh.jobs.container.CurrencyLimit;
-import com.gamingmesh.jobs.container.CurrencyType;
-import com.gamingmesh.jobs.container.DBAction;
-import com.gamingmesh.jobs.container.FastPayment;
-import com.gamingmesh.jobs.container.Job;
-import com.gamingmesh.jobs.container.JobInfo;
-import com.gamingmesh.jobs.container.JobProgression;
-import com.gamingmesh.jobs.container.JobsPlayer;
-import com.gamingmesh.jobs.container.JobsWorld;
-import com.gamingmesh.jobs.container.LoadStatus;
-import com.gamingmesh.jobs.container.Log;
-import com.gamingmesh.jobs.container.PlayerInfo;
-import com.gamingmesh.jobs.container.PlayerPoints;
-import com.gamingmesh.jobs.container.Quest;
-import com.gamingmesh.jobs.container.QuestProgression;
+import com.gamingmesh.jobs.config.*;
+import com.gamingmesh.jobs.container.*;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockOwnerShip;
 import com.gamingmesh.jobs.container.blockOwnerShip.BlockTypes;
 import com.gamingmesh.jobs.dao.JobsClassLoader;
@@ -93,32 +39,35 @@ import com.gamingmesh.jobs.economy.Economy;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.i18n.Language;
-import com.gamingmesh.jobs.listeners.JobsListener;
-import com.gamingmesh.jobs.listeners.JobsPayment1_14Listener;
-import com.gamingmesh.jobs.listeners.JobsPaymentListener;
-import com.gamingmesh.jobs.listeners.PistonProtectionListener;
-import com.gamingmesh.jobs.listeners.JobsPayment1_16Listener;
-import com.gamingmesh.jobs.listeners.PlayerSignEdit1_20Listeners;
+import com.gamingmesh.jobs.listeners.*;
 import com.gamingmesh.jobs.selection.SelectionManager;
-import com.gamingmesh.jobs.stuff.Loging;
-import com.gamingmesh.jobs.stuff.TabComplete;
-import com.gamingmesh.jobs.stuff.ToggleBarHandling;
-import com.gamingmesh.jobs.stuff.Util;
-import com.gamingmesh.jobs.stuff.VersionChecker;
+import com.gamingmesh.jobs.stuff.*;
 import com.gamingmesh.jobs.stuff.complement.Complement;
 import com.gamingmesh.jobs.stuff.complement.Complement1;
 import com.gamingmesh.jobs.stuff.complement.Complement2;
 import com.gamingmesh.jobs.stuff.complement.JobsChatEvent;
 import com.gamingmesh.jobs.tasks.BufferedPaymentThread;
 import com.gamingmesh.jobs.tasks.DatabaseSaveThread;
-
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.RawMessages.RawMessage;
-import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+import net.Zrips.CMILib.Version.Version;
+import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.logging.Logger;
 
 public final class Jobs extends JavaPlugin {
 
@@ -142,6 +91,8 @@ public final class Jobs extends JavaPlugin {
     private static GeneralConfigManager gConfigManager;
 
     private static BufferedEconomy economy;
+
+    private static Permission vaultPermission;
     private static PermissionHandler permissionHandler;
     private static PermissionManager permissionManager;
 
@@ -691,12 +642,20 @@ public final class Jobs extends JavaPlugin {
         economy = new BufferedEconomy(getInstance(), eco);
     }
 
+    public static void setVaultPermission(Permission permission) {
+        vaultPermission = permission;
+    }
+
     /**
      * Gets the economy handler
      * @return the economy handler
      */
     public static BufferedEconomy getEconomy() {
         return economy;
+    }
+
+    public static Permission getVaultPermission() {
+        return vaultPermission;
     }
 
     /**
@@ -762,7 +721,10 @@ public final class Jobs extends JavaPlugin {
             }
 
             // register economy
-            CMIScheduler.get().runTask(new HookEconomyTask(this));
+            CMIScheduler.get().runTask(() -> new HookEconomyTask(net.milkbowl.vault.economy.Economy.class));
+
+            // register permission from vault
+            CMIScheduler.get().runTask(() -> new HookPermissionTask(Permission.class));
 
             dao.loadBlockProtection();
             getExploreManager().load();
