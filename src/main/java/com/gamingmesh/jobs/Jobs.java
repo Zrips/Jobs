@@ -720,11 +720,14 @@ public final class Jobs extends JavaPlugin {
                 complement = new Complement1();
             }
 
-            // register economy
-            CMIScheduler.get().runTask(() -> new HookEconomyTask(net.milkbowl.vault.economy.Economy.class));
+            if (HookVault.isVaultEnable()) {
+                // register economy
+                CMIScheduler.get().runTask(() -> new HookEconomyTask(net.milkbowl.vault.economy.Economy.class));
 
-            // register permission from vault
-            CMIScheduler.get().runTask(() -> new HookPermissionTask(Permission.class));
+                // register permission from vault
+                CMIScheduler.get().runTask(() -> new HookPermissionTask(Permission.class));
+            }
+
 
             dao.loadBlockProtection();
             getExploreManager().load();
