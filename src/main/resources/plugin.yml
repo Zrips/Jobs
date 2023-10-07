@@ -232,3 +232,9 @@ permissions:
   jobs.area.remove:
     description: Grants access to the area remove command
     default: op
+  jobs.hidetop.*:
+    description: Prevent player to be shown in all job top
+    default: false
+  jobs.hidegtop:
+    description: Prevent player to be shown in the global jobs top
+    default: false

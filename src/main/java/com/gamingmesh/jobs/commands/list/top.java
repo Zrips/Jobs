@@ -1,22 +1,23 @@
 package com.gamingmesh.jobs.commands.list;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.commands.Cmd;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.i18n.Language;
-
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class top implements Cmd {
 
@@ -56,11 +57,19 @@ public class top implements Cmd {
 
         int workingIn = Jobs.getUsedSlots(job);
         PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, workingIn, page);
+        final int finalPage = page;
+        Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () ->showTop(sender, job, pi, finalPage) );
+        return true;
+    }
 
-        List<TopList> fullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart());
+    private static void showTop(CommandSender sender, Job job, PageInfo pi, int page) {
+        Player player = (Player) sender;
+        List<TopList> fullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart())
+                .stream().filter(topList -> hasToBeSeenInTop(topList, job)).collect(Collectors.toList());
+
         if (fullList.isEmpty()) {
             CMIMessages.sendMessage(sender, LC.info_NoInformation);
-            return true;
+            return;
         }
 
         int place = 1;
@@ -69,15 +78,16 @@ public class top implements Cmd {
             Language.sendMessage(sender, "command.top.output.topline", "%jobname%", job.getName(), "%amount%", Jobs.getGCManager().JobsTopAmount);
 
             for (TopList one : fullList) {
+                System.out.println(one.getPlayerInfo().getName());
                 if (place > Jobs.getGCManager().JobsTopAmount)
                     break;
 
                 Language.sendMessage(sender, "command.top.output.list",
-                    "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
-                    "%playername%", one.getPlayerInfo().getName(),
-                    "%playerdisplayname%", one.getPlayerInfo().getDisplayName(),
-                    "%level%", one.getLevel(),
-                    "%exp%", one.getExp());
+                        "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
+                        "%playername%", one.getPlayerInfo().getName(),
+                        "%playerdisplayname%", one.getPlayerInfo().getDisplayName(),
+                        "%level%", one.getLevel(),
+                        "%exp%", one.getExp());
                 place++;
             }
             pi.autoPagination(sender, "jobs top " + job.getName());
@@ -88,7 +98,7 @@ public class top implements Cmd {
                 if (place > Jobs.getGCManager().JobsTopAmount)
                     break;
                 ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
-                    "%playername%", one.getPlayerInfo().getName(), "%playerdisplayname%", one.getPlayerInfo().getDisplayName(), "%level%", one.getLevel()));
+                        "%playername%", one.getPlayerInfo().getName(), "%playerdisplayname%", one.getPlayerInfo().getDisplayName(), "%level%", one.getLevel()));
                 place++;
             }
 
@@ -96,6 +106,16 @@ public class top implements Cmd {
 
             pi.autoPagination(sender, "jobs top " + job.getName());
         }
-        return true;
     }
+
+    private static boolean hasToBeSeenInTop(TopList topList, Job job) {
+        Player player = topList.getPlayerInfo().getJobsPlayer().getPlayer();
+        if (player != null)
+            return !player.hasPermission("jobs.hidetop.*") || !player.hasPermission("jobs.hidetop." + job.getName().toLowerCase());
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(topList.getPlayerInfo().getUuid());
+        return !
+                (Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop.*")
+                || Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop." + job.getName().toLowerCase()));
+    }
+
 }
