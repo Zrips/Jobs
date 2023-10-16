@@ -233,7 +233,7 @@ public class NameTranslatorManager {
             if (listOfNames.size() > 0)
                 CMIMessages.consoleMessage("&eLoaded &6" + listOfNames.size() + " &ecustom item names");
         } else
-           CMIMessages.consoleMessage("&cThe ItemList section not found in &6" + itemFile.fileName + " &cfile.");
+            CMIMessages.consoleMessage("&cThe ItemList section not found in &6" + itemFile.fileName + " &cfile.");
 
         if ((section = itemFile.getConfig().getConfigurationSection("EntityList")) != null) {
             listOfEntities.clear();
@@ -434,7 +434,13 @@ public class NameTranslatorManager {
 
             ConfigurationSection enchSection = c.getC().getConfigurationSection("EnchantList");
             for (Enchantment one : Enchantment.values()) {
-                String enchName = CMIEnchantment.getName(one);
+                String enchName = "Unknown";
+                try {
+                    enchName = CMIEnchantment.getName(one);
+                } catch (Throwable e) {
+                    // If enchant check failed we can skip this entirely
+                    continue;
+                }
                 if (enchName.equals("Unknown"))
                     continue;
 
