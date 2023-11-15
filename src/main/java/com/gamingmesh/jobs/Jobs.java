@@ -1008,7 +1008,7 @@ public final class Jobs extends JavaPlugin {
 
         // no job
         if (numjobs == 0) {
-            if (noneJob == null || noneJob.isWorldBlackListed(block) || noneJob.isWorldBlackListed(block, ent) || noneJob.isWorldBlackListed(victim))
+            if (noneJob == null || noneJob.isWorldBlackListed(block, ent, victim))
                 return;
 
             JobInfo jobinfo = noneJob.getJobInfo(info, 1);
@@ -1106,8 +1106,7 @@ public final class Jobs extends JavaPlugin {
         } else {
             List<Job> expiredJobs = new ArrayList<>();
             for (JobProgression prog : progression) {
-                if (prog.getJob().isWorldBlackListed(block) || prog.getJob().isWorldBlackListed(block, ent)
-                    || prog.getJob().isWorldBlackListed(victim))
+                if (prog.getJob().isWorldBlackListed(block, ent, victim))
                     continue;
 
                 if (jPlayer.isLeftTimeEnded(prog.getJob())) {

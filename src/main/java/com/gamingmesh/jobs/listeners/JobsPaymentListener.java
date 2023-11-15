@@ -528,7 +528,7 @@ public final class JobsPaymentListener implements Listener {
         if (!payIfCreative(player))
             return;
 
-        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getWorld().getName()))
             return;
 
         // check if player is riding
@@ -550,8 +550,7 @@ public final class JobsPaymentListener implements Listener {
                 }
             }
 
-            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player),
-                new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH));
+            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(((Item) event.getCaught()).getItemStack(), ActionType.FISH), event.getCaught());
         }
     }
 

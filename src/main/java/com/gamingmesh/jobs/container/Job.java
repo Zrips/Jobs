@@ -31,9 +31,12 @@ import java.util.function.BiPredicate;
 
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.stuff.Util;
+
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -652,21 +655,32 @@ public class Job {
     }
 
     public boolean isWorldBlackListed(Entity ent) {
-        return isWorldBlackListed(null, ent);
+        return isWorldBlackListed(null, ent, null);
     }
 
     public boolean isWorldBlackListed(Block block) {
-        return isWorldBlackListed(block, null);
+        return isWorldBlackListed(block, null, null);
     }
 
+    @Deprecated
     public boolean isWorldBlackListed(Block block, Entity ent) {
+        return isWorldBlackListed(block, ent, null);
+    }
+
+    public boolean isWorldBlackListed(Block block, Entity ent, LivingEntity lent) {
+        if (block != null)
+            return isWorldBlackListed(block.getWorld());
+        if (ent != null)
+            return isWorldBlackListed(ent.getWorld());
+        if (lent != null)
+            return isWorldBlackListed(lent.getWorld());
+        return false;
+    }
+
+    public boolean isWorldBlackListed(World world) {
         if (worldBlacklist.isEmpty())
             return reversedWorldBlacklist;
-
-        if (block != null)
-            return worldBlacklist.contains(block.getWorld().getName()) != reversedWorldBlacklist;
-
-        return ent != null && worldBlacklist.contains(ent.getWorld().getName()) != reversedWorldBlacklist;
+        return world != null && worldBlacklist.contains(world.getName()) != reversedWorldBlacklist;
     }
 
     public boolean isReversedWorldBlacklist() {
