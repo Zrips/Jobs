@@ -470,12 +470,11 @@ public class ConfigManager {
 
         cfg.addComment(pt + ".limitedItems", "Limit item use to jobs level");
         cfg.addComment(pt + ".limitedItems.firstOne", "Just name, don't have any impact");
-        
-        
+
         cfg.addComment(pt + ".limitedItems.firstOne.ItemStack", "Tool/Weapon data. More information on usage www.zrips.net/cmi/commands/icwol/");
-        cfg.get(pt + ".limitedItems.firstOne.ItemStack", "DIAMOND_PICKAXE;n{&8Miner_Pickaxe};l{&eBobs_pick\\n&710%_bonus_XP};DAMAGE_ALL:1,FIRE_ASPECT:1");       
+        cfg.get(pt + ".limitedItems.firstOne.ItemStack", "DIAMOND_PICKAXE;n{&8Miner_Pickaxe};l{&eBobs_pick\\n&710%_bonus_XP};DAMAGE_ALL:1,FIRE_ASPECT:1");
         cfg.addComment(pt + ".limitedItems.firstOne.level", "Level of this job player can start using this item");
-        cfg.get(pt + ".limitedItems.firstOne.level", 5);        
+        cfg.get(pt + ".limitedItems.firstOne.level", 5);
 
         cfg.save();
     }
@@ -1007,7 +1006,8 @@ public class ConfigManager {
         return result.toString();
     }
 
-    boolean informed = false;
+    boolean informedGUI = false;
+    boolean informedLimited = false;
 
     private Job loadJobs(ConfigurationSection jobsSection) {
         java.util.logging.Logger log = Jobs.getPluginLogger();
@@ -1169,7 +1169,7 @@ public class ConfigManager {
                     CMIItemStack item = CMIItemStack.deserialize(guiSection.getString("ItemStack"), ahead);
                     if (!ahead.isAsyncHead() && item != null && item.getCMIType().isNone())
                         gItem.setGuiItem(item.getItemStack());
-                    
+
                 } else if (guiSection.isString("Item")) {
                     String item = guiSection.getString("Item");
 
@@ -1205,9 +1205,9 @@ public class ConfigManager {
                     if (material != CMIMaterial.NONE)
                         guiItem = material.newItemStack();
 
-                    if (!informed) {
+                    if (!informedGUI) {
                         CMIMessages.consoleMessage("&5Update " + jobConfigName + " jobs gui item section to use `ItemStack` instead of `Item` sections format. More information inside _EXAMPLE job file");
-                        informed = true;
+                        informedGUI = true;
                     }
                 } else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
                     guiItem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
@@ -1387,51 +1387,72 @@ public class ConfigManager {
                         continue;
                     }
 
-                    CMIMaterial mat = CMIMaterial.NONE;
-
-                    if (itemSection.isInt("id")) {
-                        mat = CMIMaterial.get(itemSection.getInt("id"));
-                    } else {
-                        mat = CMIMaterial.get(itemSection.getString("id"));
-                    }
-
-                    if (mat == CMIMaterial.NONE) {
-                        log.warning("Job " + jobConfigName + " has incorrect limitedItems material id!");
-                        continue;
-                    }
-
-                    List<String> lore = itemSection.getStringList("lore");
-
-                    for (int a = 0; a < lore.size(); a++) {
-                        lore.set(a, CMIChatColor.translate(lore.get(a)));
-                    }
-
-                    Map<Enchantment, Integer> enchants = new HashMap<>();
-                    for (String eachLine : itemSection.getStringList("enchants")) {
-                        String[] split = eachLine.split("=", 2);
-                        if (split.length == 0)
-                            continue;
-
-                        Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
-                        if (ench == null)
-                            continue;
-
-                        int level = -1;
-
-                        if (split.length > 1) {
-                            try {
-                                level = Integer.parseInt(split[1]);
-                            } catch (NumberFormatException e) {
-                            }
-                        }
-
-                        if (level != -1)
-                            enchants.put(ench, level);
-                    }
-
                     String node = itemKey.toLowerCase();
 
-                    jobLimitedItems.put(node, new JobLimitedItems(node, mat, 1, itemSection.getString("name"), lore, enchants, itemSection.getInt("level")));
+                    if (itemSection.contains("id")) {
+
+                        CMIMaterial mat = CMIMaterial.NONE;
+
+                        if (itemSection.isInt("id")) {
+                            mat = CMIMaterial.get(itemSection.getInt("id"));
+                        } else {
+                            mat = CMIMaterial.get(itemSection.getString("id"));
+                        }
+
+                        if (mat == CMIMaterial.NONE) {
+                            log.warning("Job " + jobConfigName + " has incorrect limitedItems material id!");
+                            continue;
+                        }
+
+                        List<String> lore = itemSection.getStringList("lore");
+
+                        for (int a = 0; a < lore.size(); a++) {
+                            lore.set(a, CMIChatColor.translate(lore.get(a)));
+                        }
+
+                        Map<Enchantment, Integer> enchants = new HashMap<>();
+                        for (String eachLine : itemSection.getStringList("enchants")) {
+                            String[] split = eachLine.split("=", 2);
+                            if (split.length == 0)
+                                continue;
+
+                            Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
+                            if (ench == null)
+                                continue;
+
+                            int level = -1;
+
+                            if (split.length > 1) {
+                                try {
+                                    level = Integer.parseInt(split[1]);
+                                } catch (NumberFormatException e) {
+                                }
+                            }
+
+                            if (level != -1)
+                                enchants.put(ench, level);
+                        }
+
+                        jobLimitedItems.put(node, new JobLimitedItems(node, mat, 1, itemSection.getString("name"), lore, enchants, itemSection.getInt("level")));
+
+                        if (!informedLimited) {
+                            CMIMessages.consoleMessage("&5Update " + jobConfigName
+                                + " jobs limited items section to use `ItemStack` instead of `id` sections format. More information inside _EXAMPLE job file");
+                            informedLimited = true;
+                        }
+
+                    } else if (itemSection.contains("ItemStack")) {
+
+                        CMIItemStack limitedItem = CMIItemStack.deserialize(itemSection.getString("ItemStack"));
+
+                        if (limitedItem == null || limitedItem.getCMIType().isNone()) {
+                            log.warning("Job " + jobConfigName + " has incorrect limitedItems material id!");
+                            continue;
+                        }
+
+                        jobLimitedItems.put(node, new JobLimitedItems(node, limitedItem.getItemStack(), itemSection.getInt("level")));
+
+                    }
                 }
             }
             job.setLimitedItems(jobLimitedItems);
