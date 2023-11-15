@@ -1386,7 +1386,7 @@ public final class Jobs extends JavaPlugin {
     public static void perform(JobsPlayer jPlayer, ActionInfo info, BufferedPayment payment, Job job, Block block, Entity ent, LivingEntity victim) {
         double expPayment = payment.get(CurrencyType.EXP);
 
-        JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), noneJob, payment.get(CurrencyType.MONEY),
+        JobsPrePaymentEvent jobsPrePaymentEvent = new JobsPrePaymentEvent(jPlayer.getPlayer(), job, payment.get(CurrencyType.MONEY),
             payment.get(CurrencyType.POINTS), block, ent, victim, info);
         Bukkit.getServer().getPluginManager().callEvent(jobsPrePaymentEvent);
         // If event is canceled, don't do anything

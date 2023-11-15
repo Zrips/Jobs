@@ -9,6 +9,8 @@ import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -58,14 +60,14 @@ public class top implements Cmd {
         int workingIn = Jobs.getUsedSlots(job);
         PageInfo pi = new PageInfo(Jobs.getGCManager().JobsTopAmount, workingIn, page);
         final int finalPage = page;
-        Bukkit.getScheduler().runTaskAsynchronously(Jobs.getInstance(), () ->showTop(sender, job, pi, finalPage) );
+        CMIScheduler.runTaskAsynchronously(() -> showTop(sender, job, pi, finalPage));
         return true;
     }
 
     private static void showTop(CommandSender sender, Job job, PageInfo pi, int page) {
         Player player = (Player) sender;
         List<TopList> fullList = Jobs.getJobsDAO().toplist(job.getName(), pi.getStart())
-                .stream().filter(topList -> hasToBeSeenInTop(topList, job)).collect(Collectors.toList());
+            .stream().filter(topList -> hasToBeSeenInTop(topList, job)).collect(Collectors.toList());
 
         if (fullList.isEmpty()) {
             CMIMessages.sendMessage(sender, LC.info_NoInformation);
@@ -83,11 +85,11 @@ public class top implements Cmd {
                     break;
 
                 Language.sendMessage(sender, "command.top.output.list",
-                        "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
-                        "%playername%", one.getPlayerInfo().getName(),
-                        "%playerdisplayname%", one.getPlayerInfo().getDisplayName(),
-                        "%level%", one.getLevel(),
-                        "%exp%", one.getExp());
+                    "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
+                    "%playername%", one.getPlayerInfo().getName(),
+                    "%playerdisplayname%", one.getPlayerInfo().getDisplayName(),
+                    "%level%", one.getLevel(),
+                    "%exp%", one.getExp());
                 place++;
             }
             pi.autoPagination(sender, "jobs top " + job.getName());
@@ -98,7 +100,7 @@ public class top implements Cmd {
                 if (place > Jobs.getGCManager().JobsTopAmount)
                     break;
                 ls.add(Jobs.getLanguage().getMessage("scoreboard.line", "%number%", ((page - 1) * Jobs.getGCManager().JobsTopAmount) + place,
-                        "%playername%", one.getPlayerInfo().getName(), "%playerdisplayname%", one.getPlayerInfo().getDisplayName(), "%level%", one.getLevel()));
+                    "%playername%", one.getPlayerInfo().getName(), "%playerdisplayname%", one.getPlayerInfo().getDisplayName(), "%level%", one.getLevel()));
                 place++;
             }
 
@@ -111,11 +113,11 @@ public class top implements Cmd {
     private static boolean hasToBeSeenInTop(TopList topList, Job job) {
         Player player = topList.getPlayerInfo().getJobsPlayer().getPlayer();
         if (player != null)
-            return !player.hasPermission("jobs.hidetop.*") || !player.hasPermission("jobs.hidetop." + job.getName().toLowerCase());
+            return !player.isPermissionSet("jobs.hidetop.*") || !player.isPermissionSet("jobs.hidetop." + job.getName().toLowerCase());
+
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(topList.getPlayerInfo().getUuid());
-        return !
-                (Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop.*")
-                || Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop." + job.getName().toLowerCase()));
+        return !(Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop.*")
+            || Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop." + job.getName().toLowerCase()));
     }
 
 }
