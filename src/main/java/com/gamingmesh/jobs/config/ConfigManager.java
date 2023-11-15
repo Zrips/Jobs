@@ -200,17 +200,10 @@ public class ConfigManager {
         cfg.addComment(pt + ".rejoinCooldown", "Defines how often in seconds player can rejoin this job. Can be bypassed with jobs.rejoinbypass");
         cfg.get(pt + ".rejoinCooldown", 10);
 
-        cfg.addComment(pt + ".Gui", "GUI icon information when using GUI function");
-        cfg.addComment(pt + ".Gui.Item", "You can use the custom player head:",
-            "Item: player_head",
-            "  CustomSkull: Notch",
-            "",
-            "Name of the material");
-        cfg.get(pt + ".Gui.Item", "oaklog");
+        cfg.addComment(pt + ".Gui", "GUI icon information when using GUI function", "More information on usage at https://www.zrips.net/cmi/commands/icwol/");
+        cfg.get(pt + ".Gui.ItemStack", "oaklog;DURABILITY:1;hideenchants");
         cfg.addComment(pt + ".Gui.slot", "Slot number to show the item in the specified row");
         cfg.get(pt + ".Gui.slot", 5);
-        cfg.addComment(pt + ".Gui.Enchantments", "Enchants of the item");
-        cfg.get(pt + ".Gui.Enchantments", Arrays.asList("DURABILITY:1"));
 
         cfg.addComment(pt + ".maxDailyQuests",
             "Defines maximum amount of daily quests player can have from THIS job",
