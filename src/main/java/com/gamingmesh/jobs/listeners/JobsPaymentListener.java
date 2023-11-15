@@ -128,6 +128,7 @@ import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMILocation;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
+import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Logs.CMIDebug;
@@ -687,36 +688,11 @@ public final class JobsPaymentListener implements Listener {
                     third = mat;
             }
 
-            switch (mat) {
-            case LEATHER_BOOTS:
-            case LEATHER_CHESTPLATE:
-            case LEATHER_HELMET:
-            case LEATHER_LEGGINGS:
-            case LEATHER_HORSE_ARMOR:
-                leather = true;
-                break;
-            case SHULKER_BOX:
-            case BLACK_SHULKER_BOX:
-            case BLUE_SHULKER_BOX:
-            case BROWN_SHULKER_BOX:
-            case CYAN_SHULKER_BOX:
-            case GRAY_SHULKER_BOX:
-            case GREEN_SHULKER_BOX:
-            case LIGHT_BLUE_SHULKER_BOX:
-            case LIGHT_GRAY_SHULKER_BOX:
-            case LIME_SHULKER_BOX:
-            case MAGENTA_SHULKER_BOX:
-            case ORANGE_SHULKER_BOX:
-            case PINK_SHULKER_BOX:
-            case PURPLE_SHULKER_BOX:
-            case RED_SHULKER_BOX:
-            case WHITE_SHULKER_BOX:
-            case YELLOW_SHULKER_BOX:
+            if (mat.isShulkerBox())
                 shulker = true;
-                break;
-            default:
-                break;
-            }
+
+            if (mat.containsCriteria(CMIMC.LEATHER))
+                leather = true;
         }
 
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
@@ -1605,34 +1581,24 @@ public final class JobsPaymentListener implements Listener {
 
         LivingEntity animal = event.getEntity();
 
-        double closest = 30.0;
-        Player player = null;
-        for (Player i : Bukkit.getOnlinePlayers()) {
-            if (!i.getWorld().getName().equals(animal.getWorld().getName()))
-                continue;
+        Player player = Util.getClosestPlayer(animal.getLocation());
 
-            double dist = i.getLocation().distance(animal.getLocation());
-            if (closest > dist) {
-                closest = dist;
-                player = i;
-            }
-        }
+        if (player == null)
+            return;
 
-        if (player != null && closest < 30.0) {
-            // check if in creative
-            if (!payIfCreative(player))
-                return;
+        // check if in creative
+        if (!payIfCreative(player))
+            return;
 
-            if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
-                return;
+        if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
+            return;
 
-            // check if player is riding
-            if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
-                return;
+        // check if player is riding
+        if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
+            return;
 
-            // pay
-            Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(animal, ActionType.BREED));
-        }
+        // pay
+        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new EntityActionInfo(animal, ActionType.BREED));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

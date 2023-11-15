@@ -70,6 +70,22 @@ public final class Util {
         return dcf.format(number);
     }
 
+    public static Player getClosestPlayer(Location loc) {
+        double closest = 30.0;
+        Player player = null;
+        for (Player i : Bukkit.getOnlinePlayers()) {
+            if (!i.getWorld().getName().equals(loc.getWorld().getName()))
+                continue;
+
+            double dist = i.getLocation().distance(loc);
+            if (closest > dist) {
+                closest = dist;
+                player = i;
+            }
+        }
+        return closest > 30 ? null : player;
+    }
+
     public static String getRealType(Entity entity) {
         if (Version.isCurrentEqualOrHigher(Version.v1_11_R1)) {
             return entity.getType().name();
