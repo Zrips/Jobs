@@ -470,18 +470,12 @@ public class ConfigManager {
 
         cfg.addComment(pt + ".limitedItems", "Limit item use to jobs level");
         cfg.addComment(pt + ".limitedItems.firstOne", "Just name, don't have any impact");
-        cfg.addComment(pt + ".limitedItems.firstOne.id", "Tool/Weapon id. Works for any interact action.");
-        cfg.get(pt + ".limitedItems.firstOne.id", "DIAMOND_PICKAXE");
+        
+        
+        cfg.addComment(pt + ".limitedItems.firstOne.ItemStack", "Tool/Weapon data. More information on usage www.zrips.net/cmi/commands/icwol/");
+        cfg.get(pt + ".limitedItems.firstOne.ItemStack", "DIAMOND_PICKAXE;n{&8Miner_Pickaxe};l{&eBobs_pick\\n&710%_bonus_XP};DAMAGE_ALL:1,FIRE_ASPECT:1");       
         cfg.addComment(pt + ".limitedItems.firstOne.level", "Level of this job player can start using this item");
-        cfg.get(pt + ".limitedItems.firstOne.level", 5);
-        cfg.addComment(pt + ".limitedItems.firstOne.name", "(optional) Items name, option to use color codes");
-        cfg.get(pt + ".limitedItems.firstOne.name", "&8Miner Pickaxe");
-        cfg.addComment(pt + ".limitedItems.firstOne.lore", "(optional) Item lore, again can come with color codes");
-        cfg.get(pt + ".limitedItems.firstOne.lore", Arrays.asList("&eBobs pick", "&710% bonus XP"));
-        cfg.addComment(pt + ".limitedItems.firstOne.enchants",
-            "(optional) Item enchantments, all enchantment names can be found https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html",
-            "enchant level can increase with jobs level to give best RPG experience");
-        cfg.get(pt + ".limitedItems.firstOne.enchants", Arrays.asList("DAMAGE_ALL=1", "FIRE_ASPECT=1"));
+        cfg.get(pt + ".limitedItems.firstOne.level", 5);        
 
         cfg.save();
     }
@@ -1016,7 +1010,6 @@ public class ConfigManager {
     boolean informed = false;
 
     private Job loadJobs(ConfigurationSection jobsSection) {
-        informed = false;
         java.util.logging.Logger log = Jobs.getPluginLogger();
 
         for (String jobConfigName : jobsSection.getKeys(false)) {
@@ -1213,8 +1206,7 @@ public class ConfigManager {
                         guiItem = material.newItemStack();
 
                     if (!informed) {
-                        CMIMessages.consoleMessage("Update " + jobConfigName + " jobs gui item section to use `ItemStack` instead of `Item` sections format");
-                        CMIMessages.consoleMessage("More information inside example job file");
+                        CMIMessages.consoleMessage("&5Update " + jobConfigName + " jobs gui item section to use `ItemStack` instead of `Item` sections format. More information inside _EXAMPLE job file");
                         informed = true;
                     }
                 } else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
