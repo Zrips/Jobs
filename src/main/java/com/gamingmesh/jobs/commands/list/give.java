@@ -14,6 +14,9 @@ import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.GiveItem;
 
+import net.Zrips.CMILib.Items.CMIAsyncHead;
+import net.Zrips.CMILib.Items.CMIItemStack;
+
 public class give implements Cmd {
 
     private enum actions {
@@ -72,17 +75,27 @@ public class give implements Cmd {
             return true;
         }
 
+        Player p = player;
+
         switch (name) {
         case items:
             JobItems jItem = ItemBoostManager.getItemByKey(itemName);
-            ItemStack item = jItem == null ? null : jItem.getItemStack(player);
 
-            if (item == null) {
+            CMIAsyncHead ahead = new CMIAsyncHead() {
+                @Override
+                public void afterAsyncUpdate(ItemStack item) {
+                    GiveItem.giveItemForPlayer(p, ItemBoostManager.applyNBT(item, jItem.getNode()));
+                }
+            };
+
+            CMIItemStack item = jItem == null ? null : jItem.getItemStack(player, ahead);
+
+            if (jItem == null || item == null) {
                 Language.sendMessage(sender, "command.give.output.noitem");
                 return true;
             }
-
-            GiveItem.giveItemForPlayer(player, item);
+            if (!ahead.isAsyncHead())
+                GiveItem.giveItemForPlayer(player, ItemBoostManager.applyNBT(item.getItemStack(), jItem.getNode()));
             break;
         case limiteditems:
             if (job == null) {
@@ -91,14 +104,23 @@ public class give implements Cmd {
             }
 
             JobLimitedItems jLItem = job.getLimitedItems().get(itemName.toLowerCase());
-            ItemStack limItem = jLItem == null ? null : jLItem.getItemStack(player);
+
+            ahead = new CMIAsyncHead() {
+                @Override
+                public void afterAsyncUpdate(ItemStack item) {
+                    GiveItem.giveItemForPlayer(p, item);
+                }
+            };
+
+            CMIItemStack limItem = jLItem == null ? null : jLItem.getItemStack(player, ahead);
 
             if (limItem == null) {
                 Language.sendMessage(sender, "command.give.output.noitem");
                 return true;
             }
 
-            GiveItem.giveItemForPlayer(player, limItem);
+            if (!ahead.isAsyncHead())
+                GiveItem.giveItemForPlayer(player, limItem.getItemStack());
             break;
         default:
             break;

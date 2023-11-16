@@ -52,9 +52,11 @@ import com.gamingmesh.jobs.container.JobLimitedItems;
 import com.gamingmesh.jobs.container.JobPermission;
 import com.gamingmesh.jobs.container.Quest;
 import com.gamingmesh.jobs.container.QuestObjective;
+import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Equations.ParseError;
 import net.Zrips.CMILib.Equations.Parser;
@@ -1317,64 +1319,6 @@ public class ConfigManager {
             }
             job.setCommands(jobCommand);
 
-            // Items **OUTDATED** Moved to ItemBoostManager!!
-            HashMap<String, JobItems> jobItems = new HashMap<>();
-            ConfigurationSection itemsSection = jobSection.getConfigurationSection("items");
-            if (itemsSection != null) {
-                for (String itemKey : itemsSection.getKeys(false)) {
-                    ConfigurationSection itemSection = itemsSection.getConfigurationSection(itemKey);
-
-                    String node = itemKey.toLowerCase();
-                    if (itemSection == null) {
-                        log.warning("Job " + jobConfigName + " has an invalid item key " + itemKey + "!");
-                        continue;
-                    }
-                    int id = itemSection.getInt("id");
-
-                    String name = null;
-                    if (itemSection.isString("name"))
-                        name = itemSection.getString("name");
-
-                    List<String> lore = new ArrayList<>();
-                    if (itemSection.contains("lore"))
-                        for (String eachLine : itemSection.getStringList("lore")) {
-                            lore.add(CMIChatColor.translate(eachLine));
-                        }
-
-                    HashMap<Enchantment, Integer> enchants = new HashMap<>();
-                    if (itemSection.contains("enchants"))
-                        for (String eachLine : itemSection.getStringList("enchants")) {
-
-                            if (!eachLine.contains("="))
-                                continue;
-
-                            Enchantment ench = CMIEnchantment.getEnchantment(eachLine.split("=")[0]);
-                            Integer level = -1;
-                            try {
-                                level = Integer.parseInt(eachLine.split("=")[1]);
-                            } catch (NumberFormatException e) {
-                                continue;
-                            }
-
-                            if (ench != null && level != -1)
-                                enchants.put(ench, level);
-                        }
-
-                    BoostMultiplier b = new BoostMultiplier();
-                    if (itemSection.isDouble("moneyBoost"))
-                        b.add(CurrencyType.MONEY, itemSection.getDouble("moneyBoost") - 1);
-                    if (itemSection.isDouble("pointBoost"))
-                        b.add(CurrencyType.POINTS, itemSection.getDouble("pointBoost") - 1);
-                    if (itemSection.isDouble("expBoost"))
-                        b.add(CurrencyType.EXP, itemSection.getDouble("expBoost") - 1);
-
-                    jobItems.put(node.toLowerCase(), new JobItems(node, CMIMaterial.get(id), 1, name, lore, enchants, b, new ArrayList<Job>()));
-                }
-
-                CMIMessages.consoleMessage("&cRemove Items section from " + jobConfigName + " job, as of Jobs 4.10.0 version this was moved to boostedItems.yml file!");
-            }
-            job.setItemBonus(jobItems);
-
             // Limited Items
             Map<String, JobLimitedItems> jobLimitedItems = new HashMap<>();
             ConfigurationSection limitedItemsSection = jobSection.getConfigurationSection("limitedItems");
@@ -1406,11 +1350,12 @@ public class ConfigManager {
 
                         List<String> lore = itemSection.getStringList("lore");
 
-                        for (int a = 0; a < lore.size(); a++) {
-                            lore.set(a, CMIChatColor.translate(lore.get(a)));
-                        }
+                        if (lore != null)
+                            for (int a = 0; a < lore.size(); a++) {
+                                lore.set(a, CMIChatColor.translate(lore.get(a).replace(" ", "_")));
+                            }
 
-                        Map<Enchantment, Integer> enchants = new HashMap<>();
+                        StringBuilder enchants = new StringBuilder();
                         for (String eachLine : itemSection.getStringList("enchants")) {
                             String[] split = eachLine.split("=", 2);
                             if (split.length == 0)
@@ -1429,11 +1374,30 @@ public class ConfigManager {
                                 }
                             }
 
-                            if (level != -1)
-                                enchants.put(ench, level);
+                            if (level == -1)
+                                continue;
+
+                            if (!enchants.toString().isEmpty())
+                                enchants.append(",");
+                            enchants.append(split[0] + ":" + level);
                         }
 
-                        jobLimitedItems.put(node, new JobLimitedItems(node, mat, 1, itemSection.getString("name"), lore, enchants, itemSection.getInt("level")));
+                        String itemString = "";
+
+                        String name = CMIChatColor.translate(itemSection.getString("name"));
+
+                        if (name != null)
+                            itemString += ";n{" + name.replace(" ", "_") + "}";
+
+                        if (lore != null)
+                            for (int b = 0; b < lore.size(); b++) {
+                                lore.set(b, CMIChatColor.translate(lore.get(b).replace(" ", "_")));
+                            }
+
+                        if (lore != null && !lore.isEmpty())
+                            itemString += ";l{" + CMIList.listToString(lore, "\\n") + "}";
+
+                        jobLimitedItems.put(node, new JobLimitedItems(node, itemString, itemSection.getInt("level")));
 
                         if (!informedLimited) {
                             CMIMessages.consoleMessage("&5Update " + jobConfigName
@@ -1450,11 +1414,12 @@ public class ConfigManager {
                             continue;
                         }
 
-                        jobLimitedItems.put(node, new JobLimitedItems(node, limitedItem.getItemStack(), itemSection.getInt("level")));
+                        jobLimitedItems.put(node, new JobLimitedItems(node, itemSection.getString("ItemStack"), itemSection.getInt("level")));
 
                     }
                 }
             }
+
             job.setLimitedItems(jobLimitedItems);
 
             job.setCmdOnJoin(jobSection.getStringList("cmd-on-join"));

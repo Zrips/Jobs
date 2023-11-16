@@ -18,59 +18,44 @@
 
 package com.gamingmesh.jobs.container;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
-import net.Zrips.CMILib.Container.CMINumber;
+import net.Zrips.CMILib.Items.CMIAsyncHead;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.NBT.CMINBT;
 
 public class JobLimitedItems {
     private String node;
     CMIMaterial mat;
     private String name;
-    private ItemStack item;
+    private String itemString;
     private List<String> lore;
     private Map<Enchantment, Integer> enchants;
     private int level;
 
-    public JobLimitedItems(String node, CMIMaterial material, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, int level) {
+    public JobLimitedItems(String node, String itemString, int level) {
         this.node = node;
+        this.itemString = itemString.replace(" ", "_");
 
-        CMIItemStack ct = material.newCMIItemStack(CMINumber.clamp(amount, 1, material.getMaterial().getMaxStackSize()));
-        ct.setDisplayName(name);
-        ct.setLore(lore);
-        for (Entry<Enchantment, Integer> one : enchants.entrySet()) {
-            ct.addEnchant(one.getKey(), one.getValue());
-        }
-        this.item = ct.getItemStack();
+        CMIItemStack citem = CMIItemStack.deserialize(itemString);
 
-        this.name = name;
-        this.lore = lore;
-        this.enchants = enchants;
-        this.level = level;
-        this.mat = material;
-    }
-
-    public JobLimitedItems(String node, ItemStack item, int level) {
-        this.node = node;
-        this.item = item;
-        if (this.item.hasItemMeta()) {
-            ItemMeta meta = this.item.getItemMeta();
+        ItemStack item = citem.getItemStack();
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
             if (meta.hasDisplayName())
                 name = meta.getDisplayName();
             if (meta.hasLore())
                 lore = meta.getLore();
         }
         enchants = item.getEnchantments();
+        mat = citem.getCMIType();
 
         this.level = level;
     }
@@ -79,26 +64,8 @@ public class JobLimitedItems {
         return node;
     }
 
-    public ItemStack getItemStack(Player player) {
-
-        ItemStack item = this.item.clone();
-
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) {
-            return item;
-        }
-
-        if (lore != null && !lore.isEmpty()) {
-            List<String> translatedLore = new ArrayList<>();
-            for (String oneLore : lore) {
-                translatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
-            }
-
-            meta.setLore(translatedLore);
-        }
-
-        item.setItemMeta(meta);
-        return item;
+    public CMIItemStack getItemStack(Player player, CMIAsyncHead ahead) {
+        return CMIItemStack.deserialize(itemString.replace("[player]", player == null ? "" : player.getName()), ahead);
     }
 
     @Deprecated
@@ -124,5 +91,11 @@ public class JobLimitedItems {
 
     public int getLevel() {
         return level;
+    }
+
+    public static ItemStack applyNBT(ItemStack item, int jobId, String node) {
+        CMINBT nbt = new CMINBT(item);
+        nbt.setInt("JobsLimited", jobId);
+        return (ItemStack) nbt.setString("JobsLimitedNode", node);
     }
 }

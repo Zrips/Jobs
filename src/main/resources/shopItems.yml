@@ -6,27 +6,12 @@ Items:
     # Atleast one type of currency needs to be defined
     vaultPrice: 10000.0
     Icon:
-      # (REQUIRED) Icon item
-      Id: diamond_pickaxe
-      # (Optional - Default: 1) Icon item amount
-      Amount: 1
-      # (Optional) Icon name. Supports usual color codes
-      Name: "&eBest pick axe ever!"
-      # (Optional) Icon lore. Supports usual color codes
-      Lore:
-      - "&6Efficiency V"
-      - "&6Unbreaking III"
-      - "&eAnd one tasty apple!"
+      # (REQUIRED) Icon item. [player] can be used as a variable for the player who opens UI
+      ItemStack: diamond_pickaxe;&eBest_pick_axe_ever!;&6Efficiency_V\n&6Unbreaking_III\n&eAnd_one_tasty_apple!      
       # (Optional - default: false) Hides icon if player don't have permission to get this item
       HideWithoutPermission: true
       # (Optional - default: false) Hides icon if player don't have enough point levels to get this icon
-      HideIfThereIsNoEnoughPoints: false
-      # (Optional) When you want to use Player Head material with skin then use this
-      #CustomHead:
-      #  You can specify here valid player name or uuid.
-      #  PlayerName: playerNameOrUUID
-      #  Use the current player who opened the gui, so the head skin will be this player who opened.
-      #  UseCurrentPlayer: true
+      HideIfThereIsNoEnoughPoints: false  
     # (Optional) List of permissions required to buy this item
     RequiredPermission:
     - jobs.item.pickaxe
@@ -44,30 +29,9 @@ Items:
     - "msg &eThanks for buying this super pick axe!"
     # (Optional) Gives items by defined criteria
     GiveItems:
-      # Can be any word
-      PickAxe:
-        # (Required) Item name
-        Id: diamond_pickaxe
-        # (Optional - Default: 1) Item amount
-        Amount: 1
-        # (Optional) Item name
-        Name: "&eSuper PickAxe"
-        # (Optional) Item lore
-        Lore:
-        - "&eUber pickAxe"
-        # (Optional) Item enchants
-        Enchants:
-        - DIG_SPEED=5
-        - DURABILITY=3
-      Giving-Potion:
-        Id: potion
-        Amount: 1
-        Name: "&6Jump boost"
-        potion-type: jump
-      # Can be any word
-      Apple:
-        # (Required) Item name
-        Id: apple
+    - diamond_pickaxe;2;&eSuper_PickAxe;&eUber_pickAxe;DIG_SPEED:5,DURABILITY:3
+    - potion;n{&6Jump_boost};jump
+    - apple
   WoodenShovel:
     pointPrice: 100.0
     Icon:

@@ -12,49 +12,54 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
 
 public final class GiveItem {
 
     public static void giveItemForPlayer(Player player, int id, int meta, int qty, String name, List<String> lore,
-	    java.util.Map<Enchantment, Integer> enchants) {
-	ItemStack itemStack = CMIMaterial.get(id, meta).newItemStack();
-	itemStack.setAmount(qty);
-	ItemMeta itemMeta = itemStack.getItemMeta();
-	if (itemMeta == null) {
-	    return;
-	}
+        java.util.Map<Enchantment, Integer> enchants) {
+        ItemStack itemStack = CMIMaterial.get(id, meta).newItemStack();
+        itemStack.setAmount(qty);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) {
+            return;
+        }
 
-	if (lore != null && !lore.isEmpty()) {
-	    List<String> translatedLore = new ArrayList<>();
-	    for (String oneLore : lore) {
-		translatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
-	    }
+        if (lore != null && !lore.isEmpty()) {
+            List<String> translatedLore = new ArrayList<>();
+            for (String oneLore : lore) {
+                translatedLore.add(CMIChatColor.translate(oneLore.replace("[player]", player.getName())));
+            }
 
-	    itemMeta.setLore(translatedLore);
-	}
+            itemMeta.setLore(translatedLore);
+        }
 
-	if (enchants != null) {
-	    if (itemStack.getType() == CMIMaterial.ENCHANTED_BOOK.getMaterial()) {
-		EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) itemMeta;
-		for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
-		    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
-		}
-	    } else {
-		for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
-		    itemMeta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
-		}
-	    }
-	}
+        if (enchants != null) {
+            if (itemStack.getType() == CMIMaterial.ENCHANTED_BOOK.getMaterial()) {
+                EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) itemMeta;
+                for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
+                    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
+                }
+            } else {
+                for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
+                    itemMeta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
+                }
+            }
+        }
 
-	if (name != null)
-	    itemMeta.setDisplayName(CMIChatColor.translate(name));
+        if (name != null)
+            itemMeta.setDisplayName(CMIChatColor.translate(name));
 
-	itemStack.setItemMeta(itemMeta);
-	giveItemForPlayer(player, itemStack);
+        itemStack.setItemMeta(itemMeta);
+        giveItemForPlayer(player, itemStack);
     }
 
     public static void giveItemForPlayer(Player player, ItemStack item) {
-	player.getInventory().addItem(item);
-	player.updateInventory();
+        if (player == null)
+            return;
+        CMIScheduler.runAtEntity(player, () -> {
+            player.getInventory().addItem(item);
+            player.updateInventory();
+        });
     }
 }

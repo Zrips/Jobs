@@ -416,7 +416,7 @@ public class JobsListener implements Listener {
 
         return false;
     }
-
+    
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLimitedItemInteract(PlayerInteractEvent event) {
 
@@ -470,7 +470,7 @@ public class JobsListener implements Listener {
         String itemNode = null;
         CMIMaterial mat = CMIMaterial.get(iih);
 
-        Integer jobId = null;
+        int jobId = 0;
         mein: for (JobProgression one : jPlayer.getJobProgression()) {
             for (JobLimitedItems oneItem : one.getJob().getLimitedItems().values()) {
                 if (one.getLevel() >= oneItem.getLevel() || !isThisItem(oneItem, mat, name, lore, enchants))
@@ -486,9 +486,7 @@ public class JobsListener implements Listener {
             event.setCancelled(true);
             CMIActionBar.send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", meinOk));
 
-            CMINBT nbt = new CMINBT(iih);
-            nbt.setInt("JobsLimited", jobId);
-            iih = (ItemStack) nbt.setString("JobsLimitedNode", itemNode);
+            iih = JobLimitedItems.applyNBT(iih, jobId, itemNode); 
             try {
                 if (Version.isCurrentHigher(Version.v1_8_R3) && event.getHand() != EquipmentSlot.HAND) {
                     CMIItemStack.setItemInOffHand(player, iih);
@@ -502,8 +500,9 @@ public class JobsListener implements Listener {
     }
 
     private static boolean isThisItem(JobLimitedItems oneItem, CMIMaterial mat, String name, List<String> lore, Map<Enchantment, Integer> enchants) {
-        if (oneItem.getType() != mat)
+        if (oneItem.getType() != mat) {
             return false;
+        }
 
         if (oneItem.getName() != null && !CMIChatColor.translate(oneItem.getName()).equalsIgnoreCase(name)) {
             return false;
@@ -518,12 +517,12 @@ public class JobsListener implements Listener {
         for (Entry<Enchantment, Integer> oneE : enchants.entrySet()) {
             Integer value = oneItem.getEnchants().get(oneE.getKey());
 
-            if (value != null && value <= oneE.getValue()) {
-                return true;
+            if (value != null && value > oneE.getValue()) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     @EventHandler(ignoreCancelled = true)

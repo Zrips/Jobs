@@ -1,7 +1,5 @@
 package com.gamingmesh.jobs;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,8 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.bukkit.Color;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.container.BoostMultiplier;
@@ -20,216 +18,191 @@ import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
+import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Messages.CMIMessages;
+import net.Zrips.CMILib.NBT.CMINBT;
 
 public final class ItemBoostManager {
 
     private static final Map<String, JobItems> ITEMS = new HashMap<>();
-    private static final Map<String, JobItems> LEGACY = new HashMap<>();
 
-    @SuppressWarnings("deprecation")
+    static boolean informed = false;
+
     public static void load() {
-	ConfigReader cfg;
-	try {
-	    cfg = new ConfigReader(Jobs.getInstance(), "boostedItems.yml");
-	} catch (Exception e2) {
-	    e2.printStackTrace();
-	    return;
-	}
+        ConfigReader cfg;
+        try {
+            cfg = new ConfigReader(Jobs.getInstance(), "boostedItems.yml");
+        } catch (Exception e2) {
+            e2.printStackTrace();
+            return;
+        }
 
-	ITEMS.clear();
-	LEGACY.clear();
+        ITEMS.clear();
 
-	// Converting from existing records in Jobs from old format which was located in jobConfig.yml file 
-	boolean save = false;
-	for (Job one : Jobs.getJobs()) {
-	    for (Entry<String, JobItems> oneI : one.getItemBonus().entrySet()) {
-		JobItems item = oneI.getValue();
+        Set<String> keys = cfg.getC().getKeys(false);
 
-		String name = one.getName() + "_" + oneI.getKey();
-		org.bukkit.inventory.ItemStack stack = item.getItemStack(null);
+        cfg.addComment("exampleBoost", "Attention! If category name has _ in it, that means its legacy item which was converted from jobConfig.yml file",
+            "Keep this format until you will be sure that all legacy items have been converted throw usage, which is automatic process when player uses items with boost in them",
+            "",
+            "Name which will be used to identify this particular item boost",
+            "This is EXAMPLE boost and will be ignored");
+        cfg.addComment("exampleBoost.ItemStack", "Item information, on usage read more at https://www.zrips.net/cmi/commands/icwol/",
+            "You can use ingame command /jobs edititemboost to give particular boost to any item you are holding");
+        cfg.get("exampleBoost.ItemStack", "Golden_shovel;n{&2Custom_item_name};l{&2Some_random\\n&5Lore_with_some\\n{#pink}Colors};FIRE_ASPECT:1,DAMAGE_ALL:1");
 
-		cfg.getC().set(name + ".id", CMIMaterial.get(stack).toString());
-		cfg.getC().set(name + ".jobs", Arrays.asList(one.getName()));
-		if (stack.hasItemMeta()) {
-		    cfg.getC().set(name + ".name", stack.getItemMeta().hasDisplayName() ? CMIChatColor.deColorize(stack.getItemMeta().getDisplayName()) : null);
-		    cfg.getC().set(name + ".lore", stack.getItemMeta().hasLore() ? CMIChatColor.deColorize(stack.getItemMeta().getLore()) : null);
-		}
-		List<String> ench = new ArrayList<>();
-		for (Entry<Enchantment, Integer> oneE : stack.getEnchantments().entrySet()) {
-		    ench.add(CMIEnchantment.get(oneE.getKey()) + "=" + oneE.getValue());
-		}
-		cfg.getC().set(name + ".enchants", ench);
-		for (CurrencyType oneC : CurrencyType.values()) {
-		    cfg.getC().set(name + "." + oneC.toString().toLowerCase() + "Boost", ((int) (item.getBoost().get(oneC) * 100D) / 100D) + 1D);
-		}
-		save = true;
-	    }
+        cfg.addComment("exampleBoost.moneyBoost", "[Required] Money boost: 1.1 is equals 10% more income when 0.9 is equals 10% less from base income");
+        for (CurrencyType oneC : CurrencyType.values()) {
+            cfg.get("exampleBoost." + oneC.toString().toLowerCase() + "Boost", 1D);
+        }
+        cfg.addComment("exampleBoost.jobs", "[Required] Jobs which should receive this boost",
+            "Can be specific jobs or use 'all' to give this boost for every job");
+        cfg.get("exampleBoost.jobs", Arrays.asList("Miner", "Woodcutter", "all"));
 
-	    one.getItemBonus().clear();
-	}
+        cfg.addComment("exampleBoost.levelFrom", "(Optional) Defines level of job from which this boost should be applied",
+            "Keep in mind that if boost have multiple jobs, then level will be checked by job which is requesting boost value");
+        cfg.get("exampleBoost.levelFrom", 0);
+        cfg.addComment("exampleBoost.levelUntil", "(Optional) Defines level of job until which this boost should be applied");
+        cfg.get("exampleBoost.levelUntil", 50);
 
-	if (save) {
-	    try {
-		cfg.getC().save(new File(Jobs.getFolder(), "boostedItems.yml"));
-	    } catch (IOException e1) {
-		e1.printStackTrace();
-	    }
-	    try {
-		cfg = new ConfigReader(Jobs.getInstance(), "boostedItems.yml");
-	    } catch (Exception e) {
-		e.printStackTrace();
-		return;
-	    }
-	}
+        for (String one : keys) {
+            if (!cfg.getC().isConfigurationSection(one))
+                continue;
 
-	Set<String> keys = cfg.getC().getKeys(false);
+            // Ignoring example boost
+            if (one.equalsIgnoreCase("exampleBoost"))
+                continue;
 
-	cfg.addComment("exampleBoost", "Attention! If category name has _ in it, that means its legacy item which was converted from jobConfig.yml file",
-	    "Keep this format until you will be sure that all legacy items have been converted throw usage, which is automatic process when player uses items with boost in them",
-	    "",
-	    "Name which will be used to identify this particular item boost",
-	    "This is EXAMPLE boost and will be ignored");
-	cfg.addComment("exampleBoost.id", "Item Id which can be any material name as of 1.13 update",
-	    "This is only used when performing command like /jobs give, but boost itself is not dependent on item type",
-	    "You can use ingame command /jobs edititemboost to give particular boost to any item you are holding");
-	cfg.get("exampleBoost.id", "Golden_shovel");
-	cfg.addComment("exampleBoost.name", "(Optional) Item custom name", "Custom colors like &2 &5 can be used");
-	cfg.get("exampleBoost.name", "&2Custom item name");
-	cfg.addComment("exampleBoost.lore", "(Optional) Item custom lore", "Same as name, supports color codes");
-	cfg.get("exampleBoost.lore", Arrays.asList("&2Some random", "&5Lore with some", "&7Colors"));
-	cfg.addComment("exampleBoost.enchants", "(Optional) Item custom enchants",
-	    "All enchantment names can be found https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html");
-	cfg.get("exampleBoost.enchants", Arrays.asList("FIRE_ASPECT=1", "DAMAGE_ALL=1"));
-	cfg.addComment("exampleBoost.leather-color", "(Optional) Leather armour colors (0-255)");
-	cfg.get("exampleBoost.leather-color", "82,34,125");
-	cfg.addComment("exampleBoost.moneyBoost", "[Required] Money boost: 1.1 is equals 10% more income when 0.9 is equals 10% less from base income");
-	for (CurrencyType oneC : CurrencyType.values()) {
-	    cfg.get("exampleBoost." + oneC.toString().toLowerCase() + "Boost", 1D);
-	}
-	cfg.addComment("exampleBoost.jobs", "[Required] Jobs which should receive this boost",
-	    "Can be specific jobs or use 'all' to give this boost for every job");
-	cfg.get("exampleBoost.jobs", Arrays.asList("Miner", "Woodcutter", "all"));
+            List<Job> jobs = new ArrayList<>();
+            List<String> j = cfg.get(one + ".jobs", Arrays.asList(""));
 
-	cfg.addComment("exampleBoost.levelFrom", "(Optional) Defines level of job from which this boost should be applied",
-	    "Keep in mind that if boost have multiple jobs, then level will be checked by job which is requesting boost value");
-	cfg.get("exampleBoost.levelFrom", 0);
-	cfg.addComment("exampleBoost.levelUntil", "(Optional) Defines level of job until which this boost should be applied");
-	cfg.get("exampleBoost.levelUntil", 50);
+            if (j.contains("all")) {
+                jobs.addAll(Jobs.getJobs());
+            } else {
+                for (String oneJ : j) {
+                    Job job = Jobs.getJob(oneJ);
 
-	for (String one : keys) {
-	    if (!cfg.getC().isConfigurationSection(one))
-		continue;
+                    if (job != null) {
+                        jobs.add(job);
+                    } else {
+                        Jobs.getPluginLogger().warning("Cant determine job by " + oneJ + " name for " + one + " boosted item!");
+                    }
+                }
+            }
 
-	    // Ignoring example boost
-	    if (one.equalsIgnoreCase("exampleBoost"))
-		continue;
+            if (jobs.isEmpty()) {
+                Jobs.getPluginLogger().warning("Jobs list is empty for " + one + " boosted item!");
+                continue;
+            }
 
-	    List<Job> jobs = new ArrayList<>();
-	    List<String> j = cfg.get(one + ".jobs", Arrays.asList(""));
+            BoostMultiplier b = new BoostMultiplier();
+            for (CurrencyType oneC : CurrencyType.values()) {
+                String typeName = oneC.toString().toLowerCase();
 
-	    if (j.contains("all")) {
-		jobs.addAll(Jobs.getJobs());
-	    } else {
-		for (String oneJ : j) {
-		    Job job = Jobs.getJob(oneJ);
+                if (cfg.getC().isDouble(one + "." + typeName + "Boost"))
+                    b.add(oneC, cfg.get(one + "." + typeName + "Boost", 1D) - 1);
+            }
 
-		    if (job != null) {
-			jobs.add(job);
-		    } else {
-			Jobs.getPluginLogger().warning("Cant determine job by " + oneJ + " name for " + one + " boosted item!");
-		    }
-		}
-	    }
+            String node = one.toLowerCase();
 
-	    if (jobs.isEmpty()) {
-		Jobs.getPluginLogger().warning("Jobs list is empty for " + one + " boosted item!");
-		continue;
-	    }
+            JobItems jitem = new JobItems(node);
 
-	    List<String> lore = cfg.get(one + ".lore", Arrays.asList(""));
-	    for (int a = 0; a < lore.size(); a++) {
-		lore.set(a, CMIChatColor.translate(lore.get(a)));
-	    }
+            jitem.setJobs(jobs);
+            jitem.setBoostMultiplier(b);
+            
+            if (cfg.getC().isInt(one + ".levelFrom"))
+                jitem.setFromLevel(cfg.get(one + ".levelFrom", 0));
 
-	    Map<Enchantment, Integer> enchants = new HashMap<>();
-	    if (cfg.getC().isList(one + ".enchants"))
-		for (String eachLine : cfg.get(one + ".enchants", Arrays.asList(""))) {
-		    String[] split = eachLine.split("=", 2);
-		    if (split.length == 0)
-			continue;
+            if (cfg.getC().isInt(one + ".levelUntil"))
+                jitem.setUntilLevel(cfg.get(one + ".levelUntil", 1000));
 
-		    Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
-		    int level = -1;
+            // Old format, should be removed down the line
+            if (cfg.getC().isString(one + ".id")) {
 
-		    if (split.length > 1) {
-			try {
-			    level = Integer.parseInt(split[1]);
-			} catch (NumberFormatException e) {
-			    continue;
-			}
-		    }
+                if (!informed) {
+                    CMIMessages.consoleMessage("&5Update boosted item " + one + " item section to use new 'ItemStack' format");
+                    informed = true;
+                }
 
-		    if (ench != null && level != -1)
-			enchants.put(ench, level);
-		}
+                CMIMaterial mat = cfg.getC().isString(one + ".id") ? CMIMaterial.get(cfg.get(one + ".id", "Stone")) : null;
 
-	    BoostMultiplier b = new BoostMultiplier();
-	    for (CurrencyType oneC : CurrencyType.values()) {
-		String typeName = oneC.toString().toLowerCase();
+                String name = cfg.getC().isString(one + ".name") ? cfg.get(one + ".name", "") : null;
 
-		if (cfg.getC().isDouble(one + "." + typeName + "Boost"))
-		    b.add(oneC, cfg.get(one + "." + typeName + "Boost", 1D) - 1);
-	    }
+                if (mat == null) {
+                    CMIMessages.consoleMessage("&cCould not determine boosted item material (" + node + ")");
+                    continue;
+                }
+                List<String> lore = cfg.get(one + ".lore", new ArrayList<String>());
+                for (int a = 0; a < lore.size(); a++) {
+                    lore.set(a, CMIChatColor.translate(lore.get(a)).replace(" ", "_"));
+                }
 
-	    CMIMaterial mat = cfg.getC().isString(one + ".id") ? CMIMaterial.get(cfg.get(one + ".id", "Stone")) : null;
+                StringBuilder enchants = new StringBuilder();
 
-	    String name = cfg.getC().isString(one + ".name") ? cfg.get(one + ".name", "") : null;
-	    String node = one.toLowerCase();
+                if (cfg.getC().isList(one + ".enchants"))
+                    for (String eachLine : cfg.get(one + ".enchants", Arrays.asList(""))) {
+                        String[] split = eachLine.split("=", 2);
+                        if (split.length == 0)
+                            continue;
 
-	    Color leatherColor = null;
-	    String lc = cfg.getC().getString(one + ".leather-color", "");
-	    if (!lc.isEmpty()) {
-		String[] split = lc.split(",", 3);
+                        Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
 
-		if (split.length != 0) {
-		    int red = Integer.parseInt(split[0]);
-		    int green = split.length > 0 ? Integer.parseInt(split[1]) : 0;
-		    int blue = split.length > 1 ? Integer.parseInt(split[2]) : 0;
+                        if (ench == null)
+                            continue;
 
-		    try {
-			leatherColor = Color.fromRGB(red, green, blue);
-		    } catch (IllegalArgumentException e) {
-		    }
-		}
-	    }
+                        int level = -1;
 
-	    JobItems item = new JobItems(node, mat, 1, name, lore, enchants, b, jobs, null, leatherColor);
+                        if (split.length > 1) {
+                            try {
+                                level = Integer.parseInt(split[1]);
+                            } catch (NumberFormatException e) {
+                                continue;
+                            }
+                        }
 
-	    if (cfg.getC().isInt(one + ".levelFrom"))
-		item.setFromLevel(cfg.get(one + ".levelFrom", 0));
+                        if (level == -1)
+                            continue;
 
-	    if (cfg.getC().isInt(one + ".levelUntil"))
-		item.setUntilLevel(cfg.get(one + ".levelUntil", 1000));
+                        if (!enchants.toString().isEmpty())
+                            enchants.append(",");
+                        enchants.append(split[0] + ":" + level);
 
-	    for (Job oneJ : jobs) {
-		oneJ.getItemBonus().put(node, item);
-	    }
+                    }
 
-	    // Lets add into legacy map
-	    String[] split = one.split("_", 2);
-	    if (split.length > 1) {
-		item.setLegacyKey(split[1].toLowerCase());
-		LEGACY.put(item.getLegacyKey(), item);
-	    }
+                String lc = cfg.getC().getString(one + ".leather-color", "");
 
-	    ITEMS.put(node, item);
-	}
+                String itemSring = mat.toString();
+                if (name != null)
+                    itemSring += ";n{" + name.replace(" ", "_") + "}";
 
-	cfg.save();
-	CMIMessages.consoleMessage("&eLoaded &6" + ITEMS.size() + " &eboosted items");
+                if (!lore.isEmpty())
+                    itemSring += ";l{" + CMIList.listToString(lore, "\\n") + "}";
+
+                if (lc != null)
+                    itemSring += ";" + lc;
+
+                if (!enchants.toString().isEmpty())
+                    itemSring += ";" + enchants.toString();
+
+                jitem.setItemString(itemSring);
+            } else if (cfg.getC().isString(one + ".ItemStack")) {
+                String itemString = cfg.get(one + ".ItemStack", cfg.getC().getString(one + ".ItemStack"));
+                CMIItemStack item = CMIItemStack.deserialize(itemString, null);
+
+                if (item == null || item.getCMIType().isNone()) {
+                    CMIMessages.consoleMessage("&cInvalid ItemStack for boosted item (" + node + ")");
+                    continue;
+                }
+                jitem.setItemString(itemString);
+            }
+
+            ITEMS.put(node, jitem);
+        }
+
+        cfg.save();
+        CMIMessages.consoleMessage("&eLoaded &6" + ITEMS.size() + " &eboosted items");
     }
 
     /**
@@ -239,13 +212,13 @@ public final class ItemBoostManager {
      * @return List of {@link JobItems}
      */
     public static List<JobItems> getItemsByJob(Job job) {
-	List<JobItems> ls = new ArrayList<>();
-	for (JobItems one : ITEMS.values()) {
-	    if (one.getJobs().contains(job))
-		ls.add(one);
-	}
+        List<JobItems> ls = new ArrayList<>();
+        for (JobItems one : ITEMS.values()) {
+            if (one.getJobs().contains(job))
+                ls.add(one);
+        }
 
-	return ls;
+        return ls;
     }
 
     /** Returns a map of items from the specific job.
@@ -254,13 +227,13 @@ public final class ItemBoostManager {
      * @return map of items
      */
     public static Map<String, JobItems> getItemsMapByJob(Job job) {
-	Map<String, JobItems> i = new HashMap<>();
-	for (Entry<String, JobItems> one : ITEMS.entrySet()) {
-	    if (one.getValue().getJobs().contains(job))
-		i.put(one.getKey(), one.getValue());
-	}
+        Map<String, JobItems> i = new HashMap<>();
+        for (Entry<String, JobItems> one : ITEMS.entrySet()) {
+            if (one.getValue().getJobs().contains(job))
+                i.put(one.getKey(), one.getValue());
+        }
 
-	return i;
+        return i;
     }
 
     /**
@@ -270,23 +243,53 @@ public final class ItemBoostManager {
      * @return {@link JobItems}
      */
     public static JobItems getItemByKey(String key) {
-	key = key.toLowerCase();
-
-	JobItems item = ITEMS.get(key);
-	return item != null ? item : LEGACY.get(key);
+        return ITEMS.get(key.toLowerCase());
     }
 
     /**
      * @return the current cached map of items.
      */
     public static Map<String, JobItems> getItems() {
-	return ITEMS;
+        return ITEMS;
     }
 
-    /**
-     * @return the current cached map of legacy items.
-     */
-    public static Map<String, JobItems> getLegacyItems() {
-	return LEGACY;
+    private static final String jobsItemBoost = "JobsItemBoost";
+
+    public static boolean containsItemBoostByNBT(ItemStack item) {
+        return item != null && new CMINBT(item).hasNBT(jobsItemBoost);
+    }
+
+    public static JobItems getJobsItemByNbt(ItemStack item) {
+        if (item == null)
+            return null;
+
+        Object itemName = new CMINBT(item).getString(jobsItemBoost);
+
+        if (itemName == null || itemName.toString().isEmpty()) {
+            // Checking old boost items and converting to new format if needed
+            if (new CMINBT(item).hasNBT(jobsItemBoost)) {
+                for (Job one : Jobs.getJobs()) {
+                    itemName = new CMINBT(item).getString(jobsItemBoost + "." + one.getName());
+                    if (itemName != null) {
+                        JobItems b = getItemByKey(itemName.toString());
+                        if (b != null) {
+                            ItemStack ic = (ItemStack) new CMINBT(item).setString(jobsItemBoost, b.getNode());
+                            item.setItemMeta(ic.getItemMeta());
+                        }
+                        break;
+                    }
+                }
+            }
+            if (itemName == null)
+                return null;
+        }
+
+        return getItemByKey(itemName.toString());
+    }
+
+    public static ItemStack applyNBT(ItemStack item, String node) {
+        if (item == null)
+            return null;
+        return (ItemStack) new CMINBT(item).setString(jobsItemBoost, node);
     }
 }

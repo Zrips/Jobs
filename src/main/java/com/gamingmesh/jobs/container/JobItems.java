@@ -19,37 +19,19 @@
 package com.gamingmesh.jobs.container;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import org.bukkit.Color;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffectType;
 
-import net.Zrips.CMILib.Colors.CMIChatColor;
-import net.Zrips.CMILib.Items.CMIMaterial;
-import net.Zrips.CMILib.NBT.CMINBT;
-import net.Zrips.CMILib.Version.Version;
+import net.Zrips.CMILib.Items.CMIAsyncHead;
+import net.Zrips.CMILib.Items.CMIItemStack;
 
-@SuppressWarnings("deprecation")
 public class JobItems {
 
     private String node;
-    private String legacyKey;
-    private ItemStack item;
 
-    private Object potion;
-    private Color leatherColor;
+    private String itemString;
 
-    private final Map<Enchantment, Integer> enchants = new HashMap<>();
     private BoostMultiplier boostMultiplier = new BoostMultiplier();
 
     private final List<Job> jobs = new ArrayList<>();
@@ -57,139 +39,16 @@ public class JobItems {
     private int fromLevel = 0;
     private int untilLevel = Integer.MAX_VALUE;
 
-    public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs) {
-        this(node, mat, amount, name, lore, enchants, boostMultiplier, jobs, null, null);
-    }
-
-    public JobItems(String node, CMIMaterial mat, int amount, String name, List<String> lore, Map<Enchantment, Integer> enchants, BoostMultiplier boostMultiplier, List<Job> jobs,
-        Object potion, Color leatherColor) {
-        if (mat == null) {
-            mat = CMIMaterial.STONE;
-        }
-
-        if (enchants != null) {
-            this.enchants.putAll(enchants);
-        }
-
+    public JobItems(String node) {
         this.node = node;
-
-        if (boostMultiplier != null) {
-            this.boostMultiplier = boostMultiplier;
-        }
-
-        setJobs(jobs);
-
-        ItemMeta meta = (item = mat.newItemStack()).getItemMeta();
-        if (potion != null && meta instanceof PotionMeta && CMIMaterial.isPotion(mat.getMaterial())) {
-            PotionMeta potionMeta = (PotionMeta) meta;
-
-            if (Version.isCurrentEqualOrHigher(Version.v1_10_R1) && potion instanceof org.bukkit.potion.PotionData) {
-                potionMeta.setBasePotionData((org.bukkit.potion.PotionData) potion);
-            } else if (potion instanceof org.bukkit.potion.Potion) {
-                PotionEffectType effectType = ((org.bukkit.potion.Potion) potion).getType().getEffectType();
-
-                if (effectType != null) {
-                    potionMeta.setMainEffect(effectType);
-                }
-            }
-
-            meta = potionMeta;
-        } else if (leatherColor != null && meta instanceof LeatherArmorMeta && CMIMaterial.isLeatherArmor(mat.getMaterial())) {
-            LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
-            armorMeta.setColor(this.leatherColor = leatherColor);
-            meta = armorMeta;
-        }
-
-        if (meta != null) {
-            if (name != null)
-                meta.setDisplayName(CMIChatColor.translate(name));
-
-            if (lore != null)
-                meta.setLore(lore);
-
-            if (enchants != null) {
-                if (mat == CMIMaterial.ENCHANTED_BOOK) {
-                    EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
-                    for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
-                        bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
-                    }
-                } else {
-                    for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
-                        meta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
-                    }
-                }
-            }
-
-            item.setItemMeta(meta);
-        }
-
-        item.setAmount(amount);
-        CMINBT nbt = new CMINBT(item);
-        item = (ItemStack) nbt.setString("JobsItemBoost", node);
     }
 
     public String getNode() {
         return node;
     }
 
-    public ItemStack getItemStack(Player player) {
-        if (player == null)
-            return item;
-
-        ItemStack item = this.item.clone();
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) {
-            return item;
-        }
-
-        if (potion != null && CMIMaterial.isPotion(item.getType()) && meta instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) meta;
-
-            if (Version.isCurrentEqualOrHigher(Version.v1_10_R1) && potion instanceof org.bukkit.potion.PotionData) {
-                potionMeta.setBasePotionData((org.bukkit.potion.PotionData) potion);
-            } else if (potion instanceof org.bukkit.potion.Potion) {
-                PotionEffectType effectType = ((org.bukkit.potion.Potion) potion).getType().getEffectType();
-
-                if (effectType != null) {
-                    potionMeta.setMainEffect(effectType);
-                }
-            }
-
-            meta = potionMeta;
-        } else if (leatherColor != null && CMIMaterial.isLeatherArmor(item.getType()) && meta instanceof LeatherArmorMeta) {
-            LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
-            armorMeta.setColor(leatherColor);
-            meta = armorMeta;
-        }
-
-        if (meta.hasDisplayName())
-            meta.setDisplayName(CMIChatColor.translate(meta.getDisplayName().replace("[player]", player.getName())));
-
-        if (meta.hasLore()) {
-            List<String> translatedLore = meta.getLore();
-
-            for (int a = 0; a < translatedLore.size(); a++) {
-                translatedLore.set(a, CMIChatColor.translate(translatedLore.get(a).replace("[player]", player.getName())));
-            }
-
-            meta.setLore(translatedLore);
-        }
-
-        if (enchants != null) {
-            if (item.getType() == CMIMaterial.ENCHANTED_BOOK.getMaterial()) {
-                EnchantmentStorageMeta bookMeta = (EnchantmentStorageMeta) meta;
-                for (Entry<Enchantment, Integer> oneEnch : enchants.entrySet()) {
-                    bookMeta.addStoredEnchant(oneEnch.getKey(), oneEnch.getValue(), true);
-                }
-            } else {
-                for (Entry<Enchantment, Integer> oneEnchant : enchants.entrySet()) {
-                    meta.addEnchant(oneEnchant.getKey(), oneEnchant.getValue(), true);
-                }
-            }
-        }
-
-        item.setItemMeta(meta);
-        return item;
+    public CMIItemStack getItemStack(Player player, CMIAsyncHead ahead) {
+        return CMIItemStack.deserialize(itemString.replace("[player]", player == null ? "" : player.getName()), ahead);
     }
 
     public BoostMultiplier getBoost() {
@@ -215,10 +74,6 @@ public class JobItems {
         }
     }
 
-    public Map<Enchantment, Integer> getEnchants() {
-        return enchants;
-    }
-
     public int getFromLevel() {
         return fromLevel;
     }
@@ -235,11 +90,16 @@ public class JobItems {
         this.untilLevel = untilLevel;
     }
 
-    public String getLegacyKey() {
-        return legacyKey;
+    public CMIItemStack getItem() {
+        return CMIItemStack.deserialize(itemString);
     }
 
-    public void setLegacyKey(String legacyKey) {
-        this.legacyKey = legacyKey;
+    public void setItemString(String itemString) {
+        this.itemString = itemString.replace(" ", "_");
     }
+
+    public void setBoostMultiplier(BoostMultiplier boostMultiplier) {
+        this.boostMultiplier = boostMultiplier;
+    }
+
 }

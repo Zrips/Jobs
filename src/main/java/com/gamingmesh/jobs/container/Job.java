@@ -58,7 +58,7 @@ public class Job {
     private List<JobCommands> jobCommands;
     private List<JobConditions> jobConditions;
 
-    private Map<String, JobItems> jobItems;
+//    private Map<String, JobItems> jobItems;
     private Map<String, JobLimitedItems> jobLimitedItems;
 
     private String jobName = "N/A";
@@ -115,7 +115,7 @@ public class Job {
             vipmaxLevel, maxSlots, jobPermissions, jobCommands, jobConditions,
             jobLimitedItems, cmdOnJoin, cmdOnLeave, guiItem, guiSlot, worldBlacklist);
 
-        this.jobItems = jobItems;
+//        this.jobItems = jobItems;
         this.description = description;
     }
 
@@ -577,36 +577,6 @@ public class Job {
 
     public Job setConditions(List<JobConditions> jobConditions) {
         this.jobConditions = jobConditions;
-        return this;
-    }
-
-    /**
-     * No longer used, moved to ItemBoostManager
-     * @return Items for this job
-     */
-    @Deprecated
-    public Map<String, JobItems> getItemBonus() {
-        if (jobItems == null)
-            jobItems = new HashMap<String, JobItems>();
-        return jobItems;
-    }
-
-    /**
-     * No longer used, moved to ItemBoostManager
-     * @return Items for this job
-     */
-    @Deprecated
-    public JobItems getItemBonus(String key) {
-        return jobItems.get(key.toLowerCase());
-    }
-
-    /**
-     * No longer used, moved to ItemBoostManager
-     * @return Items for this job
-     */
-    @Deprecated
-    public Job setItemBonus(HashMap<String, JobItems> jobItems) {
-        this.jobItems = jobItems;
         return this;
     }
 

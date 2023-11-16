@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,31 +15,28 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.CMILib.CMIEnchantment;
-import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
 import com.gamingmesh.jobs.container.JobsPlayer;
 import com.gamingmesh.jobs.container.ShopItem;
 import com.gamingmesh.jobs.stuff.GiveItem;
-import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.GUI.CMIGui;
 import net.Zrips.CMILib.GUI.CMIGuiButton;
 import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
 import net.Zrips.CMILib.GUI.GUIManager.GUIRows;
+import net.Zrips.CMILib.Items.CMIAsyncHead;
+import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
 import net.Zrips.CMILib.Messages.CMIMessages;
-import net.Zrips.CMILib.Version.Version;
 
 @SuppressWarnings("deprecation")
 public class ShopManager {
@@ -110,7 +106,15 @@ public class ShopManager {
 
         mainCycle: for (ShopItem item : ls) {
             List<String> lore = new ArrayList<>();
-            CMIMaterial mat = CMIMaterial.get(item.getIconMaterial());
+
+            CMIAsyncHead ahead = new CMIAsyncHead() {
+                @Override
+                public void afterAsyncUpdate(ItemStack item) {
+
+                }
+            };
+
+            CMIItemStack icon = item.getIcon(player, ahead);
 
             boolean hiddenLore = false;
 
@@ -124,26 +128,18 @@ public class ShopManager {
 
             if (item.isHideIfNoEnoughPoints() && item.getPointPrice() > 0 &&
                 jPlayer.getPointsData().getCurrentPoints() < item.getPointPrice()) {
-                mat = CMIMaterial.STONE_BUTTON;
+                icon = CMIMaterial.STONE_BUTTON.newCMIItemStack();
                 lore.add(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
                 hiddenLore = true;
             }
 
-            if (mat == CMIMaterial.NONE)
-                mat = CMIMaterial.STONE_BUTTON;
-
-            ItemStack guiItem = mat.newItemStack();
+            ItemStack guiItem = icon.getItemStack();
             ItemMeta meta = guiItem.getItemMeta();
             if (meta == null)
                 continue;
 
-            guiItem.setAmount(item.getIconAmount());
-
-            if (item.getIconName() != null)
-                meta.setDisplayName(item.getIconName());
-
             if (!hiddenLore) {
-                lore.addAll(item.getIconLore());
+                lore.addAll(icon.getLore());
 
                 if (item.getPointPrice() > 0) {
                     String color = item.getPointPrice() >= points ? "" : Jobs.getLanguage().getMessage("command.shop.info.haveColor");
@@ -189,32 +185,6 @@ public class ShopManager {
             }
 
             meta.setLore(lore);
-
-            if (item.getCustomHead() != null) {
-                guiItem = CMIMaterial.PLAYER_HEAD.newItemStack(item.getIconAmount());
-
-                SkullMeta skullMeta = (SkullMeta) guiItem.getItemMeta();
-                if (skullMeta == null)
-                    continue;
-
-                if (item.getIconName() != null)
-                    skullMeta.setDisplayName(item.getIconName());
-
-                skullMeta.setLore(lore);
-
-                if (item.isHeadOwner()) {
-                    Util.setSkullOwner(skullMeta, jPlayer.getPlayer());
-                } else {
-                    try {
-                        Util.setSkullOwner(skullMeta, Bukkit.getOfflinePlayer(UUID.fromString(item.getCustomHead())));
-                    } catch (IllegalArgumentException ex) {
-                        Util.setSkullOwner(skullMeta, Bukkit.getOfflinePlayer(item.getCustomHead()));
-                    }
-                }
-
-                guiItem.setItemMeta(skullMeta);
-            } else
-                guiItem.setItemMeta(meta);
 
             CMIGuiButton button = new CMIGuiButton(guiItem) {
                 @Override
@@ -272,7 +242,15 @@ public class ShopManager {
                     }
 
                     for (JobItems one : item.getitems()) {
-                        GiveItem.giveItemForPlayer(player, one.getItemStack(player));
+                        CMIAsyncHead ahead = new CMIAsyncHead() {
+                            @Override
+                            public void afterAsyncUpdate(ItemStack item) {
+                                GiveItem.giveItemForPlayer(player, item);
+                            }
+                        };
+                        CMIItemStack citem = one.getItemStack(player, ahead);
+                        if (citem != null && !ahead.isAsyncHead())
+                            GiveItem.giveItemForPlayer(player, citem.getItemStack());
                     }
 
                     if (item.getPointPrice() > 0) {
@@ -326,6 +304,8 @@ public class ShopManager {
         return true;
     }
 
+    boolean informed = false;
+
     public void load() {
         list.clear();
 
@@ -361,27 +341,71 @@ public class ShopManager {
             sItem.setPointPrice(pointPrice);
             sItem.setVaultPrice(vaultPrice);
 
-            if (nameSection.isString("Icon.Id"))
-                sItem.setIconMaterial(nameSection.getString("Icon.Id"));
-            else {
+            if (nameSection.contains("Icon.Id")) {
+
+                String itemString = "";
+
+                if (!informed) {
+                    CMIMessages.consoleMessage("&5Update shops items icon section and use 'ItemStack' instead");
+                    informed = true;
+                }
+
+                CMIMaterial mat = null;
+                if (nameSection.isString("Icon.Id"))
+                    mat = CMIMaterial.get(nameSection.getString("Icon.Id"));
+
+                if (mat == null) {
+                    Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid Icon name property. Skipping!");
+                    continue;
+                }
+
+                int amount = nameSection.getInt("Icon.Amount", 1);
+
+                if (amount > 1)
+                    itemString += ";" + amount;
+
+                String name = CMIChatColor.translate(nameSection.getString("Icon.Name"));
+
+                if (name != null)
+                    itemString += ";n{" + name.replace(" ", "_") + "}";
+
+                List<String> lore = nameSection.getStringList("Icon.Lore");
+                if (lore != null)
+                    for (int b = 0; b < lore.size(); b++) {
+                        lore.set(b, CMIChatColor.translate(lore.get(b).replace(" ", "_")));
+                    }
+
+                if (lore != null && !lore.isEmpty())
+                    itemString += ";l{" + CMIList.listToString(lore, "\\n") + "}";
+
+                if (nameSection.isString("Icon.CustomHead.PlayerName")) {
+                    itemString = mat.toString() + ":" + nameSection.getString("Icon.CustomHead.PlayerName") + itemString;
+                } else if (nameSection.getBoolean("Icon.CustomHead.UseCurrentPlayer", false)) {
+                    itemString = mat.toString() + ":[player]" + itemString;
+                } else {
+                    itemString = mat.toString() + itemString;
+                }
+
+                sItem.setIconString(itemString);
+
+            } else if (nameSection.contains("Icon.ItemStack")) {
+
+                String itemString = nameSection.getString("Icon.ItemStack");
+                CMIItemStack item = CMIItemStack.deserialize(itemString, null);
+
+                if (item == null || item.getCMIType().isNone()) {
+                    CMIMessages.consoleMessage("&cInvalid ItemStack for shop icon item (" + category + ")");
+                    continue;
+                }
+
+                sItem.setIconString(itemString);
+            }
+
+            if (sItem.getIconString() == null) {
                 Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid Icon name property. Skipping!");
                 continue;
             }
 
-            sItem.setIconAmount(nameSection.getInt("Icon.Amount", 1));
-            sItem.setIconName(CMIChatColor.translate(nameSection.getString("Icon.Name")));
-
-            List<String> lore = nameSection.getStringList("Icon.Lore");
-            for (int b = 0; b < lore.size(); b++) {
-                lore.set(b, CMIChatColor.translate(lore.get(b)));
-            }
-
-            sItem.setIconLore(lore);
-
-            if (nameSection.isString("Icon.CustomHead.PlayerName"))
-                sItem.setCustomHead(nameSection.getString("Icon.CustomHead.PlayerName"));
-
-            sItem.setCustomHeadOwner(nameSection.getBoolean("Icon.CustomHead.UseCurrentPlayer", true));
             sItem.setHideIfThereIsNoEnoughPoints(nameSection.getBoolean("Icon.HideIfThereIsNoEnoughPoints"));
             sItem.setHideWithoutPerm(nameSection.getBoolean("Icon.HideWithoutPermission"));
             sItem.setRequiredPerm(nameSection.getStringList("RequiredPermission"));
@@ -417,73 +441,114 @@ public class ShopManager {
             }
             sItem.setCommands(performCommands);
 
-            ConfigurationSection itemsSection = nameSection.getConfigurationSection("GiveItems");
-            if (itemsSection != null) {
+            if (nameSection.isList("GiveItems")) {
+
                 List<JobItems> items = new ArrayList<>();
+                for (String itemString : nameSection.getStringList("GiveItems")) {
 
-                for (String oneItemName : itemsSection.getKeys(false)) {
-                    ConfigurationSection itemSection = itemsSection.getConfigurationSection(oneItemName);
-                    if (itemSection == null)
-                        continue;
+                    CMIItemStack item = CMIItemStack.deserialize(itemString, null);
 
-                    String id = null;
-                    if (itemSection.isString("Id"))
-                        id = itemSection.getString("Id");
-                    else {
-                        Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid GiveItems item id property. Skipping!");
+                    if (item == null || item.getCMIType().isNone()) {
+                        CMIMessages.consoleMessage("&cInvalid ItemStack for boosted item (" + itemString + ")");
                         continue;
                     }
-
-                    int amount = itemSection.getInt("Amount", 1);
-                    String name = CMIChatColor.translate(itemSection.getString("Name"));
-
-                    List<String> giveLore = itemSection.getStringList("Lore");
-                    for (int v = 0; v < giveLore.size(); v++) {
-                        giveLore.set(v, CMIChatColor.translate(giveLore.get(v)));
-                    }
-
-                    Map<Enchantment, Integer> enchants = new HashMap<>();
-                    for (String eachLine : itemSection.getStringList("Enchants")) {
-                        String[] split = eachLine.split("=", 2);
-                        if (split.length == 0)
-                            continue;
-
-                        Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
-                        if (ench == null)
-                            continue;
-
-                        Integer level = 1;
-                        if (split.length > 1) {
-                            try {
-                                level = Integer.parseInt(split[1]);
-                            } catch (NumberFormatException e) {
-                                continue;
-                            }
-                        }
-
-                        enchants.put(ench, level);
-                    }
-
-                    Object potionData = null;
-                    if (itemSection.contains("potion-type")) {
-                        PotionType type;
-                        try {
-                            type = PotionType.valueOf(itemSection.getString("potion-type", "speed").toUpperCase());
-                        } catch (IllegalArgumentException ex) {
-                            type = PotionType.SPEED;
-                        }
-
-                        if (Version.isCurrentEqualOrHigher(Version.v1_10_R1)) {
-                            potionData = new PotionData(type);
-                        } else {
-                            potionData = new Potion(type, 1, false);
-                        }
-                    }
-
-                    items.add(new JobItems(oneItemName.toLowerCase(), id == null ? CMIMaterial.STONE : CMIMaterial.get(id), amount, name, giveLore,
-                        enchants, new BoostMultiplier(), new ArrayList<>(), potionData, null));
+                    JobItems jitem = new JobItems("");
+                    jitem.setItemString(itemString);
+                    items.add(jitem);
                 }
                 sItem.setitems(items);
+
+            } else {
+
+                // Outdated method
+                ConfigurationSection itemsSection = nameSection.getConfigurationSection("GiveItems");
+                if (itemsSection != null) {
+                    List<JobItems> items = new ArrayList<>();
+
+                    for (String oneItemName : itemsSection.getKeys(false)) {
+                        ConfigurationSection itemSection = itemsSection.getConfigurationSection(oneItemName);
+                        if (itemSection == null)
+                            continue;
+
+                        if (itemSection.contains("Id")) {
+                            CMIMaterial mat = null;
+                            if (itemSection.isString("Id"))
+                                mat = CMIMaterial.get(itemSection.getString("Id"));
+                            else {
+                                Jobs.getPluginLogger().severe("Shop item " + category + " has an invalid GiveItems item id property. Skipping!");
+                                continue;
+                            }
+
+                            int amount = itemSection.getInt("Amount", 1);
+                            String name = CMIChatColor.translate(itemSection.getString("Name"));
+
+                            List<String> giveLore = itemSection.getStringList("Lore");
+                            if (giveLore != null)
+                                for (int v = 0; v < giveLore.size(); v++) {
+                                    giveLore.set(v, CMIChatColor.translate(giveLore.get(v)).replace(" ", "_"));
+                                }
+
+                            StringBuilder enchants = new StringBuilder();
+                            for (String eachLine : itemSection.getStringList("Enchants")) {
+                                String[] split = eachLine.split("=", 2);
+                                if (split.length == 0)
+                                    continue;
+
+                                Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
+                                if (ench == null)
+                                    continue;
+
+                                Integer level = 1;
+                                if (split.length > 1) {
+                                    try {
+                                        level = Integer.parseInt(split[1]);
+                                    } catch (NumberFormatException e) {
+                                        continue;
+                                    }
+                                }
+
+                                if (!enchants.toString().isEmpty())
+                                    enchants.append(",");
+                                enchants.append(split[0] + ":" + level);
+                            }
+
+                            String potionData = "";
+                            if (itemSection.contains("potion-type")) {
+                                PotionType type;
+                                try {
+                                    type = PotionType.valueOf(itemSection.getString("potion-type", "speed").toUpperCase());
+                                } catch (IllegalArgumentException ex) {
+                                    type = PotionType.SPEED;
+                                }
+
+                                potionData += type.toString() + ":false:false";
+                            }
+
+                            String itemSring = mat.toString();
+                            if (name != null)
+                                itemSring += ";n{" + name.replace(" ", "_") + "}";
+                            if (amount > 1)
+                                itemSring += ";" + amount;
+
+                            if (giveLore != null && !giveLore.isEmpty())
+                                itemSring += ";l{" + CMIList.listToString(giveLore, "\\n") + "}";
+
+                            if (!potionData.isEmpty())
+                                itemSring += ";" + potionData;
+
+                            if (!enchants.toString().isEmpty())
+                                itemSring += ";" + enchants.toString();
+
+                            JobItems jitem = new JobItems(oneItemName.toLowerCase());
+
+                            jitem.setItemString(itemSring);
+
+                            items.add(jitem);
+                        }
+
+                    }
+                    sItem.setitems(items);
+                }
             }
 
             i++;

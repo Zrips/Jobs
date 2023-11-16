@@ -1044,7 +1044,7 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().allowEnchantingBoostedItems) {
             for (JobProgression prog : jPlayer.getJobProgression()) {
                 for (JobItems jobItem : ItemBoostManager.getItemsByJob(prog.getJob())) {
-                    if (event.getItem().isSimilar(jobItem.getItemStack(player))) {
+                    if (event.getItem().isSimilar(jobItem.getItemStack(player, null).getItemStack())) {
                         event.setCancelled(true);
                         return;
                     }

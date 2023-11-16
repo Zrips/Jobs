@@ -66,6 +66,7 @@ import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Container.CMINumber;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.NBT.CMINBT;
 import net.Zrips.CMILib.Version.Version;
@@ -1073,46 +1074,25 @@ public class PlayerManager {
         JobProgression progress = getJobsPlayer(player).getJobProgression(job);
 
         for (JobItems jitem : jitems) {
-            if (jitem != null && jitem.getJobs().contains(job)) {
-                data.add(jitem.getBoost(progress));
-            }
+            if (jitem == null)
+                continue;
+            if (!jitem.getJobs().contains(job))
+                continue;
+
+            data.add(jitem.getBoost(progress));
         }
 
         return data;
     }
 
-    private final String jobsItemBoost = "JobsItemBoost";
-
+    @Deprecated
     public boolean containsItemBoostByNBT(ItemStack item) {
-        return item != null && new CMINBT(item).hasNBT(jobsItemBoost);
+        return containsItemBoostByNBT(item);
     }
 
+    @Deprecated
     public JobItems getJobsItemByNbt(ItemStack item) {
-        if (item == null)
-            return null;
-
-        Object itemName = new CMINBT(item).getString(jobsItemBoost);
-
-        if (itemName == null || itemName.toString().isEmpty()) {
-            // Checking old boost items and converting to new format if needed
-            if (new CMINBT(item).hasNBT(jobsItemBoost)) {
-                for (Job one : Jobs.getJobs()) {
-                    itemName = new CMINBT(item).getString(jobsItemBoost + "." + one.getName());
-                    if (itemName != null) {
-                        JobItems b = ItemBoostManager.getItemByKey(itemName.toString());
-                        if (b != null) {
-                            ItemStack ic = (ItemStack) new CMINBT(item).setString(jobsItemBoost, b.getNode());
-                            item.setItemMeta(ic.getItemMeta());
-                        }
-                        break;
-                    }
-                }
-            }
-            if (itemName == null)
-                return null;
-        }
-
-        return ItemBoostManager.getItemByKey(itemName.toString());
+        return ItemBoostManager.getJobsItemByNbt(item);
     }
 
     public enum BoostOf {
