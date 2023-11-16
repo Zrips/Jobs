@@ -287,7 +287,7 @@ public class Job {
     }
 
     public int getGuiSlot() {
-        return guiItem == null ? 0 : guiItem.getGuiSlot();
+        return guiItem == null ? -1 : guiItem.getGuiSlot();
     }
 
     /**

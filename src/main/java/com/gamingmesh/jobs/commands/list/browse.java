@@ -34,7 +34,9 @@ public class browse implements Cmd {
                 try {
                     plugin.getGUIManager().openJobsBrowseGUI((Player) sender);
                 } catch (Throwable e) {
+                    
                     ((Player) sender).closeInventory();
+                    e.printStackTrace();
                 }
 
                 return true;

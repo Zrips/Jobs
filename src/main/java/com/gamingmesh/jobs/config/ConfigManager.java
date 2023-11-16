@@ -64,6 +64,7 @@ import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIAsyncHead;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 
@@ -1245,10 +1246,11 @@ public class ConfigManager {
                 if (!customSkull.isEmpty()) {
                     guiItem = Util.getSkull(customSkull);
                 }
-
                 gItem.setGuiSlot(guiSection.getInt("slot", -1));
             }
 
+            gItem.setGuiItem(guiItem);
+            
             job.setGuiItem(gItem);
 
             // Permissions

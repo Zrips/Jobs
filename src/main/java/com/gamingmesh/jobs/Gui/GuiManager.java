@@ -168,16 +168,7 @@ public class GuiManager {
                 lore.add(Jobs.getLanguage().getMessage("command.info.gui.rightClick"));
             }
 
-            ItemStack guiItem = job.getGuiItem();
-//            ItemMeta meta = guiItem.getItemMeta();
-//            meta.setDisplayName(job.getDisplayName());
-//            meta.setLore(lore);
-//
-//            if (Jobs.getGCManager().hideItemAttributes) {
-//                meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ATTRIBUTES, org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
-//            }
-//
-//            guiItem.setItemMeta(meta);
+            ItemStack guiItem = job.getGuiItem().clone();
 
             CMIGuiButton button = new CMIGuiButton(job.getGuiSlot() >= 0 ? job.getGuiSlot() : pos, guiItem) {
 
@@ -222,6 +213,7 @@ public class GuiManager {
             };
 
             button.setName(job.getDisplayName());
+            button.clearLore();
             button.addLore(lore);
             if (Jobs.getGCManager().hideItemAttributes) {
                 button.hideItemFlags();
@@ -277,7 +269,7 @@ public class GuiManager {
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
         Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job);
         JobProgression prog = jPlayer.getJobProgression(job);
-        ItemStack guiItem = job.getGuiItem();
+        ItemStack guiItem = job.getGuiItem().clone();
 
         int level = prog != null ? prog.getLevel() : 1;
         int numjobs = jPlayer.progression.size();
@@ -499,7 +491,7 @@ public class GuiManager {
         int numjobs = jPlayer.progression.size();
         int level = jPlayer.getJobProgression(job) != null ? jPlayer.getJobProgression(job).getLevel() : 1;
 
-        ItemStack guiItem = job.getGuiItem();
+        ItemStack guiItem = job.getGuiItem().clone();
         int i = 0;
         for (ActionType actionType : jobsRemained) {
             List<JobInfo> info = job.getJobInfo(actionType);
