@@ -979,6 +979,8 @@ public class JobsPlayer {
     }
 
     public void setSaved(boolean isSaved) {
+        if (!isSaved && !isOnline())
+            Jobs.getPlayerManager().addPlayer(this);
         this.isSaved = isSaved;
     }
 
