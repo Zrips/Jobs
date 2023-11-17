@@ -789,10 +789,20 @@ public final class JobsPaymentListener implements Listener {
                     }
                 }
 
+                if (resultStack == null)
+                    return;
+
                 while (newItemsCount > 0) {
                     newItemsCount--;
 
-                    Jobs.action(jPlayer, new ItemActionInfo(resultStack, type));
+                    if (resultStack.getItemMeta() instanceof PotionMeta) {
+                        PotionMeta potion = (PotionMeta) resultStack.getItemMeta();
+                        Jobs.action(jPlayer, new PotionItemActionInfo(resultStack, type, potion.getBasePotionData().getType()));
+                    } else if (resultStack.hasItemMeta() && resultStack.getItemMeta().hasDisplayName()) {
+                        Jobs.action(jPlayer, new ItemNameActionInfo(CMIChatColor.stripColor(resultStack.getItemMeta().getDisplayName()), type));
+                    } else {
+                        Jobs.action(jPlayer, new ItemActionInfo(resultStack, type));
+                    }
                 }
             }
         }, 1);
