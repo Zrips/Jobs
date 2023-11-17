@@ -19,6 +19,7 @@
 package com.gamingmesh.jobs.listeners;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,8 @@ import com.gamingmesh.jobs.container.JobsPlayer;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Colors.CMIChatColor;
+import net.Zrips.CMILib.Container.CMIBlock;
+import net.Zrips.CMILib.Container.CMIList;
 import net.Zrips.CMILib.Items.ArmorTypes;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
@@ -216,17 +219,39 @@ public class JobsListener implements Listener {
             CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.topline"))))
             return;
 
-        String command = CMIChatColor.stripColor(plugin.getComplement().getLine(sign, 1));
-        for (String key : Jobs.getLanguageManager().signKeys) {
-            if (command.equalsIgnoreCase(CMIChatColor.stripColor(Jobs.getLanguage().getMessage("signs.secondline." + key)))) {
-                command = key;
-                break;
-            }
+        List<String> commandLines = new ArrayList<String>();
+
+        if (Version.isCurrentEqualOrHigher(Version.v1_20_R1)) {
+            SignSide side = getSignSide(block, player.getLocation());
+            commandLines.addAll(Arrays.asList(sign.getSide(side.equals(SignSide.FRONT) ? org.bukkit.block.sign.Side.FRONT : org.bukkit.block.sign.Side.BACK).getLines()));
+            commandLines.remove(0);
+        } else {
+            commandLines.addAll(Arrays.asList(sign.getLines()));
+            commandLines.remove(0);
         }
 
-        player.performCommand("jobs " + command + " " + CMIChatColor.stripColor(plugin.getComplement().getLine(sign, 2))
-            + " " + CMIChatColor.stripColor(plugin.getComplement()
-                .getLine(sign, 3)).replace(" ", "")); // Replace trailing spaces at 3rd line to parse command
+        String command = CMIChatColor.stripColor(CMIList.listToString(commandLines, " "));
+        if (command.endsWith(" "))
+            command = command.substring(0, command.length() - 1);
+
+        // Even if we should not cancel in Monitor state, we might add it just in case for the other plugins which could check this event after wards
+        event.setCancelled(true);
+
+        player.performCommand("jobs " + command);
+    }
+
+    public static enum SignSide {
+        FRONT,
+        BACK
+    }
+
+    private static SignSide getSignSide(Block sign, Location loc) {
+        float playerAngle = (float) Math.toDegrees(Math.atan2(loc.getX() - sign.getX() - 0.5, loc.getZ() - sign.getZ() - 0.5));
+        playerAngle = playerAngle < 0 ? playerAngle + 360 : playerAngle;
+        BlockFace facing = (new CMIBlock(sign)).getFacing();
+        double blockAngle = Math.toDegrees(Math.atan2(facing.getModX(), facing.getModZ()));
+        double phi = Math.abs(blockAngle - playerAngle) % 360;
+        return (phi > 180 ? 360 - phi : phi) < 90 ? SignSide.FRONT : SignSide.BACK;
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -416,7 +441,7 @@ public class JobsListener implements Listener {
 
         return false;
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLimitedItemInteract(PlayerInteractEvent event) {
 
@@ -486,7 +511,7 @@ public class JobsListener implements Listener {
             event.setCancelled(true);
             CMIActionBar.send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", meinOk));
 
-            iih = JobLimitedItems.applyNBT(iih, jobId, itemNode); 
+            iih = JobLimitedItems.applyNBT(iih, jobId, itemNode);
             try {
                 if (Version.isCurrentHigher(Version.v1_8_R3) && event.getHand() != EquipmentSlot.HAND) {
                     CMIItemStack.setItemInOffHand(player, iih);
