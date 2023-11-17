@@ -61,6 +61,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -89,6 +90,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.jetbrains.annotations.NotNull;
 
 import com.bgsoftware.wildstacker.api.enums.StackSplit;
 import com.gamingmesh.jobs.ItemBoostManager;
@@ -1602,15 +1604,13 @@ public final class JobsPaymentListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerEat(FoodLevelChangeEvent event) {
-        HumanEntity human = event.getEntity();
+    public void onPlayerItemConsumeEvent(PlayerItemConsumeEvent event) {
+        Player player = event.getPlayer();
 
-        if (!(human instanceof Player) || !Jobs.getGCManager().canPerformActionInWorld(human.getWorld()) || human.hasMetadata("NPC"))
+        if (!Jobs.getGCManager().canPerformActionInWorld(player.getWorld()) || player.hasMetadata("NPC"))
             return;
 
-        Player player = (Player) human;
-
-        if (!player.isOnline() || event.getFoodLevel() <= player.getFoodLevel() || player.getFoodLevel() == 20)
+        if (!player.isOnline())
             return;
 
         // check if in creative
@@ -1624,7 +1624,20 @@ public final class JobsPaymentListener implements Listener {
         if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
             return;
 
-        Jobs.action(Jobs.getPlayerManager().getJobsPlayer(player), new ItemActionInfo(CMIItemStack.getItemInMainHand(player), ActionType.EAT));
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return;
+
+        ItemStack currentItem = event.getItem();
+
+        if (currentItem == null)
+            return;
+
+        if (currentItem.getItemMeta() instanceof PotionMeta) {
+            Jobs.action(jPlayer, new PotionItemActionInfo(currentItem, ActionType.EAT, ((PotionMeta) currentItem.getItemMeta()).getBasePotionData().getType()));
+        } else {
+            Jobs.action(jPlayer, new ItemActionInfo(currentItem, ActionType.EAT));
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
