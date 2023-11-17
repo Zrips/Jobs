@@ -344,7 +344,7 @@ public class JobsPlayer {
      * 
      * @param jobName
      * @param type {@link CurrencyType}
-     * @param force whenever to retrieve as soon as possible without time
+     * @param force whenever we should update now or wait until scheduled time
      * @return amount of boost
      */
     public double getBoost(String jobName, CurrencyType type, boolean force) {
@@ -354,7 +354,6 @@ public class JobsPlayer {
             return boost;
 
         long time = System.currentTimeMillis();
-
         List<BoostCounter> counterList = boostCounter.get(jobName);
         if (counterList != null) {
             for (BoostCounter counter : counterList) {
@@ -362,7 +361,7 @@ public class JobsPlayer {
                     continue;
 
                 if (force || time - counter.getTime() > 1000 * 60) {
-                    boost = getPlayerBoostNew(jobName, type);
+                    boost = getPlayerBoostNew(jobName, type, force);
                     counter.setBoost(boost);
                     counter.setTime(time);
                     return boost;
@@ -371,12 +370,12 @@ public class JobsPlayer {
                 return counter.getBoost();
             }
 
-            boost = getPlayerBoostNew(jobName, type);
+            boost = getPlayerBoostNew(jobName, type, force);
             counterList.add(new BoostCounter(type, boost, time));
             return boost;
         }
 
-        boost = getPlayerBoostNew(jobName, type);
+        boost = getPlayerBoostNew(jobName, type, force);
 
         counterList = new ArrayList<>();
         counterList.add(new BoostCounter(type, boost, time));
@@ -385,38 +384,38 @@ public class JobsPlayer {
         return boost;
     }
 
-    private Double getPlayerBoostNew(String jobName, CurrencyType type) {
+    private Double getPlayerBoostNew(String jobName, CurrencyType type, Boolean forced) {
 
         if (Jobs.getGCManager().addPermissionBoost) {
 
-            Double boost = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), true, true);
+            Double boost = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), forced != null ? forced : true, true);
 
-            Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + ".all", false, true);
+            Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + ".all", forced != null ? forced : false, true);
             if (v1 != 0d)
                 boost += v1;
 
-            v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", false, true);
+            v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", forced != null ? forced : false, true);
             if (v1 != 0d)
                 boost += v1;
 
-            v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), false, true);
+            v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), forced != null ? forced : false, true);
             if (v1 != 0d)
                 boost += v1;
 
             return boost;
         }
 
-        Double boost = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), true, false);
+        Double boost = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + "." + type.getName(), forced != null ? forced : true, false);
 
-        Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + ".all", false, false);
+        Double v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost." + jobName + ".all", forced != null ? forced : false, false);
         if (v1 != 0d && (v1 > boost || v1 < boost && !Jobs.getGCManager().highestPermissionBoost))
             boost = v1;
 
-        v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", false, false);
+        v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all.all", forced != null ? forced : false, false);
         if (v1 != 0d && (v1 > boost || v1 < boost && !Jobs.getGCManager().highestPermissionBoost))
             boost = v1;
 
-        v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), false, false);
+        v1 = Jobs.getPermissionManager().getMaxPermission(this, "jobs.boost.all." + type.getName(), forced != null ? forced : false, false);
         if (v1 != 0d && (v1 > boost || v1 < boost && !Jobs.getGCManager().highestPermissionBoost))
             boost = v1;
 
