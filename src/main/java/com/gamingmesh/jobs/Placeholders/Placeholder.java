@@ -407,6 +407,9 @@ public class Placeholder {
         return String.valueOf((int) (value * 100) / 100D);
     }
 
+    DecimalFormat dFormat = new DecimalFormat("00.0");
+    DecimalFormat fFormat = new DecimalFormat("##.###");
+
     public String getValue(UUID uuid, JobsPlaceHolders placeHolder, String value) {
         if (placeHolder == null)
             return null;
@@ -452,7 +455,7 @@ public class Placeholder {
             case user_totallevels:
                 return Integer.toString(user.getTotalLevels());
             case user_points:
-                return new DecimalFormat("00.0").format(user.getPointsData().getCurrentPoints());
+                return dFormat.format(user.getPointsData().getCurrentPoints());
             case user_points_fixed:
                 return Integer.toString((int) user.getPointsData().getCurrentPoints());
             case user_total_points:
@@ -520,7 +523,7 @@ public class Placeholder {
                 case user_jprogress_$1:
                     return j == null ? "" : Jobs.getCommandManager().jobProgressMessage(j.getMaxExperience(), j.getExperience());
                 case user_jexp_rounded_$1:
-                    return j == null ? "0" : new DecimalFormat("##.###").format(j.getExperience());
+                    return j == null ? "0" : fFormat.format(j.getExperience());
                 case user_jmaxexp_$1:
                     return j == null ? "0" : format.format(j.getMaxExperience());
                 case user_jexpunf_$1:

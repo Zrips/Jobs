@@ -21,12 +21,12 @@ public class PlayerPoints {
 
     public void setPoints(double points) {
 	current = points;
-	total = points;
+	if (current > total)
+	    total = current;
     }
 
     public void takePoints(double points) {
 	current -= points;
-        total -= points;
     }
 
     public boolean havePoints(double points) {
