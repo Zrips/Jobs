@@ -1087,7 +1087,7 @@ public class PlayerManager {
 
     @Deprecated
     public boolean containsItemBoostByNBT(ItemStack item) {
-        return containsItemBoostByNBT(item);
+        return ItemBoostManager.containsItemBoostByNBT(item);
     }
 
     @Deprecated

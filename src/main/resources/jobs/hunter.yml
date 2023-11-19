@@ -28,7 +28,7 @@ Hunter:
       - Kill everything what moves and get money
       - Get 100 for this!
   Gui:
-    Item: bow
+    ItemStack: bow
   Tame:
     Wolf:
       income: 20.0

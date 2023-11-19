@@ -28,7 +28,7 @@ Digger:
       - Dig blocks and get money
       - Get 100 for this!
   Gui:
-    Item: wooden_shovel
+    ItemStack: wooden_shovel
   Break:
     red_sand:
       income: 1

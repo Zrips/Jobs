@@ -28,7 +28,7 @@ Enchanter:
       - Be a wizard and get money
       - Get 100 for this!
   Gui:
-    Item: enchanting_table
+    ItemStack: enchanting_table
   Enchant:
     wood_sword:
       income: 1.5

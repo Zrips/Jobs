@@ -28,7 +28,7 @@ Fisherman:
       - Catch fish and get money
       - Get 100 for this!
   Gui:
-    Item: fishing_rod
+    ItemStack: fishing_rod
   Fish:
     cod:
       income: 15.0

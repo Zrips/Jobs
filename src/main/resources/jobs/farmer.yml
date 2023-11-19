@@ -28,7 +28,7 @@ Farmer:
       - Be a farmer and get money
       - Get 100 for this!
   Gui:
-    Item: wooden_hoe
+    ItemStack: wooden_hoe
   Tame:
     Wolf:
       income: 5.0

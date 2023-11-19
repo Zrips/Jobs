@@ -28,7 +28,7 @@ Brewer:
       - Brew some stuff and get money
       - Get 100 for this!
   Gui:
-    Item: brewing_stand
+    ItemStack: brewing_stand
   Brew:
     nether_wart:
       income: 6.0

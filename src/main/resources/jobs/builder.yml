@@ -28,7 +28,7 @@ Builder:
       - Place blocks and get money
       - Get 100 for this!
   Gui:
-    Item: brick_stairs
+    ItemStack: brick_stairs
   Place:
     stone:
       income: 1.3

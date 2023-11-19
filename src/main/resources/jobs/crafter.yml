@@ -28,7 +28,7 @@ Crafter:
       - Craft and get money
       - Get 100 for this!
   Gui:
-    Item: crafting_table
+    ItemStack: crafting_table
   Craft:
     stick:
       income: 0.1

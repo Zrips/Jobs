@@ -101,15 +101,8 @@ exampleJob:
   # GUI icon information when using GUI function
   Gui:
     # name of the material
-    # You can use the custom player head:
-    # Item: player_head
-    #   CustomSkull: Notch
-    Item: LOG:2
-
-    # enchants in the item
-    Enchantments:
-    - 'DURABILITY:1'
-
+    ItemStack: oaklog;DURABILITY:1
+    
     # The number of slot where to put this material in gui.
     slot: 2
 
