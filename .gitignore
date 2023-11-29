@@ -6,3 +6,4 @@
 src/main/resources/locale/messages_en.yml
 .classpath
 .project
+/build/

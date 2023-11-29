@@ -226,11 +226,6 @@
 			<!--			 Temporary solution for replacing repository -->
 			<systemPath>${basedir}/libs/mypet-3.11-20210318.180552-1.jar</systemPath>
 		</dependency>
-		<dependency>
-			<groupId>CMILib</groupId>
-			<artifactId>CMILib</artifactId>
-			<version>1.4.3.1</version>
-		</dependency>
 	</dependencies>
 	<repositories>
 		<!-- MythicMobs -->
@@ -293,7 +288,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					<outputDirectory>D:\MC\Server 1.20\plugins\</outputDirectory>
+					<outputDirectory>build/jar</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
