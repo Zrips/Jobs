@@ -787,7 +787,6 @@ public final class Jobs extends JavaPlugin {
             getDBManager().getDB().triggerTableIdUpdate();
 
             CMIMessages.consoleMessage("&ePlugin has been enabled successfully.");
-            CMIMessages.consoleMessage("&eAAAAAAAAAAAAAAAAAAA");
         } catch (Throwable e) {
             e.printStackTrace();
             System.out.println("There was some issues when starting plugin. Please contact dev about this. Plugin will be disabled.");
