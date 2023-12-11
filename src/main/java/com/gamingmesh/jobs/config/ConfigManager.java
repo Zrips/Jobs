@@ -1550,12 +1550,14 @@ public class ConfigManager {
                             jobInfo.add(new JobInfo(actionType, id, meta, type + subType, income, incomeEquation, experience, expEquation, pointsEquation, points, 1,
                                 -1, typeSection.getCurrentPath(), null, null, null));
                         }
-
                         job.setJobInfo(actionType, jobInfo);
-                        continue;
                     }
 
                     for (String key : typeSection.getKeys(false)) {
+                        
+                        if (key.equalsIgnoreCase("materials"))
+                            continue;
+                        
                         ConfigurationSection section = typeSection.getConfigurationSection(key);
                         if (section == null) {
                             continue;
