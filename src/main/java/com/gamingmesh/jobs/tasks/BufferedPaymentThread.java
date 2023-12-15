@@ -22,45 +22,25 @@ import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.economy.BufferedEconomy;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class BufferedPaymentThread extends Thread {
-    private volatile boolean running = true;
-    private int sleep;
-
-    public BufferedPaymentThread(int duration) {
-	super("Jobs-BufferedPaymentThread");
-	// We need this to be atleast 1 or more seconds
-	duration = duration < 1 ? 1 : duration;
-	this.sleep = duration * 1000;	
-    }
+public class BufferedPaymentThread extends BukkitRunnable {
 
     @Override
     public void run() {
-
-	CMIMessages.consoleMessage("&eStarted buffered payment thread.");
-
-	while (running) {
-	    try {
-		sleep(sleep);
-	    } catch (InterruptedException e) {
-		this.running = false;
-		continue;
-	    }
-	    try {
-		BufferedEconomy economy = Jobs.getEconomy();
-		if (economy != null)
-		    economy.payAll();
-	    } catch (Throwable t) {
-		t.printStackTrace();
-		CMIMessages.consoleMessage("&c[Jobs] Exception in BufferedPaymentThread, stopping economy payments!");
-		running = false;
-	    }
-	}
-	CMIMessages.consoleMessage("&eBuffered payment thread shutdown.");
+        try {
+            BufferedEconomy economy = Jobs.getEconomy();
+            if (economy != null)
+                economy.payAll();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            CMIMessages.consoleMessage("&c[Jobs] Exception in BufferedPaymentThread, stopping economy payments!");
+            cancel();
+        }
     }
 
     public void shutdown() {
-	this.running = false;
-	interrupt();
+        cancel();
+        CMIMessages.consoleMessage("&eBuffered payment thread shutdown.");
     }
 }
