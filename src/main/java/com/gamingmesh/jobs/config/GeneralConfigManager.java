@@ -105,7 +105,7 @@ public class GeneralConfigManager {
         EmptyServerAccountActionBar, ActionBarsMessageByDefault, aBarSilentMode, ShowTotalWorkers, ShowPenaltyBonus, useDynamicPayment,
         JobsGUIOpenOnBrowse, JobsGUIShowChatBrowse, JobsGUISwitcheButtons, ShowActionNames, hideItemAttributes,
         DisableJoiningJobThroughGui, FireworkLevelupUse, UseRandom, UsePerPermissionForLeaving,
-        EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, useMaxPaymentCurve, blockOwnershipTakeOver,
+        EnableConfirmation, jobsInfoOpensBrowse, MonsterDamageUse, MonsterDamageIgnoreBosses, useMaxPaymentCurve, blockOwnershipTakeOver,
         hideJobsInfoWithoutPermission, UseTaxes, TransferToServerAccount, TakeFromPlayersPayment, AutoJobJoinUse, AllowDelevel, RomanNumbers,
         BossBarEnabled = false, BossBarShowOnEachAction = false, BossBarsMessageByDefault = false, ExploreCompact, ExploreSaveIntoDatabase = false, DBCleaningJobsUse, DBCleaningUsersUse,
         DisabledWorldsUse, UseAsWhiteListWorldList, MythicMobsEnabled,
@@ -910,6 +910,9 @@ public class GeneralConfigManager {
             "This prevents from killing monsters in one hit when they suffer in example fall damage");
         MonsterDamageUse = c.get("ExploitProtections.General.MonsterDamage.Use", false);
         MonsterDamagePercentage = c.get("ExploitProtections.General.MonsterDamage.Percentage", 60);
+        c.addComment("ExploitProtections.General.MonsterDamage.IgnoreBosses", "When enabled we will avoid checking damage done to ender dragon, wither and warden",
+            "This can help out in case you have server with custom damage sources which might not be registered and payouts might not be given out");
+        MonsterDamageIgnoreBosses = c.get("ExploitProtections.General.MonsterDamage.IgnoreBosses", true);
 
         c.addComment("ExploitProtections.McMMO", "McMMO abilities");
         c.addComment("ExploitProtections.McMMO.TreeFellerMultiplier", "Players will get part of money from cutting trees with treefeller ability enabled.",

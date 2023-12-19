@@ -153,9 +153,9 @@ public final class JobsPaymentListener implements Listener {
         .build();
 
     private final Cache<UUID, Player> entityLastDamager = CacheBuilder.newBuilder()
-            .expireAfterWrite(5, TimeUnit.MINUTES)
-            .weakKeys()
-            .build();
+        .expireAfterWrite(5, TimeUnit.MINUTES)
+        .weakKeys()
+        .build();
     private Cache<UUID, Long> cowMilkingTimer;
 
     public JobsPaymentListener(Jobs plugin) {
@@ -1246,7 +1246,8 @@ public final class JobsPaymentListener implements Listener {
         //Gross but works
         entityLastDamager.put(ent.getUniqueId(), (Player) ((EntityDamageByEntityEvent) event).getDamager());
 
-        if(!Jobs.getGCManager().MonsterDamageUse) return;
+        if (!Jobs.getGCManager().MonsterDamageUse)
+            return;
 
         double damage = event.getFinalDamage();
         double s = ((Damageable) ent).getHealth();
@@ -1296,14 +1297,15 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-        if(!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+        if (!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
             return;
 
         LivingEntity lVictim = event.getEntity();
         Entity killer;
 
-        if(!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent)) {
-            if(entityLastDamager.getIfPresent(event.getEntity().getUniqueId()) == null) return;
+        if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent)) {
+            if (entityLastDamager.getIfPresent(event.getEntity().getUniqueId()) == null)
+                return;
             killer = entityLastDamager.getIfPresent(event.getEntity().getUniqueId());
         } else {
             killer = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
@@ -1324,16 +1326,31 @@ public final class JobsPaymentListener implements Listener {
         }
 
         if (Jobs.getGCManager().MonsterDamageUse) {
-            UUID lVictimUUID = lVictim.getUniqueId();
-            Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
 
-            if (damage != null) {
-                double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
+            boolean ignore = false;
+            if (Jobs.getGCManager().MonsterDamageIgnoreBosses) {
+                CMIEntityType etype = CMIEntityType.getByType(lVictim.getType());
+                switch (etype) {
+                case ENDER_DRAGON:
+                case WITHER:
+                case WARDEN:
+                    ignore = true;
+                    break;
+                }
+            }
 
-                damageDealtByPlayers.invalidate(lVictimUUID);
+            if (!ignore) {
+                UUID lVictimUUID = lVictim.getUniqueId();
+                Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
 
-                if (perc < Jobs.getGCManager().MonsterDamagePercentage)
-                    return;
+                if (damage != null) {
+                    double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
+
+                    damageDealtByPlayers.invalidate(lVictimUUID);
+
+                    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
+                        return;
+                }
             }
         }
 
