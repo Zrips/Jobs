@@ -113,7 +113,7 @@ public class top implements Cmd {
     private static boolean hasToBeSeenInTop(TopList topList, Job job) {
         Player player = topList.getPlayerInfo().getJobsPlayer().getPlayer();
         if (player != null)
-            return !player.isPermissionSet("jobs.hidetop.*") || !player.isPermissionSet("jobs.hidetop." + job.getName().toLowerCase());
+            return !(player.hasPermission("jobs.hidetop.*") || player.hasPermission("jobs.hidetop." + job.getName().toLowerCase()));
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(topList.getPlayerInfo().getUuid());
         return !(Jobs.getVaultPermission().playerHas(null, offlinePlayer, "jobs.hidetop.*")

@@ -6,11 +6,9 @@ import com.gamingmesh.jobs.container.TopList;
 import com.gamingmesh.jobs.i18n.Language;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Scoreboards.CMIScoreboard;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -108,7 +106,7 @@ public class gtop implements Cmd {
     private static boolean hasToBeSeenInGlobalTop(TopList topList) {
         Player player = topList.getPlayerInfo().getJobsPlayer().getPlayer();
         if (player != null)
-            return !player.isPermissionSet("jobs.hidegtop");
+            return !player.hasPermission("jobs.hidegtop");
         return !Jobs.getVaultPermission().playerHas(
             null,
             Bukkit.getOfflinePlayer(topList.getPlayerInfo().getUuid()),
