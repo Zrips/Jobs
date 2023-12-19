@@ -28,37 +28,38 @@ public class DatabaseSaveThread extends Thread {
     private int sleep;
 
     public DatabaseSaveThread(int duration) {
-	super("Jobs-DatabaseSaveTask");
-	this.sleep = duration * 60000;
+        super("Jobs-DatabaseSaveTask");
+        this.sleep = duration * 60000;
     }
 
     @Override
     public void run() {
 
-	CMIMessages.consoleMessage("&eStarted database save task.");
+        CMIMessages.consoleMessage("&eStarted database save task.");
 
-	while (running) {
-	    try {
-		sleep(sleep);
-	    } catch (InterruptedException e) {
-		this.running = false;
-		continue;
-	    }
-	    try {
-		Jobs.getPlayerManager().saveAll();
-	    } catch (Throwable t) {
-		t.printStackTrace();
-		CMIMessages.consoleMessage("&c[Jobs] Exception in DatabaseSaveTask, stopping auto save!");
-		running = false;
-	    }
-	}
+        while (running) {
+            try {
+                sleep(sleep);
+            } catch (InterruptedException e) {
+                this.running = false;
+                continue;
+            }
+            try {
+                if (running)
+                    Jobs.getPlayerManager().saveAll();
+            } catch (Throwable t) {
+                t.printStackTrace();
+                CMIMessages.consoleMessage("&c[Jobs] Exception in DatabaseSaveTask, stopping auto save!");
+                running = false;
+            }
+        }
 
-	CMIMessages.consoleMessage("&eDatabase save task shutdown!");
+        CMIMessages.consoleMessage("&eDatabase save task shutdown!");
 
     }
 
     public void shutdown() {
-	this.running = false;
-	interrupt();
+        this.running = false;
+        interrupt();
     }
 }

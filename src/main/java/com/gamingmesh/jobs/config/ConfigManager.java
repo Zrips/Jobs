@@ -1170,8 +1170,10 @@ public class ConfigManager {
                     };
 
                     CMIItemStack item = CMIItemStack.deserialize(guiSection.getString("ItemStack"), ahead);
-                    if (!ahead.isAsyncHead() && item != null && item.getCMIType().isNone())
+
+                    if (!ahead.isAsyncHead() && item != null && !item.getCMIType().isNone()) {
                         gItem.setGuiItem(item.getItemStack());
+                    }
 
                 } else if (guiSection.isString("Item")) {
                     String item = guiSection.getString("Item");
@@ -1212,45 +1214,49 @@ public class ConfigManager {
                         CMIMessages.consoleMessage("&5Update " + jobConfigName + " jobs gui item section to use `ItemStack` instead of `Item` sections format. More information inside _EXAMPLE job file");
                         informedGUI = true;
                     }
+                    
+                    gItem.setGuiItem(guiItem);
                 } else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
-                    guiItem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
+                    guiItem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();                    
+                    gItem.setGuiItem(guiItem);
                     CMIMessages.consoleMessage("Update " + jobConfigName + " jobs gui item section to use `Item` instead of `Id` and `Data` sections");
                 } else
                     log.warning("Job " + jobConfigName + " has an invalid (" + guiSection.getString("Item") + ") Gui property. Please fix this if you want to use it!");
 
-                for (String str4 : guiSection.getStringList("Enchantments")) {
-                    String[] id = str4.split(":", 2);
+                if (guiSection.isList("Enchantments")) {
+                    for (String str4 : guiSection.getStringList("Enchantments")) {
+                        String[] id = str4.split(":", 2);
 
-                    if (id.length < 2)
-                        continue;
+                        if (id.length < 2)
+                            continue;
 
-                    Enchantment enchant = CMIEnchantment.getEnchantment(id[0]);
-                    if (enchant == null)
-                        continue;
+                        Enchantment enchant = CMIEnchantment.getEnchantment(id[0]);
+                        if (enchant == null)
+                            continue;
 
-                    int level = 1;
-                    try {
-                        level = Integer.parseInt(id[1]);
-                    } catch (NumberFormatException ex) {
+                        int level = 1;
+                        try {
+                            level = Integer.parseInt(id[1]);
+                        } catch (NumberFormatException ex) {
+                        }
+
+                        if (guiItem.getItemMeta() instanceof EnchantmentStorageMeta) {
+                            EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) guiItem.getItemMeta();
+                            enchantMeta.addStoredEnchant(enchant, level, true);
+                            guiItem.setItemMeta(enchantMeta);
+                        } else
+                            guiItem.addUnsafeEnchantment(enchant, level);
                     }
-
-                    if (guiItem.getItemMeta() instanceof EnchantmentStorageMeta) {
-                        EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) guiItem.getItemMeta();
-                        enchantMeta.addStoredEnchant(enchant, level, true);
-                        guiItem.setItemMeta(enchantMeta);
-                    } else
-                        guiItem.addUnsafeEnchantment(enchant, level);
+                    gItem.setGuiItem(guiItem);
                 }
 
                 String customSkull = guiSection.getString("CustomSkull", "");
                 if (!customSkull.isEmpty()) {
-                    guiItem = Util.getSkull(customSkull);
+                    gItem.setGuiItem(Util.getSkull(customSkull));
                 }
                 gItem.setGuiSlot(guiSection.getInt("slot", -1));
             }
 
-            gItem.setGuiItem(guiItem);
-            
             job.setGuiItem(gItem);
 
             // Permissions
@@ -1554,10 +1560,10 @@ public class ConfigManager {
                     }
 
                     for (String key : typeSection.getKeys(false)) {
-                        
+
                         if (key.equalsIgnoreCase("materials"))
                             continue;
-                        
+
                         ConfigurationSection section = typeSection.getConfigurationSection(key);
                         if (section == null) {
                             continue;
