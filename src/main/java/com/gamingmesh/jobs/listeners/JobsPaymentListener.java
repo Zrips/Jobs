@@ -151,6 +151,11 @@ public final class JobsPaymentListener implements Listener {
         .expireAfterWrite(10, TimeUnit.SECONDS)
         .weakKeys()
         .build();
+
+    private final Cache<UUID, Player> entityLastDamager = CacheBuilder.newBuilder()
+            .expireAfterWrite(5, TimeUnit.MINUTES)
+            .weakKeys()
+            .build();
     private Cache<UUID, Long> cowMilkingTimer;
 
     public JobsPaymentListener(Jobs plugin) {
@@ -1227,7 +1232,7 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDamageByPlayer(EntityDamageEvent event) {
-        if (!Jobs.getGCManager().MonsterDamageUse || !(event instanceof EntityDamageByEntityEvent)
+        if (!(event instanceof EntityDamageByEntityEvent)
             || !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
             return;
 
@@ -1237,6 +1242,11 @@ public final class JobsPaymentListener implements Listener {
 
         if (!(((EntityDamageByEntityEvent) event).getDamager() instanceof Player))
             return;
+
+        //Gross but works
+        entityLastDamager.put(ent.getUniqueId(), (Player) ((EntityDamageByEntityEvent) event).getDamager());
+
+        if(!Jobs.getGCManager().MonsterDamageUse) return;
 
         double damage = event.getFinalDamage();
         double s = ((Damageable) ent).getHealth();
@@ -1274,6 +1284,7 @@ public final class JobsPaymentListener implements Listener {
             damage = s;
 
         if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
+            entityLastDamager.put(ent.getUniqueId(), (Player) ((Projectile) event.getDamager()).getShooter());
             Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
             if (damageDealt != null) {
                 damageDealtByPlayers.put(entUUID, damageDealt + damage);
@@ -1285,17 +1296,18 @@ public final class JobsPaymentListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-        if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) ||
-            !Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
+        if(!Jobs.getGCManager().canPerformActionInWorld(event.getEntity().getWorld()))
             return;
 
-        EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
+        LivingEntity lVictim = event.getEntity();
+        Entity killer;
 
-        // Entity that died must be living
-        if (!(e.getEntity() instanceof LivingEntity))
-            return;
-
-        LivingEntity lVictim = (LivingEntity) e.getEntity();
+        if(!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent)) {
+            if(entityLastDamager.getIfPresent(event.getEntity().getUniqueId()) == null) return;
+            killer = entityLastDamager.getIfPresent(event.getEntity().getUniqueId());
+        } else {
+            killer = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
+        }
 
         // mob spawner, no payment or experience
         if (!Jobs.getGCManager().payNearSpawner() && lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
@@ -1326,7 +1338,7 @@ public final class JobsPaymentListener implements Listener {
         }
 
         //extra check for Citizens 2 sentry kills
-        if (e.getDamager() instanceof Player && e.getDamager().hasMetadata("NPC"))
+        if (killer.hasMetadata("NPC"))
             return;
 
         if (Jobs.getGCManager().MythicMobsEnabled && HookManager.getMythicManager() != null
@@ -1336,26 +1348,21 @@ public final class JobsPaymentListener implements Listener {
 
         Player pDamager = null;
 
-        boolean isTameable = e.getDamager() instanceof Tameable;
-        boolean isMyPet = HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(e.getDamager(), null);
+        boolean isTameable = killer instanceof Tameable;
+        boolean isMyPet = HookManager.getMyPetManager() != null && HookManager.getMyPetManager().isMyPet(killer, null);
 
-        if (e.getDamager() instanceof Player) { // Checking if killer is player
-            pDamager = (Player) e.getDamager();
+        if (killer instanceof Player) { // Checking if killer is player
+            pDamager = (Player) killer;
         } else if (isMyPet) { // Checking if killer is MyPet animal
-            UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(e.getDamager());
+            UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(killer);
 
             if (uuid != null)
                 pDamager = Bukkit.getPlayer(uuid);
         } else if (isTameable) { // Checking if killer is tamed animal
-            Tameable t = (Tameable) e.getDamager();
+            Tameable t = (Tameable) killer;
 
             if (t.isTamed() && t.getOwner() instanceof Player)
                 pDamager = (Player) t.getOwner();
-        } else if (e.getDamager() instanceof Projectile) {
-            Projectile pr = (Projectile) e.getDamager();
-
-            if (pr.getShooter() instanceof Player)
-                pDamager = (Player) pr.getShooter();
         }
 
         if (pDamager == null)
@@ -1396,18 +1403,18 @@ public final class JobsPaymentListener implements Listener {
         if (Jobs.getGCManager().payForStackedEntities) {
             if (JobsHook.WildStacker.isEnabled()) {
                 for (int i = 0; i < HookManager.getWildStackerHandler().getEntityAmount(lVictim) - 1; i++) {
-                    Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
+                    Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
                 }
             } else if (JobsHook.StackMob.isEnabled() && HookManager.getStackMobHandler().isStacked(lVictim)) {
                 for (uk.antiperson.stackmob.entity.StackEntity stacked : HookManager.getStackMobHandler().getStackEntities()) {
                     if (stacked.getEntity().getType() == lVictim.getType()) {
-                        Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.KILL), e.getDamager(), stacked.getEntity());
+                        Jobs.action(jDamager, new EntityActionInfo(stacked.getEntity(), ActionType.KILL), killer, stacked.getEntity());
                     }
                 }
             }
         }
 
-        Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), e.getDamager(), lVictim);
+        Jobs.action(jDamager, new EntityActionInfo(lVictim, ActionType.KILL), killer, lVictim);
 
         // Payment for killing player with particular job, except NPC's
         if (notNpc) {
