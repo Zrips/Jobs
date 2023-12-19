@@ -780,7 +780,6 @@ public final class Jobs extends JavaPlugin {
                 CMIScheduler.get().runTask(() -> new HookPermissionTask(Permission.class));
             }
 
-
             dao.loadBlockProtection();
             getExploreManager().load();
             getCommandManager().fillCommands();
@@ -806,19 +805,19 @@ public final class Jobs extends JavaPlugin {
 
         pm.registerEvents(new JobsListener(getInstance()), getInstance());
         pm.registerEvents(new JobsPaymentListener(getInstance()), getInstance());
-        
+
         if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
             pm.registerEvents(new JobsPayment1_14Listener(), getInstance());
         }
-        
+
         if (Version.isCurrentEqualOrHigher(Version.v1_16_R3)) {
             pm.registerEvents(new JobsPayment1_16Listener(), getInstance());
         }
 
         if (Version.isCurrentEqualOrHigher(Version.v1_20_R1)) {
-            pm.registerEvents(new PlayerSignEdit1_20Listeners(), getInstance());         
+            pm.registerEvents(new PlayerSignEdit1_20Listeners(), getInstance());
         }
-        
+
         if (getGCManager().useBlockProtection) {
             pm.registerEvents(new PistonProtectionListener(), getInstance());
         }
@@ -925,11 +924,14 @@ public final class Jobs extends JavaPlugin {
 
         if (pManager != null) {
             pManager.removePlayerAdditions();
+            CMIMessages.consoleMessage("&eCleared boss bar cache");
             pManager.saveAll();
+            CMIMessages.consoleMessage("&eSaved player data");
         }
 
         if (dao != null) {
             dao.closeConnections();
+            CMIMessages.consoleMessage("&eClosed database connection");
         }
 
         CMIMessages.consoleMessage(suffix);
