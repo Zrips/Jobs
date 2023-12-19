@@ -48,7 +48,7 @@ public class fireall implements Cmd {
             return true;
         }
 
-        if (jPlayer.progression.isEmpty()) {
+        if (jPlayer.getJobProgression().isEmpty()) {
             Language.sendMessage(sender, "command.fireall.error.nojobs");
             return true;
         }

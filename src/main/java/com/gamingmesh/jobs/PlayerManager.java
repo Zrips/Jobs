@@ -325,7 +325,7 @@ public class PlayerManager {
             if (!resetID && jPlayer.getUserId() == -1)
                 continue;
 
-            for (JobProgression oneJ : jPlayer.progression)
+            for (JobProgression oneJ : jPlayer.getJobProgression())
                 dao.insertJob(jPlayer, oneJ);
 
             dao.saveLog(jPlayer);
@@ -547,7 +547,7 @@ public class PlayerManager {
      * @param jPlayer {@link JobsPlayer}
      */
     public void leaveAllJobs(JobsPlayer jPlayer) {
-        for (JobProgression job : new ArrayList<>(jPlayer.progression))
+        for (JobProgression job : new ArrayList<>(jPlayer.getJobProgression()))
             leaveJob(jPlayer, job.getJob());
 
         jPlayer.leaveAllJobs();
@@ -976,7 +976,7 @@ public class PlayerManager {
      */
     public void reload() {
         for (JobsPlayer jPlayer : playersUUID.values()) {
-            for (JobProgression progression : jPlayer.progression) {
+            for (JobProgression progression : jPlayer.getJobProgression()) {
                 Job job = Jobs.getJob(progression.getJob().getName());
                 if (job != null)
                     progression.setJob(job);
@@ -1193,13 +1193,13 @@ public class PlayerManager {
                     return;
 
                 int playerMaxJobs = getMaxJobs(jPlayer);
-                int playerCurrentJobs = jPlayer.progression.size();
+                int playerCurrentJobs = jPlayer.getJobProgression().size();
 
                 if (playerMaxJobs == 0 || playerMaxJobs != -1 && playerCurrentJobs >= playerMaxJobs)
                     return;
 
                 for (Job one : Jobs.getJobs()) {
-                    if (playerMaxJobs != -1 && jPlayer.progression.size() >= playerMaxJobs)
+                    if (playerMaxJobs != -1 && jPlayer.getJobProgression().size() >= playerMaxJobs)
                         return;
 
                     if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())

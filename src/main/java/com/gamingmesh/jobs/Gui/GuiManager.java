@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -97,7 +96,7 @@ public class GuiManager {
             Job job = jobsList.get(i);
             List<String> lore = new ArrayList<>();
 
-            for (JobProgression onePJob : jPlayer.progression) {
+            for (JobProgression onePJob : jPlayer.getJobProgression()) {
                 if (onePJob.getJob().getName().equalsIgnoreCase(job.getName())) {
                     lore.add(Jobs.getLanguage().getMessage("command.info.gui.working"));
                     break;
@@ -272,7 +271,7 @@ public class GuiManager {
         ItemStack guiItem = job.getGuiItem().clone();
 
         int level = prog != null ? prog.getLevel() : 1;
-        int numjobs = jPlayer.progression.size();
+        int numjobs = jPlayer.getJobProgression().size();
         int nextButton = Jobs.getGCManager().getJobsGUINextButton();
         int backButton = Jobs.getGCManager().getJobsGUIBackButton();
 
@@ -488,7 +487,7 @@ public class GuiManager {
         JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
         Boost boost = Jobs.getPlayerManager().getFinalBonus(jPlayer, job);
 
-        int numjobs = jPlayer.progression.size();
+        int numjobs = jPlayer.getJobProgression().size();
         int level = jPlayer.getJobProgression(job) != null ? jPlayer.getJobProgression(job).getLevel() : 1;
 
         ItemStack guiItem = job.getGuiItem().clone();
@@ -510,15 +509,15 @@ public class GuiManager {
 
                 double income = jInfo.getIncome(level, numjobs, jPlayer.maxJobsEquation);
                 income = boost.getFinalAmount(CurrencyType.MONEY, income);
-                String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
+                String incomeColor = income >= 0 ? "" : CMIChatColor.DARK_RED.toString();
 
                 double xp = jInfo.getExperience(level, numjobs, jPlayer.maxJobsEquation);
                 xp = boost.getFinalAmount(CurrencyType.EXP, xp);
-                String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
+                String xpColor = xp >= 0 ? "" : CMIChatColor.GRAY.toString();
 
                 double points = jInfo.getPoints(level, numjobs, jPlayer.maxJobsEquation);
                 points = boost.getFinalAmount(CurrencyType.POINTS, points);
-                String pointsColor = points >= 0 ? "" : ChatColor.RED.toString();
+                String pointsColor = points >= 0 ? "" : CMIChatColor.RED.toString();
 
                 if (income == 0D && points == 0D && xp == 0D)
                     continue;

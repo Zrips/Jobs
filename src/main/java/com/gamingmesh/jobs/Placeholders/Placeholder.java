@@ -382,7 +382,7 @@ public class Placeholder {
         try {
             int id = Integer.parseInt(value);
             if (id > 0)
-                return user.progression.get(id - 1);
+                return user.getJobProgression().get(id - 1);
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             Job job = Jobs.getJob(value);
             if (job != null)
@@ -465,18 +465,18 @@ public class Placeholder {
             case user_displayhonorific:
                 return user.getDisplayHonorific();
             case user_joinedjobcount:
-                return Integer.toString(user.progression.size());
+                return Integer.toString(user.getJobProgression().size());
             case user_archived_jobs:
                 return Integer.toString(user.getArchivedJobs().getArchivedJobs().size());
             case user_jobs:
                 StringBuilder jobNames = new StringBuilder();
-                for (JobProgression prog : user.progression) {
+                for (JobProgression prog : user.getJobProgression()) {
                     if (!jobNames.toString().isEmpty()) {
                         jobNames.append(LC.info_ListSpliter.getLocale());
                     }
                     jobNames.append(prog.getJob().getDisplayName());
                 }
-                if (user.progression.isEmpty()) {
+                if (user.getJobProgression().isEmpty()) {
                     if (Jobs.getNoneJob() != null)
                         jobNames.append(Jobs.getNoneJob().getDisplayName());
                 }
@@ -579,7 +579,7 @@ public class Placeholder {
                         if (!Jobs.getCommandManager().hasJobPermission(player, job) ||
                             user.isInJob(job) ||
                             job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots() ||
-                            !job.isIgnoreMaxJobs() && !Jobs.getPlayerManager().getJobsLimit(user, (short) user.progression.size()))
+                            !job.isIgnoreMaxJobs() && !Jobs.getPlayerManager().getJobsLimit(user, (short) user.getJobProgression().size()))
                             return convert(false);
 
                         return convert(true);

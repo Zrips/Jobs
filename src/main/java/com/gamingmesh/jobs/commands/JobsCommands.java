@@ -364,7 +364,7 @@ public class JobsCommands implements CommandExecutor {
         }
 
         int level = prog != null ? prog.getLevel() : 1;
-        int numjobs = player.progression.size();
+        int numjobs = player.getJobCount();
 
         for (JobInfo info : job.getJobInfo(type)) {
 

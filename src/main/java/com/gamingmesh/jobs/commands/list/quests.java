@@ -89,7 +89,7 @@ public class quests implements Cmd {
 
         Language.sendMessage(sender, "command.quests.toplineseparator", "[playerName]", jPlayer.getName(), "[questsDone]", jPlayer.getDoneQuests());
 
-        for (JobProgression jobProg : jPlayer.progression) {
+        for (JobProgression jobProg : jPlayer.getJobProgression()) {
             List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
 
             for (QuestProgression q : list) {
@@ -171,7 +171,7 @@ public class quests implements Cmd {
         gui.addLock(InvType.Gui);
         gui.addLock(InvType.Main);
 
-        for (JobProgression jobProg : jPlayer.progression) {
+        for (JobProgression jobProg : jPlayer.getJobProgression()) {
             List<QuestProgression> list = jPlayer.getQuestProgressions(jobProg.getJob());
 
             for (QuestProgression q : list) {

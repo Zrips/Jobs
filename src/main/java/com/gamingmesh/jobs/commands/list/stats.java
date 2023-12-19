@@ -35,7 +35,7 @@ public class stats implements Cmd {
             return true;
         }
 
-        if (jPlayer.progression.isEmpty()) {
+        if (jPlayer.getJobProgression().isEmpty()) {
             Language.sendMessage(sender, "command.stats.error.nojob");
             return true;
         }
