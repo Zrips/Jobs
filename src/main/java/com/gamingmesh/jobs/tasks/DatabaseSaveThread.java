@@ -21,44 +21,23 @@ package com.gamingmesh.jobs.tasks;
 import com.gamingmesh.jobs.Jobs;
 
 import net.Zrips.CMILib.Messages.CMIMessages;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class DatabaseSaveThread extends Thread {
-
-    private volatile boolean running = true;
-    private int sleep;
-
-    public DatabaseSaveThread(int duration) {
-	super("Jobs-DatabaseSaveTask");
-	this.sleep = duration * 60000;
-    }
+public class DatabaseSaveThread extends BukkitRunnable {
 
     @Override
     public void run() {
-
-	CMIMessages.consoleMessage("&eStarted database save task.");
-
-	while (running) {
-	    try {
-		sleep(sleep);
-	    } catch (InterruptedException e) {
-		this.running = false;
-		continue;
-	    }
-	    try {
-		Jobs.getPlayerManager().saveAll();
-	    } catch (Throwable t) {
-		t.printStackTrace();
-		CMIMessages.consoleMessage("&c[Jobs] Exception in DatabaseSaveTask, stopping auto save!");
-		running = false;
-	    }
-	}
-
-	CMIMessages.consoleMessage("&eDatabase save task shutdown!");
-
+        try {
+            Jobs.getPlayerManager().saveAll();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            CMIMessages.consoleMessage("&c[Jobs] Exception in DatabaseSaveTask, stopping auto save!");
+            cancel();
+        }
     }
 
     public void shutdown() {
-	this.running = false;
-	interrupt();
+        cancel();
+        CMIMessages.consoleMessage("&eDatabase save task shutdown!");
     }
 }

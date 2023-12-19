@@ -42,8 +42,8 @@ Jobs is designed for and officially supported on the following server engines:
 
 While other server engines are not officially supported, direct forks of Spigot and Paper _may_ still be compatible. Here are a few examples:
 
-- PurPur
-- Tuinity
+- Purpur
+- Pufferfish
 
 Please note that these unsupported engines are used 'as is' and may not offer the same level of support or performance as the officially supported engines.
 
