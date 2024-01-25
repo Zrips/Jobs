@@ -1087,7 +1087,7 @@ public final class JobsPaymentListener implements Listener {
         if (!Jobs.getGCManager().preventShopItemEnchanting)
             return;
 
-        if (!Jobs.getPlayerManager().containsItemBoostByNBT(event.getInventory().getContents()[0]))
+        if (!ItemBoostManager.containsItemBoostByNBT(event.getInventory().getContents()[0]))
             return;
 
         if (!CMIMaterial.get(event.getInventory().getContents()[1]).equals(CMIMaterial.ENCHANTED_BOOK))

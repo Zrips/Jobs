@@ -71,6 +71,7 @@ public class Placeholder {
         user_jobs,
 
         user_boost_$1_$2("jname/number", "money/exp/points"),
+        user_pboost_$1_$2("jname/number", "money/exp/points"),
         user_isin_$1("jname/number"),
         user_canjoin_$1("jname/number"),
         user_jlevel_$1("jname/number"),
@@ -535,6 +536,9 @@ public class Placeholder {
                 case user_boost_$1_$2:
                     Boost boost = Jobs.getPlayerManager().getFinalBonus(user, job, true, true);
                     return (vals.size() < 2 || j == null) ? "" : simplifyDouble(boost.getFinal(CurrencyType.getByName(vals.get(1)), false, true));
+                case user_pboost_$1_$2:
+                    boost = Jobs.getPlayerManager().getFinalBonus(user, job, true, true);
+                    return (vals.size() < 2 || j == null) ? "" : simplifyDouble(boost.getFinal(CurrencyType.getByName(vals.get(1)), false, true) * 100D);
                 case user_isin_$1:
                     return job == null ? "no" : convert(user.isInJob(job));
                 case user_job_$1:

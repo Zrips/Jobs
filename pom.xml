@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Jobs</groupId>
 	<artifactId>jobs</artifactId>
-	<version>5.2.2.1</version>
+	<version>5.2.2.2</version>
 	<name>Jobs</name>
 	<url>http://maven.apache.org</url>
 
@@ -288,7 +288,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-					<outputDirectory>build/jar</outputDirectory>
+					<outputDirectory>D:/MC/Server 1.20/plugins</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
