@@ -1370,6 +1370,10 @@ public final class JobsPaymentListener implements Listener {
 
         if (killer instanceof Player) { // Checking if killer is player
             pDamager = (Player) killer;
+        } else if (killer instanceof Projectile) { // Checking if killer is a projectile shot by a player
+            Projectile projectile = (Projectile) killer;
+
+            pDamager = projectile.getShooter() instanceof Player ? (Player) projectile.getShooter() : null;
         } else if (isMyPet) { // Checking if killer is MyPet animal
             UUID uuid = HookManager.getMyPetManager().getOwnerOfPet(killer);
 
