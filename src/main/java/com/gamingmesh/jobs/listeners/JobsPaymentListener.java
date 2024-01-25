@@ -1326,7 +1326,6 @@ public final class JobsPaymentListener implements Listener {
         }
 
         if (Jobs.getGCManager().MonsterDamageUse) {
-
             boolean ignore = false;
             if (Jobs.getGCManager().MonsterDamageIgnoreBosses) {
                 CMIEntityType etype = CMIEntityType.getByType(lVictim.getType());
@@ -1342,14 +1341,13 @@ public final class JobsPaymentListener implements Listener {
             if (!ignore) {
                 UUID lVictimUUID = lVictim.getUniqueId();
                 Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
-
                 if (damage != null) {
                     double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
-
                     damageDealtByPlayers.invalidate(lVictimUUID);
-
                     if (perc < Jobs.getGCManager().MonsterDamagePercentage)
                         return;
+                } else {
+                    return;
                 }
             }
         }
