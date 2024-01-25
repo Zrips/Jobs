@@ -84,6 +84,8 @@ public class Placeholder {
         user_jmaxexpunf_$1("jname/number"),
         user_jmaxlvl_$1("jname/number"),
         user_job_$1("jname/number"),
+        user_jobfull_$1("jname/number"),
+        user_jobshort_$1("jname/number"),
         user_title_$1("jname/number"),
         user_archived_jobs_level_$1("jname/number"),
         user_archived_jobs_exp_$1("jname/number"),
@@ -543,6 +545,10 @@ public class Placeholder {
                     return job == null ? "no" : convert(user.isInJob(job));
                 case user_job_$1:
                     return j == null ? "" : j.getJob().getName();
+                case user_jobfull_$1:
+                    return j == null ? "" : j.getJob().getDisplayName();
+                case user_jobshort_$1:
+                    return j == null ? "" : j.getJob().getShortName();
                 case user_title_$1:
                     if (j == null)
                         return "";
