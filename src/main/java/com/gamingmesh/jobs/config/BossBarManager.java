@@ -36,6 +36,12 @@ public class BossBarManager {
     }
 
     public void ShowJobProgression(final JobsPlayer player, final JobProgression jobProg, double expGain) {
+        if (Version.getCurrent().isLower(Version.v1_9_R1) || !Jobs.getGCManager().BossBarsMessageByDefault)
+            return;
+
+        if (!ToggleBarHandling.getBossBarToggle().getOrDefault(player.getUniqueId().toString(), true))
+            return;
+
         if (Jobs.getGCManager().isBossBarAsync()) {
             CMIScheduler.get().runTaskAsynchronously(() -> ShowJobProgressionInTask(player, jobProg, expGain));
         } else {
@@ -44,12 +50,6 @@ public class BossBarManager {
     }
 
     private synchronized void ShowJobProgressionInTask(final JobsPlayer player, final JobProgression jobProg, double expGain) {
-        if (Version.getCurrent().isLower(Version.v1_9_R1) || !Jobs.getGCManager().BossBarsMessageByDefault)
-            return;
-
-        if (!ToggleBarHandling.getBossBarToggle().getOrDefault(player.getUniqueId().toString(), true))
-            return;
-
         BossBar bar = null;
         BossBarInfo oldOne = null;
         for (BossBarInfo one : player.getBossBarInfo()) {
