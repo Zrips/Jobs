@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import com.gamingmesh.jobs.api.JobsBlockOwnershipRegisterEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -102,6 +103,12 @@ public class BlockOwnerShip {
 	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
 	if (jPlayer == null) {
 	    return ownershipFeedback.invalid;
+	}
+
+	JobsBlockOwnershipRegisterEvent jobsBlockOwnershipRegisterEvent = new JobsBlockOwnershipRegisterEvent(player, block);
+	Bukkit.getServer().getPluginManager().callEvent(jobsBlockOwnershipRegisterEvent);
+	if(jobsBlockOwnershipRegisterEvent.isCancelled()) {
+		return ownershipFeedback.invalid;
 	}
 
 	UUID ownerUUID = this.getOwnerByLocation(block.getLocation());
