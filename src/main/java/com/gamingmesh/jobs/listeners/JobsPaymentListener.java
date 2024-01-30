@@ -1341,14 +1341,14 @@ public final class JobsPaymentListener implements Listener {
             if (!ignore) {
                 UUID lVictimUUID = lVictim.getUniqueId();
                 Double damage = damageDealtByPlayers.getIfPresent(lVictimUUID);
-                if (damage != null) {
-                    double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
-                    damageDealtByPlayers.invalidate(lVictimUUID);
-                    if (perc < Jobs.getGCManager().MonsterDamagePercentage)
-                        return;
-                } else {
+                // Not paying if we have no records about damage done to an entity by the player's
+                if (damage == null)
                     return;
-                }
+
+                double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
+                damageDealtByPlayers.invalidate(lVictimUUID);
+                if (perc < Jobs.getGCManager().MonsterDamagePercentage)
+                    return;
             }
         }
 
