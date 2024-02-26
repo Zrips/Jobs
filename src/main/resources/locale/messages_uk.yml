@@ -1,4 +1,4 @@
-# Translated into Ukrainian: stefanbanderovych (discord)
+# Translated into Ukrainian: stefanbanderovych2 (discord)
 economy:
   error:
     nomoney: '&cВибачте, але у національному банку не залишилося коштів!'
@@ -48,7 +48,7 @@ command:
       cmdFormat: '&7/[command] &f[arguments]'
       helpPageDescription: '&2* [description]'
       title: '&e-------&e ======= &6Роботи &e======= &e-------'
-      page: '&e-----&e ==== Сторінка &6[1] &eиз &6[2] &e==== &e-----'
+      page: '&e-----&e ==== Сторінка &6[1] &eз &6[2] &e==== &e-----'
       fliperSimbols: '&e----------'
       prevPage: '&2---<< &6Назад '
       prevPageOff: '&7---<< Назад '
@@ -257,9 +257,9 @@ command:
     error:
       nojob: Спочатку влаштуйтеся на роботу.
     output:
-      message: 'Рівень %joblevel% для %jobname%: %jobxp%/%jobmaxxp% оп.'
+      message: 'Рівень %joblevel% для %jobname%: %jobxp%/%jobmaxxp% дос.'
       max-level: '     &cМакс. рівень   -   %jobname%'
-    bossBarOutput: 'Ур. %joblevel% %jobname%: %jobxp%/%jobmaxxp% оп.%gain%'
+    bossBarOutput: 'Рів. %joblevel% %jobname%: %jobxp%/%jobmaxxp% дос.%gain%'
     bossBarGain: ' &7(&f%gain%&7)'
   shop:
     help:
@@ -270,7 +270,7 @@ command:
       currentPoints: '&eУ вас: &6%currentpoints%'
       price: '&eЦіна: &6%price%'
       reqJobs: '&eНеобхідні роботи:'
-      reqJobsList: '  &6%jobsname%&e: &e%level% ур.'
+      reqJobsList: '  &6%jobsname%&e: &e%level% рів.'
       reqTotalLevel: '&6Потрібен сукупний рівень: &e%totalLevel%'
       reqJobsColor: '&c'
       reqJobsLevelColor: '&4'
@@ -307,7 +307,7 @@ command:
       newMax: ' &eМакс. рівень: &f[max]'
       material: '&7%material%'
       levelRange: ' &a(&e%levelFrom% &a- &e%levelUntil% &aрівнів)'
-      levelFrom: ' &a(от &e%levelFrom% &aрівня)'
+      levelFrom: ' &a(від &e%levelFrom% &aрівня)'
       levelUntil: ' &a(до &e%levelUntil% &aрівня)'
       money: ' &2%money%$'
       points: ' &6%points%оч.'
@@ -532,7 +532,7 @@ command:
       nojob: Не вдалося знайти будь-які дані.
     output:
       topline: '&aТоп&e %amount% &aгравців на всіх роботах'
-      list: '&e%number%&a. &e%playername% &aрів. &e%level% &aс&e %exp% &aоч.'
+      list: '&e%number%&a. &e%playername% &aрів. &e%level% &aс&e %exp% &aдос.'
       prev: '&e<<< Попер. сторінка &2|'
       next: '&2|&e Наст. сторінка >>>'
       show: '&2Показується глобальний топ з &e[from] &2до &e[until]'
@@ -566,7 +566,7 @@ command:
       money: '&6гроші: %amount% '
       exp: '&eдосвід: %amount% '
       points: '&6очки: %amount%'
-      totalIncomes: '    &6Усього грошей:&2 %money%&6, Усього досвіду:&2 %exp%&6, Усього очок:&2 %points%'
+      totalIncomes: '    &6Усього грошей:&2 %money%&6, Усього досвіду:&2 %exp%&6, Усього досвіду:&2 %points%'
       bottomline: '&7***********************************************************'
       prev: '&e<<< Попер. сторінка &2|'
       next: '&2|&e Наст. сторінка >>>'
@@ -581,7 +581,7 @@ command:
       money: '&6гроші: %amount% '
       exp: '&eдосвід: %amount% '
       points: '&6очки: %amount%'
-      totalIncomes: '    &6Усього грошей:&2 %money%&6, Усього досвіду:&2 %exp%&6, Усього очок:&2 %points%'
+      totalIncomes: '    &6Усього грошей:&2 %money%&6, Усього досвіду:&2 %exp%&6, Усього досвіду:&2 %points%'
       bottomline: '&7**************************************************************'
       nodata: '&cДані не знайдені'
   transfer:
