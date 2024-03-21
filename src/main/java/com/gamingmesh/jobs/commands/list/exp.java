@@ -102,20 +102,23 @@ public class exp implements Cmd {
             JobProgression prog = jPlayer.getJobProgression(job);
 
             switch (action) {
-            case Add:
-                int oldLevel = prog.getLevel();
-                if (prog.addExperience(amount))
-                    Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
-                break;
-            case Set:
-                prog.setExperience(amount);
-                break;
-            case Take:
-                prog.takeExperience(amount);
-                break;
-            default:
-                break;
+                case Add:
+                    int oldLevel = prog.getLevel();
+                    if (prog.addExperience(amount))
+                        Jobs.getPlayerManager().performLevelUp(jPlayer, prog.getJob(), oldLevel);
+                    break;
+                case Set:
+                    prog.setExperience(amount);
+                    break;
+                case Take:
+                    prog.takeExperience(amount);
+                    break;
+                default:
+                    break;
             }
+
+            jPlayer.setSaved(false);
+            jPlayer.save(true);
 
             Player player = jPlayer.getPlayer();
             if (player == null) {
