@@ -259,21 +259,24 @@ public class BlockOwnerShip {
     }
 
     public int clear(UUID uuid) {
-	HashMap<String, blockLoc> ls = blockOwnerShips.remove(uuid);
-	if (ls == null)
-	    return 0;
+		HashMap<String, blockLoc> ls = blockOwnerShips.remove(uuid);
+		if (ls == null) {
+			return 0;
+		}
 
-	for (blockLoc one : ls.values()) {
-	    one.getBlock().removeMetadata(metadataName, plugin);
+		for (blockLoc one : ls.values()) {
+			if (one.getBlock() != null) {
+				one.getBlock().removeMetadata(metadataName, plugin);
 
-	    Map<String, UUID> oldRecord = ownerMapByLocation.get(one.getWorldName());
-	    if (oldRecord != null)
-		oldRecord.remove(one.toVectorString());
+				Map<String, UUID> oldRecord = ownerMapByLocation.get(one.getWorldName());
+				if (oldRecord != null)
+					oldRecord.remove(one.toVectorString());
+			}
 
+		}
+
+		return ls.size();
 	}
-
-	return ls.size();
-    }
 
     public int remove(UUID uuid, String location) {
 	HashMap<String, blockLoc> ls = blockOwnerShips.get(uuid);
