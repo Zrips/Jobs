@@ -1453,7 +1453,8 @@ public final class Jobs extends JavaPlugin {
         payment.set(CurrencyType.MONEY, jobsPrePaymentEvent.getAmount());
         payment.set(CurrencyType.POINTS, jobsPrePaymentEvent.getPoints());
 
-        JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, expPayment);
+        JobsExpGainEvent jobsExpGainEvent = new JobsExpGainEvent(payment.getOfflinePlayer(), job, expPayment,
+                block, ent, victim, info);
         Bukkit.getServer().getPluginManager().callEvent(jobsExpGainEvent);
         // If event is canceled, don't do anything
         if (jobsExpGainEvent.isCancelled())

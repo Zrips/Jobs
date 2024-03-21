@@ -24,16 +24,11 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
 
     private boolean cancelled = false;
 
-    public JobsExpGainEvent(OfflinePlayer offlinePlayer, Job job, double exp) {
-	this.offlinePlayer = offlinePlayer;
-	this.job = job;
-	this.exp = exp;
-    }
-
     public JobsExpGainEvent(OfflinePlayer offlinePlayer, Job job, double exp, Block block,
 		Entity entity, LivingEntity living, ActionInfo info) {
-	this(offlinePlayer, job, exp);
-
+    this.offlinePlayer = offlinePlayer;
+    this.job = job;
+    this.exp = exp;
 	this.block = block;
 	this.entity = entity;
 	this.living = living;
