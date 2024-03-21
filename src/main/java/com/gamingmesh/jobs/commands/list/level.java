@@ -110,6 +110,9 @@ public class level implements Cmd {
                     break;
                 }
 
+                jPlayer.setSaved(false);
+                jPlayer.save(true);
+
                 Player player = jPlayer.getPlayer();
                 if (player != null)
                     Language.sendMessage(player, "command.level.output.target", "%jobname%", job.getDisplayName(), "%level%", prog.getLevel(),
