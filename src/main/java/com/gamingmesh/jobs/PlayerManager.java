@@ -1182,33 +1182,31 @@ public class PlayerManager {
         if (!Jobs.getGCManager().AutoJobJoinUse || player == null || player.isOp())
             return;
 
-        CMIScheduler.get().runTaskLater(new Runnable() {
-            @Override
-            public void run() {
-                if (!player.isOnline())
+        CMIScheduler.runTaskLater(() -> {
+            if (!player.isOnline())
+                return;
+
+            JobsPlayer jPlayer = getJobsPlayer(player);
+            if (jPlayer == null || player.hasPermission("jobs.*"))
+                return;
+
+            int playerMaxJobs = getMaxJobs(jPlayer);
+            int playerCurrentJobs = jPlayer.getJobProgression().size();
+
+            if (playerMaxJobs == 0 || playerMaxJobs != -1 && playerCurrentJobs >= playerMaxJobs)
+                return;
+
+            for (Job one : Jobs.getJobs()) {
+                if (playerMaxJobs != -1 && jPlayer.getJobProgression().size() >= playerMaxJobs)
                     return;
 
-                JobsPlayer jPlayer = getJobsPlayer(player);
-                if (jPlayer == null || player.hasPermission("jobs.*"))
-                    return;
+                if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
+                    continue;
 
-                int playerMaxJobs = getMaxJobs(jPlayer);
-                int playerCurrentJobs = jPlayer.getJobProgression().size();
-
-                if (playerMaxJobs == 0 || playerMaxJobs != -1 && playerCurrentJobs >= playerMaxJobs)
-                    return;
-
-                for (Job one : Jobs.getJobs()) {
-                    if (playerMaxJobs != -1 && jPlayer.getJobProgression().size() >= playerMaxJobs)
-                        return;
-
-                    if (one.getMaxSlots() != null && Jobs.getUsedSlots(one) >= one.getMaxSlots())
-                        continue;
-
-                    if (!jPlayer.isInJob(one) && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
-                        joinJob(jPlayer, one);
-                }
+                if (!jPlayer.isInJob(one) && player.hasPermission("jobs.autojoin." + one.getName().toLowerCase()))
+                    joinJob(jPlayer, one);
             }
+
         }, Jobs.getGCManager().AutoJobJoinDelay * 20L);
     }
 }

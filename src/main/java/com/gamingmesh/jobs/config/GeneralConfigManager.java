@@ -35,12 +35,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.container.CurrencyLimit;
 import com.gamingmesh.jobs.container.CurrencyType;
 
 import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.Container.CMIList;
+import net.Zrips.CMILib.Enchants.CMIEnchantment;
 import net.Zrips.CMILib.Equations.Parser;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
@@ -582,7 +582,7 @@ public class GeneralConfigManager {
 
             Enchantment enchant = null;
             if (ench != null) {
-                enchant = CMIEnchantment.getEnchantment(ench);
+                enchant = CMIEnchantment.getByName(ench);
             }
 
             Integer level = null;

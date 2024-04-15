@@ -15,7 +15,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.JobInfo;
 import com.gamingmesh.jobs.container.NameList;
@@ -23,6 +22,7 @@ import com.gamingmesh.jobs.hooks.HookManager;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Container.CMIText;
+import net.Zrips.CMILib.Enchants.CMIEnchantment;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIMaterial;

@@ -95,7 +95,6 @@ import org.jetbrains.annotations.NotNull;
 import com.bgsoftware.wildstacker.api.enums.StackSplit;
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.actions.BlockActionInfo;
 import com.gamingmesh.jobs.actions.BlockCollectInfo;
 import com.gamingmesh.jobs.actions.CustomKillInfo;
@@ -128,6 +127,8 @@ import net.Zrips.CMILib.CMILib;
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMILocation;
+import net.Zrips.CMILib.Enchants.CMIEnchantEnum;
+import net.Zrips.CMILib.Enchants.CMIEnchantment;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMC;
@@ -469,7 +470,7 @@ public final class JobsPaymentListener implements Listener {
 
             if (item.getType() != Material.AIR && Jobs.getBpManager().isInBp(block)) {
                 for (Enchantment one : item.getEnchantments().keySet()) {
-                    if (CMIEnchantment.get(one) == CMIEnchantment.SILK_TOUCH) {
+                    if (CMIEnchantment.get(one).equalEnum(CMIEnchantEnum.SILK_TOUCH)) {
                         return;
                     }
                 }
@@ -840,13 +841,11 @@ public final class JobsPaymentListener implements Listener {
     private static String getEnchantName(Enchantment enchant) {
         try {
             return enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
-
         } catch (Throwable e) {
             CMIEnchantment cmiEnchant = CMIEnchantment.get(enchant);
             if (cmiEnchant != null)
-                return cmiEnchant.toString();
+                return cmiEnchant.getKeyName();
         }
-
         return null;
     }
 

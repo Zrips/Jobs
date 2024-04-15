@@ -35,10 +35,10 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.actions.EnchantActionInfo;
 import com.gamingmesh.jobs.container.JobsWorld;
 
+import net.Zrips.CMILib.Enchants.CMIEnchantment;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Version.Version;
 
@@ -382,8 +382,8 @@ public final class Util {
     }
 
     public static boolean enchantMatchesActionInfo(String enchant, EnchantActionInfo actionInfo) {
-        CMIEnchantment e = CMIEnchantment.get(actionInfo.getName());
-        String enchantName = e != null ? CMIEnchantment.get(actionInfo.getName()).toString() : actionInfo.getName();
+        CMIEnchantment e = CMIEnchantment.getCMIByName(actionInfo.getName());
+        String enchantName = e != null ? e.getKeyName() : actionInfo.getName();
 
         return (
         // Enchantment without level e.g. silk_touch

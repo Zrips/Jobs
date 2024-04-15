@@ -18,7 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionType;
 
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.container.Job;
 import com.gamingmesh.jobs.container.JobItems;
 import com.gamingmesh.jobs.container.JobProgression;
@@ -28,6 +27,7 @@ import com.gamingmesh.jobs.stuff.GiveItem;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMIList;
+import net.Zrips.CMILib.Enchants.CMIEnchantment;
 import net.Zrips.CMILib.GUI.CMIGui;
 import net.Zrips.CMILib.GUI.CMIGuiButton;
 import net.Zrips.CMILib.GUI.GUIManager.GUIClickType;
@@ -494,7 +494,7 @@ public class ShopManager {
                                 if (split.length == 0)
                                     continue;
 
-                                Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
+                                Enchantment ench = CMIEnchantment.getByName(split[0]);
                                 if (ench == null)
                                     continue;
 

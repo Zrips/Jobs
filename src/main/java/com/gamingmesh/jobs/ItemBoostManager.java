@@ -11,7 +11,6 @@ import java.util.Set;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.container.BoostMultiplier;
 import com.gamingmesh.jobs.container.CurrencyType;
 import com.gamingmesh.jobs.container.Job;
@@ -19,6 +18,7 @@ import com.gamingmesh.jobs.container.JobItems;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMIList;
+import net.Zrips.CMILib.Enchants.CMIEnchantment;
 import net.Zrips.CMILib.FileHandler.ConfigReader;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
@@ -147,7 +147,7 @@ public final class ItemBoostManager {
                         if (split.length == 0)
                             continue;
 
-                        Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
+                        Enchantment ench = CMIEnchantment.getByName(split[0]);
 
                         if (ench == null)
                             continue;

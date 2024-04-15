@@ -37,7 +37,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import com.gamingmesh.jobs.ItemBoostManager;
 import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.CMILib.CMIEnchantment;
 import com.gamingmesh.jobs.Gui.GuiItem;
 import com.gamingmesh.jobs.container.ActionType;
 import com.gamingmesh.jobs.container.BoostMultiplier;
@@ -57,6 +56,7 @@ import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMIList;
+import net.Zrips.CMILib.Enchants.CMIEnchantment;
 import net.Zrips.CMILib.Entities.CMIEntityType;
 import net.Zrips.CMILib.Equations.ParseError;
 import net.Zrips.CMILib.Equations.Parser;
@@ -624,8 +624,8 @@ public class ConfigManager {
                 }
 
                 if (matId != null && (material = CMIMaterial.get(matId)) != CMIMaterial.NONE) {
-                    Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " is using ID: " + myKey + "!");
-                    Jobs.getPluginLogger().warning("Please use the Material name instead: " + material.toString() + "!");
+                    CMIMessages.consoleMessage("Job " + jobName + " " + actionType.getName() + " is using ID: " + myKey + "!");
+                    CMIMessages.consoleMessage("Please use the Material name instead: " + material.toString() + "!");
                 }
             }
 
@@ -638,7 +638,7 @@ public class ConfigManager {
             return null;
 
         if (material.getMaterial() != null && material.isAir()) {
-            Jobs.getPluginLogger().warning("Job " + jobName + " " + actionType.getName() + " can't recognize material! (" + myKey + ")");
+            CMIMessages.consoleMessage("Job " + jobName + " " + actionType.getName() + " can't recognize material! (" + myKey + ")");
             return null;
         }
 
@@ -675,7 +675,7 @@ public class ConfigManager {
             // These actions MUST be blocks
             if (actionType == ActionType.BREAK || actionType == ActionType.PLACE || actionType == ActionType.STRIPLOGS) {
                 if (!material.isBlock() || material.getMaterial().toString().equalsIgnoreCase("AIR")) {
-                    Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
+                    CMIMessages.consoleMessage("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + material
                         + " (" + myKey + ")! Material must be a block! Use \"/jobs blockinfo\" on a target block");
                     return null;
                 }
@@ -693,14 +693,14 @@ public class ConfigManager {
              * configurations broken.
              */
             if (material == CMIMaterial.REDSTONE_ORE && actionType == ActionType.BREAK && Version.isCurrentLower(Version.v1_13_R1)) {
-                Jobs.getPluginLogger().warning("Job " + jobName + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
-                Jobs.getPluginLogger().warning("Automatically changing block to GLOWING_REDSTONE_ORE. Please update your configuration.");
-                Jobs.getPluginLogger().warning("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
-                Jobs.getPluginLogger().warning("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
+                CMIMessages.consoleMessage("Job " + jobName + " is using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE.");
+                CMIMessages.consoleMessage("Automatically changing block to GLOWING_REDSTONE_ORE. Please update your configuration.");
+                CMIMessages.consoleMessage("In vanilla minecraft, REDSTONE_ORE changes to GLOWING_REDSTONE_ORE when interacted with.");
+                CMIMessages.consoleMessage("In the future, Jobs using REDSTONE_ORE instead of GLOWING_REDSTONE_ORE may fail to work correctly.");
                 material = CMIMaterial.LEGACY_GLOWING_REDSTONE_ORE;
             } else if (material == CMIMaterial.LEGACY_GLOWING_REDSTONE_ORE && actionType == ActionType.BREAK && Version.isCurrentEqualOrHigher(Version.v1_13_R1)) {
-                Jobs.getPluginLogger().warning("Job " + jobName + " is using GLOWING_REDSTONE_ORE instead of REDSTONE_ORE.");
-                Jobs.getPluginLogger().warning("Automatically changing block to REDSTONE_ORE. Please update your configuration.");
+                CMIMessages.consoleMessage("Job " + jobName + " is using GLOWING_REDSTONE_ORE instead of REDSTONE_ORE.");
+                CMIMessages.consoleMessage("Automatically changing block to REDSTONE_ORE. Please update your configuration.");
                 material = CMIMaterial.REDSTONE_ORE;
             }
             // END HACK
@@ -777,16 +777,15 @@ public class ConfigManager {
                 }
             }
         } else if (actionType == ActionType.ENCHANT) {
-            Enchantment enchant = CMIEnchantment.getEnchantment(myKey);
 
-            if (enchant == null && material == CMIMaterial.NONE) {
-                Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
+            CMIEnchantment cmiEnchant = CMIEnchantment.getCMIByName(myKey);
+
+            if (cmiEnchant == null && material == CMIMaterial.NONE) {
+                CMIMessages.consoleMessage("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
                 return null;
             }
 
-            CMIEnchantment cmiEnchant = CMIEnchantment.get(enchant);
-
-            type = cmiEnchant != null ? cmiEnchant.toString() : enchant == null ? myKey : enchant.getKey().getKey().toLowerCase().replace("_", "").replace("minecraft:", "");
+            type = cmiEnchant != null ? cmiEnchant.getKeyName() : myKey;
 
         } else if (actionType == ActionType.CUSTOMKILL || actionType == ActionType.COLLECT || actionType == ActionType.MMKILL
             || actionType == ActionType.BAKE || actionType == ActionType.SMELT) {
@@ -798,7 +797,7 @@ public class ConfigManager {
             try {
                 amount = Integer.valueOf(myKey);
             } catch (NumberFormatException e) {
-                Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
+                CMIMessages.consoleMessage("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
                 return null;
             }
 
@@ -822,7 +821,7 @@ public class ConfigManager {
         }
 
         if (type == null) {
-            Jobs.getPluginLogger().warning("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
+            CMIMessages.consoleMessage("Job " + jobName + " has an invalid " + actionType.getName() + " type property: " + myKey + "!");
             return null;
         }
 
@@ -1214,10 +1213,10 @@ public class ConfigManager {
                         CMIMessages.consoleMessage("&5Update " + jobConfigName + " jobs gui item section to use `ItemStack` instead of `Item` sections format. More information inside _EXAMPLE job file");
                         informedGUI = true;
                     }
-                    
+
                     gItem.setGuiItem(guiItem);
                 } else if (guiSection.isInt("Id") && guiSection.isInt("Data")) {
-                    guiItem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();                    
+                    guiItem = CMIMaterial.get(guiSection.getInt("Id"), guiSection.getInt("Data")).newItemStack();
                     gItem.setGuiItem(guiItem);
                     CMIMessages.consoleMessage("Update " + jobConfigName + " jobs gui item section to use `Item` instead of `Id` and `Data` sections");
                 } else
@@ -1230,7 +1229,7 @@ public class ConfigManager {
                         if (id.length < 2)
                             continue;
 
-                        Enchantment enchant = CMIEnchantment.getEnchantment(id[0]);
+                        Enchantment enchant = CMIEnchantment.getByName(id[0]);
                         if (enchant == null)
                             continue;
 
@@ -1369,7 +1368,7 @@ public class ConfigManager {
                             if (split.length == 0)
                                 continue;
 
-                            Enchantment ench = CMIEnchantment.getEnchantment(split[0]);
+                            Enchantment ench = CMIEnchantment.getByName(split[0]);
                             if (ench == null)
                                 continue;
 
