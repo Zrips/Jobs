@@ -47,7 +47,7 @@ public class stats implements Cmd {
         String pref = JobsCommands.LABEL + " " + info.class.getSimpleName() + " ";
 
         for (JobProgression jobProg : jPlayer.getJobProgression()) {
-            for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg, sender instanceof Player).split("\n")) {
+            for (String msg : Jobs.getCommandManager().jobStatsMessage(jobProg,  jPlayer, sender instanceof Player).split("\n")) {
                 new RawMessage().addText(msg).addHover(leftClick).addCommand(pref + jobProg.getJob().getName()).show(sender);
             }
         }

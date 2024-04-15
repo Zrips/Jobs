@@ -25,14 +25,14 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
     private boolean cancelled = false;
 
     public JobsExpGainEvent(OfflinePlayer offlinePlayer, Job job, double exp, Block block,
-		Entity entity, LivingEntity living, ActionInfo info) {
-    this.offlinePlayer = offlinePlayer;
-    this.job = job;
-    this.exp = exp;
-	this.block = block;
-	this.entity = entity;
-	this.living = living;
-	this.info = info;
+        Entity entity, LivingEntity living, ActionInfo info) {
+        this.offlinePlayer = offlinePlayer;
+        this.job = job;
+        this.exp = exp;
+        this.block = block;
+        this.entity = entity;
+        this.living = living;
+        this.info = info;
     }
 
     /**
@@ -41,7 +41,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
      * @return {@link OfflinePlayer}
      */
     public OfflinePlayer getPlayer() {
-	return offlinePlayer;
+        return offlinePlayer;
     }
 
     /**
@@ -50,7 +50,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
      * @return {@link Job}
      */
     public Job getJob() {
-	return job;
+        return job;
     }
 
     /**
@@ -59,7 +59,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
      * @return the amount of experience the player got
      */
     public double getExp() {
-	return exp;
+        return exp;
     }
 
     /**
@@ -68,7 +68,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
      * @param exp the new value
      */
     public void setExp(double exp) {
-	this.exp = exp;
+        this.exp = exp;
     }
 
     /**
@@ -77,7 +77,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
      * @return {@link Block}
      */
     public Block getBlock() {
-	return block;
+        return block;
     }
 
     /**
@@ -88,7 +88,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
      * @return {@link Entity}
      */
     public Entity getEntity() {
-	return entity;
+        return entity;
     }
 
     /**
@@ -97,7 +97,7 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
      * @return {@link LivingEntity}
      */
     public LivingEntity getLivingEntity() {
-	return living;
+        return living;
     }
 
     /**
@@ -106,16 +106,16 @@ public final class JobsExpGainEvent extends BaseEvent implements Cancellable {
      * @return {@link ActionInfo}
      */
     public ActionInfo getActionInfo() {
-	return info;
+        return info;
     }
 
     @Override
     public boolean isCancelled() {
-	return cancelled;
+        return cancelled;
     }
 
     @Override
     public void setCancelled(boolean cancelled) {
-	this.cancelled = cancelled;
+        this.cancelled = cancelled;
     }
 }

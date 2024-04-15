@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,6 +27,7 @@ import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
+import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMIArray;
 import net.Zrips.CMILib.Container.PageInfo;
 import net.Zrips.CMILib.Locale.LC;
@@ -373,15 +373,15 @@ public class JobsCommands implements CommandExecutor {
             double income = info.getIncome(level, numjobs, player.maxJobsEquation);
 
             income = boost.getFinalAmount(CurrencyType.MONEY, income);
-            String incomeColor = income >= 0 ? "" : ChatColor.DARK_RED.toString();
+            String incomeColor = income >= 0 ? "" : CMIChatColor.DARK_RED.toString();
 
             double xp = info.getExperience(level, numjobs, player.maxJobsEquation);
             xp = boost.getFinalAmount(CurrencyType.EXP, xp);
-            String xpColor = xp >= 0 ? "" : ChatColor.GRAY.toString();
+            String xpColor = xp >= 0 ? "" : CMIChatColor.GRAY.toString();
 
             double points = info.getPoints(level, numjobs, player.maxJobsEquation);
             points = boost.getFinalAmount(CurrencyType.POINTS, points);
-            String pointsColor = xp >= 0 ? "" : ChatColor.RED.toString();
+            String pointsColor = xp >= 0 ? "" : CMIChatColor.RED.toString();
 
             if (income == 0D && points == 0D && xp == 0D)
                 continue;
@@ -390,7 +390,7 @@ public class JobsCommands implements CommandExecutor {
 
             message.append(Jobs.getLanguage().getMessage("command.info.help.material", "%material%", materialName));
             if (prog != null && !info.isInLevelRange(prog.getLevel()))
-                message.append(ChatColor.RED + " -> ");
+                message.append(CMIChatColor.RED + " -> ");
             else
                 message.append(" -> ");
 
@@ -417,19 +417,27 @@ public class JobsCommands implements CommandExecutor {
         return message.toString();
     }
 
+    @Deprecated
+    public String jobStatsMessage(JobProgression jobProg) {
+        return jobStatsMessage(jobProg, null, true);
+    }
+
+    @Deprecated
+    public String jobStatsMessage(JobProgression jobProg,  boolean progressBar) {
+        return jobStatsMessage(jobProg, null, progressBar);        
+    }
+    
     /**
      * Displays job stats about a particular player's job
      * @param jobProg - the job progress of the players job
+     * @param jPlayer - the player of the job
+     * @param progressBar - if the progress bar should be displayed
      * @return the message
      */
-    public String jobStatsMessage(JobProgression jobProg) {
-        return jobStatsMessage(jobProg, true);
-    }
+    public String jobStatsMessage(JobProgression jobProg, JobsPlayer jPlayer, boolean progressBar) {
 
-    public String jobStatsMessage(JobProgression jobProg, boolean progressBar) {
-        boolean isMaxLevelReached = jobProg.getLevel() == jobProg.getJob().getMaxLevel();
-        String path = "command.stats.output." + (isMaxLevelReached ? "max-level"
-            : "message");
+        boolean isMaxLevelReached = jobProg.getLevel() >= (jPlayer == null ? jobProg.getJob().getMaxLevel() : jPlayer.getMaxJobLevelAllowed(jobProg.getJob()));
+        String path = "command.stats.output." + (isMaxLevelReached ? "max-level" : "message");
 
         Title title = Jobs.getTitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
         String message = Jobs.getLanguage().getMessage(path,

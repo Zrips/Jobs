@@ -103,7 +103,7 @@ public class gtop implements Cmd {
         pi.autoPagination(sender, "jobs gtop");
     }
 
-    private static boolean hasToBeSeenInGlobalTop(TopList topList) {
+    public static boolean hasToBeSeenInGlobalTop(TopList topList) {
         Player player = topList.getPlayerInfo().getJobsPlayer().getPlayer();
         if (player != null)
             return !player.hasPermission("jobs.hidegtop");
