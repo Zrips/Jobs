@@ -1460,6 +1460,8 @@ public final class Jobs extends JavaPlugin {
         if (jobsExpGainEvent.isCancelled())
             return;
 
+        checkDailyQuests(jPlayer, job, info);
+
         payment.set(CurrencyType.EXP, jobsExpGainEvent.getExp());
 
         boolean limited = true;

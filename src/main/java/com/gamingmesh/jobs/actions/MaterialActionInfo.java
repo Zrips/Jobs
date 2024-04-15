@@ -26,6 +26,7 @@ import com.gamingmesh.jobs.container.BaseActionInfo;
 public abstract class MaterialActionInfo extends BaseActionInfo {
     private Material material;
     private byte data;
+
     public MaterialActionInfo(Material material, byte data, ActionType type) {
         super(type);
         this.material = material;
@@ -39,7 +40,7 @@ public abstract class MaterialActionInfo extends BaseActionInfo {
 
     @Override
     public String getNameWithSub() {
-	return getName() + ":" + data;
+        return getName() + ":" + data;
     }
 
 }
