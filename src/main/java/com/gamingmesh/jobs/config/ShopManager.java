@@ -36,6 +36,7 @@ import net.Zrips.CMILib.Items.CMIAsyncHead;
 import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
+import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 
 @SuppressWarnings("deprecation")
@@ -185,6 +186,7 @@ public class ShopManager {
             }
 
             meta.setLore(lore);
+            guiItem.setItemMeta(meta);
 
             CMIGuiButton button = new CMIGuiButton(guiItem) {
                 @Override
