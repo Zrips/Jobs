@@ -132,7 +132,6 @@ import net.Zrips.CMILib.Items.CMIItemStack;
 import net.Zrips.CMILib.Items.CMIMC;
 import net.Zrips.CMILib.Items.CMIMaterial;
 import net.Zrips.CMILib.Locale.LC;
-import net.Zrips.CMILib.Logs.CMIDebug;
 import net.Zrips.CMILib.Messages.CMIMessages;
 import net.Zrips.CMILib.Version.Version;
 import net.Zrips.CMILib.Version.Schedulers.CMIScheduler;
@@ -144,16 +143,13 @@ public final class JobsPaymentListener implements Listener {
 
     private final Cache<UUID, Double> damageDealtByPlayers = CacheBuilder.newBuilder()
         .expireAfterWrite(5, TimeUnit.MINUTES)
-        .weakKeys()
         .build();
     private final Cache<UUID, Entity> punchedEndCrystals = CacheBuilder.newBuilder()
         .expireAfterWrite(10, TimeUnit.SECONDS)
-        .weakKeys()
         .build();
 
     private final Cache<UUID, Player> entityLastDamager = CacheBuilder.newBuilder()
         .expireAfterWrite(5, TimeUnit.MINUTES)
-        .weakKeys()
         .build();
     private Cache<UUID, Long> cowMilkingTimer;
 
@@ -163,7 +159,6 @@ public final class JobsPaymentListener implements Listener {
         if (Jobs.getGCManager().CowMilkingTimer > 0) {
             cowMilkingTimer = CacheBuilder.newBuilder()
                 .expireAfterWrite(Jobs.getGCManager().CowMilkingTimer, TimeUnit.MILLISECONDS)
-                .weakKeys()
                 .build();
         }
     }
@@ -822,9 +817,7 @@ public final class JobsPaymentListener implements Listener {
         else if (b == null)
             return false;
 
-        CMIMaterial mat1 = CMIMaterial.get(a),
-            mat2 = CMIMaterial.get(b);
-        return mat1 == mat2 && Util.getDurability(a) == Util.getDurability(b) && Objects.equal(a.getData(), b.getData()) &&
+        return CMIMaterial.get(a) == CMIMaterial.get(b) && Util.getDurability(a) == Util.getDurability(b) && Objects.equal(a.getData(), b.getData()) &&
             Objects.equal(a.getEnchantments(), b.getEnchantments());
     }
 
@@ -1247,11 +1240,11 @@ public final class JobsPaymentListener implements Listener {
         if (!(((EntityDamageByEntityEvent) event).getDamager() instanceof Player))
             return;
 
-        //Gross but works
-        entityLastDamager.put(ent.getUniqueId(), (Player) ((EntityDamageByEntityEvent) event).getDamager());
-
         if (!Jobs.getGCManager().MonsterDamageUse)
             return;
+
+        //Gross but works
+        entityLastDamager.put(ent.getUniqueId(), (Player) ((EntityDamageByEntityEvent) event).getDamager());
 
         double damage = event.getFinalDamage();
         double s = ((Damageable) ent).getHealth();
@@ -1260,11 +1253,7 @@ public final class JobsPaymentListener implements Listener {
 
         UUID entUUID = ent.getUniqueId();
         Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
-        if (damageDealt != null) {
-            damageDealtByPlayers.put(entUUID, damageDealt + damage);
-        } else {
-            damageDealtByPlayers.put(entUUID, damage);
-        }
+        damageDealtByPlayers.put(entUUID, damageDealt == null ? damage : damageDealt + damage);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1288,15 +1277,13 @@ public final class JobsPaymentListener implements Listener {
         if (damage > s)
             damage = s;
 
-        if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
-            entityLastDamager.put(ent.getUniqueId(), (Player) ((Projectile) event.getDamager()).getShooter());
-            Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
-            if (damageDealt != null) {
-                damageDealtByPlayers.put(entUUID, damageDealt + damage);
-            } else {
-                damageDealtByPlayers.put(entUUID, damage);
-            }
-        }
+        if (!(((Projectile) event.getDamager()).getShooter() instanceof Player))
+            return;
+
+        entityLastDamager.put(ent.getUniqueId(), (Player) ((Projectile) event.getDamager()).getShooter());
+
+        Double damageDealt = damageDealtByPlayers.getIfPresent(entUUID);
+        damageDealtByPlayers.put(entUUID, damageDealt == null ? damage : damageDealt + damage);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -1308,12 +1295,13 @@ public final class JobsPaymentListener implements Listener {
         Entity killer;
 
         if (!(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent)) {
-            if (entityLastDamager.getIfPresent(event.getEntity().getUniqueId()) == null)
-                return;
             killer = entityLastDamager.getIfPresent(event.getEntity().getUniqueId());
         } else {
             killer = ((EntityDamageByEntityEvent) event.getEntity().getLastDamageCause()).getDamager();
         }
+
+        if (killer == null)
+            return;
 
         // mob spawner, no payment or experience
         if (!Jobs.getGCManager().payNearSpawner() && lVictim.hasMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata())) {
@@ -1321,9 +1309,7 @@ public final class JobsPaymentListener implements Listener {
                 // So lets remove meta in case some plugin removes entity in wrong way.
                 // Need to delay action for other function to properly check for existing meta data relating to this entity before clearing it out
                 // Longer delay is needed due to mob split event being fired few seconds after mob dies and not at same time
-                CMIScheduler.get().runTaskLater(() -> {
-                    lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin);
-                }, 200L);
+                CMIScheduler.runTaskLater(() -> lVictim.removeMetadata(Jobs.getPlayerManager().getMobSpawnerMetadata(), plugin), 200L);
             } catch (Throwable ignored) {
             }
             return;
@@ -1351,6 +1337,7 @@ public final class JobsPaymentListener implements Listener {
 
                 double perc = (damage * 100D) / Util.getMaxHealth(lVictim);
                 damageDealtByPlayers.invalidate(lVictimUUID);
+                entityLastDamager.invalidate(lVictimUUID);
                 if (perc < Jobs.getGCManager().MonsterDamagePercentage)
                     return;
             }

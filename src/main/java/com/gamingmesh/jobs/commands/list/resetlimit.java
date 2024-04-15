@@ -16,13 +16,10 @@ public class resetlimit implements Cmd {
         }
 
         if (args[0].equalsIgnoreCase("all")) {
-
             for (JobsPlayer jPlayer : Jobs.getPlayerManager().getPlayersCache().values()) {
                 jPlayer.nullPaymentLimits();
             }
-
             Jobs.getDBManager().getDB().clearLimitsTable();
-
             Language.sendMessage(sender, "command.resetlimit.output.reseted", "%playername%", "", "%playerdisplayname%", "");
             return true;
         }
