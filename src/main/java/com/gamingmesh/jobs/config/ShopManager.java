@@ -212,12 +212,12 @@ public class ShopManager {
                         }
                     }
 
-                    if (item.getPointPrice() > 0 && jPlayer.getPointsData().getCurrentPoints() < item.getPointPrice()) {
+                    if (item.getPointPrice() > 0 && (jPlayer.getPointsData().getCurrentPoints() <= 0 || jPlayer.getPointsData().getCurrentPoints() < item.getPointPrice())) {
                         player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoPoints"));
                         return;
                     }
 
-                    if (item.getVaultPrice() > 0 && jPlayer.getBalance() < item.getVaultPrice()) {
+                    if (item.getVaultPrice() > 0 && (jPlayer.getBalance() <= 0 || jPlayer.getBalance() < item.getVaultPrice())) {
                         player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoMoney"));
                         return;
                     }
