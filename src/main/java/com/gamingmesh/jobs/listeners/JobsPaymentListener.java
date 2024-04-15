@@ -60,8 +60,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
@@ -77,6 +75,7 @@ import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.AnvilInventory;
@@ -90,7 +89,6 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.jetbrains.annotations.NotNull;
 
 import com.bgsoftware.wildstacker.api.enums.StackSplit;
 import com.gamingmesh.jobs.ItemBoostManager;
@@ -905,6 +903,7 @@ public final class JobsPaymentListener implements Listener {
 
         Inventory inv = event.getInventory();
 
+        int slotToCheck = 2;
         // must be an inventory
         if (!(inv instanceof AnvilInventory) && (Version.isCurrentEqualOrHigher(Version.v1_14_R1)
             && !(inv instanceof GrindstoneInventory) && !(inv instanceof StonecutterInventory))
@@ -912,8 +911,14 @@ public final class JobsPaymentListener implements Listener {
             && (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && !(inv instanceof SmithingInventory)))
             return;
 
+        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1) && (inv instanceof StonecutterInventory))
+            slotToCheck = 1;
+        else if (Version.isCurrentEqualOrHigher(Version.v1_16_R1) && (inv instanceof SmithingInventory))
+            slotToCheck = 3;
+
         int slot = event.getSlot();
-        if (event.getSlotType() != SlotType.RESULT || (slot != 2 && slot != 1))
+
+        if (event.getSlotType() != SlotType.RESULT || (slot != slotToCheck))
             return;
 
         if (((Version.isCurrentEqualOrHigher(Version.v1_14_R1) && !(inv instanceof StonecutterInventory))
