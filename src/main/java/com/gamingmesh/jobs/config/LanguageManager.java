@@ -346,6 +346,7 @@ public class LanguageManager {
             c.get("command.info.help.actions", "&eValid actions are: &f%actions%");
             c.get("command.info.help.max", " - &emax level:&f ");
             c.get("command.info.help.newMax", " &eMax level: &f[max]");
+            c.get("command.info.help.jobName", "&7%jobdisplayname%");
             c.get("command.info.help.material", "&7%material%");
 
             c.get("command.info.help.levelRange", " &a(&e%levelFrom% &a- &e%levelUntil% &alevels)");

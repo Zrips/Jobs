@@ -212,7 +212,7 @@ public class GuiManager {
                 }
             };
 
-            button.setName(job.getDisplayName());
+            button.setName(Jobs.getLanguage().getMessage("command.info.help.jobName", job));
             button.clearLore();
             button.addLore(lore);
             if (Jobs.getGCManager().hideItemAttributes) {
@@ -338,8 +338,9 @@ public class GuiManager {
                         continue;
 
                     ItemMeta meta = guiItem.getItemMeta();
-                    meta.setDisplayName(job.getDisplayName());
+                    meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.help.jobName", job));
                     meta.setLore(lore);
+                    
                     guiItem.setItemMeta(meta);
                     tempInv.setItem(i, guiItem.clone());
 
@@ -358,7 +359,7 @@ public class GuiManager {
             }
 
             ItemMeta meta = guiItem.getItemMeta();
-            meta.setDisplayName(job.getDisplayName());
+            meta.setDisplayName(Jobs.getLanguage().getMessage("command.info.help.jobName", job));
             meta.setLore(lore);
             guiItem.setItemMeta(meta);
             tempInv.setItem(i, guiItem.clone());
