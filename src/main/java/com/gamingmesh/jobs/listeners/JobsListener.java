@@ -435,7 +435,7 @@ public class JobsListener implements Listener {
             if (prog.getLevel() >= oneItem.getLevel() || !oneItem.getNode().equalsIgnoreCase(node))
                 continue;
 
-            CMIActionBar.send(jPlayer.getPlayer(), Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", job.getDisplayName()));
+            CMIActionBar.send(jPlayer.getPlayer(), Jobs.getLanguage().getMessage("limitedItem.error.levelup", job));
             return true;
         }
 
@@ -491,7 +491,7 @@ public class JobsListener implements Listener {
                 lore = meta.getLore();
         }
 
-        String meinOk = null;
+        Job meinOk = null;
         String itemNode = null;
         CMIMaterial mat = CMIMaterial.get(iih);
 
@@ -501,7 +501,7 @@ public class JobsListener implements Listener {
                 if (one.getLevel() >= oneItem.getLevel() || !isThisItem(oneItem, mat, name, lore, enchants))
                     continue;
                 jobId = one.getJob().getId();
-                meinOk = one.getJob().getDisplayName();
+                meinOk = one.getJob();
                 itemNode = oneItem.getNode();
                 break mein;
             }
@@ -509,7 +509,7 @@ public class JobsListener implements Listener {
 
         if (meinOk != null) {
             event.setCancelled(true);
-            CMIActionBar.send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", "[jobname]", meinOk));
+            CMIActionBar.send(player, Jobs.getLanguage().getMessage("limitedItem.error.levelup", meinOk));
 
             iih = JobLimitedItems.applyNBT(iih, jobId, itemNode);
             try {

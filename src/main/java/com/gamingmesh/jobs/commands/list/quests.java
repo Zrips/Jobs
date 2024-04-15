@@ -120,7 +120,7 @@ public class quests implements Cmd {
                 List<String> hoverList = new ArrayList<>();
 
                 for (String current : hoverMsg.split("\n")) {
-                    current = current.replace("[jobName]", jobProg.getJob().getDisplayName())
+                    current = Language.updateJob(current, jobProg.getJob())
                         .replace("[time]", CMITimeManager.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
 
                     if (current.contains("[desc]")) {
@@ -192,7 +192,7 @@ public class quests implements Cmd {
                 List<String> hoverList = new ArrayList<>();
 
                 for (String current : hoverMsg.split("\n")) {
-                    current = current.replace("[jobName]", jobProg.getJob().getName())
+                    current = Language.updateJob(current, jobProg.getJob())
                         .replace("[time]", CMITimeManager.to24hourShort(q.getValidUntil() - System.currentTimeMillis()));
 
                     if (current.contains("[desc]")) {

@@ -204,7 +204,7 @@ public class ShopManager {
                         JobProgression playerJob = jPlayer.getJobProgression(tempJob);
                         if (playerJob == null || playerJob.getLevel() < oneJob.getValue()) {
                             player.sendMessage(Jobs.getLanguage().getMessage("command.shop.info.NoJobReqForitem",
-                                "%jobname%", tempJob.getName(),
+                                tempJob,
                                 "%joblevel%", oneJob.getValue()));
                             return;
                         }

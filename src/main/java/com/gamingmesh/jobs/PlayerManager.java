@@ -60,6 +60,7 @@ import com.gamingmesh.jobs.dao.JobsDAO;
 import com.gamingmesh.jobs.dao.JobsDAOData;
 import com.gamingmesh.jobs.economy.PaymentData;
 import com.gamingmesh.jobs.hooks.HookManager;
+import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.stuff.Util;
 
 import net.Zrips.CMILib.ActionBar.CMIActionBar;
@@ -681,7 +682,8 @@ public class PlayerManager {
         if (prog.getLevel() < oldLevel) {
             String message = Jobs.getLanguage().getMessage("message.leveldown.message");
 
-            message = message.replace("%jobname%", job.getDisplayName());
+            message = Language.updateJob(message, job);
+
             message = message.replace("%playername%", jPlayer.getName());
             message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
             message = message.replace("%joblevel%", prog.getLevelFormatted());
@@ -785,7 +787,7 @@ public class PlayerManager {
         String message = Jobs.getLanguage().getMessage("message.levelup." + (Jobs.getGCManager().isBroadcastingLevelups()
             ? "broadcast" : "nobroadcast"));
 
-        message = message.replace("%jobname%", job.getDisplayName());
+        message = Language.updateJob(message, job);
 
         if (levelUpEvent.getOldTitle() != null)
             message = message.replace("%titlename%", levelUpEvent.getOldTitle()
@@ -828,7 +830,8 @@ public class PlayerManager {
             message = message.replace("%playerdisplayname%", jPlayer.getDisplayName());
             message = message.replace("%titlename%", levelUpEvent.getNewTitle()
                 .getChatColor().toString() + levelUpEvent.getNewTitle().getName());
-            message = message.replace("%jobname%", job.getDisplayName());
+            
+            message = Language.updateJob(message, job);
 
             if (Jobs.getGCManager().isBroadcastingSkillups() || Jobs.getGCManager().TitleChangeActionBar || Jobs.getGCManager().TitleChangeChat) {
                 for (String line : message.split("\n")) {
@@ -899,8 +902,10 @@ public class PlayerManager {
                     commandString = commandString.replace("[player]", jPlayer.getName())
                         .replace("[playerName]", jPlayer.getName())
                         .replace("[oldlevel]", Integer.toString(newLevel - 1))
-                        .replace("[newlevel]", Integer.toString(newLevel))
-                        .replace("[jobname]", prog.getJob().getName());
+                        .replace("[newlevel]", Integer.toString(newLevel));
+
+                    commandString = Language.updateJob(commandString, prog.getJob());
+
                     commands.add(commandString);
                 }
             }

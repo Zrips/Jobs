@@ -112,8 +112,7 @@ public class editquests implements Cmd {
         for (Quest quest : quests) {
             if (!pi.isEntryOk())
                 continue;
-            ChatEditorObject CEO = new ChatEditorObject(Jobs.getLanguage().getMessage("command.editquests.help.output.list", "[jobName]", quest.getJob()
-                .getDisplayName(), "[questName]", quest.getQuestName())) {
+            ChatEditorObject CEO = new ChatEditorObject(Jobs.getLanguage().getMessage("command.editquests.help.output.list", quest.getJob(), "[questName]", quest.getQuestName())) {
                 @Override
                 public void onDelete() {
                     if (quest.getJob() != null) {

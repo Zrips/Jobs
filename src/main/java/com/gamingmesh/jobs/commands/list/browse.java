@@ -34,7 +34,7 @@ public class browse implements Cmd {
                 try {
                     plugin.getGUIManager().openJobsBrowseGUI((Player) sender);
                 } catch (Throwable e) {
-                    
+
                     ((Player) sender).closeInventory();
                     e.printStackTrace();
                 }
@@ -114,14 +114,14 @@ public class browse implements Cmd {
                         hoverMsg += Jobs.getLanguage().getMessage("command.browse.output.click");
 
                         rm.addText(Jobs.getLanguage().getMessage("command.browse.output.list", "[place]", pi.getPositionForOutput(),
-                            "[jobname]", one.getName())).addHover(hoverMsg).addCommand("jobs browse -j:" + one.getName());
+                            one)).addHover(hoverMsg).addCommand("jobs browse -j:" + one.getName());
 
                         rm.show(sender);
                     }
                     pi.autoPagination(sender, "jobs browse", "-p:");
                 } else {
 
-                    Language.sendMessage(sender, "command.browse.output.jobHeader", "[jobname]", j.getName());
+                    Language.sendMessage(sender, "command.browse.output.jobHeader", j);
 
                     int maxLevel = j.getMaxLevel(sender);
                     if (maxLevel > 0)
@@ -180,12 +180,12 @@ public class browse implements Cmd {
                                 msg += Jobs.getLanguage().getMessage("command.browse.output.console.bonus", "[amount]", bonus);
                         }
 
-                        msg += Jobs.getLanguage().getMessage("command.browse.output.console.list", "[jobname]", one.getName());
+                        msg += Jobs.getLanguage().getMessage("command.browse.output.console.list", one);
 
                         CMIMessages.sendMessage(sender, msg);
                     }
                 } else {
-                    Language.sendMessage(sender, "command.browse.output.jobHeader", "[jobname]", j.getName());
+                    Language.sendMessage(sender, "command.browse.output.jobHeader", j);
 
                     int maxLevel = j.getMaxLevel(sender);
                     if (maxLevel > 0)

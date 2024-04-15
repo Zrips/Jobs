@@ -55,7 +55,7 @@ public class promote implements Cmd {
             Player player = jPlayer.getPlayer();
             if (player != null)
                 Language.sendMessage(player, "command.promote.output.target",
-                    "%jobname%", job.getDisplayName(),
+                    job,
                     "%levelsgained%", levelsGained);
 
             Language.sendMessage(sender, "general.admin.success");

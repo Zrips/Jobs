@@ -113,7 +113,7 @@ public class edititembonus implements Cmd {
 
         for (Job one : item.getJobs()) {
             Language.sendMessage(sender, "command.itembonus.output.list",
-                "[jobname]", one.getName(),
+                one,
                 "%money%", mc + formatText((int) (boost.get(CurrencyType.MONEY) * 100)),
                 "%points%", pc + formatText((int) (boost.get(CurrencyType.POINTS) * 100)),
                 "%exp%", ec + formatText((int) (boost.get(CurrencyType.EXP) * 100)));

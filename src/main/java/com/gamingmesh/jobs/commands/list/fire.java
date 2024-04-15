@@ -30,14 +30,14 @@ public class fire implements Cmd {
         }
 
         if (!jPlayer.isInJob(job)) {
-            Language.sendMessage(sender, "command.fire.error.nojob", "%jobname%", job.getDisplayName());
+            Language.sendMessage(sender, "command.fire.error.nojob", job);
             return true;
         }
 
         if (Jobs.getPlayerManager().leaveJob(jPlayer, job)) {
             Player player = jPlayer.getPlayer();
             if (player != null)
-                Language.sendMessage(player, "command.fire.output.target", "%jobname%", job.getDisplayName());
+                Language.sendMessage(player, "command.fire.output.target", job);
 
             Language.sendMessage(sender, "general.admin.success");
         }

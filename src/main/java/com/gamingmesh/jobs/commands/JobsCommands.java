@@ -309,7 +309,7 @@ public class JobsCommands implements CommandExecutor {
                     else
                         message.add(m);
                 } else if (!type.isEmpty()) {
-                    message.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none", "%jobname%", job.getDisplayName()));
+                    message.add(Jobs.getLanguage().getMessage("command.info.output." + actionType.getName().toLowerCase() + ".none", job));
                 }
             }
         }
@@ -423,10 +423,10 @@ public class JobsCommands implements CommandExecutor {
     }
 
     @Deprecated
-    public String jobStatsMessage(JobProgression jobProg,  boolean progressBar) {
-        return jobStatsMessage(jobProg, null, progressBar);        
+    public String jobStatsMessage(JobProgression jobProg, boolean progressBar) {
+        return jobStatsMessage(jobProg, null, progressBar);
     }
-    
+
     /**
      * Displays job stats about a particular player's job
      * @param jobProg - the job progress of the players job
@@ -442,7 +442,7 @@ public class JobsCommands implements CommandExecutor {
         Title title = Jobs.getTitleManager().getTitle(jobProg.getLevel(), jobProg.getJob().getName());
         String message = Jobs.getLanguage().getMessage(path,
             "%joblevel%", jobProg.getLevelFormatted(),
-            "%jobname%", jobProg.getJob().getDisplayName(),
+            jobProg.getJob(),
             "%jobxp%", Math.round(jobProg.getExperience() * 100.0) / 100.0,
             "%jobmaxxp%", jobProg.getMaxExperience(),
             "%titlename%", title == null ? "Unknown" : title.getName());
@@ -486,7 +486,7 @@ public class JobsCommands implements CommandExecutor {
 
         String message = Jobs.getLanguage().getMessage("command.stats.output.message",
             "%joblevel%", level,
-            "%jobname%", jobProg.getJob().getDisplayName(),
+            jobProg,
             "%jobxp%", Math.round(exp * 100.0) / 100.0,
             "%jobmaxxp%", maxExperience);
         return " " + jobProgressMessage(maxExperience, exp) + " " + message;

@@ -28,83 +28,83 @@ public class itembonus implements Cmd {
 
     @Override
     public Boolean perform(Jobs plugin, final CommandSender sender, final String[] args) {
-	if (!(sender instanceof Player)) {
-	    CMIMessages.sendMessage(sender, LC.info_Ingame);
-	    return null;
-	}
+        if (!(sender instanceof Player)) {
+            CMIMessages.sendMessage(sender, LC.info_Ingame);
+            return null;
+        }
 
-	Player player = (Player) sender;
+        Player player = (Player) sender;
 
-	JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-	if (jPlayer == null)
-	    return false;
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        if (jPlayer == null)
+            return false;
 
-	ItemStack iih = CMIItemStack.getItemInMainHand(player);
+        ItemStack iih = CMIItemStack.getItemInMainHand(player);
 
-	List<ItemStack> items = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
 
-	if (iih != null && iih.getType() != Material.AIR)
-	    items.add(iih);
+        if (iih != null && iih.getType() != Material.AIR)
+            items.add(iih);
 
-	for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
-	    if (oneArmor != null && oneArmor.getType() != Material.AIR)
-		items.add(oneArmor);
-	}
+        for (ItemStack oneArmor : player.getInventory().getArmorContents()) {
+            if (oneArmor != null && oneArmor.getType() != Material.AIR)
+                items.add(oneArmor);
+        }
 
-	sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
+        sender.sendMessage(Jobs.getLanguage().getMessage("command.bonus.output.topline"));
 
-	for (ItemStack oneI : items) {
-	    JobItems jitem = Jobs.getPlayerManager().getJobsItemByNbt(oneI);
-	    if (jitem == null)
-		continue;
+        for (ItemStack oneI : items) {
+            JobItems jitem = Jobs.getPlayerManager().getJobsItemByNbt(oneI);
+            if (jitem == null)
+                continue;
 
-	    for (Job one : jitem.getJobs()) {
-		JobProgression prog = jPlayer.getJobProgression(one);
-		BoostMultiplier boost = prog == null ? jitem.getBoost() : jitem.getBoost(prog);
+            for (Job one : jitem.getJobs()) {
+                JobProgression prog = jPlayer.getJobProgression(one);
+                BoostMultiplier boost = prog == null ? jitem.getBoost() : jitem.getBoost(prog);
 
-		boolean any = false;
-		for (CurrencyType oneC : CurrencyType.values()) {
-		    if (boost.get(oneC) != 0D) {
-			any = true;
-			break;
-		    }
-		}
+                boolean any = false;
+                for (CurrencyType oneC : CurrencyType.values()) {
+                    if (boost.get(oneC) != 0D) {
+                        any = true;
+                        break;
+                    }
+                }
 
-		if (!any)
-		    continue;
+                if (!any)
+                    continue;
 
-		String mc = CMIChatColor.DARK_GREEN.toString(),
-		    pc = CMIChatColor.GOLD.toString(),
-		    ec = CMIChatColor.YELLOW.toString(),
-		    msg = null;
+                String mc = CMIChatColor.DARK_GREEN.toString(),
+                    pc = CMIChatColor.GOLD.toString(),
+                    ec = CMIChatColor.YELLOW.toString(),
+                    msg = null;
 
-		if (prog != null)
-		    msg = Jobs.getLanguage().getMessage("command.itembonus.output.list",
-			"[jobname]", one.getName(),
-			"%money%", mc + formatText((int) (boost.get(CurrencyType.MONEY) * 100)),
-			"%points%", pc + formatText((int) (boost.get(CurrencyType.POINTS) * 100)),
-			"%exp%", ec + formatText((int) (boost.get(CurrencyType.EXP) * 100)));
-		else
-		    msg = Jobs.getLanguage().getMessage("command.itembonus.output.notAplyingList",
-			"[jobname]", one.getName(),
-			"%money%", mc + formatText((int) (boost.get(CurrencyType.MONEY) * 100)),
-			"%points%", pc + formatText((int) (boost.get(CurrencyType.POINTS) * 100)),
-			"%exp%", ec + formatText((int) (boost.get(CurrencyType.EXP) * 100)));
+                if (prog != null)
+                    msg = Jobs.getLanguage().getMessage("command.itembonus.output.list",
+                        one,
+                        "%money%", mc + formatText((int) (boost.get(CurrencyType.MONEY) * 100)),
+                        "%points%", pc + formatText((int) (boost.get(CurrencyType.POINTS) * 100)),
+                        "%exp%", ec + formatText((int) (boost.get(CurrencyType.EXP) * 100)));
+                else
+                    msg = Jobs.getLanguage().getMessage("command.itembonus.output.notAplyingList",
+                        one,
+                        "%money%", mc + formatText((int) (boost.get(CurrencyType.MONEY) * 100)),
+                        "%points%", pc + formatText((int) (boost.get(CurrencyType.POINTS) * 100)),
+                        "%exp%", ec + formatText((int) (boost.get(CurrencyType.EXP) * 100)));
 
-		String name = CMIMaterial.get(oneI.getType()).getName();
+                String name = CMIMaterial.get(oneI.getType()).getName();
 
-		if (jitem.getFromLevel() != 0 || jitem.getUntilLevel() != Integer.MAX_VALUE)
-		    name += " \n" + Jobs.getLanguage().getMessage("command.itembonus.output.hoverLevelLimits",
-			"%from%", jitem.getFromLevel(),
-			"%until%", jitem.getUntilLevel());
+                if (jitem.getFromLevel() != 0 || jitem.getUntilLevel() != Integer.MAX_VALUE)
+                    name += " \n" + Jobs.getLanguage().getMessage("command.itembonus.output.hoverLevelLimits",
+                        "%from%", jitem.getFromLevel(),
+                        "%until%", jitem.getUntilLevel());
 
-		new RawMessage().addText(msg).addHover(name).show(sender);
-	    }
-	}
-	return true;
+                new RawMessage().addText(msg).addHover(name).show(sender);
+            }
+        }
+        return true;
     }
 
     private static String formatText(double amount) {
-	return ((amount > 0 ? "+" : "") + amount + "%");
+        return ((amount > 0 ? "+" : "") + amount + "%");
     }
 }

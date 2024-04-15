@@ -108,10 +108,10 @@ public class boost implements Cmd {
                     for (CurrencyType curr : CurrencyType.values()) {
                         job.addBoost(curr, 0);
                     }
-                    Language.sendMessage(sender, "command.boost.output.jobsboostreset", "%jobname%", job.getName());
+                    Language.sendMessage(sender, "command.boost.output.jobsboostreset", job);
                 } else {
                     job.addBoost(type, 0);
-                    Language.sendMessage(sender, "command.boost.output.jobstypeboostreset", "%jobname%", job.getName(), "%type%", type.getDisplayName());
+                    Language.sendMessage(sender, "command.boost.output.jobstypeboostreset", job, "%type%", type.getDisplayName());
                 }
             }
             return true;
@@ -127,7 +127,7 @@ public class boost implements Cmd {
                     one.addBoost(type, rate, timeDuration);
                 }
 
-                Language.sendMessage(sender, "command.boost.output.boostadded", "%boost%", rate, "%jobname%", one.getName());
+                Language.sendMessage(sender, "command.boost.output.boostadded", "%boost%", rate, one);
             }
         } else {
             if (type == null) {
@@ -137,7 +137,7 @@ public class boost implements Cmd {
             } else {
                 job.addBoost(type, rate, timeDuration);
             }
-            Language.sendMessage(sender, "command.boost.output.boostadded", "%boost%", rate, "%jobname%", job.getName());
+            Language.sendMessage(sender, "command.boost.output.boostadded", "%boost%", rate, job);
         }
 
         return true;
@@ -145,12 +145,11 @@ public class boost implements Cmd {
 
     private static void showBoosts(CommandSender sender, Job job) {
         RawMessage rm = new RawMessage();
-        String msg = Jobs.getLanguage().getMessage("command.boost.output.boostStats", "%jobname%", job.getDisplayName());
+        String msg = Jobs.getLanguage().getMessage("command.boost.output.boostStats", job);
         String[] split = msg.split("%payments%");
 
         rm.addText(split[0]);
 
-//        String msg = Jobs.getLanguage().getMessage("command.boost.output.boostStats", "%jobname%", job.getDisplayName());
         for (CurrencyType curr : CurrencyType.values()) {
 
             double boost = job.getBoost().get(curr);

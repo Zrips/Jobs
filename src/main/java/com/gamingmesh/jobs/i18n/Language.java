@@ -29,6 +29,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import com.gamingmesh.jobs.Jobs;
 import com.gamingmesh.jobs.config.YmlMaker;
+import com.gamingmesh.jobs.container.Job;
 
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Messages.CMIMessages;
@@ -48,6 +49,13 @@ public class Language {
         enlocale = new YmlMaker(Jobs.getFolder(), "locale/messages_en.yml").getConfig();
         if (customlocale == null)
             customlocale = enlocale;
+    }
+
+    public static String updateJob(String text, Job job) {
+        return text
+            .replaceAll("\\[jobname\\]|%jobname%", job.getName())
+            .replaceAll("\\[jobdisplayname\\]|%jobdisplayname%", job.getDisplayName())
+            .replaceAll("\\[jobfullname\\]|%jobfullname%", job.getJobFullName());
     }
 
     public static void sendMessage(CommandSender sender, String key, Object... variables) {
@@ -103,12 +111,22 @@ public class Language {
             }
         }
 
-        if (variables != null && variables.length > 0)
-            for (int i = 0; i < variables.length; i++) {
-                if (variables.length >= i + 2)
-                    msg = msg.replace(String.valueOf(variables[i]), String.valueOf(variables[i + 1]));
-                i++;
+        if (variables == null || variables.length == 0)
+            return msg;
+
+        for (int i = 0; i < variables.length; i++) {
+
+            if (variables[i] instanceof Job) {
+                msg = updateJob(msg, (Job) variables[i]);
+                continue;
             }
+
+            if (variables.length < i + 2)
+                break;
+
+            msg = msg.replace(String.valueOf(variables[i]), String.valueOf(variables[i + 1]));
+            i++;
+        }
 
         return msg;
     }

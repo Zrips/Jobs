@@ -70,7 +70,7 @@ public class BossBarManager {
 
         String message = Jobs.getLanguage().getMessage("command.stats.bossBarOutput",
             "%joblevel%", jobProg.getLevelFormatted(),
-            "%jobname%", jobProg.getJob().getDisplayName(),
+            jobProg.getJob(),
             "%jobxp%", String.format(Jobs.getGCManager().getDecimalPlacesMoney(), jobProg.getExperience()),
             "%jobmaxxp%", jobProg.getMaxExperience(),
             "%gain%", gain);

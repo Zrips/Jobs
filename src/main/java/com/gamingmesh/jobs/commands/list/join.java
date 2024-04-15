@@ -58,23 +58,23 @@ public class join implements Cmd {
 
         if (jPlayer.isInJob(job)) {
             // already in job message
-            Language.sendMessage(sender, "command.join.error.alreadyin", "%jobname%", job.getDisplayName());
+            Language.sendMessage(sender, "command.join.error.alreadyin", job);
             return true;
         }
 
         if (job.getMaxSlots() != null && Jobs.getUsedSlots(job) >= job.getMaxSlots()) {
-            Language.sendMessage(sender, "command.join.error.fullslots", "%jobname%", job.getDisplayName());
+            Language.sendMessage(sender, "command.join.error.fullslots", job);
             return true;
         }
-        
+
         if (!job.isIgnoreMaxJobs() && !Jobs.getPlayerManager().getJobsLimit(jPlayer, (short) jPlayer.getJobCount(false))) {
             Language.sendMessage(sender, "command.join.error.maxjobs");
             return true;
         }
 
         if (args.length == 2 && args[1].equalsIgnoreCase("-needConfirmation")) {
-            new RawMessage().addText(Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()))
-                .addHover(Jobs.getLanguage().getMessage("command.join.confirm", "[jobname]", job.getName()))
+            new RawMessage().addText(Jobs.getLanguage().getMessage("command.join.confirm", job))
+                .addHover(Jobs.getLanguage().getMessage("command.join.confirm", job))
                 .addCommand("jobs join " + job.getName()).show(pSender);
             return true;
         }
@@ -86,7 +86,7 @@ public class join implements Cmd {
         }
 
         Jobs.getPlayerManager().joinJob(jPlayer, job);
-        Language.sendMessage(sender, "command.join.success", "%jobname%", job.getDisplayName());
+        Language.sendMessage(sender, "command.join.success", job);
         return true;
     }
 }

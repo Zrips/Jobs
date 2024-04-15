@@ -77,10 +77,10 @@ public class top implements Cmd {
         int place = 1;
 
         if (!Jobs.getGCManager().ShowToplistInScoreboard || player == null) {
-            Language.sendMessage(sender, "command.top.output.topline", "%jobname%", job.getName(), "%amount%", Jobs.getGCManager().JobsTopAmount);
+            Language.sendMessage(sender, "command.top.output.topline", job, "%amount%", Jobs.getGCManager().JobsTopAmount);
 
             for (TopList one : fullList) {
-                System.out.println(one.getPlayerInfo().getName());
+
                 if (place > Jobs.getGCManager().JobsTopAmount)
                     break;
 
@@ -104,7 +104,7 @@ public class top implements Cmd {
                 place++;
             }
 
-            CMIScoreboard.show(player, Jobs.getLanguage().getMessage("scoreboard.topline", "%jobname%", job.getName()), ls, Jobs.getGCManager().ToplistInScoreboardInterval);
+            CMIScoreboard.show(player, Jobs.getLanguage().getMessage("scoreboard.topline", job), ls, Jobs.getGCManager().ToplistInScoreboardInterval);
 
             pi.autoPagination(sender, "jobs top " + job.getName());
         }
