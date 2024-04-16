@@ -488,8 +488,9 @@ public class PlayerManager {
 
         Jobs.takeSlot(job);
         Jobs.getSignUtil().updateAllSign(job);
-
-        job.updateTotalPlayers();
+        
+        job.modifyTotalPlayerWorking(1);
+        
         jPlayer.maxJobsEquation = CMINumber.clamp(getMaxJobs(jPlayer), 0, 9999);
 
         // Removing from cached item boost for recalculation
@@ -534,7 +535,8 @@ public class PlayerManager {
         jPlayer.getLeftTimes().remove(jPlayer.getUniqueId());
 
         Jobs.getSignUtil().updateAllSign(job);
-        job.updateTotalPlayers();
+        
+        job.modifyTotalPlayerWorking(-1);
 
         // Removing from cached item boost for recalculation
         cache.remove(jPlayer.getUniqueId());
@@ -565,9 +567,9 @@ public class PlayerManager {
         if (!jPlayer.transferJob(oldjob, newjob) || !Jobs.getJobsDAO().quitJob(jPlayer, oldjob))
             return false;
 
-        oldjob.updateTotalPlayers();
+        oldjob.modifyTotalPlayerWorking(-1);
         Jobs.getJobsDAO().joinJob(jPlayer, jPlayer.getJobProgression(newjob));
-        newjob.updateTotalPlayers();
+        newjob.modifyTotalPlayerWorking(1);
         jPlayer.save();
         return true;
     }

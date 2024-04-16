@@ -211,6 +211,16 @@ public class Job {
 
         return totalPlayers;
     }
+    /**
+     * 
+     * @param change the amount to change
+     * @return the new total
+     */
+    public int modifyTotalPlayerWorking(int change) {
+        totalPlayers = CMINumber.clamp(totalPlayers + change, 0, Integer.MAX_VALUE);
+        updateBonus();
+        return totalPlayers;
+    }
 
     /**
      * Updates the total players property from database synchronously.
