@@ -71,7 +71,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -418,13 +417,20 @@ public final class JobsPaymentListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void breakTest(BlockBreakEvent event) {
+
+        CMIMessages.consoleMessage("break" + 1);
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-
+        CMIMessages.consoleMessage("" + 1);
         final Block block = event.getBlock();
 
         if (!Jobs.getGCManager().canPerformActionInWorld(block.getWorld()))
             return;
+        CMIMessages.consoleMessage("" + 2);
 
         Player player = event.getPlayer();
 
@@ -434,14 +440,17 @@ public final class JobsPaymentListener implements Listener {
         // check if player is riding
         if (Jobs.getGCManager().disablePaymentIfRiding && player.isInsideVehicle())
             return;
+        CMIMessages.consoleMessage("" + 3);
 
         // check if in creative
         if (!payIfCreative(player))
             return;
 
+        CMIMessages.consoleMessage("" + 4);
         if (!Jobs.getPermissionHandler().hasWorldPermission(player, player.getLocation().getWorld().getName()))
             return;
 
+        CMIMessages.consoleMessage("" + 5);
         BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
 
         FastPayment fp = Jobs.FASTPAYMENT.get(player.getUniqueId());
@@ -454,9 +463,11 @@ public final class JobsPaymentListener implements Listener {
 
             Jobs.FASTPAYMENT.remove(player.getUniqueId());
         }
+        CMIMessages.consoleMessage("" + 6);
         if (!payForItemDurabilityLoss(player))
             return;
 
+        CMIMessages.consoleMessage("" + 7);
         // Protection for block break with silktouch
         if (Jobs.getGCManager().useSilkTouchProtection) {
             ItemStack item = CMIItemStack.getItemInMainHand(player);
@@ -469,6 +480,7 @@ public final class JobsPaymentListener implements Listener {
                 }
             }
         }
+        CMIMessages.consoleMessage("" + 8);
 
         // Better implementation?
         // Prevent money duplication when breaking plant blocks
@@ -1079,19 +1091,6 @@ public final class JobsPaymentListener implements Listener {
         Jobs.action(jPlayer, new ItemActionInfo(resultStack, ActionType.ENCHANT));
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void PrepareAnvilEvent(final PrepareAnvilEvent event) {
-        if (!Jobs.getGCManager().preventShopItemEnchanting)
-            return;
-
-        if (!ItemBoostManager.containsItemBoostByNBT(event.getInventory().getContents()[0]))
-            return;
-
-        if (!CMIMaterial.get(event.getInventory().getContents()[1]).equals(CMIMaterial.ENCHANTED_BOOK))
-            return;
-
-        event.setResult(null);
-    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryMoveItemEventToFurnace(InventoryMoveItemEvent event) {

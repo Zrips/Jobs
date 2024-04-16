@@ -96,6 +96,7 @@ import com.gamingmesh.jobs.i18n.Language;
 import com.gamingmesh.jobs.listeners.JobsListener;
 import com.gamingmesh.jobs.listeners.JobsPayment1_14Listener;
 import com.gamingmesh.jobs.listeners.JobsPayment1_16Listener;
+import com.gamingmesh.jobs.listeners.JobsPayment1_9Listener;
 import com.gamingmesh.jobs.listeners.JobsPaymentListener;
 import com.gamingmesh.jobs.listeners.PistonProtectionListener;
 import com.gamingmesh.jobs.listeners.PlayerSignEdit1_20Listeners;
@@ -797,26 +798,24 @@ public final class Jobs extends JavaPlugin {
 
     private static void registerListeners() {
 
-        org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
+        CMIMessages.consoleMessage("&eRegistering listeners...");
 
-        if (Version.isCurrentEqualOrHigher(Version.v1_9_R1)) {
-            pm.registerEvents(new com.gamingmesh.jobs.listeners.Listener1_9(), getInstance());
-        }
+        org.bukkit.plugin.PluginManager pm = getInstance().getServer().getPluginManager();
 
         pm.registerEvents(new JobsListener(getInstance()), getInstance());
         pm.registerEvents(new JobsPaymentListener(getInstance()), getInstance());
 
-        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1)) {
+        if (Version.isCurrentEqualOrHigher(Version.v1_9_R1))
+            pm.registerEvents(new JobsPayment1_9Listener(), getInstance());
+
+        if (Version.isCurrentEqualOrHigher(Version.v1_14_R1))
             pm.registerEvents(new JobsPayment1_14Listener(), getInstance());
-        }
 
-        if (Version.isCurrentEqualOrHigher(Version.v1_16_R3)) {
+        if (Version.isCurrentEqualOrHigher(Version.v1_16_R3))
             pm.registerEvents(new JobsPayment1_16Listener(), getInstance());
-        }
 
-        if (Version.isCurrentEqualOrHigher(Version.v1_20_R1)) {
+        if (Version.isCurrentEqualOrHigher(Version.v1_20_R1))
             pm.registerEvents(new PlayerSignEdit1_20Listeners(), getInstance());
-        }
 
         if (getGCManager().useBlockProtection) {
             pm.registerEvents(new PistonProtectionListener(), getInstance());
@@ -830,6 +829,7 @@ public final class Jobs extends JavaPlugin {
         if (HookManager.checkMythicMobs()) {
             HookManager.getMythicManager().registerListener();
         }
+        CMIMessages.consoleMessage("&eListeners registered successfully");
     }
 
     public static void reload() {
